@@ -33,7 +33,7 @@ function delete_account(url) {
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left" class="title"><table width="100%" cellpadding="5" cellspacing="5">
@@ -77,7 +77,7 @@ function delete_account(url) {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_ALIASES}</td>
-                              <td width="242"  class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
+                              <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>

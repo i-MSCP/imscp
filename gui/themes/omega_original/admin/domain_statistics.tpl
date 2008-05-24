@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -42,23 +42,18 @@
                                   <table width="100%">
                                     <tr>
                                       <td width="80" class="content">{TR_MONTH}</td>
-                                      <td width="80" class="content"><span class="content2">
-                                        <select name="month">
+                                      <td width="80" class="content"><span class="content2"><select name="month">
                                           <!-- BDP: month_list -->
                                           <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
                                           <!-- EDP: month_list -->
-                                        </select>
-                                      </span> </td>
+                                        </select></span></td>
                                       <td width="80" class="content">{TR_YEAR}</td>
-                                      <td width="80" class="content"><span class="content2">
-                                        <select name="year">
+                                      <td width="80" class="content"><span class="content2"><select name="year">
                                           <!-- BDP: year_list -->
                                           <option {OPTION_SELECTED}>{YEAR_VALUE}</option>
                                           <!-- EDP: year_list -->
-                                        </select>
-                                      </span> </td>
-                                      <td class="content"><input name="Submit" type="submit" class="button" value="{TR_SHOW}">
-                                      </td>
+                                        </select></span></td>
+                                      <td class="content"><input name="Submit" type="submit" class="button" value="{TR_SHOW}" /></td>
                                     </tr>
                                   </table>
                                 <table width="100%">
@@ -90,14 +85,13 @@
                                     </tr>
                                 </table>
                                 <!-- end of content -->
-                                  <input name="uaction" type="hidden" value="show_traff">
-                                  <input type="hidden" name="domain_id" value="{DOMAIN_ID}">
+                                  <input name="uaction" type="hidden" value="show_traff" />
+                                  <input type="hidden" name="domain_id" value="{DOMAIN_ID}" />
                               </form></td>
                             </tr>
                           </table>
                         <br>
-                          <!-- EDP: traffic_table -->
-                      </td>
+                          <!-- EDP: traffic_table --></td>
                       <td>&nbsp;</td>
                     </tr>
                     <tr>
@@ -106,8 +100,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

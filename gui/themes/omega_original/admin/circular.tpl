@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -58,14 +58,12 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" width="200">{TR_MESSAGE_SUBJECT}</td>
-                              <td class="content"><input type="text" name="msg_subject" value="{MESSAGE_SUBJECT}" style="width:270px" class="textinput">
-                              </td>
+                              <td class="content"><input type="text" name="msg_subject" value="{MESSAGE_SUBJECT}" style="width:270px" class="textinput"></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" style="width:200px; vertical-align:top;">{TR_MESSAGE_TEXT}</td>
-                              <td class="content"><textarea name="msg_text" style="width:80%" class="textinput2" rows="20">{MESSAGE_TEXT}</textarea>
-                              </td>
+                              <td class="content"><textarea name="msg_text" style="width:80%" class="textinput2" rows="20">{MESSAGE_TEXT}</textarea></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>

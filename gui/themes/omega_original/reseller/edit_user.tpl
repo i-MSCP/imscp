@@ -46,7 +46,7 @@ function delete_account(url) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -174,14 +174,14 @@ function delete_account(url) {
                         <td>&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  ">
                           &nbsp;&nbsp;&nbsp;
-                          <input type="checkbox" name="send_data" checked>
+                          <input type="checkbox" name="send_data" checked="checked">
                           {TR_SEND_DATA}</td>
                       </tr>
                       </font>
 
                     </table>
                   <input type="hidden" name="uaction" value="save_changes">
-                    <input type="hidden" name="edit_id" value="{EDIT_ID}">
+                  <input type="hidden" name="edit_id" value="{EDIT_ID}">
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

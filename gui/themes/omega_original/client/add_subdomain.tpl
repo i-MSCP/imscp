@@ -7,7 +7,7 @@
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function makeUser(){
     var subname  = document.forms[0].elements['subdomain_name'].value;
@@ -89,7 +89,7 @@ function MM_swapImage() { //v3.0
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -115,13 +115,12 @@ function MM_swapImage() { //v3.0
                               <td width="250" class="content2">
 							   {TR_SUBDOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
-                              <td class="content"><input type="text" name="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onBlur="makeUser()";>
+                              <td class="content"><input type="text" name="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
                                 {DOMAIN_NAME}</td>
                             </tr>
                             <tr>
                               <td width="250" class="content2">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</td>
-                              <td class="content"><input type="text" name="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput">
-                              </td>
+                              <td class="content"><input type="text" name="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput"></td>
                             </tr>
                             <tr>
                               <td colspan="2">&nbsp;</td>
@@ -142,8 +141,7 @@ function MM_swapImage() { //v3.0
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

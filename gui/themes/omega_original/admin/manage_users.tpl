@@ -8,7 +8,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-
 function action_status(url) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
@@ -33,7 +32,6 @@ function sbmt(form, uaction) {
 }
 //-->
 </script>
-
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -50,7 +48,7 @@ function sbmt(form, uaction) {
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -68,7 +66,7 @@ function sbmt(form, uaction) {
 	    </tr>
     </table>
 	</td>
-    <td width="27" align="right" >&nbsp;</td>
+    <td width="27" align="right">&nbsp;</td>
   </tr>
   <tr>
     <td valign="top"><!-- BDP: props_list -->
@@ -199,8 +197,7 @@ function sbmt(form, uaction) {
                         <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                         <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                     </select></td>
-              <td><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
-              </td>
+              <td><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " /></td>
             </tr>
           </table>
 		  </td>

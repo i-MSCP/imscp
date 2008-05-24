@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -31,7 +31,7 @@
                             <td colspan="2" class="title">{TR_USER_ASSIGNMENT}</td>
                           </tr>
                       </table></td>
-                      <td width="27" align="right" >&nbsp;</td>
+                      <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
                       <td valign="top"><form action="manage_reseller_users.php" method="post" name="admin_user_assignment" id="admin_user_assignment">
@@ -74,7 +74,7 @@
                                   <!-- BDP: dst_reseller -->
                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                      <td width="200" ><b>{TR_TO_RESELLER}</b>
+                                      <td width="200"><b>{TR_TO_RESELLER}</b>
                                           <select name="dst_reseller">
                                             <!-- BDP: dst_reseller_option -->
                                             <option {DST_RSL_SELECTED} value="{DST_RSL_VALUE}">{DST_RSL_OPTION}</option>

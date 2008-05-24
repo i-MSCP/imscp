@@ -7,7 +7,7 @@
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 	function sbmt(form, uaction) {
 	    form.uaction.value = uaction;
@@ -162,7 +162,7 @@
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3">
 	<form name="add_mail_acc_frm" method="post" action="add_mail_acc.php">
 	<input type="hidden" name="uaction" value="add_user">
@@ -191,38 +191,31 @@
               <!-- EDP: page_message -->
               <tr>
                 <td nowrap class="content2" width="200">{TR_USERNAME}</td>
-                <td valign="middle" nowrap class="content">
-                  <input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput">
+                <td valign="middle" nowrap class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
+                <td nowrap class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
                 <td nowrap class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
               <tr>
-                <td nowrap class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
-                <td nowrap class="content">
-                  <select name="als_id">
+                <td nowrap class="content2" width="200"><input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
+                <td nowrap class="content"><select name="als_id">
                     <!-- BDP: als_list -->
                     <option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>
                     <!-- EDP: als_list -->
-                  </select>
-                </td>
+                  </select></td>
               </tr>
 			  <!-- EDP: to_alias_domain -->
 			  <!-- BDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" width="200">
                   <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
-                <td nowrap class="content">
-                  <select name="sub_id">
+                <td nowrap class="content"><select name="sub_id">
                     <!-- BDP: sub_list -->
                     <option value="{SUB_ID}" {SUB_SELECTED}>@{SUB_NAME}</option>
                     <!-- EDP: sub_list -->
-                  </select>
-                </td>
+                  </select></td>
               </tr>
 			  <!-- EDP: to_subdomain -->
               <tr>
@@ -231,15 +224,11 @@
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
-                <td nowrap  class="content">
-                  <input type="password" name="pass" value="" style="width:210px" class="textinput">
-                </td>
+                <td nowrap  class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD_REPEAT}</td>
-                <td nowrap class="content">
-                  <input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
-                </td>
+                <td nowrap class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
                 <td nowrap class="content2" colspan="2">
@@ -247,29 +236,19 @@
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
-				</td>
-                <td nowrap class="content">
-                  <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
-	    	    </td>
+				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" /></td>
+                <td nowrap class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
 	          </tr>
               <tr>
-             <td colspan="2">
-            <input name="Submit" type="submit" class="button" value=" {TR_ADD} ">
-                    </td>
+             <td colspan="2"><input name="Submit" type="submit" class="button" value=" {TR_ADD} "></td>
                 </tr>
-            </table>
-	</td>
+            </table></td>
           </tr>
-            </table>
-       	</td>
+            </table></td>
 	</tr>
-        </table>
-      </form>
-			</td>
+        </table></form></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 

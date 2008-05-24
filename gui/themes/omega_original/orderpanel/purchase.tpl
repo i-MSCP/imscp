@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
 <link href="../themes/omega_original/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function validateForm(contact) {
 

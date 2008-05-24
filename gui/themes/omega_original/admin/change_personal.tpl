@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -55,13 +55,11 @@
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_GENDER}</td>
-                              <td class="content">
-                                <select name="gender" size="1">
+                              <td class="content"><select name="gender" size="1">
                                   <option value="M" {VL_MALE}>{TR_MALE}</option>
                                   <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
                                   <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
-                                </select>
-                              </td>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -113,8 +111,7 @@
                               <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}">
                                   <input type="hidden" name="uaction" value="updt_data"></td>
                             </tr>
-                          </table>
-                      </form></td>
+                          </table></form></td>
                       <td>&nbsp;</td>
                     </tr>
                     <tr>
@@ -123,8 +120,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

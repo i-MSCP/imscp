@@ -8,7 +8,7 @@
     <td width="40" align="center" nowrap  class="content3"><a href="addon.php?id={PACK_ID}&amp;user_id={USER_ID}" class="linkdark">{PURCHASE}</a></td>
   </tr>
   <tr>
-    <td colspan="2"  class="content">{PACK_INFO}</td>
+    <td colspan="2" class="content">{PACK_INFO}</td>
   </tr>
 </table>
 <br>

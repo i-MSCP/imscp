@@ -44,7 +44,7 @@ function sbmt(form) {
       <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
       <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
      </tr>
-     <tr height="*">
+     <tr>
       <td colspan="3">
        <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -78,7 +78,7 @@ function sbmt(form) {
                <!-- BDP: db_list -->
                <tr>
                 <td height="48" align="left" class="content4">&nbsp;&nbsp;&nbsp;<strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.png" width="15" height="16" align="absmiddle">&nbsp;{DB_NAME}</strong></td>
-                <td align="left" class="content4">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/db_comit.png" width="13" height="17" align="absmiddle">&nbsp;<a href="sql_execute_query.php?id={USER_ID}" class="link" >{TR_EXECUTE_QUERY}</a></td>
+                <td align="left" class="content4">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/db_comit.png" width="13" height="17" align="absmiddle">&nbsp;<a href="sql_execute_query.php?id={USER_ID}" class="link">{TR_EXECUTE_QUERY}</a></td>
                 <td width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" alt="add_user" width="26" height="16" border="0" align="absmiddle">&nbsp;<a href="sql_add_user.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>
                 <td align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('delete_sql_database.php?id={DB_ID}')">{TR_DELETE}</a></td>
                </tr>
@@ -92,7 +92,7 @@ function sbmt(form) {
                 <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" align="absmiddle">&nbsp;{DB_USER}</td>
                 <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;<a href="#" class="link" onclick="return sbmt(document.forms[{COUNT}]);">{TR_PHP_MYADMIN}</a></td>
                  <form method="post" action="../tools/pma/index.php" target="_blank"><input type="hidden" name="pma_username" value="{USER_MYSQL}"><input type="hidden" name="pma_password" value="{PASS_MYSQL}"></form>
-                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="14" height="16" border="0" align="absmiddle">&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link" >{TR_CHANGE_PASSWORD}</a></td>
+                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="14" height="16" border="0" align="absmiddle">&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>
                </tr>
                <!-- EDP: user_list -->

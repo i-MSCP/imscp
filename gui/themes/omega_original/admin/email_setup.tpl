@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -43,17 +43,17 @@
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_USER_LOGIN_NAME}</td>
-                              <td  class="content">{USERNAME} </td>
+                              <td class="content">{USERNAME}</td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2">{TR_USER_PASSWORD}</td>
-                              <td  class="content">{PASSWORD}</td>
+                              <td class="content">{PASSWORD}</td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2">{TR_USER_REAL_NAME}</td>
-                              <td  class="content">{NAME}</td>
+                              <td class="content">{NAME}</td>
                             </tr>
                           </table>
                         <br>

@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -65,8 +65,7 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_EMAIL}</td>
-                                <td class="content"><input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
@@ -85,61 +84,51 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_GENDER}</td>
-                                <td class="content">
-                                    <select name="gender" size="1">
+                                <td class="content"><select name="gender" size="1">
                                       <option value="M" {VL_MALE}>{TR_MALE}</option>
                                       <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
                                       <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
-                                    </select>
-                                </td>
+                                    </select></td>
                                </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_COMPANY}</td>
-                                <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_ZIP_POSTAL_CODE}</td>
-                                <td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_CITY}</td>
-                                <td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_COUNTRY}</td>
-                                <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_STREET_1}</td>
-                                <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_STREET_2}</td>
-                                <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_PHONE}</td>
-                                <td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_FAX}</td>
-                                <td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
@@ -161,8 +150,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

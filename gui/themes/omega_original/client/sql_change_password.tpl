@@ -37,7 +37,7 @@ function action_delete(url) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -61,7 +61,7 @@ function action_delete(url) {
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="200" class="content2">{TR_USER_NAME}</td>
-                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput" readonly>
+                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput" readonly="readonly">
                               </td>
                             </tr>
                             <tr>

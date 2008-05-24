@@ -46,7 +46,7 @@ function MM_goToURL() { //v3.0
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -92,7 +92,7 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_TRAFFIC}</td>
-                            <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                            <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                   <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
                                   <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
@@ -111,7 +111,7 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_DISK}</td>
-                            <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                            <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                   <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
                                   <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
@@ -125,7 +125,7 @@ function MM_goToURL() { //v3.0
                                 </tr>
                               </table>
                                 <br>
-                              {VL_DISK_USED} / {VL_DISK_LIMIT} </td>
+                              {VL_DISK_USED} / {VL_DISK_LIMIT}</td>
                           <tr>
                             <td>&nbsp;</td>
                             <td class="content3"><strong>{TR_FEATURE}</strong></td>
@@ -184,8 +184,7 @@ function MM_goToURL() { //v3.0
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

@@ -25,76 +25,63 @@
    </tr>
    <tr>
     <td style="width: 195px; vertical-align: top;">{MENU}</td>
-    <td colspan="3" style="vertical-align: top;">
-	 <table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+    <td colspan="3" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
       <tr height="95">
        <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
        <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
       </tr>
-      <tr height="*">
-       <td height="415" colspan="3">
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+       <td height="415" colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
          <tr>
-          <td align="left">
-		   <table width="100%" cellpadding="5" cellspacing="5">
+          <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
             <tr>
              <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
              <td colspan="2" class="title">{TR_MENU_WEBTOOLS}</td>
             </tr>
-           </table>
-		  </td>
+           </table></td>
           <td width="27" align="right">&nbsp;</td>
          </tr>
          <tr>
-          <td>
-		   <table width="100%" cellspacing="7">
+          <td><table width="100%" cellspacing="7">
 		   <tr>
              <td>&nbsp;</td>
-             <td class="content">
-			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+             <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><p><a href="protected_areas.php"><img src="{THEME_COLOR_PATH}/images/icons/htaccessicon.gif" width="46" height="46" border="0"></a></p></td>
                 <td><a href="protected_areas.php" class="link">&nbsp;{TR_HTACCESS}</a><br />
                  &nbsp;{TR_HTACCESS_TEXT}</td>
                </tr>
-              </table>
-			 </td>
+              </table></td>
             </tr>
             <tr>
              <td width="25">&nbsp;</td>
-             <td class="content">
-			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+             <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.gif" width="46" height="46" border="0"></a></td>
                 <td><a href="error_pages.php" class="link"> &nbsp;{TR_ERROR_PAGES}</a><br />
                  &nbsp;{TR_ERROR_PAGES_TEXT}</td>
                </tr>
-              </table>
-			 </td>
+              </table></td>
             </tr>
             <tr>
              <td>&nbsp;</td>
-             <td class="content">
-			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+             <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><a href="backup.php"><img src="{THEME_COLOR_PATH}/images/icons/backupicon.gif" width="46" height="46" border="0"></a></td>
                 <td><a href="backup.php" class="link">&nbsp;{TR_BACKUP}</a><br />
                  &nbsp;{TR_BACKUP_TEXT}</td>
                </tr>
-              </table>
-			 </td>
+              </table></td>
             </tr>
             <tr>
              <td>&nbsp;</td>
-             <td class="content">
-			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+             <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/webmailicon.gif" width="46" height="46" border="0"></a></td>
                 <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="link">&nbsp;{TR_WEBMAIL}</a><br />
                  &nbsp;{TR_WEBMAIL_TEXT}</td>
                </tr>
-              </table>
-			 </td>
+              </table></td>
             </tr>
             <tr>
              <td>&nbsp;</td>
@@ -105,8 +92,7 @@
                 <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="link">&nbsp;{TR_FILEMANAGER}</a><br />
                  &nbsp;{TR_FILEMANAGER_TEXT}</td>
                </tr>
-              </table>
-			 </td>
+              </table></td>
             </tr>
 			<!-- BDP: active_awstats -->
             <tr>
@@ -118,12 +104,10 @@
                 <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="link">&nbsp;{TR_AWSTATS}</a><br />
                  &nbsp;{TR_AWSTATS_TEXT}</td>
                </tr>
-              </table>
-		     </td>
+              </table></td>
             </tr>
 		    <!-- EDP: active_awstats -->
-           </table>
-		  </td>
+           </table></td>
           <td>&nbsp;</td>
          </tr>
          <tr>
@@ -133,8 +117,7 @@
         </table>
 	   </td>
       </tr>
-     </table>
-    </td>
+     </table></td>
    </tr>
   </table>
  </body>

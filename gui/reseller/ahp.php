@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
@@ -107,25 +107,28 @@ if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 // Generate empty form
 function gen_empty_ahp_page(&$tpl) {
-	$tpl->assign(
-			array(
-				'HP_NAME_VALUE' => '',
-				'TR_MAX_SUB_LIMITS' => '',
-				'TR_MAX_ALS_VALUES' => '',
-				'HP_MAIL_VALUE' => '',
-				'HP_FTP_VALUE' => '',
-				'HP_SQL_DB_VALUE' => '',
-				'HP_SQL_USER_VALUE' => '',
-				'HP_TRAFF_VALUE' => '',
-				'HP_PRICE' => '',
-				'HP_SETUPFEE' => '',
-				'HP_VELUE' => '',
-				'HP_PAYMENT' => '',
-				'HP_DESCRIPTION_VALUE' => '',
-				'TR_STATUS_NO' => 'checked',
-				'HP_DISK_VALUE' => ''
-				)
-			);
+	$tpl->assign(array(
+		'HP_NAME_VALUE'			=> '',
+		'TR_MAX_SUB_LIMITS'		=> '',
+		'TR_MAX_ALS_VALUES'		=> '',
+		'HP_MAIL_VALUE'			=> '',
+		'HP_FTP_VALUE'			=> '',
+		'HP_SQL_DB_VALUE'		=> '',
+		'HP_SQL_USER_VALUE'		=> '',
+		'HP_TRAFF_VALUE'		=> '',
+		'HP_PRICE'				=> '',
+		'HP_SETUPFEE'			=> '',
+		'HP_VELUE'				=> '',
+		'HP_PAYMENT'			=> '',
+		'HP_DESCRIPTION_VALUE'	=> '',
+		'TR_STATUS_YES'			=> '',
+		'TR_STATUS_NO'			=> 'checked',		
+		'TR_PHP_YES'			=> '',
+		'TR_PHP_NO'				=> 'checked',
+		'TR_CGI_YES'			=> '',
+		'TR_CGI_NO'				=> 'checked',
+		'HP_DISK_VALUE'			=> ''
+	));
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
 

@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-24 Jochen Manz
+	- GUI:
+		* Fixed #1284: Some HTML, JS fixes, removed ugly/useless whitespace removed useles height="*" - Part 4
+		* Fixed #1275: TR_PHP_YES, TR_PHP_NO, TR_CGI_YES, TR_CGI_NO and TR_STATUS_YES aren't replaced correctly
+		
 2008-05-23 Jochen Manz
 	- GUI:
 		* Fixed #1279: some Web Content Accessibility Work (Part 1)
@@ -11,6 +16,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-22 Benedikt Heintel
 	- GUI:
+		* Fixed #1275: Some HTML and CSS fixes in the HTML templates and some PHP files - Part 2 
 		* Fixed #1273: some HTML fixes in the HTML templates - Part 1
 		* Fixed #1274: remove Disallow /ispcp/ from robots.txt
 
@@ -37,7 +43,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #1260: Syntaxerror in ispcp-als-mngr
 	- GUI:
-		* Fixed #1144: Show all support tickets to adminShow all support tickets to admin
+		* Fixed #1144: Show all support tickets to admin
 		* Fixed #1226: Logging Deamon (Mail)
 		* Fixed #1258: possible XSS - Cross Site Scripting in some GUI-files
 		* Fixed #1259: tiny typos in php comments

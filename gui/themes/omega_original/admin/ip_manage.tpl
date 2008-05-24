@@ -6,12 +6,11 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function action_delete(url, ip) {
 	if (!confirm("{TR_MESSAGE_DELETE} " + ip))
 		return false;
-
 	location = url;
 }
 //-->
@@ -32,7 +31,7 @@ function action_delete(url, ip) {
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -111,7 +110,7 @@ function action_delete(url, ip) {
                               </tr>
                               <tr>
                                 <td nowrap>&nbsp;</td>
-                                <td colspan="2" nowrap ><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                                <td colspan="2" nowrap><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
                               </tr>
                             </table>
                             <input type="hidden" name="uaction" value="add_ip">

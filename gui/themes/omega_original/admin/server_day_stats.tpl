@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -36,7 +36,7 @@
                     <tr>
                       <td valign="top"><table>
                           <tr>
-                            <td width="40" nowrap="nowrap" >&nbsp;</td>
+                            <td width="40" nowrap="nowrap">&nbsp;</td>
                             <td height="25" colspan="13" nowrap="nowrap" class="content">{TR_YEAR} {YEAR}&nbsp;&nbsp;&nbsp;&nbsp; {TR_MONTH}{MONTH}&nbsp;&nbsp;&nbsp;{TR_DAY} {DAY}</td>
                           </tr>
                           <tr align="center">

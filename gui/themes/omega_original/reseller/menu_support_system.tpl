@@ -9,11 +9,11 @@
    </table>
   </td>
  </tr>
- <tr height="*">
+ <tr>
 				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}"  class="submenu">{TR_OPEN_TICKETS}</a></td>
+    <td><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}" class="submenu">{TR_OPEN_TICKETS}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

@@ -6,12 +6,11 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
 }
 //-->
@@ -37,7 +36,7 @@ function action_delete(url) {
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -68,7 +67,7 @@ function action_delete(url) {
                             <td class="{CONTENT}"><a href="{LINK}" class="link" target="_blank"><strong>{MENU_NAME}</strong></a><br>
                               {LINK}</td>
                             <td class="{CONTENT}" align="center">{LEVEL}</td>
-                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="custom_menus.php?edit_id={BUTONN_ID}"  class="link">{TR_EDIT}</a></td>
+                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="custom_menus.php?edit_id={BUTONN_ID}" class="link">{TR_EDIT}</a></td>
                             <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#"  onclick="action_delete('custom_menus.php?delete_id={BUTONN_ID}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: button_list -->
@@ -84,22 +83,22 @@ function action_delete(url) {
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_NAME}</td>
-                                <td class="content"><input name="bname" type="text" class="textinput" id="bname" style="width:210px"></td>
+                                <td class="content"><input name="bname" type="text" class="textinput" id="bname" style="width:210px" /></td>
                               </tr>
                               <tr>
-                                <td width="25" >&nbsp;</td>
+                                <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_LINK}</td>
-                                <td class="content"><input name="blink" type="text" class="textinput" id="blink" style="width:210px"></td>
+                                <td class="content"><input name="blink" type="text" class="textinput" id="blink" style="width:210px" /></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_TARGET}</td>
-                                <td class="content"><input name="btarget" type="text" class="textinput" id="btarget" style="width:210px"></td>
+                                <td class="content"><input name="btarget" type="text" class="textinput" id="btarget" style="width:210px" /></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_VIEW_FROM}</td>
-                                <td  class="content"><select name="bview" id="bview">
+                                <td class="content"><select name="bview" id="bview">
                                     <option value="admin">{ADMIN}</option>
                                     <option value="reseller">{RESELLER}</option>
                                     <option value="user">{USER}</option>
@@ -121,17 +120,17 @@ function action_delete(url) {
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_NAME}</td>
-                                <td class="content"><input name="bname" type="text" class="textinput" id="bname" style="width:210px" value="{BUTON_NAME}"></td>
+                                <td class="content"><input name="bname" type="text" class="textinput" id="bname" style="width:210px" value="{BUTON_NAME}" /></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_LINK}</td>
-                                <td class="content"><input name="blink" type="text" class="textinput" id="blink" style="width:210px" value="{BUTON_LINK}"></td>
+                                <td class="content"><input name="blink" type="text" class="textinput" id="blink" style="width:210px" value="{BUTON_LINK}" /></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_TARGET}</td>
-                                <td class="content"><input name="btarget" type="text" class="textinput" id="btarget" style="width:210px" value="{BUTON_TARGET}"></td>
+                                <td class="content"><input name="btarget" type="text" class="textinput" id="btarget" style="width:210px" value="{BUTON_TARGET}" /></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
@@ -145,15 +144,14 @@ function action_delete(url) {
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
-                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'edit_button');"></td>
+                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'edit_button');" /></td>
                               </tr>
                             </table>
-                            <input type="hidden" name="eid" value="{EID}">
+                            <input type="hidden" name="eid" value="{EID}" />
                             <!-- EDP: edit_button -->
-                            <input type="hidden" name="uaction" value="">
+                            <input type="hidden" name="uaction" value="" />
                           </form>
-                        <!-- end of content -->
-                      </td>
+                        <!-- end of content --></td>
                       <td>&nbsp;</td>
                     </tr>
                     <tr>
@@ -162,8 +160,7 @@ function action_delete(url) {
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

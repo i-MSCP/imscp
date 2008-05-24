@@ -54,7 +54,7 @@ function action_delete(url) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -109,11 +109,11 @@ function action_delete(url) {
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
                                 <!-- BDP: mysql_prefix_infront -->
-                                <input type="radio" name="id_pos" value="start" checked>
+                                <input type="radio" name="id_pos" value="start" checked="checked">
                                 {TR_START_ID_POS}
                                 <!-- EDP: mysql_prefix_infront -->
                                 <!-- BDP: mysql_prefix_behind -->
-                                <input type="radio" name="id_pos" value="end" checked>
+                                <input type="radio" name="id_pos" value="end" checked="checked">
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_behind -->
                               </td>
@@ -132,7 +132,7 @@ function action_delete(url) {
                               <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td colspan="2"><input accesskey=#13 name="Add_New" type="submit" class="button" id="Add_New" value="  {TR_ADD}  " >
+                              <td colspan="2"><input accesskey="#13" name="Add_New" type="submit" class="button" id="Add_New" value="  {TR_ADD}  ">
                                 &nbsp;&nbsp;&nbsp;
                                 <input type="button" name="Submit" value="   {TR_CANCEL}   " onclick="location.href = 'manage_sql.php'" class="button"></td>
                             </tr>
@@ -152,8 +152,7 @@ function action_delete(url) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

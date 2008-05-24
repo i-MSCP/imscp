@@ -37,7 +37,7 @@ function action_delete(url) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -63,8 +63,7 @@ function action_delete(url) {
                             <tr>
                               <td width="5">&nbsp;</td>
                               <td width="200" class="content2">{TR_DB_NAME}</td>
-                              <td class="content"><input type="text" name="db_name" value="{DB_NAME}" style="width:170px" class="textinput">
-                              </td>
+                              <td class="content"><input type="text" name="db_name" value="{DB_NAME}" style="width:170px" class="textinput"></td>
                             </tr>
                             <tr>
                               <td width="5">&nbsp;</td>
@@ -82,11 +81,11 @@ function action_delete(url) {
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
                                 <!-- BDP: mysql_prefix_infront -->
-                                <input type="radio" name="id_pos" value="start" checked>
+                                <input type="radio" name="id_pos" value="start" checked="checked">
                                 {TR_START_ID_POS}
                                 <!-- EDP: mysql_prefix_infront -->
                                 <!-- BDP: mysql_prefix_behind -->
-                                <input type="radio" name="id_pos" value="end" checked>
+                                <input type="radio" name="id_pos" value="end" checked="checked">
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_behind -->
                               </td>
@@ -97,8 +96,7 @@ function action_delete(url) {
                             </tr>
                           </table>
                         <!-- end of content -->
-                          <input type="hidden" name="uaction" value="add_db">
-                      </form></td>
+                          <input type="hidden" name="uaction" value="add_db"></form></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>
@@ -109,8 +107,7 @@ function action_delete(url) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

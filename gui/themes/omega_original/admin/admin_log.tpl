@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -75,15 +75,14 @@
                               <td width="80">&nbsp;</td>
                               <td><label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>
                                 <select name="uaction_clear" id="uaction_clear">
-                                    <option value="0" selected>{TR_CLEAR_LOG_EVERYTHING}</option>
+                                    <option value="0" selected="selected">{TR_CLEAR_LOG_EVERYTHING}</option>
                                     <option value="2">{TR_CLEAR_LOG_LAST2}</option>
                                     <option value="4">{TR_CLEAR_LOG_LAST4}</option>
                                     <option value="12">{TR_CLEAR_LOG_LAST12}</option>
                                     <option value="26">{TR_CLEAR_LOG_LAST26}</option>
                                     <option value="52">{TR_CLEAR_LOG_LAST52}</option>
                                 </select>
-                                  <input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  ">
-                              </td>
+                                <input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  "></td>
                             </tr>
                           </table>
                         <!-- EDP: clear_log -->
@@ -97,8 +96,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

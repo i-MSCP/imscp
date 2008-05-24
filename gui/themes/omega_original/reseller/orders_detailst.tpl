@@ -6,13 +6,11 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
-
 function delete_order(url) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
 		return false;
-
 	location = url;
 }
 
@@ -20,7 +18,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 }
 //-->
@@ -47,7 +45,7 @@ function sbmt(form, uaction) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -92,7 +90,7 @@ function sbmt(form, uaction) {
                         <td class="content2">{TR_DMN_IP}</td>
                         <td class="content"><select name="domain_ip">
                             <!-- BDP: ip_entry -->
-                            <option value="{IP_VALUE}" {ip_selected}>{IP_NUM}&nbsp;({IP_NAME})</option>
+                            <option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM}&nbsp;({IP_NAME})</option>
                             <!-- EDP: ip_entry -->
                           </select>
                         </td>

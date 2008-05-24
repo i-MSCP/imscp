@@ -22,7 +22,7 @@
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
+				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -49,8 +49,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td width="200" class="content2">{TR_LOSTPASSWORD}</td>
-                              <td class="content">
-							   <select name="lostpassword">
+                              <td class="content"><select name="lostpassword">
                                   <option value="0" {LOSTPASSWORD_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {LOSTPASSWORD_SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>
@@ -58,9 +57,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_LOSTPASSWORD_TIMEOUT}</td>
-                              <td class="content">
-                                <input name="lostpassword_timeout" type="text" class="textinput" id="lostpassword_timeout" style="width:50px" value="{LOSTPASSWORD_TIMEOUT_VALUE}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="lostpassword_timeout" type="text" class="textinput" id="lostpassword_timeout" style="width:50px" value="{LOSTPASSWORD_TIMEOUT_VALUE}" maxlength="3" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -71,9 +68,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_PASSWD_CHARS}</td>
-                              <td class="content">
-                                <input name="passwd_chars" type="text" class="textinput" id="passwd_chars" style="width:50px" value="{PASSWD_CHARS}" maxlength="2" />
-							</td>
+                              <td class="content"><input name="passwd_chars" type="text" class="textinput" id="passwd_chars" style="width:50px" value="{PASSWD_CHARS}" maxlength="2" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -81,8 +76,7 @@
                               <td class="content"><select name="passwd_strong" id="passwd_strong">
                                 <option value="0" {PASSWD_STRONG_OFF}>{TR_DISABLED}</option>
                                 <option value="1" {PASSWD_STRONG_ON}>{TR_ENABLED}</option>
-                              </select>
-                              </td>
+                              </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -91,8 +85,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE}</td>
-                              <td class="content">
-							    <select name="bruteforce" id="bruteforce">
+                              <td class="content"><select name="bruteforce" id="bruteforce">
                                   <option value="0" {BRUTEFORCE_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {BRUTEFORCE_SELECTED_ON}>{TR_ENABLED}</option>
                                 </select></td>
@@ -124,16 +117,12 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_BETWEEN_TIME}</td>
-                              <td class="content">
-                                <input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_MAX_CAPTCHA}</td>
-                              <td class="content">
-                                <input name="bruteforce_max_capcha" type="text" class="textinput" id="bruteforce_max_capcha" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="bruteforce_max_capcha" type="text" class="textinput" id="bruteforce_max_capcha" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" /></td>
 							  </tr>
 							                              <tr>
                               <td>&nbsp;</td>

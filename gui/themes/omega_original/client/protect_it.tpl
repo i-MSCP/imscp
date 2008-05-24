@@ -6,19 +6,20 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
 
 function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  var i, args = MM_goToURL.arguments;
+  document.MM_returnValue = false;
   for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
 
@@ -39,7 +40,6 @@ function begin_js() {
                 document.forms[0].elements["groups[]"].disabled = false;
             }
         }
-
 //-->
 </script>
 </head>
@@ -64,7 +64,7 @@ function begin_js() {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -95,13 +95,11 @@ function begin_js() {
                               <tr>
                                 <td width="80">{TR_PATH} </td>
                                 <td><input name="other_dir" type="text" class="textinput" id="path" style="width:170px" value="{PATH}">
-                                    <input type="hidden" name="use_other_dir" >
-                                    <script language="JavaScript" type="text/javascript">
+                                    <input type="hidden" name="use_other_dir">
+                                    <script type="text/javascript">
 					<!--
-						function OpenTree()
-						{
-						  libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-						  
+						function OpenTree() {
+						  libwindow = window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
 						}
 					//-->
 					</script>
@@ -125,9 +123,9 @@ function begin_js() {
                         </tr>
                         <tr align="center">
                           <td width="25" nowrap>&nbsp;</td>
-                          <td nowrap class="content"><input type="radio" name="ptype" value="user" {USER_CHECKED} onFocus="changeType('user');">
+                          <td nowrap class="content"><input type="radio" name="ptype" value="user" {USER_CHECKED} onfocus="changeType('user');">
                             {TR_USER_AUTH}</td>
-                          <td nowrap class="content"><input type="radio" name="ptype" value="group" {GROUP_CHECKED} onFocus="changeType('group');">
+                          <td nowrap class="content"><input type="radio" name="ptype" value="group" {GROUP_CHECKED} onfocus="changeType('group');">
                             {TR_GROUP_AUTH}</td>
                         </tr>
                         <tr>

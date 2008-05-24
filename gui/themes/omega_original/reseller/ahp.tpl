@@ -28,7 +28,7 @@ function delete_account(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -45,7 +45,7 @@ function delete_account(url) {
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
+          <tr>
             <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
@@ -72,8 +72,7 @@ function delete_account(url) {
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_TEMPLATE_NAME}</td>
-                        <td class="content"><input type="text" name="hp_name" value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_name" value="{HP_NAME_VALUE}" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
@@ -83,55 +82,47 @@ function delete_account(url) {
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SUBDOMAINS}</td>
-                        <td class="content"><input type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_ALIASES}</td>
-                        <td class="content"><input type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_MAILACCOUNTS}</td>
-                        <td class="content"><input type="text" name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_FTP}</td>
-                        <td class="content"><input type="text" name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL}</td>
-                        <td class="content"><input type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL_USERS}</td>
-                        <td class="content"><input type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_TRAFFIC}</td>
-                        <td class="content"><input type="text" name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_DISK_LIMIT}</td>
-                        <td class="content"><input type="text" name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
-                        </td>
+                        <td class="content"><input type="text" name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_PHP}</td>
-                        <td  class="content"><input type="radio" name="php" value="_yes_" {TR_PHP_YES}>
+                        <td class="content"><input type="radio" name="php" value="_yes_" {TR_PHP_YES}>
                           {TR_YES}
                           <input type="radio" name="php" value="_no_" {TR_PHP_NO}>
                           {TR_NO}</td>
@@ -139,7 +130,7 @@ function delete_account(url) {
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_CGI}</td>
-                        <td  class="content"><input type="radio" name="cgi" value="_yes_" {TR_CGI_YES}>
+                        <td class="content"><input type="radio" name="cgi" value="_yes_" {TR_CGI_YES}>
                           {TR_YES}
                           <input type="radio" name="cgi" value="_no_" {TR_CGI_NO}>
                           {TR_NO}</td>
@@ -192,8 +183,7 @@ function delete_account(url) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

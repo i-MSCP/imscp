@@ -9,7 +9,7 @@
    </table>
   </td>
  </tr>
- <tr height="*">
+ <tr>
 				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
