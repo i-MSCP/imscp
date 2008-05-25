@@ -75,7 +75,7 @@
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_DISK}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_DOMAIN}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_SUBDOMAIN}</b></td>
-                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALIAS}</b> </td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALIAS}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_MAIL}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_SQL_DB}</b></td>
@@ -84,7 +84,7 @@
                             <!-- BDP: reseller_entry -->
                             <tr>
                               <td nowrap="nowrap" align="center">&nbsp;</td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="reseller_user_statistics.php?rid={RESELLER_ID}&amp;name={RESELLER_NAME}&amp;month={MONTH}&amp;year={YEAR}" title="{RESELLER_NAME}" class="link"><b>{RESELLER_NAME}</a></b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="reseller_user_statistics.php?rid={RESELLER_ID}&amp;name={RESELLER_NAME}&amp;month={MONTH}&amp;year={YEAR}" title="{RESELLER_NAME}" class="link">{RESELLER_NAME}</a></b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" /></td>

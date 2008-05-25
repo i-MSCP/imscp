@@ -68,7 +68,7 @@ function action_delete(url) {
                               <td nowrap="nowrap" class="content2">{TR_ARSP_MESSAGE}</td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content"><textarea name="arsp_message" cols="50" rows="15" wrap="virtual" style="width:80%">{ARSP_MESSAGE}</textarea>
+                              <td nowrap="nowrap" class="content"><textarea name="arsp_message" cols="50" rows="15" style="width:80%">{ARSP_MESSAGE}</textarea>
                               </td>
                             </tr>
                           </table>

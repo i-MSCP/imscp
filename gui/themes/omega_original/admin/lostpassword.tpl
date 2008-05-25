@@ -94,8 +94,8 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" style="width:200px;vertical-align:top;">{TR_MESSAGE}</td>
-                              <td class="content" width="35%"><textarea name="message1" rows="20" class="textinput2" ID="message1" style="width:90%">{MESSAGE_VALUE1}</textarea></td>
-                              <td class="content" width="35%"><textarea name="message2" rows="20" class="textinput2" ID="message2" style="width:90%">{MESSAGE_VALUE2}</textarea></td>
+                              <td class="content" width="35%"><textarea name="message1" rows="20" cols="80" class="textinput2" ID="message1" style="width:90%">{MESSAGE_VALUE1}</textarea></td>
+                              <td class="content" width="35%"><textarea name="message2" rows="20" cols="80" class="textinput2" ID="message2" style="width:90%">{MESSAGE_VALUE2}</textarea></td>
                             </tr>
                             <tr>
                               <td width="20">&nbsp;</td>

@@ -56,26 +56,24 @@
                     <tr>
                       <td>&nbsp;</td>
                       <td width="200" class="content2">{TR_GROUPNAME}</td>
-                      <td colspan="2" class="content"><input name="groupname" type="text" class="textinput" id="groupname" style="width:170px" value="">
+                      <td colspan="2" class="content"><input name="groupname" type="text" class="textinput" id="groupname" style="width:170px" value="" />
                       </td>
                     </tr>
                     <tr>
                       <td>&nbsp;</td>
-                      <td colspan="3"><input type="hidden" name="uaction" value="add_group">
-                          <input name="Submit" type="submit" class="button" value="{TR_ADD_GROUP}">
+                      <td colspan="3"><input type="hidden" name="uaction" value="add_group" />
+                          <input name="Submit" type="submit" class="button" value="{TR_ADD_GROUP}" />
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
                     </tr>
-                </table></td>
+                </table></form></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
-            </table>
-			</form>
-			</td>
+            </table></td>
           </tr>
         </table>
 	  </td>

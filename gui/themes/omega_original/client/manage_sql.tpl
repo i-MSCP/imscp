@@ -21,6 +21,7 @@ function sbmt(form) {
 //-->
   </script>
  </head>
+
  <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
   <!-- BDP: logged_from -->
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -90,7 +91,6 @@ function sbmt(form) {
                <tr>
                 <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" align="absmiddle">&nbsp;{DB_USER}</td>
                 <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;<a href="#" class="link" onclick="return sbmt(document.forms[{COUNT}]);">{TR_PHP_MYADMIN}</a></td>
-                 <form method="post" action="../tools/pma/index.php" target="_blank"><input type="hidden" name="pma_username" value="{USER_MYSQL}"><input type="hidden" name="pma_password" value="{PASS_MYSQL}"></form>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="14" height="16" border="0" align="absmiddle">&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>
                </tr>
@@ -108,6 +108,6 @@ function sbmt(form) {
      </table>
     </td>
    </tr>
-  </table>
+  </table><form method="post" action="../tools/pma/index.php" target="_blank"><input type="hidden" name="pma_username" value="{USER_MYSQL}" /><input type="hidden" name="pma_password" value="{PASS_MYSQL}" /></form>
  </body>
 </html>

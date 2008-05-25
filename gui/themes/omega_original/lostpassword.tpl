@@ -26,7 +26,7 @@
          <tr>
           <td width="45" rowspan="6"></td>
           <td colspan="2">
-		  	<div class="login_text"><label for="uname">{TR_IMGCAPCODE}<br /><strong>{TR_CAPCODE}</strong></label></div></td>
+		  	<div class="login_text"><label for="capcode">{TR_IMGCAPCODE}<br /><strong>{TR_CAPCODE}</strong></label></div></td>
          </tr>
          <tr>
           <td colspan="2"><input name="capcode" type="text" class="textinput" ID="capcode" style="width:210px" value=""></td>
@@ -43,7 +43,7 @@
           </td>
          </tr>
          <tr>
-          <td colspan="2"><input name="uname" id="uname" type="text" class="textinput" id="uname3" style="width:210px" value=""></td>
+          <td colspan="2"><input name="uname" id="uname" type="text" class="textinput" style="width:210px" value=""></td>
          </tr>
          <tr>
           <td colspan="3">&nbsp;</td>

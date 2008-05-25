@@ -78,7 +78,7 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_MESSAGE}</td>
-                        <td class="content"><textarea name="auto_message" style="width:90%" class="textinput2" rows="30" />{MESSAGE_VALUE}</textarea>
+                        <td class="content"><textarea name="auto_message" style="width:90%" class="textinput2" rows="30" cols="80" />{MESSAGE_VALUE}</textarea>
                         </td>
                       </tr>
                       <tr>

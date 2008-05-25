@@ -16,6 +16,7 @@ function action_delete(url) {
 //-->
 </script>
 </head>
+
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
@@ -65,7 +66,7 @@ function action_delete(url) {
                             </tr>
                             <tr>
                               <td width="200" class="content2" style="vertical-align:top;">{TR_SQL_QUERY}</td>
-                              <td class="content"><textarea name="sql_query" rows="15" wrap="virtual" style="width:80%">{SQL_QUERY}</textarea>
+                              <td class="content"><textarea name="sql_query" rows="15" cols="80" style="width:80%">{SQL_QUERY}</textarea>
                               </td>
                             </tr>
                             <!-- BDP: sql_result -->

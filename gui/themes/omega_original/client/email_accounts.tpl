@@ -62,24 +62,24 @@ function action_delete(url, mailacc) {
                   <td width="25">&nbsp;</td>
                   <td valign="top"><table width="100%" cellspacing="7">
                     <!-- BDP: page_message -->
-					<tr>
-                      <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
-                      </tr>
-                    <tr>
-					<!-- EDP: page_message -->
-                      <td nowrap="nowrap" class="content3"><b>{TR_MAIL}</b></td>
-                      <td nowrap="nowrap" class="content3" width="150"><b>{TR_TYPE}</b></td>
-                      <td nowrap="nowrap" class="content3" align="center" width="180"><b>{TR_STATUS}</b></td>
-                      <td nowrap="nowrap" class="content3" align="center" width="100"><b>{TR_ACTION}</b></td>
-                    </tr>
+                <tr>
+                  <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                </tr>
+                <tr>
+                    <!-- EDP: page_message -->
+                   <td nowrap="nowrap" class="content3"><b>{TR_MAIL}</b></td>
+                   <td nowrap="nowrap" class="content3" width="150"><b>{TR_TYPE}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="180"><b>{TR_STATUS}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="100"><b>{TR_ACTION}</b></td>
+                </tr>
                     <!-- BDP: mail_message -->
-                    <tr>
-                      <td colspan="4" class="title"><font color="#FF0000">{MAIL_MSG}</font></td>
-                    </tr>
+                <tr>
+                   <td colspan="4" class="title"><font color="#FF0000">{MAIL_MSG}</font></td>
+                </tr>
                     <!-- EDP: mail_message -->
                     <!-- BDP: mail_item -->
-                    <tr>
-                      <td nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="14" align="absmiddle"> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_ACC}</a>
+                <tr>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="14" align="absmiddle"> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_ACC}</a>
                           <!-- BDP: auto_respond --><div style="display: {AUTO_RESPOND_VIS};">
 						  <br><span class="style1">
 						  {TR_AUTORESPOND}: [&nbsp;&nbsp;
@@ -89,10 +89,9 @@ function action_delete(url, mailacc) {
 						  </span></div>
 						  <!-- EDP: auto_respond -->
                       </td>
-                      <td nowrap="nowrap" class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
-                      <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>
-                      <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{MAIL_ACTION_SCRIPT}', '{MAIL_ACC}')">{MAIL_ACTION}</a></td>
-					</td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{MAIL_ACTION_SCRIPT}', '{MAIL_ACC}')">{MAIL_ACTION}</a></td>
                     </tr>
                     <!-- EDP: mail_item -->
                     <!-- BDP: mails_total -->
@@ -100,8 +99,7 @@ function action_delete(url, mailacc) {
                       <td colspan="4" align="right" nowrap="nowrap" class="content3">{TR_TOTAL_MAIL_ACCOUNTS}:&nbsp;<b>{TOTAL_MAIL_ACCOUNTS}</b>/{ALLOWED_MAIL_ACCOUNTS}</td>
                     </tr>
                     <!-- EDP: mails_total -->
-                  </table>
-                    </td>
+                  </table></td>
                 </tr>
             </table></td>
             <td>&nbsp;</td>
@@ -110,11 +108,9 @@ function action_delete(url, mailacc) {
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
-        </table>
-			</td>
+        </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

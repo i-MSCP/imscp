@@ -44,7 +44,7 @@
                     <table width="100%" cellspacing="7">
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content"><textarea name="error" rows="35" class="textinput2" id="error" style="width:80%">{ERROR}</textarea></td>
+                        <td class="content"><textarea name="error" rows="35" cols="80" class="textinput2" id="error" style="width:80%">{ERROR}</textarea></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

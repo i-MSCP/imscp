@@ -41,8 +41,7 @@
               </tr>
               <tr>
                 <td><table width="100%" align="left" cellpadding="5" cellspacing="5">
-                    <tr>
-                      <!-- BDP: page_message -->
+                    <!-- BDP: page_message -->
                     <tr>
                       <td width="25" nowrap="nowrap">&nbsp;</td>
                       <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>

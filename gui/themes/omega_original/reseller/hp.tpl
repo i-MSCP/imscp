@@ -8,17 +8,15 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
 }
 //-->
 </script>
-
 </head>
+
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
@@ -55,7 +53,7 @@ function delete_account(url) {
                     <!-- BDP: page_message -->
                     <tr>
                       <td width="35">&nbsp;</td>
-                      <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font></b></td>
+                      <td colspan="5" class="title"><b><font color="#FF0000">{MESSAGE}</font></b></td>
                     </tr>
                     <!-- EDP: page_message -->
                     <!-- BDP: hp_table -->

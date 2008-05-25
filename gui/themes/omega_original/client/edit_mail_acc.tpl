@@ -119,7 +119,7 @@
                 <td class="content2" style="width:125px;vertical-align:top;">
                  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
                 </td>
-                <td class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
+                <td class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px">{FORWARD_LIST}</textarea></td>
                </tr>
               </table>
               <!-- EDP: forward_mail -->

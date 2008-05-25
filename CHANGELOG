@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-05-25 Jochen Manz
 	- GUI:
 		* Fixed #1288: Some HTML, CSS and JS fixes/polishes - Part 5
+		* Fixed #1290: some widespread html fixes - Part 6 (patch included)
 
 2008-05-24 Jochen Manz
 	- GUI:

@@ -89,7 +89,7 @@ function action_delete(url) {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td><span class="{LANG_CLASS}">
-                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'change_language');" /></td>
+                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'change_language');" /></span></td>
                             </tr>
                         </table>
                         <br />

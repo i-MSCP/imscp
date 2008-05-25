@@ -113,7 +113,7 @@
                             </tr>
                             <tr>
                               <td nowrap="nowrap" class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea></td>
+                              <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px"></textarea></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}">
