@@ -25,7 +25,7 @@ function action_delete(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -65,10 +65,10 @@ function action_delete(url) {
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td nowrap class="content2">{TR_ARSP_MESSAGE}</td>
+                              <td nowrap="nowrap" class="content2">{TR_ARSP_MESSAGE}</td>
                             </tr>
                             <tr>
-                              <td nowrap class="content"><textarea name="arsp_message" cols="50" rows="15" wrap="virtual" style="width:80%">{ARSP_MESSAGE}</textarea>
+                              <td nowrap="nowrap" class="content"><textarea name="arsp_message" cols="50" rows="15" wrap="virtual" style="width:80%">{ARSP_MESSAGE}</textarea>
                               </td>
                             </tr>
                           </table>

@@ -26,7 +26,7 @@ function action_delete(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -61,14 +61,14 @@ function action_delete(url) {
                       <td valign="top"><table width="100%" cellspacing="7">
                           <!-- BDP: page_message -->
                           <tr>
-                            <td colspan="4" nowrap class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                            <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <tr>
-                            <td nowrap class="content3"><b>{TR_DOMAIN}</b></td>
-                            <td nowrap class="content3"><b>{TR_CATCHALL}</b></td>
-                            <td nowrap class="content3" align="center" width="100"><b>{TR_STATUS}</b></td>
-                            <td nowrap class="content3" align="center" width="200"><b>{TR_ACTION}</b></td>
+                            <td nowrap="nowrap" class="content3"><b>{TR_DOMAIN}</b></td>
+                            <td nowrap="nowrap" class="content3"><b>{TR_CATCHALL}</b></td>
+                            <td nowrap="nowrap" class="content3" align="center" width="100"><b>{TR_STATUS}</b></td>
+                            <td nowrap="nowrap" class="content3" align="center" width="200"><b>{TR_ACTION}</b></td>
                           </tr>
                           <!-- BDP: catchall_message -->
                           <tr>
@@ -77,10 +77,10 @@ function action_delete(url) {
                           <!-- EDP: catchall_message -->
                           <!-- BDP: catchall_item -->
                           <tr>
-                            <td nowrap class="{ITEM_CLASS}">{CATCHALL_DOMAIN}</td>
-                            <td nowrap class="{ITEM_CLASS}">{CATCHALL_ACC}</td>
-                            <td nowrap class="{ITEM_CLASS}" align="center" width="100">{CATCHALL_STATUS}</td>
-                            <td nowrap class="{ITEM_CLASS}" align="center" width="200"><!-- BDP: del_icon -->
+                            <td nowrap="nowrap" class="{ITEM_CLASS}">{CATCHALL_DOMAIN}</td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}">{CATCHALL_ACC}</td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100">{CATCHALL_STATUS}</td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="200"><!-- BDP: del_icon -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle">
                                 <!-- EDP: del_icon -->
                               <a href="{CATCHALL_ACTION_SCRIPT}" class="link">{CATCHALL_ACTION}</a></td>

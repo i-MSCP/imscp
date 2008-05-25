@@ -8,12 +8,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function MM_goToURL() { //v3.0
-  var i, args = MM_goToURL.arguments;
-  document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
-}
-
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
@@ -26,7 +20,7 @@ function action_delete(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -67,27 +61,27 @@ function action_delete(url) {
                           <!-- BDP: tickets_list -->
                           <tr>
                             <td width="30" class="content3" align="center"><b>{TR_STATUS}</b></td>
-                            <td nowrap class="content3"><b>{TR_SUBJECT}</b></td>
-                            <td width="150" class="content3" nowrap align="center"><b>{TR_URGENCY}</b></td>
-                            <td width="100" class="content3" nowrap align="center"><b>{TR_LAST_DATA}</b></td>
-                            <td width="100" align="center" nowrap class="content3"><strong>{TR_ACTION}</strong></td>
+                            <td nowrap="nowrap" class="content3"><b>{TR_SUBJECT}</b></td>
+                            <td width="150" class="content3" nowrap="nowrap" align="center"><b>{TR_URGENCY}</b></td>
+                            <td width="100" class="content3" nowrap="nowrap" align="center"><b>{TR_LAST_DATA}</b></td>
+                            <td width="100" align="center" nowrap="nowrap" class="content3"><strong>{TR_ACTION}</strong></td>
                           </tr>
                           <!-- BDP: tickets_item -->
                           <tr>
-                            <td width="25" nowrap class="{CONTENT}"><b>{NEW}</b></td>
-                            <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left">
+                            <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
+                            <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left">
                                 <script type="text/javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>
                               {SUBJECT}</a></td>
-                            <td class="{CONTENT}" nowrap align="center">{URGENCY}</td>
-                            <td class="{CONTENT}" nowrap align="center">{LAST_DATE}</td>
-                            <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
+                            <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
+                            <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
+                            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: tickets_item -->
                           <tr>
-                            <td colspan="2" nowrap><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','delete_ticket.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
-                            <td colspan="3" nowrap><div align="right">
+                            <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','delete_ticket.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
+                            <td colspan="3" nowrap="nowrap"><div align="right">
                                 <!-- BDP: scroll_prev_gray -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                                 <!-- EDP: scroll_prev_gray -->

@@ -1,15 +1,15 @@
-function sbmt(form, uaction) {
 
+function sbmt(form, uaction) {
     form.uaction.value = uaction;
     form.submit();
-    
-    return false;
 
+    return false;
 }
 
 function changeColor(aaa,color){
                 aaa.style.backgroundColor=color;
 }
+
 function MM_preloadImages() { //v3.0
   var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
     var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
@@ -34,9 +34,12 @@ function MM_swapImage() { //v3.0
 }
 
 function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+  var i, args = MM_goToURL.arguments;
+  document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2)
+    eval(args[i]+".location='"+args[i+1]+"'");
 }
+
 function MM_openBrWindow(theURL,winName,features) { //v2.0
   window.open(theURL,winName,features);
 }

@@ -11,7 +11,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -42,7 +42,7 @@
               <tr>
                 <td valign="top"><table width="100%" cellspacing="7">
                     <tr>
-                      <td width="40" nowrap>&nbsp;&nbsp;&nbsp;</td>
+                      <td width="40" nowrap="nowrap">&nbsp;&nbsp;&nbsp;</td>
                       <td><!-- BDP: props_list -->
                           <form name="rs_frm" method="post" action="reseller_user_statistics.php?psi={POST_PREV_PSI}">
                             <table width="100%">
@@ -78,33 +78,33 @@
                             <!-- EDP: no_domains -->
                             <!-- BDP: domain_list -->
                             <tr>
-                              <td height="25" colspan="13" nowrap class="content">{RESELLER_NAME}</td>
+                              <td height="25" colspan="13" nowrap="nowrap" class="content">{RESELLER_NAME}</td>
                             </tr>
                             <tr align="center">
-                              <td class="content3" nowrap height="25"><b>{TR_DOMAIN_NAME}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_DISK}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_WEB}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_FTP_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SMTP}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_POP3}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SUBDOMAIN}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_ALIAS}</b> </td>
-                              <td class="content3" nowrap height="25"><b>{TR_MAIL}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_FTP}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SQL_DB}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SQL_USER}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_DOMAIN_NAME}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_DISK}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_WEB}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP3}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SUBDOMAIN}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALIAS}</b> </td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_MAIL}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SQL_DB}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SQL_USER}</b></td>
                             </tr>
                             <!-- BDP: domain_entry -->
                             <tr>
-                              <td class="{ITEM_CLASS}" nowrap align="center"><b><a href="domain_statistics.php?month={MONTH}&year={YEAR}&domain_id={DOMAIN_ID}" class="link">{DOMAIN_NAME}</a></b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="domain_statistics.php?month={MONTH}&year={YEAR}&domain_id={DOMAIN_ID}" class="link">{DOMAIN_NAME}</a></b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                                    <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                    <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                         <tr>
                                           <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                          <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1"></td>
+                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1"></td>
                                           <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                         </tr>
                                     </table></td>
@@ -113,13 +113,13 @@
                                 </table>
                                   <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br>
                                 {TRAFF_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                                    <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                    <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                         <tr>
                                           <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                          <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1"></td>
+                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1"></td>
                                           <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                         </tr>
                                     </table></td>
@@ -128,16 +128,16 @@
                                 </table>
                                   <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br>
                                 {DISK_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{WEB}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{FTP}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SMTP}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{POP3}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SUB_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{ALS_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{MAIL_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{FTP_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_DB_MSG}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_USER_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SMTP}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP3}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_DB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_USER_MSG}</td>
                             </tr>
                             <!-- EDP: domain_entry -->
                             <!-- EDP: domain_list -->

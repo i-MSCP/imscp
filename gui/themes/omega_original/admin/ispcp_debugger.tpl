@@ -61,8 +61,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_DOMAIN_ERROR}</font>
+			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_DOMAIN_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: domain_list -->
@@ -83,8 +83,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_ALIAS_ERROR}</font>
+			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_ALIAS_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: alias_list -->
@@ -105,8 +105,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_SUBDOMAIN_ERROR}</font>
+			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_SUBDOMAIN_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: subdomain_list -->
@@ -127,9 +127,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_MAIL_ERROR}</font>
-			 </td>
+			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_MAIL_ERROR}</span></td>
             </tr>
             <!-- EDP: mail_list -->
            </table>

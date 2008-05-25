@@ -238,7 +238,7 @@
                                   </tr>
                                   <!-- BDP: rsl_ip_message -->
                                   <tr>
-                                    <td colspan="4" class="title" nowrap align="center"><b>{MESSAGES_LABEL}</b></td>
+                                    <td colspan="4" class="title" nowrap="nowrap" align="center"><b>{MESSAGES_LABEL}</b></td>
                                   </tr>
                                   <!-- EDP: rsl_ip_message -->
                                   <!-- BDP: rsl_ip_list -->

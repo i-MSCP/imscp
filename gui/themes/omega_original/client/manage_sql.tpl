@@ -11,7 +11,6 @@
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
 }
 
@@ -26,7 +25,7 @@ function sbmt(form) {
   <!-- BDP: logged_from -->
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
-    <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+    <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
    </tr>
   </table>
   <!-- EDP: logged_from -->

@@ -11,7 +11,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -64,12 +64,12 @@
                           </table>
                         <table width="100%" cellspacing="3">
                             <tr align="center">
-                              <td class="content3" nowrap height="25"><b>{TR_DATE}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_WEB_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_FTP_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SMTP_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_POP_TRAFF}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SUM}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_DATE}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_WEB_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP_TRAFF}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SUM}</b></td>
                             </tr>
                             <!-- BDP: page_message -->
                             <tr>
@@ -79,21 +79,21 @@
                             <!-- BDP: traff_list -->
                             <!-- BDP: traff_item -->
                             <tr>
-                              <td class="{CONTENT}" nowrap align="center">{DATE}</td>
-                              <td class="{CONTENT}" nowrap align="center" valign="top">{WEB_TRAFF}</td>
-                              <td class="{CONTENT}" nowrap align="center" valign="top">{FTP_TRAFF}</td>
-                              <td class="{CONTENT}" nowrap align="center" valign="top">{SMTP_TRAFF}</td>
-                              <td class="{CONTENT}" nowrap align="center" valign="top">{POP_TRAFF}</td>
-                              <td class="{CONTENT}" nowrap align="center">{SUM_TRAFF}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center">{DATE}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{WEB_TRAFF}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{FTP_TRAFF}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{SMTP_TRAFF}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{POP_TRAFF}</td>
+                              <td class="{CONTENT}" nowrap="nowrap" align="center">{SUM_TRAFF}</td>
                             </tr>
                             <!-- EDP: traff_item -->
                             <tr>
-                              <td class="content3" nowrap align="center"><b>{TR_ALL}</b></td>
-                              <td class="content3" nowrap align="center" valign="top"><b>{WEB_ALL}</b></td>
-                              <td class="content3" nowrap align="center" valign="top"><b>{FTP_ALL}</b></td>
-                              <td class="content3" nowrap align="center" valign="top"><b>{SMTP_ALL}</b></td>
-                              <td class="content3" nowrap align="center" valign="top"><b>{POP_ALL}</b></td>
-                              <td class="content3" nowrap align="center"><b>{SUM_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center" valign="top"><b>{WEB_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center" valign="top"><b>{FTP_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center" valign="top"><b>{SMTP_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center" valign="top"><b>{POP_ALL}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{SUM_ALL}</b></td>
                             </tr>
                             <!-- EDP: traff_list -->
                           </table>

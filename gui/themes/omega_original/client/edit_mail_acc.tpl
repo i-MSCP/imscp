@@ -9,13 +9,6 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
-	function sbmt(form, uaction) {
-	    form.uaction.value = uaction;
-	    form.submit();
-
-	    return false;
-	}
-
 	function begin_js() {
 		if (document.forms[0].elements['mail_forward']) {
 			document.forms[0].elements['forward_list'].disabled = true;
@@ -42,8 +35,7 @@
   <!-- ToolTip end -->
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
-    <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font>
-    </td>
+    <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
    </tr>
   </table>
   <!-- EDP: logged_from -->
@@ -107,7 +99,7 @@
                 </td>
                </tr>
                <tr>
-                <td nowrap class="content2" colspan="2">
+                <td nowrap="nowrap" class="content2" colspan="2">
                  &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');">{TR_FORWARD_MAIL}
                 </td>
                </tr>
@@ -115,7 +107,7 @@
                 <td class="content2" style="width:200px;vertical-align:top;">
                  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
                 </td>
-                <td nowrap class="content">
+                <td nowrap="nowrap" class="content">
                  <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
                 </td>
                </tr>

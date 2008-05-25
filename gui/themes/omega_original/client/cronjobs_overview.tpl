@@ -13,12 +13,6 @@ function action_delete(url) {
 		return false;
 	location = url;
 }
-
-function MM_goToURL() { //v3.0
-  var i, args = MM_goToURL.arguments;
-  document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
-}
 //-->
 </script>
 </head>
@@ -26,7 +20,7 @@ function MM_goToURL() { //v3.0
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -70,16 +64,16 @@ function MM_goToURL() { //v3.0
                     </tr>
                     <tr>
                       <!-- BDP: cronjobs -->
-                      <td nowrap>&nbsp;</td>
-                      <td nowrap class="{ITEM_CLASS}"><strong>{NAME}</strong><br>
+                      <td nowrap="nowrap">&nbsp;</td>
+                      <td nowrap="nowrap" class="{ITEM_CLASS}"><strong>{NAME}</strong><br>
                         {DESCRIPTION}</td>
-                      <td width="100" align="center" nowrap class="{ITEM_CLASS}">{ACTIVE}</td>
-                      <td width="100" nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>
-                      <td width="100" nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}')">{TR_DELETE}</td>
+                      <td width="100" align="center" nowrap="nowrap" class="{ITEM_CLASS}">{ACTIVE}</td>
+                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>
+                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}')">{TR_DELETE}</td>
                       <!-- EDP: cronjobs -->
                     </tr>
                     <tr>
-                      <td nowrap>&nbsp;</td>
+                      <td nowrap="nowrap">&nbsp;</td>
                       <td colspan="4"><input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}"></td>
                     </tr>
                 </table></td>

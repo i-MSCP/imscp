@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-25 Jochen Manz
+	- GUI:
+		* Fixed #1288: Some HTML, CSS and JS fixes/polishes - Part 5
+
 2008-05-24 Jochen Manz
 	- GUI:
 		* Fixed #1284: Some HTML, JS fixes, removed ugly/useless whitespace removed useles height="*" - Part 4

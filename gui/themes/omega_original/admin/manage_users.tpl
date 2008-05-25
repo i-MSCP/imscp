@@ -11,24 +11,20 @@
 function action_status(url) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-
 	location = url;
 }
 
 function action_delete(url, dmn_name) {
 	if (!confirm("{TR_MESSAGE_DELETE} (" + dmn_name + ")"))
 		return false;
-
 	location = url;
 }
 
 function sbmt(form, uaction) {
-
     form.details.value = uaction;
     form.submit();
 
     return false;
-
 }
 //-->
 </script>

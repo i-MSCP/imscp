@@ -8,15 +8,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-	function sbmt(form, uaction) {
-
-    	form.uaction.value = uaction;
-	    form.submit();
-
-    	return false;
-
-	}
-
 	function checkForm(){
             var forw   = document.forms[0].elements['forward_list'].value;
 
@@ -61,7 +52,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); changeType('{DEFAULT}');">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -108,21 +99,21 @@
                               }
                               //-->
                               </script>
-                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
                                 {TR_MAIL_LIST}</td>
-                              <td nowrap class="content"><select name="mail_id">
+                              <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
                                   <option value="{MAIL_ID};{MAIL_ACCOUNT_PUNNY};">{MAIL_ACCOUNT}</option>
                                   <!-- EDP: mail_list -->
                                 </select></td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
+                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
                                 {TR_FORWARD_MAIL}</td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea></td>
+                              <td nowrap="nowrap" class="content2" width="200">{TR_FORWARD_TO}</td>
+                              <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}">

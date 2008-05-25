@@ -11,25 +11,18 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-
 	location = ('change_status.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
 		return false;
-
 	location = url;
-}
-
-function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
 //-->
 </script>
-
 </head>
+
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>

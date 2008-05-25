@@ -20,7 +20,7 @@ function action_delete(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -63,16 +63,16 @@ function action_delete(url) {
           <!-- EDP: page_message -->
           <!-- BDP: tickets_list -->
           <tr>
-            <td nowrap class="content3"> {TR_TICKET_URGENCY}: {URGENCY} <br>
+            <td nowrap="nowrap" class="content3"> {TR_TICKET_URGENCY}: {URGENCY} <br>
               {TR_TICKET_SUBJECT}: {SUBJECT} </td>
           </tr>
           <!-- BDP: tickets_item -->
           <tr>
-            <td nowrap class="content2"><span class="content">{TR_TICKET_FROM}: {FROM}</span><br>
+            <td nowrap="nowrap" class="content2"><span class="content">{TR_TICKET_FROM}: {FROM}</span><br>
               {TR_TICKET_DATE}: {DATE}</td>
           </tr>
           <tr>
-            <td nowrap class="content">{TICKET_CONTENT}</td>
+            <td nowrap="nowrap" class="content">{TICKET_CONTENT}</td>
           </tr>
           <!-- EDP: tickets_item -->
         </table></td>

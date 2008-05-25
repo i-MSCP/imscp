@@ -75,7 +75,7 @@ td.content3 {
 <table width="450" cellpadding="5" cellspacing="5">
               <!-- BDP: page_message -->
               <tr>
-                <td width="100%" nowrap class="content3"><font color="#FF0000">{MESSAGE}</font></td>
+                <td width="100%" nowrap="nowrap" class="content3"><font color="#FF0000">{MESSAGE}</font></td>
               </tr>
               <!-- EDP: page_message -->
               <tr>

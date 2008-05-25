@@ -174,6 +174,23 @@ td {
 	font-size:			12px;
 }
 
+td.loginTop {
+	background-image:	url(../images/login/login_top.jpg);
+}
+
+td.backButton {
+	background-image:	url(../images/button.gif);
+	color:red;
+}
+
+td.stats {
+	background-image:	url(../images/stats_background.gif);
+}
+
+td.statsBar {
+	background-image:	url(../images/bars/stats_background.gif);
+}
+
 td.content {
 	font-size:			12px;
 	color:				#000000;

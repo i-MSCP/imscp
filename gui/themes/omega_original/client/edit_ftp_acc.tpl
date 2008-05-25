@@ -35,15 +35,6 @@ function MM_jumpMenu(targ,selObj,restore) { //v3.0
   if (restore) selObj.selectedIndex=0;
 }
 
-function sbmt(form, uaction) {
-
-    form.uaction.value = uaction;
-    form.submit();
-
-    return false;
-
-}
-
 function OpenTree() {
   libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
 
@@ -55,7 +46,7 @@ function OpenTree() {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -95,24 +86,24 @@ function OpenTree() {
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td nowrap class="content2" width="200">{TR_FTP_ACCOUNT}</td>
-                              <td nowrap class="content"><input type="text" name="ftp_account" value="{FTP_ACCOUNT}" style="width:170px" class="textinput" readonly="readonly">
+                              <td nowrap="nowrap" class="content2" width="200">{TR_FTP_ACCOUNT}</td>
+                              <td nowrap="nowrap" class="content"><input type="text" name="ftp_account" value="{FTP_ACCOUNT}" style="width:170px" class="textinput" readonly="readonly">
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" width="200">{TR_PASSWORD}</td>
-                              <td nowrap class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content2" width="200">{TR_PASSWORD}</td>
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
-                              <td nowrap class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" width="200"><input type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
+                              <td nowrap="nowrap" class="content2" width="200"><input type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
                                 {TR_USE_OTHER_DIR}</td>
-                              <td nowrap class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
                                   <br>
                                 <a href="javascript:OpenTree();" class="link">{CHOOSE_DIR} </a> </td>
                             </tr>

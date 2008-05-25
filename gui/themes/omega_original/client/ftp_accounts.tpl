@@ -20,7 +20,7 @@ function action_delete(url) {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -55,12 +55,12 @@ function action_delete(url) {
                       <td valign="top"><table width="100%" cellspacing="7">
                           <!-- BDP: page_message -->
                           <tr>
-                            <td colspan="3" nowrap class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                            <td colspan="3" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <tr>
-                            <td nowrap class="content3"><b>{TR_FTP_ACCOUNT}</b></td>
-                            <td nowrap class="content3" align="center" colspan="2"><b>{TR_FTP_ACTION}</b></td>
+                            <td nowrap="nowrap" class="content3"><b>{TR_FTP_ACCOUNT}</b></td>
+                            <td nowrap="nowrap" class="content3" align="center" colspan="2"><b>{TR_FTP_ACTION}</b></td>
                           </tr>
                           <!-- BDP: ftp_message -->
                           <tr>
@@ -69,14 +69,14 @@ function action_delete(url) {
                           <!-- EDP: ftp_message -->
                           <!-- BDP: ftp_item -->
                           <tr>
-                            <td nowrap class="{ITEM_CLASS}"><span class="content"><img src="{THEME_COLOR_PATH}/images/icons/ftp_account.png" width="16" height="16" align="left"></span>{FTP_ACCOUNT}</td>
-                            <td nowrap class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="edit_ftp_acc.php?id={UID}" class="link">{TR_EDIT}</a></td>
-                            <td nowrap class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('delete_ftp_acc.php?id={UID}')">{TR_DELETE}</a></td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}"><span class="content"><img src="{THEME_COLOR_PATH}/images/icons/ftp_account.png" width="16" height="16" align="left"></span>{FTP_ACCOUNT}</td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="edit_ftp_acc.php?id={UID}" class="link">{TR_EDIT}</a></td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('delete_ftp_acc.php?id={UID}')">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: ftp_item -->
                           <!-- BDP: ftps_total -->
                           <tr>
-                            <td colspan="3" align="right" nowrap class="content3">{TR_TOTAL_FTP_ACCOUNTS}&nbsp;<b>{TOTAL_FTP_ACCOUNTS}</b></td>
+                            <td colspan="3" align="right" nowrap="nowrap" class="content3">{TR_TOTAL_FTP_ACCOUNTS}&nbsp;<b>{TOTAL_FTP_ACCOUNTS}</b></td>
                           </tr>
                           <!-- EDP: ftps_total -->
                       </table></td>

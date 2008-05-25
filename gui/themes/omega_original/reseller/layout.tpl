@@ -11,7 +11,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -53,29 +53,29 @@
                         <td colspan="2" class="content3"><strong>{TR_UPLOAD_LOGO}</strong></td>
                       </tr>
                       <tr>
-                        <td width="40" nowrap>&nbsp;</td>
-                        <td width="200" class="content2" nowrap>{TR_LOGO_FILE}</td>
-                        <td class="content" nowrap><input type="file" name="logo_file" size="40">
+                        <td width="40" nowrap="nowrap">&nbsp;</td>
+                        <td width="200" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
+                        <td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40">
                         </td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td nowrap="nowrap"><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
                                    <input type="hidden" name="uaction" value="upload_logo" />
                                    </form></td>
-                        <td nowrap>
+                        <td nowrap="nowrap">
                                    <form method="post" action="layout.php">
                                    <input type="hidden" name="uaction" value="delete_logo" />
                                    <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
                                    </form></td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td colspan="2" nowrap>&nbsp;</td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td colspan="2" nowrap="nowrap">&nbsp;</td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td colspan="2" nowrap><img src="{OWN_LOGO}" alt="reseller logo"></td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo"></td>
                       </tr>
                     </table>
                     <!-- end of content -->

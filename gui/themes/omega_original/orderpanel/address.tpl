@@ -1,15 +1,5 @@
 <!-- BDP: purchase_header -->
 <!-- EDP: purchase_header -->
-<script type="text/javascript">
-<!--
-function sbmt(form, uaction) {
-    form.uaction.value = uaction;
-    form.submit();
-
-    return false;
-}
-//-->
-</script>
 <form name="address" method="post" action="address.php">
 <table width="400">
   <tr>

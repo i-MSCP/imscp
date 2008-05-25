@@ -10,10 +10,10 @@
   <!--
   function showHideBlocks(id) {
     if(document.getElementById(id).style.display == "none") {
-        //unhide
+        // unhide
         document.getElementById(id).style.display = "block";
     } else {
-        //hide
+        // hide
         document.getElementById(id).style.display = "none";
     }
   }

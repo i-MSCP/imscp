@@ -11,7 +11,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -63,30 +63,30 @@
                           </table>
                         <table width="100%">
                             <tr align="center">
-                              <td class="content3" nowrap height="25"><b>{TR_DAY}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_WEB_TRAFFIC}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_FTP_TRAFFIC}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_SMTP_TRAFFIC}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_POP3_TRAFFIC}</b></td>
-                              <td class="content3" nowrap height="25"><b>{TR_ALL_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_DAY}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_WEB_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP3_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALL_TRAFFIC}</b></td>
                             </tr>
                             <!-- BDP: traffic_table_item -->
                             <tr>
-                              <td class="{ITEM_CLASS}" nowrap align="center"><b>{DATE}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{WEB_TRAFFIC}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center"> {FTP_TRAFFIC}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SMTP_TRAFFIC}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{POP3_TRAFFIC}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{ALL_TRAFFIC}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b>{DATE}</b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_TRAFFIC}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"> {FTP_TRAFFIC}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SMTP_TRAFFIC}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP3_TRAFFIC}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_TRAFFIC}</td>
                             </tr>
                             <!-- EDP: traffic_table_item -->
                             <tr>
-                              <td class="content3" nowrap align="center"><b> <b>{TR_ALL}</b></b></td>
-                              <td class="content3" nowrap align="center"><b>{ALL_WEB_TRAFFIC}</b></td>
-                              <td class="content3" nowrap align="center"><b> {ALL_FTP_TRAFFIC} </b></td>
-                              <td class="content3" nowrap align="center"><b>{ALL_SMTP_TRAFFIC}</b></td>
-                              <td class="content3" nowrap align="center"><b>{ALL_POP3_TRAFFIC}</b></td>
-                              <td class="content3" nowrap align="center"><b>{ALL_ALL_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b> <b>{TR_ALL}</b></b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{ALL_WEB_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b> {ALL_FTP_TRAFFIC} </b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{ALL_SMTP_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{ALL_POP3_TRAFFIC}</b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{ALL_ALL_TRAFFIC}</b></td>
                             </tr>
                           </table>
                         <!-- end of content -->

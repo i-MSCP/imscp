@@ -15,7 +15,6 @@ function action_delete(url) {
 }
 
 function enable_for_post() {
-
 	for (var i = 0; i < document.frmsettings.length; i++) {
 		for (var a = 0; a < document.frmsettings.elements[i].length; a++) {
 			if (document.frmsettings.elements[i].name == "port_type[]") {
@@ -25,7 +24,6 @@ function enable_for_post() {
 	}
 
 	return true;
-
 }
 //-->
 </script>

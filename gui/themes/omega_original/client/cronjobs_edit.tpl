@@ -6,21 +6,12 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
-<!--
-function MM_goToURL() { //v3.0
-  var i, args = MM_goToURL.arguments;
-  document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
-}
-//-->
-</script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -62,18 +53,18 @@ function MM_goToURL() { //v3.0
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td nowrap class="content2">{TR_NAME}</td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td nowrap="nowrap" class="content2">{TR_NAME}</td>
                         <td colspan="4" class="content"><input name="name" type="text" class="textinput" id="name" style="width:170px" value="{NAME}"></td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td nowrap class="content2">{TR_DESCRIPTION}</td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td nowrap="nowrap" class="content2">{TR_DESCRIPTION}</td>
                         <td colspan="4" class="content"><input name="description" type="text" class="textinput" id="description" style="width:170px" value="{DESCTIPTON}"></td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td nowrap class="content2">{TR_ACTIVE}</td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td nowrap="nowrap" class="content2">{TR_ACTIVE}</td>
                         <td colspan="4" class="content"><select name="activ">
                             <option value="1" selected="selected">{YES}</option>
                             <option value="0">{NO}</option>
@@ -92,16 +83,16 @@ function MM_goToURL() { //v3.0
                         <td colspan="5" class="content"><input name="command_line" type="text" class="textinput" id="command_line" style="width:370px" value="{COMMAND_LINE}"></td>
                       </tr>
                       <tr>
-                        <td nowrap>&nbsp;</td>
-                        <td align="center" nowrap class="content2">{TR_MIN}</td>
+                        <td nowrap="nowrap">&nbsp;</td>
+                        <td align="center" nowrap="nowrap" class="content2">{TR_MIN}</td>
                         <td align="center" class="content2">{TR_HOUR}</td>
                         <td align="center" class="content2">{TR_DAY}</td>
                         <td align="center" class="content2">{TR_MONTHS}</td>
                         <td align="center" class="content2">{TR_WEEKDAYS}</td>
                       </tr>
                       <tr align="center" valign="top">
-                        <td width="25" nowrap>&nbsp;</td>
-                        <td width="200" nowrap class="content"><select name="min" size="6" multiple id="min">
+                        <td width="25" nowrap="nowrap">&nbsp;</td>
+                        <td width="200" nowrap="nowrap" class="content"><select name="min" size="6" multiple="multiple" id="min">
                             <option value="*">Every Minute</option>
                             <option value="*/2">Every Other Minute</option>
                             <option value="*/5">Every Five Minutes</option>
@@ -168,7 +159,7 @@ function MM_goToURL() { //v3.0
                             <option value="58">58</option>
                             <option value="59">59</option>
                             </select></td>
-                        <td class="content"><select name="hour" size="6" multiple id="hour">
+                        <td class="content"><select name="hour" size="6" multiple="multiple" id="hour">
                             <option value="*">Every Hour</option>
                             <option value="*/2">Every Other Hour</option>
                             <option value="*/4">Every Four Hours</option>
@@ -198,7 +189,7 @@ function MM_goToURL() { //v3.0
                             <option value="22">22 = 10 PM</option>
                             <option value="23">23 = 11 PM</option>
                             </select></td>
-                        <td class="content"><select name="day_of_month" size="6" multiple id="day_of_month">
+                        <td class="content"><select name="day_of_month" size="6" multiple="multiple" id="day_of_month">
                             <option value="*">Every Day</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -232,7 +223,7 @@ function MM_goToURL() { //v3.0
                             <option value="30">30</option>
                             <option value="31">31</option>
                             </select></td>
-                        <td class="content"><select name="month" size="6" multiple id="month">
+                        <td class="content"><select name="month" size="6" multiple="multiple" id="month">
                             <option value="*">Every Month</option>
                             <option value="1">January</option>
                             <option value="2">February</option>
@@ -247,7 +238,7 @@ function MM_goToURL() { //v3.0
                             <option value="11">November</option>
                             <option value="12">December</option>
                             </select></td>
-                        <td class="content"><select name="day_of_week" size="6" multiple id="day_of_week">
+                        <td class="content"><select name="day_of_week" size="6" multiple="multiple" id="day_of_week">
                             <option value="*">Every Weekday</option>
                             <option value="0">Sunday</option>
                             <option value="1">Monday</option>

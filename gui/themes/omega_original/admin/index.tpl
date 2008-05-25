@@ -156,10 +156,10 @@
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20"></td>
-            <td width="405" background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0">
+            <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{BAR_VALUE}" height="1"></td>
+                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{BAR_VALUE}" height="1"></td>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
               </tr>
             </table></td>

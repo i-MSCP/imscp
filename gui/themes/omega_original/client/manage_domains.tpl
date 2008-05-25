@@ -66,7 +66,7 @@ function MM_swapImage() { //v3.0
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
 <!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -91,7 +91,7 @@ function MM_swapImage() { //v3.0
 <table width="100%" cellpadding="5" cellspacing="5">
     <!-- BDP: page_message -->
     <tr>
-      <td class="title" nowrap colspan="5"><font color="#FF0000">{MESSAGE}</font></td>
+      <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{MESSAGE}</font></td>
     </tr>
     <!-- EDP: page_message -->
 	<tr>
@@ -109,24 +109,24 @@ function MM_swapImage() { //v3.0
         <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
           <!-- BDP: als_message -->
           <tr>
-            <td class="title" nowrap colspan="5"><font color="#FF0000">{ALS_MSG}</font></td>
+            <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{ALS_MSG}</font></td>
           </tr>
           <!-- EDP: als_message -->
           <!-- BDP: als_list -->
           <tr>
-            <td class="content3" nowrap><b>{TR_ALS_NAME}</b></td>
-            <td class="content3" nowrap><b>{TR_ALS_MOUNT}</b></td>
-            <td class="content3" nowrap align="center"><b>{TR_ALS_FORWARD}</b></td>
-            <td class="content3" nowrap align="center"><b>{TR_ALS_STATUS}</b></td>
-            <td class="content3" nowrap align="center"><b>{TR_ALS_ACTION}</b></td>
+            <td class="content3" nowrap="nowrap"><b>{TR_ALS_NAME}</b></td>
+            <td class="content3" nowrap="nowrap"><b>{TR_ALS_MOUNT}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALS_FORWARD}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALS_STATUS}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALS_ACTION}</b></td>
           </tr>
           <!-- BDP: als_item -->
           <tr>
-            <td class="{ITEM_CLASS}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {ALS_NAME}</td>
-            <td class="{ITEM_CLASS}" nowrap>{ALS_MOUNT}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center">{ALS_FORWARD}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {ALS_NAME}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap">{ALS_MOUNT}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_FORWARD}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_STATUS}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -159,22 +159,22 @@ function MM_swapImage() { //v3.0
         <td valign="top"><table width="100%" cellspacing="7">
           <!-- BDP: sub_message -->
           <tr>
-            <td class="title" nowrap colspan="5"><font color="#FF0000">{SUB_MSG}</font></td>
+            <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{SUB_MSG}</font></td>
           </tr>
           <!-- EDP: sub_message -->
           <!-- BDP: sub_list -->
           <tr>
-            <td class="content3" colspan="2" nowrap><b>{TR_SUB_NAME}</b></td>
-            <td class="content3" nowrap><b>{TR_SUB_MOUNT}</b></td>
-            <td class="content3" nowrap align="center"><b>{TR_SUB_STATUS}</b></td>
-            <td class="content3" nowrap align="center"><b>{TR_SUB_ACTION}</b></td>
+            <td class="content3" colspan="2" nowrap="nowrap"><b>{TR_SUB_NAME}</b></td>
+            <td class="content3" nowrap="nowrap"><b>{TR_SUB_MOUNT}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_S="nowrap"TATUS}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_ACTION}</b></td>
           </tr>
           <!-- BDP: sub_item -->
           <tr>
-            <td class="{ITEM_CLASS}" colspan="2" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
-            <td class="{ITEM_CLASS}" nowrap>{SUB_MOUNT}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center">{SUB_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
+            <td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
           </tr>
           <!-- EDP: sub_item -->
           <!-- EDP: sub_list -->

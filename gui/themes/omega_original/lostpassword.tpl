@@ -7,6 +7,7 @@
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
+
 <body onload="javascript:document.frm.uname.focus()">
 <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
   <tr>
@@ -16,7 +17,7 @@
     <td>
 <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="453" height="69" background="{THEME_COLOR_PATH}/images/login/login_top.jpg">&nbsp;</td>
+    <td width="453" height="69" class="loginTop">&nbsp;</td>
   </tr>
   <tr>
     <td>

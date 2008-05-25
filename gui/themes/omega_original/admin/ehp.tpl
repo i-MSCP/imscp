@@ -8,11 +8,9 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
 }
 //-->

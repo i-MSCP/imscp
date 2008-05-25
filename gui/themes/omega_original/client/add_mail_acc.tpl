@@ -9,13 +9,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
-	function sbmt(form, uaction) {
-	    form.uaction.value = uaction;
-	    form.submit();
-
-	    return false;
-	}
-
 	function checkForm() {
         	var aname  = document.forms[0].elements['username'].value;
         	var apass  = document.forms[0].elements['pass'].value;
@@ -142,7 +135,7 @@
 <!-- BDP: logged_from -->
      <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -190,17 +183,17 @@
               </tr>
               <!-- EDP: page_message -->
               <tr>
-                <td nowrap class="content2" width="200">{TR_USERNAME}</td>
-                <td valign="middle" nowrap class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content2" width="200">{TR_USERNAME}</td>
+                <td valign="middle" nowrap="nowrap" class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
-                <td nowrap class="content" colspan="2">@{DOMAIN_NAME}</td>
+                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
+                <td nowrap="nowrap" class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
               <tr>
-                <td nowrap class="content2" width="200"><input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
-                <td nowrap class="content"><select name="als_id">
+                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
+                <td nowrap="nowrap" class="content"><select name="als_id">
                     <!-- BDP: als_list -->
                     <option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>
                     <!-- EDP: als_list -->
@@ -209,9 +202,9 @@
 			  <!-- EDP: to_alias_domain -->
 			  <!-- BDP: to_subdomain -->
               <tr>
-                <td nowrap class="content2" width="200">
+                <td nowrap="nowrap" class="content2" width="200">
                   <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
-                <td nowrap class="content"><select name="sub_id">
+                <td nowrap="nowrap" class="content"><select name="sub_id">
                     <!-- BDP: sub_list -->
                     <option value="{SUB_ID}" {SUB_SELECTED}>@{SUB_NAME}</option>
                     <!-- EDP: sub_list -->
@@ -219,25 +212,25 @@
               </tr>
 			  <!-- EDP: to_subdomain -->
               <tr>
-                <td nowrap class="content2" colspan="2">
+                <td nowrap="nowrap" class="content2" colspan="2">
                   &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onclick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
-                <td nowrap  class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
+                <td nowrap="nowrap" class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD_REPEAT}</td>
-                <td nowrap class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD_REPEAT}</td>
+                <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
-                <td nowrap class="content2" colspan="2">
+                <td nowrap="nowrap" class="content2" colspan="2">
                   &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType();">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
 				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" /></td>
-                <td nowrap class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
+                <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
 	          </tr>
               <tr>
              <td colspan="2"><input name="Submit" type="submit" class="button" value=" {TR_ADD} "></td>

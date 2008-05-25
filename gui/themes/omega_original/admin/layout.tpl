@@ -53,16 +53,16 @@
                                       					<td colspan="2" class="content3"><b>{TR_UPLOAD_LOGO}</b></td>
                                     				</tr>
                                     				<tr>
-                                      					<td width="230" class="content2" nowrap>{TR_LOGO_FILE}</td>
-                                      					<td class="content" nowrap><input type="file" name="logo_file" size="40" />
+                                      					<td width="230" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
+                                      					<td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40" />
 									<input type="hidden" name="uaction" value="upload_logo" />
                                   					<input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
                                 					</form>
 									</td>
                                     				</tr>
                                      				<tr>
-			                        			<td nowrap>&nbsp;</td>
-			                        			<td nowrap>
+			                        			<td nowrap="nowrap">&nbsp;</td>
+			                        			<td nowrap="nowrap">
 								</td></tr><tr>
 			                        			<td class="content2"><img src="{OWN_LOGO}" alt="admin logo"></td>
 			                        			<td class="content">
