@@ -830,7 +830,7 @@ SQL_QUERY;
 	}
 	// drop desired database;
 	$query = <<<SQL_QUERY
-        DROP DATABASE;
+        DROP DATABASE
 SQL_QUERY;
 
 	$query .= $db_name;

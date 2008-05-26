@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-26 Jochen Manz
+	- GUI:
+		* Fixed #1297: Error on deleting users
+
 2008-05-25 Jochen Manz
 	- GUI:
 		* Fixed #1288: Some HTML, CSS and JS fixes/polishes - Part 5
