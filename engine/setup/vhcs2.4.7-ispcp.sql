@@ -162,6 +162,10 @@ UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'o
 UPDATE `mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 -- END: Regenerate config files
 
+-- BEGIN: Change to default ispCP Theme : 
+UPDATE `user_gui_props` SET `layout` = 'omega_original'; 
+-- END: Change to default ispCP Theme :
+
 -- Change charset:
 
 ALTER DATABASE `ispcp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

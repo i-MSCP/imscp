@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-27 Malte Geierhos
+	- SETUP 
+		* Fixed #1269: Update doesn't set the new theme as default
+
 2008-05-27 Benedikt Heintel
 	- GUI:
 		* Fixed #1291: reseller/ahp.php complains about already sent header
