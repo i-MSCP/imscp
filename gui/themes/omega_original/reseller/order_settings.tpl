@@ -52,7 +52,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                       <!-- BDP: page_message -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
@@ -107,8 +107,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

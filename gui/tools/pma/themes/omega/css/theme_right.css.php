@@ -116,10 +116,8 @@ form {
     margin:           	 0px 0px 0px 0px;
 }
 
-th.td{
+th.td {
     font-weight: 		 normal;
-    color: 				 transparent;
-    background-color: 	 transparent;
     background-image: 	 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_th.png);
 
 }
@@ -193,7 +191,7 @@ fieldset legend {
     font-weight: 		bold;
     background-color: 	#ffffff;
     padding:            2px 2px 2px 2px;
-	size:        		11px;
+	font-size:        	11px;
 }
 
 /* buttons in some browsers (eg. Konqueror) are block elements,
@@ -249,7 +247,6 @@ button.mult_submit {
 /* odd table rows 1,3,5,7,... */
 table tr.odd th,
 table tr.odd {
-    background-image:   none;
     background-color:   #E5E5E5;
     text-align:         left;
 }
@@ -257,7 +254,6 @@ table tr.odd {
 /* even table rows 2,4,6,8,... */
 table tr.even th,
 table tr.even {
-    background-image:   none;
     background-color:   #D5D5D5;
     text-align:         left;
 }
@@ -663,7 +659,7 @@ span.tabcaution {
 
 /* enabled drop/empty tabs */
 a.tabcaution {
-    color:              FF0000;
+    color:              #FF0000;
 }
 a.tabcaution:hover {
     color: #FFFFFF;
@@ -689,7 +685,7 @@ ul#topmenu li {
 /* default tab styles */
 .tab, .tabcaution, .tabactive {
     background-color:	 #E5E5E5;
-    border: 			 0px 1px 0px 0px;
+    border-width: 		 0px 1px 0px 0px;
 	border-style:		 solid;
 	border-color: 		 #FFFFFF;
 	background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header2.png);

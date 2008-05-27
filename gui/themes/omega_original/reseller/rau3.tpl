@@ -47,7 +47,7 @@
                         <!-- BDP: page_message -->
                         <tr>
                           <td width="25">&nbsp;</td>
-                          <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                          <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                         </tr>
                         <!-- EDP: page_message -->
                         <tr>
@@ -174,9 +174,7 @@
                         </tr>
                         <tr>
                           <td>&nbsp;</td>
-                          <td colspan="2"><font color="#FF0000">
-                            <input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  ">
-                          </font></td>
+                          <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  " /></td>
                         </tr>
                       </table>
                     </form>
@@ -190,8 +188,7 @@
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

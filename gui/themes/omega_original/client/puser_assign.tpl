@@ -45,7 +45,7 @@
                     <!-- BDP: page_message -->
                     <tr>
                       <td>&nbsp;</td>
-                      <td colspan="4" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                      <td colspan="4" class="title"><span class="message">{MESSAGE}</span></td>
                     </tr>
                     <!-- EDP: page_message -->
                     <tr>
@@ -93,13 +93,10 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
-              </table>
-             </form>
-            </td>
+              </table></form></td>
            </tr>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

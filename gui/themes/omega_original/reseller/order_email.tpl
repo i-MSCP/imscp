@@ -66,7 +66,7 @@
                       <!-- BDP: page_message -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
@@ -106,8 +106,7 @@
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

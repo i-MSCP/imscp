@@ -54,7 +54,7 @@ function delete_order(url) {
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
@@ -171,8 +171,7 @@ function delete_order(url) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

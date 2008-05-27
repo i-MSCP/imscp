@@ -73,7 +73,7 @@
                             </tr>
                             <!-- BDP: page_message -->
                             <tr>
-                              <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <!-- BDP: traff_list -->

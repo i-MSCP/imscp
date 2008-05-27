@@ -44,7 +44,7 @@
                     <!-- BDP: page_message -->
                     <tr>
                       <td width="25" nowrap="nowrap">&nbsp;</td>
-                      <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                      <td colspan="4" nowrap="nowrap" class="title"><span class="message">{MESSAGE}</span></td>
                     </tr>
                     <!-- EDP: page_message -->
                     <!-- BDP: protected_areas -->
@@ -80,8 +80,7 @@
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

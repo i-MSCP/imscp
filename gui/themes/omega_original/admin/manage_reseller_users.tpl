@@ -41,13 +41,13 @@
                               <td><table width="100%" cellpadding="5" cellspacing="5">
                                   <!-- BDP: page_message -->
                                   <tr>
-                                    <td colspan="3" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                                    <td colspan="3" class="title"><span class="message">{MESSAGE}</span></td>
                                   </tr>
                                   <!-- EDP: page_message -->
                                   <!-- BDP: src_reseller -->
                                   <tr>
                                     <td colspan="3"><b>{TR_FROM_RESELLER}</b>
-                                        <select name="src_reseller" onChange="return sbmt(document.forms[0],'change_src');;">
+                                        <select name="src_reseller" onchange="return sbmt(document.forms[0],'change_src');;">
                                           <!-- BDP: src_reseller_option -->
                                           <option {SRC_RSL_SELECTED} value="{SRC_RSL_VALUE}">{SRC_RSL_OPTION}</option>
                                           <!-- EDP: src_reseller_option -->
@@ -98,8 +98,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

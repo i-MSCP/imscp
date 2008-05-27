@@ -100,17 +100,17 @@ ul#databaseList a {
 
 div#navidbpageselector a,
 ul#databaseList a {
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
 }
 
 ul#databaseList a:hover {
-    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }
 
 ul#databaseList li.selected a {
-    background: <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
     color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
 }
 
@@ -126,7 +126,7 @@ div#leftframelinks a img.icon {
 }
 
 div#leftframelinks a:hover {
-    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }
 

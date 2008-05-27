@@ -45,7 +45,7 @@
                       <!-- BDP: page_message -->
                       <tr>
                         <td class="title" align="center">&nbsp;</td>
-                        <td class="title" align="center"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td class="title" align="center"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
@@ -68,11 +68,10 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content"><p>{TR_RESTORE_DIRECTIONS}</p>
-                            <input name="Submit" type="submit" class="button" value=" {TR_RESTORE} ">
+                            <input name="Submit" type="submit" class="button" value=" {TR_RESTORE} " />
                             <p>
                               <input type="hidden" name="uaction" value="bk_restore" />
-                            </p>
-                        </td>
+                            </p></td>
                       </tr>
                     </table></form></td>
                 <td>&nbsp;</td>

@@ -22,7 +22,7 @@
           <td>
            <table width="453" border="0" cellpadding="0" cellspacing="1">
             <tr>
-             <td align="center" valign="middle" bgcolor="#FFFFFF"><strong><span style="color:red;">&nbsp;{MESSAGE}&nbsp;</span></strong></td>
+             <td align="center" valign="middle" bgcolor="#ffffff"><strong><span class="message">&nbsp;{MESSAGE}&nbsp;</span></strong></td>
             </tr>
             <tr>
              <td align="right"><a class="login" href="{BACKBUTTONDESTINATION}" target="_self">{TR_BACK}</a></td>
@@ -43,8 +43,7 @@
   Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a>
   </td>
   </tr>
- </table>
-    </td>
+ </table></td>
    </tr>
   </table>
  </body>

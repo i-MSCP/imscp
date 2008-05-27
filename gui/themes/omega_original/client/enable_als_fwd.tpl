@@ -65,7 +65,7 @@ function MM_preloadImages() { //v3.0
                             </tr>
                             <!-- BDP: page_message -->
                             <tr>
-                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <tr>
                               <!-- EDP: page_message -->
@@ -101,8 +101,7 @@ function MM_preloadImages() { //v3.0
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

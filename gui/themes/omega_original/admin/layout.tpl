@@ -44,9 +44,7 @@
                               				<td width="40">&nbsp;</td>
                               				<td align="left"><form enctype="multipart/form-data" name="set_layout" method="post" action="layout.php">
                                   			<!-- BDP: page_message -->
-                                  				<div align="lext" class="title">
-                                  					<font color="#FF0000">{MESSAGE}</font>
-												</div>
+                                  				<div align="left" class="title"><span class="message">{MESSAGE}</span></div>
                                   			<!-- EDP: page_message -->
                                   				<table width="100%" cellpadding="5" cellspacing="5">
                                     				<tr>

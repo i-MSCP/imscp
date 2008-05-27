@@ -68,7 +68,7 @@
                                   <table width="100%" cellspacing="3">
                                     <!-- BDP: no_domains -->
                                     <tr>
-                                      <td class="title" colspan="13" width="550"><font color="#FF0000"> {TR_NO_DOMAINS}</font> </td>
+                                      <td class="title" colspan="13" width="550"><span style="color:red;"> {TR_NO_DOMAINS}</span></td>
                                     </tr>
                                     <!-- EDP: no_domains -->
                                     <!-- BDP: domain_list -->
@@ -182,8 +182,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

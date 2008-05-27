@@ -60,7 +60,7 @@ function delete_order(url) {
             <!-- BDP: page_message -->
             <tr>
              <td width="35">&nbsp;</td>
-             <td colspan="7" class="title"><font color="#FF0000">{MESSAGE}<br /></font></td>
+             <td colspan="7" class="title"><span class="message">{MESSAGE}<br /></span></td>
             </tr>
             <!-- EDP: page_message -->
             <!-- BDP: orders_table -->

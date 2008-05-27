@@ -10,7 +10,7 @@
 
 				 <!-- BDP: page_message -->
                   <tr>
-                    <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                    <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                   </tr>
                   <!-- EDP: page_message -->
 
@@ -94,7 +94,7 @@
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr align="right">
-    <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CONTINUE}  "></td>
+    <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CONTINUE}  " /></td>
   </tr>
 </table></form>
 <br />

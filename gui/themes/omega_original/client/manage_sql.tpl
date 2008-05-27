@@ -67,7 +67,7 @@ function sbmt(form) {
               <table width="100%" cellpadding="5" cellspacing="5">
                <!-- BDP: page_message -->
                <tr>
-                <td colspan="4" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                <td colspan="4" class="title"><span class="message">{MESSAGE}</span></td>
                </tr>
                <!-- EDP: page_message -->
                <!-- BDP: db_list -->
@@ -84,7 +84,7 @@ function sbmt(form) {
                </tr>
                <!-- BDP: db_message -->
                <tr>
-                <td height="28" colspan="4" class="title"><font color="#FF0000">&nbsp;&nbsp;{DB_MSG}</font></td>
+                <td height="28" colspan="4" class="title"><span class="message">&nbsp;&nbsp;{DB_MSG}</span></td>
                </tr>
                <!-- EDP: db_message -->
                <!-- BDP: user_list -->

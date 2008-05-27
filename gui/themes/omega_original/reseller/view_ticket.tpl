@@ -58,13 +58,13 @@ function action_delete(url) {
         <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
           <!-- BDP: page_message -->
           <tr>
-            <td class="title"><font color="#FF0000">{MESSAGE}</font></td>
+            <td class="title"><span class="message">{MESSAGE}</span></td>
           </tr>
           <!-- EDP: page_message -->
           <!-- BDP: tickets_list -->
           <tr>
-            <td nowrap="nowrap" class="content3"> {TR_TICKET_URGENCY}: {URGENCY} <br>
-              {TR_TICKET_SUBJECT}: {SUBJECT} </td>
+            <td nowrap="nowrap" class="content3"> {TR_TICKET_URGENCY}: {URGENCY}<br>
+              {TR_TICKET_SUBJECT}: {SUBJECT}</td>
           </tr>
           <!-- BDP: tickets_item -->
           <tr>
@@ -129,11 +129,9 @@ function action_delete(url) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-			</td>
+</table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

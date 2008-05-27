@@ -61,7 +61,7 @@ function action_delete(url) {
                       <td valign="top"><table width="100%" cellspacing="7">
                           <!-- BDP: page_message -->
                           <tr>
-                            <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                            <td colspan="4" nowrap="nowrap" class="title"><span class="message">{MESSAGE}</span></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <tr>
@@ -72,7 +72,7 @@ function action_delete(url) {
                           </tr>
                           <!-- BDP: catchall_message -->
                           <tr>
-                            <td colspan="4" class="title"><font color="#FF0000">{CATCHALL_MSG}</font></td>
+                            <td colspan="4" class="title"><span class="message">{CATCHALL_MSG}</span></td>
                           </tr>
                           <!-- EDP: catchall_message -->
                           <!-- BDP: catchall_item -->

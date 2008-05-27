@@ -22,11 +22,11 @@
          </tr>
          <!-- BDP: page_message -->
          <tr>
-          <td colspan="7"><div align="center"><font size="-2" color="#FF0000">{MESSAGE}</font></div></td>
+          <td colspan="7" align="center"><span class="message" style="font-size:x-small;">{MESSAGE}</span></td>
          </tr>
          <!-- EDP: page_message -->
          <tr>
-          <td colspan="7"><div align="center"><font size="-2">{TR_LOGIN_INFO}</font></div></td>
+          <td colspan="7"><div align="center"><span style="font-size:x-small;">{TR_LOGIN_INFO}</span></div></td>
          </tr>
          <tr>
           <td width="19">&nbsp;</td>
@@ -52,7 +52,7 @@
           <td>&nbsp;</td>
          </tr>
          <tr>
-          <td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><font size="-2">{TR_LOSTPW}</font></a></div></td>
+          <td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><span style="font-size:x-small;">{TR_LOSTPW}</span></a></div></td>
           <td colspan="4">&nbsp;</td>
          </tr>
          <tr>
@@ -71,17 +71,14 @@
 		  <td>&nbsp;</td>
          </tr>
 /* END SSL-Switch */ -->
-        </table>
-        </form>
-       </td>
+        </table></form></td>
       </tr>
      </table>
      <table align="center" width="453">
       <tr>
        <td align="right" class="login">Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a></td>
       </tr>
-     </table>
-    </td>
+     </table></td>
    </tr>
   </table>
  </body>

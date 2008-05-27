@@ -45,23 +45,21 @@ function sbmt(form, uaction) {
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
 				<tr>
-				  <td colspan="3">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="left">
     <table width="100%" cellpadding="5" cellspacing="5">
         <!-- BDP: page_message -->
         <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="3" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+            <td colspan="3" class="title"><span class="message">{MESSAGE}</span></td>
         </tr>
         <!-- EDP: page_message -->
 	    <tr>
 		    <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		    <td colspan="2" class="title">{TR_ADMINISTRATORS}</td>
 	    </tr>
-    </table>
-	</td>
+    </table></td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
   <tr>
@@ -70,7 +68,7 @@ function sbmt(form, uaction) {
           <!-- BDP: admin_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="3" class="title"><font color="#FF0000">{ADMIN_MESSAGE}</font></td>
+            <td colspan="3" class="title"><span class="message">{ADMIN_MESSAGE}</span></td>
           </tr>
           <!-- EDP: admin_message -->
           <!-- BDP: admin_list -->
@@ -113,14 +111,12 @@ function sbmt(form, uaction) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td align="left">
-<table width="100%" cellpadding="5" cellspacing="5">
+    <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_RESELLERS}</td>
 	</tr>
-</table>
-	</td>
+</table></td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
   <tr>
@@ -128,7 +124,7 @@ function sbmt(form, uaction) {
       <!-- BDP: rsl_message -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td colspan="5" class="title"><font color="#FF0000">{RSL_MESSAGE}</font></td>
+        <td colspan="5" class="title"><span class="message">{RSL_MESSAGE}</span></td>
       </tr>
       <!-- EDP: rsl_message -->
       <!-- BDP: rsl_list -->
@@ -204,7 +200,7 @@ function sbmt(form, uaction) {
         <!-- BDP: usr_message -->
         <tr>
           <td width="25">&nbsp;</td>
-          <td colspan="7" class="title"><font color="#FF0000">{USR_MESSAGE}</font></td>
+          <td colspan="7" class="title"><span class="message">{USR_MESSAGE}</span></td>
         </tr>
         <!-- EDP: usr_message -->
         <!-- BDP: usr_list -->
@@ -270,11 +266,9 @@ function sbmt(form, uaction) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-				  </td>
+</table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

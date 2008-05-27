@@ -47,7 +47,7 @@ function action_delete(url, ip) {
                           <!-- BDP: page_message -->
                           <tr>
                             <td width="25">&nbsp;</td>
-                            <td colspan="4"><font color="#FF0000"><span class="title"><font color="#FF0000">{MESSAGE}</font></span> </font></td>
+                            <td colspan="4" class="title"><span class="message">{MESSAGE}</span></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <tr>
@@ -123,8 +123,7 @@ function action_delete(url, ip) {
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

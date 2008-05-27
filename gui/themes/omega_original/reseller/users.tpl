@@ -70,7 +70,7 @@ function sbmt(form, uaction) {
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="8" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="8" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <tr>
                         <!-- EDP: page_message -->
@@ -155,8 +155,7 @@ function sbmt(form, uaction) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

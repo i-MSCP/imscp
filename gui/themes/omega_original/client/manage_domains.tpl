@@ -91,7 +91,7 @@ function MM_swapImage() { //v3.0
 <table width="100%" cellpadding="5" cellspacing="5">
     <!-- BDP: page_message -->
     <tr>
-      <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{MESSAGE}</font></td>
+      <td class="title" nowrap="nowrap" colspan="5"><span class="message">{MESSAGE}</span></td>
     </tr>
     <!-- EDP: page_message -->
 	<tr>
@@ -109,7 +109,7 @@ function MM_swapImage() { //v3.0
         <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
           <!-- BDP: als_message -->
           <tr>
-            <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{ALS_MSG}</font></td>
+            <td class="title" nowrap="nowrap" colspan="5"><span class="message">{ALS_MSG}</span></td>
           </tr>
           <!-- EDP: als_message -->
           <!-- BDP: als_list -->
@@ -159,7 +159,7 @@ function MM_swapImage() { //v3.0
         <td valign="top"><table width="100%" cellspacing="7">
           <!-- BDP: sub_message -->
           <tr>
-            <td class="title" nowrap="nowrap" colspan="5"><font color="#FF0000">{SUB_MSG}</font></td>
+            <td class="title" nowrap="nowrap" colspan="5"><span class="message">{SUB_MSG}</span></td>
           </tr>
           <!-- EDP: sub_message -->
           <!-- BDP: sub_list -->
@@ -187,11 +187,9 @@ function MM_swapImage() { //v3.0
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-			</td>
+</table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

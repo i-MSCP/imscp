@@ -63,7 +63,7 @@ function action_delete(url, mailacc) {
                   <td valign="top"><table width="100%" cellspacing="7">
                     <!-- BDP: page_message -->
                 <tr>
-                  <td colspan="4" nowrap="nowrap" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                  <td colspan="4" nowrap="nowrap" class="title"><span class="message">{MESSAGE}</span></td>
                 </tr>
                 <tr>
                     <!-- EDP: page_message -->
@@ -74,7 +74,7 @@ function action_delete(url, mailacc) {
                 </tr>
                     <!-- BDP: mail_message -->
                 <tr>
-                   <td colspan="4" class="title"><font color="#FF0000">{MAIL_MSG}</font></td>
+                   <td colspan="4" class="title"><span class="message">{MAIL_MSG}</span></td>
                 </tr>
                     <!-- EDP: mail_message -->
                     <!-- BDP: mail_item -->

@@ -77,13 +77,13 @@ td {
 .inbox_bar_header {
 	font-family: verdana;
 	font-size: 10px;
-	padding: 10 1;
+	padding: 10px 1px;
 	color: #000000;
 	margin: auto;
 }
 
 .inbox_left_bar_handle {
-	padding: 1 1;
+	padding: 1px 1px;
 }
 
 .company_text {
@@ -112,7 +112,7 @@ td {
 }
 
 .mailmessage_table {
-	background-color: White;
+	background-color: white;
 }
 
 #company_table {
@@ -122,7 +122,7 @@ td {
 }
 
 .current_folder {
-	padding: 1 1;
+	padding: 1px 1px;
 	background: url(../../skins/omega/left_inbox_bar.gif);
 	background-repeat: repeat-x;
 	color : #ffffff;
@@ -183,7 +183,7 @@ frame {
 }
 
 .mail_display_header {
-	background: White;
+	background: white;
 	border-bottom: 1px solid #ABABAB;
 	border-top: 1px solid #ABABAB;
 }
@@ -288,6 +288,7 @@ p.button_text {
 	float: left;
 	margin: 3px 0px 0px 65px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -299,6 +300,7 @@ p.button_text {
 	float: left;
 	margin: 1px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -310,6 +312,7 @@ p.button_text {
 	float: left;
 	margin: 1px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -321,6 +324,7 @@ p.button_text {
 	float: left;
 	margin: 1px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -332,6 +336,7 @@ p.button_text {
 	float: left;
 	margin: 1px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -344,6 +349,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -355,6 +361,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
 }
 
@@ -366,6 +373,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #calendar_button {
@@ -376,6 +384,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #fetchmail_button {
@@ -386,6 +395,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #help_button {
@@ -396,6 +406,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #search_button {
@@ -406,6 +417,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #exit_button {
@@ -416,6 +428,7 @@ p.button_text {
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #file_manager {
@@ -426,7 +439,8 @@ p.button_text {
 	float: left;
 	margin: 5px 0px 0px 0px;
 	cursor: hand;
-	Color: #FFFFFF;
+	cursor: pointer;
+	color: #FFFFFF;
 }
 
 
@@ -444,7 +458,7 @@ p.button_text {
 }
 
 .small_header_bar {
-	background-color: White;
+	background-color: white;
 }
 
 .left_main {
@@ -457,6 +471,7 @@ p.button_text {
 	float: none;
 	margin: -5px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #left_drafts_button {
@@ -465,6 +480,7 @@ p.button_text {
 	float: none;
 	margin: -5px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #left_sent_button {
@@ -473,6 +489,7 @@ p.button_text {
 	float: none;
 	margin: -5px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #left_trash_button {
@@ -481,6 +498,7 @@ p.button_text {
 	float: none;
 	margin: -5px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #left_folder_button {
@@ -489,6 +507,7 @@ p.button_text {
 	float: none;
 	margin: -5px 0px 0px 0px;
 	cursor: hand;
+	cursor: pointer;
 }
 
 #left_logo{
@@ -500,7 +519,7 @@ p.button_text {
 
 .left_button_text {
 	margin: -5px 0px 0px 0px;
-	font: 9px;
+	font-size: 9px;
 }
 
 #left_hook {
@@ -530,7 +549,7 @@ p.button_text {
 	height: 16px;
 	position: relative;
 	margin-top: 0px;
-	padding: 0 0 12 0;
+	padding: 0 0 12px 0;
 }
 
 #folders {
@@ -628,7 +647,7 @@ p.button_text {
 	color: #FFFFFF;
 	font-weight: bold;
 	margin: 0 0 0 -5px;
-	padding: 10;
+	padding: 10px;
 	text-align: center;
 	line-height: 30px;
 }
@@ -955,7 +974,7 @@ th a:hover, .calhead a:hover {
 
 .left_button_text {
 	margin: -5px 0px 0px 0px;
-	font: 9px;
+	font-size: 9px;
 }
 
 .message_body_read_text pre {

@@ -55,7 +55,7 @@ function action_delete(url) {
                       <td valign="top"><table width="100%" cellspacing="7">
                         <!-- BDP: page_message -->
                         <tr>
-                          <td colspan="6" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                          <td colspan="6" class="title"><span class="message">{MESSAGE}</span></td>
                         </tr>
                         <!-- EDP: page_message -->
                         <!-- BDP: tickets_list -->
@@ -110,8 +110,7 @@ function action_delete(url) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

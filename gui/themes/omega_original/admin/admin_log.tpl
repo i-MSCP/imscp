@@ -39,7 +39,7 @@
                             <!-- BDP: page_message -->
                             <tr align="left">
                               <td width="25">&nbsp;</td>
-                              <td colspan="2"><font color="#FF0000"><span class="title"><font color="#FF0000">{PAG_MESSAGE}</font></span> </font></td>
+                              <td colspan="2" class="title"><span class="message">{PAG_MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
@@ -55,7 +55,7 @@
                             </tr>
                             <!-- EDP: log_row -->
                           </table>
-                        <div align="right"><br>
+                        <div align="right"><br />
                               <!-- BDP: scroll_prev_gray -->
                               <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                               <!-- EDP: scroll_prev_gray -->

@@ -52,7 +52,7 @@ function action_delete(url) {
         <td valign="top"><table width="100%" cellspacing="7">
           <!-- BDP: page_message -->
           <tr>
-            <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+            <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
           </tr>
           <!-- EDP: page_message -->
           <!-- BDP: tickets_list -->
@@ -72,7 +72,9 @@ function action_delete(url) {
             <td class="{CONTENT}" nowrap="nowrap" align="left">{TO}</td>
             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left" />
                     <script type="text/javascript">
+<!--
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
+//-->
 						</script>
               {SUBJECT}</a></td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
@@ -107,11 +109,9 @@ function action_delete(url) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-				  </td>
+</table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

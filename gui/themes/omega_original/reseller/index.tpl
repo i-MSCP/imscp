@@ -48,7 +48,7 @@
           <!-- BDP: page_message -->
            <tr>
              <td>&nbsp;</td>
-             <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+             <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
            </tr>
           <!-- EDP: page_message -->
           <tr>
@@ -103,7 +103,7 @@
           </tr>
           <!-- BDP: msg_entry -->
           <td>&nbsp;</td>
-            <td colspan="2" class="title"><font color="#FF0000">{TR_NEW_MSGS}</font></td>
+            <td colspan="2" class="title"><span class="message">{TR_NEW_MSGS}</span></td>
           </tr>
           <!-- EDP: msg_entry -->
           <!--
@@ -139,7 +139,7 @@
       <!-- BDP: traff_warn -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="title"><font color="#FF0000">{TR_TRAFFIC_WARNING}</font></td>
+        <td class="title"><span class="message">{TR_TRAFFIC_WARNING}</span></td>
       </tr>
       <!-- EDP: traff_warn -->
       <tr>
@@ -187,7 +187,7 @@
       <!-- BDP: disk_warn -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="title"><font color="#FF0000">{TR_DISK_WARNING}</font></td>
+        <td class="title"><span class="message">{TR_DISK_WARNING}</span></td>
       </tr>
       <!-- EDP: disk_warn -->
       <tr>
@@ -217,11 +217,9 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-			</td>
+</table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

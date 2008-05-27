@@ -53,7 +53,7 @@
       <!-- BDP: usr_msg -->
       <tr>
         <td nowrap="nowrap">&nbsp;</td>
-        <td colspan="5" nowrap="nowrap" class="title"><font color="#FF0000">{USER_MESSAGE}</font></td>
+        <td colspan="5" nowrap="nowrap" class="title"><span class="message">{USER_MESSAGE}</span></td>
       </tr>
       <!-- EDP: usr_msg -->
       <!-- BDP: pusres -->
@@ -103,7 +103,7 @@
       <!-- BDP: grp_msg -->
       <tr>
         <td nowrap="nowrap">&nbsp;</td>
-        <td colspan="5" nowrap="nowrap" class="title"><font color="#FF0000">{GROUP_MESSAGE}</font></td>
+        <td colspan="5" nowrap="nowrap" class="title"><span class="message">{GROUP_MESSAGE}</span></td>
       </tr>
       <!-- EDP: grp_msg -->
       <!-- BDP: pgroups -->
@@ -130,11 +130,9 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>			
-			</td>
+</table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

@@ -71,7 +71,7 @@ function action_delete(url) {
                           <table width="100%" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>
-                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <!-- BDP: show_sqluser_list -->

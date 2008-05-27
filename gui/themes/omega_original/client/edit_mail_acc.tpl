@@ -77,7 +77,7 @@
               <table width="100%" cellpadding="3" cellspacing="3">
                <!-- BDP: page_message -->
                <tr>
-                <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                </tr>
                <!-- EDP: page_message -->
                <tr>
