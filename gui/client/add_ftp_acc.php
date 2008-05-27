@@ -450,12 +450,12 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
     }
 
     if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
-        set_page_message(tr('Subdomain list is empty! You can not add FTP accounts there!'));
+        set_page_message(tr('Subdomain list is empty! You cannot add FTP accounts there!'));
         return;
     }
 
     if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
-        set_page_message(tr('Alias list is empty! You can not add FTP accounts there!'));
+        set_page_message(tr('Alias list is empty! You cannot add FTP accounts there!'));
         return;
     }
 

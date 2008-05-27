@@ -79,15 +79,15 @@ function enable_for_post() {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="{CLASS}">{SERVICE}
-                                <input name="var_name[]" type="hidden" id="var_name" value="{VAR_NAME}" />
-                                  <input name="custom[]" type="hidden" id="custom" value="{CUSTOM}" /></td>
-                              <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
-                              <td class="{CLASS}"><select name="port_type[]" id="port_type" {PROTOCOL_READONLY}>
+                                <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}" />
+                                  <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" /></td>
+                              <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port{NUM}" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
+                              <td class="{CLASS}"><select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
                                   <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
                                   <option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
                                 </select>
                               </td>
-                              <td class="{CLASS}"><select name="show_val[]" id="show_val">
+                              <td class="{CLASS}"><select name="show_val[]" id="show_val{NUM}">
                                   <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                 </select>

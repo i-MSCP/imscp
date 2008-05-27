@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-27 Benedikt Heintel
+	- GUI:
+		* Fixed #1291: reseller/ahp.php complains about already sent header
+		* Fixed #1293: in client/protect_it.php template variable {USER_SELECTED} is not set
+		* Fixed #1294: id has to be unique in the whole html file, but in the list in admin/settings_ports.php|.tpl are several unique id's
+		* Fixed #1299: there is a typo in the whole ispcp, cannot is wrongly written separated, but it is used to write it together
+		* Fixed #1300: some html fixes; replaced <font> with external CSS class or span; webmail/pma theme css fixes - Part 7
+
 2008-05-26 Jochen Manz
 	- GUI:
 		* Fixed #1297: Error on deleting users
@@ -14,7 +22,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1284: Some HTML, JS fixes, removed ugly/useless whitespace removed useles height="*" - Part 4
 		* Fixed #1275: TR_PHP_YES, TR_PHP_NO, TR_CGI_YES, TR_CGI_NO and TR_STATUS_YES aren't replaced correctly
-		
+
 2008-05-23 Jochen Manz
 	- GUI:
 		* Fixed #1279: some Web Content Accessibility Work (Part 1)
@@ -25,7 +33,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-22 Benedikt Heintel
 	- GUI:
-		* Fixed #1275: Some HTML and CSS fixes in the HTML templates and some PHP files - Part 2 
+		* Fixed #1275: Some HTML and CSS fixes in the HTML templates and some PHP files - Part 2
 		* Fixed #1273: some HTML fixes in the HTML templates - Part 1
 		* Fixed #1274: remove Disallow /ispcp/ from robots.txt
 

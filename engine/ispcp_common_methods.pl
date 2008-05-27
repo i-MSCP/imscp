@@ -438,14 +438,14 @@ sub setfmode {
     my $res = chmod ($fperms, $fname);
 
     if ($res != 1) {
-        push_el(\@main::el, 'setfmode()', "ERROR: Can not change permissions of file '$fname' !");
+        push_el(\@main::el, 'setfmode()', "ERROR: cannot change permissions of file '$fname' !");
         return -1;
     }
 
     $res = chown ($uid, $gid, $fname);
 
     if ($res != 1) {
-        push_el(\@main::el, 'setfmode()', "ERROR: Can not change user/group of file '$fname' !");
+        push_el(\@main::el, 'setfmode()', "ERROR: cannot change user/group of file '$fname' !");
         return -1;
 
     }

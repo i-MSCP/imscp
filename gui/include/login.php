@@ -58,7 +58,7 @@ function register_user($uname, $upass) {
 	    }
 
 	    if (!is_userdomain_ok($uname)) {
-	        write_log($uname." Domain status is not OK - user can not login");
+	        write_log($uname." Domain status is not OK - user cannot login");
 	        system_message(tr("%s's account status is not ok!", $uname));
 	        return false;
 	    }

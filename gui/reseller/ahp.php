@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
@@ -122,7 +122,7 @@ function gen_empty_ahp_page(&$tpl) {
 		'HP_PAYMENT'			=> '',
 		'HP_DESCRIPTION_VALUE'	=> '',
 		'TR_STATUS_YES'			=> '',
-		'TR_STATUS_NO'			=> 'checked',		
+		'TR_STATUS_NO'			=> 'checked',
 		'TR_PHP_YES'			=> '',
 		'TR_PHP_NO'				=> 'checked',
 		'TR_CGI_YES'			=> '',

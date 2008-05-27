@@ -76,7 +76,7 @@ $cfg['MAX_SQL_PASS_LENGTH'] = 32;
 
 // the following variables are overriden via admin cp
 $cfg['DOMAIN_ROWS_PER_PAGE'] = 10;
-// 'admin' => hosting plans are available only in admin level, reseller can not make custom changes
+// 'admin' => hosting plans are available only in admin level, reseller cannot make custom changes
 // 'reseller' => hosting plans are available only in reseller level
 $cfg['HOSTING_PLANS_LEVEL'] = 'reseller';
 

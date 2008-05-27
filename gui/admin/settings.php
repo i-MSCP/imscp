@@ -117,12 +117,13 @@ if ($cfg['LOSTPASSWORD']) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected="selected"');
 }
-if ($cfg['PASSWD_CHARS']) {
-	$tpl->assign('{PASSWD_STRONG_ON}', 'selected="selected"');
-	$tpl->assign('{PASSWD_STRONG_OFF}', '');
+
+if ($cfg['PASSWD_STRONG']) {
+	$tpl->assign('PASSWD_STRONG_ON', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_OFF', '');
 } else {
-	$tpl->assign('{PASSWD_STRONG_ON}', '');
-	$tpl->assign('{PASSWD_STRONG_OFF}', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_ON', '');
+	$tpl->assign('PASSWD_STRONG_OFF', 'selected="selected"');
 }
 
 if ($cfg['BRUTEFORCE']) {

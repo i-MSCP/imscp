@@ -405,12 +405,12 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
     }
 
     if ($_POST['dmn_type'] === 'sub' && !isset($_POST['sub_id'])) {
-        set_page_message(tr('Subdomain list is empty! You can not add mail accounts!'));
+        set_page_message(tr('Subdomain list is empty! You cannot add mail accounts!'));
         return;
     }
 
     if ($_POST['dmn_type'] === 'als' && !isset($_POST['als_id'])) {
-        set_page_message(tr('Alias list is empty! You can not add mail accounts!'));
+        set_page_message(tr('Alias list is empty! You cannot add mail accounts!'));
         return;
     }
 

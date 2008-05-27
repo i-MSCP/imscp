@@ -27,7 +27,8 @@ function changeType(wath) {
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); begin_js();">
-<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<!-- BDP: logged_from -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
@@ -93,7 +94,7 @@ function changeType(wath) {
                           <td nowrap="nowrap">&nbsp;</td>
                           <td colspan="2" nowrap="nowrap" class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="80">{TR_AREA_NAME} </td>
+                                <td width="80">{TR_AREA_NAME}</td>
                                 <td><input name="paname" type="text" class="textinput" id="paname" style="width:170px" value="{AREA_NAME}"></td>
                               </tr>
                           </table></td>
@@ -114,13 +115,13 @@ function changeType(wath) {
                           <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
                           <td align="center" nowrap="nowrap" class="content"><select name="users[]" multiple="multiple" size="5" class="textinput2">
                               <!-- BDP: user_item -->
-                              <option value="{USER_VALUE}" {USER_SELECTED}>{USER_LEBEL}</option>
+                              <option value="{USER_VALUE}" {USER_SELECTED}>{USER_LABEL}</option>
                               <!-- EDP: user_item -->
                             </select>
                           </td>
                           <td align="center" nowrap="nowrap" class="content"><select name="groups[]" multiple="multiple" size="5" class="textinput2">
                               <!-- BDP: group_item -->
-                              <option value="{GROUP_VALUE}" {GROUP_SELECTED}>{GROUP_LEBEL}</option>
+                              <option value="{GROUP_VALUE}" {GROUP_SELECTED}>{GROUP_LABEL}</option>
                               <!-- EDP: group_item -->
                             </select>
                           </td>
