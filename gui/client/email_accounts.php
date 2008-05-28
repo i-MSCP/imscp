@@ -134,7 +134,7 @@ SQL_QUERY;
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br \>";
+				$mail_type .= user_trans_mail_type($type) . "<br />";
 			}
 
 			$tpl->assign(
@@ -214,7 +214,7 @@ SQL_QUERY;
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . '<br \>';
+				$mail_type .= user_trans_mail_type($type) . '<br />';
 			}
 
 
@@ -293,7 +293,7 @@ SQL_QUERY;
 			$mail_type = '';
 
  			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br \>";
+				$mail_type .= user_trans_mail_type($type) . "<br />";
 			}
 
 			$tpl->assign(

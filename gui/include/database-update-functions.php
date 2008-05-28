@@ -27,16 +27,15 @@
  **/
 
 /*
- * Select the current revision from the database and return it
+ * Get the current revision from the database and return it
  */
 function getCurrentRevision() {
 	global $sql;
 
-	$query = "SELECT * FROM `config` WHERE `name` = 'DATABASE_REVISION'";
- 	$rs = $sql->Execute($query);
-	$current_revision = (int)$rs->fields['value'];
+	$query	= "SELECT * FROM `config` WHERE `name` = 'DATABASE_REVISION'";
+ 	$rs		= $sql->Execute($query);
 
-	return $current_revision;
+	return (int)$rs->fields['value'];
 }
 
 /*
@@ -82,11 +81,16 @@ function returnFunctionName($revision) {
  */
 function executeDatabaseUpdates() {
 	global $sql;
+	$failedUpdate = false;
 
 	while(checkNewRevisionExists()) {
+		// Get the next database update revision
 		$newRevision 	= getNextRevision();
+		
+		// Get the needed function name
 		$functionName 	= returnFunctionName($newRevision);
 
+		// Create a empty array 
 		$queryArray 	= array();
 
 		// Pull the query from the update function
@@ -95,27 +99,29 @@ function executeDatabaseUpdates() {
 		// Query to set the new Database Revision
 		$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
 
+		// Start the Transaction
 		$sql->StartTrans();
 
+		// Execute every query in our queryarray
 		foreach($queryArray as $query) {
 			$sql->Execute($query);
 		}
 
 		// Prompt an error and break while-loop when an update fails
- 		if ($sql->HasFailedTrans()) {
- 			set_page_message(tr("Db update %s failed", $newRevision));
-			$sql->CompleteTrans();
-			unset($queryArray);
-			break;
-		} else {
-			$sql->CompleteTrans();
-			unset($queryArray);
- 		}
+ 		if ($sql->HasFailedTrans())			
+			$failedUpdate = true;
+		
+		// Complete the Transactin and rollback if nessessary
+		$sql->CompleteTrans();
+		
+		// Display an error if nessessary
+		if($failedUpdate)
+			system_message(tr("Database update %s failed", $newRevision));
 	}
 }
 
 /*
- * Insert the update functions below this entry please. The revision should be ascending.
+ * Insert the update functions below this entry please. The revision has to be ascending and unique.
  * Don't insert an update twice!
  */
 

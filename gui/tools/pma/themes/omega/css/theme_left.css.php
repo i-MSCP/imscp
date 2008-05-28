@@ -156,7 +156,7 @@ div#left_tableList ul {
     margin:             0;
     padding:            0;
     font-size:          80%;
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
 }
 
 div#left_tableList ul ul {
@@ -164,13 +164,13 @@ div#left_tableList ul ul {
 }
 
 div#left_tableList a {
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     text-decoration:    none;
 }
 
 div#left_tableList a:hover {
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     text-decoration:    underline;
 }
@@ -185,15 +185,15 @@ div#left_tableList li {
 /* marked items */
 div#left_tableList > ul li.marked > a,
 div#left_tableList > ul li.marked {
-    background: <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
-    color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
 }
 <?php } ?>
 
 <?php if ($GLOBALS['cfg']['LeftPointerEnable']) { ?>
 div#left_tableList > ul li:hover > a,
 div#left_tableList > ul li:hover {
-    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }
 <?php } ?>
@@ -216,6 +216,6 @@ div#left_tableList ul ul {
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
 }
 #serverinfo a:hover {
-    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    background-color:   <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }

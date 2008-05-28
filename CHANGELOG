@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-28 Jochen Manz
+	- GUI:
+		* Fixed #1303: some css fixes for pma and webmail themes, + fix IE exclusive comment handling in webmail - Part 8 (patch included)
+		* Fixed #1304: 'TR_USUALY_NAMED' => tr('(usually named ' . $name . ')') is not translateable
+		* Fixed #1306: gui/client/email_accounts.php produces wrong html code (patch included)
+
 2008-05-27 Malte Geierhos
 	- SETUP 
 		* Fixed #1269: Update doesn't set the new theme as default

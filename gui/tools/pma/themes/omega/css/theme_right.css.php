@@ -105,7 +105,7 @@ a img {
 
 hr {
     color: #333333;
-	background-color: #6666cc;
+	background-color:   #6666cc;
 	border: 0;
     height:             1px;
 }
@@ -177,7 +177,7 @@ a.drop:hover{
 }
 
 fieldset {
-    margin-top:         1em;
+    margin-top:          1em;
     border:     		 #cccccc solid 1px;
     padding:    		 0.5em;
 }
@@ -310,7 +310,7 @@ img.lightbulb {
 }
 
 .pdflayout_table {
-    background:         #ff9900;
+    background-color:   #ff9900;
     color:              #000000;
     overflow:           hidden;
     clip:               inherit;
@@ -529,18 +529,18 @@ fieldset.confirmation legend {
 }
 
 .tblHeaders {
-    font-weight:        bold;
-    color:              #ffffff;
+    font-weight:         bold;
+    color:               #ffffff;
     background-color:    #cccccc;
     background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
-    background-repeat:  repeat-x;
+    background-repeat:   repeat-x;
     background-position: top;
-    height:             18px;
+    height:              18px;
 }
 
 .tblFooters {
-    font-weight:        normal;
-    color:              #ffffff;
+    font-weight:         normal;
+    color:               #ffffff;
     background-color:    #cccccc;
     background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
     background-repeat:  repeat-x;
@@ -593,10 +593,10 @@ td.disabled {
 
 /* topmenu */
 ul#topmenu {
-    font-weight:        bold;
-    list-style-type:    none;
-    margin:             0;
-    padding:            0;
+    font-weight:         bold;
+    list-style-type:     none;
+    margin:              0;
+    padding:             0;
     background-color:    #cccccc;
 	background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
     background-repeat:   repeat-x;
@@ -605,16 +605,16 @@ ul#topmenu {
 }
 
 ul#topmenu li {
-    float:              left;
-    margin:             0;
-    padding:            0;
-    vertical-align:     middle;
+    float:               left;
+    margin:              0;
+    padding:             0;
+    vertical-align:      middle;
 	height: 			 24px;
 }
 
 #topmenu img {
-    vertical-align:     middle;
-    margin-right:       0.1em;
+    vertical-align:      middle;
+    margin-right:        0.1em;
 }
 
 /* default tab styles */
@@ -622,7 +622,7 @@ ul#topmenu li {
 	color:               #f4dc6b;
 	font-family:         Verdana, Arial, Helvetica, sans-serif;
 	padding:			 0;
-    white-space:        nowrap;
+    white-space:         nowrap;
 }
 
 /* disabled tabs */
@@ -670,16 +670,16 @@ a.tabcaution:hover {
 /* active tab */
 ul#topmenu li a.tabactive {
     color:              black;
-	padding: 			 4px 8px 8px 8px;
+	padding:            4px 8px 8px 8px;
 }
 <?php } else { ?>
 #topmenu {
-    padding: 0px;
-    padding-top:		 4px;
+    padding:            0px;
+    padding-top:        4px;
 }
 
 ul#topmenu li {
-    border-bottom: 0;
+    border-bottom:      0;
 }
 
 /* default tab styles */
@@ -757,7 +757,6 @@ a.tabactive {
     border-right: 		 1px solid #FFFFFF;
 	border-left: 		 1px solid #FFFFFF;
     margin-left: 		 -3px;
-	color:               #f4dc6b;
 }
 
 a.tabactive:hover {
@@ -1049,7 +1048,6 @@ div#serverstatus table .tblFooters a:after {
 body#bodyquerywindow {
     margin: 0;
     padding: 0;
-    background-image: none;
     background-color: #F5F5F5;
 }
 
@@ -1093,4 +1091,5 @@ div#queryboxcontainer div#bookmarkoptions {
     margin-top: 0.5em;
 }
 /* end querybox */
+
 

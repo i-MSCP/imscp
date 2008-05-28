@@ -1,24 +1,24 @@
 /* For printview */
-body{
+body {
     font-family:       Verdana, Arial, Helvetica, sans-serif;
     font-size:         10px;
     color:             #000000;
     background-color:  #ffffff;
 }
-h1{
+h1 {
     font-family:       Verdana, Arial, Helvetica, sans-serif;
     font-size:         16px;
     font-weight:       bold;
     color:             #000000;
 }
-table{
+table {
     border-width:      1px;
     border-color:      #000000;
     border-style:      solid;
     border-collapse:   collapse;
     border-spacing:    0;
 }
-th{
+th {
     font-family:       Verdana, Arial, Helvetica, sans-serif;
     font-size:         10px;
     font-weight:       bold;
@@ -29,7 +29,7 @@ th{
     border-style:      solid;
     padding:           2px;
 }
-td{
+td {
     font-family:       Verdana, Arial, Helvetica, sans-serif;
     font-size:         10px;
     color:             #000000;
