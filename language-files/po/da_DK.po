@@ -3743,6 +3743,27 @@ msgstr "ispCP - Forhandler : Support System: Se Biletter"
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt."
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Hoved Index"
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"

@@ -3746,6 +3746,27 @@ msgstr "ispCP - Revendeur : Système de support : Voir les Tickets"
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+
 #~ msgid ""
 #~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 #~ msgstr ""

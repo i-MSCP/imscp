@@ -3904,6 +3904,27 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Hlavný zoznam"
 

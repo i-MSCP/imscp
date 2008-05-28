@@ -3743,3 +3743,24 @@ msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
 msgid "Message was sent."
 msgstr "Meldingen ble sendt."
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+

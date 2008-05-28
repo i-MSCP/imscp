@@ -3715,6 +3715,27 @@ msgstr "ispCP - Риселър : Служба Поддръжка: Преглед
 msgid "Message was sent."
 msgstr "съобщението беше изпратено."
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(име по подразбиране backup_YYYY_MM_DD.tar.bz2)"
 #~ msgid "Order in progress"

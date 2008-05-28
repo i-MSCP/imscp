@@ -2055,7 +2055,7 @@ msgid "Restore backup"
 msgstr "Backup einspielen"
 
 msgid "Click the Restore button and the system will restore the last daily backup"
-msgstr "Klicken Sie auf wiederherstellen und das System spielt das letzte Backup ein."
+msgstr "Klicken Sie auf Wiederherstellen und das System spielt das letzte Backup ein."
 
 msgid "Restore"
 msgstr "Wiederherstellen"
@@ -3864,3 +3864,23 @@ msgstr "ispCP - Reseller: Supportsystem: Tickets anzeigen"
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
 
+msgid "Password settings"
+msgstr "Passworteinstellungen"
+
+msgid "Password length"
+msgstr "Passwortlänge"
+
+msgid "Use strong Passwords"
+msgstr "Nutze starkes Passwort"
+
+msgid "E-Mail settings"
+msgstr "E-Mail-Einstellungen"
+
+msgid "Create default E-Mail addresses"
+msgstr "Erstelle Standard-E-Mail-Adresse"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "E-Mail-Adressen fest sperren"
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr "Es ist nicht möglich das Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie ihren Administrator!"

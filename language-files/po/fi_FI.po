@@ -3821,6 +3821,27 @@ msgstr "ispCP - J�lleenmyyj� : Tukij�rjestelm�: Lue kysymyksi�"
 msgid "Message was sent."
 msgstr "Viesti on l�hetetty."
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Yll�pito / P��sivu"
 
