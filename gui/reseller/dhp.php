@@ -33,7 +33,7 @@ else {
 }
 
 // Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(id) FROM orders WHERE plan_id=?", array($hpid));
+$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
 $data = $res->FetchRow();
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';

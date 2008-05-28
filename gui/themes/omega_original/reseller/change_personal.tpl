@@ -75,12 +75,12 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_STREET_1}</td>
-                        <td class="content"><input type="text" name="street1" value="{STREET1}" style="width:210px" class="textinput"></td>
+                        <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_STREET_2}</td>
-                        <td class="content"><input type="text" name="street2" value="{STREET2}" style="width:210px" class="textinput"></td>
+                        <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

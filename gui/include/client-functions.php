@@ -829,11 +829,9 @@ SQL_QUERY;
 		}
 	}
 	// drop desired database;
-	$query = <<<SQL_QUERY
-        DROP DATABASE ?;
-SQL_QUERY;
+	$query = "DROP DATABASE IF EXISTS ".$db_name.";";
 
-	$rs = exec_query($sql, $query, array($db_name));
+	$rs = exec_query($sql, $query, array());
 
 	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
 	// delete desired database from the ispcp sql_database table;

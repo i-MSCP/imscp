@@ -166,7 +166,7 @@ function MM_swapImage() { //v3.0
           <tr>
             <td class="content3" colspan="2" nowrap="nowrap"><b>{TR_SUB_NAME}</b></td>
             <td class="content3" nowrap="nowrap"><b>{TR_SUB_MOUNT}</b></td>
-            <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_S="nowrap"TATUS}</b></td>
+            <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_STATUS}</b></td>
             <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_ACTION}</b></td>
           </tr>
           <!-- BDP: sub_item -->

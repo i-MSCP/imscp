@@ -164,6 +164,14 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td class="content2">{TR_HOSTING_PLANS_LEVEL}</td>
+                              <td class="content"><select name="hosting_plan_level" id="hosting_plan_level">
+                                  <option value="admin" {HOSTING_PLANS_LEVEL_ADMIN}>{TR_ADMIN}</option>
+                                  <option value="reseller" {HOSTING_PLANS_LEVEL_RESELLER}>{TR_RESELLER}</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td class="content2">{TR_DOMAIN_ROWS_PER_PAGE}</td>
                               <td class="content"><input name="domain_rows_per_page" type="text" class="textinput" id="domain_rows_per_page" style="width:50px" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" /></td>
                             </tr>

@@ -273,7 +273,7 @@ $tpl->assign(
 		'TR_ACTION' => tr('Action'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_ADD' => tr('Add'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true)
 		)
 	);
 

@@ -34,7 +34,7 @@ function delete_account(url) {
 				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td align="left" class="title"><table width="100%" cellpadding="5" cellspacing="5">
+                      <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
                             <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_serverstatus.png" width="25" height="25"></td>
                             <td colspan="2" class="title">{TR_HOSTING_PLANS}</td>

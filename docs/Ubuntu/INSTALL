@@ -35,6 +35,7 @@ Debian (or even any other *NIX-Distribution)
 All 6.06 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-edgy
 All 7.04 required packages are listed in ./docs/Ubuntu/ubuntu-packages-feisty
 All 7.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-gutsy
+All 8.04 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-hardy
 
 ================================================================================
 3) Introduction
@@ -66,11 +67,13 @@ Make sure you are logged in as root and MySQL is running.
 	# apt-get update && apt-get upgrade
 
    for Ubuntu 6.06 LTS please use:
-	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-edgy`
+	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
    for Ubuntu 7.04 please use:
-   	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-feisty
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
    for Ubuntu 7.10 please use:
-   	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-gutsy`
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
+   for Ubuntu 8.04 please use:
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
 
 	(when you get to the courier screen select 'no' to web directories)
 	(when you get to the postfix screen select 'internet site' and then type 'root'
@@ -131,11 +134,13 @@ Make sure you are logged in as root and MySQL is running.
 	# apt-get update && apt-get upgrade
 
    for Ubuntu 6.06 LTS please use:
-	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-edgy`
+	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
    for Ubuntu 7.04 please use:
-   	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-feisty
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
    for Ubuntu 7.10 please use:
-   	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-gutsy`
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
+   for Ubuntu 8.04 please use:
+   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
 
 	(when you get to the courier screen select 'no' to web directories)
 	(when you get to the postfix screen select 'internet site' and then type 'root'

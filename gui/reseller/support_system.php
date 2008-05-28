@@ -273,7 +273,7 @@ $tpl->assign(
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
 		)
 	);
 

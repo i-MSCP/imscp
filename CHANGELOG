@@ -1,14 +1,29 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-28 Benedikt Heintel
+	- DOCS:
+		* Changed Debian INSTALL
+		* Changed Ubuntu INSTALL
+		* Updated Debian packages for Lenny
+		* Updated Ubuntu packages for Hardy Heron
+	- GUI:
+		* Fixed #1305: some german language updates and typo
+		* Fixed #1307: in reseller/change_personal.php {STREET1} and {STREET2} are not set correctly
+		* Fixed #1308: some umlauf fixes
+		* Fixed #1310: error in manage_domains.tpl
+		* Fixed #1311: error in client-functions.php
+		* Added: Hosting plan level selectable from admin configuration
+		* Updated reseller Main Menu
+
 2008-05-28 Jochen Manz
 	- GUI:
 		* Fixed #1303: some css fixes for pma and webmail themes, + fix IE exclusive comment handling in webmail - Part 8 (patch included)
 		* Fixed #1304: 'TR_USUALY_NAMED' => tr('(usually named ' . $name . ')') is not translateable
-		* Fixed #1306: gui/client/email_accounts.php produces wrong html code (patch included)
+		* Fixed #1306: gui/client/email_accounts.php produces wrong html code
 
 2008-05-27 Malte Geierhos
-	- SETUP 
+	- SETUP
 		* Fixed #1269: Update doesn't set the new theme as default
 
 2008-05-27 Benedikt Heintel
@@ -26,7 +41,7 @@ ispCP ω 1.0.0 Changelog
 2008-05-25 Jochen Manz
 	- GUI:
 		* Fixed #1288: Some HTML, CSS and JS fixes/polishes - Part 5
-		* Fixed #1290: some widespread html fixes - Part 6 (patch included)
+		* Fixed #1290: some widespread html fixes - Part 6
 
 2008-05-24 Jochen Manz
 	- GUI:
