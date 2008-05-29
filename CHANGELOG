@@ -1,5 +1,11 @@
 ispCP ω 1.0.0 Changelog
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2008-05-30 Benedikt Heintel
+	- GUI:
+		* Fixed #1317: updated language files
+		* Fixed #1318: tiny typo in client/ftp_choose_dir.php translation string
+		* Fixed #1319: some more german translation updates, especially for the emails
 
 2008-05-29 Jochen Manz
 	- GUI:

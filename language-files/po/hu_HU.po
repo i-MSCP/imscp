@@ -3722,10 +3722,11 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Kezdõlap"
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(rendszerint elnevezve: domain-backup-ÉÉÉÉ.HH.NN-ÓÓPPMM.tar.bz2)"
 #~ msgid "Max domain count"
 #~ msgstr "Max domain szám"
 #~ msgid "Max subdomain count"

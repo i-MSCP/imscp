@@ -3933,6 +3933,9 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid ""
 #~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 #~ msgstr ""
@@ -3945,9 +3948,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Hay un conflicto con el administrador / revendedor que has de solucionar "
 #~ "primero!"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "<i>(generalmente llamado backup_AAA_MM_DD.tar)<i>"
 
 #~ msgid "Domains limit"
 #~ msgstr "Límite de dominios"

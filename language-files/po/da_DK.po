@@ -3767,10 +3767,11 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Hoved Index"
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
 #~ msgid "Max domain count"
 #~ msgstr "Max domæneantal"
 #~ msgid "Max subdomain count"

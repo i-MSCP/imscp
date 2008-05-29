@@ -3928,14 +3928,14 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Hlavný zoznam"
 
 #~ msgid "There's a conflicting admin / reseller fix that first!"
 #~ msgstr "Je tu konfliktný administrátor / predajca najprv to oprav !"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(zvyčajne pomenované ako backuo_YYYY_MM_DD.tar.bz2)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Limit domén"

@@ -3845,11 +3845,11 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Yll�pito / P��sivu"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(nimetty yleens� backup_YYYY_MM_DD.tar.bz2)"
 
 #~ msgid "Max domain count"
 #~ msgstr "Max domainien m��r�"

@@ -3784,8 +3784,8 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(örn. yedek_YIL_AY_GUN.tar.bz2)"
+msgid "URL to this admin panel"
+msgstr ""
 
 #, fuzzy
 #~ msgid "Order in progress"

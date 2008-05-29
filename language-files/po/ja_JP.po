@@ -3831,11 +3831,11 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - 管理者/メイン インデックス"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(backup_YYYY_MM_DD.tar.bz2の形で保存されます)"
 
 #~ msgid "Max domain count"
 #~ msgstr "最大ドメイン数"

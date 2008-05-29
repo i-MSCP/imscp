@@ -3848,6 +3848,9 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #, fuzzy
 #~ msgid ""
 #~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
@@ -3857,9 +3860,6 @@ msgstr ""
 
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Virtual Hosting Control System"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(meestal backup_YYY_MM_DD.tar genaamd)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Domeinen limiet"

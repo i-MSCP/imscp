@@ -3766,3 +3766,6 @@ msgstr ""
 
 msgid "Hosting plans available for"
 msgstr ""
+
+msgid "URL to this admin panel"
+msgstr ""

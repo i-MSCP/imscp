@@ -3744,6 +3744,9 @@ msgstr ""
 msgid "Hosting plans available for"
 msgstr ""
 
+msgid "URL to this admin panel"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
