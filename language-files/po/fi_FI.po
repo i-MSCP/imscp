@@ -3842,6 +3842,9 @@ msgstr ""
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Yll�pito / P��sivu"
 

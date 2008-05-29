@@ -1013,7 +1013,7 @@ msgid "No subdomain system errors"
 msgstr "Keine Fehler im Subdomain-System"
 
 msgid "No email account system errors"
-msgstr "Keine Fehler im E-Mail Konten-System"
+msgstr "Keine Fehler im E-Mail-Konten-System"
 
 msgid "ispCP debugger"
 msgstr "ispCP Debugger"
@@ -1122,7 +1122,7 @@ msgid "Layout"
 msgstr "Layout"
 
 msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Admin/Kennwort vergessen E-Mail Einstellungen'"
+msgstr "ispCP - Admin/Kennwort vergessen E-Mail-Einstellungen'"
 
 msgid "Lost password e-mail"
 msgstr "\"Passwort vergessen\"-E-Mail"
@@ -1900,7 +1900,7 @@ msgid "Choose dir"
 msgstr "Verzeichnis auswählen"
 
 msgid "Invalid Mail Localpart Format used!"
-msgstr "Ungültiges Mail Localpart Format used!"
+msgstr "Ungültiges Mail Localpart Format benutzt!"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
@@ -2220,7 +2220,7 @@ msgstr "SQL-Datenbank wurde erfolgreich gelöscht!"
 
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
-"Es sind dieser Subdomain noch E-Mail Konten zugeordnet.<br>Löschen Sie diese "
+"Es sind dieser Subdomain noch E-Mail-Konten zugeordnet.<br>Löschen Sie diese "
 "zuerst!"
 
 msgid "Subdomain scheduled for deletion!"
@@ -3884,3 +3884,6 @@ msgstr "E-Mail-Adressen fest sperren"
 
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Es ist nicht möglich das Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie ihren Administrator!"
+
+msgid "Hosting plans available for"
+msgstr "Tarife verfügbar für"

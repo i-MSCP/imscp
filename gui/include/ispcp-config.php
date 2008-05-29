@@ -32,12 +32,12 @@ if ($cfg_obj->status != 'ok') {
 	if ($cfg_obj->status == 'err') {
 		// cannot open ispcp.conf file - we must show warning
 		print
-		die("<center><b><font color=red>Cannot open the ispcp.conf config file!<br />Please contact your system administrator</font></b></center>");
+		die("<div align=\"center\"><b><span style=\"color:red;\">Cannot open the ispcp.conf config file!<br />Please contact your system administrator</span></b></div>");
 	}
 
 	if (substr($cfg_obj->status, 0, 24) == 'missing config variable:') {
 		// cannot open ispcp.conf file - we must show warning
-		die("<center><b><font color=red>Config variable " . substr($cfg_obj->status, 25) . " is missing!<br />Please contact your system administrator</font></b></center>");
+		die("<div align=\"center\"><b><span style=\"color:red;\">Config variable " . substr($cfg_obj->status, 25) . " is missing!<br />Please contact your system administrator</span></b></div>");
 	}
 }
 

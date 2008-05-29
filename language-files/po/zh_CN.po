@@ -3761,3 +3761,6 @@ msgstr ""
 
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
+
+msgid "Hosting plans available for"
+msgstr ""

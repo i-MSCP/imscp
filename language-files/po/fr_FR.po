@@ -3767,6 +3767,9 @@ msgstr ""
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
 #~ msgid ""
 #~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 #~ msgstr ""

@@ -2259,7 +2259,7 @@ SQL_QUERY;
   <title>{$title}</title>
  </head>
  <body>
-  <center>
+  <div align="center">
    <table width="100%" height="95%">
     <tr align="center">
      <td align="center">
@@ -2269,7 +2269,7 @@ RIC;
      </td>
     </tr>
    </table>
-  </center>
+  </div>
  </body>
 </html>
 RIC;

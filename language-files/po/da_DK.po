@@ -3764,6 +3764,9 @@ msgstr ""
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr "ispCP - Admin/Hoved Index"
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"

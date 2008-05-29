@@ -3750,6 +3750,9 @@ msgstr ""
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"

@@ -3803,6 +3803,9 @@ msgstr ""
 msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(de obicei denumit backup_YYYY_MM_DD.tar.bz2)"
 
