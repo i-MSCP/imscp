@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-29
+	- GUI:
+		*Fixed #1271: MAIL ALIAS (forward adress) MALFUNCTIONS
+
 2008-05-29 Benedikt Heintel
 	- GUI:
 		* Fixed #1313: valid HTML fixes; updated german translation; added translation string "Hosting plans available for"

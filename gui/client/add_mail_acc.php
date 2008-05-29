@@ -319,12 +319,10 @@ SQL_QUERY;
 				AND
 				`domain_id` = ?
 				AND
-				`mail_type` = ?
-				AND
 				`sub_id` = ?
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
+    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id));
     }
 
     if ($rs->fields['cnt'] > 0) {
