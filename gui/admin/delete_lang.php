@@ -22,12 +22,11 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* do we have a proper delete_id ? */
+/* do we have a proper delete_id? */
 global $cfg;
 
 if (!isset($_GET['delete_lang'])) {
 	header("Location: multilanguage.php");
-
 	die();
 }
 
@@ -35,7 +34,6 @@ $delete_lang = $_GET['delete_lang'];
 
 if ($delete_lang == $cfg['USER_INITIAL_LANG']) {
 	/* ERR - we have domain that use this ip */
-
 	set_page_message('Error we can\'t delete system default language!');
 
 	header("Location: multilanguage.php");
@@ -44,11 +42,11 @@ if ($delete_lang == $cfg['USER_INITIAL_LANG']) {
 
 /* check if some one still use that lang */
 $query = <<<SQL_QUERY
-    select
+    SELECT
         *
-    from
+    FROM
          user_gui_props
-    where
+    WHERE
         lang = ?
 SQL_QUERY;
 
@@ -63,7 +61,7 @@ if ($rs->RecordCount () > 0) {
 }
 
 $query = <<<SQL_QUERY
-    drop table $delete_lang
+    DROP TABLE $delete_lang
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array());
@@ -77,7 +75,7 @@ if( $exstatus != 0) {
     die();
 }
 */
-write_log("$admin_login: removes language $delete_lang!");
+write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_lang));
 
 set_page_message('Language was removed!');
 

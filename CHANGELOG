@@ -6,6 +6,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1313: valid HTML fixes; updated german translation; added translation string "Hosting plans available for"
 		* Fixed #1314: in admin|reseller/lostpassword.php the variable {BASE_SERVER_VHOST} is not listed in the legend
 		* Fixed #1315: tiny fix for whitespace in backup.php|.tpl
+		* Fixed #1316: empty variables for log
 
 2008-05-28 Benedikt Heintel
 	- DOCS:

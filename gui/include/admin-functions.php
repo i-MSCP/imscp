@@ -2236,7 +2236,6 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 				orders_settings
 			WHERE
 				user_id = ?
-
 SQL_QUERY;
 
 	if (isset($_SESSION['user_theme'])) {
@@ -2346,7 +2345,7 @@ SQL_QUERY;
 	}
 
 	// Prepare and send mail
-	$search = array();
+	$search  = array();
 	$replace = array();
 
 	$search [] = '{SUBJ}';
@@ -2367,7 +2366,7 @@ SQL_QUERY;
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
+	write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!", $_SESSION['user_logged'], $to, $from, $mail_status));
 }
 
 function setConfig_Value($name, $value) {
