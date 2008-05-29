@@ -87,6 +87,8 @@ $tpl->assign(
 			'TR_SENDER_EMAIL' => tr('Senders email'),
 			'TR_SENDER_NAME' => tr('Senders name'),
 			'TR_APPLY_CHANGES' => tr('Apply changes'),
+			'TR_USERTYPE' => tr('Benutzertyp (admin, reseller, user)'),
+			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 			'SUBJECT_VALUE' => $data['subject'],
 			'MESSAGE_VALUE' => $data['message'],
 			'SENDER_EMAIL_VALUE' => $data['sender_email'],

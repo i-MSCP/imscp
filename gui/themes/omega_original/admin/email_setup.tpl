@@ -55,6 +55,16 @@
                               <td class="content2">{TR_USER_REAL_NAME}</td>
                               <td class="content">{NAME}</td>
                             </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td class="content2">{TR_USERTYPE}</td>
+                              <td class="content">{USERTYPE}</td>
+                            </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td class="content2">{TR_BASE_SERVER_VHOST}</td>
+                              <td class="content">{BASE_SERVER_VHOST}</td>
+                            </tr>
                           </table>
                         <br>
                           <table width="100%" cellpadding="5" cellspacing="5">

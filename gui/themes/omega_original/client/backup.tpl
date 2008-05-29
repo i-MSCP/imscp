@@ -57,8 +57,7 @@
                         <td class="content"><ol>
                               <li>{TR_FTP_LOG_ON}</li>
                               <li>{TR_SWITCH_TO_BACKUP}</li>
-                              <li>{TR_DOWNLOAD_FILE}<br />
-                                {TR_USUALY_NAMED}</li>
+                              <li>{TR_DOWNLOAD_FILE}<br />{TR_USUALY_NAMED}</li>
                             </ol></td>
                       </tr>
                       <tr>
