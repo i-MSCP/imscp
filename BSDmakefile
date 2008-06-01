@@ -30,6 +30,11 @@
 #    http://isp-control.net
 #
 
+# This is a TODO list:
+# CLOSE:	there is no /etc/cron.d/ispcp is freebsd
+# CLOSE: 	wrong path and format awstats cronjob
+# OPEN:		scoreboard dir not created
+# OPEN:		Under jail, system still in heavy testing
 
 .ifdef $(OSTYPE)==FreeBSD
 .include <Makefile.fbsd>

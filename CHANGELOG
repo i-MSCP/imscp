@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-01 Benedikt Heintel
+	- LANGUAGES:
+		* Fixed #1322: (german) updated german language file
+	- DISTS:
+		* Fixed #1324: (freebsd) fix freebsd awstats and cronjob
+
 2008-05-29 Jochen Manz
 	- GUI:
 		* Fixed #1323: some better web accessability - (Part 2); removed doubled javascript code

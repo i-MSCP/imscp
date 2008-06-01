@@ -274,7 +274,7 @@ msgid "SSI"
 msgstr "SSI"
 
 msgid "Frontpage extensions"
-msgstr "Frontpage-Erweiterung"
+msgstr "Frontpage-Erweiterungen"
 
 msgid "Backup and restore"
 msgstr "Datensicherung und Wiederherstellung"
@@ -320,7 +320,7 @@ msgstr "Das Protokoll ist leer!"
 
 #, php-format
 msgid "%s deleted the full admin log!"
-msgstr "%s hat die gesamte Admin-Logdatei gelöscht!"
+msgstr "%s hat das gesamte Admin-Protokoll gelöscht!"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
@@ -601,7 +601,7 @@ msgid "Edit button"
 msgstr "Menüpunkt bearbeiten"
 
 msgid "Database updates"
-msgstr "Datenbankupdates"
+msgstr "ispCP-Datenbankupdates"
 
 msgid "Available database updates"
 msgstr "Verfügbare Datenbankupdates"
@@ -928,7 +928,7 @@ msgid "Add new user hosting plan"
 msgstr "Neuen Tarif anlegen"
 
 msgid "Return to previous menu"
-msgstr "Zurück vorherigen Menü"
+msgstr "Zurück zum vorherigen Menü"
 
 msgid "Hosting plan added!"
 msgstr "Tarif hinzugefügt!"
@@ -1016,7 +1016,7 @@ msgid "No email account system errors"
 msgstr "Keine Fehler im E-Mail-Konten-System"
 
 msgid "ispCP debugger"
-msgstr "ispCP Debugger"
+msgstr "ispCP-Debugger"
 
 msgid "Domain errors"
 msgstr "Domainfehler"
@@ -1059,10 +1059,10 @@ msgid "Get it at"
 msgstr "Download von"
 
 msgid "ispCP updates"
-msgstr "ispCP Updates"
+msgstr "ispCP-Updates"
 
 msgid "Available ispCP updates"
-msgstr "Verfügbare ispCP Updates"
+msgstr "Verfügbare ispCP-Updates"
 
 msgid "No new ispCP updates available"
 msgstr "Keine neuen ispCP-Updates verfügbar"
@@ -1122,7 +1122,7 @@ msgid "Layout"
 msgstr "Layout"
 
 msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Admin/Kennwort vergessen E-Mail-Einstellungen'"
+msgstr "ispCP - Admin/\"Kennwort vergessen\"-E-Mail-Einstellungen'"
 
 msgid "Lost password e-mail"
 msgstr "\"Passwort vergessen\"-E-Mail"
@@ -1435,7 +1435,7 @@ msgid "SQL<br>user"
 msgstr "SQL-Benutzer"
 
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "ispCP Admin / Systemtools / Anti-Rootkits-Tools-Logchecker"
+msgstr "ispCP Admin / Systemtools / Anti-Rootkit-Tools-Logchecker"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -1729,7 +1729,7 @@ msgid "Filesystem system Info"
 msgstr "Dateisystem-Informationen"
 
 msgid "Mount"
-msgstr "Mountpunkt"
+msgstr "Einhängepunkt"
 
 msgid "Type"
 msgstr "Typ"
@@ -1815,7 +1815,7 @@ msgid "Domain with that name already exists on the system!"
 msgstr "Eine gleichnamige Domain existiert bereits im System!"
 
 msgid "Incorrect mount point syntax"
-msgstr "Ungültige Schreibweise des Mountpunkts"
+msgstr "Ungültige Schreibweise des Einhängepunkts"
 
 msgid "Master domain cannot be used!"
 msgstr "Die Hauptdomain kann nicht verwendet werden!"
@@ -1848,7 +1848,7 @@ msgid "Unknown domain type"
 msgstr "Unbekannter Domaintyp"
 
 msgid "Incorrect mount point length or syntax"
-msgstr "Ungültige Länge oder Schreibweise des Mountpunkts"
+msgstr "Ungültige Länge oder Schreibweise des Einhängepunkts"
 
 #, php-format
 msgid "%s does not exist"
@@ -1900,7 +1900,7 @@ msgid "Choose dir"
 msgstr "Verzeichnis auswählen"
 
 msgid "Invalid Mail Localpart Format used!"
-msgstr "Ungültiges Mail Localpart Format benutzt!"
+msgstr "Ungültiges Mail-local-part-Format benutzt!"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
@@ -1958,7 +1958,7 @@ msgid "Please type database name!"
 msgstr "Bitte geben Sie einen Datenbanknamen ein!"
 
 msgid "Database name is too long!"
-msgstr "Datenbankname ist zu lang!"
+msgstr "Der Datenbankname ist zu lang!"
 
 msgid "Specified database name already exists!"
 msgstr "Der eingegebene Datenbankname existiert bereits!"
@@ -2022,7 +2022,7 @@ msgid "Subdomain name"
 msgstr "Subdomainname"
 
 msgid "Directory tree mount point"
-msgstr "Zielverzeichnis (Mountpunkt)"
+msgstr "Zielverzeichnis (Einhängepunkt)"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Datensicherungsarchiv ist für die Wiederherstellung geplant!"
@@ -2220,7 +2220,7 @@ msgstr "SQL-Datenbank wurde erfolgreich gelöscht!"
 
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
-"Es sind dieser Subdomain noch E-Mail-Konten zugeordnet.<br>Löschen Sie diese "
+"Dieser Subdomain sind noch E-Mail-Konten zugeordnet.<br>Löschen Sie diese "
 "zuerst!"
 
 msgid "Subdomain scheduled for deletion!"
@@ -2451,7 +2451,7 @@ msgid "Manage domains"
 msgstr "Domainverwaltung"
 
 msgid "Mount point"
-msgstr "Mountpunkt"
+msgstr "Einhängepunkt"
 
 msgid "Forward"
 msgstr "Weiterleiten"
@@ -2828,7 +2828,7 @@ msgid "Access your files through the web interface"
 msgstr "Verwalten Sie Ihre Dateien mit dem webbasierten Dateimanager"
 
 msgid "Access your Awstats statistics"
-msgstr "AWStats Statistik öffnen"
+msgstr "AWStats-Statistik öffnen"
 
 msgid "Manage protected areas, users and groups"
 msgstr "Geschützte Verzeichnisse, Benutzer und Gruppen verwalten"
@@ -2849,7 +2849,7 @@ msgid "Logout"
 msgstr "Abmelden"
 
 msgid "ispCP database updates"
-msgstr "ispCP Datenbank-Updates"
+msgstr "ispCP-Datenbankupdates"
 
 msgid "Custom menus"
 msgstr "Eigene Menüpunkte"
@@ -3030,7 +3030,7 @@ msgid "Unknown type"
 msgstr "Unbekannter Typ"
 
 msgid "Welcome {USERNAME} to ispCP!"
-msgstr "Willkommen neuer ispCP-Benutzer {USERNAME}!"
+msgstr "Willkommen {USERNAME} auf ispCP!"
 
 msgid ""
 "\n"
@@ -3154,7 +3154,7 @@ msgstr ""
 "\n"
 
 msgid "New alias order for {CUSTOMER}!"
-msgstr "Neue Alias Bestellung von {CUSTOMER}!"
+msgstr "Neue Alias-Bestellung von {CUSTOMER}!"
 
 msgid ""
 "\n"
@@ -3217,7 +3217,7 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr "%ss Kontostatus ist nicht ok!"
+msgstr "%ss Kontostatus ist nicht OK!"
 
 msgid "You entered an incorrect password."
 msgstr "Sie haben ein falsches Passwort eingegeben."
@@ -3336,7 +3336,7 @@ msgid ""
 "You have disabled SQL databases for this user!<br>You can not have SQL users "
 "here!"
 msgstr ""
-"Sie haben SQL Datenbanken für diesen Benutzer deaktiviert!<br>Sie können "
+"Sie haben SQL-Datenbanken für diesen Benutzer deaktiviert!<br>Sie können "
 "keine SQL-Benutzer anlegen!"
 
 msgid "You are exceeding your SQL database limit!"
@@ -3591,7 +3591,7 @@ msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max. Anzahl SQL-Benutzer<br /><i>(-1 deaktiviert, 0 unbegrenzt)</i>"
 
 msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Transfervolumen (Traffic) [MB]<br /><i>(0 unbegrenztt)</i>"
+msgstr "Transfervolumen (Traffic) [MB]<br /><i>(0 unbegrenzt)</i>"
 
 msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
 msgstr "Speicherplatz [MB]<br /><i>(0 unbegrenzt)</i>"
@@ -3664,7 +3664,7 @@ msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Reseller/Hauptmenü"
 
 msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Tarif kann nicht gelöscht werden, es exisitieren Bestellungen!"
+msgstr "Tarif kann nicht gelöscht werden, es existieren noch Bestellungen!"
 
 msgid "View details"
 msgstr "Details anzeigen"
@@ -3877,7 +3877,7 @@ msgid "E-Mail settings"
 msgstr "E-Mail-Einstellungen"
 
 msgid "Create default E-Mail addresses"
-msgstr "Erstelle Standard-E-Mail-Adresse"
+msgstr "Erstelle Standard-E-Mail-Adressen"
 
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail-Adressen fest sperren"
