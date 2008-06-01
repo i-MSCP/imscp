@@ -59,7 +59,7 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_ALIAS_NAME}</td>
-                        <td class="content">{ALIAS_NAME} </td>
+                        <td class="content">{ALIAS_NAME}</td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -77,7 +77,7 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">
-						 {TR_FORWARD} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
+						 <label for="forward">{TR_FORWARD}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
 						</td>
                         <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}"></td>
                       </tr>

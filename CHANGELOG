@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-29 Jochen Manz
+	- GUI:
+		* Fixed #1323: some better web accessability - (Part 2); removed doubled javascript code
+		* Fixed #1321: tiny layout fix for some khtml/webkit based browsers
+
 2008-05-30 Benedikt Heintel
 	- GUI:
 		* Fixed #1317: updated language files

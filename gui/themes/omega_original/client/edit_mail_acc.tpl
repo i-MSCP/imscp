@@ -87,28 +87,28 @@
               <!-- BDP: normal_mail -->
               <table width="100%" cellpadding="5" cellspacing="5">
                <tr>
-                <td width="200" class="content2">{TR_PASSWORD}</td>
+                <td width="200" class="content2"><label for="pass">{TR_PASSWORD}</label></td>
                 <td class="content">
-                 <input type="password" name="pass" value="" style="width:210px" class="textinput">
+                 <input type="password" name="pass" id="pass" value="" style="width:210px" class="textinput">
                 </td>
                </tr>
                <tr>
-                <td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
+                <td width="200" class="content2"><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
                 <td class="content">
-                 <input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
+                 <input type="password" name="pass_rep" id="pass_rep" value="" style="width:210px" class="textinput">
                 </td>
                </tr>
                <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
-                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');">{TR_FORWARD_MAIL}
+                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');"><label for="mail_forward">{TR_FORWARD_MAIL}</label>
                 </td>
                </tr>
                <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
+                 <label for="forward_list">{TR_FORWARD_TO}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
                 </td>
                 <td nowrap="nowrap" class="content">
-                 <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
+                 <textarea name="forward_list" id="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
                 </td>
                </tr>
               </table>

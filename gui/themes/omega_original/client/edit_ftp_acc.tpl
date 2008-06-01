@@ -37,7 +37,6 @@ function MM_jumpMenu(targ,selObj,restore) { //v3.0
 
 function OpenTree() {
   libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-
 }
 //-->
 </script>
@@ -91,13 +90,13 @@ function OpenTree() {
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200">{TR_PASSWORD}</td>
-                              <td nowrap="nowrap" class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content2" width="200"><label for="pass">{TR_PASSWORD}</label></td>
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass" id="pass" value="" style="width:170px" class="textinput">
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
-                              <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content2" width="200"><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" id="pass_rep" value="" style="width:170px" class="textinput">
                               </td>
                             </tr>
                             <tr>
@@ -122,8 +121,7 @@ function OpenTree() {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

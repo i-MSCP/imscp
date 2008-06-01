@@ -14,52 +14,6 @@ function makeUser(){
 	subname = subname.toLowerCase();
 	document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
 }
-
-function MM_preloadImages() { //v3.0
-	var d=document;
-	if(d.images){
-  	if(!d.MM_p) d.MM_p=new Array();
-    var i,j=d.MM_p.length,a=MM_preloadImages.arguments;
-		for(i=0; i<a.length; i++)
-		    if (a[i].indexOf("#")!=0) {
-				d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];
-			}
-	}
-}
-
-function MM_swapImgRestore() { //v3.0
-	var i,x,a=document.MM_sr;
-	for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++)
-		x.src=x.oSrc;
-}
-
-function MM_findObj(n, d) { //v4.01
-  	var p,i,x;
-  	if(!d) d=document;
-  		if((p=n.indexOf("?"))>0&&parent.frames.length) {
-    		d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);
-		}
-  	if(!(x=d[n])&&d.all)
-  		x=d.all[n];
- 	for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  	for(i=0;!x&&d.layers&&i<d.layers.length;i++)
-		x=MM_findObj(n,d.layers[i].document);
-  	if(!x && d.getElementById)
-		x=d.getElementById(n);
-	return x;
-}
-
-function MM_swapImage() { //v3.0
-  	var i,j=0,x,a=MM_swapImage.arguments;
-  	document.MM_sr=new Array;
-	for(i=0;i<(a.length-2);i+=3)
-   	if ((x=MM_findObj(a[i]))!=null) {
-		document.MM_sr[j++]=x;
-		if(!x.oSrc)
-			x.oSrc=x.src;
-		x.src=a[i+2];
-	}
-}
 //-->
 </script>
 </head>
@@ -111,14 +65,14 @@ function MM_swapImage() { //v3.0
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="250" class="content2">
-							   {TR_SUBDOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
+							   <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
-                              <td class="content"><input type="text" name="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
+                              <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
                                 {DOMAIN_NAME}</td>
                             </tr>
                             <tr>
-                              <td width="250" class="content2">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</td>
-                              <td class="content"><input type="text" name="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput"></td>
+                              <td width="250" class="content2"><label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label></td>
+                              <td class="content"><input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput"></td>
                             </tr>
                             <tr>
                               <td colspan="2">&nbsp;</td>
@@ -127,8 +81,7 @@ function MM_swapImage() { //v3.0
                               <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_ADD}">
                                   <input type="hidden" name="uaction" value="add_subd"></td>
                             </tr>
-                          </table>
-                      </form></td>
+                          </table></form></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

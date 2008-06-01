@@ -6,8 +6,8 @@ function sbmt(form, uaction) {
     return false;
 }
 
-function changeColor(aaa,color){
-                aaa.style.backgroundColor=color;
+function changeColor(aaa, color){
+    aaa.style.backgroundColor = color;
 }
 
 function MM_preloadImages() { //v3.0
