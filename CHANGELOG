@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-02 Benedikt Heintel
+	- GUI:
+		* Fixed #1327: No switch back as admin when logged as reseller
+
 2008-06-01 Benedikt Heintel
 	- LANGUAGES:
 		* Fixed #1322: (german) updated german language file
