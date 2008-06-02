@@ -1230,7 +1230,7 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
 
@@ -1245,8 +1245,8 @@ msgstr "Alteração cancelada!"
 
 #, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1897,10 +1897,10 @@ msgstr "Senha inválida!"
 msgid "Entered passwords differ from the another!"
 msgstr "A senha informada está diferente da outra!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Lista de sub-domínios vazia! Você não pode incluir contas de FTP aqui!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr ""
 "Lista de alias está vazia! Você não pode adicionar usuário de FTP nesta "
 "conta!"
@@ -1953,11 +1953,11 @@ msgstr "Informe o nome da conta de e-mail!"
 msgid "Password data includes not permitted signs!"
 msgstr "Senha contém caracteres não permitidos!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 "Lista de sub-domínios vazia! Você não pode incluir contas de e-mail aqui!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr ""
 "Lista de alias está vazia! Você não pode adicionar usuário de e-mail nesta "
 "conta!"
@@ -2393,7 +2393,7 @@ msgstr "Páginas de erro"
 msgid "FTP list is empty!"
 msgstr "Lista de FTP vazia!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Erro ao abrir o diretório!<br>Por favor, contacte o administrador!"
 
 msgid "Parent Directory"
@@ -2584,10 +2584,10 @@ msgstr "Por favor informe o caminho da área"
 msgid "%s doesn't exist"
 msgstr ""
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Você não pode proteger area sem grupo(s) selecionado(s)"
 
 msgid "Protected area updated successfully!"
@@ -3242,11 +3242,11 @@ msgstr "Tipo desconhecido"
 msgid "hide aliases"
 msgstr "esconder alias"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
 
@@ -3254,14 +3254,14 @@ msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
 msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Você excedeu a quantidade máxima de alias!"
 
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 
@@ -3269,7 +3269,7 @@ msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 
@@ -3277,7 +3277,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"You have a SQL databases limit!<br>You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
 
@@ -3285,12 +3285,12 @@ msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
 
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
 "Você desabilitou bancos de dados SQL para este usuário!<br>Você não pode ter "
@@ -3300,10 +3300,10 @@ msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
 msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "You have a new order"
@@ -3566,7 +3566,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Propriedades do domínio atualizadas com sucesso!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr ""
 
 #, php-format
@@ -3574,7 +3574,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
@@ -3587,7 +3587,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr ""
 
 #, php-format
@@ -3841,9 +3841,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3993,7 +3990,7 @@ msgstr ""
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Modificação do representante cancelada!"
 
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Erro ao abrir o arquivo! Por favor, contacte o administrador!"
 
 #~ msgid "Not in:"
@@ -4032,7 +4029,7 @@ msgstr ""
 #~ msgid "New"
 #~ msgstr "Novo"
 
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Contas de e-mail selecionadas não podem ser criadas!"
 
 #~ msgid "support question(s)"

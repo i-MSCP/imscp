@@ -1171,7 +1171,7 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> má nastavena neomezená práva pro službu <b>%2$s</b>!<br>"
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr "Nemůžete přesunout <b>%1$s</b> k cílovému partneru,<br> který má nastaven limit pro službu <b>%2$s</b>!"
 
 #, php-format
@@ -1182,7 +1182,7 @@ msgid "Moving aborted!"
 msgstr "Přesun přerušen!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 msgstr "<b>%s</b> má IP adresu, která nemůže být spravována cílovým partnerem!<br>Uživatel nemůže být přesunut!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1823,10 +1823,10 @@ msgstr "Chybí heslo!"
 msgid "Entered passwords differ from the another!"
 msgstr "Hesla jsou rozdílná!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Seznam subdomén je prázdný! Nemůžete přidat FTP účty!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "FTP účty nelze přidávat. Soubor aliasů je prázdný!"
 
 msgid "Please specify other FTP account dir!"
@@ -1877,10 +1877,10 @@ msgstr "Prosím zadejte uživatelské jméno e-mailového účtu!"
 msgid "Password data includes not permitted signs!"
 msgstr "Heslo obsahuje nepovolené znaky!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Seznam subdomén je prázdný! Nemůžete přidávat poštovní účty!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
 
 msgid "Forward list is empty!"
@@ -2301,7 +2301,7 @@ msgstr "Chybové stránky"
 msgid "FTP list is empty!"
 msgstr "Seznam FTP je prázdný!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Nelze otevřít adresář!<br>Kontaktujte administrátora!"
 
 msgid "Parent Directory"
@@ -2490,10 +2490,10 @@ msgstr "Prosím zadejte cestu oblasti"
 msgid "%s doesn't exist"
 msgstr "%s neexistuje"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr "Nemůžete chránit oblast bez vybrání uživatele(ů)"
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Nemůžete chránit oblast bez vybrání skupin(y)"
 
 msgid "Protected area updated successfully!"
@@ -3197,52 +3197,52 @@ msgstr "Neznámá chyba"
 msgid "hide aliases"
 msgstr "skrýt aliasy"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Dosáhl jste limitu domén.<br>Nemůžete přidat další domény!"
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 msgstr "Máte limit počtu subdomén.<br>Nemůžete přidat uživatele s neomezeným počtem subdomén!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Překračujete váš limit subdomén!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "Máte limit aliasů!<br>Nemůžete přidat uživatele s neomezeným počtem aliasů!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Překračujete limit počtu aliasů!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 msgstr "Máte limit poštovních účtů!<br>Nemůžete přidat uživatele s neomezeným počtem poštovích účtů!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Překračujete limit poštovních účtů!"
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 msgstr "Máte limit FTP účtů!<br>Nemůžete přidat uživatele s neomezeným počtem FTP účtů!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Překračujete limit FTP účtů!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 msgstr "Máte limit SQL databází!<br>Nemůžete přidat uživatele s neomezeným počtem SQL databází!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Překračujete limit SQL databází!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 msgstr "Máte limit SQL účtů!<br>Nemůžete přidat uživatele s neomezeným počtem SQL účtů!"
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 msgstr "Nemáte povolenou SQL databázi pro tohoto uživatele!<br>Nemůžete zde vložit nového SQL uživatele!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Překračujete limit SQL databází!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "Máte limit přenosu dat!<br>Nemůžete přidat uživatele s neomezeným přenosem dat!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr "Máte limit diskového prostoru!<br>Nemůžete přidat uživatele s neomezeným diskovým prostorem!"
 
 msgid "You have a new order"
@@ -3488,7 +3488,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Nastavení domény úspěšně aktualizováno!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "Služba <em>%s</em> nemůže být vypnuta!<br>"
 
 #, php-format
@@ -3496,7 +3496,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr "V systému je <em>%s</em> záznamů!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr "Služba <em>%s</em> nemůže být omezena!<br>"
 
 #, php-format
@@ -3508,7 +3508,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "S systému je <em>%s</em> záznamů!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr "Služba <em>%s</em> nemůže být neomezená!<br>"
 
 #, php-format
@@ -3757,9 +3757,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3876,7 +3873,7 @@ msgstr ""
 #~ msgstr "Nesprávná délka nebo syntaxe SQL uživatele!"
 #~ msgid "Incorrect disk length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe diskového prostoru!"
-#~ msgid "<b>%s</b> Service can not be limited !<br>"
+#~ msgid "<b>%s</b> Service cannot be limited !<br>"
 #~ msgstr "<b>%s</b> služba nemůže být omezena!<br>"
 #~ msgid "Incorrect price!"
 #~ msgstr "Nesprávná cena!"
@@ -3898,13 +3895,13 @@ msgstr ""
 #~ msgstr "Aktualizace jazyka nainstalována!"
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Chybná adresa!<br>Úprava partnera byla zrušena."
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Nelze otevřít soubor! Kontaktujte administrátora!"
 #~ msgid "You have"
 #~ msgstr "Máte"
 #~ msgid "New"
 #~ msgstr "Nový"
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Nelze vytvořit všezachytávající účet!"
 #~ msgid "new"
 #~ msgstr "nový"

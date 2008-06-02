@@ -1175,7 +1175,7 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
@@ -1186,7 +1186,7 @@ msgid "Moving aborted!"
 msgstr "Áthelyezés megszakítva!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1828,10 +1828,10 @@ msgstr "Hiányzó jelszó adat!"
 msgid "Entered passwords differ from the another!"
 msgstr "A megadott jelszavak különböznek egymástól!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Üres aldomain lista! Nem hozhatsz itt létre új FTP hozzáférést!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias lista üres! Nem hozhatsz létre FTP hozzáférést!"
 
 msgid "Please specify other FTP account dir!"
@@ -1882,10 +1882,10 @@ msgstr "Add meg az email hozzáférés nevét!"
 msgid "Password data includes not permitted signs!"
 msgstr ""
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Üres aldomain lista! Nem hozhatsz itt létre új email hozzáférést!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Alias lista üres! Nem hozhatsz létre Email hozzáférést!"
 
 msgid "Forward list is empty!"
@@ -2306,7 +2306,7 @@ msgstr "Hibalapok"
 msgid "FTP list is empty!"
 msgstr "FTP lista üres!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Nem lehet megnyitni a könyvtárat!<br>Lépj kapcsolatba az adminisztrátorral !"
 
 msgid "Parent Directory"
@@ -2495,10 +2495,10 @@ msgstr "Add meg a terület útvonalát"
 msgid "%s doesn't exist"
 msgstr "%s nem létezik"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Nem védheted a területet kiválasztott csoport(ok) nélkül"
 
 msgid "Protected area updated successfully!"
@@ -3163,52 +3163,52 @@ msgstr "Ismeretlen hiba"
 msgid "hide aliases"
 msgstr "aliasok elrejtése"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Elérted a domain korlátot.<br>Nem tudsz több domaint hozzáadni!"
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 msgstr "Maximális aldomainjeid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan aldomain létrehozási lehetőséggel!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Túllépted aldomainjeid korlátját!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "Maximális aliaszok száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan aliasz hozzáadási lehetőséggel!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Túllépted az aliasok maximális számát!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 msgstr "Maximális Mail fiókjaid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan Mailfiók létrehozási lehetőséggel!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Túllépted mail fiókjaid korlátját!"
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 msgstr "Maximális FTP hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan FTP hozzáférés  létrehozási lehetőséggel!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Túllépted FTP hozzáféréseid korlátját!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 msgstr "Maximális SQL adatbázisaid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan SQL adatbázis létrehozási lehetőséggel!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Túllépted SQL adatbázisaid korlátját!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 msgstr "Maximális SQL hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan SQL hozzáférés  létrehozási lehetőséggel!"
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 msgstr "Nem engedélyezted az SQL adatbázisokat ennek a felhasználónak!<br>Nem hozhatsz létre SQL felhasználót!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Túllépted SQL hozzáféréseid korlátját!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "Maximális adatforgalmad korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan adatforgalommal!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "You have a new order"
@@ -3447,7 +3447,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Domain tulajdonságok sikeresen frissítve!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr ""
 
 #, php-format
@@ -3455,7 +3455,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
@@ -3467,7 +3467,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr ""
 
 #, php-format
@@ -3716,9 +3716,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3835,7 +3832,7 @@ msgstr ""
 #~ msgstr "Aztán az értéket amit most be akarsz írni!<br>"
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Cím!<br> Viszonteladó szerkesztése megszakítva!"
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr ""
 #~ "Nem lehet megnyitni a fájlt!<br>Lépj kapcsolatba az adminisztrátorral !"
 #~ msgid "Not in:"
@@ -3858,7 +3855,7 @@ msgstr ""
 #~ msgstr "Ügyfélszolgálati kérdés(ek)"
 #~ msgid "New"
 #~ msgstr "Új"
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Nem hozható létre gyûjtõ email!"
 #~ msgid "support question(s)"
 #~ msgstr "Ügyfélszolgálati kérdés(ek)"

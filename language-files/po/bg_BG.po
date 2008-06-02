@@ -1171,7 +1171,7 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> има безграничени права за услугата <b>%2$s</b> !"
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr "Вие не можете да преместите <b>%1$s</b> в определения риселъра,<br>с ограничения на услугата <b>%2$s</b> !"
 
 #, php-format
@@ -1182,7 +1182,7 @@ msgid "Moving aborted!"
 msgstr "Преместването е прекъснато!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 msgstr "<b>%s</b> има IP адрес който не може да се управлява от определеното място риселъра !<br>Този потребител не може да бъде преместен!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1820,10 +1820,10 @@ msgstr "Паролата не е указана!"
 msgid "Entered passwords differ from the another!"
 msgstr "Въведените пароли са различни!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Списъкът на поддомейните е празен! Виене можете Добави туда учётнизаписи FTP!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Списъкът с псевдоними е празен! Вие не може да добави тук FTP акаунт!"
 
 msgid "Please specify other FTP account dir!"
@@ -1874,10 +1874,10 @@ msgstr "Укажете име за потребителя на пощенска 
 msgid "Password data includes not permitted signs!"
 msgstr "Паролата съдържа неразрешени символи!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Списъкът с поддомейни е празен! Вие не може да добавяте пощенски кутии!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Списъкът с псевдоними е празен! Вие не може да добавяте пощенски кутии!"
 
 msgid "Forward list is empty!"
@@ -2298,7 +2298,7 @@ msgstr "Страници с грешки"
 msgid "FTP list is empty!"
 msgstr "Списъкът с FTP е празен!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Невъзможно е да отвори директорията !<br> Свържете се със своя администратор !"
 
 msgid "Parent Directory"
@@ -2472,10 +2472,10 @@ msgstr "Укажете директорията на зоната"
 msgid "%s doesn't exist"
 msgstr "%s не съществува"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr "Вие не може да защитите зона без да укажете потребител/и"
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Вие не може да защитите зоната без да сте избрали група/и."
 
 msgid "Protected area updated successfully!"
@@ -3176,52 +3176,52 @@ msgstr "Неизвестна Грешка"
 msgid "hide aliases"
 msgstr "скрити псевдоними"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Вашия сте достигнали границата за Домейни .<br>Вие не може да добавите повече домейни!"
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 msgstr "Имате ограничение за брой поддомейни!<br>Вие не може да добавите потребител с безграничен брой поддомейни!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Вие сте превишили ограничението за брой поддомейни!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "Имате ограничение за брой псевдоними!<br>Вие не може да добавите потребител с безграничен брой псевдоними!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Вие сте превишили ограничението за брой псевдоними!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 msgstr "Имате ограничение за брой пощенски кутии!<br>Вие не може да добавите потребител с безграничен брой пощенски кутии!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Вие сте превишили ограничението за брой пощенски кутии!"
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 msgstr "Имате ограничение за брой FTP акаунти!<br>Вие не може да добавите потребител с безграничен брой FTP акаунти!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Вие сте превишили ограничението за FTP акаунти!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 msgstr "Имате ограничение за брой SQL бази данни!<br>Вие не може да добавите потребител с безграничен брой SQL бази данни!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Вие сте превишили ограничението за брой SQL бази данни!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 msgstr "Имате ограничение за брой SQL потрбители!<br>Вие не може да добавите потребител с безграничен брой SQL потребители!"
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 msgstr "Имате забраненни SQL бази данни за този потребител!<br>Не може да имате SQL потребители Тук!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Вие сте превищили ограничението за брой SQL бази данни!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "Имате ограничение за трафик!<br>Вие не можете да добавите потребител с безграничен трафик!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr "Имате Ограничено дисково пространство!<br>Вие не можете да добавите потребител с безгранично дисковото пространство!"
 
 msgid "You have a new order"
@@ -3464,7 +3464,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Настройките на домейна са успешно променени!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "Услугата <em>%s</em> не может да бъде Забранена! "
 
 #, php-format
@@ -3472,7 +3472,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr "В системата има <em>%s</em> записи!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr "Услугата <em>%s</em> не может да бъде ограничена!"
 
 #, php-format
@@ -3484,7 +3484,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "В системата има <em>%s</em> записи!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
 
 #, php-format
@@ -3731,9 +3731,6 @@ msgid "Create default E-Mail addresses"
 msgstr ""
 
 msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
 msgid "Hosting plans available for"

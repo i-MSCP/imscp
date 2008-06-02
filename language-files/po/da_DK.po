@@ -1175,7 +1175,7 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> har ubegrænset rettigheder for en <b>%2$s</b> Service !<br>"
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr "Du kan ikke flytte <b>%1$s</b> fra en forhandler,<br>der har begrænsning for <b>%2$s</b> service!"
 
 #, php-format
@@ -1186,7 +1186,7 @@ msgid "Moving aborted!"
 msgstr "Flytning afbrudt!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 msgstr "<b>%s</b> har IP adresse der ikke kan håndteres fra forhandleren !<br>Denne bruger kan ikke flyttes!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1827,10 +1827,10 @@ msgstr "Adgangskode data mangler"
 msgid "Entered passwords differ from the another!"
 msgstr "De indtastede kodeord er forskellige fra hinanden."
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomæne liste er tom! Du kan ikke tilføje FTP konti der!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias listen er tom! Du kan ikke tilføje FTP konti der!"
 
 msgid "Please specify other FTP account dir!"
@@ -1881,10 +1881,10 @@ msgstr "Indtast email adresse brugernavn!"
 msgid "Password data includes not permitted signs!"
 msgstr "Adgangskode indeholder ugyldige tegn"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Subdomæne liste er tom! Du kan ikke tilføje email konti!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Alias listen er tom! Du kan ikke tilføje email konti!"
 
 msgid "Forward list is empty!"
@@ -2305,7 +2305,7 @@ msgstr "Fejlsider"
 msgid "FTP list is empty!"
 msgstr "FTP liste er tom!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Kan ikke åbne bibliotek !<br> Kontakt venligst din administrator!"
 
 msgid "Parent Directory"
@@ -2494,10 +2494,10 @@ msgstr "Indtast område sti"
 msgid "%s doesn't exist"
 msgstr "%s findes ikke"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr "Du kan ikke beskytte område(r) uden at vælge bruger(e)"
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Du kan ikke beskytte områder uden at have valgt Gruppe( r)"
 
 msgid "Protected area updated successfully!"
@@ -3201,52 +3201,52 @@ msgstr "Ukendt fejl"
 msgid "hide aliases"
 msgstr "Skjul aliaser"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Du har nået din domæne grænse.<br>Du kan ikke tilføje flere domæner!"
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 msgstr "Du har subdomæne begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset subdomæner!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Du overskrider din subdomæne grænse!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "Du har alias begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset aliaser!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Du overskrider din Alias Grænse!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 msgstr "Du har mail konti begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset mail konti!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Du overskrider din mail konti grænse!"
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 msgstr "Du har FTP konti begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset FTP konti!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Du overskrider din FTP konti grænse!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 msgstr "Du har SQL database begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset SQL databaser!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Du overskrider din SQL database grænse!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 msgstr "Du har SQL bruger begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset SQL brugere!"
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 msgstr "Du har deaktiveret SQL databaser for denne bruger!<br>Du kan ikke have SQL brugere her!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Du overskrider din SQL database grænse!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "Du har trafik begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset trafik!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr "Du har diskplads begrænsning!<br>Du kan ikke tilføje en bruger med ubegrænset diskplads!"
 
 msgid "You have a new order"
@@ -3492,7 +3492,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Domæne Egenskaber opdateret succesfuldt."
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "<em>%s</em> service kan ikke deaktiveres!"
 
 #, php-format
@@ -3500,7 +3500,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr "Der er <em>%s</em> records på systemet!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr "<em>%s</em> service kan ikke være begrænset!"
 
 #, php-format
@@ -3512,7 +3512,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "Der er <em>%s</em> filer på systemet!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr "<em>%s</em> service kan ikke være ubegrænset!"
 
 #, php-format
@@ -3761,9 +3761,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3882,7 +3879,7 @@ msgstr ""
 #~ msgstr "Så den værdi du prøver at taste nu!<br>"
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Adresse !<br>Redigering af forhandler afbrudt!"
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Kan ikke åbne fil ! Kontakt venligst din administrator!"
 #~ msgid "Not in:"
 #~ msgstr "Ikke i:"
@@ -3906,7 +3903,7 @@ msgstr ""
 #~ msgstr "Support spørgsmål"
 #~ msgid "New"
 #~ msgstr "Ny"
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "FangAlle mail konto kan ikke oprettes"
 #~ msgid "support question(s)"
 #~ msgstr "Support spørgsmål"

@@ -1222,7 +1222,7 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
 
@@ -1237,8 +1237,8 @@ msgstr "Verplaatsing geannuleerd"
 
 #, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1889,10 +1889,10 @@ msgstr "Wachtwoord informatie is onvindbaar"
 msgid "Entered passwords differ from the another!"
 msgstr "Ingevulde wachtwoorden verschillen van elkaar!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Er zijn geen subdomeinen. U kunt er geen FTP account aan toegoeven"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Er zijn geen aliassen, u kunt hier geen FTP accounts aanmaken."
 
 msgid "Please specify other FTP account dir!"
@@ -1943,10 +1943,10 @@ msgstr "Gelieve een mail account gebruikersnaam in te vullen"
 msgid "Password data includes not permitted signs!"
 msgstr "Het paswoord bevat niet toegestane tekens!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Er zijn geen subdomeinen. U kan geen mail accounts toevoegen"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Er zijn geen aliassen, u kunt hier geen e-mail accounts aanmaken."
 
 msgid "Forward list is empty!"
@@ -2386,7 +2386,7 @@ msgstr "Error paginas"
 msgid "FTP list is empty!"
 msgstr "Er zijn geen FTP gebruikers"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Kan deze map niet openen, neem contact op met de beheerder."
 
 msgid "Parent Directory"
@@ -2577,10 +2577,10 @@ msgstr "Gelieve gebiedspad in te voeren"
 msgid "%s doesn't exist"
 msgstr ""
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "U kunt geen gebied beschermen zonder een geselecteerde groep(en)"
 
 msgid "Protected area updated successfully!"
@@ -3233,11 +3233,11 @@ msgstr "Onbekend type"
 msgid "hide aliases"
 msgstr "verberg aliassen"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
 
@@ -3245,14 +3245,14 @@ msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
 msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "U overschrijdt uw alias limiet!"
 
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 
@@ -3260,7 +3260,7 @@ msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 
@@ -3268,7 +3268,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"You have a SQL databases limit!<br>You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
 
@@ -3276,12 +3276,12 @@ msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
 
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
 "U hebt MySQL databanken uitgeschakeld voor deze gebruiker!<br>U kan geen "
@@ -3291,10 +3291,10 @@ msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
 msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "You have a new order"
@@ -3565,7 +3565,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Domein eigenschappen succesvol gewijzigd!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr ""
 
 #, php-format
@@ -3573,7 +3573,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
@@ -3586,7 +3586,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr ""
 
 #, php-format
@@ -3842,9 +3842,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -4028,7 +4025,7 @@ msgstr ""
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
 
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."
 
 #~ msgid "Not in:"
@@ -4067,7 +4064,7 @@ msgstr ""
 #~ msgid "New"
 #~ msgstr "Nieuw"
 
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Catch all mail account kan niet aangemaakt worden!"
 
 #~ msgid "support question(s)"

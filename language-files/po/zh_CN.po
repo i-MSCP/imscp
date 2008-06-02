@@ -1173,8 +1173,8 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
-msgstr "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 
 #, php-format
 msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
@@ -1184,8 +1184,8 @@ msgid "Moving aborted!"
 msgstr "Moving aborted!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
-msgstr "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgstr "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Admin/Manage users/User assignment"
@@ -1825,11 +1825,11 @@ msgstr "Password data is missing!"
 msgid "Entered passwords differ from the another!"
 msgstr "Entered passwords differ from the another!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
+msgstr "Subdomain list is empty! You cannot add FTP accounts there!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
+msgstr "Alias list is empty! You cannot add FTP accounts there!"
 
 msgid "Please specify other FTP account dir!"
 msgstr "Please specify other FTP account dir!"
@@ -1879,11 +1879,11 @@ msgstr "Please enter mail account username!"
 msgid "Password data includes not permitted signs!"
 msgstr "Password data includes not permitted signs!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
-msgstr "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgstr "Subdomain list is empty! You cannot add mail accounts!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
-msgstr "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
+msgstr "Alias list is empty! You cannot add mail accounts!"
 
 msgid "Forward list is empty!"
 msgstr "Forward list is empty!"
@@ -2303,8 +2303,8 @@ msgstr "Error pages"
 msgid "FTP list is empty!"
 msgstr "FTP list is empty!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr "Cannot open directory !<br />Please contact your administrator !"
 
 msgid "Parent Directory"
 msgstr "Parent Directory"
@@ -2492,11 +2492,11 @@ msgstr "Please enter area path"
 msgid "%s doesn't exist"
 msgstr "%s doesn't exist"
 
-msgid "You can not protect area without selected user(s)"
-msgstr "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
+msgstr "You cannot protect area without selected user(s)"
 
-msgid "You can not protect area without selected group(s)"
-msgstr "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
+msgstr "You cannot protect area without selected group(s)"
 
 msgid "Protected area updated successfully!"
 msgstr "Protected area updated successfully!"
@@ -3199,53 +3199,53 @@ msgstr "Unknown error"
 msgid "hide aliases"
 msgstr "hide aliases"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
-msgstr "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
+msgstr "You have reached your domains limit.<br>You cannot add more domains!"
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
-msgstr "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgstr "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "You are exceeding your subdomains limit!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
-msgstr "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgstr "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "You Are Exceeding Your Alias Limit!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
-msgstr "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgstr "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "You are exceeding your mail accounts limit!"
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
-msgstr "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgstr "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "You are exceeding your FTP accounts limit!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
-msgstr "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgstr "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "You are exceeding your SQL databases limit!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
-msgstr "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgstr "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgstr "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "You are exceeding your SQL database limit!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
-msgstr "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgstr "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
-msgstr "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
+msgstr "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 
 msgid "You have a new order"
 msgstr "You have a new order"
@@ -3490,16 +3490,16 @@ msgid "Domain properties updated successfully!"
 msgstr "Domain properties updated successfully!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
-msgstr "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "The <em>%s</em> service cannot be disabled! "
 
 #, php-format
 msgid "There are <em>%s</em> records on system!"
 msgstr "There are <em>%s</em> records on system!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
-msgstr "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "The <em>%s</em> service cannot be limited! "
 
 #, php-format
 msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
@@ -3510,8 +3510,8 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "There are <em>%s</em> records on the system!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
-msgstr "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "The <em>%s</em> service cannot be unlimited! "
 
 #, php-format
 msgid "There are reseller limits for the <em>%s</em> service!"
@@ -3757,9 +3757,6 @@ msgid "Create default E-Mail addresses"
 msgstr ""
 
 msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
 msgid "Hosting plans available for"

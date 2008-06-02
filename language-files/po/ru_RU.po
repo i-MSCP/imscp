@@ -1199,7 +1199,7 @@ msgstr "<b>%1$s</b> имеет безлимитные права для серв
 
 #, php-format
 msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
 "Вы не можете переместить <b>%1$s</b> в назначенное место реселлера,<br>с лимитами "
@@ -1218,8 +1218,8 @@ msgstr "Перемещение прервано!"
 
 #, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 "<b>%s</b> имеет IP адрес который не может управляться с назначенного места "
 "реселлера !<br>Этот пользователь не может быть перемещён!"
@@ -1859,10 +1859,10 @@ msgstr "Пароль не указан!"
 msgid "Entered passwords differ from the another!"
 msgstr "Ввведенные пароли отличаются!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Список поддоменов пуст! Вы не можете добавить туда учётные записи FTP!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Список псевдонимов пуст! Вы не можете добавить туда учётные записи FTP!"
 
 msgid "Please specify other FTP account dir!"
@@ -1913,10 +1913,10 @@ msgstr "Укажите имя пользователя почтового ящи
 msgid "Password data includes not permitted signs!"
 msgstr "Пароль сожержит не разрешенные символы!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Список поддоменов пуст! Вы не можете добавлять почтовые ящики!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Список псевдонимов пуст! Вы не можете добавлять почтовые ящики!"
 
 msgid "Forward list is empty!"
@@ -2350,7 +2350,7 @@ msgstr "Страницы Обшибок"
 msgid "FTP list is empty!"
 msgstr "Список FTP пуст!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Невозможно открыть директорию !<br> Свяжитесь со своим администратором !"
 
 msgid "Parent Directory"
@@ -2524,10 +2524,10 @@ msgstr "Укажите директорию зоны"
 msgid "%s doesn't exist"
 msgstr "%s не существует"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr "Вы не можете защитить зону без указанных пользователей"
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Вы не можете защитить зону без выбранных групп."
 
 msgid "Protected area updated successfully!"
@@ -3228,11 +3228,11 @@ msgstr "Неизвестная ошибка"
 msgid "hide aliases"
 msgstr "скрыть псевдонимы"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Ваш лимит на домены достиг предела.<br>Вы не можете добавить больше доменов!"
 
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
 "У вас есть лимит на поддомены!<br>Вы не можете добавить пользователя "
@@ -3242,7 +3242,7 @@ msgid "You are exceeding your subdomains limit!"
 msgstr "Вы привысили лимит поддоменов!"
 
 msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 "У вас есть лимит на псевдонимы!<br>Вы не можете добавить пользователя с безлимитными псевдонимами!"
 
@@ -3250,7 +3250,7 @@ msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Вы привысили лимит псевдонимов!"
 
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 "У вас есть лимит на почтовые ящики!<br>Вы не можете добавить пользователя с безлимитными "
@@ -3260,7 +3260,7 @@ msgid "You are exceeding your mail accounts limit!"
 msgstr "Вы привысили лимит почтовых ящиков!"
 
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 "У вас есть лимит на учётные записи FTP!<br>Вы не можете добавить пользователя с безлимитными "
@@ -3270,7 +3270,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr "Вы привысили лимит учётных записей FTP!"
 
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"You have a SQL databases limit!<br>You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
 "У вас есть лимит на SQL базы данных!<br>Вы не можете добавить пользователя с безлимитными "
@@ -3280,14 +3280,14 @@ msgid "You are exceeding your SQL databases limit!"
 msgstr "Вы привысили лимит SQL баз данных!"
 
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
 "У вас есть лимит на учётные записи SQL!<br>Вы не можете добавить пользователя с безлимитными "
 "учётными записями SQL!"
 
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
 "У вас отключенны SQL базы данных для этого пользователя!<br>У вас не может быть SQL пользователей "
@@ -3297,10 +3297,10 @@ msgid "You are exceeding your SQL database limit!"
 msgstr "Вы привысили лимит SQL баз данных!"
 
 msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "У вас лимит траффика!<br>Вы не можете добавить пользователя с безлимитным траффиком!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr "У вас лимит дискового пространства!<br>Вы не можете добавить пользователя с безлимитным дисковым пространством!"
 
 msgid "You have a new order"
@@ -3556,7 +3556,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Настройки домена успешно изменены!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "Сервис <em>%s</em> не может быть отключен! "
 
 #, php-format
@@ -3564,7 +3564,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr "В системе <em>%s</em> записей!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr "Сервис <em>%s</em> не может быть ограничен!"
 
 #, php-format
@@ -3577,7 +3577,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "В системе <em>%s</em> записей!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr "Сервис <em>%s</em> не может быть безлимитным! "
 
 #, php-format
@@ -3828,9 +3828,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3911,7 +3908,7 @@ msgstr ""
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b>Адрес!<br>Редактирование реселлера отменено!"
 
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Невозможно открыть файл! Свяжитесь со своим администратором!"
 
 #~ msgid "seconds"

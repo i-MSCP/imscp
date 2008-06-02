@@ -1199,7 +1199,7 @@ msgstr "<b>%1$s</b> hat unbeschränkte Rechte für den Dienst <b>%2$s</b>!<br>"
 
 #, php-format
 msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
 "Sie können <b>%1$s</b> nicht einem Reseller zuweisen,<br>der ein Limit für "
@@ -1218,8 +1218,8 @@ msgstr "Verschieben abgebrochen!"
 
 #, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 "<b>%s</b> hat IP-Adressen, die nicht vom neuen Reseller verwaltet werden "
 "können!<br>Dieser Kunde kann nicht verschoben werden!"
@@ -1866,10 +1866,10 @@ msgstr "Passwortdaten fehlen!"
 msgid "Entered passwords differ from the another!"
 msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Es sind keine Subdomains vorhanden! Sie können keinen FTP-Zugang erstellen!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Keine Aliase vorhanden! Sie können keinen FTP-Zugang erstellen!"
 
 msgid "Please specify other FTP account dir!"
@@ -1922,12 +1922,12 @@ msgstr "Bitte geben Sie einen Benutzernamen für das E-Mail-Konto an"
 msgid "Password data includes not permitted signs!"
 msgstr "Das Passwort enthält unzulässige Zeichen!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 "Es sind keine Subdomains vorhanden! Sie können keine E-Mail-Konten "
 "hinzufügen!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Keine Aliase vorhanden! Sie können keine E-Mail-Konten anlegen!"
 
 msgid "Forward list is empty!"
@@ -2358,8 +2358,8 @@ msgstr "Fehlerseiten"
 msgid "FTP list is empty!"
 msgstr "Es sind keine FTP-Zugänge vorhanden!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr "Kann Verzeichnis nicht öffnen!<br>Bitte kontaktieren Sie Ihren Administrator!"
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr "Es ist nicht möglich das Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie ihren Administrator!"
 
 msgid "Parent Directory"
 msgstr "Hauptverzeichnis"
@@ -2549,12 +2549,12 @@ msgstr "Bitte wählen Sie ein Verzeichnis aus, das Sie schützen wollen!"
 msgid "%s doesn't exist"
 msgstr "%s existiert nicht"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 "Sie können keine geschützten Verzeichnisse erstellen ohne einen Benutzer "
 "auszuwählen"
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr ""
 "Sie können keine geschützten Verzeichnisse erstellen ohne eine Gruppe "
 "auszuwählen"
@@ -3269,13 +3269,13 @@ msgstr "Unbekannter Fehler"
 msgid "hide aliases"
 msgstr "Alias verstecken"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 "Sie haben die max. Anzahl an Domains erreicht.<br>Sie können keine Weiteren "
 "hinzufügen!"
 
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
 "Sie haben die max. Anzahl an Subdomains erreicht.<br>Sie können keine "
@@ -3284,7 +3284,7 @@ msgstr ""
 msgid "You are exceeding your subdomains limit!"
 msgstr "Sie haben die max. Anzahl an Subdomains erreicht!"
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 "Sie haben ein Alias-Limit!<br>Sie können keinen Benutzer mit unbegrenzen "
 "Aliasen anlegen!"
@@ -3293,7 +3293,7 @@ msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Sie haben die max. Anzahl an Aliasen erreicht!"
 
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 "Sie haben nur eine begrenzte Anzahl an E-Mail-Konten zur Verfügung.<br>Sie "
@@ -3304,7 +3304,7 @@ msgid "You are exceeding your mail accounts limit!"
 msgstr "Sie haben die max. Anzahl an E-Mail-Konten erreicht!"
 
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 "Sie haben nur eine begrenzte Anzahl an FTP-Zugängen zur Verfügung.<br>Sie "
@@ -3314,7 +3314,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr "Sie haben die max. Anzahl an FTP-Zugängen erreicht!"
 
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"You have a SQL databases limit!<br>You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
 "Sie haben nur eine begrenzte Anzahl an SQL-Datenbanken zur Verfügung.<br>Sie "
@@ -3325,7 +3325,7 @@ msgid "You are exceeding your SQL databases limit!"
 msgstr "Sie haben die max. Anzahl an SQL-Datenbanken erreicht!"
 
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
 "Sie haben nur eine begrenzte Anzahl an SQL-Benutzern zur Verfügung.<br>Sie "
@@ -3333,7 +3333,7 @@ msgstr ""
 "anlegen!"
 
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
 "Sie haben SQL-Datenbanken für diesen Benutzer deaktiviert!<br>Sie können "
@@ -3342,12 +3342,12 @@ msgstr ""
 msgid "You are exceeding your SQL database limit!"
 msgstr "Sie haben die max. Anzahl an SQL-Benutzern erreicht!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 "Sie haben ein Traffic-Limit.<br>Sie können keinen Benutzer mit unbegrenztem "
 "Traffic anlegen!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 "Sie haben eine Speicherplatzbegrenzung.<br>Sie können keinen Benutzer mit "
 "unbegrenztem Speicherplatz anlegen!"
@@ -3609,7 +3609,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Domaineigenschaften wurden erfolgreich aktualisiert!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "Der Dienst <em>%s</em> kann nicht deaktiviert werden! "
 
 #, php-format
@@ -3617,7 +3617,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr "Es gibt <em>%s</em> Datensätze im System!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr "Der Dienst <em>%s</em> kann nicht beschränkt werden!"
 
 #, php-format
@@ -3631,7 +3631,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr "Es gibt <em>%s</em> Datensätze im System!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr "Der Dienst <em>%s</em> darf nicht unbeschränkt sein!"
 
 #, php-format
@@ -3881,9 +3881,6 @@ msgstr "Erstelle Standard-E-Mail-Adressen"
 
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail-Adressen fest sperren"
-
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr "Es ist nicht möglich das Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie ihren Administrator!"
 
 msgid "Hosting plans available for"
 msgstr "Tarife verfügbar für"

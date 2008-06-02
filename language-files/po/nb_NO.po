@@ -1176,7 +1176,7 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> har ubegrensede rettigheter for en <b>%2$s</b> service !<br>"
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
@@ -1187,7 +1187,7 @@ msgid "Moving aborted!"
 msgstr "Flytting avbrutt"
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1828,10 +1828,10 @@ msgstr "Passordinformasjon mangler!"
 msgid "Entered passwords differ from the another!"
 msgstr "Passordene er ikke like!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Underdomene listen er tom! Du kan ikke legge til FTP kontoer der!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Pekerlisten er tom! Du kan ikke legge til FTP kontoer der!"
 
 msgid "Please specify other FTP account dir!"
@@ -1882,10 +1882,10 @@ msgstr "Vennligst skriv inn brukernavn for mail!"
 msgid "Password data includes not permitted signs!"
 msgstr "Passordet inneholder tegn som ikke er tillatt!"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Pekerlisten er tom! Du kan ikke legge til mail kontoer!"
 
 msgid "Forward list is empty!"
@@ -2315,7 +2315,7 @@ msgstr "Feil sider"
 msgid "FTP list is empty!"
 msgstr "FTP listen er tom!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
 #, fuzzy
@@ -2508,10 +2508,10 @@ msgstr "Venligst skriv inn sti"
 msgid "%s doesn't exist"
 msgstr "%s eksisterer ikke"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr ""
 
 msgid "Protected area updated successfully!"
@@ -3197,52 +3197,52 @@ msgstr "Ukjent feil"
 msgid "hide aliases"
 msgstr "skjul pekere"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Du Overskrider Din Peker Grense!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Du overskrider din grense for antall FTP kontoer!"
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Du overskrider din grense for antall SQL databser!"
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
 msgstr ""
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Du overskrider din grense for antall SQL databser!"
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "Du har en grense for trafikk!<br>Du kan ikke legge til brukere med ubegrenset trafikk!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "You have a new order"
@@ -3488,7 +3488,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Egenskapene for domenet ble oppdatert uten problemer!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
 
 #, php-format
@@ -3496,7 +3496,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
@@ -3508,7 +3508,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr ""
 
 #, php-format
@@ -3759,9 +3759,6 @@ msgid "Create default E-Mail addresses"
 msgstr ""
 
 msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr ""
 
 msgid "Hosting plans available for"

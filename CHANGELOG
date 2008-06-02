@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-06-02 Benedikt Heintel
 	- GUI:
 		* Fixed #1327: No switch back as admin when logged as reseller
+		* Fixed #1328: updated all language files to fit the change in the translation strings where "can not" was replaced with "cannot"
 
 2008-06-01 Benedikt Heintel
 	- LANGUAGES:

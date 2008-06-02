@@ -1228,7 +1228,7 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
 
@@ -1243,8 +1243,8 @@ msgstr "Siirto keskeytetty!"
 
 #, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1895,10 +1895,10 @@ msgstr "Salasanatiedot uupuvat!"
 msgid "Entered passwords differ from the another!"
 msgstr "Annetut salasanat eiv�t t�sm��!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Alidomain-lista on tyhj�! Et voi tehd� FTP-tunnuksia t�nne!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias-lista on tyhj�! Et voi lis�t� FTP-tunnuksia t�nne!"
 
 msgid "Please specify other FTP account dir!"
@@ -1949,10 +1949,10 @@ msgstr "Anna s�hk�postin k�ytt�j�nimi!"
 msgid "Password data includes not permitted signs!"
 msgstr "Salasana sis�lt�� kiellettyj� merkkej�"
 
-msgid "Subdomain list is empty! You can not add mail accounts!"
+msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Alidomain-lista on tyhj�! Et voi luoda s�hk�posteja!"
 
-msgid "Alias list is empty! You can not add mail accounts!"
+msgid "Alias list is empty! You cannot add mail accounts!"
 msgstr "Alias-lista on tyhj�! Et voi lis�t� s�hk�postik�ytt�ji�!"
 
 msgid "Forward list is empty!"
@@ -2390,7 +2390,7 @@ msgstr "Virhesivut"
 msgid "FTP list is empty!"
 msgstr "FTP-lista on tyhj�!"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory !<br />Please contact your administrator !"
 msgstr "Ei voi avata hakemistoa!<br>Ota yhteys yll�pitoon!"
 
 msgid "Parent Directory"
@@ -2581,10 +2581,10 @@ msgstr "Anna alueen polku"
 msgid "%s doesn't exist"
 msgstr ""
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)"
 msgstr ""
 
-msgid "You can not protect area without selected group(s)"
+msgid "You cannot protect area without selected group(s)"
 msgstr "Et voi luoda suojattua aluetta ilman ryhm��!"
 
 msgid "Protected area updated successfully!"
@@ -3236,11 +3236,11 @@ msgstr "Tuntematon tyyppi"
 msgid "hide aliases"
 msgstr "piilota aliakset"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
 
@@ -3248,14 +3248,14 @@ msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
 msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Olet ylitt�m�ss� aliasten m��r��!"
 
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 
@@ -3263,7 +3263,7 @@ msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 
@@ -3271,7 +3271,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"You have a SQL databases limit!<br>You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
 
@@ -3279,12 +3279,12 @@ msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
 
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
 "Olet ottanut tietokannat pois k�yt�st� t�ll� k�ytt�j�ll�!<br>Et voi lis�t� "
@@ -3294,10 +3294,10 @@ msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
 msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "You have a new order"
@@ -3564,7 +3564,7 @@ msgid "Domain properties updated successfully!"
 msgstr "Domainin ominaisuuksia p�ivitetty onnistuneesti!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled! "
 msgstr ""
 
 #, php-format
@@ -3572,7 +3572,7 @@ msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
@@ -3585,7 +3585,7 @@ msgid "There are <em>%s</em> records on the system!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited! "
 msgstr ""
 
 #, php-format
@@ -3839,9 +3839,6 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -3991,7 +3988,7 @@ msgstr ""
 #~ msgid "Update language installed!"
 #~ msgstr "P�ivityskieli asennettu!"
 
-#~ msgid "Catch all mail account can not be created!"
+#~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Nappaa kaikki -tunnusta ei voi luoda!"
 
 #~ msgid "Alias scheduled for modification!"
@@ -4003,7 +4000,7 @@ msgstr ""
 #~ msgid "new"
 #~ msgstr "uusi"
 
-#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Tiedostoa ei voi avata! Ota yhteys yll�pitoon!"
 
 #~ msgid "Not in:"
