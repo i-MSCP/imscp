@@ -138,7 +138,7 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct nedded tags and entries;
+	# Let's construct needed tags and entries;
 	#
 	my %tag_hash = (
 		'{DMN_NAME}' => $dmn_name,
@@ -159,7 +159,7 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's get Sytem and Workind config files;
+	# Let's get System and Working config files;
 	#
 	my ($sys, $working) = ('', '');
 
@@ -173,7 +173,7 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Is the new domain entry exists ?
+	# Does the new domain entry exists ?
 	#
 	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
 	if ($rs == 0) {
@@ -185,7 +185,7 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's contruct the replacement and do it;
+	# Let's construct the replacement and do it;
 	#
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
@@ -274,7 +274,7 @@ sub dmn_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct nedded tags and entries;
+	# Let's construct needed tags and entries;
 	#
 	my %tag_hash = (
 		'{DMN_NAME}' => $dmn_name,
@@ -295,7 +295,7 @@ sub dmn_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's get Sytem and Workind config files;
+	# Let's get Sytem and Working config files;
 	#
 	my ($sys, $working) = ('', '');
 
@@ -309,7 +309,7 @@ sub dmn_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Is the new domain entry exists ?
+	# Does the new domain entry exists ?
 	#
 	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
 	if ($rs == 0) {
@@ -321,7 +321,7 @@ sub dmn_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's contruct the replacement and do it;
+	# Let's construct the replacement and do it;
 	#
 	#
 	#my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";

@@ -784,7 +784,7 @@ sub add_named_cfg_data {
     return $rs if ($rs != 0);
 
     #
-    # Let's construct nedded tags and entries;
+    # Let's construct needed tags and entries;
     #
 
     my %tag_hash = (
@@ -809,7 +809,7 @@ sub add_named_cfg_data {
     return $rs if ($rs != 0);
 
     #
-    # Let's get Sytem and Workind config files;
+    # Let's get System and Working config files;
     #
 
     my ($sys, $working) = ('', '');
@@ -839,7 +839,7 @@ sub add_named_cfg_data {
     return $rs if ($rs != 0);
 
     #
-    # Let's contruct the replacement and do it;
+    # Let's construct the replacement and do it;
     #
 
     my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
