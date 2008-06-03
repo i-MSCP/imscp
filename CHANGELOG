@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-03 Benedikt Heintel
+	- GUI:
+		* Fixed #1330: In admin/manage_sessions.php {ADMIN_USERNAME} is not replaced
+
 2008-06-02 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1329: some typos in the engine perl files
@@ -30,7 +34,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1271: MAIL ALIAS (forward adress) MALFUNCTIONS
 	- ENGINE:
 		* Fixed #824: IMAP SSL Traffic not counted
-		
+
 
 2008-05-29 Benedikt Heintel
 	- GUI:
