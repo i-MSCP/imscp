@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: url_parser.php 12792 2007-11-27 20:33:19Z pdontthink $
+ * @version $Id: url_parser.php 12825 2007-12-16 15:58:45Z kink $
  * @package squirrelmail
  */
 
@@ -242,4 +242,3 @@ function sq_strpos_8bit($haystack,$offset=0,$maxlength=false) {
     }
     return $ret;
 }
-?>

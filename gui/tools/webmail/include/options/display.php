@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display.php 12718 2007-10-01 19:37:52Z pdontthink $
+ * @version $Id: display.php 13103 2008-05-07 16:28:41Z pdontthink $
  * @package squirrelmail
  */
 
@@ -118,9 +118,10 @@ function load_optpage_data_display() {
     );
 
     if ($optmode != 'submit')
-       $onloadScript = 'document.forms[0].new_js_autodetect_results.value = \'' . SMPREF_JS_ON . '\'';
+       // FIXME: our form is named "f" - why? let's use something better
+       $onLoadScript = 'document.f.new_js_autodetect_results.value = \'' . SMPREF_JS_ON . '\'';
     else
-       $onloadScript = '';
+       $onLoadScript = '';
 
     $optvals[SMOPT_GRP_GENERAL][] = array(
         'name'    => 'js_autodetect_results',
@@ -368,7 +369,7 @@ function load_optpage_data_display() {
     $result = array(
         'grps' => $optgrps,
         'vals' => $optvals,
-        'xtra' => $onloadScript
+        'xtra' => $onLoadScript
     );
     return ($result);
 }
@@ -435,4 +436,3 @@ function save_option_reply_prefix($option) {
 
 }
 
-?>

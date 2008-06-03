@@ -9,7 +9,7 @@
  * @author Marc Groot Koerkamp
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 12749 2007-10-31 03:38:19Z jangliss $
+ * @version $Id: Deliver.class.php 13066 2008-04-28 02:18:58Z pdontthink $
  * @package squirrelmail
  */
 
@@ -32,7 +32,17 @@ class Deliver {
      * function mail - send the message parts to the SMTP stream
      *
      * @param Message  $message      Message object to send
-     * @param resource $stream       Handle to the SMTP stream
+     *                               NOTE that this is passed by
+     *                               reference and will be modified
+     *                               upon return with updated
+     *                               fields such as Message ID, References,
+     *                               In-Reply-To and Date headers.
+     * @param resource $stream       Handle to the outgoing stream
+     *                               (when FALSE, nothing will be
+     *                               written to the stream; this can
+     *                               be used to determine the actual
+     *                               number of bytes that will be 
+     *                               written to the stream)
      * @param string   $reply_id     Identifies message being replied to
      *                               (OPTIONAL; caller should ONLY specify
      *                               a value for this when the message
@@ -42,11 +52,31 @@ class Deliver {
      *                               message inside another (OPTIONAL; caller
      *                               should ONLY specify a value for this 
      *                               when the message being sent is a reply)
+     * @param resource $imap_stream  If there is an open IMAP stream in 
+     *                               the caller's context, it should be
+     *                               passed in here.  This is OPTIONAL,
+     *                               as one will be created if not given,
+     *                               but as some IMAP servers may baulk
+     *                               at opening more than one connection
+     *                               at a time, the caller should always
+     *                               abide if possible.  Currently, this
+     *                               stream is only used when $reply_id
+     *                               is also non-zero, but that is subject
+     *                               to change.
+     * @param mixed    $extra        Any implementation-specific variables
+     *                               can be passed in here and used in
+     *                               an overloaded version of this method
+     *                               if needed.
      *
-     * @return integer $raw_length
+     * @return integer The number of bytes written (or that would have been
+     *                 written) to the output stream.
+     *
      */
-    function mail($message, $stream=false, $reply_id=0, $reply_ent_id=0) {
-        $rfc822_header = $message->rfc822_header;
+    function mail(&$message, $stream=false, $reply_id=0, $reply_ent_id=0, 
+                  $imap_stream=NULL, $extra=NULL) {
+
+        $rfc822_header = &$message->rfc822_header;
+
         if (count($message->entities)) {
             $boundary = $this->mimeBoundary();
             $rfc822_header->content_type->properties['boundary']='"'.$boundary.'"';
@@ -61,12 +91,28 @@ class Deliver {
         if ($reply_id) {
             global $imapConnection, $username, $key, $imapServerAddress, 
                    $imapPort, $mailbox;
-            if (!$imapConnection)
-                $imapConnection = sqimap_login($username, $key, 
-                                               $imapServerAddress, $imapPort, 0);
 
-            sqimap_mailbox_select($imapConnection, $mailbox);
-            $reply_message = sqimap_get_message($imapConnection, $reply_id, $mailbox);
+            // try our best to use an existing IMAP handle
+            //
+            $close_imap_stream = FALSE;
+            if (is_resource($imap_stream)) {
+                $my_imap_stream = $imap_stream;
+
+            } else if (is_resource($imapConnection)) {
+                $my_imap_stream = $imapConnection;
+
+            } else {
+                $close_imap_stream = TRUE;
+                $my_imap_stream = sqimap_login($username, $key,
+                                               $imapServerAddress, $imapPort, 0);
+            } 
+
+            sqimap_mailbox_select($my_imap_stream, $mailbox);
+            $reply_message = sqimap_get_message($my_imap_stream, $reply_id, $mailbox);
+
+            if ($close_imap_stream) {
+                sqimap_logout($my_imap_stream);
+            }
 
             if ($reply_ent_id) {
                 /* redefine the messsage in case of message/rfc822 */
@@ -89,12 +135,43 @@ class Deliver {
                              ? $message->reply_rfc822_header : '');
         $header = $this->prepareRFC822_Header($rfc822_header, $reply_rfc822_header, $raw_length);
 
+        $this->send_mail($message, $header, $boundary, $stream, $raw_length, $extra);
+
+        return $raw_length;
+    }
+
+    /**
+     * function send_mail - send the message parts to the IMAP stream
+     *
+     * @param Message  $message      Message object to send
+     * @param string   $header       Headers ready to send
+     * @param string   $boundary     Message parts boundary
+     * @param resource $stream       Handle to the SMTP stream
+     *                               (when FALSE, nothing will be
+     *                               written to the stream; this can
+     *                               be used to determine the actual
+     *                               number of bytes that will be
+     *                               written to the stream)
+     * @param int     &$raw_length   The number of bytes written (or that
+     *                               would have been written) to the 
+     *                               output stream - NOTE that this is
+     *                               passed by reference
+     * @param mixed    $extra        Any implementation-specific variables
+     *                               can be passed in here and used in
+     *                               an overloaded version of this method
+     *                               if needed.
+     *
+     * @return void
+     *
+     */
+    function send_mail($message, $header, $boundary, $stream=false, 
+                       &$raw_length, $extra=NULL) {
+
         if ($stream) {
             $this->preWriteToStream($header);
             $this->writeToStream($stream, $header);
         }
         $this->writeBody($message, $stream, $raw_length, $boundary);
-        return $raw_length;
     }
 
     /**
@@ -105,6 +182,11 @@ class Deliver {
      *
      * @param Message   $message      Message object to transform
      * @param resource  $stream       SMTP output stream
+     *                                (when FALSE, nothing will be
+     *                                written to the stream; this can
+     *                                be used to determine the actual
+     *                                number of bytes that will be 
+     *                                written to the stream)
      * @param integer  &$length_raw   raw length of the message (part)
      *                                as returned by mail fn
      * @param string    $boundary     custom boundary to call, usually for subparts
@@ -163,6 +245,11 @@ class Deliver {
      *
      * @param Message   $message      Message object to transform
      * @param resource  $stream       SMTP output stream
+     *                                (when FALSE, nothing will be
+     *                                written to the stream; this can
+     *                                be used to determine the actual
+     *                                number of bytes that will be 
+     *                                written to the stream)
      * @param integer  &$length       length of the message part
      *                                as returned by mail fn
      *
@@ -373,6 +460,8 @@ class Deliver {
         } else {
             if ($mime_header->type0 == 'text' || $mime_header->type0 == 'message') {
                 $header[] = 'Content-Transfer-Encoding: 8bit' .  $rn;
+            } else if ($mime_header->type0 == 'multipart' || $mime_header->type0 == 'alternative') {
+                /* no-op; no encoding needed */
             } else {
                 $header[] = 'Content-Transfer-Encoding: base64' .  $rn;
             }
@@ -419,7 +508,7 @@ class Deliver {
      *
      * @return string $header
      */
-    function prepareRFC822_Header($rfc822_header, $reply_rfc822_header, &$raw_length) {
+    function prepareRFC822_Header(&$rfc822_header, $reply_rfc822_header, &$raw_length) {
         global $domain, $version, $username, $encode_header_key, $edit_identity, $hide_auth_header;
 
         if (! isset($hide_auth_header)) $hide_auth_header=false;
@@ -439,15 +528,21 @@ class Deliver {
 
         /* This creates an RFC 822 date */
         $date = date('D, j M Y H:i:s ', time()) . $this->timezone();
+
         /* Create a message-id */
-        $message_id = '<' . $REMOTE_PORT . '.';
-        if (isset($encode_header_key) && trim($encode_header_key)!='') {
-            // use encrypted form of remote address
-            $message_id.= OneTimePadEncrypt($this->ip2hex($REMOTE_ADDR),base64_encode($encode_header_key));
-        } else {
-            $message_id.= $REMOTE_ADDR;
+        $message_id = 'MESSAGE ID GENERATION ERROR! PLEASE CONTACT SQUIRRELMAIL DEVELOPERS';
+        if (empty($rfc822_header->message_id)) {
+            $message_id = '<';
+            /* user-specifc data to decrease collision chance */
+            $seed_data = $username . '.';
+            $seed_data .= (!empty($REMOTE_PORT) ? $REMOTE_PORT . '.' : '');
+            $seed_data .= (!empty($REMOTE_ADDR) ? $REMOTE_ADDR . '.' : '');
+            /* add the current time in milliseconds and randomness */
+            $seed_data .= uniqid(mt_rand(),true);
+            /* put it through one-way hash and add it to the ID */
+            $message_id .= md5($seed_data) . '.squirrel@' . $SERVER_NAME .'>';
         }
-        $message_id .= '.' . time() . '.squirrel@' . $SERVER_NAME .'>';
+
         /* Make an RFC822 Received: line */
         if (isset($REMOTE_HOST)) {
             $received_from = "$REMOTE_HOST ([$REMOTE_ADDR])";
@@ -471,6 +566,7 @@ class Deliver {
          * webmail installation does not prevent changes in user's email address.
          * See SquirrelMail bug tracker #847107 for more details about it.
          */
+        // FIXME: The following headers may generate slightly differently between the message sent to the destination and that stored in the Sent folder because this code will be called before both actions.  This is not necessarily a big problem, but other headers such as Message-ID and Date are preserved between both actions
         if (isset($encode_header_key) &&
             trim($encode_header_key)!='') {
             // use encoded headers, if encryption key is set and not empty
@@ -488,18 +584,33 @@ class Deliver {
         }
 
         /* Insert the rest of the header fields */
-        $header[] = 'Message-ID: '. $message_id . $rn;
+
+        if (!empty($rfc822_header->message_id)) {
+            $header[] = 'Message-ID: '. $rfc822_header->message_id . $rn;
+        } else {
+            $header[] = 'Message-ID: '. $message_id . $rn;
+            $rfc822_header->message_id = $message_id;
+        }
+
         if (is_object($reply_rfc822_header) &&
             isset($reply_rfc822_header->message_id) &&
             $reply_rfc822_header->message_id) {
             //if ($reply_rfc822_header->message_id) {
             $rep_message_id = $reply_rfc822_header->message_id;
-        //        $this->strip_crlf($message_id);
             $header[] = 'In-Reply-To: '.$rep_message_id . $rn;
+            $rfc822_header->in_reply_to = $rep_message_id;
             $references = $this->calculate_references($reply_rfc822_header);
             $header[] = 'References: '.$references . $rn;
+            $rfc822_header->references = $references;
         }
-        $header[] = "Date: $date" . $rn;
+
+        if (!empty($rfc822_header->date) && $rfc822_header->date != -1) {
+            $header[] = 'Date: '. $rfc822_header->date . $rn;
+        } else {
+            $header[] = "Date: $date" . $rn;
+            $rfc822_header->date = $date;
+        }
+
         $header[] = 'Subject: '.encodeHeader($rfc822_header->subject) . $rn;
 
         // folding address list [From|To|Cc|Bcc] happens by using ",$rn<space>"
@@ -853,4 +964,3 @@ class Deliver {
     }
 }
 
-?>

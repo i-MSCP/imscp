@@ -3,7 +3,7 @@
 # Copyright (c) 2005 The Squirrelmail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: reply_buttons.po,v 1.1 2005/11/04 15:02:39 tokul Exp $
+# $Id: reply_buttons.po 10240 2005-11-04 15:02:38Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: reply_buttons\n"

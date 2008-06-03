@@ -1,7 +1,7 @@
 # Czech Translation of SquirrelMail proon plugin
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Daniel Kahoun <squirrel@dan.idk.cz>, 2005.
-# $Id: proon.po,v 1.1 2005/08/15 10:42:55 tokul Exp $
+# $Id: proon.po 9967 2005-08-15 10:42:54Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: proon VERSION\n"

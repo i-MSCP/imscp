@@ -2,7 +2,7 @@
 # SquirrelMail's restrict_senders plugin.
 # Copyright (c) 2003-2005 SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# $Id: restrict_senders.po,v 1.6 2005/06/10 11:04:35 tokul Exp $
+# $Id: restrict_senders.po 9571 2005-06-10 11:04:34Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: restrict_senders\n"

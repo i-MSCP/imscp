@@ -1,4 +1,4 @@
-# $Id: unsafe_image_rules.po,v 1.2 2006/01/28 11:04:01 jervfors Exp $
+# $Id: unsafe_image_rules.po 10575 2006-01-28 11:03:59Z jervfors $
 # Portuguese unsafe_image_rules plugin translation.
 # Copyright (c) 2003-2005 The SquirrelMail Project Team
 # Ruben Leote Mendes <ruben@nocturno.org>, 2003.

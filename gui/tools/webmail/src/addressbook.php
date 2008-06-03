@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 12537 2007-07-14 18:34:04Z kink $
+ * @version $Id: addressbook.php 13112 2008-05-07 21:16:10Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -39,13 +39,16 @@ sqgetGlobalVar('base_uri',  $base_uri,      SQ_SESSION);
 sqgetGlobalVar('delimiter', $delimiter,     SQ_SESSION);
 
 /* From the address form */
-sqgetGlobalVar('addaddr',   $addaddr,   SQ_POST);
-sqgetGlobalVar('editaddr',  $editaddr,  SQ_POST);
-sqgetGlobalVar('deladdr',   $deladdr,   SQ_POST);
-sqgetGlobalVar('sel',       $sel,       SQ_POST);
-sqgetGlobalVar('oldnick',   $oldnick,   SQ_POST);
-sqgetGlobalVar('backend',   $backend,   SQ_POST);
-sqgetGlobalVar('doedit',    $doedit,    SQ_POST);
+sqgetGlobalVar('addaddr',    $addaddr,    SQ_POST);
+sqgetGlobalVar('editaddr',   $editaddr,   SQ_POST);
+sqgetGlobalVar('deladdr',    $deladdr,    SQ_POST);
+sqgetGlobalVar('compose_to', $compose_to, SQ_POST);
+sqgetGlobalVar('sel',        $sel,        SQ_POST);
+// renumber $sel array
+if (!empty($sel)) $sel = array_merge($sel);
+sqgetGlobalVar('oldnick',    $oldnick,    SQ_POST);
+sqgetGlobalVar('backend',    $backend,    SQ_POST);
+sqgetGlobalVar('doedit',     $doedit,     SQ_POST);
 
 /* Get sorting order */
 $abook_sort_order = get_abook_sort();
@@ -243,6 +246,47 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
                 $defselected  = $orig_sel;
             }
 
+        /************************************************
+         * Compose to selected address(es)              *
+         ************************************************/
+        } else if ((!empty($compose_to)) && sizeof($sel) > 0) {
+            $orig_sel = $sel;
+            sort($sel);
+
+            // The selected addresses are identidied by "backend:nickname"
+            $lookup_failed = false;
+            $send_to = '';
+
+            for ($i = 0 ; (($i < sizeof($sel)) && !$lookup_failed) ; $i++) {
+                list($sbackend, $snick) = explode(':', $sel[$i]);
+
+                $data = $abook->lookup($snick, $sbackend);
+
+                if (!$data) {
+                    $formerror = $abook->error;
+                    $lookup_failed = true;
+                    break;
+                } else {
+                    $addr = $abook->full_address($data);
+                    if (!empty($addr))
+                        $send_to .= $addr . ', ';
+                }
+            }
+
+
+            if ($lookup_failed || empty($send_to)) {
+                $showaddrlist = true;
+                $defselected  = $sel;
+            }
+
+
+            // send off to compose screen
+            else {
+                $send_to = trim($send_to, ', ');
+                header('Location: ' . $base_uri . 'src/compose.php?send_to=' . rawurlencode($send_to));
+                exit;
+            }
+
         } else {
 
             /***********************************************
@@ -319,9 +363,10 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
                     $formerror = _("Please select address that you want to edit");
                     $showaddrlist = true;
                 } /* end of edit stage detection */
-            } /* !empty($editaddr)                  - Update/modify address */
-        } /* (!empty($deladdr)) && sizeof($sel) > 0 - Delete address(es) */
-    } /* !empty($addaddr['nickname'])               - Add new address */
+            } /* !empty($editaddr)                     - Update/modify address */
+        } /* (!empty($deladdr)) && sizeof($sel) > 0    - Delete address(es)
+          or (!empty($compose_to)) && sizeof($sel) > 0 - Compose to address(es) */
+    } /* !empty($addaddr['nickname'])                  - Add new address */
 
     // Some times we end output before forms are printed
     if($abortform) {
@@ -360,19 +405,27 @@ if ($showaddrlist) {
     }
 
     usort($alist,'alistcmp');
+
+    // filter listing as needed
+    $hook_return = do_hook_function('abook_list_filter', $alist);
+    if (!empty($hook_return)) $alist = $hook_return;
+
     $prevbackend = -1;
     $headerprinted = false;
 
-    echo html_tag( 'p', '<a href="#AddAddress">' . _("Add address") . '</a>', 'center' ) . "\n";
+    $compose_to_in_new_window_javascript = ' onclick="var send_to = \'\'; var f = document.forms.length; var i = 0; var grab_next_hidden = \'\'; while (i < f) { var e = document.forms[i].elements.length; var j = 0; while (j < e) { if (document.forms[i].elements[j].type == \'checkbox\' && document.forms[i].elements[j].checked) { var pos = document.forms[i].elements[j].value.indexOf(\':\'); if (pos >= 1) { grab_next_hidden = document.forms[i].elements[j].value; } } else if (document.forms[i].elements[j].type == \'hidden\' && grab_next_hidden == document.forms[i].elements[j].name) { if (send_to != \'\') { send_to += \', \'; } send_to += document.forms[i].elements[j].value; } j++; } i++; } if (send_to != \'\') { comp_in_new(\''. $base_uri . 'src/compose.php?send_to=\' + send_to); } return false;"';
+
+    echo html_tag( 'div', '<a href="#AddAddress">' . _("Add address") . '</a>', 'center' ) . "\n";
 
     /* List addresses */
     if (count($alist) > 0) {
-        echo addForm($form_url, 'post');
+        echo addForm($form_url, 'post', 'address_book_form');
         if ($abook->add_extra_field) {
             $abook_fields = 6;
         } else {
             $abook_fields = 5;
         }
+        $count = 0;
         while(list($undef,$row) = each($alist)) {
 
             /* New table header for each backend */
@@ -382,7 +435,9 @@ if ($showaddrlist) {
                             html_tag( 'tr',
                                 html_tag( 'td',
                                     addSubmit(_("Edit selected"), 'editaddr').
-                                    addSubmit(_("Delete selected"), 'deladdr'),
+                                    addSubmit(_("Delete selected"), 'deladdr').
+                                    addSubmit(_("Compose to selected"), 'compose_to',
+                                              ($javascript_on && $compose_new_win ? $compose_to_in_new_window_javascript : '')),
                                     'center', '', "colspan=\"$abook_fields\"" )
                                 ) .
                             html_tag( 'tr',
@@ -393,25 +448,26 @@ if ($showaddrlist) {
 
                 echo html_tag( 'table',
                         html_tag( 'tr',
-                            html_tag( 'td', "\n" . '<strong>' . $row['source'] . '</strong>' . "\n", 'center', $color[0] )
-                            ),
+                            html_tag( 'td', "\n" . '<strong>' . $row['source'] . '</strong>' . "\n", 'center', $color[0], 'colspan="2"' )
+                            ).
+                            concat_hook_function('address_book_header', $row),
                         'center', '', 'width="95%"' ) ."\n".
                     html_tag( 'table', '', 'center', '', 'border="0" cellpadding="1" cellspacing="0" width="90%"' ) .
                     html_tag( 'tr', "\n" .
                             html_tag( 'th', '&nbsp;', 'left', '', 'width="1%"' ) .
                             html_tag( 'th', _("Nickname") . 
                                       show_abook_sort_button($abook_sort_order, _("sort by nickname"), 0, 1),
-                                      'left', '', 'width="1%"' ) .
+                                      'left', '', 'width="10%"' ) .
                             html_tag( 'th', _("Name") .
                                       show_abook_sort_button($abook_sort_order, _("sort by name"), 2, 3),
-                                      'left', '', 'width="1%"' ) .
+                                      'left', '', 'width="10%"' ) .
                             html_tag( 'th', _("E-mail").
                                       show_abook_sort_button($abook_sort_order, _("sort by email"), 4, 5),
-                                      'left', '', 'width="1%"' ) .
+                                      'left', '', 'width="10%"' ) .
                             html_tag( 'th', _("Info").
                                       show_abook_sort_button($abook_sort_order, _("sort by info"), 6, 7),
-                                      'left', '', 'width="1%"' ) .
-                            ($abook->add_extra_field ? html_tag( 'th', '&nbsp;','left', '', 'width="1%"'): ''),
+                                      'left', '', 'width="10%"' ) .
+                            ($abook->add_extra_field ? html_tag( 'th', '&nbsp;','left', '', 'width="1%0"'): ''),
                             '', $color[9] ) . "\n";
 
                 $line = 0;
@@ -420,21 +476,32 @@ if ($showaddrlist) {
 
             $prevbackend = $row['backend'];
 
-            /* Check if this user is selected */
-            $selected = in_array($row['backend'] . ':' . $row['nickname'], $defselected);
-
             /* Print one row, with alternating color */
             if ($line % 2) {
                 $tr_bgcolor = $color[12];
             } else {
                 $tr_bgcolor = $color[4];
             }
+
+            // Print special message if that's what we have
+            // here instead of an actual address entry
+            if (!empty($row['special_message'])) {
+                echo html_tag('tr', '', '', $tr_bgcolor)
+                   . html_tag('td', $row['special_message'], 'center', '', 'colspan="5"')
+                   . "</tr>\n";
+                $line++;
+                continue;
+            }
+
+            /* Check if this user is selected */
+            $selected = in_array($row['backend'] . ':' . $row['nickname'], $defselected);
+
             if ($squirrelmail_language == 'ja_JP') {
                 echo html_tag( 'tr', '', '', $tr_bgcolor);
                 if ($abook->backends[$row['backend']]->writeable) {
                     echo html_tag( 'td',
                             '<small>' .
-                            addCheckBox('sel[]', $selected, $row['backend'].':'.$row['nickname']).
+                            addCheckBox('sel[' . $count . ']', $selected, $row['backend'].':'.$row['nickname'], ' id="' . $row['backend'] . '_' . urlencode($row['nickname']) . '"').
                             '</small>' ,
                             'center', '', 'valign="top" width="1%"' );
                 } else {
@@ -442,15 +509,15 @@ if ($showaddrlist) {
                             '&nbsp;' ,
                             'center', '', 'valign="top" width="1%"' );
                 }
-                echo html_tag( 'td', '&nbsp;' . htmlspecialchars($row['nickname']) . '&nbsp;', 'left', '', 'valign="top" width="1%" nowrap' ) . 
-                    html_tag( 'td', '&nbsp;' . htmlspecialchars($row['lastname']) . ' ' . htmlspecialchars($row['firstname']) . '&nbsp;', 'left', '', 'valign="top" width="1%" nowrap' ) .
-                    html_tag( 'td', '', 'left', '', 'valign="top" width="1%" nowrap' ) . '&nbsp;';
+                echo html_tag( 'td', '&nbsp;<label for="' . $row['backend'] . '_' . urlencode($row['nickname']) . '">' . htmlspecialchars($row['nickname']) . '</label>&nbsp;', 'left', '', 'valign="top" width="10%" nowrap' ) . 
+                    html_tag( 'td', '&nbsp;<label for="' . $row['backend'] . '_' . urlencode($row['nickname']) . '">' . htmlspecialchars($row['lastname']) . ' ' . htmlspecialchars($row['firstname']) . '</label>&nbsp;', 'left', '', 'valign="top" width="10%" nowrap' ) .
+                    html_tag( 'td', '', 'left', '', 'valign="top" width="10%" nowrap' ) . '&nbsp;';
             } else {
                 echo html_tag( 'tr', '', '', $tr_bgcolor);
                 if ($abook->backends[$row['backend']]->writeable) {
                     echo html_tag( 'td',
                             '<small>' .
-                            addCheckBox('sel[]', $selected, $row['backend'] . ':' . $row['nickname']).
+                            addCheckBox('sel[' . $count . ']', $selected, $row['backend'] . ':' . $row['nickname'], ' id="' . $row['backend'] . '_' . urlencode($row['nickname']) . '"').
                             '</small>' ,
                             'center', '', 'valign="top" width="1%"' );
                 } else {
@@ -458,25 +525,27 @@ if ($showaddrlist) {
                             '&nbsp;' ,
                             'center', '', 'valign="top" width="1%"' );
                 }
-                echo html_tag( 'td', '&nbsp;' . htmlspecialchars($row['nickname']) . '&nbsp;', 'left', '', 'valign="top" width="1%" nowrap' ) .
-                    html_tag( 'td', '&nbsp;' . htmlspecialchars($row['name']) . '&nbsp;', 'left', '', 'valign="top" width="1%" nowrap' ) .
-                    html_tag( 'td', '', 'left', '', 'valign="top" width="1%" nowrap' ) . '&nbsp;';
+                echo html_tag( 'td', '&nbsp;<label for="' . $row['backend'] . '_' . urlencode($row['nickname']) . '">' . htmlspecialchars($row['nickname']) . '</label>&nbsp;', 'left', '', 'valign="top" width="10%" nowrap' ) .
+                    html_tag( 'td', '&nbsp;<label for="' . $row['backend'] . '_' . urlencode($row['nickname']) . '">' . htmlspecialchars($row['name']) . '</label>&nbsp;', 'left', '', 'valign="top" width="10%" nowrap' ) .
+                    html_tag( 'td', '', 'left', '', 'valign="top" width="10%" nowrap' ) . '&nbsp;';
             }
             $email = $abook->full_address($row);
-            echo makeComposeLink('src/compose.php?send_to='.rawurlencode($email),
+            echo addHidden($row['backend'] . ':' . $row['nickname'], rawurlencode($email))
+               . makeComposeLink('src/compose.php?send_to='.rawurlencode($email),
                     htmlspecialchars($row['email'])).
                 '&nbsp;</td>'."\n".
-                html_tag( 'td', '&nbsp;' . htmlspecialchars($row['label']) . '&nbsp;', 'left', '', 'valign="top" width="1%"' );
+                html_tag( 'td', '&nbsp;<label for="' . $row['backend'] . '_' . urlencode($row['nickname']) . '">' . htmlspecialchars($row['label']) . '</label>&nbsp;', 'left', '', 'valign="top" width="10%"' );
 
             // add extra column if third party backend needs it
             if ($abook->add_extra_field) {
                 echo html_tag( 'td',
                                '&nbsp;' . (isset($row['extra']) ? $row['extra'] : '') . '&nbsp;',
-                               'left', '', 'valign="top" width="1%"' );
+                               'left', '', 'valign="top" width="10%"' );
             }
 
             echo "</tr>\n";
             $line++;
+            $count++;
         }
 
         /* End of list. Close table. */
@@ -484,7 +553,9 @@ if ($showaddrlist) {
             echo html_tag( 'tr',
                     html_tag( 'td',
                         addSubmit(_("Edit selected"), 'editaddr') .
-                        addSubmit(_("Delete selected"), 'deladdr'),
+                        addSubmit(_("Delete selected"), 'deladdr').
+                        addSubmit(_("Compose to selected"), 'compose_to',
+                                  ($javascript_on && $compose_new_win ? $compose_to_in_new_window_javascript : '')),
                         'center', '', "colspan=\"$abook_fields\"" )
                     );
         }

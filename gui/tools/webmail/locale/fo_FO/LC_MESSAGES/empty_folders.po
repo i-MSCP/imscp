@@ -1,6 +1,6 @@
 # translation of empty_folders.po to Faroese
 # Copyright (C) 2005 Free Software Foundation, Inc.
-# $Id: empty_folders.po,v 1.1 2005/12/20 07:42:51 tokul Exp $
+# $Id: empty_folders.po 10481 2005-12-20 07:42:50Z tokul $
 # Danial Olsen <danial@com-data.fo>, 2005.
 msgid ""
 msgstr ""

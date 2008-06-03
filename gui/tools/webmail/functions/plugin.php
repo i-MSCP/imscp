@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: plugin.php 12752 2007-11-01 18:54:18Z pdontthink $
+ * @version $Id: plugin.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 
@@ -208,4 +208,3 @@ if (isset($plugins) && is_array($plugins)) {
     }
 }
 
-?>

@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: debugger.po,v 1.2 2005/07/27 06:14:03 jervfors Exp $
+# $Id: debugger.po 9837 2005-07-27 06:14:15Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: debugger\n"

@@ -1,0 +1,79 @@
+# translation of mark_read.po to Nynorsk
+# Copyright (c) 2004-2006 SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004-2006.
+# $Id: mark_read.po 12742 2007-10-26 23:15:55Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: mark_read 1.4.1\n"
+"POT-Creation-Date: 2005-03-04 15:08+0200\n"
+"PO-Revision-Date: 2006-03-04 00:10+0100\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "read"
+msgstr "lest"
+
+msgid "unread"
+msgstr "ulest"
+
+msgid "mark all messages in this folder as read"
+msgstr "marker alle meldingar i mappa som lest"
+
+msgid "mark all messages in this folder as unread"
+msgstr "marker alle meldingar i mappa som ulest"
+
+msgid "mark all messages in the above folders as read"
+msgstr "marker alle meldingar i mappa over som lest"
+
+msgid "mark all messages in the above folders as unread"
+msgstr "marker alle meldingar i mappa over som ulest"
+
+msgid "mark all folders"
+msgstr "marker alle mapper"
+
+msgid "Mark Read Link"
+msgstr "Marker lest lenkje"
+
+msgid ""
+"Select all Folders, which you want to appear with a mark as read-/unread-"
+"link:"
+msgstr "Vel alle mappene, som ein vil skal merkast med lest/ulest- lenkje:"
+
+msgid "Toggle Special Folders"
+msgstr "Slå av/på spesialmapper"
+
+msgid "Toggle All"
+msgstr "Slå av/på alt"
+
+msgid "Display links"
+msgstr "Syn lenkjer"
+
+msgid "none"
+msgstr "inga"
+
+msgid "read/unread"
+msgstr "lest/ulest"
+
+msgid "upper"
+msgstr "øvre"
+
+msgid "lower"
+msgstr "nedre"
+
+msgid "shortened"
+msgstr "avkorta"
+
+msgid "brackets"
+msgstr "i parantes"
+
+msgid "seperator"
+msgstr "skileteikn"
+
+msgid "Display 'mark all folders' link below the folder list"
+msgstr "Vis 'marker alle mapper' lenkja under mappelista"
+
+msgid "Save"
+msgstr "Lagra"

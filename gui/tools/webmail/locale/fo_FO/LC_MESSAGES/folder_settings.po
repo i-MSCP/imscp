@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the squirrelmail package.
 # Danial Olsen <danial@com-data.fo>, 2005.
-# $Id: folder_settings.po,v 1.1 2005/12/29 09:13:53 tokul Exp $
+# $Id: folder_settings.po 10513 2005-12-29 09:13:52Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: folder_settings\n"

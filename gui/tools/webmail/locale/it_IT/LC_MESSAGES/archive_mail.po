@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Luca Francesconi <luca.francesconi@ariannaconsulting.it>, 2005.
-# $Id: archive_mail.po,v 1.2 2005/10/03 14:00:52 tokul Exp $
+# $Id: archive_mail.po 10125 2005-10-03 14:00:52Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: archive_mail 1.2\n"

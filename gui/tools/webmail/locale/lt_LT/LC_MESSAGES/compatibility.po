@@ -2,7 +2,7 @@
 # Copyright (c) 2004-2006 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: compatibility.po,v 1.6 2006/06/21 20:08:18 tokul Exp $
+# $Id: compatibility.po 11288 2006-06-21 20:08:18Z tokul $
 # 
 msgid ""
 msgstr ""

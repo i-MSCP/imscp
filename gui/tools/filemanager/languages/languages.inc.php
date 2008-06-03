@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -46,6 +46,8 @@ function getLanguageArray() {
 	$languageArray["fr"]["file"] = "fr.inc.php";
 	$languageArray["de"]["name"] = "German";
 	$languageArray["de"]["file"] = "de.inc.php";
+	$languageArray["he"]["name"] = "Hebrew";
+	$languageArray["he"]["file"] = "he-utf.inc.php";
 	$languageArray["it"]["name"] = "Italian";
 	$languageArray["it"]["file"] = "it.inc.php";
 	$languageArray["ja"]["name"] = "Japanese";

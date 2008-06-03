@@ -99,7 +99,7 @@
       <p>
       SquirrelMail naudoja IMAP protokolą, informaciją apie jį galima rasti
       <A HREF="http://imap.org"/>http://imap.org</A>. Programa naudoja 
-      nuosavas IMAP funkcijas, o ne tas kurios įtaisytos į PHP4. Tačiau tai
+      nuosavas IMAP funkcijas, o ne tas kurios įtaisytos į PHP. Tačiau tai
       paprastai rūpi tik tiems, kurie įrengia sistemą, bet patikėkite, jiems
       tikrai patinka tokios galimybės.
       </p>

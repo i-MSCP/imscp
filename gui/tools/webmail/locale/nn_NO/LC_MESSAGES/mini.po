@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Copyright (C) The SquirrelMail Project Team, 2006
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
-# $Id: mini.po,v 1.2 2006/04/09 16:38:37 tokul Exp $
+# $Id: mini.po 11046 2006-04-09 16:39:40Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: mini 0.3rc1\n"

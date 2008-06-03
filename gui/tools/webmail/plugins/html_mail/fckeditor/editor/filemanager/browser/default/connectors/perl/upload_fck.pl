@@ -308,7 +308,7 @@ sub CheckContentType
 #
 #		if(
 #			$$DATA =~ /<\s*SCRIPT(?:.|\n)*?>/i
-#				|| $$DATA =~ /<\s*(?:.|\n)*?\bonload\s*=(?:.|\n)*?>/i
+#				|| $$DATA =~ /<\s*(?:.|\n)*?\bONLOAD\s*=(?:.|\n)*?>/i
 #				|| $$DATA =~ /<\s*(?:.|\n)*?\bONCLICK\s*=(?:.|\n)*?>/i
 #				) {
 #			$Infomation = '(JavaScript contains)';

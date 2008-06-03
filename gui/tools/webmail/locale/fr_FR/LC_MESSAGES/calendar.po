@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The Squirrelmail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Mikael <pub@grizzli.org>, 2005.
-# $Id: calendar.po,v 1.1 2005/09/11 13:27:07 tokul Exp $
+# $Id: calendar.po 10096 2005-09-11 13:27:06Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: calendar VERSION\n"

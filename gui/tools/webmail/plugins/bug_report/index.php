@@ -7,13 +7,12 @@
  * people to the login screen. At this point no attempt is made to see if the
  * person is logged in or not.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2008 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: index.php 13029 2008-03-11 05:07:17Z pdontthink $
  * @package plugins
  * @subpackage bug_report
  */
 
 header('Location: ../index.php');
 
-?>

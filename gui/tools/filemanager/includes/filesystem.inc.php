@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -29,18 +29,18 @@ function ftp_openconnection() {
 	global $net2ftp_globals;
 
 // Check if the FTP module of PHP is installed
-	if (function_exists("ftp_connect") == false) {
+	if (function_exists("ftp_connect") == false) { 
 		$errormessage = __("The <a href=\"http://www.php.net/manual/en/ref.ftp.php\" target=\"_blank\">FTP module of PHP</a> is not installed.<br /><br /> The administrator of this website should install this FTP module. Installation instructions are given on <a href=\"http://www.php.net/manual/en/ref.ftp.php\" target=\"_blank\">php.net</a><br />");
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 // Decrypt password
-	if (isset($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]) == true) {
-		$net2ftp_password = decryptPassword($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]);
+	if (isset($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]) == true) { 
+		$net2ftp_password = decryptPassword($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]); 
 	}
-	else {
-		$net2ftp_password = decryptPassword($net2ftp_globals["password_encrypted"]);
+	else { 
+		$net2ftp_password = decryptPassword($net2ftp_globals["password_encrypted"]); 
 	}
 
 // Check if port nr is filled in
@@ -50,25 +50,25 @@ function ftp_openconnection() {
 	$ftp_connect = "ftp_connect";
 	if ($net2ftp_globals["sslconnect"] == "yes" && function_exists("ftp_ssl_connect")) { $ftp_connect = "ftp_ssl_connect"; }
 
-	$conn_id = ftp_connect($net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"]);
+	$conn_id = $ftp_connect($net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"]);
 	if ($conn_id == false) {
-		$errormessage = __("Unable to connect to FTP server <b>%1\$s</b> on port <b>%2\$s</b>.<br /><br />Are you sure this is the address of the FTP server? This is often different from that of the HTTP (web) server. Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"]);
+		$errormessage = __("Unable to connect to FTP server <b>%1\$s</b> on port <b>%2\$s</b>.<br /><br />Are you sure this is the address of the FTP server? This is often different from that of the HTTP (web) server. Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 // Login with username and password
 	$login_result = ftp_login($conn_id, $net2ftp_globals["username"], $net2ftp_password);
-	if ($login_result == false) {
+	if ($login_result == false) { 
 		$errormessage = __("Unable to login to FTP server <b>%1\$s</b> with username <b>%2\$s</b>.<br /><br />Are you sure your username and password are correct? Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver"], $net2ftp_globals["username"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 // Set passive mode
-	if ($net2ftp_globals["passivemode"] == "yes") {
-		$success = ftp_pasv($conn_id, TRUE);
-		if ($success == false) {
+	if ($net2ftp_globals["passivemode"] == "yes") { 
+		$success = ftp_pasv($conn_id, TRUE); 
+		if ($success == false) { 
 			$errormessage = __("Unable to switch to the passive mode on FTP server <b>%1\$s</b>.", $net2ftp_globals["ftpserver"]);
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
@@ -108,7 +108,7 @@ function ftp_openconnection2() {
 	global $net2ftp_globals;
 
 // Check if the FTP module of PHP is installed
-	if (function_exists("ftp_connect") == false) {
+	if (function_exists("ftp_connect") == false) { 
 		$errormessage = __("The <a href=\"http://www.php.net/manual/en/ref.ftp.php\" target=\"_blank\">FTP module of PHP</a> is not installed.<br /><br /> The administrator of this website should install this FTP module. Installation instructions are given on <a href=\"http://www.php.net/manual/en/ref.ftp.php\" target=\"_blank\">php.net</a><br />");
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -119,7 +119,7 @@ function ftp_openconnection2() {
 
 // Set up basic connection
 	$conn_id = ftp_connect($net2ftp_globals["ftpserver2"], $net2ftp_globals["ftpserverport2"]);
-	if ($conn_id == false) {
+	if ($conn_id == false) { 
 		$errormessage = __("Unable to connect to the second (target) FTP server <b>%1\$s</b> on port <b>%2\$s</b>.<br /><br />Are you sure this is the address of the second (target) FTP server? This is often different from that of the HTTP (web) server. Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver2"], $net2ftp_globals["ftpserverport2"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -127,17 +127,17 @@ function ftp_openconnection2() {
 
 // Login with username and password
 	$login_result = ftp_login($conn_id, $net2ftp_globals["username2"], $net2ftp_globals["password2"]);
-	if ($login_result == false) {
+	if ($login_result == false) { 
 		$errormessage = __("Unable to login to the second (target) FTP server <b>%1\$s</b> with username <b>%2\$s</b>.<br /><br />Are you sure your username and password are correct? Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver2"], $net2ftp_globals["username2"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 // Set passive mode
-	if ($net2ftp_globals["passivemode"] == "yes") {
-		$success = ftp_pasv($conn_id, TRUE);
-		if ($success == false) {
-			$errormessage = __("Unable to switch to the passive mode on the second (target) FTP server <b>%1\$s</b>.", $net2ftp_globals["ftpserver2"]);
+	if ($net2ftp_globals["passivemode"] == "yes") { 
+		$success = ftp_pasv($conn_id, TRUE); 
+		if ($success == false) { 
+			$errormessage = __("Unable to switch to the passive mode on the second (target) FTP server <b>%1\$s</b>.", $net2ftp_globals["ftpserver2"]); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
@@ -200,7 +200,7 @@ function ftp_rename2($conn_id, $directory, $entry, $newName) {
 	$new = glueDirectories($directory, $newName);
 
 	$ftp_rename_result = ftp_rename($conn_id, $old, $new);
-	if ($ftp_rename_result == false) {
+	if ($ftp_rename_result == false) { 
 		$errormessage = __("Unable to rename directory or file <b>%1\$s</b> into <b>%2\$s</b>", $old, $new);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -231,9 +231,9 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 //
 // $list[$i]["dirorfile"] contains d or - which indicates if the entry is a directory or a file
 // $list[$i]["dirfilename"] contains the name of the entry
-// $list[$i]["chmodoctal"] contains the 3-digit nr
+// $list[$i]["chmodoctal"] contains the 3-digit nr 
 //
-// If the entry is a directory, $list[$i]["chmod_subdirectories"] and $list[$i]["chmod_subfiles"] are "yes" if
+// If the entry is a directory, $list[$i]["chmod_subdirectories"] and $list[$i]["chmod_subfiles"] are "yes" if 
 // the subdirectories and files within the chmodded directory should also be chmodded
 // --------------
 
@@ -245,7 +245,7 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 // -------------------------------------------------------------------------
 // Initialization
 // -------------------------------------------------------------------------
-	if ($divelevel == 0) {
+	if ($divelevel == 0) { 
 		$net2ftp_output["ftp_chmod2"][] = "<ul>";
 	}
 
@@ -258,11 +258,11 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 		$currentdirectory = glueDirectories($directory, $list["directories"][$i]["dirfilename"]);
 
 // ------------------------------------
-// Determine if the directory must first be chmodded (if chmodded to 5 or 7),
+// Determine if the directory must first be chmodded (if chmodded to 5 or 7), 
 // or first be traversed (if chmodded to other values)
 // A problem is that we don't know if the FTP user is the owner/group/other of the file...
 // ------------------------------------
-		if ($list["directories"][$i]["chmodoctal"] == 555 ||
+		if ($list["directories"][$i]["chmodoctal"] == 555 || 
 		$list["directories"][$i]["chmodoctal"] == 557 ||
 		$list["directories"][$i]["chmodoctal"] == 575 ||
 		$list["directories"][$i]["chmodoctal"] == 577 ||
@@ -284,13 +284,13 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 		if ($first_chmod_then_traverse == true && ($list["directories"][$i]["chmod_subdirectories"] == "yes" || $divelevel == 0)) {
 			$sitecommand = "chmod 0" . $list["directories"][$i]["chmodoctal"] . " $currentdirectory";
 			$success1 = ftp_site($conn_id, $sitecommand);
-			if ($success1 == false) {
-				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand);
+			if ($success1 == false) { 
+				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand); 
 				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
-				return false;
+				return false; 
 			}
-			elseif ($success1 == true)  {
-				$net2ftp_output["ftp_chmod2"][] = __("Directory <b>%1\$s</b> successfully chmodded to <b>%2\$s</b>", $currentdirectory, $list["directories"][$i]["chmodoctal"]);
+			elseif ($success1 == true)  { 
+				$net2ftp_output["ftp_chmod2"][] = __("Directory <b>%1\$s</b> successfully chmodded to <b>%2\$s</b>", $currentdirectory, $list["directories"][$i]["chmodoctal"]); 
 			}
 		}
 
@@ -323,7 +323,7 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 			ftp_chmod2($conn_id, $currentdirectory, $newlist, $newdivelevel);
 
 			$net2ftp_output["ftp_chmod2"][] = "</ul>";
-
+			
 		} // end if subdirectories and files
 
 // ------------------------------------
@@ -334,13 +334,13 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 		if ($first_chmod_then_traverse == false && ($list["directories"][$i]["chmod_subdirectories"] == "yes" || $divelevel == 0)) {
 			$sitecommand = "chmod 0" . $list["directories"][$i]["chmodoctal"] . " $currentdirectory";
 			$success1 = ftp_site($conn_id, $sitecommand);
-			if ($success1 == false) {
-				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand);
+			if ($success1 == false) { 
+				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand); 
 				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
-				return false;
+				return false; 
 			}
-			elseif ($success1 == true)  {
-				$net2ftp_output["ftp_chmod2"][] = __("Directory <b>%1\$s</b> successfully chmodded to <b>%2\$s</b>", $currentdirectory, $list["directories"][$i]["chmodoctal"]);
+			elseif ($success1 == true)  { 
+				$net2ftp_output["ftp_chmod2"][] = __("Directory <b>%1\$s</b> successfully chmodded to <b>%2\$s</b>", $currentdirectory, $list["directories"][$i]["chmodoctal"]); 
 			}
 		}
 
@@ -360,12 +360,12 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 		if ($list["files"][$i]["chmod_subfiles"] == "yes" || $divelevel == 0) {
 			$sitecommand = "chmod 0" . $list["files"][$i]["chmodoctal"] . " $currentfile";
 			$success2 = ftp_site($conn_id, $sitecommand);
-			if ($success2 == false) {
-				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand);
+			if ($success2 == false) { 
+				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand); 
 				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
-				return false;
+				return false; 
 			}
-			elseif ($success2 == true)  {
+			elseif ($success2 == true)  { 
 				$net2ftp_output["ftp_chmod2"][] = __("File <b>%1\$s</b> was successfully chmodded to <b>%2\$s</b>", $currentfile, $list["files"][$i]["chmodoctal"]);
 			}
 		}
@@ -416,8 +416,8 @@ function ftp_rmdir2($conn_id, $directory) {
 		$parts = explode("/", $directory);
 		$lastpartnr = sizeof($parts)-1;
 		$success2 = ftp_rmdir($conn_id, $parts[$lastpartnr]);
-		if ($success2 == false) {
-			$errormessage = __("Unable to delete the directory <b>%1\$s</b>", $directory);
+		if ($success2 == false) { 
+			$errormessage = __("Unable to delete the directory <b>%1\$s</b>", $directory); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
@@ -461,8 +461,8 @@ function ftp_delete2($conn_id, $file) {
 		$parts = explode("/", $file);
 		$lastpartnr = sizeof($parts)-1;
 		$success2 = ftp_delete($conn_id, $parts[$lastpartnr]);
-		if ($success2 == false) {
-			$errormessage = __("Unable to delete the file <b>%1\$s</b>", $file);
+		if ($success2 == false) { 
+			$errormessage = __("Unable to delete the file <b>%1\$s</b>", $file); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
@@ -491,7 +491,7 @@ function ftp_newdirectory($conn_id, $directory) {
 // --------------
 
 	$success1 = ftp_mkdir($conn_id, $directory);
-	if ($success1 == false) {
+	if ($success1 == false) { 
 		$errormessage = __("Unable to create the directory <b>%1\$s</b>", $directory);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -530,8 +530,8 @@ function ftp_readfile($conn_id, $directory, $file) {
 
 // Step 1/4: Create a temporary filename
 	$tempfilename = tempnam($net2ftp_globals["application_tempdir"], "read__");
-	if ($tempfilename == false)  {
-		@unlink($tempfilename);
+	if ($tempfilename == false)  { 
+		@unlink($tempfilename); 
 		$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -542,8 +542,8 @@ function ftp_readfile($conn_id, $directory, $file) {
 // Open connection if needed
 	if ($conn_id == "") {
 		$conn_id = ftp_openconnection();
-		if ($net2ftp_result["success"] == false)  {
-			@unlink($tempfilename);
+		if ($net2ftp_result["success"] == false)  { 
+			@unlink($tempfilename); 
 			return false;
 		}
 		$leave_conn_open = "no";
@@ -563,8 +563,8 @@ function ftp_readfile($conn_id, $directory, $file) {
 	$ftpmode = ftpAsciiBinary($source);
 
 	$ftp_get_result = ftp_get($conn_id, "$tempfilename", "$source", $ftpmode);
-	if ($ftp_get_result == false) {
-		@unlink($tempfilename);
+	if ($ftp_get_result == false) { 
+		@unlink($tempfilename); 
 		$errormessage = __("Unable to get the file <b>%1\$s</b> from the FTP server and to save it as temporary file <b>%2\$s</b>.<br />Check the permissions of the %3\$s directory.<br />", $source, $tempfilename, $net2ftp_globals["application_tempdir"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -582,11 +582,11 @@ function ftp_readfile($conn_id, $directory, $file) {
 
 // Step 4/4: Delete temporary file
 	$unlink_result = @unlink($tempfilename);
-	if ($unlink_result == false) {
-		$errormessage = __("Unable to delete the temporary file");
+	if ($unlink_result == false) {  
+		$errormessage = __("Unable to delete the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
-	}
+	} 
 	registerTempfile("unregister", $tempfilename);
 
 // Change CarriageReturn+LineFeed by LineFeed
@@ -640,9 +640,9 @@ function ftp_writefile($conn_id, $directory, $file, $string) {
 
 // Step 1/4: Create a temporary filename
 	$tempfilename = tempnam($net2ftp_globals["application_tempdir"], "write__");
-	if ($tempfilename == false)  {
-		@unlink($tempfilename);
-		$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
+	if ($tempfilename == false)  { 
+		@unlink($tempfilename); 
+		$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -682,8 +682,8 @@ function ftp_writefile($conn_id, $directory, $file, $string) {
 	//$ftpmode = ftpAsciiBinary($file);
 
 	$success3 = ftp_put($conn_id, $target, $tempfilename, $ftpmode);
-	if ($success3 == false) {
-		@unlink($tempfilename);
+	if ($success3 == false) { 
+		@unlink($tempfilename); 
 		$errormessage = __("Unable to put the file <b>%1\$s</b> on the FTP server.<br />You may not have write permissions on the directory.", $target);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -694,11 +694,11 @@ function ftp_writefile($conn_id, $directory, $file, $string) {
 
 // Step 4/4: Delete temporary file
 	$success4 = @unlink($tempfilename);
-	if ($success4 == false) {
-		$errormessage = __("Unable to delete the temporary file");
+	if ($success4 == false) { 
+		$errormessage = __("Unable to delete the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
-	}
+	} 
 	registerTempfile("unregister", $tempfilename);
 
 } // End function ftp_writefile
@@ -721,7 +721,7 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 
 // --------------
 // This function copies/moves/deletes directories and files from an FTP server to the same
-// or another FTP server. Files are first transferred from the source FTP server to the webserver,
+// or another FTP server. Files are first transferred from the source FTP server to the webserver, 
 // and then transferred to the target FTP server.
 //
 // $list[$i]["dirorfile"] contains d or - which indicates if its a directory or a file
@@ -759,7 +759,7 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 		$source = glueDirectories($list["directories"][$i]["sourcedirectory"], $list["directories"][$i]["dirfilename"]);
 		if ($copymovedelete == "copy" || $copymovedelete == "move") {
 			if ($divelevel > 0) { $target = glueDirectories($list["directories"][$i]["targetdirectory"], $list["directories"][$i]["dirfilename"]); } // Subdirectories keep their original names
-			else                { $target = glueDirectories($list["directories"][$i]["targetdirectory"], $list["directories"][$i]["newname"]); }     // First-level user-selected directories can have been renamed
+			else                { $target = glueDirectories($list["directories"][$i]["targetdirectory"], $list["directories"][$i]["newname"]); }     // First-level user-selected directories can have been renamed 
 		}
 		else {
 			$target = "";
@@ -771,16 +771,16 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 
 
 // Check that the targetdirectory is not a subdirectory of the sourcedirectory
-		if (($conn_id_source == $conn_id_target) && ($copymovedelete != "delete") && (isSubdirectory($source, $target) == true)) {
-			$net2ftp_output["ftp_copymovedelete"][] = __("The target directory <b>%1\$s</b> is the same as or a subdirectory of the source directory <b>%2\$s</b>, so this directory will be skipped", $target, $source);
+		if (($conn_id_source == $conn_id_target) && ($copymovedelete != "delete") && (isSubdirectory($source, $target) == true)) { 
+			$net2ftp_output["ftp_copymovedelete"][] = __("The target directory <b>%1\$s</b> is the same as or a subdirectory of the source directory <b>%2\$s</b>, so this directory will be skipped", $target, $source); 
 			$net2ftp_output["ftp_copymovedelete"][] = "</ul>";
-			continue;
+			continue;			
 		}
 
 // Check if the directory contains a banned keyword
 // If banned keyword - copy: continue
 // If banned keyword - move: abort
-		if ($list["directories"][$i]["selectable"] == "banned_keyword") {
+		if ($list["directories"][$i]["selectable"] == "banned_keyword") { 
 			if ($copymovedelete == "copy") {
 				$net2ftp_output["ftp_copymovedelete"][] = __("The directory <b>%1\$s</b> contains a banned keyword, so this directory will be skipped", $source);
 				$net2ftp_output["ftp_copymovedelete"][] = "</ul>";
@@ -803,10 +803,10 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 
 // Get a new list
 		$newlist = ftp_getlist($conn_id_source, $source);
-		if ($net2ftp_result["success"] == false) {
+		if ($net2ftp_result["success"] == false) { 
 			$net2ftp_output["ftp_copymovedelete"][] = __("The directory <b>%1\$s</b> could not be selected, so this directory will be skipped", $source);
 			$net2ftp_output["ftp_copymovedelete"][] = "</ul>";
-			setErrorVars(true, "", "", "", "");
+			setErrorVars(true, "", "", "", ""); 
 			continue;
 		}
 
@@ -826,13 +826,13 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 
 // Delete the source directory
 // (Only if there were no problems in the recursive call to ftp_copymovedelete() above)
-		if ($ftp_copymovedelete_result == true && ($copymovedelete == "move" || $copymovedelete == "delete")) {
+		if ($ftp_copymovedelete_result == true && ($copymovedelete == "move" || $copymovedelete == "delete")) { 
 			ftp_rmdir2($conn_id_source, $source);
- 			if ($net2ftp_result["success"] == false) {
-				setErrorVars(true, "", "", "", "");
-				$net2ftp_output["ftp_copymovedelete"][] = __("Unable to delete the subdirectory <b>%1\$s</b> - it may not be empty", $source);
+ 			if ($net2ftp_result["success"] == false) { 
+				setErrorVars(true, "", "", "", ""); 
+				$net2ftp_output["ftp_copymovedelete"][] = __("Unable to delete the subdirectory <b>%1\$s</b> - it may not be empty", $source); 
 			}
-			else {
+			else { 
 				$net2ftp_output["ftp_copymovedelete"][] = __("Deleted subdirectory <b>%1\$s</b>", $source);
 			}
 		}
@@ -864,7 +864,7 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 		else                                      { $target = glueDirectories($list["files"][$i]["targetdirectory"], $list["files"][$i]["dirfilename"]); }
 
 // Check that the target is not the same as the source file
-			if (($conn_id_source == $conn_id_target) && ($target == $source)) {
+			if (($conn_id_source == $conn_id_target) && ($target == $source)) { 
 				$net2ftp_output["ftp_copymovedelete"][] = __("The target for file <b>%1\$s</b> is the same as the source, so this file will be skipped", $source);
 				continue;
 			}
@@ -872,7 +872,7 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 // Check if the file contains a banned keyword, and if it is not bigger than the limit
 // If banned keyword or too big - copy: continue with the other files
 // If banned keyword or too big - move: abort
-			if ($list["files"][$i]["selectable"] == "banned_keyword") {
+			if ($list["files"][$i]["selectable"] == "banned_keyword") { 
 				if ($copymovedelete == "copy") {
 					$net2ftp_output["ftp_copymovedelete"][] = __("The file <b>%1\$s</b> contains a banned keyword, so this file will be skipped", $source);
 					continue;
@@ -882,7 +882,7 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 					return false;
 				}
 			}
-			elseif ($list["files"][$i]["selectable"] == "too_big") {
+			elseif ($list["files"][$i]["selectable"] == "too_big") { 
 				if ($copymovedelete == "copy") {
 					$net2ftp_output["ftp_copymovedelete"][] = __("The file <b>%1\$s</b> is too big to be copied, so this file will be skipped", $source);
 					continue;
@@ -903,14 +903,14 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 			$copymove = "copy";
 
 			ftp_getfile($conn_id_source, $localtargetdir, $localtargetfile, $remotesourcedir, $remotesourcefile, $ftpmode, $copymove);
-			if ($net2ftp_result["success"] == false) {
+			if ($net2ftp_result["success"] == false) { 
 				setErrorVars(true, "", "", "", "");
-				if ($copymovedelete == "copy") {
-					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to copy the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
-					continue;
+				if ($copymovedelete == "copy") { 
+					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to copy the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
+					continue; 
 				}
-				elseif ($copymovedelete == "move") {
-					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to move the file <b>%1\$s</b>, aborting the move", $list["files"][$i]["dirfilename"]);
+				elseif ($copymovedelete == "move") { 
+					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to move the file <b>%1\$s</b>, aborting the move", $list["files"][$i]["dirfilename"]); 
 					return false;
 				}
 			}
@@ -925,34 +925,34 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 			$copymove = "move";
 
 			ftp_putfile($conn_id_target, $localsourcedir, $localsourcefile, $remotetargetdir, $remotetargetfile, $ftpmode, $copymove);
-			if ($net2ftp_result["success"] == false) {
+			if ($net2ftp_result["success"] == false) { 
 				setErrorVars(true, "", "", "", "");
-				if ($copymovedelete == "copy") {
-					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to copy the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
-					continue;
+				if ($copymovedelete == "copy") { 
+					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to copy the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
+					continue; 
 				}
-				elseif ($copymovedelete == "move") {
-					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to move the file <b>%1\$s</b>, aborting the move", $list["files"][$i]["dirfilename"]);
+				elseif ($copymovedelete == "move") { 
+					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to move the file <b>%1\$s</b>, aborting the move", $list["files"][$i]["dirfilename"]); 
 					return false;
 				}
 			}
 
 // Copy: if the operation is successful, print a message
-			elseif ($net2ftp_result["success"] == true && $copymovedelete == "copy") {
-				$net2ftp_output["ftp_copymovedelete"][] = __("Copied file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
+			elseif ($net2ftp_result["success"] == true && $copymovedelete == "copy") { 
+				$net2ftp_output["ftp_copymovedelete"][] = __("Copied file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
 			}
 
 // Move: only if the operation is successful, delete the source file
-			elseif ($copymovedelete == "move") {
+			elseif ($copymovedelete == "move") { 
 				$remotesource = glueDirectories($list["files"][$i]["sourcedirectory"], $list["files"][$i]["dirfilename"]);
 
 				ftp_delete2($conn_id_source, $remotesource);
-				if ($net2ftp_result["success"] == false) {
-					setErrorVars(true, "", "", "", "");
+				if ($net2ftp_result["success"] == false) { 
+					setErrorVars(true, "", "", "", ""); 
 					$net2ftp_output["ftp_copymovedelete"][] = __("Unable to move the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
 				}
-				else {
-					$net2ftp_output["ftp_copymovedelete"][] = __("Moved file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
+				else { 
+					$net2ftp_output["ftp_copymovedelete"][] = __("Moved file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
 				}
 			}
 
@@ -965,13 +965,13 @@ function ftp_copymovedelete($conn_id_source, $conn_id_target, $list, $copymovede
 			$remotesource = glueDirectories($list["files"][$i]["sourcedirectory"], $list["files"][$i]["dirfilename"]);
 
 			ftp_delete2($conn_id_source, $remotesource);
-			if ($net2ftp_result["success"] == false) {
-				setErrorVars(true, "", "", "", "");
-				$net2ftp_output["ftp_copymovedelete"][] = __("Unable to delete the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
+			if ($net2ftp_result["success"] == false) { 
+				setErrorVars(true, "", "", "", ""); 
+				$net2ftp_output["ftp_copymovedelete"][] = __("Unable to delete the file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
 				continue;
 			}
-			else {
-				$net2ftp_output["ftp_copymovedelete"][] = __("Deleted file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]);
+			else { 
+				$net2ftp_output["ftp_copymovedelete"][] = __("Deleted file <b>%1\$s</b>", $list["files"][$i]["dirfilename"]); 
 			}
 
 		} // end delete
@@ -1005,13 +1005,13 @@ function ftp_processfiles($dowhat, $conn_id, $directory, $list, $options, $resul
 
 // --------------
 // This function does something with files (get size, find string, ...)
-// The $list contains both directories and files. The files are simply processed; the
+// The $list contains both directories and files. The files are simply processed; the 
 // directories are parsed recursively.
 //
 // $list[$i]["dirorfile"] contains d or - which indicates if the entry is a directory or a file
 // $list[$i]["dirfilename"] contains the name of the entry
 // $list[$i]["size"] contains the size of the entry
-//
+// 
 // OPTIONS:
 // if ($dowhat == "calculatesize") then
 // 	$options = array()						doesn't contain anything
@@ -1029,7 +1029,7 @@ function ftp_processfiles($dowhat, $conn_id, $directory, $list, $options, $resul
 // if ($dowhat == "findstring") then
 // 	$result[$k]["directory"] contains the directory
 // 	$result[$k]["dirfilename"] contains the filename
-// 	$result[$k]["line"] contains the line nr
+// 	$result[$k]["line"] contains the line nr 
 //
 // --------------
 
@@ -1041,7 +1041,7 @@ function ftp_processfiles($dowhat, $conn_id, $directory, $list, $options, $resul
 // -------------------------------------------------------------------------
 // Initialization
 // -------------------------------------------------------------------------
-	if ($divelevel == 0) {
+	if ($divelevel == 0) { 
 
 	}
 
@@ -1088,12 +1088,12 @@ function ftp_processfiles($dowhat, $conn_id, $directory, $list, $options, $resul
 		elseif ($dowhat == "findstring") {
 
 // Check that the file is smaller than the maximum file size that can be processed with net2ftp
-			if ($list["files"][$i]["selectable"] != "ok") {
+			if ($list["files"][$i]["selectable"] != "ok") { 
 				continue;
 			}
 
 // Check that the file is within the limits indicated on the selection screen
-			if ($list["files"][$i]["size"] < $options["size_from"] || $list["files"][$i]["size"] > $options["size_to"]) {
+			if ($list["files"][$i]["size"] < $options["size_from"] || $list["files"][$i]["size"] > $options["size_to"]) { 
 //				echo "File $i skipped";
 				continue;
 			}
@@ -1135,7 +1135,7 @@ function ftp_processfiles($dowhat, $conn_id, $directory, $list, $options, $resul
 					array_push($result, $tempresult);
 				}
 
-			} // end for
+			} // end for 
 
 		} // end if findstring
 
@@ -1183,7 +1183,7 @@ function ftp_getfile($conn_id, $localtargetdir, $localtargetfile, $remotesourced
 
 // Check if the filesize is smaller than the allowed filesize
 //	$ftp_size_result = ftp_size($conn_id, $remotesource);
-//	if ($ftp_size_result > $net2ftp_settings["max_filesize"]) {
+//	if ($ftp_size_result > $net2ftp_settings["max_filesize"]) { 
 //		$errormessage = __("The file is too big to be transferred");
 //		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 //		return false;
@@ -1198,8 +1198,8 @@ function ftp_getfile($conn_id, $localtargetdir, $localtargetfile, $remotesourced
 
 // Get file
 	$success1 = ftp_get($conn_id, $localtarget, $remotesource, $ftpmode);
-	if ($success1 == false) {
-		$errormessage = __("Unable to copy the remote file <b>%1\$s</b> to the local file using FTP mode <b>%2\$s</b>", $remotesource, $printftpmode);
+	if ($success1 == false) { 
+		$errormessage = __("Unable to copy the remote file <b>%1\$s</b> to the local file using FTP mode <b>%2\$s</b>", $remotesource, $printftpmode); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -1212,7 +1212,7 @@ function ftp_getfile($conn_id, $localtargetdir, $localtargetfile, $remotesourced
 // Move ==> delete remote source file
 	if ($copymove != "copy") {
 		$success2 = ftp_delete2($conn_id, $remotesource);
-		if ($success2 == false) {
+		if ($success2 == false) { 
 			$errormessage = __("Unable to delete file <b>%1\$s</b>", $remotesource);
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
@@ -1255,13 +1255,13 @@ function ftp_putfile($conn_id, $localsourcedir, $localsourcefile, $remotetargetd
 
 // In the function ftp_put, use FTP_BINARY without the double quotes, otherwhise ftp_put assumes FTP_ASCII
 // DO NOT REMOVE THIS OR THE BINARY FILES WILL BE CORRUPTED (when copying, moving, uploading,...)
-	if ($ftpmode == "FTP_BINARY") { $ftpmode = FTP_BINARY; }
+	if ($ftpmode == "FTP_BINARY") { $ftpmode = FTP_BINARY; } 
 
 	if ($ftpmode == FTP_ASCII) { $printftpmode = "FTP_ASCII"; }
 	elseif ($ftpmode == FTP_BINARY) { $printftpmode = "FTP_BINARY"; }
 
 // Check if the filesize is smaller than the allowed filesize
-	if (filesize($localsource) > $net2ftp_settings["max_filesize"]) {
+	if (filesize($localsource) > $net2ftp_settings["max_filesize"]) { 
 		$errormessage = __("The file is too big to be transferred");
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -1281,8 +1281,8 @@ function ftp_putfile($conn_id, $localsourcedir, $localsourcefile, $remotetargetd
 // Put local file to remote file
 // int ftp_put (int ftp_stream, string remote_file, string local_file, int mode)
 	$success1 = ftp_put($conn_id, $remotetarget, $localsource, $ftpmode);
-	if ($success1 == false) {
-		$errormessage = __("Unable to copy the local file to the remote file <b>%1\$s</b> using FTP mode <b>%2\$s</b>", $remotetarget, $printftpmode);
+	if ($success1 == false) { 
+		$errormessage = __("Unable to copy the local file to the remote file <b>%1\$s</b> using FTP mode <b>%2\$s</b>", $remotetarget, $printftpmode); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -1295,8 +1295,8 @@ function ftp_putfile($conn_id, $localsourcedir, $localsourcefile, $remotetargetd
 // Move ==> delete local source file
 	if ($copymove != "copy") {
 		$success2 = unlink($localsource);
-		if ($success2 == false) {
-			$errormessage = __("Unable to delete the local file");
+		if ($success2 == false) { 
+			$errormessage = __("Unable to delete the local file"); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
@@ -1348,7 +1348,7 @@ function getContentType($entry) {
 
 		elseif (strpos($entry, ".mpp") !== false) { $content_type = "application/vnd.ms-project"; }
 	}
-
+	
 	return $content_type;
 }
 
@@ -1383,7 +1383,7 @@ function ftp_downloadfile($directory, $entry) {
 
 // Check if the filesize is smaller than the allowed filesize
 //	$ftp_size_result = ftp_size($conn_id, "$directory/$entry");
-//	if ($ftp_size_result > $net2ftp_settings["max_filesize"]) {
+//	if ($ftp_size_result > $net2ftp_settings["max_filesize"]) { 
 //		$errormessage = __("The file is too big to be transferred");
 //		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 //		return false;
@@ -1394,8 +1394,8 @@ function ftp_downloadfile($directory, $entry) {
 
 // Temporary filename
 	$tempfilename = tempnam($net2ftp_globals["application_tempdir"], "downl__");
-	if ($tempfilename == false)  {
-		@unlink($tempfilename);
+	if ($tempfilename == false)  { 
+		@unlink($tempfilename); 
 		$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
@@ -1405,9 +1405,9 @@ function ftp_downloadfile($directory, $entry) {
 // Get the file
 //          ftp_getfile($conn_id, $localtargetdir, $localtargetfile, $remotesourcedir, $remotesourcefile, $ftpmode, $copymove)
 		ftp_getfile($conn_id, "", $tempfilename, $directory, $entry, $ftpmode, "copy");
-		if ($net2ftp_result["success"] == false) {
-			@unlink($tempfilename);
-			$errormessage = __("Unable to get the file <b>%1\$s</b> from the FTP server and to save it as temporary file <b>%2\$s</b>.<br />Check the permissions of the %3\$s directory.<br />", $entry, $tempfilename, $net2ftp_globals["application_tempdir"]);
+		if ($net2ftp_result["success"] == false) { 
+			@unlink($tempfilename); 
+			$errormessage = __("Unable to get the file <b>%1\$s</b> from the FTP server and to save it as temporary file <b>%2\$s</b>.<br />Check the permissions of the %3\$s directory.<br />", $entry, $tempfilename, $net2ftp_globals["application_tempdir"]); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
@@ -1426,17 +1426,17 @@ function ftp_downloadfile($directory, $entry) {
 // Open file
 // --------------------
 // From the PHP manual:
-// Note:  The mode may contain the letter 'b'.
-// This is useful only on systems which differentiate between binary and text
-// files (i.e. Windows. It's useless on Unix). If not needed, this will be
-// ignored. You are encouraged to include the 'b' flag in order to make your scripts
+// Note:  The mode may contain the letter 'b'. 
+// This is useful only on systems which differentiate between binary and text 
+// files (i.e. Windows. It's useless on Unix). If not needed, this will be 
+// ignored. You are encouraged to include the 'b' flag in order to make your scripts 
 // more portable.
 // Thanks to Malte for bringing this to my attention !
 	registerTempfile("register", $tempfilename);
-	$handle = fopen($tempfilename , "rb");
+	$handle = fopen($tempfilename , "rb"); 
 	if ($handle == false) {
-		@unlink($tempfilename);
-		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
+		@unlink($tempfilename); 
+		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -1449,8 +1449,8 @@ function ftp_downloadfile($directory, $entry) {
 //	$success1 = fpassthru($handle);
 //	if ($success1 == false) {
 //		@fclose($handle);
-//		@unlink($tempfilename);
-//		$errormessage = __("Unable to send the file to the browser");
+//		@unlink($tempfilename); 
+//		$errormessage = __("Unable to send the file to the browser"); 
 //		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 //		return false;
 //	}
@@ -1470,11 +1470,11 @@ function ftp_downloadfile($directory, $entry) {
 // Delete the temporary file
 // --------------------
 	$success3 = @unlink($tempfilename);
-	if ($success3 == false) {
-		$errormessage = __("Unable to delete the temporary file");
+	if ($success3 == false) { 
+		$errormessage = __("Unable to delete the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
-	}
+	} 
 	registerTempfile("unregister", $tempfilename);
 
 } // End function ftp_downloadfile
@@ -1521,7 +1521,6 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 		if ($net2ftp_result["success"] == false)  { return false; }
 
 	}
-
 
 // -------------------------------------------------------------------------
 // For all directories...
@@ -1579,7 +1578,7 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 // ------------------------
 		if ($zipactions["download"] == "yes") {
 			$timenow = time();
-
+			
 			$filenameToSend = "net2ftp-" . $timenow . ".zip";
 			$filesizeToSend = strlen($net2ftp_globals["zipfile"]->file());
 			sendDownloadHeaders($filenameToSend, $filesizeToSend);
@@ -1595,9 +1594,9 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 			$string = $net2ftp_globals["zipfile"]->file();
 
 			$tempfilename = tempnam($net2ftp_globals["application_tempdir"], "zip__");
-			if ($tempfilename == false)  {
-				@unlink($tempfilename);
-				$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
+			if ($tempfilename == false)  { 
+				@unlink($tempfilename); 
+				$errormessage = __("Unable to create the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]); 
 				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 				return false;
 			}
@@ -1612,14 +1611,14 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 // ------------------------
 		if ($zipactions["save"] == "yes") {
 			ftp_putfile($conn_id, "", $tempfilename, $directory, $zipactions["save_filename"], FTP_BINARY, "copy");
-			if ($net2ftp_result["success"] == false) {
-				@unlink($tempfilename);
-//				$errormessage = __("Unable to put the file <b>%1\$s</b> on the FTP server.<br />You may not have write permissions on the directory.", $zipactions["save_filename"]);
+			if ($net2ftp_result["success"] == false) { 
+				@unlink($tempfilename); 
+//				$errormessage = __("Unable to put the file <b>%1\$s</b> on the FTP server.<br />You may not have write permissions on the directory.", $zipactions["save_filename"]); 
 //				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 				return false;
 			}
 			else { $net2ftp_output["ftp_zip"][] = __("The zip file has been saved on the FTP server as <b>%1\$s</b>", $zipactions["save_filename"]) . "<br /><br />\n"; }
-		}
+		}		
 
 // ------------------------
 // Close the connection
@@ -1659,9 +1658,9 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 			$AttmFiles = array($tempfilename);
 
 			SendMail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles);
-			if ($net2ftp_result["success"] == false) {
-				@unlink($tempfilename);
-				return false;
+			if ($net2ftp_result["success"] == false) { 
+				@unlink($tempfilename); 
+				return false; 
 			}
 			$net2ftp_output["ftp_zip"][] = __("The zip file has been sent to <b>%1\$s</b>.", $To) . "<br /><br />";
 		}
@@ -1671,8 +1670,8 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 // ------------------------
 		if ($zipactions["save"] == "yes" || $zipactions["email"] == "yes") {
 			$success4 = @unlink($tempfilename);
-			if ($success4 == false) {
-				$errormessage = __("Unable to delete the temporary file");
+			if ($success4 == false) { 
+				$errormessage = __("Unable to delete the temporary file"); 
 				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 				return false;
 			}
@@ -1704,20 +1703,20 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 function acceptFiles($uploadedFilesArray) {
 
 // --------------
-// This PHP function takes files that were just uploaded with HTTP POST,
-// verifies if the size is smaller than a certain value, and moves them
-// using move_uploaded_file() from the server's temporary directory to
+// This PHP function takes files that were just uploaded with HTTP POST, 
+// verifies if the size is smaller than a certain value, and moves them 
+// using move_uploaded_file() from the server's temporary directory to 
 // net2ftp's temporary directory
 //
 // $uploadedFilesArray[number]["name"] and $acceptedFilesArray[number]["name"] contain the real name of the file
 // $uploadedFilesArray[number]["tmp_name"] contains the temporary name of the file in the *webserver's* temporary directory (eg C:\temp)
 // $acceptedFilesArray[number]["tmp_name"] contains the temporary name of the file in *net2ftp's* temporary directory (eg C:\web\net2ftp\temp)
 //
-// Note 1 - $acceptedFilesArray[number]["tmp_name"] may not be the same as $uploadedFilesArray[number]["tmp_name"] because
+// Note 1 - $acceptedFilesArray[number]["tmp_name"] may not be the same as $uploadedFilesArray[number]["tmp_name"] because 
 //          $acceptedFilesArray[number]["tmp_name"] should be unique at the moment the file is transferred to the new directory.
-// Note 2 - $acceptedFilesArray[number]["tmp_name"]
+// Note 2 - $acceptedFilesArray[number]["tmp_name"] 
 //            - starts with upload (or upl on Windows, because on that platform only the first 3 letters are kept)
-//            - has the same filename extension as the real filename
+//            - has the same filename extension as the real filename 
 //            - ends with .txt
 //     The filename extension is needed by the PCL TAR library, which needs to determine if the archive is tar, tgz or gz.
 //     The additional .txt is to ensure that no temporary file would be executed on the web server, which could compromise it.
@@ -1732,7 +1731,7 @@ function acceptFiles($uploadedFilesArray) {
 // -------------------------------------------------------------------------
 	global $net2ftp_globals, $net2ftp_settings, $net2ftp_output;
 	$max_filesize = $net2ftp_settings["max_filesize"];
-
+	
 	$skipped = 0;     // Index of the files which are too big / contain a banned keyword
 	$moved_ok = 0;    // Index of the files that have been treated successfully
 	$moved_notok = 0; // Index of the files that have been treated unsuccessfully
@@ -1751,13 +1750,13 @@ function acceptFiles($uploadedFilesArray) {
 // In that case, only $uploadedFilesArray["$i"]["name"] is filled in.
 			$net2ftp_output["acceptFiles"][] = __("File <b>%1\$s</b> is too big. This file will not be uploaded.", $file_name);
 			$skipped = $skipped + 1;
-			@unlink($file_tmp_name);
+			@unlink($file_tmp_name); 
 			continue;
 		}
 		elseif (checkAuthorizedName($file_name) == false) {
 			$net2ftp_output["acceptFiles"][] = __("File <b>%1\$s</b> is contains a banned keyword. This file will not be uploaded.", $file_name);
 			$skipped = $skipped + 1;
-			@unlink($file_tmp_name);
+			@unlink($file_tmp_name); 
 			continue;
 		}
 
@@ -1768,17 +1767,17 @@ function acceptFiles($uploadedFilesArray) {
 		if (substr($file_name, -6) == "tar.gz") { $extension = "tar.gz"; }
 
 		$tempfilename = tempnam2($net2ftp_globals["application_tempdir"], "upload__", "." . $extension . ".txt");
-		if ($tempfilename == false) {
-			@unlink($tempfilename);
-			$errormessage = __("Could not generate a temporary file.");
+		if ($tempfilename == false) { 
+			@unlink($tempfilename); 
+			$errormessage = __("Could not generate a temporary file."); 
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
 
 		$success2 = move_uploaded_file($file_tmp_name, $tempfilename);
-		if ($success2 == false) {
+		if ($success2 == false) { 
 			$net2ftp_output["acceptFiles"][] = __("File <b>%1\$s</b> could not be moved", $file_name);
-			@unlink($file_tmp_name);
+			@unlink($file_tmp_name); 
 			@unlink($tempfilename);
 			$moved_notok = $moved_notok + 1;
 			continue;
@@ -1791,7 +1790,7 @@ function acceptFiles($uploadedFilesArray) {
 // When uploading files, print some output
 // When updating files, do not print anything
 			registerTempfile("register", $tempfilename);
-			if ($net2ftp_globals["state"] == "upload") {
+			if ($net2ftp_globals["state"] == "upload") { 
 				$net2ftp_output["acceptFiles"][] = __("File <b>%1\$s</b> is OK", $file_name);
 			}
 			$moved_ok = $moved_ok + 1;
@@ -1801,21 +1800,21 @@ function acceptFiles($uploadedFilesArray) {
 
 	} // End for
 
-	if ($moved_notok > 0) {
-		$errormessage = __("Unable to move the uploaded file to the temp directory.<br /><br />The administrator of this website has to <b>chmod 777</b> the /temp directory of net2ftp.");
+	if ($moved_notok > 0) { 
+		$errormessage = __("Unable to move the uploaded file to the temp directory.<br /><br />The administrator of this website has to <b>chmod 777</b> the /temp directory of net2ftp."); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
-	elseif ($moved_ok == 0 && $skipped == 0) {
+	elseif ($moved_ok == 0 && $skipped == 0) { 
 		$errormessage = __("You did not provide any file to upload.");
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
-	elseif ($moved_ok == 0 && $skipped > 0) {
-		return "all_uploaded_files_are_too_big";
+	elseif ($moved_ok == 0 && $skipped > 0) { 
+		return "all_uploaded_files_are_too_big"; 
 	}
-	else {
-		return $acceptedFilesArray;
+	else { 
+		return $acceptedFilesArray; 
 	}
 
 } // End function acceptFiles
@@ -1839,7 +1838,7 @@ function acceptFiles($uploadedFilesArray) {
 function ftp_transferfiles($filesArray, $targetDir) {
 
 // --------------
-// This PHP function takes a file that was uploaded from a client computer via a browser to the web server,
+// This PHP function takes a file that was uploaded from a client computer via a browser to the web server, 
 // and puts it on another FTP server
 // --------------
 
@@ -1852,9 +1851,9 @@ function ftp_transferfiles($filesArray, $targetDir) {
 // Open connection
 // ------------------------------
 	$conn_id = ftp_openconnection();
-	if ($net2ftp_result["success"] == false) {
+	if ($net2ftp_result["success"] == false) { 
 		for ($i=1; $i<=sizeof($filesArray); $i++) { @unlink($filesArray[$i]["tmp_name"]); }
-		return false;
+		return false; 
 	}
 
 // ------------------------------
@@ -1873,9 +1872,9 @@ function ftp_transferfiles($filesArray, $targetDir) {
 
 // Put files
 		ftp_putfile($conn_id, "", $filesArray[$i]["tmp_name"], $targetDir, $filesArray[$i]["name"], $ftpmode, "move");
-		if ($net2ftp_result["success"] == false) {
+		if ($net2ftp_result["success"] == false) { 
 			setErrorVars(true, "", "", "", "");
-			@unlink($filesArray[$i]["tmp_name"]);
+			@unlink($filesArray[$i]["tmp_name"]); 
 			$net2ftp_output["ftp_transferfiles"][] = __("File <b>%1\$s</b> could not be transferred to the FTP server", $filesArray[$i]["name"]);
 			continue;
 		}
@@ -1907,7 +1906,7 @@ function ftp_transferfiles($filesArray, $targetDir) {
 function ftp_unziptransferfiles($archivesArray) {
 
 // --------------
-// Extract the directories and files from the archive to a temporary directory on the web server, and
+// Extract the directories and files from the archive to a temporary directory on the web server, and 
 // then create the directories and put the files on the FTP server
 // --------------
 
@@ -1920,7 +1919,7 @@ function ftp_unziptransferfiles($archivesArray) {
 // Open connection
 // -------------------------------------------------------------------------
 	$conn_id = ftp_openconnection();
-	if ($net2ftp_result["success"] == false) {
+	if ($net2ftp_result["success"] == false) { 
 		for ($archive_nr=1; $archive_nr<=sizeof($archivesArray); $archive_nr++) { @unlink($archivesArray[$archive_nr]["tmp_name"]); }
 		return false;
 	}
@@ -1947,7 +1946,7 @@ function ftp_unziptransferfiles($archivesArray) {
 		if ($archive_type != "zip" && $archive_type != "tar" && $archive_type != "tgz" && $archive_type != "gz") {
 			$net2ftp_output["ftp_unziptransferfiles"][] = __("Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment.", $archive_name);
 			continue;
-		}
+		} 
 
 // -------------------------------------------------------------------------
 // Extract directories and files
@@ -1966,11 +1965,11 @@ function ftp_unziptransferfiles($archivesArray) {
 			$zip = new PclZip($archive_file);
 			$list = $zip->extract($p_path = $tempdir);
 		}
-		elseif ($archive_type == "tar" || $archive_type == "tgz" || $archive_type == "gz") {
+		elseif ($archive_type == "tar" || $archive_type == "tgz" || $archive_type == "gz") { 
 			$list = PclTarExtract($archive_file, $tempdir);
 		}
 
-		if ($list <= 0) {
+		if ($list <= 0) { 
 			$net2ftp_output["ftp_unziptransferfiles"][] = __("Unable to extract the files and directories from the archive");
 			continue;
 		}
@@ -1989,12 +1988,12 @@ function ftp_unziptransferfiles($archivesArray) {
 // Directory entry in the archive: create the directory
 			if (is_dir($source) == true) {
 				ftp_newdirectory($conn_id, $target);
-				if ($net2ftp_result["success"] == true) {
-					$net2ftp_output["ftp_unziptransferfiles"][] = __("Created directory %1\$s", $target);
+				if ($net2ftp_result["success"] == true) { 
+					$net2ftp_output["ftp_unziptransferfiles"][] = __("Created directory %1\$s", $target); 
 				}
-				else {
+				else { 
 					$net2ftp_output["ftp_unziptransferfiles"][] = __("Could not create directory %1\$s", $target);
-					setErrorVars(true, "", "", "", "");
+					setErrorVars(true, "", "", "", ""); 
 				}
 			} // end if directory
 // File entry in the archive: put the file
@@ -2002,8 +2001,8 @@ function ftp_unziptransferfiles($archivesArray) {
 			elseif (is_file($source) == true) {
 				ftp_putfile($conn_id, dirname($source), basename($source), dirname($target), basename($target), $ftpmode, "move");
 				if ($net2ftp_result["success"] == true) { $net2ftp_output["ftp_unziptransferfiles"][] = __("Copied file %1\$s", $target); }
-				else {
-					setErrorVars(true, "", "", "", "");
+				else { 
+					setErrorVars(true, "", "", "", ""); 
 					$target_relative_parts = explode("/", str_replace("\\", "/", dirname($target_relative)));
 					$directory_to_create = $net2ftp_globals["directory"];
 					for ($j=0; $j<sizeof($target_relative_parts); $j=$j+1) {
@@ -2017,8 +2016,8 @@ function ftp_unziptransferfiles($archivesArray) {
 					} // end for
 					ftp_putfile($conn_id, dirname($source), basename($source), dirname($target), basename($target), $ftpmode, "copy");
 					if ($net2ftp_result["success"] == true) { $net2ftp_output["ftp_unziptransferfiles"][] = __("Copied file %1\$s", $target); }
-					else {
-						setErrorVars(true, "", "", "", "");
+					else { 
+						setErrorVars(true, "", "", "", ""); 
 						$net2ftp_output["ftp_unziptransferfiles"][] = __("Could not copy file %1\$s", $target);
 					}
 				}
@@ -2031,7 +2030,7 @@ function ftp_unziptransferfiles($archivesArray) {
 
 // Delete the temporary directory and its contents
 		$delete_dirorfile_result = delete_dirorfile($tempdir);
-		if ($delete_dirorfile_result == false) {
+		if ($delete_dirorfile_result == false) { 
 			$net2ftp_output["ftp_unziptransferfiles"][] = __("Unable to delete the temporary directory");
 		}
 		else {
@@ -2040,7 +2039,7 @@ function ftp_unziptransferfiles($archivesArray) {
 
 // Delete the archive
 		$unlink_result = @unlink($archive_file);
-		if ($unlink_result == false) {
+		if ($unlink_result == false) { 
 			$net2ftp_output["ftp_unziptransferfiles"][] = __("Unable to delete the temporary file %1\$s", $archive_file);
 		}
 		else {
@@ -2083,8 +2082,8 @@ function ftp_mysite($conn_id, $command) {
 // --------------
 
 	$success1 = ftp_site($conn_id, $command);
-	if ($success1 == false) {
-		$errormessage = __("Unable to execute site command <b>%1\$s</b>", $command);
+	if ($success1 == false) { 
+		$errormessage = __("Unable to execute site command <b>%1\$s</b>", $command); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -2320,7 +2319,7 @@ function get_filename_name($filename) {
 function ftpAsciiBinary($filename) {
 
 // --------------
-// Checks the first character of a file and its extension to see if it should be
+// Checks the first character of a file and its extension to see if it should be 
 // transferred in ASCII or Binary mode
 // --------------
 
@@ -2335,13 +2334,13 @@ function ftpAsciiBinary($filename) {
 	if ($net2ftp_globals["ftpmode"] != "automatic") { return FTP_BINARY; }
 
 // -------------------------------------------------------------------------
-// If $net2ftp_globals["ftpmode"] == "automatic" then return return
+// If $net2ftp_globals["ftpmode"] == "automatic" then return return 
 // FTP_ASCII or FTP_BINARY
 // -------------------------------------------------------------------------
 	$firstcharacter = substr($filename, 0, 1);
 
-	if ($firstcharacter == ".") {
-		$ftpmode = FTP_ASCII;
+	if ($firstcharacter == ".") { 
+		$ftpmode = FTP_ASCII; 
 		return $ftpmode;
 	}
 
@@ -2398,17 +2397,17 @@ function ftpAsciiBinary($filename) {
 		$last == "readme"		||
 		$last == "setup" 		||
 		$last == "seq" 		||
-		$last == "sh" 		||
-		$last == "sql" 		||
-		$last == "style" 		||
-		$last == "tcl" 		||
-		$last == "tex"		||
-		$last == "threads"	||
+		$last == "sh" 		|| 
+		$last == "sql" 		|| 
+		$last == "style" 		|| 
+		$last == "tcl" 		|| 
+		$last == "tex"		|| 
+		$last == "threads"	|| 
 		$last == "tmpl"  		||
-		$last == "tpl"  		||
-		$last == "txt"  		||
+		$last == "tpl"  		|| 
+		$last == "txt"  		|| 
 		$last == "ubb"  		||
-		$last == "vbs"  		||
+		$last == "vbs"  		|| 
 		$last == "xml"  		||
 		strstr($last, "htm")
 							)	{ $ftpmode = FTP_ASCII; }
@@ -2555,51 +2554,51 @@ function getFileType($filename) {
 		$last == "qmail" 		||
 		$last == "readme"		||
 		$last == "setup" 		||
-		$last == "sh" 		||
-		$last == "shtml" 		||
-		$last == "sql" 		||
-		$last == "style" 		||
-		$last == "tcl" 		||
-		$last == "tex"		||
-		$last == "threads"	||
+		$last == "sh" 		|| 
+		$last == "shtml" 		|| 
+		$last == "sql" 		|| 
+		$last == "style" 		|| 
+		$last == "tcl" 		|| 
+		$last == "tex"		|| 
+		$last == "threads"	|| 
 		$last == "tmpl"  		||
-		$last == "tpl"  		||
-		$last == "txt"  		||
+		$last == "tpl"  		|| 
+		$last == "txt"  		|| 
 		$last == "ubb"  		||
-		$last == "vbs"  		||
+		$last == "vbs"  		|| 
 		$last == "xml"  		||
 		$last == "conf"		||
 		strstr($last, "htm")) { return "TEXT"; }
 
-	elseif (	$last == "png"  ||
-			$last == "jpg"  ||
-			$last == "jpeg" ||
+	elseif (	$last == "png"  || 
+			$last == "jpg"  || 
+			$last == "jpeg" || 
 			$last == "gif"  ||
 			$last == "bmp"  ||
 			$last == "tif"  ||
 			$last == "tiff")    { return "IMAGE"; }
 
-	elseif (	$last == "exe"  ||
+	elseif (	$last == "exe"  || 
 			$last == "com")     { return "EXECUTABLE"; }
 
-	elseif (	$last == "doc"  ||
-			$last == "rtf"  ||
-			$last == "xls"  ||
-			$last == "ppt"  ||
-			$last == "mdb"  ||
-			$last == "vsd"  ||
+	elseif (	$last == "doc"  || 
+			$last == "rtf"  || 
+			$last == "xls"  || 
+			$last == "ppt"  || 
+			$last == "mdb"  || 
+			$last == "vsd"  || 
 			$last == "mpp")     { return "OFFICE"; }
 
-	elseif (	$last == "zip"  ||
-			$last == "tar"  ||
-			$last == "gz"   ||
-			$last == "tgz"  ||
-			$last == "rar"  ||
-			$last == "arj"  ||
+	elseif (	$last == "zip"  || 
+			$last == "tar"  || 
+			$last == "gz"   || 
+			$last == "tgz"  || 
+			$last == "rar"  || 
+			$last == "arj"  || 
 			$last == "arc")     { return "ARCHIVE"; }
 
 	else					  { return "OTHER"; }
-
+	
 
 } // end getFileType
 
@@ -2623,7 +2622,7 @@ function getFileType($filename) {
 function getSystemType() {
 
 // --------------
-// Gets the WEBSERVER system type on which PHP is running
+// Gets the WEBSERVER system type on which PHP is running 
 // (Not the one for which is was built)
 // --------------
 
@@ -2670,7 +2669,7 @@ function checkEmailAddress($email) {
 	           "[a-z0-9]+([_\.-][a-z0-9]+)*" .    //user
 	           "@" .
 	           "([a-z0-9]+([\.-][a-z0-9]+)*)+" .   //domain
-	           "\\.[a-z]{2,}" .                    //sld, tld
+	           "\\.[a-z]{2,}" .                    //sld, tld 
 	           "$", $email, $regs)) { return true;	}
 	else { return false; }
 
@@ -2863,9 +2862,9 @@ function registerTempfile($dowhat, $filename) {
 // Add the current file to/from the $net2ftp_globals["tempfiles"] array
 // Initialize $net2ftp_tempfiles if needed
 // -------------------------------------------------------------------------
-	if ($dowhat == "register") {
+	if ($dowhat == "register") { 
 		if (isset($net2ftp_globals["tempfiles"]) == false) { $net2ftp_globals["tempfiles"] = array(); }
-		@array_push($net2ftp_globals["tempfiles"], $filename);
+		@array_push($net2ftp_globals["tempfiles"], $filename); 
 	} // end if register
 
 // -------------------------------------------------------------------------
@@ -2875,8 +2874,8 @@ function registerTempfile($dowhat, $filename) {
 		$newindex = 0;
 		$tempfiles_new = array();
 		for ($i=0; $i<=sizeof($net2ftp_globals["tempfiles"]); $i++) {
-			if (isset($net2ftp_globals["tempfiles"][$i]) == true && $net2ftp_globals["tempfiles"][$i] != $filename) {
-				$tempfiles_new[$newindex] = $net2ftp_globals["tempfiles"][$i];
+			if (isset($net2ftp_globals["tempfiles"][$i]) == true && $net2ftp_globals["tempfiles"][$i] != $filename) { 
+				$tempfiles_new[$newindex] = $net2ftp_globals["tempfiles"][$i]; 
 				$newindex = $newindex + 1;
 			}
 		} // end for
@@ -2944,7 +2943,7 @@ function net2ftp_shutdown() {
 // was not reached.
 	if (($max_execution_time > 0) && ($time_taken > $max_execution_time - 1)) {
 		if (isStatusbarActive() == true && function_exists("setStatus") == true) {
-			setStatus(10, 10, __("Script halted"));
+			setStatus(10, 10, __("Script halted")); 
 		}
 
 		$text = "";
@@ -2991,8 +2990,8 @@ function SendMail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmF
 /* Alex's comments:
 This might be some useful stuff to send out emails in either text
 or html or multipart version, and attach one or more files or even
-none to it. Inspired by Kieran's msg above, I thought it might be
-useful to have a complete function for doing this, so it can be used
+none to it. Inspired by Kieran's msg above, I thought it might be 
+useful to have a complete function for doing this, so it can be used 
 wherever it's needed. Anyway I am not too sure how this script will
 behave under Windows.
 {br} represent the HTML-tag for line break and should be replaced,
@@ -3019,23 +3018,23 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 //	$From or die("sender address missing");
 //	$To or die("recipient address missing");
 
-	if ((strlen($Html) < 1) && (strlen($Text) < 1)) {
-		$errormessage = __("You did not provide any text to send by email!");
+	if ((strlen($Html) < 1) && (strlen($Text) < 1)) { 
+		$errormessage = __("You did not provide any text to send by email!"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
-	if (strlen($From) < 1) {
-		$errormessage = __("You did not supply a From address.");
+	if (strlen($From) < 1) { 
+		$errormessage = __("You did not supply a From address."); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
-	if (strlen($To) < 1) {
-		$errormessage = __("You did not supply a To address.");
+	if (strlen($To) < 1) { 
+		$errormessage = __("You did not supply a To address."); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
-	if (strlen($Html) < 1) {
-		$Html = preg_replace("/\n/","<br>",$Text);
+	if (strlen($Html) < 1) { 
+		$Html = preg_replace("/\n/","<br>",$Text); 
 	}
 
 // Check if the To email address is valid
@@ -3043,9 +3042,9 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	           "[a-zA-Z0-9]+([_\.-][a-zA-Z0-9]+)*" .    //user
 	           "@" .
 	           "([a-zA-Z0-9]+([\.-][a-zA-Z0-9]+)*)+" .  //domain
-	           "\\.[a-zA-Z]{2,}" .                      //sld, tld
-	           "$", $To, $regs)) {
-		$errormessage = __("The email address you have entered (%1\$s) does not seem to be valid.<br />Please enter an address in the format <b>username@domain.com</b>", $To);
+	           "\\.[a-zA-Z]{2,}" .                      //sld, tld 
+	           "$", $To, $regs)) { 
+		$errormessage = __("The email address you have entered (%1\$s) does not seem to be valid.<br />Please enter an address in the format <b>username@domain.com</b>", $To); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -3055,13 +3054,13 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	$IB = "----=_InnerBoundery_001";
 
 // Headers
-	$headers ="MIME-Version: 1.0\r\n";
-	$headers.="From: ".$FromName." <".$From.">\n";
-	$headers.="To: ".$ToName." <".$To.">\n";
-	$headers.="Reply-To: ".$FromName." <".$From.">\n";
-	$headers.="X-Priority: 1\n";
-	$headers.="X-MSMail-Priority: High\n";
-	$headers.="X-Mailer: My PHP Mailer\n";
+	$headers ="MIME-Version: 1.0\r\n"; 
+	$headers.="From: ".$FromName." <".$From.">\n"; 
+	$headers.="To: ".$ToName." <".$To.">\n"; 
+	$headers.="Reply-To: ".$FromName." <".$From.">\n"; 
+	$headers.="X-Priority: 1\n"; 
+	$headers.="X-MSMail-Priority: High\n"; 
+	$headers.="X-Mailer: My PHP Mailer\n"; 
 	$headers.="Content-Type: multipart/mixed;\n\tboundary=\"".$OB."\"\n";
 
 // Messages start with text/html alternatives in OB
@@ -3069,7 +3068,7 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	$Msg.="\n--".$OB."\n";
 	$Msg.="Content-Type: multipart/alternative;\n\tboundary=\"".$IB."\"\n\n";
 
-// Plaintext section
+// Plaintext section 
 	$Msg.="\n--".$IB."\n";
 	$Msg.="Content-Type: text/plain;\n\tcharset=\"iso-8859-1\"\n";
 	$Msg.="Content-Transfer-Encoding: quoted-printable\n\n";
@@ -3077,12 +3076,12 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 // Plaintext goes here
 	$Msg.=$Text."\n\n";
 
-// Html section
+// Html section 
 	$Msg.="\n--".$IB."\n";
 	$Msg.="Content-Type: text/html;\n\tcharset=\"iso-8859-1\"\n";
 	$Msg.="Content-Transfer-Encoding: base64\n\n";
 
-// Html goes here
+// Html goes here 
 	$Msg.=chunk_split(base64_encode($Html))."\n\n";
 
 // End of IB
@@ -3091,7 +3090,7 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 // Attachments
 	if($AttmFiles){
 		foreach($AttmFiles as $AttmFile){
-//			$patharray = explode ("/", $AttmFile);
+//			$patharray = explode ("/", $AttmFile); 
 //			$FileName=$patharray[sizeof($patharray)-1];
 			$FileName = "RequestedFile.zip";
 
@@ -3114,9 +3113,9 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	$Msg.="\n--".$OB."--\n";
 
 // Send mail
-	$success2 = mail($To, $Subject, $Msg, $headers);
-	if ($success2 == false) {
-		$errormessage = __("Due to technical problems the email to <b>%1\$s</b> could not be sent.", $To);
+	$success2 = mail($To, $Subject, $Msg, $headers); 
+	if ($success2 == false) { 
+		$errormessage = __("Due to technical problems the email to <b>%1\$s</b> could not be sent.", $To); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -3186,13 +3185,13 @@ function getSelectedEntries($list) {
 // --------------
 // Input = array where dirfilename is set if the entry was selected, not set if not selected:
 //   [1] => Array ( [dirfilename] => dir1 [dirorfile] => d [size] => 0 [selectable] => ok      [permissions] => ---rw-rw- )   <-- selected
-//   [2] => Array ( [dirfilename] => dir2 [dirorfile] => d [size] => 0 [selectable] => ok      [permissions] => ---rw-rw- )   <-- selected
+//   [2] => Array ( [dirfilename] => dir2 [dirorfile] => d [size] => 0 [selectable] => ok      [permissions] => ---rw-rw- )   <-- selected 
 //   [3] => Array ( [dirfilename] => dir3 [dirorfile] => d [size] => 0 [selectable] => too_big [permissions] => ---rw-rw- )   <-- selected
 //   [4] => Array (                       [dirorfile] => d [size] => 0 [selectable] => ok      [permissions] => ---rw-rw- )   <-- not selected
 //
 // Output = array with only the selected entries, which are not TOO BIG or which do not contain a forbidden keyword
-//   [1] => Array ( [dirfilename] => dir1 [dirorfile] => d [size] => 0 [permissions] => ---rw-rw- )
-//   [2] => Array ( [dirfilename] => dir2 [dirorfile] => d [size] => 0 [permissions] => ---rw-rw- )
+//   [1] => Array ( [dirfilename] => dir1 [dirorfile] => d [size] => 0 [permissions] => ---rw-rw- ) 
+//   [2] => Array ( [dirfilename] => dir2 [dirorfile] => d [size] => 0 [permissions] => ---rw-rw- ) 
 // --------------
 
 // Global variables
@@ -3213,40 +3212,40 @@ function getSelectedEntries($list) {
 	for ($i=1; $i<=sizeof($list); $i=$i+1) {
 		if (isset($list[$i]["dirorfile"]) == true && isset($list[$i]["dirfilename"]) == true) {
 
-			if (isset($list[$i]["selectable"]) == false || $list[$i]["selectable"] != "ok" &&
-			($net2ftp_globals["state"] == "downloadfile" || $net2ftp_globals["state"] == "downloadzip" ||
-			$net2ftp_globals["state"] == "edit" || $net2ftp_globals["state"] == "findstring" ||
-			$net2ftp_globals["state"] == "unzip" || $net2ftp_globals["state"] == "view" ||
-			$net2ftp_globals["state"] == "zip" ||
-			$net2ftp_globals["state2"] == "copy" || $net2ftp_globals["state2"] == "move")) {
-				continue;
+			if (isset($list[$i]["selectable"]) == false || $list[$i]["selectable"] != "ok" && 
+			($net2ftp_globals["state"] == "downloadfile" || $net2ftp_globals["state"] == "downloadzip" || 
+			$net2ftp_globals["state"] == "edit" || $net2ftp_globals["state"] == "findstring" || 
+			$net2ftp_globals["state"] == "unzip" || $net2ftp_globals["state"] == "view" || 
+			$net2ftp_globals["state"] == "zip" || 
+			$net2ftp_globals["state2"] == "copy" || $net2ftp_globals["state2"] == "move")) { 
+				continue; 
 			}
 
 			$list[$i]["dirfilename"]      = validateGenericInput($list[$i]["dirfilename"]);
 			$list[$i]["dirfilename_html"] = htmlEncode2($list[$i]["dirfilename"]);
 			$list[$i]["dirfilename_js"]   = javascriptEncode2($list[$i]["dirfilename"]);
 			if ($list[$i]["dirorfile"] == "d") {
-				$newlist["directories"][$directory_index] = $list[$i];
+				$newlist["directories"][$directory_index] = $list[$i]; 
 				$directory_index++;
-				$newlist["all"][$all_index] = $list[$i];
+				$newlist["all"][$all_index] = $list[$i]; 
 				$all_index++;
 			}
 			elseif ($list[$i]["dirorfile"] == "-") {
-				$newlist["files"][$file_index] = $list[$i];
+				$newlist["files"][$file_index] = $list[$i]; 
 				$file_index++;
-				$newlist["all"][$all_index] = $list[$i];
+				$newlist["all"][$all_index] = $list[$i]; 
 				$all_index++;
 			}
 			elseif ($list[$i]["dirorfile"] == "l") {
-				$newlist["symlinks"][$symlink_index] = $list[$i];
+				$newlist["symlinks"][$symlink_index] = $list[$i]; 
 				$symlink_index++;
-				$newlist["all"][$all_index] = $list[$i];
+				$newlist["all"][$all_index] = $list[$i]; 
 				$all_index++;
 			}
 			elseif ($list[$i]["dirorfile"] == "u") {
-				$newlist["unrecognized"][$unrecognized_index] = $list[$i];
+				$newlist["unrecognized"][$unrecognized_index] = $list[$i]; 
 				$unrecognized_index++;
-				$newlist["all"][$all_index] = $list[$i];
+				$newlist["all"][$all_index] = $list[$i]; 
 				$all_index++;
 			}
 		}
@@ -3333,14 +3332,14 @@ function tempnam2($dir, $prefix, $postfix) {
 
 // --------------
 // Contributed by anonymous on http://www.php.net on 23-Jul-2003 04:56
-// The tempnam() function will not let you specify a postfix to the filename created.
-// Here is a function that will create a new filename with pre and post fix'es.
+// The tempnam() function will not let you specify a postfix to the filename created. 
+// Here is a function that will create a new filename with pre and post fix'es. 
 // It returns false if it can't create in the dir specified. (The function tempnam, on the contrary, creates the file in the systems temp dir.)
 // --------------
 
 	if ($dir[strlen($dir) - 1] == '/') { $trailing_slash = ""; }
 	else { $trailing_slash = "/"; }
-
+ 
 // Check if the $dir is a directory
 	if (!is_dir($dir) || filetype($dir) != "dir") { return false; }
 
@@ -3348,7 +3347,7 @@ function tempnam2($dir, $prefix, $postfix) {
 	if (!is_writable($dir)){ return false; }
 
 // Create the temporary filename
-	do {
+	do { 
 		$seed = substr(md5(microtime()), 0, 8);
 		$filename = $dir . $trailing_slash . $prefix . $seed . $postfix;
 		clearstatcache();
@@ -3383,7 +3382,7 @@ function tempdir2($dir, $prefix, $postfix) {
 
 	if ($dir[strlen($dir) - 1] == '/') { $trailing_slash = ""; }
 	else { $trailing_slash = "/"; }
-
+ 
 // Check if the $dir is a directory
 	if (!is_dir($dir) || filetype($dir) != "dir") { return false; }
 
@@ -3391,7 +3390,7 @@ function tempdir2($dir, $prefix, $postfix) {
 	if (!is_writable($dir)){ return false; }
 
 // Create the temporary filename
-	do {
+	do { 
 		$seed = substr(md5(microtime()), 0, 8);
 		$filename = $dir . $trailing_slash . $prefix . $seed . $postfix;
 	} while (!mkdir($filename, 0777));
@@ -3423,16 +3422,16 @@ function local_readfile($file) {
 	global $net2ftp_globals;
 
 // From the PHP manual:
-// Note:  The mode may contain the letter 'b'.
-// This is useful only on systems which differentiate between binary and text
-// files (i.e. Windows. It's useless on Unix). If not needed, this will be
-// ignored. You are encouraged to include the 'b' flag in order to make your scripts
+// Note:  The mode may contain the letter 'b'. 
+// This is useful only on systems which differentiate between binary and text 
+// files (i.e. Windows. It's useless on Unix). If not needed, this will be 
+// ignored. You are encouraged to include the 'b' flag in order to make your scripts 
 // more portable.
 // Thanks to Malte for bringing this to my attention !
 
 	$handle = fopen($file, "rb"); // Open the file for reading only
-	if ($handle == false) {
-		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
+	if ($handle == false) { 
+		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -3443,15 +3442,15 @@ function local_readfile($file) {
 	if ($filesize == 0) { return ""; }
 
 	$string = fread($handle, $filesize);
-	if ($string == false && filesize($file)>0) {
-		$errormessage =  __("Unable to read the temporary file");
+	if ($string == false && filesize($file)>0) { 
+		$errormessage =  __("Unable to read the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 	$success3 = fclose($handle);
-	if ($success3 == false) {
-		$errormessage = __("Unable to close the handle of the temporary file");
+	if ($success3 == false) { 
+		$errormessage = __("Unable to close the handle of the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -3482,22 +3481,22 @@ function local_writefile($file, $string) {
 	global $net2ftp_globals;
 
 	$handle = fopen($file, "wb");
-	if ($handle == false) {
-		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]);
+	if ($handle == false) { 
+		$errormessage = __("Unable to open the temporary file. Check the permissions of the %1\$s directory.", $net2ftp_globals["application_tempdir"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 	$success1 = fwrite($handle, $string);
-	if ($success1 == false && strlen($string)>0) {
-		$errormessage = __("Unable to write the string to the temporary file <b>%1\$s</b>.<br />Check the permissions of the %2\$s directory.", $file, $net2ftp_globals["application_tempdir"]);
+	if ($success1 == false && strlen($string)>0) { 
+		$errormessage = __("Unable to write the string to the temporary file <b>%1\$s</b>.<br />Check the permissions of the %2\$s directory.", $file, $net2ftp_globals["application_tempdir"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
 
 	$success2 = fclose($handle);
-	if ($success2 == false) {
-		$errormessage = __("Unable to close the handle of the temporary file");
+	if ($success2 == false) { 
+		$errormessage = __("Unable to close the handle of the temporary file"); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;
 	}
@@ -3543,30 +3542,30 @@ function local_getlist($localdirectory) {
 	$j = 1;
 
 // -------------------------------------------------------------------------
-// While loop
+// While loop 
 // -------------------------------------------------------------------------
 	while (false !== ($dirfilename = readdir($handle))) {
 		if ($dirfilename != "." && $dirfilename != "..") {
-			if (is_dir($dirfilename) == true) {
+			if (is_dir($dirfilename) == true) { 
 				$listline["scanrule"]     = "local";
-				$listline["dirorfile"]    = "d";
+				$listline["dirorfile"]    = "d"; 
 				$listline["dirfilename"]  = $dirfilename;
-				$listline["size"]         = 0;
-				$listline["selectable"]   = "ok";
+				$listline["size"]         = 0; 
+				$listline["selectable"]   = "ok"; 
 				array_push($list_directories, $listline);
 			}
-			else {
+			else { 
 				$listline["scanrule"]    = "local";
-				$listline["dirorfile"]   = "-";
+				$listline["dirorfile"]   = "-"; 
 				$listline["dirfilename"] = $dirfilename;
 				$listline["size"]        = filesize($localdirectory . "/" . $dirfilename);
 
 				// Check if the filesize is bigger than the maximum authorized filesize
-				if (isset($listline["size"]) && is_numeric($listline["size"]) && $listline["size"] > $net2ftp_settings["max_filesize"]) {
-					$listline["selectable"] = "too_big";
+				if (isset($listline["size"]) && is_numeric($listline["size"]) && $listline["size"] > $net2ftp_settings["max_filesize"]) { 
+					$listline["selectable"] = "too_big"; 
 				}
-				else {
-					$listline["selectable"] = "ok";
+				else { 
+					$listline["selectable"] = "ok"; 
 				}
 
 				array_push($list_files, $listline);
@@ -3614,7 +3613,7 @@ function delete_dirorfile($dirorfile) {
 
 	$result = true;
 
-	if (is_dir($dirorfile)) {
+	if (is_dir($dirorfile)) { 
 		$directory = $dirorfile;
 		if(substr($dir, -1, 1) == "/"){
 			$directory = substr($directory, 0, strlen($directory) - 1);
@@ -3622,12 +3621,12 @@ function delete_dirorfile($dirorfile) {
 		if ($handle = opendir("$directory")) {
 			while (false !== ($item = readdir($handle))) {
 				if ($item != "." && $item != "..") {
-					if (is_dir("$directory/$item")) {
-						$delete_dirorfile_result = delete_dirorfile("$directory/$item", $mode);
+					if (is_dir("$directory/$item")) { 
+						$delete_dirorfile_result = delete_dirorfile("$directory/$item", $mode); 
 						$result = $result && $delete_dirorfile_result;
-					}
-					else {
-						$unlink_result = unlink("$directory/$item");
+					} 
+					else { 
+						$unlink_result = unlink("$directory/$item"); 
 						$result = $result && $unlink_result;
 					}
 				}
@@ -3639,7 +3638,7 @@ function delete_dirorfile($dirorfile) {
 	}
 	elseif (is_file($dirorfile)) {
 		$file = $dirorfile;
-		$unlink_result = unlink($file);
+		$unlink_result = unlink($file); 
 		$result = $result && $unlink_result;
 	}
 
@@ -3696,7 +3695,7 @@ function sendDownloadHeaders($filename, $filesize) {
 		header("Content-Disposition: $content_disposition; filename=\"" . $filename_html . "\"");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Pragma: public");
-	}
+	} 
 	else {
 		// Firefox needs an asterisk to enable filenames with special characters
 		header("Content-Disposition: $content_disposition; filename*=\"" . $filename_html . "\"");
@@ -3704,7 +3703,7 @@ function sendDownloadHeaders($filename, $filesize) {
 	}
 
 	header("Content-Description: $filename_html");
-	header("Content-Length: $filesize");
+	header("Content-Length: $filesize"); 
 	header("Connection: close");
 
 } // End function sendDownloadHeaders

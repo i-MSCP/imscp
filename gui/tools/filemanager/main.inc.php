@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -52,7 +52,6 @@ function net2ftp($action) {
 		if (defined("NET2FTP_SENDHTTPHEADERS") == false) { echo "Error: please call the net2ftp(\$action) function first with \$action = \"sendHttpHeaders\"!"; return false; }
 	}
 
-
 // -------------------------------------------------------------------------
 // Global variables
 // -------------------------------------------------------------------------
@@ -67,7 +66,7 @@ function net2ftp($action) {
 		$net2ftp_messages = array();
 		$net2ftp_output = array();
 		$net2ftp_result["success"]         = true;
-		$net2ftp_result["error_message"]   = "";
+		$net2ftp_result["errormessage"]    = "";
 		$net2ftp_result["debug_backtrace"] = "";
 		$net2ftp_result["exit"]            = false;
 		$net2ftp_settings = array();
@@ -82,9 +81,9 @@ function net2ftp($action) {
 // -------------------------------------------------------------------------
 // Input checks
 // -------------------------------------------------------------------------
-	if ($action != "sendHttpHeaders" && $action != "printJavascript" && $action != "printCss" && $action != "printBodyonload" && $action != "printBody") {
+	if ($action != "sendHttpHeaders" && $action != "printJavascript" && $action != "printCss" && $action != "printBodyOnload" && $action != "printBody") {
 		$net2ftp_result["success"]         = false;
-		$net2ftp_result["error_message"]   = "The \$action variable has an unknown value: $action.";
+		$net2ftp_result["errormessage"]    = "The \$action variable has an unknown value: $action.";
 		$net2ftp_result["debug_backtrace"] = debug_backtrace();
 		logError();
 		return false;
@@ -115,7 +114,6 @@ function net2ftp($action) {
 	$net2ftp_globals["application_skinsdir"]     = $net2ftp_globals["application_rootdir"] . "/skins";
 	$net2ftp_globals["application_tempdir"]      = $net2ftp_globals["application_rootdir"] . "/temp";
 
-
 // -------------------------------------------------------------------------
 // Set basic settings
 // -------------------------------------------------------------------------
@@ -124,29 +122,29 @@ function net2ftp($action) {
 
 // Run the script to the end, even if the user hits the stop button
 		ignore_user_abort();
-
+	
 // Execute function shutdown() if the script reaches the maximum execution time (usually 30 seconds)
 // DON'T REGISTER IT HERE YET, as this causes errors on newer versions of PHP; first include the function libraries
 //		register_shutdown_function("net2ftp_shutdown");
-
+	
 // Set the error reporting level
 		if     ($net2ftp_settings["error_reporting"] == "ALL")  { error_reporting(E_ALL); }
 		elseif ($net2ftp_settings["error_reporting"] == "NONE") { error_reporting(0); }
 		else                                                    { error_reporting(E_ERROR | E_WARNING | E_PARSE); }
-
+	
 // Timer: start
 		$net2ftp_globals["starttime"] = microtime();
 		$net2ftp_globals["endtime"] = microtime();
 	}
 
 // Set the PHP temporary directory
-	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
+//	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
 
 // -------------------------------------------------------------------------
 // Function libraries:
 // 1. Libraries which are always needed
 // 2. Register global variables
-// 3. Function libraries which are needed depending on certain variables
+// 3. Function libraries which are needed depending on certain variables 
 // // --> Do this only once, when $action == "sendHttpHeaders"
 // -------------------------------------------------------------------------
 
@@ -159,13 +157,14 @@ function net2ftp($action) {
 		require_once($net2ftp_globals["application_includesdir"]  . "/errorhandling.inc.php");
 		require_once($net2ftp_globals["application_includesdir"]  . "/filesystem.inc.php");
 		require_once($net2ftp_globals["application_includesdir"]  . "/html.inc.php");
+		require_once($net2ftp_globals["application_includesdir"]  . "/StonePhpSafeCrypt.php");
 		require_once($net2ftp_globals["application_languagesdir"] . "/languages.inc.php");
 		require_once($net2ftp_globals["application_skinsdir"]     . "/skins.inc.php");
 
 // 1. Define functions which are used, but which did not exist before PHP version 4.3.0
 		if (version_compare(phpversion(), "4.3.0", "<")) {
 			require_once($net2ftp_globals["application_includesdir"] . "/before430.inc.php");
-		}
+		} 
 
 // 2. Register global variables (POST, GET, GLOBAL, ...)
 		require_once($net2ftp_globals["application_includesdir"] . "/registerglobals.inc.php");
@@ -178,9 +177,9 @@ function net2ftp($action) {
 			require_once($net2ftp_globals["application_includesdir"] . "/pclzip.lib.php");
 		}
 		if ($net2ftp_globals["state"] == "advanced_ftpserver"   || $net2ftp_globals["state"] == "advanced_parsing" ||
-			$net2ftp_globals["state"] == "advanced_webserver" || $net2ftp_globals["state"] == "browse"           ||
-			$net2ftp_globals["state"] == "copymovedelete"     || $net2ftp_globals["state"] == "chmod"            ||
-			$net2ftp_globals["state"] == "calculatesize"      || $net2ftp_globals["state"] == "downloadzip"      ||
+			$net2ftp_globals["state"] == "advanced_webserver" || $net2ftp_globals["state"] == "browse"           || 
+			$net2ftp_globals["state"] == "copymovedelete"     || $net2ftp_globals["state"] == "chmod"            || 
+			$net2ftp_globals["state"] == "calculatesize"      || $net2ftp_globals["state"] == "downloadzip"      || 
 			$net2ftp_globals["state"] == "findstring"         || $net2ftp_globals["state"] == "followsymlink"    ||
 			$net2ftp_globals["state"] == "install"            || $net2ftp_globals["state"] == "zip") {
 			require_once($net2ftp_globals["application_includesdir"] . "/browse.inc.php");
@@ -189,12 +188,12 @@ function net2ftp($action) {
 			require_once($net2ftp_globals["application_includesdir"] . "/zip.lib.php");
 		}
 
-// 3. Load the plugins
+// 4. Load the plugins
 		require_once($net2ftp_globals["application_pluginsdir"] . "/plugins.inc.php");
 		$net2ftp_globals["activePlugins"] = getActivePlugins();
 		net2ftp_plugin_includePhpFiles();
 
-// 3. Load the language file
+// 5. Load the language file
 		includeLanguageFile();
 
 	}
@@ -207,44 +206,41 @@ function net2ftp($action) {
 	}
 
 // -------------------------------------------------------------------------
-// Check authorizations
-// --> Do this only once, when $action == "sendHttpHeaders"
-// -------------------------------------------------------------------------
-
-	if ($action == "sendHttpHeaders" && $net2ftp_settings["check_authorization"] == "yes" && $net2ftp_globals["ftpserver"] != "") {
-
-		checkAuthorization($net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"], $net2ftp_globals["directory"], $net2ftp_globals["username"]);
-		if ($net2ftp_result["success"] == false) {
-			logError();
-			return false;
-		}
-
-	}
-
-// -------------------------------------------------------------------------
 // Log access
 // --> Do this only once, when $action == "sendHttpHeaders"
 // -------------------------------------------------------------------------
 	if ($action == "sendHttpHeaders") {
 		logAccess();
-		if ($net2ftp_result["success"] == false) {
+		if ($net2ftp_result["success"] == false) { 
 			logError();
-			return false;
+			return false; 
+		}
+	}
+
+// -------------------------------------------------------------------------
+// Check authorizations
+// --> Do this only once, when $action == "sendHttpHeaders"
+// -------------------------------------------------------------------------
+	if ($action == "sendHttpHeaders" && $net2ftp_settings["check_authorization"] == "yes" && $net2ftp_globals["ftpserver"] != "") {
+		checkAuthorization($net2ftp_globals["ftpserver"], $net2ftp_globals["ftpserverport"], $net2ftp_globals["directory"], $net2ftp_globals["username"]);
+		if ($net2ftp_result["success"] == false) { 
+			logError();
+			return false; 
 		}
 	}
 
 // -------------------------------------------------------------------------
 // Get the consumption counter values from the database
-// This retrieves the consumption of network and server resources for the
-// current IP address and FTP server from the database, and stores these
+// This retrieves the consumption of network and server resources for the 
+// current IP address and FTP server from the database, and stores these 
 // values in global variables. See /includes/consumption.inc.php for the details.
 // --> Do this only once, when $action == "sendHttpHeaders"
 // -------------------------------------------------------------------------
 	if ($action == "sendHttpHeaders") {
 		getConsumption();
-		if ($net2ftp_result["success"] == false) {
+		if ($net2ftp_result["success"] == false) { 
 			logError();
-			return false;
+			return false; 
 		}
 	}
 
@@ -255,63 +251,63 @@ function net2ftp($action) {
 // ------------------------------------
 // For most modules, everything must be done: send headers, print body, etc
 // ------------------------------------
-	if ($net2ftp_globals["state"] == "admin" ||
-          $net2ftp_globals["state"] == "admin_createtables" ||
-          $net2ftp_globals["state"] == "admin_emptylogs" ||
-          $net2ftp_globals["state"] == "admin_viewlogs"  ||
-          $net2ftp_globals["state"] == "advanced" ||
-          $net2ftp_globals["state"] == "advanced_ftpserver" ||
-          $net2ftp_globals["state"] == "advanced_parsing" ||
-          $net2ftp_globals["state"] == "advanced_webserver" ||
-          $net2ftp_globals["state"] == "bookmark" ||
-          $net2ftp_globals["state"] == "browse" ||
+	if ($net2ftp_globals["state"] == "admin" || 
+          $net2ftp_globals["state"] == "admin_createtables" || 
+          $net2ftp_globals["state"] == "admin_emptylogs" || 
+          $net2ftp_globals["state"] == "admin_viewlogs"  || 
+          $net2ftp_globals["state"] == "advanced" || 
+          $net2ftp_globals["state"] == "advanced_ftpserver" || 
+          $net2ftp_globals["state"] == "advanced_parsing" || 
+          $net2ftp_globals["state"] == "advanced_webserver" || 
+          $net2ftp_globals["state"] == "bookmark" || 
+          $net2ftp_globals["state"] == "browse" || 
           $net2ftp_globals["state"] == "calculatesize" ||
-          $net2ftp_globals["state"] == "chmod" ||
-          $net2ftp_globals["state"] == "copymovedelete" ||
-          $net2ftp_globals["state"] == "edit" ||
-          $net2ftp_globals["state"] == "findstring" ||
-          $net2ftp_globals["state"] == "install" ||
-          ($net2ftp_globals["state"] == "jupload" && $net2ftp_globals["screen"] == 1) ||
-          $net2ftp_globals["state"] == "login" ||
-          $net2ftp_globals["state"] == "login_small" ||
-          $net2ftp_globals["state"] == "logout" ||
-          $net2ftp_globals["state"] == "newdir" ||
-          $net2ftp_globals["state"] == "raw" ||
-          $net2ftp_globals["state"] == "rename" ||
-          $net2ftp_globals["state"] == "unzip" ||
-          $net2ftp_globals["state"] == "upload" ||
-          ($net2ftp_globals["state"] == "view" && $net2ftp_globals["state2"] == "") ||
+          $net2ftp_globals["state"] == "chmod" || 
+          $net2ftp_globals["state"] == "copymovedelete" || 
+          $net2ftp_globals["state"] == "edit" || 
+          $net2ftp_globals["state"] == "findstring" || 
+          $net2ftp_globals["state"] == "install" || 
+          ($net2ftp_globals["state"] == "jupload" && $net2ftp_globals["screen"] == 1) || 
+          $net2ftp_globals["state"] == "login" || 
+          $net2ftp_globals["state"] == "login_small" || 
+          $net2ftp_globals["state"] == "logout" || 
+          $net2ftp_globals["state"] == "newdir" || 
+          $net2ftp_globals["state"] == "raw" ||  
+          $net2ftp_globals["state"] == "rename" ||  
+          $net2ftp_globals["state"] == "unzip" || 
+          $net2ftp_globals["state"] == "upload" || 
+          ($net2ftp_globals["state"] == "view" && $net2ftp_globals["state2"] == "") || 
           $net2ftp_globals["state"] == "zip") {
 
 		require_once($net2ftp_globals["application_modulesdir"] . "/" . $net2ftp_globals["state"] . "/" . $net2ftp_globals["state"] . ".inc.php");
 
-		if     ($action == "sendHttpHeaders") {
-			net2ftp_module_sendHttpHeaders();
+		if     ($action == "sendHttpHeaders") { 
+			net2ftp_module_sendHttpHeaders(); 
 
 			// If needed, exit to avoid sending non-header output (by net2ftp or other application)
 			// Example: if a module sends a HTTP redirect header (See /includes/authorizations.inc.php function checkAdminUsernamePassword()!)
 			if ($net2ftp_result["exit"] == true) { exit(); }
 
 		}
-		elseif ($action == "printJavascript") {
-			net2ftp_module_printJavascript();
-			net2ftp_plugin_printJavascript();
+		elseif ($action == "printJavascript") { 
+			net2ftp_module_printJavascript(); 
+			net2ftp_plugin_printJavascript(); 
 		}
-		elseif ($action == "printCss")        {
+		elseif ($action == "printCss")        { 
 			net2ftp_module_printCss();
 			net2ftp_plugin_printCss();
 		}
-		elseif ($action == "printBodyonload") {
-			net2ftp_module_printBodyonload();
-			net2ftp_plugin_printBodyonload();
+		elseif ($action == "printBodyOnload") { 
+			net2ftp_module_printBodyOnload(); 
+			net2ftp_plugin_printBodyOnload(); 
 		}
 		elseif ($action == "printBody")       {
 
 			// Print the status bar to be able to show the progress
-			if (isStatusbarActive() == true) {
-				require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/statusbar.template.php");
-				require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/status/status.inc.php");
+			if (isStatusbarActive() == true) { 
+				require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/statusbar.template.php"); 
 			}
+			require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/status/status.inc.php"); 
 
 			// Do the work and meanwhile update the progress bar
 			net2ftp_module_printBody();
@@ -333,14 +329,14 @@ function net2ftp($action) {
 // ------------------------------------
 // For some modules, only headers must be sent
 // ------------------------------------
-	elseif ($net2ftp_globals["state"] == "clearcookies"  ||
-              $net2ftp_globals["state"] == "downloadfile"  ||
+	elseif ($net2ftp_globals["state"] == "clearcookies"  || 
+              $net2ftp_globals["state"] == "downloadfile"  || 
               $net2ftp_globals["state"] == "downloadzip"   ||
               $net2ftp_globals["state"] == "followsymlink" ||
-             ($net2ftp_globals["state"] == "jupload" && $net2ftp_globals["screen"] == 2) ||
+             ($net2ftp_globals["state"] == "jupload" && $net2ftp_globals["screen"] == 2) || 
              ($net2ftp_globals["state"] == "view" && $net2ftp_globals["state2"] != "")) {
 		require_once($net2ftp_globals["application_modulesdir"] . "/" . $net2ftp_globals["state"] . "/" . $net2ftp_globals["state"] . ".inc.php");
-		if     ($action == "sendHttpHeaders") {
+		if     ($action == "sendHttpHeaders") { 
 
 			// Do the work - do not update the progress bar
 			net2ftp_module_sendHttpHeaders();
@@ -357,7 +353,7 @@ function net2ftp($action) {
 		}
 		elseif ($action == "printJavascript") { }
 		elseif ($action == "printCss")        { }
-		elseif ($action == "printBodyonload") { }
+		elseif ($action == "printBodyOnload") { }
 		elseif ($action == "printBody")       { }
 	}
 	elseif ($net2ftp_globals["state"] == "error") {
@@ -365,7 +361,7 @@ function net2ftp($action) {
 		return false;
 	}
 	else {
-		$errormessage = __("Unexpected state string: %1\$s. Exiting.", $net2ftp_globals["state"]);
+		$errormessage = __("Unexpected state string: %1\$s. Exiting.", $net2ftp_globals["state"]); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		logError();
 		return false;
@@ -398,33 +394,34 @@ function isStatusbarActive() {
 
 // If $net2ftp_globals["isStatusbarActive"] is not yet filled, calculate its value
 // and fill it in
-	if (isset($net2ftp_globals["isStatusbarActive"]) == false) {
-		if (
-		$net2ftp_globals["state"] == "admin" ||
-		$net2ftp_globals["state"] == "admin_createtables" ||
-		$net2ftp_globals["state"] == "admin_emptylogs"   ||
-		$net2ftp_globals["state"] == "admin_viewlogs" ||
-		$net2ftp_globals["state"] == "advanced" ||
-		$net2ftp_globals["state"] == "advanced_ftpserver" ||
-		$net2ftp_globals["state"] == "advanced_parsing"   ||
-		$net2ftp_globals["state"] == "advanced_webserver" ||
-		$net2ftp_globals["state"] == "bookmark" ||
-		($net2ftp_globals["state"] == "browse" && $net2ftp_globals["state2"] == "main") ||
+	if (isset($net2ftp_globals["isStatusbarActive"]) == false) { 
+		if ($net2ftp_globals["skin"] == "openlaszlo") { $net2ftp_globals["isStatusbarActive"] = false; }
+		elseif (
+		$net2ftp_globals["state"] == "admin" || 
+		$net2ftp_globals["state"] == "admin_createtables" || 
+		$net2ftp_globals["state"] == "admin_emptylogs"   || 
+		$net2ftp_globals["state"] == "admin_viewlogs" || 
+		$net2ftp_globals["state"] == "advanced" || 
+		$net2ftp_globals["state"] == "advanced_ftpserver" || 
+		$net2ftp_globals["state"] == "advanced_parsing"   || 
+		$net2ftp_globals["state"] == "advanced_webserver" || 
+		$net2ftp_globals["state"] == "bookmark" || 
+		($net2ftp_globals["state"] == "browse" && $net2ftp_globals["state2"] == "main") || 
 		$net2ftp_globals["state"] == "calculatesize" ||
-		$net2ftp_globals["state"] == "chmod" ||
-		$net2ftp_globals["state"] == "copymovedelete" ||
-		$net2ftp_globals["state"] == "easywebsite" ||
-		$net2ftp_globals["state"] == "findstring" ||
-		$net2ftp_globals["state"] == "install" ||
-		$net2ftp_globals["state"] == "jupload" ||
-		$net2ftp_globals["state"] == "newdir" ||
+		$net2ftp_globals["state"] == "chmod" || 
+		$net2ftp_globals["state"] == "copymovedelete" || 
+		$net2ftp_globals["state"] == "easywebsite" || 
+		$net2ftp_globals["state"] == "findstring" || 
+		$net2ftp_globals["state"] == "install" || 
+		$net2ftp_globals["state"] == "jupload" || 
+		$net2ftp_globals["state"] == "newdir" || 
 		$net2ftp_globals["state"] == "newfile" ||
-		$net2ftp_globals["state"] == "raw" ||
-		$net2ftp_globals["state"] == "rename" ||
-		$net2ftp_globals["state"] == "unzip" ||
-		$net2ftp_globals["state"] == "updatefile" ||
-		$net2ftp_globals["state"] == "upload" ||
-		$net2ftp_globals["state"] == "view" ||
+		$net2ftp_globals["state"] == "raw" ||  
+		$net2ftp_globals["state"] == "rename" ||  
+		$net2ftp_globals["state"] == "unzip" || 
+		$net2ftp_globals["state"] == "updatefile" || 
+		$net2ftp_globals["state"] == "upload" || 
+		$net2ftp_globals["state"] == "view" || 
 		$net2ftp_globals["state"] == "zip") {
 			$net2ftp_globals["isStatusbarActive"] = true;
 		}
@@ -465,10 +462,10 @@ function stopwatch() {
 	$now = ((float)$now_usec + (float)$now_sec);
 
 // Initialization
-	if (isset($net2ftp_globals["stopwatch_starttime"]) == false) {
+	if (isset($net2ftp_globals["stopwatch_starttime"]) == false) { 
 		$net2ftp_globals["stopwatch_starttime"] = $now;
 	}
-	if (isset($net2ftp_globals["stopwatch_endtime"]) == false) {
+	if (isset($net2ftp_globals["stopwatch_endtime"]) == false) { 
 		$net2ftp_globals["stopwatch_endtime"] = $now;
 	}
 

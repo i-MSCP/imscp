@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -54,28 +54,28 @@ if (function_exists("session_name") == false) {
 }
 
 // PMA - Cookies are safer
-ini_set("session.use_cookies", true);
+@ini_set("session.use_cookies", true);
 
 // PMA - but not all user allow cookies
-ini_set("session.use_only_cookies", false);
-ini_set("session.use_trans_sid", true);
+@ini_set("session.use_only_cookies", false);
+@ini_set("session.use_trans_sid", true);
 
 // PMA - Delete session/cookies when browser is closed
-ini_set("session.cookie_lifetime", 0);
+@ini_set("session.cookie_lifetime", 0);
 
 // PMA - Warn but dont work with bug
-ini_set("session.bug_compat_42", false);
-ini_set("session.bug_compat_warn", true);
+@ini_set("session.bug_compat_42", false);
+@ini_set("session.bug_compat_warn", true);
 
 // PMA - Use more secure session ids (with PHP 5)
 if (version_compare(PHP_VERSION, "5.0.0", "ge") && substr(PHP_OS, 0, 3) != "WIN") {
-	ini_set("session.hash_function", 1);
-	ini_set("session.hash_bits_per_character", 6);
+	@ini_set("session.hash_function", 1);
+	@ini_set("session.hash_bits_per_character", 6);
 }
 
 // PMA - [2006-01-25] Nicola Asuni - www.tecnick.com: maybe the PHP directive
 // session.save_handler is set to another value like "user"
-ini_set("session.save_handler", "files");
+@ini_set("session.save_handler", "files");
 
 // Start the session
 // PMA - On some servers (for example, sourceforge.net), we get a permission error on the session data directory, so prefix with @
@@ -88,7 +88,6 @@ if (isset($_SESSION["net2ftp_remote_addr_new"]) == true) { $_SESSION["net2ftp_re
 else                                                     { $_SESSION["net2ftp_remote_addr_old"] = ""; }
 $_SESSION["net2ftp_session_id_new"]  = session_id();
 $_SESSION["net2ftp_remote_addr_new"] = $_SERVER["REMOTE_ADDR"];
-
 
 // -------------------------------------------------------------------------
 // 3 SERVER variabes
@@ -148,11 +147,13 @@ $net2ftp_globals["username_js"]   = javascriptEncode2($net2ftp_globals["username
 if (isset($_POST["password"]) == true) {
 	$net2ftp_globals["password_encrypted"]  = encryptPassword(trim($_POST["password"]));
 	$_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]] = encryptPassword(trim($_POST["password"]));
+	$_SESSION["net2ftp_session_id_old"]  = $_SESSION["net2ftp_session_id_new"];
 }
 // From the upload page (SWFUpload Flash applet)
 elseif (isset($_GET["password_encrypted"]) == true) {
 	$net2ftp_globals["password_encrypted"]  = trim($_GET["password_encrypted"]);
 	$_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]] = trim($_GET["password_encrypted"]);
+	$_SESSION["net2ftp_session_id_old"]  = $_SESSION["net2ftp_session_id_new"];
 }
 
 // ----------------------------------------------
@@ -323,11 +324,11 @@ if ($net2ftp_globals["state"] == "logout") {
 
 // -------------------------------------------------------------------------
 // 5.2 Redirect to login_small 
-//         if session has expired
+//         if session has expired        (not for OpenLaszlo skin as it does not make a connection on the Login screen)
 //         if the IP address has changed (disabled as this may cause problems for some people)
 //         if the password is blank
 // -------------------------------------------------------------------------
-if ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" &&
+if ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" && 
 	$_SESSION["net2ftp_session_id_old"] != $_SESSION["net2ftp_session_id_new"]) {
 	$net2ftp_globals["go_to_state"]  = $net2ftp_globals["state"];
 	$net2ftp_globals["go_to_state2"] = $net2ftp_globals["state2"];
@@ -893,7 +894,6 @@ function validateState($state) {
 	$statelist[] = "login_small";
 	$statelist[] = "logout";
 	$statelist[] = "newdir";
-	$statelist[] = "newfile";
 	$statelist[] = "raw";
 	$statelist[] = "rename";
 	$statelist[] = "unzip";

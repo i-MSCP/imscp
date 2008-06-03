@@ -1,6 +1,6 @@
 # translation of compatibility.po to Faroese
 # Copyright (C) 2005 Free Software Foundation, Inc.
-# $Id: compatibility.po,v 1.1 2005/12/20 07:42:51 tokul Exp $
+# $Id: compatibility.po 10481 2005-12-20 07:42:50Z tokul $
 # Danial Olsen <danial@com-data.fo>, 2005.
 msgid ""
 msgstr ""

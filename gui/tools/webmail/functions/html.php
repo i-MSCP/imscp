@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: html.php 12438 2007-06-03 14:19:09Z bouchon $
+ * @version $Id: html.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  * @since 1.3.0
  */
@@ -183,4 +183,3 @@ function set_url_var($url, $var, $val=null, $link=true) {
             echo $format_ar[$frm_last];
         }
     }
-?>

@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Ferdie Ferdsen <ferdie@despam.de>, 2004.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: templates.po,v 1.7 2005/09/10 11:42:24 jervfors Exp $
+# $Id: templates.po 10086 2005-09-10 11:42:24Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: templates 1.1\n"

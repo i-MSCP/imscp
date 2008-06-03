@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 12811 2007-12-14 17:04:21Z jangliss $
+ * @version $Id: strings.php 13164 2008-05-23 17:31:51Z kink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.13';
+$version = '1.4.15';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,13);
+$SQM_INTERNAL_VERSION = array(1,4,15);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -881,4 +881,3 @@ function sq_trim_value ( &$value ) {
 
 
 $PHP_SELF = php_self();
-?>

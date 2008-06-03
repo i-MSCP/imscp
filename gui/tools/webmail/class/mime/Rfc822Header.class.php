@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 12764 2007-11-15 05:52:52Z jangliss $
+ * @version $Id: Rfc822Header.class.php 12934 2008-02-10 19:08:30Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -578,8 +578,13 @@ class Rfc822Header {
                          $aAddrBookAddress = $this->parseAddress($aAddr['email'],true);
                      } else {
                          $iPosAt = strpos($aAddr['email'], '@');
-                         $oAddr->mailbox = substr($aAddr['email'], 0, $iPosAt);
-                         $oAddr->host = substr($aAddr['email'], $iPosAt+1);
+                         if ($iPosAt === FALSE) {
+                             $oAddr->mailbox = $aAddr['email'];
+                             $oAddr->host = FALSE;
+                         } else {
+                             $oAddr->mailbox = substr($aAddr['email'], 0, $iPosAt);
+                             $oAddr->host = substr($aAddr['email'], $iPosAt+1);
+                         }
                          if (isset($aAddr['name'])) {
                              $oAddr->personal = $aAddr['name'];
                          } else {

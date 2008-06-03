@@ -1,18 +1,22 @@
+# translation of askuserinfo.po to Dutch
 # Ask User Info Plugin
 # Copyright (c) 2004-2005 SquirrelMail Project Team
-# M.J. Prinsen <translation@prinsenonline.com>, 2004.
 #
+# M.J. Prinsen <translation@prinsenonline.com>, 2004.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ask User Info Plugin 1.0\n"
+"Project-Id-Version: askuserinfo\n"
 "POT-Creation-Date: 2003-09-11 05:04+0100\n"
-"PO-Revision-Date: 2004-01-10 16:30+0100\n"
-"Last-Translator: M.J. Prinsen <translation@prinsenonline.com>\n"
-"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"PO-Revision-Date: 2007-04-02 21:01+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: setup.php:50
 msgid "NOTE: You need to supply your full name and email address."
-msgstr "NB: U moet uw volledige naam en e-mailadres invullen."
+msgstr "Opmerking: u moet uw volledige naam en e-mailadres invullen."
+

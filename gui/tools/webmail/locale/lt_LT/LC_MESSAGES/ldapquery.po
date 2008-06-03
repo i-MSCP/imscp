@@ -3,7 +3,7 @@
 # Copyright (c) 2003-2006 SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: ldapquery.po,v 1.6 2006/08/13 13:50:15 tokul Exp $
+# $Id: ldapquery.po 11579 2006-08-13 13:50:15Z tokul $
 # 
 # 
 msgid ""

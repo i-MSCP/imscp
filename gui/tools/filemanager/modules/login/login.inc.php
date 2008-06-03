@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -57,9 +57,9 @@ function net2ftp_module_printJavascript() {
 
 	global $net2ftp_settings, $net2ftp_globals;
 
+// Check if the user did enter an FTP server and username
 	echo "<script type=\"text/javascript\"><!--\n";	
 
-// Check if the user did enter an FTP server and username
 	echo "function CheckInput(form) {\n";
 	echo "	var u,p1,p2,e;\n";
 	echo "	s=form.ftpserver.value;\n";
@@ -111,9 +111,6 @@ function net2ftp_module_printJavascript() {
 	echo "}\n";
 	echo "//--></script>\n";
 
-// Include
-//	echo "<script type=\"text/javascript\" src=\"". $net2ftp_globals["application_rootdir_url"] . "/modules/login/login.js\"></script>\n";
-
 } // end net2ftp_printJavascript
 
 // **                                                                                  **
@@ -138,9 +135,8 @@ function net2ftp_module_printCss() {
 
 	global $net2ftp_settings, $net2ftp_globals;
 
-// Include
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/skins/" . $net2ftp_globals["skin"] . "/css/main.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["image_url"]) . "\" />\n";
-	
+
 } // end net2ftp_printCssInclude
 
 // **                                                                                  **
@@ -157,7 +153,7 @@ function net2ftp_module_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_module_printBodyonload() {
+function net2ftp_module_printBodyOnload() {
 
 // --------------
 // This function prints the <body onload="" actions
@@ -166,7 +162,7 @@ function net2ftp_module_printBodyonload() {
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
 //	echo "";
 
-} // end net2ftp_printBodyonload
+} // end net2ftp_printBodyOnload
 
 // **                                                                                  **
 // **                                                                                  **

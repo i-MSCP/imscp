@@ -1,0 +1,205 @@
+# Italian translation of Squirrelmail abook_import_export plugin.
+# Copyright (c) 2006-2207 The SquirrelMail Project Team
+# Roberto Bellandi <roberto@nettirrena.it>, 2006.
+# $Id: $
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-07-22 19:44+0300\n"
+"PO-Revision-Date: 2007-01-21 07:04+0100\n"
+"Last-Translator: Roberto Bellandi <roberto@nettirrena.it>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "You must use different symbols for text and field delimiters."
+msgstr "Devi usare caratteri diversi per il testo e per i separatori di campo."
+
+#, php-format
+msgid "Return to main %sAddress Book%s page."
+msgstr "Ritorna alla pagina principale %sAddress Book%s"
+
+msgid "Selected address book is empty."
+msgstr "Agenda selezionata vuota."
+
+msgid "Please select a file for uploading."
+msgstr "Selezionare un file da inviare."
+
+msgid "The uploaded file exceeds PHP upload_max_filesize limits."
+msgstr "Il file inviato eccede la dimensione impostata in PHP variabile: upload_max_filesize limits."
+
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML."
+msgstr ""
+"Il file inviato eccede la direttiva MAX_FILE_SIZE specificata nel "
+"HTML."
+
+msgid "The uploaded file was only partially uploaded."
+msgstr "Il file da inviare e stato solo parzilmente inviato."
+
+msgid "No file was uploaded."
+msgstr "Nessun file inviato."
+
+msgid "Missing a temporary directory."
+msgstr "Manca il percorso temporaneo."
+
+msgid "Failed to write file to disk."
+msgstr "Fallita scrittura file sul disco."
+
+msgid "Unknown upload error."
+msgstr "Errore invio file sconosciuto."
+
+msgid "Upload error"
+msgstr "Errore invio"
+
+#, php-format
+msgid ""
+"Imported CSV file is too big. Contact your system administrator, if you want "
+"to import files, that are bigger than %s."
+msgstr ""
+"File importato troppo grande. Contattare amministratore di sistema, se vuoi "
+"poter importare file che sono piu grandi di %s."
+
+msgid "Error, could not open address file."
+msgstr "Errore non posso aprire il file con gli indirizzi"
+
+msgid "No#"
+msgstr "Nr#"
+
+msgid "Omit"
+msgstr "Escludi"
+
+msgid "Add to address book: "
+msgstr "Aggiunge agli indirizzi"
+
+msgid "Finish"
+msgstr "Finito"
+
+msgid "Nothing to import"
+msgstr "Niente da importare"
+
+msgid "Return to Address Book"
+msgstr "Ritorna agli indirizzi"
+
+msgid "The following rows have errors"
+msgstr "Le seguenti righe contengono errori"
+
+msgid "Can't move uploaded file to attachment directory."
+msgstr "Non posso spostare il file inviato nel percorso degli allegati."
+
+msgid "Unable to access uploaded data. Contact your system administrator."
+msgstr "Impossibile accedere ai dati inviati. Contattare amministratore di sistema."
+
+#, php-format
+msgid "Row %d:"
+msgstr "Riga %d:"
+
+msgid ""
+"There were errors uploading the data, as listed below. Entries not listed "
+"here were uploaded."
+msgstr ""
+"Ci sono errori inviando i dati, come elencato di seguito. Le righe non elencate "
+"qua sono state inserite."
+
+msgid "Upload Completed!"
+msgstr "Invio completato!"
+
+msgid "Click on the link below to verify your work."
+msgstr "Cliccare sul collegamento qua sotto per verificare la operazione."
+
+msgid "Addresses"
+msgstr "Indirizzi"
+
+msgid "Single quotes (')"
+msgstr "Singolo apice (')"
+
+msgid "Double quotes (\")"
+msgstr "Doppio apice (\")"
+
+msgid "Comma (,)"
+msgstr "Virgola (,)"
+
+msgid "Semicolon (;)"
+msgstr "Punto e virgola (;)"
+
+msgid "Custom delimiter"
+msgstr "Separatore personalizzato"
+
+msgid "Address book import"
+msgstr "Importazione indirizzi"
+
+msgid "Select file:"
+msgstr "Seleziona file:"
+
+msgid "Max:"
+msgstr "Massimo:"
+
+msgid "Input character set:"
+msgstr "Set caratteri in ingresso:"
+
+msgid "Field delimiter:"
+msgstr "Delimitatore di campo:"
+
+msgid "Custom field delimiter:"
+msgstr "Delimitatore di campo personalizzato:"
+
+msgid "Text delimiter:"
+msgstr "Delimitatore di testo:"
+
+msgid "Custom text delimiter:"
+msgstr "Delimitatore di testo personalizzato:"
+
+msgid "Import CSV File"
+msgstr "Importa File indirizzi"
+
+msgid "ERROR"
+msgstr "ERRORE"
+
+msgid "Address book uploads are disabled."
+msgstr "Invio indirizzi disabilitato."
+
+msgid "Address book export"
+msgstr "Esportazione indirizzi"
+
+msgid "Use address book:"
+msgstr "Utilizza indirizzi:"
+
+msgid "Export to CSV File"
+msgstr "Esporta file rubrica"
+
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#, php-format
+msgid "%s B"
+msgstr "%s B"
+
+msgid "Nickname"
+msgstr "Soprannome"
+
+msgid "First Name"
+msgstr "Nome"
+
+msgid "Last Name"
+msgstr "Cognome"
+
+msgid "Email"
+msgstr "Indirizzo E-Mail"
+
+msgid "Additional Info"
+msgstr "Informazioni supplementari"
+
+msgid "Do Not Include"
+msgstr "Escludi"
+
+msgid "LDIF import is not supported."
+msgstr "Importazione LDIF non supportata."

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php 12768 2007-11-19 04:20:34Z jangliss $
+ * @version $Id: read_body.php 13133 2008-05-13 09:38:58Z kink $
  * @package squirrelmail
  */
 
@@ -118,9 +118,17 @@ function printer_friendly_link($mailbox, $passed_id, $passed_ent_id, $color) {
     global $javascript_on;
 
     /* hackydiehack */
+
+    // Pull "view_unsafe_images" from the URL to find out if the unsafe images
+    // should be displayed. The default is not to display unsafe images.
     if( !sqgetGlobalVar('view_unsafe_images', $view_unsafe_images, SQ_GET) ) {
+        // If "view_unsafe_images" isn't part of the URL, default to not
+        // displaying unsafe images.
         $view_unsafe_images = false;
     } else {
+        //  If "view_unsafe_images" is part of the URL, display unsafe images
+        //  regardless of the value of the URL variable.
+        // FIXME: Do we really want to display the unsafe images regardless of the value in URL variable?
         $view_unsafe_images = true;
     }
 
@@ -157,10 +165,10 @@ function ServerMDNSupport($read) {
 }
 
 function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
-    global $username, $attachment_dir, $color,
+    global $username, $attachment_dir, $color, $default_move_to_sent,
            $version, $attachments, $squirrelmail_language, $default_charset,
            $languages, $useSendmail, $domain, $sent_folder,
-           $popuser, $data_dir, $username;
+           $popuser, $data_dir;
 
     sqgetGlobalVar('SERVER_NAME', $SERVER_NAME, SQ_SERVER);
 
@@ -179,7 +187,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     $rfc822_header->to[] = $header->dnt;
     $rfc822_header->subject = _("Read:") . ' ' . decodeHeader($header->subject, true, false);
 
-    // FIX ME, use identity.php from SM 1.5. Change this also in compose.php
+    // FIXME: use identity.php from SM 1.5. Change this also in compose.php
 
     $reply_to = '';
     if (isset($identity) && $identity != 'default') {
@@ -309,16 +317,20 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
         $deliver = new Deliver_SMTP();
         global $smtpServerAddress, $smtpPort, $pop_before_smtp;
+
+        $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
+
         $user = '';
         $pass = '';
-        $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
+
         get_smtp_user($user, $pass);
+
         $stream = $deliver->initStream($composeMessage,$domain,0,
-                                       $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
+                $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
     }
     $success = false;
     if ($stream) {
-        $length  = $deliver->mail($composeMessage, $stream);
+        $deliver->mail($composeMessage, $stream);
         $success = $deliver->finalizeStream($stream);
     }
     if (!$success) {
@@ -330,12 +342,32 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
         plain_error_message($msg, $color);
     } else {
         unset ($deliver);
-        if (sqimap_mailbox_exists ($imapConnection, $sent_folder)) {
-            sqimap_append ($imapConnection, $sent_folder, $length);
+
+        // copy message to sent folder
+        $move_to_sent = getPref($data_dir,$username,'move_to_sent');
+        if (isset($default_move_to_sent) && ($default_move_to_sent != 0)) {
+            $svr_allow_sent = true;
+        } else {
+            $svr_allow_sent = false;
+        }
+
+        if (isset($sent_folder) && (($sent_folder != '') || ($sent_folder != 'none'))
+                && sqimap_mailbox_exists( $imapConnection, $sent_folder)) {
+            $fld_sent = true;
+        } else {
+            $fld_sent = false;
+        }
+
+        if ((isset($move_to_sent) && ($move_to_sent != 0)) || (!isset($move_to_sent))) {
+            $lcl_allow_sent = true;
+        } else {
+            $lcl_allow_sent = false;
+        }
+
+        if (($fld_sent && $svr_allow_sent && !$lcl_allow_sent) || ($fld_sent && $lcl_allow_sent)) {
             require_once(SM_PATH . 'class/deliver/Deliver_IMAP.class.php');
             $imap_deliver = new Deliver_IMAP();
-            $imap_deliver->mail($composeMessage, $imapConnection);
-            sqimap_append_done ($imapConnection);
+            $imap_deliver->mail($composeMessage, $imapConnection, 0, 0, $imapConnection, $sent_folder);
             unset ($imap_deliver);
         }
     }

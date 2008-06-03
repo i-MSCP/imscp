@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2006.
-# $Id: change_sqlpass.po,v 1.2 2006/05/28 15:01:28 jervfors Exp $
+# $Id: change_sqlpass.po 11168 2006-05-28 15:01:28Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: change_sqlpass 3.3\n"

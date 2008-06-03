@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail custom_charset plugin
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2001.
-# $Id: custom_charset.po,v 1.1 2005/06/10 09:56:56 tokul Exp $
+# $Id: custom_charset.po 9564 2005-06-10 09:56:55Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: custom_charset 1.1\n"

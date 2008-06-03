@@ -8,12 +8,12 @@
  * a button to show the bug report mail message in order to actually
  * send it.
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
+ * Copyright (c) 1999-2008 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This is a standard Squirrelmail-1.2 API for plugins.
  *
- * @version $Id: bug_report.php 11100 2006-05-01 14:58:16Z tokul $
+ * @version $Id: bug_report.php 13029 2008-03-11 05:07:17Z pdontthink $
  * @package plugins
  * @subpackage bug_report
  */
@@ -24,6 +24,18 @@
 define('SM_PATH','../../');
 
 require_once(SM_PATH . 'include/validate.php');
+
+
+// if this plugin is not enabled, don't continue
+//
+global $plugins, $color;
+if (!in_array('bug_report', $plugins)) {
+    plain_error_message(_("Plugin is not enabled"), $color);
+    exit;
+}
+
+
+
 /* load sqimap_get_user_server() */
 include_once(SM_PATH . 'functions/imap_general.php');
 // loading form functions

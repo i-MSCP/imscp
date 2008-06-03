@@ -64,12 +64,12 @@
       <b>Kalba</b><br>
       Jei anglų nėra jūsų gimtoji kalba arba jei jūs geriau mokate kitą užsienio 
       kalbą, jūs galite pasirinkti vieną iš sąraše pateikiamų kalbų ir visas (arba
-      beveik visas) Squirrelmail bus rodomas būtent ta kalba. Tačiau aplankų vardai
+      beveik visas) SquirrelMail bus rodomas būtent ta kalba. Tačiau aplankų vardai
       ir atėjusios žinutės nebus išverstos.
       <br><br>
 
       <b>Naudoti Javascript ar HTML adresų knygą?</b><br>
-      Vienas iš mūsų tikslų buvo sukurti Squirrelmail taip, kad jame nebūtų jokio
+      Vienas iš mūsų tikslų buvo sukurti SquirrelMail taip, kad jame nebūtų jokio
       Javascript. Tačiau dalis mūsų programuotojų parašė neblogą adresų paieškos
       priedą, kuris naudoją Javascript. Vietoj to, kad jį išmesti, mes leidžiame 
       jums pasirinkti kokį adresų knygutės variantą naudoti. HTML variantas turetų 
@@ -182,7 +182,7 @@
       <br><br>
 
       <b>Išsiskleidžiantys aplankai</b><br>
-      "Aktyvuoti išsiskleidžiančius aplankus" punktas įjungia specialų Squirrelmail
+      "Aktyvuoti išsiskleidžiančius aplankus" punktas įjungia specialų SquirrelMail
       režimą, kuris leidžia paslėpti dalį aplankų taip tarsi jie būtų įtraukti į 
       aukščiau esantį aplanką.
       <br><br>

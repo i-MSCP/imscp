@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail verify_reply_to plugin.
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: verify_reply_to.po,v 1.1 2005/06/10 11:04:35 tokul Exp $
+# $Id: verify_reply_to.po 9571 2005-06-10 11:04:34Z tokul $
 # 
 # 
 msgid ""

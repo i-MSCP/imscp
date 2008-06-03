@@ -2,6 +2,11 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-06-03 Benedikt Heintel
+	- TOOLS:
+		* Updated net2ftp to version 0.97
+		* Updates SquirrelMail to version 1.4.15
+
+2008-06-03 Benedikt Heintel
 	- GUI:
 		* Fixed #1330: In admin/manage_sessions.php {ADMIN_USERNAME} is not replaced
 

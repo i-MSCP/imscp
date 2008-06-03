@@ -1,205 +1,43 @@
 THE SQUIRRELMAIL TEAM
 =====================
 
- Main Developers:
- ----------------
-   Alex Lemaresquier    <alex@brainstorm.fr>
-   Chris Hilts          <tassium@squirrelmail.org>     http://www.birdbrained.org
-   Fredrik Jervfors     <jervfors@squirrelmail.org>    http://fredrik.jervfors.se
-   Jonathan Angliss     <jon@squirrelmail.org>
-   Marc Groot Koerkamp  <marc@squirrelmail.org>
-   Paul Lesneiwski      <paul@squirrelmail.org>
-   Seth E. Randall      <sethr@missoulafcu.org>
-   Steve Brown          <sbrown25@gmail.com>
-   Thijs Kinkhorst      <kink@squirrelmail.org>        http://thijs.kinkhorst.nl
-   Alexandros Vellis    <avel+sqm@noc.uoa.gr>          http://users.uoa.gr/~avel
+The SquirrelMail Project thanks each and every one that have made SquirrelMail
+what it is today. This includes, but isn't limited to, bug reporters, patch
+submitters, testers, plugin authors, community members, and many, many other.
 
- Past Developers, now retired:
- -----------------------------
- Brent Bice, Bron Gondwana, Bryan Stalcup, Erin Schnabel, Gerrit Padgham,
- Gustav Foseid, Jason Munro, Jimmy Conner, Konstantin Riabitsev, Lewis Bergman,
- Luke Ehresman, Matt Phillips, Nathan Ehresman, Paul Thompson, Peter Hutnick,
- Philippe Mingo, Pål Løberg, Rick Castello, Shane Wilson, Simon Dick, Steve
- Falla, Steve Gare, Tomas Kuliavas, Tyler Akins, Wouter Teepe.
- (Thanks people!)
+The list below contains some of persons that have helped the project, with the
+aim to give credit where it is due. If you feel that your name has wrongfully
+been left out, please contact the SquirrelMail Project.
 
+Main developers:
+----------------
+Alex Lemaresquier    <alex@brainstorm.fr>
+Alexandros Vellis    <avel+sqm@noc.uoa.gr>          http://users.uoa.gr/~avel
+Chris Hilts          <tassium@squirrelmail.org>     http://www.birdbrained.org
+Fredrik Jervfors     <jervfors@squirrelmail.org>    http://fredrik.jervfors.se
+Jonathan Angliss     <jon@squirrelmail.org>
+Marc Groot Koerkamp  <marc@squirrelmail.org>
+Paul Lesneiwski      <paul@squirrelmail.org>
+Seth E. Randall      <sethr@missoulafcu.org>
+Steve Brown          <sbrown25@gmail.com>
+Thijs Kinkhorst      <kink@squirrelmail.org>        http://thijs.kinkhorst.nl
 
- Translations:
- -------------
+Past developers, now retired:
+-----------------------------
+Brent Bice, Bron Gondwana, Bryan Stalcup, Erin Schnabel, Gerrit Padgham, Gustav
+Foseid, Jason Munro, Jimmy Conner, Konstantin Riabitsev, Lewis Bergman, Luke
+Ehresman, Matt Phillips, Nathan Ehresman, Paul Thompson, Peter Hutnick, Philippe
+Mingo, Pål Løberg, Rick Castello, Shane Wilson, Simon Dick, Steve Falla, Steve
+Gare, Tomas Kuliavas, Tyler Akins, and Wouter Teepe.
 
- Mailinglist:    squirrelmail-i18n@lists.sourceforge.net
- Leader:         
+Significant contributions:
+--------------------------
+Alex Bleeker, Charles Scheidecker, Cor Bosman, Damien Sandras, David
+Whittington, Jan-Pieter Cornet, John Williams, Libor Kopecky, Martin Jespersen,
+Michael Long, Ondrej Sury, Pontus Ullgren, Rob Siemborski, Sergiusz Pawlowicz,
+Stefan Meier, Stefan Sels, and many others.
 
-   Arabic        Asrar Abbasi <asrar at canasoft.net>
-                 Naveed Saqib <naveed.saqib at biznas.com>
-                 Mohamed H. Tawfiq <mhtawfiq at creative-e.net>
-
-   Basque        Iker Etxaniz ietxaniz at csiss.jesuitak.org
-                 Eneko Harreguy eharreguy at csiss.jesuitak.org
-                 Jabier Martinez jmartinez at csiss.jesuitak.org
-
-   Bengali       Uttiya Chowdhury <chowdhury_uttiya at yahoo.com>
-
-   British       Mark Boddington <mark.boddington at transactgroup.net>
-
-   Bulgarian     Stanislav Yordanov <stanprog at yahoo.com>
-
-   Catalan       Josep Sanz <jsanz at fa.upc.es>
-
-   Chinese (Simplified)
-                 Bo Jin <bensonjin at yahoo.com>
-
-   Chinese (Traditional)
-                 Ching <ching at kiwa.com.tw>
-                 Ray Liao <ray6 at mail2000.com.tw>
-
-   Croatian      Albert Novak <Albert.Novak at CARNet.hr>
-                 Zoran Dzelajlija <jelly+i18n at srk.fer.hr> (last translator)
-
-   Czech         Ondrej Sury <ondrej at sury.cz>
-                 Tomas Zvala <fox at murder.cz>
-                 Tomas Drbohlav <tomas.drbohlav at mff.cuni.cz>
-
-   Danish        Claus Rasmussen <claus at webclaus.com>
-
-   Dutch         M.J. Prinsen <translation at prinsenonline.com>
-                 Arjen Halma <arjen at halma.nl>
-
-   Estonian      Lauri Jesmin <jesmin at ut.ee>
-                 Peeter Russak <pezz at tkwcy.ee>
-                 Tanel Kindsigo <tanel at vykk.vil.ee>
-
-   Faroese       Danial Olsen <danial at com-data.fo>
-
-   Farsi         Reza Mohammadi <remohammadi at users.sourceforge.net>
-
-   Finnish       Teemu Junnila <teejun at vallcom.com>
-                 Jaakko Heusala <jaakko.heusala at kapsi.fi>
-                 Juha Ojaniemi <juha.ojaniemi at netello.com>
-                 Kari Mattsson <kari at trivore.com>
-
-   French        Ali Nedjimi <lrdfrx at club-internet.fr>
-                 Nicolas Cartron <nc at ncartron.com>
-                 Olivier Piquerez <piquerez at topd.ch>
-                 Antoine Hulin <antoine at origan.fdn.org>
-                 Alex Lemaresquier <alex at brainstorm.fr> (current maintainer)
-                 Laurent Pozza <laurent at pozza.org>
-                 Intri Geri <intrigeri at boum.org>
-
-   Georgian      Tamuna Changiani <tamuniach at gmail.com>
-
-   German        Roland Bauerschmidt <rb at debian.org>
-                 Ralf Hildebrandt <Ralf.Hildebrandt at charite.de> (coordinator)
-                 Klaus Brunner <klaus at winf.at>
-                 Ferdie Ferdsen <ferdie at despam.de>
-                 Thomas Fründ <fruend at fhos.de>
-                 Florian Daumling <jam at qv90.de>
-
-   Greek         George P. Kremmydas <george at kefalonia-ithaki.gr>
-                 Alexandros Vellis <avel at noc.uoa.gr>
-
-   Hebrew        Yoav Bagno <yoavb at zavit.net.il>
-
-   Hungarian     István-Attila András <bergkatten at netscape.net>
-                 KADI Gergo <gergo at kapu.hu>
-                 Zoltan Levardy <zoltan at levardy.org>
-
-   Icelandic     Karl Heiðar <karlh at macho.is>
-                 H.M.Gestsson <skvirrelmail at kuntnet.org>
-
-   Indonesian    Arief S Fitrianto <arief at fisika.ui.ac.id>
-
-   Italian       Aldo Moresco <moresco at idcm.it>
-                 Antonetti Roberto <antonr at piceniaweb.com> (help files)
-                 Marco Ciullini <marco.ciullini at datamar.it>
-                 Gianmichele Murano <gingia at email.it>
-                 Valerio Felici <valerio at bgweb.it> (last translator)
-
-   Japanese      HIGASHIYAMA Masato <masato at yamaai-tech.com>
-                 Andre Nicholson <andre at neo-anime.org>
-
-   Korean        Jong-II Kim <aporie at netian.com>
-
-   Lithuanian    Tomas Kuliavas <tokul at users.sourceforge.net>
-
-   Malay         Sapuan bin Samion <sapuan at pc.jaring.my>
-
-   Norwegian Bokmal
-                 Gustav Foseid <gustavf at squirrelmail.org>
-                 Frode Nordahl <frode at powertech.no>
-                 Robin Smidsrød <robin at smidsrod.no> (last translator)
-                 Hans Fredrik Nordhaug <hans at nordhaug.priv.no>
-
-   Norwegian Nynorsk
-                 Magni Onsøien <magnio-squirrel at initio.no>
-                 Ola Ketil Siqveland <ola.k.siqveland at tn.his.no>
-                 Hans Fredrik Nordhaug <hans at nordhaug.priv.no>
-
-   Polish        Lukasz Klimek <casa at lo.pila.pl>
-                 Horus <horus at dronet.pl>
-                 Andrzej Pruszynski <donkiszot (at) fiz,coi,waw,pl>
-
-   Portuguese (Brazil)
-                 Henrique Moura <henriquemoura at hotmail.com>
-                 Gleydson Mazioli da Silva <gleydson.mazioli at ima.sp.gov.br>
-                 Marcos Tadeu <marcos at v2r.com.br>
-                 Fabio Mengue <fabio at unicamp.br>
-
-   Portuguese (Portugal)
-                 Ruben Leote Mendes <ruben at nocturno.org>
-
-   Romanian      Mircea Ilie <mrx at tep.ro>
-                 Veaceslav Chicu <slavic at chicu.ro>
-
-   Russian       Gregory Mokhin <mok at kde.ru>
-
-   Serbian       Boris Manojlovic <steki at verat.net>
-                 Nenad Peric <nesha at teleport.co.yu>
-
-   Slovak        Ondrej Sury <ondrej at sury.cz>
-                 Peter Kubicko <Booster13 at centrum.cz>
-
-   Slovenian     Tomaz Zupan <tomaz.zupan at orpo.si>
-
-   Spanish       Hernan Collazo <hcollazo at opengeeks.com.ar>
-                 Philippe Mingo <philippe at squirrelmail.org>
-                 Dirk Enrique Seiffert <ds at caribenet.com>
-
-   Swedish       Tobias Ekbom <tobias at vallcom.net>
-                 Teemu Junnila <teejun at vallcom.com>
-                 Olle Hällnäs <olle at xmms.org>
-                 Johan Fernberger <johan at fernberger.com>
-                 Fredrik Jervfors <sqm_admin at fimbul.net> (translation coordinator)
-
-   Thai          Nartpong Ampornaramweth <yongnarak at yahoo.com>
-    (Thai translation is not supported until someone updates translation)
-
-   Turkish       Kerem Erkan <kerem.erkan at basari.com.tr>
-                 Volkan Yildirim <volkan at ozzmosis.pleksus.net.tr>
-                 Dr.Hikmet Gumus <gumush at hitstar.org>
-
-   Uighur        Mamatjan Tursun <oghri at 163.com>
-
-   Ukrainian     Khohlov Sergii <sergkh at westlucky.net>
-                 Serhij Dubyk <dubyk at library.lviv.ua>
-
-   Vietnamese    Le Viet Hung <heros at hcm.fpt.vn>
-    (Vietnamese is not supported until someone updates translation.
-     translation is not in Vietnamese)
-
-   Welsh         Andrew Rawlins <awr at aber.ac.uk>
-
- Significant Contributions:
- --------------------------
- Sergiusz Pawlowicz, Libor Kopecky, Stefan Meier, Charles Scheidecker,
- Alex Bleeker, Damien Sandras, David Whittington, Jan-Pieter Cornet,
- John Williams, Martin Jespersen, Ondrej Sury, Pontus Ullgren,
- Stefan Sels, Rob Siemborski, Michael Long, Cor Bosman and many others!
-
- Thanks to all who have made SquirrelMail the way it is now!
- That includes bugreporters, patch submitters, testers, plugin authors, ...
-
-
-( We have tried to keep this up to date to give credit where it
-  is due. If you feel that you have wrongfully been left off this
-  list, contact us. )
+Translations:
+-------------
+The translators are credited in the file "TRANSLATORS", which is part of the
+locales package.

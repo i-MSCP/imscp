@@ -2,7 +2,7 @@
 # SquirrelMail advanced_settings plugin.
 # Copyright (c) 2006 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: advanced_settings.po,v 1.1 2006/06/21 20:08:18 tokul Exp $
+# $Id: advanced_settings.po 11288 2006-06-21 20:08:18Z tokul $
 # 
 msgid ""
 msgstr ""

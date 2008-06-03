@@ -5,9 +5,16 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: validate.php 12766 2007-11-15 06:11:01Z jangliss $
+ * @version $Id: validate.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
+
+/**
+ * Make sure we have a page name
+ *
+ */
+if ( !defined('PAGE_NAME') ) define('PAGE_NAME', NULL);
+
 
 /** include the mime class before the session start ! otherwise we can't store
  * messages with a session_register.
@@ -70,4 +77,3 @@ if ( $timeZone != SMPREF_NONE && ($timeZone != "")
     putenv("TZ=".$timeZone);
 }
 
-?>

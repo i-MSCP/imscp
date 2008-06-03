@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Copyright (C) The SquirrelMail Project Team, 2006.
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006.
-# $Id: multilogin.po,v 1.1 2006/03/03 23:34:10 jervfors Exp $
+# $Id: multilogin.po 10856 2006-03-03 23:34:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: multilogin 2.3.2\n"

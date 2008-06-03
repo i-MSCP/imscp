@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 //  |                                                                               |
@@ -27,7 +27,6 @@ $net2ftp_settings["email_feedback"] = "webmaster@net2ftp.com";
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
 $net2ftp_settings["default_skin"]     = "omega";
-$net2ftp_globals["default_skin"]	  = "omega";
 // Enter the address of your help pages, support forum or ticket system
 // This will add a link in the footer; leave empty if you don't have this
 $net2ftp_settings["help_text"] = "";
@@ -38,7 +37,7 @@ $net2ftp_settings["error_reporting"] = "NONE";
 //$net2ftp_settings["error_reporting"] = "standard";
 //$net2ftp_settings["error_reporting"] = "ALL";
 
-// Fix PNG images
+// Fix transparent PNG images in IE
 $net2ftp_settings["fix_png"] = "yes";
 
 
@@ -57,9 +56,10 @@ $net2ftp_settings["admin_password"] = "";
 
 $net2ftp_settings["message_browse"] = "";
 
+
 // ----------------------------------------------------------------------------------
-// A MySQL database is optional. It can be used for: logging the users,
-// checking the consumption of network and server resources (data transfer
+// A MySQL database is optional. It can be used for: logging the users, 
+// checking the consumption of network and server resources (data transfer 
 // volume and script execution time), and checking the user's home directory
 // ----------------------------------------------------------------------------------
 
@@ -77,7 +77,17 @@ $net2ftp_settings["log_access"] = "yes";
 $net2ftp_settings["log_error"]  = "yes";
 
 // Delete logs which are older than X days automatically
-$net2ftp_settings["log_length_days"] = 7; // number of days
+$net2ftp_settings["log_length_days"] = 31; // number of days
+
+
+// ----------------------------------------------------------------------------------
+// Logging to the system logger
+// ----------------------------------------------------------------------------------
+
+$net2ftp_settings["use_syslog"] = "no";
+$net2ftp_settings["syslog_priority"] = LOG_NOTICE;
+$net2ftp_settings["syslog_facility"] = LOG_MAIL;
+$net2ftp_settings["syslog_ident"] = "net2ftp";
 
 
 // ----------------------------------------------------------------------------------
@@ -123,13 +133,13 @@ putenv("PHP_TMPDIR=" . $tmpdir);
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 // ----------------------------------------------------------------------------------
 
-$net2ftp_settings["application_version"] = "0.96";
-$net2ftp_settings["application_build_nr"] = "43";
+$net2ftp_settings["application_version"] = "0.97";
+$net2ftp_settings["application_build_nr"] = "44";
 
 // Is this net2ftp.com, or a net2ftp installation elsewhere
 $net2ftp_settings["net2ftpdotcom"] = "no";
 
-// Google Adsense advertisements
+// Google Adsense advertisements 
 // Not shown when using HTTPS to avoid warnings on each pageload
 $net2ftp_settings["show_google_ads"] = "no";
 

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 12803 2007-12-05 20:21:46Z jangliss $
+ * @version $Id: mime.php 13019 2008-03-08 10:53:42Z jervfors $
  * @package squirrelmail
  */
 
@@ -313,6 +313,8 @@ function formatBody($imap_stream, $message, $color, $wrap_at, $ent_num, $id, $ma
            $username, $key, $imapServerAddress, $imapPort,
            $download_and_unsafe_link;
 
+    // If there's no "view_unsafe_images" variable in the URL, turn unsafe
+    // images off by default.
     if( !sqgetGlobalVar('view_unsafe_images', $view_unsafe_images, SQ_GET) ) {
         $view_unsafe_images = false;
     }
@@ -370,16 +372,35 @@ function formatBody($imap_stream, $message, $color, $wrap_at, $ent_num, $id, $ma
             return $body;
         }
 
+        /*
+         * Previously the links for downloading and unsafe images were printed
+         * under the mail. By putting the links in a global variable we can
+         * print it in the toolbar where it belongs. Since the original code was
+         * in this place it's left here. It might be possible to move it to some
+         * other place if that makes sense. The possibility to do so has not
+         * been evaluated yet.
+         */
+
+        // Initialize the global variable to an empty string.
         $download_and_unsafe_link = '';
 
+        // Prepare and build a link for downloading the mail.
         $link = 'passed_id=' . $id . '&amp;ent_id='.$ent_num.
             '&amp;mailbox=' . $urlmailbox .'&amp;sort=' . $sort .
             '&amp;startMessage=' . $startMessage . '&amp;show_more=0';
         if (isset($passed_ent_id)) {
             $link .= '&amp;passed_ent_id='.$passed_ent_id;
         }
+
+        // Always add the link for downloading the mail as a file to the global
+        // variable.
         $download_and_unsafe_link .= '&nbsp;|&nbsp;<a href="download.php?absolute_dl=true&amp;' .
             $link . '">' . _("Download this as a file") .  '</a>';
+
+        // Find out the right text to use in the link depending on the
+        // circumstances. If the unsafe images are displayed the link should
+        // hide them, if they aren't displayed the link should only appear if
+        // the mail really contains unsafe images.
         if ($view_unsafe_images) {
             $text = _("Hide Unsafe Images");
         } else {
@@ -390,6 +411,9 @@ function formatBody($imap_stream, $message, $color, $wrap_at, $ent_num, $id, $ma
                 $text = '';
             }
         }
+
+        // Only create a link for unsafe images if there's need for one. If so:
+        // add it to the global variable.
         if($text != '') {
             $download_and_unsafe_link .= '&nbsp;|&nbsp;<a href="read_body.php?' . $link . '">' . $text . '</a>';
         }
@@ -1678,9 +1702,12 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
         $attvalue = trim(substr($attvalue,1,-1));
     }
 
+    // If there's no "view_unsafe_images" variable in the URL, turn unsafe
+    // images off by default.
     if( !sqgetGlobalVar('view_unsafe_images', $view_unsafe_images, SQ_GET) ) {
         $view_unsafe_images = false;
     }
+
     $secremoveimg = '../images/' . _("sec_remove_eng.png");
 
     /**
@@ -1765,6 +1792,7 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
  * @return           a string with edited content.
  */
 function sq_fixstyle($body, $pos, $message, $id, $mailbox){
+    // FIXME: Is the global "view_unsafe_images" really needed here?
     global $view_unsafe_images;
     $me = 'sq_fixstyle';
 
@@ -1778,7 +1806,7 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
         $char = $body{$i};
         switch ($char) {
             case '<':
-                $sToken .= $char;
+                $sToken = $char;
                 break;
             case '/':
                  if ($sToken == '<') {
@@ -1873,9 +1901,9 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
     /**
      * Remove any backslashes, entities, and extraneous whitespace.
      */
-     $contentTemp = $content;
-     sq_defang($contentTemp);
-     sq_unspace($contentTemp);
+    $contentTemp = $content;
+    sq_defang($contentTemp);
+    sq_unspace($contentTemp);
 
     /**
      * Fix stupid css declarations which lead to vulnerabilities
@@ -2190,7 +2218,7 @@ function sq_sanitize($body,
  */
 function magicHTML($body, $id, $message, $mailbox = 'INBOX', $take_mailto_links =true) {
 
-    // require_once(SM_PATH . 'functions/url_parser.php');  // for $MailTo_PReg_Match
+    require_once(SM_PATH . 'functions/url_parser.php');  // for $MailTo_PReg_Match
 
     global $attachment_common_show_images, $view_unsafe_images,
            $has_unsafe_images;
@@ -2304,9 +2332,13 @@ function magicHTML($body, $id, $message, $mailbox = 'INBOX', $take_mailto_links 
                 )
             )
         );
+
+    // If there's no "view_unsafe_images" variable in the URL, turn unsafe
+    // images off by default.
     if( !sqgetGlobalVar('view_unsafe_images', $view_unsafe_images, SQ_GET) ) {
         $view_unsafe_images = false;
     }
+
     if (!$view_unsafe_images){
         /**
          * Remove any references to http/https if view_unsafe_images set
@@ -2510,5 +2542,3 @@ function SendDownloadHeaders($type0, $type1, $filename, $force, $filesize=0) {
     }
 
 }  // end fn SendDownloadHeaders
-
-?>

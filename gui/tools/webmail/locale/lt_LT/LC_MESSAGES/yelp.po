@@ -2,7 +2,7 @@
 # SquirrelMail's yelp plugin.
 # Copyright (c) 2003-2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# $Id: yelp.po,v 1.2 2005/06/05 11:49:48 jervfors Exp $
+# $Id: yelp.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: yelp 1.1\n"

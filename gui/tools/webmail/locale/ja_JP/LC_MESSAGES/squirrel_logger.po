@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Andre Nicholson <andre@neo-anime.org>, 2005.
-# $Id: squirrel_logger.po,v 1.1 2005/10/09 19:12:57 jervfors Exp $
+# $Id: squirrel_logger.po 10141 2005-10-09 19:12:56Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrel_logger\n"

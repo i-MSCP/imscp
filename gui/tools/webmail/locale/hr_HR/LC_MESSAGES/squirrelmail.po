@@ -1,7 +1,7 @@
 # Croatian Squirrelmail Translation 
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Albert Novak <Albert.Novak@CARNet.hr>, 2001-2003.
-# $Id: squirrelmail.po,v 1.4 2005/06/05 11:49:46 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4.2\n"

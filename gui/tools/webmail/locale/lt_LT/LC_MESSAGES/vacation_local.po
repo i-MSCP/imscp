@@ -2,7 +2,7 @@
 # SquirrelMail's vacation_local plugin.
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: vacation_local.po,v 1.4 2005/08/28 10:45:09 tokul Exp $
+# $Id: vacation_local.po 10018 2005-08-28 10:45:09Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: vacation_local 2.0\n"

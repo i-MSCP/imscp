@@ -6,7 +6,7 @@
 # Tomas Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2005.
 # Daniel Kahoun <squirrel@dan.idk.cz>, 2006.
 # Tomas Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2006.
-# $Id: squirrelmail.po,v 1.8 2006/06/30 06:46:47 jervfors Exp $
+# $Id: squirrelmail.po 11328 2006-06-30 06:46:47Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"

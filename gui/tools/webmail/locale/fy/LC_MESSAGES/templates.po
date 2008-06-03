@@ -1,0 +1,82 @@
+# translation of templates.po to Nederlands
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) templates Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: templates.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: templates\n"
+"POT-Creation-Date: 2005-10-24 21:02+0300\n"
+"PO-Revision-Date: 2007-04-15 09:53+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#, php-format
+msgid "Template file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Sjabloantriem %s koe net iepene wurde. Nim kontakt op mei jo systeembehearder om dit probleem op te lossen."
+
+#, php-format
+msgid "Template file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Sjabloantriem %s koe net skreaun wurde. Nim kontakt op mei jo systeembehearder om dit probleem op te lossen."
+
+#, php-format
+msgid "Template file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Sjabloantriem %s koe net fanút tydlike triem, %s,  kopiearre wurde. Nim kontakt op mei jo systeembehearder om dit probleem op te lossen."
+
+msgid "You must be on WYSIWYG mode!"
+msgstr "Jo moatte yn WYSIWYG-modus wêze!"
+
+msgid "Add Template"
+msgstr "Sjabloan taheakje"
+
+msgid "Templates"
+msgstr "Sjabloanen"
+
+msgid "Create/Edit/Delete chunks of text that can be quickly added to messages."
+msgstr "Meitsje/bewurkje/wiskje teksten dy't gau oan berjochten taheakke wurde kinne."
+
+msgid "Append Templates before all existing text"
+msgstr "Slabloanen foár alle triemmen tekst taheakje"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Add blank line before template text when appending"
+msgstr "Lege regel foár sjabloantekst iepenlitte by it taheakjen"
+
+msgid "Add blank line after template text when appending"
+msgstr "Lege regel nei de sjabloantekst iepenlitte by it taheakjen"
+
+#, php-format
+msgid "Template %d"
+msgstr "Sjabloan %d"
+
+msgid "Options"
+msgstr "Opsjes"
+
+msgid "Add a New Template"
+msgstr "In nij sjabloan taheakje"
+
+msgid "Description"
+msgstr "Beskriuwing"
+
+msgid "Template Text"
+msgstr "Sjabloantekst"
+
+msgid "Save / Update"
+msgstr "Opslaan / bywurkje"
+
+msgid "Delete"
+msgstr "Wiskje"
+
+msgid "Move Up"
+msgstr "Omheech"
+

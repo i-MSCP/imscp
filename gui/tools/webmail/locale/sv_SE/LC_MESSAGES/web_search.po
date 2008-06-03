@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: web_search.po,v 1.1 2005/12/27 14:03:41 jervfors Exp $
+# $Id: web_search.po 10503 2005-12-27 14:03:40Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: web_search 0.1.6\n"

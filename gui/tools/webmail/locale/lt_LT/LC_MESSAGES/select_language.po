@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail select_language plugin.
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2001.
-# $Id: select_language.po,v 1.1 2005/08/28 08:18:30 tokul Exp $
+# $Id: select_language.po 10013 2005-08-28 08:18:29Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: select_language 1.0\n"

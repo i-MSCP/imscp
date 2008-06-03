@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail Limit Languages plugin.
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: limit_languages.po,v 1.1 2005/07/03 17:05:53 tokul Exp $
+# $Id: limit_languages.po 9717 2005-07-03 17:05:52Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: limit_languages 1.0\n"

@@ -1,7 +1,7 @@
 # translation of squirrelmail.po to Portugues Brasileiro
 # Portuguese (Brazil) Squirrelmail Translation
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
-# $Id: squirrelmail.po,v 1.9 2005/06/12 15:07:08 tokul Exp $
+# $Id: squirrelmail.po 9590 2005-06-12 15:07:08Z tokul $
 # Marcos Tadeu <marcos@v2r.com.br>, 2003-2005.
 msgid ""
 msgstr ""

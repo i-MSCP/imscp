@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: verify_reply_to.po,v 1.3 2005/06/05 11:49:53 jervfors Exp $
+# $Id: verify_reply_to.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: verify_reply_to\n"

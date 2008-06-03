@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -38,7 +38,7 @@
 //  |  sign, for example %1\$s or %2\$s. The English message, for example           |
 //  |     $messages[...] = ["The file %1\$s was copied to %2\$s "]                  |
 //  |  should becomes after translation:                                            |
-//  |     $messages[...] = ["Le fichier %1\$s a �t� copi� vers %2\$s "]             |
+//  |     $messages[...] = ["Le fichier %1\$s a été copié vers %2\$s "]             |
 //  |                                                                               |
 //  |  When a real percent sign % is needed in the text it is entered as %%         |
 //  |  otherwise it is interpreted as a variable. So no, it's not a mistake.        |
@@ -107,12 +107,12 @@ $net2ftp_messages["Reading the old file"] = "قراءة الملف القديم"
 $net2ftp_messages["Comparing the 2 files"] = "مقارنة الملفين";
 $net2ftp_messages["Printing the comparison"] = "طباعة المقارنة";
 $net2ftp_messages["Sending FTP command %1\$s of %2\$s"] = "إرسال أمر FTP %1\$s من %2\$s";
-$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Getting archive %1\$s of %2\$s from the FTP server";
-$net2ftp_messages["Creating a temporary directory on the FTP server"] = "Creating a temporary directory on the FTP server";
-$net2ftp_messages["Setting the permissions of the temporary directory"] = "Setting the permissions of the temporary directory";
-$net2ftp_messages["Copying the net2ftp installer script to the FTP server"] = "Copying the net2ftp installer script to the FTP server";
+$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "جلب أرشيف %1\$s من %2\$s من سرفر FTP";
+$net2ftp_messages["Creating a temporary directory on the FTP server"] = "إنشاء دليل مؤقت على سرفر FTP";
+$net2ftp_messages["Setting the permissions of the temporary directory"] = "إعداد تصاريح الدليل المؤقت";
+$net2ftp_messages["Copying the net2ftp installer script to the FTP server"] = "نسخ معالج net2ftp إلى سرفر FTP";
 $net2ftp_messages["Script finished in %1\$s seconds"] = "الوقت المستغرق %1\$s ثانية";
-$net2ftp_messages["Script halted"] = "تعثر السكربت";
+$net2ftp_messages["Script halted"] = "تعثر المعالج";
 
 // Used on various screens
 $net2ftp_messages["Please wait..."] = "يرجى الانتظار ...";
@@ -132,8 +132,8 @@ $net2ftp_messages["This function has been disabled by the Administrator of this 
 $net2ftp_messages["The directory <b>%1\$s</b> does not exist or could not be selected, so the directory <b>%2\$s</b> is shown instead."] = "الدليل <b>%1\$s</b> غير موجود أو لا يمكن تحديده , لذا لا يمكن عرض الدليل <b>%2\$s</b> بدلاً منه .";
 $net2ftp_messages["Your root directory <b>%1\$s</b> does not exist or could not be selected."] = "الدليل الجرز root <b>%1\$s</b> غير موجود أو لا يمكن تحديده .";
 $net2ftp_messages["The directory <b>%1\$s</b> could not be selected - you may not have sufficient rights to view this directory, or it may not exist."] = "الدليل <b>%1\$s</b> لا يمكن تحديده - ربما لاتمتلك تخويل كاف لعرض هذا الدليل , أو ربما يكون غير موجود .";
-$net2ftp_messages["Entries which contain banned keywords can't be managed using net2ftp. This is to avoid Paypal or Ebay scams from being uploaded through net2ftp."] = "Entries which contain banned keywords can't be managed using net2ftp. This is to avoid Paypal or Ebay scams from being uploaded through net2ftp.";
-$net2ftp_messages["Files which are too big can't be downloaded, uploaded, copied, moved, searched, zipped, unzipped, viewed or edited; they can only be renamed, chmodded or deleted."] = "Files which are too big can't be downloaded, uploaded, copied, moved, searched, zipped, unzipped, viewed or edited; they can only be renamed, chmodded or deleted.";
+$net2ftp_messages["Entries which contain banned keywords can't be managed using net2ftp. This is to avoid Paypal or Ebay scams from being uploaded through net2ftp."] = "الإدخالات التي تحتوي على كلمات مفتاحية محظورة لا يمكن إدارتها بواسطة net2ftp .  ذلك لحماية Paypal أو Ebay من الغش و التلاعب .";
+$net2ftp_messages["Files which are too big can't be downloaded, uploaded, copied, moved, searched, zipped, unzipped, viewed or edited; they can only be renamed, chmodded or deleted."] = "الملفات الكبيرة جداً لا يمكن تحميلها ، رفعها ، نسخها ، نقلها ، البحث فيها ، ضغطها ، فك ضغطها ، عرضها أو تحريرها ؛  فقط يمكن تغيير الاسم ، التصاريح أو الحذف .";
 $net2ftp_messages["Execute %1\$s in a new window"] = "تنفيذ %1\$s في نافذة جديدة";
 
 
@@ -151,8 +151,8 @@ $net2ftp_messages["Please select at least one directory or file!"] = "يرجى �
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "سرفر FTP <b>%1\$s</b> غير موجود في قائمة سرفرات FTP المسموح بها .";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "السرفر FTP <b>%1\$s</b> موجود في قائمة سرفرات FTP المحظورة .";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "منفذ سرفر FTP %1\$s لا يمكن استخدامه .";
-$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "عنوان IP (%1\$s) موجود في قائمة عناوين IP المحظورة .";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "عنوان IP  الخاص بك (%1\$s) غير موجود في قائمة عناوين IP المسموح بها .";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "عنوان IP الخاص بك (%1\$s) موجود في قائمة عناوين IP المحظورة .";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "الجدول net2ftp_users يحتوي على صفوف مكررة .";
@@ -176,8 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "الجدول net2ftp_log_consumption_ipaddress يحتوي على عناصر مكررة .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "لا يمكن تحديث الجدول net2ftp_log_consumption_ftpserver .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "الجدول net2ftp_log_consumption_ftpserver يحتوي على عناصر مكررة .";
-$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
-$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "لا يمكن تحديث الجدول net2ftp_log_access .";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "يتضمن الجدول net2ftp_log_access مدخلات متكررة .";
 
 
 // -------------------------------------------------------------------------
@@ -248,8 +248,8 @@ $net2ftp_messages["Unable to delete the temporary file"] = "تعذر حذف مل
 // ftp_copymovedelete()
 $net2ftp_messages["Processing directory <b>%1\$s</b>"] = "Processing directory <b>%1\$s</b>";
 $net2ftp_messages["The target directory <b>%1\$s</b> is the same as or a subdirectory of the source directory <b>%2\$s</b>, so this directory will be skipped"] = "الدليل الهدف <b>%1\$s</b> نفس المصدر أو دليل فرعي من الدليل المصدر <b>%2\$s</b>, لذا سيتم تخطي هذا الدليل .";
-$net2ftp_messages["The directory <b>%1\$s</b> contains a banned keyword, so this directory will be skipped"] = "The directory <b>%1\$s</b> contains a banned keyword, so this directory will be skipped";
-$net2ftp_messages["The directory <b>%1\$s</b> contains a banned keyword, aborting the move"] = "The directory <b>%1\$s</b> contains a banned keyword, aborting the move";
+$net2ftp_messages["The directory <b>%1\$s</b> contains a banned keyword, so this directory will be skipped"] = "الدليل <b>%1\$s</b> يحتوي على كلمات مفتاحية محظورة ، لذا سيتم تخطي هذا الدليل";
+$net2ftp_messages["The directory <b>%1\$s</b> contains a banned keyword, aborting the move"] = "الدليل <b>%1\$s</b> يحتوي على كلمات مفتاحية محظورة ، تم إلغاء النقل";
 $net2ftp_messages["Unable to create the subdirectory <b>%1\$s</b>. It may already exist. Continuing the copy/move process..."] = "تعذر إنشاء الدليل الفرعي <b>%1\$s</b>. ربما يكون موجود من . متابعة عملية النسخ/النقل ...";
 $net2ftp_messages["Created target subdirectory <b>%1\$s</b>"] = "إنشاء الدليل الفرعي الهدف <b>%1\$s</b>";
 $net2ftp_messages["The directory <b>%1\$s</b> could not be selected, so this directory will be skipped"] = "الدليل <b>%1\$s</b> لا يمكن تحديده . لذا سيتم تخطي هذا الدليل .";
@@ -257,13 +257,13 @@ $net2ftp_messages["Unable to delete the subdirectory <b>%1\$s</b> - it may not b
 $net2ftp_messages["Deleted subdirectory <b>%1\$s</b>"] = "تم حذف الدليل الفرعي <b>%1\$s</b>";
 $net2ftp_messages["Processing of directory <b>%1\$s</b> completed"] = "تمت معالجة الدليل <b>%1\$s</b>";
 $net2ftp_messages["The target for file <b>%1\$s</b> is the same as the source, so this file will be skipped"] = "الدليل الهدف للملف <b>%1\$s</b> يبدو أنه كالمصدر , لذا سيتم تخطي هذا الملف";
-$net2ftp_messages["The file <b>%1\$s</b> contains a banned keyword, so this file will be skipped"] = "The file <b>%1\$s</b> contains a banned keyword, so this file will be skipped";
-$net2ftp_messages["The file <b>%1\$s</b> contains a banned keyword, aborting the move"] = "The file <b>%1\$s</b> contains a banned keyword, aborting the move";
-$net2ftp_messages["The file <b>%1\$s</b> is too big to be copied, so this file will be skipped"] = "The file <b>%1\$s</b> is too big to be copied, so this file will be skipped";
-$net2ftp_messages["The file <b>%1\$s</b> is too big to be moved, aborting the move"] = "The file <b>%1\$s</b> is too big to be moved, aborting the move";
+$net2ftp_messages["The file <b>%1\$s</b> contains a banned keyword, so this file will be skipped"] = "الملف <b>%1\$s</b> يحتوي على كلمات مفتاحية محظورة ، لذا سيتم تخطي هذا الملف";
+$net2ftp_messages["The file <b>%1\$s</b> contains a banned keyword, aborting the move"] = "الملف <b>%1\$s</b> يحتوي على كلمات مفتاحية محظورة ، تم إلغاء النقل";
+$net2ftp_messages["The file <b>%1\$s</b> is too big to be copied, so this file will be skipped"] = "الملف <b>%1\$s</b> كبير جداً كي ينسخ ، لذا سيتم تجاوزه";
+$net2ftp_messages["The file <b>%1\$s</b> is too big to be moved, aborting the move"] = "الملف <b>%1\$s</b> كبير جداً كي ينقل ، تم إلغاء النقل";
 $net2ftp_messages["Unable to copy the file <b>%1\$s</b>"] = "تعذر نسخ الملف <b>%1\$s</b>";
 $net2ftp_messages["Copied file <b>%1\$s</b>"] = "تم نسخ الملف <b>%1\$s</b>";
-$net2ftp_messages["Unable to move the file <b>%1\$s</b>, aborting the move"] = "Unable to move the file <b>%1\$s</b>, aborting the move";
+$net2ftp_messages["Unable to move the file <b>%1\$s</b>, aborting the move"] = "تعذر نقل الملف <b>%1\$s</b>, تم إلغاء العملية";
 $net2ftp_messages["Moved file <b>%1\$s</b>"] = "تم نقل الملف <b>%1\$s</b>";
 $net2ftp_messages["Unable to delete the file <b>%1\$s</b>"] = "تعذر حذف الملف <b>%1\$s</b>";
 $net2ftp_messages["Deleted file <b>%1\$s</b>"] = "تم حذف الملف <b>%1\$s</b>";
@@ -276,8 +276,8 @@ $net2ftp_messages["Unable to copy the remote file <b>%1\$s</b> to the local file
 $net2ftp_messages["Unable to delete file <b>%1\$s</b>"] = "تعذر حذف الملف <b>%1\$s</b>";
 
 // ftp_putfile()
-$net2ftp_messages["The file is too big to be transferred"] = "The file is too big to be transferred";
-$net2ftp_messages["Daily limit reached: the file <b>%1\$s</b> will not be transferred"] = "الحصة اليومية المسموح بها انتهت » الملف <b>%1\$s</b> لن يتم ترحيله";
+$net2ftp_messages["The file is too big to be transferred"] = "كبير جداً كي يتم ترحيله";
+$net2ftp_messages["Daily limit reached: the file <b>%1\$s</b> will not be transferred"] = "الحصة اليومية المسموح بها استنفذت » الملف <b>%1\$s</b> لن يتم ترحيله";
 $net2ftp_messages["Unable to copy the local file to the remote file <b>%1\$s</b> using FTP mode <b>%2\$s</b>"] = "تعذر نسخ الملف المحلي إلى الملف البعيد <b>%1\$s</b> باستخدام نمط FTP <b>%2\$s</b>";
 $net2ftp_messages["Unable to delete the local file"] = "تعذر حذف الملف المحلي";
 
@@ -290,23 +290,23 @@ $net2ftp_messages["Unable to create the temporary file"] = "تعذر إنشاء 
 $net2ftp_messages["The zip file has been saved on the FTP server as <b>%1\$s</b>"] = "تم حفظ الملف المضغوط zip إلى سرفر FTP باسم <b>%1\$s</b>";
 $net2ftp_messages["Requested files"] = "الملفات المطلوبة";
 
-$net2ftp_messages["Dear,"] = "Dear,";
-$net2ftp_messages["Someone has requested the files in attachment to be sent to this email account (%1\$s)."] = "Someone has requested the files in attachment to be sent to this email account (%1\$s).";
-$net2ftp_messages["If you know nothing about this or if you don't trust that person, please delete this email without opening the Zip file in attachment."] = "If you know nothing about this or if you don't trust that person, please delete this email without opening the Zip file in attachment.";
-$net2ftp_messages["Note that if you don't open the Zip file, the files inside cannot harm your computer."] = "Note that if you don't open the Zip file, the files inside cannot harm your computer.";
-$net2ftp_messages["Information about the sender: "] = "Information about the sender: ";
-$net2ftp_messages["IP address: "] = "IP address: ";
-$net2ftp_messages["Time of sending: "] = "Time of sending: ";
-$net2ftp_messages["Sent via the net2ftp application installed on this website: "] = "Sent via the net2ftp application installed on this website: ";
-$net2ftp_messages["Webmaster's email: "] = "Webmaster's email: ";
-$net2ftp_messages["Message of the sender: "] = "Message of the sender: ";
-$net2ftp_messages["net2ftp is free software, released under the GNU/GPL license. For more information, go to http://www.net2ftp.com."] = "net2ftp is free software, released under the GNU/GPL license. For more information, go to http://www.net2ftp.com.";
+$net2ftp_messages["Dear,"] = "السلام عليكم ,";
+$net2ftp_messages["Someone has requested the files in attachment to be sent to this email account (%1\$s)."] = "شخص ما طلب إرسال الملفات المرفقة إلى عنوان البريد الالكتروني (%1\$s) .";
+$net2ftp_messages["If you know nothing about this or if you don't trust that person, please delete this email without opening the Zip file in attachment."] = "إن لم تكن تعرف شئ حول هذا , أو إن لم تكن معني بهذا الشخص , يرجى حذف الرسالة بدون فتح الملف المضغوط المرفق .";
+$net2ftp_messages["Note that if you don't open the Zip file, the files inside cannot harm your computer."] = "ملاحظة - إن لم تقم بفتح الملف المضغوط , فلن تلحق الملفات التي بداخله أي أذى بجهازك إن كنت تشك بها .";
+$net2ftp_messages["Information about the sender: "] = "معلومات حول المرسل » ";
+$net2ftp_messages["IP address: "] = "عنوان IP » ";
+$net2ftp_messages["Time of sending: "] = "وقت الإرسال » ";
+$net2ftp_messages["Sent via the net2ftp application installed on this website: "] = "أرسلت بواسطة برنامج net2ftp المركب على هذا الموقع » ";
+$net2ftp_messages["Webmaster's email: "] = "بريد الإدارة » ";
+$net2ftp_messages["Message of the sender: "] = "رسالة المرسل » ";
+$net2ftp_messages["net2ftp is free software, released under the GNU/GPL license. For more information, go to http://www.net2ftp.com."] = "net2ftp برنامج مجاني ، صادر تحت الترخيص GNU/GPL .  للمزيد من المعلومات ، راجع http://www.net2ftp.com .";
 
 $net2ftp_messages["The zip file has been sent to <b>%1\$s</b>."] = "تم إرسال الملف المضغوط إلى <b>%1\$s</b>.";
 
 // acceptFiles()
 $net2ftp_messages["File <b>%1\$s</b> is too big. This file will not be uploaded."] = "حجم الملف <b>%1\$s</b> كبير جداً . لن يتم رفع هذا الملف .";
-$net2ftp_messages["File <b>%1\$s</b> is contains a banned keyword. This file will not be uploaded."] = "File <b>%1\$s</b> is contains a banned keyword. This file will not be uploaded.";
+$net2ftp_messages["File <b>%1\$s</b> is contains a banned keyword. This file will not be uploaded."] = "المف <b>%1\$s</b> يتضمن كلمات مفتاحية محظورة .  لن يتم رفع هذا الملف .";
 $net2ftp_messages["Could not generate a temporary file."] = "تعذر إنشاء ملف التخزين المؤقت .";
 $net2ftp_messages["File <b>%1\$s</b> could not be moved"] = "تعذر نقل الملف <b>%1\$s</b>";
 $net2ftp_messages["File <b>%1\$s</b> is OK"] = "المف <b>%1\$s</b> نجاح !";
@@ -321,22 +321,22 @@ $net2ftp_messages["Transferring files to the FTP server"] = "ترحيل المل
 // ftp_unziptransferfiles()
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "معالجة الأرشيف رقم %1\$s » <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "تعذر معالجة الأرشيف <b>%1\$s</b> بسبب عدم دعم هذا النوع . فقط أنواع الأرشيف zip, tar, tgz و gz مدعومة حالياً .";
-$net2ftp_messages["Unable to extract the files and directories from the archive"] = "Unable to extract the files and directories from the archive";
-$net2ftp_messages["Created directory %1\$s"] = "Created directory %1\$s";
-$net2ftp_messages["Could not create directory %1\$s"] = "Could not create directory %1\$s";
-$net2ftp_messages["Copied file %1\$s"] = "Copied file %1\$s";
-$net2ftp_messages["Could not copy file %1\$s"] = "Could not copy file %1\$s";
-$net2ftp_messages["Unable to delete the temporary directory"] = "Unable to delete the temporary directory";
-$net2ftp_messages["Unable to delete the temporary file %1\$s"] = "Unable to delete the temporary file %1\$s";
+$net2ftp_messages["Unable to extract the files and directories from the archive"] = "تعذر استخراج الملفات و المجلدات من الأرشيف";
+$net2ftp_messages["Created directory %1\$s"] = "تم إنشاء الدليل %1\$s";
+$net2ftp_messages["Could not create directory %1\$s"] = "تعذر إنشاء الدليل %1\$s";
+$net2ftp_messages["Copied file %1\$s"] = "تم نسخ %1\$s";
+$net2ftp_messages["Could not copy file %1\$s"] = "تعذر نسخ الملف %1\$s";
+$net2ftp_messages["Unable to delete the temporary directory"] = "تعذر حذف الدليل المؤقت";
+$net2ftp_messages["Unable to delete the temporary file %1\$s"] = "تعذر حذف الملف المؤقت %1\$s";
 
 // ftp_mysite()
 $net2ftp_messages["Unable to execute site command <b>%1\$s</b>"] = "تعذر تنفيذ امر الموقع <b>%1\$s</b>";
 
 // shutdown()
-$net2ftp_messages["Your task was stopped"] = "Your task was stopped";
-$net2ftp_messages["The task you wanted to perform with net2ftp took more time than the allowed %1\$s seconds, and therefor that task was stopped."] = "The task you wanted to perform with net2ftp took more time than the allowed %1\$s seconds, and therefor that task was stopped.";
-$net2ftp_messages["This time limit guarantees the fair use of the web server for everyone."] = "This time limit guarantees the fair use of the web server for everyone.";
-$net2ftp_messages["Try to split your task in smaller tasks: restrict your selection of files, and omit the biggest files."] = "Try to split your task in smaller tasks: restrict your selection of files, and omit the biggest files.";
+$net2ftp_messages["Your task was stopped"] = "تم إيقاف المهمة";
+$net2ftp_messages["The task you wanted to perform with net2ftp took more time than the allowed %1\$s seconds, and therefor that task was stopped."] = "المهمة التي تريد إنجازها بواسطة net2ftp استغرقت وقت أطول من المسموح %1\$s ثانية , و لذلك تم إيقاف المهمة .";
+$net2ftp_messages["This time limit guarantees the fair use of the web server for everyone."] = "هذا الوقت المحدد لضمان عدالة استخدام السرفر للجميع .";
+$net2ftp_messages["Try to split your task in smaller tasks: restrict your selection of files, and omit the biggest files."] = "جرب تجزئة مهمتك إلى مهمات أصغر » قلل من عدد الملفات المحددة , و احذف الملفات الأكبر .";
 $net2ftp_messages["If you really need net2ftp to be able to handle big tasks which take a long time, consider installing net2ftp on your own server."] = "إذا كنت تريد حقاً تمكين net2ftp من إنجاز المهام الكبيرة التي تستغرق وقت طويل , يمكنك التفكير في تركيب برنامج net2ftp على موقعك مباشرة .";
 
 // SendMail()
@@ -353,7 +353,7 @@ $net2ftp_messages["Please enter your username and password for FTP server "] = "
 $net2ftp_messages["You did not fill in your login information in the popup window.<br />Click on \"Go to the login page\" below."] = "لم تقم بكتابة معلومات الدخول في نافذة البوب اب .<br />اضغط على \"الذهاب إلى صفحة الدخول\" بالأسفل .";
 $net2ftp_messages["Access to the net2ftp Admin panel is disabled, because no password has been set in the file settings.inc.php. Enter a password in that file, and reload this page."] = "الدخول إلى لوحة التحكم غير متاح , بسبب عدم تعيين كلمة مرور في الملف settings.inc.php . أدخل كلمة المرور في الملف , ثم أعد تحميل هذه الصفحة .";
 $net2ftp_messages["Please enter your Admin username and password"] = "يرجى إدخال اسم المستخدم و كلمة المرور الإدارية";
-$net2ftp_messages["You did not fill in your login information in the popup window.<br />Click on \"Go to the login page\" below."] = "لم تقم بكتابة معلومات الدخول في نافذة البوب اب .<br />اضغط على \"الذهاب إلى صفحة الدخول\" بالأسفل .";
+$net2ftp_messages["You did not fill in your login information in the popup window.<br />Click on \"Go to the login page\" below."] = "لم تقم بكتابة معلومات الدخول في نافذة البوب اب .<br />اضغط على \"الذهاب إلى صفحة الدخول\"  بالأسفل .";
 $net2ftp_messages["Wrong username or password for the net2ftp Admin panel. The username and password can be set in the file settings.inc.php."] = "خطأ في اسم المستخدم أو كلمة المرور للوحة التحكم . اسم المستخدم و كلمة المرور يمكن تعيينها في الملف settings.inc.php .";
 
 
@@ -671,7 +671,7 @@ if ($net2ftp_globals["state"] == "bookmark") {
 // -------------------------------------------------------------------------
 $net2ftp_messages["Add this link to your bookmarks:"] = "أضف هذا الرابط إلة مفضلتك »";
 $net2ftp_messages["Internet Explorer: right-click on the link and choose \"Add to Favorites...\""] = "Internet Explorer » اضغط بالزر الأيمن فوق الرابط و اختر \"إضافة إلى المفضلة...\"";
-$net2ftp_messages["Netscape, Mozilla, Firefox: right-click on the link and choose \"Bookmark This Link...\""] = "Netscape, Mozilla, Firefox » right-click on the link and choose \"Bookmark This Link...\"";
+$net2ftp_messages["Netscape, Mozilla, Firefox: right-click on the link and choose \"Bookmark This Link...\""] = "Netscape, Mozilla, Firefox » اضغط بالزر الأيمن فوق الرابط و اختر \"أضف هذا الرابط إلى المفضلة...\"";
 $net2ftp_messages["Note: when you will use this bookmark, a popup window will ask you for your username and password."] = "ملاحظة » عند استخدام الاختصار من المفضلة , سيطلب منك بواسطة نافذة بوب اب إدخال اسم المستخدم و كلمة المرور .";
 
 } // end bookmark
@@ -689,9 +689,9 @@ $net2ftp_messages["Please wait..."] = "يرجى الانتظار ...";
 // browse()
 $net2ftp_messages["Directories with names containing \' cannot be displayed correctly. They can only be deleted. Please go back and select another subdirectory."] = "الأدلة التي تحتوي اسمائها على \' لا يمكن عرضها بشكل صحيح . يمكن فقط حذفها . يرجى العودة للخلف و اختيار دليل فرعي آخر .";
 
-$net2ftp_messages["Daily limit reached: you will not be able to transfer data"] = "Daily limit reached: you will not be able to transfer data";
-$net2ftp_messages["In order to guarantee the fair use of the web server for everyone, the data transfer volume and script execution time are limited per user, and per day. Once this limit is reached, you can still browse the FTP server but not transfer data to/from it."] = "In order to guarantee the fair use of the web server for everyone, the data transfer volume and script execution time are limited per user, and per day. Once this limit is reached, you can still browse the FTP server but not transfer data to/from it.";
-$net2ftp_messages["If you need unlimited usage, please install net2ftp on your own web server."] = "If you need unlimited usage, please install net2ftp on your own web server.";
+$net2ftp_messages["Daily limit reached: you will not be able to transfer data"] = "الحصة اليومية انتهت » لا يمكنك متابعة ترحيل البيانات .";
+$net2ftp_messages["In order to guarantee the fair use of the web server for everyone, the data transfer volume and script execution time are limited per user, and per day. Once this limit is reached, you can still browse the FTP server but not transfer data to/from it."] = "لضمان استخدام السرفر ويب للجميع , تم تحديد حصة يومية لترحيل البيانات و الملفات لكل مستخدم . عند استهلاكك لهذه الحصة , تسطيع استعراض سرفر FTP و لكن لا يمكنك متابعة نقل البيانات من و إلى .";
+$net2ftp_messages["If you need unlimited usage, please install net2ftp on your own web server."] = "إذا كنت تريد استخدام هذه اخدمة بدون حدود , يمكنك تركيب net2ftp على سرفرك الخاص .";
 
 // printdirfilelist()
 // Keep this short, it must fit in a small button!
@@ -700,8 +700,8 @@ $net2ftp_messages["New file"] = "ملف جديد";
 $net2ftp_messages["HTML templates"] = "قوالب HTML";
 $net2ftp_messages["Upload"] = "الرفع";
 $net2ftp_messages["Java Upload"] = "الرفع بـ Java";
-$net2ftp_messages["Flash Upload"] = "Flash Upload";
-$net2ftp_messages["Install"] = "Install";
+$net2ftp_messages["Flash Upload"] = "رفع بواسطة الفلاش";
+$net2ftp_messages["Install"] = "التركيب";
 $net2ftp_messages["Advanced"] = "متقدم";
 $net2ftp_messages["Copy"] = "نسخ";
 $net2ftp_messages["Move"] = "نقل";
@@ -709,7 +709,7 @@ $net2ftp_messages["Delete"] = "حذف";
 $net2ftp_messages["Rename"] = "إعادة تسمية";
 $net2ftp_messages["Chmod"] = "تصريح";
 $net2ftp_messages["Download"] = "تحميل";
-$net2ftp_messages["Unzip"] = "Unzip";
+$net2ftp_messages["Unzip"] = "استخراج";
 $net2ftp_messages["Zip"] = "Zip";
 $net2ftp_messages["Size"] = "الحجم";
 $net2ftp_messages["Search"] = "بحث";
@@ -722,8 +722,8 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "إنشاء ملف �
 $net2ftp_messages["Create a website easily using ready-made templates"] = "إنشاء المواقع سهل باستخدام القوالب الجاهزة";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "رفع ملفات جديد إلى الدليل %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "رفع المجلدات و الملفات بواسطة Java applet";
-$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
-$net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
+$net2ftp_messages["Upload files using a Flash applet"] = "رفع الملفات بواسطة Flash applet";
+$net2ftp_messages["Install software packages (requires PHP on web server)"] = "تركيب حزمة البرنامج ( يتطلب سرفر PHP على الموقع )";
 $net2ftp_messages["Go to the advanced functions"] = "الذهاب إلى الوظائف المتقدمة";
 $net2ftp_messages["Copy the selected entries"] = "نسخ العناصر المحددة";
 $net2ftp_messages["Move the selected entries"] = "نقل العناصر المحددة";
@@ -731,7 +731,7 @@ $net2ftp_messages["Delete the selected entries"] = "حذف العناصر الم
 $net2ftp_messages["Rename the selected entries"] = "إعادة تسمية العناصر المحددة";
 $net2ftp_messages["Chmod the selected entries (only works on Unix/Linux/BSD servers)"] = "تصريح العناصر المحددة (يعمل فقط على سرفرات Unix/Linux/BSD)";
 $net2ftp_messages["Download a zip file containing all selected entries"] = "تحميل ملف zip يحتوي على جميع العناصر المحددة";
-$net2ftp_messages["Unzip the selected archives on the FTP server"] = "Unzip the selected archives on the FTP server";
+$net2ftp_messages["Unzip the selected archives on the FTP server"] = "فك ضغط الأراشيف المحددة على سرفر FTP";
 $net2ftp_messages["Zip the selected entries to save or email them"] = "ضغط Zip العناصر المحددة لحفظها أو إرسالها بالبريد";
 $net2ftp_messages["Calculate the size of the selected entries"] = "حساب حجم العناصر المحددة";
 $net2ftp_messages["Find files which contain a particular word"] = "إيجاد الملفات التي تتضمن الكلمة جزئياً";
@@ -745,7 +745,7 @@ $net2ftp_messages["Click to check or uncheck all rows"] = "اضغط لتحديد
 $net2ftp_messages["All"] = "الكل";
 $net2ftp_messages["Name"] = "الاسم";
 $net2ftp_messages["Type"] = "النوع";
-//$net2ftp_messages["Size"] = "Size";
+//$net2ftp_messages["Size"] = "الحجم";
 $net2ftp_messages["Owner"] = "المالك";
 $net2ftp_messages["Group"] = "المجموعة";
 $net2ftp_messages["Perms"] = "الصلاحية";
@@ -756,7 +756,7 @@ $net2ftp_messages["Select the file %1\$s"] = "حدد الملف %1\$s";
 $net2ftp_messages["Select the symlink %1\$s"] = "حدد symlink %1\$s";
 $net2ftp_messages["Go to the subdirectory %1\$s"] = "الذهاب إلى الدليل الفرعي %1\$s";
 $net2ftp_messages["Download the file %1\$s"] = "تحميل الملف %1\$s";
-$net2ftp_messages["Follow symlink %1\$s"] = "Follow symlink %1\$s";
+$net2ftp_messages["Follow symlink %1\$s"] = "اتبع الرابط %1\$s";
 $net2ftp_messages["View"] = "عرض";
 $net2ftp_messages["Edit"] = "تحرير";
 $net2ftp_messages["Update"] = "تحديث";
@@ -777,8 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "خرج FTP غير معروف";
 $net2ftp_messages["Number"] = "العدد";
 $net2ftp_messages["Size"] = "الحجم";
 $net2ftp_messages["Skipped"] = "تم تخطيه";
-$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
-$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
+$net2ftp_messages["Data transferred from this IP address today"] = "البيانات التي تم ترحيلها بواسطة هذا الأي بي اليوم";
+$net2ftp_messages["Data transferred to this FTP server today"] = "البيانات التي تم ترحيلها بواسطة سفر FTP هذا اليوم";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "اللغة »";
@@ -901,7 +901,7 @@ $net2ftp_messages["Click on the image to view the details of this template"] = "
 // Screen 2 - printTemplateDetails
 $net2ftp_messages["The template files will be copied to your FTP server. Existing files with the same filename will be overwritten. Do you want to continue?"] = "سيتم نسخ ملفات القالب إلى سرفرك FTP .الملفات التي تحمل نفس الاسم سيتم الكتابة فوقها . هل ترغب بالمتابعة ؟";
 $net2ftp_messages["Install template to directory: "] = "تركيب القالب في الدليل » ";
-$net2ftp_messages["Install"] = "Install";
+$net2ftp_messages["Install"] = "تركيب";
 $net2ftp_messages["Size"] = "الحجم";
 $net2ftp_messages["Preview page"] = "معاينة الصفحة";
 $net2ftp_messages["opens in a new window"] = "في في نافذة جديدة";
@@ -917,7 +917,7 @@ $net2ftp_messages["Browse the FTP server"] = "استعراض سرفر FTP";
 $net2ftp_messages["Add this link to your favorites to return to this page later on!"] = "إضافة هذا الرابط إلى مفضلتك للعودة إلى هذه الصفخة فيما بعد !";
 $net2ftp_messages["Edit website at %1\$s"] = "تحرير موقع الويب في %1\$s";
 $net2ftp_messages["Internet Explorer: right-click on the link and choose \"Add to Favorites...\""] = "Internet Explorer » اضغط بالزر الأيمن فوق الرابط و اختر \"إضافة إلى المفضلة...\"";
-$net2ftp_messages["Netscape, Mozilla, Firefox: right-click on the link and choose \"Bookmark This Link...\""] = "Netscape, Mozilla, Firefox » right-click on the link and choose \"Bookmark This Link...\"";
+$net2ftp_messages["Netscape, Mozilla, Firefox: right-click on the link and choose \"Bookmark This Link...\""] = "Netscape, Mozilla, Firefox: right-click on the link and choose \"Bookmark This Link...\"";
 
 // ftp_copy_local2ftp
 $net2ftp_messages["WARNING: Unable to create the subdirectory <b>%1\$s</b>. It may already exist. Continuing..."] = "تحذير » تعذر إنشاء الدليل الفرعي <b>%1\$s</b> . ربما يكون موجود من قبل . المتابعة...";
@@ -944,7 +944,7 @@ $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "الحالة
 $net2ftp_messages["Directory: "] = "المجلد » ";
 $net2ftp_messages["File: "] = "الملف » ";
 $net2ftp_messages["New file name: "] = "اسم الملف الجديد » ";
-$net2ftp_messages["Character encoding: "] = "Character encoding: ";
+$net2ftp_messages["Character encoding: "] = "صيغة الترميز » ";
 $net2ftp_messages["Note: changing the textarea type will save the changes"] = "ملاحظة » تغيير نوع صندوق النص سوف يحفظ هذه التعديلات";
 $net2ftp_messages["Copy up"] = "نسخ إلى";
 $net2ftp_messages["Copy down"] = "نسخ من";
@@ -981,8 +981,8 @@ $net2ftp_messages["files which were last modified"] = "الملفات ذات آ�
 $net2ftp_messages["from"] = "من";
 $net2ftp_messages["to"] = "إلى";
 
-$net2ftp_messages["Directory"] = "الدليل";
-$net2ftp_messages["File"] = "ملف";
+$net2ftp_messages["Directory"] = "المجلد";
+$net2ftp_messages["File"] = "الملف";
 $net2ftp_messages["Line"] = "السطر";
 $net2ftp_messages["Action"] = "الإجراء";
 $net2ftp_messages["View"] = "عرض";
@@ -1001,21 +1001,21 @@ $net2ftp_messages["Edit the source code of file %1\$s"] = "تحرير كود ا�
 
 // -------------------------------------------------------------------------
 // Install size module
-if ($net2ftp_globals["state"] == "install") {
+if ($net2ftp_globals["state"] == "التركيب") {
 // -------------------------------------------------------------------------
 
 // /modules/install/install.inc.php
-$net2ftp_messages["Install software packages"] = "Install software packages";
+$net2ftp_messages["Install software packages"] = "تثبيت حزمة البرنامج";
 $net2ftp_messages["Unable to open the template file"] = "تعذر فتح ملف القالب";
 $net2ftp_messages["Unable to read the template file"] = "تعذر قراءة ملف القالب";
-$net2ftp_messages["Unable to get the list of packages"] = "Unable to get the list of packages";
+$net2ftp_messages["Unable to get the list of packages"] = "تعذر جلب قائمة الحزمة";
 
 // /skins/blue/install1.template.php
-$net2ftp_messages["The net2ftp installer script has been copied to the FTP server."] = "The net2ftp installer script has been copied to the FTP server.";
-$net2ftp_messages["This script runs on your web server and requires PHP to be installed."] = "This script runs on your web server and requires PHP to be installed.";
-$net2ftp_messages["In order to run it, click on the link below."] = "In order to run it, click on the link below.";
-$net2ftp_messages["net2ftp has tried to determine the directory mapping between the FTP server and the web server."] = "net2ftp has tried to determine the directory mapping between the FTP server and the web server.";
-$net2ftp_messages["Should this link not be correct, enter the URL manually in your web browser."] = "Should this link not be correct, enter the URL manually in your web browser.";
+$net2ftp_messages["The net2ftp installer script has been copied to the FTP server."] = "تم نسخ معالج تريكب net2ftp إلى سرفر FTP .";
+$net2ftp_messages["This script runs on your web server and requires PHP to be installed."] = "هذا المعالج يعمل على سرفر موقع و يحتاج إلى PHP ليتم تركيبه .";
+$net2ftp_messages["In order to run it, click on the link below."] = "لتشغيله ، اضغط الرابط التالي .";
+$net2ftp_messages["net2ftp has tried to determine the directory mapping between the FTP server and the web server."] = "حاول net2ftp المقارنة بين سرفر FTP و سرفرل موقعك .";
+$net2ftp_messages["Should this link not be correct, enter the URL manually in your web browser."] = "ربما لا يكون هذا الرابط صحيح ، أدخل الرابط URL في مستعرضك يدوياً .";
 
 } // end install
 
@@ -1047,7 +1047,7 @@ $net2ftp_messages["Note: to use this applet, Sun's Java plugin must be installed
 if ($net2ftp_globals["state"] == "login") {
 // -------------------------------------------------------------------------
 $net2ftp_messages["Login!"] = "تسجيل الدخول !";
-$net2ftp_messages["Once you are logged in, you will be able to:"] = "Once you are logged in, you will be able to:";
+$net2ftp_messages["Once you are logged in, you will be able to:"]  = "بعد تسجيل الدخول , يمكنك »";
 $net2ftp_messages["Navigate the FTP server"] = "استعراض سرفر FTP";
 $net2ftp_messages["Once you have logged in, you can browse from directory to directory and see all the subdirectories and files."] = "التنقل من مجلد إلى مجلد و استعراض جميع المجلدات الفرعية و الملفات .";
 $net2ftp_messages["Upload files"] = "رفع الملفات";
@@ -1056,10 +1056,10 @@ $net2ftp_messages["Download files"] = "تحميل الملفات";
 $net2ftp_messages["Click on a filename to quickly download one file.<br />Select multiple files and click on Download; the selected files will be downloaded in a zip archive."] = "اضغط على اسم الملف للتحميل الفردي السريع .<br />حدد ملفات متعددة ثم اضغط على تحميل , يتم تحميل الملفات المحددة ضمن ملف مضغوط zip .";
 $net2ftp_messages["Zip files"] = "ضغط Zip الملفات";
 $net2ftp_messages["... and save the zip archive on the FTP server, or email it to someone."] = "... و حفظ الملف zip على سرفر FTP , أو إرساله بواسطة البريد الالكتروني .";
-$net2ftp_messages["Unzip files"] = "Unzip files";
-$net2ftp_messages["Different formats are supported: .zip, .tar, .tgz and .gz."] = "Different formats are supported: .zip, .tar, .tgz and .gz.";
-$net2ftp_messages["Install software"] = "Install software";
-$net2ftp_messages["Choose from a list of popular applications (PHP required)."] = "Choose from a list of popular applications (PHP required).";
+$net2ftp_messages["Unzip files"] = "استخراج الملفات";
+$net2ftp_messages["Different formats are supported: .zip, .tar, .tgz and .gz."] = "الصيغ المدعومة » .zip, .tar, .tgz و .gz.";
+$net2ftp_messages["Install software"] = "تركيب البرنامج";
+$net2ftp_messages["Choose from a list of popular applications (PHP required)."] = "اختر من قائمة التطبيقات الشائعة ( تتطلب PHP ) .";
 $net2ftp_messages["Copy, move and delete"] = "نسخ , نقل , و حذف";
 $net2ftp_messages["Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted."] = "المجلدات و محتوياتها (المجلدات الفرعية و الملفات) .";
 $net2ftp_messages["Copy or move to a 2nd FTP server"] = "نسخ أو نقل من و إلى سرفر FTP";
@@ -1071,7 +1071,7 @@ $net2ftp_messages["PHP functions are linked to the documentation on php.net."] =
 $net2ftp_messages["Plain text editor"] = "محرر نصوص عادية";
 $net2ftp_messages["Edit text right from your browser; every time you save the changes the new file is transferred to the FTP server."] = "تحرير النص بواسطة المستعرض .";
 $net2ftp_messages["HTML editors"] = "محرر HTML";
-$net2ftp_messages["Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from."] = "Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from.";
+$net2ftp_messages["Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from."] = "محرر HTML متقدم (WYSIWYG) , ما تشاهده تحصل عليه , يمكنك الاختيار بين محررين .";
 $net2ftp_messages["Code editor"] = "محرر الكود";
 $net2ftp_messages["Edit HTML and PHP in an editor with syntax highlighting."] = "تحرير كود HTML و PHP مع التمييز .";
 $net2ftp_messages["Search for words or phrases"] = "بحث عن كلمات أو تعبير برمجي";
@@ -1085,7 +1085,7 @@ $net2ftp_messages["Port"] = "المنفذ";
 $net2ftp_messages["Username"] = "اسم المستخدم";
 $net2ftp_messages["Password"] = "كلمة المرور";
 $net2ftp_messages["Anonymous"] = "Anonymous";
-$net2ftp_messages["Passive mode"] = "نمط Passive الخمول";
+$net2ftp_messages["Passive mode"] = "Passive";
 $net2ftp_messages["Initial directory"] = "الدليل الأولي";
 $net2ftp_messages["Language"] = "اللغة";
 $net2ftp_messages["Skin"] = "الشكل";
@@ -1107,10 +1107,10 @@ if ($net2ftp_globals["state"] == "login_small") {
 // -------------------------------------------------------------------------
 
 $net2ftp_messages["Please enter your Administrator username and password."] = "يرجى إدخال اسم المستخدم و كلمة المرور الخاصة بالإدارة .";
-$net2ftp_messages["Please enter your username and password for FTP server <b>%1\$s</b>."] = "Please enter your username and password for FTP server <b>%1\$s</b>.";
+$net2ftp_messages["Please enter your username and password for FTP server <b>%1\$s</b>."] = "يرجى إدخال اسم المستخدم و كلمة المرور لسرفر FTP <b>%1\$s</b> .";
 $net2ftp_messages["Username"] = "اسم المستخدم";
-$net2ftp_messages["Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue.";
-$net2ftp_messages["Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue.";
+$net2ftp_messages["Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue."] = "انتهت مدة جلسة العمل ، يرجى إعادة كتابة اسم المستخدم و كلمة المرور لسرفر FTP <b>%1\$s</b> للمتابعة .";
+$net2ftp_messages["Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue."] = "تم تغيير عنوان IP الخاص بك ، يرجى إعادة كتابة كلمة المرور لسرفر FTP <b>%1\$s</b> للمتعابعة .";
 $net2ftp_messages["Password"] = "كلمة المرور";
 $net2ftp_messages["Login"] = "تسجيل الدخول";
 $net2ftp_messages["Continue"] = "المتابعة";
@@ -1127,7 +1127,7 @@ if ($net2ftp_globals["state"] == "logout") {
 $net2ftp_messages["Login page"] = "صفحة الدخول";
 
 // logout.template.php
-$net2ftp_messages["You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>."] = "You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>.";
+$net2ftp_messages["You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>."] = "تم تسجيل خروجك من سرفر FTP . لتسجيل الدخول من جديد , <a href=\"%1\$s\" title=\"صفحة الدخول (accesskey l)\" accesskey=\"l\">اتبع الرابط التالي</a>.";
 $net2ftp_messages["Note: other users of this computer could click on the browser's Back button and access the FTP server."] = "ملاحظة » يمكن لأي مستخدم آخر لهذا الجهاز أن يضغط زر للخلف في المستعرض و الوصول إلى سرفر FTP .";
 $net2ftp_messages["To prevent this, you must close all browser windows."] = "لمنع حصول ذلك , يتوجب عليك إغلاق جميع صفحات المستعرض الآن .";
 $net2ftp_messages["Close"] = "إغلاق";
@@ -1173,7 +1173,7 @@ $net2ftp_messages["Rename directories and files"] = "إعادة تسمية ال�
 $net2ftp_messages["Old name: "] = "الاسم القديم » ";
 $net2ftp_messages["New name: "] = "الاسم الجديد » ";
 $net2ftp_messages["The new name may not contain any dots. This entry was not renamed to <b>%1\$s</b>"] = "الاسم الجديد يجب أن لا يتضمن نقاط . لم تتم إعادة تسمية هذا العنصر إلى <b>%1\$s</b>";
-$net2ftp_messages["The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>"] = "The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>";
+$net2ftp_messages["The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>"] = "الاسم الجديد لا يمكن أن يتضمن كلمات مفتاحية محظورة .  لم تتتم إعادة التسمية إلى <b>%1\$s</b>";
 $net2ftp_messages["<b>%1\$s</b> was successfully renamed to <b>%2\$s</b>"] = "تم إعادة تسمية <b>%1\$s</b> إلى <b>%2\$s</b> بنجاح !";
 $net2ftp_messages["<b>%1\$s</b> could not be renamed to <b>%2\$s</b>"] = "تعذر إعادة تسمية <b>%1\$s</b> إلى <b>%2\$s</b> !";
 
@@ -1186,15 +1186,15 @@ if ($net2ftp_globals["state"] == "unzip") {
 // -------------------------------------------------------------------------
 
 // /modules/unzip/unzip.inc.php
-$net2ftp_messages["Unzip archives"] = "Unzip archives";
-$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Getting archive %1\$s of %2\$s from the FTP server";
-$net2ftp_messages["Unable to get the archive <b>%1\$s</b> from the FTP server"] = "Unable to get the archive <b>%1\$s</b> from the FTP server";
+$net2ftp_messages["Unzip archives"] = "استخراج الكل";
+$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "جلب الأرشيف %1\$s من %2\$s من سرفر FTP";
+$net2ftp_messages["Unable to get the archive <b>%1\$s</b> from the FTP server"] = "تعذر جلب الأرشيف <b>%1\$s</b> من سرفر FTP";
 
 // /skins/[skin]/unzip1.template.php
 $net2ftp_messages["Set all targetdirectories"] = "تعيين جميع الأدلة الهدف";
 $net2ftp_messages["To set a common target directory, enter that target directory in the textbox above and click on the button \"Set all targetdirectories\"."] = "لتعيين دليل هدف مشترك , أدخل الدليل الهدف في الحقل النصي السابق ثم اضغط زر \"تعيين جميع الأدلة الهدف\".";
 $net2ftp_messages["Note: the target directory must already exist before anything can be copied into it."] = "ملاحظة » الدليل الهدف يجب أن يكون موجود أولاً .";
-$net2ftp_messages["Unzip archive <b>%1\$s</b> to:"] = "Unzip archive <b>%1\$s</b> to:";
+$net2ftp_messages["Unzip archive <b>%1\$s</b> to:"] = "فك الأرشيف <b>%1\$s</b> إلى »";
 $net2ftp_messages["Target directory:"] = "المجلد الهدف »";
 $net2ftp_messages["Use folder names (creates subdirectories automatically)"] = "استخدام نفس أسماء المجلدات (إنشاء المجلدات الفرعية تلقائياً)";
 
@@ -1211,7 +1211,7 @@ $net2ftp_messages["Known bugs: - erases tab characters - doesn't work well with 
 $net2ftp_messages["This function allows you to upload a new version of the selected file, to view what are the changes and to accept or reject each change. Before anything is saved, you can edit the merged files."] = "هذه الوظيفة تمكنك من تحميل نسخة جديدة من الملف المحدد , لمشاهدة مالذي تم تعديله و قبول أو رفض كل تعديل . قبل حفظ أي شئ يمكنك تحرير الملفات المدمجة .";
 $net2ftp_messages["Old file:"] = "الملف القديم »";
 $net2ftp_messages["New file:"] = "الملف الجديد »";
-$net2ftp_messages["Restrictions:"] = "المحدودية »";
+$net2ftp_messages["Restrictions:"] = "التحديد »";
 $net2ftp_messages["The maximum size of one file is restricted by net2ftp to <b>%1\$s kB</b> and by PHP to <b>%2\$s</b>"] = "الحجم الأقصى للملف الواحد محدد بواسطة البرنامج إلى <b>%1\$s ك ب</b> و بواسطة PHP إلى <b>%2\$s</b>";
 $net2ftp_messages["The maximum execution time is <b>%1\$s seconds</b>"] = "مدة التنفيذ القصوى هي <b>%1\$s ثانية</b>";
 $net2ftp_messages["The FTP transfer mode (ASCII or BINARY) will be automatically determined, based on the filename extension"] = "نمط ترحيل FTP إن كان (ASCII أو BINARY) يتم تحديده تلقائياً , بالأعتماد على لاحقة اسم الملف";
@@ -1238,7 +1238,7 @@ $net2ftp_messages["Archives entered here will be decompressed, and the files ins
 $net2ftp_messages["Add another"] = "إضافة آخر";
 $net2ftp_messages["Use folder names (creates subdirectories automatically)"] = "استخدام نفس أسماء المجلدات (إنشاء المجلدات الفرعية تلقائياً)";
 
-$net2ftp_messages["Choose a directory"] = "اختر دليل";
+$net2ftp_messages["Choose a directory"] = "اختر الدليل";
 $net2ftp_messages["Please wait..."] = "يرجى الانتظار ...";
 $net2ftp_messages["Uploading... please wait..."] = "جار الرفع ... يرجى الانتظار ...";
 $net2ftp_messages["If the upload takes more than the allowed <b>%1\$s seconds<\/b>, you will have to try again with less/smaller files."] = "إذا استغرق الرفع وقت أطول من المسموح <b>%1\$s ثانية<\/b> , ستحاتج إلى إعادة المحاولة مع عدد ملفات أقل / أصغر .";
@@ -1259,7 +1259,7 @@ $net2ftp_messages["Upload more files and archives"] = "رفع المزيد من 
 // Messages which are shared by upload and jupload
 if ($net2ftp_globals["state"] == "upload" || $net2ftp_globals["state"] == "jupload") {
 // -------------------------------------------------------------------------
-$net2ftp_messages["Restrictions:"] = "المحدودية »";
+$net2ftp_messages["Restrictions:"] = "التحديد »";
 $net2ftp_messages["The maximum size of one file is restricted by net2ftp to <b>%1\$s kB</b> and by PHP to <b>%2\$s</b>"] = "الحجم الأقصى للملف الواحد محدد بواسطة البرنامج إلى <b>%1\$s ك ب</b> و بواسطة PHP إلى <b>%2\$s</b>";
 $net2ftp_messages["The maximum execution time is <b>%1\$s seconds</b>"] = "مدة التنفيذ القصوى هي <b>%1\$s ثانية</b>";
 $net2ftp_messages["The FTP transfer mode (ASCII or BINARY) will be automatically determined, based on the filename extension"] = "نمط ترحيل FTP إن كان (ASCII أو BINARY) يتم تحديده تلقائياً , بالأعتماد على لاحقة اسم الملف";

@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # István-Attila András <bergkatten@netscape.net>, 2001.
 # Zoltán Levárdy <zoltan@levardy.org>, 2003.
-# $Id: squirrelmail.po,v 1.7 2005/06/05 11:49:46 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4.3\n"

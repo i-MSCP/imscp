@@ -1,7 +1,7 @@
 # Ukrainian translation of SquirrelMail abook_import_export plugin
 # Copyright (c) 2006 SquirrelMail Project Team
 # Serhij Dubyk <dubyk@library.lviv.ua>, 2006
-# $Id: abook_import_export.po,v 1.1 2006/06/21 19:01:35 tokul Exp $
+# $Id: abook_import_export.po 11220 2006-06-21 19:01:35Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: abook_import_export 0.9\n"

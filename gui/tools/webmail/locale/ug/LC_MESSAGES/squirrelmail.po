@@ -1,7 +1,7 @@
 # Uighur squirrel mail translation.
 # Copyright (c) 2004-2005 The SquirrelMail Project Team
 # Mamatjan Tursun <oghri@163.com>, 2003.
-# $Id: squirrelmail.po,v 1.5 2005/06/09 07:42:54 tokul Exp $
+# $Id: squirrelmail.po 9560 2005-06-09 07:42:54Z tokul $
 # 
 msgid ""
 msgstr ""

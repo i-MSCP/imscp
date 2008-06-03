@@ -3,16 +3,17 @@
  * 
  * Copyright (C) 2007 Fernando M.A.d.S. <fermads@gmail.com>
  *
- * Contributors :
- *
- * 	Michael Hurni <michael.hurni@gmail.com>
+ * Developers:
+ *		Fernando M.A.d.S. <fermads@gmail.com>
+ *		Michael Hurni <michael.hurni@gmail.com>
+ * Contributors: 	
+ *		Martin D. Kirk
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
  * GNU Lesser General Public License as published by the Free Software Foundation.
  * 
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
-
 
 CodePress = {
 	scrolling : false,
@@ -22,7 +23,7 @@ CodePress = {
 	initialize : function() {
 		if(typeof(editor)=='undefined' && !arguments[0]) return;
 		chars = '|32|46|62|'; // charcodes that trigger syntax highlighting
-		cc = '\u2009'; // control char
+		cc = '\u2009'; // carret char
 		editor = document.getElementsByTagName('pre')[0];
 		editor.contentEditable = 'true';
 		document.getElementsByTagName('body')[0].onfocus = function() {editor.focus();}
@@ -30,15 +31,18 @@ CodePress = {
 		document.attachEvent('onkeypress', this.keyHandler);
 		window.attachEvent('onscroll', function() { if(!CodePress.scrolling) setTimeout(function(){CodePress.syntaxHighlight('scroll')},1)});
 		completeChars = this.getCompleteChars();
-//		CodePress.syntaxHighlight('init');
+		completeEndingChars =  this.getCompleteEndingChars();
 		setTimeout(function() { window.scroll(0,0) },50); // scroll IE to top
 	},
 	
 	// treat key bindings
 	keyHandler : function(evt) {
 		charCode = evt.keyCode;
-		if(completeChars.indexOf('|'+String.fromCharCode(charCode)+'|')!=-1 && CodePress.autocomplete) { // auto complete
-			CodePress.complete(String.fromCharCode(charCode))
+		fromChar = String.fromCharCode(charCode);
+		
+		if( (completeEndingChars.indexOf('|'+fromChar+'|')!= -1 || completeChars.indexOf('|'+fromChar+'|')!=-1  )&& CodePress.autocomplete) { // auto complete
+			if(!CodePress.completeEnding(fromChar))
+			     CodePress.complete(fromChar);
 		}
 	    else if(chars.indexOf('|'+charCode+'|')!=-1||charCode==13) { // syntax highlighting
 		 	CodePress.syntaxHighlight('generic');
@@ -171,6 +175,31 @@ CodePress = {
 			cChars += '|'+Language.complete[i].input;
 		return cChars+'|';
 	},
+
+	getCompleteEndingChars : function() {
+		var cChars = '';
+		for(var i=0;i<Language.complete.length;i++)
+			cChars += '|'+Language.complete[i].output.charAt(Language.complete[i].output.length-1);
+		return cChars+'|';
+	},
+
+	completeEnding : function(trigger) {
+		var range = document.selection.createRange();
+		try {
+			range.moveEnd('character', 1)
+		}
+		catch(e) {
+			return false;
+		}
+		var next_character = range.text
+		range.moveEnd('character', -1)
+		if(next_character != trigger )  return false;
+		else {
+			range.moveEnd('character', 1)
+			range.text=''
+			return true;
+		}
+	},	
 
 	shortcuts : function() {
 		var cCode = arguments[0];

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 12769 2007-11-19 04:21:49Z jangliss $
+ * @version $Id: imap_messages.php 13039 2008-03-14 09:38:23Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -726,14 +726,14 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
         if (!$allow_server_sort) {
            $from = parseAddress($from);
            if ($from[0][1]) {
-              $from = decodeHeader($from[0][1]);
+              $from = decodeHeader($from[0][1], true, false);
            } else {
               $from = $from[0][0];
            }
            $messages[$msgi]['FROM-SORT'] = $from;
-           $subject_sort = strtolower(decodeHeader($subject));
-           if (preg_match("/^(vedr|sv|re|aw):\s*(.*)$/si", $subject_sort, $matches)){
-                $messages[$msgi]['SUBJECT-SORT'] = $matches[2];
+           $subject_sort = strtolower(decodeHeader($subject, true, false));
+           if (preg_match("/^(?:(?:vedr|sv|re|aw|fw|fwd|\[\w\]):\s*)*\s*(.*)$/si", $subject_sort, $matches)){
+                $messages[$msgi]['SUBJECT-SORT'] = $matches[1];
            } else {
                $messages[$msgi]['SUBJECT-SORT'] = $subject_sort;
            }
@@ -862,7 +862,7 @@ function sqimap_get_message($imap_stream, $id, $mailbox) {
 function parse_message_entities(&$msg, $id, $imap_stream) {
     global $uid_support;
     if (!empty($msg->entities)) foreach ($msg->entities as $i => $entity) {
-        if (is_object($entity) && get_class($entity) == 'Message') {
+        if (is_object($entity) && strtolower(get_class($entity)) == 'message') {
             if (!empty($entity->rfc822_header)) {
                 $read = sqimap_run_command($imap_stream, "FETCH $id BODY[". $entity->entity_id .".HEADER]", true, $response, $message, $uid_support);
                 $rfc822_header = new Rfc822Header();

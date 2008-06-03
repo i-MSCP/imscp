@@ -2,13 +2,15 @@
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # HIGASHIYAMA Masato <masato@yamaai-tech.com>, 2002, 2003.
-# Andre Nicholson <andre@neo-anime.org> 2005-2006.
-# $Id: squirrelmail.po,v 1.8 2006/09/04 16:43:54 tokul Exp $
+# Andre Nicholson <andre@neo-anime.org> 2005-2007.
+# $Id: squirrelmail.po 12833 2007-12-20 10:03:56Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"
-"POT-Creation-Date: 2006-02-21 06:50+0100\n"
-"PO-Revision-Date: 2006-03-03 22:42+0100\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2007-02-14 12:48+0100\n"
+"PO-Revision-Date: 2007-04-14 11:52-0400\n"
 "Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
 "Language-Team: Japanese <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -176,14 +178,27 @@ msgstr "ドラフトに保存しました"
 msgid "Could not move/copy file. File not attached"
 msgstr "添付するファイルが見つかりません"
 
-msgid "Draft Saved"
-msgstr "ドラフトに保存しました"
+#, fuzzy
+msgid "Your draft has been saved."
+msgstr "メッセージを送信しました。"
 
-msgid "Your Message has been sent."
+msgid "Your mail has been sent."
 msgstr "メッセージを送信しました。"
 
 msgid "From:"
 msgstr "差出人："
+
+msgid "To:"
+msgstr "宛先"
+
+msgid "Cc:"
+msgstr "Cc"
+
+msgid "Bcc:"
+msgstr "Bcc"
+
+msgid "Subject:"
+msgstr "件名"
 
 msgid "Send"
 msgstr "送信"
@@ -239,7 +254,9 @@ msgstr "宛先が入力されていません"
 msgid "Error: Draft folder %s does not exist."
 msgstr "エラー：草稿用フォルダ %s は存在しません。"
 
-#, fuzzy
+msgid "Message not sent."
+msgstr "メッセージは送信しませんでした。"
+
 msgid "Server replied:"
 msgstr "サーバの応答："
 
@@ -277,11 +294,9 @@ msgstr "登録完了"
 msgid "Unsubscribed successfully."
 msgstr "解除完了"
 
-#, fuzzy
 msgid "Deleted folder successfully."
 msgstr "フォルダを削除しました"
 
-#, fuzzy
 msgid "Created folder successfully."
 msgstr "フォルダを作成しました"
 
@@ -360,12 +375,29 @@ msgstr "ヘルプ"
 
 #, fuzzy
 msgid ""
-"The help has not been translated to the selected language. It will be "
-"displayed in English instead."
+"Help is not available in the selected language. It will be displayed in "
+"English instead."
 msgstr "ヘルプファイルはまだ %s に翻訳されていません、英語で表示されます"
 
-msgid "Some or all of the help documents are not present!"
-msgstr "一部または全てのヘルプドキュメントは提供されていません"
+#, fuzzy
+msgid ""
+"Help is not available. Please contact your system administrator for "
+"assistance."
+msgstr "このエラーとともに管理者に連絡を取ってください。"
+
+#, fuzzy
+msgid ""
+"This chapter is not available in the selected language. It will be displayed "
+"in English instead."
+msgstr "ヘルプファイルはまだ %s に翻訳されていません、英語で表示されます"
+
+#, fuzzy
+msgid "This chapter is missing"
+msgstr "名前が入力されていません"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr ""
 
 msgid "Table of Contents"
 msgstr "目次"
@@ -398,7 +430,7 @@ msgid "Last Refresh"
 msgstr "前リフレッシュ"
 
 msgid "Check mail"
-msgstr "メールをチェックする"
+msgstr "メールをチェック"
 
 msgid "Login"
 msgstr "ログイン"
@@ -513,6 +545,10 @@ msgstr "例：63aa7f"
 
 msgid "Matches"
 msgstr "一致"
+
+#, fuzzy
+msgid "Editing identities is disabled."
+msgstr "プラグインは無効です。"
 
 msgid "Default Identity"
 msgstr "デフォルトID"
@@ -740,6 +776,10 @@ msgstr "このページにアクセスするにはアカウントが必要です。"
 msgid "Folder:"
 msgstr "フォルダ："
 
+#, fuzzy
+msgid "Saved Searches"
+msgstr "現在の検索"
+
 msgid "edit"
 msgstr "編集"
 
@@ -772,6 +812,9 @@ msgstr "全体"
 
 msgid "No Messages Found"
 msgstr "表示するメッセージはありません"
+
+msgid "Please enter something to search for"
+msgstr ""
 
 msgid "Signout"
 msgstr "ログアウト"
@@ -824,7 +867,8 @@ msgstr "メモ"
 msgid "Add to address book"
 msgstr "アドレス帳に追加"
 
-msgid "Title & Org. / Dept."
+#, fuzzy
+msgid "Title &amp; Org. / Dept."
 msgstr "肩書／所属など"
 
 msgid "Viewing Full Header"
@@ -832,6 +876,9 @@ msgstr "全ヘッダ表示"
 
 msgid "Viewing a text attachment"
 msgstr "テキストの添付ファイルを表示"
+
+msgid "View Unsafe Images"
+msgstr "安全でないイメージの表示"
 
 msgid ""
 "Could not include PEAR database functions required for the database backend."
@@ -851,7 +898,8 @@ msgstr "パーソナルアドレス帳"
 msgid "Database error: %s"
 msgstr "データベースエラー：%s"
 
-msgid "Addressbook is read-only"
+#, fuzzy
+msgid "Address book is read-only"
 msgstr "アドレス帳は読込専用です。"
 
 #, fuzzy, php-format
@@ -861,6 +909,10 @@ msgstr "ユーザ名「%s」は既に使用されています"
 #, fuzzy, php-format
 msgid "User \"%s\" does not exist"
 msgstr "ユーザ名「%s」は存在しません。"
+
+#, fuzzy, php-format
+msgid "User '%s' already exist."
+msgstr "ユーザ名「%s」は既に使用されています"
 
 msgid "Not a file name"
 msgstr "ファイル名ではありません"
@@ -877,13 +929,22 @@ msgstr "書込に失敗しました"
 msgid "Unable to update"
 msgstr "更新に失敗しました"
 
+msgid "Address book is corrupted. Required fields are missing."
+msgstr ""
+
+#, fuzzy
+msgid "Address book entry is too big"
+msgstr "アドレス帳テーブル名"
+
 msgid "Could not lock datafile"
 msgstr "データファイルをロックできませんでした"
 
-msgid "Write to addressbook failed"
+#, fuzzy
+msgid "Write to address book failed"
 msgstr "アドレス帳の書き込みに失敗しました"
 
-msgid "Error initializing addressbook database."
+#, fuzzy
+msgid "Error initializing address book database."
 msgstr "アドレス帳の読み込みに失敗しました"
 
 #, php-format
@@ -893,7 +954,8 @@ msgstr "%s のファイルが開けませんでした"
 msgid "Global address book"
 msgstr "共通アドレス帳"
 
-msgid "Error initializing global addressbook."
+#, fuzzy
+msgid "Error initializing global address book."
 msgstr "グローバルアドレス帳の初期化に失敗しました："
 
 #, php-format
@@ -1160,7 +1222,6 @@ msgstr "エラー：要求を完了できませんでした。"
 msgid "Query:"
 msgstr "問合せ："
 
-#, fuzzy
 msgid "Reason Given:"
 msgstr "理由："
 
@@ -1215,10 +1276,14 @@ msgstr "エラー：要求を完了できませんでした。"
 msgid "Solution:"
 msgstr "解決法："
 
+#, fuzzy
 msgid ""
-"Remove unneccessary messages from your folder and start with your Trash "
-"folder."
+"Remove unneccessary messages from your folders. Start with your Trash folder."
 msgstr "不要なメッセージをフォルダから削除してください。"
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr ""
 
 msgid "(no subject)"
 msgstr "（無題）"
@@ -1271,9 +1336,6 @@ msgstr "移動"
 
 msgid "Expunge"
 msgstr "削除する"
-
-msgid "mailbox"
-msgstr "メールボックス"
 
 msgid "Read"
 msgstr "既読"
@@ -1337,9 +1399,6 @@ msgstr "取り込んでいる行："
 msgid "Hide Unsafe Images"
 msgstr "安全でないイメージを隠す"
 
-msgid "View Unsafe Images"
-msgstr "安全でないイメージの表示"
-
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -1365,6 +1424,17 @@ msgstr "%s のディレクトリが作成できません。"
 
 msgid "Could not create hashed directory structure!"
 msgstr "ハッシュディレクトリの作成ができません。"
+
+#, fuzzy
+msgid "Email delivery error"
+msgstr "配送エラーレポート"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr ""
+
+msgid "Can't open SMTP stream."
+msgstr ""
 
 msgid "Service not available, closing channel"
 msgstr "サービスは使用できません。チャンネルを閉じます。"
@@ -1546,7 +1616,8 @@ msgstr "メール作成ウインドウの幅"
 msgid "Height of Compose Window"
 msgstr "メール作成ウインドウの高さ<"
 
-msgid "Append Signature before Reply/Forward Text"
+#, fuzzy
+msgid "Prepend Signature before Reply/Forward Text"
 msgstr "署名を返信／転送する文書の前に入れる"
 
 #, fuzzy
@@ -1586,19 +1657,19 @@ msgid "Do not use Trash"
 msgstr "Trash を使用しない"
 
 msgid "Trash Folder"
-msgstr "Trash フォルダ"
+msgstr "ゴミ箱"
 
 msgid "Do not use Drafts"
 msgstr "Trash を使用しない"
 
 msgid "Draft Folder"
-msgstr "Draft フォルダ"
+msgstr "下書き"
 
 msgid "Do not use Sent"
 msgstr "Sent を使用しない"
 
 msgid "Sent Folder"
-msgstr "Sent フォルダ"
+msgstr "送信済み"
 
 msgid "Folder List Options"
 msgstr "フォルダリストのオプション"
@@ -1714,6 +1785,18 @@ msgstr "字下げ："
 
 msgid "Delimited:"
 msgstr "区切付き："
+
+#, fuzzy
+msgid "You can't select INBOX as Trash folder."
+msgstr "スパムフォルダを選択する必要がある。"
+
+#, fuzzy
+msgid "You can't select INBOX as Sent folder."
+msgstr "スパムフォルダを選択する必要がある。"
+
+#, fuzzy
+msgid "You can't select INBOX as Draft folder."
+msgstr "スパムフォルダを選択する必要がある。"
 
 msgid "Name and Address Options"
 msgstr "名前とアドレスのオプション"
@@ -1868,7 +1951,6 @@ msgstr "これら以外のサーバ"
 msgid "IMAP Folder Delimiter"
 msgstr "IMAP フォルダのデリミッタ"
 
-#, fuzzy
 msgid "Use &quot;detect&quot; to auto-detect."
 msgstr "自動検出をさせる時は「detect」"
 
@@ -1882,13 +1964,16 @@ msgid "IMAP Authentication Type"
 msgstr "IMAP の認証の種類"
 
 msgid "IMAP login"
-msgstr ""
+msgstr "IMAP ログイン"
 
 msgid "Use Sendmail Binary"
 msgstr "Sendmail を使う"
 
 msgid "Choose &quot;no&quot; for SMTP"
 msgstr ""
+
+msgid "Sendmail Arguments"
+msgstr "Sendmail 引数"
 
 msgid "Sendmail Path"
 msgstr "Sendmail のパス"
@@ -1906,7 +1991,7 @@ msgid "SMTP Authentication Type"
 msgstr "SMTP 認証の種類"
 
 msgid "No SMTP auth"
-msgstr ""
+msgstr "SMTP auth なし"
 
 msgid "Login (plain text)"
 msgstr "Login（テキスト形式）"
@@ -2030,6 +2115,10 @@ msgstr "UID をサポート"
 
 msgid "PHP session name"
 msgstr "PHP のセッション名"
+
+#, fuzzy
+msgid "Location base"
+msgstr "辞書を削除しました"
 
 msgid "Message of the Day"
 msgstr "今日のメッセージ"
@@ -2222,7 +2311,6 @@ msgstr ""
 "れません。しかし、メッセージを受け取った開発者はバグリストに追加するかもしれ"
 "ません。"
 
-#, fuzzy
 msgid "This bug involves:"
 msgstr "このバグの内容は"
 
@@ -2286,6 +2374,9 @@ msgstr "イベントは追加されました。"
 
 msgid "Date:"
 msgstr "日付："
+
+msgid "m/d/Y"
+msgstr ""
 
 msgid "Time:"
 msgstr "時間："
@@ -2359,17 +2450,17 @@ msgstr "6 時間"
 msgid "Calendar"
 msgstr "カレンダー"
 
-msgid "Delete & Prev"
-msgstr "削除＆戻る"
+msgid "Delete &amp; Prev"
+msgstr "削除 &amp; 戻る"
 
-msgid "Delete & Next"
-msgstr "削除＆次へ"
+msgid "Delete &amp; Next"
+msgstr "削除 &amp; 次へ"
 
 msgid "Move to:"
 msgstr "移動"
 
 msgid "Delete/Move/Next Buttons:"
-msgstr "削除／移動／次へ ボタン："
+msgstr "削除 / 移動 / 次へ ボタン："
 
 msgid "Display at top"
 msgstr "上に表示"
@@ -2414,13 +2505,6 @@ msgstr "有償。RBL + オープンリレー"
 
 msgid "COMMERCIAL - RBL+ Dial-up entries."
 msgstr "有償。RBL + ダイヤルアップ項目"
-
-msgid ""
-"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
-"false positives than ORBS did though."
-msgstr ""
-"無償。ORDB は ORBS が無くなった時に生まれました。しかし、ORBS より false "
-"positives が少ないようです。"
 
 msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
 msgstr "無償。Five-Ten-sg.com：直接のスパム源です。"
@@ -3943,6 +4027,9 @@ msgstr "インターフェース言語"
 msgid "Translation direction"
 msgstr "翻訳方向"
 
+msgid "Arabic"
+msgstr ""
+
 #, php-format
 msgid "About SquirrelMail %s"
 msgstr "SquirrelMail バージョン %s について"
@@ -3997,19 +4084,12 @@ msgstr ""
 msgid "Nothing to search"
 msgstr "削除するものはありません"
 
-#, fuzzy
-msgid "No folders were found to unsubscribe from."
-msgstr "解除するフォルダが見付かりません："
-
-#, fuzzy
-msgid "No folders were found to subscribe to."
-msgstr "登録するフォルダが見付かりません："
-
-msgid "Save folder tree"
-msgstr "フォルダツリーの保存"
-
 msgid "SquirrelMail Webmail Application"
 msgstr "Squirrelmail ウェブメールアプリケーション"
+
+#, fuzzy
+msgid "Add New Identity"
+msgstr "新しい ID を追加"
 
 #, fuzzy
 msgid "Received"
@@ -4019,26 +4099,47 @@ msgstr "受取通知"
 msgid "Compose Preferences"
 msgstr "フォルダの設定"
 
+#, php-format
+msgid "Folder list should automatically %srefresh%s."
+msgstr ""
+
+#, php-format
+msgid "This page should automatically %srefresh%s."
+msgstr ""
+
 msgid ""
 "Control the behaviour and layout of writing new mail messages, replying to "
 "and forwarding messages."
 msgstr ""
 
 #, fuzzy
+msgid "Read Receipt"
+msgstr "受取通知"
+
+#, fuzzy
+msgid "deleted"
+msgstr "削除"
+
+msgid "answered"
+msgstr ""
+
+#, fuzzy
+msgid "draft"
+msgstr "ドラフトに保存"
+
+#, fuzzy
+msgid "flagged"
+msgstr "フラグ"
+
+#, fuzzy
+msgid "Status"
+msgstr "土"
+
+#, fuzzy
 msgid "View as plain text"
 msgstr "Login（テキスト形式）"
 
 msgid "View as HTML"
-msgstr ""
-
-#, fuzzy
-msgid "As Attachment"
-msgstr "添付ファイル"
-
-msgid "Bypass Trash"
-msgstr "Trash を回避"
-
-msgid "Please enter something to search for"
 msgstr ""
 
 msgid "There must be at least one criteria to search for"
@@ -4064,28 +4165,15 @@ msgstr ""
 msgid "(Spurious argument)"
 msgstr ""
 
-msgid "Fold"
-msgstr "畳む"
-
-msgid "Unfold"
-msgstr "開く"
-
-#, fuzzy
-msgid "Saved Searches"
-msgstr "現在の検索"
-
 msgid "Missing"
 msgstr ""
 
-msgid "and&nbsp;subfolders:"
-msgstr ""
-
-msgid "Exclude Criteria:"
-msgstr ""
-
 #, fuzzy
-msgid "Search Criteria"
-msgstr "検索内容"
+msgid "Standard Search"
+msgstr "現在の検索"
+
+msgid "Advanced search"
+msgstr ""
 
 #, fuzzy
 msgid "Add New Criteria"
@@ -4190,17 +4278,64 @@ msgstr "または"
 msgid "Or"
 msgstr ""
 
-msgid "Standard search"
+#, fuzzy
+msgid "No RPC action given"
+msgstr "引用しない"
+
+msgid "No deletion ID given"
 msgstr ""
 
-msgid "Advanced search"
-msgstr ""
+#, fuzzy
+msgid "No mailbox given"
+msgstr "メールボックス"
 
-msgid "Folder List"
-msgstr "フォルダリスト"
+msgid "RPC action not understood"
+msgstr ""
 
 msgid "PHP install does not have LDAP support."
 msgstr ""
+
+#, fuzzy
+msgid "Removing entry from address book failed"
+msgstr "アドレス帳の書き込みに失敗しました"
+
+msgid "LDAP rename is not supported by used protocol version"
+msgstr ""
+
+msgid ""
+"LDAP rename is not supported by used LDAP library. You can't change nickname"
+msgstr ""
+
+#, fuzzy
+msgid "LDAP rename failed"
+msgstr "削除に失敗しました："
+
+msgid "Unable to remove some field values"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unable to rename user \"%s\" to \"%s\""
+msgstr "%s の検索結果は有りませんでした"
+
+#, fuzzy
+msgid "Error initializing other address books."
+msgstr "グローバルアドレス帳の初期化に失敗しました："
+
+#, fuzzy
+msgid "Unknown address book backend"
+msgstr "共通アドレス帳"
+
+#, fuzzy, php-format
+msgid "%s %s"
+msgstr "%s から %s"
+
+#, fuzzy
+msgid ""
+"Could not open temporary file to store attachment. Contact your system "
+"administrator to resolve this issue."
+msgstr ""
+"署名ファイル %s が一時ファイル %s からコピーできませんでした。このエラーとと"
+"もに管理者に連絡を取ってください。"
 
 msgid "Illegal folder name."
 msgstr ""
@@ -4255,49 +4390,45 @@ msgid ""
 "consult your system administrator"
 msgstr ""
 
+msgid "Trash"
+msgstr "ゴミ箱"
+
+msgid "Drafts"
+msgstr "下書き"
+
 #, fuzzy
 msgid "Unknown recipient"
 msgstr "不明な応答"
 
 msgid "Unflag"
-msgstr ""
+msgstr "フラグを削除"
 
-#, fuzzy
 msgid "Flag"
-msgstr "フラグ"
+msgstr "フラグを付ける"
 
 #, fuzzy
 msgid "Undelete"
 msgstr "削除"
 
-msgid "Viewing HTML formatted email"
-msgstr "HTML 形式メールを表示中"
+msgid "Bypass Trash"
+msgstr "Trash を回避"
+
+msgid "Copy"
+msgstr ""
 
 #, fuzzy
 msgid "unavailable"
 msgstr "未実装"
 
-#, fuzzy
 msgid "Error"
 msgstr "エラー："
 
 msgid "Terminating SquirrelMail due to a fatal error"
 msgstr ""
 
-#, fuzzy
-msgid "Email delivery error"
-msgstr "配送エラーレポート"
-
-#, php-format
-msgid "Can't execute command '%s'."
-msgstr ""
-
 msgid ""
 "Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP "
 "version does not support it."
-msgstr ""
-
-msgid "Can't open SMTP stream."
 msgstr ""
 
 msgid "TLS session is already activated."
@@ -4364,7 +4495,11 @@ msgid "Strip signature when replying"
 msgstr "返信時のカーソル位置"
 
 #, fuzzy
-msgid "Template"
+msgid "Skin"
+msgstr "サイズ"
+
+#, fuzzy
+msgid "Icon Theme"
 msgstr "テーマ"
 
 #, fuzzy
@@ -4383,15 +4518,15 @@ msgstr "月表示"
 msgid "Default font size"
 msgstr "デフォルトの左側（フォルダなど）フレームサイズ"
 
-#, fuzzy
-msgid "Icon Theme"
-msgstr "テーマ"
-
 msgid "Enable Fancy Row Mouseover Highlighting"
 msgstr ""
 
 msgid "Show Flag / Unflag Buttons"
 msgstr ""
+
+#, fuzzy
+msgid "Enable Message Copy Buttons"
+msgstr "メッセージ表示と構成"
 
 #, fuzzy
 msgid "Use Compact Page Selector"
@@ -4403,8 +4538,13 @@ msgstr "メッセージ表示オプション"
 msgid "Height of inline frame"
 msgstr ""
 
-msgid "Show 'Delete & Prev/Next' Links"
+#, fuzzy
+msgid "Show 'Delete &amp; Prev/Next' Links"
 msgstr "「削除＆戻る・次へ」リンクを表示"
+
+#, fuzzy
+msgid "Translate Special Folders"
+msgstr "特別なフォルダの自動作成"
 
 #, fuzzy
 msgid "Save Replies with Original Message"
@@ -4417,10 +4557,6 @@ msgstr[0] "%d 分"
 
 msgid "Show only subscribed folders"
 msgstr ""
-
-#, fuzzy
-msgid "Template Default"
-msgstr "デフォルトにする"
 
 msgid "XP"
 msgstr "XP"
@@ -4446,11 +4582,13 @@ msgid ""
 "documentation."
 msgstr ""
 
-#, fuzzy
-msgid "Sendmail Arguments"
-msgstr "Sendmail のパス"
-
 msgid "SMTP Connection Security"
+msgstr ""
+
+msgid "Custom SMTP AUTH username"
+msgstr ""
+
+msgid "Custom SMTP AUTH password"
 msgstr ""
 
 #, fuzzy
@@ -4509,9 +4647,6 @@ msgstr "ページセレクタを有効"
 msgid "Tweaks"
 msgstr "微調整"
 
-msgid "Use advanced tree folder listing"
-msgstr ""
-
 msgid "Use icons"
 msgstr "アイコンを使う"
 
@@ -4528,6 +4663,10 @@ msgid "Allow remote configuration test"
 msgstr ""
 
 #, fuzzy
+msgid "Address book file line length"
+msgstr "アドレス帳テーブル名"
+
+#, fuzzy
 msgid "Templates"
 msgstr "テーマ"
 
@@ -4539,6 +4678,10 @@ msgstr "デフォルトの左側（フォルダなど）フレームサイズ"
 msgid "Default template"
 msgstr "デフォルトテーマ"
 
+#, fuzzy
+msgid "Fallback template"
+msgstr "デフォルトテーマ"
+
 msgid "Show System Specifications"
 msgstr ""
 
@@ -4547,9 +4690,6 @@ msgstr "私のメールアカウント"
 
 msgid "Bug Reports"
 msgstr "バグレポート"
-
-msgid "m/d/Y"
-msgstr ""
 
 msgid "You must type in a new password."
 msgstr ""
@@ -4626,9 +4766,9 @@ msgstr ""
 msgid "Unable to bind to LDAP server."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "Server replied: %s"
-msgstr "サーバの応答："
+msgstr "サーバの応答： %s"
 
 msgid "Unable to find user's password attribute."
 msgstr ""
@@ -4654,7 +4794,7 @@ msgid "Multiple userid matches found."
 msgstr ""
 
 msgid "ldap_get_dn error."
-msgstr ""
+msgstr "ldap_get_dn エラー"
 
 #, php-format
 msgid "Unsupported crypto: %s"
@@ -4810,6 +4950,10 @@ msgstr "ユーザ名："
 msgid "Empty new password"
 msgstr ""
 
+#, fuzzy, php-format
+msgid "Unable to execute \"%s\"."
+msgstr "更新に失敗しました"
+
 #, fuzzy
 msgid "Server Capability response:"
 msgstr "サーバの応答："
@@ -4846,13 +4990,18 @@ msgstr "要求"
 msgid "Execution time:"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s ms"
-msgstr "%s から %s"
+msgstr "%s ミリ秒"
 
-#, fuzzy
-msgid "Command failed"
-msgstr "コマンドが失敗しました"
+msgid "Mailing Lists"
+msgstr "メーリングリスト"
+
+msgid ""
+"Manage the (non-RFC-compliant) mailing lists that you are subscribed to for "
+"the purpose of providing one-click list replies when responding to list "
+"messages."
+msgstr ""
 
 #, fuzzy
 msgid "No POP3 servers configured yet."
@@ -4866,6 +5015,13 @@ msgstr "もう一度ログインする"
 msgid "Fetching from %s"
 msgstr "メールを取り込んでいます"
 
+msgid "Can't get mailbox status:"
+msgstr ""
+
+#, fuzzy
+msgid "Fetching list of messages..."
+msgstr "メッセージを取り込んでいます"
+
 #, php-format
 msgid "Login OK: Inbox contains %s message"
 msgid_plural "Login OK: Inbox contains %s messages"
@@ -4875,18 +5031,62 @@ msgstr[0] "ログイン OK：%s 件の未読メッセージがあります"
 msgid "Fetching message %s."
 msgstr "メッセージを取り込んでいます"
 
-#, fuzzy, php-format
-msgid "Refetching message %s."
-msgstr "メッセージの再取込"
-
 #, fuzzy
 msgid "Warning:"
 msgstr "警告"
+
+#, fuzzy
+msgid "Authentication type:"
+msgstr "IMAP の認証の種類"
+
+msgid "USER"
+msgstr ""
+
+msgid "APOP"
+msgstr ""
+
+msgid "APOP or USER"
+msgstr ""
+
+#, fuzzy
+msgid "Connection type:"
+msgstr "原因不明のエラー：%s"
+
+#, fuzzy
+msgid "Plain text"
+msgstr "ページ表示"
+
+msgid "Use TLS"
+msgstr ""
+
+#, fuzzy
+msgid "Use StartTLS"
+msgstr "更新に失敗しました"
 
 msgid ""
 "The NewMail plugin will follow the Folder Preferences option &quot;Enable "
 "Unread Message Notification&quot;"
 msgstr ""
+
+#, fuzzy
+msgid "Follow folder preferences"
+msgstr "フォルダの設定"
+
+#, fuzzy
+msgid "All folders"
+msgstr "全フォルダ"
+
+#, fuzzy
+msgid "Special folders"
+msgstr "特別なフォルダのオプション"
+
+#, fuzzy
+msgid "Regular folders"
+msgstr "名前を変更"
+
+#, fuzzy
+msgid "Check for new messages in:"
+msgstr "%s 件の未読メッセージがあります"
 
 #, fuzzy
 msgid "Width of popup window:"
@@ -4916,6 +5116,10 @@ msgstr ""
 msgid "Media file %s will be removed, if you upload other media file."
 msgstr ""
 
+#, fuzzy, php-format
+msgid "%s notice:"
+msgstr "%s さんは書きました："
+
 #, fuzzy
 msgid "Warning"
 msgstr "警告"
@@ -4930,21 +5134,6 @@ msgstr "SquirrelSpell の設定異常"
 msgid "Save emails submitted to SpamCop:"
 msgstr ""
 
-#, fuzzy
-msgid "Spam Service Type:"
-msgstr "IMAP サーバのタイプ"
-
-#, fuzzy
-msgid "Free reporting"
-msgstr "スパムレポート"
-
-msgid "Member services"
-msgstr ""
-
-#, fuzzy
-msgid "Save Service Type"
-msgstr "スキャンタイプを保存しました。"
-
 msgid "SpamCop reporting"
 msgstr "SpamCop レポート"
 
@@ -4956,6 +5145,14 @@ msgstr ""
 
 #, fuzzy
 msgid "Invalid SquirrelSpell module."
+msgstr "SquirrelSpell の結果"
+
+#, fuzzy
+msgid "Unknown error"
+msgstr "原因不明のエラー：%s"
+
+#, fuzzy
+msgid "SquirrelSpell error."
 msgstr "SquirrelSpell の結果"
 
 #, fuzzy, php-format
@@ -4997,11 +5194,26 @@ msgstr "メール作成時："
 msgid "Not yet functional, currently does nothing"
 msgstr "現在は機能しません。"
 
-msgid "D"
-msgstr "D"
+#, fuzzy
+msgid "Address book is empty"
+msgstr "アドレス帳は読込専用です。"
 
-msgid "F"
-msgstr "F"
+#, fuzzy
+msgid "Address book search"
+msgstr "アドレス帳の検索"
+
+msgid "Attachment"
+msgstr "添付ファイル"
+
+msgid "Attach"
+msgstr "添付："
+
+msgid "Max."
+msgstr ""
+
+#, fuzzy
+msgid "Receipts"
+msgstr "受取通知"
 
 #, fuzzy
 msgid "SquirrelMail notice messages"
@@ -5019,16 +5231,96 @@ msgid "More info:"
 msgstr "IMAP サーバの情報"
 
 #, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "解除するフォルダが見付かりません："
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "登録するフォルダが見付かりません："
+
+#, fuzzy
 msgid "Message Flags"
 msgstr "メッセージフィルタ"
 
 #, fuzzy
-msgid "Attachment"
+msgid "Click here to change the sorting of the message list"
+msgstr "もう一度ログインする"
+
+#, fuzzy
+msgid "Add/Edit"
+msgstr "編集"
+
+#, fuzzy
+msgid "Rule Conditions"
+msgstr "含む："
+
+#, fuzzy
+msgid "Identifying Name"
+msgstr "名前"
+
+#, fuzzy
+msgid "To or cc"
+msgstr "To または Cc"
+
+msgid "Other"
+msgstr "その他"
+
+msgid "Save Changes"
+msgstr "変更"
+
+#, fuzzy
+msgid "Type"
+msgstr "時間："
+
+#, fuzzy
+msgid "Requested"
+msgstr "要求"
+
+#, fuzzy
+msgid "Send Read Receipt Now"
+msgstr "受取通知をすぐに送信する"
+
+msgid "Viewing HTML formatted email"
+msgstr "HTML 形式メールを表示中"
+
+#, fuzzy
+msgid "As Attachment"
 msgstr "添付ファイル"
 
 #, fuzzy
-msgid "Click here to change the sorting of the message list"
-msgstr "もう一度ログインする"
+msgid "Move To"
+msgstr "移動"
+
+#, fuzzy
+msgid "Delete &amp; Previous"
+msgstr "削除＆戻る"
+
+#, fuzzy
+msgid "and subfolders"
+msgstr "下のフォルダのサブフォルダとして"
+
+msgid "Exclude"
+msgstr ""
+
+msgid "Fold"
+msgstr "畳む"
+
+msgid "Unfold"
+msgstr "開く"
+
+#, fuzzy
+msgid "Forget"
+msgstr "破棄"
+
+msgid "Email"
+msgstr "メール"
+
+#, fuzzy
+msgid "Additional Info"
+msgstr "その他の情報"
+
+msgid "Folder List"
+msgstr "フォルダリスト"
 
 msgid "Delivery error report"
 msgstr "配送エラーレポート"
@@ -5038,3 +5330,57 @@ msgstr "配送不能メッセージヘッダ"
 
 msgid "This image has been removed for security reasons"
 msgstr ""
+
+#~ msgid "Draft Saved"
+#~ msgstr "ドラフトに保存しました"
+
+#~ msgid "Some or all of the help documents are not present!"
+#~ msgstr "一部または全てのヘルプドキュメントは提供されていません"
+
+#~ msgid ""
+#~ "FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+#~ "false positives than ORBS did though."
+#~ msgstr ""
+#~ "無償。ORDB は ORBS が無くなった時に生まれました。しかし、ORBS より false "
+#~ "positives が少ないようです。"
+
+#~ msgid "Save folder tree"
+#~ msgstr "フォルダツリーの保存"
+
+#, fuzzy
+#~ msgid "Search Criteria"
+#~ msgstr "検索内容"
+
+#, fuzzy
+#~ msgid "Template"
+#~ msgstr "テーマ"
+
+#, fuzzy
+#~ msgid "Template Default"
+#~ msgstr "デフォルトにする"
+
+#, fuzzy
+#~ msgid "Command failed"
+#~ msgstr "コマンドが失敗しました"
+
+#, fuzzy
+#~ msgid "Refetching message %s."
+#~ msgstr "メッセージの再取込"
+
+#, fuzzy
+#~ msgid "Spam Service Type:"
+#~ msgstr "IMAP サーバのタイプ"
+
+#, fuzzy
+#~ msgid "Free reporting"
+#~ msgstr "スパムレポート"
+
+#, fuzzy
+#~ msgid "Save Service Type"
+#~ msgstr "スキャンタイプを保存しました。"
+
+#~ msgid "D"
+#~ msgstr "D"
+
+#~ msgid "F"
+#~ msgstr "F"

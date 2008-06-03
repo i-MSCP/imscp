@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 12793 2007-11-27 21:26:57Z jangliss $
+ * @version $Id: global.php 12988 2008-03-03 14:06:36Z kink $
  * @package squirrelmail
  */
 
@@ -115,7 +115,7 @@ sqsession_is_active();
 /* if running with magic_quotes_gpc then strip the slashes
    from POST and GET global arrays */
 
-if (get_magic_quotes_gpc()) {
+if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) {
     sqstripslashes($_GET);
     sqstripslashes($_POST);
 }

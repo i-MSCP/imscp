@@ -2,7 +2,7 @@
 # SquirrelMail web_search plugin.
 # Copyright (c) 2006 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: web_search.po,v 1.1 2006/06/21 20:08:19 tokul Exp $
+# $Id: web_search.po 11288 2006-06-21 20:08:18Z tokul $
 # 
 msgid ""
 msgstr ""

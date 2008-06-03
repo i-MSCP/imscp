@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2006.
-# $Id: cookie_warning.po,v 1.1 2006/08/10 18:10:42 tokul Exp $
+# $Id: cookie_warning.po 11502 2006-08-10 18:14:36Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: cookie_warning 1.1\n"

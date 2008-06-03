@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: redirect.php 12625 2007-08-29 07:25:36Z pdontthink $
+ * @version $Id: redirect.php 12848 2008-01-04 07:18:01Z pdontthink $
  * @package squirrelmail
  */
 
@@ -113,11 +113,10 @@ $attachment_common_types_parsed = array();
 sqsession_register($attachment_common_types, 'attachment_common_types');
 sqsession_register($attachment_common_types_parsed, 'attachment_common_types_parsed');
 
-$debug = false;
 
 if ( sqgetGlobalVar('HTTP_ACCEPT', $http_accept, SQ_SERVER) &&
     !isset($attachment_common_types_parsed[$http_accept]) ) {
-    attachment_common_parse($http_accept, $debug);
+    attachment_common_parse($http_accept);
 }
 
 /* Complete autodetection of Javascript. */
@@ -173,7 +172,7 @@ header("Location: $redirect_url");
 
 /* --------------------- end main ----------------------- */
 
-function attachment_common_parse($str, $debug) {
+function attachment_common_parse($str) {
     global $attachment_common_types, $attachment_common_types_parsed;
 
     $attachment_common_types_parsed[$str] = true;

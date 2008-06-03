@@ -4,7 +4,7 @@
 # Copyright (C) 2006 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: change_sqlpass.po,v 1.2 2006/06/21 20:08:18 tokul Exp $
+# $Id: change_sqlpass.po 11288 2006-06-21 20:08:18Z tokul $
 # 
 msgid ""
 msgstr ""

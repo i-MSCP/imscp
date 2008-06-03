@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
-# $Id: unsafe_image_rules.po,v 1.1 2006/03/03 23:34:10 jervfors Exp $
+# $Id: unsafe_image_rules.po 10856 2006-03-03 23:34:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: unsafe_image_rules 0.8\n"

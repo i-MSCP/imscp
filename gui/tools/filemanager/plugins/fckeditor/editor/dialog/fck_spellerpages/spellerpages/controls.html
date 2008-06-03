@@ -73,7 +73,7 @@ function init_spell() {
 
 </script>
 	</head>
-	<body class="controlWindowBody" onload="init_spell();" style="OVERFLOW: hidden" scroll="no">	<!-- by FredCK -->
+	<body class="controlWindowBody" onLoad="init_spell();" style="OVERFLOW: hidden" scroll="no">	<!-- by FredCK -->
 		<form name="spellcheck">
 			<table border="0" cellpadding="0" cellspacing="0" border="0" align="center">
 				<tr>
@@ -98,7 +98,7 @@ function init_spell() {
 							</tr>
 							<tr>
 								<td>
-									<select class="suggSlct" name="sugg" size="7" onchange="suggText();" onDblClick="replace_word();">
+									<select class="suggSlct" name="sugg" size="7" onChange="suggText();" onDblClick="replace_word();">
 										<option></option>
 									</select>
 								</td>
@@ -110,11 +110,11 @@ function init_spell() {
 						<table border="0" cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnIgnore" value="Ignore" onclick="ignore_word();">
+									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnIgnore" value="Ignore" onClick="ignore_word();">
 								</td>
 								<td>&nbsp;&nbsp;</td>
 								<td>
-									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnIgnoreAll" value="Ignore All" onclick="ignore_all();">
+									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnIgnoreAll" value="Ignore All" onClick="ignore_all();">
 								</td>
 							</tr>
 							<tr>
@@ -122,11 +122,11 @@ function init_spell() {
 							</tr>
 							<tr>
 								<td>
-									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnReplace" value="Replace" onclick="replace_word();">
+									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnReplace" value="Replace" onClick="replace_word();">
 								</td>
 								<td>&nbsp;&nbsp;</td>
 								<td>
-									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnReplaceAll" value="Replace All" onclick="replace_all();">
+									<input class="buttonDefault" type="button" fckLang="DlgSpellBtnReplaceAll" value="Replace All" onClick="replace_all();">
 								</td>
 							</tr>
 							<tr>
@@ -134,13 +134,13 @@ function init_spell() {
 							</tr>
 							<tr>
 								<td>
-									<input class="buttonDefault" type="button" name="btnUndo" fckLang="DlgSpellBtnUndo" value="Undo" onclick="undo();"
+									<input class="buttonDefault" type="button" name="btnUndo" fckLang="DlgSpellBtnUndo" value="Undo" onClick="undo();"
 										disabled>
 								</td>
 								<td>&nbsp;&nbsp;</td>
 								<td>
 									<!-- by FredCK
-									<input class="buttonDefault" type="button" value="Close" onclick="end_spell();">
+									<input class="buttonDefault" type="button" value="Close" onClick="end_spell();">
 									-->
 								</td>
 							</tr>

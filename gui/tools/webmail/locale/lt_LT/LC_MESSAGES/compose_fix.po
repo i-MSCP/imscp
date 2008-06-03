@@ -1,7 +1,7 @@
 # Squirrelmail Lithuanian Translation.
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2001.
-# $Id: compose_fix.po,v 1.1 2005/06/10 11:04:35 tokul Exp $
+# $Id: compose_fix.po 9571 2005-06-10 11:04:34Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4.4\n"

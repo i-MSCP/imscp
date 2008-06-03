@@ -1,7 +1,7 @@
 # change_mysqlpass translation to Spanish
 # This file is distributed under the same license as the PACKAGE package.
 # Dirk Enrique Seiffert <info@caribenet.com>, 2005.
-# $Id: change_sqlpass.po,v 1.1 2005/11/12 15:13:47 tokul Exp $
+# $Id: change_sqlpass.po 10345 2005-11-12 15:13:46Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: change_mysqlpass\n"

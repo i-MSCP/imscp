@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Ferdie Ferdsen <ferdie@despam.de>, 2004.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: ldapquery.po,v 1.6 2005/09/06 21:06:39 jervfors Exp $
+# $Id: ldapquery.po 10064 2005-09-06 21:06:40Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: ldapquery 2.0\n"

@@ -5,7 +5,7 @@
 # **
 # ** Philipe Mingo <mingo@rotedic.com>
 # ** 
-# **  $Id: xgetpo 9918 2005-08-06 06:14:31Z tokul $ 
+# **  $Id: xgetpo 13150 2008-05-16 04:48:31Z jervfors $ 
 
 # force use of same locale in order to keep same sorting order
 LC_ALL=en_US.ISO8859-1
@@ -13,7 +13,7 @@ LANG=en_US.ISO8859-1
 export LC_ALL LANG
 
 # set common gettext options
-XGETTEXT_OPTIONS="--keyword=_ -keyword=N_ --default-domain=squirrelmail --no-location -C"
+XGETTEXT_OPTIONS="--keyword=_ -keyword=N_ --default-domain=squirrelmail --no-location --add-comments=i18n"
 
 # Allows controlling language option
 # (gettext v.0.10.40 = -C, gettext 0.11+ = -L php).

@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: compatibility.po,v 1.7 2005/10/26 05:11:35 jervfors Exp $
+# $Id: compatibility.po 10200 2005-10-26 05:11:35Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: compatibility 2.0.2\n"

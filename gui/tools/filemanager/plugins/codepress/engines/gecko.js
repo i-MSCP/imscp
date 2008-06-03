@@ -3,16 +3,17 @@
  * 
  * Copyright (C) 2007 Fernando M.A.d.S. <fermads@gmail.com>
  *
- * Contributors :
- *
- * 	Michael Hurni <michael.hurni@gmail.com>
+ * Developers:
+ *		Fernando M.A.d.S. <fermads@gmail.com>
+ *		Michael Hurni <michael.hurni@gmail.com>
+ * Contributors: 	
+ *		Martin D. Kirk
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
  * GNU Lesser General Public License as published by the Free Software Foundation.
  * 
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
-
 
 CodePress = {
 	scrolling : false,
@@ -21,29 +22,33 @@ CodePress = {
 	// set initial vars and start sh
 	initialize : function() {
 		if(typeof(editor)=='undefined' && !arguments[0]) return;
-		chars = '|32|46|62|'; // charcodes that trigger syntax highlighting
-		cc = '\u2009'; // control char
-		editor = document.getElementsByTagName('body')[0];
+		body = document.getElementsByTagName('body')[0];
+		body.innerHTML = body.innerHTML.replace(/\n/g,"");
+		chars = '|32|46|62|8|'; // charcodes that trigger syntax highlighting
+		cc = '\u2009'; // carret char
+		editor = document.getElementsByTagName('pre')[0];
 		document.designMode = 'on';
 		document.addEventListener('keypress', this.keyHandler, true);
 		window.addEventListener('scroll', function() { if(!CodePress.scrolling) CodePress.syntaxHighlight('scroll') }, false);
 		completeChars = this.getCompleteChars();
-//		CodePress.syntaxHighlight('init');
+		completeEndingChars =  this.getCompleteEndingChars();
 	},
 
 	// treat key bindings
 	keyHandler : function(evt) {
     	keyCode = evt.keyCode;	
 		charCode = evt.charCode;
+		fromChar = String.fromCharCode(charCode);
 
 		if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
 			CodePress.shortcuts(charCode?charCode:keyCode);
 		}
-		else if(completeChars.indexOf('|'+String.fromCharCode(charCode)+'|')!=-1 && CodePress.autocomplete) { // auto complete
-			CodePress.complete(String.fromCharCode(charCode));
+		else if( (completeEndingChars.indexOf('|'+fromChar+'|')!= -1 || completeChars.indexOf('|'+fromChar+'|')!=-1) && CodePress.autocomplete) { // auto complete
+			if(!CodePress.completeEnding(fromChar))
+			     CodePress.complete(fromChar);
 		}
 	    else if(chars.indexOf('|'+charCode+'|')!=-1||keyCode==13) { // syntax highlighting
-		 	CodePress.syntaxHighlight('generic');
+			top.setTimeout(function(){CodePress.syntaxHighlight('generic');},100);
 		}
 		else if(keyCode==9 || evt.tabKey) {  // snippets activation (tab)
 			CodePress.snippets(evt);
@@ -87,11 +92,21 @@ CodePress = {
 		}
 	},
 	
+	getEditor : function() {
+		if(!document.getElementsByTagName('pre')[0]) {
+			body = document.getElementsByTagName('body')[0];
+			if(!body.innerHTML) return body;
+			if(body.innerHTML=="<br>") body.innerHTML = "<pre> </pre>";
+			else body.innerHTML = "<pre>"+body.innerHTML+"</pre>";
+		}
+		return document.getElementsByTagName('pre')[0];
+	},
+	
 	// syntax highlighting parser
 	syntaxHighlight : function(flag) {
 		//if(document.designMode=='off') document.designMode='on'
-		if(flag!='init') window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));
-
+		if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));}
+		editor = CodePress.getEditor();
 		o = editor.innerHTML;
 		o = o.replace(/<br>/g,'\n');
 		o = o.replace(/<.*?>/g,'');
@@ -103,7 +118,7 @@ CodePress = {
 		for(i=0;i<Language.syntax.length;i++) 
 			x = x.replace(Language.syntax[i].input,Language.syntax[i].output);
 
-		editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.split(z).join(x); 
+		editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.split(z).join(x);
 		if(flag!='init') this.findString();
 	},
 	
@@ -153,7 +168,32 @@ CodePress = {
 			cChars += '|'+Language.complete[i].input;
 		return cChars+'|';
 	},
-
+	
+	getCompleteEndingChars : function() {
+		var cChars = '';
+		for(var i=0;i<Language.complete.length;i++)
+			cChars += '|'+Language.complete[i].output.charAt(Language.complete[i].output.length-1);
+		return cChars+'|';
+	},
+	
+	completeEnding : function(trigger) {
+		var range = window.getSelection().getRangeAt(0);
+		try {
+			range.setEnd(range.endContainer, range.endOffset+1)
+		}
+		catch(e) {
+			return false;
+		}
+		var next_character = range.toString()
+		range.setEnd(range.endContainer, range.endOffset-1)
+		if(next_character != trigger) return false;
+		else {
+			range.setEnd(range.endContainer, range.endOffset+1)
+			range.deleteContents();
+			return true;
+		}
+	},
+	
 	shortcuts : function() {
 		var cCode = arguments[0];
 		if(cCode==13) cCode = '[enter]';
@@ -191,6 +231,8 @@ CodePress = {
 	
 	// get code from editor
 	getCode : function() {
+		if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
+			editor = CodePress.getEditor();
 		var code = editor.innerHTML;
 		code = code.replace(/<br>/g,'\n');
 		code = code.replace(/\u2009/g,'');
@@ -206,9 +248,11 @@ CodePress = {
 		var code = arguments[0];
 		code = code.replace(/\u2009/gi,'');
 		code = code.replace(/&/gi,'&amp;');
-       	code = code.replace(/</g,'&lt;');
-        code = code.replace(/>/g,'&gt;');
+		code = code.replace(/</g,'&lt;');
+		code = code.replace(/>/g,'&gt;');
 		editor.innerHTML = code;
+		if (code == '')
+			document.getElementsByTagName('body')[0].innerHTML = '';
 	},
 
 	// undo and redo methods
@@ -217,17 +261,21 @@ CodePress = {
 		history : [], // history vector
 		
 		undo : function() {
+			editor = CodePress.getEditor();
 			if(editor.innerHTML.indexOf(cc)==-1){
-				window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));
-			 	this.history[this.pos] = editor.innerHTML;
+				if(editor.innerHTML != " ")
+					window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));
+				this.history[this.pos] = editor.innerHTML;
 			}
-			this.pos--;
-			if(typeof(this.history[this.pos])=='undefined') this.pos++;
+			this.pos --;
+			if(typeof(this.history[this.pos])=='undefined') this.pos ++;
 			editor.innerHTML = this.history[this.pos];
+			if(editor.innerHTML.indexOf(cc)>-1) editor.innerHTML+=cc;
 			CodePress.findString();
 		},
 		
 		redo : function() {
+			// editor = CodePress.getEditor();
 			this.pos++;
 			if(typeof(this.history[this.pos])=='undefined') this.pos--;
 			editor.innerHTML = this.history[this.pos];

@@ -2,21 +2,20 @@
 # Copyright (c) 1999-2007 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Johan Fernberger <johan@fernberger.com>, 2002.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2007.
-# $Id: squirrelmail.po,v 1.77.2.1 2007/01/06 14:24:16 jervfors Exp $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2007.
+# $Id: squirrelmail.po 12820 2007-12-15 09:33:02Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: SquirrelMail 1.4.9\n"
+"Project-Id-Version: SquirrelMail 1.4.13\n"
 "Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
 "i18n@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2006-12-03 23:04+0100\n"
-"PO-Revision-Date: 2007-01-06 15:22+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"POT-Creation-Date: 2007-12-15 00:57+0100\n"
+"PO-Revision-Date: 2007-12-15 10:26+0100\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgid "Address Book"
 msgstr "Adressbok"
@@ -178,14 +177,26 @@ msgstr "Utkast sparat"
 msgid "Could not move/copy file. File not attached"
 msgstr "Kunde inte flytta/kopiera filen. Filen bifogades inte."
 
-msgid "Draft Saved"
-msgstr "Utkast sparat"
+msgid "Your draft has been saved."
+msgstr "Ditt utkast har sparats."
 
-msgid "Your Message has been sent."
-msgstr "Brevet har skickats."
+msgid "Your mail has been sent."
+msgstr "Ditt brev har skickats."
 
 msgid "From:"
 msgstr "Från:"
+
+msgid "To:"
+msgstr "Till:"
+
+msgid "Cc:"
+msgstr "Kopia:"
+
+msgid "Bcc:"
+msgstr "Dold kopia:"
+
+msgid "Subject:"
+msgstr "Ärende:"
 
 msgid "Send"
 msgstr "Skicka"
@@ -243,6 +254,9 @@ msgstr "Du måste ange en mottagare."
 #, php-format
 msgid "Error: Draft folder %s does not exist."
 msgstr "Fel: Katalogen &quot;%s&quot; för sparade utkast finns inte"
+
+msgid "Message not sent."
+msgstr "Brevet skickades inte."
 
 msgid "Server replied:"
 msgstr "Servern svarade:"
@@ -961,6 +975,10 @@ msgstr "Visa"
 msgid "View Business Card"
 msgstr "Visa visitkort"
 
+msgid "Your session has expired, but will be resumed after logging in again."
+msgstr ""
+"Sessionen har gått ut men kommer att återupptas efter förnyad inloggning."
+
 msgid "Sunday"
 msgstr "Söndag"
 
@@ -1254,7 +1272,7 @@ msgstr "Kasta onödiga brev. Börja med brev i din papperskorg."
 
 #, php-format
 msgid "Invalid mailbox name: %s"
-msgstr "Ogiltigt namn för brevlåda: %s"
+msgstr "Ogiltigt brevlådenamn: %s"
 
 msgid "(no subject)"
 msgstr "(ärende saknas)"
@@ -1544,7 +1562,7 @@ msgstr "Mellan rubriker och brevtext"
 msgid "After message body"
 msgstr "Efter brevtexten"
 
-msgid "Addressbook Display Format"
+msgid "Address Book Display Format"
 msgstr "Adressbokens utseende"
 
 msgid "Javascript"
@@ -1553,14 +1571,23 @@ msgstr "JavaScript"
 msgid "HTML"
 msgstr "HTML"
 
+msgid "Format of Addresses Added From Address Book"
+msgstr "Format på adresser tillagda från adressboken"
+
+msgid "No prefix/Address only"
+msgstr "Inget prefix/endast adress"
+
+msgid "Nickname and address"
+msgstr "Smeknamn och adress"
+
+msgid "Full name and address"
+msgstr "Fullständigt namn och adress"
+
 msgid "Show HTML Version by Default"
 msgstr "Visa HTML-versionen"
 
 msgid "Enable Forward as Attachment"
 msgstr "Aktivera vidarebefordran som bilaga"
-
-msgid "Include CCs when Forwarding Messages"
-msgstr "Inkludera alla när ett brev vidarebefordras"
 
 msgid "Include Me in CC when I Reply All"
 msgstr "Lägg till mig som mottagare när jag svarar alla"
@@ -1904,8 +1931,14 @@ msgstr "Mac OS X e-postserver"
 msgid "hMailServer IMAP server"
 msgstr "hMailServer IMAP-server"
 
+msgid "Mercury/32 IMAP server"
+msgstr "Mercury/32 IMAP-server"
+
 msgid "Binc IMAP server"
 msgstr "Binc IMAP-server"
+
+msgid "Dovecot IMAP server"
+msgstr "Dovecot IMAP-server"
 
 msgid "Not one of the above servers"
 msgstr "Ingen av ovanstående servrar"
@@ -1934,11 +1967,11 @@ msgstr "Använd Sendmail-programmet"
 msgid "Choose &quot;no&quot; for SMTP"
 msgstr "Välj &quot;Nej&quot; för SMTP"
 
-msgid "Sendmail Arguments"
-msgstr "Sendmailparametrar"
-
 msgid "Sendmail Path"
 msgstr "Sökväg till Sendmail"
+
+msgid "Sendmail Arguments"
+msgstr "Sendmailparametrar"
 
 msgid "SMTP Server Address"
 msgstr "Adress till SMTP-server"
@@ -1957,6 +1990,12 @@ msgstr "Ingen SMTP-validering"
 
 msgid "Login (plain text)"
 msgstr "Inloggning (klartext)"
+
+msgid "Custom SMTP AUTH username"
+msgstr "Anpassat SMTP AUTH-användarnamn"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Anpassat SMTP AUTH-lösenord"
 
 msgid "POP3 Before SMTP?"
 msgstr "POP3 innan SMTP?"
@@ -2474,13 +2513,6 @@ msgstr "KOMMERSIELL - RBL+ OpenRelay."
 msgid "COMMERCIAL - RBL+ Dial-up entries."
 msgstr "KOMMERSIELL - RBL+ Dial-up."
 
-msgid ""
-"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
-"false positives than ORBS did though."
-msgstr ""
-"FRI - ORDB föddes när ORBS försvann. Verkar i alla fall ha färre falsklarm "
-"än ORBS hade."
-
 msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
 msgstr "FRI - Five-Ten-sg.com - Direkta skräppostkällor."
 
@@ -2812,17 +2844,11 @@ msgstr "Kontakta listans ägare"
 msgid "Mailing List"
 msgstr "E-postlista"
 
-msgid "POP3 connect:"
-msgstr "POP3-uppkoppling:"
-
 msgid "No server specified"
 msgstr "Ingen server angiven"
 
 msgid "Error "
 msgstr "Fel "
-
-msgid "POP3 user:"
-msgstr "POP3 användarnamn:"
 
 msgid "no login ID submitted"
 msgstr "inget användarnamn angivet"
@@ -2830,14 +2856,8 @@ msgstr "inget användarnamn angivet"
 msgid "connection not established"
 msgstr "uppkoppling ej genomförd"
 
-msgid "POP3 pass:"
-msgstr "POP3 lösenord:"
-
 msgid "No password submitted"
 msgstr "Inget lösenord angivet"
-
-msgid "POP3 apop:"
-msgstr "POP3 apop:"
 
 msgid "No connection to server"
 msgstr "Kunde inte kontakta servern"
@@ -2854,44 +2874,14 @@ msgstr "avbryt"
 msgid "apop authentication failed"
 msgstr "apop-validering misslyckades"
 
-msgid "POP3 login:"
-msgstr "POP3 användarnamn:"
-
-msgid "POP3 top:"
-msgstr "POP3 början:"
-
-msgid "POP3 pop_list:"
-msgstr "POP3 pop_lista:"
-
 msgid "Premature end of list"
 msgstr "Listan är inte fullständig"
-
-msgid "POP3 get:"
-msgstr "POP3 hämta:"
-
-msgid "POP3 last:"
-msgstr "POP3 sista:"
-
-msgid "POP3 reset:"
-msgstr "POP3 återställ:"
-
-msgid "POP3 send_cmd:"
-msgstr "POP3 skicka_kommando:"
 
 msgid "Empty command string"
 msgstr "Tom kommandosträng"
 
-msgid "POP3 quit:"
-msgstr "POP3 avsluta:"
-
 msgid "connection does not exist"
 msgstr "uppkopplingen finns inte"
-
-msgid "POP3 uidl:"
-msgstr "POP3 UIDL:"
-
-msgid "POP3 delete:"
-msgstr "POP3 kasta:"
 
 msgid "No msg number submitted"
 msgstr "Inget brevnummer angivet"
@@ -3192,6 +3182,15 @@ msgstr "(ingen)"
 
 msgid "requires JavaScript to work"
 msgstr "kräver JavaScript"
+
+msgid "Width of popup window:"
+msgstr "Bredd på dialogrutan:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Ange 0 för att använda det förinställda värdet"
+
+msgid "Height of popup window:"
+msgstr "Höjd på dialogrutan:"
 
 msgid "Try"
 msgstr "Spela"
@@ -3530,9 +3529,6 @@ msgstr "Vill du kasta din personliga ordlista?"
 msgid "Error Decrypting Dictionary"
 msgstr "Fel vid dekryptering av ordlista"
 
-msgid "Cute."
-msgstr "Sött."
-
 #, php-format
 msgid "Could not run the spellchecker command (%s)."
 msgstr "Stavningskontrollen kunde inte exekvera kommandot (%s)."
@@ -3809,6 +3805,9 @@ msgstr ""
 msgid "SquirrelSpell Initiating"
 msgstr "Startar SquirrelSpell"
 
+msgid ", "
+msgstr ", "
+
 #, php-format
 msgid "Settings adjusted to: %s with %s as default dictionary."
 msgstr "Inställningarna justerade till: %s med %s som förvald ordlista"
@@ -3926,7 +3925,7 @@ msgid "%s to %s"
 msgstr "%s till %s"
 
 msgid "Chinese, Simplified"
-msgstr "Kinesiska, förenklad"
+msgstr "Kinsiska, förenklad"
 
 msgid "English"
 msgstr "Engelska"
@@ -4041,9 +4040,6 @@ msgstr "Översättningsriktning"
 
 msgid "Arabic"
 msgstr "Arabiska"
-
-msgid "Chinese (Simplified)"
-msgstr "Kinesiska, förenklad"
 
 msgid "Delivery error report"
 msgstr "Rapport om leveransfel"

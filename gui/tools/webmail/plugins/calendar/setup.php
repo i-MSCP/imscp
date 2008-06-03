@@ -16,8 +16,7 @@
  */
 function squirrelmail_plugin_init_calendar() {
     global $squirrelmail_plugin_hooks;
-#    $squirrelmail_plugin_hooks['menuline']['calendar'] = 'calendar';
-    $squirrelmail_plugin_hooks['calendar_plugin']['calendar'] = 'calendar';
+    $squirrelmail_plugin_hooks['menuline']['calendar'] = 'calendar';
 }
 
 /**
@@ -25,9 +24,8 @@ function squirrelmail_plugin_init_calendar() {
  * @return void
  */
 function calendar() {
-    displayInternalLink('plugins/calendar/calendar.php','<div id="calendar_button" title="'._("Calendar").'">&nbsp;&nbsp;&nbsp;</div>','');
-#    displayInternalLink('plugins/calendar/calendar.php',_("Calendar"),'right');
-#    echo "&nbsp;&nbsp;\n";
+    displayInternalLink('plugins/calendar/calendar.php',_("Calendar"),'right');
+    echo "&nbsp;&nbsp;\n";
 }
 
 ?>

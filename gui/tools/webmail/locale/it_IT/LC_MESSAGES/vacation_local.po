@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Luca Francesconi <luca.francesconi@ariannaconsulting.it>, 2005.
-# $Id: vacation_local.po,v 1.1 2005/10/03 14:00:53 tokul Exp $
+# $Id: vacation_local.po 10125 2005-10-03 14:00:52Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: vacation_local 2.0\n"

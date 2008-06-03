@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: show_ssl_link.po,v 1.1 2005/06/12 14:03:06 jervfors Exp $
+# $Id: show_ssl_link.po 9581 2005-06-12 14:03:05Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: show_ssl_link\n"

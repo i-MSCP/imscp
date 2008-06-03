@@ -1,7 +1,7 @@
 # Shared Calendars Italian translation.
 # Copyright (C) 2006 The SquirrelMail Project Team
 # Rocco Scappatura <rocsca@sttspa.it>, 2006.
-# $Id: calendar.po,v 1.2 2006/02/10 21:02:12 tokul Exp $
+# $Id: calendar.po 10694 2006-02-10 21:03:04Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: Shared Calendars 2.0.1\n"

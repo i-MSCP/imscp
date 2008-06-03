@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_search.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: imap_search.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  * @subpackage imap
  * @deprecated This search interface has been largely replaced by asearch
@@ -125,4 +125,3 @@ function sqimap_search($imapConnection, $search_where, $search_what, $mailbox,
 
 
 
-?>

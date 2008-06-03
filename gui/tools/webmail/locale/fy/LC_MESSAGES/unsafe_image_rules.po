@@ -1,0 +1,237 @@
+# translation of unsafe_image_rules.po to Nederlands
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# translation of unsafe_image_rules.po to
+# LANGUAGE (xx_XX) unsafe_image_rules Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: unsafe_image_rules.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: unsafe_image_rules\n"
+"POT-Creation-Date: 2006-01-17 10:40+0100\n"
+"PO-Revision-Date: 2007-04-15 09:53+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: add.php:60
+msgid "Safe Sender"
+msgstr "Feilige ferstjoerder"
+
+#: add.php:60
+#: functions.php:267
+#: options.php:84
+msgid "Unsafe Image Rules"
+msgstr "Regels foar ûnfeilige ôfbylden"
+
+#: add.php:66
+msgid "Use the form below to modify the address that will be added to the Unsafe Image Rules."
+msgstr "Brûk ûndersteand formulier om de adressen dy't taheakke wurde sille oan de regels foar ûnfeilige ôfbylden oan te passen."
+
+#: add.php:73
+#: options.php:173
+msgid "From"
+msgstr "Fan"
+
+#: add.php:77
+#: options.php:193
+#: options.php:226
+msgid "Contains"
+msgstr "Befet"
+
+#: add.php:78
+#: options.php:196
+#: options.php:226
+msgid "Reg.Exp."
+msgstr "Regexp."
+
+#: add.php:83
+#: options.php:155
+msgid "Save"
+msgstr "Opslaan"
+
+#: add.php:111
+msgid "The following address has been successfully added to the Unsafe Images Rules:"
+msgstr "De folgjende adressen binne súksesfol taheakke oan de regels foar ûnfeilige ôfbylden:"
+
+#: add.php:114
+msgid "I didn't seem to get a valid email address to add. This shouldn't happen!"
+msgstr "Der is gjin jildich e-mailadres ûntfongen om ta te heakjen. Dit mei net barre!"
+
+#: add.php:118
+msgid "Sending you back to the message list in five seconds."
+msgstr "Jo wurde yn fiif sekonden weromstjoerd nei de berjochtenlist."
+
+#. i18n: The first %s inserts HTML flr starting a link, and the second ends it.
+#: add.php:120
+#, php-format
+msgid "If you are not automatically redirected, please click %shere%s."
+msgstr "As jo net automatysk trochstjoerd wurde, klik %shjir%s."
+
+#: functions.php:269
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr "Stel regels yn foar hoe't der omgien wurde moat mei ûnfeilige ôfbylden yn HTML-berjochten."
+
+#: functions.php:389
+msgid "Always trust images from this sender"
+msgstr "Altyd ôfbylden fan dizze ferstjoerder betrouwe"
+
+#: options.php:68
+msgid "Saved Trusted Options"
+msgstr "Betroud-opsjes opslein"
+
+#: options.php:84
+msgid "Options"
+msgstr "Opsjes"
+
+#: options.php:92
+msgid "Trust all sources:"
+msgstr "Alle boarnen betrouwe:"
+
+#: options.php:96
+msgid "WARNING!"
+msgstr "WARSKOGING!"
+
+#: options.php:97
+msgid "This is not recommended by the SquirrelMail Project Team."
+msgstr "Dit wurdt net oanrikkemandearre troch it projektteam fan SquirrelMail."
+
+#. i18n: %s inserts a complete link which doesn't need to be i18n.
+#: options.php:99
+#, php-format
+msgid "Read %s for more details. There is a risk you may receive more spam if you check this option."
+msgstr "Lês %s foar mear details. It risiko bestiet dat jo mear spam ûntfange as jo dizze opsje ynskeakelje."
+
+#: options.php:101
+msgid "If checked unsafe images are always seen."
+msgstr "By ynskeakeljen sille ûnfeilige ôfbylden altyd werjûn wurde."
+
+#: options.php:102
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr "Dizze opsje makket de status fan alle oare opsjes net-relevant."
+
+#: options.php:107
+msgid "Trust sources in address book:"
+msgstr "Boarnen yn adresboek betrouwe:"
+
+#: options.php:111
+msgid "If checked, unsafe images are shown for messages from anyone in your address book."
+msgstr "By ynskeakeljen sille ûnfeilige ôfbylden werjûn wurde fan berjochten dy't ôfkomstich binne fan persoanen út jo adresboek."
+
+#: options.php:115
+msgid "Trust anything I send:"
+msgstr "Alles dat ik ferstjoer betrouwe:"
+
+#: options.php:119
+msgid "If checked, unsafe images are shown for messages sent by any of your identities."
+msgstr "By ynskeakeljen sille ûnfeilige ôfbylden toand wurde foar berjochten dy't troch ien fan jo identiteiten ferstjoerd is."
+
+#: options.php:120
+msgid "You might not want to set this if you forward Spam to other people, and then go back and read from your 'Sent' folder."
+msgstr "Dit wolle jo mooglik net as jo spam-berjochten trochstjoere nei oare persoanen en dêrnei weromgeane en se iepenje yn jo map mei ferstjoerde berjochten."
+
+#: options.php:124
+msgid "Trust defined sources:"
+msgstr "Definearre boarnen betrouwe:"
+
+#: options.php:128
+msgid "If checked, unsafe images are shown for the sources shown below."
+msgstr "By ynskeakeljen sille ûnfeilige ôfbylden fan ûndersteande boarnen toand wurde."
+
+#: options.php:134
+msgid "When viewing a message with unsafe images, you can quickly add the sender's email address or domain to the Unsafe Image Rules by clicking the 'Always trust images from this sender' link. The following options set the default behavior when the address is being added."
+msgstr "At jo in berjocht mei ûnfeilige ôfbylden besjogge kinne jo it e-mailadres of domein fan de ôfstjoerder maklik oan de regels foar ûnfeilige ôfbylden taheakje troch te klikken op 'Altyd ôfbylden fan dizze ôfstjoerder betrouwe'. De folgjende opsjes bepale it standertgedrach as in adres taheakke wurdt."
+
+#: options.php:137
+msgid "Always add full email address:"
+msgstr "Altyd folsleine e-mailadressen taheakje:"
+
+#: options.php:140
+msgid "If selected the full email address of the sender will be added to the Unsafe Image Rules list."
+msgstr "By selektearjen sil it folsleine e-mailadres fan de ôfstjoerder taheakke wurde oan de list mei regels foar ûnfeilige ôfbylden."
+
+#: options.php:142
+msgid "Always add full domain:"
+msgstr "Altyd folslein domein taheakje:"
+
+#: options.php:145
+msgid "If selected only the domain of the sender will be added to the Unsafe Image Rules list."
+msgstr "By selektearjen sil allinnich it domein fan de ôfstjoerder taheakke wurde oan de list mei regels foar ûnfeilige ôfbylden."
+
+#: options.php:147
+msgid "Always ask:"
+msgstr "Altyd freegje:"
+
+#: options.php:150
+msgid "Ask what to add to the Unsafe Image Rules list."
+msgstr "Freget wat jo taheakje wolle oan de list mei regels foar ûnfeilige ôfbylden."
+
+#: options.php:158
+msgid "Add New Rule"
+msgstr "Nije regel taheakje"
+
+#: options.php:159
+msgid "Done"
+msgstr "Dien"
+
+#: options.php:167
+msgid "Trust source if "
+msgstr "Boarne betrouwe as "
+
+#: options.php:176
+msgid "To"
+msgstr "Oan"
+
+#: options.php:179
+msgid "Cc"
+msgstr "CC"
+
+#: options.php:182
+msgid "To or Cc"
+msgstr "Oan of CC"
+
+#: options.php:185
+msgid "Subject"
+msgstr "Underwerp"
+
+#: options.php:204
+msgid "NB"
+msgstr "Opmerking"
+
+#: options.php:206
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "As jo in reguliere ekspresje opjouwe moatte jo skiedingstekens ynslute."
+
+#: options.php:207
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr "De 'Befet'-kontrole sil útfierd wurde mei haadletterûngefoelige oerienkomming."
+
+#: options.php:209
+msgid "Submit"
+msgstr "Yntsjinje"
+
+#: options.php:219
+msgid "Edit"
+msgstr "Bewurkje"
+
+#: options.php:221
+msgid "Delete"
+msgstr "Wiskje"
+
+#. i18n: If [field] [Contains|Reg.Exp.] [user defined data]
+#: options.php:224
+#, php-format
+msgid "If %s %s %s"
+msgstr "As %s %s %s"
+
+#: options.php:230
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "Dit sjocht der net út as in  jildige reguliere ekspresje."
+
+#: options.php:230
+msgid "WARNING:"
+msgstr "WARSKOGING:"
+

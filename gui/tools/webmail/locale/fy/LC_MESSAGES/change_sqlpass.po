@@ -1,0 +1,160 @@
+# translation of change_sqlpass.po to Frisian
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) change_sqlpass Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: change_sqlpass.pot 11167 2006-05-28 09:30:56Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: change_sqlpass\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2006-05-28 11:18+0200\n"
+"PO-Revision-Date: 2007-04-14 11:55+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: functions.php:55
+msgid "Could not find Pear DB library"
+msgstr "Koe Pear DB-bibleteek net fine"
+
+#: functions.php:96
+msgid "Could not make database connection"
+msgstr "Koe gjin ferbining mei de databank meitsje"
+
+# Dit is wat al te bryk oersetten. De bedoeling derefter wie my net dúdlik
+#: functions.php:196
+#, php-format
+msgid "DATABASE ERROR: could not lookup force change password flag: %s"
+msgstr "DATABANKFOUT: koe dizze flagge foar it forsearjen fan it wachtwurd te wizigjen net fine: %s"
+
+# wartaal
+#: functions.php:207
+#, php-format
+msgid "Force change password query result is: %s<br />Query was: %s<br /><br />"
+msgstr "Resultaat fan query om it wizigjen fan it wachtwurd te forsearjen is: %s<br />Query wie: %s<br /><br />"
+
+#: functions.php:273
+#: functions.php:510
+msgid "Change Password"
+msgstr "Wachtwurd wizigje"
+
+#: functions.php:275
+msgid "Use this to change your email password."
+msgstr "Brûk dit om jo e-mailwachtwurd te wizigjen"
+
+#: functions.php:304
+msgid "Password changed successfully.<br />Please use your new password to log in from now on."
+msgstr "Wachtwurd is wizige.<br />Brûk fan no ôf jo nije wachtwurd om yn te logjen."
+
+#: functions.php:306
+msgid "Password change cancelled.<br />Your password has NOT been changed."
+msgstr "Wachtwurdwiziging annulearre.<br />Jo wachtwurd is NET wizige."
+
+#: functions.php:462
+msgid "Periodically, we ask that you change your password.  This is done to help maintain good security for your email account."
+msgstr "Wy freegje jo geregeld om jo wachtwurd te wizigjen. Wy dogge dit om jo e-mailakkount feilich te hâlden."
+
+#: functions.php:508
+msgid "Change Password - Secure"
+msgstr "Wachtwurd wizigje -feilich"
+
+#: functions.php:527
+msgid "Old Password"
+msgstr "Alde wachtwurd"
+
+#: functions.php:531
+msgid "New Password"
+msgstr "Nij wachtwurd"
+
+#: functions.php:535
+msgid "Verify New Password"
+msgstr "Nij wachtwurd befêstigje"
+
+#: functions.php:541
+msgid "Submit"
+msgstr "Yntsjinje"
+
+#: functions.php:548
+msgid "Cancel"
+msgstr "Annulearje"
+
+#: functions.php:609
+#, php-format
+msgid "DATABASE ERROR: could not lookup salt: %s"
+msgstr "DATABANKFOUT: koe salt net fine: %s"
+
+#: functions.php:620
+#: functions.php:763
+#, php-format
+msgid "Password query result is: %s<br />Query was: %s<br /><br />"
+msgstr "Resultaat fan wachtwurd-query is: %s<br />Query wie: %s<br /><br />"
+
+#: functions.php:719
+msgid "You must type in your old password"
+msgstr "Fier jo âlde wachtwurd yn"
+
+#: functions.php:722
+msgid "Your old password is not correct"
+msgstr "Jo âlde wachtwurd is net goed"
+
+#: functions.php:752
+#, php-format
+msgid "DATABASE ERROR: could not lookup old password: %s"
+msgstr "DATABANKFOUT: koe âlde wachtwurd net opsykje: %s"
+
+#: functions.php:769
+msgid "Your old password does not match"
+msgstr "Jo âlde wachtwurd komt net oerien"
+
+#: functions.php:775
+msgid "You must type in a new password"
+msgstr "Fier jo nije wachtwurd yn"
+
+#: functions.php:780
+#, php-format
+msgid "Your new password is too short.  It must be at least %s characters long"
+msgstr "Jo nije wachtwurd is te koart. Dizze moat mear as %s lettertekens lang wêze."
+
+#: functions.php:783
+#, php-format
+msgid "Your new password is too long.  It must be no more than %s characters long"
+msgstr "Jo nije wachtwurd is te lang. Dizze mei net langer wêze as %s lettertekens."
+
+#: functions.php:786
+msgid "Please include at least one digit in your new password"
+msgstr "Brûk teminsten ien sifer yn jo nije wachtwurd"
+
+#: functions.php:789
+msgid "Please include at least one upper-case letter in your new password"
+msgstr "Brûk teminsten ien haadletter yn jo nije wachtwurd"
+
+#: functions.php:792
+msgid "Please include at least one lower-case letter in your new password"
+msgstr "Brûk teminsten ien lytse letter yn jo nije wachtwurd"
+
+#: functions.php:795
+msgid "Please include at least one non-alphanumeric character (such as @, - or _) in your new password"
+msgstr "Brûk teminsten ien net-alfanumeryk teken (lykas, @, - of _) yn jo nije wachtwurd"
+
+#: functions.php:799
+msgid "You must also type in your new password in the verify box"
+msgstr "Fier ek de befêstiging fan jo nije wachtwurd yn"
+
+#: functions.php:802
+msgid "Your new password does not match the verify password"
+msgstr "De opjûne nije wachtwurden binne net itselde"
+
+#: functions.php:805
+msgid "Your new password must be different than your old password"
+msgstr "Jo nije wachtwurd moat oars wêze as jo âlde wachtwurd"
+
+#: functions.php:865
+#, php-format
+msgid "DATABASE ERROR: could not update password: %s"
+msgstr "DATABANKFOUT: koe wachtwurd net bywurkje: %s"
+

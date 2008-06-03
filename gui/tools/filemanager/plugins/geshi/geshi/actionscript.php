@@ -4,7 +4,7 @@
  * ----------------
  * Author: Steffen Krause (Steffen.krause@muse.de)
  * Copyright: (c) 2004 Steffen Krause, Nigel McNie (http://qbnz.com/highlighter)
- * Release Version: 1.0.7.19
+ * Release Version: 1.0.7.21
  * Date Started: 2004/06/20
  *
  * Actionscript language file for GeSHi.
@@ -103,8 +103,8 @@ $language_data = array (
 			'ne', 'NEGATIVE_INFINITY', 'NetConnection', 'NetStream', 'newline', 'nextFrame',
 			'nextScene', 'nextSibling', 'nodeName', 'nodeType', 'nodeValue', 'not', 'Number', 'Object',
 			'on', 'onActivity', 'onChanged', 'onClipEvent', 'onClose', 'onConnect', 'onData', 'onDragOut',
-			'onDragOver', 'onEnterFrame', 'onID3', 'onKeyDown', 'onKeyUp', 'onKillFocus', 'onload', 'onloadComplete',
-			'onloadError', 'onloadInit', 'onloadProgress', 'onloadStart', 'onMouseDown', 'onMouseMove', 'onMouseUp',
+			'onDragOver', 'onEnterFrame', 'onID3', 'onKeyDown', 'onKeyUp', 'onKillFocus', 'onLoad', 'onLoadComplete',
+			'onLoadError', 'onLoadInit', 'onLoadProgress', 'onLoadStart', 'onMouseDown', 'onMouseMove', 'onMouseUp',
 			'onMouseWheel', 'onPress', 'onRelease', 'onReleaseOutside', 'onResize', 'onRollOut', 'onRollOver',
 			'onScroller', 'onSelect', 'onSetFocus', 'onSoundComplete', 'onStatus', 'onUnload', 'onUpdate', 'onXML',
 			'or(logischesOR)', 'ord', 'os', 'parentNode', 'parseCSS', 'parseFloat', 'parseInt', 'parseXML', 'password',

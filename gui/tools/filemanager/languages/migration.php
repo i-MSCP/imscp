@@ -15,6 +15,7 @@ $languagesArray[] = "en";
 $languagesArray[] = "en-utf";
 $languagesArray[] = "es";
 $languagesArray[] = "fr";
+$languagesArray[] = "he-utf";
 $languagesArray[] = "it";
 $languagesArray[] = "ja";
 $languagesArray[] = "nl";

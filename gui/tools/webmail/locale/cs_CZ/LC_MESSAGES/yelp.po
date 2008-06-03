@@ -2,7 +2,7 @@
 # Copyright (C) 2004 THE yelp'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the yelp package.
 # Ondra 'Kepi' Kudlík <kepi@cacwa.cz>, 2004.
-# $Id: yelp.po,v 1.1 2004/04/03 11:39:03 tokul Exp $
+# $Id: yelp.po 6996 2004-04-03 11:39:03Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: yelp 1.0\n"

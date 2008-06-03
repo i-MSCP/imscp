@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 12770 2007-11-19 05:26:16Z jangliss $
+ * @version $Id: mailbox_display.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 
@@ -755,12 +755,11 @@ function mail_message_listing_beginning ($imapConnection,
          . html_tag( 'td', '', 'right', '', 'nowrap' );
 
     if (!$auto_expunge) {
-        echo getButton('SUBMIT', 'expungeButton',_("Expunge"))
-             ."&nbsp;\n";
+        echo getButton('SUBMIT', 'expungeButton',_("Expunge")) ."\n";
     }
 
-    echo getButton('SUBMIT', 'markRead',_("Read"));
-    echo getButton('SUBMIT', 'markUnread',_("Unread"));
+    echo getButton('SUBMIT', 'markRead',_("Read")) . "\n";
+    echo getButton('SUBMIT', 'markUnread',_("Unread")) . "\n";
     echo getButton('SUBMIT', 'delete',_("Delete")) ."&nbsp;\n";
     if (!strpos($php_self,'mailbox')) {
         $location = $php_self.'?mailbox=INBOX&amp;startMessage=1';
@@ -1328,5 +1327,3 @@ function handleAsSent($mailbox) {
     return $handleAsSent_result;
 }
 
-// vim: et ts=4
-?>

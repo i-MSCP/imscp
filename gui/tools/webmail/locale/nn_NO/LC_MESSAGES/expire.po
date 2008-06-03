@@ -1,7 +1,7 @@
 # translation of expire.po to Nynorsk
 # This file is distributed under the same license as the SquirrelMail package.
 # Copyright (C) The SquirrelMail Project Team, 2006
-# $Id: expire.po,v 1.2 2006/08/11 13:20:01 tokul Exp $
+# $Id: expire.po 11517 2006-08-11 13:20:01Z tokul $
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006.
 msgid ""
 msgstr ""

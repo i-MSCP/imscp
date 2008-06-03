@@ -11,7 +11,7 @@
  * @link http://www.w3.org/TR/html4/ W3.org HTML 4.01 form specs
  * @copyright &copy; 2004-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: forms.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: forms.php 13069 2008-04-29 23:27:48Z pdontthink $
  * @package squirrelmail
  * @subpackage forms
  * @since 1.4.3 and 1.5.1
@@ -31,17 +31,17 @@ function addInputField($type, $name = null, $value = null, $attributes = '') {
 /**
  * Password input field
  */
-function addPwField($name , $value = null) {
-    return addInputField('password', $name , $value);
+function addPwField($name , $value = null, $extra_attributes='') {
+    return addInputField('password', $name , $value, $extra_attributes);
 }
 
 
 /**
  * Form checkbox
  */
-function addCheckBox($name, $checked = false, $value = null) {
+function addCheckBox($name, $checked = false, $value = null, $extra_attributes='') {
     return addInputField('checkbox', $name, $value,
-        ($checked ? ' checked="checked"' : ''));
+        ($checked ? ' checked="checked"' : '') . $extra_attributes);
 }
 
 /**
@@ -62,17 +62,16 @@ function addHidden($name, $value) {
 /**
  * An input textbox.
  */
-function addInput($name, $value = '', $size = 0, $maxlength = 0) {
+function addInput($name, $value = '', $size = 0, $maxlength = 0, $extra_attributes='') {
 
-    $attr = '';
     if ($size) {
-        $attr.= ' size="'.(int)$size.'"';
+        $extra_attributes .= ' size="'.(int)$size.'"';
     }
     if ($maxlength) {
-        $attr.= ' maxlength="'.(int)$maxlength .'"';
+        $extra_attributes .= ' maxlength="'.(int)$maxlength .'"';
     }
 
-    return addInputField('text', $name, $value, $attr);
+    return addInputField('text', $name, $value, $extra_attributes);
 }
 
 
@@ -110,8 +109,8 @@ function addSelect($name, $values, $default = null, $usekeys = false)
  * Form submission button
  * Note the switched value/name parameters!
  */
-function addSubmit($value, $name = null) {
-    return addInputField('submit', $name, $value);
+function addSubmit($value, $name = null, $extra_attributes='') {
+    return addInputField('submit', $name, $value, $extra_attributes);
 }
 /**
  * Form reset button, $value = caption
@@ -148,4 +147,3 @@ function addForm($action, $method = 'post', $name = '', $enctype = '', $charset 
         $enctype . $name . $charset . ">\n";
 }
 
-?>

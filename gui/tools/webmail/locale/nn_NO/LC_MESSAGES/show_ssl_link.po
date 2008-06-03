@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the show_ssl_link plugin.
 # Copyright (c) 2005 The Squirrelmail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2005
-# $Id: show_ssl_link.po,v 1.1 2005/08/13 05:31:08 tokul Exp $
+# $Id: show_ssl_link.po 9939 2005-08-13 05:35:44Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: show_ssl_link\n"

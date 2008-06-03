@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver_SMTP.class.php 12778 2007-11-25 21:41:35Z pdontthink $
+ * @version $Id: Deliver_SMTP.class.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 
@@ -352,4 +352,3 @@ class Deliver_SMTP extends Deliver {
     }
 }
 
-?>

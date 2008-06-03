@@ -2,7 +2,7 @@
 # Copyright (c) 2005-2006 SquirrelMail Project Team
 # Khohlov Sergii <sergkh@westlucky.net>, 2004.
 # Serhij Dubyk <dubyk@library.lviv.ua>, 2006
-# $Id: squirrelmail.po,v 1.8 2006/06/21 19:25:22 tokul Exp $
+# $Id: squirrelmail.po 11287 2006-06-21 19:25:22Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail 1.5.2\n"

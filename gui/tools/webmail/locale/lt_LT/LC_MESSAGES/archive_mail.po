@@ -2,7 +2,7 @@
 # SquirrelMail's archive_mail plugin.
 # Copyright (C) 2003-2004 SquirrelMail Development Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# $Id: archive_mail.po,v 1.2 2004/09/03 13:03:26 tokul Exp $
+# $Id: archive_mail.po 8009 2004-09-03 13:05:41Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: archive_mail 1.2\n"

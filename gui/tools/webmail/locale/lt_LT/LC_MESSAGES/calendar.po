@@ -2,7 +2,7 @@
 # Copyright (c) 2005-2006 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: calendar.po,v 1.2 2006/08/13 13:50:15 tokul Exp $
+# $Id: calendar.po 11579 2006-08-13 13:50:15Z tokul $
 # 
 # 
 msgid ""

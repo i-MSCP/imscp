@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: configtest.php 12730 2007-10-08 21:25:02Z jervfors $
+ * @version $Id: configtest.php 12988 2008-03-03 14:06:36Z kink $
  * @package squirrelmail
  * @subpackage config
  */
@@ -157,7 +157,14 @@ if(count($diff)) {
     do_err('Required PHP extensions missing: '.implode(', ',$diff) );
 }
 
-echo $IND . "PHP extensions OK.<br />\n";
+echo $IND . "PHP extensions OK. Dynamic loading is ";
+
+if (!(bool)ini_get('enable_dl') || (bool)ini_get('safe_mode')) {
+    echo "disabled.<br />\n";
+} else {
+    echo "enabled.<br />\n";
+}
+
 
 /* dangerous php settings */
 /** mbstring.func_overload<>0 fix. See cvs HEAD comments. */
@@ -188,7 +195,8 @@ if ((bool) ini_get('register_globals') &&
 /**
  * Do not use SquirrelMail with magic_quotes_* on.
  */
-if ( get_magic_quotes_runtime() || get_magic_quotes_gpc() ||
+if ( (function_exists('get_magic_quotes_runtime') &&  @get_magic_quotes_runtime()) ||
+     (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) ||
     ( (bool) ini_get('magic_quotes_sybase') && ini_get('magic_quotes_sybase') != 'off' )
     ) {
     $magic_quotes_warning='You have enabled any one of <tt>magic_quotes_runtime</tt>, '
@@ -520,22 +528,28 @@ if(!empty($addrbook_dsn) || !empty($prefs_dsn) || !empty($addrbook_global_dsn)) 
         foreach($dsns as $type => $dsn) {
             $aDsn = explode(':', $dsn);
             $dbtype = array_shift($aDsn);
+
             if(isset($db_functions[$dbtype]) && function_exists($db_functions[$dbtype])) {
                 echo "$IND$dbtype database support present.<br />\n";
-
-                // now, test this interface:
-
-                $dbh = DB::connect($dsn, true);
-                if (DB::isError($dbh)) {
-                    do_err('Database error: '. htmlspecialchars(DB::errorMessage($dbh)) .
-                            ' in ' .$type .' DSN.');
-                }
-                $dbh->disconnect();
-                echo "$IND$type database connect successful.<br />\n";
-
-            } else {
+            } elseif(!(bool)ini_get('enable_dl') || (bool)ini_get('safe_mode')) {
                 do_err($dbtype.' database support not present!');
+            } else {
+                // Non-fatal error
+                do_err($dbtype.' database support not present or not configured!
+                    Trying to dynamically load '.$dbtype.' extension.
+                    Please note that it is advisable to not rely on dynamic loading of extensions.', FALSE);
             }
+
+
+            // now, test this interface:
+
+            $dbh = DB::connect($dsn, true);
+            if (DB::isError($dbh)) {
+                do_err('Database error: '. htmlspecialchars(DB::errorMessage($dbh)) .
+                        ' in ' .$type .' DSN.');
+            }
+            $dbh->disconnect();
+            echo "$IND$type database connect successful.<br />\n";
         }
     } else {
         $db_error='Required PHP PEAR DB support is not available.'

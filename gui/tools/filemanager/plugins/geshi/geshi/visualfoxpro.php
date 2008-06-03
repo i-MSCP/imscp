@@ -4,7 +4,7 @@
  * ----------------
  * Author: Roberto Armellin (r.armellin@tin.it)
  * Copyright: (c) 2004 Roberto Armellin, Nigel McNie (http://qbnz.com/highlighter/)
- * Release Version: 1.0.7.19
+ * Release Version: 1.0.7.21
  * Date Started: 2004/09/17
  *
  * Visual FoxPro language file for GeSHi.
@@ -348,7 +348,7 @@ $language_data = array (
 			'MainFile','Margin','MaxButton','MaxHeight','MaxLeft','MaxLength',
 			'MaxTop','MaxWidth','MemoWindow','MinButton','MinHeight','MinWidth',
 			'MouseIcon','MousePointer','Movable','MoverBars','MultiSelect','Name',
-			'NapTime','NewIndex','NewItemId','NoDataonload','NoDefine','NotifyContainer',
+			'NapTime','NewIndex','NewItemId','NoDataOnLoad','NoDefine','NotifyContainer',
 			'NullDisplay','NumberOfElements','OLEDragMode','OLEDragPicture','OLEDropEffects','OLEDropHasData',
 			'OLEDropMode','OLERequestPendingTimeOut','OLEServerBusyRaiseError','OLEServerBusyTimeOut','OLETypeAllowed','OleClass',
 			'OleClassId','OleControlContainer','OleIDispInValue','OleIDispOutValue','OleIDispatchIncoming','OleIDispatchOutgoing',
@@ -400,7 +400,7 @@ $language_data = array (
 			),
 		'COMMENTS' => array(
 			1 => 'color: green; font-style: italic;',
-			2 => 'color: green font-style: italic;',
+			2 => 'color: green; font-style: italic;',
 			'MULTI' => 'color: #808080; font-style: italic;'
 			),
 		'ESCAPE_CHAR' => array(

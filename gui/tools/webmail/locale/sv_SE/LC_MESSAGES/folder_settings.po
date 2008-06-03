@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: folder_settings.po,v 1.1 2006/06/30 05:53:29 jervfors Exp $
+# $Id: folder_settings.po 11321 2006-06-30 05:53:27Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: folder_settings 0.3\n"

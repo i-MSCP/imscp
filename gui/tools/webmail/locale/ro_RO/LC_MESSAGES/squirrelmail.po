@@ -2,7 +2,7 @@
 # Copyright (c) 2003-2005 SquirrelMail Project Team
 # Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
 # Veaceslav Chicu <slavic@chicu.ro>, 2005.
-# $Id: squirrelmail.po,v 1.6 2005/11/08 17:45:57 tokul Exp $
+# $Id: squirrelmail.po 10286 2005-11-08 17:45:57Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4.4\n"

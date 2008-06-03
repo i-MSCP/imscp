@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <!--
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2008 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -44,22 +44,22 @@
 window.onload = function()
 {
 	var eImg1 = document.createElement( 'img' ) ;
-	eImg1.onload = Img_onload ;
+	eImg1.onload = Img_OnLoad ;
 	eImg1.src = 'default/fck_strip.gif' ;
 
 	var eImg2 = document.createElement( 'img' ) ;
-	eImg2.onload = Img_onload ;
+	eImg2.onload = Img_OnLoad ;
 	eImg2.src = 'office2003/fck_strip.gif' ;
 
 	var eImg3 = document.createElement( 'img' ) ;
-	eImg3.onload = Img_onload ;
+	eImg3.onload = Img_OnLoad ;
 	eImg3.src = 'silver/fck_strip.gif' ;
 }
 
 var iTotalStrips = 3 ;
 var iMaxHeight = 0 ;
 
-function Img_onload()
+function Img_OnLoad()
 {
 	if ( iMaxHeight < this.height )
 		iMaxHeight = this.height ;

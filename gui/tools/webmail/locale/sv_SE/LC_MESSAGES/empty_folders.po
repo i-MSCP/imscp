@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: empty_folders.po,v 1.5 2005/11/12 15:13:47 tokul Exp $
+# $Id: empty_folders.po 10345 2005-11-12 15:13:46Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: empty_folders\n"

@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail squirrel_logger plugin.
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: squirrel_logger.po,v 1.1 2005/07/11 15:33:09 tokul Exp $
+# $Id: squirrel_logger.po 9754 2005-07-11 15:33:08Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrel_logger 2.0\n"

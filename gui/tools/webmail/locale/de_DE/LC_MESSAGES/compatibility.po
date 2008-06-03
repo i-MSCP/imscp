@@ -2,7 +2,7 @@
 # Copyright (C) 2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
-# $Id: compatibility.po,v 1.1 2006/08/11 13:38:03 tokul Exp $
+# $Id: compatibility.po 11562 2006-08-11 13:38:02Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: compatibility 2.04\n"

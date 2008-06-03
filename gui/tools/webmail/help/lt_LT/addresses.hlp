@@ -13,13 +13,13 @@
       saugomi dažniausiai naudojami adresai. LDAP serveriai (dažnai 
       naudojami privačiose kompanijose ir universitetuose, kad 
       standartiniai organizacijų adresai būtų lengvai pasiekiami) taip
-      pat yra palaikomi Squirrelmail.
+      pat yra palaikomi SquirrelMail.
       </p>
       <p>
       Jei jūsų naršyklė palaiko Javascript, tada jums būtų geriau įjungti
       javascript naudojančią adresų knygą savo pašto Nustatymų meniu. Ji 
       veikia nedidelių iššokančių langų principu. Paprasti HTML adresų 
-      sąrašai yra palaikomi tam atvejui, kad Squirrelmail galėtų naudoti
+      sąrašai yra palaikomi tam atvejui, kad SquirrelMail galėtų naudoti
       ir pačios paprasčiausios Interneto naršyklės.
       </p>
    </description>
@@ -108,7 +108,7 @@
       protokolas. Pavyzdžiui, universitetas gali naudoti LDAP saugoti visiems
       savo studentų, dėstytojų ir personalo adresams. Tinkamai sukonfiguruoti
       LDAP nustatymai leistų SquirrelMail pateikti visus mokymo įstaigos 
-      el-pašto adresus. Squirrelmail LDAP galimybės yra pakankamai didelės ir
+      el-pašto adresus. SquirrelMail LDAP galimybės yra pakankamai didelės ir
       leidžia <I>vienoje vietoje</I> rodyti asmeninę adresų knygą ir LDAP 
       adresus.
       </p><p>

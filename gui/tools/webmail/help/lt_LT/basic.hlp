@@ -1,15 +1,15 @@
 <chapter>
    <title>
-      Squirrelmail pristatymas
+      SquirrelMail pristatymas
    </title>
    <summary>
       SquirrelMail leidžia patikrinti savo elektroninį paštą per WWW.
    </summary>
    <description>
       <p>
-      Taigi kas per daiktas tas <A HREF="http://www.squirrelmail.org/index.php3?from=1">
+      Taigi kas per daiktas tas <A HREF="http://www.squirrelmail.org/">
       SquirrelMail</A>? Tai yra pašto sistemos www interfeisas, parašytas naudojant 
-      <A HREF="http://www.php.net">PHP4</A> kalbą. Tikslas yra leisti skaityti paštą, 
+      <A HREF="http://www.php.net">PHP</A> kalbą. Tikslas yra leisti skaityti paštą, 
       esantį jūsų pašto serveryje, iš bet kurios vietos Internete, naudojant standartinę 
       www naršyklę. Detalesnę informaciją apie tai, kaip viskas vyksta ir kas tai yra 
       IMAP protokolas, galite rasti <A HREF="http://imap.org">http://imap.org</A>.
@@ -27,7 +27,7 @@
       (Dažniausiai užduodamų klausimų / FAQ) skyrių. 
       </p>
       <p>
-      Squirrelmail yra suskirstytas į dvi pagrindines sekcijas (frames).  Kairioji
+      SquirrelMail yra suskirstytas į dvi pagrindines sekcijas (frames).  Kairioji
       sekcija parodo naudojamus aplankus. Daugiau informacijos apie tai galima rasti
       pagalbos sistemos skyriuje "Aplankai". Priklausomai nuo nustatymų ta siauroji
       juosta gali persikraustyti į dešinę pusę.
@@ -40,14 +40,14 @@
       </p>
       <p>
       Antroje meniu eilutėje yra kiti meniu punktai:
-         <ul>
+      </p>
+      <ul>
             <li><b>Rašyti</b> - Leidžia rašyti ir siųsti laiškus
             <li><b>Adresai</b> - Parodo adresus saugomus jūsų adresų knygoje.
             <li><b>Aplankai</b> - Leidžia tvarkyti aplankus. Jūs galite juos kurti, trinti ir pervardinti. 
-            <li><b>Nustatymai</b> - Leidžia pakeisti bendrą Squirrelmail išvaizdą ir kitus nustatymus. 
+            <li><b>Nustatymai</b> - Leidžia pakeisti bendrą SquirrelMail išvaizdą ir kitus nustatymus. 
             <li><b>Paieška</b> - Leidžia vykdyti paiešką savo pašto dėžėje. 
             <li><b>Pagalba</b> - Pagalbos sistema, kuriuoje jūs dabar esate.
-         </ul>
-      </p>
+      </ul>
    </description>
 </section>   

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: login.php 12768 2007-11-19 04:20:34Z jangliss $
+ * @version $Id: login.php 13104 2008-05-07 16:36:35Z pdontthink $
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net
@@ -85,13 +85,13 @@ if (!empty($_SESSION)) {
  *         $custom_session_handlers[4],
  *         $custom_session_handlers[5]
  *     );
- *
+ * 
  * We need to replicate that code once here because PHP has
  * long had a bug that resets the session handler mechanism
  * when the session data is also destroyed.  Because of this
  * bug, even administrators who define custom session handlers
  * via a PHP pre-load defined in php.ini (auto_prepend_file)
- * will still need to define the $custom_session_handlers array
+ * will still need to define the $custom_session_handlers array 
  * in config_local.php.
  */
 global $custom_session_handlers;
@@ -110,7 +110,7 @@ if (!empty($custom_session_handlers)) {
 sqsession_is_active();
 if (!empty($sel)) {
     sqsession_register($sel, 'session_expired_location');
-    if (!empty($sep))
+    if (!empty($sep)) 
         sqsession_register($sep, 'session_expired_post');
 }
 
@@ -124,14 +124,16 @@ $loginname_value = (sqGetGlobalVar('loginname', $loginname) ? htmlspecialchars($
 
 $header = "<script language=\"JavaScript\" type=\"text/javascript\">\n" .
           "<!--\n".
+          "  var alreadyFocused = false;\n".
           "  function squirrelmail_loginpage_onload() {\n".
-          "    document.forms[0].js_autodetect_results.value = '" . SMPREF_JS_ON . "';\n".
+          "    document.login_form.js_autodetect_results.value = '" . SMPREF_JS_ON . "';\n".
+          "    if (alreadyFocused) return;\n".
           "    var textElements = 0;\n".
-          "    for (i = 0; i < document.forms[0].elements.length; i++) {\n".
-          "      if (document.forms[0].elements[i].type == \"text\" || document.forms[0].elements[i].type == \"password\") {\n".
+          "    for (i = 0; i < document.login_form.elements.length; i++) {\n".
+          "      if (document.login_form.elements[i].type == \"text\" || document.login_form.elements[i].type == \"password\") {\n".
           "        textElements++;\n".
           "        if (textElements == " . (isset($loginname) ? 2 : 1) . ") {\n".
-          "          document.forms[0].elements[i].focus();\n".
+          "          document.login_form.elements[i].focus();\n".
           "          break;\n".
           "        }\n".
           "      }\n".
@@ -158,8 +160,8 @@ if (! isset($color) || ! is_array($color)) {
 
 displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
 
-echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onload=\"squirrelmail_loginpage_onload();\">" .
-     "\n" . addForm('redirect.php', 'post');
+echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
+     "\n" . addForm('redirect.php', 'post', 'login_form');
 
 $username_form_name = 'login_username';
 $password_form_name = 'secretkey';
@@ -239,7 +241,7 @@ echo html_tag( 'table',
                                     _("Name:") ,
                                 'right', '', 'width="30%"' ) .
                                 html_tag( 'td',
-				    addInput($username_form_name, $loginname_value),
+				    addInput($username_form_name, $loginname_value, 0, 0, ' onfocus="alreadyFocused=true;"'),
                                 'left', '', 'width="70%"' )
                                 ) . "\n" .
                             html_tag( 'tr',
@@ -247,15 +249,15 @@ echo html_tag( 'table',
                                     _("Password:") ,
                                 'right', '', 'width="30%"' ) .
                                 html_tag( 'td',
-				    addPwField($password_form_name).
+				    addPwField($password_form_name, null, ' onfocus="alreadyFocused=true;"').
 				    addHidden('js_autodetect_results', SMPREF_JS_OFF).
-                    $mailtofield .
+                    $mailtofield . 
 				    addHidden('just_logged_in', '1'),
                                 'left', '', 'width="70%"' )
                             ) ,
                         'center', $color[4], 'border="0" width="100%"' ) ,
                     'left',$color[4] )
-                ) .
+                ) . 
                 html_tag( 'tr',
                     html_tag( 'td',
                         '<center>'. addSubmit(_("Login")) .'</center>',

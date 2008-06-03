@@ -1,7 +1,7 @@
 # Slovak Squirrelmail Translation
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Peter Kubicko <Booster13@centrum.cz>, 2000-2001.
-# $Id: squirrelmail.po,v 1.9 2005/06/05 11:49:52 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail.po, v.1.4 2003/10/08\n"

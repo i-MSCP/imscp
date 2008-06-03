@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: squirrel_logger.po,v 1.1 2005/07/27 05:35:55 jervfors Exp $
+# $Id: squirrel_logger.po 9831 2005-07-27 05:35:54Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrel_logger\n"

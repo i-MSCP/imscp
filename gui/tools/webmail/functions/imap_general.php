@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_general.php 12476 2007-06-25 21:04:55Z kink $
+ * @version $Id: imap_general.php 12943 2008-02-14 22:22:22Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -696,6 +696,23 @@ function sqimap_get_num_messages ($imap_stream, $mailbox) {
     return false; //"BUG! Couldn't get number of messages in $mailbox!";
 }
 
+/**
+ * Parses an address string.
+FIXME: the original author should step up and document this - the following is a guess based on a couple simple tests of *using* the function, not knowing the code inside
+ *
+ * @param string $address Generic email address(es) in any format, including 
+ *                        possible personal information as well as the 
+ *                        actual address (such as "Jose" <jose@example.org>
+ *                        or "Jose" <jose@example.org>, "Keiko" <keiko@example.org>)
+ * @param int $max        The most email addresses to parse out of the given string
+ *
+ * @return array An array with one sub-array for each address found in the
+ *               given string.  Each sub-array contains two (?) entries, the
+ *               first containing the actual email address, the second
+ *               containing any personal information that was in the address
+ *               string
+ *
+ */
 function parseAddress($address, $max=0) {
     $aTokens = array();
     $aAddress = array();
@@ -960,4 +977,3 @@ function map_yp_alias($username) {
    return chop(substr($yp, strlen($username)+1));
 }
 
-?>

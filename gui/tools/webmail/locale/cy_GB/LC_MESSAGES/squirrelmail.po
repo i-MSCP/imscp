@@ -1,7 +1,7 @@
 # SquirrelMail Welsh Translation
 # Copyright (c) 2003-2005 The SquirrelMail Project Team
 # Andrew Rawlins <awr@aber.ac.uk>, 2003.
-# $Id: squirrelmail.po,v 1.5.14.2 2006/12/31 01:17:06 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"

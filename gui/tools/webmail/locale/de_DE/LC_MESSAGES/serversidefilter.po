@@ -2,7 +2,7 @@
 # Copyright (c) 2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
-# $Id: serversidefilter.po,v 1.1 2006/01/14 15:52:06 tokul Exp $
+# $Id: serversidefilter.po 10539 2006-01-14 15:52:05Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: serversidefilter 1.5-1.2.7\n"

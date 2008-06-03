@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_utf7_local.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: imap_utf7_local.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  * @subpackage imap
  * @since 1.3.2
@@ -220,4 +220,3 @@ function decodeBASE64($s) {
     return $d;
 }
 
-?>

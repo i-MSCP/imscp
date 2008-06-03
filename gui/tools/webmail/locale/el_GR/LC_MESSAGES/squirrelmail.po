@@ -3,7 +3,7 @@
 # "George P. Kremmydas" <george@kefalonia-ithaki.gr>, 2003.
 # Proofreading & some help, as well as maintenance for now,
 # by Alexandros Vellis <avel@noc.uoa.gr>
-# $Id: squirrelmail.po,v 1.10 2006/11/03 17:11:53 avel Exp $
+# $Id: squirrelmail.po 11944 2006-11-03 17:11:53Z avel $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"

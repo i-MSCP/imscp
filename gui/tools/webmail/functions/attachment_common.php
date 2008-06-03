@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: attachment_common.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: attachment_common.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 
@@ -217,4 +217,3 @@ function attachment_common_octet_stream(&$Args) {
     }
 }
 
-?>

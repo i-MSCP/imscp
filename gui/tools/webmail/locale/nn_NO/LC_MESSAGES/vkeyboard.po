@@ -1,7 +1,7 @@
 # translation of vkeyboard.po to Nynorsk
 # Copyright (c) 2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# $Id: vkeyboard.po,v 1.1 2006/09/10 09:52:26 jervfors Exp $
+# $Id: vkeyboard.po 11689 2006-09-10 09:52:24Z jervfors $
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
 msgid ""
 msgstr ""

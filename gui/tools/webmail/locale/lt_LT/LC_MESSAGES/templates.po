@@ -2,7 +2,7 @@
 # SquirrelMail's templates plugin.
 # Copyright (c) 2003-2005 SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# $Id: templates.po,v 1.5 2005/06/10 09:56:57 tokul Exp $
+# $Id: templates.po 9564 2005-06-10 09:56:55Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: templates\n"

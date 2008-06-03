@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -121,7 +121,7 @@ function net2ftp_module_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_module_printBodyonload() {
+function net2ftp_module_printBodyOnload() {
 
 // --------------
 // This function prints the <body onload="" actions
@@ -130,7 +130,7 @@ function net2ftp_module_printBodyonload() {
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
 //	echo "";
 
-} // end net2ftp_printBodyonload
+} // end net2ftp_printBodyOnload
 
 // **                                                                                  **
 // **                                                                                  **

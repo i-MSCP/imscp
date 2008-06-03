@@ -2,10 +2,10 @@
 /** 
  *  setup.php -- SpamCop plugin           
  *
- *  Copyright (c) 1999-2006 The SquirrelMail Project Team
+ *  Copyright (c) 1999-2008 The SquirrelMail Project Team
  *  Licensed under the GNU GPL. For full terms see the file COPYING.
  *  
- *  $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $                                                         
+ *  $Id: setup.php 12918 2008-02-05 17:53:29Z jervfors $                                                         
  */
 
 /** Disable Quick Reporting by default */
@@ -90,17 +90,17 @@ function spamcop_show_link() {
    
    if ($spamcop_method == 'web_form') {
 ?><script language="javascript" type="text/javascript">
-document.write('<a href="../plugins/spamcop/spamcop.php?passed_id=<?PHP echo urlencode($passed_id); ?>&amp;js_web=1&amp;mailbox=<?PHP echo urlencode($mailbox); ?>&amp;passed_ent_id=<?PHP echo urlencode($passed_ent_id); ?>" target="_blank">');
-document.write("<?PHP echo _("Report as Spam"); ?>");
+document.write('<a href="../plugins/spamcop/spamcop.php?passed_id=<?php echo urlencode($passed_id); ?>&amp;js_web=1&amp;mailbox=<?php echo urlencode($mailbox); ?>&amp;passed_ent_id=<?php echo urlencode($passed_ent_id); ?>" target="_blank">');
+document.write("<?php echo _("Report as Spam"); ?>");
 document.write("</a>");
 </script><noscript>
-<a href="../plugins/spamcop/spamcop.php?passed_id=<?PHP echo urlencode($passed_id); ?>&amp;mailbox=<?PHP echo urlencode($mailbox); ?>&amp;startMessage=<?PHP echo urlencode($startMessage); ?>&amp;passed_ent_id=<?PHP echo urlencode($passed_ent_id); ?>">
-<?PHP echo _("Report as Spam"); ?></a>
-</noscript><?PHP
+<a href="../plugins/spamcop/spamcop.php?passed_id=<?php echo urlencode($passed_id); ?>&amp;mailbox=<?php echo urlencode($mailbox); ?>&amp;startMessage=<?php echo urlencode($startMessage); ?>&amp;passed_ent_id=<?php echo urlencode($passed_ent_id); ?>">
+<?php echo _("Report as Spam"); ?></a>
+</noscript><?php
    } else {
-?><a href="../plugins/spamcop/spamcop.php?passed_id=<?PHP echo urlencode($passed_id); ?>&amp;mailbox=<?PHP echo urlencode($mailbox); ?>&amp;startMessage=<?PHP echo urlencode($startMessage); ?>&amp;passed_ent_id=<?PHP echo urlencode($passed_ent_id); ?>">
-<?PHP echo _("Report as Spam"); ?></a>
-<?PHP
+?><a href="../plugins/spamcop/spamcop.php?passed_id=<?php echo urlencode($passed_id); ?>&amp;mailbox=<?php echo urlencode($mailbox); ?>&amp;startMessage=<?php echo urlencode($startMessage); ?>&amp;passed_ent_id=<?php echo urlencode($passed_ent_id); ?>">
+<?php echo _("Report as Spam"); ?></a>
+<?php
    }
 }
 
@@ -142,5 +142,3 @@ function spamcop_while_sending() {
        $compose_new_win = false;
    }
 }
-
-?>

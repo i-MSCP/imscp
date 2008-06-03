@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -112,6 +112,51 @@ function setErrorVars($success, $errormessage, $debug_backtrace, $file, $line) {
 //	if ($success == false) {
 //		logError();
 //	}
+
+} // end setErrorVars
+
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
+function net2ftpErrorHandler($errno, $errmsg, $file, $line, $vars) {
+
+// --------------
+// This function processes PHP notices, warnings and errors
+// --------------
+
+// -------------------------------------------------------------------------
+// Global variables
+// -------------------------------------------------------------------------
+	global $net2ftp_output;
+
+// -------------------------------------------------------------------------
+// Put error details in variable
+// -------------------------------------------------------------------------
+	if ($errno == E_USER_ERROR || $errno == E_ERROR || $errno == E_PARSE) {
+		$net2ftp_output["php_error"][] = "Error [$errno] $errstr in file $file on line $line";
+		echo "Error [$errno] $errstr in file $file on line $line";
+		exit();
+	}
+	elseif ($errorno == E_USER_WARNING || $errno == E_WARNING) {
+		$net2ftp_output["php_warning"][] = "Warning [$errno] $errstr in file $file on line $line";
+	}
+	elseif ($errorno == E_USER_NOTICE) {
+		$net2ftp_output["php_notice"][] = "Notice [$errno] $errstr in file $file on line $line";
+	}
+	else {
+		$net2ftp_output["php_error"][] = "Unknown error type [$errno] $errstr in file $file on line $line";
+	}
 
 } // end setErrorVars
 

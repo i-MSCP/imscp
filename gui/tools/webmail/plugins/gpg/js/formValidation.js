@@ -1093,7 +1093,7 @@ Validate.prototype.setErrDisplay = function ( arrErrList )
   * Revision 1.07  2003/11/23 19:38:04  walter
   * - added code to check if a FORM of a Form Object was being returned
   *   as the Object that fired the SUMBIT event.
-  * - commented out the onload event bind, Opera does not acknowledge it.
+  * - commented out the onLoad event bind, Opera does not acknowledge it.
   *
   * Revision 1.06  2003/11/20 21:14:12  walter
   * - added 'is_names' to data types. This will accept SPACE, DASHES,

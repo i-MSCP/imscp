@@ -26,7 +26,7 @@
 
 var oEditor = window.parent.InnerDialogLoaded() ;
 
-function onload()
+function OnLoad()
 {
 	// First of all, translate the dialog box texts
 	oEditor.FCKLanguageManager.TranslatePage( document ) ;
@@ -97,7 +97,7 @@ function ReplaceAll()
 }
 		</script>
 	</head>
-	<body onload="onload()" scroll="no" style="OVERFLOW: hidden">
+	<body onload="OnLoad()" scroll="no" style="OVERFLOW: hidden">
 		<table cellSpacing="3" cellPadding="2" width="100%" border="0">
 			<tr>
 				<td noWrap><label for="txtFind" fckLang="DlgReplaceFindLbl">Find what:</label>

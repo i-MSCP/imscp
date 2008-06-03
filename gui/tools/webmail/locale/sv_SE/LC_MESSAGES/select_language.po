@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: select_language.po,v 1.1 2005/09/05 16:05:50 jervfors Exp $
+# $Id: select_language.po 10058 2005-09-05 16:05:49Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: select_language\n"

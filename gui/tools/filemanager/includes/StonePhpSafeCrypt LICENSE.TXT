@@ -1,0 +1,56 @@
+/////////
+//
+//  Stone PHP SafeCrypt LICENSE
+//
+
+/////////
+//
+//  This code is distributed under the Modified BSD License.  Resist the
+//  menace of the GPL!  Freedom isn't freedom if it only applies to some.
+//  Companies do good work for open source.  The temptation to curtail free
+//  access is the antithesis of open source and community.  Give your work
+//  to _everyone_ and watch it grow and prosper.  Genuine freedom and open
+//  access are the biggest wins of all.
+//
+//    http://sc.tri-bit.com/Why_I_Hate_The_GPL
+//
+//  This and the previous paragraph and link are not considered part of the
+//  license, and may be removed in derivative work if desired.  But, please
+//  don't: we need to get past the destructive monster that is GPL.
+//
+//
+//
+//  Modified BSD License (3-Clause, GPL compatible)
+//  -----------------------------------------------
+//
+//  Copyright (c) 2006, John Haugeland
+//
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are
+//  met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in
+//       the documentation and/or other materials provided with the
+//       distribution.
+//
+//     * Neither the name of John Haugeland nor the names of project
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY JOHN HAUGELAND "AS-IS" AND ANY EXPRESS OR
+//  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+//  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+//  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+//  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+//  POSSIBILITY OF SUCH DAMAGE.

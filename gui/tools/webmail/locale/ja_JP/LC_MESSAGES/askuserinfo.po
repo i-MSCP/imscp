@@ -2,7 +2,7 @@
 # Copyright (c) 2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Andre Nicholson <andre@neo-anime.org>, 2005.
-# $Id: askuserinfo.po,v 1.1 2005/10/10 21:36:48 jervfors Exp $
+# $Id: askuserinfo.po 10164 2005-10-10 21:36:47Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: askuserinfo 1.0\n"

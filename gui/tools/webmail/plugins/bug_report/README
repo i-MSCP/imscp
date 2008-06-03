@@ -1,4 +1,4 @@
-Bug Reporter
+Bug Reporter Plugin For SquirrelMail
 
 Need to submit a bug?  Need to know valuable system information?  Need
 to be accurate?  This should do it for you.
@@ -35,26 +35,44 @@ Future Work
 Installation
 ============
 
-You must configure plugin before you enable it in your SquirrelMail
-installation. Plugin's configuration is stored in 
-config/bug_report_config.php or plugins/bug_report/config.php files. 
-Configuration options can be found in plugins/bug_report/config_default.php
-file.
+NOTE!  None of the following is true for this plugin under SquirrelMail
+version 1.4.x.  All you need to do is enable the plugin in the main
+SquirrelMail configuration.
+//FIXME: implement the following?  Backport it from DEVEL...
+You must configure this plugin before you enable it in your SquirrelMail
+installation.  The plugin's configuration is stored in one of the
+following files:
 
-If both configuration files are present, plugin uses the one in
-config/ directory.
+    config/bug_report_config.php
+    plugins/bug_report/config.php files.
 
-By default plugin is visible only to users listed in 
-plugins/bug_report/admins or config/admins file or only to user
-that owns main SquirrelMail configuration file. Other users can use 
-bug_report plugin, if you set administrator's email in plugin's 
-configuration and set $bug_report_allow_users option to true.
+The default configuration options can be found in (copy this file to
+one of the above locations and then edit it to suit you):
 
-Once plugin is configured, go back to the main directory, run configure 
-and enable the plugin.
+    plugins/bug_report/config_default.php
+
+If both configuration files are present, this plugin uses the one in
+the config/ directory.
+
+By default, the plugin will only be visible to users listed in the
+following files:
+
+    plugins/bug_report/admins
+    config/admins
+
+... or only to the user that owns the main SquirrelMail configuration
+file.  Other users can use the bug_report plugin if you set a value for
+the administrator's email address in the plugin configuration file and
+set $bug_report_allow_users option to TRUE.
+
+Once the plugin is configured, go back to the main SquirrelMail
+directory, run "configure" and enable the plugin.
+
 
 Credits
 =======
 
 This plugin has been originally developed by Tyler Akins and is now
 maintained by the SquirrelMail Project Team.
+
+

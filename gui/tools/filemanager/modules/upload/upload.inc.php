@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -124,7 +124,7 @@ function net2ftp_module_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_module_printBodyonload() {
+function net2ftp_module_printBodyOnload() {
 
 // --------------
 // This function prints the <body onload="" actions
@@ -133,7 +133,7 @@ function net2ftp_module_printBodyonload() {
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
 //	echo "";
 
-} // end net2ftp_printBodyonload
+} // end net2ftp_printBodyOnload
 
 // **                                                                                  **
 // **                                                                                  **
@@ -186,7 +186,7 @@ function net2ftp_module_printBody() {
 		} // end foreach
 	}
 
-// Upload via SWFUpload Flash applet
+// Upload via SWFUpload Flash applet or using the OpenLaszlo skin
 	if (isset($_FILES["Filedata"]) == true && is_array($_FILES["Filedata"]) == true) {
 		$file_counter = $file_counter + 1;
 		$uploadedFilesArray["$file_counter"]["name"]     = $_FILES["Filedata"]["name"];
@@ -286,7 +286,12 @@ function net2ftp_module_printBody() {
 // -------------------------------------------------------------------------
 // Print the output
 // -------------------------------------------------------------------------
-	require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/manage.template.php");
+	if ($net2ftp_globals["skin"] == "openlaszlo") {
+		require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/manage.html.template.php");
+	}
+	else {
+		require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/manage.template.php");
+	}
 
 } // End net2ftp_printBody
 

@@ -2,7 +2,7 @@
 # Copyright (c) 2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2006.
-# $Id: select_language.po,v 1.1 2006/09/01 09:31:53 tokul Exp $
+# $Id: select_language.po 11668 2006-09-01 09:31:52Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: select_language 1.1\n"

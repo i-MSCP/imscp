@@ -2,12 +2,48 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
+Version 1.4.15 - 23 May 2008
+----------------------------
+  - Fix saving of Read Receipts to Sent folder.
+  - Converted Romanian (ro_RO) to UTF-8.
+  - Converted Slovak (sk_SK) to UTF-8.
+  - Converted Swedish (sv_SE) to UTF-8.
+
+Version 1.4.15 Release Candidate 1 - 12 May 2008
+------------------------------------------------
+  - Added support for Macedonian.
+  - Don't allow invalid plugin names in conf.pl --install-plugin.
+  - Fix warning in Printer Friendly due to missing include (#1849101).
+  - Let configtest.php use optional PEAR dynamic extension loading,
+    patch by Walter Huijbers (#1833123).
+  - Fix for IMAP servers that were having problems saving sent messages.
+  - Fix broken <style> tag parsing for some HTML messages, thanks
+    Roalt Zijlstra.
+  - Re-added support for Vietnamese.
+  - Fixed broken MDN functionality (send read confirmation).
+  - Converted Norwegian Bokmål (nb_NO) to UTF-8.
+  - Converted traditional Chinese (zh_TW) to UTF-8.
+  - Avoid deprecation notices on get_magic_quotes_* functions.
+  - Improved Message-ID generation code.
+  - Added edit list, checkbox, radio group, multiple-select folder
+    list and multiple-select string list option widget types,
+    as well as support for the "trailing_text" widget attribute.
+  - Boolean option widgets are henceforth presented as checkboxes.
+  - Tidied up fortune plugin to be inline with specifications for plugins.
+  - Enhanced address book page: added 'Compose to' button, put labels
+    around address entries tied to checkboxes, improved column spacing,
+    added hook for plugins that can filter address book listings.
+    Complements RisuMail team (risumail.jp).
+
+Version 1.4.14 - Skipped; version number abused by spammers.
+
 Version 1.4.13 - 14 December 2007
 ---------------------------------
   - Include compatibility plugin files if available.
   - Some IMAP servers send nil for an empty email body (See RFC2180,
     section 4.1.3 on empty strings).
-
+  - New release to clear up any confusion with respect to
+    compromised 1.4.11 and 1.4.12 packages [CVE-2007-6348].
 
 Version 1.4.12 - 04 December 2007
 ---------------------------------
@@ -92,6 +128,8 @@ Version 1.4.11 - 29 September 2007
     whatsoever.
   - Make the Message Details plugin actually show the correct entity when 
     viewing details of attached messages.
+  - Add PAGE_NAME constant to all src/ pages for use in detecting what page
+    has been requested by the client.
 
 Version 1.4.10a - 10 May 2007
 -----------------------------

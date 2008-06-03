@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Antoine Hulin <antoine@origan.fdn.org>, 2002-2003
 # Alex Lemaresquier <alex@brainstorm.fr>, 2003-2005
-# $Id: squirrelmail.po,v 1.22 2006/03/10 16:18:57 alex-brainstorm Exp $
+# $Id: squirrelmail.po 10961 2006-03-10 16:18:57Z alex-brainstorm $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail\n"

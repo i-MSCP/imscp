@@ -1,7 +1,7 @@
 /*****************************************************************
- * Release Notes: SquirrelMail 1.4.13                            *
- * The "Hope and a Step" Release                                 *
- * 14 December 2007                                              *
+ * Release Notes: SquirrelMail 1.4.15                            *
+ * The "Plain Old Regular" Release                               *
+ * 22 May 2008                                                   *
  *****************************************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -16,20 +16,12 @@ In this edition of SquirrelMail Release Notes:
 All about this release
 ======================
 
-This version, 1.4.13 is a security release, addressing
-the following problems since 1.4.12:
-- 1.4.12 Package Compromise
-(see ChangeLog for a full list)
+This release is a bugfix release for a number of issues identified since
+1.4.13 was released.
 
+Version number 1.4.14 was skipped, because some spammer decided to use this
+version number in a phishing attempt.
 
-PHP requirement raised to 4.1.0
-===============================
-
-The minimum PHP requirement raised from 4.0.6 to 4.1.0.
-SquirrelMail has been broken for a while with 4.0.x without anyone
-noticing, this move merely reflects reality.
-
-PHP 4.1.0 has been released more than 5 years ago.
 
 Locales / Translations / Charsets
 =================================
@@ -84,7 +76,7 @@ Reporting my favorite SquirrelMail 1.4 bug
 
 We constantly aim to make SquirrelMail even better. So we need you to
 submit any bug you come across! Also, please mention that the bug is
-in this 1.4.9a release, and list your IMAP server and webserver details.
+in this release, and list your IMAP server and webserver details.
 
    http://www.squirrelmail.org/bugs
 

@@ -1,7 +1,7 @@
 # translation of squirrelmail.po to Portugues Iberico
 # Portuguese (Portugal) Squirrelmail Translation
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
-# $Id: squirrelmail.po,v 1.8 2006/01/29 09:25:50 tokul Exp $
+# $Id: squirrelmail.po 10599 2006-01-29 09:25:50Z tokul $
 # Alexandre Pereira <b62@clix.pt>, 2003-2005.
 msgid ""
 msgstr ""

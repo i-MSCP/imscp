@@ -1,17 +1,18 @@
 # Finnish (fi_FI) SquirrelMail Translation
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2007 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Teemu Junnila <teejun@vallcom.com>, 2002.
 # Jaakko Heusala <Jaakko.Heusala@kapsi.fi>, 2004.
 # Juha Ojaniemi <juha.ojaniemi@netello.com>, 2005.
-# Kari Mattsson <kari@trivore.com>, 2005-2006.
-# $Id: squirrelmail.po,v 1.8 2006/05/25 14:18:57 jervfors Exp $
+# Kari Mattsson <kari@trivore.com>, 2005-2007.
+# $Id: squirrelmail.po 12717 2007-10-01 10:22:35Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: SquirrelMail\n"
-"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-i18n@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2005-04-16 19:47+0300\n"
-"PO-Revision-Date: 2006-05-01 00:12+0300\n"
+"Project-Id-Version: SquirrelMail HEAD\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2007-02-14 12:48+0100\n"
+"PO-Revision-Date: 2007-10-01 12:12+0200\n"
 "Last-Translator: Kari Mattsson <kari@trivore.com>\n"
 "Language-Team: Finnish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +22,15 @@ msgstr ""
 
 msgid "Address Book"
 msgstr "Osoitekirja"
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "To"
+msgstr "Vastaanottaja"
+
+msgid "Cc"
+msgstr "Kopio (Cc)"
 
 msgid "Name"
 msgstr "Nimi"
@@ -34,17 +44,17 @@ msgstr "Tietoja"
 msgid "Source"
 msgstr "Lähde"
 
-msgid "To"
-msgstr "Vastaanottaja"
-
-msgid "Cc"
-msgstr "Kopio (Cc)"
-
 msgid "Bcc"
 msgstr "Piilokopio (Bcc)"
 
-msgid "No persons matching your search were found"
-msgstr "Ketään hakemaasi ei löytynyt"
+msgid "Use Addresses"
+msgstr "Käytä osoitteita"
+
+msgid "Cancel"
+msgstr "Peruuta"
+
+msgid "Address Book Search"
+msgstr "Haku Osoitekirjasta"
 
 msgid "Search for"
 msgstr "Etsi"
@@ -61,29 +71,21 @@ msgstr "Etsi"
 msgid "List all"
 msgstr "Näytä kaikki"
 
-msgid "Close"
-msgstr "Sulje"
-
+#, php-format
 msgid "Unable to list addresses from %s"
 msgstr "Osoitteita ei löytynyt %s:sta"
 
 msgid "Your search failed with the following error(s)"
 msgstr "Hakusi epäonnistui seuraavin virheilmoituksin"
 
-msgid "All"
-msgstr "Kaikki"
-
-msgid "Use Addresses"
-msgstr "Käytä osoitteita"
-
-msgid "Cancel"
-msgstr "Peruuta"
-
-msgid "Address Book Search"
-msgstr "Haku Osoitekirjasta"
+msgid "No persons matching your search were found"
+msgstr "Ketään hakemaasi ei löytynyt"
 
 msgid "Return"
 msgstr "Paluu"
+
+msgid "Close"
+msgstr "Sulje"
 
 msgid "Nickname"
 msgstr "Lempinimi"
@@ -130,9 +132,24 @@ msgstr "Muokkaa valittuja"
 msgid "Delete selected"
 msgstr "Poista valitut"
 
+msgid "sort by nickname"
+msgstr "aakkosta lempinimen mukaan"
+
+#, fuzzy
+msgid "sort by name"
+msgstr "aakkosta sukunimen mukaan"
+
+msgid "sort by email"
+msgstr "aakkosta sähköpostiosoitteen mukaan"
+
+msgid "sort by info"
+msgstr "aakkosta info-sarakkeen mukaan"
+
+#, php-format
 msgid "Add to %s"
 msgstr "Lisää kohteeseen %s"
 
+#, php-format
 msgid "%s wrote:"
 msgstr "%s kirjoitti:"
 
@@ -142,6 +159,7 @@ msgstr "lainaus"
 msgid "who"
 msgstr "kuka"
 
+#, php-format
 msgid "On %s, %s wrote:"
 msgstr "%s %s kirjoitti:"
 
@@ -161,16 +179,33 @@ msgid "Draft Email Saved"
 msgstr "Luonnos Talletettu"
 
 msgid "Could not move/copy file. File not attached"
-msgstr "Tiedoston siirto/kopiointi epäonnistui. Tiedostoa ei liittetty viestiin"
+msgstr ""
+"Tiedoston siirto/kopiointi epäonnistui. Tiedostoa ei liittetty viestiin"
 
-msgid "Draft Saved"
-msgstr "Luonnos Talletettu"
+#, fuzzy
+msgid "Your draft has been saved."
+msgstr "Viestisi on lähetetty."
 
-msgid "Your Message has been sent."
+#, fuzzy
+msgid "Your mail has been sent."
 msgstr "Viestisi on lähetetty."
 
 msgid "From:"
 msgstr "Lähettäjä:"
+
+msgid "To:"
+msgstr "Vastaanottaja:"
+
+#, fuzzy
+msgid "Cc:"
+msgstr "Kopio (Cc)"
+
+#, fuzzy
+msgid "Bcc:"
+msgstr "Piilokopio (Bcc)"
+
+msgid "Subject:"
+msgstr "Aihe:"
 
 msgid "Send"
 msgstr "Lähetä"
@@ -183,6 +218,11 @@ msgstr "Lisää"
 
 msgid "Delete selected attachments"
 msgstr "Poista valitut liitteet"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr "PHP-asetukset estävät liitteiden liittämisen sähköpostiviesteihin."
 
 msgid "Priority"
 msgstr "Prioriteetti"
@@ -217,11 +257,39 @@ msgstr "Talleta Luonnos"
 msgid "You have not filled in the \"To:\" field."
 msgstr "Et ole määrittänyt Vastaanottajaa (To:)."
 
+#, php-format
 msgid "Error: Draft folder %s does not exist."
 msgstr "Virhe: Vedoskansio '%s' puuttuu."
 
-msgid "Server replied: "
+#, fuzzy
+msgid "Message not sent."
+msgstr "Viestiä ei voida tulostaa"
+
+#, fuzzy
+msgid "Server replied:"
 msgstr "Palvelin vastasi: "
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Virheellinen nimi kansiolle. Ole hyvä ja valitse jokin toinen nimi."
+
+msgid "Click here to go back"
+msgstr "Napsauta tästä päästäksesi takaisin"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Et ole valinnut poistettavaa kansiota. Ole hyvä ja valitse."
+
+msgid "Delete Folder"
+msgstr "Poista kansio"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Haluatko varmasti poistaa %s:n?"
+
+msgid "Yes"
+msgstr "Kyllä"
+
+msgid "No"
+msgstr "Ei"
 
 msgid "Folders"
 msgstr "Kansiot"
@@ -274,9 +342,6 @@ msgstr "Muuta nimeä"
 msgid "No folders found"
 msgstr "Kansioita ei löydy"
 
-msgid "Delete Folder"
-msgstr "Poista kansio"
-
 msgid "Delete"
 msgstr "Poista"
 
@@ -294,24 +359,6 @@ msgstr "Ei käyttöönotettavia kansioita!"
 
 msgid "Subscribe to:"
 msgstr "Ota käyttöön:"
-
-msgid "Illegal folder name. Please select a different name."
-msgstr "Virheellinen nimi kansiolle. Ole hyvä ja valitse jokin toinen nimi."
-
-msgid "Click here to go back"
-msgstr "Napsauta tästä päästäksesi takaisin"
-
-msgid "You have not selected a folder to delete. Please do so."
-msgstr "Et ole valinnut poistettavaa kansiota. Ole hyvä ja valitse."
-
-msgid "Are you sure you want to delete %s?"
-msgstr "Haluatko varmasti poistaa %s:n?"
-
-msgid "Yes"
-msgstr "Kyllä"
-
-msgid "No"
-msgstr "Ei"
 
 msgid "You have not selected a folder to rename. Please do so."
 msgstr "Et ole valinnut kansiota, jonka nimi muutetaan. Ole hyvä ja valitse."
@@ -331,15 +378,35 @@ msgstr "VIRHE: Ohjetiedostot ovat väärää muotoa!"
 msgid "Help"
 msgstr "Ohje"
 
+#, fuzzy
 msgid ""
-"The help has not been translated to %s. It will be displayed in English "
-"instead."
+"Help is not available in the selected language. It will be displayed in "
+"English instead."
 msgstr ""
 "Ohjetta ei valitettavasti ole käännetty kielelle %s. Ohje näytetään "
 "englanniksi. "
 
-msgid "Some or all of the help documents are not present!"
-msgstr "Osa tai kaikki ohjedokumentit puuttuvat!"
+#, fuzzy
+msgid ""
+"Help is not available. Please contact your system administrator for "
+"assistance."
+msgstr "Ota yhteys käyttötukeesi ja ilmoita tämä virhe."
+
+#, fuzzy
+msgid ""
+"This chapter is not available in the selected language. It will be displayed "
+"in English instead."
+msgstr ""
+"Ohjetta ei valitettavasti ole käännetty kielelle %s. Ohje näytetään "
+"englanniksi. "
+
+#, fuzzy
+msgid "This chapter is missing"
+msgstr "Nimi puuttuu"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr ""
 
 msgid "Table of Contents"
 msgstr "Sisältö"
@@ -368,18 +435,27 @@ msgstr "Saapuneet"
 msgid "Purge"
 msgstr "Tyhjennä"
 
+msgid "Last Refresh"
+msgstr "Viimeisin päivitys"
+
+msgid "Check mail"
+msgstr "Päivitä"
+
 msgid "Login"
 msgstr "Kirjaudu sisään"
 
+#, php-format
 msgid "%s Logo"
 msgstr "%s logo"
 
+#, php-format
 msgid "SquirrelMail version %s"
 msgstr "SquirrelMail-selainposti versio %s"
 
 msgid "By the SquirrelMail Project Team"
 msgstr "SquirrelMailin kehittäjäryhmältä"
 
+#, php-format
 msgid "%s Login"
 msgstr "%s Kirjautuminen"
 
@@ -392,70 +468,11 @@ msgstr "Salasana:"
 msgid "No messages were selected."
 msgstr "Ei valittuja viestejä."
 
-msgid "Personal Information"
-msgstr "Henkilötiedot"
-
-msgid "Display Preferences"
-msgstr "Näyttöasetukset"
-
-msgid "Message Highlighting"
-msgstr "Viestien Merkintä"
-
-msgid "Folder Preferences"
-msgstr "Kansioasetukset"
-
-msgid "Index Order"
-msgstr "Sarakejärjestys"
-
 msgid "Options"
 msgstr "Asetukset"
 
-msgid "Error(s) occurred while saving your options"
-msgstr "Virhe(itä) asetusten tallennuksen yhteydessä."
-
-msgid "Some of your preference changes were not applied."
-msgstr "Osa tekemistäsi muutoksista ei tullut voimaan."
-
-msgid "Successfully Saved Options"
-msgstr "Asetukset on talletettu!"
-
-msgid "Refresh Folder List"
-msgstr "Päivitä kansiolista"
-
-msgid "Refresh Page"
-msgstr "Päivitä sivu"
-
-msgid ""
-"This contains personal information about yourself such as your name, your "
-"email address, etc."
-msgstr "Sisältää henkilötietoja, kuten nimesi, sähköpostiosoitteesi jne."
-
-msgid ""
-"You can change the way that SquirrelMail looks and displays information to "
-"you, such as the colors, the language, and other settings."
-msgstr "Voit vaihtaa SquirrelMailin näytön värejä, kielen jne."
-
-msgid ""
-"Based upon given criteria, incoming messages can have different background "
-"colors in the message list. This helps to easily distinguish who the "
-"messages are from, especially for mailing lists."
-msgstr ""
-"Viestit voidaan määritellä näytettäväksi luettelossa erilaisin taustavärein. "
-"Tämä helpottaa erottamaan esimerkiksi sen keneltä viesti on tullut. "
-"Asetus on erityisen sopiva viestilistojen yhteydessä."
-
-msgid ""
-"These settings change the way your folders are displayed and manipulated."
-msgstr ""
-"Nämä asetukset määrittävät sen miten kansiot näytetään ja miten niitä "
-"käsitellään."
-
-msgid ""
-"The order of the message index can be rearranged and changed to contain the "
-"headers in any order you want."
-msgstr ""
-"Viestisarakkeet voidaan määritellä näyttämään otsaketiedot halutussa "
-"järjestyksessä."
+msgid "Message Highlighting"
+msgstr "Viestien Merkintä"
 
 msgid "New"
 msgstr "Uusi"
@@ -538,17 +555,21 @@ msgstr "Esim. 63aa7f"
 msgid "Matches"
 msgstr "Täsmää"
 
-msgid "Alternate Identity %d"
-msgstr "Vaihtoehtoinen henkilöllisyys %d"
-
-msgid "Advanced Identities"
-msgstr "Henkilötietojen lisähallinta"
+msgid "Editing identities is disabled."
+msgstr ""
 
 msgid "Default Identity"
 msgstr "Henkilötiedot (oletus)"
 
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Vaihtoehtoinen henkilöllisyys %d"
+
 msgid "Add a New Identity"
 msgstr "Lisää uusi henkilöllisyys"
+
+msgid "Advanced Identities"
+msgstr "Henkilötietojen lisähallinta"
 
 msgid "Full Name"
 msgstr "Koko nimi"
@@ -567,6 +588,9 @@ msgstr "Käytä tätä oletuksena"
 
 msgid "Move Up"
 msgstr "Siirrä ylös"
+
+msgid "Index Order"
+msgstr "Sarakejärjestys"
 
 msgid "Checkbox"
 msgstr "Rastitusruutu"
@@ -597,8 +621,83 @@ msgstr "poista"
 msgid "Return to options page"
 msgstr "Paluu asetussivulle"
 
+msgid "Personal Information"
+msgstr "Henkilötiedot"
+
+msgid "Display Preferences"
+msgstr "Näyttöasetukset"
+
+msgid "Folder Preferences"
+msgstr "Kansioasetukset"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "Virhe(itä) asetusten tallennuksen yhteydessä."
+
+msgid "Some of your preference changes were not applied."
+msgstr "Osa tekemistäsi muutoksista ei tullut voimaan."
+
+msgid "Successfully Saved Options"
+msgstr "Asetukset on talletettu!"
+
+msgid "Refresh Folder List"
+msgstr "Päivitä kansiolista"
+
+msgid "Refresh Page"
+msgstr "Päivitä sivu"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "Sisältää henkilötietoja, kuten nimesi, sähköpostiosoitteesi jne."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "Voit vaihtaa SquirrelMailin näytön värejä, kielen jne."
+
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Viestit voidaan määritellä näytettäväksi luettelossa erilaisin taustavärein. "
+"Tämä helpottaa erottamaan esimerkiksi sen keneltä viesti on tullut. Asetus "
+"on erityisen sopiva viestilistojen yhteydessä."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"Nämä asetukset määrittävät sen miten kansiot näytetään ja miten niitä "
+"käsitellään."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Viestisarakkeet voidaan määritellä näyttämään otsaketiedot halutussa "
+"järjestyksessä."
+
 msgid "Message not printable"
 msgstr "Viestiä ei voida tulostaa"
+
+#, fuzzy
+msgid "Attachments:"
+msgstr "Liitteet:"
+
+msgid "Unknown sender"
+msgstr "Tuntematon lähettäjä"
+
+#, fuzzy
+msgid "Info:"
+msgstr "Tietoja"
+
+#, fuzzy
+msgid "Size:"
+msgstr "Koko"
+
+#, fuzzy
+msgid "Type:"
+msgstr "Aika:"
 
 msgid "Invalid URL"
 msgstr "Epäkelpo URL"
@@ -621,6 +720,7 @@ msgstr "Viestisi"
 msgid "Sent"
 msgstr "Lähetetty:"
 
+#, php-format
 msgid "Was displayed on %s"
 msgstr "Avattiin näyttöön, %s"
 
@@ -629,9 +729,6 @@ msgstr "vähemmän"
 
 msgid "more"
 msgstr "enemmän"
-
-msgid "Unknown sender"
-msgstr "Tuntematon lähettäjä"
 
 msgid "Mailer"
 msgstr "Postittaja"
@@ -694,6 +791,10 @@ msgstr "Tätä sivua voi tarkastella vasta kirjauduttuasi sisään."
 msgid "Folder:"
 msgstr "Kansio:"
 
+#, fuzzy
+msgid "Saved Searches"
+msgstr "Aiemmat haut"
+
 msgid "edit"
 msgstr "muokkaa"
 
@@ -727,6 +828,9 @@ msgstr "Kaikki kentät"
 msgid "No Messages Found"
 msgstr "Viestejä ei löytynyt"
 
+msgid "Please enter something to search for"
+msgstr "Kirjoita ensin etsittävä teksti"
+
 msgid "Signout"
 msgstr "Kirjaudu ulos"
 
@@ -742,6 +846,7 @@ msgstr "Napsauta tästä kirjautuaksesi uudestaan sisään."
 msgid "Viewing a Business Card"
 msgstr "Näytössä on käyntikortti"
 
+#, php-format
 msgid ""
 "vCard Version %s is not supported. Some information might not be converted "
 "correctly."
@@ -749,9 +854,6 @@ msgstr "vCard versio %s ei ole tuettu. Osa tiedoista saattaa puuttua."
 
 msgid "Title"
 msgstr "Otsikko:"
-
-msgid "Email"
-msgstr "Sähköposti"
 
 msgid "Web Page"
 msgstr "Web-sivu"
@@ -777,14 +879,12 @@ msgstr "Fax"
 msgid "Note"
 msgstr "Merkintä"
 
-msgid "Add to Addressbook"
+msgid "Add to address book"
 msgstr "Lisää osoitekirjaan"
 
-msgid "Title & Org. / Dept."
+#, fuzzy
+msgid "Title &amp; Org. / Dept."
 msgstr "Titteli ja organisaatio / osasto"
-
-msgid "Add to Address Book"
-msgstr "Lisää osoitekirjaan"
 
 msgid "Viewing Full Header"
 msgstr "Näytössä ovat kaikki otsaketiedot"
@@ -792,12 +892,17 @@ msgstr "Näytössä ovat kaikki otsaketiedot"
 msgid "Viewing a text attachment"
 msgstr "Näytössä on tekstiliite"
 
+msgid "View Unsafe Images"
+msgstr "Näytä turvattomat kuvat"
+
 msgid ""
 "Could not include PEAR database functions required for the database backend."
-msgstr ""
+msgstr "Vaadittavia PEAR-tietokantafunktioita ei voitu käyttää."
 
+#, php-format
 msgid "Is PEAR installed, and is the include path set correctly to find %s?"
-msgstr "Onko PEAR asennettu ja ovatko polut oikein määritetty, jotta %s löytyy?"
+msgstr ""
+"Onko PEAR asennettu ja ovatko polut oikein määritetty, jotta %s löytyy?"
 
 msgid "Please contact your system administrator and report this error."
 msgstr "Ota yhteys käyttötukeesi ja ilmoita tämä virhe."
@@ -805,17 +910,25 @@ msgstr "Ota yhteys käyttötukeesi ja ilmoita tämä virhe."
 msgid "Personal address book"
 msgstr "Henkilökohtainen osoitekirja"
 
+#, php-format
 msgid "Database error: %s"
 msgstr "Tietokantavirhe: %s"
 
-msgid "Addressbook is read-only"
+#, fuzzy
+msgid "Address book is read-only"
 msgstr "Osoitekirja on kirjoitussuojattu"
 
-msgid "User '%s' already exist"
+#, fuzzy, php-format
+msgid "User \"%s\" already exists"
 msgstr "Käyttäjä '%s' on jo olemassa"
 
-msgid "User '%s' does not exist"
+#, fuzzy, php-format
+msgid "User \"%s\" does not exist"
 msgstr "Käyttäjää '%s' ei ole olemassa"
+
+#, fuzzy, php-format
+msgid "User '%s' already exist."
+msgstr "Käyttäjä '%s' on jo olemassa"
 
 msgid "Not a file name"
 msgstr "Virheellinen tiedostonimi"
@@ -832,26 +945,41 @@ msgstr "Kirjoittaminen epäonnistui"
 msgid "Unable to update"
 msgstr "Päivitys epäonnistui"
 
+msgid "Address book is corrupted. Required fields are missing."
+msgstr "Osoitekirja on vaurioitunut. Pakollisia kenttiä puuttuu."
+
+#, fuzzy
+msgid "Address book entry is too big"
+msgstr "Osoitekirjataulukko"
+
 msgid "Could not lock datafile"
 msgstr "Tietokantatiedoston lukistus epäonnistui"
 
-msgid "Write to addressbook failed"
+#, fuzzy
+msgid "Write to address book failed"
 msgstr "Osoitekirjaan kirjoittaminen epäonnistui"
 
-msgid "Error initializing addressbook database."
+#, fuzzy
+msgid "Error initializing address book database."
 msgstr "Virhe osoitekirjan tietokannan alustamisessa:"
 
+#, php-format
 msgid "Error opening file %s"
 msgstr "Virhe tiedoston %s avauksessa"
 
 msgid "Global address book"
 msgstr "Yleinen osoitekirja"
 
-msgid "Error initializing global addressbook."
+#, fuzzy
+msgid "Error initializing global address book."
 msgstr "Virhe yleisen osoitekirjan alustuksessa:"
 
+#, php-format
 msgid "Error initializing LDAP server %s:"
 msgstr "Virhe LDAP-palvelimen %s alustuksessa:"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Napsauta tähän muuttaaksesi osoiteluettelon järjestystä"
 
 msgid "Invalid input data"
 msgstr "Virhe syöttötiedossa"
@@ -1006,15 +1134,18 @@ msgstr "D G:i"
 msgid "D, H:i"
 msgstr "D G:i"
 
+#, php-format
 msgid "Preference database error (%s). Exiting abnormally"
 msgstr "Asetustietokantavirhe (%s). Epänormaali lopetus."
 
+#, php-format
 msgid "Click here to return to %s"
 msgstr "Napsauta tästä palaataksesi (%s)"
 
 msgid "Go to the login page"
 msgstr "Poistu sisäänkirjautumissivulle."
 
+#, php-format
 msgid ""
 "Preference file, %s, does not exist. Log out, and log back in to create a "
 "default preference file."
@@ -1022,6 +1153,7 @@ msgstr ""
 "Asetustiedostoa %s ei löydy. Poistu ja kirjaudu uudestaan sisään luodaksesi "
 "uuden asetustiedoston."
 
+#, php-format
 msgid ""
 "Preference file, %s, could not be opened. Contact your system administrator "
 "to resolve this issue."
@@ -1029,6 +1161,7 @@ msgstr ""
 "Asetustiedostoa %s ei saatu auki. Ota yhteys käyttötukeesi, ilmoita tämä "
 "virhe."
 
+#, php-format
 msgid ""
 "Preference file, %s, could not be written. Contact your system administrator "
 "to resolve this issue."
@@ -1036,6 +1169,7 @@ msgstr ""
 "Asetustiedostoon %s ei voitu kirjoittaa. Ota yhteys käyttötukeesi, ilmoita "
 "tämä virhe."
 
+#, php-format
 msgid ""
 "Preference file, %s, could not be copied from temporary file, %s. Contact "
 "your system administrator to resolve this issue."
@@ -1043,6 +1177,7 @@ msgstr ""
 "Asetustiedostoa %s ei voitu kopioida väliaikaistiedostosta %s. Ota yhteys "
 "käyttötukeesi, ilmoita tämä virhe."
 
+#, php-format
 msgid "Error opening %s"
 msgstr "Virhe %s:n avaamisessa"
 
@@ -1052,35 +1187,40 @@ msgstr "Asetustiedostoa ei löytynyt tai sitä ei voitu lukea!"
 msgid "Could not create initial preference file!"
 msgstr "Asetustiedoston luonti epäonnistui!"
 
+#, php-format
 msgid "%s should be writable by user %s"
 msgstr "%s pitäisi olla kirjoitusoikeus käyttäjällä %s"
 
 msgid "Signature is too big."
 msgstr "Allekirjoitus on liian iso."
 
+#, php-format
 msgid ""
 "Signature file, %s, could not be opened. Contact your system administrator "
 "to resolve this issue."
 msgstr ""
-"Allekirjoitustiedostoa %s ei voitu avata. Ota yhteys käyttötukeesi ja ilmoita "
-"tämä virhe."
+"Allekirjoitustiedostoa %s ei voitu avata. Ota yhteys käyttötukeesi ja "
+"ilmoita tämä virhe."
 
+#, php-format
 msgid ""
 "Signature file, %s, could not be written. Contact your system administrator "
 "to resolve this issue."
 msgstr ""
-"Allekirjoitustiedostoon %s ei voitu kirjoittaa. Ota yhteys käyttötukeesi "
-"ja ilmoita tämä virhe."
+"Allekirjoitustiedostoon %s ei voitu kirjoittaa. Ota yhteys käyttötukeesi ja "
+"ilmoita tämä virhe."
 
+#, php-format
 msgid ""
 "Signature file, %s, could not be copied from temporary file, %s. Contact "
 "your system administrator to resolve this issue."
 msgstr ""
-"Allekirjoitustiedostoa %s ei voitu kopioida %s:sta. Ota yhteys "
-"käyttötukeesi ja ilmoita tämä virhe."
+"Allekirjoitustiedostoa %s ei voitu kopioida %s:sta. Ota yhteys käyttötukeesi "
+"ja ilmoita tämä virhe."
 
+#, fuzzy
 msgid ""
-"You need to have php4 installed with the multibyte string function enabled "
+"You need to have PHP installed with the multibyte string function enabled "
 "(using configure option --enable-mbstring)."
 msgstr "PHP asetusvirhe, tarvitaan --enable-mbstring"
 
@@ -1111,11 +1251,13 @@ msgstr "VIRHE: IMAP-palvelin sulki yhteyden."
 msgid "ERROR: Unknown IMAP response."
 msgstr "VIRHE: Tuntematon IMAP-vastaus."
 
+#, php-format
 msgid "Error connecting to IMAP server: %s."
 msgstr "Virhe yhteydenotossa IMAP-palvelimeen: %s."
 
 msgid "The IMAP server is reporting that plain text logins are disabled."
-msgstr "IMAP-palvelin kertoo, että 'plain text' sisäänkirjaus ei ole mahdollista."
+msgstr ""
+"IMAP-palvelin kertoo, että 'plain text' sisäänkirjaus ei ole mahdollista."
 
 msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
 msgstr "CRAM-MD5- tai DIGENST-MD5-autentikoinnin käyttäminen voi toimia."
@@ -1123,9 +1265,11 @@ msgstr "CRAM-MD5- tai DIGENST-MD5-autentikoinnin käyttäminen voi toimia."
 msgid "Also, the use of TLS may allow SquirrelMail to login."
 msgstr "Myös TLS:n käyttö saattaa ratkaista ongelman."
 
+#, php-format
 msgid "Bad request: %s"
 msgstr "Huono pyyntö: %s"
 
+#, php-format
 msgid "Unknown error: %s"
 msgstr "Tuntematon virhe: %s"
 
@@ -1141,11 +1285,15 @@ msgstr "VIRHE: Viestiä ei voitu liittää kohteeseen"
 msgid "Solution:"
 msgstr "Ehdotuksia: "
 
+#, fuzzy
 msgid ""
-"Remove unneccessary messages from your folder and start with your Trash "
-"folder."
+"Remove unneccessary messages from your folders. Start with your Trash folder."
 msgstr ""
 "Poista tarpeettomia viestejä kansioistasi, aloita Poistetut -kansiosta."
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr ""
 
 msgid "(no subject)"
 msgstr "(tyhjä)"
@@ -1195,9 +1343,6 @@ msgstr "Siirrä"
 msgid "Expunge"
 msgstr "Siivoa"
 
-msgid "mailbox"
-msgstr "postilaatikko"
-
 msgid "Read"
 msgstr "Luettu"
 
@@ -1219,9 +1364,11 @@ msgstr "Poista kaikki valinnat"
 msgid "Select All"
 msgstr "Valitse kaikki"
 
+#, php-format
 msgid "Viewing Messages: %s to %s (%s total)"
 msgstr "Viestit %s - %s; yhteensä %s."
 
+#, php-format
 msgid "Viewing Message: %s (%s total)"
 msgstr "Viesti: %s; yhteensä %s."
 
@@ -1234,7 +1381,8 @@ msgstr "Näytä kaikki"
 msgid "SquirrelMail could not decode the bodystructure of the message"
 msgstr "Selainposti ei saanut rakennetta auki viestistä"
 
-msgid "the provided bodystructure by your imap-server"
+#, fuzzy
+msgid "The bodystructure provided by your IMAP server:"
 msgstr "IMAP-palvelimen antama viestirakenne"
 
 msgid ""
@@ -1259,9 +1407,6 @@ msgstr "HAE rivi:"
 msgid "Hide Unsafe Images"
 msgstr "Piilota epäturvalliset kuvat"
 
-msgid "View Unsafe Images"
-msgstr "Näytä turvattomat kuvat"
-
 msgid "Download"
 msgstr "lataa"
 
@@ -1271,6 +1416,7 @@ msgstr "sec_remove_fi.png"
 msgid "This external link will open in a new window"
 msgstr "Tämä ulkoinen linkki avaa uuden ikkunan."
 
+#, php-format
 msgid "Option Type '%s' Not Found"
 msgstr "Asetustyyppiä '%s' ei löydy"
 
@@ -1280,11 +1426,23 @@ msgstr "Nykyinen kansio"
 msgid "Compose"
 msgstr "Kirjoita viesti"
 
+#, php-format
 msgid "Error creating directory %s."
 msgstr "Virhe hakemiston %s luonnissa."
 
 msgid "Could not create hashed directory structure!"
 msgstr "Hakemistopolun teko epäonnistui!"
+
+#, fuzzy
+msgid "Email delivery error"
+msgstr "Perilletoimituksen virheraportti"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr ""
+
+msgid "Can't open SMTP stream."
+msgstr ""
 
 msgid "Service not available, closing channel"
 msgstr "Palvelua ei ole käytössä, yhteys katkaistaan"
@@ -1394,6 +1552,12 @@ msgstr "Sivujen maksimi lukumäärä näytössä"
 msgid "Always Show Full Date"
 msgstr "Näytä päiväys aina kokonaisena"
 
+msgid "Length of From/To Field (0 for full)"
+msgstr "Lähettäjä/Vastaanottaja-kenttien pituus (0=ei rajaa)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Otsikko-kentän pituus (0=ei rajaa)"
+
 msgid "Message Display and Composition"
 msgstr "Viestien näyttö ja kirjoittaminen"
 
@@ -1460,7 +1624,8 @@ msgstr "Kirjoitusikkunan leveys"
 msgid "Height of Compose Window"
 msgstr "Kirjoitusikkunan korkeus"
 
-msgid "Append Signature before Reply/Forward Text"
+#, fuzzy
+msgid "Prepend Signature before Reply/Forward Text"
 msgstr "Lisää allekirjoitus ennen lainattavaa viestiä"
 
 msgid "Prefix for Original Message when Replying"
@@ -1625,10 +1790,23 @@ msgstr "Sisennetty: "
 msgid "Delimited:"
 msgstr "Rajattu: "
 
+#, fuzzy
+msgid "You can't select INBOX as Trash folder."
+msgstr "Valitse roskapostikansio."
+
+#, fuzzy
+msgid "You can't select INBOX as Sent folder."
+msgstr "Valitse roskapostikansio."
+
+#, fuzzy
+msgid "You can't select INBOX as Draft folder."
+msgstr "Valitse roskapostikansio."
+
 msgid "Name and Address Options"
 msgstr "Nimi- ja osoiteasetukset"
 
-msgid "Email Address"
+#, fuzzy
+msgid "E-mail Address"
 msgstr "Sähköpostiosoite"
 
 msgid "Edit Advanced Identities"
@@ -1769,6 +1947,10 @@ msgstr "Mac OS X Mailserver -palvelin"
 msgid "hMailServer IMAP server"
 msgstr "hMailServer-IMAP-palvelin"
 
+#, fuzzy
+msgid "Binc IMAP server"
+msgstr "Yhteys IMAP-palvelimeen"
+
 msgid "Not one of the above servers"
 msgstr "Ei mikään edelläolevista"
 
@@ -1796,6 +1978,10 @@ msgstr "Käytä sendmailia"
 msgid "Choose &quot;no&quot; for SMTP"
 msgstr "Valitse &quot;ei&quot; SMTP:lle"
 
+#, fuzzy
+msgid "Sendmail Arguments"
+msgstr "Sendmailin hakemistopolku"
+
 msgid "Sendmail Path"
 msgstr "Sendmailin hakemistopolku"
 
@@ -1820,6 +2006,9 @@ msgstr "Sisäänkirjaus (plain text)"
 msgid "POP3 Before SMTP?"
 msgstr "POP3 ennen SMTP:tä?"
 
+msgid "Header Encryption Key"
+msgstr ""
+
 msgid "Invert Time"
 msgstr "Kellonaika päinvastoin"
 
@@ -1833,13 +2022,13 @@ msgid "Show Folder Prefix Option"
 msgstr "Näytä kansion etuliite vaihoehto"
 
 msgid "By default, move to trash"
-msgstr "Siirrä roskakoriin jos ei määritetä toisin"
+msgstr "Siirrä poistettuihin, jos ei määritetä toisin"
 
 msgid "By default, move to sent"
-msgstr "Siirrä lähetettyihin jos ei määritetä toisin"
+msgstr "Siirrä lähetettyihin, jos ei määritetä toisin"
 
 msgid "By default, save as draft"
-msgstr "Siirrä luonnoksiin jos ei määritetä toisin"
+msgstr "Siirrä luonnoksiin, jos ei määritetä toisin"
 
 msgid "List Special Folders First"
 msgstr "Näytä erikoiskansiot ensimmäisenä"
@@ -1913,6 +2102,12 @@ msgstr "Salli henkilöllisyyksien muokkaaminen"
 msgid "Allow editing of full name"
 msgstr "Salli koko nimen muokkaaminen"
 
+msgid "Remove username from headers"
+msgstr ""
+
+msgid "Used only when identities can't be modified"
+msgstr ""
+
 msgid "Use server-side sorting"
 msgstr "Käytä järjestämistä palvelimella"
 
@@ -1927,6 +2122,10 @@ msgstr "UID-tuki"
 
 msgid "PHP session name"
 msgstr "PHP-istunnon nimi"
+
+#, fuzzy
+msgid "Location base"
+msgstr "Sanasto Poistettu"
 
 msgid "Message of the Day"
 msgstr "Päivän tiedoteviesti"
@@ -2006,7 +2205,8 @@ msgstr "Teemojen numerointi"
 msgid "Configuration Administrator"
 msgstr "Asetusten ylläpitäjä"
 
-msgid "Note: it is recommended that you configure your system using conf.pl, and "
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
 "not this plugin. conf.pl contains additional information regarding the "
 "purpose of variables and appropriate values, as well as additional "
 "verification steps."
@@ -2026,6 +2226,7 @@ msgstr "Teeman hakemistopolku"
 msgid "Plugins"
 msgstr "Lisätoiminto-ohjelmistot (plugin)"
 
+#, php-format
 msgid "Plugin directory could not be found: %s"
 msgstr "Lisätoiminto-ohjelmistojen hakemistoa %s ei löytynyt."
 
@@ -2054,19 +2255,21 @@ msgid ""
 "for any common problems."
 msgstr ""
 
+#, php-format
 msgid ""
 "Make sure that you are running the most recent copy of %s. You are currently "
 "using version %s."
 msgstr ""
-"Varmista että käytössäsi ohjelman %s uusin versio."
-"Nyt käytössäsi on versio %s."
+"Varmista että käytössäsi ohjelman %s uusin versio.Nyt käytössäsi on versio %"
+"s."
 
+#, php-format
 msgid ""
 "Check to see if your bug is already listed in the %sBug List%s on "
 "SourceForge. If it is, we already know about it and are trying to fix it."
 msgstr ""
-"Tarkista onko havaitsemasi virhe jo listattu SourceForgen "
-"%sBug List%s-luettelossa. Jos se on, yritämme jo korjata virhettä."
+"Tarkista onko havaitsemasi virhe jo listattu SourceForgen %sBug List%s-"
+"luettelossa. Jos se on, yritämme jo korjata virhettä."
 
 msgid ""
 "Try to make sure that you can repeat it. If the bug happens sporatically, "
@@ -2074,6 +2277,7 @@ msgid ""
 "view a specific message, keep that message around so maybe we can see it."
 msgstr ""
 
+#, php-format
 msgid ""
 "If there were warnings displayed above, try to resolve them yourself. Read "
 "the guides in the %s directory where SquirrelMail was installed."
@@ -2096,7 +2300,7 @@ msgid ""
 "SourceForge, but someone who gets your message may add it for you."
 msgstr ""
 
-msgid "This bug involves"
+msgid "This bug involves:"
 msgstr ""
 
 msgid "the general program"
@@ -2117,14 +2321,15 @@ msgstr "Virheraportointi:"
 msgid "Show button in toolbar"
 msgstr "Näytä painike työkalupalkissa"
 
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Kalenteritiedostoon %s kirjoitus epäonnistui."
+
 msgid "TODAY"
 msgstr "TÄNÄÄN"
 
 msgid "Go"
 msgstr "Siirry"
-
-msgid "Could not write calendar file %s"
-msgstr "Kalenteritiedostoon %s kirjoitus epäonnistui."
 
 msgid "l, F j Y"
 msgstr "l, F j Y"
@@ -2158,6 +2363,9 @@ msgstr "Tapahtuma lisätty!"
 
 msgid "Date:"
 msgstr "Päiväys:"
+
+msgid "m/d/Y"
+msgstr ""
 
 msgid "Time:"
 msgstr "Aika:"
@@ -2231,10 +2439,12 @@ msgstr "6 tuntia"
 msgid "Calendar"
 msgstr "Kalenteri"
 
-msgid "Delete & Prev"
+#, fuzzy
+msgid "Delete &amp; Prev"
 msgstr "Poista & Edellinen"
 
-msgid "Delete & Next"
+#, fuzzy
+msgid "Delete &amp; Next"
 msgstr "Poista & Seuraava"
 
 msgid "Move to:"
@@ -2286,13 +2496,6 @@ msgstr "KAUPALLINEN - RBL+ avoimet palvelimet."
 msgid "COMMERCIAL - RBL+ Dial-up entries."
 msgstr "KAUPALLINEN - RBL+ modeemikäyttäjät."
 
-msgid ""
-"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
-"false positives than ORBS did though."
-msgstr ""
-"VAPAA - ORDB syntyi kun ORBS poistui. Näyttää sisältävän vähemmän vääriä "
-"ilmoituksia kuin ORBS."
-
 msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
 msgstr "VAPAA - Five-Ten-sg.com - Suorat roskapostilähteet."
 
@@ -2332,8 +2535,9 @@ msgid ""
 "FREE, for now - SpamCop - An interesting solution that lists servers that "
 "have a very high spam to legit email ratio (85 percent or more)."
 msgstr ""
-"VAPAA, toistaiseksi - SPAMCOP - Palvelu, joka listaa palvelimia joilla on erittäin "
-"suuri roskapostin suhde kunnolliseen postiin verrattuna (85% tai enemmän)."
+"VAPAA, toistaiseksi - SPAMCOP - Palvelu, joka listaa palvelimia joilla on "
+"erittäin suuri roskapostin suhde kunnolliseen postiin verrattuna (85% tai "
+"enemmän)."
 
 msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
 msgstr "VAPAA - dev.null.dk - ei tietoja"
@@ -2440,6 +2644,7 @@ msgstr "Otsake"
 msgid "Contains:"
 msgstr "Sisältää:"
 
+#, php-format
 msgid "If %s contains %s then move to %s"
 msgstr "Jos %s sisältää %s niin siirrä: %s"
 
@@ -2461,8 +2666,7 @@ msgid ""
 "junk email in your INBOX and move it to another folder (like Trash)."
 msgstr ""
 "Roskapostin suodattaminen mahdollistaa DNS-perusteisten mustalistattujen "
-"viestienlähettäjien viestien siirtämisen muihin kansioihin (esim "
-"roskakoriin)."
+"viestienlähettäjien viestien siirtämisen muihin kansioihin (esim. Poistetut)."
 
 msgid "You must select a spam folder."
 msgstr "Valitse roskapostikansio."
@@ -2473,6 +2677,7 @@ msgstr "Sinun on valittava yksi vaihtoehdoista."
 msgid "Spam Filtering"
 msgstr "Roskapostin suodatus"
 
+#, php-format
 msgid "WARNING! Tell the administrator to set the %s variable."
 msgstr "HUOM! Pyydä ylläpitoasi asettamaan muuttuja %s."
 
@@ -2507,12 +2712,14 @@ msgstr ""
 "päälle kaikkien viestien skannaus, skannaa kansiosi, ja palauta skannaus "
 "takaisin vain uusille viesteille."
 
+#, php-format
 msgid "Spam is sent to %s."
 msgstr "Roskaposti lähetty vastaanottajalle: %s."
 
 msgid "not set yet"
 msgstr "ei vielä asetettu"
 
+#, php-format
 msgid "Spam scan is limited to %s."
 msgstr "Roskapostin skannaus rajoitettu: %s."
 
@@ -2522,6 +2729,7 @@ msgstr "PÄÄLLÄ"
 msgid "OFF"
 msgstr "POIS PÄÄLTÄ"
 
+#, php-format
 msgid "%s is not found."
 msgstr "%s ei löytynyt."
 
@@ -2544,12 +2752,9 @@ msgid ""
 "Run some test IMAP commands, displaying both the command and the result. "
 "These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
 "configuration. Custom command strings can be used."
-msgstr ""
-"Testaa joitakin IMAP-komentoja ja niiden vastauksia."
+msgstr "Testaa joitakin IMAP-komentoja ja niiden vastauksia."
 
-msgid "Mailinglist"
-msgstr "Postituslista"
-
+#, php-format
 msgid ""
 "This will send a message to %s requesting help for this list. You will "
 "receive an emailed response at the address below."
@@ -2557,6 +2762,7 @@ msgstr ""
 "Lähettää viestin vastaanottajalle %s ja pyytää apua listan käytöstä. Saat "
 "vastauksen sähköpostitse alla olevaan osoitteeseen."
 
+#, php-format
 msgid ""
 "This will send a message to %s requesting that you will be subscribed to "
 "this list. You will be subscribed with the address below."
@@ -2564,12 +2770,20 @@ msgstr ""
 "Lähettää viestin vastaanottajalle %s ja ilmoittaa sinut listan tilaajaksi. "
 "Tilausosoitteesi on allaoleva osoite."
 
+#, php-format
 msgid ""
 "This will send a message to %s requesting that you will be unsubscribed from "
 "this list. It will try to unsubscribe the adress below."
 msgstr ""
 "Lähettää viestin vastaanottajalle %s ja peruuttaa tilauksesi. Osoite joka "
 "yritetään poistaa on allaoleva osoite."
+
+#, fuzzy, php-format
+msgid "Unknown action: %s"
+msgstr "Tuntematon virhe: %s"
+
+msgid "Mailinglist"
+msgstr "Postituslista"
 
 msgid "Send Mail"
 msgstr "Lähetä Viesti"
@@ -2612,9 +2826,6 @@ msgstr "POP3 salasana:"
 
 msgid "No password submitted"
 msgstr "Salasanaa ei annettu"
-
-msgid "authentication failed "
-msgstr "käyttäjän tarkastus epäonnistui"
 
 msgid "POP3 apop:"
 msgstr "POP3 apop:"
@@ -2712,6 +2923,7 @@ msgstr "Sisäänkirjoittautuminen oikein: Ei uusia viestejä"
 msgid "Login OK: Inbox EMPTY"
 msgstr "Sisäänkirjoittautuminen oikein: INBOX tyhjä"
 
+#, php-format
 msgid "Login OK: Inbox contains %s messages"
 msgstr "Sisäänkirjoittautuminen OK; INBOXissa on %s viestiä"
 
@@ -2754,6 +2966,7 @@ msgstr "Kirjoittaudutaan pois IMAPista"
 msgid "Message appended to mailbox"
 msgstr "Viesti lisätty kansioon"
 
+#, php-format
 msgid "Message %d deleted from remote server!"
 msgstr "Viesto %d on poistettu palvelimesta!"
 
@@ -2858,8 +3071,8 @@ msgid ""
 "This configures settings for downloading email from a POP3 mailbox to your "
 "account on this server."
 msgstr ""
-"Tämä määrittelee asetukset viestien hakuun POP3-postilaatikolta tämän palvelimen "
-"postitilin kansioihisi."
+"Tämä määrittelee asetukset viestien hakuun POP3-postilaatikolta tämän "
+"palvelimen postitilin kansioihisi."
 
 msgid "Message Details"
 msgstr "Viestin tiedot"
@@ -2888,23 +3101,10 @@ msgstr "Tallenna viesti"
 msgid "View Message details"
 msgstr "Näytä viestin tiedot"
 
-msgid "New Mail"
-msgstr "Uusi viesti"
-
-msgid "SquirrelMail Notice:"
-msgstr "SquirrelMail-huomautus:"
-
-msgid "You have %s new message"
-msgid_plural "You have %s new messages"
-msgstr[0] "Olet saanut uuden viestin!"
-msgstr[1] "Olet saanut uusia viestejä!"
-
-msgid "You have %s new messages"
-msgstr "Olet saanut %s uutta viestiä!"
-
 msgid "New Mail Notification"
 msgstr "Uusien viestien esitys"
 
+#, fuzzy, php-format
 msgid ""
 "The %s option will check ALL of your folders for unseen mail, not just the "
 "inbox for notification."
@@ -2915,6 +3115,7 @@ msgstr ""
 msgid "Check all boxes, not just INBOX"
 msgstr "Tarkista kaikki kansiot, ei ainosastaan INBOX"
 
+#, fuzzy, php-format
 msgid ""
 "Selecting the %s option will enable the showing of a popup window when "
 "unseen mail is in your folders (requires JavaScript)."
@@ -2925,6 +3126,7 @@ msgstr ""
 msgid "Show popup window on new mail"
 msgstr "Näytä uudessa ikkunassa ilmoitus uusista viesteistä"
 
+#, fuzzy, php-format
 msgid ""
 "Use the %s option to only check for messages that are recent. Recent "
 "messages are those that have just recently showed up and have not been "
@@ -2939,41 +3141,42 @@ msgstr ""
 msgid "Count only messages that are RECENT"
 msgstr "Ota huomioon vain viimeisimmät viestit"
 
+#, php-format
 msgid ""
 "Selecting the %s option will change the title in some browsers to let you "
 "know when you have new mail (requires JavaScript, and only works in IE but "
 "you won't see errors with other browsers). This will always tell you if you "
 "have new mail, even if you have %s enabled."
 msgstr ""
-"Valitsemalla %s saadaan Internet Explorerin otsikkorivi "
-"vaihtumaan uusien viestien saapuessa (vaatii JavaScriptin, ei aiheuta "
-"virheitä muissa selaimissa vaikka näistä toiminto puuttuu). Tämän "
-"valitsemalla näet aina jos sinulla on uusia viestejä, jopa silloin kun "
-"%s on käytössä."
+"Valitsemalla %s saadaan Internet Explorerin otsikkorivi vaihtumaan uusien "
+"viestien saapuessa (vaatii JavaScriptin, ei aiheuta virheitä muissa "
+"selaimissa vaikka näistä toiminto puuttuu). Tämän valitsemalla näet aina jos "
+"sinulla on uusia viestejä, jopa silloin kun %s on käytössä."
 
 msgid "Change title on supported browsers"
 msgstr "Vaihda otsikkorivi tuetuissa selaimissa."
 
+#, php-format
 msgid ""
 "Select %s to turn on playing a media file when unseen mail is in your "
 "folders. When enabled, you can specify the media file to play in the "
 "provided file box."
 msgstr ""
-"Valitse %s jos haluat soittaa multimediatiedoston "
-"uusien viestien saapuessa. Voit valita haluamasi multimediatiedoston, "
-"esimerkiksi jonkin äänitiedoston."
+"Valitse %s jos haluat soittaa multimediatiedoston uusien viestien saapuessa. "
+"Voit valita haluamasi multimediatiedoston, esimerkiksi jonkin äänitiedoston."
 
 msgid "Enable Media Playing"
 msgstr "Käytä Multimediaa"
 
+#, php-format
 msgid ""
 "Select from the list of %s the media file to play when new mail arrives. If "
 "no file is specified, %s, no sound will be used."
 msgstr ""
-"Valitse %s listalta multimediatiedosto joka "
-"soitetaan uusien viestien saapuessa. Valitsemalla paikallinen "
-"%s voit käyttää omassa koneessasi olevia tiedostoja. Jos "
-"et valitse mitään niin palvelimen oletustiedosto otetaan käyttöön."
+"Valitse %s listalta multimediatiedosto joka soitetaan uusien viestien "
+"saapuessa. Valitsemalla paikallinen %s voit käyttää omassa koneessasi olevia "
+"tiedostoja. Jos et valitse mitään niin palvelimen oletustiedosto otetaan "
+"käyttöön."
 
 msgid "Select server file"
 msgstr "Valitse palvelimen tiedosto:"
@@ -2990,6 +3193,22 @@ msgstr "Kokeile"
 msgid "Current File:"
 msgstr "Tämänhetkinen tiedosto:"
 
+msgid "New Mail"
+msgstr "Uusi viesti"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail-huomautus:"
+
+#, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "Olet saanut %s uuden viestin!"
+msgstr[1] "Olet saanut %s uutta viestiä!"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Olet saanut %s uutta viestiä!"
+
 msgid "NewMail Options"
 msgstr "Uusien viestien asetukset"
 
@@ -3000,9 +3219,11 @@ msgstr ""
 "Tässä setuksia äänien ja/tai ikkunailmoitusten käytöstä kun uusia viestejä "
 "on tullut kansioihin."
 
+#, php-format
 msgid "%s New Messages"
 msgstr "%s uutta viestiä"
 
+#, php-format
 msgid "%s New Message"
 msgid_plural "%s New Messages"
 msgstr[0] "%s uusi viesti"
@@ -3198,7 +3419,6 @@ msgstr ""
 msgid "Cancel / Done"
 msgstr "Peruuta / Valmis"
 
-
 msgid "Send Spam Report"
 msgstr "Lähetä SpamCop-raportti"
 
@@ -3265,18 +3485,22 @@ msgstr "Virhe sanaston lukemisessa"
 msgid "Cute."
 msgstr "Hienoa."
 
+#, php-format
 msgid "Could not run the spellchecker command (%s)."
 msgstr "En voinut suorittaa oikeinkirjoituksen tarkistajaa (%s)."
 
 msgid "Error while writing to pipe."
 msgstr "Virhe kirjoitettaessa putkeen."
 
+#, php-format
 msgid "Could not open temporary file '%s'."
 msgstr "Väliaikaistiedoston '%s' avaaminen epäonnistui."
 
+#, php-format
 msgid "Error while writing to temporary file '%s'."
 msgstr "Virhe kirjoitettaessa väliaikaistiedostoon '%s'."
 
+#, php-format
 msgid "I tried to execute '%s', but it returned:"
 msgstr "Yritin suorittaa '%s', mutta se palautti:"
 
@@ -3295,6 +3519,7 @@ msgstr "Henkilökohtainen sanastosi talletetaan... Odota."
 msgid "SquirrelSpell Results"
 msgstr "SquirrelSpell Tulokset"
 
+#, php-format
 msgid "Found %s errors"
 msgstr "Löytyi %s virhettä"
 
@@ -3361,23 +3586,6 @@ msgstr "Oikeikirjoituksen tarkistus kesken. Poistu ja peruuta?"
 msgid "No errors found"
 msgstr "Ei virheitä"
 
-#, fuzzy
-msgid ""
-"Your personal dictionary has been encrypted and is now stored in an "
-"encrypted format."
-msgstr ""
-"Sanastosi on <strong>suojattu</strong> ja talletettu <strong>suojatussa "
-"muodossa</strong>."
-
-#, fuzzy
-msgid ""
-"Your personal dictionary has been decrypted and is now stored as plain text."
-msgstr ""
-"Sanastosio on <strong>avattu</strong> ja talletettu <strong>avoimena</strong>"
-
-msgid "Personal Dictionary Crypto Settings"
-msgstr "Oman Sanaston Suojausasetukset"
-
 msgid "Your personal dictionary was erased."
 msgstr "Sanastosi poistettu."
 
@@ -3415,6 +3623,27 @@ msgstr ""
 msgid "Dictionary re-encrypted"
 msgstr "Sanasto uudelleentalletettu"
 
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"Sanastosi on <strong>suojattu</strong> ja talletettu <strong>suojatussa "
+"muodossa</strong>."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"Sanastosio on <strong>avattu</strong> ja talletettu <strong>avoimena</strong>"
+
+#, fuzzy
+msgid "No action requested."
+msgstr "Ei muutoksia."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Oman Sanaston Suojausasetukset"
+
 msgid "Personal Dictionary"
 msgstr "Oma Sanasto"
 
@@ -3424,6 +3653,7 @@ msgstr "Sanastosi on tyhjä"
 msgid "Please check any words you wish to delete from your dictionary."
 msgstr "Valitse sanastostasi poistettavat sanat."
 
+#, php-format
 msgid "%s dictionary"
 msgstr "%s sanasto"
 
@@ -3576,8 +3806,8 @@ msgid "Encrypt or decrypt your personal dictionary"
 msgstr "Suojaa tai avaa oma sanastosi"
 
 #, fuzzy
-msgid "not available"
-msgstr "ei olemassa"
+msgid "Personal dictionary encryption options are not available"
+msgstr "Oman Sanaston Suojausasetukset"
 
 msgid "SquirrelSpell Options Menu"
 msgstr "SquirrelSpell Asetusmenu"
@@ -3655,6 +3885,7 @@ msgid ""
 "language?"
 msgstr "Mitä kääntäjää käytetään muunkielisten viestien saapuessa?"
 
+#, php-format
 msgid "%s to %s"
 msgstr "%s -} %s"
 
@@ -3772,13 +4003,18 @@ msgstr "Käyttöliittymän kieli"
 msgid "Translation direction"
 msgstr "Käännössuunta"
 
+msgid "Arabic"
+msgstr ""
+
+#, php-format
 msgid "About SquirrelMail %s"
-msgstr "Tietoja SquirrelMail-selainposti %s"
+msgstr "Tietoja SquirrelMail-selainpostista %s"
 
 msgid ""
 "SquirrelMail is the name of the program that provides access to your email "
 "via the web."
-msgstr "SquirrelMail on ohjelma, joka sallii sähköpostien käsittelyn www-selaimella."
+msgstr ""
+"SquirrelMail on ohjelma, joka sallii sähköpostien käsittelyn www-selaimella."
 
 #, php-format
 msgid ""
@@ -3820,49 +4056,31 @@ msgstr "Ylläpito on asentanut seuraavat lisäohjelmat:"
 msgid "none installed"
 msgstr "ei yhtään"
 
-msgid "sort by nickname"
-msgstr "aakkosta lempinimen mukaan"
-
 #, fuzzy
-msgid "sort by name"
-msgstr "aakkosta sukunimen mukaan"
-
-msgid "sort by email"
-msgstr "aakkosta sähköpostiosoitteen mukaan"
-
-msgid "sort by info"
-msgstr "aakkosta info-sarakkeen mukaan"
-
-msgid "Add to address book"
-msgstr "Lisää osoitekirjaan"
-
-msgid ""
-"Because PHP file uploads are turned off, you can not attach files to this "
-"message. Please see your system administrator for details."
-msgstr "PHP-asetukset estävät liitteiden liittämisen sähköpostiviesteihin."
-
-#, fuzzy
-msgid "No folders were found to unsubscribe from."
-msgstr "Ei käytössäolevia kansioita!"
-
-#, fuzzy
-msgid "No folders were found to subscribe to."
-msgstr "Ei käyttöönotettavia kansioita!"
-
-msgid "Last Refresh"
-msgstr "Viimeisin päivitys"
-
-msgid "Check mail"
-msgstr "Päivitä"
-
-msgid "Save folder tree"
-msgstr "Tallenna kansiorakenne"
+msgid "Nothing to search"
+msgstr "Ei poistettavaa!"
 
 msgid "SquirrelMail Webmail Application"
 msgstr "SquirrelMail-selainposti"
 
+#, fuzzy
+msgid "Add New Identity"
+msgstr "Lisää uusi henkilöllisyys"
+
+#, fuzzy
+msgid "Received"
+msgstr "Kuittaus"
+
 msgid "Compose Preferences"
 msgstr "Muokkausasetukset"
+
+#, php-format
+msgid "Folder list should automatically %srefresh%s."
+msgstr ""
+
+#, php-format
+msgid "This page should automatically %srefresh%s."
+msgstr ""
 
 msgid ""
 "Control the behaviour and layout of writing new mail messages, replying to "
@@ -3870,18 +4088,35 @@ msgid ""
 msgstr ""
 
 #, fuzzy
-msgid "Received"
-msgstr "Kuittaus"
+msgid "Read Receipt"
+msgstr "Lukukuitti"
 
 #, fuzzy
-msgid "As Attachment"
-msgstr "Liitteet:"
+msgid "deleted"
+msgstr "poista"
 
-msgid "Bypass Trash"
-msgstr "Ohita roskis"
+#, fuzzy
+msgid "answered"
+msgstr "vastattus"
 
-msgid "Please enter something to search for"
-msgstr "Kirjoita ensin etsittävä teksti"
+#, fuzzy
+msgid "draft"
+msgstr "Talleta luonnos"
+
+#, fuzzy
+msgid "flagged"
+msgstr "Liputettu"
+
+#, fuzzy
+msgid "Status"
+msgstr "la"
+
+#, fuzzy
+msgid "View as plain text"
+msgstr "Sisäänkirjaus (plain text)"
+
+msgid "View as HTML"
+msgstr ""
 
 msgid "There must be at least one criteria to search for"
 msgstr "Ainakin yksi hakukriteeri täytyy määritellä."
@@ -3906,30 +4141,15 @@ msgstr "(Puuttuva komennon argumentti)"
 msgid "(Spurious argument)"
 msgstr ""
 
-#, fuzzy
-msgid "Fold"
-msgstr "Kansiot"
-
-#, fuzzy
-msgid "Unfold"
-msgstr "Tietoja"
-
-#, fuzzy
-msgid "Saved Searches"
-msgstr "Aiemmat haut"
-
 msgid "Missing"
 msgstr "puuttuu"
 
-msgid "and&nbsp;subfolders:"
-msgstr "ja&nbsp;alikansiot:"
-
-msgid "Exclude Criteria:"
-msgstr ""
-
 #, fuzzy
-msgid "Search Criteria"
-msgstr "Etsi"
+msgid "Standard Search"
+msgstr "Vakiohaku"
+
+msgid "Advanced search"
+msgstr "Edistynyt haku"
 
 #, fuzzy
 msgid "Add New Criteria"
@@ -4029,20 +4249,62 @@ msgstr "ja"
 msgid "Or"
 msgstr "tai"
 
-msgid "Standard search"
-msgstr "Vakiohaku"
+#, fuzzy
+msgid "No RPC action given"
+msgstr "Ei sitaattia"
 
-msgid "Advanced search"
-msgstr "Edistynyt haku"
+msgid "No deletion ID given"
+msgstr ""
 
-msgid "Folder List"
-msgstr "Kansiotlista"
+#, fuzzy
+msgid "No mailbox given"
+msgstr "postilaatikko"
+
+msgid "RPC action not understood"
+msgstr ""
 
 msgid "PHP install does not have LDAP support."
 msgstr "PHP:ssa ei ole LDAP-tukea."
 
-msgid "Click here to change the sorting of the address list"
-msgstr "Napsauta tähän muuttaaksesi osoiteluettelon järjestystä"
+msgid "Removing entry from address book failed"
+msgstr "Osoitekirjamerkinnän poistaminen epäonnistui."
+
+msgid "LDAP rename is not supported by used protocol version"
+msgstr "LDAP-uudelleennimeäminen ei ole tuettu tässä protokollaversiossa."
+
+msgid ""
+"LDAP rename is not supported by used LDAP library. You can't change nickname"
+msgstr ""
+
+msgid "LDAP rename failed"
+msgstr "LDAP-uudelleennimeäminen epäonnistui"
+
+msgid "Unable to remove some field values"
+msgstr "Joidenkin arvojen poistaminen epäonnistui."
+
+#, fuzzy, php-format
+msgid "Unable to rename user \"%s\" to \"%s\""
+msgstr "Käyttäjän DN ei löydy."
+
+#, fuzzy
+msgid "Error initializing other address books."
+msgstr "Virhe yleisen osoitekirjan alustuksessa:"
+
+#, fuzzy
+msgid "Unknown address book backend"
+msgstr "Yleisen osoitekirjan taulu"
+
+#, fuzzy, php-format
+msgid "%s %s"
+msgstr "%s -} %s"
+
+#, fuzzy
+msgid ""
+"Could not open temporary file to store attachment. Contact your system "
+"administrator to resolve this issue."
+msgstr ""
+"Allekirjoitustiedostoa %s ei voitu kopioida %s:sta. Ota yhteys käyttötukeesi "
+"ja ilmoita tämä virhe."
 
 msgid "Illegal folder name."
 msgstr "Epäkelpo kansion nimi."
@@ -4051,17 +4313,15 @@ msgstr "Epäkelpo kansion nimi."
 msgid "The name may not contain any of the following: %s"
 msgstr "Nimessä ei voi olla mitään seuraavista: %s"
 
-#, fuzzy
 msgid "Please select a different name."
-msgstr "Virheellinen nimi kansiolle. Ole hyvä ja valitse jokin toinen nimi."
+msgstr "Ole hyvä ja valitse jokin toinen nimi."
 
-#, fuzzy
 msgid "You have not selected a folder to subscribe. Please do so."
-msgstr "Et ole valinnut kansiota, jonka nimi muutetaan. Ole hyvä ja valitse."
+msgstr "Et ole valinnut tilattavaa kansiota. Ole hyvä ja valitse."
 
-#, fuzzy
 msgid "You have not selected a folder to unsubscribe. Please do so."
-msgstr "Et ole valinnut kansiota, jonka nimi muutetaan. Ole hyvä ja valitse."
+msgstr ""
+"Et ole valinnut kansiota, jonka tilaus peruutetaan. Ole hyvä ja valitse."
 
 msgid "Possible reason:"
 msgstr "Mahdollinen syy:"
@@ -4075,24 +4335,117 @@ msgstr "Syy:"
 msgid ""
 "TLS is enabled, but this version of PHP does not support TLS sockets, or is "
 "missing the openssl extension."
-msgstr "TLS on aktivoitu, mutta tämä PHP-versio ei tue TLS:a tai OpenSSL-laajennus puuttuu."
+msgstr ""
+"TLS on aktivoitu, mutta tämä PHP-versio ei tue TLS:a tai OpenSSL-laajennus "
+"puuttuu."
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used IMAP server "
+"does not support STARTTLS."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to start TLS."
+msgstr "TLS:n käyttö epäonnistui."
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
 
 msgid ""
 "Your mailbox is not located at this server. Try a different server or "
 "consult your system administrator"
-msgstr "Postilaatikkosi ei ole tällä palvelimella. Yritä toista palvelinta tai ota yhteys tukeen."
+msgstr ""
+"Postilaatikkosi ei ole tällä palvelimella. Yritä toista palvelinta tai ota "
+"yhteys tukeen."
+
+msgid "Trash"
+msgstr "Poistetut"
+
+msgid "Drafts"
+msgstr "Luonnokset"
 
 msgid "Unknown recipient"
 msgstr "Tuntematon vastanottaja"
 
 msgid "Unflag"
-msgstr ""
+msgstr "Poista lippu"
 
 msgid "Flag"
 msgstr "Lippu"
 
 msgid "Undelete"
-msgstr "Undelete"
+msgstr "Palauta"
+
+msgid "Bypass Trash"
+msgstr "Ohita Poistetut"
+
+msgid "Copy"
+msgstr "Kopioi"
+
+msgid "unavailable"
+msgstr "ei ole olemassa"
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "Terminating SquirrelMail due to a fatal error"
+msgstr "SquirrelMail suljetaan peruuttamattoman virheen vuoksi"
+
+msgid ""
+"Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP "
+"version does not support it."
+msgstr ""
+
+msgid "TLS session is already activated."
+msgstr "TLS-istunto on jo aktivoitu."
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used SMTP server "
+"does not support it"
+msgstr ""
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 10 "
+"(Disable server thread sort) to true)."
+msgstr ""
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 11 "
+"(Disable server-side sorting) to true."
+msgstr ""
+
+#, fuzzy
+msgid "Your used charset is not supported by your IMAP server."
+msgstr "IMAP-palvelin ei tue järjestämistä ketjuittain."
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 12 "
+"(Allow server charset search) to false) or choose option 10 (Language "
+"settings) and set option 2 (Default charset) to a charset supported by your "
+"IMAP server."
+msgstr ""
+
+msgid "Out of quota error."
+msgstr "Virhe: Levytila on loppunut."
+
+msgid ""
+"An error occured when SquirrelMail appended a message to the mailbox as "
+"listed in this message."
+msgstr ""
+
+msgid "Your IMAP server returned an error."
+msgstr "IMAP-palvelin palautti virheen."
+
+#, fuzzy
+msgid "IMAP server closed the connection."
+msgstr "VIRHE: IMAP-palvelin sulki yhteyden."
 
 #, fuzzy
 msgid "General Message Composition"
@@ -4106,41 +4459,66 @@ msgstr "Ota Cc:t mukaan viestiä välitettäessä"
 msgid "Strip signature when replying"
 msgstr "Poista allekirjoitus vastatessa"
 
-msgid "Enable Fancy Row Mouseover Highlighting"
-msgstr ""
+#, fuzzy
+msgid "Skin"
+msgstr "seuraavista:"
 
-msgid "Message Flags Icon Theme"
-msgstr ""
+#, fuzzy
+msgid "Icon Theme"
+msgstr "Teema"
+
+#, fuzzy
+msgid "Default font style"
+msgstr "Henkilötiedot (oletus)"
+
+#, fuzzy
+msgid "Font style"
+msgstr "ei vielä asetettu"
+
+#, fuzzy
+msgid "Font size"
+msgstr "Kuukausinäyttö"
+
+#, fuzzy
+msgid "Default font size"
+msgstr "Vasemman puolen oletusleveys"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr "Aktivoi hieno rivin korostus hiirellä."
 
 msgid "Show Flag / Unflag Buttons"
 msgstr "Näytä lippupainikkeet"
 
 #, fuzzy
+msgid "Enable Message Copy Buttons"
+msgstr "Viestien näyttö ja kirjoittaminen"
+
 msgid "Use Compact Page Selector"
-msgstr "Käytä sivunvalitsinta"
+msgstr "Käytä tiivistä sivunvalitsinta"
 
-msgid "Length of From/To Field (0 for full)"
-msgstr "Lähettäjä/Vastaanottaja-kenttien pituus (0=ei rajaa)"
+msgid "Message Display Options"
+msgstr "Viestinnäyttöasetukset"
 
-msgid "Length of Subject Field (0 for full)"
-msgstr "Otsikko-kentän pituus (0=ei rajaa)"
+msgid "Height of inline frame"
+msgstr "Inline-kehyksen korkeus"
 
 #, fuzzy
-msgid "Message Display Options"
-msgstr "Yleiset näyttöasetukset"
-
-msgid "Show 'Delete & Prev/Next' Links"
+msgid "Show 'Delete &amp; Prev/Next' Links"
 msgstr "Näytä 'Poista & Edell./Seur.'-linkit"
 
 #, fuzzy
-msgid "Save Replies with Original Message"
-msgstr "Alkuperäinen viesti"
+msgid "Translate Special Folders"
+msgstr "Luo erikoiskansiot automaattisesti"
 
-#, fuzzy, php-format
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "Talleta vastaukset alkuperäisen viestin mukana"
+
+#, php-format
 msgid "%d Minute"
 msgid_plural "%d Minutes"
-msgstr[0] "minuutti"
-msgstr[1] "minuuttia"
+msgstr[0] "%d minuutti"
+msgstr[1] "%d minuuttia"
 
 msgid "Show only subscribed folders"
 msgstr "Näytä vain tilatut kansiot"
@@ -4148,9 +4526,44 @@ msgstr "Näytä vain tilatut kansiot"
 msgid "XP"
 msgstr "XP"
 
+msgid "Mercury/32 IMAP server"
+msgstr "Mercury/32-IMAP-palvelin"
+
+msgid "IMAP Connection Security"
+msgstr "IMAP-yhteyden turvallisuus"
+
 #, fuzzy
-msgid "Hide SquirrelMail Header"
-msgstr "Näytä kaikki otsaketiedot"
+msgid "Plain text connection"
+msgstr "Suljen yhteyttä"
+
+#, fuzzy
+msgid "Secure IMAP (TLS) connection"
+msgstr "Käytä TLS-suojausta"
+
+msgid "IMAP STARTTLS connection"
+msgstr ""
+
+msgid ""
+"Requires higher PHP version and special functions. See SquirrelMail "
+"documentation."
+msgstr ""
+
+msgid "SMTP Connection Security"
+msgstr ""
+
+msgid "Custom SMTP AUTH username"
+msgstr ""
+
+msgid "Custom SMTP AUTH password"
+msgstr ""
+
+#, fuzzy
+msgid "Disable server-side sorting"
+msgstr "Käytä järjestämistä palvelimella"
+
+#, fuzzy
+msgid "Disable server-side thread sorting"
+msgstr "Käytä ketjutusta palvelimella"
 
 #, fuzzy
 msgid "Search functions"
@@ -4165,11 +4578,37 @@ msgstr "Vain edistynyt haku"
 msgid "Both search functions"
 msgstr "Molemmat hakufunktiot"
 
+#, fuzzy
+msgid "Time Zone Configuration"
+msgstr "Testaa asetukset"
+
+msgid "Standard GNU C time zones"
+msgstr ""
+
+#, fuzzy
+msgid "Strict time zones"
+msgstr "Alkuaika:"
+
+msgid "Custom GNU C time zones"
+msgstr ""
+
+msgid "Custom strict time zones"
+msgstr ""
+
+#, fuzzy
+msgid "Size of username field"
+msgstr "Asetukset käyttäjänimikenttä"
+
+#, fuzzy
+msgid "Size of key field"
+msgstr "Asetusten avainkenttä"
+
+#, fuzzy
+msgid "Size of value field"
+msgstr "Asetusten arvokenttä"
+
 msgid "Show alternative language names"
 msgstr "Näytä vaihtoehtoiset kielten nimet"
-
-msgid "Available languages"
-msgstr "Valittavat kielet"
 
 #, fuzzy
 msgid "Enable aggressive decoding"
@@ -4178,12 +4617,12 @@ msgstr "Aktivoi agressiivinen dekoodaus"
 msgid "Tweaks"
 msgstr "Virittelyt"
 
-msgid "Use advanced tree folder listing"
-msgstr ""
-
 #, fuzzy
 msgid "Use icons"
 msgstr "sekuntia"
+
+msgid "Use inline frames with HTML mails"
+msgstr ""
 
 msgid "Use PHP recode functions"
 msgstr "Käytä PHP:n recode-funktioita"
@@ -4194,93 +4633,34 @@ msgstr "Käytä PHP:n iconv-funktioita"
 msgid "Allow remote configuration test"
 msgstr "Salli asetusten etätesti"
 
+#, fuzzy
+msgid "Address book file line length"
+msgstr "Osoitekirjataulukko"
+
+#, fuzzy
+msgid "Templates"
+msgstr "Teemat"
+
+#, fuzzy
+msgid "Default font set"
+msgstr "Vasemman puolen oletusleveys"
+
+#, fuzzy
+msgid "Default template"
+msgstr "Oletusteema"
+
+msgid "Fallback template"
+msgstr ""
+
 msgid "Show System Specifications"
 msgstr "Näytä järjestelmän tiedot"
 
-#, fuzzy
-msgid "Search Mailing List Archives"
-msgstr "Listaa arkistot"
-
-msgid "Search SourceForge Bugtracker"
+msgid "my email account"
 msgstr ""
 
-msgid "Search for words:"
-msgstr "Etsi sanoja:"
-
-msgid "Written by:"
-msgstr "Tehnyt:"
-
 #, fuzzy
-msgid "Email addresses only"
-msgstr "Sähköpostiosoite"
-
-msgid "Mailing list:"
-msgstr "Postituslista:"
-
-#, fuzzy
-msgid "SquirrelMail users list"
-msgstr "SquirrelMail-käyttäjien luettelo"
-
-#, fuzzy
-msgid "SquirrelMail plugins list"
-msgstr "SquirrelMail-lisäohjelmien luettelo"
-
-#, fuzzy
-msgid "SquirrelMail developers list"
-msgstr "SquirrelMail-kehittäjien luettelo"
-
-#, fuzzy
-msgid "SquirrelMail internationalization list"
-msgstr "SquirrelMailin kansainvälistäjien luettelo"
-
-#, fuzzy
-msgid "Sort by:"
-msgstr "Järjestä:"
-
-msgid "Relevance"
-msgstr "relevanssi"
-
-msgid "Search Archives"
-msgstr "Hae arkistoja"
-
-msgid "Reset Form"
-msgstr "Tyhjennä lomake"
-
-msgid "Summary keyword:"
-msgstr "Yhteenvetoavainsana:"
-
-msgid "Sort By:"
-msgstr "Järjestä:"
-
-msgid "ID"
-msgstr "ID"
-
-msgid "Summary"
-msgstr "Yhteenveto"
-
-msgid "Open Date"
-msgstr "avauspäivä"
-
-msgid "Close Date"
-msgstr "sulkemispäivä"
-
-msgid "Submitter"
-msgstr "Lähettäjä"
-
-msgid "Assignee"
-msgstr "Määrääjä"
-
-msgid "Order:"
-msgstr "Järjestys:"
-
-msgid "Ascending"
-msgstr "nouseva"
-
-msgid "Descending"
-msgstr "laskeva"
-
-msgid "Search Bugtracker"
-msgstr ""
+msgid "Bug Reports"
+msgstr "Virheraportointi:"
 
 msgid "You must type in a new password."
 msgstr "Sinun täytyy kirjoittaa uusi salasana."
@@ -4297,6 +4677,7 @@ msgstr "Sinun täytyy kirjoittaa nykyinen salasanasi."
 msgid "Your current password is not correct."
 msgstr "Nykyinen salasanasi on virheellinen."
 
+#, php-format
 msgid "Your new password should be %s to %s characters long."
 msgstr "Uuden salasanasi tulisi olla %s - %s merkkiä pitkä."
 
@@ -4342,6 +4723,7 @@ msgstr ""
 msgid "Unable to use TLS."
 msgstr "TLS:n käyttö epäonnistui."
 
+#, php-format
 msgid "Error: %s"
 msgstr "Virhe %s"
 
@@ -4351,6 +4733,7 @@ msgstr "LDAP TLS:n käyttö nykyasetuksilla ei onnistu."
 msgid "Unable to bind to LDAP server."
 msgstr "Yhteyden avaaminen LDAP-palvelimeen ei onnistu."
 
+#, php-format
 msgid "Server replied: %s"
 msgstr "Palvelin vastasi: %s"
 
@@ -4361,7 +4744,7 @@ msgid "Unable to rebind to LDAP server."
 msgstr "Uuden yhteyden avaaminen LDAP-palvelimelle epäonnistui."
 
 msgid "LDAP server uses different attribute to store user's password."
-msgstr ""
+msgstr "LDAP-palvelin käyttää eri attribuuttia salasanan tallentamiseen."
 
 msgid "Unable to connect to LDAP server."
 msgstr "Ei yhteyttä LDAP-palvelimeen"
@@ -4376,26 +4759,26 @@ msgid "Multiple userid matches found."
 msgstr ""
 
 msgid "ldap_get_dn error."
-msgstr ""
+msgstr "ldap_get_dn-virhe."
 
 #, php-format
 msgid "Unsupported crypto: %s"
-msgstr ""
+msgstr "Ei-tuettu salaus: %s"
 
-msgid "PHP mhash extension is missing."
-msgstr ""
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr "PHP:n mhash-lajennus puuttuu."
 
 msgid "System crypt library doesn't support standard DES crypt."
-msgstr ""
+msgstr "Järjestelmän kirjastot eivät tue vakiota 1DES:tä."
 
 msgid "System crypt library doesn't have MD5 support."
-msgstr ""
+msgstr "Järjestelmän kirjastot eivät tue MD5:tä."
 
 msgid "System crypt library doesn't support extended DES crypt."
-msgstr ""
+msgstr "Järjestelmän kirjastot eivät tue laajennettua 1DES:tä."
 
 msgid "System crypt library doesn't have Blowfish support."
-msgstr ""
+msgstr "Järjestelmän kirjastot eivät tue Blowfist:tä."
 
 msgid "unknown"
 msgstr "tuntematon"
@@ -4404,43 +4787,102 @@ msgid "Unable to validate user's password."
 msgstr "Käyttäjän salasanan validointi epäonnistui."
 
 msgid "Blowfish is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "Blowfish ei ole WWW-palvelimella tuettuna."
 
 msgid "MD5 is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "MD5 ei ole WWW-palvelimella tuettuna."
 
 msgid ""
 "Extended DES crypt is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "WWW-palvelin ei tue heikkoa 1DES-kryptausta (laajennettu)."
 
 msgid ""
 "Standard DES crypt is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "WWW-palvelin ei tue heikkoa 1DES-kryptausta (vakio)."
 
 msgid "PHP Curl extension is NOT available! Unable to change password!"
-msgstr ""
+msgstr "PHP Curl -laajennus puuttuu. Salasanan vaihtaminen ei onnistu!"
 
 msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
 msgstr ""
+"En voi vaihtaa salasanaa! (Onko käyttäjä 'Self Configurable User' ?) (401)"
 
 #, fuzzy
 msgid "Cannot change password!"
 msgstr "Salasanan vaihtaminen ei onnistu."
 
 msgid "Cannot connect to Database Server, please try later!"
-msgstr ""
+msgstr "En saa yhteyttä tietokantapalvelimeen. Yritä myöhemmin uudelleen."
 
 msgid "Database not found on server"
-msgstr ""
+msgstr "Tietokanta ei löytynyt palvelimelta."
 
 msgid "SQL call failed, try again later."
-msgstr ""
+msgstr "SQL-kysely epäonnistui. Yritä myöhemmin uudelleen."
 
 msgid "Duplicate login entries detected, cannot change password!"
-msgstr ""
+msgstr "Lokista löytyi kaksoismerkintöjä. Salasanaa ei voi nyt vaihtaa."
 
 msgid "Password change was not successful!"
 msgstr "Salasanan vaihtaminen ei onnistunut."
+
+msgid ""
+"Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be "
+"available in your PHP include_path setting."
+msgstr ""
+
+msgid "Required change password backend configuration options are missing."
+msgstr ""
+"Salasanan vaihdon vaatima taustajärjestelmän valinta-asetuksissa on "
+"puutteita."
+
+#, fuzzy, php-format
+msgid "Connection error: %s"
+msgstr "Tuntematon virhe: %s"
+
+#, php-format
+msgid "Invalid table name: %s"
+msgstr "Epäkelpo taulun nimi: %s"
+
+msgid "User table is empty."
+msgstr "Käyttäjätaulu on tyhjä."
+
+msgid "Invalid uid field."
+msgstr "Epäkelpo uid-kenttä."
+
+msgid "Invalid password field"
+msgstr "Epäkelpo salasana-kenttä."
+
+#, fuzzy
+msgid "Invalid domain field"
+msgstr "Virhe syöttötiedossa"
+
+#, fuzzy, php-format
+msgid "Query failed: %s"
+msgstr "Poisto epäonnistui:"
+
+#, fuzzy
+msgid "Unable to find user in user table."
+msgstr "Käyttäjän DN ei löydy."
+
+msgid "Too many matches found in user table."
+msgstr "User-taulusta löytyi liian monta vastausta."
+
+#, fuzzy
+msgid "Unable to detect password crypto algorithm."
+msgstr "Käyttäjän salasanan attribuuttia ei löydy."
+
+#, fuzzy
+msgid "Unable to encrypt new password."
+msgstr "Käyttäjän salasanan validointi epäonnistui."
+
+#, fuzzy, php-format
+msgid "Unable to set new password: %s"
+msgstr "Käyttäjän salasanan validointi epäonnistui."
+
+#, fuzzy
+msgid "Unable to use digest-md5 crypto."
+msgstr "TLS:n käyttö epäonnistui."
 
 msgid "Closing Connection"
 msgstr "Suljen yhteyttä"
@@ -4452,13 +4894,13 @@ msgid "No valid backend defined."
 msgstr ""
 
 msgid "Incorrent path to vmail.inc file."
-msgstr ""
+msgstr "Väärä polku vmail.inc-tiedostoon."
 
 msgid "Invalid or corrupted vmail.inc file."
-msgstr ""
+msgstr "Vioittunut vmail.inc-tiedosto."
 
 msgid "Invalid user."
-msgstr ""
+msgstr "Epäkelpo käyttäjä"
 
 msgid "Empty domain"
 msgstr "Tyhjä verkkotunnus"
@@ -4471,6 +4913,10 @@ msgstr "Tyhjä käyttäjätunnus"
 
 msgid "Empty new password"
 msgstr "Tyhjä uusi salasana."
+
+#, fuzzy, php-format
+msgid "Unable to execute \"%s\"."
+msgstr "TLS:n käyttö epäonnistui."
 
 msgid "Server Capability response:"
 msgstr "Palvelin vastasi: "
@@ -4487,8 +4933,8 @@ msgid ""
 "NOTE: These commands are live, any changes made will effect your current "
 "email account."
 msgstr ""
-"HUOM! Nämä komennot vaikuttavat suoraan nykyiseen sähköpostitiliisi ja "
-"siinä oleviin viesteihin."
+"HUOM! Nämä komennot vaikuttavat suoraan nykyiseen sähköpostitiliisi ja siinä "
+"oleviin viesteihin."
 
 msgid "Select"
 msgstr "Valitse"
@@ -4503,6 +4949,23 @@ msgstr "Tyhjä komento:"
 msgid "Request:"
 msgstr "pyydetään:"
 
+msgid "Execution time:"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%s ms"
+msgstr "%s -} %s"
+
+#, fuzzy
+msgid "Mailing Lists"
+msgstr "Postituslista"
+
+msgid ""
+"Manage the (non-RFC-compliant) mailing lists that you are subscribed to for "
+"the purpose of providing one-click list replies when responding to list "
+"messages."
+msgstr ""
+
 #, fuzzy
 msgid "No POP3 servers configured yet."
 msgstr "Palvelinta ei määritelty"
@@ -4511,10 +4974,82 @@ msgstr "Palvelinta ei määritelty"
 msgid "Click here to go to the options page."
 msgstr "Klikkaa tästä kirjautuaksesi uudestaan sisään."
 
+#, fuzzy, php-format
+msgid "Fetching from %s"
+msgstr "Ladataan: "
+
+msgid "Can't get mailbox status:"
+msgstr ""
+
+#, fuzzy
+msgid "Fetching list of messages..."
+msgstr "Ladataan viesti"
+
+#, php-format
 msgid "Login OK: Inbox contains %s message"
 msgid_plural "Login OK: Inbox contains %s messages"
 msgstr[0] "Sisäänkirjoittautuminen oikein. INBOXissa %s viesti."
 msgstr[1] "Sisäänkirjoittautuminen oikein. INBOXissa %s viestiä."
+
+#, fuzzy, php-format
+msgid "Fetching message %s."
+msgstr "Ladataan viesti"
+
+#, fuzzy
+msgid "Warning:"
+msgstr "Varoitus, "
+
+#, fuzzy
+msgid "Authentication type:"
+msgstr "käyttäjän autentikointitapa (IMAP)"
+
+msgid "USER"
+msgstr ""
+
+msgid "APOP"
+msgstr ""
+
+msgid "APOP or USER"
+msgstr ""
+
+#, fuzzy
+msgid "Connection type:"
+msgstr "Content-Type"
+
+#, fuzzy
+msgid "Plain text"
+msgstr "Sivuta"
+
+msgid "Use TLS"
+msgstr ""
+
+msgid "Use StartTLS"
+msgstr ""
+
+msgid ""
+"The NewMail plugin will follow the Folder Preferences option &quot;Enable "
+"Unread Message Notification&quot;"
+msgstr ""
+
+#, fuzzy
+msgid "Follow folder preferences"
+msgstr "Kansioasetukset"
+
+#, fuzzy
+msgid "All folders"
+msgstr "Kaikki kansiot"
+
+#, fuzzy
+msgid "Special folders"
+msgstr "Erityiset kansioasetukset"
+
+#, fuzzy
+msgid "Regular folders"
+msgstr "Valitse kansio"
+
+#, fuzzy
+msgid "Check for new messages in:"
+msgstr "Olet saanut %s uutta viestiä!"
 
 msgid "Width of popup window:"
 msgstr "Kirjoitusikkunan leveys:"
@@ -4537,26 +5072,57 @@ msgstr "Lähetä mediatiedosto:"
 msgid "Uploaded Media File:"
 msgstr "Lähetetty mediatiedosto:"
 
-msgid "unavailable"
-msgstr "ei ole olemassa"
-
+#, php-format
 msgid "Media file %s will be removed, if you upload other media file."
 msgstr "Tiedosto %s poistetaan jos lähetät (upload) toisen tiedoston."
 
-msgid "Spam Service Type:"
-msgstr "Roskapostipalvelun tyyppi"
+#, fuzzy, php-format
+msgid "%s notice:"
+msgstr "%s kirjoitti:"
 
-msgid "Free reporting"
-msgstr "Vapaa raportointi"
+#, fuzzy
+msgid "Warning"
+msgstr "Varoitus, "
 
-msgid "Member services"
-msgstr "Jäsenpalvelut"
+msgid "There are some restrictions in Sent Subfolder options."
+msgstr ""
 
-msgid "Save Service Type"
-msgstr "Tallennettu palvelutyyppi"
+#, fuzzy
+msgid "Sent Subfolders plugin is misconfigured."
+msgstr "SquirrelSpell on määritelty väärin."
+
+msgid "Save emails submitted to SpamCop:"
+msgstr ""
 
 msgid "SpamCop reporting"
 msgstr "SpamCop-raportointi"
+
+#, php-format
+msgid ""
+"Your %s dictionary is encrypted with password that differs from your current "
+"password."
+msgstr ""
+
+#, fuzzy
+msgid "Invalid SquirrelSpell module."
+msgstr "SquirrelSpell Tulokset"
+
+msgid "Unknown error"
+msgstr "Tuntematon virhe"
+
+#, fuzzy
+msgid "SquirrelSpell error."
+msgstr "SquirrelSpell Tulokset"
+
+#, fuzzy, php-format
+msgid "Found %d error"
+msgid_plural "Found %d errors"
+msgstr[0] "Löytyi %s virhettä"
+msgstr[1] "Löytyi %s virhettä"
+
+#, fuzzy, php-format
+msgid "Using %s dictionary for spellcheck."
+msgstr "Käytössä <strong>%s</strong> sanasto (systeemin oletusarvo)."
 
 msgid "Translation Theme:"
 msgstr "Käännösteema"
@@ -4564,7 +5130,7 @@ msgstr "Käännösteema"
 msgid ""
 "Selected translation engine is disabled. Please update your translation "
 "preferences."
-msgstr ""
+msgstr "Valittu käännösmoottori on pois päältä. Ole hyvä ja muuta asetuksiasi."
 
 msgid "Translation Preferences"
 msgstr "Käännösasetukset"
@@ -4584,6 +5150,139 @@ msgstr "Kirjoitettasessa:"
 msgid "Not yet functional, currently does nothing"
 msgstr "Ei ole vielä käytettävissä."
 
+#, fuzzy
+msgid "Address book is empty"
+msgstr "Osoitekirja on kirjoitussuojattu"
+
+#, fuzzy
+msgid "Address book search"
+msgstr "Haku Osoitekirjasta"
+
+#, fuzzy
+msgid "Attachment"
+msgstr "Liitteet:"
+
+#, fuzzy
+msgid "Attach"
+msgstr "Liite:"
+
+msgid "Max."
+msgstr ""
+
+#, fuzzy
+msgid "Receipts"
+msgstr "Kuittaus"
+
+#, fuzzy
+msgid "SquirrelMail notice messages"
+msgstr "SquirrelMail-huomautus:"
+
+msgid "Category:"
+msgstr ""
+
+#, fuzzy
+msgid "Tip:"
+msgstr "Aika:"
+
+#, fuzzy
+msgid "More info:"
+msgstr "IMAP-palvelimen tiedot"
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "Ei käytössäolevia kansioita!"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "Ei käyttöönotettavia kansioita!"
+
+#, fuzzy
+msgid "Message Flags"
+msgstr "Viestisuodattimet"
+
+#, fuzzy
+msgid "Click here to change the sorting of the message list"
+msgstr "Napsauta tähän muuttaaksesi osoiteluettelon järjestystä"
+
+#, fuzzy
+msgid "Add/Edit"
+msgstr "Muokkaa"
+
+#, fuzzy
+msgid "Rule Conditions"
+msgstr "Sisältää:"
+
+#, fuzzy
+msgid "Identifying Name"
+msgstr "Tunnistukseen käytettävä nimi"
+
+#, fuzzy
+msgid "To or cc"
+msgstr "Vastaanottaja (To) tai Kopionvastaanottaja (Cc)"
+
+#, fuzzy
+msgid "Other"
+msgstr "Muu:"
+
+#, fuzzy
+msgid "Save Changes"
+msgstr "Tallenna viesti"
+
+msgid "Type"
+msgstr ""
+
+#, fuzzy
+msgid "Requested"
+msgstr "pyydetään"
+
+#, fuzzy
+msgid "Send Read Receipt Now"
+msgstr "Lähetä lukukuitti nyt"
+
+msgid "Viewing HTML formatted email"
+msgstr ""
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "Liitteet:"
+
+#, fuzzy
+msgid "Move To"
+msgstr "Siirrä"
+
+#, fuzzy
+msgid "Delete &amp; Previous"
+msgstr "Poista & Edellinen"
+
+#, fuzzy
+msgid "and subfolders"
+msgstr "ja&nbsp;alikansiot:"
+
+msgid "Exclude"
+msgstr ""
+
+#, fuzzy
+msgid "Fold"
+msgstr "Kansiot"
+
+#, fuzzy
+msgid "Unfold"
+msgstr "Tietoja"
+
+#, fuzzy
+msgid "Forget"
+msgstr "unohda"
+
+msgid "Email"
+msgstr "Sähköposti"
+
+#, fuzzy
+msgid "Additional Info"
+msgstr "Lisätietoja"
+
+msgid "Folder List"
+msgstr "Kansiotlista"
+
 msgid "Delivery error report"
 msgstr "Perilletoimituksen virheraportti"
 
@@ -4593,23 +5292,145 @@ msgstr "Toimittamattomat Viestiotsakkeet"
 msgid "This image has been removed for security reasons"
 msgstr "Tämä kuva on poistettu tietoturvasyistä."
 
-#~ msgid "Unknown error"
-#~ msgstr "Tuntematon virhe"
+#~ msgid "Draft Saved"
+#~ msgstr "Luonnos Talletettu"
+
+#~ msgid "Some or all of the help documents are not present!"
+#~ msgstr "Osa tai kaikki ohjedokumentit puuttuvat!"
+
+#~ msgid "Add to Addressbook"
+#~ msgstr "Lisää osoitekirjaan"
+
+#~ msgid "Add to Address Book"
+#~ msgstr "Lisää osoitekirjaan"
+
+#~ msgid ""
+#~ "FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+#~ "false positives than ORBS did though."
+#~ msgstr ""
+#~ "VAPAA - ORDB syntyi kun ORBS poistui. Näyttää sisältävän vähemmän vääriä "
+#~ "ilmoituksia kuin ORBS."
+
+#~ msgid "authentication failed "
+#~ msgstr "käyttäjän tarkastus epäonnistui"
+
+#, fuzzy
+#~ msgid "not available"
+#~ msgstr "ei olemassa"
+
+#~ msgid "Save folder tree"
+#~ msgstr "Tallenna kansiorakenne"
+
+#, fuzzy
+#~ msgid "Search Criteria"
+#~ msgstr "Etsi"
+
+#, fuzzy
+#~ msgid "Hide SquirrelMail Header"
+#~ msgstr "Näytä kaikki otsaketiedot"
+
+#~ msgid "Available languages"
+#~ msgstr "Valittavat kielet"
+
+#, fuzzy
+#~ msgid "Search Mailing List Archives"
+#~ msgstr "Listaa arkistot"
+
+#~ msgid "Search for words:"
+#~ msgstr "Etsi sanoja:"
+
+#~ msgid "Written by:"
+#~ msgstr "Tehnyt:"
+
+#, fuzzy
+#~ msgid "Email addresses only"
+#~ msgstr "Sähköpostiosoite"
+
+#~ msgid "Mailing list:"
+#~ msgstr "Postituslista:"
+
+#, fuzzy
+#~ msgid "SquirrelMail users list"
+#~ msgstr "SquirrelMail-käyttäjien luettelo"
+
+#, fuzzy
+#~ msgid "SquirrelMail plugins list"
+#~ msgstr "SquirrelMail-lisäohjelmien luettelo"
+
+#, fuzzy
+#~ msgid "SquirrelMail developers list"
+#~ msgstr "SquirrelMail-kehittäjien luettelo"
+
+#, fuzzy
+#~ msgid "SquirrelMail internationalization list"
+#~ msgstr "SquirrelMailin kansainvälistäjien luettelo"
+
+#, fuzzy
+#~ msgid "Sort by:"
+#~ msgstr "Järjestä:"
+
+#~ msgid "Relevance"
+#~ msgstr "relevanssi"
+
+#~ msgid "Search Archives"
+#~ msgstr "Hae arkistoja"
+
+#~ msgid "Reset Form"
+#~ msgstr "Tyhjennä lomake"
+
+#~ msgid "Summary keyword:"
+#~ msgstr "Yhteenvetoavainsana:"
+
+#~ msgid "Sort By:"
+#~ msgstr "Järjestä:"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Summary"
+#~ msgstr "Yhteenveto"
+
+#~ msgid "Open Date"
+#~ msgstr "avauspäivä"
+
+#~ msgid "Close Date"
+#~ msgstr "sulkemispäivä"
+
+#~ msgid "Submitter"
+#~ msgstr "Lähettäjä"
+
+#~ msgid "Assignee"
+#~ msgstr "Määrääjä"
+
+#~ msgid "Order:"
+#~ msgstr "Järjestys:"
+
+#~ msgid "Ascending"
+#~ msgstr "nouseva"
+
+#~ msgid "Descending"
+#~ msgstr "laskeva"
+
+#~ msgid "Spam Service Type:"
+#~ msgstr "Roskapostipalvelun tyyppi"
+
+#~ msgid "Free reporting"
+#~ msgstr "Vapaa raportointi"
+
+#~ msgid "Member services"
+#~ msgstr "Jäsenpalvelut"
+
+#~ msgid "Save Service Type"
+#~ msgstr "Tallennettu palvelutyyppi"
 
 #~ msgid "said"
 #~ msgstr "kirjoitti"
-
-#~ msgid "To:"
-#~ msgstr "Vastaanottaja:"
 
 #~ msgid "CC:"
 #~ msgstr "Kopio (CC):"
 
 #~ msgid "BCC:"
 #~ msgstr "Piilokopio (BCC):"
-
-#~ msgid "Subject:"
-#~ msgstr "Aihe:"
 
 #~ msgid "Draft folder"
 #~ msgstr "Luonnosten Kansio"
@@ -4772,10 +5593,10 @@ msgstr "Tämä kuva on poistettu tietoturvasyistä."
 #~ msgstr "Ei löytynyt viestejä"
 
 #~ msgid "Welcome to %s's WebMail system"
-#~ msgstr "Tervetuloa %s WebMailiin"
+#~ msgstr "Tervetuloa %s Selainpostiin"
 
 #~ msgid "Running SquirrelMail version %s (c) 1999-2001."
-#~ msgstr "Käytössä SquirrelMail versio %s (c) 1999-2001."
+#~ msgstr "Käytössä SquirrelMailin versio %s (c) 1999-2001."
 
 #~ msgid "Unknown messagenumber in reply from server: "
 #~ msgstr "Palvelin vastasi tuntemattomalla viestinumerolla: "
@@ -4811,4 +5632,3 @@ msgstr "Tämä kuva on poistettu tietoturvasyistä."
 
 #~ msgid "delete_move_next:"
 #~ msgstr "poista_mene_seuraavaan:"
-

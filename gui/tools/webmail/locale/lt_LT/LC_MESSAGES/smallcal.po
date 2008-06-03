@@ -4,7 +4,7 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 msgid ""
 msgstr ""
-"Project-Id-Version: $Id: smallcal.po,v 1.5 2005/06/05 11:49:48 jervfors Exp $\n"
+"Project-Id-Version: $Id: smallcal.po 9522 2005-06-05 11:50:09Z jervfors $\n"
 "POT-Creation-Date: 2003-10-20 16:27+0300\n"
 "PO-Revision-Date: 2003-10-20 18:53+0200\n"
 "Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"

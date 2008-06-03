@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (c) 2004-2005 SquirrelMail Project Team
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2004, 2005.
-# $Id: naguser.po,v 1.4 2005/06/05 11:49:42 jervfors Exp $
+# $Id: naguser.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: naguser\n"

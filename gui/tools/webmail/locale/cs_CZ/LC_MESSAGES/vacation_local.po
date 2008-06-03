@@ -1,7 +1,7 @@
 # Czech Translation of SquirrelMail vacation_local plugin
 # Copyright (c) 2005 The SquirrelMail Project Team
 # Petr Stehlik <pstehlik@sophics.cz>, 2005                                                                        \u2502
-# $Id: vacation_local.po,v 1.2 2005/07/20 16:07:09 jervfors Exp $
+# $Id: vacation_local.po 9798 2005-07-20 16:07:38Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: vacation_local VERSION\n"

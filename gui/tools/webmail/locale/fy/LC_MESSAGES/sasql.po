@@ -1,0 +1,971 @@
+# translation of sasql.po to Nederlands
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) sasql Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: sasql.pot 12147 2007-01-19 13:36:59Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: sasql\n"
+"Report-Msgid-Bugs-To: Randy Smith <perlstalker@vuser.org>\n"
+"POT-Creation-Date: 2007-01-19 13:40+0100\n"
+"PO-Revision-Date: 2007-04-15 09:52+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: bayes_stats.inc.php:31
+msgid "Bayes Filter Statistics"
+msgstr "Statistiken fan Bayes-filter"
+
+#: bayes_stats.inc.php:37
+msgid "Below are the number of messages that have been learned as spam and ham (non-spam) by the Bayesian filter. The Bayesian filter does not activate until enough messages have been learned as spam or ham."
+msgstr "Hjirûnder fine jo it oantal berjochten wêrfan it Bayes-filter leard hat oft it spam of ham (net-spam) is. It Bayes-filter wurdt pas aktyf neidat it troch genôch berjochten leard hat  wat spam is en wat ham."
+
+#: bayes_stats.inc.php:41
+msgid "Spam Count"
+msgstr "Oantal spam"
+
+#: bayes_stats.inc.php:47
+msgid "Ham Count"
+msgstr "Oantal ham"
+
+#: dspam.inc.php:82
+msgid "DSPAM Settings"
+msgstr "DSPAM-ynstellingen"
+
+#: dspam.inc.php:89
+msgid "Warning"
+msgstr "Warskôging"
+
+#: dspam.inc.php:91
+msgid "Enabling DSPAM will disable SpamAssassin scanning of your email."
+msgstr "It aktivearjen fan DSPAM sil it ôftaasten (scannen) fan SpamAssassin fan jo e-mail útskeakelje."
+
+#: dspam.inc.php:94
+msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
+msgstr "De ynstellingen en wite/swarte listen fan SpamAssassin sille net troch DSPAM brûkt wurde."
+
+#. *
+#. * To translators: %s's will be replaced with <a ..> and </a>
+#.
+#: dspam.inc.php:102
+#, php-format
+msgid "This %sFAQ%s from the DSPAM web site explains the differences between SpamAssassin and DSPAM and why you might want to use dspam instead of SpamAssassin."
+msgstr "Dizze %sFAQ%s fan de DSPAM-webstee leit it ferskil út tusken SpamAssassin en DSPAM en wêrom't jo DSPAM brûke soenen ynstee fan SpamAssassin."
+
+#: dspam.inc.php:113
+msgid "DSPAM is a learning system that filters spam based on what <i>you</i> tell it is spam and what isn't. Messages are analyzed as they are delivered and are assigned a spam probability between 0 and 1. The more messages you receive, both spam and innocent, the better DSPAM learns what <i>you</i> think is spam and what is not."
+msgstr "DSPAM is in learsysteem dat spam filtert op basis fan wat <i>u</i> as spam oanmerkt en wat net. Berjochten wurde analysearre ûnder it besoargjen en krije in spamwierskynlikheid tusken de 0 en 1 tawiisd. Hoe mear berjochten as jo ûntfange, spam likegoed as ûnskuldich, nammenste better DSPAM leart wat <i>u</i> wol/gjin spam is."
+
+#: dspam.inc.php:117
+msgid "Reporting Spam"
+msgstr "Spam rapportearje"
+
+#: dspam.inc.php:120
+msgid "If you receive a spam message in your Inbox, forward the message to <nobr>username-spam@domain</nobr> and it will be learned as spam. For example, if your address is joe@example.com, you would forward the message to <nobr>joe-spam@example.com</nobr>."
+msgstr "As jo in spamberjocht yn jo postfak ûntfange, stjoer it dan troch nei <nobr>brûkersnamme-spam@domein.nl</nobr> en it sil oanmerkt wurde as spam. Bygelyks as jo adres jan@foarbyld.nl is, dan stjoere jo it berjocht troch oan <nobr>jan-spam@foarbyld.nl</nobr>."
+
+#: dspam.inc.php:126
+#, php-format
+msgid "You can also move your spam messages to the <i>%s</i> folder. This folder is periodically checked for messages which are then learned as spam and deleted. You do not need to move messages from your %s folder here because they have already been learned as spam."
+msgstr "Jo kinne ek jo spam-berjochten ferpleatse nei de map <i>%s</i>. Dizze map wurdt periodyk neisjoen op berjochten. Dizze wurde dan as spam oanmerkt en wiske. Jo hoege gjin berjochten út de map %s hjirhinne te ferpleatsen omdat dy al oanmerkt binne as spam."
+
+#: dspam.inc.php:131
+msgid "Reporting False Positives"
+msgstr "Falske positiven melde"
+
+#: dspam.inc.php:134
+msgid "From time to time, DSPAM will catch an innocent messages as spam. These messages are called \"false positives\". There is no way to prevent false positives entirely. If you find a false positive, forward the message to <nobr>username-fp@domain</nobr> and it will be learned as an innocent message. For example, if your email address is joe@example.com, you would forward the message to <nobr>joe-fp@example.com</nobr>."
+msgstr "Ut en troch sil DSPAM ûnskuldige berjochten foar spam oansjen. Dizze berjochten neame wy \"falske positiven\" (false positives). Falske positiven binne net hielendal út te sluten. As jo in falske positieve fine, stjoer it berjocht dan troch nei<nobr>brûkersnamme-fp@domein</nobr> en it sil oanmerkt wurde as ûnskuldich berjocht. Bygelyks, as jo e-mailadres jan@foarbyld.nl is, dan stjoere jo it berjocht troch oan <nobr>jan-fp@foarbyld.nl</nobr>."
+
+#: dspam.inc.php:140
+#, php-format
+msgid "You can also move your false positives to the <i>%s</i> folder from the %s folder. This folder is periodically checked for messages which are then learned as false positives and deleted."
+msgstr "Jo kinne jo falske positiven ek nei de map <i>%s</i> ferpleatse fanút de map %s. Dizze map wurdt periodyk kontrolearre op berjochten. Se wurde dan as falske positiven oanmerkt en wiske."
+
+#: dspam.inc.php:145
+msgid "Disclaimer"
+msgstr "Disclaimer"
+
+#: dspam.inc.php:148
+msgid "DSPAM is a learning system. It only knows what is spam based on what you teach it is spam and what is not. Due to DSPAM's nature, you are more likely to see errors in spam detection until it is trained on your email. If you do not report a message as spam within ten days, the message will be permanently learned as innocent and you will be more likely to receive more spam."
+msgstr "DSPAM is in learsysteem. It wit allinnich wat spam is basearre op wat jo it filter leare wat wol spam is en wat net. Fanwege de wurkwize fan DSPAM sille jo yn it begjin faak fouten yn de spam-deteksje opmerke, oant jo it op jo e-mail treend hawwe. As jo net binnen tsien dagen in berjocht as spam rapportearje, dan sil it berjocht permanint oanmerkt wurde as 'ûnskuldich' en sille jo earder mear spam ûntfange."
+
+#. *
+#. * To translators: %s's will be replaced by <a ..> and </a>
+#.
+#: dspam.inc.php:162
+#, php-format
+msgid "Please read the %sDSPAM Primer%s before enabling DSPAM."
+msgstr "Lês de %sDSPAM Primer%s eardat jo DSPAM aktivearje."
+
+#: dspam.inc.php:183
+msgid "Use DSPAM"
+msgstr "DSPAM brûke"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:198
+#, php-format
+msgid "Clean out your %s folder on opt-in?"
+msgstr "Wolle jo jo %s-map opskjinje by opt-in?"
+
+#: dspam.inc.php:200
+#: purge.inc.php:37
+msgid "Note"
+msgstr "Opmerking:"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:205
+#: purge.inc.php:38
+#, php-format
+msgid "Your %s folder may be unavailable during the purge. It will become available again when the purge is complete."
+msgstr "Jo %s-map is ûnder it opskjinjen mooglik ûnberikber. De map is wer beskikber as it opskjinjen dien is."
+
+#: dspam.inc.php:214
+msgid "Update"
+msgstr "Bywurkje"
+
+#: move_to.php:98
+msgid "No messages were selected."
+msgstr "Der binne gjin berjochten selektearre."
+
+#: policyd_docs.inc.php:8
+#: policyd.inc.php:186
+msgid "Greylisting"
+msgstr "Greylisting"
+
+#: policyd_docs.inc.php:9
+msgid "What is Greylisting?"
+msgstr "Wat is Greylisting?"
+
+#: policyd_docs.inc.php:12
+msgid "Greylisting is a method of filtering spam that relies on the fact that most spammers use software that does not behave like a regular email program. Instead of retrying when it receives a \"temporary error\" from a mail server, the spammer's software will give up on the message and keep going through their list. Because legitimate servers will attempt to resend the message after a temporary error, no legitimate mail is blocked."
+msgstr "Greylisting is in metoade dy't gebrûk makket fan it feit dat de measte spammers software brûke dat him net gedraacht as in normaal e-mailprogramma. Ynstee fan berjochten op 'e nij te ferstjoeren at it in tydlike fout fan in mailtsjinner ûntfangt, jout de software fan de spammer it ferstjoeren dêrfan op en giet fierder mei de e-maillist. Omdat legitime tsjinners besykje sille om nei in tydlike fout it berjocht op 'e nij te ferstjoeren giet der gjin ûnskuldige e-mail ferlern."
+
+#: policyd_docs.inc.php:15
+msgid "Email Delays"
+msgstr "E-mailfertragingen"
+
+#: policyd_docs.inc.php:18
+msgid "Greylisting tells the sending server to retry before the message is allowed in. Most servers will retry within five minutes but may take longer depending on the amount of mail to be sent. It is not surprising to see mail delayed for as much as an hour, though such delays are uncommon."
+msgstr "Greylisting lit de ferstjoerende tsjinner it berjocht op 'e nij ferstjoere eardat it talitten wurdt. De measte tsjinners besykje it op 'e nij binnen fiif minuten, mar it kin wat langer duorje, ôfhinklik fan it tal berjochten dat ferstjoerd wurde moat. It bart wolris dat berjochten meer as in oere fertrage wurde, al is soks seldsum."
+
+#: policyd_docs.inc.php:22
+#: policyd.inc.php:195
+#, php-format
+msgid "Warning: "
+msgstr "Warskôging:"
+
+#: policyd_docs.inc.php:23
+msgid "Do not enable greylisting if you require immediate delivery of email."
+msgstr "Aktivearje greylisting net as jo wolle dat jo jo e-mail fuortendaliks ûntfange."
+
+#. To translators: %s's are the function name and PEAR generated errors.
+#.
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: policyd.inc.php:50
+#: policyd.inc.php:90
+#: policyd.inc.php:122
+#: policyd.inc.php:140
+#: sasql_db.php:43
+#: sasql_db.php:79
+#: sasql_db.php:223
+#: sasql_db.php:280
+#: sasql_db.php:336
+#: sasql_db.php:393
+#: sasql_db.php:419
+#: sasql_db.php:466
+#: sasql_db.php:505
+#: sasql_db.php:536
+#, php-format
+msgid "Database error in %s: %s"
+msgstr "Databankfout yn %s: %s"
+
+#: policyd.inc.php:176
+msgid "Policy Settings"
+msgstr "Belied-ynstellingen"
+
+#. To translators: %s's are <a ..> and </a>
+#: policyd.inc.php:191
+#, php-format
+msgid "Enable greylisting. See %sthis page%s for more details."
+msgstr "Aktivearje greylisting. Sjoch %sdizze side%s foar mear details."
+
+#: policyd.inc.php:196
+msgid "Greylisting may delay the delivery of email."
+msgstr "Greylisting kin it ôfleverjen fan e-mail fertraagje."
+
+#: policyd.inc.php:204
+#: sa_settings.inc.php:173
+msgid "Save Settings"
+msgstr "Ynstellingen opslaan"
+
+#: purge.inc.php:22
+#, php-format
+msgid "Purge %s Folder"
+msgstr "Map %s opskjinje"
+
+#: purge.inc.php:30
+msgid "Purge"
+msgstr "Opskjinje"
+
+#: purge.inc.php:33
+#, php-format
+msgid "Delete all messages from your %s folder."
+msgstr "Alle berjochten út jo %s-map wiskje"
+
+#: sa_abooksync.inc.php:20
+msgid "Allow Senders from Address Book"
+msgstr "Ferstjoerders út jo adresboek tastean"
+
+#: sa_abooksync.inc.php:26
+msgid "Allow"
+msgstr "Tastean"
+
+#: sa_abooksync.inc.php:27
+msgid "Allow all address in the address book."
+msgstr "Alle adressen út jo adresboek tastean."
+
+#. required_hists
+#: sa_opts-dist.php:19
+#: sasql_hooks.php:450
+msgid "Spam Score"
+msgstr "Spamskoare"
+
+#: sa_opts-dist.php:20
+msgid "Once all SpamAssassin tests have been run, the resulting score is matched against this value, and if greater than this value, the e-mail message is marked as spam. We recommend a value of '5'."
+msgstr "Neidat alle testen fan SpamAssassin útfierd binne sil de resultearjende skoare fergelike wurde mei dizze wearde. Berjochten mei in hegere skoare as dizze wearde sille as spam oanmerkt wurde. Wy advisearje de wearde 5."
+
+#: sa_opts-dist.php:22
+msgid "0 - Very Aggressive"
+msgstr "0 - tige agressyf"
+
+#: sa_opts-dist.php:23
+msgid "1"
+msgstr "1"
+
+#: sa_opts-dist.php:24
+msgid "2 - Aggressive"
+msgstr "2 - agressyf"
+
+#: sa_opts-dist.php:25
+msgid "3"
+msgstr "3"
+
+#: sa_opts-dist.php:26
+msgid "4"
+msgstr "4"
+
+#: sa_opts-dist.php:27
+msgid "5 - Recommended"
+msgstr "5 - oanrikkemandearre"
+
+#: sa_opts-dist.php:28
+msgid "6"
+msgstr "6"
+
+#: sa_opts-dist.php:29
+msgid "7"
+msgstr "7"
+
+#: sa_opts-dist.php:30
+msgid "8 - Lenient"
+msgstr "8 - swak"
+
+#: sa_opts-dist.php:31
+msgid "9"
+msgstr "9"
+
+#: sa_opts-dist.php:32
+msgid "10 - Very Lenient"
+msgstr "1- tige zwak"
+
+#: sa_opts-dist.php:33
+msgid "Don't Filter"
+msgstr "Net filterje"
+
+#. NOTE: The ordering here is a little odd to allow some inclusion of
+#. other option names.
+#. subject_tag
+#: sa_opts-dist.php:43
+msgid "Spam Subject Tag"
+msgstr "Spam-ûnderwerp-tag"
+
+#: sa_opts-dist.php:45
+msgid "*****SPAM*****"
+msgstr "*****SPAM*****"
+
+#. rewrite_subject
+#. 'rewrite_header subject'
+#: sa_opts-dist.php:48
+#: sa_opts-dist.php:63
+msgid "Rewrite Subject Line"
+msgstr "Underwerp-regel werskriuwe"
+
+#. To translators: %s is the default from subject_tag
+#: sa_opts-dist.php:50
+#, php-format
+msgid "SpamAssassin can re-write the subject line of e-mail that has been determined to be spam by prefixing the original subject with: %s.  To turn on this feature, select this option."
+msgstr "SpamAssassin kin de ûnderwerpregel fan in e-mail dy't as spam oanmerkt is werskriuwe troch it oarspronklike ûnderwerp foarôf gean te litten mei %s. Om dizze funksje oan te setten, dizze opsje selektearje."
+
+#. This is here to allow me to include the rewrite_subject title
+#. *
+#. * To Translators: %s is the title from rewrite_subject
+#.
+#: sa_opts-dist.php:60
+#, php-format
+msgid "The text to prefix to the subject of messages determined to be spam. %s must be turned on."
+msgstr "De tekst dy't foar it ûnderwerp setten wurdt fan berjochten dy't as spam oanmerkt binne. %s moat aktivearre wêze."
+
+#: sa_opts-dist.php:64
+msgid "SpamAssassin can re-write the subject line of e-mail that has been determined to be spam by prefixing the original subject with this value."
+msgstr "SpamAssassin kin de ûnderwerpregel fan e-mail dy't as spam oanmerkt is werskriuwe troch it oarspronklike ûnderwerp foarôf gean te litten mei dizze wearde."
+
+#. use_terse_report
+#: sa_opts-dist.php:70
+msgid "Short Report"
+msgstr "Koart rapport"
+
+#: sa_opts-dist.php:71
+msgid "This option will tell SpamAssassin to use a shorter spam report once the message has been found to be spam."
+msgstr "Dizze opsje fertelt SpamAssassin dat dizze in koarter spamrapport brûke moat as in berjocht spam blykt te wêzen."
+
+#. use_dcc
+#: sa_opts-dist.php:77
+msgid "Use DCC"
+msgstr "DCC brûke"
+
+#: sa_opts-dist.php:78
+msgid "Checks messages against the DCC (Distrubuted Checksum Clearinghouse) to see if a message matches a known spam message."
+msgstr "Kontrolearret berjochten tsjin de DCC (Distributed Checksum Clearinghouse) om nei te gean oft in berjocht oerienkomt mei in bekend spamberjocht."
+
+#. use_razor1
+#: sa_opts-dist.php:84
+msgid "Use SpamNet (version 1)"
+msgstr "SpamNet (ferzje 1) brûke"
+
+#: sa_opts-dist.php:85
+#: sa_opts-dist.php:92
+msgid "Checks messages against SpamNet to see if a message is a known spam message."
+msgstr "Kontrolearret berjochten tsjin SpamNet om te sjen oft in berjocht bekend stiet as spam."
+
+#. use_razor2
+#: sa_opts-dist.php:91
+msgid "Use SpamNet (version 2)"
+msgstr "SpamNet (ferzje 2) brûke"
+
+#. always_add_headers
+#: sa_opts-dist.php:98
+msgid "Always Add Headers"
+msgstr "Altyd kopteksten taheakje"
+
+#: sa_opts-dist.php:99
+msgid "Uncheck if you do not want to add the headers to non-spam."
+msgstr "Deselektearje as jo gjin kopteksten taheakje wolle oan berjochten dy't gjin spam binne."
+
+#. ok_languages
+#: sa_opts-dist.php:105
+msgid "Acceptable Languages"
+msgstr "Akseptearre talen"
+
+#: sa_opts-dist.php:106
+msgid "Select all the languages you expect to receive e-mail in."
+msgstr "Selektearje alle talen wêryn oan jo ferstjoerde e-mailberichten opsteld wêze kinne."
+
+#: sa_opts-dist.php:112
+msgid "All"
+msgstr "Alles"
+
+#: sa_opts-dist.php:113
+msgid "Afrikaans"
+msgstr "Afrikaansk"
+
+#: sa_opts-dist.php:114
+msgid "Albanian"
+msgstr "Albanysk"
+
+#: sa_opts-dist.php:115
+msgid "Amharic"
+msgstr "Amhaarsk"
+
+#: sa_opts-dist.php:116
+msgid "Arabic"
+msgstr "Arabysk"
+
+#: sa_opts-dist.php:117
+msgid "Armenian"
+msgstr "Armeensk"
+
+#: sa_opts-dist.php:118
+msgid "Basque"
+msgstr "Baskysk"
+
+#: sa_opts-dist.php:119
+msgid "Bosnian"
+msgstr "Bosnysk"
+
+#: sa_opts-dist.php:120
+msgid "Bulgarian"
+msgstr "Bulgaarsk"
+
+#: sa_opts-dist.php:121
+msgid "Byelorussian"
+msgstr "Wyt-Russysk"
+
+#: sa_opts-dist.php:122
+msgid "Catalan"
+msgstr "Katalaansk"
+
+#: sa_opts-dist.php:123
+msgid "Chinese"
+msgstr "Sinees"
+
+#: sa_opts-dist.php:124
+msgid "Croatian"
+msgstr "Kroaatsk"
+
+#: sa_opts-dist.php:125
+msgid "Czech"
+msgstr "Tsjechysk"
+
+#: sa_opts-dist.php:126
+msgid "Danish"
+msgstr "Deensk"
+
+#: sa_opts-dist.php:127
+msgid "Dutch"
+msgstr "Nederlânsk"
+
+#: sa_opts-dist.php:128
+msgid "English"
+msgstr "Ingelsk"
+
+#: sa_opts-dist.php:129
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#: sa_opts-dist.php:130
+msgid "Estonian"
+msgstr "Estlânsk"
+
+#: sa_opts-dist.php:131
+msgid "Finnish"
+msgstr "Finsk"
+
+#: sa_opts-dist.php:132
+msgid "French"
+msgstr "Frânsk"
+
+#: sa_opts-dist.php:133
+msgid "Frisian"
+msgstr "Frysk"
+
+#: sa_opts-dist.php:134
+msgid "Georgian"
+msgstr "Georgysk"
+
+#: sa_opts-dist.php:135
+msgid "German"
+msgstr "Dútsk"
+
+#: sa_opts-dist.php:136
+msgid "Greek"
+msgstr "Gryksk"
+
+#: sa_opts-dist.php:137
+msgid "Hebrew"
+msgstr "Hebreeuwsk"
+
+#: sa_opts-dist.php:138
+msgid "Hindi"
+msgstr "Hindoestaansk"
+
+#: sa_opts-dist.php:139
+msgid "Hungarian"
+msgstr "Hongaarsk"
+
+#: sa_opts-dist.php:140
+msgid "Icelandic"
+msgstr "Iislânsk"
+
+#: sa_opts-dist.php:141
+msgid "Indonesian"
+msgstr "Yndonesysk"
+
+#: sa_opts-dist.php:142
+msgid "Irish Gaelic"
+msgstr "Iersk Gaelic"
+
+#: sa_opts-dist.php:143
+msgid "Italian"
+msgstr "Italjaansk"
+
+#: sa_opts-dist.php:144
+msgid "Japanese"
+msgstr "Japansk"
+
+#: sa_opts-dist.php:145
+msgid "Korean"
+msgstr "Koreaansk"
+
+#: sa_opts-dist.php:146
+msgid "Latin"
+msgstr "Latyn"
+
+#: sa_opts-dist.php:147
+msgid "Latvian"
+msgstr "Letsk"
+
+#: sa_opts-dist.php:148
+msgid "Lithuanian"
+msgstr "Litousk"
+
+#: sa_opts-dist.php:149
+msgid "Malay"
+msgstr "Maleisk"
+
+#: sa_opts-dist.php:150
+msgid "Marathi"
+msgstr "Maraty"
+
+#: sa_opts-dist.php:151
+msgid "Nepali"
+msgstr "Nepaleesk"
+
+#: sa_opts-dist.php:152
+msgid "Norwegian"
+msgstr "Noarsk"
+
+#: sa_opts-dist.php:153
+msgid "Persian"
+msgstr "Perzysk"
+
+#: sa_opts-dist.php:154
+msgid "Polish"
+msgstr "Poalsk"
+
+#: sa_opts-dist.php:155
+msgid "Portuguese"
+msgstr "Portugeesk"
+
+#: sa_opts-dist.php:156
+msgid "Quechua"
+msgstr "Quechua"
+
+#: sa_opts-dist.php:157
+msgid "Rhaeto-Romance"
+msgstr "Reto-Romaansk"
+
+#: sa_opts-dist.php:158
+msgid "Romanian"
+msgstr "Roemeensk"
+
+#: sa_opts-dist.php:159
+msgid "Russian"
+msgstr "Russysk"
+
+#: sa_opts-dist.php:160
+msgid "Sanskrit"
+msgstr "Sanskryt"
+
+#: sa_opts-dist.php:161
+msgid "Scots"
+msgstr "Skotsk"
+
+#: sa_opts-dist.php:162
+msgid "Scottish Gaelic"
+msgstr "Skotsk Gaelic"
+
+#: sa_opts-dist.php:163
+msgid "Serbian"
+msgstr "Servysk"
+
+#: sa_opts-dist.php:164
+msgid "Slovak"
+msgstr "Slowaaksk"
+
+#: sa_opts-dist.php:165
+msgid "Slovenian"
+msgstr "Sloweensk"
+
+#: sa_opts-dist.php:166
+msgid "Spanish"
+msgstr "Spaansk"
+
+#: sa_opts-dist.php:167
+msgid "Swahili"
+msgstr "Swahily"
+
+#: sa_opts-dist.php:168
+msgid "Swedish"
+msgstr "Sweedsk"
+
+#: sa_opts-dist.php:169
+msgid "Tagalog"
+msgstr "Tagalog"
+
+#: sa_opts-dist.php:170
+msgid "Tamil"
+msgstr "Tamyl"
+
+#: sa_opts-dist.php:171
+msgid "Thai"
+msgstr "Taïs"
+
+#: sa_opts-dist.php:172
+msgid "Turkish"
+msgstr "Turksk"
+
+#: sa_opts-dist.php:173
+msgid "Ukrainian"
+msgstr "Oekraynsk"
+
+#: sa_opts-dist.php:174
+msgid "Vietnamese"
+msgstr "Fiëtnameesk"
+
+#: sa_opts-dist.php:175
+msgid "Welsh"
+msgstr "Welsh"
+
+#: sa_opts-dist.php:176
+msgid "Yiddish"
+msgstr "Jiddysk"
+
+#. use_bayes
+#: sa_opts-dist.php:179
+msgid "Use Bayesian Filter"
+msgstr "Bayesian-filter brûke"
+
+#: sa_opts-dist.php:180
+msgid "The Baysian Filter will learn what is spam and what isn't to become a better filter."
+msgstr "It Bayesian-filter sil leare wat spam is en wat net, om sa hieltiten better filterje te kinnen."
+
+#. use_bayes_rules
+#: sa_opts-dist.php:186
+msgid "Use Bayesian Filter Rules"
+msgstr "Bayesian-filterregels brûke"
+
+#: sa_opts-dist.php:187
+msgid "Turning this off allows you do disable the Baysian Filter rules while still training the filter."
+msgstr "As jo dit útskeakelje kinne jo de Bayesian-filterregels útsette wylst jo it filter noch trene."
+
+#. auto_learn
+#: sa_opts-dist.php:193
+msgid "Auto-learn"
+msgstr "Automatysk leare"
+
+#: sa_opts-dist.php:194
+msgid "Automatically feed high and low scoring mails into SpamAssassin's learning systems. (Currently, only Bayesian filtering is supported.)"
+msgstr "Foarsjoch it learsysteem fan SpamAssassin automatysk fan leech- en heechskoarende berjochten. (No wurdt allinnich Bayesian-filtering stipe.)"
+
+#. report_safe
+#: sa_opts-dist.php:200
+msgid "Spam Encapsulation"
+msgstr "Spam-ynkapseling"
+
+#: sa_opts-dist.php:201
+msgid "Encapsulate spam messages into a MIME or plain-text attachment, or you can disable it altogether."
+msgstr "Kapsel spamberjochten yn in MIME- of plattetekst-taheaksel, of jo kinne dit hielendal útskeakelje."
+
+#: sa_opts-dist.php:203
+msgid "Disabled"
+msgstr "Utskeakele"
+
+#: sa_opts-dist.php:204
+msgid "MIME Attachment"
+msgstr "MIME-taheaksel"
+
+#: sa_opts-dist.php:205
+msgid "Text Attachment"
+msgstr "Tekst-taheaksel"
+
+#. These options were removed as of SpamAssassin 2.50-ish
+#. They are here for those running older versions of SA.
+#. report_header
+#: sa_opts-dist.php:212
+msgid "Report in Header"
+msgstr "Rapportearje yn berjochtkop"
+
+#: sa_opts-dist.php:213
+msgid "SpamAssassin will create a report when it determines an e-mail message to be spam.  This report is normally prepended to the e-mail message.  To have the report written as part of the e-mail header, select this option."
+msgstr "SpamAssassin sil in rapport oanmeitsje as it in e-mailbericht oanmerkt as spam. Dit rapport wurdt normaliter boppe-yn it e-mailberjocht setten. As jo it rapport yn de berjochtkoppen sette litte wolle, selektearje dan dizze opsje."
+
+#. defang_mime
+#: sa_opts-dist.php:219
+msgid "Reformat HTML Spam"
+msgstr "HTML-spam omsette nei tekst"
+
+#: sa_opts-dist.php:220
+msgid "When an e-mail in HTML format is determined to be spam, SpamAssassin can convert the message to text. To allow this, select this option."
+msgstr "As in berjocht yn HTML-formaat as spam oanmerkt wurdt, dan kin SpamAssassin it berjocht omsette nei tekst. Om dit ta te litten, selektearje dizze opsje."
+
+#. White/black list info
+#: sa_opts-dist.php:250
+msgid "Whitelist From"
+msgstr "Op wite list fan"
+
+#: sa_opts-dist.php:251
+msgid "E-mail from these addresses will not be marked as spam. You may use '*' as a wildcard to allow a large number of addresses at one time. E.g. Whitelist From '*@aol.com' will not mark any message that claims to be from aol.com as spam."
+msgstr "E-mail ôfkomstich fan dizze adressen sil net as spam oanmerkt wurde. Jo meie '*' brûke as in jokerteken om grutte oantallen adressen yn ien kear ta te stean. Bg. 'Op wite list fan @home.nl' sil elk berjocht dat seit fan home.nl ôfkomstich te wêzen net markearre wurde as spam."
+
+#: sa_opts-dist.php:253
+msgid "Don't Whitelist From"
+msgstr "Net op wite list fan"
+
+#: sa_opts-dist.php:254
+msgid "This address will be excluded from a previous whitelist and will be treated as a normal address, i.e. it will not be automatically allowed."
+msgstr "Dit adres sil útsluten wurde fan in eardere wite list en sil behannele wurde as in normaal adres. It sil dus net automatysk talitten wurde."
+
+#: sa_opts-dist.php:256
+msgid "Blacklist From"
+msgstr "Swarte list fan"
+
+#: sa_opts-dist.php:257
+msgid "E-mail from these addresses will always be marked as spam. You may use '*' as a wildcard to block a large number of addresses at one time. E.g. Blacklist From '*@aol.com' will mark all messages that claims to be from aol.com as spam."
+msgstr "E-mail ôfkomstich fan dizze adressen sil altyd oanmerkt wurde as spam. Jo kinne '*' brûke as jokerteken om in grut oantal adressen yn ien kear te blokkearen. Bg. 'Op swarte list fan *@home.nl' sil elk berjocht dat seit fan home.nl ôfkomstich te wêzen markearre wurde as spam."
+
+#: sa_opts-dist.php:259
+msgid "Don't Blacklist From"
+msgstr "Net op swarte list fan"
+
+#: sa_opts-dist.php:260
+msgid "This address will be excluded from a previous blacklist and will be treated as a normal address, i.e. it will not be automatically denied."
+msgstr "Dit adres sil útsluten wurde fan in foarrige swarte list en sil as normaal adres behannele wurde. It sil dus net automatysk blokkearre wurde."
+
+#: sa_opts-dist.php:262
+msgid "Whitelist To"
+msgstr "Op wite list oan"
+
+#: sa_opts-dist.php:263
+msgid "E-mail to these addresses will not be marked as spam. This is useful for allowing e-mail lists. For example, you can allow all messages from an e-mail list that sends to 'Tofu-Support-List@beeflovers.com'. You may use '*' as a wildcard to allow a large number of addresses at one time. E.g. Whitelist To '*@aol.com' will not mark any message that claims to be to aol.com as spam."
+msgstr "E-mail dy't oan dizze adressen rjochten is, sil net as spam oanmerkt wurde. Dit is handich foar it talitten fan mailinglisten. Bygelyks, jo kinne alle berjochten tastean fan in mailinglist dy't ferstjoert oan 'Tofu-stipe-list@oranjekoekleafhawwers.nl'. Jo kinne '*' as jokerteken brûke om in grut oantal adressen yn ien kear ta te litten. Dus 'Op wite list oan *.pandorra.be' sil net ien fan de berjochten dy't adressearre binne oan pandorra.be markearje as spam."
+
+#: sa_opts-dist.php:265
+msgid "Blacklist To"
+msgstr "Op swarte list oan"
+
+#: sa_opts-dist.php:266
+msgid "E-mail to these addresses will be marked as spam. You may use '*' as a wildcard to reject a large number of addresses at one time. E.g. Blacklist To '*@aol.com' will mark all messages that claims to be to aol.com as spam."
+msgstr "E-mail dy't nei dizze adressen tastjoerd is, sil markearre wurde as spam. Jo kinne gebrûk meitsje fan '*' as in jokerteken om in grut oantal adressen yn ien kear te blokkearjen. Dus 'Swarte list oan *@pandorra.be' sil alle berjochten dy't adressearre binne oan pandorra.be markearje as spam."
+
+#: sa_settings.inc.php:114
+msgid "General Settings"
+msgstr "Algemiene ynstellingen"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:308
+#, php-format
+msgid "Database error: %s"
+msgstr "Databankfout: %s"
+
+#: sasql_db.php:366
+#, php-format
+msgid "sasql_AddPref_multiple Database error: %s"
+msgstr "sasql_AddPref_multiple databankfout: %s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:443
+#, php-format
+msgid "Database error %s: %s"
+msgstr "Databankfout %s: %s"
+
+#: sasql_hooks.php:111
+#: sasql_options.php:62
+msgid "Spam Filters"
+msgstr "Spamfilters"
+
+#: sasql_hooks.php:113
+msgid "Configure the behavior of your spam filters."
+msgstr "Stel it gedrach fan jo spamfilters yn."
+
+#: sasql_hooks.php:209
+msgid "Add Email to Whitelist"
+msgstr "E-mail oan wite list taheakje"
+
+#: sasql_hooks.php:210
+#: sasql_hooks.php:280
+msgid "Allow Sender"
+msgstr "Ofstjoerder tastean"
+
+#: sasql_hooks.php:211
+msgid "Add Domain to Whitelist"
+msgstr "Domein oan wite list taheakje"
+
+#: sasql_hooks.php:212
+msgid "Allow Domain"
+msgstr "Domein tastean"
+
+#: sasql_hooks.php:213
+msgid "Remove Email from Whitelist"
+msgstr "E-mail út wite list wiskje"
+
+#: sasql_hooks.php:214
+#: sasql_hooks.php:216
+#: sasql_hooks.php:223
+#: sasql_hooks.php:225
+msgid "remove"
+msgstr "wiskje"
+
+#: sasql_hooks.php:215
+msgid "Remove Domain from Whitelist"
+msgstr "Domein fan wite list wiskje"
+
+#: sasql_hooks.php:218
+msgid "Add Email to Blacklist"
+msgstr "E-mail oan swarte list taheakje"
+
+#: sasql_hooks.php:219
+msgid "Block Sender"
+msgstr "Ofstjoerder blokkearje"
+
+#: sasql_hooks.php:220
+msgid "Add Domain to Blacklist"
+msgstr "Domein oan swarte list taheakje"
+
+#: sasql_hooks.php:221
+msgid "Block Domain"
+msgstr "Domein blokkearje"
+
+#: sasql_hooks.php:222
+msgid "Remove Email from Blacklist"
+msgstr "E-mail fan swarte list wiskje"
+
+#: sasql_hooks.php:224
+msgid "Remove Domain from Blacklist"
+msgstr "Domein fan swarte list wiskje"
+
+#: sasql_hooks.php:231
+msgid "Address is already in your whitelist"
+msgstr "Adres stiet al op jo wite list"
+
+#: sasql_hooks.php:232
+#: sasql_hooks.php:240
+msgid "Whitelisted"
+msgstr "Op wite list"
+
+#: sasql_hooks.php:239
+msgid "Domain is already in your whitelist"
+msgstr "Domein stiet al op jo wite list"
+
+#: sasql_hooks.php:253
+msgid "Address is already in your blacklist"
+msgstr "Adres stiet al op jo swarte list"
+
+#: sasql_hooks.php:254
+#: sasql_hooks.php:262
+msgid "Blacklisted"
+msgstr "Op swarte list"
+
+#: sasql_hooks.php:261
+msgid "Domain is already in your blacklist"
+msgstr "Domein stiet al op jo swarte list"
+
+#: sasql_hooks.php:311
+#: sasql_hooks.php:369
+msgid "Learn as False Positive"
+msgstr "Oanmerke as falske positive"
+
+#: sasql_hooks.php:315
+#: sasql_hooks.php:373
+msgid "Learn as Spam"
+msgstr "Oanmerke as spam"
+
+#: sasql_options.php:62
+msgid "Options"
+msgstr "Opsjes"
+
+#: sasql_wblist.php:41
+#: sa_whitelist.inc.php:43
+msgid "Error: You must include an e-mail address."
+msgstr "Fout: slút in e-mailadres yn."
+
+#: sasql_wblist.php:48
+#: sa_whitelist.inc.php:49
+msgid "Error: You have entered an invalid e-mail address."
+msgstr "Fout: jo hawwe in ûnjildich e-mailadres ynfierd"
+
+#: sasql_wblist.php:53
+msgid "Error: Missing option."
+msgstr "Fout: opsje ûntbrekt."
+
+#: sa_whitelist.inc.php:53
+msgid "Error: You must select Allow or Deny."
+msgstr "Fout: selektearje tastean of wegerje."
+
+#: sa_whitelist.inc.php:76
+msgid "Global Allow / Deny Address List"
+msgstr "Globale list mei tastiene/wegere adressen"
+
+#: sa_whitelist.inc.php:83
+#: sa_whitelist.inc.php:125
+msgid "Address"
+msgstr "Adres"
+
+#: sa_whitelist.inc.php:84
+#: sa_whitelist.inc.php:126
+msgid "Type"
+msgstr "Type"
+
+#: sa_whitelist.inc.php:118
+msgid "Personal Allow / Deny Address List"
+msgstr "Persoanlike list mei tastiene/wegere adressen"
+
+#: sa_whitelist.inc.php:127
+msgid "Action"
+msgstr "Aksje"
+
+#: sa_whitelist.inc.php:134
+msgid "Address Removed"
+msgstr "Adres wiske"
+
+#: sa_whitelist.inc.php:160
+#, php-format
+msgid "Unknown option: %s"
+msgstr "Unbekende opsje: %s"
+
+#: sa_whitelist.inc.php:168
+msgid "Delete"
+msgstr "Wiskje"
+
+#: sa_whitelist.inc.php:174
+msgid "Edit"
+msgstr "Bewurkje"
+
+#. echo $edit;
+#: sa_whitelist.inc.php:188
+msgid "Edit Address"
+msgstr "Adres bewurkje"
+
+#: sa_whitelist.inc.php:194
+msgid "Add New Address"
+msgstr "Nii adres taheakje"
+
+#: sa_whitelist.inc.php:220
+msgid "Address:"
+msgstr "Adres:"
+
+#: sa_whitelist.inc.php:224
+msgid "Type:"
+msgstr "Type:"
+
+#. End Form
+#. Help
+#: sa_whitelist.inc.php:245
+msgid "Legend"
+msgstr "Leginda"
+

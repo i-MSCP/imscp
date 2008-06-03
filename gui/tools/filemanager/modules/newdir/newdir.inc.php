@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -102,7 +102,7 @@ function net2ftp_module_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_module_printBodyonload() {
+function net2ftp_module_printBodyOnload() {
 
 // --------------
 // This function prints the <body onload="" actions
@@ -111,7 +111,7 @@ function net2ftp_module_printBodyonload() {
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
 //	echo "";
 
-} // end net2ftp_printBodyonload
+} // end net2ftp_printBodyOnload
 
 // **                                                                                  **
 // **                                                                                  **
@@ -141,6 +141,10 @@ function net2ftp_module_printBody() {
 	if (isset($_POST["newNames"]) == true) { $newNames = validateEntry($_POST["newNames"]); }
 	else                                   { $newNames = ""; }
 
+// Keep track of the number of errors, warnings and notices
+	$net2ftp_output[0]["errors"] = 0;
+	$net2ftp_output[0]["warnings"] = 0;
+	$net2ftp_output[0]["notices"] = 0;
 
 // -------------------------------------------------------------------------
 // Variables for all screens
@@ -184,10 +188,14 @@ function net2ftp_module_printBody() {
 				ftp_newdirectory($conn_id, $newsubdir);
 				if ($net2ftp_result["success"] == false)  { 
 					setErrorVars(true, "", "", "", ""); // Continue anyway
-					$net2ftp_output["newdir"][] = __("Directory <b>%1\$s</b> could not be created.", htmlEncode2($newNames[$k])); 
+					$message = __("Directory <b>%1\$s</b> could not be created.", htmlEncode2($newNames[$k]));
+					$net2ftp_output[] = array("number" => $k, "message" => $message, "type" => "error");
+					$net2ftp_output[0]["errors"]++;
 				}
 				else                                      { 
-					$net2ftp_output["newdir"][] = __("Directory <b>%1\$s</b> was successfully created.", htmlEncode2($newNames[$k])); 
+					$message = __("Directory <b>%1\$s</b> was successfully created.", htmlEncode2($newNames[$k]));
+					$net2ftp_output[] = array("number" => $k, "message" => $message, "type" => "notice");
+					$net2ftp_output[0]["notices"]++;
 				}
 			} // End if
 		} // End for

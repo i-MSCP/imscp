@@ -1,7 +1,7 @@
 # translation of abook_import_export.po to Faroese
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# $Id: abook_import_export.po,v 1.1 2005/12/19 06:55:44 tokul Exp $
+# $Id: abook_import_export.po 10472 2005-12-19 06:55:43Z tokul $
 # Danial Olsen <danial@com-data.fo>, 2005.
 msgid ""
 msgstr ""

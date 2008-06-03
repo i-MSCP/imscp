@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: mini.po,v 1.1 2005/09/08 03:42:54 jervfors Exp $
+# $Id: mini.po 10076 2005-09-08 03:42:53Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mini 0.3rc1\n"

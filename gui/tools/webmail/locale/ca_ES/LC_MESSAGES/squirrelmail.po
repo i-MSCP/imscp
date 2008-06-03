@@ -2,7 +2,7 @@
 # Catalan Squirrelmail Translation
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Albert Cervera Areny <albertca@jazzfree.com>, 2002.
-# $Id: squirrelmail.po,v 1.5 2005/06/05 11:49:41 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"

@@ -2,7 +2,7 @@
 # SquirrelMail's vkeyboard plugin.
 # Copyright (c) 2004-2005 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
-# $Id: vkeyboard.po,v 1.3 2006/09/10 09:52:26 jervfors Exp $
+# $Id: vkeyboard.po 11689 2006-09-10 09:52:24Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: vkeyboard 0.8\n"

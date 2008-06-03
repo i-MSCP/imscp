@@ -1,7 +1,7 @@
 # translation of squirrelmail to Icelandic
 # Copyright (c) 2003-2004 The SquirrelMail Project Team
 # Hordur Mar Gestsson <zbot@kuntnet.org>, 2003
-# $Id: squirrelmail.po,v 1.4 2005/04/16 18:26:55 jervfors Exp $
+# $Id: squirrelmail.po 9317 2005-04-16 18:27:06Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"

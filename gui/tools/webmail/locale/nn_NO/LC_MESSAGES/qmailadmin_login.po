@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the qmailadmin_login plugin.
 # Copyright (c) 2005-2006 The Squirrelmail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2005-2006.
-# $Id: qmailadmin_login.po,v 1.2 2006/03/03 23:31:46 jervfors Exp $
+# $Id: qmailadmin_login.po 10855 2006-03-03 23:31:47Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: qmailadmin_login 1.1\n"

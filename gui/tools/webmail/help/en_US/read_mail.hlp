@@ -45,7 +45,7 @@
       Click this link to delete the message being currently viewed.
       All attachments of deleted mail are deleted as well.  You can prevent the 
       loss of attachments by Downloading them first (explained further in
-      this chapter).<BR>
+      this chapter).<br />
       In this context, deleting means that the message will be moved to
       the folder called Trash. If you wish to keep the message afterall, view
       the Trash folder and move the message out.
@@ -171,7 +171,7 @@
       on the file name will either display the attachment or present a 
       download dialog depending on the file type.  If you wish to download
       the file (rather than possibly viewing it), click on the "download" 
-      link on the right side.<BR>
+      link on the right side.<br />
       If your webbrowser supports viewing the attachment file type, another
       link, "view" will be displayed which displays the file in your browser.
       </p>

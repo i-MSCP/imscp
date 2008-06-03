@@ -1,7 +1,7 @@
 # SquirrelMail Bulgarian Translation
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # Stanislav Yordanov <stan@stud.ru.acad.bg>, 2003.
-# $Id: squirrelmail.po,v 1.4 2005/06/05 11:49:40 jervfors Exp $
+# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"

@@ -13,7 +13,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php 12749 2007-10-31 03:38:19Z jangliss $
+ * @version $Id: compose.php 13118 2008-05-08 07:37:14Z kink $
  * @package squirrelmail
  */
 
@@ -1431,8 +1431,18 @@ function getByteSize($ini_size) {
  * In the future the responsible backend should be automaticly loaded
  * and conf.pl should show a list of available backends.
  * The message also should be constructed by the message class.
+ *
+ * @param object $composeMessage The message being sent.  Please note
+ *                               that it is passed by reference and
+ *                               will be returned modified, with additional
+ *                               headers, such as Message-ID, Date, In-Reply-To,
+ *                               References, and so forth.
+ *
+ * @return boolean FALSE if delivery failed, or some non-FALSE value
+ *                 upon success.
+ *
  */
-function deliverMessage($composeMessage, $draft=false) {
+function deliverMessage(&$composeMessage, $draft=false) {
     global $send_to, $send_to_cc, $send_to_bcc, $mailprio, $subject, $body,
         $username, $popuser, $usernamedata, $identity, $idents, $data_dir,
         $request_mdn, $request_dr, $default_charset, $color, $useSendmail,
@@ -1551,7 +1561,7 @@ function deliverMessage($composeMessage, $draft=false) {
     if (!$useSendmail && !$draft) {
         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
         $deliver = new Deliver_SMTP();
-        global $smtpServerAddress, $smtpPort, $pop_before_smtp, $smtp_auth_mech;
+        global $smtpServerAddress, $smtpPort, $pop_before_smtp;
 
         $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
         
@@ -1577,20 +1587,16 @@ function deliverMessage($composeMessage, $draft=false) {
         $stream = $deliver->initStream($composeMessage,$sendmail_path);
     } elseif ($draft) {
         global $draft_folder;
-        require_once(SM_PATH . 'class/deliver/Deliver_IMAP.class.php');
         $imap_stream = sqimap_login($username, $key, $imapServerAddress,
                 $imapPort, 0);
         if (sqimap_mailbox_exists ($imap_stream, $draft_folder)) {
             require_once(SM_PATH . 'class/deliver/Deliver_IMAP.class.php');
             $imap_deliver = new Deliver_IMAP();
-            $length = $imap_deliver->mail($composeMessage, 0, $reply_id, $reply_ent_id);
-            sqimap_append ($imap_stream, $draft_folder, $length);
-            $imap_deliver->mail($composeMessage, $imap_stream, $reply_id, $reply_ent_id);
-            sqimap_append_done ($imap_stream, $draft_folder);
+            $succes = $imap_deliver->mail($composeMessage, $imap_stream, $reply_id, $reply_ent_id, $imap_stream, $draft_folder);
             sqimap_logout($imap_stream);
             unset ($imap_deliver);
             $composeMessage->purgeAttachments();
-            return $length;
+            return $succes;
         } else {
             $msg  = '<br />'.sprintf(_("Error: Draft folder %s does not exist."),
                 htmlspecialchars($draft_folder));
@@ -1600,7 +1606,7 @@ function deliverMessage($composeMessage, $draft=false) {
     }
     $succes = false;
     if ($stream) {
-        $length = $deliver->mail($composeMessage, $stream, $reply_id, $reply_ent_id);
+        $deliver->mail($composeMessage, $stream, $reply_id, $reply_ent_id);
         $succes = $deliver->finalizeStream($stream);
     }
     if (!$succes) {
@@ -1611,10 +1617,19 @@ function deliverMessage($composeMessage, $draft=false) {
         plain_error_message($msg, $color);
     } else {
         unset ($deliver);
-        $move_to_sent = getPref($data_dir,$username,'move_to_sent');
         $imap_stream = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 
-        /* Move to sent code */
+
+        // mark original message as having been replied to if applicable
+        global $passed_id, $mailbox, $action;
+        if ($action == 'reply' || $action == 'reply_all') {
+            sqimap_mailbox_select ($imap_stream, $mailbox);
+            sqimap_messages_flag ($imap_stream, $passed_id, $passed_id, 'Answered', false);
+        }
+
+
+        // copy message to sent folder
+        $move_to_sent = getPref($data_dir,$username,'move_to_sent');
         if (isset($default_move_to_sent) && ($default_move_to_sent != 0)) {
             $svr_allow_sent = true;
         } else {
@@ -1635,19 +1650,12 @@ function deliverMessage($composeMessage, $draft=false) {
         }
 
         if (($fld_sent && $svr_allow_sent && !$lcl_allow_sent) || ($fld_sent && $lcl_allow_sent)) {
-            sqimap_append ($imap_stream, $sent_folder, $length);
             require_once(SM_PATH . 'class/deliver/Deliver_IMAP.class.php');
             $imap_deliver = new Deliver_IMAP();
-            $imap_deliver->mail($composeMessage, $imap_stream, $reply_id, $reply_ent_id);
-            sqimap_append_done ($imap_stream, $sent_folder);
+            $imap_deliver->mail($composeMessage, $imap_stream, $reply_id, $reply_ent_id, $imap_stream, $sent_folder);
             unset ($imap_deliver);
         }
-        global $passed_id, $mailbox, $action;
         $composeMessage->purgeAttachments();
-        if ($action == 'reply' || $action == 'reply_all') {
-            sqimap_mailbox_select ($imap_stream, $mailbox);
-            sqimap_messages_flag ($imap_stream, $passed_id, $passed_id, 'Answered', false);
-        }
         sqimap_logout($imap_stream);
     }
     return $succes;

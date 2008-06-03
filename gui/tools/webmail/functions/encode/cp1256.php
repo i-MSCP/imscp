@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: cp1256.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: cp1256.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  * @subpackage encode
  */
@@ -177,4 +177,3 @@ function unicodetocp1256($var) {
     }
     return $ret;
 }
-?>

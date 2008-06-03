@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: restrict_senders.po,v 1.6 2005/06/10 16:21:19 jervfors Exp $
+# $Id: restrict_senders.po 9580 2005-06-10 16:28:53Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: restrict_senders\n"

@@ -36,6 +36,10 @@ require_once("./main.inc.php");
 //    be called once before the other net2ftp() calls!
 // ------------------------------------------------------------------------
 net2ftp("sendHttpHeaders");
+if ($net2ftp_result["success"] == false) {
+	require_once("./skins/omega/error.template.php");
+	exit();
+}
 
 // <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 ?>
@@ -50,7 +54,7 @@ net2ftp("sendHttpHeaders");
 <?php net2ftp("printJavascript"); ?>
 <?php net2ftp("printCss"); ?>
 </head>
-<body onload="<?php net2ftp("printBodyonload"); ?>">
+<body onload="<?php net2ftp("printBodyOnload"); ?>">
 
 <?php net2ftp("printBody"); ?>
 

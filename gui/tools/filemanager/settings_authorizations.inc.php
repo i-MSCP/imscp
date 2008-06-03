@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2007 by David Gartner                         |
+//  |              Copyright (c) 2003-2008 by David Gartner                         |
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 //  |                                                                               |
@@ -59,23 +59,23 @@ $net2ftp_settings["allowed_ftpserverport"] = "21";
 
 
 // ----------------------------------------------------------------------------------
-// Allowed IP addresses from which a user can connect
+// Allowed IP addresses or IP address ranges from which a user can connect
 // Set the first entry to ALL, or enter a list of allowed IP addresses
 // ----------------------------------------------------------------------------------
 
 $net2ftp_settings["allowed_addresses"][1] = "ALL";
-//$net2ftp_settings["allowed_addresses"][1] = "127.0.0.1";
-//$net2ftp_settings["allowed_addresses"][2] = "127.0.0.2";
-//$net2ftp_settings["allowed_addresses"][3] = "192.168.1.3";
+//$net2ftp_settings["allowed_addresses"][1] = "127.0.0.1";   // IP address
+//$net2ftp_settings["allowed_addresses"][2] = "192.168.100"; // IP address range
+//$net2ftp_settings["allowed_addresses"][3] = "10.0.0.1";
 
 
 // ----------------------------------------------------------------------------------
-// Banned IP addresses from which a user can connect
+// Banned IP addresses or IP address ranges from which a user may not connect
 // Set the first entry to NONE, or enter a list of banned IP addresses
 // ----------------------------------------------------------------------------------
 
 $net2ftp_settings["banned_addresses"][1] = "NONE";
-//$net2ftp_settings["banned_addresses"][1] = "192.168.1.1";
+//$net2ftp_settings["banned_addresses"][1] = "127.0.0.1";
 //$net2ftp_settings["banned_addresses"][2] = "192.168.1.2";
 //$net2ftp_settings["banned_addresses"][3] = "192.168.1.3";
 

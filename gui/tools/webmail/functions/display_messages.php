@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display_messages.php 12797 2007-12-01 02:29:12Z pdontthink $
+ * @version $Id: display_messages.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 
@@ -170,5 +170,3 @@ function error_option_save($message) {
 
     $optpage_save_error=array_merge($optpage_save_error,array($message));
 }
-// vim: et ts=4
-?>

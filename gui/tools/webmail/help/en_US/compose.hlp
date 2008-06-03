@@ -21,7 +21,7 @@
       From
    </title>
    <description>
-      <p>The <B>From:</B> field will only be displayed if you have enabled multiple
+      <p>The <b>From:</b> field will only be displayed if you have enabled multiple
       identities (through the Options, Personal Preferences menu). If you've done
       so you can choose which identity you want to use, i.e. which name and
       email address appear as the From-line of your message.
@@ -35,7 +35,7 @@
    </title>
    <description>
       <p>
-      Next is the <B>To:</B> field.  In this field you should 
+      Next is the <b>To:</b> field.  In this field you should 
       enter the email address of the person or persons you are sending a 
       message to.  You may enter as many addresses as you like, separating 
       them with a comma.  One may also press the "Addresses" button to fill 
@@ -52,14 +52,14 @@
    </title>
    <description>
       <p>
-      Next is the <B>CC:</B> field.  CC is an abbreviation for <B>C</B>arbon 
-      <B>C</B>opy.  If you wish to send someone else a copy of the message 
+      Next is the <b>CC:</b> field.  CC is an abbreviation for <b>C</b>arbon 
+      <b>C</b>opy.  If you wish to send someone else a copy of the message 
       here is where you would do that.  Think of this in the same way a memo 
-      is laid out.  You can have as many people as you like in the <B>To:</B>, 
-      <B>CC:</B>, and <B>BCC:</B> fields.  Only the people to whom the message 
-      has direct impact would be in the <B>To:</B> field while recipients to 
-      whom this is possibly only informative would be in the <B>CC:</B> and 
-      <B>BCC:</B> fields.
+      is laid out.  You can have as many people as you like in the <b>To:</b>, 
+      <b>CC:</b>, and <b>BCC:</b> fields.  Only the people to whom the message 
+      has direct impact would be in the <b>To:</b> field while recipients to 
+      whom this is possibly only informative would be in the <b>CC:</b> and 
+      <b>BCC:</b> fields.
       </p>
    </description>
 </section>
@@ -70,9 +70,9 @@
    </title>
    <description>
       <p>
-      BCC is an abbreviation for <B>B</B>lind <B>C</B>arbon <B>C</B>opy.
-      Use this to send someone a copy of the email <I>without</I> the 
-      recipients in the <B>To:</B> or <B>CC:</B> fields knowing about it.
+      BCC is an abbreviation for <b>B</b>lind <b>C</b>arbon <b>C</b>opy.
+      Use this to send someone a copy of the email <i>without</i> the 
+      recipients in the <b>To:</b> or <b>CC:</b> fields knowing about it.
       </p>
    </description>
 </section>
@@ -157,7 +157,7 @@
       <p>
       Located at the bottom of the Compose page, this feature allows you to 
       include a file with your email.  The file must be located on your 
-      <I>local</I> machine or network to be attached.  A browse button is 
+      <i>local</i> machine or network to be attached.  A browse button is 
       present so you may search through your directory structure and click 
       on the file to include.  Alternatively you may type directly into the 
       attach field if you know the full path and exact file name.  Simply 

@@ -107,7 +107,7 @@ if ( FCKBrowserInfo.IsIE )
 //		9. Start the editor.
 
 // Start the editor as soon as the window is loaded.
-function Window_onload()
+function Window_OnLoad()
 {
 	// There is a bug on Netscape when rendering the frame. It goes over the
 	// right border. So we must correct it.
@@ -116,7 +116,7 @@ function Window_onload()
 
 	LoadConfigFile() ;
 }
-window.onload = Window_onload ;
+window.onload = Window_OnLoad ;
 
 function LoadConfigFile()
 {

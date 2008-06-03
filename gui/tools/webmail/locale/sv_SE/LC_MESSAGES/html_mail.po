@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2005 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: html_mail.po,v 1.4 2005/10/26 05:15:12 jervfors Exp $
+# $Id: html_mail.po 10201 2005-10-26 05:15:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: html_mail 2.3\n"

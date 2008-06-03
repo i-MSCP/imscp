@@ -1,102 +1,101 @@
+# translation of vacation_local.po to Dutch
+# Tony den Haan <tony@dhits.nl>, 2006.
+# M.J. Prinsen <translation@prinsenonline.com>, 2006.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# translation of vacation_local.po to
 # Dutch (nl_NL) vacation_local Translation (SquirrelMail plugin)
 # Copyright (c) 1999-2006 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Tony den Haan <tony@dhits.nl>, 2006.
-# M.J. Prinsen <translation@prinsenonline.com>, 2006.
-# $Id: vacation_local.po,v 1.2 2006/04/20 12:23:14 jervfors Exp $
+# $Id: vacation_local.po 12641 2007-08-30 15:16:19Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: vacation_local\n"
 "POT-Creation-Date: 2005-07-20 17:05+0200\n"
-"PO-Revision-Date: 2006-04-20 14:14+0200\n"
-"Last-Translator: M.J. Prinsen <translation@prinsenonline.com>\n"
+"PO-Revision-Date: 2007-04-04 21:57+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
 "Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 msgid "Vacation Message"
-msgstr "Vakantie Melding"
+msgstr "Vakantiemelding"
 
 msgid ""
 "Set up an auto-reply message and optionally forward your incoming email. "
 "This can be useful when you are away on vacation."
 msgstr ""
-"Stel een auto-reply bericht en/of stuur inkomende mail door. Dit is handig "
-"als je op vakantie bent"
+"Stel een auto-reply-bericht op en/of stuur inkomende e-mail door. Dit is handig "
+"als u op vakantie bent"
 
 msgid "Bad characters in list of forwarding address."
-msgstr "Ongeldige tekens in de lijst van doorstuuradressen"
+msgstr "Ongeldige tekens in de lijst van doorstuuradressen."
 
 msgid "Options"
 msgstr "Instellingen"
 
 msgid "Change Vacation Message"
-msgstr "Vakantie mededeling wijzigen"
+msgstr "Vakantiemelding wijzigen"
 
 msgid "Settings Saved"
 msgstr "Instellingen opgeslagen"
 
 msgid "Send auto-reply to sender?"
-msgstr "Melding terugsturen naar afzender?"
+msgstr "Melding sturen naar afzender?"
 
 msgid "Vacation subject:"
-msgstr "Vakantie onderwerp:"
+msgstr "Vakantie-onderwerp:"
 
 msgid "Vacation message:"
-msgstr "Vakantie bericht:"
+msgstr "Vakantiebericht:"
 
 msgid "Forward incoming messages to addresses listed below?"
-msgstr "Inkomende mails doorsturen naar onderstaande adressen?"
+msgstr "Inkomende berichten doorsturen naar onderstaande adressen?"
 
 msgid "No local delivery; forward and/or auto-reply only."
-msgstr "Geen lokale opslag, alleen doorsturen en/of vakantiemelding sturen"
+msgstr "Geen lokale opslag, alleen doorsturen en/of vakantiemelding sturen."
 
 msgid "Forwarding email addresses (one address per line)"
 msgstr "Doorstuuradressen (1 per regel)"
 
 msgid "Submit"
-msgstr "Opslaan"
+msgstr "Indienen"
 
 msgid "Error: Could not bind to LDAP server."
-msgstr "Fout: Kan geen verbinding met LDAP server krijgen."
+msgstr "Fout: kan geen verbinding met LDAP-server krijgen."
 
 #, php-format
 msgid "Error: Could not find FTP server for %s in LDAP server."
-msgstr "Fout: Kan geen FTP server voor %s vinden op LDAP server."
+msgstr "Fout: kan geen FTP-server voor %s vinden op de LDAP-server."
 
 msgid "Error: Could not connect to LDAP server."
-msgstr "Fout: Kan geen verbinding maken met de LDAP server."
+msgstr "Fout: kan geen verbinding maken met de LDAP-server."
 
 msgid "Error: Unable to connect to FTP server. Please try again later."
-msgstr ""
-"Fout: Kan geen verbinding maken met de FTP server. Probeer later opnieuw."
+msgstr "Fout: kan geen verbinding maken met de FTP-server. Probeer het later opnieuw."
 
 msgid ""
 "Error: Unable to log in to FTP server. Please contact your system "
 "administrator."
-msgstr ""
-"Fout: Kan niet inloggen op FTP server. Neem contact op met uw "
-"systeembeheerder."
+msgstr "Fout: kan niet inloggen op de FTP-server. Neem contact op met uw systeembeheerder."
 
 msgid ""
 "Error: Unable to switch to passive FTP mode. Please contact your system "
 "administrator."
 msgstr ""
-"Fout: Kan niet omschakelen naar passive FTP. Neem contact op met uw "
+"Fout: kan niet omschakelen naar passive-FTP. Neem contact op met uw "
 "systeembeheerder."
 
 msgid "Error: Unable to upload file. Please contact your system administrator."
-msgstr ""
-"Fout: Kan bestand niet uploaden. Neem contact op met uw systeembeheerder."
+msgstr "Fout: kan bestand niet uploaden. Neem contact op met uw systeembeheerder."
 
 msgid "An error occurred uploading the file:"
 msgstr "Er is een fout opgetreden bij het uploaden van bestand:"
 
-msgid ""
-"Error: unable to download file. Please contact your system administrator."
+msgid "Error: unable to download file. Please contact your system administrator."
 msgstr ""
-"Fout: Kan het bestand niet downloaden. Neem contact op met uw "
+"Fout: kan het bestand niet downloaden. Neem contact op met uw "
 "systeembeheerder."
 
 msgid "An error occurred downloading the file:"
@@ -104,7 +103,7 @@ msgstr "Er is een fout opgetreden bij het downloaden van bestand:"
 
 msgid "Error: unable to delete file. Please contact your system administrator."
 msgstr ""
-"Fout: Kan het bestand niet verwijderen. Neem contact op met uw "
+"Fout: kan het bestand niet verwijderen. Neem contact op met uw "
 "systeembeheerder."
 
 msgid "An error occurred deleting the file:"
@@ -117,12 +116,13 @@ msgid ""
 "An error occurred attempting to read temp file; check permissions on "
 "attachments directory."
 msgstr ""
-"Fout bij het lezen van tijdelijk bestand. Controleer de rechten op de "
+"Fout bij lezen van tijdelijk bestand. Controleer de toegangsrechten op de "
 "directory met bijlagen."
 
 msgid ""
 "An error occurred attempting to create temp file; check permissions on "
 "attachments directory."
 msgstr ""
-"Fout bij het maken van tijdelijk bestand. Controleer de rechten op de "
+"Fout bij aanmaken van tijdelijk bestand. Controleer de toegangsrechten op de "
 "directory met bijlagen."
+

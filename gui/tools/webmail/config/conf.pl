@@ -6,7 +6,7 @@
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 12692 2007-09-18 20:57:29Z pdontthink $
+# $Id: conf.pl 12949 2008-02-20 19:11:41Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -354,9 +354,14 @@ $abook_file_line_length = 2048          if ( !$abook_file_line_length );
 
 if ( $ARGV[0] eq '--install-plugin' ) {
     print "Activating plugin " . $ARGV[1] . "\n";
-    push @plugins, $ARGV[1];
-    save_data();
-    exit(0);
+    if ( -d "../plugins/" . $ARGV[1]) {
+        push @plugins, $ARGV[1];
+        save_data();
+        exit(0);
+    } else {
+        print "No such plugin.\n";
+        exit(1);
+    }
 } elsif ( $ARGV[0] eq '--remove-plugin' ) {
     print "Removing plugin " . $ARGV[1] . "\n";
     foreach $plugin (@plugins) {
@@ -500,24 +505,24 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
         print "R   Return to Main Menu\n";
     } elsif ( $menu == 3 ) {
         print $WHT. "Folder Defaults\n" . $NRM;
-        print "1.  Default Folder Prefix         : $WHT$default_folder_prefix$NRM\n";
-        print "2.  Show Folder Prefix Option     : $WHT$show_prefix_option$NRM\n";
-        print "3.  Trash Folder                  : $WHT$trash_folder$NRM\n";
-        print "4.  Sent Folder                   : $WHT$sent_folder$NRM\n";
-        print "5.  Drafts Folder                 : $WHT$draft_folder$NRM\n";
-        print "6.  By default, move to trash     : $WHT$default_move_to_trash$NRM\n";
-        print "7.  By default, move to sent      : $WHT$default_move_to_sent$NRM\n";
-        print "8.  By default, save as draft     : $WHT$default_save_as_draft$NRM\n";
-        print "9.  List Special Folders First    : $WHT$list_special_folders_first$NRM\n";
-        print "10. Show Special Folders Color    : $WHT$use_special_folder_color$NRM\n";
-        print "11. Auto Expunge                  : $WHT$auto_expunge$NRM\n";
-        print "12. Default Sub. of INBOX         : $WHT$default_sub_of_inbox$NRM\n";
-        print "13. Show 'Contain Sub.' Option    : $WHT$show_contain_subfolders_option$NRM\n";
-        print "14. Default Unseen Notify         : $WHT$default_unseen_notify$NRM\n";
-        print "15. Default Unseen Type           : $WHT$default_unseen_type$NRM\n";
-        print "16. Auto Create Special Folders   : $WHT$auto_create_special$NRM\n";
-        print "17. Folder Delete Bypasses Trash  : $WHT$delete_folder$NRM\n";
-        print "18. Enable /NoSelect folder fix   : $WHT$noselect_fix_enable$NRM\n";
+        print "1.  Default Folder Prefix          : $WHT$default_folder_prefix$NRM\n";
+        print "2.  Show Folder Prefix Option      : $WHT$show_prefix_option$NRM\n";
+        print "3.  Trash Folder                   : $WHT$trash_folder$NRM\n";
+        print "4.  Sent Folder                    : $WHT$sent_folder$NRM\n";
+        print "5.  Drafts Folder                  : $WHT$draft_folder$NRM\n";
+        print "6.  By default, move to trash      : $WHT$default_move_to_trash$NRM\n";
+        print "7.  By default, save sent messages : $WHT$default_move_to_sent$NRM\n";
+        print "8.  By default, save as draft      : $WHT$default_save_as_draft$NRM\n";
+        print "9.  List Special Folders First     : $WHT$list_special_folders_first$NRM\n";
+        print "10. Show Special Folders Color     : $WHT$use_special_folder_color$NRM\n";
+        print "11. Auto Expunge                   : $WHT$auto_expunge$NRM\n";
+        print "12. Default Sub. of INBOX          : $WHT$default_sub_of_inbox$NRM\n";
+        print "13. Show 'Contain Sub.' Option     : $WHT$show_contain_subfolders_option$NRM\n";
+        print "14. Default Unseen Notify          : $WHT$default_unseen_notify$NRM\n";
+        print "15. Default Unseen Type            : $WHT$default_unseen_type$NRM\n";
+        print "16. Auto Create Special Folders    : $WHT$auto_create_special$NRM\n";
+        print "17. Folder Delete Bypasses Trash   : $WHT$delete_folder$NRM\n";
+        print "18. Enable /NoSelect folder fix    : $WHT$noselect_fix_enable$NRM\n";
         print "\n";
         print "R   Return to Main Menu\n";
     } elsif ( $menu == 4 ) {
@@ -1710,11 +1715,12 @@ sub command24a {
     return $default_move_to_trash;
 }
 
-# default move to sent 
+# default move to sent (save sent messages)
 sub command24b {
-    print "By default, should messages get moved to the sent folder?  You\n";
-    print "can specify the default sent folder in option 4.  If this is set\n";
-    print "to false, messages will get sent and no copy will be made.\n";
+    print "By default, should copies of outgoing messages get saved in the\n";
+    print "sent folder?  You can specify the default sent folder in option 4.\n";
+    print "If this is set to false, messages will get sent and no copy will\n";
+    print "be made.\n";
     print "\n";
     print "Sent folder is currently: $sent_folder\n";
     print "\n";
@@ -1724,7 +1730,7 @@ sub command24b {
     } else {
         $default_value = "n";
     }
-    print "By default, move to sent (y/n) [$WHT$default_value$NRM]: $WHT";
+    print "By default, save sent messages (y/n) [$WHT$default_value$NRM]: $WHT";
     $new_show = <STDIN>;
     if ( ( $new_show =~ /^y\n/i ) || ( ( $new_show =~ /^\n/ ) && ( $default_value eq "y" ) ) ) {
         $default_move_to_sent = "true";
@@ -1743,7 +1749,7 @@ sub command24c {
     print "Drafts folder is currently: $draft_folder\n";
     print "\n";
 
-    if ( lc($default_move_to_draft) eq "true" ) {
+    if ( lc($default_save_as_draft) eq "true" ) {
         $default_value = "y";
     } else {
         $default_value = "n";

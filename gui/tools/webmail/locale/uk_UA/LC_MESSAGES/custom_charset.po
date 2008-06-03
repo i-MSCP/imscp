@@ -1,7 +1,7 @@
 # SquirrelMail custom_charset plugin Ukrainian translation
 # Copyright (c) 2006 SquirrelMail Project Team
 # Serhij Dubyk <dubyk@library.lviv.ua>, 2006.
-# $Id: custom_charset.po,v 1.1 2006/03/09 20:24:03 tokul Exp $
+# $Id: custom_charset.po 10909 2006-03-09 20:24:03Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: custom_charset 1.1\n"

@@ -63,7 +63,7 @@
       <b>Nuo</b> - Paieška vykdoma žinutės siuntėjo lauke. Realiai lauko 
       turinys šiek tiek skiriasi nuo to, ką jūs matote aplankų sąrašuose.
       Paprastai "Nuo" laukas saugo vardą IR elektroninio pašto adresą. Tačiau 
-      Squirrelmail parodo tik vardą. Todėl paieškos kriterijus gali sutapti 
+      SquirrelMail parodo tik vardą. Todėl paieškos kriterijus gali sutapti 
       ne tik su kieno nors vardu, bet ir su elektroninio pašto adresu.
       </p>
       <p>

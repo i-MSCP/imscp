@@ -2,7 +2,7 @@
 # Copyright (C) 2006 The SquirrelMail Project
 # This file is distributed under the same license as the squirrelmail package.
 # Tamuna <tchangiani@saba.edu.ge>, 2006.
-# $Id: squirrelmail.po,v 1.3 2006/03/10 18:31:02 tokul Exp $
+# $Id: squirrelmail.po 10964 2006-03-10 18:31:02Z tokul $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4.5\n"
