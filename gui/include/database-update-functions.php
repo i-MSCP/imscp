@@ -90,13 +90,19 @@ function executeDatabaseUpdates() {
 		// Get the needed function name
 		$functionName 	= returnFunctionName($newRevision);
 
-		// Create a empty array 
-		$queryArray 	= array();
+		// Create some empty arrays
+		$tmpArray 		= array();
+		$queryArray		= array();
 
 		// Pull the query from the update function
-		$queryArray[] 	= $functionName();
+		$tmpArray 		= $functionName();
 
-		// Query to set the new Database Revision
+		// Put each query into the queryArray
+		foreach($tmpArray as $oneEntry) {
+			$queryArray[] = $oneEntry;
+		}
+		
+		// Add the query to set the new Database Revision
 		$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
 
 		// Start the Transaction
@@ -122,6 +128,7 @@ function executeDatabaseUpdates() {
 
 /*
  * Insert the update functions below this entry please. The revision has to be ascending and unique.
+ * Each databaseUpdate function has to return a array. Even if the array contains only one entry.
  * Don't insert an update twice!
  */
 

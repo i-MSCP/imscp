@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-04 Jochen Manz
+	- GUI:
+		* Fixed the database update functionality
+
 2008-06-03 Benedikt Heintel
 	- TOOLS:
 		* Updated net2ftp to version 0.97
@@ -23,7 +27,7 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		* Fixed #1324: (freebsd) fix freebsd awstats and cronjob
 
-2008-05-29 Jochen Manz
+2008-06-01 Jochen Manz
 	- GUI:
 		* Fixed #1323: some better web accessability - (Part 2); removed doubled javascript code
 		* Fixed #1321: tiny layout fix for some khtml/webkit based browsers
