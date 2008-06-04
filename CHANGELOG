@@ -3,7 +3,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-06-04 Jochen Manz
 	- GUI:
-		* Fixed the database update functionality
+		* Fixed #1331: unknown column 'mail_auto_respond_text' in 'field list'
 
 2008-06-03 Benedikt Heintel
 	- TOOLS:
