@@ -1018,7 +1018,6 @@ sub setup_php {
 	#
 
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-
 	my $bk_dir = "$cfg_dir/backup";
 
 	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi_ispcp.conf');
@@ -1371,7 +1370,7 @@ sub setup_mta {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/postfix";
-	my $bk_dir = "$cfg_dir/backup";
+	my $bk_dir  = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 	my $vrl_dir = "$cfg_dir/ispcp";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
@@ -1562,7 +1561,7 @@ sub setup_ftpd {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/proftpd";
-	my $bk_dir = "$cfg_dir/backup";
+	my $bk_dir  = "$cfg_dir/backup";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
 	if ($main::cfg{'CMD_FTPD'} ne 'no') {

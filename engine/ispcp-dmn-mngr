@@ -1623,7 +1623,7 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 	}
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
-		my $ini_tpl = undef;
+		my $ini_tpl 	= undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -1651,7 +1651,7 @@ sub dmn_add_httpd_file_data {
 	#
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 		my $starter_tpl = undef;
-		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
+		my $cfg_dir 	= "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php5-fcgi-starter.tpl');
 		return $rs if ($rs != 0);

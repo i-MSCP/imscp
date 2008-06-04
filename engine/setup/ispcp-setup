@@ -517,35 +517,27 @@ sub setup_system_dirs {
 	push_el(\@main::el, 'setup_system_dirs()', 'Starting...');
 
 	$rs = make_dir($main::cfg{'APACHE_WWW_DIR'}, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'APACHE_USERS_LOG_DIR'}, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'LOG_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'BACKUP_FILE_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-
 	return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'PHP_STARTER_DIR'}, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0755);
-
 	return $rs if ($rs != 0);
 
 	# AWStats dir, use of $main::ua{'awstats_on'}, instead of $main::cfg{'AWSTATS_ACTIVE'},
@@ -569,91 +561,68 @@ sub setup_config {
 	push_el(\@main::el, 'setup_config()', 'Starting...');
 
 	$rs = set_conf_val('SERVER_HOSTNAME', $main::ua{'hostname'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('BASE_SERVER_IP', $main::ua{'eth_ip'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('BASE_SERVER_VHOST', $main::ua{'admin_vhost'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('DATABASE_HOST', $main::ua{'db_host'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('DATABASE_NAME', $main::ua{'db_name'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('DATABASE_USER', $main::ua{'db_user'});
-
 	return $rs if ($rs != 0);
 
 	if ($main::ua{'db_password'} ne '') {
-
 		($rs, $rdata) = encrypt_db_password($main::ua{'db_password'});
-
 		return $rs if ($rs != 0);
 
 		$rs = set_conf_val('DATABASE_PASSWORD', $rdata);
-
 		return $rs if ($rs != 0);
-
 	}
 
 	$rs = set_conf_val('MTA_MAILBOX_MIN_UID', $main::ua{'su_uid'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('MTA_MAILBOX_UID', $main::ua{'su_uid'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('MTA_MAILBOX_GID', $main::ua{'su_gid'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('APACHE_SUEXEC_MIN_UID', $main::ua{'vu_uid'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('APACHE_SUEXEC_MIN_GID', $main::ua{'vu_gid'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $main::ua{'admin_email'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('SECONDARY_DNS', $main::ua{'secondary_dns'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('MYSQL_PREFIX', $main::ua{'mysql_prefix'});
-
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('MYSQL_PREFIX_TYPE', $main::ua{'mysql_prefix_type'});
-
 	return $rs if ($rs != 0);
 
 	$rs = store_conf();
-
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_config()', 'Ending...');
@@ -682,9 +651,7 @@ sub setup_sql {
 
 
 		# Let's reset data;
-
 		$main::db = undef;
-
 		$main::db_name = '';
 
 		@main::db_connect = (
@@ -918,52 +885,6 @@ sub setup_sql {
 
 }
 
-sub setup_resolver {
-
-	my ($rs, $data, $resolv_data, $cmd) = (undef, undef, undef, undef);
-
-	push_el(\@main::el, 'setup_resolver()', 'Starting...');
-
-	push_el(\@main::el, 'setup_resolver()', 'Not doing anything because of security concerns');
-
-	if ( 0 ) {
-
-    	my $resolv_file = "/etc/resolv.conf";
-
-    	#Remove old nameservers
-
-    	$cmd = "$main::cfg{'CMD_CP'} -p -f $resolv_file $resolv_file.bkp";
-
-    	$rs = sys_command_rs($cmd);
-
-    	return $rs if ($rs != 0);
-
-    	$data = "nameserver 127.0.0.1\n";
-
-    	if ($main::cfg{'SECONDARY_DNS'} ne '') {
-    		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
-    	}
-
-    	$resolv_data = get_file($resolv_file);
-    	# Comment this line if removing the existing nameservers causes any problem
-    	#$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
-
-    	$data .= $resolv_data;
-
-		# security fix:
-    	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
-
-    	$rs = store_file($resolv_file, $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-    	return $rs if ($rs != 0);
-
-	}
-
-	push_el(\@main::el, 'setup_resolver()', 'Ending...');
-
-	return 0;
-
-}
-
 sub setup_hosts {
 
 	my ($rs, $data, $cmd) = (undef, undef, undef);
@@ -997,7 +918,6 @@ sub setup_hosts {
 	$data .= "ff02::3\tip6-allhosts\n";
 
 	$rs = store_file($hosts_file, $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_hosts()', 'Ending...');
@@ -1024,9 +944,6 @@ sub setup_host_system {
 	return $rs if ($rs != 0);
 
 	$rs = setup_crontab();
-	return $rs if ($rs != 0);
-
-	$rs = setup_resolver();
 	return $rs if ($rs != 0);
 
 	$rs = setup_hosts();

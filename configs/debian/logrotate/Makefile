@@ -40,4 +40,3 @@ install:
 uninstall:
 
 	rm -rf $(ROOT_CONF)/logrotate.d/ispcp
-

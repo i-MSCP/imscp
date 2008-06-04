@@ -584,6 +584,151 @@ sub update_pma {
 	return 0;
 }
 
+sub update_httpd {
+	push_el(\@main::el, 'update_httpd()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+	my $bk_dir = "$cfg_dir/backup";
+	my $wrk_dir = "$cfg_dir/working";
+	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
+	my %tag_hash = ();
+
+	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+		sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/ispcp-setup-services.log");
+	}
+
+	#
+	# Apache Master file
+	#
+
+	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/00_master.conf" $bk_dir/00_master.ispcp-rc4.conf";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	($rs, $cfg_tpl) = get_file("$cfg_dir/00_master.conf");
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
+					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
+					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+					'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
+					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
+					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'},
+					'{WWW_DIR}'					=> $main::cfg{'ROOT_DIR'},
+					'{DMN_NAME}'				=> 'gui',
+					'{CONF_DIR}'				=> $main::cfg{'CONF_DIR'},
+					'{MR_LOCK_FILE}'			=> $main::cfg{'MR_LOCK_FILE'},
+					'{RKHUNTER_LOG}'			=> $main::cfg{'RKHUNTER_LOG'},
+					'{CHKROOTKIT_LOG}'			=> $main::cfg{'CHKROOTKIT_LOG'},
+					'{PEAR_DIR}'				=> $main::cfg{'PEAR_DIR'},
+					'{OTHER_ROOTKIT_LOG}'		=> $main::cfg{'OTHER_ROOTKIT_LOG'},
+					'{APACHE_SUEXEC_USER_PREF}'	=> $main::cfg{'APACHE_SUEXEC_USER_PREF'},
+					'{APACHE_SUEXEC_MIN_UID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+					'{APACHE_SUEXEC_MIN_GID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/01_awstats.conf" $bk_dir/01_awstats.ispcp-rc4.conf";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	($rs, $cfg_tpl) = get_file("$cfg_dir/01_awstats.conf");
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+					'{AWSTATS_ENGINE_DIR}' 		=> $main::cfg{'AWSTATS_ENGINE_DIR'},
+					'{AWSTATS_WEB_DIR}' 		=> $main::cfg{'AWSTATS_WEB_DIR'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Configure the fastcgi_ispcp.conf
+	#
+
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+	my $bk_dir = "$cfg_dir/backup";
+
+	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi_ispcp.conf');
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+					'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
+					'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
+					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf $bk_dir/fastcgi_ispcp.ispcp-rc4.conf";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load") {
+            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.rc4.load";
+            $rs = sys_command($cmd);
+            return $rs if ($rs != 0);
+
+            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
+            return $rs if ($rs != 0);
+
+            $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
+            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
+            return $rs if ($rs != 0);
+	}
+
+	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+		sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/ispcp-setup-services.log");
+	}
+
+	push_el(\@main::el, 'update_httpd()', 'Ending...');
+	return 0;
+}
+
+sub search_and_replace() {
+    my $dir = shift;
+    if (opendir(DIRH, "$dir")) {
+        foreach (readdir(DIRH)) {
+            # ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+            if (/$ARGV[0]/io) {
+                $cmd = "$main::cfg{'CMD_SED} -i -e \"s/\/phptmp/\/phptmp\//\" php*.ini";
+				$rs = sys_command($cmd);
+				return $rs if ($rs != 0);
+            }
+            search_and_replace("$dir/$_") if (-d "$dir/$_" && ! -l "$dir/$_");
+        }
+        closedir DIRH;
+    }
+}
+
 sub update_conf {
 	push_el(\@main::el, 'update_conf()', 'Starting...');
 
@@ -764,7 +909,18 @@ sub patch_ispcp_rc3() {
 sub patch_ispcp_rc4() {
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Starting...');
 
-	print STDOUT "\tNothing else to do!\n";
+	$rs = setup_mta();
+	return 2 if ($rs != 0);
+
+	$rs = setup_ftpd();
+	return 3 if ($rs != 0);
+
+	# FastCGI-Security
+	search_file_in_dir($main::cfg{'PHP_STARTER_DIR'});
+
+	# Update Apache
+	$rs = update_httpd();
+	return 4 if ($rs != 0);
 
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Ending...');
 	return 0;

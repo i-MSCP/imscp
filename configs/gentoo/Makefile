@@ -64,4 +64,3 @@ uninstall:
 		cd ./proftpd && $(MAKE) uninstall ; cd .. ; \
 		cd ./logrotate && $(MAKE) uninstall ; cd .. ; \
 	fi
-

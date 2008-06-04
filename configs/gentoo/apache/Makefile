@@ -37,6 +37,8 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache/working
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache/parts
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/vhosts.d
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/modules.d
