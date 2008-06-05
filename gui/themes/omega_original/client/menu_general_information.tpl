@@ -36,12 +36,14 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
+  <!-- BDP: isactive_update_hp -->
   <tr>
     <td><a href="update_hp.php" class="submenu">{TR_MENU_UPDATE_HP}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
+  <!-- EDP: isactive_update_hp -->
     <tr>
     <td>&nbsp;</td>
   </tr>

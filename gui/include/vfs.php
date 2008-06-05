@@ -111,7 +111,9 @@ class vfs {
 			define("VFS_TMP_DIR", $cfg['GUI_ROOT_DIR'] . '/phptmp');
 		}
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
+		$_ENV['TMPDIR'] = VFS_TMP_DIR;
 		putenv("PHP_TMPDIR=" . $_ENV['PHP_TMPDIR']);
+		putenv("TMPDIR=" . $_ENV['PHP_TMPDIR']);
 	}
 
 	/**
