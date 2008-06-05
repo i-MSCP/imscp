@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-04 Benedikt Heintel
+	- DISTS:
+		* Fixed #1333: (Gentoo) Missing files, directories (/etc/ispcp/apache/), Gentoo
+
 2008-06-04 Jochen Manz
 	- GUI:
 		* Fixed #1331: unknown column 'mail_auto_respond_text' in 'field list'

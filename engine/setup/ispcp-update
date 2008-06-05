@@ -719,7 +719,7 @@ sub search_and_replace() {
             # ignore . and .. :
             next if ($_ eq "." || $_ eq "..");
             if (/$ARGV[0]/io) {
-                $cmd = "$main::cfg{'CMD_SED} -i -e \"s/\/phptmp/\/phptmp\//\" php*.ini";
+                $cmd = '$main::cfg{'CMD_SED} -i -e "s/\/phptmp\"/\/phptmp\//\"" php.ini';
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
             }
@@ -916,7 +916,7 @@ sub patch_ispcp_rc4() {
 	return 3 if ($rs != 0);
 
 	# FastCGI-Security
-	search_file_in_dir($main::cfg{'PHP_STARTER_DIR'});
+	search_and_replace($main::cfg{'PHP_STARTER_DIR'});
 
 	# Update Apache
 	$rs = update_httpd();
