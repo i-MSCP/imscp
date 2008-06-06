@@ -73,7 +73,9 @@ function action_delete(url) {
                           <td class="{CONTENT}" nowrap="nowrap" align="left">{FROM}</td>
                           <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left" />
                               <script type="text/javascript">
+<!--
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
+//-->
 						</script>
                             {SUBJECT}</a></td>
                           <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>

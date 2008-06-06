@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-06 Jochen Manz
+	- GUI:
+		* Fixed #1336: some better web accessability - (Part 3); and some more
+	- LANGUAGES:
+		* Fixed #1335: tiny german language file update (patch included)
+	- CONFIGS:
+		* Fixed #1337: freebsd ispcp.conf ajustment agains dev new ispcp.conf
+
 2008-06-04 Benedikt Heintel
 	- DISTS:
 		* Fixed #1333: (Gentoo) Missing files, directories (/etc/ispcp/apache/), Gentoo

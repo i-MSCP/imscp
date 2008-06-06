@@ -70,8 +70,8 @@
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2" style="vertical-align:top;">{TR_ENABLE_FWD}</td>
                         <td class="content">
-                            <input type="radio" name="status" {CHECK_EN} value="1" /> {TR_ENABLE}<br />
-                            <input type="radio" name="status" {CHECK_DIS} value="0" /> {TR_DISABLE}
+                            <input type="radio" name="status" id="status1" {CHECK_EN} value="1" /> <label for="status1">{TR_ENABLE}</label><br />
+                            <input type="radio" name="status" id="status2" {CHECK_DIS} value="0" /> <label for="status2">{TR_DISABLE}</label>
                         </td>
                       </tr>
                       <tr>

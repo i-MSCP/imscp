@@ -183,16 +183,16 @@
               </tr>
               <!-- EDP: page_message -->
               <tr>
-                <td nowrap="nowrap" class="content2" width="200">{TR_USERNAME}</td>
-                <td valign="middle" nowrap="nowrap" class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content2" width="200"><label for="username">{TR_USERNAME}</label></td>
+                <td valign="middle" nowrap="nowrap" class="content"><input type="text" name="username" id="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
               </tr>
               <tr>
-                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
+                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');"><label for="dmn_type1">{TR_TO_MAIN_DOMAIN}</label></td>
                 <td nowrap="nowrap" class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
               <tr>
-                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
+                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');"><label for="dmn_type2">{TR_TO_DMN_ALIAS}</label></td>
                 <td nowrap="nowrap" class="content"><select name="als_id">
                     <!-- BDP: als_list -->
                     <option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>

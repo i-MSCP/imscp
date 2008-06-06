@@ -98,8 +98,8 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td class="content2"><label for="email">{TR_EMAIL}</label></td>
-                        <td class="content"><input type="text" name="email" id="email" value="{EMAIL}" style="width:210px" class="textinput"></td>
+                        <td class="content2"><label for="email1">{TR_EMAIL}</label></td>
+                        <td class="content"><input type="text" name="email" id="email1" value="{EMAIL}" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

@@ -90,30 +90,21 @@ function executeDatabaseUpdates() {
 		// Get the needed function name
 		$functionName 	= returnFunctionName($newRevision);
 
-		// Create some empty arrays
-		$tmpArray 		= array();
-		$queryArray		= array();
+		// Pull the query from the update function using a variable function
+		$queryArray 	= $functionName();
 
-		// Pull the query from the update function
-		$tmpArray 		= $functionName();
-
-		// Put each query into the queryArray
-		foreach($tmpArray as $oneEntry) {
-			$queryArray[] = $oneEntry;
-		}
-		
-		// Add the query to set the new Database Revision
+		// Add the query, to set the new Database Revision, to our queryArray
 		$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
 
 		// Start the Transaction
 		$sql->StartTrans();
 
-		// Execute every query in our queryarray
+		// Execute every query in our queryArray
 		foreach($queryArray as $query) {
 			$sql->Execute($query);
 		}
 
-		// Prompt an error and break while-loop when an update fails
+		// Set failedUpdate to true if an databaseUpdate failed
  		if ($sql->HasFailedTrans())			
 			$failedUpdate = true;
 		
@@ -127,9 +118,8 @@ function executeDatabaseUpdates() {
 }
 
 /*
- * Insert the update functions below this entry please. The revision has to be ascending and unique.
+ * Insert the update functions below this entry. The revision has to be ascending and unique.
  * Each databaseUpdate function has to return a array. Even if the array contains only one entry.
- * Don't insert an update twice!
  */
 
 /*

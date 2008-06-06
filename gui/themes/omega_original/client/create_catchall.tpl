@@ -99,8 +99,8 @@
                               }
                               //-->
                               </script>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
-                                {TR_MAIL_LIST}</td>
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
+                                <label for="mail_type1">{TR_MAIL_LIST}</label></td>
                               <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
                                   <option value="{MAIL_ID};{MAIL_ACCOUNT_PUNNY};">{MAIL_ACCOUNT}</option>
@@ -108,12 +108,12 @@
                                 </select></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
-                                {TR_FORWARD_MAIL}</td>
+                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
+                                <label for="mail_type2">{TR_FORWARD_MAIL}</label></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px"></textarea></td>
+                              <td nowrap="nowrap" class="content2" width="200"><label for="forward_list">{TR_FORWARD_TO}</label></td>
+                              <td nowrap="nowrap" class="content"><textarea name="forward_list" id="forward_list" cols="35" rows="5" style="width:210px"></textarea></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}">
