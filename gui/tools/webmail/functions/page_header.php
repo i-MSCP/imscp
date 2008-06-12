@@ -9,6 +9,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id: page_header.php 12538 2007-07-14 19:04:00Z kink $
  * @package squirrelmail
+ *
+ * @modified by ispCP Omega Team http://isp-control.net
  */
 
 /** Include required files from SM */
@@ -253,10 +255,15 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
     if ( $shortBoxName == 'INBOX' ) {
         $shortBoxName = _("INBOX");
     }
+    //
+	// Modified by ispCP Omega - http://isp-control.net
+	//
     echo "<a name=\"pagetop\"></a>\n"
+    /**** commented out
         . html_tag( 'table', '', '', $color[4], 'border="0" width="100%" cellspacing="0" cellpadding="2"' ) ."\n"
         . html_tag( 'tr', '', '', $color[9] ) ."\n"
         . html_tag( 'td', '', 'left' ) ."\n";
+
     if ( $shortBoxName <> '' && strtolower( $shortBoxName ) <> 'none' ) {
         echo '         ' . _("Current Folder") . ": <b>$shortBoxName&nbsp;</b>\n";
     } else {
@@ -271,8 +278,20 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
         . ($hide_sm_attributions ? html_tag( 'td', '', 'left', '', 'colspan="2"' )
                                  : html_tag( 'td', '', 'left' ) )
         . "\n";
+	*/
+		. html_tag( 'table', NULL, NULL, NULL, 'border="0" width="100%" cellspacing="0" cellpadding="2"' ) ."\n"
+		. html_tag( 'tr', NULL, NULL, NULL, 'class="main_header_bar"' ) ."\n"
+		. ($hide_sm_attributions ? html_tag( 'td', NULL, 'left', NULL, 'colspan="2"' ) : html_tag( 'td', NULL, 'left' ) )
+		. "\n";
+    //
+	// End Modification
+	//
     $urlMailbox = urlencode($mailbox);
     $startMessage = (int)$startMessage;
+	//
+	// Modified by ispCP Omega - http://isp-control.net
+	//
+	/**** commented out
     echo makeComposeLink('src/compose.php?mailbox='.$urlMailbox.'&amp;startMessage='.$startMessage);
     echo "&nbsp;&nbsp;\n";
     displayInternalLink ('src/addressbook.php', _("Addresses"));
@@ -287,9 +306,23 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
     echo "&nbsp;&nbsp;\n";
 
     do_hook('menuline');
+    */
+    // Menu Icons
+	echo displayInternalLink('src/right_main.php?PG_SHOWALL=0&amp;sort=0&amp;startMessage=1&amp;mailbox=INBOX', "<div id='inbox_button'><p class='button_text'>"._("INBOX")."</p></div>") . "\n";
+	echo makeComposeLink('src/compose.php?mailbox='.$urlMailbox.'&amp;startMessage='.$startMessage, "<div id='compose_button'><p class='button_text'>"._("Compose")."</p></div>") . "\n";
+	echo displayInternalLink ('src/addressbook.php', "<div id='addresses_button'><p class='button_text'>"._("Addresses")."</p></div>") . "\n";
+	echo displayInternalLink ('src/folders.php', "<div id='folders_button'><p class='button_text'>"._("Folders")."</p></div>") . "\n";
+	echo displayInternalLink ('src/options.php', "<div id='options_button'><p class='button_text'>"._("Options")."</p></div>") . "\n";
+	//
+	// End Modification
+	//
 
     echo "      </td>\n";
 
+	//
+	// Modified by ispCP Omega - http://isp-control.net
+	//
+	/**** commented out
     if (!$hide_sm_attributions)
     {
         echo html_tag( 'td', '', 'right' ) ."\n";
@@ -298,8 +331,50 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
         echo '<a href="'.$provider_uri.'" target="_blank">'.$provider_name.'</a>';
         echo "</td>\n";
     }
+	*/
+	//
+	// End Modification
+	//
+
+	//
+	// Modified by ispCP Omega - http://isp-control.net
+	//
+    // Top Header
+	echo "      <td class=\"inbox_bar_header\" align=\"right\" width=\"30%\">";
+	echo displayInternalLink ('src/signout.php', "<div id='exit_button' title='"._("Sign Out")."'>&nbsp;&nbsp;&nbsp;</div>", $frame_top) . "\n";
+	echo displayInternalLink ("src/search.php?mailbox=$urlMailbox", "<div id='search_button' title='"._("Search")."'>&nbsp;&nbsp;&nbsp;</div>") . "\n";
+	echo displayInternalLink ('src/help.php', "<div id='help_button' title='"._("Help")."'>&nbsp;&nbsp;&nbsp;</div>") . "\n";
+	do_hook('fetchmail');
+	do_hook('calendar_plugin');
+	do_hook('bookmark_plugin');
+	do_hook('notes_plugin');
+	do_hook('todo_plugin');
+	echo "      </td>";
     echo "   </tr>\n".
-        "</table><br>\n\n";
+        "</table>\n\n";
+
+    // Welcome Bar
+	//
+	// Modified by ispCP Omega - http://isp-control.net
+	//
+	echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
+		    <tr>\n
+			  <td class=\"top_left_bar_handle\" width=\"5px\">\n
+	            <div align=\"right\"><img src=\"".$base_uri."images/blank.png\"></div>\n
+			</td>\n";
+	if ( $shortBoxName <> '' && strtolower( $shortBoxName ) <> 'none' ) {
+        echo "      <td align=\"left\" class=\"inbox_bar_header\">" . _("Current Folder") . ": <b>$shortBoxName&nbsp;</b></td>\n";
+    } else {
+        echo "      <td align=\"left\" class=\"inbox_bar_header\">" . _("Current Folder") . ": <b>Option&nbsp;</b></td>\n";
+    }
+	echo "  <td class=\"top_bar_header\" align=\"right\" >";
+	do_hook('menuline');
+	echo "&nbsp;</td>";
+	//
+	// End Modification
+	//
+	echo "   </tr>\n
+		  </table><br>\n\n";
 }
 
 /* blatently copied/truncated/modified from the above function */
@@ -371,4 +446,3 @@ function compose_Header($color, $mailbox) {
 
     echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" $onload>\n\n";
 }
-

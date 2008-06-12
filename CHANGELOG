@@ -1,13 +1,23 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-12 Benedikt Heintel
+	- GUI:
+		* Fixed #1340: when a new ticket is created mail to admin contain encoded strings
+	- LANGUAGES:
+		* Added Basque
+		* Updated Catalan
+	- TOOLS:
+		* Fixed #923: Open basedir errors with filemanager. Anyone else has the same error?
+		* Fixed #1339: Webmail layout broken (once again)
+
 2008-06-06 Jochen Manz
+	- CONFIGS:
+		* Fixed #1337: freebsd ispcp.conf ajustment agains dev new ispcp.conf
 	- GUI:
 		* Fixed #1336: some better web accessability - (Part 3); and some more
 	- LANGUAGES:
 		* Fixed #1335: tiny german language file update (patch included)
-	- CONFIGS:
-		* Fixed #1337: freebsd ispcp.conf ajustment agains dev new ispcp.conf
 
 2008-06-04 Benedikt Heintel
 	- DISTS:

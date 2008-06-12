@@ -1,0 +1,3771 @@
+# translation of eu_ES.po to Euskara
+# Copyright (C) YEAR ispCP Team
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Danel Ibañez <laborategia@gmail.com>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: eu_ES\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"PO-Revision-Date: 2008-06-09 00:55+0200\n"
+"Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
+"Language-Team: Euskara <eu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"X-Poedit-Language: Basque\n"
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
+
+msgid "_: Localised language"
+msgstr "Euskara"
+
+msgid "ispCP Omega a Virtual Hosting Control System"
+msgstr "ispCP Omega Virtual Hosting Control System-a"
+
+msgid "Administrator login"
+msgstr "Hasi saioa administrari gisa"
+
+msgid "Login"
+msgstr "Saioa hasi"
+
+msgid "Username"
+msgstr "Erabiltzaile izena"
+
+msgid "Password"
+msgstr "Pasahitza"
+
+msgid "Please enter your login information"
+msgstr "Mesedez sar ezazu saio hasierako informazioa"
+
+msgid "Secure Connection"
+msgstr "Konexio segurua"
+
+msgid "Normal Connection"
+msgstr "Konexio arrunta"
+
+msgid "Lost password"
+msgstr "Ez dut pasahitza gogoratzen"
+
+msgid "Retrieving lost passwords is currently not possible"
+msgstr "Momentuz ezin da ahaztutako pasahitzak berreskuratu"
+
+msgid "ispCP - Virtual Hosting Control System"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "Password sent"
+msgstr "Pasahitza bidali da"
+
+msgid "ERROR: Password was not sent"
+msgstr "ERROREA: Pasahitza ez da bidali"
+
+msgid "The password was requested"
+msgstr "Pasahitza eskatu da"
+
+msgid "Back"
+msgstr "Atzera"
+
+msgid "ERROR: Unknown user"
+msgstr "ERROREA: Erabiltzaile ezezaguna"
+
+msgid "Retry"
+msgstr "Bersaiatu"
+
+msgid "ERROR: Security code was not correct!"
+msgstr "ERROREA: Segurtasun kodea ez zen zuzena"
+
+msgid "Security code"
+msgstr "Segurtasun kodea"
+
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgstr "(Gehiegikeriak ekiditeko, \"Segurtasun kodea\" izeneko atalean sar ezazu ondoko irudiko hizkiak )"
+
+msgid "Request password"
+msgstr "Pasahitza eskatu"
+
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Admin/Erabiltzaileak kudeatu/Erabiltzailea gehitu"
+
+msgid "Administrator"
+msgstr "Administraria"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Erabiltzaile izenean luzera edo sintaxi okerra"
+
+msgid "Incorrect password length or syntax!"
+msgstr "Pasahitzan luzera edo sintaxi okerra!"
+
+msgid "Entered passwords do not match!"
+msgstr "Sartutako pasahitzak ez dira berdinak!"
+
+msgid "Incorrect email length or syntax!"
+msgstr "Posta elektronikoan luzera edo sintaxi okerra"
+
+msgid "This user name already exist!"
+msgstr "Erabiltzaile hau dagoeneko badago!"
+
+msgid "Empty data or wrong field!"
+msgstr "Datua zurian edo okerreko atala!"
+
+msgid "Passwords don't match!"
+msgstr "Pasahitzak ez datoz bat!"
+
+msgid "Add admin"
+msgstr "Administratzailea gehitu"
+
+msgid "Core data"
+msgstr "Datu nagusiak"
+
+msgid "Repeat password"
+msgstr "Pasahitza errepikatu"
+
+msgid "Email"
+msgstr "Posta elektronikoa"
+
+msgid "Additional data"
+msgstr "Datu gehigarriak"
+
+msgid "First name"
+msgstr "Izena"
+
+msgid "Last name"
+msgstr "Abizena"
+
+msgid "Gender"
+msgstr "Sexua"
+
+msgid "Male"
+msgstr "Gizonezkoa"
+
+msgid "Female"
+msgstr "Emakumezkoa"
+
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+msgid "Company"
+msgstr "Lantokia"
+
+msgid "Zip/Postal code"
+msgstr "Posta kodea"
+
+msgid "City"
+msgstr "Herria"
+
+msgid "Country"
+msgstr "Herria"
+
+msgid "Street 1"
+msgstr "Kalea 1"
+
+msgid "Street 2"
+msgstr "Kalea 2"
+
+msgid "Phone"
+msgstr "Telefonoa"
+
+msgid "Fax"
+msgstr "Faxa"
+
+msgid "Add"
+msgstr "Gehitu"
+
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr "ispCP - Admin/Erabiltzaileak kudeatu/Gehitu bersaltzailea"
+
+msgid "Reseller IP list is empty!"
+msgstr "Bersaltzailearen IP zerrenda hutsik dago!"
+
+msgid "No."
+msgstr "Zbk."
+
+msgid "Assign"
+msgstr "Ezarri"
+
+msgid "Label"
+msgstr "Etiketa"
+
+msgid "Number"
+msgstr "Zenbakia"
+
+msgid "Reseller"
+msgstr "Bersaltzailea"
+
+msgid "Incorrect email syntax!"
+msgstr "Posta elektronikoan sintaxi okerra!"
+
+msgid "Incorrect domains limit!"
+msgstr "Domeinu muga okerra!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Azpidomeinu muga okerra!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Ezizenen muga okerra!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "FTP kontuen muga okerra!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Posta elektroniko kontuen muga okerra!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "SQL datubaseen muga okerra!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "SQL erabiltzaileen muga okerra!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Trafikoaren muga okerra!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Diskoaren kuota muga okerra!"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Gutxienez IP zenbaki bat ezarri behar diozu bersaltzaileari!"
+
+msgid "Add reseller"
+msgstr "Gehitu bersaltzailea"
+
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Domeinu muga<br><i>(0 mugagabea)</i>"
+
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Azpidomeinu muga<br><i>(-1 ezgaitua, 0 mugagabea(</i>"
+
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Ezizen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Posta elektroniko kontuen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "FTP kontuen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL datubaseen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL erabiltzaile muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Trafiko muga [MB]<br><i>(0 mugagabea)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Disko muga [MB]<br><i>(0 mugagabea)</i>"
+
+msgid "PHP"
+msgstr "PHP"
+
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+msgid "JSP"
+msgstr "JSP"
+
+msgid "SSI"
+msgstr "SSI"
+
+msgid "Frontpage extensions"
+msgstr "Frontpage gehigarriak"
+
+msgid "Backup and restore"
+msgstr "Segurtasun kopia eta berezartzea"
+
+msgid "Custom error pages"
+msgstr "Akats orri pertsonalizatuak"
+
+msgid "Protected areas"
+msgstr "Babestutako guneak"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Directory listing"
+msgstr "Direktorio zerrendatzea"
+
+msgid "Apache logfiles"
+msgstr "Apacheren log fitxategiak"
+
+msgid "AwStats"
+msgstr "AwStats"
+
+msgid "Logo upload"
+msgstr "Logoa igo"
+
+msgid "yes"
+msgstr "bai"
+
+msgid "no"
+msgstr "ez"
+
+msgid "Reseller IPs"
+msgstr "Bersaltzailearen IPAK"
+
+msgid "Customer ID"
+msgstr "Erabiltzaile ID-a"
+
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - Admin/Admin Log-a"
+
+msgid "Log is empty!"
+msgstr "Log-a hutsik dago!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr "%s ezabatuak administrazioen log osoa!"
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr "%s ezabatuak bi aste baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr "%s ezabatuak hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr "%s ezabatuak hiru hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr "%s ezabatuak sei hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr "%s ezabatuak urte bete baino zaharragoak diren administrazioen log-ak!"
+
+msgid "Invalid time period!"
+msgstr "Denbora tarte okerra!"
+
+msgid "Admin Log"
+msgstr "Admin Log-a"
+
+msgid "Clear log"
+msgstr "Log-a garbitu"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Message"
+msgstr "Mezua"
+
+msgid "Delete from log:"
+msgstr "Ezabatua log-etik:"
+
+msgid "everything"
+msgstr "dena"
+
+msgid "older than 2 weeks"
+msgstr "bi aste baino zaharragoak"
+
+msgid "older than 1 month"
+msgstr "hilabete baino zaharragoak"
+
+msgid "older than 3 months"
+msgstr "hiru hilabete baino zaharragoak"
+
+msgid "older than 6 months"
+msgstr "sei hilabete baino zaharragoak"
+
+msgid "older than 12 months"
+msgstr "hamabi hilabete baino zaharragoak"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administraria/Gehitu hostatze plana"
+
+msgid "Add hosting plan"
+msgstr "Gehitu hostatze plana"
+
+msgid "Hosting plan properties"
+msgstr "Hostatze planaren aukerak"
+
+msgid "Template name"
+msgstr "Txantiloi izena"
+
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko azpidomeinuak<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko ezizenak<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Billing Settings"
+msgstr "Fakturazio aukerak"
+
+msgid "Price"
+msgstr "Salneurri"
+
+msgid "Setup fee"
+msgstr "Instalazio tasa"
+
+msgid "Currency"
+msgstr "Moneta"
+
+msgid "Payment period"
+msgstr "Ordaintze denbora tartea"
+
+msgid "Available for purchasing"
+msgstr "Erosteko aukera"
+
+msgid "Description"
+msgstr "Deskribapena"
+
+msgid "(e.g. EUR)"
+msgstr "(adib. EUR)"
+
+msgid "Add plan"
+msgstr "Gehitu plana"
+
+msgid "Incorrect template name length!"
+msgstr "Txantiloi izen luzera okerra!"
+
+msgid "Incorrect template description length!"
+msgstr "Txantiloi deskribapen luzera okerra!"
+
+msgid "Incorrect price syntax!"
+msgstr "Salneurrien sintaxi okerra!"
+
+msgid "Incorrect setup fee syntax!"
+msgstr "Instalazio tasaren sintaxi okerra!"
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Lehenik badago izen bera duen hostatze plana!"
+
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Admin/Pasahitza aldatu"
+
+msgid "Please fill up all data fields!"
+msgstr "Mesedez bete datu guztiak!"
+
+msgid "Passwords do not match!"
+msgstr "Pasahitzak ez datoz bat!"
+
+msgid "The current password is wrong!"
+msgstr "Oraingo pasahitza oker dago!"
+
+msgid "User password updated successfully!"
+msgstr "Erabiltzaileren pasahitza zuzen eguneratua!"
+
+msgid "Change password"
+msgstr "Pasahitza aldatu"
+
+msgid "Password data"
+msgstr "Pasahitz datua"
+
+msgid "Update password"
+msgstr "Pasahitza eguneratu"
+
+msgid "Current password"
+msgstr "Oraingo pasahitza"
+
+msgid "Personal data updated successfully!"
+msgstr "Datu pertsonalak zuzen eguneratu dira!"
+
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Admin/Aldatu datu pertsonalak"
+
+msgid "Change personal data"
+msgstr "Aldatu datu pertsonalak"
+
+msgid "Personal data"
+msgstr "Datu pertsonalak"
+
+msgid "Update data"
+msgstr "Datuak eguneratu"
+
+msgid "ispCP - Admin - Email Marketing"
+msgstr "ispCP - Amin - Posta elektroniko bidezko marketinga"
+
+msgid "Please specify a message subject!"
+msgstr "Mesedez jar ezazu mezuaren gaia!"
+
+msgid "Please specify a message content!"
+msgstr "Mesedez jar ezazu mezuaren edukina!"
+
+msgid "Please specify a sender name!"
+msgstr "Mesedez jar ezazu bidaltzailearen izena!"
+
+msgid "Please specify a sender email!"
+msgstr "Mesedez jar ezazu bidaltzailearen posta elektronikoa!"
+
+msgid "You send email to your users successfully!"
+msgstr "Erabiltzaileei posta elektronikoak zuzen bidali dira!"
+
+msgid "Email marketing"
+msgstr "Posta elektroniko bidezko marketinga"
+
+msgid "Send message to"
+msgstr "Nori bidali mezua"
+
+msgid "All users"
+msgstr "Erabiltzaile guztiak"
+
+msgid "All resellers"
+msgstr "Bersaltzaile guztiei"
+
+msgid "All users & resellers"
+msgstr "Erabiltzaile eta bersaltaile guztiei"
+
+msgid "Message subject"
+msgstr "Mezuaren gaia"
+
+msgid "Senders email"
+msgstr "Bidaltzailearen posta elektronikoa"
+
+msgid "Senders name"
+msgstr "Bidaltzailearen izena"
+
+msgid "Send message"
+msgstr "Mezua bidali"
+
+msgid "You have no custom menus."
+msgstr "Ez dauzkazu menu pertsonalizatuak"
+
+msgid "User"
+msgstr "Erabiltzailea"
+
+msgid "All"
+msgstr "Guztira"
+
+msgid "Are you sure you want to delete"
+msgstr "Ziur zaude ezabatu nahi dituzula"
+
+msgid "Missing or incorrect data input!"
+msgstr "Sarrera atu okerrak edo galduak!"
+
+msgid "Custom menu data updated successful!"
+msgstr "Menu pertsonalizatuen datuak zuzen eguneratuak!"
+
+msgid "Custom menu deleted successful!"
+msgstr "Menu pertsonalizatua zuzen ezabatua!"
+
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Admin - Kudeatu menu pertsonalizatuak"
+
+msgid "Manage custom menus"
+msgstr "Kudeatu menu pertsonalizatuak"
+
+msgid "Add new button"
+msgstr "Gehitu botoi berria"
+
+msgid "Button name"
+msgstr "Botoiaren izena"
+
+msgid "Button link"
+msgstr "Botoiaren esteka"
+
+msgid "Button target"
+msgstr "Botoriaren helburua"
+
+msgid "Show in"
+msgstr "Non ikusi"
+
+msgid "Administrator level"
+msgstr "Administrari maila"
+
+msgid "Reseller level"
+msgstr "Bersaltzaile maila"
+
+msgid "Enduser level"
+msgstr "Azken erabiltzaile maila"
+
+msgid "Reseller and enduser level"
+msgstr "Bersaltzaile eta azken erabiltzaile maila"
+
+msgid "Menu button"
+msgstr "Menu botoia"
+
+msgid "Action"
+msgstr "Akzioa"
+
+msgid "Edit"
+msgstr "Aldatu"
+
+msgid "Delete"
+msgstr "Ezabatu"
+
+msgid "Level"
+msgstr "Maila"
+
+msgid "Save"
+msgstr "Gorde"
+
+msgid "Edit button"
+msgstr "Aldatu botoia"
+
+msgid "Database updates"
+msgstr "Datubasearen eguneraketa"
+
+msgid "Available database updates"
+msgstr "Datubasearen eguneraketa eskuragarri"
+
+msgid "Update"
+msgstr "Eguneratu"
+
+msgid "Update details"
+msgstr "Eguneraketaren xehetasunak"
+
+msgid "No database updates available"
+msgstr "Ez dago datubasearen eguneraketarik"
+
+msgid "New Database update is now available"
+msgstr "Datubasearen eguneraketa berria dago eskuragarri"
+
+msgid "Do you want to execute the Updates now?"
+msgstr "Eguneraketak orain instalatu nahi dituzu?"
+
+msgid "You cannot delete the last active IP address!"
+msgstr "Ezin duzu azken IP helbide aktiboa ezabatu!"
+
+msgid "Error: we have a domain using this IP!"
+msgstr "Errorea: dagoeneko badaukagu domeinu bat IP hau erabiltzen!"
+
+msgid "Error: we have a reseller using this IP!"
+msgstr "Errorea: dagoeneko badaukagu bersaltzaile bat IP hau erabiltzen!"
+
+msgid "IP was deleted!"
+msgstr "IP-a ezabatua izan da!"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Euskarri txartela zuzen ezabatu da!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Irekitako euskarri txartel guztiak zuzen ezabatu dira!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Itxitako euskarri txartel guztiak zuzen ezabatu dira!"
+
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Domeinua/Xehetasunak"
+
+msgid "Domain details"
+msgstr "Domeinuaren xehetasunak"
+
+msgid "Domain name"
+msgstr "Domeinuaren izena"
+
+msgid "Domain IP"
+msgstr "Domeinuaren IP-a"
+
+msgid "Status"
+msgstr "Egoera"
+
+msgid "PHP support"
+msgstr "PHP euskarria"
+
+msgid "CGI support"
+msgstr "CGI euskarria"
+
+msgid "MySQL support"
+msgstr "MySQL euskarria"
+
+msgid "Traffic in MB"
+msgstr "Trafikoa MB-etan"
+
+msgid "Disk in MB"
+msgstr "Diskoa MB-etan"
+
+msgid "Feature"
+msgstr "Aukerak"
+
+msgid "Used"
+msgstr "Erabilia"
+
+msgid "Limit"
+msgstr "Muga"
+
+msgid "Mail accounts"
+msgstr "Posta elektroniko kontuak"
+
+msgid "FTP accounts"
+msgstr "FTP kontuak"
+
+msgid "SQL databases"
+msgstr "SQL datubaseak"
+
+msgid "SQL users"
+msgstr "SQL erabiltzaileak"
+
+msgid "Subdomains"
+msgstr "Azpidomeinuak"
+
+msgid "Domain aliases"
+msgstr "Domeinu ezizenak"
+
+msgid "Submit changes"
+msgstr "Bidali aldaketak"
+
+msgid "Enabled"
+msgstr "Gaitua"
+
+msgid "Disabled"
+msgstr "Ez gaitua"
+
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Domeinuaren Estatistika Datuak"
+
+msgid "Domain statistics"
+msgstr "Domeinuaren estatistikak"
+
+msgid "Month"
+msgstr "Hilabetea"
+
+msgid "Year"
+msgstr "Urtea"
+
+msgid "Show"
+msgstr "Ikusi"
+
+msgid "Web traffic"
+msgstr "Web trafikoa"
+
+msgid "FTP traffic"
+msgstr "FTP trafikoa"
+
+msgid "SMTP traffic"
+msgstr "SMTP trafikoa"
+
+msgid "POP3/IMAP traffic"
+msgstr "POP3/IMAP trafikoa"
+
+msgid "All traffic"
+msgstr "Trafiko guztia"
+
+msgid "Day"
+msgstr "Eguna"
+
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Administraria aldatu"
+
+msgid "User session was killed!"
+msgstr "Erabiltzaile sesioa ezabatua izan da!"
+
+msgid "Domain account"
+msgstr "Domeinu kontua"
+
+msgid "Edit admin"
+msgstr "Aldatu administratzailea"
+
+msgid "Send new login data"
+msgstr "Bidali sarrera datu berriak"
+
+msgid "Generate password"
+msgstr "Pasahitza sortu"
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Bersaltzailea aldatu"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL datubaseen muga <i>ezgaitua</i> dago!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL erabiltzaile muga <i>ezgaitua</i> dago!"
+
+msgid "Domains"
+msgstr "Domeinuak"
+
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr "Sendotasun eza current_als_cnt eta oraingo ezizenen kopuruan: %1$d != %2$d"
+
+msgid "Aliases"
+msgstr "Ezizenak"
+
+msgid "Mail"
+msgstr "Posta elektronikoa"
+
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr "Sendotasun eza current_ftp_cnt eta oraingo ftp kontuen artean: %1$d != %2$d"
+
+msgid "FTP"
+msgstr "FTP-a"
+
+msgid "SQL Databases"
+msgstr "SQL Datubaseak"
+
+msgid "SQL Users"
+msgstr "SQL Erabiltzaileak"
+
+msgid "Web Traffic"
+msgstr "Web trafikoa"
+
+msgid "Disk storage"
+msgstr "Disko almazenamendua"
+
+msgid "Reseller data inconsistency!"
+msgstr "Bersaltzaile datu akatsdunak!"
+
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Dagoneneko bersaltzaile honek ezarririk ditu <b>%s</b> kontuetan muga altuagoak jarritako muga berria baino."
+
+msgid "Edit reseller aborted!"
+msgstr "Bersaltzailearen aldaketak abortatuak!"
+
+#, php-format
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Bersaltzaile honen erabiltzaileek ezarririk daukate <b>%s</b> kontuetan muga altuagoak jarritako muga berria baino."
+
+#, php-format
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr "Bersaltzaile honek erabiltzaileak ditu mugagabeko baimenekin <b>%s</b> zerbitzuetan!<br>"
+
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr "Bersaltzailea mugatu nahi baduzu, lenehik bere erabiltzaileak mugatu!<br>"
+
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
+msgstr "Bersaltzaile honek domeinuak dauzka ezarriak <b>%s</b> helbidera!<br>"
+
+msgid "Edit reseller"
+msgstr "Aldatu bersaltzailea"
+
+msgid "E-mail"
+msgstr "Posta elektronikoa"
+
+msgid "unlimited"
+msgstr "mugagabea"
+
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Domeinuen muga<br><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Administraria/Aldatu hostatze plana"
+
+msgid "Price Style"
+msgstr "Salneurrien itxura"
+
+msgid "Update plan"
+msgstr "Eguneratu plana"
+
+msgid "Edit hosting plan"
+msgstr "Aldatu hostatze plana"
+
+msgid "Undefined reference to data!"
+msgstr "Erreferentzi ezezaguna datura!"
+
+msgid "Incorrect price. Example: 9.99"
+msgstr "Salneurri okerra. Adibidez: 9.99"
+
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr "Instalazio tasa okerra. Adibidez: 19.99"
+
+msgid "Please specify a subject!"
+msgstr "Mesedez jar ezazu gaia!"
+
+msgid "Please specify message!"
+msgstr "Mesedez jar ezazu mezua!"
+
+msgid "Auto email template data updated!"
+msgstr "Posta elektroniko automatikoen txantiloia eguneratua!"
+
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Posta elektronikoaren ezarpena"
+
+msgid "Email setup"
+msgstr "Posta elektronikoaren ezarpena"
+
+msgid "Message template info"
+msgstr "Mezu txantiloiaren informazioa"
+
+msgid "User login (system) name"
+msgstr "Erabiltzaileren sarrera (sistema) izena"
+
+msgid "User password"
+msgstr "Erabiltzaileren pasahitza"
+
+msgid "User real (first and last) name"
+msgstr "Erabiltzailearen benetako izena (izen eta abizenak)"
+
+msgid "Message template"
+msgstr "Mezuren txantiloia"
+
+msgid "Subject"
+msgstr "Gaia"
+
+msgid "Apply changes"
+msgstr "Aldaketak ezarri"
+
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administraria/Hostatze Planen Kudeaketa"
+
+msgid "Hosting plans"
+msgstr "Hostatze planak"
+
+msgid "Manage hosting plans"
+msgstr "Kudeatu hostatze planak"
+
+msgid "Purchasing"
+msgstr "Erosketak"
+
+msgid "Add new user hosting plan"
+msgstr "Gehitu erabiltzaile hostatze plan berria"
+
+msgid "Return to previous menu"
+msgstr "Itzuli aurreko menura"
+
+msgid "Hosting plan added!"
+msgstr "Hostatze plana gehitua!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hostatze plana ezabatua!"
+
+msgid "Hosting plan updated!"
+msgstr "Hostatze plana eguneratua!"
+
+msgid "Hosting plans not found!"
+msgstr "Hostatze plana ez da aurkitu!"
+
+msgid "Name"
+msgstr "Izena"
+
+msgid "Show hosting plan"
+msgstr "Ikusi hostatze plana"
+
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr "<b>%d</b> euskarri txartel berri dauzkazu"
+
+msgid "View"
+msgstr "Ikusi"
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Ezin izan da begiratu eguneratzeak! Webgunea ezin da aurkitu."
+
+msgid "New ispCP update is now available"
+msgstr "ispCP eguneraketa berria eskuragarri dago orain"
+
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Admin/IP kudeaketa"
+
+msgid "Remove IP"
+msgstr "Ezabatu IP-a"
+
+msgid "New IP was added!"
+msgstr "IP berria gehitua izan da!"
+
+msgid "Wrong IP number!"
+msgstr "IP zenbaki okerra!"
+
+msgid "Please specify domain!"
+msgstr "Mesedez jar ezazu domeinua!"
+
+msgid "Please specify alias!"
+msgstr "Mesedez jar ezazu ezizena!"
+
+msgid "This IP already exist!"
+msgstr "IP hau dagoeneko badago!"
+
+msgid "Manage IPs"
+msgstr "IP-ak kudeatu"
+
+msgid "Available IPs"
+msgstr "Dauden IP-ak"
+
+msgid "IP"
+msgstr "IP-a"
+
+msgid "Domain"
+msgstr "Domeinua"
+
+msgid "Alias"
+msgstr "Ezizena"
+
+msgid "Add new IP"
+msgstr "Gehitu IP berria"
+
+msgid "Are you sure you want to delete this IP: "
+msgstr "Ziur zaude ezabatu nahi duzula IP hau: "
+
+msgid "No domain system errors"
+msgstr "Akatsik ez domeinu sisteman"
+
+msgid "No domain alias system errors"
+msgstr "Akatsik ez domeinu ezizenen sisteman"
+
+msgid "No subdomain system errors"
+msgstr "Akatsik ez azpidomeinuen sisteman"
+
+msgid "No email account system errors"
+msgstr "Akatsik ez posta elektroniko kontuen sisteman"
+
+msgid "ispCP debugger"
+msgstr "ispCP debugger"
+
+msgid "Domain errors"
+msgstr "Domeinu akatsak"
+
+msgid "Domain alias errors"
+msgstr "Domeinu ezizenen akatsak"
+
+msgid "Subdomain errors"
+msgstr "Azpidomeinuen akatsak"
+
+msgid "Mail account errors"
+msgstr "Posta elektroniko kontuen akatsak"
+
+msgid "ispCP Daemon tools"
+msgstr "ispCP Deabruen tresnak"
+
+msgid "Execute requests"
+msgstr "Exekuzio eskaerak"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "Deabruak %d egoera kodea itzuli du"
+
+msgid "Unknown domain status!"
+msgstr "Domeinuaren egoera ezezaguna!"
+
+msgid "Unknown account type!"
+msgstr "Kontu mota ezezaguna!"
+
+msgid "Invalid account id!"
+msgstr "Kontuaren id okerra!"
+
+msgid "Done"
+msgstr "Egina"
+
+msgid "Unknown Error"
+msgstr "Akats ezezaguna"
+
+msgid "Get it at"
+msgstr "Eskuratu"
+
+msgid "ispCP updates"
+msgstr "ispCp eguneraketak"
+
+msgid "Available ispCP updates"
+msgstr "Eskuragarri dauden ispCP eguneraketak"
+
+msgid "No new ispCP updates available"
+msgstr "Ez dago ispCP eguneraketarik eskuragarri"
+
+msgid "User language updated successfully!"
+msgstr "Erabiltzaile hizkuntza zuzen eguneratua!"
+
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Admin/Hizkuntza aldatu"
+
+msgid "Language"
+msgstr "Hizkuntza"
+
+msgid "Choose default language"
+msgstr "Aukeratu berezko hizkuntza"
+
+msgid "Upload file error!"
+msgstr "Akatsa fitxategia igotzerakoan!"
+
+msgid "You can only upload images!"
+msgstr "Irudiak soilik igo ditzazkezu!"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Irudiak 195 x 195 pixel baino txikiagoa izan behar du!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "Zure logoa zuzen igo da!"
+
+msgid "Layout settings"
+msgstr "Txantiloi aukerak"
+
+msgid "Installed layouts"
+msgstr "Instaltutako txantiloitak"
+
+msgid "Layout name"
+msgstr "Txantiloi izena"
+
+msgid "default"
+msgstr "berezkoa"
+
+msgid "Upload logo"
+msgstr "Logoa igo"
+
+msgid "Logo file"
+msgstr "Logo fitxategia"
+
+msgid "Upload"
+msgstr "Igo"
+
+msgid "Remove"
+msgstr "Ezabatu"
+
+msgid "Choose default layout"
+msgstr "Aukeratu berezko txantiloia"
+
+msgid "Layout"
+msgstr "Txantiloia"
+
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Admin/Ahaztutako posta elektronikoaren aukerak"
+
+msgid "Lost password e-mail"
+msgstr "Ahaztutako pasahitzaren posta elektronikoa"
+
+msgid "Activation E-Mail"
+msgstr "Aktibazio posta elektronikoa"
+
+msgid "Password E-Mail"
+msgstr "Pasahitzaren posta elektronikoa"
+
+msgid "User (first and last) name"
+msgstr "Erabiltzaile izena (izen eta abizena)"
+
+msgid "Lost password link"
+msgstr "Ahaztutako pasahitzaren esteka"
+
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Mantune modua"
+
+msgid "Settings saved !"
+msgstr "Aukerak gordeak!"
+
+msgid "Maintenance mode"
+msgstr "Mantenu modua"
+
+msgid "Under this mode only administrators can login"
+msgstr "Modu honetak soilik administrariek izena eman dezakete"
+
+msgid "Reseller list is empty!"
+msgstr "Bersaltzaile zerrenda hutsik dago!"
+
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Bersaltzailea ezarri"
+
+msgid "Reseller assignment"
+msgstr "Bersaltzailea ezarri"
+
+msgid "Reseller users"
+msgstr "Bersaltzailearen erabiltzaileak"
+
+msgid "Mark"
+msgstr "Marka"
+
+msgid "Reseller name"
+msgstr "Bersaltzailearen izena"
+
+msgid "Owner"
+msgstr "Jabea"
+
+msgid "To Admin"
+msgstr "Administrariari"
+
+msgid "Move"
+msgstr "Mugitu"
+
+msgid "Reseller or user list is empty!"
+msgstr "Bersaltzaile edo erabiltzaile zerrenda hutsik!"
+
+msgid "User list is empty!"
+msgstr "Erabiltzaile zerrenda hutsik dago!"
+
+msgid "User was moved"
+msgstr "Erabiltzailea mugitu da"
+
+msgid "Please select some user(s)!"
+msgstr "Mesedez aukeratu erabiltzailea(k)!"
+
+msgid "Source and destination reseller are the same!"
+msgstr "Jatorriko eta helburuko bersaltzaileak berak dira!"
+
+#, php-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr "<b>%1$s</b> baimen mugagabeak ditu <b>%2$s</b> zerbitzurako!<br>"
+
+#, php-format
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr "Ezin duzu mugitu <b>%1$s</b> birsaltzaile atalean, <br>non mugak dituen <b>%2$s</b> zerbitzurako!"
+
+#, php-format
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr "<b>%1$s</b> muga gainditzen ari da <b>%2$s</b>rako<br>zerbitzaria bersaltzaile atalean<br>"
+
+msgid "Moving aborted!"
+msgstr "Mugitzea abortatua!"
+
+#, php-format
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgstr "<b>%s</b>-rek daukan IP helbidea ezin da kudeatu bersaltzaile ataletik!<br>Erabiltzaile hau ezin da mugitu!"
+
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Admin/Erabiltzaile kudeatzailea/Erabiltzailearen ezarpenak"
+
+msgid "User assignment"
+msgstr "Erabiltzailearen ezarpenak"
+
+msgid "Users"
+msgstr "Erabiltzaileak"
+
+msgid "User name"
+msgstr "Erabiltzaile izena"
+
+msgid "From reseller"
+msgstr "Bersaltzailetik"
+
+msgid "To reseller"
+msgstr "Bersaltzailera"
+
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Admin/Kudeatu Saioak"
+
+msgid "Manage user sessions"
+msgstr "Kudeatu erabiltzaile saioak"
+
+msgid "User type"
+msgstr "Erabiltzaile mota"
+
+msgid "Last access"
+msgstr "Azken sarrera"
+
+msgid "Options"
+msgstr "Aukerak"
+
+msgid "Kill session"
+msgstr "Amaitu saioa"
+
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Admin/Erabiltzaileak Kudeatu"
+
+msgid "User added"
+msgstr "Erabiltzailea gehitua"
+
+msgid "Reseller added"
+msgstr "Bersaltzailea gehituta"
+
+msgid "User updated"
+msgstr "Erabiltzailea eguneratua"
+
+msgid "User deleted"
+msgstr "Erabiltzailea ezabatua"
+
+msgid "Email Updated"
+msgstr "Posta elektronikoa eguneratua"
+
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr "Erabiltzaileak domeinua dauka!<br>Erabiltzailea ezabatzeko lehenik ezabatu domeinua!"
+
+msgid "User was disabled"
+msgstr "Erabiltzailea ezgaitu da "
+
+msgid "Incorrect data input!"
+msgstr "Datu sarrera okerra!"
+
+msgid "ispCP - Admin/Internationalisation"
+msgstr "ispCP - Admin/Internazionalizazioa"
+
+msgid "Default language changed!"
+msgstr "Berezko hizkuntza aldatua!"
+
+msgid "You can upload only text files!"
+msgstr "Textu fitxategiak soilik igo ditzazkezu!"
+
+msgid "Could not read language file!"
+msgstr "Ezin izan da irakurri hizkuntza fitxategia!"
+
+msgid "Uploaded file is not a valid language file!"
+msgstr "Igotako fitxategia ez da hizkuntza fitxategi baliogarria!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr "Igotako fitxategiak ez dauka hizkuntzaren informazioa!"
+
+msgid "New language installed!"
+msgstr "Hizkuntza berria instaltuta!"
+
+msgid "Language was updated!"
+msgstr "Hizkuntza eguneratua!"
+
+msgid "uninstall"
+msgstr "kendu"
+
+#, php-format
+msgid "%d messages translated"
+msgstr "%d mezu itzulirik"
+
+msgid "Internationalisation"
+msgstr "Internazionalizazioa"
+
+msgid "Installed languages"
+msgstr "Instalatutako hizkuntzak"
+
+msgid "Messages"
+msgstr "Mezuak"
+
+msgid "Default"
+msgstr "Berezkoa"
+
+msgid "Install new language"
+msgstr "Instalatu hizkuntza berria"
+
+msgid "Language file"
+msgstr "Hizkuntza fitxategia"
+
+msgid "Install"
+msgstr "instalatu"
+
+msgid "Export"
+msgstr "Exportatu"
+
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Bersaltzailearen estatistikak"
+
+msgid "Not found reseller(s) in your system!"
+msgstr "Ez da aurkitu bersaltzailerik zure sisteman!"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr "%1$s / %2$s <br/>-tik<br/> <b>%3$s</b>"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$s / %2$s <br/>-tik<br/> <b>mugagabea</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr "%1$d / %2$d <br/>-tik<br/> <b>%3$d</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$d / %2$d <br/>-tik<br/> <b>mugagabea</b>"
+
+msgid "Reseller statistics table"
+msgstr "Bersaltzailearen estatistika taula"
+
+msgid "Traffic"
+msgstr "Trafikoa"
+
+msgid "Disk"
+msgstr "Diskoa"
+
+msgid "Subdomain"
+msgstr "Azpidomeinua"
+
+msgid "SQL database"
+msgstr "SQL datubasea"
+
+msgid "SQL user"
+msgstr "SQL erabiltzailea"
+
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Admin/Bersaltzailearen Erabiltzaile Estatistikak"
+
+#, php-format
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
+msgstr "%1$s <br/>-tik<br/> <b>%2$s</b>"
+
+#, php-format
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr "%s <br/>-tik<br/> <b>mugagabea</b>"
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr "%1$d <br/>-tik<br/> <b>%2$d</b>"
+
+msgid "<b>disabled</b>"
+msgstr "<b>ezgaitua</b>"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr "%d <br/>-tik<br/> <b>mugagabea</b>"
+
+msgid "Reseller users table"
+msgstr "Bersaltzailearen erabiltzaile taula"
+
+msgid "This reseller has no domains."
+msgstr "Bersaltzaile honek ez dauka domeinurik"
+
+msgid "Traffic<br>usage"
+msgstr "Erabilitako<br>trafikoa"
+
+msgid "Disk<br>usage"
+msgstr "Disko<br>erabilera"
+
+msgid "Web<br>traffic"
+msgstr "Web<br>trafikoa"
+
+msgid "FTP<br>traffic"
+msgstr "FTP<br>trafikoa"
+
+msgid "SMTP<br>traffic"
+msgstr "SMTP<br>trafikoa"
+
+msgid "POP3/IMAP<br>traffic"
+msgstr "POP3/IMAP<br>trafikoa"
+
+msgid "SQL<br>database"
+msgstr "SQL<br>datubasea"
+
+msgid "SQL<br>user"
+msgstr "SQL<br>erabiltzailea"
+
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "ispCP Admin / Sistema Tresnak / Rootkit-en aurkako tresnaren log arakatzailea"
+
+#, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "%s ez da existitzen edo hutsik dago"
+
+msgid "Anti-Rootkits Tools Log Checker"
+msgstr "Rootkit-en aurkako tresnaren log arakatzailea"
+
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Zerbitzariaren eguneko estatistikak"
+
+msgid "Server day statistics"
+msgstr "Zerbitzariaren eguneko estatistikak"
+
+msgid "Month:"
+msgstr "Hilabetea:"
+
+msgid "Year:"
+msgstr "Urtea;"
+
+msgid "Day:"
+msgstr "Eguna:"
+
+msgid "Hour"
+msgstr "Ordua"
+
+msgid "Web in"
+msgstr "Web sarrera"
+
+msgid "Web out"
+msgstr "Web irteera"
+
+msgid "Mail in"
+msgstr "Posta sarrera"
+
+msgid "Mail out"
+msgstr "Posta irteera"
+
+msgid "Pop/IMAP in"
+msgstr "POP/IMAP sarrera"
+
+msgid "Pop/IMAP out"
+msgstr "POP/IMAP irteera"
+
+msgid "Other in"
+msgstr "Beste sarrerak"
+
+msgid "Other out"
+msgstr "Beste irteerak"
+
+msgid "All in"
+msgstr "Sarrera guztiak"
+
+msgid "All out"
+msgstr "Irteera guztiak"
+
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Zerbitzariaren estatistikak"
+
+msgid "Server statistics"
+msgstr "Zerbitzariaren estatistikak"
+
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP Admin / Sistema Tresnak / Zerbitzariaren Egoera"
+
+msgid "UP"
+msgstr "MARTXAN"
+
+msgid "DOWN"
+msgstr "ERORIA"
+
+msgid "Host"
+msgstr "Host-a"
+
+msgid "Service"
+msgstr "Zerbitzua"
+
+msgid "Server status"
+msgstr "Zerbitzariaren egoera"
+
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Admin/Zerbitzariaren Trafiko Ezarpenak"
+
+msgid "Wrong data input!"
+msgstr "Sarrera datu okerrak!"
+
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Kontuz trafikoa handiagoa da onartutako  gehienezko trafikoa baino!"
+
+msgid "Server traffic settings updated successfully!"
+msgstr "Zerbitzariaren trafiko ezarpenen eguneraketa zuzena!"
+
+msgid "Modify"
+msgstr "Aldatu"
+
+msgid "Server traffic settings"
+msgstr "Zerbitzariaren trafiko ezarpenak"
+
+msgid "Set server traffic settings"
+msgstr "Ezarri zerbitzariaren trafiko ezarpenak"
+
+msgid "Max traffic [MB]"
+msgstr "Gehienezko trafikoa [MB]"
+
+msgid "Warning traffic [MB]"
+msgstr "Trafiko larrialdi abisua [MB]"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Ezarpenak"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "ERROREA; Soilik zenbaki positiboak onartzen dira !"
+
+msgid "General settings"
+msgstr "Ezarpen orokorrak"
+
+msgid "Settings"
+msgstr "Ezarpenak"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktibazio estekaren amaiera denbora (minutuak)"
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce detekzioa"
+
+msgid "Block time between logins"
+msgstr "Izen emateen arteko blokeatze denbora"
+
+msgid "Max number of login attempts"
+msgstr "Gehienezko izen emate saiakerak"
+
+msgid "Blocktime (minutes)"
+msgstr "Blokeo denbora (minutuak)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Izen emateen arteko blokeatze denbora (segunduak)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Gehienezko CAPTCHA onartze saiakerak"
+
+msgid "Other settings"
+msgstr "Beste aukerak"
+
+msgid "Default language"
+msgstr "Berezko hizkuntza"
+
+msgid "Support system"
+msgstr "Euskarri sistema"
+
+msgid "Server ports"
+msgstr "Zerbitzari portuak"
+
+msgid "Domains per page"
+msgstr "Domeinuak orriko"
+
+msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgstr "ERROREA: Soilik hizkiak, zenbakiak, marratxoa eta azpimarrak onartzen dira!"
+
+msgid "ERROR: Port already exists!"
+msgstr "ERROREA: Portua iadanik badago!"
+
+msgid "You have no custom service ports defined."
+msgstr "Ez daukazu berezko zerbitzu porturik ezarririk."
+
+msgid "udp"
+msgstr "udp"
+
+msgid "tcp"
+msgstr "tcp"
+
+msgid "Yes"
+msgstr "Bai"
+
+msgid "No"
+msgstr "Ez"
+
+msgid "Services"
+msgstr "Zerbitzuak"
+
+msgid "Port"
+msgstr "Portua"
+
+msgid "Protocol"
+msgstr "Protokoloa"
+
+msgid "You have no support tickets."
+msgstr "Ez daukazu euskarri txartelik."
+
+msgid "Low"
+msgstr "Baxua"
+
+msgid "Medium"
+msgstr "Ertaina"
+
+msgid "High"
+msgstr "Altua"
+
+msgid "Very high"
+msgstr "Oso altua"
+
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Erabiltzailea/Galderak eta Iradokizunak"
+
+msgid "Support tickets"
+msgstr "Euskarri txartelak"
+
+msgid "Priority"
+msgstr "Lehentasuna"
+
+msgid "Last reply"
+msgstr "Azken erantzuna"
+
+msgid "Delete all"
+msgstr "Ezabatu guztia"
+
+msgid "Open tickets"
+msgstr "Irekitako txartelak"
+
+msgid "Closed tickets"
+msgstr "Itxitako txartelak"
+
+msgid "[New]"
+msgstr "[Berria]"
+
+msgid "[Re]"
+msgstr "[Er]"
+
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Erabiltzailea/Gaitu Posta Erantzun Automatikoa"
+
+msgid "From"
+msgstr "Norengandik"
+
+msgid "days"
+msgstr "egun"
+
+msgid "hours"
+msgstr "ordu"
+
+msgid "minutes"
+msgstr "minutu"
+
+msgid "System info"
+msgstr "Sistemaren informazioa"
+
+msgid "Vital system info"
+msgstr "Oinarrizko sistema informazioa"
+
+msgid "CPU system Info"
+msgstr "CPU sistema informazioa"
+
+msgid "CPU model"
+msgstr "CPU mota"
+
+msgid "CPU MHz"
+msgstr "CPU MHz"
+
+msgid "CPU cache"
+msgstr "CPU cache-a"
+
+msgid "CPU bogomips"
+msgstr "CPU bogomips-ak"
+
+msgid "Memory system info"
+msgstr "Memoria sistemaren informazioa"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Total"
+msgstr "Guztira"
+
+msgid "Free"
+msgstr "Askea"
+
+msgid "Swap"
+msgstr "Elkartrukaketa"
+
+msgid "Up time"
+msgstr "Piztutako denbora"
+
+msgid "Kernel"
+msgstr "Kernel-a"
+
+msgid "Load"
+msgstr "Zama"
+
+msgid "Filesystem system Info"
+msgstr "Sistema fitxategiaren sistema informazioa"
+
+msgid "Mount"
+msgstr "Montatzea"
+
+msgid "Type"
+msgstr "Mota"
+
+msgid "Partition"
+msgstr "Partizioa"
+
+msgid "Percent"
+msgstr "Portzentaia"
+
+msgid "Size"
+msgstr "Tamaina"
+
+msgid "Ticket not found!"
+msgstr "Txartela ez da aurkitu!"
+
+msgid "Open ticket"
+msgstr "Irekitako txartela"
+
+msgid "Close ticket"
+msgstr "Itxitako txartela"
+
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Erabiltzailea : Euskarri Sistema: Ikusi Txartelak"
+
+msgid "Please type your message!"
+msgstr "Mesedez idatzi zure mesua!"
+
+msgid "Message was sent!"
+msgstr "Mezua bidalia izan da!"
+
+msgid "Ticket was closed!"
+msgstr "Txartela itxia izan da!"
+
+msgid "Ticket was reopened!"
+msgstr "Txartela berrirekia izan da!"
+
+msgid "ispCP - Admin : Support System: View Tickets"
+msgstr "ispCP - Admin : Euskarri Sistema: Ikusi Txartelak"
+
+msgid "View support ticket"
+msgstr "Ikusi euskarri txartelak"
+
+msgid "Send message reply"
+msgstr "Bidali erantzun mezua"
+
+msgid "Send reply"
+msgstr "Bidali erantzuna"
+
+msgid "ispCP Client : Add Alias"
+msgstr "isp - Client : Gehitu ezizena"
+
+msgid "Manage domain alias"
+msgstr "Kudeatu domeinu ezizenak"
+
+msgid "Add domain alias"
+msgstr "Gehitu domeinu ezizena"
+
+msgid "User account"
+msgstr "Erabiltzaile kontua"
+
+msgid "Directory mount point"
+msgstr "Montatze direktorio piuntua"
+
+msgid "Forward to URL"
+msgstr "Aurrera jarraitu URL-a"
+
+msgid "Add alias"
+msgstr "Gehitu ezizena"
+
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr "Ez duzu 'www' ipini beharrik ispCP-ek bere kabuz jarriko du."
+
+msgid "Domain alias limit reached!"
+msgstr "Domeinu ezizenen mugara iritxia!"
+
+msgid "Incorrect domain name syntax"
+msgstr "Domeinu izenaren sistaxi okerra"
+
+msgid "Domain with that name already exists on the system!"
+msgstr "Izen bera daukan domeinua iada badago sisteman!"
+
+msgid "Incorrect mount point syntax"
+msgstr "Montatzen puntuaren sistaxi okerra"
+
+msgid "Master domain cannot be used!"
+msgstr "Domeinu nagusia ezin da erabili!"
+
+msgid "Incorrect forward syntax"
+msgstr "Aurrera jarraitzean sintaxi okerra"
+
+msgid "Domain with this name already exist"
+msgstr "Izen honekin iada domeinua badago"
+
+msgid "There is a subdomain with the same mount point!"
+msgstr "Azpidomeinu bat dago muntatze puntu berarekin!"
+
+msgid "Alias scheduled for activation!"
+msgstr "Ezizena aktibazio zain!"
+
+msgid "Alias scheduled for addition!"
+msgstr "Ezizena gehitzeko zain!"
+
+msgid "Empty List"
+msgstr "Zerrenda Hutsa"
+
+msgid "Empty list"
+msgstr "Zerrenda hutsa"
+
+msgid "FTP account already exists!"
+msgstr "FTP kontua iada badago!"
+
+msgid "Unknown domain type"
+msgstr "Domeinu mota ezezaguna"
+
+msgid "Incorrect mount point length or syntax"
+msgstr "Montatze puntuaren tamaina edo sistaxi okerra"
+
+#, php-format
+msgid "%s does not exist"
+msgstr "%d ez dago"
+
+msgid "FTP account added!"
+msgstr "FTP kontua gehitua!"
+
+msgid "Please enter FTP account username!"
+msgstr "Mesedez sar ezazu FTP kontuaren erabiltzaile izena!"
+
+msgid "Password data is missing!"
+msgstr "Pasahitzaren datuak galduta daude!"
+
+msgid "Entered passwords differ from the another!"
+msgstr "Sartutako pasahitzak ez datoz bat!"
+
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
+msgstr "Azpidomeinu zerrenda hutsik dago! Ezin duzu FTP konturik gehitu hona!"
+
+msgid "Alias list is empty! You cannot add FTP accounts there!"
+msgstr "Ezizen zerrenda hutsik dago! Ezin duzu FTP konturik gehitu hona!"
+
+msgid "Please specify other FTP account dir!"
+msgstr "Mesedez sar ezazu beste direktorio bat FTP konturako!"
+
+msgid "FTP accounts limit reached!"
+msgstr "FTP kontuaen mugara iritxia!"
+
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Erabiltzailea/Gehitu FTP erabiltzailea"
+
+msgid "Add FTP user"
+msgstr "Gehitu FTP erabiltzailea"
+
+msgid "To main domain"
+msgstr "Domeinu nagusira"
+
+msgid "To domain alias"
+msgstr "Domeinu ezizenera"
+
+msgid "To subdomain"
+msgstr "Azpidomeinura"
+
+msgid "Use other dir"
+msgstr "Erabili beste direkorio bat"
+
+msgid "Choose dir"
+msgstr "Aukeratu direktorioa"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Posta okerra Localpart formatua erabilia!"
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr "Posten helbide formatu okerra zure aurrera jarraitze zerrenda!"
+
+msgid "Mail forward list empty!"
+msgstr "Aurrera jarraitze posta zerrenda hutsik!"
+
+msgid "Mail account already exists!"
+msgstr "Posta kontua iada badago!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Posta kontua gehitzeko zain!"
+
+msgid "Please enter mail account username!"
+msgstr "Mesedez sar ezazu posta kontuko erabiltzaile izena!"
+
+msgid "Password data includes not permitted signs!"
+msgstr "Pasahitzak onartzen ez diren zeinuak ditu!"
+
+msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgstr "Azpidomeinu zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
+
+msgid "Alias list is empty! You cannot add mail accounts!"
+msgstr "Ezizenen  zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
+
+msgid "Forward list is empty!"
+msgstr "Aurrera jarraitze  zerrenda hutsik dago!"
+
+msgid "Mail accounts limit reached!"
+msgstr "Posta kontuen mugara iritxia!"
+
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Erabiltzailea/Gehitu porta elektroniko erabiltzailea"
+
+msgid "Add mail users"
+msgstr "Gehitu posta elektroniko erabiltzailea"
+
+msgid "Normal mail"
+msgstr "Posta arrunta"
+
+msgid "Forward mail"
+msgstr "Aurrera jarraitze posta"
+
+msgid "Forward to"
+msgstr "Nora aurrera jarraitu"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Banandu email helbide multzoa lerro-jauziekin."
+
+msgid "Please type database name!"
+msgstr "Mesedez sar ezazu datubaseren izena!"
+
+msgid "Database name is too long!"
+msgstr "Datubasearen izena luzeegia da!"
+
+msgid "Specified database name already exists!"
+msgstr "Sartu duzun datubasearen izena iada badago!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr "Ordezkatzaileak ala nola %% eta ? ez dira onartzen!"
+
+msgid "SQL database created successfully!"
+msgstr "SQL datubasea zuzen sortua!"
+
+msgid "SQL accounts limit reached!"
+msgstr "SQL kontuen mugara iritxia!"
+
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Erabiltzailea/Gehitu SQL datubasea"
+
+msgid "Add SQL database"
+msgstr "Gehitu SQL datubasea"
+
+msgid "Database name"
+msgstr "Datubasearen izena"
+
+msgid "Use numeric ID"
+msgstr "Erabili zenbakizko ID-a"
+
+msgid "Before the name"
+msgstr "Izenare aurretik"
+
+msgid "After the name"
+msgstr "Izenaren atzetik"
+
+msgid "Subdomains limit reached!"
+msgstr "Azpidomeinuen mugara iritxia!"
+
+msgid "Please specify subdomain name!"
+msgstr "Mesedez sar ezazu azpidomeinuaren izena!"
+
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Azpidomeinua iada badago edo ez da onartzen!"
+
+msgid "Wrong subdomain syntax!"
+msgstr "Azpidomeinu sistaxi okerra!"
+
+msgid "Subdomain mount point already exists!"
+msgstr "Azpidomeinu muntatze puntua dagoeneko badago!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Azpidomeinua gehitzeko zain!"
+
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Erabiltzailea/Gehitu azpidomeinua"
+
+msgid "Add subdomain"
+msgstr "Gehitu azpidomeinua"
+
+msgid "Subdomain data"
+msgstr "Azpidomeinu datuak"
+
+msgid "Subdomain name"
+msgstr "Azpidomeinu izena"
+
+msgid "Directory tree mount point"
+msgstr "Direktorio zuhaitzan muntatze puntua"
+
+msgid "Backup archive scheduled for restoring!"
+msgstr "Segurtasun kopia berrezartzeko zain!"
+
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Erabiltzailea/Eguneroko Seguratsun Kopia"
+
+msgid "Backup"
+msgstr "Segurtasun kopia"
+
+msgid "Daily backup"
+msgstr "Eguneroko segurtasun kopia"
+
+msgid "Instructions to download today's backup"
+msgstr "Gaurko segurtasun kopia eskuratzeko azalpenak"
+
+msgid "Login with your FTP account"
+msgstr "Saioa hasi zure FTP kontuarekin"
+
+msgid "Switch to backups/ directory"
+msgstr "Aldatu backups/ direktoriora"
+
+msgid "Download the files stored in this directory"
+msgstr "Eskuratu direktorio honetan daudek fitxategiak"
+
+msgid "(usually named "
+msgstr "(normalean deitua"
+
+msgid "Restore backup"
+msgstr "Berreskuratu segurtasun kopia"
+
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr "Sakatu Berreskuratu botoia eta sistema azken eguneko segurtasun kopiara berreskuratuko du"
+
+msgid "Restore"
+msgstr "Berreskuratu"
+
+msgid "Are you sure you want to restore the backup?"
+msgstr "Ziur zaude segurtasun kopia berreskuratu nahi duzuna?"
+
+msgid "N/A"
+msgstr "D/E"
+
+msgid "Enable"
+msgstr "Gaitua"
+
+msgid "Disable"
+msgstr "Ezgaitua"
+
+msgid "Delete CatchAll"
+msgstr "Ezabatu CatchAll"
+
+msgid "None"
+msgstr "Ezer ere ez"
+
+msgid "Create catch all"
+msgstr "Sortu catch all-a"
+
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Erabiltzailea/Erabiltzaile kudeaketa"
+
+msgid "Manage users"
+msgstr "Erabiltzaile kudeaketa"
+
+msgid "Mail users"
+msgstr "Posta erabiltzaileak"
+
+msgid "Auto respond"
+msgstr "Erantzun automatikoa"
+
+msgid "Domain mails"
+msgstr "Domeinuaren postak"
+
+msgid "Subdomain mails"
+msgstr "Azpidomeinuaren postak"
+
+msgid "Alias mails"
+msgstr "Ezizenen postak"
+
+msgid "Mails total"
+msgstr "Postak guztira"
+
+msgid "FTPs total"
+msgstr "FTP-ak guztira"
+
+msgid "Catch all account"
+msgstr "Catch all kontua"
+
+msgid "Catch all"
+msgstr "Catch all"
+
+msgid "FTP users"
+msgstr "FTP erabiltzaileak"
+
+msgid "FTP account"
+msgstr "FTP kontua"
+
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Erabiltzailea/Pasahitza aldatu"
+
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Erabiltzailea/Aldatu Datu Pertsonalak"
+
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Erabiltzailea ez da existitzen edo ez daukazu baimenik interfaze honetera sartzeko!"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Catch all kontua sortzeko zain!"
+
+msgid "Mail forward list error!"
+msgstr "Posta aurrera jarraitze zerrendan akatsa!"
+
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Erabiltzailea/Sortu CatchAll Posta Kontua"
+
+msgid "Create catch all mail account"
+msgstr "Sortu catch all posta kontua"
+
+msgid "Mail accounts list"
+msgstr "Posta kontuen zerrenda"
+
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP - Erabiltzailea/Cron Lanen Kudeatzailea"
+
+msgid "Cronjob Manager"
+msgstr "Cron Lanen Kudeatzailea"
+
+msgid "Add Cronjob"
+msgstr "Gehitu Cron lana"
+
+msgid "Active"
+msgstr "Martxan"
+
+msgid "Cronjob"
+msgstr "Cron lana"
+
+msgid "Command to run:"
+msgstr "Exekutatzeko komandoa:"
+
+msgid "Minute(s):"
+msgstr "Minutua(k);"
+
+msgid "Hour(s):"
+msgstr "Ordua(k):"
+
+msgid "Day(s):"
+msgstr "Eguna(k):"
+
+msgid "Month(s):"
+msgstr "Hilabetea(k):"
+
+msgid "Weekday(s):"
+msgstr "Asteeguna(k);"
+
+msgid "Reset"
+msgstr "Berhasi"
+
+msgid "Cancel"
+msgstr "Ezeztatu"
+
+msgid "Edit Cronjob"
+msgstr "Cron lana aldatu"
+
+msgid "Cronjobs"
+msgstr "Cron lanak"
+
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Ezabatzen saiatzen ari zaren domeinu ezizena k posta kontuak ditu!<br>Ezabatu hauek lehenik!"
+
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "Ezabatzen saiatzen ari zaren domeinu ezizena k FTP kontuak ditu!<br>Ezabatu hauek lehenik!"
+
+msgid "Alias scheduled for deletion!"
+msgstr "Ezizena ezabatzeko zain!"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Catch all kontua ezabatzeko zain!"
+
+msgid "FTP account deleted successfully!"
+msgstr "FTP kontua zuzen ezabatua!"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Mesedez ezabatu lehenik CatchAll kontua posta elektroniko honentzat!"
+
+msgid "SQL database was removed successfully!"
+msgstr "SQL datubasea zuzen ezabatu da!"
+
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Ezabatzen saiatzen ari zaren azpidomeinuak posta kontuak ditu !<br>Ezabatu hauek lehenik!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Azpidomeinua ezabatzeko zain!"
+
+msgid "Mail account scheduled for modification!"
+msgstr "Posta elektroniko kontua aldatzeko zain!"
+
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Erabitlzailea/Domeinu Estatistikak"
+
+msgid "Web Stats"
+msgstr "Web Estatistikak"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+msgid "Sum"
+msgstr "Sum"
+
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Domeinu Ezizen Kudeaketa/Aldatu Ezizena"
+
+msgid "Edit domain alias"
+msgstr "Aldatu domeinu ezizenak"
+
+msgid "Alias name"
+msgstr "Ezizena"
+
+msgid "Mount Point"
+msgstr "Montatze puntua"
+
+msgid "Enable Forward"
+msgstr "Gaitu aurrera jarraitzea"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "Aurrera jarraitze URL-a 'http://'-az hasi behar du"
+
+msgid "Entered passwords differ!"
+msgstr "Sartutako pasahitzak ez datoz bat!"
+
+msgid "FTP account data updated!"
+msgstr "FTP kontuaren datuak eguneratuak!"
+
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Erabiltzailea/Aldatu FTP Kontua"
+
+msgid "Edit FTP user"
+msgstr "Aldatu FTP erabiltzailea"
+
+msgid "Save changes"
+msgstr "Gorde aldaketak"
+
+msgid "Email account not found!"
+msgstr "Posta elektroniko kontua ez da aurkitu!"
+
+msgid "Missing or wrong data!"
+msgstr "Datu okerrak edo galduak!"
+
+msgid "Password data includes not valid signs!"
+msgstr "Pasahitzak onartzen ez diren zeinuak dauzka!"
+
+msgid "Mail were updated successfully!"
+msgstr "Posta elektronikoak zuzen eguneratu dira!"
+
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Kudeatu Posta elektronikoa eta FTP-a/Aldatu posta kontua"
+
+msgid "Edit email account"
+msgstr "Aldatu posta kontua"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Mesedez idatz ezazu zure postako erantzun automatikoaren mezua!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Posta elektroniko kontua aldatzeko zain!"
+
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Erabiltzailea/Gaitua Posta elektronikoaren Erantzun Automatikoa"
+
+msgid "Edit mail auto responder"
+msgstr "Aldatu auto erantzun posta"
+
+msgid "Your message"
+msgstr "Zure mezua"
+
+msgid "Please wait for update"
+msgstr "Mesedez itxaron eguneratu bitartean"
+
+msgid "Mail accounts list is empty!"
+msgstr "Posta elektroniko kontuen zerrenda hutsik dago!"
+
+msgid "Enable mail auto responder"
+msgstr "Gaitua posta elektronikoaren erantzun automatikoa"
+
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - Erabiltzailea/Kudeatu Akats Orri Pertsonalizatuak"
+
+msgid "Server error - please choose error page"
+msgstr "Zerbitzari akatsa - mesedez aukeratu akats orria"
+
+msgid "Edit error page"
+msgstr "Aldatu akats orria"
+
+msgid "Custom error page was updated!"
+msgstr "Akats orri pertsonalizatua eguneratua izan da!"
+
+msgid "System error - custom error page was NOT updated!"
+msgstr "Sistema akatsa - akats orri pertsonalizatua EZ da eguneratu!"
+
+msgid "Error 401 (unauthorised)"
+msgstr "401 Akatsa (baimenik ez)"
+
+msgid "Error 403 (forbidden)"
+msgstr "403 Akatsa (debekatua)"
+
+msgid "Error 404 (not found)"
+msgstr "404 Akatsa (ez da aurkitu)"
+
+msgid "Error 500 (internal server error)"
+msgstr "500 Akatsa (zerbitzari barruko akatsa)"
+
+msgid "Error 503 (service unavailable)"
+msgstr "503 Akatsa (zerbitzua ez dago eskuragarri)"
+
+msgid "Error pages"
+msgstr "Akats orriak"
+
+msgid "FTP list is empty!"
+msgstr "FTP zerrenda hutsik dago!"
+
+msgid "Cannot open directory !<br />Please contact your administrator !"
+msgstr "Ezin izan da ireki direktorioa ! <br />Mesedez jakinarazi zure administrariari !"
+
+msgid "Parent Directory"
+msgstr "Aurreko Direktorioa"
+
+msgid "Protect it"
+msgstr "Babestu"
+
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Erabiltzailea/Web Tresnak"
+
+msgid "Directory tree"
+msgstr "Direktorio zuhaitza"
+
+msgid "Directories"
+msgstr "Direktorioak"
+
+msgid "Choose"
+msgstr "Aukeratu"
+
+msgid "disabled"
+msgstr "ez gaitua"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "<b>%d</b> erantzun berri dauzkazu zure euskarri galderetan"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s - %3$stik]"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s mugagabetik]"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Ezarritako trafikoaren muga gainditzen ari zara!"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s - %3$stik]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s mugagabetik]"
+
+msgid "You are exceeding your disk limit!"
+msgstr "Ezarritako disko tamainaren muga gainditzen ari zara!"
+
+msgid "You have no new support questions!"
+msgstr "Ez daukazu euskarri galdera berririk!"
+
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Erabiltzailea/Aurkibide Nagusia"
+
+msgid "General information"
+msgstr "Infomazio orokorra"
+
+msgid "Account name"
+msgstr "Kontu izena"
+
+msgid "Main domain"
+msgstr "Domeinu nagusia"
+
+msgid "SQL support"
+msgstr "SQL euskarria"
+
+msgid "Traffic usage"
+msgstr "Trafiko erabilera"
+
+msgid "Disk usage"
+msgstr "Disko erabilera"
+
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Erabiltzailea/Aldatu Hizkuntza"
+
+msgid "Subdomain list is empty!"
+msgstr "Azpidomeinu zerrenda hustik dago!"
+
+msgid "Delete order"
+msgstr "Ezabatu eskaera"
+
+msgid "Alias list is empty!"
+msgstr "Ezizen zerrenda hutsik dago!"
+
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Erabiltzailea/Domeinuak Kudeatu"
+
+msgid "Manage domains"
+msgstr "Domeinuak kudeatu"
+
+msgid "Mount point"
+msgstr "Muntatze puntua"
+
+msgid "Forward"
+msgstr "Aurrera jarraitu"
+
+msgid "Actions"
+msgstr "Akzioak"
+
+msgid "Database user list is empty!"
+msgstr "Datubaseko erabiltzaile zerrenda hutsik dago!"
+
+msgid "Database list is empty!"
+msgstr "Datubase zerrenda hutsik dago!"
+
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCp - Erabitlzailea/SQL Kudeatu"
+
+msgid "Manage SQL"
+msgstr "SQL kudeatu"
+
+msgid "Database Name and Users"
+msgstr "Datubaseen Izen eta Erabiltzaileak"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin-a"
+
+msgid "Database users"
+msgstr "Datubase erabiltzaileak"
+
+msgid "Add SQL user"
+msgstr "Gehitu SQL erabiltzailea"
+
+msgid "Execute query"
+msgstr "Exekutatu kontsulta"
+
+msgid "Login phpMyAdmin"
+msgstr "Saioa hasi phpMyAdmin-en"
+
+msgid "Please specify message subject!"
+msgstr "Mesedez jar ezazu mezuaren gaia!"
+
+msgid "Your message was sent!"
+msgstr "Zure mezua bidalia izan da!"
+
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCp - Euskarri sistema - Txartel berria"
+
+msgid "New ticket"
+msgstr "Txartel berria"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr "Babestutako gunea egoera ONEAN dago ezabatu nahi baduzu!"
+
+msgid "Protected area deleted successfully!"
+msgstr "Babestutako gunea zuzen ezabatua!"
+
+msgid "Permission deny!"
+msgstr "Baimena debekatua!"
+
+msgid "You do not have protected areas"
+msgstr "Ez daukazu babesturiko gunerik"
+
+msgid "Manage users and groups"
+msgstr "Kudeatu erabiltzaile eta taldeak"
+
+msgid "Add user"
+msgstr "Gehitu erabiltzailea"
+
+msgid "Group name"
+msgstr "Taldearen izena"
+
+msgid "Group members"
+msgstr "Taldekideak"
+
+msgid "Add group"
+msgstr "Gehitu taldea"
+
+msgid "Group"
+msgstr "Taldea"
+
+msgid "Add new protected area"
+msgstr "Gehitu babestutako gune berria"
+
+msgid "Please choose user or group"
+msgstr "Mesedez aukeratu erabiltzailea edo taldea"
+
+msgid "Please enter area name"
+msgstr "Mesedez sartu gunearen izena"
+
+msgid "Please enter area path"
+msgstr "Mesedez sartu gunearen helbidea"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s ez da existitzen"
+
+msgid "You cannot protect area without selected user(s)"
+msgstr "Ezin duzu gunea babestu erabiltzailerik aukertu gabe"
+
+msgid "You cannot protect area without selected group(s)"
+msgstr "Ezin duzu gunea babestu talderik aukeratu gabe"
+
+msgid "Protected area updated successfully!"
+msgstr "Babestutako gunea zuzen eguneratua!"
+
+msgid "Protected area created successfully!"
+msgstr "Babestutako gunea zuzen sortua!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr "Babestutako gunea egoera ONEAN dago aldatu nahi baduzu!"
+
+msgid "You have no users !"
+msgstr "Ez daukazu erabiltzailerik !"
+
+msgid "You have no groups!"
+msgstr "Ez daukazu talderik!"
+
+msgid "Protect this area"
+msgstr "Babestu gune hau"
+
+msgid "Path"
+msgstr "Helbidea"
+
+msgid "Groups"
+msgstr "Taldeak"
+
+msgid "User auth"
+msgstr "Erabiltzaile autentifikazioa"
+
+msgid "Group auth"
+msgstr "Talde autentifikazioa"
+
+msgid "Area name"
+msgstr "Gunearen izena"
+
+msgid "Unprotect it"
+msgstr "Babesa kendu"
+
+#, php-format
+msgid "User was assigned to the %s group"
+msgstr "Erabiltzailea %s taldera atxikitu da"
+
+#, php-format
+msgid "User was deleted from the %s group "
+msgstr "Erabiltzailea ezabatua izan da %s taldetik"
+
+msgid "User assign"
+msgstr "Erabiltzailea atxikitua"
+
+msgid "Already in:"
+msgstr "Dagoeneko hemen:"
+
+msgid "Member of group:"
+msgstr "Taldeetako partaide:"
+
+msgid "Select group:"
+msgstr "Aukeratu taldea:"
+
+msgid "Update user"
+msgstr "Eguneratu erabiltzailea"
+
+msgid "Invalid group name!"
+msgstr "Talde izen okerra!"
+
+msgid "Group already exists!"
+msgstr "Taldea iada badago!"
+
+msgid "Manage user"
+msgstr "Erabitlzaielak kudeatu"
+
+msgid "You have no users!"
+msgstr "Ez daukazu erabiltzailerik!"
+
+msgid "Wrong username!"
+msgstr "Erabiltzaile izen okerra!"
+
+msgid "User already exist !"
+msgstr "Erabiltzailea iada badago !"
+
+msgid "SQL users limit reached!"
+msgstr "SQL erabiltzaileen mugara iritxi da!"
+
+msgid "Please type user name!"
+msgstr "Mesedez idatzi erabiltzailearen izena!"
+
+msgid "Please type user password!"
+msgstr "Mesedez idatzi erabiltzailearen pasahitza!"
+
+msgid "Too user long password!"
+msgstr "Erabiltzailearen pasahitza luzeegia!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr "SQL erabiltzailea ez da aurkitu! Agian beste erabiltzaile batek ezabatua izan da!"
+
+msgid "User name too long!"
+msgstr "Erabiltzaile izena luzeegia!"
+
+#, php-format
+msgid "Wildcards as %% and ? are not allowed!"
+msgstr "Ordezkatzaileak ala nola %% eta ? ez dira onartzen!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Sartutako SQL erabiltzailea iadanik badago!"
+
+msgid "SQL user successfully added!"
+msgstr "SQL erabiltzailea zuzen gehitua!"
+
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Erabiltzailea/Gehitu SQL erabiltzailea"
+
+msgid "SQL user name"
+msgstr "SQL erabiltzaile izena"
+
+msgid "In front the name"
+msgstr "Izenaren aurrekarean"
+
+msgid "Behind the name"
+msgstr "Izenaren atzekaldean"
+
+msgid "Add existing user"
+msgstr "Gehitu lehendik dagoen erabiltzailea"
+
+msgid "Existing SQL users"
+msgstr "Dauden SQL erabiltzaileak"
+
+msgid "Too long user password!"
+msgstr "Erabiltzailearen pasahitza luzeegia!"
+
+msgid "SQL user password was successfully changed!"
+msgstr "SQL erabiltzailearen pasahitza zuzen aldatu da!"
+
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Erabiltzailea/Aldatu SQL Erabiltzailearen Pasahitza"
+
+msgid "Change SQL user password"
+msgstr "Aldatu SQL erabiltzailearen pasahitza"
+
+msgid "Change"
+msgstr "Aldatu"
+
+msgid "SQL user was removed successfully!"
+msgstr "SQL erabiltzailea zuzen ezabatu da!"
+
+msgid "Please enter an SQL query!"
+msgstr "MEsedez sartu SQL kontsulta!"
+
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr "Ezin izan da konektatu SQL zerbitzarira %s gisa!"
+
+msgid "Execution of SQL query failed!"
+msgstr "SQL kontsultaren exekusioak huts egin du!"
+
+msgid "Execution of SQL query succeeded!"
+msgstr "SQL kontsulta burutu da!"
+
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Erabiltzailea/Exekutatu SQL Kontsulta"
+
+msgid "Execute SQL query"
+msgstr "Exekutatu SQL kontsulta"
+
+msgid "SQL query"
+msgstr "SQL kontsulta"
+
+msgid "Query status"
+msgstr "Kontsultaren egoera"
+
+msgid "Query result"
+msgstr "Kontsultaren erantzuna"
+
+msgid "Execute"
+msgstr "Exekutatu"
+
+msgid "Protected area was deleted successful!"
+msgstr "Babestutako gunea zuzen ezabatu da!"
+
+msgid "Hosting plans available for update"
+msgstr "Hostatzen planak eguneratzeko"
+
+msgid "Cancel order"
+msgstr "Ezeztatu eskaera"
+
+msgid "Your order"
+msgstr "Zure eskaera"
+
+msgid "Purchase"
+msgstr "Erosi"
+
+msgid "There are no available updates"
+msgstr "Ez dago eguneraketarik"
+
+msgid "PHP Support: enabled"
+msgstr "PHP euskarria gaiturik"
+
+msgid "PHP Support: disabled"
+msgstr "PHP euskarria gaitu gabe"
+
+msgid "CGI Support: enabled"
+msgstr "CGI euskrria gaitua"
+
+msgid "CGI Support: disabled"
+msgstr "CGI euskarria gaitu gabe"
+
+msgid "Disk limit"
+msgstr "Disko muga"
+
+msgid "Traffic limit"
+msgstr "Trafiko muga"
+
+msgid "Emails"
+msgstr "Posta elektronikoak"
+
+msgid "FTPs"
+msgstr "FTP-ak"
+
+msgid "free of charge"
+msgstr "doain"
+
+msgid "There are no available hosting plans for update"
+msgstr "Ez dago hostatze planen eguneraketarik"
+
+msgid "ispCP - Update hosting plan"
+msgstr "ispCP - Eguneratu hostatze plana"
+
+msgid "Your request for hosting pack update was added successfully"
+msgstr "Zure eskaera hostatze multzoaren eguneraketarentzat zuzen gehitua izan da"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr "[ispCP-EskaeraPanela] - Eguneraketa eskaera bat daukazu"
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
+"Eguenraketa eskaera abt daukazu {ACCOUNT} kontuarentzat\n"
+"\n"
+"\n"
+"Mesedez izena eman zure ispCP kontrol panelean xehetasun gehiagorako"
+
+msgid "Your request for hosting pack update was removed successfully"
+msgstr "Zure eskaera hostatze multzoaren eguneraketarentzat zuzen ezabatu da"
+
+msgid "Message was send!"
+msgstr "Mezua bidalia izan da!"
+
+msgid "ISPCP - Client/Webtools"
+msgstr "ISPCP - Erabiltzailea/Web Tresnak"
+
+msgid "Webtools"
+msgstr "Web tresnak"
+
+msgid "Customize error pages for your domain"
+msgstr "Akats orri pertsonalizatuak zure domeinurako"
+
+msgid "Backup and restore settings"
+msgstr "Segurtasun kopia eta berreskuratze aukerak"
+
+msgid "Access your mail through the web interface"
+msgstr "Satu zure posta elektronikora web interfaze bidez"
+
+msgid "Access your files through the web interface"
+msgstr "Satu zure fitxategietaera web interfaze bidez"
+
+msgid "Access your Awstats statistics"
+msgstr "Sartu zure Awstas estatistiketara"
+
+msgid "Manage protected areas, users and groups"
+msgstr "Kudeatu zure babestutako guneak, erabiltzailea eta taldeak"
+
+msgid "System tools"
+msgstr "Sistema tresnak"
+
+msgid "Statistics"
+msgstr "Estatistikak"
+
+msgid "Reseller statistics"
+msgstr "Bersaltzailearen estatistikak"
+
+msgid "Admin log"
+msgstr "Administrariaren log-a"
+
+msgid "Logout"
+msgstr "Irten"
+
+msgid "ispCP database updates"
+msgstr "ispCP datubasearen eguneraketak"
+
+msgid "Custom menus"
+msgstr "Menu pertsonalizatuak"
+
+msgid "Overview"
+msgstr "Orokorra"
+
+msgid "User sessions"
+msgstr "Erabiltzaile saioak"
+
+msgid "Lostpw email setup"
+msgstr "Ahaztutako postaren ezarpenak"
+
+msgid "Rootkit Log"
+msgstr "Rootkit-aren Log-a"
+
+msgid "Admin users"
+msgstr "Adminsitrari erabiltzaileak"
+
+msgid "Normal users"
+msgstr "Erabiltzaile arruntak"
+
+msgid "System messages"
+msgstr "Sistemaren mezuak"
+
+msgid "No new messages"
+msgstr "Ez dago mezu berririk"
+
+msgid "Server traffic"
+msgstr "Zerbitzariaren trafikoa"
+
+msgid "Administrators list is empty!"
+msgstr "Administrarien zerrenda hutsik dago!"
+
+msgid "Creation date"
+msgstr "Sortze data"
+
+msgid "Created by"
+msgstr "Nork sortua"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Resellers list is empty!"
+msgstr "Bersaltzaileen zerrenda hutsik dago!"
+
+msgid "Switch to user interface"
+msgstr "Aldatu erabiltzaile interfazera"
+
+msgid "Switch"
+msgstr "Aldatu"
+
+msgid "Not found user records matching the search criteria!"
+msgstr "Ez da aurkitu erabiltzaile sarrerarik bilaketaren datuekin!"
+
+msgid "view aliases"
+msgstr "ikusi ezizenak"
+
+msgid "Users list is empty!"
+msgstr "Erabiltzaileen zerrenda hutsik dago!"
+
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Ziur zaude domeinuaren kontuaren egoera aldatu nahi duzula?"
+
+msgid "Are you sure you want to delete this account?"
+msgstr "Ziur zaude kontu hau ezabatu nahi duzula?"
+
+msgid "Administrators"
+msgstr "Administrariak"
+
+msgid "Resellers"
+msgstr "Bersaltzaileak"
+
+msgid "Search"
+msgstr "Bilatu"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s orain %2$s gisa zaude izen emanda"
+
+msgid "Go back"
+msgstr "Jo atzera"
+
+msgid "OK"
+msgstr "Ados"
+
+msgid "Suspended"
+msgstr "Etendua"
+
+msgid "Error"
+msgstr "Akatsa"
+
+msgid "ispCP - Order Panel"
+msgstr "ispCP - Esakera Panela"
+
+msgid "[Ticket] {SUBJ}"
+msgstr "[Txartela] {SUBJ}"
+
+msgid ""
+"Hello {TO_NAME} !\n"
+"\n"
+"You have a new ticket to read"
+msgstr ""
+"Kaixo {TO_NAME} !\n"
+"\n"
+"Txartel berri bat daukazu irakurtzeko"
+
+#, php-format
+msgid "%.2f PB"
+msgstr "%.2f PB"
+
+#, php-format
+msgid "%.2f TB"
+msgstr "%.2f TB"
+
+#, php-format
+msgid "%.2f GB"
+msgstr "%.2f GB"
+
+#, php-format
+msgid "%.2f MB"
+msgstr "%.2f MB"
+
+#, php-format
+msgid "%.2f KB"
+msgstr "%.2f KB"
+
+#, php-format
+msgid "%d B"
+msgstr "%d B"
+
+msgid "Email and FTP accounts"
+msgstr "Posta elektroniko eta FTP kontuak"
+
+msgid "Add mail user"
+msgstr "Gehitu posta elektroniko erabiltzailea"
+
+msgid "Filemanager"
+msgstr "Artxibo kudeaketa"
+
+msgid "Web statistics"
+msgstr "Web estatistikak"
+
+msgid "Group/User management"
+msgstr "Taldea/Erabiltzaile Kudeaketa"
+
+msgid "Email Accounts"
+msgstr "Posta elektroniko kontuak"
+
+msgid "FTP Accounts"
+msgstr "FTP kontuak"
+
+msgid "Update Hosting Package"
+msgstr "Eguneratu Hostatze Paketea"
+
+msgid "Domain mail"
+msgstr "Domeinuaren posta"
+
+msgid "Email forward"
+msgstr "Posta elektronikoa aurrerantz"
+
+msgid "Alias mail"
+msgstr "Ezizenaren posta"
+
+msgid "Alias forward"
+msgstr "Ezizenen aurrera jarraitzea"
+
+msgid "Subdomain mail"
+msgstr "Azpidomeinuen posta"
+
+msgid "Subdomain forward"
+msgstr "Azpidomeinuen aurrera jarraitzea"
+
+msgid "Unknown type"
+msgstr "Mota ezezaguna"
+
+msgid "Welcome {USERNAME} to ispCP!"
+msgstr "Ongi etorri {USERNAME} ispCP-ra!"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new ispCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Best wishes with ispCP!\n"
+"The ispCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Kaixo {NAME}!\n"
+"\n"
+"Kontu berri bat sortu da ispCP-en zuretzat.\n"
+"Zure kontuaren informazioa\n"
+"\n"
+"Erbiltzaile mota: {USERTYPE}\n"
+"Erabitlzaile izena: {USERNAME}\n"
+"Pasahitza: {PASSWORD}\n"
+"\n"
+"Gogoratu pasahitza sarritan aldatzea batez ere lehenik izena ematen duzunean.\n"
+"\n"
+"Orain bertan sar zaitezke http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Gurarik oberenak ispCP-rekin!\n"
+"ispCP Taldea\n"
+"\n"
+
+msgid "Please activate your new ispCP password!"
+msgstr "Mesedez gaitu zure ispCP pasahitz berria!"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"Use this link to activate your new ispCP password:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Good Luck with the ispCP System\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Kaixo {NAME}!\n"
+"Erabili esta hau ispCP-ko zure pasahitz berria gaitzeko:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Zorte on ispCP Sistemarekin\n"
+"ispCP Taldea\n"
+"\n"
+
+msgid "Your new ispCP login!"
+msgstr "Zure ispCP izen emate berria"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"Your user name is: {USERNAME}\n"
+"Your password is: {PASSWORD}\n"
+"\n"
+"You can login at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Best wishes with ispCP!\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Kaixo {NAME}!\n"
+"\n"
+"Zure erabiltzaile izena: {USERNAME}\n"
+"Zure pasahitza: {PASSWORD}\n"
+"\n"
+"Orain bertan sar zaitezke http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Gurarik oberenak ispCP-rekin!\n"
+"ispCP Taldea\n"
+"\n"
+
+msgid "Confirmation for domain order {DOMAIN}!"
+msgstr "Baieztapena domeinu eskaerarentzat {DOMAIN}i"
+
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"This is an automatic confirmation for the order of the domain:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Agur t'erdi {NAME},\n"
+"Hau baieztapen automatikoa da domeinu eskaerentzat:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"Milesker ispCP zerbitzuak erabiltzeagatik.\n"
+"ispCP Taldea\n"
+"\n"
+
+msgid "New alias order for {CUSTOMER}!"
+msgstr "Ezizen berri eskaera {CUSTOMER} erabiltzailearentzat!"
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Agur t'erdi {RESELLER},\n"
+"Zure erabiltzailea {CUSTOMER} zain dago ezizen berriaren onartzeko:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Behin izena emanda ezizena gaitu dezakezu\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php -en\n"
+"\n"
+"Milesker ispCP-ko zerbitzuak erabiltzeagatik.\n"
+"ispCP Taldea\n"
+"\n"
+
+msgid "Catchall account"
+msgstr "Catchall kontua"
+
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+"Barkatu eragozpenak baina momentu honetan zerbitzaria mantenupean dago\n"
+"Mesedez saiatu zaitez beranduago."
+
+msgid "Could not get config from database"
+msgstr "Ezin izan dira aukerak eskuratu datubasetik"
+
+#, php-format
+msgid "You have to wait %d seconds"
+msgstr "%d segundu itxaron behar dituzu"
+
+#, php-format
+msgid "You have been blocked for %d minutes"
+msgstr "%d minutuz blokeatua zaude"
+
+msgid "System is currently under maintenance! Only administrators can login."
+msgstr "Sistema mantenupean dago! Soilik administrariek eman dezakete izena."
+
+msgid "User already logged or session sharing problem! Aborting..."
+msgstr "Erabiltzaileak iada izena mena du edo saio banaketa arazoa! Abortatzen..."
+
+#, php-format
+msgid "%s's account status is not ok!"
+msgstr "%s-ren kontua ez dago egoera onean!"
+
+msgid "You entered an incorrect password."
+msgstr "Pasahitz okerra sartu duzu."
+
+msgid "Request from foreign host was blocked!"
+msgstr "Kanpoko hostetik eskaerak blokeatuak izan dira!"
+
+msgid "You do not have permission to access this interface!"
+msgstr "Ez daukazu baimenin interfaze honetara sartzeko!"
+
+msgid "Domain alias"
+msgstr "Domainu ezizenak"
+
+msgid "Manage Orders"
+msgstr "Kudeatu Eskaerak"
+
+msgid "Order settings"
+msgstr "Eskaera aukerak"
+
+msgid "Order email setup"
+msgstr "Eskera posta aukerak"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Mesedez bete bi datu kanpuak pasahitzarentzat!"
+
+msgid "Addition in progress"
+msgstr "Gehitzea bidean"
+
+msgid "Modification in progress"
+msgstr "Aldaketa bidean"
+
+msgid "Deletion in progress"
+msgstr "Ezabatzea bidean"
+
+msgid "Being enabled"
+msgstr "Aktibatzerakoan"
+
+msgid "Being suspended"
+msgstr "Etetean"
+
+msgid "Awaiting for approval"
+msgstr "Onarpen zain!"
+
+msgid "Unknown error"
+msgstr "Akats ezezaguna"
+
+msgid "hide aliases"
+msgstr "ezkutatu ezizenak"
+
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
+msgstr "Zure domeinu mugara iritxi zara<br> Ezin duru domeinu gehiagorik gehitu!"
+
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgstr "Azpidomeinu muga daukazu!<br>Ezin duzu erabiltzaile abt gehitu azpidomeinu mugagabeekin!"
+
+msgid "You are exceeding your subdomains limit!"
+msgstr "Azpidomeinuen muga gainditzen ari zara!"
+
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgstr "Ezizenen muga abt daukazu<br>Ezin duzu erabiltzailerik gehitu ezizen mugagabeekin!"
+
+msgid "You Are Exceeding Your Alias Limit!"
+msgstr "Ezizenen muga gainditzen ari zara!"
+
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgstr "Posta kontuen muga abt daukazu<br>Ezin duzu erabiltzailerik gehitu posta kontu mugagabeekin!"
+
+msgid "You are exceeding your mail accounts limit!"
+msgstr "Posta kontuen muga gainditzen ari zara!"
+
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgstr "FTP kontuen muga daukazu!<br>Ezin duzu erabiltzaile bat gehitu FTP kontu mugagabeekin!"
+
+msgid "You are exceeding your FTP accounts limit!"
+msgstr "Zure FTP kontu muga gainditzen ari zara!"
+
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgstr "SQL datubaseen muga daukazu!<br>Ezin duzu erabiltzaile bat gehitu SQL datubase mugagabeekin!"
+
+msgid "You are exceeding your SQL databases limit!"
+msgstr "Zure SQL kontu muga gainditzen ari zara!"
+
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgstr "SQL erabiltzaile muga daukazu!<br>Ezin duzu erabiltzaile bat gehitu SQL erabiltzaile mugagabeekin!"
+
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgstr "SQl datubaseak ez daude gaituak erabiltzaile honentzat<br> Ezin duzu eduki SQL erabiltzailerik!"
+
+msgid "You are exceeding your SQL database limit!"
+msgstr "Zure SQL datubaseen muga gainditzen ari zara!"
+
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgstr "Trafiko muga daukazu!<br>Ezin duzu erabitlzailerik gehitu trafiko mugagabearekin!"
+
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
+msgstr "Disko muga daukazu!<br>Ezin duzu erabiltzailerik gehitu disko mugagabearekin!"
+
+msgid "You have a new order"
+msgstr "Eskaera berri bat daukazu"
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
+"\n"
+"Please login into your ispCP control panel for more details.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Agur t'erdi {RESELLER},\n"
+"Eskaera berri bat daukzu {NAME} <{MAIL}>-rena {DOMAIN}-rentzat\n"
+"\n"
+"Mesederz izena eman zure ispCP kontrol panelean xehetasun gehiagorako.\n"
+"\n"
+
+msgid "ispCP Error"
+msgstr "ispCP Akatsa"
+
+msgid "Error Message"
+msgstr "Akats Mezua"
+
+msgid "Wrong domain name syntax!"
+msgstr "Okerreko sintaxia domeinu izenenean!"
+
+msgid "Add On A Domain"
+msgstr "Gehitu domeinuan"
+
+msgid "Continue"
+msgstr "Jarraitu"
+
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr "(adib. zure-aukerako-domeinua.com)"
+
+msgid "Please fill out all needed fields!"
+msgstr "Mesedez bete ezazu beharrezko kanpuak!"
+
+msgid "Enter Address"
+msgstr "Sartu Helbideak"
+
+msgid "* denotes mandatory field."
+msgstr "* beharrezkoa esan nahi du."
+
+msgid "Your Chart"
+msgstr "Zure grafikoa"
+
+msgid "Costs"
+msgstr "Kostuak"
+
+msgid "Personal Data"
+msgstr "Datu Pertsonalak"
+
+msgid "Check Out"
+msgstr "Atera"
+
+msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgstr "<b>Milesker erosteagatik</b><br>Posta elektroniko bat jasoko duzu xehetasun eta informazio gehiagorekin"
+
+msgid "No available hosting packages"
+msgstr "Ez dago hostatze paketerik eskuragarri"
+
+msgid "Webspace"
+msgstr "Webgunea"
+
+msgid "Domain Features"
+msgstr "Domeinuaren Aukerak"
+
+msgid "Package Features"
+msgstr "Paketearen Aukerak"
+
+msgid "Backup and Restore"
+msgstr "Segurtasun kopia eta Berreskuratzea"
+
+msgid "Custom Error Pages"
+msgstr "Akats Orri Pertsonalizatuak"
+
+msgid "Protected Areas"
+msgstr "Babestutako Guneak"
+
+msgid "Custom Apache Logs"
+msgstr "Apache.ren Log pertsonalizatua"
+
+msgid "Web & E-Mail Support"
+msgstr "Web bidezko eta Posta elektroniko bidezko euskarria"
+
+msgid "Your Own Domain"
+msgstr "Zure Domeinua"
+
+msgid "ispCP Control Panel"
+msgstr "ispCP - Kontrol Panela"
+
+msgid "Automatic Updates"
+msgstr "Eguneraketa Automatikoak"
+
+msgid "Package Price"
+msgstr "Paketearen Salneurria"
+
+msgid "Setup Fee"
+msgstr "Instalazio tasa"
+
+msgid "Performance"
+msgstr "Errendimendua"
+
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Bersaltzailea : Gehitu ezizena"
+
+msgid "You have no user records."
+msgstr "Ez daukazu erabiltzaile daturik."
+
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Bersaltzailea/Gehitu hostatze plana"
+
+msgid "Price must be a number!"
+msgstr "Salneurria zenbaki bat izan behar du!"
+
+msgid "Setup fee must be a number!"
+msgstr "Instalazio tasak zenbaki bat izan behar du!"
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr "Hostatze planak bersaltzailearen mugak gainditzen ditu!"
+
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Bersaltzailea/Pasahitza aldatu"
+
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Bersaltzailea/Aldatu datu pertsonalak"
+
+msgid "ispCP - Circular"
+msgstr "ispCP - Zirkularra"
+
+msgid "Circular"
+msgstr "Zirkularra"
+
+msgid "Wrong domain ID!"
+msgstr "Domeinu ID okerra!"
+
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr "Ezabatzen saiatzen ari zaren domeinuak posta kontuak ditu!<br>lehenik ezabatu hauek!"
+
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr "Ezabatzen saiatzen ari zaren domeinuak FTP kontuak ditu!<br>lehenik ezabatu hauek!"
+
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr "Ezabatzen saiatzen ari zaren domeinuak domeinu ezizenak ditu!<br>lehenik ezabatu hauek!"
+
+msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgstr "Ezabatzen saiatzen ari zaren domeinuak azpidomeinuak ditu!<br>lehenik ezabatu hauek!"
+
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Kudeatu Domeinua/Ezizenak"
+
+msgid "Manage alias"
+msgstr "Kudeatu ezizenak"
+
+msgid "Real domain"
+msgstr "Benetako domeinua"
+
+msgid "You have no alias records."
+msgstr "Ez daukazu ezizenik."
+
+msgid "Activate"
+msgstr "Aktibatu"
+
+msgid "Domain alias added for termination!"
+msgstr "Domeinu ezizena gehitua amaiera punturako!"
+
+msgid "Domain alias not added for termination!"
+msgstr "Domeinu ezizena ez da gehitu amaiera punturako!"
+
+msgid "Domain alias added!"
+msgstr "Domeinu ezizena gehitua!"
+
+msgid "Domain alias not added!"
+msgstr "Domeinu ezizena ez da gehitu!"
+
+msgid "Domain alias modified!"
+msgstr "Domeinu ezizena aldatua!"
+
+msgid "Domain alias not modified!"
+msgstr "Domeinu ezizena ez da aldatu!"
+
+msgid "Ordered domain alias not deleted!"
+msgstr "Eskatutako domeinu ezizena ez da ezabatu!"
+
+msgid "Ordered domain alias activated!"
+msgstr "Eskatutako domeinu ezizena aktibatua!"
+
+msgid "Ordered domain alias not activated!"
+msgstr "Eskatutako domeinu ezizena ez daaktibatu!"
+
+msgid "User terminated!"
+msgstr "Erabiltzaile amaitua!"
+
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Domeinua/Aldatu"
+
+msgid "Edit Domain"
+msgstr "Aldatu Domeinua"
+
+msgid "Domain properties"
+msgstr "Domeinu aukerak"
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko azpidomeinuak<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko ezizenak<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Posta elektronikoen muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "FTP kontuen muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL datubase muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL erabiltzaile muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Trafiko muga<br /><i>(0 mugagabea)</i>"
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disko tamaina<br /><i>(0 mugagabea)</i>"
+
+msgid "SQL Database"
+msgstr "SQL Datubasea"
+
+msgid "SQL User"
+msgstr "SQL Erabiltzailea"
+
+msgid "Domain properties could not be updated!"
+msgstr "Domeinuaren aukerak ezin izan dira eguneratu!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domeinuaren aukerak zuzen eguneratu dira!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "<em>%s</em> zerbitzua ezin izan da gelditu!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "<em>%s</em> erregistro daude sisteman!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "<em>%s</em> zerbitzua ezin daiteke mugatu!"
+
+#, php-format
+msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr "Emandako zenbakia sisteman dauden <em>%s</em> erregistro kopurua baino baxuagoa da!"
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "<em>%s</em> erregistro daude sisteman!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "<em>%s</em> zerbitzua ezin daiteke mugagabea izan!"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Bersaltzailearen mugak daude <em>%s</em> zerbitzuarentzat!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "<em>%s</em> zerbitzurako bersaltzailearen muga gainditzen ari zara!"
+
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Erabiltzaileak/Aldatu"
+
+msgid "Edit user"
+msgstr "Aldatu erabiltzailea"
+
+msgid "Users list"
+msgstr "Erabiltzaile zerrenda"
+
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Bersaltzailea/Aldatu hostatze plana"
+
+msgid "View hosting plan"
+msgstr "Ikusi hostatze plana"
+
+msgid "ispCP - Reseller/Manage users/Email setup"
+msgstr "ispCP - Bersaltzailea/Erabiltzaile kudeatzaileak/Posta elektronikoaren ezarpena"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Bersaltzailea/aurkibide nagusia"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hostatze plana ezin da ezabati, eskaerak daude!"
+
+msgid "View details"
+msgstr "Ikusi xehetasunak"
+
+msgid "User accounts"
+msgstr "Erabiltzaile kontuak"
+
+msgid "Mail account"
+msgstr "Posta elektroniko kontua"
+
+msgid "Extras"
+msgstr "Gehigarriak"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr "%1$s / %2$s <b>%3$d</b>-tik"
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr "%1$s / %2$s <b> mugagabetik</b>"
+
+#, php-format
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr "%1$d / %2$d <b>%3$d</b>-tik"
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr "%1$d / %2$d <b> mugagabetik</b>"
+
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Bersaltzailea/Aldatu hizkuntza"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Bersaltzailea/Ahaztutako posta elek.-aren ezarpenak"
+
+msgid "Lostpw email"
+msgstr "Ahaztutako pasahitza posta"
+
+msgid "Lostpw link"
+msgstr "Ahaztutako pasahitz esteka"
+
+msgid "ispCP - Reseller/Order email setup"
+msgstr "ispCP - Bersaltzailea/Eskaera Posta Ezarpenak"
+
+msgid "Manage orders"
+msgstr "Kudeatu eskaerak"
+
+msgid "Wrong order ID!"
+msgstr "Eskaera ID okerra!"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Eskaera ezeztatua: bersaltzailea mugara iritsi da!"
+
+msgid "User added!"
+msgstr "Erabiltzailea gehitua!"
+
+msgid "Customer order was removed successful!"
+msgstr "Eroslearen eskaera zuzen ezabatu da!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Bersaltzailea/Eskaera xehetasunak"
+
+msgid "Order data updated successfully!"
+msgstr "Eskaera datuak zuzen eguneratuak!"
+
+msgid "Order date"
+msgstr "Eskaera data"
+
+msgid "Hosting plan"
+msgstr "Hostatze plana"
+
+msgid "Hosting details"
+msgstr "Hostatze xehetasunak"
+
+msgid "Order details"
+msgstr "Eskaera xehetasunak"
+
+msgid "Customer data"
+msgstr "Eroslearen datuak"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Ziur zaude eskaera hau ezabatu nahi duzula?"
+
+msgid "Add to the system"
+msgstr "Gehitu sistemara"
+
+msgid "ispCP - Reseller/Order settings"
+msgstr "ispCP - Bersaltzailea/Eskaera Ezarpenak"
+
+msgid "Header"
+msgstr "Burua"
+
+msgid "Preview"
+msgstr "Aurreikisu"
+
+msgid "Implementation URL"
+msgstr "Inplementazio URL-a"
+
+msgid "Footer"
+msgstr "Oina"
+
+msgid "ispCP - Reseller/Order management"
+msgstr "ispCP - Bersaltzailea/Eskaera kudeatzailea"
+
+msgid "You do not have new orders!"
+msgstr "Ez daukazu eskaera berririk!"
+
+msgid "New order"
+msgstr "Eskaera berria"
+
+msgid "Update order"
+msgstr "Eguneratu eskaera"
+
+msgid "ID"
+msgstr "ID-a"
+
+msgid "Order"
+msgstr "Eskaera"
+
+msgid "Add/Details"
+msgstr "Gehitu/Xehetasunak"
+
+msgid "ispCP - Users/Add user"
+msgstr "ispcp - Erabitlzaileak/Gehitu erabiltzailea"
+
+msgid "Choose hosting plan"
+msgstr "Aukeratu hostatze plana"
+
+msgid "Personalise template"
+msgstr "Pertsonalizatu txantiloia"
+
+msgid "Next step"
+msgstr "Hurrengo pausua"
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr "Ez daukazu hostatze planik. Mesedez jar zaitez kontaktuan sistemaren administrariarekin."
+
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Erabiltzailea/Gehitu erabiltzailea (2. pausua)"
+
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Domeinu muga<br><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Backup / Restore"
+msgstr "Segurtasun Kopia/Berreskuratu"
+
+msgid "Apache logs"
+msgstr "Apache log-ak"
+
+msgid "Awstats"
+msgstr "Awstats"
+
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Erabiltzailea/Gehitu erabiltzailea"
+
+msgid "Add other domains to this account"
+msgstr "Gehitu beste domeinuak kontu honetara"
+
+msgid "System error with Domain ID "
+msgstr "Sistema akatsa ID domeinuarekin "
+
+msgid "This reseller has no domains yet."
+msgstr "Bersaltzaileak ez dauka domeinurik oraindik."
+
+msgid "ispCP - Users"
+msgstr "ispCP - Erabiltzaileak"
+
+msgid "Stats"
+msgstr "Estatistikak"
+
+msgid "Edit User"
+msgstr "Aldatu Erabiltzailea"
+
+msgid "View aliases"
+msgstr "Ikusi ezizenal"
+
+msgid "You have no users."
+msgstr "Ez daukazu erabiltzailerik."
+
+msgid "User data updated!"
+msgstr "Erabiltzaile datuak eguneratuak!"
+
+msgid "User data not updated!"
+msgstr "Erabiltzaile datuak ez dira eguneratu!"
+
+msgid "This user has domain record !<br>First remove the domain from the system!"
+msgstr "Erabiltzaileak domeinu erregistroak ditu!<br>Lehenik ezabatu domeinuak sistematik!"
+
+msgid "User not terminated!"
+msgstr "Erabiltzailea ez da amaitu!"
+
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispcp - Bersaltzailea : Euskarri Sistema: Ikusi Txartela"
+
+msgid "Message was sent."
+msgstr "Mezua bidalia izan da."
+
+msgid "Password settings"
+msgstr "Pasahitzaren ezarpenak"
+
+msgid "Password length"
+msgstr "Pasahitzaren luzeera"
+
+msgid "Use strong Passwords"
+msgstr "Erabili pasahitz sendoa"
+
+msgid "E-Mail settings"
+msgstr "Posta elektronikoaren ezarpenak"
+
+msgid "Create default E-Mail addresses"
+msgstr "Sortu berezkoa Posta elektronikoak"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "Posta elektroniko kontuak gogor ezgaituak"
+
+msgid "Hosting plans available for"
+msgstr "Hostatzen planak aukeran daude"
+
+msgid "URL to this admin panel"
+msgstr "Administrazio panel honetara URL-a"
+
