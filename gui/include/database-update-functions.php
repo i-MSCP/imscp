@@ -86,7 +86,7 @@ function executeDatabaseUpdates() {
 	while(checkNewRevisionExists()) {
 		// Get the next database update revision
 		$newRevision 	= getNextRevision();
-		
+
 		// Get the needed function name
 		$functionName 	= returnFunctionName($newRevision);
 
@@ -105,12 +105,12 @@ function executeDatabaseUpdates() {
 		}
 
 		// Set failedUpdate to true if an databaseUpdate failed
- 		if ($sql->HasFailedTrans())			
+ 		if ($sql->HasFailedTrans())
 			$failedUpdate = true;
-		
+
 		// Complete the Transactin and rollback if nessessary
 		$sql->CompleteTrans();
-		
+
 		// Display an error if nessessary
 		if($failedUpdate)
 			system_message(tr("Database update %s failed", $newRevision));
@@ -203,6 +203,18 @@ function _databaseUpdate_4() {
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
+
+	return $sqlUpd;
+}
+
+/*
+ * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346 (Benedikt Heintel, 2008-06-13)
+ */
+function _databaseUpdate_5() {
+	$sqlUpd = array();
+
+	$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';";
+	$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a';";
 
 	return $sqlUpd;
 }

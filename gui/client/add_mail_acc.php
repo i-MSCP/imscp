@@ -397,7 +397,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         }
         // Not permitted chars
         if (!chk_password($pass)) {
-            set_page_message(tr('Password data includes not permitted signs!'));
+            set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg['PASSWD_CHARS']);
             return;
         }
     }

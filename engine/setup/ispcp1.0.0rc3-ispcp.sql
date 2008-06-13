@@ -7,6 +7,8 @@ USE {DATABASE};
 
 -- BEGIN: Upgrade database structure:
 UPDATE `config` SET `value` = '1' WHERE `name` = 'DATABASE_REVISION' LIMIT 1;
+ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';
+ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a';
 -- END: Upgrade database structure
 
 -- BEGIN: Regenerate config files:

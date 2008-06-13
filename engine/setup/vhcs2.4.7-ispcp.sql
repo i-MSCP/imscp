@@ -73,6 +73,9 @@ CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_mail` `dtraff_mail` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_pop` `dtraff_pop` BIGINT UNSIGNED NULL DEFAULT NULL;
 
+ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';
+ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a';
+
 ALTER IGNORE TABLE `ftp_group` ADD UNIQUE KEY `groupname` (`groupname`);
 
 ALTER IGNORE TABLE `htaccess_groups` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
@@ -162,8 +165,8 @@ UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'o
 UPDATE `mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 -- END: Regenerate config files
 
--- BEGIN: Change to default ispCP Theme : 
-UPDATE `user_gui_props` SET `layout` = 'omega_original'; 
+-- BEGIN: Change to default ispCP Theme :
+UPDATE `user_gui_props` SET `layout` = 'omega_original';
 -- END: Change to default ispCP Theme :
 
 -- Change charset:

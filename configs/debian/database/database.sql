@@ -522,10 +522,10 @@ CREATE TABLE `sql_database` (
 CREATE TABLE `sql_user` (
   `sqlu_id` int(10) unsigned NOT NULL auto_increment,
   `sqld_id` int(10) unsigned DEFAULT '0',
-  `sqlu_name` varchar(16) binary DEFAULT 'n/a',
-  `sqlu_pass` varchar(16) binary DEFAULT 'n/a',
+  `sqlu_name` varchar(64) binary DEFAULT 'n/a',
+  `sqlu_pass` varchar(64) binary DEFAULT 'n/a',
   UNIQUE KEY (`sqlu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2;
 
 -- --------------------------------------------------------
 

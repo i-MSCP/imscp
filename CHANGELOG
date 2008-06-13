@@ -1,6 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-13 Benedikt Heintel
+	- DATABASES:
+		* Fixed 1346: client mysql password length
+	- ENGINE:
+		* Fixed #1215: POP/IMAP traffic is not added in domain statistics with courier and fedora core 8
+		* Fixed #1345: Bug in mail log collection (ispcp-vrl-traff)
+
 2008-06-12 Benedikt Heintel
 	- GUI:
 		* Fixed #1340: when a new ticket is created mail to admin contain encoded strings
