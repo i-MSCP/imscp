@@ -26,7 +26,7 @@
 {AW-ENABLED}15	*/6	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog={AWSTATS_ENGINE_DIR}/awstats.pl >/dev/null 2>&1
 
 # Rootkit Hunter
-{RK-ENABLED}0 	*/12	*	*	*	root {RKHUNTER} --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG} >/dev/null 2>&1
+{RK-ENABLED}0 	*/12	*	*	*	root {RKHUNTER} --scan-knownbad-files --check-deleted --cronjob --createlogfile {RKHUNTER_LOG} >/dev/null 2>&1
 
 # Chkrootkit
 {CR-ENABLED}0 	*/12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
