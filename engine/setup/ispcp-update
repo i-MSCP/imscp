@@ -663,13 +663,13 @@ sub update_httpd {
 	# Configure the fastcgi_ispcp.conf
 	#
 
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-	my $bk_dir = "$cfg_dir/backup";
+	$cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+	$bk_dir = "$cfg_dir/backup";
 
 	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi_ispcp.conf');
 	return $rs if ($rs != 0);
 
-	my %tag_hash = (
+	%tag_hash = (
 					'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 					'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
 					'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
@@ -712,14 +712,17 @@ sub update_httpd {
 	return 0;
 }
 
-sub search_and_replace() {
+sub search_and_replace {
     my $dir = shift;
+    my ($cmd, $rs) = (undef, undef);
+
     if (opendir(DIRH, "$dir")) {
         foreach (readdir(DIRH)) {
             # ignore . and .. :
             next if ($_ eq "." || $_ eq "..");
             if (/$ARGV[0]/io) {
-                $cmd = '$main::cfg{'CMD_SED} -i -e "s/\/phptmp\"/\/phptmp\//\"" php.ini';
+            	my $sed = $main::cfg{'CMD_SED'};
+                $cmd = '$sed -i -e "s/\/phptmp\"/\/phptmp\//\"" php.ini';
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
             }
@@ -868,7 +871,7 @@ sub patch_ispcp_rc2 {
 	return 0;
 }
 
-sub patch_ispcp_rc3() {
+sub patch_ispcp_rc3 {
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 
 	my ($rs, $rdata) = (undef, undef);
@@ -906,17 +909,17 @@ sub patch_ispcp_rc3() {
 	return 0;
 }
 
-sub patch_ispcp_rc4() {
+sub patch_ispcp_rc4 {
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Starting...');
 
-	$rs = setup_mta();
+	my $rs = setup_mta();
 	return 2 if ($rs != 0);
 
 	$rs = setup_ftpd();
 	return 3 if ($rs != 0);
 
 	# FastCGI-Security
-	search_and_replace($main::cfg{'PHP_STARTER_DIR'});
+	search_and_replace("$main::cfg{'PHP_STARTER_DIR'}");
 
 	# Update Apache
 	$rs = update_httpd();
@@ -958,15 +961,9 @@ sub prepare_update {
 		if ($rs == 0) {
 			$rs = remove_vhcs2();
 		}
-		if ($rs == 0) {
-			$rs = patch_ispcp_rc3();
-		}
-		if ($rs == 0) {
-			$rs = patch_ispcp_rc4();
-		}
 
 		if ($rs != 0) {
-    		print STDOUT "\t Update failed!\n";
+    		print STDOUT "\tUpdate failed!\n";
    	 		exit_werror("ispCP Update failed.");
 		}
 	}
