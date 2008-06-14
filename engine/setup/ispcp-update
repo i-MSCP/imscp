@@ -715,13 +715,13 @@ sub update_httpd {
 sub search_and_replace {
     my $dir = shift;
     my ($cmd, $rs) = (undef, undef);
+    my $sed = $main::cfg{'CMD_SED'};
 
     if (opendir(DIRH, "$dir")) {
         foreach (readdir(DIRH)) {
             # ignore . and .. :
             next if ($_ eq "." || $_ eq "..");
             if (/$ARGV[0]/io) {
-            	my $sed = $main::cfg{'CMD_SED'};
                 $cmd = "$sed -i -e 's~/phptmp\"~/phptmp/\"~' php.ini";
 				$rs = sys_command($cmd);
 				#return $rs if ($rs != 0);
@@ -919,7 +919,7 @@ sub patch_ispcp_rc4 {
 	return 3 if ($rs != 0);
 
 	# FastCGI-Security
-	print STDOUT "\tYou can ignore this error: /bin/sed: can't read php.ini: No such file or directory";
+	print STDOUT "\tYou can ignore this error: /bin/sed: can't read php.ini: No such file or directory\n";
 	search_and_replace("$main::cfg{'PHP_STARTER_DIR'}");
 
 	# Update Apache
