@@ -722,7 +722,7 @@ sub search_and_replace {
             next if ($_ eq "." || $_ eq "..");
             if (/$ARGV[0]/io) {
             	my $sed = $main::cfg{'CMD_SED'};
-                $cmd = '$sed -i -e "s/\/phptmp\"/\/phptmp\//\"" php.ini';
+                $cmd = "$sed -i -e \"s/\/phptmp\"/\/phptmp\//\"\" php.ini";
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
             }
