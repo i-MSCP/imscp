@@ -187,12 +187,12 @@ function chk_username($username, $length = null) {
 
 function chk_email($email, $num = 50) {
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
 
-	$nqtext = "[^\\\\$nonascii\015\012\"]";
-	$qchar = "\\\\[^$nonascii]";
+	$nqtext = "[^\\\\$nonascii\015\012\"]"; # all not qouteable chars
+	$qchar = "\\\\[^$nonascii]";			# matched quoted chars
 
-	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
@@ -213,25 +213,23 @@ function chk_email($email, $num = 50) {
 }
 
 function ispcp_check_local_part($email, $num = 50) {
+	if (strlen($email) > $num)
+		return false;
+
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
 
 	$nqtext = "[^\\\\$nonascii\015\012\"]";
 	$qchar = "\\\\[^$nonascii]";
 
-	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
 	$regex = $user_part;
 	// RegEx end
-	if (!preg_match("/^$regex$/D", $email))
-		return false;
-
-	if (strlen($email) > $num)
-		return false;
-
-	return true;
+	return (bool) preg_match("/^$regex$/", $email);
+	return false;
 }
 
 function full_domain_check($data) {

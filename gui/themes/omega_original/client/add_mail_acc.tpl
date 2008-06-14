@@ -17,7 +17,7 @@
 		if (aname == "") {
 			alert(emptyData);
 		}
-	
+
 		if (mailtype == "normal") {
 			if (apass == "" || apass2 == "") {
 				alert(emptyData)
@@ -26,7 +26,7 @@
 			} else {
 				document.forms[0].submit();
 			}
-			} else {
+		} else {
 			if (forw == "") {
 				alert(emptyData)
 			} else {

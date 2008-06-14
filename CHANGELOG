@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-14 Benedikt Heintel
+	- GUI:
+		* Fixed #1344: Error with LocalPart address checking
+	- LANGUAGE:
+		* Updated Catalan
+
 2008-06-13 Benedikt Heintel
 	- DATABASES:
 		* Fixed 1346: client mysql password length
