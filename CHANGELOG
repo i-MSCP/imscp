@@ -2,8 +2,11 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-06-14 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC5
 	- GUI:
 		* Fixed #1344: Error with LocalPart address checking
+	- ENGINE:
+		* Fixed: Update Script
 	- LANGUAGE:
 		* Updated Catalan
 
