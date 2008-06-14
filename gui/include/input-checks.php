@@ -186,6 +186,9 @@ function chk_username($username, $length = null) {
 }
 
 function chk_email($email, $num = 50) {
+	if (strlen($email) > $num)
+		return false;
+
 	// RegEx begin
 	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
 
@@ -203,13 +206,7 @@ function chk_email($email, $num = 50) {
 
 	$regex = "$user_part\@$domain_part";
 	// RegEx end
-	if (!preg_match("/^$regex$/", $email))
-		return false;
-
-	if (strlen($email) > $num)
-		return false;
-
-	return true;
+	return (bool) preg_match("/^$regex$/", $email);
 }
 
 function ispcp_check_local_part($email, $num = 50) {
@@ -229,7 +226,6 @@ function ispcp_check_local_part($email, $num = 50) {
 	$regex = $user_part;
 	// RegEx end
 	return (bool) preg_match("/^$regex$/", $email);
-	return false;
 }
 
 function full_domain_check($data) {
