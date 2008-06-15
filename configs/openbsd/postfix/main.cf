@@ -57,7 +57,13 @@ mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 mailbox_size_limit = 0
 mailbox_command    = procmail -a "$EXTENSION"
 
-biff = no
+# Message size limit
+# => 0 for unlimited
+# => 104857600 for 100 MB
+message_size_limit           = 0
+
+biff                         = no
+recipient_delimiter          = +
 
 alias_database                    = hash:{MTA_LOCAL_ALIAS_HASH}
 
