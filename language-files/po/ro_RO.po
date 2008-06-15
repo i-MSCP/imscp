@@ -1402,10 +1402,6 @@ msgstr "%1$s <br/>din<br/> <b>%2$s</b>"
 msgid "%s <br/>of<br/> <b>unlimited</b>"
 msgstr "%s <br/>din<br/> <b>nelimitat</b>"
 
-#, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>din<br/> <b>%2$s</b>"
-
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "<b>dezactivat</b>"
@@ -3578,37 +3574,6 @@ msgstr "Editare domeniu"
 
 msgid "Domain properties"
 msgstr "Proprietati domeniu"
-
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita subdomenii<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita aliasuri<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita conturi mail<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita counturi FTP<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita baze de date SQL<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita utilizatori SQL<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limita Trafic<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-#, fuzzy
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limita spatiu pe disc<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
 
 msgid "SQL Database"
 msgstr "Baze Date SQL"
