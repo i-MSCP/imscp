@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"POT-Creation-Date: 2008-06-15 15:08+0200\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -80,8 +80,12 @@ msgstr "ERROR: Sikkerhetskoden var feil!"
 msgid "Security code"
 msgstr "Sikkerhetskode"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
-msgstr "(For å hindre missbruk, må du skrive kombinasjonen av bokstaver i bildet over inn i feltet \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(For å hindre missbruk, må du skrive kombinasjonen av bokstaver i bildet "
+"over inn i feltet \"Security code\")"
 
 msgid "Request password"
 msgstr "Forespørr passord"
@@ -425,11 +429,11 @@ msgstr "Ugyldig lengde på malnavnet!"
 msgid "Incorrect template description length!"
 msgstr "Ugyldig lengde på beskrivelsen av malen!"
 
-msgid "Incorrect price syntax!"
-msgstr "Ugylidig utseende på pris!"
+msgid "Price must be a number!"
+msgstr "Prisen må være et nummer!"
 
-msgid "Incorrect setup fee syntax!"
-msgstr "Ugyldig utseende på opprettelseskostnad!"
+msgid "Setup fee must be a number!"
+msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "En betalingsløsning med dette navnet eksisterer allerede!"
@@ -461,11 +465,11 @@ msgstr "Oppdater passord"
 msgid "Current password"
 msgstr "Nåværende passord"
 
-msgid "Personal data updated successfully!"
-msgstr "Oppdatering av personlig informasjon vellykket!"
-
 msgid "ispCP - Admin/Change Personal Data"
 msgstr "ispCP - Admin/Endre Personlig Informasjon"
+
+msgid "Personal data updated successfully!"
+msgstr "Oppdatering av personlig informasjon vellykket!"
 
 msgid "Change personal data"
 msgstr "Endre personlig informasjon"
@@ -608,14 +612,14 @@ msgstr "Oppdater"
 msgid "Update details"
 msgstr "Oppdaterings detaljer"
 
-msgid "No database updates available"
-msgstr "Ingen database oppdateringer tilgjengelig"
-
 msgid "New Database update is now available"
 msgstr "Ny database oppdatering er nå tilgjengelig"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Vil du utføre oppdateringene nå?"
+
+msgid "No database updates available"
+msgstr "Ingen database oppdateringer tilgjengelig"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Du kan ikke fjerne den siste aktive IP adressen!"
@@ -755,8 +759,54 @@ msgstr "Send ny login informasjon"
 msgid "Generate password"
 msgstr "Generer passord"
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Admin/Administer brukere/Endre Forhandler"
+#, fuzzy
+msgid "ispCP - Admin/Edit Domain"
+msgstr "ispCP - Admin/Admin Logg"
+
+msgid "Edit Domain"
+msgstr "Endre domene"
+
+msgid "Domain properties"
+msgstr "Domene egenskaper"
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for antall FTP kontoer <br /><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+"Grense for antall SQL databaser <br /><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for antall SQL brukere <br /><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Trafikk begrensning [MB] <br /><i>(0 unlimited)</i>"
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disk begrensning [MB] <br /><i>(0 unlimited)</i>"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nei"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Brukeren eksisterer ikke eller du har ikke rettigheter til denne siden!"
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "Begrensningen for SQL databaser er  <i>disabled</i>!"
@@ -764,25 +814,90 @@ msgstr "Begrensningen for SQL databaser er  <i>disabled</i>!"
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL bruker grensen er <i>disabled</i>!"
 
-msgid "Domains"
-msgstr "Domener"
+msgid "Subdomain"
+msgstr "Underdomene"
 
-#, fuzzy, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr "Inkonsistens mellom current_als_cnt og det faktiske antall pekere: %1$d != %2$d"
-
-msgid "Aliases"
-msgstr "Pekere"
+msgid "Alias"
+msgstr "Peker"
 
 msgid "Mail"
 msgstr "Mail"
 
-#, fuzzy, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr "Inkonsistens mellom current_ftp_cnt og det faktiske antall ftp: %1$d != %2$d"
-
 msgid "FTP"
 msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "SQL Database"
+
+msgid "SQL User"
+msgstr "SQL Bruker"
+
+msgid "Traffic"
+msgstr "Trafikk"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "Domain properties could not be updated!"
+msgstr ""
+
+msgid "Domain properties updated successfully!"
+msgstr "Egenskapene for domenet ble oppdatert uten problemer!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Administer brukere/Endre Forhandler"
+
+msgid "Domains"
+msgstr "Domener"
+
+#, fuzzy, php-format
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+"Inkonsistens mellom current_als_cnt og det faktiske antall pekere: %1$d != %2"
+"$d"
+
+msgid "Aliases"
+msgstr "Pekere"
+
+#, fuzzy, php-format
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+"Inkonsistens mellom current_ftp_cnt og det faktiske antall ftp: %1$d != %2$d"
 
 msgid "SQL Databases"
 msgstr "SQL Databaser"
@@ -800,22 +915,31 @@ msgid "Reseller data inconsistency!"
 msgstr "Inkonsistens i forhandlerdata!"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Endring av forhandler avbrutt!"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr ""
 
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "Om du vil sette begrensninger for en forhandler, må du først sette begrensninger for brukerene til forhandleren!"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Om du vil sette begrensninger for en forhandler, må du først sette "
+"begrensninger for brukerene til forhandleren!"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -835,9 +959,6 @@ msgstr "Domene grense<br><i>((-1 disabled, 0 unlimited)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Endre betalingsplan"
-
-msgid "Price Style"
-msgstr "Pris Stil"
 
 msgid "Update plan"
 msgstr "Oppdater plan"
@@ -890,6 +1011,12 @@ msgstr "Emne"
 msgid "Apply changes"
 msgstr "Utfør endringer"
 
+msgid "Benutzertyp (admin, reseller, user)"
+msgstr ""
+
+msgid "URL to this admin panel"
+msgstr ""
+
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr "ispCP - Administrator/Betalingsplan Administrasjon"
 
@@ -917,6 +1044,9 @@ msgstr "Betalingsplan slettet!"
 msgid "Hosting plan updated!"
 msgstr "Betalingsplan oppdatert!"
 
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+
 msgid "Hosting plans not found!"
 msgstr "Betalingsplan ikke funnet!"
 
@@ -938,6 +1068,25 @@ msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
 
 msgid "New ispCP update is now available"
 msgstr "Ny ispCP oppdatering er nå tilgjengelig"
+
+#, fuzzy
+msgid "A database update is available"
+msgstr "Ingen database oppdateringer tilgjengelig"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Du overskirder din trafikk grense!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s av ubegrenset]"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s av %3$s]"
+
+#, fuzzy
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Klient/Hovedside"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/IP administrasjon"
@@ -971,9 +1120,6 @@ msgstr "IP"
 
 msgid "Domain"
 msgstr "Domene"
-
-msgid "Alias"
-msgstr "Peker"
 
 msgid "Add new IP"
 msgstr "Legg til ny IP"
@@ -1014,18 +1160,16 @@ msgstr "ispCP Prosessverktøy"
 msgid "Execute requests"
 msgstr "Utfør handlindger"
 
+msgid "Set status to \"change\""
+msgstr ""
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr "Prosessen returnerte %d som status kode"
 
-msgid "Unknown domain status!"
-msgstr "Ukjente domene status!"
-
-msgid "Unknown account type!"
-msgstr "Ukjent kontotype!"
-
-msgid "Invalid account id!"
-msgstr "Ugyldig konto id!"
+#, fuzzy
+msgid "Unknown type!"
+msgstr "Ukjent type"
 
 msgid "Done"
 msgstr "Ferdig"
@@ -1173,21 +1317,28 @@ msgstr "Kilde og mål forhandler er den samme!"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr "<b>%1$s</b> har ubegrensede rettigheter for en <b>%2$s</b> service !<br>"
+msgstr ""
+"<b>%1$s</b> har ubegrensede rettigheter for en <b>%2$s</b> service !<br>"
 
 #, php-format
-msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr ""
 
 msgid "Moving aborted!"
 msgstr "Flytting avbrutt"
 
 #, php-format
-msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1245,7 +1396,9 @@ msgid "Email Updated"
 msgstr "Email oppdatert"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "Denne brukeren har et domene!<br>For å slette denne brukeren slett domenet først!"
+msgstr ""
+"Denne brukeren har et domene!<br>For å slette denne brukeren slett domenet "
+"først!"
 
 msgid "User was disabled"
 msgstr "Brukeren ble deaktivert"
@@ -1332,15 +1485,6 @@ msgstr "%1$d / %2$d <br/>av<br/> <b>ubegrenset</b>"
 
 msgid "Reseller statistics table"
 msgstr "Forhandler statistikk bord"
-
-msgid "Traffic"
-msgstr "Trafikk"
-
-msgid "Disk"
-msgstr "Disk"
-
-msgid "Subdomain"
-msgstr "Underdomene"
 
 msgid "SQL database"
 msgstr "SQL database"
@@ -1524,6 +1668,15 @@ msgstr "Instillinger"
 msgid "Activation link expire time (minutes)"
 msgstr "Utløpstiden til aktiveringslinken (minutter)"
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr "Bruteforce detektering"
 
@@ -1545,6 +1698,15 @@ msgstr "Maksimalt antall CAPTCHA valideringsfosøk"
 msgid "Other settings"
 msgstr "Andre instillinger"
 
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
 msgid "Default language"
 msgstr "Standar språk"
 
@@ -1554,11 +1716,33 @@ msgstr "Hjelp system"
 msgid "Server ports"
 msgstr "Server porter"
 
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Til Admin"
+
 msgid "Domains per page"
 msgstr "Domener per side"
 
+#, fuzzy
+msgid "Log Level"
+msgstr "Nivå"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Feil"
+
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
-msgstr "FEIL: Kun bokstaver, tall, nummer, mellombrom og understrek er tillatt!"
+msgstr ""
+"FEIL: Kun bokstaver, tall, nummer, mellombrom og understrek er tillatt!"
 
 msgid "ERROR: Port already exists!"
 msgstr "FEIL: Porten eksisterer allerede!"
@@ -1571,12 +1755,6 @@ msgstr "udp"
 
 msgid "tcp"
 msgstr "tcp"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nei"
 
 msgid "Services"
 msgstr "Tjenester"
@@ -1608,6 +1786,12 @@ msgstr "ispCP - Klient/Spørsmål & Kommentarer"
 msgid "Support tickets"
 msgstr "Hjelp sak"
 
+msgid "From"
+msgstr "Fra"
+
+msgid "To"
+msgstr ""
+
 msgid "Priority"
 msgstr "Prioritet"
 
@@ -1631,9 +1815,6 @@ msgstr "[Sv]"
 
 msgid "ispCP - Client/Enable Mail Autoresponder"
 msgstr "ispCP - Client/Aktiver Mail Autosvar"
-
-msgid "From"
-msgstr "Fra"
 
 msgid "days"
 msgstr "dager"
@@ -1765,7 +1946,8 @@ msgid "Add alias"
 msgstr "Legg til peker"
 
 msgid "You do not need 'www.' ispCP will add it on its own."
-msgstr "Du trenger ikke å skrive inn 'www.' ispCP vil legge det til automatisk."
+msgstr ""
+"Du trenger ikke å skrive inn 'www.' ispCP vil legge det til automatisk."
 
 msgid "Domain alias limit reached!"
 msgstr "Grensen for domene peker nådd!"
@@ -1876,10 +2058,15 @@ msgstr "Mail kontoen eksisterer allerede!"
 msgid "Mail account scheduled for addition!"
 msgstr "Mail konto lagt i kø for å bli lagt til!"
 
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Vennligst spesifiser en avsender email!"
+
 msgid "Please enter mail account username!"
 msgstr "Vennligst skriv inn brukernavn for mail!"
 
-msgid "Password data includes not permitted signs!"
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Passordet inneholder tegn som ikke er tillatt!"
 
 msgid "Subdomain list is empty! You cannot add mail accounts!"
@@ -2006,14 +2193,18 @@ msgstr "Naviger deg til backups/ mappen"
 msgid "Download the files stored in this directory"
 msgstr "Last ned filer som er lagret i denne mappen"
 
-msgid "(usually named "
+#, fuzzy
+msgid "(usually named"
 msgstr "(vanligvis heter de "
 
 msgid "Restore backup"
 msgstr "Gjenopprett sikkerhetskopi"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
-msgstr "Trykk på Gjenopprett knappen og systemet vil tilbakeføre den siste daglige sikkerhetskopien"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
+msgstr ""
+"Trykk på Gjenopprett knappen og systemet vil tilbakeføre den siste daglige "
+"sikkerhetskopien"
 
 msgid "Restore"
 msgstr "Gjenopprett"
@@ -2086,9 +2277,6 @@ msgstr "ispCP - Klient/Endre Passord"
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Klient/Endre Personlig Informasjon"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Brukeren eksisterer ikke eller du har ikke rettigheter til denne siden!"
-
 msgid "Catch all account scheduled for creation!"
 msgstr "Fang alle kontoer som ligger i kø for å bli opprettet!"
 
@@ -2143,9 +2331,6 @@ msgstr "Ukedag(er):"
 msgid "Reset"
 msgstr "Resett"
 
-msgid "Cancel"
-msgstr "Avbryt"
-
 #, fuzzy
 msgid "Edit Cronjob"
 msgstr "Endre Cronjobb"
@@ -2154,10 +2339,13 @@ msgstr "Endre Cronjobb"
 msgid "Cronjobs"
 msgstr "Cronjobber"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
 
 msgid "Alias scheduled for deletion!"
@@ -2175,7 +2363,8 @@ msgstr ""
 msgid "SQL database was removed successfully!"
 msgstr "Fjerning av SQL databasen var vellykket!"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 
 msgid "Subdomain scheduled for deletion!"
@@ -2344,17 +2533,6 @@ msgstr "deaktiver"
 #, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
 msgstr "Du har <b>%d</b> nye svar på dine hjelp saker"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s av %3$s]"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s av ubegrenset]"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Du overskirder din trafikk grense!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2873,6 +3051,13 @@ msgstr ""
 msgid "Details"
 msgstr "Detaljer"
 
+#, fuzzy
+msgid "Edit domain"
+msgstr "Endre domene"
+
+msgid "Edit user"
+msgstr "Endre bruker"
+
 msgid "Are you sure you want to change the status of domain account?"
 msgstr ""
 
@@ -2984,6 +3169,10 @@ msgstr "Videresending av underdomene"
 
 msgid "Unknown type"
 msgstr "Ukjent type"
+
+#, fuzzy, php-format
+msgid "Database update %s failed"
+msgstr "Database oppdateringer"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Velkommen {USERNAME} til ispCP!"
@@ -3139,10 +3328,14 @@ msgid "You have been blocked for %d minutes"
 msgstr "Du har blitt blokkert for %d minutter"
 
 msgid "System is currently under maintenance! Only administrators can login."
-msgstr "Systemet er forøyeblikket under vedlikehold! Kun administratorer kan logge inn."
+msgstr ""
+"Systemet er forøyeblikket under vedlikehold! Kun administratorer kan logge "
+"inn."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "Brukeren er allerede logget inn eller det er et sesjondelings problem! Avbryter..."
+msgstr ""
+"Brukeren er allerede logget inn eller det er et sesjondelings problem! "
+"Avbryter..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3200,47 +3393,63 @@ msgstr "skjul pekere"
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
+"subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Du Overskrider Din Peker Grense!"
 
-msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
+"mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
+"accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Du overskrider din grense for antall FTP kontoer!"
 
-msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Du overskrider din grense for antall SQL databser!"
 
-msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
+"users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
+"here!"
 msgstr ""
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Du overskrider din grense for antall SQL databser!"
 
-msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
-msgstr "Du har en grense for trafikk!<br>Du kan ikke legge til brukere med ubegrenset trafikk!"
+msgid ""
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgstr ""
+"Du har en grense for trafikk!<br>Du kan ikke legge til brukere med "
+"ubegrenset trafikk!"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
 msgstr ""
@@ -3299,7 +3508,9 @@ msgstr "Persjonlig Informasjon"
 msgid "Check Out"
 msgstr "Sjekk ut"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
 msgstr ""
 
 msgid "No available hosting packages"
@@ -3357,12 +3568,6 @@ msgstr ""
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
-msgid "Price must be a number!"
-msgstr "Prisen må være et nummer!"
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
@@ -3383,17 +3588,26 @@ msgstr "Sirkelformet"
 msgid "Wrong domain ID!"
 msgstr "Gal domene ID"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
 msgstr ""
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr ""
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr ""
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
 msgstr ""
+
+#, fuzzy
+msgid "User terminated!"
+msgstr "Bruker avsluttet!"
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Administrer Domene/Pekere"
@@ -3438,92 +3652,11 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-#, fuzzy
-msgid "User terminated!"
-msgstr "Bruker avsluttet!"
-
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domene/Endre"
 
-msgid "Edit Domain"
-msgstr "Endre domene"
-
-msgid "Domain properties"
-msgstr "Domene egenskaper"
-
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for antall FTP kontoer <br /><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for antall SQL databaser <br /><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for antall SQL brukere <br /><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Trafikk begrensning [MB] <br /><i>(0 unlimited)</i>"
-
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Disk begrensning [MB] <br /><i>(0 unlimited)</i>"
-
-msgid "SQL Database"
-msgstr "SQL Database"
-
-msgid "SQL User"
-msgstr "SQL Bruker"
-
-msgid "Domain properties could not be updated!"
-msgstr ""
-
-msgid "Domain properties updated successfully!"
-msgstr "Egenskapene for domenet ble oppdatert uten problemer!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr ""
-
-#, php-format
-msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
-
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Brukere/Endre"
-
-msgid "Edit user"
-msgstr "Endre bruker"
 
 msgid "Users list"
 msgstr "Bruker liste"
@@ -3539,9 +3672,6 @@ msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Forhandler/Hovedside"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr ""
 
 msgid "View details"
 msgstr "Vis detaljer"
@@ -3680,7 +3810,9 @@ msgid "Next step"
 msgstr "Neste steg"
 
 msgid "You have no hosting plans. Please contact your system administrator."
-msgstr "Du har ikke valgt noen betalingsløsning. Vennligst ta kontakt med din systemadministrator. "
+msgstr ""
+"Du har ikke valgt noen betalingsløsning. Vennligst ta kontakt med din "
+"systemadministrator. "
 
 msgid "ispCP - User/Add user(step2)"
 msgstr "ispCP - Bruker/Legg til bruker(steg2)"
@@ -3730,8 +3862,10 @@ msgstr "Brukerdata oppdatert!"
 msgid "User data not updated!"
 msgstr "Brukerdata ikke oppdatert!"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr "Denne brukeren har en domene oppføring !<br>Slett domenet fra systemet først!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
+msgstr ""
+"Denne brukeren har en domene oppføring !<br>Slett domenet fra systemet først!"
 
 msgid "User not terminated!"
 msgstr "Bruker ikke avsluttet!"
@@ -3743,26 +3877,20 @@ msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
 msgid "Message was sent."
 msgstr "Meldingen ble sendt."
 
-msgid "Password settings"
-msgstr ""
+#~ msgid "Incorrect price syntax!"
+#~ msgstr "Ugylidig utseende på pris!"
 
-msgid "Password length"
-msgstr ""
+#~ msgid "Incorrect setup fee syntax!"
+#~ msgstr "Ugyldig utseende på opprettelseskostnad!"
 
-msgid "Use strong Passwords"
-msgstr ""
+#~ msgid "Price Style"
+#~ msgstr "Pris Stil"
 
-msgid "E-Mail settings"
-msgstr ""
+#~ msgid "Unknown domain status!"
+#~ msgstr "Ukjente domene status!"
 
-msgid "Create default E-Mail addresses"
-msgstr ""
+#~ msgid "Unknown account type!"
+#~ msgstr "Ukjent kontotype!"
 
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Hosting plans available for"
-msgstr ""
-
-msgid "URL to this admin panel"
-msgstr ""
+#~ msgid "Invalid account id!"
+#~ msgstr "Ugyldig konto id!"

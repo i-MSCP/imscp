@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"POT-Creation-Date: 2008-06-15 15:08+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -436,10 +436,10 @@ msgstr ""
 msgid "Incorrect template description length!"
 msgstr ""
 
-msgid "Incorrect price syntax!"
+msgid "Price must be a number!"
 msgstr ""
 
-msgid "Incorrect setup fee syntax!"
+msgid "Setup fee must be a number!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -472,10 +472,10 @@ msgstr ""
 msgid "Current password"
 msgstr "รหัสผ่านปัจจุบัน"
 
-msgid "Personal data updated successfully!"
+msgid "ispCP - Admin/Change Personal Data"
 msgstr ""
 
-msgid "ispCP - Admin/Change Personal Data"
+msgid "Personal data updated successfully!"
 msgstr ""
 
 msgid "Change personal data"
@@ -619,15 +619,15 @@ msgstr ""
 msgid "Update details"
 msgstr ""
 
-msgid "No database updates available"
-msgstr ""
-
 msgid "New Database update is now available"
 msgstr ""
 
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "คุณแน่ใจที่จะต้องการลบการสั่งซื้อนี้?"
+
+msgid "No database updates available"
+msgstr ""
 
 msgid "You cannot delete the last active IP address!"
 msgstr ""
@@ -768,13 +768,122 @@ msgstr ""
 msgid "Generate password"
 msgstr "รหัสผ่านปัจจุบัน"
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgid "ispCP - Admin/Edit Domain"
+msgstr ""
+
+msgid "Edit Domain"
+msgstr ""
+
+msgid "Domain properties"
+msgstr ""
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+msgid "Yes"
+msgstr "ใช่"
+
+msgid "No"
+msgstr ""
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>!"
+msgstr ""
+
+msgid "Subdomain"
+msgstr ""
+
+msgid "Alias"
+msgstr ""
+
+msgid "Mail"
+msgstr "e-mail"
+
+msgid "FTP"
+msgstr ""
+
+msgid "SQL Database"
+msgstr ""
+
+msgid "SQL User"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Domain properties could not be updated!"
+msgstr ""
+
+msgid "Domain properties updated successfully!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
 msgid "Domains"
@@ -788,15 +897,9 @@ msgstr ""
 msgid "Aliases"
 msgstr ""
 
-msgid "Mail"
-msgstr "e-mail"
-
 #, php-format
 msgid ""
 "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
-
-msgid "FTP"
 msgstr ""
 
 msgid "SQL Databases"
@@ -858,9 +961,6 @@ msgstr ""
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
-msgid "Price Style"
-msgstr ""
-
 msgid "Update plan"
 msgstr ""
 
@@ -912,6 +1012,12 @@ msgstr ""
 msgid "Apply changes"
 msgstr ""
 
+msgid "Benutzertyp (admin, reseller, user)"
+msgstr ""
+
+msgid "URL to this admin panel"
+msgstr ""
+
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr ""
 
@@ -939,6 +1045,9 @@ msgstr ""
 msgid "Hosting plan updated!"
 msgstr ""
 
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+
 msgid "Hosting plans not found!"
 msgstr ""
 
@@ -959,6 +1068,23 @@ msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
 msgid "New ispCP update is now available"
+msgstr ""
+
+msgid "A database update is available"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+msgid "ispCP - Admin/Main Index"
 msgstr ""
 
 msgid "ispCP - Admin/IP manage"
@@ -992,9 +1118,6 @@ msgid "IP"
 msgstr ""
 
 msgid "Domain"
-msgstr ""
-
-msgid "Alias"
 msgstr ""
 
 msgid "Add new IP"
@@ -1037,17 +1160,14 @@ msgstr ""
 msgid "Execute requests"
 msgstr ""
 
+msgid "Set status to \"change\""
+msgstr ""
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
 
-msgid "Unknown domain status!"
-msgstr ""
-
-msgid "Unknown account type!"
-msgstr ""
-
-msgid "Invalid account id!"
+msgid "Unknown type!"
 msgstr ""
 
 msgid "Done"
@@ -1362,15 +1482,6 @@ msgstr ""
 msgid "Reseller statistics table"
 msgstr ""
 
-msgid "Traffic"
-msgstr ""
-
-msgid "Disk"
-msgstr ""
-
-msgid "Subdomain"
-msgstr ""
-
 msgid "SQL database"
 msgstr ""
 
@@ -1553,6 +1664,15 @@ msgstr ""
 msgid "Activation link expire time (minutes)"
 msgstr ""
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr ""
 
@@ -1574,6 +1694,15 @@ msgstr ""
 msgid "Other settings"
 msgstr ""
 
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
 msgid "Default language"
 msgstr ""
 
@@ -1583,8 +1712,28 @@ msgstr ""
 msgid "Server ports"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "เพิ่มผู้ดูแลระบบ"
+
 msgid "Domains per page"
 msgstr ""
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "ข้อความของคุณ"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
@@ -1599,12 +1748,6 @@ msgid "udp"
 msgstr ""
 
 msgid "tcp"
-msgstr ""
-
-msgid "Yes"
-msgstr "ใช่"
-
-msgid "No"
 msgstr ""
 
 msgid "Services"
@@ -1637,6 +1780,12 @@ msgstr ""
 msgid "Support tickets"
 msgstr ""
 
+msgid "From"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
 msgid "Priority"
 msgstr ""
 
@@ -1659,9 +1808,6 @@ msgid "[Re]"
 msgstr "[ตอบ]"
 
 msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr ""
-
-msgid "From"
 msgstr ""
 
 msgid "days"
@@ -1906,10 +2052,14 @@ msgstr ""
 msgid "Mail account scheduled for addition!"
 msgstr ""
 
+msgid "Please select at least one mail type!"
+msgstr ""
+
 msgid "Please enter mail account username!"
 msgstr ""
 
-msgid "Password data includes not permitted signs!"
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 
 msgid "Subdomain list is empty! You cannot add mail accounts!"
@@ -2037,7 +2187,7 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named "
+msgid "(usually named"
 msgstr ""
 
 msgid "Restore backup"
@@ -2117,10 +2267,6 @@ msgstr ""
 msgid "ispCP - Client/Change Personal Data"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2171,9 +2317,6 @@ msgstr ""
 
 msgid "Reset"
 msgstr ""
-
-msgid "Cancel"
-msgstr "ยกเลิก"
 
 msgid "Edit Cronjob"
 msgstr ""
@@ -2370,17 +2513,6 @@ msgstr ""
 
 #, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-msgid "You are exceeding your traffic limit!"
 msgstr ""
 
 #, php-format
@@ -2886,6 +3018,13 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
+#, fuzzy
+msgid "Edit domain"
+msgstr "เพิ่ม subdomain"
+
+msgid "Edit user"
+msgstr ""
+
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "คุณแน่ใจที่จะต้องการเปลี่ยนสถานะของโดเมน?"
 
@@ -2996,6 +3135,10 @@ msgid "Subdomain forward"
 msgstr ""
 
 msgid "Unknown type"
+msgstr ""
+
+#, php-format
+msgid "Database update %s failed"
 msgstr ""
 
 msgid "Welcome {USERNAME} to ispCP!"
@@ -3203,8 +3346,8 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You cannot add an user with unlimited "
-"SQL databases!"
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
@@ -3342,12 +3485,6 @@ msgstr ""
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
-msgid "Price must be a number!"
-msgstr ""
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
@@ -3381,6 +3518,9 @@ msgstr ""
 msgid ""
 "Domain you are trying to remove has subdomains accounts !<br> first remove "
 "them !"
+msgstr ""
+
+msgid "User terminated!"
 msgstr ""
 
 msgid "ispCP - Manage Domain/Alias"
@@ -3427,91 +3567,10 @@ msgstr "เพิ่ม domain alias"
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "User terminated!"
-msgstr ""
-
 msgid "ispCP - Domain/Edit"
 msgstr ""
 
-msgid "Edit Domain"
-msgstr ""
-
-msgid "Domain properties"
-msgstr ""
-
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr ""
-
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL Database"
-msgstr ""
-
-msgid "SQL User"
-msgstr ""
-
-msgid "Domain properties could not be updated!"
-msgstr ""
-
-msgid "Domain properties updated successfully!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
-
 msgid "ispCP - Users/Edit"
-msgstr ""
-
-msgid "Edit user"
 msgstr ""
 
 msgid "Users list"
@@ -3527,9 +3586,6 @@ msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
-msgstr ""
-
-msgid "Hosting plan can't be deleted, there are orders!"
 msgstr ""
 
 msgid "View details"
@@ -3727,30 +3783,6 @@ msgid "ispCP - Reseller : Support System: View Tickets"
 msgstr ""
 
 msgid "Message was sent."
-msgstr ""
-
-msgid "Password settings"
-msgstr ""
-
-msgid "Password length"
-msgstr ""
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Hosting plans available for"
-msgstr ""
-
-msgid "URL to this admin panel"
 msgstr ""
 
 #, fuzzy

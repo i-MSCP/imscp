@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"POT-Creation-Date: 2008-06-15 15:08+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: VOLKAN KIRIK <volkirik@yahoo.com.tr>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -430,10 +430,10 @@ msgstr ""
 msgid "Incorrect template description length!"
 msgstr ""
 
-msgid "Incorrect price syntax!"
+msgid "Price must be a number!"
 msgstr ""
 
-msgid "Incorrect setup fee syntax!"
+msgid "Setup fee must be a number!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -466,11 +466,11 @@ msgstr ""
 msgid "Current password"
 msgstr "Mevcut parola"
 
-msgid "Personal data updated successfully!"
-msgstr "Kişisel bilgiler güncellendi!"
-
 msgid "ispCP - Admin/Change Personal Data"
 msgstr ""
+
+msgid "Personal data updated successfully!"
+msgstr "Kişisel bilgiler güncellendi!"
 
 msgid "Change personal data"
 msgstr "Kişisel bilgileri değiştir"
@@ -616,16 +616,16 @@ msgid "Update details"
 msgstr ""
 
 #, fuzzy
-msgid "No database updates available"
-msgstr "Yeni ispCP güncellemesi yok"
-
-#, fuzzy
 msgid "New Database update is now available"
 msgstr "Yeni ispCP güncellemesi var"
 
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Bu siparişi silmek istediğinize emin misiniz"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Yeni ispCP güncellemesi yok"
 
 msgid "You cannot delete the last active IP address!"
 msgstr ""
@@ -765,14 +765,131 @@ msgstr ""
 msgid "Generate password"
 msgstr "Şifre oluştur"
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Yönetici/Kullanıcıları yönet/Bayi düzenle"
+#, fuzzy
+msgid "ispCP - Admin/Edit Domain"
+msgstr "Alan adı düzenle"
+
+msgid "Edit Domain"
+msgstr "Alan adı düzenle"
+
+msgid "Domain properties"
+msgstr ""
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Yes"
+msgstr "Evet"
+
+msgid "No"
+msgstr "Hayır"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "SQL veritabanı limiti <i>pasifleştirilmiş</i>!"
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL kullanıcıları limiti <i>pasifleştirilmiş</i>!"
+
+msgid "Subdomain"
+msgstr ""
+
+msgid "Alias"
+msgstr "Takma ad"
+
+msgid "Mail"
+msgstr ""
+
+msgid "FTP"
+msgstr ""
+
+msgid "SQL Database"
+msgstr ""
+
+msgid "SQL User"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Domain properties could not be updated!"
+msgstr ""
+
+msgid "Domain properties updated successfully!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Yönetici/Kullanıcıları yönet/Bayi düzenle"
 
 msgid "Domains"
 msgstr "Alan adları"
@@ -785,15 +902,9 @@ msgstr ""
 msgid "Aliases"
 msgstr ""
 
-msgid "Mail"
-msgstr ""
-
 #, php-format
 msgid ""
 "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
-
-msgid "FTP"
 msgstr ""
 
 msgid "SQL Databases"
@@ -856,9 +967,6 @@ msgstr "Altalanadı limiti<br><i>(-1 pasif, 0 limitsiz)</i>"
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
-msgid "Price Style"
-msgstr ""
-
 msgid "Update plan"
 msgstr ""
 
@@ -910,6 +1018,12 @@ msgstr ""
 msgid "Apply changes"
 msgstr "Değişiklikleri kaydet"
 
+msgid "Benutzertyp (admin, reseller, user)"
+msgstr ""
+
+msgid "URL to this admin panel"
+msgstr ""
+
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr ""
 
@@ -937,6 +1051,10 @@ msgstr "Hosting planı silindi!"
 msgid "Hosting plan updated!"
 msgstr "Hosting planı güncellendi!"
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Bu isimde hosting planı mevcut!"
+
 msgid "Hosting plans not found!"
 msgstr "Hosting planı bulunamadı!"
 
@@ -958,6 +1076,25 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Yeni ispCP güncellemesi var"
+
+#, fuzzy
+msgid "A database update is available"
+msgstr "Yeni ispCP güncellemesi yok"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Trafik limitini aştınız!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Yönetici/Kullanıcı Yönet/Kullanıcı Ekle"
 
 msgid "ispCP - Admin/IP manage"
 msgstr ""
@@ -991,9 +1128,6 @@ msgstr ""
 
 msgid "Domain"
 msgstr "Alan adı"
-
-msgid "Alias"
-msgstr "Takma ad"
 
 msgid "Add new IP"
 msgstr "Yeni IP ekle"
@@ -1035,20 +1169,16 @@ msgstr ""
 msgid "Execute requests"
 msgstr "Sorgu çalıştır"
 
+msgid "Set status to \"change\""
+msgstr ""
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
 
 #, fuzzy
-msgid "Unknown domain status!"
-msgstr "Yanlış alt alan adı yazımı!"
-
-msgid "Unknown account type!"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid account id!"
-msgstr "Mail hesapları listesi"
+msgid "Unknown type!"
+msgstr "HATA: Bilinmeyen kullanıcı"
 
 msgid "Done"
 msgstr "Bitti"
@@ -1363,15 +1493,6 @@ msgstr ""
 msgid "Reseller statistics table"
 msgstr ""
 
-msgid "Traffic"
-msgstr ""
-
-msgid "Disk"
-msgstr ""
-
-msgid "Subdomain"
-msgstr ""
-
 msgid "SQL database"
 msgstr ""
 
@@ -1555,6 +1676,15 @@ msgstr ""
 msgid "Activation link expire time (minutes)"
 msgstr ""
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr ""
 
@@ -1576,6 +1706,15 @@ msgstr ""
 msgid "Other settings"
 msgstr "Diğer ayarlar"
 
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
 msgid "Default language"
 msgstr ""
 
@@ -1585,8 +1724,29 @@ msgstr ""
 msgid "Server ports"
 msgstr ""
 
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Yönetici ekle"
+
 msgid "Domains per page"
 msgstr "Bir sayfadaki alan adı sayısı"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Seviye"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Hata"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
@@ -1602,12 +1762,6 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
-
-msgid "Yes"
-msgstr "Evet"
-
-msgid "No"
-msgstr "Hayır"
 
 msgid "Services"
 msgstr ""
@@ -1639,6 +1793,12 @@ msgstr ""
 msgid "Support tickets"
 msgstr ""
 
+msgid "From"
+msgstr "Kimden"
+
+msgid "To"
+msgstr ""
+
 msgid "Priority"
 msgstr ""
 
@@ -1662,9 +1822,6 @@ msgstr "[Cvp]"
 
 msgid "ispCP - Client/Enable Mail Autoresponder"
 msgstr ""
-
-msgid "From"
-msgstr "Kimden"
 
 msgid "days"
 msgstr "gün"
@@ -1910,10 +2067,14 @@ msgstr "Mail hesabı mevcut!"
 msgid "Mail account scheduled for addition!"
 msgstr "Mail hesabı eklenmesi için kaydedildi"
 
+msgid "Please select at least one mail type!"
+msgstr ""
+
 msgid "Please enter mail account username!"
 msgstr ""
 
-msgid "Password data includes not permitted signs!"
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Parolada izin verilmeyen işaretler var!"
 
 msgid "Subdomain list is empty! You cannot add mail accounts!"
@@ -2041,7 +2202,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named "
+#, fuzzy
+msgid "(usually named"
 msgstr "(örn. yedek "
 
 msgid "Restore backup"
@@ -2121,10 +2283,6 @@ msgstr ""
 msgid "ispCP - Client/Change Personal Data"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2176,9 +2334,6 @@ msgstr "Haftanın günü"
 
 msgid "Reset"
 msgstr ""
-
-msgid "Cancel"
-msgstr "İptal"
 
 msgid "Edit Cronjob"
 msgstr "Cronjob düzenle"
@@ -2377,17 +2532,6 @@ msgstr "kapalı"
 #, fuzzy, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
 msgstr "Yeni bir yardım isteği sorusu yok!"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Trafik limitini aştınız!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2900,6 +3044,13 @@ msgstr "Kullanıcı listesi boş!"
 msgid "Details"
 msgstr "Detaylar"
 
+#, fuzzy
+msgid "Edit domain"
+msgstr "Alan adı düzenle"
+
+msgid "Edit user"
+msgstr "Kullanıcı düzenle"
+
 msgid "Are you sure you want to change the status of domain account?"
 msgstr ""
 
@@ -3011,6 +3162,10 @@ msgstr ""
 
 msgid "Unknown type"
 msgstr ""
+
+#, fuzzy, php-format
+msgid "Database update %s failed"
+msgstr "Hazır ispCP güncellemeleri"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3220,8 +3375,8 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You cannot add an user with unlimited "
-"SQL databases!"
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
@@ -3362,12 +3517,6 @@ msgstr "Kullanıcı kaydınız yok."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
-msgid "Price must be a number!"
-msgstr ""
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
@@ -3401,6 +3550,9 @@ msgstr ""
 msgid ""
 "Domain you are trying to remove has subdomains accounts !<br> first remove "
 "them !"
+msgstr ""
+
+msgid "User terminated!"
 msgstr ""
 
 msgid "ispCP - Manage Domain/Alias"
@@ -3448,99 +3600,11 @@ msgstr "Alan adına takma isim ekle"
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "User terminated!"
-msgstr ""
-
 msgid "ispCP - Domain/Edit"
-msgstr ""
-
-msgid "Edit Domain"
-msgstr "Alan adı düzenle"
-
-msgid "Domain properties"
-msgstr ""
-
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-#, fuzzy
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-#, fuzzy
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
-msgid "SQL Database"
-msgstr ""
-
-msgid "SQL User"
-msgstr ""
-
-msgid "Domain properties could not be updated!"
-msgstr ""
-
-msgid "Domain properties updated successfully!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
 msgstr ""
-
-msgid "Edit user"
-msgstr "Kullanıcı düzenle"
 
 msgid "Users list"
 msgstr "Kullanıcı listesi"
@@ -3556,10 +3620,6 @@ msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
 msgstr ""
-
-#, fuzzy
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Bu isimde hosting planı mevcut!"
 
 msgid "View details"
 msgstr "Detayları göster"
@@ -3760,29 +3820,13 @@ msgstr ""
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
 
-msgid "Password settings"
-msgstr ""
+#, fuzzy
+#~ msgid "Unknown domain status!"
+#~ msgstr "Yanlış alt alan adı yazımı!"
 
-msgid "Password length"
-msgstr ""
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Hosting plans available for"
-msgstr ""
-
-msgid "URL to this admin panel"
-msgstr ""
+#, fuzzy
+#~ msgid "Invalid account id!"
+#~ msgstr "Mail hesapları listesi"
 
 #, fuzzy
 #~ msgid "Order in progress"

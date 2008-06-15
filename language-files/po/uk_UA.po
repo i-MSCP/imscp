@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"POT-Creation-Date: 2008-06-15 15:08+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -441,10 +441,10 @@ msgstr ""
 msgid "Incorrect template description length!"
 msgstr ""
 
-msgid "Incorrect price syntax!"
+msgid "Price must be a number!"
 msgstr ""
 
-msgid "Incorrect setup fee syntax!"
+msgid "Setup fee must be a number!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -477,11 +477,11 @@ msgstr "Оновити пароль"
 msgid "Current password"
 msgstr "Поточний пароль"
 
-msgid "Personal data updated successfully!"
-msgstr "Персональні дані успішно оновлені!"
-
 msgid "ispCP - Admin/Change Personal Data"
 msgstr "ispCP - Адміністратор/Зміна персональних даних"
+
+msgid "Personal data updated successfully!"
+msgstr "Персональні дані успішно оновлені!"
 
 msgid "Change personal data"
 msgstr "Змінити персональні дані"
@@ -627,16 +627,16 @@ msgid "Update details"
 msgstr "Деталі оновлення"
 
 #, fuzzy
-msgid "No database updates available"
-msgstr "Немає нових оновлень ispCP"
-
-#, fuzzy
 msgid "New Database update is now available"
 msgstr "Доступне оновлення ispCP"
 
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Немає нових оновлень ispCP"
 
 msgid "You cannot delete the last active IP address!"
 msgstr ""
@@ -778,8 +778,61 @@ msgstr "Надіслати нові дані автентифікації"
 msgid "Generate password"
 msgstr "Оновити пароль"
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
+#, fuzzy
+msgid "ispCP - Admin/Edit Domain"
+msgstr "ispCP - Адміністратор/Журнал адміністратора"
+
+msgid "Edit Domain"
+msgstr "Редагувати домен"
+
+msgid "Domain properties"
+msgstr "Властивості домену"
+
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Yes"
+msgstr "Так"
+
+msgid "No"
+msgstr "Ні"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
 
 #, fuzzy
 msgid "SQL databases limit is <i>disabled</i>!"
@@ -788,6 +841,73 @@ msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</
 #, fuzzy
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "Subdomain"
+msgstr "Піддомен"
+
+msgid "Alias"
+msgstr "Аліас"
+
+msgid "Mail"
+msgstr "Пошта"
+
+msgid "FTP"
+msgstr ""
+
+msgid "SQL Database"
+msgstr "База даних SQL"
+
+msgid "SQL User"
+msgstr "Користувач SQL"
+
+msgid "Traffic"
+msgstr "Трафік"
+
+msgid "Disk"
+msgstr "Диск"
+
+#, fuzzy
+msgid "Domain properties could not be updated!"
+msgstr "Властивості домену успішно оновлені!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Властивості домену успішно оновлені!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
 
 msgid "Domains"
 msgstr "Домени"
@@ -800,15 +920,9 @@ msgstr ""
 msgid "Aliases"
 msgstr "Аліаси"
 
-msgid "Mail"
-msgstr "Пошта"
-
 #, php-format
 msgid ""
 "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
-
-msgid "FTP"
 msgstr ""
 
 msgid "SQL Databases"
@@ -877,9 +991,6 @@ msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - не�
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
 
-msgid "Price Style"
-msgstr ""
-
 msgid "Update plan"
 msgstr "Оновити план"
 
@@ -932,6 +1043,12 @@ msgstr "Тема"
 msgid "Apply changes"
 msgstr "Застосувати зміни"
 
+msgid "Benutzertyp (admin, reseller, user)"
+msgstr ""
+
+msgid "URL to this admin panel"
+msgstr ""
+
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr "ispCP - Адміністратор/Керування хостінг-планами"
 
@@ -959,6 +1076,10 @@ msgstr "Видалено хостінг-план!"
 msgid "Hosting plan updated!"
 msgstr "Оновлено хостінг-план!"
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Хостінг-план із введеною назвою вже існує!"
+
 msgid "Hosting plans not found!"
 msgstr "Хостінг-плани не знайдені!"
 
@@ -980,6 +1101,24 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Доступне оновлення ispCP"
+
+#, fuzzy
+msgid "A database update is available"
+msgstr "Немає нових оновлень ispCP"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Ви вичерпали ліміт трафіку!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Адміністратор/Головна"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Адміністратор/Керування IP"
@@ -1014,9 +1153,6 @@ msgstr ""
 
 msgid "Domain"
 msgstr "Домен"
-
-msgid "Alias"
-msgstr "Аліас"
 
 msgid "Add new IP"
 msgstr "Додати новий IP"
@@ -1060,21 +1196,16 @@ msgstr "ispCP - Клієнт/Web-інструменти"
 msgid "Execute requests"
 msgstr "Виконати запит"
 
+msgid "Set status to \"change\""
+msgstr ""
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
 
 #, fuzzy
-msgid "Unknown domain status!"
-msgstr "невідомий статус"
-
-#, fuzzy
-msgid "Unknown account type!"
+msgid "Unknown type!"
 msgstr "Невідомий тип"
-
-#, fuzzy
-msgid "Invalid account id!"
-msgstr "Список поштових скриньок"
 
 msgid "Done"
 msgstr "Завершено"
@@ -1395,15 +1526,6 @@ msgstr ""
 msgid "Reseller statistics table"
 msgstr "Таблиця статистики реселера"
 
-msgid "Traffic"
-msgstr "Трафік"
-
-msgid "Disk"
-msgstr "Диск"
-
-msgid "Subdomain"
-msgstr "Піддомен"
-
 msgid "SQL database"
 msgstr "База даних SQL"
 
@@ -1588,6 +1710,15 @@ msgstr "Налаштування"
 msgid "Activation link expire time (minutes)"
 msgstr ""
 
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr "Визначення перебором"
 
@@ -1609,6 +1740,15 @@ msgstr ""
 msgid "Other settings"
 msgstr "Налаштування замовлення"
 
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
 msgid "Default language"
 msgstr "Довільна мова"
 
@@ -1619,8 +1759,29 @@ msgstr "Система підтримки"
 msgid "Server ports"
 msgstr "Стан сервера"
 
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Адміністратору"
+
 msgid "Domains per page"
 msgstr "Доменів на сторінку"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Рівень"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Помилка"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
@@ -1636,12 +1797,6 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
-
-msgid "Yes"
-msgstr "Так"
-
-msgid "No"
-msgstr "Ні"
 
 msgid "Services"
 msgstr ""
@@ -1673,6 +1828,12 @@ msgstr "ispCP - Клієнт/Питання та пропозиції"
 msgid "Support tickets"
 msgstr "Запити підтримки"
 
+msgid "From"
+msgstr "Від"
+
+msgid "To"
+msgstr ""
+
 msgid "Priority"
 msgstr "Пріоритет"
 
@@ -1696,9 +1857,6 @@ msgstr "[Відповідь]"
 
 msgid "ispCP - Client/Enable Mail Autoresponder"
 msgstr "ispCP - Клієнт/Активація автовідповідача"
-
-msgid "From"
-msgstr "Від"
 
 msgid "days"
 msgstr "дні"
@@ -1946,10 +2104,15 @@ msgstr "Поштова скринька вже існує!"
 msgid "Mail account scheduled for addition!"
 msgstr "Триває додавання поштової скриньки!"
 
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Укажіть скриньку відправника!"
+
 msgid "Please enter mail account username!"
 msgstr "Введіть користувача електронної пошти!"
 
-msgid "Password data includes not permitted signs!"
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Пароль містить недозволені символи!"
 
 msgid "Subdomain list is empty! You cannot add mail accounts!"
@@ -2078,7 +2241,7 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named "
+msgid "(usually named"
 msgstr ""
 
 msgid "Restore backup"
@@ -2158,11 +2321,6 @@ msgstr "ispCP - Клієнт/Зміна пароля"
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Клієнт/Зміна персональних даних"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
-
 msgid "Catch all account scheduled for creation!"
 msgstr "Перехоплення всього в процесі створення!"
 
@@ -2214,9 +2372,6 @@ msgstr "Дні тижня:"
 
 msgid "Reset"
 msgstr "Очистити"
-
-msgid "Cancel"
-msgstr "Скасувати"
 
 msgid "Edit Cronjob"
 msgstr "Редагувати завдання Cron"
@@ -2424,17 +2579,6 @@ msgstr "вимкнено"
 #, fuzzy, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
 msgstr "Немає нових питань підтримки!"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Ви вичерпали ліміт трафіку!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2954,6 +3098,13 @@ msgstr "Список користувачів порожній!"
 msgid "Details"
 msgstr "Деталі"
 
+#, fuzzy
+msgid "Edit domain"
+msgstr "Редагувати домен"
+
+msgid "Edit user"
+msgstr "Редагувати користувача"
+
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Ви впевнені, що бажаєте змінити статус облікового запису домена?"
 
@@ -3066,6 +3217,10 @@ msgstr "Перенаправлення піддомену"
 
 msgid "Unknown type"
 msgstr "Невідомий тип"
+
+#, fuzzy, php-format
+msgid "Database update %s failed"
+msgstr "Користувачі баз даних"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3279,8 +3434,8 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
 msgid ""
-"You have a SQL databases limit!<br>You cannot add an user with unlimited "
-"SQL databases!"
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
@@ -3423,12 +3578,6 @@ msgstr "Ви не маєте записів користувачів."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Реселер/Додавання хостінг-плану"
 
-msgid "Price must be a number!"
-msgstr ""
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
@@ -3470,6 +3619,9 @@ msgid ""
 msgstr ""
 "Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть "
 "їх!"
+
+msgid "User terminated!"
+msgstr "Користувач видалений!"
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Керування доменами/Аліаси"
@@ -3517,101 +3669,11 @@ msgstr "Аліас домену додано!"
 msgid "Ordered domain alias not activated!"
 msgstr "Аліас домену не додано!"
 
-msgid "User terminated!"
-msgstr "Користувач видалений!"
-
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Домен/Редагування"
 
-msgid "Edit Domain"
-msgstr "Редагувати домен"
-
-msgid "Domain properties"
-msgstr "Властивості домену"
-
-#, fuzzy
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
-
-msgid "SQL Database"
-msgstr "База даних SQL"
-
-msgid "SQL User"
-msgstr "Користувач SQL"
-
-#, fuzzy
-msgid "Domain properties could not be updated!"
-msgstr "Властивості домену успішно оновлені!"
-
-msgid "Domain properties updated successfully!"
-msgstr "Властивості домену успішно оновлені!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
-
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Користувачі/Редагування"
-
-msgid "Edit user"
-msgstr "Редагувати користувача"
 
 msgid "Users list"
 msgstr "Список користувачів"
@@ -3627,10 +3689,6 @@ msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Реселер/Головна"
-
-#, fuzzy
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Хостінг-план із введеною назвою вже існує!"
 
 msgid "View details"
 msgstr "Перегляд деталей"
@@ -3832,32 +3890,17 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
 
-msgid "Password settings"
-msgstr ""
+#, fuzzy
+#~ msgid "Unknown domain status!"
+#~ msgstr "невідомий статус"
 
-msgid "Password length"
-msgstr ""
+#, fuzzy
+#~ msgid "Unknown account type!"
+#~ msgstr "Невідомий тип"
 
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Hosting plans available for"
-msgstr ""
-
-msgid "URL to this admin panel"
-msgstr ""
-
-#~ msgid "ispCP - Admin/Main Index"
-#~ msgstr "ispCP - Адміністратор/Головна"
+#, fuzzy
+#~ msgid "Invalid account id!"
+#~ msgstr "Список поштових скриньок"
 
 #~ msgid "Max domain count"
 #~ msgstr "Макс. кількість доменів"
