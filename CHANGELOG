@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-06-15 Benedikt Heintel
 	- CONFIGS:
 		* Added maximum e-mail size
+	- ENGINE:
+		* Fix for RC5 update
 	- LANGUAGES:
 		* Updated Romanian
 		* Updated all language files

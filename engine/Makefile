@@ -104,6 +104,7 @@ install:
 	$(CMD_INSTALL) ./setup/ispcp-setup-methods.pl $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/regenerate.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.7-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.8-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp1.0.0rc2-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup

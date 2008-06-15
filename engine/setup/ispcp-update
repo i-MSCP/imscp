@@ -1073,7 +1073,7 @@ sub prepare_update {
 	# start services
 	start_services();
 
-	exit 0;
+	return 0;
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 }
@@ -1087,7 +1087,7 @@ sub update_shut_down {
 
 \tispCP '$main::cfg{'Version'}' Update completed successfully!
 
-\tPlease type http://$main::ua{'admin_vhost'} in your browser,
+\tPlease type http://$main::cfg{'BASE_SERVER_VHOST'} in your browser,
 \tlog in with your Administrator Account and perform Database Updates if exists.
 
 MSG
@@ -1121,17 +1121,6 @@ system('clear');
 my $rs = undef;
 
 $rs = prepare_update();
-
-if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-$rs = update_ispcp();
 
 if ($rs != 0) {
 	my $el_data = pop_el(\@main::el);
