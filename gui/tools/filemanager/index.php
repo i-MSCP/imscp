@@ -1,22 +1,22 @@
 <?php
 
 /*  Hi,
-    
+
     Thanks for downloading net2ftp!
-    
+
     This page shows how to integrate net2ftp in a generic PHP page.
     It is quite easy:
     1. Define the constants NET2FTP_APPLICATION_ROOTDIR and NET2FTP_APPLICATION_ROOTDIR_URL
     2. Include the file main.inc.php
-    3. Execute 5 net2ftp() calls to send the HTTP headers, print the Javascript 
+    3. Execute 5 net2ftp() calls to send the HTTP headers, print the Javascript
        code, print the HTML body, etc...
     4. Check if an error occured to print out an error message.
-    
+
     Look in /integration for more elaborate examples.
-    
+
     Enjoy,
-    
-    David 
+
+    David
 */
 
 // ------------------------------------------------------------------------
@@ -32,7 +32,7 @@ elseif (isset($_SERVER["PHP_SELF"]) == true)    { define("NET2FTP_APPLICATION_RO
 require_once("./main.inc.php");
 
 // ------------------------------------------------------------------------
-// 3. Execute net2ftp($action). Note that net2ftp("sendHttpHeaders") MUST 
+// 3. Execute net2ftp($action). Note that net2ftp("sendHttpHeaders") MUST
 //    be called once before the other net2ftp() calls!
 // ------------------------------------------------------------------------
 net2ftp("sendHttpHeaders");
@@ -60,7 +60,7 @@ if ($net2ftp_result["success"] == false) {
 
 <?php
 // ------------------------------------------------------------------------
-// 4. Check the result and print out an error message. This can be done using 
+// 4. Check the result and print out an error message. This can be done using
 //    a template, or by accessing the $net2ftp_result variable directly.
 // ------------------------------------------------------------------------
 if ($net2ftp_result["success"] == false) {

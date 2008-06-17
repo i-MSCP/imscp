@@ -98,7 +98,7 @@ $net2ftp_settings["functionuse_edit"] = "yes";
 // Update file (beta function)
 $net2ftp_settings["functionuse_update"] = "no";
 
-// Open file 
+// Open file
 $net2ftp_settings["functionuse_open"] = "yes";
 
 ?>

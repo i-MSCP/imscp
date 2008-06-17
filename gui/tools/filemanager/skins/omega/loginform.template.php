@@ -57,7 +57,7 @@
 							<td><input name="directory" value="<?php echo $directory; ?>" type="text" style="width:230px;" /></td>
 <?php /* ----- SSL ----- */ ?>
 <?php							if ($sslconnect["inputType"] == "checkbox") { ?>
-								<td><span><input name="sslconnect" value="yes" type="hidden" <?php echo $sslconnect["checked"]; ?> /></span></td>
+								<td><span><input name="sslconnect" value="no" type="hidden" <?php echo $sslconnect["checked"]; ?> /></span></td>
 <?php							} else { ?>
 								<td></td>
 <?php							} ?>

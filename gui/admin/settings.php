@@ -54,6 +54,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$support_system 					= $_POST['support_system'];
 	$hosting_plan_level					= $_POST['hosting_plan_level'];
 	$domain_rows_per_page 				= clean_input($_POST['domain_rows_per_page']);
+	$checkforupdate						= $_POST['checkforupdate'];
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
 		case "E_USER_NOTICE":
@@ -94,6 +95,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('HOSTING_PLANS_LEVEL', $hosting_plan_level);
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		setConfig_Value('LOG_LEVEL', $log_level);
+		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
 		set_page_message(tr('Settings saved !'));
 	}
 }
@@ -176,6 +178,14 @@ if ($cfg['HOSTING_PLANS_LEVEL'] == "admin") {
 	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', 'selected="selected"');
 }
 
+if ($cfg['CHECK_FOR_UPDATES']) {
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', '');
+} else {
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', '');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
+}
+
 switch($cfg['LOG_LEVEL']){
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
@@ -244,7 +254,8 @@ $tpl->assign(
 		'TR_E_USER_OFF' => tr('Disabled'),
 		'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
-		'TR_E_USER_ERROR' => tr('Errors')
+		'TR_E_USER_ERROR' => tr('Errors'),
+		'TR_CHECK_FOR_UPDATES' => tr('Check for update')
 		)
 	);
 

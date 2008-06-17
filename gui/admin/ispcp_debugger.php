@@ -25,8 +25,8 @@ check_login(__FILE__);
 function count_requests(&$sql, $id_name, $table){
     global $cfg;
 
-    $query = "select $id_name FROM $table WHERE $id_name = ?";
-	$rs = exec_query($sql, $query, $cfg['ITEM_CHANGE_STATUS']);
+    $query = "select `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
+	$rs = exec_query($sql, $query, array($cfg['ITEM_OK_STATUS'], $cfg['ITEM_DISABLED_STATUS'], $cfg['ITEM_ORDERED_STATUS']));
     $count = $rs->RecordCount();
     return $count;
 }

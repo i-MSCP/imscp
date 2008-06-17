@@ -194,6 +194,7 @@ function check_login($fName = null, $checkReferer = true) {
             if (isset($info['host']) && !empty($info['host'])) {
                 if ($info['host'] != $_SERVER['HTTP_HOST'] || $info['host'] != $_SERVER['SERVER_NAME']) {
                     set_page_message(tr('Request from foreign host was blocked!'));
+                if(!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']), strlen($_SERVER['REDIRECT_URL'])) === $_SERVER['REDIRECT_URL']))
                     redirect_to_level_page();
                 }
             }

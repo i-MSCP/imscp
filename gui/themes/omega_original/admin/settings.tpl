@@ -44,6 +44,18 @@
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_CHECK_FOR_UPDATES}</strong></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td width="200" class="content2">{TR_CHECK_FOR_UPDATES}</td>
+                              <td class="content"><select name="checkforupdate">
+                                  <option value="0" {CHECK_FOR_UPDATES_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {CHECK_FOR_UPDATES_SELECTED_ON}>{TR_ENABLED}</option>
+                              </select></td>
+                            </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_LOSTPASSWORD}</strong></td>
                             </tr>
                             <tr>

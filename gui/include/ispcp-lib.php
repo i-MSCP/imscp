@@ -147,6 +147,9 @@ $cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] = true;
 // false: email accounts are soft suspended (passwords are modified so user can't access the accounts)
 $cfg['HARD_MAIL_SUSPENSION'] = true;
 
+// false: disable automatic serch for new version
+$cfg['CHECK_FOR_UPDATES'] = true;
+
 
 require_once(INCLUDEPATH.'/date-functions.php');
 require_once(INCLUDEPATH.'/input-checks.php');

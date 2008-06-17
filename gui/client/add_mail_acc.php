@@ -370,8 +370,10 @@ SQL_QUERY;
 }
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
-	  $mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
-	  $mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
+	global $cfg;
+
+	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
+	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
 
 	if (($mail_type_normal == false) && ($mail_type_forward == false)) {
 		set_page_message(tr('Please select at least one mail type!'));

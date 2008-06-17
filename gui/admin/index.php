@@ -71,6 +71,12 @@ SQL_QUERY;
 function get_ispcp_update_infos(&$tpl) {
 	global $cfg;
 
+	if (!$cfg['CHECK_FOR_UPDATES']) {
+		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
+		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+		return false;
+	}
+
 	$last_update = "http://www.isp-control.net/latest.txt";
 	// Fake the browser type
 	ini_set('user_agent', 'Mozilla/5.0');
@@ -163,7 +169,8 @@ SQL_QUERY;
 	}
 
 	$tpl->assign(
-		array('TRAFFIC_WARNING' => $traff_msg,
+		array(
+			'TRAFFIC_WARNING' => $traff_msg,
 			'BAR_VALUE' => $bar_value,
 			)
 		);
