@@ -10,7 +10,7 @@
 <script type="text/javascript">
 <!--
 	function begin_js() {
-		if (document.forms[0].elements['mail_forward']) {
+		if (document.forms[0].elements['mail_forward'].checked == false) {
 			document.forms[0].elements['forward_list'].disabled = true;
 		}
 	}

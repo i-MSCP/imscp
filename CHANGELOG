@@ -7,6 +7,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1277: Adding CHECK_FOR_UPDATES in ispcp.conf
 		* Fixed #1351: Filemanager not work update RC4 -> RC5
 		* Fixed #1353: In admin/ispcp_debugger.php not all execute request are counted
+		* Fixed #1354: Disabled forward list when editing mixed mail address
 
 2008-06-15 Benedikt Heintel
 	- CONFIGS:
