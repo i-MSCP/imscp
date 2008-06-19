@@ -309,8 +309,9 @@ SQL_QUERY;
 			}
 		 	$mail_forward = implode(',', $mail_accs);
 		}
-
-		$mail_type = implode(',', $mail_type);
+	
+    		$mail_type = implode(',', $mail_type);
+		list($t_, $foo) = split('_', $mail_type, 2);
 
 		$check_acc_query = <<<SQL_QUERY
 			SELECT
@@ -323,9 +324,11 @@ SQL_QUERY;
 				`domain_id` = ?
 				AND
 				`sub_id` = ?
+				AND
+				LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id));
+    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id, $t_));
     }
 
     if ($rs->fields['cnt'] > 0) {
