@@ -1,11 +1,9 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-06-19 Jochen Manz
-	- GUI:
-		* Fixed #1355: You can't create a mail alias account if the user part already exists as a subdomain mail account
-	- ENGINE:
-		* Fixed Mail traffic accounting
+2008-06-19 Jochen Manz 
+	- GUI: 
+		* Fixed #1355: You can't create a mail alias account if the user part already exists as a subdomain mail account 
 
 2008-06-17 Benedikt Heintel
 	- GUI:

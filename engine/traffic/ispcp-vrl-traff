@@ -316,10 +316,6 @@ sub collect_mail_traffic {
     my $traffic_domain = undef;
 	my $smtp_from_domain = undef;
 	my $smtp_to_domain = undef;
-	my ($query, $rows) = (undef, undef);
-	my $extra_size = undef;
-	my $recipient_address = undef;
-	my %forwarders_table;
 
     ($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
@@ -344,10 +340,10 @@ sub collect_mail_traffic {
 
 		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
-			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print \$3,\$4,\$10;}' 1>$smtp_log";
+			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		} else {
 			# Logs not including AMAVIS/SPAMASSASSIN/CLAMAV entries
- 			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && \$6 !~ /virtual/ && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print \$3,\$4,\$10;}' 1>$smtp_log";
+ 			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && \$6 !~ /virtual/ && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		}
 
         $rs = sys_command($cmd);
@@ -365,70 +361,15 @@ sub collect_mail_traffic {
             return (-1, '');
         }
 
-		#
-		# Build address forwarding recipients table
-		#
-		my $query = <<"SQLEND";
-			SELECT
-				concat( mail_acc, '\@', domain_name ) AS mail_from, domain_name, mail_forward
-			FROM
-				mail_users
-			LEFT JOIN
-				domain
-			USING 
-				( domain_id )
-			WHERE 
-				mail_type LIKE '%normal_forward'
-		UNION
-			SELECT 
-				concat( mail_acc, '\@', subdomain_name, '.', domain_name ) AS mail_from, domain_name, mail_forward
-			FROM 
-				mail_users
-			LEFT JOIN 
-				domain
-			USING
-				( domain_id )
-			LEFT JOIN 
-				subdomain
-			USING
-				( domain_id )
-			WHERE
-				mail_type LIKE '%subdom_forward'
-		UNION
-			SELECT 
-				concat( mail_acc, '\@', alias_name ) AS mail_from, domain_name, mail_forward
-			FROM 
-				mail_users
-			LEFT JOIN
-				domain
-			USING
-				( domain_id )
-			LEFT JOIN
-				domain_aliasses
-			USING
-				( domain_id )
-			WHERE 
-				mail_type LIKE '%alias_forward'
-SQLEND
-		
-		($rs, $rows) = doSQL($query);
-		return $rs if ($rs != 0);
-		foreach (@$rows) {
-			$forwarders_table{@$_[0]} = (@$_[2] =~ tr/,//)+1;
-		}
-
         while (<F>) {
 
             my $line = $_;
 
-            if ($line =~ /^([^@]+)@([^\,]+)\ ([^@]+)@([^\,]+)\ (\d+)\n$/) {
+            if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
 
-				$smtp_from_domain = $2;
-				$smtp_to_domain = $4;
-				$traffic_size = $5;
-				$recipient_address = $3.'@'.$4;
-				chomp($line);
-				push_el(\@main::el, 'collect_mail_traffic()', $line);
+				$smtp_from_domain = $1;
+				$smtp_to_domain = $2;
+				$traffic_size = $3;
 
 				if($smtp_from_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::smtp_traffic{$smtp_from_domain}) {
 					$smtp_from_domain = $3.$4;
@@ -437,20 +378,11 @@ SQLEND
 					$smtp_to_domain = $3.$4;
 				}
 
-				# Add extra size to account forwardings
-				if (exists($forwarders_table{$recipient_address})) {
-					$extra_size = $forwarders_table{$recipient_address} * $traffic_size;
-					$main::smtp_traffic{$smtp_to_domain} += $extra_size;
-					push_el(\@main::el, 'collect_mail_traffic()', $recipient_address . ' extra size: ' . $extra_size);
-				}
-
                 if(exists $main::smtp_traffic{$smtp_from_domain}) {
                 	$main::smtp_traffic{$smtp_from_domain} += $traffic_size;
-					push_el(\@main::el, 'collect_mail_traffic()', "Current traffic count for domain " . $smtp_from_domain . ':' . $main::smtp_traffic{$smtp_from_domain});
 				}
-				elsif(exists $main::smtp_traffic{$smtp_to_domain}) {
+				else {
                 	$main::smtp_traffic{$smtp_to_domain} += $traffic_size;
-					push_el(\@main::el, 'collect_mail_traffic()', "Current traffic count for domain " . $smtp_to_domain . ':' . $main::smtp_traffic{$smtp_to_domain});
                 }
 
             }
