@@ -12,7 +12,7 @@
  *
  * The SQL Parser code relies heavily on these functions.
  *
- * @version $Id: string.lib.php 10293 2007-04-17 11:53:36Z cybot_tm $
+ * @version $Id: string.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  * @uses    PMA_PHP_INT_VERSION
  * @uses    PMA_dl()
  * @uses    extension_loaded()
@@ -22,6 +22,9 @@
  * @uses    defined()
  * @todo a .lib filename should not have code in main(), split or rename file
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /* Try to load mbstring, unless we're using buggy php version */
 if (PMA_PHP_INT_VERSION != 40203) {

@@ -3,8 +3,11 @@
 /**
  * Set of functions used to build dumps of tables
  *
- * @version $Id: latex.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: latex.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

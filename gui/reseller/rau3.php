@@ -31,7 +31,8 @@ $tpl->define_dynamic('ip_entry', 'page');
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
-	array('TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
+	array(
+		'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -333,55 +334,9 @@ ISPCP_SQL_QUERY;
 	$dmn_id = $sql->Insert_ID();
 
 	// Create the 3 default addresses if wanted
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'])
+		client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
 
-/*
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-		$query = <<<SQL_QUERY
-            INSERT INTO mail_users
-                (mail_acc,
-                 mail_pass,
-                 mail_forward,
-                 domain_id,
-                 mail_type,
-                 sub_id,
-                 status,
-                 mail_auto_respond)
-            VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
-
-		// create default forwarder for webmaster@domain.tld to the account's owner
-		$rs = exec_query($sql, $query, array('webmaster',
-				'_no_',
-				$user_email,
-				$dmn_id,
-				'normal_forward',
-				0,
-				$cfg['ITEM_ADD_STATUS'],
-				'_no_'));
-
-		// create default forwarder for postmaster@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('postmaster',
-				'_no_',
-				$_SESSION['user_email'],
-				$dmn_id,
-				'normal_forward',
-				0,
-				$cfg['ITEM_ADD_STATUS'],
-				'_no_'));
-
-		// create default forwarder for abuse@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('abuse',
-				'_no_',
-				$_SESSION['user_email'],
-				$dmn_id,
-				'normal_forward',
-				0,
-				$cfg['ITEM_ADD_STATUS'],
-				'_no_'));
-	}
-*/
 	// add_domain_extras($dmn_id, $record_id, $sql);
 	// lets send mail to user
 	send_add_user_auto_msg ($reseller_id,

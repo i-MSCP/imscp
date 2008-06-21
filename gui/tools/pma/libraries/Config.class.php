@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11218 2008-04-29 11:44:42Z lem9 $
+ * @version $Id: Config.class.php 11330 2008-06-20 17:53:30Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.6');
+        $this->set('PMA_VERSION', '2.11.7-rc2');
         /**
          * @deprecated
          */
@@ -178,6 +178,9 @@ class PMA_Config
                    && preg_match('@Safari/([0-9]*)@', $HTTP_USER_AGENT, $log_version2)) {
             $this->set('PMA_USR_BROWSER_VER', $log_version[1] . '.' . $log_version2[1]);
             $this->set('PMA_USR_BROWSER_AGENT', 'SAFARI');
+        } elseif (preg_match('@rv:1.9(.*)Gecko@', $HTTP_USER_AGENT)) {
+            $this->set('PMA_USR_BROWSER_VER', '1.9');
+            $this->set('PMA_USR_BROWSER_AGENT', 'GECKO');
         } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $HTTP_USER_AGENT, $log_version)) {
             $this->set('PMA_USR_BROWSER_VER', $log_version[1]);
             $this->set('PMA_USR_BROWSER_AGENT', 'MOZILLA');

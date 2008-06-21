@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header_meta_style.inc.php 11035 2008-01-05 13:33:05Z lem9 $
+ * @version $Id: header_meta_style.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11183 2008-04-02 17:19:59Z lem9 $
+ * @version $Id: common.lib.php 11299 2008-06-01 13:02:12Z lem9 $
  */
 
 /**
@@ -1562,8 +1562,11 @@ function PMA_getTab($tab)
     // display icon, even if iconic is disabled but the link-text is missing
     if (($GLOBALS['cfg']['MainPageIconic'] || empty($tab['text']))
         && isset($tab['icon'])) {
+        // avoid generating an alt tag, because it only illustrates
+        // the text that follows and if browser does not display
+        // images, the text is duplicated
         $image = '<img class="icon" src="' . htmlentities($GLOBALS['pmaThemeImage'])
-            .'%1$s" width="16" height="16" alt="%2$s" />%2$s';
+            .'%1$s" width="16" height="16" alt="" />%2$s';
         $tab['text'] = sprintf($image, htmlentities($tab['icon']), $tab['text']);
     }
     // check to not display an empty link-text
@@ -1967,8 +1970,8 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
             // timestamp is numeric on some MySQL 4.1
             if ($meta->numeric && $meta->type != 'timestamp') {
                 $condition .= '= ' . $row[$i] . ' AND';
-            } elseif ($meta->type == 'blob'
-                // hexify only if this is a true not empty BLOB
+            } elseif (($meta->type == 'blob' || $meta->type == 'string')
+                // hexify only if this is a true not empty BLOB or a BINARY
                  && stristr($field_flags, 'BINARY')
                  && !empty($row[$i])) {
                     // do not waste memory building a too big condition

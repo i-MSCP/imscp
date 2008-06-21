@@ -17,7 +17,7 @@
  *
  * note: grab_globals has extracted the fields from _FILES or HTTP_POST_FILES
  *
- * @version $Id: tbl_replace_fields.inc.php 10536 2007-07-27 14:50:37Z lem9 $
+ * @version $Id: tbl_replace_fields.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  *
  * @uses $_REQUEST
  * @uses defined()
@@ -29,6 +29,9 @@
  * @uses PMA_NO_VARIABLES_IMPORT
  * @uses PMA_sqlAddslashes()
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * do not import request variable into global scope
@@ -53,7 +56,6 @@ if ($file_to_insert->isError()) {
 $file_to_insert->cleanUp();
 
 if (false !== $possibly_uploaded_val) {
-    $seen_binary = true;
     $val = $possibly_uploaded_val;
 } else {
 
@@ -94,7 +96,6 @@ if (false !== $possibly_uploaded_val) {
                 // blobs where set, insert original fields content.
                 if (! empty($prot_row[$key])) {
                     $val = '0x' . bin2hex($prot_row[$key]);
-                    $seen_binary = true;
                 } else {
                     $val = '';
                 }

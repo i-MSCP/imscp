@@ -3,8 +3,11 @@
 /**
  * Set of functions used to build XML dumps of tables
  *
- * @version $Id: xml.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: xml.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

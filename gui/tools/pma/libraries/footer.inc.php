@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * finishs HTML output
+ * finishes HTML output
  *
  * updates javascript variables in index.php for coorect working with querywindow
  * and navigation frame refreshing
@@ -42,8 +42,11 @@
  * @uses    PMA_DBI_close()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 10630 2007-09-11 21:04:32Z lem9 $
+ * @version $Id: footer.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * for PMA_setHistory()

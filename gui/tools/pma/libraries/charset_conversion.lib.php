@@ -3,9 +3,11 @@
 /**
  * Charset conversion functions.
  *
- * @version $Id: charset_conversion.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: charset_conversion.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
-
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Loads the recode or iconv extensions if any of it is not loaded yet

@@ -3,8 +3,11 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 10588 2007-09-02 19:23:59Z lem9 $
+ * @version $Id: relation.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

@@ -3,8 +3,11 @@
 /**
  * Code for displaying language selection
  *
- * @version $Id: display_select_lang.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: display_select_lang.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Sorts available languages by their true english names

@@ -3,11 +3,14 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: select_lang.lib.php 10895 2007-11-02 16:45:49Z lem9 $
+ * @version $Id: select_lang.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
- * trys to find the language to use
+ * tries to find the language to use
  *
  * @uses    $GLOBALS['cfg']['lang']
  * @uses    $GLOBALS['cfg']['DefaultLang']

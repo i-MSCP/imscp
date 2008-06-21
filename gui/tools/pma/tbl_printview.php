@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_printview.php 10607 2007-09-05 10:49:52Z lem9 $
+ * @version $Id: tbl_printview.php 11228 2008-05-03 11:59:52Z lem9 $
  */
 
 /**
@@ -148,7 +148,7 @@ foreach ($the_tables as $key => $table) {
      * Displays the comments of the table if MySQL >= 3.23
      */
     if (!empty($show_comment)) {
-        echo $strTableComments . ': ' . $show_comment . '<br /><br />';
+        echo $strTableComments . ': ' . htmlspecialchars($show_comment) . '<br /><br />';
     }
 
     /**

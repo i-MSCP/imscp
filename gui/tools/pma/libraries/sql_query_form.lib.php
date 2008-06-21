@@ -3,13 +3,16 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 10588 2007-09-02 19:23:59Z lem9 $
+ * @version $Id: sql_query_form.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
  * @usedby  tbl_structure.php
  * @usedby  querywindow.php
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

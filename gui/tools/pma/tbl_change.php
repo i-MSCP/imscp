@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_change.php 11183 2008-04-02 17:19:59Z lem9 $
+ * @version $Id: tbl_change.php 11282 2008-05-18 16:45:36Z lem9 $
  */
 
 /**
@@ -406,8 +406,10 @@ foreach ($loop_array as $vrowcount => $vrow) {
         // Prepares the field value
         $real_null_value = FALSE;
         if (isset($vrow)) {
-            if (!isset($vrow[$field])
-              || (function_exists('is_null') && is_null($vrow[$field]))) {
+            // On a BLOB that can have a NULL value, the is_null() returns
+            // true if it has no content but for me this is different than
+            // having been set explicitely to NULL so I put an exception here
+            if (! $is_blob && function_exists('is_null') && is_null($vrow[$field])) {
                 $real_null_value = TRUE;
                 $vrow[$field]   = '';
                 $special_chars = '';

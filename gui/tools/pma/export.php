@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 10914 2007-11-10 15:20:59Z lem9 $
+ * @version $Id: export.php 11330 2008-06-20 17:53:30Z lem9 $
  */
 
 /**
@@ -287,7 +287,11 @@ if ($asfile) {
         // It seems necessary to check about zlib.output_compression
         // to avoid compressing twice
         if (!@ini_get('zlib.output_compression')) {
-            $content_encoding = 'x-gzip';
+            // On Firefox 3, sending this content encoding corrupts the .gz
+            // (as tested on Windows and Linux) but detect GECKO 1.9
+            if (! (PMA_USR_BROWSER_AGENT == 'GECKO' && PMA_USR_BROWSER_VER == '1.9')) {
+                $content_encoding = 'x-gzip';
+            }
             $mime_type = 'application/x-gzip';
         }
     } elseif ($compression == 'zip') {
@@ -338,6 +342,10 @@ if ($save_on_server) {
 if (!$save_on_server) {
     if ($asfile) {
         // Download
+        // (avoid rewriting data containing HTML with anchors and forms;
+        // this was reported to happen under Plesk)
+        ini_set('url_rewriter.tags','');
+
         if (!empty($content_encoding)) {
             header('Content-Encoding: ' . $content_encoding);
         }
@@ -578,7 +586,7 @@ if (!empty($asfile)) {
     }
 
     // Do the compression
-    // 1. as a gzipped file
+    // 1. as a zipped file
     if ($compression == 'zip') {
         if (@function_exists('gzcompress')) {
             $zipfile = new zipfile();

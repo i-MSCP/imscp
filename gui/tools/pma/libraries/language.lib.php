@@ -3,8 +3,11 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: language.lib.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @version $Id: language.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * lang detection is done here

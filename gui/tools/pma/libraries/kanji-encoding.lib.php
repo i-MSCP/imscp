@@ -9,8 +9,11 @@
  *
  * 2002/2/22 - by Yukihiro Kawada <kawada@den.fujifilm.co.jp>
  *
- * @version $Id: kanji-encoding.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: kanji-encoding.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Gets the php internal encoding codes and sets the available encoding

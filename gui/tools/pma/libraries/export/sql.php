@@ -3,8 +3,11 @@
 /**
  * Set of functions used to build SQL dumps of tables
  *
- * @version $Id: sql.php 11190 2008-04-06 23:22:19Z lem9 $
+ * @version $Id: sql.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

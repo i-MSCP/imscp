@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-21 Benedikt Heintel
+	- DOCS:
+		* Fixed #1359: two errors prevent installation on Ubuntu Hardy Heron and solution to both
+	- GUI:
+		* Fixed #1247: png icon is ugly scaled
+	- TOOLS:
+		* Updated phpMyAdmin to 2.11.7 RC2
+
 2008-06-17 Benedikt Heintel
 	- GUI:
 		* Fixed #1231: Session conflict / redirection problem

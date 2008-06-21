@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mcrypt.lib.php 11005 2007-12-18 08:02:41Z cybot_tm $
+ * @version $Id: mcrypt.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Initialization

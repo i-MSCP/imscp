@@ -3,8 +3,11 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 11196 2008-04-16 18:54:42Z lem9 $
+ * @version $Id: database_interface.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *
@@ -1270,8 +1273,11 @@ function PMA_DBI_get_triggers($db, $table) {
     $result = array();
 
     // available in INFORMATION_SCHEMA since MySQL 5.0.10
+    // Note: in http://dev.mysql.com/doc/refman/5.0/en/faqs-triggers.html
+    // their example uses WHERE TRIGGER_SCHEMA='dbname' so let's use this
+    // instead of WHERE EVENT_OBJECT_SCHEMA='dbname'
     if (PMA_MYSQL_INT_VERSION >= 50010) {
-        $triggers = PMA_DBI_fetch_result("SELECT TRIGGER_SCHEMA, TRIGGER_NAME, EVENT_MANIPULATION, ACTION_TIMING, ACTION_STATEMENT, EVENT_OBJECT_SCHEMA, EVENT_OBJECT_TABLE FROM information_schema.TRIGGERS WHERE EVENT_OBJECT_SCHEMA= '" . PMA_sqlAddslashes($db,true) . "' and EVENT_OBJECT_TABLE = '" . PMA_sqlAddslashes($table, true) . "';");
+        $triggers = PMA_DBI_fetch_result("SELECT TRIGGER_SCHEMA, TRIGGER_NAME, EVENT_MANIPULATION, ACTION_TIMING, ACTION_STATEMENT, EVENT_OBJECT_SCHEMA, EVENT_OBJECT_TABLE FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA= '" . PMA_sqlAddslashes($db,true) . "' and EVENT_OBJECT_TABLE = '" . PMA_sqlAddslashes($table, true) . "';");
 
         if ($triggers) {
             $delimiter = '//';

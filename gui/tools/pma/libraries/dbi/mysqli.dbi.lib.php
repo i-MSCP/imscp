@@ -3,8 +3,11 @@
 /**
  * Interface to the improved MySQL extension (MySQLi)
  *
- * @version $Id: mysqli.dbi.lib.php 11189 2008-04-06 12:52:53Z lem9 $
+ * @version $Id: mysqli.dbi.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 // MySQL client API
 if (!defined('PMA_MYSQL_CLIENT_API')) {
@@ -12,26 +15,6 @@ if (!defined('PMA_MYSQL_CLIENT_API')) {
     define('PMA_MYSQL_CLIENT_API', (int)sprintf('%d%02d%02d', $client_api[0], $client_api[1], intval($client_api[2])));
     unset($client_api);
 }
-
-// Constants from mysql_com.h of MySQL 4.1.3
-/**
- * @deprecated
-define('NOT_NULL_FLAG',         MYSQLI_NOT_NULL_FLAG);
-define('PRI_KEY_FLAG',          MYSQLI_PRI_KEY_FLAG);
-define('UNIQUE_KEY_FLAG',       MYSQLI_UNIQUE_KEY_FLAG);
-define('MULTIPLE_KEY_FLAG',     MYSQLI_MULTIPLE_KEY_FLAG);
-define('BLOB_FLAG',             MYSQLI_BLOB_FLAG);
-define('UNSIGNED_FLAG',         MYSQLI_UNSIGNED_FLAG);
-define('ZEROFILL_FLAG',         MYSQLI_ZEROFILL_FLAG);
-define('BINARY_FLAG',           MYSQLI_BINARY_FLAG);
-define('ENUM_FLAG',             MYSQLI_TYPE_ENUM);
-define('AUTO_INCREMENT_FLAG',   MYSQLI_AUTO_INCREMENT_FLAG);
-define('TIMESTAMP_FLAG',        MYSQLI_TIMESTAMP_FLAG);
-define('SET_FLAG',              MYSQLI_SET_FLAG);
-define('NUM_FLAG',              MYSQLI_NUM_FLAG);
-define('PART_KEY_FLAG',         MYSQLI_PART_KEY_FLAG);
-define('UNIQUE_FLAG',           MYSQLI_UNIQUE_FLAG);
- */
 
 /**
  * some older mysql client libs are missing this constants ...
@@ -663,7 +646,6 @@ function PMA_DBI_field_name($result, $i)
  * @uses    MYSQLI_TIMESTAMP_FLAG
  * @uses    MYSQLI_AUTO_INCREMENT_FLAG
  * @uses    MYSQLI_TYPE_ENUM
- * @uses    MYSQLI_BINARY_FLAG
  * @uses    MYSQLI_ZEROFILL_FLAG
  * @uses    MYSQLI_UNSIGNED_FLAG
  * @uses    MYSQLI_BLOB_FLAG
@@ -671,6 +653,12 @@ function PMA_DBI_field_name($result, $i)
  * @uses    MYSQLI_UNIQUE_KEY_FLAG
  * @uses    MYSQLI_PRI_KEY_FLAG
  * @uses    MYSQLI_NOT_NULL_FLAG
+ * @uses    MYSQLI_TYPE_TINY_BLOB 
+ * @uses    MYSQLI_TYPE_BLOB
+ * @uses    MYSQLI_TYPE_MEDIUM_BLOB  
+ * @uses    MYSQLI_TYPE_LONG_BLOB 
+ * @uses    MYSQLI_TYPE_VAR_STRING  
+ * @uses    MYSQLI_TYPE_STRING
  * @uses    mysqli_fetch_field_direct()
  * @uses    PMA_convert_display_charset()
  * @param   object mysqli result    $result
@@ -679,18 +667,29 @@ function PMA_DBI_field_name($result, $i)
  */
 function PMA_DBI_field_flags($result, $i)
 {
+    // This is missing from PHP 5.2.5, see http://bugs.php.net/bug.php?id=44846
+    if (! defined('MYSQLI_ENUM_FLAG')) {
+        define('MYSQLI_ENUM_FLAG', 256); // see MySQL source include/mysql_com.h
+    }
     $f = mysqli_fetch_field_direct($result, $i);
+    $type = $f->type;
+    $charsetnr = $f->charsetnr;
     $f = $f->flags;
     $flags = '';
     if ($f & MYSQLI_UNIQUE_KEY_FLAG)     { $flags .= 'unique ';}
     if ($f & MYSQLI_NUM_FLAG)            { $flags .= 'num ';}
     if ($f & MYSQLI_PART_KEY_FLAG)       { $flags .= 'part_key ';}
-    if ($f & MYSQLI_TYPE_SET)            { $flags .= 'set ';}
+    if ($f & MYSQLI_SET_FLAG)            { $flags .= 'set ';}
     if ($f & MYSQLI_TIMESTAMP_FLAG)      { $flags .= 'timestamp ';}
     if ($f & MYSQLI_AUTO_INCREMENT_FLAG) { $flags .= 'auto_increment ';}
-    if ($f & MYSQLI_TYPE_ENUM)           { $flags .= 'enum ';}
-    // @TODO seems to be outdated
-    if ($f & MYSQLI_BINARY_FLAG)         { $flags .= 'binary ';}
+    if ($f & MYSQLI_ENUM_FLAG)           { $flags .= 'enum ';}
+    // See http://dev.mysql.com/doc/refman/6.0/en/c-api-datatypes.html:
+    // to determine if a string is binary, we should not use MYSQLI_BINARY_FLAG
+    // but instead the charsetnr member of the MYSQL_FIELD
+    // structure. Watch out: some types like DATE returns 63 in charsetnr
+    // so we have to check also the type.
+    // Unfortunately there is no equivalent in the mysql extension.
+    if (($type == MYSQLI_TYPE_TINY_BLOB || $type == MYSQLI_TYPE_BLOB || $type == MYSQLI_TYPE_MEDIUM_BLOB || $type == MYSQLI_TYPE_LONG_BLOB || $type == MYSQLI_TYPE_VAR_STRING || $type == MYSQLI_TYPE_STRING) && 63 == $charsetnr)                { $flags .= 'binary ';}
     if ($f & MYSQLI_ZEROFILL_FLAG)       { $flags .= 'zerofill ';}
     if ($f & MYSQLI_UNSIGNED_FLAG)       { $flags .= 'unsigned ';}
     if ($f & MYSQLI_BLOB_FLAG)           { $flags .= 'blob ';}

@@ -3,8 +3,11 @@
 /**
  * Set of functions used for cleaning up phpMyAdmin tables
  *
- * @version $Id: relation_cleanup.lib.php 10667 2007-09-26 16:51:27Z lem9 $
+ * @version $Id: relation_cleanup.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

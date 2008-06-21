@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 10436 2007-06-14 16:52:26Z lem9 $
+ * @version $Id: tbl_replace.php 11281 2008-05-18 15:53:27Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -127,9 +127,6 @@ if (isset($_REQUEST['err_url'])) {
 } else {
     $err_url = 'tbl_change.php' . PMA_generate_common_url($url_params);
 }
-
-// Misc
-$seen_binary = false;
 
 /**
  * Prepares the update/insert of a row

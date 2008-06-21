@@ -4,8 +4,11 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 10238 2007-04-01 09:26:14Z cybot_tm $
+ * @version $Id: db_table_exists.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

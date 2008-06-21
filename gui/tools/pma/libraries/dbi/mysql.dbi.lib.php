@@ -3,8 +3,11 @@
 /**
  * Interface to the classic MySQL extension
  *
- * @version $Id: mysql.dbi.lib.php 11083 2008-01-27 13:22:36Z lem9 $
+ * @version $Id: mysql.dbi.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

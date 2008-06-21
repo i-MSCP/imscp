@@ -36,7 +36,7 @@ libnet-dns-perl
 libnet-libidn-perl
 libnet-netmask-perl
 libnet-smtp-server-perl
-libperl5.10
+libperl5.8
 libsasl2-2
 libsasl2-modules
 libsnmp-session-perl

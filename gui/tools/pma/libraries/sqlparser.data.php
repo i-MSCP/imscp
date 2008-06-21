@@ -19,8 +19,11 @@
  * It's easier to use only uppercase for proper sorting. In case of
  * doubt, use the DEBUG code after this function's definition.
  *
- * @version$Id: sqlparser.data.php 10939 2007-11-23 18:24:19Z lem9 $
+ * @version$Id: sqlparser.data.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * @global array MySQL function names

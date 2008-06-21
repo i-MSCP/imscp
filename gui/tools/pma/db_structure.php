@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_structure.php 10557 2007-08-11 13:34:20Z lem9 $
+ * @version $Id: db_structure.php 11244 2008-05-08 01:30:22Z lem9 $
  */
 
 /**
@@ -190,8 +190,11 @@ $sum_row_count_pre = '';
 
 foreach ($tables as $keyname => $each_table) {
     if ($each_table['TABLE_ROWS'] === null || $each_table['TABLE_ROWS'] < $GLOBALS['cfg']['MaxExactCount']) {
+        $each_table['COUNTED'] = true;
         $each_table['TABLE_ROWS'] = PMA_Table::countRecords($db,
             $each_table['TABLE_NAME'], $return = true, $force_exact = true);
+    } else {
+        $each_table['COUNTED'] = false;
     }
 
     $table_encoded = urlencode($each_table['TABLE_NAME']);
@@ -367,8 +370,8 @@ foreach ($tables as $keyname => $each_table) {
             $row_count_pre = '~';
             $sum_row_count_pre = '~';
             $show_superscript = '<sup>1</sup>';
-        } elseif($each_table['ENGINE'] == 'InnoDB') {
-            // InnoDB table: Row count is not accurate
+        } elseif($each_table['ENGINE'] == 'InnoDB' && (! $each_table['COUNTED'])) {
+            // InnoDB table: we did not get an accurate row count
             $row_count_pre = '~';
             $sum_row_count_pre = '~';
             $show_superscript = '';

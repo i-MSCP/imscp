@@ -22,7 +22,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11176 2008-03-29 11:16:04Z lem9 $
+ * @version $Id: common.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
 
 /**
@@ -51,6 +51,11 @@ if (version_compare(phpversion(), '6', 'lt')) {
      */
     @ini_set('magic_quotes_runtime', false);
 }
+
+/**
+ * for verification in all procedural scripts under libraries
+ */
+define('PHPMYADMIN', true);
 
 /**
  * core functions
@@ -729,9 +734,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
         // Gets the authentication library that fits the $cfg['Server'] settings
         // and run authentication
-
-        // (for a quick check of path disclosure in auth/cookies:)
-        $coming_from_common = true;
 
         // to allow HTTP or http
         $cfg['Server']['auth_type'] = strtolower($cfg['Server']['auth_type']);

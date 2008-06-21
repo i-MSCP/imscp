@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: parse_analyze.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: parse_analyze.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

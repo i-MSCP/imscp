@@ -3,8 +3,11 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: ods.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @version $Id: ods.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

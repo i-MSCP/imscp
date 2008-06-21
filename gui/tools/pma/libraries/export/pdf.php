@@ -3,8 +3,11 @@
 /**
  * Produce a PDF report (export) from a query
  *
- * @version $Id: pdf.php 10263 2007-04-13 17:26:10Z lem9 $
+ * @version $Id: pdf.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

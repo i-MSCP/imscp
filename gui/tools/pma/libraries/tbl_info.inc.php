@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_info.inc.php 10679 2007-09-27 16:56:09Z lem9 $
+ * @version $Id: tbl_info.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

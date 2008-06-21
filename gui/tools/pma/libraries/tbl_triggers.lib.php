@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_triggers.lib.php 10353 2007-05-07 17:03:41Z lem9 $
+ * @version $Id: tbl_triggers.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 $url_query .= '&amp;goto=tbl_structure.php';
 

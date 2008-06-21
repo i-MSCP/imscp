@@ -151,13 +151,13 @@ $pos = $_SESSION['userconf']['navi_limit_offset'];
 
     // INIT PMA_setFrameSize
     var onloadCnt = 0; 
-    var onloadHandler = window.onload;  
+    var onLoadHandler = window.onload;  
     var resizeHandler = window.onresize;
     window.document.onresize  = resizeHandler;
     window.onload = function() {
         if (onloadCnt == 0) {
-            if (typeof(onloadHandler) == "function") { 
-                onloadHandler(); 
+            if (typeof(onLoadHandler) == "function") { 
+                onLoadHandler(); 
             }
             if (typeof(PMA_setFrameSize) != 'undefined' && typeof(PMA_setFrameSize) == 'function') { 
                 PMA_setFrameSize(); 

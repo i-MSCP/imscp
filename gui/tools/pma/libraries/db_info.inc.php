@@ -32,8 +32,11 @@
  * @uses    strnatcasecmp()
  * @uses    count()
  * @uses    addslashes()
- * @version $Id: db_info.inc.php 11043 2008-01-05 15:12:30Z lem9 $
+ * @version $Id: db_info.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * requirements

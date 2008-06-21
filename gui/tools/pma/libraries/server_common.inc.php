@@ -7,8 +7,11 @@
  * @uses    PMA_DBI_fetch_result()
  * @uses    PMA_DBI_QUERY_STORE
  * @uses    $userlink
- * @version $Id: server_common.inc.php 10230 2007-03-30 10:23:01Z cybot_tm $
+ * @version $Id: server_common.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Gets some core libraries

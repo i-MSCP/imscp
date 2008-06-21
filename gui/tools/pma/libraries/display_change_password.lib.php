@@ -3,8 +3,11 @@
 /**
  * Displays form for password change 
  *
- * @version $Id: display_change_password.lib.php 10796 2007-10-16 07:09:50Z cybot_tm $
+ * @version $Id: display_change_password.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 // loic1: autocomplete feature of IE kills the "onchange" event handler and it
 //        must be replaced by the "onpropertychange" one in this case

@@ -291,7 +291,7 @@ SQL_QUERY;
 			}
 
 			$mail_forward = $_POST['forward_list'];
-			$farray = preg_split ("/[\n,]+/", $mail_forward);
+			$farray = preg_split("/[\n,]+/", $mail_forward);
 			$mail_accs = array();
 
 			foreach ($farray as $value) {
@@ -310,6 +310,7 @@ SQL_QUERY;
 		}
 
 		$mail_type = implode(',', $mail_type);
+		list($dmn_type, $type) = split('_', $mail_type, 2);
 
 		$check_acc_query = <<<SQL_QUERY
 			SELECT
@@ -322,9 +323,11 @@ SQL_QUERY;
 				`domain_id` = ?
 				AND
 				`sub_id` = ?
+				AND
+				LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id));
+    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
     }
 
     if ($rs->fields['cnt'] > 0) {

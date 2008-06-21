@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_properties.inc.php 11191 2008-04-07 16:22:07Z lem9 $
+ * @version $Id: tbl_properties.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Check parameters
@@ -68,7 +71,7 @@ if ($action == 'tbl_create.php') {
 } elseif ($action == 'tbl_addfield.php') {
     ?>
     <input type="hidden" name="field_where" value="<?php echo $field_where; ?>" />
-    <input type="hidden" name="after_field" value="<?php echo $after_field; ?>" />
+    <input type="hidden" name="after_field" value="<?php echo PMA_sanitize($after_field); ?>" />
     <?php
 }
 
@@ -86,7 +89,7 @@ if (isset($field_where)) {
 
 if (isset($after_field)) {
     ?>
-    <input type="hidden" name="orig_after_field" value="<?php echo $after_field; ?>" />
+    <input type="hidden" name="orig_after_field" value="<?php echo PMA_sanitize($after_field); ?>" />
     <?php
 }
 
@@ -359,6 +362,9 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
     if ($zerofill) {
         $attribute = 'UNSIGNED ZEROFILL';
     }
+    if (isset($row['Extra']) && $row['Extra'] == 'ON UPDATE CURRENT_TIMESTAMP') {
+        $attribute = 'ON UPDATE CURRENT_TIMESTAMP';
+    }
 
     if (isset($submit_attribute) && $submit_attribute != FALSE) {
         $attribute = $submit_attribute;
@@ -396,9 +402,6 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
 
     $cnt_attribute_types = count($cfg['AttributeTypes']);
     for ($j = 0;$j < $cnt_attribute_types; $j++) {
-        if (PMA_MYSQL_INT_VERSION >= 40100 && $cfg['AttributeTypes'][$j] == 'BINARY') {
-            continue;
-        }
         $content_cells[$i][$ci] .= '                <option value="'. $cfg['AttributeTypes'][$j] . '"';
         if (strtoupper($attribute) == strtoupper($cfg['AttributeTypes'][$j])) {
             $content_cells[$i][$ci] .= ' selected="selected"';
@@ -462,7 +465,7 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
 
     $content_cells[$i][$ci] = '<select name="field_extra[]" id="field_' . $i . '_' . ($ci - $ci_offset) . '">';
 
-    if (!isset($row) || empty($row['Extra'])) {
+    if (!isset($row) || empty($row['Extra']) || $row['Extra'] != 'auto_increment') {
         $content_cells[$i][$ci] .= "\n";
         $content_cells[$i][$ci] .= '<option value="">&nbsp;</option>' . "\n";
         $content_cells[$i][$ci] .= '<option value="AUTO_INCREMENT">auto_increment</option>' . "\n";

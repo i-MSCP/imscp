@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mult_submits.inc.php 10563 2007-08-18 12:46:30Z lem9 $
+ * @version $Id: mult_submits.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * Prepares the work and runs some other scripts if required

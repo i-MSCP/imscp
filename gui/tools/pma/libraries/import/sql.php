@@ -3,8 +3,11 @@
 /**
  * SQL import plugin for phpMyAdmin
  *
- * @version $Id: sql.php 11051 2008-01-14 12:59:42Z lem9 $
+ * @version $Id: sql.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

@@ -5,15 +5,11 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 11188 2008-04-06 11:11:56Z lem9 $
+ * @version $Id: cookie.auth.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
 
-/**
- * @todo replace by constant
- * $coming_from_common can be set from outside with register_globals on
- */
-if (!isset($coming_from_common)) {
-   exit;
+if (! defined('PHPMYADMIN')) {
+    exit;
 }
 
 if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {

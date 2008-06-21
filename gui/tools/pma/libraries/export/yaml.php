@@ -3,8 +3,11 @@
 /**
  * Set of functions used to build YAML dumps of tables
  *
- * @version $Id: yaml.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: yaml.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

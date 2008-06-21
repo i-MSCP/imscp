@@ -3,8 +3,11 @@
 /**
  * Displays form for creating a table (if user has privileges for that)
  *
- * @version $Id: display_create_table.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: display_create_table.lib.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  *

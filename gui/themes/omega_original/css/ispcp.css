@@ -100,20 +100,24 @@ a.submenu:hover, a.submenu:active, a.submenu:focus {
 	vertical-align:		middle;
 }
 
-a.logout, a.logout:link, a.logout:visited {
+.logoutbutton a, .logoutbutton a:link, .logoutbutton a:visited {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-weight:		bold;
-	font-size: 			10px;
+	font-size: 			14px;
 	color: 				#ffffff;
-	height: 			18px;
+	height: 			24px;
 	padding: 			1px;
-	padding-left:		5px;
 	white-space: 		nowrap;
 	text-decoration:	none;
 }
 
-a.logout:hover, a.logout:active, a.logout:focus {
+.logoutbutton a:hover, .logoutbutton a:active, .logoutbutton a:focus {
 	color: 				#f4dc6b;
+}
+
+.logoutbutton img {
+	vertical-align:		middle;
+	padding-right:		5px;
 }
 
 .login {
@@ -184,7 +188,7 @@ td.loginTop {
 
 td.backButton {
 	background-image:	url(../images/button.gif);
-	color:red;
+	color:				red;
 }
 
 td.stats {

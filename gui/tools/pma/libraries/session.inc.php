@@ -3,7 +3,7 @@
 /**
  * session handling
  *
- * @version $Id: session.inc.php 10942 2007-11-25 13:33:54Z lem9 $
+ * @version $Id: session.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  * @todo    add failover or warn if sessions are not configured properly
  * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session
@@ -13,6 +13,9 @@
  * @uses    version_compare()
  * @uses    PHP_VERSION
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 // verify if PHP supports session, die if it does not
 
@@ -50,10 +53,8 @@ ini_set('session.bug_compat_42', false);
 ini_set('session.bug_compat_warn', true);
 
 // use more secure session ids (with PHP 5)
-if (version_compare(PHP_VERSION, '5.0.0', 'ge')
-  && substr(PHP_OS, 0, 3) != 'WIN') {
+if (version_compare(PHP_VERSION, '5.0.0', 'ge')) {
     ini_set('session.hash_function', 1);
-    ini_set('session.hash_bits_per_character', 6);
 }
 
 // some pages (e.g. stylesheet) may be cached on clients, but not in shared

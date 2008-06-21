@@ -2,8 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_routines.inc.php 10562 2007-08-18 12:06:51Z lem9 $
+ * @version $Id: db_routines.inc.php 11326 2008-06-17 21:32:48Z lem9 $
  */
+if (! defined('PHPMYADMIN')) {
+    exit;
+}
 
 /**
  * @todo Support seeing the "results" of the called procedure or
