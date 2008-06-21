@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-21 Marc Pujol
+	- GUI:
+		* Fixed #1360: Editing mail forwarded accounts (no mailbox) fails
+		* Fixed #1361: Password for forwarded+mailbox mail accounts can't be changed
+
 2008-06-21 Benedikt Heintel
 	- DOCS:
 		* Fixed #1359: two errors prevent installation on Ubuntu Hardy Heron and solution to both
