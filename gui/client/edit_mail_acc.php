@@ -160,15 +160,15 @@ SQL_QUERY;
 
 function update_email_pass($sql) {
 	if (!isset($_POST['uaction'])) {
-		return;
+		return false;
 	}
 	if (preg_match('/update_pass/', $_POST['uaction']) == 0) {
-		return;
+		return true;
 	}
 	if (preg_match('/update_forward/', $_POST['uaction']) == 1 || isset($_POST['mail_forward'])) {
 		// The user only wants to update the forward list, not the password
 		if ($_POST['pass'] === '' || $_POST['pass_rep'] === '') {
-			return;
+			return true;
 		}
 	}
 
@@ -179,13 +179,13 @@ function update_email_pass($sql) {
 
 	if (trim($pass) === '' || trim($pass_rep) === '' || $mail_id === '' || !is_numeric($mail_id)) {
 		set_page_message(tr('Missing or wrong data!'));
-		return;
+		return false;
 	} else if ($pass !== $pass_rep) {
 		set_page_message(tr('Entered passwords differ!'));
-		return;
+		return false;
 	} else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) { // Not permitted chars
 		set_page_message(tr('Password data includes not valid signs!'));
-		return;
+		return false;
 	} else {
 		global $cfg;
 		$status = $cfg['ITEM_CHANGE_STATUS'];
@@ -206,21 +206,16 @@ SQL_QUERY;
 
 		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
 
-		if (preg_match('/update_forward/', $_POST['uaction']) == 0 && !isset($_POST['mail_forward'])) {
-			send_request();
-			set_page_message(tr("Mail were updated successfully!"));
-			header("Location: email_accounts.php");
-			die();
-		}
+		return true;
 	}
 }
 
 function update_email_forward(&$tpl, &$sql) {
 	if (!isset($_POST['uaction'])) {
-		return;
+		return false;
 	}
 	if (preg_match('/update_forward/', $_POST['uaction']) == 0 && !isset($_POST['mail_forward'])) {
-		return;
+		return true;
 	}
 
 	$mail_account = $_POST['mail_account'];
@@ -228,18 +223,18 @@ function update_email_forward(&$tpl, &$sql) {
 	$forward_list = clean_input($_POST['forward_list']);
 	$mail_accs = array();
 
-	if (isset($_POST['mail_forward'])) {
-		$faray = preg_split ("/[\n,]+/", $forward_list);
+	if (isset($_POST['mail_forward']) || $_POST['uaction'] == 'update_forward') {
+		$faray = preg_split ('/[\n\s,]+/', $forward_list);
 
 		foreach ($faray as $value) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
 				/* ERR .. strange :) not email in this line - warrning */
 				set_page_message(tr("Mail forward list error!"));
-				return;
+				return false;
 			} else if ($value === '') {
 				set_page_message(tr("Mail forward list error!"));
-				return;
+				return false;
 			}
 			$mail_accs[] = $value;
 		}
@@ -286,11 +281,8 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($forward_list, $mail_type, $status, $mail_id));
 
-	send_request();
 	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account");
-	set_page_message(tr("Mail were updated successfully!"));
-	header("Location: email_accounts.php");
-	die();
+	return true;
 }
 
 // end page functions.
@@ -310,8 +302,17 @@ $tpl->assign(
 // dynamic page data.
 
 edit_mail_account($tpl, $sql);
-update_email_pass($sql);
-update_email_forward($tpl, $sql);
+$ok  = update_email_pass($sql);
+$ok2 = update_email_forward($tpl, $sql);
+
+if ($ok && $ok2) {
+	set_page_message(tr("Mail were updated successfully!"));
+}
+if ($ok || $ok2) {
+	send_request();
+	header("Location: email_accounts.php");
+	die();
+}
 
 // static page messages.
 

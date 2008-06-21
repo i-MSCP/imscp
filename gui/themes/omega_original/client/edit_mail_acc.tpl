@@ -10,8 +10,10 @@
 <script type="text/javascript">
 <!--
 	function begin_js() {
-		if (document.forms[0].elements['mail_forward'].checked == false) {
-			document.forms[0].elements['forward_list'].disabled = true;
+		if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
+			if (document.forms[0].elements['mail_forward'].checked == false) {
+				document.forms[0].elements['forward_list'].disabled = true;
+			}
 		}
 	}
 
@@ -128,7 +130,7 @@
               <input type="hidden" name="id" value="{MAIL_ID}">
               <input type="hidden" name="mail_type" value="{MAIL_TYPE}">
               <input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}">
-              <input type="hidden" name="uaction" value="">
+              <input type="hidden" name="uaction" value="{ACTION}">
               </form>
              </td>
             </tr>
