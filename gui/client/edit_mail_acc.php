@@ -167,7 +167,7 @@ function update_email_pass($sql) {
 	}
 	if (preg_match('/update_forward/', $_POST['uaction']) == 1 || isset($_POST['mail_forward'])) {
 		// The user only wants to update the forward list, not the password
-		if ($_POST['pass'] === '' || $_POST['pass_rep'] === '') {
+		if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
 			return true;
 		}
 	}
@@ -183,7 +183,7 @@ function update_email_pass($sql) {
 	} else if ($pass !== $pass_rep) {
 		set_page_message(tr('Entered passwords differ!'));
 		return false;
-	} else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) { // Not permitted chars
+	} else if (preg_match("/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^]/i", $pass)) { // Not permitted chars
 		set_page_message(tr('Password data includes not valid signs!'));
 		return false;
 	} else {
@@ -302,13 +302,9 @@ $tpl->assign(
 // dynamic page data.
 
 edit_mail_account($tpl, $sql);
-$ok  = update_email_pass($sql);
-$ok2 = update_email_forward($tpl, $sql);
 
-if ($ok && $ok2) {
+if (update_email_pass($sql) && update_email_forward($tpl, $sql)) {
 	set_page_message(tr("Mail were updated successfully!"));
-}
-if ($ok || $ok2) {
 	send_request();
 	header("Location: email_accounts.php");
 	die();

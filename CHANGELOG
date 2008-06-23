@@ -2,6 +2,10 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-06-23 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC5a (GUI Update)
+	- GUI:
+		* Fixed: Missing icons
+		* Fixed: Message shown on same page on "forward error"
 	- DISTS:
 		* Fixed #1362: (Ubuntu) User creation fails
 
