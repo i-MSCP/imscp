@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-23 Benedikt Heintel
+	- DISTS:
+		* Fixed #1362: (Ubuntu) User creation fails
+
 2008-06-21 Marc Pujol
 	- GUI:
 		* Fixed #1360: Editing mail forwarded accounts (no mailbox) fails
