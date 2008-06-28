@@ -77,7 +77,7 @@ $tpl->assign(
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPEL' => tr('(e.g. EUR)'),
+			'TR_EXAMPLE' => tr('(e.g. EUR)'),
 			'TR_UPDATE_PLAN' => tr('Update plan')));
 
 /*

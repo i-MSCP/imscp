@@ -6,17 +6,8 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/javascript">
 <!--
-	function sbmt(form, uaction) {
-
-    	form.uaction.value = uaction;
-	    form.submit();
-
-    	return false;
-
-	}
-
 	function checkForm(){
             var forw   = document.forms[0].elements['forward_list'].value;
 
@@ -58,10 +49,10 @@
 </style>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); changeType('{DEFAULT}');">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); changeType('{DEFAULT}');">
+<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -73,13 +64,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95">
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
-            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -90,54 +81,51 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
                       <td valign="top"><form name="create_catchall_frm" method="post" action="create_catchall.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>
-                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr style="display:none;" id='normal_mail_block'>
                               <script type="text/javascript">
-
+                              <!--
                               if ("{NORMAL_MAIL}" == 'checked') {
                                   document.getElementById('normal_mail_block').style.display = 'block';
                               }
-
+                              //-->
                               </script>
-                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onClick="changeType('normal');">
-                                {TR_MAIL_LIST} </td>
-                              <td nowrap class="content"><select name="mail_id">
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
+                                <label for="mail_type1">{TR_MAIL_LIST}</label></td>
+                              <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
                                   <option value="{MAIL_ID};{MAIL_ACCOUNT_PUNNY};">{MAIL_ACCOUNT}</option>
                                   <!-- EDP: mail_list -->
-                                </select>
-                              </td>
+                                </select></td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onClick="changeType('forward');">
-                                {TR_FORWARD_MAIL} </td>
+                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
+                                <label for="mail_type2">{TR_FORWARD_MAIL}</label></td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea>
-                              </td>
+                              <td nowrap="nowrap" class="content2" width="200"><label for="forward_list">{TR_FORWARD_TO}</label></td>
+                              <td nowrap="nowrap" class="content"><textarea name="forward_list" id="forward_list" cols="35" rows="5" style="width:210px"></textarea></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}">
-                          <input type="hidden" name="uaction" value="create_catchall">
-                          <input type="hidden" name="id" value="{ID}">
+                          <input type="hidden" name="uaction" value="create_catchall" />
+                          <input type="hidden" name="id" value="{ID}" />
                       </form></td>
                     </tr>
                 </table></td>
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

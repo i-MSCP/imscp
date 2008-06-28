@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');

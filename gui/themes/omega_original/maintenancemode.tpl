@@ -7,22 +7,23 @@
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
+
  <body text="#000000">
-  <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
+  <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
    <tr>
     <td>
-     <table width="453" style="border:solid 1px #CCCCCC;"align="center" cellpadding="0" cellspacing="0">
+     <table width="453" style="border:solid 1px #CCCCCC;" align="center" cellpadding="0" cellspacing="0">
       <tr>
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
          <tr>
-          <td width="453" height="69" background="{THEME_COLOR_PATH}/images/login/login_top.jpg">&nbsp;</td>
+          <td width="453" height="69" class="loginTop">&nbsp;</td>
          </tr>
          <tr>
           <td>
            <table width="453" border="0" cellpadding="0" cellspacing="1">
             <tr>
-             <td align="center" valign="middle" bgcolor="#FFFFFF"><strong><font color="#FF0000">&nbsp;{TR_MESSAGE}&nbsp;</font></strong></td>
+             <td align="center" valign="middle" bgcolor="#FFFFFF"><strong><span class="message">{TR_MESSAGE}</span></strong></td>
             </tr>
             <tr>
              <td align="right"><a class="login" href="index.php?admin=1" target="_self">{TR_ADMINLOGIN}</a></td>
@@ -43,8 +44,7 @@
   Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a>
   </td>
   </tr>
- </table>
-    </td>
+ </table></td>
    </tr>
   </table>
  </body>

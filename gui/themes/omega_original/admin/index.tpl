@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,13 +17,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr height="95">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
-				  <td colspan=3>
+				<tr>
+				  <td colspan="3">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="left">
@@ -42,7 +42,7 @@
           <!-- BDP: page_message -->
            <tr>
              <td>&nbsp;</td>
-             <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+             <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
            </tr>
           <!-- EDP: page_message -->
           <tr>
@@ -102,7 +102,7 @@
           </tr>
           <!-- BDP: msg_entry -->
           <td>&nbsp;</td>
-            <td colspan="2" class="title"><font color="#FF0000">{TR_NEW_MSGS}</font></td>
+            <td colspan="2" class="title"><span class="message">{TR_NEW_MSGS}</span></td>
           </tr>
           <!-- EDP: msg_entry -->
           <!-- BDP: update_message -->
@@ -111,7 +111,7 @@
             <td colspan="2" style="color:#ff0000"><b>{UPDATE}</b></td>
           </tr>
           <!-- EDP: update_message -->
-	  <!-- BDP: database_update_message -->
+          <!-- BDP: database_update_message -->
           <tr>
             <td width="25">&nbsp;</td>
             <td colspan="2" style="color:#ff0000"><b>{DATABASE_UPDATE}</b></td>
@@ -144,7 +144,7 @@
       <!-- BDP: traff_warn -->
       <tr>
         <td>&nbsp;</td>
-        <td class="title"><font color="#FF0000">{TR_TRAFFIC_WARNING}</font></td>
+        <td class="title"><span class="message">{TR_TRAFFIC_WARNING}</span></td>
       </tr>
       <!-- EDP: traff_warn -->
       <tr>
@@ -156,10 +156,10 @@
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20"></td>
-            <td width="405" background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0">
+            <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{BAR_VALUE}" height="1"></td>
+                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{BAR_VALUE}" height="1"></td>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
               </tr>
             </table></td>
@@ -174,11 +174,9 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>
-				  </td>
+</table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

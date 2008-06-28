@@ -6,24 +6,22 @@
   <meta name="robots" content="nofollow">
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-  <script language="JavaScript" type="text/JavaScript">
+  <script type="text/javascript">
 <!--
-
 function delete_order(url) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
 		return false;
-
 	location = url;
 }
 //-->
   </script>
  </head>
 
- <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+ <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
   <!-- BDP: logged_from -->
-  <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
-    <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font></td>
+    <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
    </tr>
   </table>
   <!-- EDP: logged_from -->
@@ -35,14 +33,14 @@ function delete_order(url) {
    </tr>
    <tr>
     <td style="width: 195px; vertical-align: top;">{MENU}</td>
-    <td colspan=2 style="vertical-align: top;">
+    <td colspan="2" style="vertical-align: top;">
      <table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-      <tr height="95";>
+      <tr height="95">
        <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
        <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
       </tr>
-      <tr height="*">
-       <td colspan=3>
+      <tr>
+       <td colspan="3">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
          <tr>
           <td align="left">
@@ -62,7 +60,7 @@ function delete_order(url) {
             <!-- BDP: page_message -->
             <tr>
              <td width="35">&nbsp;</td>
-             <td colspan="7" class="title"><font color="#FF0000">{MESSAGE}<br /></font></td>
+             <td colspan="7" class="title"><span class="message">{MESSAGE}<br /></span></td>
             </tr>
             <!-- EDP: page_message -->
             <!-- BDP: orders_table -->
@@ -84,7 +82,7 @@ function delete_order(url) {
              <td class="{ITEM_CLASS}">{USER}</td>
              <td align="center" class="{ITEM_CLASS}">{STATUS}</td>
              <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle"> <a href="{LINK}" class="link">{TR_ADD}</a></td>
-             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_order('orders_delete.php?order_id={ID}')" class="link">{TR_DELETE}</a></td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_order('orders_delete.php?order_id={ID}')" class="link">{TR_DELETE}</a></td>
             </tr>
             <!-- EDP: order -->
             <!-- EDP: orders_table -->

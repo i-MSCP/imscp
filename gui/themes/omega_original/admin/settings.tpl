@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,13 +17,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
-				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -39,9 +39,21 @@
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_CHECK_FOR_UPDATES}</strong></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td width="200" class="content2">{TR_CHECK_FOR_UPDATES}</td>
+                              <td class="content"><select name="checkforupdate">
+                                  <option value="0" {CHECK_FOR_UPDATES_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {CHECK_FOR_UPDATES_SELECTED_ON}>{TR_ENABLED}</option>
+                              </select></td>
+                            </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_LOSTPASSWORD}</strong></td>
@@ -49,8 +61,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td width="200" class="content2">{TR_LOSTPASSWORD}</td>
-                              <td class="content">
-							   <select name="lostpassword">
+                              <td class="content"><select name="lostpassword">
                                   <option value="0" {LOSTPASSWORD_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {LOSTPASSWORD_SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>
@@ -58,22 +69,16 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_LOSTPASSWORD_TIMEOUT}</td>
-                              <td class="content">
-                                <input name="lostpassword_timeout" type="text" class="textinput" id="lostpassword_timeout" style="width:50px" value="{LOSTPASSWORD_TIMEOUT_VALUE}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="lostpassword_timeout" type="text" class="textinput" id="lostpassword_timeout" style="width:50px" value="{LOSTPASSWORD_TIMEOUT_VALUE}" maxlength="3" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_PASSWORD_SETTINGS}</strong></td>
                             </tr>
                             <tr>
-                            </tr>
-                            <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_PASSWD_CHARS}</td>
-                              <td class="content">
-                                <input name="passwd_chars" type="text" class="textinput" id="passwd_chars" style="width:50px" value="{PASSWD_CHARS}" maxlength="2" />
-							</td>
+                              <td class="content"><input name="passwd_chars" type="text" class="textinput" id="passwd_chars" style="width:50px" value="{PASSWD_CHARS}" maxlength="2" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -81,8 +86,7 @@
                               <td class="content"><select name="passwd_strong" id="passwd_strong">
                                 <option value="0" {PASSWD_STRONG_OFF}>{TR_DISABLED}</option>
                                 <option value="1" {PASSWD_STRONG_ON}>{TR_ENABLED}</option>
-                              </select>
-                              </td>
+                              </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -91,8 +95,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE}</td>
-                              <td class="content">
-							    <select name="bruteforce" id="bruteforce">
+                              <td class="content"><select name="bruteforce" id="bruteforce">
                                   <option value="0" {BRUTEFORCE_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {BRUTEFORCE_SELECTED_ON}>{TR_ENABLED}</option>
                                 </select></td>
@@ -124,41 +127,32 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_BETWEEN_TIME}</td>
-                              <td class="content">
-                                <input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_MAX_CAPTCHA}</td>
-                              <td class="content">
-                                <input name="bruteforce_max_capcha" type="text" class="textinput" id="bruteforce_max_capcha" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
-                              </td>
-							  </tr>
-							                              <tr>
+                              <td class="content"><input name="bruteforce_max_capcha" type="text" class="textinput" id="bruteforce_max_capcha" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" /></td>
+                            </tr>
+                            <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_MAIL_SETTINGS}</strong></td>
                             </tr>
-							<td>&nbsp;</td>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td class="content2">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</td>
-                              <td class="content">
-                                <select name="create_default_email_addresses" id="create_default_email_addresses">
+                              <td class="content"><select name="create_default_email_addresses" id="create_default_email_addresses">
                                   <option value="0" {CREATE_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {CREATE_DEFAULT_EMAIL_ADDRESSES_ON}>{TR_ENABLED}</option>
-                                </select>
-                              </td>
-                            </tr>
-                            <tr>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_HARD_MAIL_SUSPENSION}</td>
-                              <td class="content">
-                                <select name="hard_mail_suspension" id="hard_mail_suspension">
+                              <td class="content"><select name="hard_mail_suspension" id="hard_mail_suspension">
                                   <option value="0" {HARD_MAIL_SUSPENSION_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {HARD_MAIL_SUSPENSION_ON}>{TR_ENABLED}</option>
-                                </select>
-                              </td>
+                                </select></td>
                             <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_OTHER_SETTINGS}</strong></td>
@@ -166,42 +160,42 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_USER_INITIAL_LANG}</td>
-                              <td class="content">
-                                <select name="def_language" id="def_language">
+                              <td class="content"><select name="def_language" id="def_language">
                                   <!-- BDP: def_language -->
                                   <option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>
                                   <!-- EDP: def_language -->
-                                </select>
-                              </td>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_SUPPORT_SYSTEM}</td>
-                              <td class="content">
-                                <select name="support_system" id="support_system">
+                              <td class="content"><select name="support_system" id="support_system">
                                   <option value="0" {SUPPORT_SYSTEM_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {SUPPORT_SYSTEM_SELECTED_ON}>{TR_ENABLED}</option>
-                                </select>
-							 </td>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_HOSTING_PLANS_LEVEL}</td>
+                              <td class="content"><select name="hosting_plan_level" id="hosting_plan_level">
+                                  <option value="admin" {HOSTING_PLANS_LEVEL_ADMIN}>{TR_ADMIN}</option>
+                                  <option value="reseller" {HOSTING_PLANS_LEVEL_RESELLER}>{TR_RESELLER}</option>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_DOMAIN_ROWS_PER_PAGE}</td>
-                              <td class="content">
-                                <input name="domain_rows_per_page" type="text" class="textinput" id="domain_rows_per_page" style="width:50px" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" />
-                              </td>
+                              <td class="content"><input name="domain_rows_per_page" type="text" class="textinput" id="domain_rows_per_page" style="width:50px" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_LOG_LEVEL}</td>
-                              <td class="content">
-                                <select name="log_level" id="log_level">
+                              <td class="content"><select name="log_level" id="log_level">
                                   <option value="E_USER_OFF" {LOG_LEVEL_SELECTED_OFF}>{TR_E_USER_OFF}</option>
 								  <option value="E_USER_ERROR" {LOG_LEVEL_SELECTED_ERROR}>{TR_E_USER_ERROR}</option>
                                   <option value="E_USER_WARNING" {LOG_LEVEL_SELECTED_WARNING}>{TR_E_USER_WARNING}</option>
 								  <option value="E_USER_NOTICE" {LOG_LEVEL_SELECTED_NOTICE}>{TR_E_USER_NOTICE}</option>
-                                </select>
-                              </td>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -218,8 +212,7 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

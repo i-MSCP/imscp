@@ -6,45 +6,37 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
-
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-
 	location = ('change_status.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
 		return false;
-
 	location = url;
 }
 
-    function makeUser(){
-	    var dname  = document.forms[0].elements['ndomain_name'].value;
-		dname = dname.toLowerCase();
-	    dname = dname.replace(/�/gi, "ae");
-	    dname = dname.replace(/�/gi, "ue");
-	    dname = dname.replace(/�/gi, "oe");
-	    dname = dname.replace(/�/gi, "ss");
-		document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
-    }
-
-function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+function makeUser() {
+	var dname = document.forms[0].elements['ndomain_name'].value;
+	dname = dname.toLowerCase();
+	dname = dname.replace(/�/gi, "ae");
+	dname = dname.replace(/�/gi, "ue");
+	dname = dname.replace(/�/gi, "oe");
+	dname = dname.replace(/�/gi, "ss");
+	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
 }
 //-->
 </script>
-
 </head>
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -56,13 +48,13 @@ function MM_goToURL() { //v3.0
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95">
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
-            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -78,7 +70,7 @@ function MM_goToURL() { //v3.0
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <!-- BDP: alias_list -->
@@ -108,7 +100,7 @@ function MM_goToURL() { //v3.0
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_DOMAIN_NAME}</td>
-                        <td class="content"><input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onBlur="makeUser();"></td>
+                        <td class="content"><input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onblur="makeUser();"></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -116,8 +108,8 @@ function MM_goToURL() { //v3.0
                         <td class="content"><input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px"></td>
                       </tr>
                       <tr>
-                        <td width="25" nowrap>&nbsp;</td>
-                        <td width="200" nowrap class="content2">{TR_FORWARD}</td>
+                        <td width="25" nowrap="nowrap">&nbsp;</td>
+                        <td width="200" nowrap="nowrap" class="content2">{TR_FORWARD}</td>
                         <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}">
                         </td>
                       </tr>
@@ -125,7 +117,7 @@ function MM_goToURL() { //v3.0
                         <td width="25">&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  ">
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_GO_USERS}  ">
+                          <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_GO_USERS}  ">
                         </td>
                       </tr>
                     </table>
@@ -139,8 +131,7 @@ function MM_goToURL() { //v3.0
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,13 +17,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
-				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -46,7 +46,7 @@
       <!-- BDP: page_message -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
       </tr>
       <!-- EDP: page_message -->
       <tr>
@@ -80,62 +80,62 @@
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_DOMAIN_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_domain_cnt value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_domain_cnt" value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_SUBDOMAIN_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_subdomain_cnt value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_ALIASES_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_alias_cnt value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_alias_cnt" value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_MAIL_USERS_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_mail_cnt value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_FTP_USERS_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_ftp_cnt value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_SQLDB_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_sql_db_cnt value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_SQL_USERS_COUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_sql_user_cnt value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_sql_user_cnt" value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_TRAFFIC_AMOUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_traffic value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_traffic" value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
         <td class="content2" width="200">{TR_MAX_DISK_AMOUNT}</td>
-        <td class="content"><input type="text" name=nreseller_max_disk value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput">
+        <td class="content"><input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <!--
               <tr>
                 <td class="content2" width="175">{TR_PHP}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="php" value="yes" checked>
+                  <input type="radio" name="php" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="php" value="no">
                   {TR_NO}</td>
@@ -143,7 +143,7 @@
               <tr>
                 <td class="content2" width="175">{TR_PERL_CGI}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="cgi" value="yes" checked>
+                  <input type="radio" name="cgi" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="cgi" value="no">
                   {TR_NO}</td>
@@ -151,7 +151,7 @@
               <tr>
                 <td class="content2" width="175" height="23">{TR_JSP}</td>
                 <td width="254" class="content3" height="23">
-                  <input type="radio" name="jsp" value="yes" checked>
+                  <input type="radio" name="jsp" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="jsp" value="no">
                   {TR_NO}</td>
@@ -159,7 +159,7 @@
               <tr>
                 <td class="content2" width="175" height="23">{TR_SSI}</td>
                 <td width="254" class="content3" height="23">
-                  <input type="radio" name="ssi" value="yes" checked>
+                  <input type="radio" name="ssi" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="ssi" value="no">
                   {TR_NO}</td>
@@ -167,7 +167,7 @@
               <tr>
                 <td class="content2" width="175">{TR_FRONTPAGE_EXT}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="fp" value="yes" checked>
+                  <input type="radio" name="fp" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="fp" value="no">
                   {TR_NO}</td>
@@ -175,7 +175,7 @@
               <tr>
                 <td class="content2" width="175">{TR_BACKUP_RESTORE}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="backup_restore" value="yes" checked>
+                  <input type="radio" name="backup_restore" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="backup_restore" value="no">
                   {TR_NO}</td>
@@ -183,7 +183,7 @@
               <tr>
                 <td class="content2" width="175">{TR_CUSTOM_ERROR_PAGES}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="error_pages" value="yes" checked>
+                  <input type="radio" name="error_pages" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="error_pages" value="no">
                   {TR_NO}</td>
@@ -191,7 +191,7 @@
               <tr>
                 <td class="content2" width="175">{TR_PROTECTED_AREAS}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="protected_areas" value="yes" checked>
+                  <input type="radio" name="protected_areas" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="protected_areas" value="no">
                   {TR_NO}</td>
@@ -199,7 +199,7 @@
               <tr>
                 <td class="content2" width="175">{TR_WEBMAIL}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="webmail" value="yes" checked>
+                  <input type="radio" name="webmail" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="webmail" value="no">
                   {TR_NO}</td>
@@ -207,7 +207,7 @@
               <tr>
                 <td class="content2" width="175">{TR_DIR_LIST}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="directorylisting" value="yes" checked>
+                  <input type="radio" name="directorylisting" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="directorylisting" value="no">
                   {TR_NO}</td>
@@ -215,7 +215,7 @@
               <tr>
                 <td class="content2" width="175">{TR_APACHE_LOGFILES}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="apachelogfiles" value="yes" checked>
+                  <input type="radio" name="apachelogfiles" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="apachelogfiles" value="no">
                   {TR_NO}</td>
@@ -223,7 +223,7 @@
               <tr>
                 <td class="content2" width="175">{TR_AWSTATS}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="awstats" value="yes" checked>
+                  <input type="radio" name="awstats" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="awstats" value="no">
                   {TR_NO}</td>
@@ -231,7 +231,7 @@
               <tr>
                 <td class="content2" width="175">{TR_LOGO_UPLOAD}</td>
                 <td width="254" class="content3">
-                  <input type="radio" name="logo_upload" value="yes" checked>
+                  <input type="radio" name="logo_upload" value="yes" checked="checked">
                   {TR_YES}
                   <input type="radio" name="logo_upload" value="no">
                   {TR_NO}</td>
@@ -245,7 +245,7 @@
           </tr>
           <!-- BDP: rsl_ip_message -->
           <tr>
-            <td colspan="4" class="title" nowrap><b>{MESSAGES_LABEL}</b></td>
+            <td colspan="4" class="title" nowrap="nowrap"><b>{MESSAGES_LABEL}</b></td>
           </tr>
           <!-- EDP: rsl_ip_message -->
           <!-- BDP: rsl_ip_list -->
@@ -351,7 +351,7 @@
         <td>&nbsp;</td>
         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">
           &nbsp;&nbsp;&nbsp;
-          <input type="checkbox" name="send_data" checked>
+          <input type="checkbox" name="send_data" checked="checked">
           {TR_SEND_DATA}</td>
       </tr>
     </table>
@@ -369,8 +369,7 @@
   </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

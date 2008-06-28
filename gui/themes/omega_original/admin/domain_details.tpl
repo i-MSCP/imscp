@@ -6,33 +6,24 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
-
 function action_status(url) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-
 	location = url;
 }
 
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
-}
-
-function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
 //-->
 </script>
-
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -41,13 +32,13 @@ function MM_goToURL() { //v3.0
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
-				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -92,13 +83,13 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_TRAFFIC}</td>
-                            <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                            <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                   <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                                  <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                  <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                       <tr>
                                         <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                        <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_TRAFFIC_PERCENT}" height="1"></td>
+                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_TRAFFIC_PERCENT}" height="1"></td>
                                         <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                       </tr>
                                   </table></td>
@@ -111,13 +102,13 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_DISK}</td>
-                            <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                            <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                   <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                                  <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                  <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                       <tr>
                                         <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                        <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_DISK_PERCENT}" height="1"></td>
+                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_DISK_PERCENT}" height="1"></td>
                                         <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                       </tr>
                                   </table></td>
@@ -125,7 +116,7 @@ function MM_goToURL() { //v3.0
                                 </tr>
                               </table>
                                 <br>
-                              {VL_DISK_USED} / {VL_DISK_LIMIT} </td>
+                              {VL_DISK_USED} / {VL_DISK_LIMIT}</td>
                           <tr>
                             <td>&nbsp;</td>
                             <td class="content3"><strong>{TR_FEATURE}</strong></td>
@@ -171,7 +162,7 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td>&nbsp;</td>
                             <td colspan="3"><form name="buttons" method="post" action="#">
-                                <input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','manage_users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
+                                <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','manage_users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
                               &nbsp;&nbsp;&nbsp;
                             </form></td>
                           </tr>
@@ -184,8 +175,7 @@ function MM_goToURL() { //v3.0
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

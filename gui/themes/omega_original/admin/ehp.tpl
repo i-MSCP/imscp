@@ -6,20 +6,18 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
-
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
-
 	location = url;
 }
 //-->
 </script>
 
 </head>
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -27,16 +25,16 @@ function delete_account(url) {
 <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0"></td>
 </tr>
 	<tr>
-		<td style="width: 195px; vertical-align: top;">{SUB_MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95";>
+		<td style="width: 195px; vertical-align: top;">{MENU}</td>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr height="*">
-				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td align="left" class="title"><table width="100%" cellpadding="5" cellspacing="5">
+                      <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
                             <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_serverstatus.png" width="25" height="25"></td>
                             <td colspan="2" class="title">{TR_EDIT_HOSTING_PLAN}</td>
@@ -54,66 +52,66 @@ function delete_account(url) {
                             <!-- BDP: page_message -->
                             <tr>
                               <td>&nbsp;</td>
-                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_TEMPLATE_NAME}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_name  value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_name"  value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2"> {TR_TEMPLATE_DESCRIPTON}</td>
+                              <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
                               <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px">{HP_DESCRIPTION_VALUE}</textarea></td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_SUBDOMAINS}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_sub value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_ALIASES}</i></b> </td>
-                              <td width="242"  class="content"><input type="text" {READONLY} name=hp_als value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
+                              <td class="content2" width="193">{TR_MAX_ALIASES}</td>
+                              <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_MAILACCOUNTS}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_mail value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_FTP}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_ftp value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_SQL}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_sql_db value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_SQL_USERS}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_sql_user value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_MAX_TRAFFIC}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_traff value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="20">&nbsp;</td>
                               <td class="content2" width="193">{TR_DISK_LIMIT}</td>
-                              <td class="content"><input type="text" {READONLY} name=hp_disk value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
+                              <td class="content"><input type="text" {READONLY} name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
                               </td>
                             </tr>
                             <tr>
@@ -148,9 +146,9 @@ function delete_account(url) {
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_CURRENCY}</td>
+                              <td class="content2">{TR_VALUE}</td>
                               <td class="content"><input name="hp_currency" {READONLY} type="text" class="textinput" id="hp_currency" style="width:100px" value="{HP_CURRENCY}">
-                                  <small>{TR_EXAMPEL}</small></td>
+                                  <small>{TR_EXAMPLE}</small></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -185,8 +183,7 @@ function delete_account(url) {
                     </tr>
                   </table></td>
 				</tr>
-			</table>
-		</td>
+			</table></td>
 	</tr>
 </table>
 </body>

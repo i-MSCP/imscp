@@ -8,7 +8,7 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
 
- <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+ <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
    <tr>
     <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,14 +17,14 @@
    </tr>
    <tr>
     <td style="width: 195px; vertical-align: top;">{MENU}</td>
-    <td colspan=2 style="vertical-align: top;">
+    <td colspan="2" style="vertical-align: top;">
      <table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-      <tr height="95";>
+      <tr height="95">
        <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
        <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
       </tr>
-      <tr height="*">
-       <td colspan=3>
+      <tr>
+       <td colspan="3">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
          <tr>
           <td align="left">
@@ -44,7 +44,7 @@
             <!-- BDP: page_message -->
             <tr>
              <td width="25">&nbsp;</td>
-             <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+             <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
             </tr>
             <!-- EDP: page_message -->
             <tr>
@@ -61,8 +61,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_DOMAIN_ERROR}</font>
+			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_DOMAIN_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: domain_list -->
@@ -83,8 +83,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_ALIAS_ERROR}</font>
+			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_ALIAS_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: alias_list -->
@@ -105,8 +105,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_SUBDOMAIN_ERROR}</font>
+			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_SUBDOMAIN_ERROR}</span>
 			 </td>
             </tr>
             <!-- EDP: subdomain_list -->
@@ -127,9 +127,8 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
-              <font color="red">{TR_MAIL_ERROR}</font>
-			 </td>
+			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_MAIL_ERROR}</span></td>
             </tr>
             <!-- EDP: mail_list -->
            </table>

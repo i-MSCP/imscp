@@ -8,10 +8,10 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -23,13 +23,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95">
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
-            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -45,13 +45,13 @@
                       <!-- BDP: page_message -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td width="203" class="content2"> {TR_CHOOSE_DEFAULT_LANGUAGE}</td>
-                        <td class="content"><select name="def_language">
+                        <td width="203" class="content2"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+                        <td class="content"><select name="def_language" id="def_language">
                             <!-- BDP: def_language -->
                             <option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>
                             <!-- EDP: def_language -->
@@ -77,8 +77,7 @@
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

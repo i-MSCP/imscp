@@ -6,39 +6,34 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
-
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-
 	location = ('change_status.php?domain_id=' + dom_id);
 }
 
 function delete_account(url, dmn_name) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT} (" + dmn_name + ")"))
 		return false;
-
 	location = url;
 }
 
 function sbmt(form, uaction) {
+	form.details.value = uaction;
+	form.submit();
 
-    form.details.value = uaction;
-    form.submit();
-
-    return false;
-
+	return false;
 }
 //-->
 </script>
-
 </head>
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+
+<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -50,13 +45,13 @@ function sbmt(form, uaction) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95";>
+	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95">
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr height="*">
-            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -70,19 +65,19 @@ function sbmt(form, uaction) {
                 <td><form name="search_user" method="post" action="users.php">
                     <table width="100%" cellspacing="3">
                       <tr>
-                        <td colspan="9" nowrap>&nbsp;</td>
+                        <td colspan="9" nowrap="nowrap">&nbsp;</td>
                       </tr>
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="8" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="8" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
                       <tr>
                         <!-- EDP: page_message -->
                         <td>&nbsp;</td>
                         <td colspan="6"><table border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                              <td nowrap><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
+                              <td nowrap="nowrap"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
                                   <select name="search_common" class="textinput">
                                     <option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
                                     <option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
@@ -96,12 +91,12 @@ function sbmt(form, uaction) {
                                     <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                                     <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                                 </select></td>
-                              <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_SEARCH} ">
+                              <td nowrap="nowrap"><input name="Submit" type="submit" class="button" value=" {TR_SEARCH} ">
                               </td>
                             </tr>
                         </table></td>
                         <td colspan="3" align="right"><input type="hidden" name="details" value="">
-                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle"> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
+                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle"> <a href="#" class="link" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -114,17 +109,17 @@ function sbmt(form, uaction) {
                       <!-- BDP: user_entry -->
                       <tr>
                         <td align="center">&nbsp;</td>
-                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onClick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
+                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onclick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
                         <td class="{CLASS_TYPE_ROW}"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle"> <a href="edit_user.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle"> <a href="edit_user.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
                         <!-- EDP: edit_option -->
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('druser.php?id={USER_ID}', '{NAME}')" class="link">{ACTION}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_account('delete_user.php?id={USER_ID}', '{NAME}')" class="link">{ACTION}</a></td>
                       </tr>
                       <!-- BDP: user_details -->
                       <tr>
@@ -160,8 +155,7 @@ function sbmt(form, uaction) {
               </tr>
             </table></td>
           </tr>
-        </table>
-	  </td>
+        </table></td>
 	</tr>
 </table>
 </body>

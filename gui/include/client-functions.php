@@ -577,7 +577,7 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
