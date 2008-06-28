@@ -32,7 +32,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	die();
 }
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = <<<SQL_QUERY
 	select
 		*
@@ -84,7 +84,7 @@ $user_email = $rs->fields['email'];
 // lets check the reseller limits
 $err_msg = "";
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "select props from hosting_plans where id = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
@@ -212,7 +212,7 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 $dmn_id = $sql->Insert_ID();
 
 // Create the 3 default addresses if wanted
-if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
+if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
 
 // ispcp 2.5 feature
 // add_domain_extras($dmn_id, $record_id, $sql);

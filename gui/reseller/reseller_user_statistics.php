@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/reseller_user_statistics.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/reseller_user_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('page_message', 'page');
@@ -38,8 +38,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $rid = $_SESSION['user_id'];
 $name = $_SESSION['user_logged'];
@@ -70,9 +69,9 @@ $tpl->assign(
 		);
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
-	$rows_per_page = (int)($cfg['DOMAIN_ROWS_PER_PAGE'] / 2);
+	$rows_per_page = (int)(Config::get('DOMAIN_ROWS_PER_PAGE') / 2);
 
 	if (isset($_GET['psi'])) {
 		$start_index = (int)trim($_GET['psi']);
@@ -102,6 +101,9 @@ SQL_QUERY;
 	$rs = exec_query($sql, $count_query, array($reseller_id));
 	$records_count = $rs->fields['cnt'];
 
+	$start_index = (int) $start_index;
+	$rows_per_page = (int) $rows_per_page;
+	
 	$query = <<<SQL_QUERY
         SELECT
             admin_id
@@ -114,10 +116,10 @@ SQL_QUERY;
         ORDER BY
             admin_name ASC
         LIMIT
-			?, ?
+			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($reseller_id, $start_index, $rows_per_page));
+	$rs = exec_query($sql, $query, array($reseller_id));
 	$tpl->assign(
 				array(
 					'RESELLER_NAME' => $reseller_name,
@@ -303,8 +305,8 @@ function generate_domain_entry (&$tpl, $user_id, $row) {
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_statistics.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_statistics.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
 gen_logged_from($tpl);
 
@@ -343,7 +345,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

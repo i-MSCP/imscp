@@ -3,10 +3,9 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @author 		ispCP Team (2007)
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -21,7 +20,7 @@
 require '../include/ispcp-lib.php';
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['PURCHASE_TEMPLATE_PATH'] . '/address.tpl');
+$tpl->define_dynamic('page', Config::get('PURCHASE_TEMPLATE_PATH') . '/address.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
@@ -205,7 +204,7 @@ function check_address_data(&$tpl) {
 *
 */
 
-if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id']) && $_SESSION['plan_id']) {
+if (isset($_SESSION['user_id']) && $_SESSION['plan_id']) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];
 } else {
@@ -262,7 +261,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

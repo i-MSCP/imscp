@@ -23,10 +23,10 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/settings.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings.tpl');
 $tpl->define_dynamic('def_language', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -52,9 +52,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hard_mail_suspension 				= $_POST['hard_mail_suspension'];
 	$user_initial_lang 					= $_POST['def_language'];
 	$support_system 					= $_POST['support_system'];
-	$hosting_plan_level					= $_POST['hosting_plan_level'];
 	$domain_rows_per_page 				= clean_input($_POST['domain_rows_per_page']);
-	$checkforupdate						= $_POST['checkforupdate'];
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
 		case "E_USER_NOTICE":
@@ -92,45 +90,42 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('HARD_MAIL_SUSPENSION', $hard_mail_suspension);
 		setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
 		setConfig_Value('ISPCP_SUPPORT_SYSTEM', $support_system);
-		setConfig_Value('HOSTING_PLANS_LEVEL', $hosting_plan_level);
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		setConfig_Value('LOG_LEVEL', $log_level);
-		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
 		set_page_message(tr('Settings saved !'));
 	}
 }
 
 $tpl->assign(
 	array(
-		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg['LOSTPASSWORD_TIMEOUT'],
-		'PASSWD_CHARS' => $cfg['PASSWD_CHARS'],
-		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg['BRUTEFORCE_MAX_LOGIN'],
-		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg['BRUTEFORCE_BLOCK_TIME'],
-		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg['BRUTEFORCE_BETWEEN_TIME'],
-		'BRUTEFORCE_MAX_CAPTCHA' => $cfg['BRUTEFORCE_MAX_CAPTCHA'],
-		'DOMAIN_ROWS_PER_PAGE' => $cfg['DOMAIN_ROWS_PER_PAGE']
+		'LOSTPASSWORD_TIMEOUT_VALUE' => Config::get('LOSTPASSWORD_TIMEOUT'),
+		'PASSWD_CHARS' => Config::get('PASSWD_CHARS'),
+		'BRUTEFORCE_MAX_LOGIN_VALUE' => Config::get('BRUTEFORCE_MAX_LOGIN'),
+		'BRUTEFORCE_BLOCK_TIME_VALUE' => Config::get('BRUTEFORCE_BLOCK_TIME'),
+		'BRUTEFORCE_BETWEEN_TIME_VALUE' => Config::get('BRUTEFORCE_BETWEEN_TIME'),
+		'BRUTEFORCE_MAX_CAPTCHA' => Config::get('BRUTEFORCE_MAX_CAPTCHA'),
+		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE')
 		)
 	);
 
-gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
+gen_def_language($tpl, $sql, Config::get('USER_INITIAL_LANG'));
 
-if ($cfg['LOSTPASSWORD']) {
+if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', 'selected="selected"');
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected="selected"');
 }
-
-if ($cfg['PASSWD_STRONG']) {
-	$tpl->assign('PASSWD_STRONG_ON', 'selected="selected"');
-	$tpl->assign('PASSWD_STRONG_OFF', '');
+if (Config::get('PASSWD_CHARS')) {
+	$tpl->assign('{PASSWD_STRONG_ON}', 'selected="selected"');
+	$tpl->assign('{PASSWD_STRONG_OFF}', '');
 } else {
-	$tpl->assign('PASSWD_STRONG_ON', '');
-	$tpl->assign('PASSWD_STRONG_OFF', 'selected="selected"');
+	$tpl->assign('{PASSWD_STRONG_ON}', '');
+	$tpl->assign('{PASSWD_STRONG_OFF}', 'selected="selected"');
 }
 
-if ($cfg['BRUTEFORCE']) {
+if (Config::get('BRUTEFORCE')) {
 	$tpl->assign('BRUTEFORCE_SELECTED_ON', 'selected="selected"');
 	$tpl->assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
@@ -138,7 +133,7 @@ if ($cfg['BRUTEFORCE']) {
 	$tpl->assign('BRUTEFORCE_SELECTED_OFF', 'selected="selected"');
 }
 
-if ($cfg['BRUTEFORCE_BETWEEN']) {
+if (Config::get('BRUTEFORCE_BETWEEN')) {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected="selected"');
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
@@ -146,7 +141,7 @@ if ($cfg['BRUTEFORCE_BETWEEN']) {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected="selected"');
 }
 
-if ($cfg['ISPCP_SUPPORT_SYSTEM']) {
+if (Config::get('ISPCP_SUPPORT_SYSTEM')) {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected="selected"');
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
@@ -154,7 +149,7 @@ if ($cfg['ISPCP_SUPPORT_SYSTEM']) {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected="selected"');
 }
 
-if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"');
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', '');
 } else {
@@ -162,7 +157,7 @@ if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
 }
 
-if ($cfg['HARD_MAIL_SUSPENSION']) {
+if (Config::get('HARD_MAIL_SUSPENSION')) {
 	$tpl->assign('HARD_MAIL_SUSPENSION_ON', 'selected="selected"');
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', '');
 } else {
@@ -170,23 +165,7 @@ if ($cfg['HARD_MAIL_SUSPENSION']) {
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', 'selected="selected"');
 }
 
-if ($cfg['HOSTING_PLANS_LEVEL'] == "admin") {
-	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', 'selected="selected"');
-	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', '');
-} else {
-	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', '');
-	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', 'selected="selected"');
-}
-
-if ($cfg['CHECK_FOR_UPDATES']) {
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', 'selected="selected"');
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', '');
-} else {
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', '');
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
-}
-
-switch($cfg['LOG_LEVEL']){
+switch(Config::get('LOG_LEVEL')){
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
@@ -217,8 +196,8 @@ switch($cfg['LOG_LEVEL']){
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
 	array(
@@ -246,16 +225,12 @@ $tpl->assign(
 		'TR_DISABLED' => tr('Disabled'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_SERVERPORTS' => tr('Server ports'),
-		'TR_HOSTING_PLANS_LEVEL' => tr('Hosting plans available for'),
-		'TR_ADMIN' => tr('Admin'),
-		'TR_RESELLER' => tr('Reseller'),
 		'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page'),
 		'TR_LOG_LEVEL' => tr('Log Level'),
 		'TR_E_USER_OFF' => tr('Disabled'),
 		'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
-		'TR_CHECK_FOR_UPDATES' => tr('Check for update')
 		)
 	);
 
@@ -264,7 +239,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

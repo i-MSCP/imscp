@@ -23,12 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/change_password.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/change_password.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -40,7 +39,7 @@ $tpl->assign(
 	);
 
 function update_password() {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
@@ -74,7 +73,7 @@ SQL_QUERY;
 }
 
 function check_udata($id, $pass) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         SELECT
@@ -103,8 +102,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 $tpl->assign(
 	array('TR_CHANGE_PASSWORD' => tr('Change password'),
@@ -123,7 +122,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

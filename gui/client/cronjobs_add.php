@@ -3,7 +3,7 @@
  * ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 2006-2007 by ispCP | http://isp-control.net
  * @link http://isp-control.net
  * @author ispCP Team (2007)
  * @license This program is free software; you can redistribute it and/or modify it under
@@ -20,11 +20,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/cronjobs_add.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/cronjobs_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array('TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
@@ -45,8 +45,8 @@ function add_cron_job(&$tpl, &$sql, $user_id) {
  *
  */
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -80,7 +80,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

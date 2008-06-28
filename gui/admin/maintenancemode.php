@@ -23,9 +23,9 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/maintenancemode.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/maintenancemode.tpl');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -51,7 +51,7 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 	set_page_message(tr('Settings saved !'));
 }
 
-if ($cfg['MAINTENANCEMODE']) {
+if (Config::get('MAINTENANCEMODE')) {
 	$selected_on = 'selected';
 } else {
 	$selected_off = 'selected';
@@ -62,15 +62,15 @@ if ($cfg['MAINTENANCEMODE']) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
 		array(
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
 			'TR_MESSAGE' => tr('Message'),
-			'MESSAGE_VALUE' => $cfg['MAINTENANCEMODE_MESSAGE'],
+			'MESSAGE_VALUE' => Config::get('MAINTENANCEMODE_MESSAGE'),
 			'SELECTED_ON' => $selected_on,
 			'SELECTED_OFF' => $selected_off,
 			'TR_ENABLED' => tr('Enabled'),
@@ -84,7 +84,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

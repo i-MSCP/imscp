@@ -23,11 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/email_setup.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/email_setup.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $user_id = $_SESSION['user_id'];
 
@@ -71,8 +71,8 @@ $tpl->assign(
 			)
 		);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
 		array(
@@ -87,8 +87,6 @@ $tpl->assign(
 			'TR_SENDER_EMAIL' => tr('Senders email'),
 			'TR_SENDER_NAME' => tr('Senders name'),
 			'TR_APPLY_CHANGES' => tr('Apply changes'),
-			'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
-			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 			'SUBJECT_VALUE' => $data['subject'],
 			'MESSAGE_VALUE' => $data['message'],
 			'SENDER_EMAIL_VALUE' => $data['sender_email'],
@@ -101,7 +99,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

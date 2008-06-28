@@ -29,7 +29,7 @@ define('MT_NORMAL_CATCHALL', 'normal_catchall');
 define('MT_ALIAS_CATCHALL', 'alias_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -56,8 +56,8 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_LOGOUT' => tr('Logout'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_LANGUAGE' => tr('Language'),
-			'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
@@ -105,7 +105,7 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -114,7 +114,7 @@ SQL_QUERY;
 
 // Function to generate the manu data for reseller
 function gen_reseller_menu(&$tpl, $menu_file) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 
@@ -140,15 +140,15 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			'TR_MENU_LOGOUT' => tr('Logout'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_LANGUAGE' => tr('Language'),
-			'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-			'VERSION' => $cfg['Version'],
-			'BUILDDATE' => $cfg['BuildDate'],
-			'CODENAME' => $cfg['CodeName']
+			'VERSION' => Config::get('Version'),
+			'BUILDDATE' => Config::get('BuildDate'),
+			'CODENAME' => Config::get('CodeName')
 			)
 		);
 
@@ -192,11 +192,8 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
-	}
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
-		$tpl->assign('HP_MENU_ADD', '');
 	}
 
 	$tpl->parse('MENU', 'menu');
@@ -244,7 +241,7 @@ SQL_QUERY;
 
 // Makeing user's probs
 function generate_reseller_user_props ($reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	// Init with empty variables
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -408,7 +405,8 @@ SQL_QUERY;
 // Get traffic information for user
 function get_user_traffic($user_id)
 {
-	global $sql, $crnt_month, $crnt_year;
+	$sql = Database::getInstance();
+	global $crnt_month, $crnt_year;
 
 	$query = <<<SQL_QUERY
 			select
@@ -479,7 +477,7 @@ SQL_QUERY;
 // Get user's probs info from sql
 function get_user_props ($user_id)
 {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
     select
@@ -576,7 +574,7 @@ function rsl_full_domain_check ($data) {
 
 // Generate ip list
 function generate_ip_list(&$tpl, &$reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	global $domain_ip;
 
 	$query = <<<SQL_QUERY
@@ -731,27 +729,27 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		return false;
 	}
+
+	return false;
 } //End of check_ruser_data()
 
 // Translate domain status
 function translate_dmn_status ($status) {
-	global $cfg;
-
-	if ($status == $cfg['ITEM_OK_STATUS']) {
+	if ($status == Config::get('ITEM_OK_STATUS')) {
 		return tr('OK');
-	} else if ($status == $cfg['ITEM_ADD_STATUS']) {
+	} else if ($status == Config::get('ITEM_ADD_STATUS')) {
 		return tr('Addition in progress');
-	} else if ($status == $cfg['ITEM_CHANGE_STATUS']) {
+	} else if ($status == Config::get('ITEM_CHANGE_STATUS')) {
 		return tr('Modification in progress');
-	} else if ($status == $cfg['ITEM_DELETE_STATUS']) {
+	} else if ($status == Config::get('ITEM_DELETE_STATUS')) {
 		return tr('Deletion in progress');
-	} else if ($status == $cfg['ITEM_DISABLED_STATUS']) {
+	} else if ($status == Config::get('ITEM_DISABLED_STATUS')) {
 		return tr('Suspended');
-	} else if ($status == $cfg['ITEM_TOENABLE_STATUS']) {
+	} else if ($status == Config::get('ITEM_TOENABLE_STATUS')) {
 		return tr('Being enabled');
-	} else if ($status == $cfg['ITEM_TODISABLED_STATUS']) {
+	} else if ($status == Config::get('ITEM_TODISABLED_STATUS')) {
 		return tr('Being suspended');
-	} else if ($status == $cfg['ITEM_ORDERED_STATUS']) {
+	} else if ($status == Config::get('ITEM_ORDERED_STATUS')) {
 		return tr('Awaiting for approval');
 	} else {
 		return tr('Unknown error');
@@ -760,7 +758,7 @@ function translate_dmn_status ($status) {
 
 // Check if the domain already exist
 function ispcp_domain_exists ($domain_name, $reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = <<<SQL_QUERY
       select
@@ -1160,7 +1158,7 @@ SQL_QUERY;
 	}
 }
 
-function gen_domain_details(&$tpl, &$sql, &$domain_id) {
+function gen_domain_details(&$tpl, &$sql, $domain_id) {
 	$tpl->assign('USER_DETAILS', '');
 
 	if (isset($_SESSION['details']) and $_SESSION['details'] == 'hide') {
@@ -1313,7 +1311,7 @@ SQL_QUERY;
 
 	if ($dmn_max != 0) {
 		if ($dmn_current + 1 > $dmn_max) {
-			set_page_message(tr('You have reached your domains limit.<br>You cannot add more domains!'));
+			set_page_message(tr('You have reached your domains limit.<br>You can not add more domains!'));
 			$error = true;
 		}
 	}
@@ -1321,7 +1319,7 @@ SQL_QUERY;
 	if ($sub_max != 0) {
 		if ($sub_new != -1) {
 			if ($sub_new == 0) {
-				set_page_message(tr('You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!'));
+				set_page_message(tr('You have a subdomains limit!<br>You can not add an user with unlimited subdomains!'));
 				$error = true;
 			} else if ($sub_current + $sub_new > $sub_max) {
 				set_page_message(tr('You are exceeding your subdomains limit!'));
@@ -1333,7 +1331,7 @@ SQL_QUERY;
 	if ($als_max != 0) {
 		if ($als_new != -1) {
 			if ($als_new == 0) {
-				set_page_message(tr('You have an aliases limit!<br>You cannot add an user with unlimited aliases!'));
+				set_page_message(tr('You have an aliases limit!<br>You can not add an user with unlimited aliases!'));
 				$error = true;
 			} else if ($als_current + $als_new > $als_max) {
 				set_page_message(tr('You Are Exceeding Your Alias Limit!'));
@@ -1344,7 +1342,7 @@ SQL_QUERY;
 
 	if ($mail_max != 0) {
 		if ($mail_new == 0) {
-			set_page_message(tr('You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!'));
+			set_page_message(tr('You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!'));
 			$error = true;
 		} else if ($mail_current + $mail_new > $mail_max) {
 			set_page_message(tr('You are exceeding your mail accounts limit!'));
@@ -1353,7 +1351,7 @@ SQL_QUERY;
 
 	if ($ftp_max != 0) {
 		if ($ftp_new == 0) {
-			set_page_message(tr('You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!'));
+			set_page_message(tr('You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!'));
 			$error = true;
 		} else if ($ftp_current + $ftp_new > $ftp_max) {
 			set_page_message(tr('You are exceeding your FTP accounts limit!'));
@@ -1364,7 +1362,7 @@ SQL_QUERY;
 	if ($sql_db_max != 0) {
 		if ($sql_db_new != -1) {
 			if ($sql_db_new == 0) {
-				set_page_message(tr('You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!'));
+				set_page_message(tr('You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!'));
 				$error = true;
 			} else if ($sql_db_current + $sql_db_new > $sql_db_max) {
 				set_page_message(tr('You are exceeding your SQL databases limit!'));
@@ -1376,10 +1374,10 @@ SQL_QUERY;
 	if ($sql_user_max != 0) {
 		if ($sql_user_new != -1) {
 			if ($sql_user_new == 0) {
-				set_page_message(tr('You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!'));
+				set_page_message(tr('You have an SQL users limit!<br>You can not add an user with unlimited SQL users!'));
 				$error = true;
 			} else if ($sql_db_new == -1) {
-				set_page_message(tr('You have disabled SQL databases for this user!<br>You cannot have SQL users here!'));
+				set_page_message(tr('You have disabled SQL databases for this user!<br>You can not have SQL users here!'));
 				$error = true;
 			} else if ($sql_user_current + $sql_user_new > $sql_user_max) {
 				set_page_message(tr('You are exceeding your SQL database limit!'));
@@ -1390,7 +1388,7 @@ SQL_QUERY;
 
 	if ($traff_max != 0) {
 		if ($traff_new == 0) {
-			set_page_message(tr('You have a traffic limit!<br>You cannot add an user with unlimited traffic!'));
+			set_page_message(tr('You have a traffic limit!<br>You can not add an user with unlimited traffic!'));
 			$error = true;
 		} else if ($traff_current + $traff_new > $traff_max) {
 			set_page_message(tr('You are exceeding your traffic limit!'));
@@ -1400,7 +1398,7 @@ SQL_QUERY;
 
 	if ($disk_max != 0) {
 		if ($disk_new == 0) {
-			set_page_message(tr('You have a disk limit!<br>You cannot add an user with unlimited disk!'));
+			set_page_message(tr('You have a disk limit!<br>You can not add an user with unlimited disk!'));
 			$error = true;
 		} else if ($disk_current + $disk_new > $disk_max) {
 			set_page_message(tr('You are exceeding your disk limit!'));
@@ -1417,7 +1415,7 @@ SQL_QUERY;
 
 // Update reseller props
 function au_update_reseller_props($reseller_id, $props) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	list($php, $cgi, $sub,
 		$als, $mail, $ftp,
@@ -1526,8 +1524,6 @@ SQL_QUERY;
 } // End of au_update_reseller_props()
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
-	global $cfg;
-
 	$data = get_order_email($admin_id);
 
 	$from_name = $data['sender_name'];
@@ -1550,7 +1546,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 		} else if ($ulname) {
 			$name = $ulname;
 		} else {
-			$name = $uemail;
+			$name = $uname;
 		}
 		$to = $uemail;
 	}
@@ -1560,8 +1556,6 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$search [] = '{DOMAIN}';
 	$replace[] = $domain_name;
-	$search [] = '{MAIL}';
-	$replace[] = $uemail;
 	$search [] = '{NAME}';
 	$replace[] = $name;
 
@@ -1571,7 +1565,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$subject = encode($subject);
 
 	$headers = "From: ". $from . "\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1586,17 +1580,19 @@ you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
 Please login into your ispCP control panel for more details.
 
-', true);
-
+');
 	$search [] = '{RESELLER}';
 	$replace[] = $from_name;
+	$search [] = '{MAIL}';
+	$replace[] = $to;
 	$message = str_replace($search, $replace, $message);
 
-	$mail_result = mail($from, $subject, $message, $headers);
+	$mail_result = mail(encode($from), $subject, $message, $headers);
 }
 
-function send_alias_order_email($alias_name) {
-	global $cfg, $sql;
+function send_alias_order_email($alias_name)
+{
+	$sql = Database::getInstance();
 
 	$user_id = $_SESSION['user_id'];
 
@@ -1631,7 +1627,7 @@ function send_alias_order_email($alias_name) {
 		} else if ($ulname) {
 			$from_name = $ulname;
 		} else {
-			$from_name = $uemail;
+			$from_name = $uname;
 		}
 		$from = $uemail;
 	}
@@ -1645,7 +1641,7 @@ function send_alias_order_email($alias_name) {
 	$search [] = '{ALIAS}';
 	$replace[] = $alias_name;
 	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $cfg['BASE_SERVER_VHOST'];
+	$replace[] = Config::get('BASE_SERVER_VHOST');
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
@@ -1653,7 +1649,7 @@ function send_alias_order_email($alias_name) {
 	$subject = encode($subject);
 
 	$headers = "From: ". $from ."\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1662,12 +1658,13 @@ function send_alias_order_email($alias_name) {
 }
 
 // add the 3 mail accounts/forwardings to a new domain...
-function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0) {
-	global $cfg, $sql;
+function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0)
+{
+	$sql = Database::getInstance();
 
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 
-		$forward_type = ($dmn_type == 'alias') ? 'alias_forward' : 'normal_forward';
+		$forward_type = ($dmn_type == 'alias') ? 'alias_forward': 'normal_forward';
 
 		// prepare SQL
 		$query = <<<SQL_QUERY
@@ -1687,14 +1684,14 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 SQL_QUERY;
 
 		// create default forwarder for webmaster@domain.tld to the account's owner
-		$rs = exec_query($sql, $query,
+		$rs = exec_query($sql, $query, 
 			array('webmaster',
 				'_no_',
 				$user_email,
 				$dmn_id,
 				$forward_type,
 				$sub_id,
-				$cfg['ITEM_ADD_STATUS'],
+				Config::get('ITEM_ADD_STATUS'),
 				'_no_',
 				10485760,
 				'webmaster@'.$dmn_part
@@ -1702,14 +1699,14 @@ SQL_QUERY;
 		);
 
 		// create default forwarder for postmaster@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query,
+		$rs = exec_query($sql, $query, 
 			array('postmaster',
 				'_no_',
 				$_SESSION['user_email'],
 				$dmn_id,
 				$forward_type,
 				$sub_id,
-				$cfg['ITEM_ADD_STATUS'],
+				Config::get('ITEM_ADD_STATUS'),
 				'_no_',
 				10485760,
 				'postmaster@'.$dmn_part
@@ -1717,14 +1714,14 @@ SQL_QUERY;
 		);
 
 		// create default forwarder for abuse@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query,
+		$rs = exec_query($sql, $query, 
 			array('abuse',
 				'_no_',
 				$_SESSION['user_email'],
 				$dmn_id,
 				$forward_type,
 				$sub_id,
-				$cfg['ITEM_ADD_STATUS'],
+				Config::get('ITEM_ADD_STATUS'),
 				'_no_',
 				10485760,
 				'abuse@'.$dmn_part
@@ -1734,5 +1731,6 @@ SQL_QUERY;
 	}
 
 } // end client_mail_add_default_accounts
+
 
 ?>

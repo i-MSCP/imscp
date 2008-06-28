@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/puser_assign.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/puser_assign.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('already_in', 'page');
@@ -31,7 +31,7 @@ $tpl->define_dynamic('grp_avlb', 'page');
 $tpl->define_dynamic('add_button', 'page');
 $tpl->define_dynamic('remove_button', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -169,8 +169,7 @@ SQL_QUERY;
 			$members = $members . "," . $uuser_id;
 		}
 
-		global $cfg;
-		$change_status = $cfg['ITEM_CHANGE_STATUS'];
+		$change_status = Config::get('ITEM_CHANGE_STATUS');
 
 		$update_query = <<<SQL_QUERY
 				update
@@ -186,7 +185,7 @@ SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
-		$change_status = $cfg['ITEM_CHANGE_STATUS'];
+		$change_status = Config::get('ITEM_CHANGE_STATUS');
 
 		$query = <<<SQL_QUERY
 				update
@@ -246,8 +245,7 @@ SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($members, $group_id, $dmn_id));
 
-		global $cfg;
-		$change_status = $cfg['ITEM_CHANGE_STATUS'];
+		$change_status = Config::get('ITEM_CHANGE_STATUS');
 		$query = <<<SQL_QUERY
 				update
 					htaccess
@@ -267,9 +265,8 @@ SQL_QUERY;
 	}
 }
 
-function gen_page_awstats(&$tpl) {
-	global $cfg;
-	$awstats_act = $cfg['AWSTATS_ACTIVE'];
+function gen_page_awstats($tpl) {
+	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
 	} else {
@@ -283,8 +280,8 @@ function gen_page_awstats(&$tpl) {
 }
 // ** end of funcfions
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -319,7 +316,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

@@ -4,8 +4,10 @@
 <form name="addon" method="post" action="addon.php">
 <table width="400">
   <tr>
-    <td class="content3"><strong>{CHECK_OUT}</strong></td>
+    <td class="content3"><strong>{CHECK_OUT}</strong> </td>
   </tr>
+
+	
 
   <tr>
     <td>{THANK_YOU_MESSAGE}</td>

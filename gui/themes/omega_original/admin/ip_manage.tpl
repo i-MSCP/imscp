@@ -6,18 +6,20 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/JavaScript">
 <!--
+
 function action_delete(url, ip) {
 	if (!confirm("{TR_MESSAGE_DELETE} " + ip))
 		return false;
+
 	location = url;
 }
 //-->
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -26,13 +28,13 @@ function action_delete(url, ip) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -47,7 +49,7 @@ function action_delete(url, ip) {
                           <!-- BDP: page_message -->
                           <tr>
                             <td width="25">&nbsp;</td>
-                            <td colspan="4" class="title"><span class="message">{MESSAGE}</span></td>
+                            <td colspan="4"><font color="#FF0000"><span class="title"><font color="#FF0000">{MESSAGE}</font></span> </font></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <tr>
@@ -63,16 +65,16 @@ function action_delete(url, ip) {
                           </tr>
                           <!-- BDP: ip_row -->
                           <tr>
-                            <td width="25" nowrap="nowrap">&nbsp;</td>
-                            <td align="left" nowrap="nowrap" class="{IP_CLASS}">{IP}</td>
-                            <td align="center" nowrap="nowrap" class="{IP_CLASS}">{DOMAIN}</td>
-                            <td class="{IP_CLASS}" nowrap="nowrap" align="center">{ALIAS}</td>
-                            <td class="{IP_CLASS}" nowrap="nowrap" align="center">
+                            <td width="25" nowrap>&nbsp;</td>
+                            <td align="left" nowrap class="{IP_CLASS}">{IP}</td>
+                            <td align="center" nowrap class="{IP_CLASS}">{DOMAIN}</td>
+                            <td class="{IP_CLASS}" nowrap align="center">{ALIAS}</td>
+                            <td class="{IP_CLASS}" nowrap align="center">
 							<!-- BDP: ip_delete_show -->
             				-
             				<!-- EDP: ip_delete_show -->
             				<!-- BDP: ip_delete_link -->
-              				<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('delete_ip.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a></td>
+              				<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ip.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a></td>
             				<!-- EDP: ip_delete_link -->
                           </tr>
                           <!-- EDP: ip_row -->
@@ -85,9 +87,9 @@ function action_delete(url, ip) {
                                 <td colspan="2" class="content3"><b>{TR_ADD_NEW_IP}</b></td>
                               </tr>
                               <tr>
-                                <td width="25" nowrap="nowrap">&nbsp;</td>
-                                <td width="200" class="content2" nowrap="nowrap">{TR_IP}</td>
-                                <td nowrap="nowrap" class="content"><input name="ip_number_1" type="text" class="textinput" style="width:31px" value="{VALUE_IP1}" maxlength="3">
+                                <td width="25" nowrap>&nbsp;</td>
+                                <td width="200" class="content2" nowrap>{TR_IP}</td>
+                                <td nowrap class="content"><input name="ip_number_1" type="text" class="textinput" style="width:31px" value="{VALUE_IP1}" maxlength="3">
                                   .
                                   <input name="ip_number_2" type="text" class="textinput" style="width:31px" value="{VALUE_IP2}" maxlength="3">
                                   .
@@ -97,20 +99,20 @@ function action_delete(url, ip) {
                                 </td>
                               </tr>
                               <tr>
-                                <td width="25" nowrap="nowrap">&nbsp;</td>
-                                <td width="200" class="content2" nowrap="nowrap">{TR_DOMAIN}</td>
-                                <td nowrap="nowrap" class="content"><input type="text" name="domain" value="{VALUE_DOMAIN}" style="width:180px" class="textinput">
+                                <td width="25" nowrap>&nbsp;</td>
+                                <td width="200" class="content2" nowrap>{TR_DOMAIN}</td>
+                                <td nowrap class="content"><input type="text" name="domain" value="{VALUE_DOMAIN}" style="width:180px" class="textinput">
                                 </td>
                               </tr>
                               <tr>
-                                <td width="25" nowrap="nowrap">&nbsp;</td>
-                                <td width="200" class="content2" nowrap="nowrap">{TR_ALIAS}</td>
-                                <td nowrap="nowrap" class="content"><input type="text" name="alias" value="{VALUE_ALIAS}" style="width:180px" class="textinput">
+                                <td width="25" nowrap>&nbsp;</td>
+                                <td width="200" class="content2" nowrap>{TR_ALIAS}</td>
+                                <td nowrap class="content"><input type="text" name="alias" value="{VALUE_ALIAS}" style="width:180px" class="textinput">
                                 </td>
                               </tr>
                               <tr>
-                                <td nowrap="nowrap">&nbsp;</td>
-                                <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                                <td nowrap>&nbsp;</td>
+                                <td colspan="2" nowrap ><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
                               </tr>
                             </table>
                             <input type="hidden" name="uaction" value="add_ip">
@@ -123,7 +125,8 @@ function action_delete(url, ip) {
                     </tr>
                   </table></td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

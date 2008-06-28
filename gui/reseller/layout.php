@@ -23,16 +23,17 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/layout.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/layout.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 
 function save_layout() {
-    global $sql, $theme_color;
+    $sql = Database::getInstance();
+    global $theme_color;
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
@@ -134,7 +135,7 @@ function update_logo() {
 
 
 function update_user_gui_props($file_name, $user_id) {
-    global $sql;
+    $sql = Database::getInstance();
 
     $query = <<<SQL_QUERY
         update
@@ -169,8 +170,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_information.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -198,7 +199,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

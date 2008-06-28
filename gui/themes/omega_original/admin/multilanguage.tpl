@@ -6,18 +6,21 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/JavaScript">
 <!--
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
+
 	location = url;
 }
 //-->
 </script>
+
+
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -26,13 +29,13 @@ function action_delete(url) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -48,7 +51,7 @@ function action_delete(url) {
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
+                              <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font> </td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
@@ -80,7 +83,7 @@ function action_delete(url) {
                                 {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
-                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_UNINSTALL}</a>
+                                <a href="#" onClick="action_delete('{URL_DELETE}')" class="link">{TR_UNINSTALL}</a>
                                 <!-- EDP: lang_delete_link --></td>
                             </tr>
                             <!-- EDP: lang_row -->
@@ -89,7 +92,7 @@ function action_delete(url) {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td><span class="{LANG_CLASS}">
-                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'change_language');" /></span></td>
+                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'change_language');" /></td>
                             </tr>
                         </table>
                         <br />
@@ -108,7 +111,7 @@ function action_delete(url) {
                             </tr>
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
-                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onclick="return sbmt(document.forms[0],'upload_language');" /></td>
+                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onClick="return sbmt(document.forms[0],'upload_language');" /></td>
                             </tr>
                           </table>
                         <input type="hidden" name="uaction" value="" />
@@ -121,7 +124,8 @@ function action_delete(url) {
                     </tr>
                   </table></td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

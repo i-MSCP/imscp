@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,13 +17,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -44,7 +44,7 @@
                               <!-- BDP: page_message -->
                               <tr>
                                 <td width="25">&nbsp;</td>
-                                <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
+                                <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                               </tr>
                               <!-- EDP: page_message -->
                               <tr>
@@ -65,7 +65,8 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_EMAIL}</td>
-                                <td class="content"><input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
@@ -84,51 +85,61 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_GENDER}</td>
-                                <td class="content"><select name="gender" size="1">
+                                <td class="content">
+                                    <select name="gender" size="1">
                                       <option value="M" {VL_MALE}>{TR_MALE}</option>
                                       <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
                                       <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
-                                    </select></td>
+                                    </select>
+                                </td>
                                </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_COMPANY}</td>
-                                <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_ZIP_POSTAL_CODE}</td>
-                                <td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput"></td>
+                                <td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_CITY}</td>
-                                <td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_COUNTRY}</td>
-                                <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_STREET_1}</td>
-                                <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_STREET_2}</td>
-                                <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_PHONE}</td>
-                                <td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_FAX}</td>
-                                <td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput"></td>
+                                <td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput">
+                                </td>
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
@@ -150,7 +161,8 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

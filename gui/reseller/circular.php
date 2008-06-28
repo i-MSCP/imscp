@@ -26,10 +26,10 @@ function gen_page_data(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
 			array(
-				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject']),
+				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], false),
 				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], false),
-				'SENDER_EMAIL' => clean_input($_POST['sender_email']),
-				'SENDER_NAME' => clean_input($_POST['sender_name'])
+				'SENDER_EMAIL' => clean_input($_POST['sender_email'], false),
+				'SENDER_NAME' => clean_input($_POST['sender_name'], false)
 				)
 			);
 	} else {
@@ -74,10 +74,10 @@ function check_user_data (&$tpl) {
 
 	$err_message = '';
 
-	$msg_subject = clean_input($_POST['msg_subject']);
+	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
-	$sender_email = clean_input($_POST['sender_email']);
-	$sender_name = clean_input($_POST['sender_name']);
+	$sender_email = clean_input($_POST['sender_email'], false);
+	$sender_name = clean_input($_POST['sender_name'], false);
 
 	if (empty($msg_subject)) {
 		$err_message .= tr('Please specify a message subject!');
@@ -115,10 +115,10 @@ function send_circular(&$tpl, &$sql) {
 
 function send_reseller_users_message (&$sql, $admin_id) {
 
-	$msg_subject = clean_input($_POST['msg_subject']);
+	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
-	$sender_email = clean_input($_POST['sender_email']);
-	$sender_name = clean_input($_POST['sender_name']);
+	$sender_email = clean_input($_POST['sender_email'], false);
+	$sender_name = clean_input($_POST['sender_name'], false);
 
 	$query = <<<SQL_QUERY
         select
@@ -156,11 +156,11 @@ function send_circular_email ($to, $from, $subject, $message) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/circular.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/circular.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -178,8 +178,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -210,7 +210,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

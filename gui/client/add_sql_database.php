@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/add_sql_database.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/add_sql_database.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -35,17 +35,16 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 // page functions.
 
 function gen_page_post_data(&$tpl) {
-	global $cfg;
-	if ($cfg['MYSQL_PREFIX'] === 'yes') {
+	if (Config::get('MYSQL_PREFIX') === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
 	} else {
 		$tpl->assign('MYSQL_PREFIX_NO', '');
 	}
-	if ($cfg['MYSQL_PREFIX_TYPE'] === 'infront') {
+	if (Config::get('MYSQL_PREFIX_TYPE') === 'infront') {
 		$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
 		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
 		$tpl->assign('MYSQL_PREFIX_ALL', '');
-	} else if ($cfg['MYSQL_PREFIX_TYPE'] === 'behind') {
+	} else if (Config::get('MYSQL_PREFIX_TYPE') === 'behind') {
 		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 		$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 		$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -84,8 +83,6 @@ SQL_QUERY;
 }
 
 function add_sql_database(&$sql, $user_id) {
-	global $cfg;
-
 	if (!isset($_POST['uaction'])) return;
 
 	// let's generate database name.
@@ -110,7 +107,7 @@ function add_sql_database(&$sql, $user_id) {
 		$db_name = clean_input($_POST['db_name']);
 	}
 
-	if (strlen($db_name) > $cfg['MAX_SQL_DATABASE_LENGTH']) {
+	if (strlen($db_name) > Config::get('MAX_SQL_DATABASE_LENGTH')) {
 		set_page_message(tr('Database name is too long!'));
 		return;
 	}
@@ -140,7 +137,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
 
-	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . $db_name);
+	write_log($_SESSION['user_logged'] . ": add new SQL database: " . $db_name);
 	set_page_message(tr('SQL database created successfully!'));
 	user_goto('manage_sql.php');
 }
@@ -183,8 +180,7 @@ function check_sql_permissions($sql, $user_id) {
 	}
 }
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -199,8 +195,8 @@ gen_page_post_data($tpl);
 
 add_sql_database($sql, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -218,7 +214,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

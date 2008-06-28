@@ -32,12 +32,12 @@ if (isset($_GET['edit_id'])) {
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/edit_user.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/edit_user.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
                 array(
@@ -83,8 +83,8 @@ $tpl->assign(
 						)
 				);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -151,7 +151,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 //unset_messages();
@@ -162,7 +162,7 @@ if ($cfg['DUMP_GUI_DEBUG'])
 
 // Load data from sql
 function load_user_data_page($user_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
     global $last_name, $firm, $zip, $gender;
@@ -259,7 +259,7 @@ function gen_edituser_page(&$tpl) {
 
 // Function to update changes into db
 function update_data_in_db($hpid) {
-  global $sql;
+  $sql = Database::getInstance();
   global $dmn_user_name;
   global $user_email, $customer_id, $first_name;
   global $last_name, $firm, $zip, $gender;
@@ -400,7 +400,7 @@ SQL_QUERY;
   }
 
 	$admin_login = $_SESSION['user_logged'];
-    write_log("$admin_login changes data/password for $dmn_user_name!");
+    write_log("$admin_login changed data/password for $dmn_user_name!");
 
 	if (isset($_POST['send_data']) && !empty($inpass)) {
 

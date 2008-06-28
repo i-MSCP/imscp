@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/enable_mail_arsp.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/enable_mail_arsp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -59,8 +59,6 @@ SQL_QUERY;
 }
 
 function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
-	global $cfg;
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
 		if (empty($_POST['arsp_message'])) {
 			$tpl->assign('ARSP_MESSAGE', '');
@@ -69,7 +67,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		}
 
 		$arsp_message = clean_input($_POST['arsp_message'], false);
-		$item_change_status = $cfg['ITEM_CHANGE_STATUS'];
+		$item_change_status = Config::get('ITEM_CHANGE_STATUS');
 		check_for_lock_file();
 
 		$query = <<<SQL_QUERY
@@ -77,7 +75,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
                 mail_users
             set
                 status = ?,
-                mail_auto_respond = 1,
+                mail_auto_respond = 1
                 mail_auto_respond_text = ?
             where
                 mail_id = ?
@@ -140,8 +138,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	header("Location: index.php");
 }
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -159,8 +156,8 @@ gen_page_dynamic_data($tpl, $sql, $mail_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -180,7 +177,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

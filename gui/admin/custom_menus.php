@@ -58,7 +58,7 @@ SQL_QUERY;
 					'MENU_NAME' => $menu_name,
 					'LINK' => $menu_link,
 					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2',
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
+					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
 
 					)
 				);
@@ -244,7 +244,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/custom_menus.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/custom_menus.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('button_list', 'page');
@@ -252,8 +252,7 @@ $tpl->define_dynamic('button_list', 'page');
 $tpl->define_dynamic('add_button', 'page');
 $tpl->define_dynamic('edit_button', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array('TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ispCP - Admin - Manage custom menus'),
@@ -262,8 +261,8 @@ $tpl->assign(
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 add_new_button($sql);
 
@@ -314,7 +313,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

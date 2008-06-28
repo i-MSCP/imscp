@@ -23,11 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/change_personal.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/change_personal.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -56,11 +56,11 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
             zip,
             city,
             country,
-            street1,
-            street2,
             email,
             phone,
-            fax
+            fax,
+            street1,
+            street2
         from
             admin
         where
@@ -70,23 +70,23 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$tpl->assign(
-		array(
-			'FIRST_NAME' 	=> (($rs->fields['fname'] == null) 		? '' : $rs->fields['fname']),
-			'LAST_NAME' 	=> (($rs->fields['lname'] == null) 		? '' : $rs->fields['lname']),
-			'FIRM' 			=> (($rs->fields['firm'] == null) 		? '' : $rs->fields['firm']),
-			'ZIP' 			=> (($rs->fields['zip'] == null) 		? '' : $rs->fields['zip']),
-			'CITY' 			=> (($rs->fields['city'] == null) 		? '' : $rs->fields['city']),
-			'COUNTRY' 		=> (($rs->fields['country'] == null) 	? '' : $rs->fields['country']),
-			'STREET_1' 		=> (($rs->fields['street1'] == null) 	? '' : $rs->fields['street1']),
-			'STREET_2' 		=> (($rs->fields['street2'] == null) 	? '' : $rs->fields['street2']),
-			'EMAIL' 		=> (($rs->fields['email'] == null) 		? '' : $rs->fields['email']),
-			'PHONE' 		=> (($rs->fields['phone'] == null) 		? '' : $rs->fields['phone']),
-			'FAX' 			=> (($rs->fields['fax'] == null) 		? '' : $rs->fields['fax']),
-			'VL_MALE' 		=> (($rs->fields['gender'] == 'M') 		? 'selected' : ''),
-			'VL_FEMALE' 	=> (($rs->fields['gender'] == 'F') 		? 'selected' : ''),
-			'VL_UNKNOWN' 	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
-			)
-		);
+			array(
+				'FIRST_NAME' => $rs->fields['fname'],
+				'LAST_NAME' => $rs->fields['lname'],
+				'FIRM' => $rs->fields['firm'],
+				'ZIP' => $rs->fields['zip'],
+				'CITY' => $rs->fields['city'],
+				'COUNTRY' => $rs->fields['country'],
+				'EMAIL' => $rs->fields['email'],
+				'PHONE' => $rs->fields['phone'],
+				'FAX' => $rs->fields['fax'],
+				'STREET1' => $rs->fields['street1'],
+				'STREET2' => $rs->fields['street2'],
+				'VL_MALE' => (($rs->fields['gender'] === 'M') ? 'selected' : ''),
+				'VL_FEMALE' => (($rs->fields['gender'] === 'F') ? 'selected' : ''),
+				'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
+				)
+			);
 }
 
 function update_reseller_personal_data(&$sql, $user_id) {
@@ -134,8 +134,8 @@ SQL_QUERY;
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -167,7 +167,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

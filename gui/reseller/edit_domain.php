@@ -23,14 +23,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/edit_domain.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/edit_domain.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	header("Location: users.php");
 	die();
 }
@@ -73,8 +73,8 @@ $tpl->assign(
 			)
 		);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -116,7 +116,7 @@ gen_editdomain_page($tpl);
 
 // Load data from sql
 function load_user_data($user_id, $domain_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	global $domain_name, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
@@ -158,7 +158,7 @@ SQL_QUERY;
 
 // Load additional data
 function load_additional_data($user_id, $domain_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	global $domain_name, $domain_ip, $php_sup;
 	global $cgi_supp, $username;
 	// Get domain data
@@ -468,7 +468,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax == 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled! ', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on system!', $obj);
 			} else {
 				$umax = $data;
 			}
@@ -478,7 +478,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				$umax = $data;
 				$r += $umax;
@@ -488,7 +488,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -500,7 +500,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -517,11 +517,11 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
-			$err .= tr('The <em>%s</em> service cannot be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			$err .= tr('The <em>%s</em> service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 			return;
 		} else if ($data > 0) {
 			if ($r + $data > $rmax) {
-				$err .= tr('The <em>%s</em> service cannot be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 			} else {
 				$r += $data;
 
@@ -542,7 +542,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax > 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -550,12 +550,12 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 
 			return;
 		} else if ($data == 0) {
-			$err .= tr('The <em>%s</em> service cannot be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			$err .= tr('The <em>%s</em> service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -564,7 +564,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 					$data_inc = $data - $umax;
 
 					if ($r + $data_inc > $rmax) {
-						$err .= tr('The <em>%s</em> service cannot be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+						$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 						return;
 					}
 
@@ -582,7 +582,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

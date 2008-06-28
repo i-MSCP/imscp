@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/domain_statistics.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('month_item', 'page');
@@ -58,7 +58,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         select
@@ -159,8 +159,7 @@ SQL_QUERY;
 		$sum_mail += $smtp_trf;
 		$sum_pop += $pop_trf;
 
-		global $cfg;
-		$date_formt = $cfg['DATE_FORMAT'];
+		$date_formt = Config::get('DATE_FORMAT');
 		$tpl->assign(array('DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
 				'WEB_TRAFFIC' => sizeit($web_trf),
 				'FTP_TRAFFIC' => sizeit($ftp_trf),
@@ -269,8 +268,7 @@ SQL_QUERY;
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Client/Domain Statistics'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -286,8 +284,8 @@ gen_dmn_traff_list($tpl, $sql, $current_month, $current_year, $_SESSION['user_id
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_statistics.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_statistics.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
 gen_logged_from($tpl);
 
@@ -311,7 +309,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

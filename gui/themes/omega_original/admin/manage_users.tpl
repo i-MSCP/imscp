@@ -6,31 +6,37 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script>
 <!--
+
 function action_status(url) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
+
 	location = url;
 }
 
 function action_delete(url, dmn_name) {
 	if (!confirm("{TR_MESSAGE_DELETE} (" + dmn_name + ")"))
 		return false;
+
 	location = url;
 }
 
 function sbmt(form, uaction) {
+
     form.details.value = uaction;
     form.submit();
 
     return false;
+
 }
 //-->
 </script>
+
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -39,28 +45,30 @@ function sbmt(form, uaction) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="left">
     <table width="100%" cellpadding="5" cellspacing="5">
         <!-- BDP: page_message -->
         <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="3" class="title"><span class="message">{MESSAGE}</span></td>
+            <td colspan="3" class="title"><font color="#FF0000">{MESSAGE}</font></td>
         </tr>
         <!-- EDP: page_message -->
 	    <tr>
 		    <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		    <td colspan="2" class="title">{TR_ADMINISTRATORS}</td>
 	    </tr>
-    </table></td>
-    <td width="27" align="right">&nbsp;</td>
+    </table>
+	</td>
+    <td width="27" align="right" >&nbsp;</td>
   </tr>
   <tr>
     <td valign="top"><!-- BDP: props_list -->
@@ -68,7 +76,7 @@ function sbmt(form, uaction) {
           <!-- BDP: admin_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="3" class="title"><span class="message">{ADMIN_MESSAGE}</span></td>
+            <td colspan="3" class="title"><font color="#FF0000">{ADMIN_MESSAGE}</font></td>
           </tr>
           <!-- EDP: admin_message -->
           <!-- BDP: admin_list -->
@@ -93,7 +101,7 @@ function sbmt(form, uaction) {
               -
               <!-- EDP: admin_delete_show -->
               <!-- BDP: admin_delete_link -->
-              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onclick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
               <!-- EDP: admin_delete_link -->
             </td>
           </tr>
@@ -111,12 +119,14 @@ function sbmt(form, uaction) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
+    <td align="left">
+<table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_RESELLERS}</td>
 	</tr>
-</table></td>
+</table>
+	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
   <tr>
@@ -124,7 +134,7 @@ function sbmt(form, uaction) {
       <!-- BDP: rsl_message -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td colspan="5" class="title"><span class="message">{RSL_MESSAGE}</span></td>
+        <td colspan="5" class="title"><font color="#FF0000">{RSL_MESSAGE}</font></td>
       </tr>
       <!-- EDP: rsl_message -->
       <!-- BDP: rsl_list -->
@@ -143,7 +153,7 @@ function sbmt(form, uaction) {
         <td class="{RSL_CLASS}" align="center">{RSL_CREATED_BY}</td>
         <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a></td>
         <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_RSL}" class="link">{TR_EDIT}</a></td>
-        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onclick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
+        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: rsl_item -->
       <!-- EDP: rsl_list -->
@@ -189,18 +199,19 @@ function sbmt(form, uaction) {
                         <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                         <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                     </select></td>
-              <td><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " /></td>
+              <td><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
+              </td>
             </tr>
           </table>
 		  </td>
           <td align="right"><input type="hidden" name="details" value="" />
-            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
+            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
 		  </td>
         </tr>
         <!-- BDP: usr_message -->
         <tr>
           <td width="25">&nbsp;</td>
-          <td colspan="7" class="title"><span class="message">{USR_MESSAGE}</span></td>
+          <td colspan="7" class="title"><font color="#FF0000">{USR_MESSAGE}</font></td>
         </tr>
         <!-- EDP: usr_message -->
         <!-- BDP: usr_list -->
@@ -210,27 +221,24 @@ function sbmt(form, uaction) {
           <td class="content3"><b>{TR_USR_USERNAME}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
-          <td colspan="5" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
+          <td colspan="4" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
         <!-- BDP: usr_item -->
         <tr>
           <td width="25" align="center">&nbsp;</td>
-          <td class="{USR_CLASS}" align="center"><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
+          <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
           <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a></td>
-          <!-- BDP: edit_option -->
-	  <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
-          <!-- EDP: edit_option -->
-          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT_USR}</a></td>
+          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT}</a></td>
           <td width="100" align="center" class="{USR_CLASS}">
 		    <!-- BDP: usr_delete_show -->
             -
             <!-- EDP: usr_delete_show -->
             <!-- BDP: usr_delete_link -->
-              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onclick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
             <!-- EDP: usr_delete_link -->
           </td>
         </tr>
@@ -266,9 +274,11 @@ function sbmt(form, uaction) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table></td>
+</table>
+				  </td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

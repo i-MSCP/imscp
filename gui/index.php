@@ -51,36 +51,32 @@ if (check_user_login()) {
 
 shall_user_wait();
 
-if (isset($_SESSION['user_theme'])) {
-	$theme_color = $_SESSION['user_theme'];
-} else {
-	$theme_color = $cfg['USER_INITIAL_THEME'];
-}
+$theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : Config::get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
 
-if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
+if (Config::get('MAINTENANCEMODE') && !isset($_GET['admin'])) {
 
-	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
+	$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/maintenancemode.tpl');
 
 	$tpl->assign(
 			array(
 				'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
-				'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
+				'THEME_COLOR_PATH' => Config::get('LOGIN_TEMPLATE_PATH'),
 				'THEME_CHARSET' => tr('encoding'),
-				'TR_MESSAGE' => nl2br($cfg['MAINTENANCEMODE_MESSAGE']),
+				'TR_MESSAGE' => nl2br(Config::get('MAINTENANCEMODE_MESSAGE')),
 				'TR_ADMINLOGIN' => tr('Administrator login')
 				)
 			);
 
 } else {
 
-	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/index.tpl');
+	$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/index.tpl');
 
 	$tpl->assign(
 			array(
 				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
-				'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
+				'THEME_COLOR_PATH' => Config::get('LOGIN_TEMPLATE_PATH'),
 				'THEME_CHARSET' => tr('encoding'),
 				'TR_LOGIN' => tr('Login'),
 				'TR_USERNAME' => tr('Username'),
@@ -95,7 +91,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
 }
 
-if ($cfg['LOSTPASSWORD']) {
+if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
 } else {
 	$tpl->assign('TR_LOSTPW', '');
@@ -106,7 +102,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

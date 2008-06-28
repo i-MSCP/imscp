@@ -23,13 +23,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/add_alias.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/add_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('user_entry', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -45,8 +45,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -81,7 +81,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // Begin function declaration lines
 
@@ -116,7 +116,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $cfg;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	$cr_user_id = $_POST['usraccounts'];
 	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
@@ -143,7 +143,7 @@ SQL_QUERY;
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($alias_name == $cfg['BASE_SERVER_VHOST']) {
+	} else if ($alias_name == Config::get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($forward != 'no') {
 		if (!chk_forward_url($forward)) {
@@ -178,8 +178,7 @@ SQL_QUERY;
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
-	global $cfg;
-	$status = $cfg['ITEM_ADD_STATUS'];
+	$status = Config::get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
 		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
@@ -193,9 +192,9 @@ SQL_QUERY;
 		$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 /*
-    if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+    if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
         $query = <<<SQL_QUERY
             INSERT INTO mail_users
                 (mail_acc,
@@ -217,7 +216,7 @@ SQL_QUERY;
                 $cr_user_id,
                 'alias_forward',
                 $als_id,
-                $cfg['ITEM_ADD_STATUS'],
+                Config::get('ITEM_ADD_STATUS'),
                 '_no_'));
 
         // create default forwarder for postmaster@alias.tld to the account's reseller
@@ -227,7 +226,7 @@ SQL_QUERY;
                 $cr_user_id,
                 'alias_forward',
                 $als_id,
-                $cfg['ITEM_ADD_STATUS'],
+                Config::get('ITEM_ADD_STATUS'),
                 '_no_'));
 
         // create default forwarder for abuse@alias.tld to the account's reseller
@@ -237,7 +236,7 @@ SQL_QUERY;
                 $cr_user_id,
                 'alias_forward',
                 $als_id,
-                $cfg['ITEM_ADD_STATUS'],
+                Config::get('ITEM_ADD_STATUS'),
                 '_no_'));
     }
 */
@@ -251,7 +250,7 @@ SQL_QUERY;
 } // End of add_domain_alias();
 
 function gen_users_list(&$tpl, $reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	global $cr_user_id;
 
 	$query = <<<SQL_QUERY

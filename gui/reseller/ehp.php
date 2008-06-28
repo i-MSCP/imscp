@@ -23,11 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/ehp.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/ehp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 /*
  *
@@ -36,8 +36,8 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
  */
 global $hpid;
 // Show main menu
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_hp.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_hp.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_hp.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_hp.tpl');
 
 gen_logged_from($tpl);
 
@@ -76,7 +76,7 @@ $tpl->assign(
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPLE' => tr('(e.g. EUR)'),
+			'TR_EXAMPEL' => tr('(e.g. EUR)'),
 			'TR_EDIT_HOSTING_PLAN' => tr('Update plan'),
 			'TR_UPDATE_PLAN' => tr('Update plan')
 			)
@@ -107,7 +107,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // *******************************************************
 // * Function definitions
@@ -151,10 +151,9 @@ function restore_form(&$tpl, &$sql){
 
 // Generate load data from sql for requested hosting plan
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
-	global $cfg;
 	$_SESSION['hpid'] = $hpid;
 
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = <<<SQL_QUERY
         select
             *
@@ -309,11 +308,14 @@ function check_data_iscorrect(&$tpl) {
 		set_page_message($ahp_error);
 		return false;
 	}
+
+	return TRUE;
 } // End of check_data_iscorrect()
 
 // Add new host plan to DB
 function save_data_to_db() {
-	global $sql, $tpl;
+	$sql = Database::getInstance();
+	global $tpl;
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;

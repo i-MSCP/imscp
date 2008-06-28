@@ -23,15 +23,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/server_statistic.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/server_statistic.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('month_list', 'page');
 $tpl->define_dynamic('year_list', 'page');
 $tpl->define_dynamic('day_list', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -56,7 +55,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 }
 
 function get_server_trafic($from, $to) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         select
@@ -89,7 +88,8 @@ SQL_QUERY;
 }
 
 function generate_page (&$tpl) {
-	global $sql, $month, $year;
+	$sql = Database::getInstance();
+	global $month, $year;
 
 	if ($month == date('m') && $year == date('Y')) {
 		$curday = date('j');
@@ -201,8 +201,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_statistics.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
 gen_select_lists($tpl, $month, $year);
 
@@ -234,7 +234,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

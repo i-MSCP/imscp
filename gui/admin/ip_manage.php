@@ -24,15 +24,14 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ip_manage.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('ip_row', 'page');
 $tpl->define_dynamic('ip_delete_show', 'ip_row');
 $tpl->define_dynamic('ip_delete_link', 'ip_row');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -126,7 +125,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: adds new IP4 address: $ip_number!");
+			write_log("$user_logged: add new IP4 address: $ip_number!");
 
 			$sucess = true;
 		}
@@ -195,7 +194,7 @@ function check_user_data () {
 }
 
 function IP_exists() {
-	global $sql;
+	$sql = Database::getInstance();
 
 	global $ip_number_1, $ip_number_2, $ip_number_3, $ip_number_4;
 
@@ -224,8 +223,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 add_ip($tpl, $sql);
 
@@ -250,7 +249,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

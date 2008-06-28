@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/view_ticket.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/view_ticket.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
@@ -82,8 +82,7 @@ SQL_QUERY;
 
 		get_ticket_from($tpl, $sql, $ticket_id);
 
-		global $cfg;
-		$date_formt = $cfg['DATE_FORMAT'];
+		$date_formt = Config::get('DATE_FORMAT');
 		$tpl->assign(array('TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
@@ -122,8 +121,7 @@ SQL_QUERY;
 		$ticket_date = $rs->fields['ticket_date'];
 		$ticket_message = clean_input($rs->fields['ticket_message']);
 
-		global $cfg;
-		$date_formt = $cfg['DATE_FORMAT'];
+		$date_formt = Config::get('DATE_FORMAT');
 		$tpl->assign(array('DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200) / 7), "<br>\n", 1),
 				// 'ID' => $rs -> fields['ticket_reply'],
@@ -177,8 +175,7 @@ SQL_QUERY;
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -329,7 +326,7 @@ SQL_QUERY;
 
 // dynamic page data.
 
-if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 	header("Location: index.php");
 	die();
 }
@@ -360,8 +357,8 @@ if (isset($_GET['ticket_id'])) {
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_support_system.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_support_system.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_support_system.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_support_system.tpl');
 
 gen_logged_from($tpl);
 
@@ -381,7 +378,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

@@ -111,7 +111,7 @@ function update_logo() {
 }
 
 function update_user_logo($file_name, $user_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         update
@@ -126,7 +126,7 @@ SQL_QUERY;
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/layout.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/layout.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('def_layout', 'page');
@@ -135,7 +135,7 @@ save_layout($sql);
 
 update_logo();
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 gen_def_layout($tpl, $_SESSION['user_theme']);
 
@@ -153,8 +153,8 @@ $tpl->assign(
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
 	array('TR_LAYOUT_SETTINGS' => tr('Layout settings'),
@@ -178,7 +178,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

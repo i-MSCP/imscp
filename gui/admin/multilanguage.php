@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/multilanguage.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/multilanguage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lang_row', 'page');
 $tpl->define_dynamic('lang_delete_link', 'lang_row');
@@ -31,7 +31,7 @@ $tpl->define_dynamic('lang_delete_show', 'lang_row');
 $tpl->define_dynamic('lang_radio', 'lang_row');
 $tpl->define_dynamic('lang_def', 'lang_row');
 
-$theme = $cfg['USER_INITIAL_THEME'];
+$theme = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -43,7 +43,8 @@ $tpl->assign(
 	);
 
 function update_def_lang() {
-	global $sql, $theme;
+	$sql = Database::getInstance();
+	global $theme;
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_language') {
 		if (isset($_POST['default_language']) && !empty($_POST['default_language'])) {
@@ -100,7 +101,7 @@ SQL_QUERY;
 }
 
 function install_lang() {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_language') {
 		// add lang pack now !
@@ -197,8 +198,6 @@ function show_lang(&$tpl, &$sql) {
 
 	$nlang = count($tables);
 
-	global $cfg;
-
 	$row = 1;
 
 	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
@@ -260,7 +259,7 @@ SQL_QUERY;
 			$tpl->parse('LANG_RADIO', 'lang_radio');
 		}
 
-		if ($cfg['USER_INITIAL_LANG'] == 'lang_' . $dat[1] || $usr_def_lng[1] == $dat[1]) {
+		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1] || $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array('TR_UNINSTALL' => tr('uninstall'),
 					'LANG_DELETE_LINK' => '',
@@ -297,8 +296,8 @@ SQL_QUERY;
 
 update_def_lang();
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 install_lang();
 
@@ -327,7 +326,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

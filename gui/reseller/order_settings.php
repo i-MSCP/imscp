@@ -18,12 +18,14 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+define('OVERRIDE_PURIFIER', true);
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/order_settings.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/order_settings.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 // Table with orders
 $tpl->define_dynamic('purchase_header', 'page');
@@ -31,7 +33,7 @@ $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 $tpl->define_dynamic('page_message', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order settings'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -41,8 +43,6 @@ $tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/O
 // *
 // *
 function save_haf(&$tpl, &$sql) {
-	global $cfg;
-
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
 	$footer = $_POST['footer'];
@@ -95,8 +95,8 @@ if (isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer'
 
 gen_purchase_haf($tpl, $sql, $_SESSION['user_id'], true);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_orders.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_orders.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_orders.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tpl');
 
 gen_logged_from($tpl);
 
@@ -105,7 +105,7 @@ $tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 		'TR_HEADER' => tr('Header'),
 		'TR_PREVIEW' => tr('Preview'),
 		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
-		'TR_IMPLEMENT_URL' => 'http://' . $cfg['BASE_SERVER_VHOST'] . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
+		'TR_IMPLEMENT_URL' => 'http://' . Config::get('BASE_SERVER_VHOST') . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
 		'TR_FOOTER' => tr('Footer')));
 
 gen_page_message($tpl);
@@ -113,9 +113,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
-
 ?>

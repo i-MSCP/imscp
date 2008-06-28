@@ -24,7 +24,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/index.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -178,7 +178,7 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
 }
 // Calculate the usege traffic/ return array (persent/value)
 function make_traff_usege($domain_id) {
-    global $sql;
+    $sql = Database::getInstance();
 
     $res = exec_query($sql, "select domain_id from domain where domain_admin_id=?", array($domain_id));
     $dom_id = $res->FetchRow();
@@ -237,7 +237,7 @@ SQL_QUERY;
  *
  */
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
     $user_id = $_SESSION['user_id'];
@@ -284,7 +284,8 @@ list($sub_cnt,
     $ftp_acc_cnt,
     $sqld_acc_cnt,
     $sqlu_acc_cnt) = get_domain_running_props_cnt($sql, $dmn_id);
-
+// ko ima jump from other user interface neka esik i optica da ostanat tezi na
+// ska4ashtijat user
 /*if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
     list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {
@@ -343,8 +344,8 @@ $tpl->assign(
  *
  */
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -385,7 +386,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

@@ -22,16 +22,16 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (strtolower($cfg['HOSTING_PLANS_LEVEL']) != 'admin') {
-	header("Location: index.php");
+if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+	header('Location: index.php');
 	die();
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ehp.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ehp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 /*
  *
@@ -40,8 +40,8 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
  */
 global $hpid;
 // Show main menu
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_hp.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_hp.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hp.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_hp.tpl');
 
 $tpl->assign(
 		array(
@@ -70,13 +70,14 @@ $tpl->assign(
 			'TR_YES' => tr('yes'),
 			'TR_NO' => tr('no'),
 			'TR_BILLING_PROPS' => tr('Billing Settings'),
+			'TR_PRICE_STYLE' => tr('Price Style'),
 			'TR_PRICE' => tr('Price'),
 			'TR_SETUP_FEE' => tr('Setup fee'),
 			'TR_VALUE' => tr('Currency'),
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPLE' => tr('(e.g. EUR)'),
+			'TR_EXAMPEL' => tr('(e.g. EUR)'),
 			'TR_UPDATE_PLAN' => tr('Update plan')));
 
 /*
@@ -104,7 +105,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // *******************************************************
 // * Function definitions
@@ -148,7 +149,6 @@ function restore_form(&$tpl) {
 
 // Generate load data from sql for requested hosting plan
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
-	global $cfg;
 	$_SESSION['hpid'] = $hpid;
 
 	$query = <<<SQL_QUERY
@@ -292,7 +292,7 @@ function check_data_iscorrect(&$tpl) {
 
 // Add new host plan to DB
 function save_data_to_db() {
-	global $sql;
+	$sql = Database::getInstance();
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;

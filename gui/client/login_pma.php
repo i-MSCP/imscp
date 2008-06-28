@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -47,9 +47,9 @@ $_SESSION['PMA_single_signon_password'] = $rs->fields['sqlu_pass'];
 $_SESSION['PMA_single_signon_host'] = "localhost"; // pma >= 2.11
 session_write_close();
 
-user_goto($cfg['PMA_PATH']);
+user_goto(Config::get('PMA_PATH'));
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

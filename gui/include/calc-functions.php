@@ -3,7 +3,7 @@
  *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
  *
@@ -138,11 +138,9 @@ function check_user_pass($crdata, $data ) {
 
 function _passgen() {
 
-    global $cfg;
-
     $pw = '';
 
-    for($i = 0; $i <= $cfg['PASSWD_CHARS']; $i++) {
+    for($i = 0; $i <= Config::get('PASSWD_CHARS'); $i++) {
 
         $z = 0;
 

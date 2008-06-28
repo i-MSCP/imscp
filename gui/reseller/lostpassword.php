@@ -1,5 +1,6 @@
 <?php
 /**
+/**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
@@ -23,12 +24,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/lostpassword.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/lostpassword.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('custom_buttons', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 $user_id = $_SESSION['user_id'];
 
 $selected_on = '';
@@ -79,8 +79,8 @@ $tpl->assign(
 			)
 		);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -105,8 +105,7 @@ $tpl->assign(
 			'TR_MESSAGE' => tr('Message'),
 			'TR_SENDER_EMAIL' => tr('Senders email'),
 			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_APPLY_CHANGES' => tr('Apply changes'),
-			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel')
+			'TR_APPLY_CHANGES' => tr('Apply changes')
 			)
 		);
 
@@ -115,7 +114,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

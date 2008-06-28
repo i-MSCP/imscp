@@ -3,7 +3,7 @@
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
  *
@@ -58,25 +58,25 @@ $rs = exec_query($sql, $query, array($domain_id));
 
 $location = 'admin';
 
-if ($rs -> fields['domain_status'] == $cfg['ITEM_OK_STATUS'])
+if ($rs -> fields['domain_status'] == Config::get('ITEM_OK_STATUS'))
 {
 
 		//disable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
-		$action = "disable";
+		$action = 'disable';
 		change_domain_status(&$sql, $domain_id, $rs -> fields['domain_name'], $action, $location);
 }
 
-else if ($rs -> fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS'])
+else if ($rs -> fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS'))
 {
 
 	//enable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
-	$action = "enable";
+	$action = 'enable';
 	change_domain_status(&$sql, $domain_id, $rs -> fields['domain_name'], $action, $location);
 
 }
 else {
 
-	header( "Location: manage_users.php" );
+	header( 'Location: manage_users.php' );
 
     die();
 }

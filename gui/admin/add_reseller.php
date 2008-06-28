@@ -23,14 +23,15 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/add_reseller.tpl');
+
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/add_reseller.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('rsl_ip_message', 'page');
 $tpl->define_dynamic('rsl_ip_list', 'page');
 $tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -123,6 +124,7 @@ SQL_QUERY;
 		}
 
 		$tpl->parse('RSL_IP_LIST', 'rsl_ip_list');
+
 		$tpl->assign('RSL_IP_MESSAGE', '');
 	}
 
@@ -381,7 +383,8 @@ SQL_QUERY;
 }
 
 function check_user_data() {
-	global $reseller_ips, $sql;
+	global $reseller_ips;
+	$sql = Database::getInstance();
 
 	$username = clean_input($_POST['username']);
 
@@ -480,8 +483,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 $reseller_ips = get_server_ip($tpl, $sql);
 
@@ -551,8 +554,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
-	dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

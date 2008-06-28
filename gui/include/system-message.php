@@ -19,12 +19,10 @@
  */
 
 function system_message($msg, $backButtonDestination = "") {
-	global $cfg;
-
 	if (isset($_SESSION['user_theme'])) {
 		$theme_color = $_SESSION['user_theme'];
 	} else {
-		$theme_color = $cfg['USER_INITIAL_THEME'];
+		$theme_color = Config::get('USER_INITIAL_THEME');
 	}
 
 	if (empty($backButtonDestination)) {
@@ -34,11 +32,11 @@ function system_message($msg, $backButtonDestination = "") {
 	$tpl = new pTemplate();
 
     // If we are on the login page, path will be like this
-    $template = $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
+    $template = Config::get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
 
     if (!is_file($template)) {
         // But if we're inside the panel it will be like this
-        $template = '../'.$cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
+        $template = '../' . Config::get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
     }
 	
     if (!is_file($template)) {

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
@@ -19,18 +19,16 @@
  */
 
 function init_login() {
-	global $cfg;
-
 	// just make sure to expire counters in case BRUTEFORCE is turned off
-	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
+	unblock(Config::get('BRUTEFORCE_BLOCK_TIME'));
 
-	if ($cfg['BRUTEFORCE']) {
+	if (Config::get('BRUTEFORCE')) {
 		is_ipaddr_blocked(null, 'bruteforce', true);
 	}
 }
 
 function register_user($uname, $upass) {
-    global $sql, $cfg;
+    $sql = Database::getInstance();
 
     check_ipaddr();
 
@@ -42,7 +40,7 @@ function register_user($uname, $upass) {
     $udata = array();
     $udata = get_userdata($uname);
 
-  	if ($cfg['MAINTENANCEMODE'] && $udata['admin_type'] != 'admin') {
+  	if (Config::get('MAINTENANCEMODE') && $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
   		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
@@ -58,7 +56,7 @@ function register_user($uname, $upass) {
 	    }
 
 	    if (!is_userdomain_ok($uname)) {
-	        write_log($uname." Domain status is not OK - user cannot login");
+	        write_log($uname." Domain status is not OK - user can not login");
 	        system_message(tr("%s's account status is not ok!", $uname));
 	        return false;
 	    }
@@ -88,17 +86,17 @@ SQL_QUERY;
 	    write_log($uname." logged in.");
 	    return true;
 	} else {
-		$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
-
-		write_log($uname." entered incorrect password.");
-		system_message(tr("You entered an incorrect password."), $backButtonDestination);
+		$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
+	
+		write_log($uname . ' entered incorrect password.');
+		system_message(tr('You entered an incorrect password.'), $backButtonDestination);
   		return false;
 	}
 
 }
 
 function check_user_login() {
-    global $cfg, $sql;
+    $sql = Database::getInstance();
 
     $sess_id = session_id();
     /* kill timed out sessions */
@@ -139,7 +137,7 @@ SQL_QUERY;
         return false;
     }
 
-    if ($cfg['MAINTENANCEMODE'] && $user_type != 'admin') {
+    if (Config::get('MAINTENANCEMODE') && $user_type != 'admin') {
         unset_user_login_data(true);
         write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
         header("Location: /index.php");
@@ -194,7 +192,6 @@ function check_login($fName = null, $checkReferer = true) {
             if (isset($info['host']) && !empty($info['host'])) {
                 if ($info['host'] != $_SERVER['HTTP_HOST'] || $info['host'] != $_SERVER['SERVER_NAME']) {
                     set_page_message(tr('Request from foreign host was blocked!'));
-                if(!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']), strlen($_SERVER['REDIRECT_URL'])) === $_SERVER['REDIRECT_URL']))
                     redirect_to_level_page();
                 }
             }
@@ -204,7 +201,7 @@ function check_login($fName = null, $checkReferer = true) {
 }
 
 function change_user_interface($from_id, $to_id) {
-    global $sql, $cfg;
+    $sql = Database::getInstance();
 
     $index = null;
     while (1) { //used to easily exit
@@ -293,7 +290,7 @@ function change_user_interface($from_id, $to_id) {
 
         exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(sprintf("%s changes into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
+        write_log(sprintf("%s changed into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
         break;
     }
 
@@ -301,7 +298,7 @@ function change_user_interface($from_id, $to_id) {
 }
 
 function unset_user_login_data ($ignorePreserve = false) {
-	global $cfg, $sql;
+	$sql = Database::getInstance();
 
 	if (isset($_SESSION['user_logged'])) {
 

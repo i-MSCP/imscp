@@ -103,17 +103,14 @@ class vfs {
 	 * @return vfs
 	 */
 	function __construct($domain, &$db) {
-		global $cfg;
 		$this->_domain = $domain;
 		$this->_db = &$db;
 
 		if (!defined("VFS_TMP_DIR")) {
-			define("VFS_TMP_DIR", $cfg['GUI_ROOT_DIR'] . '/phptmp');
+			define("VFS_TMP_DIR", Config::get('GUI_ROOT_DIR') . '/phptmp');
 		}
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
-		$_ENV['TMPDIR'] = VFS_TMP_DIR;
 		putenv("PHP_TMPDIR=" . $_ENV['PHP_TMPDIR']);
-		putenv("TMPDIR=" . $_ENV['PHP_TMPDIR']);
 	}
 
 	/**
@@ -142,7 +139,6 @@ class vfs {
 	 * @return boolean Returns TRUE on succes or FALSE on failure.
 	 */
 	function _createTmpUser() {
-		global $cfg;
 		// Get domain data
 		$query = 'select domain_uid, domain_gid
 				  from   domain
@@ -163,7 +159,7 @@ class vfs {
 	            (?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
-				$cfg['CMD_SHELL'], $cfg['FTP_HOMEDIR'] . '/' . $this->_domain
+				Config::get('CMD_SHELL'), Config::get('FTP_HOMEDIR') . '/' . $this->_domain
 				));
 		if (!$rs) {
 			return false;
@@ -209,10 +205,13 @@ SQL_QUERY;
 		}
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
-		$this->_handle = @ftp_connect('localhost');
+		$this->_handle = @ftp_ssl_connect('localhost');
 		if (!is_resource($this->_handle)) {
-			$this->close();
-			return false;
+			$this->_handle = @ftp_connect('localhost');
+			if (!is_resource($this->_handle)) {
+				$this->close();
+				return false;
+			}
 		}
 		// Perform actual login
 		$response = @ftp_login($this->_handle, $this->_user, $this->_passwd);

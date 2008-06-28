@@ -24,12 +24,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/orders_detailst.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/orders_detailst.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('page_message', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order details'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -58,8 +58,7 @@ SQL_QUERY;
 	}
 	$plan_id = $rs->fields['plan_id'];
 
-	global $cfg;
-	$date_formt = $cfg['DATE_FORMAT'];
+	$date_formt = Config::get('DATE_FORMAT');
 	$date = date($date_formt, $rs->fields['date']);
 
 	if (isset($_POST['uaction'])) {
@@ -196,8 +195,8 @@ if (isset($_POST['uaction'])) {
 
 gen_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_orders.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_orders.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_orders.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tpl');
 
 gen_logged_from($tpl);
 
@@ -231,7 +230,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

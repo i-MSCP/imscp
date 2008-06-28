@@ -25,7 +25,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/add_ftp_acc.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/add_ftp_acc.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -80,8 +80,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 }
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
-    global $cfg;
-    $ok_status = $cfg['ITEM_OK_STATUS'];
+    $ok_status = Config::get('ITEM_OK_STATUS');
 
     $query = <<<SQL_QUERY
         SELECT
@@ -144,9 +143,7 @@ SQL_QUERY;
 }
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
-    global $cfg;
-
-    $ok_status = $cfg['ITEM_OK_STATUS'];
+    $ok_status = Config::get('ITEM_OK_STATUS');
     $query = <<<SQL_QUERY
         SELECT
             subdomain_id AS sub_id, subdomain_name AS sub_name
@@ -210,7 +207,6 @@ SQL_QUERY;
 }
 
 function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
-    global $cfg;
     global $last_gid;
     global $max_gid;
 
@@ -298,7 +294,6 @@ SQL_QUERY;
 }
 
 function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
-    global $cfg;
     global $max_uid;
 
     $query = <<<SQL_QUERY
@@ -343,8 +338,6 @@ SQL_QUERY;
 }
 
 function add_ftp_user(&$sql, $dmn_name) {
-    global $cfg;
-
     $username = strtolower(clean_input($_POST['username']));
     $res_uname = preg_match("/\./", $username, $match);
     if ($res_uname == 1) {
@@ -361,19 +354,19 @@ function add_ftp_user(&$sql, $dmn_name) {
     switch ($_POST['dmn_type']) {
         // Default moint point for a domain
         case 'dmn':
-            $ftp_user = $username . $cfg['FTP_USERNAME_SEPARATOR'] . $dmn_name;
-            $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name";
+            $ftp_user = $username . Config::get('FTP_USERNAME_SEPARATOR') . $dmn_name;
+            $ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name";
             break;
         // Default mount point for an alias domain
         case 'als':
-            $ftp_user = $username . $cfg['FTP_USERNAME_SEPARATOR'] . $_POST['als_id'];
+            $ftp_user = $username . Config::get('FTP_USERNAME_SEPARATOR') . $_POST['als_id'];
             $alias_mount_point = get_alias_mount_point($sql, $_POST['als_id']);
-            $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name" . $alias_mount_point;
+            $ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name" . $alias_mount_point;
             break;
         // Default mount point for a subdomain
         case 'sub':
-            $ftp_user = $username . $cfg['FTP_USERNAME_SEPARATOR'] . $_POST['sub_id'] . '.' . $dmn_name;
-            $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name/" . clean_input($_POST['sub_id']);
+            $ftp_user = $username . Config::get('FTP_USERNAME_SEPARATOR') . $_POST['sub_id'] . '.' . $dmn_name;
+            $ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name/" . clean_input($_POST['sub_id']);
             break;
         // Unknown domain type (?)
         default:
@@ -392,7 +385,7 @@ function add_ftp_user(&$sql, $dmn_name) {
             set_page_message(tr('Incorrect mount point length or syntax'));
             return;
         }
-        $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name/" . $ftp_vhome;
+        $ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name/" . $ftp_vhome;
         // Strip possible double-slashes
         $ftp_home = str_replace('//', '/', $ftp_home);
         // Check for $ftp_vhome existance
@@ -411,7 +404,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
     if ($ftp_uid == -1) return;
 
-    $ftp_shell = $cfg['CMD_SHELL'];
+    $ftp_shell = Config::get('CMD_SHELL');
     $ftp_passwd = crypt_user_ftp_pass($_POST['pass']);
 
     $query = <<<SQL_QUERY
@@ -422,7 +415,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
-    write_log($_SESSION['user_logged'] . ": adds new FTP account: $ftp_user");
+    write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user");
     set_page_message(tr('FTP account added!'));
     header('Location: ftp_accounts.php');
     exit(0);
@@ -450,12 +443,12 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
     }
 
     if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
-        set_page_message(tr('Subdomain list is empty! You cannot add FTP accounts there!'));
+        set_page_message(tr('Subdomain list is empty! You can not add FTP accounts there!'));
         return;
     }
 
     if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
-        set_page_message(tr('Alias list is empty! You cannot add FTP accounts there!'));
+        set_page_message(tr('Alias list is empty! You can not add FTP accounts there!'));
         return;
     }
 
@@ -545,8 +538,7 @@ function gen_page_js(&$tpl) {
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array(
 				'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Add FTP User'),
@@ -561,14 +553,12 @@ gen_page_ftp_acc_props($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_ftp_accounts.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_ftp_accounts.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_ftp_accounts.tpl');
 
 gen_logged_from($tpl);
 
 check_permissions($tpl);
-
-global $cfg;
 
 $tpl->assign(array(
 				'TR_ADD_FTP_USER' => tr('Add FTP user'),
@@ -581,13 +571,13 @@ $tpl->assign(array(
 				'TR_USE_OTHER_DIR' => tr('Use other dir'),
 				'TR_ADD' => tr('Add'),
 				'CHOOSE_DIR' => tr('Choose dir'),
-				'FTP_SEPARATOR' => $cfg['FTP_USERNAME_SEPARATOR']
+				'FTP_SEPARATOR' => Config::get('FTP_USERNAME_SEPARATOR')
 			));
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 ?>

@@ -23,12 +23,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/rootkit_log.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/rootkit_log.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('service_status', 'page');
 $tpl->define_dynamic('props_list', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -46,11 +46,11 @@ $blocksCount = 0;
 $config_entries = array('RKHUNTER_LOG', 'CHKROOTKIT_LOG', 'OTHER_ROOTKIT_LOG');
 
 foreach ($config_entries as $config_entry) {
-	if (empty($config_entry) || !isset($cfg[$config_entry]) || empty($cfg[$config_entry])) {
+	if (empty($config_entry) || !Config::exists($config_entry) || !Config::get($config_entry)) {
 		continue;
 	}
 
-	$filename = $cfg[$config_entry];
+	$filename = Config::get($config_entry);
 	$contents = '';
 
 	if (file_exists($filename) && is_readable($filename)) {
@@ -126,8 +126,8 @@ foreach ($config_entries as $config_entry) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
 		array(
@@ -140,7 +140,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

@@ -2,44 +2,47 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version		SVN: $ID$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
- *   This program is free software; you can redistribute it and/or modify it under
- *   the terms of the MPL General Public License as published by the Free Software
- *   Foundation; either version 1.1 of the License, or (at your option) any later
- *   version.
- *   You should have received a copy of the MPL Mozilla Public License along with
- *   this program; if not, write to the Open Source Initiative (OSI)
- *   http://opensource.org | osi@opensource.org
+ * @copyright 2001-2006 by moleSoftware GmbH
+ * @copyright 2006-2008 by ispCP | http://isp-control.net
+ * @version SVN: $ID$
+ * @link http://isp-control.net
+ * @author ispCP Team
+ * @license This program is free software; you can redistribute it and/or modify it under
+ *    the terms of the MPL General Public License as published by the Free Software
+ *    Foundation; either version 1.1 of the License, or (at your option) any later
+ *    version.
+ *    You should have received a copy of the MPL Mozilla Public License along with
+ *    this program; if not, write to the Open Source Initiative (OSI)
+ *    http://opensource.org | osi@opensource.org
  */
 
-require (INCLUDEPATH . '/adodb/adodb.inc.php');
-require (INCLUDEPATH . '/adodb/adodb-pager.inc.php');
+//require (INCLUDEPATH . '/adodb/adodb.inc.php');
+//require (INCLUDEPATH . '/adodb/adodb-pager.inc.php');
+require_once(INCLUDEPATH . '/class.database.php');
 
-$cfg['DB_TYPE'] = $cfg['DATABASE_TYPE'];
-$cfg['DB_HOST'] = $cfg['DATABASE_HOST'];
-$cfg['DB_USER'] = $cfg['DATABASE_USER'];
-$cfg['DB_PASS'] = decrypt_db_password($cfg['DATABASE_PASSWORD']);
-$cfg['DB_NAME'] = $cfg['DATABASE_NAME'];
+Config::set('DB_TYPE', Config::get('DATABASE_TYPE'));
+Config::set('DB_HOST', Config::get('DATABASE_HOST'));
+Config::set('DB_USER', Config::get('DATABASE_USER'));
+//$cfg['DB_PASS'] = $cfg['DATABASE_PASSWORD'];
+Config::set('DB_PASS', decrypt_db_password(Config::get('DATABASE_PASSWORD')));
+Config::set('DB_NAME', Config::get('DATABASE_NAME'));
 
-$sql = &ADONewConnection($cfg['DB_TYPE']);
+//$sql = &ADONewConnection(Config::get('DB_TYPE'));
 
-@$sql->Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) or
-	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
+//@$sql->Connect(Config::get('DB_HOST'), Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_NAME')) or
+//	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
+
+@$sql = Database::connect(Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_TYPE'), Config::get('DB_HOST'), Config::get('DB_NAME'))
+	or system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
 
 // switch optionally to utf8 based communication with the database
-if (isset($cfg['DATABASE_UTF8']) && $cfg['DATABASE_UTF8'] == 'yes') {
+if (Config::exists('DATABASE_UTF8') && Config::get('DATABASE_UTF8') == 'yes') {
 	@$sql->Execute("SET NAMES 'utf8'");
 }
 
 // No longer needed - unset for safety
-unset($cfg['DB_USER']);
-unset($cfg['DB_PASS']);
+Config::set('DB_USER', null);
+Config::set('DB_PASS', null);
 
 function execute_query (&$sql, $query) {
 	$rs = $sql->Execute($query);
@@ -52,14 +55,20 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 	$rs = $sql->Execute($query, $data);
 
 	if (!$rs && $failDie) {
-		system_message($sql->ErrorMsg());
+//		var_dump($query);
+//		var_dump($data);
+		if($query instanceof PDOStatement)
+			$msg = $query->errorInfo();
+		else
+			$msg = $sql->errorInfo();
+		system_message(isset($msg[2]) ? $msg[2] : $msg);
 	}
 
 	return $rs;
 }
 
 function quoteIdentifier($identifier) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
 

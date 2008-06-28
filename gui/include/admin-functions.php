@@ -57,7 +57,7 @@ function encode($in_str, $charset = 'UTF-8') {
 }
 
 function gen_admin_mainmenu(&$tpl, $menu_file) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -69,8 +69,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -78,8 +78,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -156,11 +156,11 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
-	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
+	if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 
@@ -168,7 +168,7 @@ SQL_QUERY;
 }
 
 function gen_admin_menu(&$tpl, $menu_file) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -208,16 +208,16 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_CUSTOM_MENUS' => tr('Custom menus'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-			'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports'),
-			'VERSION' => $cfg['Version'],
-			'BUILDDATE' => $cfg['BuildDate'],
-			'CODENAME' => $cfg['CodeName']
+			'VERSION' => Config::get('Version'),
+			'BUILDDATE' => Config::get('BuildDate'),
+			'CODENAME' => Config::get('CodeName')
 			)
 		);
 	$query = <<<SQL_QUERY
@@ -260,11 +260,11 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
-	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
+	if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 
@@ -416,8 +416,7 @@ SQL_QUERY;
 			if ($admin_created == 0) {
 				$admin_created = tr('N/A');
 			} else {
-				global $cfg;
-				$date_formt = $cfg['DATE_FORMAT'];
+				$date_formt = Config::get('DATE_FORMAT');
 				$admin_created = date($date_formt, $admin_created);
 			}
 
@@ -529,8 +528,7 @@ SQL_QUERY;
 			if ($reseller_created == 0) {
 				$reseller_created = tr('N/A');
 			} else {
-				global $cfg;
-				$date_formt = $cfg['DATE_FORMAT'];
+				$date_formt = Config::get('DATE_FORMAT');
 				$reseller_created = date($date_formt, $reseller_created);
 			}
 
@@ -554,11 +552,9 @@ SQL_QUERY;
 }
 
 function gen_user_list(&$tpl, &$sql) {
-	global $cfg;
-
 	$start_index = 0;
 
-	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
+	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 	// Search requet generated ?!
@@ -722,21 +718,18 @@ SQL_QUERY;
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
 						'USR_USERNAME' => $rs->fields['domain_name'],
-						'TR_EDIT_DOMAIN' => tr('Edit domain'),
-						'TR_EDIT_USR' => tr('Edit user'),
 						)
 					);
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 			}
 
-			global $cfg;
-			if ($rs->fields['domain_status'] == $cfg['ITEM_OK_STATUS']) {
+			if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 				$status_icon = "ok.png";
 				$status_url = "change_status.php?domain_id=" . $rs->fields['domain_id'];
-			} else if ($rs->fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS']) {
+			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
 				$status_url = "change_status.php?domain_id=" . $rs->fields['domain_id'];
-			} else if ($rs->fields['domain_status'] == $cfg['ITEM_ADD_STATUS'] || $rs->fields['domain_status'] == $cfg['ITEM_RESTORE_STATUS'] || $rs->fields['domain_status'] == $cfg['ITEM_CHANGE_STATUS'] || $rs->fields['domain_status'] == $cfg['ITEM_TOENABLE_STATUS'] || $rs->fields['domain_status'] == $cfg['ITEM_TODISABLED_STATUS'] || $rs->fields['domain_status'] == $cfg['ITEM_DELETE_STATUS']) {
+			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 				$status_url = "#";
 			} else {
@@ -757,8 +750,7 @@ SQL_QUERY;
 			if ($domain_created == 0) {
 				$domain_created = tr('N/A');
 			} else {
-				global $cfg;
-				$date_formt = $cfg['DATE_FORMAT'];
+				$date_formt = Config::get('DATE_FORMAT');
 				$domain_created = date($date_formt, $domain_created);
 			}
 
@@ -769,7 +761,7 @@ SQL_QUERY;
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "edit_admin.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?', true),
+					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?'),
 					)
 				);
 
@@ -795,7 +787,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 			'TR_USERS' => tr('Users'),
 			'TR_SEARCH' => tr('Search'),
 			'TR_CREATED_ON' => tr('Creation date'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
 			'TR_EDIT' => tr("Edit")
 			)
 		);
@@ -808,7 +800,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 }
 
 function generate_reseller_props ($reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -855,7 +847,7 @@ SQL_QUERY;
 }
 
 function generate_reseller_users_props ($reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -950,57 +942,49 @@ SQL_QUERY;
 		$rdmn_current += 1;
 
 		if ($sub_max != -1) {
-			if ($sub_max == 0)
-				$rsub_uf = '_on_';
+			if ($sub_max == 0) $rsub_uf = '_on_';
 
 			$rsub_current += $sub_current;
 			$rsub_max += $sub_max;
 		}
 
 		if ($als_max != -1) {
-			if ($als_max == 0)
-				$rals_uf = '_on_';
+			if ($als_max == 0) $rals_uf = '_on_';
 
 			$rals_current += $als_current;
 			$rals_max += $als_max;
 		}
 
-		if ($mail_max == 0)
-			$rmail_uf = '_on_';
+		if ($mail_max == 0) $rmail_uf = '_on_';
 
 		$rmail_current += $mail_current;
 		$rmail_max += $mail_max;
 
-		if ($ftp_max == 0)
-			$rftp_uf = '_on_';
+		if ($ftp_max == 0) $rftp_uf = '_on_';
 
 		$rftp_current += $ftp_current;
 		$rftp_max += $ftp_max;
 
 		if ($sql_db_max != -1) {
-			if ($sql_db_max == 0)
-				$rsql_db_uf = '_on_';
+			if ($sql_db_max == 0) $rsql_db_uf = '_on_';
 
 			$rsql_db_current += $sql_db_current;
 			$rsql_db_max += $sql_db_max;
 		}
 
 		if ($sql_user_max != -1) {
-			if ($sql_user_max == 0)
-				$rsql_user_uf = '_on_';
+			if ($sql_user_max == 0) $rsql_user_uf = '_on_';
 
 			$rsql_user_current += $sql_user_current;
 			$rsql_user_max += $sql_user_max;
 		}
 
-		if ($traff_max == 0)
-			$rtraff_uf = '_on_';
+		if ($traff_max == 0) $rtraff_uf = '_on_';
 
 		$rtraff_current += $traff_current;
 		$rtraff_max += $traff_max;
 
-		if ($disk_max == 0)
-			$rdisk_uf = '_on_';
+		if ($disk_max == 0) $rdisk_uf = '_on_';
 
 		$rdisk_current += $disk_current;
 		$rdisk_max += $disk_max;
@@ -1024,7 +1008,7 @@ SQL_QUERY;
 }
 
 function generate_user_props($user_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -1047,26 +1031,30 @@ SQL_QUERY;
 
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
-	// Sorry for the strange Hack, but it works - RatS
+	// Sorry 4 the strange Hack, but it works - RatS
 	$mail_current = records_count('mail_id', 'mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
-	$ftp_current = sub_records_rlike_count( 'domain_name', 'domain', 'domain_id', $user_id,
-											'userid', 'ftp_users', 'userid', '@', '');
+	$ftp_current = sub_records_rlike_count('domain_name', 'domain', 'domain_id', $user_id,
+		'userid', 'ftp_users', 'userid', '@', ''
+		);
 
 	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
-											'userid', 'ftp_users', 'userid', '@', '');
+		'userid', 'ftp_users', 'userid', '@', ''
+		);
 
 	$ftp_current += sub_records_rlike_count('alias_name', 'domain_aliasses', 'domain_id', $user_id,
-											'userid', 'ftp_users', 'userid', '@', '');
+		'userid', 'ftp_users', 'userid', '@', ''
+		);
 
 	$ftp_max = $rs->fields['domain_ftpacc_limit'];
 
 	$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
 	$sql_db_max = $rs->fields['domain_sqld_limit'];
 
-	$sql_user_current = sub_records_count(	'sqld_id', 'sql_database', 'domain_id', $user_id,
-											'sqlu_id', 'sql_user', 'sqld_id', '', '');
+	$sql_user_current = sub_records_count('sqld_id', 'sql_database', 'domain_id', $user_id,
+		'sqlu_id', 'sql_user', 'sqld_id', '', ''
+		);
 
 	$sql_user_max = $rs->fields['domain_sqlu_limit'];
 
@@ -1074,15 +1062,18 @@ SQL_QUERY;
 
 	$disk_max = $rs->fields['domain_disk_limit'];
 
-	return array(
-			$sub_current, $sub_max, $als_current, $als_max,
-			$mail_current, $mail_max, $ftp_current, $ftp_max,
-			$sql_db_current, $sql_db_max, $sql_user_current,
-			$sql_user_max, $traff_max, $disk_max);
+	return array($sub_current, $sub_max,
+		$als_current, $als_max,
+		$mail_current, $mail_max,
+		$ftp_current, $ftp_max,
+		$sql_db_current, $sql_db_max,
+		$sql_user_current, $sql_user_max,
+		$traff_max,
+		$disk_max);
 }
 
 function records_count($field, $table, $where, $value) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($where != '') {
 		$query = <<<SQL_QUERY
@@ -1108,7 +1099,7 @@ SQL_QUERY;
 }
 
 function records_rlike_count ($field, $table, $where, $value, $a, $b) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($where != '') {
 		$query = <<<SQL_QUERY
@@ -1134,7 +1125,7 @@ SQL_QUERY;
 }
 
 function sub_records_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($where != '') {
 		$query = <<<SQL_QUERY
@@ -1186,7 +1177,8 @@ SQL_QUERY;
 }
 
 function generate_user_traffic ($user_id) {
-	global $sql, $crnt_month, $crnt_year;
+	$sql = Database::getInstance();
+	global $crnt_month, $crnt_year;
 
 	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1284,7 +1276,7 @@ function make_usage_vals ($current, $max) {
 }
 
 function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($where != '') {
 		$query = <<<SQL_QUERY
@@ -1375,7 +1367,7 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 }
 
 function get_user_name($user_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -1393,7 +1385,7 @@ SQL_QUERY;
 }
 
 function get_logo($user_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	// check what logo we should return:
 	$query = <<<SQL_QUERY
 		SELECT
@@ -1419,7 +1411,7 @@ function get_own_logo($user_id) {
 }
 
 function get_admin_logo($user_id) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -1438,7 +1430,7 @@ SQL_QUERY;
 	if (empty($user_logo)) { // default logo
 		return '../themes/user_logos/isp_logo.gif';
 	} else {
-		return $cfg['IPS_LOGO_PATH'] . '/' . $user_logo;
+		return Config::get('IPS_LOGO_PATH') . '/' . $user_logo;
 	}
 }
 
@@ -1454,7 +1446,8 @@ function calc_bar_value($value, $value_max , $bar_width) {
 
 function write_log($msg, $level = E_USER_WARNING) {
 	/* log function */
-	global $sql, $send_log_to, $cfg;
+	$sql = Database::getInstance();
+	global $send_log_to;
 
 	if (isset($_SERVER['REMOTE_ADDR'])) {
 		$client_ip = $_SERVER['REMOTE_ADDR'];
@@ -1469,17 +1462,17 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	$msg = strip_tags(str_replace('<br />', "\n", $msg));
 
-	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRESS'];
+	$send_log_to = Config::get('DEFAULT_ADMIN_ADDRESS');
 
 	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
-	if ($send_log_to != '' && $level <= $cfg['LOG_LEVEL']) {
+	if ($send_log_to != '' && $level <= Config::get('LOG_LEVEL')) {
 		global $default_hostname, $default_base_server_ip, $Version, $BuildDate, $admin_login;
 
-		$admin_email = $cfg['DEFAULT_ADMIN_ADDRESS'];
-		$default_hostname = $cfg['SERVER_HOSTNAME'];
-		$default_base_server_ip = $cfg['BASE_SERVER_IP'];
-		$Version = $cfg['Version'];
-		$BuildDate = $cfg['BuildDate'];
+		$admin_email = Config::get('DEFAULT_ADMIN_ADDRESS');
+		$default_hostname = Config::get('SERVER_HOSTNAME');
+		$default_base_server_ip = Config::get('BASE_SERVER_IP');
+		$Version = Config::get('Version');
+		$BuildDate = Config::get('BuildDate');
 
 		$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
 
@@ -1519,8 +1512,6 @@ AUTO_LOG_MSG;
 }
 
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype, $gender = '') {
-	global $cfg;
-
 	$admin_login = $_SESSION['user_logged'];
 
 	$data = get_welcome_email($admin_id);
@@ -1531,7 +1522,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$message = $data['message'];
 
-	$base_vhost = $cfg['BASE_SERVER_VHOST'];
+	$base_vhost = Config::get('BASE_SERVER_VHOST');
 
 	if ($from_name) {
 		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
@@ -1576,7 +1567,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .= "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
+	$headers .= "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1586,7 +1577,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 }
 
 function update_reseller_props ($reseller_id, $props) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($props == '') {
 		return;
@@ -1666,14 +1657,12 @@ function gen_logged_from(&$tpl) {
 }
 
 function change_domain_status(&$sql, $domain_id, $domain_name, $action, $location) {
-	global $cfg;
-
 	check_for_lock_file();
 
 	if ($action == 'disable') {
-		$new_status = $cfg['ITEM_TODISABLED_STATUS'];
+		$new_status = Config::get('ITEM_TODISABLED_STATUS');
 	} else if ($action == 'enable') {
-		$new_status = $cfg['ITEM_TOENABLE_STATUS'];
+		$new_status = Config::get('ITEM_TOENABLE_STATUS');
 	} else {
 		return;
 	}
@@ -1695,7 +1684,7 @@ SQL_QUERY;
 	    $mail_id = $rs->fields['mail_id'];
 	    $mail_pass = $rs->fields['mail_pass'];
 
-	    if ($cfg['HARD_MAIL_SUSPENSION']) {
+	    if (Config::get('HARD_MAIL_SUSPENSION')) {
 	        $mail_status = $new_status;
 	    } else {
     		if ($action == 'disable') {
@@ -1707,7 +1696,7 @@ SQL_QUERY;
     		} else {
     			return;
     		}
-		    $mail_status = $cfg['ITEM_CHANGE_STATUS'];
+		    $mail_status = Config::get('ITEM_CHANGE_STATUS');
 	    }
 
 		$query = <<<SQL_QUERY
@@ -1999,7 +1988,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		);
 }
 function rm_rf_user_account($id_user) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 	// get domain user data
 	$query = <<<SQL_QUERY
 		SELECT
@@ -2044,7 +2033,7 @@ SQL_QUERY;
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_gid));
 	// let's delete all Subdomains for this user
-	$delete_status = $cfg['ITEM_DELETE_STATUS'];
+	$delete_status = Config::get('ITEM_DELETE_STATUS');
 
 	$query = <<<SQL_QUERY
 			UPDATE
@@ -2227,8 +2216,6 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 }
 
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
-	global $cfg;
-
 	$query = <<<SQL_QUERY
 			SELECT
 				header, footer
@@ -2236,12 +2223,13 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 				orders_settings
 			WHERE
 				user_id = ?
+
 SQL_QUERY;
 
 	if (isset($_SESSION['user_theme'])) {
 		$theme = $_SESSION['user_theme'];
 	} else {
-		$theme = $cfg['USER_INITIAL_THEME'];
+		$theme = Config::get('USER_INITIAL_THEME');
 	}
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -2258,7 +2246,7 @@ SQL_QUERY;
   <title>{$title}</title>
  </head>
  <body>
-  <div align="center">
+  <center>
    <table width="100%" height="95%">
     <tr align="center">
      <td align="center">
@@ -2268,7 +2256,7 @@ RIC;
      </td>
     </tr>
    </table>
-  </div>
+  </center>
  </body>
 </html>
 RIC;
@@ -2290,9 +2278,8 @@ RIC;
 }
 // Function by Tribal-Dolphin
 function send_tickets_msg($to_id, $from_id, $ticket_subject) {
-	global $sql;
+	$sql = Database::getInstance();
 	global $admin_login;
-	global $cfg;
 	// To information
 	$query = <<<SQL_QUERY
 		SELECT
@@ -2345,7 +2332,7 @@ SQL_QUERY;
 	}
 
 	// Prepare and send mail
-	$search  = array();
+	$search = array();
 	$replace = array();
 
 	$search [] = '{SUBJ}';
@@ -2362,15 +2349,15 @@ SQL_QUERY;
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .= "X-Mailer: ispCP " . $cfg['Version'] . " Tickets Mailer";
+	$headers .= "X-Mailer: ispCP " . Config::get('Version') . " Tickets Mailer";
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!", $_SESSION['user_logged'], $toname . ": " . $to_email, $fromname . ": " . $from_email, $mail_status));
+	write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
 }
 
 function setConfig_Value($name, $value) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$query = "SELECT name FROM config WHERE name='" . $name . "'";
 
@@ -2386,7 +2373,7 @@ function setConfig_Value($name, $value) {
 		$res = exec_query($sql, $query, array());
 	}
 
-	$cfg[$name] = $value;
+	Config::set($name, $value);
 
 	return true;
 }

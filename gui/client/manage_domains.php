@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/manage_domains.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/manage_domains.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_message', 'page');
@@ -36,9 +36,7 @@ $tpl->define_dynamic('sub_item', 'sub_list');
 // page functions.
 
 function gen_user_sub_action($sub_id, $sub_status) {
-	global $cfg;
-
-	if ($sub_status === $cfg['ITEM_OK_STATUS']) {
+	if ($sub_status === Config::get('ITEM_OK_STATUS')) {
 		return array(tr('Delete'), "delete_sub.php?id=$sub_id");
 	} else {
 		return array(tr('N/A'), '#');
@@ -95,11 +93,9 @@ SQL_QUERY;
 }
 
 function gen_user_als_action($als_id, $als_status) {
-	global $cfg;
-
-	if ($als_status === $cfg['ITEM_OK_STATUS']) {
+	if ($als_status === Config::get('ITEM_OK_STATUS')) {
 		return array(tr('Delete'), "delete_als.php?id=$als_id");
-	} else if ($als_status === $cfg['ITEM_ORDERED_STATUS']) {
+	} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')) {
 		return array(tr('Delete order'), "delete_als_order.php?del_id=$als_id");
 	} else {
 		return array(tr('N/A'), '#');
@@ -107,8 +103,6 @@ function gen_user_als_action($als_id, $als_status) {
 }
 
 function gen_user_als_forward($als_id, $als_status, $url_forward) {
-	global $cfg;
-
 	if ($url_forward === 'no') {
 		if ($als_status === 'ok') {
 			return array("-", "edit_alias.php?edit_id=" . $als_id, tr("Edit"));
@@ -185,8 +179,7 @@ SQL_QUERY;
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE' => tr('ispCP - Client/Manage Domains'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -200,8 +193,8 @@ gen_user_als_list($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -229,7 +222,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

@@ -23,11 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/edit_alias.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/edit_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 			array(
@@ -59,8 +59,8 @@ $tpl->assign(
 			)
 	);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -98,7 +98,7 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
@@ -107,7 +107,7 @@ unset_messages();
 
 // Show user data
 function gen_editalias_page(&$tpl, $edit_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -178,7 +178,7 @@ SQL_QUERY;
 
 // Check input data
 function check_fwd_data(&$tpl, $alias_id) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$forward_url = encode_idna($_POST['forward']);
 	$status = $_POST['status'];
@@ -210,12 +210,12 @@ function check_fwd_data(&$tpl, $alias_id) {
 				alias_id = ?
 SQL;
 
-		exec_query($sql, $query, array($forward_url, $cfg['ITEM_CHANGE_STATUS'], $alias_id));
+		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 		check_for_lock_file();
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: changes domain alias forward: " . $rs->fields['t1.alias_name']);
+		write_log("$admin_login: change domain alias forward: " . $rs->fields['t1.alias_name']);
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");
 		return true;

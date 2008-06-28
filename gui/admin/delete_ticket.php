@@ -3,7 +3,7 @@
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
  *
@@ -48,8 +48,6 @@ SQL_QUERY;
 		$back_url = "support_system.php";
 	}
 
-
-    global $cfg;
 
     $ticket_id = $_GET['ticket_id'];
 

@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/create_catchall.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/create_catchall.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mail_list', 'page');
@@ -39,7 +39,6 @@ if (isset($_GET['id'])) {
 // page functions.
 
 function gen_dynamic_page_data(&$tpl, &$sql, $id) {
-	global $cfg;
 	global $domain_id;
 
 	list($dmn_id,
@@ -76,7 +75,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		die();
 	}
 
-	$ok_status = $cfg['ITEM_OK_STATUS'];
+	$ok_status = Config::get('ITEM_OK_STATUS');
 	$match = array();
 	if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
 		$item_id = $match[1];
@@ -221,7 +220,6 @@ function create_catchall_mail_account(&$sql, $id) {
 		user_goto('catchall.php');
 	}
 
-	global $cfg;
 	$match = array();
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'normal') {
 		if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
@@ -253,7 +251,7 @@ SQL_QUERY;
 				$rs = exec_query($sql, $query, array($mail_id));
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
-				$status = $cfg['ITEM_ADD_STATUS'];
+				$status = Config::get('ITEM_ADD_STATUS');
 
 				// find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
 				$match = explode('@', $mail_acc);
@@ -280,7 +278,7 @@ SQL_QUERY;
 				$rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
-				write_log($_SESSION['user_logged'] . ": adds new email catch all");
+				write_log($_SESSION['user_logged'] . ": add new email catch all");
 				set_page_message(tr('Catch all account scheduled for creation!'));
 				user_goto('catchall.php');
 			} else {
@@ -296,7 +294,7 @@ SQL_QUERY;
 				$mail_type = 'normal_catchall';
 				$sub_id = '0';
 				$domain_id = $item_id;
-				$query = "SELECT `domain_name` FROM `domain`
+				$query = "SELECT `domain_name` FROM `domain` 
 					WHERE `domain_id` = ?";
 				$rs = exec_query($sql, $query, $domain_id);
 				$mail_addr = '@' . $rs->fields['domain_name'];
@@ -312,7 +310,7 @@ SQL_QUERY;
 			} elseif ($item_type === 'sub') {
 				$mail_type = 'subdom_catchall';
 				$sub_id = $item_id;
-				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain`
+				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain` 
 					WHERE `subdomain_id` = ? AND `domain`.`domain_id` = `subdomain`.`domain_id`";
 				$rs = exec_query($sql, $query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
@@ -335,7 +333,7 @@ SQL_QUERY;
 				$mail_acc[] = $value;
 			}
 
-			$status = $cfg['ITEM_ADD_STATUS'];
+			$status = Config::get('ITEM_ADD_STATUS');
 			check_for_lock_file();
 
 			$query = <<<SQL_QUERY
@@ -357,7 +355,7 @@ SQL_QUERY;
 			$rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
-			write_log($_SESSION['user_logged'] . ": adds new email catch all ");
+			write_log($_SESSION['user_logged'] . ": add new email catch all ");
 			set_page_message(tr('Catch all account scheduled for creation!'));
 			user_goto('catchall.php');
 		} else {
@@ -368,7 +366,7 @@ SQL_QUERY;
 
 // common page data.
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('ispCP - Client/Create CatchAll Mail Account'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -383,8 +381,8 @@ $tpl->assign('ID', $item_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -401,7 +399,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

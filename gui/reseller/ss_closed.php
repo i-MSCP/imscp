@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/ss_closed.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/ss_closed.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
@@ -36,7 +36,6 @@ $tpl->define_dynamic('scroll_next', 'page');
 // page functions.
 
 function get_last_date(&$tpl, &$sql, &$ticket_id) {
-	global $cfg;
 	$query = <<<SQL_QUERY
       SELECT
             ticket_date
@@ -52,7 +51,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 
-	$date_formt = $cfg['DATE_FORMAT'];
+	$date_formt = Config::get('DATE_FORMAT');
 	$last_date = date($date_formt, $rs->fields['ticket_date']);
 	$tpl->assign(
 		array('LAST_DATE' => $last_date
@@ -62,11 +61,9 @@ SQL_QUERY;
 }
 
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
-	global $cfg;
-
 	$start_index = 0;
 
-	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
+	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
@@ -192,12 +189,12 @@ SQL_QUERY;
 
 // common page data.
 
-if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 	header("Location: index.php");
 	die();
 }
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
@@ -212,26 +209,24 @@ gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_support_system.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_support_system.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_support_system.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_support_system.tpl');
 
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_SUPPORT_SYSTEM' => tr('Support system'),
-			'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-			'TR_STATUS' => tr('Status'),
-			'TR_NEW' => ' ',
-			'TR_ACTION' => tr('Action'),
-			'TR_URGENCY' => tr('Priority'),
-			'TR_SUBJECT' => tr('Subject'),
-			'TR_LAST_DATA' => tr('Last reply'),
-			'TR_DELETE_ALL' => tr('Delete all'),
-			'TR_OPEN_TICKETS' => tr('Open tickets'),
-			'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
+	array('TR_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
+		'TR_NEW' => ' ',
+		'TR_ACTION' => tr('Action'),
+		'TR_URGENCY' => tr('Priority'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_LAST_DATA' => tr('Last reply'),
+		'TR_DELETE_ALL' => tr('Delete all'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
 		)
 	);
 
@@ -240,7 +235,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

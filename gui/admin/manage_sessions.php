@@ -23,13 +23,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/manage_sessions.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/manage_sessions.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('user_session', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array('TR_ADMIN_MANAGE_SESSIONS_PAGE_TITLE' => tr('ispCP - Admin/Manage Sessions'),
@@ -79,21 +78,11 @@ SQL_QUERY;
 				);
 		}
 
-		if($rs->fields['user_name']===NULL){
-			$tpl->assign(
-					array(
-						'ADMIN_USERNAME' => tr('Unknown'),
-						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
-					)
-				);
-		} else {
-			$tpl->assign(
-					array(
-						'ADMIN_USERNAME' => $rs->fields['user_name'],
-						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
-					)
-				);
-		}
+		$tpl->assign(
+			array('ADMIN_USERNAME' => $rs->fields['user_name'],
+				'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess']),
+				)
+			);
 
 		$sess_id = session_id();
 
@@ -114,8 +103,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 kill_session($sql);
 
@@ -137,7 +126,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

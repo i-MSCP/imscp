@@ -23,13 +23,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/rau2.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/rau2.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 // check if we have only hosting plans for admins - reseller should not edit them
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	header("Location: users.php");
 	die();
 }
@@ -47,8 +47,8 @@ $tpl->assign(
  * static page messages.
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -101,7 +101,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 // unset_messages();
@@ -184,7 +184,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = "select name, props from hosting_plans where reseller_id = ? and id = ?";
 
@@ -219,7 +219,8 @@ function check_user_data(&$tpl) {
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_dmn;
-	global $sql, $dmn_chp;
+	$sql = Database::getInstance();
+	global $dmn_chp;
 
 	$ehp_error = '';
 	// Get data for fields from previus page
@@ -304,9 +305,9 @@ function check_user_data(&$tpl) {
 // Check is hosting plan with this name already exists!
 function check_hosting_plan_name($admin_id) {
 	global $hp_name;
-	global $sql;
+	$sql = Database::getInstance();
 
-	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
+	$query = "select id from hosting_plans where name = ? and reseller_id = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 	if ($res->RowCount() !== 0) {
 		return false;

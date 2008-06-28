@@ -24,7 +24,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/domain_alias.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/domain_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('table_list', 'page');
@@ -33,7 +33,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -51,8 +51,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -71,7 +71,7 @@ $tpl->assign(
 			'TR_STATUS' => tr('Status'),
 			'TR_ACTION' => tr('Action'),
 			'TR_ADD_ALIAS' => tr('Add alias'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
 		)
 	);
 
@@ -79,7 +79,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
@@ -88,13 +88,13 @@ unset_messages();
 
 // Generate domain alias list
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$have_aliases = '_no_';
 
 	$start_index = 0;
 
-	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
+	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
 	$current_psi = 0;
 	$_SESSION['search_for'] = '';
@@ -315,12 +315,12 @@ SQL_QUERY;
 			$page_cont = 'content2';
 		}
 
-		if ($als_status === $cfg['ITEM_OK_STATUS']) {
+		if ($als_status === Config::get('ITEM_OK_STATUS')) {
 			$delete_link = "delete_domainalias.php?del_id=" . $als_id;
 			$edit_link = "edit_alias.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
-		} else if ($als_status === $cfg['ITEM_ORDERED_STATUS']){
+		} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')){
 			$delete_link = "domainaliasorder.php?action=delete&del_id=".$als_id;
 			$edit_link = "domainaliasorder.php?action=activate&act_id=".$als_id;
 			$action_text = tr("Delete order");

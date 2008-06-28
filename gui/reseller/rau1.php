@@ -23,14 +23,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/rau1.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/rau1.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('add_user', 'page');
 $tpl->define_dynamic('hp_entry', 'page');
 $tpl->define_dynamic('personalize', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -47,8 +47,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -80,7 +80,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
@@ -92,7 +92,7 @@ function check_user_data() {
 	global $dmn_name; // Domain name
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt;
-	global $cfg, $sql;
+	$sql = Database::getInstance();
 	// personal template
 	$even_txt = "";
 
@@ -110,11 +110,11 @@ function check_user_data() {
 		$even_txt = tr('Wrong domain name syntax!');
 	} else if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
-	} else if ($dmn_name == $cfg['BASE_SERVER_VHOST']) {
+	} else if ($dmn_name == Config::get('BASE_SERVER_VHOST')) {
 		$even_txt = tr('Master domain cannot be used!');
 	}
 	// we have plans only for admins
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$dmn_pt = '_no_';
 	}
 
@@ -194,9 +194,9 @@ function get_data_au1_page(&$tpl) {
 
 // Get list with hosting plan for selection
 function get_hp_data_list(&$tpl, $reseller_id) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = <<<SQL_QUERY
         SELECT
 			t1.id,

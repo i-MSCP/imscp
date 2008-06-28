@@ -24,7 +24,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/orders.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/orders.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('page_message', 'page');
 // Table with orders
@@ -36,7 +36,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order management'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -54,8 +54,7 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 		$current_psi = $_GET['psi'];
 	}
 
-	global $cfg;
-	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
+	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 	// count query
 	$count_query = <<<SQL_QUERY
                 select
@@ -185,8 +184,8 @@ SQL_QUERY;
 
 gen_order_page($tpl, $sql, $_SESSION['user_id']);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_orders.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_orders.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_orders.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tpl');
 
 gen_logged_from($tpl);
 
@@ -200,7 +199,7 @@ $tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_DETAILS' => tr('Details'),
 		'TR_HP' => tr('Hosting plan'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', true),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?'),
 		'TR_ADD' => tr('Add/Details')));
 
 gen_page_message($tpl);
@@ -208,7 +207,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

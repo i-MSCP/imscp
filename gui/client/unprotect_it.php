@@ -3,7 +3,7 @@
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
  *
@@ -31,7 +31,7 @@ if (!isset($_GET['cdir'])) {
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
 
-unlink($cfg['FTP_HOMEDIR'].'/'.$domain_name.$cdir.'.htaccess');
+unlink(Config::get('FTP_HOMEDIR') . '/' . $domain_name . $cdir . '.htaccess');
 
 set_page_message( tr('Protected area was deleted successful!'));
 

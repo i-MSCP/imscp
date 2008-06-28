@@ -23,11 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/edit_alias.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/edit_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -60,8 +60,8 @@ $tpl->assign(
 		)
 	);
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -98,7 +98,7 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 
@@ -106,7 +106,7 @@ unset_messages();
 
 // Show user data
 function gen_editalias_page(&$tpl, $edit_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
 	$res = exec_query($sql, "select * from domain_aliasses where alias_id = ? and domain_id = ?", array($edit_id, $domain_id));
@@ -151,7 +151,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 // Check input data
 function check_fwd_data(&$tpl, $alias_id) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$forward_url = encode_idna($_POST['forward']);
 	$status = $_POST['status'];
@@ -163,8 +163,8 @@ function check_fwd_data(&$tpl, $alias_id) {
 		if (!chk_forward_url($forward_url)) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
-		if (!preg_match("/\/$/", $forward_url)) {
-	    	$forward_url .= "/";
+		if (!preg_match("/\/$/", $forward)) {
+	    	$forward .= "/";
 	    }
 	}
 
@@ -183,7 +183,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 				alias_id = ?
 SQL;
 
-		exec_query($sql, $query, array($forward_url, $cfg['ITEM_CHANGE_STATUS'], $alias_id));
+		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 		check_for_lock_file();
 		send_request();
 

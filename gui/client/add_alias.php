@@ -23,17 +23,17 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/add_alias.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/add_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('user_entry', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
             array(
-                'THEME_COLOR_PATH' => "../themes/$theme_color",
+                'THEME_COLOR_PATH' => '../themes/' . $theme_color,
                 'THEME_CHARSET' => tr('encoding'),
 				'ISP_LOGO' => get_logo($_SESSION['user_id']),
                 )
@@ -45,8 +45,8 @@ $tpl->assign(
  *
  */
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -134,7 +134,7 @@ function init_empty_data() {
 
 // Show data fiels
 function gen_al_page(&$tpl, $reseller_id) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $cfg;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	if (isset($_POST['forward'])) {
 		$forward = $_POST['forward'];
@@ -152,7 +152,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 }// End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $cfg;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
@@ -185,7 +185,7 @@ SQL_QUERY;
         $err_al = tr('Domain with that name already exists on the system!');
 	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($alias_name == $cfg['BASE_SERVER_VHOST']) {
+	} else if ($alias_name == Config::get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($forward != 'no') {
 		if (!chk_forward_url($forward)) {
@@ -222,16 +222,15 @@ SQL_QUERY;
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
-	global $cfg;
 
-	$status = $cfg['ITEM_ORDERED_STATUS'];
+	$status = Config::get('ITEM_ORDERED_STATUS');
 
 	$query = "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
 
-/*	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+/*	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 
 	    $reseller_id = who_owns_this(who_owns_this($cr_user_id, 'dmn_id'), 'user');
 
@@ -286,7 +285,7 @@ SQL_QUERY;
 */
 	$admin_login = $_SESSION['user_logged'];
 
-	if ($status == $cfg['ITEM_ORDERED_STATUS']) {
+	if ($status == Config::get('ITEM_ORDERED_STATUS')) {
 	    // notify the reseller:
 	    send_alias_order_email($alias_name);
 
@@ -325,7 +324,7 @@ gen_page_msg($tpl, $err_txt);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

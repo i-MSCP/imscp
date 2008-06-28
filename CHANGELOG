@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-28 Benedikt Heintel
+	- GUI:
+		* Changed: Base PHP Code
+
 2008-06-23 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0 RC5a (GUI Update)
 	- GUI:

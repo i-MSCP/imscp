@@ -6,40 +6,42 @@
   <meta name="robots" content="nofollow">
 <link href="../themes/omega_original/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
-<script type="text/javascript">
-<!--
-function validateForm(contact) {
+<script language="javascript" type="text/javascript">
 
-	if (""==document.forms.client_info.client_name.value)
+//<!-- hide script from older browsers
+function validateForm(contact)
+{
+
+	if(""==document.forms.client_info.client_name.value)
 	{
 		alert("Please enter your full name.");
 		return false;
 	}
 
-	if (""==document.forms.client_info.client_email.value)
+	if(""==document.forms.client_info.client_email.value)
 	{
 		alert("Please enter your email address.");
 		return false;
 	}
 
-	if (""==document.forms.client_info.client_domain.value)
+	if(""==document.forms.client_info.client_domain.value)
 	{
 		alert("Please enter your domain name.");
 		return false;
 	}
 
 }
-//-->
+//stop hiding script -->
 </script>
 </head>
 
-<body onload="MM_preloadImages('../themes/omega_original/images/icons/database_a.gif','../themes/omega_original/images/icons/hosting_plans_a.gif','../themes/omega_original/images/icons/domains_a.gif','../themes/omega_original/images/icons/general_a.gif','../themes/omega_original/images/icons/manage_users_a.gif','../themes/omega_original/images/icons/webtools_a.gif','../themes/omega_original/images/icons/statistics_a.gif','../themes/omega_original/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('../themes/omega_original/images/icons/database_a.gif','../themes/omega_original/images/icons/hosting_plans_a.gif','../themes/omega_original/images/icons/domains_a.gif','../themes/omega_original/images/icons/general_a.gif','../themes/omega_original/images/icons/logout_a.gif','../themes/omega_original/images/icons/manage_users_a.gif','../themes/omega_original/images/icons/webtools_a.gif','../themes/omega_original/images/icons/statistics_a.gif','../themes/omega_original/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%">
   <tr>
     <td height="80" align="left" valign="top">&nbsp;</td>
   </tr>
   <tr>
-    <td valign="top"><table height="100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+    <td valign="top"><table height="100%" width="100%"  border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -80,7 +82,7 @@ function validateForm(contact) {
 			  	<tr>
 			  	   <td>
 			  	   		<INPUT type="reset" value="{TR_RESET}">
-			  	   </td>
+			  	   </td>			  
 			  	   <td>
 			  	   		<INPUT type="submit" value="{TR_SUBMIT}">
 			  	   </td>

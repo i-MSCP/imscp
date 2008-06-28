@@ -23,12 +23,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/domain_details.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/domain_details.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('custom_buttons', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -70,8 +69,8 @@ $tpl->assign(
 			)
 	);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_page_message($tpl);
 // Get user id that come for manage domain
@@ -87,14 +86,14 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 
 // Begin function block
 
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
-	global $sql;
+	$sql = Database::getInstance();
 	// Get domain data
 	$query = <<<SQL_QUERY
       select
@@ -127,12 +126,11 @@ SQL_QUERY;
 	$ipdat = $ipres->FetchRow();
 	// Get staus name
 	$dstatus = $data['domain_status'];
-	global $cfg;
 
-	if ($dstatus == $cfg['ITEM_OK_STATUS'] || $dstatus == $cfg['ITEM_DISABLED_STATUS'] || $dstatus == $cfg['ITEM_DELETE_STATUS'] || $dstatus == $cfg['ITEM_ADD_STATUS'] || $dstatus == $cfg['ITEM_RESTORE_STATUS'] || $dstatus == $cfg['ITEM_CHANGE_STATUS'] || $dstatus == $cfg['ITEM_TOENABLE_STATUS'] || $dstatus == $cfg['ITEM_TODISABLED_STATUS']) {
+	if ($dstatus == Config::get('ITEM_OK_STATUS') || $dstatus == Config::get('ITEM_DISABLED_STATUS') || $dstatus == Config::get('ITEM_DELETE_STATUS') || $dstatus == Config::get('ITEM_ADD_STATUS') || $dstatus == Config::get('ITEM_RESTORE_STATUS') || $dstatus == Config::get('ITEM_CHANGE_STATUS') || $dstatus == Config::get('ITEM_TOENABLE_STATUS') || $dstatus == Config::get('ITEM_TODISABLED_STATUS')) {
 		$dstatus = translate_dmn_status($data['domain_status']);
 	} else {
-		$dstatus = "<b><font size=\"3\" color=red>" . $data['domain_status'] . "</font></b>";
+		$dstatus = "<b><font size=3 color=red>" . $data['domain_status'] . "</font></b>";
 	}
 
 	// Traffic diagram

@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/add_subdomain.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/add_subdomain.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -157,9 +157,7 @@ SQL_QUERY;
 }
 
 function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt) {
-	global $cfg;
-
-	$status_add = $cfg['ITEM_ADD_STATUS'];
+	$status_add = Config::get('ITEM_ADD_STATUS');
 
 	check_for_lock_file();
 
@@ -181,7 +179,7 @@ SQL_QUERY;
 	// We do not need to create the default mail adresses, subdomains are
 	// related to their domains.
 
-	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name);
+	write_log($_SESSION['user_logged'] . ": add new subdomain: " . $sub_name);
 	send_request();
 }
 
@@ -231,7 +229,7 @@ if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "
 	header("Location: index.php");
 }
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 			array(
@@ -250,8 +248,8 @@ check_subdomain_data($tpl, $sql, $_SESSION['user_id'], $dmn_name);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -273,7 +271,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 ?>

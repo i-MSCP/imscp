@@ -23,13 +23,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/rau4.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/rau4.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('alias_entry', 'alias_list');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -68,9 +68,8 @@ SQL_QUERY;
 		die();
 	}
 	// check main domain status
-	global $cfg;
-	$ok_status = $cfg['ITEM_OK_STATUS'];
-	$add_status = $cfg['ITEM_ADD_STATUS'];
+	$ok_status = Config::get('ITEM_OK_STATUS');
+	$add_status = Config::get('ITEM_ADD_STATUS');
 
 	$query = <<<SQL_QUERY
         select
@@ -106,8 +105,8 @@ gen_al_page($tpl, $_SESSION['user_id']);
 
 gen_page_message($tpl);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
@@ -132,7 +131,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 // Begin function declaration lines
@@ -156,7 +155,7 @@ function init_empty_data() {
 
 // Show data fiels
 function gen_al_page(&$tpl, $reseller_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$dmn_id = $_SESSION['dmn_id'];
 
@@ -249,11 +248,11 @@ function add_domain_alias(&$sql, &$err_al) {
 	}
 	// Begin add new alias domain
 	check_for_lock_file();
-	global $cfg;
-	$status = $cfg['ITEM_ADD_STATUS'];
+	$status = Config::get('ITEM_ADD_STATUS');
 
-	exec_query($sql, "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
-	array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+	exec_query($sql,
+		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
+		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");

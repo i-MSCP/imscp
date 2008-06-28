@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/backup.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/backup.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -52,8 +52,7 @@ SQL_QUERY;
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -64,9 +63,8 @@ $tpl->assign(
 			)
 		);
 
-function gen_page_awstats(&$tpl) {
-	global $cfg;
-	$awstats_act = $cfg['AWSTATS_ACTIVE'];
+function gen_page_awstats($tpl) {
+	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
 	} else {
@@ -85,8 +83,8 @@ send_backup_restore_request($sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -94,7 +92,7 @@ gen_page_awstats($tpl);
 
 check_permissions($tpl);
 
-if ($cfg['ZIP'] == "gzip") {
+if (Config::get('ZIP') == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";
 } else {
 	$name = "backup_YYYY_MM_DD.tar.bz2";
@@ -108,7 +106,7 @@ $tpl->assign(
 			'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
 			'TR_SWITCH_TO_BACKUP' => tr('Switch to backups/ directory'),
 			'TR_DOWNLOAD_FILE' => tr('Download the files stored in this directory'),
-			'TR_USUALY_NAMED' => tr('(usually named') . ' ' . $name . ')',
+			'TR_USUALY_NAMED' => tr('(usually named ' . $name . ')'),
 			'TR_RESTORE_BACKUP' => tr('Restore backup'),
 			'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 			'TR_RESTORE' => tr('Restore'),
@@ -121,7 +119,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

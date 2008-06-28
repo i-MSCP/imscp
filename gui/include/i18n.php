@@ -24,7 +24,6 @@
  * true: force update from session/default, anything else: set it as a language
  */
 function curlang($newlang = null, $force = false) {
-    global $cfg;
     static $language = null;
 
     // we store old value so if $language is changed old value is returned
@@ -39,7 +38,7 @@ function curlang($newlang = null, $force = false) {
     if ($language === null || ($newlang !== null && $newlang !== false)) {
 
         if ($newlang === true || (($newlang === null || $newlang === false) && $language === null)) {
-        	$newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+        	$newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : Config::get('USER_INITIAL_LANG');
         }
 
         if ($newlang !== false) {
@@ -64,7 +63,7 @@ function curlang($newlang = null, $force = false) {
  * 	@return		String					translated or original string
  **/
 function tr($msgid, $substitution = false) {
-    global $sql, $cfg;
+    $sql = Database::getInstance();
     static $cache = array();
 
     // detect whether $substitution is really $substitution or just a value to be replaced in $msgstr

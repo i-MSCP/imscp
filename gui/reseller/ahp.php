@@ -22,17 +22,18 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) == 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') == strtolower('admin')) {
 	Header("Location: hp.php");
+
 	die();
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/ahp.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/ahp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -49,8 +50,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_hp.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_hp.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_hp.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_hp.tpl');
 
 gen_logged_from($tpl);
 
@@ -101,34 +102,31 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // Function definitions
 
 // Generate empty form
 function gen_empty_ahp_page(&$tpl) {
-	$tpl->assign(array(
-		'HP_NAME_VALUE'			=> '',
-		'TR_MAX_SUB_LIMITS'		=> '',
-		'TR_MAX_ALS_VALUES'		=> '',
-		'HP_MAIL_VALUE'			=> '',
-		'HP_FTP_VALUE'			=> '',
-		'HP_SQL_DB_VALUE'		=> '',
-		'HP_SQL_USER_VALUE'		=> '',
-		'HP_TRAFF_VALUE'		=> '',
-		'HP_PRICE'				=> '',
-		'HP_SETUPFEE'			=> '',
-		'HP_VELUE'				=> '',
-		'HP_PAYMENT'			=> '',
-		'HP_DESCRIPTION_VALUE'	=> '',
-		'TR_STATUS_YES'			=> '',
-		'TR_STATUS_NO'			=> 'checked',
-		'TR_PHP_YES'			=> '',
-		'TR_PHP_NO'				=> 'checked',
-		'TR_CGI_YES'			=> '',
-		'TR_CGI_NO'				=> 'checked',
-		'HP_DISK_VALUE'			=> ''
-	));
+	$tpl->assign(
+			array(
+				'HP_NAME_VALUE' => '',
+				'TR_MAX_SUB_LIMITS' => '',
+				'TR_MAX_ALS_VALUES' => '',
+				'HP_MAIL_VALUE' => '',
+				'HP_FTP_VALUE' => '',
+				'HP_SQL_DB_VALUE' => '',
+				'HP_SQL_USER_VALUE' => '',
+				'HP_TRAFF_VALUE' => '',
+				'HP_PRICE' => '',
+				'HP_SETUPFEE' => '',
+				'HP_VELUE' => '',
+				'HP_PAYMENT' => '',
+				'HP_DESCRIPTION_VALUE' => '',
+				'TR_STATUS_NO' => 'checked',
+				'HP_DISK_VALUE' => ''
+				)
+			);
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
 
@@ -259,11 +257,13 @@ function check_data_correction(&$tpl) {
 		// $tpl -> assign('MESSAGE', $ahp_error);
 		return false;
 	}
+
+	return TRUE;
 } // End of check_data_correction()
 
 // Add new host plan to DB
 function save_data_to_db(&$tpl, $admin_id){
-	global $sql;
+	$sql = Database::getInstance();
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -303,7 +303,7 @@ SQL_QUERY;
 				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
 				$_SESSION['hp_added'] = '_yes_';
-				header("Location: hp.php");
+				header("Location: ehp.php");
 				die();
 			}
 		}

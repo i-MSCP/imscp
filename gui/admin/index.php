@@ -22,10 +22,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/index.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -68,15 +68,7 @@ SQL_QUERY;
 	}
 }
 
-function get_ispcp_update_infos(&$tpl) {
-	global $cfg;
-
-	if (!$cfg['CHECK_FOR_UPDATES']) {
-		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-		return false;
-	}
-
+function get_update_infos(&$tpl) {
 	$last_update = "http://www.isp-control.net/latest.txt";
 	// Fake the browser type
 	ini_set('user_agent', 'Mozilla/5.0');
@@ -95,21 +87,19 @@ function get_ispcp_update_infos(&$tpl) {
 	$last_update_result = (int)fread($dh2, 8);
 	fclose($dh2);
 
-	$current_version = (int)$cfg['BuildDate'];
+	$current_version = (int)Config::get('BuildDate');
 	if ($current_version < $last_update_result) {
 		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class=\"link\">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
 		$tpl->assign(array('UPDATE_MESSAGE' => ''));
 	}
-}
 
-function get_db_update_infos(&$tpl) {
 	if(checkDatabaseUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class=\"link\">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
-		$tpl->assign(array('DATABASE_UPDATE' => ''));
+		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 	}
 }
 
@@ -169,8 +159,7 @@ SQL_QUERY;
 	}
 
 	$tpl->assign(
-		array(
-			'TRAFFIC_WARNING' => $traff_msg,
+		array('TRAFFIC_WARNING' => $traff_msg,
 			'BAR_VALUE' => $bar_value,
 			)
 		);
@@ -191,13 +180,12 @@ $tpl->assign(
 			)
 	);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 get_admin_general_info($tpl, $sql);
 
-get_ispcp_update_infos($tpl);
-get_db_update_infos($tpl);
+get_update_infos($tpl);
 
 gen_system_message($tpl, $sql);
 
@@ -208,7 +196,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

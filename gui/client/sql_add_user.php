@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/sql_add_user.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/sql_add_user.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -189,8 +189,6 @@ SQL_QUERY;
 }
 
 function add_sql_user(&$sql, $user_id, $db_id) {
-	global $cfg;
-
 	if (!isset($_POST['uaction'])) return;
 
 	// let's check user input;
@@ -210,7 +208,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		return;
 	}
 
-	if (isset($_POST['pass']) AND strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH'] && !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass']) AND strlen($_POST['pass']) > Config::get('MAX_SQL_PASS_LENGTH') && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password!'));
 		return;
 	}
@@ -252,7 +250,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		$db_user = $rs->fields['sqlu_name'];
 	}
 
-	if (strlen($db_user) > $cfg['MAX_SQL_USER_LENGTH']) {
+	if (strlen($db_user) > Config::get('MAX_SQL_USER_LENGTH')) {
 		set_page_message(tr('User name too long!'));
 		return;
 	}
@@ -309,19 +307,17 @@ SQL_QUERY;
 }
 
 function gen_page_post_data(&$tpl, $db_id) {
-	global $cfg;
-
-	if ($cfg['MYSQL_PREFIX'] === 'yes') {
+	if (Config::get('MYSQL_PREFIX') === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
 	} else {
 		$tpl->assign('MYSQL_PREFIX_NO', '');
 	}
 
-	if ($cfg['MYSQL_PREFIX_TYPE'] === 'infront') {
+	if (Config::get('MYSQL_PREFIX_TYPE') === 'infront') {
 		$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
 		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
 		$tpl->assign('MYSQL_PREFIX_ALL', '');
-	} else if ($cfg['MYSQL_PREFIX_TYPE'] === 'behind') {
+	} else if (Config::get('MYSQL_PREFIX_TYPE') === 'behind') {
 		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 		$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 		$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -352,7 +348,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	user_goto('index.php');
 }
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 $tpl->assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ispCP - Client/Add SQL User'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
@@ -367,8 +363,8 @@ add_sql_user($sql, $_SESSION['user_id'], $db_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -391,7 +387,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

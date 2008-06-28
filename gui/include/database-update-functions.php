@@ -27,15 +27,16 @@
  **/
 
 /*
- * Get the current revision from the database and return it
+ * Select the current revision from the database and return it
  */
 function getCurrentRevision() {
-	global $sql;
+	$sql = Database::getInstance();
 
-	$query	= "SELECT * FROM `config` WHERE `name` = 'DATABASE_REVISION'";
- 	$rs		= $sql->Execute($query);
+	$query = "SELECT * FROM `config` WHERE `name` = 'DATABASE_REVISION'";
+ 	$rs = $sql->Execute($query);
+	$current_revision = (int)$rs->fields['value'];
 
-	return (int)$rs->fields['value'];
+	return $current_revision;
 }
 
 /*
@@ -56,7 +57,7 @@ function checkDatabaseUpdateExists() {
 }
 
 /*
- * Check for existence of an available update
+ * Check for existenz of a available update
  */
 function checkNewRevisionExists() {
 	$functionName = returnFunctionName(getNextRevision());
@@ -72,7 +73,7 @@ function checkNewRevisionExists() {
  */
 function returnFunctionName($revision) {
 	$functionName = "_databaseUpdate_" . $revision;
-
+	
 	return $functionName;
 }
 
@@ -80,56 +81,46 @@ function returnFunctionName($revision) {
  * Execute all available update functions.
  */
 function executeDatabaseUpdates() {
-	global $sql;
-	$failedUpdate = false;
-
+	$sql = Database::getInstance();
+	
 	while(checkNewRevisionExists()) {
-		// Get the next database update revision
 		$newRevision 	= getNextRevision();
-
-		// Get the needed function name
 		$functionName 	= returnFunctionName($newRevision);
 
-		// Pull the query from the update function using a variable function
-		$queryArray 	= $functionName();
-
-		// Add the query, to set the new Database Revision, to our queryArray
-		$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
-
-		// Start the Transaction
-		$sql->StartTrans();
-
-		// Execute every query in our queryArray
-		foreach($queryArray as $query) {
-			$sql->Execute($query);
+		if(function_exists($functionName)) {
+			$queryArray 	= $functionName();
+			
+			// Query to set the new Database Revision
+			$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
+			
+			$sql->StartTrans();
+			
+			foreach($queryArray as $query) {
+				$sql->Execute($query);				
+			}
+			
+			// Prompt a error when a update fails
+			if ($sql->HasFailedTrans()) {
+				set_page_message(tr("Db update %s failed", $newRevision));
+			}
+			
+			$sql->CompleteTrans();
+			unset($queryArray);
 		}
-
-		// Set failedUpdate to true if an databaseUpdate failed
- 		if ($sql->HasFailedTrans())
-			$failedUpdate = true;
-
-		// Complete the Transactin and rollback if nessessary
-		$sql->CompleteTrans();
-
-		// Display an error if nessessary
-		if($failedUpdate)
-			system_message(tr("Database update %s failed", $newRevision));
 	}
 }
 
 /*
- * Insert the update functions below this entry. The revision has to be ascending and unique.
- * Each databaseUpdate function has to return a array. Even if the array contains only one entry.
+ * Insert the update functions below this entry please. The revision should be ascending.
+ * Don't insert a update twice!
  */
 
 /*
  * Initital Update. Insert the first Revision.
  */
 function _databaseUpdate_1() {
-	$sqlUpd = array();
-
-	$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '1')";
-
+	$sqlUpd = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
+	
 	return $sqlUpd;
 }
 
@@ -146,39 +137,39 @@ function _databaseUpdate_2() {
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward');";
+				. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')";
 
 	// domain-alias mail + forward
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-				. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward');";
+				. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')";
 
 	// subdomain mail + forward
 	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward');";
+				. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')";
 
 	// domain catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
 				. "SET `mail_addr` = CONCAT('@',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND `mail_type` = 'normal_catchall';";
+				. "AND `mail_type` = 'normal_catchall'";
 
 	// domain-alias catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
 				. "SET `mail_addr` = CONCAT('@',`alias_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-				. "AND `mail_type` = 'alias_catchall';";
+				. "AND `mail_type` = 'alias_catchall'";
 
 	// subdomain catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
 				. "SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND `mail_type` = 'subdom_catchall';";
+				. "AND `mail_type` = 'subdom_catchall'";
 
 	return $sqlUpd;
 }
@@ -187,35 +178,21 @@ function _databaseUpdate_2() {
  * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139 (Benedikt Heintel, 2008-03-27)
  */
 function _databaseUpdate_3() {
-	$sqlUpd = array();
-
 	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
-
+	
 	return $sqlUpd;
 }
 
 /*
  * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196 (Benedikt Heintel, 2008-04-23)
- */
+  */
 function _databaseUpdate_4() {
 	$sqlUpd = array();
-
+	
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
-
+	
 	return $sqlUpd;
-}
-
-/*
- * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346 (Benedikt Heintel, 2008-06-13)
- */
-function _databaseUpdate_5() {
-	$sqlUpd = array();
-
-	$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';";
-	$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a';";
-
-	return $sqlUpd;
-}
+}	
 ?>

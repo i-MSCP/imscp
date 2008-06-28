@@ -23,12 +23,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/lostpassword.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/lostpassword.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('custom_buttons', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 $user_id = $_SESSION['user_id'];
 
 $selected_on = '';
@@ -78,8 +78,8 @@ $tpl->assign(
 			)
 		);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 gen_logged_from($tpl);
 
@@ -104,8 +104,7 @@ $tpl->assign(
 			'TR_MESSAGE' => tr('Message'),
 			'TR_SENDER_EMAIL' => tr('Senders email'),
 			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_APPLY_CHANGES' => tr('Apply changes'),
-			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel')
+			'TR_APPLY_CHANGES' => tr('Apply changes')
 			)
 		);
 
@@ -114,7 +113,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

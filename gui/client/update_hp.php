@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/update_hp.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/update_hp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -37,8 +37,6 @@ $tpl->define_dynamic('hp_order', 'page');
  */
 
 function gen_hp(&$tpl, &$sql, $user_id) {
-    global $cfg;
-
     $availabe_order = 0;
     $hp_title = tr('Hosting plans available for update');
     // lets see if we have an order
@@ -74,7 +72,7 @@ SQL_QUERY;
         $hp_title = tr('Your order');
     } else {
         // generate all hosting plans available for purchasing
-        if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+        if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
             $query = <<<SQL_QUERY
 				SELECT
 					t1.*,
@@ -248,7 +246,7 @@ SQL_QUERY;
     }
 }
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 $tpl->assign(
 		    array(
 				'TR_CLIENT_UPDATE_HP' => tr('ispCP - Update hosting plan'),
@@ -352,8 +350,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 
 gen_hp($tpl, $sql, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -372,7 +370,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/manage_reseller_users.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/manage_reseller_users.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('reseller_list', 'page');
@@ -33,8 +33,7 @@ $tpl->define_dynamic('src_reseller_option', 'src_reseller');
 $tpl->define_dynamic('dst_reseller', 'page');
 $tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 function gen_user_table(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
@@ -160,7 +159,7 @@ function update_reseller_user($sql) {
 }
 
 function check_user_data() {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         SELECT
@@ -232,7 +231,7 @@ SQL_QUERY;
 }
 
 function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	list ($dest_dmn_current, $dest_dmn_max,
 		$dest_sub_current, $dest_sub_max,
@@ -368,7 +367,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 		}
 		$err .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
 
-		$err .= tr('You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
+		$err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
 
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax > 0) {
@@ -410,7 +409,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 }
 
 function check_ip_sets($dest, $users, &$err) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$users_array = explode(";", $users);
 
@@ -434,7 +433,7 @@ SQL_QUERY;
 			if ($err == '_off_') {
 				$err = '';
 			}
-			$err .= tr('<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!', $domain_name);
+			$err .= tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
 
 			return false;
 		}
@@ -458,8 +457,8 @@ $tpl->assign(
 		)
 	);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 update_reseller_user($sql);
 
@@ -483,7 +482,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

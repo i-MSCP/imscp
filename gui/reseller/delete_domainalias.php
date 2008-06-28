@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 if (isset($_GET['del_id']))
 	$del_id = $_GET['del_id'];
@@ -55,7 +55,7 @@ if ($rs->RecordCount() == 0) {
 }
 
 $alias_name = $rs->fields['alias_name'];
-$delete_status = $cfg['ITEM_DELETE_STATUS'];
+$delete_status = Config::get('ITEM_DELETE_STATUS');
 
 /* check for mail acc in ALIAS domain (ALIAS MAIL) and delete them */
 $query = <<<SQL_QUERY
@@ -76,10 +76,10 @@ while (!$rs->EOF) {
 $res = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($del_id));
 $dat = $res->FetchRow();
 
-exec_query($sql, "update domain_aliasses set alias_status='" . $cfg[ITEM_DELETE_STATUS] . "' where alias_id=?", array($del_id));
+exec_query($sql, "update domain_aliasses set alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);
+write_log("$admin_login: delete domain alias: " . $dat['alias_name']);
 
 $_SESSION['aldel'] = '_yes_';
 header("Location: domain_alias.php");

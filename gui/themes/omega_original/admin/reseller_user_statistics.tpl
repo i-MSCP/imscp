@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -17,13 +17,13 @@
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -42,15 +42,15 @@
                                   <form action="reseller_user_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
                                     <table width="100%">
                                       <tr>
-                                        <td width="80" class="content"><label for="month">{TR_MONTH}</label></td>
-                                        <td width="80" class="content"><select name="month" id="month">
+                                        <td width="80" class="content">{TR_MONTH}</td>
+                                        <td width="80" class="content"><select name="month">
                                             <!-- BDP: month_list -->
                                             <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
                                             <!-- EDP: month_list -->
                                           </select>
                                         </td>
-                                        <td width="80" class="content"><label for="year">{TR_YEAR}</label></td>
-                                        <td width="80" class="content"><select name="year" id="year">
+                                        <td width="80" class="content">{TR_YEAR}</td>
+                                        <td width="80" class="content"><select name="year">
                                             <!-- BDP: year_list -->
                                             <option {OPTION_SELECTED}>{YEAR_VALUE}</option>
                                             <!-- EDP: year_list -->
@@ -68,7 +68,7 @@
                                   <table width="100%" cellspacing="3">
                                     <!-- BDP: no_domains -->
                                     <tr>
-                                      <td class="title" colspan="13" width="550"><span style="color:red;"> {TR_NO_DOMAINS}</span></td>
+                                      <td class="title" colspan="13" width="550"><font color="#FF0000"> {TR_NO_DOMAINS}</font> </td>
                                     </tr>
                                     <!-- EDP: no_domains -->
                                     <!-- BDP: domain_list -->
@@ -96,10 +96,10 @@
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                           <tr>
                                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" /></td>
-                                            <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                            <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
-                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1" /></td>
+                                                  <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1" /></td>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
                                                 </tr>
                                             </table></td>
@@ -111,10 +111,10 @@
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                           <tr>
                                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" /></td>
-                                            <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                            <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
-                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1" /></td>
+                                                  <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1" /></td>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
                                                 </tr>
                                             </table></td>
@@ -137,7 +137,7 @@
                                     <!-- EDP: domain_entry -->
                                     <!-- EDP: domain_list -->
                                   </table>
-                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <table width="100%"  border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                       <td><div align="left"><br />
                                               <!-- BDP: scroll_prev_gray -->
@@ -182,7 +182,8 @@
                     </tr>
                   </table></td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

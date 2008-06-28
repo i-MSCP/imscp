@@ -6,27 +6,35 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script>
 <!--
+
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
+
 	location = ('change_status.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
 	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
 		return false;
+
 	location = url;
+}
+
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
 //-->
 </script>
-</head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
+</head>
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -38,13 +46,13 @@ function delete_account(url) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95";>
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr>
-            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr height="*">
+            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -59,43 +67,43 @@ function delete_account(url) {
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_DOMAIN_NAME}</td>
-                      <td class="content" colspan="2">{VL_DOMAIN_NAME}</td>
+                      <td  class="content" colspan="2">{VL_DOMAIN_NAME}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_DOMAIN_IP}</td>
-                      <td class="content" colspan="2">{VL_DOMAIN_IP}</td>
+                      <td class="content2" width="193">{TR_DOMAIN_IP}</i></td>
+                      <td  class="content" colspan="2">{VL_DOMAIN_IP}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_STATUS}</td>
-                      <td class="content" colspan="2">{VL_STATUS}</td>
+                      <td class="content2" width="193">{TR_STATUS}</i></td>
+                      <td  class="content" colspan="2">{VL_STATUS}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_PHP_SUPP}</td>
-                      <td class="content" colspan="2">{VL_PHP_SUPP}</td>
+                      <td class="content2" width="193">{TR_PHP_SUPP}</i></b> </td>
+                      <td  class="content" colspan="2">{VL_PHP_SUPP}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_CGI_SUPP}</td>
-                      <td class="content" colspan="2">{VL_CGI_SUPP}</td>
+                      <td  class="content" colspan="2">{VL_CGI_SUPP}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_MYSQL_SUPP}</td>
-                      <td class="content" colspan="2">{VL_MYSQL_SUPP}</td>
+                      <td  class="content" colspan="2">{VL_MYSQL_SUPP}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_TRAFFIC}</td>
-                      <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                      <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                           <tr>
                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                            <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                            <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                 <tr>
                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_TRAFFIC_PERCENT}" height="1"></td>
+                                  <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_TRAFFIC_PERCENT}" height="1"></td>
                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                 </tr>
                             </table></td>
@@ -108,13 +116,13 @@ function delete_account(url) {
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_DISK}</td>
-                      <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                      <td  colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                           <tr>
                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
-                            <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                            <td background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                 <tr>
                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_DISK_PERCENT}" height="1"></td>
+                                  <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_DISK_PERCENT}" height="1"></td>
                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
                                 </tr>
                             </table></td>
@@ -132,46 +140,46 @@ function delete_account(url) {
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_MAIL_ACCOUNTS}</td>
-                      <td class="content">{VL_MAIL_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_MAIL_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_MAIL_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_MAIL_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_FTP_ACCOUNTS}</td>
-                      <td class="content">{VL_FTP_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_FTP_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_FTP_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_FTP_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_SQL_DB_ACCOUNTS}</td>
-                      <td class="content">{VL_SQL_DB_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_SQL_DB_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_SQL_DB_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_SQL_DB_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_SQL_USER_ACCOUNTS}</td>
-                      <td class="content">{VL_SQL_USER_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_SQL_USER_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_SQL_USER_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_SQL_USER_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_SUBDOM_ACCOUNTS}</td>
-                      <td class="content">{VL_SUBDOM_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_SUBDOM_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_SUBDOM_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_SUBDOM_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_DOMALIAS_ACCOUNTS}</td>
-                      <td class="content">{VL_DOMALIAS_ACCOUNTS_USED}</td>
-                      <td class="content">{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
+                      <td  class="content">{VL_DOMALIAS_ACCOUNTS_USED}</td>
+                      <td  class="content">{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
                     </tr>
                     <tr>
                       <td>&nbsp;</td>
                       <td colspan="3"><form name="buttons" method="post" action="#">
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
+                          <input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
                         &nbsp;&nbsp;&nbsp;
                         <!-- BDP: edit_option -->
-                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','edit_domain.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
+                        <input name="Submit2" type="submit" class="button" onClick="MM_goToURL('parent','edit_domain.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
                         <!-- EDP: edit_option -->
                       </form></td>
                     </tr>
@@ -184,7 +192,8 @@ function delete_account(url) {
               </tr>
             </table></td>
           </tr>
-        </table></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

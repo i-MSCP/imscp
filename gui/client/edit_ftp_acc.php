@@ -32,15 +32,13 @@ if (isset($_GET['id'])) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/edit_ftp_acc.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/edit_ftp_acc.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
-    global $cfg;
-
     $query = <<<SQL_QUERY
         SELECT
 			homedir
@@ -54,7 +52,7 @@ SQL_QUERY;
 
     $homedir = $rs->fields['homedir'];
     $domain_ftp = $_SESSION['user_logged'];
-    $nftp_dir = $cfg['FTP_HOMEDIR'] . "/" . $domain_ftp;
+    $nftp_dir = Config::get('FTP_HOMEDIR') . "/" . $domain_ftp;
 
     if ($nftp_dir == $homedir) {
         $odir = "";
@@ -72,7 +70,6 @@ SQL_QUERY;
 }
 
 function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
-    global $cfg;
     global $other_dir;
 
     // Create a virtual filesystem (it's important to use =&!)
@@ -102,7 +99,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 
 	     //append the full path (vfs is always checking per ftp so its logged in in the root of the user (no absolute paths are allowed here!)
 
-	     $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
+	     $other_dir = Config::get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
 
                 $query = <<<SQL_QUERY
                     update
@@ -141,7 +138,7 @@ SQL_QUERY;
 			set_page_message(tr('Incorrect mount point length or syntax'));
 		    	return;
 		    }
-	            $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name/" . $other_dir;
+	            $ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name/" . $other_dir;
 	            // Strip possible double-slashes
 	            $ftp_home = str_replace('//', '/', $other_dir);
 	            // Check for $other_dir existance
@@ -153,10 +150,10 @@ SQL_QUERY;
 	                 set_page_message(tr('%s does not exist', $other_dir));
 	                 return;
 	            }
-		    $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . $other_dir;
+		    $other_dir = Config::get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'] . $other_dir;
 	    } else { // End of user-specified mount-point
 
-		$other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'];
+		$other_dir = Config::get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'];
 
 	    }
             $query = <<<SQL_QUERY
@@ -177,8 +174,7 @@ SQL_QUERY;
 
 // common page data.
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array(
 			'TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Edit FTP Account'),
@@ -209,8 +205,8 @@ update_ftp_account($sql, $ftp_acc, $dmn_name);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_ftp_accounts.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_ftp_accounts.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_ftp_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -231,7 +227,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

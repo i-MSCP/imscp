@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/new_ticket.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/new_ticket.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -77,7 +77,7 @@ SQL_QUERY;
 
 // common page data.
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -86,7 +86,7 @@ $tpl->assign(array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support syst
 
 // dynamic page data.
 
-if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
+if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 	header("Location: index.php");
 	die();
 }
@@ -95,8 +95,8 @@ send_user_message($sql, $_SESSION['user_id'], $_SESSION['user_created_by']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_support_system.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_support_system.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_support_system.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_support_system.tpl');
 
 gen_logged_from($tpl);
 
@@ -120,7 +120,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -29,8 +29,6 @@ if (isset($_SESSION['user_id'])) {
 // THEME_COLOR managment stuff.
 
 function get_user_gui_props(&$sql, $user_id) {
-	global $cfg;
-
 	$query = <<<SQL_QUERY
         select
             lang, layout
@@ -44,13 +42,13 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0 || (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
 		// values for user id, some default stuff
-		return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
+		return array(Config::get('USER_INITIAL_LANG'), Config::get('USER_INITIAL_THEME'));
 	}
 	else if (empty($rs->fields['lang'])) {
-		return array($cfg['USER_INITIAL_LANG'], $rs->fields['layout']);
+		return array(Config::get('USER_INITIAL_LANG'), $rs->fields['layout']);
 	}
 	else if (empty($rs->fields['layout'])) {
-		return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
+		return array($rs->fields['lang'], Config::get('USER_INITIAL_THEME'));
 	}
 	else {
 		return array($rs->fields['lang'], $rs->fields['layout']);
@@ -68,7 +66,7 @@ function gen_page_message(&$tpl) {
 }
 
 function check_language_exist($lang_table) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$tables = $sql->MetaTables();
 	$nlang = count($tables);
@@ -89,7 +87,7 @@ function set_page_message($message) {
 }
 
 function get_menu_vars($menu_link) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$user_id = $_SESSION['user_id'];
 

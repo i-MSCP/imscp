@@ -6,15 +6,17 @@
 <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/JavaScript">
 <!--
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
+
 	location = url;
 }
 
 function enable_for_post() {
+    
 	for (var i = 0; i < document.frmsettings.length; i++) {
 		for (var a = 0; a < document.frmsettings.elements[i].length; a++) {
 			if (document.frmsettings.elements[i].name == "port_type[]") {
@@ -22,14 +24,15 @@ function enable_for_post() {
 			}
 		}
 	}
+    
+return true;
 
-	return true;
 }
 //-->
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -38,13 +41,13 @@ function enable_for_post() {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
 				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr height="*">
+				  <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
@@ -60,7 +63,7 @@ function enable_for_post() {
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
+                              <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
@@ -79,15 +82,15 @@ function enable_for_post() {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="{CLASS}">{SERVICE}
-                                <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}" />
-                                  <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" /></td>
-                              <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port{NUM}" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
-                              <td class="{CLASS}"><select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
+                                <input name="var_name[]" type="hidden" id="var_name" value="{VAR_NAME}" />
+                                  <input name="custom[]" type="hidden" id="custom" value="{CUSTOM}" /></td>
+                              <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
+                              <td class="{CLASS}"><select name="port_type[]" id="port_type" {PROTOCOL_READONLY}>
                                   <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
                                   <option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
                                 </select>
                               </td>
-                              <td class="{CLASS}"><select name="show_val[]" id="show_val{NUM}">
+                              <td class="{CLASS}"><select name="show_val[]" id="show_val">
                                   <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                 </select>
@@ -98,7 +101,7 @@ function enable_for_post() {
                                 <!-- EDP: port_delete_show -->
                                 <!-- BDP: port_delete_link -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
-                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
+                                <a href="#" onClick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
                                 <!-- EDP: port_delete_link -->
                               </td>
                             </tr>
@@ -139,7 +142,8 @@ function enable_for_post() {
                     </tr>
                   </table></td>
 				</tr>
-			</table></td>
+			</table>
+		</td>
 	</tr>
 </table>
 </body>

@@ -23,23 +23,22 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (isset($_GET['edit_id'])) {
-	$edit_id = $_GET['edit_id'];
+	$edit_id = (int) $_GET['edit_id'];
 } else if (isset($_POST['edit_id'])) {
-	$edit_id = $_POST['edit_id'];
+	$edit_id = (int) $_POST['edit_id'];
 } else {
 	user_goto('manage_users.php');
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/edit_reseller.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/edit_reseller.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('rsl_ip_message', 'page');
 $tpl->define_dynamic('rsl_ip_list', 'page');
 $tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -276,7 +275,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		// Hot fix:
 		// Commented out; we cannot calculate how many domains are added: 3 Domains are created by default
 		// but user can delete them and there would be a new inconsitency if so.
-		// todo: Fix it!
+		// TODO: Fix it!
 		/* if ($umail_max != $rmail_current && $umail_current > 0)
 			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d', $umail_max, $rmail_current);
 		else */
@@ -337,6 +336,7 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 		// We have something like that: $u <= ($umax = $r) <= $rmax
 		if ($umax != $r && $u > 0) { // ... && $u != unlimited
 			$err = tr('Reseller data inconsistency!'); //really?
+
 			return;
 		}
 
@@ -382,7 +382,8 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 	}
 }
 
-function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
+function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err)
+{
 	if ($r_ips == $u_ips) {
 		return;
 	} else {
@@ -409,7 +410,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 }
 
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         select
@@ -598,7 +599,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: changes data/password for reseller: $edit_username!");
+			write_log("$user_logged: change data/password for reseller: $edit_username!");
 
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				send_add_user_auto_msg ($user_id,
@@ -724,8 +725,8 @@ $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
 
 update_reseller($sql);
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 
 $tpl->assign(
 	array('TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
@@ -828,10 +829,10 @@ if (isset($_POST['genpass'])) {
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
+
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
-	dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

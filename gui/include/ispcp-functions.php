@@ -20,12 +20,10 @@
 
 function check_for_lock_file($wait_lock_timeout = 500000) {
 
-    global $cfg;
-
 	set_time_limit(0);
 	// @ prevents the Warning:
 	// File(/var/log/chkrootkit.log) is not within the allowed path(s)
-    while(@file_exists($cfg['MR_LOCK_FILE'])) {
+    while(@file_exists(Config::get('MR_LOCK_FILE'))) {
 
 		usleep($wait_lock_timeout);
         clearstatcache();
@@ -115,7 +113,7 @@ function send_request() {
 
 function update_user_props ( $user_id, $props ) {
 
-    global $sql, $cfg;
+    $sql = Database::getInstance();
 
     list (
            $sub_current, $sub_max,
@@ -150,7 +148,7 @@ SQL_QUERY;
 		// mama mia, we have to rebuild the system entry for this domain
 		// and also all domain alias and subdomains
 
-		$update_status = $cfg['ITEM_CHANGE_STATUS'];
+		$update_status = Config::get('ITEM_CHANGE_STATUS');
 
 		// check if we have to wait some system update
 		check_for_lock_file();

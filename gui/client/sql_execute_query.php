@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/sql_execute_query.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/sql_execute_query.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('sql_result', 'page');
@@ -122,8 +122,6 @@ function sql_rs2html(&$rs, $tbl_props = false, $tpl_col_names = false, $htmlspec
 }
 
 function execute_sql_query(&$tpl, &$sql, $user_id, $db_user_id) {
-    global $cfg;
-
     if (!isset($_POST['uaction'])) return;
 
     // let's check user input;
@@ -158,9 +156,9 @@ SQL_QUERY;
     $db_user_name = $rs->fields['sqlu_name'];
     $db_user_pass = $rs->fields['sqlu_pass'];
     $db_name = $rs->fields['sqld_name'];
-    $sql_user = &ADONewConnection($cfg['DB_TYPE']);
+    $sql_user = &ADONewConnection(Config::get('DB_TYPE'));
 
-    if (!@$sql_user->Connect($cfg['DB_HOST'], $db_user_name, $db_user_pass, $db_name)) {
+    if (!@$sql_user->Connect(Config::get('DB_HOST'), $db_user_name, $db_user_pass, $db_name)) {
         set_page_message(tr('Could not connect to the SQL server as %s!', $db_user_name));
         $tpl->assign('SQL_RESULT', '');
         return;
@@ -220,9 +218,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
     die();
 }
 
-global $cfg;
-
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 			array(
@@ -241,8 +237,8 @@ execute_sql_query($tpl, $sql, $_SESSION['user_id'], $db_user_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -263,7 +259,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
 

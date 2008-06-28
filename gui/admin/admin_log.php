@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/admin_log.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/admin_log.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('log_row', 'page');
 $tpl->define_dynamic('scroll_prev_gray', 'page');
@@ -32,8 +32,7 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('clear_log', 'page');
 
-global $cfg;
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -45,7 +44,7 @@ $tpl->assign(
 	);
 
 function generate_page (&$tpl) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$start_index = 0;
 	$rows_per_page = 15;
@@ -68,14 +67,14 @@ SQL_QUERY;
         ORDER BY
             log_time DESC
         LIMIT
-           ?, ?
+           $start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query);
 
 	$records_count = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $query, array($start_index, $rows_per_page));
+	$rs = exec_query($sql, $query);
 
 	if ($rs->RowCount() == 0) {
 		// set_page_message(tr('Log is empty!'));
@@ -153,7 +152,7 @@ SQL_QUERY;
 				$log_message = preg_replace($pattern, $replacement, $log_message);
 			}
 
-			$date_formt = $cfg['DATE_FORMAT'] . " H:i";
+			$date_formt = Config::get('DATE_FORMAT') . ' H:i';
 			$tpl->assign(
 					array(
 						'MESSAGE' => $log_message,
@@ -169,7 +168,7 @@ SQL_QUERY;
 }
 
 function clear_log() {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 		$query = null;
@@ -264,8 +263,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 clear_log();
 
@@ -291,7 +290,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

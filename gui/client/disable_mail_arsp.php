@@ -56,10 +56,8 @@ SQL_QUERY;
 check_email_user($sql);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
-  	global $cfg;
-
   	$mail_id = $_GET['id'];
-  	$item_change_status = $cfg['ITEM_CHANGE_STATUS'];
+  	$item_change_status = Config::get('ITEM_CHANGE_STATUS');
   	check_for_lock_file();
 
   	$query = <<<SQL_QUERY

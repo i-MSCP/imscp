@@ -22,10 +22,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/index.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -106,7 +106,8 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 }
 
 function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
-	global $sql, $crnt_month, $crnt_year;
+	$sql = Database::getInstance();
+	global $crnt_month, $crnt_year;
 	$crnt_month = date("m");
 	$crnt_year = date("Y");
 	// global
@@ -256,7 +257,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 }
 
 function gen_messages_table (&$tpl, $admin_id) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
           select
@@ -330,8 +331,8 @@ gen_def_language($tpl, $sql, $user_def_lang);
 
 gen_def_layout($tpl, $user_def_layout);
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_system_message($tpl, $sql);
 
@@ -343,7 +344,7 @@ $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

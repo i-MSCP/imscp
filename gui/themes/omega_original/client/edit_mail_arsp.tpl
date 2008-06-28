@@ -6,11 +6,12 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/JavaScript">
 <!--
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
+
 	location = url;
 }
 //-->
@@ -22,10 +23,10 @@ function action_delete(url) {
 </style>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -37,13 +38,13 @@ function action_delete(url) {
 </tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-          <tr height="95">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+          <tr height="95";>
             <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
-          <tr>
-            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr height="*">
+            <td colspan=3><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
@@ -54,28 +55,28 @@ function action_delete(url) {
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <td><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
                       <td valign="top"><form name="manage_users_common_frm" method="post" action="enable_mail_arsp.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>
-                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
+                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td nowrap="nowrap" class="content2">{TR_ARSP_MESSAGE}</td>
+                              <td nowrap class="content2">{TR_ARSP_MESSAGE}</td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content"><textarea name="arsp_message" cols="50" rows="15" style="width:80%">{ARSP_MESSAGE}</textarea>
+                              <td nowrap class="content"><textarea name="arsp_message" cols="50" rows="15" wrap="virtual" style="width:80%">{ARSP_MESSAGE}</textarea>
                               </td>
                             </tr>
                           </table>
                         <input type="hidden" name="uaction" value="enable_arsp">
                           <input type="hidden" name="id" value="{ID}">
                           <input name="Submit" type="submit" class="button" value="{TR_ENABLE}">
-                          <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onclick="location = 'email_accounts.php'">
+                          <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onClick="location = 'email_accounts.php'">
                       </form></td>
                     </tr>
                 </table></td>

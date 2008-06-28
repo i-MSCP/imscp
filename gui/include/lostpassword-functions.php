@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -22,22 +22,17 @@ function check_gd() {
 }
 
 function captcha_fontfile_exists() {
-	global $cfg;
-	return file_exists($cfg['LOSTPASSWORD_CAPTCHA_FONT']);
+	return file_exists(Config::get('LOSTPASSWORD_CAPTCHA_FONT'));
 }
 
 function createImage($strSessionVar) {
-	global $cfg;
+	$rgBgColor = Config::get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
+	$rgTextColor = Config::get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
 
-	$rgBgColor = $cfg['LOSTPASSWORD_CAPTCHA_BGCOLOR'];
+	$x = Config::get('LOSTPASSWORD_CAPTCHA_WIDTH');
+	$y = Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT');
 
-	$rgTextColor = $cfg['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'];
-
-	$x = $cfg['LOSTPASSWORD_CAPTCHA_WIDTH'];
-
-	$y = $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'];
-
-	$font = $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
+	$font = Config::get('LOSTPASSWORD_CAPTCHA_FONT');
 
 	$iRandVal = strrand(8, $strSessionVar);
 
@@ -104,7 +99,7 @@ function strrand($length, $strSessionVar) {
 }
 
 function removeOldKeys($ttl) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
@@ -122,7 +117,7 @@ SQL_QUERY;
 }
 
 function setUniqKey($admin_name, $uniqkey) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
@@ -140,7 +135,7 @@ SQL_QUERY;
 }
 
 function setPassword($uniqkey, $upass) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	if ($uniqkey == '') exit;
 
@@ -157,7 +152,7 @@ SQL_QUERY;
 }
 
 function uniqkeyexists($uniqkey) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         		SELECT
@@ -190,7 +185,7 @@ function uniqkeygen() {
 }
 
 function sendpassword($uniqkey) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         		SELECT
@@ -244,7 +239,7 @@ SQL_QUERY;
 
 		$message = $data['message'];
 
-		$base_vhost = $cfg['BASE_SERVER_VHOST'];
+		$base_vhost = Config::get('BASE_SERVER_VHOST');
 
 		if ($from_name) {
 			$from = "\"" . $from_name . "\" <" . $from_email . ">";
@@ -286,7 +281,7 @@ SQL_QUERY;
 }
 
 function requestpassword($admin_name) {
-	global $sql, $cfg;
+	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
         		SELECT
@@ -323,7 +318,7 @@ SQL_QUERY;
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$base_vhost = $cfg['BASE_SERVER_VHOST'];
+	$base_vhost = Config::get('BASE_SERVER_VHOST');
 
 	if ($from_name) {
 		$from = "\"" . $from_name . "\" <" . $from_email . ">";

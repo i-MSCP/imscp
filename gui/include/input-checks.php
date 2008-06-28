@@ -104,7 +104,7 @@ function clean_html($text) {
  * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
  * @return String {|} trimmed, stripslashed, ev htmlencoded input string
  */
-function clean_input($input, $htmlencode = true) {
+function clean_input($input, $htmlencode = false) {
 	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 		$input = trim($input, "{..}");
 	}
@@ -129,15 +129,12 @@ function clean_input($input, $htmlencode = true) {
  * @version		1.01
  *
  * @access	public
- * @global	array	$cfg		array of config values
  * @param 	String 	$data		username to be checked
  * @param 	int		$num		number of max. chars
  * @param	String	$permitted	RegExp of permitted chars
  * @return 	boolean				valid username or not
  */
 function chk_password($password, $num = 50, $permitted = "") {
-	global $cfg;
-
 	if ($num > 255) {
 		$num = 255;
 	} else if ($num < 6) {
@@ -145,15 +142,15 @@ function chk_password($password, $num = 50, $permitted = "") {
 	}
 
 	$len = strlen($password);
-	if ($len < $cfg['PASSWD_CHARS'] || $len > $num) {
+	if ($len < Config::get('PASSWD_CHARS') || $len > $num) {
 		return false;
 	}
 
-	if (!empty($permitted) && preg_match($permitted, $password)) {
+	if (!empty($permitted) && preg_match($pemitted, $password)) {
 		return false;
 	}
 
-	if ($cfg['PASSWD_STRONG']) {
+	if (Config::get('PASSWD_STRONG')) {
 		return (bool)(preg_match("/[0-9]/", $password) && preg_match("/[a-zA-Z]/", $password));
 	} else {
 		return true;
@@ -186,16 +183,13 @@ function chk_username($username, $length = null) {
 }
 
 function chk_email($email, $num = 50) {
-	if (strlen($email) > $num)
-		return false;
-
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
+	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
-	$nqtext = "[^\\\\$nonascii\015\012\"]"; # all not qouteable chars
-	$qchar = "\\\\[^$nonascii]";			# matched quoted chars
+	$nqtext = "[^\\\\$nonascii\015\012\"]";
+	$qchar = "\\\\[^$nonascii]";
 
-	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
+	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
@@ -206,26 +200,35 @@ function chk_email($email, $num = 50) {
 
 	$regex = "$user_part\@$domain_part";
 	// RegEx end
-	return (bool) preg_match("/^$regex$/", $email);
-}
+	if (!preg_match("/^$regex$/", $email))
+		return false;
 
-function ispcp_check_local_part($email, $num = 50) {
 	if (strlen($email) > $num)
 		return false;
 
+	return true;
+}
+
+function ispcp_check_local_part($email, $num = 50) {
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
+	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
 	$nqtext = "[^\\\\$nonascii\015\012\"]";
 	$qchar = "\\\\[^$nonascii]";
 
-	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
+	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
 	$regex = $user_part;
 	// RegEx end
-	return (bool) preg_match("/^$regex$/", $email);
+	if (!preg_match("/^$regex$/D", $email))
+		return false;
+
+	if (strlen($email) > $num)
+		return false;
+
+	return true;
 }
 
 function full_domain_check($data) {
@@ -555,7 +558,7 @@ function chk_subdname($subdname) {
  * @return numeric The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
-	global $sql;
+	$sql = Database::getInstance();
 
 	$who = null;
 	// Fix $type according to type or by alias

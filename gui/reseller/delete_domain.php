@@ -24,6 +24,8 @@ check_login(__FILE__);
 
 $reseller = $_SESSION['user_id'];
 
+$theme_color = Config::get('USER_INITIAL_THEME');
+
 if (isset($_GET['domain_id']))
 	$del_id = $_GET['domain_id'];
 else {
@@ -32,8 +34,8 @@ else {
 	die();
 }
 
-/* check for domain owns */
-$query = "SELECT domain_id FROM domain WHERE domain_id=? AND domain_created_id=?";
+/* check for domain ouwns */
+$query = "select domain_id from domain where domain_id=? and domain_created_id=?";
 $res = exec_query($sql, $query, array($del_id, $reseller));
 $data = $res->FetchRow();
 if ($data['domain_id'] == 0) {
@@ -43,7 +45,7 @@ if ($data['domain_id'] == 0) {
 }
 
 /* check for mail acc in MAIN domain */
-$query = "SELECT COUNT(mail_id) AS mailnum FROM mail_users WHERE domain_id=?";
+$query = "select count(mail_id) as mailnum from mail_users where domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['mailnum'] > 0) {
@@ -54,7 +56,7 @@ if ($data['mailnum'] > 0) {
 }
 
 /* check for ftp acc in MAIN domain */
-$query = "SELECT COUNT(fg.gid) AS ftpnum FROM ftp_group fg,domain d WHERE d.domain_id=? AND fg.groupname=d.domain_name";
+$query = "select count(fg.gid) as ftpnum from ftp_group fg,domain d where d.domain_id=? and fg.groupname=d.domain_name";
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['ftpnum'] > 0) {
@@ -65,7 +67,7 @@ if ($data['ftpnum'] > 0) {
 }
 
 /* check for alias domains */
-$query = "SELECT COUNT(alias_id) AS aliasnum FROM domain_aliasses WHERE domain_id=?";
+$query = "select count(alias_id) as aliasnum from domain_aliasses where domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['aliasnum'] > 0) {
@@ -76,7 +78,7 @@ if ($data['aliasnum'] > 0) {
 }
 
 /* check for subdomains */
-$query = "SELECT COUNT(subdomain_id) AS subnum FROM subdomain WHERE domain_id = ?";
+$query = "select count(subdomain_id) as subnum from subdomain where domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['subnum'] > 0) {
@@ -88,24 +90,24 @@ if ($data['subnum'] > 0) {
 
 substract_from_reseller_props($_SESSION['user_id'], $del_id);
 
-$query = "UPDATE domain SET domain_status='delete' WHERE domain_id = ?";
+$query = "update domain set domain_status='delete' where domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 send_request();
 
 /* delete admin of this domain */
-$query = "SELECT domain_admin_id,domain_name FROM domain WHERE domain_id = ?";
+$query = "select domain_admin_id,domain_name from domain where domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 $dat = $res->FetchRow();
 
-$query = "DELETE FROM admin WHERE admin_id = ?";
-$res = exec_query($sql, $query, array($dat['domain_admin_id']));
+$query = "delete from admin where admin_id=?";
+$res = exec_query($sql, $query, array($dat[domain_admin_id]));
 
 /* delete the quota section */
-$query = "DELETE FROM quotalimits WHERE name = ?";
-$res = exec_query($sql, $query, array($dat['domain_admin_id']));
+$query = "delete from quotalimits where name=?";
+$res = exec_query($sql, $query, array($dat[domain_admin_id]));
 
-
-write_log($_SESSION['user_logged'] .": deletes domain " . $dat['domain_name']);
+$admin_login = $_SESSION['user_logged'];
+write_log("$admin_login: delete domain " . $dat['domain_name']);
 
 $_SESSION['ddel'] = '_yes_';
 header("Location: users.php");
@@ -160,7 +162,7 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 
 	$rdisk_current -= $disk_max;
 
-	$rprops  = "$rdmn_current;$rdmn_max;";
+	$rprops = "$rdmn_current;$rdmn_max;";
 	$rprops .= "$rsub_current;$rsub_max;";
 	$rprops .= "$rals_current;$rals_max;";
 	$rprops .= "$rmail_current;$rmail_max;";

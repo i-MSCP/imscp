@@ -29,12 +29,12 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('dir_item', 'page');
 $tpl->define_dynamic('action_link', 'page');
 $tpl->define_dynamic('list_item', 'page');
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/ftp_choose_dir.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/ftp_choose_dir.tpl');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 function gen_directories(&$tpl) {
-	global $sql;
+	$sql = Database::getInstance();
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
@@ -43,7 +43,7 @@ function gen_directories(&$tpl) {
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {
-		set_page_message(tr('Cannot open directory !<br />Please contact your administrator !'));
+		set_page_message(tr('Can not open directory !<br>Please contact your administrator !'));
 		return;
 	}
 	// Show parent directory link
@@ -109,7 +109,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();

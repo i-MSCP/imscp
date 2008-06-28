@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
@@ -33,7 +33,7 @@ else {
 }
 
 // Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
+$res = exec_query($sql, "SELECT COUNT(id) FROM orders WHERE plan_id=?", array($hpid));
 $data = $res->FetchRow();
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';

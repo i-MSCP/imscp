@@ -22,16 +22,16 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (strtolower($cfg['HOSTING_PLANS_LEVEL']) != 'admin') {
-	header("Location: index.php");
+if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+	header('Location: index.php');
 	die();
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ahp.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ahp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -48,8 +48,8 @@ $tpl->assign(
  *
  */
 
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_hp.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_hp.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hp.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_hp.tpl');
 
 $tpl->assign(
 		array(
@@ -96,7 +96,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // Function definitions
 
@@ -122,7 +122,6 @@ function gen_empty_ahp_page(&$tpl) {
 
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
-
 // Show last entered data for new hp
 function gen_data_ahp_page(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
@@ -189,12 +188,12 @@ function check_data_correction(&$tpl) {
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
-		$price = clean_input($_POST['hp_price']);
+		$price = $_POST['hp_price'];
 	}
 	if (empty($_POST['hp_setupfee'])) {
 		$setup_fee = 0;
 	} else {
-		$setup_fee = clean_input($_POST['hp_setupfee']);
+		$setup_fee = $_POST['hp_setupfee'];
 	}
 
 	$value = clean_input($_POST['hp_value']);
@@ -207,19 +206,19 @@ function check_data_correction(&$tpl) {
 	if (isset($_POST['cgi']))
 		$hp_cgi = $_POST['cgi'];;
 
-	if ($hp_name == '') {
+	if (empty($hp_name)) {
 		$ahp_error = tr('Incorrect template name length!');
 	}
 
-	if ($description == '') {
+	if (empty($description)) {
 		$ahp_error = tr('Incorrect template description length!');
 	}
 	if (!is_numeric($price)) {
-		$ahp_error = tr('Price must be a number!');
+		$ahp_error = tr('Incorrect price syntax!');
 	}
 
 	if (!is_numeric($setup_fee)) {
-		$ahp_error = tr('Setup fee must be a number!');
+		$ahp_error = tr('Incorrect setup fee syntax!');
 	}
 
 	if (!ispcp_limit_check($hp_sub, -1)) {
@@ -252,7 +251,7 @@ function check_data_correction(&$tpl) {
 
 // Add new host plan to DB
 function save_data_to_db(&$tpl, $admin_id){
-	global $sql;
+	$sql = Database::getInstance();
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;

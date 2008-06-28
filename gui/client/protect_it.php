@@ -24,14 +24,14 @@ require '../include/vfs.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/protect_it.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/protect_it.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('group_item', 'page');
 $tpl->define_dynamic('user_item', 'page');
 $tpl->define_dynamic('unprotect_it', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -43,8 +43,6 @@ $tpl->assign(
 		);
 
 function protect_area(&$tpl, &$sql, $dmn_id) {
-	global $cfg;
-
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
 		return ;
 	}
@@ -64,7 +62,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		return;
 	}
 	// Check for existing directory
-	$path = clean_input($_POST['other_dir']);
+	$path = clean_input($_POST['other_dir'], false);
 	$domain = $_SESSION['user_logged'];
 	// We need to use the virtual file system
 	$vfs = &new vfs($domain, $sql);
@@ -91,7 +89,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			if (count($users) == 1 || count($users) == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You cannot protect area without selected user(s)'));
+					set_page_message(tr('You can not protect area without selected user(s)'));
 					return;
 				}
 			} else {
@@ -104,7 +102,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			if (count($groups) == 1 || count($groups) == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You cannot protect area without selected group(s)'));
+					set_page_message(tr('You can not protect area without selected group(s)'));
 					return;
 				}
 			} else {
@@ -116,34 +114,33 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	// lets check if we have to update or to make new enrie
 	$alt_path = $path . "/";
 	$query = <<<SQL_QUERY
-        SELECT
+        select
             id
-        FROM
+        from
             htaccess
-        WHERE
+        where
              dmn_id = ?
-		AND
+		and
 			(path = ?
-			OR
+				or
 			path = ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
-	$toadd_status = $cfg['ITEM_ADD_STATUS'];
-	$tochange_status = $cfg['ITEM_CHANGE_STATUS'];
+	$toadd_status = Config::get('ITEM_ADD_STATUS');
+	$tochange_status = Config::get('ITEM_CHANGE_STATUS');
 
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
 		$query = <<<SQL_QUERY
-        UPDATE
-			htaccess
-		SET
+        update htaccess
+		set
 			user_id = ?,
 			group_id = ?,
 			auth_name = ?,
 			path = ?,
 			status = ?
-        WHERE
+        where
 			id = '$update_id'
 SQL_QUERY;
 
@@ -153,10 +150,9 @@ SQL_QUERY;
 		set_page_message(tr('Protected area updated successfully!'));
 	} else {
 		$query = <<<SQL_QUERY
-        INSERT INTO
-			htaccess
+        insert into htaccess
             (dmn_id, user_id, group_id, auth_type, auth_name, path, status)
-        VALUES
+        values
             (?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
@@ -171,15 +167,13 @@ SQL_QUERY;
 }
 
 function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
-	global $cfg;
 	if (!isset($_GET['id'])) {
 		$edit = 'no';
 		$type = 'user';
 		$user_id = 0;
 		$group_id = 0;
 		$tpl->assign(
-			array(
-				'PATH' => '',
+			array('PATH' => '',
 				'AREA_NAME' => '',
 				'UNPROTECT_IT' => '',
 				)
@@ -192,13 +186,13 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
 		$query = <<<SQL_QUERY
-        SELECT
+        select
             *
-        FROM
+        from
             htaccess
-        WHERE
+        where
              dmn_id = ?
-		AND
+		and
 			id = ?
 SQL_QUERY;
 
@@ -214,7 +208,7 @@ SQL_QUERY;
 		$status = $rs->fields['status'];
 		$path = $rs->fields['path'];
 		$auth_name = $rs->fields['auth_name'];
-		$ok_status = $cfg['ITEM_OK_STATUS'];
+		$ok_status = Config::get('ITEM_OK_STATUS');
 		if ($status !== $ok_status) {
 			set_page_message(tr('Protected area status should be OK if you want to edit it!'));
 			header("Location: protected_areas.php");
@@ -222,8 +216,7 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-			array(
-				'PATH' => $path,
+			array('PATH' => $path,
 				'AREA_NAME' => $auth_name,
 				)
 			);
@@ -263,22 +256,21 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
+        select
             *
-        FROM
+        from
             htaccess_users
-        WHERE
+        where
              dmn_id = ?
+
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array(
-				'USER_VALUE' => "-1",
-				'USER_LABEL' => tr('You have no users !'),
-				'USER_SELECTED' => ''
+			array('USER_VALUE' => "-1",
+				'USER_LEBEL' => tr('You have no users !')
 				)
 			);
 		$tpl->parse('USER_ITEM', 'user_item');
@@ -297,7 +289,7 @@ SQL_QUERY;
 			$tpl->assign(
 					array(
 						'USER_VALUE' => $rs->fields['id'],
-						'USER_LABEL' => $rs->fields['uname'],
+						'USER_LEBEL' => $rs->fields['uname'],
 						'USER_SELECTED' => $usr_selected,
 						)
 					);
@@ -309,12 +301,13 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
+        select
             *
-        FROM
+        from
             htaccess_groups
-        WHERE
+        where
              dmn_id = ?
+
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
@@ -323,8 +316,7 @@ SQL_QUERY;
 		$tpl->assign(
 				array(
 					'GROUP_VALUE' => "-1",
-					'GROUP_LABEL' => tr('You have no groups!'),
-					'GROUP_SELECTED' => ''
+					'GROUP_LEBEL' => tr('You have no groups!')
 					)
 				);
 		$tpl->parse('GROUP_ITEM', 'group_item');
@@ -343,7 +335,7 @@ SQL_QUERY;
 			$tpl->assign(
 					array(
 						'GROUP_VALUE' => $rs->fields['id'],
-						'GROUP_LABEL' => $rs->fields['ugroup'],
+						'GROUP_LEBEL' => $rs->fields['ugroup'],
 						'GROUP_SELECTED' => $grp_selected,
 						)
 					);
@@ -353,9 +345,8 @@ SQL_QUERY;
 	}
 }
 
-function gen_page_awstats(&$tpl) {
-	global $cfg;
-	$awstats_act = $cfg['AWSTATS_ACTIVE'];
+function gen_page_awstats($tpl) {
+	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
 	} else {
@@ -374,8 +365,8 @@ function gen_page_awstats(&$tpl) {
  *
  */
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -414,7 +405,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG'])
+if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
