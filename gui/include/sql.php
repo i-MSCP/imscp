@@ -2,35 +2,30 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2008 by ispCP | http://isp-control.net
- * @version SVN: $ID$
- * @link http://isp-control.net
- * @author ispCP Team
- * @license This program is free software; you can redistribute it and/or modify it under
- *    the terms of the MPL General Public License as published by the Free Software
- *    Foundation; either version 1.1 of the License, or (at your option) any later
- *    version.
- *    You should have received a copy of the MPL Mozilla Public License along with
- *    this program; if not, write to the Open Source Initiative (OSI)
- *    http://opensource.org | osi@opensource.org
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
+ *
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
  */
 
-//require (INCLUDEPATH . '/adodb/adodb.inc.php');
-//require (INCLUDEPATH . '/adodb/adodb-pager.inc.php');
 require_once(INCLUDEPATH . '/class.database.php');
 
 Config::set('DB_TYPE', Config::get('DATABASE_TYPE'));
 Config::set('DB_HOST', Config::get('DATABASE_HOST'));
 Config::set('DB_USER', Config::get('DATABASE_USER'));
-//$cfg['DB_PASS'] = $cfg['DATABASE_PASSWORD'];
 Config::set('DB_PASS', decrypt_db_password(Config::get('DATABASE_PASSWORD')));
 Config::set('DB_NAME', Config::get('DATABASE_NAME'));
 
-//$sql = &ADONewConnection(Config::get('DB_TYPE'));
-
-//@$sql->Connect(Config::get('DB_HOST'), Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_NAME')) or
-//	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
 
 @$sql = Database::connect(Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_TYPE'), Config::get('DB_HOST'), Config::get('DB_NAME'))
 	or system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());

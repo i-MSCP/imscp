@@ -1,23 +1,22 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control Panel
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 function calc_bars($crnt, $max, $bars_max) {
 	if($max != 0) {
@@ -34,7 +33,6 @@ function calc_bars($crnt, $max, $bars_max) {
                  sprintf("%.2f", $percent_usage),
                  sprintf("%d", $bars)
                 );
-
 }
 
 function sizeit($bytes, $from = 'B') {
@@ -94,82 +92,57 @@ function sizeit($bytes, $from = 'B') {
 //
 
 function generate_rand_salt($min = 46, $max = 126) {
-
-    $salt = chr(mt_rand($min, $max));
-
+    $salt  = chr(mt_rand($min, $max));
     $salt .= chr(mt_rand($min, $max));
-
     return $salt;
-
 }
 
 function get_salt_from($data) {
-
-
     $salt = substr($data, 0, 2);
-
     return $salt;
-
-
 }
 
 function crypt_user_pass($data) {
-
 	$res = md5($data);
     return $res;
-
 }
 
 function crypt_user_ftp_pass($data) {
-
     $res = crypt($data, generate_rand_salt());
     return $res;
-
 }
 
-
 function check_user_pass($crdata, $data ) {
-
     $salt = get_salt_from($crdata);
     $udata = crypt($data, $salt);
-
     return ($udata == $crdata);
 }
 
 function _passgen() {
-
     $pw = '';
 
     for($i = 0; $i <= Config::get('PASSWD_CHARS'); $i++) {
-
         $z = 0;
 
         do {
             $z = mt_rand(42, 123);
         } while($z >= 91 && $z <= 96);
-
         $pw .= chr($z);
-
     }
-
     return $pw;
-
 }
 
 function passgen() {
-
     $pw = null;
 
     while ($pw == null || !chk_password($pw)) {
         $pw = _passgen();
     }
-
     return $pw;
 
 }
 
-function translate_limit_value($value, $autosize = false)
-{
+function translate_limit_value($value, $autosize = false) {
     if ($value == -1) {
         return tr('disabled');
     } else if ($value == 0){

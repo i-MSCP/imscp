@@ -135,6 +135,8 @@ function clean_input($input, $htmlencode = false) {
  * @return 	boolean				valid username or not
  */
 function chk_password($password, $num = 50, $permitted = "") {
+	global $cfg;
+
 	if ($num > 255) {
 		$num = 255;
 	} else if ($num < 6) {
@@ -146,7 +148,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 		return false;
 	}
 
-	if (!empty($permitted) && preg_match($pemitted, $password)) {
+	if (!empty($permitted) && preg_match($permitted, $password)) {
 		return false;
 	}
 
@@ -183,11 +185,14 @@ function chk_username($username, $length = null) {
 }
 
 function chk_email($email, $num = 50) {
-	// RegEx begin
-	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	if (strlen($email) > $num)
+		return false;
 
-	$nqtext = "[^\\\\$nonascii\015\012\"]";
-	$qchar = "\\\\[^$nonascii]";
+	// RegEx begin
+	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
+
+	$nqtext = "[^\\\\$nonascii\015\012\"]"; # all not qouteable chars
+	$qchar = "\\\\[^$nonascii]";			# matched quoted chars
 
 	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
@@ -200,35 +205,26 @@ function chk_email($email, $num = 50) {
 
 	$regex = "$user_part\@$domain_part";
 	// RegEx end
-	if (!preg_match("/^$regex$/", $email))
-		return false;
-
-	if (strlen($email) > $num)
-		return false;
-
-	return true;
+	return (bool) preg_match("/^$regex$/", $email);
 }
 
 function ispcp_check_local_part($email, $num = 50) {
+	if (strlen($email) > $num)
+		return false;
+
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
 
 	$nqtext = "[^\\\\$nonascii\015\012\"]";
 	$qchar = "\\\\[^$nonascii]";
 
-	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
 	$regex = $user_part;
 	// RegEx end
-	if (!preg_match("/^$regex$/D", $email))
-		return false;
-
-	if (strlen($email) > $num)
-		return false;
-
-	return true;
+	return (bool) preg_match("/^$regex$/", $email);
 }
 
 function full_domain_check($data) {

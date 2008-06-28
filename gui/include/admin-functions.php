@@ -718,6 +718,8 @@ SQL_QUERY;
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
 						'USR_USERNAME' => $rs->fields['domain_name'],
+						'TR_EDIT_DOMAIN' => tr('Edit domain'),
+						'TR_EDIT_USR' => tr('Edit user'),
 						)
 					);
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
@@ -942,49 +944,57 @@ SQL_QUERY;
 		$rdmn_current += 1;
 
 		if ($sub_max != -1) {
-			if ($sub_max == 0) $rsub_uf = '_on_';
+			if ($sub_max == 0)
+				$rsub_uf = '_on_';
 
 			$rsub_current += $sub_current;
 			$rsub_max += $sub_max;
 		}
 
 		if ($als_max != -1) {
-			if ($als_max == 0) $rals_uf = '_on_';
+			if ($als_max == 0)
+				$rals_uf = '_on_';
 
 			$rals_current += $als_current;
 			$rals_max += $als_max;
 		}
 
-		if ($mail_max == 0) $rmail_uf = '_on_';
+		if ($mail_max == 0)
+			$rmail_uf = '_on_';
 
 		$rmail_current += $mail_current;
 		$rmail_max += $mail_max;
 
-		if ($ftp_max == 0) $rftp_uf = '_on_';
+		if ($ftp_max == 0)
+			$rftp_uf = '_on_';
 
 		$rftp_current += $ftp_current;
 		$rftp_max += $ftp_max;
 
 		if ($sql_db_max != -1) {
-			if ($sql_db_max == 0) $rsql_db_uf = '_on_';
+			if ($sql_db_max == 0)
+				$rsql_db_uf = '_on_';
 
 			$rsql_db_current += $sql_db_current;
 			$rsql_db_max += $sql_db_max;
 		}
 
 		if ($sql_user_max != -1) {
-			if ($sql_user_max == 0) $rsql_user_uf = '_on_';
+			if ($sql_user_max == 0)
+				$rsql_user_uf = '_on_';
 
 			$rsql_user_current += $sql_user_current;
 			$rsql_user_max += $sql_user_max;
 		}
 
-		if ($traff_max == 0) $rtraff_uf = '_on_';
+		if ($traff_max == 0)
+			$rtraff_uf = '_on_';
 
 		$rtraff_current += $traff_current;
 		$rtraff_max += $traff_max;
 
-		if ($disk_max == 0) $rdisk_uf = '_on_';
+		if ($disk_max == 0)
+			$rdisk_uf = '_on_';
 
 		$rdisk_current += $disk_current;
 		$rdisk_max += $disk_max;
@@ -1031,30 +1041,26 @@ SQL_QUERY;
 
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
-	// Sorry 4 the strange Hack, but it works - RatS
+	// Sorry for the strange Hack, but it works - RatS
 	$mail_current = records_count('mail_id', 'mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
-	$ftp_current = sub_records_rlike_count('domain_name', 'domain', 'domain_id', $user_id,
-		'userid', 'ftp_users', 'userid', '@', ''
-		);
+	$ftp_current = sub_records_rlike_count( 'domain_name', 'domain', 'domain_id', $user_id,
+											'userid', 'ftp_users', 'userid', '@', '');
 
 	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
-		'userid', 'ftp_users', 'userid', '@', ''
-		);
+											'userid', 'ftp_users', 'userid', '@', '');
 
 	$ftp_current += sub_records_rlike_count('alias_name', 'domain_aliasses', 'domain_id', $user_id,
-		'userid', 'ftp_users', 'userid', '@', ''
-		);
+											'userid', 'ftp_users', 'userid', '@', '');
 
 	$ftp_max = $rs->fields['domain_ftpacc_limit'];
 
 	$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
 	$sql_db_max = $rs->fields['domain_sqld_limit'];
 
-	$sql_user_current = sub_records_count('sqld_id', 'sql_database', 'domain_id', $user_id,
-		'sqlu_id', 'sql_user', 'sqld_id', '', ''
-		);
+	$sql_user_current = sub_records_count(	'sqld_id', 'sql_database', 'domain_id', $user_id,
+											'sqlu_id', 'sql_user', 'sqld_id', '', '');
 
 	$sql_user_max = $rs->fields['domain_sqlu_limit'];
 
@@ -1062,14 +1068,11 @@ SQL_QUERY;
 
 	$disk_max = $rs->fields['domain_disk_limit'];
 
-	return array($sub_current, $sub_max,
-		$als_current, $als_max,
-		$mail_current, $mail_max,
-		$ftp_current, $ftp_max,
-		$sql_db_current, $sql_db_max,
-		$sql_user_current, $sql_user_max,
-		$traff_max,
-		$disk_max);
+	return array(
+			$sub_current, $sub_max, $als_current, $als_max,
+			$mail_current, $mail_max, $ftp_current, $ftp_max,
+			$sql_db_current, $sql_db_max, $sql_user_current,
+			$sql_user_max, $traff_max, $disk_max);
 }
 
 function records_count($field, $table, $where, $value) {
@@ -2223,7 +2226,6 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 				orders_settings
 			WHERE
 				user_id = ?
-
 SQL_QUERY;
 
 	if (isset($_SESSION['user_theme'])) {
@@ -2246,7 +2248,7 @@ SQL_QUERY;
   <title>{$title}</title>
  </head>
  <body>
-  <center>
+  <div align="center">
    <table width="100%" height="95%">
     <tr align="center">
      <td align="center">
@@ -2256,7 +2258,7 @@ RIC;
      </td>
     </tr>
    </table>
-  </center>
+  </div>
  </body>
 </html>
 RIC;
@@ -2353,7 +2355,7 @@ SQL_QUERY;
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
+	write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!", $_SESSION['user_logged'], $toname . ": " . $to_email, $fromname . ": " . $from_email, $mail_status));
 }
 
 function setConfig_Value($name, $value) {

@@ -110,7 +110,9 @@ class vfs {
 			define("VFS_TMP_DIR", Config::get('GUI_ROOT_DIR') . '/phptmp');
 		}
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
+		$_ENV['TMPDIR'] = VFS_TMP_DIR;
 		putenv("PHP_TMPDIR=" . $_ENV['PHP_TMPDIR']);
+		putenv("TMPDIR=" . $_ENV['PHP_TMPDIR']);
 	}
 
 	/**
@@ -205,13 +207,10 @@ SQL_QUERY;
 		}
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
-		$this->_handle = @ftp_ssl_connect('localhost');
+		$this->_handle = @ftp_connect('localhost');
 		if (!is_resource($this->_handle)) {
-			$this->_handle = @ftp_connect('localhost');
-			if (!is_resource($this->_handle)) {
-				$this->close();
-				return false;
-			}
+			$this->close();
+			return false;
 		}
 		// Perform actual login
 		$response = @ftp_login($this->_handle, $this->_user, $this->_passwd);

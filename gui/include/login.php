@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
@@ -56,7 +56,7 @@ function register_user($uname, $upass) {
 	    }
 
 	    if (!is_userdomain_ok($uname)) {
-	        write_log($uname." Domain status is not OK - user can not login");
+	        write_log($uname." Domain status is not OK - user cannot login");
 	        system_message(tr("%s's account status is not ok!", $uname));
 	        return false;
 	    }
@@ -192,6 +192,7 @@ function check_login($fName = null, $checkReferer = true) {
             if (isset($info['host']) && !empty($info['host'])) {
                 if ($info['host'] != $_SERVER['HTTP_HOST'] || $info['host'] != $_SERVER['SERVER_NAME']) {
                     set_page_message(tr('Request from foreign host was blocked!'));
+                if(!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']), strlen($_SERVER['REDIRECT_URL'])) === $_SERVER['REDIRECT_URL']))
                     redirect_to_level_page();
                 }
             }
@@ -290,7 +291,7 @@ function change_user_interface($from_id, $to_id) {
 
         exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(sprintf("%s changed into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
+        write_log(sprintf("%s changes into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
         break;
     }
 

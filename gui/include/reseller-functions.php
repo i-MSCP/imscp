@@ -29,7 +29,7 @@ define('MT_NORMAL_CATCHALL', 'normal_catchall');
 define('MT_ALIAS_CATCHALL', 'alias_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
-	$sql = Database::getInstance();
+    	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -194,6 +194,9 @@ SQL_QUERY;
 	} // end else
 	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
+	}
+	if (isset(Config::get('HOSTING_PLANS_LEVEL')) && strtolower(Config::get('HOSTING_PLANS_LEVEL')) === 'admin') {
+		$tpl->assign('HP_MENU_ADD', '');
 	}
 
 	$tpl->parse('MENU', 'menu');
@@ -729,8 +732,6 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		return false;
 	}
-
-	return false;
 } //End of check_ruser_data()
 
 // Translate domain status
@@ -1158,7 +1159,7 @@ SQL_QUERY;
 	}
 }
 
-function gen_domain_details(&$tpl, &$sql, $domain_id) {
+function gen_domain_details(&$tpl, &$sql, &$domain_id) {
 	$tpl->assign('USER_DETAILS', '');
 
 	if (isset($_SESSION['details']) and $_SESSION['details'] == 'hide') {
@@ -1311,7 +1312,7 @@ SQL_QUERY;
 
 	if ($dmn_max != 0) {
 		if ($dmn_current + 1 > $dmn_max) {
-			set_page_message(tr('You have reached your domains limit.<br>You can not add more domains!'));
+			set_page_message(tr('You have reached your domains limit.<br>You cannot add more domains!'));
 			$error = true;
 		}
 	}
@@ -1319,7 +1320,7 @@ SQL_QUERY;
 	if ($sub_max != 0) {
 		if ($sub_new != -1) {
 			if ($sub_new == 0) {
-				set_page_message(tr('You have a subdomains limit!<br>You can not add an user with unlimited subdomains!'));
+				set_page_message(tr('You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!'));
 				$error = true;
 			} else if ($sub_current + $sub_new > $sub_max) {
 				set_page_message(tr('You are exceeding your subdomains limit!'));
@@ -1331,7 +1332,7 @@ SQL_QUERY;
 	if ($als_max != 0) {
 		if ($als_new != -1) {
 			if ($als_new == 0) {
-				set_page_message(tr('You have an aliases limit!<br>You can not add an user with unlimited aliases!'));
+				set_page_message(tr('You have an aliases limit!<br>You cannot add an user with unlimited aliases!'));
 				$error = true;
 			} else if ($als_current + $als_new > $als_max) {
 				set_page_message(tr('You Are Exceeding Your Alias Limit!'));
@@ -1342,7 +1343,7 @@ SQL_QUERY;
 
 	if ($mail_max != 0) {
 		if ($mail_new == 0) {
-			set_page_message(tr('You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!'));
+			set_page_message(tr('You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!'));
 			$error = true;
 		} else if ($mail_current + $mail_new > $mail_max) {
 			set_page_message(tr('You are exceeding your mail accounts limit!'));
@@ -1351,7 +1352,7 @@ SQL_QUERY;
 
 	if ($ftp_max != 0) {
 		if ($ftp_new == 0) {
-			set_page_message(tr('You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!'));
+			set_page_message(tr('You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!'));
 			$error = true;
 		} else if ($ftp_current + $ftp_new > $ftp_max) {
 			set_page_message(tr('You are exceeding your FTP accounts limit!'));
@@ -1362,7 +1363,7 @@ SQL_QUERY;
 	if ($sql_db_max != 0) {
 		if ($sql_db_new != -1) {
 			if ($sql_db_new == 0) {
-				set_page_message(tr('You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!'));
+				set_page_message(tr('You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!'));
 				$error = true;
 			} else if ($sql_db_current + $sql_db_new > $sql_db_max) {
 				set_page_message(tr('You are exceeding your SQL databases limit!'));
@@ -1374,10 +1375,10 @@ SQL_QUERY;
 	if ($sql_user_max != 0) {
 		if ($sql_user_new != -1) {
 			if ($sql_user_new == 0) {
-				set_page_message(tr('You have an SQL users limit!<br>You can not add an user with unlimited SQL users!'));
+				set_page_message(tr('You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!'));
 				$error = true;
 			} else if ($sql_db_new == -1) {
-				set_page_message(tr('You have disabled SQL databases for this user!<br>You can not have SQL users here!'));
+				set_page_message(tr('You have disabled SQL databases for this user!<br>You cannot have SQL users here!'));
 				$error = true;
 			} else if ($sql_user_current + $sql_user_new > $sql_user_max) {
 				set_page_message(tr('You are exceeding your SQL database limit!'));
@@ -1388,7 +1389,7 @@ SQL_QUERY;
 
 	if ($traff_max != 0) {
 		if ($traff_new == 0) {
-			set_page_message(tr('You have a traffic limit!<br>You can not add an user with unlimited traffic!'));
+			set_page_message(tr('You have a traffic limit!<br>You cannot add an user with unlimited traffic!'));
 			$error = true;
 		} else if ($traff_current + $traff_new > $traff_max) {
 			set_page_message(tr('You are exceeding your traffic limit!'));
@@ -1398,7 +1399,7 @@ SQL_QUERY;
 
 	if ($disk_max != 0) {
 		if ($disk_new == 0) {
-			set_page_message(tr('You have a disk limit!<br>You can not add an user with unlimited disk!'));
+			set_page_message(tr('You have a disk limit!<br>You cannot add an user with unlimited disk!'));
 			$error = true;
 		} else if ($disk_current + $disk_new > $disk_max) {
 			set_page_message(tr('You are exceeding your disk limit!'));
@@ -1546,7 +1547,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 		} else if ($ulname) {
 			$name = $ulname;
 		} else {
-			$name = $uname;
+			$name = $uemail;
 		}
 		$to = $uemail;
 	}
@@ -1556,6 +1557,8 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$search [] = '{DOMAIN}';
 	$replace[] = $domain_name;
+	$search [] = '{MAIL}';
+	$replace[] = $uemail;
 	$search [] = '{NAME}';
 	$replace[] = $name;
 
@@ -1583,15 +1586,12 @@ Please login into your ispCP control panel for more details.
 ');
 	$search [] = '{RESELLER}';
 	$replace[] = $from_name;
-	$search [] = '{MAIL}';
-	$replace[] = $to;
 	$message = str_replace($search, $replace, $message);
 
-	$mail_result = mail(encode($from), $subject, $message, $headers);
+	$mail_result = mail($from, $subject, $message, $headers);
 }
 
-function send_alias_order_email($alias_name)
-{
+function send_alias_order_email($alias_name) {
 	$sql = Database::getInstance();
 
 	$user_id = $_SESSION['user_id'];
@@ -1627,7 +1627,7 @@ function send_alias_order_email($alias_name)
 		} else if ($ulname) {
 			$from_name = $ulname;
 		} else {
-			$from_name = $uname;
+			$from_name = $uemail;
 		}
 		$from = $uemail;
 	}
@@ -1664,7 +1664,7 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 
-		$forward_type = ($dmn_type == 'alias') ? 'alias_forward': 'normal_forward';
+		$forward_type = ($dmn_type == 'alias') ? 'alias_forward' : 'normal_forward';
 
 		// prepare SQL
 		$query = <<<SQL_QUERY
@@ -1684,7 +1684,7 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 SQL_QUERY;
 
 		// create default forwarder for webmaster@domain.tld to the account's owner
-		$rs = exec_query($sql, $query, 
+		$rs = exec_query($sql, $query,
 			array('webmaster',
 				'_no_',
 				$user_email,
@@ -1699,7 +1699,7 @@ SQL_QUERY;
 		);
 
 		// create default forwarder for postmaster@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, 
+		$rs = exec_query($sql, $query,
 			array('postmaster',
 				'_no_',
 				$_SESSION['user_email'],
@@ -1714,7 +1714,7 @@ SQL_QUERY;
 		);
 
 		// create default forwarder for abuse@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, 
+		$rs = exec_query($sql, $query,
 			array('abuse',
 				'_no_',
 				$_SESSION['user_email'],
@@ -1731,6 +1731,5 @@ SQL_QUERY;
 	}
 
 } // end client_mail_add_default_accounts
-
 
 ?>
