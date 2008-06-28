@@ -90,7 +90,8 @@ SQL_QUERY;
 		$date_formt = Config::get('DATE_FORMAT');
 
 		$tpl->assign(
-			array('TR_ACTION' => $tr_action,
+			array(
+				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'URGENCY' => $urgency,
 				'URGENCY_ID' => $urgency_id,
@@ -133,7 +134,8 @@ SQL_QUERY;
 		$date_formt = Config::get('DATE_FORMAT');
 
 		$tpl->assign(
-			array('DATE' => date($date_formt, $rs->fields['ticket_date']),
+			array(
+				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200) / 7), "<br>\n", 1),
 				)
 			);
@@ -154,12 +156,9 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 			tickets
 		where
 			ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_from = $rs->fields['ticket_from'];
 	$ticket_to = $rs->fields['ticket_to'];
 	$ticket_status = $rs->fields['ticket_status'];
@@ -186,10 +185,7 @@ SQL_QUERY;
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
 
 	$tpl->assign(
-		array('FROM' => $from_name
-
-			)
-		);
+		array('FROM' => $from_name));
 }
 
 // common page data.
@@ -197,12 +193,11 @@ SQL_QUERY;
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller : Support System: View Tickets'),
+	array(
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller : Support System: View Tickets'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
@@ -250,21 +245,17 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 			tickets
 		WHERE
 			ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_reply, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_reply));
 
 	$ticket_level = $rs->fields['ticket_level'];
 
 	if ($ticket_level != 1) {
 		$ticket_to = $rs->fields['ticket_from'];
-
 		$ticket_from = $rs->fields['ticket_to'];
 	} else {
 		$ticket_to = $rs->fields['ticket_to'];
-
 		$ticket_from = $rs->fields['ticket_from'];
 	}
 
@@ -332,11 +323,9 @@ function close_ticket($sql, $ticket_id) {
 		  ticket_status = '0'
 	  WHERE
 		  ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 
 	set_page_message(tr('Ticket was closed!'));
 }
@@ -365,11 +354,9 @@ SQL_QUERY;
 			ticket_status = ?
 		WHERE
 			ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 
 	set_page_message(tr('Ticket was reopened!'));
 }
@@ -383,11 +370,9 @@ function change_ticket_status_view($sql, $ticket_id) {
 			tickets
 		WHERE
 			ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_level = $rs->fields['ticket_level'];
 	$ticket_status = $rs->fields['ticket_status'];
 
@@ -414,11 +399,9 @@ SQL_QUERY;
 			ticket_status = ?
 		WHERE
 			ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 }
 
 // dynamic page data.

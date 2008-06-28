@@ -22,9 +22,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') == strtolower('admin')) {
+if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
 	Header("Location: hp.php");
-
 	die();
 }
 
@@ -82,7 +81,7 @@ $tpl->assign(
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPEL' => tr('(e.g. EUR)'),
+			'TR_EXAMPLE' => tr('(e.g. EUR)'),
 			'TR_ADD_PLAN' => tr('Add plan')
 			)
 		);
@@ -123,10 +122,14 @@ function gen_empty_ahp_page(&$tpl) {
 				'HP_VELUE' => '',
 				'HP_PAYMENT' => '',
 				'HP_DESCRIPTION_VALUE' => '',
-				'TR_STATUS_NO' => 'checked',
-				'HP_DISK_VALUE' => ''
-				)
-			);
+		'TR_STATUS_YES'			=> '',
+		'TR_STATUS_NO'			=> 'checked',
+		'TR_PHP_YES'			=> '',
+		'TR_PHP_NO'				=> 'checked',
+		'TR_CGI_YES'			=> '',
+		'TR_CGI_NO'				=> 'checked',
+		'HP_DISK_VALUE'			=> ''
+	));
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
 
@@ -257,8 +260,6 @@ function check_data_correction(&$tpl) {
 		// $tpl -> assign('MESSAGE', $ahp_error);
 		return false;
 	}
-
-	return TRUE;
 } // End of check_data_correction()
 
 // Add new host plan to DB
@@ -303,7 +304,7 @@ SQL_QUERY;
 				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
 				$_SESSION['hp_added'] = '_yes_';
-				header("Location: ehp.php");
+				header("Location: hp.php");
 				die();
 			}
 		}

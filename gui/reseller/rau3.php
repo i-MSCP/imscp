@@ -31,7 +31,8 @@ $tpl->define_dynamic('ip_entry', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
+	array(
+		'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -50,7 +51,8 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_us
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array('TR_ADD_USER' => tr('Add user'),
+	array(
+		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),
@@ -214,8 +216,13 @@ function add_user_data($reseller_id) {
 		$props = $_SESSION["ch_hpprops"];
 		unset($_SESSION["ch_hpprops"]);
 	} else {
-		$query = "select props from hosting_plans where reseller_id = ? and id = ?";
-		$res = exec_query($sql, $query, array($reseller_id, $hpid));
+		if (isset(Config::get('HOSTING_PLANS_LEVEL')) && strtolower(Config::get('HOSTING_PLANS_LEVEL') == 'admin')) {
+			$query = 'select props from hosting_plans where id = ?';
+			$res = exec_query($sql, $query, array($hpid));
+		} else {
+			$query = "select props from hosting_plans where reseller_id = ? and id = ?";
+			$res = exec_query($sql, $query, array($reseller_id, $hpid));
+		}
 		$data = $res->FetchRow();
 		$props = $data['props'];
 	}
@@ -328,55 +335,9 @@ ISPCP_SQL_QUERY;
 	$dmn_id = $sql->Insert_ID();
 
 	// Create the 3 default addresses if wanted
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+		client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
 
-/*
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
-		$query = <<<SQL_QUERY
-            INSERT INTO mail_users
-                (mail_acc,
-                 mail_pass,
-                 mail_forward,
-                 domain_id,
-                 mail_type,
-                 sub_id,
-                 status,
-                 mail_auto_respond)
-            VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
-
-		// create default forwarder for webmaster@domain.tld to the account's owner
-		$rs = exec_query($sql, $query, array('webmaster',
-				'_no_',
-				$user_email,
-				$dmn_id,
-				'normal_forward',
-				0,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-
-		// create default forwarder for postmaster@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('postmaster',
-				'_no_',
-				$_SESSION['user_email'],
-				$dmn_id,
-				'normal_forward',
-				0,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-
-		// create default forwarder for abuse@domain.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('abuse',
-				'_no_',
-				$_SESSION['user_email'],
-				$dmn_id,
-				'normal_forward',
-				0,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-	}
-*/
 	// add_domain_extras($dmn_id, $record_id, $sql);
 	// lets send mail to user
 	send_add_user_auto_msg ($reseller_id,

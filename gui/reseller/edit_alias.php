@@ -215,7 +215,7 @@ SQL;
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: change domain alias forward: " . $rs->fields['t1.alias_name']);
+		write_log("$admin_login: changes domain alias forward: " . $rs->fields['t1.alias_name']);
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");
 		return true;

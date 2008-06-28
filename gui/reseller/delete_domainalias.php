@@ -79,7 +79,7 @@ $dat = $res->FetchRow();
 exec_query($sql, "update domain_aliasses set alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: delete domain alias: " . $dat['alias_name']);
+write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);
 
 $_SESSION['aldel'] = '_yes_';
 header("Location: domain_alias.php");

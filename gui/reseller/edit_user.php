@@ -400,7 +400,7 @@ SQL_QUERY;
   }
 
 	$admin_login = $_SESSION['user_logged'];
-    write_log("$admin_login changed data/password for $dmn_user_name!");
+    write_log("$admin_login changes data/password for $dmn_user_name!");
 
 	if (isset($_POST['send_data']) && !empty($inpass)) {
 

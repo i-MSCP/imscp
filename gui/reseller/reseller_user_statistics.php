@@ -101,9 +101,6 @@ SQL_QUERY;
 	$rs = exec_query($sql, $count_query, array($reseller_id));
 	$records_count = $rs->fields['cnt'];
 
-	$start_index = (int) $start_index;
-	$rows_per_page = (int) $rows_per_page;
-	
 	$query = <<<SQL_QUERY
         SELECT
             admin_id
@@ -116,10 +113,10 @@ SQL_QUERY;
         ORDER BY
             admin_name ASC
         LIMIT
-			$start_index, $rows_per_page
+			?, ?
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($reseller_id));
+	$rs = exec_query($sql, $query, array($reseller_id, $start_index, $rows_per_page));
 	$tpl->assign(
 				array(
 					'RESELLER_NAME' => $reseller_name,

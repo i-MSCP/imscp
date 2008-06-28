@@ -97,7 +97,7 @@ $dat = $res->FetchRow();
 exec_query($sql, "update subdomain set subdomain_status='" . Config::get('ITEM_DELETE_STATUS') . "' where subdomain_id=?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: delete subdomain: " . $dat['subdomain_name']);
+write_log("$admin_login: deletes subdomain: " . $dat['subdomain_name']);
 
 $_SESSION['dadel'] = '_yes_';
 header("Location: subdomains.php");

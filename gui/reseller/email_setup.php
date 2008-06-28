@@ -65,7 +65,9 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_us
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
+$tpl->assign(
+	array(
+		'TR_EMAIL_SETUP' => tr('Email setup'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
 		'TR_USER_PASSWORD' => tr('User password'),
@@ -76,10 +78,14 @@ $tpl->assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
 		'TR_SENDER_EMAIL' => tr('Senders email'),
 		'TR_SENDER_NAME' => tr('Senders name'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
+		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 		'SUBJECT_VALUE' => $data['subject'],
 		'MESSAGE_VALUE' => $data['message'],
 		'SENDER_EMAIL_VALUE' => $data['sender_email'],
-		'SENDER_NAME_VALUE' => $data['sender_name']));
+		'SENDER_NAME_VALUE' => $data['sender_name']
+		)
+	);
 
 gen_page_message($tpl);
 

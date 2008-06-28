@@ -1,6 +1,5 @@
 <?php
 /**
-/**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
@@ -27,6 +26,7 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/lostpassword.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('custom_buttons', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 $user_id = $_SESSION['user_id'];
@@ -105,7 +105,8 @@ $tpl->assign(
 			'TR_MESSAGE' => tr('Message'),
 			'TR_SENDER_EMAIL' => tr('Senders email'),
 			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_APPLY_CHANGES' => tr('Apply changes')
+			'TR_APPLY_CHANGES' => tr('Apply changes'),
+			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel')
 			)
 		);
 

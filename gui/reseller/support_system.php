@@ -107,7 +107,8 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('TICKETS_LIST' => '',
+			array(
+				'TICKETS_LIST' => '',
 				'SCROLL_PREV' => '',
 				'SCROLL_NEXT' => ''
 				)
@@ -121,7 +122,8 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_PREV_GRAY' => '',
+				array(
+					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
 					)
 				);
@@ -133,7 +135,8 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_NEXT_GRAY' => '',
+				array(
+					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
 					)
 				);
@@ -149,42 +152,21 @@ SQL_QUERY;
 			$ticket_status = $rs->fields['ticket_status'];
 
 			if ($ticket_urgency == 1) {
-				$tpl->assign(
-					array('URGENCY' => tr("Low")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Low")));
 			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(
-					array('URGENCY' => tr("Medium")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Medium")));
 			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(
-					array('URGENCY' => tr("High")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("High")));
 			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(
-					array('URGENCY' => tr("Very high")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Very high")));
 			}
 
 			if ($ticket_status == 1) {
-				$tpl->assign(
-					array('NEW' => tr("[New]")
-						)
-					);
+				$tpl->assign(array('NEW' => tr("[New]")));
 			} elseif ($ticket_status == 4) {
-				$tpl->assign(
-					array('NEW' => tr("[Re]")
-						)
-					);
+				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
-				$tpl->assign(
-					array('NEW' => " "
-						)
-					);
+				$tpl->assign(array('NEW' => " "));
 			}
 
 			$tpl->assign(
@@ -277,6 +259,7 @@ $tpl->assign(
 	array('TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
 		'TR_TICKET_FROM' => tr('From'),
+		'TR_STATUS' => tr('Status'),
 		'TR_NEW' => ' ',
 		'TR_ACTION' => tr('Action'),
 		'TR_URGENCY' => tr('Priority'),
@@ -286,7 +269,7 @@ $tpl->assign(
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true) ,
 		)
 	);
 

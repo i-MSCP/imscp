@@ -76,7 +76,7 @@ $tpl->assign(
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPEL' => tr('(e.g. EUR)'),
+			'TR_EXAMPLE' => tr('(e.g. EUR)'),
 			'TR_EDIT_HOSTING_PLAN' => tr('Update plan'),
 			'TR_UPDATE_PLAN' => tr('Update plan')
 			)
@@ -308,8 +308,6 @@ function check_data_iscorrect(&$tpl) {
 		set_page_message($ahp_error);
 		return false;
 	}
-
-	return TRUE;
 } // End of check_data_iscorrect()
 
 // Add new host plan to DB
