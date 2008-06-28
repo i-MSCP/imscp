@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -42,7 +42,7 @@ $tpl->assign(
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			
+
 			)
 	);
 
@@ -175,7 +175,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: change data/password for $edit_username!");
+			write_log("$user_logged: changes data/password of $edit_username!");
 
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";

@@ -78,11 +78,21 @@ SQL_QUERY;
 				);
 		}
 
-		$tpl->assign(
-			array('ADMIN_USERNAME' => $rs->fields['user_name'],
-				'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess']),
-				)
-			);
+		if ($rs->fields['user_name'] === NULL){
+			$tpl->assign(
+					array(
+						'ADMIN_USERNAME' => tr('Unknown'),
+						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
+						)
+					);
+		} else {
+			$tpl->assign(
+					array(
+						'ADMIN_USERNAME' => $rs->fields['user_name'],
+						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
+						)
+					);
+		}
 
 		$sess_id = session_id();
 

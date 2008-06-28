@@ -18,6 +18,32 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
+
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/change_personal.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('hosting_plans', 'page');
+
+$theme_color = Config::get('USER_INITIAL_THEME');
+
+$tpl->assign(
+	array(
+		'TR_ADMIN_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Admin/Change Personal Data'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+
+if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
+	update_admin_personal_data($sql, $_SESSION['user_id']);
+}
+
+gen_admin_personal_data($tpl, $sql, $_SESSION['user_id']);
+
 function gen_admin_personal_data(&$tpl, &$sql, $user_id) {
 	$query = <<<SQL_QUERY
         select
@@ -111,32 +137,6 @@ SQL_QUERY;
 
 	set_page_message(tr('Personal data updated successfully!'));
 }
-
-require '../include/ispcp-lib.php';
-
-check_login(__FILE__);
-
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/change_personal.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-
-$theme_color = Config::get('USER_INITIAL_THEME');
-
-$tpl->assign(
-	array(
-		'TR_ADMIN_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Admin/Change Personal Data'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
-
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
-	update_admin_personal_data($sql, $_SESSION['user_id']);
-}
-
-gen_admin_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 /*
  *

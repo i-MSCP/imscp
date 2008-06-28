@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 	header('Location: index.php');
 	die();
 }

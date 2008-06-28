@@ -69,6 +69,16 @@ SQL_QUERY;
 }
 
 function get_update_infos(&$tpl) {
+
+	// Check if there is no order for this plan
+	$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
+	$data = $res->FetchRow();
+	if ($data['0'] > 0) {
+		$_SESSION['hp_deleted_ordererror'] = '_yes_';
+		header("Location: hp.php");
+		die();
+	}
+
 	$last_update = "http://www.isp-control.net/latest.txt";
 	// Fake the browser type
 	ini_set('user_agent', 'Mozilla/5.0');

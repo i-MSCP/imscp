@@ -382,8 +382,7 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 	}
 }
 
-function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err)
-{
+function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 	if ($r_ips == $u_ips) {
 		return;
 	} else {
@@ -599,7 +598,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: change data/password for reseller: $edit_username!");
+			write_log("$user_logged: changes data/password for reseller: $edit_username!");
 
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				send_add_user_auto_msg ($user_id,
@@ -829,7 +828,6 @@ if (isset($_POST['genpass'])) {
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();

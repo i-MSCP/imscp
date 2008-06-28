@@ -31,7 +31,8 @@ $tpl->define_dynamic('port_delete_show', 'service_ports');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
+	array(
+		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo(get_session('user_id'))
@@ -195,17 +196,20 @@ SQL_QUERY;
 			if ($custom == 0) {
 				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name\" value=\"" . $name . "\" />"));
 				$tpl->assign(
-					array('PORT_READONLY' => 'readonly',
+					array(
+						'PORT_READONLY' => 'readonly',
 						'PROTOCOL_READONLY' => 'disabled',
 						'TR_DELETE' => '-',
-						'PORT_DELETE_LINK' => ''
+						'PORT_DELETE_LINK' => '',
+						'NUM' => $row
 						)
 					);
 				$tpl->parse('PORT_DELETE_SHOW', '');
 			} else {
 				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
 				$tpl->assign(
-					array('PORT_READONLY' => '',
+					array(
+						'PORT_READONLY' => '',
 						'PROTOCOL_READONLY' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE' => 'settings_ports.php?delete=' . $rs->fields['name'],
@@ -216,7 +220,8 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array('CUSTOM' => $custom,
+				array(
+					'CUSTOM' => $custom,
 					'VAR_NAME' => $rs->fields['name'],
 					'PORT' => $port,
 					'SELECTED_UDP' => $selected_udp,
@@ -251,7 +256,8 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 show_services($tpl, $sql);
 
 $tpl->assign(
-	array('TR_ACTION' => tr('Action'),
+	array(
+		'TR_ACTION' => tr('Action'),
 		'TR_UDP' => tr('udp'),
 		'TR_TCP' => tr('tcp'),
 		'TR_ENABLED' => tr('Yes'),
@@ -266,14 +272,13 @@ $tpl->assign(
 		'TR_ACTION' => tr('Action'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_ADD' => tr('Add'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true)
 		)
 	);
 
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if (Config::get('DUMP_GUI_DEBUG'))

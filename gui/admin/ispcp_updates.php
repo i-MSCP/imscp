@@ -22,8 +22,36 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$theme_color = $cfg['USER_INITIAL_THEME'];
+
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic('update_message', 'page');
+$tpl->define_dynamic('update_infos', 'page');
+
+$tpl->assign(
+	array(
+		'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
+
+// Check if there is no order for this plan
+$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
+$data = $res->FetchRow();
+if ($data['0'] > 0) {
+	$_SESSION['hp_deleted_ordererror'] = '_yes_';
+	header("Location: hp.php");
+	die();
+}
+
 	$info_url = 'http://www.isp-control.net/download.html';
 	$last_update = 'http://www.isp-control.net/latest.txt';
 	// Fake the browser type
@@ -46,7 +74,8 @@ function get_update_infos(&$tpl) {
 	$current_version = (int)Config::get('BuildDate');
 	if ($current_version < $last_update_result) {
 		$tpl->assign(
-			array('UPDATE_MESSAGE' => '',
+			array(
+				'UPDATE_MESSAGE' => '',
 				'UPDATE' => tr('New ispCP update is now available'),
 				'INFOS' => tr('Get it at') . " <a href=\"" . $info_url . "\" class=\"link\" target=\"ispcp\">" . $info_url . "</a>"
 				)
@@ -59,23 +88,6 @@ function get_update_infos(&$tpl) {
 }
 /* END system functions */
 
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('update_message', 'page');
-$tpl->define_dynamic('update_infos', 'page');
-
-$theme_color = Config::get('USER_INITIAL_THEME');
-
-$tpl->assign(
-	array('TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
-
 /*
  *
  * static page messages.
@@ -85,12 +97,12 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
-	array('TR_UPDATES_TITLE' => tr('ispCP updates'),
+	array(
+		'TR_UPDATES_TITLE' => tr('ispCP updates'),
 		'TR_AVAILABLE_UPDATES' => tr('Available ispCP updates'),
 		'TR_MESSAGE' => tr('No new ispCP updates available'),
 		'TR_UPDATE' => tr('Update'),
-		'TR_INFOS' => tr('Update details'),
-
+		'TR_INFOS' => tr('Update details')
 		)
 	);
 
@@ -99,7 +111,6 @@ gen_page_message($tpl);
 get_update_infos($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();

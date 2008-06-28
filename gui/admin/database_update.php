@@ -69,23 +69,20 @@ $tpl->assign(array(
 ));
 
 
-if(!checkDatabaseUpdateExists()) {
-        $tpl->assign('TR_UPDATE_MESSAGE', tr('No database updates available'));
-        $tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
-} else {
-        $tpl->assign('DATABASE_UPDATE_MESSAGE', '');
-}
-
-
 if(checkDatabaseUpdateExists()) {
 	$tpl->assign(array(
-		'UPDATE_MESSAGE' =>  '',
-		'UPDATE' =>  tr('New Database update is now available'),
-		'INFOS' => tr('Do you want to execute the Updates now?'),
+		'UPDATE_MESSAGE'			=> '',
+		'DATABASE_UPDATE_MESSAGE'	=> '',
+		'UPDATE'					=> tr('New Database update is now available'),
+		'INFOS'						=> tr('Do you want to execute the Updates now?')
 	));
 	$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
 } else {
-	$tpl->assign('DATABASE_UPDATE_INFOS', '');
+	$tpl->assign(array(
+		'TR_UPDATE_MESSAGE' 		=> tr('No database updates available'),
+		'DATABASE_UPDATE_INFOS'		=> ''
+	));
+	$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 }
 
 // Execute all available db updates and redirect back to database_update.php

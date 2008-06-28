@@ -52,7 +52,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hard_mail_suspension 				= $_POST['hard_mail_suspension'];
 	$user_initial_lang 					= $_POST['def_language'];
 	$support_system 					= $_POST['support_system'];
+	$hosting_plan_level					= $_POST['hosting_plan_level'];
 	$domain_rows_per_page 				= clean_input($_POST['domain_rows_per_page']);
+	$checkforupdate						= $_POST['checkforupdate'];
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
 		case "E_USER_NOTICE":
@@ -90,8 +92,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('HARD_MAIL_SUSPENSION', $hard_mail_suspension);
 		setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
 		setConfig_Value('ISPCP_SUPPORT_SYSTEM', $support_system);
+		setConfig_Value('HOSTING_PLANS_LEVEL', $hosting_plan_level);
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		setConfig_Value('LOG_LEVEL', $log_level);
+		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
 		set_page_message(tr('Settings saved !'));
 	}
 }
@@ -225,12 +229,16 @@ $tpl->assign(
 		'TR_DISABLED' => tr('Disabled'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_SERVERPORTS' => tr('Server ports'),
+		'TR_HOSTING_PLANS_LEVEL' => tr('Hosting plans available for'),
+		'TR_ADMIN' => tr('Admin'),
+		'TR_RESELLER' => tr('Reseller'),
 		'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page'),
 		'TR_LOG_LEVEL' => tr('Log Level'),
 		'TR_E_USER_OFF' => tr('Disabled'),
 		'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
+		'TR_CHECK_FOR_UPDATES' => tr('Check for update')
 		)
 	);
 

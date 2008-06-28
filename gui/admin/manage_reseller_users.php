@@ -367,7 +367,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 		}
 		$err .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
 
-		$err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
+		$err .= tr('You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
 
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax > 0) {
@@ -433,7 +433,7 @@ SQL_QUERY;
 			if ($err == '_off_') {
 				$err = '';
 			}
-			$err .= tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
+			$err .= tr('<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!', $domain_name);
 
 			return false;
 		}

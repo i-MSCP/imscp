@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 	header('Location: index.php');
 	die();
 }
@@ -188,12 +188,12 @@ function check_data_correction(&$tpl) {
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
-		$price = $_POST['hp_price'];
+		$price = clean_input($_POST['hp_price']);
 	}
 	if (empty($_POST['hp_setupfee'])) {
 		$setup_fee = 0;
 	} else {
-		$setup_fee = $_POST['hp_setupfee'];
+		$setup_fee = clean_input($_POST['hp_setupfee']);
 	}
 
 	$value = clean_input($_POST['hp_value']);

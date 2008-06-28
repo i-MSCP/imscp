@@ -130,7 +130,7 @@ SQL_QUERY;
 	if ($dstatus == Config::get('ITEM_OK_STATUS') || $dstatus == Config::get('ITEM_DISABLED_STATUS') || $dstatus == Config::get('ITEM_DELETE_STATUS') || $dstatus == Config::get('ITEM_ADD_STATUS') || $dstatus == Config::get('ITEM_RESTORE_STATUS') || $dstatus == Config::get('ITEM_CHANGE_STATUS') || $dstatus == Config::get('ITEM_TOENABLE_STATUS') || $dstatus == Config::get('ITEM_TODISABLED_STATUS')) {
 		$dstatus = translate_dmn_status($data['domain_status']);
 	} else {
-		$dstatus = "<b><font size=3 color=red>" . $data['domain_status'] . "</font></b>";
+		$dstatus = "<b><font size=\"3\" color=red>" . $data['domain_status'] . "</font></b>";
 	}
 
 	// Traffic diagram

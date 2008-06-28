@@ -101,6 +101,11 @@ if (isset($_SESSION['user_added'])) {
  * static page messages.
  *
  */
+
+if (!isset(Config::get('HOSTING_PLANS_LEVEL')) || strtolower(Config::get('HOSTING_PLANS_LEVEL')) !== 'admin') {
+	$tpl->assign('EDIT_OPTION', '');
+}
+
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
 

@@ -1,21 +1,22 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
@@ -71,7 +72,7 @@ SQL_QUERY;
 }
 $rs = exec_query($sql, $query, array($delete_id));
 
-if ($rs -> fields['children'] > 0 && $local_admin_type !== 'user') {
+if ($rs->fields['children'] > 0 && $local_admin_type !== 'user') {
   /* this user have domain ! */
   $hdomain = 1;
   $_SESSION['hdomain'] = 1;
@@ -106,7 +107,7 @@ SQL_QUERY;
 SQL_QUERY;
     $rs = exec_query($sql, $query, array($delete_id));
 
-		// delete orders
+	// delete orders
 	 $query = <<<SQL_QUERY
     	    delete from
         	    orders
@@ -116,7 +117,7 @@ SQL_QUERY;
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($delete_id));
 
-			// delete orders settings
+	// delete orders settings
 	 $query = <<<SQL_QUERY
     	    delete from
         	    orders_settings
@@ -134,34 +135,6 @@ SQL_QUERY;
                 reseller_id = ?
 SQL_QUERY;
     $rs = exec_query($sql, $query, array($delete_id));
-
-		/*
-
-		 $query = <<<SQL_QUERY
-
-        select
-
-            admin_id
-
-		from
-			admin
-
-        where
-
-            created_by = '$delete_id'
-
-SQL_QUERY;
-
-	$rs = execute_query($sql, $query);
-
-			while (!$rs -> EOF) {
-				$delete_user_account_id = $rs -> fields['admin_id'];
-				print $delete_user_account_id."<br>";
-				rm_rf_user_account ($delete_user_account_id);
-			}
-			die ();
-			*/
-
 
   } else if ($local_admin_type == 'user') {
     rm_rf_user_account($delete_id);
@@ -186,7 +159,7 @@ SQL_QUERY;
   $rs = exec_query($sql, $query, array($delete_id));
   $user_logged= $_SESSION['user_logged'];
   $local_admin_name = $_GET['delete_username'];
-  write_log("$user_logged: delete user $local_admin_name, $local_admin_type, $delete_id!");
+  write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
   $_SESSION['user_deleted'] = 1;
   header("Location: manage_users.php");
   die();
