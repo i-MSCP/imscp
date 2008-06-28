@@ -278,7 +278,7 @@ SQL_QUERY;
 				$rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
-				write_log($_SESSION['user_logged'] . ": add new email catch all");
+				write_log($_SESSION['user_logged'] . ": adds new email catch all");
 				set_page_message(tr('Catch all account scheduled for creation!'));
 				user_goto('catchall.php');
 			} else {
@@ -294,7 +294,7 @@ SQL_QUERY;
 				$mail_type = 'normal_catchall';
 				$sub_id = '0';
 				$domain_id = $item_id;
-				$query = "SELECT `domain_name` FROM `domain` 
+				$query = "SELECT `domain_name` FROM `domain`
 					WHERE `domain_id` = ?";
 				$rs = exec_query($sql, $query, $domain_id);
 				$mail_addr = '@' . $rs->fields['domain_name'];
@@ -310,7 +310,7 @@ SQL_QUERY;
 			} elseif ($item_type === 'sub') {
 				$mail_type = 'subdom_catchall';
 				$sub_id = $item_id;
-				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain` 
+				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain`
 					WHERE `subdomain_id` = ? AND `domain`.`domain_id` = `subdomain`.`domain_id`";
 				$rs = exec_query($sql, $query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
@@ -355,7 +355,7 @@ SQL_QUERY;
 			$rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
-			write_log($_SESSION['user_logged'] . ": add new email catch all ");
+			write_log($_SESSION['user_logged'] . ": adds new email catch all ");
 			set_page_message(tr('Catch all account scheduled for creation!'));
 			user_goto('catchall.php');
 		} else {

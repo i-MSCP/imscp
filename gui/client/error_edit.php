@@ -75,7 +75,7 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 		);
 }
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');

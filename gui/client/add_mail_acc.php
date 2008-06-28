@@ -36,7 +36,6 @@ $tpl->define_dynamic('js_to_alias_domain', 'page'); 	//JavaScript has to be gene
 $tpl->define_dynamic('js_to_all_domain', 'page');		//JavaScript has to be generated, too
 $tpl->define_dynamic('js_not_domain', 'page'); 			//JavaScript has to be generated, too
 
-
 // page functions.
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
@@ -60,14 +59,18 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
                 $f_list = $_POST['forward_list'];
             }
 
-            $tpl->assign(array('USERNAME' => clean_input($_POST['username']),
-                    'DOMAIN_NAME' => $dmn_name,
-                    'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? "checked=\"checked\"" : "",
-                    'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? "checked=\"checked\"" : "",
-                    'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? "checked=\"checked\"" : "",
-                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type_normal']) ? "checked=\"checked\"" : "",
-                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type_forward']) ? "checked=\"checked\"" : "",
-                    'FORWARD_LIST' => $f_list));
+            $tpl->assign(
+					array(
+						'USERNAME' => clean_input($_POST['username']),
+	                    'DOMAIN_NAME' => $dmn_name,
+	                    'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? "checked=\"checked\"" : "",
+	                    'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? "checked=\"checked\"" : "",
+	                    'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? "checked=\"checked\"" : "",
+	                    'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type_normal'])) ? "checked=\"checked\"" : "",
+	                    'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type_forward'])) ? "checked=\"checked\"" : "",
+	                    'FORWARD_LIST' => $f_list
+						)
+					);
     }
 }
 
@@ -89,36 +92,35 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id, $ok_status));
     if ($rs->RecordCount() == 0) {
-        $tpl->assign(array('ALS_ID' => '0',
-                'ALS_SELECTED' => 'selected',
-                'ALS_NAME' => tr('Empty list')));
+        $tpl->assign(
+				array(
+					'ALS_ID' => '0',
+	                'ALS_SELECTED' => 'selected',
+	                'ALS_NAME' => tr('Empty list')
+					)
+				);
         $tpl->parse('ALS_LIST', 'als_list');
         $tpl->assign('TO_ALIAS_DOMAIN', '');
         $_SESSION['alias_count'] = "no";
-    }
-	else {
+    } else {
         $first_passed = false;
         while (!$rs->EOF) {
             if ($post_check === 'yes') {
                 if (!isset($_POST['als_id'])) {
                     $als_id = "";
-                }
-				else {
+                } else {
                     $als_id = $_POST['als_id'];
                 }
 
                 if ($als_id == $rs->fields['alias_id']) {
                     $als_selected = 'selected';
-                }
-				else {
+                } else {
                     $als_selected = '';
                 }
-            }
-			else {
+            } else {
                 if (!$first_passed) {
                     $als_selected = 'selected';
-                }
-				else {
+                } else {
                     $als_selected = '';
                 }
             }
@@ -160,44 +162,44 @@ SQL_QUERY;
         $tpl->parse('SUB_LIST', 'sub_list');
         $tpl->assign('TO_SUBDOMAIN', '');
         $_SESSION['subdomain_count'] = "no";
-    }
-	else {
+    } else {
         $first_passed = false;
 
         while (!$rs->EOF) {
             if ($post_check === 'yes') {
                 if (!isset($_POST['sub_id'])) {
                     $sub_id = "";
-                }
-				else {
+                } else {
                     $sub_id = $_POST['sub_id'];
                 }
 
                 if ($sub_id == $rs->fields['sub_id']) {
                     $sub_selected = 'selected';
-                }
-				else {
+                } else {
                     $sub_selected = '';
                 }
-            }
-			else {
+            } else {
                 if (!$first_passed) {
                     $sub_selected = 'selected';
-                }
-				else {
+                } else {
                     $sub_selected = '';
                 }
             }
 
             $sub_name = decode_idna($rs->fields['sub_name']);
             $dmn_name = decode_idna($dmn_name);
-            $tpl->assign(array('SUB_ID' => $rs->fields['sub_id'],
-                    'SUB_SELECTED' => $sub_selected,
-                    'SUB_NAME' => $sub_name . '.' . $dmn_name));
+            $tpl->assign(
+					array(
+						'SUB_ID' => $rs->fields['sub_id'],
+                    	'SUB_SELECTED' => $sub_selected,
+                    	'SUB_NAME' => $sub_name . '.' . $dmn_name
+						)
+					);
             $tpl->parse('SUB_LIST', '.sub_list');
             $rs->MoveNext();
 
-            if (!$first_passed) $first_passed = true;
+            if (!$first_passed)
+				$first_passed = true;
         }
     }
 }
@@ -285,10 +287,10 @@ SQL_QUERY;
 			}
 
 			$mail_forward = $_POST['forward_list'];
-			$faray = preg_split ("/[\n,]+/", $mail_forward);
+			$farray = preg_split("/[\n,]+/", $mail_forward);
 			$mail_accs = array();
 
-			foreach ($faray as $value) {
+			foreach ($farray as $value) {
 				$value = trim($value);
 				if (!chk_email($value) && $value !== '') {
 					/* ERR .. strange :) not email in this line - warning */
@@ -304,6 +306,7 @@ SQL_QUERY;
 		}
 
 		$mail_type = implode(',', $mail_type);
+		list($dmn_type, $type) = split('_', $mail_type, 2);
 
 		$check_acc_query = <<<SQL_QUERY
 			SELECT
@@ -315,12 +318,12 @@ SQL_QUERY;
 				AND
 				`domain_id` = ?
 				AND
-				`mail_type` = ?
-				AND
 				`sub_id` = ?
+				AND
+				LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
+    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
     }
 
     if ($rs->fields['cnt'] > 0) {
@@ -357,7 +360,7 @@ SQL_QUERY;
             $mail_auto_respond_text,
             $mail_addr));
 
-    write_log($_SESSION['user_logged'] . ": add new mail account: " . $mail_addr);
+    write_log($_SESSION['user_logged'] . ": adds new mail account: " . (isset($mail_addr) ? $mail_addr : $mail_acc));
     set_page_message(tr('Mail account scheduled for addition!'));
     send_request();
     header("Location: email_accounts.php");
@@ -365,7 +368,16 @@ SQL_QUERY;
 }
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
-    if ($_POST['mail_type'] != 'forward') {
+	
+	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
+	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
+
+	if (($mail_type_normal == false) && ($mail_type_forward == false)) {
+		set_page_message(tr('Please select at least one mail type!'));
+		return;
+	}
+
+    if ($mail_type_normal) {
         $pass = escapeshellcmd($_POST['pass']);
         $pass_rep = escapeshellcmd($_POST['pass_rep']);
     }
@@ -375,8 +387,8 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         return;
     }
 
-    if ($_POST['mail_type'] === 'normal') {
-        if (!isset($pass) || $pass == null || !isset($pass_rep) || $pass_rep == null) {
+    if ($mail_type_normal) {
+        if (!isset($pass) || $pass == null || !isset($pass_rep) || $pass_rep == null || $pass_rep == '' || $pass == '') {
             set_page_message(tr('Password data is missing!'));
             return;
         }
@@ -387,22 +399,22 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         }
         // Not permitted chars
         if (!chk_password($pass)) {
-            set_page_message(tr('Password data includes not permitted signs!'));
+            set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg['PASSWD_CHARS']);
             return;
         }
     }
 
     if ($_POST['dmn_type'] === 'sub' && !isset($_POST['sub_id'])) {
-        set_page_message(tr('Subdomain list is empty! You can not add mail accounts!'));
+        set_page_message(tr('Subdomain list is empty! You cannot add mail accounts!'));
         return;
     }
 
     if ($_POST['dmn_type'] === 'als' && !isset($_POST['als_id'])) {
-        set_page_message(tr('Alias list is empty! You can not add mail accounts!'));
+        set_page_message(tr('Alias list is empty! You cannot add mail accounts!'));
         return;
     }
 
-    if ($_POST['mail_type'] === 'forward' && empty($_POST['forward_list'])) {
+    if ($mail_type_forward && empty($_POST['forward_list'])) {
         set_page_message(tr('Forward list is empty!'));
         return;
     }
@@ -441,15 +453,13 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
         set_page_message(tr('Mail accounts limit reached!'));
         header("Location: email_accounts.php");
         die();
-    }
-	else {
+    } else {
         if (!isset($_POST['uaction'])) {
             gen_page_form_data($tpl, $dmn_name, 'no');
             gen_dmn_als_list($tpl, $sql, $dmn_id, 'no');
             gen_dmn_sub_list($tpl, $sql, $dmn_id, $dmn_name, 'no');
             gen_page_js($tpl);
-        }
-		else if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
+        } else if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
             gen_page_form_data($tpl, $dmn_name, 'yes');
             gen_dmn_als_list($tpl, $sql, $dmn_id, 'yes');
             gen_dmn_sub_list($tpl, $sql, $dmn_id, $dmn_name, 'yes');
@@ -465,20 +475,17 @@ function gen_page_js(&$tpl) {
         $tpl->assign('JS_TO_SUBDOMAIN', '');
         $tpl->assign('JS_TO_ALIAS_DOMAIN', '');
         $tpl->assign('JS_TO_ALL_DOMAIN', '');
-    }
-	else if (isset($_SESSION['subdomain_count']) && !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
+    } else if (isset($_SESSION['subdomain_count']) && !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
         $tpl->assign('JS_NOT_DOMAIN', '');
         $tpl->assign('JS_TO_SUBDOMAIN', '');
         $tpl->parse('JS_TO_ALIAS_DOMAIN', 'js_to_alias_domain');
         $tpl->assign('JS_TO_ALL_DOMAIN', '');
-    }
-	else if (!isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no alias - subdomain available
+    } else if (!isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no alias - subdomain available
         $tpl->assign('JS_NOT_DOMAIN', '');
         $tpl->parse('JS_TO_SUBDOMAIN', 'js_to_subdomain');
         $tpl->assign('JS_TO_ALIAS_DOMAIN', '');
         $tpl->assign('JS_TO_ALL_DOMAIN', '');
-    }
-	else { // there are subdomains and aliases
+    } else { // there are subdomains and aliases
         $tpl->assign('JS_NOT_DOMAIN', '');
         $tpl->assign('JS_TO_SUBDOMAIN', '');
         $tpl->assign('JS_TO_ALIAS_DOMAIN', '');
@@ -525,18 +532,22 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_ADD_MAIL_USER' => tr('Add mail users'),
-        'TR_USERNAME' => tr('Username'),
-        'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
-        'TR_TO_DMN_ALIAS' => tr('To domain alias'),
-        'TR_TO_SUBDOMAIN' => tr('To subdomain'),
-        'TR_NORMAL_MAIL' => tr('Normal mail'),
-        'TR_PASSWORD' => tr('Password'),
-        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-        'TR_FORWARD_MAIL' => tr('Forward mail'),
-        'TR_FORWARD_TO' => tr('Forward to'),
-        'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
-        'TR_ADD' => tr('Add')));
+$tpl->assign(
+		array(
+			'TR_ADD_MAIL_USER' => tr('Add mail users'),
+	        'TR_USERNAME' => tr('Username'),
+	        'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
+	        'TR_TO_DMN_ALIAS' => tr('To domain alias'),
+	        'TR_TO_SUBDOMAIN' => tr('To subdomain'),
+	        'TR_NORMAL_MAIL' => tr('Normal mail'),
+	        'TR_PASSWORD' => tr('Password'),
+	        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+	        'TR_FORWARD_MAIL' => tr('Forward mail'),
+	        'TR_FORWARD_TO' => tr('Forward to'),
+	        'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
+	        'TR_ADD' => tr('Add')
+			)
+		);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');

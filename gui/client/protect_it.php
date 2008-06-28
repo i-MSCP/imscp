@@ -102,7 +102,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			if (count($groups) == 1 || count($groups) == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You can not protect area without selected group(s)'));
+					set_page_message(tr('You cannot protect area without selected group(s)'));
 					return;
 				}
 			} else {
@@ -114,15 +114,15 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	// lets check if we have to update or to make new enrie
 	$alt_path = $path . "/";
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             id
-        from
+        FROM
             htaccess
-        where
+        WHERE
              dmn_id = ?
-		and
+		AND
 			(path = ?
-				or
+			OR
 			path = ?)
 SQL_QUERY;
 
@@ -133,14 +133,15 @@ SQL_QUERY;
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
 		$query = <<<SQL_QUERY
-        update htaccess
-		set
+        UPDATE
+			htaccess
+		SET
 			user_id = ?,
 			group_id = ?,
 			auth_name = ?,
 			path = ?,
 			status = ?
-        where
+        WHERE
 			id = '$update_id'
 SQL_QUERY;
 
@@ -150,9 +151,10 @@ SQL_QUERY;
 		set_page_message(tr('Protected area updated successfully!'));
 	} else {
 		$query = <<<SQL_QUERY
-        insert into htaccess
+        INSERT INTO
+			htaccess
             (dmn_id, user_id, group_id, auth_type, auth_name, path, status)
-        values
+        VALUES
             (?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
@@ -173,7 +175,8 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$user_id = 0;
 		$group_id = 0;
 		$tpl->assign(
-			array('PATH' => '',
+			array(
+				'PATH' => '',
 				'AREA_NAME' => '',
 				'UNPROTECT_IT' => '',
 				)
@@ -186,13 +189,13 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
 		$query = <<<SQL_QUERY
-        select
+        SELECT
             *
-        from
+        FROM
             htaccess
-        where
+        WHERE
              dmn_id = ?
-		and
+		AND
 			id = ?
 SQL_QUERY;
 
@@ -216,7 +219,8 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-			array('PATH' => $path,
+			array(
+				'PATH' => $path,
 				'AREA_NAME' => $auth_name,
 				)
 			);
@@ -256,21 +260,22 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             *
-        from
+        FROM
             htaccess_users
-        where
+        WHERE
              dmn_id = ?
-
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('USER_VALUE' => "-1",
-				'USER_LEBEL' => tr('You have no users !')
+			array(
+				'USER_VALUE' => "-1",
+				'USER_LABEL' => tr('You have no users !'),
+				'USER_SELECTED' => ''
 				)
 			);
 		$tpl->parse('USER_ITEM', 'user_item');
@@ -289,7 +294,7 @@ SQL_QUERY;
 			$tpl->assign(
 					array(
 						'USER_VALUE' => $rs->fields['id'],
-						'USER_LEBEL' => $rs->fields['uname'],
+						'USER_LABEL' => $rs->fields['uname'],
 						'USER_SELECTED' => $usr_selected,
 						)
 					);
@@ -301,13 +306,12 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             *
-        from
+        FROM
             htaccess_groups
-        where
+        WHERE
              dmn_id = ?
-
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
@@ -316,7 +320,8 @@ SQL_QUERY;
 		$tpl->assign(
 				array(
 					'GROUP_VALUE' => "-1",
-					'GROUP_LEBEL' => tr('You have no groups!')
+					'GROUP_LABEL' => tr('You have no groups!'),
+					'GROUP_SELECTED' => ''
 					)
 				);
 		$tpl->parse('GROUP_ITEM', 'group_item');
@@ -335,7 +340,7 @@ SQL_QUERY;
 			$tpl->assign(
 					array(
 						'GROUP_VALUE' => $rs->fields['id'],
-						'GROUP_LEBEL' => $rs->fields['ugroup'],
+						'GROUP_LABEL' => $rs->fields['ugroup'],
 						'GROUP_SELECTED' => $grp_selected,
 						)
 					);
@@ -345,7 +350,7 @@ SQL_QUERY;
 	}
 }
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');

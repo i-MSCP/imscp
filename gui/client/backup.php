@@ -63,7 +63,7 @@ $tpl->assign(
 			)
 		);
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
@@ -106,7 +106,7 @@ $tpl->assign(
 			'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
 			'TR_SWITCH_TO_BACKUP' => tr('Switch to backups/ directory'),
 			'TR_DOWNLOAD_FILE' => tr('Download the files stored in this directory'),
-			'TR_USUALY_NAMED' => tr('(usually named ' . $name . ')'),
+			'TR_USUALY_NAMED' => tr('(usually named') . ' ' . $name . ')',
 			'TR_RESTORE_BACKUP' => tr('Restore backup'),
 			'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 			'TR_RESTORE' => tr('Restore'),

@@ -32,6 +32,16 @@ $tpl->define_dynamic('mail_auto_respond', 'mail_item');
 $tpl->define_dynamic('mails_total', 'page');
 $tpl->define_dynamic('no_mails', 'page');
 
+$theme_color = Config::get('USER_INITIAL_THEME');
+
+$tpl->assign(
+	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Client/Manage Users'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+
 // page functions.
 
 function gen_user_mail_action($mail_id, $mail_status) {
@@ -120,7 +130,7 @@ SQL_QUERY;
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br \>";
+				$mail_type .= user_trans_mail_type($type) . "<br />";
 			}
 
 			$tpl->assign(
@@ -200,7 +210,7 @@ SQL_QUERY;
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . '<br \>';
+				$mail_type .= user_trans_mail_type($type) . '<br />';
 			}
 
 
@@ -279,11 +289,12 @@ SQL_QUERY;
 			$mail_type = '';
 
  			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br \>";
+				$mail_type .= user_trans_mail_type($type) . "<br />";
 			}
 
 			$tpl->assign(
-				array('MAIL_ACC' => $mail_acc . "@" . $show_als_name,
+				array(
+					'MAIL_ACC' => $mail_acc . "@" . $show_als_name,
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_ACTION' => $mail_action,
@@ -331,11 +342,8 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 		$dmn_cgi) = get_domain_default_props($sql, $user_id);
 
 	$dmn_mails = gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
 	$sub_mails = gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
 	$als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
 	$total_mails = $dmn_mails + $sub_mails + $als_mails;
 
 	if ($total_mails > 0) {
@@ -344,7 +352,8 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 				'DMN_TOTAL' => $dmn_mails,
 				'SUB_TOTAL' => $sub_mails,
 				'ALS_TOTAL' => $als_mails,
-				'TOTAL_MAIL_ACCOUNTS' => $total_mails
+				'TOTAL_MAIL_ACCOUNTS' => $total_mails,
+				'ALLOWED_MAIL_ACCOUNTS' => (($dmn_mailacc_limit != 0) ? $dmn_mailacc_limit : tr('unlimited'))
 				)
 			);
 	} else {
@@ -360,18 +369,6 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 
 	return $total_mails;
 }
-
-// common page data.
-
-$theme_color = Config::get('USER_INITIAL_THEME');
-
-$tpl->assign(
-	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Client/Manage Users'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
 
 // dynamic page data.
 
@@ -391,18 +388,19 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-	array('TR_MANAGE_USERS' => tr('Manage users'),
-		'TR_MAIL_USERS' => tr('Mail users'),
-		'TR_MAIL' => tr('Mail'),
-		'TR_TYPE' => tr('Type'),
-		'TR_STATUS' => tr('Status'),
-		'TR_ACTION' => tr('Action'),
-		'TR_AUTORESPOND' => tr('Auto respond'),
-		'TR_DMN_MAILS' => tr('Domain mails'),
-		'TR_SUB_MAILS' => tr('Subdomain mails'),
-		'TR_ALS_MAILS' => tr('Alias mails'),
+	array(
+		'TR_MANAGE_USERS' 	=> tr('Manage users'),
+		'TR_MAIL_USERS' 	=> tr('Mail users'),
+		'TR_MAIL' 			=> tr('Mail'),
+		'TR_TYPE' 			=> tr('Type'),
+		'TR_STATUS' 		=> tr('Status'),
+		'TR_ACTION' 		=> tr('Action'),
+		'TR_AUTORESPOND'	=> tr('Auto respond'),
+		'TR_DMN_MAILS' 		=> tr('Domain mails'),
+		'TR_SUB_MAILS' 		=> tr('Subdomain mails'),
+		'TR_ALS_MAILS'		=> tr('Alias mails'),
 		'TR_TOTAL_MAIL_ACCOUNTS' => tr('Mails total'),
-		'TR_DELETE' => tr('Delete'),
+		'TR_DELETE' 		=> tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true),
 		)
 	);

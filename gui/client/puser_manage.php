@@ -144,7 +144,7 @@ SQL_QUERY;
 	} // end of else
 }
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	$awstats_act = Config::get('AWSTATS_ACTIVE');
 	if ($awstats_act != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');

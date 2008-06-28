@@ -179,7 +179,7 @@ SQL_QUERY;
 	// We do not need to create the default mail adresses, subdomains are
 	// related to their domains.
 
-	write_log($_SESSION['user_logged'] . ": add new subdomain: " . $sub_name);
+	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name);
 	send_request();
 }
 
