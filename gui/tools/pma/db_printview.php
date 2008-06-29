@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_printview.php 10478 2007-07-09 19:41:38Z lem9 $
+ * @version $Id: db_printview.php 11334 2008-06-21 13:16:05Z lem9 $
  */
 
 /**
@@ -166,7 +166,7 @@ else {
     <td>
         <?php
         if (! empty($sts_data['Comment'])) {
-            echo $sts_data['Comment'];
+            echo htmlspecialchars($sts_data['Comment']);
             $needs_break = '<br />';
         } else {
             $needs_break = '';

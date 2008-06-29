@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-06-29 Benedikt Heintel
+	- TOOLS:
+		* Updated phpMyAdmin to 2.11.7
+
 2008-06-28 Benedikt Heintel
 	- GUI:
 		* Changed: Base PHP Code

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_datadict.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ * @version $Id: db_datadict.php 11334 2008-06-21 13:16:05Z lem9 $
  */
 
 /**
@@ -165,7 +165,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
      * Displays the comments of the table if MySQL >= 3.23
      */
     if (!empty($show_comment)) {
-        echo $strTableComments . ': ' . $show_comment . '<br /><br />';
+        echo $strTableComments . ': ' . htmlspecialchars($show_comment) . '<br /><br />';
     }
 
     /**
