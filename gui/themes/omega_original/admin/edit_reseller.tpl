@@ -349,7 +349,7 @@
       </tr>
       <tr>
         <td>&nbsp;</td>
-        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">
+        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE}">
           &nbsp;&nbsp;&nbsp;
           <input type="checkbox" name="send_data" checked="checked">
           {TR_SEND_DATA}</td>

@@ -48,7 +48,7 @@ a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
 }
 
 a.menu, a.menu:link, a.menu:visited {
-	font-family:		arial, helvetica, sans-serif;
+	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			9pt;
 	color:				#000000;
 	font-weight:		bold;
@@ -56,12 +56,12 @@ a.menu, a.menu:link, a.menu:visited {
 }
 
 a.menu:hover, a.menu:active, a.menu:focus {
-	color:				333333;
+	color:				#333333;
 	text-decoration:	none;
 }
 
 a.menu_active, a.menu_active:link, a.menu_active:visited  {
-	font-family:		arial, helvetica, sans-serif;
+	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			9pt;
 	color:				#000000;
 	font-weight:		bold;
@@ -76,7 +76,7 @@ a.menu_active:hover, a.menu_active:active, a.menu_active:focus {
 a.submenu {
 	margin-top:			0px;
 	display:			block;
-	font-family:		geneva, arial, helvetica, sans-serif;
+	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-weight:		bold;
 	font-size:			11px;
 	vertical-align:		middle;
@@ -100,24 +100,28 @@ a.submenu:hover, a.submenu:active, a.submenu:focus {
 	vertical-align:		middle;
 }
 
-a.logout, a.logout:link, a.logout:visited {
-	font-family:		arial, helvetica, sans-serif;
+.logoutbutton a, .logoutbutton a:link, .logoutbutton a:visited {
+	font-family:		Arial, Helvetica, sans-serif;
 	font-weight:		bold;
-	font-size: 			10px;
+	font-size: 			14px;
 	color: 				#ffffff;
-	height: 			18px;
+	height: 			24px;
 	padding: 			1px;
-	padding-left:		5px;
 	white-space: 		nowrap;
 	text-decoration:	none;
 }
 
-a.logout:hover, a.logout:active, a.logout:focus {
+.logoutbutton a:hover, .logoutbutton a:active, .logoutbutton a:focus {
 	color: 				#f4dc6b;
 }
 
+.logoutbutton img {
+	vertical-align:		middle;
+	padding-right:		5px;
+}
+
 .login {
-	font-family:		geneva, arial, helvetica, sans-serif;
+	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-size:			11px;
 	color:				#000;
 	white-space:		nowrap;
@@ -125,7 +129,7 @@ a.logout:hover, a.logout:active, a.logout:focus {
 }
 
 a.login, a.login:link, a.login:visited {
-	font-family:		geneva, arial, helvetica, sans-serif;
+	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-size:			11px;
 	color:				#3b73ca;
 	white-space:		nowrap;
@@ -144,7 +148,7 @@ a.login:hover, a.login:active, a.login:hover {
 }
 
 .title {
-	font-family:		geneva, arial, helvetica, sans-serif;
+	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-size:			11pt;
 	font-weight:		bold;
 	font-variant:		small-caps;
@@ -153,7 +157,7 @@ a.login:hover, a.login:active, a.login:hover {
 }
 
 .titlemenu {
-	font-family:		geneva, arial, helvetica, sans-serif;
+	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-size:			11pt;
 	font-weight:		bold;
 	font-variant:		small-caps;
@@ -164,14 +168,35 @@ a.login:hover, a.login:active, a.login:hover {
 
 .bottom {
 	color:				#ffffff;
-	font-family:		arial, helvetica, sans-serif;
+	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			7pt;
 	background-image:	url(../images/top/menu_bg.jpg);
 }
 
+.message {
+	color:				#ff0000;
+}
+
 td {
-	font-family:		arial, helvetica, sans-serif;
+	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			12px;
+}
+
+td.loginTop {
+	background-image:	url(../images/login/login_top.jpg);
+}
+
+td.backButton {
+	background-image:	url(../images/button.gif);
+	color:				red;
+}
+
+td.stats {
+	background-image:	url(../images/stats_background.gif);
+}
+
+td.statsBar {
+	background-image:	url(../images/bars/stats_background.gif);
 }
 
 td.content {
@@ -220,9 +245,9 @@ td.content4 {
 .textinput {
   background-color: 	white;
   border-style: 		solid;
-  border-width: 		1;
+  border-width: 		1px;
   border-color: 		#cccccc;
-  font-family: 			verdana;
+  font-family: 			Verdana;
   font-size: 			8pt;
   height: 				21px;
   margin: 				2px;
@@ -231,15 +256,15 @@ td.content4 {
 .textinput2 {
   background-color: 	white;
   border-style: 		solid;
-  border-width: 		1;
+  border-width: 		1px;
   border-color: 		#cccccc;
-  font-family: 			verdana;
+  font-family: 			Verdana;
   font-size: 			8pt;
   margin: 				2px;
 }
 
 .button {
-	font-family: 		arial, helvetica, sans-serif;
+	font-family: 		Arial, Helvetica, sans-serif;
 	height: 			21px;
 	font-size: 			12px;
 	color: 				#ffffff;

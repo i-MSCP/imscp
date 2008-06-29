@@ -88,7 +88,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $status));
-    print $sql->ErrorMsg();
+//     print $sql->ErrorMsg();
     $order_id = $sql->Insert_ID();
     send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
 

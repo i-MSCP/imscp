@@ -37,17 +37,12 @@ $tpl -> define_dynamic('hosting_plans', 'page');
 $tpl -> define_dynamic('database_update_message', 'page');
 $tpl -> define_dynamic('database_update_infos', 'page');
 
-$tpl -> assign(
-			array(
-				'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-				'THEME_COLOR_PATH' => "../themes/" . Config::get('USER_INITIAL_THEME'),
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
-
-// Combine the needed url this file
-$url = 'http://' . Config::get('BASE_SERVER_VHOST') . '/admin/database_update.php';
+$tpl -> assign(array(
+	'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE'	=> tr('ispCP - Virtual Hosting Control System'),
+	'THEME_COLOR_PATH'			=> "../themes/" . Config::get('USER_INITIAL_THEME'),
+	'THEME_CHARSET'				=> tr('encoding'),
+	'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
+));
 
 // $execute is false per default
 $execute = false;
@@ -62,25 +57,24 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tp
 gen_page_message($tpl);
 
 $tpl->assign(array(
-	'TR_UPDATES_TITLE' => tr('Database updates'),
-	'TR_AVAILABLE_UPDATES' => tr('Available database updates'),
-	'TR_UPDATE' => tr('Update'),
-	'TR_INFOS' => tr('Update details')
+	'TR_UPDATES_TITLE'	=> tr('Database updates'),
+	'TR_AVAILABLE_UPDATES'	=> tr('Available database updates'),
+	'TR_UPDATE'		=> tr('Update'),
+	'TR_INFOS'		=> tr('Update details')
 ));
-
 
 if(checkDatabaseUpdateExists()) {
 	$tpl->assign(array(
-		'UPDATE_MESSAGE'			=> '',
+		'UPDATE_MESSAGE'		=> '',
 		'DATABASE_UPDATE_MESSAGE'	=> '',
-		'UPDATE'					=> tr('New Database update is now available'),
-		'INFOS'						=> tr('Do you want to execute the Updates now?')
+		'UPDATE'			=> tr('New Database update is now available'),
+		'INFOS'				=> tr('Do you want to execute the Updates now?')
 	));
 	$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
 } else {
 	$tpl->assign(array(
-		'TR_UPDATE_MESSAGE' 		=> tr('No database updates available'),
-		'DATABASE_UPDATE_INFOS'		=> ''
+		'TR_UPDATE_MESSAGE' 	=> tr('No database updates available'),
+		'DATABASE_UPDATE_INFOS'	=> ''
 	));
 	$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 }
@@ -88,13 +82,11 @@ if(checkDatabaseUpdateExists()) {
 // Execute all available db updates and redirect back to database_update.php
 if($execute) {
 	executeDatabaseUpdates();
-	header('Location:' . $url);
+	header('Location:' . $_SERVER['PHP_SELF']);
 }
-
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
-	dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))dump_gui_debug();
 ?>

@@ -148,12 +148,10 @@ function check_user_data() {
 	if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 		if (!chk_password($_POST['pass'])) {
 			set_page_message(tr("Incorrect password length or syntax!"));
-
 			return false;
 		}
 		if ($_POST['pass'] != $_POST['pass_rep']) {
 			set_page_message(tr("Entered passwords do not match!"));
-
 			return false;
 		}
 	}
@@ -189,12 +187,10 @@ function check_user_data() {
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL databases limit!'));
-
 		return false;
 	}
 	else if ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
 		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
-
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
@@ -203,7 +199,6 @@ function check_user_data() {
 	}
 	else if ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
-
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
@@ -480,23 +475,23 @@ function update_reseller(&$sql) {
 
 			if (empty($_POST['pass'])) {
 				$query = <<<SQL_QUERY
-                    update
-                        admin
-                    set
-                        fname = ?,
-                        lname = ?,
-                        firm = ?,
-                        zip = ?,
-                        city = ?,
-                        country = ?,
-                        email = ?,
-                        phone = ?,
-                        fax = ?,
-                        street1 = ?,
-                        street2 = ?,
-                        gender = ?
-                    where
-                        admin_id = ?
+					update
+						admin
+					set
+						fname = ?,
+						lname = ?,
+						firm = ?,
+						zip = ?,
+						city = ?,
+						country = ?,
+						email = ?,
+						phone = ?,
+						fax = ?,
+						street1 = ?,
+						street2 = ?,
+						gender = ?
+					where
+						admin_id = ?
 SQL_QUERY;
 				$rs = exec_query($sql, $query, array($fname,
 						$lname,
@@ -514,39 +509,39 @@ SQL_QUERY;
 			} else {
 				$upass = crypt_user_pass($_POST['pass']);
 				$query = <<<SQL_QUERY
-                    update
-                        admin
-                    set
-                        admin_pass = ?,
-                        fname = ?,
-                        lname = ?,
-                        firm = ?,
-                        zip = ?,
-                        city = ?,
-                        country = ?,
-                        email = ?,
-                        phone = ?,
-                        fax = ?,
-                        street1 = ?,
-                        street2 = ?,
-                        gender = ?
-                    where
-                        admin_id = ?
+					update
+						admin
+					set
+						admin_pass = ?,
+						fname = ?,
+						lname = ?,
+						firm = ?,
+						zip = ?,
+						city = ?,
+						country = ?,
+						email = ?,
+						phone = ?,
+						fax = ?,
+						street1 = ?,
+						street2 = ?,
+						gender = ?
+					where
+						admin_id = ?
 SQL_QUERY;
-				$rs = exec_query($sql, $query, array($upass,
-						$fname,
-						$lname,
-						$firm,
-						$zip,
-						$city,
-						$country,
-						$email,
-						$phone,
-						$fax,
-						$street1,
-						$street2,
-						$gender,
-						$edit_id));
+			$rs = exec_query($sql, $query, array($upass,
+				$fname,
+				$lname,
+				$firm,
+				$zip,
+				$city,
+				$country,
+				$email,
+				$phone,
+				$fax,
+				$street1,
+				$street2,
+				$gender,
+				$edit_id));
 			}
 
 			$nreseller_max_domain_cnt = clean_input($_POST['nreseller_max_domain_cnt']);
@@ -559,7 +554,7 @@ SQL_QUERY;
 			$nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
-
+			
 			$query = <<<SQL_QUERY
                 update reseller_props
                 set

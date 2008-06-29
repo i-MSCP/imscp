@@ -39,6 +39,7 @@ function dump_gui_debug() {
     echo '<pre>';
     echo htmlentities(print_r($_FILES,   true));
     echo '</pre>';
+    return;
     echo '<font color="#0000FF"><u>Content of <b>$GLOBALS</b>:</u><br /></font>';
     echo '<pre>';
     echo htmlentities(print_r($GLOBALS,  true));

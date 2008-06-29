@@ -175,7 +175,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: changes data/password of $edit_username!");
+			write_log("$user_logged: changes data/password for $edit_username!");
 
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";

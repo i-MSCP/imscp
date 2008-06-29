@@ -47,39 +47,39 @@ gen_admin_personal_data($tpl, $sql, $_SESSION['user_id']);
 function gen_admin_personal_data(&$tpl, &$sql, $user_id) {
 	$query = <<<SQL_QUERY
         select
-            fname,
-            lname,
-            gender,
-            firm,
-            zip,
-            city,
-            country,
-            street1,
-            street2,
-            email,
-            phone,
-            fax
+            `fname`,
+            `lname`,
+            `gender`,
+            `firm`,
+            `zip`,
+            `city`,
+            `country`,
+            `street1`,
+            `street2`,
+            `email`,
+            `phone`,
+            `fax`
         from
-            admin
+            `admin`
         where
-            admin_id = ?
+            `admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$tpl->assign(
 			array(
-				'FIRST_NAME' => $rs->fields['fname'],
-				'LAST_NAME' => $rs->fields['lname'],
-				'FIRM' => $rs->fields['firm'],
-				'ZIP' => $rs->fields['zip'],
-				'CITY' => $rs->fields['city'],
-				'COUNTRY' => $rs->fields['country'],
-				'STREET_1' => $rs->fields['street1'],
-				'STREET_2' => $rs->fields['street2'],
-				'EMAIL' => $rs->fields['email'],
-				'PHONE' => $rs->fields['phone'],
-				'FAX' => $rs->fields['fax'],
+				'FIRST_NAME' => empty($rs->fields['fname'])?'':$rs->fields['fname'],
+				'LAST_NAME' => empty($rs->fields['lname'])?'':$rs->fields['lname'],
+				'FIRM' => empty($rs->fields['firm'])?'':$rs->fields['firm'],
+				'ZIP' => empty($rs->fields['zip'])?'':$rs->fields['zip'],
+				'CITY' => empty($rs->fields['city'])?'':$rs->fields['city'],
+				'COUNTRY' => empty($rs->fields['country'])?'':$rs->fields['country'],
+				'STREET_1' => empty($rs->fields['street1'])?'':$rs->fields['street1'],
+				'STREET_2' => empty($rs->fields['street2'])?'':$rs->fields['street2'],
+				'EMAIL' => empty($rs->fields['email'])?'':$rs->fields['email'],
+				'PHONE' => empty($rs->fields['phone'])?'':$rs->fields['phone'],
+				'FAX' => empty($rs->fields['fax'])?'':$rs->fields['fax'],
 				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected' : ''),
 				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
 				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : ''),
@@ -103,22 +103,22 @@ function update_admin_personal_data(&$sql, $user_id) {
 
 	$query = <<<SQL_QUERY
         update
-            admin
+            `admin`
         set
-            fname = ?,
-            lname = ?,
-            firm = ?,
-            zip = ?,
-            city = ?,
-            country = ?,
-            street1 = ?,
-            street2 = ?,
-            email = ?,
-            phone = ?,
-            fax = ?,
-            gender = ?
+            `fname` = ?,
+            `lname` = ?,
+            `firm` = ?,
+            `zip` = ?,
+            `city` = ?,
+            `country` = ?,
+            `street1` = ?,
+            `street2` = ?,
+            `email` = ?,
+            `phone` = ?,
+            `fax` = ?,
+            `gender` = ?
         where
-            admin_id = ?
+            `admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($fname,

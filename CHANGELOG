@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-06-29 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to 2.11.7
+		* Fixed #1365: session files for master domain are not removed
 
 2008-06-28 Benedikt Heintel
 	- GUI:

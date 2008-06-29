@@ -39,14 +39,12 @@ $tpl->define_dynamic('ip_entry', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(
-                array(
+$tpl->assign(array(
                         'TR_EDIT_USER_PAGE_TITLE' => tr('ispCP - Users/Edit'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                     )
-              );
+			'ISP_LOGO' => get_logo($_SESSION['user_id']),
+));
 
 /*
  *
@@ -88,20 +86,18 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_manage_us
 
 gen_logged_from($tpl);
 
-$tpl->assign(
-            array(
-					'TR_MANAGE_USERS' => tr('Manage users'),
-					'TR_USERS' => tr('Users'),
-					'TR_NO' => tr('No.'),
-					'TR_USERNAME' => tr('Username'),
-					'TR_ACTION' => tr('Action'),
-					'TR_BACK' => tr('Back'),
-                    'TR_TITLE_BACK' => tr('Return to previous menu'),
-                    'TR_TABLE_NAME' => tr('Users list'),
-					'TR_SEND_DATA' => tr('Send new login data'),
-					'TR_PASSWORD_GENERATE' => tr('Generate password')
-                 )
-			);
+$tpl->assign(array(
+	'TR_MANAGE_USERS'	=> tr('Manage users'),
+	'TR_USERS'		=> tr('Users'),
+	'TR_NO'			=> tr('No.'),
+	'TR_USERNAME'		=> tr('Username'),
+	'TR_ACTION'		=> tr('Action'),
+	'TR_BACK'		=> tr('Back'),
+	'TR_TITLE_BACK'		=> tr('Return to previous menu'),
+	'TR_TABLE_NAME'		=> tr('Users list'),
+	'TR_SEND_DATA'		=> tr('Send new login data'),
+	'TR_PASSWORD_GENERATE'	=> tr('Generate password')
+));
 
 if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', passgen());
@@ -116,7 +112,6 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 		$hpid = $_SESSION['edit_ID'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-
 		Header('Location: users.php');
 		die();
 	}
@@ -125,7 +120,6 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 		$dmn_user_name = $_SESSION['user_name'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-
 		Header('Location: users.php');
 		die();
 	}
@@ -137,22 +131,15 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 } else {
 	// Get user id that come for edit
 	$hpid = $edit_id;
-
 	load_user_data_page($hpid);
-
 	$_SESSION['edit_ID'] = $hpid;
 
 }
 gen_edituser_page($tpl);
-
 gen_page_message($tpl);
-
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
-
-if (Config::get('DUMP_GUI_DEBUG'))
-	dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))dump_gui_debug();
 
 //unset_messages();
 
@@ -165,8 +152,8 @@ function load_user_data_page($user_id) {
 	$sql = Database::getInstance();
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip, $gender;
-    global $city, $country, $street_one;
+	global $last_name, $firm, $zip, $gender;
+	global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
 
@@ -196,22 +183,20 @@ SQL_QUERY;
 		$_SESSION['user_name'] = $data['admin_name'];
 
 		$dmn_user_name	=	$data['admin_name'];
-		$user_email		=	$data['email'];
+		$user_email	=	$data['email'];
 		$customer_id	=	$data['customer_id'];
-		$first_name		=	$data['fname'];
-    	$last_name		=	$data['lname'];
-    	$gender		    =  	$data['gender'];
-		$firm			=	$data['firm'];
-		$zip			=	$data['zip'];
-    	$city			=	$data['city'];
-		$country		=	$data['country'];
-		$street_one		=	$data['street1'];
-		$street_two		=	$data['street2'];
-		$mail			=	$data['email'];
-		$phone			=	$data['phone'];
-		$fax			=	$data['fax'];
-
-
+		$first_name	=	$data['fname'];
+		$last_name	=	$data['lname'];
+		$gender		=	$data['gender'];
+		$firm		=	$data['firm'];
+		$zip		=	$data['zip'];
+		$city		=	$data['city'];
+		$country	=	$data['country'];
+		$street_one	=	$data['street1'];
+		$street_two	=	$data['street2'];
+		$mail		=	$data['email'];
+		$phone		=	$data['phone'];
+		$fax		=	$data['fax'];
 	}
 
 }//End of gen_load_ehp_page()
@@ -221,8 +206,8 @@ SQL_QUERY;
 function gen_edituser_page(&$tpl) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip, $gender;
-    global $city, $country, $street_one;
+	global $last_name, $firm, $zip, $gender;
+	global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
 
@@ -231,26 +216,23 @@ function gen_edituser_page(&$tpl) {
 	}
 
 	// Fill in the fileds
-	$tpl -> assign(
-                array(
-                       	'VL_USERNAME' => decode_idna($dmn_user_name),
-						'VL_MAIL' => $user_email,
-						'VL_USR_ID' => $customer_id,
-						'VL_USR_NAME' => $first_name,
-						'VL_LAST_USRNAME' => $last_name,
-						'VL_USR_FIRM' => $firm,
-						'VL_USR_POSTCODE' => $zip,
-						'VL_USRCITY' => $city,
-						'VL_COUNTRY' => $country,
-						'VL_STREET1' => $street_one,
-						'VL_STREET2' => $street_two,
-						'VL_MAIL' => $mail,
-                        'VL_MALE' => ($gender == 'M') ? 'checked' : '',
-                        'VL_FEMALE' => ($gender == 'F') ? 'checked' : '',
-						'VL_PHONE' => $phone,
-						'VL_FAX' => $fax
-					)
-			);
+	$tpl -> assign(array(
+		'VL_USERNAME'		=> decode_idna($dmn_user_name),
+		'VL_MAIL'		=> empty($user_email)?'':$user_email,
+		'VL_USR_ID'		=> empty($customer_id)?'':$customer_id,
+		'VL_USR_NAME'		=> empty($first_name)?'':$first_name,
+		'VL_LAST_USRNAME'	=> empty($last_name)?'':$last_name,
+		'VL_USR_FIRM'		=> empty($firm)?'':$firm,
+		'VL_USR_POSTCODE'	=> empty($zip)?'':$zip,
+		'VL_USRCITY'		=> empty($city)?'':$city,
+		'VL_COUNTRY'		=> empty($country)?'':$country,
+		'VL_STREET1'		=> empty($street_one)?'':$street_one,
+		'VL_STREET2'		=> empty($street_two)?'':$street_two,
+		'VL_MALE'		=> ($gender == 'M') ? 'checked' : '',
+		'VL_FEMALE'		=> ($gender == 'F') ? 'checked' : '',
+		'VL_PHONE'		=> empty($phone)?'':$phone,
+		'VL_FAX'		=> empty($fax)?'':$fax
+	));
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 
@@ -272,13 +254,13 @@ function update_data_in_db($hpid) {
 
   $first_name 	= clean_input($first_name);
   $last_name 	= clean_input($last_name);
-  $firm 		= clean_input($firm);
-  $gender		= clean_input($gender);
-  $zip 			= clean_input($zip);
-  $city 		= clean_input($city);
-  $country 		= clean_input($country);
-  $phone 		= clean_input($phone);
-  $fax 			= clean_input($fax);
+  $firm 	= clean_input($firm);
+  $gender	= clean_input($gender);
+  $zip 		= clean_input($zip);
+  $city 	= clean_input($city);
+  $country 	= clean_input($country);
+  $phone 	= clean_input($phone);
+  $fax 		= clean_input($fax);
   $street_one 	= clean_input($street_one);
   $street_two 	= clean_input($street_two);
 

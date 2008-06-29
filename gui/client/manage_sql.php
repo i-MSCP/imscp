@@ -111,11 +111,11 @@ SQL_QUERY;
 			$db_name = $rs->fields['sqld_name'];
 			gen_db_user_list($tpl, $sql, $db_id);
 			$tpl->assign(
-						array(
-							'DB_ID' => "$db_id",
-							'DB_NAME' => "$db_name"
-							)
-						);
+				array(
+					'DB_ID' => "$db_id",
+					'DB_NAME' => "$db_name"
+				)
+			);
 			$tpl->parse('DB_LIST', '.db_list');
 			$rs->MoveNext();
 		}
