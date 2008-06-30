@@ -147,6 +147,9 @@ Config::set('CREATE_DEFAULT_EMAIL_ADDRESSES', true);
 // false: email accounts are soft suspended (passwords are modified so user can't access the accounts)
 Config::set('HARD_MAIL_SUSPENSION', true);
 
+// false: disable automatic serch for new version
+Config::set('CHECK_FOR_UPDATES', true);
+
 
 require_once(INCLUDEPATH . '/date-functions.php');
 require_once(INCLUDEPATH . '/input-checks.php');
@@ -176,7 +179,7 @@ if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 	$config = HTMLPurifier_Config::createDefault();
 	$config->set('HTML', 'TidyLevel', 'none'); // XSS cleaning
 
-	$purifier = new HTMLPurifier($config);				
+	$purifier = new HTMLPurifier($config);
 	//$purifier = HTMLPurifier::getInstance();
 
 	$_GET		= array_map(array($purifier, 'purify'), $_GET);
