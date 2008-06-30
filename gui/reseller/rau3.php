@@ -216,7 +216,7 @@ function add_user_data($reseller_id) {
 		$props = $_SESSION["ch_hpprops"];
 		unset($_SESSION["ch_hpprops"]);
 	} else {
-		if (isset(Config::get('HOSTING_PLANS_LEVEL')) && strtolower(Config::get('HOSTING_PLANS_LEVEL') == 'admin')) {
+		if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
 			$query = 'select props from hosting_plans where id = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {

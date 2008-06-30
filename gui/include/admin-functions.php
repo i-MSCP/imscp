@@ -160,7 +160,7 @@ SQL_QUERY;
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
-	if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+	if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 
@@ -264,7 +264,7 @@ SQL_QUERY;
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
-	if (Config::get('HOSTING_PLANS_LEVEL') != strtolower('admin')) {
+	if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 

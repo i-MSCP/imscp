@@ -118,20 +118,20 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($reseller_id, $start_index, $rows_per_page));
 	$tpl->assign(
-				array(
-					'RESELLER_NAME' => $reseller_name,
-					'RESELLER_ID' => $reseller_id
-				)
-			);
+			array(
+				'RESELLER_NAME' => $reseller_name,
+				'RESELLER_ID' => $reseller_id
+			)
+		);
 
 	if ($rs->RowCount() == 0) {
 		$tpl->assign(
-					array(
-						'DOMAIN_LIST' => '',
-						'SCROLL_PREV' => '',
-						'SCROLL_NEXT' => ''
-				)
-			);
+				array(
+					'DOMAIN_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_NEXT' => ''
+					)
+				);
 	} else {
 		$tpl->assign('NO_DOMAINS', '');
 		$prev_si = $start_index - $rows_per_page;
@@ -139,9 +139,9 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-						array(
-							'SCROLL_PREV_GRAY' => '',
-							'PREV_PSI' => $prev_si
+					array(
+						'SCROLL_PREV_GRAY' => '',
+						'PREV_PSI' => $prev_si
 						)
 					);
 		}
@@ -152,11 +152,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-						array(
-							'SCROLL_NEXT_GRAY' => '',
-							'NEXT_PSI' => $next_si
-						)
-					);
+					array(
+						'SCROLL_NEXT_GRAY' => '',
+						'NEXT_PSI' => $next_si
+					)
+				);
 		}
 		$row = 1;
 

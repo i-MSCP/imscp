@@ -18,6 +18,9 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+//dirty hack (disable HTMLPurifier until figure out how to let pass post arrays)
+define('OVERRIDE_PURIFIER', null);
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -208,28 +211,29 @@ SQL_QUERY;
 			} else {
 				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
 				$tpl->assign(
-					array(
-						'PORT_READONLY' => '',
-						'PROTOCOL_READONLY' => '',
-						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE' => 'settings_ports.php?delete=' . $rs->fields['name'],
-						'PORT_DELETE_SHOW' => ''
-						)
-					);
-				$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
+						array(
+							'PORT_READONLY'		=> '',
+							'PROTOCOL_READONLY'	=> '',
+							'TR_DELETE'			=> tr('Delete'),
+							'URL_DELETE'		=> 'settings_ports.php?delete=' . $rs->fields['name'],
+							'PORT_DELETE_SHOW'	=> '',
+							'NUM'				=> $row
+							)
+						);
+ 				$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
 			}
 
 			$tpl->assign(
-				array(
-					'CUSTOM' => $custom,
-					'VAR_NAME' => $rs->fields['name'],
-					'PORT' => $port,
-					'SELECTED_UDP' => $selected_udp,
-					'SELECTED_TCP' => $selected_tcp,
-					'SELECTED_ON' => $selected_on,
-					'SELECTED_OFF' => $selected_off,
-					)
-				);
+					array(
+							'CUSTOM' => $custom,
+							'VAR_NAME' => $rs->fields['name'],
+							'PORT' => $port,
+							'SELECTED_UDP' => $selected_udp,
+							'SELECTED_TCP' => $selected_tcp,
+							'SELECTED_ON' => $selected_on,
+							'SELECTED_OFF' => $selected_off,
+						)
+					);
 
 			$tpl->parse('SERVICE_PORTS', '.service_ports');
 

@@ -84,7 +84,8 @@ SQL_QUERY;
 				);
 		} elseif ($ticket_urgency == 3) {
 			$tpl->assign(
-				array('URGENCY' => tr("High"),
+				array(
+					'URGENCY' => tr("High"),
 					'URGENCY_ID' => '3',
 					)
 				);
@@ -110,7 +111,7 @@ SQL_QUERY;
 				)
 			);
 
-		$tpl->parse('TICKETS_ITEM', '.tickets_item');
+		$tpl->parse('TICKETS_ITEM', 'tickets_item');
 		get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
 	}
 }
@@ -133,6 +134,10 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id));
+
+	if ($rs->RecordCount() == 0) {
+		return;
+	}
 
 	while (!$rs->EOF) {
 		$ticket_id = $rs->fields['ticket_id'];

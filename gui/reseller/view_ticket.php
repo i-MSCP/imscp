@@ -126,6 +126,10 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 
+	if ($rs->RecordCount() == 0){
+		return;
+	}
+
 	while (!$rs->EOF) {
 		$ticket_id = $rs->fields['ticket_id'];
 		$ticket_date = $rs->fields['ticket_date'];

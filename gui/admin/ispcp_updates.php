@@ -43,14 +43,18 @@ $tpl->assign(
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
 
-// Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
-$data = $res->FetchRow();
-if ($data['0'] > 0) {
-	$_SESSION['hp_deleted_ordererror'] = '_yes_';
-	header("Location: hp.php");
-	die();
-}
+	if (!Config::get('CHECK_FOR_UPDATES')) {
+		$tpl->assign(
+				array(
+					'UPDATE_MESSAGE'	=> '',
+					'UPDATE'		=> tr('Update checking is disabled!'),
+					'INFOS' 		=> tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . "</a>"
+					)
+				);
+		$tpl->parse('UPDATE_INFOS', 'update_infos');
+		return false;
+	}
+
 
 	$info_url = 'http://www.isp-control.net/download.html';
 	$last_update = 'http://www.isp-control.net/latest.txt';

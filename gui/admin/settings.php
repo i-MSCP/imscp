@@ -121,7 +121,7 @@ if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected="selected"');
 }
-if (Config::get('PASSWD_CHARS')) {
+if (Config::get('PASSWD_STRONG')) {
 	$tpl->assign('{PASSWD_STRONG_ON}', 'selected="selected"');
 	$tpl->assign('{PASSWD_STRONG_OFF}', '');
 } else {
@@ -167,6 +167,22 @@ if (Config::get('HARD_MAIL_SUSPENSION')) {
 } else {
 	$tpl->assign('HARD_MAIL_SUSPENSION_ON', '');
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', 'selected="selected"');
+}
+
+if (Config::get('HOSTING_PLANS_LEVEL') == "admin") {
+	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', 'selected="selected"');
+	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', '');
+} else {
+	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', '');
+	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', 'selected="selected"');
+}
+
+if (Config::get('CHECK_FOR_UPDATES')) {
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', '');
+} else {
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', '');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
 }
 
 switch(Config::get('LOG_LEVEL')){

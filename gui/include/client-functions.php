@@ -671,12 +671,15 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $db_user_id));
 
 	if ($rs->RecordCount() == 0) {
+		//dirty hack admin can't delete users without database
+		if($_SESSION['user_type']==='admin' || $_SESSION['user_type']==='reseller')
+			return;
 		user_goto('manage_sql.php');
 	}
 	// remove from ispcp sql_user table.
 	$query = 'delete from sql_user where sqlu_id = ?';
-
 	exec_query($sql, $query, array($db_user_id));
+
 	$db_name = quoteIdentifier($rs->fields['sqld_name']);
 	$db_user_name = $rs->fields['sqlu_name'];
 
@@ -684,7 +687,7 @@ SQL_QUERY;
 		$db_id = $rs->fields['sqld_id'];
 		// revoke grants on global level, if any;
 		$query = <<<SQL_QUERY
-        	REVOKE ALL ON *.* FROM ?@'%'
+       		REVOKE ALL ON *.* FROM ?@'%'
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 		$query = <<<SQL_QUERY
@@ -692,34 +695,40 @@ SQL_QUERY;
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 		// delete user record from mysql.user table;
-		$query = <<<SQL_QUERY
+/*		$query = <<<SQL_QUERY
        	 DELETE FROM
         	    mysql.user
        	 WHERE
          		Host = '%'
            AND
 				User = ?
+SQL_QUERY; */
+		$query = <<<SQL_QUERY
+			DROP USER ?@'%';
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 
 		$query = <<<SQL_QUERY
+			DROP USER ?@'localhost';
+SQL_QUERY;
+/*		$query = <<<SQL_QUERY
 			DELETE FROM
 				mysql.user
 			WHERE
 				Host = 'localhost'
 			  AND
 				User = ?
-SQL_QUERY;
+SQL_QUERY; */
 		$rs = exec_query($sql, $query, array($db_user_name));
 		// flush privileges.
 		$query = <<<SQL_QUERY
-        	FLUSH PRIVILEGES;
+			FLUSH PRIVILEGES;
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array());
 	} else {
 		$new_db_name = str_replace("_", "\\_", $db_name);
 		$query = <<<SQL_QUERY
-       	 	REVOKE ALL ON $new_db_name.* FROM ?@'%'
+			REVOKE ALL ON $new_db_name.* FROM ?@'%'
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 		$query = <<<SQL_QUERY

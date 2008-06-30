@@ -195,7 +195,7 @@ SQL_QUERY;
 	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
-	if (isset(Config::get('HOSTING_PLANS_LEVEL')) && strtolower(Config::get('HOSTING_PLANS_LEVEL')) === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) === 'admin') {
 		$tpl->assign('HP_MENU_ADD', '');
 	}
 
@@ -1150,21 +1150,23 @@ SQL_QUERY;
 	asort($languages[0], SORT_STRING);
 	foreach ($languages as $lang) {
 		$tpl->assign(
-			array('LANG_VALUE' => $lang[0],
+			array(
+				'LANG_VALUE'	=> $lang[0],
 				'LANG_SELECTED' => $lang[1],
-				'LANG_NAME' => $lang[2]
+				'LANG_NAME'		=> $lang[2]
 				)
 			);
 		$tpl->parse('DEF_LANGUAGE', '.def_language');
 	}
 }
 
-function gen_domain_details(&$tpl, &$sql, &$domain_id) {
+function gen_domain_details(&$tpl, &$sql, $domain_id) {
 	$tpl->assign('USER_DETAILS', '');
 
 	if (isset($_SESSION['details']) and $_SESSION['details'] == 'hide') {
 		$tpl->assign(
-			array('TR_VIEW_DETAILS' => tr('view aliases'),
+			array(
+				'TR_VIEW_DETAILS' => tr('view aliases'),
 				'SHOW_DETAILS' => "show",
 				)
 			);
@@ -1172,20 +1174,21 @@ function gen_domain_details(&$tpl, &$sql, &$domain_id) {
 		return;
 	} else if (isset($_SESSION['details']) and $_SESSION['details'] === "show") {
 		$tpl->assign(
-			array('TR_VIEW_DETAILS' => tr('hide aliases'),
+			array(
+				'TR_VIEW_DETAILS' => tr('hide aliases'),
 				'SHOW_DETAILS' => "hide",
 				)
 			);
 
 		$alias_query = <<<SQL_QUERY
-        select
-            alias_id, alias_name
-        from
-            domain_aliasses
-        where
-            domain_id = ?
-        order by
-            alias_id desc
+			SELECT
+				`alias_id`, `alias_name`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`domain_id` = ?
+			ORDER BY
+				`alias_id` DESC
 SQL_QUERY;
 		$alias_rs = exec_query($sql, $alias_query, array($domain_id));
 

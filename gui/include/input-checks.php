@@ -485,14 +485,14 @@ SQL_QUERY;
 }
 
 function get_post($value) {
-	if (isset($_POST[$value]))
+	if (array_key_exists($value, $_POST))
 		return $_POST[$value];
 	else
 		return null;
 }
 
 function get_session($value) {
-	if (isset($_SESSION[$value]))
+	if (array_key_exists($value, $_SESSION))
 		return $_SESSION[$value];
 	else
 		return null;

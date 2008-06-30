@@ -18,6 +18,9 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+//dirty hack (disable HTMLPurifier until figure out how to let pass post arrays)
+define('OVERRIDE_PURIFIER', null);
+
 require '../include/ispcp-lib.php';
 require '../include/vfs.php';
 
@@ -114,16 +117,16 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	// lets check if we have to update or to make new enrie
 	$alt_path = $path . "/";
 	$query = <<<SQL_QUERY
-        SELECT
-            id
-        FROM
-            htaccess
-        WHERE
-             dmn_id = ?
-		AND
-			(path = ?
-			OR
-			path = ?)
+		SELECT
+			`id`
+		FROM
+			`htaccess`
+		WHERE
+			`dmn_id` = ?
+ 		AND
+			(`path` = ?
+		OR
+			`path` = ?);
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
@@ -133,16 +136,16 @@ SQL_QUERY;
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
 		$query = <<<SQL_QUERY
-        UPDATE
-			htaccess
-		SET
-			user_id = ?,
-			group_id = ?,
-			auth_name = ?,
-			path = ?,
-			status = ?
-        WHERE
-			id = '$update_id'
+			UPDATE
+				`htaccess`
+			SET
+				`user_id` = ?,
+				`group_id` = ?,
+				`auth_name` = ?,
+				`path` = ?,
+				`status` = ?
+			WHERE
+				`id `= '$update_id';
 SQL_QUERY;
 
 		check_for_lock_file();
@@ -151,11 +154,10 @@ SQL_QUERY;
 		set_page_message(tr('Protected area updated successfully!'));
 	} else {
 		$query = <<<SQL_QUERY
-        INSERT INTO
-			htaccess
-            (dmn_id, user_id, group_id, auth_type, auth_name, path, status)
-        VALUES
-            (?, ?, ?, ?, ?, ?, ?)
+			INSERT INTO `htaccess`
+				(dmn_id, user_id, group_id, auth_type, auth_name, path, status)
+			VALUES
+				(?, ?, ?, ?, ?, ?, ?);
 SQL_QUERY;
 
 		check_for_lock_file();
@@ -189,14 +191,14 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
 		$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            htaccess
-        WHERE
-             dmn_id = ?
-		AND
-			id = ?
+			SELECT
+				*
+			FROM
+				`htaccess`
+			WHERE
+				`dmn_id` = ?
+			AND
+				`id` = ?;
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($dmn_id, $ht_id));
@@ -260,12 +262,12 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            htaccess_users
-        WHERE
-             dmn_id = ?
+		SELECT
+			*
+		FROM
+			`htaccess_users`
+		WHERE
+			`dmn_id` = ?;
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
@@ -306,12 +308,12 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            htaccess_groups
-        WHERE
-             dmn_id = ?
+		SELECT
+			*
+		FROM
+			`htaccess_groups`
+		WHERE
+			`dmn_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));

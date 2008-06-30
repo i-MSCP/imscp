@@ -70,13 +70,13 @@ SQL_QUERY;
 
 function get_update_infos(&$tpl) {
 
-	// Check if there is no order for this plan
-	$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
-	$data = $res->FetchRow();
-	if ($data['0'] > 0) {
-		$_SESSION['hp_deleted_ordererror'] = '_yes_';
-		header("Location: hp.php");
-		die();
+	$sql = Database::getInstance();
+
+	if (!Config::get('CHECK_FOR_UPDATES')) {
+		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
+		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
+		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+		return false;
 	}
 
 	$last_update = "http://www.isp-control.net/latest.txt";
@@ -90,6 +90,7 @@ function get_update_infos(&$tpl) {
 
 	if (!is_resource($dh2)) {
 		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates! Website not reachable.")));
+		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		return false;
 	}
