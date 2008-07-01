@@ -113,10 +113,10 @@ SQL_QUERY;
         ORDER BY
             admin_name ASC
         LIMIT
-			?, ?
+			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($reseller_id, $start_index, $rows_per_page));
+	$rs = exec_query($sql, $query, array($reseller_id));
 	$tpl->assign(
 			array(
 				'RESELLER_NAME' => $reseller_name,

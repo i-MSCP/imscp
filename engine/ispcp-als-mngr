@@ -723,6 +723,10 @@ sub gen_httpd_als_entry {
 
 	push_el(\@main::el, 'als_entry:', "$als_e");
 
+	if ($mount_point == "/") {
+		$mount_point = "";
+	}
+
 	my ($suexec_uid, $suexec_gid)    = get_dmn_suexec_user($dmn_id);
 	my $suexec_user_pref             = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");

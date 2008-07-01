@@ -91,6 +91,37 @@ function sizeit($bytes, $from = 'B') {
 // some password managment.
 //
 
+/**
+ * Generates a random salt for passwords.
+ *
+ * @param int $min minimum ASCII char
+ * @param int $max maximum ASCII char
+ * @return string Salt for password
+ */
+function generate_rand_salt($min = 46, $max = 126) {
+    if (CRYPT_BLOWFISH == 1) {
+        $length	= 13;
+        $pre	= '$2$';
+    } elseif (CRYPT_MD5 == 1) {
+        $length	= 9;
+        $pre	= '$1$';
+    } elseif (CRYPT_EXT_DES == 1) {
+        $length	= 9;
+        $pre	= '';
+    } elseif (CRYPT_STD_DES == 1) {
+        $length	= 2;
+        $pre	= '';
+    }
+
+    $salt = $pre;
+
+    for($i = 0; $i < $length; $i++) {
+        $salt .= chr(mt_rand($min, $max));
+    }
+
+    return $salt;
+}
+
 function get_salt_from($data) {
     $salt = substr($data, 0, 2);
     return $salt;
@@ -101,8 +132,14 @@ function crypt_user_pass($data) {
     return $res;
 }
 
+/**
+ * Encryptes the FTP user password.
+ *
+ * @param string $data the password in clear text
+ * @return string the password encrypted with salt
+ */
 function crypt_user_ftp_pass($data) {
-    $res = crypt($data);
+    $res = crypt($data, generate_rand_salt());
     return $res;
 }
 

@@ -779,11 +779,6 @@ sub patch_ispcp_rc2 {
 
 	print STDOUT "\tUpgrading system values ...";
 
-	# PHP Version
-	do {
-		$rs = ask_php_version();
-	} while ($rs == 1);
-
 	# AWStats questions
 	do {
 		$rs = ask_awstats_on();

@@ -57,12 +57,6 @@ patch
 perl
 perl-base
 perl-modules
-php4
-php4-cgi
-php4-gd
-php4-mcrypt
-php4-mysql
-php4-pear
 php5-cgi
 php5-gd
 php5-idn

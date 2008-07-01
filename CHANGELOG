@@ -2,6 +2,15 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-07-02 Benedikt Heintel
+	- CONFIG:
+		* Dropped PHP4 Support
+	- DOCS:
+		* Fixed #1374: apache2-suexec new in Lenny
+	- ENGINE:
+		* Fixed #1363: Domain Aliase at Root - Wrong in apache2 - ispcp.conf
+	- GUI:
+		* Fixed #1179: Changing domain_default_page and errordocs templates
+		* Fixed #1368: SQL syntax in reseller_user_statistics.php
 	- TOOLS:
 		* Updated HTMLpurifier to version 3.1.1
 

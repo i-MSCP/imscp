@@ -198,10 +198,6 @@ sub user_dialog {
 	#
 
 	do {
-		$rs = ask_php_version();
-	} while ($rs == 1);
-
-	do {
 		$rs = ask_second_dns();
 	} while ($rs == 1);
 

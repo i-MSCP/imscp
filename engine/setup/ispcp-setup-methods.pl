@@ -396,7 +396,7 @@ sub ask_vhost {
 }
 
 sub ask_second_dns {
-	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+	push_el(\@main::el, 'ask_second_dns()', 'Starting...');
 
 	my $rdata = undef;
 	my $qmsg = "\n\tIP of Secondary DNS. (optional) []: ";
@@ -419,12 +419,12 @@ sub ask_second_dns {
 		}
 	}
 
-	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+	push_el(\@main::el, 'ask_second_dns()', 'Ending...');
 	return 0;
 }
 
 sub ask_mysql_prefix {
-	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+	push_el(\@main::el, 'ask_mysql_prefix()', 'Starting...');
 
 	my $rdata = undef;
 	my $qmsg = "\n\tUse MySQL Prefix.\n\tPossible values: [i]nfront, [b]ehind, [n]one. [none]: ";
@@ -453,7 +453,7 @@ sub ask_mysql_prefix {
 		}
 	}
 
-	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+	push_el(\@main::el, 'ask_mysql_prefix()', 'Ending...');
 	return 0;
 }
 
@@ -578,40 +578,6 @@ sub ask_awstats_dyn {
 	}
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Ending...');
-	return 0;
-}
-
-# Set up PHP Version
-sub ask_php_version {
-
-	my $rdata = undef;
-
-	push_el(\@main::el, 'ask_php_version()', 'Starting...');
-
-	my $qmsg = "\n\tUse which PHP Version? (4 or 5). [5]: ";
-
-	print STDOUT $qmsg;
-
-	$rdata = readline(\*STDIN);
-	chop($rdata);
-
-	if (!defined($rdata) || $rdata eq '') {
-		$main::ua{'php_version'} = '5';
-	}
-	else {
-		if ($rdata eq 'php4' || $rdata eq '4') {
-			$main::ua{'php_version'} = '4';
-		}
-		elsif ($rdata eq 'php5' || $rdata eq '5') {
-			$main::ua{'php_version'} = '5';
-		}
-		else {
-			print STDOUT "\n\tOnly 'php(4)' and 'php(5)' are allowed!";
-			return 1;
-		}
-	}
-
-	push_el(\@main::el, 'ask_php_version()', 'Ending...');
 	return 0;
 }
 
@@ -1067,24 +1033,24 @@ sub setup_php {
 
 
 	## PHP4 Starter
-	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4-fcgi-starter.tpl');
-	return $rs if ($rs != 0);
-
-	%tag_hash = (
-					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
-					'{DMN_NAME}' => "master"
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-	$rs = store_file("$bk_dir/php4-fcgi-starter.ispcp", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}". "$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0755);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.ispcp $main::cfg{'PHP_STARTER_DIR'}/master/php4-fcgi-starter";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
+	#($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4-fcgi-starter.tpl');
+	#return $rs if ($rs != 0);
+	#
+	#%tag_hash = (
+	#				'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+	#				'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
+	#				'{DMN_NAME}' => "master"
+	#				);
+	#
+	#($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	#return $rs if ($rs != 0);
+	#
+	#$rs = store_file("$bk_dir/php4-fcgi-starter.ispcp", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}". "$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0755);
+	#return $rs if ($rs != 0);
+	#
+	#$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.ispcp $main::cfg{'PHP_STARTER_DIR'}/master/php4-fcgi-starter";
+	#$rs = sys_command($cmd);
+	#return $rs if ($rs != 0);
 
 	## PHP5 Starter
 	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5-fcgi-starter.tpl');
@@ -1107,33 +1073,33 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	## php4.ini
-	($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
-	return $rs if ($rs != 0);
-
-	my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
-
-	if ( $other_rk_log ne '' ) {
-	   $other_rk_log = ':' .  $other_rk_log;
-	}
-
-	%tag_hash = (
-					'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
-					'{DMN_NAME}' => "gui",
-					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
-					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-					'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-					'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-					'{OTHER_ROOTKIT_LOG}' => $other_rk_log
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
-
-	return $rs if ($rs != 0);
+	#($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
+	#return $rs if ($rs != 0);
+	#
+	#my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
+	#
+	#if ( $other_rk_log ne '' ) {
+	#   $other_rk_log = ':' .  $other_rk_log;
+	#}
+	#
+	#%tag_hash = (
+	#				'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+	#				'{DMN_NAME}' => "gui",
+	#				'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
+	#				'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+	#				'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
+	#				'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+	#				'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+	#				'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+	#				'{OTHER_ROOTKIT_LOG}' => $other_rk_log
+	#				);
+	#
+	#($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	#return $rs if ($rs != 0);
+	#
+    #$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
+	#
+	#return $rs if ($rs != 0);
 
 	## php5.ini
 	($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php5/php.ini');
