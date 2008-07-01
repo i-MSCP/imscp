@@ -91,12 +91,6 @@ function sizeit($bytes, $from = 'B') {
 // some password managment.
 //
 
-function generate_rand_salt($min = 46, $max = 126) {
-    $salt  = chr(mt_rand($min, $max));
-    $salt .= chr(mt_rand($min, $max));
-    return $salt;
-}
-
 function get_salt_from($data) {
     $salt = substr($data, 0, 2);
     return $salt;
@@ -108,7 +102,7 @@ function crypt_user_pass($data) {
 }
 
 function crypt_user_ftp_pass($data) {
-    $res = crypt($data, generate_rand_salt());
+    $res = crypt($data);
     return $res;
 }
 
