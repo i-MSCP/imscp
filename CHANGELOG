@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-02 Benedikt Heintel
+	- TOOLS:
+		* Updated HTMLpurifier to version 3.1.1
+
 2008-07-01 Marc Pujol
 	- GUI:
 		* Fixed #1372: Proftpd accept autentificate with password made by first 8 chars of the original password (Thanks sci2tech)
@@ -8,6 +12,10 @@ ispCP ω 1.0.0 Changelog
 2008-07-01 Marc Pujol
 	- GUI:
 		* Fixed #1352 PHPmyadmin login from control panel not working (thanks Machaven)
+
+2008-06-30 Benedikt Heintel
+	- GUI:
+		* Fixed #1367: Fatal Error after Login
 
 2008-06-29 Benedikt Heintel
 	- TOOLS:
