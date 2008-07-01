@@ -90,7 +90,9 @@ function sbmt(form) {
                <!-- BDP: user_list -->
                <tr>
                 <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" align="absmiddle">&nbsp;{DB_USER}</td>
-                <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;<a href="#" class="link" onclick="return sbmt(document.forms[{COUNT}]);">{TR_PHP_MYADMIN}</a></td>
+  		<form method="post" action="../tools/pma/index.php" target="_blank"><input type="hidden" name="pma_username" value="{USER_MYSQL}" /><input type="hidden" name="pma_password" value="{PASS_MYSQL}" /></form>
+                <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;<a href="#" class="link" onclick="return sbmt(document.forms[{COUNT}]);">{TR_PHP_MYADMIN}</a>
+		</td>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="14" height="16" border="0" align="absmiddle">&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>
                </tr>
@@ -108,6 +110,6 @@ function sbmt(form) {
      </table>
     </td>
    </tr>
-  </table><form method="post" action="../tools/pma/index.php" target="_blank"><input type="hidden" name="pma_username" value="{USER_MYSQL}" /><input type="hidden" name="pma_password" value="{PASS_MYSQL}" /></form>
+  </table>
  </body>
 </html>
