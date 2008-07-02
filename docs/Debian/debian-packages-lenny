@@ -2,7 +2,6 @@ apache2-mpm-worker
 apache2
 apache2.2-common
 apache2-suexec
-apache2-suexec-custom
 apache2-utils
 awstats
 bash
