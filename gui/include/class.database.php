@@ -108,6 +108,9 @@ final class DatabaseResult {
 			return $this->_fields;
 		}
 		if ($param == 'EOF') {
+			if ($this->_result->rowCount() == 0) {
+				return true;
+			}
 			return !is_null($this->_fields) && !is_array($this->_fields);
 		}
 		

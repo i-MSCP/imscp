@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-04 Marc Pujol
+	- GUI:
+		* Fixed #1383: DatabaseResult->EOF returns false on select queries which return 0 rows.
+
 2008-07-02 Benedikt Heintel
 	- CONFIG:
 		* Dropped PHP4 Support
