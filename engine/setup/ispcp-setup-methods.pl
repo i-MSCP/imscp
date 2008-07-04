@@ -1072,15 +1072,15 @@ sub setup_php {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
+	my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
+
+	if ( $other_rk_log ne '' ) {
+	   $other_rk_log = ':' .  $other_rk_log;
+	}
+
 	## php4.ini
 	#($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
 	#return $rs if ($rs != 0);
-	#
-	#my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
-	#
-	#if ( $other_rk_log ne '' ) {
-	#   $other_rk_log = ':' .  $other_rk_log;
-	#}
 	#
 	#%tag_hash = (
 	#				'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},

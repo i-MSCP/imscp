@@ -375,7 +375,7 @@ sub doHashSQL {
 # @version		1.1
 #
 # @access	public
-# @param	String 	$fname	File Name
+# @param	String 	$fname	File or Folder Name
 # @param	Mixed 	$fuser	Linux User or UserID
 # @param	Mixed	$fgroup	Linux Group, GroupID or 'null'
 # @param	int		$fperms	Linux Permissions
@@ -435,14 +435,14 @@ sub setfmode {
 	    $gid = $gdata[2];
 	}
 
-    my $res = chmod ($fperms, $fname);
+    my $res = chmod($fperms, $fname);
 
     if ($res != 1) {
         push_el(\@main::el, 'setfmode()', "ERROR: cannot change permissions of file '$fname' !");
         return -1;
     }
 
-    $res = chown ($uid, $gid, $fname);
+    $res = chown($uid, $gid, $fname);
 
     if ($res != 1) {
         push_el(\@main::el, 'setfmode()', "ERROR: cannot change user/group of file '$fname' !");

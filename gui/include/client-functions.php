@@ -804,6 +804,9 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
 	if ($rs->RecordCount() == 0) {
+		if($_SESSION['user_type'] === 'admin' || $_SESSION['user_type'] === 'reseller') {
+			return;
+		}
 		user_goto('manage_sql.php');
 	}
 

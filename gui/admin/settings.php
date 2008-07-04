@@ -121,12 +121,13 @@ if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected="selected"');
 }
+
 if (Config::get('PASSWD_STRONG')) {
-	$tpl->assign('{PASSWD_STRONG_ON}', 'selected="selected"');
-	$tpl->assign('{PASSWD_STRONG_OFF}', '');
+	$tpl->assign('PASSWD_STRONG_ON', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_OFF', '');
 } else {
-	$tpl->assign('{PASSWD_STRONG_ON}', '');
-	$tpl->assign('{PASSWD_STRONG_OFF}', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_ON', '');
+	$tpl->assign('PASSWD_STRONG_OFF', 'selected="selected"');
 }
 
 if (Config::get('BRUTEFORCE')) {

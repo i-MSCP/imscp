@@ -814,7 +814,6 @@ sub patch_ispcp_rc2 {
 	# add new variables to new ispcp.conf
 	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
-	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
 
 	# save into /etc/ispcp/ispcp.conf
 	$rs = store_conf();

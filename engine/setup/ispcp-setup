@@ -244,7 +244,6 @@ sub user_dialog {
 	push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
 	push_el(\@main::el, 'user_dialog()', "mysql_prefix: $main::ua{'mysql_prefix'}");
 	push_el(\@main::el, 'user_dialog()', "mysql_prefix_type: $main::ua{'mysql_prefix_type'}");
-	push_el(\@main::el, 'user_dialog()', "php_version: $main::ua{'php_version'}");
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	return 0;
@@ -604,9 +603,6 @@ sub setup_config {
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
-	return $rs if ($rs != 0);
-
-	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('SECONDARY_DNS', $main::ua{'secondary_dns'});
