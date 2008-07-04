@@ -2,11 +2,15 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-07-04 Benedikt Heintel
-	- GUI:
-		* Fixed #1381: Admin/reseller can not delete user that does not have a database
-		* Fixed #1382: PASSWD_STRONG enabled or disabled is not corect generated for the template
 	- ENGINE:
 		* Fixed #1380: setup is broken
+	- GUI:
+		* Fixed #1370: Error message in ispcp_debugger.php when there are no pending requests
+		* Fixed #1381: Admin/reseller can not delete user that does not have a database
+		* Fixed #1382: PASSWD_STRONG enabled or disabled is not corect generated for the template
+	- DISTS:
+		* Fixed #1378: (Fedora) Proftpd Configuration (Fedora Core 9)
+		* Fixed #1379: (Fedora) ispcp.conf for Fedora Core 9 and Fix
 
 2008-07-04 Marc Pujol
 	- GUI:

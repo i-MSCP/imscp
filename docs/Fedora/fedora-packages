@@ -1,3 +1,4 @@
+amavis*
 awstats
 bind
 bind-chroot
@@ -58,6 +59,7 @@ perl-MailTools
 perl-Net-CIDR-Lite
 perl-Net-DNS
 perl-Net-IP
+perl-Net-LibIDN
 perl-Net-Netmask
 perl-Net-Server
 perl-SNMP_Session
@@ -82,6 +84,7 @@ php-xml
 postfix
 proftpd
 proftpd-mysql
+rkhunter
 spamassassin
 system-config-bind
 tar

@@ -256,17 +256,9 @@ SQL_QUERY;
 		$i = 1;
 		while (!$rs->EOF) {
 			if ($i % 2 == 0) {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content',
-							)
-					);
+				$tpl->assign(array('CONTENT' => 'content'));
 			} else {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content2',
-							)
-					);
+				$tpl->assign(array('CONTENT' => 'content2'));
 			}
 
 			$tpl->assign(
@@ -275,7 +267,7 @@ SQL_QUERY;
 						'TR_SUBDOMAIN_NAME' => $rs->fields['subdomain_name'],
 						'TR_SUBDOMAIN_ERROR' => $rs->fields['subdomain_status'],
 						'CHANGE_ID' => $rs->fields['subdomain_id'],
-						'CHANGE_TYPE' => 'subdomain',
+						'CHANGE_TYPE' => 'subdomain'
 						)
 				);
 
@@ -468,7 +460,7 @@ $tpl->assign(
 			)
 	);
 
-if (isset($_GET['action'])) {
+if (isset($_GET['action']) && $exec_count > 0) {
 	if ($_GET['action'] == 'run_engine') {
 		check_for_lock_file();
 		$c = send_request();

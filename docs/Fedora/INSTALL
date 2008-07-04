@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for Fedora Core 7
+ispCP ω (OMEGA) HowTo Install for Fedora Core 9
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -20,7 +20,7 @@ ispCP ω Version:	1.0.0 RC6
 INSTALL Script:		1.0
 Maintainer:
 Homepage:			http://isp-contol.net
-Linux Distros:		Fedora Core 7
+Linux Distros:		Fedora Core 9
 
 ================================================================================
 2) Requirements
