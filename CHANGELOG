@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-05 Benedikt Heintel
+	- LANGUAGES:
+		* Updated German
+		* Updated Basque
+
 2008-07-04 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1380: setup is broken
