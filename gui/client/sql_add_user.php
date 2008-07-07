@@ -203,7 +203,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		return;
 	}
 
-	if ((isset($_POST['pass ']) AND isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] AND !isset($_POST['Add_Exist'])) {
+	if ((isset($_POST['pass']) AND isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] AND !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Entered passwords do not match!'));
 		return;
 	}
@@ -236,7 +236,6 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	if (!isset($_POST['Add_Exist'])) {
 
 		// we'll use domain_id in the name of the database;
-
 		if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
 			$db_user = $dmn_id . "_" . clean_input($_POST['user_name']);
 		} else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {

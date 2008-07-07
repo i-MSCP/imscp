@@ -77,7 +77,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><form name="add_alias_frm" method="post" action="add_alias.php?edit_id={ID}">
+                <td valign="top"><form name="add_alias_frm" method="post" action="alias_add.php?edit_id={ID}">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>

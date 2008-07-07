@@ -44,7 +44,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form name="edit_alias_frm" method="post" action="edit_alias.php?edit_id={ID}">
+                <td><form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -85,7 +85,7 @@
                         <td width="25">&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  ">
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','manage_domains.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
                       </tr>
                     </table>
                   <input type="hidden" name="uaction" value="modify">

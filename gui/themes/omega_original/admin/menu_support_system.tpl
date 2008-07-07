@@ -19,7 +19,7 @@
      <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
     </tr>
     <tr>
-     <td><a href="ss_closed.php" class="submenu">{TR_CLOSED_TICKETS}</a></td>
+     <td><a href="ticket_closed.php" class="submenu">{TR_CLOSED_TICKETS}</a></td>
     </tr>
     <tr>
      <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

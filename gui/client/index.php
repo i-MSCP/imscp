@@ -50,7 +50,7 @@ function gen_num_limit_msg($num, $limit) {
     if ($limit == 0) {
         return $num . '&nbsp;/&nbsp;' . tr('unlimited');
     }
-    return "$num&nbsp;/&nbsp;$limit";
+    return $num . '&nbsp;/&nbsp;' . $limit;
 }
 
 function gen_system_message(&$tpl, &$sql) {
@@ -95,8 +95,12 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
         $traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
     }
 
-    $tpl->assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-                       'TRAFFIC_BARS' => $bars));
+    $tpl->assign(
+			array(
+				'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
+                'TRAFFIC_BARS' => $bars
+				)
+			);
 
     if ($max_usage != 0 && $usage > $max_usage) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
@@ -114,8 +118,12 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
         $traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
     }
 
-    $tpl->assign(array('DISK_USAGE_DATA' => $traffic_usage_data,
-            'DISK_BARS' => $bars));
+    $tpl->assign(
+			array(
+				'DISK_USAGE_DATA' => $traffic_usage_data,
+            	'DISK_BARS' => $bars
+				)
+			);
     if ($max_usage != 0 && $usage > $max_usage) {
         $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit!'));
     } else {
@@ -221,12 +229,20 @@ SQL_QUERY;
     $num_question = $rs->fields('cnum');
 
     if ($num_question == 0) {
-        $tpl->assign(array('TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
-                'MSG_ENTRY' => ''));
+        $tpl->assign(
+				array(
+					'TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
+                	'MSG_ENTRY' => ''
+					)
+				);
     } else {
-        $tpl->assign(array('NO_MESSAGES' => '',
-                'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-                'TR_VIEW' => tr('View')));
+        $tpl->assign(
+				array(
+					'NO_MESSAGES' => '',
+                	'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+                	'TR_VIEW' => tr('View')
+					)
+				);
         $tpl->parse('MSG_ENTRY', '.msg_entry');
     }
 }
@@ -284,19 +300,6 @@ list($sub_cnt,
     $ftp_acc_cnt,
     $sqld_acc_cnt,
     $sqlu_acc_cnt) = get_domain_running_props_cnt($sql, $dmn_id);
-// ko ima jump from other user interface neka esik i optica da ostanat tezi na
-// ska4ashtijat user
-/*if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-    list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
-} else {
-    $user_def_layout = $_SESSION['user_theme'];
-
-    $user_def_lang = $_SESSION['user_def_lang'];
-}
-
-gen_def_language($tpl, $sql, $user_def_lang);
-
-gen_def_layout($tpl, $sql, $user_def_layout);*/
 
 $dtraff_pr = 0 ;
 $dmn_traff_usege = 0;
@@ -354,7 +357,8 @@ gen_system_message($tpl, $sql);
 check_permissions($tpl);
 
 $tpl->assign(
-    array('TR_GENERAL_INFORMATION' => tr('General information'),
+    array(
+		'TR_GENERAL_INFORMATION' => tr('General information'),
         'TR_ACCOUNT_NAME' => tr('Account name'),
         'TR_MAIN_DOMAIN' => tr('Main domain'),
         'TR_PHP_SUPPORT' => tr('PHP support'),
@@ -377,7 +381,6 @@ $tpl->assign(
 
         'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
         'TR_DISK_USAGE' => tr('Disk usage')
-
         )
     );
 

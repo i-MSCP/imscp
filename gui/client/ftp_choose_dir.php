@@ -75,7 +75,7 @@ function gen_directories(&$tpl) {
 		}
 		// Create the directory link
 		$tpl->assign(array('ACTION' => tr('Protect it'),
-				'PROTECT_IT' => "protect_it.php?file=$dr",
+				'PROTECT_IT' => "protected_areas_add.php?file=$dr",
 				'ICON' => $image,
 				'DIR_NAME' => $entry['file'],
 				'CHOOSE_IT' => $dr,

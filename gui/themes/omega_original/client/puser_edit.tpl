@@ -41,7 +41,7 @@
               </tr>
               <tr>
                 <td valign="top">
-                <form name="edit_user" method="post" action="puser_edit.php">
+                <form name="edit_user" method="post" action="protected_user_edit.php">
                 <table width="100%" cellpadding="5" cellspacing="5">
                     <!-- BDP: page_message -->
                     <tr>
@@ -70,7 +70,7 @@
                           <input type="hidden" name="uaction" value="modify_user">
                           <input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                     </tr>
                 </table></form></td>
                 <td>&nbsp;</td>

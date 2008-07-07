@@ -79,7 +79,7 @@
                             <!-- BDP: day_list -->
                             <tr>
                               <td align="center">&nbsp;</td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="server_day_stats.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_IN}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"> {WEB_OUT}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_IN}</td>
@@ -91,7 +91,7 @@
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_IN}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_OUT}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL}</td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><b><a href="server_day_stats.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></b></td>
                             </tr>
                             <!-- EDP: day_list -->
                             <tr>

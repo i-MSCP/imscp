@@ -15,7 +15,7 @@
       </tr>
     </table>
 	<!-- EDP: logged_from -->
-	<form name="puser_assign" method="post" action="puser_assign.php?uname={UNAME}">
+	<form name="puser_assign" method="post" action="protected_user_assign.php?uname={UNAME}">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -83,7 +83,7 @@
                       <td>&nbsp;</td>
                       <td colspan="3"><input type="hidden" name="nadmin_name" value="{UID}">
                           <input type="hidden" name="uaction" value="">
-                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue">
+                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue">
                       </td>
                     </tr>
                 </table></td>

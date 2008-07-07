@@ -19,13 +19,13 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="change_password.php" class="submenu">{TR_MENU_CHANGE_PASSWORD}</a></td>
+    <td><a href="password_change.php" class="submenu">{TR_MENU_CHANGE_PASSWORD}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="change_personal.php" class="submenu">{TR_MENU_CHANGE_PERSONAL_DATA}</a></td>
+    <td><a href="personal_change.php" class="submenu">{TR_MENU_CHANGE_PERSONAL_DATA}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
@@ -38,7 +38,7 @@
   </tr>
   <!-- BDP: isactive_update_hp -->
   <tr>
-    <td><a href="update_hp.php" class="submenu">{TR_MENU_UPDATE_HP}</a></td>
+    <td><a href="update_hosting_plan.php" class="submenu">{TR_MENU_UPDATE_HP}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

@@ -19,9 +19,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="hp.php" onmouseover="MM_swapImage('hosting_plans','','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/hosting_plans.gif" name="hosting_plans" width="47" height="46" border="0" id="hosting_plans" /></a></div></td>
+      <td class="menu"><div align="center"><a href="hosting_plan.php" onmouseover="MM_swapImage('hosting_plans','','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/hosting_plans.gif" name="hosting_plans" width="47" height="46" border="0" id="hosting_plans" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="hp.php" class="menu_active" onmouseover="MM_swapImage('hosting_plans','','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_HOSTING_PLANS}</a></div></td>
+    <td class="menu"><div align="center"><a href="hosting_plan.php" class="menu_active" onmouseover="MM_swapImage('hosting_plans','','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_HOSTING_PLANS}</a></div></td>
   </tr>
 <!-- EDP: hosting_plans -->
 </table></td>

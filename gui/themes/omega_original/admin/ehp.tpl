@@ -43,7 +43,7 @@ function delete_account(url) {
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="reseller_edit_host_plant_frm" method="post" action="ehp.php">
+                      <td valign="top"><form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
                           <table width="100%" cellspacing="3">
                             <tr>
                               <td align="left">&nbsp;</td>

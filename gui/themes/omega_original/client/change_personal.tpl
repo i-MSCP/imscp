@@ -40,7 +40,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><form name="client_change_personal_frm" method="post" action="change_personal.php">
+                <td valign="top"><form name="client_change_personal_frm" method="post" action="personal_change.php">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <!-- BDP: page_message -->
                       <tr>

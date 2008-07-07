@@ -52,7 +52,7 @@ function action_delete(url) {
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="question_frm" method="post" action="new_ticket.php">
+                      <td valign="top"><form name="question_frm" method="post" action="ticket_create.php">
                           <table width="100%" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

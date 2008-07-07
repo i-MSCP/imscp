@@ -114,7 +114,7 @@ function begin_js(){
 
 function OpenTree() {
   libwindow = window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-  
+
 }
 //-->
 </script>
@@ -155,7 +155,7 @@ function OpenTree() {
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="add_ftp_acc_frm" method="post" action="add_ftp_acc.php">
+                      <td valign="top"><form name="add_ftp_acc_frm" method="post" action="ftp_add.php">
                           <table width="100%" cellspacing="7">
                             <!-- BDP: page_message -->
                             <tr>

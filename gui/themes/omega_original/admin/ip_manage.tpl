@@ -72,7 +72,7 @@ function action_delete(url, ip) {
             				-
             				<!-- EDP: ip_delete_show -->
             				<!-- BDP: ip_delete_link -->
-              				<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('delete_ip.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a></td>
+              				<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('ip_delete.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a></td>
             				<!-- EDP: ip_delete_link -->
                           </tr>
                           <!-- EDP: ip_row -->

@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('change_status.php?domain_id=' + dom_id);
+	location = ('status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -109,7 +109,7 @@ function delete_account(url) {
                     <table width="100%" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="30">&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
+                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
                         </td>
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->

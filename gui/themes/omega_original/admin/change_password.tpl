@@ -34,7 +34,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="client_change_pass_frm" method="post" action="change_password.php">
+                      <td valign="top"><form name="client_change_pass_frm" method="post" action="password_change.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

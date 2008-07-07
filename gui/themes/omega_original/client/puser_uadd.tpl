@@ -41,7 +41,7 @@
               </tr>
               <tr>
                 <td valign="top">
-                <form name="add_user_group" method="post" action="puser_uadd.php">
+                <form name="add_user_group" method="post" action="protected_user_add.php">
                 <table width="100%" cellpadding="5" cellspacing="5">
                     <!-- BDP: page_message -->
                     <tr>
@@ -69,7 +69,7 @@
                       <td colspan="2"><input type="hidden" name="uaction" value="add_user">
                           <input name="Submit" type="submit" class="button" value="{TR_ADD_USER}">
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                     </tr>
                 </table></form></td>
                 <td>&nbsp;</td>

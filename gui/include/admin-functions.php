@@ -430,7 +430,7 @@ SQL_QUERY;
 				$tpl->assign(
 					array('ADMIN_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_ADMIN' => "delete_user.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
+						'URL_DELETE_ADMIN' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
 						'ADMIN_USERNAME' => $rs->fields['admin_name'],
 						)
 					);
@@ -441,7 +441,7 @@ SQL_QUERY;
 				array('ADMIN_USERNAME' => $rs->fields['admin_name'],
 					'ADMIN_CREATED_ON' => $admin_created,
 					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null) ? $rs->fields['created_by'] : tr("System"),
-					'URL_EDIT_ADMIN' => "edit_admin.php?edit_id=" . $rs->fields['admin_id'],
+					'URL_EDIT_ADMIN' => "admin_edit.php?edit_id=" . $rs->fields['admin_id'],
 					)
 				);
 
@@ -514,7 +514,7 @@ SQL_QUERY;
 				$tpl->assign(
 					array('RSL_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_RSL' => "delete_user.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
+						'URL_DELETE_RSL' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['admin_id'],
@@ -536,7 +536,7 @@ SQL_QUERY;
 				array('RSL_USERNAME' => $rs->fields['admin_name'],
 					'RESELLER_CREATED_ON' => $reseller_created,
 					'RSL_CREATED_BY' => $rs->fields['created_by'],
-					'URL_EDIT_RSL' => "edit_reseller.php?edit_id=" . $rs->fields['admin_id'],
+					'URL_EDIT_RSL' => "reseller_edit.php?edit_id=" . $rs->fields['admin_id'],
 					)
 				);
 
@@ -713,7 +713,7 @@ SQL_QUERY;
 					array('USR_DELETE_SHOW' => '',
 						'DOMAIN_ID' => $rs->fields['domain_id'],
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_USR' => "delete_user.php?delete_id=" . $rs->fields['domain_admin_id'] . "&delete_username=" . $rs->fields['domain_name'],
+						'URL_DELETE_USR' => "user_delete.php?delete_id=" . $rs->fields['domain_admin_id'] . "&delete_username=" . $rs->fields['domain_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
@@ -727,10 +727,10 @@ SQL_QUERY;
 
 			if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 				$status_icon = "ok.png";
-				$status_url = "change_status.php?domain_id=" . $rs->fields['domain_id'];
+				$status_url = "status_change.php?domain_id=" . $rs->fields['domain_id'];
 			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
-				$status_url = "change_status.php?domain_id=" . $rs->fields['domain_id'];
+				$status_url = "status_change.php?domain_id=" . $rs->fields['domain_id'];
 			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 				$status_url = "#";
@@ -761,7 +761,7 @@ SQL_QUERY;
 					'USER_CREATED_ON' => $domain_created,
 					'USR_CREATED_BY' => $rs2->fields['admin_name'],
 					'USR_OPTIONS' => '',
-					'URL_EDIT_USR' => "edit_admin.php?edit_id=" . $rs->fields['domain_admin_id'],
+					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
 					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?'),
 					)

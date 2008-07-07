@@ -37,7 +37,7 @@
 
   <td valign="top">
 
-  <form name="admin_edit_reseller" method="post" action="edit_reseller.php">
+  <form name="admin_edit_reseller" method="post" action="reseller_edit.php">
     <table width="100%" cellpadding="5" cellspacing="5">
       <tr>
         <td width="25">&nbsp;</td>

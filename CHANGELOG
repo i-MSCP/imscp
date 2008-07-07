@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-07 Benedikt Heintel
+	- GUI:
+		* Changed File Names
+		* Fixed #1376: not possible to add a MySQL DB
+		* Fixed #1386: when new sql user is added password confirmation is not checked corectly
+
 2008-07-05 Benedikt Heintel
 	- LANGUAGES:
 		* Updated German

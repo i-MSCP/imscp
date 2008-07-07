@@ -11,9 +11,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="manage_domains.php" onmouseover="MM_swapImage('domains','','{THEME_COLOR_PATH}/images/icons/domains_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/domains.gif" name="domains" width="47" height="46" border="0" id="domains" /></a></div></td>
+      <td class="menu"><div align="center"><a href="domains_manage.php" onmouseover="MM_swapImage('domains','','{THEME_COLOR_PATH}/images/icons/domains_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/domains.gif" name="domains" width="47" height="46" border="0" id="domains" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="manage_domains.php" class="menu_active" onmouseover="MM_swapImage('domains','','{THEME_COLOR_PATH}/images/icons/domains_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_MANAGE_DOMAINS}</a></div></td>
+    <td class="menu"><div align="center"><a href="domains_manage.php" class="menu_active" onmouseover="MM_swapImage('domains','','{THEME_COLOR_PATH}/images/icons/domains_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_MANAGE_DOMAINS}</a></div></td>
   </tr>
 </table></td>
 <!-- EDP: isactive_domain -->
@@ -21,9 +21,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="email_accounts.php" onmouseover="MM_swapImage('email','','{THEME_COLOR_PATH}/images/icons/email_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/email_a.gif" name="email" width="47" height="46" border="0" id="email" /></a></div></td>
+      <td class="menu"><div align="center"><a href="mail_accounts.php" onmouseover="MM_swapImage('email','','{THEME_COLOR_PATH}/images/icons/email_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/email_a.gif" name="email" width="47" height="46" border="0" id="email" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="email_accounts.php" class="menu_active" onmouseover="MM_swapImage('email','','{THEME_COLOR_PATH}/images/icons/email_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_EMAIL_ACCOUNTS}</a></div></td>
+    <td class="menu"><div align="center"><a href="mail_accounts.php" class="menu_active" onmouseover="MM_swapImage('email','','{THEME_COLOR_PATH}/images/icons/email_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_EMAIL_ACCOUNTS}</a></div></td>
   </tr>
 </table></td>
 <!-- EDP: isactive_email -->

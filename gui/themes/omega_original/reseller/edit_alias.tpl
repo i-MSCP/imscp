@@ -45,7 +45,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form name="edit_alias_frm" method="post" action="edit_alias.php?edit_id={ID}">
+                <td><form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>

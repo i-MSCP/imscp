@@ -269,7 +269,7 @@ SQL_QUERY;
 		} else {
 			$tpl->assign(
 				array('TR_UNINSTALL' => tr('uninstall'),
-					'URL_DELETE' => 'delete_lang.php?delete_lang=lang_' . $dat[1],
+					'URL_DELETE' => 'language_delete.pgp?delete_lang=lang_' . $dat[1],
 					'LANG_DELETE_SHOW' => '',
 					)
 				);

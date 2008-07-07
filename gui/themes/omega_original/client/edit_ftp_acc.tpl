@@ -77,7 +77,7 @@ function OpenTree() {
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="edit_ftp_acc_frm" method="post" action="edit_ftp_acc.php">
+                      <td valign="top"><form name="edit_ftp_acc_frm" method="post" action="ftp_edit.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

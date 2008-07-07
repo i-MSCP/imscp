@@ -56,7 +56,7 @@ function makeUser(){
                 <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="client_add_subdomain_frm" method="post" action="add_subdomain.php">
+                      <td valign="top"><form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
                           <table width="100%" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

@@ -317,7 +317,7 @@ SQL_QUERY;
 
 		if ($als_status === Config::get('ITEM_OK_STATUS')) {
 			$delete_link = "delete_domainalias.php?del_id=" . $als_id;
-			$edit_link = "edit_alias.php?edit_id=" . $als_id;
+			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
 		} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')){

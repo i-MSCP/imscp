@@ -75,7 +75,7 @@
            <tr>
             <td width="40">&nbsp;</td>
              <td valign="top">
-              <form name="edit_mail_acc_frm" method="post" action="edit_mail_acc.php?id={MAIL_ID}">
+              <form name="edit_mail_acc_frm" method="post" action="mail_edit.php?id={MAIL_ID}">
               <table width="100%" cellpadding="3" cellspacing="3">
                <!-- BDP: page_message -->
                <tr>

@@ -76,7 +76,7 @@ function action_delete(url) {
                           <input type="hidden" name="id" value="{ID}">
                           <input name="Submit" type="submit" class="button" value="{TR_ENABLE}">
                         &nbsp;
-                        <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onclick="location = 'email_accounts.php'">
+                        <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onclick="location = 'mail_accounts.php'">
                       </form></td>
                     </tr>
                 </table></td>

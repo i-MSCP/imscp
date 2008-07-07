@@ -19,7 +19,7 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="add_sql_database.php" class="submenu">{TR_MENU_ADD_SQL_DATABASE}</a></td>
+    <td><a href="sql_database_add.php" class="submenu">{TR_MENU_ADD_SQL_DATABASE}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

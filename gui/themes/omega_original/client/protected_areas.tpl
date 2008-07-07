@@ -60,16 +60,16 @@
                       <td class="{CLASS}" nowrap="nowrap">{AREA_NAME}<br>
                           <u>{AREA_PATH}</u></td>
                       <td width="80" class="{CLASS}" nowrap="nowrap" align="center">{STATUS}</td>
-                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="protect_it.php?id={PID}" class="link">{TR_EDIT}</a> </td>
-                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="protect_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
+                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="protected_areas_add.php?id={PID}" class="link">{TR_EDIT}</a> </td>
+                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="protected_areas_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
                     </tr>
                     <!-- EDP: dir_item -->
                     <!-- EDP: protected_areas -->
                     <tr>
                       <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
-                      <td colspan="4" nowrap="nowrap"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protect_it.php');return document.MM_returnValue" value="{TR_ADD_AREA}">
+                      <td colspan="4" nowrap="nowrap"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas_add.php');return document.MM_returnValue" value="{TR_ADD_AREA}">
                         &nbsp;&nbsp;&nbsp;
-                        <input name="Button2" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}"></td>
+                        <input name="Button2" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}"></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

@@ -60,7 +60,7 @@ function changeType(wath) {
               </tr>
               <tr>
                 <td valign="top">&nbsp;
-                    <form name="edit_ftp_acc_frm" method="post" action="protect_it.php">
+                    <form name="edit_ftp_acc_frm" method="post" action="protected_areas_add.php">
                       <table width="100%" cellpadding="5" cellspacing="5">
                         <tr>
                           <td width="25" nowrap="nowrap">&nbsp;</td>
@@ -131,12 +131,12 @@ function changeType(wath) {
                           <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="{TR_PROTECT_IT}" onclick="return sbmt(document.forms[0],'protect_it');">
                             &nbsp;&nbsp;&nbsp;
                             <!-- BDP: unprotect_it -->
-                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protect_delete.php?id={CDIR}');return document.MM_returnValue" value="{TR_UNPROTECT_IT}">
+                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas_delete.php?id={CDIR}');return document.MM_returnValue" value="{TR_UNPROTECT_IT}">
                             &nbsp;&nbsp;&nbsp;
                             <!-- EDP: unprotect_it -->
                             <br>
                             <br>
-                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}">
+                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}">
                             &nbsp;&nbsp;&nbsp;
                             <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}">
                           </td>

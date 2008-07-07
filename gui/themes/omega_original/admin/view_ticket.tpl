@@ -95,7 +95,7 @@ function action_delete(url) {
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="40">&nbsp;</td>
-        <td valign="top"><form action="view_ticket.php?ticket_id={ID}&amp;screenwidth={SCREENWIDTH}" method="post" name="question_frm" id="question_frm">
+        <td valign="top"><form action="ticket_view.php?ticket_id={ID}&amp;screenwidth={SCREENWIDTH}" method="post" name="question_frm" id="question_frm">
           <table width="100%" cellspacing="5">
             <tr>
               <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="20"></textarea>

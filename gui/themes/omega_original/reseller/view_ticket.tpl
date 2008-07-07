@@ -101,7 +101,7 @@ function action_delete(url) {
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="40">&nbsp;</td>
-        <td valign="top"><form name="question_frm" method="post" action="view_ticket.php?ticket_id={ID}">
+        <td valign="top"><form name="question_frm" method="post" action="ticket_view.php?ticket_id={ID}">
           <table width="100%" cellspacing="5">
             <tr>
               <td colspan="2" class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="20"></textarea>

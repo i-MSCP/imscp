@@ -13,19 +13,19 @@
 				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><a href="email_accounts.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
+    <td><a href="mail_accounts.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="add_mail_acc.php" class="submenu">{TR_MENU_ADD_MAIL_USER}</a></td>
+    <td><a href="mail_add.php" class="submenu">{TR_MENU_ADD_MAIL_USER}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="catchall.php" class="submenu">{TR_MENU_CATCH_ALL_MAIL}</a></td>
+    <td><a href="mail_catchall.php" class="submenu">{TR_MENU_CATCH_ALL_MAIL}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('change_status.php?domain_id=' + dom_id);
+	location = ('status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -171,7 +171,7 @@ function delete_account(url) {
                           <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
                         &nbsp;&nbsp;&nbsp;
                         <!-- BDP: edit_option -->
-                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','edit_domain.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
+                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
                         <!-- EDP: edit_option -->
                       </form></td>
                     </tr>

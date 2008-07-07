@@ -19,13 +19,13 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="add_admin.php" class="submenu">{TR_MENU_ADD_ADMIN}</a></td>
+    <td><a href="admin_add.php" class="submenu">{TR_MENU_ADD_ADMIN}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="add_reseller.php" class="submenu">{TR_MENU_ADD_RESELLER}</a></td>
+    <td><a href="reseller_add.php" class="submenu">{TR_MENU_ADD_RESELLER}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

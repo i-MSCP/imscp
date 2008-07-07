@@ -157,7 +157,7 @@
           </tr>
           <tr>
             <td colspan="3">
-	<form name="add_mail_acc_frm" method="post" action="add_mail_acc.php">
+	<form name="add_mail_acc_frm" method="post" action="mail_add.php">
 	<input type="hidden" name="uaction" value="add_user">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>

@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('change_status.php?domain_id=' + dom_id);
+	location = ('status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -50,7 +50,7 @@ function delete_account(url) {
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="reseller_add_host_plant_frm" method="post" action="ahp.php">
+                      <td valign="top"><form name="reseller_add_host_plant_frm" method="post" action="hosting_plan_add.php">
                           <table width="100%" cellspacing="3">
                             <tr>
                               <td width="25" align="left">&nbsp;</td>

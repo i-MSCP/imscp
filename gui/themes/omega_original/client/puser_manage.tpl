@@ -61,14 +61,14 @@
         <td nowrap="nowrap" align="center">&nbsp;</td>
         <td nowrap="nowrap" class="content" colspan="2">{UNAME}</td>
         <td width="80" align="center" nowrap="nowrap" class="content">{USTATUS}</td>
-        <td width="60" class="content" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="puser_edit.php?uname={USER_ID}" class="link">{TR_EDIT}</a> </td>
-        <td width="60" class="content" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> <a href="puser_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a> </td>
-        <td width="60" align="center" nowrap="nowrap" class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="puser_delete.php?uname={USER_ID}" class="link">{TR_DELETE}</a></td>
+        <td width="60" class="content" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="protected_user_edit.php?uname={USER_ID}" class="link">{TR_EDIT}</a> </td>
+        <td width="60" class="content" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> <a href="protected_user_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a> </td>
+        <td width="60" align="center" nowrap="nowrap" class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="protected_user_delete.php?uname={USER_ID}" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: pusres -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_uadd.php');return document.MM_returnValue" value="{TR_ADD_USER}">
+        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}">
           &nbsp;&nbsp; </td>
       </tr>
     </table></td>
@@ -115,12 +115,12 @@
           <!-- EDP: group_members -->
         </td>
         <td width="80" align="center" nowrap="nowrap" class="content">{GSTATUS}</td>
-        <td width="100" colspan="2" align="center" nowrap="nowrap" class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="puser_gdelete.php?gname={GROUP_ID}" class="link">{TR_DELETE}</a></td>
+        <td width="100" colspan="2" align="center" nowrap="nowrap" class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="protected_group_delete.php?gname={GROUP_ID}" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: pgroups -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','puser_gadd.php');return document.MM_returnValue">
+        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue">
           &nbsp; </td>
       </tr>
     </table></td>

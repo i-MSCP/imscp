@@ -19,7 +19,7 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="add_ftp_acc.php" class="submenu">{TR_MENU_ADD_FTP_USER}</a></td>
+    <td><a href="ftp_add.php" class="submenu">{TR_MENU_ADD_FTP_USER}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

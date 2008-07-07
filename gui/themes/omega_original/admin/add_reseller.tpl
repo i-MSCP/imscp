@@ -34,7 +34,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="admin_add_reseller" method="post" action="add_reseller.php">
+                      <td valign="top"><form name="admin_add_reseller" method="post" action="reseller_add.php">
                           <table width="750" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>
