@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/add_subdomain.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/subdomain_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -248,8 +248,8 @@ check_subdomain_data($tpl, $sql, $_SESSION['user_id'], $dmn_name);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_domains_manage.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_domains_manage.tpl');
 
 gen_logged_from($tpl);
 

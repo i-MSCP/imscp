@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Temizlik Kutusu",
 
 
 // Color Picker
-Colouser_addtomatic	: "Otomatik",
+ColorAutomatic	: "Otomatik",
 ColorMoreColors	: "Diger renkler...",
 
 // Document Properties

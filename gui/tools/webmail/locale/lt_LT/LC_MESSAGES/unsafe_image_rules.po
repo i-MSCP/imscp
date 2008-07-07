@@ -1,10 +1,10 @@
-# Lithuanian translation of 
+# Lithuanian translation of
 # SquirrelMail's unsafe_image_rules plugin.
 # Copyright (c) 2003-2006 SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
 # $Id: unsafe_image_rules.po 11288 2006-06-21 20:08:18Z tokul $
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: unsafe_image_rules 0.8\n"
@@ -26,7 +26,7 @@ msgstr "Nesaugių piešinių taisyklės"
 msgid ""
 "Use the form below to modify the address that will be added to the Unsafe "
 "Image Rules."
-msgstr "Žemiau esanti forma leidžia pakeisti adresą, kuris bus įtuser_addktas į nesaugių "
+msgstr "Žemiau esanti forma leidžia pakeisti adresą, kuris bus įtrauktas į nesaugių "
 "piešinių taisykles."
 
 msgid "From"
@@ -133,33 +133,33 @@ msgid ""
 "email address or domain to the Unsafe Image Rules by clicking the 'Always "
 "trust images from this sender' link. The following options set the default "
 "behavior when the address is being added."
-msgstr "Peržiūrėdami žinutę su nesaugiais priešiniais, Jūs galite greitai įtuser_addkti siuntėjo"
+msgstr "Peržiūrėdami žinutę su nesaugiais priešiniais, Jūs galite greitai įtraukti siuntėjo"
 "adresą arba domeną į nesaugių priešinių taisykles paspausdami \"Pasitikėti "
 "nesaugiais piešiniais žinutėse nuo šio siuntėjo\" nuorodą. Žemiau esantys nustatymai "
-"valdo taisyklių elgseną įtuser_addkiant adresą."
+"valdo taisyklių elgseną įtraukiant adresą."
 
 msgid "Always add full email address:"
-msgstr "Visada įtuser_addkti pilną elektroninio pašto adresą:"
+msgstr "Visada įtraukti pilną elektroninio pašto adresą:"
 
 msgid ""
 "If selected the full email address of the sender will be added to the Unsafe "
 "Image Rules list."
-msgstr "Pasirinkus šį nustatymą į nesaugių piešinių taisyklių sąrašą bus įtuser_addktas pilnas "
+msgstr "Pasirinkus šį nustatymą į nesaugių piešinių taisyklių sąrašą bus įtrauktas pilnas "
 "siuntėjo adresas."
 
 msgid "Always add full domain:"
-msgstr "Visada įtuser_addkti domeną:"
+msgstr "Visada įtraukti domeną:"
 
 msgid ""
 "If selected only the domain of the sender will be added to the Unsafe Image "
 "Rules list."
-msgstr "Pasirinkus šį nustatymą į nesaugių priešinių sąrašą bus įtuser_addktas siuntėjo domenas."
+msgstr "Pasirinkus šį nustatymą į nesaugių priešinių sąrašą bus įtrauktas siuntėjo domenas."
 
 msgid "Always ask:"
 msgstr "Visada užklausti:"
 
 msgid "Ask what to add to the Unsafe Image Rules list."
-msgstr "Užklausti ką reiktų įtuser_addkti į nesaugių priešinių taisyklių sąrašą."
+msgstr "Užklausti ką reiktų įtraukti į nesaugių priešinių taisyklių sąrašą."
 
 msgid "Add New Rule"
 msgstr "Pridėti naują taisyklę"

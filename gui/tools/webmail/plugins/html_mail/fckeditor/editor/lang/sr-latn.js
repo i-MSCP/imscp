@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Obriši sve",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automatski",
+ColorAutomatic	: "Automatski",
 ColorMoreColors	: "Više boja...",
 
 // Document Properties

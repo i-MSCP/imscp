@@ -11,6 +11,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1389: user can not create catchall
 		* Fixed #1390: user can not enable mail autorespond
 		* Fixed #1391: Notice: Indirect modification of overloaded property DatabaseResult::$fields
+	- LANGUAGES:
+		* Updated French
 
 2008-07-05 Benedikt Heintel
 	- LANGUAGES:

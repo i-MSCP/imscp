@@ -28,7 +28,7 @@ if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/view_ticket.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/ticket_view.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
@@ -438,8 +438,8 @@ if (isset($_GET['ticket_id'])) {
 
 // static page messages.
 
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_support_system.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_support_system.tpl');
+gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_ticket_system.tpl');
+gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_system.tpl');
 
 gen_logged_from($tpl);
 

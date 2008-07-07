@@ -1,18 +1,18 @@
 ﻿/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2005 Frederico Caldeira Knabben
- * 
+ *
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
+ *
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
+ *
  * "Support Open Source software. What about a donation today?"
- * 
+ *
  * File Name: et.js
  * 	Estonian language file.
- * 
+ *
  * File Authors:
  * 		Kristjan Kivikangur (kristjan@ttrk.ee)
  */
@@ -321,9 +321,9 @@ DlgReplaceReplAllBtn	: "Asenda kõik",
 DlgReplaceWordChk		: "Otsi terveid sõnu",
 
 // Paste Operations / Dialog
-PasteErrorPaste	: "Sinu buser_addseri turvaseaded ei luba redaktoril automaatselt kleepida. Palun kasutage selleks klaviatuuri (Ctrl+V).",
-PasteErrorCut	: "Sinu buser_addseri turvaseaded ei luba redaktoril automaatselt lõigata. Palun kasutage selleks klaviatuuri (Ctrl+X).",
-PasteErrorCopy	: "Sinu buser_addseri turvaseaded ei luba redaktoril automaatselt kopeerida. Palun kasutage selleks klaviatuuri (Ctrl+C).",
+PasteErrorPaste	: "Sinu brauseri turvaseaded ei luba redaktoril automaatselt kleepida. Palun kasutage selleks klaviatuuri (Ctrl+V).",
+PasteErrorCut	: "Sinu brauseri turvaseaded ei luba redaktoril automaatselt lõigata. Palun kasutage selleks klaviatuuri (Ctrl+X).",
+PasteErrorCopy	: "Sinu brauseri turvaseaded ei luba redaktoril automaatselt kopeerida. Palun kasutage selleks klaviatuuri (Ctrl+C).",
 
 PasteAsText		: "Kleebi tavalise tekstina",
 PasteFromWord	: "Kleebi Wordist",
@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Clean Up Box",	//MISSING
 
 
 // Color Picker
-Colouser_addtomatic	: "Automaatne",
+ColorAutomatic	: "Automaatne",
 ColorMoreColors	: "Rohkem värve...",
 
 // Document Properties

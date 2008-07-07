@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/email_setup.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings_welcome_mail.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 

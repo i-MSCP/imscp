@@ -34,7 +34,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form action="server_traffic_settings.php" method="post" name="admin_modify_server_traffic_settings" id="admin_modify_server_traffic_settings">
+                      <td valign="top"><form action="settings_server_traffic.php" method="post" name="admin_modify_server_traffic_settings" id="admin_modify_server_traffic_settings">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>

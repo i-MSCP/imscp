@@ -67,7 +67,7 @@ function action_delete(url) {
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="sql_add_user_frm" method="post" action="sql_add_user.php">
+                      <td valign="top"><form name="sql_add_user_frm" method="post" action="sql_user_add.php">
                           <table width="100%" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

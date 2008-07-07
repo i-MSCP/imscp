@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/lostpassword.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings_lostpassword.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('custom_buttons', 'page');

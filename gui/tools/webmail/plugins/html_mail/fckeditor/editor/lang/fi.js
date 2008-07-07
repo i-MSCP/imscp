@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Tyhjennä",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automaattinen",
+ColorAutomatic	: "Automaattinen",
 ColorMoreColors	: "Lisää värejä...",
 
 // Document Properties

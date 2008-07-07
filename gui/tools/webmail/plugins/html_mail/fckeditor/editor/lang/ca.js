@@ -1,18 +1,18 @@
 ﻿/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2005 Frederico Caldeira Knabben
- * 
+ *
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
+ *
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
+ *
  * "Support Open Source software. What about a donation today?"
- * 
+ *
  * File Name: ca.js
  * 	Catalan language file.
- * 
+ *
  * File Authors:
  * 		Jordi Cerdan (nan@myp.ad)
  */
@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Netejar camp",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automàtic",
+ColorAutomatic	: "Automàtic",
 ColorMoreColors	: "Més Colors...",
 
 // Document Properties
@@ -357,9 +357,9 @@ DlgSpellBtnUndo			: "Desfer",
 DlgSpellNoSuggestions	: "Cap suggestió",
 DlgSpellProgress		: "Comprovació de sintaxi en progrés",
 DlgSpellNoMispell		: "Comprovació de sintaxi completada",
-DlgSpellNoChanges		: "Comprovació de sintaxi: cap pauser_addlada canviada",
-DlgSpellOneChange		: "Comprovació de sintaxi: una pauser_addla canviada",
-DlgSpellManyChanges		: "Comprovació de sintaxi %1 pauser_addles canviades",
+DlgSpellNoChanges		: "Comprovació de sintaxi: cap paraulada canviada",
+DlgSpellOneChange		: "Comprovació de sintaxi: una paraula canviada",
+DlgSpellManyChanges		: "Comprovació de sintaxi %1 paraules canviades",
 
 IeSpellDownload			: "Comprovació de sintaxi no instal·lat. Voleu descarregar-ho ara?",
 

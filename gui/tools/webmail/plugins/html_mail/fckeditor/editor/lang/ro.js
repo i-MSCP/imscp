@@ -336,7 +336,7 @@ DlgPasteCleanBox		: "Şterge căsuţa",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automatic",
+ColorAutomatic	: "Automatic",
 ColorMoreColors	: "Mai multe culori...",
 
 // Document Properties

@@ -28,7 +28,7 @@ if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ss_closed.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ticket_closed.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
 $tpl->define_dynamic('tickets_item', 'tickets_list');
@@ -285,8 +285,8 @@ gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_support_system.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_support_system.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_ticket_system.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_ticket_system.tpl');
 
 $tpl->assign(
 	array(

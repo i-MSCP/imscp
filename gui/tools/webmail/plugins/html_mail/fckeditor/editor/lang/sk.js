@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Vyčistiť schránku",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automaticky",
+ColorAutomatic	: "Automaticky",
 ColorMoreColors	: "Viac farieb...",
 
 // Document Properties

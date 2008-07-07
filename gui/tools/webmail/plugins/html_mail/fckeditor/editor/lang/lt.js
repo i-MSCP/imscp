@@ -1,18 +1,18 @@
 ﻿/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2005 Frederico Caldeira Knabben
- * 
+ *
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
+ *
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
+ *
  * "Support Open Source software. What about a donation today?"
- * 
+ *
  * File Name: lt.js
  * 	Lithuanian language file.
- * 
+ *
  * File Authors:
  * 		Tauras Paliulis (tauras.paliulis@tauras.com)
  */
@@ -22,7 +22,7 @@ var FCKLang =
 // Language direction : "ltr" (left to right) or "rtl" (right to left).
 Dir					: "ltr",
 
-ToolbarCollapse		: "Sutuser_addkti mygtukų juostą",
+ToolbarCollapse		: "Sutraukti mygtukų juostą",
 ToolbarExpand		: "Išplėsti mygtukų juostą",
 
 // Toolbar Items and Context Menu
@@ -56,16 +56,16 @@ InsertSmiley		: "Įterpti veidelį",
 About				: "Apie FCKeditor",
 Bold				: "Pusjuodis",
 Italic				: "Kursyvas",
-Underline			: "Pabuser_addktas",
-StrikeThrough		: "Perbuser_addktas",
+Underline			: "Pabrauktas",
+StrikeThrough		: "Perbrauktas",
 Subscript			: "Apatinis indeksas",
 Superscript			: "Viršutinis indeksas",
 LeftJustify			: "Lygiuoti kairę",
 CenterJustify		: "Centruoti",
 RightJustify		: "Lygiuoti dešinę",
 BlockJustify		: "Lygiuoti abi puses",
-DecreaseIndent		: "Sumažinti įtuser_addką",
-IncreaseIndent		: "Padidinti įtuser_addką",
+DecreaseIndent		: "Sumažinti įtrauką",
+IncreaseIndent		: "Padidinti įtrauką",
 Undo				: "Atšaukti",
 Redo				: "Atstatyti",
 NumberedListLbl		: "Numeruotas sąrašas",
@@ -137,7 +137,7 @@ NoActiveX			: "You browser's security settings could limit some features of the 
 
 // Dialogs
 DlgBtnOK			: "OK",
-DlgBtnCancel		: "Nutuser_addkti",
+DlgBtnCancel		: "Nutraukti",
 DlgBtnClose			: "Uždaryti",
 DlgBtnBrowseServer	: "Naršyti po serverį",
 DlgAdvancedTag		: "Papildomas",
@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Trinti įvedimo lauką",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automatinis",
+ColorAutomatic	: "Automatinis",
 ColorMoreColors	: "Daugiau spalvų...",
 
 // Document Properties
@@ -386,7 +386,7 @@ DlgSelectChkMulti	: "Leisti daugeriopą atranką",
 DlgSelectOpAvail	: "Galimos parinktys",
 DlgSelectOpText		: "Tekstas",
 DlgSelectOpValue	: "Reikšmė",
-DlgSelectBtnAdd		: "Įtuser_addkti",
+DlgSelectBtnAdd		: "Įtraukti",
 DlgSelectBtnModify	: "Modifikuoti",
 DlgSelectBtnUp		: "Aukštyn",
 DlgSelectBtnDown	: "Žemyn",
@@ -440,7 +440,7 @@ DlgDocCharSetOther	: "Kita simbolių kodavimo lentelė",
 
 DlgDocDocType		: "Dokumento tipo antraštė",
 DlgDocDocTypeOther	: "Kita dokumento tipo antraštė",
-DlgDocIncXHTML		: "Įtuser_addkti XHTML deklaracijas",
+DlgDocIncXHTML		: "Įtraukti XHTML deklaracijas",
 DlgDocBgColor		: "Fono spalva",
 DlgDocBgImage		: "Fono paveikslėlio nuoroda (URL)",
 DlgDocBgNoScroll	: "Neslenkantis fonas",

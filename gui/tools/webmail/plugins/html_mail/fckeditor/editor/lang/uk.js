@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Очистити область",
 
 
 // Color Picker
-Colouser_addtomatic	: "Автоматичний",
+ColorAutomatic	: "Автоматичний",
 ColorMoreColors	: "Кольори...",
 
 // Document Properties

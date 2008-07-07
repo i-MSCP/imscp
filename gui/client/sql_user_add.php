@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/sql_add_user.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/sql_user_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -362,8 +362,8 @@ add_sql_user($sql, $_SESSION['user_id'], $db_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_sql_manage.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_sql_manage.tpl');
 
 gen_logged_from($tpl);
 

@@ -4,8 +4,8 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
 # $Id: ldapquery.po 11579 2006-08-13 13:50:15Z tokul $
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ldapquery 2.1\n"
@@ -89,7 +89,7 @@ msgid "Save"
 msgstr "Išsaugoti"
 
 msgid "Add to address book"
-msgstr "Įtuser_addkti į adresų knygą"
+msgstr "Įtraukti į adresų knygą"
 
 msgid "Plugin requires PHP with LDAP support."
 msgstr "Priedui būtina PHP su LDAP palaikymu."
@@ -623,7 +623,7 @@ msgid "Object related to domain"
 msgstr "Objektas susijęs su domenu"
 
 msgid "Friendly Country"
-msgstr "Duser_addgiška šalis"
+msgstr "Draugiška šalis"
 
 msgid "Pilot Organisation"
 msgstr ""

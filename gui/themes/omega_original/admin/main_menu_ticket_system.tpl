@@ -10,7 +10,7 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="manage_users.php" onmouseover="MM_swapImage('manage_users','','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.gif" name="manage_users" width="47" height="46" border="0" id="manage_users" /></a></div></td>
+      <td class="menu"><div align="center"><a href="manage_users.php" onmouseover="MM_swapImage('manage_users','','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/manage_users.gif" name="manage_users" width="47" height="46" border="0" id="manage_users" /></a></div></td>
   </tr><tr>
     <td class="menu"><div align="center"><a href="manage_users.php" class="menu_active" onmouseover="MM_swapImage('manage_users','','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_MANAGE_USERS}</a></div></td>
   </tr>
@@ -28,9 +28,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="sysinfo.php" onmouseover="MM_swapImage('webtools','','{THEME_COLOR_PATH}/images/icons/webtools_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/webtools.gif" name="webtools" width="47" height="46" border="0" id="webtools" /></a></div></td>
+      <td class="menu"><div align="center"><a href="system_info.php" onmouseover="MM_swapImage('webtools','','{THEME_COLOR_PATH}/images/icons/webtools_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/webtools.gif" name="webtools" width="47" height="46" border="0" id="webtools" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="sysinfo.php" class="menu_active" onmouseover="MM_swapImage('webtools','','{THEME_COLOR_PATH}/images/icons/webtools_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_SYSTEM_TOOLS}</a></div></td>
+    <td class="menu"><div align="center"><a href="system_info.php" class="menu_active" onmouseover="MM_swapImage('webtools','','{THEME_COLOR_PATH}/images/icons/webtools_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_SYSTEM_TOOLS}</a></div></td>
   </tr>
 </table></td>
     <td width="30">&nbsp;</td>
@@ -45,7 +45,7 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}" onmouseover="MM_swapImage('support','','{THEME_COLOR_PATH}/images/icons/support_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/support.gif" name="support" width="47" height="46" border="0" id="support" /></a></div></td>
+      <td class="menu"><div align="center"><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}" onmouseover="MM_swapImage('support','','{THEME_COLOR_PATH}/images/icons/support_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/support_a.gif" name="support" width="47" height="46" border="0" id="support" /></a></div></td>
   </tr><tr>
     <td class="menu"><div align="center"><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}" class="menu_active" onmouseover="MM_swapImage('support','','{THEME_COLOR_PATH}/images/icons/support_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_SUPPORT_SYSTEM}</a></div></td>
   </tr>

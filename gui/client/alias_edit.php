@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/edit_alias.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -60,8 +60,8 @@ $tpl->assign(
 		)
 	);
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_domains_manage.tpl');
+gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_domains_manage.tpl');
 
 gen_logged_from($tpl);
 

@@ -24,7 +24,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/change_password.tpl');
+$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/password_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 

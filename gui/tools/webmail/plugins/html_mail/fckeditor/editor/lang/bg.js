@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Изчисти",
 
 
 // Color Picker
-Colouser_addtomatic	: "По подразбиране",
+ColorAutomatic	: "По подразбиране",
 ColorMoreColors	: "Други цветове...",
 
 // Document Properties

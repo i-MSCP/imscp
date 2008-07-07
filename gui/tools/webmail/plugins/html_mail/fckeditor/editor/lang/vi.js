@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Xoá sạch",
 
 
 // Color Picker
-Colouser_addtomatic	: "Tự động",
+ColorAutomatic	: "Tự động",
 ColorMoreColors	: "Màu khác...",
 
 // Document Properties

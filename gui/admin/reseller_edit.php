@@ -31,7 +31,7 @@ if (isset($_GET['edit_id'])) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/edit_reseller.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/reseller_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('rsl_ip_message', 'page');
@@ -719,8 +719,8 @@ $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
 
 update_reseller($sql);
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 $tpl->assign(
 	array('TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),

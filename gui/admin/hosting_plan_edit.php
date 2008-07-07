@@ -28,7 +28,7 @@ if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ehp.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/hosting_plan_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
@@ -40,8 +40,8 @@ $theme_color = Config::get('USER_INITIAL_THEME');
  */
 global $hpid;
 // Show main menu
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hp.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_hp.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_hosting_plan.tpl');
 
 $tpl->assign(
 		array(

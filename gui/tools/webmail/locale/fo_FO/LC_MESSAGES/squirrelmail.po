@@ -3849,7 +3849,7 @@ msgid "Saved Translation Options"
 msgstr "Goymdir umsetingaruppsetingar"
 
 msgid "Your server options are as follows:"
-msgstr "Tínir servauser_addppsetingar eru hesir:"
+msgstr "Tínir servarauppsetingar eru hesir:"
 
 msgid "Maximum of 150 words translated, powered by Systran"
 msgstr "Í mesta lagi 150 orð umsett, rikin av Systran"

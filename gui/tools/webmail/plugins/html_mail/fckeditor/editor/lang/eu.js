@@ -336,7 +336,7 @@ DlgPasteCleanBox		: "Testu-eremua Garbitu",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automatikoa",
+ColorAutomatic	: "Automatikoa",
 ColorMoreColors	: "Kolore gehiago...",
 
 // Document Properties

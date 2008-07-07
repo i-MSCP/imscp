@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Clean Up Box",	//MISSING
 
 
 // Color Picker
-Colouser_addtomatic	: "Автоматаар",
+ColorAutomatic	: "Автоматаар",
 ColorMoreColors	: "Нэмэлт өнгөнүүд...",
 
 // Document Properties

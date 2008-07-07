@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Tøm boksen",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automatisk",
+ColorAutomatic	: "Automatisk",
 ColorMoreColors	: "Flere farger...",
 
 // Document Properties

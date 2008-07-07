@@ -414,7 +414,7 @@ msgid "Device"
 msgstr "Eining"
 
 msgid "Strong Authentication User"
-msgstr "Streng brukauser_addtentisering"
+msgstr "Streng brukarautentisering"
 
 msgid "Certificate Authority"
 msgstr "Sertifikatautorisasjon"

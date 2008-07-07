@@ -138,7 +138,7 @@ FCKTextColorCommand.prototype._CreatePanelBody = function( targetDocument, targe
 		'<table cellspacing="0" cellpadding="0" width="100%" border="0">\
 			<tr>\
 				<td><div class="ColorBoxBorder"><div class="ColorBox" style="background-color: #000000"></div></div></td>\
-				<td nowrap width="100%" align="center" unselectable="on">' + FCKLang.Colouser_addtomatic + '</td>\
+				<td nowrap width="100%" align="center" unselectable="on">' + FCKLang.ColorAutomatic + '</td>\
 			</tr>\
 		</table>' ;
 

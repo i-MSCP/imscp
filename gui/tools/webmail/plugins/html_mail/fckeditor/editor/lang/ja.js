@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "入力エリアクリア",
 
 
 // Color Picker
-Colouser_addtomatic	: "自動",
+ColorAutomatic	: "自動",
 ColorMoreColors	: "その他の色...",
 
 // Document Properties

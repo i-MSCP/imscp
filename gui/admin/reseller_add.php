@@ -24,7 +24,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/add_reseller.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/reseller_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('rsl_ip_message', 'page');
@@ -483,8 +483,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 $reseller_ips = get_server_ip($tpl, $sql);
 

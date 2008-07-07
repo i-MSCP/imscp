@@ -1,7 +1,7 @@
 <chapter>
    <title>
       Dažniausiai užduodami klausimai
-   </title>   
+   </title>
    <summary>
       Kartais iškyla klausimų, kuriuos jau uždavė daug kas prieš tai.
       Čia pateikiama bent dalis atsakymų į tokius klausimus.
@@ -10,27 +10,27 @@
 
 <section>
    <title>
-      Ar galima įtuser_addkti kelis adresus iš adresų knygos?
+      Ar galima įtraukti kelis adresus iš adresų knygos?
    </title>
    <description>
       <p>
       Taip. Adresų knyga pateikia visų adresų, atitinkančių paieškos kriterijus,
-      sąrašą. Esant 10 vardų gali būti pasirinkta bet kokia <B>Kam:</B> ar 
+      sąrašą. Esant 10 vardų gali būti pasirinkta bet kokia <B>Kam:</B> ar
       <B>CC:</B> laukų kombinacija. Visi pasirinkti adresai bus sudėlioti į
       atitinkamus laukus.
       </p>
    </description>
-</section>   
+</section>
 
 <section>
    <title>
-      Ar galima įtuser_addkti į adresų knygą adresus iš atėjusių laiškų?
+      Ar galima įtraukti į adresų knygą adresus iš atėjusių laiškų?
    </title>
    <description>
       <p>
-      Ne. Šiuo metu to padaryti neįmanoma. Tačiau jūs galite nusikopijuoti 
+      Ne. Šiuo metu to padaryti neįmanoma. Tačiau jūs galite nusikopijuoti
       adresą į savo kompiuterio atmintį ir paskui įkelti jį į adresų knygą.
-      Paprastai tai galima padaryti naudojant dešinį palės klavišą. Per daug 
+      Paprastai tai galima padaryti naudojant dešinį palės klavišą. Per daug
       nenuliūskite.  SquirrelMail yra toliau vystomas ir ši galimybė gali būti
       sukurta vėlesnėse versijose.
       </p>
@@ -39,7 +39,7 @@
 
 <section>
    <title>
-      Kas sukūrė SquirrelMail? 
+      Kas sukūrė SquirrelMail?
    </title>
    <description>
       <p>
@@ -55,7 +55,7 @@
    </title>
    <description>
       <p>
-      SquirrelMail atveju jūs gaunate galimybę per IMAP protokolą žiūrėti į savo pašto 
+      SquirrelMail atveju jūs gaunate galimybę per IMAP protokolą žiūrėti į savo pašto
       dėžės turinį. Ir jums nereikia narstyti kažkieno kompiuterio, kai jūs tik norite
       pasitikrinti paštą.
       </p>
@@ -68,7 +68,7 @@
    </title>
    <description>
       <p>
-      Bet kur, kur galite rasti Interneto ryšį ir www naršyklę. Galimybė pasinaudoti 
+      Bet kur, kur galite rasti Interneto ryšį ir www naršyklę. Galimybė pasinaudoti
       mobiliu ryšiu (WAP/WML) šiuo metu nėra numatyta bei neplanuojama.
       </p>
    </description>
@@ -80,12 +80,12 @@
    </title>
    <description>
       <p>
-      Labai abejotina, kad www paštas savo galimybėmis sugebės pralenkti 
-      įprastą pašto programą. Tačiau kas žino, mes juk gyvename pakankamai 
-      kintančiame pasaulyje?  Bet kuriuo atveju būnant kur nors toli nuo 
+      Labai abejotina, kad www paštas savo galimybėmis sugebės pralenkti
+      įprastą pašto programą. Tačiau kas žino, mes juk gyvename pakankamai
+      kintančiame pasaulyje?  Bet kuriuo atveju būnant kur nors toli nuo
       savo kompiuterio kartais būna  naudinga turėti galimybę patikrinti,
-      ar niekas neatsiuntė kokios nors svarbios žinutės. Ir jums nereikia 
-      nieko darkyti duser_addgo kompiuteryje. SquirrelMail yra tik priedas prie 
+      ar niekas neatsiuntė kokios nors svarbios žinutės. Ir jums nereikia
+      nieko darkyti draugo kompiuteryje. SquirrelMail yra tik priedas prie
       įprastos programos.
       </p>
    </description>
@@ -98,7 +98,7 @@
    <description>
       <p>
       SquirrelMail naudoja IMAP protokolą, informaciją apie jį galima rasti
-      <A HREF="http://imap.org"/>http://imap.org</A>. Programa naudoja 
+      <A HREF="http://imap.org"/>http://imap.org</A>. Programa naudoja
       nuosavas IMAP funkcijas, o ne tas kurios įtaisytos į PHP. Tačiau tai
       paprastai rūpi tik tiems, kurie įrengia sistemą, bet patikėkite, jiems
       tikrai patinka tokios galimybės.

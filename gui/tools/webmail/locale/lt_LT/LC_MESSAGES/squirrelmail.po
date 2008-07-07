@@ -101,7 +101,7 @@ msgid "Additional info"
 msgstr "Papildoma informacija"
 
 msgid "Add to:"
-msgstr "Įtuser_addkti į:"
+msgstr "Įtraukti į:"
 
 msgid "No personal address book is defined. Contact administrator."
 msgstr ""
@@ -120,7 +120,7 @@ msgid "Please select address that you want to edit"
 msgstr "Pasirinkite adresą, kurį Jūs norite pakeisti"
 
 msgid "Add address"
-msgstr "Įtuser_addkti adresą"
+msgstr "Įtraukti adresą"
 
 msgid "Edit selected"
 msgstr "Redaguoti pasirinktą"
@@ -142,7 +142,7 @@ msgstr "rūšiuoti pagal pastabas"
 
 #, php-format
 msgid "Add to %s"
-msgstr "Įtuser_addkti į adresų knygą (%s)"
+msgstr "Įtraukti į adresų knygą (%s)"
 
 #, php-format
 msgid "%s wrote:"
@@ -214,7 +214,7 @@ msgid ""
 "message. Please see your system administrator for details."
 msgstr ""
 "Jūs negalite pridėti priedų prie šios žinutės, nes Jūsų pašto sistemoje yra "
-"duser_adddžiama įkelti bylas per php. Informuokite savo pašto sistemos "
+"draudžiama įkelti bylas per php. Informuokite savo pašto sistemos "
 "administratorių, jei Jums yra reikalinga ši pašto funkcija."
 
 msgid "Priority"
@@ -867,7 +867,7 @@ msgid "Note"
 msgstr "Pastabos"
 
 msgid "Add to address book"
-msgstr "Įtuser_addkti į adresų knygą"
+msgstr "Įtraukti į adresų knygą"
 
 msgid "Title &amp; Org. / Dept."
 msgstr "Pareigos ir organizacija / padalinys"
@@ -1213,10 +1213,10 @@ msgstr ""
 "(configure opcija --enable-mbstring)."
 
 msgid "ERROR: No available IMAP stream."
-msgstr "KLAIDA : IMAP suser_addtas neprieinamas."
+msgstr "KLAIDA : IMAP srautas neprieinamas."
 
 msgid "ERROR: Connection dropped by IMAP server."
-msgstr "KLAIDA: IMAP serveris nutuser_addkė jungtį."
+msgstr "KLAIDA: IMAP serveris nutraukė jungtį."
 
 msgid "ERROR: Could not complete request."
 msgstr "KLAIDA: Neįmanoma vykdyti užklausos."
@@ -1299,7 +1299,7 @@ msgid ""
 "moved away or deleted (perhaps by another program accessing the same "
 "mailbox)."
 msgstr ""
-"Greičiausiai jūsų žinučių sąrašas paseno ir žinutė buvo patuser_addkta ar "
+"Greičiausiai jūsų žinučių sąrašas paseno ir žinutė buvo patraukta ar "
 "ištrinta (greičiausiai kitos programos dirbančios su ta pačia dėžute)"
 
 msgid "Unknown date"
@@ -1438,7 +1438,7 @@ msgid "Requested mail action not taken: mailbox unavailable"
 msgstr "Nurodytas veiksmas neįvykdytas: pašto dėžė nepasiekiama"
 
 msgid "Requested action aborted: error in processing"
-msgstr "Nurodytas veiksmas nutuser_addktas: įvyko klaida apdorojant"
+msgstr "Nurodytas veiksmas nutrauktas: įvyko klaida apdorojant"
 
 msgid "Requested action not taken: insufficient system storage"
 msgstr "Nurodytas veiksmas neįvykdytas: nepakanka vietos saugojimui"
@@ -1480,7 +1480,7 @@ msgid "User not local; please try forwarding"
 msgstr "Vartotojas nevietinis. Patikrinkite persiuntimo galimybes"
 
 msgid "Requested mail action aborted: exceeding storage allocation"
-msgstr "Nurodytas veiksmas nutuser_addktas: nepakanka vietos informacijai saugoti"
+msgstr "Nurodytas veiksmas nutrauktas: nepakanka vietos informacijai saugoti"
 
 msgid "Requested action not taken: mailbox name not allowed"
 msgstr "Nurodytas veiksmas neįvykdytas: netinkamas pašto dėžės vardas"
@@ -1594,7 +1594,7 @@ msgid "Enable Forward as Attachment"
 msgstr "Įjungti persiuntimą kaip priedą"
 
 msgid "Include Me in CC when I Reply All"
-msgstr "Įtuser_addk mane į CC kai atsakau visiems"
+msgstr "Įtrauk mane į CC kai atsakau visiems"
 
 msgid "Enable Mailer Display"
 msgstr "Rodyti pašto kliento informaciją"
@@ -2319,7 +2319,7 @@ msgid ""
 msgstr ""
 "Pasistenkite pateikti kiek galima daugiau informacijos, kad būtų lengviau "
 "aptikti ir pašalinti klaidą. Pranešimas apie klaidą nebus automatiškai "
-"įtuser_addktas į SourceForge klaidų sąrašą, tačiau kas nors perskaitęs žinutę, "
+"įtrauktas į SourceForge klaidų sąrašą, tačiau kas nors perskaitęs žinutę, "
 "gali tai padaryti už Jus."
 
 msgid "This bug involves:"
@@ -2381,7 +2381,7 @@ msgid "Set Event"
 msgstr "Įvesti įvykį"
 
 msgid "Event Has been added!"
-msgstr "Įvykis buvo įtuser_addktas!"
+msgstr "Įvykis buvo įtrauktas!"
 
 msgid "Date:"
 msgstr "Data:"
@@ -2556,7 +2556,7 @@ msgid ""
 "have a very high spam to legit email ratio (85 percent or more)."
 msgstr ""
 "NEMOKAMAS, šiuo metu - SPAMCOP - Įdomus sprendimas, kuris saugo serverius, "
-"kuriuose spamas sudaro didesnę dalį nuo bendro žinučių suser_addto (85 procentai "
+"kuriuose spamas sudaro didesnę dalį nuo bendro žinučių srauto (85 procentai "
 "ir daugiau)."
 
 msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
@@ -2729,7 +2729,7 @@ msgid ""
 "around."
 msgstr ""
 "Spamo siuntimas tiesiai į šiukšlių dėžę gali būti ne pati geriausia mintis, "
-"kadangi Jūs netyčia galite ten nusiųsti žinutes nuo duser_addgų ar žinučių "
+"kadangi Jūs netyčia galite ten nusiųsti žinutes nuo draugų ar žinučių "
 "serverių. Kad ir kokį nustatytumėte aplanką, įsitikinkite, kad jis būtų "
 "periodiškai valomas ir neišsipūstų bendra jūsų pašto dėžės užimama vieta."
 
@@ -2808,8 +2808,8 @@ msgid ""
 "This will send a message to %s requesting that you will be subscribed to "
 "this list. You will be subscribed with the address below."
 msgstr ""
-"Ši komanda nusiųs žinutę į %s, prašydama jus įtuser_addkti į šį susirašinėjimo "
-"sąrašą. Bandoma bus įtuser_addkti žemiau esantį adresą."
+"Ši komanda nusiųs žinutę į %s, prašydama jus įtraukti į šį susirašinėjimo "
+"sąrašą. Bandoma bus įtraukti žemiau esantį adresą."
 
 #, php-format
 msgid ""
@@ -2869,7 +2869,7 @@ msgid "No server banner"
 msgstr "Serveris neprisistatė"
 
 msgid "abort"
-msgstr "nutuser_addkti"
+msgstr "nutraukti"
 
 msgid "apop authentication failed"
 msgstr "apop autorizacija nepavyko"
@@ -3021,7 +3021,7 @@ msgid "Check mail at login"
 msgstr "Patikrinti paštą prisijungiant"
 
 msgid "Check mail at folder refresh"
-msgstr "Patikrinti paštą perkuser_addnant puslapius"
+msgstr "Patikrinti paštą perkraunant puslapius"
 
 msgid "Modify Server"
 msgstr "Keisti serverį"
@@ -3244,7 +3244,7 @@ msgid "No sound specified"
 msgstr "Garsas nenurodytas"
 
 msgid "Loading the sound..."
-msgstr "Kuser_addnasi audio..."
+msgstr "Kraunasi audio..."
 
 msgid "Sent Subfolders Options"
 msgstr "Išsiųstų žinučių aplankų nustatymai"
@@ -3621,10 +3621,10 @@ msgid "Ignore All"
 msgstr "Ignoruoti visus"
 
 msgid "Add this word to your personal dictionary"
-msgstr "Įtuser_addkti žodį į asmeninį žodyną"
+msgstr "Įtraukti žodį į asmeninį žodyną"
 
 msgid "Add to Dic"
-msgstr "Įtuser_addkti į žodyną"
+msgstr "Įtraukti į žodyną"
 
 msgid "Close and Commit"
 msgstr "Uždaryti ir išsaugoti"
@@ -4071,7 +4071,7 @@ msgid "This image has been removed for security reasons"
 msgstr "Šis piešinys buvo pašalintas saugumo sumetimais"
 
 #~ msgid "Include CCs when Forwarding Messages"
-#~ msgstr "Įtuser_addkti CC adresus persiunčiant žinutes"
+#~ msgstr "Įtraukti CC adresus persiunčiant žinutes"
 
 #~ msgid "POP3 connect:"
 #~ msgstr "POP3 susijungimo komanda:"

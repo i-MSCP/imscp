@@ -49,7 +49,7 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
     <tr>
-    <td><a href="manage_sessions.php" class="submenu">{TR_MENU_MANAGE_SESSIONS}</a></td>
+    <td><a href="sessions_manage.php" class="submenu">{TR_MENU_MANAGE_SESSIONS}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

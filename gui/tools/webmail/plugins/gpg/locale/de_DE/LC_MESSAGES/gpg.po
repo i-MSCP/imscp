@@ -1,4 +1,4 @@
-# Deutsch (German) Translation File for GPG Plugin 
+# Deutsch (German) Translation File for GPG Plugin
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Roland Fritz <roland.fritz@fritz-internet.de>, 2003
@@ -122,7 +122,7 @@ msgid ""
 "Any key signed with your trusted key ID will be allowed for encryption "
 "without generating errors."
 msgstr ""
-"Jeder mit ihrer Vertuser_addten Key ID verschlüsselte Schlüssel kann zur "
+"Jeder mit ihrer Vertrauten Key ID verschlüsselte Schlüssel kann zur "
 "Verschlüsselung verwendet werden."
 
 #: modules/genkey_keygen.php:138
@@ -230,7 +230,7 @@ msgid ""
 "Choosing a good passphrase is one of the most important tasks for secure "
 "communications."
 msgstr ""
-"Die Wahl einer guten Passphrase ist die wichtigste Vouser_addssetzung für sichere "
+"Die Wahl einer guten Passphrase ist die wichtigste Voraussetzung für sichere "
 "Kommunikation."
 
 #: modules/passpop.mod:169
@@ -243,7 +243,7 @@ msgstr ""
 
 #: modules/getstart.php:97
 msgid "Configure a Trusted Key"
-msgstr "Vertuser_addten Schlüssel konfigurieren"
+msgstr "Vertrauten Schlüssel konfigurieren"
 
 #: modules/passpop.mod:100
 msgid "Confirm Delete Key"
@@ -389,7 +389,7 @@ msgid ""
 "system administrator?"
 msgstr ""
 "Wollen Sie dem systemweiten Schlüsselring, den Ihr Administrator definiert "
-"hat, vertuser_adden?"
+"hat, vertrauen?"
 
 #: modules/general.mod:309
 msgid ""
@@ -397,7 +397,7 @@ msgid ""
 "administrator?"
 msgstr ""
 "Wollen Sie dem systemweiten ADK, den Ihr Administrator definiert hat, "
-"vertuser_adden?"
+"vertrauen?"
 
 #: gpg_help.php:74 modules/gpg_recipientlist.php:81
 #: modules/keyring_main.php:313
@@ -473,7 +473,7 @@ msgstr "Hier Suchbegriff für zu importierenden Schlüsseln angeben"
 #: gpg_key_functions.php:389
 msgid ""
 "Enter a search string for the key you would like to trust in the box below."
-msgstr "Hier Suchbegriff für vertuser_addte Schlüsseln angeben."
+msgstr "Hier Suchbegriff für vertraute Schlüsseln angeben."
 
 #: modules/keyring_main.php:144
 msgid "Error adding new SubKey"
@@ -612,11 +612,11 @@ msgstr "GPG Plugin Optionen"
 #: gpg_encrypt_functions.php:108
 msgid ""
 "GPG Plugin: Check your preferences from the Trusted Key Screen in Options."
-msgstr "GPG Plugin: Bitte Einstellung - vertuser_addte Schlüssel prüfen."
+msgstr "GPG Plugin: Bitte Einstellung - vertraute Schlüssel prüfen."
 
 #: gpg_encrypt_functions.php:107
 msgid "GPG Plugin: No Trusted Key Selected, but Use Trusted Key Feature Set."
-msgstr "GPG Plugin: Kein vertuser_addter Schlüssel gewählt, aber Option aktiviert."
+msgstr "GPG Plugin: Kein vertrauter Schlüssel gewählt, aber Option aktiviert."
 
 #: gpg_encrypt_functions.php:232
 msgid "GPG Plugin: No cyphertext was generated."
@@ -718,7 +718,7 @@ msgstr "Wie sollte die Passphrase aussehen?"
 
 #: help/disc_keystore.php:12
 msgid "If it is not secure, your identity can be stolen!"
-msgstr "Ohne SSL kann ihre Identität missbuser_addcht werden!"
+msgstr "Ohne SSL kann ihre Identität missbraucht werden!"
 
 #: modules/getstart.php:79
 msgid "If not, skip this step."
@@ -752,7 +752,7 @@ msgid ""
 "that you wish to encrypt to will need to be signed by a trusted key."
 msgstr ""
 "Wenn Schlüsselpaare auf dem Webserver gespeichert werden, sind diese mit "
-"einem vertuser_addten Schlüssel signiert."
+"einem vertrauten Schlüssel signiert."
 
 #: modules/general.mod:338
 msgid ""
@@ -776,7 +776,7 @@ msgstr ""
 msgid ""
 "If you do not see the key you want to trust in the list above, or if there "
 "is no list:"
-msgstr "Wenn der vertuser_addete Schlüssel nicht in der Liste steht:"
+msgstr "Wenn der vertrauete Schlüssel nicht in der Liste steht:"
 
 #: modules/keyserver.mod:129
 msgid ""
@@ -792,9 +792,9 @@ msgid ""
 "recommended that you do not upload your existing private key until trust can "
 "be established."
 msgstr ""
-"Wenn sie dem Betreiber des Webmail-Servers nicht vertuser_adden, sollten sie "
+"Wenn sie dem Betreiber des Webmail-Servers nicht vertrauen, sollten sie "
 "keine vorhandenen privaten Schlüssel importieren. Stellen sie dieses "
-"Vertuser_adden zuerst her."
+"Vertrauen zuerst her."
 
 #: help/what_passphrase.php:10
 msgid ""
@@ -1362,7 +1362,7 @@ msgstr "Suche nach Schlüssel"
 #: gpg_key_functions.php:396
 msgid "Search my keyring for a new trusted key using the search string above:"
 msgstr ""
-"Schlüsselring nach einem neuen vertuser_addten Schlüssel mit dem obigen "
+"Schlüsselring nach einem neuen vertrauten Schlüssel mit dem obigen "
 "Suchbegriff durchsuchen:"
 
 #: modules/gpgdecrypt.mod:227
@@ -1407,7 +1407,7 @@ msgstr "Mit dieser Option setzen sie diesen Schlüssel zum Signieren ein."
 #: help/what_trusted.php:33
 msgid "Select this option to set the key as your trusted key."
 msgstr ""
-"Mit dieser Option setzen sie diesen Schlüssel als vertuser_addten Schlüssel."
+"Mit dieser Option setzen sie diesen Schlüssel als vertrauten Schlüssel."
 
 #: modules/keygen.php:39 modules/keyview.php:223
 #, fuzzy
@@ -1427,7 +1427,7 @@ msgstr "Der neue Signatur-Schlüssel ersetzt den bisherigen."
 
 #: help/what_trusted.php:35
 msgid "Setting a new trusted key will replace any previously chosen key."
-msgstr "Der neue vertuser_addte Schlüssel ersetzt den bisherigen."
+msgstr "Der neue vertraute Schlüssel ersetzt den bisherigen."
 
 #: gpg_hook_functions.php:521
 msgid "Setup the GPG Plugin with a secret key."
@@ -1540,7 +1540,7 @@ msgid ""
 "the host!"
 msgstr ""
 "Speichern privater Schlüssel auf einem anderen Server ist nicht zu "
-"empfehlen, wenn sie dem Server nicht tuser_adden!"
+"empfehlen, wenn sie dem Server nicht trauen!"
 
 #: modules/keyview.php:403
 #, fuzzy
@@ -1628,8 +1628,8 @@ msgid ""
 "a shared system trusted key defined by your system administrator."
 msgstr ""
 "Der zum Signieren verwendete Schlüssel ist einer der folgenden: Ihr "
-"vertuser_addter Schlüssel, ein Schlüsselpaar ihres öffentlichen/privaten "
-"Schlüsselrings, ein systemweiter vertuser_addter Schlüssel, den Ihr Administrator "
+"vertrauter Schlüssel, ein Schlüsselpaar ihres öffentlichen/privaten "
+"Schlüsselrings, ein systemweiter vertrauter Schlüssel, den Ihr Administrator "
 "festgelegt hat."
 
 #: modules/general.mod:334
@@ -1683,7 +1683,7 @@ msgid ""
 "This error usually occurs because you have not set a trusted key, or because "
 "you have not signed the key you are trying to encrypt to."
 msgstr ""
-"Dieser Fehler tritt auf, wenn sie keinen vertuser_addten Schlüssel gesetzt haben "
+"Dieser Fehler tritt auf, wenn sie keinen vertrauten Schlüssel gesetzt haben "
 "oder vergessen haben den Schlüssel zu signieren."
 
 #: modules/keyring_main.php:467
@@ -1700,7 +1700,7 @@ msgstr "Dies ist der SIGNATUR Schlüssel"
 
 #: modules/keyview.php:270
 msgid "This is my TRUSTED key"
-msgstr "Dies ist der VERTuser_addTE Schlüssel"
+msgstr "Dies ist der VERTrauTE Schlüssel"
 
 #: modules/general.mod:294
 msgid "This key has the properties:"
@@ -1716,7 +1716,7 @@ msgid ""
 "should be treated as a fully trusted key."
 msgstr ""
 "Diese Option gibt an, welchen Schlüssel des öffentlichen Schlüsselrings "
-"vertuser_addt werden soll."
+"vertraut werden soll."
 
 #: help/external_resources.php:7
 msgid ""
@@ -1762,7 +1762,7 @@ msgid ""
 "called 'Trusted Key ID'."
 msgstr ""
 "Um das GPG Plugin zu nutzen ohne private Schlüssel auf dem Server zu "
-"speichern, können sie die folgende Option verwenden: 'ID des vertuser_addten "
+"speichern, können sie die folgende Option verwenden: 'ID des vertrauten "
 "Schlüssels'."
 
 #: gpg_hook_functions.php:518
@@ -1772,7 +1772,7 @@ msgstr "Um diese Nachricht in Squirrelmail zu entschlüsseln:"
 #: help/what_trusted.php:38
 msgid "To disable the trusted key option, select no key as trusted."
 msgstr ""
-"Um diese Option zu deaktivieren, wählen sie keinen vertuser_addten Schlüssel."
+"Um diese Option zu deaktivieren, wählen sie keinen vertrauten Schlüssel."
 
 #: modules/keyring_main.php:839
 msgid "To locate a key or keys, please enter a search string below."
@@ -1791,7 +1791,7 @@ msgid ""
 "To set your trusted key, find the desired key in the 'public' or 'system' "
 "ring of the"
 msgstr ""
-"Zum Setzen des vertuser_addten Schlüssels, wählen sie den gewünschten Schlüssel "
+"Zum Setzen des vertrauten Schlüssels, wählen sie den gewünschten Schlüssel "
 "im öffentlichen oder systemweiten Schlüsselring"
 
 #: modules/genkey.php:78
@@ -1877,7 +1877,7 @@ msgstr "Verwende Signatur-Schlüssel:"
 
 #: gpg_key_functions.php:353
 msgid "Using trusted key:"
-msgstr "Verwende vertuser_addten Schlüssel:"
+msgstr "Verwende vertrauten Schlüssel:"
 
 #: help/what_trusted.php:23
 msgid ""
@@ -1963,7 +1963,7 @@ msgstr "Was ist ein Signatur Schlüssel?"
 
 #: help/base.php:34
 msgid "What is a 'Trusted Key'?"
-msgstr "Was ist ein vertuser_addter Schlüssel?"
+msgstr "Was ist ein vertrauter Schlüssel?"
 
 #: help/what_signing.php:4
 msgid "What is a Signing Key?"
@@ -1971,7 +1971,7 @@ msgstr "Was ist ein Signatur Schlüssel?"
 
 #: help/what_trusted.php:4
 msgid "What is a Trusted Key?"
-msgstr "Was ist ein vertuser_addter Schlüssel?"
+msgstr "Was ist ein vertrauter Schlüssel?"
 
 #: help/base.php:14 help/what_keystrength.php:5
 msgid "What is a good key strength?"
@@ -2061,11 +2061,11 @@ msgstr "Es ist immer nur ein Signatur Schlüssel erlaubt."
 
 #: help/what_trusted.php:40 modules/getstart.php:102
 msgid "You can only have one trusted key at any given time."
-msgstr "Es ist immer nur ein vertuser_addter Schlüssel erlaubt."
+msgstr "Es ist immer nur ein vertrauter Schlüssel erlaubt."
 
 #: gpg_key_functions.php:357
 msgid "You currently trust key:"
-msgstr "Aktueller vertuser_adder Schlüssel:"
+msgstr "Aktueller vertrauer Schlüssel:"
 
 #: gpg_encrypt_functions.php:389
 msgid "You did not provide a passphrase!"
@@ -2122,7 +2122,7 @@ msgid ""
 "You must choose whether to trust this keyring and use it in your public key "
 "lookups."
 msgstr ""
-"Wählen sie ob sie diesem Schlüsselring vertuser_adden und zum Suchen öffentlicher "
+"Wählen sie ob sie diesem Schlüsselring vertrauen und zum Suchen öffentlicher "
 "Schlüssel verwenden wollen."
 
 #: modules/general.mod:300
@@ -2196,7 +2196,7 @@ msgstr "System ADK verwenden deaktiviert."
 
 #: modules/general.mod:446
 msgid "Your Preference to not trust the system keyring has been saved."
-msgstr "Systemweitem Schlüsselring vertuser_adden deaktiviert."
+msgstr "Systemweitem Schlüsselring vertrauen deaktiviert."
 
 #: modules/general.mod:456
 msgid "Your Preference to not use the system ADK has been saved."
@@ -2214,7 +2214,7 @@ msgstr "System ADK verwenden aktiviert."
 
 #: modules/general.mod:443
 msgid "Your Preference to trust the system keyring has been saved."
-msgstr "Systemweitem Schlüsselring vertuser_adden aktiviert."
+msgstr "Systemweitem Schlüsselring vertrauen aktiviert."
 
 #: modules/general.mod:453
 msgid "Your Preference to use the system ADK has been saved."
@@ -2320,7 +2320,7 @@ msgstr "'Dies ist mein Signatur Schlüssel' anwählen und speichern."
 
 #: modules/getstart.php:111
 msgid "check 'This is my trusted key', and save."
-msgstr "'Dies ist mein vertuser_addter Schlüssel' anwählen und speichern."
+msgstr "'Dies ist mein vertrauter Schlüssel' anwählen und speichern."
 
 #: modules/getstart.php:109 modules/getstart.php:130
 msgid "click on it to view the details,"
@@ -2387,7 +2387,7 @@ msgstr "Text"
 
 #: modules/keyring_main.php:863
 msgid "trusted key"
-msgstr "vertuser_addter Schlüssel"
+msgstr "vertrauter Schlüssel"
 
 #: modules/genkey_keygen.php:230
 msgid "try again"

@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Limpar o Cadro",
 
 
 // Color Picker
-Colouser_addtomatic	: "Automático",
+ColorAutomatic	: "Automático",
 ColorMoreColors	: "Máis Cores...",
 
 // Document Properties

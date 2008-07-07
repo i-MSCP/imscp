@@ -13,7 +13,7 @@
   <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-     <td><a href="sysinfo.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
+     <td><a href="system_info.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
     </tr>
     <tr>
      <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

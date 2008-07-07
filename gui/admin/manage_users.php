@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/manage_users.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/users_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('admin_message', 'page');
 $tpl->define_dynamic('admin_list', 'page');
@@ -106,8 +106,8 @@ if (!Config::exists('HOSTING_PLANS_LEVEL') || strtolower(Config::get('HOSTING_PL
 	$tpl->assign('EDIT_OPTION', '');
 }
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 get_admin_manage_users($tpl, $sql);
 

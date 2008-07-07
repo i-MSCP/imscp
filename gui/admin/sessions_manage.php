@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/manage_sessions.tpl');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/sessions_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('user_session', 'page');
@@ -97,9 +97,9 @@ SQL_QUERY;
 		$sess_id = session_id();
 
 		if ($sess_id === $rs->fields['session_id']) {
-			$tpl->assign('KILL_LINK', 'manage_sessions.php');
+			$tpl->assign('KILL_LINK', 'sessions_manage.php');
 		} else {
-			$tpl->assign('KILL_LINK', 'manage_sessions.php?kill=' . $rs->fields['session_id']);
+			$tpl->assign('KILL_LINK', 'sessions_manage.php?kill=' . $rs->fields['session_id']);
 		}
 
 		$tpl->parse('USER_SESSION', '.user_session');
@@ -113,8 +113,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_manage_users.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_manage_users.tpl');
+gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 kill_session($sql);
 
