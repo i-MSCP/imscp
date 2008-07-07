@@ -75,7 +75,7 @@ msgid "Omit"
 msgstr "Praleisti"
 
 msgid "Add to address book: "
-msgstr "Įtraukti į adresų knygą: "
+msgstr "Įtuser_addkti į adresų knygą: "
 
 #. display import button only after table is loaded
 msgid "Finish"
@@ -208,7 +208,7 @@ msgid "Additional Info"
 msgstr "Papildoma informacija"
 
 msgid "Do Not Include"
-msgstr "Neįtraukti"
+msgstr "Neįtuser_addkti"
 
 msgid "LDIF import is not supported."
 msgstr "LDIF bylų įkėlimas yra nepalaikomas."

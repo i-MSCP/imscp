@@ -52,7 +52,7 @@
           <td>&nbsp;</td>
          </tr>
          <tr>
-          <td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><span style="font-size:x-small;">{TR_LOSTPW}</span></a></div></td>
+          <td colspan="3"><div align="center"><a class="login" href="settings_lostpassword.php" tabindex="4"><span style="font-size:x-small;">{TR_LOSTPW}</span></a></div></td>
           <td colspan="4">&nbsp;</td>
          </tr>
          <tr>

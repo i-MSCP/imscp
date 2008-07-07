@@ -45,7 +45,7 @@
 			Dateien zuerst downloaden und lokal auf Ihre Festplatte speichern.<BR>
 			In diesem Kontext bedeuted l&ouml;schen, dass das Mail in den Ordner
 			"Trash" verschoben, jedoch nicht wirklich gel&ouml;scht wird. Sie k&ouml;nnen dann
-			jederzeit das Mail aus dem Trash Ordner wieder raus nehmen.
+			jederzeit das Mail aus dem Trash Ordner wieder user_adds nehmen.
       </p>
    </description>
 </section>
@@ -115,7 +115,7 @@
    <description>
       <p>
 			Mit dieser Funktion k&ouml;nnen Sie die Kopfzeilen jeder Mail anschauen. Im
-			Normalfall brauchen Sie diese Option nicht. Sie sehen in den Kopfzeilen
+			Normalfall buser_addchen Sie diese Option nicht. Sie sehen in den Kopfzeilen
 			detailliertere Informationen &uuml;ber das E-Mail.
       </p>
    </description>

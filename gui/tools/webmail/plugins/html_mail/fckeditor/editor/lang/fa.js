@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Clean Up Box",	//MISSING
 
 
 // Color Picker
-ColorAutomatic	: "خودکار",
+Colouser_addtomatic	: "خودکار",
 ColorMoreColors	: "رنگهای بيشتر...",
 
 // Document Properties

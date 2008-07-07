@@ -245,7 +245,7 @@ SQL_QUERY;
 	write_log("$admin_login: add domain alias: $alias_name");
 
 	$_SESSION["aladd"] = '_yes_';
-	header("Location: domain_alias.php");
+	header("Location: alias.php");
 	die();
 } // End of add_domain_alias();
 
@@ -270,7 +270,7 @@ SQL_QUERY;
 
 	if ($ar->RowCount() == 0) {
 		set_page_message(tr('You have no user records.'));
-		header("Location: domain_alias.php");
+		header("Location: alias.php");
 		die();
 		$tpl->assign('USER_ENTRY', '');
 		return false;

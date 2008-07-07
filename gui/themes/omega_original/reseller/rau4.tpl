@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -65,7 +65,7 @@ function makeUser() {
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><form name="add_alias_frm" method="post" action="rau4.php">
+                <td valign="top"><form name="add_alias_frm" method="post" action="user_add4.php">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <!-- BDP: page_message -->
                       <tr>

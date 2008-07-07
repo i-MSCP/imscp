@@ -41,9 +41,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="manage_sql.php" onmouseover="MM_swapImage('databases','','{THEME_COLOR_PATH}/images/icons/database_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/database.gif" name="databases" width="47" height="46" border="0" id="databases" /></a></div></td>
+      <td class="menu"><div align="center"><a href="sql_manage.php" onmouseover="MM_swapImage('databases','','{THEME_COLOR_PATH}/images/icons/database_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/database.gif" name="databases" width="47" height="46" border="0" id="databases" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="manage_sql.php" class="menu_active" onmouseover="MM_swapImage('databases','','{THEME_COLOR_PATH}/images/icons/database_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_MANAGE_SQL}</a></div></td>
+    <td class="menu"><div align="center"><a href="sql_manage.php" class="menu_active" onmouseover="MM_swapImage('databases','','{THEME_COLOR_PATH}/images/icons/database_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_MANAGE_SQL}</a></div></td>
   </tr>
 </table></td>
 <!-- EDP: isactive_sql -->

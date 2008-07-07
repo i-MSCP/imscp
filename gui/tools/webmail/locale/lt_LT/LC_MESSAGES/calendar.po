@@ -563,7 +563,7 @@ msgid "Create Event"
 msgstr "Įvesti įvykį"
 
 msgid "Summary:"
-msgstr "Santrauka"
+msgstr "Santuser_addka"
 
 msgid "Start:"
 msgstr "Pradžia:"

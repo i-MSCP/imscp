@@ -12,7 +12,7 @@ function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
 
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -58,7 +58,7 @@ function delete_account(url) {
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form name="search_user" method="post" action="edit_user.php">
+                <td><form name="search_user" method="post" action="user_edit.php">
                     <table width="100%" cellspacing="5">
                       <tr>
                         <td width="35">&nbsp;</td>

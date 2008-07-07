@@ -524,7 +524,7 @@ msgstr "Papildoma"
 
 #: modules/getstart.php:140
 msgid "Find the public keys of people you want to communicate securely with"
-msgstr "Atraskite viešus asmenų, su kuriais norite saugiai bendrauti, raktus"
+msgstr "Atraskite viešus asmenų, su kuriais norite saugiai benduser_addti, raktus"
 
 #: modules/keyview.php:443
 msgid "Fingerprint"
@@ -602,7 +602,7 @@ msgstr "GPG Priedas - Bendriniai Nustatymai"
 #: gpg_sign_functions.php:206
 msgid "GPG Plugin Error:No body text received from Compose page"
 msgstr ""
-"GPG priedo klaida: Iš žinutės kūrimo lango nepavyko ištraukti jokio žinutės "
+"GPG priedo klaida: Iš žinutės kūrimo lango nepavyko ištuser_addkti jokio žinutės "
 "teksto"
 
 #: gpg_help.php:51 gpg_help.php:56 gpg_help_base.php:54 gpg_help_base.php:59
@@ -2041,7 +2041,7 @@ msgid ""
 "When you encrypt an email message, the plugin can be set to automatically "
 "include your email address in the recipient list."
 msgstr ""
-"Kei Jūs koduojate el.pašto žinutę, priedas gali automatiškai įtraukti Jūsų "
+"Kei Jūs koduojate el.pašto žinutę, priedas gali automatiškai įtuser_addkti Jūsų "
 "el.pašto adresą į gavėjų sąrašą."
 
 #: modules/getstart.php:53

@@ -40,7 +40,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$db_id = $_POST['id'];
 } else {
-	user_goto('manage_sql.php');
+	user_goto('sql_manage.php');
 }
 
 // page functions.
@@ -73,7 +73,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
 			set_page_message(tr('SQL users limit reached!'));
-			header("Location: manage_sql.php");
+			header("Location: sql_manage.php");
 			die();
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
@@ -100,7 +100,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: manage_sql.php');
+		header('Location: sql_manage.php');
 		die();
 	}
 }
@@ -302,7 +302,7 @@ SQL_QUERY;
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . $db_user);
 	set_page_message(tr('SQL user successfully added!'));
-	user_goto('manage_sql.php');
+	user_goto('sql_manage.php');
 }
 
 function gen_page_post_data(&$tpl, $db_id) {

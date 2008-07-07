@@ -39,7 +39,7 @@
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;&nbsp;&nbsp;</td>
                               <td><!-- BDP: props_list -->
-                                  <form action="reseller_user_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
+                                  <form action="user_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
                                     <table width="100%">
                                       <tr>
                                         <td width="80" class="content"><label for="month">{TR_MONTH}</label></td>
@@ -144,13 +144,13 @@
                                               <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="reseller_user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
+                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
                                         &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="reseller_user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
+                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                       <td><div align="right"><br />
@@ -158,13 +158,13 @@
                                               <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="reseller_user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
+                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
                                         &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="reseller_user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
+                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                     </tr>

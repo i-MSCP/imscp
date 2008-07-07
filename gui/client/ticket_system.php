@@ -34,28 +34,6 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
 // page functions.
-
-function get_last_date(&$tpl, &$sql, $ticket_id) {
-	$query = <<<SQL_QUERY
-		SELECT
-			`ticket_date`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-		OR
-			`ticket_reply` = ?
-		ORDER BY
-			`ticket_date` DESC
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
-
-	$date_formt = Config::get('DATE_FORMAT');
-	$last_date = date($date_formt, $rs->fields['ticket_date']);
-	$tpl->assign(array('LAST_DATE' => $last_date));
-}
-
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
@@ -133,10 +111,10 @@ SQL_QUERY;
 		global $i ;
 
 		while (!$rs->EOF) {
-			$ticket_id = $rs->fields['ticket_id'];
-			get_last_date($tpl, $sql, $ticket_id);
+			$ticket_id		= $rs->fields['ticket_id'];
+			$date			= ticketGetLastDate($sql, $ticket_id);
 			$ticket_urgency = $rs->fields['ticket_urgency'];
-			$ticket_status = $rs->fields['ticket_status'];
+			$ticket_status	= $rs->fields['ticket_status'];
 
 			if ($ticket_urgency == 1) {
 				$tpl->assign(array('URGENCY' => tr("Low")));
@@ -154,11 +132,14 @@ SQL_QUERY;
 				$tpl->assign(array('NEW' => " "));
 			}
 
-			$tpl->assign(array(
-				'SUBJECT' => stripslashes($rs->fields['ticket_subject']),
-				'ID' => $ticket_id,
-				'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
-			));
+			$tpl->assign(
+				array(
+					'LAST_DATE'	=> $date,
+					'SUBJECT'	=> stripslashes($rs->fields['ticket_subject']),
+					'ID'		=> $ticket_id,
+					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
+					)
+				);
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();
 			$i++;

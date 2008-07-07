@@ -132,7 +132,7 @@ function action_delete(url) {
                             <tr>
                               <td colspan="2"><input accesskey="#13" name="Add_New" type="submit" class="button" id="Add_New" value="  {TR_ADD}  ">
                                 &nbsp;&nbsp;&nbsp;
-                                <input type="button" name="Submit" value="   {TR_CANCEL}   " onclick="location.href = 'manage_sql.php'" class="button"></td>
+                                <input type="button" name="Submit" value="   {TR_CANCEL}   " onclick="location.href = 'sql_manage.php'" class="button"></td>
                             </tr>
                             <!-- EDP: create_sqluser -->
                           </table>

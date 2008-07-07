@@ -25,7 +25,7 @@ check_login(__FILE__);
 if (isset($_GET['id'])) {
     $db_user_id = $_GET['id'];
 } else {
-    user_goto('manage_sql.php');
+    user_goto('sql_manage.php');
 }
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
@@ -37,6 +37,6 @@ sql_delete_user($sql, $dmn_id, $db_user_id);
 write_log($_SESSION['user_logged'].": deletes SQL user ".$db_user_id."!");
 set_page_message(tr('SQL user was removed successfully!'));
 
-user_goto('manage_sql.php');
+user_goto('sql_manage.php');
 
 ?>

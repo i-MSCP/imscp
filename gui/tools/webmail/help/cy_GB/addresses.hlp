@@ -3,13 +3,13 @@
       Addresses
    </title>
    <summary>
-      Gall llyfrau cyfeiriadau arbed llawer o amser a gwaith teipio. 
+      Gall llyfuser_add cyfeiriadau arbed llawer o amser a gwaith teipio. 
       Gallwch gynnwys cyfeiriadaur bobl y byddwch yn ysgrifennu 
       atynt amlaf ynddynt, au hailddefnyddio drosodd a throsodd.
    </summary>
    <description>
       <p>
-      Mae llyfrau cyfeiriadau yn nodwedd gwych o ran arbed amser. 
+      Mae llyfuser_add cyfeiriadau yn nodwedd gwych o ran arbed amser. 
       Gallwch storio cyfeiriadau y byddwch yn eu defnyddion aml yma. 
       Mae gweinyddwyr LDAP (syn cael eu defnyddion aml gan gwmnïau 
       a phrifysgolion er mwyn gwneud cyfeiriadau ledled y sefydlia
@@ -114,7 +114,7 @@
       chyfadrannau yn cael eu storio au rhoi o fewn cyrraedd. Os 
       yw wedi ei ffurfweddu i ddefnyddio gweinyddwr LDAP y 
       brifysgol, gallai  SquirrelMail wedyn restru pob cyfeiriad 
-      ebost ar y campws (ynghyd âr meysydd llyfrau cyfeiriadau 
+      ebost ar y campws (ynghyd âr meysydd llyfuser_add cyfeiriadau 
       eraill os ydynt ar gael). Maer modd y mae SquirrelMail yn 
       defnyddio LDAP yn wirioneddol nerthol yn yr ystyr ei fod 
       yn <i>cyfuno</I> eich llyfr cyfeiriadau lleol ar wybodaeth am 

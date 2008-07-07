@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Svuota area di testo",
 
 
 // Color Picker
-ColorAutomatic	: "Automatico",
+Colouser_addtomatic	: "Automatico",
 ColorMoreColors	: "Altri colori...",
 
 // Document Properties

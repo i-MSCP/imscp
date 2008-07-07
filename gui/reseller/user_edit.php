@@ -309,14 +309,14 @@ SQL_QUERY;
 
           set_page_message( tr("Incorrect password length or syntax!"));
 
-          header( "Location: edit_user.php?edit_id=$hpid" );
+          header( "Location: user_edit.php?edit_id=$hpid" );
           die();
       }
       if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
           set_page_message( tr("Entered passwords do not match!"));
 
-          header( "Location: edit_user.php?edit_id=$hpid" );
+          header( "Location: user_edit.php?edit_id=$hpid" );
           die();
       }
       $pure_user_pass = $inpass;

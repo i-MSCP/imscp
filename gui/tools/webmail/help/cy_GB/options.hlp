@@ -59,7 +59,7 @@ yn ateb ei neges.
       <LI><B>Quote Who XML</B><br>
       Mae hwn yn cynhyrchur llinell: <TT>&lt;quote who="John Doe"&gt;</TT>.<br><br>
       <LI><B>User-Defined</B><br>
-     Mae hyn yn fodd i chi  ddiffinio eich llinell ddyfyniad eich hun. Yn y ddau flwch testun isod, gallwch deipio dechrau a 
+     Mae hyn yn fodd i chi  ddiffinio eich llinell ddyfyniad eich hun. Yn y ddau flwch testun isod, gallwch deipio dechuser_add a 
 diwedd y dyfyniad. Bydd enwr awdur yn cael ei gynnwys rhwng y rhain.
       </UL><br><br>
 
@@ -96,7 +96,7 @@ n SquirrelMail er enghraifft.
       Un on prif nodau wrth greu SquirrelMail oedd i beidio â chynnwys unrhyw Javascript ar unrhyw un on tudalennau. Fodd byn
 nag, cynhyrchodd rhai on datblygwyr wasanaeth llyfr cyfeiriadau da iawn syn defnyddio Javascript. Ychwanegwyd rhai swyddogaet
 hau eraill syn perthyn i Javascript ato hefyd. Yn hytrach nai gymryd oddi yno, rydym bellach yn cynnig y dewis i chi o ddefny
-ddio HTML pur neu alluogi  Javascript hefyd. Os nad ydych chin gwybod beth y mae hyn yn ei olygu, y peth gorau i chi ei wneud
+ddio HTML pur neu alluogi  Javascript hefyd. Os nad ydych chin gwybod beth y mae hyn yn ei olygu, y peth gouser_add i chi ei wneud
  yw dewis Autodetect.
 
       <br><br>
@@ -174,7 +174,7 @@ t yn ddigon hawdd eu deall.
    </title>
    <description>
       Deilliodd y syniad yma or ffaith ei bod yn anodd iawn gwahaniaethu rhwng pa negesau a ddaeth o ble wrth ddarllen trwyr 
-rhestr o negesau os ydych chi wedi tanysgrifio i nifer o restrau postio. O ddefnyddio Message Highlighting, gallwch gael lliw
+rhestr o negesau os ydych chi wedi tanysgrifio i nifer o restuser_add postio. O ddefnyddio Message Highlighting, gallwch gael lliw
  cefndir pob neges o un rhestr bostio yn wahanol i liw rhestr arall.
 
 Cliciwch ar [New] i greu un newydd, neu [Edit] i olygu un sydd gennych yn barod a bydd y dewisiadaun ymddangos isod.

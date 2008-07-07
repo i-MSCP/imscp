@@ -42,7 +42,7 @@
                           			<table width="100%" cellpadding="0" cellspacing="0">
                             			<tr>
                               				<td width="40">&nbsp;</td>
-                              				<td align="left"><form enctype="multipart/form-data" name="set_layout" method="post" action="layout.php">
+                              				<td align="left"><form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
                                   			<!-- BDP: page_message -->
                                   				<div align="left" class="title"><span class="message">{MESSAGE}</span></div>
                                   			<!-- EDP: page_message -->
@@ -64,7 +64,7 @@
 								</td></tr><tr>
 			                        			<td class="content2"><img src="{OWN_LOGO}" alt="admin logo"></td>
 			                        			<td class="content">
-			        					<form method="post" action="layout.php">
+			        					<form method="post" action="settings_layout.php">
 			                                   			<input type="hidden" name="uaction" value="delete_logo" />
 				                                   		<input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
 			                                   		</form>

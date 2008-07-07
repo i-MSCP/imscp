@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "نظّف محتوى الصندوق",
 
 
 // Color Picker
-ColorAutomatic	: "تلقائي",
+Colouser_addtomatic	: "تلقائي",
 ColorMoreColors	: "ألوان إضافية...",
 
 // Document Properties

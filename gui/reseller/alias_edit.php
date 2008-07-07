@@ -74,13 +74,13 @@ if (isset($_POST['uaction']) && ('modify' === $_POST['uaction'])) {
 		unset($_SESSION['edit_ID']);
 
 		$_SESSION['aledit'] = '_no_';
-		header('Location: domain_alias.php');
+		header('Location: alias.php');
 		die();
 	}
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		$_SESSION['aledit'] = "_yes_";
-		header("Location: domain_alias.php");
+		header("Location: alias.php");
 		die();
 	}
 } else {
@@ -133,7 +133,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: domain_alias.php');
+		header('Location: alias.php');
 		die();
 	}
 	// Get data from sql
@@ -141,7 +141,7 @@ SQL_QUERY;
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
-		header('Location: domain_alias.php');
+		header('Location: alias.php');
 		die();
 	}
 	$data = $res->FetchRow();

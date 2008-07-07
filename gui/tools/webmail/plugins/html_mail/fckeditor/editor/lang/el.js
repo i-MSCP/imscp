@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Clean Up Box",	//MISSING
 
 
 // Color Picker
-ColorAutomatic	: "Αυτόματο",
+Colouser_addtomatic	: "Αυτόματο",
 ColorMoreColors	: "Περισσότερα χρώματα...",
 
 // Document Properties

@@ -70,11 +70,11 @@ if (isset($GLOBALS['ch_hpprops']))
 if (isset($GLOBALS['local_data']))
 	unset($GLOBALS['local_data']);
 
-if (isset($GLOBALS['rau3_added']))
-	unset($GLOBALS['rau3_added']);
+if (isset($GLOBALS['user_add3_added']))
+	unset($GLOBALS['user_add3_added']);
 
-if (isset($GLOBALS['rau3_added']))
-	unset($GLOBALS['rau3_added']);
+if (isset($GLOBALS['user_add3_added']))
+	unset($GLOBALS['user_add3_added']);
 
 if (isset($GLOBALS['dmn_ip']))
 	unset($GLOBALS['dmn_ip']);
@@ -338,14 +338,14 @@ function generate_users_list (&$tpl, $admin_id) {
 }
 
 function check_externel_events(&$tpl) {
-	global $rau3_added, $externel_event, $edit, $es_sbmt, $user_has_domain, $user_deleted;
+	global $user_add3_added, $externel_event, $edit, $es_sbmt, $user_has_domain, $user_deleted;
 
-	if (isset($_SESSION["rau3_added"])) {
-		if ($_SESSION["rau3_added"] === '_yes_') {
+	if (isset($_SESSION["user_add3_added"])) {
+		if ($_SESSION["user_add3_added"] === '_yes_') {
 			set_page_message(tr('User added!'));
 
 			$externel_event = '_on_';
-			unset($_SESSION["rau3_added"]);
+			unset($_SESSION["user_add3_added"]);
 		}
 	} else if (isset($_SESSION["edit"])) {
 		if ('_yes_' === $_SESSION["edit"]) {

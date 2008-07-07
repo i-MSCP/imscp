@@ -674,7 +674,7 @@ SQL_QUERY;
 		//dirty hack admin can't delete users without database
 		if($_SESSION['user_type']==='admin' || $_SESSION['user_type']==='reseller')
 			return;
-		user_goto('manage_sql.php');
+		user_goto('sql_manage.php');
 	}
 	// remove from ispcp sql_user table.
 	$query = 'delete from sql_user where sqlu_id = ?';
@@ -766,7 +766,7 @@ function check_usr_sql_perms(&$sql, $db_user_id) {
 	if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: manage_sql.php');
+		header('Location: sql_manage.php');
 		die();
 	}
 }
@@ -775,7 +775,7 @@ function check_db_sql_perms(&$sql, $db_id) {
 	if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: manage_sql.php');
+		header('Location: sql_manage.php');
 		die();
 	}
 }
@@ -807,7 +807,7 @@ SQL_QUERY;
 		if($_SESSION['user_type'] === 'admin' || $_SESSION['user_type'] === 'reseller') {
 			return;
 		}
-		user_goto('manage_sql.php');
+		user_goto('sql_manage.php');
 	}
 
 	$db_name = quoteIdentifier($rs->fields['db_name']);

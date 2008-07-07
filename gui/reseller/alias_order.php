@@ -30,7 +30,7 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 		$del_id = $_GET['del_id'];
 	else{
 		$_SESSION['orderaldel'] = '_no_';
-		header("Location: domain_alias.php");
+		header("Location: alias.php");
 		die();
 	}
 
@@ -42,7 +42,7 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	$query = "DELETE FROM mail_users WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
 	$rs = exec_query($sql, $query, array($del_id, $domain_id, Config::get('ITEM_ORDERED_STATUS')));
 
-	header("Location: domain_alias.php");
+	header("Location: alias.php");
 	die();
 
 } else if (isset($_GET['action']) && $_GET['action'] === "activate") {
@@ -51,13 +51,13 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 		$act_id = $_GET['act_id'];
 	else{
 		$_SESSION['orderalact'] = '_no_';
-		header("Location: domain_alias.php");
+		header("Location: alias.php");
 		die();
 	}
 	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id=?";
 	$rs = exec_query($sql, $query, $act_id);
 	if ($rs -> RecordCount() == 0) {
-		header('Location: domain_alias.php');
+		header('Location: alias.php');
 		die();
 	}
 	$alias_name = $rs -> fields['alias_name'];
@@ -69,7 +69,7 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id`= ?';
 	$rs = exec_query($sql, $query, $domain_id);
 	if ($rs -> RecordCount() == 0) {
-		header('Location: domain_alias.php');
+		header('Location: alias.php');
 		die();
 	}
 	$user_email = $rs -> fields['email'];
@@ -90,11 +90,11 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	set_page_message(tr('Alias scheduled for activation!'));
 
 	$_SESSION['orderalact'] = '_yes_';
-	header("Location: domain_alias.php");
+	header("Location: alias.php");
 	die();
 
 } else {
-	header("Location: domain_alias.php");
+	header("Location: alias.php");
 	die();
 }
 

@@ -40,7 +40,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><form enctype="multipart/form-data" name="set_layout" method="post" action="layout.php">
+                <td valign="top"><form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
                     <table width="100%" cellspacing="3">
                       <!-- BDP: page_message -->
                       <tr>
@@ -64,7 +64,7 @@
                                    <input type="hidden" name="uaction" value="upload_logo" />
                                    </form></td>
                         <td nowrap="nowrap">
-                                   <form method="post" action="layout.php">
+                                   <form method="post" action="settings_layout.php">
                                    <input type="hidden" name="uaction" value="delete_logo" />
                                    <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
                                    </form></td>

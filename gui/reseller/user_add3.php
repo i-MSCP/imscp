@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/rau3.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add3.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
@@ -84,7 +84,7 @@ $tpl->assign(
 
 init_in_values();
 // Process the action ...
-if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_SESSION['step_two_data'])) {
+if (isset($_POST['uaction']) && ("user_add3_nxt" === $_POST['uaction']) && !isset($_SESSION['step_two_data'])) {
 	if (check_ruser_data($tpl, '_no_')) {
 		add_user_data($_SESSION['user_id']);
 	}
@@ -96,7 +96,7 @@ if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_S
 	$tpl->assign('MESSAGE', "");
 }
 
-gen_rau3_page($tpl);
+gen_user_add3_page($tpl);
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -134,7 +134,7 @@ function init_in_values() {
 } // End of init_in_values()
 
 // generate page add user 3
-function gen_rau3_page(&$tpl) {
+function gen_user_add3_page(&$tpl) {
 	global $dmn_name, $hpid, $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
@@ -168,7 +168,7 @@ function gen_rau3_page(&$tpl) {
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 	$_SESSION['local_data'] = "$dmn_name;$hpid";
-} // End of gen_rau3_page()
+} // End of gen_user_add3_page()
 
 // Init global value with empty values
 function gen_empty_data() {
@@ -376,11 +376,11 @@ SQL_QUERY;
 		// we have to add some aliases for this looser
 		$_SESSION['dmn_id'] = $dmn_id;
 		$_SESSION['dmn_ip'] = $domain_ip;
-		header("Location: rau4.php?accout=$dmn_id");
+		header("Location: user_add4.php?accout=$dmn_id");
 		die();
 	} else {
 		// we have not to add alias
-		$_SESSION['rau3_added'] = "_yes_";
+		$_SESSION['user_add3_added'] = "_yes_";
 		header("Location: users.php");
 		die();
 	}

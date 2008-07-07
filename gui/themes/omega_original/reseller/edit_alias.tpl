@@ -86,7 +86,7 @@
                         <td width="25">&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  ">
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domain_alias.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
                       </tr>
                     </table>
                   <input type="hidden" name="uaction" value="modify">

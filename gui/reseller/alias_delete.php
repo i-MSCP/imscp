@@ -28,7 +28,7 @@ if (isset($_GET['del_id']))
 	$del_id = $_GET['del_id'];
 else {
 	$_SESSION['aldel'] = '_no_';
-	header("Location: domain_alias.php");
+	header("Location: alias.php");
 	die();
 }
 $reseller_id = $_SESSION['user_id'];
@@ -50,7 +50,7 @@ SQL_QUERY;
 $rs = exec_query($sql, $query, array($del_id, $reseller_id));
 
 if ($rs->RecordCount() == 0) {
-	header('Location: domain_alias.php');
+	header('Location: alias.php');
 	die();
 }
 
@@ -82,7 +82,7 @@ $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);
 
 $_SESSION['aldel'] = '_yes_';
-header("Location: domain_alias.php");
+header("Location: alias.php");
 die()
 
 ?>

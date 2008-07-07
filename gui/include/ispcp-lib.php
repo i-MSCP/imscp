@@ -23,8 +23,9 @@ require_once(INCLUDEPATH . '/ispcp-config.php');
 
 session_name('ispCP');
 
-if (!isset($_SESSION))
+if (!isset($_SESSION)) {
 	session_start();
+}
 
 // Error handling and debug
 //error_reporting(0);
@@ -165,6 +166,7 @@ require_once(INCLUDEPATH . '/idna.php');
 require_once(INCLUDEPATH . '/lostpassword-functions.php');
 require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
+require_once(INCLUDEPATH . '/functions.ticket_system.php');
 require_once(INCLUDEPATH . '/database-update-functions.php');
 require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
 //require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.func.php');

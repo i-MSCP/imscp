@@ -76,7 +76,7 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($domain_id, $reseller_id));
     if ($rs->RecordCount() == 0) {
         set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-        header('Location: reseller_user_statistics.php');
+        header('Location: user_statistics.php');
         die();
     }
 

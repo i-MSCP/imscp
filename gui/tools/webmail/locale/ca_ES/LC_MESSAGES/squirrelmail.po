@@ -3561,31 +3561,31 @@ msgid "Occurs times:"
 msgstr "Nombre d'aparicions:"
 
 msgid "Change this word"
-msgstr "Canviar aquesta paraula"
+msgstr "Canviar aquesta pauser_addla"
 
 msgid "Change"
 msgstr "Canviar"
 
 msgid "Change ALL occurances of this word"
-msgstr "Canviar TOTES les aparicions d'aquesta paraula"
+msgstr "Canviar TOTES les aparicions d'aquesta pauser_addla"
 
 msgid "Change All"
 msgstr "Canviar-ho Tot"
 
 msgid "Ignore this word"
-msgstr "Ignorar aquesta paraula"
+msgstr "Ignorar aquesta pauser_addla"
 
 msgid "Ignore"
 msgstr "Ignorar"
 
 msgid "Ignore ALL occurances this word"
-msgstr "Ignorar TOTES les aparicions d'aquesta paraula"
+msgstr "Ignorar TOTES les aparicions d'aquesta pauser_addla"
 
 msgid "Ignore All"
 msgstr "Ignorar-les totes"
 
 msgid "Add this word to your personal dictionary"
-msgstr "Afegir aquesta paraula al diccionari personal"
+msgstr "Afegir aquesta pauser_addla al diccionari personal"
 
 msgid "Add to Dic"
 msgstr "Affegir al Dic"
@@ -3671,18 +3671,18 @@ msgid "Personal Dictionary"
 msgstr "Diccionari personal"
 
 msgid "No words in your personal dictionary."
-msgstr "No hi ha paraules al seu diccionari personal"
+msgstr "No hi ha pauser_addles al seu diccionari personal"
 
 msgid "Please check any words you wish to delete from your dictionary."
 msgstr ""
-"Sisplau seleccioni totes les paraules que vulgui eliminar del diccionari."
+"Sisplau seleccioni totes les pauser_addles que vulgui eliminar del diccionari."
 
 #, php-format
 msgid "%s dictionary"
 msgstr "Diccionari %s"
 
 msgid "Delete checked words"
-msgstr "Eliminar paraules seleccionades"
+msgstr "Eliminar pauser_addles seleccionades"
 
 msgid "Edit your Personal Dictionary"
 msgstr "Editar el diccionari personal"
@@ -4614,7 +4614,7 @@ msgstr "L'alias conté caràcters no vàlids"
 
 #, fuzzy
 msgid "Change Password"
-msgstr "Canviar aquesta paraula"
+msgstr "Canviar aquesta pauser_addla"
 
 #, fuzzy
 msgid "Current Password:"
@@ -4745,7 +4745,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Cannot change password!"
-msgstr "Canviar aquesta paraula"
+msgstr "Canviar aquesta pauser_addla"
 
 msgid "Cannot connect to Database Server, please try later!"
 msgstr ""

@@ -2908,7 +2908,7 @@ msgid ""
 msgstr ""
 
 msgid "Change title on supported browsers"
-msgstr "Muuda tiitliriba seda võimaldavates brauserites"
+msgstr "Muuda tiitliriba seda võimaldavates buser_addserites"
 
 #, c-format
 msgid ""

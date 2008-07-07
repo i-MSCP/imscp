@@ -40,7 +40,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form action="lostpassword.php" method="post" name="frmlostpassword" ID="frmlostpassword">
+                <td><form action="settings_lostpassword.php" method="post" name="frmlostpassword" ID="frmlostpassword">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>

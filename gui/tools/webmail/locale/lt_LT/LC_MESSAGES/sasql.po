@@ -25,7 +25,7 @@ msgstr "Įjungdami DSPAM, Jūs atjungiate SpamAssassin skanavimo funkcijas."
 
 msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
 msgstr ""
-"SpamAssassin nustatymai ir leidimų/draudimų sąrašai nėra naudojami tarp "
+"SpamAssassin nustatymai ir leidimų/duser_adddimų sąrašai nėra naudojami tarp "
 "dspam."
 
 #. *
@@ -595,7 +595,7 @@ msgstr "Neblokuoti siuntėjo"
 msgid ""
 "This address will be excluded from a previous blacklist and will be treated "
 "as a normal address, i.e. it will not be automatically denied."
-msgstr "Šis adresas bus pašalintas iš draudžiamų sąrašo ir bus laikomas normaliu, t.y. nebus automatiškai blokuojamas."
+msgstr "Šis adresas bus pašalintas iš duser_adddžiamų sąrašo ir bus laikomas normaliu, t.y. nebus automatiškai blokuojamas."
 
 msgid "Whitelist To"
 msgstr "Leisti gavėją"
@@ -634,7 +634,7 @@ msgid "Error: You must select Allow or Deny."
 msgstr "Klaida: Jūs turite pasirinkti praleisti ar blokuoti."
 
 msgid "Global Allow / Deny Address List"
-msgstr "Bendrinis Leidimų/Draudimų sąrašas"
+msgstr "Bendrinis Leidimų/Duser_adddimų sąrašas"
 
 msgid "Address"
 msgstr "Adresas"
@@ -643,7 +643,7 @@ msgid "Type"
 msgstr "Tipas"
 
 msgid "Personal Allow / Deny Address List"
-msgstr "Asmeninis Leidimų/Draudimų Sąrašas"
+msgstr "Asmeninis Leidimų/Duser_adddimų Sąrašas"
 
 msgid "Action"
 msgstr "Veiksmas"
@@ -666,7 +666,7 @@ msgid "Edit Address"
 msgstr "Keisti adresą"
 
 msgid "Add New Address"
-msgstr "Įtraukti naują adresą"
+msgstr "Įtuser_addkti naują adresą"
 
 msgid "Address:"
 msgstr "Adresas:"
@@ -677,7 +677,7 @@ msgstr "Tipas:"
 #. End Form
 #. Help
 msgid "Legend"
-msgstr "Santrauka"
+msgstr "Santuser_addka"
 
 #. To translators: %s's are the function name
 #. and PEAR generated error message.
@@ -711,7 +711,7 @@ msgid "Configure the behavior of your spam filters."
 msgstr "Čia Jūs galite valdyti spamo filtravimo sistemos elgseną."
 
 msgid "Add Email to Whitelist"
-msgstr "Įtraukti adresą į leidžiamų sąrašą"
+msgstr "Įtuser_addkti adresą į leidžiamų sąrašą"
 
 msgid "Allow Sender"
 msgstr "Praleisti Siuntėją"
@@ -726,16 +726,16 @@ msgid "Remove Domain from Whitelist"
 msgstr "Pašalinti domeną iš leidžiamų sąrašo"
 
 msgid "Add Email to Blacklist"
-msgstr "Įtraukti adresą į draudžiamų sąrašą"
+msgstr "Įtuser_addkti adresą į duser_adddžiamų sąrašą"
 
 msgid "Block Sender"
 msgstr "Blokuoti siuntėją"
 
 msgid "Remove Email from Blacklist"
-msgstr "Pašalinti adresą iš draudžiamų sąrašo"
+msgstr "Pašalinti adresą iš duser_adddžiamų sąrašo"
 
 msgid "Remove Domain from Blacklist"
-msgstr "Pašalinti domeną iš draudžiamų sąrašo"
+msgstr "Pašalinti domeną iš duser_adddžiamų sąrašo"
 
 msgid "Address is already in your whitelist"
 msgstr "Adresas jau yra tarp leidžiamų sąrašo"
@@ -747,13 +747,13 @@ msgid "Domain is already in your whitelist"
 msgstr "Domenas jau yra tarp leidžiamų sąrašo"
 
 msgid "Address is already in your blacklist"
-msgstr "Adresas jau yra tarp draudžiamų sąrašo"
+msgstr "Adresas jau yra tarp duser_adddžiamų sąrašo"
 
 msgid "Blacklisted"
-msgstr "Įtraukta į draudžiamų sąrašą"
+msgstr "Įtuser_addkta į duser_adddžiamų sąrašą"
 
 msgid "Domain is already in your blacklist"
-msgstr "Domenas jau yra tarp draudžiamų sąrašo"
+msgstr "Domenas jau yra tarp duser_adddžiamų sąrašo"
 
 msgid "Learn as False Positive"
 msgstr "Išmokti kaip klaidingą priskyrimą"

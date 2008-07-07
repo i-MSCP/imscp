@@ -1135,7 +1135,7 @@ msgstr ""
 
 #, fuzzy
 msgid "ERROR: No available IMAP stream."
-msgstr "VILLA . Enginn imapstraumur fáanlegur."
+msgstr "VILLA . Enginn imapstuser_addmur fáanlegur."
 
 #, fuzzy
 msgid "ERROR: Connection dropped by IMAP server."

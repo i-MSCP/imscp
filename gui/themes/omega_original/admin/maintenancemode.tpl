@@ -34,7 +34,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form action="maintenancemode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
+                      <td valign="top"><form action="settings_maintenance_mode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>

@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 		* Changed File Names
 		* Fixed #1376: not possible to add a MySQL DB
 		* Fixed #1386: when new sql user is added password confirmation is not checked corectly
+		* Fixed #1387: /client/manage_sql.php is missing
+		* Fixed #1388: admin can't remove language
+		* Fixed #1389: user can not create catchall
+		* Fixed #1390: user can not enable mail autorespond
+		* Fixed #1391: Notice: Indirect modification of overloaded property DatabaseResult::$fields
 
 2008-07-05 Benedikt Heintel
 	- LANGUAGES:

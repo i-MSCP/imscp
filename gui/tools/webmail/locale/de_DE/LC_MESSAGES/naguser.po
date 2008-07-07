@@ -26,7 +26,7 @@ msgid ""
 msgstr "Ihr Browser beherrscht keine inline frames."
 
 msgid "Usage instructions"
-msgstr "Gebrauchsanweisung"
+msgstr "Gebuser_addchsanweisung"
 
 msgid "Yes, I understand"
 msgstr "Ja, ich habe die Bedingungen gelesen und akzeptiert"

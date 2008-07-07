@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Mező tartalmának törlése",
 
 
 // Color Picker
-ColorAutomatic	: "Automatikus",
+Colouser_addtomatic	: "Automatikus",
 ColorMoreColors	: "Több szín...",
 
 // Document Properties

@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Počisti okvir",
 
 
 // Color Picker
-ColorAutomatic	: "Samodejno",
+Colouser_addtomatic	: "Samodejno",
 ColorMoreColors	: "Več barv...",
 
 // Document Properties

@@ -25,7 +25,7 @@ check_login(__FILE__);
 if (isset($_GET['id'])) {
 	$db_user_id = $_GET['id'];
 } else {
-	user_goto('manage_sql.php');
+	user_goto('sql_manage.php');
 }
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);

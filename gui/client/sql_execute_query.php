@@ -33,7 +33,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
     $db_user_id = $_POST['id'];
 } else {
-    user_goto('manage_sql.php');
+    user_goto('sql_manage.php');
 }
 
 // page functions.

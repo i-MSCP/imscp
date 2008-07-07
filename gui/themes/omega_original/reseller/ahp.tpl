@@ -12,7 +12,7 @@ function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
 
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {

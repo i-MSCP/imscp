@@ -336,7 +336,7 @@ DlgPasteCleanBox		: "קופסת ניקוי",
 
 
 // Color Picker
-ColorAutomatic	: "אוטומטי",
+Colouser_addtomatic	: "אוטומטי",
 ColorMoreColors	: "צבעים נוספים...",
 
 // Document Properties

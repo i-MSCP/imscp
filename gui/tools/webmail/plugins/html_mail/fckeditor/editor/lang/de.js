@@ -175,8 +175,8 @@ DlgImgHeight		: "Höhe",
 DlgImgLockRatio		: "Größenverhaeltniss beibehalten",
 DlgBtnResetSize		: "Größe zuruecksetzen",
 DlgImgBorder		: "Rahmen",
-DlgImgHSpace		: "H-Freiraum",
-DlgImgVSpace		: "V-Freiraum",
+DlgImgHSpace		: "H-Freiuser_addm",
+DlgImgVSpace		: "V-Freiuser_addm",
 DlgImgAlign			: "Ausrichtung",
 DlgImgAlignLeft		: "Links",
 DlgImgAlignAbsBottom: "Abs Unten",
@@ -336,7 +336,7 @@ DlgPasteCleanBox		: "Inhalt aufräumen",
 
 
 // Color Picker
-ColorAutomatic	: "Automatisch",
+Colouser_addtomatic	: "Automatisch",
 ColorMoreColors	: "Weitere Farben...",
 
 // Document Properties

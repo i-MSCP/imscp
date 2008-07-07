@@ -633,7 +633,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 
-	$rau_error = '_off_';
+	$user_add_error = '_off_';
 	$inpass_re = '';
 	// Get data for fields from previus page
 	if (isset($_POST['userpassword']))
@@ -694,41 +694,41 @@ function check_ruser_data (&$tpl, $NoPass) {
 	// Begin checking...
 	if ('_no_' == $NoPass) {
 		if (('' === $inpass_re) || ('' === $inpass)) {
-			$rau_error = tr('Please fill up both data fields for password!');
+			$user_add_error = tr('Please fill up both data fields for password!');
 		} else if ($inpass_re !== $inpass) {
-			$rau_error = tr("Passwords don't match!");
+			$user_add_error = tr("Passwords don't match!");
 		} else if (!chk_password($inpass)) {
-			$rau_error = tr('Incorrect password length or syntax!');
+			$user_add_error = tr('Incorrect password length or syntax!');
 		}
 	}
 
 	if ($user_email == NULL) {
-		$rau_error = tr('Incorrect email length or syntax!');
+		$user_add_error = tr('Incorrect email length or syntax!');
 	}
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
 	else if(!ispcp_limit_check($customer_id)){
 
-		$rau_error = tr('Incorrect customer ID syntax!');
+		$user_add_error = tr('Incorrect customer ID syntax!');
 	}
 	else if(!chk_username($first_name, 40)){
 
-		$rau_error = tr('Incorrect first name length or syntax!');
+		$user_add_error = tr('Incorrect first name length or syntax!');
 	}else if(!chk_username($last_name, 40)){
 
-		$rau_error = tr('Incorrect second name length or syntax!');
+		$user_add_error = tr('Incorrect second name length or syntax!');
 	}else if(!ispcp_limit_check($zip)){
 
-		$rau_error = tr('Incorrect post code length or syntax!');
+		$user_add_error = tr('Incorrect post code length or syntax!');
 	} */
 
-	if ($rau_error == '_off_') {
+	if ($user_add_error == '_off_') {
 		// send data throught session
 		$_SESSION['Message'] = NULL;
 
 		return true;
 	} else {
-		$_SESSION['Message'] = $rau_error;
+		$_SESSION['Message'] = $user_add_error;
 
 		return false;
 	}

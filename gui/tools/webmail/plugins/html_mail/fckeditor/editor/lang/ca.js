@@ -318,7 +318,7 @@ DlgReplaceReplaceLbl	: "Remplaçar per:",
 DlgReplaceCaseChk		: "Sensible a Majúscules",
 DlgReplaceReplaceBtn	: "Remplaçar",
 DlgReplaceReplAllBtn	: "Remplaçar Tot",
-DlgReplaceWordChk		: "Cercar Paraula Completa",
+DlgReplaceWordChk		: "Cercar Pauser_addla Completa",
 
 // Paste Operations / Dialog
 PasteErrorPaste	: "La seguretat del vostre navigador no permet executar automàticament les operacions d'enganxat. Si us plau, utilitzeu el teclat (Ctrl+V).",
@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Netejar camp",
 
 
 // Color Picker
-ColorAutomatic	: "Automàtic",
+Colouser_addtomatic	: "Automàtic",
 ColorMoreColors	: "Més Colors...",
 
 // Document Properties
@@ -357,9 +357,9 @@ DlgSpellBtnUndo			: "Desfer",
 DlgSpellNoSuggestions	: "Cap suggestió",
 DlgSpellProgress		: "Comprovació de sintaxi en progrés",
 DlgSpellNoMispell		: "Comprovació de sintaxi completada",
-DlgSpellNoChanges		: "Comprovació de sintaxi: cap paraulada canviada",
-DlgSpellOneChange		: "Comprovació de sintaxi: una paraula canviada",
-DlgSpellManyChanges		: "Comprovació de sintaxi %1 paraules canviades",
+DlgSpellNoChanges		: "Comprovació de sintaxi: cap pauser_addlada canviada",
+DlgSpellOneChange		: "Comprovació de sintaxi: una pauser_addla canviada",
+DlgSpellManyChanges		: "Comprovació de sintaxi %1 pauser_addles canviades",
 
 IeSpellDownload			: "Comprovació de sintaxi no instal·lat. Voleu descarregar-ho ara?",
 

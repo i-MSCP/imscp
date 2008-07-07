@@ -84,7 +84,7 @@
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="create_catchall_frm" method="post" action="create_mail_catchall.php">
+                      <td valign="top"><form name="create_catchall_frm" method="post" action="mail_catchall_add.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>

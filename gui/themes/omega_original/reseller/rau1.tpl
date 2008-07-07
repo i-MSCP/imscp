@@ -12,7 +12,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -59,7 +59,7 @@ function delete_account(url) {
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form name="reseller_add_users_first_frm" method="post" action="rau1.php">
+                <td><form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <!-- BDP: page_message -->
                       <tr>
@@ -110,7 +110,7 @@ function delete_account(url) {
                       </tr>
                       <!-- EDP: add_form -->
                     </table>
-                  <input type="hidden" name="uaction" value="rau_nxt">
+                  <input type="hidden" name="uaction" value="user_add_nxt">
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

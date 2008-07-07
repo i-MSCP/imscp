@@ -22,7 +22,7 @@ var FCKLang =
 // Language direction : "ltr" (left to right) or "rtl" (right to left).
 Dir					: "ltr",
 
-ToolbarCollapse		: "Sutraukti mygtukų juostą",
+ToolbarCollapse		: "Sutuser_addkti mygtukų juostą",
 ToolbarExpand		: "Išplėsti mygtukų juostą",
 
 // Toolbar Items and Context Menu
@@ -56,16 +56,16 @@ InsertSmiley		: "Įterpti veidelį",
 About				: "Apie FCKeditor",
 Bold				: "Pusjuodis",
 Italic				: "Kursyvas",
-Underline			: "Pabrauktas",
-StrikeThrough		: "Perbrauktas",
+Underline			: "Pabuser_addktas",
+StrikeThrough		: "Perbuser_addktas",
 Subscript			: "Apatinis indeksas",
 Superscript			: "Viršutinis indeksas",
 LeftJustify			: "Lygiuoti kairę",
 CenterJustify		: "Centruoti",
 RightJustify		: "Lygiuoti dešinę",
 BlockJustify		: "Lygiuoti abi puses",
-DecreaseIndent		: "Sumažinti įtrauką",
-IncreaseIndent		: "Padidinti įtrauką",
+DecreaseIndent		: "Sumažinti įtuser_addką",
+IncreaseIndent		: "Padidinti įtuser_addką",
 Undo				: "Atšaukti",
 Redo				: "Atstatyti",
 NumberedListLbl		: "Numeruotas sąrašas",
@@ -137,7 +137,7 @@ NoActiveX			: "You browser's security settings could limit some features of the 
 
 // Dialogs
 DlgBtnOK			: "OK",
-DlgBtnCancel		: "Nutraukti",
+DlgBtnCancel		: "Nutuser_addkti",
 DlgBtnClose			: "Uždaryti",
 DlgBtnBrowseServer	: "Naršyti po serverį",
 DlgAdvancedTag		: "Papildomas",
@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Trinti įvedimo lauką",
 
 
 // Color Picker
-ColorAutomatic	: "Automatinis",
+Colouser_addtomatic	: "Automatinis",
 ColorMoreColors	: "Daugiau spalvų...",
 
 // Document Properties
@@ -386,7 +386,7 @@ DlgSelectChkMulti	: "Leisti daugeriopą atranką",
 DlgSelectOpAvail	: "Galimos parinktys",
 DlgSelectOpText		: "Tekstas",
 DlgSelectOpValue	: "Reikšmė",
-DlgSelectBtnAdd		: "Įtraukti",
+DlgSelectBtnAdd		: "Įtuser_addkti",
 DlgSelectBtnModify	: "Modifikuoti",
 DlgSelectBtnUp		: "Aukštyn",
 DlgSelectBtnDown	: "Žemyn",
@@ -440,7 +440,7 @@ DlgDocCharSetOther	: "Kita simbolių kodavimo lentelė",
 
 DlgDocDocType		: "Dokumento tipo antraštė",
 DlgDocDocTypeOther	: "Kita dokumento tipo antraštė",
-DlgDocIncXHTML		: "Įtraukti XHTML deklaracijas",
+DlgDocIncXHTML		: "Įtuser_addkti XHTML deklaracijas",
 DlgDocBgColor		: "Fono spalva",
 DlgDocBgImage		: "Fono paveikslėlio nuoroda (URL)",
 DlgDocBgNoScroll	: "Neslenkantis fonas",

@@ -245,14 +245,16 @@ SQL_QUERY;
 
 		if ($usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
-				array('DEFAULT' => tr('yes'),
+				array(
+					'DEFAULT' => tr('yes'),
 					'LANG_RADIO' => '',
 					)
 				);
 			$tpl->parse('LANG_DEF', 'lang_def');
 		} else {
 			$tpl->assign(
-				array('LANG_DEF' => '',
+				array(
+					'LANG_DEF' => '',
 					'LANG_VALUE' => 'lang_' . $dat[1],
 					)
 				);
@@ -261,15 +263,17 @@ SQL_QUERY;
 
 		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1] || $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
-				array('TR_UNINSTALL' => tr('uninstall'),
+				array(
+					'TR_UNINSTALL' => tr('uninstall'),
 					'LANG_DELETE_LINK' => '',
 					)
 				);
 			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
 		} else {
 			$tpl->assign(
-				array('TR_UNINSTALL' => tr('uninstall'),
-					'URL_DELETE' => 'language_delete.pgp?delete_lang=lang_' . $dat[1],
+				array(
+					'TR_UNINSTALL' => tr('uninstall'),
+					'URL_DELETE' => 'language_delete.php?delete_lang=lang_' . $dat[1],
 					'LANG_DELETE_SHOW' => '',
 					)
 				);
@@ -278,7 +282,8 @@ SQL_QUERY;
 		// 'LANGUAGE' => $dat[1],
 		// $res
 		$tpl->assign(
-			array('LANGUAGE' => $language_name,
+			array(
+				'LANGUAGE' => $language_name,
 				'MESSAGES' => tr('%d messages translated', $rs->fields['cnt']),
 				'URL_EXPORT' => 'multilanguage_export.php?export_lang=lang_' . $dat[1],
 				)

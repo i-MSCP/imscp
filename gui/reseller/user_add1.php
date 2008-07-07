@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/rau1.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add1.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('add_user', 'page');
@@ -129,7 +129,7 @@ function check_user_data() {
 		$_SESSION['chtpl'] = $dmn_pt;
 		$_SESSION['step_one'] = "_yes_";
 
-		header("Location: rau2.php");
+		header("Location: user_add2.php");
 		die();
 	} else {
 		// check if reseller timits are not touched
@@ -140,7 +140,7 @@ function check_user_data() {
 			$_SESSION['chtpl'] = $dmn_pt;
 			$_SESSION['step_one'] = "_yes_";
 
-			header("Location: rau3.php");
+			header("Location: user_add3.php");
 			die();
 		}
 		else {

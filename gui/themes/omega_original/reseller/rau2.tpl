@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -56,8 +56,8 @@ function delete_account(url) {
               </tr>
               <tr>
                 <td valign="top"><!-- BDP: add_user -->
-                    <form name="reseller_add_users_first_frm" method="post" action="rau2.php">
-                      <input type="hidden" name="uaction" value="rau2_nxt">
+                    <form name="reseller_add_users_first_frm" method="post" action="user_add2.php">
+                      <input type="hidden" name="uaction" value="user_add2_nxt">
                       <table width="100%" cellpadding="5" cellspacing="5">
                         <tr>
                           <td width="25">&nbsp;</td>

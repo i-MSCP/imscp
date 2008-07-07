@@ -32,7 +32,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$db_user_id = $_POST['id'];
 } else {
-	user_goto('manage_sql.php');
+	user_goto('sql_manage.php');
 }
 
 // page functions.
@@ -92,7 +92,7 @@ SQL_QUERY;
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . $db_user_name);
 	set_page_message(tr('SQL user password was successfully changed!'));
-	user_goto('manage_sql.php');
+	user_goto('sql_manage.php');
 }
 
 function gen_page_data(&$tpl, &$sql, $db_user_id) {

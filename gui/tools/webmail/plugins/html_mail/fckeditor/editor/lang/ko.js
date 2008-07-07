@@ -336,7 +336,7 @@ DlgPasteCleanBox		: "글상자 제거",
 
 
 // Color Picker
-ColorAutomatic	: "기본색상",
+Colouser_addtomatic	: "기본색상",
 ColorMoreColors	: "색상선택...",
 
 // Document Properties

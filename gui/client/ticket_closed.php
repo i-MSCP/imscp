@@ -33,29 +33,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-// page functions.
-
-function get_last_date(&$tpl, &$sql, &$ticket_id) {
-	$query = <<<SQL_QUERY
-      SELECT
-          ticket_date
-      FROM
-          tickets
-      WHERE
-          ticket_id = ?
-        OR
-          ticket_reply = ?
-      ORDER BY
-          ticket_date DESC
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
-
-	$date_formt = Config::get('DATE_FORMAT');
-	$last_date = date($date_formt, $rs->fields['ticket_date']);
-	$tpl->assign(array('LAST_DATE' => $last_date));
-}
-
+// page functions
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
@@ -101,17 +79,25 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign(array('TICKETS_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => ''));
+		$tpl->assign(
+				array(
+					'TICKETS_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_NEXT' => ''
+					)
+				);
 		set_page_message(tr('You have no support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 		if ($start_index == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
-			$tpl->assign(array('SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prev_si));
+			$tpl->assign(
+					array(
+						'SCROLL_PREV_GRAY' => '',
+						'PREV_PSI' => $prev_si
+						)
+					);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -119,13 +105,17 @@ SQL_QUERY;
 		if ($next_si + 1 > $records_count) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
-			$tpl->assign(array('SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $next_si));
+			$tpl->assign(
+					array(
+						'SCROLL_NEXT_GRAY' => '',
+						'NEXT_PSI' => $next_si
+						)
+					);
 		}
 
 		global $i;
 
-		get_last_date($tpl, $sql, $rs->fields['ticket_id']);
+		$date = ticketGetLastDate($sql, $rs->fields['ticket_id']);
 
 		while (!$rs->EOF) {
 			$ticket_urgency = $rs->fields['ticket_urgency'];
@@ -141,11 +131,15 @@ SQL_QUERY;
 				$tpl->assign(array('URGENCY' => tr("Very high")));
 			}
 
-			$tpl->assign(array('NEW' => " "));
-
-			$tpl->assign(array('SUBJECT' => stripslashes($rs->fields['ticket_subject']),
-					'ID' => $rs->fields['ticket_id'],
-					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
+			$tpl->assign(
+					array(
+						'NEW' 		=> " ",
+						'LAST_DATE' => $date,
+						'SUBJECT' 	=> stripslashes($rs->fields['ticket_subject']),
+						'ID'		=> $rs->fields['ticket_id'],
+						'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
+						)
+					);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();

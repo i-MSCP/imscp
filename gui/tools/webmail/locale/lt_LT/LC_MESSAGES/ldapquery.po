@@ -89,7 +89,7 @@ msgid "Save"
 msgstr "Išsaugoti"
 
 msgid "Add to address book"
-msgstr "Įtraukti į adresų knygą"
+msgstr "Įtuser_addkti į adresų knygą"
 
 msgid "Plugin requires PHP with LDAP support."
 msgstr "Priedui būtina PHP su LDAP palaikymu."
@@ -623,7 +623,7 @@ msgid "Object related to domain"
 msgstr "Objektas susijęs su domenu"
 
 msgid "Friendly Country"
-msgstr "Draugiška šalis"
+msgstr "Duser_addgiška šalis"
 
 msgid "Pilot Organisation"
 msgstr ""

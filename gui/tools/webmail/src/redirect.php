@@ -3,7 +3,7 @@
 /**
  * Prevents users from reposting their form data after a successful logout.
  *
- * Derived from webmail.php by Ralf Kraudelt <kraude@wiwi.uni-rostock.de>
+ * Derived from webmail.php by Ralf Kuser_adddelt <kuser_addde@wiwi.uni-rostock.de>
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License

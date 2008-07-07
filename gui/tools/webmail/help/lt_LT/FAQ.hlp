@@ -10,7 +10,7 @@
 
 <section>
    <title>
-      Ar galima įtraukti kelis adresus iš adresų knygos?
+      Ar galima įtuser_addkti kelis adresus iš adresų knygos?
    </title>
    <description>
       <p>
@@ -24,7 +24,7 @@
 
 <section>
    <title>
-      Ar galima įtraukti į adresų knygą adresus iš atėjusių laiškų?
+      Ar galima įtuser_addkti į adresų knygą adresus iš atėjusių laiškų?
    </title>
    <description>
       <p>
@@ -85,7 +85,7 @@
       kintančiame pasaulyje?  Bet kuriuo atveju būnant kur nors toli nuo 
       savo kompiuterio kartais būna  naudinga turėti galimybę patikrinti,
       ar niekas neatsiuntė kokios nors svarbios žinutės. Ir jums nereikia 
-      nieko darkyti draugo kompiuteryje. SquirrelMail yra tik priedas prie 
+      nieko darkyti duser_addgo kompiuteryje. SquirrelMail yra tik priedas prie 
       įprastos programos.
       </p>
    </description>

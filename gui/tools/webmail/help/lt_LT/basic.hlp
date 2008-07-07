@@ -30,7 +30,7 @@
       SquirrelMail yra suskirstytas į dvi pagrindines sekcijas (frames).  Kairioji
       sekcija parodo naudojamus aplankus. Daugiau informacijos apie tai galima rasti
       pagalbos sistemos skyriuje "Aplankai". Priklausomai nuo nustatymų ta siauroji
-      juosta gali persikraustyti į dešinę pusę.
+      juosta gali persikuser_addstyti į dešinę pusę.
       </p>
       <p>
       Dešinėje sekcijoje vyksta visas veiksmas. Puslapio viršuje yra meniu eilutė. 

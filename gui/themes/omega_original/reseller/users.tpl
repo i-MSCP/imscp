@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url, dmn_name) {
@@ -115,7 +115,7 @@ function sbmt(form, uaction) {
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_edit.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
-                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle"> <a href="edit_user.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle"> <a href="user_edit.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
                         <!-- EDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>

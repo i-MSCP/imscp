@@ -40,7 +40,6 @@ $tpl->assign(
 			'TR_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain/Alias'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		)
 	);
@@ -316,13 +315,13 @@ SQL_QUERY;
 		}
 
 		if ($als_status === Config::get('ITEM_OK_STATUS')) {
-			$delete_link = "delete_domainalias.php?del_id=" . $als_id;
+			$delete_link = "alias_delete.php?del_id=" . $als_id;
 			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
 		} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')){
-			$delete_link = "domainaliasorder.php?action=delete&del_id=".$als_id;
-			$edit_link = "domainaliasorder.php?action=activate&act_id=".$als_id;
+			$delete_link = "alias_order.php?action=delete&del_id=".$als_id;
+			$edit_link = "alias_order.php?action=activate&act_id=".$als_id;
 			$action_text = tr("Delete order");
 			$edit_text = tr("Activate");
 		} else {

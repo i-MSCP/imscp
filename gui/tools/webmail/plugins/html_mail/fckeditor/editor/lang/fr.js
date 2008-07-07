@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Effacer le contenu",
 
 
 // Color Picker
-ColorAutomatic	: "Automatique",
+Colouser_addtomatic	: "Automatique",
 ColorMoreColors	: "Plus de Couleurs...",
 
 // Document Properties

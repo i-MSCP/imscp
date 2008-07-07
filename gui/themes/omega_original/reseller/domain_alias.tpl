@@ -11,7 +11,7 @@
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
-	location = ('status_change.php?domain_id=' + dom_id);
+	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url) {
@@ -58,7 +58,7 @@ function delete_account(url) {
                 <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
                       <td height="25" colspan="6" nowrap="nowrap"><!-- serach gose here-->
-                          <form name="search_alias_frm" method="post" action="domain_alias.php?psi={PSI}">
+                          <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr>
                                 <td width="40" nowrap="nowrap">&nbsp;</td>
@@ -116,13 +116,13 @@ function delete_account(url) {
                             <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                             <!-- EDP: scroll_prev_gray -->
                             <!-- BDP: scroll_prev -->
-                            <a href="domain_alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                            <a href="alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
                             <!-- EDP: scroll_prev -->
                             <!-- BDP: scroll_next_gray -->
                           &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
                           <!-- EDP: scroll_next_gray -->
                           <!-- BDP: scroll_next -->
-                          &nbsp;<a href="domain_alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                          &nbsp;<a href="alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
                           <!-- EDP: scroll_next -->
                         </div></td>
                       </tr>

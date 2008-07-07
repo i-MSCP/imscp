@@ -335,7 +335,7 @@ DlgPasteCleanBox		: "Box opschonen",
 
 
 // Color Picker
-ColorAutomatic	: "Automatisch",
+Colouser_addtomatic	: "Automatisch",
 ColorMoreColors	: "Meer kleuren...",
 
 // Document Properties

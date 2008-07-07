@@ -75,7 +75,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
                 mail_users
             set
                 status = ?,
-                mail_auto_respond = 1
+                mail_auto_respond = 1,
                 mail_auto_respond_text = ?
             where
                 mail_id = ?

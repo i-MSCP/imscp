@@ -98,7 +98,7 @@ function update_logo() {
 
 		$newFName = get_user_name($user_id) . '.' . $fext;
 
-		$path = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/layout.php') + 1);
+		$path = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/settings_layout.php') + 1);
 
 		$logoFile = $path . '/themes/user_logos/' . $newFName;
 		move_uploaded_file($fname, $logoFile);

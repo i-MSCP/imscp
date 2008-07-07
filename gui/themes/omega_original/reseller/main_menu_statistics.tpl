@@ -34,9 +34,9 @@
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-      <td class="menu"><div align="center"><a href="reseller_user_statistics.php" onmouseover="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/statistics_a.gif" name="statistics" width="47" height="46" border="0" id="statistics" /></a></div></td>
+      <td class="menu"><div align="center"><a href="user_statistics.php" onmouseover="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/statistics_a.gif" name="statistics" width="47" height="46" border="0" id="statistics" /></a></div></td>
   </tr><tr>
-    <td class="menu"><div align="center"><a href="reseller_user_statistics.php" class="menu_active" onmouseover="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_DOMAIN_STATISTICS}</a></div></td>
+    <td class="menu"><div align="center"><a href="user_statistics.php" class="menu_active" onmouseover="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onmouseout="MM_swapImgRestore()">{TR_MENU_DOMAIN_STATISTICS}</a></div></td>
   </tr>
 </table></td>
 <!-- BDP: isactive_support -->

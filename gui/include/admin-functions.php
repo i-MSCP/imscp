@@ -727,10 +727,10 @@ SQL_QUERY;
 
 			if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 				$status_icon = "ok.png";
-				$status_url = "status_change.php?domain_id=" . $rs->fields['domain_id'];
+				$status_url = "domain_status_change.php?domain_id=" . $rs->fields['domain_id'];
 			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
-				$status_url = "status_change.php?domain_id=" . $rs->fields['domain_id'];
+				$status_url = "domain_status_change.php?domain_id=" . $rs->fields['domain_id'];
 			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 				$status_url = "#";

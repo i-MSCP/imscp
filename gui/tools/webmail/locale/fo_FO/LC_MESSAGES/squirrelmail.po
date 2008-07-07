@@ -1815,7 +1815,7 @@ msgid "User-Defined Citation Start"
 msgstr "Brúkara uppsett byrjan á sitati"
 
 msgid "User-Defined Citation End"
-msgstr "Brúkarauppsett endi á sitati"
+msgstr "Brúkauser_addppsett endi á sitati"
 
 msgid "Signature Options"
 msgstr "Uppsetingar av undirskrift"
@@ -3849,7 +3849,7 @@ msgid "Saved Translation Options"
 msgstr "Goymdir umsetingaruppsetingar"
 
 msgid "Your server options are as follows:"
-msgstr "Tínir servarauppsetingar eru hesir:"
+msgstr "Tínir servauser_addppsetingar eru hesir:"
 
 msgid "Maximum of 150 words translated, powered by Systran"
 msgstr "Í mesta lagi 150 orð umsett, rikin av Systran"

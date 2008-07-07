@@ -19,13 +19,13 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="rau1.php" class="submenu">{TR_MENU_ADD_USER}</a></td>
+    <td><a href="user_add1.php" class="submenu">{TR_MENU_ADD_USER}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="domain_alias.php" class="submenu">{TR_MENU_DOMAIN_ALIAS}</a></td>
+    <td><a href="alias.php" class="submenu">{TR_MENU_DOMAIN_ALIAS}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
@@ -37,7 +37,7 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="lostpassword.php" class="submenu">{TR_MENU_LOSTPW_EMAIL}</a></td>
+    <td><a href="settings_lostpassword.php" class="submenu">{TR_MENU_LOSTPW_EMAIL}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>

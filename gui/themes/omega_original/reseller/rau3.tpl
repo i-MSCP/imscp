@@ -41,8 +41,8 @@
               </tr>
               <tr>
                 <td valign="top"><!-- BDP: add_user -->
-                    <form name="reseller_add_users_first_frm" method="post" action="rau3.php">
-                      <input type="hidden" name="uaction" value="rau3_nxt">
+                    <form name="reseller_add_users_first_frm" method="post" action="user_add3.php">
+                      <input type="hidden" name="uaction" value="user_add3_nxt">
                       <table width="100%" cellpadding="5" cellspacing="5">
                         <!-- BDP: page_message -->
                         <tr>
