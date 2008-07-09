@@ -1,43 +1,10 @@
 #!/bin/sh
-
-# ispCP ω (OMEGA) a Virtual Hosting Control System
-# Copyright (c) 2007 by ispCP
-# http://www.isp-control.net
 #
+# chkconfig: - 91 35
+# description: Starts and stops the ISPCP daemon
 #
-# License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
-#
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
-#
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
-#
-#
-# The ispCP Home Page is at:
-#
-#    http://www.isp-control.net
-#
-### BEGIN INIT INFO
-# Provides:             ispcp_daemon
-# Required-Start:       $network $local_fs $remote_fs
-# Required-Stop:
-# Should-Stop:          $local_fs
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
-# Short-Description:    ispCP GUI-Backend communication Daemon
-### END INIT INFO
-# Note: do not modify any of these vars here, use /etc/default/$NAME instead
-
+# pidfile: /var/run/ispcp.pid
+# config:  /etc/ispcp/ispcp.conf
 
 
 # Source function library.

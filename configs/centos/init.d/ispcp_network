@@ -1,5 +1,9 @@
 #!/bin/sh
-
+# chkconfig: - 85 15
+# description: Starts and stops the ISPCP  networking
+#
+# pidfile: /var/run/ispcp.pid
+# config:  /etc/ispcp/ispcp.conf
 # ispCP ω (OMEGA) a Virtual Hosting Control System
 # Copyright (c) 2007 by ispCP
 # http://www.isp-control.net
@@ -26,15 +30,7 @@
 # The ispCP Home Page is at:
 #
 #    http://www.isp-control.net
-### BEGIN INIT INFO
-# Provides:             ispcp_network
-# Required-Start:       $network $local_fs $remote_fs
-# Required-Stop:
-# Should-Stop:          $local_fs
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
-# Short-Description:    ispCP Network Traffic Logger
-### END INIT INFO
+
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin

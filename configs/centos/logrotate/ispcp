@@ -1,4 +1,4 @@
-/var/log/apache2/users/*.log {
+/var/log/httpd/users/*.log {
   weekly
   missingok
   rotate 52
@@ -8,20 +8,20 @@
   create 640 root adm
   sharedscripts
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
   endscript
   postrotate
   for i in `seq 1 10`; do
-    if [ -f /var/run/apache2.pid ]; then
-      /etc/init.d/apache2 stop > /dev/null
+    if [ -f /var/run/httpd.pid ]; then
+      /etc/init.d/httpd stop > /dev/null
       sleep 5
-      /etc/init.d/apache2 start > /dev/null
+      /etc/init.d/httpd start > /dev/null
     fi
   done
   endscript
 }
 
-/var/log/apache2/backup/*.log.perv {
+/var/log/httpd/backup/*.log.perv {
   size 5M
   missingok
   rotate 5
@@ -31,7 +31,7 @@
   create 640 root adm
 }
 
-/var/log/proftpd/xferlog {
+/var/log/xferlog {
   daily
   rotate 7
   missingok
@@ -42,14 +42,14 @@
   endscript
 }
 
-/var/log/proftpd/ftp_traff.log {
+/var/log/ftp_traff.log {
   daily
   rotate 7
   missingok
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff &> /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
     /usr/bin/killall -HUP syslogd

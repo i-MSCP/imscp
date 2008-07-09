@@ -33,7 +33,6 @@
 export
 
 install:
-
 	if test $(HOST_OS) = centos ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		(cd ./apache && $(MAKE) install &); \
@@ -50,7 +49,6 @@ install:
 	fi
 
 uninstall:
-
 	if test $(HOST_OS) = centos ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		(cd ./apache && $(MAKE) uninstall &); \

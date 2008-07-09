@@ -31,6 +31,7 @@
 #
 
 ROOT_COURIER_CONF=$(ROOT_CONF)/courier
+ROOT_AUTHLIB_CONF=$(ROOT_CONF)/authlib
 
 export
 
@@ -38,6 +39,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/courier
 	$(SYSTEM_MAKE_DIRS) $(ROOT_COURIER_CONF)
+	$(SYSTEM_MAKE_DIRS) $(ROOT_AUTHLIB_CONF)
 
 #	MTA Configuration Files;
 	cp ./userdb $(SYSTEM_CONF)/courier

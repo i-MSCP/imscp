@@ -9,6 +9,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1393: patch to restore gui/client/ functionality
 		* Fixed #1394: patch to restore gui/reseller/ functionality
 		* Fixed #1396: Wordwrap in ticket system
+	- DISTS:
+		* Fixed #1399: CentOS Build Instructions and Config Broken
 	- LANGUAGES:
 		* Updated Italian
 		* Updated Czech

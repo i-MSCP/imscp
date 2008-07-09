@@ -30,7 +30,7 @@
 #    http://isp-control.net
 #
 
-ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
+ROOT_APACHE_CONF=$(ROOT_CONF)/httpd
 
 export
 
@@ -38,8 +38,8 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/vhosts
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/conf.d
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
@@ -53,7 +53,7 @@ install:
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
 	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf
 
-	cp -R $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf $(ROOT_APACHE_CONF)/mods-available/fastcgi_ispcp.conf
+	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/conf.d/fastcgi_ispcp.conf
 
 uninstall:
 

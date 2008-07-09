@@ -20,7 +20,7 @@
 
 # Postfix directory settings; These are critical for normal Postfix MTA functionallity
 command_directory            = /usr/sbin
-daemon_directory             = /usr/lib/postfix
+daemon_directory             = /usr/libexec/postfix
 
 # Some common configuration parameters
 inet_interfaces              = all
