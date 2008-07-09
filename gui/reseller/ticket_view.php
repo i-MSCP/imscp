@@ -88,6 +88,7 @@ SQL_QUERY;
 
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$date_formt = Config::get('DATE_FORMAT');
+		$ticket_content = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
@@ -97,7 +98,7 @@ SQL_QUERY;
 				'URGENCY_ID' => $urgency_id,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'SUBJECT' => $rs->fields['ticket_subject'],
-				'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200) / 7), "<br>\n", 1),
+				'TICKET_CONTENT' => nl2br($ticket_content),
 				'ID' => $rs->fields['ticket_id']
 				)
 			);

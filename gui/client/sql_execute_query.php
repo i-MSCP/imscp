@@ -156,9 +156,8 @@ SQL_QUERY;
     $db_user_name = $rs->fields['sqlu_name'];
     $db_user_pass = $rs->fields['sqlu_pass'];
     $db_name = $rs->fields['sqld_name'];
-    $sql_user = &ADONewConnection(Config::get('DB_TYPE'));
 
-    if (!@$sql_user->Connect(Config::get('DB_HOST'), $db_user_name, $db_user_pass, $db_name)) {
+    if (!@$sql_user =Database::connect($db_user_name, $db_user_pass, Config::get('DB_TYPE'), Config::get('DB_HOST'), $db_name)) {
         set_page_message(tr('Could not connect to the SQL server as %s!', $db_user_name));
         $tpl->assign('SQL_RESULT', '');
         return;
@@ -169,12 +168,20 @@ SQL_QUERY;
     $rs = $sql_user->Execute($query);
 
     if (!$rs) {
-        $tpl->assign(array('QUERY_STATUS' => tr('Execution of SQL query failed!'),
-                'QUERY_RESULT' => $sql_user->ErrorMsg()));
+        $tpl->assign(
+				array(
+					'QUERY_STATUS' => tr('Execution of SQL query failed!'),
+                	'QUERY_RESULT' => $sql_user->ErrorMsg()
+					)
+				);
     } else {
         write_log($_SESSION['user_logged'] . ": execute SQL query!");
-        $tpl->assign(array('QUERY_STATUS' => tr('Execution of SQL query succeeded!'),
-                'QUERY_RESULT' => sql_rs2html($rs)));
+        $tpl->assign(
+				array(
+					'QUERY_STATUS' => tr('Execution of SQL query succeeded!'),
+                	'QUERY_RESULT' => sql_rs2html($rs)
+					)
+				);
     }
 
     @$sql_user->Close();
@@ -259,7 +266,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

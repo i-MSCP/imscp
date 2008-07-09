@@ -1,6 +1,18 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-09 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1395: vhcs2.4.7-ispcp.sql / ispc-update - default language not migrated
+	- GUI:
+		* Fixed #1384: Client/Execute Query doesn't work.
+		* Fixed #1393: patch to restore gui/client/ functionality
+		* Fixed #1394: patch to restore gui/reseller/ functionality
+		* Fixed #1396: Wordwrap in ticket system
+	- LANGUAGES:
+		* Updated Italian
+		* Updated Czech
+
 2008-07-07 Benedikt Heintel
 	- GUI:
 		* Changed File Names
