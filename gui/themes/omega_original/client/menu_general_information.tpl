@@ -38,7 +38,7 @@
   </tr>
   <!-- BDP: isactive_update_hp -->
   <tr>
-    <td><a href="update_hosting_plan.php" class="submenu">{TR_MENU_UPDATE_HP}</a></td>
+    <td><a href="hosting_plan_update.php" class="submenu">{TR_MENU_UPDATE_HP}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
