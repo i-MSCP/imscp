@@ -34,7 +34,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td><form name="admin_email_setup" method="post" action="email_setup.php">
+                      <td><form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>

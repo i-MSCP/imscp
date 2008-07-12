@@ -145,7 +145,7 @@ SQL_QUERY;
 				`path` = ?,
 				`status` = ?
 			WHERE
-				`id `= '$update_id';
+				`id` = '$update_id';
 SQL_QUERY;
 
 		check_for_lock_file();
