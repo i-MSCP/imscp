@@ -7,6 +7,8 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1409: admin can not change welcome email (thanks sci2tech)
 		* Fixed #1410: user can not add new protected areas (thanks sci2tech)
+		* Fixed #1401: personal_change.php blank page (thanks sci2tech)
+		* Fixed #1407: admin/manage_users.php does not show left menu (thanks sci2tech)
 
 2008-07-09 Benedikt Heintel
 	- ENGINE:
