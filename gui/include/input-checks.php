@@ -132,7 +132,7 @@ function clean_input($input, $htmlencode = false) {
  * @param 	String 	$data		username to be checked
  * @param 	int		$num		number of max. chars
  * @param	String	$permitted	RegExp of permitted chars
- * @return 	boolean				valid username or not
+ * @return 	boolean				valid password or not
  */
 function chk_password($password, $num = 50, $permitted = "") {
 	global $cfg;

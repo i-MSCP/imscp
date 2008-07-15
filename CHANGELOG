@@ -1,6 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-16 Benedikt Heintel
+	- GUI:
+		* Fixed #1358: Webmail link in tools should be hidden if domain has no mail
+		* Fixed #1400: error in manage_users.php (left menu)
+		* Fixed #1412: Some pages are not working with latest trunk
+		* Fixed #1413: Editing e-mail account: new password is shell-escaped
+		* Fixed #1414: SMTP AUTH not working with password, that contains a dollar sign
+	- SETUP:
+		* Fixed #1395: vhcs2.4.7-ispcp.sql / ispc-update - default language not migrated
+
 2008-07-12 Marc Pujol
 	- ENGINE:
 		* Fixed #1405: mysqldump fails with remote database

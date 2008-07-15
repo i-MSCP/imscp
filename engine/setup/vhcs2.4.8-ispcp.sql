@@ -55,8 +55,7 @@ DROP TABLE IF EXISTS `lang_Chinese`;
 DROP TABLE IF EXISTS `lang_Danish`;
 DROP TABLE IF EXISTS `lang_Deutsch`;
 DROP TABLE IF EXISTS `lang_Dutch`;
--- English Translation is up to date after install
--- DROP TABLE IF EXISTS `lang_English`;
+DROP TABLE IF EXISTS `lang_English`;
 DROP TABLE IF EXISTS `lang_Finnish`;
 DROP TABLE IF EXISTS `lang_French`;
 DROP TABLE IF EXISTS `lang_German`;

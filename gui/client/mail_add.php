@@ -132,7 +132,8 @@ SQL_QUERY;
             $tpl->parse('ALS_LIST', '.als_list');
             $rs->MoveNext();
 
-            if (!$first_passed) $first_passed = true;
+            if (!$first_passed)
+				$first_passed = true;
         }
     }
 }
@@ -263,7 +264,7 @@ SQL_QUERY;
 				$mail_addr = $mail_acc.'@'.decode_idna($rs->fields['alias_name']); // the complete address
 			} else {
 				set_page_message(tr('Unknown domain type'));
-				return ;
+				return false;
 			}
 		}
 
@@ -279,7 +280,7 @@ SQL_QUERY;
 				$sub_id = $_POST['als_id'];
 			} else {
 				set_page_message(tr('Unknown domain type'));
-				return;
+				return false;
 			}
 
 			if (!isset($_POST['mail_type_normal'])) {
@@ -295,10 +296,10 @@ SQL_QUERY;
 				if (!chk_email($value) && $value !== '') {
 					/* ERR .. strange :) not email in this line - warning */
 					set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
-					return;
+					return false;
 				} else if ($value === '') {
 					set_page_message(tr("Mail forward list empty!"));
-					return;
+					return false;
 				}
 				$mail_accs[] = $value;
 			}
@@ -328,7 +329,7 @@ SQL_QUERY;
 
     if ($rs->fields['cnt'] > 0) {
         set_page_message(tr('Mail account already exists!'));
-        return;
+        return false;
     }
 
     check_for_lock_file();
@@ -374,49 +375,46 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 
 	if (($mail_type_normal == false) && ($mail_type_forward == false)) {
 		set_page_message(tr('Please select at least one mail type!'));
-		return;
+		return false;
 	}
 
     if ($mail_type_normal) {
-        $pass = escapeshellcmd($_POST['pass']);
-        $pass_rep = escapeshellcmd($_POST['pass_rep']);
+        $pass = clean_input($_POST['pass']);
+        $pass_rep = clean_input($_POST['pass_rep']);
     }
 
     if (!isset($_POST['username']) || $_POST['username'] === '') {
         set_page_message(tr('Please enter mail account username!'));
-        return;
+        return false;
     }
 
     if ($mail_type_normal) {
-        if (!isset($pass) || $pass == null || !isset($pass_rep) || $pass_rep == null || $pass_rep == '' || $pass == '') {
+        if (trim($pass) === '' || trim($pass_rep) === '') {
             set_page_message(tr('Password data is missing!'));
-            return;
-        }
-
-        if ($pass !== $pass_rep) {
-            set_page_message(tr('Entered passwords differ from the another!'));
-            return;
-        }
-        // Not permitted chars
-        if (!chk_password($pass)) {
+            return false;
+        } else if ($pass !== $pass_rep) {
+            set_page_message(tr('Entered passwords differ!'));
+            return false;
+        } else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
+        	// Not permitted chars
             set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
-            return;
+            return false;
         }
     }
 
     if ($_POST['dmn_type'] === 'sub' && !isset($_POST['sub_id'])) {
         set_page_message(tr('Subdomain list is empty! You cannot add mail accounts!'));
-        return;
+        return false;
     }
 
     if ($_POST['dmn_type'] === 'als' && !isset($_POST['als_id'])) {
         set_page_message(tr('Alias list is empty! You cannot add mail accounts!'));
-        return;
+        return false;
     }
 
     if ($mail_type_forward && empty($_POST['forward_list'])) {
         set_page_message(tr('Forward list is empty!'));
-        return;
+        return false;
     }
 
     schedule_mail_account($sql, $dmn_id, $dmn_name);
@@ -553,6 +551,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 ?>

@@ -172,19 +172,19 @@ function update_email_pass($sql) {
 		}
 	}
 
-	$pass = escapeshellcmd($_POST['pass']);
-	$pass_rep = escapeshellcmd($_POST['pass_rep']);
+	$pass = clean_input($_POST['pass']);
+	$pass_rep = clean_input($_POST['pass_rep']);
 	$mail_id = $_GET['id'];
 	$mail_account = clean_input($_POST['mail_account']);
 
 	if (trim($pass) === '' || trim($pass_rep) === '' || $mail_id === '' || !is_numeric($mail_id)) {
-		set_page_message(tr('Missing or wrong data!'));
+		set_page_message(tr('Password data is missing!'));
 		return false;
 	} else if ($pass !== $pass_rep) {
 		set_page_message(tr('Entered passwords differ!'));
 		return false;
-	} else if (preg_match("/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^]/i", $pass)) { // Not permitted chars
-		set_page_message(tr('Password data includes not valid signs!'));
+	} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) { // Not permitted chars
+        set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
 		return false;
 	} else {
 		$status = Config::get('ITEM_CHANGE_STATUS');
@@ -333,7 +333,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

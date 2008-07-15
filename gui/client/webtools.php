@@ -26,6 +26,7 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/webtools.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('active_awstats', 'page');
+$tpl->define_dynamic('active_email', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
@@ -38,6 +39,15 @@ $tpl->assign(
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
+
+// Check, if E-Mail is active for this user
+list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
+     $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
+     $dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
+     $dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+
+if ($dmn_mailacc_limit == -1)
+	$tpl->assign('ACTIVE_EMAIL', '');
 
 function gen_page_awstats(&$tpl) {
 	$awstats_act = Config::get('AWSTATS_ACTIVE');

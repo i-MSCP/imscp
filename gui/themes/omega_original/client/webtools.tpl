@@ -72,6 +72,7 @@
                </tr>
               </table></td>
             </tr>
+            <!-- BDP: active_email -->
             <tr>
              <td>&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -82,6 +83,7 @@
                </tr>
               </table></td>
             </tr>
+            <!-- EDP: active_email -->
             <tr>
              <td>&nbsp;</td>
              <td class="content">
