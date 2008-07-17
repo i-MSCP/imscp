@@ -1,6 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-18 Benedikt Heintel
+	- GUI:
+		* Fixed #1416: Missing menu when a client try to ad new email: client/mail_add.php
+		* Fixed #1417: Template error and missing menu when a client try to enable autoresponder: client/mail_autoresponder_enable.php
+		* Fixed #1418: Template error and missing menu when a client try to enable autoresponder: client/mail_autoresponder_edit.php
+		* Fixed #1419: Template error and missing menu when a client try to create catch all: client/mail_catchall_add.php
+		* Fixed #1420: Missing menu when a client try to edit email: client/mail_edit.php
+		* Fixed #1421: Client can`t change sql password: client/sql_change_password.php (template error)
+
 2008-07-16 Benedikt Heintel
 	- GUI:
 		* Fixed #1358: Webmail link in tools should be hidden if domain has no mail

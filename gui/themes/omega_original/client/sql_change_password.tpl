@@ -51,7 +51,7 @@ function action_delete(url) {
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
-                      <td valign="top"><form name="sql_change_password_frm" method="post" action="sql_password_change.php">
+                      <td valign="top"><form name="sql_change_password_frm" method="post" action="sql_change_password.php">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>
