@@ -16,6 +16,7 @@ dnsutils
 gcc
 gzip
 iptables
+ispell
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev

@@ -1040,7 +1040,7 @@ sub crypt_md5_data {
 
     }
 
-    my ($rs, $rdata) = gen_rand_num(2);
+    my ($rs, $rdata) = gen_rand_num(8);
 
     return (-1, '') if ($rs != 0);
 

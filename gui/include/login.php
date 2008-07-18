@@ -49,14 +49,14 @@ function register_user($uname, $upass) {
 	if (crypt($upass, $udata['admin_pass']) == $udata['admin_pass'] || md5($upass) == $udata['admin_pass']) {
 
 	    if (isset($_SESSION['user_logged'])) {
-	        write_log($uname." user already logged or session sharing problem! Aborting...");
+	        write_log(tr("%s user already logged or session sharing problem! Aborting...", $uname));
 	        system_message(tr('User already logged or session sharing problem! Aborting...'));
 	        unset_user_login_data();
 	        return false;
 	    }
 
 	    if (!is_userdomain_ok($uname)) {
-	        write_log($uname." Domain status is not OK - user cannot login");
+	        write_log(tr("%s's account status is not ok!", $uname));
 	        system_message(tr("%s's account status is not ok!", $uname));
 	        return false;
 	    }
@@ -87,7 +87,7 @@ SQL_QUERY;
 	    return true;
 	} else {
 		$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
-	
+
 		write_log($uname . ' entered incorrect password.');
 		system_message(tr('You entered an incorrect password.'), $backButtonDestination);
   		return false;

@@ -329,7 +329,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         my ($hash_key, $hash_value, $dmn_name) = (undef, undef, undef);
 
-        if ($mail_type =~ /^normal_mail.*/) {
+        if ($mail_type =~ /.*normal_mail.*/) {
 
         	$dmn_name = $main::domain_id_name{$mail_dmn_id};
 
@@ -337,7 +337,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
 	        $hash_value = "$mail_acc\@$dmn_name$mail_forward_list,$mail_acc\@ispcp-arpl.$dmn_name";
 
-        } elsif ($mail_type =~ /^alias_mail.*/) {
+        } elsif ($mail_type =~ /.*alias_mail.*/) {
 
         	$dmn_name = $main::als_id_name{$mail_sub_id};
 
@@ -345,7 +345,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         	$hash_value = "$mail_acc\@$dmn_name$mail_forward_list,$mail_acc\@ispcp-arpl.$dmn_name";
 
-        } elsif ($mail_type  =~ /^subdom_mail.*/) {
+        } elsif ($mail_type  =~ /.*subdom_mail.*/) {
 
         	my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
@@ -393,7 +393,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type =~ /^normal_mail.*/ || $mail_type =~ /^alias_mail.*/ || $mail_type  =~ /^subdom_mail.*/);
+    } if ($mail_type =~ /.*normal_mail.*/ || $mail_type =~ /.*alias_mail.*/ || $mail_type  =~ /.*subdom_mail.*/);
 
     do {
 
@@ -461,7 +461,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward');
+    } if ($mail_type =~ /.*normal_forward.*/ || $mail_type =~ /.*alias_forward.*/);
 
     do {
         my $sub_pref = $main::sub_id_name{$mail_sub_id};
@@ -518,7 +518,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_forward');
+    } if ($mail_type =~ /.*subdom_forward.*/);
 
     $rs = sys_command("$cmd_postmap $transport_cfg");
 
@@ -552,7 +552,7 @@ sub mbox_check_last_transport_entry {
 
     my $mail_type = @$mbox_data[5];
 
-    if ($mail_type eq 'alias_mail' || $mail_type eq 'alias_forward') {
+    if ($mail_type =~ /.*alias_mail.*/ || $mail_type =~ /.*alias_forward.*/) {
 
         $sql = "select count(mail_id) as cnt from mail_users where (status = 'ok' or status = 'change') and mail_auto_respond != '_no_' and domain_id = $mail_dmn_id and sub_id = $mail_sub_id and mail_type != 'normal_catchall' and mail_type != 'alias_catchall';";
 
@@ -609,7 +609,7 @@ sub mbox_del_last_transport_entry {
 
     my $hash_key = "ispcp-arpl.$dmn_name";
 
-    if ($mail_type eq 'alias_mail' || $mail_type eq 'alias_forward') {
+    if ($mail_type =~ /.*alias_mail.*/ || $mail_type =~ /.*alias_forward.*/) {
 
         my $als_name = $main::als_id_name{$mail_sub_id};
 
@@ -735,19 +735,19 @@ sub mbox_del_mta_cfg_autorespond_data {
 
     do {
 
-		if ($mail_type =~ /^normal_mail.*/) {
+		if ($mail_type =~ /.*normal_mail.*/) {
 
         	$dmn_name = $main::domain_id_name{$mail_dmn_id};
 
         	$hash_key = "$mail_acc\@$dmn_name";
 
-		} elsif ($mail_type =~ /^alias_mail.*/) {
+		} elsif ($mail_type =~ /.*alias_mail.*/) {
 
         	$dmn_name = $main::als_id_name{$mail_sub_id};
 
         	$hash_key = "$mail_acc\@$dmn_name";
 
-		} elsif ($mail_type =~ /^subdom_mail.*/) {
+		} elsif ($mail_type =~ /.*subdom_mail.*/) {
 
     	    my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
@@ -1155,7 +1155,7 @@ sub mbox_add_mta_cfg_data {
 
         }
 
-    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward' || $mail_type eq 'subdom_forward');
+    } if ($mail_type =~ /.*normal_forward.*/ || $mail_type =~ /.*alias_forward.*/ || $mail_type =~ /.*subdom_forward.*/);
 
     do {
 
@@ -1491,7 +1491,7 @@ sub mbox_del_mta_cfg_data {
 
         }
 
-    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward' || $mail_type eq 'subdom_forward');
+    } if ($mail_type =~ /.*normal_forward.*/ || $mail_type =~ /.*alias_forward.*/ || $mail_type =~ /.*subdom_forward.*/);
 
     do {
 
@@ -1890,7 +1890,7 @@ sub mbox_add_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /^normal_mail.*/);
 
     do {
 
@@ -1909,7 +1909,7 @@ sub mbox_add_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'alias_mail');
+    } if ($mail_type =~ /^alias_mail.*/);
 
     do {
 
@@ -1932,7 +1932,7 @@ sub mbox_add_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'subdom_mail');
+    } if ($mail_type =~ /^subdom_mail.*/);
 
     ($rs, $working) = get_file($userdb_working_cfg);
 
@@ -2035,7 +2035,7 @@ sub mbox_del_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /.*normal_mail.*/);
 
     do {
 
@@ -2048,7 +2048,7 @@ sub mbox_del_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'alias_mail');
+    } if ($mail_type =~ /.*alias_mail.*/);
 
     do {
 
@@ -2065,7 +2065,7 @@ sub mbox_del_po_data {
         return $rs if ($rs != 0);
 
 
-    } if ($mail_type eq 'subdom_mail');
+    } if ($mail_type =~ /.*subdom_mail.*/);
 
     ($rs, $working) = get_file($userdb_working_cfg);
 
@@ -2196,7 +2196,7 @@ sub mbox_add_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /.*normal_mail.*/);
 
     do {
 
@@ -2218,7 +2218,7 @@ sub mbox_add_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'alias_mail');
+    } if ($mail_type =~ /.*alias_mail.*/);
 
     do {
 
@@ -2244,9 +2244,9 @@ sub mbox_add_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'subdom_mail');
+    } if ($mail_type =~ /.*subdom_mail.*/);
 
-    if ($mail_type eq 'normal_mail' || $mail_type eq 'subdom_mail' || $mail_type eq 'alias_mail') {
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/) {
 
 
         ($rs, $rdata) = mbox_check_sasl_user($check_user);
@@ -2368,7 +2368,7 @@ sub mbox_del_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /.*normal_mail.*/);
 
     do {
 
@@ -2390,7 +2390,7 @@ sub mbox_del_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'alias_mail');
+    } if ($mail_type =~ /.*alias_mail.*/);
 
     do {
 
@@ -2416,7 +2416,7 @@ sub mbox_del_sasl_data {
 
         $hash_value = "OK";
 
-    } if ($mail_type eq 'subdom_mail');
+    } if ($mail_type =~ /.*subdom_mail.*/);
 
     if ($mail_type eq 'normal_mail' || $mail_type eq 'subdom_mail' || $mail_type eq 'alias_mail') {
 
