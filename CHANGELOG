@@ -12,6 +12,11 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1423: e-mail as normal mail and e-mail forward not in /etc/courier/userdb
 		* Fixed #1424: Adminstrator password created by setup is truncated at 8 characters
 		* Fixed #1428: ispell is needed for webmail
+	- LANGUAGES:
+		* Added Chinese (Hongkong)
+		* Added Galician
+		* Updated Chinese (China)
+		* Updated Italian
 
 2008-07-16 Benedikt Heintel
 	- GUI:
