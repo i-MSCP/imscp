@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-19 Jochen Manz
+	- GUI:
+		* Small fix for ispcp-lib.php
+
 2008-07-18 Benedikt Heintel
 	- GUI:
 		* Fixed #1416: Missing menu when a client try to ad new email: client/mail_add.php

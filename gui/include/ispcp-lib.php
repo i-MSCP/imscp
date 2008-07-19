@@ -190,7 +190,7 @@ if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 	foreach ($_POST as $i) {
 		$i	= $purifier->purify($i);
 	}
-	foreach ($_GET as $i) {
+	foreach ($_REQUEST as $i) {
 		$i	= $purifier->purify($i);
 	}
 }
