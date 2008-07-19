@@ -184,9 +184,15 @@ if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 	$purifier = new HTMLPurifier($config);
 	//$purifier = HTMLPurifier::getInstance();
 
-	$_GET		= array_map(array($purifier, 'purify'), $_GET);
-	$_POST		= array_map(array($purifier, 'purify'), $_POST);
-	$_REQUEST	= array_map(array($purifier, 'purify'), $_REQUEST);
+	foreach ($_GET as $i) {
+		$i	= $purifier->purify($i);
+	}
+	foreach ($_POST as $i) {
+		$i	= $purifier->purify($i);
+	}
+	foreach ($_GET as $i) {
+		$i	= $purifier->purify($i);
+	}
 }
 
 $query = <<<SQL
