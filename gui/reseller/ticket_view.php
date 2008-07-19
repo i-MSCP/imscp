@@ -207,27 +207,25 @@ $tpl->assign(
 	);
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwidth) {
-	if (!isset($_POST['uaction'])) return;
-	// close ticket
-	elseif ($_POST['uaction'] == "close") {
+	if (!isset($_POST['uaction'])) {
+		return;
+	} elseif ($_POST['uaction'] == "close") {
+		// close ticket
 		close_ticket($sql, $ticket_id);
 		return;
-	}
-	// open ticket
-	elseif ($_POST['uaction'] == "open") {
+	} elseif ($_POST['uaction'] == "open") {
+		// open ticket
 		open_ticket($sql, $ticket_id);
 		return;
-	}
-	// no message check->error
-	elseif (empty($_POST['user_message'])) {
+	} elseif (empty($_POST['user_message'])) {
+		// no message check->error
 		set_page_message(tr('Please type your message!'));
-
 		return;
 	}
 
 	$ticket_date = time();
 
-	$subj = clean_input($_POST['subject']);
+	$subject = clean_input($_POST['subject']);
 
 	$user_message = clean_input($_POST["user_message"]);
 
@@ -281,17 +279,14 @@ SQL_QUERY;
 			(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_to,
-			$ticket_from,
-			$ticket_status,
-			$ticket_reply,
-			$urgency,
-			$ticket_date,
-			htmlspecialchars($subj, ENT_QUOTES, "UTF-8"),
+	$rs = exec_query($sql, $query, array($ticket_to, $ticket_from,
+			$ticket_status, $ticket_reply, $urgency, $ticket_date,
+			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($ticket_from, $ticket_to, $subj);
+	send_tickets_msg($ticket_from, $ticket_to, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
+			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
 }
 
 function get_send_to_who(&$sql, &$ticket_reply) {

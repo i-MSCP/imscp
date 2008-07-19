@@ -2279,7 +2279,7 @@ RIC;
 	$tpl->assign('PURCHASE_FOOTER', $footer);
 }
 // Function by Tribal-Dolphin
-function send_tickets_msg($to_id, $from_id, $ticket_subject) {
+function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status) {
 	$sql = Database::getInstance();
 	global $admin_login;
 	// To information
@@ -2313,10 +2313,16 @@ SQL_QUERY;
 	$from_lname = $res->fields['lname'];
 	$from_uname = $res->fields['admin_name'];
 	// Prepare message
-	$subject = tr('[Ticket] {SUBJ}');
-	$message = tr("Hello {TO_NAME} !\n\nYou have a new ticket to read");
-	// Format adresses
+	$subject = tr('[Ticket]') . '{SUBJ}';
+	if ($ticket_status == 0) {
+		$message = tr("Hello %s!\n\nYou have a new ticket:\n", "{TO_NAME}");
+	} else {
+		$message = tr("Hello %s!\n\nYou have an answer for this ticket:\n", "{TO_NAME}");
+	}
+	$message .= $ticket_message;
+	$message .= tr("Log in to answer.");
 
+	// Format adresses
 	if ($from_fname && $from_lname) {
 		$from = "\"" . encode($from_fname . ' ' . $from_lname) . "\" <" . $from_email . ">";
 		$fromname = "$from_fname $from_lname";

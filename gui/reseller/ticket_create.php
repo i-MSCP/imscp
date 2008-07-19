@@ -30,32 +30,25 @@ $tpl->define_dynamic('logged_from', 'page');
 // page functions.
 
 function send_user_message(&$sql, $user_id, $user_created_by) {
-	if (!isset($_POST['uaction'])) return;
+	if (!isset($_POST['uaction']))
+		return;
 
 	if (empty($_POST['subj'])) {
 		set_page_message(tr('Please specify message subject!'));
-
 		return;
 	}
 
 	if (empty($_POST['user_message'])) {
 		set_page_message(tr('Please type your message!'));
-
 		return;
 	}
 
 	$ticket_date = time();
-
 	$urgency = $_POST['urgency'];
-
-	$subj = clean_input($_POST['subj']);
-
+	$subject = clean_input($_POST['subj']);
 	$user_message = clean_input($_POST["user_message"]);
-
 	$ticket_status = 2;
-
 	$ticket_reply = 0;
-
 	$ticket_level = 2;
 
 	$query = <<<SQL_QUERY
@@ -73,17 +66,14 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
             (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_level,
-			$user_id,
-			$user_created_by,
-			$ticket_status,
-			$ticket_reply,
-			$urgency,
-			$ticket_date,
-			$subj,
-			$user_message));
+	$rs = exec_query($sql, $query, array($ticket_level,	$user_id, $user_created_by,
+			$ticket_status,	$ticket_reply, $urgency, $ticket_date,
+			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
+			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
 
-	send_tickets_msg($user_created_by, $user_id, $subj);
+	set_page_message(tr('Message was sent.'));
+	send_tickets_msg($user_created_by, $user_id, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
+			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
 	header("Location: ticket_system.php");
 }
 

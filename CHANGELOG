@@ -1,6 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-18 Benedikt Heintel
+	- GUI:
+		* Fixed #1397: E-Mail on ticket response
+		* Fixed #1402: awstats static not working
+		* Fixed #1425: Include support for templates
+		* Fixed #1431
+	- TOOLS:
+		* Updated phpMyAdmin to 2.11.7.1
+
 2008-07-19 Jochen Manz
 	- GUI:
 		* Small fix for ispcp-lib.php
@@ -12,7 +21,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1418: Template error and missing menu when a client try to enable autoresponder: client/mail_autoresponder_edit.php
 		* Fixed #1419: Template error and missing menu when a client try to create catch all: client/mail_catchall_add.php
 		* Fixed #1420: Missing menu when a client try to edit email: client/mail_edit.php
-		* Fixed #1421: Client can`t change sql password: client/sql_change_password.php (template error)
+		* Fixed #1421: Client can't change sql password: client/sql_change_password.php (template error)
 		* Fixed #1423: e-mail as normal mail and e-mail forward not in /etc/courier/userdb
 		* Fixed #1424: Adminstrator password created by setup is truncated at 8 characters
 		* Fixed #1428: ispell is needed for webmail

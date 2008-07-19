@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11338 2008-06-23 16:40:08Z lem9 $
+ * @version $Id: Config.class.php 11391 2008-07-15 14:40:42Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.7');
+        $this->set('PMA_VERSION', '2.11.7.1');
         /**
          * @deprecated
          */

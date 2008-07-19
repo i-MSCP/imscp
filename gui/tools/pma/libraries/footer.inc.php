@@ -42,7 +42,7 @@
  * @uses    PMA_DBI_close()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: footer.inc.php 11389 2008-07-15 14:04:44Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -74,7 +74,8 @@ if (window.parent.setAll) {
         echo PMA_escapeJsString($GLOBALS['collation_connection']) . "', '";
         echo PMA_escapeJsString($GLOBALS['server']) . "', '";
         echo PMA_escapeJsString(PMA_ifSetOr($GLOBALS['db'], '')) . "', '";
-        echo PMA_escapeJsString(PMA_ifSetOr($GLOBALS['table'], '')); ?>');
+        echo PMA_escapeJsString(PMA_ifSetOr($GLOBALS['table'], '')) . "', '";
+        echo PMA_escapeJsString($_SESSION[' PMA_token ']);?>');
 }
     <?php
     if (! empty($GLOBALS['reload'])) {

@@ -22,7 +22,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: common.inc.php 11391 2008-07-15 14:40:42Z lem9 $
  */
 
 /**
@@ -398,7 +398,10 @@ if (! PMA_isValid($_REQUEST['token']) || $_SESSION[' PMA_token '] != $_REQUEST['
      *  List of parameters which are allowed from unsafe source
      */
     $allow_list = array(
-        'db', 'table', 'lang', 'server', 'convcharset', 'collation_connection', 'target',
+        /* needed for direct access, see FAQ 1.34
+         * also, server needed for cookie login screen (multi-server)
+         */
+        'server', 'db', 'table', 'target',
         /* Session ID */
         'phpMyAdmin',
         /* Cookie preferences */

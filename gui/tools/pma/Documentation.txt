@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.11.7 Documentation
+phpMyAdmin 2.11.7.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.11.7 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 11338 2008-06-23 16:40:08Z
+  * Documentation version: $Id: Documentation.html 11391 2008-07-15 14:40:42Z
     lem9 $
 
 Requirements
@@ -2022,14 +2022,16 @@ pma_reloadnavigation"), so upgrade your PHP to the next version.
 1.34 Can I access directly to database or table pages?
 
 Yes. Out of the box, you can use URLs like http://server/phpMyAdmin/index.php?
-db=database&table=table&target=script. Table and script parts are optional. If
-you want http://server/phpMyAdmin/database[/table][/script] URLs, you need to
-do some configuration. Following lines apply only for Apache web server. First
-make sure, that you have enabled some features within global configuration. You
-need Options FollowSymLinks and AllowOverride FileInfo enabled for directory
-where phpMyAdmin is installed and you need mod_rewrite to be enabled. Then you
-just need to create following .htaccess file in root folder of phpMyAdmin
-installation (don't forget to change directory name inside of it):
+server=X&db=database&table=table&target=script. For server you use the server
+number which refers to the order of the server paragraph in config.inc.php.
+Table and script parts are optional. If you want http://server/phpMyAdmin/
+database[/table][/script] URLs, you need to do some configuration. Following
+lines apply only for Apache web server. First make sure, that you have enabled
+some features within global configuration. You need Options FollowSymLinks and
+AllowOverride FileInfo enabled for directory where phpMyAdmin is installed and
+you need mod_rewrite to be enabled. Then you just need to create following
+.htaccess file in root folder of phpMyAdmin installation (don't forget to
+change directory name inside of it):
 
 RewriteEngine On
 RewriteBase /path_to_phpMyAdmin

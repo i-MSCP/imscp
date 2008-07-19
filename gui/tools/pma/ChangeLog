@@ -2,8 +2,13 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 11338 2008-06-23 16:40:08Z lem9 $
+$Id: ChangeLog 11397 2008-07-15 17:50:21Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.7.1 (2008-07-15)
+- bug [security] XSRF/CSRF by manipulating the db,
+  convcharset and collation_connection parameters,
+  thanks to YGN Ethical Hacker Group
 
 2.11.7.0 (2008-06-23)
 - bug #1908719 [interface] New field cannot be auto-increment and primary key 

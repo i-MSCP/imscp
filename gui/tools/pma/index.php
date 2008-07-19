@@ -3,7 +3,7 @@
 /**
  * forms frameset
  *
- * @version $Id: index.php 10590 2007-09-02 19:59:59Z lem9 $
+ * @version $Id: index.php 11389 2008-07-15 14:04:44Z lem9 $
  * @uses    $GLOBALS['strNoFrames']
  * @uses    $GLOBALS['cfg']['QueryHistoryDB']
  * @uses    $GLOBALS['cfg']['Server']['user']
@@ -124,6 +124,7 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     var server = '<?php echo PMA_escapeJsString($GLOBALS['server']); ?>';
     var table = '<?php echo PMA_escapeJsString($GLOBALS['table']); ?>';
     var db    = '<?php echo PMA_escapeJsString($GLOBALS['db']); ?>';
+    var token = '<?php echo PMA_escapeJsString($_SESSION[' PMA_token ']); ?>';
     var text_dir = '<?php echo PMA_escapeJsString($GLOBALS['text_dir']); ?>';
     var pma_absolute_uri = '<?php echo PMA_escapeJsString($GLOBALS['cfg']['PmaAbsoluteUri']); ?>';
 

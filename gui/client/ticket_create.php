@@ -44,7 +44,7 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 
 	$ticket_date = time();
 	$urgency = $_POST['urgency'];
-	$subj = clean_html($_POST['subj']);
+	$subject = clean_html($_POST['subj']);
 	$user_message = clean_input($_POST["user_message"]);
 	$ticket_status = 1;
 	$ticket_reply = 0;
@@ -59,18 +59,14 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
             (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_level,
-			$user_id,
-			$reseller_id,
-			$ticket_status,
-			$ticket_reply,
-			$urgency,
-			$ticket_date,
-			htmlspecialchars($subj, ENT_QUOTES, "UTF-8"),
+	$rs = exec_query($sql, $query, array($ticket_level, $user_id, $reseller_id,
+			$ticket_status, $ticket_reply, $urgency, $ticket_date,
+			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
 
-	send_tickets_msg($reseller_id, $user_id, $subj);
 	set_page_message(tr('Your message was sent!'));
+	send_tickets_msg($reseller_id, $user_id, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
+			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
 	header("Location: ticket_system.php");
 	exit(0);
 }
