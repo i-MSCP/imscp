@@ -5,6 +5,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Add missing file
 		* Cleaning gui/admin/domain_status_change.php
+		* Fixed #1432: rv1279 /admin/domain_status_change.php r1281 reseller/alias_add.php white page
 
 2008-07-20 Markus Milkereit
 	- ENGINE:
