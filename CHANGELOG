@@ -1,7 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-07-18 Benedikt Heintel
+2008-07-20 Benedikt Heintel
+	- GUI:
+		* Fixed #1432
+
+2008-07-19 Benedikt Heintel
 	- GUI:
 		* Fixed #1397: E-Mail on ticket response
 		* Fixed #1402: awstats static not working

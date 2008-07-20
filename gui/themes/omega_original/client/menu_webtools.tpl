@@ -42,14 +42,14 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
-  <!-- BDP: active_awstats -->
+  <!-- BDP: active_webmail -->
     <tr>
     <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="submenu">{TR_WEBMAIL}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
-  <!-- EDP: active_awstats -->
+  <!-- EDP: active_webmail -->
     <tr>
     <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="submenu">{TR_FILEMANAGER}</a></td>
   </tr>
