@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-20 Markus Milkereit
+	- ENGINE:
+		* Fixed #755: Protected areas are not working
+
 2008-07-20 Benedikt Heintel
 	- GUI:
 		* Fixed #1432

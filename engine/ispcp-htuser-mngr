@@ -474,17 +474,11 @@ sub htuser_del_user_system_data {
 				my $size = `$cmd_wc -c < $htaccess_file`;
 
 				if ($size < 2) {
-
 					del_file($htaccess_file);
-
 				}
-
 			}
-
 		}
-
 	}
-
 
 	return $rs if ($rs != 0);
 
@@ -546,8 +540,12 @@ sub htuser_add_user_system_data {
 
 	}
 
+	my $hfile = (get_file($htaccess_file))[1];
+	if(!defined($hfile)) {
+		$hfile = "";
+	}
 	my $htaccess_content =
-        set_zone( (get_file($htaccess_file))[1], "
+        set_zone($hfile, "
         AuthType $auth_type
         AuthName \"$auth_name\"
         AuthUserFile $htaccess_users_file
@@ -650,15 +648,11 @@ sub htuser_add_group_system_data {
 		my ($ugroup, $members) = (@$rdata[0], @$rdata[1]);
 
 		foreach (split(',', $members)) {
-
 			my $user_id = $_;
-
 			$rs = htuser_add_user_to_group($dmn_id, $dmn_name, $ugroup, $user_id);
-
 			return $rs if ($rs != 0);
 
 		}
-
 		$ugroups .= "$ugroup ";
 
 	}
@@ -670,8 +664,12 @@ sub htuser_add_group_system_data {
 	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
 	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
 
+	my $hfile = (get_file($htaccess_file))[1];
+	if(!defined($hfile)) {
+		$hfile = "";
+	}
 	my $htaccess_content =
-        set_zone( (get_file($htaccess_file))[1], "
+        set_zone($hfile, "
         AuthType $auth_type
         AuthName \"$auth_name\"
         AuthUserFile $htaccess_users_file
