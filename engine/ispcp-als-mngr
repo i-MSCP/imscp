@@ -723,7 +723,7 @@ sub gen_httpd_als_entry {
 
 	push_el(\@main::el, 'als_entry:', "$als_e");
 
-	if ($mount_point == "/") {
+	if ($mount_point eq "/") {
 		$mount_point = "";
 	}
 

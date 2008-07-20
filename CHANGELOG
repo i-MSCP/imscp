@@ -6,6 +6,9 @@ ispCP ω 1.0.0 Changelog
 		* Add missing file
 		* Cleaning gui/admin/domain_status_change.php
 		* Fixed #1432: rv1279 /admin/domain_status_change.php r1281 reseller/alias_add.php white page
+		* Add daemon request count in htaccess htaccess_user and htaccess_groups tables: gui/admin/ispcp_debugger.php
+	- ENGINE:
+		* Minor fix for engine/ispcp-als-mngr
 
 2008-07-20 Markus Milkereit
 	- ENGINE:

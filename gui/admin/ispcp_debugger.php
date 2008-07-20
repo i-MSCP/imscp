@@ -412,6 +412,9 @@ $exec_count = count_requests($sql, 'domain_status', 'domain');
 $exec_count = $exec_count + count_requests($sql, 'alias_status', 'domain_aliasses');
 $exec_count = $exec_count + count_requests($sql, 'subdomain_status', 'subdomain');
 $exec_count = $exec_count + count_requests($sql, 'status', 'mail_users');
+$exec_count = $exec_count + count_requests($sql, 'status', 'htaccess');
+$exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_groups');
+$exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_users');
 
 $tpl = new pTemplate();
 
