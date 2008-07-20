@@ -30,10 +30,8 @@ if (!is_numeric($_GET['domain_id'])) {
 	 die();
 }
 
-// so we have domain id and lets disable or enable it
 $domain_id = $_GET['domain_id'];
 
-// hopa tropa - check statsu to know if have to disable or enable it
 $query = <<<SQL_QUERY
 	SELECT
 		`domain_name`,
@@ -49,15 +47,12 @@ $rs = exec_query($sql, $query, array($domain_id));
 $location = 'admin';
 
 if ($rs -> fields['domain_status'] ==  Config::get('ITEM_OK_STATUS')) {
-	//disable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
 	$action = "disable";
 	change_domain_status(&$sql, $domain_id, $rs -> fields['domain_name'], $action, $location);
 } else if ($rs -> fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
-	//enable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
 	$action = "enable";
 	change_domain_status(&$sql, $domain_id, $rs -> fields['domain_name'], $action, $location);
 } else {
-die('ok');
 	header( "Location: manage_users.php" );
 	die();
 }

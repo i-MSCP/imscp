@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-07-20 Daniel Andreca
 	- GUI:
 		* Add missing file
+		* Cleaning gui/admin/domain_status_change.php
 
 2008-07-20 Markus Milkereit
 	- ENGINE:
