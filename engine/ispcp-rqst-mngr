@@ -183,6 +183,68 @@ sub mngr_engine {
 
     }
 
+    $sql = "select mail_id, mail_acc, status from mail_users where status != 'ok' and status != 'ordered' order by mail_id";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    my $mail_count = @$rdata;
+
+    if ($mail_count > 0) {
+
+        foreach (@$rdata) {
+
+            my $row = $_;
+
+            my ($mail_id, $mail_acc, $mail_status) = (@$row[0], @$row[1], @$row[2]);
+
+            if ($mail_status eq "toadd" || $mail_status eq "change" || $mail_status eq "delete") {
+
+                if (defined($main::engine_debug)) {
+
+                    push_el(\@main::el, 'mngr_engine()', "processing $mail_id, $mail_acc, $mail_status.");
+
+                }
+
+            }
+
+            $rs = sys_command("$main::ispcp_mbox_mngr $mail_id 1>>$main::ispcp_mbox_mngr_stdout 2>>$main::ispcp_mbox_mngr_stderr");
+
+            if ($rs != 0) {
+
+                if (-e $main::ispcp_mbox_mngr_el) {
+
+                    my $rs1 = undef;
+
+                    pop_el(\@main::el); # removing 'sys_command()' error message;
+
+                    ($rs1, $rdata) = get_el_error($main::ispcp_mbox_mngr_el);
+
+                    return $rs1 if ($rs1 != 0);
+
+                    push_el(\@main::el, $main::ispcp_mbox_mngr, $rdata);
+
+                }
+
+                if (!defined($main::engine_debug)) {
+
+                    del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
+
+                }
+
+                return $rs;
+
+            }
+
+            if (!defined($main::engine_debug)) {
+
+                del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
+
+            }
+
+        }
+
+    }
+
     $sql = "select subdomain_id, subdomain_name, subdomain_status from subdomain where subdomain_status != 'ok' order by subdomain_id";
 
     ($rs, $rdata) = doSQL($sql);
@@ -301,68 +363,6 @@ sub mngr_engine {
 
                 }
 
-
-            }
-
-        }
-
-    }
-
-    $sql = "select mail_id, mail_acc, status from mail_users where status != 'ok' and status != 'ordered' order by mail_id";
-
-    ($rs, $rdata) = doSQL($sql);
-
-    my $mail_count = @$rdata;
-
-    if ($mail_count > 0) {
-
-        foreach (@$rdata) {
-
-            my $row = $_;
-
-            my ($mail_id, $mail_acc, $mail_status) = (@$row[0], @$row[1], @$row[2]);
-
-            if ($mail_status eq "toadd" || $mail_status eq "change" || $mail_status eq "delete") {
-
-                if (defined($main::engine_debug)) {
-
-                    push_el(\@main::el, 'mngr_engine()', "processing $mail_id, $mail_acc, $mail_status.");
-
-                }
-
-            }
-
-            $rs = sys_command("$main::ispcp_mbox_mngr $mail_id 1>$main::ispcp_mbox_mngr_stdout 2>$main::ispcp_mbox_mngr_stderr");
-
-            if ($rs != 0) {
-
-                if (-e $main::ispcp_mbox_mngr_el) {
-
-                    my $rs1 = undef;
-
-                    pop_el(\@main::el); # removing 'sys_command()' error message;
-
-                    ($rs1, $rdata) = get_el_error($main::ispcp_mbox_mngr_el);
-
-                    return $rs1 if ($rs1 != 0);
-
-                    push_el(\@main::el, $main::ispcp_mbox_mngr, $rdata);
-
-                }
-
-                if (!defined($main::engine_debug)) {
-
-                    del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
-
-                }
-
-                return $rs;
-
-            }
-
-            if (!defined($main::engine_debug)) {
-
-                del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
 
             }
 

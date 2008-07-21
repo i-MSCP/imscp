@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-21 Daniel Andreca
+	- GUI:
+		* Fixed #1434: rootkit.log.php
+	- ENGINE:
+		* Subdomains and aliases emails were not removed when reseller/admin remove parent domain
+
 2008-07-20 Daniel Andreca
 	- GUI:
 		* Add missing file

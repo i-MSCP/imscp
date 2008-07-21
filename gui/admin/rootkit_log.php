@@ -53,7 +53,7 @@ foreach ($config_entries as $config_entry) {
 	$filename = Config::get($config_entry);
 	$contents = '';
 
-	if (file_exists($filename) && is_readable($filename)) {
+	if (file_exists($filename) && is_readable($filename) && filesize($filename)>0) {
 		$handle = fopen($filename, 'r');
 
 		$log = fread($handle, filesize($filename));
