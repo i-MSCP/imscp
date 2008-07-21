@@ -1992,19 +1992,19 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 }
 function rm_rf_user_account($id_user) {
 	$sql = Database::getInstance();
+	
 	// get domain user data
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			domain_id,
-			domain_name,
-			domain_gid,
-			domain_created_id
+			`domain_id`,
+			`domain_name`,
+			`domain_gid`,
+			`domain_created_id`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_admin_id = ?
-SQL_QUERY;
-
+			`domain_admin_id` = ?
+	";
 	$rs = exec_query($sql, $query, array($id_user));
 
 	$domain_id = $rs->fields['domain_id'];
@@ -2016,100 +2016,57 @@ SQL_QUERY;
 	// BEGIN - DELETE ALL SYSTEM ENTRIES FOR THIS USER
 	// fist we'll delete all FTP Accounts
 	// delete all FTP Accounts
-	$query = <<<SQL_QUERY
-		  DELETE FROM
-			  ftp_users
-		  WHERE
-			  gid = ?
-SQL_QUERY;
+	$query = "DELETE FROM `ftp_users` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
 
-	while (!$rs->EOF) {
-		$rs->MoveNext();
-	}
 	// delete the group
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				ftp_group
-			WHERE
-				gid = ?
-SQL_QUERY;
+	$query = "DELETE FROM `ftp_group` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
+	
 	// let's delete all Subdomains for this user
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
-
-	$query = <<<SQL_QUERY
-			UPDATE
-				subdomain
-			SET
-				subdomain_status = ?
-			WHERE
-				domain_id = ?
-SQL_QUERY;
+	$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
+	
 	// let's delete all domain aliases for this user
-	$query = <<<SQL_QUERY
-		UPDATE
-			domain_aliasses
-		SET
-			alias_status = ?
-		WHERE
-			domain_id = ?
-SQL_QUERY;
+	$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
 
-	while (!$rs->EOF) {
-		$rs->MoveNext();
-	}
 	// let's delete all mail accounts for this user
-	$query = <<<SQL_QUERY
-			UPDATE
-				mail_users
-			SET
-				status = ?
-			WHERE
-				domain_id = ?
-SQL_QUERY;
-
+	$query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
+	
 	// delete all htaccess entries for this user
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				htaccess
-			WHERE
-				dmn_id = ?
-SQL_QUERY;
+	$query = "DELETE FROM `htaccess` WHERE `dmn_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				htaccess_groups
-			WHERE
-				dmn_id = ?
-SQL_QUERY;
+	$query = "DELETE FROM `htaccess_groups` WHERE `dmn_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				 htaccess_users
-			WHERE
-				dmn_id = ?
-SQL_QUERY;
+	$query = "DELETE FROM `htaccess_users` WHERE `dmn_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 	// end of delete htaccess entires
-	while (!$rs->EOF) {
-		$rs->MoveNext();
-	}
-	// Lets Delete SQL DBs and Users
-	$query = <<<SQL_QUERY
-		SELECT
-			sqld_id
-		FROM
-			sql_database
-		WHERE
-			domain_id = ?
-SQL_QUERY;
+
+	//delete asociated traffic
+	$query = "DELETE FROM `domain_traffic` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
+	
+	//delete error pages
+	$query = "DELETE FROM `error_pages` WHERE `user_id` = ?";
+	$rs = exec_query($sql, $query, array($id_user));
+	
+	//delete quotalimits
+	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
+	$rs = exec_query($sql, $query, array($domain_name));
+	
+	//delete quotatallies
+	$query = "DELETE FROM `quotatallies` WHERE `name` = ?";
+	$rs = exec_query($sql, $query, array($domain_name));
+	
+	// Lets Delete SQL DBs and Users
+	$query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
+	$rs = exec_query($sql, $query, array($domain_id));
+	
 	while (!$rs->EOF) {
 		$db_id = $rs->fields['sqld_id'];
 		delete_sql_database($sql, $domain_id, $db_id);
@@ -2119,41 +2076,25 @@ SQL_QUERY;
 	// END - DELETE ALL SYSTEM ENTRIES FOR THIS USER
 	// BEGIN - DELETE ALL GUI ENTRIES FOR THIS USER
 	// delete the layout settings
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				user_gui_props
-			WHERE
-				user_id = ?
-SQL_QUERY;
-	$rs = exec_query($sql, $query, array($id_user));
-	// update reseller props
+	
 	// delete all tickets for this user
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				tickets
-			WHERE
-			  ticket_from = ?
-			OR
-			  ticket_to = ?
-SQL_QUERY;
+	$query = "DELETE FROM `tickets` WHERE `ticket_from` = ? OR `ticket_to` = ?";
 	$rs = exec_query($sql, $query, array($id_user, $id_user));
+	
 	// let's delete the main domain for this user
-	$query = <<<SQL_QUERY
-			UPDATE
-				domain
-			SET
-				domain_status = ?
-			WHERE
-				domain_admin_id = ?
-SQL_QUERY;
+	$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_admin_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $id_user));
-	// delete the user acount
-	$query = <<<SQL_QUERY
-			DELETE FROM
-				admin
-			WHERE
-				admin_id = ?
-SQL_QUERY;
+	
+	remove_users_common_properties($id_user);
+}
+
+function remove_users_common_properties($id_user) {
+	$sql = Database::getInstance();
+	
+	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
+	$rs = exec_query($sql, $query, array($id_user));
+
+	$query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?";
 	$rs = exec_query($sql, $query, array($id_user));
 }
 

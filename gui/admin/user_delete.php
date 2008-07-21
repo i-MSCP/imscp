@@ -25,144 +25,66 @@ check_login(__FILE__);
 /* do we have a proper delete_id ? */
 
 if (!isset($_GET['delete_id']) or !is_numeric($_GET['delete_id'])) {
-  header( "Location: manage_users.php" );
-  die();
+	header( "Location: manage_users.php" );
+	die();
 }
 
 $delete_id = $_GET['delete_id'];
 
-$query = <<<SQL_QUERY
-    select
-        admin_type
-    from
-        admin
-    where
-        admin_id=?
-SQL_QUERY;
+$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id`=?";
+
 $rs = exec_query($sql, $query, array($delete_id));
 
 $local_admin_type = $rs->fields['admin_type'];
 
-if ($local_admin_type == 'admin') {
-  $query = <<<SQL_QUERY
-        select
-            count(admin_id) as children
-        from
-            admin
-        where
-            created_by = ?
-SQL_QUERY;
-
-} else if ($local_admin_type == 'reseller') {
-  $query = <<<SQL_QUERY
-        select
-            count(admin_id) as children from admin
-        where
-            created_by = ?
-SQL_QUERY;
-
-} else if ($local_admin_type == 'user') {
-  $query = <<<SQL_QUERY
-        select
-            count(domain_id) as children from domain
-        where
-            domain_admin_id = ?
-SQL_QUERY;
-
+if ($local_admin_type == 'admin' || $local_admin_type == 'reseller') {
+	$query = "SELECT count(`admin_id`) as children FROM `admin` WHERE `created_by` = ?";
+	$rs = exec_query($sql, $query, array($delete_id));
+	if ($rs->fields['children'] > 0) {
+		/* this user have domain ! */
+		$hdomain = 1;
+		$_SESSION['hdomain'] = 1;
+		header("Location: manage_users.php");
+		die();
+	}
 }
-$rs = exec_query($sql, $query, array($delete_id));
 
-if ($rs->fields['children'] > 0 && $local_admin_type !== 'user') {
-  /* this user have domain ! */
-  $hdomain = 1;
-  $_SESSION['hdomain'] = 1;
-  header("Location: manage_users.php");
-  die();
-} else {
-  if ($local_admin_type == 'admin') {
-    $query = <<<SQL_QUERY
-            delete
-                from email_tpls
-            where
-                owner_id = ? and
-                name = 'add-user-auto-msg'
-SQL_QUERY;
-    $rs = exec_query($sql, $query, array($delete_id));
-
-  } else if ($local_admin_type == 'reseller') {
-    $query = <<<SQL_QUERY
-            delete
-                from email_tpls
-            where
-                owner_id = ? and
-                name = 'add-user-auto-msg'
-SQL_QUERY;
-    $rs = exec_query($sql, $query, array($delete_id));
-
-    $query = <<<SQL_QUERY
-            delete
-                from reseller_props
-            where
-                reseller_id = ?
-SQL_QUERY;
+if ($local_admin_type == 'admin') {
+	$query = "DELETE FROM `email_tpls` WHERE `owner_id` = ? AND `name` = 'add-user-auto-msg'";
+	$rs = exec_query($sql, $query, array($delete_id));
+	
+	remove_users_common_properties($delete_id);
+		
+} else if ($local_admin_type == 'reseller') {
+	$query = "DELETE FROM `email_tpls` WHERE `owner_id` = ? AND `name` = 'add-user-auto-msg'";
+	$rs = exec_query($sql, $query, array($delete_id));
+	
+	$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
     $rs = exec_query($sql, $query, array($delete_id));
 
 	// delete orders
-	 $query = <<<SQL_QUERY
-    	    delete from
-        	    orders
-        	where
-            	user_id  = ?
-
-SQL_QUERY;
+	$query = "DELETE FROM `orders` WHERE `user_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
 
 	// delete orders settings
-	 $query = <<<SQL_QUERY
-    	    delete from
-        	    orders_settings
-        	where
-            	user_id  = ?
-
-SQL_QUERY;
+	$query = "DELETE FROM `orders_settings` WHERE `user_id`  = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
 
+	$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
+	$rs = exec_query($sql, $query, array($delete_id));
+	
+	remove_users_common_properties($delete_id);
 
-    $query = <<<SQL_QUERY
-            delete
-                from hosting_plans
-            where
-                reseller_id = ?
-SQL_QUERY;
-    $rs = exec_query($sql, $query, array($delete_id));
-
-  } else if ($local_admin_type == 'user') {
-    rm_rf_user_account($delete_id);
-    check_for_lock_file();
-    send_request();
-  }
-
-  $query = <<<SQL_QUERY
-        delete
-            from admin
-        where
-            admin_id = ?
-SQL_QUERY;
-  $rs = exec_query($sql, $query, array($delete_id));
-
-  $query = <<<SQL_QUERY
-            delete
-                from user_gui_props
-            where
-                user_id = ?
-SQL_QUERY;
-  $rs = exec_query($sql, $query, array($delete_id));
-  $user_logged= $_SESSION['user_logged'];
-  $local_admin_name = $_GET['delete_username'];
-  write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
-  $_SESSION['user_deleted'] = 1;
-  header("Location: manage_users.php");
-  die();
+} else if ($local_admin_type == 'user') {
+	rm_rf_user_account($delete_id);
+	check_for_lock_file();
+	send_request();
 }
 
+	$user_logged= $_SESSION['user_logged'];
+	$local_admin_name = $_GET['delete_username'];
+	write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
+	$_SESSION['user_deleted'] = 1;
+	header("Location: manage_users.php");
+	die();
 ?>

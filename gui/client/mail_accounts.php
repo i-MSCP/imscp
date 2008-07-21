@@ -35,12 +35,12 @@ $tpl->define_dynamic('no_mails', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Client/Manage Users'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Users'),
+		'THEME_COLOR_PATH' 						=> "../themes/$theme_color",
+		'THEME_CHARSET'							=> tr('encoding'),
+		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
+	)
+);
 
 // page functions.
 
@@ -57,20 +57,20 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
 		if ($mail_status === Config::get('ITEM_OK_STATUS')) {
 			if ($mail_auto_respond == false) {
 				$tpl->assign(
-					array('AUTO_RESPOND_DISABLE' => tr('Enable'),
-						'AUTO_RESPOND_DISABLE_SCRIPT' => "mail_autoresponder_enable.php?id=$mail_id",
-						'AUTO_RESPOND_EDIT' => '',
-						'AUTO_RESPOND_EDIT_SCRIPT' => '',
-						'AUTO_RESPOND_VIS' => 'inline'
+					array('AUTO_RESPOND_DISABLE'		=> tr('Enable'),
+						'AUTO_RESPOND_DISABLE_SCRIPT'	=> "mail_autoresponder_enable.php?id=$mail_id",
+						'AUTO_RESPOND_EDIT'				=> '',
+						'AUTO_RESPOND_EDIT_SCRIPT'		=> '',
+						'AUTO_RESPOND_VIS'				=> 'inline'
 						));
 			} else {
 				$tpl->assign(
-					array('AUTO_RESPOND_DISABLE' => tr('Disable'),
-						'AUTO_RESPOND_DISABLE_SCRIPT' => "mail_autoresponder_disable.php?id=$mail_id",
-						'AUTO_RESPOND_EDIT' => tr('Edit'),
-						'AUTO_RESPOND_EDIT_SCRIPT' => "mail_autoresponder_edit.php?id=$mail_id",
+					array('AUTO_RESPOND_DISABLE'		=> tr('Disable'),
+						'AUTO_RESPOND_DISABLE_SCRIPT'	=> "mail_autoresponder_disable.php?id=$mail_id",
+						'AUTO_RESPOND_EDIT'				=> tr('Edit'),
+						'AUTO_RESPOND_EDIT_SCRIPT'		=> "mail_autoresponder_edit.php?id=$mail_id",
 						'AUTO_RESPOND_VIS' => 'inline'
-						));
+					));
 			}
 		} else {
 			$tpl->assign(
@@ -79,35 +79,35 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
 					'AUTO_RESPOND_EDIT' => '',
 					'AUTO_RESPOND_EDIT_SCRIPT' => '',
 					'AUTO_RESPOND_VIS' => 'inline'
-					));
+				));
 		}
 	} else {
 		$tpl->assign(
-			array('AUTO_RESPOND_DISABLE' => tr('Please wait for update'),
-				'AUTO_RESPOND_DISABLE_SCRIPT' => '',
-				'AUTO_RESPOND_EDIT' => '',
-				'AUTO_RESPOND_EDIT_SCRIPT' => '',
-				'AUTO_RESPOND_VIS' => 'none'
-				));
+			array('AUTO_RESPOND_DISABLE'		=> tr('Please wait for update'),
+				'AUTO_RESPOND_DISABLE_SCRIPT'	=> '',
+				'AUTO_RESPOND_EDIT'				=> '',
+				'AUTO_RESPOND_EDIT_SCRIPT'		=> '',
+				'AUTO_RESPOND_VIS'				=> 'none'
+			));
 	}
 }
 
 function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$dmn_query = <<<SQL_QUERY
-        SELECT
-            mail_id, mail_acc, mail_type, status, mail_auto_respond
-        FROM
-            mail_users
-        WHERE
-            domain_id = ?
-          AND
-            sub_id = 0
-          AND
-            (mail_type LIKE '%normal_mail%' OR mail_type LIKE '%normal_forward%')
-        ORDER BY
-            mail_acc ASC,
-            mail_type DESC
-SQL_QUERY;
+	$dmn_query ="
+		SELECT
+            `mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`
+		FROM
+            `mail_users`
+		WHERE
+            `domain_id` = ?
+		AND
+            `sub_id` = 0
+		AND
+            (`mail_type` LIKE '%normal_mail%' OR `mail_type` LIKE '%normal_forward%')
+		ORDER BY
+            `mail_acc` ASC,
+            `mail_type` DESC
+	";
 
 	$rs = exec_query($sql, $dmn_query, array($dmn_id));
 	if ($rs->RecordCount() == 0) {
@@ -134,15 +134,15 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'MAIL_ACC' => $mail_acc . "@" . $show_dmn_name,
-						'MAIL_TYPE' => $mail_type,
-						'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
-						'MAIL_ACTION' => $mail_action,
-						'MAIL_ACTION_SCRIPT' => $mail_action_script,
-						'MAIL_EDIT_SCRIPT' => $mail_edit_script
-					)
-				);
+				array(
+					'MAIL_ACC'			=> $mail_acc . "@" . $show_dmn_name,
+					'MAIL_TYPE'			=> $mail_type,
+					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
+					'MAIL_ACTION'		=> $mail_action,
+					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
+				)
+			);
 
 			gen_user_mail_auto_respond($tpl,
 				$rs->fields['mail_id'],
@@ -161,30 +161,30 @@ SQL_QUERY;
 }
 
 function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$sub_query = <<<SQL_QUERY
-        SELECT
-            t1.subdomain_id AS sub_id,
-            t1.subdomain_name AS sub_name,
-            t2.mail_id,
-            t2.mail_acc,
-            t2.mail_type,
-            t2.status,
-            t2.mail_auto_respond
-        FROM
-            subdomain AS t1,
-            mail_users AS t2
-        WHERE
-            t1.domain_id = ?
-          AND
-            t2.domain_id = ?
-          AND
-            (t2.mail_type LIKE '%subdom_mail%' OR t2.mail_type LIKE '%subdom_forward%')
-          AND
-            t1.subdomain_id = t2.sub_id
-        ORDER BY
-            t2.mail_acc ASC,
-			t2.mail_type DESC
-SQL_QUERY;
+	$sub_query = "
+		SELECT
+			t1.`subdomain_id` AS sub_id,
+			t1.`subdomain_name` AS sub_name,
+			t2.`mail_id`,
+			t2.`mail_acc`,
+			t2.`mail_type`,
+			t2.`status`,
+			t2.`mail_auto_respond`
+		FROM
+			`subdomain` AS t1,
+			`mail_users` AS t2
+		WHERE
+			t1.`domain_id` = ?
+		AND
+			t2.`domain_id` = ?
+		AND
+			(t2.`mail_type` LIKE '%subdom_mail%' OR t2.`mail_type` LIKE '%subdom_forward%')
+		AND
+			t1.`subdomain_id` = t2.`sub_id`
+		ORDER BY
+			t2.`mail_acc` ASC,
+			t2.`mail_type` DESC
+	";
 
 	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
 
@@ -215,14 +215,14 @@ SQL_QUERY;
 
 
 			$tpl->assign(
-				array('MAIL_ACC' => $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
-					'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-					'MAIL_STATUS' => $mail_type,
-					'MAIL_ACTION' => $mail_action,
-					'MAIL_ACTION_SCRIPT' => $mail_action_script,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
-					)
-				);
+				array('MAIL_ACC'		=> $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
+					'MAIL_TYPE'			=> $mail_type,
+					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
+					'MAIL_ACTION'		=> $mail_action,
+					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
+				)
+			);
 
 			gen_user_mail_auto_respond($tpl,
 				$rs->fields['mail_id'],
@@ -242,28 +242,28 @@ SQL_QUERY;
 
 function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	$als_query = <<<SQL_QUERY
-        SELECT
-            t1.alias_id AS als_id,
-            t1.alias_name AS als_name,
-            t2.mail_id,
-            t2.mail_acc,
-            t2.mail_type,
-            t2.status,
-            t2.mail_auto_respond
-        FROM
-            domain_aliasses AS t1,
-            mail_users AS t2
-        WHERE
-            t1.domain_id = ?
-          AND
-            t2.domain_id = ?
-          AND
-            t1.alias_id = t2.sub_id
-          AND
-            (t2.mail_type LIKE '%alias_mail%' OR t2.mail_type LIKE '%alias_forward%')
-        ORDER BY
-        	t2.mail_acc ASC,
-            t2.mail_type DESC
+		SELECT
+			t1.`alias_id` AS als_id,
+			t1.`alias_name` AS als_name,
+			t2.`mail_id`,
+			t2.`mail_acc`,
+			t2.`mail_type`,
+			t2.`status`,
+			t2.`mail_auto_respond`
+		FROM
+			`domain_aliasses` AS t1,
+			`mail_users` AS t2
+		WHERE
+			t1.`domain_id` = ?
+		AND
+			t2.`domain_id` = ?
+		AND
+			t1.`alias_id` = t2.`sub_id`
+		AND
+			(t2.`mail_type` LIKE '%alias_mail%' OR t2.`mail_type` LIKE '%alias_forward%')
+		ORDER BY
+			t2.`mail_acc` ASC,
+			t2.`mail_type` DESC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $als_query, array($dmn_id, $dmn_id));
@@ -294,12 +294,12 @@ SQL_QUERY;
 
 			$tpl->assign(
 				array(
-					'MAIL_ACC' => $mail_acc . "@" . $show_als_name,
-					'MAIL_TYPE' => $mail_type,
-					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
-					'MAIL_ACTION' => $mail_action,
-					'MAIL_ACTION_SCRIPT' => $mail_action_script,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
+					'MAIL_ACC'			=> $mail_acc . "@" . $show_als_name,
+					'MAIL_TYPE'			=> $mail_type,
+					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
+					'MAIL_ACTION'		=> $mail_action,
+					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
 					)
 				);
 
@@ -361,8 +361,8 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 			array('MAIL_MSG' => tr('Mail accounts list is empty!'),
 				'MAIL_ITEM' => '',
 				'MAILS_TOTAL' => ''
-				)
-			);
+			)
+		);
 
 		$tpl->parse('MAIL_MESSAGE', 'mail_message');
 	}
