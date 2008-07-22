@@ -1508,12 +1508,17 @@ sub sub_add_httpd_file_data {
 
 		$rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
 		return $rs if ($rs != 0);
-		$rs = setfmode("$sub_dir/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-		$rs = setfmode("$sub_dir/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-		$rs = setfmode("$sub_dir/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
+		
+		opendir(DIR, "$sub_dir/htdocs/images/");
+		my @files = readdir(DIR);
+		closedir(DIR);
+			
+		foreach (@files) {
+			# ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+			$rs = setfmode("$sub_dir/htdocs/images/$_", $sys_user, $sys_group, 0644);
+			return $rs if ($rs != 0);
+		}
 	}
 
     push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');

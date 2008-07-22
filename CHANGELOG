@@ -1,14 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-22 Daniel Andreca
+	- ENGINE:
+		* Fixed #1438: htdocs/images bad owner
+
 2008-07-21 Daniel Andreca
 	- GUI:
 		* Corrected link for update hosting plan in ispcp/gui/themes/omega_original/client/hosting_plan_update.tpl
 		* Corrected output for subdomain mail in ispcp/gui/client/mail_accounts.php
 		* Remove residual data from table on user remove.
-
-2008-07-21 Daniel Andreca
-	- GUI:
 		* Fixed #1434: rootkit.log.php
 	- ENGINE:
 		* Subdomains and aliases emails were not removed when reseller/admin remove parent domain

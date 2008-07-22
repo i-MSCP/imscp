@@ -1490,23 +1490,16 @@ sub als_add_httpd_file_data {
 		$rs = setfmode("$www_dir/$als_name/htdocs/images/", $sys_user, $sys_group, 0755);
 		return $rs if ($rs != 0);
 
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
-
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
-		return $rs if ($rs != 0);
+		opendir(DIR, "$www_dir/$als_name/htdocs/images/");
+		my @files = readdir(DIR);
+		closedir(DIR);
+			
+		foreach (@files) {
+			# ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+			$rs = setfmode("$www_dir/$als_name/htdocs/images/$_", $sys_user, $sys_group, 0644);
+			return $rs if ($rs != 0);
+		}
 	}
 	push_el(\@main::el, 'als_add_httpd_file_data()', 'Ending...');
 	return 0;
