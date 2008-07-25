@@ -16,9 +16,9 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version	 : 1.0.0 RC6
-INSTALL Script		: 3.5
-Maintainer		: 
+ispCP ω Version	: 1.0.0 RC6
+INSTALL Script	: 3.5
+Maintainer		:
 Homepage		: http://www.isp-contol.net
 Distros			: FreeBSD
 
@@ -36,6 +36,9 @@ All FreeBSD required packages are listed in docs/FreeBSD/freebsd-packages
 
 The configuration is customised for use with apache 2.2.x version using suexec
 module enable.
+
+WARNING: DEFAULT setting is using mod_php not fastcgi !!
+
 ================================================================================
 3) Introduction
 ---------------

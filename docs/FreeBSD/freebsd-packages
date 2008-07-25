@@ -1,4 +1,4 @@
-=-=-=-= BASIC REQUIRED PACKAGE/PORTS =-=-=-= last update 20080403
+=-=-=-= BASIC REQUIRED PACKAGE/PORTS =-=-=-= last update 20080725
 
 Apache 2.2.x		Web System
 	x threads	option
@@ -41,7 +41,7 @@ Perl			=-=-=-= PERL MODULE =-=-=-=
 	+ Digest-SHA1
 	+ HTML-Parser
 	+ HTML-Tagset
-	+ HTTP-GHTTP	
+	+ HTTP-GHTTP
 	+ IO-stringy
 	+ MIME-tools
 	+ Mail-Tools
@@ -77,4 +77,5 @@ PHP-Extensions
 	x xmlrpc
 	x xslt
 	x session
+	x php5-pdo_mysql	Since RC6 ispcp using pdo
 awstats

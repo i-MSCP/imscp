@@ -1,33 +1,37 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-07-25 Benedikt Heintel
+	- DOCS:
+		* Fixed #1435: Update FreeBSD Doc
+	- TOOLS:
+		* Fixed #1426: webmail: bookmarks doesn't work
+
 2008-07-22 Daniel Andreca
 	- ENGINE:
 		* Fixed #1438: htdocs/images bad owner
 
 2008-07-21 Daniel Andreca
+	- ENGINE:
+		* Subdomains and aliases emails were not removed when reseller/admin remove parent domain
 	- GUI:
 		* Corrected link for update hosting plan in ispcp/gui/themes/omega_original/client/hosting_plan_update.tpl
 		* Corrected output for subdomain mail in ispcp/gui/client/mail_accounts.php
 		* Remove residual data from table on user remove.
 		* Fixed #1434: rootkit.log.php
-	- ENGINE:
-		* Subdomains and aliases emails were not removed when reseller/admin remove parent domain
 
 2008-07-20 Daniel Andreca
+	- ENGINE:
+		* Minor fix for engine/ispcp-als-mngr
 	- GUI:
 		* Add missing file
 		* Cleaning gui/admin/domain_status_change.php
 		* Fixed #1432: rv1279 /admin/domain_status_change.php r1281 reseller/alias_add.php white page
 		* Add daemon request count in htaccess htaccess_user and htaccess_groups tables: gui/admin/ispcp_debugger.php
-	- ENGINE:
-		* Minor fix for engine/ispcp-als-mngr
-
-2008-07-20 Markus Milkereit
-	- ENGINE:
-		* Fixed #755: Protected areas are not working
 
 2008-07-20 Benedikt Heintel
+	- ENGINE:
+		* Fixed #755: Protected areas are not working
 	- GUI:
 		* Fixed #1432
 

@@ -3,15 +3,15 @@
 # Copyright (C) 2008 ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
-#
+# Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-15 15:08+0200\n"
-"PO-Revision-Date: 2007-07-06 16:03-0500\n"
-"Last-Translator: VOLKAN KIRIK <volkirik@yahoo.com.tr>\n"
+"PO-Revision-Date: 2007-07-22 13:53-0500\n"
+"Last-Translator: Fikret TOZAK <ftozak@akyobi.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,7 +125,7 @@ msgid "Core data"
 msgstr ""
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Şifreyi tekrar girin"
 
 msgid "Email"
 msgstr "Eposta"
@@ -263,37 +263,37 @@ msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
 msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
 
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 msgid "CGI / Perl"
-msgstr ""
+msgstr "CGI / Perl"
 
 msgid "JSP"
-msgstr ""
+msgstr "JSP"
 
 msgid "SSI"
-msgstr ""
+msgstr "SSI"
 
 msgid "Frontpage extensions"
-msgstr ""
+msgstr "Frontpage eklentileri"
 
 msgid "Backup and restore"
-msgstr "Yedekleme"
+msgstr "Yedekleme ve Geri Yükleme"
 
 msgid "Custom error pages"
-msgstr ""
+msgstr "Değiştirilebilir hata sayfaları"
 
 msgid "Protected areas"
-msgstr ""
+msgstr "Korunan bölgeler"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Webposta"
 
 msgid "Directory listing"
 msgstr "Klasör listeleme"
 
 msgid "Apache logfiles"
-msgstr ""
+msgstr "Apache kayıt dosyaları"
 
 msgid "AwStats"
 msgstr ""
@@ -308,7 +308,7 @@ msgid "no"
 msgstr "hayır"
 
 msgid "Reseller IPs"
-msgstr ""
+msgstr "Bayi IP numaraları"
 
 msgid "Customer ID"
 msgstr "Müşteri ID"
@@ -317,7 +317,7 @@ msgid "ispCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
-msgstr ""
+msgstr "Kayıtlar boş!"
 
 #, php-format
 msgid "%s deleted the full admin log!"
@@ -344,13 +344,13 @@ msgid "%s deleted the admin log older than one year!"
 msgstr ""
 
 msgid "Invalid time period!"
-msgstr ""
+msgstr "Yanlış zaman peryodu"
 
 msgid "Admin Log"
 msgstr "Yönetici Kaydı"
 
 msgid "Clear log"
-msgstr ""
+msgstr "Kayıtları temizle"
 
 msgid "Date"
 msgstr "Tarih"
@@ -359,7 +359,7 @@ msgid "Message"
 msgstr "Mesaj"
 
 msgid "Delete from log:"
-msgstr ""
+msgstr "Kayıtlardan Sil:"
 
 msgid "everything"
 msgstr "hepsi"
@@ -389,7 +389,7 @@ msgid "Hosting plan properties"
 msgstr "Hosting plan özellikleri"
 
 msgid "Template name"
-msgstr ""
+msgstr "Şablon adı"
 
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -401,7 +401,7 @@ msgid "Billing Settings"
 msgstr "Faturalama ayarları"
 
 msgid "Price"
-msgstr ""
+msgstr "Ücret"
 
 msgid "Setup fee"
 msgstr ""
@@ -431,7 +431,7 @@ msgid "Incorrect template description length!"
 msgstr ""
 
 msgid "Price must be a number!"
-msgstr ""
+msgstr "Ücret numaralardan oluşmalıdır"
 
 msgid "Setup fee must be a number!"
 msgstr ""
@@ -446,10 +446,10 @@ msgid "Please fill up all data fields!"
 msgstr ""
 
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Şifreler aynı değil"
 
 msgid "The current password is wrong!"
-msgstr ""
+msgstr "Mevcut şifre yanlış!"
 
 msgid "User password updated successfully!"
 msgstr ""
@@ -479,7 +479,7 @@ msgid "Personal data"
 msgstr "Kişisel bilgi"
 
 msgid "Update data"
-msgstr ""
+msgstr "Veri güncelle"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -518,22 +518,22 @@ msgid "Message subject"
 msgstr "Mesaj konusu"
 
 msgid "Senders email"
-msgstr ""
+msgstr "Gönderici eposta"
 
 msgid "Senders name"
-msgstr ""
+msgstr "Gönderici adı"
 
 msgid "Send message"
-msgstr ""
+msgstr "Mesajı gönder"
 
 msgid "You have no custom menus."
 msgstr "Hiç özel menünüz yok."
 
 msgid "User"
-msgstr ""
+msgstr "Kullanıcı"
 
 msgid "All"
-msgstr ""
+msgstr "Tüm"
 
 msgid "Are you sure you want to delete"
 msgstr "Silmek istediğinize emin misiniz"
@@ -542,16 +542,16 @@ msgid "Missing or incorrect data input!"
 msgstr ""
 
 msgid "Custom menu data updated successful!"
-msgstr ""
+msgstr "Özel menü verileri güncellendi!"
 
 msgid "Custom menu deleted successful!"
-msgstr ""
+msgstr "Özel menü silindi!"
 
 msgid "ispCP - Admin - Manage custom menus"
-msgstr ""
+msgstr "ispCp - Yönetici - Özel menü yönetimi"
 
 msgid "Manage custom menus"
-msgstr ""
+msgstr "Özel menü yönetimi"
 
 msgid "Add new button"
 msgstr "Yeni düğme ekle"
@@ -569,10 +569,10 @@ msgid "Show in"
 msgstr ""
 
 msgid "Administrator level"
-msgstr ""
+msgstr "Yönetici seviyesi"
 
 msgid "Reseller level"
-msgstr ""
+msgstr "Bayi seviyesi"
 
 msgid "Enduser level"
 msgstr "Son kullanıcı seviyesi"
@@ -610,10 +610,10 @@ msgid "Available database updates"
 msgstr "Hazır ispCP güncellemeleri"
 
 msgid "Update"
-msgstr ""
+msgstr "Güncelleme"
 
 msgid "Update details"
-msgstr ""
+msgstr "Güncelleme detayları"
 
 #, fuzzy
 msgid "New Database update is now available"
@@ -649,19 +649,19 @@ msgid "All closed support tickets deleted successfully!"
 msgstr ""
 
 msgid "ispCP - Domain/Details"
-msgstr ""
+msgstr "ispCP - Alan/Detaylar"
 
 msgid "Domain details"
-msgstr ""
+msgstr "Alan detayları"
 
 msgid "Domain name"
-msgstr ""
+msgstr "Alan adı"
 
 msgid "Domain IP"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 msgid "PHP support"
 msgstr "PHP desteği"
@@ -673,7 +673,7 @@ msgid "MySQL support"
 msgstr "MySQL desteği"
 
 msgid "Traffic in MB"
-msgstr ""
+msgstr "Trafik (MB)"
 
 msgid "Disk in MB"
 msgstr "MB cinsinden disk"
@@ -685,7 +685,7 @@ msgid "Used"
 msgstr ""
 
 msgid "Limit"
-msgstr ""
+msgstr "Limit"
 
 msgid "Mail accounts"
 msgstr "Mail hesapları"
@@ -694,19 +694,19 @@ msgid "FTP accounts"
 msgstr "FTP hesapları"
 
 msgid "SQL databases"
-msgstr ""
+msgstr "SQL veritabanları"
 
 msgid "SQL users"
-msgstr ""
+msgstr "SQL kullanıcıları"
 
 msgid "Subdomains"
-msgstr ""
+msgstr "Alt alanlar"
 
 msgid "Domain aliases"
 msgstr ""
 
 msgid "Submit changes"
-msgstr ""
+msgstr "Değişiklikleri onayla"
 
 msgid "Enabled"
 msgstr "Açık"
@@ -727,7 +727,7 @@ msgid "Year"
 msgstr "Yıl"
 
 msgid "Show"
-msgstr ""
+msgstr "Göster"
 
 msgid "Web traffic"
 msgstr "Web trafiği"
@@ -736,10 +736,10 @@ msgid "FTP traffic"
 msgstr "FTP trafiği"
 
 msgid "SMTP traffic"
-msgstr ""
+msgstr "SMTP trafik"
 
 msgid "POP3/IMAP traffic"
-msgstr ""
+msgstr "POP3/IMAP trafik"
 
 msgid "All traffic"
 msgstr "Tüm trafik"
@@ -760,7 +760,7 @@ msgid "Edit admin"
 msgstr "Yöneticiyi düzenle"
 
 msgid "Send new login data"
-msgstr ""
+msgstr "Yeni giriş bilgilerini gönder"
 
 msgid "Generate password"
 msgstr "Şifre oluştur"
@@ -773,7 +773,7 @@ msgid "Edit Domain"
 msgstr "Alan adı düzenle"
 
 msgid "Domain properties"
-msgstr ""
+msgstr "Alan özellikleri"
 
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -826,34 +826,34 @@ msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL kullanıcıları limiti <i>pasifleştirilmiş</i>!"
 
 msgid "Subdomain"
-msgstr ""
+msgstr "Alt alan"
 
 msgid "Alias"
 msgstr "Takma ad"
 
 msgid "Mail"
-msgstr ""
+msgstr "Eposta"
 
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 msgid "SQL Database"
-msgstr ""
+msgstr "SQL veritabanı"
 
 msgid "SQL User"
-msgstr ""
+msgstr "SQl Kullanıcısı"
 
 msgid "Traffic"
-msgstr ""
+msgstr "Trafik"
 
 msgid "Disk"
-msgstr ""
+msgstr "Disk"
 
 msgid "Domain properties could not be updated!"
-msgstr ""
+msgstr "Alan özellikleri güncellenemedi!"
 
 msgid "Domain properties updated successfully!"
-msgstr ""
+msgstr "Alan özellikleri güncellendi!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled! "
@@ -908,10 +908,10 @@ msgid ""
 msgstr ""
 
 msgid "SQL Databases"
-msgstr ""
+msgstr "SQL veritabanları"
 
 msgid "SQL Users"
-msgstr ""
+msgstr "SQL kullanıcıları"
 
 msgid "Web Traffic"
 msgstr "Web Trafiği"
@@ -958,7 +958,7 @@ msgid "E-mail"
 msgstr "E-posta"
 
 msgid "unlimited"
-msgstr ""
+msgstr "limitsiz"
 
 #, fuzzy
 msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
@@ -968,7 +968,7 @@ msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Update plan"
-msgstr ""
+msgstr "Planı güncelle"
 
 msgid "Edit hosting plan"
 msgstr "Hosting planı düzenle"
@@ -1004,7 +1004,7 @@ msgid "User login (system) name"
 msgstr ""
 
 msgid "User password"
-msgstr ""
+msgstr "Kullanıcı şifresi"
 
 msgid "User real (first and last) name"
 msgstr ""
@@ -1013,7 +1013,7 @@ msgid "Message template"
 msgstr ""
 
 msgid "Subject"
-msgstr ""
+msgstr "Konu"
 
 msgid "Apply changes"
 msgstr "Değişiklikleri kaydet"
@@ -1034,7 +1034,7 @@ msgid "Manage hosting plans"
 msgstr ""
 
 msgid "Purchasing"
-msgstr ""
+msgstr "Satın alma"
 
 msgid "Add new user hosting plan"
 msgstr "Yeni kullanıcı hosting planı ekle"
@@ -1062,7 +1062,7 @@ msgid "Name"
 msgstr "Ad"
 
 msgid "Show hosting plan"
-msgstr ""
+msgstr "Hosting planı göster"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -1100,10 +1100,10 @@ msgid "ispCP - Admin/IP manage"
 msgstr ""
 
 msgid "Remove IP"
-msgstr ""
+msgstr "IP kaldır"
 
 msgid "New IP was added!"
-msgstr ""
+msgstr "Yeni IP eklendi!"
 
 msgid "Wrong IP number!"
 msgstr "Yanlış IP numarası!"
@@ -1115,16 +1115,16 @@ msgid "Please specify alias!"
 msgstr ""
 
 msgid "This IP already exist!"
-msgstr ""
+msgstr "Bu IP zaten mevcut"
 
 msgid "Manage IPs"
-msgstr ""
+msgstr "IP yönetimi"
 
 msgid "Available IPs"
 msgstr "Kullanılabilir IPler"
 
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 msgid "Domain"
 msgstr "Alan adı"
@@ -1151,7 +1151,7 @@ msgid "ispCP debugger"
 msgstr ""
 
 msgid "Domain errors"
-msgstr ""
+msgstr "Alan hataları"
 
 msgid "Domain alias errors"
 msgstr ""
@@ -1184,7 +1184,7 @@ msgid "Done"
 msgstr "Bitti"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "Bilinmeyen hata"
 
 msgid "Get it at"
 msgstr ""
@@ -1211,13 +1211,13 @@ msgid "Choose default language"
 msgstr "Dil seç"
 
 msgid "Upload file error!"
-msgstr ""
+msgstr "Dosya gönderim hatası"
 
 msgid "You can only upload images!"
-msgstr ""
+msgstr "Sadece resim dosyası gönderebilirsiniz!"
 
 msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr ""
+msgstr "Resim dosyası 195 x 195 pixel ebatından küçük olmalıdır"
 
 msgid "Your logo was successful uploaded!"
 msgstr "Ambleminiz yüklendi!"
@@ -1235,16 +1235,16 @@ msgid "default"
 msgstr "Varsayılan"
 
 msgid "Upload logo"
-msgstr ""
+msgstr "Logo yükle"
 
 msgid "Logo file"
-msgstr ""
+msgstr "Logo dosyası"
 
 msgid "Upload"
-msgstr ""
+msgstr "Gönder"
 
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 msgid "Choose default layout"
 msgstr "Taslak seç"
@@ -1256,25 +1256,25 @@ msgid "ispCP - Admin/Lostpw email setup"
 msgstr ""
 
 msgid "Lost password e-mail"
-msgstr ""
+msgstr "Şifre unutma iletisi"
 
 msgid "Activation E-Mail"
-msgstr ""
+msgstr "Aktivasyon iletisi"
 
 msgid "Password E-Mail"
-msgstr ""
+msgstr "Şifre iletisi"
 
 msgid "User (first and last) name"
-msgstr ""
+msgstr "Kullanıcı adı soyadı"
 
 msgid "Lost password link"
-msgstr ""
+msgstr "Şifre unutma bağlantısı"
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr ""
 
 msgid "Settings saved !"
-msgstr ""
+msgstr "ayarlar kaydedildi!"
 
 msgid "Maintenance mode"
 msgstr ""
@@ -1283,7 +1283,7 @@ msgid "Under this mode only administrators can login"
 msgstr ""
 
 msgid "Reseller list is empty!"
-msgstr ""
+msgstr "Bayi listesi boş!"
 
 msgid "ispCP - Admin/Manage users/Reseller assignment"
 msgstr ""
@@ -1292,19 +1292,19 @@ msgid "Reseller assignment"
 msgstr ""
 
 msgid "Reseller users"
-msgstr ""
+msgstr "Bayi kullanıcıları"
 
 msgid "Mark"
-msgstr ""
+msgstr "İşaretle"
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Bayi adı"
 
 msgid "Owner"
 msgstr "Sahip"
 
 msgid "To Admin"
-msgstr ""
+msgstr "Yöneticiye"
 
 msgid "Move"
 msgstr "Taşı"
@@ -1313,13 +1313,13 @@ msgid "Reseller or user list is empty!"
 msgstr ""
 
 msgid "User list is empty!"
-msgstr ""
+msgstr "Kullanıcı listesi boş!"
 
 msgid "User was moved"
 msgstr "Kullanıcı taşındı"
 
 msgid "Please select some user(s)!"
-msgstr ""
+msgstr "Lütfen kullanıcı(lar) seçiniz!"
 
 msgid "Source and destination reseller are the same!"
 msgstr ""
@@ -1359,22 +1359,22 @@ msgid "Users"
 msgstr "Kullanıcılar"
 
 msgid "User name"
-msgstr ""
+msgstr "Kullanıcı adı"
 
 msgid "From reseller"
 msgstr "Bayiden"
 
 msgid "To reseller"
-msgstr ""
+msgstr "Bayiye"
 
 msgid "ispCP - Admin/Manage Sessions"
 msgstr ""
 
 msgid "Manage user sessions"
-msgstr ""
+msgstr "Kullanıcı oturumlarını yönet"
 
 msgid "User type"
-msgstr ""
+msgstr "Kulanıcı tipi"
 
 msgid "Last access"
 msgstr "Son erişim"
@@ -1389,16 +1389,16 @@ msgid "ispCP - Admin/Manage Users"
 msgstr ""
 
 msgid "User added"
-msgstr ""
+msgstr "Kullanıcı eklendi"
 
 msgid "Reseller added"
-msgstr ""
+msgstr "Bayi eklendi"
 
 msgid "User updated"
-msgstr ""
+msgstr "Kullanıcı güncellendi"
 
 msgid "User deleted"
-msgstr ""
+msgstr "Kullanıcı silindi"
 
 msgid "Email Updated"
 msgstr "Email güncellendi"
@@ -1422,7 +1422,7 @@ msgid "You can upload only text files!"
 msgstr "Sadece metin dosya gönderebilirsin!"
 
 msgid "Could not read language file!"
-msgstr ""
+msgstr "Dil dosyası okunamıyor!"
 
 msgid "Uploaded file is not a valid language file!"
 msgstr ""
@@ -1431,7 +1431,7 @@ msgid "Uploaded file does not contain the language information!"
 msgstr ""
 
 msgid "New language installed!"
-msgstr ""
+msgstr "Yeni dil yüklendi!"
 
 #, fuzzy
 msgid "Language was updated!"
@@ -1466,7 +1466,7 @@ msgid "Install"
 msgstr ""
 
 msgid "Export"
-msgstr ""
+msgstr "Dışarı çıkart"
 
 msgid "ispCP - Reseller statistics"
 msgstr ""
@@ -1494,13 +1494,13 @@ msgid "Reseller statistics table"
 msgstr ""
 
 msgid "SQL database"
-msgstr ""
+msgstr "SQL veritabanı"
 
 msgid "SQL user"
-msgstr ""
+msgstr "SQL kullanıcısı"
 
 msgid "ispCP - Admin/Reseller User Statistics"
-msgstr ""
+msgstr "ispCP - Yönetici/Bayi Kullanıcı istatistikleri"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
@@ -1529,7 +1529,7 @@ msgid "This reseller has no domains."
 msgstr ""
 
 msgid "Traffic<br>usage"
-msgstr ""
+msgstr "Trafik<br>kullanımı"
 
 msgid "Disk<br>usage"
 msgstr "Disk<br>kullanımı"
@@ -1541,16 +1541,16 @@ msgid "FTP<br>traffic"
 msgstr "FTP<br>trafiği"
 
 msgid "SMTP<br>traffic"
-msgstr ""
+msgstr "SMTP<br>trafik"
 
 msgid "POP3/IMAP<br>traffic"
-msgstr ""
+msgstr "POP3/IMAP<br>trafik"
 
 msgid "SQL<br>database"
-msgstr ""
+msgstr "SQL<br>veritabanı"
 
 msgid "SQL<br>user"
-msgstr ""
+msgstr "SQl<br>kullanıcısı"
 
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
@@ -1587,10 +1587,10 @@ msgid "Web out"
 msgstr "Web giden"
 
 msgid "Mail in"
-msgstr ""
+msgstr "Gelen posta"
 
 msgid "Mail out"
-msgstr ""
+msgstr "Giden posta"
 
 msgid "Pop/IMAP in"
 msgstr ""
@@ -1599,16 +1599,16 @@ msgid "Pop/IMAP out"
 msgstr ""
 
 msgid "Other in"
-msgstr ""
+msgstr "Diğer gelenler"
 
 msgid "Other out"
-msgstr ""
+msgstr "Diğer gidenler"
 
 msgid "All in"
-msgstr ""
+msgstr "Tüm gelenler"
 
 msgid "All out"
-msgstr ""
+msgstr "Tüm gidenler"
 
 msgid "ispCP - Admin/Server statistics"
 msgstr ""
@@ -1620,19 +1620,19 @@ msgid "ispCP Admin / System Tools / Server Status"
 msgstr ""
 
 msgid "UP"
-msgstr ""
+msgstr "Yukarı"
 
 msgid "DOWN"
-msgstr ""
+msgstr "Aşağı"
 
 msgid "Host"
 msgstr ""
 
 msgid "Service"
-msgstr ""
+msgstr "Servis"
 
 msgid "Server status"
-msgstr ""
+msgstr "Server durumu"
 
 msgid "ispCP - Admin/Server Traffic Settings"
 msgstr ""
@@ -1653,16 +1653,16 @@ msgid "Server traffic settings"
 msgstr ""
 
 msgid "Set server traffic settings"
-msgstr ""
+msgstr "Server trafik ayarlarını düzenle"
 
 msgid "Max traffic [MB]"
-msgstr ""
+msgstr "Max trafik [MB]"
 
 msgid "Warning traffic [MB]"
 msgstr "Uyarı trafiği [MB]"
 
 msgid "ispCP - Admin/Settings"
-msgstr ""
+msgstr "ispCP - Yönetici/Ayarları"
 
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr ""
@@ -1677,13 +1677,13 @@ msgid "Activation link expire time (minutes)"
 msgstr ""
 
 msgid "Password settings"
-msgstr ""
+msgstr "Şifre ayarları"
 
 msgid "Use strong Passwords"
-msgstr ""
+msgstr "Zor şifreler kullanın"
 
 msgid "Password length"
-msgstr ""
+msgstr "Şifre uzunluğu"
 
 msgid "Bruteforce detection"
 msgstr ""
@@ -1716,13 +1716,13 @@ msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Varsayılan dil"
 
 msgid "Support system"
-msgstr ""
+msgstr "Destek sistem"
 
 msgid "Server ports"
-msgstr ""
+msgstr "Server portları"
 
 msgid "Hosting plans available for"
 msgstr ""
@@ -1739,14 +1739,14 @@ msgid "Log Level"
 msgstr "Seviye"
 
 msgid "Notices, Warnings and Errors"
-msgstr ""
+msgstr "Notlar, Uyarılar ve Hatalar"
 
 msgid "Warnings and Errors"
-msgstr ""
+msgstr "Uyarılar ve Hatalar"
 
 #, fuzzy
 msgid "Errors"
-msgstr "Hata"
+msgstr "Hatalar"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
@@ -1758,19 +1758,19 @@ msgid "You have no custom service ports defined."
 msgstr ""
 
 msgid "udp"
-msgstr ""
+msgstr "udp"
 
 msgid "tcp"
-msgstr ""
+msgstr "tcp"
 
 msgid "Services"
-msgstr ""
+msgstr "Servisler"
 
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 msgid "Protocol"
-msgstr ""
+msgstr "Protokol"
 
 msgid "You have no support tickets."
 msgstr "Yardım isteği mesajınız yok."
@@ -1797,10 +1797,10 @@ msgid "From"
 msgstr "Kimden"
 
 msgid "To"
-msgstr ""
+msgstr "Kime"
 
 msgid "Priority"
-msgstr ""
+msgstr "Öncelik"
 
 msgid "Last reply"
 msgstr "Son cevap"
@@ -1833,34 +1833,34 @@ msgid "minutes"
 msgstr "dakika"
 
 msgid "System info"
-msgstr ""
+msgstr "Sistem bilgisi"
 
 msgid "Vital system info"
 msgstr "Hayati sistem hakkında bilgi"
 
 msgid "CPU system Info"
-msgstr ""
+msgstr "Sistem CPU bilgisi"
 
 msgid "CPU model"
-msgstr ""
+msgstr "CPU model"
 
 msgid "CPU MHz"
-msgstr ""
+msgstr "CPU MHz"
 
 msgid "CPU cache"
-msgstr ""
+msgstr "CPU cache"
 
 msgid "CPU bogomips"
 msgstr ""
 
 msgid "Memory system info"
-msgstr ""
+msgstr "Sistem bellek bilgisi"
 
 msgid "RAM"
-msgstr ""
+msgstr "RAM"
 
 msgid "Total"
-msgstr ""
+msgstr "Toplam"
 
 msgid "Free"
 msgstr ""
@@ -1929,7 +1929,7 @@ msgid "Send message reply"
 msgstr ""
 
 msgid "Send reply"
-msgstr ""
+msgstr "Yanıtla"
 
 msgid "ispCP Client : Add Alias"
 msgstr ""
@@ -2744,10 +2744,10 @@ msgid "Member of group:"
 msgstr ""
 
 msgid "Select group:"
-msgstr ""
+msgstr "Grup seç"
 
 msgid "Update user"
-msgstr ""
+msgstr "Kullanıcı güncelle"
 
 #, fuzzy
 msgid "Invalid group name!"
@@ -2773,10 +2773,10 @@ msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
-msgstr ""
+msgstr "Lütfen kullanıcı adını giriniz!"
 
 msgid "Please type user password!"
-msgstr ""
+msgstr "Lütfen kullanıcı şifresini giriniz!"
 
 msgid "Too user long password!"
 msgstr ""
@@ -2795,13 +2795,13 @@ msgid "Specified SQL username name already exists!"
 msgstr ""
 
 msgid "SQL user successfully added!"
-msgstr ""
+msgstr "SQL kullanıcısı eklendi!"
 
 msgid "ispCP - Client/Add SQL User"
 msgstr ""
 
 msgid "SQL user name"
-msgstr ""
+msgstr "SQL kullanıcı adı"
 
 msgid "In front the name"
 msgstr ""
@@ -2816,7 +2816,7 @@ msgid "Existing SQL users"
 msgstr "Mevcut SQL kullanıcıları"
 
 msgid "Too long user password!"
-msgstr ""
+msgstr "Çok uzun kullanıcı şifresi!"
 
 msgid "SQL user password was successfully changed!"
 msgstr ""
@@ -2856,13 +2856,13 @@ msgid "Execute SQL query"
 msgstr "SQL sorgusu çalıştır"
 
 msgid "SQL query"
-msgstr ""
+msgstr "SQL sorgusu"
 
 msgid "Query status"
-msgstr ""
+msgstr "Sorgu durumu"
 
 msgid "Query result"
-msgstr ""
+msgstr "Sorgu sonucu"
 
 msgid "Execute"
 msgstr "Çalıştır"
@@ -2880,7 +2880,7 @@ msgid "Your order"
 msgstr "Siparişiniz"
 
 msgid "Purchase"
-msgstr ""
+msgstr "Satın Al"
 
 msgid "There are no available updates"
 msgstr ""
@@ -2902,10 +2902,10 @@ msgid "Disk limit"
 msgstr "MB cinsinden disk"
 
 msgid "Traffic limit"
-msgstr ""
+msgstr "Trafik limit"
 
 msgid "Emails"
-msgstr ""
+msgstr "Epostalar"
 
 msgid "FTPs"
 msgstr ""
@@ -2963,31 +2963,31 @@ msgid "Manage protected areas, users and groups"
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Sistem araçları"
 
 msgid "Statistics"
-msgstr ""
+msgstr "İstatistikler"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Bayi istatistikleri"
 
 msgid "Admin log"
 msgstr "Yönetici kaydı"
 
 msgid "Logout"
-msgstr ""
+msgstr "Çıkış"
 
 msgid "ispCP database updates"
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Değiştirilebilir menüler"
 
 msgid "Overview"
 msgstr ""
 
 msgid "User sessions"
-msgstr ""
+msgstr "Kullanıcı oturumları"
 
 msgid "Lostpw email setup"
 msgstr ""
@@ -3002,13 +3002,13 @@ msgid "Normal users"
 msgstr "Normal kullanıcı"
 
 msgid "System messages"
-msgstr ""
+msgstr "Sistem mesajları"
 
 msgid "No new messages"
 msgstr "Yeni mesaj yok"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Server trafik"
 
 msgid "Administrators list is empty!"
 msgstr ""
@@ -3061,10 +3061,10 @@ msgid "Administrators"
 msgstr "Yöneticiler"
 
 msgid "Resellers"
-msgstr ""
+msgstr "Bayiler"
 
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3161,7 +3161,7 @@ msgid "Subdomain forward"
 msgstr ""
 
 msgid "Unknown type"
-msgstr ""
+msgstr "Bilinmeyen tip"
 
 #, fuzzy, php-format
 msgid "Database update %s failed"
@@ -3713,7 +3713,7 @@ msgid "Header"
 msgstr "Başlık"
 
 msgid "Preview"
-msgstr ""
+msgstr "Önizleme"
 
 msgid "Implementation URL"
 msgstr ""
