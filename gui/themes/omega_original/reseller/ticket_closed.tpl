@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, subject) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
 		return false;
 	location = url;
 }
@@ -70,7 +70,7 @@ function action_delete(url) {
                           <tr>
                             <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
                             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left">
-                                <script type="text/javascript">
+                        <script type="text/javascript">
 <!--
 							document.write('<a href="ticket_view.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 //-->
@@ -78,7 +78,7 @@ function action_delete(url) {
                               {SUBJECT}</a></td>
                             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
                             <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
-                            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('ticket_delete.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
+                            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: tickets_item -->
                           <tr>

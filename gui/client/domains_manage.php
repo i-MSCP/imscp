@@ -214,7 +214,7 @@ $tpl->assign(
 			'TR_SUB_MOUNT' => tr('Mount point'),
 			'TR_SUB_STATUS' => tr('Status'),
 			'TR_SUB_ACTION' => tr('Actions'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true)
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true)
 		)
 	);
 

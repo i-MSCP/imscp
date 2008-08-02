@@ -64,7 +64,7 @@ gen_cron_jobs($tpl, $sql, $_SESSION['user_id']);
 
 $tpl->assign(
 	array('TR_CRON_MANAGER' => tr('Cronjob Manager'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true),
 		'TR_CRONJOBS' => tr('Cronjobs'),
 		'TR_ACTIVE' => tr('Active'),
 		'TR_ACTION' => tr('Active'),

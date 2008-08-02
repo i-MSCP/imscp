@@ -8,14 +8,14 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function change_status(dom_id) {
-	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
+function change_status(dom_id, dmn_name) {
+	if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
 		return false;
 	location = ('domain_status_change.php?domain_id=' + dom_id);
 }
 
 function delete_account(url, dmn_name) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT} (" + dmn_name + ")"))
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name)))
 		return false;
 	location = url;
 }
@@ -109,7 +109,7 @@ function sbmt(form, uaction) {
                       <!-- BDP: user_entry -->
                       <tr>
                         <td align="center">&nbsp;</td>
-                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onclick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
+                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onclick="change_status('{URL_CHANGE_STATUS}', '{NAME}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
                         <td class="{CLASS_TYPE_ROW}"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>

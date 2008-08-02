@@ -111,7 +111,7 @@ if (isset($_POST['uname'])) {
 				$tpl->assign(
 						array(
 							'TR_MESSAGE' => tr('ERROR: Unknown user'),
-							'TR_LINK' => "<a class=\"link\" href=\"settings_lostpassword.php\">" . tr('Retry') . "</a>"
+							'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
 							)
 						);
 			}
@@ -119,7 +119,7 @@ if (isset($_POST['uname'])) {
 			$tpl->assign(
 					array(
 						'TR_MESSAGE' => tr('ERROR: Security code was not correct!') . ' ' . $_SESSION['image'],
-						'TR_LINK' => "<a class=\"link\" href=\"settings_lostpassword.php\">" . tr('Retry') . "</a>"
+						'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
 						)
 					);
 		}

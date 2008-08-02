@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function delete_order(url) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
+function delete_order(url, name) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", name)))
 		return false;
 	location = url;
 }
@@ -157,7 +157,7 @@ function delete_order(url) {
                           &nbsp;&nbsp;
                           <input name="update" type="button" onclick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}">
                           &nbsp;&nbsp;
-                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}')" class="button" value="{TR_DELETE_ORDER}">
+                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="button" value="{TR_DELETE_ORDER}">
                           <input type="hidden" name="uaction" value="">
                           <input name="order_id" type="hidden" value="{ID}"></td>
                       </tr>

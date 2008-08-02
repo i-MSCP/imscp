@@ -7,7 +7,12 @@ final class Database {
     public $nameQuote = '`';
 
     private function __construct($user, $pass, $type, $host, $name) {
-        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass);
+    	// Avoid stacktrace and revelation of DB Password with try-catch block
+    	try {
+        	$this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass);
+        } catch (PDOException $e) {
+    		echo 'Connection failed: ' . $e->getMessage();
+		}
         $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
     }
 

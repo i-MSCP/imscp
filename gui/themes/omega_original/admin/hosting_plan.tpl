@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function delete_account(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function delete_account(url, plan) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", plan)))
 		return false;
 	location = url;
 }
@@ -66,7 +66,7 @@ function delete_account(url) {
                             <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
                             <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="hosting_plan_edit.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
                       		<!-- BDP: hp_delete -->
-                            <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_account('hosting_plan_delete.php?hpid={HP_ID}')" class="link">{PLAN_ACTION}</a></td>
+                            <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_account('hosting_plan_delete.php?hpid={HP_ID}', '{PLAN_NAME}')" class="link">{PLAN_ACTION}</a></td>
                       		<!-- EDP: hp_delete -->
                           </tr>
                           <!-- EDP: hp_entry -->

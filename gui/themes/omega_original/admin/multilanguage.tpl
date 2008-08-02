@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, language) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
 		return false;
 	location = url;
 }
@@ -76,11 +76,11 @@ function action_delete(url) {
                               </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_EXPORT}" class="link" target="_blank">{TR_EXPORT}</a> </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" />
-                                  <!-- BDP: lang_delete_show -->
+                                <!-- BDP: lang_delete_show -->
                                 {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
-                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_UNINSTALL}</a>
+                                <a href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')" class="link">{TR_UNINSTALL}</a>
                                 <!-- EDP: lang_delete_link --></td>
                             </tr>
                             <!-- EDP: lang_row -->

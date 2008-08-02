@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <td>
-        <form name="frm" action="settings_lostpassword.php" method="post">
+        <form name="frm" action="lostpassword.php" method="post">
         <table width="453" border="0" cellspacing="0" cellpadding="0">
          <tr>
           <td width="45" rowspan="6"></td>

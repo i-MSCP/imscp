@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, name) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", name)))
 		return false;
 	location = url;
 }
@@ -71,7 +71,7 @@ function action_delete(url) {
                           <tr>
                             <td nowrap="nowrap" class="{ITEM_CLASS}"><span class="content"><img src="{THEME_COLOR_PATH}/images/icons/ftp_account.png" width="16" height="16" align="left"></span>{FTP_ACCOUNT}</td>
                             <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="ftp_edit.php?id={UID}" class="link">{TR_EDIT}</a></td>
-                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('ftp_delete.php?id={UID}')">{TR_DELETE}</a></td>
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('ftp_delete.php?id={UID}', '{FTP_ACCOUNT}')">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: ftp_item -->
                           <!-- BDP: ftps_total -->

@@ -763,7 +763,7 @@ SQL_QUERY;
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?'),
+					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?', null, true),
 					)
 				);
 
@@ -789,7 +789,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 			'TR_USERS' => tr('Users'),
 			'TR_SEARCH' => tr('Search'),
 			'TR_CREATED_ON' => tr('Creation date'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true),
 			'TR_EDIT' => tr("Edit")
 			)
 		);
@@ -1992,7 +1992,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 }
 function rm_rf_user_account($id_user) {
 	$sql = Database::getInstance();
-	
+
 	// get domain user data
 	$query = "
 		SELECT
@@ -2022,12 +2022,12 @@ function rm_rf_user_account($id_user) {
 	// delete the group
 	$query = "DELETE FROM `ftp_group` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
-	
+
 	// let's delete all Subdomains for this user
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
 	$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
-	
+
 	// let's delete all domain aliases for this user
 	$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
@@ -2035,7 +2035,7 @@ function rm_rf_user_account($id_user) {
 	// let's delete all mail accounts for this user
 	$query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
-	
+
 	// delete all htaccess entries for this user
 	$query = "DELETE FROM `htaccess` WHERE `dmn_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -2050,23 +2050,23 @@ function rm_rf_user_account($id_user) {
 	//delete asociated traffic
 	$query = "DELETE FROM `domain_traffic` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
-	
+
 	//delete error pages
 	$query = "DELETE FROM `error_pages` WHERE `user_id` = ?";
 	$rs = exec_query($sql, $query, array($id_user));
-	
+
 	//delete quotalimits
 	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($domain_name));
-	
+
 	//delete quotatallies
 	$query = "DELETE FROM `quotatallies` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($domain_name));
-	
+
 	// Lets Delete SQL DBs and Users
 	$query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
-	
+
 	while (!$rs->EOF) {
 		$db_id = $rs->fields['sqld_id'];
 		delete_sql_database($sql, $domain_id, $db_id);
@@ -2076,21 +2076,21 @@ function rm_rf_user_account($id_user) {
 	// END - DELETE ALL SYSTEM ENTRIES FOR THIS USER
 	// BEGIN - DELETE ALL GUI ENTRIES FOR THIS USER
 	// delete the layout settings
-	
+
 	// delete all tickets for this user
 	$query = "DELETE FROM `tickets` WHERE `ticket_from` = ? OR `ticket_to` = ?";
 	$rs = exec_query($sql, $query, array($id_user, $id_user));
-	
+
 	// let's delete the main domain for this user
 	$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_admin_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $id_user));
-	
+
 	remove_users_common_properties($id_user);
 }
 
 function remove_users_common_properties($id_user) {
 	$sql = Database::getInstance();
-	
+
 	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
 	$rs = exec_query($sql, $query, array($id_user));
 

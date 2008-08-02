@@ -322,7 +322,7 @@ $tpl->assign(
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
 			'TR_INSTALL' => tr('Install'),
 			'TR_EXPORT' => tr('Export'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true),
 			)
 	);
 

@@ -9,7 +9,7 @@
 <script type="text/javascript">
 <!--
 function action_delete(url, ip) {
-	if (!confirm("{TR_MESSAGE_DELETE} " + ip))
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE} ", ip)))
 		return false;
 	location = url;
 }

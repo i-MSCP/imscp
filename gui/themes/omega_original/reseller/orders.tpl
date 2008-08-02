@@ -8,8 +8,8 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
   <script type="text/javascript">
 <!--
-function delete_order(url) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
+function delete_order(url, domain) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", domain)))
 		return false;
 	location = url;
 }
@@ -82,7 +82,7 @@ function delete_order(url) {
              <td class="{ITEM_CLASS}">{USER}</td>
              <td align="center" class="{ITEM_CLASS}">{STATUS}</td>
              <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle"> <a href="{LINK}" class="link">{TR_ADD}</a></td>
-             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_order('orders_delete.php?order_id={ID}')" class="link">{TR_DELETE}</a></td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="link">{TR_DELETE}</a></td>
             </tr>
             <!-- EDP: order -->
             <!-- EDP: orders_table -->

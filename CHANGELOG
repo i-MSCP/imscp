@@ -1,6 +1,22 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-02 Benedikt Heintel
+	- GUI:
+		* Fixed #846: Wrong german text format of "Are you sure you want to delete" and other remarks to manage_domains.php
+		* Fixed #1445: Mysql username/password exposed if database is down!
+	- LANGUAGES:
+		* Updated Chinese
+		* Updated Dutch
+		* Updated Spanish
+		* Added Swedish
+
+2008-07-29 Benedikt Heintel
+	- GUI:
+		* Fixed #1441: lost password link leads to an incorrect page
+	- DISTS:
+		* Fixed #1440: (CentOS) lsb_release not installed on CentOS
+
 2008-07-25 Benedikt Heintel
 	- DOCS:
 		* Fixed #1435: Update FreeBSD Doc

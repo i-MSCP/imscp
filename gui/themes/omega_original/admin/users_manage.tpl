@@ -8,14 +8,14 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_status(url) {
-	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
+function action_status(url, dmn_name) {
+	if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
 		return false;
 	location = url;
 }
 
 function action_delete(url, dmn_name) {
-	if (!confirm("{TR_MESSAGE_DELETE} (" + dmn_name + ")"))
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name)))
 		return false;
 	location = url;
 }
@@ -215,7 +215,7 @@ function sbmt(form, uaction) {
         <!-- BDP: usr_item -->
         <tr>
           <td width="25" align="center">&nbsp;</td>
-          <td class="{USR_CLASS}" align="center"><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
+          <td class="{USR_CLASS}" align="center"><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}', '{USR_USERNAME}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
           <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>

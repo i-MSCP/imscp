@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, service) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", service)))
 		return false;
 	location = url;
 }
@@ -98,7 +98,7 @@ function enable_for_post() {
                                 <!-- EDP: port_delete_show -->
                                 <!-- BDP: port_delete_link -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
-                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
+                                <a href="#" onclick="action_delete('{URL_DELETE}', '{SERVICE}')" class="link">{TR_DELETE}</a>
                                 <!-- EDP: port_delete_link -->
                               </td>
                             </tr>

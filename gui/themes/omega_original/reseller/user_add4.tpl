@@ -8,18 +8,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function change_status(dom_id) {
-	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
-		return false;
-	location = ('domain_status_change.php?domain_id=' + dom_id);
-}
-
-function delete_account(url) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
-		return false;
-	location = url;
-}
-
 function makeUser() {
 	var dname = document.forms[0].elements['ndomain_name'].value;
 	dname = dname.toLowerCase();

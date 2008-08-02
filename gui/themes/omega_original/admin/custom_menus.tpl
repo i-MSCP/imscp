@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, link_name) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", link_name)))
 		return false;
 	location = url;
 }
@@ -68,7 +68,7 @@ function action_delete(url) {
                               {LINK}</td>
                             <td class="{CONTENT}" align="center">{LEVEL}</td>
                             <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="custom_menus.php?edit_id={BUTONN_ID}" class="link">{TR_EDIT}</a></td>
-                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#"  onclick="action_delete('custom_menus.php?delete_id={BUTONN_ID}')" class="link">{TR_DELETE}</a></td>
+                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#"  onclick="action_delete('custom_menus.php?delete_id={BUTONN_ID}', '{MENU_NAME}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: button_list -->
                         </table>

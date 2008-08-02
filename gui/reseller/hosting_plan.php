@@ -66,7 +66,7 @@ $tpl->assign(
 			'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
 			'TR_BACK' => tr('Back'),
 			'TR_TITLE_BACK' => tr('Return to previous menu'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true)
 			)
 		);
 

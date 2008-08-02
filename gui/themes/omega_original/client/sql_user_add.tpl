@@ -8,12 +8,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
-		return false;
-	location = url;
-}
-
   document.captureEvents(Event.KEYPRESS);
 
   function Check_Key(e) {
@@ -28,7 +22,7 @@ function action_delete(url) {
         return false;
       }
   	}
-  } 
+  }
 //-->
 </script>
 </head>
