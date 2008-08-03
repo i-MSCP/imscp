@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-03 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Japanese
+
 2008-08-03 Daniel Andreca
 	- GUI:
 		* Fixed #1079: Error adding user when opening new tab/window
