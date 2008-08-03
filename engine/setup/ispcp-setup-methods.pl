@@ -199,8 +199,8 @@ sub ask_db_password {
 	my $qmsg = "\n\tPlease enter system SQL password. [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
-
-	if (!defined($pass1) || $pass1 eq '') {
+	
+	if (!defined($pass1) || $pass1 eq '' || $pass1 =~ /^([a-zA-Z0-9@*#]{8,32})$/i) {
 		$main::ua{'db_password'} = '';
 	}
 	else {
