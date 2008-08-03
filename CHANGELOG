@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-03 Daniel Andreca
+	- GUI:
+		* Fixed #1079: Error adding user when opening new tab/window
+
 2008-08-02 Benedikt Heintel
 	- GUI:
 		* Fixed #846: Wrong german text format of "Are you sure you want to delete" and other remarks to manage_domains.php

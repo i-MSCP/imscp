@@ -355,7 +355,7 @@ function unset_messages () {
 	$glToUnset[] = 'step_one';
 	$glToUnset[] = 'step_two_data';
 	$glToUnset[] = 'ch_hpprops';
-	$glToUnset[] = 'rau3_added';
+	$glToUnset[] = 'user_add3_added';
 	$glToUnset[] = 'user_has_domain';
 	$glToUnset[] = 'local_data';
 	$glToUnset[] = 'reseller_added';
@@ -377,14 +377,19 @@ function unset_messages () {
 	$glToUnset[] = 'local_data';
 
 	foreach ($glToUnset as $toUnset) {
-		if (isset($GLOBALS[$toUnset]))
+		if (array_key_exists($toUnset,$GLOBALS))
 			unset($GLOBALS[$toUnset]);
 	}
 
 	$sessToUnset = array();
 	$sessToUnset[] = 'reseller_added';
 	$sessToUnset[] = 'dmn_name';
-	$sessToUnset[] = 'rau3_added';
+	$sessToUnset[] = 'dmn_tpl';
+	$sessToUnset[] = 'chtpl';
+	$sessToUnset[] = 'step_one';
+	$sessToUnset[] = 'step_two_data';
+	$sessToUnset[] = 'ch_hpprops';
+	$sessToUnset[] = 'user_add3_added';
 	$sessToUnset[] = 'user_has_domain';
 	$sessToUnset[] = 'user_added';
 	$sessToUnset[] = 'aladd';
@@ -403,7 +408,7 @@ function unset_messages () {
 	$sessToUnset[] = 'local_data';
 
 	foreach ($sessToUnset as $toUnset) {
-		if (isset($_SESSION[$toUnset]))
+		if (array_key_exists($toUnset,$_SESSION))
 			unset($_SESSION[$toUnset]);
 	}
 }

@@ -77,9 +77,14 @@ $tpl->assign(
 		)
 	);
 
-get_pageone_param();
+if(!get_pageone_param()){
+	set_page_message(tr("Domain data has been altered. Please enter again"));
+	unset_messages();
+	header("Location: user_add1.php");
+	die();
+}
 
-if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one_data']))) {
+if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
 		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
@@ -90,7 +95,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 		}
 	}
 } else {
-	unset($_SESSION['step_one_data']);
+	unset($_SESSION['step_one']);
 	global $dmn_chp;
 	get_hp_data($dmn_chp, $_SESSION['user_id']);
 	$tpl->assign('MESSAGE', '');
@@ -114,14 +119,25 @@ function get_pageone_param() {
 	global $dmn_chp;
 	global $dmn_pt;
 
-	if (isset($_SESSION['dmn_name']))
+	if (isset($_SESSION['dmn_name'])){
 		$dmn_name = $_SESSION['dmn_name'];
-
-	if (isset($_SESSION['dmn_tpl']))
+	} else {
+		return false;
+	}
+	
+	if (isset($_SESSION['dmn_tpl'])){
 		$dmn_chp = $_SESSION['dmn_tpl'];
-
-	if (isset($_SESSION['chtpl']))
+	} else {
+		return false;
+	}
+	
+	if (isset($_SESSION['chtpl'])){
 		$dmn_pt = $_SESSION['chtpl'];
+	} else {
+		return false;
+	}
+	
+	return true;
 } // End of get_pageone_param()
 
 // Show page with initial data fileds
@@ -273,17 +289,17 @@ function check_user_data(&$tpl) {
 	if (!ispcp_limit_check($hp_ftp, -1)) {
 		set_page_message(tr('Incorrect FTP accounts limit!'));
 	}
-	if (!ispcp_limit_check($hp_sql_user, -1)) {
+	if (!ispcp_limit_check($hp_sql_db, -1)) {
 		set_page_message(tr('Incorrect SQL databases limit!'));
 	}
 	else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
 	}
-	if (!ispcp_limit_check($hp_sql_db, -1)) {
+	if (!ispcp_limit_check($hp_sql_user, -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
 	}
-	else if ($hp_sql_db == -1 && $hp_sql_user != -1) {
-		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
+	else if ($hp_sql_user == -1 &&  $hp_sql_db!= -1) {
+		set_page_message(tr('SQL databases limit is not <i>disabled</i>!'));
 	}
 	if (!ispcp_limit_check($hp_traff, null)) {
 		set_page_message(tr('Incorrect traffic limit!'));

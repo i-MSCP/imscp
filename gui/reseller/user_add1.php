@@ -97,7 +97,7 @@ function check_user_data() {
 	$even_txt = "";
 
 	if (isset($_POST['dmn_name'])) {
-		$dmn_name = strtolower($_POST['dmn_name']);
+		$dmn_name = strtolower(trim($_POST['dmn_name']));
 		$dmn_name = encode_idna($dmn_name);
 	}
 	if (isset($_POST['dmn_tpl']))
@@ -162,7 +162,6 @@ function get_empty_au1_page(&$tpl) {
 			'CHTPL2_VAL' => 'checked'
 			)
 		);
-
 	$tpl->assign('MESSAGE', '');
 } //End of get_empty_au1_page()
 

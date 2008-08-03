@@ -49,16 +49,16 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 	$reseller_id = $_SESSION['user_id'];
 	$domain_id = $_SESSION['dmn_id'];
 
-	$query = <<<SQL_QUERY
-      select
-          domain_id
-      from
-          domain
-      where
-          domain_id = ?
-        and
-          domain_created_id = ?
-SQL_QUERY;
+	$query =  "
+		SELECT
+			`domain_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
+		AND
+			`domain_created_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $reseller_id));
 
@@ -71,16 +71,16 @@ SQL_QUERY;
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	$add_status = Config::get('ITEM_ADD_STATUS');
 
-	$query = <<<SQL_QUERY
-        select
-            domain_id
-        from
-            domain
-        where
-            domain_id = ?
-          and
-            (domain_status = ? or domain_status = ?)
-SQL_QUERY;
+	$query =  "
+		SELECT
+			`domain_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
+		AND
+			(`domain_status` = ? or `domain_status` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $ok_status, $add_status));
 	if ($rs->RecordCount() == 0) {
@@ -159,16 +159,16 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	$dmn_id = $_SESSION['dmn_id'];
 
-	$query = <<<SQL_QUERY
-        select
-            alias_id,
-            alias_name,
-            alias_status
-        from
-            domain_aliasses
-        where
-            domain_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`alias_id`,
+			`alias_name`,
+			`alias_status`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`domain_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
@@ -226,15 +226,18 @@ function add_domain_alias(&$sql, &$err_al) {
 	    	$forward .= "/";
 	    }
 	} else {
-		$res = exec_query($sql, "select domain_id from domain_aliasses where alias_name=?", array($alias_name));
-		$res2 = exec_query($sql, "select domain_id from domain where domain_name =?", array($alias_name));
+		$query="SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name`=?";
+		$res = exec_query($sql, $query, array($alias_name));
+		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` =?";
+		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
-
+		
+		$query="SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id`=? AND `subdomain_mount`=?";
 		$subdomres = exec_query($sql,
-			"select count(subdomain_id) as cnt from subdomain where domain_id=? and subdomain_mount=?",
+			$query,
 			array($cr_user_id, $mount_point));
 		$subdomdata = $subdomres->FetchRow();
 		if ($subdomdata['cnt'] > 0) {
@@ -249,10 +252,17 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Begin add new alias domain
 	check_for_lock_file();
 	$status = Config::get('ITEM_ADD_STATUS');
-
-	exec_query($sql,
-		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
-		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+	
+	$query="insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
+	exec_query($sql, $query, array(
+									$cr_user_id,
+									$alias_name,
+									$mount_point,
+									$status,
+									$domain_ip,
+									$forward
+								)
+	);
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");

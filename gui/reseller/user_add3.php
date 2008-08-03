@@ -82,7 +82,13 @@ $tpl->assign(
 		)
 	);
 
-init_in_values();
+if(!init_in_values()){
+	set_page_message(tr("Domain data has been altered. Please enter again"));
+	unset_messages();
+	header("Location: user_add1.php");
+	die();
+}
+
 // Process the action ...
 if (isset($_POST['uaction']) && ("user_add3_nxt" === $_POST['uaction']) && !isset($_SESSION['step_two_data'])) {
 	if (check_ruser_data($tpl, '_no_')) {
@@ -131,6 +137,8 @@ function init_in_values() {
 	list($dmn_name, $hpid) = explode(";", $step_two);
 	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
 	$dmn_user_name = $dmn_name;
+	if(!chk_dname($dmn_name) || ($hpid==''))return false;
+	return true;
 } // End of init_in_values()
 
 // generate page add user 3
@@ -217,10 +225,10 @@ function add_user_data($reseller_id) {
 		unset($_SESSION["ch_hpprops"]);
 	} else {
 		if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
-			$query = 'select props from hosting_plans where id = ?';
+			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {
-			$query = "select props from hosting_plans where reseller_id = ? and id = ?";
+			$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 			$res = exec_query($sql, $query, array($reseller_id, $hpid));
 		}
 		$data = $res->FetchRow();
@@ -253,19 +261,20 @@ function add_user_data($reseller_id) {
 	}
 
 	check_for_lock_file();
+	/*Daniel Andreca: If this check is disabled why execute query?
 	// check again if a user like that exits
-	$query = <<<OMEGA_SQL_QUERY
-	select
-		count(*) as count
-    from
-		admin
-	where
-		admin_name = ?
-	limit 1
-OMEGA_SQL_QUERY;
+	$query = "
+		SELECT
+			COUNT(*) as count
+		FROM
+			`admin`
+		WHERE
+			`admin_name` = ?
+		LIMIT 1
+	";
 
 	$res = exec_query($sql, $query, $dmn_user_name);
-	$data = $res->FetchRow();
+	$data = $res->FetchRow();*/
 
 	/*
 	if ($data['count'] > 0) {
@@ -273,21 +282,19 @@ OMEGA_SQL_QUERY;
 		return;
 	}*/
 
-	$query = <<<ISPCP_SQL_QUERY
-        	insert into admin
-                      (
-                        admin_name, admin_pass, admin_type, domain_created,
-                        created_by, fname, lname,
-                        firm, zip, city,
-                        country, email, phone,
-                        fax, street1, street2, customer_id, gender
-                      )
-                values
-                      (
-                        ?, ?, 'user', unix_timestamp(),
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                      )
-ISPCP_SQL_QUERY;
+	$query = "
+		INSERT INTO `admin` (
+			`admin_name`, `admin_pass`, `admin_type`, `domain_created`,
+			`created_by`, `fname`, `lname`,
+			`firm`, `zip`, `city`,
+			`country`, `email`, `phone`,
+			`fax`, `street1`, `street2`, `customer_id`, `gender`
+		)
+		VALUES (
+			?, ?, 'user', unix_timestamp(),
+			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+		)
+	";
 
 	$res = exec_query($sql, $query, array(
 											$dmn_user_name, $inpass, $reseller_id,
@@ -301,28 +308,28 @@ ISPCP_SQL_QUERY;
 
 	$record_id = $sql->Insert_ID();
 
-	$query = <<<ISPCP_SQL_QUERY
-            insert into domain (
-                        domain_name, domain_admin_id,
-                        domain_created_id, domain_created,
-                        domain_mailacc_limit, domain_ftpacc_limit,
-                        domain_traffic_limit, domain_sqld_limit,
-                        domain_sqlu_limit, domain_status,
-                        domain_subd_limit, domain_alias_limit,
-                        domain_ip_id, domain_disk_limit,
-                        domain_disk_usage, domain_php, domain_cgi
-                       )
-                values (
-                        ?, ?,
-                        ?, unix_timestamp(),
-                        ?, ?,
-                        ?, ?,
-                        ?, 'toadd',
-                        ?, ?,
-                        ?, ?, '0',
-                        ?, ?
-                       )
-ISPCP_SQL_QUERY;
+	$query = "
+		INSERT INTO `domain` (
+			`domain_name`, `domain_admin_id`,
+			`domain_created_id`, `domain_created`,
+			`domain_mailacc_limit`, `domain_ftpacc_limit`,
+			`domain_traffic_limit`, `domain_sqld_limit`,
+			`domain_sqlu_limit`, `domain_status`,
+			`domain_subd_limit`, `domain_alias_limit`,
+			`domain_ip_id`, `domain_disk_limit`,
+			`domain_disk_usage`, `domain_php`, `domain_cgi`
+		)
+		VALUES (
+			?, ?,
+			?, unix_timestamp(),
+			?, ?,
+			?, ?,
+			?, 'toadd',
+			?, ?,
+			?, ?, '0',
+			?, ?
+		)
+	";
 
 	$res = exec_query($sql, $query, array(
 											$dmn_name, $record_id,
@@ -352,13 +359,12 @@ ISPCP_SQL_QUERY;
 	$user_def_lang = $_SESSION['user_def_lang'];
 	$user_theme_color = $_SESSION['user_theme'];
 
-	$query = <<<SQL_QUERY
-                insert into
-                  user_gui_props
-                      (user_id, lang, layout)
-                  values
-                      (?, ?, ?)
-SQL_QUERY;
+	$query = "
+		INSERT INTO `user_gui_props`
+			(`user_id`, `lang`, `layout`)
+		VALUES
+			(?, ?, ?)
+	";
 
 	$res = exec_query($sql, $query, array($record_id,
 			$user_def_lang,
