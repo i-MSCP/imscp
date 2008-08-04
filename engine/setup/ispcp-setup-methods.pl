@@ -118,8 +118,8 @@ sub check_eth {
 	my ($d1, $d2, $d3, $d4) = ($1, $2, $3, $4);
 
 	return 0 if (($d1 <= 0) || ($d1 >= 255));
-	return 0 if (($d2 < 0) || ($d2 > 255));
-	return 0 if (($d3 < 0) || ($d3 > 255));
+	return 0 if (($d2 < 0)  || ($d2 > 255));
+	return 0 if (($d3 < 0)  || ($d3 > 255));
 	return 0 if (($d4 <= 0) || ($d4 >= 255));
 
 	return 1;
@@ -199,8 +199,8 @@ sub ask_db_password {
 	my $qmsg = "\n\tPlease enter system SQL password. [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
-	
-	if (!defined($pass1) || $pass1 eq '' || $pass1 =~ /^([a-zA-Z0-9@*#]{8,32})$/i) {
+
+	if (!defined($pass1) || $pass1 eq '') {
 		$main::ua{'db_password'} = '';
 	}
 	else {

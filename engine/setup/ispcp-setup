@@ -686,7 +686,7 @@ sub setup_sql {
 
 	return $rs if ($rs != 0);
 
-	my $cmd = "$main::cfg{'CMD_MYSQL'} --host=$main::db_host --user=$main::db_user --pass=$main::db_pwd < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
+	my $cmd = "$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" --user=\"$main::db_user\" --pass=\"$main::db_pwd\" < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
 
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
@@ -697,7 +697,7 @@ sub setup_sql {
 
 	my $languages_sql = "$main::cfg{'CONF_DIR'}/database/languages.sql";
 
-	$cmd = "$main::cfg{'CMD_MYSQL'} --host=$main::db_host --user=$main::db_user --pass=$main::db_pwd $main::db_name < $languages_sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
+	$cmd = "$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" --user=\"$main::db_user\" --pass=\"$main::db_pwd\" $main::db_name < $languages_sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
 
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);

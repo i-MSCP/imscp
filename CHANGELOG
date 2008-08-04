@@ -6,6 +6,8 @@ ispCP ω 1.0.0 Changelog
 		* Updated all INSTALL
 	- TOOLS:
 		* Updated: PHPmyAdmin to 2.11.8.1
+	- SETUP:
+		* Fixed #1443: If MySQL root-password contains a | the ispcp-setup script ends up with an error
 	- LANGUAGES:
 		* Updated all languages files.
 

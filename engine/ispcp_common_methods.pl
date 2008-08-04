@@ -252,7 +252,7 @@ sub doSQL {
 
     if (!defined($main::db) || !ref($main::db)) {
 
-        $main::db = DBI -> connect(@main::db_connect, {PrintError => 0});
+        $main::db = DBI->connect(@main::db_connect, {PrintError => 0});
 
         if ( !defined($main::db) ) {
 
@@ -265,21 +265,21 @@ sub doSQL {
             return (-1, '');
 
         } elsif ($main::cfg{'DATABASE_UTF8'} eq 'yes' ) { # DB: use always UTF8
-            $qr = $main::db -> do("SET NAMES 'utf8';");
+            $qr = $main::db->do("SET NAMES 'utf8';");
         }
     }
 
     if ($sql =~ /select/i) {
 
-        $qr = $main::db -> selectall_arrayref($sql);
+        $qr = $main::db->selectall_arrayref($sql);
 
     } elsif ($sql =~ /show/i) {
 
-        $qr = $main::db -> selectall_arrayref($sql);
+        $qr = $main::db->selectall_arrayref($sql);
 
     } else {
 
-        $qr = $main::db -> do($sql);
+        $qr = $main::db->do($sql);
 
     }
 
