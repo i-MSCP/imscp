@@ -186,7 +186,7 @@ if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 
 	$_GET	 = $purifier->purifyArray($_GET);
 	$_POST	 = $purifier->purifyArray($_POST);
-	$_COOKIE = $purifier->purifyArray($_COOKIE);
+	//$_COOKIE = $purifier->purifyArray($_COOKIE);
 
 }
 

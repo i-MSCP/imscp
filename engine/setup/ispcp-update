@@ -143,7 +143,7 @@ MSG
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while ($rdata < 0 || $rdata > 5) {
+	while ($rdata < 0 || $rdata > 6) {
 		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);

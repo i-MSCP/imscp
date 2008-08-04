@@ -129,12 +129,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 
 7. Delete old files to avoid security risks:
-	# rm -fR /var/www/ispcp/gui/admin/
-	# rm -fR /var/www/ispcp/gui/client/
-	# rm -fR /var/www/ispcp/gui/include/
-	# rm -fR /var/www/ispcp/gui/orderpanel/
-	# rm -fR /var/www/ispcp/gui/themes/
-	# rm -fR /var/www/ispcp/gui/reseller/
+	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -fR /var/www/ispcp/gui/*.php
 
 8. Copy /usr and /var directories into your system (you may make backups)
