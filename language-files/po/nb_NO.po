@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-15 15:08+0200\n"
+"POT-Creation-Date: 2008-08-04 15:05+0200\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -177,140 +177,29 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Legg til"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr "ispCP - Admin/Administrer brukere/Legg til forhandler"
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Administrer brukere/Endre Administrator"
 
-msgid "Reseller IP list is empty!"
-msgstr "Forhandler IP listen er tom!"
-
-msgid "No."
-msgstr "Nei."
-
-msgid "Assign"
-msgstr "Tildel"
-
-msgid "Label"
-msgstr "Merke"
-
-msgid "Number"
-msgstr "Nummer"
+msgid "User session was killed!"
+msgstr "Brukersesjonen ble drept!"
 
 msgid "Reseller"
 msgstr "Forhandler"
 
-msgid "Incorrect email syntax!"
-msgstr "Ugyldig sammensetning av email!"
+msgid "Domain account"
+msgstr "Domene konto"
 
-msgid "Incorrect domains limit!"
-msgstr "Ugyldig domene grense!"
+msgid "Edit admin"
+msgstr "Endre administrator"
 
-msgid "Incorrect subdomains limit!"
-msgstr "Ugyldig underdomene grense!"
+msgid "Update"
+msgstr "Oppdater"
 
-msgid "Incorrect aliases limit!"
-msgstr "Ugyldig identitets grense!"
+msgid "Send new login data"
+msgstr "Send ny login informasjon"
 
-msgid "Incorrect FTP accounts limit!"
-msgstr "Ugyldig grense for FTP kontoer!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Ugyldig grense for mail kontoer!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Ugyldig SQL database grense!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Ugyldig SQL brukergrense!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Ugyldig grense for trafikk!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Ugyldig diskgrense!"
-
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "Minst en IP må være tildelt RESELLEREN"
-
-msgid "Add reseller"
-msgstr "Legg til forhandler"
-
-msgid "Domains limit<br><i>(0 unlimited)</i>"
-msgstr "Domenegrense<br><i>(0 unlimited)</i>"
-
-msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Underdomene grense<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Identitetgrense<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for mailkontoer<br><i>(-1 disabled, 0 unlimited)</i> "
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for FTP kontoer<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for SQL databaser<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Grense for SQL brukere<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Grense for overføring [MB]<br><i>(0 unlimited)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Grense for diskbruk [MB]<br><i>(0 unlimited)</i>"
-
-msgid "PHP"
-msgstr "PHP"
-
-msgid "CGI / Perl"
-msgstr "CGI / Perl"
-
-msgid "JSP"
-msgstr "JSP"
-
-msgid "SSI"
-msgstr "SSI"
-
-msgid "Frontpage extensions"
-msgstr "Frontpage utvidelser"
-
-msgid "Backup and restore"
-msgstr "Sikkerhetskopiering og gjenoppretting"
-
-msgid "Custom error pages"
-msgstr "Egendefinerte feilsider"
-
-msgid "Protected areas"
-msgstr "Beskyttede områder"
-
-msgid "Webmail"
-msgstr "Webmail"
-
-msgid "Directory listing"
-msgstr "Folder listing"
-
-msgid "Apache logfiles"
-msgstr "Apache logfiler"
-
-msgid "AwStats"
-msgstr "AwStats"
-
-msgid "Logo upload"
-msgstr "Opplasting av logo"
-
-msgid "yes"
-msgstr "ja"
-
-msgid "no"
-msgstr "nei"
-
-msgid "Reseller IPs"
-msgstr "Forhandler IP'er"
-
-msgid "Customer ID"
-msgstr "Kunde ID"
+msgid "Generate password"
+msgstr "Generer passord"
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Admin/Admin Logg"
@@ -378,108 +267,6 @@ msgstr "eldre enn 6 måneder"
 msgid "older than 12 months"
 msgstr "eldre enn 12 måneder"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/Legg til betalingsløsning "
-
-msgid "Add hosting plan"
-msgstr "Legg til betalingsløsning"
-
-msgid "Hosting plan properties"
-msgstr "Egenskaper for betalingsløsningen"
-
-msgid "Template name"
-msgstr "Plan på mal"
-
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maks underdomener<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maks antall identiteter<br><i>(-1 disabled, 0 unlimited)</i>"
-
-msgid "Billing Settings"
-msgstr "Betalings instillinger"
-
-msgid "Price"
-msgstr "Pris"
-
-msgid "Setup fee"
-msgstr "Opprettelseskostnad"
-
-msgid "Currency"
-msgstr "Valutta"
-
-msgid "Payment period"
-msgstr "Betalingsperiode"
-
-msgid "Available for purchasing"
-msgstr "Tilgjengelig for kjøp"
-
-msgid "Description"
-msgstr "Beskrivelse"
-
-msgid "(e.g. EUR)"
-msgstr "(feks. NOK)"
-
-msgid "Add plan"
-msgstr "Legg til løsning"
-
-msgid "Incorrect template name length!"
-msgstr "Ugyldig lengde på malnavnet!"
-
-msgid "Incorrect template description length!"
-msgstr "Ugyldig lengde på beskrivelsen av malen!"
-
-msgid "Price must be a number!"
-msgstr "Prisen må være et nummer!"
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
-msgid "Hosting plan with entered name already exists!"
-msgstr "En betalingsløsning med dette navnet eksisterer allerede!"
-
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Admin/Endre Passord"
-
-msgid "Please fill up all data fields!"
-msgstr "Venligst fyll inn data i alle feltene!"
-
-msgid "Passwords do not match!"
-msgstr "Passordene er ikke like!"
-
-msgid "The current password is wrong!"
-msgstr "Det nåværende passordet er galt!"
-
-msgid "User password updated successfully!"
-msgstr "Vellykket oppdatering av bruker passord!"
-
-msgid "Change password"
-msgstr "Endre passord"
-
-msgid "Password data"
-msgstr "Passord data"
-
-msgid "Update password"
-msgstr "Oppdater passord"
-
-msgid "Current password"
-msgstr "Nåværende passord"
-
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Admin/Endre Personlig Informasjon"
-
-msgid "Personal data updated successfully!"
-msgstr "Oppdatering av personlig informasjon vellykket!"
-
-msgid "Change personal data"
-msgstr "Endre personlig informasjon"
-
-msgid "Personal data"
-msgstr "Personlig informasjon"
-
-msgid "Update data"
-msgstr "Oppdater informasjon"
-
 msgid "ispCP - Admin - Email Marketing"
 msgstr "ispCP - Admin - Email Markedsføring"
 
@@ -534,7 +321,8 @@ msgstr "Bruker"
 msgid "All"
 msgstr "Alle"
 
-msgid "Are you sure you want to delete"
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
 msgstr "Er du sikker på at du vil slette"
 
 msgid "Missing or incorrect data input!"
@@ -606,9 +394,6 @@ msgstr "Database oppdateringer"
 msgid "Available database updates"
 msgstr "Tilgjengelige database oppdateringer"
 
-msgid "Update"
-msgstr "Oppdater"
-
 msgid "Update details"
 msgstr "Oppdaterings detaljer"
 
@@ -620,27 +405,6 @@ msgstr "Vil du utføre oppdateringene nå?"
 
 msgid "No database updates available"
 msgstr "Ingen database oppdateringer tilgjengelig"
-
-msgid "You cannot delete the last active IP address!"
-msgstr "Du kan ikke fjerne den siste aktive IP adressen!"
-
-msgid "Error: we have a domain using this IP!"
-msgstr "Error: vi har et domene som bruker denne IP'en!"
-
-msgid "Error: we have a reseller using this IP!"
-msgstr "Error: vi har en forhandler som bruker denne IP'en!"
-
-msgid "IP was deleted!"
-msgstr "IP'en ble slettet!"
-
-msgid "Support ticket deleted successfully!"
-msgstr "Hjelp saken ble vellykket slettet!"
-
-msgid "All open support tickets deleted successfully!"
-msgstr "Alle åpene hjelp saker ble vellykket slettet!"
-
-msgid "All closed support tickets deleted successfully!"
-msgstr "Alle lukkede hjelp saker ble vellykket slettet!"
 
 msgid "ispCP - Domain/Details"
 msgstr "ispCP - Domene/Detaljer"
@@ -708,57 +472,6 @@ msgstr "Aktivert"
 msgid "Disabled"
 msgstr "Deaktivert"
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Domene Statistisk Data"
-
-msgid "Domain statistics"
-msgstr "Domene statestikk"
-
-msgid "Month"
-msgstr "Måned"
-
-msgid "Year"
-msgstr "År"
-
-msgid "Show"
-msgstr "Vis"
-
-msgid "Web traffic"
-msgstr "Web trafikk"
-
-msgid "FTP traffic"
-msgstr "FTP trafikk"
-
-msgid "SMTP traffic"
-msgstr "SMTP trafikk"
-
-msgid "POP3/IMAP traffic"
-msgstr "POP3/IMAP trafikk"
-
-msgid "All traffic"
-msgstr "All traffikk"
-
-msgid "Day"
-msgstr "Dag"
-
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Administrer brukere/Endre Administrator"
-
-msgid "User session was killed!"
-msgstr "Brukersesjonen ble drept!"
-
-msgid "Domain account"
-msgstr "Domene konto"
-
-msgid "Edit admin"
-msgstr "Endre administrator"
-
-msgid "Send new login data"
-msgstr "Send ny login informasjon"
-
-msgid "Generate password"
-msgstr "Generer passord"
-
 #, fuzzy
 msgid "ispCP - Admin/Edit Domain"
 msgstr "ispCP - Admin/Admin Logg"
@@ -808,11 +521,35 @@ msgid ""
 msgstr ""
 "Brukeren eksisterer ikke eller du har ikke rettigheter til denne siden!"
 
+msgid "Incorrect subdomains limit!"
+msgstr "Ugyldig underdomene grense!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Ugyldig identitets grense!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Ugyldig grense for mail kontoer!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Ugyldig grense for FTP kontoer!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Ugyldig SQL brukergrense!"
+
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "Begrensningen for SQL databaser er  <i>disabled</i>!"
 
+msgid "Incorrect SQL databases limit!"
+msgstr "Ugyldig SQL database grense!"
+
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL bruker grensen er <i>disabled</i>!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Ugyldig grense for trafikk!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Ugyldig diskgrense!"
 
 msgid "Subdomain"
 msgstr "Underdomene"
@@ -877,88 +614,143 @@ msgstr ""
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Admin/Administer brukere/Endre Forhandler"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Domene Statistisk Data"
 
-msgid "Domains"
-msgstr "Domener"
+msgid "Domain statistics"
+msgstr "Domene statestikk"
 
-#, fuzzy, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
-"Inkonsistens mellom current_als_cnt og det faktiske antall pekere: %1$d != %2"
-"$d"
+msgid "Month"
+msgstr "Måned"
 
-msgid "Aliases"
-msgstr "Pekere"
+msgid "Year"
+msgstr "År"
 
-#, fuzzy, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
-"Inkonsistens mellom current_ftp_cnt og det faktiske antall ftp: %1$d != %2$d"
+msgid "Show"
+msgstr "Vis"
 
-msgid "SQL Databases"
-msgstr "SQL Databaser"
+msgid "Web traffic"
+msgstr "Web trafikk"
 
-msgid "SQL Users"
-msgstr "SQL Brukere"
+msgid "FTP traffic"
+msgstr "FTP trafikk"
 
-msgid "Web Traffic"
-msgstr "Web Trafikk"
+msgid "SMTP traffic"
+msgstr "SMTP trafikk"
 
-msgid "Disk storage"
-msgstr "Disk lagring"
+msgid "POP3/IMAP traffic"
+msgstr "POP3/IMAP trafikk"
 
-msgid "Reseller data inconsistency!"
-msgstr "Inkonsistens i forhandlerdata!"
+msgid "All traffic"
+msgstr "All traffikk"
 
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
-msgstr ""
+msgid "Day"
+msgstr "Dag"
 
-msgid "Edit reseller aborted!"
-msgstr "Endring av forhandler avbrutt!"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Legg til betalingsløsning "
 
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
-msgstr ""
+msgid "Add hosting plan"
+msgstr "Legg til betalingsløsning"
 
-#, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
-msgstr ""
+msgid "Hosting plan properties"
+msgstr "Egenskaper for betalingsløsningen"
 
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
-"Om du vil sette begrensninger for en forhandler, må du først sette "
-"begrensninger for brukerene til forhandleren!"
+msgid "Template name"
+msgstr "Plan på mal"
 
-#, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr ""
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maks underdomener<br><i>(-1 disabled, 0 unlimited)</i>"
 
-msgid "Edit reseller"
-msgstr "Endre forhandler"
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maks antall identiteter<br><i>(-1 disabled, 0 unlimited)</i>"
 
-msgid "E-mail"
-msgstr "E-mail"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for mailkontoer<br><i>(-1 disabled, 0 unlimited)</i> "
 
-msgid "unlimited"
-msgstr "ubegrenset"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for FTP kontoer<br><i>(-1 disabled, 0 unlimited)</i>"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
-msgstr "Domene grense<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for SQL databaser<br><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Grense for SQL brukere<br><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Grense for overføring [MB]<br><i>(0 unlimited)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Grense for diskbruk [MB]<br><i>(0 unlimited)</i>"
+
+msgid "PHP"
+msgstr "PHP"
+
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+msgid "Backup and restore"
+msgstr "Sikkerhetskopiering og gjenoppretting"
+
+msgid "Apache logfiles"
+msgstr "Apache logfiler"
+
+msgid "AwStats"
+msgstr "AwStats"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "no"
+msgstr "nei"
+
+msgid "Billing Settings"
+msgstr "Betalings instillinger"
+
+msgid "Price"
+msgstr "Pris"
+
+msgid "Setup fee"
+msgstr "Opprettelseskostnad"
+
+msgid "Currency"
+msgstr "Valutta"
+
+msgid "Payment period"
+msgstr "Betalingsperiode"
+
+msgid "Available for purchasing"
+msgstr "Tilgjengelig for kjøp"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "(e.g. EUR)"
+msgstr "(feks. NOK)"
+
+msgid "Add plan"
+msgstr "Legg til løsning"
+
+msgid "Incorrect template name length!"
+msgstr "Ugyldig lengde på malnavnet!"
+
+msgid "Incorrect template description length!"
+msgstr "Ugyldig lengde på beskrivelsen av malen!"
+
+msgid "Incorrect price syntax!"
+msgstr "Ugylidig utseende på pris!"
+
+msgid "Incorrect setup fee syntax!"
+msgstr "Ugyldig utseende på opprettelseskostnad!"
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "En betalingsløsning med dette navnet eksisterer allerede!"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Endre betalingsplan"
+
+msgid "Price Style"
+msgstr "Pris Stil"
 
 msgid "Update plan"
 msgstr "Oppdater plan"
@@ -974,48 +766,6 @@ msgstr "Ugyldig pris. Eksempel: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Ugyldig opprettings kostnad. Eksempel: 19.99"
-
-msgid "Please specify a subject!"
-msgstr "Vennligst spesifiser et emne!"
-
-msgid "Please specify message!"
-msgstr "Vennligst spesifiser en melding!"
-
-msgid "Auto email template data updated!"
-msgstr "Informasjonen i auto email malen ble oppdatert!"
-
-msgid "ispCP - Admin/Manage users/Email setup"
-msgstr "sipCP - Admin/Administrer brukere/Email oppsett"
-
-msgid "Email setup"
-msgstr "Email oppsett"
-
-msgid "Message template info"
-msgstr "Meldingsmal informasjon"
-
-msgid "User login (system) name"
-msgstr "Bruker login (system) navn"
-
-msgid "User password"
-msgstr "Brukerpassord"
-
-msgid "User real (first and last) name"
-msgstr "Brukerens ekte (for og etter) navn"
-
-msgid "Message template"
-msgstr "Meldingsmal"
-
-msgid "Subject"
-msgstr "Emne"
-
-msgid "Apply changes"
-msgstr "Utfør endringer"
-
-msgid "Benutzertyp (admin, reseller, user)"
-msgstr ""
-
-msgid "URL to this admin panel"
-msgstr ""
 
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr "ispCP - Administrator/Betalingsplan Administrasjon"
@@ -1050,6 +800,9 @@ msgstr ""
 msgid "Hosting plans not found!"
 msgstr "Betalingsplan ikke funnet!"
 
+msgid "No."
+msgstr "Nei."
+
 msgid "Name"
 msgstr "Navn"
 
@@ -1062,6 +815,9 @@ msgstr "Du har <b>%d</b> nye hjelp spørsmål"
 
 msgid "View"
 msgstr "Vis"
+
+msgid "Update checking is disabled!"
+msgstr ""
 
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
@@ -1087,6 +843,18 @@ msgstr "%1$d%% [%2$s av %3$s]"
 #, fuzzy
 msgid "ispCP - Admin/Main Index"
 msgstr "ispCP - Klient/Hovedside"
+
+msgid "You cannot delete the last active IP address!"
+msgstr "Du kan ikke fjerne den siste aktive IP adressen!"
+
+msgid "Error: we have a domain using this IP!"
+msgstr "Error: vi har et domene som bruker denne IP'en!"
+
+msgid "Error: we have a reseller using this IP!"
+msgstr "Error: vi har en forhandler som bruker denne IP'en!"
+
+msgid "IP was deleted!"
+msgstr "IP'en ble slettet!"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/IP administrasjon"
@@ -1124,7 +892,8 @@ msgstr "Domene"
 msgid "Add new IP"
 msgstr "Legg til ny IP"
 
-msgid "Are you sure you want to delete this IP: "
+#, fuzzy, php-format
+msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Er du sikker på at du vil slette denne IP'en:"
 
 msgid "No domain system errors"
@@ -1177,6 +946,13 @@ msgstr "Ferdig"
 msgid "Unknown Error"
 msgstr "Ukjent feil"
 
+#, fuzzy
+msgid "Enable update at"
+msgstr "Database oppdateringer"
+
+msgid "Settings"
+msgstr "Instillinger"
+
 msgid "Get it at"
 msgstr "Få alt"
 
@@ -1200,78 +976,6 @@ msgstr "Språk"
 
 msgid "Choose default language"
 msgstr "Velg standar språk"
-
-msgid "Upload file error!"
-msgstr "Feil med fil opplasting!"
-
-msgid "You can only upload images!"
-msgstr "Du kan bare last opp bilder!"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Bildene må være mindre enn 195 x 195 pixler!"
-
-msgid "Your logo was successful uploaded!"
-msgstr "Din opplasting av logo var vellykket!"
-
-msgid "Layout settings"
-msgstr "Utseende instillinger"
-
-msgid "Installed layouts"
-msgstr "Installerte utseender"
-
-msgid "Layout name"
-msgstr "Utseende navn"
-
-msgid "default"
-msgstr "standar"
-
-msgid "Upload logo"
-msgstr "Las topp logo"
-
-msgid "Logo file"
-msgstr "Logo fil"
-
-msgid "Upload"
-msgstr "Last opp"
-
-msgid "Remove"
-msgstr "Fjern"
-
-msgid "Choose default layout"
-msgstr "Velg standar utseende"
-
-msgid "Layout"
-msgstr "Utseende"
-
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Admin/Glemtpw email setup"
-
-msgid "Lost password e-mail"
-msgstr "Glemt passord e-mail"
-
-msgid "Activation E-Mail"
-msgstr "Aktiverings E-Mail"
-
-msgid "Password E-Mail"
-msgstr "Passord E-Mail"
-
-msgid "User (first and last) name"
-msgstr "Bruker (for og etter) navn"
-
-msgid "Lost password link"
-msgstr "Mistet passord link"
-
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Admin/Vedlikeholds modus"
-
-msgid "Settings saved !"
-msgstr "Instillinger lagret !"
-
-msgid "Maintenance mode"
-msgstr "Vedlikeholds modus"
-
-msgid "Under this mode only administrators can login"
-msgstr "I denne modusen kan bare administratorer logge inn"
 
 msgid "Reseller list is empty!"
 msgstr "Forhandler listen er tom!"
@@ -1359,24 +1063,6 @@ msgstr "Fra forhandler"
 msgid "To reseller"
 msgstr "Til forhandler"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Admin/Administrer Sesjoner"
-
-msgid "Manage user sessions"
-msgstr "Administrer brukersesjoner"
-
-msgid "User type"
-msgstr "Brukertype"
-
-msgid "Last access"
-msgstr "Siste tilgang"
-
-msgid "Options"
-msgstr "Muligheter"
-
-msgid "Kill session"
-msgstr "Drep sesjon"
-
 msgid "ispCP - Admin/Manage Users"
 msgstr "ispCP - Admin/Administrer Brukere"
 
@@ -1411,6 +1097,9 @@ msgstr "ispCP - Admin/Internasjonalisering"
 
 msgid "Default language changed!"
 msgstr "Standar språk endret!"
+
+msgid "Upload file error!"
+msgstr "Feil med fil opplasting!"
 
 msgid "You can upload only text files!"
 msgstr "Du kan kun laste opp tekstfiler!"
@@ -1460,6 +1149,194 @@ msgstr "Installer"
 
 msgid "Export"
 msgstr "Eksporter"
+
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Admin/Endre Passord"
+
+msgid "Please fill up all data fields!"
+msgstr "Venligst fyll inn data i alle feltene!"
+
+msgid "Passwords do not match!"
+msgstr "Passordene er ikke like!"
+
+msgid "The current password is wrong!"
+msgstr "Det nåværende passordet er galt!"
+
+msgid "User password updated successfully!"
+msgstr "Vellykket oppdatering av bruker passord!"
+
+msgid "Change password"
+msgstr "Endre passord"
+
+msgid "Password data"
+msgstr "Passord data"
+
+msgid "Update password"
+msgstr "Oppdater passord"
+
+msgid "Current password"
+msgstr "Nåværende passord"
+
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Admin/Endre Personlig Informasjon"
+
+msgid "Personal data updated successfully!"
+msgstr "Oppdatering av personlig informasjon vellykket!"
+
+msgid "Change personal data"
+msgstr "Endre personlig informasjon"
+
+msgid "Personal data"
+msgstr "Personlig informasjon"
+
+msgid "Update data"
+msgstr "Oppdater informasjon"
+
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr "ispCP - Admin/Administrer brukere/Legg til forhandler"
+
+msgid "Reseller IP list is empty!"
+msgstr "Forhandler IP listen er tom!"
+
+msgid "Assign"
+msgstr "Tildel"
+
+msgid "Label"
+msgstr "Merke"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Incorrect email syntax!"
+msgstr "Ugyldig sammensetning av email!"
+
+msgid "Incorrect domains limit!"
+msgstr "Ugyldig domene grense!"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Minst en IP må være tildelt RESELLEREN"
+
+msgid "Add reseller"
+msgstr "Legg til forhandler"
+
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Domenegrense<br><i>(0 unlimited)</i>"
+
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Underdomene grense<br><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Identitetgrense<br><i>(-1 disabled, 0 unlimited)</i>"
+
+msgid "JSP"
+msgstr "JSP"
+
+msgid "SSI"
+msgstr "SSI"
+
+msgid "Frontpage extensions"
+msgstr "Frontpage utvidelser"
+
+msgid "Custom error pages"
+msgstr "Egendefinerte feilsider"
+
+msgid "Protected areas"
+msgstr "Beskyttede områder"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Directory listing"
+msgstr "Folder listing"
+
+msgid "Logo upload"
+msgstr "Opplasting av logo"
+
+msgid "Reseller IPs"
+msgstr "Forhandler IP'er"
+
+msgid "Customer ID"
+msgstr "Kunde ID"
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Administer brukere/Endre Forhandler"
+
+msgid "Domains"
+msgstr "Domener"
+
+#, fuzzy, php-format
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+"Inkonsistens mellom current_als_cnt og det faktiske antall pekere: %1$d != %2"
+"$d"
+
+msgid "Aliases"
+msgstr "Pekere"
+
+#, fuzzy, php-format
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+"Inkonsistens mellom current_ftp_cnt og det faktiske antall ftp: %1$d != %2$d"
+
+msgid "SQL Databases"
+msgstr "SQL Databaser"
+
+msgid "SQL Users"
+msgstr "SQL Brukere"
+
+msgid "Web Traffic"
+msgstr "Web Trafikk"
+
+msgid "Disk storage"
+msgstr "Disk lagring"
+
+msgid "Reseller data inconsistency!"
+msgstr "Inkonsistens i forhandlerdata!"
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+
+msgid "Edit reseller aborted!"
+msgstr "Endring av forhandler avbrutt!"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+
+#, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
+msgstr ""
+
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Om du vil sette begrensninger for en forhandler, må du først sette "
+"begrensninger for brukerene til forhandleren!"
+
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
+msgstr ""
+
+msgid "Edit reseller"
+msgstr "Endre forhandler"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "unlimited"
+msgstr "ubegrenset"
+
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Domene grense<br><i>((-1 disabled, 0 unlimited)</i>"
 
 msgid "ispCP - Reseller statistics"
 msgstr "ispCP - Forhandler statistikk"
@@ -1626,32 +1503,122 @@ msgstr "Service"
 msgid "Server status"
 msgstr "Server status"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Admin/Server Traffic Settings"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Admin/Administrer Sesjoner"
 
-msgid "Wrong data input!"
-msgstr "Gal inndata!"
+msgid "Manage user sessions"
+msgstr "Administrer brukersesjoner"
 
-msgid "Warning traffic is bigger than max traffic!"
-msgstr "Advarsels trafikken er større enn maks trafikk! "
+msgid "User type"
+msgstr "Brukertype"
 
-msgid "Server traffic settings updated successfully!"
-msgstr "Vellykket oppdatering av serverens trafikk instillinger!"
+msgid "Last access"
+msgstr "Siste tilgang"
 
-msgid "Modify"
-msgstr "Endre"
+msgid "Options"
+msgstr "Muligheter"
 
-msgid "Server traffic settings"
-msgstr "Server trafikk instillinger"
+msgid "Kill session"
+msgstr "Drep sesjon"
 
-msgid "Set server traffic settings"
-msgstr "Sett server trafikk instillinger"
+msgid "You can only upload images!"
+msgstr "Du kan bare last opp bilder!"
 
-msgid "Max traffic [MB]"
-msgstr "Maks trafikk [MB]"
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Bildene må være mindre enn 195 x 195 pixler!"
 
-msgid "Warning traffic [MB]"
-msgstr "Advarsels trafikk [MB]"
+msgid "Your logo was successful uploaded!"
+msgstr "Din opplasting av logo var vellykket!"
+
+msgid "Layout settings"
+msgstr "Utseende instillinger"
+
+msgid "Installed layouts"
+msgstr "Installerte utseender"
+
+msgid "Layout name"
+msgstr "Utseende navn"
+
+msgid "default"
+msgstr "standar"
+
+msgid "Upload logo"
+msgstr "Las topp logo"
+
+msgid "Logo file"
+msgstr "Logo fil"
+
+msgid "Upload"
+msgstr "Last opp"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Choose default layout"
+msgstr "Velg standar utseende"
+
+msgid "Layout"
+msgstr "Utseende"
+
+msgid "Please specify a subject!"
+msgstr "Vennligst spesifiser et emne!"
+
+msgid "Please specify message!"
+msgstr "Vennligst spesifiser en melding!"
+
+msgid "Auto email template data updated!"
+msgstr "Informasjonen i auto email malen ble oppdatert!"
+
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Admin/Glemtpw email setup"
+
+msgid "Lost password e-mail"
+msgstr "Glemt passord e-mail"
+
+msgid "Message template info"
+msgstr "Meldingsmal informasjon"
+
+msgid "Message template"
+msgstr "Meldingsmal"
+
+msgid "Activation E-Mail"
+msgstr "Aktiverings E-Mail"
+
+msgid "Password E-Mail"
+msgstr "Passord E-Mail"
+
+msgid "User login (system) name"
+msgstr "Bruker login (system) navn"
+
+msgid "User password"
+msgstr "Brukerpassord"
+
+msgid "User (first and last) name"
+msgstr "Bruker (for og etter) navn"
+
+msgid "Lost password link"
+msgstr "Mistet passord link"
+
+msgid "Subject"
+msgstr "Emne"
+
+msgid "Apply changes"
+msgstr "Utfør endringer"
+
+msgid "URL to this admin panel"
+msgstr ""
+
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Vedlikeholds modus"
+
+msgid "Settings saved !"
+msgstr "Instillinger lagret !"
+
+msgid "Maintenance mode"
+msgstr "Vedlikeholds modus"
+
+msgid "Under this mode only administrators can login"
+msgstr "I denne modusen kan bare administratorer logge inn"
 
 msgid "ispCP - Admin/Settings"
 msgstr "ispCP - Admin/Instillinger"
@@ -1661,9 +1628,6 @@ msgstr "FEIL: Kun positive nummer tillatt!"
 
 msgid "General settings"
 msgstr "Generelle instillinger"
-
-msgid "Settings"
-msgstr "Instillinger"
 
 msgid "Activation link expire time (minutes)"
 msgstr "Utløpstiden til aktiveringslinken (minutter)"
@@ -1740,6 +1704,10 @@ msgstr ""
 msgid "Errors"
 msgstr "Feil"
 
+#, fuzzy
+msgid "Check for update"
+msgstr "Bruker oppdatert"
+
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
 "FEIL: Kun bokstaver, tall, nummer, mellombrom og understrek er tillatt!"
@@ -1765,56 +1733,44 @@ msgstr "Port"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "You have no support tickets."
-msgstr "Du har ingen hjelpsaker"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Admin/Server Traffic Settings"
 
-msgid "Low"
-msgstr "Lav"
+msgid "Wrong data input!"
+msgstr "Gal inndata!"
 
-msgid "Medium"
-msgstr "Middels"
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Advarsels trafikken er større enn maks trafikk! "
 
-msgid "High"
-msgstr "Høy"
+msgid "Server traffic settings updated successfully!"
+msgstr "Vellykket oppdatering av serverens trafikk instillinger!"
 
-msgid "Very high"
-msgstr "Veldig høy"
+msgid "Modify"
+msgstr "Endre"
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Klient/Spørsmål & Kommentarer"
+msgid "Server traffic settings"
+msgstr "Server trafikk instillinger"
 
-msgid "Support tickets"
-msgstr "Hjelp sak"
+msgid "Set server traffic settings"
+msgstr "Sett server trafikk instillinger"
 
-msgid "From"
-msgstr "Fra"
+msgid "Max traffic [MB]"
+msgstr "Maks trafikk [MB]"
 
-msgid "To"
+msgid "Warning traffic [MB]"
+msgstr "Advarsels trafikk [MB]"
+
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "sipCP - Admin/Administrer brukere/Email oppsett"
+
+msgid "Email setup"
+msgstr "Email oppsett"
+
+msgid "User real (first and last) name"
+msgstr "Brukerens ekte (for og etter) navn"
+
+msgid "User type (admin, reseller, user)"
 msgstr ""
-
-msgid "Priority"
-msgstr "Prioritet"
-
-msgid "Last reply"
-msgstr "Siste svar"
-
-msgid "Delete all"
-msgstr "Slett alle"
-
-msgid "Open tickets"
-msgstr "Åpne saker"
-
-msgid "Closed tickets"
-msgstr "Lukkede saker"
-
-msgid "[New]"
-msgstr "[Ny]"
-
-msgid "[Re]"
-msgstr "[Sv]"
-
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Client/Aktiver Mail Autosvar"
 
 msgid "days"
 msgstr "dager"
@@ -1888,6 +1844,66 @@ msgstr "Prosent"
 msgid "Size"
 msgstr "Størrelse"
 
+msgid "You have no support tickets."
+msgstr "Du har ingen hjelpsaker"
+
+msgid "Low"
+msgstr "Lav"
+
+msgid "Medium"
+msgstr "Middels"
+
+msgid "High"
+msgstr "Høy"
+
+msgid "Very high"
+msgstr "Veldig høy"
+
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Klient/Spørsmål & Kommentarer"
+
+msgid "Support tickets"
+msgstr "Hjelp sak"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "To"
+msgstr ""
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "Last reply"
+msgstr "Siste svar"
+
+msgid "Delete all"
+msgstr "Slett alle"
+
+msgid "Open tickets"
+msgstr "Åpne saker"
+
+msgid "Closed tickets"
+msgstr "Lukkede saker"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Hjelp saken ble vellykket slettet!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Alle åpene hjelp saker ble vellykket slettet!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Alle lukkede hjelp saker ble vellykket slettet!"
+
+msgid "[New]"
+msgstr "[Ny]"
+
+msgid "[Re]"
+msgstr "[Sv]"
+
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Client/Aktiver Mail Autosvar"
+
 msgid "Ticket not found!"
 msgstr "Sak ikke funnet!"
 
@@ -1905,6 +1921,9 @@ msgstr "Vennligst skriv inn til melding!"
 
 msgid "Message was sent!"
 msgstr "Melding sendt"
+
+msgid "Message was sent."
+msgstr "Meldingen ble sendt."
 
 msgid "Ticket was closed!"
 msgstr "Saken ble lukket!"
@@ -1979,195 +1998,41 @@ msgstr "Pekeren er lagt i kø for aktivering!"
 msgid "Alias scheduled for addition!"
 msgstr "Peker lagt i kø for å bli lagt til!"
 
-msgid "Empty List"
-msgstr "Tom Liste"
-
-msgid "Empty list"
-msgstr "Tom liste"
-
-msgid "FTP account already exists!"
-msgstr "FTP kontoen eksisterer allerede!"
-
-msgid "Unknown domain type"
-msgstr "Ukjent domene type"
-
-msgid "Incorrect mount point length or syntax"
-msgstr "Ugyldig monteringspunkt lengde eller form"
-
-#, php-format
-msgid "%s does not exist"
-msgstr "%s eksisterer ikke"
-
-msgid "FTP account added!"
-msgstr "FTP konto lagt til!"
-
-msgid "Please enter FTP account username!"
-msgstr "Vennligst skriv inn ditt FTP brukernavn!"
-
-msgid "Password data is missing!"
-msgstr "Passordinformasjon mangler!"
-
-msgid "Entered passwords differ from the another!"
-msgstr "Passordene er ikke like!"
-
-msgid "Subdomain list is empty! You cannot add FTP accounts there!"
-msgstr "Underdomene listen er tom! Du kan ikke legge til FTP kontoer der!"
-
-msgid "Alias list is empty! You cannot add FTP accounts there!"
-msgstr "Pekerlisten er tom! Du kan ikke legge til FTP kontoer der!"
-
-msgid "Please specify other FTP account dir!"
-msgstr "Vennligs spesifiser en annen mappe for denne FTP kontoen!"
-
-msgid "FTP accounts limit reached!"
-msgstr "Grensen for FTP kontoer nådd!"
-
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Client/Legg til FTP Bruker"
-
-msgid "Add FTP user"
-msgstr "Legg til FTP bruker"
-
-msgid "To main domain"
-msgstr "Til hoveddomenet"
-
-msgid "To domain alias"
-msgstr "Til domenepekere"
-
-msgid "To subdomain"
-msgstr "Til underdomene"
-
-msgid "Use other dir"
-msgstr "Bruk annen mappe"
-
-msgid "Choose dir"
-msgstr "Vel mappe"
-
-msgid "Invalid Mail Localpart Format used!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 
-msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr "Mailformatet på en av adressene i videresendingslisten er gal!"
-
-msgid "Mail forward list empty!"
-msgstr "Videresendingslisten for mail er tom!"
-
-msgid "Mail account already exists!"
-msgstr "Mail kontoen eksisterer allerede!"
-
-msgid "Mail account scheduled for addition!"
-msgstr "Mail konto lagt i kø for å bli lagt til!"
-
-#, fuzzy
-msgid "Please select at least one mail type!"
-msgstr "Vennligst spesifiser en avsender email!"
-
-msgid "Please enter mail account username!"
-msgstr "Vennligst skriv inn brukernavn for mail!"
-
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Passordet inneholder tegn som ikke er tillatt!"
-
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
-
-msgid "Alias list is empty! You cannot add mail accounts!"
-msgstr "Pekerlisten er tom! Du kan ikke legge til mail kontoer!"
-
-msgid "Forward list is empty!"
-msgstr "Videresendingslisten er tom!"
-
-msgid "Mail accounts limit reached!"
-msgstr "Mail konto grensen nådd!"
-
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Klient/Legg til Mail Bruker"
-
-msgid "Add mail users"
-msgstr "Legg til mail bruker"
-
-msgid "Normal mail"
-msgstr "Normal mail"
-
-msgid "Forward mail"
-msgstr "Videresendings mail"
-
-msgid "Forward to"
-msgstr "Videresend til"
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr "Legg til flere email adresser ved å skille de med en linjeskift."
-
-msgid "Please type database name!"
-msgstr "Vennligst skriv inn database navnet!"
-
-msgid "Database name is too long!"
-msgstr "Database navnet er for kort!"
-
-msgid "Specified database name already exists!"
-msgstr "Inntastet database navn eksisterer allerede!"
-
-#, php-format
-msgid "Wildcards such as %% and ? are not allowed!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
 
-msgid "SQL database created successfully!"
-msgstr "Oppretting av SQL databasen var vellykket!"
+msgid "Alias scheduled for deletion!"
+msgstr "Peker lagt i kø for sletting!"
 
-msgid "SQL accounts limit reached!"
-msgstr "Grensen for SQL kontoer nådd!"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Client/Legg til SQL Database"
+msgid "Edit domain alias"
+msgstr "Endre domene pekere"
 
-msgid "Add SQL database"
-msgstr "Legg til SQL database"
+msgid "Alias name"
+msgstr "Peker navn"
 
-msgid "Database name"
-msgstr "Database navn"
+msgid "Mount Point"
+msgstr "Monterings punkt"
 
-msgid "Use numeric ID"
-msgstr "Bruk numerisk ID"
+msgid "Enable Forward"
+msgstr "Aktiver Videresending"
 
-msgid "Before the name"
-msgstr "Før navnet"
+msgid "Enable"
+msgstr "Aktiver"
 
-msgid "After the name"
-msgstr "Etter navnet"
+msgid "Disable"
+msgstr "Deaktiver"
 
-msgid "Subdomains limit reached!"
-msgstr "Grensen for underdomener nådd!"
-
-msgid "Please specify subdomain name!"
-msgstr "Vennligst spesifiser navn på underdomene!"
-
-msgid "Subdomain already exists or is not allowed!"
-msgstr "Underdomenet eksisterer allerede eller er ikke tillatt!"
-
-msgid "Wrong subdomain syntax!"
-msgstr "Gal form på Underdomenet!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Underdomenets monteringspunkt eksisterer allerede!"
-
-msgid "Subdomain scheduled for addition!"
-msgstr "Underdomene lagt i kø for å bli lagt til!"
-
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Klient/Legg til Underdomene"
-
-msgid "Add subdomain"
-msgstr "Legg til underdomene"
-
-msgid "Subdomain data"
-msgstr "Underdomene informasjon"
-
-msgid "Subdomain name"
-msgstr "Underdomene navn"
-
-msgid "Directory tree mount point"
-msgstr "Katalogtreets monteringspunkt"
+msgid "A Forward URL has to start with 'http://'"
+msgstr "En videresendings URL må starte med 'http://'"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Sikkerhetskopi lagt i kø for gjennoppretting!"
@@ -2211,86 +2076,6 @@ msgstr "Gjenopprett"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Er du sikker på at du vil tilbakeføre sikkerhetskopien?"
-
-msgid "N/A"
-msgstr "N/A"
-
-msgid "Enable"
-msgstr "Aktiver"
-
-msgid "Disable"
-msgstr "Deaktiver"
-
-#, fuzzy
-msgid "Delete CatchAll"
-msgstr "Slett FangAlle"
-
-msgid "None"
-msgstr "Ingen"
-
-#, fuzzy
-msgid "Create catch all"
-msgstr "Lag en fang alle"
-
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Klient/Administrer Brukere"
-
-msgid "Manage users"
-msgstr "Administrer brukere"
-
-msgid "Mail users"
-msgstr "Mail brukere"
-
-msgid "Auto respond"
-msgstr "Autosvar"
-
-msgid "Domain mails"
-msgstr "Domene mail"
-
-msgid "Subdomain mails"
-msgstr "Underdomene mail"
-
-msgid "Alias mails"
-msgstr "Pekermail"
-
-msgid "Mails total"
-msgstr "Totalt antall mail"
-
-msgid "FTPs total"
-msgstr "Totalt antall FTP'er"
-
-msgid "Catch all account"
-msgstr "Fang alle kontoer"
-
-msgid "Catch all"
-msgstr "Fang alle"
-
-msgid "FTP users"
-msgstr "FTP brukere"
-
-msgid "FTP account"
-msgstr "FTP kontoer"
-
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Klient/Endre Passord"
-
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Klient/Endre Personlig Informasjon"
-
-msgid "Catch all account scheduled for creation!"
-msgstr "Fang alle kontoer som ligger i kø for å bli opprettet!"
-
-msgid "Mail forward list error!"
-msgstr "Mail videresendingsliste feil!"
-
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Klient/Legg til FangAlle Mail Kontoer"
-
-msgid "Create catch all mail account"
-msgstr "Legg til en fang all mail konto"
-
-msgid "Mail accounts list"
-msgstr "Mail konto liste"
 
 msgid "ispCP - Client/Cronjob Manager"
 msgstr "ispCP - Klient/Cronjob Manager"
@@ -2339,39 +2124,32 @@ msgstr "Endre Cronjobb"
 msgid "Cronjobs"
 msgstr "Cronjobber"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr ""
+msgid "N/A"
+msgstr "N/A"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
+msgid "Subdomain list is empty!"
+msgstr "Underdomene listen er tom!"
 
-msgid "Alias scheduled for deletion!"
-msgstr "Peker lagt i kø for sletting!"
+msgid "Delete order"
+msgstr "Slatt ordre"
 
-msgid "Catch all account scheduled for deletion!"
-msgstr ""
+msgid "Alias list is empty!"
+msgstr "Peker listen er tom!"
 
-msgid "FTP account deleted successfully!"
-msgstr "Sletting av FTP kontoen vellykket!"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Klient/Administrer Domener"
 
-msgid "Please delete first CatchAll account for this email!"
-msgstr ""
+msgid "Manage domains"
+msgstr "Administrer domener"
 
-msgid "SQL database was removed successfully!"
-msgstr "Fjerning av SQL databasen var vellykket!"
+msgid "Mount point"
+msgstr "Monteringspunkt"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
+msgid "Forward"
+msgstr "Fremmover"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr ""
-
-msgid "Mail account scheduled for modification!"
-msgstr ""
+msgid "Actions"
+msgstr "Handlinger"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Klient/Domene Statistikk"
@@ -2390,81 +2168,6 @@ msgstr "POP/IMAP"
 
 msgid "Sum"
 msgstr "Sum"
-
-msgid "ispCP - Manage Domain Alias/Edit Alias"
-msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
-
-msgid "Edit domain alias"
-msgstr "Endre domene pekere"
-
-msgid "Alias name"
-msgstr "Peker navn"
-
-msgid "Mount Point"
-msgstr "Monterings punkt"
-
-msgid "Enable Forward"
-msgstr "Aktiver Videresending"
-
-msgid "A Forward URL has to start with 'http://'"
-msgstr "En videresendings URL må starte med 'http://'"
-
-msgid "Entered passwords differ!"
-msgstr "Inntastede passord er forskjellige!"
-
-msgid "FTP account data updated!"
-msgstr "FTP kontoinformasjon oppdatert!"
-
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Klient/Endre FTP Konto"
-
-msgid "Edit FTP user"
-msgstr "Endre FTP bruker"
-
-msgid "Save changes"
-msgstr "Lagre endringer"
-
-msgid "Email account not found!"
-msgstr "Email konto ikke funnet!"
-
-msgid "Missing or wrong data!"
-msgstr "Manglende eller gal data!"
-
-msgid "Password data includes not valid signs!"
-msgstr "Inntastede passord inneholder ulovlige tegn!"
-
-msgid "Mail were updated successfully!"
-msgstr "Mail bel vellykket oppdatert!"
-
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Administrer Mail og FTP / Endre mail konto"
-
-msgid "Edit email account"
-msgstr "Endre email konto"
-
-msgid "Please type your mail autorespond message!"
-msgstr "Venligst skriv inn din autosvar melding!"
-
-msgid "Mail account scheduler for modification!"
-msgstr "Mail konto lagt i kø for modifisering!"
-
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Klient/Aktiver Mail Autosvar"
-
-msgid "Edit mail auto responder"
-msgstr "Endre mail autosvar"
-
-msgid "Your message"
-msgstr "Din melding"
-
-msgid "Please wait for update"
-msgstr "Venligst vent på en oppdatering"
-
-msgid "Mail accounts list is empty!"
-msgstr "Mail konto listen er ikke tom!"
-
-msgid "Enable mail auto responder"
-msgstr "Aktiver mail autosvar"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Klient/Administrer Egendefinerte Feilsider"
@@ -2504,8 +2207,92 @@ msgstr "Feil sider"
 msgid "FTP list is empty!"
 msgstr "FTP listen er tom!"
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Klient/Administrer Brukere"
+
+msgid "Manage users"
+msgstr "Administrer brukere"
+
+msgid "FTPs total"
+msgstr "Totalt antall FTP'er"
+
+msgid "FTP users"
+msgstr "FTP brukere"
+
+msgid "FTP account"
+msgstr "FTP kontoer"
+
+msgid "Empty List"
+msgstr "Tom Liste"
+
+msgid "Empty list"
+msgstr "Tom liste"
+
+msgid "FTP account already exists!"
+msgstr "FTP kontoen eksisterer allerede!"
+
+msgid "Unknown domain type"
+msgstr "Ukjent domene type"
+
+msgid "Incorrect mount point length or syntax"
+msgstr "Ugyldig monteringspunkt lengde eller form"
+
+#, php-format
+msgid "%s does not exist"
+msgstr "%s eksisterer ikke"
+
+msgid "FTP account added!"
+msgstr "FTP konto lagt til!"
+
+msgid "Please enter FTP account username!"
+msgstr "Vennligst skriv inn ditt FTP brukernavn!"
+
+msgid "Password data is missing!"
+msgstr "Passordinformasjon mangler!"
+
+msgid "Entered passwords differ from the another!"
+msgstr "Passordene er ikke like!"
+
+#, fuzzy
+msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgstr "Underdomene listen er tom! Du kan ikke legge til FTP kontoer der!"
+
+#, fuzzy
+msgid "Alias list is empty! You can not add FTP accounts there!"
+msgstr "Pekerlisten er tom! Du kan ikke legge til FTP kontoer der!"
+
+msgid "Please specify other FTP account dir!"
+msgstr "Vennligs spesifiser en annen mappe for denne FTP kontoen!"
+
+msgid "FTP accounts limit reached!"
+msgstr "Grensen for FTP kontoer nådd!"
+
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Client/Legg til FTP Bruker"
+
+msgid "Add FTP user"
+msgstr "Legg til FTP bruker"
+
+msgid "To main domain"
+msgstr "Til hoveddomenet"
+
+msgid "To domain alias"
+msgstr "Til domenepekere"
+
+msgid "To subdomain"
+msgstr "Til underdomene"
+
+msgid "Use other dir"
+msgstr "Bruk annen mappe"
+
+msgid "Choose dir"
+msgstr "Vel mappe"
+
+#, fuzzy
+msgid "Can not open directory !<br>Please contact your administrator !"
 msgstr ""
+"Du har ikke valgt noen betalingsløsning. Vennligst ta kontakt med din "
+"systemadministrator. "
 
 #, fuzzy
 msgid "Parent Directory"
@@ -2527,354 +2314,23 @@ msgstr "Mapper"
 msgid "Choose"
 msgstr "Velg"
 
-msgid "disabled"
-msgstr "deaktiver"
+msgid "FTP account deleted successfully!"
+msgstr "Sletting av FTP kontoen vellykket!"
 
-#, php-format
-msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "Du har <b>%d</b> nye svar på dine hjelp saker"
+msgid "Entered passwords differ!"
+msgstr "Inntastede passord er forskjellige!"
 
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s av %3$s]"
+msgid "FTP account data updated!"
+msgstr "FTP kontoinformasjon oppdatert!"
 
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s av ubegrenset]"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Klient/Endre FTP Konto"
 
-msgid "You are exceeding your disk limit!"
-msgstr "Du overskrider din disk grense!"
+msgid "Edit FTP user"
+msgstr "Endre FTP bruker"
 
-msgid "You have no new support questions!"
-msgstr ""
-
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Klient/Hovedside"
-
-msgid "General information"
-msgstr "Generell informasjon"
-
-msgid "Account name"
-msgstr "Kontonavn"
-
-msgid "Main domain"
-msgstr "Hoved domene"
-
-msgid "SQL support"
-msgstr "SQL hjelp"
-
-msgid "Traffic usage"
-msgstr "Trafikk bruk"
-
-msgid "Disk usage"
-msgstr "Disk bruk"
-
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Klient/Endre Språk"
-
-msgid "Subdomain list is empty!"
-msgstr "Underdomene listen er tom!"
-
-msgid "Delete order"
-msgstr "Slatt ordre"
-
-msgid "Alias list is empty!"
-msgstr "Peker listen er tom!"
-
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Klient/Administrer Domener"
-
-msgid "Manage domains"
-msgstr "Administrer domener"
-
-msgid "Mount point"
-msgstr "Monteringspunkt"
-
-msgid "Forward"
-msgstr "Fremmover"
-
-msgid "Actions"
-msgstr "Handlinger"
-
-msgid "Database user list is empty!"
-msgstr "Database brukerlisten er tom!"
-
-msgid "Database list is empty!"
-msgstr "Database listen er tom!"
-
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Klient/Administrer SQL"
-
-msgid "Manage SQL"
-msgstr "Administrer SQL"
-
-msgid "Database Name and Users"
-msgstr "Database Navn og Brukere"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Database users"
-msgstr "Database brukere"
-
-msgid "Add SQL user"
-msgstr "Legg til SQL bruker"
-
-msgid "Execute query"
-msgstr "Utfør spørring"
-
-#, fuzzy
-msgid "Login phpMyAdmin"
-msgstr "Login phpMyAdmin"
-
-msgid "Please specify message subject!"
-msgstr "Venligs spesifiser meldings emne!"
-
-msgid "Your message was sent!"
-msgstr "Din melding ble sendt!"
-
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Hjelp system - Ny hjelp sak"
-
-msgid "New ticket"
-msgstr "Ny sak"
-
-msgid "Protected area status should be OK if you want to delete it!"
-msgstr ""
-
-msgid "Protected area deleted successfully!"
-msgstr ""
-
-#, fuzzy
-msgid "Permission deny!"
-msgstr "Tilgang nekt!"
-
-msgid "You do not have protected areas"
-msgstr ""
-
-msgid "Manage users and groups"
-msgstr "Administrer brukere og grupper"
-
-msgid "Add user"
-msgstr "Legg til bruker"
-
-msgid "Group name"
-msgstr "Gruppenavn"
-
-msgid "Group members"
-msgstr "Gruppe medlemmer"
-
-msgid "Add group"
-msgstr "Legg til gruppe"
-
-msgid "Group"
-msgstr "Gruppe"
-
-msgid "Add new protected area"
-msgstr ""
-
-msgid "Please choose user or group"
-msgstr "Venligst velg en bruker eller gruppe"
-
-msgid "Please enter area name"
-msgstr "Venligst legg til områdenavn"
-
-msgid "Please enter area path"
-msgstr "Venligst skriv inn sti"
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s eksisterer ikke"
-
-msgid "You cannot protect area without selected user(s)"
-msgstr ""
-
-msgid "You cannot protect area without selected group(s)"
-msgstr ""
-
-msgid "Protected area updated successfully!"
-msgstr ""
-
-msgid "Protected area created successfully!"
-msgstr ""
-
-msgid "Protected area status should be OK if you want to edit it!"
-msgstr ""
-
-msgid "You have no users !"
-msgstr "Du har ingen brukere !"
-
-msgid "You have no groups!"
-msgstr "Du har ingen brupper!"
-
-#, fuzzy
-msgid "Protect this area"
-msgstr "Beskytt dette området"
-
-msgid "Path"
-msgstr "Sti"
-
-msgid "Groups"
-msgstr "Grupper"
-
-msgid "User auth"
-msgstr "Brukerautentisering"
-
-msgid "Group auth"
-msgstr "Gruppeautentisering"
-
-msgid "Area name"
-msgstr "Navn på området"
-
-#, fuzzy
-msgid "Unprotect it"
-msgstr "Ubeskytt det"
-
-#, php-format
-msgid "User was assigned to the %s group"
-msgstr "Brukere ble lagt til %s bruppen"
-
-#, php-format
-msgid "User was deleted from the %s group "
-msgstr "Brukere ble fjernet fra %s gruppen"
-
-msgid "User assign"
-msgstr "Bruker tildeling"
-
-msgid "Already in:"
-msgstr "Allerede i:"
-
-msgid "Member of group:"
-msgstr "Medlem av gruppe:"
-
-msgid "Select group:"
-msgstr "Velg gruppe:"
-
-msgid "Update user"
-msgstr "Oppdater bruker"
-
-msgid "Invalid group name!"
-msgstr "Ugyldig gruppenavn!"
-
-msgid "Group already exists!"
-msgstr "Gruppen eksisterer allerede!"
-
-msgid "Manage user"
-msgstr "Administrer bruker"
-
-msgid "You have no users!"
-msgstr "Du har ingen brukere!"
-
-msgid "Wrong username!"
-msgstr "Galt brukernavn!"
-
-msgid "User already exist !"
-msgstr "Brukeren eksisterer allerede !"
-
-msgid "SQL users limit reached!"
-msgstr "Grense for SQL brukere nådd!"
-
-msgid "Please type user name!"
-msgstr "Venligst oppgi brukernavn!"
-
-msgid "Please type user password!"
-msgstr "Venligst oppgi bruker passord!"
-
-msgid "Too user long password!"
-msgstr "For langt brukerpassord!"
-
-msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr "SQL bruker ikke funnet! Kansje den er slettet av en annen bruker!"
-
-msgid "User name too long!"
-msgstr "Brukernavnet er for langt!"
-
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr ""
-
-msgid "Specified SQL username name already exists!"
-msgstr "Det spesifiserte SQL brukernavnet eksisterer allerede!"
-
-#, fuzzy
-msgid "SQL user successfully added!"
-msgstr "SQL brukeren ble vellykket lagt til!"
-
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Klient/Legg til SQL Bruker"
-
-msgid "SQL user name"
-msgstr "SQL brukernavn"
-
-#, fuzzy
-msgid "In front the name"
-msgstr "Forran navnet"
-
-#, fuzzy
-msgid "Behind the name"
-msgstr "Bak navnet"
-
-msgid "Add existing user"
-msgstr "Legg til eksisterende bruker"
-
-msgid "Existing SQL users"
-msgstr "Eksisterende SQL brukere"
-
-msgid "Too long user password!"
-msgstr "For langt bruker passord!"
-
-#, fuzzy
-msgid "SQL user password was successfully changed!"
-msgstr "Passordet på SQL brukeren ble endret vellykket!"
-
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Endre Passord på SQL Brukeren"
-
-#, fuzzy
-msgid "Change SQL user password"
-msgstr "Endring av passord på SQL bruker"
-
-msgid "Change"
-msgstr "Endre"
-
-msgid "SQL user was removed successfully!"
-msgstr "Fjerning av SQL bruker var vellykket!"
-
-msgid "Please enter an SQL query!"
-msgstr "Venligst skriv inn en SQL spørring!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Kunne ikke koble til SQL serveren som %s!"
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Utføringen av SQL spørringen feilet!"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Utføringen av SQL spørringen var vellykket!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Klient/Utfør SQL Spørring"
-
-msgid "Execute SQL query"
-msgstr "Utfør SQL spørring"
-
-msgid "SQL query"
-msgstr "SQL spørring"
-
-msgid "Query status"
-msgstr "Status på spørringen"
-
-msgid "Query result"
-msgstr "Resultat av spørringen"
-
-msgid "Execute"
-msgstr "Utfør"
-
-msgid "Protected area was deleted successful!"
-msgstr ""
+msgid "Save changes"
+msgstr "Lagre endringer"
 
 msgid "Hosting plans available for update"
 msgstr ""
@@ -2941,6 +2397,568 @@ msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr ""
+
+msgid "disabled"
+msgstr "deaktiver"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Du har <b>%d</b> nye svar på dine hjelp saker"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s av %3$s]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s av ubegrenset]"
+
+msgid "You are exceeding your disk limit!"
+msgstr "Du overskrider din disk grense!"
+
+msgid "You have no new support questions!"
+msgstr ""
+
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Klient/Hovedside"
+
+msgid "General information"
+msgstr "Generell informasjon"
+
+msgid "Account name"
+msgstr "Kontonavn"
+
+msgid "Main domain"
+msgstr "Hoved domene"
+
+msgid "SQL support"
+msgstr "SQL hjelp"
+
+msgid "Traffic usage"
+msgstr "Trafikk bruk"
+
+msgid "Disk usage"
+msgstr "Disk bruk"
+
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Klient/Endre Språk"
+
+msgid "Please wait for update"
+msgstr "Venligst vent på en oppdatering"
+
+msgid "Mail accounts list is empty!"
+msgstr "Mail konto listen er ikke tom!"
+
+msgid "Mail users"
+msgstr "Mail brukere"
+
+msgid "Auto respond"
+msgstr "Autosvar"
+
+msgid "Domain mails"
+msgstr "Domene mail"
+
+msgid "Subdomain mails"
+msgstr "Underdomene mail"
+
+msgid "Alias mails"
+msgstr "Pekermail"
+
+msgid "Mails total"
+msgstr "Totalt antall mail"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr ""
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr "Mailformatet på en av adressene i videresendingslisten er gal!"
+
+msgid "Mail forward list empty!"
+msgstr "Videresendingslisten for mail er tom!"
+
+msgid "Mail account already exists!"
+msgstr "Mail kontoen eksisterer allerede!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Mail konto lagt i kø for å bli lagt til!"
+
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Vennligst spesifiser en avsender email!"
+
+msgid "Please enter mail account username!"
+msgstr "Vennligst skriv inn brukernavn for mail!"
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Passordet inneholder tegn som ikke er tillatt!"
+
+msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
+
+msgid "Alias list is empty! You cannot add mail accounts!"
+msgstr "Pekerlisten er tom! Du kan ikke legge til mail kontoer!"
+
+msgid "Forward list is empty!"
+msgstr "Videresendingslisten er tom!"
+
+msgid "Mail accounts limit reached!"
+msgstr "Mail konto grensen nådd!"
+
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Klient/Legg til Mail Bruker"
+
+msgid "Add mail users"
+msgstr "Legg til mail bruker"
+
+msgid "Normal mail"
+msgstr "Normal mail"
+
+msgid "Forward mail"
+msgstr "Videresendings mail"
+
+msgid "Forward to"
+msgstr "Videresend til"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Legg til flere email adresser ved å skille de med en linjeskift."
+
+msgid "Mail account scheduled for modification!"
+msgstr ""
+
+msgid "Please type your mail autorespond message!"
+msgstr "Venligst skriv inn din autosvar melding!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Mail konto lagt i kø for modifisering!"
+
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Klient/Aktiver Mail Autosvar"
+
+msgid "Edit mail auto responder"
+msgstr "Endre mail autosvar"
+
+msgid "Your message"
+msgstr "Din melding"
+
+msgid "Enable mail auto responder"
+msgstr "Aktiver mail autosvar"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Fang alle kontoer som ligger i kø for å bli opprettet!"
+
+msgid "Mail forward list error!"
+msgstr "Mail videresendingsliste feil!"
+
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Klient/Legg til FangAlle Mail Kontoer"
+
+msgid "Create catch all mail account"
+msgstr "Legg til en fang all mail konto"
+
+msgid "Mail accounts list"
+msgstr "Mail konto liste"
+
+#, fuzzy
+msgid "Create catch all"
+msgstr "Lag en fang alle"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr ""
+
+#, fuzzy
+msgid "Delete CatchAll"
+msgstr "Slett FangAlle"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Catch all account"
+msgstr "Fang alle kontoer"
+
+msgid "Catch all"
+msgstr "Fang alle"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr ""
+
+msgid "Email account not found!"
+msgstr "Email konto ikke funnet!"
+
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Administrer Mail og FTP / Endre mail konto"
+
+msgid "Mail were updated successfully!"
+msgstr "Mail bel vellykket oppdatert!"
+
+msgid "Edit email account"
+msgstr "Endre email konto"
+
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Klient/Endre Passord"
+
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Klient/Endre Personlig Informasjon"
+
+msgid "Please choose user or group"
+msgstr "Venligst velg en bruker eller gruppe"
+
+msgid "Please enter area name"
+msgstr "Venligst legg til områdenavn"
+
+msgid "Please enter area path"
+msgstr "Venligst skriv inn sti"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s eksisterer ikke"
+
+msgid "You can not protect area without selected user(s)"
+msgstr ""
+
+msgid "You cannot protect area without selected group(s)"
+msgstr ""
+
+msgid "Protected area updated successfully!"
+msgstr ""
+
+msgid "Protected area created successfully!"
+msgstr ""
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr ""
+
+msgid "You have no users !"
+msgstr "Du har ingen brukere !"
+
+msgid "You have no groups!"
+msgstr "Du har ingen brupper!"
+
+#, fuzzy
+msgid "Protect this area"
+msgstr "Beskytt dette området"
+
+msgid "Path"
+msgstr "Sti"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "User auth"
+msgstr "Brukerautentisering"
+
+msgid "Group auth"
+msgstr "Gruppeautentisering"
+
+msgid "Area name"
+msgstr "Navn på området"
+
+#, fuzzy
+msgid "Unprotect it"
+msgstr "Ubeskytt det"
+
+msgid "Manage users and groups"
+msgstr "Administrer brukere og grupper"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr ""
+
+msgid "Protected area deleted successfully!"
+msgstr ""
+
+#, fuzzy
+msgid "Permission deny!"
+msgstr "Tilgang nekt!"
+
+msgid "You do not have protected areas"
+msgstr ""
+
+msgid "Add user"
+msgstr "Legg til bruker"
+
+msgid "Group name"
+msgstr "Gruppenavn"
+
+msgid "Group members"
+msgstr "Gruppe medlemmer"
+
+msgid "Add group"
+msgstr "Legg til gruppe"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Add new protected area"
+msgstr ""
+
+msgid "Protected area was deleted successful!"
+msgstr ""
+
+msgid "Invalid group name!"
+msgstr "Ugyldig gruppenavn!"
+
+msgid "Group already exists!"
+msgstr "Gruppen eksisterer allerede!"
+
+msgid "Manage user"
+msgstr "Administrer bruker"
+
+msgid "Wrong username!"
+msgstr "Galt brukernavn!"
+
+msgid "User already exist !"
+msgstr "Brukeren eksisterer allerede !"
+
+#, php-format
+msgid "User was assigned to the %s group"
+msgstr "Brukere ble lagt til %s bruppen"
+
+#, php-format
+msgid "User was deleted from the %s group "
+msgstr "Brukere ble fjernet fra %s gruppen"
+
+msgid "User assign"
+msgstr "Bruker tildeling"
+
+msgid "Already in:"
+msgstr "Allerede i:"
+
+msgid "Member of group:"
+msgstr "Medlem av gruppe:"
+
+msgid "Select group:"
+msgstr "Velg gruppe:"
+
+msgid "Update user"
+msgstr "Oppdater bruker"
+
+msgid "You have no users!"
+msgstr "Du har ingen brukere!"
+
+msgid "Please type user password!"
+msgstr "Venligst oppgi bruker passord!"
+
+msgid "Too long user password!"
+msgstr "For langt bruker passord!"
+
+#, fuzzy
+msgid "SQL user password was successfully changed!"
+msgstr "Passordet på SQL brukeren ble endret vellykket!"
+
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Endre Passord på SQL Brukeren"
+
+#, fuzzy
+msgid "Change SQL user password"
+msgstr "Endring av passord på SQL bruker"
+
+msgid "Change"
+msgstr "Endre"
+
+msgid "Please type database name!"
+msgstr "Vennligst skriv inn database navnet!"
+
+msgid "Database name is too long!"
+msgstr "Database navnet er for kort!"
+
+msgid "Specified database name already exists!"
+msgstr "Inntastet database navn eksisterer allerede!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
+
+msgid "SQL database created successfully!"
+msgstr "Oppretting av SQL databasen var vellykket!"
+
+msgid "SQL accounts limit reached!"
+msgstr "Grensen for SQL kontoer nådd!"
+
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Client/Legg til SQL Database"
+
+msgid "Add SQL database"
+msgstr "Legg til SQL database"
+
+msgid "Database name"
+msgstr "Database navn"
+
+msgid "Use numeric ID"
+msgstr "Bruk numerisk ID"
+
+msgid "Before the name"
+msgstr "Før navnet"
+
+msgid "After the name"
+msgstr "Etter navnet"
+
+msgid "SQL database was removed successfully!"
+msgstr "Fjerning av SQL databasen var vellykket!"
+
+msgid "SQL user was removed successfully!"
+msgstr "Fjerning av SQL bruker var vellykket!"
+
+msgid "Please enter an SQL query!"
+msgstr "Venligst skriv inn en SQL spørring!"
+
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr "Kunne ikke koble til SQL serveren som %s!"
+
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Utføringen av SQL spørringen feilet!"
+
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Utføringen av SQL spørringen var vellykket!"
+
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Klient/Utfør SQL Spørring"
+
+msgid "Execute SQL query"
+msgstr "Utfør SQL spørring"
+
+msgid "SQL query"
+msgstr "SQL spørring"
+
+msgid "Query status"
+msgstr "Status på spørringen"
+
+msgid "Query result"
+msgstr "Resultat av spørringen"
+
+msgid "Execute"
+msgstr "Utfør"
+
+msgid "Database user list is empty!"
+msgstr "Database brukerlisten er tom!"
+
+msgid "Database list is empty!"
+msgstr "Database listen er tom!"
+
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Klient/Administrer SQL"
+
+msgid "Manage SQL"
+msgstr "Administrer SQL"
+
+msgid "Database Name and Users"
+msgstr "Database Navn og Brukere"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Database users"
+msgstr "Database brukere"
+
+msgid "Add SQL user"
+msgstr "Legg til SQL bruker"
+
+msgid "Execute query"
+msgstr "Utfør spørring"
+
+#, fuzzy
+msgid "Login phpMyAdmin"
+msgstr "Login phpMyAdmin"
+
+msgid "SQL users limit reached!"
+msgstr "Grense for SQL brukere nådd!"
+
+msgid "Please type user name!"
+msgstr "Venligst oppgi brukernavn!"
+
+msgid "Too user long password!"
+msgstr "For langt brukerpassord!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr "SQL bruker ikke funnet! Kansje den er slettet av en annen bruker!"
+
+msgid "User name too long!"
+msgstr "Brukernavnet er for langt!"
+
+#, php-format
+msgid "Wildcards as %% and ? are not allowed!"
+msgstr ""
+
+msgid "Specified SQL username name already exists!"
+msgstr "Det spesifiserte SQL brukernavnet eksisterer allerede!"
+
+#, fuzzy
+msgid "SQL user successfully added!"
+msgstr "SQL brukeren ble vellykket lagt til!"
+
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Klient/Legg til SQL Bruker"
+
+msgid "SQL user name"
+msgstr "SQL brukernavn"
+
+#, fuzzy
+msgid "In front the name"
+msgstr "Forran navnet"
+
+#, fuzzy
+msgid "Behind the name"
+msgstr "Bak navnet"
+
+msgid "Add existing user"
+msgstr "Legg til eksisterende bruker"
+
+msgid "Existing SQL users"
+msgstr "Eksisterende SQL brukere"
+
+msgid "Subdomains limit reached!"
+msgstr "Grensen for underdomener nådd!"
+
+msgid "Please specify subdomain name!"
+msgstr "Vennligst spesifiser navn på underdomene!"
+
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Underdomenet eksisterer allerede eller er ikke tillatt!"
+
+msgid "Wrong subdomain syntax!"
+msgstr "Gal form på Underdomenet!"
+
+msgid "Subdomain mount point already exists!"
+msgstr "Underdomenets monteringspunkt eksisterer allerede!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Underdomene lagt i kø for å bli lagt til!"
+
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Klient/Legg til Underdomene"
+
+msgid "Add subdomain"
+msgstr "Legg til underdomene"
+
+msgid "Subdomain data"
+msgstr "Underdomene informasjon"
+
+msgid "Subdomain name"
+msgstr "Underdomene navn"
+
+msgid "Directory tree mount point"
+msgstr "Katalogtreets monteringspunkt"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr ""
+
+msgid "Please specify message subject!"
+msgstr "Venligs spesifiser meldings emne!"
+
+msgid "Your message was sent!"
+msgstr "Din melding ble sendt!"
+
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Hjelp system - Ny hjelp sak"
+
+msgid "New ticket"
+msgstr "Ny sak"
 
 msgid "Message was send!"
 msgstr "Meldingen ble sendt!"
@@ -3092,13 +3110,24 @@ msgstr "Feil"
 msgid "ispCP - Order Panel"
 msgstr ""
 
-msgid "[Ticket] {SUBJ}"
+msgid "[Ticket]"
 msgstr ""
 
+#, php-format
 msgid ""
-"Hello {TO_NAME} !\n"
+"Hello %s!\n"
 "\n"
-"You have a new ticket to read"
+"You have a new ticket:\n"
+msgstr ""
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr ""
+
+msgid "Log in to answer."
 msgstr ""
 
 #, php-format
@@ -3300,7 +3329,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3331,6 +3360,12 @@ msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Systemet er forøyeblikket under vedlikehold! Kun administratorer kan logge "
 "inn."
+
+#, fuzzy, php-format
+msgid "%s user already logged or session sharing problem! Aborting..."
+msgstr ""
+"Brukeren er allerede logget inn eller det er et sesjondelings problem! "
+"Avbryter..."
 
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
@@ -3565,50 +3600,6 @@ msgstr "ispCP Forhandler : Legg til Pekere"
 msgid "You have no user records."
 msgstr ""
 
-msgid "ispCP - Reseller/Add hosting plan"
-msgstr ""
-
-msgid "Hosting plan values exceed reseller maximum values!"
-msgstr ""
-
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Forhandler/Endre Passord"
-
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Forhandler/Endre Personlig Informasjon"
-
-#, fuzzy
-msgid "ispCP - Circular"
-msgstr "ispCP - Sirkelformet"
-
-#, fuzzy
-msgid "Circular"
-msgstr "Sirkelformet"
-
-msgid "Wrong domain ID!"
-msgstr "Gal domene ID"
-
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
-
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-
-#, fuzzy
-msgid "User terminated!"
-msgstr "Bruker avsluttet!"
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Administrer Domene/Pekere"
 
@@ -3652,22 +3643,65 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP - Circular"
+msgstr "ispCP - Sirkelformet"
+
+#, fuzzy
+msgid "Circular"
+msgstr "Sirkelformet"
+
+msgid "Wrong domain ID!"
+msgstr "Gal domene ID"
+
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr ""
+
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr ""
+
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr ""
+
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domene/Endre"
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Brukere/Endre"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be disabled! "
+msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
 
-msgid "Users list"
-msgstr "Bruker liste"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be limited! "
+msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
+
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr ""
+
+msgid "Price must be a number!"
+msgstr "Prisen må være et nummer!"
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
 
 msgid "ispCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
-msgstr ""
-
-msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
@@ -3703,15 +3737,6 @@ msgstr "%1$d / %2$d av <b>ubegrenset</b>"
 
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Forhandler/Endre Språk"
-
-msgid "ispCP - Reseller/Lostpw email setup"
-msgstr ""
-
-msgid "Lostpw email"
-msgstr "Glemtpw email"
-
-msgid "Lostpw link"
-msgstr "Glemtpw link"
 
 msgid "ispCP - Reseller/Order email setup"
 msgstr "ispCP - Forhandler/Oppsett av ordre email"
@@ -3797,6 +3822,28 @@ msgstr "Ordre"
 msgid "Add/Details"
 msgstr "Legg til/Detaljer"
 
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Forhandler/Endre Passord"
+
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Forhandler/Endre Personlig Informasjon"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr ""
+
+msgid "Lostpw email"
+msgstr "Glemtpw email"
+
+msgid "Lostpw link"
+msgstr "Glemtpw link"
+
+msgid "ispCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+#, fuzzy
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
+
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Brukere/Legg til brukere"
 
@@ -3829,6 +3876,13 @@ msgstr "Apache logger"
 msgid "Awstats"
 msgstr "Awstats"
 
+msgid "Domain data has been altered. Please enter again"
+msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "Begrensningen for SQL databaser er  <i>disabled</i>!"
+
 msgid "ispCP - User/Add user"
 msgstr "ispCP - Bruker/Legg til bruker"
 
@@ -3838,11 +3892,22 @@ msgstr "Legg flere domener til denne kontoen"
 msgid "System error with Domain ID "
 msgstr "Systemfeil med Domene ID"
 
-msgid "This reseller has no domains yet."
-msgstr "Forhandleren har ingen domener enda."
+#, fuzzy
+msgid "User terminated!"
+msgstr "Bruker avsluttet!"
+
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Brukere/Endre"
+
+msgid "Users list"
+msgstr "Bruker liste"
 
 msgid "ispCP - Users"
 msgstr "ispCP - Brukere"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Er du sikker på at du vil slette denne ordren"
 
 msgid "Stats"
 msgstr "Statestikk"
@@ -3870,21 +3935,14 @@ msgstr ""
 msgid "User not terminated!"
 msgstr "Bruker ikke avsluttet!"
 
-#, fuzzy
-msgid "ispCP - Reseller : Support System: View Tickets"
-msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
+msgid "This reseller has no domains yet."
+msgstr "Forhandleren har ingen domener enda."
 
-msgid "Message was sent."
-msgstr "Meldingen ble sendt."
+#~ msgid "Missing or wrong data!"
+#~ msgstr "Manglende eller gal data!"
 
-#~ msgid "Incorrect price syntax!"
-#~ msgstr "Ugylidig utseende på pris!"
-
-#~ msgid "Incorrect setup fee syntax!"
-#~ msgstr "Ugyldig utseende på opprettelseskostnad!"
-
-#~ msgid "Price Style"
-#~ msgstr "Pris Stil"
+#~ msgid "Password data includes not valid signs!"
+#~ msgstr "Inntastede passord inneholder ulovlige tegn!"
 
 #~ msgid "Unknown domain status!"
 #~ msgstr "Ukjente domene status!"

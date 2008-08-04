@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-15 15:08+0200\n"
+"POT-Creation-Date: 2008-08-04 15:05+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -176,153 +176,31 @@ msgstr "Факс"
 msgid "Add"
 msgstr "Додати"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr ""
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
 
-msgid "Reseller IP list is empty!"
-msgstr "Список IP реселера порожній!"
-
-msgid "No."
-msgstr "№"
-
-msgid "Assign"
-msgstr "Призначити"
-
-msgid "Label"
-msgstr "Мітка"
-
-msgid "Number"
-msgstr "Номер"
+msgid "User session was killed!"
+msgstr "Сесія користувача знищена!"
 
 msgid "Reseller"
 msgstr "Реселер"
 
-#, fuzzy
-msgid "Incorrect email syntax!"
-msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+msgid "Domain account"
+msgstr "Обліковий запис домену"
+
+msgid "Edit admin"
+msgstr "Редагувати адміністратора"
+
+msgid "Update"
+msgstr "Оновити"
+
+msgid "Send new login data"
+msgstr "Надіслати нові дані автентифікації"
 
 #, fuzzy
-msgid "Incorrect domains limit!"
-msgstr "Невірний синтаксис <i>доменного імені</i>"
-
-#, fuzzy
-msgid "Incorrect subdomains limit!"
-msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
-
-#, fuzzy
-msgid "Incorrect aliases limit!"
-msgstr "Невірне введення даних!"
-
-#, fuzzy
-msgid "Incorrect FTP accounts limit!"
-msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
-
-#, fuzzy
-msgid "Incorrect mail accounts limit!"
-msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
-
-#, fuzzy
-msgid "Incorrect SQL databases limit!"
-msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
-
-#, fuzzy
-msgid "Incorrect SQL users limit!"
-msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
-
-#, fuzzy
-msgid "Incorrect traffic limit!"
-msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
-
-#, fuzzy
-msgid "Incorrect disk quota limit!"
-msgstr "Невірне введення даних!"
-
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "Ви маєте призначити хоча б одну IP-адресу реселеру!"
-
-msgid "Add reseller"
-msgstr "Додати реселера"
-
-#, fuzzy
-msgid "Domains limit<br><i>(0 unlimited)</i>"
-msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-#, fuzzy
-msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
-
-msgid "PHP"
-msgstr ""
-
-msgid "CGI / Perl"
-msgstr ""
-
-msgid "JSP"
-msgstr ""
-
-msgid "SSI"
-msgstr ""
-
-msgid "Frontpage extensions"
-msgstr ""
-
-msgid "Backup and restore"
-msgstr "Резервне копіювання та відновлення"
-
-msgid "Custom error pages"
-msgstr "Індивідуальні сторінки помилок"
-
-msgid "Protected areas"
-msgstr "Захищені зони"
-
-msgid "Webmail"
-msgstr ""
-
-msgid "Directory listing"
-msgstr "Список директорій"
-
-msgid "Apache logfiles"
-msgstr "Журнали веб-сервера"
-
-msgid "AwStats"
-msgstr "AWStats"
-
-msgid "Logo upload"
-msgstr "Завантаження логотипа"
-
-msgid "yes"
-msgstr "так"
-
-msgid "no"
-msgstr "ні"
-
-msgid "Reseller IPs"
-msgstr "IP реселера"
-
-msgid "Customer ID"
-msgstr "ID користувача"
+msgid "Generate password"
+msgstr "Оновити пароль"
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Адміністратор/Журнал адміністратора"
@@ -390,108 +268,6 @@ msgstr "давніші за 6 місяців"
 msgid "older than 12 months"
 msgstr "давніші за 12 місяців"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Адміністратор/Додавання хостінг-плану"
-
-msgid "Add hosting plan"
-msgstr "Додати хостинґ-план"
-
-msgid "Hosting plan properties"
-msgstr "Властивості хостінг-плану"
-
-msgid "Template name"
-msgstr "Назва шаблону"
-
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Billing Settings"
-msgstr "Налаштування рахунків"
-
-msgid "Price"
-msgstr "Ціна"
-
-msgid "Setup fee"
-msgstr "Плата за установку"
-
-msgid "Currency"
-msgstr "Валюта"
-
-msgid "Payment period"
-msgstr "Термін оплати"
-
-msgid "Available for purchasing"
-msgstr "Замовлення можливе"
-
-msgid "Description"
-msgstr "Опис"
-
-msgid "(e.g. EUR)"
-msgstr "(Наприклад, UAH)"
-
-msgid "Add plan"
-msgstr "Додати план"
-
-msgid "Incorrect template name length!"
-msgstr ""
-
-msgid "Incorrect template description length!"
-msgstr ""
-
-msgid "Price must be a number!"
-msgstr ""
-
-msgid "Setup fee must be a number!"
-msgstr ""
-
-msgid "Hosting plan with entered name already exists!"
-msgstr "Хостінг-план із введеною назвою вже існує!"
-
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Адміністратор/Зміна пароля"
-
-msgid "Please fill up all data fields!"
-msgstr "Будь ласка, заповніть усі поля!"
-
-msgid "Passwords do not match!"
-msgstr ""
-
-msgid "The current password is wrong!"
-msgstr "Поточний пароль невірний"
-
-msgid "User password updated successfully!"
-msgstr "Пароль користувача успішно оновлений!"
-
-msgid "Change password"
-msgstr "Змінити пароль"
-
-msgid "Password data"
-msgstr "Пароль"
-
-msgid "Update password"
-msgstr "Оновити пароль"
-
-msgid "Current password"
-msgstr "Поточний пароль"
-
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Адміністратор/Зміна персональних даних"
-
-msgid "Personal data updated successfully!"
-msgstr "Персональні дані успішно оновлені!"
-
-msgid "Change personal data"
-msgstr "Змінити персональні дані"
-
-msgid "Personal data"
-msgstr "Персональні дані"
-
-msgid "Update data"
-msgstr "Оновити відомості"
-
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
 
@@ -546,7 +322,8 @@ msgstr "Користувач"
 msgid "All"
 msgstr "Усі"
 
-msgid "Are you sure you want to delete"
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
 msgstr "Ви впевнені, що бажаєте видалити?"
 
 msgid "Missing or incorrect data input!"
@@ -620,9 +397,6 @@ msgstr "Користувачі баз даних"
 msgid "Available database updates"
 msgstr "Доступні оновлення ispCP"
 
-msgid "Update"
-msgstr "Оновити"
-
 msgid "Update details"
 msgstr "Деталі оновлення"
 
@@ -637,27 +411,6 @@ msgstr "Ви впевнені, що бажаєте видалити це зам�
 #, fuzzy
 msgid "No database updates available"
 msgstr "Немає нових оновлень ispCP"
-
-msgid "You cannot delete the last active IP address!"
-msgstr ""
-
-msgid "Error: we have a domain using this IP!"
-msgstr ""
-
-msgid "Error: we have a reseller using this IP!"
-msgstr ""
-
-msgid "IP was deleted!"
-msgstr "IP видалено!"
-
-msgid "Support ticket deleted successfully!"
-msgstr "Запит підтримки успішно видалено!"
-
-msgid "All open support tickets deleted successfully!"
-msgstr "Усі незакриті заявки успішно видалено!"
-
-msgid "All closed support tickets deleted successfully!"
-msgstr "Усі закриті заявки успішно видалено!"
 
 msgid "ispCP - Domain/Details"
 msgstr "ispCP - Домен/Деталі"
@@ -725,59 +478,6 @@ msgstr "Увімкнено"
 msgid "Disabled"
 msgstr "Вимкнено"
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Статистика домену"
-
-msgid "Domain statistics"
-msgstr "Статистика домену"
-
-msgid "Month"
-msgstr "Місяць"
-
-msgid "Year"
-msgstr "Рік"
-
-msgid "Show"
-msgstr "Показати"
-
-msgid "Web traffic"
-msgstr "Web-трафік"
-
-msgid "FTP traffic"
-msgstr "Трафік FTP"
-
-msgid "SMTP traffic"
-msgstr "Трафік SMTP"
-
-msgid "POP3/IMAP traffic"
-msgstr "Трафік POP/IMAP"
-
-msgid "All traffic"
-msgstr "Весь трафік"
-
-msgid "Day"
-msgstr "День"
-
-#, fuzzy
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
-
-msgid "User session was killed!"
-msgstr "Сесія користувача знищена!"
-
-msgid "Domain account"
-msgstr "Обліковий запис домену"
-
-msgid "Edit admin"
-msgstr "Редагувати адміністратора"
-
-msgid "Send new login data"
-msgstr "Надіслати нові дані автентифікації"
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Оновити пароль"
-
 #, fuzzy
 msgid "ispCP - Admin/Edit Domain"
 msgstr "ispCP - Адміністратор/Журнал адміністратора"
@@ -835,12 +535,44 @@ msgstr ""
 "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
 
 #, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Невірне введення даних!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit!"
+msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#, fuzzy
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
 #, fuzzy
+msgid "Incorrect SQL databases limit!"
+msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
+
+#, fuzzy
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Incorrect traffic limit!"
+msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Невірне введення даних!"
 
 msgid "Subdomain"
 msgstr "Піддомен"
@@ -906,90 +638,146 @@ msgstr ""
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Статистика домену"
 
-msgid "Domains"
-msgstr "Домени"
+msgid "Domain statistics"
+msgstr "Статистика домену"
 
-#, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
+msgid "Month"
+msgstr "Місяць"
 
-msgid "Aliases"
-msgstr "Аліаси"
+msgid "Year"
+msgstr "Рік"
 
-#, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
+msgid "Show"
+msgstr "Показати"
 
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
-msgstr ""
-
-#, fuzzy
-msgid "Web Traffic"
+msgid "Web traffic"
 msgstr "Web-трафік"
 
-#, fuzzy
-msgid "Disk storage"
-msgstr "Використання дискового простору"
+msgid "FTP traffic"
+msgstr "Трафік FTP"
 
-#, fuzzy
-msgid "Reseller data inconsistency!"
-msgstr "Таблиця статистики реселера"
+msgid "SMTP traffic"
+msgstr "Трафік SMTP"
 
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
+msgid "POP3/IMAP traffic"
+msgstr "Трафік POP/IMAP"
+
+msgid "All traffic"
+msgstr "Весь трафік"
+
+msgid "Day"
+msgstr "День"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Адміністратор/Додавання хостінг-плану"
+
+msgid "Add hosting plan"
+msgstr "Додати хостинґ-план"
+
+msgid "Hosting plan properties"
+msgstr "Властивості хостінг-плану"
+
+msgid "Template name"
+msgstr "Назва шаблону"
+
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Edit reseller aborted!"
-msgstr "Редагування реселера перервано!"
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#, fuzzy
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-"Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його "
-"користувачів!<br>"
 
-#, fuzzy, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr "Цей реселер має домени, призначені <b>"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
-msgid "Edit reseller"
-msgstr "Редагувати реселера"
-
-msgid "E-mail"
-msgstr "Електронна пошта"
-
-msgid "unlimited"
-msgstr "необмежено"
-
-#, fuzzy
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "PHP"
+msgstr ""
+
+msgid "CGI / Perl"
+msgstr ""
+
+msgid "Backup and restore"
+msgstr "Резервне копіювання та відновлення"
+
+msgid "Apache logfiles"
+msgstr "Журнали веб-сервера"
+
+msgid "AwStats"
+msgstr "AWStats"
+
+msgid "yes"
+msgstr "так"
+
+msgid "no"
+msgstr "ні"
+
+msgid "Billing Settings"
+msgstr "Налаштування рахунків"
+
+msgid "Price"
+msgstr "Ціна"
+
+msgid "Setup fee"
+msgstr "Плата за установку"
+
+msgid "Currency"
+msgstr "Валюта"
+
+msgid "Payment period"
+msgstr "Термін оплати"
+
+msgid "Available for purchasing"
+msgstr "Замовлення можливе"
+
+msgid "Description"
+msgstr "Опис"
+
+msgid "(e.g. EUR)"
+msgstr "(Наприклад, UAH)"
+
+msgid "Add plan"
+msgstr "Додати план"
+
+msgid "Incorrect template name length!"
+msgstr ""
+
+msgid "Incorrect template description length!"
+msgstr ""
+
+#, fuzzy
+msgid "Incorrect price syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect setup fee syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Хостінг-план із введеною назвою вже існує!"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
+
+#, fuzzy
+msgid "Price Style"
+msgstr "Ціна"
 
 msgid "Update plan"
 msgstr "Оновити план"
@@ -1004,49 +792,6 @@ msgid "Incorrect price. Example: 9.99"
 msgstr ""
 
 msgid "Incorrect setup fee. Example: 19.99"
-msgstr ""
-
-msgid "Please specify a subject!"
-msgstr "Укажіть тему!"
-
-msgid "Please specify message!"
-msgstr "Будь ласка, укажіть повідомлення!"
-
-msgid "Auto email template data updated!"
-msgstr "Шаблон автовідповідача пошти оновлено!"
-
-msgid "ispCP - Admin/Manage users/Email setup"
-msgstr ""
-"ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
-
-msgid "Email setup"
-msgstr "Налаштування електронної пошти"
-
-msgid "Message template info"
-msgstr "Інформація про шаблон"
-
-msgid "User login (system) name"
-msgstr "Логін користувача"
-
-msgid "User password"
-msgstr "Пароль користувача"
-
-msgid "User real (first and last) name"
-msgstr ""
-
-msgid "Message template"
-msgstr "Шаблон повідомлення"
-
-msgid "Subject"
-msgstr "Тема"
-
-msgid "Apply changes"
-msgstr "Застосувати зміни"
-
-msgid "Benutzertyp (admin, reseller, user)"
-msgstr ""
-
-msgid "URL to this admin panel"
 msgstr ""
 
 msgid "ispCP - Administrator/Hosting Plan Management"
@@ -1083,6 +828,9 @@ msgstr "Хостінг-план із введеною назвою вже існ
 msgid "Hosting plans not found!"
 msgstr "Хостінг-плани не знайдені!"
 
+msgid "No."
+msgstr "№"
+
 msgid "Name"
 msgstr "Ім'я"
 
@@ -1095,6 +843,10 @@ msgstr ""
 
 msgid "View"
 msgstr "Переглянути"
+
+#, fuzzy
+msgid "Update checking is disabled!"
+msgstr "Оновлення мови встановлене!"
 
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
@@ -1119,6 +871,18 @@ msgstr ""
 
 msgid "ispCP - Admin/Main Index"
 msgstr "ispCP - Адміністратор/Головна"
+
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
+msgid "Error: we have a domain using this IP!"
+msgstr ""
+
+msgid "Error: we have a reseller using this IP!"
+msgstr ""
+
+msgid "IP was deleted!"
+msgstr "IP видалено!"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Адміністратор/Керування IP"
@@ -1157,8 +921,8 @@ msgstr "Домен"
 msgid "Add new IP"
 msgstr "Додати новий IP"
 
-#, fuzzy
-msgid "Are you sure you want to delete this IP: "
+#, fuzzy, php-format
+msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
 
 msgid "No domain system errors"
@@ -1213,6 +977,13 @@ msgstr "Завершено"
 msgid "Unknown Error"
 msgstr ""
 
+#, fuzzy
+msgid "Enable update at"
+msgstr "Користувачі баз даних"
+
+msgid "Settings"
+msgstr "Налаштування"
+
 msgid "Get it at"
 msgstr "Завантажити з"
 
@@ -1237,81 +1008,6 @@ msgstr "Мова"
 
 msgid "Choose default language"
 msgstr "Вибір основної мови"
-
-msgid "Upload file error!"
-msgstr "Помилка завантаження файлу!"
-
-msgid "You can only upload images!"
-msgstr ""
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr ""
-
-msgid "Your logo was successful uploaded!"
-msgstr "Логотип успішно завантажено!"
-
-msgid "Layout settings"
-msgstr "Налаштування макету"
-
-msgid "Installed layouts"
-msgstr "Установлені макети"
-
-msgid "Layout name"
-msgstr "Назва макету"
-
-msgid "default"
-msgstr "довільне"
-
-msgid "Upload logo"
-msgstr "Завантажити логотип"
-
-msgid "Logo file"
-msgstr "Файл логотипа"
-
-msgid "Upload"
-msgstr "Завантажити"
-
-msgid "Remove"
-msgstr "Видалити"
-
-msgid "Choose default layout"
-msgstr "Вибір основного оформлення"
-
-msgid "Layout"
-msgstr "Макет"
-
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Адміністратор/Налаштування втрати пароля"
-
-msgid "Lost password e-mail"
-msgstr ""
-
-msgid "Activation E-Mail"
-msgstr ""
-
-msgid "Password E-Mail"
-msgstr ""
-
-msgid "User (first and last) name"
-msgstr "Ім'я й прізвище користувача"
-
-msgid "Lost password link"
-msgstr ""
-
-#, fuzzy
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Адміністратор/Головна"
-
-msgid "Settings saved !"
-msgstr "Налаштування збережені!"
-
-#, fuzzy
-msgid "Maintenance mode"
-msgstr "Керування замовленнями"
-
-#, fuzzy
-msgid "Under this mode only administrators can login"
-msgstr "Лише адміністратори можуть входити в цьому режимі"
 
 msgid "Reseller list is empty!"
 msgstr "Список реселерів порожній!"
@@ -1398,24 +1094,6 @@ msgstr "Від реселера"
 msgid "To reseller"
 msgstr "Реселеру"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Адміністратор/Керування сесіями"
-
-msgid "Manage user sessions"
-msgstr "Керування сесіями користувача"
-
-msgid "User type"
-msgstr "Тип користувача"
-
-msgid "Last access"
-msgstr "Останній доступ"
-
-msgid "Options"
-msgstr "Параметри"
-
-msgid "Kill session"
-msgstr "Завершити сесію"
-
 msgid "ispCP - Admin/Manage Users"
 msgstr "ispCP - Адміністратор/Керування користувачами"
 
@@ -1448,6 +1126,9 @@ msgstr ""
 
 msgid "Default language changed!"
 msgstr "Довільна мова змінена!"
+
+msgid "Upload file error!"
+msgstr "Помилка завантаження файлу!"
 
 msgid "You can upload only text files!"
 msgstr "Можна завантажувати лише текстові файли!"
@@ -1500,6 +1181,201 @@ msgstr "Установити"
 
 msgid "Export"
 msgstr "Експорт"
+
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Адміністратор/Зміна пароля"
+
+msgid "Please fill up all data fields!"
+msgstr "Будь ласка, заповніть усі поля!"
+
+msgid "Passwords do not match!"
+msgstr ""
+
+msgid "The current password is wrong!"
+msgstr "Поточний пароль невірний"
+
+msgid "User password updated successfully!"
+msgstr "Пароль користувача успішно оновлений!"
+
+msgid "Change password"
+msgstr "Змінити пароль"
+
+msgid "Password data"
+msgstr "Пароль"
+
+msgid "Update password"
+msgstr "Оновити пароль"
+
+msgid "Current password"
+msgstr "Поточний пароль"
+
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Адміністратор/Зміна персональних даних"
+
+msgid "Personal data updated successfully!"
+msgstr "Персональні дані успішно оновлені!"
+
+msgid "Change personal data"
+msgstr "Змінити персональні дані"
+
+msgid "Personal data"
+msgstr "Персональні дані"
+
+msgid "Update data"
+msgstr "Оновити відомості"
+
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr ""
+
+msgid "Reseller IP list is empty!"
+msgstr "Список IP реселера порожній!"
+
+msgid "Assign"
+msgstr "Призначити"
+
+msgid "Label"
+msgstr "Мітка"
+
+msgid "Number"
+msgstr "Номер"
+
+#, fuzzy
+msgid "Incorrect email syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Невірний синтаксис <i>доменного імені</i>"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Ви маєте призначити хоча б одну IP-адресу реселеру!"
+
+msgid "Add reseller"
+msgstr "Додати реселера"
+
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "JSP"
+msgstr ""
+
+msgid "SSI"
+msgstr ""
+
+msgid "Frontpage extensions"
+msgstr ""
+
+msgid "Custom error pages"
+msgstr "Індивідуальні сторінки помилок"
+
+msgid "Protected areas"
+msgstr "Захищені зони"
+
+msgid "Webmail"
+msgstr ""
+
+msgid "Directory listing"
+msgstr "Список директорій"
+
+msgid "Logo upload"
+msgstr "Завантаження логотипа"
+
+msgid "Reseller IPs"
+msgstr "IP реселера"
+
+msgid "Customer ID"
+msgstr "ID користувача"
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
+
+msgid "Domains"
+msgstr "Домени"
+
+#, php-format
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+
+msgid "Aliases"
+msgstr "Аліаси"
+
+#, php-format
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
+msgid "SQL Databases"
+msgstr ""
+
+msgid "SQL Users"
+msgstr ""
+
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Web-трафік"
+
+#, fuzzy
+msgid "Disk storage"
+msgstr "Використання дискового простору"
+
+#, fuzzy
+msgid "Reseller data inconsistency!"
+msgstr "Таблиця статистики реселера"
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+
+msgid "Edit reseller aborted!"
+msgstr "Редагування реселера перервано!"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+
+#, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його "
+"користувачів!<br>"
+
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
+msgstr "Цей реселер має домени, призначені <b>"
+
+msgid "Edit reseller"
+msgstr "Редагувати реселера"
+
+msgid "E-mail"
+msgstr "Електронна пошта"
+
+msgid "unlimited"
+msgstr "необмежено"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
 msgid "ispCP - Reseller statistics"
 msgstr "ispCP - Статистика реселера"
@@ -1668,32 +1544,125 @@ msgstr "Сервіс"
 msgid "Server status"
 msgstr "Стан сервера"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Адміністратор/Налаштування трафіка сервера"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Адміністратор/Керування сесіями"
 
-msgid "Wrong data input!"
-msgstr "Невірно введені дані!"
+msgid "Manage user sessions"
+msgstr "Керування сесіями користувача"
 
-msgid "Warning traffic is bigger than max traffic!"
-msgstr "Ліміт трафіка більший за максимальний трафік!"
+msgid "User type"
+msgstr "Тип користувача"
 
-msgid "Server traffic settings updated successfully!"
-msgstr "Налаштування трафіку сервера успішно оновлені!"
+msgid "Last access"
+msgstr "Останній доступ"
 
-msgid "Modify"
-msgstr "Змінити"
+msgid "Options"
+msgstr "Параметри"
 
-msgid "Server traffic settings"
-msgstr "Налаштування трафіку сервера"
+msgid "Kill session"
+msgstr "Завершити сесію"
 
-msgid "Set server traffic settings"
-msgstr "Налаштувати трафік сервера"
+msgid "You can only upload images!"
+msgstr ""
 
-msgid "Max traffic [MB]"
-msgstr "Макс. трафік [MB]"
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
 
-msgid "Warning traffic [MB]"
-msgstr "Ліміт трафіка [МБ]"
+msgid "Your logo was successful uploaded!"
+msgstr "Логотип успішно завантажено!"
+
+msgid "Layout settings"
+msgstr "Налаштування макету"
+
+msgid "Installed layouts"
+msgstr "Установлені макети"
+
+msgid "Layout name"
+msgstr "Назва макету"
+
+msgid "default"
+msgstr "довільне"
+
+msgid "Upload logo"
+msgstr "Завантажити логотип"
+
+msgid "Logo file"
+msgstr "Файл логотипа"
+
+msgid "Upload"
+msgstr "Завантажити"
+
+msgid "Remove"
+msgstr "Видалити"
+
+msgid "Choose default layout"
+msgstr "Вибір основного оформлення"
+
+msgid "Layout"
+msgstr "Макет"
+
+msgid "Please specify a subject!"
+msgstr "Укажіть тему!"
+
+msgid "Please specify message!"
+msgstr "Будь ласка, укажіть повідомлення!"
+
+msgid "Auto email template data updated!"
+msgstr "Шаблон автовідповідача пошти оновлено!"
+
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Адміністратор/Налаштування втрати пароля"
+
+msgid "Lost password e-mail"
+msgstr ""
+
+msgid "Message template info"
+msgstr "Інформація про шаблон"
+
+msgid "Message template"
+msgstr "Шаблон повідомлення"
+
+msgid "Activation E-Mail"
+msgstr ""
+
+msgid "Password E-Mail"
+msgstr ""
+
+msgid "User login (system) name"
+msgstr "Логін користувача"
+
+msgid "User password"
+msgstr "Пароль користувача"
+
+msgid "User (first and last) name"
+msgstr "Ім'я й прізвище користувача"
+
+msgid "Lost password link"
+msgstr ""
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "Apply changes"
+msgstr "Застосувати зміни"
+
+msgid "URL to this admin panel"
+msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Адміністратор/Головна"
+
+msgid "Settings saved !"
+msgstr "Налаштування збережені!"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Керування замовленнями"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Лише адміністратори можуть входити в цьому режимі"
 
 msgid "ispCP - Admin/Settings"
 msgstr ""
@@ -1703,9 +1672,6 @@ msgstr ""
 
 msgid "General settings"
 msgstr "Головні налаштування"
-
-msgid "Settings"
-msgstr "Налаштування"
 
 msgid "Activation link expire time (minutes)"
 msgstr ""
@@ -1783,6 +1749,10 @@ msgstr ""
 msgid "Errors"
 msgstr "Помилка"
 
+#, fuzzy
+msgid "Check for update"
+msgstr "Користувача оновлено"
+
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
 
@@ -1807,56 +1777,45 @@ msgstr ""
 msgid "Protocol"
 msgstr "Протокол"
 
-msgid "You have no support tickets."
-msgstr "Ви не маєте запитів підтримки."
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Адміністратор/Налаштування трафіка сервера"
 
-msgid "Low"
-msgstr "Низький"
+msgid "Wrong data input!"
+msgstr "Невірно введені дані!"
 
-msgid "Medium"
-msgstr "Середній"
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Ліміт трафіка більший за максимальний трафік!"
 
-msgid "High"
-msgstr "Високий"
+msgid "Server traffic settings updated successfully!"
+msgstr "Налаштування трафіку сервера успішно оновлені!"
 
-msgid "Very high"
-msgstr "Невідкладний"
+msgid "Modify"
+msgstr "Змінити"
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Клієнт/Питання та пропозиції"
+msgid "Server traffic settings"
+msgstr "Налаштування трафіку сервера"
 
-msgid "Support tickets"
-msgstr "Запити підтримки"
+msgid "Set server traffic settings"
+msgstr "Налаштувати трафік сервера"
 
-msgid "From"
-msgstr "Від"
+msgid "Max traffic [MB]"
+msgstr "Макс. трафік [MB]"
 
-msgid "To"
+msgid "Warning traffic [MB]"
+msgstr "Ліміт трафіка [МБ]"
+
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr ""
+"ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+
+msgid "Email setup"
+msgstr "Налаштування електронної пошти"
+
+msgid "User real (first and last) name"
 msgstr ""
 
-msgid "Priority"
-msgstr "Пріоритет"
-
-msgid "Last reply"
-msgstr "Остання відповідь"
-
-msgid "Delete all"
-msgstr "Видалити все"
-
-msgid "Open tickets"
-msgstr "Відкриті запити"
-
-msgid "Closed tickets"
-msgstr "Закриті запити"
-
-msgid "[New]"
-msgstr "[Нове]"
-
-msgid "[Re]"
-msgstr "[Відповідь]"
-
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Клієнт/Активація автовідповідача"
+msgid "User type (admin, reseller, user)"
+msgstr ""
 
 msgid "days"
 msgstr "дні"
@@ -1930,6 +1889,66 @@ msgstr "Процент(ів)"
 msgid "Size"
 msgstr "Розмір"
 
+msgid "You have no support tickets."
+msgstr "Ви не маєте запитів підтримки."
+
+msgid "Low"
+msgstr "Низький"
+
+msgid "Medium"
+msgstr "Середній"
+
+msgid "High"
+msgstr "Високий"
+
+msgid "Very high"
+msgstr "Невідкладний"
+
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Клієнт/Питання та пропозиції"
+
+msgid "Support tickets"
+msgstr "Запити підтримки"
+
+msgid "From"
+msgstr "Від"
+
+msgid "To"
+msgstr ""
+
+msgid "Priority"
+msgstr "Пріоритет"
+
+msgid "Last reply"
+msgstr "Остання відповідь"
+
+msgid "Delete all"
+msgstr "Видалити все"
+
+msgid "Open tickets"
+msgstr "Відкриті запити"
+
+msgid "Closed tickets"
+msgstr "Закриті запити"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Запит підтримки успішно видалено!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Усі незакриті заявки успішно видалено!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Усі закриті заявки успішно видалено!"
+
+msgid "[New]"
+msgstr "[Нове]"
+
+msgid "[Re]"
+msgstr "[Відповідь]"
+
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Клієнт/Активація автовідповідача"
+
 msgid "Ticket not found!"
 msgstr "Запит не знайдено!"
 
@@ -1947,6 +1966,9 @@ msgstr "Будь ласка, введіть повідомлення!"
 
 msgid "Message was sent!"
 msgstr ""
+
+msgid "Message was sent."
+msgstr "Повідомлення відправлене."
 
 msgid "Ticket was closed!"
 msgstr "Запит закрито!"
@@ -2024,198 +2046,47 @@ msgstr "Триває додавання аліасу!"
 msgid "Alias scheduled for addition!"
 msgstr "Триває додавання аліасу!"
 
-msgid "Empty List"
-msgstr "Порожній список"
-
-msgid "Empty list"
-msgstr "Порожній список"
-
-msgid "FTP account already exists!"
-msgstr "Користувач FTP уже існує!"
-
-msgid "Unknown domain type"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
+"<br>Спочатку видаліть їх!"
 
-msgid "Incorrect mount point length or syntax"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!"
+"<br>Спочатку видаліть їх!"
 
-#, php-format
-msgid "%s does not exist"
-msgstr ""
+msgid "Alias scheduled for deletion!"
+msgstr "Триває видалення аліасу!"
 
-msgid "FTP account added!"
-msgstr "Користувача FTP додано!"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
 
-msgid "Please enter FTP account username!"
-msgstr "Введіть користувача FTP!"
+msgid "Edit domain alias"
+msgstr "Редагувати аліас домену"
 
-msgid "Password data is missing!"
-msgstr "Пароль порожній!"
-
-msgid "Entered passwords differ from the another!"
-msgstr "Паролі не співпадають!"
-
-msgid "Subdomain list is empty! You cannot add FTP accounts there!"
-msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
-
-msgid "Alias list is empty! You cannot add FTP accounts there!"
-msgstr ""
-"Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
-
-msgid "Please specify other FTP account dir!"
-msgstr "Будь ласка, укажіть іншу директорію користувача FTP!"
-
-msgid "FTP accounts limit reached!"
-msgstr ""
-
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Клієнт/Додавання користувача FTP"
-
-msgid "Add FTP user"
-msgstr "Додати користувача FTP"
-
-msgid "To main domain"
-msgstr "Головному домену"
-
-msgid "To domain alias"
-msgstr "Аліасу домену"
-
-msgid "To subdomain"
-msgstr "Піддомену"
-
-msgid "Use other dir"
-msgstr "Використовувати іншу директорію"
-
-msgid "Choose dir"
-msgstr "Вибір директорії"
-
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Використано невірний формат Mail Localpart"
-
-msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr ""
-
-msgid "Mail forward list empty!"
-msgstr "Список пересилань порожній!"
-
-msgid "Mail account already exists!"
-msgstr "Поштова скринька вже існує!"
-
-msgid "Mail account scheduled for addition!"
-msgstr "Триває додавання поштової скриньки!"
+msgid "Alias name"
+msgstr "Назва аліасу"
 
 #, fuzzy
-msgid "Please select at least one mail type!"
-msgstr "Укажіть скриньку відправника!"
+msgid "Mount Point"
+msgstr "Точка монтування"
 
-msgid "Please enter mail account username!"
-msgstr "Введіть користувача електронної пошти!"
-
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Пароль містить недозволені символи!"
-
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
-
-msgid "Alias list is empty! You cannot add mail accounts!"
-msgstr "Список аліасів порожній! Ви не можете додавати тут поштові скриньки!"
-
-msgid "Forward list is empty!"
-msgstr "Список пересилання порожній!"
-
-msgid "Mail accounts limit reached!"
-msgstr ""
-
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Клієнт/Додавання поштової скриньки"
-
-msgid "Add mail users"
-msgstr "Додати поштові скриньки"
-
-msgid "Normal mail"
-msgstr "Нормальний E-mail"
-
-msgid "Forward mail"
+#, fuzzy
+msgid "Enable Forward"
 msgstr "Пересилання пошти"
 
-msgid "Forward to"
-msgstr "Переслати:"
+msgid "Enable"
+msgstr "Увімкнути"
 
-msgid "Separate multiple email addresses with a line-break."
+msgid "Disable"
+msgstr "Вимкнути"
+
+msgid "A Forward URL has to start with 'http://'"
 msgstr ""
-
-msgid "Please type database name!"
-msgstr "Будь ласка, введіть назву бази даних!"
-
-msgid "Database name is too long!"
-msgstr ""
-
-msgid "Specified database name already exists!"
-msgstr "Вказане ім'я бази даних уже існує!"
-
-#, php-format
-msgid "Wildcards such as %% and ? are not allowed!"
-msgstr ""
-
-msgid "SQL database created successfully!"
-msgstr "База даних SQL успішно створена!"
-
-msgid "SQL accounts limit reached!"
-msgstr ""
-
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Клієнт/Додавання бази даних SQL"
-
-msgid "Add SQL database"
-msgstr "Додати SQL базу"
-
-msgid "Database name"
-msgstr "Назва бази даних"
-
-msgid "Use numeric ID"
-msgstr "Використовувати числовий ID"
-
-msgid "Before the name"
-msgstr ""
-
-msgid "After the name"
-msgstr ""
-
-msgid "Subdomains limit reached!"
-msgstr ""
-
-msgid "Please specify subdomain name!"
-msgstr "Будь ласка, укажіть назву піддомена!"
-
-#, fuzzy
-msgid "Subdomain already exists or is not allowed!"
-msgstr "Піддомен уже існує!"
-
-msgid "Wrong subdomain syntax!"
-msgstr "Невірний запис субдомену!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Точка монтування піддомену вже існує!"
-
-msgid "Subdomain scheduled for addition!"
-msgstr "Триває додавання піддомену!"
-
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Клієнт/Додавання піддомену"
-
-msgid "Add subdomain"
-msgstr "Додати піддомен"
-
-msgid "Subdomain data"
-msgstr "Відомості піддомену"
-
-msgid "Subdomain name"
-msgstr "Ім'я піддомену"
-
-#, fuzzy
-msgid "Directory tree mount point"
-msgstr "Точка монтування (директорія)"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Триває відновлення архівів..."
@@ -2257,84 +2128,6 @@ msgstr "Відновити"
 #, fuzzy
 msgid "Are you sure you want to restore the backup?"
 msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
-
-msgid "N/A"
-msgstr ""
-
-msgid "Enable"
-msgstr "Увімкнути"
-
-msgid "Disable"
-msgstr "Вимкнути"
-
-msgid "Delete CatchAll"
-msgstr "Видалити перехоплювач пошти"
-
-msgid "None"
-msgstr "Ні"
-
-msgid "Create catch all"
-msgstr "Створити перехоплення всього"
-
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Клієнт/Керування користувачами"
-
-msgid "Manage users"
-msgstr "Керування користувачами"
-
-msgid "Mail users"
-msgstr "Користувачі пошти"
-
-msgid "Auto respond"
-msgstr "Автовідповідач"
-
-msgid "Domain mails"
-msgstr "Пошта домену"
-
-msgid "Subdomain mails"
-msgstr "Пошта піддомена"
-
-msgid "Alias mails"
-msgstr "Поштові аліаси"
-
-msgid "Mails total"
-msgstr "Усього поштових скриньок"
-
-msgid "FTPs total"
-msgstr "Усього FTP"
-
-msgid "Catch all account"
-msgstr "перехопити всю пошту"
-
-msgid "Catch all"
-msgstr "Перехопити все"
-
-msgid "FTP users"
-msgstr "Користувачі FTP"
-
-msgid "FTP account"
-msgstr "Користувач FTP"
-
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Клієнт/Зміна пароля"
-
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Клієнт/Зміна персональних даних"
-
-msgid "Catch all account scheduled for creation!"
-msgstr "Перехоплення всього в процесі створення!"
-
-msgid "Mail forward list error!"
-msgstr "Помилка списку пересилання пошти!"
-
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Клієнт/Створення \"перехоплювача пошти\""
-
-msgid "Create catch all mail account"
-msgstr "Створити перехоплення всіх поштових облікових записів"
-
-msgid "Mail accounts list"
-msgstr "Список поштових скриньок"
 
 msgid "ispCP - Client/Cronjob Manager"
 msgstr "ispCP - Клієнт/Керування завданнями Cron"
@@ -2379,45 +2172,33 @@ msgstr "Редагувати завдання Cron"
 msgid "Cronjobs"
 msgstr "Завдання Cron'a"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
+msgid "N/A"
 msgstr ""
-"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
-"<br>Спочатку видаліть їх!"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
-"Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!"
-"<br>Спочатку видаліть їх!"
+msgid "Subdomain list is empty!"
+msgstr "Список піддоменів порожній!"
 
-msgid "Alias scheduled for deletion!"
-msgstr "Триває видалення аліасу!"
+msgid "Delete order"
+msgstr "Видалити замовлення"
 
-msgid "Catch all account scheduled for deletion!"
-msgstr "Перехоплення всього в процесі видалення!"
+msgid "Alias list is empty!"
+msgstr "Список аліасів порожній!"
 
-msgid "FTP account deleted successfully!"
-msgstr "Користувача FTP успішно видалено!"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Клієнт/Керування доменами"
 
-msgid "Please delete first CatchAll account for this email!"
-msgstr "Видаліть спочатку \"перехоплювач усіх\" для цієї скриньки!"
+msgid "Manage domains"
+msgstr "Керування доменами"
 
-msgid "SQL database was removed successfully!"
-msgstr "База даних SQL успішно видалена!"
+msgid "Mount point"
+msgstr "Точка монтування"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
-"видаліть їх!"
+msgid "Forward"
+msgstr "Переслати"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Триває видалення піддомену!"
-
-msgid "Mail account scheduled for modification!"
-msgstr "Триває оновлення поштової скриньки!"
+#, fuzzy
+msgid "Actions"
+msgstr "Дія"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Клієнт/Статистика домену"
@@ -2436,83 +2217,6 @@ msgstr ""
 
 msgid "Sum"
 msgstr "Сума"
-
-msgid "ispCP - Manage Domain Alias/Edit Alias"
-msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
-
-msgid "Edit domain alias"
-msgstr "Редагувати аліас домену"
-
-msgid "Alias name"
-msgstr "Назва аліасу"
-
-#, fuzzy
-msgid "Mount Point"
-msgstr "Точка монтування"
-
-#, fuzzy
-msgid "Enable Forward"
-msgstr "Пересилання пошти"
-
-msgid "A Forward URL has to start with 'http://'"
-msgstr ""
-
-msgid "Entered passwords differ!"
-msgstr "Паролі не співпадають!"
-
-msgid "FTP account data updated!"
-msgstr "Дані користувача FTP оновлені!"
-
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Клієнт/Редагування облікового запису FTP"
-
-msgid "Edit FTP user"
-msgstr "Редагувати користувача FTP"
-
-msgid "Save changes"
-msgstr "Зберегти зміни"
-
-msgid "Email account not found!"
-msgstr ""
-
-msgid "Missing or wrong data!"
-msgstr "Відсутні або невірні дані!"
-
-msgid "Password data includes not valid signs!"
-msgstr ""
-
-msgid "Mail were updated successfully!"
-msgstr "Пошта успішно оновлена!"
-
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Керування поштою та FTP / Редагування поштової скриньки"
-
-msgid "Edit email account"
-msgstr "Редагувати поштову скриньку"
-
-msgid "Please type your mail autorespond message!"
-msgstr "Будь ласка, введіть повідомлення автовідповідача!"
-
-msgid "Mail account scheduler for modification!"
-msgstr "Оновлення поштової скриньки!"
-
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Клієнт/Активація автовідповідача"
-
-msgid "Edit mail auto responder"
-msgstr "Редагувати поштовий автовідповідач"
-
-msgid "Your message"
-msgstr "Ваше повідомлення"
-
-msgid "Please wait for update"
-msgstr "Будь ласка, зачекайте оновлення!"
-
-msgid "Mail accounts list is empty!"
-msgstr "Список поштових скриньок порожній!"
-
-msgid "Enable mail auto responder"
-msgstr "Увімкнути автовідповідач"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Клієнт/Керування власними сторінками помилок"
@@ -2550,7 +2254,90 @@ msgstr "Сторінки помилок"
 msgid "FTP list is empty!"
 msgstr "Список FTP порожній!"
 
-msgid "Cannot open directory !<br />Please contact your administrator !"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Клієнт/Керування користувачами"
+
+msgid "Manage users"
+msgstr "Керування користувачами"
+
+msgid "FTPs total"
+msgstr "Усього FTP"
+
+msgid "FTP users"
+msgstr "Користувачі FTP"
+
+msgid "FTP account"
+msgstr "Користувач FTP"
+
+msgid "Empty List"
+msgstr "Порожній список"
+
+msgid "Empty list"
+msgstr "Порожній список"
+
+msgid "FTP account already exists!"
+msgstr "Користувач FTP уже існує!"
+
+msgid "Unknown domain type"
+msgstr ""
+
+msgid "Incorrect mount point length or syntax"
+msgstr ""
+
+#, php-format
+msgid "%s does not exist"
+msgstr ""
+
+msgid "FTP account added!"
+msgstr "Користувача FTP додано!"
+
+msgid "Please enter FTP account username!"
+msgstr "Введіть користувача FTP!"
+
+msgid "Password data is missing!"
+msgstr "Пароль порожній!"
+
+msgid "Entered passwords differ from the another!"
+msgstr "Паролі не співпадають!"
+
+#, fuzzy
+msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
+
+#, fuzzy
+msgid "Alias list is empty! You can not add FTP accounts there!"
+msgstr ""
+"Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
+
+msgid "Please specify other FTP account dir!"
+msgstr "Будь ласка, укажіть іншу директорію користувача FTP!"
+
+msgid "FTP accounts limit reached!"
+msgstr ""
+
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Клієнт/Додавання користувача FTP"
+
+msgid "Add FTP user"
+msgstr "Додати користувача FTP"
+
+msgid "To main domain"
+msgstr "Головному домену"
+
+msgid "To domain alias"
+msgstr "Аліасу домену"
+
+msgid "To subdomain"
+msgstr "Піддомену"
+
+msgid "Use other dir"
+msgstr "Використовувати іншу директорію"
+
+msgid "Choose dir"
+msgstr "Вибір директорії"
+
+#, fuzzy
+msgid "Can not open directory !<br>Please contact your administrator !"
 msgstr ""
 "Не можу відкрити директорію!<br>Зверніться до Вашого системного "
 "адміністратора!"
@@ -2573,351 +2360,23 @@ msgstr "Директорії"
 msgid "Choose"
 msgstr "Вибрати"
 
-msgid "disabled"
-msgstr "вимкнено"
+msgid "FTP account deleted successfully!"
+msgstr "Користувача FTP успішно видалено!"
 
-#, fuzzy, php-format
-msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "Немає нових питань підтримки!"
+msgid "Entered passwords differ!"
+msgstr "Паролі не співпадають!"
 
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr ""
+msgid "FTP account data updated!"
+msgstr "Дані користувача FTP оновлені!"
 
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr ""
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Клієнт/Редагування облікового запису FTP"
 
-msgid "You are exceeding your disk limit!"
-msgstr "Ви вичерпали ліміт дискового простору!"
+msgid "Edit FTP user"
+msgstr "Редагувати користувача FTP"
 
-msgid "You have no new support questions!"
-msgstr "Немає нових питань підтримки!"
-
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Клієнт/Головна"
-
-msgid "General information"
-msgstr "Загальна інформація"
-
-msgid "Account name"
-msgstr "Обліковий запис"
-
-msgid "Main domain"
-msgstr "Головний домен"
-
-msgid "SQL support"
-msgstr "Підтримка SQL"
-
-msgid "Traffic usage"
-msgstr "Використання трафіку"
-
-msgid "Disk usage"
-msgstr "Використання дискового простору"
-
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Клієнт/Зміна мови"
-
-msgid "Subdomain list is empty!"
-msgstr "Список піддоменів порожній!"
-
-msgid "Delete order"
-msgstr "Видалити замовлення"
-
-msgid "Alias list is empty!"
-msgstr "Список аліасів порожній!"
-
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Клієнт/Керування доменами"
-
-msgid "Manage domains"
-msgstr "Керування доменами"
-
-msgid "Mount point"
-msgstr "Точка монтування"
-
-msgid "Forward"
-msgstr "Переслати"
-
-#, fuzzy
-msgid "Actions"
-msgstr "Дія"
-
-msgid "Database user list is empty!"
-msgstr "Список користувачів баз даних порожній!"
-
-msgid "Database list is empty!"
-msgstr "Список баз даних порожній!"
-
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Клієнт/Керування SQL"
-
-msgid "Manage SQL"
-msgstr "Керування SQL"
-
-#, fuzzy
-msgid "Database Name and Users"
-msgstr "Користувачі баз даних"
-
-msgid "PhpMyAdmin"
-msgstr ""
-
-msgid "Database users"
-msgstr "Користувачі баз даних"
-
-msgid "Add SQL user"
-msgstr "Додати SQL користувача"
-
-msgid "Execute query"
-msgstr "Виконати запит"
-
-msgid "Login phpMyAdmin"
-msgstr ""
-
-msgid "Please specify message subject!"
-msgstr "Будь ласка, укажіть тему повідомлення!"
-
-msgid "Your message was sent!"
-msgstr "Ваше повідомлення надіслане!"
-
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Система підтримки"
-
-msgid "New ticket"
-msgstr "Новий запит"
-
-msgid "Protected area status should be OK if you want to delete it!"
-msgstr ""
-
-msgid "Protected area deleted successfully!"
-msgstr "Захищена зона успішно видалена!"
-
-msgid "Permission deny!"
-msgstr "Доступ заборонено!"
-
-msgid "You do not have protected areas"
-msgstr "Ви не маєте захищених зон"
-
-msgid "Manage users and groups"
-msgstr "Керування користувачами й групами"
-
-msgid "Add user"
-msgstr "Додати користувача"
-
-msgid "Group name"
-msgstr "Назва групи"
-
-msgid "Group members"
-msgstr "Члени групи"
-
-msgid "Add group"
-msgstr "Додати групу"
-
-msgid "Group"
-msgstr "Група"
-
-msgid "Add new protected area"
-msgstr "Додати захищену зону"
-
-msgid "Please choose user or group"
-msgstr "Оберіть користувача або групу"
-
-msgid "Please enter area name"
-msgstr "Введіть назву зони"
-
-msgid "Please enter area path"
-msgstr "Введіть шлях зони"
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr ""
-
-msgid "You cannot protect area without selected user(s)"
-msgstr ""
-
-msgid "You cannot protect area without selected group(s)"
-msgstr "Ви не можете створити захищену зону без вибору групи або груп"
-
-msgid "Protected area updated successfully!"
-msgstr "Захищена зона успішно оновлена!"
-
-msgid "Protected area created successfully!"
-msgstr "Захищена зона успішно створена!"
-
-msgid "Protected area status should be OK if you want to edit it!"
-msgstr ""
-
-msgid "You have no users !"
-msgstr "Ви не маєте користувачів!"
-
-msgid "You have no groups!"
-msgstr "Ви не маєте груп!"
-
-msgid "Protect this area"
-msgstr "Захистити цю зону"
-
-msgid "Path"
-msgstr "Шлях"
-
-msgid "Groups"
-msgstr "Групи"
-
-msgid "User auth"
-msgstr "Авторизація користувача"
-
-msgid "Group auth"
-msgstr "Авторизація групи"
-
-msgid "Area name"
-msgstr "Ім'я зони"
-
-msgid "Unprotect it"
-msgstr "Відкрити"
-
-#, fuzzy, php-format
-msgid "User was assigned to the %s group"
-msgstr "Користувача призначено до групи"
-
-#, fuzzy, php-format
-msgid "User was deleted from the %s group "
-msgstr "Користувача призначено до групи"
-
-msgid "User assign"
-msgstr "Призначення користувача"
-
-msgid "Already in:"
-msgstr "Уже в групі:"
-
-msgid "Member of group:"
-msgstr ""
-
-msgid "Select group:"
-msgstr ""
-
-msgid "Update user"
-msgstr "Оновити користувача"
-
-#, fuzzy
-msgid "Invalid group name!"
-msgstr "Список поштових скриньок"
-
-#, fuzzy
-msgid "Group already exists!"
-msgstr "Група вже існує!"
-
-msgid "Manage user"
-msgstr "Керування користувачем"
-
-msgid "You have no users!"
-msgstr "Ви не маєте користувачів!"
-
-msgid "Wrong username!"
-msgstr "Невірне ім'я користувача!"
-
-msgid "User already exist !"
-msgstr "Користувач уже існує!"
-
-#, fuzzy
-msgid "SQL users limit reached!"
-msgstr "Ліміт користувачів SQL вичерпаний!"
-
-msgid "Please type user name!"
-msgstr "Будь ласка, введіть ім'я користувача!"
-
-msgid "Please type user password!"
-msgstr "Будь ласка, введіть пароль користувача!"
-
-msgid "Too user long password!"
-msgstr "Занадто довгий пароль користувача!"
-
-msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
-
-msgid "User name too long!"
-msgstr "Занадто довге ім'я користувача!"
-
-#, fuzzy, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Маски (% та ?) заборонені!"
-
-msgid "Specified SQL username name already exists!"
-msgstr "Вказаний користувач бази даних уже існує!"
-
-msgid "SQL user successfully added!"
-msgstr "Користувач SQL успішно доданий!"
-
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Клієнт/Додавання користувача SQL"
-
-msgid "SQL user name"
-msgstr "Користувач SQL"
-
-msgid "In front the name"
-msgstr "На початку назви"
-
-msgid "Behind the name"
-msgstr "У кінці імені"
-
-msgid "Add existing user"
-msgstr "Додати існуючого користувача"
-
-msgid "Existing SQL users"
-msgstr "Існуючі користувачі SQL"
-
-msgid "Too long user password!"
-msgstr "Занадто довгий пароль користувача!"
-
-msgid "SQL user password was successfully changed!"
-msgstr "Пароль користувача SQL успішно змінений!"
-
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Клієнт/Зміна пароля користувача SQL"
-
-msgid "Change SQL user password"
-msgstr "Змінити пароль користувача SQL"
-
-msgid "Change"
-msgstr "Змінити"
-
-msgid "SQL user was removed successfully!"
-msgstr "Користувач SQL успішно видалений!"
-
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Введіть запит SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Виконати запит SQL"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Виконати запит SQL"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Клієнт/Виконання запиту SQL"
-
-msgid "Execute SQL query"
-msgstr "Виконати запит SQL"
-
-msgid "SQL query"
-msgstr "Запит SQL"
-
-msgid "Query status"
-msgstr "Стан запиту"
-
-msgid "Query result"
-msgstr "Результат запиту"
-
-msgid "Execute"
-msgstr "Виконати"
-
-msgid "Protected area was deleted successful!"
-msgstr "Захищена зона успішно видалена!"
+msgid "Save changes"
+msgstr "Зберегти зміни"
 
 msgid "Hosting plans available for update"
 msgstr "Хостінг-плани, доступні для оновлення"
@@ -2984,6 +2443,567 @@ msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Ваш запит на зміну хостінг-плану успішно видалений"
+
+msgid "disabled"
+msgstr "вимкнено"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Немає нових питань підтримки!"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your disk limit!"
+msgstr "Ви вичерпали ліміт дискового простору!"
+
+msgid "You have no new support questions!"
+msgstr "Немає нових питань підтримки!"
+
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Клієнт/Головна"
+
+msgid "General information"
+msgstr "Загальна інформація"
+
+msgid "Account name"
+msgstr "Обліковий запис"
+
+msgid "Main domain"
+msgstr "Головний домен"
+
+msgid "SQL support"
+msgstr "Підтримка SQL"
+
+msgid "Traffic usage"
+msgstr "Використання трафіку"
+
+msgid "Disk usage"
+msgstr "Використання дискового простору"
+
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Клієнт/Зміна мови"
+
+msgid "Please wait for update"
+msgstr "Будь ласка, зачекайте оновлення!"
+
+msgid "Mail accounts list is empty!"
+msgstr "Список поштових скриньок порожній!"
+
+msgid "Mail users"
+msgstr "Користувачі пошти"
+
+msgid "Auto respond"
+msgstr "Автовідповідач"
+
+msgid "Domain mails"
+msgstr "Пошта домену"
+
+msgid "Subdomain mails"
+msgstr "Пошта піддомена"
+
+msgid "Alias mails"
+msgstr "Поштові аліаси"
+
+msgid "Mails total"
+msgstr "Усього поштових скриньок"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Використано невірний формат Mail Localpart"
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr ""
+
+msgid "Mail forward list empty!"
+msgstr "Список пересилань порожній!"
+
+msgid "Mail account already exists!"
+msgstr "Поштова скринька вже існує!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Триває додавання поштової скриньки!"
+
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Укажіть скриньку відправника!"
+
+msgid "Please enter mail account username!"
+msgstr "Введіть користувача електронної пошти!"
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Пароль містить недозволені символи!"
+
+msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
+
+msgid "Alias list is empty! You cannot add mail accounts!"
+msgstr "Список аліасів порожній! Ви не можете додавати тут поштові скриньки!"
+
+msgid "Forward list is empty!"
+msgstr "Список пересилання порожній!"
+
+msgid "Mail accounts limit reached!"
+msgstr ""
+
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Клієнт/Додавання поштової скриньки"
+
+msgid "Add mail users"
+msgstr "Додати поштові скриньки"
+
+msgid "Normal mail"
+msgstr "Нормальний E-mail"
+
+msgid "Forward mail"
+msgstr "Пересилання пошти"
+
+msgid "Forward to"
+msgstr "Переслати:"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "Mail account scheduled for modification!"
+msgstr "Триває оновлення поштової скриньки!"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Будь ласка, введіть повідомлення автовідповідача!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Оновлення поштової скриньки!"
+
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Клієнт/Активація автовідповідача"
+
+msgid "Edit mail auto responder"
+msgstr "Редагувати поштовий автовідповідач"
+
+msgid "Your message"
+msgstr "Ваше повідомлення"
+
+msgid "Enable mail auto responder"
+msgstr "Увімкнути автовідповідач"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Перехоплення всього в процесі створення!"
+
+msgid "Mail forward list error!"
+msgstr "Помилка списку пересилання пошти!"
+
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Клієнт/Створення \"перехоплювача пошти\""
+
+msgid "Create catch all mail account"
+msgstr "Створити перехоплення всіх поштових облікових записів"
+
+msgid "Mail accounts list"
+msgstr "Список поштових скриньок"
+
+msgid "Create catch all"
+msgstr "Створити перехоплення всього"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Перехоплення всього в процесі видалення!"
+
+msgid "Delete CatchAll"
+msgstr "Видалити перехоплювач пошти"
+
+msgid "None"
+msgstr "Ні"
+
+msgid "Catch all account"
+msgstr "перехопити всю пошту"
+
+msgid "Catch all"
+msgstr "Перехопити все"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Видаліть спочатку \"перехоплювач усіх\" для цієї скриньки!"
+
+msgid "Email account not found!"
+msgstr ""
+
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Керування поштою та FTP / Редагування поштової скриньки"
+
+msgid "Mail were updated successfully!"
+msgstr "Пошта успішно оновлена!"
+
+msgid "Edit email account"
+msgstr "Редагувати поштову скриньку"
+
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Клієнт/Зміна пароля"
+
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Клієнт/Зміна персональних даних"
+
+msgid "Please choose user or group"
+msgstr "Оберіть користувача або групу"
+
+msgid "Please enter area name"
+msgstr "Введіть назву зони"
+
+msgid "Please enter area path"
+msgstr "Введіть шлях зони"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr ""
+
+#, fuzzy
+msgid "You can not protect area without selected user(s)"
+msgstr "Ви не можете створити захищену зону без вибору групи або груп"
+
+msgid "You cannot protect area without selected group(s)"
+msgstr "Ви не можете створити захищену зону без вибору групи або груп"
+
+msgid "Protected area updated successfully!"
+msgstr "Захищена зона успішно оновлена!"
+
+msgid "Protected area created successfully!"
+msgstr "Захищена зона успішно створена!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr ""
+
+msgid "You have no users !"
+msgstr "Ви не маєте користувачів!"
+
+msgid "You have no groups!"
+msgstr "Ви не маєте груп!"
+
+msgid "Protect this area"
+msgstr "Захистити цю зону"
+
+msgid "Path"
+msgstr "Шлях"
+
+msgid "Groups"
+msgstr "Групи"
+
+msgid "User auth"
+msgstr "Авторизація користувача"
+
+msgid "Group auth"
+msgstr "Авторизація групи"
+
+msgid "Area name"
+msgstr "Ім'я зони"
+
+msgid "Unprotect it"
+msgstr "Відкрити"
+
+msgid "Manage users and groups"
+msgstr "Керування користувачами й групами"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr ""
+
+msgid "Protected area deleted successfully!"
+msgstr "Захищена зона успішно видалена!"
+
+msgid "Permission deny!"
+msgstr "Доступ заборонено!"
+
+msgid "You do not have protected areas"
+msgstr "Ви не маєте захищених зон"
+
+msgid "Add user"
+msgstr "Додати користувача"
+
+msgid "Group name"
+msgstr "Назва групи"
+
+msgid "Group members"
+msgstr "Члени групи"
+
+msgid "Add group"
+msgstr "Додати групу"
+
+msgid "Group"
+msgstr "Група"
+
+msgid "Add new protected area"
+msgstr "Додати захищену зону"
+
+msgid "Protected area was deleted successful!"
+msgstr "Захищена зона успішно видалена!"
+
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Список поштових скриньок"
+
+#, fuzzy
+msgid "Group already exists!"
+msgstr "Група вже існує!"
+
+msgid "Manage user"
+msgstr "Керування користувачем"
+
+msgid "Wrong username!"
+msgstr "Невірне ім'я користувача!"
+
+msgid "User already exist !"
+msgstr "Користувач уже існує!"
+
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Користувача призначено до групи"
+
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "Користувача призначено до групи"
+
+msgid "User assign"
+msgstr "Призначення користувача"
+
+msgid "Already in:"
+msgstr "Уже в групі:"
+
+msgid "Member of group:"
+msgstr ""
+
+msgid "Select group:"
+msgstr ""
+
+msgid "Update user"
+msgstr "Оновити користувача"
+
+msgid "You have no users!"
+msgstr "Ви не маєте користувачів!"
+
+msgid "Please type user password!"
+msgstr "Будь ласка, введіть пароль користувача!"
+
+msgid "Too long user password!"
+msgstr "Занадто довгий пароль користувача!"
+
+msgid "SQL user password was successfully changed!"
+msgstr "Пароль користувача SQL успішно змінений!"
+
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Клієнт/Зміна пароля користувача SQL"
+
+msgid "Change SQL user password"
+msgstr "Змінити пароль користувача SQL"
+
+msgid "Change"
+msgstr "Змінити"
+
+msgid "Please type database name!"
+msgstr "Будь ласка, введіть назву бази даних!"
+
+msgid "Database name is too long!"
+msgstr ""
+
+msgid "Specified database name already exists!"
+msgstr "Вказане ім'я бази даних уже існує!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
+
+msgid "SQL database created successfully!"
+msgstr "База даних SQL успішно створена!"
+
+msgid "SQL accounts limit reached!"
+msgstr ""
+
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Клієнт/Додавання бази даних SQL"
+
+msgid "Add SQL database"
+msgstr "Додати SQL базу"
+
+msgid "Database name"
+msgstr "Назва бази даних"
+
+msgid "Use numeric ID"
+msgstr "Використовувати числовий ID"
+
+msgid "Before the name"
+msgstr ""
+
+msgid "After the name"
+msgstr ""
+
+msgid "SQL database was removed successfully!"
+msgstr "База даних SQL успішно видалена!"
+
+msgid "SQL user was removed successfully!"
+msgstr "Користувач SQL успішно видалений!"
+
+#, fuzzy
+msgid "Please enter an SQL query!"
+msgstr "Введіть запит SQL!"
+
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
+
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Виконати запит SQL"
+
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Виконати запит SQL"
+
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Клієнт/Виконання запиту SQL"
+
+msgid "Execute SQL query"
+msgstr "Виконати запит SQL"
+
+msgid "SQL query"
+msgstr "Запит SQL"
+
+msgid "Query status"
+msgstr "Стан запиту"
+
+msgid "Query result"
+msgstr "Результат запиту"
+
+msgid "Execute"
+msgstr "Виконати"
+
+msgid "Database user list is empty!"
+msgstr "Список користувачів баз даних порожній!"
+
+msgid "Database list is empty!"
+msgstr "Список баз даних порожній!"
+
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Клієнт/Керування SQL"
+
+msgid "Manage SQL"
+msgstr "Керування SQL"
+
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Користувачі баз даних"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
+msgid "Database users"
+msgstr "Користувачі баз даних"
+
+msgid "Add SQL user"
+msgstr "Додати SQL користувача"
+
+msgid "Execute query"
+msgstr "Виконати запит"
+
+msgid "Login phpMyAdmin"
+msgstr ""
+
+#, fuzzy
+msgid "SQL users limit reached!"
+msgstr "Ліміт користувачів SQL вичерпаний!"
+
+msgid "Please type user name!"
+msgstr "Будь ласка, введіть ім'я користувача!"
+
+msgid "Too user long password!"
+msgstr "Занадто довгий пароль користувача!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+
+msgid "User name too long!"
+msgstr "Занадто довге ім'я користувача!"
+
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
+msgstr "Маски (% та ?) заборонені!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Вказаний користувач бази даних уже існує!"
+
+msgid "SQL user successfully added!"
+msgstr "Користувач SQL успішно доданий!"
+
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Клієнт/Додавання користувача SQL"
+
+msgid "SQL user name"
+msgstr "Користувач SQL"
+
+msgid "In front the name"
+msgstr "На початку назви"
+
+msgid "Behind the name"
+msgstr "У кінці імені"
+
+msgid "Add existing user"
+msgstr "Додати існуючого користувача"
+
+msgid "Existing SQL users"
+msgstr "Існуючі користувачі SQL"
+
+msgid "Subdomains limit reached!"
+msgstr ""
+
+msgid "Please specify subdomain name!"
+msgstr "Будь ласка, укажіть назву піддомена!"
+
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Піддомен уже існує!"
+
+msgid "Wrong subdomain syntax!"
+msgstr "Невірний запис субдомену!"
+
+msgid "Subdomain mount point already exists!"
+msgstr "Точка монтування піддомену вже існує!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Триває додавання піддомену!"
+
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Клієнт/Додавання піддомену"
+
+msgid "Add subdomain"
+msgstr "Додати піддомен"
+
+msgid "Subdomain data"
+msgstr "Відомості піддомену"
+
+msgid "Subdomain name"
+msgstr "Ім'я піддомену"
+
+#, fuzzy
+msgid "Directory tree mount point"
+msgstr "Точка монтування (директорія)"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Триває видалення піддомену!"
+
+msgid "Please specify message subject!"
+msgstr "Будь ласка, укажіть тему повідомлення!"
+
+msgid "Your message was sent!"
+msgstr "Ваше повідомлення надіслане!"
+
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Система підтримки"
+
+msgid "New ticket"
+msgstr "Новий запит"
 
 msgid "Message was send!"
 msgstr "Повідомлення відправлене!"
@@ -3140,13 +3160,24 @@ msgstr "Помилка"
 msgid "ispCP - Order Panel"
 msgstr "Контрольна панель ispCP"
 
-msgid "[Ticket] {SUBJ}"
+msgid "[Ticket]"
 msgstr ""
 
+#, php-format
 msgid ""
-"Hello {TO_NAME} !\n"
+"Hello %s!\n"
 "\n"
-"You have a new ticket to read"
+"You have a new ticket:\n"
+msgstr ""
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr ""
+
+msgid "Log in to answer."
 msgstr ""
 
 #, php-format
@@ -3309,7 +3340,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3340,6 +3371,10 @@ msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Система знаходиться в стані обслуговування! Лише адміністратори можуть "
 "входити до системи."
+
+#, fuzzy, php-format
+msgid "%s user already logged or session sharing problem! Aborting..."
+msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
 
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
@@ -3575,54 +3610,6 @@ msgstr "Реселер ispCP : Додавання аліасу"
 msgid "You have no user records."
 msgstr "Ви не маєте записів користувачів."
 
-msgid "ispCP - Reseller/Add hosting plan"
-msgstr "ispCP - Реселер/Додавання хостінг-плану"
-
-msgid "Hosting plan values exceed reseller maximum values!"
-msgstr ""
-
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Реселер/Зміна пароля"
-
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Реселер/Зміна персональних даних"
-
-msgid "ispCP - Circular"
-msgstr "ispCP - Адміністратор/Реклама"
-
-msgid "Circular"
-msgstr "Масова розсилка пошти"
-
-msgid "Wrong domain ID!"
-msgstr "Невірний ID домену!"
-
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-"Домен, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку "
-"видаліть їх!"
-
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-"Домен, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку "
-"видаліть їх!"
-
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
-"Домен, що Ви намагаєтеся видалити, містить аліаси!<br>Спочатку видаліть їх!"
-
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-"Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть "
-"їх!"
-
-msgid "User terminated!"
-msgstr "Користувач видалений!"
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Керування доменами/Аліаси"
 
@@ -3669,23 +3656,71 @@ msgstr "Аліас домену додано!"
 msgid "Ordered domain alias not activated!"
 msgstr "Аліас домену не додано!"
 
+msgid "ispCP - Circular"
+msgstr "ispCP - Адміністратор/Реклама"
+
+msgid "Circular"
+msgstr "Масова розсилка пошти"
+
+msgid "Wrong domain ID!"
+msgstr "Невірний ID домену!"
+
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
+
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку "
+"видаліть їх!"
+
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить аліаси!<br>Спочатку видаліть їх!"
+
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть "
+"їх!"
+
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Домен/Редагування"
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Користувачі/Редагування"
+#, php-format
+msgid "The <em>%s</em> service can not be disabled! "
+msgstr ""
 
-msgid "Users list"
-msgstr "Список користувачів"
+#, php-format
+msgid "The <em>%s</em> service can not be limited! "
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr ""
+
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Реселер/Додавання хостінг-плану"
+
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
 
 msgid "ispCP - Reseller/Edit hosting plan"
 msgstr "ispCP - Реселер/Редагування хостінг-плану"
 
 msgid "View hosting plan"
 msgstr "Перегляд хостінг-плану"
-
-msgid "ispCP - Reseller/Manage users/Email setup"
-msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Реселер/Головна"
@@ -3721,15 +3756,6 @@ msgstr ""
 #, fuzzy
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Клієнт/Зміна мови"
-
-msgid "ispCP - Reseller/Lostpw email setup"
-msgstr "ispCP - Реселер/Налаштування відновлення пароля"
-
-msgid "Lostpw email"
-msgstr "E-mail для відновлення пароля"
-
-msgid "Lostpw link"
-msgstr "Посилання на відновлення пароля"
 
 msgid "ispCP - Reseller/Order email setup"
 msgstr "ispCP - Реселер/Налаштування замовлення"
@@ -3812,6 +3838,27 @@ msgstr "Замовлення"
 msgid "Add/Details"
 msgstr "Додати/Деталі"
 
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Реселер/Зміна пароля"
+
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Реселер/Зміна персональних даних"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Реселер/Налаштування відновлення пароля"
+
+msgid "Lostpw email"
+msgstr "E-mail для відновлення пароля"
+
+msgid "Lostpw link"
+msgstr "Посилання на відновлення пароля"
+
+msgid "ispCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Реселер : Система підтримки: Перегляд запитів"
+
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Користувачі/Додавання користувача"
 
@@ -3842,6 +3889,13 @@ msgstr "Журнали веб-сервера"
 msgid "Awstats"
 msgstr "AWStats"
 
+msgid "Domain data has been altered. Please enter again"
+msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
 msgid "ispCP - User/Add user"
 msgstr "ispCP - Користувач/Додавання користувача"
 
@@ -3851,11 +3905,21 @@ msgstr "Додати інші домени до цього облікового 
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr "Цей реселер не має доменів."
+msgid "User terminated!"
+msgstr "Користувач видалений!"
+
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Користувачі/Редагування"
+
+msgid "Users list"
+msgstr "Список користувачів"
 
 msgid "ispCP - Users"
 msgstr "ispCP - Користувачі"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Ви впевнені, що бажаєте змінити статус облікового запису домена?"
 
 msgid "Stats"
 msgstr "Статистика"
@@ -3884,11 +3948,11 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
-msgstr "ispCP - Реселер : Система підтримки: Перегляд запитів"
+msgid "This reseller has no domains yet."
+msgstr "Цей реселер не має доменів."
 
-msgid "Message was sent."
-msgstr "Повідомлення відправлене."
+#~ msgid "Missing or wrong data!"
+#~ msgstr "Відсутні або невірні дані!"
 
 #, fuzzy
 #~ msgid "Unknown domain status!"
@@ -4020,9 +4084,6 @@ msgstr "Повідомлення відправлене."
 
 #~ msgid "Password generate"
 #~ msgstr "Ґенерація пароля"
-
-#~ msgid "Update language installed!"
-#~ msgstr "Оновлення мови встановлене!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Невизначена системна помилка!"

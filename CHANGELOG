@@ -1,6 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-04 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC6
+	- LANGUAGES:
+		* Updated all languages files.
+
+2008-08-03 Malte Geierhos
+	- SETUP:
+		* Fixed #1443: If MySQL root-password contains a | the ispcp-setup script ends up with an error
+
 2008-08-03 Benedikt Heintel
 	- LANGUAGES:
 		* Updated Japanese

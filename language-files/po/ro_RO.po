@@ -4,14 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-01 18:49+0100\n"
+"POT-Creation-Date: 2008-08-04 15:05+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
-"Translation-Date: 2008-04-30 16:03-0500\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Translation-Date: 2008-04-30 16:03-0500\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
@@ -83,8 +83,8 @@ msgid ""
 "(To avoid abuse, we ask you to write the combination of letters on the above "
 "picture into the field \"Security code\")"
 msgstr ""
-"Pentru evitarea abuzurilor, solicitam tastarea combinatiei de litere din imaginea"
-"de mai sus in campul \"Cod Securitate\")"
+"Pentru evitarea abuzurilor, solicitam tastarea combinatiei de litere din "
+"imagineade mai sus in campul \"Cod Securitate\")"
 
 msgid "Request password"
 msgstr "Solicitare parola"
@@ -176,140 +176,29 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Adauga"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr "ispCP- Administrator/Administrare utilizatori/Adauga reseller"
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Administrator/Administrare useri/Editeaza Administratori"
 
-msgid "Reseller IP list is empty!"
-msgstr "Lista de IP-uri pentru reseller este goala"
-
-msgid "No."
-msgstr "Nu"
-
-msgid "Assign"
-msgstr "Atribuie"
-
-msgid "Label"
-msgstr "Eticheta"
-
-msgid "Number"
-msgstr "Numar"
+msgid "User session was killed!"
+msgstr "Sesiune user terminata"
 
 msgid "Reseller"
 msgstr "Reseller"
 
-msgid "Incorrect email syntax!"
-msgstr "Sintaxa email incorecta"
+msgid "Domain account"
+msgstr "Cont domeniu"
 
-msgid "Incorrect domains limit!"
-msgstr "Limita domeniilor este incorecta"
+msgid "Edit admin"
+msgstr "Editare admin"
 
-msgid "Incorrect subdomains limit!"
-msgstr "Limita subdomeniilor este incorecta"
+msgid "Update"
+msgstr "Actualizare"
 
-msgid "Incorrect aliases limit!"
-msgstr "Limita aliasurilor este incorecta"
+msgid "Send new login data"
+msgstr "Salveaza noile date de login"
 
-msgid "Incorrect FTP accounts limit!"
-msgstr "Limita conturilor FTP este incorecta"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Limita conturilor email este incorecta"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Limita bazelor de date SQL este incorecta"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Limita userilor SQL este incorecta"
-
-msgid "Incorrect traffic limit!"
-msgstr "Limita traficului este incorecta"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Limita spatiului este incorecta"
-
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "Trebuie sa atribuie cel putin un IP pentru reseller"
-
-msgid "Add reseller"
-msgstr "Adauga reseller"
-
-msgid "Domains limit<br><i>(0 unlimited)</i>"
-msgstr "Limita domenii <br /><i>(0 nelimitat)</i>"
-
-msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita subdomenii <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita subdomenii <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Conturi E-Mail <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita conturi FTP <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Baze de date SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limita utilizatori SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limita trafic [MB] <br /><i>(-1 dezactivat, 0 nelimitat) </i>"
-
-msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limita Disc[MB] <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "PHP"
-msgstr "PHP"
-
-msgid "CGI / Perl"
-msgstr "CGI / Perl"
-
-msgid "JSP"
-msgstr "JSP"
-
-msgid "SSI"
-msgstr "SSI"
-
-msgid "Frontpage extensions"
-msgstr "Extensii Frontpage"
-
-msgid "Backup and restore"
-msgstr "Backup si restaurare"
-
-msgid "Custom error pages"
-msgstr "Pagini erori customizabile"
-
-msgid "Protected areas"
-msgstr "Zone Protejate"
-
-msgid "Webmail"
-msgstr "Webmail"
-
-msgid "Directory listing"
-msgstr "Lista de Directoare"
-
-msgid "Apache logfiles"
-msgstr "Loguri Apache"
-
-msgid "AwStats"
-msgstr "AwStats"
-
-msgid "Logo upload"
-msgstr "Upload Logo"
-
-msgid "yes"
-msgstr "da"
-
-msgid "no"
-msgstr "nu"
-
-msgid "Reseller IPs"
-msgstr "Ip-uri Reseller"
-
-msgid "Customer ID"
-msgstr "Identitate Client"
+msgid "Generate password"
+msgstr "Genereaza parola!"
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Administrator/Log Administrator"
@@ -377,108 +266,6 @@ msgstr "mai vechi de sase luni"
 msgid "older than 12 months"
 msgstr "mai vechi de 12 luni"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/ Adauga plan gazduire"
-
-msgid "Add hosting plan"
-msgstr "Adauga plan gazduire"
-
-msgid "Hosting plan properties"
-msgstr "Proprietati plan gazduire"
-
-msgid "Template name"
-msgstr "Nume sablon"
-
-msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maxim subdomenii<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maxim aliasuri<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
-
-msgid "Billing Settings"
-msgstr "Optiuni plata"
-
-msgid "Price"
-msgstr "Pret"
-
-msgid "Setup fee"
-msgstr "Gratuit"
-
-msgid "Currency"
-msgstr "Moneda"
-
-msgid "Payment period"
-msgstr "Perioada platita"
-
-msgid "Available for purchasing"
-msgstr "Disponibil pentru cumparare"
-
-msgid "Description"
-msgstr "Descriere"
-
-msgid "(e.g. EUR)"
-msgstr "(ex. EUR)"
-
-msgid "Add plan"
-msgstr "Adauga plan"
-
-msgid "Incorrect template name length!"
-msgstr "Lungime nume template incorecta"
-
-msgid "Incorrect template description length!"
-msgstr "Lungime descriere template incorecta"
-
-msgid "Incorrect price syntax!"
-msgstr "Sintaxa pret incorecta"
-
-msgid "Incorrect setup fee syntax!"
-msgstr "Sintaxa incorecta la a pretului"
-
-msgid "Hosting plan with entered name already exists!"
-msgstr "Planul de gazduire cu numele introdus exista deja"
-
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Administrator/Schimba Parola"
-
-msgid "Please fill up all data fields!"
-msgstr "Te rugam completeaza toate campurile"
-
-msgid "Passwords do not match!"
-msgstr "Parola nu corespunde"
-
-msgid "The current password is wrong!"
-msgstr "Parola utilizata este gresita"
-
-msgid "User password updated successfully!"
-msgstr "Parola utilizator modificata cu suces"
-
-msgid "Change password"
-msgstr "Schimba parola"
-
-msgid "Password data"
-msgstr "Date Parola"
-
-msgid "Update password"
-msgstr "Improspatare parola"
-
-msgid "Current password"
-msgstr "Parola curenta"
-
-msgid "Personal data updated successfully!"
-msgstr "Datele personale improspatate cu succes"
-
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Administrator/ Modifica Date Personale"
-
-msgid "Change personal data"
-msgstr "Schimba datele personale"
-
-msgid "Personal data"
-msgstr "Date personale"
-
-msgid "Update data"
-msgstr "Salveaza datele"
-
 msgid "ispCP - Admin - Email Marketing"
 msgstr "ispCP - Administrator - E-Mail Marketing"
 
@@ -533,7 +320,8 @@ msgstr "Utilizator"
 msgid "All"
 msgstr "Toate"
 
-msgid "Are you sure you want to delete"
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
 msgstr "Sigur doriti sa stergeti"
 
 msgid "Missing or incorrect data input!"
@@ -605,14 +393,8 @@ msgstr "Actualizari baza de date"
 msgid "Available database updates"
 msgstr "Actualizari ispCP disponibile"
 
-msgid "Update"
-msgstr "Actualizare"
-
 msgid "Update details"
 msgstr "Actualizeaza detaliile"
-
-msgid "No database updates available"
-msgstr "Nu exista actualizari disponibile pentru baza de date"
 
 msgid "New Database update is now available"
 msgstr "O noua actualizare a bazei de date este disponibila acum"
@@ -620,26 +402,8 @@ msgstr "O noua actualizare a bazei de date este disponibila acum"
 msgid "Do you want to execute the Updates now?"
 msgstr "Doresti sa executi actualizarea acum?"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Nu poti sterge ultimele IP-uri active"
-
-msgid "Error: we have a domain using this IP!"
-msgstr "EROARE: exista un domeniu care foloseste acest IP!"
-
-msgid "Error: we have a reseller using this IP!"
-msgstr "EROARE: exista un reseller care foloseste acest IP!"
-
-msgid "IP was deleted!"
-msgstr "IP-ul a fost sters!"
-
-msgid "Support ticket deleted successfully!"
-msgstr "Ticket-ul pentru cerere suport a fost sters cu suces!"
-
-msgid "All open support tickets deleted successfully!"
-msgstr "Toate ticket-ele de suport deschise au fost sterse cu succes!"
-
-msgid "All closed support tickets deleted successfully!"
-msgstr "Toate ticket-ele de suport inchise au fost sterse cu succes!"
+msgid "No database updates available"
+msgstr "Nu exista actualizari disponibile pentru baza de date"
 
 msgid "ispCP - Domain/Details"
 msgstr "ispCP- Domenii/Detalii"
@@ -707,6 +471,152 @@ msgstr "Pornit"
 msgid "Disabled"
 msgstr "Dezactivat"
 
+#, fuzzy
+msgid "ispCP - Admin/Edit Domain"
+msgstr "ispCP - Administrator/Log Administrator"
+
+msgid "Edit Domain"
+msgstr "Editare domeniu"
+
+msgid "Domain properties"
+msgstr "Proprietati domeniu"
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maxim subdomenii<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maxim aliasuri<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Conturi E-Mail <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita conturi FTP <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Baze de date SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita utilizatori SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limita trafic [MB] <br /><i>(-1 dezactivat, 0 nelimitat) </i>"
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limita Disc[MB] <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "Cancel"
+msgstr "Anuleaza"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Nu"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Utilizatorul nu exista sau nu ai permisiunea sa accesezi aceasta interfata!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Limita subdomeniilor este incorecta"
+
+msgid "Incorrect aliases limit!"
+msgstr "Limita aliasurilor este incorecta"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Limita conturilor email este incorecta"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Limita conturilor FTP este incorecta"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Limita userilor SQL este incorecta"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Limita pentru bazele de date SQL este <i>dezactivata</i>"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Limita bazelor de date SQL este incorecta"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Limita pentru useri SQL este <i>dezactivata</i>"
+
+msgid "Incorrect traffic limit!"
+msgstr "Limita traficului este incorecta"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Limita spatiului este incorecta"
+
+msgid "Subdomain"
+msgstr "Subdomeniu"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Mail"
+msgstr "e-mail"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "Baze Date SQL"
+
+msgid "SQL User"
+msgstr "Utilizator SQL"
+
+msgid "Traffic"
+msgstr "Trafic"
+
+msgid "Disk"
+msgstr "Disc"
+
+#, fuzzy
+msgid "Domain properties could not be updated!"
+msgstr " Proprietatile domeniului nu pot fi modificate!"
+
+msgid "Domain properties updated successfully!"
+msgstr " Proprietatile domeniului actualizate cu succes"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "Acest <em>%s</em> serviciu nu poate fi dezactivat! "
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "Exista <em>%s</em> inregistrari in sistem"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "Acest <em>%s</em> serviciu nu poate fi limitat!"
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"Numarul specificat este mai mic decat <em>%s</em> inregistrari, prezente "
+"deja in sistem!"
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Exista<em>%s</em> inregistrari in sistem!"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "Acest <em>%s</em> serviciu nu poate fi nelimitat!"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Exista limitari pentru serviciul <em>%s</em>!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "S-a depasit limita pentru serviciul <em>%s</em>!"
+
 msgid "ispCP - Domain Statistics Data"
 msgstr "Date Statistici Domeniu"
 
@@ -740,126 +650,112 @@ msgstr "Tot traficul"
 msgid "Day"
 msgstr "Ziua"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Administrator/Administrare useri/Editeaza Administratori"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/ Adauga plan gazduire"
 
-msgid "User session was killed!"
-msgstr "Sesiune user terminata"
+msgid "Add hosting plan"
+msgstr "Adauga plan gazduire"
 
-msgid "Domain account"
-msgstr "Cont domeniu"
+msgid "Hosting plan properties"
+msgstr "Proprietati plan gazduire"
 
-msgid "Edit admin"
-msgstr "Editare admin"
-
-msgid "Send new login data"
-msgstr "Salveaza noile date de login"
-
-msgid "Generate password"
-msgstr "Genereaza parola!"
-
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Administrator/Administrare useri/ Editeaza Reseller"
+msgid "Template name"
+msgstr "Nume sablon"
 
 #, fuzzy
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "Limita pentru bazele de date SQL este <i>dezactivata</i>"
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maxim subdomenii<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
 
 #, fuzzy
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "Limita pentru useri SQL este <i>dezactivata</i>"
-
-msgid "Domains"
-msgstr "Domenii"
-
-#, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
-"Inconsistenta intre current_als_cnt si valoarea actuala contorizata: %1$d != %2$d"
-
-msgid "Aliases"
-msgstr "Alias-e"
-
-msgid "Mail"
-msgstr "e-mail"
-
-#, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
-"nconsistenta intre current_ftp_cnt si valoarea actuala contorizata:: %1$d != %2$d"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Databases"
-msgstr "Baze de date SQL"
-
-msgid "SQL Users"
-msgstr "Useri SQL"
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maxim aliasuri<br /><i>(-1 dezactivat, 0 nelimitat)</i>"
 
 #, fuzzy
-msgid "Web Traffic"
-msgstr "Trafic Web"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Conturi E-Mail <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
 
 #, fuzzy
-msgid "Disk storage"
-msgstr "Utilizare disc"
-
-msgid "Reseller data inconsistency!"
-msgstr "Date Reseller inconsistente"
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
-msgstr ""
-"Acest reseller are deja alocat mai mult/peste <b>%s</b> conturi/limite"
-"decat noua limita introdusa"
-
-msgid "Edit reseller aborted!"
-msgstr "Editare Reseller abandonata!"
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
-msgstr ""
-"Acest reseller foloseste deja mai mult/peste <b>%s</b> conturi/limite"
-"decat noua limita introdusa"
-
-
-#, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
-msgstr ""
-"Acest reseller(i) are deja alocate drepturi nelimitate pentru serviciu"
-"<b>%s</b><br>"
-
-
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
-"Daca se doreste limitarea resellerului intai trebuie introdusa limita pentru clienti"
-
-#, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr "Acest reseller are domenii alocate la adresa <b>%s</b>!<br>"
-
-msgid "Edit reseller"
-msgstr "Editeaza reseller"
-
-msgid "E-mail"
-msgstr "E-Mail"
-
-msgid "unlimited"
-msgstr "nelimitat"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita conturi FTP <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
 
 #, fuzzy
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
-msgstr "Limita Disc <br><i>(-1 dezactivat, 0 nelimitat)</i>"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Baze de date SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+#, fuzzy
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita utilizatori SQL <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limita trafic [MB] <br /><i>(-1 dezactivat, 0 nelimitat) </i>"
+
+#, fuzzy
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limita Disc[MB] <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "PHP"
+msgstr "PHP"
+
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+msgid "Backup and restore"
+msgstr "Backup si restaurare"
+
+msgid "Apache logfiles"
+msgstr "Loguri Apache"
+
+msgid "AwStats"
+msgstr "AwStats"
+
+msgid "yes"
+msgstr "da"
+
+msgid "no"
+msgstr "nu"
+
+msgid "Billing Settings"
+msgstr "Optiuni plata"
+
+msgid "Price"
+msgstr "Pret"
+
+msgid "Setup fee"
+msgstr "Gratuit"
+
+msgid "Currency"
+msgstr "Moneda"
+
+msgid "Payment period"
+msgstr "Perioada platita"
+
+msgid "Available for purchasing"
+msgstr "Disponibil pentru cumparare"
+
+msgid "Description"
+msgstr "Descriere"
+
+msgid "(e.g. EUR)"
+msgstr "(ex. EUR)"
+
+msgid "Add plan"
+msgstr "Adauga plan"
+
+msgid "Incorrect template name length!"
+msgstr "Lungime nume template incorecta"
+
+msgid "Incorrect template description length!"
+msgstr "Lungime descriere template incorecta"
+
+msgid "Incorrect price syntax!"
+msgstr "Sintaxa pret incorecta"
+
+msgid "Incorrect setup fee syntax!"
+msgstr "Sintaxa incorecta la a pretului"
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Planul de gazduire cu numele introdus exista deja"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Editare plan hosting"
@@ -881,42 +777,6 @@ msgstr "Pret incorect. Exemplu: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Setare rata plata. Exemplu: 19.99"
-
-msgid "Please specify a subject!"
-msgstr "Te rog specifica un subiect!"
-
-msgid "Please specify message!"
-msgstr "Te rog specifica un mesaj!"
-
-msgid "Auto email template data updated!"
-msgstr "Sablunul pentru email a fost actualizat!"
-
-msgid "ispCP - Admin/Manage users/Email setup"
-msgstr "ispCP - Administrator/Administreaza useri/Setari e-mail"
-
-msgid "Email setup"
-msgstr "Setare Email"
-
-msgid "Message template info"
-msgstr "Mesaj informatie interfata"
-
-msgid "User login (system) name"
-msgstr "Autorizare nume (system) utilizator"
-
-msgid "User password"
-msgstr "Parola utilizator"
-
-msgid "User real (first and last) name"
-msgstr "Numele real utilizator (nume si prenume)"
-
-msgid "Message template"
-msgstr "Mesaj interfata"
-
-msgid "Subject"
-msgstr "Subiect"
-
-msgid "Apply changes"
-msgstr "Salveaza modificarile"
 
 msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr "ispCP - Administrator/ Management plan gazduire"
@@ -945,8 +805,14 @@ msgstr "Plan gazduire sters!"
 msgid "Hosting plan updated!"
 msgstr "Plan gazduire actualizat!"
 
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Planul de gazduire nu poate fi sters, exista comenzi!"
+
 msgid "Hosting plans not found!"
 msgstr "Planurile de gazduire nu au fost gasite!"
+
+msgid "No."
+msgstr "Nu"
 
 msgid "Name"
 msgstr "Nume"
@@ -961,11 +827,47 @@ msgstr "Ai <b>%d</b> noi cereri de suport."
 msgid "View"
 msgstr "Vizualizare"
 
+msgid "Update checking is disabled!"
+msgstr ""
+
 msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nu s-a putut verifica daca exista actualizari disponibile. Website-ul nu este disponibil"
+msgstr ""
+"Nu s-a putut verifica daca exista actualizari disponibile. Website-ul nu "
+"este disponibil"
 
 msgid "New ispCP update is now available"
 msgstr "O noua actualizare pentru ispCP este disponibila"
+
+#, fuzzy
+msgid "A database update is available"
+msgstr "Nu exista actualizari disponibile pentru baza de date"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Limita de trafic depasita!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s din nelimitat]"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s din %3$s]"
+
+#, fuzzy
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Client/ Index Principal"
+
+msgid "You cannot delete the last active IP address!"
+msgstr "Nu poti sterge ultimele IP-uri active"
+
+msgid "Error: we have a domain using this IP!"
+msgstr "EROARE: exista un domeniu care foloseste acest IP!"
+
+msgid "Error: we have a reseller using this IP!"
+msgstr "EROARE: exista un reseller care foloseste acest IP!"
+
+msgid "IP was deleted!"
+msgstr "IP-ul a fost sters!"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Administrator/ Manager Ip-uri"
@@ -1000,14 +902,11 @@ msgstr "IP"
 msgid "Domain"
 msgstr "Domeniu"
 
-msgid "Alias"
-msgstr "Alias"
-
 msgid "Add new IP"
 msgstr "Adauga IP nou"
 
-#, fuzzy
-msgid "Are you sure you want to delete this IP: "
+#, fuzzy, php-format
+msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Sigur doriti sa stergeti aceast IP?"
 
 msgid "No domain system errors"
@@ -1044,25 +943,29 @@ msgstr "ispCP Daemon tools"
 msgid "Execute requests"
 msgstr "Executa interogarile"
 
+msgid "Set status to \"change\""
+msgstr ""
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr "Daemon-ul a intors %d ca si cod de status"
 
-msgid "Unknown domain status!"
-msgstr "Status domeniu necunoscut"
-
-msgid "Unknown account type!"
-msgstr "Tip acount necunoscut"
-
 #, fuzzy
-msgid "Invalid account id!"
-msgstr "ID Cont domeniu necunoscut"
+msgid "Unknown type!"
+msgstr "Tip necunoscut"
 
 msgid "Done"
 msgstr "Gata"
 
 msgid "Unknown Error"
 msgstr "Eroare necunoscuta"
+
+#, fuzzy
+msgid "Enable update at"
+msgstr "Actualizari baza de date"
+
+msgid "Settings"
+msgstr "Setari"
 
 msgid "Get it at"
 msgstr "Obtine-l la"
@@ -1087,78 +990,6 @@ msgstr "Limba"
 
 msgid "Choose default language"
 msgstr "Alege limba default"
-
-msgid "Upload file error!"
-msgstr "Eroare upload fisier"
-
-msgid "You can only upload images!"
-msgstr "Nu puteti uploada decat imagini"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Imaginile trebuie sa fie mai mici de 195 x 195 pixeli !"
-
-msgid "Your logo was successful uploaded!"
-msgstr "Logo-ul a fost incarcat cu succes"
-
-msgid "Layout settings"
-msgstr "Setari sablon"
-
-msgid "Installed layouts"
-msgstr "Sabloane instalate"
-
-msgid "Layout name"
-msgstr "Nume Sablon"
-
-msgid "default"
-msgstr "principal"
-
-msgid "Upload logo"
-msgstr "Incarca logo"
-
-msgid "Logo file"
-msgstr "Fisier logo"
-
-msgid "Upload"
-msgstr "Incarca"
-
-msgid "Remove"
-msgstr "Sterge"
-
-msgid "Choose default layout"
-msgstr "Alege sablon principal"
-
-msgid "Layout"
-msgstr "Sablon"
-
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Administrator/Setari email pentru parola pierduta"
-
-msgid "Lost password e-mail"
-msgstr "e-mail parola pierduta"
-
-msgid "Activation E-Mail"
-msgstr "E-mail pentru activare"
-
-msgid "Password E-Mail"
-msgstr "E-mail parola "
-
-msgid "User (first and last) name"
-msgstr "Utilizator (nume si prenume)"
-
-msgid "Lost password link"
-msgstr "Link parola pierduta"
-
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Administrator/ Mod Intretinere"
-
-msgid "Settings saved !"
-msgstr "Setarile au fost salvate"
-
-msgid "Maintenance mode"
-msgstr "Mod Intretinere"
-
-msgid "Under this mode only administrators can login"
-msgstr "In acest mod doar administratorii pot sa se autentifice"
 
 msgid "Reseller list is empty!"
 msgstr "Lista de reselleri este goala"
@@ -1206,30 +1037,32 @@ msgstr "Reseller-ul sursa si destinatie este acelasi"
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> are drepturi nelimitate pentru serviciul <b>%2$s</b>!"
 
-#, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+#, fuzzy, php-format
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
-msgstr "Nu poti asigna <b>%1$s</b> unui reseller <br>care are limite "
-"pentru serviciul <b>%2$s</b>!"
+msgstr ""
+"Nu poti asigna <b>%1$s</b> unui reseller <br>care are limite pentru "
+"serviciul <b>%2$s</b>!"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller!<br>"
 msgstr ""
-"<b>%1$s</b> depaseste limita pentru serviciul <b>%2$s</b><br> al reseller-ului"
-"destinatie!<br>"
+"<b>%1$s</b> depaseste limita pentru serviciul <b>%2$s</b><br> al reseller-"
+"uluidestinatie!<br>"
 
 msgid "Moving aborted!"
 msgstr "Mutare intrerupta"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
-"<b>%s</b> are adresa IP care nu poate fi administrata de reseller-ul destinatie!"
-"<br>Acest utilizator nu poate fi mutat!"
+"<b>%s</b> are adresa IP care nu poate fi administrata de reseller-ul "
+"destinatie!<br>Acest utilizator nu poate fi mutat!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Administrator/ Administreaza utilizatori/Alocare utilizatori"
@@ -1248,24 +1081,6 @@ msgstr "De la reseller-ul"
 
 msgid "To reseller"
 msgstr "Pana la reseller-ul"
-
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Administrator/Administreaza sesiuni"
-
-msgid "Manage user sessions"
-msgstr "Administrare sesiune utilizator"
-
-msgid "User type"
-msgstr "Tip utilizator"
-
-msgid "Last access"
-msgstr "Ultima accesare"
-
-msgid "Options"
-msgstr "Optiuni"
-
-msgid "Kill session"
-msgstr "Stergere sesiune"
 
 msgid "ispCP - Admin/Manage Users"
 msgstr "ispCP - Administrato/Administrare utilizatori"
@@ -1286,7 +1101,9 @@ msgid "Email Updated"
 msgstr "Adresa de mail a fost actualizata"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "Acest utilizator are un domeniu !<br> Pentru a sterge utilizatorul sterge domeniul intai"
+msgstr ""
+"Acest utilizator are un domeniu !<br> Pentru a sterge utilizatorul sterge "
+"domeniul intai"
 
 msgid "User was disabled"
 msgstr "Utilizatorul a fost dezactivat"
@@ -1299,6 +1116,9 @@ msgstr "ispCP - Administrator/ Internationalizare"
 
 msgid "Default language changed!"
 msgstr "Limba principala a fost schimbata!"
+
+msgid "Upload file error!"
+msgstr "Eroare upload fisier"
 
 msgid "You can upload only text files!"
 msgstr "Poti incarca doar fisiere text"
@@ -1351,6 +1171,204 @@ msgstr "Instaleaza"
 msgid "Export"
 msgstr "Exporta"
 
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Administrator/Schimba Parola"
+
+msgid "Please fill up all data fields!"
+msgstr "Te rugam completeaza toate campurile"
+
+msgid "Passwords do not match!"
+msgstr "Parola nu corespunde"
+
+msgid "The current password is wrong!"
+msgstr "Parola utilizata este gresita"
+
+msgid "User password updated successfully!"
+msgstr "Parola utilizator modificata cu suces"
+
+msgid "Change password"
+msgstr "Schimba parola"
+
+msgid "Password data"
+msgstr "Date Parola"
+
+msgid "Update password"
+msgstr "Improspatare parola"
+
+msgid "Current password"
+msgstr "Parola curenta"
+
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Administrator/ Modifica Date Personale"
+
+msgid "Personal data updated successfully!"
+msgstr "Datele personale improspatate cu succes"
+
+msgid "Change personal data"
+msgstr "Schimba datele personale"
+
+msgid "Personal data"
+msgstr "Date personale"
+
+msgid "Update data"
+msgstr "Salveaza datele"
+
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr "ispCP- Administrator/Administrare utilizatori/Adauga reseller"
+
+msgid "Reseller IP list is empty!"
+msgstr "Lista de IP-uri pentru reseller este goala"
+
+msgid "Assign"
+msgstr "Atribuie"
+
+msgid "Label"
+msgstr "Eticheta"
+
+msgid "Number"
+msgstr "Numar"
+
+msgid "Incorrect email syntax!"
+msgstr "Sintaxa email incorecta"
+
+msgid "Incorrect domains limit!"
+msgstr "Limita domeniilor este incorecta"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Trebuie sa atribuie cel putin un IP pentru reseller"
+
+msgid "Add reseller"
+msgstr "Adauga reseller"
+
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Limita domenii <br /><i>(0 nelimitat)</i>"
+
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita subdomenii <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limita subdomenii <br /><i>(-1 dezactivat, 0 nelimitat)</i>"
+
+msgid "JSP"
+msgstr "JSP"
+
+msgid "SSI"
+msgstr "SSI"
+
+msgid "Frontpage extensions"
+msgstr "Extensii Frontpage"
+
+msgid "Custom error pages"
+msgstr "Pagini erori customizabile"
+
+msgid "Protected areas"
+msgstr "Zone Protejate"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Directory listing"
+msgstr "Lista de Directoare"
+
+msgid "Logo upload"
+msgstr "Upload Logo"
+
+msgid "Reseller IPs"
+msgstr "Ip-uri Reseller"
+
+msgid "Customer ID"
+msgstr "Identitate Client"
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Administrator/Administrare useri/ Editeaza Reseller"
+
+msgid "Domains"
+msgstr "Domenii"
+
+#, php-format
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+"Inconsistenta intre current_als_cnt si valoarea actuala contorizata: %1$d != "
+"%2$d"
+
+msgid "Aliases"
+msgstr "Alias-e"
+
+#, php-format
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+"nconsistenta intre current_ftp_cnt si valoarea actuala contorizata:: %1$d != "
+"%2$d"
+
+msgid "SQL Databases"
+msgstr "Baze de date SQL"
+
+msgid "SQL Users"
+msgstr "Useri SQL"
+
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Trafic Web"
+
+#, fuzzy
+msgid "Disk storage"
+msgstr "Utilizare disc"
+
+msgid "Reseller data inconsistency!"
+msgstr "Date Reseller inconsistente"
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+"Acest reseller are deja alocat mai mult/peste <b>%s</b> conturi/limitedecat "
+"noua limita introdusa"
+
+msgid "Edit reseller aborted!"
+msgstr "Editare Reseller abandonata!"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+"Acest reseller foloseste deja mai mult/peste <b>%s</b> conturi/limitedecat "
+"noua limita introdusa"
+
+#, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
+msgstr ""
+"Acest reseller(i) are deja alocate drepturi nelimitate pentru serviciu<b>%s</"
+"b><br>"
+
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Daca se doreste limitarea resellerului intai trebuie introdusa limita pentru "
+"clienti"
+
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
+msgstr "Acest reseller are domenii alocate la adresa <b>%s</b>!<br>"
+
+msgid "Edit reseller"
+msgstr "Editeaza reseller"
+
+msgid "E-mail"
+msgstr "E-Mail"
+
+msgid "unlimited"
+msgstr "nelimitat"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Limita Disc <br><i>(-1 dezactivat, 0 nelimitat)</i>"
+
 msgid "ispCP - Reseller statistics"
 msgstr "ispCP - Statistici reseller"
 
@@ -1376,15 +1394,6 @@ msgstr "%1$d / %2$d <br/>din<br/> <b>nelimitat</b>"
 msgid "Reseller statistics table"
 msgstr "Tabel statistici reseller"
 
-msgid "Traffic"
-msgstr "Trafic"
-
-msgid "Disk"
-msgstr "Disc"
-
-msgid "Subdomain"
-msgstr "Subdomeniu"
-
 msgid "SQL database"
 msgstr "Baza date SQL"
 
@@ -1401,6 +1410,10 @@ msgstr "%1$s <br/>din<br/> <b>%2$s</b>"
 #, php-format
 msgid "%s <br/>of<br/> <b>unlimited</b>"
 msgstr "%s <br/>din<br/> <b>nelimitat</b>"
+
+#, fuzzy, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr "%1$s <br/>din<br/> <b>%2$s</b>"
 
 #, fuzzy
 msgid "<b>disabled</b>"
@@ -1522,6 +1535,241 @@ msgstr "Serviciu"
 msgid "Server status"
 msgstr "Status Server"
 
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Administrator/Administreaza sesiuni"
+
+msgid "Manage user sessions"
+msgstr "Administrare sesiune utilizator"
+
+msgid "User type"
+msgstr "Tip utilizator"
+
+msgid "Last access"
+msgstr "Ultima accesare"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Kill session"
+msgstr "Stergere sesiune"
+
+msgid "You can only upload images!"
+msgstr "Nu puteti uploada decat imagini"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Imaginile trebuie sa fie mai mici de 195 x 195 pixeli !"
+
+msgid "Your logo was successful uploaded!"
+msgstr "Logo-ul a fost incarcat cu succes"
+
+msgid "Layout settings"
+msgstr "Setari sablon"
+
+msgid "Installed layouts"
+msgstr "Sabloane instalate"
+
+msgid "Layout name"
+msgstr "Nume Sablon"
+
+msgid "default"
+msgstr "principal"
+
+msgid "Upload logo"
+msgstr "Incarca logo"
+
+msgid "Logo file"
+msgstr "Fisier logo"
+
+msgid "Upload"
+msgstr "Incarca"
+
+msgid "Remove"
+msgstr "Sterge"
+
+msgid "Choose default layout"
+msgstr "Alege sablon principal"
+
+msgid "Layout"
+msgstr "Sablon"
+
+msgid "Please specify a subject!"
+msgstr "Te rog specifica un subiect!"
+
+msgid "Please specify message!"
+msgstr "Te rog specifica un mesaj!"
+
+msgid "Auto email template data updated!"
+msgstr "Sablunul pentru email a fost actualizat!"
+
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Administrator/Setari email pentru parola pierduta"
+
+msgid "Lost password e-mail"
+msgstr "e-mail parola pierduta"
+
+msgid "Message template info"
+msgstr "Mesaj informatie interfata"
+
+msgid "Message template"
+msgstr "Mesaj interfata"
+
+msgid "Activation E-Mail"
+msgstr "E-mail pentru activare"
+
+msgid "Password E-Mail"
+msgstr "E-mail parola "
+
+msgid "User login (system) name"
+msgstr "Autorizare nume (system) utilizator"
+
+msgid "User password"
+msgstr "Parola utilizator"
+
+msgid "User (first and last) name"
+msgstr "Utilizator (nume si prenume)"
+
+msgid "Lost password link"
+msgstr "Link parola pierduta"
+
+msgid "Subject"
+msgstr "Subiect"
+
+msgid "Apply changes"
+msgstr "Salveaza modificarile"
+
+msgid "URL to this admin panel"
+msgstr ""
+
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Administrator/ Mod Intretinere"
+
+msgid "Settings saved !"
+msgstr "Setarile au fost salvate"
+
+msgid "Maintenance mode"
+msgstr "Mod Intretinere"
+
+msgid "Under this mode only administrators can login"
+msgstr "In acest mod doar administratorii pot sa se autentifice"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Administrator/Setari"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "EROARE: Numai numerele pozitive sunt permise"
+
+msgid "General settings"
+msgstr "Setari Generale"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Perioada de expirare a link-ului de activare (minute)"
+
+#, fuzzy
+msgid "Password settings"
+msgstr "Parola a fost trimisa"
+
+#, fuzzy
+msgid "Use strong Passwords"
+msgstr "Parola utilizator"
+
+#, fuzzy
+msgid "Password length"
+msgstr "Parola a fost trimisa"
+
+msgid "Bruteforce detection"
+msgstr "Detectare bruteforce"
+
+msgid "Block time between logins"
+msgstr "Timp blocare intre autentificari"
+
+msgid "Max number of login attempts"
+msgstr "Numar maxim autentificari permise"
+
+msgid "Blocktime (minutes)"
+msgstr "Timp blocare (minute)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Timp blocare intre atentificari (secunde)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Numar maxim de validari CAPTCHA"
+
+msgid "Other settings"
+msgstr "Alte setari"
+
+#, fuzzy
+msgid "E-Mail settings"
+msgstr "Setari Generale"
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+#, fuzzy
+msgid "E-Mail accounts are hard suspended"
+msgstr "Contul de mail deja exista!"
+
+msgid "Default language"
+msgstr "Limba principala"
+
+msgid "Support system"
+msgstr "Suport sistem"
+
+msgid "Server ports"
+msgstr "Porturi server"
+
+#, fuzzy
+msgid "Hosting plans available for"
+msgstr "Planuri de gazduire disponibile pentru actualizare"
+
+#, fuzzy
+msgid "Admin"
+msgstr "Pentru Administrator"
+
+msgid "Domains per page"
+msgstr "Domenii per pagina"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Nivel"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Eroare"
+
+#, fuzzy
+msgid "Check for update"
+msgstr "Utilizator actualizat"
+
+msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgstr "EROARE: Doar Litere, Numere, Liniute si UnderScore permise"
+
+msgid "ERROR: Port already exists!"
+msgstr "ERROARE: Portul deja exista"
+
+msgid "You have no custom service ports defined."
+msgstr "Nu ai definit porturi pentru serviciu custom"
+
+msgid "udp"
+msgstr "udp"
+
+msgid "tcp"
+msgstr "tcp"
+
+msgid "Services"
+msgstr "serviciile"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Protocol"
+msgstr "Protocol"
+
 msgid "ispCP - Admin/Server Traffic Settings"
 msgstr "ispCP - Administrator/Setari Trafic Server"
 
@@ -1549,131 +1797,17 @@ msgstr "Trafic maxim [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Atentionare trafic [MB]"
 
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Administrator/Setari"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Administrator/Administreaza useri/Setari e-mail"
 
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "EROARE: Numai numerele pozitive sunt permise"
+msgid "Email setup"
+msgstr "Setare Email"
 
-msgid "General settings"
-msgstr "Setari Generale"
+msgid "User real (first and last) name"
+msgstr "Numele real utilizator (nume si prenume)"
 
-msgid "Settings"
-msgstr "Setari"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Perioada de expirare a link-ului de activare (minute)"
-
-msgid "Bruteforce detection"
-msgstr "Detectare bruteforce"
-
-msgid "Block time between logins"
-msgstr "Timp blocare intre autentificari"
-
-msgid "Max number of login attempts"
-msgstr "Numar maxim autentificari permise"
-
-msgid "Blocktime (minutes)"
-msgstr "Timp blocare (minute)"
-
-msgid "Block time between logins (seconds)"
-msgstr "Timp blocare intre atentificari (secunde)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Numar maxim de validari CAPTCHA"
-
-msgid "Other settings"
-msgstr "Alte setari"
-
-msgid "Default language"
-msgstr "Limba principala"
-
-msgid "Support system"
-msgstr "Suport sistem"
-
-msgid "Server ports"
-msgstr "Porturi server"
-
-msgid "Domains per page"
-msgstr "Domenii per pagina"
-
-msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
-msgstr "EROARE: Doar Litere, Numere, Liniute si UnderScore permise"
-
-msgid "ERROR: Port already exists!"
-msgstr "ERROARE: Portul deja exista"
-
-msgid "You have no custom service ports defined."
-msgstr "Nu ai definit porturi pentru serviciu custom"
-
-msgid "udp"
-msgstr "udp"
-
-msgid "tcp"
-msgstr "tcp"
-
-msgid "Yes"
-msgstr "Da"
-
-msgid "No"
-msgstr "Nu"
-
-msgid "Services"
-msgstr "serviciile"
-
-msgid "Port"
-msgstr "Port"
-
-msgid "Protocol"
-msgstr "Protocol"
-
-msgid "You have no support tickets."
-msgstr "Nu exista ticket-uri de suport"
-
-msgid "Low"
-msgstr "Redus"
-
-msgid "Medium"
-msgstr "Mediu"
-
-msgid "High"
-msgstr "Ridicat"
-
-msgid "Very high"
-msgstr "Foarte ridicat"
-
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Client/ Intrebari & Comentarii"
-
-msgid "Support tickets"
-msgstr "Ticket-uri suport"
-
-msgid "Priority"
-msgstr "Prioritate"
-
-msgid "Last reply"
-msgstr "Ultima replica"
-
-msgid "Delete all"
-msgstr "Sterge tot"
-
-msgid "Open tickets"
-msgstr "Ticket-uri deschise"
-
-msgid "Closed tickets"
-msgstr "Ticket-uri inchise"
-
-msgid "[New]"
-msgstr "[Nou]"
-
-msgid "[Re]"
-msgstr "[Re]"
-
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Client/ Activeaza Mail Raspuns Automat"
-
-msgid "From"
-msgstr "De La"
+msgid "User type (admin, reseller, user)"
+msgstr ""
 
 msgid "days"
 msgstr "zile"
@@ -1747,6 +1881,66 @@ msgstr "Procent"
 msgid "Size"
 msgstr "Marime"
 
+msgid "You have no support tickets."
+msgstr "Nu exista ticket-uri de suport"
+
+msgid "Low"
+msgstr "Redus"
+
+msgid "Medium"
+msgstr "Mediu"
+
+msgid "High"
+msgstr "Ridicat"
+
+msgid "Very high"
+msgstr "Foarte ridicat"
+
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Client/ Intrebari & Comentarii"
+
+msgid "Support tickets"
+msgstr "Ticket-uri suport"
+
+msgid "From"
+msgstr "De La"
+
+msgid "To"
+msgstr ""
+
+msgid "Priority"
+msgstr "Prioritate"
+
+msgid "Last reply"
+msgstr "Ultima replica"
+
+msgid "Delete all"
+msgstr "Sterge tot"
+
+msgid "Open tickets"
+msgstr "Ticket-uri deschise"
+
+msgid "Closed tickets"
+msgstr "Ticket-uri inchise"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Ticket-ul pentru cerere suport a fost sters cu suces!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Toate ticket-ele de suport deschise au fost sterse cu succes!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Toate ticket-ele de suport inchise au fost sterse cu succes!"
+
+msgid "[New]"
+msgstr "[Nou]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Client/ Activeaza Mail Raspuns Automat"
+
 msgid "Ticket not found!"
 msgstr "Ticket-ul nu a fost gasit"
 
@@ -1763,6 +1957,9 @@ msgid "Please type your message!"
 msgstr "Te rugam scrie mesajul"
 
 msgid "Message was sent!"
+msgstr "Mesajul a fost trimis"
+
+msgid "Message was sent."
 msgstr "Mesajul a fost trimis"
 
 msgid "Ticket was closed!"
@@ -1840,191 +2037,46 @@ msgstr "Alias programat pentru adaugare!"
 msgid "Alias scheduled for addition!"
 msgstr "Alias programat pentru adaugare!"
 
-msgid "Empty List"
-msgstr "Goleste lista"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Aliasul de domeniu pe care incercati sa-l stergeti are conturi de email!"
+"<br>Stergeti-le inainte!"
 
-msgid "Empty list"
-msgstr "Lista goala"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Aliasul de domeniu pe care incercati sa-l stergeti are conturi FTP!Stergeti-"
+"le inainte!"
 
-msgid "FTP account already exists!"
-msgstr "Contul de FTP deja exista!"
+msgid "Alias scheduled for deletion!"
+msgstr "Alias programat pentru stergere!"
 
-msgid "Unknown domain type"
-msgstr "Tip domeniu necunoscut"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP -  Administrare Alias Domeniu/ Editeaza Alias"
 
-msgid "Incorrect mount point length or syntax"
-msgstr "Lungime sau sintaxa incorecta la mount point"
+msgid "Edit domain alias"
+msgstr "Editeaza alias-uri domeniu"
 
-#, php-format
-msgid "%s does not exist"
-msgstr "%s nu exista"
+msgid "Alias name"
+msgstr "Nume alias"
 
-msgid "FTP account added!"
-msgstr "Contul de FTP a fost adaugat!"
-
-msgid "Please enter FTP account username!"
-msgstr "Introdu numele utilizatorului pentru contul FTP"
-
-msgid "Password data is missing!"
-msgstr "Datele parolei lipsesc !"
-
-msgid "Entered passwords differ from the another!"
-msgstr "Parolele nu sunt identice"
-
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr "Lista subdomenii este goala! Nu poti adauga conturi FTP acolo"
-
-msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr "Lista de alias-e este goala! Nu puteti adauga conturi FTP!"
-
-msgid "Please specify other FTP account dir!"
-msgstr "Stabileste alt director pentru contul FTP!"
-
-msgid "FTP accounts limit reached!"
-msgstr "Limita de conturi FTP a fost atinsa"
-
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Client/Adauga utilizator FTP"
-
-msgid "Add FTP user"
-msgstr "Adauga utilizator FTP"
-
-msgid "To main domain"
-msgstr "La domeniul principal"
-
-msgid "To domain alias"
-msgstr "La alias-uri domeniu"
-
-msgid "To subdomain"
-msgstr "La subdomeniu"
-
-msgid "Use other dir"
-msgstr "Foloseste alt director"
-
-msgid "Choose dir"
-msgstr "Alege director"
-
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Format Localpart pentru mail invalid"
-
-msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr "Formatul mail al unei adrese din lista de forward este incorect!"
-
-msgid "Mail forward list empty!"
-msgstr "Lista de forward pentru mail este goala!"
-
-msgid "Mail account already exists!"
-msgstr "Contul de mail deja exista!"
-
-msgid "Mail account scheduled for addition!"
-msgstr "Contul de mail programat pentru adaugare!"
-
-msgid "Please enter mail account username!"
-msgstr "Introdu un utilizator pentru contul de mail!"
-
-msgid "Password data includes not permitted signs!"
-msgstr "Parola contine caractere ce nu sunt permise!"
-
-msgid "Subdomain list is empty! You can not add mail accounts!"
-msgstr "Lista subdomenii este goala. Nu poti adauga noi conturi de mail!"
-
-msgid "Alias list is empty! You can not add mail accounts!"
-msgstr "Lista de alias-e este goala! Nu puteti adauga conturi de mail!"
-
-msgid "Forward list is empty!"
-msgstr "Lista de forward este goala!"
-
-msgid "Mail accounts limit reached!"
-msgstr "A fost atinsa limita de conturi mail!"
-
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Client/Adauga Utilizator Mail"
-
-msgid "Add mail users"
-msgstr "Adauga utilizatori mail"
-
-msgid "Normal mail"
-msgstr "Mail Normal"
-
-msgid "Forward mail"
-msgstr "Foeward Mail"
-
-msgid "Forward to"
-msgstr "Forward la"
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr "Adrese de e-mail separate cu o linie"
-
-msgid "Please type database name!"
-msgstr "Completeaza numele bazei de date!"
-
-msgid "Database name is too long!"
-msgstr "Numele datei de baze prea lung!"
-
-msgid "Specified database name already exists!"
-msgstr "Numele bazei de date specificate exista!"
-
-#, php-format
-msgid "Wildcards such as %% and ? are not allowed!"
-msgstr "Wildcards ca %% si ? nu sunt permise!"
-
-msgid "SQL database created successfully!"
-msgstr "Baza de date SQL creata cu succes!"
-
-msgid "SQL accounts limit reached!"
-msgstr "Limita conturilor SQL atinsa!"
-
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Client/Adauga Baza Date SQL"
-
-msgid "Add SQL database"
-msgstr "Adauga baza de date SQL"
-
-msgid "Database name"
-msgstr "Numele bazei de date"
-
-msgid "Use numeric ID"
-msgstr "Foloseste ID numeric"
-
-msgid "Before the name"
-msgstr "Inaintea numelui"
-
-msgid "After the name"
-msgstr "Dupa nume"
-
-msgid "Subdomains limit reached!"
-msgstr "Limita subdomenii atinsa!"
-
-msgid "Please specify subdomain name!"
-msgstr "Specifica nume subdomeniu!"
-
-msgid "Subdomain already exists or is not allowed!"
-msgstr "Subdomeniul specificat exista deja sau nu e permis!"
-
-msgid "Wrong subdomain syntax!"
-msgstr "Sintaxa subdomeniu gresita!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Locul montarii subdomeniu deja existent!"
-
-msgid "Subdomain scheduled for addition!"
-msgstr "Subdomeniu programat pentru adaugare!"
-
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Client/ Adauga subdomeniu"
-
-msgid "Add subdomain"
-msgstr "Adauga subdomeniu"
-
-msgid "Subdomain data"
-msgstr "Date subdomeniu"
-
-msgid "Subdomain name"
-msgstr "Nume subdomeniu"
+msgid "Mount Point"
+msgstr "Punct de instalare"
 
 #, fuzzy
-msgid "Directory tree mount point"
-msgstr "Arbore directoare locul montarii"
+msgid "Enable Forward"
+msgstr "Activeaza Forward-ul"
+
+msgid "Enable"
+msgstr "Activeaza"
+
+msgid "Disable"
+msgstr "Dezactiveaza"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "Un  forward URL trebuie sa inceapa cu 'http://' "
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Arhiva backup programata pentru restaurare!"
@@ -2050,7 +2102,8 @@ msgstr "Navigati in directorul backups"
 msgid "Download the files stored in this directory"
 msgstr "Descarcati fisierele din acest director"
 
-msgid "(usually named "
+#, fuzzy
+msgid "(usually named"
 msgstr "(de obicei denumit "
 
 msgid "Restore backup"
@@ -2058,97 +2111,13 @@ msgstr "Restaureaza salvare"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Click pe butonul Restaurare pentru a restaura ultimul backup"
+msgstr "Click pe butonul Restaurare pentru a restaura ultimul backup"
 
 msgid "Restore"
 msgstr "Restaureaza"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Sigur doriti sa restaurati salvarea?"
-
-msgid "N/A"
-msgstr "N/A"
-
-msgid "Enable"
-msgstr "Activeaza"
-
-msgid "Disable"
-msgstr "Dezactiveaza"
-
-msgid "Delete CatchAll"
-msgstr "Sterge Cont Colector"
-
-msgid "None"
-msgstr "Nici unul"
-
-msgid "Create catch all"
-msgstr "Creaza cont colector"
-
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Client/Administreaza utilizatori"
-
-msgid "Manage users"
-msgstr "Administreaza utilizatori"
-
-msgid "Mail users"
-msgstr "Utilizatori mail"
-
-msgid "Auto respond"
-msgstr "Raspuns automat"
-
-msgid "Domain mails"
-msgstr "Emailuri domeniu"
-
-msgid "Subdomain mails"
-msgstr "Emailuri subdomeniu"
-
-msgid "Alias mails"
-msgstr "Alias pentru mail-uri"
-
-msgid "Mails total"
-msgstr "Total e-mailuri"
-
-msgid "FTPs total"
-msgstr "FTP-uri total"
-
-msgid "Catch all account"
-msgstr "Cont colector"
-
-msgid "Catch all"
-msgstr "Colector"
-
-msgid "FTP users"
-msgstr "Utilizatori FTP"
-
-msgid "FTP account"
-msgstr "Cont FTP"
-
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Client/Schimba parola"
-
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Client/Schimba Date Personale"
-
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Utilizatorul nu exista sau nu ai permisiunea sa accesezi aceasta interfata!"
-
-msgid "Catch all account scheduled for creation!"
-msgstr "Cont colector principal programat pentru creare!"
-
-msgid "Mail forward list error!"
-msgstr "Eroare in lista de forward mailuri!"
-
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Client/Creaza Cont colector Mail"
-
-msgid "Create catch all mail account"
-msgstr "Creaza cont colector email"
-
-msgid "Mail accounts list"
-msgstr "Lista conturi e-mail"
 
 msgid "ispCP - Client/Cronjob Manager"
 msgstr "ispCP - Client/Administrare CronJob"
@@ -2186,53 +2155,39 @@ msgstr "Zile saptamana:"
 msgid "Reset"
 msgstr "Reseteaza"
 
-msgid "Cancel"
-msgstr "Anuleaza"
-
 msgid "Edit Cronjob"
 msgstr "Editare Cronjob"
 
 msgid "Cronjobs"
 msgstr "Cronojob-uri"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr ""
-"Aliasul de domeniu pe care incercati sa-l stergeti are conturi de email!"
-"<br>Stergeti-le inainte!"
+msgid "N/A"
+msgstr "N/A"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
-"Aliasul de domeniu pe care incercati sa-l stergeti are conturi FTP!"
-"Stergeti-le inainte!"
+msgid "Subdomain list is empty!"
+msgstr "Lista de subdomenii este goala!"
 
-msgid "Alias scheduled for deletion!"
-msgstr "Alias programat pentru stergere!"
+msgid "Delete order"
+msgstr "Sterge comanda"
 
-msgid "Catch all account scheduled for deletion!"
-msgstr "Cont catch all programat pentru stergere!"
+msgid "Alias list is empty!"
+msgstr "Lista de alias-e este goala!"
 
-msgid "FTP account deleted successfully!"
-msgstr "Contul de FTP a fost sters!"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Client/ Administrare Domenii"
 
-msgid "Please delete first CatchAll account for this email!"
-msgstr "Sterge intai contul colector pentru acest email!"
+msgid "Manage domains"
+msgstr "Administreaza domeniile"
 
-msgid "SQL database was removed successfully!"
-msgstr "Baza de date SQL stearsa cu succes!"
+msgid "Mount point"
+msgstr "Punct instalare"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea intai!"
+msgid "Forward"
+msgstr "Forward"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Subdomeniu programat pentru stergere!"
-
-msgid "Mail account scheduled for modification!"
-msgstr "Cont e-mail programat pentru modificare!"
+#, fuzzy
+msgid "Actions"
+msgstr "Actiuni"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Client/ Statistici Domeniu"
@@ -2251,82 +2206,6 @@ msgstr "POP/IMAP"
 
 msgid "Sum"
 msgstr "Sum"
-
-msgid "ispCP - Manage Domain Alias/Edit Alias"
-msgstr "ispCP -  Administrare Alias Domeniu/ Editeaza Alias"
-
-msgid "Edit domain alias"
-msgstr "Editeaza alias-uri domeniu"
-
-msgid "Alias name"
-msgstr "Nume alias"
-
-msgid "Mount Point"
-msgstr "Punct de instalare"
-
-#, fuzzy
-msgid "Enable Forward"
-msgstr "Activeaza Forward-ul"
-
-msgid "A Forward URL has to start with 'http://'"
-msgstr "Un  forward URL trebuie sa inceapa cu 'http://' "
-
-msgid "Entered passwords differ!"
-msgstr "Parolele introduse difera!"
-
-msgid "FTP account data updated!"
-msgstr "Datele contului de FTP au fost actualizate!"
-
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Client/Editeaza contul FTP"
-
-msgid "Edit FTP user"
-msgstr "Editare utilizator FTP"
-
-msgid "Save changes"
-msgstr "Salveaza modificarile"
-
-msgid "Email account not found!"
-msgstr "Contul email nu exista!"
-
-msgid "Missing or wrong data!"
-msgstr "Date lipsa sau gresite"
-
-msgid "Password data includes not valid signs!"
-msgstr "Datele parolei includ caractere invalide!"
-
-msgid "Mail were updated successfully!"
-msgstr "E-Mail actualizat cu succes!"
-
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Administrare Mail si FTP/ Editeaza cont mail"
-
-msgid "Edit email account"
-msgstr "Editeaza cont mail"
-
-msgid "Please type your mail autorespond message!"
-msgstr "Introdu mesajul pentru raspuns automat la mail!"
-
-msgid "Mail account scheduler for modification!"
-msgstr "Cont de mail programat pentru modificare!"
-
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Client/Activeaza Raspuns Automat La E-Mail"
-
-msgid "Edit mail auto responder"
-msgstr "Editeaza raspunsul automat la e-mail"
-
-msgid "Your message"
-msgstr "Mesajul dumneavoastra"
-
-msgid "Please wait for update"
-msgstr "Asteapta pana se actualizeaza"
-
-msgid "Mail accounts list is empty!"
-msgstr "Lista de conturi mail este goala!"
-
-msgid "Enable mail auto responder"
-msgstr "Activeaza raspunsul automat la e-mail"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Client/ Administrare Pagini Eroare Personalizate"
@@ -2364,6 +2243,88 @@ msgstr "Pagini de eroare"
 msgid "FTP list is empty!"
 msgstr "Lista FTP este goala!"
 
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Client/Administreaza utilizatori"
+
+msgid "Manage users"
+msgstr "Administreaza utilizatori"
+
+msgid "FTPs total"
+msgstr "FTP-uri total"
+
+msgid "FTP users"
+msgstr "Utilizatori FTP"
+
+msgid "FTP account"
+msgstr "Cont FTP"
+
+msgid "Empty List"
+msgstr "Goleste lista"
+
+msgid "Empty list"
+msgstr "Lista goala"
+
+msgid "FTP account already exists!"
+msgstr "Contul de FTP deja exista!"
+
+msgid "Unknown domain type"
+msgstr "Tip domeniu necunoscut"
+
+msgid "Incorrect mount point length or syntax"
+msgstr "Lungime sau sintaxa incorecta la mount point"
+
+#, php-format
+msgid "%s does not exist"
+msgstr "%s nu exista"
+
+msgid "FTP account added!"
+msgstr "Contul de FTP a fost adaugat!"
+
+msgid "Please enter FTP account username!"
+msgstr "Introdu numele utilizatorului pentru contul FTP"
+
+msgid "Password data is missing!"
+msgstr "Datele parolei lipsesc !"
+
+msgid "Entered passwords differ from the another!"
+msgstr "Parolele nu sunt identice"
+
+#, fuzzy
+msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgstr "Lista subdomenii este goala! Nu poti adauga conturi FTP acolo"
+
+#, fuzzy
+msgid "Alias list is empty! You can not add FTP accounts there!"
+msgstr "Lista de alias-e este goala! Nu puteti adauga conturi FTP!"
+
+msgid "Please specify other FTP account dir!"
+msgstr "Stabileste alt director pentru contul FTP!"
+
+msgid "FTP accounts limit reached!"
+msgstr "Limita de conturi FTP a fost atinsa"
+
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Client/Adauga utilizator FTP"
+
+msgid "Add FTP user"
+msgstr "Adauga utilizator FTP"
+
+msgid "To main domain"
+msgstr "La domeniul principal"
+
+msgid "To domain alias"
+msgstr "La alias-uri domeniu"
+
+msgid "To subdomain"
+msgstr "La subdomeniu"
+
+msgid "Use other dir"
+msgstr "Foloseste alt director"
+
+msgid "Choose dir"
+msgstr "Alege director"
+
+#, fuzzy
 msgid "Can not open directory !<br>Please contact your administrator !"
 msgstr "Nu se poate deschide directorul!<br>Contactati administratorul!"
 
@@ -2385,361 +2346,23 @@ msgstr "Directoare"
 msgid "Choose"
 msgstr "alege"
 
-msgid "disabled"
-msgstr "dezactivat"
+msgid "FTP account deleted successfully!"
+msgstr "Contul de FTP a fost sters!"
 
-#, php-format
-msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "Exista <b>%d</b> raspuns nou la interogarea de suport"
+msgid "Entered passwords differ!"
+msgstr "Parolele introduse difera!"
 
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s din %3$s]"
+msgid "FTP account data updated!"
+msgstr "Datele contului de FTP au fost actualizate!"
 
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s din nelimitat]"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Client/Editeaza contul FTP"
 
-msgid "You are exceeding your traffic limit!"
-msgstr "Limita de trafic depasita!"
+msgid "Edit FTP user"
+msgstr "Editare utilizator FTP"
 
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s din %3$s]"
-
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s din nelimitat]"
-
-msgid "You are exceeding your disk limit!"
-msgstr "Limita spatiu alocat pe disk depasita !"
-
-msgid "You have no new support questions!"
-msgstr "Nu exista cereri de suport noi!"
-
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Client/ Index Principal"
-
-msgid "General information"
-msgstr "Informatii Generale"
-
-msgid "Account name"
-msgstr "Nume cont"
-
-msgid "Main domain"
-msgstr "Domeniu Principal"
-
-msgid "SQL support"
-msgstr "Suport SQL"
-
-msgid "Traffic usage"
-msgstr "Trafic utilizat"
-
-msgid "Disk usage"
-msgstr "Utilizare disc"
-
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Client/Schimba Limba"
-
-msgid "Subdomain list is empty!"
-msgstr "Lista de subdomenii este goala!"
-
-msgid "Delete order"
-msgstr "Sterge comanda"
-
-msgid "Alias list is empty!"
-msgstr "Lista de alias-e este goala!"
-
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Client/ Administrare Domenii"
-
-msgid "Manage domains"
-msgstr "Administreaza domeniile"
-
-msgid "Mount point"
-msgstr "Punct instalare"
-
-msgid "Forward"
-msgstr "Forward"
-
-#, fuzzy
-msgid "Actions"
-msgstr "Actiuni"
-
-msgid "Database user list is empty!"
-msgstr "Nu exista utilizatori pentru baza de date"
-
-msgid "Database list is empty!"
-msgstr "Nu exista baze de date!"
-
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Client/ Administrare SQL"
-
-msgid "Manage SQL"
-msgstr "Administreaza SQL"
-
-#, fuzzy
-msgid "Database Name and Users"
-msgstr "Nume si Utilizatori de baza de date"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Database users"
-msgstr "Utilizatori pentru baza de date"
-
-msgid "Add SQL user"
-msgstr "Adauga utilizator pentru SQL"
-
-msgid "Execute query"
-msgstr "Executa interogarea"
-
-msgid "Login phpMyAdmin"
-msgstr "Atentificare in phpMyAdmin"
-
-msgid "Please specify message subject!"
-msgstr "Specifica un subiect pentru mesaj!"
-
-msgid "Your message was sent!"
-msgstr "Mesajul dumneavoastra a fost trimis!"
-
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Sistem de suport - Interogare noua"
-
-msgid "New ticket"
-msgstr "Interogare noua"
-
-msgid "Protected area status should be OK if you want to delete it!"
-msgstr "Status-ul zonelor protejate trebuie sa fie OK daca vrei sa le stergi!"
-
-msgid "Protected area deleted successfully!"
-msgstr "Zone protejate sterse cu succes!"
-
-msgid "Permission deny!"
-msgstr "Permisiune refuzata!"
-
-msgid "You do not have protected areas"
-msgstr "Nu ai zone protejate"
-
-msgid "Manage users and groups"
-msgstr "Administreaza utilizatori si grupuri"
-
-msgid "Add user"
-msgstr "Adauga utilizator"
-
-msgid "Group name"
-msgstr "Nume Grup"
-
-msgid "Group members"
-msgstr "Membrii Grup"
-
-msgid "Add group"
-msgstr "Adauga grup"
-
-msgid "Group"
-msgstr "Grup"
-
-msgid "Add new protected area"
-msgstr "Adauga zona protejata"
-
-msgid "Please choose user or group"
-msgstr "Alege utilizator sau grup"
-
-msgid "Please enter area name"
-msgstr "Introdu numele zonei"
-
-msgid "Please enter area path"
-msgstr "Introdu calea spre zona"
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s nu exista"
-
-msgid "You can not protect area without selected user(s)"
-msgstr "Nu poti proteja o zona fara utilizator(i) selectati!"
-
-msgid "You can not protect area without selected group(s)"
-msgstr "Nu poti proteja zona fara grup(uri) selectate!"
-
-msgid "Protected area updated successfully!"
-msgstr "Zona protejata actualizata cu succes!"
-
-msgid "Protected area created successfully!"
-msgstr "Zona protejata creata cu succes!"
-
-msgid "Protected area status should be OK if you want to edit it!"
-msgstr "Status-ul zonei protejate trebuie sa fie OK daca vrei sa o editezi!"
-
-msgid "You have no users !"
-msgstr "Nu exista utilizatori!"
-
-msgid "You have no groups!"
-msgstr "Nu exista grupuri!"
-
-msgid "Protect this area"
-msgstr "Protejeaza aceasta zona"
-
-msgid "Path"
-msgstr "Calea"
-
-msgid "Groups"
-msgstr "Grupuri"
-
-msgid "User auth"
-msgstr "Autorizare utilizator"
-
-msgid "Group auth"
-msgstr "Autorizare grup"
-
-msgid "Area name"
-msgstr "Numele zonei"
-
-msgid "Unprotect it"
-msgstr "Anuleaza protejarea zonei"
-
-#, php-format
-msgid "User was assigned to the %s group"
-msgstr "Utilizatorul a fost alocat %s grupului"
-
-#, php-format
-msgid "User was deleted from the %s group "
-msgstr "Utilizatorul a fost sters din %s grupul "
-
-msgid "User assign"
-msgstr "Alocare utilizator"
-
-msgid "Already in:"
-msgstr "Deja in:"
-
-msgid "Member of group:"
-msgstr "Membru al grupului:"
-
-msgid "Select group:"
-msgstr "Selecteaza grup:"
-
-msgid "Update user"
-msgstr "Actualizeaza utilizatorul"
-
-#, fuzzy
-msgid "Invalid group name!"
-msgstr "Nume grup incorect!"
-
-#, fuzzy
-msgid "Group already exists!"
-msgstr "Grupul deja exista!"
-
-msgid "Manage user"
-msgstr "Administreaza utilizator"
-
-msgid "You have no users!"
-msgstr "Nu aveti nici un user!"
-
-msgid "Wrong username!"
-msgstr "Nume utilizator gresit!"
-
-msgid "User already exist !"
-msgstr "Utilizator deja existent!"
-
-msgid "SQL users limit reached!"
-msgstr "Ai atins limita de utilizatori SQL!"
-
-msgid "Please type user name!"
-msgstr "Introdu un nume de utilizator!"
-
-msgid "Please type user password!"
-msgstr "Introdu parola pentru utilizator!"
-
-msgid "Too user long password!"
-msgstr "Parola utilizator prea lunga!"
-
-msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr "Utilizator SQL negasit! Poate a fost sters de alt utilizator!"
-
-msgid "User name too long!"
-msgstr "Nume utilizator prea lung!"
-
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Wildcard-uri ca  %% si ? nu sunt permise!"
-
-msgid "Specified SQL username name already exists!"
-msgstr "Numele utilizatorului SQL deja exista!"
-
-msgid "SQL user successfully added!"
-msgstr "Utilizator SQL adaugat cu succes!"
-
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Client/ Adauga utilizator SQL"
-
-msgid "SQL user name"
-msgstr "Nume utilizator SQL"
-
-msgid "In front the name"
-msgstr "In fata numelui"
-
-msgid "Behind the name"
-msgstr "Dupa nume"
-
-msgid "Add existing user"
-msgstr "Adauga utilizator existent"
-
-msgid "Existing SQL users"
-msgstr "Utilizatori SQL existenti"
-
-msgid "Too long user password!"
-msgstr "Parola utilizator prea lunga!"
-
-msgid "SQL user password was successfully changed!"
-msgstr "Parola pentru utilizatorul SQL modificata cu succes!"
-
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Client/ Modifica Parola Utilizator SQL"
-
-msgid "Change SQL user password"
-msgstr "Schimba parola utilizatorului SQL"
-
-msgid "Change"
-msgstr "Modifica"
-
-msgid "SQL user was removed successfully!"
-msgstr "Utilizatorul SQL sters cu succes!"
-
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Executa interogarea SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Nu pot executa conectarea la serverul SQL ca %s!"
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Interogarea SQL a esuat!"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Interogarea SQL a reusit!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Client/ Executa interogare SQL"
-
-msgid "Execute SQL query"
-msgstr "Executa interogarea SQL"
-
-msgid "SQL query"
-msgstr "Interogare SQL"
-
-msgid "Query status"
-msgstr "Status interogare"
-
-msgid "Query result"
-msgstr "rezultat interogare"
-
-msgid "Execute"
-msgstr "Executa"
-
-msgid "Protected area was deleted successful!"
-msgstr "Zona protejata stearsa cu succes!"
+msgid "Save changes"
+msgstr "Salveaza modificarile"
 
 msgid "Hosting plans available for update"
 msgstr "Planuri de gazduire disponibile pentru actualizare"
@@ -2809,6 +2432,568 @@ msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Cererea ta pentru up-date pachet gazduire a fost refuzata"
+
+msgid "disabled"
+msgstr "dezactivat"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Exista <b>%d</b> raspuns nou la interogarea de suport"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s din %3$s]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s din nelimitat]"
+
+msgid "You are exceeding your disk limit!"
+msgstr "Limita spatiu alocat pe disk depasita !"
+
+msgid "You have no new support questions!"
+msgstr "Nu exista cereri de suport noi!"
+
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Client/ Index Principal"
+
+msgid "General information"
+msgstr "Informatii Generale"
+
+msgid "Account name"
+msgstr "Nume cont"
+
+msgid "Main domain"
+msgstr "Domeniu Principal"
+
+msgid "SQL support"
+msgstr "Suport SQL"
+
+msgid "Traffic usage"
+msgstr "Trafic utilizat"
+
+msgid "Disk usage"
+msgstr "Utilizare disc"
+
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Client/Schimba Limba"
+
+msgid "Please wait for update"
+msgstr "Asteapta pana se actualizeaza"
+
+msgid "Mail accounts list is empty!"
+msgstr "Lista de conturi mail este goala!"
+
+msgid "Mail users"
+msgstr "Utilizatori mail"
+
+msgid "Auto respond"
+msgstr "Raspuns automat"
+
+msgid "Domain mails"
+msgstr "Emailuri domeniu"
+
+msgid "Subdomain mails"
+msgstr "Emailuri subdomeniu"
+
+msgid "Alias mails"
+msgstr "Alias pentru mail-uri"
+
+msgid "Mails total"
+msgstr "Total e-mailuri"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Format Localpart pentru mail invalid"
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr "Formatul mail al unei adrese din lista de forward este incorect!"
+
+msgid "Mail forward list empty!"
+msgstr "Lista de forward pentru mail este goala!"
+
+msgid "Mail account already exists!"
+msgstr "Contul de mail deja exista!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Contul de mail programat pentru adaugare!"
+
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Te rugam sa specifici un email la destinatar"
+
+msgid "Please enter mail account username!"
+msgstr "Introdu un utilizator pentru contul de mail!"
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Parola contine caractere ce nu sunt permise!"
+
+#, fuzzy
+msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgstr "Lista subdomenii este goala. Nu poti adauga noi conturi de mail!"
+
+#, fuzzy
+msgid "Alias list is empty! You cannot add mail accounts!"
+msgstr "Lista de alias-e este goala! Nu puteti adauga conturi de mail!"
+
+msgid "Forward list is empty!"
+msgstr "Lista de forward este goala!"
+
+msgid "Mail accounts limit reached!"
+msgstr "A fost atinsa limita de conturi mail!"
+
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Client/Adauga Utilizator Mail"
+
+msgid "Add mail users"
+msgstr "Adauga utilizatori mail"
+
+msgid "Normal mail"
+msgstr "Mail Normal"
+
+msgid "Forward mail"
+msgstr "Foeward Mail"
+
+msgid "Forward to"
+msgstr "Forward la"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Adrese de e-mail separate cu o linie"
+
+msgid "Mail account scheduled for modification!"
+msgstr "Cont e-mail programat pentru modificare!"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Introdu mesajul pentru raspuns automat la mail!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Cont de mail programat pentru modificare!"
+
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Client/Activeaza Raspuns Automat La E-Mail"
+
+msgid "Edit mail auto responder"
+msgstr "Editeaza raspunsul automat la e-mail"
+
+msgid "Your message"
+msgstr "Mesajul dumneavoastra"
+
+msgid "Enable mail auto responder"
+msgstr "Activeaza raspunsul automat la e-mail"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Cont colector principal programat pentru creare!"
+
+msgid "Mail forward list error!"
+msgstr "Eroare in lista de forward mailuri!"
+
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Client/Creaza Cont colector Mail"
+
+msgid "Create catch all mail account"
+msgstr "Creaza cont colector email"
+
+msgid "Mail accounts list"
+msgstr "Lista conturi e-mail"
+
+msgid "Create catch all"
+msgstr "Creaza cont colector"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Cont catch all programat pentru stergere!"
+
+msgid "Delete CatchAll"
+msgstr "Sterge Cont Colector"
+
+msgid "None"
+msgstr "Nici unul"
+
+msgid "Catch all account"
+msgstr "Cont colector"
+
+msgid "Catch all"
+msgstr "Colector"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Sterge intai contul colector pentru acest email!"
+
+msgid "Email account not found!"
+msgstr "Contul email nu exista!"
+
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Administrare Mail si FTP/ Editeaza cont mail"
+
+msgid "Mail were updated successfully!"
+msgstr "E-Mail actualizat cu succes!"
+
+msgid "Edit email account"
+msgstr "Editeaza cont mail"
+
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Client/Schimba parola"
+
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Client/Schimba Date Personale"
+
+msgid "Please choose user or group"
+msgstr "Alege utilizator sau grup"
+
+msgid "Please enter area name"
+msgstr "Introdu numele zonei"
+
+msgid "Please enter area path"
+msgstr "Introdu calea spre zona"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s nu exista"
+
+#, fuzzy
+msgid "You can not protect area without selected user(s)"
+msgstr "Nu poti proteja o zona fara utilizator(i) selectati!"
+
+#, fuzzy
+msgid "You cannot protect area without selected group(s)"
+msgstr "Nu poti proteja zona fara grup(uri) selectate!"
+
+msgid "Protected area updated successfully!"
+msgstr "Zona protejata actualizata cu succes!"
+
+msgid "Protected area created successfully!"
+msgstr "Zona protejata creata cu succes!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr "Status-ul zonei protejate trebuie sa fie OK daca vrei sa o editezi!"
+
+msgid "You have no users !"
+msgstr "Nu exista utilizatori!"
+
+msgid "You have no groups!"
+msgstr "Nu exista grupuri!"
+
+msgid "Protect this area"
+msgstr "Protejeaza aceasta zona"
+
+msgid "Path"
+msgstr "Calea"
+
+msgid "Groups"
+msgstr "Grupuri"
+
+msgid "User auth"
+msgstr "Autorizare utilizator"
+
+msgid "Group auth"
+msgstr "Autorizare grup"
+
+msgid "Area name"
+msgstr "Numele zonei"
+
+msgid "Unprotect it"
+msgstr "Anuleaza protejarea zonei"
+
+msgid "Manage users and groups"
+msgstr "Administreaza utilizatori si grupuri"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr "Status-ul zonelor protejate trebuie sa fie OK daca vrei sa le stergi!"
+
+msgid "Protected area deleted successfully!"
+msgstr "Zone protejate sterse cu succes!"
+
+msgid "Permission deny!"
+msgstr "Permisiune refuzata!"
+
+msgid "You do not have protected areas"
+msgstr "Nu ai zone protejate"
+
+msgid "Add user"
+msgstr "Adauga utilizator"
+
+msgid "Group name"
+msgstr "Nume Grup"
+
+msgid "Group members"
+msgstr "Membrii Grup"
+
+msgid "Add group"
+msgstr "Adauga grup"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Add new protected area"
+msgstr "Adauga zona protejata"
+
+msgid "Protected area was deleted successful!"
+msgstr "Zona protejata stearsa cu succes!"
+
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Nume grup incorect!"
+
+#, fuzzy
+msgid "Group already exists!"
+msgstr "Grupul deja exista!"
+
+msgid "Manage user"
+msgstr "Administreaza utilizator"
+
+msgid "Wrong username!"
+msgstr "Nume utilizator gresit!"
+
+msgid "User already exist !"
+msgstr "Utilizator deja existent!"
+
+#, php-format
+msgid "User was assigned to the %s group"
+msgstr "Utilizatorul a fost alocat %s grupului"
+
+#, php-format
+msgid "User was deleted from the %s group "
+msgstr "Utilizatorul a fost sters din %s grupul "
+
+msgid "User assign"
+msgstr "Alocare utilizator"
+
+msgid "Already in:"
+msgstr "Deja in:"
+
+msgid "Member of group:"
+msgstr "Membru al grupului:"
+
+msgid "Select group:"
+msgstr "Selecteaza grup:"
+
+msgid "Update user"
+msgstr "Actualizeaza utilizatorul"
+
+msgid "You have no users!"
+msgstr "Nu aveti nici un user!"
+
+msgid "Please type user password!"
+msgstr "Introdu parola pentru utilizator!"
+
+msgid "Too long user password!"
+msgstr "Parola utilizator prea lunga!"
+
+msgid "SQL user password was successfully changed!"
+msgstr "Parola pentru utilizatorul SQL modificata cu succes!"
+
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Client/ Modifica Parola Utilizator SQL"
+
+msgid "Change SQL user password"
+msgstr "Schimba parola utilizatorului SQL"
+
+msgid "Change"
+msgstr "Modifica"
+
+msgid "Please type database name!"
+msgstr "Completeaza numele bazei de date!"
+
+msgid "Database name is too long!"
+msgstr "Numele datei de baze prea lung!"
+
+msgid "Specified database name already exists!"
+msgstr "Numele bazei de date specificate exista!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr "Wildcards ca %% si ? nu sunt permise!"
+
+msgid "SQL database created successfully!"
+msgstr "Baza de date SQL creata cu succes!"
+
+msgid "SQL accounts limit reached!"
+msgstr "Limita conturilor SQL atinsa!"
+
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Client/Adauga Baza Date SQL"
+
+msgid "Add SQL database"
+msgstr "Adauga baza de date SQL"
+
+msgid "Database name"
+msgstr "Numele bazei de date"
+
+msgid "Use numeric ID"
+msgstr "Foloseste ID numeric"
+
+msgid "Before the name"
+msgstr "Inaintea numelui"
+
+msgid "After the name"
+msgstr "Dupa nume"
+
+msgid "SQL database was removed successfully!"
+msgstr "Baza de date SQL stearsa cu succes!"
+
+msgid "SQL user was removed successfully!"
+msgstr "Utilizatorul SQL sters cu succes!"
+
+#, fuzzy
+msgid "Please enter an SQL query!"
+msgstr "Executa interogarea SQL!"
+
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr "Nu pot executa conectarea la serverul SQL ca %s!"
+
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Interogarea SQL a esuat!"
+
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Interogarea SQL a reusit!"
+
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Client/ Executa interogare SQL"
+
+msgid "Execute SQL query"
+msgstr "Executa interogarea SQL"
+
+msgid "SQL query"
+msgstr "Interogare SQL"
+
+msgid "Query status"
+msgstr "Status interogare"
+
+msgid "Query result"
+msgstr "rezultat interogare"
+
+msgid "Execute"
+msgstr "Executa"
+
+msgid "Database user list is empty!"
+msgstr "Nu exista utilizatori pentru baza de date"
+
+msgid "Database list is empty!"
+msgstr "Nu exista baze de date!"
+
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Client/ Administrare SQL"
+
+msgid "Manage SQL"
+msgstr "Administreaza SQL"
+
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Nume si Utilizatori de baza de date"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Database users"
+msgstr "Utilizatori pentru baza de date"
+
+msgid "Add SQL user"
+msgstr "Adauga utilizator pentru SQL"
+
+msgid "Execute query"
+msgstr "Executa interogarea"
+
+msgid "Login phpMyAdmin"
+msgstr "Atentificare in phpMyAdmin"
+
+msgid "SQL users limit reached!"
+msgstr "Ai atins limita de utilizatori SQL!"
+
+msgid "Please type user name!"
+msgstr "Introdu un nume de utilizator!"
+
+msgid "Too user long password!"
+msgstr "Parola utilizator prea lunga!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr "Utilizator SQL negasit! Poate a fost sters de alt utilizator!"
+
+msgid "User name too long!"
+msgstr "Nume utilizator prea lung!"
+
+#, php-format
+msgid "Wildcards as %% and ? are not allowed!"
+msgstr "Wildcard-uri ca  %% si ? nu sunt permise!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Numele utilizatorului SQL deja exista!"
+
+msgid "SQL user successfully added!"
+msgstr "Utilizator SQL adaugat cu succes!"
+
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Client/ Adauga utilizator SQL"
+
+msgid "SQL user name"
+msgstr "Nume utilizator SQL"
+
+msgid "In front the name"
+msgstr "In fata numelui"
+
+msgid "Behind the name"
+msgstr "Dupa nume"
+
+msgid "Add existing user"
+msgstr "Adauga utilizator existent"
+
+msgid "Existing SQL users"
+msgstr "Utilizatori SQL existenti"
+
+msgid "Subdomains limit reached!"
+msgstr "Limita subdomenii atinsa!"
+
+msgid "Please specify subdomain name!"
+msgstr "Specifica nume subdomeniu!"
+
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Subdomeniul specificat exista deja sau nu e permis!"
+
+msgid "Wrong subdomain syntax!"
+msgstr "Sintaxa subdomeniu gresita!"
+
+msgid "Subdomain mount point already exists!"
+msgstr "Locul montarii subdomeniu deja existent!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Subdomeniu programat pentru adaugare!"
+
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Client/ Adauga subdomeniu"
+
+msgid "Add subdomain"
+msgstr "Adauga subdomeniu"
+
+msgid "Subdomain data"
+msgstr "Date subdomeniu"
+
+msgid "Subdomain name"
+msgstr "Nume subdomeniu"
+
+#, fuzzy
+msgid "Directory tree mount point"
+msgstr "Arbore directoare locul montarii"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea "
+"intai!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdomeniu programat pentru stergere!"
+
+msgid "Please specify message subject!"
+msgstr "Specifica un subiect pentru mesaj!"
+
+msgid "Your message was sent!"
+msgstr "Mesajul dumneavoastra a fost trimis!"
+
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Sistem de suport - Interogare noua"
+
+msgid "New ticket"
+msgstr "Interogare noua"
 
 msgid "Message was send!"
 msgstr "Mesajul a fost trimis!"
@@ -2918,6 +3103,13 @@ msgstr "Lista de utilizatori e goala!"
 msgid "Details"
 msgstr "Detalii"
 
+#, fuzzy
+msgid "Edit domain"
+msgstr "Editare domeniu"
+
+msgid "Edit user"
+msgstr "Editeaza Utilizator"
+
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Sigur doriti sa schimbati statusul acestui domeniu?"
 
@@ -2952,17 +3144,32 @@ msgstr "Eroare"
 msgid "ispCP - Order Panel"
 msgstr "ispCP - Panou Comenzi"
 
-msgid "[Ticket] {SUBJ}"
+#, fuzzy
+msgid "[Ticket]"
 msgstr "[Ticket] {SUBJ}"
 
+#, fuzzy, php-format
 msgid ""
-"Hello {TO_NAME} !\n"
+"Hello %s!\n"
 "\n"
-"You have a new ticket to read"
+"You have a new ticket:\n"
 msgstr ""
 "Salut {TO_NAME} !\n"
 "\n"
 "Ai un nou ticket necitit"
+
+#, fuzzy, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr ""
+"Salut {TO_NAME} !\n"
+"\n"
+"Ai un nou ticket necitit"
+
+msgid "Log in to answer."
+msgstr ""
 
 #, php-format
 msgid "%.2f PB"
@@ -3033,6 +3240,10 @@ msgstr "Redirectare subdomeniu"
 msgid "Unknown type"
 msgstr "Tip necunoscut"
 
+#, fuzzy, php-format
+msgid "Database update %s failed"
+msgstr "Actualizari baza de date"
+
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Bun-Venit {USERNAME} in ispCP!"
 
@@ -3067,7 +3278,8 @@ msgstr ""
 "Nume utilizator: {USERNAME}\n"
 "Parola: {PASSWORD}\n"
 "\n"
-"Nu uita sa schimba parola din cand in cand si prima oara cand accesezi contul.\n"
+"Nu uita sa schimba parola din cand in cand si prima oara cand accesezi "
+"contul.\n"
 "\n"
 "Poti sa te autentifici imediat la http://{BASE_SERVER_VHOST}\n"
 "\n"
@@ -3075,7 +3287,8 @@ msgstr ""
 "Echipa ispCP.\n"
 "\n"
 
-msgid "Please activate new ispCP password!"
+#, fuzzy
+msgid "Please activate your new ispCP password!"
 msgstr "Esti rugat sa activezi noua parola ispCP"
 
 msgid ""
@@ -3160,6 +3373,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Comanda alias nou pentru {CUSTOMER}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3169,7 +3383,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3199,7 +3413,6 @@ msgstr ""
 "Ne pare rau dar in aceste momente sistemul isi actualizeaza continutul.\n"
 "Va rugam sa reveniti."
 
-
 msgid "Could not get config from database"
 msgstr "Nu pot obtine config-ul din baza de date"
 
@@ -3212,10 +3425,20 @@ msgid "You have been blocked for %d minutes"
 msgstr "Sunteti blocat pentru %d minute"
 
 msgid "System is currently under maintenance! Only administrators can login."
-msgstr "Sistemul isi actualizeaza serviciile si continutul! Numai administratorii se pot autentifica"
+msgstr ""
+"Sistemul isi actualizeaza serviciile si continutul! Numai administratorii se "
+"pot autentifica"
+
+#, fuzzy, php-format
+msgid "%s user already logged or session sharing problem! Aborting..."
+msgstr ""
+"Utilizator deja autentificat sau probleme de sharing al sesiunilor. "
+"Intrerup..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "Utilizator deja autentificat sau probleme de sharing al sesiunilor. Intrerup..."
+msgstr ""
+"Utilizator deja autentificat sau probleme de sharing al sesiunilor. "
+"Intrerup..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3272,30 +3495,35 @@ msgstr "Eroare necunoscuta"
 msgid "hide aliases"
 msgstr "ascunde alias-urile"
 
-msgid "You have reached your domains limit.<br>You can not add more domains!"
-msgstr "Limita domeniilor atinsa.<br>Nu se mai poti adauga domenii suplimentare!"
+#, fuzzy
+msgid "You have reached your domains limit.<br>You cannot add more domains!"
+msgstr ""
+"Limita domeniilor atinsa.<br>Nu se mai poti adauga domenii suplimentare!"
 
+#, fuzzy
 msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
-"Exista limita pentru subdomenii!<br>Nu poti adauga un utilizator fara limita "
-" de subdomenii!"
+"Exista limita pentru subdomenii!<br>Nu poti adauga un utilizator fara "
+"limita  de subdomenii!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Ai depasit limita subdomeniilor!"
 
+#, fuzzy
 msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
-"Exista limita pentru aliasuri!<br>Nu poti adauga utilizator"
-"cu aliasuri nelimitate"
+"Exista limita pentru aliasuri!<br>Nu poti adauga utilizatorcu aliasuri "
+"nelimitate"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Ai depasit limita stabilita pentru alias-uri!"
 
+#, fuzzy
 msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
 "Exista o limita pentru conturi de mail!<br>Nu poti aduga utilizator fara "
@@ -3304,8 +3532,9 @@ msgstr ""
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Ai depasit limita stabilita pentru conturi de mail!"
 
+#, fuzzy
 msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
 "accounts!"
 msgstr ""
 "Exista o limita la conturile FTP!<br>Nu poti adauga utilizator cu conturi "
@@ -3314,40 +3543,48 @@ msgstr ""
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Ai depasita limita conturilor FTP!"
 
+#, fuzzy
 msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
-"SQL databases!"
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
-"Exista o limita a numarului bazelor de date SQL!<br>Nu poti adauga utilizator fara "
-"limita la numarul bazelor de date SQL!"
+"Exista o limita a numarului bazelor de date SQL!<br>Nu poti adauga "
+"utilizator fara limita la numarul bazelor de date SQL!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Ai depasit limita bazelor de date SQL!"
 
+#, fuzzy
 msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
-"Exista limita pentru utilizatorii SQL!<br>Nu poti adauga utilizatori cu numar de utilizatori  "
-"SQL nelimitat!"
+"Exista limita pentru utilizatorii SQL!<br>Nu poti adauga utilizatori cu "
+"numar de utilizatori  SQL nelimitat!"
 
+#, fuzzy
 msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
 "here!"
 msgstr ""
-"Ai dezactivat dazele de date pentru acest utilizator! Nu poti avea utilizatori"
-"SQL aici!"
+"Ai dezactivat dazele de date pentru acest utilizator! Nu poti avea "
+"utilizatoriSQL aici!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Ai depasit limita bazei de date SQL"
 
+#, fuzzy
 msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
-"Exista o limita a traficului!<br>Nu poti adauga utilizator cu trafic nelimitat!"
+"Exista o limita a traficului!<br>Nu poti adauga utilizator cu trafic "
+"nelimitat!"
 
-msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
-msgstr "Exista o limita a spatiului pe disc!<br>Nu poti adauga utilizatori fara limita a aspatiului pe disc!"
+#, fuzzy
+msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
+msgstr ""
+"Exista o limita a spatiului pe disc!<br>Nu poti adauga utilizatori fara "
+"limita a aspatiului pe disc!"
 
 msgid "You have a new order"
 msgstr "Ai o comanda noua"
@@ -3468,55 +3705,6 @@ msgstr "ispCP Reseller: Adauga Alias-uri"
 msgid "You have no user records."
 msgstr "Nu exista inregistrari utilizatori"
 
-msgid "ispCP - Reseller/Add hosting plan"
-msgstr "ispCP - Reseller/ Adauga plan gazduire"
-
-msgid "Price must be a number!"
-msgstr "Pretul trebuie sa contina cifra"
-
-msgid "Setup fee must be a number!"
-msgstr "Costurile trebuie sa contina cifre !"
-
-msgid "Hosting plan values exceed reseller maximum values!"
-msgstr "Valoarea planului de gazduire depaseste valoarea maxima admisa !"
-
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Reseller/Schimbare Parola"
-
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Reseller/Schimbare Date Personale"
-
-msgid "ispCP - Circular"
-msgstr "ispCP - Circular"
-
-msgid "Circular"
-msgstr "Circular"
-
-msgid "Wrong domain ID!"
-msgstr "Id DOmeniu gresit !"
-
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-"Incercati sa stergeti un domeniu ce are conturi email!<br>stergeti mai intai conturile de email!"
-
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-"Incercati stergerea unui domeniu cu conturi FTP!<br> acestea trebuie sterse intai!"
-
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
-"Incercati sa stergeti un domeniu ce are aliasuri!<br>stergeti-le mai intai!"
-
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-"Incercati stergerea unui domeniu cu conturi de subdomenii!<br> mai intai"
-"stergeti subdomeniile"
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Administrare Domeniu/Alias-uri"
 
@@ -3563,73 +3751,65 @@ msgstr "Alias domeniu activat!"
 msgid "Ordered domain alias not activated!"
 msgstr "Alias domeniu neadaugat!"
 
-msgid "User terminated!"
-msgstr "Utilizator sters"
+msgid "ispCP - Circular"
+msgstr "ispCP - Circular"
+
+msgid "Circular"
+msgstr "Circular"
+
+msgid "Wrong domain ID!"
+msgstr "Id DOmeniu gresit !"
+
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr ""
+"Incercati sa stergeti un domeniu ce are conturi email!<br>stergeti mai intai "
+"conturile de email!"
+
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr ""
+"Incercati stergerea unui domeniu cu conturi FTP!<br> acestea trebuie sterse "
+"intai!"
+
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr ""
+"Incercati sa stergeti un domeniu ce are aliasuri!<br>stergeti-le mai intai!"
+
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+"Incercati stergerea unui domeniu cu conturi de subdomenii!<br> mai "
+"intaistergeti subdomeniile"
 
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domeniu/Editeaza"
 
-msgid "Edit Domain"
-msgstr "Editare domeniu"
-
-msgid "Domain properties"
-msgstr "Proprietati domeniu"
-
-msgid "SQL Database"
-msgstr "Baze Date SQL"
-
-msgid "SQL User"
-msgstr "Utilizator SQL"
-
-#, fuzzy
-msgid "Domain properties could not be updated!"
-msgstr " Proprietatile domeniului nu pot fi modificate!"
-
-msgid "Domain properties updated successfully!"
-msgstr " Proprietatile domeniului actualizate cu succes"
-
-#, php-format
+#, fuzzy, php-format
 msgid "The <em>%s</em> service can not be disabled! "
 msgstr "Acest <em>%s</em> serviciu nu poate fi dezactivat! "
 
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "Exista <em>%s</em> inregistrari in sistem"
-
-#, php-format
+#, fuzzy, php-format
 msgid "The <em>%s</em> service can not be limited! "
 msgstr "Acest <em>%s</em> serviciu nu poate fi limitat!"
 
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-"Numarul specificat este mai mic decat <em>%s</em> inregistrari, prezente deja in sistem!"
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "Exista<em>%s</em> inregistrari in sistem!"
-
-#, php-format
+#, fuzzy, php-format
 msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "Acest <em>%s</em> serviciu nu poate fi nelimitat!"
 
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Exista limitari pentru serviciul <em>%s</em>!"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Reseller/ Adauga plan gazduire"
 
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "S-a depasit limita pentru serviciul <em>%s</em>!"
+msgid "Price must be a number!"
+msgstr "Pretul trebuie sa contina cifra"
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Utilizatori/Editeaza"
+msgid "Setup fee must be a number!"
+msgstr "Costurile trebuie sa contina cifre !"
 
-msgid "Edit user"
-msgstr "Editeaza Utilizator"
-
-msgid "Users list"
-msgstr "Lista Utilizatori"
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr "Valoarea planului de gazduire depaseste valoarea maxima admisa !"
 
 msgid "ispCP - Reseller/Edit hosting plan"
 msgstr "ispCP - Reseller/Editeaza plang gazduire"
@@ -3637,14 +3817,8 @@ msgstr "ispCP - Reseller/Editeaza plang gazduire"
 msgid "View hosting plan"
 msgstr "Vezi plan gazduire"
 
-msgid "ispCP - Reseller/Manage users/Email setup"
-msgstr "ispCP - Reseller/Administreaza utilizatori/Setare Mail"
-
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Reseller/Index Principal"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Planul de gazduire nu poate fi sters, exista comenzi!"
 
 msgid "View details"
 msgstr "Vezi detalii"
@@ -3676,15 +3850,6 @@ msgstr "%1$d / %2$d din <b>nelimitat</b>"
 
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Reseller/Schimba Limba"
-
-msgid "ispCP - Reseller/Lostpw email setup"
-msgstr "ispCP - Reseller/Setari mail parola pierduta"
-
-msgid "Lostpw email"
-msgstr "E-Mail parola pierduta"
-
-msgid "Lostpw link"
-msgstr "Link parola pierduta"
 
 msgid "ispCP - Reseller/Order email setup"
 msgstr "ispCP - Reseller/Setari mail comanda"
@@ -3767,6 +3932,27 @@ msgstr "Comanda"
 msgid "Add/Details"
 msgstr "Adauga/Detalii"
 
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Reseller/Schimbare Parola"
+
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Reseller/Schimbare Date Personale"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Reseller/Setari mail parola pierduta"
+
+msgid "Lostpw email"
+msgstr "E-Mail parola pierduta"
+
+msgid "Lostpw link"
+msgstr "Link parola pierduta"
+
+msgid "ispCP - Reseller/Manage users/Email setup"
+msgstr "ispCP - Reseller/Administreaza utilizatori/Setare Mail"
+
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Reseller: Sistem Suport: Vezi Cereri"
+
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Utilizatori/Adauga"
 
@@ -3797,6 +3983,13 @@ msgstr "Loguri Apache"
 msgid "Awstats"
 msgstr "Awstats"
 
+msgid "Domain data has been altered. Please enter again"
+msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "Limita pentru bazele de date SQL este <i>dezactivata</i>"
+
 msgid "ispCP - User/Add user"
 msgstr "ispCP - Utilizator/Adauga utilizator"
 
@@ -3806,11 +3999,21 @@ msgstr "Adauga alte domenii acestui cont"
 msgid "System error with Domain ID "
 msgstr "Eroare sistem cu Id Domeniu"
 
-msgid "This reseller has no domains yet."
-msgstr "Acest reseller inca nu are domenii."
+msgid "User terminated!"
+msgstr "Utilizator sters"
+
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Utilizatori/Editeaza"
+
+msgid "Users list"
+msgstr "Lista Utilizatori"
 
 msgid "ispCP - Users"
 msgstr "ispCP - Utilizatori"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Sigur doriti sa schimbati statusul acestui domeniu?"
 
 msgid "Stats"
 msgstr "Statistici"
@@ -3834,100 +4037,108 @@ msgstr "Date utilizator neactualizate!"
 
 msgid ""
 "This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
-"Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
+msgstr "Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
 
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
-msgstr "ispCP - Reseller: Sistem Suport: Vezi Cereri"
+msgid "This reseller has no domains yet."
+msgstr "Acest reseller inca nu are domenii."
 
-msgid "Message was sent."
-msgstr "Mesajul a fost trimis"
+#~ msgid "Missing or wrong data!"
+#~ msgstr "Date lipsa sau gresite"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(de obicei denumit backup_YYYY_MM_DD.tar.bz2)"
+#~ msgid "Password data includes not valid signs!"
+#~ msgstr "Datele parolei includ caractere invalide!"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Comanda in progres"
+#~ msgid "Unknown domain status!"
+#~ msgstr "Status domeniu necunoscut"
 
-#, fuzzy
-msgid "Incorrect username number or syntax!"
-msgstr "Sintaxa pentru campul utilizator incorecta!"
+#~ msgid "Unknown account type!"
+#~ msgstr "Tip acount necunoscut"
 
 #, fuzzy
-msgid "Incorrect password number or syntax!"
-msgstr "Sintaxa pentru campul parola incorecta!"
+#~ msgid "Invalid account id!"
+#~ msgstr "ID Cont domeniu necunoscut"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(de obicei denumit backup_YYYY_MM_DD.tar.bz2)"
 
 #, fuzzy
-msgid "Incorrect max domain number or syntax!"
-msgstr "Sintaxa pentru campul maxim domenii incorecta!"
+#~ msgid "Order in progress"
+#~ msgstr "Comanda in progres"
 
 #, fuzzy
-msgid "Incorrect max subdomain number or syntax!"
-msgstr "Sintaxa pentru campul maxim subdomenii incorecta!"
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Sintaxa pentru campul utilizator incorecta!"
 
 #, fuzzy
-msgid "Incorrect max alias number or syntax!"
-msgstr "Sintaxa pentru campul maxim aliasuri incorecta!"
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Sintaxa pentru campul parola incorecta!"
 
 #, fuzzy
-msgid "Incorrect max FTP number or syntax!"
-msgstr "Sintaxa pentru campul maxim conturi ftp incorecta!"
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim domenii incorecta!"
 
 #, fuzzy
-msgid "Incorrect max mail number or syntax!"
-msgstr "Sintaxa pentru campul maxim e-mailuri incorecta!"
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim subdomenii incorecta!"
 
 #, fuzzy
-msgid "Incorrect max SQL databases number or syntax!"
-msgstr "Sintaxa pentru campul maxim baze de date incorecta!"
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim aliasuri incorecta!"
 
 #, fuzzy
-msgid "Incorrect max SQL users number or syntax!"
-msgstr "Sintaxa pentru campul maxim utilizatori sql incorecta!"
-
-msgid "Incorrect max traffic amount or syntax!"
-msgstr "Sintaxa pentru campul maxim trafic incorecta!"
-
-msgid "Incorrect max disk amount or syntax!"
-msgstr "Sintaxa pentru campul maxim spatiu incorecta!"
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim conturi ftp incorecta!"
 
 #, fuzzy
-msgid "Incorrect FTP account count or no number<br />"
-msgstr ""
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim e-mailuri incorecta!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Nu se poate face conexiune ca administrator MySQL!"
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim baze de date incorecta!"
 
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adresa!<br>Editare reseller intrerupta!"
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim utilizatori sql incorecta!"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Nu se poate deschide fisierul!<br>Contactati administratorul !"
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim trafic incorecta!"
 
-msgid "wait to be added"
-msgstr "asteapta sa fie adaugat/e"
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Sintaxa pentru campul maxim spatiu incorecta!"
 
-msgid "wait to be modified"
-msgstr "asteapta sa fie modificat/e"
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Nu se poate face conexiune ca administrator MySQL!"
 
-msgid "wait to be deleted"
-msgstr "asteapta sa fie sters/e"
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b> Adresa!<br>Editare reseller intrerupta!"
 
-msgid "wait to be enabled"
-msgstr "asteapta sa fie activat/e"
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Nu se poate deschide fisierul!<br>Contactati administratorul !"
 
-msgid "You have"
-msgstr "Aveti"
+#~ msgid "wait to be added"
+#~ msgstr "asteapta sa fie adaugat/e"
 
-msgid "Catch all mail account can not be created!"
-msgstr "Cont catch all nu poate fi creat!"
+#~ msgid "wait to be modified"
+#~ msgstr "asteapta sa fie modificat/e"
 
-msgid "Alias scheduled for modification!"
-msgstr "Alias programat pentru modificare!"
+#~ msgid "wait to be deleted"
+#~ msgstr "asteapta sa fie sters/e"
 
-msgid "delete"
-msgstr "sterge"
+#~ msgid "wait to be enabled"
+#~ msgstr "asteapta sa fie activat/e"
+
+#~ msgid "You have"
+#~ msgstr "Aveti"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Cont catch all nu poate fi creat!"
+
+#~ msgid "Alias scheduled for modification!"
+#~ msgstr "Alias programat pentru modificare!"
+
+#~ msgid "delete"
+#~ msgstr "sterge"
