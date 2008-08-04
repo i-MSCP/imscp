@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 11214 2008-04-24 17:05:50Z lem9 $
+ * @version $Id: Table.class.php 11353 2008-06-27 14:27:18Z lem9 $
  */
 
 /**
@@ -599,7 +599,7 @@ class PMA_Table {
             $no_constraints_comments = true;
             $GLOBALS['sql_constraints_query'] = '';
 
-            $sql_structure = PMA_getTableDef($source_db, $source_table, "\n", $err_url);
+            $sql_structure = PMA_getTableDef($source_db, $source_table, "\n", $err_url, false, false);
             unset($no_constraints_comments);
             $parsed_sql =  PMA_SQP_parse($sql_structure);
             $analyzed_sql = PMA_SQP_analyze($parsed_sql);

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_change.php 11282 2008-05-18 16:45:36Z lem9 $
+ * @version $Id: tbl_change.php 11337 2008-06-23 11:56:41Z lem9 $
  */
 
 /**
@@ -235,8 +235,8 @@ while ($trow = PMA_DBI_fetch_assoc($table_def)) {
 }
 
 $tabindex = 0;
-$tabindex_for_function = +1000;
-$tabindex_for_null     = +2000;
+$tabindex_for_function = +3000;
+$tabindex_for_null     = +6000;
 $tabindex_for_value    = 0;
 $o_rows   = 0;
 $biggest_max_file_size = 0;
@@ -735,7 +735,7 @@ foreach ($loop_array as $vrowcount => $vrow) {
                             && isset($row_table_def['Default']) && $enum_atom == $row_table_def['Default'])) {
                         echo ' checked="checked"';
                     }
-                    echo 'tabindex="' . ($tabindex + $tabindex_for_value) . '" />';
+                    echo ' tabindex="' . ($tabindex + $tabindex_for_value) . '" />';
                     echo '<label for="field_' . $idindex . '_3_' . $j . '">'
                         . htmlspecialchars($enum_atom) . '</label>' . "\n";
                 } // end for

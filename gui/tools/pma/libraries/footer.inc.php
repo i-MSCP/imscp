@@ -42,7 +42,7 @@
  * @uses    PMA_DBI_close()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 11389 2008-07-15 14:04:44Z lem9 $
+ * @version $Id: footer.inc.php 11402 2008-07-15 18:42:50Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

@@ -3,7 +3,7 @@
 /**
  * Code for displaying language selection
  *
- * @version $Id: display_select_lang.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: display_select_lang.lib.php 11379 2008-07-09 15:33:49Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -53,7 +53,10 @@ function PMA_select_language($use_fieldset = FALSE) {
             . ((int)$GLOBALS['server']) . '" />' . "\n";
     }
 
-    $language_title = $GLOBALS['strLanguage'] . ($GLOBALS['strLanguage'] != 'Language' ? ' - Language' : '') . ' <a href="./translators.html" target="documentation">' .
+    // For non-English, display "Language" with emphasis because it's
+    // not a proper word in the current language; we show it to help
+    // people recognize the dialog
+    $language_title = $GLOBALS['strLanguage'] . ($GLOBALS['strLanguage'] != 'Language' ? ' - <em>Language</em>' : '') . ' <a href="./translators.html" target="documentation">' .
             ($cfg['ReplaceHelpImg'] ?
                 '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_info.png" width="11" height="11" alt="Info" />' :
                 '(*)') . '</a>';

@@ -3,7 +3,7 @@
 /**
  * Generic plugin interface.
  *
- * @version $Id: plugin_interface.lib.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ * @version $Id: plugin_interface.lib.php 11421 2008-07-23 16:55:33Z lem9 $
  */
 
 /**
@@ -27,7 +27,11 @@ function PMA_getPlugins($plugins_dir, $plugin_param)
     if ($handle = @opendir($plugins_dir)) {
         $is_first = 0;
         while ($file = @readdir($handle)) {
-            if (is_file($plugins_dir . $file) && eregi('\.php$', $file)) {
+            // In some situations, Mac OS creates a new file for each file
+            // (for example ._csv.php) so the following regexp
+            // matches a file which does not start with a dot but ends
+            // with ".php"
+            if (is_file($plugins_dir . $file) && preg_match('@^[^\.](.)*\.php$@i', $file)) {
                 include $plugins_dir . $file;
             }
         }
@@ -218,8 +222,7 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
         $ret .= '</div>' . "\n";
     } elseif ($opt['type'] == 'message_only') {
         $ret .= '<div class="formelementrow">' . "\n";
-        $ret .= '<label for="text_' . $plugin_name . '_' . $opt['name'] . '" class="desc">'
-            . PMA_getString($opt['text']) . '</label>';
+        $ret .= '<p class="desc">' . PMA_getString($opt['text']) . '</p>';
         $ret .= '</div>' . "\n";
     } elseif ($opt['type'] == 'select') {
         $ret .= '<div class="formelementrow">' . "\n";
@@ -229,7 +232,7 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
             . ' id="select_' . $plugin_name . '_' . $opt['name'] . '">';
         $default = PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']);
         foreach($opt['values'] as $key => $val) {
-            $ret .= '<option name="' . $key . '"';
+            $ret .= '<option value="' . $key . '"';
             if ($key == $default) {
                 $ret .= ' selected="selected"';
             }

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header.inc.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: header.inc.php 11422 2008-07-24 17:12:32Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -29,6 +29,27 @@ if (empty($GLOBALS['is_header_sent'])) {
     require_once './libraries/header_http.inc.php';
     require_once './libraries/header_meta_style.inc.php';
 
+    // Cross-framing protection
+    if ( false === $GLOBALS['cfg']['AllowThirdPartyFraming']) {
+    ?>
+    <script type="text/javascript">
+    try {
+        // can't access this if on a different domain
+        var topdomain = top.document.domain;
+        // double-check just for sure
+        if (topdomain != self.document.domain) {
+            alert("Redirecting...");
+            top.location.replace(self.document.URL.substring(0, self.document.URL.lastIndexOf("/")+1));
+        }
+    }
+    catch(e) {
+            alert("Redirecting... (error: " + e);
+            top.location.replace(self.document.URL.substring(0, self.document.URL.lastIndexOf("/")+1));
+    }
+
+    </script>
+    <?php
+    }
     // generate title
     $title     = str_replace(
                     array(

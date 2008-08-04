@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_import.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: display_import.lib.php 11405 2008-07-17 14:02:26Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -154,10 +154,23 @@ echo "\n";
         <label for="checkbox_allow_interrupt"><?php echo $strAllowInterrupt; ?></label><br />
         </div>
 
+        <?php
+        if (! (isset($timeout_passed) && $timeout_passed)) {
+        ?>
         <div class="formelementrow">
         <label for="text_skip_queries"><?php echo $strSkipQueries; ?></label>
         <input type="text" name="skip_queries" value="<?php echo PMA_pluginGetDefault('Import', 'skip_queries');?>" id="text_skip_queries" />
         </div>
+        <?php
+        } else {
+        // If timeout has passed,
+        // do not show the Skip dialog to avoid the risk of someone
+        // entering a value here that would interfere with "skip"
+        ?>
+        <input type="hidden" name="skip_queries" value="<?php echo PMA_pluginGetDefault('Import', 'skip_queries');?>" id="text_skip_queries" />
+        <?php
+        }
+        ?>
     </fieldset>
 
     <fieldset class="options">

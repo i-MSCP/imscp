@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11391 2008-07-15 14:40:42Z lem9 $
+ * @version $Id: Config.class.php 11445 2008-07-28 19:37:23Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.7.1');
+        $this->set('PMA_VERSION', '2.11.8.1');
         /**
          * @deprecated
          */
@@ -545,12 +545,14 @@ class PMA_Config
 
     /**
      * returns a unique value to force a CSS reload if either the config
-     * or the theme changes
+     * or the theme changes;
+     * must also check the pma_fontsize cookie in case there is no
+     * config file
      * @return  int  Unix timestamp
      */
     function getThemeUniqueValue()
     {
-        return intval($_SESSION['PMA_Config']->get('fontsize')) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info);
+        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize'])) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info);
     }
 
     /**
@@ -1003,6 +1005,14 @@ class PMA_Config
     function getFontsizeSelection()
     {
         $current_size = $_SESSION['PMA_Config']->get('fontsize');
+        // for the case when there is no config file (this is supported)
+        if (empty($current_size)) {
+            if (isset($_COOKIE['pma_fontsize'])) {
+                $current_size = $_COOKIE['pma_fontsize'];
+            } else {
+                $current_size = '82%';
+            }
+        }
         $options = PMA_Config::getFontsizeOptions($current_size);
 
         $return = '<label for="select_fontsize">' . $GLOBALS['strFontSize'] . ':</label>' . "\n";

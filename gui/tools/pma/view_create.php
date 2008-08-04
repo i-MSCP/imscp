@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: view_create.php 10606 2007-09-05 10:17:18Z lem9 $
+ * @version $Id: view_create.php 11343 2008-06-24 14:11:54Z lem9 $
  */
 
 /**
@@ -29,7 +29,7 @@ if (isset($_POST['submitoptions'])) {
     if (isset($_POST['algorithm'])) {
         $create_query .= ' ALGORITHM = ' . $_POST['algorithm'] . $sep;
     }
-    $create_query .= ' VIEW ' . $_POST['view_name'] . $sep;
+    $create_query .= ' VIEW ' . PMA_backquote($_POST['view_name']) . $sep;
 
     if (!empty($_POST['column_names'])) {
         $create_query .= ' (' . $_POST['column_names'] . ')' . $sep;

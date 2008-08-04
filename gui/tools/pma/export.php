@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 11330 2008-06-20 17:53:30Z lem9 $
+ * @version $Id: export.php 11407 2008-07-18 17:42:52Z lem9 $
  */
 
 /**
@@ -363,6 +363,11 @@ if (!$save_on_server) {
             header('Pragma: public');
         } else {
             header('Pragma: no-cache');
+            // test case: exporting a database into a .gz file with Safari
+            // would produce files not having the current time 
+            if ('SAFARI' == PMA_USR_BROWSER_AGENT) {
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            } 
         }
     } else {
         // HTML

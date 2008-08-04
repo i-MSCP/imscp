@@ -10,7 +10,7 @@
  * @author     Michal Čihař <michal@cihar.com>
  * @copyright  2006 Michal Čihař <michal@cihar.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: setup.php 10748 2007-10-10 07:30:59Z cybot_tm $
+ * @version    $Id: setup.php 11423 2008-07-24 17:26:05Z lem9 $
  */
 
 // Grab phpMyAdmin version and PMA_dl function
@@ -26,7 +26,7 @@ $PMA_Config_Setup = new PMA_Config();
 
 // Script information
 $script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php 10748 2007-10-10 07:30:59Z cybot_tm $';
+$script_version = '$Id: setup.php 11423 2008-07-24 17:26:05Z lem9 $';
 
 // Grab action
 if (isset($_POST['action'])) {
@@ -682,7 +682,7 @@ function show_overview($title, $list, $buttons = '') {
         echo $val[0];
         echo '</div>';
         echo '<div class="data">';
-        echo $val[1];
+        echo htmlspecialchars($val[1]);
         echo '</div>';
         echo '</div>' . "\n";
     }

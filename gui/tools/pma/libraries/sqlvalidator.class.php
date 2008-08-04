@@ -25,7 +25,7 @@
 *
 * @author   Robin Johnson <robbat2@users.sourceforge.net>
 *
-* @version  $Id: sqlvalidator.class.php 11326 2008-06-17 21:32:48Z lem9 $
+* @version  $Id: sqlvalidator.class.php 11335 2008-06-21 14:01:54Z lem9 $
 */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -179,7 +179,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
             $this->username                      = 'anonymous';
             $this->password                      = '';
             $this->calling_program               = 'PHP_SQLValidator';
-            $this->calling_program_version       = '$Revision: 11326 $';
+            $this->calling_program_version       = '$Revision: 11335 $';
             $this->target_dbms                   = 'N/A';
             $this->target_dbms_version           = 'N/A';
             $this->connection_technology         = 'PHP';

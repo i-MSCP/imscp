@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.11.7.1 Documentation
+phpMyAdmin 2.11.8.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.11.7.1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 11391 2008-07-15 14:40:42Z
+  * Documentation version: $Id: Documentation.html 11445 2008-07-28 19:37:23Z
     lem9 $
 
 Requirements
@@ -415,6 +415,10 @@ $cfg['PmaNoRelation_DisableWarning'] boolean
 $cfg['SuhosinDisableWarning'] boolean
     A warning is displayed on the main page if Suhosin is detected. You can set
     this parameter to TRUE to stop this message from appearing.
+$cfg['AllowThirdPartyFraming'] boolean
+    Setting this to true allows a page located on a different domain to call
+    phpMyAdmin inside a frame, and is a potential security hole allowing
+    cross-frame scripting attacks.
 $cfg['blowfish_secret'] string
     The "cookie" auth_type uses blowfish algorithm to encrypt the password.
     If you are using the "cookie" auth_type, enter here a random passphrase of
@@ -776,7 +780,8 @@ $cfg['MaxCharactersInDisplayedSQL'] integer
     The maximum number of characters when a SQL query is displayed. The default
     limit of 1000 should be correct to avoid the display of tons of hexadecimal
     codes that represent BLOBs, but some users have real SQL queries that are
-    longer than 1000 characters.
+    longer than 1000 characters. Also, if a query's length exceeds this limit,
+    this query is not saved in the history.
 $cfg['OBGzip'] string/boolean
     Defines whether to use GZip output buffering for increased speed in HTTP
     transfers.

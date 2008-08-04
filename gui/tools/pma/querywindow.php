@@ -27,7 +27,6 @@
  * @uses    PMA_getRelationsParam()
  * @uses    PMA_isValid()
  * @uses    PMA_ifSetOr()
- * @uses    PMA_setHistory()
  * @uses    PMA_getHistory()
  * @uses    PMA_generate_common_url()
  * @uses    PMA_generate_common_hidden_inputs()
@@ -39,7 +38,7 @@
  * @uses    strlen()
  * @uses    preg_replace()
  * @uses    htmlspecialchars()
- * @version $Id: querywindow.php 10946 2007-11-26 21:44:00Z lem9 $
+ * @version $Id: querywindow.php 11376 2008-07-09 14:17:19Z lem9 $
  */
 
 /**

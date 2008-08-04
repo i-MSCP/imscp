@@ -3,7 +3,7 @@
 /**
  * navigation css file from theme Original
  *
- * @version $Id: theme_left.css.php 10902 2007-11-05 17:51:57Z lem9 $
+ * @version $Id: theme_left.css.php 11409 2008-07-19 14:46:28Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -78,7 +78,8 @@ button {
 /* specific elements */
 
 div#pmalogo {
-    background-color: #D0DCE0<?php //better echo $GLOBALS['cfg']['logoBGC']; ?>;
+    <?php //better echo $GLOBALS['cfg']['logoBGC']; ?>;
+    background-color: <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
     padding:.3em;
 }
 div#pmalogo,

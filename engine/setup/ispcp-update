@@ -50,6 +50,7 @@ use constant {
         RC2		=> 3,
         RC3		=> 4,
         RC4		=> 5,
+        RC5		=> 6,
 	};
 
 ################################################################################
@@ -132,6 +133,7 @@ sub welcome_note {
 \t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)
 \t(4) ispCP OMEGA 1.0.0 RC3
 \t(5) ispCP OMEGA 1.0.0 RC4
+\t(6) ispCP OMEGA 1.0.0 RC5
 \t(0) abort
 MSG
 
@@ -962,7 +964,7 @@ sub prepare_update {
    	 		exit_werror("ispCP Update failed.");
 		}
 	}
-	# ispCP 1.0.0 RC2/3/4 Update
+	# ispCP 1.0.0 RC2/3/4/5 Update
 	elsif ($main::ua{'update'} >= RC2) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
@@ -1022,6 +1024,10 @@ sub prepare_update {
 		# ispCP 1.0.0 RC4
 		elsif ($main::ua{'update'} eq RC4) {
 			$rs = patch_ispcp_rc4();
+		}
+		# ispCP 1.0.0 RC5
+		elsif ($main::ua{'update'} eq RC5) {
+			push_el(\@main::el, 'patch_ispcp_rc5()', 'Nothing else to patch.');
 		}
 
 		if ($rs != 0) {

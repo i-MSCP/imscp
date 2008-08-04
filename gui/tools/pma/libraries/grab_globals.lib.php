@@ -6,7 +6,7 @@
  * variables from them. It does the same work for $HTTP_ACCEPT_LANGUAGE and 
  * $HTTP_AUTHORIZATION.
  *
- * @version $Id: grab_globals.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: grab_globals.lib.php 11335 2008-06-21 14:01:54Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

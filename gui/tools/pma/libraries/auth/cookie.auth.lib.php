@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: cookie.auth.lib.php 11390 2008-07-15 14:14:09Z lem9 $
  */
 
 if (! defined('PHPMYADMIN')) {
@@ -67,7 +67,6 @@ if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
  * @uses    PMA_sendHeaderLocation()
  * @uses    PMA_select_language()
  * @uses    PMA_select_server()
- * @uses    PMA_VERSION
  * @uses    file_exists()
  * @uses    sprintf()
  * @uses    count()
@@ -106,8 +105,8 @@ function PMA_auth()
     // Defines the "item" image depending on text direction
     $item_img = $GLOBALS['pmaThemeImage'] . 'item_' . $GLOBALS['text_dir'] . '.png';
 
-    /* HTML header */
-    $page_title = 'phpMyAdmin ' . PMA_VERSION;
+    /* HTML header; do not show here the PMA version to improve security  */
+    $page_title = 'phpMyAdmin ';
     require './libraries/header_meta_style.inc.php';
     ?>
 <script type="text/javascript">

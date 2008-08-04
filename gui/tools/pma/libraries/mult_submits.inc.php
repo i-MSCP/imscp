@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mult_submits.inc.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: mult_submits.inc.php 11344 2008-06-24 17:33:50Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -160,7 +160,9 @@ if (!empty($submit_mult) && !empty($what)) {
 
             case 'drop_tbl':
                 $current = urldecode($sval);
-                if (!empty($views) && in_array($current, $views)) {
+                // here we must compare with the value before urldecode()
+                // because $views has been treated with htmlspecialchars()
+                if (!empty($views) && in_array($sval, $views)) {
                     $full_query_views .= (empty($full_query_views) ? 'DROP VIEW ' : ', ')
                         . PMA_backquote(htmlspecialchars($current));
                 } else {
@@ -322,7 +324,9 @@ elseif ($mult_btn == $strYes) {
             case 'drop_tbl':
                 PMA_relationsCleanupTable($db, $selected[$i]);
                 $current = urldecode($selected[$i]);
-                if (!empty($views) && in_array($current, $views)) {
+                // here we must compare with the value before urldecode()
+                // because $views has been treated with htmlspecialchars()
+                if (!empty($views) && in_array($selected[$i], $views)) {
                     $sql_query_views .= (empty($sql_query_views) ? 'DROP VIEW ' : ', ')
                               . PMA_backquote($current);
                 } else {

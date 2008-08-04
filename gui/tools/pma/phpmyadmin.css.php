@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: phpmyadmin.css.php 10950 2007-12-01 16:06:01Z lem9 $
+ * @version $Id: phpmyadmin.css.php 11358 2008-06-28 15:46:54Z lem9 $
  */
 
 /**
@@ -39,7 +39,7 @@ header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
 
 ?>
 html {
-    font-size: <?php echo $_SESSION['PMA_Config']->get('fontsize'); ?>;
+    font-size: <?php echo (null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize']); ?>;
 }
 
 input, select, textarea {

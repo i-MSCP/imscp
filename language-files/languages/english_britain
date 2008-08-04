@@ -1,5 +1,5 @@
-ispcp_table = EnglishBritain
-ispcp_language = English (GB)
+ispcp_table = English
+ispcp_language = English
 ispcp_languageSetlocaleValue = en_GB
 encoding = UTF-8
 Mail = e-mail

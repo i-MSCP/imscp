@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: relation.lib.php 11376 2008-07-09 14:17:19Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -711,6 +711,7 @@ function PMA_setComment($db, $table, $col, $comment, $removekey = '', $mode = 'a
  *
  * @uses    $_SESSION['sql_history']
  * @uses    $cfg['QueryHistoryMax']
+ * @uses    $GLOBALS['cfg']['MaxCharactersInDisplayedSQL'] 
  * @uses    PMA_getRelationsParam()
  * @uses    PMA_query_as_cu()
  * @uses    PMA_backquote()
@@ -726,6 +727,9 @@ function PMA_setComment($db, $table, $col, $comment, $removekey = '', $mode = 'a
  */
 function PMA_setHistory($db, $table, $username, $sqlquery)
 {
+    if (strlen($sqlquery) > $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']) {
+        return;
+    }
     $cfgRelation = PMA_getRelationsParam();
 
     if (! isset($_SESSION['sql_history'])) {

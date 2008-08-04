@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: csv.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: csv.php 11357 2008-06-28 14:17:11Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -184,9 +184,17 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
                     $schema_insert .= $row[$j];
                 } else {
                     // also double the escape string if found in the data
-                    $schema_insert .= $csv_enclosed
+                    if ('csv' == $what) {
+                        $schema_insert .= $csv_enclosed
                                    . str_replace($csv_enclosed, $csv_escaped . $csv_enclosed, str_replace($csv_escaped, $csv_escaped . $csv_escaped, $row[$j]))
                                    . $csv_enclosed;
+                    } else {
+                        // for excel, avoid a problem when a field contains
+                        // double quotes
+                        $schema_insert .= $csv_enclosed
+                                   . str_replace($csv_enclosed, $csv_escaped . $csv_enclosed, $row[$j])
+                                   . $csv_enclosed;
+                    }
                 }
             } else {
                 $schema_insert .= '';

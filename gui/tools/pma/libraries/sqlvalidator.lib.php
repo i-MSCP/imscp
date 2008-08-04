@@ -27,7 +27,7 @@
  *
  * Also set a username and password if you have a private one
  *
- * @version $Id: sqlvalidator.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: sqlvalidator.lib.php 11335 2008-06-21 14:01:54Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

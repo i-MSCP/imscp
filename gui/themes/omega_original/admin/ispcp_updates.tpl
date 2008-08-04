@@ -32,7 +32,7 @@
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_update.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_UPDATES_TITLE}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -71,7 +71,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>				  
+</table>
 				  </td>
 				</tr>
 			</table>

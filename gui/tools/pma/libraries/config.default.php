@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 11113 2008-02-09 16:09:54Z lem9 $
+ * @version $Id: config.default.php 11422 2008-07-24 17:12:32Z lem9 $
  */
 
 /**
@@ -52,6 +52,14 @@ $cfg['PmaNoRelation_DisableWarning'] = false;
  * @global boolean $cfg['SuhosinDisableWarning']
  */
 $cfg['SuhosinDisableWarning'] = false;
+
+/**
+ * Allows phpMyAdmin to be included from a document located on
+ * another domain; setting this to true is a potential security hole
+ *
+ * @global boolean $cfg['AllowThirdPartyFraming']
+ */
+$cfg['AllowThirdPartyFraming'] = false;
 
 /**
  * The 'cookie' auth_type uses blowfish algorithm to encrypt the password. If

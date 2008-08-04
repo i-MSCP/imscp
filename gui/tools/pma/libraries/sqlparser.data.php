@@ -19,7 +19,7 @@
  * It's easier to use only uppercase for proper sorting. In case of
  * doubt, use the DEBUG code after this function's definition.
  *
- * @version$Id: sqlparser.data.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version$Id: sqlparser.data.php 11345 2008-06-24 17:51:49Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -436,6 +436,7 @@ $PMA_SQPdata_reserved_word = array (
     'COMPRESSED',
     'CONCURRENT',
     'CONSTRAINT',
+    'CONTAINS',
     'CONVERT',
     'CREATE',
     'CROSS',
@@ -453,6 +454,7 @@ $PMA_SQPdata_reserved_word = array (
     'DELETE',
     'DESC',
     'DESCRIBE',
+    'DETERMINISTIC',
     'DISTINCT',
     'DISTINCTROW',
     'DIV',
@@ -611,6 +613,7 @@ $PMA_SQPdata_reserved_word = array (
     'ROWS',
     'ROW_FORMAT',
     'SECOND',
+    'SECURITY',
     'SELECT',
     'SEPARATOR',
     'SERIALIZABLE',
@@ -621,6 +624,7 @@ $PMA_SQPdata_reserved_word = array (
     'SLAVE',
     'SONAME',
     'SOUNDS',                   // string-functions.html
+    'SQL',
     'SQL_AUTO_IS_NULL',
     'SQL_BIG_RESULT',
     'SQL_BIG_SELECTS',
@@ -683,7 +687,7 @@ $PMA_SQPdata_reserved_word = array (
  *
  * @global integer MySQL reserved words count
  */
-$PMA_SQPdata_reserved_word_cnt = 279;
+$PMA_SQPdata_reserved_word_cnt = 283;
 /**
  * The previous array must be sorted so that the binary search work. 
  * Sometimes a word is not added in the correct order, so

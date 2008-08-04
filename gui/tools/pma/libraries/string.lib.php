@@ -12,7 +12,7 @@
  *
  * The SQL Parser code relies heavily on these functions.
  *
- * @version $Id: string.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: string.lib.php 11335 2008-06-21 14:01:54Z lem9 $
  * @uses    PMA_PHP_INT_VERSION
  * @uses    PMA_dl()
  * @uses    extension_loaded()

@@ -2,8 +2,37 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 11397 2008-07-15 17:50:21Z lem9 $
+$Id: ChangeLog 11445 2008-07-28 19:37:23Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.8.1 (2008-07-28)
+- bug #2027102, small fix for a notice about "lang" 
+
+2.11.8.0 (2008-07-28)
+- patch #1987593 [interface] Table list pagination in navi, 
+  thanks to Jason Day - jday29
+- bug #1989081 [profiling] Profiling causes query to be executed again
+  (really causes a problem in case of INSERT/UPDATE)
+- bug #1990342 [import] SQL file import very slow on Windows,
+  thanks to Richard Heaton - wotnot
+- bug [XHTML] problem with tabindex and radio fields
+- bug #1971221 [interface] tabindex not set correctly 
+- bug [views] VIEW name created via the GUI was not protected with backquotes 
+- bug #1989813 [interface] Deleting multiple views (space in name) 
+- bug #1992628 [parser] SQL parser removes essential space 
+- bug #1989281 [export] CSV for MS Excel incorrect escaping of double quotes 
+- bug #1959855 [interface] Font size option problem when no config file 
+- bug #1982489 [relation] Relationship view should check for changes 
+- bug [history] Do not save too big queries in history 
+- [security] Do not show version info on login screen 
+- bug #2018595 [import] Potential data loss on import resubmit 
+- patch #2020630 [export] Safari and timedate, thanks to Sebastian Mendel,
+  Isaac Bennetch and Jürgen Wind 
+- bug #2022182 [import, export] Import/Export fails because of Mac files 
+- [security] protection against cross-frame scripting and
+  new directive AllowThirdPartyFraming, thanks to YGN Ethical Hacker Group
+- [security] possible XSS during setup, thanks to YGN Ethical Hacker Group 
+- [interface] revert language changing problem introduced with 2.11.7.1 
 
 2.11.7.1 (2008-07-15)
 - bug [security] XSRF/CSRF by manipulating the db,
@@ -33,7 +62,7 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
   no effect, thanks to Tim Starling
 - bug #1996943 [export] Firefox 3 and .sql.gz (corrupted); detect Gecko 1.9,
   thanks to Jürgen Wind - windkiel
-  
+
 2.11.6.0 (2008-04-29)
 - bug #1903724 [interface] Displaying of very large queries in error message 
 - bug #1905711 [compatibility] Functions deprecated in PHP 5.3: is_a() and
@@ -199,7 +228,6 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - bug #1810629 [setup] XSS in setup.php, thanks to Omer Singer, The DigiTrust Group
 
 2.11.1.0 (2007-09-20)
-
 - bug #1783667 [export] NO_AUTO_VALUE_ON_ZERO and MySQL version 
 - bug #1780098 [GUI] Logout causes CSS loss, thanks to Juergen Wind
 . incorrect field ids, thanks to Michael Keck
@@ -218,7 +246,6 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - bug #1798627 [GUI] Wrong storage engine displayed
 
 2.11.0.0 (2007-08-21)
-
 + [import] support handling of DELIMITER to mimic mysql CLI, thanks to fb1
 + improved PHP 6 compatibility
 - bug #1674914 [structure] changing definition of a TIMESTAMP field
@@ -317,7 +344,6 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - bug #1771721 Old SVN URLs
 
 2.10.3.0 (2007-07-20)
-
 - bug #1734285 Copy database with VIEWs
 - bug #1722502 DROP TABLE in export VIEW
 - bug #1729027 Sorting results of VIEW browsing
@@ -331,7 +357,6 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - Do not try to delete an internal relation if we just deleted an InnoDB one
 
 2.10.2.0 (2007-06-15)
-
 + [data] display all warnings, not only last one
 - typo in fix for bug #1671813
 - bug #1714908 Inserted Row Count is wrong
@@ -354,8 +379,6 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - patch #1731280 Avoid negative exponent in gmp_pow(), thanks to anosek
 
 2.10.1.0 (2007-04-23)
-=====================
-
 - bug #1541147 [js] '#' in database names not correctly handled by queywindow.js
 - bug #1671403 [parser] using "client" as table name
 - bug #1672379 [core] Call to undefined function PMA_removeCookie()
@@ -388,19 +411,13 @@ $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyA
 - bug #1704467 XSS vulnerability in browse_foreigners.php, thanks to sp3x SecurityReason
 
 2.10.0.2 (2007-03-02)
-=====================
-
 + bug #1671813 CVE-2006-1549 deep recursion crash
 
 2.10.0.1 (2007-03-01)
-=====================
-
 . [config] set $cfg['Servers'][$i]['ssl'] default value to false,
    we got reports from some users having problems with the default value of true
 
 2.10.0.0 (2007-02-28)
-=====================
-
 - bug #1659176 [general] memory error displaying a table with large BLOBs
 - bug #1668662 [install] can create the new pma_designer_coords table
 + [gui] navi logo now links to main page by default, with still the possibility

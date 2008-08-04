@@ -3,7 +3,7 @@
 /**
  * Library that provides common import functions that are used by import plugins
  *
- * @version $Id: import.lib.php 11326 2008-06-17 21:32:48Z lem9 $
+ * @version $Id: import.lib.php 11335 2008-06-21 14:01:54Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
