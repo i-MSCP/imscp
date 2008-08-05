@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-05 Daniel Andreca
+	- GUI:
+		* Reseller that don`t have hosting plans can`t add new user
+
 2008-08-04 Benedikt Heintel
 	- DOCS:
 		* Updated all INSTALL

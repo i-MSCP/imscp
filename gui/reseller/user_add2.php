@@ -124,19 +124,7 @@ function get_pageone_param() {
 	} else {
 		return false;
 	}
-	
-	if (isset($_SESSION['dmn_tpl'])){
-		$dmn_chp = $_SESSION['dmn_tpl'];
-	} else {
-		return false;
-	}
-	
-	if (isset($_SESSION['chtpl'])){
-		$dmn_pt = $_SESSION['chtpl'];
-	} else {
-		return false;
-	}
-	
+
 	return true;
 } // End of get_pageone_param()
 
