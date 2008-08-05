@@ -1,9 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-05 Benedikt Heintel
+	- SETUP:
+		* Fixed #1447: proftpd.conf missing replacements
+
 2008-08-05 Daniel Andreca
 	- GUI:
 		* Reseller that don`t have hosting plans can`t add new user
+	- SETUP:
+		* Fixed #1448: Permissions on HTMLPurifier folder not correct after install
 
 2008-08-04 Benedikt Heintel
 	- DOCS:

@@ -157,4 +157,11 @@ fi
 chmod -R 0755 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
+#
+# Set correct permission for HTMLPurifier/DefinitionCache/Serializer gui directory
+#
+
+i="$ROOT_DIR/gui/include/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer"
+chmod -R 0755 $i;
+
 echo "done";
