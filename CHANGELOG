@@ -2,8 +2,10 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-08-05 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC6
 	- SETUP:
 		* Fixed #1447: proftpd.conf missing replacements
+		* Fixed: MySQL root password containing " or ` ends up with an error
 
 2008-08-05 Daniel Andreca
 	- GUI:
