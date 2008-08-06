@@ -226,7 +226,7 @@ function _databaseUpdate_6() {
 	$sqlUpd = array();
 
 	$sqlUpd[] = "ALTER IGNORE TABLE `htaccess`
-				CHANGE `user_id` `user_id` VARCHAR(255) NULL DEFAULT NULL ,
+				CHANGE `user_id` `user_id` VARCHAR(255) NULL DEFAULT NULL,
 				CHANGE `group_id` `group_id` VARCHAR(255) NULL DEFAULT NULL";
 
 	return $sqlUpd;

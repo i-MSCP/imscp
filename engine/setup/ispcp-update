@@ -302,7 +302,9 @@ sub migrate_vhcs2 {
 
     print STDOUT "\tCreating new database...";
 
-    if (sys_command("mysqladmin -u\'$main::db_user\' -p\'$main::db_pwd\' create ispcp ") != 0) {
+	# Escape " and '
+	$main::db_pwd =~ s/([\'\"])/\\$1/g;
+    if (sys_command("mysqladmin -u\"$main::db_user\" -p\"$main::db_pwd\" create ispcp ") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -311,7 +313,7 @@ sub migrate_vhcs2 {
 
     print STDOUT "\tCopying database...";
 
-    if (sys_command("mysqldump --opt -u\'$main::db_user\' -p\'$main::db_pwd\' $main::vhcs2{'DATABASE_NAME'} | mysql -u\'$main::db_user\' -p\'$main::db_pwd\' $main::db_name") != 0) {
+    if (sys_command("mysqldump --opt -u\"$main::db_user\" -p\"$main::db_pwd\" $main::vhcs2{'DATABASE_NAME'} | mysql -u\"$main::db_user\" -p\"$main::db_pwd\" $main::db_name") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -335,7 +337,7 @@ sub migrate_vhcs2 {
 	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
+	$rs = sys_command("mysql -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
@@ -926,6 +928,17 @@ sub patch_ispcp_rc4 {
 	return 0;
 }
 
+sub patch_ispcp_rc5 {
+	push_el(\@main::el, 'patch_ispcp_rc5()', 'Starting...');
+
+	if ($main::cfg{'ISPCP_SUPPORT_SYSTEM_PATH'} == support_system.php) {
+		$rs = set_conf_val('ISPCP_SUPPORT_SYSTEM_PATH', ticket_system.php);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'patch_ispcp_rc5()', 'Ending...');
+}
+
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -1027,7 +1040,7 @@ sub prepare_update {
 		}
 		# ispCP 1.0.0 RC5
 		elsif ($main::ua{'update'} eq RC5) {
-			push_el(\@main::el, 'patch_ispcp_rc5()', 'Nothing else to patch.');
+			$rs = patch_ispcp_rc5();
 		}
 
 		if ($rs != 0) {
@@ -1057,7 +1070,8 @@ sub prepare_update {
 	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
+	$main::db_pwd =~ s/([\'\"])/\\$1/g;
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
    	 	exit_werror("SQL Update failed.");
 	}

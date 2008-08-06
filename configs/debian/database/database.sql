@@ -83,7 +83,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'),
-('DATABASE_REVISION', '4');
+('DATABASE_REVISION', '6');
 
 -- --------------------------------------------------------
 
@@ -260,8 +260,8 @@ CREATE TABLE `hosting_plans` (
 CREATE TABLE `htaccess` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `dmn_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_id` tinyint(4) DEFAULT NULL,
-  `group_id` tinyint(4) DEFAULT NULL,
+  `user_id` VARCHAR(255) NULL DEFAULT NULL,
+  `group_id` VARCHAR(255) NULL DEFAULT NULL,
   `auth_type` varchar(255) DEFAULT NULL,
   `auth_name` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,

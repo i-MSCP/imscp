@@ -74,16 +74,16 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_SMTP', '25;tcp;SMTP;1;0'),
 ('PORT_DNS', '53;tcp;DNS;1;0'),
 ('PORT_HTTP', '80;tcp;HTTP;1;0'),
-('PORT_HTTPS', '443;tcp;HTTPS;1;0'),
+('PORT_HTTPS', '443;tcp;HTTPS;0;0'),
 ('PORT_POP3', '110;tcp;POP3;1;0'),
 ('PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0'),
 ('PORT_IMAP', '143;tcp;IMAP;1;0'),
-('PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'),
-('PORT_POSTGREY', '10030;tcp;POSTGREY;1;1'),
+('PORT_IMAP-SSL', '993;tcp;IMAP-SSL;0;0'),
+('PORT_POSTGREY', '60000;tcp;POSTGREY;1;1'),
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'),
-('DATABASE_REVISION', '4');
+('DATABASE_REVISION', '6');
 
 -- --------------------------------------------------------
 
@@ -260,8 +260,8 @@ CREATE TABLE `hosting_plans` (
 CREATE TABLE `htaccess` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `dmn_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_id` tinyint(4) DEFAULT NULL,
-  `group_id` tinyint(4) DEFAULT NULL,
+  `user_id` VARCHAR(255) NULL DEFAULT NULL,
+  `group_id` VARCHAR(255) NULL DEFAULT NULL,
   `auth_type` varchar(255) DEFAULT NULL,
   `auth_name` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
@@ -525,7 +525,7 @@ CREATE TABLE `sql_user` (
   `sqlu_name` varchar(64) binary DEFAULT 'n/a',
   `sqlu_pass` varchar(64) binary DEFAULT 'n/a',
   UNIQUE KEY (`sqlu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2;
 
 -- --------------------------------------------------------
 
