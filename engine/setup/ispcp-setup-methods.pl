@@ -1569,7 +1569,7 @@ sub setup_ftpd {
 						'{DATABASE_NAME}' => $main::db_name,
 						'{DATABASE_HOST}' => $main::db_host,
 						'{DATABASE_USER}' => $main::ua{'db_ftp_user'},
-						'{DATABASE_PASS}' => $main::ua{'db_ftp_password'}
+						'{DATABASE_PASS}' => $main::ua{'db_ftp_password'},
 						'{FTPD_MIN_UID}'  => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 						'{FTPD_MIN_GID}'  => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
 					   );
