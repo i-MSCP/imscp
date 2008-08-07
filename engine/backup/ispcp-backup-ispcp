@@ -252,7 +252,8 @@ sub backup_ispcp_engine {
 
                 my $db_backup_file = "$backup_dir/$db_name-$date.sql";
 
-                my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h\'$main::cfg{'DATABASE_HOST'}\' -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
+				$dbpass =~ s/([\'\"])/\\$1/g;
+                my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h\"$main::cfg{'DATABASE_HOST'}\" -u\"$dbuser\" -p\"$dbpass\" \"$db_name\" >\"$db_backup_file\"";
 
                 my ($db_filename, $db_compresscmd) = (undef, undef);
 
