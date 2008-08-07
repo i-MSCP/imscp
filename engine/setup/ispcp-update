@@ -936,9 +936,13 @@ sub patch_ispcp_rc5 {
 	if ($main::cfg{'ISPCP_SUPPORT_SYSTEM_PATH'} eq "support_system.php") {
 		my $rs = set_conf_val('ISPCP_SUPPORT_SYSTEM_PATH', "ticket_system.php");
 		return $rs if ($rs != 0);
+
+		$rs = store_conf();
+		return $rs if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'patch_ispcp_rc5()', 'Ending...');
+	return 0;
 }
 
 sub prepare_update {

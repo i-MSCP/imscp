@@ -2,6 +2,8 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-08-07 Benedikt Heintel
+	- SETUP:
+		* Fixed: Ticket system variable not set in RC6
 	- LANGUAGES:
 		* Updated German
 		* Updated Spanish (Spain)
