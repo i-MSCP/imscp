@@ -933,8 +933,8 @@ sub patch_ispcp_rc4 {
 sub patch_ispcp_rc5 {
 	push_el(\@main::el, 'patch_ispcp_rc5()', 'Starting...');
 
-	if ($main::cfg{'ISPCP_SUPPORT_SYSTEM_PATH'} == support_system.php) {
-		my $rs = set_conf_val('ISPCP_SUPPORT_SYSTEM_PATH', ticket_system.php);
+	if ($main::cfg{'ISPCP_SUPPORT_SYSTEM_PATH'} eq "support_system.php") {
+		my $rs = set_conf_val('ISPCP_SUPPORT_SYSTEM_PATH', "ticket_system.php");
 		return $rs if ($rs != 0);
 	}
 
