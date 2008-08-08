@@ -80,7 +80,7 @@ function enable_for_post() {
                               <td width="25">&nbsp;</td>
                               <td class="{CLASS}">{SERVICE}
                                 <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}" />
-                                  <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" /></td>
+                                <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" /></td>
                               <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port{NUM}" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
                               <td class="{CLASS}"><select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
                                   <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
@@ -97,8 +97,8 @@ function enable_for_post() {
                                 {TR_DELETE}
                                 <!-- EDP: port_delete_show -->
                                 <!-- BDP: port_delete_link -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
-                                <a href="#" onclick="action_delete('{URL_DELETE}', '{SERVICE}')" class="link">{TR_DELETE}</a>
+								<a href="#" onclick="action_delete('{URL_DELETE}', '{NAME}')" class="link">
+                                <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">{TR_DELETE}</a>
                                 <!-- EDP: port_delete_link -->
                               </td>
                             </tr>

@@ -212,6 +212,7 @@ SQL_QUERY;
 				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
 				$tpl->assign(
 						array(
+							'NAME' => $name,
 							'PORT_READONLY'		=> '',
 							'PROTOCOL_READONLY'	=> '',
 							'TR_DELETE'			=> tr('Delete'),

@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-08 Benedikt Heintel
+	- GUI:
+		* Fixed #1454: settings_ports.php delete link not okay
+
 2008-08-07 Benedikt Heintel
 	- SETUP:
 		* Fixed: Ticket system variable not set in RC6
