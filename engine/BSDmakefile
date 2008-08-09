@@ -44,7 +44,6 @@ CMD_INSTALL=/usr/bin/install -m 0700 -o root -g wheel
 CMD_MAIL_INSTALL=/usr/bin/install -m 0700 -o vmail -g mail
 CMD_DIR_INSTALL=/usr/bin/install -d -o root -g wheel
 
-
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ENGINE_ROOT)
@@ -107,24 +106,22 @@ install:
 	$(CMD_INSTALL) ./setup/reset-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup-methods.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/regenerate.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.7-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.8-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp1.0.0rc2-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp1.0.0rc3-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
-
 	$(CMD_INSTALL) ./tools/ispcpphptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcpphptemp.sh
 
 	$(CMD_INSTALL) ./traffic/ispcp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff $(SYSTEM_ENGINE_ROOT)/traffic
-	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-correction $(SYSTEM_ENGINE_ROOT)/traffic
-
 
 uninstall:
 
 	rm -rf $(SYSTEM_ENGINE_ROOT)
 	rm -rf ./*~
-

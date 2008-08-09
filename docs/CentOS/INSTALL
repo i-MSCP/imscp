@@ -226,7 +226,7 @@ need to be running.
 	# cp -Rv /tmp/ispcp/usr/* /usr/
 	# cp -Rv /tmp/ispcp/var/* /var/
 
-9. Backup ispcp.conf and copy the /etc dircetory into your system (you may make backups):
+9. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
 
    If updating from RC5:

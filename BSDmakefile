@@ -72,17 +72,34 @@ install:
 	cp $(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/
 	cp $(SYSTEM_WEB)/ispcp/engine/messager/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messager/
 	cp $(SYSTEM_WEB)/ispcp/gui/include/ispcp-db-keys.php $(SYSTEM_ROOT)/gui/include/
+	cp $(SYSTEM_WEB)/ispcp/gui/themes/user_logos/* $(SYSTEM_ROOT)/gui/themes/user_logos/
 	cp $(SYSTEM_WEB)/ispcp/gui/tools/pma/config.inc.php $(SYSTEM_ROOT)/gui/tools/pma/
-.endif
 
+	# Delete old files to avoid security risks
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/admin
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/client
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/include
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/orderpanel
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/themes
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/reseller
+	rm -rf $(SYSTEM_WEB)/ispcp/gui/*.php
+
+        # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+	mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
+	mv -v /usr/local/etc/proftpd.conf /usr/local/etc/proftpd.old.conf
+
+	# Copy /usr and /var directories into your system (you may make backups)
+	cp -R $(INST_PREF)/usr/* /usr/
+	cp -R $(INST_PREF)/var/* /var/
+.else
 	cd ${INST_PREF} && cp -R * /
+.endif
 	rm -rf ${INST_PREF}
-
-	#
-	#
-	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
-	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade" 
-	# to complete upgrade process
+        #
+        #
+        # If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
+        # Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
+        # to complete upgrade process
 
 uninstall:
 

@@ -2062,7 +2062,8 @@ sub add_dmn_suexec_user {
 	    my $sys_group = "$suexec_user_pref$sys_gid";
 		my $cmd = undef;
 
-        # group data - BSD has another format:
+        	# group data - BSD has another format:
+		# BSD/NUX Command
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
 			$cmd = "$main::cfg{'CMD_GROUPADD'} $sys_group -g $sys_gid";
 		} else {
@@ -2078,6 +2079,7 @@ sub add_dmn_suexec_user {
 		my $homedir = "$main::cfg{'APACHE_WWW_DIR'}/@$dmn_data[1]";
 
 		# BSD has another format:
+		# BSD/NUX Command
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
 			$cmd = "$main::cfg{'CMD_USERADD'} $sys_user -c virtual-user -d $homedir -g $sys_group -s /bin/false -u $sys_uid";
 		} else {
