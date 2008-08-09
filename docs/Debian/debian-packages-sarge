@@ -17,6 +17,7 @@ gzip
 iptables
 ispell
 libapache2-mod-fastcgi
+libapache2-mod-fcgid
 libberkeleydb-perl
 libc6-dev
 libcrypt-blowfish-perl

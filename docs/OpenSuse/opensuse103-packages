@@ -2,6 +2,7 @@ apache2
 apache2-worker
 apache2-mod_cband
 apache2-mod_fastcgi
+apache2-mod-fcgid
 awstats
 bash
 bind

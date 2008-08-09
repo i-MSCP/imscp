@@ -24,6 +24,7 @@ libmcrypt
 mod_auth_mysql
 mod_perl
 mod_ssl
+mod_fcgi
 mysql
 mysql-server
 patch

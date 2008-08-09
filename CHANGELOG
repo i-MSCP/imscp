@@ -1,9 +1,20 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-09 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #296: Add support for libapache2-mod-fcgid
+	- DOCS:
+		* Fixed: Spelling mistake
+	- DISTS:
+		* Fixed #1457: (FreeBSD) Update various FreeBSD Section
+
 2008-08-08 Benedikt Heintel
 	- GUI:
 		* Fixed #1454: settings_ports.php delete link not okay
+	- LANGUAGES:
+		* Updated Japanes
+		* Updated Spanish (Spain)
 
 2008-08-07 Benedikt Heintel
 	- SETUP:

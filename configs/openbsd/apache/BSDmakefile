@@ -48,11 +48,13 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
-	cp -R ./httpd.conf $(APACHE_EXT_CONF)/ispcp.conf
-	cp -R ./fastcgi.conf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
+	cp ./httpd.conf $(APACHE_EXT_CONF)/ispcp.conf
+	cp ./fastcgi.conf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
+	cp ./fcgid_ispcp.conf $(APACHE_MOD_CONF)/mods-available/fcgid_ispcp.conf
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
-	rm -rf $(ROOT_APACHE_CONF)/ispcp.conf
-	rm -rf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
+	rm -f $(ROOT_APACHE_CONF)/ispcp.conf
+	rm -f $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
+	rm -f $(APACHE_MOD_CONF)/fcgid_ispcp.conf

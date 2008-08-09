@@ -512,6 +512,40 @@ sub ask_db_pma_password {
 	return 0;
 }
 
+# Set up FastCGI version
+sub ask_fastcgi {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
+
+	my $qmsg = "\n\tFastCGI Version:[f]astcgi or f[c]gid. [fastcgi]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'php_fastcgi'} = 'fastcgi';
+	}
+	else {
+		if ($rdata eq 'fastcgi' || $rdata eq 'f') {
+			$main::ua{'php_fastcgi'} = 'fastcgi';
+		}
+		elsif ($rdata eq 'fcgid' || $rdata eq 'c') {
+			$main::ua{'php_fastcgi'} = 'fcgid';
+		}
+		else {
+			print STDOUT "\n\tOnly '[f]astcgi' or 'f[c]gid' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_fastcgi()', 'Ending...');
+	return 0;
+}
+
 # Set up AWStats
 sub ask_awstats_on {
 
@@ -962,8 +996,8 @@ sub setup_php_master_user_dirs {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Create php4 directory for Master User
-	$rs = make_dir("$starter_dir/master/php4", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-	return $rs if ($rs != 0);
+	#$rs = make_dir("$starter_dir/master/php4", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
+	#return $rs if ($rs != 0);
 
 	# Create php5 directory for Master User
 	$rs = make_dir("$starter_dir/master/php5", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
@@ -1017,6 +1051,43 @@ sub setup_php {
 
             $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
             $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
+            return $rs if ($rs != 0);
+	}
+
+	#
+	# Configure the fcgid_ispcp.conf
+	#
+
+	$cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+	$bk_dir = "$cfg_dir/backup";
+
+	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fcgid_ispcp.conf');
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$bk_dir/fcgid_ispcp.conf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fcgid_ispcp.conf.ispcp $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load") {
+            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load";
+            $rs = sys_command($cmd);
+            return $rs if ($rs != 0);
+
+            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load");
+            return $rs if ($rs != 0);
+
+            $rdata = "<IfModule !mod_fcgid.c>\n" . $rdata . "</IfModule>\n";
+            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load", $rdata);
             return $rs if ($rs != 0);
 	}
 
@@ -1263,7 +1334,11 @@ sub setup_httpd {
 		sys_command_rs("/usr/sbin/a2enmod cgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/ispcp-setup-services.log");
-		sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
+		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
+			sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
+		} else {
+			sys_command_rs("/usr/sbin/a2enmod fcgid_ispcp &> /tmp/ispcp-setup-services.log");
+		}
 		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/ispcp-setup-services.log");
 
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
@@ -1278,6 +1353,7 @@ sub setup_httpd {
 
 	if (-e "/usr/sbin/a2dismod") {
 		sys_command_rs("/usr/sbin/a2dismod fastcgi &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/a2dismod fcgid &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2dismod php4 &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2dismod php5 &> /tmp/ispcp-setup-services.log");
 	}

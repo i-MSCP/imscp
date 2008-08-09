@@ -206,6 +206,14 @@ sub user_dialog {
 	} while ($rs == 1);
 
 	#
+	# FastCGI-Version questions
+	#
+
+	do {
+		$rs = ask_fastcgi();
+	} while ($rs == 1);
+
+	#
 	# AWStats questions
 	#
 
@@ -603,6 +611,9 @@ sub setup_config {
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('PHP_FASTCGI', $main::ua{'php_fastcgi'});
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('SECONDARY_DNS', $main::ua{'secondary_dns'});
