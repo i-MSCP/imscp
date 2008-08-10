@@ -1,10 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-08-11 Daniel Andreca
+2008-08-10 Benedikt Heintel
+	- GUI:
+		* Fixed #1326: show the user's disk quota and the diks usage in the user list
+
+2008-08-10 Daniel Andreca
 	- CONFIGS:
 		* Support for libapache2-mod-fcgid in config files.
-	- Engine:
+	- ENGINE:
 		* fcgid-ispcp.conf incorect generated.
 	- GUI:
 		* Missing menu when editing domain alias

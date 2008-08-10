@@ -116,7 +116,9 @@ $tpl->assign(
 			'VL_MONTH' => $crnt_month,
 			'VL_YEAR' => $crnt_year,
 			'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-			'TR_EDIT_USER' => tr('Edit User')
+			'TR_EDIT_USER' => tr('Edit User'),
+			'TR_BW_USAGE' => tr('Bandwidth'),
+			'TR_DISK_USAGE' => tr('Disk')
 		)
 	);
 
@@ -324,6 +326,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'ACTION' => tr('Delete'),
 					'USER_ID' => $rs->fields['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),
+					'DISK_LIMIT' => $rs->fields['domain_disk_limit'],
+					'DISK_USAGE' => round($rs->fields['domain_disk_usage'] / 1024 / 1024,1)
 					)
 				);
 
