@@ -38,9 +38,6 @@
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 
-    # httpd dmn entry PHP2 support BEGIN.
-    # httpd dmn entry PHP2 support END.
-
     <Directory {WWW_DIR}/{DMN_NAME}/htdocs>
         # httpd dmn entry PHP support BEGIN.
         # httpd dmn entry PHP support END.
@@ -49,6 +46,9 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    # httpd dmn entry PHP2 support BEGIN.
+    # httpd dmn entry PHP2 support END.
 
     Include {CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
 

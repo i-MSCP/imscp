@@ -43,6 +43,7 @@ install:
 
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./fastcgi.conf ./working/fastcgi_ispcp.conf
+	cp ./fcgid_ispcp.conf ./working/fcgid_ispcp.conf
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
@@ -50,7 +51,7 @@ install:
 	cp -R ./working $(SYSTEM_CONF)/apache
 	cp ./httpd.conf $(APACHE_EXT_CONF)/ispcp.conf
 	cp ./fastcgi.conf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
-	cp ./fcgid_ispcp.conf $(APACHE_MOD_CONF)/mods-available/fcgid_ispcp.conf
+	cp ./fcgid_ispcp.conf $(APACHE_MOD_CONF)/fcgid_ispcp.conf
 
 uninstall:
 

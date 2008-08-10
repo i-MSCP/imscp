@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-11 Daniel Andreca
+	- CONFIGS:
+		* Support for libapache2-mod-fcgid in config files.
+	- Engine:
+		* fcgid-ispcp.conf incorect generated.
+	- GUI:
+		* Missing menu when editing domain alias
+
 2008-08-09 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #296: Add support for libapache2-mod-fcgid

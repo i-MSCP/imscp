@@ -64,7 +64,6 @@ final class Config {
 		'APACHE_WWW_DIR' => null,
 		'SCOREBOARDS_DIR' => null,
 		'ZIP' => null,
-		'PHP4_FASTCGI_BIN' => null,
 		'PHP5_FASTCGI_BIN' => null,
 		'PHP_VERSION' => null,
 		'FTPD_CONF_FILE' => null,

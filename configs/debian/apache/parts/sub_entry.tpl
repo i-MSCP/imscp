@@ -36,9 +36,6 @@
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
 
-    # httpd sub entry PHP2 support BEGIN.
-    # httpd sub entry PHP2 support END.
-
     <Directory {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs>
         # httpd sub entry PHP support BEGIN.
         # httpd sub entry PHP support END.
@@ -47,6 +44,9 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    # httpd sub entry PHP2 support BEGIN.
+    # httpd sub entry PHP2 support END.
 
     Include {CUSTOM_SITES_CONFIG_DIR}/{SUB_NAME}.conf
 

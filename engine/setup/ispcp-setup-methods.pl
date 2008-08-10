@@ -1078,8 +1078,8 @@ sub setup_php {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load") {
-            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load";
+	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load") {
+            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fcgid.load $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load";
             $rs = sys_command($cmd);
             return $rs if ($rs != 0);
 

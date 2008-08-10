@@ -39,9 +39,6 @@
     # httpd als entry cgi support BEGIN.
     # httpd als entry cgi support END.
 
-    # httpd als entry PHP2 support BEGIN.
-    # httpd als entry PHP2 support END.
-
     <Directory {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs>
         # httpd als entry PHP support BEGIN.
         # httpd als entry PHP support END.
@@ -50,6 +47,9 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    # httpd als entry PHP2 support BEGIN.
+    # httpd als entry PHP2 support END.
 
     Include {CUSTOM_SITES_CONFIG_DIR}/{ALS_NAME}.conf
 
