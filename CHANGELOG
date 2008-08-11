@@ -1,10 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-11 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Basque
+		* Updated Catalan
+
 2008-08-11 Daniel Andreca
 	- CONFIGS:
 		* Fixed #1463: RC6 r1322 "FCGIWrapper not allowed here".
-		
+
 2008-08-10 Benedikt Heintel
 	- GUI:
 		* Fixed #1326: show the user's disk quota and the diks usage in the user list
@@ -17,11 +22,26 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Missing menu when editing domain alias
 
+2008-08-10 Benedikt Heintel
+	- GUI:
+		* Fixed #1326: show the user's disk quota and the diks usage in the user list
+	- SETUP:
+		* Fixed #1462: typo rules 465-470 uninstall script
+	- LANGUAGES:
+		* Updated Turkish
+		* Updated German
+
 2008-08-09 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #296: Add support for libapache2-mod-fcgid
+		* Fixed #837: AWStats password protection
 	- DOCS:
 		* Fixed: Spelling mistake
+	- SETUP:
+		* Fixed: Bind config not installed correctly
+	- TOOLS:
+		* Updated AWStats to version 6.8
+		* Updated maillogconvert
 	- DISTS:
 		* Fixed #1457: (FreeBSD) Update various FreeBSD Section
 

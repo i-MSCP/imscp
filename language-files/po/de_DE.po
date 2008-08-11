@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-04 15:05+0200\n"
-"PO-Revision-Date: 2008-08-06 23:56+0100\n"
+"PO-Revision-Date: 2008-08-10 23:13+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: German (Germany) <de_DE@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2230,9 +2230,8 @@ msgstr "Anderes Verzeichnis benutzen"
 msgid "Choose dir"
 msgstr "Verzeichnis auswählen"
 
-#, fuzzy
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr "Es ist nicht möglich das Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie ihren Administrator!"
+msgstr "Es ist nicht möglich dieses Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie Ihren Administrator!"
 
 msgid "Parent Directory"
 msgstr "Hauptverzeichnis"
@@ -2550,9 +2549,8 @@ msgstr "Bitte wählen Sie ein Verzeichnis aus, das Sie schützen wollen!"
 msgid "%s doesn't exist"
 msgstr "%s existiert nicht"
 
-#, fuzzy
 msgid "You can not protect area without selected user(s)"
-msgstr "Sie können keine geschützten Verzeichnisse erstellen ohne einen Benutzer auszuwählen"
+msgstr "Sie können keine geschützten Verzeichnisse erstellen ohne mind. einen Benutzer auszuwählen"
 
 msgid "You cannot protect area without selected group(s)"
 msgstr "Sie können keine geschützten Verzeichnisse erstellen ohne eine Gruppe auszuwählen"
@@ -3262,7 +3260,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Neue Alias-Bestellung von {CUSTOMER}!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3288,7 +3285,7 @@ msgstr ""
 "Einmal eingeloggt, können Sie den neuen Alias aktivieren \n"
 "http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
-"Das ispCP-Team\n"
+"Ihr ispCP-Team\n"
 "\n"
 
 msgid "Catchall account"
