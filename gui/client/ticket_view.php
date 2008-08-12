@@ -33,22 +33,22 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	$user_id = $_SESSION['user_id'];
-	$query = <<<SQL_QUERY
-        select
-            ticket_id,
-            ticket_status,
-            ticket_reply,
-            ticket_urgency,
-            ticket_date,
-            ticket_subject,
-            ticket_message
-        from
-            tickets
-        where
-            ticket_id = ?
-          and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
 	if ($rs->RecordCount() == 0) {
@@ -97,22 +97,22 @@ SQL_QUERY;
 }
 
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
-	$query = <<<SQL_QUERY
-        SELECT
-            ticket_id,
-            ticket_status,
-            ticket_reply,
-            ticket_urgency,
-            ticket_date,
-            ticket_subject,
-            ticket_message
-        FROM
-            tickets
-        WHERE
-            ticket_reply = ?
-        ORDER BY
-            ticket_date ASC
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_reply` = ?
+		ORDER BY
+			`ticket_date` ASC
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	if ($rs->RecordCount() == 0){
@@ -136,19 +136,19 @@ SQL_QUERY;
 }
 
 function get_ticket_from(&$tpl, &$sql, $ticket_id) {
-	$query = <<<SQL_QUERY
-    	select
-          ticket_from,
-          ticket_to,
-          ticket_status,
-          ticket_reply
-      from
-          tickets
-      where
-          ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	$ticket_from = $rs->fields['ticket_from'];
@@ -156,16 +156,16 @@ SQL_QUERY;
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
 
-	$query = <<<SQL_QUERY
-        select
-            admin_name,
-            fname,
-            lname
-        from
-            admin
-        where
-            admin_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`admin_name`,
+			`fname`,
+			`lname`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_from));
 	$from_user_name = decode_idna($rs->fields['admin_name']);
@@ -211,37 +211,36 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	$ticket_from = $user_id;
 	$ticket_to = $reseller_id;
 
-	$query = <<<SQL_QUERY
-        insert into tickets
-            (ticket_from,
-             ticket_to,
-             ticket_status,
-             ticket_reply,
-             ticket_urgency,
-             ticket_date,
-             ticket_subject,
-             ticket_message)
-        values
-            (?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	$query = "
+		INSERT INTO `tickets`
+			(`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`)
+		VALUES
+			(?, ?, ?, ?, ?, ?, ?, ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
 			$ticket_reply, $urgency, $ticket_date,
 			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
 
-	set_page_message(tr('Message was send!'));
 	// Update all Replays -> Status 1
-	$query = <<<SQL_QUERY
-        update
-            tickets
-        set
-            ticket_status = '1'
-        where
-            ticket_id = ?
-          or
-            ticket_reply = ?
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = '1'
+		WHERE
+			`ticket_id` = ?
+		OR
+			`ticket_reply` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_reply, $ticket_reply));
 
@@ -255,16 +254,16 @@ SQL_QUERY;
 }
 
 function change_ticket_status($sql, $ticket_id) {
-	$query = <<<SQL_QUERY
-        select
-            ticket_status
-        from
-            tickets
-        where
-            ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_status`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	$ch_ticket_status = $rs->fields['ticket_status'];
@@ -277,32 +276,32 @@ SQL_QUERY;
 		$ticket_status = 4;
 	}
 
-	$query = <<<SQL_QUERY
-    	update
-          tickets
-      set
-        	ticket_status = ?
-      where
-        	ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = ?
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	// end of set status 3
 }
 
 function close_ticket($sql, $ticket_id) {
-	$query = <<<SQL_QUERY
-    	update
-          tickets
-      set
-        	ticket_status = '0'
-      where
-        	ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = '0'
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	set_page_message(tr('Ticket was closed!'));
 }
@@ -310,16 +309,16 @@ SQL_QUERY;
 function open_ticket(&$sql, $ticket_id) {
 	$ticket_status = 3;
 
-	$query = <<<SQL_QUERY
-    	update
-          tickets
-      set
-        	ticket_status = ?
-      where
-        	ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = ?
+		WHERE
+			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	set_page_message(tr('Ticket was reopened!'));

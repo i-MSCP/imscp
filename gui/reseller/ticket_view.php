@@ -38,22 +38,22 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 	$user_id = $_SESSION['user_id'];
-	$query = <<<SQL_QUERY
-		select
-		  ticket_id,
-		  ticket_status,
-		  ticket_reply,
-		  ticket_urgency,
-		  ticket_date,
-		  ticket_subject,
-		  ticket_message
-	  from
-			tickets
-	  where
-			ticket_id = ?
-		and
-		  (ticket_from = ? or ticket_to = ?)
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+		AND
+		  (`ticket_from` = ? OR `ticket_to` = ?)
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
@@ -109,21 +109,21 @@ SQL_QUERY;
 }
 
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
-	$query = <<<SQL_QUERY
-	  SELECT
-			ticket_id,
-			ticket_status,
-			ticket_reply,
-			ticket_urgency,
-			ticket_date,
-			ticket_message
-	  FROM
-			tickets
-	  WHERE
-			ticket_reply = ?
-	  ORDER BY
-			ticket_date ASC
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_message`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_reply` = ?
+		ORDER BY
+			`ticket_date` ASC
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 
@@ -151,17 +151,17 @@ SQL_QUERY;
 }
 
 function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
-	$query = <<<SQL_QUERY
-		select
-			ticket_from,
-			ticket_to,
-			ticket_status,
-			ticket_reply
-		from
-			tickets
-		where
-			ticket_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_from = $rs->fields['ticket_from'];
@@ -169,17 +169,17 @@ SQL_QUERY;
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			admin_name,
-			admin_type,
-			fname,
-			lname
+			`admin_name`,
+			`admin_type`,
+			`fname`,
+			`lname`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
-SQL_QUERY;
+			`admin_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_from));
 	$from_user_name = decode_idna($rs->fields['admin_name']);
@@ -233,22 +233,22 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 
 	$ticket_reply = $_GET['ticket_id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			ticket_level,
-			ticket_from,
-			ticket_to,
-			ticket_status,
-			ticket_reply,
-			ticket_urgency,
-			ticket_date,
-			ticket_subject,
-			ticket_message
+			`ticket_level`,
+			`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_reply));
 
@@ -264,20 +264,19 @@ SQL_QUERY;
 
 	$urgency = $_POST['urgency'];
 
-	$query = <<<SQL_QUERY
-		INSERT INTO
-			tickets
-			(ticket_from,
-			 ticket_to,
-			 ticket_status,
-			 ticket_reply,
-			 ticket_urgency,
-			 ticket_date,
-			 ticket_subject,
-			 ticket_message)
+	$query = "
+		INSERT INTO `tickets`
+			(`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_to, $ticket_from,
 			$ticket_status, $ticket_reply, $urgency, $ticket_date,
@@ -290,40 +289,40 @@ SQL_QUERY;
 }
 
 function get_send_to_who(&$sql, &$ticket_reply) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			ticket_from
+			`ticket_from`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_reply));
 	$ticket_from = $rs->fields['ticket_from'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			admin_type
+			`admin_type`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
-SQL_QUERY;
+			`admin_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_from));
 	$admin_type = $rs->fields['admin_type'];
 }
 
 function close_ticket($sql, $ticket_id) {
-	$query = <<<SQL_QUERY
-	  UPDATE
-		  tickets
-	  SET
-		  ticket_status = '0'
-	  WHERE
-		  ticket_id = ?
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = '0'
+		WHERE
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 
@@ -331,14 +330,14 @@ SQL_QUERY;
 }
 
 function open_ticket($sql, $ticket_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			ticket_level
+			`ticket_level`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 
@@ -347,14 +346,14 @@ SQL_QUERY;
 	$ticket_level = $rs->fields['ticket_level'];
 	$ticket_status = 3;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
-			tickets
+			`tickets`
 		SET
-			ticket_status = ?
+			`ticket_status` = ?
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 
@@ -362,15 +361,15 @@ SQL_QUERY;
 }
 
 function change_ticket_status_view($sql, $ticket_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			ticket_level,
-			ticket_status
+			`ticket_level`,
+			`ticket_status`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_level = $rs->fields['ticket_level'];
@@ -392,14 +391,14 @@ SQL_QUERY;
 		$ticket_status = 3;
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
-			tickets
+			`tickets`
 		SET
-			ticket_status = ?
+			`ticket_status` = ?
 		WHERE
-			ticket_id = ?
-SQL_QUERY;
+			`ticket_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 }
