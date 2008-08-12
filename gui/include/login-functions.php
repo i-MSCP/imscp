@@ -184,11 +184,11 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$logincount  = $data['login_count'];
 	$captchacount = $data['captcha_count'];
 
-	if ($type == 'bruteforce' && $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
+	if ($type == 'bruteforce' && Config::get('BRUTEFORCE') && $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
 	    block_ipaddr($ipaddr, 'Login');
 	}
 
-	if ($type == 'captcha' && $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA')) {
+	if ($type == 'captcha' && Config::get('BRUTEFORCE') && $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA') && Config::get('BRUTEFORCE')) {
 	    block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 

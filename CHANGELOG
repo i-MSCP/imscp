@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-11 Daniel Andreca
+	- GUI:
+		* Fixed #1466: Login protection activated even BRUTEFORCE=0.
+
 2008-08-11 Benedikt Heintel
 	- LANGUAGES:
 		* Updated Basque
