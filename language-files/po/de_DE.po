@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-04 15:05+0200\n"
-"PO-Revision-Date: 2008-08-10 23:13+0100\n"
+"PO-Revision-Date: 2008-08-11 22:25+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: German (Germany) <de_DE@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2429,7 +2429,7 @@ msgstr "Bitte geben Sie einen Benutzernamen für das E-Mail-Konto an"
 
 #, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Das Passwort is kürzer als %s Zeichen oder enthält unzulässige Zeichen!"
+msgstr "Das Passwort ist kürzer als %s Zeichen oder enthält unzulässige Zeichen!"
 
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Es sind keine Subdomains vorhanden! Sie können keine E-Mail-Konten hinzufügen!"

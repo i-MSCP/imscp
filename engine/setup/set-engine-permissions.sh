@@ -70,6 +70,19 @@ else
 	chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
 fi
 
+# Fix rkhunter.log perms
+if [ $DEBUG -eq 1 ]; then
+    echo -e "	ug+r,u+w,o-r $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_USER /var/log/rkhunter.log";
+else
+    echo -n ".";
+fi
+
+#chmod ug+r,u+w,o-r rkhunter.log
+if [ -f /var/log/rkhunter.log ]
+then
+	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_USER /var/log/rkhunter.log
+fi
+
 for i in `find $ROOT_DIR/engine/`; do
 
 	if [ -f $i ]; then

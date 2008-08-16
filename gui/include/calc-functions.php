@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -166,9 +166,10 @@ function _passgen() {
 function passgen() {
     $pw = null;
 
-    while ($pw == null || !chk_password($pw)) {
+    while ($pw == null || !chk_password($pw, 50, "/[<>]/")) {
         $pw = _passgen();
     }
+
     return $pw;
 
 }

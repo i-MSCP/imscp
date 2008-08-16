@@ -1,9 +1,21 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-16 Benedikt Heintel
+	- CONFIGS:
+		* Fixed: --scan-knownbad-files and --check-deleted are no longer supported by rkhunter
+	- DOCS:
+		* Fixed #1471: chkrootkit should be in lenny / hardy
+	- LANGUAGES:
+		* Updated Chinese (simplified)
+		* Updated German
+	- SETUP:
+		* Fixed #1475: typo on installation (ispcp-setup)
+		* Fixed: default user for rkhunter.log
+
 2008-08-11 Daniel Andreca
 	- GUI:
-		* Fixed #1466: Login protection activated even BRUTEFORCE=0.
+		* Fixed #1466: Login protection activated even BRUTEFORCE=0
 		* Fixed #1465: view_ticket.tpl displays message twice on reply.
 
 2008-08-11 Benedikt Heintel
@@ -13,23 +25,19 @@ ispCP ω 1.0.0 Changelog
 
 2008-08-11 Daniel Andreca
 	- CONFIGS:
-		* Fixed #1463: RC6 r1322 "FCGIWrapper not allowed here".
-
-2008-08-10 Benedikt Heintel
-	- GUI:
-		* Fixed #1326: show the user's disk quota and the diks usage in the user list
+		* Fixed #1463: RC6 r1322 "FCGIWrapper not allowed here"
 
 2008-08-10 Daniel Andreca
 	- CONFIGS:
-		* Support for libapache2-mod-fcgid in config files.
+		* Support for libapache2-mod-fcgid in config files
 	- ENGINE:
-		* fcgid-ispcp.conf incorect generated.
+		* fcgid-ispcp.conf incorect generated
 	- GUI:
 		* Missing menu when editing domain alias
 
 2008-08-10 Benedikt Heintel
 	- GUI:
-		* Fixed #1326: show the user's disk quota and the diks usage in the user list
+		* Fixed #1326: show the user's disc quota and the disc usage in the user list
 	- SETUP:
 		* Fixed #1462: typo rules 465-470 uninstall script
 	- LANGUAGES:

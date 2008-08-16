@@ -337,7 +337,7 @@ sub ask_admin_email {
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-	my $qmsg = "\n\tPlease enter admininistrator email address: ";
+	my $qmsg = "\n\tPlease enter administrator e-mail address: ";
 	print STDOUT $qmsg;
 
 	$rdata = readline(\*STDIN); chop($rdata);
@@ -349,7 +349,7 @@ sub ask_admin_email {
 		if ($rdata =~ /^([\w\W]{1,255})\@([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 			$main::ua{'admin_email'} = $rdata;
 		} else {
-			print STDOUT "\n\tE-Mail address not valid!";
+			print STDOUT "\n\tE-mail address not valid!";
 			return 1;
 		}
 	}
@@ -711,7 +711,7 @@ sub setup_named {
 		$cfg = get_file($main::cfg{'BIND_CONF_FILE'});
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg$cfg_tpl", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg_tpl", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		return $rs if ($rs != 0);
 	}
 

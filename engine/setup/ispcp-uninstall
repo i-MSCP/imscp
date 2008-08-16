@@ -462,11 +462,11 @@ sub uninstall_logrotate {
 
     my ($rs, $cmd) = (undef, undef);
 
-    my $logrorate_d = "/etc/logrorate.d";
+    my $logrotate_d = "/etc/logrotate.d";
 
-    if ( -e "$logrorate_d/ispcp" ) {
+    if ( -e "$logrotate_d/ispcp" ) {
 
-        $rs = del_file("$logrorate_d/ispcp");
+        $rs = del_file("$logrotate_d/ispcp");
 
         return $rs if ($rs != 0);
     }

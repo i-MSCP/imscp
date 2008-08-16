@@ -19,7 +19,7 @@ use strict;no strict "refs";
 # Defines
 #-------------------------------------------------------
 use vars qw/ $REVISION $VERSION /;
-$REVISION='$Revision: 1.31 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+$REVISION='$Revision: 1.33 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
 $VERSION="1.2 (build $REVISION)";
 
 use vars qw/
@@ -62,9 +62,9 @@ sub error {
 
 sub debug {
 	my $level = $_[1] || 1;
-	if ($Debug >= $level) {
+	if ($Debug >= $level) { 
 		my $debugstring = $_[0];
-		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br>"; }
+		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br />"; }
 		print localtime(time)." - DEBUG $level - $. - : $debugstring\n";
 		}
 	0;
@@ -99,7 +99,7 @@ sub CleanHost {
 #
 sub CleanDomain { $_=shift;
 	s/>.*$//; s/[<>]//g;
-	s/^.*@//;
+	s/^.*@//; 
 	if (! $_) { $_ = 'localhost'; }
 	return $_;
 }
@@ -134,7 +134,7 @@ sub OutputRecord {
 	# Clean from
 	$from=&CleanEmail($from);
 	$from||='<>';
-
+	
 	# Clean to
 	if ($mode eq 'vadmin') { $to=&CleanVadminUser($to); }
 	else { $to=&CleanEmail($to); }
@@ -152,10 +152,10 @@ sub OutputRecord {
 	$relay_r=~s/\.$//;
 	if ($relay_r eq 'local' || $relay_r eq 'localhost.localdomain') { $relay_r='localhost'; }
 	#if we don't have info for relay_s, we keep it unknown, awstats might then guess it
-
+	
 	# Write line
 	print "$year-$month-$day $time $from $to $relay_s $relay_r SMTP $extinfo $code $size\n";
-
+	
 	# If there was a redirect
 	if ($forwardto) {
 		# Redirect to local address
@@ -242,7 +242,7 @@ while (<>) {
 		debug("Comment record");
 		next;
 	}
-
+	
 	#
 	# Get sender host for postfix
 	#
@@ -261,7 +261,7 @@ while (<>) {
 	#
 	elsif (/: reject/) {
 		$MailType||='postfix';
-		# Example:
+		# Example: 
 		# postfix ?.? :  Jan 01 12:00:00 halley postfix/smtpd[9245]: reject: RCPT from unknown[203.156.32.33]: 554 <userx@yahoo.com>: Recipient address rejected: Relay access denied; from=<sender@aol.com> to=<userx@yahoo.com>
         # postfix 2.1+:  Jan 01 12:00:00 localhost postfix/smtpd[11120]: NOQUEUE: reject: RCPT from unknown[62.205.124.145]: 450 Client host rejected: cannot find your hostname, [62.205.124.145]; from=<sender@msn.com> to=<usery@yahoo.com> proto=ESMTP helo=<xxx.com>
 		# postfix ?.? :  Jan 01 12:00:00 apollon postfix/smtpd[26553]: 1954F3B8A4: reject: RCPT from unknown[80.245.33.2]: 450 <usery@yahoo.com>: User unknown in local recipient table; from=<sender@msn.com> to=<usery@yahoo.com> proto=ESMTP helo=<xxx.com>
@@ -279,7 +279,7 @@ while (<>) {
 				$mail{$mailid}{'relay_s'}=&trim($1);
 			}
 			$mail{$mailid}{'from'}=&trim($from);
-			if ($to) {
+			if ($to) { 
 				$mail{$mailid}{'to'}=&trim($to);
 			}
 			elsif ($code =~ /<(.*)>/) {
@@ -298,7 +298,7 @@ while (<>) {
 	#
 	elsif (/stat(us)?=bounced/) {
 		$MailType||='postfix';
-		# Example:
+		# Example: 
 		# postfix:  Sep  9 18:24:23 halley postfix/local[22003]: 12C6413EC9: to=<etavidian@partenor.com>, relay=local, delay=0, status=bounced (unknown user: "etavidian")
 		my ($mon,$day,$time,$id,$to,$relay_r)=m/(\w+)\s+(\d+)\s+(\d+:\d+:\d+)\s+[\w\-\.\@]+\s+(?:postfix\/(?:local|lmtp|smtpd|smtp|virtual|pipe))\[\d+\]:\s+(.*?):\s+to=([^\s,]*)[\s,]+relay=([^\s,]*)/;
 		$mailid=($id eq 'reject'?'999':$id);	# id not provided in log, we take '999'
@@ -319,7 +319,7 @@ while (<>) {
 	#
 	elsif (/, reject/) {
 		$MailType||='sendmail';
-		# Example:
+		# Example: 
 		# sm-mta:   Jul 27 04:06:05 androneda sm-mta[6641]: h6RB44tg006641: ruleset=check_mail, arg1=<7ms93d4ms@topprodsource.com>, relay=crelay1.easydns.com [216.220.57.222], reject=451 4.1.8 Domain of sender address 7ms93d4ms@topprodsource.com does not resolve
 		# sm-mta:	Jul 27 06:21:24 androneda sm-mta[11461]: h6RDLNtg011461: ruleset=check_rcpt, arg1=<nobody@nova.dice.net>, relay=freedom.myhostdns.com [66.246.77.42], reject=550 5.7.1 <nobody@nova.dice.net>... Relaying denied
 		# sendmail: Sep 30 04:21:32 halley sendmail[3161]: g8U2LVi03161: ruleset=check_rcpt, arg1=<amber3624@netzero.net>, relay=moon.partenor.fr [10.0.0.254], reject=550 5.7.1 <amber3624@netzero.net>... Relaying denied
@@ -370,7 +370,7 @@ while (<>) {
 		$mail{$id}{'mon'}=$mon;
 		$mail{$id}{'day'}=$day;
 		$mail{$id}{'time'}=$time;
-		if (&trim($to)=~/^|/) {
+		if (&trim($to)=~/^\|/) {
 			# In particular case of mails are sent to a pipe, the ctladdr contains the to
 			$mail{$id}{'to'}=&trim($fromorto);
 		} else {
@@ -451,12 +451,12 @@ while (<>) {
 			$ok=1;
 		}
 		# Code 1030=SMTP: Non-Delivered Report (NDR) Generated
-		if ($code == 1030) {	# This is for errors.
+		if ($code == 1030) {	# This is for errors. 
 			$code=999;
 			$ok=1;
 		}
 
-		if ($ok && !$mail{$id}{'code'} ) {
+		if ($ok && !$mail{$id}{'code'} ) {		
 			$mailid=$id;
 			if ($date =~ /(\d+)-(\d+)-(\d+)/) {
 				$mail{$id}{'year'}=sprintf("%02s",$1);
@@ -591,8 +591,8 @@ while (<>) {
 			$mailid=$id;
 		}
 	}
-
-
+	
+	
 	#
 	# Write record if all required data were found
 	#
@@ -600,7 +600,7 @@ while (<>) {
 		my $code; my $to;
 		my $delivery=0;
 		my $canoutput=0;
-
+		
 		debug("ID:$mailid RELAY_S:".($mail{$mailid}{'relay_s'}||'')." RELAY_R:".($mail{$mailid}{'relay_r'}||'')." FROM:".($mail{$mailid}{'from'}||'')." TO:".($mail{$mailid}{'to'}||'')." CODE:".($mail{$mailid}{'code'}||''));
 
 		# Check if we can output a mail line
