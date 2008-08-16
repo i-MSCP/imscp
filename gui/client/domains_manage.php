@@ -96,7 +96,7 @@ function gen_user_als_action($als_id, $als_status) {
 	if ($als_status === Config::get('ITEM_OK_STATUS')) {
 		return array(tr('Delete'), "alias_delete.php?id=$als_id");
 	} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')) {
-		return array(tr('Delete order'), "alias_order_order.php?del_id=$als_id");
+		return array(tr('Delete order'), "alias_order_delete.php?del_id=$als_id");
 	} else {
 		return array(tr('N/A'), '#');
 	}
