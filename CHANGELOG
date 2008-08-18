@@ -6,6 +6,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #940: Logfile problem
 	- GUI:
 		* Fixed #1461: Call-time pass-by-reference has been deprecated
+	- CONFIGS:
+		* Fixed #1472: Recent fastcgi/fcgid changes break fcgid for me (gentoo)
 
 2008-08-17 Daniel Andreca
 	- GUI:
