@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-08-18 Daniel Andreca
+	- ENGINE:
+		* Fixed #940: Logfile problem
+
 2008-08-17 Daniel Andreca
 	- GUI:
 		* Small typo on gui/client/domains_manage.php

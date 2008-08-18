@@ -10,12 +10,6 @@
     ServerName      {DMN_NAME}
     ServerAlias     www.{DMN_NAME} {DMN_NAME} *.{DMN_NAME}
 
-    ErrorLog        {APACHE_USERS_LOG_DIR}/{DMN_NAME}-error.log
-    TransferLog     {APACHE_USERS_LOG_DIR}/{DMN_NAME}-access.log
-
-    CustomLog       {APACHE_LOG_DIR}/{DMN_NAME}-traf.log traff
-    CustomLog       {APACHE_LOG_DIR}/{DMN_NAME}-combined.log combined
-
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
     RedirectMatch permanent ^/ftp([\/]?)		http://{BASE_SERVER_VHOST}/ftp/

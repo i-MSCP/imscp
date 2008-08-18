@@ -1,0 +1,181 @@
+#!/usr/bin/perl
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2008 by isp Control Panel
+# http://isp-control.net
+#
+#
+# Based on vlogger - smarter logging for apache idea
+# steve j. kondik  <shade@chemlab.org>
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
+
+use strict;
+use warnings;
+use sigtrap qw(handler exitall HUP USR1 TERM INT PIPE);
+use Getopt::Std;
+
+use FindBin;
+use lib "$FindBin::Bin/";
+require 'ispcp_common_code.pl';
+
+our %OPTS;
+getopts( 'e', \%OPTS );
+
+if ( !-d $main::cfg{'APACHE_LOG_DIR'}) {
+	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_LOG_DIR'}." does not exist - exiting.\n";
+	exit;
+}
+
+my $MAXFILES = "33";
+if ( $main::cfg{'APACHE_MAX_OPEN_LOG'} ) {
+	$MAXFILES = $main::cfg{'APACHE_MAX_OPEN_LOG'};
+}
+
+my %timestamps = ();
+my %combined_logs = ();
+my %traff_logs = ();
+my %access_logs = ();
+my %error_logs = ();
+
+sub checkFileExists;
+sub DefaultLogs();
+sub ErrorLogs();
+
+open (STDERR, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr") or die ( "Can't redirect STDERR" );;
+STDERR->autoflush(1);
+open (STDOUT, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout") or die ( "Can't redirect STDOUT" );;
+STDOUT->autoflush(1);
+
+if ( $OPTS{'e'} ) {
+	ErrorLogs();
+} else {
+	DefaultLogs();
+}
+
+sub ErrorLogs(){
+	while ( my $log_line = <STDIN> ) {
+		my $vhost = 'default';
+		
+		if($log_line =~ m/($main::cfg{'APACHE_WWW_DIR'})/){
+			($vhost) = $log_line =~ m/$main::cfg{'APACHE_WWW_DIR'}\/([^\/]*)/;
+		} else {
+			if($log_line =~ m/($main::cfg{'PHP_STARTER_DIR'})/){
+				($vhost) = $log_line =~ m/$main::cfg{'PHP_STARTER_DIR'}\/([^\/]*)/;
+			}
+		}
+		
+		if ( $vhost eq 'master' ){
+			$vhost='default';
+		}
+
+		my $force_open=0;
+		if ( !$error_logs{$vhost} ){
+			$force_open=1;
+			if ( (keys(%timestamps)+1) > $MAXFILES ) {
+				my ( $key, $value ) = sort { $timestamps{$a} <=> $timestamps{$b} } ( keys(%timestamps) );
+				close $error_logs{$key};
+				delete $error_logs{$key};
+				delete $timestamps{$key};
+			}
+		}
+	
+		checkFileExists($vhost, \%error_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-error.log",$force_open);
+		print { $error_logs{$vhost} } $log_line;
+	}
+}
+sub DefaultLogs(){
+	while ( my $log_line = <STDIN> ) {
+		my ($vhost, $rhost, $rlog, $user, $date, $url_with_method, $status, $size, $referrer, $agent) = $log_line =~
+			m/^(\S+) (\S+) ([^ ]*?) ([^ ]*?) \[(\S+ \+\d{4})\] "(\S+ \S+ [^"]+)" (\d{3}) (\d+|-) "(.*?)" "([^"]+)"$/;
+		
+		$vhost = lc($vhost) || "default";
+		if ( $vhost =~ m#[/\\]# ) { $vhost = "default" }
+		$vhost =~ /(.*)/o;
+		$vhost = $1;
+		$vhost = 'default' unless $vhost;
+		
+		my $force_open=0;
+		if ( !$combined_logs{$vhost} || !$traff_logs{$vhost} || !$access_logs{$vhost} ){
+			$force_open=1;
+			if ( (keys(%timestamps)+1) > $MAXFILES ) {
+				my ( $key, $value ) = sort { $timestamps{$a} <=> $timestamps{$b} } ( keys(%timestamps) );
+				close $combined_logs{$key};
+				close $traff_logs{$key};
+				close $access_logs{$key};
+				delete $combined_logs{$key};
+				delete $traff_logs{$key};
+				delete $access_logs{$key};
+				delete $timestamps{$key};
+			}
+		}
+	
+		checkFileExists($vhost, \%combined_logs, $main::cfg{'APACHE_LOG_DIR'},"-combined.log",$force_open);
+		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traff.log",$force_open);
+		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
+		
+		$log_line =~ s/^\S*\s+//o;
+		
+		print { $combined_logs{$vhost} } $log_line;
+		print { $access_logs{$vhost} } $log_line;
+		if ( $size ne '-' && $size != 0 ){
+			print { $traff_logs{$vhost} } "$size\n";
+		}
+	}
+}
+
+exit;
+
+sub checkFileExists(){
+	my ($local_vhost, $hash, $path, $postpend,$force)=@_;
+	if (!(-e "$path/$local_vhost$postpend") || $force eq '1'){
+			open ($hash->{$local_vhost}, ">>", "$path/$local_vhost$postpend") or die ( "Can't open $path/$local_vhost$postpend" );
+			$hash->{$local_vhost}->autoflush(1);
+	}
+	$timestamps{$local_vhost}=time();
+}
+
+sub exitall {
+	if ( $OPTS{'e'} ) {
+		foreach my $key ( keys %error_logs ) {
+			close $key;
+		}
+	}
+	else {
+		foreach my $key ( keys %combined_logs ) {
+			close $key;
+		}
+		%combined_logs = ();
+		foreach my $key ( keys %traff_logs ) {
+			close $key;
+		}
+		%traff_logs = ();
+		foreach my $key ( keys %access_logs ) {
+			close $key;
+		}
+		%access_logs = ();
+	}
+}

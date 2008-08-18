@@ -81,6 +81,7 @@ install:
 	# one more copy for auto replay system;
 	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)/messager
 
+	$(CMD_INSTALL) ./ispcp-apache-logger $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-rqst-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-dmn-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-sub-mngr $(SYSTEM_ENGINE_ROOT)

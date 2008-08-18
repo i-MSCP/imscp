@@ -15,12 +15,6 @@
     ServerName      {ALS_NAME}
     ServerAlias     www.{ALS_NAME} {ALS_NAME} *.{ALS_NAME}
 
-    ErrorLog        {APACHE_USERS_LOG_DIR}/{ALS_NAME}-error.log
-    TransferLog     {APACHE_USERS_LOG_DIR}/{ALS_NAME}-access.log
-
-    CustomLog       {APACHE_LOG_DIR}/{DMN_NAME}-traf.log traff
-    CustomLog       {APACHE_LOG_DIR}/{DMN_NAME}-combined.log combined
-
     Alias /errors   {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/errors/
 
     ErrorDocument 401 /errors/401.html

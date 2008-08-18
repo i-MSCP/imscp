@@ -25,4 +25,3 @@
             Allow from all
         </Directory>
     </IfModule>
-
