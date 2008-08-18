@@ -163,7 +163,7 @@ SQL_QUERY;
 function send_circular(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		if (check_user_data($tpl)) {
-			send_reseller_message(&$sql);
+			send_reseller_message($sql);
 			unset($_POST['uaction']);
 			gen_page_data($tpl, $sql);
 		}

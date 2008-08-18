@@ -111,8 +111,8 @@ $tpl->assign(
 		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE')
 		)
 	);
-
-gen_def_language($tpl, $sql, Config::get('USER_INITIAL_LANG'));
+$language=Config::get('USER_INITIAL_LANG');
+gen_def_language($tpl, $sql, $language);
 
 if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', 'selected="selected"');

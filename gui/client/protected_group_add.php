@@ -42,7 +42,7 @@ $tpl->assign(
 		)
 	);
 
-function padd_group(&$tpl, &$sql, &$dmn_id) {
+function padd_group(&$tpl, &$sql, $dmn_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_group') {
 		// we have user to add
 		if (isset($_POST['groupname'])) {

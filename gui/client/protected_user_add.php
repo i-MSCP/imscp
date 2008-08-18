@@ -42,7 +42,7 @@ $tpl->assign(
 		)
 	);
 
-function padd_user(&$tpl, &$sql, &$dmn_id) {
+function padd_user(&$tpl, &$sql, $dmn_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
 		// we have user to add
 		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {

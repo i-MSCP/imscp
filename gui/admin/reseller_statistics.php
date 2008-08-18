@@ -299,7 +299,7 @@ $crnt_year = '';
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
-generate_page (&$tpl);
+generate_page ($tpl);
 
 $tpl->assign(
 		array(

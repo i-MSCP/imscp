@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-08-18 Daniel Andreca
 	- ENGINE:
 		* Fixed #940: Logfile problem
+	- GUI:
+		* Fixed #1461: Call-time pass-by-reference has been deprecated
 
 2008-08-17 Daniel Andreca
 	- GUI:
