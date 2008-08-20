@@ -1155,7 +1155,7 @@ sub mbox_add_mta_cfg_data {
 
         }
 
-    } if ($mail_type =~ /.*normal_forward.*/ || $mail_type =~ /.*alias_forward.*/ || $mail_type =~ /.*subdom_forward.*/);
+    } if ($mail_type =~ /^normal_forward.*/ || $mail_type =~ /^alias_forward.*/ || $mail_type =~ /^subdom_forward.*/);
 
     do {
 
@@ -2418,7 +2418,7 @@ sub mbox_del_sasl_data {
 
     } if ($mail_type =~ /.*subdom_mail.*/);
 
-    if ($mail_type eq 'normal_mail' || $mail_type eq 'subdom_mail' || $mail_type eq 'alias_mail') {
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/) {
 
         ($rs, $rdata) = mbox_check_sasl_user($check_user);
 

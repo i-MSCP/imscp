@@ -207,7 +207,7 @@ sub mngr_engine {
 
             }
 
-            $rs = sys_command("$main::ispcp_mbox_mngr $mail_id 1>>$main::ispcp_mbox_mngr_stdout 2>>$main::ispcp_mbox_mngr_stderr");
+            $rs = sys_command("$main::ispcp_mbox_mngr $mail_id 1>$main::ispcp_mbox_mngr_stdout 2>$main::ispcp_mbox_mngr_stderr");
 
             if ($rs != 0) {
 

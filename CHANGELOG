@@ -1,5 +1,8 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-08-20 Daniel Andreca
+	- ENGINE:
+		* Fixed #1498: normal mail + forward doesn't work
 
 2008-08-18 Daniel Andreca
 	- ENGINE:
