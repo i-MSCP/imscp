@@ -52,6 +52,7 @@
                       <td>&nbsp;</td>
                       <td colspan="3" class="content3"><strong>{UNAME}</strong></td>
                     </tr>
+                    <!-- BDP: in_group -->
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td width="200" class="content2"> {TR_MEMBER_OF_GROUP}</td>
@@ -65,9 +66,11 @@
                           <!-- EDP: remove_button -->
                       </td>
                     </tr>
+                    <!-- EDP: in_group -->
+                    <!-- BDP: not_in_group -->
                     <tr>
-                      <td>&nbsp;</td>
-                      <td class="content2"> {TR_SELECT_GROUP}</td>
+                      <td width="25">&nbsp;</td>
+                      <td width="200" class="content2"> {TR_SELECT_GROUP}</td>
                       <td class="content"><select name="groups">
                           <!-- BDP: grp_avlb -->
                           <option value="{GRP_ID}">{GRP_NAME}</option>
@@ -79,6 +82,7 @@
                           <!-- EDP: add_button -->
                       </td>
                     </tr>
+                    <!-- EDP: not_in_group -->
                     <tr>
                       <td>&nbsp;</td>
                       <td colspan="3"><input type="hidden" name="nadmin_name" value="{UID}">

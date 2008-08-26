@@ -30,6 +30,8 @@ $tpl->define_dynamic('already_in', 'page');
 $tpl->define_dynamic('grp_avlb', 'page');
 $tpl->define_dynamic('add_button', 'page');
 $tpl->define_dynamic('remove_button', 'page');
+$tpl->define_dynamic('in_group', 'page');
+$tpl->define_dynamic('not_in_group', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -42,16 +44,16 @@ $tpl->assign(
 	);
 // ** Functions
 function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
-	$query = <<<SQL_QUERY
-        select
-            uname
-        from
-            htaccess_users
-        where
-             dmn_id = ?
-        and
-			id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`uname`
+		FROM
+			`htaccess_users`
+		WHERE
+			`dmn_id` = ?
+		AND
+			`id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
 
@@ -79,14 +81,14 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 		die();
 	}
 	// get groups
-	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            htaccess_groups
-        where
-             dmn_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`htaccess_groups`
+		WHERE
+			`dmn_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
@@ -109,10 +111,11 @@ SQL_QUERY;
 			for($i = 0; $i < count($members);$i++) {
 				if ($uuser_id == $members[$i]) {
 					$tpl->assign(
-						array('GRP_IN' => $group_name,
+						array(
+							'GRP_IN' => $group_name,
 							'GRP_IN_ID' => $group_id,
-							)
-						);
+						)
+					);
 
 					$tpl->parse('ALREADY_IN', '.already_in');
 					$grp_in = $group_id;
@@ -121,10 +124,11 @@ SQL_QUERY;
 			}
 			if ($grp_in !== $group_id) {
 				$tpl->assign(
-					array('GRP_NAME' => $group_name,
+					array(
+						'GRP_NAME' => $group_name,
 						'GRP_ID' => $group_id,
-						)
-					);
+					)
+				);
 				$tpl->parse('GRP_AVLB', '.grp_avlb');
 				$not_added_in ++;
 			}
@@ -133,12 +137,10 @@ SQL_QUERY;
 		}
 		// generate add/remove buttons
 		if ($added_in < 1) {
-			$tpl->assign('ALREADY_IN', '');
-			$tpl->assign('REMOVE_BUTTON', '');
+			$tpl->assign('IN_GROUP', '');
 		}
 		if ($not_added_in < 1) {
-			$tpl->assign('GRP_AVLB', '');
-			$tpl->assign('ADD_BUTTON', '');
+			$tpl->assign('NOT_IN_GROUP', '');
 		}
 	}
 }
@@ -148,18 +150,19 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 		$uuser_id = clean_input($_POST['nadmin_name']);
 		$group_id = $_POST['groups'];
 
-		$query = <<<SQL_QUERY
-        select
-			id,
-			ugroup,
-			members
-		from
-        	htaccess_groups
-        where
-			dmn_id = ?
-			and
-			id = ?
-SQL_QUERY;
+		$query = "
+			SELECT
+				`id`,
+				`ugroup`,
+				`members`
+			FROM
+				`htaccess_groups`
+			WHERE
+				`dmn_id` = ?
+			AND
+				`id` = ?
+		";
+
 		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
 
 		$members = $rs->fields['members'];
@@ -171,30 +174,30 @@ SQL_QUERY;
 
 		$change_status = Config::get('ITEM_CHANGE_STATUS');
 
-		$update_query = <<<SQL_QUERY
-				update
-					htaccess_groups
-				set
-					members = ?,
-					status = ?
-				where
-					id = ?
-					and
-					dmn_id = ?
-SQL_QUERY;
+		$update_query = "
+			UPDATE
+				`htaccess_groups`
+			SET
+				`members` = ?,
+				`status` = ?
+			WHERE
+				`id` = ?
+			AND
+				`dmn_id` = ?
+		";
 
 		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
 		$change_status = Config::get('ITEM_CHANGE_STATUS');
 
-		$query = <<<SQL_QUERY
-				update
-					htaccess
-				set
-					status = ?
-				where
-					dmn_id = ?
-SQL_QUERY;
+		$query = "
+			UPDATE
+				`htaccess`
+			SET
+				`status` = ?
+			WHERE
+				`dmn_id` = ?
+		";
 
 		$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
@@ -211,18 +214,19 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 		$group_id = $_POST['groups_in'];
 		$uuser_id = clean_input($_POST['nadmin_name']);
 
-		$query = <<<SQL_QUERY
-        select
-			id,
-			ugroup,
-			members
-		from
-        	htaccess_groups
-        where
-			dmn_id = ?
-			and
-			id = ?
-SQL_QUERY;
+		$query = "
+			SELECT
+				`id`,
+				`ugroup`,
+				`members`
+			FROM
+				`htaccess_groups`
+			WHERE
+				`dmn_id` = ?
+			AND
+				`id` = ?
+		";
+
 		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
 
 		$members = $rs->fields['members'];
@@ -232,28 +236,28 @@ SQL_QUERY;
 		$members = preg_replace("/^,/", "", "$members");
 		$members = preg_replace("/,$/", "", "$members");
 
-		$update_query = <<<SQL_QUERY
-				update
-					htaccess_groups
-				set
-					members = ?
-				where
-					id = ?
-				and
-					dmn_id = ?
-SQL_QUERY;
+		$update_query = "
+			UPDATE
+				`htaccess_groups`
+			SET
+				`members` = ?
+			WHERE
+				`id` = ?
+			AND
+				`dmn_id` = ?
+		";
 
 		$rs_update = exec_query($sql, $update_query, array($members, $group_id, $dmn_id));
 
 		$change_status = Config::get('ITEM_CHANGE_STATUS');
-		$query = <<<SQL_QUERY
-				update
-					htaccess
-				set
-					status = ?
-				where
-					dmn_id = ?
-SQL_QUERY;
+		$query = "
+				UPDATE
+					`htaccess`
+				SET
+					`status` = ?
+				WHERE
+					`dmn_id` = ?
+		";
 		$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
 		check_for_lock_file();

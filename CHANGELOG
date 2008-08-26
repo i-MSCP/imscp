@@ -1,5 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-08-26 Daniel Andreca
+	- GUI:
+		* Fixed #1508: Don't show the "Member of group" line on protected_user_assign.php if no group memberships
+		* Fixed #1468: Are you sure you want to delete %s? | custumers domain management
+	- CONFIGS:
+		* Fixed #1503: Debian Etch postfix-tls is a virtual package of postfix
+		* Fixed #1485: master.cf in gentoo shouldn't have default of chroot for smtp (thanks pgentoo)
+
 2008-08-20 Daniel Andreca
 	- ENGINE:
 		* Fixed #1498: normal mail + forward doesn't work
