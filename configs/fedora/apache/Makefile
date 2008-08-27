@@ -54,8 +54,8 @@ install:
 	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf
 	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/working/fcgid_ispcp.conf
 
-	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/conf.d/fastcgi_ispcp.conf
-	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/conf.d/fcgid_ispcp.conf
+	cp ./fastcgi.conf $(ROOT_APACHE_CONF)/conf.d/fastcgi_ispcp.conf
+	cp ./fcgid_ispcp.conf $(ROOT_APACHE_CONF)/conf.d/fcgid_ispcp.conf
 
 uninstall:
 

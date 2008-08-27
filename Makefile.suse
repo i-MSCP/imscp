@@ -45,6 +45,7 @@ SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/log/apache2/backup
 SYSTEM_VIRTUAL=$(INST_PREF)/srv/www/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/srv/www/awstats
 SYSTEM_FCGI=$(INST_PREF)/srv/www/fcgi
+SYSTEM_SCOREBOARDS=$(INST_PREF)/srv/www/scoreboards
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 SYSTEM_MAKE_FILE=/bin/touch
@@ -62,6 +63,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/ispcp-arpl-msgr
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_FCGI)
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SCOREBOARDS)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_AWSTATS)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_MAIL_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_APACHE_BACK_LOG)
@@ -85,6 +87,7 @@ uninstall:
 	rm -rf $(SYSTEM_LOG)
 	rm -rf $(SYSTEM_VIRTUAL)
 	rm -rf $(SYSTEM_FCGI)
+	rm -rf $(SYSTEM_SCOREBOARDS)
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
@@ -93,5 +96,6 @@ uninstall:
 clean:
 
 	cd ./tools/daemon && $(MAKE) clean
+	rm -rf $(INST_PREF)
 
 .PHONY: install uninstall clean

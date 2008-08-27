@@ -103,5 +103,6 @@ uninstall:
 clean:
 
 	cd ./tools/daemon && $(MAKE) clean
+	rm -rf $(INST_PREF)
 
 .PHONY: install uninstall clean
