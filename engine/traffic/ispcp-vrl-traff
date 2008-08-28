@@ -126,6 +126,11 @@ sub gen_log_file {
 
     my $log_file = $dest_file;
 
+    if(! -e $src_file){
+        push_el(\@main::el, 'gen_log_file()', "WARNING: File '$src_file' do not exists !");
+        return (0, '_no_');
+    }
+
     $rs = sys_command("$main::cfg{'CMD_CP'} $src_file $dest_file");
 
     return ($rs, '') if ($rs != 0);

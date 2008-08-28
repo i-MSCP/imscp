@@ -110,8 +110,9 @@ sub ErrorLogs(){
 sub DefaultLogs(){
 	while ( my $log_line = <STDIN> ) {
 		my ($vhost, $rhost, $rlog, $user, $date, $url_with_method, $status, $size, $referrer, $agent) = $log_line =~
-			m/^(\S+) (\S+) ([^ ]*?) ([^ ]*?) \[(\S+ \+\d{4})\] "(\S+ \S+ [^"]+)" (\d{3}) (\d+|-) "(.*?)" "([^"]+)"$/;
-		
+			m/^(\S+) (\S+) ([^ ]*?) ([^ ]*?) \[(\S+ \+\d{4})\] "(.*?)" (\d{3}) (\d+|-) "(.*?)" "([^"]+)"$/;
+		if(!defined($vhost)){print "Trouble line:\n\t$log_line\n"; return 0;}
+		if(!defined($size)){print "Trouble line:\n\t$log_line\n"; return 0;}
 		$vhost = lc($vhost) || "default";
 		if ( $vhost =~ m#[/\\]# ) { $vhost = "default" }
 		$vhost =~ /(.*)/o;
@@ -123,9 +124,15 @@ sub DefaultLogs(){
 			$force_open=1;
 			if ( (keys(%timestamps)+1) > $MAXFILES ) {
 				my ( $key, $value ) = sort { $timestamps{$a} <=> $timestamps{$b} } ( keys(%timestamps) );
-				close $combined_logs{$key};
-				close $traff_logs{$key};
-				close $access_logs{$key};
+				if(-e "$main::cfg{'APACHE_LOG_DIR'}/$key-combined.log" && defined($combined_logs{$key})){
+					close $combined_logs{$key};
+				}
+				if(-e "$main::cfg{'APACHE_LOG_DIR'}/$key-traf.log" && defined($traff_logs{$key})){
+					close $traff_logs{$key};
+				}
+				if(-e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$key-access.log" && defined($access_logs{$key})){
+					close $access_logs{$key};
+				}
 				delete $combined_logs{$key};
 				delete $traff_logs{$key};
 				delete $access_logs{$key};
@@ -134,7 +141,7 @@ sub DefaultLogs(){
 		}
 	
 		checkFileExists($vhost, \%combined_logs, $main::cfg{'APACHE_LOG_DIR'},"-combined.log",$force_open);
-		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traff.log",$force_open);
+		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traf.log",$force_open);
 		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
 		
 		$log_line =~ s/^\S*\s+//o;

@@ -1,5 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-08-29 Daniel Andreca
+	- ENGINE:
+		* maillogconvert.pl contains ilegal characters
+		* traffic processing fails if log file is missing
+		* Generated traffic for crafted GET/POST is not processed
+
 2008-08-26 Daniel Andreca
 	- GUI:
 		* Fixed #1508: Don't show the "Member of group" line on protected_user_assign.php if no group memberships
