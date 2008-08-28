@@ -5,6 +5,8 @@ ispCP ω 1.0.0 Changelog
 		* maillogconvert.pl contains ilegal characters
 		* traffic processing fails if log file is missing
 		* Generated traffic for crafted GET/POST is not processed
+	- LANGUAGES:
+		* Updated Galician
 
 2008-08-26 Daniel Andreca
 	- GUI:
