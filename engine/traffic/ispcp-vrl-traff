@@ -50,213 +50,249 @@ use File::Basename;
 
 sub zero_traffic_entries {
 
-    my ($key, $value) = (undef, undef);
+	my ($key, $value) = (undef, undef);
 
-    push_el(\@main::el, 'zero_traffic_entries()', 'Starting...');
+	push_el(\@main::el, 'zero_traffic_entries()', 'Starting...');
 
-    while (($key, $value) = each %main::domain_name_id) {
+	while (($key, $value) = each %main::domain_name_id) {
 
-        $main::ftp_traffic{$key} = 0;
+		$main::ftp_traffic{$key} = 0;
 
-        $main::smtp_traffic{$key} = 0;
+		$main::smtp_traffic{$key} = 0;
 
-        $main::po_traffic{$key} = 0;
+		$main::po_traffic{$key} = 0;
 
-    }
+	}
 
-    while (($key, $value) = each %main::als_name_id) {
+	while (($key, $value) = each %main::als_name_id) {
 
-        $main::ftp_traffic{$key} = 0;
+		$main::ftp_traffic{$key} = 0;
 
-        $main::smtp_traffic{$key} = 0;
+		$main::smtp_traffic{$key} = 0;
 
-        $main::po_traffic{$key} = 0;
+		$main::po_traffic{$key} = 0;
 
-    }
+	}
 
-    push_el(\@main::el, 'zero_traffic_entries()', 'Ending...');
+	push_el(\@main::el, 'zero_traffic_entries()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 sub diff_command {
 
-    my ($cmd) = @_;
+	my ($cmd) = @_;
 
-    push_el(\@main::el, 'diff_command()', 'Starting...');
+	push_el(\@main::el, 'diff_command()', 'Starting...');
 
-    my $result = system($cmd);
+	my $result = system($cmd);
 
-    my $exit_value  = $? >> 8;
+	my $exit_value = $? >> 8;
 
-    my $signal_num  = $? & 127;
+	my $signal_num = $? & 127;
 
-    my $dumped_core = $? & 128;
+	my $dumped_core = $? & 128;
 
-    if ($exit_value == 2) {
+	if ($exit_value == 2) {
 
-        push_el(\@main::el, 'diff_command()', "ERORR: '$cmd' returned '$exit_value' !");
+		push_el(\@main::el, 'diff_command()', "ERORR: '$cmd' returned '$exit_value' !");
 
-        return $exit_value;
+		return $exit_value;
 
-    }
+	}
 
-    push_el(\@main::el, 'diff_command()', 'Ending...');
+	push_el(\@main::el, 'diff_command()', 'Ending...');
 
-    return $exit_value;
+	return $exit_value;
 
 }
 
 sub gen_log_file {
 
-    my ($fname, $src_dir, $dest_dir) = @_;
+	my ($fname, $src_dir, $dest_dir) = @_;
 
-    push_el(\@main::el, 'gen_log_file()', 'Starting...');
+	push_el(\@main::el, 'gen_log_file()', 'Starting...');
 
-    my $rs = undef;
+	my $rs = undef;
 
-    $fname =~ s/\/*//i;
+	$fname =~ s/\/*//i;
 
-    my $src_file = "$src_dir/$fname";
+	my $src_file = "$src_dir/$fname";
 
-    my $dest_file = "$dest_dir/".basename($fname);
+	my $dest_file = "$dest_dir/".basename($fname);
 
-    my $dest_file_prev = "$dest_dir/".basename($fname).".prev";
+	my $dest_file_prev = "$dest_dir/".basename($fname).".prev";
 
-    my $log_file = $dest_file;
+	my $log_file = $dest_file;
 
-    if(! -e $src_file){
-        push_el(\@main::el, 'gen_log_file()', "WARNING: File '$src_file' do not exists !");
-        return (0, '_no_');
-    }
+	if(! -e $src_file){
 
-    $rs = sys_command("$main::cfg{'CMD_CP'} $src_file $dest_file");
+		push_el(\@main::el, 'gen_log_file()', "WARNING: File '$src_file' do not exists !");
 
-    return ($rs, '') if ($rs != 0);
+		return (0, '_no_');
+
+	}
+
+	$rs = sys_command("$main::cfg{'CMD_CP'} $src_file $dest_file");
+
+	return ($rs, '') if ($rs != 0);
 
 	if (-e $dest_file_prev) {
 
-        if (diff_command("$main::cfg{'CMD_DIFF'} -a -q $dest_file $dest_file_prev") == 0) {
+		if (diff_command("$main::cfg{'CMD_DIFF'} -a -q $dest_file $dest_file_prev") == 0) {
 
-            $rs = del_file($dest_file);
+			$rs = del_file($dest_file);
 
-            return ($rs, '') if ($rs != 0);
+			return ($rs, '') if ($rs != 0);
 
-            return (0, '_no_');
+			return (0, '_no_');
 
-        }
+		}
 
-        $log_file = $dest_file.".diff";
+		$log_file = $dest_file.".diff";
 
-        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | $main::cfg{'CMD_EGREP'} '^<' | $main::cfg{'CMD_SED'} 's/^< //' 1> $log_file");
+		diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | $main::cfg{'CMD_EGREP'} '^<' | $main::cfg{'CMD_SED'} 's/^< //' 1> $log_file");
 
-        $rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
+		$rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
 
-        return ($rs, '') if ($rs != 0);
+		return ($rs, '') if ($rs != 0);
 
-    } else {
+	} else {
 
-        $rs = sys_command("$main::cfg{'CMD_CP'} $dest_file $dest_file_prev");
+		$rs = sys_command("$main::cfg{'CMD_CP'} $dest_file $dest_file_prev");
 
-        return ($rs, '') if ($rs != 0);
+		return ($rs, '') if ($rs != 0);
 
-    }
+	}
 
-    push_el(\@main::el, 'gen_log_file()', 'Ending...');
+	push_el(\@main::el, 'gen_log_file()', 'Ending...');
 
-    return (0, $log_file);
+	return (0, $log_file);
+}
+
+sub collect_http_traffic_from_log {
+	
+	my ($key, $value) = @_;
+	
+	my ($rs, $rdata, $timestamp, $sum, $rows, $sql) = (undef, undef, time(), 0, undef, undef);
+
+	# timestamp has floor down for the last half'n our to make timestamps in
+	# server_traffic and domain_traffic the same
+	$timestamp = $timestamp - ($timestamp % 1800);
+
+	my $domain_log = "$key-traf.log";
+
+	($rs, $rdata) = gen_log_file($domain_log, $main::cfg{'APACHE_LOG_DIR'}, $main::cfg{'LOG_DIR'});
+
+	return ($rs, '') if ($rs != 0);
+
+	$sum = 0;
+
+	if ($rdata ne '_no_') {
+
+		my $res = open(F, '<', $rdata);
+
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_http_traffic()', "ERROR: Can't open '$rdata' for reading !");
+			return (-1, '');
+		}
+
+		while (<F>) {
+			$sum += $1 if ($_ =~ /(\d+)\n$/);
+		}
+
+		close(F);
+
+		$rs = del_file($rdata);
+
+		return ($rs, '') if ($rs != 0);
+
+	}
+
+	if($sum != 0){
+		
+		$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$value' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
+	
+		($rs, $rows) = doSQL($sql);
+	
+		return $rs if ($rs != 0);
+
+		if($$rows[0][0] == 0){
+
+			$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$value', '$timestamp', $sum, '0', '0', '0');";
+
+		} else {
+
+			$sql = "update `domain_traffic` set `dtraff_web`=`dtraff_web`+$sum, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$value' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
+
+		}
+
+		($rs, $rdata) = doSQL($sql);
+
+		return ($rs, '') if ($rs != 0);
+
+	}
+
+	return (0, $timestamp);
+
 }
 
 sub collect_http_traffic {
 
-    my ($key, $value, $timestamp, $sum) = (undef, undef, time(), 0);
+	my ($key, $value,$timestamp,$rs) = (undef, undef, time(),undef);
 
-    # timestamp has floor down for the last half'n our to make timestamps in
-	# server_traffic and domain_traffic the same
-    $timestamp = $timestamp - ($timestamp % 1800);
+	push_el(\@main::el, 'collect_http_traffic()', 'Starting...');
 
-    my ($rs, $rdata) = (undef, undef);
+	while (($key,$value) = each(%main::domain_name_id)) {
+		($rs, $timestamp)=collect_http_traffic_from_log($key,$value);
+		return ($rs, '') if ($rs != 0);
+	}
 
-    push_el(\@main::el, 'collect_http_traffic()', 'Starting...');
+	while (($key,$value) = each(%main::als_name_id)) {
+		($rs, $timestamp)=collect_http_traffic_from_log($key,$main::als_id_parentid{$value});
+		return ($rs, '') if ($rs != 0);
+	}
 
-    while (($key,$value) = each %main::domain_name_id) {
+	while (($key,$value) = each(%main::sub_id_name)) {
+		($rs, $timestamp)=collect_http_traffic_from_log("$value.$main::domain_id_name{$main::sub_id_parentid{$key}}",$main::sub_id_parentid{$key});
+		return ($rs, '') if ($rs != 0);
+	}
 
-        my $domain_log = "$key-traf.log";
+	push_el(\@main::el, 'collect_http_traffic()', 'Ending...');
 
-        ($rs, $rdata) = gen_log_file($domain_log, $main::cfg{'APACHE_LOG_DIR'}, $main::cfg{'LOG_DIR'});
-
-        return ($rs, '') if ($rs != 0);
-
-        $sum = 0;
-
-        if ($rdata ne '_no_') {
-
-            my $rlog = $rdata;
-
-            my $res = open(F, '<', $rlog);
-
-            if (!defined($res)) {
-                push_el(\@main::el, 'collect_http_traffic()', "ERROR: Can't open '$rlog' for reading !");
-                return (-1, '');
-            }
-
-            while (<F>) {
-                $sum += $1 if ($_ =~ /(\d+)\n$/);
-            }
-
-            close(F);
-
-            $rs = del_file($rlog);
-
-            return ($rs, '') if ($rs != 0);
-
-        }
-
-        my $sql = undef;
-
-        $sql = "insert into domain_traffic (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$value', '$timestamp', '$sum', '0', '0', '0');";
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return ($rs, '') if ($rs != 0);
-
-    }
-
-    push_el(\@main::el, 'collect_http_traffic()', 'Ending...');
-
-    return (0, $timestamp);
+	return (0, $timestamp);
 }
 
 sub collect_ftp_traffic {
 
-    my ($timestamp) = @_;
+	my ($timestamp) = @_;
 
-    my ($key, $value, $id) = (undef, undef, undef);
+	my ($key, $value, $id) = (undef, undef, undef);
 
-    my ($rs, $rdata, $rlog) = (undef, undef, undef);
+	my ($rs, $rdata, $rlog) = (undef, undef, undef);
 
 	my $traffic_size = undef;
 	my $traffic_domain = undef;
 
-    ($rs, $rlog) = gen_log_file($main::cfg{'FTP_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
+	($rs, $rlog) = gen_log_file($main::cfg{'FTP_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    if ($rlog ne '_no_') {
+	if ($rlog ne '_no_') {
 
-        my $res = open(F, '<', $rlog);
+		my $res = open(F, '<', $rlog);
 
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_ftp_traffic()', "ERROR: Can't open '$rlog' for reading !");
-            return (-1, '');
-        }
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_ftp_traffic()', "ERROR: Can't open '$rlog' for reading !");
+			return (-1, '');
+		}
 
-        while (<F>) {
+		while (<F>) {
 
-            my $line = $_;
+			my $line = $_;
 
-            if ($line =~ /^(\d+) [^\@]+\@([^\n]+)\n$/) {
+			if ($line =~ /^(\d+) [^\@]+\@([^\n]+)\n$/) {
 
 				$traffic_size = $1;
 				$traffic_domain = $2;
@@ -268,82 +304,100 @@ sub collect_ftp_traffic {
 					$main::ftp_traffic{$traffic_domain} += $traffic_size;
 				}
 
-            }
+			}
 
-        }
+		}
 
-        close(F);
+		close(F);
 
-        while (($key, $value) = each %main::ftp_traffic) {
+		while (($key, $value) = each %main::ftp_traffic) {
 
-            if ($id = $main::als_name_id{$key}) {
-                $main::ftp_traffic{
-                    $main::domain_id_name {
-                        $main::als_id_parentid{$id}
-                    }
-                } += $value;
-            }
+			if ($id = $main::als_name_id{$key}) {
+				$main::ftp_traffic{
+					$main::domain_id_name {
+						$main::als_id_parentid{$id}
+					}
+				} += $value;
+			}
 
-        }
+		}
 
-        $rs = del_file($rlog);
+		$rs = del_file($rlog);
 
-        return $rs if ($rs != 0);
-    }
+		return $rs if ($rs != 0);
+	}
 
-    while (($key, $value) = each %main::ftp_traffic) {
+	while (($key, $value) = each %main::ftp_traffic) {
 
-        if ($id = $main::domain_name_id{$key}) {
+		if ($id = $main::domain_name_id{$key}) {
 
-            my $sql = undef;
+			if($value != 0){
 
-            $sql = "update domain_traffic set dtraff_ftp = $value where dtraff_time = $timestamp and domain_id = $id;";
+				my $sql = undef;
+	
+				$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
+		
+				my ($rs, $rows) = doSQL($sql);
+		
+				return $rs if ($rs != 0);
+	
+				if($$rows[0][0] == 0){
+	
+					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', $value, '0', '0');";
+	
+				} else {
+	
+					$sql = "update `domain_traffic` set `dtraff_ftp`=`dtraff_ftp`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
+	
+				}
+	
+				($rs, $rdata) = doSQL($sql);
 
-            ($rs, $rdata) = doSQL($sql);
+				return $rs if ($rs != 0);
 
-            return $rs if ($rs != 0);
+			}
 
-        }
-    }
+		}
+	}
 }
 
 sub collect_mail_traffic {
 
-    my ($timestamp) = @_;
+	my ($timestamp) = @_;
 
-    my ($key, $value, $id) = (undef, undef, undef);
+	my ($key, $value, $id) = (undef, undef, undef);
 
-    my ($rs, $rdata, $rlog) = (undef, undef, undef);
+	my ($rs, $rdata, $rlog) = (undef, undef, undef);
 
-    my ($cat, $grep, $awk) = ($main::cfg{'CMD_CAT'}, $main::cfg{'CMD_GREP'}, $main::cfg{'CMD_AWK'});
+	my ($cat, $grep, $awk) = ($main::cfg{'CMD_CAT'}, $main::cfg{'CMD_GREP'}, $main::cfg{'CMD_AWK'});
 
 	my $traffic_size = undef;
-    my $traffic_domain = undef;
+	my $traffic_domain = undef;
 	my $smtp_from_domain = undef;
 	my $smtp_to_domain = undef;
 
-    ($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
+	($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
 
-    if ($rlog ne '_no_') {
+	if ($rlog ne '_no_') {
 
-        my $smtp_log = "$main::cfg{'LOG_DIR'}/smtp.log";
+		my $smtp_log = "$main::cfg{'LOG_DIR'}/smtp.log";
 
-        my $smtp_delivery_log = "$main::cfg{'LOG_DIR'}/smtp_delivery.log";
+		my $smtp_delivery_log = "$main::cfg{'LOG_DIR'}/smtp_delivery.log";
 
-        my $imap_log = "$main::cfg{'LOG_DIR'}/imap.log";
+		my $imap_log = "$main::cfg{'LOG_DIR'}/imap.log";
 
-        my $pop3_log = "$main::cfg{'LOG_DIR'}/pop3.log";
+		my $pop3_log = "$main::cfg{'LOG_DIR'}/pop3.log";
 
-        my $cmd = "$grep 'postfix' $rlog | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
+		my $cmd = "$grep 'postfix' $rlog | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
 
-        $rs = sys_command($cmd);
+		$rs = sys_command($cmd);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
+		if(exists $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
 			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		} else {
@@ -351,26 +405,26 @@ sub collect_mail_traffic {
  			$cmd = "$cat $smtp_delivery_log | $awk '{if ( \$10 != \"?\" && \$6 !~ /virtual/ && !(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		}
 
-        $rs = sys_command($cmd);
+		$rs = sys_command($cmd);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-        $rs = del_file($smtp_delivery_log);
+# 		$rs = del_file($smtp_delivery_log);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-        my $res = open(F, '<', $smtp_log);
+		my $res = open(F, '<', $smtp_log);
 
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$smtp_log' for reading !");
-            return (-1, '');
-        }
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$smtp_log' for reading !");
+			return (-1, '');
+		}
 
-        while (<F>) {
+		while (<F>) {
 
-            my $line = $_;
+			my $line = $_;
 
-            if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
+			if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
 
 				$smtp_from_domain = $1;
 				$smtp_to_domain = $2;
@@ -382,59 +436,58 @@ sub collect_mail_traffic {
 				if($smtp_to_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::smtp_traffic{$smtp_to_domain}) {
 					$smtp_to_domain = $3.$4;
 				}
-
-                if(exists $main::smtp_traffic{$smtp_from_domain}) {
-                	$main::smtp_traffic{$smtp_from_domain} += $traffic_size;
+				if(exists $main::smtp_traffic{$smtp_from_domain}) {
+					$main::smtp_traffic{$smtp_from_domain} += $traffic_size;
 				}
 				else {
-                	$main::smtp_traffic{$smtp_to_domain} += $traffic_size;
-                }
+					$main::smtp_traffic{$smtp_to_domain} += $traffic_size;
+				}
 
-            }
+			}
 
-        }
+		}
 
-        close(F);
+		close(F);
 
-        while (($key, $value) = each %main::smtp_traffic) {
+		while (($key, $value) = each %main::smtp_traffic) {
 
-            if ($id = $main::als_name_id{$key}) {
-                $main::smtp_traffic{
-                    $main::domain_id_name {
-                        $main::als_id_parentid{$id}
-                    }
-                } += $value;
-            }
+			if ($id = $main::als_name_id{$key}) {
+				$main::smtp_traffic{
+					$main::domain_id_name {
+						$main::als_id_parentid{$id}
+					}
+				} += $value;
+			}
 
-        }
+		}
 
-        $rs = del_file($smtp_log);
+# 		$rs = del_file($smtp_log);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 
 		# IMAP
 		#$rs = sys_command("$cat $rlog|$grep 'imaplogin'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 		$rs = sys_command("$cat $rlog|$grep 'imapd'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-        $res = open(F, '<', $imap_log);
+		$res = open(F, '<', $imap_log);
 
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
-            return (-1, '');
-        }
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
+			return (-1, '');
+		}
 
-        while (<F>) {
+		while (<F>) {
 
-            my $line = $_;
+			my $line = $_;
 
-            if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
+			if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
 
-                my ($ma, $sum) = ("$1\n", $2 + $3);
+				my ($ma, $sum) = ("$1\n", $2 + $3);
 
-                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
 				$traffic_domain = $2;
 
@@ -445,40 +498,40 @@ sub collect_mail_traffic {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
 
-            }
+			}
 
-        }
+		}
 
-        close(F);
+		close(F);
 
 
-        $rs = del_file($imap_log);
+		$rs = del_file($imap_log);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 
 		# IMAP-SSL
 		#$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 		$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-        $res = open(F, '<', $imap_log);
+		$res = open(F, '<', $imap_log);
 
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
-            return (-1, '');
-        }
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
+			return (-1, '');
+		}
 
-        while (<F>) {
+		while (<F>) {
 
-            my $line = $_;
+			my $line = $_;
 
-            if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
+			if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
 
-                my ($ma, $sum) = ("$1\n", $2 + $3);
+				my ($ma, $sum) = ("$1\n", $2 + $3);
 
-                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
 				$traffic_domain = $2;
 
@@ -489,16 +542,16 @@ sub collect_mail_traffic {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
 
-            }
+			}
 
-        }
+		}
 
-        close(F);
+		close(F);
 
 
-        $rs = del_file($imap_log);
+		$rs = del_file($imap_log);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 
 		# POP3
@@ -509,64 +562,22 @@ sub collect_mail_traffic {
 			." 1>$pop3_log");
 		return $rs if ($rs != 0);
 
-        $res = open(F, '<', $pop3_log);
+		$res = open(F, '<', $pop3_log);
 
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
-            return (-1, '');
-        }
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
+			return (-1, '');
+		}
 
-        while (<F>) {
+		while (<F>) {
 
-            my $line = $_;
+			my $line = $_;
 
-            if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
+			if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
 
-                my ($ma, $sum) = ("$1\n", $2 + $3);
+				my ($ma, $sum) = ("$1\n", $2 + $3);
 
-                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
-
-				$traffic_domain = $2;
-
-				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
-					$main::po_traffic{$3.$4} += $sum;
-				}
-				else {
-					$main::po_traffic{$traffic_domain} += $sum;
-				}
-
-            }
-
-        }
-
-        close(F);
-
-        $rs = del_file($pop3_log);
-
-        return $rs if ($rs != 0);
-
-
-        # POP3-SSL
-        $rs = sys_command("$cat $rlog|$grep 'pop3d-ssl'|$grep 'user='|$grep 'retr='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
-
-        return $rs if ($rs != 0);
-
-        $res = open(F, '<', $pop3_log);
-
-        if (!defined($res)) {
-            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
-            return (-1, '');
-        }
-
-        while (<F>) {
-
-            my $line = $_;
-
-            if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
-
-                my ($ma, $sum) = ("$1\n", $2 + $3);
-
-                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
 				$traffic_domain = $2;
 
@@ -577,99 +588,179 @@ sub collect_mail_traffic {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
 
-            }
+			}
 
-        }
+		}
 
-        close(F);
+		close(F);
 
-        while (($key, $value) = each %main::po_traffic) {
+		$rs = del_file($pop3_log);
 
-            if ($id = $main::als_name_id{$key}) {
-                $main::po_traffic {
-                    $main::domain_id_name {
-                        $main::als_id_parentid{$id}
-                    }
-                } += $value;
-
-            }
-
-        }
-
-        $rs = del_file($pop3_log);
-
-        return $rs if ($rs != 0);
-
-        $rs = del_file($rlog);
-
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 
-    }
+		# POP3-SSL
+		$rs = sys_command("$cat $rlog|$grep 'pop3d-ssl'|$grep 'user='|$grep 'retr='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
 
-    while (($key, $value) = each %main::smtp_traffic) {
+		return $rs if ($rs != 0);
 
-        if ($id = $main::domain_name_id{$key}) {
+		$res = open(F, '<', $pop3_log);
 
-            my $sql = undef;
+		if (!defined($res)) {
+			push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
+			return (-1, '');
+		}
 
-            $sql = "update domain_traffic set dtraff_mail = $value where dtraff_time = $timestamp and domain_id = $id;";
+		while (<F>) {
 
-            ($rs, $rdata) = doSQL($sql);
+			my $line = $_;
 
-            return $rs if ($rs != 0);
+			if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
 
-        }
-    }
+				my ($ma, $sum) = ("$1\n", $2 + $3);
 
-    while (($key, $value) = each %main::po_traffic) {
+				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
-        if ($id = $main::domain_name_id{$key}) {
+				$traffic_domain = $2;
 
-            my $sql = undef;
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
+					$main::po_traffic{$3.$4} += $sum;
+				}
+				else {
+					$main::po_traffic{$traffic_domain} += $sum;
+				}
 
-            $sql = "update domain_traffic set dtraff_pop = $value where dtraff_time = $timestamp and domain_id = $id;";
+			}
 
-            ($rs, $rdata) = doSQL($sql);
+		}
 
-            return $rs if ($rs != 0);
+		close(F);
 
-        }
-    }
+		while (($key, $value) = each %main::po_traffic) {
 
-    return 0;
+			if ($id = $main::als_name_id{$key}) {
+				$main::po_traffic {
+					$main::domain_id_name {
+						$main::als_id_parentid{$id}
+					}
+				} += $value;
+
+			}
+
+		}
+
+		$rs = del_file($pop3_log);
+
+		return $rs if ($rs != 0);
+
+		$rs = del_file($rlog);
+
+		return $rs if ($rs != 0);
+
+
+	}
+
+	while (($key, $value) = each %main::smtp_traffic) {
+
+		if ($id = $main::domain_name_id{$key}) {
+
+			if($value != 0){
+
+				my $sql = undef;
+
+				$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
+
+				my ($rs, $rows) = doSQL($sql);
+
+				return $rs if ($rs != 0);
+
+				if($$rows[0][0] == 0){
+
+					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', '0', $value, '0');";
+
+				} else {
+
+					$sql = "update `domain_traffic` set `dtraff_mail`=`dtraff_mail`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
+
+				}
+
+				($rs, $rdata) = doSQL($sql);
+	
+				return $rs if ($rs != 0);
+
+			}
+
+		}
+
+	}
+
+	while (($key, $value) = each %main::po_traffic) {
+
+		if ($id = $main::domain_name_id{$key}) {
+
+			if($value != 0){
+
+				my $sql = undef;
+
+				$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
+
+				my ($rs, $rows) = doSQL($sql);
+
+				return $rs if ($rs != 0);
+
+				if($$rows[0][0] == 0){
+	
+					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', '0', '0', $value);";
+
+				} else {
+
+					$sql = "update `domain_traffic` set `dtraff_pop`=`dtraff_pop`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
+
+				}
+
+				($rs, $rdata) = doSQL($sql);
+
+				return $rs if ($rs != 0);
+
+			}
+
+		}
+
+	}
+
+	return 0;
 
 }
 
 
 sub vrl_traff_start_up {
 
-    my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'vrl_traff_start_up()', 'Starting...');
+	push_el(\@main::el, 'vrl_traff_start_up()', 'Starting...');
 
-    # Let's clear Execution Logs, if any.
+	# Let's clear Execution Logs, if any.
 
-    if (-e $main::ispcp_vrl_traff_el) {
+	if (-e $main::ispcp_vrl_traff_el) {
 
-        $rs = del_file($main::ispcp_vrl_traff_el);
+		$rs = del_file($main::ispcp_vrl_traff_el);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-    }
+	}
 
-    # config check;
+	# config check;
 
-    $rs = get_conf();
+	$rs = get_conf();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    #
-    # getting initial data also must be done here;
-    #
+	#
+	# getting initial data also must be done here;
+	#
 
-    my $sql = "
-        SELECT
+	my $sql = "
+		SELECT
 		domain_id,
 		domain_name,
 		domain_gid,
@@ -692,63 +783,68 @@ sub vrl_traff_start_up {
 		domain_cgi
 	FROM
 		domain
-    ";
+	";
 
-    ($rs, $rdata) = doSQL($sql);
+	($rs, $rdata) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    $rs = get_domain_ids();
+	$rs = get_domain_ids();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    $rs = get_alias_ids();
+	$rs = get_alias_ids();
 
-    return $rs if ($rs != 0);
-    $rs = zero_traffic_entries();
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	$rs = get_subdom_ids();
 
-    push_el(\@main::el, 'vrl_traff_start_up()', 'Ending...');
+	return $rs if ($rs != 0);
 
-    return 0;
+	$rs = zero_traffic_entries();
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'vrl_traff_start_up()', 'Ending...');
+
+	return 0;
 
 }
 
 
 sub vrl_traff_shut_down {
 
-    my $rs = undef;
+	my $rs = undef;
 
-    push_el(\@main::el, 'vrl_traff_shut_down()', 'Starting...');
+	push_el(\@main::el, 'vrl_traff_shut_down()', 'Starting...');
 
-    push_el(\@main::el, 'vrl_traff_shut_down()', 'Ending...');
+	push_el(\@main::el, 'vrl_traff_shut_down()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 sub vrl_traff_engine {
 
-    my ($rs, $timestamp) = (undef, undef);
+	my ($rs, $timestamp) = (undef, undef);
 
-    push_el(\@main::el, 'vrl_traff_engine()', 'Starting...');
+	push_el(\@main::el, 'vrl_traff_engine()', 'Starting...');
 
-    ($rs, $timestamp) = collect_http_traffic();
+	($rs, $timestamp) = collect_http_traffic();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    $rs = collect_ftp_traffic($timestamp);
+	$rs = collect_ftp_traffic($timestamp);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    $rs = collect_mail_traffic($timestamp);
+	$rs = collect_mail_traffic($timestamp);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'vrl_traff_engine()', 'Ending...');
+	push_el(\@main::el, 'vrl_traff_engine()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -760,11 +856,11 @@ $rs = vrl_traff_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+	dump_el(\@main::el, $main::ispcp_vrl_traff_el);
 
-    vrl_traff_shut_down();
+	vrl_traff_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -773,9 +869,9 @@ $rs = vrl_traff_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, 'stderr');
+	dump_el(\@main::el, 'stderr');
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -784,9 +880,9 @@ $rs = vrl_traff_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+	dump_el(\@main::el, $main::ispcp_vrl_traff_el);
 
-    exit 1;
+	exit 1;
 
 }
 

@@ -3005,6 +3005,7 @@ sub dmn_add_awstats_cron {
 
 	my $cronjob_hour = '3';
 	my $conf_dir           = $main::cfg{'CONF_DIR'};
+	my $virtual_dir        = $main::cfg{'APACHE_WWW_DIR'};
 	my $tpl_dir            = "$conf_dir/cron.d/parts";
 	my $working_dir        = "$conf_dir/cron.d/working";
 	my $backup_dir         = "$conf_dir/cron.d/backup";
@@ -3104,7 +3105,8 @@ sub dmn_add_awstats_cron {
 		'{AWSTATS_ROOT_DIR}'   => $awstats_root_dir,
 		'{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
 		'{AWSTATS_WEB_DIR}'    => $awstats_web_dir,
-		'{USER_LANG}'          => $user_lang
+		'{USER_LANG}'          => $user_lang,
+		'{APACHE_WWW_DIR}'     => $virtual_dir
 	);
 	(
 		$rs,

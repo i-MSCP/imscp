@@ -1,5 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-09-01 Daniel Andreca
+	- ENGINE:
+		* ispcp-apache-logger is crashing
+		* crontab entry for static awstats scripts broken 
+		* partial solve for #1232 domain_traffic becomes huge and slows down server.
+
 2008-08-29 Daniel Andreca
 	- ENGINE:
 		* maillogconvert.pl contains ilegal characters

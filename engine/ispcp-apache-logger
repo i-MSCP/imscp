@@ -65,9 +65,9 @@ sub checkFileExists;
 sub DefaultLogs();
 sub ErrorLogs();
 
-open (STDERR, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr") or die ( "Can't redirect STDERR" );;
+open (STDERR, ">", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr") or die ( "Can't redirect STDERR" );;
 STDERR->autoflush(1);
-open (STDOUT, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout") or die ( "Can't redirect STDOUT" );;
+open (STDOUT, ">", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout") or die ( "Can't redirect STDOUT" );;
 STDOUT->autoflush(1);
 
 if ( $OPTS{'e'} ) {
@@ -79,7 +79,7 @@ if ( $OPTS{'e'} ) {
 sub ErrorLogs(){
 	while ( my $log_line = <STDIN> ) {
 		my $vhost = 'default';
-		
+
 		if($log_line =~ m/($main::cfg{'APACHE_WWW_DIR'})/){
 			($vhost) = $log_line =~ m/$main::cfg{'APACHE_WWW_DIR'}\/([^\/]*)/;
 		} else {
@@ -87,7 +87,7 @@ sub ErrorLogs(){
 				($vhost) = $log_line =~ m/$main::cfg{'PHP_STARTER_DIR'}\/([^\/]*)/;
 			}
 		}
-		
+
 		if ( $vhost eq 'master' ){
 			$vhost='default';
 		}
@@ -102,15 +102,14 @@ sub ErrorLogs(){
 				delete $timestamps{$key};
 			}
 		}
-	
+
 		checkFileExists($vhost, \%error_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-error.log",$force_open);
 		print { $error_logs{$vhost} } $log_line;
 	}
 }
 sub DefaultLogs(){
 	while ( my $log_line = <STDIN> ) {
-		my ($vhost, $rhost, $rlog, $user, $date, $url_with_method, $status, $size, $referrer, $agent) = $log_line =~
-			m/^(\S+) (\S+) ([^ ]*?) ([^ ]*?) \[(\S+ \+\d{4})\] "(.*?)" (\d{3}) (\d+|-) "(.*?)" "([^"]+)"$/;
+		my ($vhost, $size, $line) = $log_line =~ m/^(\S+) (\d+|-) (.*)$/s;
 		if(!defined($vhost)){print "Trouble line:\n\t$log_line\n"; return 0;}
 		if(!defined($size)){print "Trouble line:\n\t$log_line\n"; return 0;}
 		$vhost = lc($vhost) || "default";
@@ -118,7 +117,7 @@ sub DefaultLogs(){
 		$vhost =~ /(.*)/o;
 		$vhost = $1;
 		$vhost = 'default' unless $vhost;
-		
+
 		my $force_open=0;
 		if ( !$combined_logs{$vhost} || !$traff_logs{$vhost} || !$access_logs{$vhost} ){
 			$force_open=1;
@@ -139,13 +138,13 @@ sub DefaultLogs(){
 				delete $timestamps{$key};
 			}
 		}
-	
+
 		checkFileExists($vhost, \%combined_logs, $main::cfg{'APACHE_LOG_DIR'},"-combined.log",$force_open);
 		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traf.log",$force_open);
 		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
-		
-		$log_line =~ s/^\S*\s+//o;
-		
+
+		$log_line=$line;
+
 		print { $combined_logs{$vhost} } $log_line;
 		print { $access_logs{$vhost} } $log_line;
 		if ( $size ne '-' && $size != 0 ){
