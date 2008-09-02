@@ -107,7 +107,7 @@ sub copy_subdomain_logs {
 
             my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-error.log";
 
-	    my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
+            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
 
             if (! -d $dest_dir)
             {
@@ -117,25 +117,33 @@ sub copy_subdomain_logs {
 
             }
 
-            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            if ( -e $src_access_file ){
 
-            $rs = sys_command($cmd_cp);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
 
-            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               return $rs if ($rs != 0);
 
-            return $rs if ($rs != 0);
+               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
 
-            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+               return $rs if ($rs != 0);
 
-            $rs = sys_command($cmd_cp);
+            }
 
-            return $rs if ($rs != 0);
+            if ( -e $src_error_file ){
 
-            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
+
+               return $rs if ($rs != 0);
+
+               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+
+               return $rs if ($rs != 0);
+
+            }
 
         }
 
@@ -183,25 +191,33 @@ sub copy_domain_logs {
 
             }
 
-            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            if( -e $src_access_file){
 
-            $rs = sys_command($cmd_cp);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
 
-            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               return $rs if ($rs != 0);
 
-            return $rs if ($rs != 0);
+               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
 
-            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+               return $rs if ($rs != 0);
 
-            $rs = sys_command($cmd_cp);
+            }
 
-            return $rs if ($rs != 0);
+            if ( -e $src_error_file ){
 
-            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
+
+               return $rs if ($rs != 0);
+
+               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+
+               return $rs if ($rs != 0);
+
+            }
 
         }
 
@@ -255,25 +271,33 @@ sub copy_alias_logs {
 
             }
 
-            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            if ( -e $src_access_file){
 
-            $rs = sys_command($cmd_cp);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
 
-            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               return $rs if ($rs != 0);
 
-            return $rs if ($rs != 0);
+               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
 
-            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+               return $rs if ($rs != 0);
 
-            $rs = sys_command($cmd_cp);
+            }
 
-            return $rs if ($rs != 0);
+            if ( -e $src_error_file ){
 
-            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
 
-            return $rs if ($rs != 0);
+               $rs = sys_command($cmd_cp);
+
+               return $rs if ($rs != 0);
+
+               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+
+               return $rs if ($rs != 0);
+
+            }
 
         }
 

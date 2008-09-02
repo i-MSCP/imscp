@@ -1,5 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-09-02 Daniel Andreca
+	- ENGINE:
+		* Fixed #1522: ispcp-httpd-logs-mngr crashes if logfile doesn't exist
+		* Fixed #1523: Weird logfiles for disabled domain
+
 2008-09-01 Daniel Andreca
 	- ENGINE:
 		* ispcp-apache-logger is crashing

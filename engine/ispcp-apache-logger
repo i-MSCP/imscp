@@ -81,10 +81,10 @@ sub ErrorLogs(){
 		my $vhost = 'default';
 
 		if($log_line =~ m/($main::cfg{'APACHE_WWW_DIR'})/){
-			($vhost) = $log_line =~ m/$main::cfg{'APACHE_WWW_DIR'}\/([^\/]*)/;
+			($vhost) = $log_line =~ m/$main::cfg{'APACHE_WWW_DIR'}\/([a-zA-Z0-9_\-\.]*)/;
 		} else {
 			if($log_line =~ m/($main::cfg{'PHP_STARTER_DIR'})/){
-				($vhost) = $log_line =~ m/$main::cfg{'PHP_STARTER_DIR'}\/([^\/]*)/;
+				($vhost) = $log_line =~ m/$main::cfg{'PHP_STARTER_DIR'}\/([a-zA-Z0-9_\-\.]*)/;
 			}
 		}
 
