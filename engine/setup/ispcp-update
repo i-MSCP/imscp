@@ -313,7 +313,7 @@ sub migrate_vhcs2 {
 
     print STDOUT "\tCopying database...";
 
-    if (sys_command("$main::cfg{'CMD_MYSQLDUMP'} --opt -u\"$main::db_user\" -p\"$main::db_pwd\" $main::vhcs2{'DATABASE_NAME'} | $main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" $main::db_name") != 0) {
+    if (sys_command("$main::cfg{'CMD_MYSQLDUMP'} --opt --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" $main::vhcs2{'DATABASE_NAME'} | $main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" $main::db_name") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -337,7 +337,7 @@ sub migrate_vhcs2 {
 	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
@@ -837,7 +837,7 @@ sub patch_ispcp_rc2 {
 	return $rs if ($rs != 0);
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
    	 	exit_werror("SQL Update failed.");
 	}
@@ -886,7 +886,7 @@ sub patch_ispcp_rc3 {
 	return $rs if ($rs != 0);
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
  	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
@@ -1077,7 +1077,7 @@ sub prepare_update {
 	return $rs if ($rs != 0);
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
 	if ($rs != 0) {
    	 	exit_werror("SQL Update failed.");
 	}

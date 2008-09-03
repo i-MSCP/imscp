@@ -1,5 +1,9 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+008-08-16 Daniel Andreca
+	- SETUP:
+		* RC6 remote database support for upgrade script (thanks Standbye)
+
 2008-09-02 Daniel Andreca
 	- ENGINE:
 		* Fixed #1522: ispcp-httpd-logs-mngr crashes if logfile doesn't exist
@@ -8,8 +12,8 @@ ispCP ω 1.0.0 Changelog
 2008-09-01 Daniel Andreca
 	- ENGINE:
 		* ispcp-apache-logger is crashing
-		* crontab entry for static awstats scripts broken 
-		* partial solve for #1232 domain_traffic becomes huge and slows down server.
+		* crontab entry for static awstats scripts broken
+		* partial solve for #1232 domain_traffic becomes huge and slows down server
 
 2008-08-29 Daniel Andreca
 	- ENGINE:
