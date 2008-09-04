@@ -45,14 +45,14 @@ require 'ispcp_common_code.pl';
 our %OPTS;
 getopts( 'e', \%OPTS );
 
-if ( !-d $main::cfg{'APACHE_LOG_DIR'}) {
-	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_LOG_DIR'}." does not exist - exiting.\n";
-	exit;
-}
-
 my $MAXFILES = "33";
 if ( $main::cfg{'APACHE_MAX_OPEN_LOG'} ) {
 	$MAXFILES = $main::cfg{'APACHE_MAX_OPEN_LOG'};
+}
+
+my $MAXLOGFILESIZE = 10485760; # 10Mb
+if ( $main::cfg{'APACHE_MAX_LOG_FILE_SIZE'} ) {
+	$MAXLOGFILESIZE = $main::cfg{'APACHE_MAX_LOG_FILE_SIZE'};
 }
 
 my %timestamps = ();
@@ -64,19 +64,46 @@ my %error_logs = ();
 sub checkFileExists;
 sub DefaultLogs();
 sub ErrorLogs();
+sub checkFileSize;
 
-open (STDERR, ">", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr") or die ( "Can't redirect STDERR" );;
-STDERR->autoflush(1);
-open (STDOUT, ">", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout") or die ( "Can't redirect STDOUT" );;
-STDOUT->autoflush(1);
+## Creating log files if possible ##
 
-if ( $OPTS{'e'} ) {
+if ( !-d $main::cfg{'LOG_DIR'} ) {
+	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'LOG_DIR'}." does not exist - logging on standard streams.\n";
+} else {
+	checkFileSize("$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr");
+	checkFileSize("$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout");
+
+	my $res = open (STDERR, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr");
+	if (!defined($res)) {
+		print STDERR "[ispcp-apache-logger] Can't redirect STDERR\n";
+	} else {
+		STDERR->autoflush(1);
+	}
+	$res = open (STDOUT, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout");
+	if (!defined($res)) {
+		print STDERR "[ispcp-apache-logger] Can't redirect STDOUT\n";
+	} else {
+		STDOUT->autoflush(1);
+	}
+}
+
+if ( !-d $main::cfg{'APACHE_LOG_DIR'}) {
+	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_LOG_DIR'}." does not exist!!!\n";
+} elsif ( !-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
+	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_USERS_LOG_DIR'}." does not exist!!!.\n";
+} elsif ( $OPTS{'e'} ) {
 	ErrorLogs();
 } else {
 	DefaultLogs();
 }
 
+while ( my $log_line = <STDIN> ){}
+
 sub ErrorLogs(){
+	if (defined($main::engine_debug)){
+		print STDOUT "[ispcp-apache-logger] Starting error log proccessing...\n";
+	}
 	while ( my $log_line = <STDIN> ) {
 		my $vhost = 'default';
 
@@ -107,11 +134,18 @@ sub ErrorLogs(){
 		print { $error_logs{$vhost} } $log_line;
 	}
 }
+
 sub DefaultLogs(){
+	if (defined($main::engine_debug)){
+		print STDOUT "[ispcp-apache-logger] Starting default log proccessing...\n";
+	}
 	while ( my $log_line = <STDIN> ) {
 		my ($vhost, $size, $line) = $log_line =~ m/^(\S+) (\d+|-) (.*)$/s;
-		if(!defined($vhost)){print "Trouble line:\n\t$log_line\n"; return 0;}
-		if(!defined($size)){print "Trouble line:\n\t$log_line\n"; return 0;}
+		
+		if( !defined($vhost) || !defined($size) ){
+			print STDERR "[ispcp-apache-logger] Trouble line:\n\t$log_line\n";
+		}
+		
 		$vhost = lc($vhost) || "default";
 		if ( $vhost =~ m#[/\\]# ) { $vhost = "default" }
 		$vhost =~ /(.*)/o;
@@ -155,13 +189,24 @@ sub DefaultLogs(){
 
 exit;
 
+sub checkFileSize(){
+	my ($file)=@_;
+	if( -e $file && ((my $filesize = -s $file) > $MAXLOGFILESIZE)) {
+		unlink($file);
+	}
+}
+
 sub checkFileExists(){
 	my ($local_vhost, $hash, $path, $postpend,$force)=@_;
 	if (!(-e "$path/$local_vhost$postpend") || $force eq '1'){
-			open ($hash->{$local_vhost}, ">>", "$path/$local_vhost$postpend") or die ( "Can't open $path/$local_vhost$postpend" );
+		my $res = open ($hash->{$local_vhost}, ">>", "$path/$local_vhost$postpend");
+		if (!defined($res)) {
+			print STDERR "[ispcp-apache-logger] Can't open $path/$local_vhost$postpend\n";
+		} else {
 			$hash->{$local_vhost}->autoflush(1);
+			$timestamps{$local_vhost}=time();
+		}
 	}
-	$timestamps{$local_vhost}=time();
 }
 
 sub exitall {
@@ -169,8 +214,10 @@ sub exitall {
 		foreach my $key ( keys %error_logs ) {
 			close $key;
 		}
-	}
-	else {
+		if (defined($main::engine_debug)){
+			print STDOUT "[ispcp-apache-logger] Ending error log proccessing...\n";
+		}
+	} else {
 		foreach my $key ( keys %combined_logs ) {
 			close $key;
 		}
@@ -183,5 +230,8 @@ sub exitall {
 			close $key;
 		}
 		%access_logs = ();
+		if (defined($main::engine_debug)){
+			print STDOUT "[ispcp-apache-logger] Ending default log proccessing...\n";
+		}
 	}
 }

@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-008-08-16 Daniel Andreca
+2008-09-05 Daniel Andreca
+	- ENGINE:
+		* Fixed #1526: apache logger problems
+
+2008-09-03 Daniel Andreca
 	- SETUP:
 		* RC6 remote database support for upgrade script (thanks Standbye)
 
