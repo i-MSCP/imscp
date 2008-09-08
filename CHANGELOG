@@ -1,5 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-09-09 Daniel Andreca
+	- ENGINE:
+		* Fixed #1524: Warning on logrotate
+		* Fixed #1528: mod-sql in lenny is not enabled by default
+
 2008-09-05 Daniel Andreca
 	- ENGINE:
 		* Fixed #1526: apache logger problems

@@ -40,6 +40,7 @@ require 'ispcp_common_code.pl';
 
 %main::po_traffic = ();
 
+%main::sub_id_name= ();
 
 use strict;
 
