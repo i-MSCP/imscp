@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-04 15:05+0200\n"
-"PO-Revision-Date: 2008-08-11 11:38+0200\n"
+"PO-Revision-Date: 2008-08-22 14:04+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2274,11 +2274,10 @@ msgstr "Utilitzar un altre directori"
 msgid "Choose dir"
 msgstr "Escollir directori"
 
-#, fuzzy
 msgid "Can not open directory !<br>Please contact your administrator !"
 msgstr ""
 "No es pot obrir el directori!<br> Si us plau contacteu amb el vostre "
-"administrador!"
+"administrador !"
 
 msgid "Parent Directory"
 msgstr "Directori arrel"
@@ -3045,7 +3044,6 @@ msgstr "La llista d'usuaris és buida!"
 msgid "Details"
 msgstr "Detalls"
 
-#, fuzzy
 msgid "Edit domain"
 msgstr "Editar domini"
 
@@ -3312,7 +3310,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Nova comanda d'àlies per a {CUSTOMER}!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3692,17 +3689,17 @@ msgstr ""
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domini/Editar"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be disabled! "
-msgstr "El servei de <em>%s</em> no es pot desactivar!"
+msgstr "El servei de <em>%s</em> no es pot desactivar! "
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be limited! "
-msgstr "El servei de <em>%s</em> no es pot limitar!"
+msgstr "El servei de <em>%s</em> no es pot limitar! "
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be unlimited! "
-msgstr "El servei de <em>%s</em> no es pot il·limitar!"
+msgstr "El servei de <em>%s</em> no es pot il·limitar! "
 
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Distribuïdor/Afegir pla de hosting"

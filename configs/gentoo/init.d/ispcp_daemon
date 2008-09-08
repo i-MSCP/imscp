@@ -41,15 +41,13 @@ depend() {
 
 start() {
     ebegin "Starting $SVCNAME"
-    start-stop-daemon --start --exec $DAEMON \
-                --pidfile $PID
+    start-stop-daemon --start --exec $DAEMON --pidfile $PID
     eend $?
 }
 
 
 stop() {
     ebegin "Stopping $SVCNAME"
-    start-stop-daemon --stop --exec $DAEMON \
-                --pidfile $PID
+    start-stop-daemon --stop --exec $DAEMON --pidfile $PID
     eend $?
 }

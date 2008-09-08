@@ -40,6 +40,10 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #1498: normal mail + forward doesn't work
 
+2008-08-19 Benedikt Heintel
+	- DISTS:
+		* Fixed #1797: Gentoo: init.d script not working
+
 2008-08-18 Daniel Andreca
 	- ENGINE:
 		* Fixed #940: Logfile problem
