@@ -397,7 +397,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
             return false;
         } else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
         	// Not permitted chars
-            set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
+            set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!', Config::get('PASSWD_CHARS')));
             return false;
         }
     }

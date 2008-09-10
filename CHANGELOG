@@ -3,6 +3,7 @@ ispCP ω 1.0.0 Changelog
 2008-09-10 Daniel Andreca
 	- LANGUAGES:
 		* Updated French (thanks momo)
+		* Mail_add.php display incorrect messages
 
 2008-09-09 Daniel Andreca
 	- ENGINE:
