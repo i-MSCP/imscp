@@ -11,13 +11,13 @@
     /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
+  /etc/init.d/apache2 stop > /dev/null
   for i in `seq 1 10`; do
     if [ -f /var/run/apache2.pid ]; then
-      /etc/init.d/apache2 stop > /dev/null
       sleep 5
-      /etc/init.d/apache2 start > /dev/null
     fi
   done
+  /etc/init.d/apache2 start > /dev/null
   endscript
 }
 

@@ -5,6 +5,8 @@ ispCP ω 1.0.0 Changelog
 		* Updated French (thanks momo)
 		* Mail_add.php display incorrect messages
 		* Fixed #1530: Inconsistency between current_ftp_cnt and actual ftp count: -9 != 1
+	- CONFIGS:
+		* logrotate/ispcp restart apache 10 times (http://www.isp-control.net/forum/apache-just-stopped-o-t-3747-2.html#pid35737)
 
 2008-09-09 Daniel Andreca
 	- ENGINE:
