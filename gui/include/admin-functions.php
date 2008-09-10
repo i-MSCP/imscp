@@ -948,7 +948,7 @@ SQL_QUERY;
 				$rsub_uf = '_on_';
 
 			$rsub_current += $sub_current;
-			$rsub_max += $sub_max;
+			$rsub_max += ($sub_max>0)?$sub_max:0;
 		}
 
 		if ($als_max != -1) {
@@ -956,27 +956,27 @@ SQL_QUERY;
 				$rals_uf = '_on_';
 
 			$rals_current += $als_current;
-			$rals_max += $als_max;
+			$rals_max += ($als_max>0)?$als_max:0;
 		}
 
 		if ($mail_max == 0)
 			$rmail_uf = '_on_';
 
 		$rmail_current += $mail_current;
-		$rmail_max += $mail_max;
+		$rmail_max += ($mail_max>0)?$mail_max:0;
 
 		if ($ftp_max == 0)
 			$rftp_uf = '_on_';
 
 		$rftp_current += $ftp_current;
-		$rftp_max += $ftp_max;
+		$rftp_max += ($ftp_max>0)?$ftp_max:0;
 
 		if ($sql_db_max != -1) {
 			if ($sql_db_max == 0)
 				$rsql_db_uf = '_on_';
 
 			$rsql_db_current += $sql_db_current;
-			$rsql_db_max += $sql_db_max;
+			$rsql_db_max += ($sql_db_max>0)?$sql_db_max:0;
 		}
 
 		if ($sql_user_max != -1) {
@@ -984,7 +984,7 @@ SQL_QUERY;
 				$rsql_user_uf = '_on_';
 
 			$rsql_user_current += $sql_user_current;
-			$rsql_user_max += $sql_user_max;
+			$rsql_user_max += ($sql_user_max>0)?$sql_user_max:0;
 		}
 
 		if ($traff_max == 0)
