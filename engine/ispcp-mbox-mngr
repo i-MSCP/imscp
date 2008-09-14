@@ -1834,20 +1834,17 @@ sub mbox_add_po_data {
 
     my $mail_autorespond = @$mbox_data[8];
 
-
     my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
 
     my $mbox_uid = $main::cfg{'MTA_MAILBOX_UID'};
 
     my $mbox_gid = $main::cfg{'MTA_MAILBOX_GID'};
 
-
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
     my $courier_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
 
     my $cmd_makeuserdb = $main::cfg{'CMD_MAKEUSERDB'};
-
 
     my $working_dir = "$conf_dir/courier/working";
 
@@ -1862,6 +1859,12 @@ sub mbox_add_po_data {
     my $userdb_working_cfg = "$working_dir/userdb";
 
     my $userdb_backup_cfg = "$backup_dir/userdb.$timestamp";
+
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/){
+
+        $mail_pass=decrypt_db_password($mail_pass);
+
+    }
 
     ($rs, $sys) = get_file($userdb_cfg);
 
@@ -1985,20 +1988,17 @@ sub mbox_del_po_data {
 
     my $mail_autorespond = @$mbox_data[8];
 
-
     my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
 
     my $mbox_uid = $main::cfg{'MTA_MAILBOX_UID'};
 
     my $mbox_gid = $main::cfg{'MTA_MAILBOX_GID'};
 
-
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
     my $courier_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
 
     my $cmd_makeuserdb = $main::cfg{'CMD_MAKEUSERDB'};
-
 
     my $working_dir = "$conf_dir/courier/working";
 
@@ -2013,6 +2013,12 @@ sub mbox_del_po_data {
     my $userdb_working_cfg = "$working_dir/userdb";
 
     my $userdb_backup_cfg = "$backup_dir/userdb.$timestamp";
+
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/){
+
+        $mail_pass=decrypt_db_password($mail_pass);
+
+   }
 
     ($rs, $sys) = get_file($userdb_cfg);
 
@@ -2177,6 +2183,12 @@ sub mbox_add_sasl_data {
     my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
 
     my $check_user = undef;
+
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/){
+
+        $mail_pass=decrypt_db_password($mail_pass);
+
+    }
 
     do {
 
@@ -2350,6 +2362,12 @@ sub mbox_del_sasl_data {
     my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
 
     my $check_user = undef;
+
+    if ($mail_type=~ /.*normal_mail.*/ || $mail_type=~ /.*subdom_mail.*/ || $mail_type=~ /.*alias_mail.*/){
+
+        $mail_pass=decrypt_db_password($mail_pass);
+
+    }
 
     do {
 

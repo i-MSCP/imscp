@@ -32,23 +32,24 @@ $tpl->define_dynamic('no_messages', 'page');
 $tpl->define_dynamic('msg_entry', 'page');
 $tpl->define_dynamic('update_message', 'page');
 $tpl->define_dynamic('database_update_message', 'page');
+$tpl->define_dynamic('critical_update_message', 'page');
 $tpl->define_dynamic('traff_warn', 'page');
 
 function gen_system_message(&$tpl, &$sql) {
 	$user_id = $_SESSION['user_id'];
 
-	$query = <<<SQL_QUERY
-        select
-            count(ticket_id) as cnum
-        from
-            tickets
-        where
-            ticket_to = ?
-          and
-            (ticket_status = '2' or ticket_status = '5')
-          and
-            ticket_reply = 0
-SQL_QUERY;
+	$query = "
+		SELECT
+			count(`ticket_id`) as cnum
+		FROM
+			`tickets`
+		WHERE
+			`ticket_to` = ?
+		AND
+			(`ticket_status` = '2' or `ticket_status` = '5')
+		AND
+			`ticket_reply` = 0
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -112,15 +113,18 @@ function get_update_infos(&$tpl) {
 	} else {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 	}
+	if (checkNewCriticalRevisionExists()) {
+		executeCriticalUpdates();
+		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
+		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
+	}
+	else {
+		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
+	}
 }
 
 function gen_server_trafic(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
-        select
-            straff_max,straff_warn
-        from
-            straff_settings
-SQL_QUERY;
+	$query = "SELECT `straff_max`, `straff_warn` FROM `straff_settings`";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -130,16 +134,16 @@ SQL_QUERY;
 
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
 
-	$query = <<<SQL_QUERY
-        select
-            IFNULL((sum(bytes_in) + sum(bytes_out)), 0)  as traffic
-        from
-            server_traffic
-        where
-            traff_time > ?
-          and
-            traff_time < ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			IFNULL((sum(`bytes_in`) + sum(`bytes_out`)), 0) AS traffic
+		FROM
+			`server_traffic`
+		WHERE
+			`traff_time` > ?
+		AND
+			`traff_time` < ?
+	";
 
 	$rs1 = exec_query($sql, $query, array($fdofmnth, $ldofmnth));
 
@@ -170,10 +174,11 @@ SQL_QUERY;
 	}
 
 	$tpl->assign(
-		array('TRAFFIC_WARNING' => $traff_msg,
+		array(
+			'TRAFFIC_WARNING' => $traff_msg,
 			'BAR_VALUE' => $bar_value,
-			)
-		);
+		)
+	);
 }
 
 /*

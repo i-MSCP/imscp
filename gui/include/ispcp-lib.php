@@ -151,6 +151,8 @@ Config::set('HARD_MAIL_SUSPENSION', true);
 // false: disable automatic serch for new version
 Config::set('CHECK_FOR_UPDATES', true);
 
+Config::set('CRITICAL_UPDATE_REVISION', 0);
+
 
 require_once(INCLUDEPATH . '/date-functions.php');
 require_once(INCLUDEPATH . '/input-checks.php');
@@ -168,6 +170,7 @@ require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
 require_once(INCLUDEPATH . '/database-update-functions.php');
+require_once(INCLUDEPATH . '/critical-update-functions.php');
 require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
 //require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.func.php');
 
@@ -187,15 +190,9 @@ if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 	$_GET	 = $purifier->purifyArray($_GET);
 	$_POST	 = $purifier->purifyArray($_POST);
 	//$_COOKIE = $purifier->purifyArray($_COOKIE);
-
 }
 
-$query = <<<SQL
-	SELECT
-		name, value
-	FROM
-		config
-SQL;
+$query = "SELECT `name`, `value` FROM `config`";
 
 if (!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));

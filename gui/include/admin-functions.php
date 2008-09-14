@@ -116,14 +116,14 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			)
 		);
 
-	$query = <<<SQL_QUERY
-		select
+	$query = "
+		SELECT
 			*
-		from
-			custom_menus
-		where
-			menu_level = 'admin'
-SQL_QUERY;
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'admin'
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -220,14 +220,14 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'CODENAME' => Config::get('CodeName')
 			)
 		);
-	$query = <<<SQL_QUERY
-		select
+	$query = "
+		SELECT
 			*
 		from
 			custom_menus
 		where
 			menu_level = 'admin1'
-SQL_QUERY;
+";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -272,14 +272,7 @@ SQL_QUERY;
 }
 
 function get_cnt_of_user(&$sql, $user_type) {
-	$query = <<<SQL_QUERY
-		SELECT
-			count(admin_id) as cnt
-		FROM
-			admin
-		WHERE
-			admin_type=?
-SQL_QUERY;
+	$query = "SELECT count(`admin_id`) as cnt FROM `admin` WHERE `admin_type`=?";
 
 	$rs = exec_query($sql, $query, array($user_type));
 
@@ -290,22 +283,10 @@ SQL_QUERY;
 
 function get_cnt(&$sql, $table, $field, $where, $value) {
 	if ($where != '') {
-		$query = <<<SQL_QUERY
-			SELECT
-				count(?) as  cnt
-			FROM
-				$table
-			WHERE
-				$where = ?
-SQL_QUERY;
+		$query = "SELECT count(?) as cnt FROM $table WHERE $where = ?";
 		$rs = exec_query($sql, $query, array($field, $value));
 	} else {
-		$query = <<<SQL_QUERY
-			SELECT
-				count(?) as  cnt
-			FROM
-				$table
-SQL_QUERY;
+		$query = "SELECT count(?) as cnt FROM $table ";
 		$rs = exec_query($sql, $query, array($field));
 	}
 
@@ -314,12 +295,7 @@ SQL_QUERY;
 }
 
 function get_sql_user_count($sql) {
-	$query = <<<SQL_QUERY
-		SELECT DISTINCT
-			sqlu_name
-		FROM
-			sql_user
-SQL_QUERY;
+	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user` ";
 
 	$rs = exec_query($sql, $query, false);
 
@@ -363,19 +339,19 @@ function get_admin_general_info(&$tpl, &$sql) {
 }
 
 function gen_admin_list(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 			SELECT
-				t1.admin_id, t1.admin_name, t1.domain_created, IFNULL(t2.admin_name, '') AS created_by
+				t1.`admin_id`, t1.`admin_name`, t1.`domain_created`, IFNULL(t2.`admin_name`, '') AS created_by
 			FROM
-				admin AS t1
-			  LEFT JOIN
-				admin AS t2 ON t1.created_by = t2.admin_id
+				`admin` AS t1
+			LEFT JOIN
+				`admin` AS t2 ON t1.created_by = t2.admin_id
 			WHERE
-				t1.admin_type='admin'
+				t1.`admin_type`='admin'
 			ORDER BY
-				t1.admin_name
+				t1.`admin_name`
 			ASC
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -457,19 +433,19 @@ SQL_QUERY;
 }
 
 function gen_reseller_list(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
-			  SELECT
-				  t1.admin_id, t1.admin_name, t1.domain_created, IFNULL(t2.admin_name, '') AS created_by
-			  FROM
-				  admin as t1
-				LEFT JOIN
-				  admin AS t2 ON t1.created_by = t2.admin_id
-			  WHERE
-				  t1.admin_type='reseller'
-			  ORDER BY
-				  t1.admin_name
-			  ASC
-SQL_QUERY;
+	$query = "
+		SELECT
+			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`, IFNULL(t2.`admin_name`, '') AS created_by
+		FROM
+			`admin` as t1
+		LEFT JOIN
+			`admin` AS t2 ON t1.created_by = t2.`admin_id`
+		WHERE
+			t1.`admin_type`='reseller'
+		ORDER BY
+			t1.`admin_name`
+		ASC
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -686,18 +662,18 @@ function gen_user_list(&$tpl, &$sql) {
 			// user status icon
 			$domain_created_id = $rs->fields['domain_created_id'];
 
-			$query = <<<SQL_QUERY
-		SELECT
-			admin_id,
-			admin_name
-		FROM
-			admin
-		WHERE
-			admin_id=?
-		ORDER BY
-			admin_name
-		ASC
-SQL_QUERY;
+			$query = "
+				SELECT
+					`admin_id`,
+					`admin_name`
+				FROM
+					`admin`
+				WHERE
+					`admin_id`=?
+				ORDER BY
+					`admin_name`
+				ASC
+			";
 
 			$rs2 = exec_query($sql, $query, array($domain_created_id));
 
@@ -804,14 +780,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 function generate_reseller_props ($reseller_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
-		SELECT
-			*
-		FROM
-			reseller_props
-		WHERE
-			reseller_id = ?
-SQL_QUERY;
+	$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
@@ -891,14 +860,7 @@ function generate_reseller_users_props ($reseller_id) {
 		$rdisk_current, $rdisk_max, $rdisk_uf
 		);
 
-	$query = <<<SQL_QUERY
-		SELECT
-			admin_id
-		FROM
-			admin
-		WHERE
-			created_by = ?
-SQL_QUERY;
+	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
@@ -907,14 +869,7 @@ SQL_QUERY;
 	} while (!$rs->EOF) {
 		$admin_id = $rs->fields['admin_id'];
 
-		$query = <<<SQL_QUERY
-			SELECT
-				domain_id
-			FROM
-				domain
-			WHERE
-				domain_admin_id = ?
-SQL_QUERY;
+		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
 
 		$dres = exec_query($sql, $query, array($admin_id));
 
@@ -1020,15 +975,7 @@ SQL_QUERY;
 function generate_user_props($user_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
-		SELECT
-			*
-		FROM
-			domain
-		WHERE
-			domain_id = ?
-
-SQL_QUERY;
+	$query = "SELECT * FROM `domain` WHERE `domain_id` = ?";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -1079,22 +1026,10 @@ function records_count($field, $table, $where, $value) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = <<<SQL_QUERY
-			SELECT
-				COUNT($field) AS cnt
-			FROM
-				$table
-			WHERE
-				$where = ?
-SQL_QUERY;
+		$query = "SELECT COUNT($field) AS cnt FROM $table WHERE $where = ?";
 		$rs = exec_query($sql, $query, array($value));
 	} else {
-		$query = <<<SQL_QUERY
-			SELECT
-				COUNT($field) AS cnt
-			FROM
-				$table
-SQL_QUERY;
+		$query = "SELECT COUNT($field) AS cnt FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
@@ -1105,22 +1040,10 @@ function records_rlike_count ($field, $table, $where, $value, $a, $b) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = <<<SQL_QUERY
-			SELECT
-				COUNT($field) AS cnt
-			FROM
-				$table
-			WHERE
-				$where RLIKE ?
-SQL_QUERY;
+		$query = "SELECT COUNT($field) AS cnt FROM $table WHERE $where RLIKE ?";
 		$rs = exec_query($sql, $query, array($a . $value . $b));
 	} else {
-		$query = <<<SQL_QUERY
-			SELECT
-				COUNT($field) AS cnt
-			FROM
-				$table
-SQL_QUERY;
+		$query = "SELECT COUNT($field) AS cnt FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
@@ -1131,23 +1054,10 @@ function sub_records_count ($field, $table, $where, $value, $subfield, $subtable
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = <<<SQL_QUERY
-			SELECT
-				$field AS field
-			FROM
-				$table
-			WHERE
-				$where = ?
-SQL_QUERY;
+		$query = "SELECT $field AS field FROM $table WHERE $where = ?";
 		$rs = exec_query($sql, $query, array($value));
 	} else {
-		$query = <<<SQL_QUERY
-			SELECT
-				$field AS field
-			FROM
-				$table
-
-SQL_QUERY;
+		$query = "SELECT $field AS field FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
@@ -1159,14 +1069,7 @@ SQL_QUERY;
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {
-			$query = <<<SQL_QUERY
-				SELECT
-					COUNT($subfield) AS cnt
-				FROM
-					$subtable
-				WHERE
-					$subwhere = ?
-SQL_QUERY;
+			$query = "SELECT COUNT($subfield) AS cnt FROM $subtable WHERE $subwhere = ?";
 		} else {
 			return $result;
 		}
@@ -1191,20 +1094,20 @@ function generate_user_traffic ($user_id) {
 		$to_timestamp = mktime(0, 0, 0, $crnt_month + 1, 1, $crnt_year);
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			domain_id,
-			IFNULL(domain_disk_usage,0) AS domain_disk_usage,
-			IFNULL(domain_traffic_limit,0) AS domain_traffic_limit,
-			IFNULL(domain_disk_limit,0) AS domain_disk_limit,
-			domain_name
+			`domain_id`,
+			IFNULL(`domain_disk_usage`,0) AS domain_disk_usage,
+			IFNULL(`domain_traffic_limit`,0) AS domain_traffic_limit,
+			IFNULL(`domain_disk_limit`,0) AS domain_disk_limit,
+			`domain_name`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		ORDER BY
-			domain_name
-SQL_QUERY;
+			`domain_name`
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -1223,25 +1126,25 @@ SQL_QUERY;
 
 		$domain_name = $rs->fields['domain_name'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
-				IFNULL(SUM(dtraff_web), 0) AS web,
-				IFNULL(SUM(dtraff_ftp), 0) AS ftp,
-				IFNULL(SUM(dtraff_mail), 0) AS smtp,
-				IFNULL(SUM(dtraff_pop), 0) AS pop,
-				IFNULL(SUM(dtraff_web), 0) +
-				IFNULL(SUM(dtraff_ftp), 0) +
-				IFNULL(SUM(dtraff_mail), 0) +
-				IFNULL(SUM(dtraff_pop), 0) AS total
+				IFNULL(SUM(`dtraff_web`), 0) AS web,
+				IFNULL(SUM(`dtraff_ftp`), 0) AS ftp,
+				IFNULL(SUM(`dtraff_mail`), 0) AS smtp,
+				IFNULL(SUM(`dtraff_pop`), 0) AS pop,
+				IFNULL(SUM(`dtraff_web`), 0) +
+				IFNULL(SUM(`dtraff_ftp`), 0) +
+				IFNULL(SUM(`dtraff_mail`), 0) +
+				IFNULL(SUM(`dtraff_pop`), 0) AS total
 			FROM
-				domain_traffic
+				`domain_traffic`
 			WHERE
-					domain_id = ?
-				AND
-					dtraff_time >= ?
-				AND
-					dtraff_time < ?
-SQL_QUERY;
+				`domain_id` = ?
+			AND
+				`dtraff_time` >= ?
+			AND
+				`dtraff_time` < ?
+		";
 
 		$rs1 = exec_query($sql, $query, array($domain_id, $from_timestamp, $to_timestamp));
 
@@ -1282,24 +1185,10 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = <<<SQL_QUERY
-	  SELECT
-		  $field AS field
-	  FROM
-		  $table
-	  WHERE
-		  $where = ?
-SQL_QUERY;
-
+		$query = "SELECT $field AS field FROM $table WHERE $where = ?";
 		$rs = exec_query($sql, $query, array($value));
 	} else {
-		$query = <<<SQL_QUERY
-			SELECT
-				$field AS field
-			FROM
-				$table
-SQL_QUERY;
-
+		$query = "SELECT $field AS field FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
@@ -1311,14 +1200,7 @@ SQL_QUERY;
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {
-			$query = <<<SQL_QUERY
-				SELECT
-					COUNT($subfield) AS cnt
-				FROM
-					$subtable
-				WHERE
-					$subwhere RLIKE ?
-SQL_QUERY;
+			$query = "SELECT COUNT($subfield) AS cnt FROM $subtable WHERE $subwhere RLIKE ?";
 		} else {
 			return $result;
 		}
@@ -1372,15 +1254,7 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 function get_user_name($user_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
-		SELECT
-			admin_name
-		FROM
-			admin
-		WHERE
-			admin_id = ?
-
-SQL_QUERY;
+	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -1390,15 +1264,14 @@ SQL_QUERY;
 function get_logo($user_id) {
 	$sql = Database::getInstance();
 	// check what logo we should return:
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			admin_id, created_by, admin_type
+			`admin_id`, `created_by`, `admin_type`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
-
-SQL_QUERY;
+			`admin_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -1416,15 +1289,7 @@ function get_own_logo($user_id) {
 function get_admin_logo($user_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
-		SELECT
-			logo
-		FROM
-			user_gui_props
-		WHERE
-			user_id= ?
-
-SQL_QUERY;
+	$query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -1459,7 +1324,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 	}
 	$msg = replace_html(htmlentities($msg . "<br><small>User IP: " . $client_ip . "</small>", ENT_COMPAT, tr('encoding')));
 
-	$query = "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)";
+	$query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
 
 	exec_query($sql, $query, $msg, false);
 
@@ -1496,7 +1361,7 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-		$headers = "From: \"ispCP  Logging Daemon\" <" . $admin_email . ">\n";
+		$headers = "From: \"ispCP Logging Daemon\" <" . $admin_email . ">\n";
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
@@ -1509,7 +1374,7 @@ AUTO_LOG_MSG;
 
 			$log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
 
-			exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
+			exec_query($sql, "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $log_message, false);
 		}
 	}
 }
@@ -1597,31 +1462,31 @@ function update_reseller_props ($reseller_id, $props) {
 		$disk_current, $disk_max
 		) = explode (";", $props);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
-			reseller_props
+			`reseller_props`
 		SET
-			current_dmn_cnt = ?,
-			max_dmn_cnt = ?,
-			current_sub_cnt = ?,
-			max_sub_cnt = ?,
-			current_als_cnt = ?,
-			max_als_cnt = ?,
-			current_mail_cnt = ?,
-			max_mail_cnt = ?,
-			current_ftp_cnt = ?,
-			max_ftp_cnt = ?,
-			current_sql_db_cnt = ?,
-			max_sql_db_cnt = ?,
-			current_sql_user_cnt = ?,
-			max_sql_user_cnt = ?,
-			current_traff_amnt = ?,
-			max_traff_amnt = ?,
-			current_disk_amnt = ?,
-			max_disk_amnt = ?
+			`current_dmn_cnt` = ?,
+			`max_dmn_cnt` = ?,
+			`current_sub_cnt` = ?,
+			`max_sub_cnt` = ?,
+			`current_als_cnt` = ?,
+			`max_als_cnt` = ?,
+			`current_mail_cnt` = ?,
+			`max_mail_cnt` = ?,
+			`current_ftp_cnt` = ?,
+			`max_ftp_cnt` = ?,
+			`current_sql_db_cnt` = ?,
+			`max_sql_db_cnt` = ?,
+			`current_sql_user_cnt` = ?,
+			`max_sql_user_cnt` = ?,
+			`current_traff_amnt` = ?,
+			`max_traff_amnt` = ?,
+			`current_disk_amnt` = ?,
+			`max_disk_amnt` = ?
 		WHERE
-			reseller_id = ?
-SQL_QUERY;
+			`reseller_id` = ?
+	";
 
 	$res = exec_query($sql, $query, array($dmn_current,
 			$dmn_max,
@@ -1670,60 +1535,55 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 		return;
 	}
 
-	$query = <<<SQL_QUERY
-	  SELECT
-		  mail_id,
-		  mail_pass
-	  FROM
-		  mail_users
-	  WHERE
-		  domain_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`mail_id`,
+			`mail_pass`,
+			`mail_type`
+		FROM
+			`mail_users`
+		WHERE
+			`domain_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
 	while (!$rs->EOF) {
 
-	    $mail_id = $rs->fields['mail_id'];
-	    $mail_pass = $rs->fields['mail_pass'];
+		$mail_id = $rs->fields['mail_id'];
+		$mail_pass = $rs->fields['mail_pass'];
+		$mail_type = $rs->fields['mail_type'];
 
-	    if (Config::get('HARD_MAIL_SUSPENSION')) {
-	        $mail_status = $new_status;
-	    } else {
-    		if ($action == 'disable') {
-    			$timestamp = time();
-    			$pass_prefix = substr(md5($timestamp), 0, 4);
-    			$mail_pass = $pass_prefix . $rs->fields['mail_pass'];
-    		} else if ($action == 'enable') {
-    			$mail_pass = substr($rs->fields['mail_pass'], 4, 50);
-    		} else {
-    			return;
-    		}
-		    $mail_status = Config::get('ITEM_CHANGE_STATUS');
-	    }
+		if (Config::get('HARD_MAIL_SUSPENSION')) {
+			$mail_status = $new_status;
+		} else {
+			if ($action == 'disable') {
+				$timestamp = time();
+				$pass_prefix = substr(md5($timestamp), 0, 4);
+				if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)){
+					$mail_pass=decrypt_db_password($mail_pass);
+					$mail_pass = $pass_prefix . $mail_pass;
+					$mail_pass=encrypt_db_password($mail_pass);
+				}
+			} else if ($action == 'enable') {
+				if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)){
+					$mail_pass=decrypt_db_password($mail_pass);
+					$mail_pass = substr($mail_pass, 4, 50);
+					$mail_pass=encrypt_db_password($mail_pass);
+				}
+			} else {
+				return;
+			}
+			$mail_status = Config::get('ITEM_CHANGE_STATUS');
+		}
 
-		$query = <<<SQL_QUERY
-			UPDATE
-				 mail_users
-			SET
-				mail_pass = ?,
-				status = ?
-			WHERE
-				mail_id = ?
-SQL_QUERY;
+		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
 
 		$rs2 = exec_query($sql, $query, array($mail_pass, $mail_status, $mail_id));
 
 		$rs->MoveNext();
 	}
-	$query = <<<SQL_QUERY
-		  UPDATE
-			  domain
-		  SET
-			  domain_status = ?
-		  WHERE
-			  domain_id = ?
-SQL_QUERY;
+	$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
 
 	$rs = exec_query($sql, $query, array($new_status, $domain_id));
 
@@ -1756,126 +1616,75 @@ function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 	$rows_per_page, $search_for, $search_common, $search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// We have pure list query;
-		$count_query = <<<SQL_QUERY
-				SELECT
-					COUNT(domain_id) AS cnt
-				FROM
-					domain
-SQL_QUERY;
+		$count_query = "SELECT COUNT(domain_id) AS cnt FROM `domain`";
 
-		$search_query = <<<SQL_QUERY
-				 SELECT
-					*
-				 FROM
-					domain
-				 ORDER BY
-					domain_name ASC
-				 LIMIT
-					$start_index, $rows_per_page
-SQL_QUERY;
+		$search_query = "SELECT * FROM `domain` ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page";
 	} else if ($search_for === '' && $search_status != '') {
 		if ($search_status === 'all') {
-			$add_query = <<<SQL_QUERY
-SQL_QUERY;
+			$add_query = "";
 		} else {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					domain_status = '$search_status'
-SQL_QUERY;
+			$add_query = "WHERE `domain_status` = '$search_status'";
 		}
 
-		$count_query = <<<SQL_QUERY
-				SELECT
-					COUNT(domain_id) AS cnt
-				FROM
-					domain
-				   $add_query
-SQL_QUERY;
+		$count_query = "SELECT COUNT(domain_id) AS cnt FROM `domain` $add_query";
 
-		$search_query = <<<SQL_QUERY
-				 SELECT
-					*
-				 FROM
-					domain
-					$add_query
-				 ORDER BY
-					domain_name ASC
-				 LIMIT
-					$start_index, $rows_per_page
-SQL_QUERY;
+		$search_query = "SELECT * FROM `domain` $add_query ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page";
+
 	} else if ($search_for != '') {
 		if ($search_common === 'domain_name') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					admin_name RLIKE '$search_for' %s
-SQL_QUERY;
+			$add_query = "WHERE `admin_name` RLIKE '$search_for' %s";
 		} else if ($search_common === 'customer_id') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					customer_id RLIKE '$search_for' %s
-SQL_QUERY;
+			$add_query = "WHERE customer_id RLIKE '$search_for' %s";
 		} else if ($search_common === 'lname') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					(lname RLIKE '$search_for' OR fname RLIKE '$search_for') %s
-SQL_QUERY;
+			$add_query = "WHERE (lname RLIKE '$search_for' OR fname RLIKE '$search_for') %s";
 		} else if ($search_common === 'firm') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					firm RLIKE '$search_for' %s
-SQL_QUERY;
+			$add_query = "WHERE firm RLIKE '$search_for' %s";
 		} else if ($search_common === 'city') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					city RLIKE '$search_for' %s
-SQL_QUERY;
+			$add_query = "WHERE city RLIKE '$search_for' %s";
 		} else if ($search_common === 'country') {
-			$add_query = <<<SQL_QUERY
-				WHERE
-					country RLIKE '$search_for' %s
-SQL_QUERY;
+			$add_query = "WHERE country RLIKE '$search_for' %s";
 		}
 
 		if ($search_status != 'all') {
 			// $add_query = sprintf($add_query, " and t1.created_by = '$reseller_id' and t2.domain_status = '$search_status'");
 			$add_query = sprintf($add_query, " and t2.domain_status = '$search_status'");
 
-			$count_query = <<<SQL_QUERY
-					SELECT
-						COUNT(admin_id) AS cnt
-					FROM
-						admin AS t1,
-						domain AS t2
-					$add_query
-						AND
-					t1.admin_id = t2.domain_admin_id
-SQL_QUERY;
-		} else {
-			$add_query = sprintf($add_query, " ");
-
-			$count_query = <<<SQL_QUERY
-					SELECT
-						COUNT(admin_id) AS cnt
-					FROM
-						admin
-					$add_query
-SQL_QUERY;
-		}
-
-		$search_query = <<<SQL_QUERY
-			SELECT
-					t1.admin_id, t2.*
-			FROM
-					admin as t1,
-				 	domain as t2
+			$count_query = "
+				SELECT
+					COUNT(admin_id) AS cnt
+				FROM
+					admin AS t1,
+					domain AS t2
 				$add_query
 				AND
 					t1.admin_id = t2.domain_admin_id
-				ORDER BY
-					t2.domain_name ASC
-				LIMIT
-					$start_index, $rows_per_page
-SQL_QUERY;
+			";
+		} else {
+			$add_query = sprintf($add_query, " ");
+
+			$count_query = "
+				SELECT
+					COUNT(admin_id) AS cnt
+				FROM
+					admin
+				$add_query
+			";
+		}
+
+		$search_query = "
+			SELECT
+				t1.admin_id, t2.*
+			FROM
+				admin as t1,
+				domain as t2
+				$add_query
+			AND
+				t1.admin_id = t2.domain_admin_id
+			ORDER BY
+				t2.domain_name ASC
+			LIMIT
+				$start_index, $rows_per_page
+		";
 	}
 }
 
@@ -2160,14 +1969,14 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 }
 
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
-	$query = <<<SQL_QUERY
-			SELECT
-				header, footer
-			FROM
-				orders_settings
-			WHERE
-				user_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			header, footer
+		FROM
+			orders_settings
+		WHERE
+			user_id = ?
+	";
 
 	if (isset($_SESSION['user_theme'])) {
 		$theme = $_SESSION['user_theme'];
@@ -2195,7 +2004,7 @@ SQL_QUERY;
      <td align="center">
 RIC;
 
-		$footer = <<<RIC
+        $footer = <<<RIC
      </td>
     </tr>
    </table>
@@ -2224,14 +2033,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	$sql = Database::getInstance();
 	global $admin_login;
 	// To information
-	$query = <<<SQL_QUERY
-		SELECT
-			fname, lname, email, admin_name
-		FROM
-			admin
-		WHERE
-			admin_id = '$to_id'
-SQL_QUERY;
+	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = '$to_id'";
 
 	$res = execute_query($sql, $query);
 	$to_email = $res->fields['email'];
@@ -2239,14 +2041,7 @@ SQL_QUERY;
 	$to_lname = $res->fields['lname'];
 	$to_uname = $res->fields['admin_name'];
 	// From information
-	$query = <<<SQL_QUERY
-		SELECT
-			fname, lname, email, admin_name
-		FROM
-			admin
-		WHERE
-			admin_id = ?
-SQL_QUERY;
+	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = ?";
 
 	$res = exec_query($sql, $query, $from_id);
 	$from_email = $res->fields['email'];
@@ -2308,16 +2103,16 @@ SQL_QUERY;
 function setConfig_Value($name, $value) {
 	$sql = Database::getInstance();
 
-	$query = "SELECT name FROM config WHERE name='" . $name . "'";
+	$query = "SELECT `name` FROM `config` WHERE `name`='" . $name . "'";
 
 	$res = exec_query($sql, $query, array());
 
 	if ($res->RecordCount() == 0) {
-		$query = "INSERT INTO config (name, value) VALUES ('" . $name . "','" . $value . "')";
+		$query = "INSERT INTO `config` (`name`, `value`) VALUES ('" . $name . "','" . $value . "')";
 
 		exec_query($sql, $query, array());
 	} else {
-		$query = "UPDATE config SET	value='" . $value . "' WHERE name='" . $name . "'";
+		$query = "UPDATE `config` SET	`value`='" . $value . "' WHERE `name`='" . $name . "'";
 
 		$res = exec_query($sql, $query, array());
 	}

@@ -154,7 +154,7 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($db_user_id, $dmn_id));
 
     $db_user_name = $rs->fields['sqlu_name'];
-    $db_user_pass = $rs->fields['sqlu_pass'];
+    $db_user_pass = decrypt_db_password($rs->fields['sqlu_pass']);
     $db_name = $rs->fields['sqld_name'];
 
     if (!@$sql_user =Database::connect($db_user_name, $db_user_pass, Config::get('DB_TYPE'), Config::get('DB_HOST'), $db_name)) {
@@ -197,7 +197,7 @@ function gen_page_post_data(&$tpl, &$sql, $db_user_id) {
 					);
     } else {
         $query = <<<SQL_QUERY
-            select
+			select
 				sqlu_name as db_user_name
 			from
 				sql_user
@@ -209,8 +209,8 @@ SQL_QUERY;
         $tpl->assign(
 					array(
 						'USER_NAME' => $rs->fields['db_user_name'],
-                		'SQL_QUERY' => '',
-                		'SQL_RESULT' => ''
+						'SQL_QUERY' => '',
+						'SQL_RESULT' => ''
 						)
 					);
     }

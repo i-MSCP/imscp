@@ -1,5 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-08-26 Daniel Andreca
+	- GUI:
+		* encript email password in database
+		* encript sql password in database
+		* Fixed #1535: Wrong error text in user Email creation
+		* Fixed #1396: Wordwrap in ticket system
+		* Fixed #1533 Hardcoded FTP sepparator
+
 2008-09-10 Daniel Andreca
 	- LANGUAGES:
 		* Updated French (thanks momo)

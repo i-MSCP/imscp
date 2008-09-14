@@ -170,6 +170,8 @@ SQL_QUERY;
 }
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
+	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
+
 	$query = <<<SQL_QUERY
         SELECT
             domain_name
@@ -192,7 +194,7 @@ SQL_QUERY;
             userid RLIKE ?
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array('@' . $dmn_name));
+	$rs = exec_query($sql, $query, array($ftp_separator . $dmn_name));
 
 	$dmn_ftp_acc_cnt = $rs->fields['cnt'];
 
@@ -200,6 +202,7 @@ SQL_QUERY;
 }
 
 function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
+	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
         SELECT
             subdomain_name
@@ -237,7 +240,7 @@ SQL_QUERY;
                 userid RLIKE ?
 SQL_QUERY;
 
-		$rs_cnt = exec_query($sql, $query, array('@' . $sub_name . '.' . $dmn->fields['domain_name']));
+		$rs_cnt = exec_query($sql, $query, array($ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']));
 
 		$sub_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
@@ -248,6 +251,7 @@ SQL_QUERY;
 }
 
 function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
+	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
         SELECT
             alias_name
@@ -275,7 +279,7 @@ SQL_QUERY;
                 userid RLIKE ?
 SQL_QUERY;
 
-		$rs_cnt = exec_query($sql, $query, array('@' . $als_name));
+		$rs_cnt = exec_query($sql, $query, array($ftp_separator . $als_name));
 
 		$als_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
@@ -702,14 +706,6 @@ SQL_QUERY;
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 		// delete user record from mysql.user table;
-/*		$query = <<<SQL_QUERY
-       	 DELETE FROM
-        	    mysql.user
-       	 WHERE
-         		Host = '%'
-           AND
-				User = ?
-SQL_QUERY; */
 		$query = <<<SQL_QUERY
 			DROP USER ?@'%';
 SQL_QUERY;
@@ -718,14 +714,7 @@ SQL_QUERY;
 		$query = <<<SQL_QUERY
 			DROP USER ?@'localhost';
 SQL_QUERY;
-/*		$query = <<<SQL_QUERY
-			DELETE FROM
-				mysql.user
-			WHERE
-				Host = 'localhost'
-			  AND
-				User = ?
-SQL_QUERY; */
+
 		$rs = exec_query($sql, $query, array($db_user_name));
 		// flush privileges.
 		$query = <<<SQL_QUERY

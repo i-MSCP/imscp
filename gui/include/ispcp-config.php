@@ -64,4 +64,39 @@ function decrypt_db_password ($db_pass) {
 	}
 }
 
+function encrypt_db_password($db_pass){
+	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
+	
+	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
+		$td = @mcrypt_module_open (MCRYPT_BLOWFISH, '', 'cbc', '');
+		// Create key
+		$key = $ispcp_db_pass_key;
+		// Create the IV and determine the keysize length
+		$iv = $ispcp_db_pass_iv;
+		
+		//compatibility with used perl pads
+		$block_size=@mcrypt_enc_get_block_size($td);
+		$strlen=strlen($db_pass);
+
+		$pads=$block_size-$strlen % $block_size;
+
+		for ($i=0; $i<$pads;$i++){
+			$db_pass.=" ";
+		}
+		// Intialize encryption
+		@mcrypt_generic_init ($td, $key, $iv);
+		//Encrypt string
+		$encrypted = @mcrypt_generic ($td, $db_pass);
+		@mcrypt_generic_deinit($td);
+		@mcrypt_module_close($td);
+
+		$text = @base64_encode("$encrypted");
+		$text=trim($text);
+		return $text;
+	} else {
+		//system_message("ERROR: The php-extension 'mcrypt' not loaded!");
+		die("ERROR: The php-extension 'mcrypt' not loaded!");
+	}
+}
+
 ?>

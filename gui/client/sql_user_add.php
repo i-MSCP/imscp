@@ -82,19 +82,19 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 
 	$dmn_name = $_SESSION['user_logged'];
 
-	$query = <<<SQL_QUERY
-        select
-            t1.sqld_id, t2.domain_id, t2.domain_name
-        from
-            sql_database as t1,
-            domain as t2
-        where
-            t1.sqld_id = ?
-          and
-            t2.domain_id = t1.domain_id
-          and
-            t2.domain_name = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			t1.`sqld_id`, t2.`domain_id`, t2.`domain_name`
+		FROM
+			`sql_database` as t1,
+			`domain` as t2
+		WHERE
+			t1.`sqld_id` = ?
+		AND
+			t2.`domain_id` = t1.`domain_id`
+		AND
+			t2.`domain_name` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
 
@@ -106,9 +106,7 @@ SQL_QUERY;
 }
 // Returns an array with a list of the sqlusers of the current database
 function get_sqluser_list_of_current_db(&$sql, $db_id) {
-	$query = "SELECT sqlu_name
-			  FROM sql_user
-			  WHERE sqld_id = ?";
+	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
 
 	$rs = exec_query($sql, $query, array($db_id));
 
@@ -131,22 +129,22 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 	$userlist = get_sqluser_list_of_current_db($sql, $db_id);
 	$dmn_id = get_user_domain_id($sql, $user_id);
 	// Lets select all sqlusers of the current domain except the users of the current database
-	$query = <<<SQL_QUERY
-	SELECT
-		t1.sqlu_name,
-		t1.sqlu_id
-	FROM
-		sql_user AS t1,
-		sql_database AS t2
-    WHERE
-	    t1.sqld_id = t2.sqld_id
-	  AND
-	    t2.domain_id = ?
-	  AND
-	    t1.sqld_id  <> ?
-	ORDER BY
-	    t1.sqlu_name
-SQL_QUERY;
+	$query = "
+		SELECT
+			t1.`sqlu_name`,
+			t1.`sqlu_id`
+		FROM
+			`sql_user` AS t1,
+			`sql_database` AS t2
+		WHERE
+			t1.`sqld_id` = t2.`sqld_id`
+			AND
+			t2.`domain_id` = ?
+		AND
+			t1.`sqld_id` <> ?
+		ORDER BY
+			t1.`sqlu_name`
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
@@ -163,9 +161,13 @@ SQL_QUERY;
 		if ($oldrs_name != $rs->fields['sqlu_name'] && @!in_array($rs->fields['sqlu_name'], $userlist)) {
 			$user_found = true;
 			$oldrs_name = $rs->fields['sqlu_name'];
-			$tpl->assign(array('SQLUSER_ID' => $rs->fields['sqlu_id'],
+			$tpl->assign(
+				array(
+					'SQLUSER_ID' => $rs->fields['sqlu_id'],
 					'SQLUSER_SELECTED' => $select,
-					'SQLUSER_NAME' => $rs->fields['sqlu_name']));
+					'SQLUSER_NAME' => $rs->fields['sqlu_name']
+				)
+			);
 			$tpl->parse('SQLUSER_LIST', '.sqluser_list');
 		}
 		$rs->MoveNext();
@@ -180,9 +182,7 @@ SQL_QUERY;
 }
 
 function check_db_user(&$sql, $db_user) {
-	$query = <<<SQL_QUERY
-        select count(User) as cnt from mysql.user where User=?
-SQL_QUERY;
+	$query = "SELECT count(User) AS cnt FROM mysql.user WHERE User=?";
 
 	$rs = exec_query($sql, $query, array($db_user));
 	return $rs->fields['cnt'];
@@ -219,14 +219,14 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	}
 
 	if (isset($_POST['Add_Exist'])) {
-		$query = "SELECT sqlu_pass FROM sql_user WHERE sqlu_id = ?";
+		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_id` = ?";
 		$rs = exec_query($sql, $query, array($_POST['sqluser_id']));
 
 		if ($rs->RecordCount() == 0) {
 			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'));
 			return;
 		}
-		$user_pass = $rs->fields['sqlu_pass'];
+		$user_pass = decrypt_db_password($rs->fields['sqlu_pass']);
 	} else {
 		$user_pass = $_POST['pass'];
 	}
@@ -269,25 +269,25 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	// add user in the ispcp table;
 
-	$query = <<<SQL_QUERY
-        insert into sql_user
-            (sqld_id, sqlu_name, sqlu_pass)
-        values
-            (?, ?, ?)
-SQL_QUERY;
+	$query = "
+		INSERT INTO `sql_user`
+			(`sqld_id`, `sqlu_name`, `sqlu_pass`)
+		VALUES
+			(?, ?, ?)
+	";
 
-	$rs = exec_query($sql, $query, array($db_id, $db_user, $user_pass));
+	$rs = exec_query($sql, $query, array($db_id, $db_user, encrypt_db_password($user_pass)));
 
-	$query = <<<SQL_QUERY
-        select
-            sqld_name as db_name
-        from
-            sql_database
-        where
-            sqld_id = ?
-          and
-            domain_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			`sqld_name` as `db_name`
+		FROM
+			`sql_database`
+		WHERE
+			`sqld_id` = ?
+		AND
+			`domain_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($db_id, $dmn_id));
 	$db_name = $rs->fields['db_name'];

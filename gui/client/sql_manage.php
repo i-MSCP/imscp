@@ -36,16 +36,16 @@ $count = -1;
 function gen_db_user_list(&$tpl, &$sql, $db_id) {
 	global $count;
 
-	$query = <<<SQL_QUERY
-        SELECT
-            sqlu_id, sqlu_name, sqlu_pass
-        FROM
-            sql_user
-        WHERE
-            sqld_id = ?
-        ORDER BY
-            sqlu_name
-SQL_QUERY;
+	$query = "
+		SELECT
+			`sqlu_id`, `sqlu_name`, `sqlu_pass`
+		FROM
+			`sql_user`
+		WHERE
+			`sqld_id` = ?
+		ORDER BY
+			`sqlu_name`
+	";
 
 	$rs = exec_query($sql, $query, array($db_id));
 
@@ -70,7 +70,7 @@ SQL_QUERY;
 			$count++;
 			$user_id = $rs->fields['sqlu_id'];
 			$user_mysql = $rs -> fields['sqlu_name'];
-	  		$pass_mysql = $rs -> fields['sqlu_pass'];
+			$pass_mysql = decrypt_db_password($rs -> fields['sqlu_pass']);
 			$tpl->assign(
 					array(
 						'DB_USER' => $user_mysql,
@@ -89,16 +89,16 @@ SQL_QUERY;
 function gen_db_list(&$tpl, &$sql, $user_id) {
 	$dmn_id = get_user_domain_id($sql, $user_id);
 
-	$query = <<<SQL_QUERY
-        SELECT
-            sqld_id, sqld_name
-        FROM
-            sql_database
-        WHERE
-            domain_id = ?
-        ORDER BY
-            sqld_name
-SQL_QUERY;
+	$query = "
+		SELECT
+			`sqld_id`, `sqld_name`
+		FROM
+			`sql_database`
+		WHERE
+			`domain_id` = ?
+		ORDER BY
+			`sqld_name`
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 

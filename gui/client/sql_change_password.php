@@ -62,32 +62,24 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 	$user_pass = $_POST['pass'];
 
 	// update user pass in the ispcp sql_user table;
-	$query = <<<SQL_QUERY
-        update
-            sql_user
-        set
-            sqlu_pass = ?
-        where
-            sqlu_name = ?
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`sql_user`
+		SET
+			`sqlu_pass` = ?
+		WHERE
+			`sqlu_name` = ?
+	";
 
-	$rs = exec_query($sql, $query, array($user_pass, $db_user_name));
+	$rs = exec_query($sql, $query, array(encrypt_db_password($user_pass), $db_user_name));
 
 	// update user pass in the mysql system tables;
 
-	$query = <<<SQL_QUERY
-
-        SET PASSWORD FOR '$db_user_name'@'%' = PASSWORD('$user_pass')
-
-SQL_QUERY;
+	$query = "SET PASSWORD FOR '$db_user_name'@'%' = PASSWORD('$user_pass')";
 
 	$rs = execute_query($sql, $query);
 
-	$query = <<<SQL_QUERY
-
-		SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')
-
-SQL_QUERY;
+	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
 	$rs = execute_query($sql, $query);
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . $db_user_name);
@@ -97,17 +89,21 @@ SQL_QUERY;
 
 function gen_page_data(&$tpl, &$sql, $db_user_id) {
 	$query = <<<SQL_QUERY
-        select
-			sqlu_name
-		from
-			sql_user
-		where
-			sqlu_id = ?
+		SELECT
+			`sqlu_name`
+		FROM
+			`sql_user`
+		WHERE
+			`sqlu_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($db_user_id));
-	$tpl->assign(array('USER_NAME' => $rs->fields['sqlu_name'],
-			'ID' => $db_user_id));
+	$tpl->assign(
+		array(
+			'USER_NAME' => $rs->fields['sqlu_name'],
+			'ID' => $db_user_id
+		)
+	);
 	return $rs->fields['sqlu_name'];
 }
 

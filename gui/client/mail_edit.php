@@ -42,19 +42,19 @@ function edit_mail_account(&$tpl, &$sql) {
 
 	$dmn_name = $_SESSION['user_logged'];
 
-	$query = <<<SQL_QUERY
-          select
-              t1.*, t2.domain_id, t2.domain_name
-          from
-              mail_users as t1,
-              domain as t2
-          where
-              t1.mail_id = ?
-            and
-              t2.domain_id = t1.domain_id
-            and
-              t2.domain_name = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			t1.*, t2.`domain_id`, t2.`domain_name`
+		FROM
+			`mail_users` as t1,
+			`domain` as t2
+		WHERE
+			t1.`mail_id` = ?
+		AND
+			t2.`domain_id` = t1.`domain_id`
+		AND
+			t2.`domain_name` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
@@ -72,38 +72,38 @@ SQL_QUERY;
 		foreach (explode(',', $mail_type_list) as $mail_type) {
 			if ($mail_type == MT_NORMAL_MAIL) {
 				$mtype[] = 1;
-				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
  				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
-				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALIAS_MAIL) {
 				$mtype[] = 2;
-				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($sub_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
-				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
-				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
  				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_SUBDOM_FORWARD) {
  				$mtype[] = 6;
-				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			}
@@ -184,27 +184,15 @@ function update_email_pass($sql) {
 		set_page_message(tr('Entered passwords differ!'));
 		return false;
 	} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) { // Not permitted chars
-        set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
+        set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs!', Config::get('PASSWD_CHARS')));
 		return false;
 	} else {
+		$pass=encrypt_db_password($pass);
 		$status = Config::get('ITEM_CHANGE_STATUS');
-
 		check_for_lock_file();
-
-		$query = <<<SQL_QUERY
-          UPDATE
-              `mail_users`
-          SET
-              `mail_pass` = ?,
-              `status` = ?
-          WHERE
-              `mail_id` = ?
-SQL_QUERY;
-
+		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
 		$rs = exec_query($sql, $query, array($pass, $status, $mail_id));
-
 		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
-
 		return true;
 	}
 }
@@ -266,16 +254,7 @@ function update_email_forward(&$tpl, &$sql) {
 
 	check_for_lock_file();
 
-	$query = <<<SQL_QUERY
-          UPDATE
-              `mail_users`
-          SET
-              `mail_forward` = ?,
-              `mail_type` = ?,
-              `status` = ?
-          WHERE
-              `mail_id` = ?
-SQL_QUERY;
+	$query = "UPDATE `mail_users` SET `mail_forward` = ?, `mail_type` = ?, `status` = ? WHERE `mail_id` = ?";
 
 	$rs = exec_query($sql, $query, array($forward_list, $mail_type, $status, $mail_id));
 
