@@ -73,6 +73,15 @@ function get_update_infos(&$tpl) {
 
 	$sql = Database::getInstance();
 
+	if (checkNewCriticalRevisionExists()) {
+		executeCriticalUpdates();
+		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
+		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
+	}
+	else {
+		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
+	}
+	
 	if (!Config::get('CHECK_FOR_UPDATES')) {
 		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
@@ -112,14 +121,6 @@ function get_update_infos(&$tpl) {
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
-	}
-	if (checkNewCriticalRevisionExists()) {
-		executeCriticalUpdates();
-		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
-		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
-	}
-	else {
-		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
 	}
 }
 

@@ -1,7 +1,7 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-008-09-15 Daniel Andreca
+2008-09-15 Daniel Andreca
 	- GUI:
 		* Fixed #1396: Wordwrap in ticket system (admin / client)
 		* Fixed #1506: Email edit link inconsistent with other pages
