@@ -233,7 +233,11 @@ sub ask_db_ftp_user {
 	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_ftp_user'} = $db_user;
 	}
-	else {
+	elsif( $rdata eq $main::ua{'db_user'}) {
+		$qmsg = "\n\tftp SQL user must not be identical to system SQL user!";
+		print STDOUT $qmsg;
+		return 1;
+	} else {
 		$main::ua{'db_ftp_user'} = $rdata;
 	}
 
@@ -470,6 +474,14 @@ sub ask_db_pma_user {
 
 	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_pma_user'} = $db_user;
+	} elsif( $rdata eq $main::ua{'db_user'}){
+		$qmsg = "\n\tphpMyAdmin Control user must not be identical to system SQL user!";
+		print STDOUT $qmsg;
+		return 1;
+	} elsif ($rdata eq $main::ua{'db_ftp_user'}) {
+		$qmsg = "\n\tphpMyAdmin Control user must not be identical to ftp SQL user!";
+		print STDOUT $qmsg;
+		return 1;
 	} else {
 		$main::ua{'db_pma_user'} = $rdata;
 	}

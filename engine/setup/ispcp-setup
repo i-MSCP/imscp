@@ -155,8 +155,9 @@ sub user_dialog {
 	# ispCP ftp SQL user questions;
 	#
 
-	$rs = ask_db_ftp_user();
-	return $rs if ($rs != 0);
+	do {
+		$rs = ask_db_ftp_user();
+	} while ($rs == 1);
 
 	do {
 		$rs = ask_db_ftp_password();
@@ -166,8 +167,9 @@ sub user_dialog {
 	# PMA user for SQL
 	#
 
-	$rs = ask_db_pma_user();
-	return $rs if ($rs != 0);
+	do {
+		$rs = ask_db_pma_user();
+	} while ($rs == 1);
 
 	do {
 		$rs = ask_db_pma_password();

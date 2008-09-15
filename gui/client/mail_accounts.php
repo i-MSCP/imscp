@@ -46,9 +46,9 @@ $tpl->assign(
 
 function gen_user_mail_action($mail_id, $mail_status) {
 	if ($mail_status === Config::get('ITEM_OK_STATUS')) {
-		return array(tr('Delete'), "mail_delete.php?id=$mail_id", "mail_edit.php?id=$mail_id");
+		return array(tr('Delete'), "mail_delete.php?id=$mail_id", tr('Edit'), "mail_edit.php?id=$mail_id");
 	} else {
-		return array(tr('N/A'), '#', '#');
+		return array(tr('N/A'), '#', tr('N/A'), '#');
 	}
 }
 
@@ -121,7 +121,7 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				$tpl->assign('ITEM_CLASS', 'content2');
 			}
 
-			list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
+			list($mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 			$show_dmn_name = decode_idna($dmn_name);
@@ -138,8 +138,9 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					'MAIL_ACC'			=> $mail_acc . "@" . $show_dmn_name,
 					'MAIL_TYPE'			=> $mail_type,
 					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
-					'MAIL_ACTION'		=> $mail_action,
-					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_DELETE'		=> $mail_delete,
+					'MAIL_DELETE_SCRIPT'=> $mail_delete_script,
+					'MAIL_EDIT'			=> $mail_edit,
 					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
 				)
 			);
@@ -199,7 +200,7 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				$tpl->assign('ITEM_CLASS', 'content2');
 			}
 
-			list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
+			list($mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 
@@ -215,11 +216,13 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 
 			$tpl->assign(
-				array('MAIL_ACC'		=> $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
+				array(
+					'MAIL_ACC'		=> $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
 					'MAIL_TYPE'			=> $mail_type,
 					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
-					'MAIL_ACTION'		=> $mail_action,
-					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_DELETE'		=> $mail_delete,
+					'MAIL_DELETE_SCRIPT'=> $mail_delete_script,
+					'MAIL_EDIT'			=> $mail_edit,
 					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
 				)
 			);
@@ -278,7 +281,7 @@ SQL_QUERY;
 			} else {
 				$tpl->assign('ITEM_CLASS', 'content2');
 			}
-			list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
+			list($mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 			$show_dmn_name = decode_idna($dmn_name);
@@ -297,8 +300,9 @@ SQL_QUERY;
 					'MAIL_ACC'			=> $mail_acc . "@" . $show_als_name,
 					'MAIL_TYPE'			=> $mail_type,
 					'MAIL_STATUS'		=> translate_dmn_status($rs->fields['status']),
-					'MAIL_ACTION'		=> $mail_action,
-					'MAIL_ACTION_SCRIPT'=> $mail_action_script,
+					'MAIL_DELETE'		=> $mail_delete,
+					'MAIL_DELETE_SCRIPT'=> $mail_delete_script,
+					'MAIL_EDIT'			=> $mail_edit,
 					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
 					)
 				);
