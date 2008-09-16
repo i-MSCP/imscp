@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: sqlparser.lib.php 11513 2008-08-28 16:17:53Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -152,7 +152,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11335 2008-06-21 14:01:54Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11513 2008-08-28 16:17:53Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -833,6 +833,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $number_of_brackets = 0;
         $in_subquery = false;
         $seen_subquery = false;
+        $seen_from = false;
 
         // for SELECT EXTRACT(YEAR_MONTH FROM CURDATE())
         // we must not use CURDATE as a table_ref

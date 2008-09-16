@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 11407 2008-07-18 17:42:52Z lem9 $
+ * @version $Id: export.php 11450 2008-08-01 19:15:01Z lem9 $
  */
 
 /**
@@ -344,7 +344,7 @@ if (!$save_on_server) {
         // Download
         // (avoid rewriting data containing HTML with anchors and forms;
         // this was reported to happen under Plesk)
-        ini_set('url_rewriter.tags','');
+        @ini_set('url_rewriter.tags','');
 
         if (!empty($content_encoding)) {
             header('Content-Encoding: ' . $content_encoding);

@@ -3,7 +3,7 @@
 /**
  * Library that provides common import functions that are used by import plugins
  *
- * @version $Id: import.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: import.lib.php 11451 2008-08-01 20:02:21Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -175,7 +175,9 @@ function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
                 }
             }
             // check length of query unless we decided to pass it to sql.php
-            if (!$go_sql) {
+            // (if $run_query is false, we are just displaying so show
+            // the complete query in the textarea)
+            if (! $go_sql && $run_query) {
                 if ($cfg['VerboseMultiSubmit'] && ! empty($sql_query)) {
                     if (strlen($sql_query) > 50000 || $executed_queries > 50 || $max_sql_len > 1000) {
                         $sql_query = '';

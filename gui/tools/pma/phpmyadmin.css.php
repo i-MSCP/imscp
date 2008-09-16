@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: phpmyadmin.css.php 11358 2008-06-28 15:46:54Z lem9 $
+ * @version $Id: phpmyadmin.css.php 11450 2008-08-01 19:15:01Z lem9 $
  */
 
 /**
@@ -19,7 +19,7 @@ require_once './libraries/sqlparser.lib.php';
 // when zlib_compression is on
 if (PMA_USR_BROWSER_AGENT == 'IE' && PMA_USR_BROWSER_VER == '6'
  && (ini_get('zlib.output_compression'))) {
-    ini_set('zlib.output_compression', 'Off');
+    @ini_set('zlib.output_compression', 'Off');
 }
 
 if ($GLOBALS['text_dir'] === 'ltr') {

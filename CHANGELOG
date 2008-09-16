@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-16 Benedikt Heintel
+	- TOOLS:
+		* Updated: PHPmyAdmin to 2.11.9.1
+
 2008-09-15 Daniel Andreca
 	- GUI:
 		* Fixed #1396: Wordwrap in ticket system (admin / client)
@@ -13,7 +17,7 @@ ispCP ω 1.0.0 Changelog
 		* Encrypt email password in database
 		* Encrypt sql password in database
 		* Fixed #1535: Wrong error text in user Email creation
-		* Fixed #1396: Wordwrap in ticket system (resseler)
+		* Fixed #1396: Wordwrap in ticket system (reseler)
 		* Fixed #1533 Hardcoded FTP sepparator
 
 2008-09-10 Daniel Andreca

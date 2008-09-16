@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 11390 2008-07-15 14:14:09Z lem9 $
+ * @version $Id: cookie.auth.lib.php 11449 2008-08-01 19:00:36Z lem9 $
  */
 
 if (! defined('PHPMYADMIN')) {
@@ -154,7 +154,8 @@ if (top != self) {
     // Displays the languages form
     if (empty($GLOBALS['cfg']['Lang'])) {
         require_once './libraries/display_select_lang.lib.php';
-        PMA_select_language(true);
+        // use fieldset, don't show doc link
+        PMA_select_language(true, false);
     }
 
     // Displays the warning message and the login form
@@ -179,14 +180,8 @@ if (top != self) {
     <legend>
 <?php 
     echo $GLOBALS['strLogin']; 
-    echo '<a href="./Documentation.html" target="documentation" ' .
-        'title="' . $GLOBALS['strPmaDocumentation'] . '">';
-    if ($GLOBALS['cfg']['ReplaceHelpImg']) {
-        echo '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_help.png" width="11" height="11" alt="' . $GLOBALS['strPmaDocumentation'] . '" />';
-    } else {
-        echo '(*)';
-    }
-    echo '</a>';
+    // no real need to put a link to doc here, and it would reveal the
+    // version number
 ?>
 </legend>
 

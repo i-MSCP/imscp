@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: database_interface.lib.php 11585 2008-09-15 12:03:45Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -186,6 +186,32 @@ function PMA_DBI_get_tables($database, $link = null)
     return PMA_DBI_fetch_result('SHOW TABLES FROM ' . PMA_backquote($database) . ';',
         null, 0, $link, PMA_DBI_QUERY_STORE);
 }
+
+/**
+ * usort comparison callback
+ *
+ * @param   string  $a first argument to sort 
+ * @param   string  $b second argument to sort 
+ *
+ * @return  integer  a value representing whether $a should be before $b in the
+ *                   sorted array or not
+ *
+ * @global  string   the column the array shall be sorted by
+ * @global  string   the sorting order ('ASC' or 'DESC')
+ *
+ * @access  private
+ */
+function PMA_usort_comparison_callback($a, $b)
+{
+    if ($GLOBALS['cfg']['NaturalOrder']) {
+        $sorter = 'strnatcasecmp';
+    } else {
+        $sorter = 'strcasecmp';
+    }
+    // produces f.e.:
+    // return -1 * strnatcasecmp($a["SCHEMA_TABLES"], $b["SCHEMA_TABLES"])
+    return ($GLOBALS['callback_sort_order'] == 'ASC' ? 1 : -1) * $sorter($a[$GLOBALS['callback_sort_by']], $b[$GLOBALS['callback_sort_by']]);
+} // end of the 'PMA_usort_comparison_callback()' function
 
 /**
  * returns array of all tables in given db or dbs
@@ -399,7 +425,7 @@ function PMA_DBI_get_tables_full($database, $table = false,
  * @param   string      $databases      database
  * @param   boolean     $force_stats    retrieve stats also for MySQL < 5
  * @param   resource    $link           mysql link
- * @param   string      $sort_by        collumn to order by
+ * @param   string      $sort_by        column to order by
  * @param   string      $sort_order     ASC or DESC
  * @param   integer     $limit_offset   starting offset for LIMIT
  * @param   bool|int    $limit_count    row count for LIMIT or true for $GLOBALS['cfg']['MaxDbList']
@@ -543,23 +569,10 @@ function PMA_DBI_get_databases_full($database = null, $force_stats = false,
      * (caused by older MySQL < 5 or $GLOBALS['cfg']['NaturalOrder'])
      */
     if ($apply_limit_and_order_manual) {
-
-        /**
-         * first apply ordering
-         */
-        if ($GLOBALS['cfg']['NaturalOrder']) {
-            $sorter = 'strnatcasecmp';
-        } else {
-            $sorter = 'strcasecmp';
-        }
-
-        // produces f.e.:
-        // return -1 * strnatcasecmp($a["SCHEMA_TABLES"], $b["SCHEMA_TABLES"])
-        $sort_function = '
-            return ' . ($sort_order == 'ASC' ? 1 : -1) . ' * ' . $sorter . '($a["' . $sort_by . '"], $b["' . $sort_by . '"]);
-        ';
-
-        usort($databases, create_function('$a, $b', $sort_function));
+        $GLOBALS['callback_sort_order'] = $sort_order;
+        $GLOBALS['callback_sort_by'] = $sort_by;
+        usort($databases, 'PMA_usort_comparison_callback');
+        unset($GLOBALS['callback_sort_order'], $GLOBALS['callback_sort_by']);
 
         /**
          * now apply limit

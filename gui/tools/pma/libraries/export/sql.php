@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build SQL dumps of tables
  *
- * @version $Id: sql.php 11353 2008-06-27 14:27:18Z lem9 $
+ * @version $Id: sql.php 11471 2008-08-09 13:58:44Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -118,7 +118,7 @@ if (isset($plugin_list)) {
         $plugin_list['sql']['options'][] =
             array('type' => 'bool', 'name' => 'hex_for_blob', 'text' => 'strHexForBLOB');
         $plugin_list['sql']['options'][] =
-            array('type' => 'select', 'name' => 'type', 'text' => 'strSQLExportType', 'values' => array('INSERT', 'UPDATE', 'REPLACE'));
+            array('type' => 'select', 'name' => 'type', 'text' => 'strSQLExportType', 'values' => array('INSERT' => 'INSERT', 'UPDATE' => 'UPDATE', 'REPLACE' => 'REPLACE'));
         $plugin_list['sql']['options'][] =
             array('type' => 'egroup');
     }
@@ -346,7 +346,7 @@ function PMA_exportDBFooter($db)
 
             foreach($procedure_names as $procedure_name) {
                 if (! empty($GLOBALS['sql_drop_table'])) {
-		    $procs_funcs .= 'DROP PROCEDURE ' . PMA_backquote($procedure_name) . $delimiter . $crlf;
+		    $procs_funcs .= 'DROP PROCEDURE IF EXISTS ' . PMA_backquote($procedure_name) . $delimiter . $crlf;
                 }	
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'PROCEDURE', $procedure_name) . $delimiter . $crlf . $crlf;
             }
@@ -360,7 +360,7 @@ function PMA_exportDBFooter($db)
 
             foreach($function_names as $function_name) {
                 if (! empty($GLOBALS['sql_drop_table'])) {
-		    $procs_funcs .= 'DROP FUNCTION ' . PMA_backquote($function_name) . $delimiter . $crlf;
+		    $procs_funcs .= 'DROP FUNCTION IF EXISTS ' . PMA_backquote($function_name) . $delimiter . $crlf;
                 }	
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'FUNCTION', $function_name) . $delimiter . $crlf . $crlf;
             }

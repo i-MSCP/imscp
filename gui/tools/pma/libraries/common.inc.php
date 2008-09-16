@@ -22,7 +22,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11445 2008-07-28 19:37:23Z lem9 $
+ * @version $Id: common.inc.php 11431 2008-07-25 12:25:33Z lem9 $
  */
 
 /**
