@@ -11,13 +11,7 @@
     /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-  /etc/init.d/apache2 stop > /dev/null
-  for i in `seq 1 10`; do
-    if [ -f /var/run/apache2.pid ]; then
-      sleep 5
-    fi
-  done
-  /etc/init.d/apache2 start > /dev/null
+    /etc/init.d/apache2 reload > /dev/null
   endscript
 }
 
@@ -37,6 +31,13 @@
   missingok
   compress
   delaycompress
+  postrotate
+    if [ -e /var/run/syslogd.pid ]; then
+      /usr/bin/killall -HUP syslogd
+    elif [ -e /var/run/rsyslogd.pid ]; then
+      /usr/bin/killall -HUP rsyslogd
+    fi
+  endscript
 }
 
 /var/log/proftpd/ftp_traff.log {
@@ -49,6 +50,10 @@
     /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    /usr/bin/killall -HUP syslogd
+    if [ -e /var/run/syslogd.pid ]; then
+      /usr/bin/killall -HUP syslogd
+    elif [ -e /var/run/rsyslogd.pid ]; then
+      /usr/bin/killall -HUP rsyslogd
+    fi
   endscript
 }
