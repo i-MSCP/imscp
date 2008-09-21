@@ -216,7 +216,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$err_al = tr("Incorrect domain name syntax");
 	} else if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
 		$err_al = tr('Domain with that name already exists on the system!');
-	} else if (!chk_mountp($mount_point)) {
+	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
 	} else if ($forward != 'no') {
 		if (!chk_forward_url($forward)) {

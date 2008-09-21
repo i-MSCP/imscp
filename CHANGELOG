@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-21 Daniel Andreca
+	- GUI:
+		* Fixed #1538: Not possible to add a domain alias with an already existing mountpoint
+
 2008-09-20 Daniel Andreca
 	- CONFIGS:
 		* logrotate/ispcp fails if rsyslog is used
