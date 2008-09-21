@@ -73,54 +73,33 @@ function get_update_infos(&$tpl) {
 
 	$sql = Database::getInstance();
 
-	if (checkNewCriticalRevisionExists()) {
-		executeCriticalUpdates();
+	if (criticalUpdate::getInstance()->checkUpdateExists()) {
+		criticalUpdate::getInstance()->executeUpdates();
 		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
 		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
 	}
 	else {
 		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
 	}
-	
-	if (!Config::get('CHECK_FOR_UPDATES')) {
-		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
-		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-		return false;
-	}
 
-	$last_update = "http://www.isp-control.net/latest.txt";
-	// Fake the browser type
-	ini_set('user_agent', 'Mozilla/5.0');
-
-	$timeout = 2;
-	$old_timeout = ini_set('default_socket_timeout', $timeout);
-	$dh2 = @fopen($last_update, 'r');
-	ini_set('default_socket_timeout', $old_timeout);
-
-	if (!is_resource($dh2)) {
-		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates! Website not reachable.")));
-		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-		return false;
-	}
-
-	$last_update_result = (int)fread($dh2, 8);
-	fclose($dh2);
-
-	$current_version = (int)Config::get('BuildDate');
-	if ($current_version < $last_update_result) {
-		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class=\"link\">' . tr('New ispCP update is now available') . '</a>'));
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-	} else {
-		$tpl->assign(array('UPDATE_MESSAGE' => ''));
-	}
-
-	if(checkDatabaseUpdateExists()) {
+	if(databaseUpdate::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class=\"link\">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
+	}
+	
+	if (!Config::get('CHECK_FOR_UPDATES')) {
+		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
+		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+		return false;
+	}
+
+	if (versionUpdate::getInstance()->checkUpdateExists()) {
+		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class=\"link\">' . tr('New ispCP update is now available') . '</a>'));
+		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+	} else {
+		$tpl->assign(array('UPDATE_MESSAGE' => ''));
 	}
 }
 

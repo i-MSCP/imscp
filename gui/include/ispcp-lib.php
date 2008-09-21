@@ -169,8 +169,9 @@ require_once(INCLUDEPATH . '/lostpassword-functions.php');
 require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
-require_once(INCLUDEPATH . '/database-update-functions.php');
-require_once(INCLUDEPATH . '/critical-update-functions.php');
+require_once(INCLUDEPATH . '/class.ispcp-update.php');
+require_once(INCLUDEPATH . '/class.database-update.php');
+require_once(INCLUDEPATH . '/class.critical-update.php');
 require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
 //require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.func.php');
 

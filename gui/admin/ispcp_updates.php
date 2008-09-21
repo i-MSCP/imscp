@@ -55,33 +55,12 @@ function get_update_infos(&$tpl) {
 		return false;
 	}
 
-
-	$info_url = 'http://www.isp-control.net/download.html';
-	$last_update = 'http://www.isp-control.net/latest.txt';
-	// Fake the browser type
-	ini_set('user_agent', 'Mozilla/5.0');
-
-	$timeout = 2;
-	$old_timeout = ini_set('default_socket_timeout', $timeout);
-	$dh2 = @fopen($last_update, 'r');
-	ini_set('default_socket_timeout', $old_timeout);
-
-	if (!is_resource($dh2)) {
-		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates! Website not reachable.")));
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-		return false;
-	}
-
-	$last_update_result = (int)fread($dh2, 8);
-	fclose($dh2);
-
-	$current_version = (int)Config::get('BuildDate');
-	if ($current_version < $last_update_result) {
+	if (versionUpdate::getInstance()->checkUpdateExists()) {
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE' => '',
 				'UPDATE' => tr('New ispCP update is now available'),
-				'INFOS' => tr('Get it at') . " <a href=\"" . $info_url . "\" class=\"link\" target=\"ispcp\">" . $info_url . "</a>"
+				'INFOS' => tr('Get it at') . " <a href=\"http://www.isp-control.net/download.html\" class=\"link\" target=\"ispcp\">http://www.isp-control.net/download.html</a>"
 				)
 			);
 

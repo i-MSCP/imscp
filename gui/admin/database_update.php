@@ -63,7 +63,7 @@ $tpl->assign(array(
 	'TR_INFOS'		=> tr('Update details')
 ));
 
-if(checkDatabaseUpdateExists()) {
+if(databaseUpdate::getInstance()->checkUpdateExists()) {
 	$tpl->assign(array(
 		'UPDATE_MESSAGE'		=> '',
 		'DATABASE_UPDATE_MESSAGE'	=> '',
@@ -81,7 +81,7 @@ if(checkDatabaseUpdateExists()) {
 
 // Execute all available db updates and redirect back to database_update.php
 if($execute) {
-	executeDatabaseUpdates();
+	databaseUpdate::getInstance()->executeUpdates();
 	header('Location:' . $_SERVER['PHP_SELF']);
 }
 
