@@ -37,18 +37,17 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 function gen_page_post_data(&$tpl) {
 	if (Config::get('MYSQL_PREFIX') === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
+		if (Config::get('MYSQL_PREFIX_TYPE') === 'infront') {
+			$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
+			$tpl->assign('MYSQL_PREFIX_BEHIND', '');
+			$tpl->assign('MYSQL_PREFIX_ALL', '');
+		} else {
+			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
+			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
+			$tpl->assign('MYSQL_PREFIX_ALL', '');
+		}
 	} else {
 		$tpl->assign('MYSQL_PREFIX_NO', '');
-	}
-	if (Config::get('MYSQL_PREFIX_TYPE') === 'infront') {
-		$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
-		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
-		$tpl->assign('MYSQL_PREFIX_ALL', '');
-	} else if (Config::get('MYSQL_PREFIX_TYPE') === 'behind') {
-		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
-		$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
-		$tpl->assign('MYSQL_PREFIX_ALL', '');
-	} else {
 		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
 		$tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');

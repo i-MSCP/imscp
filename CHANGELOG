@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-23 Daniel Andreca
+	- GUI:
+		* Fixed #1544: Add SQL database has only one option -> useless
+
 2008-09-21 Daniel Andreca
 	- GUI:
 		* Fixed #1538: Not possible to add a domain alias with an already existing mountpoint
