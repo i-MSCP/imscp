@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-09-23 Daniel Andreca
 	- GUI:
 		* Fixed #1544: Add SQL database has only one option -> useless
+	- CONFIGS:
+		* Enable quota on proftpd for debian lenny
 
 2008-09-21 Daniel Andreca
 	- GUI:

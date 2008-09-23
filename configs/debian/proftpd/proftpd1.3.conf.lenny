@@ -109,12 +109,20 @@ Group                      nogroup
   PathDenyFilter           "\.quota$"
 </Global>
 
+# Loading required modules
 <IfModule !mod_sql.c>
   LoadModule mod_sql.c
 </IfModule>
 <IfModule !mod_sql_mysql.c>
   LoadModule mod_sql_mysql.c
 </IfModule>
+<IfModule !mod_quotatab.c>
+  LoadModule mod_quotatab.c
+</IfModule>
+<IfModule !mod_quotatab_sql.c>
+  LoadModule mod_quotatab_sql.c
+</IfModule>
+
 
 #
 # SSL via TLS
@@ -132,7 +140,7 @@ Group                      nogroup
 #
 # ISPCP Quota management;
 #
-<IfModule mod_quota.c>
+<IfModule mod_quotatab.c>
   QuotaEngine              on
   QuotaShowQuotas          on
   QuotaDisplayUnits        Mb
