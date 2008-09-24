@@ -75,6 +75,8 @@ function get_update_infos(&$tpl) {
 
 	if (criticalUpdate::getInstance()->checkUpdateExists()) {
 		criticalUpdate::getInstance()->executeUpdates();
+		if(criticalUpdate::getInstance()->getErrorMessage()!="")
+			system_message(criticalUpdate::getInstance()->getErrorMessage());
 		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
 		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
 	}
@@ -83,7 +85,7 @@ function get_update_infos(&$tpl) {
 	}
 
 	if(databaseUpdate::getInstance()->checkUpdateExists()) {
-		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class=\"link\">' . tr('A database update is available') . '</a>'));
+		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
@@ -96,10 +98,15 @@ function get_update_infos(&$tpl) {
 	}
 
 	if (versionUpdate::getInstance()->checkUpdateExists()) {
-		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class=\"link\">' . tr('New ispCP update is now available') . '</a>'));
+		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class="link">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
-		$tpl->assign(array('UPDATE_MESSAGE' => ''));
+		if( versionUpdate::getInstance()->getErrorMessage() != "" ) {
+			$tpl->assign(array('UPDATE' => versionUpdate::getInstance()->getErrorMessage()));
+			$tpl->parse('UPDATE_MESSAGE', 'update_message');
+		} else {
+			$tpl->assign(array('UPDATE_MESSAGE' => ''));
+		}
 	}
 }
 

@@ -101,11 +101,11 @@
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
                                 <!-- BDP: mysql_prefix_infront -->
-                                <input type="radio" name="id_pos" value="start" checked="checked">
+                                <input type="hidden" name="id_pos" value="start" checked="checked">
                                 {TR_START_ID_POS}
                                 <!-- EDP: mysql_prefix_infront -->
                                 <!-- BDP: mysql_prefix_behind -->
-                                <input type="radio" name="id_pos" value="end" checked="checked">
+                                <input type="hidden" name="id_pos" value="end" checked="checked">
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_behind -->
                               </td>

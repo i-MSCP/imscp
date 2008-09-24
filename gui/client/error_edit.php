@@ -75,28 +75,12 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 		);
 }
 
-function gen_page_awstats(&$tpl) {
-	$awstats_act = Config::get('AWSTATS_ACTIVE');
-	if ($awstats_act != 'yes') {
-		$tpl->assign('ACTIVE_AWSTATS', '');
-	} else {
-		$tpl->assign(
-			array(
-				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
-				'AWSTATS_TARGET' => '_blank'
-				)
-			);
-	}
-}
-
 // static page messages.
 
 gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
-
-gen_page_awstats($tpl);
 
 check_permissions($tpl);
 

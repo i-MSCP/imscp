@@ -62,20 +62,6 @@ $tpl->assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Err
 		'DOMAIN' => $domain
 		));
 
-function gen_page_awstats(&$tpl) {
-	$awstats_act = Config::get('AWSTATS_ACTIVE');
-	if ($awstats_act != 'yes') {
-		$tpl->assign('ACTIVE_AWSTATS', '');
-	} else {
-		$tpl->assign(
-			array(
-				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
-				'AWSTATS_TARGET' => '_blank'
-				)
-			);
-	}
-}
-
 // dynamic page data.
 
 update_error_page($sql, $_SESSION['user_id']);
@@ -86,8 +72,6 @@ gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webt
 gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
-
-gen_page_awstats($tpl);
 
 check_permissions($tpl);
 

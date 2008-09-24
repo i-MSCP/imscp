@@ -66,6 +66,9 @@ function get_update_infos(&$tpl) {
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 	} else {
+		if( versionUpdate::getInstance()->getErrorMessage() != "" ) {
+			$tpl->assign(array('TR_MESSAGE' => versionUpdate::getInstance()->getErrorMessage()));
+		}
 		$tpl->assign('UPDATE_INFOS', '');
 	}
 }

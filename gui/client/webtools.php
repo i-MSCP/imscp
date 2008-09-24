@@ -49,22 +49,6 @@ list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn
 if ($dmn_mailacc_limit == -1)
 	$tpl->assign('ACTIVE_EMAIL', '');
 
-function gen_page_awstats(&$tpl) {
-	$awstats_act = Config::get('AWSTATS_ACTIVE');
-	if ($awstats_act != 'yes') {
-		$tpl->assign('ACTIVE_AWSTATS', '');
-	} else {
-		$tpl->assign(
-			array(
-				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
-				'AWSTATS_TARGET' => '_blank'
-				)
-			);
-	}
-}
-
-gen_page_awstats($tpl);
-
 /*
  *
  * static page messages.

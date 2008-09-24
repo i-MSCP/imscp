@@ -538,16 +538,16 @@ function gen_client_menu(&$tpl, $menu_file) {
 				)
 		);
 
-	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            custom_menus
-        WHERE
-            menu_level = 'user'
-          OR
-            menu_level = 'all'
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'user'
+		OR
+			`menu_level` = 'all'
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -592,8 +592,8 @@ SQL_QUERY;
 
     if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
 
-	if (Config::get('AWSTATS_ACTIVE') == 'yes') {
-		$tpl->assign('ACTIVE_AWSTSTS', '');
+	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
+		$tpl->assign('ACTIVE_AWSTATS', '');
 	} else {
 		$tpl->assign(
 			array(

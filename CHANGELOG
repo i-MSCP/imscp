@@ -1,9 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-24 Daniel Andreca
+	- GUI:
+		* Fixed #1544: Add SQL user has only one option -> useless
+		* Fixed #1545: HTML bug with hint for updates
+		* Fixed #1546: Tiny english typo
+
 2008-09-23 Daniel Andreca
 	- GUI:
 		* Fixed #1544: Add SQL database has only one option -> useless
+		* Fixed #1543: client/webtools.php makes some gui trouble
 	- CONFIGS:
 		* Enable quota on proftpd for debian lenny
 

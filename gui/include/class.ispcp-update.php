@@ -72,8 +72,12 @@ abstract class ispcpUpdate{
 		check_for_lock_file();
 		send_request();
 	}
-	protected function addErrorMessage($message){$this->errorMessages.=$message;}
-	public function getErrorMessage(){return $this->errorMessages;}
+	protected function addErrorMessage($message){
+		$this->errorMessages.=$message;
+	}
+	public function getErrorMessage(){
+		return $this->errorMessages;
+	}
 	public function executeUpdates() {
 		$engine_run_request=false;
 		$sql = Database::getInstance();
@@ -148,7 +152,10 @@ class versionUpdate extends ispcpUpdate{
 		$old_timeout = ini_set('default_socket_timeout', $timeout);
 		$dh2 = @fopen($last_update, 'r');
 		ini_set('default_socket_timeout', $old_timeout);
-		if (!is_resource($dh2))return false;
+		if (!is_resource($dh2)){
+			$this->addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
+			return false;
+		}
 		$last_update_result = (int)fread($dh2, 8);
 		fclose($dh2);
 		return $last_update_result;
