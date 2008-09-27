@@ -131,6 +131,8 @@ $main::db_name = undef;
 
 $main::db = undef;
 
+$main::use_crypted_pwd = undef;
+
 $main::master_name = 'ispcp-rqst-mngr';
 
 %main::cfg = ();
