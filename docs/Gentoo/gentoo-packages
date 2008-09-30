@@ -18,6 +18,7 @@ dev-perl/IP-Country
 dev-perl/Mail-DomainKeys
 dev-perl/Mail-SPF-Query
 dev-perl/Net-Ident
+dev-perl/Net-LibIDN
 dev-perl/Term-ReadPassword
 dev-perl/XML-Parser
 dev-perl/crypt-cbc

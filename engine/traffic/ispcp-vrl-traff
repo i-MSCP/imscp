@@ -141,7 +141,7 @@ sub gen_log_file {
 
 	if (-e $dest_file_prev) {
 
-		if (diff_command("$main::cfg{'CMD_DIFF'} -a -q $dest_file $dest_file_prev") == 0) {
+		if (diff_command("$main::cfg{'CMD_CMP'} -s $dest_file $dest_file_prev") == 0) {
 
 			$rs = del_file($dest_file);
 

@@ -1322,7 +1322,7 @@ msgstr "%1$d / %2$d <br/>von<br/> <b>%3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d von <b>unlimited</b>"
+msgstr "%1$d / %2$d von <b>unbegrenzt</b>"
 
 msgid "Reseller statistics table"
 msgstr "Resellerstatistik"

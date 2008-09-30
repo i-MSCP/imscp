@@ -4,6 +4,10 @@ ispCP ω 1.0.0 Changelog
 2008-09-30 Daniel Andreca
 	- TOOLS:
 		* Updated: PHPmyAdmin to 2.11.9.2
+	-ENGINE:
+		* Fixed #1479: Use cmp instead of diff (at least for the logs) (thanks aseques)
+	- LANGUAGES:
+		* Updated German (thanks Haeber)
 
 2008-09-24 Daniel Andreca
 	- GUI:
