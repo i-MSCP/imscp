@@ -6,7 +6,7 @@
  * @author Michal Čihař <michal@cihar.com>
  * @package phpMyAdmin
  *
- * @version $Id: js_escape.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: js_escape.lib.php 11604 2008-09-22 14:09:44Z lem9 $
  */
 
 /**
@@ -46,6 +46,9 @@ function PMA_jsFormat($a_string = '', $add_backquotes = true)
  * enclosed by <![CDATA[ ... ]]>
  * this requires only to escape ' with \' and end of script block
  *
+ * We also remove NUL byte as some browsers (namely MSIE) ignore it and
+ * inserting it anywhere inside </script would allow to bypass this check.
+ *
  * @uses    strtr()
  * @uses    preg_replace()
  * @param   string  $string the string to be escaped
@@ -55,6 +58,7 @@ function PMA_escapeJsString($string)
 {
     return preg_replace('@</script@i', '</\' + \'script',
                         strtr($string, array(
+                                "\000" => '',
                                 '\\' => '\\\\',
                                 '\'' => '\\\'',
                                 "\n" => '\n',
