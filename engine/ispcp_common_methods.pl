@@ -2040,6 +2040,48 @@ sub get_human_date {
 
 }
 
+sub check_uid_gid_available {
+
+    my ($sys_uid, $sys_gid) = @_;
+
+    push_el(\@main::el, 'check_uid_gid_available()', 'Starting...');
+
+    my $name = undef;
+
+    my $max_uid = $main::cfg{'APACHE_SUEXEC_MAX_UID'};
+
+    my $max_gid = $main::cfg{'APACHE_SUEXEC_MAX_GID'};
+
+    if($sys_uid > $max_uid){
+        push_el(\@main::el, 'check_uid_gid_available()', "ERROR: Maximum user id for this system is reached!");
+        return (2, $sys_uid, $sys_gid);
+    }
+
+    if($sys_gid > $max_gid){
+        push_el(\@main::el, 'check_uid_gid_available()', "ERROR: Maximum group id for this system is reached!");
+        return (2, $sys_uid, $sys_gid);
+    }
+
+    $name = getgrgid($sys_gid);
+
+    if( defined($name) ) {
+        push_el(\@main::el, 'check_uid_gid_available()', "INFO: Group id $sys_gid already in use!");
+        return (1, $sys_uid, $sys_gid);
+    }
+
+    $name = getpwuid($sys_uid);
+
+    if ( defined($name) ) {
+        push_el(\@main::el, 'check_uid_gid_available()', "INFO: User id $sys_uid already in use!");
+        return (1, $sys_uid, $sys_gid);
+    }
+
+    push_el(\@main::el, 'check_uid_gid_available()', 'Ending...');
+
+    return (0, $sys_uid, $sys_gid);
+
+}
+
 sub add_dmn_suexec_user {
 
     my ($dmn_data) = @_;
@@ -2054,17 +2096,24 @@ sub add_dmn_suexec_user {
 
     my ($rs, $rdata, $sql) = (undef, undef, undef);
 
-    if ($dmn_uid == 0 && $dmn_gid == 0) {
-	    my $num = get_auto_num();
+    my ($num, $sys_uid, $sys_gid) = (undef, undef, undef);
 
-	    my ($sys_uid, $sys_gid) = ($suexec_min_uid + $num, $suexec_min_gid + $num);
+    if ($dmn_uid == 0 && $dmn_gid == 0) {
+
+        do{
+            $num = get_auto_num();
+            ($sys_uid, $sys_gid) = ($suexec_min_uid + $num, $suexec_min_gid + $num);
+            ($rs, $sys_uid, $sys_gid) = check_uid_gid_available($sys_uid, $sys_gid);
+        }while ($rs == 1);
+
+        return $rs if ($rs != 0);
 
 	    my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	    my $sys_user = "$suexec_user_pref$sys_uid";
 	    my $sys_group = "$suexec_user_pref$sys_gid";
 		my $cmd = undef;
 
-        	# group data - BSD has another format:
+        # group data - BSD has another format:
 		# BSD/NUX Command
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
 			$cmd = "$main::cfg{'CMD_GROUPADD'} $sys_group -g $sys_gid";
