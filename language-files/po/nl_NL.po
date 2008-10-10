@@ -1,11 +1,11 @@
-#
+﻿#
 msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-04 15:15+0200\n"
-"PO-Revision-Date: 2008-08-17 13:00+0100\n"
-"Last-Translator: raro <roderik@roderik.nl>\n"
+"PO-Revision-Date: 2008-10-05 13:00+0100\n"
+"Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -810,7 +810,7 @@ msgid "Update checking is disabled!"
 msgstr "Update checken is uitgeschakeld!"
 
 msgid "Couldn't check for updates! Website not reachable."
-msgstr "Kan niet naar nieuwe updaten zoeken ! Website is niet te bereiken."
+msgstr "Kan niet naar nieuwe update zoeken ! Website is niet te bereiken."
 
 msgid "New ispCP update is now available"
 msgstr "Er is een nieuwe ispCP update beschikbaar"
@@ -3832,208 +3832,242 @@ msgid "View aliases"
 msgstr "Bekijk aliassen"
 
 msgid "You have no users."
-msgstr "U heeft geen gebruikers"
+msgstr "U heeft geen gebruikers."
 
 msgid "User data updated!"
-msgstr "Gebruikersinformatie gewijzigd"
+msgstr "Gebruikersinformatie gewijzigd!"
 
 msgid "User data not updated!"
-msgstr "Gebruikersinformatie niet gewijzigd"
+msgstr "Gebruikersinformatie niet gewijzigd!"
 
 msgid "This user has domain record !<br>First remove the domain from the system!"
 msgstr "Deze gebruiker heeft een domein!<br>Verwijder eerst dit domein van het systeem!"
 
 msgid "User not terminated!"
-msgstr "Gebruiker niet beeindigd"
+msgstr "Gebruiker niet beeindigd!"
 
 msgid "This reseller has no domains yet."
-msgstr "Deze reseller heeft nog geen domeinen"
+msgstr "Deze reseller heeft nog geen domeinen."
 
-#~ msgid "Missing or wrong data!"
-#~ msgstr "Vermiste of verkeerde data"
-#~ msgid "Password data includes not valid signs!"
-#~ msgstr "Wachtwoord data bevat niet toegestane tekens!"
+msgid "Missing or wrong data!"
+msgstr "Ontbrekende of verkeerde data!"
 
-#, fuzzy
-#~ msgid "Unknown domain status!"
-#~ msgstr "onbekende status"
+msgid "Password data includes not valid signs!"
+msgstr "Wachtwoord data bevat niet toegestane tekens!"
 
-#, fuzzy
-#~ msgid "Unknown account type!"
-#~ msgstr "Onbekend type"
+msgid "Unknown domain status!"
+msgstr "Onbekende domein status!"
 
-#, fuzzy
-#~ msgid "Invalid account id!"
-#~ msgstr "Mail accounts lijst"
+msgid "Unknown account type!"
+msgstr "Onbekende account type!"
 
-#, fuzzy
-#~ msgid ""
-#~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-#~ msgstr ""
-#~ "Onbestendigheid tussen current_mail_cnt en daadwerkelijke mail telling: %1"
-#~ "$d != %2$d"
-#~ msgid "Domains limit"
-#~ msgstr "Domeinen limiet"
-#~ msgid "Subdomains limit"
-#~ msgstr "Subdomeinen limiet"
-#~ msgid "Aliases limit"
-#~ msgstr "Aliassen limiet"
-#~ msgid "Mail accounts limit"
-#~ msgstr "Mail account limiet"
-#~ msgid "FTP accounts limit"
-#~ msgstr "FTP account limiet"
-#~ msgid "SQL databases limit"
-#~ msgstr "SQL databases limiet"
-#~ msgid "SQL users limit"
-#~ msgstr "SQL gebruikers limiet"
-#~ msgid "Traffic limit [MB]"
-#~ msgstr "Verkeer limiet [MB]"
-#~ msgid "Disk limit [MB]"
-#~ msgstr "Schijf limiet [MB]"
-#~ msgid "Max domain count"
-#~ msgstr "Max aantal domeinen"
-#~ msgid "Max subdomain count"
-#~ msgstr "Max aantal subdomeinen"
-#~ msgid "Max aliases count"
-#~ msgstr "Max aantal aliassen"
-#~ msgid "Max mail users count"
-#~ msgstr "Max aantal mailgebruikers"
-#~ msgid "Max FTP users count"
-#~ msgstr "Max aantal FTP gebruikers"
-#~ msgid "Max SQL databases count"
-#~ msgstr "Max aantal MySQL databanken"
-#~ msgid "Max SQL users count"
-#~ msgstr "Max aantal MySQL gebruikers"
-#~ msgid "Max traffic amount [MB]"
-#~ msgstr "Max aantal verkeer [MB]"
-#~ msgid "Max disk amount [MB]"
-#~ msgstr "Max schijfruimte [MB]"
+msgid "Invalid account id!"
+msgstr "Onjuist account id!"
 
-#, fuzzy
-#~ msgid "Order in progress"
-#~ msgstr "Bezig met toevoeging"
-#~ msgid "Uninstall"
-#~ msgstr "Verwijderen"
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr "Inconsistentie tussen current_mail_cnt en daadwerkelijke mail telling: %1$d != %2$d"
 
-#, fuzzy
-#~ msgid "Incorrect username number or syntax!"
-#~ msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
+msgid "Domains limit"
+msgstr "Domeinen limiet"
 
-#, fuzzy
-#~ msgid "Incorrect password number or syntax!"
-#~ msgstr "Onjuiste max alias telling of syntax!"
+msgid "Subdomains limit"
+msgstr "Subdomeinen limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max domain number or syntax!"
-#~ msgstr "Onjuiste max domein telling of syntax!"
+msgid "Aliases limit"
+msgstr "Aliassen limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max subdomain number or syntax!"
-#~ msgstr "Onjuiste max subdomein telling of syntax!"
+msgid "Mail accounts limit"
+msgstr "Mail accounts limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max alias number or syntax!"
-#~ msgstr "Onjuiste max alias telling of syntax!"
+msgid "FTP accounts limit"
+msgstr "FTP accounts limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max FTP number or syntax!"
-#~ msgstr "Onjuiste max FTP telling of syntax!"
+msgid "SQL databases limit"
+msgstr "SQL databanken limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max mail number or syntax!"
-#~ msgstr "Onjuiste max mail telling of syntax!"
+msgid "SQL users limit"
+msgstr "SQL gebruikers limiet"
 
-#, fuzzy
-#~ msgid "Incorrect max SQL databases number or syntax!"
-#~ msgstr "Onjuiste max MySQL databanken telling of syntax!"
+msgid "Traffic limit [MB]"
+msgstr "Verkeer limiet [MB]"
 
-#, fuzzy
-#~ msgid "Incorrect max SQL users number or syntax!"
-#~ msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
-#~ msgid "Incorrect max traffic amount or syntax!"
-#~ msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
-#~ msgid "Incorrect max disk amount or syntax!"
-#~ msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+msgid "Disk limit [MB]"
+msgstr "Schijf limiet [MB]"
 
-#, fuzzy
-#~ msgid "Incorrect alias number or syntax!"
-#~ msgstr "Onjuiste max alias telling of syntax!"
+msgid "Max domain count"
+msgstr "Max aantal domeinen"
 
-#, fuzzy
-#~ msgid "Incorrect disk number or syntax!"
-#~ msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+msgid "Max subdomain count"
+msgstr "Max aantal subdomeinen"
 
-#, fuzzy
-#~ msgid "Incorrect FTP account count or no number<br />"
-#~ msgstr "Onjuiste max FTP telling of syntax!"
-#~ msgid "Change user interface"
-#~ msgstr "Verander lay-out"
+msgid "Max aliases count"
+msgstr "Max aantal aliassen"
 
-#, fuzzy
-#~ msgid "show"
-#~ msgstr "Toon"
-#~ msgid "Edit properties"
-#~ msgstr "Wijzig instellingen"
-#~ msgid "User does not exist!"
-#~ msgstr "Gebruiker bestaat niet!"
-#~ msgid "Servicemode"
-#~ msgstr "Dienstmodus"
-#~ msgid "Cannot connect as MySQL administrator!"
-#~ msgstr "Kan niet verbinden als MySQL beheerder!"
-#~ msgid "SQL query has error"
-#~ msgstr "MySQL query geeft een error"
-#~ msgid "SQL query is ok"
-#~ msgstr "MySQL query is ok"
-#~ msgid "of"
-#~ msgstr "van"
-#~ msgid "Password generate"
-#~ msgstr "Wachtwoord aanmaken"
-#~ msgid "Undefined user accounting error!"
-#~ msgstr "Niet gedefinieerde fout!"
-#~ msgid "This reseller has already dispatched more <b>"
-#~ msgstr "Deze reseller heeft al meer doorgestuurd <b>"
-#~ msgid "Then the value you are trying to enter now !<br>"
-#~ msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
-#~ msgid "This reseller has more <b>"
-#~ msgstr "Deze reseller heeft meer <b>"
-#~ msgid "Then the value you are trying to enter now!<br>"
-#~ msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
-#~ msgid "</b> Address !<br>Edit reseller aborted!"
-#~ msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
-#~ msgid "Cannot open file! Please contact your administrator !"
-#~ msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."
-#~ msgid "Not in:"
-#~ msgstr "Niet in"
-#~ msgid "HDD"
-#~ msgstr "Harde schijf"
-#~ msgid "seconds"
-#~ msgstr "seconden"
-#~ msgid "wait to be added"
-#~ msgstr "Wachten op toevoeging"
-#~ msgid "wait to be modified"
-#~ msgstr "Wachten op aanpassing"
-#~ msgid "wait to be deleted"
-#~ msgstr "Wachten op verwijdering"
-#~ msgid "wait to be enabled"
-#~ msgstr "Wachten op activering"
-#~ msgid "wait to be suspended"
-#~ msgstr "Wachten op opschorting"
-#~ msgid "unknown status"
-#~ msgstr "onbekende status"
-#~ msgid "You have"
-#~ msgstr "U hebt"
-#~ msgid "Support question(s)"
-#~ msgstr "Ondersteuning vragen"
-#~ msgid "New"
-#~ msgstr "Nieuw"
-#~ msgid "Catch all mail account cannot be created!"
-#~ msgstr "Catch all mail account kan niet aangemaakt worden!"
-#~ msgid "support question(s)"
-#~ msgstr "ondersteuning vragen"
-#~ msgid "new"
-#~ msgstr "nieuw"
-#~ msgid "Alias scheduled for modification!"
-#~ msgstr "Alias gepland voor aanpassing"
-#~ msgid "delete"
-#~ msgstr "verwijder"
+msgid "Max mail users count"
+msgstr "Max aantal mailgebruikers"
 
+msgid "Max FTP users count"
+msgstr "Max aantal FTP gebruikers"
+
+msgid "Max SQL databases count"
+msgstr "Max aantal MySQL databanken"
+
+msgid "Max SQL users count"
+msgstr "Max aantal MySQL gebruikers"
+
+msgid "Max traffic amount [MB]"
+msgstr "Max aantal verkeer [MB]"
+
+msgid "Max disk amount [MB]"
+msgstr "Max schijfruimte [MB]"
+
+msgid "Order in progress"
+msgstr "Bezig met toevoeging"
+
+msgid "Uninstall"
+msgstr "Verwijderen"
+
+msgid "Incorrect username number or syntax!"
+msgstr "Onjuiste gerbruikersnaam aantal of syntaxis!"
+
+msgid "Incorrect password number or syntax!"
+msgstr "Onjuiste paswoord aantal of syntaxis!"
+
+msgid "Incorrect max domain number or syntax!"
+msgstr "Onjuiste max domein aantal of syntaxis!"
+
+msgid "Incorrect max subdomain number or syntax!"
+msgstr "Onjuiste max subdomein aantal of syntaxis!"
+
+msgid "Incorrect max alias number or syntax!"
+msgstr "Onjuiste max alias aantal of syntaxis!"
+
+msgid "Incorrect max FTP number or syntax!"
+msgstr "Onjuiste max FTP aantal of syntaxis!"
+
+msgid "Incorrect max mail number or syntax!"
+msgstr "Onjuiste max mail aantal of syntaxis!"
+
+msgid "Incorrect max SQL databases number or syntax!"
+msgstr "Onjuiste max MySQL databanken aantal of syntaxis!"
+
+msgid "Incorrect max SQL users number or syntax!"
+msgstr "Onjuiste max MySQL gebruikers aantal of syntaxis!"
+
+msgid "Incorrect max traffic amount or syntax!"
+msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
+
+msgid "Incorrect max disk amount or syntax!"
+msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+
+msgid "Incorrect alias number or syntax!"
+msgstr "Onjuiste alias aantal of syntax!"
+
+msgid "Incorrect disk number or syntax!"
+msgstr "Onjuiste schijf aantal of syntax!"
+
+msgid "Incorrect FTP account count or no number<br />"
+msgstr "Onjuiste FTP account telling of geen aantal<br />"
+
+msgid "Change user interface"
+msgstr "Verander gebruiker lay-out"
+
+msgid "show"
+msgstr "toon"
+
+msgid "Edit properties"
+msgstr "Wijzig instellingen"
+
+msgid "User does not exist!"
+msgstr "Gebruiker bestaat niet!"
+
+msgid "Servicemode"
+msgstr "Dienstmodus"
+
+msgid "Cannot connect as MySQL administrator!"
+msgstr "Kan niet verbinden als MySQL beheerder!"
+
+msgid "SQL query has error"
+msgstr "SQL query geeft een error"
+
+msgid "SQL query is ok"
+msgstr "SQL query is ok"
+
+msgid "of"
+msgstr "van"
+
+msgid "Password generate"
+msgstr "Wachtwoord aanmaken"
+
+msgid "Undefined user accounting error!"
+msgstr "Niet gedefinieerde user account error!"
+
+msgid "This reseller has already dispatched more <b>"
+msgstr "Deze reseller heeft al meer doorgestuurd <b>"
+
+msgid "Then the value you are trying to enter now!<br>"
+msgstr "Dan de waarde die u nu probeert in te vullen!<br>"
+
+msgid "This reseller has more <b>"
+msgstr "Deze reseller heeft meer <b>"
+
+msgid "Then the value you are trying to enter now!<br>"
+msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+
+msgid "</b> Address !<br>Edit reseller aborted!"
+msgstr "</b> Adres !<br>Bewerken reseller mislukt!"
+
+msgid "Cannot open file! Please contact your administrator !"
+msgstr "Kan bestand niet openen! Neem contact op met de beheerder."
+
+msgid "Not in:"
+msgstr "Niet in:"
+
+msgid "HDD"
+msgstr "HDD"
+
+msgid "seconds"
+msgstr "seconden"
+
+msgid "wait to be added"
+msgstr "Wachten op toevoeging"
+
+msgid "wait to be modified"
+msgstr "Wachten op aanpassing"
+
+msgid "wait to be deleted"
+msgstr "Wachten op verwijdering"
+
+msgid "wait to be enabled"
+msgstr "Wachten op activering"
+
+msgid "wait to be suspended"
+msgstr "Wachten op opschorting"
+
+msgid "unknown status"
+msgstr "onbekende status"
+
+msgid "You have"
+msgstr "U hebt"
+
+msgid "Support question(s)"
+msgstr "Ondersteuning vragen"
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "Catch all mail account cannot be created!"
+msgstr "Catch all mail account kan niet aangemaakt worden!"
+
+msgid "support question(s)"
+msgstr "ondersteuning vragen"
+
+msgid "new"
+msgstr "nieuw"
+
+msgid "Alias scheduled for modification!"
+msgstr "Alias gepland voor aanpassing"
+
+msgid "delete"
+msgstr "verwijder"

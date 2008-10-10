@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-10 Daniel Andreca
+	- LANGUAGES:
+		* Updated Hungarian (thanks Attila Fulop)
+		* Updated Dutch (thanks mata)
+
 2008-09-05 Daniel Andreca
 	- LANGUAGES:
 		* Fixed #1552: Updated Czech
