@@ -42,311 +42,309 @@ use warnings;
 
 sub dsk_quota_start_up {
 
-    my ($rs) = (undef, undef);
+	my ($rs) = (undef, undef);
 
-    push_el(\@main::el, 'dsk_quota_start_up()', 'Starting...');
+	push_el(\@main::el, 'dsk_quota_start_up()', 'Starting...');
 
-    # Let's clear Execution Logs, if any.
+	# Let's clear Execution Logs, if any.
 
-    if (-e $main::ispcp_dsk_quota_el) {
+	if (-e $main::ispcp_dsk_quota_el) {
 
-        $rs = del_file($main::ispcp_dsk_quota_el);
+		$rs = del_file($main::ispcp_dsk_quota_el);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-    }
+	}
 
-    # config check;
+	# config check;
 
-    $rs = get_conf();
+	$rs = get_conf();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dsk_quota_start_up()', 'Ending...');
+	push_el(\@main::el, 'dsk_quota_start_up()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 
 sub dsk_quota_shut_down {
 
-    my $rs = undef;
+	my $rs = undef;
 
-    push_el(\@main::el, 'dsk_quota_shut_down()', 'Starting...');
+	push_el(\@main::el, 'dsk_quota_shut_down()', 'Starting...');
 
-    push_el(\@main::el, 'dsk_quota_shut_down()', 'Ending...');
+	push_el(\@main::el, 'dsk_quota_shut_down()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 sub dsk_quota_engine {
 
-    my ($rs, $ref, $rdata) = (undef, undef, undef);
+	my ($rs, $ref, $rdata) = (undef, undef, undef);
 
-    push_el(\@main::el, 'dsk_quota_engine()', 'Starting...');
+	push_el(\@main::el, 'dsk_quota_engine()', 'Starting...');
 
-    my $sql = "select domain_id, domain_name from domain where domain_status = 'ok';";
+	my $sql = "select domain_id, domain_name from domain where domain_status = 'ok';";
 
-    ($rs, $ref) = doSQL($sql);
+	($rs, $ref) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    my $cmd_du = $main::cfg{'CMD_DU'};
+	my $cmd_du = $main::cfg{'CMD_DU'};
 
-    foreach (@$ref) {
+	foreach (@$ref) {
 
-        my $disk_limit  = @$_[2];
+		my $disk_limit  = @$_[2];
 
-        my $domain_name = @$_[1];
+		my $domain_name = @$_[1];
 
-        my $domain_id   = @$_[0];
+		my $domain_id   = @$_[0];
 
-        my $size = 0;
+		my $size = 0;
 
 	# BSD/NUX Command
 	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
 
-        	my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
 		$s =~ /^(\d+)/; $size += $1*1024;
 
-        	$s = `$cmd_du -d 0 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
+			$s = `$cmd_du -d 0 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
 
-        	$s =~ /^(\d+)/; $size += $1*1024;
+			$s =~ /^(\d+)/; $size += $1*1024;
 
 	} else {
 
-        	my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
-        	$s =~ /^(\d+)/; $size += $1;
+			$s =~ /^(\d+)/; $size += $1;
 
-        	$s = `$cmd_du -s -B1 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
+			$s = `$cmd_du -s -B1 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
 
-        	$s =~ /^(\d+)/; $size += $1;
+			$s =~ /^(\d+)/; $size += $1;
 	}
 
-        if ($size > 0) {
+		if ($size > 0) {
 
-            $sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $rdata = @$rdata[0];
+			$rdata = @$rdata[0];
 
-            my $quota_ent = @$rdata[0];
+			my $quota_ent = @$rdata[0];
 
-            if ($quota_ent > 0) {
+			if ($quota_ent > 0) {
 
-                $sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
 
-                ($rs, $rdata) = doSQL($sql);
+				($rs, $rdata) = doSQL($sql);
 
-                return $rs if ($rs != 0);
+				return $rs if ($rs != 0);
 
-            }
+			}
 
-        }
-    }
+		}
+	}
 
-    push_el(\@main::el, 'dsk_quota_engine()', 'Ending...');
+	push_el(\@main::el, 'dsk_quota_engine()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 
 sub mysqldb_quota_by_mysql_engine {
 
-    my ($rs, $ref, $rdata, $size) = (undef, undef, undef, undef);
+	my ($rs, $ref, $rdata, $size) = (undef, undef, undef, undef);
 
-    push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Starting...');
+	push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Starting...');
 
-    my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
+	my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
 
-    ($rs, $ref) = doSQL($sql);
+	($rs, $ref) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    my $domain_ids = $ref;
+	my $domain_ids = $ref;
 
-    foreach (@$domain_ids) {
+	foreach (@$domain_ids) {
 
-        my $disk_usage  = @$_[2];
+		my $disk_usage  = @$_[2];
 
-        my $domain_name = @$_[1];
+		my $domain_name = @$_[1];
 
-        my $domain_id   = @$_[0];
+		my $domain_id   = @$_[0];
 
-	    my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
+		my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
 
-    	($rs, $ref) = doSQL($sql);
+		($rs, $ref) = doSQL($sql);
 
 		my $sqldb_ids = $ref;
 
 		$size = 0;
 
-	    foreach (@$sqldb_ids) {
+		foreach (@$sqldb_ids) {
 
-    	    my $sqldb_name   = @$_[1];
-
-	        my $sqldb_id     = @$_[0];
-
+			my $sqldb_name   = @$_[1];
+			my $sqldb_id     = @$_[0];
 			my $sql = "show table status from `$sqldb_name`;";
 
-		   	($rs, $ref) = doSQL($sql);
+			($rs, $ref) = doSQL($sql);
 
-			foreach(@$ref)
-			{
-   			    my $data_length   = @$_[5];
+			foreach(@$ref){
 
-		        my $index_length  = @$_[7];
+				my $data_length   = @$_[6];
+				my $index_length  = @$_[8];
 
 				$size += $data_length + $index_length;
+
 			}
 
-	    }
+		}
 
-        if ($size > 0) {
+		if ($size > 0) {
 
 			$size += $disk_usage;
 
-            $sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $rdata = @$rdata[0];
+			$rdata = @$rdata[0];
 
-            my $quota_ent = @$rdata[0];
+			my $quota_ent = @$rdata[0];
 
-            if ($quota_ent > 0) {
+			if ($quota_ent > 0) {
 
-                $sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
 
-                ($rs, $rdata) = doSQL($sql);
+				($rs, $rdata) = doSQL($sql);
 
-                return $rs if ($rs != 0);
+				return $rs if ($rs != 0);
 
-            }
+			}
 
-        }
-    }
+		}
+	}
 
-    push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Ending...');
+	push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 sub mysqldb_quota_by_dir_engine {
 
-    my ($rs, $ref, $rdata, $size) = (undef, undef, undef, undef);
+	my ($rs, $ref, $rdata, $size) = (undef, undef, undef, undef);
 
-    push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Starting...');
+	push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Starting...');
 
-    my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
+	my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
 
-    ($rs, $ref) = doSQL($sql);
+	($rs, $ref) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
 	my $cmd_du = $main::cfg{'CMD_DU'};
 
-    my $domain_ids = $ref;
+	my $domain_ids = $ref;
 
-    foreach (@$domain_ids) {
+	foreach (@$domain_ids) {
 
-        my $disk_usage  = @$_[2];
+		my $disk_usage  = @$_[2];
 
-        my $domain_name = @$_[1];
+		my $domain_name = @$_[1];
 
-        my $domain_id   = @$_[0];
+		my $domain_id   = @$_[0];
 
-	    my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
+		my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
 
-    	($rs, $ref) = doSQL($sql);
+		($rs, $ref) = doSQL($sql);
 
 		my $sqldb_ids = $ref;
 
 		$size = 0;
 
-	    foreach (@$sqldb_ids) {
+		foreach (@$sqldb_ids) {
 
-    	    my $sqldb_name   = @$_[1];
+			my $sqldb_name   = @$_[1];
 
-	        my $sqldb_id     = @$_[0];
+			my $sqldb_id     = @$_[0];
 
 			# BSD/NUX Command
 			if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
 
-            			$size = `$cmd_du -I "*.frm" -d 0 $main::cfg{DATABASE_DIR}/$sqldb_name`;
-              
-                       		$size =~ /^(\d+)/; $size = $1*1024;
+				$size = `$cmd_du -I "*.frm" -I "db.opt" -d 0 $main::cfg{DATABASE_DIR}/$sqldb_name/* | tail -1`;
+
+				$size =~ /^(\d+)/; $size = $1;
 
 			} else {
 	
-				$size = `$cmd_du -sb --exclude=*.frm $main::cfg{DATABASE_DIR}/$sqldb_name`;
+				$size = `$cmd_du -csb --exclude=*.frm --exclude=db.opt $main::cfg{DATABASE_DIR}/$sqldb_name/* | tail -1`;
 
 				$size =~ /^(\d+)/; $size = $1;
 
 			}
 
-	    }
+		}
 
 
-        if ($size > 0) {
+		if ($size > 0) {
 
 			$size += $disk_usage;
 
-            $sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
 
-            ($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+			return $rs if ($rs != 0);
 
-            $rdata = @$rdata[0];
+			$rdata = @$rdata[0];
 
-            my $quota_ent = @$rdata[0];
+			my $quota_ent = @$rdata[0];
 
-            if ($quota_ent > 0) {
+			if ($quota_ent > 0) {
 
-                $sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
 
-                ($rs, $rdata) = doSQL($sql);
+				($rs, $rdata) = doSQL($sql);
 
-                return $rs if ($rs != 0);
+				return $rs if ($rs != 0);
 
-            }
+			}
 
-        }
-    }
+		}
+	}
 
-    push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Ending...');
+	push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -357,11 +355,11 @@ $rs = dsk_quota_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_dsk_quota_el);
+	dump_el(\@main::el, $main::ispcp_dsk_quota_el);
 
-    dsk_quota_shut_down();
+	dsk_quota_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -370,24 +368,23 @@ $rs = dsk_quota_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_dsk_quota_el);
+	dump_el(\@main::el, $main::ispcp_dsk_quota_el);
 
-    dsk_quota_shut_down();
+	dsk_quota_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
-
-$rs = mysqldb_quota_by_dir_engine();
+$rs = mysqldb_quota_by_mysql_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_dsk_quota_el);
+	dump_el(\@main::el, $main::ispcp_dsk_quota_el);
 
-    dsk_quota_shut_down();
+	dsk_quota_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -396,9 +393,9 @@ $rs = dsk_quota_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_dsk_quota_el);
+	dump_el(\@main::el, $main::ispcp_dsk_quota_el);
 
-    exit 1;
+	exit 1;
 
 }
 

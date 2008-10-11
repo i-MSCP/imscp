@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-11 Daniel Andreca
+	- ENGINE:
+		* Fixed #1080: Active web folders should not be deletable by customer
+		* Fixed #1554: MySQL quota calculation (thanks Feg)
+
 2008-09-10 Daniel Andreca
 	- LANGUAGES:
 		* Updated Hungarian (thanks Attila Fulop)

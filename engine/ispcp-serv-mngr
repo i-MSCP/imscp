@@ -253,6 +253,18 @@ sub serv_mngr_engine {
 
     }
 
+    if ($main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
+
+        if ($main::cfg{'CMD_FTPD'} ne 'no') {
+
+            $cmd = $main::cfg{'CMD_FTPD'};
+
+            sys_command_rs("$cmd restart");
+
+        }
+
+    }
+
     if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
         $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
 

@@ -2033,8 +2033,6 @@ sub sub_del_mta_file_data {
     return 0;
 }
 
-
-
 sub sub_add_mta_data {
 
     my ($sub_data) = @_;
@@ -2118,6 +2116,163 @@ sub sub_del_mta_data {
     return 0;
 }
 
+sub sub_add_proftpd_cfg_data {
+	my ($sub_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'Starting...');
+
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $sub_name         = @$sub_data[2];
+	my $sub_mount_point  = @$sub_data[3];
+	my $sub_to           = @$sub_data[6];
+
+	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
+	my $apache_www_dir   = $main::cfg{'APACHE_WWW_DIR'};
+
+	my $tpl_dir          = "$conf_dir/proftpd/parts";
+	my $backup_dir       = "$conf_dir/proftpd/backup";
+	my $working_dir      = "$conf_dir/proftpd/working";
+	my $sub_fname        = "$sub_name.$sub_to.conf";
+	my $sub_path         = "$apache_www_dir/$sub_to$sub_mount_point";
+	my $working_cfg      = "$working_dir/$sub_fname";
+	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
+
+	#
+	# Let's get needed tags and templates;
+	#
+	my $entry = '';
+	($rs, $entry) = get_tpl(
+		$tpl_dir,
+		'proftpd.conf.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	my $seq = 0;
+
+	#
+	# Let's prepare them;
+	#
+	my %tag_hash = (
+		'{PATH}' => $sub_path,
+	);
+	($rs, $entry) = prep_tpl(
+		\%tag_hash,
+		$entry
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's store generated data;
+	#
+	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'Ending...');
+	return 0;
+}
+
+sub sub_del_proftpd_cfg_data {
+	my ($sub_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+
+	my $sub_name         = @$sub_data[2];
+	my $sub_to           = @$sub_data[6];
+	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
+	my $sub_fname        = "$sub_name.$sub_to.conf";
+	my $working_dir      = "$conf_dir/proftpd/working";
+	my $working_cfg      = "$working_dir/$sub_fname";
+	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
+
+	#
+	# Let's remove .db files for this domain;
+	#
+	$rs = del_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	$rs = del_file($sys_cfg);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'Ending...');
+	return 0;
+}
+
+sub sub_add_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'sub_add_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'sub_add_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
+	$rs = sub_add_proftpd_cfg_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'sub_add_proftpd_data()', 'Ending...');
+	return 0;
+}
+
+sub sub_change_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'sub_change_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'sub_change_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
+	$rs = sub_add_proftpd_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'sub_change_proftpd_data()', 'Ending...');
+	return 0;
+}
+
+sub sub_del_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'sub_del_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'sub_del_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
+	$rs = sub_del_proftpd_cfg_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'sub_del_proftpd_data()', 'Ending...');
+	return 0;
+}
+
 sub sub_add_data {
 
     my ($sub_data) = @_;
@@ -2133,6 +2288,10 @@ sub sub_add_data {
         return -1;
 
     }
+
+    $rs = sub_add_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
 
     $rs = sub_add_named_data($sub_data);
 
@@ -2168,6 +2327,10 @@ sub sub_change_data {
 
     }
 
+    $rs = sub_change_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
+
     $rs = sub_change_named_data($sub_data);
 
     return $rs if ($rs != 0);
@@ -2201,6 +2364,10 @@ sub sub_del_data {
         return -1;
 
     }
+
+    $rs = sub_del_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
 
     $rs = sub_del_named_data($sub_data);
 
