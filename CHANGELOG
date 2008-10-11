@@ -2,6 +2,12 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-09-11 Daniel Andreca
+	- GUI:
+		* Fixed #1151: Update Hosting Package should only visible for a customer if a hosting plan to update is available (thanks Feg)
+	- CONFIGS:
+		* Fixed #971: Why i can't set the IPs of a domain? (thanks Feg)
+	- TOOLS:
+		* Fixed #714: Undefined index in pma-style sheet (thanks Feg)
 	- ENGINE:
 		* Fixed #1080: Active web folders should not be deletable by customer
 		* Fixed #1554: MySQL quota calculation (thanks Feg)

@@ -87,11 +87,6 @@ Group                      nogroup
   HideNoAccess             on
 </Directory>
 
-# But not to overwrite ispCP Standard directories.
-<Directory ~/>
-  PathDenyFilter "^/(backups|cgi-bin|htdocs|errors|logs|phptmp|statistics)/?$"
-</Directory>
-
 <Limit ALL>
   IgnoreHidden             on
 </Limit>

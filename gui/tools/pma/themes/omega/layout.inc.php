@@ -10,6 +10,17 @@
  */
 
 /**
+ * We don't need these values, but let's define them, 
+ * so PHP doesn't complain... 
+ */ 
+ $GLOBALS['cfg']['BgcolorOne']               = '';
+ $GLOBALS['cfg']['BgcolorTwo']               = '';
+ $GLOBALS['cfg']['LeftBgColor']              = '';
+ $GLOBALS['cfg']['LeftPointerColor']         = '';
+ $GLOBALS['cfg']['RightBgColor']             = '';
+ $GLOBALS['cfg']['ThBgcolor']                = '';
+
+/** 
  * navi frame
  */
 // navi frame width
