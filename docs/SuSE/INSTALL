@@ -10,14 +10,13 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6) FAQ
-7) Credits
+6) Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0
-INSTALL Skript:		1.0
+INSTALL Skript:		1.1
 Maintainer:
 Homepage:			http://isp-contol.net
 Linux Distris:		SLES
@@ -63,13 +62,7 @@ See: OpenSuse. Suse ELS is not longer supported as individual distribution due
 to the fact it is similar to OpenSuse and not well used.
 
 ================================================================================
-6) FAQ
-------
-
-Please check http://isp-control.net for any questions not answered in this file.
-
-================================================================================
-7) Credits
+6) Credits
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.

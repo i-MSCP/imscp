@@ -1,4 +1,4 @@
-ispCP Ï(OMEGA) HowTo Install for CentOS 5.1
+ispCP Ï(OMEGA) HowTo Install for CentOS 5.2
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -10,17 +10,16 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6) FAQ
-7) Credits
+6) Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ÏVersion:        1.0.0 RC6
-INSTALL Script:        1.0
+INSTALL Script:        1.1
 Maintainer:
 Homepage:              http://isp-contol.net
-Linux Distros:         CentOS 5.1
+Linux Distros:         CentOS 5.2
 
 ================================================================================
 2) Requirements
@@ -79,6 +78,10 @@ For the following steps, you will need to be logged in as root.
    After that, we need to install a few perl modules that aren't packaged. You
    can run the following command to install them:
         # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
+
+   Note: If you've never run 'perl -MCPAN -e shell' before, you'll have to do this 
+         first and answer 'no' to autoconfigure perl. 
+
    Now, remove Sendmail so Postfix will be the default MTA
         # yum remove sendmail
 
@@ -114,8 +117,6 @@ For the following steps, you will need to be logged in as root and MySQL will
 need to be running.
 
 1. (optional) Check the ispcp.conf and adapt it to your requirements.
-   An overview over the variables you can find in the FAQ on
-   http://isp-control.net
 
 2. Build the System by using make:
         # make -f Makefile.centos install
@@ -203,9 +204,6 @@ need to be running.
     # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
-   An overview over the variables you can find in the FAQ on
-   http://isp-control.net
-
 5. Build the System by using make:
     # make -f Makefile.centos install
 
@@ -250,13 +248,7 @@ need to be running.
 	# rm -fR /tmp/ispcp/
 
 ================================================================================
-6) FAQ
-------
-
-Please check http://isp-control.net for any questions not answered in this file.
-
-================================================================================
-7) Credits
+6) Credits
 ----------
 
 ispCP Ïis a project of ispCP | isp Control Panel.

@@ -10,14 +10,13 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6) FAQ
-7) Credits
+6 Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0 RC6
-INSTALL Script:		1.0
+INSTALL Script:		1.1
 Maintainer:
 Homepage:			http://www.isp-contol.net
 Linux Distris:		Slackware 12
@@ -60,20 +59,7 @@ Please have a look in the CentOS INSTALL file
 Please have a look in the CentOS INSTALL file
 
 ================================================================================
-6) FAQ
-------
-
-Q.- How can I prevent websites using more than their bandwidth limit to stop working?
-A.- If you have installed the apache2-mod-cband (available for etch and lenny/sid)
-     all you need to do is:
-       # a2enmod cband
-     note that you might want to review /etc/apache2/mods-available/cband.conf
-     to disable the /cband-status and /cband-status-me handlers.
-
-Please check http://www.isp-control.net for any questions not answered in this file.
-
-================================================================================
-7) Credits
+6) Credits
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.

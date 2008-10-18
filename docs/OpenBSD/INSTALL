@@ -10,14 +10,13 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6) FAQ
-7) Credits
+6) Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0 RC6
-INSTALL Script:		2.0
+INSTALL Script:		2.1
 Maintainer:
 Homepage:			http://www.isp-contol.net
 Linux Distros:		OpenBSD
@@ -88,8 +87,6 @@ Make sure you are logged in as root and MySQL is running.
 	cpan> install MIME::Tools
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
-   An overview over the variables you can find in the FAQ on
-   http://isp-control.net
 
 5. Build the System by using make:
 	# make -f Makefile.inc install
@@ -215,8 +212,6 @@ Make sure you are logged in as root and MySQL is running.
 	./configs/dists and use/change them.
 
 	Check the ispcp.conf and adapt it to your requirements.
-	An overview over the variables you can find in the FAQ on
-	http://isp-control.net
 
 5. Build the System by using make:
 	# make -f Makefile.inc install
@@ -267,20 +262,7 @@ Make sure you are logged in as root and MySQL is running.
 	# rm -fR /tmp/ispcp/
 
 ================================================================================
-6) FAQ
-------
-
-Q.- How can I prevent websites using more than their bandwidth limit to stop working?
-A.- If you have installed the apache2-mod-cband (available for etch and lenny/sid)
-     all you need to do is:
-       # a2enmod cband
-     note that you might want to review /etc/apache2/mods-available/cband.conf
-     to disable the /cband-status and /cband-status-me handlers.
-
-Please check http://www.isp-control.net for any questions not answered in this file.
-
-================================================================================
-7) Credits
+6) Credits
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.
