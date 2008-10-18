@@ -188,7 +188,7 @@ $tpl->assign(array(
 	'TR_OPEN_TICKETS'	=> tr('Open tickets'),
 	'TR_CLOSED_TICKETS'	=> tr('Closed tickets'),
 	'TR_DELETE'			=> tr('Delete'),
-	'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', '%s', true)
+	'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s')
 ));
 
 gen_page_message($tpl);

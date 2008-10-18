@@ -345,7 +345,7 @@ $tpl->assign(
         'TR_FTP_ACTION' => tr('Action'),
         'TR_EDIT' => tr('Edit'),
         'TR_DELETE' => tr('Delete'),
-        'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true)
+        'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
         )
     );
 

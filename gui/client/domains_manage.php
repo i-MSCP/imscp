@@ -43,23 +43,55 @@ function gen_user_sub_action($sub_id, $sub_status) {
 	}
 }
 
+function gen_user_alssub_action($sub_id, $sub_status) {
+	if ($sub_status === Config::get('ITEM_OK_STATUS')) {
+		return array(tr('Delete'), "alssub_delete.php?id=$sub_id");
+	} else {
+		return array(tr('N/A'), '#');
+	}
+}
+
+function gen_user_alssub_action($sub_id, $sub_status) {
+	if ($sub_status === Config::get('ITEM_OK_STATUS')) {
+		return array(tr('Delete'), "alssub_delete.php?id=$sub_id");
+	} else {
+		return array(tr('N/A'), '#');
+	}
+}
+
 function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 	$domain_id = get_user_domain_id($sql, $user_id);
 
 	$query = <<<SQL_QUERY
         SELECT
-            subdomain_id, subdomain_name, subdomain_mount, subdomain_status
+            subdomain_id, subdomain_name, subdomain_mount, subdomain_status, domain_name
         FROM
-            subdomain
+            subdomain join domain
+        ON
+            subdomain.domain_id = domain.domain_id
         WHERE
-            domain_id = ?
+            subdomain.domain_id = ?
         ORDER BY
             subdomain_name
 SQL_QUERY;
+			
+  $query2 = <<<SQL_QUERY
+        SELECT
+            subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_status, alias_name
+        FROM
+            subdomain_alias join domain_aliasses
+        ON
+            subdomain_alias.alias_id = domain_aliasses.alias_id
+        WHERE
+            domain_id = ?
+        ORDER BY
+            subdomain_alias_name
+SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
+	$rs2 = exec_query($sql, $query2, array($domain_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ( ( $rs->RecordCount() + $rs2->RecordCount() ) == 0) {
 		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
 		$tpl->parse('SUB_MESSAGE', 'sub_message');
 	} else {
@@ -76,6 +108,7 @@ SQL_QUERY;
 			$tpl->assign(
 						array(
 							'SUB_NAME' => $sbd_name,
+							'SUB_ALIAS_NAME'	=>	$rs->fields['domain_name'],
 							'SUB_MOUNT' => $rs->fields['subdomain_mount'],
 							'SUB_STATUS' => translate_dmn_status($rs->fields['subdomain_status']),
 							'SUB_ACTION' => $sub_action,
@@ -86,9 +119,32 @@ SQL_QUERY;
 			$rs->MoveNext();
 			$counter++;
 		}
+		while (!$rs2->EOF) {
+			if ($counter % 2 == 0) {
+				$tpl->assign('ITEM_CLASS', 'content');
+			} else {
+				$tpl->assign('ITEM_CLASS', 'content2');
+			}
 
+			list($sub_action, $sub_action_script) = gen_user_alssub_action($rs2->fields['subdomain_alias_id'], $rs2->fields['subdomain_alias_status']);
+			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
+			$tpl->assign(
+						array(
+							'SUB_NAME' => $sbd_name,
+							'SUB_ALIAS_NAME'	=>	$rs2->fields['alias_name'],
+							'SUB_MOUNT' => $rs2->fields['subdomain_alias_mount'],
+							'SUB_STATUS' => translate_dmn_status($rs2->fields['subdomain_alias_status']),
+							'SUB_ACTION' => $sub_action,
+							'SUB_ACTION_SCRIPT' => $sub_action_script
+						)
+					);
+			$tpl->parse('SUB_ITEM', '.sub_item');
+			$rs2->MoveNext();
+			$counter++;
+		}
+		
 		$tpl->parse('SUB_LIST', 'sub_list');
-		$tpl->assign('SUB_MESSAGE', '');
+	  $tpl->assign('SUB_MESSAGE', '');		
 	}
 }
 
@@ -96,7 +152,7 @@ function gen_user_als_action($als_id, $als_status) {
 	if ($als_status === Config::get('ITEM_OK_STATUS')) {
 		return array(tr('Delete'), "alias_delete.php?id=$als_id");
 	} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')) {
-		return array(tr('Delete order'), "alias_order_delete.php?del_id=$als_id");
+		return array(tr('Delete order'), "alias_order_order.php?del_id=$als_id");
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -214,7 +270,7 @@ $tpl->assign(
 			'TR_SUB_MOUNT' => tr('Mount point'),
 			'TR_SUB_STATUS' => tr('Status'),
 			'TR_SUB_ACTION' => tr('Actions'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true)
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
 		)
 	);
 
