@@ -3,7 +3,7 @@
 /**
  * Interface to the improved MySQL extension (MySQLi)
  *
- * @version $Id: mysqli.dbi.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: mysqli.dbi.lib.php 11435 2008-07-26 15:18:59Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -91,9 +91,7 @@ function PMA_DBI_connect($user, $password, $is_controluser = false)
 
     if ($return_value == false) {
         if ($is_controluser) {
-            if (! defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
-                define('PMA_DBI_CONNECT_FAILED_CONTROLUSER', true);
-            }
+            trigger_error($GLOBALS['strControluserFailed'], E_USER_WARNING);
             return false;
         }
         PMA_auth_fails();
@@ -108,12 +106,11 @@ function PMA_DBI_connect($user, $password, $is_controluser = false)
  * selects given database
  *
  * @uses    $GLOBALS['userlink']
- * @uses    PMA_MYSQL_INT_VERSION
  * @uses    PMA_convert_charset()
  * @uses    mysqli_select_db()
  * @param   string          $dbname database name to select
- * @param   object mysqli   $link   the mysli object
- * @return  boolean         treu or false
+ * @param   object mysqli   $link   the mysqli object
+ * @return  boolean         true or false
  */
 function PMA_DBI_select_db($dbname, $link = null)
 {
@@ -124,9 +121,6 @@ function PMA_DBI_select_db($dbname, $link = null)
             return false;
         }
     }
-    if (PMA_MYSQL_INT_VERSION < 40100) {
-        $dbname = PMA_convert_charset($dbname);
-    }
     return mysqli_select_db($link, $dbname);
 }
 
@@ -135,7 +129,6 @@ function PMA_DBI_select_db($dbname, $link = null)
  *
  * @uses    PMA_DBI_QUERY_STORE
  * @uses    PMA_DBI_QUERY_UNBUFFERED
- * @uses    PMA_MYSQL_INT_VERSION
  * @uses    $GLOBALS['userlink']
  * @uses    PMA_convert_charset()
  * @uses    MYSQLI_STORE_RESULT
@@ -164,10 +157,42 @@ function PMA_DBI_try_query($query, $link = null, $options = 0)
             return false;
         }
     }
-    if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION < 40100) {
-        $query = PMA_convert_charset($query);
+
+    if ($GLOBALS['cfg']['DBG']['sql']) {
+        $time = microtime(true);
     }
-    return mysqli_query($link, $query, $method);
+    $r = mysqli_query($link, $query, $method);
+    if ($GLOBALS['cfg']['DBG']['sql']) {
+        $time = microtime(true) - $time;
+
+        $hash = md5($query);
+
+        if (isset($_SESSION['debug']['queries'][$hash])) {
+            $_SESSION['debug']['queries'][$hash]['count']++;
+        } else {
+            $_SESSION['debug']['queries'][$hash] = array();
+            $_SESSION['debug']['queries'][$hash]['count'] = 1;
+            $_SESSION['debug']['queries'][$hash]['query'] = $query;
+            $_SESSION['debug']['queries'][$hash]['time'] = $time;
+        }
+
+        $trace = array();
+        foreach (debug_backtrace() as $trace_step) {
+            $trace[] = PMA_Error::relPath($trace_step['file']) . '#' 
+                . $trace_step['line'] . ': '
+                . (isset($trace_step['class']) ? $trace_step['class'] : '')
+                //. (isset($trace_step['object']) ? get_class($trace_step['object']) : '')
+                . (isset($trace_step['type']) ? $trace_step['type'] : '')
+                . (isset($trace_step['function']) ? $trace_step['function'] : '')
+                . '('
+                . (isset($trace_step['params']) ? implode(', ', $trace_step['params']) : '')
+                . ')'
+                ;
+        }
+        $_SESSION['debug']['queries'][$hash]['trace'][] = $trace;
+    }
+
+    return $r;
 
     // From the PHP manual:
     // "note: returns true on success or false on failure. For SELECT,
@@ -177,130 +202,55 @@ function PMA_DBI_try_query($query, $link = null, $options = 0)
 }
 
 /**
- * returns $type array of rows from given $result
- *
- * The following function is meant for internal use only.
- * Do not call it from outside this library!
- *
- * @uses    $GLOBALS['allow_recoding']
- * @uses    $GLOBALS['cfg']['AllowAnywhereRecoding']
- * @uses    PMA_MYSQL_INT_VERSION
- * @uses    PMA_DBI_get_fields_meta()
- * @uses    PMA_convert_display_charset()
- * @uses    mysqli_fetch_array()
- * @uses    mysqli_num_fields()
- * @uses    stristr()
- * @param   object mysqli result    $result
- * @param   integer                 $type   ASSOC, BOTH, or NUMERIC array
- * @return  array                   results
- * @access  protected
- */
-function PMA_mysqli_fetch_array($result, $type = false)
-{
-    if ($type != false) {
-        $data = @mysqli_fetch_array($result, $type);
-    } else {
-        $data = @mysqli_fetch_array($result);
-    }
-
-    /* No data returned => do not touch it */
-    if (! $data) {
-        return $data;
-    }
-
-    if (!defined('PMA_MYSQL_INT_VERSION') || PMA_MYSQL_INT_VERSION >= 40100
-      || !(isset($GLOBALS['cfg']['AllowAnywhereRecoding'])
-        && $GLOBALS['cfg']['AllowAnywhereRecoding']
-        && $GLOBALS['allow_recoding'])) {
-        /* No recoding -> return data as we got them */
-        return $data;
-    }
-
-    $ret    = array();
-    $num    = mysqli_num_fields($result);
-    if ($num > 0) {
-        $fields = PMA_DBI_get_fields_meta($result);
-    }
-    // sometimes, mysqli_fetch_fields() does not return results
-    // (as seen in PHP 5.1.0-dev), so for now, return $data unchanged
-    if (!$fields) {
-        return $data;
-    }
-    $i = 0;
-    for ($i = 0; $i < $num; $i++) {
-        if (!isset($fields[$i]->type)) {
-            /* No meta information available -> we guess that it should be
-             * converted */
-            if (isset($data[$i])) {
-                $ret[$i] = PMA_convert_display_charset($data[$i]);
-            }
-            if (isset($fields[$i]->name) && isset($data[$fields[$i]->name])) {
-                $ret[PMA_convert_display_charset($fields[$i]->name)] =
-                    PMA_convert_display_charset($data[$fields[$i]->name]);
-            }
-        } else {
-            /* Meta information available -> check type of field and convert
-             * it according to the type */
-            if (stristr($fields[$i]->type, 'BLOB')
-              || stristr($fields[$i]->type, 'BINARY')) {
-                if (isset($data[$i])) {
-                    $ret[$i] = $data[$i];
-                }
-                if (isset($data[$fields[$i]->name])) {
-                    $ret[PMA_convert_display_charset($fields[$i]->name)] =
-                        $data[$fields[$i]->name];
-                }
-            } else {
-                if (isset($data[$i])) {
-                    $ret[$i] = PMA_convert_display_charset($data[$i]);
-                }
-                if (isset($data[$fields[$i]->name])) {
-                    $ret[PMA_convert_display_charset($fields[$i]->name)] =
-                        PMA_convert_display_charset($data[$fields[$i]->name]);
-                }
-            }
-        }
-    }
-    return $ret;
-}
-
-/**
  * returns array of rows with associative and numeric keys from $result
  *
- * @uses    PMA_mysqli_fetch_array()
+ * @uses    mysqli_fetch_array()
  * @uses    MYSQLI_BOTH
  * @param   object mysqli result    $result
  * @return  array                   result rows
  */
 function PMA_DBI_fetch_array($result)
 {
-    return PMA_mysqli_fetch_array($result, MYSQLI_BOTH);
+    return mysqli_fetch_array($result, MYSQLI_BOTH);
 }
 
 /**
  * returns array of rows with associative keys from $result
  *
- * @uses    PMA_mysqli_fetch_array()
+ * @uses    mysqli_fetch_array()
  * @uses    MYSQLI_ASSOC
  * @param   object mysqli result    $result
  * @return  array                   result rows
  */
 function PMA_DBI_fetch_assoc($result)
 {
-    return PMA_mysqli_fetch_array($result, MYSQLI_ASSOC);
+    return mysqli_fetch_array($result, MYSQLI_ASSOC);
 }
 
 /**
  * returns array of rows with numeric keys from $result
  *
- * @uses    PMA_mysqli_fetch_array()
+ * @uses    mysqli_fetch_array()
  * @uses    MYSQLI_NUM
  * @param   object mysqli result    $result
  * @return  array                   result rows
  */
 function PMA_DBI_fetch_row($result)
 {
-    return PMA_mysqli_fetch_array($result, MYSQLI_NUM);
+    return mysqli_fetch_array($result, MYSQLI_NUM);
+}
+
+/*
+ * Adjusts the result pointer to an arbitrary row in the result
+ *
+ * @uses    mysqli_data_seek()
+ * @param   $result
+ * @param   $offset
+ * @return  boolean true on success, false on failure
+ */
+function PMA_DBI_data_seek($result, $offset)
+{
+    return mysqli_data_seek($result, $offset);
 }
 
 /**
@@ -308,7 +258,6 @@ function PMA_DBI_fetch_row($result)
  *
  * @uses    mysqli_result
  * @uses    func_get_args()
- * @uses    is_object()
  * @uses    mysqli_free_result()
  * @param   result  $result,...     one or more mysql result resources
  */
@@ -372,8 +321,6 @@ function PMA_DBI_get_client_info()
 /**
  * returns last error message or false if no errors occured
  *
- * @uses    PMA_MYSQL_INT_VERSION
- * @uses    PMA_convert_display_charset()
  * @uses    PMA_DBI_convert_message()
  * @uses    $GLOBALS['errno']
  * @uses    $GLOBALS['userlink']
@@ -419,32 +366,10 @@ function PMA_DBI_getError($link = null)
 
     if ($error_number == 2002) {
         $error = '#' . ((string) $error_number) . ' - ' . $GLOBALS['strServerNotResponding'] . ' ' . $GLOBALS['strSocketProblem'];
-    } elseif (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 40100) {
-        $error = '#' . ((string) $error_number) . ' - ' . $error_message;
     } else {
-        $error = '#' . ((string) $error_number) . ' - ' . PMA_convert_display_charset($error_message);
+        $error = '#' . ((string) $error_number) . ' - ' . $error_message;
     }
     return $error;
-}
-
-/**
- * closes given database $link or $GLOBALS['userlink']
- *
- * @uses    $GLOBALS['userlink']
- * @uses    mysqli_close()
- * @param   object mysqli   $link   the mysqli object
- * @return  boolean         treu or false
- */
-function PMA_DBI_close($link = null)
-{
-    if (empty($link)) {
-        if (isset($GLOBALS['userlink'])) {
-            $link = $GLOBALS['userlink'];
-        } else {
-            return false;
-        }
-    }
-    return @mysqli_close($link);
 }
 
 /**
@@ -616,10 +541,7 @@ function PMA_DBI_num_fields($result)
  */
 function PMA_DBI_field_len($result, $i)
 {
-    $info = mysqli_fetch_field_direct($result, $i);
-    // stdClass::$length will be integrated in
-    // mysqli-ext when mysql4.1 has been released.
-    return @$info->length;
+    return mysqli_fetch_field_direct($result, $i)->length;
 }
 
 /**
@@ -632,8 +554,7 @@ function PMA_DBI_field_len($result, $i)
  */
 function PMA_DBI_field_name($result, $i)
 {
-    $info = mysqli_fetch_field_direct($result, $i);
-    return $info->name;
+    return mysqli_fetch_field_direct($result, $i)->name;
 }
 
 /**
@@ -653,14 +574,12 @@ function PMA_DBI_field_name($result, $i)
  * @uses    MYSQLI_UNIQUE_KEY_FLAG
  * @uses    MYSQLI_PRI_KEY_FLAG
  * @uses    MYSQLI_NOT_NULL_FLAG
- * @uses    MYSQLI_TYPE_TINY_BLOB 
  * @uses    MYSQLI_TYPE_BLOB
  * @uses    MYSQLI_TYPE_MEDIUM_BLOB  
  * @uses    MYSQLI_TYPE_LONG_BLOB 
  * @uses    MYSQLI_TYPE_VAR_STRING  
  * @uses    MYSQLI_TYPE_STRING
  * @uses    mysqli_fetch_field_direct()
- * @uses    PMA_convert_display_charset()
  * @param   object mysqli result    $result
  * @param   integer                 $i      field
  * @return  string                  field flags
@@ -697,7 +616,7 @@ function PMA_DBI_field_flags($result, $i)
     if ($f & MYSQLI_UNIQUE_KEY_FLAG)     { $flags .= 'unique_key ';}
     if ($f & MYSQLI_PRI_KEY_FLAG)        { $flags .= 'primary_key ';}
     if ($f & MYSQLI_NOT_NULL_FLAG)       { $flags .= 'not_null ';}
-    return PMA_convert_display_charset(trim($flags));
+    return trim($flags);
 }
 
 ?>

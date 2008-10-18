@@ -3,7 +3,7 @@
 /**
  * Set of functions used to run config authentication (ie no authentication).
  *
- * @version $Id: config.auth.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: config.auth.lib.php 11468 2008-08-08 16:15:16Z lem9 $
  */
 
 
@@ -88,28 +88,18 @@ function PMA_auth_fails()
 <body>
 <br /><br />
 <center>
-    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin ' . PMA_VERSION); ?></h1>
+    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin'); ?></h1>
 </center>
 <br />
 <table border="0" cellpadding="0" cellspacing="3" align="center" width="80%">
     <tr>
         <td>
+
     <?php
-    echo "\n";
     $GLOBALS['is_header_sent'] = TRUE;
 
-    /**
-     * @todo I have included this div from libraries/header.inc.php to work around
-     * an undefined variable in tooltip.js, when the server is not responding.
-     * Work has to be done to merge all code that starts the page (DOCTYPE and
-     * this div) to one place
-     */
-    ?>
-    <div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
-    <?php
-
     if (isset($GLOBALS['allowDeny_forbidden']) && $GLOBALS['allowDeny_forbidden']) {
-        echo '<p>' . $GLOBALS['strAccessDenied'] . '</p>' . "\n";
+        trigger_error($GLOBALS['strAccessDenied'], E_USER_NOTICE);
     } else {
         // Check whether user has configured something
         if ($_SESSION['PMA_Config']->source_mtime == 0) {
@@ -122,15 +112,11 @@ function PMA_auth_fails()
         //  rejected the connection, which is not really what happened)
         // 2002 is the error given by mysqli
         // 2003 is the error given by mysql
-            echo '<p>' . $GLOBALS['strAccessDeniedExplanation'] . '</p>' . "\n";
+            trigger_error($GLOBALS['strAccessDeniedExplanation'], E_USER_WARNING);
         }
         PMA_mysqlDie($conn_error, '', true, '', false);
     }
-    if (! empty($GLOBALS['PMA_errors']) && is_array($GLOBALS['PMA_errors'])) {
-        foreach ($GLOBALS['PMA_errors'] as $error) {
-            echo '<div class="error">' . $error . '</div>' . "\n";
-        }
-    }
+    $GLOBALS['error_handler']->dispUserErrors();
 ?>
         </td>
     </tr>

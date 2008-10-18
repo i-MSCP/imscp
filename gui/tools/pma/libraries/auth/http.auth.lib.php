@@ -4,7 +4,7 @@
  * Set of functions used to run http authentication.
  * NOTE: Requires PHP loaded as a Apache module.
  *
- * @version $Id: http.auth.lib.php 11184 2008-04-03 12:42:33Z lem9 $
+ * @version $Id: http.auth.lib.php 11468 2008-08-08 16:15:16Z lem9 $
  */
 
 
@@ -19,8 +19,8 @@
  *
  * @access  public
  */
-function PMA_auth() {
-
+function PMA_auth()
+{
     /* Perform logout to custom URL */
     if (!empty($_REQUEST['old_usr']) && !empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
         PMA_sendHeaderLocation($GLOBALS['cfg']['Server']['LogoutURL']);
@@ -48,22 +48,25 @@ function PMA_auth() {
     ?>
 </head>
 <body>
-<?php if (file_exists('./config.header.inc.php')) {
-          require './config.header.inc.php';
-      }
- ?>
+    <?php
+    if (file_exists('./config.header.inc.php')) {
+        require './config.header.inc.php';
+    }
+    ?>
 
 <br /><br />
 <center>
-    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin ' . PMA_VERSION); ?></h1>
+    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin'); ?></h1>
 </center>
 <br />
-<div class="warning"><?php echo $GLOBALS['strWrongUser']; ?></div>
 
-<?php if (file_exists('./config.footer.inc.php')) {
-         require './config.footer.inc.php';
-      }
- ?>
+    <?php
+    PMA_Message::error('strWrongUser')->display();
+
+    if (file_exists('./config.footer.inc.php')) {
+        require './config.footer.inc.php';
+    }
+    ?>
 
 </body>
 </html>
@@ -98,7 +101,6 @@ function PMA_auth_check()
 
     // Grabs the $PHP_AUTH_USER variable whatever are the values of the
     // 'register_globals' and the 'variables_order' directives
-    // loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
     if (empty($PHP_AUTH_USER)) {
         if (PMA_getenv('PHP_AUTH_USER')) {
             $PHP_AUTH_USER = PMA_getenv('PHP_AUTH_USER');
@@ -121,7 +123,6 @@ function PMA_auth_check()
     }
     // Grabs the $PHP_AUTH_PW variable whatever are the values of the
     // 'register_globals' and the 'variables_order' directives
-    // loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
     if (empty($PHP_AUTH_PW)) {
         if (PMA_getenv('PHP_AUTH_PW')) {
             $PHP_AUTH_PW = PMA_getenv('PHP_AUTH_PW');
@@ -153,8 +154,8 @@ function PMA_auth_check()
     if (!empty($old_usr)
         && (isset($PHP_AUTH_USER) && $old_usr == $PHP_AUTH_USER)) {
         $PHP_AUTH_USER = '';
-        // -> delete user's choices that were stored in session 
-        session_destroy(); 
+        // -> delete user's choices that were stored in session
+        session_destroy();
     }
 
     // Returns whether we get authentication settings or not
