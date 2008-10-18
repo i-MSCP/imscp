@@ -38,13 +38,13 @@ use strict;
 
 use warnings;
 
-$main::sub_task_id = undef;
+$main::alssub_task_id = undef;
 
-sub sub_mngr_start_up {
+sub alssub_mngr_start_up {
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_mngr_start_up()', 'Starting...');
+    push_el(\@main::el, 'alssub_mngr_start_up()', 'Starting...');
 
     # checking for master process;
 
@@ -54,9 +54,9 @@ sub sub_mngr_start_up {
 
     # Let's clear Execution Logs, if any.
 
-    if (-e $main::ispcp_sub_mngr_el) {
+    if (-e $main::ispcp_alssub_mngr_el) {
 
-        $rs = del_file($main::ispcp_sub_mngr_el);
+        $rs = del_file($main::ispcp_alssub_mngr_el);
 
         return $rs if ($rs != 0);
 
@@ -86,13 +86,13 @@ sub sub_mngr_start_up {
 
     my $sql = "
     	SELECT
-		subdomain_id,
-		domain_id,
-		subdomain_name,
-		subdomain_mount,
-		subdomain_status
+		subdomain_alias_id,
+		alias_id,
+		subdomain_alias_name,
+		subdomain_alias_mount,
+		subdomain_alias_status
 	FROM
-		subdomain
+		subdomain_alias
     ";
 
     ($rs, $rdata) = doSQL($sql);
@@ -105,37 +105,37 @@ sub sub_mngr_start_up {
     # getting task id and domain record id;
     #
 
-    $main::sub_task_id = $ARGV[0];
+    $main::alssub_task_id = $ARGV[0];
 
-    push_el(\@main::el, 'sub_mngr_start_up()', 'Ending...');
+    push_el(\@main::el, 'alssub_mngr_start_up()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_mngr_shut_down {
+sub alssub_mngr_shut_down {
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_mngr_shut_down()', 'Starting...');
+    push_el(\@main::el, 'alssub_mngr_shut_down()', 'Starting...');
 
-    push_el(\@main::el, 'sub_mngr_shut_down()', 'Ending...');
+    push_el(\@main::el, 'alssub_mngr_shut_down()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_add_named_cfg_data {
+sub alssub_add_named_cfg_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_add_named_cfg_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_named_cfg_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -147,11 +147,11 @@ sub sub_add_named_cfg_data {
 
     my $sub_pref = @$sub_data[2];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
-    my $dmn_ip = @$sub_data[26];
+    my $dmn_ip = @$sub_data[33];
 
 
     my $timestamp = time;
@@ -279,7 +279,7 @@ sub sub_add_named_cfg_data {
 
     my $db_sub_entry_val = "$db_sub_entry_b_val$db_sub_entry$db_sub_entry_e_val\n$db_sub_entry_b$db_sub_entry_e";
 
-    ($rs, $working) = repl_tag($db_sub_entry_b, $db_sub_entry_e, $working, $db_sub_entry_val, "sub_add_named_cfg_data");
+    ($rs, $working) = repl_tag($db_sub_entry_b, $db_sub_entry_e, $working, $db_sub_entry_val, "alssub_add_named_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -308,7 +308,7 @@ sub sub_add_named_cfg_data {
 
     my $db_time_val = "$db_time_b\t\t\t $time2\t\n$db_time_e";
 
-    ($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "sub_add_named_cfg_data");
+    ($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "alssub_add_named_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -332,23 +332,23 @@ sub sub_add_named_cfg_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_named_cfg_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_named_cfg_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_del_named_cfg_data {
+sub alssub_del_named_cfg_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_del_named_cfg_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_named_cfg_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_named_cfg_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_named_cfg_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -360,11 +360,11 @@ sub sub_del_named_cfg_data {
 
     my $sub_pref = @$sub_data[2];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
-    my $dmn_ip = @$sub_data[26];
+    my $dmn_ip = @$sub_data[33];
 
 
     my $timestamp = time;
@@ -507,11 +507,11 @@ sub sub_del_named_cfg_data {
 	#
 
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d%02d",$year+1900,$mon+1,$mday,$seq;
+    my $time2 = sprintf "%4d%02d%02d01",$year+1900,$mon+1,$mday,$seq;
 
     my $db_time_val = "$db_time_b\t\t\t $time2\t\n$db_time_e";
 
-    ($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "sub_del_named_cfg_data");
+    ($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "alssub_del_named_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -535,23 +535,23 @@ sub sub_del_named_cfg_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_del_named_cfg_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_named_cfg_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_add_named_data {
+sub alssub_add_named_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_add_named_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_named_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_named_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_named_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -559,27 +559,27 @@ sub sub_add_named_data {
 
     return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-    $rs = sub_add_named_cfg_data($sub_data);
+    $rs = alssub_add_named_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_named_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_named_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_change_named_data {
+sub alssub_change_named_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_change_named_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_change_named_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_change_named_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_change_named_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -587,27 +587,27 @@ sub sub_change_named_data {
 
     return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-    $rs = sub_add_named_cfg_data($sub_data);
+    $rs = alssub_add_named_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_change_named_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_change_named_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_del_named_data {
+sub alssub_del_named_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_del_named_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_named_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_named_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_named_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -615,27 +615,27 @@ sub sub_del_named_data {
 
     return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-    $rs = sub_del_named_cfg_data($sub_data);
+    $rs = alssub_del_named_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_del_named_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_named_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub gen_httpd_sub_group_entry {
+sub gen_httpd_alssub_group_entry {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'Starting...');
+    push_el(\@main::el, 'gen_httpd_alssub_group_entry()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'gen_httpd_alssub_group_entry()', 'ERROR: Undefined Input Data...');
 
         return (-1, '');
 
@@ -649,15 +649,16 @@ sub gen_httpd_sub_group_entry {
 
     my $sub_mount = @$sub_data[3];
 
-    my $dmn_id = @$sub_data[5];
+    my $dmn_id = @$sub_data[6];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
-    my $sub_ip = @$sub_data[26];
+    my $sub_ip = @$sub_data[33];
 
-    my ($sub_php, $sub_cgi) = (@$sub_data[24], @$sub_data[25]);
+    my ($sub_php, $sub_cgi) = (@$sub_data[31], @$sub_data[32]);
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -730,8 +731,8 @@ sub gen_httpd_sub_group_entry {
     my %tag_hash =
 
         (
-         '{DMN_NAME}' => $dmn_name,
-         '{DMN_GRP}' => $dmn_name,
+         '{DMN_NAME}' => $dmn_grp_name,
+         '{DMN_GRP}' => $dmn_grp_name,
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
@@ -790,7 +791,7 @@ sub gen_httpd_sub_group_entry {
                                  $sub_cgi_e,
                                  $sub_entry,
                                  $cgi_entry,
-                                 "gen_httpd_sub_group_entry"
+                                 "gen_httpd_alssub_group_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -816,7 +817,7 @@ sub gen_httpd_sub_group_entry {
                                      $sub_php2_e,
                                      $sub_entry,
                                      $php2_entry,
-                                     "gen_httpd_sub_group_entry"
+                                     "gen_httpd_alssub_group_entry"
                                     );
 
         return ($rs, '') if ($rs != 0);
@@ -828,7 +829,7 @@ sub gen_httpd_sub_group_entry {
                                  $sub_php_e,
                                  $sub_entry,
                                  $php_entry,
-                                 "gen_httpd_sub_group_entry"
+                                 "gen_httpd_alssub_group_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -846,23 +847,23 @@ sub gen_httpd_sub_group_entry {
         return $rs if ($rs != 0);
     }
 
-    push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'Ending...');
+    push_el(\@main::el, 'gen_httpd_alssub_group_entry()', 'Ending...');
 
     return (0, $sub_entry_val);
 
 }
 
-sub sub_add_httpd_cfg_data {
+sub alssub_add_httpd_cfg_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_httpd_cfg_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -874,13 +875,14 @@ sub sub_add_httpd_cfg_data {
 
     my $sub_pref = @$sub_data[2];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
     my $sub_mount = @$sub_data[3];
 
-    my $sub_ip = @$sub_data[26];
+    my $sub_ip = @$sub_data[33];
 
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
@@ -955,7 +957,7 @@ sub sub_add_httpd_cfg_data {
 
     my %tag_hash =  (
                      '{IP}' => $sub_ip,
-                     '{DMN_GRP}' => $dmn_name,
+                     '{DMN_GRP}' => $dmn_grp_name,
                      '{SUB_NAME}' => $sub_name
                     );
 
@@ -1045,7 +1047,7 @@ sub sub_add_httpd_cfg_data {
 
     my ($sub_entry, $sub_entry_val) = ('', '');
 
-    ($rs, $sub_entry) = gen_httpd_sub_group_entry($sub_data);
+    ($rs, $sub_entry) = gen_httpd_alssub_group_entry($sub_data);
 
     return $rs if ($rs != 0);
 
@@ -1059,7 +1061,7 @@ sub sub_add_httpd_cfg_data {
     # Fit all back to top;
     #
 
-    ($rs, $vh_entry_working) = repl_tag($dg_b_val, $dg_e_val, $vh_entry_working, $dg_entry_working, "sub_add_httpd_cfg_data");
+    ($rs, $vh_entry_working) = repl_tag($dg_b_val, $dg_e_val, $vh_entry_working, $dg_entry_working, "alssub_add_httpd_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -1068,7 +1070,7 @@ sub sub_add_httpd_cfg_data {
                                $vh_e_val,
                                $working,
                                $vh_entry_working,
-                               "sub_add_httpd_cfg_data"
+                               "alssub_add_httpd_cfg_data"
                               );
 
     return $rs if ($rs != 0);
@@ -1081,7 +1083,7 @@ sub sub_add_httpd_cfg_data {
 
     if ($rs == 0) {
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "sub_add_httpd_cfg_data");
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "alssub_add_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -1111,49 +1113,49 @@ sub sub_add_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_httpd_cfg_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_change_httpd_cfg_data {
+sub alssub_change_httpd_cfg_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_change_httpd_cfg_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_change_httpd_cfg_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_change_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_change_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_add_httpd_cfg_data($sub_data);
+    $rs = alssub_add_httpd_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_change_httpd_cfg_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_change_httpd_cfg_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_del_httpd_cfg_data {
+sub alssub_del_httpd_cfg_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_del_httpd_cfg_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_httpd_cfg_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -1165,13 +1167,14 @@ sub sub_del_httpd_cfg_data {
 
     my $sub_pref = @$sub_data[2];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
     my $sub_mount = @$sub_data[3];
 
-    my $sub_ip = @$sub_data[26];
+    my $sub_ip = @$sub_data[33];
 
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
@@ -1246,7 +1249,7 @@ sub sub_del_httpd_cfg_data {
 
     my %tag_hash =  (
                      '{IP}' => $sub_ip,
-                     '{DMN_GRP}' => $dmn_name,
+                     '{DMN_GRP}' => $dmn_grp_name,
                      '{SUB_NAME}' => $sub_name
                     );
 
@@ -1337,7 +1340,7 @@ sub sub_del_httpd_cfg_data {
     # Fit all back to top;
     #
 
-    ($rs, $vh_entry_working) = repl_tag($dg_b_val, $dg_e_val, $vh_entry_working, $dg_entry_working, "sub_del_httpd_cfg_data");
+    ($rs, $vh_entry_working) = repl_tag($dg_b_val, $dg_e_val, $vh_entry_working, $dg_entry_working, "alssub_del_httpd_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -1346,7 +1349,7 @@ sub sub_del_httpd_cfg_data {
                                $vh_e_val,
                                $working,
                                $vh_entry_working,
-                               "sub_del_httpd_cfg_data"
+                               "alssub_del_httpd_cfg_data"
                               );
 
     return $rs if ($rs != 0);
@@ -1359,7 +1362,7 @@ sub sub_del_httpd_cfg_data {
 
     if ($rs == 0) {
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "sub_del_httpd_cfg_data");
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "alssub_del_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -1389,23 +1392,23 @@ sub sub_del_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_del_httpd_cfg_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_httpd_cfg_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_add_httpd_file_data {
+sub alssub_add_httpd_file_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_add_httpd_file_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_httpd_file_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_httpd_file_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_httpd_file_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -1415,9 +1418,10 @@ sub sub_add_httpd_file_data {
 
     my $sub_mount = @$sub_data[3];
 
-    my $dmn_id = @$sub_data[5];
+    my $dmn_id = @$sub_data[6];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
@@ -1425,7 +1429,7 @@ sub sub_add_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-		my $sub_dir = "$www_dir/$dmn_name/$sub_mount";
+		my $sub_dir = "$www_dir/$dmn_grp_name/$sub_mount";
 
     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
@@ -1456,25 +1460,25 @@ sub sub_add_httpd_file_data {
                              0755
                             );
 
-    return $rs if ($rs != 0);
+   return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_httpd_file_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_change_httpd_file_data {
+sub alssub_change_httpd_file_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_change_httpd_file_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_change_httpd_file_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -1484,9 +1488,10 @@ sub sub_change_httpd_file_data {
 
     my $sub_mount = @$sub_data[3];
 
-    my $dmn_id = @$sub_data[5];
+    my $dmn_id = @$sub_data[6];
 
-    my $dmn_name = @$sub_data[6];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
@@ -1494,7 +1499,7 @@ sub sub_change_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $sub_dir = "$www_dir/$dmn_name$sub_mount";
+    my $sub_dir = "$www_dir/$dmn_grp_name$sub_mount";
 
     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
@@ -1521,23 +1526,23 @@ sub sub_change_httpd_file_data {
 	    return $rs if ($rs != 0);
     }
 
-    push_el(\@main::el, 'sub_change_httpd_file_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_change_httpd_file_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_del_httpd_file_data {
+sub alssub_del_httpd_file_data {
 
     my ($sub_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'sub_del_httpd_file_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_httpd_file_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_httpd_file_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -1547,9 +1552,9 @@ sub sub_del_httpd_file_data {
 
     my $sub_mount = @$sub_data[3];
 
-    my $dmn_name = @$sub_data[6];
-
-    my $dmn_id = @$sub_data[1];
+    my $dmn_name = @$sub_data[7];
+    my $dmn_id = @$sub_data[12];
+    my $dmn_grp_name = @$sub_data[13];
 
     my $sub_name = "$sub_pref.$dmn_name";
 
@@ -1557,7 +1562,7 @@ sub sub_del_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $sub_dir = "$www_dir/$dmn_name$sub_mount";
+    my $sub_dir = "$www_dir/$dmn_grp_name$sub_mount";
 
     #
     # Custom http config
@@ -1597,776 +1602,244 @@ sub sub_del_httpd_file_data {
 
     ($rs, $rdata) = del_dir($sub_dir);
 
-    push_el(\@main::el, 'sub_del_httpd_file_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_add_httpd_data {
+sub alssub_add_httpd_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_add_httpd_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_httpd_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_httpd_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_httpd_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_add_httpd_cfg_data($sub_data);
+    $rs = alssub_add_httpd_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    $rs = sub_add_httpd_file_data($sub_data);
+     $rs = alssub_add_httpd_file_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_httpd_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_httpd_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_change_httpd_data {
+sub alssub_change_httpd_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_change_httpd_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_change_httpd_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_change_httpd_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_change_httpd_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_change_httpd_cfg_data($sub_data);
+    $rs = alssub_change_httpd_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    $rs = sub_change_httpd_file_data($sub_data);
+    $rs = alssub_change_httpd_file_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_change_httpd_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_change_httpd_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_del_httpd_data {
+sub alssub_del_httpd_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_del_httpd_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_httpd_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_httpd_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_httpd_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_del_httpd_cfg_data($sub_data);
+    $rs = alssub_del_httpd_cfg_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    $rs = sub_del_httpd_file_data($sub_data);
+    $rs = alssub_del_httpd_file_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_del_httpd_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_httpd_data()', 'Ending...');
 
     return 0;
 
 }
 
-#
-# Postfix MTA Managment;
-#
-
-sub sub_add_mta_cfg_data {
-
-    my ($sub_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'sub_add_mta_cfg_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_add_mta_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $sub_pref = @$sub_data[2];
-
-    my $dmn_name = @$sub_data[6];
-
-    my $sub_name = "$sub_pref.$dmn_name";
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
-
-
-    my $tpl_dir = "$conf_dir/postfix/parts";
-
-    my $working_dir = "$conf_dir/postfix/working";
-
-    my $backup_dir = "$conf_dir/postfix/backup";
-
-
-    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $working_cfg = "$working_dir/domains";
-
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/domains.$timestamp";
-
-    my ($sys, $working) = (undef, undef);
-
-    #
-    # Getting needed configs;
-    #
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Checking for domain entry existance;
-    #
-
-    $working =~ s/^$sub_name\t\t\t[^\n]+\n//gim;
-
-    $working .= "$sub_name\t\t\tvsubdmn-entry\n";
-
-    #
-    # Let's do some backup first;
-    #
-
-    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's write configs;
-    #
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command("$cmd_postmap $sys_cfg");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_add_mta_cfg_data()', 'Ending...');
-
-    return 0;
-}
-
-sub sub_del_mta_cfg_data {
-
-    my ($sub_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'sub_del_mta_cfg_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_del_mta_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $sub_pref = @$sub_data[2];
-
-    my $dmn_name = @$sub_data[6];
-
-    my $sub_name = "$sub_pref.$dmn_name";
-
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
-
-
-    my $tpl_dir = "$conf_dir/postfix/parts";
-
-    my $working_dir = "$conf_dir/postfix/working";
-
-    my $backup_dir = "$conf_dir/postfix/backup";
-
-
-    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $working_cfg = "$working_dir/domains";
-
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/domains.$timestamp";
-
-    my ($sys, $working) = (undef, undef);
-
-    #
-    # Getting needed configs;
-    #
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Checking for domain entry existance;
-    #
-
-    $working =~ s/^$sub_name\t\t\t[^\n]+\n//gim;
-
-    #
-    # Let's do some backup first;
-    #
-
-    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's write configs;
-    #
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command("$cmd_postmap $sys_cfg");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_del_mta_cfg_data()', 'Ending...');
-
-    return 0;
-}
-
-sub sub_add_mta_file_data {
-
-    my ($sub_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'sub_add_mta_file_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_add_mta_file_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $sub_pref = @$sub_data[2];
-
-    my $dmn_name = @$sub_data[6];
-
-    my $sub_name = "$sub_pref.$dmn_name";
-
-
-    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-
-    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-
-    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
-
-
-    $rs = make_dir(
-                   "$virtual_mail_dir/$sub_name",
-                   $mailbox_uid_name,
-                   $mailbox_gid_name,
-                   0700
-                  );
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_add_mta_file_data()', 'Ending...');
-
-    return 0;
-}
-
-sub sub_del_mta_file_data {
-
-    my ($sub_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'sub_del_mta_file_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_del_mta_file_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $sub_pref = @$sub_data[2];
-
-    my $dmn_name = @$sub_data[6];
-
-    my $sub_name = "$sub_pref.$dmn_name";
-
-
-    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-
-    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-
-    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
-
-
-    $rs = del_dir("$virtual_mail_dir/$sub_name");
-
-    return $rs if ($rs != 0);
-
-
-    push_el(\@main::el, 'sub_del_mta_file_data()', 'Ending...');
-
-    return 0;
-}
-
-sub sub_add_mta_data {
+sub alssub_add_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_add_mta_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_add_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_add_mta_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_add_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_add_mta_cfg_data($sub_data);
+    $rs = alssub_add_named_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    $rs = sub_add_mta_file_data($sub_data);
+     $rs = alssub_add_httpd_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_add_mta_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_add_data()', 'Ending...');
 
     return 0;
+
 }
 
-sub sub_change_mta_data {
+sub alssub_change_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_change_mta_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_change_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_change_mta_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_change_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_add_mta_data($sub_data);
+    $rs = alssub_change_named_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_change_mta_data()', 'Ending...');
+    $rs = alssub_change_httpd_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_change_data()', 'Ending...');
 
     return 0;
+
 }
 
-sub sub_del_mta_data {
+sub alssub_del_data {
 
     my ($sub_data) = @_;
 
     my $rs = undef;
 
-    push_el(\@main::el, 'sub_del_mta_data()', 'Starting...');
+    push_el(\@main::el, 'alssub_del_data()', 'Starting...');
 
     if (!defined($sub_data) || $sub_data eq '') {
 
-        push_el(\@main::el, 'sub_del_mta_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'alssub_del_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
     }
 
-    $rs = sub_del_mta_cfg_data($sub_data);
+    $rs = alssub_del_named_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    $rs = sub_del_mta_file_data($sub_data);
+    $rs = alssub_del_httpd_data($sub_data);
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'sub_del_mta_data()', 'Ending...');
-
-    return 0;
-}
-
-sub sub_add_proftpd_cfg_data {
-	my ($sub_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'Starting...');
-
-	if (!defined($sub_data) || $sub_data eq '') {
-		push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
-		return -1;
-	}
-
-	#
-	# Initial data we need;
-	#
-	my $sub_name         = @$sub_data[2];
-	my $sub_mount_point  = @$sub_data[3];
-	my $sub_to           = @$sub_data[6];
-
-	my $conf_dir         = $main::cfg{'CONF_DIR'};
-	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
-	my $apache_www_dir   = $main::cfg{'APACHE_WWW_DIR'};
-
-	my $tpl_dir          = "$conf_dir/proftpd/parts";
-	my $backup_dir       = "$conf_dir/proftpd/backup";
-	my $working_dir      = "$conf_dir/proftpd/working";
-	my $sub_fname        = "$sub_name.$sub_to.conf";
-	my $sub_path         = "$apache_www_dir/$sub_to$sub_mount_point";
-	my $working_cfg      = "$working_dir/$sub_fname";
-	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
-
-	#
-	# Let's get needed tags and templates;
-	#
-	my $entry = '';
-	($rs, $entry) = get_tpl(
-		$tpl_dir,
-		'proftpd.conf.tpl'
-	);
-	return $rs if ($rs != 0);
-
-	my $seq = 0;
-
-	#
-	# Let's prepare them;
-	#
-	my %tag_hash = (
-		'{PATH}' => $sub_path,
-	);
-	($rs, $entry) = prep_tpl(
-		\%tag_hash,
-		$entry
-	);
-	return $rs if ($rs != 0);
-
-	#
-	# Let's store generated data;
-	#
-	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'Ending...');
-	return 0;
-}
-
-sub sub_del_proftpd_cfg_data {
-	my ($sub_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'Starting...');
-	if (!defined($sub_data) || $sub_data eq '') {
-		push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
-		return -1;
-	}
-
-	#
-	# Initial data we need;
-	#
-
-	my $sub_name         = @$sub_data[2];
-	my $sub_to           = @$sub_data[6];
-	my $conf_dir         = $main::cfg{'CONF_DIR'};
-	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
-	my $sub_fname        = "$sub_name.$sub_to.conf";
-	my $working_dir      = "$conf_dir/proftpd/working";
-	my $working_cfg      = "$working_dir/$sub_fname";
-	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
-
-	#
-	# Let's remove .db files for this domain;
-	#
-	$rs = del_file($working_cfg);
-	return $rs if ($rs != 0);
-
-	$rs = del_file($sys_cfg);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'Ending...');
-	return 0;
-}
-
-sub sub_add_proftpd_data {
-	my ($sub_data) = @_;
-	my $rs         = undef;
-
-	push_el(\@main::el, 'sub_add_proftpd_data()', 'Starting...');
-	if (!defined($sub_data) || $sub_data eq '') {
-		push_el(\@main::el, 'sub_add_proftpd_data()', 'ERROR: Undefined Input Data...');
-		return -1;
-	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
-
-	$rs = sub_add_proftpd_cfg_data($sub_data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_add_proftpd_data()', 'Ending...');
-	return 0;
-}
-
-sub sub_change_proftpd_data {
-	my ($sub_data) = @_;
-	my $rs         = undef;
-
-	push_el(\@main::el, 'sub_change_proftpd_data()', 'Starting...');
-	if (!defined($sub_data) || $sub_data eq '') {
-		push_el(\@main::el, 'sub_change_proftpd_data()', 'ERROR: Undefined Input Data...');
-		return -1;
-	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
-
-	$rs = sub_add_proftpd_data($sub_data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_change_proftpd_data()', 'Ending...');
-	return 0;
-}
-
-sub sub_del_proftpd_data {
-	my ($sub_data) = @_;
-	my $rs         = undef;
-
-	push_el(\@main::el, 'sub_del_proftpd_data()', 'Starting...');
-	if (!defined($sub_data) || $sub_data eq '') {
-		push_el(\@main::el, 'sub_del_proftpd_data()', 'ERROR: Undefined Input Data...');
-		return -1;
-	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
-
-	$rs = sub_del_proftpd_cfg_data($sub_data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_del_proftpd_data()', 'Ending...');
-	return 0;
-}
-
-sub sub_add_data {
-
-    my ($sub_data) = @_;
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'sub_add_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_add_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = sub_add_proftpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_add_named_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_add_httpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_add_mta_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_add_data()', 'Ending...');
+    push_el(\@main::el, 'alssub_del_data()', 'Ending...');
 
     return 0;
 
 }
 
-sub sub_change_data {
-
-    my ($sub_data) = @_;
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'sub_change_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_change_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = sub_change_proftpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_change_named_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_change_httpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_change_mta_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_change_data()', 'Ending...');
-
-    return 0;
-
-}
-
-sub sub_del_data {
-
-    my ($sub_data) = @_;
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'sub_del_data()', 'Starting...');
-
-    if (!defined($sub_data) || $sub_data eq '') {
-
-        push_el(\@main::el, 'sub_del_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = sub_del_proftpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_del_named_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_del_httpd_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = sub_del_mta_data($sub_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'sub_del_data()', 'Ending...');
-
-    return 0;
-
-}
-
-sub sub_mngr_engine {
+sub alssub_mngr_engine {
 
     my ($rs, $rows, $rdata) = (undef, undef, undef);
 
-    push_el(\@main::el, 'sub_mngr_engine()', 'Starting...');
+    push_el(\@main::el, 'alssub_mngr_engine()', 'Starting...');
 
     my $sql = "
       SELECT
-        t1.subdomain_id,
-        t1.domain_id,
-        t1.subdomain_name,
-        t1.subdomain_mount,
-        t1.subdomain_status,
+        t1.subdomain_alias_id,
+        t1.alias_id,
+        t1.subdomain_alias_name,
+        t1.subdomain_alias_mount,
+        t1.subdomain_alias_status,
+        t2.alias_id,
         t2.domain_id,
-        t2.domain_name,
-        t2.domain_gid,
-        t2.domain_uid,
-        t2.domain_admin_id,
-        t2.domain_created_id,
-        t2.domain_created,
-        t2.domain_last_modified,
-        t2.domain_mailacc_limit,
-        t2.domain_ftpacc_limit,
-        t2.domain_traffic_limit,
-        t2.domain_sqld_limit,
-        t2.domain_sqlu_limit,
-        t2.domain_status,
-        t2.domain_alias_limit,
-        t2.domain_subd_limit,
-        t2.domain_ip_id,
-        t2.domain_disk_limit,
-        t2.domain_disk_usage,
-        t2.domain_php,
-        t2.domain_cgi,
-        t3.ip_number
+        t2.alias_name,
+        t2.alias_status,
+        t2.alias_mount,
+        t2.alias_ip_id,
+        t2.url_forward,
+        t3.domain_id,
+        t3.domain_name,
+        t3.domain_gid,
+        t3.domain_uid,
+        t3.domain_admin_id,
+        t3.domain_created_id,
+        t3.domain_created,
+        t3.domain_last_modified,
+        t3.domain_mailacc_limit,
+        t3.domain_ftpacc_limit,
+        t3.domain_traffic_limit,
+        t3.domain_sqld_limit,
+        t3.domain_sqlu_limit,
+        t3.domain_status,
+        t3.domain_alias_limit,
+        t3.domain_subd_limit,
+        t3.domain_ip_id,
+        t3.domain_disk_limit,
+        t3.domain_disk_usage,
+        t3.domain_php,
+        t3.domain_cgi,
+        t4.ip_number
       FROM
-        subdomain AS t1,
-        domain AS t2,
-        server_ips AS t3
+        subdomain_alias AS t1,
+        domain_aliasses AS t2,
+        domain AS t3,
+        server_ips AS t4
       WHERE
-            t1.domain_id    = t2.domain_id
-        AND t2.domain_ip_id = t3.ip_id
-        AND t1.subdomain_id = $main::sub_task_id
+            t1.alias_id    = t2.alias_id
+        AND t2.domain_id = t3.domain_id
+        AND t3.domain_ip_id = t4.ip_id
+        AND t1.subdomain_alias_id = $main::alssub_task_id
     ";
 
     ($rs, $rows) = doSQL($sql);
@@ -2384,13 +1857,13 @@ sub sub_mngr_engine {
 
     if ($sub_status eq 'toadd') {
 
-        $rs = sub_add_data($entry);
+        $rs = alssub_add_data($entry);
 
         $timestamp = time();
 
         if ($rs == 0) {
 
-            $sql = "update subdomain set subdomain_status='ok' where subdomain_id = $sub_id;";
+            $sql = "update subdomain_alias set subdomain_alias_status='ok' where subdomain_alias_id = $sub_id;";
 
         } else {
 
@@ -2398,7 +1871,7 @@ sub sub_mngr_engine {
 
             $msg =~ s/\'/\\\'/g;
 
-            $sql = "update subdomain set subdomain_status='$sub_name | $msg' where subdomain_id = $sub_id;";
+            $sql = "update subdomain_alias set subdomain_alias_status='$sub_name | $msg' where subdomain_alias_id = $sub_id;";
 
         }
 
@@ -2406,17 +1879,18 @@ sub sub_mngr_engine {
 
         return $rs if ($rs != 0);
 
-    } elsif ($sub_status eq 'change') {
+    } 
+    elsif ($sub_status eq 'change') {
 
         # Changing domains;
 
-        $rs = sub_change_data($entry);
+        $rs = alssub_change_data($entry);
 
         $timestamp = time();
 
         if ($rs == 0) {
 
-            $sql = "update subdomain set subdomain_status='ok' where subdomain_id = $sub_id;";
+            $sql = "update subdomain_alias set subdomain_alias_status='ok' where subdomain_alias_id = $sub_id;";
 
         } else {
 
@@ -2424,7 +1898,7 @@ sub sub_mngr_engine {
 
             $msg =~ s/\'/\\\'/g;
 
-            $sql = "update subdomain set subdomain_status='$sub_name | $msg' where subdomain_id = $sub_id;";
+            $sql = "update subdomain_alias set subdomain_alias_status='$sub_name | $msg' where subdomain_alias_id = $sub_id;";
 
         }
 
@@ -2436,13 +1910,13 @@ sub sub_mngr_engine {
 
         # Removing domains;
 
-        $rs = sub_del_data($entry);
+        $rs = alssub_del_data($entry);
 
         $timestamp = time();
 
         if ($rs == 0) {
 
-            $sql = "delete from subdomain where subdomain_id = $sub_id;";
+            $sql = "delete from subdomain_alias where subdomain_alias_id = $sub_id;";
 
         } else {
 
@@ -2450,7 +1924,7 @@ sub sub_mngr_engine {
 
             $msg =~ s/\'/\\\'/g;
 
-            $sql = "update subdomain set subdomain_status='$sub_name | $msg' where subdomain_id = $sub_id;";
+            $sql = "update subdomain_alias set subdomain_alias_status='$sub_name | $msg' where subdomain_alias_id = $sub_id;";
 
         }
 
@@ -2464,7 +1938,7 @@ sub sub_mngr_engine {
 
     sleep(1);
 
-    push_el(\@main::el, 'sub_mngr_engine()', 'Ending...');
+    push_el(\@main::el, 'alssub_mngr_engine()', 'Ending...');
 
     return 0;
 
@@ -2472,35 +1946,35 @@ sub sub_mngr_engine {
 
 my $rs = undef;
 
-$rs = sub_mngr_start_up();
+$rs = alssub_mngr_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_sub_mngr_el);
+    dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
 
-    sub_mngr_shut_down();
+    alssub_mngr_shut_down();
 
     exit 1;
 
 }
 
-$rs = sub_mngr_engine();
+$rs = alssub_mngr_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_sub_mngr_el);
+    dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
 
-    sub_mngr_shut_down();
+    alssub_mngr_shut_down();
 
     exit 1;
 
 }
 
-$rs = sub_mngr_shut_down();
+$rs = alssub_mngr_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_sub_mngr_el);
+    dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
 
     exit 1;
 

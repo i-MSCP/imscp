@@ -120,6 +120,8 @@ sub serv_mngr_start_up {
     $main::changed_als_cnt = $ARGV[2]."";
 
     $main::changed_mail_cnt = $ARGV[3]."";
+    
+    $main::changed_alssub_cnt = $ARGV[4]."";
 
     push_el(\@main::el, 'serv_mngr_start_up()', 'Ending...');
 
@@ -241,7 +243,7 @@ sub serv_mngr_engine {
 
     }
 
-    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
+    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
         if ($main::cfg{'CMD_NAMED'} ne 'no') {
 
@@ -311,7 +313,7 @@ sub serv_mngr_engine {
 
     }
 
-    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
+    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
         if ($main::cfg{'CMD_HTTPD'} ne 'no') {
 

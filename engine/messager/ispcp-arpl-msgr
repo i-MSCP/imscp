@@ -665,7 +665,7 @@ sub arpl_msgr_engine {
 
 	push_el(\@main::el, 'arpl_msgr_engine()', 'Starting...');
 
-	my ($sql, $rs) = (undef, undef);
+	my ($sql, $rs, $ref) = (undef, undef, undef);
 
 	my $msg_parser = new MIME::Parser;
 
@@ -718,11 +718,30 @@ sub arpl_msgr_engine {
 
 				my $ma = $to_ma->address."\n";
 
+				# TODO: Resolve forwards
+                return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)$/));
+
+                # postbox with normal_mail, alias_mail or subdom_mail as type, so '_mail'
+	            $sql = "SELECT `mail_forward`, INSTR(`mail_type`, '_mail') FROM `mail_users` WHERE `mail_addr` = '$ma'";
+
+                ($rs, $ref) = doSQL($sql);
+				return $rs if ($rs != 0);
+
+                my $ref = @$ref[0]; # erster Datensatz
+
+                # second field = 0 -> no postbox (forward, etc.)
+                if (@$ref[1] == 0) {
+	                # first field -> forward address
+                	$ma = @$ref[0];
+                }
+
+                $ma = $ma."\n";
+
         		return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)\n$/));
 
 	        	my ($user, $dmn) = ($1, $2);
 
-    	    	my ($ref, $dmn_id, $sub_id, $pt) = (undef, undef, undef, undef, undef, undef);
+    	    	my ($dmn_id, $sub_id, $pt) = (undef, undef, undef, undef, undef);
 
        		 	my ($domainformsubdomain, $subformsubdomain) = (undef, undef);
 

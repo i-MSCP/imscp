@@ -89,6 +89,12 @@ $main::ispcp_sub_mngr_el = "$main::log_dir/ispcp-sub-mngr.el";
 $main::ispcp_sub_mngr_stdout = "$main::log_dir/ispcp-sub-mngr.stdout";
 $main::ispcp_sub_mngr_stderr = "$main::log_dir/ispcp-sub-mngr.stderr";
 
+$main::ispcp_alssub_mngr = "$main::root_dir/engine/ispcp-alssub-mngr";
+
+$main::ispcp_alssub_mngr_el = "$main::log_dir/ispcp-alssub-mngr.el";
+$main::ispcp_alssub_mngr_stdout = "$main::log_dir/ispcp-alssub-mngr.stdout";
+$main::ispcp_alssub_mngr_stderr = "$main::log_dir/ispcp-alssub-mngr.stderr";
+
 $main::ispcp_als_mngr = "$main::root_dir/engine/ispcp-als-mngr";
 
 $main::ispcp_als_mngr_el = "$main::log_dir/ispcp-als-mngr.el";
