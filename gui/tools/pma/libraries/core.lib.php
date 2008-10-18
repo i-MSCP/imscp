@@ -2,8 +2,10 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Core functions used all over the scripts.
+ * This script is distinct from libraries/common.inc.php because this
+ * script is called from /test.
  *
- * @version $Id: core.lib.php 10420 2007-06-03 23:30:40Z lem9 $
+ * @version $Id: core.lib.php 11499 2008-08-21 16:45:14Z lem9 $
  */
 
 /**
@@ -196,6 +198,8 @@ function PMA_securePath($path)
  * displays the given error message on phpMyAdmin error page in foreign language,
  * ends script execution and closes session
  *
+ * loads language file if not loaded already
+ *
  * @todo    use detected argument separator (PMA_Config)
  * @uses    $GLOBALS['session_name']
  * @uses    $GLOBALS['text_dir']
@@ -207,24 +211,40 @@ function PMA_securePath($path)
  * @uses    $_COOKIE
  * @uses    substr()
  * @uses    header()
- * @uses    urlencode()
- * @param string    $error_message the error message or named error message
+ * @uses    http_build_query()
+ * @uses    is_string()
+ * @uses    sprintf()
+ * @uses    vsprintf()
+ * @uses    strtr()
+ * @uses    defined()
+ * @param   string $error_message the error message or named error message
+ * @param   string|array $message_args arguments applied to $error_message
+ * @return  exit
  */
 function PMA_fatalError($error_message, $message_args = null)
 {
+    // it could happen PMA_fatalError() is called before language file is loaded
     if (! isset($GLOBALS['available_languages'])) {
-        $GLOBALS['cfg'] = array('DefaultLang'           => 'en-iso-8859-1',
-                     'AllowAnywhereRecoding' => false);
+        $GLOBALS['cfg'] = array(
+            'DefaultLang'           => 'en-utf-8',
+            'AllowAnywhereRecoding' => false);
+
         // Loads the language file
         require_once './libraries/select_lang.lib.php';
+
         if (isset($strError)) {
             $GLOBALS['strError'] = $strError;
+        } else {
+            $GLOBALS['strError'] = 'Error';
         }
+
+        // $text_dir is set in lang/language-utf-8.inc.php
         if (isset($text_dir)) {
             $GLOBALS['text_dir'] = $text_dir;
         }
     }
 
+    // $error_message could be a language string identifier: strString
     if (substr($error_message, 0, 3) === 'str') {
         if (isset($$error_message)) {
             $error_message = $$error_message;
@@ -242,11 +262,14 @@ function PMA_fatalError($error_message, $message_args = null)
 
     // Displays the error message
     // (do not use &amp; for parameters sent by header)
-    header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php'
-            . '?lang='  . urlencode($GLOBALS['available_languages'][$GLOBALS['lang']][2])
-            . '&dir='   . urlencode($GLOBALS['text_dir'])
-            . '&type='  . urlencode($GLOBALS['strError'])
-            . '&error=' . urlencode($error_message));
+    $query_params = array(
+        'lang'  => $GLOBALS['available_languages'][$GLOBALS['lang']][2],
+        'dir'   => $GLOBALS['text_dir'],
+        'type'  => $GLOBALS['strError'],
+        'error' => $error_message,
+    );
+    header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php?'
+            . http_build_query($query_params, null, '&'));
 
     // on fatal errors it cannot hurt to always delete the current session
     if (isset($GLOBALS['session_name']) && isset($_COOKIE[$GLOBALS['session_name']])) {
@@ -514,9 +537,9 @@ function PMA_checkPageValidity(&$page, $whitelist)
 }
 
 /**
- * trys to find the value for the given environment vriable name
+ * tries to find the value for the given environment variable name
  *
- * searchs in $_SERVER, $_ENV than trys getenv() and apache_getenv()
+ * searches in $_SERVER, $_ENV then tries getenv() and apache_getenv()
  * in this order
  *
  * @uses    $_SERVER
@@ -559,7 +582,7 @@ function PMA_removeCookie($cookie)
 }
 
 /**
- * sets cookie if value is different from current cokkie value,
+ * sets cookie if value is different from current cookie value,
  * or removes if value is equal to default
  *
  * @uses    PMA_Config::isHttps()
@@ -599,14 +622,8 @@ function PMA_setCookie($cookie, $value, $default = null, $validity = null, $http
         } else {
             $v = time() + $validity;
         }
-        /* Use native support for httponly cookies if available */
-        if (version_compare(PHP_VERSION, '5.2.0', 'ge')) {
-            return setcookie($cookie, $value, $v,
-                PMA_Config::getCookiePath(), '', PMA_Config::isHttps(), $httponly);
-        } else {
-            return setcookie($cookie, $value, $v,
-                PMA_Config::getCookiePath() . ($httponly ? '; HttpOnly' : ''), '', PMA_Config::isHttps());
-        }
+        return setcookie($cookie, $value, $v,
+            PMA_Config::getCookiePath(), '', PMA_Config::isHttps(), $httponly);
     }
 
     // cookie has already $value as value

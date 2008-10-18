@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11605 2008-09-22 16:39:00Z lem9 $
+ * @version $Id: Config.class.php 11619 2008-09-27 12:46:03Z lem9 $
  */
 
 /**
@@ -55,7 +55,7 @@ class PMA_Config
     var $default_server = array();
 
     /**
-     * @var boolean wether init is done or mot
+     * @var boolean whether init is done or not
      * set this to false to force some initial checks
      * like checking for required functions
      */
@@ -74,7 +74,7 @@ class PMA_Config
         // PMA_Config::load()
         $this->load($source);
 
-        // other settings, independant from config file, comes in
+        // other settings, independent from config file, comes in
         $this->checkSystem();
 
         $this->checkIsHttps();
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.9.2');
+        $this->set('PMA_VERSION', '3.0.0');
         /**
          * @deprecated
          */
@@ -106,7 +106,7 @@ class PMA_Config
     }
 
     /**
-     * wether to use gzip output compression or not
+     * whether to use gzip output compression or not
      */
     function checkOutputCompression()
     {
@@ -375,8 +375,6 @@ class PMA_Config
          * Parses the configuration file
          */
         $old_error_reporting = error_reporting(0);
-        // avoid "headers already sent" error when file contains a BOM
-        ob_start();
         if (function_exists('file_get_contents')) {
             $eval_result =
                 eval('?>' . trim(file_get_contents($this->getSource())));
@@ -384,7 +382,6 @@ class PMA_Config
             $eval_result =
                 eval('?>' . trim(implode("\n", file($this->getSource()))));
         }
-        ob_end_clean();
         error_reporting($old_error_reporting);
 
         if ($eval_result === false) {
@@ -456,7 +453,7 @@ class PMA_Config
     /**
      * check config source
      *
-     * @return  boolean wether source is valid or not
+     * @return  boolean whether source is valid or not
      */
     function checkConfigSource()
     {
@@ -483,15 +480,17 @@ class PMA_Config
         }
 
         // Check for permissions (on platforms that support it):
-        $perms = @fileperms($this->getSource());
-        if (!($perms === false) && ($perms & 2)) {
-            // This check is normally done after loading configuration
-            $this->checkWebServerOs();
-            if ($this->get('PMA_IS_WINDOWS') == 0) {
-                $this->source_mtime = 0;
-                die('Wrong permissions on configuration file, should not be world writable!');
-            }
-        }
+	if ($this->get('CheckConfigurationPermissions')) {
+            $perms = @fileperms($this->getSource());
+            if (!($perms === false) && ($perms & 2)) {
+                // This check is normally done after loading configuration
+                $this->checkWebServerOs();
+                if ($this->get('PMA_IS_WINDOWS') == 0) {
+                    $this->source_mtime = 0;
+                    die('Wrong permissions on configuration file, should not be world writable!');
+                }
+	    }
+	}
 
         return true;
     }
@@ -534,25 +533,15 @@ class PMA_Config
     }
 
     /**
-     * old PHP 4 style constructor
-     *
-     * @deprecated
-     */
-    function PMA_Config($source = null)
-    {
-        $this->__construct($source);
-    }
-
-    /**
      * returns a unique value to force a CSS reload if either the config
-     * or the theme changes;
+     * or the theme changes
      * must also check the pma_fontsize cookie in case there is no
      * config file
      * @return  int  Unix timestamp
      */
     function getThemeUniqueValue()
     {
-        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize'])) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info);
+        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize'])) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info) . (isset($_SESSION['userconf']['custom_color']) ? substr($_SESSION['userconf']['custom_color'],1,6) : '');
     }
 
     /**
@@ -562,7 +551,7 @@ class PMA_Config
      */
     function checkPmaAbsoluteUri()
     {
-        // Setup a default value to let the people and lazy syadmins work anyway,
+        // Setup a default value to let the people and lazy sysadmins work anyway,
         // they'll get an error if the autodetect code doesn't work
         $pma_absolute_uri = $this->get('PmaAbsoluteUri');
         $is_https = $this->get('is_https');
@@ -575,12 +564,16 @@ class PMA_Config
             $url = array();
 
             // At first we try to parse REQUEST_URI, it might contain full URL
+            /**
+             * REQUEST_URI contains PATH_INFO too, this is not what we want
+             * script-php/pathinfo/
             if (PMA_getenv('REQUEST_URI')) {
                 $url = @parse_url(PMA_getenv('REQUEST_URI')); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
                 if ($url === false) {
                     $url = array('path' => $_SERVER['REQUEST_URI']);
                 }
             }
+             */
 
             // If we don't have scheme, we didn't have full URL so we need to
             // dig deeper
@@ -617,13 +610,17 @@ class PMA_Config
 
                 // And finally the path could be already set from REQUEST_URI
                 if (empty($url['path'])) {
+                    /**
+                     * REQUEST_URI contains PATH_INFO too, this is not what we want
+                     * script-php/pathinfo/
                     if (PMA_getenv('PATH_INFO')) {
                         $path = parse_url(PMA_getenv('PATH_INFO'));
                     } else {
                         // PHP_SELF in CGI often points to cgi executable, so use it
                         // as last choice
-                        $path = parse_url(PMA_getenv('PHP_SELF'));
-                    }
+                     */
+                        $path = parse_url($GLOBALS['PMA_PHP_SELF']);
+                    //}
                     $url['path'] = $path['path'];
                 }
             }
@@ -708,8 +705,6 @@ class PMA_Config
      */
     function checkCollationConnection()
     {
-        // (could be improved by executing it after the MySQL connection only if
-        //  PMA_MYSQL_INT_VERSION >= 40100)
         if (! empty($_REQUEST['collation_connection'])) {
             $this->set('collation_connection',
                 strip_tags($_REQUEST['collation_connection']));
@@ -743,8 +738,8 @@ class PMA_Config
         if (preg_match('/^[0-9.]+(px|em|pt|\%)$/', $new_fontsize)) {
             $this->set('fontsize', $new_fontsize);
         } elseif (! $this->get('fontsize')) {
-             // 80% would correspond to the default browser font size
-             // of 16, but use 82% to help read the monoface font
+            // 80% would correspond to the default browser font size
+            // of 16, but use 82% to help read the monoface font
             $this->set('fontsize', '82%');
         }
 
@@ -757,6 +752,7 @@ class PMA_Config
      * checks if upload is enabled
      *
      */
+
     function checkUpload()
     {
         if (ini_get('file_uploads')) {
@@ -802,7 +798,7 @@ class PMA_Config
     /**
      * @static
      */
-    function isHttps()
+    static public function isHttps()
     {
         $is_https = false;
 
@@ -851,7 +847,7 @@ class PMA_Config
     /**
      * @static
      */
-    function getCookiePath()
+    static public function getCookiePath()
     {
         static $cookie_path = null;
 
@@ -861,28 +857,34 @@ class PMA_Config
 
         $url = '';
 
+        /**
+         * REQUEST_URI contains PATH_INFO too, this is not what we want
+         * script-php/pathinfo/
         if (PMA_getenv('REQUEST_URI')) {
             $url = PMA_getenv('REQUEST_URI');
         }
+         */
 
         // If we don't have path
         if (empty($url)) {
-            if (PMA_getenv('PATH_INFO')) {
-                $url = PMA_getenv('PATH_INFO');
+            if ($GLOBALS['PMA_PHP_SELF']) {
+                // PHP_SELF in CGI often points to cgi executable, so use it
+                // as last choice
+                $url = $GLOBALS['PMA_PHP_SELF'];
             // on IIS with PHP-CGI:
             } elseif (PMA_getenv('SCRIPT_NAME')) {
                 $url = PMA_getenv('SCRIPT_NAME');
-            } elseif (PMA_getenv('PHP_SELF')) {
-                // PHP_SELF in CGI often points to cgi executable, so use it
-                // as last choice
-                $url = PMA_getenv('PHP_SELF');
             }
         }
 
+        /**
+         * REQUEST_URI contains PATH_INFO too, this is not what we want
+         * script-php/pathinfo/
         $parsed_url = @parse_url($_SERVER['REQUEST_URI']); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
-        if ($parsed_url === false || empty($parsed_url['path'])) {
+        if ($parsed_url === false) {
+         */
             $parsed_url = array('path' => $url);
-        }
+        //}
 
         $cookie_path   = substr($parsed_url['path'], 0, strrpos($parsed_url['path'], '/'))  . '/';
 
@@ -938,7 +940,7 @@ class PMA_Config
      * @param   string  $current_size   current selected font size with unit
      * @return  array   selectable font sizes
      */
-    function getFontsizeOptions($current_size = '82%')
+    static protected function _getFontsizeOptions($current_size = '82%')
     {
         $unit = preg_replace('/[0-9.]*/', '', $current_size);
         $value = preg_replace('/[^0-9.]*/', '', $current_size);
@@ -996,13 +998,13 @@ class PMA_Config
      *
      * @uses    $_SESSION['PMA_Config']
      * @uses    PMA_Config::get()
-     * @uses    PMA_Config::getFontsizeOptions()
+     * @uses    PMA_Config::_getFontsizeOptions()
      * @uses    $GLOBALS['strFontSize']
      * @static
      * @param   string  $current_size   currently slected font size with unit
      * @return  string  html selectbox
      */
-    function getFontsizeSelection()
+    static protected function _getFontsizeSelection()
     {
         $current_size = $_SESSION['PMA_Config']->get('fontsize');
         // for the case when there is no config file (this is supported)
@@ -1013,7 +1015,7 @@ class PMA_Config
                 $current_size = '82%';
             }
         }
-        $options = PMA_Config::getFontsizeOptions($current_size);
+        $options = PMA_Config::_getFontsizeOptions($current_size);
 
         $return = '<label for="select_fontsize">' . $GLOBALS['strFontSize'] . ':</label>' . "\n";
         $return .= '<select name="fontsize" id="select_fontsize" onchange="this.form.submit();">' . "\n";
@@ -1033,18 +1035,18 @@ class PMA_Config
      * return complete font size selection form
      *
      * @uses    PMA_generate_common_hidden_inputs()
-     * @uses    PMA_Config::getFontsizeSelection()
+     * @uses    PMA_Config::_getFontsizeSelection()
      * @uses    $GLOBALS['strGo']
      * @static
      * @param   string  $current_size   currently slected font size with unit
      * @return  string  html selectbox
      */
-    function getFontsizeForm()
+    static public function getFontsizeForm()
     {
         return '<form name="form_fontsize_selection" id="form_fontsize_selection"'
             . ' method="post" action="index.php" target="_parent">' . "\n"
             . PMA_generate_common_hidden_inputs() . "\n"
-            . PMA_Config::getFontsizeSelection() . "\n"
+            . PMA_Config::_getFontsizeSelection() . "\n"
             . '<noscript>' . "\n"
             . '<input type="submit" value="' . $GLOBALS['strGo'] . '" />' . "\n"
             . '</noscript>' . "\n"

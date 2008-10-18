@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_links.inc.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: server_links.inc.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -51,11 +51,9 @@ $tabs['vars']['icon'] = 's_vars.png';
 $tabs['vars']['link'] = 'server_variables.php';
 $tabs['vars']['text'] = $strServerTabVariables;
 
-if (PMA_MYSQL_INT_VERSION >= 40100) {
-    $tabs['charset']['icon'] = 's_asci.png';
-    $tabs['charset']['link'] = 'server_collations.php';
-    $tabs['charset']['text'] = $strCharsets;
-}
+$tabs['charset']['icon'] = 's_asci.png';
+$tabs['charset']['link'] = 'server_collations.php';
+$tabs['charset']['text'] = $strCharsets;
 
 $tabs['engine']['icon'] = 'b_engine.png';
 $tabs['engine']['link'] = 'server_engines.php';
@@ -97,4 +95,3 @@ if (!empty($message)) {
 }
 
 ?>
-<br />

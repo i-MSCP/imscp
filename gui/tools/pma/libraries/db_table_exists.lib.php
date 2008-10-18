@@ -4,7 +4,7 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: db_table_exists.lib.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -13,6 +13,8 @@ if (! defined('PHPMYADMIN')) {
 /**
  *
  */
+require_once './libraries/Table.class.php';
+
 if (empty($is_db)) {
     if (strlen($db)) {
         $is_db = @PMA_DBI_select_db($db);
@@ -43,12 +45,17 @@ if (empty($is_db)) {
 
 if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
     // Not a valid table name -> back to the db_sql.php
+    
     if (strlen($table)) {
-        $_result = PMA_DBI_try_query(
-            'SHOW TABLES LIKE \'' . PMA_sqlAddslashes($table, true) . '\';',
-            null, PMA_DBI_QUERY_STORE);
-        $is_table = @PMA_DBI_num_rows($_result);
-        PMA_DBI_free_result($_result);
+        $is_table = isset(PMA_Table::$cache[$db][$table]);
+        
+        if (! $is_table) {
+            $_result = PMA_DBI_try_query(
+                'SHOW TABLES LIKE \'' . PMA_sqlAddslashes($table, true) . '\';',
+                null, PMA_DBI_QUERY_STORE);
+            $is_table = @PMA_DBI_num_rows($_result);
+            PMA_DBI_free_result($_result);
+        }
     } else {
         $is_table = false;
     }

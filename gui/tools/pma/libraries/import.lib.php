@@ -81,7 +81,10 @@ function PMA_detectCompression($filepath)
  */
 function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
 {
-    global $import_run_buffer, $go_sql, $complete_query, $display_query, $sql_query, $cfg, $my_die, $error, $reload, $timeout_passed, $skip_queries, $executed_queries, $max_sql_len, $read_multiply, $cfg, $sql_query_disabled, $db, $run_query, $is_superuser, $message, $show_error_header;
+    global $import_run_buffer, $go_sql, $complete_query, $display_query,
+        $sql_query, $cfg, $my_die, $error, $reload, $timeout_passed,
+        $skip_queries, $executed_queries, $max_sql_len, $read_multiply,
+        $cfg, $sql_query_disabled, $db, $run_query, $is_superuser;
     $read_multiply = 1;
     if (isset($import_run_buffer)) {
         // Should we skip something?
@@ -94,10 +97,9 @@ function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
                     $sql_query .= $import_run_buffer['full'];
                 }
                 if (!$cfg['AllowUserDropDatabase']
-                    && !$is_superuser
-                    && preg_match('@^[[:space:]]*DROP[[:space:]]+(IF EXISTS[[:space:]]+)?DATABASE @i', $import_run_buffer['sql'])) {
-                    $message = $GLOBALS['strNoDropDatabases'];
-                    $show_error_header = TRUE;
+                 && !$is_superuser
+                 && preg_match('@^[[:space:]]*DROP[[:space:]]+(IF EXISTS[[:space:]]+)?DATABASE @i', $import_run_buffer['sql'])) {
+                    $GLOBALS['message'] = PMA_Message::error('strNoDropDatabases');
                     $error = TRUE;
                 } else {
                     $executed_queries++;
@@ -142,7 +144,7 @@ function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
                                 $msg .= $GLOBALS['strRows'] . ': ' . $a_num_rows;
                             } elseif ($a_aff_rows > 0) {
                                 $a_rows =
-                                $msg .= $GLOBALS['strAffectedRows'] . ' ' . $a_aff_rows;
+                                $msg .= sprintf($GLOBALS['strRowsAffected'], $a_aff_rows);
                             } else {
                                 $msg .= $GLOBALS['strEmptyResultSet'];
                             }

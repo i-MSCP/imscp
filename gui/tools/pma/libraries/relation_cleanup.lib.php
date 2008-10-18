@@ -3,7 +3,7 @@
 /**
  * Set of functions used for cleaning up phpMyAdmin tables
  *
- * @version $Id: relation_cleanup.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: relation_cleanup.lib.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -13,148 +13,163 @@ if (! defined('PHPMYADMIN')) {
  *
  */
 require_once './libraries/relation.lib.php';
-$cfgRelation = PMA_getRelationsParam();
 
-function PMA_relationsCleanupColumn($db, $table, $column) {
-    global $cfgRelation;
+/**
+ * Cleanu column related relation stuff
+ *
+ * @uses PMA_getRelationsParam()
+ * @uses PMA_backquote()
+ * @uses PMA_sqlAddslashes()
+ * @uses PMA_query_as_cu()
+ * @param string $db
+ * @param string $table
+ * @param string $column
+ */
+function PMA_relationsCleanupColumn($db, $table, $column)
+{
+    $cfgRelation = PMA_getRelationsParam();
+    
     if ($cfgRelation['commwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\''
-                    . ' AND column_name = \'' . PMA_sqlAddslashes(urldecode($column)) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+                    . ' AND column_name = \'' . PMA_sqlAddslashes($column) . '\'';
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['displaywork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\''
-                    . ' AND display_field = \'' . PMA_sqlAddslashes(urldecode($column)) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+                    . ' AND display_field = \'' . PMA_sqlAddslashes($column) . '\'';
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['relwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE master_db  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND master_table = \'' . PMA_sqlAddslashes($table) . '\''
-                    . ' AND master_field = \'' . PMA_sqlAddslashes(urldecode($column)) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+                    . ' AND master_field = \'' . PMA_sqlAddslashes($column) . '\'';
+        PMA_query_as_cu($remove_query);
 
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE foreign_db  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND foreign_table = \'' . PMA_sqlAddslashes($table) . '\''
-                    . ' AND foreign_field = \'' . PMA_sqlAddslashes(urldecode($column)) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+                    . ' AND foreign_field = \'' . PMA_sqlAddslashes($column) . '\'';
+        PMA_query_as_cu($remove_query);
     }
 }
 
-function PMA_relationsCleanupTable($db, $table) {
-    global $cfgRelation;
+/**
+ * Cleanup table related relation stuff
+ *
+ * @uses PMA_getRelationsParam()
+ * @uses PMA_backquote()
+ * @uses PMA_sqlAddslashes()
+ * @uses PMA_query_as_cu()
+ * @param string $db
+ * @param string $table
+ */
+function PMA_relationsCleanupTable($db, $table)
+{
+    $cfgRelation = PMA_getRelationsParam();
 
     if ($cfgRelation['commwork']) {
-            $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
-                        . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
-                        . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
-            $rmv_rs    = PMA_query_as_cu($remove_query);
-            unset($remove_query);
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
+                    . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
+                    . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['displaywork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['pdfwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_coords'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['table_coords'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['designerwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['relwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE master_db  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND master_table = \'' . PMA_sqlAddslashes($table) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
 
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE foreign_db  = \'' . PMA_sqlAddslashes($db) . '\''
                     . ' AND foreign_table = \'' . PMA_sqlAddslashes($table) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 }
 
-function PMA_relationsCleanupDatabase($db) {
-    global $cfgRelation;
+/**
+ * Cleanup database related relation stuff
+ *
+ * @uses PMA_getRelationsParam()
+ * @uses PMA_backquote()
+ * @uses PMA_sqlAddslashes()
+ * @uses PMA_query_as_cu()
+ * @param string $db
+ */
+function PMA_relationsCleanupDatabase($db)
+{
+    $cfgRelation = PMA_getRelationsParam();
 
     if ($cfgRelation['commwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['bookmarkwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['bookmark'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['bookmark'])
                     . ' WHERE dbase  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['displaywork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['pdfwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['pdf_pages'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['pdf_pages'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
 
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_coords'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['table_coords'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 
     if ($cfgRelation['designerwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
-    }
+        PMA_query_as_cu($remove_query);
+     }
 
     if ($cfgRelation['relwork']) {
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE master_db  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
 
-        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
+        $remove_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE foreign_db  = \'' . PMA_sqlAddslashes($db) . '\'';
-        $rmv_rs    = PMA_query_as_cu($remove_query);
-        unset($remove_query);
+        PMA_query_as_cu($remove_query);
     }
 }
 

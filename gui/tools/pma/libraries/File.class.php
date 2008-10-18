@@ -3,7 +3,7 @@
 /**
  * file upload functions
  *
- * @version $Id: File.class.php 11205 2008-04-22 11:26:24Z nijel $
+ * @version $Id: File.class.php 11536 2008-09-02 17:35:48Z nijel $
  */
 
 /**
@@ -68,18 +68,6 @@ class PMA_File
      * @var string charset of file
      */
     var $_charset = null;
-
-    /**
-     * old PHP 4 style constructor
-     *
-     * @see     PMA_File::__construct()
-     * @uses    PMA_File::__construct()
-     * @access  public
-     */
-    function PMA_File($name = false)
-    {
-        $this->__construct($name);
-    }
 
     /**
      * constructor
@@ -354,13 +342,8 @@ class PMA_File
             'type' => $file['type']['multi_edit'][$primary],
             'size' => $file['size']['multi_edit'][$primary],
             'tmp_name' => $file['tmp_name']['multi_edit'][$primary],
-            //'error' => $file['error']['multi_edit'][$primary],
+            'error' => $file['error']['multi_edit'][$primary],
         );
-
-        // ['error'] exists since PHP 4.2.0
-        if (isset($file['error'])) {
-            $new_file['error'] = $file['error']['multi_edit'][$primary];
-        }
 
         return $new_file;
     }
@@ -488,7 +471,7 @@ class PMA_File
      */
     function isReadable()
     {
-        // surpress warnings from beeing displayed, but not from beeing logged
+        // suppress warnings from being displayed, but not from being logged
         // any file access outside of open_basedir will issue a warning
         ob_start();
         $is_readable = is_readable($this->getName());
@@ -527,42 +510,15 @@ class PMA_File
             return true;
         }
 
-        /**
-         * it is not important if open_basedir is set - we just cannot read the file
-         * so we try to move it
-        if ('' != ini_get('open_basedir')) {
-         */
-
-        // check tmp dir config
-        if (empty($GLOBALS['cfg']['TempDir'])) {
-            $GLOBALS['cfg']['TempDir'] = 'tmp/';
-        }
-
-        // surpress warnings from beeing displayed, but not from beeing logged
-        ob_start();
-        // check tmp dir
-        if (! is_dir($GLOBALS['cfg']['TempDir'])) {
-            // try to create the tmp directory
-            if (@mkdir($GLOBALS['cfg']['TempDir'], 0777)) {
-                chmod($GLOBALS['cfg']['TempDir'], 0777);
-            } else {
-                // create tmp dir failed
-                $this->_error_message = $GLOBALS['strFieldInsertFromFileTempDirNotExists'];
-                ob_end_clean();
-                return false;
-            }
-        }
-        ob_end_clean();
-
-        if (! is_writable($GLOBALS['cfg']['TempDir'])) {
+        if (empty($GLOBALS['cfg']['TempDir']) || ! is_writable($GLOBALS['cfg']['TempDir'])) {
             // cannot create directory or access, point user to FAQ 1.11
             $this->_error_message = $GLOBALS['strFieldInsertFromFileTempDirNotExists'];
             return false;
         }
 
-        $new_file_to_upload = $GLOBALS['cfg']['TempDir'] . '/' . basename($this->getName());
+        $new_file_to_upload = tempnam(realpath($GLOBALS['cfg']['TempDir']), basename($this->getName()));
 
-        // surpress warnings from beeing displayed, but not from beeing logged
+        // suppress warnings from being displayed, but not from being logged
         // any file access outside of open_basedir will issue a warning
         ob_start();
         $move_uploaded_file_result = move_uploaded_file($this->getName(), $new_file_to_upload);
@@ -602,7 +558,7 @@ class PMA_File
      */
     function _detectCompression()
     {
-        // surpress warnings from beeing displayed, but not from beeing logged
+        // suppress warnings from being displayed, but not from being logged
         // f.e. any file access outside of open_basedir will issue a warning
         ob_start();
         $file = fopen($this->getName(), 'rb');
@@ -692,21 +648,16 @@ class PMA_File
                 }
                 break;
             case 'application/zip':
-                if ($GLOBALS['cfg']['GZipDump'] && @function_exists('gzinflate')) {
-                    include_once './libraries/unzip.lib.php';
-                    $this->_handle = new SimpleUnzip();
-                    $this->_handle->ReadFile($this->getName());
-                    if ($this->_handle->Count() == 0) {
-                        $this->_error_message = $GLOBALS['strNoFilesFoundInZip'];
-                        return false;
-                    } elseif ($this->_handle->GetError(0) != 0) {
-                        $this->_error_message = $GLOBALS['strErrorInZipFile'] . ' ' . $this->_handle->GetErrorMsg(0);
+                if ($GLOBALS['cfg']['ZipDump'] && @function_exists('zip_open')) {
+                    include_once './libraries/zip_extension.lib.php';
+                    $result = PMA_getZipContents($this->getName());
+                    if (! empty($result['error'])) {
+                        $this->_error_message = PMA_Message::rawError($result['error']);
                         return false;
                     } else {
-                        $this->content_uncompressed = $this->_handle->GetData(0);
+                        $this->content_uncompressed = $result['data'];
                     }
-                    // We don't need to store it further
-                    $this->_handle = null;
+                    unset($result);
                 } else {
                     $this->_error_message = sprintf($GLOBALS['strUnsupportedCompressionDetected'], $this->getCompression());
                     return false;
@@ -754,6 +705,7 @@ class PMA_File
      *
      * @param   integer $length numbers of chars/bytes to skip
      * @return  boolean
+     * @todo this function is unused
      */
     function advanceFilePointer($length)
     {
@@ -768,7 +720,7 @@ class PMA_File
     /**
      * http://bugs.php.net/bug.php?id=29532
      * bzip reads a maximum of 8192 bytes on windows systems
-     *
+     * @todo this function is unused
      */
     function getNextChunk($max_size = null)
     {
@@ -791,6 +743,11 @@ class PMA_File
                 $result = gzread($this->getHandle(), $size);
                 break;
             case 'application/zip':
+                /*
+                 * if getNextChunk() is used some day,
+                 * replace this code by code similar to the one
+                 * in open()
+                 *
                 include_once './libraries/unzip.lib.php';
                 $import_handle = new SimpleUnzip();
                 $import_handle->ReadFile($this->getName());
@@ -804,6 +761,7 @@ class PMA_File
                 } else {
                     $result = $import_handle->GetData(0);
                 }
+                 */
                 break;
             case 'none':
                 $result = fread($this->getHandle(), $size);

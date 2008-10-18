@@ -3,14 +3,14 @@
 /**
  * hold PMA_Theme class
  *
- * @version $Id: Theme.class.php 11035 2008-01-05 13:33:05Z lem9 $
+ * @version $Id: Theme.class.php 11365 2008-07-01 19:21:28Z lem9 $
  */
 
 /**
  * handles theme
  *
- * @todo add the possibility to make a theme depends on another theme and by default on original
- * @todo make all components optional - taking missing components from 'parent' theme
+ * @todo add the possibility to make a theme depend on another theme and by default on original
+ * @todo make all components optional - get missing components from 'parent' theme
  * @todo make css optionally replacing 'parent' css or extending it (by appending at the end)
  * @todo add an optional global css file - which will be used for both frames
  *
@@ -89,7 +89,7 @@ class PMA_Theme {
 
         @include $this->getPath() . '/info.inc.php';
 
-        // did it set correctly?
+        // was it set correctly?
         if (! isset($theme_name)) {
             return false;
         }
@@ -120,7 +120,7 @@ class PMA_Theme {
      * @param   string  $folder path to theme
      * @return  object  PMA_Theme
      */
-    function load($folder)
+    static public function load($folder)
     {
         $theme = new PMA_Theme();
 
@@ -143,7 +143,6 @@ class PMA_Theme {
      * @uses    PMA_Theme::setImgPath()
      * @uses    PMA_Theme::getName()
      * @uses    $GLOBALS['cfg']['ThemePath']
-     * @uses    $GLOBALS['PMA_errors']
      * @uses    $GLOBALS['strThemeNoValidImgPath']
      * @uses    is_dir()
      * @uses    sprintf()
@@ -157,13 +156,9 @@ class PMA_Theme {
             $this->setImgPath($GLOBALS['cfg']['ThemePath'] . '/original/img/');
             return true;
         } else {
-            $GLOBALS['PMA_errors'][] =
-                sprintf($GLOBALS['strThemeNoValidImgPath'], $this->getName());
-            /*
             trigger_error(
                 sprintf($GLOBALS['strThemeNoValidImgPath'], $this->getName()),
-                E_USER_WARNING);
-            */
+                E_USER_ERROR);
             return false;
         }
     }
@@ -313,7 +308,7 @@ class PMA_Theme {
     }
 
     /**
-     * load css (send to stdout, normaly the browser)
+     * load css (send to stdout, normally the browser)
      *
      * @access  public
      * @uses    PMA_Theme::getPath()

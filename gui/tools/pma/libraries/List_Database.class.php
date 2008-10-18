@@ -3,7 +3,7 @@
 /**
  * holds the PMA_List_Database class
  *
- * @version $Id: List_Database.class.php 10913 2007-11-09 21:24:40Z cybot_tm $
+ * @version $Id: List_Database.class.php 11365 2008-07-01 19:21:28Z lem9 $
  */
 
 /**
@@ -28,27 +28,29 @@ require_once './libraries/List.class.php';
 {
     /**
      * @var mixed   database link resource|object to be used
-     * @access protected
      */
-    var $_db_link = null;
+    protected $_db_link = null;
 
     /**
      * @var mixed   user database link resource|object
-     * @access protected
      */
-    var $_db_link_user = null;
+    protected $_db_link_user = null;
 
     /**
      * @var mixed   controluser database link resource|object
-     * @access protected
      */
-    var $_db_link_control = null;
+    protected $_db_link_control = null;
 
     /**
      * @var boolean whether SHOW DATABASES is disabled or not
      * @access protected
      */
-    var $_show_databases_disabled = false;
+    protected $_show_databases_disabled = false;
+    
+    /**
+     * @var string command to retrieve databases from server
+     */
+    protected $_command = null;
 
     /**
      * Constructor
@@ -60,74 +62,41 @@ require_once './libraries/List.class.php';
      * @param   mixed   $db_link_user       user database link resource|object
      * @param   mixed   $db_link_control    control database link resource|object
      */
-    function __construct($db_link_user = null, $db_link_control = null) {
+    public function __construct($db_link_user = null, $db_link_control = null)
+    {
         $this->_db_link = $db_link_user;
         $this->_db_link_user = $db_link_user;
         $this->_db_link_control = $db_link_control;
 
+        parent::__construct();
         $this->build();
-    }
-
-    /**
-     * old PHP 4 style constructor
-     *
-     * @see PMA_List_Database::__construct()
-     */
-    function PMA_List_Database($db_link_user = null, $db_link_control = null) {
-        $this->__construct($db_link_user, $db_link_control);
-    }
-
-    /**
-     * removes all databases not accessible by current user from list
-     *
-     * @access  protected
-     * @uses    PMA_List_Database::$items
-     * @uses    PMA_List_Database::$_db_link_user
-     * @uses    PMA_List_Database::$_need_to_reindex to set it if reuqired
-     * @uses    PMA_DBI_select_db()
-     */
-    function _checkAccess()
-    {
-        foreach ($this->items as $key => $db) {
-            if (! @PMA_DBI_select_db($db, $this->_db_link_user)) {
-                unset($this->items[$key]);
-            }
-        }
-
-        // re-index values
-        $this->_need_to_reindex = true;
     }
 
     /**
      * checks if the configuration wants to hide some databases
      *
      * @todo temporaly use this docblock to test how to doc $GLOBALS
-     * @access  protected
      * @uses    PMA_List_Database::$items
-     * @uses    PMA_List_Database::$_need_to_reindex to set it if reuqired
      * @uses    preg_match()
      * @uses    $cfg['Server']['hide_db']
      */
-    function _checkHideDatabase()
+    protected function _checkHideDatabase()
     {
         if (empty($GLOBALS['cfg']['Server']['hide_db'])) {
             return;
         }
 
-        foreach ($this->items as $key => $db) {
+        foreach ($this as $key => $db) {
             if (preg_match('/' . $GLOBALS['cfg']['Server']['hide_db'] . '/', $db)) {
-                unset($this->items[$key]);
+                $this->offsetUnset($key);
             }
         }
-        // re-index values
-        $this->_need_to_reindex = true;
     }
 
     /**
      * retrieves database list from server
      *
      * @todo    we could also search mysql tables if all fail?
-     * @access  protected
      * @uses    PMA_List_Database::$_show_databases_disabled for not retrying if SHOW DATABASES is disabled
      * @uses    PMA_List_Database::$_db_link
      * @uses    PMA_List_Database::$_db_link_control in case of SHOW DATABASES is disabled for userlink
@@ -137,26 +106,30 @@ require_once './libraries/List.class.php';
      * @uses    $GLOBALS['errno']
      * @param   string  $like_db_name   usally a db_name containing wildcards
      */
-    function _retrieve($like_db_name = '')
+    protected function _retrieve($like_db_name = null)
     {
         if ($this->_show_databases_disabled) {
             return array();
         }
-
-        if (! empty($like_db_name)) {
-            $like = " LIKE '" . $like_db_name . "';";
+        
+        if (null !== $like_db_name) {
+            $command = "SHOW DATABASES LIKE '" . $like_db_name . "'";
+        } elseif (null === $this->_command) {
+            $command = str_replace('#user#', $GLOBALS['cfg']['Server']['user'], 
+                $GLOBALS['cfg']['Server']['ShowDatabasesCommand']);
+            $this->_command = $command;
         } else {
-            $like = ";";
+            $command = $this->_command;
         }
 
-        $database_list = PMA_DBI_fetch_result('SHOW DATABASES' . $like, null, null, $this->_db_link);
+        $database_list = PMA_DBI_fetch_result($command, null, null, $this->_db_link);
         PMA_DBI_getError();
 
         if ($GLOBALS['errno'] !== 0) {
             // failed to get database list, try the control user
             // (hopefully there is one and he has SHOW DATABASES right)
             $this->_db_link = $this->_db_link_control;
-            $database_list = PMA_DBI_fetch_result('SHOW DATABASES' . $like, null, null, $this->_db_link);
+            $database_list = PMA_DBI_fetch_result($command, null, null, $this->_db_link);
 
             PMA_DBI_getError();
 
@@ -176,39 +149,24 @@ require_once './libraries/List.class.php';
      * builds up the list
      *
      * @uses    PMA_List_Database::$items to initialize it
-     * @uses    PMA_List_Database::$_need_to_reindex
      * @uses    PMA_List_Database::_checkOnlyDatabase()
      * @uses    PMA_List_Database::_retrieve()
      * @uses    PMA_List_Database::_checkHideDatabase()
-     * @uses    PMA_List_Database::_checkAccess()
-     * @uses    PMA_MYSQL_INT_VERSION
      * @uses    array_values()
      * @uses    natsort()
      * @uses    $cfg['NaturalOrder']
      */
-    function build()
+    public function build()
     {
-        $this->items = array();
-
         if (! $this->_checkOnlyDatabase()) {
-            $this->items = $this->_retrieve();
+            $items = $this->_retrieve();
             if ($GLOBALS['cfg']['NaturalOrder']) {
-                natsort($this->items);
-                $this->_need_to_reindex = true;
+                natsort($items);
             }
+            $this->exchangeArray($items);
         }
-
+        
         $this->_checkHideDatabase();
-
-        // Before MySQL 4.0.2, SHOW DATABASES could send the
-        // whole list, so check if we really have access:
-        if (PMA_MYSQL_INT_VERSION < 40002) {
-            $this->_checkAccess();
-        }
-
-        if ($this->_need_to_reindex) {
-            $this->items = array_values($this->items);
-        }
     }
 
     /**
@@ -227,7 +185,7 @@ require_once './libraries/List.class.php';
      * @uses    $cfg['Server']['only_db']
      * @return  boolean false if there is no only_db, otherwise true
      */
-    function _checkOnlyDatabase()
+    protected function _checkOnlyDatabase()
     {
         if (is_string($GLOBALS['cfg']['Server']['only_db'])
          && strlen($GLOBALS['cfg']['Server']['only_db'])) {
@@ -239,12 +197,14 @@ require_once './libraries/List.class.php';
         if (! is_array($GLOBALS['cfg']['Server']['only_db'])) {
             return false;
         }
+        
+        $items = array();
 
         foreach ($GLOBALS['cfg']['Server']['only_db'] as $each_only_db) {
             if ($each_only_db === '*' && ! $this->_show_databases_disabled) {
                 // append all not already listed dbs to the list
-                $this->items = array_merge($this->items,
-                    array_diff($this->_retrieve(), $this->items));
+                $items = array_merge($items,
+                    array_diff($this->_retrieve(), $items));
                 // there can only be one '*', and this can only be last
                 break;
             }
@@ -253,17 +213,19 @@ require_once './libraries/List.class.php';
             // thus containing not escaped _ or %
             if (! preg_match('/(^|[^\\\\])(_|%)/', $each_only_db)) {
                 // ... not contains wildcard
-                $this->items[] = PMA_unescape_mysql_wildcards($each_only_db);
+                $items[] = PMA_unescape_mysql_wildcards($each_only_db);
                 continue;
             }
 
             if (! $this->_show_databases_disabled) {
-                $this->items = array_merge($this->items, $this->_retrieve($each_only_db));
+                $items = array_merge($items, $this->_retrieve($each_only_db));
                 continue;
             }
 
             // @todo induce error, about not using wildcards with SHOW DATABASE disabled?
         }
+        
+        $this->exchangeArray($items);
 
         return true;
     }
@@ -276,7 +238,7 @@ require_once './libraries/List.class.php';
      * @uses    strlen()
      * @return  string  default item
      */
-    function getDefault()
+    public function getDefault()
     {
         if (strlen($GLOBALS['db'])) {
             return $GLOBALS['db'];
@@ -295,7 +257,7 @@ require_once './libraries/List.class.php';
      * @uses    $cfg['LeftFrameDBSeparator']
      * @uses    $cfg['ShowTooltipAliasDB']
      * @uses    PMA_getTableCount()
-     * @uses    PMA_getComments()
+     * @uses    PMA_getDbComment()
      * @uses    is_array()
      * @uses    implode()
      * @uses    strstr()
@@ -304,19 +266,22 @@ require_once './libraries/List.class.php';
      * @param   integer $count
      * @return  array   db list
      */
-    function getGroupedDetails($offset, $count)
+    public function getGroupedDetails($offset, $count)
     {
         $dbgroups   = array();
         $parts      = array();
+
+        if ($GLOBALS['cfg']['ShowTooltip']
+          && $GLOBALS['cfgRelation']['commwork']) {
+            $db_tooltips = PMA_getDbComments();
+        }
+
         foreach ($this->getLimitedItems($offset, $count) as $key => $db) {
             // garvin: Get comments from PMA comments table
             $db_tooltip = '';
-            if ($GLOBALS['cfg']['ShowTooltip']
-              && $GLOBALS['cfgRelation']['commwork']) {
-                $_db_tooltip = PMA_getComments($db);
-                if (is_array($_db_tooltip)) {
-                    $db_tooltip = implode(' ', $_db_tooltip);
-                }
+
+            if (isset($db_tooltips[$db])) {
+                $db_tooltip = $_db_tooltips[$db];
             }
 
             if ($GLOBALS['cfg']['LeftFrameDBTree']
@@ -347,24 +312,26 @@ require_once './libraries/List.class.php';
                 'disp_name_cut' => $disp_name_cut,
                 'disp_name'     => $disp_name,
                 'comment'       => $db_tooltip,
-                'num_tables'    => PMA_getTableCount($db),
             );
+            
+            if ($GLOBALS['cfg']['Server']['CountTables']) {
+                $dbgroups[$group][$db]['num_tables'] = PMA_getTableCount($db);
+            }
         } // end foreach ($GLOBALS['PMA_List_Database']->items as $db)
         return $dbgroups;
     }
 
     /**
-     * returns a part of the items 
+     * returns a part of the items
      *
-     * @uses    PMA_List_Database::$items
      * @uses    array_slice()
      * @param   integer $offset
      * @param   integer $count
-     * @return  array  some items 
+     * @return  array  some items
      */
-    function getLimitedItems($offset, $count)
+    public function getLimitedItems($offset, $count)
     {
-        return(array_slice($this->items, $offset, $count));
+        return array_slice($this->getArrayCopy(), $offset, $count);
     }
 
     /**
@@ -372,7 +339,7 @@ require_once './libraries/List.class.php';
      *
      * @return  string  html code list
      */
-    function getHtmlListGrouped($selected = '', $offset, $count)
+    public function getHtmlListGrouped($selected = '', $offset, $count)
     {
         if (true === $selected) {
             $selected = $this->getDefault();
@@ -382,7 +349,7 @@ require_once './libraries/List.class.php';
         foreach ($this->getGroupedDetails($offset, $count) as $group => $dbs) {
             if (count($dbs) > 1) {
                 $return .= '<li>' . htmlspecialchars($group) . '<ul>' . "\n";
-                // wether display db_name cuted by the group part
+                // whether display db_name cut by the group part
                 $cut = true;
             } else {
                 // .. or full
@@ -404,7 +371,10 @@ require_once './libraries/List.class.php';
                 } else {
                     $return .= htmlspecialchars($db['disp_name']);
                 }
-                $return .= ' (' . $db['num_tables'] . ')';
+                
+                if (! empty($db['num_tables'])) {
+                    $return .= ' (' . $db['num_tables'] . ')';
+                }
                 $return .= '</a></li>' . "\n";
             }
             if (count($dbs) > 1) {
@@ -425,7 +395,7 @@ require_once './libraries/List.class.php';
      *
      * @return  string  html code select
      */
-    function getHtmlSelectGrouped($selected = '', $offset, $count)
+    public function getHtmlSelectGrouped($selected = '', $offset, $count)
     {
         if (true === $selected) {
             $selected = $this->getDefault();
@@ -439,7 +409,7 @@ require_once './libraries/List.class.php';
             if (count($dbs) > 1) {
                 $return .= '<optgroup label="' . htmlspecialchars($group)
                     . '">' . "\n";
-                // wether display db_name cuted by the group part
+                // whether display db_name cuted by the group part
                 $cut = true;
             } else {
                 // .. or full
@@ -451,8 +421,11 @@ require_once './libraries/List.class.php';
                 if ($db['name'] == $selected) {
                     $return .= ' selected="selected"';
                 }
-                $return .= '>' . htmlspecialchars($cut ? $db['disp_name_cut'] : $db['disp_name'])
-                    .' (' . $db['num_tables'] . ')</option>' . "\n";
+                $return .= '>' . htmlspecialchars($cut ? $db['disp_name_cut'] : $db['disp_name']);
+                if (! empty($db['num_tables'])) {
+                    $return .= ' (' . $db['num_tables'] . ')';
+                }
+                $return .= '</option>' . "\n";
             }
             if (count($dbs) > 1) {
                 $return .= '</optgroup>' . "\n";
@@ -467,9 +440,8 @@ require_once './libraries/List.class.php';
      * this is just a backup, if all is fine this can be deleted later
      *
      * @deprecated
-     * @access protected
      */
-    function _checkAgainstPrivTables()
+    protected function _checkAgainstPrivTables()
     {
         // 1. get allowed dbs from the "mysql.db" table
         // lem9: User can be blank (anonymous user)
@@ -491,7 +463,6 @@ require_once './libraries/List.class.php';
             // populating $dblist[], as previous code did. But it is
             // now populated with actual database names instead of
             // with regular expressions.
-            var_dump($tmp_mydbs);
             $tmp_alldbs = PMA_DBI_query('SHOW DATABASES;', $GLOBALS['controllink']);
             // loic1: all databases cases - part 2
             if (isset($tmp_mydbs['%'])) {

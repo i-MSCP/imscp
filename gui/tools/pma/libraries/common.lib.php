@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11321 2008-06-13 16:26:21Z lem9 $
+ * @version $Id: common.lib.php 11439 2008-07-26 20:05:19Z lem9 $
  */
 
 /**
@@ -68,18 +68,62 @@ function PMA_pow($base, $exp, $use_function = false)
  * string PMA_getIcon(string $icon)
  *
  * @uses    $GLOBALS['pmaThemeImage']
- * @param   $icon   name of icon
+ * @uses    $GLOBALS['cfg']['PropertiesIconic']
+ * @uses    htmlspecialchars()
+ * @param   string  $icon   name of icon file
+ * @param   string  $alternate alternate text
+ * @param   boolean $container include in container
+ * @param   boolean $$force_text whether to force alternate text to be displayed
  * @return          html img tag
  */
-function PMA_getIcon($icon, $alternate = '')
+function PMA_getIcon($icon, $alternate = '', $container = false, $force_text = false)
 {
+    $include_icon = false;
+    $include_text = false;
+    $include_box  = false;
+    $alternate    = htmlspecialchars($alternate);
+    $button       = '';
+
     if ($GLOBALS['cfg']['PropertiesIconic']) {
-        return '<img src="' . $GLOBALS['pmaThemeImage'] . $icon . '"'
+         $include_icon = true;
+    }
+
+    if ($force_text
+     || ! (true === $GLOBALS['cfg']['PropertiesIconic'])
+     || ! $include_icon) {
+        // $cfg['PropertiesIconic'] is false or both
+        // OR we have no $include_icon
+        $include_text = true;
+    }
+
+    if ($include_text && $include_icon && $container) {
+        // we have icon, text and request for container
+        $include_box = true;
+    }
+
+    if ($include_box) {
+        $button .= '<div class="nowrap">';
+    }
+
+    if ($include_icon) {
+        $button .= '<img src="' . $GLOBALS['pmaThemeImage'] . $icon . '"'
             . ' title="' . $alternate . '" alt="' . $alternate . '"'
             . ' class="icon" width="16" height="16" />';
-    } else {
-        return $alternate;
     }
+
+    if ($include_icon && $include_text) {
+        $button .= ' ';
+    }
+
+    if ($include_text) {
+        $button .= $alternate;
+    }
+
+    if ($include_box) {
+        $button .= '</div>';
+    }
+
+    return $button;
 }
 
 /**
@@ -352,12 +396,7 @@ function PMA_showMySQLDocu($chapter, $link, $big_icon = false)
             $mysql = '5.0';
             $lang = 'en';
             if (defined('PMA_MYSQL_INT_VERSION')) {
-                if (PMA_MYSQL_INT_VERSION < 50000) {
-                    $mysql = '4.1';
-                    if (!empty($GLOBALS['mysql_4_1_doc_lang'])) {
-                        $lang = $GLOBALS['mysql_4_1_doc_lang'];
-                    }
-                } elseif (PMA_MYSQL_INT_VERSION >= 50100) {
+                if (PMA_MYSQL_INT_VERSION >= 50100) {
                     $mysql = '5.1';
                     if (!empty($GLOBALS['mysql_5_1_doc_lang'])) {
                         $lang = $GLOBALS['mysql_5_1_doc_lang'];
@@ -383,20 +422,44 @@ function PMA_showMySQLDocu($chapter, $link, $big_icon = false)
 } // end of the 'PMA_showMySQLDocu()' function
 
 /**
- * Displays a hint icon, on mouse over show the hint
+ * returns HTML for a footnote marker and add the messsage to the footnotes
  *
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    PMA_jsFormat()
+ * @uses    $GLOBALS['footnotes']
  * @param   string   the error message
- *
+ * @return  string html code for a footnote marker
  * @access  public
  */
-function PMA_showHint($hint_message)
+function PMA_showHint($message, $bbcode = false, $type = 'notice')
 {
-    //return '<img class="lightbulb" src="' . $GLOBALS['pmaThemeImage'] . 'b_tipp.png" width="16" height="16" border="0" alt="' . $hint_message . '" title="' . $hint_message . '" align="middle" onclick="alert(\'' . PMA_jsFormat($hint_message, false) . '\');" />';
-    return '<img class="lightbulb" src="' . $GLOBALS['pmaThemeImage']
-        . 'b_tipp.png" width="16" height="16" alt="Tip" title="Tip" onmouseover="pmaTooltip(\''
-        .  PMA_jsFormat($hint_message, false) . '\'); return false;" onmouseout="swapTooltip(\'default\'); return false;" />';
+    if ($message instanceof PMA_Message) {
+        $key = $message->getHash();
+        $type = $message->getLevel();
+    } else {
+        $key = md5($message);
+    }
+
+    if (! isset($GLOBALS['footnotes'][$key])) {
+        $nr = count($GLOBALS['footnotes']) + 1;
+        // this is the first instance of this message
+        $instance = 1;
+        $GLOBALS['footnotes'][$key] = array(
+            'note'      => $message,
+            'type'      => $type,
+            'nr'        => $nr,
+            'instance'  => $instance
+        );
+    } else {
+        $nr = $GLOBALS['footnotes'][$key]['nr'];
+        // another instance of this message (to ensure ids are unique)
+        $instance = ++$GLOBALS['footnotes'][$key]['instance'];
+    }
+
+    if ($bbcode) {
+        return '[sup]' . $nr . '[/sup]';
+    }
+
+    // footnotemarker used in js/tooltip.js
+    return '<sup class="footnotemarker" id="footnote_sup_' . $nr . '_' . $instance . '">' . $nr . '</sup>';
 }
 
 /**
@@ -411,7 +474,7 @@ function PMA_showHint($hint_message)
  * @uses    $GLOBALS['strEdit']
  * @uses    $GLOBALS['strMySQLSaid']
  * @uses    $GLOBALS['cfg']['PropertiesIconic'] 
- * @uses    $GLOBALS['cfg']['MaxCharactersInDisplayedSQL'] 
+ * @uses    $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']
  * @uses    PMA_backquote()
  * @uses    PMA_DBI_getError()
  * @uses    PMA_formatSql()
@@ -498,21 +561,25 @@ function PMA_mysqlDie($error_message = '', $the_query = '',
         if (strstr(strtolower($formatted_sql), 'select')) { // please show me help to the error on select
             echo PMA_showMySQLDocu('SQL-Syntax', 'SELECT');
         }
-        if ($is_modify_link && strlen($db)) {
+        if ($is_modify_link) {
+            $_url_params = array(
+                'sql_query' => $the_query,
+                'show_query' => 1,
+            );
             if (strlen($table)) {
-                $doedit_goto = '<a href="tbl_sql.php?' . PMA_generate_common_url($db, $table) . '&amp;sql_query=' . urlencode($the_query) . '&amp;show_query=1">';
+                $_url_params['db'] = $db;
+                $_url_params['table'] = $table;
+                $doedit_goto = '<a href="tbl_sql.php?' . PMA_generate_common_url($_url_params) . '">';
+            } elseif (strlen($db)) {
+                $_url_params['db'] = $db;
+                $doedit_goto = '<a href="db_sql.php?' . PMA_generate_common_url($_url_params) . '">';
             } else {
-                $doedit_goto = '<a href="db_sql.php?' . PMA_generate_common_url($db) . '&amp;sql_query=' . urlencode($the_query) . '&amp;show_query=1">';
+                $doedit_goto = '<a href="server_sql.php?' . PMA_generate_common_url($_url_params) . '">';
             }
-            if ($GLOBALS['cfg']['PropertiesIconic']) {
-                echo $doedit_goto
-                   . '<img class="icon" src=" '. $GLOBALS['pmaThemeImage'] . 'b_edit.png" width="16" height="16" alt="' . $GLOBALS['strEdit'] .'" />'
-                   . '</a>';
-            } else {
-                echo '    ['
-                   . $doedit_goto . $GLOBALS['strEdit'] . '</a>'
-                   . ']' . "\n";
-            }
+
+            echo $doedit_goto
+               . PMA_getIcon('b_edit.png', $GLOBALS['strEdit'])
+               . '</a>';
         } // end if
         echo '    </p>' . "\n"
             .'    <p>' . "\n"
@@ -548,57 +615,24 @@ function PMA_mysqlDie($error_message = '', $the_query = '',
         . $error_message . "\n"
         . '</code><br />' . "\n";
     echo '</div>';
-    echo '<fieldset class="tblFooters">';
 
-    if (!empty($back_url) && $exit) {
-        $goto_back_url='<a href="' . (strstr($back_url, '?') ? $back_url . '&amp;no_history=true' : $back_url . '?no_history=true') . '">';
-        echo '[ ' . $goto_back_url . $GLOBALS['strBack'] . '</a> ]';
-    }
-    echo '    </fieldset>' . "\n\n";
     if ($exit) {
+        if (! empty($back_url)) {
+            if (strstr($back_url, '?')) {
+                $back_url .= '&amp;no_history=true';
+            } else {
+                $back_url .= '?no_history=true';
+            }
+            echo '<fieldset class="tblFooters">';
+            echo '[ <a href="' . $back_url . '">' . $GLOBALS['strBack'] . '</a> ]';
+            echo '</fieldset>' . "\n\n";
+        }
         /**
          * display footer and exit
          */
         require_once './libraries/footer.inc.php';
     }
 } // end of the 'PMA_mysqlDie()' function
-
-/**
- * Returns a string formatted with CONVERT ... USING
- * if MySQL supports it
- *
- * @uses    PMA_MYSQL_INT_VERSION
- * @uses    $GLOBALS['collation_connection']
- * @uses    explode()
- * @param   string  the string itself
- * @param   string  the mode: quoted or unquoted (this one by default)
- *
- * @return  the formatted string
- *
- * @access  private
- */
-function PMA_convert_using($string, $mode='unquoted', $force_utf8 = false)
-{
-    if ($mode == 'quoted') {
-        $possible_quote = "'";
-    } else {
-        $possible_quote = "";
-    }
-
-    if (PMA_MYSQL_INT_VERSION >= 40100) {
-        if ($force_utf8) {
-            $charset = 'utf8';
-            $collate = ' COLLATE utf8_bin';
-        } else {
-            list($charset) = explode('_', $GLOBALS['collation_connection']);
-            $collate = '';
-        }
-        $converted_string = "CONVERT(" . $possible_quote . $string . $possible_quote . " USING " . $charset . ")" . $collate;
-    } else {
-        $converted_string = $possible_quote . $string . $possible_quote;
-    }
-    return $converted_string;
-} // end function
 
 /**
  * Send HTTP header, taking IIS limits into account (600 seems ok)
@@ -686,6 +720,8 @@ function PMA_sendHeaderLocation($uri)
  * @uses    explode()
  * @param   string  $db     name of db
  * @param   string  $tables name of tables
+ * @param   integer $limit_offset   list offset
+ * @param   integer $limit_count    max tables to return
  * return   array   (recursive) grouped table list
  */
 function PMA_getTableList($db, $tables = null, $limit_offset = 0, $limit_count = false)
@@ -906,14 +942,14 @@ if (typeof(window.parent) != 'undefined'
  *
  * @param   string  $message    the message to display
  * @param   string  $sql_query  the query to display
+ * @param   string  $type       the type (level) of the message 
  * @global  array   the configuration array
  * @uses    $cfg
  * @access  public
  */
-function PMA_showMessage($message, $sql_query = null)
+function PMA_showMessage($message, $sql_query = null, $type = 'notice')
 {
     global $cfg;
-    $query_too_big = false;
 
     if (null === $sql_query) {
         if (! empty($GLOBALS['display_query'])) {
@@ -930,22 +966,14 @@ function PMA_showMessage($message, $sql_query = null)
     // Corrects the tooltip text via JS if required
     // @todo this is REALLY the wrong place to do this - very unexpected here
     if (strlen($GLOBALS['table']) && $cfg['ShowTooltip']) {
-        $result = PMA_DBI_try_query('SHOW TABLE STATUS FROM ' . PMA_backquote($GLOBALS['db']) . ' LIKE \'' . PMA_sqlAddslashes($GLOBALS['table'], true) . '\'');
-        if ($result) {
-            $tbl_status = PMA_DBI_fetch_assoc($result);
-            $tooltip    = (empty($tbl_status['Comment']))
-                        ? ''
-                        : $tbl_status['Comment'] . ' ';
-            $tooltip .= '(' . PMA_formatNumber($tbl_status['Rows'], 0) . ' ' . $GLOBALS['strRows'] . ')';
-            PMA_DBI_free_result($result);
-            $uni_tbl = PMA_jsFormat($GLOBALS['db'] . '.' . $GLOBALS['table'], false);
-            echo "\n";
-            echo '<script type="text/javascript">' . "\n";
-            echo '//<![CDATA[' . "\n";
-            echo "window.parent.updateTableTitle('" . $uni_tbl . "', '" . PMA_jsFormat($tooltip, false) . "');" . "\n";
-            echo '//]]>' . "\n";
-            echo '</script>' . "\n";
-        } // end if
+        $tooltip = PMA_Table::sGetToolTip($GLOBALS['db'], $GLOBALS['table']);
+        $uni_tbl = PMA_jsFormat($GLOBALS['db'] . '.' . $GLOBALS['table'], false);
+        echo "\n";
+        echo '<script type="text/javascript">' . "\n";
+        echo '//<![CDATA[' . "\n";
+        echo "window.parent.updateTableTitle('" . $uni_tbl . "', '" . PMA_jsFormat($tooltip, false) . "');" . "\n";
+        echo '//]]>' . "\n";
+        echo '</script>' . "\n";
     } // end if ... elseif
 
     // Checks if the table needs to be repaired after a TRUNCATE query.
@@ -953,329 +981,287 @@ function PMA_showMessage($message, $sql_query = null)
     // @todo this is REALLY the wrong place to do this - very unexpected here
     if (strlen($GLOBALS['table'])
      && $GLOBALS['sql_query'] == 'TRUNCATE TABLE ' . PMA_backquote($GLOBALS['table'])) {
-        if (!isset($tbl_status)) {
-            $result = @PMA_DBI_try_query('SHOW TABLE STATUS FROM ' . PMA_backquote($GLOBALS['db']) . ' LIKE \'' . PMA_sqlAddslashes($GLOBALS['table'], true) . '\'');
-            if ($result) {
-                $tbl_status = PMA_DBI_fetch_assoc($result);
-                PMA_DBI_free_result($result);
-            }
-        }
-        if (isset($tbl_status) && (int) $tbl_status['Index_length'] > 1024) {
+        if (PMA_Table::sGetStatusInfo($GLOBALS['db'], $GLOBALS['table'], 'Index_length') > 1024) {
             PMA_DBI_try_query('REPAIR TABLE ' . PMA_backquote($GLOBALS['table']));
         }
     }
     unset($tbl_status);
-    echo '<br />' . "\n";
 
     echo '<div align="' . $GLOBALS['cell_align_left'] . '">' . "\n";
-    if (!empty($GLOBALS['show_error_header'])) {
-        echo '<div class="error">' . "\n";
-        echo '<h1>' . $GLOBALS['strError'] . '</h1>' . "\n";
-    }
 
-    echo '<div class="notice">';
-    echo PMA_sanitize($message);
-    if (isset($GLOBALS['special_message'])) {
-        echo PMA_sanitize($GLOBALS['special_message']);
-        unset($GLOBALS['special_message']);
-    }
-    echo '</div>';
-
-    if (!empty($GLOBALS['show_error_header'])) {
+    if ($message instanceof PMA_Message) {
+        $message->display();
+        $type = $message->getLevel();
+    } else {
+        echo '<div class="' . $type . '">';
+        echo PMA_sanitize($message);
+        if (isset($GLOBALS['special_message'])) {
+            echo PMA_sanitize($GLOBALS['special_message']);
+            unset($GLOBALS['special_message']);
+        }
         echo '</div>';
     }
 
     if ($cfg['ShowSQL'] == true && ! empty($sql_query)) {
-        // Basic url query part
-        $url_qpart = '?' . PMA_generate_common_url($GLOBALS['db'], $GLOBALS['table']);
-
         // Html format the query to be displayed
-        // The nl2br function isn't used because its result isn't a valid
-        // xhtml1.0 statement before php4.0.5 ("<br>" and not "<br />")
         // If we want to show some sql code it is easiest to create it here
-         /* SQL-Parser-Analyzer */
+        /* SQL-Parser-Analyzer */
 
-        if (!empty($GLOBALS['show_as_php'])) {
-            $new_line = '\'<br />' . "\n" . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;. \' ';
-        }
-        if (isset($new_line)) {
-             /* SQL-Parser-Analyzer */
-            $query_base = PMA_sqlAddslashes(htmlspecialchars($sql_query), false, false, true);
-             /* SQL-Parser-Analyzer */
-            $query_base = preg_replace("@((\015\012)|(\015)|(\012))+@", $new_line, $query_base);
+        if (! empty($GLOBALS['show_as_php'])) {
+            $new_line = '\\n"<br />' . "\n"
+                . '&nbsp;&nbsp;&nbsp;&nbsp;. "';
+            $query_base = htmlspecialchars(addslashes($sql_query));
+            $query_base = preg_replace('/((\015\012)|(\015)|(\012))/', $new_line, $query_base);
         } else {
             $query_base = $sql_query;
         }
 
-        if (strlen($query_base) > $cfg['MaxCharactersInDisplayedSQL']) {
-            $query_too_big = true; 
-            $query_base = nl2br(htmlspecialchars($sql_query));
-            unset($GLOBALS['parsed_sql']);
-        }
+        $query_too_big = false;
 
-        // Parse SQL if needed
-        // (here, use "! empty" because when deleting a bookmark,
-        // $GLOBALS['parsed_sql'] is set but empty
-        if (! empty($GLOBALS['parsed_sql']) && $query_base == $GLOBALS['parsed_sql']['raw']) {
-            $parsed_sql = $GLOBALS['parsed_sql'];
-        } else {
+        if (strlen($query_base) > $cfg['MaxCharactersInDisplayedSQL']) {
             // when the query is large (for example an INSERT of binary
             // data), the parser chokes; so avoid parsing the query
-            if (! $query_too_big) {
-                $parsed_sql = PMA_SQP_parse($query_base);
-            }
+            $query_too_big = true;
+            $query_base = nl2br(htmlspecialchars($sql_query));
+        } elseif (! empty($GLOBALS['parsed_sql'])
+         && $query_base == $GLOBALS['parsed_sql']['raw']) {
+            // (here, use "! empty" because when deleting a bookmark,
+            // $GLOBALS['parsed_sql'] is set but empty
+            $parsed_sql = $GLOBALS['parsed_sql'];
+        } else {
+            // Parse SQL if needed
+            $parsed_sql = PMA_SQP_parse($query_base);
         }
 
         // Analyze it
         if (isset($parsed_sql)) {
             $analyzed_display_query = PMA_SQP_analyze($parsed_sql);
-        }
+            // Here we append the LIMIT added for navigation, to
+            // enable its display. Adding it higher in the code
+            // to $sql_query would create a problem when
+            // using the Refresh or Edit links.
 
-        // Here we append the LIMIT added for navigation, to
-        // enable its display. Adding it higher in the code
-        // to $sql_query would create a problem when
-        // using the Refresh or Edit links.
+            // Only append it on SELECTs.
 
-        // Only append it on SELECTs.
+            /**
+             * @todo what would be the best to do when someone hits Refresh:
+             * use the current LIMITs ?
+             */
 
-        /**
-         * @todo what would be the best to do when someone hits Refresh:
-         * use the current LIMITs ?
-         */
-
-        if (isset($analyzed_display_query[0]['queryflags']['select_from'])
-         && isset($GLOBALS['sql_limit_to_append'])) {
-            $query_base  = $analyzed_display_query[0]['section_before_limit'] . "\n" . $GLOBALS['sql_limit_to_append'] . $analyzed_display_query[0]['section_after_limit'];
-            // Need to reparse query
-            $parsed_sql = PMA_SQP_parse($query_base);
-        }
-
-        if (!empty($GLOBALS['show_as_php'])) {
-            $query_base = '$sql  = \'' . $query_base;
-        } elseif (!empty($GLOBALS['validatequery'])) {
-            $query_base = PMA_validateSQL($query_base);
-        } else {
-            if (isset($parsed_sql)) {
-                $query_base = PMA_formatSql($parsed_sql, $query_base);
+            if (isset($analyzed_display_query[0]['queryflags']['select_from'])
+             && isset($GLOBALS['sql_limit_to_append'])) {
+                $query_base = $analyzed_display_query[0]['section_before_limit']
+                    . "\n" . $GLOBALS['sql_limit_to_append']
+                    . $analyzed_display_query[0]['section_after_limit'];
+                // Need to reparse query
+                $parsed_sql = PMA_SQP_parse($query_base);
             }
+        }
+
+        if (! empty($GLOBALS['show_as_php'])) {
+            $query_base = '$sql  = "' . $query_base;
+        } elseif (! empty($GLOBALS['validatequery'])) {
+            $query_base = PMA_validateSQL($query_base);
+        } elseif (isset($parsed_sql)) {
+            $query_base = PMA_formatSql($parsed_sql, $query_base);
         }
 
         // Prepares links that may be displayed to edit/explain the query
         // (don't go to default pages, we must go to the page
         // where the query box is available)
 
-        $edit_target = strlen($GLOBALS['db']) ? (strlen($GLOBALS['table']) ? 'tbl_sql.php' : 'db_sql.php') : 'server_sql.php';
+        // Basic url query part
+        $url_params = array();
+        if (strlen($GLOBALS['db'])) {
+            $url_params['db'] = $GLOBALS['db'];
+            if (strlen($GLOBALS['table'])) {
+                $url_params['table'] = $GLOBALS['table'];
+                $edit_link = 'tbl_sql.php';
+            } else {
+                $edit_link = 'db_sql.php';
+            }
+        } else {
+            $edit_link = 'server_sql.php';
+        }
 
-        if (isset($cfg['SQLQuery']['Edit'])
-            && ($cfg['SQLQuery']['Edit'] == true)
-            && (!empty($edit_target))
-            && ! $query_too_big) {
+        // Want to have the query explained (Mike Beck 2002-05-22)
+        // but only explain a SELECT (that has not been explained)
+        /* SQL-Parser-Analyzer */
+        $explain_link = '';
+        if (! empty($cfg['SQLQuery']['Explain']) && ! $query_too_big) {
+            $explain_params = $url_params;
+            // Detect if we are validating as well
+            // To preserve the validate URL data
+            if (! empty($GLOBALS['validatequery'])) {
+                $explain_params['validatequery'] = 1;
+            }
 
+            if (preg_match('@^SELECT[[:space:]]+@i', $sql_query)) {
+                $explain_params['sql_query'] = 'EXPLAIN ' . $sql_query;
+                $_message = $GLOBALS['strExplain'];
+            } elseif (preg_match('@^EXPLAIN[[:space:]]+SELECT[[:space:]]+@i', $sql_query)) {
+                $explain_params['sql_query'] = substr($sql_query, 8);
+                $_message = $GLOBALS['strNoExplain'];
+            }
+            if (isset($explain_params['sql_query'])) {
+                $explain_link = 'import.php' . PMA_generate_common_url($explain_params);
+                $explain_link = ' [' . PMA_linkOrButton($explain_link, $_message) . ']';
+            }
+        } //show explain
+
+        $url_params['sql_query']  = $sql_query;
+        $url_params['show_query'] = 1;
+
+        if (! empty($cfg['SQLQuery']['Edit']) && ! $query_too_big) {
             if ($cfg['EditInWindow'] == true) {
                 $onclick = 'window.parent.focus_querywindow(\'' . PMA_jsFormat($sql_query, false) . '\'); return false;';
             } else {
                 $onclick = '';
             }
 
-            $edit_link = $edit_target
-                       . $url_qpart
-                       . '&amp;sql_query=' . urlencode($sql_query)
-                       . '&amp;show_query=1#querybox';
+            $edit_link .= PMA_generate_common_url($url_params) . '#querybox';
             $edit_link = ' [' . PMA_linkOrButton($edit_link, $GLOBALS['strEdit'], array('onclick' => $onclick)) . ']';
         } else {
             $edit_link = '';
         }
 
-        // Want to have the query explained (Mike Beck 2002-05-22)
-        // but only explain a SELECT (that has not been explained)
-        /* SQL-Parser-Analyzer */
-        if (isset($cfg['SQLQuery']['Explain'])
-            && $cfg['SQLQuery']['Explain'] == true
-            && ! $query_too_big) {
-
-            // Detect if we are validating as well
-            // To preserve the validate uRL data
-            if (!empty($GLOBALS['validatequery'])) {
-                $explain_link_validate = '&amp;validatequery=1';
-            } else {
-                $explain_link_validate = '';
-            }
-
-            $explain_link = 'import.php'
-                          . $url_qpart
-                          . $explain_link_validate
-                          . '&amp;sql_query=';
-
-            if (preg_match('@^SELECT[[:space:]]+@i', $sql_query)) {
-                $explain_link .= urlencode('EXPLAIN ' . $sql_query);
-                $message = $GLOBALS['strExplain'];
-            } elseif (preg_match('@^EXPLAIN[[:space:]]+SELECT[[:space:]]+@i', $sql_query)) {
-                $explain_link .= urlencode(substr($sql_query, 8));
-                $message = $GLOBALS['strNoExplain'];
-            } else {
-                $explain_link = '';
-            }
-            if (!empty($explain_link)) {
-                $explain_link = ' [' . PMA_linkOrButton($explain_link, $message) . ']';
-            }
-        } else {
-            $explain_link = '';
-        } //show explain
+        $url_qpart = PMA_generate_common_url($url_params);
 
         // Also we would like to get the SQL formed in some nice
         // php-code (Mike Beck 2002-05-22)
-        if (isset($cfg['SQLQuery']['ShowAsPHP'])
-            && $cfg['SQLQuery']['ShowAsPHP'] == true
-            && ! $query_too_big) {
-            $php_link = 'import.php'
-                      . $url_qpart
-                      . '&amp;show_query=1'
-                      . '&amp;sql_query=' . urlencode($sql_query)
-                      . '&amp;show_as_php=';
+        if (! empty($cfg['SQLQuery']['ShowAsPHP']) && ! $query_too_big) {
+            $php_params = $url_params;
 
-            if (!empty($GLOBALS['show_as_php'])) {
-                $php_link .= '0';
-                $message = $GLOBALS['strNoPhp'];
+            if (! empty($GLOBALS['show_as_php'])) {
+                $_message = $GLOBALS['strNoPhp'];
             } else {
-                $php_link .= '1';
-                $message = $GLOBALS['strPhp'];
+                $php_params['show_as_php'] = 1;
+                $_message = $GLOBALS['strPhp'];
             }
-            $php_link = ' [' . PMA_linkOrButton($php_link, $message) . ']';
+
+            $php_link = 'import.php' . PMA_generate_common_url($php_params);
+            $php_link = ' [' . PMA_linkOrButton($php_link, $_message) . ']';
 
             if (isset($GLOBALS['show_as_php'])) {
-                $runquery_link
-                     = 'import.php'
-                     . $url_qpart
-                     . '&amp;show_query=1'
-                     . '&amp;sql_query=' . urlencode($sql_query);
+                $runquery_link = 'import.php' . PMA_generate_common_url($url_params);
                 $php_link .= ' [' . PMA_linkOrButton($runquery_link, $GLOBALS['strRunQuery']) . ']';
             }
-
         } else {
             $php_link = '';
         } //show as php
 
         // Refresh query
-        if (isset($cfg['SQLQuery']['Refresh'])
-            && $cfg['SQLQuery']['Refresh']
-            && preg_match('@^(SELECT|SHOW)[[:space:]]+@i', $sql_query)) {
-
-            $refresh_link = 'import.php'
-                      . $url_qpart
-                      . '&amp;show_query=1'
-                      . '&amp;sql_query=' . urlencode($sql_query);
+        if (! empty($cfg['SQLQuery']['Refresh'])
+         && preg_match('@^(SELECT|SHOW)[[:space:]]+@i', $sql_query)) {
+            $refresh_link = 'import.php' . PMA_generate_common_url($url_params);
             $refresh_link = ' [' . PMA_linkOrButton($refresh_link, $GLOBALS['strRefresh']) . ']';
         } else {
             $refresh_link = '';
         } //show as php
 
-        if (isset($cfg['SQLValidator']['use'])
-            && $cfg['SQLValidator']['use'] == true
-            && isset($cfg['SQLQuery']['Validate'])
-            && $cfg['SQLQuery']['Validate'] == true) {
-            $validate_link = 'import.php'
-                           . $url_qpart
-                           . '&amp;show_query=1'
-                           . '&amp;sql_query=' . urlencode($sql_query)
-                           . '&amp;validatequery=';
+        if (! empty($cfg['SQLValidator']['use'])
+         && ! empty($cfg['SQLQuery']['Validate'])) {
+            $validate_params = $url_params;
             if (!empty($GLOBALS['validatequery'])) {
-                $validate_link .= '0';
                 $validate_message = $GLOBALS['strNoValidateSQL'] ;
             } else {
-                $validate_link .= '1';
+                $validate_params['validatequery'] = 1;
                 $validate_message = $GLOBALS['strValidateSQL'] ;
             }
+
+            $validate_link = 'import.php' . PMA_generate_common_url($validate_params);
             $validate_link = ' [' . PMA_linkOrButton($validate_link, $validate_message) . ']';
         } else {
             $validate_link = '';
         } //validator
 
-        // why this?
-        //unset($sql_query);
-
-        // Displays the message
-        echo '<fieldset class="">' . "\n";
-        echo '    <legend>' . $GLOBALS['strSQLQuery'] . ':</legend>';
-        echo '    <div>';
-        // when uploading a 700 Kio binary file into a LONGBLOB,
-        // I get a white page, strlen($query_base) is 2 x 700 Kio
-        // so put a hard limit here (let's say 1000)
+        echo '<code class="sql">';
         if ($query_too_big) {
-            echo '    ' . substr($query_base, 0, $cfg['MaxCharactersInDisplayedSQL']) . '[...]';
+            echo substr($query_base, 0, $cfg['MaxCharactersInDisplayedSQL']) . '[...]';
         } else {
-            echo '    ' . $query_base;
+            echo $query_base;
         }
 
         //Clean up the end of the PHP
-        if (!empty($GLOBALS['show_as_php'])) {
-            echo '\';';
+        if (! empty($GLOBALS['show_as_php'])) {
+            echo '";';
         }
-        echo '    </div>';
-        echo '</fieldset>' . "\n";
+        echo '</code>';
 
-        if (!empty($edit_target)) {
-            echo '<fieldset class="tblFooters">';
-            // avoid displaying a Profiling checkbox that could
-            // be checked, which would reexecute an INSERT, for example
-            if (! empty($refresh_link)) {
-                PMA_profilingCheckbox($sql_query);
-            }
-            echo $edit_link . $explain_link . $php_link . $refresh_link . $validate_link;
-            echo '</fieldset>';
+        echo '<div class="tools">';
+        // avoid displaying a Profiling checkbox that could
+        // be checked, which would reexecute an INSERT, for example
+        if (! empty($refresh_link)) {
+            PMA_profilingCheckbox($sql_query);
         }
+        echo $edit_link . $explain_link . $php_link . $refresh_link . $validate_link;
+        echo '</div>';
     }
     echo '</div><br />' . "\n";
 } // end of the 'PMA_showMessage()' function
 
-
 /**
- * Verifies if current MySQL server supports profiling 
+ * Verifies if current MySQL server supports profiling
  *
+ * @uses    $_SESSION['profiling_supported'] for caching
+ * @uses    $GLOBALS['server']
+ * @uses    PMA_DBI_fetch_value()
+ * @uses    PMA_MYSQL_INT_VERSION
+ * @uses    defined()
  * @access  public
- * @return  boolean whether profiling is supported 
+ * @return  boolean whether profiling is supported
  *
- * @author   Marc Delisle 
+ * @author   Marc Delisle
  */
-function PMA_profilingSupported() {
-    // 5.0.37 has profiling but for example, 5.1.20 does not
-    // (avoid a trip to the server for MySQL before 5.0.37)
-    // and do not set a constant as we might be switching servers
-    if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 50037 && PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'profiling'")) {
-        return true;
-    } else {
-        return false;
+function PMA_profilingSupported()
+{
+    if (! PMA_cacheExists('profiling_supported', true)) {
+        // 5.0.37 has profiling but for example, 5.1.20 does not
+        // (avoid a trip to the server for MySQL before 5.0.37)
+        // and do not set a constant as we might be switching servers
+        if (defined('PMA_MYSQL_INT_VERSION')
+         && PMA_MYSQL_INT_VERSION >= 50037
+         && PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'profiling'")) {
+            PMA_cacheSet('profiling_supported', true, true);
+        } else {
+            PMA_cacheSet('profiling_supported', false, true);
+        }
     }
+
+    return PMA_cacheGet('profiling_supported', true);
 }
 
 /**
- * Displays a form with the Profiling checkbox 
+ * Displays a form with the Profiling checkbox
  *
  * @param   string  $sql_query
  * @access  public
  *
- * @author   Marc Delisle 
+ * @author   Marc Delisle
  */
-function PMA_profilingCheckbox($sql_query) {
+function PMA_profilingCheckbox($sql_query)
+{
     if (PMA_profilingSupported()) {
         echo '<form action="sql.php" method="post">' . "\n";
         echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']);
         echo '<input type="hidden" name="sql_query" value="' . htmlspecialchars($sql_query) . '" />' . "\n";
         echo '<input type="hidden" name="profiling_form" value="1" />' . "\n";
-        echo '<input type="checkbox" name="profiling" id="profiling"' . (isset($_SESSION['profiling']) ? ' checked="checked"' : '') . ' onclick="this.form.submit();" /><label for="profiling">' . $GLOBALS['strProfiling'] . '</label>' . "\n";
+        PMA_generate_html_checkbox('profiling', $GLOBALS['strProfiling'], isset($_SESSION['profiling']), true);
         echo '<noscript><input type="submit" value="' . $GLOBALS['strGo'] . '" /></noscript>' . "\n";
         echo '</form>' . "\n";
     }
 }
 
 /**
- * Displays the results of SHOW PROFILE 
+ * Displays the results of SHOW PROFILE
  *
- * @param    array   the results 
+ * @param    array   the results
  * @access  public
  *
- * @author   Marc Delisle 
+ * @author   Marc Delisle
  */
-function PMA_profilingResults($profiling_results) {
+function PMA_profilingResults($profiling_results)
+{
     echo '<fieldset><legend>' . $GLOBALS['strProfiling'] . '</legend>' . "\n";
     echo '<table>' . "\n";
     echo ' <tr>' .  "\n";
@@ -1437,28 +1423,6 @@ function PMA_formatNumber($value, $length = 3, $comma = 0, $only_down = false)
 } // end of the 'PMA_formatNumber' function
 
 /**
- * Extracts ENUM / SET options from a type definition string
- *
- * @param   string   The column type definition
- *
- * @return  array    The options or
- *          boolean  false in case of an error.
- *
- * @author  rabus
- */
-function PMA_getEnumSetOptions($type_def)
-{
-    $open = strpos($type_def, '(');
-    $close = strrpos($type_def, ')');
-    if (!$open || !$close) {
-        return false;
-    }
-    $options = substr($type_def, $open + 2, $close - $open - 3);
-    $options = explode('\',\'', $options);
-    return $options;
-} // end of the 'PMA_getEnumSetOptions' function
-
-/**
  * Writes localised date
  *
  * @param   string   the current timestamp
@@ -1526,16 +1490,17 @@ function PMA_getTab($tab)
 
     $tab = array_merge($defaults, $tab);
 
-    // determine additionnal style-class
+    // determine additional style-class
     if (empty($tab['class'])) {
         if ($tab['text'] == $GLOBALS['strEmpty']
             || $tab['text'] == $GLOBALS['strDrop']) {
             $tab['class'] = 'caution';
-        } elseif (!empty($tab['active'])
-          || (isset($GLOBALS['active_page'])
-               && $GLOBALS['active_page'] == $tab['link'])
-          || (basename($GLOBALS['PMA_PHP_SELF']) == $tab['link'] && empty($tab['warning'])))
-        {
+        } elseif (! empty($tab['active'])
+         || PMA_isValid($GLOBALS['active_page'], 'identical', $tab['link'])) {
+            $tab['class'] = 'active';
+        } elseif (empty($GLOBALS['active_page'])
+          && basename($GLOBALS['PMA_PHP_SELF']) == $tab['link']
+          && empty($tab['warning'])) {
             $tab['class'] = 'active';
         }
     }
@@ -1551,9 +1516,9 @@ function PMA_getTab($tab)
         $tab['link'] = $tab['link'] . $tab['sep']
             .(empty($GLOBALS['url_query']) ?
                 PMA_generate_common_url() : $GLOBALS['url_query']);
-        if (!empty($tab['args'])) {
+        if (! empty($tab['args'])) {
             foreach ($tab['args'] as $param => $value) {
-                $tab['link'] .= '&amp;' . urlencode($param) . '='
+                $tab['link'] .= PMA_get_arg_separator('html') . urlencode($param) . '='
                     . urlencode($value);
             }
         }
@@ -1887,7 +1852,6 @@ function PMA_checkParameters($params, $die = true, $request = true)
 /**
  * Function to generate unique condition for specified row.
  *
- * @uses    PMA_MYSQL_INT_VERSION
  * @uses    $GLOBALS['analyzed_sql'][0]
  * @uses    PMA_DBI_field_flags()
  * @uses    PMA_backquote()
@@ -1938,7 +1902,7 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
         // Do not use a table alias in a condition.
         // Test case is:
         // select * from galerie x WHERE
-        //(select count(*) from galerie y where y.datum=x.datum)>1 
+        //(select count(*) from galerie y where y.datum=x.datum)>1
         //
         // But orgtable is present only with mysqli extension so the
         // fix is only for mysqli.
@@ -1955,17 +1919,8 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
             $condition = ' CONCAT(' . PMA_backquote($meta->table) . '.'
                 . PMA_backquote($meta->orgname) . ') ';
         } else {
-            // string and blob fields have to be converted using
-            // the system character set (always utf8) since
-            // mysql4.1 can use different charset for fields.
-            if (PMA_MYSQL_INT_VERSION >= 40100
-              && ($meta->type == 'string' || $meta->type == 'blob')) {
-                $condition = ' CONVERT(' . PMA_backquote($meta->table) . '.'
-                    . PMA_backquote($meta->orgname) . ' USING utf8) ';
-            } else {
-                $condition = ' ' . PMA_backquote($meta->table) . '.'
-                    . PMA_backquote($meta->orgname) . ' ';
-            }
+            $condition = ' ' . PMA_backquote($meta->table) . '.'
+                . PMA_backquote($meta->orgname) . ' ';
         } // end if... else...
 
         if (!isset($row[$i]) || is_null($row[$i])) {
@@ -1980,14 +1935,10 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
                  && !empty($row[$i])) {
                     // do not waste memory building a too big condition
                     if (strlen($row[$i]) < 1000) {
-                        if (PMA_MYSQL_INT_VERSION < 40002) {
-                            $condition .= 'LIKE 0x' . bin2hex($row[$i]) . ' AND';
-                        } else {
-                            // use a CAST if possible, to avoid problems
-                            // if the field contains wildcard characters % or _
-                            $condition .= '= CAST(0x' . bin2hex($row[$i])
-                                . ' AS BINARY) AND';
-                        }
+                        // use a CAST if possible, to avoid problems
+                        // if the field contains wildcard characters % or _
+                        $condition .= '= CAST(0x' . bin2hex($row[$i])
+                            . ' AS BINARY) AND';
                     } else {
                         // this blob won't be part of the final condition
                         $condition = '';
@@ -2037,28 +1988,33 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
 function PMA_buttonOrImage($button_name, $button_class, $image_name, $text,
     $image)
 {
+    if (false === $GLOBALS['cfg']['PropertiesIconic']) {
+        echo ' <input type="submit" name="' . $button_name . '"'
+                .' value="' . htmlspecialchars($text) . '"'
+                .' title="' . htmlspecialchars($text) . '" />' . "\n";
+        return;
+    }
+
     /* Opera has trouble with <input type="image"> */
     /* IE has trouble with <button> */
     if (PMA_USR_BROWSER_AGENT != 'IE') {
         echo '<button class="' . $button_class . '" type="submit"'
-            .' name="' . $button_name . '" value="' . $text . '"'
-            .' title="' . $text . '">' . "\n"
-            .'<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . $image . '"'
-            .' title="' . $text . '" alt="' . $text . '" width="16"'
-            .' height="16" />'
-            .($GLOBALS['cfg']['PropertiesIconic'] === 'both' ? '&nbsp;' . $text : '') . "\n"
+            .' name="' . $button_name . '" value="' . htmlspecialchars($text) . '"'
+            .' title="' . htmlspecialchars($text) . '">' . "\n"
+            . PMA_getIcon($image, $text)
             .'</button>' . "\n";
     } else {
         echo '<input type="image" name="' . $image_name . '" value="'
-            . $text . '" title="' . $text . '" src="' . $GLOBALS['pmaThemeImage']
+            . htmlspecialchars($text) . '" title="' . htmlspecialchars($text) . '" src="' . $GLOBALS['pmaThemeImage']
             . $image . '" />'
-            . ($GLOBALS['cfg']['PropertiesIconic'] === 'both' ? '&nbsp;' . $text : '') . "\n";
+            . ($GLOBALS['cfg']['PropertiesIconic'] === 'both' ? '&nbsp;' . htmlspecialchars($text) : '') . "\n";
     }
 } // end function
 
 /**
  * Generate a pagination selector for browsing resultsets
  *
+ * @todo $url is not javascript escaped!?
  * @uses    $GLOBALS['strPageNumber']
  * @uses    range()
  * @param   string      URL for the JavaScript
@@ -2066,7 +2022,7 @@ function PMA_buttonOrImage($button_name, $button_class, $image_name, $text,
  * @param   string      current page number
  * @param   string      number of total pages
  * @param   string      If the number of pages is lower than this
- *                      variable, no pages will be ommitted in
+ *                      variable, no pages will be omitted in
  *                      pagination
  * @param   string      How many rows at the beginning should always
  *                      be shown?
@@ -2086,6 +2042,10 @@ function PMA_pageselector($url, $rows, $pageNow = 1, $nbTotalPage = 1,
     $showAll = 200, $sliceStart = 5, $sliceEnd = 5, $percent = 20,
     $range = 10, $prompt = '')
 {
+    $increment = floor($nbTotalPage / $percent);
+    $pageNowMinusRange = ($pageNow - $range);
+    $pageNowPlusRange = ($pageNow + $range);
+
     $gotopage = $prompt
               . ' <select name="pos" onchange="goToUrl(this, \''
               . $url . '\');">' . "\n";
@@ -2105,29 +2065,28 @@ function PMA_pageselector($url, $rows, $pageNow = 1, $nbTotalPage = 1,
         }
 
         // garvin: Based on the number of results we add the specified
-        // $percent percentate to each page number,
+        // $percent percentage to each page number,
         // so that we have a representing page number every now and then to
-        // immideately jump to specific pages.
+        // immediately jump to specific pages.
         // As soon as we get near our currently chosen page ($pageNow -
-        // $range), every page number will be
-        // shown.
+        // $range), every page number will be shown.
         $i = $sliceStart;
         $x = $nbTotalPage - $sliceEnd;
         $met_boundary = false;
         while ($i <= $x) {
-            if ($i >= ($pageNow - $range) && $i <= ($pageNow + $range)) {
+            if ($i >= $pageNowMinusRange && $i <= $pageNowPlusRange) {
                 // If our pageselector comes near the current page, we use 1
                 // counter increments
                 $i++;
                 $met_boundary = true;
             } else {
-                // We add the percentate increment to our current page to
+                // We add the percentage increment to our current page to
                 // hop to the next one in range
-                $i = $i + floor($nbTotalPage / $percent);
+                $i += $increment;
 
                 // Make sure that we do not cross our boundaries.
-                if ($i > ($pageNow - $range) && !$met_boundary) {
-                    $i = $pageNow - $range;
+                if ($i > $pageNowMinusRange && ! $met_boundary) {
+                    $i = $pageNowMinusRange;
                 }
             }
 
@@ -2152,7 +2111,6 @@ function PMA_pageselector($url, $rows, $pageNow = 1, $nbTotalPage = 1,
     }
 
     $gotopage .= ' </select><noscript><input type="submit" value="' . $GLOBALS['strGo'] . '" /></noscript>';
-
 
     return $gotopage;
 } // end function
@@ -2319,6 +2277,190 @@ function PMA_externalBug($functionality, $component, $minimum_version, $bugref)
 }
 
 /**
+ * Generates and echoes an HTML checkbox
+ *
+ * @param   string  $html_field_name the checkbox HTML field
+ * @param   string  $label
+ * @param   boolean $checked is it initially checked? 
+ * @param   boolean $onclick should it submit the form on click?
+ */
+function PMA_generate_html_checkbox($html_field_name, $label, $checked, $onclick) {
+
+    echo '<input type="checkbox" name="' . $html_field_name . '" id="' . $html_field_name . '"' . ($checked ? ' checked="checked"' : '') . ($onclick ? ' onclick="this.form.submit();"' : '') . ' /><label for="' . $html_field_name . '">' . $label . '</label>';
+}
+
+/**
+ * Generates and echoes a set of radio HTML fields
+ *
+ * @uses    htmlspecialchars()
+ * @param   string  $html_field_name the radio HTML field
+ * @param   array   $choices the choices values and labels
+ * @param   string  $checked_choice the choice to check by default
+ * @param   boolean $line_break whether to add an HTML line break after a choice
+ * @param   boolean $escape_label whether to use htmlspecialchars() on label 
+ * @param   string  $class enclose each choice with a div of this class
+ */
+function PMA_generate_html_radio($html_field_name, $choices, $checked_choice = '', $line_break = true, $escape_label = true, $class='') {
+    foreach ($choices as $choice_value => $choice_label) {
+        if (! empty($class)) {
+            echo '<div class="' . $class . '">';
+        }
+        $html_field_id = $html_field_name . '_' . $choice_value;
+        echo '<input type="radio" name="' . $html_field_name . '" id="' . $html_field_id . '" value="' . htmlspecialchars($choice_value) . '"';
+        if ($choice_value == $checked_choice) {
+            echo ' checked="checked"';
+        }
+        echo ' />' . "\n";
+        echo '<label for="' . $html_field_id . '">' . ($escape_label ? htmlspecialchars($choice_label)  : $choice_label) . '</label>';
+        if ($line_break) {
+            echo '<br />';
+        }
+        if (! empty($class)) {
+            echo '</div>';
+        }
+        echo "\n";
+    }
+}
+
+/**
+ * Generates and echoes an HTML dropdown 
+ *
+ * @uses    htmlspecialchars()
+ * @param   string  $select_name
+ * @param   array   $choices the choices values
+ * @param   string  $active_choice the choice to select by default
+ * @todo    support titles
+ */
+function PMA_generate_html_dropdown($select_name, $choices, $active_choice)
+{
+    $result = '<select name="' . htmlspecialchars($select_name) . '" id="' . htmlspecialchars($select_name) . '">"' . "\n";
+    foreach ($choices as $one_choice) {
+        $result .= '<option value="' . htmlspecialchars($one_choice) . '"';
+        if ($one_choice == $active_choice) {
+            $result .= ' selected="selected"';
+        }
+        $result .= '>' . htmlspecialchars($one_choice) . '</option>' . "\n";
+    }
+    $result .= '</select>' . "\n";
+    echo $result;
+}
+
+/**
+ * Generates a slider effect (Mootools)
+ * Takes care of generating the initial <div> and the link
+ * controlling the slider; you have to generate the </div> yourself
+ * after the sliding section.
+ *
+ * @uses    $GLOBALS['cfg']['InitialSlidersState']
+ * @param   string  $id the id of the <div> on which to apply the effect
+ * @param   string  $message the message to show as a link
+ */
+function PMA_generate_slider_effect($id, $message)
+{
+    ?>
+<script type="text/javascript">
+// <![CDATA[
+window.addEvent('domready', function(){
+    var status = {
+        'true': '- ',
+        'false': '+ '
+    };
+
+    var anchor<?php echo $id; ?> = new Element('a', {
+        'id': 'toggle_<?php echo $id; ?>',
+        'href': '#',
+        'events': {
+            'click': function(){
+                mySlide<?php echo $id; ?>.toggle();
+            }
+        }
+    });
+
+    anchor<?php echo $id; ?>.appendText('<?php echo $message; ?>');
+    anchor<?php echo $id; ?>.injectBefore('<?php echo $id; ?>');
+
+    var slider_status<?php echo $id; ?> = new Element('span', {
+        'id': 'slider_status_<?php echo $id; ?>'
+    });
+    slider_status<?php echo $id; ?>.appendText('<?php echo $GLOBALS['cfg']['InitialSlidersState'] == 'closed' ? '+' : '-';?> ');
+    slider_status<?php echo $id; ?>.injectBefore('toggle_<?php echo $id; ?>');
+
+    var mySlide<?php echo $id; ?> = new Fx.Slide('<?php echo $id; ?>');
+    <?php
+    if ($GLOBALS['cfg']['InitialSlidersState'] == 'closed') {
+        ?>
+    mySlide<?php echo $id; ?>.hide();
+        <?php
+    }
+    ?>
+    mySlide<?php echo $id; ?>.addEvent('complete', function() {
+                $('slider_status_<?php echo $id; ?>').set('html', status[mySlide<?php echo $id; ?>.open]);
+                    });
+
+    $('<?php echo $id; ?>').style.display="block";
+});
+    document.write('<div id="<?php echo $id; ?>" <?php echo $GLOBALS['cfg']['InitialSlidersState'] == 'closed' ? ' style="display: none;"' : ''; ?>>');
+    //]]>
+    </script>
+    <noscript>
+    <div id="<?php echo $id; ?>">
+    </noscript>
+    <?php
+}
+
+/**
+ * Cache information in the session
+ *
+ * @param unknown_type $var
+ * @param unknown_type $val
+ * @param unknown_type $server
+ * @return mixed
+ */
+function PMA_cacheExists($var, $server = 0)
+{
+    if (true === $server) {
+        $server = $GLOBALS['server'];
+    }
+    return isset($_SESSION['cache']['server_' . $server][$var]);
+}
+
+/**
+ * Cache information in the session
+ *
+ * @param unknown_type $var
+ * @param unknown_type $val
+ * @param unknown_type $server
+ * @return mixed
+ */
+function PMA_cacheGet($var, $server = 0)
+{
+    if (true === $server) {
+        $server = $GLOBALS['server'];
+    }
+    if (isset($_SESSION['cache']['server_' . $server][$var])) {
+        return $_SESSION['cache']['server_' . $server][$var];
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Cache information in the session
+ *
+ * @param unknown_type $var
+ * @param unknown_type $val
+ * @param unknown_type $server
+ * @return mixed
+ */
+function PMA_cacheSet($var, $val = null, $server = 0)
+{
+    if (true === $server) {
+        $server = $GLOBALS['server'];
+    }
+    $_SESSION['cache']['server_' . $server][$var] = $val;
+}
+
+/**
  * Converts a bit value to printable format;
  * in MySQL a BIT field can be from 1 to 64 bits so we need this
  * function because in PHP, decbin() supports only 32 bits
@@ -2342,26 +2484,115 @@ function PMA_printable_bit_value($value, $length) {
 }
 
 /**
- * Extracts the true field type and length from a field type spec
+ * Extracts the various parts from a field type spec
  *
  * @uses    strpos()
  * @uses    chop()
  * @uses    substr()
  * @param   string $fieldspec 
- * @return  array associative array containing the type and length 
+ * @return  array associative array containing type, spec_in_brackets 
+ *          and possibly enum_set_values (another array)
+ * @author  Marc Delisle
+ * @author  Joshua Hogendorn
  */
-function PMA_extract_type_length($fieldspec) {
+function PMA_extractFieldSpec($fieldspec) {
     $first_bracket_pos = strpos($fieldspec, '(');
     if ($first_bracket_pos) {
-        $length = chop(substr($fieldspec, $first_bracket_pos + 1, (strpos($fieldspec, ')') - $first_bracket_pos - 1)));
-        $type = chop(substr($fieldspec, 0, $first_bracket_pos));
+        $spec_in_brackets = chop(substr($fieldspec, $first_bracket_pos + 1, (strpos($fieldspec, ')') - $first_bracket_pos - 1)));
+        // convert to lowercase just to be sure
+        $type = strtolower(chop(substr($fieldspec, 0, $first_bracket_pos)));
     } else {
         $type = $fieldspec;
-        $length = '';
+        $spec_in_brackets = '';
     }
+
+    if ('enum' == $type || 'set' == $type) {
+        // Define our working vars
+        $enum_set_values = array();
+        $working = "";
+        $in_string = false;
+        $index = 0;
+
+        // While there is another character to process	
+        while (isset($fieldspec[$index])) {
+            // Grab the char to look at
+            $char = $fieldspec[$index];
+		
+            // If it is a single quote, needs to be handled specially
+            if ($char == "'") {
+                // If we are not currently in a string, begin one
+                if (! $in_string) {
+                    $in_string = true;
+                    $working = "";
+                // Otherwise, it may be either an end of a string, or a 'double quote' which can be handled as-is
+                } else {
+                // Check out the next character (if possible)
+                    $has_next = isset($fieldspec[$index + 1]);
+                    $next = $has_next ? $fieldspec[$index + 1] : null;
+				
+                // If we have reached the end of our 'working' string (because there are no more chars, or the next char is not another quote)
+                    if (! $has_next || $next != "'") {
+                        $enum_set_values[] = $working;
+                        $in_string = false;
+				
+                    // Otherwise, this is a 'double quote', and can be added to the working string
+                    } elseif ($next == "'") {
+                        $working .= "'";
+                        // Skip the next char; we already know what it is
+                        $index++;
+                    }
+                }
+            // escaping of a quote?
+            } elseif ('\\' == $char && isset($fieldspec[$index + 1]) && "'" == $fieldspec[$index + 1]) {
+                $working .= "'";
+                $index++;
+            // Otherwise, add it to our working string like normal
+            } else {
+                $working .= $char;
+            }
+            // Increment character index
+            $index++;
+        } // end while
+    } else {
+        $enum_set_values = array();
+    }
+
     return array(
         'type' => $type,
-        'length' => $length
+        'spec_in_brackets' => $spec_in_brackets,
+        'enum_set_values'  => $enum_set_values
     );
+}
+
+/**
+ * Verifies if this table's engine supports foreign keys 
+ *
+ * @uses    strtoupper()
+ * @param   string $engine
+ * @return  boolean 
+ */
+function PMA_foreignkey_supported($engine) {
+    $engine = strtoupper($engine);
+    if ('INNODB' == $engine || 'PBXT' == $engine) {
+        return true;
+    } else {
+        return false;
+    }
+} 
+
+/**
+ * Replaces some characters by a displayable equivalent 
+ *
+ * @uses    str_replace()
+ * @param   string $content
+ * @return  string the content with characters replaced 
+ */
+function PMA_replace_binary_contents($content) {
+    $result = str_replace("\x00", '\0', $content);
+    $result = str_replace("\x08", '\b', $result);
+    $result = str_replace("\x0a", '\n', $result);
+    $result = str_replace("\x0d", '\r', $result);
+    $result = str_replace("\x1a", '\Z', $result);
+    return $result;
 }
 ?>

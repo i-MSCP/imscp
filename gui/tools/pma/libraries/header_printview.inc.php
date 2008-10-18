@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header_printview.inc.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: header_printview.inc.php 11378 2008-07-09 15:24:44Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -43,10 +43,10 @@ if ($text_dir == 'ltr') {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $available_languages[$lang][2]; ?>" lang="<?php echo $available_languages[$lang][2]; ?>" dir="<?php echo $text_dir; ?>">
 
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
 <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title><?php echo $strSQLResult; ?> - phpMyAdmin <?php echo PMA_VERSION ?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
 <link rel="stylesheet" type="text/css" href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=print&amp;nocache=<?php echo $_SESSION['PMA_Config']->getThemeUniqueValue(); ?>" />
 </style>
 </head>
@@ -54,13 +54,13 @@ if ($text_dir == 'ltr') {
 <body bgcolor="#ffffff">
 <h1><?php echo $strSQLResult; ?></h1>
 <p>
-    <b><?php echo $strHost; ?>:</b> <?php echo $cfg['Server']['verbose'] ? $cfg['Server']['verbose'] : $cfg['Server']['host'] . ((!empty($cfg['Server']['port'])) ? ':' . $cfg['Server']['port'] : ''); ?><br />
-    <b><?php echo $strDatabase; ?>:</b> <?php echo htmlspecialchars($db); ?><br />
-    <b><?php echo $strGenTime; ?>:</b> <?php echo PMA_localisedDate(); ?><br />
-    <b><?php echo $strGenBy; ?>:</b> phpMyAdmin&nbsp;<?php echo PMA_VERSION; ?>&nbsp;/ MySQL&nbsp;<?php echo PMA_MYSQL_STR_VERSION; ?><br />
-    <b><?php echo $strSQLQuery; ?>:</b> <?php echo htmlspecialchars($full_sql_query); ?>;
+    <strong><?php echo $strHost; ?>:</strong> <?php echo $cfg['Server']['verbose'] ? $cfg['Server']['verbose'] : $cfg['Server']['host'] . ((!empty($cfg['Server']['port'])) ? ':' . $cfg['Server']['port'] : ''); ?><br />
+    <strong><?php echo $strDatabase; ?>:</strong> <?php echo htmlspecialchars($db); ?><br />
+    <strong><?php echo $strGenTime; ?>:</strong> <?php echo PMA_localisedDate(); ?><br />
+    <strong><?php echo $strGenBy; ?>:</strong> phpMyAdmin&nbsp;<?php echo PMA_VERSION; ?>&nbsp;/ MySQL&nbsp;<?php echo PMA_MYSQL_STR_VERSION; ?><br />
+    <strong><?php echo $strSQLQuery; ?>:</strong> <?php echo htmlspecialchars($full_sql_query); ?>;
     <?php if (isset($num_rows)) { ?><br />
-    <b><?php echo $strRows; ?>:</b> <?php echo $num_rows; ?>
+    <strong><?php echo $strRows; ?>:</strong> <?php echo $num_rows; ?>
     <?php } ?>
 </p>
 

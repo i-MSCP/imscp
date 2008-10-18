@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_triggers.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: tbl_triggers.lib.php 11582 2008-09-10 16:53:28Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -32,7 +32,7 @@ if ($triggers) {
         $drop_and_create = $trigger['drop'] . $delimiter . "\n" . $trigger['create'] . "\n";
 
         echo sprintf('<tr class="%s">
-                              <td><b>%s</b></td>
+                              <td><strong>%s</strong></td>
                               <td>%s</td>
                               <td>%s</td>
                               <td>%s</td>

@@ -3,7 +3,7 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: sql_query_form.lib.php 11336 2008-06-21 15:01:27Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
@@ -40,8 +40,7 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * @uses    $GLOBALS['cfg']['DefaultTabDatabase']
  * @uses    $GLOBALS['cfg']['DefaultQueryDatabase']
  * @uses    $GLOBALS['cfg']['DefaultQueryTable']
- * @uses    $GLOBALS['cfg']['Bookmark']['db']
- * @uses    $GLOBALS['cfg']['Bookmark']['table']
+ * @uses    $GLOBALS['cfg']['Bookmark']
  * @uses    $GLOBALS['strSuccess']
  * @uses    PMA_generate_common_url()
  * @uses    PMA_backquote()
@@ -154,9 +153,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
 
     // Bookmark Support
     if ($display_tab === 'full' || $display_tab === 'history') {
-        if (! empty($GLOBALS['cfg']['Bookmark'])
-          && $GLOBALS['cfg']['Bookmark']['db']
-          && $GLOBALS['cfg']['Bookmark']['table']) {
+        if (! empty($GLOBALS['cfg']['Bookmark'])) {
             PMA_sqlQueryFormBookmark();
         }
     }
@@ -333,9 +330,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
     echo '<div class="clearfloat"></div>' . "\n";
     echo '</div>' . "\n";
 
-    if (! empty($GLOBALS['cfg']['Bookmark'])
-      && $GLOBALS['cfg']['Bookmark']['db']
-      && $GLOBALS['cfg']['Bookmark']['table']) {
+    if (! empty($GLOBALS['cfg']['Bookmark'])) {
         ?>
         <div id="bookmarkoptions">
         <div class="formelement">
@@ -376,13 +371,11 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
     }
     echo '</div>' . "\n";
     echo '<div class="formelement">' . "\n";
-    if (PMA_MYSQL_INT_VERSION >= 50000) {
-        echo '<label for="id_sql_delimiter">[ ' . $GLOBALS['strDelimiter']
-            .'</label>' . "\n";
-        echo '<input type="text" name="sql_delimiter" size="3" '
-            .'value="' . $delimiter . '" '
-            .'id="id_sql_delimiter" /> ]' . "\n";
-    }
+    echo '<label for="id_sql_delimiter">[ ' . $GLOBALS['strDelimiter']
+        .'</label>' . "\n";
+    echo '<input type="text" name="sql_delimiter" size="3" '
+        .'value="' . $delimiter . '" '
+        .'id="id_sql_delimiter" /> ]' . "\n";
 
     echo '<input type="checkbox" name="show_query" value="1" '
         .'id="checkbox_show_query" checked="checked" />' . "\n"
@@ -400,10 +393,9 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
  * prints bookmark fieldset
  *
  * @usedby  PMA_sqlQueryForm()
- * @uses    PMA_listBookmarks()
+ * @uses    PMA_Bookmark_getList()
  * @uses    $GLOBALS['db']
  * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $GLOBALS['cfg']['Bookmark']
  * @uses    $GLOBALS['cfg']['ReplaceHelpImg']
  * @uses    $GLOBALS['strBookmarkQuery']
  * @uses    $GLOBALS['strBookmarkView']
@@ -417,7 +409,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
  */
 function PMA_sqlQueryFormBookmark()
 {
-    $bookmark_list = PMA_listBookmarks($GLOBALS['db'], $GLOBALS['cfg']['Bookmark']);
+    $bookmark_list = PMA_Bookmark_getList($GLOBALS['db']);
     if (! $bookmark_list || count($bookmark_list) < 1) {
         return;
     }
@@ -499,7 +491,6 @@ function PMA_sqlQueryFormBookmark()
  * @uses    PMA_displayMaximumUploadSize()
  * @uses    PMA_generateCharsetDropdownBox()
  * @uses    PMA_generateHiddenMaxFileSize()
- * @uses    PMA_MYSQL_INT_VERSION
  * @uses    PMA_CSDROPDOWN_CHARSET
  * @uses    empty()
  */
@@ -526,7 +517,7 @@ function PMA_sqlQueryFormUpload(){
     echo '</div>';
 
     if ($files === FALSE) {
-        $errors[$GLOBALS['strError']] = $GLOBALS['strWebServerUploadDirectoryError'];
+        $errors[] = PMA_Message::error('strWebServerUploadDirectoryError');
     } elseif (!empty($files)) {
         echo '<div class="formelement">';
         echo '<strong>' . $GLOBALS['strWebServerUploadDirectory'] .':</strong>' . "\n";
@@ -542,32 +533,16 @@ function PMA_sqlQueryFormUpload(){
 
 
     echo '<fieldset id="" class="tblFooters">';
-    if (PMA_MYSQL_INT_VERSION < 40100
-      && $GLOBALS['cfg']['AllowAnywhereRecoding']
-      && $GLOBALS['allow_recoding']) {
-        echo $GLOBALS['strCharsetOfFile'] . "\n"
-             . '<select name="charset_of_file" size="1">' . "\n";
-        foreach ($GLOBALS['cfg']['AvailableCharsets'] as $temp_charset) {
-            echo '<option value="' . $temp_charset . '"';
-            if ($temp_charset == $GLOBALS['charset']) {
-                echo ' selected="selected"';
-            }
-            echo '>' . $temp_charset . '</option>' . "\n";
-        }
-        echo '</select>' . "\n";
-    } elseif (PMA_MYSQL_INT_VERSION >= 40100) {
-        echo $GLOBALS['strCharsetOfFile'] . "\n";
-        echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET,
-                'charset_of_file', null, 'utf8', FALSE);
-    } // end if (recoding)
+    echo $GLOBALS['strCharsetOfFile'] . "\n";
+    echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET,
+            'charset_of_file', null, 'utf8', FALSE);
     echo '<input type="submit" name="SQL" value="' . $GLOBALS['strGo']
         .'" />' . "\n";
     echo '<div class="clearfloat"></div>' . "\n";
     echo '</fieldset>';
 
-    foreach ($errors as $error => $message) {
-        echo '<div>' . $error . '</div>';
-        echo '<div>' . $message . '</div>';
+    foreach ($errors as $error) {
+        $error->display();
     }
 }
 ?>

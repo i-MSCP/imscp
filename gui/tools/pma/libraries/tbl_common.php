@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_common.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: tbl_common.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -17,7 +17,7 @@ require_once './libraries/bookmark.lib.php';
 // Check parameters
 PMA_checkParameters(array('db', 'table'));
 
-if (PMA_MYSQL_INT_VERSION >= 50002 && $db === 'information_schema') {
+if ($db === 'information_schema') {
     $db_is_information_schema = true;
 } else {
     $db_is_information_schema = false;

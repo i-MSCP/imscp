@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_links.inc.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: tbl_links.inc.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -40,7 +40,7 @@ $err_url   = $cfg['DefaultTabTable'] . PMA_generate_common_url($url_params);
 /**
  * Displays headers
  */
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 require_once './libraries/header.inc.php';
 
 /**
@@ -89,14 +89,11 @@ if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_
     $tabs['operation']['link'] = 'tbl_operations.php';
     $tabs['operation']['text'] = $strOperations;
 
-    $ln8_stt = (PMA_MYSQL_INT_VERSION >= 40000)
-             ? 'TRUNCATE TABLE '
-             : 'DELETE FROM ';
     $tabs['empty']['link']  = 'sql.php';
     $tabs['empty']['args']['reload']    = 1;
-    $tabs['empty']['args']['sql_query'] = $ln8_stt . PMA_backquote($table);
+    $tabs['empty']['args']['sql_query'] = 'TRUNCATE TABLE ' . PMA_backquote($table);
     $tabs['empty']['args']['zero_rows'] = sprintf($strTableHasBeenEmptied, htmlspecialchars($table));
-    $tabs['empty']['attr']  = 'onclick="return confirmLink(this, \'' . $ln8_stt . PMA_jsFormat($table) . '\')"';
+    $tabs['empty']['attr']  = 'onclick="return confirmLink(this, \'TRUNCATE TABLE ' . PMA_jsFormat($table) . '\')"';
     $tabs['empty']['args']['goto'] = 'tbl_structure.php';
     $tabs['empty']['class'] = 'caution';
     $tabs['empty']['icon'] = 'b_empty.png';
@@ -140,4 +137,4 @@ if (!empty($message)) {
     unset($message);
 }
 
-?><br />
+?>

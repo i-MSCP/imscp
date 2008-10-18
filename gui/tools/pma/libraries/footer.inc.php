@@ -3,7 +3,7 @@
 /**
  * finishes HTML output
  *
- * updates javascript variables in index.php for coorect working with querywindow
+ * updates javascript variables in index.php for correct working with querywindow
  * and navigation frame refreshing
  *
  * send buffered data if buffered
@@ -32,17 +32,16 @@
  * @uses    $cfg['DBG']['enable']
  * @uses    $cfg['DBG']['profile']['enable']
  * @uses    $GLOBALS['strOpenNewWindow']
- * @uses    $cfg['MaxCharactersInDisplayedSQL'] 
+ * @uses    $cfg['MaxCharactersInDisplayedSQL']
  * @uses    PMA_isValid()
  * @uses    PMA_setHistory()
  * @uses    PMA_ifSetOr()
  * @uses    PMA_escapeJsString()
  * @uses    PMA_getenv()
  * @uses    PMA_generate_common_url()
- * @uses    PMA_DBI_close()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 11402 2008-07-15 18:42:50Z lem9 $
+ * @version $Id: footer.inc.php 11403 2008-07-15 19:03:11Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -59,6 +58,39 @@ if (! PMA_isValid($_REQUEST['no_history']) && empty($GLOBALS['error_message'])
         PMA_ifSetOr($GLOBALS['table'], ''),
         $GLOBALS['cfg']['Server']['user'],
         $GLOBALS['sql_query']);
+}
+
+if ($GLOBALS['error_handler']->hasDisplayErrors()) {
+    echo '<div>';
+    $GLOBALS['error_handler']->dispErrors();
+    echo '</div>';
+}
+
+if (count($GLOBALS['footnotes'])) {
+    echo '<div class="notice">';
+    foreach ($GLOBALS['footnotes'] as $footnote) {
+        echo '<span id="footnote_' . $footnote['nr'] . '"><sup>'
+            . $footnote['nr'] . '</sup> ' . $footnote['note'] . '</span><br />';
+    }
+    echo '</div>';
+}
+
+if (! empty($_SESSION['debug'])) {
+    $sum_time = 0;
+    $sum_exec = 0;
+    foreach ($_SESSION['debug']['queries'] as $query) {
+        $sum_time += $query['count'] * $query['time'];
+        $sum_exec += $query['count'];
+    }
+
+    echo '<div>';
+    echo count($_SESSION['debug']['queries']) . ' queries executed'
+        . $sum_exec . ' times in ' . $sum_time . ' seconds';
+    echo '<pre>';
+    print_r($_SESSION['debug']);
+    echo '</pre>';
+    echo '</div>';
+    $_SESSION['debug'] = array();
 }
 
 ?>
@@ -154,16 +186,6 @@ if (PMA_getenv('SCRIPT_NAME') && empty($_POST) && !$GLOBALS['checked_special']) 
     echo '</div>' . "\n";
 }
 
-/**
- * Close database connections
- */
-if (! empty($GLOBALS['controllink'])) {
-    @PMA_DBI_close($GLOBALS['controllink']);
-}
-if (! empty($GLOBALS['userlink'])) {
-    @PMA_DBI_close($GLOBALS['userlink']);
-}
-
 // Include possible custom footers
 if (file_exists('./config.footer.inc.php')) {
     require './config.footer.inc.php';
@@ -175,8 +197,8 @@ if (file_exists('./config.footer.inc.php')) {
  */
 
 // profiling deactivated due to licensing issues
-if (! empty($GLOBALS['cfg']['DBG']['enable'])
-  && ! empty($GLOBALS['cfg']['DBG']['profile']['enable'])) {
+if (! empty($GLOBALS['cfg']['DBG']['php'])
+ && ! empty($GLOBALS['cfg']['DBG']['profile']['enable'])) {
     //run the basic setup code first
     require_once './libraries/dbg/setup.php';
     //if the setup ran fine, then do the profiling

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header.inc.php 11422 2008-07-24 17:12:32Z lem9 $
+ * @version $Id: header.inc.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -28,134 +28,8 @@ if (empty($GLOBALS['is_header_sent'])) {
 
     require_once './libraries/header_http.inc.php';
     require_once './libraries/header_meta_style.inc.php';
-
-    // Cross-framing protection
-    if ( false === $GLOBALS['cfg']['AllowThirdPartyFraming']) {
+    require_once './libraries/header_scripts.inc.php';
     ?>
-    <script type="text/javascript">
-    try {
-        // can't access this if on a different domain
-        var topdomain = top.document.domain;
-        // double-check just for sure
-        if (topdomain != self.document.domain) {
-            alert("Redirecting...");
-            top.location.replace(self.document.URL.substring(0, self.document.URL.lastIndexOf("/")+1));
-        }
-    }
-    catch(e) {
-            alert("Redirecting... (error: " + e);
-            top.location.replace(self.document.URL.substring(0, self.document.URL.lastIndexOf("/")+1));
-    }
-
-    </script>
-    <?php
-    }
-    // generate title
-    $title     = str_replace(
-                    array(
-                        '@HTTP_HOST@',
-                        '@SERVER@',
-                        '@VERBOSE@',
-                        '@VSERVER@',
-                        '@DATABASE@',
-                        '@TABLE@',
-                        '@PHPMYADMIN@',
-                        ),
-                    array(
-                        PMA_getenv('HTTP_HOST') ? PMA_getenv('HTTP_HOST') : '',
-                        isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : '',
-                        isset($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : '',
-                        !empty($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : (isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : ''),
-                        $GLOBALS['db'],
-                        $GLOBALS['table'],
-                        'phpMyAdmin ' . PMA_VERSION,
-                        ),
-                    !empty($GLOBALS['table']) ? $GLOBALS['cfg']['TitleTable'] :
-                    (!empty($GLOBALS['db']) ? $GLOBALS['cfg']['TitleDatabase'] :
-                    (!empty($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['TitleServer'] :
-                    $GLOBALS['cfg']['TitleDefault']))
-                    );
-    // here, the function does not exist with this configuration: $cfg['ServerDefault'] = 0;
-    $is_superuser    = function_exists('PMA_isSuperuser') && PMA_isSuperuser();
-    ?>
-    <script type="text/javascript">
-    // <![CDATA[
-    // Updates the title of the frameset if possible (ns4 does not allow this)
-    if (typeof(parent.document) != 'undefined' && typeof(parent.document) != 'unknown'
-        && typeof(parent.document.title) == 'string') {
-        parent.document.title = '<?php echo PMA_sanitize(str_replace('\'', '\\\'', $title)); ?>';
-    }
-    <?php
-    // Add some javascript instructions if required
-    if (isset($js_to_run) && $js_to_run == 'functions.js') {
-        echo "\n";
-        ?>
-    // js form validation stuff
-    var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
-    var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-    var noDropDbMsg = '<?php echo (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase'])
-        ? str_replace('\'', '\\\'', $GLOBALS['strNoDropDatabases']) : ''; ?>';
-    var confirmMsg  = '<?php echo(($GLOBALS['cfg']['Confirm']) ? str_replace('\'', '\\\'', $GLOBALS['strDoYouReally']) : ''); ?>';
-    var confirmMsgDropDB  = '<?php echo(($GLOBALS['cfg']['Confirm']) ? str_replace('\'', '\\\'', $GLOBALS['strDropDatabaseStrongWarning']) : ''); ?>';
-    // ]]>
-    </script>
-    <script src="./js/functions.js" type="text/javascript"></script>
-        <?php
-    } elseif (isset($js_to_run) && $js_to_run == 'user_password.js') {
-        echo "\n";
-        ?>
-    // js form validation stuff
-    var jsHostEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strHostEmpty']); ?>';
-    var jsUserEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strUserEmpty']); ?>';
-    var jsPasswordEmpty   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordEmpty']); ?>';
-    var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
-    // ]]>
-    </script>
-    <script src="./js/user_password.js" type="text/javascript"></script>
-        <?php
-    } elseif (isset($js_to_run) && $js_to_run == 'server_privileges.js') {
-        echo "\n";
-        ?>
-    // js form validation stuff
-    var jsHostEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strHostEmpty']); ?>';
-    var jsUserEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strUserEmpty']); ?>';
-    var jsPasswordEmpty   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordEmpty']); ?>';
-    var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
-    // ]]>
-    </script>
-    <script src="./js/server_privileges.js" type="text/javascript"></script>
-    <script src="./js/functions.js" type="text/javascript"></script>
-        <?php
-    } elseif (isset($js_to_run) && $js_to_run == 'indexes.js') {
-        echo "\n";
-        ?>
-    // js index validation stuff
-    var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
-    var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-    // ]]>
-    </script>
-    <script src="./js/indexes.js" type="text/javascript"></script>
-        <?php
-    } elseif (isset($js_to_run) && $js_to_run == 'tbl_change.js') {
-        echo "\n";
-        ?>
-    // ]]>
-    </script>
-    <script src="./js/tbl_change.js" type="text/javascript"></script>
-        <?php
-    } else {
-        echo "\n";
-        ?>
-    // ]]>
-    </script>
-        <?php
-    }
-    echo "\n";
-
-    // Reloads the navigation frame via JavaScript if required
-    PMA_reloadNavigation();
-    ?>
-    <script src="./js/tooltip.js" type="text/javascript"></script>
     <meta name="OBGZip" content="<?php echo ($GLOBALS['cfg']['OBGzip'] ? 'true' : 'false'); ?>" />
     <?php /* remove vertical scroll bar bug in ie */ ?>
     <!--[if IE 6]>
@@ -170,7 +44,6 @@ if (empty($GLOBALS['is_header_sent'])) {
 </head>
 
 <body>
-<div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
     <?php
 
     // Include possible custom headers
@@ -183,7 +56,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     // note: here, the decoration won't work because without cookies,
     // our standard CSS is not operational
     if (empty($_COOKIE)) {
-         echo '<div class="notice">' . $GLOBALS['strCookiesRequired'] . '</div>' . "\n";
+        PMA_Message::notice('strCookiesRequired')->display();
     }
 
     if (!defined('PMA_DISPLAY_HEADING')) {
@@ -194,7 +67,7 @@ if (empty($GLOBALS['is_header_sent'])) {
      * Display heading if needed. Design can be set in css file.
      */
 
-    if (PMA_DISPLAY_HEADING) {
+    if (PMA_DISPLAY_HEADING && $GLOBALS['server'] > 0) {
         $server_info = (!empty($GLOBALS['cfg']['Server']['verbose'])
                         ? $GLOBALS['cfg']['Server']['verbose']
                         : $GLOBALS['cfg']['Server']['host'] . (empty($GLOBALS['cfg']['Server']['port'])
@@ -268,16 +141,15 @@ if (empty($GLOBALS['is_header_sent'])) {
                 // Get additional information about tables for tooltip is done
                 // in libraries/db_info.inc.php only once
                 if ($cfgRelation['commwork']) {
-                    $comment = PMA_getComments($GLOBALS['db']);
-
+                    $comment = PMA_getDbComment($GLOBALS['db']);
                     /**
                      * Displays table comment
                      */
-                    if (is_array($comment) && ! empty($comment)) {
+                    if (! empty($comment)) {
                         echo '<span class="table_comment"'
-                            .' id="span_table_comment">&quot;'
-                            .htmlspecialchars(implode(' ', $comment))
-                            .'&quot;</span>' . "\n";
+                           . ' id="span_table_comment">&quot;'
+                           . htmlspecialchars($comment)
+                           . '&quot;</span>' . "\n";
                     } // end if
                 }
             }

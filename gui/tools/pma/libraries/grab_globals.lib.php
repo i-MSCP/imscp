@@ -6,14 +6,14 @@
  * variables from them. It does the same work for $HTTP_ACCEPT_LANGUAGE and 
  * $HTTP_AUTHORIZATION.
  *
- * @version $Id: grab_globals.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: grab_globals.lib.php 11365 2008-07-01 19:21:28Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
 /**
- * copy values from one array to another, usally from a superglobal into $GLOBALS
+ * copy values from one array to another, usually from a superglobal into $GLOBALS
  *
  * @uses    $GLOBALS['_import_blacklist']
  * @uses    preg_replace()
@@ -76,6 +76,7 @@ $_import_blacklist = array(
     '/^sql_query$/i',   // the query to be executed
     '/^GLOBALS$/i',     // the global scope
     '/^str.*$/i',       // PMA localized strings
+    '/^error_handler.*$/i',       // the error handler
     '/^_.*$/i',         // PMA does not use variables starting with _ from extern
     '/^.*\s+.*$/i',     // no whitespaces anywhere
     '/^[0-9]+.*$/i',    // numeric variable names

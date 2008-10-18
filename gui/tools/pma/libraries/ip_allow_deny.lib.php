@@ -4,7 +4,7 @@
  * This library is used with the server IP allow/deny host authentication
  * feature
  *
- * @version $Id: ip_allow_deny.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: ip_allow_deny.lib.php 10849 2007-10-18 09:03:01Z cybot_tm $
  */
 
 
@@ -170,7 +170,6 @@ function PMA_allowDeny($type)
         }
 
         // Handle shortcuts with above array
-        // DON'T use "array_key_exists" as it's only PHP 4.1 and newer.
         if (isset($shortcuts[$rule_data[2]])) {
             $rule_data[2] = $shortcuts[$rule_data[2]];
         }

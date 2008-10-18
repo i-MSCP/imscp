@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Theme_Manager.class.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: Theme_Manager.class.php 11365 2008-07-01 19:21:28Z lem9 $
  */
 
 /**
@@ -109,12 +109,10 @@ class PMA_Theme_Manager
 
 
         if (! $this->checkTheme($GLOBALS['cfg']['ThemeDefault'])) {
-            $GLOBALS['PMA_errors'][] = sprintf($GLOBALS['strThemeDefaultNotFound'],
-                htmlspecialchars($GLOBALS['cfg']['ThemeDefault']));
             trigger_error(
                 sprintf($GLOBALS['strThemeDefaultNotFound'],
                     htmlspecialchars($GLOBALS['cfg']['ThemeDefault'])),
-                E_USER_WARNING);
+                E_USER_ERROR);
             $GLOBALS['cfg']['ThemeDefault'] = false;
         }
 
@@ -149,12 +147,9 @@ class PMA_Theme_Manager
     function setActiveTheme($theme = null)
     {
         if (! $this->checkTheme($theme)) {
-            $GLOBALS['PMA_errors'][] = sprintf($GLOBALS['strThemeNotFound'],
-                htmlspecialchars($theme));
-            /* Following code can lead to path disclossure, because headers will be sent later */
-/*          trigger_error(
+            trigger_error(
                 sprintf($GLOBALS['strThemeNotFound'], htmlspecialchars($theme)),
-                E_USER_WARNING);*/
+                E_USER_ERROR);
             return false;
         }
 
@@ -213,14 +208,6 @@ class PMA_Theme_Manager
     }
 
     /**
-     * old PHP 4 constructor
-     */
-    function PMA_Theme_Manager()
-    {
-        $this->__construct();
-    }
-
-    /**
      * @private
      * @param   string $folder
      * @return  boolean
@@ -228,13 +215,10 @@ class PMA_Theme_Manager
     /*private*/ function _checkThemeFolder($folder)
     {
         if (! is_dir($folder)) {
-            $GLOBALS['PMA_errors'][] =
-                sprintf($GLOBALS['strThemePathNotFound'],
-                    htmlspecialchars($folder));
             trigger_error(
                 sprintf($GLOBALS['strThemePathNotFound'],
                     htmlspecialchars($folder)),
-                E_USER_WARNING);
+                E_USER_ERROR);
             return false;
         }
 
@@ -289,9 +273,9 @@ class PMA_Theme_Manager
     }
 
     /**
-     * returns HTML selectbox, with or without form enclsoed
+     * returns HTML selectbox, with or without form enclosed
      *
-     * @param   boolean $form   wether enclosed by from tags or not
+     * @param   boolean $form   whether enclosed by from tags or not
      */
     function getHtmlSelectBox($form = true)
     {
@@ -383,7 +367,7 @@ class PMA_Theme_Manager
             return true;
         }
 
-        // load css for this them failed, try default theme css
+        // if loading css for this theme failed, try default theme css
         $fallback_theme = $this->getFallBackTheme();
         if ($fallback_theme && $fallback_theme->loadCss($type)) {
             return true;

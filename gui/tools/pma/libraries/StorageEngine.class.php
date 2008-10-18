@@ -3,7 +3,7 @@
 /**
  * Library for extracting information about the available storage engines
  *
- * @version $Id: StorageEngine.class.php 10654 2007-09-20 16:25:32Z lem9 $
+ * @version $Id: StorageEngine.class.php 11415 2008-07-21 15:18:48Z lem9 $
  */
 
 /**
@@ -50,12 +50,10 @@ class PMA_StorageEngine
      * @static
      * @staticvar array $storage_engines storage engines
      * @access  public
-     * @uses    PMA_MYSQL_INT_VERSION
-     * @uses    PMA_StorageEngine::getStorageEnginesBefore40102()
      * @uses    PMA_DBI_fetch_result()
      * @return  array    of storage engines
      */
-    function getStorageEngines()
+    static public function getStorageEngines()
     {
         static $storage_engines = null;
 
@@ -63,16 +61,7 @@ class PMA_StorageEngine
             return $storage_engines;
         }
 
-        $storage_engines = array();
-
-        // SHOW STORAGE ENGINES comes with MySQL 4.1.2
-        if (PMA_MYSQL_INT_VERSION < 40102) {
-            $storage_engines = PMA_StorageEngine::getStorageEnginesBefore40102();
-        } else {
-            $storage_engines = PMA_DBI_fetch_result('SHOW STORAGE ENGINES', 'Engine');
-        }
-
-        return $storage_engines;
+        return PMA_DBI_fetch_result('SHOW STORAGE ENGINES', 'Engine');
     }
 
     /**
@@ -90,7 +79,7 @@ class PMA_StorageEngine
      *                              Should unavailable storage engines be offered?
      * @return  string  html selectbox
      */
-    function getHtmlSelect($name = 'engine', $id = null,
+    static public function getHtmlSelect($name = 'engine', $id = null,
       $selected = null, $offerUnavailableEngines = false)
     {
         $selected   = strtolower($selected);
@@ -100,6 +89,12 @@ class PMA_StorageEngine
         foreach (PMA_StorageEngine::getStorageEngines() as $key => $details) {
             if (!$offerUnavailableEngines
               && ($details['Support'] == 'NO' || $details['Support'] == 'DISABLED')) {
+                continue;
+            }
+            // currently (MySQL 5.1.26) there is no way we can be informed
+            // that MyBS does not support normal table creation so
+            // we use an exception here
+            if ('MyBS' == $details['Engine']) {
                 continue;
             }
             $output .= '    <option value="' . htmlspecialchars($key). '"'
@@ -115,62 +110,6 @@ class PMA_StorageEngine
     }
 
     /**
-     * returns array of storage engines for MySQL < 4.1, hard coded
-     * Emulating SHOW STORAGE ENGINES...
-     *
-     * @static
-     * @access  public
-     * @uses    PMA_DBI_query()
-     * @uses    PMA_DBI_fetch_row()
-     * @uses    PMA_DBI_free_result()
-     * @uses    substr()
-     * @return  array    of storage engines
-     */
-    function getStorageEnginesBefore40102()
-    {
-        $storage_engines = array(
-            'myisam' => array(
-                'Engine'  => 'MyISAM',
-                'Support' => 'DEFAULT'
-            ),
-            'merge' => array(
-                'Engine'  => 'MERGE',
-                'Support' => 'YES'
-            ),
-            'heap' => array(
-                'Engine'  => 'HEAP',
-                'Support' => 'YES'
-            ),
-            'memory' => array(
-                'Engine'  => 'MEMORY',
-                'Support' => 'YES'
-            )
-        );
-        $known_engines = array(
-            'archive' => 'ARCHIVE',
-            'bdb'     => 'BDB',
-            'csv'     => 'CSV',
-            'innodb'  => 'InnoDB',
-            'isam'    => 'ISAM',
-            'gemini'  => 'Gemini'
-        );
-        $res = PMA_DBI_query('SHOW VARIABLES LIKE \'have\\_%\';');
-        while ($row = PMA_DBI_fetch_row($res)) {
-            $current = substr($row[0], 5);
-            if (! empty($known_engines[$current])) {
-                $storage_engines[$current] = array(
-                    'Engine'  => $known_engines[$current],
-                    'Support' => $row[1]
-                );
-            }
-        }
-        PMA_DBI_free_result($res);
-
-        return $storage_engines;
-    }
-
-
-    /**
      * public static final PMA_StorageEngine getEngine()
      *
      * Loads the corresponding engine plugin, if available.
@@ -181,7 +120,7 @@ class PMA_StorageEngine
      * @param   string  $engine   The engine ID
      * @return  object  The engine plugin
      */
-    function getEngine($engine)
+    static public function getEngine($engine)
     {
         $engine = str_replace('/', '', str_replace('.', '', $engine));
         $engine_lowercase_filename = strtolower($engine);
@@ -203,7 +142,7 @@ class PMA_StorageEngine
      * @param   string  $engine name of engine
      * @reutrn  boolean whether $engine is valid or not
      */
-    function isValid($engine)
+    static public function isValid($engine)
     {
         $storage_engines = PMA_StorageEngine::getStorageEngines();
         return isset($storage_engines[$engine]);
@@ -270,7 +209,6 @@ class PMA_StorageEngine
      * @uses    PMA_ENGINE_DETAILS_TYPE_PLAINTEXT
      * @uses    PMA_StorageEngine::getVariables()
      * @uses    PMA_StorageEngine::getVariablesLikePattern()
-     * @uses    PMA_MYSQL_INT_VERSION
      * @uses    PMA_DBI_query()
      * @uses    PMA_DBI_fetch_assoc()
      * @uses    PMA_DBI_free_result()
@@ -287,15 +225,9 @@ class PMA_StorageEngine
             $like = '';
         }
 
-        if (PMA_MYSQL_INT_VERSION >= 40102) {
-            $global = ' GLOBAL ';
-        } else {
-            $global = '';
-        }
-
         $mysql_vars = array();
 
-        $sql_query = 'SHOW ' . $global . ' VARIABLES ' . $like . ';';
+        $sql_query = 'SHOW GLOBAL VARIABLES ' . $like . ';';
         $res = PMA_DBI_query($sql_query);
         while ($row = PMA_DBI_fetch_assoc($res)) {
             if (isset($variables[$row['Variable_name']])) {
@@ -358,18 +290,6 @@ class PMA_StorageEngine
                     $this->support = PMA_ENGINE_SUPPORT_NO;
             }
         }
-    }
-
-    /**
-     * old PHP 4 style constructor
-     * @deprecated
-     * @see     PMA_StorageEngine::__construct()
-     * @uses    PMA_StorageEngine::__construct()
-     * @param   string  $engine engine name
-     */
-    function PMA_StorageEngine($engine)
-    {
-        $this->__construct($engine);
     }
 
     /**

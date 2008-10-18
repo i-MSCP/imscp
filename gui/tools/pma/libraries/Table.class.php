@@ -2,14 +2,17 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 11353 2008-06-27 14:27:18Z lem9 $
+ * @version $Id: Table.class.php 11579 2008-09-08 17:10:58Z lem9 $
  */
 
 /**
- *
+ * @todo make use of PMA_Message and PMA_Error
  */
-class PMA_Table {
+class PMA_Table
+{
 
+    static $cache = array();
+    
     /**
      * @var string  table name
      */
@@ -76,7 +79,7 @@ class PMA_Table {
     }
 
     /**
-     * sets table anme
+     * sets table name
      *
      * @uses    $this->name to set it
      * @param   string  $table_name new table name
@@ -90,7 +93,7 @@ class PMA_Table {
      * returns table name
      *
      * @uses    $this->name as return value
-     * @param   boolean wether to quote name with backticks ``
+     * @param   boolean whether to quote name with backticks ``
      * @return  string  table name
      */
     function getName($quoted = false)
@@ -116,7 +119,7 @@ class PMA_Table {
      * returns database name for this table
      *
      * @uses    $this->db_name  as return value
-     * @param   boolean wether to quote name with backticks ``
+     * @param   boolean whether to quote name with backticks ``
      * @return  string  database name for this table
      */
     function getDbName($quoted = false)
@@ -130,14 +133,14 @@ class PMA_Table {
     /**
      * returns full name for table, including database name
      *
-     * @param   boolean wether to quote name with backticks ``
+     * @param   boolean whether to quote name with backticks ``
      */
     function getFullName($quoted = false)
     {
         return $this->getDbName($quoted) . '.' . $this->getName($quoted);
     }
 
-    function isView($db = null, $table = null)
+    static public function isView($db = null, $table = null)
     {
         if (strlen($db) && strlen($table)) {
             return PMA_Table::_isView($db, $table);
@@ -180,6 +183,7 @@ class PMA_Table {
 
     /**
      * loads structure data
+     * (this function is work in progress? not yet used)
      */
     function loadStructure()
     {
@@ -209,16 +213,6 @@ class PMA_Table {
     }
 
     /**
-     * old PHP 4style constructor
-     *
-     * @see     PMA_Table::__construct()
-     */
-    function PMA_Table($table_name, $db_name)
-    {
-        $this->__construct($table_name, $db_name);
-    }
-
-    /**
      * Checks if this "table" is a view
      *
      * @deprecated
@@ -230,15 +224,13 @@ class PMA_Table {
      *
      * @access  public
      */
-    function _isView($db, $table) {
+    static protected function _isView($db, $table)
+    {
         // maybe we already know if the table is a view
         if (isset($GLOBALS['tbl_is_view']) && $GLOBALS['tbl_is_view']) {
             return true;
         }
-        // old MySQL version: no view
-        if (PMA_MYSQL_INT_VERSION < 50000) {
-            return false;
-        }
+
         // This would be the correct way of doing the check but at least in
         // MySQL 5.0.33 it's too slow when there are hundreds of databases
         // and/or tables (more than 3 minutes for 400 tables)
@@ -251,10 +243,32 @@ class PMA_Table {
         // from the result set are NULL except Name and Comment.
         // MySQL from 5.0.0 to 5.0.12 returns 'view',
         // from 5.0.13 returns 'VIEW'.
-        $comment = strtoupper(PMA_DBI_fetch_value('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'', 0, 'Comment'));
         // use substr() because the comment might contain something like:
         // (VIEW 'BASE2.VTEST' REFERENCES INVALID TABLE(S) OR COLUMN(S) OR FUNCTION)
-        return (substr($comment, 0, 4) == 'VIEW');
+        $comment = strtoupper(PMA_Table::sGetStatusInfo($db, $table, 'Comment'));
+        return substr($comment, 0, 4) == 'VIEW';
+    }
+    
+    static public function sGetToolTip($db, $table)
+    {
+        return PMA_Table::sGetStatusInfo($db, $table, 'Comment') 
+            . ' (' . PMA_Table::countRecords($db, $table, true) . ')';
+    }
+
+    static public function sGetStatusInfo($db, $table, $info = null, $force_read = false)
+    {
+        if (! isset(PMA_Table::$cache[$db][$table]) || $force_read) {
+            PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'');
+        }
+        
+        if (null === $info) {
+            return PMA_Table::$cache[$db][$table];
+        }
+        
+        if (! isset(PMA_Table::$cache[$db][$table][$info]) || $force_read) {
+            PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'');
+        }
+        return PMA_Table::$cache[$db][$table][$info];
     }
 
     /**
@@ -270,26 +284,22 @@ class PMA_Table {
      * @param   string  $attribute
      * @param   string  $collation
      * @param   string  $null       with 'NULL' or 'NOT NULL'
-     * @param   string  $default    default value
-     * @param   boolean $default_current_timestamp  whether default value is
-     *                                              CURRENT_TIMESTAMP or not
-     *                                              this overrides $default value
+     * @param   string  $default_type   whether default is CURRENT_TIMESTAMP,
+     *                                  NULL, NONE, USER_DEFINED
+     * @param   boolean $default_value  default value for USER_DEFINED default type
      * @param   string  $extra      'AUTO_INCREMENT'
      * @param   string  $comment    field comment
      * @param   array   &$field_primary list of fields for PRIMARY KEY
      * @param   string  $index
-     * @param   string  $default_orig
      * @return  string  field specification
      */
-    function generateFieldSpec($name, $type, $length = '', $attribute = '',
-        $collation = '', $null = false, $default = '',
-        $default_current_timestamp = false, $extra = '', $comment = '',
+    static function generateFieldSpec($name, $type, $length = '', $attribute = '',
+        $collation = '', $null = false, $default_type = 'USER_DEFINED',
+        $default_value = '', $extra = '', $comment = '',
         &$field_primary, $index, $default_orig = false)
     {
 
         $is_timestamp = strpos(' ' . strtoupper($type), 'TIMESTAMP') == 1;
-
-        // $default_current_timestamp has priority over $default
 
         /**
          * @todo include db-name
@@ -305,40 +315,38 @@ class PMA_Table {
             $query .= ' ' . $attribute;
         }
 
-        if (PMA_MYSQL_INT_VERSION >= 40100 && !empty($collation)
-          && $collation != 'NULL'
+        if (!empty($collation) && $collation != 'NULL'
           && preg_match('@^(TINYTEXT|TEXT|MEDIUMTEXT|LONGTEXT|VARCHAR|CHAR|ENUM|SET)$@i', $type)) {
             $query .= PMA_generateCharsetQueryPart($collation);
         }
 
         if ($null !== false) {
-            if (!empty($null)) {
-                $query .= ' NOT NULL';
-            } else {
+            if ($null == 'NULL') {
                 $query .= ' NULL';
+            } else {
+                $query .= ' NOT NULL';
             }
         }
-
-        if ($default_current_timestamp && $is_timestamp) {
-            $query .= ' DEFAULT CURRENT_TIMESTAMP';
-        // auto_increment field cannot have a default value
-        } elseif ($extra !== 'AUTO_INCREMENT'
-          && (strlen($default) || $default != $default_orig)) {
-            if (strtoupper($default) == 'NULL') {
-                $query .= ' DEFAULT NULL';
-            } else {
-                if (strlen($default)) {
-                    if ($is_timestamp && $default == '0') {
-                        // a TIMESTAMP does not accept DEFAULT '0'
-                        // but DEFAULT 0  works
-                        $query .= ' DEFAULT ' . PMA_sqlAddslashes($default);
-                    } elseif ($default && $type == 'BIT') {
-                        $query .= ' DEFAULT b\'' . preg_replace('/[^01]/', '0', $default) . '\'';
-                    } else {
-                        $query .= ' DEFAULT \'' . PMA_sqlAddslashes($default) . '\'';
-                    }
+        
+        switch ($default_type) {
+            case 'USER_DEFINED' :
+                if ($is_timestamp && $default_value === '0') {
+                    // a TIMESTAMP does not accept DEFAULT '0'
+                    // but DEFAULT 0 works
+                    $query .= ' DEFAULT 0';
+                } elseif ($type == 'BIT') {
+                    $query .= ' DEFAULT b\'' . preg_replace('/[^01]/', '0', $default_value) . '\'';
+                } else {
+                    $query .= ' DEFAULT \'' . PMA_sqlAddslashes($default_value) . '\'';
                 }
-            }
+                break;
+            case 'NULL' :
+            case 'CURRENT_TIMESTAMP' :
+                $query .= ' DEFAULT ' . $default_type;
+                break;
+            case 'NONE' :
+            default :
+                break;
         }
 
         if (!empty($extra)) {
@@ -371,7 +379,7 @@ class PMA_Table {
                 }
             } // end if (auto_increment)
         }
-        if (PMA_MYSQL_INT_VERSION >= 40100 && !empty($comment)) {
+        if (!empty($comment)) {
             $query .= " COMMENT '" . PMA_sqlAddslashes($comment) . "'";
         }
         return $query;
@@ -388,52 +396,61 @@ class PMA_Table {
      * @param   boolean  whether to retain or to displays the result
      * @param   boolean  whether to force an exact count
      *
-     * @return  mixed    the number of records if retain is required, true else
+     * @return  mixed    the number of records if "retain" param is true,
+     *                   otherwise true
      *
      * @access  public
      */
-    function countRecords($db, $table, $ret = false, $force_exact = false)
+    static public function countRecords($db, $table, $ret = false, 
+        $force_exact = false, $is_view = null)
     {
-        $row_count = false;
-
-        if (! $force_exact) {
-            $row_count = PMA_DBI_fetch_value(
-                'SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \''
-                    . PMA_sqlAddslashes($table, true) . '\';',
-                0, 'Rows');
-        }
-
-        $tbl_is_view = PMA_Table::isView($db, $table);
-
-        // for a VIEW, $row_count is always false at this point
-        if (false === $row_count || $row_count < $GLOBALS['cfg']['MaxExactCount']) {
-            if (! $tbl_is_view) {
-                $row_count = PMA_DBI_fetch_value(
-                    'SELECT COUNT(*) FROM ' . PMA_backquote($db) . '.'
-                    . PMA_backquote($table));
-            } else {
-                // For complex views, even trying to get a partial record
-                // count could bring down a server, so we offer an
-                // alternative: setting MaxExactCountViews to 0 will bypass
-                // completely the record counting for views
-
-                if ($GLOBALS['cfg']['MaxExactCountViews'] == 0) {
-                    $row_count = 0;
+        if (isset(PMA_Table::$cache[$db][$table]['ExactRows'])) {
+            $row_count = PMA_Table::$cache[$db][$table]['ExactRows'];
+        } else {
+            $row_count = false;
+            
+            if (null === $is_view) {
+                $is_view = PMA_Table::isView($db, $table);
+            }
+            
+            if (! $force_exact) {
+                if (! isset(PMA_Table::$cache[$db][$table]['Rows']) && ! $is_view) {
+                    PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . PMA_sqlAddslashes($table, true) . '\'');
+                }
+                $row_count = PMA_Table::$cache[$db][$table]['Rows'];
+            }
+    
+            // for a VIEW, $row_count is always false at this point
+            if (false === $row_count || $row_count < $GLOBALS['cfg']['MaxExactCount']) {
+                if (! $is_view) {
+                    $row_count = PMA_DBI_fetch_value(
+                        'SELECT COUNT(*) FROM ' . PMA_backquote($db) . '.'
+                        . PMA_backquote($table));
                 } else {
-                    // Counting all rows of a VIEW could be too long, so use
-                    // a LIMIT clause.
-                    // Use try_query because it can fail (a VIEW is based on
-                    // a table that no longer exists)
-                    $result = PMA_DBI_try_query(
-                        'SELECT 1 FROM ' . PMA_backquote($db) . '.'
-                            . PMA_backquote($table) . ' LIMIT '
-                            . $GLOBALS['cfg']['MaxExactCountViews'],
-                            null, PMA_DBI_QUERY_STORE);
-                    if (!PMA_DBI_getError()) {
-                        $row_count = PMA_DBI_num_rows($result);
-                        PMA_DBI_free_result($result);
+                    // For complex views, even trying to get a partial record
+                    // count could bring down a server, so we offer an
+                    // alternative: setting MaxExactCountViews to 0 will bypass
+                    // completely the record counting for views
+    
+                    if ($GLOBALS['cfg']['MaxExactCountViews'] == 0) {
+                        $row_count = 0;
+                    } else {
+                        // Counting all rows of a VIEW could be too long, so use
+                        // a LIMIT clause.
+                        // Use try_query because it can fail (a VIEW is based on
+                        // a table that no longer exists)
+                        $result = PMA_DBI_try_query(
+                            'SELECT 1 FROM ' . PMA_backquote($db) . '.'
+                                . PMA_backquote($table) . ' LIMIT '
+                                . $GLOBALS['cfg']['MaxExactCountViews'],
+                                null, PMA_DBI_QUERY_STORE);
+                        if (!PMA_DBI_getError()) {
+                            $row_count = PMA_DBI_num_rows($result);
+                            PMA_DBI_free_result($result);
+                        }
                     }
                 }
+                PMA_Table::$cache[$db][$table]['ExactRows'] = $row_count;
             }
         }
 
@@ -447,26 +464,25 @@ class PMA_Table {
         // Note: as of PMA 2.8.0, we no longer seem to be using
         // PMA_Table::countRecords() in display mode.
         echo PMA_formatNumber($row_count, 0);
-        if ($tbl_is_view) {
+        if ($is_view) {
             echo '&nbsp;'
-                . sprintf($GLOBALS['strViewMaxExactCount'],
+                . sprintf($GLOBALS['strViewHasAtLeast'],
                     $GLOBALS['cfg']['MaxExactCount'],
                     '[a@./Documentation.html#cfg_MaxExactCount@_blank]', '[/a]');
         }
     } // end of the 'PMA_Table::countRecords()' function
 
     /**
-     * @todo    add documentation
+     * @see PMA_Table::generateFieldSpec()
      */
-    function generateAlter($oldcol, $newcol, $type, $length,
-        $attribute, $collation, $null, $default, $default_current_timestamp,
-        $extra, $comment='', $default_orig)
+    static public function generateAlter($oldcol, $newcol, $type, $length,
+        $attribute, $collation, $null, $default_type, $default_value,
+        $extra, $comment = '', &$field_primary, $index, $default_orig)
     {
-        $empty_a = array();
         return PMA_backquote($oldcol) . ' '
             . PMA_Table::generateFieldSpec($newcol, $type, $length, $attribute,
-                $collation, $null, $default, $default_current_timestamp, $extra,
-                $comment, $empty_a, -1, $default_orig);
+                $collation, $null, $default_type, $default_value, $extra,
+                $comment, $field_primary, $index, $default_orig);
     } // end function
 
     /**
@@ -487,7 +503,7 @@ class PMA_Table {
      *
      * @author          Garvin Hicking <me@supergarv.de>
      */
-    function duplicateInfo($work, $pma_table, $get_fields, $where_fields,
+    static public function duplicateInfo($work, $pma_table, $get_fields, $where_fields,
       $new_fields)
     {
         $last_id = -1;
@@ -565,7 +581,7 @@ class PMA_Table {
      *
      * @author          Michal Cihar <michal@cihar.com>
      */
-    function moveCopy($source_db, $source_table, $target_db, $target_table, $what, $move, $mode)
+    static public function moveCopy($source_db, $source_table, $target_db, $target_table, $what, $move, $mode)
     {
         global $err_url;
 
@@ -574,11 +590,16 @@ class PMA_Table {
         $GLOBALS['asfile']         = 1;
 
         // Ensure the target is valid
-        if (! $GLOBALS['PMA_List_Database']->exists($source_db, $target_db)) {
-            /**
-             * @todo exit really needed here? or just a return?
-             */
-            exit;
+        if (! $GLOBALS['pma']->databases->exists($source_db, $target_db)) {
+            if (! $GLOBALS['pma']->databases->exists($source_db)) {
+                $GLOBALS['message'] = PMA_Message::rawError('source database `'
+                    . htmlspecialchars($source_db) . '` not found');
+            }
+            if (! $GLOBALS['pma']->databases->exists($target_db)) {
+                $GLOBALS['message'] = PMA_Message::rawError('target database `'
+                    . htmlspecialchars($target_db) . '` not found');
+            }
+            return false;
         }
 
         $source = PMA_backquote($source_db) . '.' . PMA_backquote($source_table);
@@ -832,6 +853,7 @@ class PMA_Table {
                 PMA_query_as_cu($table_query);
                 unset($table_query);
             }
+
             $GLOBALS['sql_query']      .= "\n\n" . $sql_drop_query . ';';
         // end if ($move)
         } else {
@@ -874,7 +896,7 @@ class PMA_Table {
                 $where_fields = array('db_name' => $source_db, 'table_name' => $source_table);
                 $new_fields = array('db_name' => $target_db, 'table_name' => $target_table);
                 PMA_Table::duplicateInfo('displaywork', 'table_info', $get_fields, $where_fields, $new_fields);
-                
+
 
                 /**
                  * @todo revise this code when we support cross-db relations
@@ -883,13 +905,13 @@ class PMA_Table {
                 $where_fields = array('master_db' => $source_db, 'master_table' => $source_table);
                 $new_fields = array('master_db' => $target_db, 'foreign_db' => $target_db, 'master_table' => $target_table);
                 PMA_Table::duplicateInfo('relwork', 'relation', $get_fields, $where_fields, $new_fields);
-                
+
 
                 $get_fields = array('foreign_field', 'master_table', 'master_field');
                 $where_fields = array('foreign_db' => $source_db, 'foreign_table' => $source_table);
                 $new_fields = array('master_db' => $target_db, 'foreign_db' => $target_db, 'foreign_table' => $target_table);
                 PMA_Table::duplicateInfo('relwork', 'relation', $get_fields, $where_fields, $new_fields);
-                
+
 
                 $get_fields = array('x', 'y', 'v', 'h');
                 $where_fields = array('db_name' => $source_db, 'table_name' => $source_table);
@@ -917,7 +939,7 @@ class PMA_Table {
                  */
             }
         }
-
+        return true;
     }
 
     /**
@@ -960,7 +982,7 @@ class PMA_Table {
     {
         if (null !== $new_db && $new_db !== $this->getDbName()) {
             // Ensure the target is valid
-            if (! $GLOBALS['PMA_List_Database']->exists($new_db)) {
+            if (! $GLOBALS['pma']->databases->exists($new_db)) {
                 $this->errors[] = $GLOBALS['strInvalidDatabase'] . ': ' . $new_db;
                 return false;
             }
@@ -1070,6 +1092,61 @@ class PMA_Table {
         $this->messages[] = sprintf($GLOBALS['strRenameTableOK'],
             htmlspecialchars($old_name), htmlspecialchars($new_name));
         return true;
+    }
+
+    /**
+     * Get all unique columns
+     *
+     * returns an array with all columns with unqiue content, in fact these are
+     * all columns being single indexed in PRIMARY or UNIQUE
+     *
+     * f.e.
+     *  - PRIMARY(id) // id
+     *  - UNIQUE(name) // name
+     *  - PRIMARY(fk_id1, fk_id2) // NONE
+     *  - UNIQUE(x,y) // NONE
+     *
+     *
+     * @param   boolean whether to quote name with backticks ``
+     * @return array
+     */
+    public function getUniqueColumns($quoted = true)
+    {
+        $sql = 'SHOW INDEX FROM ' . $this->getFullName(true) . ' WHERE Non_unique = 0';
+        $uniques = PMA_DBI_fetch_result($sql, array('Key_name', null), 'Column_name');
+
+        $return = array();
+        foreach ($uniques as $index) {
+            if (count($index) > 1) {
+                continue;
+            }
+            $return[] = $this->getFullName($quoted) . '.' . ($quoted ? PMA_backquote($index[0]) : $index[0]);
+        }
+
+        return $return;
+    }
+
+    /**
+     * Get all indexed columns
+     *
+     * returns an array with all columns make use of an index, in fact only
+     * first columns in an index
+     *
+     * f.e. index(col1, col2) would only return col1
+     * @param   boolean whether to quote name with backticks ``
+     * @return array
+     */
+    public function getIndexedColumns($quoted = true)
+    {
+        $sql = 'SHOW INDEX FROM ' . $this->getFullName(true) . ' WHERE Seq_in_index = 1';
+        $indexed = PMA_DBI_fetch_result($sql, 'Column_name', 'Column_name');
+
+        $return = array();
+        foreach ($indexed as $column) {
+            $return[] = $this->getFullName($quoted) . '.' . ($quoted ? PMA_backquote($column) : $column);
+        }
+
+        return $return;
     }
 }
 ?>

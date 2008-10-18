@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 11422 2008-07-24 17:12:32Z lem9 $
+ * @version $Id: config.default.php 11564 2008-09-07 11:43:11Z lem9 $
  */
 
 /**
@@ -47,7 +47,7 @@ $cfg['PmaAbsoluteUri'] = '';
 $cfg['PmaNoRelation_DisableWarning'] = false;
 
 /**
- * Disable the default warning that is displayed if Suhosin is detected 
+ * Disable the default warning that is displayed if Suhosin is detected
  *
  * @global boolean $cfg['SuhosinDisableWarning']
  */
@@ -138,12 +138,15 @@ $cfg['Servers'][$i]['compress'] = false;
 
 /**
  * MySQL control user settings (this user must have read-only
+ * access to the "mysql/user" and "mysql/db" tables). The controluser is also
+ * used for all relational features (pmadb)
  *
  * @global string $cfg['Servers'][$i]['controluser']
  */
 $cfg['Servers'][$i]['controluser'] = '';
 
 /**
+ * MySQL control user settings (this user must have read-only
  * access to the "mysql/user" and "mysql/db" tables). The controluser is also
  * used for all relational features (pmadb)
  *
@@ -328,11 +331,53 @@ $cfg['Servers'][$i]['AllowRoot'] = true;
 $cfg['Servers'][$i]['AllowDeny']['order'] = '';
 
 /**
+ * Disable use of INFORMATION_SCHEMA
+ *
+ * @see http://sf.net/support/tracker.php?aid=1849494
+ * @see http://bugs.mysql.com/19588
+ * @global boolean $cfg['Servers'][$i]['DisableIS']
+ */
+$cfg['Servers'][$i]['DisableIS'] = true;
+
+/**
  * Host authentication rules, leave blank for defaults
  *
  * @global array $cfg['Servers'][$i]['AllowDeny']['rules']
  */
 $cfg['Servers'][$i]['AllowDeny']['rules'] = array();
+
+/**
+ * SQL command to fetch available databases
+ *
+ * by default most user will be fine with SHOW DATABASES,
+ * for servers with a huge amount of databases it is possible to
+ * define a command which executes faster but with less information
+ *
+ * especially when accessing database servers from ISPs changing this command
+ * can result in a great speed improvement
+ *
+ * false will disable fetching databases from the server, only databases in
+ * $cfg['Servers'][$i]['only_db'] will be displayed
+ *
+ * #user# will be replaced by current user
+ *
+ * examples:
+ * 'SHOW DATABASES'
+ * "SHOW DATABASES LIKE '#user#\_%'"
+ * 'SELECT DISTINCT TABLE_SCHEMA FROM information_schema.SCHEMA_PRIVILEGES'
+ * 'SELECT SCHEMA_NAME FROM information_schema.SCHEMATA'
+ * false
+ *
+ * @global array $cfg['Servers'][$i]['ShowDatabasesCommand']
+ */
+$cfg['Servers'][$i]['ShowDatabasesCommand'] = 'SHOW DATABASES';
+
+/**
+ * Whether to count tables when showing database list
+ *
+ * @global array $cfg['Servers'][$i]['CountTables']
+ */
+$cfg['Servers'][$i]['CountTables'] = true;
 
 /**
  * Default server (0 = no default server)
@@ -495,6 +540,51 @@ $cfg['AllowArbitraryServer'] = false;
 
 
 /*******************************************************************************
+ * Error handler configuration
+ *
+ * this configures phpMyAdmins own error handler, it is used to avoid information
+ * dislcosure, gather errors for logging, reporting and displaying
+ *
+ * @global array $cfg['Error_Handler']
+ */
+$cfg['Error_Handler'] = array();
+
+/**
+ * whether to display errors or not
+ *
+ * this does not affect errors of type  E_USER_*
+ *
+ * @global boolean $cfg['Error_Handler']['display']
+ */
+$cfg['Error_Handler']['display'] = false;
+
+/**
+ * where to log errors, false or empty to disable
+ *
+ * <code>
+ * // EXAMPLE log to std PHP error log
+ * $cfg['Error_Handler']['log'] = array(0);
+ * // EXAMPLE mail errors
+ * $cfg['Error_Handler']['log'] = array(1, 'admin@example.org');
+ * // EXAMPLE append to specific file
+ * $cfg['Error_Handler']['log'] = array(3, '/var/log/phpmyadmin_error.log');
+ * </code>
+ *
+ * @see     http://php.net/error_log
+ * @global  string $cfg['Error_Handler']['log']
+ */
+$cfg['Error_Handler']['log'] = false;
+
+/**
+ * gather all errors in session to be displayed on a error reporting page
+ * for viewing and/or sending to phpMyAdmin developer team
+ *
+ * @global boolean $cfg['Error_Handler']['gather']
+ */
+$cfg['Error_Handler']['gather'] = false;
+
+
+/*******************************************************************************
  * Left frame setup
  */
 
@@ -532,7 +622,7 @@ $cfg['LeftFrameTableSeparator']= '__';
  *
  * @global integer $cfg['LeftFrameTableLevel']
  */
-$cfg['LeftFrameTableLevel'] = '1';
+$cfg['LeftFrameTableLevel'] = 1;
 
 /**
  * display table comment as tooltip in left frame
@@ -600,6 +690,20 @@ $cfg['DisplayServersList'] = false;
  */
 $cfg['DisplayDatabasesList'] = 'auto';
 
+/**
+ * target of the navigation panel quick access icon
+ *
+ * Possible values:
+ * 'tbl_structure.php' = fields list
+ * 'tbl_sql.php' = SQL form
+ * 'tbl_select.php' = search page
+ * 'tbl_change.php' = insert row page
+ * 'sql.php' = browse page
+ *
+ * @global string $cfg['LeftDefaultTabTable']
+ */
+$cfg['LeftDefaultTabTable'] = 'tbl_structure.php';
+
 
 /*******************************************************************************
  * In the main frame, at startup...
@@ -652,13 +756,6 @@ $cfg['SuggestDBName'] = true;
 /*******************************************************************************
  * In browse mode...
  */
-
-/**
- * display blob field contents
- *
- * @global boolean $cfg['ShowBlob']
- */
-$cfg['ShowBlob'] = false;
 
 /**
  * Use icons instead of text for the navigation bar buttons
@@ -835,13 +932,13 @@ $cfg['DefaultTabDatabase'] = 'db_structure.php';
  * Possible values:
  * 'tbl_structure.php' = fields list
  * 'tbl_sql.php' = SQL form
- * 'tbl_select.php' = select page
+ * 'tbl_select.php' = search page
  * 'tbl_change.php' = insert row page
  * 'sql.php' = browse page
  *
  * @global string $cfg['DefaultTabTable']
  */
-$cfg['DefaultTabTable'] = 'tbl_structure.php';
+$cfg['DefaultTabTable'] = 'sql.php';
 
 
 /*******************************************************************************
@@ -1023,6 +1120,34 @@ $cfg['Export']['htmlword_columns'] = false;
  * @global string $cfg['Export']['htmlword_null']
  */
 $cfg['Export']['htmlword_null'] = 'NULL';
+
+/**
+ *
+ *
+ * @global boolean $cfg['Export']['texytext_structure']
+ */
+$cfg['Export']['texytext_structure'] = TRUE;
+
+/**
+ *
+ *
+ * @global boolean $cfg['Export']['texytext_data']
+ */
+$cfg['Export']['texytext_data'] = TRUE;
+
+/**
+ *
+ *
+ * @global boolean $cfg['Export']['texytext_columns']
+ */
+$cfg['Export']['texytext_columns'] = FALSE;
+
+/**
+ *
+ *
+ * @global string $cfg['Export']['texytext_null']
+ */
+$cfg['Export']['texytext_null'] = 'NULL';
 
 /**
  *
@@ -1561,19 +1686,19 @@ $cfg['PDFDefaultPageSize'] = 'A4';
  *
  * @global string $cfg['DefaultLang']
  */
-$cfg['DefaultLang'] = 'en-iso-8859-1';
+$cfg['DefaultLang'] = 'en-utf-8';
 
 /**
- * Default connection collation (used for MySQL >= 4.1)
+ * Default connection collation
  *
  * @global string $cfg['DefaultConnectionCollation']
  */
-$cfg['DefaultConnectionCollation'] = 'utf8_unicode_ci';
+$cfg['DefaultConnectionCollation'] = 'utf8_general_ci';
 
 /**
  * Force: always use this language - must be defined in
  *        libraries/select_lang.lib.php
- * $cfg['Lang'] = 'en-iso-8859-1';
+ * $cfg['Lang'] = 'en-utf-8';
  *
  * Regular expression to limit listed languages, e.g. '^(cs|en)' for Czech and
  * English only
@@ -1590,7 +1715,7 @@ $cfg['FilterLanguages'] = '';
  *
  * @global string $cfg['DefaultCharset']
  */
-$cfg['DefaultCharset'] = 'iso-8859-1';
+$cfg['DefaultCharset'] = 'utf-8';
 
 /**
  * Allow character set recoding of MySQL queries, must be also enabled in language
@@ -1900,6 +2025,15 @@ $cfg['WYSIWYG-PDF'] = true;
  */
 $cfg['NaturalOrder'] = true;
 
+/**
+ * Initial state for sliders
+ * (open | closed)
+ *
+ * @global string $cfg['InitialSlidersState']
+ */
+$cfg['InitialSlidersState'] = 'closed';
+
+
 
 //-----------------------------------------------------------------------------
 // custom-setup by mkkeck: 2004-05-04
@@ -2119,6 +2253,14 @@ $cfg['GD2Available'] = 'auto';
  */
 $cfg['TrustedProxies'] = array();
 
+/**
+ * We normally check the permissions on the configuration file to ensure
+ * it's not world writable. However, phpMyAdmin could be installed on
+ * a NTFS filesystem mounted on a non-Windows server, in which case the
+ * permissions seems wrong but in fact cannot be detected. In this case
+ * a sysadmin would set the following to false.
+ */
+$cfg['CheckConfigurationPermissions'] = true;
 
 /*******************************************************************************
  * SQL Parser Settings
@@ -2184,18 +2326,25 @@ $cfg['SQLValidator']['password'] = '';
 
 /*******************************************************************************
  * Developers ONLY!
- * To use the following, please install the DBG extension from http://dd.cron.ru/dbg/
  *
  * @global array $cfg['DBG']
  */
 $cfg['DBG'] = array();
 
 /**
- * Make the DBG stuff available
+ * Output executed queries and their execution times
  *
  * @global boolean $cfg['DBG']['enable']
  */
-$cfg['DBG']['enable'] = false;
+$cfg['DBG']['sql'] = false;
+
+/**
+ * Make the DBG stuff available
+ * To use the following, please install the DBG extension from http://dd.cron.ru/dbg/
+ *
+ * @global boolean $cfg['DBG']['enable']
+ */
+$cfg['DBG']['php'] = false;
 
 /**
  * Produce profiling results of PHP
@@ -2224,39 +2373,76 @@ $cfg['DBG']['profile']['threshold'] = 0.5;
  * @global array $cfg['ColumnTypes']
  */
 $cfg['ColumnTypes'] = array(
-   'VARCHAR',
-   'TINYINT',
-   'TEXT',
-   'DATE',
-   'SMALLINT',
-   'MEDIUMINT',
-   'INT',
-   'BIGINT',
-   'FLOAT',
-   'DOUBLE',
-   'DECIMAL',
-   'DATETIME',
-   'TIMESTAMP',
-   'TIME',
-   'YEAR',
-   'CHAR',
-   'TINYBLOB',
-   'TINYTEXT',
-   'BLOB',
-   'MEDIUMBLOB',
-   'MEDIUMTEXT',
-   'LONGBLOB',
-   'LONGTEXT',
-   'ENUM',
-   'SET',
-   'BIT',
-   'BOOL'
+    // most used
+    'INT',
+    'VARCHAR',
+    'TEXT',
+    'DATE',
+
+    // numeric
+    'NUMERIC' => array(
+        'TINYINT',
+        'SMALLINT',
+        'MEDIUMINT',
+        'INT',
+        'BIGINT',
+        '-',
+        'DECIMAL',
+        'FLOAT',
+        'DOUBLE',
+        'REAL',
+        '-',
+        'BIT',
+        'BOOL',
+        'SERIAL',
+    ),
+
+
+    // Date/Time
+    'DATE and TIME' => array(
+        'DATE',
+        'DATETIME',
+        'TIMESTAMP',
+        'TIME',
+        'YEAR',
+    ),
+
+    // Text
+    'STRING' => array(
+        'CHAR',
+        'VARCHAR',
+        '-',
+        'TINYTEXT',
+        'TEXT',
+        'MEDIUMTEXT',
+        'LONGTEXT',
+        '-',
+        'BINARY',
+        'VARBINARY',
+        '-',
+        'TINYBLOB',
+        'MEDIUMBLOB',
+        'BLOB',
+        'LONGBLOB',
+        '-',
+        'ENUM',
+        'SET',
+    ),
+
+    'SPATIAL' => array(
+        'GEOMETRY',
+        'POINT',
+        'LINESTRING',
+        'POLYGON',
+        'MULTIPOINT',
+        'MULTILINESTRING',
+        'MULTIPOLYGON',
+        'GEOMETRYCOLLECTION',
+    ),
 );
 
 /**
  * Attributes
- * Note: the "ON UPDATE CURRENT_TIMESTAMP" attribute is added dynamically
- * for MySQL >= 4.1.2, in libraries/tbl_properties.inc.php
  *
  * @global array $cfg['AttributeTypes']
  */
@@ -2264,7 +2450,8 @@ $cfg['AttributeTypes'] = array(
    '',
    'BINARY',
    'UNSIGNED',
-   'UNSIGNED ZEROFILL'
+   'UNSIGNED ZEROFILL',
+   'on update CURRENT_TIMESTAMP',
 );
 
 
@@ -2275,40 +2462,75 @@ if ($cfg['ShowFunctionFields']) {
      * @global array $cfg['Functions']
      */
     $cfg['Functions'] = array(
-       'ASCII',
-       'CHAR',
-       'SOUNDEX',
-       'LCASE',
-       'UCASE',
-       'NOW',
-       'PASSWORD',
-       'OLD_PASSWORD',
-       'MD5',
-       'SHA1',
-       'ENCRYPT',
-       'COMPRESS',
-       'UNCOMPRESS',
-       'RAND',
-       'LAST_INSERT_ID',
-       'COUNT',
-       'AVG',
-       'SUM',
-       'CURDATE',
-       'CURTIME',
-       'UTC_DATE',
-       'UTC_TIME',
-       'UTC_TIMESTAMP',
-       'FROM_DAYS',
-       'FROM_UNIXTIME',
-       'PERIOD_ADD',
-       'PERIOD_DIFF',
-       'TO_DAYS',
-       'UNIX_TIMESTAMP',
-       'USER',
-       'WEEKDAY',
-       'CONCAT',
-       'HEX',
-       'UNHEX'
+        'ABS',
+        'ACOS',
+        'ASCII',
+        'ASIN',
+        'ATAN',
+        'BIN',
+        'BIT_COUNT',
+        'BIT_LENGTH',
+        'CEILING',
+        'CHAR',
+        'CHAR_LENGTH',
+        'COMPRESS',
+        'COS',
+        'COT',
+        'CRC32',
+        'CURDATE',
+        'CURRENT_USER',
+        'CURTIME',
+        'DATE',
+        'DAYNAME',
+        'DEGREES',
+        'DES_DECRYPT',
+        'DES_ENCRYPT',
+        'ENCRYPT',
+        'EXP',
+        'FLOOR',
+        'FROM_DAYS',
+        'FROM_UNIXTIME',
+        'HEX',
+        'INET_ATON',
+        'INET_NTOA',
+        'LENGTH',
+        'LN',
+        'LOG',
+        'LOG10',
+        'LOG2',
+        'LOWER',
+        'MD5',
+        'NOW',
+        'OCT',
+        'OLD_PASSWORD',
+        'ORD',
+        'PASSWORD',
+        'RADIANS',
+        'RAND',
+        'REVERSE',
+        'ROUND',
+        'SEC_TO_TIME',
+        'SHA1',
+        'SOUNDEX',
+        'SPACE',
+        'SQRT',
+        'STDDEV_POP',
+        'STDDEV_SAMP',
+        'TAN',
+        'TIMESTAMP',
+        'TIME_TO_SEC',
+        'UNCOMPRESS',
+        'UNHEX',
+        'UNIX_TIMESTAMP',
+        'UPPER',
+        'USER',
+        'UTC_DATE',
+        'UTC_TIME',
+        'UTC_TIMESTAMP',
+        'UUID',
+        'VAR_POP',
+        'VAR_SAMP',
+        'YEAR',
     );
 
     /**
@@ -2317,31 +2539,49 @@ if ($cfg['ShowFunctionFields']) {
      * @global array $cfg['RestrictColumnTypes']
      */
     $cfg['RestrictColumnTypes'] = array(
-       'VARCHAR' => 'FUNC_CHAR',
-       'TINYINT' => 'FUNC_NUMBER',
-       'TEXT' => 'FUNC_CHAR',
-       'DATE' => 'FUNC_DATE',
-       'SMALLINT' => 'FUNC_NUMBER',
-       'MEDIUMINT' => 'FUNC_NUMBER',
-       'INT' => 'FUNC_NUMBER',
-       'BIGINT' => 'FUNC_NUMBER',
-       'FLOAT' => 'FUNC_NUMBER',
-       'DOUBLE' => 'FUNC_NUMBER',
-       'DECIMAL' => 'FUNC_NUMBER',
-       'DATETIME' => 'FUNC_DATE',
-       'TIMESTAMP' => 'FUNC_DATE',
-       'TIME' => 'FUNC_DATE',
-       'YEAR' => 'FUNC_DATE',
-       'CHAR' => 'FUNC_CHAR',
-       'TINYBLOB' => 'FUNC_CHAR',
-       'TINYTEXT' => 'FUNC_CHAR',
-       'BLOB' => 'FUNC_CHAR',
-       'MEDIUMBLOB' => 'FUNC_CHAR',
-       'MEDIUMTEXT' => 'FUNC_CHAR',
-       'LONGBLOB' => 'FUNC_CHAR',
-       'LONGTEXT' => 'FUNC_CHAR',
-       'ENUM' => '',
-       'SET' => ''
+        'TINYINT'   => 'FUNC_NUMBER',
+        'SMALLINT'  => 'FUNC_NUMBER',
+        'MEDIUMINT' => 'FUNC_NUMBER',
+        'INT'       => 'FUNC_NUMBER',
+        'BIGINT'    => 'FUNC_NUMBER',
+        'DECIMAL'   => 'FUNC_NUMBER',
+        'FLOAT'     => 'FUNC_NUMBER',
+        'DOUBLE'    => 'FUNC_NUMBER',
+        'REAL'      => 'FUNC_NUMBER',
+        'BIT'       => 'FUNC_NUMBER',
+        'BOOL'      => 'FUNC_NUMBER',
+        'SERIAL'    => 'FUNC_NUMBER',
+
+        'DATE'      => 'FUNC_DATE',
+        'DATETIME'  => 'FUNC_DATE',
+        'TIMESTAMP' => 'FUNC_DATE',
+        'TIME'      => 'FUNC_DATE',
+        'YEAR'      => 'FUNC_DATE',
+
+        'CHAR'          => 'FUNC_CHAR',
+        'VARCHAR'       => 'FUNC_CHAR',
+        'TINYTEXT'      => 'FUNC_CHAR',
+        'TEXT'          => 'FUNC_CHAR',
+        'MEDIUMTEXT'    => 'FUNC_CHAR',
+        'LONGTEXT'      => 'FUNC_CHAR',
+        'BINARY'        => 'FUNC_CHAR',
+        'VARBINARY'     => 'FUNC_CHAR',
+        'TINYBLOB'      => 'FUNC_CHAR',
+        'MEDIUMBLOB'    => 'FUNC_CHAR',
+        'BLOB'          => 'FUNC_CHAR',
+        'LONGBLOB'      => 'FUNC_CHAR',
+        'ENUM'          => '',
+        'SET'           => '',
+
+        'GEOMETRY'              => 'FUNC_SPATIAL',
+        'POINT'                 => 'FUNC_SPATIAL',
+        'LINESTRING'            => 'FUNC_SPATIAL',
+        'POLYGON'               => 'FUNC_SPATIAL',
+        'MULTIPOINT'            => 'FUNC_SPATIAL',
+        'MULTILINESTRING'       => 'FUNC_SPATIAL',
+        'MULTIPOLYGON'          => 'FUNC_SPATIAL',
+        'GEOMETRYCOLLECTION'    => 'FUNC_SPATIAL',
+
     );
 
     /**
@@ -2351,54 +2591,103 @@ if ($cfg['ShowFunctionFields']) {
      */
     $cfg['RestrictFunctions'] = array(
         'FUNC_CHAR' => array(
-            'ASCII',
+            'BIN',
             'CHAR',
-            'SOUNDEX',
-            'LCASE',
-            'UCASE',
-            'PASSWORD',
-            'OLD_PASSWORD',
-            'MD5',
-            'SHA1',
-            'ENCRYPT',
+            'CURRENT_USER',
             'COMPRESS',
-            'UNCOMPRESS',
-            'LAST_INSERT_ID',
-            'USER',
-            'CONCAT',
+            'DAYNAME',
+            'DES_DECRYPT',
+            'DES_ENCRYPT',
+            'ENCRYPT',
             'HEX',
-            'UNHEX'
+            'INET_NTOA',
+            'LOWER',
+            'MD5',
+            'OLD_PASSWORD',
+            'PASSWORD',
+            'REVERSE',
+            'SHA1',
+            'SOUNDEX',
+            'SPACE',
+            'UNCOMPRESS',
+            'UNHEX',
+            'UPPER',
+            'USER',
+            'UUID',
         ),
 
         'FUNC_DATE' => array(
-            'NOW',
             'CURDATE',
             'CURTIME',
+            'DATE',
             'FROM_DAYS',
             'FROM_UNIXTIME',
-            'PERIOD_ADD',
-            'PERIOD_DIFF',
-            'TO_DAYS',
-            'UNIX_TIMESTAMP',
+            'NOW',
+            'SEC_TO_TIME',
+            'TIMESTAMP',
             'UTC_DATE',
             'UTC_TIME',
             'UTC_TIMESTAMP',
-            'WEEKDAY'
+            'YEAR',
         ),
 
         'FUNC_NUMBER' => array(
+            'ABS',
+            'ACOS',
             'ASCII',
-            'CHAR',
-            'MD5',
-            'SHA1',
-            'ENCRYPT',
+            'ASIN',
+            'ATAN',
+            'BIT_LENGTH',
+            'BIT_COUNT',
+            'CEILING',
+            'CHAR_LENGTH',
+            'COS',
+            'COT',
+            'CRC32',
+            'DEGREES',
+            'EXP',
+            'FLOOR',
+            'INET_ATON',
+            'LENGTH',
+            'LN',
+            'LOG',
+            'LOG2',
+            'LOG10',
+            'OCT',
+            'ORD',
+            'RADIANS',
             'RAND',
-            'LAST_INSERT_ID',
+            'ROUND',
+            'SQRT',
+            'STDDEV_POP',
+            'STDDEV_SAMP',
+            'TAN',
+            'TIME_TO_SEC',
             'UNIX_TIMESTAMP',
-            'COUNT',
-            'AVG',
-            'SUM'
-        )
+            'VAR_POP',
+            'VAR_SAMP',
+        ),
+
+        'FUNC_SPATIAL' => array(
+            'GeomFromText',
+            'GeomFromWKB',
+
+            'GeomCollFromText',
+            'LineFromText',
+            'MLineFromText',
+            'PointFromText',
+            'MPointFromText',
+            'PolyFromText',
+            'MPolyFromText',
+
+            'GeomCollFromWKB',
+            'LineFromWKB',
+            'MLineFromWKB',
+            'PointFromWKB',
+            'MPointFromWKB',
+            'PolyFromWKB',
+            'MPolyFromWKB',
+        ),
     );
 
     /**
@@ -2410,7 +2699,8 @@ if ($cfg['ShowFunctionFields']) {
         'FUNC_CHAR' => '',
         'FUNC_DATE' => '',
         'FUNC_NUMBER' => '',
-        'first_timestamp' => 'NOW'
+        'first_timestamp' => 'NOW',
+        'pk_char36' => 'UUID',
     );
 
 
@@ -2429,7 +2719,7 @@ $cfg['NumOperators'] = array(
    '<=',
    '!=',
    'LIKE',
-   'NOT LIKE'
+   'NOT LIKE',
 );
 
 /**
@@ -2444,7 +2734,7 @@ $cfg['TextOperators'] = array(
    '=',
    '!=',
    'REGEXP',
-   'NOT REGEXP'
+   'NOT REGEXP',
 );
 
 /**
@@ -2454,7 +2744,7 @@ $cfg['TextOperators'] = array(
  */
 $cfg['EnumOperators'] = array(
    '=',
-   '!='
+   '!=',
 );
 
 /**
@@ -2464,7 +2754,7 @@ $cfg['EnumOperators'] = array(
  */
 $cfg['SetOperators'] = array(
    'IN',
-   'NOT IN'
+   'NOT IN',
 );
 
 /**
@@ -2474,7 +2764,7 @@ $cfg['SetOperators'] = array(
  */
 $cfg['NullOperators'] = array(
    'IS NULL',
-   'IS NOT NULL'
+   'IS NOT NULL',
 );
 
 /**
@@ -2484,7 +2774,7 @@ $cfg['NullOperators'] = array(
  */
 $cfg['UnaryOperators'] = array(
    'IS NULL' => 1,
-   'IS NOT NULL' => 1
+   'IS NOT NULL' => 1,
 );
 
 ?>

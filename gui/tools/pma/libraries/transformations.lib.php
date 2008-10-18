@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: transformations.lib.php 10211 2007-03-27 13:07:49Z cybot_tm $
+ * @version $Id: transformations.lib.php 11192 2008-04-09 00:22:06Z lem9 $
  */
 
 /**
@@ -131,7 +131,7 @@ function PMA_getAvailableMIMEtypes()
 }
 
 /**
- * Gets the mimetypes for all rows of a table
+ * Gets the mimetypes for all columns of a table
  *
  * @uses    $GLOBALS['controllink']
  * @uses    PMA_getRelationsParam()
@@ -246,34 +246,4 @@ function PMA_setMIME($db, $table, $key, $mimetype, $transformation,
         return false;
     }
 } // end of 'PMA_setMIME()' function
-
-/**
- * Returns the real filename of a configured transformation
- *
- * in fact: it just replaces old php3 with php extension
- *
- * garvin: for security, never allow to break out from transformations directory
- *
- * @uses    PMA_securePath()
- * @uses    preg_replace()
- * @uses    strlen()
- * @uses    file_exists()
- * @access  public
- * @param   string   $filename   the current filename
- * @return  string   the new filename
- */
-function PMA_sanitizeTransformationFile(&$filename)
-{
-    $include_file = PMA_securePath($filename);
-
-    // This value can also contain a 'php3' value, in which case we map this filename to our new 'php' variant
-    $testfile = preg_replace('@\.inc\.php3$@', '.inc.php', $include_file);
-    if ($include_file{strlen($include_file)-1} == '3'
-     && file_exists('./libraries/transformations/' . $testfile)) {
-        $include_file = $testfile;
-        $filename     = $testfile; // Corrects the referenced variable for further actions on the filename;
-    }
-
-    return $include_file;
-} // end of 'PMA_sanitizeTransformationFile()' function
 ?>

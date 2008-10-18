@@ -25,7 +25,7 @@
 *
 * @author   Robin Johnson <robbat2@users.sourceforge.net>
 *
-* @version  $Id: sqlvalidator.class.php 11335 2008-06-21 14:01:54Z lem9 $
+* @version  $Id: sqlvalidator.class.php 11336 2008-06-21 15:01:27Z lem9 $
 */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -168,7 +168,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
          *
          * @access public
          */
-        function PMA_SQLValidator()
+        function __construct()
         {
             $this->url                           = 'http://sqlvalidator.mimer.com/v1/services';
             $this->service_name                  = 'SQL99Validator';
@@ -179,7 +179,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
             $this->username                      = 'anonymous';
             $this->password                      = '';
             $this->calling_program               = 'PHP_SQLValidator';
-            $this->calling_program_version       = '$Revision: 11335 $';
+            $this->calling_program_version       = '$Revision: 11336 $';
             $this->target_dbms                   = 'N/A';
             $this->target_dbms_version           = 'N/A';
             $this->connection_technology         = 'PHP';

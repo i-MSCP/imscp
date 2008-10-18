@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mult_submits.inc.php 11344 2008-06-24 17:33:50Z lem9 $
+ * @version $Id: mult_submits.inc.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -19,9 +19,11 @@ if (! empty($submit_mult)
   || ! empty($rows_to_delete))) {
     define('PMA_SUBMIT_MULT', 1);
     if (isset($selected_db) && !empty($selected_db)) {
+        // coming from server database view - do something with selected databases
         $selected     = $selected_db;
         $what         = 'drop_db';
     } elseif (isset($selected_tbl) && !empty($selected_tbl)) {
+        // coming from database structure view - do something with selected tables
         if ($submit_mult == $strPrintView) {
             require './tbl_printview.php';
         } else {
@@ -59,6 +61,7 @@ if (! empty($submit_mult)
            } // end switch
         }
     } elseif (isset($selected_fld) && !empty($selected_fld)) {
+        // coming from table structure view - do something with selected columns/fileds
         $selected     = $selected_fld;
         switch ($submit_mult) {
             case $strDrop:
@@ -105,19 +108,10 @@ if (! empty($submit_mult)
                 require './tbl_alter.php';
                 break;
             case $strBrowse:
-                $sql_query = '';
-                foreach ($selected AS $idx => $sval) {
-                    if ($sql_query == '') {
-                        $sql_query .= 'SELECT ' . PMA_backquote(urldecode($sval));
-                    } else {
-                        $sql_query .=  ', ' . PMA_backquote(urldecode($sval));
-                    }
-                }
-                $sql_query .= ' FROM ' . PMA_backquote(htmlspecialchars($table));
-                require './sql.php';
-                break;
+                // this should already be handled by tbl_structure.php
         }
     } else {
+        // coming from borwsing - do something with selected rows
         $what = 'row_delete';
         $selected = $rows_to_delete;
     }
@@ -128,16 +122,23 @@ if (! empty($submit_mult)
  * Displays the confirmation form if required
  */
 if (!empty($submit_mult) && !empty($what)) {
-    $js_to_run = 'functions.js';
+    $GLOBALS['js_include'][] = 'functions.js';
     unset($message);
+
+    require_once './libraries/header.inc.php';
     if (strlen($table)) {
         require './libraries/tbl_common.php';
         $url_query .= '&amp;goto=tbl_sql.php&amp;back=tbl_sql.php';
         require './libraries/tbl_info.inc.php';
+        require_once './libraries/tbl_links.inc.php';
     } elseif (strlen($db)) {
         require './libraries/db_common.inc.php';
         require './libraries/db_info.inc.php';
+    } else {
+        require_once './libraries/server_common.inc.php';
+        require_once './libraries/server_links.inc.php';
     }
+
     // Builds the query
     $full_query     = '';
     if ($what == 'drop_tbl') {
@@ -148,21 +149,19 @@ if (!empty($submit_mult) && !empty($what)) {
     foreach ($selected AS $idx => $sval) {
         switch ($what) {
             case 'row_delete':
-                $full_query .= htmlspecialchars(urldecode($sval))
+                $full_query .= htmlspecialchars($sval)
                     . ';<br />';
                 break;
             case 'drop_db':
                 $full_query .= 'DROP DATABASE '
-                    . PMA_backquote(htmlspecialchars(urldecode($sval)))
+                    . PMA_backquote(htmlspecialchars($sval))
                     . ';<br />';
                 $reload = 1;
                 break;
 
             case 'drop_tbl':
-                $current = urldecode($sval);
-                // here we must compare with the value before urldecode()
-                // because $views has been treated with htmlspecialchars()
-                if (!empty($views) && in_array($sval, $views)) {
+                $current = $sval;
+                if (!empty($views) && in_array($current, $views)) {
                     $full_query_views .= (empty($full_query_views) ? 'DROP VIEW ' : ', ')
                         . PMA_backquote(htmlspecialchars($current));
                 } else {
@@ -172,12 +171,8 @@ if (!empty($submit_mult) && !empty($what)) {
                 break;
 
             case 'empty_tbl':
-                if (PMA_MYSQL_INT_VERSION >= 40000) {
-                    $full_query .= 'TRUNCATE ';
-                } else {
-                    $full_query .= 'DELETE FROM ';
-                }
-                $full_query .= PMA_backquote(htmlspecialchars(urldecode($sval)))
+                $full_query .= 'TRUNCATE ';
+                $full_query .= PMA_backquote(htmlspecialchars($sval))
                             . ';<br />';
                 break;
 
@@ -188,11 +183,11 @@ if (!empty($submit_mult) && !empty($what)) {
                         . '<br />&nbsp;&nbsp;DROP PRIMARY KEY,'
                         . '<br />&nbsp;&nbsp; ADD PRIMARY KEY('
                         . '<br />&nbsp;&nbsp;&nbsp;&nbsp; '
-                        . PMA_backquote(htmlspecialchars(urldecode($sval)))
+                        . PMA_backquote(htmlspecialchars($sval))
                         . ',';
                 } else {
                     $full_query .= '<br />&nbsp;&nbsp;&nbsp;&nbsp; '
-                        . PMA_backquote(htmlspecialchars(urldecode($sval)))
+                        . PMA_backquote(htmlspecialchars($sval))
                         . ',';
                 }
                 if ($i == $selected_cnt-1) {
@@ -203,16 +198,12 @@ if (!empty($submit_mult) && !empty($what)) {
             case 'drop_fld':
                 if ($full_query == '') {
                     $full_query .= 'ALTER TABLE '
-                        . PMA_backquote(htmlspecialchars($table))
-                        . '<br />&nbsp;&nbsp;DROP '
-                        . PMA_backquote(htmlspecialchars(urldecode($sval)))
-                        . ',';
-                } else {
-                    $full_query .= '<br />&nbsp;&nbsp;DROP '
-                        . PMA_backquote(htmlspecialchars(urldecode($sval)))
-                        . ',';
+                        . PMA_backquote(htmlspecialchars($table));
                 }
-                if ($i == $selected_cnt-1) {
+                $full_query .= '<br />&nbsp;&nbsp;DROP '
+                    . PMA_backquote(htmlspecialchars($sval))
+                    . ',';
+                if ($i == $selected_cnt - 1) {
                     $full_query = preg_replace('@,$@', ';<br />', $full_query);
                 }
                 break;
@@ -229,35 +220,33 @@ if (!empty($submit_mult) && !empty($what)) {
         unset($full_query_views);
     }
 
-    // Displays the form
-    ?>
-<!-- Do it really ? -->
-<form action="<?php echo $action; ?>" method="post">
-<input type="hidden" name="query_type" value="<?php echo $what; ?>" />
-    <?php
+    // Displays the confirmation form
+    $_url_params = array(
+        'query_type' => $what,
+        'reload' => (! empty($reload) ? 1 : 0),
+    );
     if (strpos(' ' . $action, 'db_') == 1) {
-        echo PMA_generate_common_hidden_inputs($db);
-    } elseif (strpos(' ' . $action, 'tbl_') == 1
-              || $what == 'row_delete') {
-        echo PMA_generate_common_hidden_inputs($db, $table);
-    } else  {
-        echo PMA_generate_common_hidden_inputs();
+        $_url_params['db']= $db;
+    } elseif (strpos(' ' . $action, 'tbl_') == 1 || $what == 'row_delete') {
+        $_url_params['db']= $db;
+        $_url_params['table']= $table;
     }
-?>
-<input type="hidden" name="reload" value="<?php echo isset($reload) ? PMA_sanitize($reload) : 0; ?>" />
-<?php
     foreach ($selected as $idx => $sval) {
-        echo '<input type="hidden" name="selected[]" value="' . htmlspecialchars($sval) . '" />' . "\n";
+        $_url_params['selected'][] = $sval;
     }
     if ($what == 'drop_tbl' && !empty($views)) {
         foreach ($views as $current) {
-           echo '<input type="hidden" name="views[]" value="' . htmlspecialchars($current) . '" />' . "\n";
+            $_url_params['views'][] = $current;
        }
     }
     if ($what == 'row_delete') {
-        echo '<input type="hidden" name="original_sql_query" value="' . htmlspecialchars($original_sql_query) . '" />' . "\n";
-        echo '<input type="hidden" name="original_url_query" value="' . htmlspecialchars($original_url_query) . '" />' . "\n";
+        $_url_params['original_sql_query'] = $original_sql_query;
+        $_url_params['original_url_query'] = $original_url_query;
     }
+    ?>
+<form action="<?php echo $action; ?>" method="post">
+    <?php
+    echo PMA_generate_common_hidden_inputs($_url_params);
     ?>
 <fieldset class="confirmation">
     <legend><?php echo ($what == 'drop_db' ? $strDropDatabaseStrongWarning . '&nbsp;' : '') . $strDoYouReally; ?>:</legend>
@@ -273,7 +262,7 @@ if (!empty($submit_mult) && !empty($what)) {
 
 
 /**
- * Executes the query
+ * Executes the query - dropping rows, columns/fields, tables or dbs
  */
 elseif ($mult_btn == $strYes) {
 
@@ -308,14 +297,14 @@ elseif ($mult_btn == $strYes) {
     for ($i = 0; $i < $selected_cnt; $i++) {
         switch ($query_type) {
             case 'row_delete':
-                $a_query = urldecode($selected[$i]);
+                $a_query = $selected[$i];
                 $run_parts = TRUE;
                 break;
 
             case 'drop_db':
                 PMA_relationsCleanupDatabase($selected[$i]);
                 $a_query   = 'DROP DATABASE '
-                           . PMA_backquote(urldecode($selected[$i]));
+                           . PMA_backquote($selected[$i]);
                 $reload    = 1;
                 $run_parts = TRUE;
                 $rebuild_database_list = true;
@@ -323,10 +312,8 @@ elseif ($mult_btn == $strYes) {
 
             case 'drop_tbl':
                 PMA_relationsCleanupTable($db, $selected[$i]);
-                $current = urldecode($selected[$i]);
-                // here we must compare with the value before urldecode()
-                // because $views has been treated with htmlspecialchars()
-                if (!empty($views) && in_array($selected[$i], $views)) {
+                $current = $selected[$i];
+                if (!empty($views) && in_array($current, $views)) {
                     $sql_query_views .= (empty($sql_query_views) ? 'DROP VIEW ' : ', ')
                               . PMA_backquote($current);
                 } else {
@@ -338,66 +325,62 @@ elseif ($mult_btn == $strYes) {
 
             case 'check_tbl':
                 $sql_query .= (empty($sql_query) ? 'CHECK TABLE ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]));
+                           . PMA_backquote($selected[$i]);
                 $use_sql    = TRUE;
                 break;
 
             case 'optimize_tbl':
                 $sql_query .= (empty($sql_query) ? 'OPTIMIZE TABLE ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]));
+                           . PMA_backquote($selected[$i]);
                 $use_sql    = TRUE;
                 break;
 
             case 'analyze_tbl':
                 $sql_query .= (empty($sql_query) ? 'ANALYZE TABLE ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]));
+                           . PMA_backquote($selected[$i]);
                 $use_sql    = TRUE;
                 break;
 
             case 'repair_tbl':
                 $sql_query .= (empty($sql_query) ? 'REPAIR TABLE ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]));
+                           . PMA_backquote($selected[$i]);
                 $use_sql    = TRUE;
                 break;
 
             case 'empty_tbl':
-                if (PMA_MYSQL_INT_VERSION >= 40000) {
-                    $a_query = 'TRUNCATE ';
-                } else {
-                    $a_query = 'DELETE FROM ';
-                }
-                $a_query .= PMA_backquote(htmlspecialchars(urldecode($selected[$i])));
+                $a_query = 'TRUNCATE ';
+                $a_query .= PMA_backquote(htmlspecialchars($selected[$i]));
                 $run_parts = TRUE;
                 break;
 
             case 'drop_fld':
                 PMA_relationsCleanupColumn($db, $table, $selected[$i]);
                 $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) : ',')
-                           . ' DROP ' . PMA_backquote(urldecode($selected[$i]))
+                           . ' DROP ' . PMA_backquote($selected[$i])
                            . (($i == $selected_cnt-1) ? ';' : '');
                 break;
 
             case 'primary_fld':
                 $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . (empty($primary) ? '' : ' DROP PRIMARY KEY,') . ' ADD PRIMARY KEY( ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]))
+                           . PMA_backquote($selected[$i])
                            . (($i == $selected_cnt-1) ? ');' : '');
                 break;
 
             case 'index_fld':
                 $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . ' ADD INDEX( ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]))
+                           . PMA_backquote($selected[$i])
                            . (($i == $selected_cnt-1) ? ');' : '');
                 break;
 
             case 'unique_fld':
                 $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . ' ADD UNIQUE( ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]))
+                           . PMA_backquote($selected[$i])
                            . (($i == $selected_cnt-1) ? ');' : '');
                 break;
 
             case 'fulltext_fld':
                 $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . ' ADD FULLTEXT( ' : ', ')
-                           . PMA_backquote(urldecode($selected[$i]))
+                           . PMA_backquote($selected[$i])
                            . (($i == $selected_cnt-1) ? ');' : '');
                 break;
         } // end switch
@@ -409,7 +392,7 @@ elseif ($mult_btn == $strYes) {
             if ($query_type != 'drop_db') {
                 PMA_DBI_select_db($db);
             }
-            $result = @PMA_DBI_query($a_query) or PMA_mysqlDie('', $a_query, FALSE, $err_url);
+            $result = PMA_DBI_query($a_query);
         } // end if
     } // end for
 
@@ -426,17 +409,21 @@ elseif ($mult_btn == $strYes) {
         require './sql.php';
     } elseif (!$run_parts) {
         PMA_DBI_select_db($db);
-        $result = PMA_DBI_query($sql_query);
-        if (!empty($sql_query_views)) {
+        $result = PMA_DBI_try_query($sql_query);
+        if ($result && !empty($sql_query_views)) {
             $sql_query .= ' ' . $sql_query_views . ';';
-            PMA_DBI_query($sql_query_views);
+            $result = PMA_DBI_try_query($sql_query_views);
             unset($sql_query_views);
+        }
+
+        if (! $result) {
+            $message = PMA_Message::error(PMA_DBI_getError());
         }
     }
     if ($rebuild_database_list) {
         // avoid a problem with the database list navigator
         // when dropping a db from server_databases
-        $GLOBALS['PMA_List_Database']->build();
+        $GLOBALS['pma']->databases->build();
     }
 }
 ?>

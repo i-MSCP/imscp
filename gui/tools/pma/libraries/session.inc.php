@@ -10,8 +10,6 @@
  * @uses    session_name()
  * @uses    session_start()
  * @uses    ini_set()
- * @uses    version_compare()
- * @uses    PHP_VERSION
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -52,10 +50,8 @@ session_set_cookie_params(0, PMA_Config::getCookiePath() . '; HttpOnly',
 @ini_set('session.bug_compat_42', false);
 @ini_set('session.bug_compat_warn', true);
 
-// use more secure session ids (with PHP 5)
-if (version_compare(PHP_VERSION, '5.0.0', 'ge')) {
-    @ini_set('session.hash_function', 1);
-}
+// use more secure session ids
+@ini_set('session.hash_function', 1);
 
 // some pages (e.g. stylesheet) may be cached on clients, but not in shared
 // proxy servers
@@ -70,12 +66,6 @@ session_cache_limiter('private');
 
 $session_name = 'phpMyAdmin';
 @session_name($session_name);
-// strictly, PHP 4 since 4.4.2 would not need a verification
-if (version_compare(PHP_VERSION, '5.1.2', 'lt')
- && isset($_COOKIE[$session_name])
- && eregi("\r|\n", $_COOKIE[$session_name])) {
-    die('attacked');
-}
 
 if (! isset($_COOKIE[$session_name])) {
     // on first start of session we will check for errors
@@ -112,17 +102,10 @@ if (!isset($_SESSION[' PMA_token '])) {
  * (only required if sensitive information stored in session)
  *
  * @uses    session_regenerate_id() to secure session from fixation
- * @uses    session_id()            to set new session id
- * @uses    strip_tags()            to prevent XSS attacks in SID
- * @uses    function_exists()       for session_regenerate_id()
  */
 function PMA_secureSession()
 {
     // prevent session fixation and XSS
-    if (function_exists('session_regenerate_id')) {
-        session_regenerate_id(true);
-    } else {
-        session_id(strip_tags(session_id()));
-    }
+    session_regenerate_id(true);
 }
 ?>

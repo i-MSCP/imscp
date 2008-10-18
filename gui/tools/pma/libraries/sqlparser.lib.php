@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 11513 2008-08-28 16:17:53Z lem9 $
+ * @version $Id: sqlparser.lib.php 11583 2008-09-11 17:03:49Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -129,7 +129,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     // Revised, Robbat2 - 13 Janurary 2003, 2:59PM
     function PMA_SQP_throwError($message, $sql)
     {
-
         global $SQP_errorString;
         $SQP_errorString = '<p>'.$GLOBALS['strSQLParserUserError'] . '</p>' . "\n"
             . '<pre>' . "\n"
@@ -152,7 +151,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11513 2008-08-28 16:17:53Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11583 2008-09-11 17:03:49Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -262,7 +261,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $this_was_quote       = false;
 
         while ($count2 < $len) {
-            $c      = PMA_substr($sql, $count2, 1);
+            $c      = $GLOBALS['PMA_substr']($sql, $count2, 1);
             $count1 = $count2;
 
             $previous_was_space = $this_was_space;
@@ -284,7 +283,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             }
 
             // Checks for white space
-            if (PMA_STR_isSpace($c)) {
+            if ($GLOBALS['PMA_STR_isSpace']($c)) {
                 $this_was_space = true;
                 $count2++;
                 continue;
@@ -295,9 +294,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             // C style /* */
             // ANSI style --
             if (($c == '#')
-                || (($count2 + 1 < $len) && ($c == '/') && (PMA_substr($sql, $count2 + 1, 1) == '*'))
-                || (($count2 + 2 == $len) && ($c == '-') && (PMA_substr($sql, $count2 + 1, 1) == '-'))
-                || (($count2 + 2 < $len) && ($c == '-') && (PMA_substr($sql, $count2 + 1, 1) == '-') && ((PMA_substr($sql, $count2 + 2, 1) <= ' ')))) {
+                || (($count2 + 1 < $len) && ($c == '/') && ($GLOBALS['PMA_substr']($sql, $count2 + 1, 1) == '*'))
+                || (($count2 + 2 == $len) && ($c == '-') && ($GLOBALS['PMA_substr']($sql, $count2 + 1, 1) == '-'))
+                || (($count2 + 2 < $len) && ($c == '-') && ($GLOBALS['PMA_substr']($sql, $count2 + 1, 1) == '-') && (($GLOBALS['PMA_substr']($sql, $count2 + 2, 1) <= ' ')))) {
                 $count2++;
                 $pos  = 0;
                 $type = 'bad';
@@ -317,13 +316,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                         break;
                 } // end switch
                 $count2 = ($pos < $count2) ? $len : $pos;
-                $str    = PMA_substr($sql, $count1, $count2 - $count1);
+                $str    = $GLOBALS['PMA_substr']($sql, $count1, $count2 - $count1);
                 PMA_SQP_arrayAdd($sql_array, 'comment_' . $type, $str, $arraysize);
                 continue;
             } // end if
 
             // Checks for something inside quotation marks
-            if (PMA_STR_strInStr($c, $quote_list)) {
+            if ($GLOBALS['PMA_strpos']($quote_list, $c) !== false) {
                 $startquotepos   = $count2;
                 $quotetype       = $c;
                 $count2++;
@@ -353,7 +352,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     if (($pos < $len) && PMA_STR_charIsEscaped($sql, $pos)) {
                         $pos ++;
                         continue;
-                    } elseif (($pos + 1 < $len) && (PMA_substr($sql, $pos, 1) == $quotetype) && (PMA_substr($sql, $pos + 1, 1) == $quotetype)) {
+                    } elseif (($pos + 1 < $len) && ($GLOBALS['PMA_substr']($sql, $pos, 1) == $quotetype) && ($GLOBALS['PMA_substr']($sql, $pos + 1, 1) == $quotetype)) {
                         $pos = $pos + 2;
                         continue;
                     } else {
@@ -380,27 +379,27 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     default:
                         break;
                 } // end switch
-                $data = PMA_substr($sql, $count1, $count2 - $count1);
+                $data = $GLOBALS['PMA_substr']($sql, $count1, $count2 - $count1);
                 PMA_SQP_arrayAdd($sql_array, $type, $data, $arraysize);
                 continue;
             }
 
             // Checks for brackets
-            if (PMA_STR_strInStr($c, $bracket_list)) {
+            if ($GLOBALS['PMA_strpos']($bracket_list, $c) !== false) {
                 // All bracket tokens are only one item long
                 $this_was_bracket = true;
                 $count2++;
                 $type_type     = '';
-                if (PMA_STR_strInStr($c, '([{')) {
+                if ($GLOBALS['PMA_strpos']('([{', $c) !== false) {
                     $type_type = 'open';
                 } else {
                     $type_type = 'close';
                 }
 
                 $type_style     = '';
-                if (PMA_STR_strInStr($c, '()')) {
+                if ($GLOBALS['PMA_strpos']('()', $c) !== false) {
                     $type_style = 'round';
-                } elseif (PMA_STR_strInStr($c, '[]')) {
+                } elseif ($GLOBALS['PMA_strpos']('[]', $c) !== false) {
                     $type_style = 'square';
                 } else {
                     $type_style = 'curly';
@@ -427,7 +426,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             if (PMA_STR_isSqlIdentifier($c, false)
              || $c == '@'
              || ($c == '.'
-              && PMA_STR_isDigit(PMA_substr($sql, $count2 + 1, 1))
+              && $GLOBALS['PMA_STR_isDigit']($GLOBALS['PMA_substr']($sql, $count2 + 1, 1))
               && ($previous_was_space || $previous_was_bracket || $previous_was_listsep))) {
 
                 /* DEBUG
@@ -445,8 +444,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 $is_identifier           = $previous_was_punct;
                 $is_sql_variable         = $c == '@' && ! $previous_was_quote;
                 $is_user                 = $c == '@' && $previous_was_quote;
-                $is_digit                = !$is_identifier && !$is_sql_variable && PMA_STR_isDigit($c);
-                $is_hex_digit            = $is_digit && $c == '0' && $count2 < $len && PMA_substr($sql, $count2, 1) == 'x';
+                $is_digit                = !$is_identifier && !$is_sql_variable && $GLOBALS['PMA_STR_isDigit']($c);
+                $is_hex_digit            = $is_digit && $c == '0' && $count2 < $len && $GLOBALS['PMA_substr']($sql, $count2, 1) == 'x';
                 $is_float_digit          = $c == '.';
                 $is_float_digit_exponent = FALSE;
 
@@ -460,25 +459,23 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                  */
 
                 // Nijel: Fast skip is especially needed for huge BLOB data, requires PHP at least 4.3.0:
-                if (PMA_PHP_INT_VERSION >= 40300) {
-                    if ($is_hex_digit) {
-                        $count2++;
-                        $pos = strspn($sql, '0123456789abcdefABCDEF', $count2);
-                        if ($pos > $count2) {
-                            $count2 = $pos;
-                        }
-                        unset($pos);
-                    } elseif ($is_digit) {
-                        $pos = strspn($sql, '0123456789', $count2);
-                        if ($pos > $count2) {
-                            $count2 = $pos;
-                        }
-                        unset($pos);
+                if ($is_hex_digit) {
+                    $count2++;
+                    $pos = strspn($sql, '0123456789abcdefABCDEF', $count2);
+                    if ($pos > $count2) {
+                        $count2 = $pos;
                     }
+                    unset($pos);
+                } elseif ($is_digit) {
+                    $pos = strspn($sql, '0123456789', $count2);
+                    if ($pos > $count2) {
+                        $count2 = $pos;
+                    }
+                    unset($pos);
                 }
 
-                while (($count2 < $len) && PMA_STR_isSqlIdentifier(PMA_substr($sql, $count2, 1), ($is_sql_variable || $is_digit))) {
-                    $c2 = PMA_substr($sql, $count2, 1);
+                while (($count2 < $len) && PMA_STR_isSqlIdentifier($GLOBALS['PMA_substr']($sql, $count2, 1), ($is_sql_variable || $is_digit))) {
+                    $c2 = $GLOBALS['PMA_substr']($sql, $count2, 1);
                     if ($is_sql_variable && ($c2 == '.')) {
                         $count2++;
                         continue;
@@ -506,7 +503,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                             $is_float_digit          = FALSE;
                         }
                     }
-                    if (($is_hex_digit && PMA_STR_isHexDigit($c2)) || ($is_digit && PMA_STR_isDigit($c2))) {
+                    if (($is_hex_digit && PMA_STR_isHexDigit($c2)) || ($is_digit && $GLOBALS['PMA_STR_isDigit']($c2))) {
                         $count2++;
                         continue;
                     } else {
@@ -518,7 +515,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 } // end while
 
                 $l    = $count2 - $count1;
-                $str  = PMA_substr($sql, $count1, $l);
+                $str  = $GLOBALS['PMA_substr']($sql, $count1, $l);
 
                 $type = '';
                 if ($is_digit || $is_float_digit || $is_hex_digit) {
@@ -543,15 +540,15 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             }
 
             // Checks for punct
-            if (PMA_STR_strInStr($c, $allpunct_list)) {
-                while (($count2 < $len) && PMA_STR_strInStr(PMA_substr($sql, $count2, 1), $allpunct_list)) {
+            if ($GLOBALS['PMA_strpos']($allpunct_list, $c) !== false) {
+                while (($count2 < $len) && $GLOBALS['PMA_strpos']($allpunct_list, $GLOBALS['PMA_substr']($sql, $count2, 1)) !== false) {
                     $count2++;
                 }
                 $l = $count2 - $count1;
                 if ($l == 1) {
                     $punct_data = $c;
                 } else {
-                    $punct_data = PMA_substr($sql, $count1, $l);
+                    $punct_data = $GLOBALS['PMA_substr']($sql, $count1, $l);
                 }
 
                 // Special case, sometimes, althought two characters are
@@ -593,12 +590,12 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     if (($first == ',') || ($first == ';') || ($first == '.') || ($first == '*')) {
                         $count2     = $count1 + 1;
                         $punct_data = $first;
-                    } elseif (($last2 == '/*') || (($last2 == '--') && ($count2 == $len || PMA_substr($sql, $count2, 1) <= ' '))) {
+                    } elseif (($last2 == '/*') || (($last2 == '--') && ($count2 == $len || $GLOBALS['PMA_substr']($sql, $count2, 1) <= ' '))) {
                         $count2     -= 2;
-                        $punct_data = PMA_substr($sql, $count1, $count2 - $count1);
+                        $punct_data = $GLOBALS['PMA_substr']($sql, $count1, $count2 - $count1);
                     } elseif (($last == '-') || ($last == '+') || ($last == '!')) {
                         $count2--;
-                        $punct_data = PMA_substr($sql, $count1, $count2 - $count1);
+                        $punct_data = $GLOBALS['PMA_substr']($sql, $count1, $count2 - $count1);
                     /**
                      * @todo for negation operator, split in 2 tokens ?
                      * "select x&~1 from t"
@@ -621,7 +618,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             $count2++;
 
             $debugstr = 'C1 C2 LEN: ' . $count1 . ' ' . $count2 . ' ' . $len .  "\n"
-                      . 'STR: ' . PMA_substr($sql, $count1, $count2 - $count1) . "\n";
+                      . 'STR: ' . $GLOBALS['PMA_substr']($sql, $count1, $count2 - $count1) . "\n";
             PMA_SQP_bug($debugstr, $sql);
             return $sql;
 
@@ -668,7 +665,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 $d_next_upper = '';
             }
 
-            //DEBUG echo "[prev: <b>".$d_prev."</b> ".$t_prev."][cur: <b>".$d_cur."</b> ".$t_cur."][next: <b>".$d_next."</b> ".$t_next."]<br />";
+            //DEBUG echo "[prev: <strong>".$d_prev."</strong> ".$t_prev."][cur: <strong>".$d_cur."</strong> ".$t_cur."][next: <strong>".$d_next."</strong> ".$t_next."]<br />";
 
             if ($t_cur == 'alpha') {
                 $t_suffix     = '_identifier';
@@ -687,8 +684,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                      */
                     $t_suffix = '_functionName';
                     /* There are functions which might be as well column types */
-                    if (PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_column_type, $PMA_SQPdata_column_type_cnt)) {
-                    }
                 } elseif (PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_column_type, $PMA_SQPdata_column_type_cnt)) {
                     $t_suffix = '_columnType';
 
@@ -814,7 +809,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             'group_by_clause'=> '',
             'order_by_clause'=> '',
             'having_clause'  => '',
-            'limit_clause'   => '',
+            'limit_clause'  => '',
             'where_clause'   => '',
             'where_clause_identifiers'   => array(),
             'unsorted_query' => '',
@@ -837,7 +832,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
         // for SELECT EXTRACT(YEAR_MONTH FROM CURDATE())
         // we must not use CURDATE as a table_ref
-        // so we track wether we are in the EXTRACT()
+        // so we track whether we are in the EXTRACT()
         $in_extract          = FALSE;
 
         // for GROUP_CONCAT(...)
@@ -894,8 +889,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
  * ['group_by_clause']
  * ['order_by_clause']
  * ['having_clause']
- * ['where_clause']
  * ['limit_clause']
+ * ['where_clause']
  *
  * The identifiers of the WHERE clause are put into the array
  * ['where_clause_identifier']
@@ -1006,7 +1001,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         // loop #1 for each token: select_expr, table_ref for SELECT
 
         for ($i = 0; $i < $size; $i++) {
-//DEBUG echo "Loop1 <b>"  . $arr[$i]['data'] . "</b> (" . $arr[$i]['type'] . ")<br />";
+//DEBUG echo "Loop1 <strong>"  . $arr[$i]['data'] . "</strong> (" . $arr[$i]['type'] . ")<br />";
 
             // High speed seek for locating the end of the current query
             if ($seek_queryend == TRUE) {
@@ -1455,7 +1450,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $unsorted_query = $arr['raw']; // in case there is no ORDER BY
 
         for ($i = 0; $i < $size; $i++) {
-//DEBUG echo "Loop2 <b>"  . $arr[$i]['data'] . "</b> (" . $arr[$i]['type'] . ")<br />";
+//DEBUG echo "Loop2 <strong>"  . $arr[$i]['data'] . "</strong> (" . $arr[$i]['type'] . ")<br />";
 
             // need_confirm
             //
@@ -1594,9 +1589,12 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     }
                     if ($seen_order) {
                         $seen_order_by = TRUE;
-                        // here we assume that the ORDER BY keywords took
-                        // exactly 8 characters
-                        $unsorted_query = substr($arr['raw'], 0, $arr[$i]['pos'] - 8);
+                        // Here we assume that the ORDER BY keywords took
+                        // exactly 8 characters.
+                        // We use PMA_substr() to be charset-safe; otherwise
+                        // if the table name contains accents, the unsorted
+                        // query would be missing some characters.
+                        $unsorted_query = PMA_substr($arr['raw'], 0, $arr[$i]['pos'] - 8);
                         $in_order_by = TRUE;
                         $order_by_clause = '';
                     }
@@ -1697,8 +1695,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     $unsorted_query .= $sep;
                 }
             }
-            
-            if ($in_limit) {
+
+	        if ($in_limit) {
                 if ($upper_data == 'OFFSET') {
                     $limit_clause .= $sep;
                 }
@@ -1713,7 +1711,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
             // clear $upper_data for next iteration
             $upper_data='';
-
         } // end for $i (loop #2)
         if (empty($section_before_limit)) {
             $section_before_limit = $arr['raw'];
@@ -1744,7 +1741,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $seen_default = FALSE;
 
         for ($i = 0; $i < $size; $i++) {
-        // DEBUG echo "Loop 3 <b>" . $arr[$i]['data'] . "</b> " . $arr[$i]['type'] . "<br />";
+        // DEBUG echo "Loop 3 <strong>" . $arr[$i]['data'] . "</strong> " . $arr[$i]['type'] . "<br />";
 
             if ($arr[$i]['type'] == 'alpha_reservedWord') {
                 $upper_data = strtoupper($arr[$i]['data']);
@@ -1925,25 +1922,14 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     // of the foreign key REFERENCES
                     if ($brackets_level > 1) {
                         $foreign[$foreign_key_number]['ref_index_list'][] = $identifier;
-                    } else {
-                        // for MySQL 4.0.18, identifier is
-                        // `table` or `db`.`table`
+                    } elseif ($arr[$i+1]['type'] == 'punct_qualifier') {
+                        // identifier is `db`.`table`
                         // the first pass will pick the db name
-                        // the next pass will execute the else and pick the
-                        // db name in $db_table[0]
-                        if ($arr[$i+1]['type'] == 'punct_qualifier') {
-                                $foreign[$foreign_key_number]['ref_db_name'] = $identifier;
-                        } else {
-                        // for MySQL 4.0.16, identifier is
-                        // `table` or `db.table`
-                            $db_table = explode('.', $identifier);
-                            if (isset($db_table[1])) {
-                                $foreign[$foreign_key_number]['ref_db_name'] = $db_table[0];
-                                $foreign[$foreign_key_number]['ref_table_name'] = $db_table[1];
-                            } else {
-                                $foreign[$foreign_key_number]['ref_table_name'] = $db_table[0];
-                            }
-                        }
+                        // the next pass will pick the table name
+                        $foreign[$foreign_key_number]['ref_db_name'] = $identifier;
+                    } else {
+                        // identifier is `table`
+                        $foreign[$foreign_key_number]['ref_table_name'] = $identifier;
                     }
                 }
             }
@@ -2139,7 +2125,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
         $in_priv_list = FALSE;
         for ($i = $start_token; $i < $arraysize; $i++) {
-// DEBUG echo "Loop format <b>" . $arr[$i]['data'] . "</b> " . $arr[$i]['type'] . "<br />";
+// DEBUG echo "Loop format <strong>" . $arr[$i]['data'] . "</strong> " . $arr[$i]['type'] . "<br />";
             $before = '';
             $after  = '';
             $indent = 0;
@@ -2407,7 +2393,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 case 'quote_backtick':
                     // here we check for punct_user to handle correctly
                     // DEFINER = `username`@`%`
-                    // where @ is the punct_user and `%` is the quote_backtick 
+                    // where @ is the punct_user and `%` is the quote_backtick
                     if ($typearr[3] != 'punct_qualifier' && $typearr[3] != 'alpha_variable' && $typearr[3] != 'punct_user') {
                         $after     .= ' ';
                     }

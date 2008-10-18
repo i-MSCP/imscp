@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_export.lib.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: display_export.lib.php 11571 2008-09-07 15:29:00Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -38,9 +38,7 @@ $export_list = PMA_getPlugins('./libraries/export/', array('export_type' => $exp
 
 /* Fail if we didn't find any plugin */
 if (empty($export_list)) {
-    $GLOBALS['show_error_header'] = TRUE;
-    PMA_showMessage($strCanNotLoadExportPlugins);
-    unset($GLOBALS['show_error_header']);
+    PMA_Message::error('strCanNotLoadExportPlugins')->display();
     require './libraries/footer.inc.php';
 }
 ?>
@@ -145,8 +143,30 @@ echo PMA_pluginGetJavascript($export_list);
     <?php } ?>
 
     <label for="filename_template">
-        <?php echo $strFileNameTemplate; ?>
-        <sup>(1)</sup></label>:
+        <?php
+        echo $strFileNameTemplate;
+
+        $trans = new PMA_Message;
+        $trans->addMessage('__SERVER__/');
+        $trans->addString('strFileNameTemplateDescriptionServer');
+        if ($export_type == 'database' || $export_type == 'table') {
+            $trans->addMessage('__DB__/');
+            $trans->addString('strFileNameTemplateDescriptionDatabase');
+            if ($export_type == 'table') {
+                $trans->addMessage('__TABLE__/');
+                $trans->addString('strFileNameTemplateDescriptionTable');
+            }
+        }
+
+        $message = new PMA_Message('strFileNameTemplateDescription');
+        $message->addParam('<a href="http://php.net/strftime" target="documentation" title="'
+            . $strDocu . '">', false);
+        $message->addParam('</a>', false);
+        $message->addParam($trans);
+
+        echo PMA_showHint($message);
+        ?>
+        </label>:
     <input type="text" name="filename_template" id="filename_template"
     <?php
         echo ' value="';
@@ -187,17 +207,17 @@ echo PMA_pluginGetJavascript($export_list);
         echo '        <label for="select_charset_of_file">'
             . $strCharsetOfFile . '</label>' . "\n";
 
-        $temp_charset = reset($cfg['AvailableCharsets']);
-        echo '        <select id="select_charset_of_file" name="charset_of_file" size="1">' . "\n";
-        foreach ($cfg['AvailableCharsets'] as $key => $temp_charset) {
-            echo '            <option value="' . $temp_charset . '"';
+        reset($cfg['AvailableCharsets']);
+        echo '<select id="select_charset_of_file" name="charset_of_file" size="1">';
+        foreach ($cfg['AvailableCharsets'] as $temp_charset) {
+            echo '<option value="' . $temp_charset . '"';
             if ((empty($cfg['Export']['charset']) && $temp_charset == $charset)
               || $temp_charset == $cfg['Export']['charset']) {
                 echo ' selected="selected"';
             }
-            echo '>' . $temp_charset . '</option>' . "\n";
+            echo '>' . $temp_charset . '</option>';
         } // end foreach
-        echo '        </select>';
+        echo '</select>';
     } // end if
     ?>
     </div>
@@ -255,18 +275,3 @@ if ($is_zip || $is_gzip || $is_bzip) { ?>
     <input type="submit" value="<?php echo $strGo; ?>" id="buttonGo" />
 </fieldset>
 </form>
-
-<div class="notice">
-    <sup id="FileNameTemplateHelp">(1)</sup>
-    <?php
-    $trans = '__SERVER__/' . $strFileNameTemplateDescriptionServer;
-    if ($export_type == 'database' || $export_type == 'table') {
-        $trans .= ', __DB__/' . $strFileNameTemplateDescriptionDatabase;
-    }
-    if ($export_type == 'table') {
-        $trans .= ', __TABLE__/' . $strFileNameTemplateDescriptionTable;
-    }
-    echo sprintf($strFileNameTemplateDescription,
-        '<a href="http://www.php.net/strftime" target="documentation" title="'
-        . $strDocu . '">', '</a>', $trans); ?>
-</div>

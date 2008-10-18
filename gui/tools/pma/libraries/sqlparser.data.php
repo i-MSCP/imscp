@@ -366,6 +366,7 @@ $PMA_SQPdata_column_attrib = array (
     'INNOBASE',         // Engine alias InnoDB
     'INNODB',           // Engine InnoDB
     'ISAM',             // Engine
+    'MARIA',            // Engine
     'MEMORY',           // Engine alias HEAP, but preferred
     'MERGE',            // Engine
     'MRG_ISAM',         // Engine
@@ -386,7 +387,7 @@ $PMA_SQPdata_column_attrib = array (
  *
  * @global integer MySQL attributes count
  */
-$PMA_SQPdata_column_attrib_cnt = 29;
+$PMA_SQPdata_column_attrib_cnt = 30;
 
 /**
  * words that are reserved by MySQL and may not be used as identifiers without quotes
@@ -534,6 +535,7 @@ $PMA_SQPdata_reserved_word = array (
     'LOCKS',
     'LOGS',
     'LOW_PRIORITY',
+    'MARIA',                // 5.1 ?
     'MASTER',
     'MASTER_CONNECT_RETRY',
     'MASTER_HOST',
@@ -575,7 +577,10 @@ $PMA_SQPdata_reserved_word = array (
     'OUTER',
     'OUTFILE',
     'PACK_KEYS',
+    'PAGE',                 // 5.1-maria ?
     'PARTIAL',
+    'PARTITION',            // 5.1
+    'PARTITIONS',           // 5.1
     'PASSWORD',
     'PRIMARY',
     'PRIVILEGES',
@@ -660,6 +665,7 @@ $PMA_SQPdata_reserved_word = array (
     'THEN',
     'TO',
     'TRAILING',
+    'TRANSACTIONAL',    // 5.1 ?
     'TRUNCATE',
     'TYPE',
     'TYPES',
@@ -687,7 +693,7 @@ $PMA_SQPdata_reserved_word = array (
  *
  * @global integer MySQL reserved words count
  */
-$PMA_SQPdata_reserved_word_cnt = 283;
+$PMA_SQPdata_reserved_word_cnt = 288;
 /**
  * The previous array must be sorted so that the binary search work. 
  * Sometimes a word is not added in the correct order, so
@@ -705,6 +711,7 @@ echo '<pre>';
 print_r($PMA_SQPdata_reserved_word);
 echo '</pre>';
 */
+
 /**
  * words forbidden to be used as column or table name wihtout quotes
  * as seen in http://dev.mysql.com/doc/mysql/en/reserved-words.html

@@ -12,7 +12,7 @@
  *
  * The SQL Parser code relies heavily on these functions.
  *
- * @version $Id: string_native.lib.php 10294 2007-04-17 11:59:09Z cybot_tm $
+ * @version $Id: string_native.lib.php 10831 2007-10-17 13:51:06Z cybot_tm $
  */
 
 /**
@@ -67,7 +67,6 @@ function PMA_STR_pos($haystack, $needle, $offset = 0)
  * @param   string  $needle
  * @param   string  $haystack
  * @return  integer position of $needle in $haystack or false
- * @todo    add workaround for PHP < 5.0.0 only first char of $needle is used
  */
 function PMA_STR_rPos($haystack, $needle, $offset = 0)
 {

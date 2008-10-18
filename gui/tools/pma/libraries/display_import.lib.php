@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_import.lib.php 11405 2008-07-17 14:02:26Z lem9 $
+ * @version $Id: display_import.lib.php 11571 2008-09-07 15:29:00Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -19,9 +19,7 @@ $import_list = PMA_getPlugins('./libraries/import/', $import_type);
 
 /* Fail if we didn't find any plugin */
 if (empty($import_list)) {
-    $GLOBALS['show_error_header'] = TRUE;
-    PMA_showMessage($strCanNotLoadImportPlugins);
-    unset($GLOBALS['show_error_header']);
+    PMA_Message::error('strCanNotLoadImportPlugins')->display();
     require './libraries/footer.inc.php';
 }
 ?>
@@ -38,30 +36,25 @@ if ($import_type == 'server') {
 echo '    <input type="hidden" name="import_type" value="' . $import_type . '" />';
 echo PMA_pluginGetJavascript($import_list);
 ?>
-
-    <h2><?php echo $strImport; ?></h2>
-
-    <!-- File name, and some other common options -->
     <fieldset class="options">
         <legend><?php echo $strFileToImport; ?></legend>
 
-        <?php
-        if ($GLOBALS['is_upload']) {
-        ?>
+<?php
+if ($GLOBALS['is_upload']) {
+    ?>
         <div class="formelementrow">
         <label for="input_import_file"><?php echo $strLocationTextfile; ?></label>
         <input style="margin: 5px" type="file" name="import_file" id="input_import_file" onchange="match_file(this.value);" />
-        <?php
-        echo PMA_displayMaximumUploadSize($max_upload_size) . "\n";
-        // some browsers should respect this :)
-        echo PMA_generateHiddenMaxFileSize($max_upload_size) . "\n";
-        } else {
-            echo '<div class="warning">' . "\n";
-            echo $strUploadsNotAllowed . "\n";
-        }
-        ?>
+    <?php
+    echo PMA_displayMaximumUploadSize($max_upload_size) . "\n";
+    // some browsers should respect this :)
+    echo PMA_generateHiddenMaxFileSize($max_upload_size) . "\n";
+    ?>
         </div>
-<?php
+    <?php
+} else {
+    PMA_Message::warning('strUploadsNotAllowed')->display();
+}
 if (!empty($cfg['UploadDir'])) {
     $extensions = '';
     foreach ($import_list as $key => $val) {
@@ -75,10 +68,7 @@ if (!empty($cfg['UploadDir'])) {
     $files = PMA_getFileSelectOptions(PMA_userDir($cfg['UploadDir']), $matcher, (isset($timeout_passed) && $timeout_passed && isset($local_import_file)) ? $local_import_file : '');
     echo '<div class="formelementrow">' . "\n";
     if ($files === FALSE) {
-        echo '    <div class="warning">' . "\n";
-        echo '        <strong>' . $strError . '</strong>: ' . "\n";
-        echo '        ' . $strWebServerUploadDirectoryError . "\n";
-        echo '    </div>' . "\n";
+        PMA_Message::error('strWebServerUploadDirectoryError')->display();
     } elseif (!empty($files)) {
         echo "\n";
         echo '    <i>' . $strOr . '</i><br/><label for="select_local_import_file">' . $strWebServerUploadDirectory . '</label>&nbsp;: ' . "\n";
@@ -93,23 +83,18 @@ if (!empty($cfg['UploadDir'])) {
 // charset of file
 echo '<div class="formelementrow">' . "\n";
 if ($cfg['AllowAnywhereRecoding'] && $allow_recoding) {
-    echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>' . "\n";
-    $temp_charset = reset($cfg['AvailableCharsets']);
-    echo '    <select id="charset_of_file" name="charset_of_file" size="1">' . "\n"
-         . '            <option value="' . htmlentities($temp_charset) . '"';
-    if ($temp_charset == $charset) {
-        echo ' selected="selected"';
-    }
-    echo '>' . htmlentities($temp_charset) . '</option>' . "\n";
-    while ($temp_charset = next($cfg['AvailableCharsets'])) {
-        echo '            <option value="' . htmlentities($temp_charset) . '"';
+    echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>';
+    reset($cfg['AvailableCharsets']);
+    echo '<select id="charset_of_file" name="charset_of_file" size="1">';
+    foreach ($cfg['AvailableCharsets'] as $temp_charset) {
+        echo '<option value="' . htmlentities($temp_charset) .  '"';
         if ($temp_charset == $charset) {
             echo ' selected="selected"';
         }
-        echo '>' . htmlentities($temp_charset) . '</option>' . "\n";
+        echo '>' . htmlentities($temp_charset) . '</option>';
     }
-    echo '        </select><br />' . "\n" . '    ';
-} elseif (PMA_MYSQL_INT_VERSION >= 40100) {
+    echo ' </select><br />';
+} else {
     echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>' . "\n";
     echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET, 'charset_of_file', 'charset_of_file', 'utf8', FALSE);
 } // end if (recoding)
@@ -124,7 +109,7 @@ if ($cfg['GZipDump'] && @function_exists('gzopen')) {
 if ($cfg['BZipDump'] && @function_exists('bzopen')) {
     $compressions .= ', bzip2';
 }
-if ($cfg['ZipDump'] && @function_exists('gzinflate')) {
+if ($cfg['ZipDump'] && @function_exists('zip_open')) {
     $compressions .= ', zip';
 }
 

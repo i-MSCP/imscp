@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_common.inc.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: db_common.inc.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -18,7 +18,7 @@ PMA_checkParameters(array('db'));
 
 $is_show_stats = $cfg['ShowStats'];
 
-if (PMA_MYSQL_INT_VERSION >= 50002 && $db == 'information_schema') {
+if ($db == 'information_schema') {
     $is_show_stats = false;
     $db_is_information_schema = true;
 } else {
@@ -50,15 +50,15 @@ if (!isset($is_db) || !$is_db) {
 /**
  * Changes database charset if requested by the user
  */
-if (isset($submitcollation) && !empty($db_collation) && PMA_MYSQL_INT_VERSION >= 40101) {
+if (isset($submitcollation) && !empty($db_collation)) {
     list($db_charset) = explode('_', $db_collation);
     $sql_query        = 'ALTER DATABASE ' . PMA_backquote($db) . ' DEFAULT' . PMA_generateCharsetQueryPart($db_collation);
     $result           = PMA_DBI_query($sql_query);
-    $message          = $strSuccess;
+    $message          = PMA_Message::success();
     unset($db_charset, $db_collation);
 }
 
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 require_once './libraries/header.inc.php';
 
 /**
