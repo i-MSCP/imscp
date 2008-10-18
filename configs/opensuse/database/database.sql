@@ -573,7 +573,7 @@ CREATE TABLE `subdomain_alias` (
   `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_alias_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_c
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

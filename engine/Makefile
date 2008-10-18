@@ -81,7 +81,7 @@ install:
 	$(CMD_INSTALL) ./ispcp-rqst-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-dmn-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-sub-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-alssub-mngr $(SYSTEM_ENGINE_ROOT
+	$(CMD_INSTALL) ./ispcp-alssub-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-als-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-htuser-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-mbox-mngr $(SYSTEM_ENGINE_ROOT)
