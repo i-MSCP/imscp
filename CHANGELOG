@@ -5,6 +5,8 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Restoring active folder creation for subdomains
 		* Fixed #1080: Active web folders should not be deletable by customer; alias subdomains implementation
+		* Fixed #1562: Carriage returns in awstats_buildstaticpages.pl
+		* Fixed #1469: Postmaster email address didn't created
 
 2008-10-16 Benedikt Heintel
 	- CONFIGS:

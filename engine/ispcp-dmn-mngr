@@ -464,7 +464,7 @@ sub dmn_add_named_db_data {
 
 ################################################################################
 ##
-## Delte DNS DB Data
+## Delete DNS DB Data
 ##
 sub dmn_del_named_db_data {
 	my ($dmn_data) = @_;
@@ -2051,6 +2051,7 @@ sub dmn_add_mta_cfg_data {
 		return -1;
 	}
 
+	my $dmn_id          = @$dmn_data[0];
 	my $dmn_name        = @$dmn_data[1];
 	my $conf_dir        = $main::cfg{'CONF_DIR'};
 	my $cmd_postmap     = $main::cfg{'CMD_POSTMAP'};
@@ -2077,8 +2078,22 @@ sub dmn_add_mta_cfg_data {
 	#
 	$working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
 
-	# Add domain entry only if mail accounts are activated
-	if (@$dmn_data[8] >= 0) {
+
+	# Add domain entry only if any email is already added to domain
+	if (@$dmn_data[8] < 0) {
+
+		my $sql = "SELECT `mail_acc` FROM `mail_users` WHERE `domain_id` = ". $dmn_id ." AND `sub_id`=0 ;";
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		my $mail_count = @$rdata;
+
+		if ($mail_count > 0) {
+			$working .= "$dmn_name\t\t\tvdmn_entry\n";
+		}
+
+	}
+	else {
 		$working .= "$dmn_name\t\t\tvdmn_entry\n";
 	}
 
