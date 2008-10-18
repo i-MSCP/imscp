@@ -8,32 +8,40 @@
 /**
  * Validates the password field in a form
  *
+ * @uses    PMA_messages['strPasswordEmpty']
+ * @uses    PMA_messages['strPasswordNotSame']
  * @param   object   the form
- *
  * @return  boolean  whether the field value is valid or not
  */
 function checkPassword(the_form)
 {
     // Did the user select 'no password'?
-    if (typeof(the_form.elements['nopass']) != 'undefined' && the_form.elements['nopass'][0].checked) {
+    if (typeof(the_form.elements['nopass']) != 'undefined'
+     && the_form.elements['nopass'][0].checked) {
         return true;
-    } else if (typeof(the_form.elements['pred_password']) != 'undefined' && (the_form.elements['pred_password'].value == 'none' || the_form.elements['pred_password'].value == 'keep')) {
+    } else if (typeof(the_form.elements['pred_password']) != 'undefined'
+     && (the_form.elements['pred_password'].value == 'none'
+      || the_form.elements['pred_password'].value == 'keep')) {
         return true;
     }
 
-    // Validates
-    if (the_form.elements['pma_pw'].value == '') {
-        alert(jsPasswordEmpty);
-        the_form.elements['pma_pw2'].value = '';
-        the_form.elements['pma_pw'].focus();
+    var password = the_form.elements['pma_pw'];
+    var password_repeat = the_form.elements['pma_pw2'];
+    var alert_msg = false;
+
+    if (password.value == '') {
+        alert_msg = PMA_messages['strPasswordEmpty'];
+    } else if (password.value != password_repeat.value) {
+        alert_msg = PMA_messages['strPasswordNotSame'];
+    }
+
+    if (alert_msg) {
+        alert(alert_msg);
+        password.value  = '';
+        password_repeat.value = '';
+        password.focus();
         return false;
-    } else if (the_form.elements['pma_pw'].value != the_form.elements['pma_pw2'].value) {
-        alert(jsPasswordNotSame);
-        the_form.elements['pma_pw'].value  = '';
-        the_form.elements['pma_pw2'].value = '';
-        the_form.elements['pma_pw'].focus();
-        return false;
-    } // end if...else if
+    }
 
     return true;
 } // end of the 'checkPassword()' function
@@ -47,13 +55,13 @@ function checkPassword(the_form)
 function checkAddUser(the_form)
 {
     if (the_form.elements['pred_hostname'].value == 'userdefined' && the_form.elements['hostname'].value == '') {
-        alert(jsHostEmpty);
+        alert(PMA_messages['strHostEmpty']);
         the_form.elements['hostname'].focus();
         return false;
     }
 
     if (the_form.elements['pred_username'].value == 'userdefined' && the_form.elements['username'].value == '') {
-        alert(jsUserEmpty);
+        alert(PMA_messages['strUserEmpty']);
         the_form.elements['username'].focus();
         return false;
     }

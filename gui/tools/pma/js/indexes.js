@@ -2,7 +2,7 @@
 /**
  * function used for index manipulation pages
  *
- * @version $Id: indexes.js 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: indexes.js 10719 2007-10-04 15:03:44Z cybot_tm $
  */
 
 /**
@@ -30,7 +30,7 @@ function checkFormElementInRange(theForm, theFieldName, message, min, max)
     // It's not a number
     if (isNaN(val)) {
         theField.select();
-        alert(errorMsg1);
+        alert(PMA_messages['strNotNumber']);
         theField.focus();
         return false;
     }
