@@ -1,6 +1,26 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-10-16 Benedikt Heintel
+	- CONFIGS:
+		* Added Mailsize function
+	- DISTS:
+		* Fixed #1594: (CentOS) More perl dependencies on CentOS
+		* Fixed #1595: (CentOS) CentOS perl docs: Advice to autoconfigure first
+	- DOCS:
+		* Fixed #1483: Misleading information in INSTALL-files
+	- ENGINE:
+		* Fixed #1512: Subdomains for domain-aliases
+		* Fixed #1509: New subdomain management system
+	- GUI:
+		* Fixed Order delete bug
+		* Fixed #1507: Some errors on around "Execute Query" option on a database
+		* Fixed #1511: e-mail aliases & autoreply
+		* Fixed #1151: Update Hosting Package should only visible for a customer if a hosting plan to update is available (thanks Feg)
+		* Fixed #1556: Special Characters like Umlauts (äüöÄÜÖ) and Ligatures (ß) in Javascript messages are encoded, wrongly.
+	- TOOLS:
+		* PHPmyAdmin 3.0.0
+
 2008-09-11 Daniel Andreca
 	- GUI:
 		* Fixed #1151: Update Hosting Package should only visible for a customer if a hosting plan to update is available (thanks Feg)
