@@ -3,7 +3,7 @@
 /**
  * runs all defined tests
  *
- * @version $Id: AllTests.php 10291 2007-04-17 10:21:51Z cybot_tm $
+ * @version $Id: AllTests.php 11080 2008-01-25 09:34:21Z cybot_tm $
  * @package phpMyAdmin-test
  */
 
@@ -30,6 +30,9 @@ require_once './test/PMA_escapeJsString_test.php';
 require_once './test/PMA_isValid_test.php';
 require_once './test/PMA_transformation_getOptions_test.php';
 require_once './test/PMA_STR_sub_test.php';
+require_once './test/PMA_generateCommonUrl_test.php';
+//require_once './test/PMA_arrayWalkRecursive_test.php';
+require_once './test/PMA_blowfish_test.php';
 
 class AllTests
 {
@@ -55,6 +58,9 @@ class AllTests
         $suite->addTestSuite('PMA_isValid_test');
         $suite->addTestSuite('PMA_transformation_getOptions_test');
         $suite->addTestSuite('PMA_STR_sub_test');
+        $suite->addTestSuite('PMA_generate_common_url_test');
+        //$suite->addTestSuite('PMA_arrayWalkRecursive_test');
+        $suite->addTestSuite('PMA_blowfish_test');
         return $suite;
     }
 }

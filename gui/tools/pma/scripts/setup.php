@@ -1395,7 +1395,7 @@ switch ($action) {
                         } else {
                             mysql_close($conn);
                         }
-                    } else { 
+                    } else {
                         $socket = empty($new_server['socket']) || $new_server['connect_type'] == 'tcp' ? NULL : $new_server['socket'];
                         $port = empty($new_server['port']) || $new_server['connect_type'] == 'socket' ? NULL : $new_server['port'];
                         $conn = @mysqli_connect($new_server['host'], $new_server['controluser'], $new_server['controlpass'], NULL, $port, $socket);
@@ -1938,10 +1938,6 @@ switch ($action) {
 
     case '':
         message('notice', 'You want to configure phpMyAdmin using web interface. Please note that this only allows basic setup, please read <a href="../Documentation.html#config">documentation</a> to see full description of all configuration directives.', 'Welcome');
-
-        if ($PMA_Config_Setup->get('PMA_PHP_INT_VERSION') < 40100) {
-            message('warning', 'Please upgrade to PHP 4.1.0, it is required for phpMyAdmin.', 'Too old PHP');
-        }
 
         if ($fail_dir) {
             message('warning', 'Please create web server writable folder config in phpMyAdmin toplevel directory as described in <a href="../Documentation.html#setup_script">documentation</a>. Otherwise you will be only able to download or display it.', 'Can not load or save configuration');

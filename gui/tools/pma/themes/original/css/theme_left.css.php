@@ -15,12 +15,19 @@ if (!defined('PMA_MINIMUM_COMMON')) {
 ?>
 /******************************************************************************/
 /* general tags */
+html {
+    font-size: <?php echo (null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize']); ?>;
+}
+
+input, select, textarea {
+    font-size: 1em;
+}
 
 body {
 <?php if (! empty($GLOBALS['cfg']['FontFamily'])) { ?>
     font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
 <?php } ?>
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background:         <?php echo (isset($_SESSION['userconf']['custom_color']) ? $_SESSION['userconf']['custom_color'] : $GLOBALS['cfg']['NaviBackground']); ?>;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     margin:             0;
     padding:            0.2em 0.2em 0.2em 0.2em;
@@ -38,8 +45,8 @@ a:active {
 }
 
 ul {
-	margin:0;
-}	
+    margin:0;
+}
 
 form {
     margin:             0;
@@ -78,8 +85,8 @@ button {
 /* specific elements */
 
 div#pmalogo {
-    <?php //better echo $GLOBALS['cfg']['logoBGC']; ?>;
-    background-color: <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    <?php //better echo $GLOBALS['cfg']['logoBGC']; ?>
+    background-color: <?php echo (isset($_SESSION['userconf']['custom_color']) ? $_SESSION['userconf']['custom_color'] : $GLOBALS['cfg']['NaviBackground']); ?>;
     padding:.3em;
 }
 div#pmalogo,
@@ -153,7 +160,7 @@ div#left_tableList ul {
     margin:             0;
     padding:            0;
     font-size:          80%;
-    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    background:         <?php echo (isset($_SESSION['userconf']['custom_color']) ? $_SESSION['userconf']['custom_color'] : $GLOBALS['cfg']['NaviBackground']); ?>;
 }
 
 div#left_tableList ul ul {
@@ -205,8 +212,9 @@ div#left_tableList ul ul {
     padding-<?php echo $left; ?>:       0.1em;
     border-<?php echo $left; ?>:        0.1em solid <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     padding-bottom:     0.1em;
-    border-bottom:      0.1em solid <?php echo $GLOBALS['cfg']['NaviColor']; ?>; 
+    border-bottom:      0.1em solid <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
 }
+
 /* for the servers list in navi panel */
 #serverinfo .item {
     white-space:        nowrap;

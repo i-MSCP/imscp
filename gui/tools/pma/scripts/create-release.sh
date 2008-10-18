@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: create-release.sh 11315 2008-06-10 17:25:15Z lem9 $
+# $Id: create-release.sh 11473 2008-08-09 21:54:57Z lem9 $
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # 2005-09-13, lem9@users.sourceforge.net
@@ -68,7 +68,7 @@
 # - added release todo list
 #
 
-KITS="all-languages-utf-8-only all-languages english"
+KITS="all-languages english"
 COMPRESSIONS="zip-7z tbz tgz 7z"
 
 if [ $# = 0 ]
@@ -106,10 +106,7 @@ Please ensure you have:
           " <h1>phpMyAdmin $1 Documentation</h1> "
      - in translators.html
      - in README
-  2. synchronized the language files:
-       cd lang
-       ./sync_lang.sh
-     and checked all language files are valid (use
+  2. checked that all language files are valid (use
      the "./scripts/check_lang.php" script to do it).
 
 Continue (y/n)?

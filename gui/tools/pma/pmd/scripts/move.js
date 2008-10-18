@@ -1,6 +1,6 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: move.js 10416 2007-05-30 16:55:18Z lem9 $
+ * @version $Id: move.js 11274 2008-05-14 17:30:33Z lem9 $
  * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
  * @package phpMyAdmin-Designer
  */
@@ -483,7 +483,7 @@ function Start_relation()
     }
 
     if (!ON_relation) {
-        document.getElementById('InnoDB_relation').style.display = '';
+        document.getElementById('foreign_relation').style.display = '';
         ON_relation = 1;
         document.getElementById('hint').innerHTML = LangSelectReferencedKey;
         document.getElementById('hint').style.visibility = "visible";
@@ -506,16 +506,16 @@ function Click_field(T, f, PK) // table field
                 alert(LangPleaseSelectPrimaryOrUniqueKey);
                 return;// 0;
             }//PK
-            if (j_tabs[db + '.' + T] != 'INNODB') {
-                document.getElementById('InnoDB_relation').style.display = 'none';
+            if (j_tabs[db + '.' + T] != '1') {
+                document.getElementById('foreign_relation').style.display = 'none';
             }
             click_field = 1;
             link_relation = "T1=" + T + "&F1=" + f;
             document.getElementById('hint').innerHTML = LangSelectForeignKey;
         } else {
             Start_relation(); // hidden hint...
-            if (j_tabs[db + '.' + T] != 'INNODB' || !PK) {
-                document.getElementById('InnoDB_relation').style.display = 'none';
+            if (j_tabs[db + '.' + T] != '1' || !PK) {
+                document.getElementById('foreign_relation').style.display = 'none';
             }
             var left = Glob_X - (document.getElementById('layer_new_relation').offsetWidth>>1);
             document.getElementById('layer_new_relation').style.left = left + 'px';
