@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
- * @version $Id: pmd_general.php 10413 2007-05-26 18:31:40Z lem9 $
+ * @version $Id: pmd_general.php 11378 2008-07-09 15:24:44Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -45,7 +45,7 @@ echo '
     var strLang = Array();
     strLang["strModifications"] = "' . PMA_escapeJsString($strModifications) . '";
     strLang["strRelationDeleted"] = "' . PMA_escapeJsString($strRelationDeleted) . '";
-    strLang["strInnoDBRelationAdded"] = "' . PMA_escapeJsString($strInnoDBRelationAdded). '";
+    strLang["strForeignKeyRelationAdded"] = "' . PMA_escapeJsString($strForeignKeyRelationAdded). '";
     strLang["strGeneralRelationFeat:strDisabled"] = "' . PMA_escapeJsString($strGeneralRelationFeat . ' : ' . $strDisabled) . '";
     strLang["strInternalRelationAdded"] = "' . PMA_escapeJsString($strInternalRelationAdded) . '";
     strLang["strErrorRelationAdded"] = "' . PMA_escapeJsString($strErrorRelationAdded) . '";
@@ -243,10 +243,10 @@ for ($i = 0; $i < count($GLOBALS['PMD']["TABLE_NAME"]); $i++) {
     onmouseout="this.className = old_class;"
     onmousedown="Click_field('<?php
         echo $GLOBALS['PMD_URL']["TABLE_NAME_SMALL"][$i]."','".urlencode($tab_column[$t_n]["COLUMN_NAME"][$j])."',";
-        if ($GLOBALS['PMD']['TABLE_TYPE'][$i] != 'INNODB') {
+        if (! PMA_foreignkey_supported($GLOBALS['PMD']['TABLE_TYPE'][$i])) {
             echo (isset($tables_pk_or_unique_keys[$t_n . "." . $tab_column[$t_n]["COLUMN_NAME"][$j]]) ? 1 : 0);
         } else {
-            // if this is an InnoDB table, it's not necessary that the
+            // if foreign keys are supported, it's not necessary that the
             // index is a primary key
             echo (isset($tables_all_keys[$t_n.".".$tab_column[$t_n]["COLUMN_NAME"][$j]]) ? 1 : 0);
         }
@@ -311,12 +311,12 @@ for ($i = 0; $i < count($GLOBALS['PMD']["TABLE_NAME"]); $i++) {
         <table width="168" border="0" align="center" cellpadding="2" cellspacing="0">
         <thead>
         <tr>
-            <td colspan="2" align="center" nowrap="nowrap"><b><?php echo $strCreateRelation; ?></b></td>
+            <td colspan="2" align="center" nowrap="nowrap"><strong><?php echo $strCreateRelation; ?></strong></td>
         </tr>
         </thead>
-        <tbody id="InnoDB_relation">
+        <tbody id="foreign_relation">
         <tr>
-            <td colspan="2" align="center" nowrap="nowrap"><b>InnoDB</b></td>
+        <td colspan="2" align="center" nowrap="nowrap"><strong>FOREIGN KEY</strong></td>
         </tr>
         <tr>
             <td width="58" nowrap="nowrap">on delete</td>
@@ -377,7 +377,7 @@ for ($i = 0; $i < count($GLOBALS['PMD']["TABLE_NAME"]); $i++) {
     <td class="input_tab">
         <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
         <tr>
-            <td colspan="3" align="center" nowrap="nowrap"><b><?php echo $strDeleteRelation; ?></b></td>
+            <td colspan="3" align="center" nowrap="nowrap"><strong><?php echo $strDeleteRelation; ?></strong></td>
         </tr>
         <tr>
             <td colspan="3" align="center" nowrap="nowrap">

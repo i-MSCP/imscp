@@ -2,55 +2,41 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_processlist.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: server_processlist.php 11059 2008-01-18 13:43:00Z cybot_tm $
  */
 
 /**
  *
  */
 require_once './libraries/common.inc.php';
-
-/**
- * Does the common work
- */
 require_once './libraries/server_common.inc.php';
+require './libraries/server_links.inc.php';
 
 
 /**
  * Kills a selected process
  */
-if (!empty($kill)) {
-    if (PMA_DBI_try_query('KILL ' . $kill . ';')) {
-        $message = sprintf($strThreadSuccessfullyKilled, $kill);
+if (!empty($_REQUEST['kill'])) {
+    if (PMA_DBI_try_query('KILL ' . $_REQUEST['kill'] . ';')) {
+        $message = PMA_Message::success('strThreadSuccessfullyKilled');
     } else {
-        $message = sprintf($strCouldNotKill, $kill);
+        $message = PMA_Message::error('strCouldNotKill');
     }
+    $message->addParam($_REQUEST['kill']);
+    $message->display();
 }
 
+$url_params = array();
 
-/**
- * Displays the links
- */
-require './libraries/server_links.inc.php';
-
-
-/**
- * Displays the sub-page heading
- */
-echo '<h2>' . "\n"
-   . ($cfg['MainPageIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_process.png" width="16" height="16" alt="" />' : '')
-   . $strProcesslist . "\n"
-   . '</h2>' . "\n";
-
-
-/**
- * Sends the query
- */
-$sql_query = 'SHOW' . (empty($full) ? '' : ' FULL') . ' PROCESSLIST';
+if (! empty($_REQUEST['full'])) {
+    $sql_query = 'SHOW FULL PROCESSLIST';
+    $url_params['full'] = 1;
+    $full_text_link = 'server_processlist.php' . PMA_generate_common_url(array(), 'html', '?');
+} else {
+    $sql_query = 'SHOW PROCESSLIST';
+    $full_text_link = 'server_processlist.php' . PMA_generate_common_url(array('full' => 1));
+}
 $result = PMA_DBI_query($sql_query);
-
-PMA_showMessage($GLOBALS['strSuccess']);
-
 
 /**
  * Displays the page
@@ -58,10 +44,10 @@ PMA_showMessage($GLOBALS['strSuccess']);
 ?>
 <table id="tableprocesslist" class="data">
 <thead>
-<tr><td><a href="./server_processlist.php?<?php echo $url_query . (empty($full) ? '&amp;full=1' : ''); ?>"
+<tr><td><a href="<?php echo $full_text_link; ?>"
             title="<?php echo empty($full) ? $strShowFullQueries : $strTruncateQueries; ?>">
-        <img src="<?php echo $pmaThemeImage . 's_' . (empty($full) ? 'full' : 'partial'); ?>text.png"
-            width="50" height="20" alt="<?php echo empty($full) ? $strShowFullQueries : $strTruncateQueries; ?>" />
+        <img src="<?php echo $pmaThemeImage . 's_' . (empty($_REQUEST['full']) ? 'full' : 'partial'); ?>text.png"
+            width="50" height="20" alt="<?php echo empty($_REQUEST['full']) ? $strShowFullQueries : $strTruncateQueries; ?>" />
         </a></td>
     <th><?php echo $strId; ?></th>
     <th><?php echo $strUser; ?></th>
@@ -77,9 +63,11 @@ PMA_showMessage($GLOBALS['strSuccess']);
 <?php
 $odd_row = true;
 while($process = PMA_DBI_fetch_assoc($result)) {
+    $url_params['kill'] = $process['Id'];
+    $kill_process = 'server_processlist.php' . PMA_generate_common_url($url_params);
     ?>
 <tr class="<?php echo $odd_row ? 'odd' : 'even'; ?>">
-    <td><a href="./server_processlist.php?<?php echo $url_query . '&amp;kill=' . $process['Id']; ?>"><?php echo $strKill; ?></a></td>
+    <td><a href="<?php echo $kill_process ; ?>"><?php echo $strKill; ?></a></td>
     <td class="value"><?php echo $process['Id']; ?></td>
     <td><?php echo $process['User']; ?></td>
     <td><?php echo $process['Host']; ?></td>

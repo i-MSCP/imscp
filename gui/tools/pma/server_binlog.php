@@ -25,7 +25,6 @@
  * @uses    PMA_generate_common_hidden_inputs()
  * @uses    PMA_generate_common_url()
  * @uses    PMA_formatByteDown()
- * @uses    PMA_showMessage()
  * @uses    PMA_DBI_fetch_assoc()
  * @uses    PMA_strlen()
  * @uses    PMA_substr()
@@ -36,7 +35,7 @@
  * @uses    array_key_exists()
  * @uses    implode()
  * @uses    htmlspecialchars()
- * @version $Id: server_binlog.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: server_binlog.php 10818 2007-10-17 09:06:00Z cybot_tm $
  */
 
 /**
@@ -144,7 +143,7 @@ if (count($binary_logs) > 1) {
     echo '</form>';
 }
 
-PMA_showMessage($GLOBALS['strSuccess']);
+PMA_Message::success()->display();
 
 /**
  * Displays the page

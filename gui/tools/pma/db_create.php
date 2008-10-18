@@ -2,14 +2,14 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_create.php 11402 2008-07-15 18:42:50Z lem9 $
+ * @version $Id: db_create.php 11403 2008-07-15 19:03:11Z lem9 $
  */
 
 /**
  * Gets some core libraries
  */
 require_once './libraries/common.inc.php';
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 require_once './libraries/mysql_charsets.lib.php';
 
 PMA_checkParameters(array('new_db'));
@@ -23,7 +23,7 @@ $err_url = 'main.php?' . PMA_generate_common_url();
  * Builds and executes the db creation sql query
  */
 $sql_query = 'CREATE DATABASE ' . PMA_backquote($new_db);
-if (!empty($db_collation) && PMA_MYSQL_INT_VERSION >= 40101) {
+if (!empty($db_collation)) {
     list($db_charset) = explode('_', $db_collation);
     if (in_array($db_charset, $mysql_charsets) && in_array($db_collation, $mysql_collations[$db_charset])) {
         $sql_query .= ' DEFAULT' . PMA_generateCharsetQueryPart($db_collation);
@@ -35,15 +35,17 @@ $sql_query .= ';';
 $result = PMA_DBI_try_query($sql_query);
 
 if (! $result) {
-    $message = PMA_DBI_getError();
+    $message = PMA_Message::rawError(PMA_DBI_getError());
     // avoid displaying the not-created db name in header or navi panel
     $GLOBALS['db'] = '';
     $GLOBALS['table'] = '';
     require_once './libraries/header.inc.php';
     require_once './main.php';
 } else {
-    $message = $strDatabase . ' ' . htmlspecialchars($new_db) . ' ' . $strHasBeenCreated;
+    $message = PMA_Message::success('strDatabaseHasBeenCreated');
+    $message->addParam($new_db);
     $GLOBALS['db'] = $new_db;
+
     require_once './libraries/header.inc.php';
     require_once './' . $cfg['DefaultTabDatabase'];
 }

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pdf_pages.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ * @version $Id: pdf_pages.php 11378 2008-07-09 15:24:44Z lem9 $
  */
 
 /**
@@ -10,7 +10,7 @@
  */
 require_once './libraries/common.inc.php';
 require_once './libraries/db_common.inc.php';
-
+require './libraries/StorageEngine.class.php';
 
 /**
  * Settings for relation stuff
@@ -74,37 +74,33 @@ if ($cfgRelation['pdfwork']) {
                 }
                 break;
             case 'createpage':
-                if (!isset($newpage) || $newpage == '') {
-                    $newpage = $strNoDescription;
-                }
-                $ins_query   = 'INSERT INTO ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['pdf_pages'])
-                             . ' (db_name, page_descr)'
-                             . ' VALUES (\'' . PMA_sqlAddslashes($db) . '\', \'' . PMA_sqlAddslashes($newpage) . '\')';
-                PMA_query_as_cu($ins_query, FALSE, $query_default_option);
-                $pdf_page_number = PMA_DBI_insert_id(isset($controllink) ? $controllink : '');
+                $pdf_page_number = PMA_REL_create_page($newpage, $cfgRelation, $db, $query_default_option); 
 
                 // A u t o m a t i c    l a y o u t
                 // ================================
-                if (isset($auto_layout_internal) || isset($auto_layout_innodb)) {
+                if (isset($auto_layout_internal) || isset($auto_layout_foreign)) {
                     $all_tables = array();
                 }
 
-                if (isset($auto_layout_innodb)) {
+                if (isset($auto_layout_foreign)) {
                     // get the tables list
                     $tables = PMA_DBI_get_tables_full($db);
-                    // find the InnoDB ones
-                    $innodb_tables = array();
+                    // find the ones who support FOREIGN KEY; it's not 
+                    // important that we group together InnoDB tables
+                    // and PBXT tables, as this logic is just to put
+                    // the tables on the layout, not to determine relations 
+                    $foreignkey_tables = array();
                     foreach($tables as $table_name => $table_properties) {
-                        if ($table_properties['ENGINE'] == 'InnoDB') {
-                            $innodb_tables[] = $table_name;
+                        if (PMA_foreignkey_supported($table_properties['ENGINE'])) {
+                            $foreignkey_tables[] = $table_name;
                         }
                     }
-                    $all_tables = $innodb_tables;
+                    $all_tables = $foreignkey_tables;
                     // could be improved by finding the tables which have the
-                    // most references keys and place them at the beginning
+                    // most references keys and placing them at the beginning
                     // of the array (so that they are all center of schema)
-                    unset($tables, $innodb_tables);
-                } // endif auto_layout_innodb
+                    unset($tables, $foreignkey_tables);
+                } // endif auto_layout_foreign
 
                 if (isset($auto_layout_internal)) {
                     // get the tables that have relations, by descending
@@ -147,7 +143,7 @@ if ($cfgRelation['pdfwork']) {
                     } // endif there are master tables
                 } // endif auto_layout_internal
 
-                if (isset($auto_layout_internal) || isset($auto_layout_innodb)) {
+                if (isset($auto_layout_internal) || isset($auto_layout_foreign)) {
                     // now generate the coordinates for the schema,
                     // in a clockwise spiral
 
@@ -278,10 +274,13 @@ if ($cfgRelation['pdfwork']) {
         echo "\n";
         ?>
     </select>
-    <input type="radio" name="action_choose" value="0" id="radio_choose0" checked="checked" style="vertical-align: middle" /><label for="radio_choose0">
-<?php echo $strEdit; ?> </label>
-    <input type="radio" name="action_choose" value="1" id="radio_choose1"  style="vertical-align: middle" /><label for="radio_choose1">
-<?php echo $strDelete; ?> </label>
+<?php
+    $choices = array(
+        '0' => $strEdit,
+        '1' => $strDelete);
+        PMA_generate_html_radio('action_choose', $choices, '0', false);
+    unset($choices);
+?>
        <input type="submit" value="<?php echo $strGo; ?>" /><br />
     </fieldset>
 </form>
@@ -300,9 +299,12 @@ if ($cfgRelation['pdfwork']) {
     <input type="hidden" name="do" value="createpage" />
     <input type="text" name="newpage" size="20" maxlength="50" />
        <input type="checkbox" name="auto_layout_internal" />
-   <?php echo '(' . $strAutomaticLayout . ' / ' . $strInternalRelations . ')' . "\n"; ?>
-        <input type="checkbox" name="auto_layout_innodb" />
-    <?php echo '(' . $strAutomaticLayout . ' / InnoDB)' . "\n"; ?>
+<?php echo '(' . $strAutomaticLayout . ' / ' . $strInternalRelations . ')';
+    if (PMA_StorageEngine::isValid('InnoDB') || PMA_StorageEngine::isValid('PBXT')) {
+        echo '<input type="checkbox" name="auto_layout_foreign" />'
+            . '(' . $strAutomaticLayout . ' / FOREIGN KEY)';
+    }
+?>
         <input type="submit" value="<?php echo $strGo; ?>" />
     </fieldset>
 </form>
@@ -522,7 +524,7 @@ function resetDrag() {
     <?php echo PMA_generate_common_hidden_inputs($db); ?>
     <input type="hidden" name="pdf_page_number" value="<?php echo $chpage; ?>" />
 
-    <?php echo '<br /><b>' . $strDisplayPDF . '</b>'; ?>:&nbsp;<br />
+    <?php echo '<br /><strong>' . $strDisplayPDF . '</strong>'; ?>:&nbsp;<br />
     <input type="checkbox" name="show_grid" id="show_grid_opt" /><label for="show_grid_opt"><?php echo $strShowGrid; ?></label><br />
     <input type="checkbox" name="show_color" id="show_color_opt" checked="checked" /><label for="show_color_opt"><?php echo $strShowColor; ?></label><br />
     <input type="checkbox" name="show_table_dimension" id="show_table_dim_opt" /><label for="show_table_dim_opt"><?php echo $strShowTableDimension; ?></label><br />

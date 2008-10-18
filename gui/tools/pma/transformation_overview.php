@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: transformation_overview.php 10146 2007-03-20 14:16:18Z cybot_tm $
+ * @version $Id: transformation_overview.php 11253 2008-05-09 10:52:01Z cybot_tm $
  */
 
 /**
@@ -15,9 +15,7 @@ define('PMA_DISPLAY_HEADING', 0);
  */
 require_once './libraries/common.inc.php';
 require_once './libraries/header.inc.php';
-require_once './libraries/relation.lib.php';
 require_once './libraries/transformations.lib.php';
-$cfgRelation = PMA_getRelationsParam();
 
 $types = PMA_getAvailableMIMEtypes();
 ?>
@@ -52,7 +50,7 @@ foreach ($types['mimetype'] as $key => $mimetype) {
 <?php
 $odd_row = true;
 foreach ($types['transformation'] as $key => $transform) {
-    $func = strtolower(preg_replace('@(\.inc\.php3?)$@i', '', $types['transformation_file'][$key]));
+    $func = strtolower(str_ireplace('.inc.php', '', $types['transformation_file'][$key]));
     $desc = 'strTransformation_' . $func;
     ?>
     <tr class="<?php echo $odd_row ? 'odd' : 'even'; ?>">

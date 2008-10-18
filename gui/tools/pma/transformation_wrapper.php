@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: transformation_wrapper.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: transformation_wrapper.php 11233 2008-05-06 08:45:08Z cybot_tm $
  */
 
 /**
@@ -46,7 +46,7 @@ $default_ct = 'application/octet-stream';
 
 if ($cfgRelation['commwork'] && $cfgRelation['mimework']) {
     $mime_map = PMA_getMime($db, $table);
-    $mime_options = PMA_transformation_getOptions((isset($mime_map[urldecode($transform_key)]['transformation_options']) ? $mime_map[urldecode($transform_key)]['transformation_options'] : ''));
+    $mime_options = PMA_transformation_getOptions((isset($mime_map[$transform_key]['transformation_options']) ? $mime_map[$transform_key]['transformation_options'] : ''));
 
     foreach ($mime_options AS $key => $option) {
         if (substr($option, 0, 10) == '; charset=') {
@@ -62,23 +62,23 @@ if ($cfgRelation['commwork'] && $cfgRelation['mimework']) {
 require_once './libraries/header_http.inc.php';
 // [MIME]
 if (isset($ct) && !empty($ct)) {
-    $content_type = 'Content-Type: ' . urldecode($ct);
+    $content_type = 'Content-Type: ' . $ct;
 } else {
-    $content_type = 'Content-Type: ' . (isset($mime_map[urldecode($transform_key)]['mimetype']) ? str_replace('_', '/', $mime_map[urldecode($transform_key)]['mimetype']) : $default_ct) . (isset($mime_options['charset']) ? $mime_options['charset'] : '');
+    $content_type = 'Content-Type: ' . (isset($mime_map[$transform_key]['mimetype']) ? str_replace('_', '/', $mime_map[$transform_key]['mimetype']) : $default_ct) . (isset($mime_options['charset']) ? $mime_options['charset'] : '');
 }
 header($content_type);
 
 if (isset($cn) && !empty($cn)) {
-    header('Content-Disposition: attachment; filename=' . urldecode($cn));
+    header('Content-Disposition: attachment; filename=' . $cn);
 }
 
 if (!isset($resize)) {
-    echo $row[urldecode($transform_key)];
+    echo $row[$transform_key];
 } else {
     // if image_*__inline.inc.php finds that we can resize,
     // it sets $resize to jpeg or png
 
-    $srcImage = imagecreatefromstring($row[urldecode($transform_key)]);
+    $srcImage = imagecreatefromstring($row[$transform_key]);
     $srcWidth = ImageSX($srcImage);
     $srcHeight = ImageSY($srcImage);
 
@@ -113,15 +113,5 @@ if (!isset($resize)) {
     }
     ImageDestroy($srcImage);
     ImageDestroy($destImage);
-}
-
-/**
- * Close MySql non-persistent connections
- */
-if (isset($GLOBALS['controllink']) && $GLOBALS['controllink']) {
-    @PMA_DBI_close($GLOBALS['controllink']);
-}
-if (isset($GLOBALS['userlink']) && $GLOBALS['userlink']) {
-    @PMA_DBI_close($GLOBALS['userlink']);
 }
 ?>

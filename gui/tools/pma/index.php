@@ -3,7 +3,7 @@
 /**
  * forms frameset
  *
- * @version $Id: index.php 11402 2008-07-15 18:42:50Z lem9 $
+ * @version $Id: index.php 11403 2008-07-15 19:03:11Z lem9 $
  * @uses    $GLOBALS['strNoFrames']
  * @uses    $GLOBALS['cfg']['QueryHistoryDB']
  * @uses    $GLOBALS['cfg']['Server']['user']
@@ -42,7 +42,6 @@ require_once './libraries/relation.lib.php';
 session_write_close();
 
 // Gets the host name
-// loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
 if (empty($HTTP_HOST)) {
     if (PMA_getenv('HTTP_HOST')) {
         $HTTP_HOST = PMA_getenv('HTTP_HOST');
@@ -111,9 +110,10 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     <?php echo htmlspecialchars($HTTP_HOST); ?></title>
 <meta http-equiv="Content-Type"
     content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
+<meta name="robots" content="noindex,nofollow" />
 <script type="text/javascript">
 // <![CDATA[
-    // definitions used in querywindow.js
+    // definitions used in common.js
     var common_query = '<?php echo PMA_escapeJsString(PMA_generate_common_url('', '', '&'));?>';
     var opendb_url = '<?php echo PMA_escapeJsString($GLOBALS['cfg']['DefaultTabDatabase']); ?>';
     var safari_browser = <?php echo PMA_USR_BROWSER_AGENT == 'SAFARI' ? 'true' : 'false' ?>;
@@ -141,22 +141,22 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
         frame_navigation = window.frames[1];
 <?php } ?>
     }
-    var onloadCnt = 0; 
+    var onloadCnt = 0;
     var onLoadHandler = window.onload;
     window.onload = function() {
         if (onloadCnt == 0) {
-            if (typeof(onLoadHandler) == "function") { 
-                onLoadHandler(); 
+            if (typeof(onLoadHandler) == "function") {
+                onLoadHandler();
             }
-            if (typeof(getFrames) != 'undefined' && typeof(getFrames) == 'function') { 
-                getFrames(); 
+            if (typeof(getFrames) != 'undefined' && typeof(getFrames) == 'function') {
+                getFrames();
             }
             onloadCnt++;
         }
     };
 // ]]>
 </script>
-<script src="./js/querywindow.js" type="text/javascript"></script>
+<script src="./js/common.js" type="text/javascript"></script>
 </head>
 <frameset cols="<?php
 if ($GLOBALS['text_dir'] === 'rtl') {

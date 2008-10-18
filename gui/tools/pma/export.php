@@ -58,9 +58,8 @@ if (empty($_REQUEST['asfile'])) {
 
 // Does export require to be into file?
 if (isset($export_list[$type]['force_file']) && ! $asfile) {
-    $message = $strExportMustBeFile;
-    $GLOBALS['show_error_header'] = true;
-    $js_to_run = 'functions.js';
+    $message = PMA_Message::error('strExportMustBeFile');
+    $GLOBALS['js_include'][] = 'functions.js';
     require_once './libraries/header.inc.php';
     if ($export_type == 'server') {
         $active_page = 'server_export.php';
@@ -151,8 +150,8 @@ function PMA_exportOutputHandler($line)
                 if ($GLOBALS['save_on_server']) {
                     $write_result = @fwrite($GLOBALS['file_handle'], $dump_buffer);
                     if (!$write_result || ($write_result != strlen($dump_buffer))) {
-                        $GLOBALS['message'] = sprintf($GLOBALS['strNoSpace'], htmlspecialchars($save_filename));
-                        $GLOBALS['show_error_header'] = true;
+                        $GLOBALS['message'] = PMA_Message::error('strNoSpace');
+                        $GLOBALS['message']->addParam($save_filename);
                         return false;
                     }
                 } else {
@@ -176,8 +175,8 @@ function PMA_exportOutputHandler($line)
             if ($GLOBALS['save_on_server'] && strlen($line) > 0) {
                 $write_result = @fwrite($GLOBALS['file_handle'], $line);
                 if (!$write_result || ($write_result != strlen($line))) {
-                    $GLOBALS['message'] = sprintf($GLOBALS['strNoSpace'], htmlspecialchars($save_filename));
-                    $GLOBALS['show_error_header'] = true;
+                    $GLOBALS['message'] = PMA_Message::error('strNoSpace');
+                    $GLOBALS['message']->addParam($save_filename);
                     return false;
                 }
                 $time_now = time();
@@ -305,21 +304,21 @@ if ($save_on_server) {
     $save_filename = PMA_userDir($cfg['SaveDir']) . preg_replace('@[/\\\\]@', '_', $filename);
     unset($message);
     if (file_exists($save_filename) && empty($onserverover)) {
-        $message = sprintf($strFileAlreadyExists, htmlspecialchars($save_filename));
-        $GLOBALS['show_error_header'] = true;
+        $message = PMA_Message::error('strFileAlreadyExists');
+        $message->addParam($save_filename);
     } else {
         if (is_file($save_filename) && !is_writable($save_filename)) {
-            $message = sprintf($strNoPermission, htmlspecialchars($save_filename));
-            $GLOBALS['show_error_header'] = true;
+            $message = PMA_Message::error('strNoPermission');
+            $message->addParam($save_filename);
         } else {
             if (!$file_handle = @fopen($save_filename, 'w')) {
-                $message = sprintf($strNoPermission, htmlspecialchars($save_filename));
-                $GLOBALS['show_error_header'] = true;
+                $message = PMA_Message::error('strNoPermission');
+                $message->addParam($save_filename);
             }
         }
     }
     if (isset($message)) {
-        $js_to_run = 'functions.js';
+        $GLOBALS['js_include'][] = 'functions.js';
         require_once './libraries/header.inc.php';
         if ($export_type == 'server') {
             $active_page = 'server_export.php';
@@ -365,17 +364,16 @@ if (!$save_on_server) {
             header('Pragma: no-cache');
             // test case: exporting a database into a .gz file with Safari
             // would produce files not having the current time 
-            if ('SAFARI' == PMA_USR_BROWSER_AGENT) {
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            } 
+            // (added this header for Safari but should not harm other browsers)
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         }
     } else {
         // HTML
         if ($export_type == 'database') {
             $num_tables = count($tables);
             if ($num_tables == 0) {
-                $message = $strNoTablesFound;
-                $js_to_run = 'functions.js';
+                $message = PMA_Message::error('strNoTablesFound');
+                $GLOBALS['js_include'][] = 'functions.js';
                 require_once './libraries/header.inc.php';
                 $active_page = 'db_export.php';
                 require './db_export.php';
@@ -431,7 +429,7 @@ if ($export_type == 'server') {
         $tmp_select = '|' . $tmp_select . '|';
     }
     // Walk over databases
-    foreach ($GLOBALS['PMA_List_Database']->items as $current_db) {
+    foreach ($GLOBALS['pma']->databases as $current_db) {
         if ((isset($tmp_select) && strpos(' ' . $tmp_select, '|' . $current_db . '|'))
             || !isset($tmp_select)) {
             if (!PMA_exportDBHeader($current_db)) {
@@ -566,7 +564,7 @@ if (!PMA_exportFooter()) {
 // End of fake loop
 
 if ($save_on_server && isset($message)) {
-    $js_to_run = 'functions.js';
+    $GLOBALS['js_include'][] = 'functions.js';
     require_once './libraries/header.inc.php';
     if ($export_type == 'server') {
         $active_page = 'server_export.php';
@@ -603,11 +601,6 @@ if (!empty($asfile)) {
     elseif ($compression == 'bzip') {
         if (@function_exists('bzcompress')) {
             $dump_buffer = bzcompress($dump_buffer);
-            if ($dump_buffer === -8) {
-                require_once './libraries/header.inc.php';
-                echo sprintf($strBzError, '<a href="http://bugs.php.net/bug.php?id=17300" target="_blank">17300</a>');
-                require_once './libraries/footer.inc.php';
-            }
         }
     }
     // 3. as a gzipped file
@@ -623,12 +616,12 @@ if (!empty($asfile)) {
         $write_result = @fwrite($file_handle, $dump_buffer);
         fclose($file_handle);
         if (strlen($dump_buffer) !=0 && (!$write_result || ($write_result != strlen($dump_buffer)))) {
-            $message = sprintf($strNoSpace, htmlspecialchars($save_filename));
+            $message = new PMA_Message('strNoSpace', PMA_Message::ERROR, $save_filename);
         } else {
-            $message = sprintf($strDumpSaved, htmlspecialchars($save_filename));
+            $message = new PMA_Message('strDumpSaved', PMA_Message::SUCCESS, $save_filename);
         }
 
-        $js_to_run = 'functions.js';
+        $GLOBALS['js_include'][] = 'functions.js';
         require_once './libraries/header.inc.php';
         if ($export_type == 'server') {
             $active_page = 'server_export.php';

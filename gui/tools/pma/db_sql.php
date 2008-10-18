@@ -16,7 +16,7 @@ require_once './libraries/common.inc.php';
 require './libraries/db_common.inc.php';
 require_once './libraries/sql_query_form.lib.php';
 
-// The Back link after a syntax error will return to this script
+// After a syntax error, we return to this script
 // with the typed query in the textarea.
 $goto = 'db_sql.php';
 $back = 'db_sql.php';

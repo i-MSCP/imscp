@@ -7,7 +7,7 @@
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.cihar.com>.
  *
- * @version $Id: config.sample.inc.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: config.sample.inc.php 11456 2008-08-05 17:28:28Z lem9 $
  */
 
 /*
@@ -46,6 +46,8 @@ $cfg['Servers'][$i]['extension'] = 'mysql';
 // $cfg['Servers'][$i]['column_info'] = 'pma_column_info';
 // $cfg['Servers'][$i]['history'] = 'pma_history';
 // $cfg['Servers'][$i]['designer_coords'] = 'pma_designer_coords';
+/* Contrib / Swekey authentication */
+// $cfg['Servers'][$i]['auth_swekey_config'] = './swekey.conf';
 
 /*
  * End of servers configuration

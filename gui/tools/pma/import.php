@@ -3,14 +3,15 @@
 /**
  * Core script for import, this is just the glue around all other stuff
  *
- * @version $Id: import.php 10398 2007-05-15 11:16:10Z cybot_tm $
+ * @uses    PMA_Bookmark_getList()
+ * @version $Id: import.php 11472 2008-08-09 17:14:28Z lem9 $
  */
 
 /**
  * Get the variables sent or posted to this script and a core script
  */
 require_once './libraries/common.inc.php';
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 
 // default values
 $GLOBALS['reload'] = false;
@@ -50,8 +51,10 @@ if (!empty($sql_query)) {
 // upload limit has been reached, let's assume the second possibility.
 if ($_POST == array() && $_GET == array()) {
     require_once './libraries/header.inc.php';
-    $show_error_header = TRUE;
-    PMA_showMessage(sprintf($strUploadLimit, '[a@./Documentation.html#faq1_16@_blank]', '[/a]'));
+    $message = PMA_Message::error('strUploadLimit');
+    $message->addParam('[a@./Documentation.html#faq1_16@_blank]');
+    $message->addParam('[/a]');
+    $message->display();
     require './libraries/footer.inc.php';
 }
 
@@ -135,7 +138,7 @@ if (!empty($id_bookmark)) {
     require_once './libraries/bookmark.lib.php';
     switch ($action_bookmark) {
         case 0: // bookmarked query that have to be run
-            $import_text = PMA_queryBookmarks($db, $cfg['Bookmark'], $id_bookmark, 'id', isset($action_bookmark_all));
+            $import_text = PMA_Bookmark_get($db, $id_bookmark, 'id', isset($action_bookmark_all));
             if (isset($bookmark_variable) && !empty($bookmark_variable)) {
                 $import_text = preg_replace('|/\*(.*)\[VARIABLE\](.*)\*/|imsU', '${1}' . PMA_sqlAddslashes($bookmark_variable) . '${2}', $import_text);
             }
@@ -147,12 +150,12 @@ if (!empty($id_bookmark)) {
 
             break;
         case 1: // bookmarked query that have to be displayed
-            $import_text = PMA_queryBookmarks($db, $cfg['Bookmark'], $id_bookmark);
+            $import_text = PMA_Bookmark_get($db, $id_bookmark);
             $run_query = FALSE;
             break;
         case 2: // bookmarked query that have to be deleted
-            $import_text = PMA_queryBookmarks($db, $cfg['Bookmark'], $id_bookmark);
-            PMA_deleteBookmarks($db, $cfg['Bookmark'], $id_bookmark);
+            $import_text = PMA_Bookmark_get($db, $id_bookmark);
+            PMA_Bookmark_delete($db, $id_bookmark);
             $run_query = FALSE;
             $error = TRUE; // this is kind of hack to skip processing the query
             break;
@@ -177,15 +180,15 @@ if (!empty($bkm_label) && !empty($import_text)) {
 
     // Should we replace bookmark?
     if (isset($bkm_replace)) {
-        $bookmarks = PMA_listBookmarks($db, $cfg['Bookmark']);
+        $bookmarks = PMA_Bookmark_getList($db);
         foreach ($bookmarks as $key => $val) {
             if ($val == $bkm_label) {
-                PMA_deleteBookmarks($db, $cfg['Bookmark'], $key);
+                PMA_Bookmark_delete($db, $key);
             }
         }
     }
 
-    PMA_addBookmarks($bfields, $cfg['Bookmark'], isset($bkm_all_users));
+    PMA_Bookmark_save($bfields, isset($bkm_all_users));
 
     $bookmark_created = TRUE;
 } // end store bookmarks
@@ -238,8 +241,7 @@ if ($import_file != 'none' && !$error) {
 
         $tmp_subdir = (PMA_IS_WINDOWS ? '.\\tmp\\' : './tmp/');
 
-        // function is_writeable() is valid on PHP3 and 4
-        if (is_writeable($tmp_subdir)) {
+        if (is_writable($tmp_subdir)) {
             $import_file_new = $tmp_subdir . basename($import_file);
             if (move_uploaded_file($import_file, $import_file_new)) {
                 $import_file = $import_file_new;
@@ -248,11 +250,13 @@ if ($import_file != 'none' && !$error) {
         }
     }
 
-    // Handle file compression
+    /**
+     *  Handle file compression
+     *  @todo duplicate code exists in File.class.php
+     */
     $compression = PMA_detectCompression($import_file);
     if ($compression === FALSE) {
-        $message = $strFileCouldNotBeRead;
-        $show_error_header = TRUE;
+        $message = PMA_Message::error('strFileCouldNotBeRead');
         $error = TRUE;
     } else {
         switch ($compression) {
@@ -260,8 +264,8 @@ if ($import_file != 'none' && !$error) {
                 if ($cfg['BZipDump'] && @function_exists('bzopen')) {
                     $import_handle = @bzopen($import_file, 'r');
                 } else {
-                    $message = sprintf($strUnsupportedCompressionDetected, $compression);
-                    $show_error_header = TRUE;
+                    $message = PMA_Message::error('strUnsupportedCompressionDetected');
+                    $message->addParam($compression);
                     $error = TRUE;
                 }
                 break;
@@ -269,32 +273,24 @@ if ($import_file != 'none' && !$error) {
                 if ($cfg['GZipDump'] && @function_exists('gzopen')) {
                     $import_handle = @gzopen($import_file, 'r');
                 } else {
-                    $message = sprintf($strUnsupportedCompressionDetected, $compression);
-                    $show_error_header = TRUE;
+                    $message = PMA_Message::error('strUnsupportedCompressionDetected');
+                    $message->addParam($compression);
                     $error = TRUE;
                 }
                 break;
             case 'application/zip':
-                if ($cfg['GZipDump'] && @function_exists('gzinflate')) {
-                    include_once './libraries/unzip.lib.php';
-                    $import_handle = new SimpleUnzip();
-                    $import_handle->ReadFile($import_file);
-                    if ($import_handle->Count() == 0) {
-                        $message = $strNoFilesFoundInZip;
-                        $show_error_header = TRUE;
-                        $error = TRUE;
-                    } elseif ($import_handle->GetError(0) != 0) {
-                        $message = $strErrorInZipFile . ' ' . $import_handle->GetErrorMsg(0);
-                        $show_error_header = TRUE;
+                if ($cfg['ZipDump'] && @function_exists('zip_open')) {
+                    include_once './libraries/zip_extension.lib.php';
+                    $result = PMA_getZipContents($import_file);
+                    if (! empty($result['error'])) {
+                        $message = PMA_Message::rawError($result['error']);
                         $error = TRUE;
                     } else {
-                        $import_text = $import_handle->GetData(0);
+                        $import_text = $result['data'];
                     }
-                    // We don't need to store it further
-                    $import_handle = '';
                 } else {
-                    $message = sprintf($strUnsupportedCompressionDetected, $compression);
-                    $show_error_header = TRUE;
+                    $message = PMA_Message::error('strUnsupportedCompressionDetected');
+                    $message->addParam($compression);
                     $error = TRUE;
                 }
                 break;
@@ -302,21 +298,19 @@ if ($import_file != 'none' && !$error) {
                 $import_handle = @fopen($import_file, 'r');
                 break;
             default:
-                $message = sprintf($strUnsupportedCompressionDetected, $compression);
-                $show_error_header = TRUE;
+                $message = PMA_Message::error('strUnsupportedCompressionDetected');
+                $message->addParam($compression);
                 $error = TRUE;
                 break;
         }
     }
     if (!$error && $import_handle === FALSE) {
-        $message = $strFileCouldNotBeRead;
-        $show_error_header = TRUE;
+        $message = PMA_Message::error('strFileCouldNotBeRead');
         $error = TRUE;
     }
 } elseif (!$error) {
     if (!isset($import_text) || empty($import_text)) {
-        $message = $strNoDataReceived;
-        $show_error_header = TRUE;
+        $message = PMA_Message::error('strNoDataReceived');
         $error = TRUE;
     }
 }
@@ -327,8 +321,7 @@ if ($cfg['AllowAnywhereRecoding'] && $allow_recoding
     if ($charset_of_file != $charset) {
         $charset_conversion = TRUE;
     }
-} elseif (PMA_MYSQL_INT_VERSION >= 40100
-    && isset($charset_of_file) && $charset_of_file != 'utf8') {
+} elseif (isset($charset_of_file) && $charset_of_file != 'utf8') {
     PMA_DBI_query('SET NAMES \'' . $charset_of_file . '\'');
     // We can not show query in this case, it is in different charset
     $sql_query_disabled = TRUE;
@@ -350,8 +343,7 @@ if (!$error) {
     // Check for file existance
     if (!file_exists('./libraries/import/' . $format . '.php')) {
         $error = TRUE;
-        $message = $strCanNotLoadImportPlugins;
-        $show_error_header = TRUE;
+        $message = PMA_Message::error('strCanNotLoadImportPlugins');
     } else {
         // Do the real import
         $plugin_param = $import_type;
@@ -372,26 +364,27 @@ if ($reset_charset) {
 
 // Show correct message
 if (!empty($id_bookmark) && $action_bookmark == 2) {
-    $message = $strBookmarkDeleted;
+    $message = PMA_Message::success('strBookmarkDeleted');
     $display_query = $import_text;
     $error = FALSE; // unset error marker, it was used just to skip processing
 } elseif (!empty($id_bookmark) && $action_bookmark == 1) {
-    $message = $strShowingBookmark;
+    $message = PMA_Message::notice('strShowingBookmark');
 } elseif ($bookmark_created) {
     $special_message = '[br]' . sprintf($strBookmarkCreated, htmlspecialchars($bkm_label));
 } elseif ($finished && !$error) {
     if ($import_type == 'query') {
-        $message = $strSuccess;
+        $message = PMA_Message::success();
     } else {
-        $message = sprintf($strImportSuccessfullyFinished, $executed_queries);
+        $message = PMA_Message::success('strImportSuccessfullyFinished');
+        $message->addParam($executed_queries);
     }
 }
 
 // Did we hit timeout? Tell it user.
 if ($timeout_passed) {
-    $message = $strTimeoutPassed;
+    $message = PMA_Message::error('strTimeoutPassed');
     if ($offset == 0 || (isset($original_skip) && $original_skip == $offset)) {
-        $message .= ' ' . $strTimeoutNothingParsed;
+        $message->addString('strTimeoutNothingParsed');
     }
 }
 

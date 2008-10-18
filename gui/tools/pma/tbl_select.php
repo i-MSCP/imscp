@@ -1,8 +1,13 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
+ * Handles table search tab
  *
- * @version $Id: tbl_select.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ * display table search form, create SQL query from form data
+ * and include sql.php to execute it
+ *
+ * @todo display search form again if no results from previous search
+ * @version $Id: tbl_select.php 11417 2008-07-21 16:41:17Z lem9 $
  */
 
 /**
@@ -11,6 +16,9 @@
 require_once './libraries/common.inc.php';
 require_once './libraries/relation.lib.php'; // foreign keys
 require_once './libraries/mysql_charsets.lib.php';
+
+$GLOBALS['js_include'][] = 'tbl_change.js';
+$GLOBALS['js_include'][] = 'mootools.js';
 
 if ($GLOBALS['cfg']['PropertiesIconic'] == true) {
     $titles['Browse'] =
@@ -51,7 +59,7 @@ if (!isset($param) || $param[0] == '') {
     $err_url   = $goto . '?' . PMA_generate_common_url($db, $table);
 
     // Gets the list and number of fields
-    $result     = PMA_DBI_query('SHOW' . (PMA_MYSQL_INT_VERSION >= 40100 ? ' FULL' : '') . ' FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
+    $result     = PMA_DBI_query('SHOW FULL FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
     $fields_cnt = PMA_DBI_num_rows($result);
     // rabue: we'd better ensure, that all arrays are empty.
     $fields_list = $fields_null = $fields_type = $fields_collation = array();
@@ -79,7 +87,7 @@ if (!isset($param) || $param[0] == '') {
         }
         $fields_null[] = $row['Null'];
         $fields_type[] = $type;
-        $fields_collation[] = PMA_MYSQL_INT_VERSION >= 40100 && !empty($row['Collation']) && $row['Collation'] != 'NULL'
+        $fields_collation[] = !empty($row['Collation']) && $row['Collation'] != 'NULL'
                           ? $row['Collation']
                           : '';
     } // end while
@@ -88,11 +96,9 @@ if (!isset($param) || $param[0] == '') {
 
     // <markus@noga.de>
     // retrieve keys into foreign fields, if any
-    $cfgRelation = PMA_getRelationsParam();
     // check also foreigners even if relwork is FALSE (to get
     // foreign keys from innodb)
-    //$foreigners  = ($cfgRelation['relwork'] ? PMA_getForeigners($db, $table) : FALSE);
-    $foreigners  = PMA_getForeigners($db, $table);
+    $foreigners = PMA_getForeigners($db, $table);
     ?>
 <script type="text/javascript">
 // <![CDATA[
@@ -121,72 +127,13 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
 
 <fieldset id="fieldset_table_search">
 
-<fieldset id="fieldset_select_fields">
-    <legend><?php echo $strSelectFields; ?></legend>
-    <select name="param[]" size="<?php echo min($fields_cnt, 10); ?>"
-        multiple="multiple">
-    <?php
-    // Displays the list of the fields
-    foreach ($fields_list as $each_field) {
-        echo '        '
-            .'<option value="' . htmlspecialchars($each_field) . '"'
-            .' selected="selected">' . htmlspecialchars($each_field)
-            .'</option>' . "\n";
-    }
-    ?>
-    </select>
-    <input type="checkbox" name="distinct" value="DISTINCT" id="oDistinct" />
-    <label for="oDistinct">DISTINCT</label>
-</fieldset>
-
-<fieldset id="fieldset_limit_rows">
-    <legend><?php echo $strLimitNumRows; ?></legend>
-    <input type="text" size="4" name="session_max_rows"
-        value="<?php echo $GLOBALS['cfg']['MaxRows']; ?>" class="textfield" />
-</fieldset>
-
-<fieldset id="fieldset_display_order">
-    <legend><?php echo $strDisplayOrder; ?></legend>
-    <select name="orderField" style="vertical-align: middle">
-        <option value="--nil--"></option>
-    <?php
-    foreach ($fields_list as $each_field) {
-        echo '        '
-            .'<option value="' . htmlspecialchars($each_field) . '">'
-            .htmlspecialchars($each_field) . '</option>' . "\n";
-    } // end for
-    ?>
-    </select>
-
-    <div class="formelement">
-        <input type="radio" name="order" value="ASC" checked="checked" id="sortASC" />
-        <label for="sortASC"><?php echo $strAscending; ?></label>
-    </div>
-
-    <div class="formelement">
-        <input type="radio" name="order" value="DESC" id="sortDESC" />
-        <label for="sortDESC"><?php echo $strDescending; ?></label>
-    </div>
-</fieldset>
-
-<br class="clearfloat" />
-<?php echo $strAddSearchConditions; ?>
-<?php echo PMA_showMySQLDocu('SQL-Syntax', 'Functions'); ?>
-
-<input type="text" name="where" class="textfield" size="64" />
-
-</fieldset>
-<fieldset class="tblFooters">
-    <input type="submit" name="submit" value="<?php echo $strGo; ?>" />
-</fieldset>
-
 <fieldset id="fieldset_table_qbe">
-    <legend><?php echo '<em>' . $strOr . '</em> ' . $strDoAQuery; ?></legend>
+    <legend><?php echo $strDoAQuery; ?></legend>
     <table class="data">
     <thead>
     <tr><th><?php echo $strField; ?></th>
         <th><?php echo $strType; ?></th>
-        <?php echo PMA_MYSQL_INT_VERSION >= 40100 ? '<th>' . $strCollation . '</th>' . "\n" : ''; ?>
+        <th><?php echo $strCollation; ?></th>
         <th><?php echo $strOperator; ?></th>
         <th><?php echo $strValue; ?></th>
     </tr>
@@ -194,16 +141,13 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     <tbody>
     <?php
     $odd_row = true;
-?>
-<script type="text/javascript" src="./js/tbl_change.js"></script>
-<?php
+
     for ($i = 0; $i < $fields_cnt; $i++) {
         ?>
         <tr class="<?php echo $odd_row ? 'odd' : 'even'; $odd_row = ! $odd_row; ?>">
             <th><?php echo htmlspecialchars($fields_list[$i]); ?></th>
             <td><?php echo $fields_type[$i]; ?></td>
-            <?php echo PMA_MYSQL_INT_VERSION >= 40100 ? '<td>'
-                . $fields_collation[$i] . '</td>' . "\n" : ''; ?>
+            <td><?php echo $fields_collation[$i]; ?></td>
             <td><select name="func[]">
         <?php
         if (strncasecmp($fields_type[$i], 'enum', 4) == 0) {
@@ -241,13 +185,9 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         // <markus@noga.de>
         $field = $fields_list[$i];
 
-        // do not use require_once here
-        require './libraries/get_foreign.lib.php';
+        $foreignData = PMA_getForeignData($foreigners, $field, false, '', '');
 
-        // we got a bug report: in some cases, even if $disp is true,
-        // there are no rows, so we add a fetch_array
-
-        if ($foreigners && isset($foreigners[$field]) && isset($disp_row) && is_array($disp_row)) {
+        if ($foreigners && isset($foreigners[$field]) && is_array($foreignData['disp_row'])) {
             // f o r e i g n    k e y s
             echo '            <select name="fields[' . $i . ']">' . "\n";
             // go back to first row
@@ -255,10 +195,12 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
             // here, the 4th parameter is empty because there is no current
             // value of data for the dropdown (the search page initial values
             // are displayed empty)
-            echo PMA_foreignDropdown($disp_row, $foreign_field, $foreign_display,
+            echo PMA_foreignDropdown($foreignData['disp_row'],
+                $foreignData['foreign_field'],
+                $foreignData['foreign_display'],
                 '', $GLOBALS['cfg']['ForeignKeyMaxLimit']);
             echo '            </select>' . "\n";
-        } elseif (isset($foreign_link) && $foreign_link == true) {
+        } elseif ($foreignData['foreign_link'] == true) {
             ?>
             <input type="text" name="fields[<?php echo $i; ?>]"
                 id="field_<?php echo md5($field); ?>[<?php echo $i; ?>]"
@@ -290,7 +232,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         ?>
                     <script type="text/javascript">
                     //<![CDATA[
-                    document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (PMA_MYSQL_INT_VERSION >= 40100 && substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
+                    document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
                     //]]>
                     </script>
         <?php
@@ -309,6 +251,63 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     ?>
     </tbody>
     </table>
+</fieldset>
+<?php
+    PMA_generate_slider_effect('searchoptions', $strOptions);
+?>
+<fieldset id="fieldset_select_fields">
+    <legend><?php echo $strSelectFields; ?></legend>
+    <select name="param[]" size="<?php echo min($fields_cnt, 10); ?>"
+        multiple="multiple">
+    <?php
+    // Displays the list of the fields
+    foreach ($fields_list as $each_field) {
+        echo '        '
+            .'<option value="' . htmlspecialchars($each_field) . '"'
+            .' selected="selected">' . htmlspecialchars($each_field)
+            .'</option>' . "\n";
+    }
+    ?>
+    </select>
+    <input type="checkbox" name="distinct" value="DISTINCT" id="oDistinct" />
+    <label for="oDistinct">DISTINCT</label>
+</fieldset>
+
+<fieldset id="fieldset_search_conditions">
+    <legend><?php echo '<em>' . $strOr . '</em> ' .$strAddSearchConditions; ?></legend>
+<?php echo PMA_showMySQLDocu('SQL-Syntax', 'Functions'); ?>
+
+<input type="text" name="where" class="textfield" size="64" />
+</fieldset>
+
+<fieldset id="fieldset_limit_rows">
+    <legend><?php echo $strLimitNumRows; ?></legend>
+    <input type="text" size="4" name="session_max_rows"
+        value="<?php echo $GLOBALS['cfg']['MaxRows']; ?>" class="textfield" />
+</fieldset>
+
+<fieldset id="fieldset_display_order">
+    <legend><?php echo $strDisplayOrder; ?></legend>
+    <select name="orderField" style="vertical-align: middle">
+        <option value="--nil--"></option>
+    <?php
+    foreach ($fields_list as $each_field) {
+        echo '        '
+            .'<option value="' . htmlspecialchars($each_field) . '">'
+            .htmlspecialchars($each_field) . '</option>' . "\n";
+    } // end for
+    ?>
+    </select>
+<?php
+    $choices = array(
+        'ASC'  => $strAscending,
+        'DESC' => $strDescending
+    );
+    PMA_generate_html_radio('order', $choices, 'ASC', false, true, "formelement");
+    unset($choices);
+?>
+</fieldset>
+</div>
 </fieldset>
 <fieldset class="tblFooters">
     <input type="hidden" name="max_number_of_fields"
@@ -351,12 +350,10 @@ else {
         $cnt_func = count($func);
         reset($func);
         while (list($i, $func_type) = each($func)) {
-            if (PMA_MYSQL_INT_VERSION >= 40100) {
-                list($charsets[$i]) = explode('_', $collations[$i]);
-            }
-            if (@$GLOBALS['cfg']['UnaryOperators'][$func_type] == 1) {
+            list($charsets[$i]) = explode('_', $collations[$i]);
+            if (isset($GLOBALS['cfg']['UnaryOperators'][$func_type]) && $GLOBALS['cfg']['UnaryOperators'][$func_type] == 1) {
                 $fields[$i] = '';
-                $w[] = PMA_backquote(urldecode($names[$i])) . ' ' . $func_type;
+                $w[] = PMA_backquote($names[$i]) . ' ' . $func_type;
 
             } elseif (strncasecmp($types[$i], 'enum', 4) == 0) {
                 if (!empty($fields[$i])) {
@@ -379,20 +376,11 @@ else {
                         $parens_close = '';
                     }
                     $enum_where = '\'' . PMA_sqlAddslashes($fields[$i][0]) . '\'';
-                    if (PMA_MYSQL_INT_VERSION >= 40100 && $charsets[$i] != $charset_connection) {
-                        $enum_where = 'CONVERT(_utf8 ' . $enum_where . ' USING ' . $charsets[$i] . ') COLLATE ' . $collations[$i];
-                    }
                     for ($e = 1; $e < $enum_selected_count; $e++) {
-                        $enum_where .= ', ';
-                        $tmp_literal = '\'' . PMA_sqlAddslashes($fields[$i][$e]) . '\'';
-                        if (PMA_MYSQL_INT_VERSION >= 40100 && $charsets[$i] != $charset_connection) {
-                            $tmp_literal = 'CONVERT(_utf8 ' . $tmp_literal . ' USING ' . $charsets[$i] . ') COLLATE ' . $collations[$i];
-                        }
-                        $enum_where .= $tmp_literal;
-                        unset($tmp_literal);
+                        $enum_where .= ', \'' . PMA_sqlAddslashes($fields[$i][$e]) . '\'';
                     }
 
-                    $w[] = PMA_backquote(urldecode($names[$i])) . ' ' . $func_type . ' ' . $parens_open . $enum_where . $parens_close;
+                    $w[] = PMA_backquote($names[$i]) . ' ' . $func_type . ' ' . $parens_open . $enum_where . $parens_close;
                 }
 
             } elseif ($fields[$i] != '') {
@@ -405,23 +393,12 @@ else {
                     $quot = '';
                 }
 
-                // Make query independant from the selected connection charset.
-                // But if the field's type is VARBINARY, it has no charset
-                // and $charsets[$i] is empty, so we cannot generate a CONVERT
-
-                if (PMA_MYSQL_INT_VERSION >= 40101 && !empty($charsets[$i]) && $charsets[$i] != $charset_connection && preg_match('@char|binary|blob|text|set@i', $types[$i])) {
-                    $prefix = 'CONVERT(_utf8 ';
-                    $suffix = ' USING ' . $charsets[$i] . ') COLLATE ' . $collations[$i];
-                } else {
-                    $prefix = $suffix = '';
-                }
-
                 // LIKE %...%
                 if ($func_type == 'LIKE %...%') {
                     $func_type = 'LIKE';
                     $fields[$i] = '%' . $fields[$i] . '%';
                 }
-                $w[] = PMA_backquote(urldecode($names[$i])) . ' ' . $func_type . ' ' . $prefix . $quot . PMA_sqlAddslashes($fields[$i]) . $quot . $suffix;
+                $w[] = PMA_backquote($names[$i]) . ' ' . $func_type . ' ' . $quot . PMA_sqlAddslashes($fields[$i]) . $quot;
 
             } // end if
         } // end for
@@ -432,9 +409,10 @@ else {
     } // end if
 
     if ($orderField != '--nil--') {
-        $sql_query .= ' ORDER BY ' . PMA_backquote(urldecode($orderField)) . ' ' . $order;
+        $sql_query .= ' ORDER BY ' . PMA_backquote($orderField) . ' ' . $order;
     } // end if
-    include './sql.php';
+
+    require './sql.php';
 }
 
 ?>

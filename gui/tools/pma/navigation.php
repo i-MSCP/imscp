@@ -3,8 +3,8 @@
 /**
  * the navigation frame - displays server, db and table selection tree
  *
- * @version $Id: navigation.php 11320 2008-06-12 20:00:23Z lem9 $
- * @uses $GLOBALS['PMA_List_Database']
+ * @version $Id: navigation.php 11602 2008-09-21 13:02:41Z lem9 $
+ * @uses $GLOBALS['pma']->databases
  * @uses $GLOBALS['server']
  * @uses $GLOBALS['db']
  * @uses $GLOBALS['table']
@@ -24,12 +24,11 @@
  * @uses $GLOBALS['cfg']['DefaultTabDatabase']
  * @uses $GLOBALS['cfgRelation']['commwork']) {
  * @uses PMA_List_Database::getSingleItem()
- * @uses PMA_List_Database::count()
  * @uses PMA_List_Database::getHtmlSelectGrouped()
  * @uses PMA_List_Database::getGroupedDetails()
  * @uses PMA_generate_common_url()
  * @uses PMA_generate_common_hidden_inputs()
- * @uses PMA_getComments();
+ * @uses PMA_getDbComment();
  * @uses PMA_getTableCount()
  * @uses PMA_getTableList()
  * @uses PMA_getRelationsParam()
@@ -52,23 +51,11 @@ require_once './libraries/common.inc.php';
  *
  * @uses $GLOBALS['controllink'] to close it
  * @uses $GLOBALS['userlink'] to close it
- * @uses PMA_DBI_close()
  * @access private only to be used in navigation.php
  */
 function PMA_exitNavigationFrame()
 {
     echo '</body></html>';
-
-    /**
-     * Close MySQL connections
-     */
-    if (isset($GLOBALS['controllink']) && $GLOBALS['controllink']) {
-        @PMA_DBI_close($GLOBALS['controllink']);
-    }
-    if (isset($GLOBALS['userlink']) && $GLOBALS['userlink']) {
-        @PMA_DBI_close($GLOBALS['userlink']);
-    }
-
     exit;
 }
 
@@ -76,8 +63,9 @@ function PMA_exitNavigationFrame()
 if (! isset($_SESSION['userconf']['navi_limit_offset'])) {
     $_SESSION['userconf']['navi_limit_offset'] = 0;
 }
-if (! isset($_SESSION['userconf']['table_limit_offset'])) {
-	$_SESSION['userconf']['table_limit_offset'] = 0;
+if (! isset($_SESSION['userconf']['table_limit_offset']) || $_SESSION['userconf']['table_limit_offset_db'] != $db) {
+    $_SESSION['userconf']['table_limit_offset'] = 0;
+    $_SESSION['userconf']['table_limit_offset_db'] = $db;
 }
 if (isset($_REQUEST['pos'])) {
 	if (isset($_REQUEST['tpos'])) {
@@ -89,9 +77,11 @@ if (isset($_REQUEST['pos'])) {
 }
 $pos = $_SESSION['userconf']['navi_limit_offset'];
 $tpos = $_SESSION['userconf']['table_limit_offset'];
-
 // free the session file, for the other frames to be loaded
-session_write_close();
+// but only if debugging is not enabled
+if (empty($_SESSION['debug'])) {
+    session_write_close();
+}
 
 /**
  * the output compression library
@@ -104,7 +94,7 @@ PMA_outBufferPre();
  * selects the database if there is only one on current server
  */
 if ($GLOBALS['server'] && ! strlen($GLOBALS['db'])) {
-    $GLOBALS['db'] = $GLOBALS['PMA_List_Database']->getSingleItem();
+    $GLOBALS['db'] = $GLOBALS['pma']->databases->getSingleItem();
 }
 
 $db_start = $GLOBALS['db'];
@@ -120,23 +110,6 @@ $cfgRelation = PMA_getRelationsParam();
  * It can now be included by libraries/header.inc.php, querywindow.php.
  */
 require_once './libraries/header_http.inc.php';
-
-if (! isset($_SESSION['userconf']['navi_limit_offset'])) {
-    $_SESSION['userconf']['navi_limit_offset'] = 0;
-}
-if (! isset($_SESSION['userconf']['table_limit_offset'])) {
-	$_SESSION['userconf']['table_limit_offset'] = 0;
-}
-if (isset($_REQUEST['pos'])) {
-	if (isset($_REQUEST['tpos'])) {
-		$_SESSION['userconf']['table_limit_offset'] = (int) $_REQUEST['pos'];
-	}
-	else {
-		$_SESSION['userconf']['navi_limit_offset'] = (int) $_REQUEST['pos'];
-	}
-}
-$pos = $_SESSION['userconf']['navi_limit_offset'];
-$tpos = $_SESSION['userconf']['table_limit_offset'];
 
 /*
  * Displays the frame
@@ -215,11 +188,11 @@ require './libraries/navigation_header.inc.php';
 if (! $GLOBALS['server']) {
     // no server selected
     PMA_exitNavigationFrame();
-} elseif (! $GLOBALS['PMA_List_Database']->count()) {
+} elseif (! count($GLOBALS['pma']->databases)) {
     // no database available, so we break here
     echo '<p>' . $GLOBALS['strNoDatabases'] . '</p>';
     PMA_exitNavigationFrame();
-} elseif ($GLOBALS['cfg']['LeftFrameLight'] && $GLOBALS['PMA_List_Database']->count() > 1) {
+} elseif ($GLOBALS['cfg']['LeftFrameLight'] && count($GLOBALS['pma']->databases) > 1) {
     $list = $cfg['DisplayDatabasesList'];
     if ($list === 'auto') {
         if (empty($GLOBALS['db'])) {
@@ -243,7 +216,7 @@ if (! $GLOBALS['server']) {
     <label for="lightm_db"><?php echo $GLOBALS['strDatabase']; ?></label>
     <?php
         echo PMA_generate_common_hidden_inputs() . "\n";
-        echo $GLOBALS['PMA_List_Database']->getHtmlSelectGrouped(true, $_SESSION['userconf']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
+        echo $GLOBALS['pma']->databases->getHtmlSelectGrouped(true, $_SESSION['userconf']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
         echo '<noscript>' . "\n"
             .'<input type="submit" name="Go" value="' . $GLOBALS['strGo'] . '" />' . "\n"
             .'</noscript>' . "\n"
@@ -252,10 +225,10 @@ if (! $GLOBALS['server']) {
         if (! empty($db)) {
             echo '<div id="databaseList">' . "\n";
         }
-        echo $GLOBALS['PMA_List_Database']->getHtmlListGrouped(true, $_SESSION['userconf']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
+        echo $GLOBALS['pma']->databases->getHtmlListGrouped(true, $_SESSION['userconf']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
     }
     $_url_params = array('pos' => $pos);
-    PMA_listNavigator($GLOBALS['PMA_List_Database']->count(), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
+    PMA_listNavigator(count($GLOBALS['pma']->databases), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
     if (! empty($db)) {
         echo '</div>' . "\n";
     }
@@ -283,7 +256,11 @@ $href_left = '<a onclick="if (toggle(\'%d\')) return false;"'
 
 $element_counter = 0;
 
+
 if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
+    $table_list = PMA_getTableList($GLOBALS['db']);
+    $table_count = count($table_list);
+    
     // show selected databasename as link to DefaultTabDatabase-page
     // with table count in ()
     $common_url_query = PMA_generate_common_url($GLOBALS['db']);
@@ -292,9 +269,9 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
 
     if ($GLOBALS['cfg']['ShowTooltip']
       && $GLOBALS['cfgRelation']['commwork']) {
-        $_db_tooltip = PMA_getComments($GLOBALS['db']);
-        if (is_array($_db_tooltip)) {
-            $db_tooltip = implode(' ', $_db_tooltip);
+        $_db_tooltip = PMA_getDbComment($GLOBALS['db']);
+        if ($_db_tooltip) {
+            $db_tooltip = $_db_tooltip;
         }
     }
 
@@ -311,11 +288,11 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
         title="<?php echo htmlspecialchars($db_tooltip); ?>" >
     <?php
     if ($GLOBALS['text_dir'] === 'rtl') {
-        echo ' <bdo dir="ltr">(' . PMA_getTableCount($GLOBALS['db']) . ')</bdo> ';
+        echo ' <bdo dir="ltr">(' . $table_count . ')</bdo> ';
     }
     echo '<span class="navi_dbName">' . htmlspecialchars($disp_name) . '</span>';
     if ($GLOBALS['text_dir'] === 'ltr') {
-        echo ' <bdo dir="ltr">(' . PMA_getTableCount($GLOBALS['db']) . ')</bdo> ';
+        echo ' <bdo dir="ltr">(' . $table_count . ')</bdo> ';
     }
     echo '</a></p>';
 
@@ -324,9 +301,8 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
      * user can find a navigator to page thru all tables.
      *
      */
-    $table_list = PMA_getTableList($GLOBALS['db'], null, $tpos, $cfg['MaxTableList']);
+    $table_list = array_slice($table_list, $tpos, $cfg['MaxTableList']);
     if (! empty($table_list)) {
-        $table_count = PMA_getTableCount($GLOBALS['db']);
         // upper table list paginator
         if (count($table_list) <= $GLOBALS['cfg']['MaxTableList'] && $table_count > $GLOBALS['cfg']['MaxTableList']) {
             $_url_params = array(
@@ -340,7 +316,7 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
         // lower table list paginator
         if (count($table_list) <= $GLOBALS['cfg']['MaxTableList'] && $table_count > $GLOBALS['cfg']['MaxTableList']) {
             PMA_listNavigator($table_count, $tpos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxTableList']);
-        } 
+        }
     } else {
         echo $GLOBALS['strNoTablesFound'];
     }
@@ -350,11 +326,11 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
 } else {
     echo '<div id="databaseList">' . "\n";
     $_url_params = array('pos' => $pos);
-    PMA_listNavigator($GLOBALS['PMA_List_Database']->count(), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
+    PMA_listNavigator(count($GLOBALS['pma']->databases), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
     echo '</div>' . "\n";
 
     $common_url_query = PMA_generate_common_url();
-    PMA_displayDbList($GLOBALS['PMA_List_Database']->getGroupedDetails($_SESSION['userconf']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']), $_SESSION['userconf']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']);
+    PMA_displayDbList($GLOBALS['pma']->databases->getGroupedDetails($_SESSION['userconf']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']), $_SESSION['userconf']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']);
 }
 
 /**
@@ -386,13 +362,13 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
 
     // get table list, for all databases
     // doing this in one step takes advantage of a single query with information_schema!
-    $tables_full = PMA_DBI_get_tables_full($GLOBALS['PMA_List_Database']->getLimitedItems($offset, $count));
+    $tables_full = PMA_DBI_get_tables_full($GLOBALS['pma']->databases->getLimitedItems($offset, $count));
 
     $url_dbgroup = '';
     echo '<ul id="leftdatabaselist">';
     $close_db_group = false;
     foreach ($ext_dblist as $group => $db_group) {
-        if ($GLOBALS['PMA_List_Database']->count() > 1) {
+        if (count($GLOBALS['pma']->databases) > 1) {
             if ($close_db_group) {
                 $url_dbgroup = '';
                 echo '</ul>';
@@ -431,7 +407,7 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
             // Displays the database name
             echo '<li>' . "\n";
 
-            if ($GLOBALS['PMA_List_Database']->count() > 1) {
+            if (count($GLOBALS['pma']->databases) > 1) {
                 // only with more than one db we need collapse ...
                 if ($db_start != $db['name'] || $db['num_tables'] < 1) {
                     // display + only if this db is not preselected
@@ -504,7 +480,7 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
                     $tables = PMA_getTableList($db['name']);
                 }
                 $child_visible =
-                    (bool) ($GLOBALS['PMA_List_Database']->count() === 1 || $db_start == $db['name']);
+                    (bool) (count($GLOBALS['pma']->databases) === 1 || $db_start == $db['name']);
                 PMA_displayTableList($tables, $child_visible, '', $db['name']);
             } elseif ($GLOBALS['cfg']['LeftFrameLight']) {
                 // no tables and LeftFrameLight:
@@ -553,7 +529,7 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
  * @global  string  html code for '+' image
  * @global  string  html code for self link
  * @param   array   $tables         array of tables/tablegroups
- * @param   boolean $visible        wether the list is visible or not
+ * @param   boolean $visible        whether the list is visible or not
  * @param   string  $tab_group_full full tab group name
  * @param   string  $table_db       db of this table
  */
@@ -629,17 +605,17 @@ function PMA_displayTableList($tables, $visible = false,
             }
             echo '</li>' . "\n";
         } elseif (is_array($table)) {
-            $href = $GLOBALS['cfg']['DefaultTabTable'] . '?'
-                .$GLOBALS['common_url_query'] . '&amp;table='
-                .urlencode($table['Name']);
+            // quick access icon next to each table name
             echo '<li>' . "\n";
-            echo '<a title="' . $GLOBALS['strBrowse'] . ': '
-                . htmlspecialchars($table['Comment'])
+            echo '<a title="'
+                . htmlspecialchars(PMA_getTitleForTarget($GLOBALS['cfg']['LeftDefaultTabTable']))
+                . ': ' . htmlspecialchars($table['Comment'])
                 .' (' . PMA_formatNumber($table['Rows'], 0) . ' ' . $GLOBALS['strRows'] . ')"'
-                .' id="browse_' . htmlspecialchars($table_db . '.' . $table['Name']) . '"'
-                .' href="sql.php?' . $GLOBALS['common_url_query']
+                .' id="quick_' . htmlspecialchars($table_db . '.' . $table['Name']) . '"'
+                .' href="' . $GLOBALS['cfg']['LeftDefaultTabTable'] . '?'
+                . $GLOBALS['common_url_query']
                 .'&amp;table=' . urlencode($table['Name'])
-                .'&amp;goto=' . $GLOBALS['cfg']['DefaultTabTable']
+                .'&amp;goto=' . $GLOBALS['cfg']['LeftDefaultTabTable']
                 . '" >'
                 .'<img class="icon"';
             if ('VIEW' === strtoupper($table['Comment'])) {
@@ -648,8 +624,14 @@ function PMA_displayTableList($tables, $visible = false,
                 echo ' src="' . $GLOBALS['pmaThemeImage'] . 'b_sbrowse.png"';
             }
             echo ' id="icon_' . htmlspecialchars($table_db . '.' . $table['Name']) . '"'
-                .' width="10" height="10" alt="' . $GLOBALS['strBrowse'] . '" /></a>' . "\n"
-                .'<a href="' . $href . '" title="' . htmlspecialchars($table['Comment']
+                .' width="10" height="10" alt="' . $GLOBALS['strBrowse'] . '" /></a>' . "\n";
+
+            // link for the table name itself
+            $href = $GLOBALS['cfg']['DefaultTabTable'] . '?'
+                .$GLOBALS['common_url_query'] . '&amp;table='
+                .urlencode($table['Name']) . '&amp;pos=0';
+            echo '<a href="' . $href
+            . '" title="' . htmlspecialchars(PMA_getTitleForTarget($GLOBALS['cfg']['DefaultTabTable']) . ': ' . $table['Comment']
                 .' (' . PMA_formatNumber($table['Rows'], 0) . ' ' . $GLOBALS['strRows']) . ')"'
                 .' id="' . htmlspecialchars($table_db . '.' . $table['Name']) . '">'
                 // preserve spaces in table name
@@ -658,6 +640,38 @@ function PMA_displayTableList($tables, $visible = false,
         }
     }
     echo '</ul>';
+}
+
+/**
+ * get the action word corresponding to a script name
+ * in order to display it as a title in navigation panel
+ *
+ * @uses    switch()
+ * @uses    $GLOBALS
+ * @param   string  a valid value for $cfg['LeftDefaultTabTable']
+ *                  or $cfg['DefaultTabTable']
+ */
+function PMA_getTitleForTarget($target) {
+    switch ($target) {
+        case 'tbl_structure.php':
+            $message = 'strStructure';
+            break;
+        case 'tbl_sql.php':
+            $message = 'strSQL';
+            break;
+        case 'tbl_select.php':
+            $message = 'strSearch';
+            break;
+        case 'tbl_change.php':
+            $message = 'strInsert';
+            break;
+        case 'sql.php':
+            $message = 'strBrowse';
+            break;
+        default:
+            $message = '';
+    }
+    return $GLOBALS[$message];
 }
 
 echo '</div>' . "\n";

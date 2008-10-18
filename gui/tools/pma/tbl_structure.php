@@ -1,8 +1,9 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- *
- * @version $Id: tbl_structure.php 11354 2008-06-27 15:08:21Z lem9 $
+ * Displays table structure infos like fields/columns, indexes, size, rows
+ * and allows manipulation of indexes and columns/fields
+ * @version $Id: tbl_structure.php 11417 2008-07-21 16:41:17Z lem9 $
  */
 
 /**
@@ -12,49 +13,86 @@ require_once './libraries/common.inc.php';
 require_once './libraries/mysql_charsets.lib.php';
 require_once './libraries/relation.lib.php';
 
+$GLOBALS['js_include'][] = 'mootools.js';
+
+/**
+ * handle multiple field commands if required
+ *
+ * submit_mult_*_x comes from IE if <input type="img" ...> is used
+ */
+if (isset($_REQUEST['submit_mult_change_x'])) {
+    $submit_mult = $strChange;
+} elseif (isset($_REQUEST['submit_mult_drop_x'])) {
+    $submit_mult = $strDrop;
+} elseif (isset($_REQUEST['submit_mult_primary_x'])) {
+    $submit_mult = $strPrimary;
+} elseif (isset($_REQUEST['submit_mult_index_x'])) {
+    $submit_mult = $strIndex;
+} elseif (isset($_REQUEST['submit_mult_unique_x'])) {
+    $submit_mult = $strUnique;
+} elseif (isset($_REQUEST['submit_mult_fulltext_x'])) {
+    $submit_mult = $strIdxFulltext;
+} elseif (isset($_REQUEST['submit_mult_browse_x'])) {
+    $submit_mult = $strBrowse;
+} elseif (isset($_REQUEST['submit_mult'])) {
+    $submit_mult = $_REQUEST['submit_mult'];
+} elseif (isset($_REQUEST['mult_btn']) && $_REQUEST['mult_btn'] == $strYes) {
+    $submit_mult = 'row_delete';
+    if (isset($_REQUEST['selected'])) {
+        $_REQUEST['selected_fld'] = $_REQUEST['selected'];
+    }
+}
+
+if (! empty($submit_mult) && isset($_REQUEST['selected_fld'])) {
+    $err_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
+    if ($submit_mult == $strBrowse) {
+        // browsing the table displaying only selected fields/columns
+        $GLOBALS['active_page'] = 'sql.php';
+        $sql_query = '';
+        foreach ($_REQUEST['selected_fld'] as $idx => $sval) {
+            if ($sql_query == '') {
+                $sql_query .= 'SELECT ' . PMA_backquote($sval);
+            } else {
+                $sql_query .=  ', ' . PMA_backquote($sval);
+            }
+        }
+
+        // what is this htmlspecialchars() for??
+        //$sql_query .= ' FROM ' . PMA_backquote(htmlspecialchars($table));
+        $sql_query .= ' FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table);
+        require './sql.php';
+        exit;
+    } else {
+        // handle multiple field commands
+        // handle confirmation of deleting multiple fields/columns
+        $action = 'tbl_structure.php';
+        require './libraries/mult_submits.inc.php';
+        //require_once './libraries/header.inc.php';
+        //require_once './libraries/tbl_links.inc.php';
+
+        if (empty($message)) {
+            $message = PMA_Message::success();
+        }
+    }
+}
+
 /**
  * Gets the relation settings
  */
 $cfgRelation = PMA_getRelationsParam();
-
-
-/**
- * Drop multiple fields if required
- */
-
-// workaround for IE problem:
-if (isset($submit_mult_change_x)) {
-    $submit_mult = $strChange;
-} elseif (isset($submit_mult_drop_x)) {
-    $submit_mult = $strDrop;
-} elseif (isset($submit_mult_primary_x)) {
-    $submit_mult = $strPrimary;
-} elseif (isset($submit_mult_index_x)) {
-    $submit_mult = $strIndex;
-} elseif (isset($submit_mult_unique_x)) {
-    $submit_mult = $strUnique;
-} elseif (isset($submit_mult_fulltext_x)) {
-    $submit_mult = $strIdxFulltext;
-}
-
-if ((!empty($submit_mult) && isset($selected_fld))
-    || isset($mult_btn)) {
-    $action = 'tbl_structure.php';
-    $err_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
-    require_once('./libraries/header.inc.php');
-    require_once './libraries/tbl_links.inc.php';
-    require './libraries/mult_submits.inc.php';
-}
 
 /**
  * Runs common work
  */
 require_once './libraries/tbl_common.php';
 $url_query .= '&amp;goto=tbl_structure.php&amp;back=tbl_structure.php';
+$url_params['goto'] = 'tbl_structure.php';
+$url_params['back'] = 'tbl_structure.php';
 
 /**
  * Prepares the table structure display
  */
+
 
 /**
  * Gets tables informations
@@ -62,36 +100,20 @@ $url_query .= '&amp;goto=tbl_structure.php&amp;back=tbl_structure.php';
 require_once './libraries/tbl_info.inc.php';
 
 /**
- * Show result of multi submit operation
- */
-if ((!empty($submit_mult) && isset($selected_fld))
-    || isset($mult_btn)) {
-    $message = $strSuccess;
-}
-
-/**
  * Displays top menu links
  */
 require_once './libraries/tbl_links.inc.php';
+require_once './libraries/Index.class.php';
 
 // 2. Gets table keys and retains them
-$result      = PMA_DBI_query('SHOW INDEX FROM ' . PMA_backquote($table) . ';');
-$primary     = '';
-$ret_keys    = array();
-$pk_array    = array(); // will be use to emphasis prim. keys in the table view
-while ($row = PMA_DBI_fetch_assoc($result)) {
-    $ret_keys[]  = $row;
-    // Backups the list of primary keys
-    if ($row['Key_name'] == 'PRIMARY') {
-        $primary .= $row['Column_name'] . ', ';
-        $pk_array[$row['Column_name']] = 1;
-    }
-} // end while
-PMA_DBI_free_result($result);
+// @todo should be: $server->db($db)->table($table)->primary()
+$primary = PMA_Index::getPrimary($table, $db);
+
 
 // 3. Get fields
 $fields_rs   = PMA_DBI_query('SHOW FULL FIELDS FROM ' . PMA_backquote($table) . ';', null, PMA_DBI_QUERY_STORE);
 $fields_cnt  = PMA_DBI_num_rows($fields_rs);
+
 
 // Get more complete field information
 // For now, this is done just for MySQL 4.1.2+ new TIMESTAMP options
@@ -114,79 +136,18 @@ $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
  */
 // action titles (image or string)
 $titles = array();
-if ($cfg['PropertiesIconic'] == true) {
-    if ($cfg['PropertiesIconic'] === 'both') {
-        $iconic_spacer = '<div class="nowrap">';
-    } else {
-        $iconic_spacer = '';
-    }
-
-    // images replaced 2004-05-08 by mkkeck
-    $titles['Change']        = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_edit.png" alt="' . $strChange . '" title="' . $strChange . '" />';
-    $titles['Drop']          = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_drop.png" alt="' . $strDrop . '" title="' . $strDrop . '" />';
-    $titles['NoDrop']        = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_drop.png" alt="' . $strDrop . '" title="' . $strDrop . '" />';
-    $titles['Primary']       = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_primary.png" alt="' . $strPrimary . '" title="' . $strPrimary . '" />';
-    $titles['Index']         = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_index.png" alt="' . $strIndex . '" title="' . $strIndex . '" />';
-    $titles['Unique']        = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_unique.png" alt="' . $strUnique . '" title="' . $strUnique . '" />';
-    $titles['IdxFulltext']   = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_ftext.png" alt="' . $strIdxFulltext . '" title="' . $strIdxFulltext . '" />';
-    $titles['NoPrimary']     = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'bd_primary.png" alt="' . $strPrimary . '" title="' . $strPrimary . '" />';
-    $titles['NoIndex']       = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'bd_index.png" alt="' . $strIndex . '" title="' . $strIndex . '" />';
-    $titles['NoUnique']      = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'bd_unique.png" alt="' . $strUnique . '" title="' . $strUnique . '" />';
-    $titles['NoIdxFulltext'] = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'bd_ftext.png" alt="' . $strIdxFulltext . '" title="' . $strIdxFulltext . '" />';
-    $titles['BrowseDistinctValues']        = $iconic_spacer
-        . '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_browse.png" alt="' . $strBrowseDistinctValues . '" title="' . $strBrowseDistinctValues . '" />';
-
-    if ($cfg['PropertiesIconic'] === 'both') {
-        $titles['Change']               .= $strChange . '</div>';
-        $titles['Drop']                 .= $strDrop . '</div>';
-        $titles['NoDrop']               .= $strDrop . '</div>';
-        $titles['Primary']              .= $strPrimary . '</div>';
-        $titles['Index']                .= $strIndex . '</div>';
-        $titles['Unique']               .= $strUnique . '</div>';
-        $titles['IdxFulltext'  ]        .= $strIdxFulltext . '</div>';
-        $titles['NoPrimary']            .= $strPrimary . '</div>';
-        $titles['NoIndex']              .= $strIndex . '</div>';
-        $titles['NoUnique']             .= $strUnique . '</div>';
-        $titles['NoIdxFulltext']        .= $strIdxFulltext . '</div>';
-        $titles['BrowseDistinctValues'] .= $strBrowseDistinctValues . '</div>';
-    }
-} else {
-    $titles['Change']               = $strChange;
-    $titles['Drop']                 = $strDrop;
-    $titles['NoDrop']               = $strDrop;
-    $titles['Primary']              = $strPrimary;
-    $titles['Index']                = $strIndex;
-    $titles['Unique']               = $strUnique;
-    $titles['IdxFulltext']          = $strIdxFulltext;
-    $titles['NoPrimary']            = $strPrimary;
-    $titles['NoIndex']              = $strIndex;
-    $titles['NoUnique']             = $strUnique;
-    $titles['NoIdxFulltext']        = $strIdxFulltext;
-    $titles['BrowseDistinctValues'] = $strBrowseDistinctValues;
-}
+$titles['Change']               = PMA_getIcon('b_edit.png', $strChange, true);
+$titles['Drop']                 = PMA_getIcon('b_drop.png', $strDrop, true);
+$titles['NoDrop']               = PMA_getIcon('b_drop.png', $strDrop, true);
+$titles['Primary']              = PMA_getIcon('b_primary.png', $strPrimary, true);
+$titles['Index']                = PMA_getIcon('b_index.png', $strIndex, true);
+$titles['Unique']               = PMA_getIcon('b_unique.png', $strUnique, true);
+$titles['IdxFulltext']          = PMA_getIcon('b_ftext.png', $strIdxFulltext, true);
+$titles['NoPrimary']            = PMA_getIcon('bd_primary.png', $strPrimary, true);
+$titles['NoIndex']              = PMA_getIcon('bd_index.png', $strIndex, true);
+$titles['NoUnique']             = PMA_getIcon('bd_unique.png', $strUnique, true);
+$titles['NoIdxFulltext']        = PMA_getIcon('bd_ftext.png', $strIdxFulltext, true);
+$titles['BrowseDistinctValues'] = PMA_getIcon('b_browse.png', $strBrowseDistinctValues, true);
 
 /**
  * Displays the table structure ('show table' works correct since 3.23.03)
@@ -203,7 +164,7 @@ $i = 0;
     <th id="th<?php echo ++$i; ?>"></th>
     <th id="th<?php echo ++$i; ?>"><?php echo $strField; ?></th>
     <th id="th<?php echo ++$i; ?>"><?php echo $strType; ?></th>
-<?php echo PMA_MYSQL_INT_VERSION >= 40100 ? '    <th id="th' . ++$i . '">' . $strCollation . '</th>' . "\n" : ''; ?>
+    <th id="th<?php echo ++$i; ?>"><?php echo $strCollation; ?></th>
     <th id="th<?php echo ++$i; ?>"><?php echo $strAttr; ?></th>
     <th id="th<?php echo ++$i; ?>"><?php echo $strNull; ?></th>
     <th id="th<?php echo ++$i; ?>"><?php echo $strDefault; ?></th>
@@ -230,14 +191,12 @@ if ($GLOBALS['cfg']['ShowPropertyComments']) {
     require_once './libraries/relation.lib.php';
     require_once './libraries/transformations.lib.php';
 
-    $cfgRelation = PMA_getRelationsParam();
+    //$cfgRelation = PMA_getRelationsParam();
 
-    if ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100) {
-        $comments_map = PMA_getComments($db, $table);
+    $comments_map = PMA_getComments($db, $table);
 
-        if ($cfgRelation['mimework'] && $cfg['BrowseMIME']) {
-            $mime_map = PMA_getMIME($db, $table, true);
-        }
+    if ($cfgRelation['mimework'] && $cfg['BrowseMIME']) {
+        $mime_map = PMA_getMIME($db, $table, true);
     }
 }
 
@@ -252,13 +211,10 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     $aryFields[]      = $row['Field'];
 
     $type             = $row['Type'];
-    $type_and_length = PMA_extract_type_length($row['Type']);
+    $extracted_fieldspec = PMA_extractFieldSpec($row['Type']);
 
-    // reformat mysql query output - staybyte - 9. June 2001
-    // loic1: set or enum types: slashes single quotes inside options
-    if (preg_match('@^(set|enum)\((.+)\)$@i', $type, $tmp)) {
-        $tmp[2]       = substr(preg_replace('@([^,])\'\'@', '\\1\\\'', ',' . $tmp[2]), 1);
-        $type         = $tmp[1] . '(' . str_replace(',', ', ', $tmp[2]) . ')';
+    if ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type']) { 
+        $type         = $extracted_fieldspec['type'] . '(' . $extracted_fieldspec['spec_in_brackets'] . ')'; 
 
         // for the case ENUM('&#8211;','&ldquo;')
         $type         = htmlspecialchars($type);
@@ -291,29 +247,26 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
         $zerofill     = stristr($row['Type'], 'zerofill');
     }
 
-    // rabus: Divide charset from the rest of the type definition (MySQL >= 4.1)
     unset($field_charset);
-    if (PMA_MYSQL_INT_VERSION >= 40100) {
-        if ((substr($type, 0, 4) == 'char'
-            || substr($type, 0, 7) == 'varchar'
-            || substr($type, 0, 4) == 'text'
-            || substr($type, 0, 8) == 'tinytext'
-            || substr($type, 0, 10) == 'mediumtext'
-            || substr($type, 0, 8) == 'longtext'
-            || substr($type, 0, 3) == 'set'
-            || substr($type, 0, 4) == 'enum'
-            ) && !$binary) {
-            if (strpos($type, ' character set ')) {
-                $type = substr($type, 0, strpos($type, ' character set '));
-            }
-            if (!empty($row['Collation'])) {
-                $field_charset = $row['Collation'];
-            } else {
-                $field_charset = '';
-            }
+    if ((substr($type, 0, 4) == 'char'
+        || substr($type, 0, 7) == 'varchar'
+        || substr($type, 0, 4) == 'text'
+        || substr($type, 0, 8) == 'tinytext'
+        || substr($type, 0, 10) == 'mediumtext'
+        || substr($type, 0, 8) == 'longtext'
+        || substr($type, 0, 3) == 'set'
+        || substr($type, 0, 4) == 'enum'
+        ) && !$binary) {
+        if (strpos($type, ' character set ')) {
+            $type = substr($type, 0, strpos($type, ' character set '));
+        }
+        if (!empty($row['Collation'])) {
+            $field_charset = $row['Collation'];
         } else {
             $field_charset = '';
         }
+    } else {
+        $field_charset = '';
     }
 
     // garvin: Display basic mimetype [MIME]
@@ -337,7 +290,7 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     // MySQL 4.1.2+ TIMESTAMP options
     // (if on_update_current_timestamp is set, then it's TRUE)
     if (isset($analyzed_sql[0]['create_table_fields'][$row['Field']]['on_update_current_timestamp'])) {
-        $attribute = 'ON UPDATE CURRENT_TIMESTAMP';
+        $attribute = 'on update CURRENT_TIMESTAMP';
     }
 
     // here, we have a TIMESTAMP that SHOW FULL FIELDS reports as having the
@@ -366,24 +319,24 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
         $field_name = '<span style="border-bottom: 1px dashed black;" title="' . htmlspecialchars($comments_map[$row['Field']]) . '">' . $field_name . '</span>';
     }
 
-    if (isset($pk_array[$row['Field']])) {
+    if ($primary && $primary->hasColumn($field_name)) {
         $field_name = '<u>' . $field_name . '</u>';
     }
     echo "\n";
     ?>
 <tr class="<?php echo $odd_row ? 'odd': 'even'; $odd_row = !$odd_row; ?>">
     <td align="center">
-        <input type="checkbox" name="selected_fld[]" value="<?php echo $field_encoded; ?>" id="checkbox_row_<?php echo $rownum; ?>" <?php echo $checked; ?> />
+        <input type="checkbox" name="selected_fld[]" value="<?php echo htmlspecialchars($row['Field']); ?>" id="checkbox_row_<?php echo $rownum; ?>" <?php echo $checked; ?> />
     </td>
     <th nowrap="nowrap"><label for="checkbox_row_<?php echo $rownum; ?>"><?php echo $field_name; ?></label></th>
     <td<?php echo $type_nowrap; ?>><bdo dir="ltr" xml:lang="en"><?php echo $type; echo $type_mime; ?></bdo></td>
-<?php echo PMA_MYSQL_INT_VERSION >= 40100 ? '    <td>' . (empty($field_charset) ? '' : '<dfn title="' . PMA_getCollationDescr($field_charset) . '">' . $field_charset . '</dfn>') . '</td>' . "\n" : '' ?>
+    <td><?php echo (empty($field_charset) ? '' : '<dfn title="' . PMA_getCollationDescr($field_charset) . '">' . $field_charset . '</dfn>'); ?></td>
     <td nowrap="nowrap" style="font-size: 70%"><?php echo $attribute; ?></td>
     <td><?php echo (($row['Null'] == 'YES') ? $strYes : $strNo); ?></td>
     <td nowrap="nowrap"><?php
     if (isset($row['Default'])) { 
-        if ($type_and_length['type'] == 'bit') {
-            echo PMA_printable_bit_value($row['Default'], $type_and_length['length']);
+        if ($extracted_fieldspec['type'] == 'bit') {
+            echo PMA_printable_bit_value($row['Default'], $extracted_fieldspec['spec_in_brackets']);
         } else {
             echo $row['Default']; 
         }
@@ -399,20 +352,9 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
             <?php echo $titles['Change']; ?></a>
     </td>
     <td align="center">
-        <?php
-        // loic1: Drop field only if there is more than one field in the table
-        if ($fields_cnt > 1) {
-            echo "\n";
-            ?>
         <a href="sql.php?<?php echo $url_query; ?>&amp;sql_query=<?php echo urlencode('ALTER TABLE ' . PMA_backquote($table) . ' DROP ' . PMA_backquote($row['Field'])); ?>&amp;cpurge=1&amp;purgekey=<?php echo urlencode($row['Field']); ?>&amp;zero_rows=<?php echo urlencode(sprintf($strFieldHasBeenDropped, htmlspecialchars($row['Field']))); ?>"
             onclick="return confirmLink(this, 'ALTER TABLE <?php echo PMA_jsFormat($table); ?> DROP <?php echo PMA_jsFormat($row['Field']); ?>')">
             <?php echo $titles['Drop']; ?></a>
-            <?php
-        } else {
-            echo "\n" . '        ' . $titles['NoDrop'];
-        }
-        echo "\n";
-        ?>
     </td>
     <td align="center">
         <?php
@@ -421,8 +363,8 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
         } else {
             echo "\n";
             ?>
-        <a href="sql.php?<?php echo $url_query; ?>&amp;sql_query=<?php echo urlencode('ALTER TABLE ' . PMA_backquote($table) . (empty($primary) ? '' : ' DROP PRIMARY KEY,') . ' ADD PRIMARY KEY(' . PMA_backquote($row['Field']) . ')'); ?>&amp;zero_rows=<?php echo urlencode(sprintf($strAPrimaryKey, htmlspecialchars($row['Field']))); ?>"
-            onclick="return confirmLink(this, 'ALTER TABLE <?php echo PMA_jsFormat($table) . (empty($primary) ? '' : ' DROP PRIMARY KEY,'); ?> ADD PRIMARY KEY(<?php echo PMA_jsFormat($row['Field']); ?>)')">
+        <a href="sql.php?<?php echo $url_query; ?>&amp;sql_query=<?php echo urlencode('ALTER TABLE ' . PMA_backquote($table) . ($primary ? ' DROP PRIMARY KEY,' : '') . ' ADD PRIMARY KEY(' . PMA_backquote($row['Field']) . ')'); ?>&amp;zero_rows=<?php echo urlencode(sprintf($strAPrimaryKey, htmlspecialchars($row['Field']))); ?>"
+            onclick="return confirmLink(this, 'ALTER TABLE <?php echo PMA_jsFormat($table) . ($primary ? ' DROP PRIMARY KEY,' : ''); ?> ADD PRIMARY KEY(<?php echo PMA_jsFormat($row['Field']); ?>)')">
             <?php echo $titles['Primary']; ?></a>
             <?php
         }
@@ -458,7 +400,7 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
         ?>
     </td>
     <?php
-        if ((!empty($tbl_type) && $tbl_type == 'MYISAM')
+        if (! empty($tbl_type) && ($tbl_type == 'MYISAM' || $tbl_type == 'MARIA')
             // FULLTEXT is possible on TEXT, CHAR and VARCHAR
             && (strpos(' ' . $type, 'text') || strpos(' ' . $type, 'char'))) {
             echo "\n";
@@ -503,44 +445,18 @@ $checkall_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
 <i><?php echo $strWithChecked; ?></i>
 
 <?php
-if ($cfg['PropertiesIconic']) {
-    PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_browse', $strBrowse, 'b_browse.png');
-} else {
-    echo '<input type="submit" name="submit_mult" value="' . $strChange . '" title="' . $strChange . '" />' . "\n";
-}
+PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_browse', $strBrowse, 'b_browse.png');
+
 if (! $tbl_is_view && ! $db_is_information_schema) {
-    if ($cfg['PropertiesIconic']) {
-        PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_change', $strChange, 'b_edit.png');
-        // Drop button if there is at least two fields
-        if ($fields_cnt > 1) {
-            PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_drop', $strDrop, 'b_drop.png');
-        }
-        if ('ARCHIVE' != $tbl_type) {
-            PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_primary', $strPrimary, 'b_primary.png');
-            PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_unique', $strUnique, 'b_unique.png');
-            PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_index', $strIndex, 'b_index.png');
-        }
-        if ((!empty($tbl_type) && $tbl_type == 'MYISAM')) {
-            PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_fulltext', $strIdxFulltext, 'b_ftext.png');
-        }
-    } else {
-        // Drop button if there is at least two fields
-        if ($fields_cnt > 1) {
-            echo '<i>' . $strOr . '</i>' . "\n"
-               . '<input type="submit" name="submit_mult" value="' . $strDrop . '" title="' . $strDrop . '" />' . "\n";
-        }
-        if ('ARCHIVE' != $tbl_type) {
-            echo '<i>' . $strOr . '</i>' . "\n"
-                . '<input type="submit" name="submit_mult" value="' . $strPrimary . '" title="' . $strPrimary . '" />' . "\n";
-            echo '<i>' . $strOr . '</i>' . "\n"
-                . '<input type="submit" name="submit_mult" value="' . $strIndex . '" title="' . $strIndex . '" />' . "\n";
-            echo '<i>' . $strOr . '</i>' . "\n"
-                . '<input type="submit" name="submit_mult" value="' . $strUnique . '" title="' . $strUnique . '" />' . "\n";
-        }
-        if ((!empty($tbl_type) && $tbl_type == 'MYISAM')) {
-            echo '<i>' . $strOr . '</i>' . "\n"
-               . '<input type="submit" name="submit_mult" value="' . $strIdxFulltext . '" title="' . $strIdxFulltext . '" />' . "\n";
-        }
+    PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_change', $strChange, 'b_edit.png');
+    PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_drop', $strDrop, 'b_drop.png');
+    if ('ARCHIVE' != $tbl_type) {
+        PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_primary', $strPrimary, 'b_primary.png');
+        PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_unique', $strUnique, 'b_unique.png');
+        PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_index', $strIndex, 'b_index.png');
+    }
+    if (! empty($tbl_type) && ($tbl_type == 'MYISAM' || $tbl_type == 'MARIA')) {
+        PMA_buttonOrImage('submit_mult', 'mult_submit', 'submit_mult_fulltext', $strIdxFulltext, 'b_ftext.png');
     }
 }
 ?>
@@ -562,9 +478,9 @@ echo $strPrintView;
 <?php
 if (! $tbl_is_view && ! $db_is_information_schema) {
 
-    // if internal relations are available, or the table type is INNODB
+    // if internal relations are available, or foreign keys are supported 
     // ($tbl_type comes from libraries/tbl_info.inc.php)
-    if ($cfgRelation['relwork'] || $tbl_type=="INNODB") {
+    if ($cfgRelation['relwork'] || PMA_foreignkey_supported($tbl_type)) {
         ?>
 <a href="tbl_relation.php?<?php echo $url_query; ?>"><?php
         if ($cfg['PropertiesIconic']) {
@@ -591,17 +507,27 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
         echo '<img class="icon" src="' . $pmaThemeImage . 'b_insrow.png" width="16" height="16" alt="' . $strAddNewField . '"/>';
     }
     echo sprintf($strAddFields, '<input type="text" name="num_fields" size="2" maxlength="2" value="1" style="vertical-align: middle" onfocus="this.select()" />');
-    ?>
-<input type="radio" name="field_where" id="radio_field_where_last" value="last" checked="checked" /><label for="radio_field_where_last"><?php echo $strAtEndOfTable; ?></label>
-<input type="radio" name="field_where" id="radio_field_where_first" value="first" /><label for="radio_field_where_first"><?php echo $strAtBeginningOfTable; ?></label>
-<input type="radio" name="field_where" id="radio_field_where_after" value="after" /><?php
-    $fieldOptions = '</label><select name="after_field" style="vertical-align: middle" onclick="this.form.field_where[2].checked=true" onchange="this.form.field_where[2].checked=true">';
+
+    // here we want to display a field selector inside the label for
+    // the After choice, and $strAfter contains a parameter to display
+    // this selector at the best place for each language; thus we
+    // set the fifth parameter of PMA_generate_html_radio() to false
+    // in order to avoid the usual escaping with htmlspecialchars() inside
+    // the label
+    $fieldOptions = '<select name="after_field" style="vertical-align: middle" onclick="this.form.field_where[2].checked=true" onchange="this.form.field_where[2].checked=true">';
     foreach ($aryFields as $fieldname) {
         $fieldOptions .= '<option value="' . htmlspecialchars($fieldname) . '">' . htmlspecialchars($fieldname) . '</option>' . "\n";
     }
     unset($aryFields);
-    $fieldOptions .= '</select><label for="radio_field_where_after">';
-    echo str_replace('<label for="radio_field_where_after"></label>', '', '<label for="radio_field_where_after">' . sprintf($strAfter, $fieldOptions) . '</label>') . "\n";
+    $fieldOptions .= '</select>';
+
+    $choices = array(
+        'last'  => $strAtEndOfTable,
+        'first' => $strAtBeginningOfTable,
+        'after' => sprintf($strAfter, $fieldOptions) 
+    );
+    PMA_generate_html_radio('field_where', $choices, 'last', false, false);
+    unset($fieldOptions, $choices);
     ?>
 <input type="submit" value="<?php echo $strGo; ?>" style="vertical-align: middle" />
 </form>
@@ -616,17 +542,40 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
 if ($fields_cnt > 20) {
     require './libraries/tbl_links.inc.php';
 } // end if ($fields_cnt > 20)
-echo "\n\n";
 
 /**
  * Displays indexes
  */
-echo '<div id="tablestatistics">' . "\n";
-// $tbl_type is a global variable from libraries/tbl_info.inc.php
+PMA_generate_slider_effect('tablestatistics_indexes', $strDetails);
+
 if (! $tbl_is_view && ! $db_is_information_schema && 'ARCHIVE' !=  $tbl_type) {
-    define('PMA_IDX_INCLUDED', 1);
-    require './tbl_indexes.php';
+    /**
+     * Display indexes
+     */
+    echo PMA_Index::getView($table, $db);
+    ?>
+<br />
+<form action="./tbl_indexes.php" method="post"
+    onsubmit="return checkFormElementInRange(this, 'idx_num_fields',
+        '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidColumnCount']); ?>',
+        1)">
+<fieldset>
+    <?php
+    echo PMA_generate_common_hidden_inputs($db, $table);
+    echo sprintf($strCreateIndex,
+        '<input type="text" size="2" name="added_fields" value="1" />');
+    ?>
+    <input type="submit" name="create_index" value="<?php echo $strGo; ?>"
+        onclick="return checkFormElementInRange(this.form,
+            'idx_num_fields',
+            '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidColumnCount']); ?>',
+            1)" />
+</fieldset>
+</form>
+<br />
+    <?php
 }
+echo '<div id="tablestatistics">' . "\n";
 
 /**
  * Displays Space usage and row statistics
@@ -719,7 +668,7 @@ if ($cfg['ShowStats']) {
             <?php
         }
         // Optimize link if overhead
-        if (isset($free_size) && ($tbl_type == 'MYISAM' || $tbl_type == 'BDB')) {
+        if (isset($free_size) && ($tbl_type == 'MYISAM' || $tbl_type == 'MARIA' || $tbl_type == 'BDB')) {
             ?>
     <tr class="tblFooters">
         <td colspan="3" align="center">
@@ -766,7 +715,21 @@ if ($cfg['ShowStats']) {
     </tr>
         <?php
     }
-    if (PMA_MYSQL_INT_VERSION >= 40100 && !empty($tbl_collation)) {
+    if (! empty($showtable['Create_options'])) {
+        ?>
+    <tr class="<?php echo ($odd_row = !$odd_row) ? 'odd' : 'even'; ?>">
+        <th class="name"><?php echo $strOptions; ?></th>
+        <td class="value"><?php
+        if ($showtable['Create_options'] == 'partitioned') {
+            echo $strPartitioned;
+        } else {
+            echo $showtable['Create_options'];
+        }
+        ?></td>
+    </tr>
+        <?php
+    }
+    if (!empty($tbl_collation)) {
         ?>
     <tr class="<?php echo ($odd_row = !$odd_row) ? 'odd' : 'even'; ?>">
         <th class="name"><?php echo $strCollation; ?></th>
@@ -842,6 +805,7 @@ if ($cfg['ShowStats']) {
 require './libraries/tbl_triggers.lib.php';
 
 echo '<div class="clearfloat"></div>' . "\n";
+echo '</div>' . "\n";
 echo '</div>' . "\n";
 
 /**

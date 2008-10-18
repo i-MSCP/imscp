@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_collations.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: server_collations.php 10704 2007-10-02 10:15:06Z cybot_tm $
  */
 
 /**
@@ -34,16 +34,6 @@ echo '<h2>' . "\n"
     : '')
    . '' . $strCharsetsAndCollations . "\n"
    . '</h2>' . "\n";
-
-
-/**
- * exits if wrong MySQL version
- * @todo Some nice Message :-)
- */
-if (PMA_MYSQL_INT_VERSION < 40100) {
-    require_once './libraries/footer.inc.php';
-}
-
 
 /**
  * Includes the required charset library

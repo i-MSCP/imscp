@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_databases.php 10462 2007-06-25 14:00:35Z lem9 $
+ * @version $Id: server_databases.php 11272 2008-05-11 21:46:07Z lem9 $
  */
 
 /**
@@ -11,7 +11,7 @@
 require_once './libraries/common.inc.php';
 
 
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 require './libraries/server_common.inc.php';
 
 /**
@@ -47,7 +47,7 @@ if (isset($_REQUEST['drop_selected_dbs_x'])) {
 if ((isset($_REQUEST['drop_selected_dbs']) || isset($_REQUEST['query_type']))
   && ($is_superuser || $cfg['AllowUserDropDatabase'])) {
     if (! isset($_REQUEST['selected_dbs']) && ! isset($_REQUEST['query_type'])) {
-        $message = $strNoDatabasesSelected;
+        $message = PMA_Message::error('strNoDatabasesSelected');
     } else {
         $action = 'server_databases.php';
         $submit_mult = 'drop_db' ;
@@ -57,11 +57,15 @@ if ((isset($_REQUEST['drop_selected_dbs']) || isset($_REQUEST['query_type']))
         }
         require './libraries/mult_submits.inc.php';
         unset($action, $submit_mult, $err_url, $selected_db);
-        if ($mult_btn == $strYes) {
-            $message = sprintf($strDatabasesDropped, count($selected));
-        } else {
-            $message = sprintf($strDatabasesDropped, 0);
+        if (empty($message)) {
+            $message = PMA_Message::success('strDatabasesDropped');
+            if ($mult_btn == $strYes) {
+                $message->addParam(count($selected));
+            } else {
+                $message->addParam(0);
+            }
         }
+
     }
 }
 
@@ -88,7 +92,7 @@ echo '<h2>' . "\n"
 if ($server > 0) {
     $databases = PMA_DBI_get_databases_full(null, $dbstats, null, $sort_by,
         $sort_order, $pos, true);
-    $databases_count = $PMA_List_Database->count();
+    $databases_count = count($GLOBALS['pma']->databases);
 } else {
     $databases_count = 0;
 }
@@ -101,15 +105,12 @@ if ($databases_count > 0) {
     reset($databases);
     $first_database = current($databases);
     // table col order
-    // there is no db specific collation or charset prior 4.1.0
-    if (PMA_MYSQL_INT_VERSION >= 40100) {
-        $column_order['DEFAULT_COLLATION_NAME'] = array(
-                'disp_name' => $strCollation,
-                'description_function' => 'PMA_getCollationDescr',
-                'format'    => 'string',
-                'footer'    => PMA_getServerCollation(),
-            );
-    }
+    $column_order['DEFAULT_COLLATION_NAME'] = array(
+            'disp_name' => $strCollation,
+            'description_function' => 'PMA_getCollationDescr',
+            'format'    => 'string',
+            'footer'    => PMA_getServerCollation(),
+        );
     $column_order['SCHEMA_TABLES'] = array(
         'disp_name' => $strNumTables,
         'format'    => 'number',
@@ -200,7 +201,8 @@ if ($databases_count > 0) {
 
         if ($is_superuser || $cfg['AllowUserDropDatabase']) {
             echo '    <td class="tool">' . "\n";
-            if ($current['SCHEMA_NAME'] != 'mysql' && (PMA_MYSQL_INT_VERSION < 50002 || $current['SCHEMA_NAME'] != 'information_schema')) {
+            if ($current['SCHEMA_NAME'] != 'mysql'
+             && $current['SCHEMA_NAME'] != 'information_schema') {
                 echo '        <input type="checkbox" name="selected_dbs[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" ' . (empty($checkall) ? '' : 'checked="checked" ') . '/>' . "\n";
             } else {
                 echo '        <input type="checkbox" name="selected_dbs[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" disabled="disabled"/>' . "\n";
@@ -208,7 +210,12 @@ if ($databases_count > 0) {
             echo '    </td>' . "\n";
         }
         echo '    <td class="name">' . "\n"
-           . '        <a onclick="if (window.parent.openDb(\'' . urlencode($current['SCHEMA_NAME']) . '\')) return false;" href="index.php?' . $url_query . '&amp;db=' . urlencode($current['SCHEMA_NAME']) . '" title="' . sprintf($strJumpToDB, htmlspecialchars($current['SCHEMA_NAME'])) . '" target="_parent">' . "\n"
+           . '        <a onclick="'
+           . 'if (window.parent.openDb(\'' . PMA_jsFormat($current['SCHEMA_NAME'], false) . '\')) return false;'
+           . '" href="index.php?' . $url_query . '&amp;db='
+           . urlencode($current['SCHEMA_NAME']) . '" title="'
+           . sprintf($strJumpToDB, htmlspecialchars($current['SCHEMA_NAME']))
+           . '" target="_parent">' . "\n"
            . '            ' . htmlspecialchars($current['SCHEMA_NAME']) . "\n"
            . '        </a>' . "\n"
            . '    </td>' . "\n";
@@ -242,8 +249,17 @@ if ($databases_count > 0) {
 
         if ($is_superuser) {
             echo '    <td class="tool">' . "\n"
-               . '        <a onclick="window.parent.setDb(\'' . urlencode($current['SCHEMA_NAME']) . '\');" href="./server_privileges.php?' . $url_query . '&amp;checkprivs=' . urlencode($current['SCHEMA_NAME']) . '" title="' . sprintf($strCheckPrivsLong, htmlspecialchars($current['SCHEMA_NAME'])) . '">'. "\n"
-               . '            ' .($cfg['PropertiesIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_rights.png" width="16" height="16" alt=" ' .$strCheckPrivs . '" /> ' : $strCheckPrivs). "\n"
+               . '        <a onclick="
+                    // <![CDATA[
+                    window.parent.setDb(\'' . PMA_jsFormat($current['SCHEMA_NAME']) . '\');
+                    // ]]>" href="./server_privileges.php?' . $url_query
+               . '&amp;checkprivs=' . urlencode($current['SCHEMA_NAME'])
+               . '" title="' . sprintf($strCheckPrivsLong, htmlspecialchars($current['SCHEMA_NAME']))
+               . '">'. "\n"
+               . '            '
+               . ($cfg['PropertiesIconic']
+                 ? '<img class="icon" src="' . $pmaThemeImage . 's_rights.png" width="16" height="16" alt=" ' . $strCheckPrivs . '" /> '
+                 : $strCheckPrivs) . "\n"
                . '        </a></td>' . "\n";
         }
         echo '</tr>' . "\n";
@@ -307,9 +323,9 @@ if ($databases_count > 0) {
             .' title="' . $strDatabasesStatsDisable . '">' . "\n"
             .'            ' . $strDatabasesStatsDisable;
     }
-    echo '</a></strong><br />' . "\n"
-        .'        <div class="warning">'
-        . $strDatabasesStatsHeavyTraffic . '</div></li>' . "\n"
+    echo '</a></strong><br />' . "\n";
+    PMA_Message::warning('strDatabasesStatsHeavyTraffic')->display();
+    echo '</li>' . "\n"
         .'</ul>' . "\n";
     echo '</form>';
 } else {

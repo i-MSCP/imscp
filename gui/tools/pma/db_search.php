@@ -38,6 +38,7 @@
  * @uses    $_REQUEST['table_select']
  * @uses    $_REQUEST['unselectall']
  * @uses    $_REQUEST['selectall']
+ * @uses    $_REQUEST['field_str']
  * @uses    is_string()
  * @uses    htmlspecialchars()
  * @uses    array_key_exists()
@@ -45,7 +46,7 @@
  * @uses    array_intersect()
  * @uses    sprintf()
  * @uses    in_array()
- * @version $Id: db_search.php 10958 2007-12-04 18:07:16Z lem9 $
+ * @version $Id: db_search.php 11115 2008-02-10 13:04:35Z lem9 $
  * @author  Thomas Chaumeny <chaume92 at aol.com>
  */
 
@@ -99,7 +100,7 @@ if (empty($_REQUEST['search_str']) || ! is_string($_REQUEST['search_str'])) {
     // For "as regular expression" (search option 4), we should not treat
     // this as an expression that contains a LIKE (second parameter of
     // PMA_sqlAddslashes()).
-    // 
+    //
     // Usage example: If user is seaching for a literal $ in a regexp search,
     // he should enter \$ as the value.
     $search_str = PMA_sqlAddslashes($_REQUEST['search_str'], ($search_option == 4 ? false : true));
@@ -116,6 +117,12 @@ if (isset($_REQUEST['selectall'])) {
     $tables_selected = $tables_names_only;
 } elseif (isset($_REQUEST['unselectall'])) {
     $tables_selected = array();
+}
+
+if (empty($_REQUEST['field_str']) || ! is_string($_REQUEST['field_str'])) {
+    unset($field_str);
+} else {
+    $field_str = PMA_sqlAddslashes($_REQUEST['field_str'], true);
 }
 
 /**
@@ -135,7 +142,6 @@ if (isset($_REQUEST['submit_search'])) {
      *
      * @todo    can we make use of fulltextsearch IN BOOLEAN MODE for this?
      * @uses    PMA_DBI_query
-     * PMA_MYSQL_INT_VERSION
      * PMA_backquote
      * PMA_DBI_free_result
      * PMA_DBI_fetch_assoc
@@ -144,6 +150,7 @@ if (isset($_REQUEST['submit_search'])) {
      * count
      * strlen
      * @param   string   the table name
+     * @param   string   restrict the search to this field
      * @param   string   the string to search
      * @param   integer  type of search (1 -> 1 word at least, 2 -> all words,
      *                                   3 -> exact string, 4 -> regexp)
@@ -153,25 +160,17 @@ if (isset($_REQUEST['submit_search'])) {
      * @global  string   the url to return to in case of errors
      * @global  string   charset connection
      */
-    function PMA_getSearchSqls($table, $search_str, $search_option)
+    function PMA_getSearchSqls($table, $field, $search_str, $search_option)
     {
-        global $err_url, $charset_connection;
+        global $err_url;
 
         // Statement types
         $sqlstr_select = 'SELECT';
         $sqlstr_delete = 'DELETE';
 
         // Fields to select
-        $res                  = PMA_DBI_query('SHOW ' . (PMA_MYSQL_INT_VERSION >= 40100 ? 'FULL ' : '') . 'FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($GLOBALS['db']) . ';');
-        while ($current = PMA_DBI_fetch_assoc($res)) {
-            if (PMA_MYSQL_INT_VERSION >= 40100) {
-                list($current['Charset']) = explode('_', $current['Collation']);
-            }
-            $current['Field'] = PMA_backquote($current['Field']);
-            $tblfields[]      = $current;
-        } // while
-        PMA_DBI_free_result($res);
-        unset($current, $res);
+        $tblfields = PMA_DBI_fetch_result('SHOW FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($GLOBALS['db']),
+            null, 'Field');
 
         // Table to use
         $sqlstr_from = ' FROM ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($table);
@@ -180,43 +179,39 @@ if (isset($_REQUEST['submit_search'])) {
         $search_wds_cnt  = count($search_words);
 
         $like_or_regex   = (($search_option == 4) ? 'REGEXP' : 'LIKE');
-        $automatic_wildcard   = (($search_option <3) ? '%' : '');
+        $automatic_wildcard   = (($search_option < 3) ? '%' : '');
 
         $fieldslikevalues = array();
         foreach ($search_words as $search_word) {
             // Eliminates empty values
-            // In MySQL 4.1, if a field has no collation we get NULL in Charset
-            // but in MySQL 5.0.x we get ''
             if (strlen($search_word) === 0) {
                 continue;
             }
 
             $thefieldlikevalue = array();
             foreach ($tblfields as $tblfield) {
-                if (PMA_MYSQL_INT_VERSION >= 40100
-                 && $tblfield['Charset'] != $charset_connection
-                 && $tblfield['Charset'] != 'NULL'
-                 && $tblfield['Charset'] != '') {
-                    $prefix = 'CONVERT(_utf8 ';
-                    $suffix = ' USING ' . $tblfield['Charset'] . ') COLLATE ' . $tblfield['Collation'];
-                } else {
-                    $prefix = $suffix = '';
+                if (! isset($field) || strlen($field) == 0 || $tblfield == $field) {
+                    $thefieldlikevalue[] = PMA_backquote($tblfield)
+                                         . ' ' . $like_or_regex . ' '
+                                         . "'" . $automatic_wildcard
+                                         . $search_word
+                                         . $automatic_wildcard . "'";
                 }
-                $thefieldlikevalue[] = $tblfield['Field']
-                                     . ' ' . $like_or_regex . ' '
-                                     . $prefix
-                                     . "'"
-                                     . $automatic_wildcard
-                                     . $search_word
-                                     . $automatic_wildcard . "'"
-                                     . $suffix;
             } // end for
 
-            $fieldslikevalues[]      = implode(' OR ', $thefieldlikevalue);
+            if (count($thefieldlikevalue) > 0) {
+                $fieldslikevalues[]      = implode(' OR ', $thefieldlikevalue);
+            }
         } // end for
 
         $implode_str  = ($search_option == 1 ? ' OR ' : ' AND ');
-        $sqlstr_where = ' WHERE (' . implode(') ' . $implode_str . ' (', $fieldslikevalues) . ')';
+        if ( empty($fieldslikevalues)) {
+            // this could happen when the "inside field" does not exist
+            // in any selected tables
+            $sqlstr_where = ' WHERE FALSE';
+        } else {
+            $sqlstr_where = ' WHERE (' . implode(') ' . $implode_str . ' (', $fieldslikevalues) . ')';
+        }
         unset($fieldslikevalues);
 
         // Builds complete queries
@@ -225,6 +220,7 @@ if (isset($_REQUEST['submit_search'])) {
         // VIEWs, anyway we have a WHERE clause that should limit results
         $sql['select_count']  = $sqlstr_select . ' COUNT(*) AS `count`' . $sqlstr_from . $sqlstr_where;
         $sql['delete']        = $sqlstr_delete . $sqlstr_from . $sqlstr_where;
+
         return $sql;
     } // end of the "PMA_getSearchSqls()" function
 
@@ -252,8 +248,7 @@ if (isset($_REQUEST['submit_search'])) {
 
     foreach ($tables_selected as $each_table) {
         // Gets the SQL statements
-        $newsearchsqls = PMA_getSearchSqls($each_table,
-            $search_str, $search_option);
+        $newsearchsqls = PMA_getSearchSqls($each_table, (! empty($field_str) ? $field_str : ''), $search_str, $search_option);
 
         // Executes the "COUNT" statement
         $res_cnt = PMA_DBI_fetch_value($newsearchsqls['select_count']);
@@ -310,26 +305,21 @@ if (isset($_REQUEST['submit_search'])) {
     </tr>
     <tr><td align="right" valign="top">
             <?php echo $GLOBALS['strSearchType']; ?></td>
-        <td><input type="radio" id="search_option_1" name="search_option"
-                value="1"<?php if ($search_option == 1) echo ' checked="checked"'; ?> />
-            <label for="search_option_1">
-                <?php echo $GLOBALS['strSearchOption1']; ?></label><sup>1</sup><br />
-            <input type="radio" id="search_option_2" name="search_option"
-                value="2"<?php if ($search_option == 2) echo ' checked="checked"'; ?> />
-            <label for="search_option_2">
-                <?php echo $GLOBALS['strSearchOption2']; ?></label><sup>1</sup><br />
-            <input type="radio" id="search_option_3" name="search_option"
-                value="3"<?php if ($search_option == 3) echo ' checked="checked"'; ?> />
-            <label for="search_option_3">
-                <?php echo $GLOBALS['strSearchOption3']; ?></label><br />
-            <input type="radio" id="search_option_4" name="search_option"
-                value="4"<?php if ($search_option == 4) echo ' checked="checked"'; ?> />
-            <label for="search_option_4">
-                <?php echo $GLOBALS['strSearchOption4']; ?></label>
+            <td><?php
 
-            <?php echo PMA_showMySQLDocu('Regexp', 'Regexp'); ?><br />
-            <br />
-            <sup>1</sup><?php echo $GLOBALS['strSplitWordsWithSpace']; ?></td>
+$choices = array(
+    '1' => $GLOBALS['strSearchOption1'] . PMA_showHint($GLOBALS['strSplitWordsWithSpace']),
+    '2' => $GLOBALS['strSearchOption2'] . PMA_showHint($GLOBALS['strSplitWordsWithSpace']),
+    '3' => $GLOBALS['strSearchOption3'],
+    '4' => $GLOBALS['strSearchOption4'] . ' ' . PMA_showMySQLDocu('Regexp', 'Regexp')
+); 
+// 4th parameter set to false to add line breaks
+// 5th parameter set to false to avoid htmlspecialchars() escaping in the label
+//  since we have some HTML in some labels
+PMA_generate_html_radio('search_option', $choices, $search_option, true, false);
+unset($choices);
+            ?>
+            </td>
     </tr>
     <tr><td align="right" valign="top">
             <?php echo $GLOBALS['strSearchInTables']; ?></td>
@@ -360,6 +350,11 @@ $alter_select =
     </tr>
     <tr><td align="right" valign="bottom">
             <?php echo $alter_select; ?></td></tr>
+    </tr>
+    <tr><td align="right">
+            <?php echo $GLOBALS['strSearchInField']; ?></td>
+        <td><input type="text" name="field_str" size="60"
+                value="<?php echo ! empty($field_str) ? $field_str : ''; ?>" /></td>
     </tr>
     </table>
 </fieldset>

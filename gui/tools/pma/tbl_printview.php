@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_printview.php 11228 2008-05-03 11:59:52Z lem9 $
+ * @version $Id: tbl_printview.php 11378 2008-07-09 15:24:44Z lem9 $
  */
 
 /**
@@ -31,7 +31,7 @@ if (! isset($the_tables) || ! is_array($the_tables)) {
  */
 require_once './libraries/relation.lib.php';
 require_once './libraries/transformations.lib.php';
-require_once './libraries/tbl_indexes.lib.php';
+require_once './libraries/Index.class.php';
 
 $cfgRelation = PMA_getRelationsParam();
 
@@ -69,9 +69,9 @@ if ($multi_tables) {
     $tbl_list     = '';
     foreach ($the_tables as $key => $table) {
         $tbl_list .= (empty($tbl_list) ? '' : ', ')
-                  . PMA_backquote(urldecode($table));
+                  . PMA_backquote($table);
     }
-    echo '<b>'.  $strShowTables . ': ' . $tbl_list . '</b>' . "\n";
+    echo '<strong>'.  $strShowTables . ': ' . $tbl_list . '</strong>' . "\n";
     echo '<hr />' . "\n";
 } // end if
 
@@ -79,7 +79,6 @@ $tables_cnt = count($the_tables);
 $counter    = 0;
 
 foreach ($the_tables as $key => $table) {
-    $table = urldecode($table);
     if ($counter + 1 >= $tables_cnt) {
         $breakstyle = '';
     } else {
@@ -101,14 +100,6 @@ foreach ($the_tables as $key => $table) {
 
     $tbl_is_view = PMA_Table::isView($db, $table);
 
-    //  Gets table keys and store them in arrays
-    $indexes      = array();
-    $indexes_info = array();
-    $indexes_data = array();
-    $ret_keys = PMA_get_indexes($table, $err_url_0);
-
-    PMA_extract_indexes($ret_keys, $indexes, $indexes_info, $indexes_data);
-
     /**
      * Gets fields properties
      */
@@ -129,20 +120,10 @@ foreach ($the_tables as $key => $table) {
     $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
 
     // Check if we can use Relations (Mike Beck)
-    if (!empty($cfgRelation['relation'])) {
-        // Find which tables are related with the current one and write it in
-        // an array
-        $res_rel = PMA_getForeigners($db, $table);
-
-        if (count($res_rel) > 0) {
-            $have_rel = true;
-        } else {
-            $have_rel = false;
-        }
-    } else {
-           $have_rel = false;
-    } // end if
-
+    // Find which tables are related with the current one and write it in
+    // an array
+    $res_rel  = PMA_getForeigners($db, $table);
+    $have_rel = (bool) count($res_rel);
 
     /**
      * Displays the comments of the table if MySQL >= 3.23
@@ -170,9 +151,7 @@ foreach ($the_tables as $key => $table) {
     if ($have_rel) {
         echo '<th>' . $strLinksTo . '</th>' . "\n";
     }
-    if ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100) {
-        echo '    <th>' . $strComments . '</th>' . "\n";
-    }
+    echo '    <th>' . $strComments . '</th>' . "\n";
     if ($cfgRelation['mimework']) {
         echo '    <th>MIME</th>' . "\n";
     }
@@ -260,14 +239,12 @@ foreach ($the_tables as $key => $table) {
         }
         echo '&nbsp;</td>' . "\n";
     }
-    if ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100) {
-        echo '    <td>';
-        $comments = PMA_getComments($db, $table);
-        if (isset($comments[$field_name])) {
-            echo htmlspecialchars($comments[$field_name]);
-        }
-        echo '&nbsp;</td>' . "\n";
+    echo '    <td>';
+    $comments = PMA_getComments($db, $table);
+    if (isset($comments[$field_name])) {
+        echo htmlspecialchars($comments[$field_name]);
     }
+    echo '&nbsp;</td>' . "\n";
     if ($cfgRelation['mimework']) {
         $mime_map = PMA_getMIME($db, $table, true);
 
@@ -285,42 +262,12 @@ foreach ($the_tables as $key => $table) {
     ?>
 </tbody>
 </table>
-
     <?php
-
-    if (! $tbl_is_view
-     && ($db != 'information_schema' || PMA_MYSQL_INT_VERSION < 50002)) {
-
+    if (! $tbl_is_view && $db != 'information_schema') {
         /**
          * Displays indexes
          */
-        $index_count = (isset($indexes))
-                     ? count($indexes)
-                     : 0;
-        if ($index_count > 0) {
-            echo "\n";
-            ?>
-    <br /><br />
-
-    <!-- Indexes -->
-    <big><?php echo $strIndexes . ':'; ?></big>
-    <table>
-        <tr>
-            <th><?php echo $strKeyname; ?></th>
-            <th><?php echo $strType; ?></th>
-            <th><?php echo $strCardinality; ?></th>
-            <th colspan="2"><?php echo $strField; ?></th>
-        </tr>
-            <?php
-            echo "\n";
-            PMA_show_indexes($table, $indexes, $indexes_info, $indexes_data, true, true);
-            echo "\n";
-            ?>
-    </table>
-            <?php
-            echo "\n";
-        } // end display indexes
-
+        echo PMA_Index::getView($table, $db, true);
 
         /**
          * Displays Space usage and row statistics
@@ -527,7 +474,7 @@ foreach ($the_tables as $key => $table) {
         } // end if ($cfg['ShowStats'])
     }
     if ($multi_tables) {
-        unset($ret_keys, $num_rows, $show_comment);
+        unset($num_rows, $show_comment);
         echo '<hr />' . "\n";
     } // end if
     echo '</div>' . "\n";

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_export.php 10517 2007-07-22 17:07:18Z lem9 $
+ * @version $Id: server_export.php 11249 2008-05-09 10:41:16Z cybot_tm $
  */
 
 /**
@@ -10,7 +10,7 @@
  */
 require_once './libraries/common.inc.php';
 
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 
 /**
  * Displays the links
@@ -30,7 +30,7 @@ $multi_values .= '<a href="' . $checkall_url . '&amp;selectall=1" onclick="setSe
 $multi_values .= '<select name="db_select[]" size="6" multiple="multiple">';
 $multi_values .= "\n";
 
-foreach ($GLOBALS['PMA_List_Database']->items as $current_db) {
+foreach ($GLOBALS['pma']->databases as $current_db) {
     if (!empty($selectall) || (isset($tmp_select) && strpos(' ' . $tmp_select, '|' . $current_db . '|'))) {
         $is_selected = ' selected="selected"';
     } else {

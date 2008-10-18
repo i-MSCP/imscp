@@ -73,7 +73,7 @@ if (! empty($sql_query)) {
         // Just crop LIMIT clause
         $sql_query = $analyzed_sql[0]['section_before_limit'] . $analyzed_sql[0]['section_after_limit'];
     }
-    $message = $GLOBALS['strSuccess'];
+    $message = PMA_Message::success();
 }
 
 /**

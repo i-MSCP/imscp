@@ -1,8 +1,16 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
+ * Display table relations for viewing and editing
  *
- * @version $Id: tbl_relation.php 11366 2008-07-04 14:36:18Z lem9 $
+ * includes phpMyAdmin relations and InnoDB relations
+ *
+ * @todo fix name handling: currently names with dots (.) are not properly handled
+ * @todo foreign key constraints require both fields being of equal type and size
+ * @todo check foreign fields to be from same type and size, all other makes no sense
+ * @todo add an link to create an index required for constraints, or an option to do automatically
+ * @todo if above todos are fullfilled we can add all fields meet requirements in the select dropdown
+ * @version $Id: tbl_relation.php 11378 2008-07-09 15:24:44Z lem9 $
  */
 
 /**
@@ -30,7 +38,12 @@ require_once './libraries/tbl_links.inc.php';
 
 require_once './libraries/relation.lib.php';
 
-$options_array = array('CASCADE' => 'CASCADE', 'SET_NULL' => 'SET NULL', 'NO_ACTION' => 'NO ACTION', 'RESTRICT' => 'RESTRICT');
+$options_array = array(
+    'CASCADE'   => 'CASCADE',
+    'SET_NULL'  => 'SET NULL',
+    'NO_ACTION' => 'NO ACTION',
+    'RESTRICT'  => 'RESTRICT',
+);
 
 /**
  * Generate dropdown choices
@@ -42,24 +55,22 @@ $options_array = array('CASCADE' => 'CASCADE', 'SET_NULL' => 'SET NULL', 'NO_ACT
  *
  * @access  public
  */
-function PMA_generate_dropdown($dropdown_question, $radio_name, $choices, $selected_value)
+function PMA_generate_dropdown($dropdown_question, $select_name, $choices, $selected_value)
 {
-    echo $dropdown_question . '&nbsp;&nbsp;';
+    echo htmlspecialchars($dropdown_question) . '&nbsp;&nbsp;';
 
-    echo '<select name="' . $radio_name . '">' . "\n";
-    echo '<option value="nix">--</option>' . "\n";
+    echo '<select name="' . htmlspecialchars($select_name) . '">' . "\n";
+    echo '<option value=""></option>' . "\n";
 
-    foreach ($choices AS $one_value => $one_label) {
-        echo '<option value="' . $one_value . '"';
+    foreach ($choices as $one_value => $one_label) {
+        echo '<option value="' . htmlspecialchars($one_value) . '"';
         if ($selected_value == $one_value) {
             echo ' selected="selected" ';
         }
-        echo '>' . $one_label . '</option>' . "\n";
+        echo '>' . htmlspecialchars($one_label) . '</option>' . "\n";
     }
     echo '</select>' . "\n";
-    echo "\n";
 }
-
 
 /**
  * Gets the relation settings
@@ -70,16 +81,11 @@ $cfgRelation = PMA_getRelationsParam();
 /**
  * Updates
  */
-
-// ensure we are positionned to our current db (since the previous reading
-// of relations makes pmadb the current one, maybe depending on the MySQL version)
-PMA_DBI_select_db($db);
-
 if ($cfgRelation['relwork']) {
     $existrel = PMA_getForeigners($db, $table, '', 'internal');
 }
-if ($tbl_type=='INNODB') {
-    $existrel_innodb = PMA_getForeigners($db, $table, '', 'innodb');
+if (PMA_foreignkey_supported($tbl_type)) {
+    $existrel_foreign = PMA_getForeigners($db, $table, '', 'foreign');
 }
 if ($cfgRelation['displaywork']) {
     $disp     = PMA_getDisplayField($db, $table);
@@ -88,10 +94,13 @@ if ($cfgRelation['displaywork']) {
 // u p d a t e s   f o r   I n t e r n a l    r e l a t i o n s
 if (isset($destination) && $cfgRelation['relwork']) {
 
-    foreach ($destination AS $master_field => $foreign_string) {
-        if ($foreign_string != 'nix') {
-            list($foreign_db, $foreign_table, $foreign_field) = explode('.', $foreign_string);
-            if (!isset($existrel[$master_field])) {
+    foreach ($destination as $master_field => $foreign_string) {
+        $upd_query = false;
+        if (! empty($foreign_string)) {
+            $foreign_string = trim($foreign_string, '`');
+            list($foreign_db, $foreign_table, $foreign_field) =
+                explode('.', $foreign_string);
+            if (! isset($existrel[$master_field])) {
                 $upd_query  = 'INSERT INTO ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                             . '(master_db, master_table, master_field, foreign_db, foreign_table, foreign_field)'
                             . ' values('
@@ -116,26 +125,27 @@ if (isset($destination) && $cfgRelation['relwork']) {
                             . ' AND master_table = \'' . PMA_sqlAddslashes($table) . '\''
                             . ' AND master_field = \'' . PMA_sqlAddslashes($master_field) . '\'';
         } // end if... else....
-        if (isset($upd_query)) {
-            $upd_rs         = PMA_query_as_cu($upd_query);
-            unset($upd_query);
+        if ($upd_query) {
+            PMA_query_as_cu($upd_query);
         }
     } // end while
 } // end if (updates for internal relations)
 
-// u p d a t e s   f o r   I n n o D B
+// u p d a t e s    f o r    f o r e i g n    k e y s
 // (for now, one index name only; we keep the definitions if the
 // foreign db is not the same)
 // I use $sql_query to be able to display directly the query via
 // PMA_showMessage()
 
-if (isset($_REQUEST['destination_innodb'])) {
+if (isset($_REQUEST['destination_foreign'])) {
     $display_query = '';
     $seen_error = false;
-    foreach ($_REQUEST['destination_innodb'] as $master_field => $foreign_string) {
-        if ($foreign_string != 'nix') {
-            list($foreign_db, $foreign_table, $foreign_field) = explode('.', $foreign_string);
-            if (!isset($existrel_innodb[$master_field])) {
+    foreach ($_REQUEST['destination_foreign'] as $master_field => $foreign_string) {
+        if (! empty($foreign_string)) {
+            $foreign_string = trim($foreign_string, '`');
+            list($foreign_db, $foreign_table, $foreign_field) =
+                explode('.', $foreign_string);
+            if (!isset($existrel_foreign[$master_field])) {
                 // no key defined for this field
 
                 // The next few lines are repeated below, so they
@@ -152,34 +162,32 @@ if (isset($_REQUEST['destination_innodb'])) {
                             . PMA_backquote($foreign_table) . '('
                             . PMA_backquote($foreign_field) . ')';
 
-                if ($_REQUEST['on_delete'][$master_field] != 'nix') {
-                    $sql_query   .= ' ON DELETE ' . $options_array[$_REQUEST['on_delete'][$master_field]];
+                if (! empty($_REQUEST['on_delete'][$master_field])) {
+                    $sql_query .= ' ON DELETE ' . $options_array[$_REQUEST['on_delete'][$master_field]];
                 }
-                if ($_REQUEST['on_update'][$master_field] != 'nix') {
-                    $sql_query   .= ' ON UPDATE ' . $options_array[$_REQUEST['on_update'][$master_field]];
+                if (! empty($_REQUEST['on_update'][$master_field])) {
+                    $sql_query .= ' ON UPDATE ' . $options_array[$_REQUEST['on_update'][$master_field]];
                 }
                 $sql_query .= ';';
                 $display_query .= $sql_query . "\n";
                 // end repeated code
 
-            } elseif (($existrel_innodb[$master_field]['foreign_db'] . '.' .$existrel_innodb[$master_field]['foreign_table'] . '.' . $existrel_innodb[$master_field]['foreign_field'] != $foreign_string)
-              || ($_REQUEST['on_delete'][$master_field] != (!empty($existrel_innodb[$master_field]['on_delete']) ? $existrel_innodb[$master_field]['on_delete'] : 'nix'))
-              || ($_REQUEST['on_update'][$master_field] != (!empty($existrel_innodb[$master_field]['on_update']) ? $existrel_innodb[$master_field]['on_update'] : 'nix'))
+            } elseif (($existrel_foreign[$master_field]['foreign_db'] . '.' .$existrel_foreign[$master_field]['foreign_table'] . '.' . $existrel_foreign[$master_field]['foreign_field'] != $foreign_string)
+              || ($_REQUEST['on_delete'][$master_field] != (!empty($existrel_foreign[$master_field]['on_delete']) ? $existrel_foreign[$master_field]['on_delete'] : ''))
+              || ($_REQUEST['on_update'][$master_field] != (!empty($existrel_foreign[$master_field]['on_update']) ? $existrel_foreign[$master_field]['on_update'] : ''))
                    ) {
                 // another foreign key is already defined for this field
                 // or
                 // an option has been changed for ON DELETE or ON UPDATE
 
                 // remove existing key
-                if (PMA_MYSQL_INT_VERSION >= 40013) {
-                    $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
-                                . ' DROP FOREIGN KEY '
-                                . PMA_backquote($existrel_innodb[$master_field]['constraint']) . ';';
+                $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                            . ' DROP FOREIGN KEY '
+                            . PMA_backquote($existrel_foreign[$master_field]['constraint']) . ';';
 
-                    // I tried to send both in one query but it failed
-                    $upd_rs     = PMA_DBI_query($sql_query);
-                    $display_query .= $sql_query . "\n";
-                }
+                // I tried to send both in one query but it failed
+                PMA_DBI_query($sql_query);
+                $display_query .= $sql_query . "\n";
 
                 // add another
                 $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
@@ -190,11 +198,11 @@ if (isset($_REQUEST['destination_innodb'])) {
                             . PMA_backquote($foreign_table) . '('
                             . PMA_backquote($foreign_field) . ')';
 
-                if ($_REQUEST['on_delete'][$master_field] != 'nix') {
+                if (! empty($_REQUEST['on_delete'][$master_field])) {
                     $sql_query   .= ' ON DELETE '
                         . $options_array[$_REQUEST['on_delete'][$master_field]];
                 }
-                if ($_REQUEST['on_update'][$master_field] != 'nix') {
+                if (! empty($_REQUEST['on_update'][$master_field])) {
                     $sql_query   .= ' ON UPDATE '
                         . $options_array[$_REQUEST['on_update'][$master_field]];
                 }
@@ -202,18 +210,16 @@ if (isset($_REQUEST['destination_innodb'])) {
                 $display_query .= $sql_query . "\n";
 
             } // end if... else....
-        } elseif (isset($existrel_innodb[$master_field])) {
-            if (PMA_MYSQL_INT_VERSION >= 40013) {
-                $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
-                        . ' DROP FOREIGN KEY '
-                        . PMA_backquote($existrel_innodb[$master_field]['constraint']);
-                $sql_query .= ';';
-                $display_query .= $sql_query . "\n";
-            }
+        } elseif (isset($existrel_foreign[$master_field])) {
+            $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                    . ' DROP FOREIGN KEY '
+                    . PMA_backquote($existrel_foreign[$master_field]['constraint']);
+            $sql_query .= ';';
+            $display_query .= $sql_query . "\n";
         } // end if... else....
 
         if (! empty($sql_query)) {
-            $upd_rs    = PMA_DBI_try_query($sql_query);
+            PMA_DBI_try_query($sql_query);
             $tmp_error = PMA_DBI_getError();
             if (! empty($tmp_error)) {
                 $seen_error = true;
@@ -224,8 +230,10 @@ if (isset($_REQUEST['destination_innodb'])) {
                 echo PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
             }
             if (substr($tmp_error, 1, 4) == '1005') {
-                echo '<p class="warning">' . $strForeignKeyError . ' : ' . $master_field
-                    .'</p>'  . PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
+                $message = PMA_Message::warning('strForeignKeyError');
+                $message->addParam($master_field);
+                $message->display();
+                echo PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
             }
             unset($tmp_error);
             $sql_query = '';
@@ -233,19 +241,18 @@ if (isset($_REQUEST['destination_innodb'])) {
     } // end foreach
     if (!empty($display_query)) {
         if ($seen_error) {
-            PMA_showMessage($strError);
+            PMA_showMessage($strError, null, 'error');
         } else {
-            PMA_showMessage($strSuccess);
+            PMA_showMessage($strSuccess, null, 'success');
         }
     }
-} // end if isset($destination_innodb)
+} // end if isset($destination_foreign)
 
 
 // U p d a t e s   f o r   d i s p l a y   f i e l d
 
-if ($cfgRelation['displaywork']
-    && isset($display_field)) {
-
+if ($cfgRelation['displaywork'] && isset($display_field)) {
+    $upd_query = false;
     if ($disp) {
         if ($display_field != '') {
             $upd_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
@@ -266,8 +273,8 @@ if ($cfgRelation['displaywork']
                    . '\'' . PMA_sqlAddslashes($display_field) . '\')';
     }
 
-    if (isset($upd_query)) {
-        $upd_rs    = PMA_query_as_cu($upd_query);
+    if ($upd_query) {
+        PMA_query_as_cu($upd_query);
     }
 } // end if
 
@@ -275,8 +282,8 @@ if ($cfgRelation['displaywork']
 if (isset($destination) && $cfgRelation['relwork']) {
     $existrel = PMA_getForeigners($db, $table, '', 'internal');
 }
-if (isset($destination_innodb) && $tbl_type=='INNODB') {
-    $existrel_innodb = PMA_getForeigners($db, $table, '', 'innodb');
+if (isset($destination_foreign) && PMA_foreignkey_supported($tbl_type)) {
+    $existrel_foreign = PMA_getForeigners($db, $table, '', 'foreign');
 }
 
 if ($cfgRelation['displaywork']) {
@@ -295,94 +302,41 @@ echo PMA_generate_common_hidden_inputs($db, $table);
 
 // relations
 
-if ($cfgRelation['relwork'] || $tbl_type=='INNODB') {
+if ($cfgRelation['relwork'] || PMA_foreignkey_supported($tbl_type)) {
     // To choose relations we first need all tables names in current db
-    // and if PMA version permits and the main table is innodb,
-    // we use SHOW TABLE STATUS because we need to find other InnoDB tables
+    // and if the main table supports foreign keys 
+    // we use SHOW TABLE STATUS because we need to find other tables of the
+    // same engine.
 
-    if ($tbl_type=='INNODB') {
+    if (PMA_foreignkey_supported($tbl_type)) {
         $tab_query           = 'SHOW TABLE STATUS FROM ' . PMA_backquote($db);
-    // [0] of the row is the name
-    // [1] is the type
+        // [0] of the row is the name
+        // [1] is the type
     } else {
         $tab_query           = 'SHOW TABLES FROM ' . PMA_backquote($db);
+        // [0] of the row is the name
     }
-    // [0] of the row is the name
 
     $tab_rs              = PMA_DBI_query($tab_query, null, PMA_DBI_QUERY_STORE);
-    $selectboxall['nix'] = '--';
-    $selectboxall_innodb['nix'] = '--';
+    $selectboxall[] = '';
+    $selectboxall_foreign[] = '';
 
-    while ($curr_table = @PMA_DBI_fetch_row($tab_rs)) {
-        if (($curr_table[0] != $table) && ($curr_table[0] != $cfg['Server']['relation'])) {
-            PMA_DBI_select_db($db);
+    while ($curr_table = PMA_DBI_fetch_row($tab_rs)) {
+        $current_table = new PMA_Table($curr_table[0], $db);
 
-            // need to use PMA_DBI_QUERY_STORE with PMA_DBI_num_rows() in mysqli
-            $fi_rs    = PMA_DBI_query('SHOW KEYS FROM ' . PMA_backquote($curr_table[0]) . ';', null, PMA_DBI_QUERY_STORE);
-            if ($fi_rs && PMA_DBI_num_rows($fi_rs) > 0) {
-                $seen_a_primary = FALSE;
-                while ($curr_field = PMA_DBI_fetch_assoc($fi_rs)) {
-                    if (isset($curr_field['Key_name']) && $curr_field['Key_name'] == 'PRIMARY') {
-                        $seen_a_primary = TRUE;
-                        $field_full = $db . '.' .$curr_field['Table'] . '.' . $curr_field['Column_name'];
-                        $field_v    = $curr_field['Table'] . '->' . $curr_field['Column_name'];
-                        $selectboxall[$field_full] =  $field_v;
-                        // there could be more than one segment of the primary
-                        // so do not break
+        // explicitely ask for non-quoted list of indexed columns
+        $selectboxall = array_merge($selectboxall, $current_table->getUniqueColumns(false));
 
-                        // Please watch here, tbl_type is INNODB but the
-                        // resulting value of SHOW KEYS is InnoDB
-
-                        if ($tbl_type=='INNODB' && isset($curr_table[1]) && $curr_table[1]=='InnoDB') {
-                            $selectboxall_innodb[$field_full] =  $field_v;
-                        }
-
-                    } elseif (isset($curr_field['Non_unique']) && $curr_field['Non_unique'] == 0 && $seen_a_primary==FALSE) {
-                        // if we can't find a primary key we take any unique one
-                        // (in fact, we show all segments of unique keys
-                        //  and all unique keys)
-                        $field_full = $db . '.' . $curr_field['Table'] . '.' . $curr_field['Column_name'];
-                        $field_v    = $curr_field['Table'] . '->' . $curr_field['Column_name'];
-                        $selectboxall[$field_full] =  $field_v;
-                        if ($tbl_type=='INNODB' && isset($curr_table[1]) && $curr_table[1]=='InnoDB') {
-                            $selectboxall_innodb[$field_full] =  $field_v;
-                        }
-
-                    // for InnoDB, any index is allowed
-                    } elseif ($tbl_type=='INNODB' && isset($curr_table[1]) && $curr_table[1]=='InnoDB') {
-                        $field_full = $db . '.' . $curr_field['Table'] . '.' . $curr_field['Column_name'];
-                        $field_v    = $curr_field['Table'] . '->' . $curr_field['Column_name'];
-                        $selectboxall_innodb[$field_full] =  $field_v;
-
-                    } // end if
-                } // end while over keys
-            } // end if (PMA_DBI_num_rows)
-            PMA_DBI_free_result($fi_rs);
-            unset($fi_rs);
-        // Mike Beck - 24.07.02: i've been asked to add all keys of the
-        // current table (see bug report #574851)
-        } elseif ($curr_table[0] == $table) {
-            PMA_DBI_select_db($db);
-
-            // need to use PMA_DBI_QUERY_STORE with PMA_DBI_num_rows() in mysqli
-            $fi_rs    = PMA_DBI_query('SHOW KEYS FROM ' . PMA_backquote($curr_table[0]) . ';', null, PMA_DBI_QUERY_STORE);
-            if ($fi_rs && PMA_DBI_num_rows($fi_rs) > 0) {
-                while ($curr_field = PMA_DBI_fetch_assoc($fi_rs)) {
-                    $field_full = $db . '.' . $curr_field['Table'] . '.' . $curr_field['Column_name'];
-                    $field_v    = $curr_field['Table'] . '->' . $curr_field['Column_name'];
-                    $selectboxall[$field_full] =  $field_v;
-                    if ($tbl_type=='INNODB' && isset($curr_table[1]) && $curr_table[1]=='InnoDB') {
-                        $selectboxall_innodb[$field_full] =  $field_v;
-                    }
-                } // end while
-            } // end if (PMA_DBI_num_rows)
-            PMA_DBI_free_result($fi_rs);
-            unset($fi_rs);
+        // if foreign keys are supported, collect all keys from other
+        // tables of the same engine
+        if (PMA_foreignkey_supported($tbl_type)
+         && isset($curr_table[1])
+         && strtoupper($curr_table[1]) == $tbl_type) {
+             // explicitely ask for non-quoted list of indexed columns
+            $selectboxall_foreign = array_merge($selectboxall_foreign, $current_table->getIndexedColumns(false));
         }
     } // end while over tables
-
 } // end if
-
 
 // Now find out the columns of our $table
 // need to use PMA_DBI_QUERY_STORE with PMA_DBI_num_rows() in mysqli
@@ -402,16 +356,14 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
     <?php
     if ($cfgRelation['relwork']) {
         echo '<th>' . $strInternalRelations;
-        if ($tbl_type=='INNODB') {
-            echo PMA_showHint($strInternalNotNecessary);
+        if (PMA_foreignkey_supported($tbl_type)) {
+            echo PMA_showHint($strInternalAndForeign);
         }
         echo '</th>';
     }
-    if ($tbl_type=='INNODB') {
-        echo '<th colspan="2">InnoDB';
-        if (PMA_MYSQL_INT_VERSION < 40013) {
-            echo '(**)';
-        }
+    if (PMA_foreignkey_supported($tbl_type)) {
+        // this does not have to be translated, it's part of the MySQL syntax
+        echo '<th colspan="2">FOREIGN KEY (' . $tbl_type . ')';
         echo '</th>';
     }
     ?>
@@ -423,7 +375,7 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
         ?>
     <tr class="<?php echo $odd_row ? 'odd' : 'even'; $odd_row = ! $odd_row; ?>">
         <td align="center">
-            <b><?php echo $save_row[$i]['Field']; ?></b></td>
+            <strong><?php echo $save_row[$i]['Field']; ?></strong></td>
         <?php
         if ($cfgRelation['relwork']) {
             ?>
@@ -438,14 +390,14 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
                 $foreign_field    = FALSE;
             }
             $seen_key = FALSE;
-            foreach ($selectboxall AS $key => $value) {
+            foreach ($selectboxall as $value) {
                 echo '                '
-                     . '<option value="' . htmlspecialchars($key) . '"';
-                if ($foreign_field && $key == $foreign_field) {
+                     . '<option value="' . htmlspecialchars($value) . '"';
+                if ($foreign_field && $value == $foreign_field) {
                     echo ' selected="selected"';
                     $seen_key = TRUE;
                 }
-                echo '>' . $value . '</option>'. "\n";
+                echo '>' . htmlspecialchars($value) . '</option>'. "\n";
             } // end while
 
             // if the link defined in relationtable points to a foreign field
@@ -463,30 +415,30 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
             <?php
         } // end if (internal relations)
 
-        if ($tbl_type=='INNODB') {
+        if (PMA_foreignkey_supported($tbl_type)) {
             echo '<td>';
             if (!empty($save_row[$i]['Key'])) {
                 ?>
             <span class="formelement">
-            <select name="destination_innodb[<?php echo htmlspecialchars($save_row[$i]['Field']); ?>]">
+            <select name="destination_foreign[<?php echo htmlspecialchars($save_row[$i]['Field']); ?>]">
                 <?php
-                if (isset($existrel_innodb[$myfield])) {
-                    $foreign_field    = $existrel_innodb[$myfield]['foreign_db'] . '.'
-                             . $existrel_innodb[$myfield]['foreign_table'] . '.'
-                             . $existrel_innodb[$myfield]['foreign_field'];
+                if (isset($existrel_foreign[$myfield])) {
+                    $foreign_field    = $existrel_foreign[$myfield]['foreign_db'] . '.'
+                             . $existrel_foreign[$myfield]['foreign_table'] . '.'
+                             . $existrel_foreign[$myfield]['foreign_field'];
                 } else {
                     $foreign_field    = FALSE;
                 }
 
                 $found_foreign_field = FALSE;
-                foreach ($selectboxall_innodb AS $key => $value) {
+                foreach ($selectboxall_foreign as $value) {
                     echo '                '
-                         . '<option value="' . htmlspecialchars($key) . '"';
-                    if ($foreign_field && $key == $foreign_field) {
+                         . '<option value="' . htmlspecialchars($value) . '"';
+                    if ($foreign_field && $value == $foreign_field) {
                         echo ' selected="selected"';
                         $found_foreign_field = TRUE;
                     }
-                    echo '>' . $value . '</option>'. "\n";
+                    echo '>' . htmlspecialchars($value) . '</option>'. "\n";
                 } // end while
 
                 // we did not find the foreign field in the tables of current db,
@@ -504,17 +456,17 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
             <span class="formelement">
                 <?php
                 PMA_generate_dropdown('ON DELETE',
-                    'on_delete[' . htmlspecialchars($save_row[$i]['Field']) . ']',
+                    'on_delete[' . $save_row[$i]['Field'] . ']',
                     $options_array,
-                    isset($existrel_innodb[$myfield]['on_delete']) ? $existrel_innodb[$myfield]['on_delete']: '');
+                    isset($existrel_foreign[$myfield]['on_delete']) ? $existrel_foreign[$myfield]['on_delete']: '');
 
                 echo '</span>' . "\n"
                     .'<span class="formelement">' . "\n";
 
                 PMA_generate_dropdown('ON UPDATE',
-                    'on_update[' . htmlspecialchars($save_row[$i]['Field']) . ']',
+                    'on_update[' . $save_row[$i]['Field'] . ']',
                     $options_array,
-                    isset($existrel_innodb[$myfield]['on_update']) ? $existrel_innodb[$myfield]['on_update']: '');
+                    isset($existrel_foreign[$myfield]['on_update']) ? $existrel_foreign[$myfield]['on_update']: '');
                 echo '</span>' . "\n";
             } else {
                 echo $strNoIndex;
@@ -557,12 +509,6 @@ if ($col_rs && PMA_DBI_num_rows($col_rs) > 0) {
 </form>
     <?php
 } // end if (we have columns in this table)
-
-if ($tbl_type === 'INNODB' && PMA_MYSQL_INT_VERSION < 40013) {
-    echo '<div class="warning">'
-        .'** ' . sprintf($strUpgrade, 'MySQL', '4.0.13')
-        .'</div>';
-}
 
 /**
  * Displays the footer

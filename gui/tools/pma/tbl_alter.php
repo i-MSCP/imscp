@@ -1,8 +1,12 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
+ * Alter one or more table columns/fields
  *
- * @version $Id: tbl_alter.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * linked from table_structure, uses libraries/tbl_properties.inc.php to display
+ * form and handles this form data
+ *
+ * @version $Id: tbl_alter.php 11242 2008-05-07 12:44:28Z cybot_tm $
  */
 
 /**
@@ -11,7 +15,7 @@
 require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
-$js_to_run = 'functions.js';
+$GLOBALS['js_include'][] = 'functions.js';
 require_once './libraries/header.inc.php';
 
 // Check parameters
@@ -22,13 +26,8 @@ PMA_checkParameters(array('db', 'table'));
  */
 require_once './libraries/tbl_common.php';
 require_once './libraries/tbl_info.inc.php';
-/**
- * Displays top menu links
- */
-$active_page = 'tbl_structure.php';
-// I don't see the need to display the links here, they will be displayed later
-//require './libraries/tbl_links.inc.php';
 
+$active_page = 'tbl_structure.php';
 
 /**
  * Defines the url to return to in case of error in a sql statement
@@ -40,102 +39,95 @@ $err_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
  * Modifications have been submitted -> updates the table
  */
 $abort = false;
-if (isset($do_save_data)) {
-    $field_cnt = count($field_orig);
+if (isset($_REQUEST['do_save_data'])) {
+    $field_cnt = count($_REQUEST['field_orig']);
+    $key_fields = array();
+    $changes = array();
+    
     for ($i = 0; $i < $field_cnt; $i++) {
-        // to "&quot;" in tbl_sql.php
-        $field_orig[$i]     = urldecode($field_orig[$i]);
-        if (strcmp(str_replace('"', '&quot;', $field_orig[$i]), $field_name[$i]) == 0) {
-            $field_name[$i] = $field_orig[$i];
-        }
-        $field_default_orig[$i] = urldecode($field_default_orig[$i]);
-        if (strcmp(str_replace('"', '&quot;', $field_default_orig[$i]), $field_default[$i]) == 0) {
-            $field_default[$i]  = $field_default_orig[$i];
-        }
-        $field_length_orig[$i] = urldecode($field_length_orig[$i]);
-        if (strcmp(str_replace('"', '&quot;', $field_length_orig[$i]), $field_length[$i]) == 0) {
-            $field_length[$i] = $field_length_orig[$i];
-        }
-        if (!isset($query)) {
-            $query = '';
-        } else {
-            $query .= ', CHANGE ';
-        }
-
-        $query .= PMA_Table::generateAlter($field_orig[$i], $field_name[$i], $field_type[$i], $field_length[$i], $field_attribute[$i], isset($field_collation[$i]) ? $field_collation[$i] : '', $field_null[$i], $field_default[$i], isset($field_default_current_timestamp[$i]), $field_extra[$i], (isset($field_comments[$i]) ? $field_comments[$i] : ''), $field_default_orig[$i]);
+        $changes[] = 'CHANGE ' . PMA_Table::generateAlter(
+            $_REQUEST['field_orig'][$i], 
+            $_REQUEST['field_name'][$i],
+            $_REQUEST['field_type'][$i], 
+            $_REQUEST['field_length'][$i], 
+            $_REQUEST['field_attribute'][$i],
+            isset($_REQUEST['field_collation'][$i]) 
+                ? $_REQUEST['field_collation'][$i] 
+                : '',
+            isset($_REQUEST['field_null'][$i]) 
+                ? $_REQUEST['field_null'][$i] 
+                : 'NOT NULL',
+            $_REQUEST['field_default_type'][$i], 
+            $_REQUEST['field_default_value'][$i],
+            isset($_REQUEST['field_extra'][$i])
+                ? $_REQUEST['field_extra'][$i]
+                : false,
+            isset($_REQUEST['field_comments'][$i]) 
+                ? $_REQUEST['field_comments'][$i] 
+                : '',
+            $key_fields,
+            $i,
+            $_REQUEST['field_default_orig'][$i]
+        );
     } // end for
 
+    // Builds the primary keys statements and updates the table
+    $key_query = '';
+    /**
+     * this is a little bit more complex
+     * 
+     * @todo if someone selects A_I when altering a column we need to check:
+     *  - no other column with A_I
+     *  - the column has an index, if not create one
+     *
+    if (count($key_fields)) {
+        $fields = array();
+        foreach ($key_fields as $each_field) {
+            if (isset($_REQUEST['field_name'][$each_field]) && strlen($_REQUEST['field_name'][$each_field])) {
+                $fields[] = PMA_backquote($_REQUEST['field_name'][$each_field]);
+            }
+        } // end for
+        $key_query = ', ADD KEY (' . implode(', ', $fields) . ') ';
+    }
+     */
+    
     // To allow replication, we first select the db to use and then run queries
     // on this db.
-     PMA_DBI_select_db($db) or PMA_mysqlDie(PMA_DBI_getError(), 'USE ' . PMA_backquote($db) . ';', '', $err_url);
+    PMA_DBI_select_db($db) or PMA_mysqlDie(PMA_DBI_getError(), 'USE ' . PMA_backquote($db) . ';', '', $err_url);
     // Optimization fix - 2 May 2001 - Robbat2
-    $sql_query = 'ALTER TABLE ' . PMA_backquote($table) . ' CHANGE ' . $query;
-    $error_create = FALSE;
-    $result    = PMA_DBI_try_query($sql_query) or $error_create = TRUE;
+    $sql_query = 'ALTER TABLE ' . PMA_backquote($table) . ' ' . implode(', ', $changes) . $key_query;
+    $result    = PMA_DBI_try_query($sql_query);
 
-    if ($error_create == FALSE) {
-        $message   = $strTable . ' ' . htmlspecialchars($table) . ' ' . $strHasBeenAltered;
-        $btnDrop   = 'Fake';
+    if ($result !== false) {
+        $message = PMA_Message::success('strTableAlteredSuccessfully');
+        $message->addParam($table);
+        $btnDrop = 'Fake';
 
         // garvin: If comments were sent, enable relation stuff
         require_once './libraries/relation.lib.php';
         require_once './libraries/transformations.lib.php';
 
-        $cfgRelation = PMA_getRelationsParam();
-
-        // take care of pmadb internal comments here
-        // garvin: Update comment table, if a comment was set.
-        if (PMA_MYSQL_INT_VERSION < 40100 && isset($field_comments) && is_array($field_comments) && $cfgRelation['commwork']) {
-            foreach ($field_comments AS $fieldindex => $fieldcomment) {
-                if (isset($field_name[$fieldindex]) && strlen($field_name[$fieldindex])) {
-                    PMA_setComment($db, $table, $field_name[$fieldindex], $fieldcomment, $field_orig[$fieldindex], 'pmadb');
+        // updaet field names in relation
+        if (isset($_REQUEST['field_orig']) && is_array($_REQUEST['field_orig'])) {
+            foreach ($_REQUEST['field_orig'] as $fieldindex => $fieldcontent) {
+                if ($_REQUEST['field_name'][$fieldindex] != $fieldcontent) {
+                    PMA_REL_renameField($db, $table, $fieldcontent, 
+                        $_REQUEST['field_name'][$fieldindex]);
                 }
             }
         }
 
-        // garvin: Rename relations&display fields, if altered.
-        if (($cfgRelation['displaywork'] || $cfgRelation['relwork']) && isset($field_orig) && is_array($field_orig)) {
-            foreach ($field_orig AS $fieldindex => $fieldcontent) {
-                if ($field_name[$fieldindex] != $fieldcontent) {
-                    if ($cfgRelation['displaywork']) {
-                        $table_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_info'])
-                                      . ' SET     display_field = \'' . PMA_sqlAddslashes($field_name[$fieldindex]) . '\''
-                                      . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
-                                      . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\''
-                                      . ' AND display_field = \'' . PMA_sqlAddslashes($fieldcontent) . '\'';
-                        $tb_rs    = PMA_query_as_cu($table_query);
-                        unset($table_query);
-                        unset($tb_rs);
-                    }
-
-                    if ($cfgRelation['relwork']) {
-                        $table_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
-                                      . ' SET     master_field = \'' . PMA_sqlAddslashes($field_name[$fieldindex]) . '\''
-                                      . ' WHERE master_db  = \'' . PMA_sqlAddslashes($db) . '\''
-                                      . ' AND master_table = \'' . PMA_sqlAddslashes($table) . '\''
-                                      . ' AND master_field = \'' . PMA_sqlAddslashes($fieldcontent) . '\'';
-                        $tb_rs    = PMA_query_as_cu($table_query);
-                        unset($table_query);
-                        unset($tb_rs);
-
-                        $table_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
-                                      . ' SET     foreign_field = \'' . PMA_sqlAddslashes($field_name[$fieldindex]) . '\''
-                                      . ' WHERE foreign_db  = \'' . PMA_sqlAddslashes($db) . '\''
-                                      . ' AND foreign_table = \'' . PMA_sqlAddslashes($table) . '\''
-                                      . ' AND foreign_field = \'' . PMA_sqlAddslashes($fieldcontent) . '\'';
-                        $tb_rs    = PMA_query_as_cu($table_query);
-                        unset($table_query);
-                        unset($tb_rs);
-                    } // end if relwork
-                } // end if fieldname has changed
-            } // end while check fieldnames
-        } // end if relations/display has to be changed
-
-        // garvin: Update comment table for mime types [MIME]
-        if (isset($field_mimetype) && is_array($field_mimetype) && $cfgRelation['commwork'] && $cfgRelation['mimework'] && $cfg['BrowseMIME']) {
-            foreach ($field_mimetype AS $fieldindex => $mimetype) {
-                if (isset($field_name[$fieldindex]) && strlen($field_name[$fieldindex])) {
-                    PMA_setMIME($db, $table, $field_name[$fieldindex], $mimetype, $field_transformation[$fieldindex], $field_transformation_options[$fieldindex]);
+        // update mime types
+        if (isset($_REQUEST['field_mimetype'])
+         && is_array($_REQUEST['field_mimetype']) 
+         && $cfg['BrowseMIME']) {
+            foreach ($_REQUEST['field_mimetype'] as $fieldindex => $mimetype) {
+                if (isset($_REQUEST['field_name'][$fieldindex])
+                 && strlen($_REQUEST['field_name'][$fieldindex])) {
+                    PMA_setMIME($db, $table, $_REQUEST['field_name'][$fieldindex], 
+                        $mimetype, 
+                        $_REQUEST['field_transformation'][$fieldindex], 
+                        $_REQUEST['field_transformation_options'][$fieldindex]);
                 }
             }
         }
@@ -143,12 +135,12 @@ if (isset($do_save_data)) {
         $active_page = 'tbl_structure.php';
         require './tbl_structure.php';
     } else {
-        PMA_mysqlDie('', '', '', $err_url, FALSE);
+        PMA_mysqlDie('', '', '', $err_url, false);
         // garvin: An error happened while inserting/updating a table definition.
         // to prevent total loss of that data, we embed the form once again.
         // The variable $regenerate will be used to restore data in libraries/tbl_properties.inc.php
-        if (isset($orig_field)) {
-                $field = $orig_field;
+        if (isset($_REQUEST['orig_field'])) {
+            $_REQUEST['field'] = $_REQUEST['orig_field'];
         }
 
         $regenerate = true;
@@ -157,11 +149,13 @@ if (isset($do_save_data)) {
 
 /**
  * No modifications yet required -> displays the table fields
+ * 
+ * $selected comes from multi_submits.inc.php
  */
-if ($abort == FALSE) {
-    if (!isset($selected)) {
+if ($abort == false) {
+    if (! isset($selected)) {
         PMA_checkParameters(array('field'));
-        $selected[]   = $field;
+        $selected[]   = $_REQUEST['field'];
         $selected_cnt = 1;
     } else { // from a multiple submit
         $selected_cnt = count($selected);
@@ -171,12 +165,8 @@ if ($abort == FALSE) {
      * @todo optimize in case of multiple fields to modify
      */
     for ($i = 0; $i < $selected_cnt; $i++) {
-        if (!empty($submit_mult)) {
-            $field = PMA_sqlAddslashes(urldecode($selected[$i]), TRUE);
-        } else {
-            $field = PMA_sqlAddslashes($selected[$i], TRUE);
-        }
-        $result        = PMA_DBI_query('SHOW FULL FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($db) . ' LIKE \'' . $field . '\';');
+        $_REQUEST['field'] = PMA_sqlAddslashes($selected[$i], true);
+        $result        = PMA_DBI_query('SHOW FULL FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($db) . ' LIKE \'' . $_REQUEST['field'] . '\';');
         $fields_meta[] = PMA_DBI_fetch_assoc($result);
         PMA_DBI_free_result($result);
     }
@@ -193,14 +183,16 @@ if ($abort == FALSE) {
      * or maybe make it part of PMA_DBI_get_fields();
      */
 
-    // We also need this to correctly learn if a TIMESTAMP is NOT NULL, since
-    // SHOW FULL FIELDS says NULL and SHOW CREATE TABLE says NOT NULL (tested
-    // in MySQL 4.0.25).
+    if (PMA_MYSQL_INT_VERSION < 50025) {
+        // We also need this to correctly learn if a TIMESTAMP is NOT NULL, since
+        // SHOW FULL FIELDS says NULL and SHOW CREATE TABLE says NOT NULL (tested
+        // in MySQL 4.0.25).
 
-    $show_create_table = PMA_DBI_fetch_value(
-        'SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table),
-        0, 1);
-    $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
+        $show_create_table = PMA_DBI_fetch_value(
+            'SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table),
+            0, 1);
+        $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
+    }
 
     require './libraries/tbl_properties.inc.php';
 }

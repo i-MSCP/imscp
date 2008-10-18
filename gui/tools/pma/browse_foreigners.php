@@ -3,7 +3,7 @@
 /**
  * display selection for relational field values
  *
- * @version $Id: browse_foreigners.php 11035 2008-01-05 13:33:05Z lem9 $
+ * @version $Id: browse_foreigners.php 11378 2008-07-09 15:24:44Z lem9 $
  */
 
 /**
@@ -38,7 +38,7 @@ if (isset($foreign_navig) && $foreign_navig == $strShowAll) {
     unset($foreign_limit);
 }
 
-require './libraries/get_foreign.lib.php';
+$foreignData = PMA_getForeignData($foreigners, $field, $override_total, isset($foreign_filter) ? $foreign_filter : '', $foreign_limit);
 
 if (isset($pk)) {
     $pk_uri = '&amp;pk=' . urlencode($pk);
@@ -51,19 +51,18 @@ if (isset($pk)) {
 
 $gotopage = '';
 $showall = '';
-// $the_total comes from get_foreign.lib.php
 
-if (isset($disp_row) && is_array($disp_row)) {
+if (is_array($foreignData['disp_row'])) {
 
-    if ($cfg['ShowAll'] && ($the_total > $per_page)) {
+    if ($cfg['ShowAll'] && ($foreignData['the_total'] > $per_page)) {
         $showall = '<input type="submit" name="foreign_navig" value="' . $strShowAll . '" />';
     }
 
     $session_max_rows = $per_page;
     $pageNow = @floor($pos / $session_max_rows) + 1;
-    $nbTotalPage = @ceil($the_total / $session_max_rows);
+    $nbTotalPage = @ceil($foreignData['the_total'] / $session_max_rows);
 
-    if ($the_total > $per_page) {
+    if ($foreignData['the_total'] > $per_page) {
         $gotopage = PMA_pageselector(
                       'browse_foreigners.php?field='    . urlencode($field) .
                                        '&amp;'          . PMA_generate_common_url($db, $table)
@@ -163,7 +162,7 @@ if (isset($disp_row) && is_array($disp_row)) {
 
 <table width="100%">
 <?php
-if (isset($disp_row) && is_array($disp_row)) {
+if (is_array($foreignData['disp_row'])) {
     $header = '<tr>
         <th>' . $strKeyname . '</th>
         <th>' . $strDescription . '</th>
@@ -178,14 +177,14 @@ if (isset($disp_row) && is_array($disp_row)) {
 
     $values = array();
     $keys   = array();
-    foreach ($disp_row as $relrow) {
-        if ($foreign_display != FALSE) {
-            $values[] = $relrow[$foreign_display];
+    foreach ($foreignData['disp_row'] as $relrow) {
+        if ($foreignData['foreign_display'] != FALSE) {
+            $values[] = $relrow[$foreignData['foreign_display']];
         } else {
             $values[] = '';
         }
 
-        $keys[] = $relrow[$foreign_field];
+        $keys[] = $relrow[$foreignData['foreign_field']];
     }
 
     asort($keys);
@@ -243,20 +242,20 @@ if (isset($disp_row) && is_array($disp_row)) {
     <tr class="<?php echo $odd_row ? 'odd' : 'even'; $odd_row = ! $odd_row; ?>">
         <td nowrap="nowrap">
         <?php
-        echo ($key_ordered_current_equals_data ? '<b>' : '')
+        echo ($key_ordered_current_equals_data ? '<strong>' : '')
             .'<a href="#" title="' . $strUseThisValue
             . ($key_ordered_current_val_title != '' ? ': ' . $key_ordered_current_val_title : '') . '"'
             .' onclick="formupdate(\'' . md5($field) . '\', \''
             . PMA_jsFormat($key_ordered_current_key, false) . '\'); return false;">'
-            .htmlspecialchars($key_ordered_current_key) . '</a>' . ($key_ordered_current_equals_data ? '</b>' : '');
+            .htmlspecialchars($key_ordered_current_key) . '</a>' . ($key_ordered_current_equals_data ? '</strong>' : '');
         ?></td>
         <td>
         <?php
-        echo ($key_ordered_current_equals_data ? '<b>' : '')
+        echo ($key_ordered_current_equals_data ? '<strong>' : '')
             . '<a href="#" title="' . $strUseThisValue . ($key_ordered_current_val_title != '' ? ': '
             . $key_ordered_current_val_title : '') . '" onclick="formupdate(\''
             . md5($field) . '\', \'' . PMA_jsFormat($key_ordered_current_key, false) . '\'); return false;">'
-            . $key_ordered_current_val . '</a>' . ($key_ordered_current_equals_data ? '</b>' : '');
+            . $key_ordered_current_val . '</a>' . ($key_ordered_current_equals_data ? '</strong>' : '');
         ?></td>
         <td width="20%">
             <img src="<?php echo $GLOBALS['pmaThemeImage'] . 'spacer.png'; ?>"
@@ -264,19 +263,19 @@ if (isset($disp_row) && is_array($disp_row)) {
 
         <td>
         <?php
-        echo ($val_ordered_current_equals_data ? '<b>' : '')
+        echo ($val_ordered_current_equals_data ? '<strong>' : '')
             . '<a href="#" title="' . $strUseThisValue .  ($val_ordered_current_val_title != '' ? ': '
             . $val_ordered_current_val_title : '') . '" onclick="formupdate(\'' . md5($field)
             . '\', \'' . PMA_jsFormat($val_ordered_current_key, false) . '\'); return false;">'
-            . $val_ordered_current_val . '</a>' . ($val_ordered_current_equals_data ? '</b>' : '');
+            . $val_ordered_current_val . '</a>' . ($val_ordered_current_equals_data ? '</strong>' : '');
         ?></td>
         <td nowrap="nowrap">
         <?php
-        echo ($val_ordered_current_equals_data ? '<b>' : '') . '<a href="#" title="'
+        echo ($val_ordered_current_equals_data ? '<strong>' : '') . '<a href="#" title="'
         . $strUseThisValue .  ($val_ordered_current_val_title != '' ? ': ' . $val_ordered_current_val_title : '')
         . '" onclick="formupdate(\'' . md5($field) . '\', \''
         . PMA_jsFormat($val_ordered_current_key, false) . '\'); return false;">' . htmlspecialchars($val_ordered_current_key)
-        . '</a>' . ($val_ordered_current_equals_data ? '</b>' : '');
+        . '</a>' . ($val_ordered_current_equals_data ? '</strong>' : '');
         ?></td>
     </tr>
         <?php
@@ -288,15 +287,3 @@ if (isset($disp_row) && is_array($disp_row)) {
 
 </body>
 </html>
-
-<?php
-/**
- * Close MySql connections
- */
-if (isset($controllink) && $controllink) {
-    @PMA_DBI_close($controllink);
-}
-if (isset($userlink) && $userlink) {
-    @PMA_DBI_close($userlink);
-}
-?>

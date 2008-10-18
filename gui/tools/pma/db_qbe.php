@@ -3,7 +3,7 @@
 /**
  * query by example the whole database
  *
- * @version $Id: db_qbe.php 10588 2007-09-02 19:23:59Z lem9 $
+ * @version $Id: db_qbe.php 11498 2008-08-21 16:32:39Z lem9 $
  */
 
 /**
@@ -23,11 +23,9 @@ $cfgRelation = PMA_getRelationsParam();
 /**
  * A query has been submitted -> execute it, else display the headers
  */
-if (isset($_REQUEST['submit_sql'])
- && preg_match('@^SELECT@i', $_REQUEST['encoded_sql_query'])) {
+if (isset($_REQUEST['submit_sql']) && ! empty($sql_query)) {
     $goto      = 'db_sql.php';
     $zero_rows = htmlspecialchars($GLOBALS['strSuccess']);
-    $sql_query = urldecode($_REQUEST['encoded_sql_query']);
     require './sql.php';
     exit;
 } else {
@@ -39,21 +37,21 @@ if (isset($_REQUEST['submit_sql'])
 }
 
 if (isset($_REQUEST['submit_sql'])
- && ! preg_match('@^SELECT@i', $_REQUEST['encoded_sql_query'])) {
-    echo '<div class="warning">' . $GLOBALS['strHaveToShow'] . '</div>';
+ && ! preg_match('@^SELECT@i', $sql_query)) {
+    PMA_Message::warning('strHaveToShow')->display();
 }
 
 
 /**
  * Initialize some variables
  */
-$col_cnt = isset($_REQUEST['col_cnt']) ? (int) $_REQUEST['col_cnt'] : 3;
-$add_col = isset($_REQUEST['add_col']) ? (int) $_REQUEST['add_col'] : 0;
-$add_row = isset($_REQUEST['add_row']) ? (int) $_REQUEST['add_row'] : 0;
+$col_cnt = PMA_ifSetOr($_REQUEST['col_cnt'], 3, 'numeric');
+$add_col = PMA_ifSetOr($_REQUEST['add_col'], 0, 'numeric');
+$add_row = PMA_ifSetOr($_REQUEST['add_row'], 0, 'numeric');
 
-$rows = isset($_REQUEST['rows']) ? (int) $_REQUEST['rows'] : 0;
-$ins_col = isset($_REQUEST['ins_col']) ? $_REQUEST['ins_col'] : array();
-$del_col = isset($_REQUEST['del_col']) ? $_REQUEST['del_col'] : array();
+$rows    = PMA_ifSetOr($_REQUEST['rows'],    0, 'numeric');
+$ins_col = PMA_ifSetOr($_REQUEST['ins_col'], null, 'array');
+$del_col = PMA_ifSetOr($_REQUEST['del_col'], null, 'array');
 
 $prev_criteria = isset($_REQUEST['prev_criteria'])
     ? $_REQUEST['prev_criteria']
@@ -82,10 +80,9 @@ $row = max($rows + $add_row, 0);
 
 
 // The tables list sent by a previously submitted form
-if (!empty($TableList)) {
-    $cnt_table_list = count($TableList);
-    for ($x = 0; $x < $cnt_table_list; $x++) {
-        $tbl_names[urldecode($TableList[$x])] = ' selected="selected"';
+if (PMA_isValid($_REQUEST['TableList'], 'array')) {
+    foreach ($_REQUEST['TableList'] as $each_table) {
+        $tbl_names[$each_table] = ' selected="selected"';
     }
 } // end if
 
@@ -101,22 +98,16 @@ if (!empty($TableList)) {
 $tbl_result     = PMA_DBI_query('SHOW TABLES FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
 $tbl_result_cnt = PMA_DBI_num_rows($tbl_result);
 if (0 == $tbl_result_cnt) {
-    echo '<div class="warning">' . $strNoTablesFound . '</div>';
+    PMA_Message::error('strNoTablesFound')->display();
     require_once './libraries/footer.inc.php';
     exit;
 }
 
-$i              = 0;
-$k              = 0;
-
 // The tables list gets from MySQL
-while ($i < $tbl_result_cnt) {
-    list($tbl)       = PMA_DBI_fetch_row($tbl_result);
-    $fld_results     = PMA_DBI_get_fields($db, $tbl);
-    $fld_results_cnt = ($fld_results) ? count($fld_results) : 0;
-    $j               = 0;
+while (list($tbl) = PMA_DBI_fetch_row($tbl_result)) {
+    $fld_results = PMA_DBI_get_fields($db, $tbl);
 
-    if (empty($tbl_names[$tbl]) && !empty($TableList)) {
+    if (empty($tbl_names[$tbl]) && !empty($_REQUEST['TableList'])) {
         $tbl_names[$tbl] = '';
     } else {
         $tbl_names[$tbl] = ' selected="selected"';
@@ -124,23 +115,17 @@ while ($i < $tbl_result_cnt) {
 
     // The fields list per selected tables
     if ($tbl_names[$tbl] == ' selected="selected"') {
-        $fld[$k++]   =  PMA_backquote($tbl) . '.*';
-        while ($j < $fld_results_cnt) {
-            $fld[$k] = PMA_convert_display_charset($fld_results[$j]['Field']);
-            $fld[$k] = PMA_backquote($tbl) . '.' . PMA_backquote($fld[$k]);
+        $each_table = PMA_backquote($tbl);
+        $fld[]  = $each_table . '.*';
+        foreach ($fld_results as $each_field) {
+            $each_field = $each_table . '.' . PMA_backquote($each_field['Field']);
+            $fld[] = $each_field;
 
             // increase the width if necessary
-            if (strlen($fld[$k]) > $form_column_width) {
-                $form_column_width = strlen($fld[$k]);
-            } //end if
-
-            $k++;
-            $j++;
-        } // end while
+            $form_column_width = max(strlen($each_field), $form_column_width);
+        } // end foreach
     } // end if
-
-    $i++;
-} // end if
+} // end while
 PMA_DBI_free_result($tbl_result);
 
 // largest width found
@@ -151,6 +136,13 @@ $realwidth = $form_column_width . 'ex';
  * Displays the Query by example form
  */
 
+/**
+ * Enter description here...
+ *
+ * @param array     $columns
+ * @param numeric   $column_number
+ * @param string    $selected
+ */
 function showColumnSelectCell($columns, $column_number, $selected = '')
 {
     ?>
@@ -164,7 +156,6 @@ function showColumnSelectCell($columns, $column_number, $selected = '')
         } else {
             $sel = '';
         }
-        echo '                ';
         echo '<option value="' . htmlspecialchars($column) . '"' . $sel . '>'
             . str_replace(' ', '&nbsp;', htmlspecialchars($column)) . '</option>' . "\n";
     }
@@ -194,8 +185,8 @@ for ($x = 0; $x < $col; $x++) {
 
     $selected = '';
     if (isset($Field[$x])) {
-        $selected = urldecode($Field[$x]);
-        $curField[$z] = urldecode($Field[$x]);
+        $selected = $Field[$x];
+        $curField[$z] = $Field[$x];
     }
     showColumnSelectCell($fld, $z, $selected);
     $z++;
@@ -237,7 +228,7 @@ for ($x = 0; $x < $col; $x++) {
     // then sorting is not available
     // Robbat2 - Fix for Bug #570698
     if (isset($Sort[$x]) && isset($Field[$x])
-     && substr(urldecode($Field[$x]), -2) == '.*') {
+     && substr($Field[$x], -2) == '.*') {
         $Sort[$x] = '';
     } //end if
 
@@ -326,16 +317,14 @@ for ($x = 0; $x < $col; $x++) {
         $stripped_Criteria = $criteria[$x];
     }
     if ((empty($prev_criteria) || !isset($prev_criteria[$x]))
-        || urldecode($prev_criteria[$x]) != htmlspecialchars($stripped_Criteria)) {
+        || $prev_criteria[$x] != htmlspecialchars($stripped_Criteria)) {
         $curCriteria[$z]   = $stripped_Criteria;
-        $encoded_Criteria  = urlencode($stripped_Criteria);
     } else {
-        $curCriteria[$z]   = urldecode($prev_criteria[$x]);
-        $encoded_Criteria  = $prev_criteria[$x];
+        $curCriteria[$z]   = $prev_criteria[$x];
     }
     ?>
     <td align="center">
-        <input type="hidden" name="prev_criteria[<?php echo $z; ?>]" value="<?php echo $encoded_Criteria; ?>" />
+        <input type="hidden" name="prev_criteria[<?php echo $z; ?>]" value="<?php echo htmlspecialchars($curCriteria[$z]); ?>" />
         <input type="text" name="criteria[<?php echo $z; ?>]" value="<?php echo htmlspecialchars($stripped_Criteria); ?>" class="textfield" style="width: <?php echo $realwidth; ?>" size="20" />
     </td>
     <?php
@@ -364,7 +353,7 @@ for ($y = 0; $y <= $row; $y++) {
                 <input type="checkbox" name="ins_row[<?php echo $w; ?>]" />
             </td>
             <td align="<?php echo $cell_align_right; ?>">
-                <b><?php echo $strAnd; ?>:</b>
+                <strong><?php echo $strAnd; ?>:</strong>
             </td>
             <td>
                 <input type="radio" name="and_or_row[<?php echo $w; ?>]" value="and"<?php echo $chk['and']; ?> />
@@ -377,7 +366,7 @@ for ($y = 0; $y <= $row; $y++) {
                 <input type="checkbox" name="del_row[<?php echo $w; ?>]" />
             </td>
             <td align="<?php echo $cell_align_right; ?>">
-                <b><?php echo $strOr; ?>:</b>
+                <strong><?php echo $strOr; ?>:</strong>
             </td>
             <td>
                 <input type="radio" name="and_or_row[<?php echo $w; ?>]" value="or"<?php echo $chk['or']; ?> />
@@ -446,7 +435,7 @@ for ($y = 0; $y <= $row; $y++) {
                 <input type="checkbox" name="ins_row[<?php echo $w; ?>]" />
             </td>
             <td align="<?php echo $cell_align_right; ?>">
-                <b><?php echo $strAnd; ?>:</b>
+                <strong><?php echo $strAnd; ?>:</strong>
             </td>
             <td>
                 <input type="radio" name="and_or_row[<?php echo $w; ?>]" value="and"<?php echo $chk['and']; ?> />
@@ -458,7 +447,7 @@ for ($y = 0; $y <= $row; $y++) {
                 <input type="checkbox" name="del_row[<?php echo $w; ?>]" />
             </td>
             <td align="<?php echo $cell_align_right; ?>">
-                <b><?php echo $strOr; ?>:</b>
+                <strong><?php echo $strOr; ?>:</strong>
             </td>
             <td>
                 <input type="radio" name="and_or_row[<?php echo $w; ?>]" value="or"<?php echo $chk['or']; ?> />
@@ -529,9 +518,9 @@ for ($x = 0; $x < $col; $x++) {
         }
         ?>
     <td align="center">
-        <b><?php echo $strOr; ?>:</b>
+        <strong><?php echo $strOr; ?>:</strong>
         <input type="radio" name="and_or_col[<?php echo $z; ?>]" value="or"<?php echo $chk['or']; ?> />
-        &nbsp;&nbsp;<b><?php echo $strAnd; ?>:</b>
+        &nbsp;&nbsp;<strong><?php echo $strAnd; ?>:</strong>
         <input type="radio" name="and_or_col[<?php echo $z; ?>]" value="and"<?php echo $chk['and']; ?> />
         <br />
         <?php echo $strQBEIns . "\n"; ?>
@@ -560,9 +549,9 @@ for ($x = 0; $x < $col; $x++) {
     }
     ?>
     <td align="center">
-        <b><?php echo $strOr; ?>:</b>
+        <strong><?php echo $strOr; ?>:</strong>
         <input type="radio" name="and_or_col[<?php echo $z; ?>]" value="or"<?php echo $chk['or']; ?> />
-        &nbsp;&nbsp;<b><?php echo $strAnd; ?>:</b>
+        &nbsp;&nbsp;<strong><?php echo $strAnd; ?>:</strong>
         <input type="radio" name="and_or_col[<?php echo $z; ?>]" value="and"<?php echo $chk['and']; ?> />
         <br />
         <?php echo $strQBEIns . "\n"; ?>
@@ -628,7 +617,7 @@ echo PMA_generate_common_hidden_inputs($url_params);
 <?php
 $strTableListOptions = '';
 $numTableListOptions = 0;
-foreach ($tbl_names AS $key => $val) {
+foreach ($tbl_names as $key => $val) {
     $strTableListOptions .= '                        ';
     $strTableListOptions .= '<option value="' . htmlspecialchars($key) . '"' . $val . '>'
         . str_replace(' ', '&nbsp;', htmlspecialchars($key)) . '</option>' . "\n";
@@ -649,13 +638,12 @@ foreach ($tbl_names AS $key => $val) {
         <fieldset>
             <legend><?php echo sprintf($strQueryOnDb, PMA_getDbLink($db)); ?>
                 </legend>
-            <textarea cols="30" name="sql_query" id="textSqlquery"
+            <textarea cols="80" name="sql_query" id="textSqlquery"
                 rows="<?php echo ($numTableListOptions > 30) ? '15' : '7'; ?>"
                 dir="<?php echo $text_dir; ?>">
 <?php
 // 1. SELECT
 $last_select = 0;
-$encoded_qry = '';
 if (!isset($qry_select)) {
     $qry_select         = '';
 }
@@ -669,7 +657,6 @@ for ($x = 0; $x < $col; $x++) {
     }
 } // end for
 if (!empty($qry_select)) {
-    $encoded_qry .= urlencode('SELECT ' . $qry_select . "\n");
     echo  'SELECT ' . htmlspecialchars($qry_select) . "\n";
 }
 
@@ -683,7 +670,6 @@ if (!empty($qry_select)) {
 // First we need the really needed Tables - those in TableList might still be
 // all Tables.
 if (isset($Field) && count($Field) > 0) {
-
     // Initialize some variables
     $tab_all    = array();
     $col_all    = array();
@@ -694,14 +680,14 @@ if (isset($Field) && count($Field) > 0) {
     $fromclause = '';
 
     // We only start this if we have fields, otherwise it would be dumb
-    foreach ($Field AS $value) {
+    foreach ($Field as $value) {
         $parts             = explode('.', $value);
         if (!empty($parts[0]) && !empty($parts[1])) {
-            $tab_raw       = urldecode($parts[0]);
+            $tab_raw       = $parts[0];
             $tab           = str_replace('`', '', $tab_raw);
             $tab_all[$tab] = $tab;
 
-            $col_raw       = urldecode($parts[1]);
+            $col_raw       = $parts[1];
             $col_all[]     = $tab . '.' . str_replace('`', '', $col_raw);
          }
     } // end while
@@ -711,12 +697,12 @@ if (isset($Field) && count($Field) > 0) {
         // Now we need all tables that we have in the where clause
         $crit_cnt         = count($criteria);
         for ($x = 0; $x < $crit_cnt; $x++) {
-            $curr_tab     = explode('.', urldecode($Field[$x]));
+            $curr_tab     = explode('.', $Field[$x]);
             if (!empty($curr_tab[0]) && !empty($curr_tab[1])) {
-                $tab_raw  = urldecode($curr_tab[0]);
+                $tab_raw  = $curr_tab[0];
                 $tab      = str_replace('`', '', $tab_raw);
 
-                $col_raw  = urldecode($curr_tab[1]);
+                $col_raw  = $curr_tab[1];
                 $col1     = str_replace('`', '', $col_raw);
                 $col1     = $tab . '.' . $col1;
                 // Now we know that our array has the same numbers as $criteria
@@ -746,7 +732,7 @@ if (isset($Field) && count($Field) > 0) {
             // the last db selected is not always the one where we need to work)
             PMA_DBI_select_db($db);
 
-            foreach ($tab_all AS $tab) {
+            foreach ($tab_all as $tab) {
                 $ind_rs   = PMA_DBI_query('SHOW INDEX FROM ' . PMA_backquote($tab) . ';');
                 while ($ind = PMA_DBI_fetch_assoc($ind_rs)) {
                     $col1 = $tab . '.' . $ind['Column_name'];
@@ -787,7 +773,7 @@ if (isset($Field) && count($Field) > 0) {
             // (that would mean that they were also found in the whereclauses
             // which would be great). if yes, we take only those
             if ($needsort == 1) {
-                foreach ($col_cand AS $col => $is_where) {
+                foreach ($col_cand as $col => $is_where) {
                     $tab           = explode('.', $col);
                     $tab           = $tab[0];
                     if ($is_where == 'Y') {
@@ -813,7 +799,7 @@ if (isset($Field) && count($Field) > 0) {
             if (count($col_cand) > 1) {
                 // Of course we only want to check each table once
                 $checked_tables = $col_cand;
-                foreach ($col_cand AS $tab) {
+                foreach ($col_cand as $tab) {
                     if ($checked_tables[$tab] != 1) {
                         $tsize[$tab] = PMA_Table::countRecords($db, $tab, true, false);
                         $checked_tables[$tab] = 1;
@@ -829,86 +815,8 @@ if (isset($Field) && count($Field) > 0) {
             }
         } // end if (exactly one where clause)
 
-        /**
-         * Removes unwanted entries from an array (PHP3 compliant)
-         *
-         * @param   array  the array to work with
-         * @param   array  the list of keys to remove
-         *
-         * @return  array  the cleaned up array
-         *
-         * @access  private
-         */
-        function PMA_arrayShort($array, $key)
-        {
-            foreach ($array AS $k => $v) {
-                if ($k != $key) {
-                    $reta[$k] = $v;
-                }
-            }
-            if (!isset($reta)) {
-                $reta = array();
-            }
-
-            return $reta;
-        } // end of the "PMA_arrayShort()" function
-
-
-        /**
-         * Finds all related tables
-         *
-         * @param   string   wether to go from master to foreign or vice versa
-         *
-         * @return  boolean  always TRUE
-         *
-         * @global  array    the list of tables that we still couldn't connect
-         * @global  array    the list of allready connected tables
-         * @global  string   the current databse name
-         * @global  string   the super user connection id
-         * @global  array    the list of relation settings
-         *
-         * @access  private
-         */
-        function PMA_getRelatives($from) {
-            global $tab_left, $tab_know, $fromclause;
-            global $controllink, $db, $cfgRelation;
-
-            if ($from == 'master') {
-                $to    = 'foreign';
-            } else {
-                $to    = 'master';
-            }
-            $in_know = '(\'' . implode('\', \'', $tab_know) . '\')';
-            $in_left = '(\'' . implode('\', \'', $tab_left) . '\')';
-
-            $rel_query = 'SELECT *'
-                       . ' FROM ' . PMA_backquote($cfgRelation['relation'])
-                       . ' WHERE ' . $from . '_db   = \'' . PMA_sqlAddslashes($db) . '\''
-                       . ' AND ' . $to   . '_db   = \'' . PMA_sqlAddslashes($db) . '\''
-                       . ' AND ' . $from . '_table IN ' . $in_know
-                       . ' AND ' . $to   . '_table IN ' . $in_left;
-            PMA_DBI_select_db($cfgRelation['db'], $controllink);
-            $relations = @PMA_DBI_query($rel_query, $controllink);
-            PMA_DBI_select_db($db, $controllink);
-            while ($row = PMA_DBI_fetch_assoc($relations)) {
-                $found_table                = $row[$to . '_table'];
-                if (isset($tab_left[$found_table])) {
-                    $fromclause             .= "\n" . ' LEFT JOIN '
-                                            . PMA_backquote($row[$to . '_table']) . ' ON '
-                                            . PMA_backquote($row[$from . '_table']) . '.'
-                                            . PMA_backquote($row[$from . '_field']) . ' = '
-                                            . PMA_backquote($row[$to . '_table']) . '.'
-                                            . PMA_backquote($row[$to . '_field']) . ' ';
-                    $tab_know[$found_table] = $found_table;
-                    $tab_left               = PMA_arrayShort($tab_left, $found_table);
-                }
-            } // end while
-
-            return TRUE;
-        } // end of the "PMA_getRelatives()" function
-
-
-        $tab_left          = PMA_arrayShort($tab_all, $master);
+        $tab_left = $tab_all;
+        unset($tab_left[$master]);
         $tab_know[$master] = $master;
 
         $run   = 0;
@@ -922,9 +830,9 @@ if (isset($Field) && count($Field) > 0) {
             $run++;
             if ($run > 5) {
 
-                foreach ($tab_left AS $tab) {
-                    $emerg    .= ', ' . PMA_backquote($tab);
-                    $tab_left = PMA_arrayShort($tab_left, $tab);
+                foreach ($tab_left as $tab) {
+                    $emerg .= ', ' . PMA_backquote($tab);
+                    unset($tab_left[$tab]);
                 }
             }
         } // end while
@@ -941,7 +849,6 @@ if (empty($qry_from) && isset($tab_all)) {
 }
 // Now let's see what we got
 if (!empty($qry_from)) {
-    $encoded_qry  .= urlencode('FROM ' . $qry_from . "\n");
     echo 'FROM ' . htmlspecialchars($qry_from) . "\n";
 }
 
@@ -993,9 +900,9 @@ for ($y = 0; $y <= $row; $y++) {
 } // end for
 
 if (!empty($qry_where) && $qry_where != '()') {
-    $encoded_qry .= urlencode('WHERE ' . $qry_where . "\n");
     echo 'WHERE ' . htmlspecialchars($qry_where) . "\n";
 } // end if
+
 
 // 4. ORDER BY
 $last_orderby = 0;
@@ -1017,12 +924,10 @@ for ($x = 0; $x < $col; $x++) {
     }
 } // end for
 if (!empty($qry_orderby)) {
-    $encoded_qry .= urlencode('ORDER BY ' . $qry_orderby);
     echo 'ORDER BY ' . htmlspecialchars($qry_orderby) . "\n";
 }
 ?>
         </textarea>
-        <input type="hidden" name="encoded_sql_query" value="<?php echo $encoded_qry; ?>" />
         </fieldset>
         <fieldset class="tblFooters">
             <input type="submit" name="submit_sql" value="<?php echo $strRunQuery; ?>" />

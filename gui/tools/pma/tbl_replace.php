@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 11281 2008-05-18 15:53:27Z lem9 $
+ * @version $Id: tbl_replace.php 11388 2008-07-14 19:52:16Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -25,7 +25,6 @@
  * @uses    PMA_securePath()
  * @uses    PMA_sendHeaderLocation()
  * @uses    str_replace()
- * @uses    urlencode()
  * @uses    count()
  * @uses    file_exists()
  * @uses    strlen()
@@ -66,7 +65,7 @@ $goto_include = false;
 
 if (isset($_REQUEST['insert_rows']) && is_numeric($_REQUEST['insert_rows']) && $_REQUEST['insert_rows'] != $cfg['InsertRows']) {
     $cfg['InsertRows'] = $_REQUEST['insert_rows'];
-    $js_to_run = 'tbl_change.js';
+    $GLOBALS['js_include'][] = 'tbl_change.js';
     require_once './libraries/header.inc.php';
     require './tbl_change.php';
     exit;
@@ -147,7 +146,6 @@ if (isset($_REQUEST['primary_key'])) {
 }
 
 $query = array();
-$message = '';
 $value_sets = array();
 $func_no_param = array(
     'NOW',
@@ -271,13 +269,13 @@ if ($is_insert && count($value_sets) > 0) {
 
     unset($query_fields, $value_sets);
 
-    $message .= $GLOBALS['strInsertedRows'] . '&nbsp;';
+    $message = PMA_Message::success('strRowsInserted');
 } elseif (! empty($query)) {
-    $message .= $GLOBALS['strAffectedRows'] . '&nbsp;';
+    $message = PMA_Message::success('strRowsAffected');
 } else {
     // No change -> move back to the calling script
-    $message .= $GLOBALS['strNoModification'];
-    $js_to_run = 'functions.js';
+    $message = PMA_Message::success('strNoModification');
+    $GLOBALS['js_include'][] = 'functions.js';
     $active_page = $goto_include;
     require_once './libraries/header.inc.php';
     require './' . PMA_securePath($goto_include);
@@ -295,8 +293,9 @@ if (! empty($GLOBALS['sql_query'])) {
 }
 $GLOBALS['sql_query'] = implode('; ', $query) . ';';
 $total_affected_rows = 0;
-$last_message = '';
-$warning_message = '';
+$last_messages = array();
+$warning_messages = array();
+$error_messages = array();
 
 foreach ($query as $single_query) {
     if ($GLOBALS['cfg']['IgnoreMultiSubmitErrors']) {
@@ -304,9 +303,9 @@ foreach ($query as $single_query) {
     } else {
         $result = PMA_DBI_query($single_query);
     }
-    
+
     if (! $result) {
-        $message .= PMA_DBI_getError();
+        $error_messages[] = PMA_DBI_getError();
     } else {
         if (@PMA_DBI_affected_rows()) {
             $total_affected_rows += @PMA_DBI_affected_rows();
@@ -320,30 +319,38 @@ foreach ($query as $single_query) {
             if ($total_affected_rows > 0) {
                 $insert_id = $insert_id + $total_affected_rows - 1;
             }
-            $last_message .= '[br]' . $GLOBALS['strInsertedRowId'] . '&nbsp;' . $insert_id;
+            $last_message = PMA_Message::notice('strInsertedRowId');
+            $last_message->addParam($insert_id);
+            $last_messages[] = $last_message;
         }
         PMA_DBI_free_result($result);
     } // end if
 
     foreach (PMA_DBI_get_warnings() as $warning) {
-        $warning_message .= $warning['Level'] . ': #' . $warning['Code'] 
-            . ' ' . $warning['Message'] . '[br]';
+        $warning_messages[] = $warning['Level'] . ': #' . $warning['Code']
+            . ' ' . $warning['Message'];
     }
-    
+
     unset($result);
 }
 unset($single_query, $query);
 
-$message .= $total_affected_rows . $last_message;
+$message->addParam($total_affected_rows);
+$message->addMessages($last_messages, '<br />');
 
-if (! empty($warning_message)) {
+if (! empty($warning_messages)) {
     /**
      * @todo use a <div class="warning"> in PMA_showMessage() for this part of
      * the message
      */
-    $message .= '[br]' . $warning_message;
+    $message->addMessages($warning_messages, '<br />');
+    $message->isWarning(true);
 }
-unset($warning_message, $total_affected_rows, $last_message);
+if (! empty($error_messages)) {
+    $message->addMessages($error_messages);
+    $message->isError(true);
+}
+unset($error_messages, $warning_messages, $total_affected_rows, $last_messages, $last_message);
 
 if (isset($return_to_sql_query)) {
     $disp_query = $GLOBALS['sql_query'];
@@ -352,18 +359,11 @@ if (isset($return_to_sql_query)) {
     $GLOBALS['sql_query'] = $return_to_sql_query;
 }
 
-// if user asked to "Insert another new row", we need tbl_change.js
-// otherwise the calendar icon does not work
-if ($goto_include == 'tbl_change.php') {
-    /**
-     * @todo if we really need to run many different js at header time,
-     * $js_to_run would become an array and header.inc.php would iterate
-     * thru it, instead of the bunch of if/elseif it does now
-     */
-    $js_to_run = 'tbl_change.js';
-} else {
-    $js_to_run = 'functions.js';
-}
+$GLOBALS['js_include'][] = 'tbl_change.js';
+$GLOBALS['js_include'][] = 'functions.js';
+// in case we call sql.php which needs those:
+$GLOBALS['js_include'][] = 'mootools.js';
+
 $active_page = $goto_include;
 require_once './libraries/header.inc.php';
 require './' . PMA_securePath($goto_include);
