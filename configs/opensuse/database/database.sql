@@ -1,4 +1,4 @@
-create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 use {DATABASE_NAME};
 
@@ -559,6 +559,21 @@ CREATE TABLE `subdomain` (
   `subdomain_status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`subdomain_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subdomain_alias`
+--
+
+CREATE TABLE `subdomain_alias` (
+  `subdomain_alias_id` int(10) unsigned NOT NULL auto_increment,
+  `alias_id` int(10) unsigned default NULL,
+  `subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
+  `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
+  `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`subdomain_alias_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_c
 
 -- --------------------------------------------------------
 

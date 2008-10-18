@@ -41,7 +41,6 @@ install:
 	cp -R ./working $(SYSTEM_CONF)/cron.d
 	cp $(SYSTEM_CONF)/cron.d/ispcp $(SYSTEM_CONF)/cron.d/working
 
-
 uninstall:
 
 	rm -rf $(ROOT_CONF)/cron.d
