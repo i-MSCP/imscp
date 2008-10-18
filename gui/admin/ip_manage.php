@@ -240,7 +240,7 @@ $tpl->assign(
 			'TR_ACTION' => tr('Action'),
 			'TR_ADD' => tr('Add'),
 			'TR_ADD_NEW_IP' => tr('Add new IP'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: %s?', '%s', true)
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: %s?', true, '%s')
 			)
 	);
 
