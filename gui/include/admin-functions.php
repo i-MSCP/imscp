@@ -739,7 +739,7 @@ function gen_user_list(&$tpl, &$sql) {
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?', null, true),
+					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?', true),
 					)
 				);
 
@@ -765,7 +765,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 			'TR_USERS' => tr('Users'),
 			'TR_SEARCH' => tr('Search'),
 			'TR_CREATED_ON' => tr('Creation date'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s', true),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 			'TR_EDIT' => tr("Edit")
 			)
 		);

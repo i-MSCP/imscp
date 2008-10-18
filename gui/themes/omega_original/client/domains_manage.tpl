@@ -125,7 +125,7 @@ function action_delete(url,alias_or_subdomain) {
           </tr>
           <!-- BDP: sub_item -->
           <tr>
-            <td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
+            <td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}.{SUB_ALIAS_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>

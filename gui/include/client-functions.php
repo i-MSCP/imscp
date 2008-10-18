@@ -491,6 +491,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
+	$tpl->define_dynamic('isactive_update_hp', 'menu');
 
 	$tpl->assign(
 			array(
@@ -601,6 +602,23 @@ function gen_client_menu(&$tpl, $menu_file) {
 				'AWSTATS_TARGET' => '_blank'
 				)
 			);
+	}
+
+	# Hide 'Update Hosting Package'-Button, if there are none
+	$query = <<<SQL_QUERY
+	 SELECT
+	     id
+	 FROM
+	     hosting_plans
+	 WHERE
+	     reseller_id = ?
+	   AND
+	     status = '1'
+SQL_QUERY;
+	
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+	if ($rs->RecordCount() == 0) {
+		$tpl->assign('ISACTIVE_UPDATE_HP', '');
 	}
 
 	$tpl->parse('MENU', 'menu');

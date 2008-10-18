@@ -68,7 +68,14 @@ function makeUser(){
 							   <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
                               <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
-                                {DOMAIN_NAME}</td>
+                                <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} onClick="changeDom('real');">{DOMAIN_NAME}
+                                <input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} onClick="changeDom('alias');">
+                                <select name="als_id">
+                                    <!-- BDP: als_list -->
+                                    <option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
+                                    <!-- EDP: als_list -->
+                                </select>
+                                </td>
                             </tr>
                             <tr>
                               <td width="250" class="content2"><label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label></td>

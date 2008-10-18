@@ -222,7 +222,7 @@ $tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 		'TR_DELETE_ORDER' => tr('Delete order'),
 		'TR_DMN_IP' => tr('Domain IP'),
 		'TR_CUSTOMER_ID' => tr('Customer ID'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', null, true),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', true),
 		'TR_ADD' => tr('Add to the system')));
 
 gen_page_message($tpl);

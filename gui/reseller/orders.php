@@ -199,7 +199,7 @@ $tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_DETAILS' => tr('Details'),
 		'TR_HP' => tr('Hosting plan'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', null, true),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', true),
 		'TR_ADD' => tr('Add/Details')));
 
 gen_page_message($tpl);

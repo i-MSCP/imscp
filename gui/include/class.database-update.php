@@ -206,6 +206,33 @@ class databaseUpdate extends ispcpUpdate{
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
+	 *
+	 * @author		Benedikt Heintel
+	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @version		1.0
+	 * @since		r1356
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_7() {
+		$sqlUpd = array();
+
+		$sqlUpd[] = "DROP TABLE IF EXISTS `subdomain_alias`";
+		$sqlUpd[] = "CREATE TABLE IF NOT EXISTS `subdomain_alias` (
+					`subdomain_alias_id` int(10) unsigned NOT NULL auto_increment,
+					`alias_id` int(10) unsigned default NULL,
+					`subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
+					`subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
+					`subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
+					PRIMARY KEY  (`subdomain_alias_id`)
+					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+		return $sqlUpd;
+	}	
+
 	/*
 	* DO NOT CHANGE ANYTHING BELOW THIS LINE
 	*/
