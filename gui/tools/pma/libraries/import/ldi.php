@@ -3,7 +3,7 @@
 /**
  * CSV import plugin for phpMyAdmin
  *
- * @version $Id: ldi.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: ldi.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -20,21 +20,15 @@ if (isset($plugin_list)) {
     if ($GLOBALS['cfg']['Import']['ldi_local_option'] == 'auto') {
         $GLOBALS['cfg']['Import']['ldi_local_option'] = FALSE;
 
-        if (PMA_MYSQL_INT_VERSION < 32349) {
+        $result = PMA_DBI_try_query('SHOW VARIABLES LIKE \'local\\_infile\';');
+        if ($result != FALSE && PMA_DBI_num_rows($result) > 0) {
+            $tmp = PMA_DBI_fetch_row($result);
+            if ($tmp[1] == 'ON') {
                 $GLOBALS['cfg']['Import']['ldi_local_option'] = TRUE;
-        }
-
-        if (PMA_MYSQL_INT_VERSION > 40003) {
-            $result = PMA_DBI_try_query('SHOW VARIABLES LIKE \'local\\_infile\';');
-            if ($result != FALSE && PMA_DBI_num_rows($result) > 0) {
-                $tmp = PMA_DBI_fetch_row($result);
-                if ($tmp[1] == 'ON') {
-                    $GLOBALS['cfg']['Import']['ldi_local_option'] = TRUE;
-                }
             }
-            PMA_DBI_free_result($result);
-            unset($result);
         }
+        PMA_DBI_free_result($result);
+        unset($result);
     }
     $plugin_list['ldi'] = array(
         'text' => 'strLDI',
@@ -57,8 +51,7 @@ if (isset($plugin_list)) {
 
 if ($import_file == 'none' || $compression != 'none' || $charset_conversion) {
     // We handle only some kind of data!
-    $message = $strInvalidLDIImport;
-    $show_error_header = TRUE;
+    $message = PMA_Message::error('strInvalidLDIImport');
     $error = TRUE;
     return;
 }

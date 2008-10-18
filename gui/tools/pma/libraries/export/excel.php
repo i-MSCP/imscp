@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: excel.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: excel.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

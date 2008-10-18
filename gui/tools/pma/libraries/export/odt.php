@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: odt.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: odt.php 11336 2008-06-21 15:01:27Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -33,10 +33,8 @@ if (isset($plugin_list)) {
             $plugin_list['odt']['options'][] =
                 array('type' => 'bool', 'name' => 'relation', 'text' => 'strRelations');
         }
-        if (!empty($GLOBALS['cfgRelation']['commwork']) || PMA_MYSQL_INT_VERSION >= 40100) {
-            $plugin_list['odt']['options'][] =
-                array('type' => 'bool', 'name' => 'comments', 'text' => 'strComments');
-        }
+        $plugin_list['odt']['options'][] =
+            array('type' => 'bool', 'name' => 'comments', 'text' => 'strComments');
         if (!empty($GLOBALS['cfgRelation']['mimework'])) {
             $plugin_list['odt']['options'][] =
                 array('type' => 'bool', 'name' => 'mime', 'text' => 'strMIME_MIMEtype');
@@ -282,7 +280,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
     if ($do_relation && $have_rel) {
         $columns_cnt++;
     }
-    if ($do_comments && ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100)) {
+    if ($do_comments) {
         $columns_cnt++;
     }
     if ($do_mime && $cfgRelation['mimework']) {
@@ -308,7 +306,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
             . '<text:p>' . htmlspecialchars($GLOBALS['strLinksTo']) . '</text:p>'
             . '</table:table-cell>';
     }
-    if ($do_comments && ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100)) {
+    if ($do_comments) {
         $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
             . '<text:p>' . htmlspecialchars($GLOBALS['strComments']) . '</text:p>'
             . '</table:table-cell>';
@@ -379,7 +377,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
                     . '</table:table-cell>';
             }
         }
-        if ($do_comments && ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100)) {
+        if ($do_comments) {
             if (isset($comments[$field_name])) {
                 $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
                     . '<text:p>' . htmlspecialchars($comments[$field_name]) . '</text:p>'

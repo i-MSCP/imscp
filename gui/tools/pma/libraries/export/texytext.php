@@ -1,9 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Set of functions used to build CSV dumps of tables
- *
- * @version $Id: htmlword.php 11336 2008-06-21 15:01:27Z lem9 $
+ * Sample export to Texy! text.
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -13,16 +11,25 @@ if (! defined('PHPMYADMIN')) {
  *
  */
 if (isset($plugin_list)) {
-    $plugin_list['htmlword'] = array(
-        'text' => 'strHTMLWord',
-        'extension' => 'doc',
-        'mime_type' => 'application/vnd.ms-word',
-        'force_file' => true,
+    $plugin_list['texytext'] = array(
+        'text' => 'strTexyText',
+        'extension' => 'txt',
+        'mime_type' => 'text/plain',
         'options' => array(
-            array('type' => 'bool', 'name' => 'structure', 'text' => 'strStructure', 'force' => 'data'),
-            array('type' => 'bgroup', 'name' => 'data', 'text' => 'strData', 'force' => 'structure'),
-            array('type' => 'text', 'name' => 'null', 'text' => 'strReplaceNULLBy'),
-            array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
+            array('type' => 'bool',
+                'name' => 'structure',
+                'text' => 'strStructure',
+                'force' => 'data'),
+            array('type' => 'bgroup',
+                'name' => 'data',
+                'text' => 'strData',
+                'force' => 'structure'),
+            array('type' => 'text',
+                'name' => 'null',
+                'text' => 'strReplaceNULLBy'),
+            array('type' => 'bool',
+                'name' => 'columns',
+                'text' => 'strPutColNames'),
             array('type' => 'egroup'),
             ),
         'options_text' => 'strOptions',
@@ -48,7 +55,7 @@ function PMA_exportComment($text) {
  * @access  public
  */
 function PMA_exportFooter() {
-    return PMA_exportOutputHandler('</body></html>');
+    return true;
 }
 
 /**
@@ -59,17 +66,7 @@ function PMA_exportFooter() {
  * @access  public
  */
 function PMA_exportHeader() {
-    global $charset, $charset_of_file;
-    return PMA_exportOutputHandler('<html xmlns:o="urn:schemas-microsoft-com:office:office"
-xmlns:x="urn:schemas-microsoft-com:office:word"
-xmlns="http://www.w3.org/TR/REC-html40">
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-type" content="text/html;charset=' . (isset($charset_of_file) ? $charset_of_file : $charset) .'" />
-</head>
-<body>');
+    return true;
 }
 
 /**
@@ -82,7 +79,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
  * @access  public
  */
 function PMA_exportDBHeader($db) {
-    return PMA_exportOutputHandler('<h1>' . $GLOBALS['strDatabase'] . ' ' . $db . '</h1>');
+    return PMA_exportOutputHandler('===' . $GLOBALS['strDatabase'] . ' ' . $db . "\n\n");
 }
 
 /**
@@ -128,10 +125,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
 {
     global $what;
 
-    if (!PMA_exportOutputHandler('<h2>' . $GLOBALS['strDumpingData'] . ' ' . $table . '</h2>')) {
-        return FALSE;
-    }
-    if (!PMA_exportOutputHandler('<table class="width100" cellspacing="1">')) {
+    if (!PMA_exportOutputHandler('== ' . $GLOBALS['strDumpingData'] . ' ' . $table . "\n\n")) {
         return FALSE;
     }
 
@@ -140,39 +134,36 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     $fields_cnt  = PMA_DBI_num_fields($result);
 
     // If required, get fields name at the first line
-    if (isset($GLOBALS['htmlword_columns'])) {
-        $schema_insert = '<tr class="print-category">';
+    if (isset($GLOBALS[$what . '_columns'])) {
+        $text_output = "|------\n";
         for ($i = 0; $i < $fields_cnt; $i++) {
-            $schema_insert .= '<td class="print"><b>' . htmlspecialchars(stripslashes(PMA_DBI_field_name($result, $i))) . '</b></td>';
+            $text_output .= '|' . htmlspecialchars(stripslashes(PMA_DBI_field_name($result, $i)));
         } // end for
-        $schema_insert .= '</tr>';
-        if (!PMA_exportOutputHandler($schema_insert)) {
+        $text_output .= "\n|------\n";
+        if (!PMA_exportOutputHandler($text_output)) {
             return FALSE;
         }
     } // end if
 
     // Format the data
     while ($row = PMA_DBI_fetch_row($result)) {
-        $schema_insert = '<tr class="print-category">';
+        $text_output = '';
         for ($j = 0; $j < $fields_cnt; $j++) {
             if (!isset($row[$j]) || is_null($row[$j])) {
                 $value = $GLOBALS[$what . '_null'];
             } elseif ($row[$j] == '0' || $row[$j] != '') {
                 $value = $row[$j];
             } else {
-                $value = '';
+                $value = ' ';
             }
-            $schema_insert .= '<td class="print">' . htmlspecialchars($value) . '</td>';
+            $text_output .= '|' . htmlspecialchars($value);
         } // end for
-        $schema_insert .= '</tr>';
-        if (!PMA_exportOutputHandler($schema_insert)) {
+        $text_output .= "\n";
+        if (!PMA_exportOutputHandler($text_output)) {
             return FALSE;
         }
     } // end while
     PMA_DBI_free_result($result);
-    if (!PMA_exportOutputHandler('</table>')) {
-        return FALSE;
-    }
 
     return TRUE;
 }
@@ -181,7 +172,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
 {
     global $cfgRelation;
 
-    if (!PMA_exportOutputHandler('<h2>' . $GLOBALS['strTableStructure'] . ' ' .$table . '</h2>')) {
+    if (!PMA_exportOutputHandler('== ' . $GLOBALS['strTableStructure'] . ' ' .$table . "\n\n")) {
         return FALSE;
     }
 
@@ -224,9 +215,6 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
     /**
      * Displays the table structure
      */
-    if (!PMA_exportOutputHandler('<table class="width100" cellspacing="1">')) {
-        return FALSE;
-    }
 
     $columns_cnt = 4;
     if ($do_relation && $have_rel) {
@@ -239,31 +227,31 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
         $columns_cnt++;
     }
 
-    $schema_insert = '<tr class="print-category">';
-    $schema_insert .= '<th class="print">' . htmlspecialchars($GLOBALS['strField']) . '</th>';
-    $schema_insert .= '<td class="print"><b>' . htmlspecialchars($GLOBALS['strType']) . '</b></td>';
-    $schema_insert .= '<td class="print"><b>' . htmlspecialchars($GLOBALS['strNull']) . '</b></td>';
-    $schema_insert .= '<td class="print"><b>' . htmlspecialchars($GLOBALS['strDefault']) . '</b></td>';
+    $text_output = "|------\n";
+    $text_output .= '|' . htmlspecialchars($GLOBALS['strField']);
+    $text_output .= '|' . htmlspecialchars($GLOBALS['strType']);
+    $text_output .= '|' . htmlspecialchars($GLOBALS['strNull']);
+    $text_output .= '|' . htmlspecialchars($GLOBALS['strDefault']);
     if ($do_relation && $have_rel) {
-        $schema_insert .= '<td class="print"><b>' . htmlspecialchars($GLOBALS['strLinksTo']) . '</b></td>';
+        $text_output .= '|' . htmlspecialchars($GLOBALS['strLinksTo']);
     }
     if ($do_comments) {
-        $schema_insert .= '<td class="print"><b>' . htmlspecialchars($GLOBALS['strComments']) . '</b></td>';
+        $text_output .= '|' . htmlspecialchars($GLOBALS['strComments']);
         $comments = PMA_getComments($db, $table);
     }
     if ($do_mime && $cfgRelation['mimework']) {
-        $schema_insert .= '<td class="print"><b>' . htmlspecialchars('MIME') . '</b></td>';
+        $text_output .= '|' . htmlspecialchars('MIME');
         $mime_map = PMA_getMIME($db, $table, true);
     }
-    $schema_insert .= '</tr>';
+    $text_output .= "\n|------\n";
 
-    if (!PMA_exportOutputHandler($schema_insert)) {
+    if (!PMA_exportOutputHandler($text_output)) {
         return FALSE;
     }
 
     while ($row = PMA_DBI_fetch_assoc($result)) {
 
-        $schema_insert = '<tr class="print-category">';
+        $text_output = '';
         $type             = $row['Type'];
         // reformat mysql query output - staybyte - 9. June 2001
         // loic1: set or enum types: slashes single quotes inside options
@@ -309,39 +297,39 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
         $fmt_pre = '';
         $fmt_post = '';
         if (in_array($row['Field'], $unique_keys)) {
-            $fmt_pre = '<b>' . $fmt_pre;
-            $fmt_post = $fmt_post . '</b>';
+            $fmt_pre = '**' . $fmt_pre;
+            $fmt_post = $fmt_post . '**';
         }
         if ($row['Key']=='PRI') {
-            $fmt_pre = '<i>' . $fmt_pre;
-            $fmt_post = $fmt_post . '</i>';
+            $fmt_pre = '//' . $fmt_pre;
+            $fmt_post = $fmt_post . '//';
         }
-        $schema_insert .= '<td class="print">' . $fmt_pre . htmlspecialchars($row['Field']) . $fmt_post . '</td>';
-        $schema_insert .= '<td class="print">' . htmlspecialchars($type) . '</td>';
-        $schema_insert .= '<td class="print">' . htmlspecialchars($row['Null'] == '' ? $GLOBALS['strNo'] : $GLOBALS['strYes']) . '</td>';
-        $schema_insert .= '<td class="print">' . htmlspecialchars(isset($row['Default']) ? $row['Default'] : '') . '</td>';
+        $text_output .= '|' . $fmt_pre . htmlspecialchars($row['Field']) . $fmt_post;
+        $text_output .= '|' . htmlspecialchars($type);
+        $text_output .= '|' . htmlspecialchars($row['Null'] == '' ? $GLOBALS['strNo'] : $GLOBALS['strYes']);
+        $text_output .= '|' . htmlspecialchars(isset($row['Default']) ? $row['Default'] : '');
 
         $field_name = $row['Field'];
 
         if ($do_relation && $have_rel) {
-            $schema_insert .= '<td class="print">' . (isset($res_rel[$field_name]) ? htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' (' . $res_rel[$field_name]['foreign_field'] . ')') : '') . '</td>';
+            $text_output .= '|' . (isset($res_rel[$field_name]) ? htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' (' . $res_rel[$field_name]['foreign_field'] . ')') : '');
         }
         if ($do_comments && $cfgRelation['commwork']) {
-            $schema_insert .= '<td class="print">' . (isset($comments[$field_name]) ? htmlspecialchars($comments[$field_name]) : '') . '</td>';
+            $text_output .= '|' . (isset($comments[$field_name]) ? htmlspecialchars($comments[$field_name]) : '');
         }
         if ($do_mime && $cfgRelation['mimework']) {
-            $schema_insert .= '<td class="print">' . (isset($mime_map[$field_name]) ? htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype'])) : '') . '</td>';
+            $text_output .= '|' . (isset($mime_map[$field_name]) ? htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype'])) : '');
         }
 
-        $schema_insert .= '</tr>';
+        $text_output .= "\n";
 
-        if (!PMA_exportOutputHandler($schema_insert)) {
+        if (!PMA_exportOutputHandler($text_output)) {
             return FALSE;
         }
     } // end while
     PMA_DBI_free_result($result);
 
-    return PMA_exportOutputHandler('</table>');
+    return true;
 }
 
 }

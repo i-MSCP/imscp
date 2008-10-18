@@ -3,7 +3,7 @@
 /**
  * Produce a PDF report (export) from a query
  *
- * @version $Id: pdf.php 11335 2008-06-21 14:01:54Z lem9 $
+ * @version $Id: pdf.php 11365 2008-07-01 19:21:28Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -42,6 +42,17 @@ class PMA_PDF extends TCPDF
     var $tablewidths;
     var $headerset;
     var $footerset;
+
+    // added because tcpdf for PHP 5 has a protected $buffer
+    public function getBuffer()
+    {
+        return $this->buffer;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
 
     // overloading of a tcpdf function:
     function _beginpage($orientation)
@@ -236,7 +247,7 @@ class PMA_PDF extends TCPDF
             for ($i = 0; $i < $this->numFields; $i++){
                 $stringWidth = $this->getstringwidth($this->fields[$i]->name) + 6 ;
                 // save the real title's width
-                $titleWidth[$i] = $stringWidth; 
+                $titleWidth[$i] = $stringWidth;
                 $totalTitleWidth += $stringWidth;
 
                 // set any column titles less than the start width to the column title width
@@ -281,8 +292,8 @@ class PMA_PDF extends TCPDF
                 }
             }
 
-            // loop through the data, any column whose contents is bigger
-            // than the col size is resized
+            // loop through the data; any column whose contents 
+            // is greater than the column size is resized
             /**
               * @todo force here a LIMIT to avoid reading all rows
               */
@@ -453,10 +464,10 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     $pdf->mysql_report($sql_query, $attr);
 
     // instead of $pdf->Output():
-    if ($pdf->state < 3) {
+    if ($pdf->getState() < 3) {
         $pdf->Close();
     }
-    if (!PMA_exportOutputHandler($pdf->buffer)) {
+    if (!PMA_exportOutputHandler($pdf->getBuffer())) {
         return FALSE;
     }
 
