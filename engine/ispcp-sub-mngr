@@ -1458,6 +1458,69 @@ sub sub_add_httpd_file_data {
 
     return $rs if ($rs != 0);
 
+    ($rs, $rdata) = make_dir(
+                             "$sub_dir/phptmp",
+                             $sys_user,
+                             $httpd_gid,
+                             0770
+                            );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Default domain page template;
+    #
+
+    # check if htdocs folder not exists
+    if (!(-e "$sub_dir/htdocs/")) {
+
+        ($rs, $rdata) = make_dir(
+                               "$sub_dir/htdocs",
+                                $sys_user,
+                                $sys_group,
+                                0755
+                       );
+
+        return $rs if ($rs != 0);
+
+        my $index_tpl = '';
+        my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+
+        ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
+
+        return $rs if ($rs != 0);
+
+        $index_tpl =~ s/{DOMAIN_NAME}/$sub_name/gi;
+        $index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+
+        ($rs, $rdata) = store_file(
+                                  "$sub_dir/htdocs/index.html",
+                                   $index_tpl,
+                                   $sys_user,
+                                   $sys_group,
+                                   0644
+                        );
+
+        return $rs if ($rs != 0);
+
+        $rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $sub_dir/htdocs/");
+        return $rs if ($rs != 0);
+
+        $rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
+        return $rs if ($rs != 0);
+
+        opendir(DIR, "$sub_dir/htdocs/images/");
+        my @files = readdir(DIR);
+        closedir(DIR);
+
+        foreach (@files) {
+            # ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+            $rs = setfmode("$sub_dir/htdocs/images/$_", $sys_user, $sys_group, 0644);
+            return $rs if ($rs != 0);
+        }
+    }
+
     push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');
 
     return 0;
@@ -2165,7 +2228,7 @@ sub sub_add_proftpd_data {
 		push_el(\@main::el, 'sub_add_proftpd_data()', 'ERROR: Undefined Input Data...');
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
 
 	$rs = sub_add_proftpd_cfg_data($sub_data);
 	return $rs if ($rs != 0);
@@ -2183,7 +2246,7 @@ sub sub_change_proftpd_data {
 		push_el(\@main::el, 'sub_change_proftpd_data()', 'ERROR: Undefined Input Data...');
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
 
 	$rs = sub_add_proftpd_data($sub_data);
 	return $rs if ($rs != 0);
@@ -2201,7 +2264,7 @@ sub sub_del_proftpd_data {
 		push_el(\@main::el, 'sub_del_proftpd_data()', 'ERROR: Undefined Input Data...');
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
 
 	$rs = sub_del_proftpd_cfg_data($sub_data);
 	return $rs if ($rs != 0);

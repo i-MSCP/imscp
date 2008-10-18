@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-18 Daniel Andreca
+	- ENGINE:
+		* Restoring active folder creation for subdomains
+		* Fixed #1080: Active web folders should not be deletable by customer; alias subdomains implementation
+
 2008-10-16 Benedikt Heintel
 	- CONFIGS:
 		* Added Mailsize function

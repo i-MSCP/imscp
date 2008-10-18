@@ -51,14 +51,6 @@ function gen_user_alssub_action($sub_id, $sub_status) {
 	}
 }
 
-function gen_user_alssub_action($sub_id, $sub_status) {
-	if ($sub_status === Config::get('ITEM_OK_STATUS')) {
-		return array(tr('Delete'), "alssub_delete.php?id=$sub_id");
-	} else {
-		return array(tr('N/A'), '#');
-	}
-}
-
 function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 	$domain_id = get_user_domain_id($sql, $user_id);
 

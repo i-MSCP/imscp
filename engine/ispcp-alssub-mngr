@@ -1451,16 +1451,79 @@ sub alssub_add_httpd_file_data {
                              0755
                             );
 
+     return $rs if ($rs != 0);
+
+     ($rs, $rdata) = make_dir(
+                              "$sub_dir/cgi-bin",
+                              $sys_user,
+                              $sys_group,
+                              0755
+                      );
+
     return $rs if ($rs != 0);
 
     ($rs, $rdata) = make_dir(
-                             "$sub_dir/cgi-bin",
-                             $sys_user,
-                             $sys_group,
-                             0755
-                            );
+                              "$sub_dir/phptmp",
+                              $sys_user,
+                              $httpd_gid,
+                              0770
+                             );
 
-   return $rs if ($rs != 0);
+    return $rs if ($rs != 0);
+
+    #
+    # Default domain page template;
+    #
+
+    # check if htdocs folder not exists
+    if (!(-e "$sub_dir/htdocs/")) {
+
+        ($rs, $rdata) = make_dir(
+                                 "$sub_dir/htdocs",
+                                  $sys_user,
+                                  $sys_group,
+                                  0755
+                         );
+
+        return $rs if ($rs != 0);
+
+        my $index_tpl = '';
+        my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+
+        ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
+
+        return $rs if ($rs != 0);
+
+        $index_tpl =~ s/{DOMAIN_NAME}/$sub_name/gi;
+        $index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+
+        ($rs, $rdata) = store_file(
+                                   "$sub_dir/htdocs/index.html",
+                                    $index_tpl,
+                                    $sys_user,
+                                    $sys_group,
+                                    0644
+                        );
+
+        return $rs if ($rs != 0);
+
+        $rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $sub_dir/htdocs/");
+        return $rs if ($rs != 0);
+
+        $rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
+        return $rs if ($rs != 0);
+
+        opendir(DIR, "$sub_dir/htdocs/images/");
+        my @files = readdir(DIR);
+        closedir(DIR);
+
+        foreach (@files) {
+            # ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+            $rs = setfmode("$sub_dir/htdocs/images/$_", $sys_user, $sys_group, 0644);
+            return $rs if ($rs != 0);
+        }
+    }
 
     push_el(\@main::el, 'alssub_add_httpd_file_data()', 'Ending...');
 
@@ -1698,6 +1761,164 @@ sub alssub_del_httpd_data {
 
 }
 
+sub alssub_add_proftpd_cfg_data {
+	my ($sub_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'alssub_add_proftpd_cfg_data()', 'Starting...');
+
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'alssub_add_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $sub_name         = @$sub_data[2];
+	my $sub_mount_point  = @$sub_data[3];
+	my $sub_to           = @$sub_data[7];
+	my $alias_to         = @$sub_data[13];
+
+	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
+	my $apache_www_dir   = $main::cfg{'APACHE_WWW_DIR'};
+
+	my $tpl_dir          = "$conf_dir/proftpd/parts";
+	my $backup_dir       = "$conf_dir/proftpd/backup";
+	my $working_dir      = "$conf_dir/proftpd/working";
+	my $sub_fname        = "$sub_name.$sub_to.conf";
+	my $sub_path         = "$apache_www_dir/$alias_to$sub_mount_point";
+	my $working_cfg      = "$working_dir/$sub_fname";
+	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
+
+	#
+	# Let's get needed tags and templates;
+	#
+	my $entry = '';
+	($rs, $entry) = get_tpl(
+		$tpl_dir,
+		'proftpd.conf.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	my $seq = 0;
+
+	#
+	# Let's prepare them;
+	#
+	my %tag_hash = (
+		'{PATH}' => $sub_path,
+	);
+	($rs, $entry) = prep_tpl(
+		\%tag_hash,
+		$entry
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's store generated data;
+	#
+	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_proftpd_cfg_data()', 'Ending...');
+	return 0;
+}
+
+sub alssub_del_proftpd_cfg_data {
+	my ($sub_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'alssub_del_proftpd_cfg_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'alssub_del_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+
+	my $sub_name         = @$sub_data[2];
+	my $sub_to           = @$sub_data[7];
+	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
+	my $sub_fname        = "$sub_name.$sub_to.conf";
+	my $working_dir      = "$conf_dir/proftpd/working";
+	my $working_cfg      = "$working_dir/$sub_fname";
+	my $sys_cfg          = "$proftpd_conf_dir/$sub_fname";
+
+	#
+	# Let's remove .db files for this domain;
+	#
+	$rs = del_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	$rs = del_file($sys_cfg);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_proftpd_cfg_data()', 'Ending...');
+	return 0;
+}
+
+sub alssub_add_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'alssub_add_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'alssub_add_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
+
+	$rs = alssub_add_proftpd_cfg_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_proftpd_data()', 'Ending...');
+	return 0;
+}
+
+sub alssub_change_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'alssub_change_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'alssub_change_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
+
+	$rs = alssub_add_proftpd_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_change_proftpd_data()', 'Ending...');
+	return 0;
+}
+
+sub alssub_del_proftpd_data {
+	my ($sub_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'alssub_del_proftpd_data()', 'Starting...');
+	if (!defined($sub_data) || $sub_data eq '') {
+		push_el(\@main::el, 'alssub_del_proftpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_FTPD'} eq 'no');
+
+	$rs = alssub_del_proftpd_cfg_data($sub_data);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_proftpd_data()', 'Ending...');
+	return 0;
+}
+
 sub alssub_add_data {
 
     my ($sub_data) = @_;
@@ -1713,6 +1934,10 @@ sub alssub_add_data {
         return -1;
 
     }
+
+    $rs = alssub_add_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
 
     $rs = alssub_add_named_data($sub_data);
 
@@ -1744,6 +1969,10 @@ sub alssub_change_data {
 
     }
 
+    $rs = alssub_change_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
+
     $rs = alssub_change_named_data($sub_data);
 
     return $rs if ($rs != 0);
@@ -1773,6 +2002,10 @@ sub alssub_del_data {
         return -1;
 
     }
+
+    $rs = alssub_del_proftpd_data($sub_data);
+
+    return $rs if ($rs != 0);
 
     $rs = alssub_del_named_data($sub_data);
 

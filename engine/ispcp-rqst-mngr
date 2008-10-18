@@ -369,7 +369,7 @@ sub mngr_engine {
         }
 
     }
-    
+
     $sql = "select subdomain_alias_id, subdomain_alias_name, subdomain_alias_status from subdomain_alias where subdomain_alias_status != 'ok' order by subdomain_alias_id";
 
     ($rs, $rdata) = doSQL($sql);
