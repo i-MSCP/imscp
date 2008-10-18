@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: check_lang.sh 9393 2006-09-08 11:28:23Z lem9 $
+# $Id: check_lang.sh 10648 2007-09-15 23:31:45Z lem9 $
 ##
 # Shell script to check that all language files are syncronized
 # Catches duplicate/missing strings
@@ -8,7 +8,7 @@
 # August 9, 2002
 ##
 
-MASTER="english-iso-8859-1.inc.php"
+MASTER="english-utf-8.inc.php"
 TMPDIR="tmp-check"
 FILEPAT="*.inc.php"
 STRINGMATCH='^[[:space:]]*\$[[:alnum:]_]+[[:blank:]]+='
