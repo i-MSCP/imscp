@@ -1,7 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-09-18 Daniel Andreca
+2008-10-19 Benedikt Heintel
+	- GUI:
+		* Fixed #1515: Security issue, login reveals whether a username is valid
+		* Fixed #1561: Show mail-forwarding-target in overview
+
+2008-10-18 Daniel Andreca
 	- ENGINE:
 		* Restoring active folder creation for subdomains
 		* Fixed #1080: Active web folders should not be deletable by customer; alias subdomains implementation

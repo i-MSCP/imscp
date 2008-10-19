@@ -29,11 +29,13 @@ function init_login() {
 
 function register_user($uname, $upass) {
     $sql = Database::getInstance();
+	$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
 
     check_ipaddr();
 
     if (!username_exists($uname)) {
         write_log("Login error, <b><i>".$uname."</i></b> unknown username");
+		system_message(tr('You entered an incorrect username/password.'), $backButtonDestination);
         return false;
     }
 
@@ -86,10 +88,8 @@ SQL_QUERY;
 	    write_log($uname." logged in.");
 	    return true;
 	} else {
-		$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
-
 		write_log($uname . ' entered incorrect password.');
-		system_message(tr('You entered an incorrect password.'), $backButtonDestination);
+		system_message(tr('You entered an incorrect username/password.'), $backButtonDestination);
   		return false;
 	}
 

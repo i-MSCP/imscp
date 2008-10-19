@@ -95,7 +95,7 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
 function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	$dmn_query ="
 		SELECT
-            `mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`
+            `mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`, CONCAT( LEFT(`mail_forward`, 50), IF( LENGTH(`mail_forward`) > 50, '...', '') ) as 'mail_forward'
 		FROM
             `mail_users`
 		WHERE
@@ -130,7 +130,9 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br />";
+				$mail_type .= user_trans_mail_type($type);
+				if (strpos($type, '_forward') !== false) $mail_type .= ': ' . str_replace(array("\r\n", "\n", "\r"), ", ", $rs->fields['mail_forward']);
+				$mail_type .= '<br />';
 			}
 
 			$tpl->assign(
@@ -170,7 +172,8 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			t2.`mail_acc`,
 			t2.`mail_type`,
 			t2.`status`,
-			t2.`mail_auto_respond`
+			t2.`mail_auto_respond`,
+			CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) as 'mail_forward'
 		FROM
 			`subdomain` AS t1,
 			`mail_users` AS t2
@@ -211,7 +214,9 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$mail_type = '';
 
 			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . '<br />';
+				$mail_type .= user_trans_mail_type($type);
+				if (strpos($type, '_forward') !== false) $mail_type .= ': ' . str_replace(array("\r\n", "\n", "\r"), ", ", $rs->fields['mail_forward']);
+				$mail_type .= '<br />';
 			}
 
 
@@ -252,7 +257,8 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			t2.`mail_acc`,
 			t2.`mail_type`,
 			t2.`status`,
-			t2.`mail_auto_respond`
+			t2.`mail_auto_respond`,
+			CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) as 'mail_forward'
 		FROM
 			`domain_aliasses` AS t1,
 			`mail_users` AS t2
@@ -292,7 +298,9 @@ SQL_QUERY;
 			$mail_type = '';
 
  			foreach ($mail_types as $type) {
-				$mail_type .= user_trans_mail_type($type) . "<br />";
+				$mail_type .= user_trans_mail_type($type);
+				if (strpos($type, '_forward') !== false) $mail_type .= ': ' . str_replace(array("\r\n", "\n", "\r"), ", ", $rs->fields['mail_forward']);
+				$mail_type .= '<br />';
 			}
 
 			$tpl->assign(
