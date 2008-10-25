@@ -891,4 +891,38 @@ function get_gender_by_code($code, $nullOnBad = false) {
 	}
 }
 
+function mount_point_exists($dmn_id, $mnt_point){
+	$sql = Database::getInstance();
+	$query = "
+		SELECT
+			t1.`domain_id`, t2.`alias_mount`, t3.`subdomain_mount`, t4.`subdomain_alias_mount`
+		FROM 
+			`domain` as t1
+		LEFT JOIN 
+			(`domain_aliasses` as t2)
+		ON
+			(t1.`domain_id` = t2.`domain_id`)
+		LEFT JOIN 
+			(`subdomain` as t3)
+		ON
+			(t1.`domain_id` = t3.`domain_id`)
+		LEFT JOIN 
+			(`subdomain_alias` as t4)
+		ON
+			(t2.`alias_id` = t4.`alias_id`)
+		WHERE
+			t1.`domain_id` = ?
+		AND
+			(
+				`alias_mount` = ?
+			OR
+				`subdomain_mount` = ?
+			OR
+				`subdomain_alias_mount` = ?
+			)
+	";
+	$rs = exec_query($sql, $query, array($dmn_id, $mnt_point, $mnt_point, $mnt_point));
+	if ($rs->RowCount() > 0) return true;
+	return false;
+}
 ?>

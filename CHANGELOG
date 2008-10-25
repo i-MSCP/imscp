@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-09-25 Daniel Andreca
+	- GUI:
+		* Fixed #1550: Subdomain with existing mountpoint not possible
+
 2008-10-19 Benedikt Heintel
 	- GUI:
 		* Fixed #1515: Security issue, login reveals whether a username is valid

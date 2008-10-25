@@ -204,7 +204,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $tpl;
 
-	$cr_user_id = $_SESSION['dmn_id'];
+	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];
 	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
@@ -234,15 +234,11 @@ function add_domain_alias(&$sql, &$err_al) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
-		
-		$query="SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id`=? AND `subdomain_mount`=?";
-		$subdomres = exec_query($sql,
-			$query,
-			array($cr_user_id, $mount_point));
-		$subdomdata = $subdomres->FetchRow();
-		if ($subdomdata['cnt'] > 0) {
-			$err_al = tr("There is a subdomain with the same mount point!");
+
+		if (mount_point_exists($dmn_id, $mount_point)) {
+			$err_al = tr('Mount point already in use!');
 		}
+
 	}
 
 	if ('_off_' !== $err_al) {
