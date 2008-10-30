@@ -1,7 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-09-25 Daniel Andreca
+2008-10-30 Daniel Andreca
+	- GUI:
+		* Fixed #1536: CentOS - ISPCP fails to install
+
+2008-10-25 Daniel Andreca
 	- GUI:
 		* Fixed #1550: Subdomain with existing mountpoint not possible
 

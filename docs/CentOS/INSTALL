@@ -130,8 +130,14 @@ need to be running.
 4. Now, setup some items for BIND configuration:
         # mv /var/named/data /var/named/data2
         # ln -s /var/named/chroot/var/named/data /var/named/data
-        # touch /etc/named.conf
-        # touch /etc/ispcp/bind/backup/named.conf.ispcp
+        # cat >> named.caching-nameserver.conf <<eof
+        # include "/etc/named-ispcp.conf";
+        # eof
+        In file /var/named/chroot/etc/named.caching-nameserver.conf after line:
+                include "/etc/named.rfc1912.zones";
+        add
+                include "/etc/named-ispcp.conf";
+        Modify /var/named/chroot/etc/named.caching-nameserver.conf according your needs (default it binds only to localhost)
 
 5. Next, we create the SASL database directory and link the configuration for
    Postfix
@@ -146,7 +152,6 @@ need to be running.
         mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5
 
 6. A little bit of Apache configuration is needed:
-        # mkdir /var/www/scoreboards
 
         # echo 'include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
 
