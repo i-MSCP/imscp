@@ -130,9 +130,6 @@ need to be running.
 4. Now, setup some items for BIND configuration:
         # mv /var/named/data /var/named/data2
         # ln -s /var/named/chroot/var/named/data /var/named/data
-        # cat >> named.caching-nameserver.conf <<eof
-        # include "/etc/named-ispcp.conf";
-        # eof
         In file /var/named/chroot/etc/named.caching-nameserver.conf after line:
                 include "/etc/named.rfc1912.zones";
         add
