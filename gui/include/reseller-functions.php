@@ -698,7 +698,11 @@ function check_ruser_data (&$tpl, $NoPass) {
 		} else if ($inpass_re !== $inpass) {
 			$user_add_error = tr("Passwords don't match!");
 		} else if (!chk_password($inpass)) {
-			$user_add_error = tr('Incorrect password length or syntax!');
+			if(Config::get('PASSWD_STRONG')){
+        $user_add_error = sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS'));
+      } else {
+        $user_add_error = sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
+      }
 		}
 	}
 

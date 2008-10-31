@@ -3853,6 +3853,9 @@ msgstr "Benutzer wurde nicht gelöscht!"
 msgid "This reseller has no domains yet."
 msgstr "Dieser Reseller hat noch keine Domains."
 
+msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgstr "Das Passwort muss mindestens %s Zeichen lang sein sowie Buchstaben und Zahlen enthalten um gültig zu sein."
+
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Fehlende oder falsche Daten!"
 #~ msgid "Password data includes not valid signs!"

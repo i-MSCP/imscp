@@ -3768,3 +3768,6 @@ msgstr ""
 
 msgid "This reseller has no domains yet."
 msgstr ""
+
+msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgstr ""

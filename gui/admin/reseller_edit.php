@@ -147,7 +147,11 @@ function check_user_data() {
 
 	if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 		if (!chk_password($_POST['pass'])) {
-			set_page_message(tr("Incorrect password length or syntax!"));
+			if(Config::get('PASSWD_STRONG')){
+        set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
+      } else {
+        set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
+      }
 			return false;
 		}
 		if ($_POST['pass'] != $_POST['pass_rep']) {
@@ -554,7 +558,7 @@ SQL_QUERY;
 			$nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
-			
+
 			$query = <<<SQL_QUERY
                 update reseller_props
                 set
