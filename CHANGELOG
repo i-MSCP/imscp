@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-02 Benedikt Heintel
+	- LANGUAGES:
+		* Updated: Italian
+
 2008-10-30 Daniel Andreca
 	- GUI:
 		* Fixed #1536: CentOS - ISPCP fails to install
@@ -25,8 +29,8 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Added Mailsize function
 	- DISTS:
-		* Fixed #1594: (CentOS) More perl dependencies on CentOS
-		* Fixed #1595: (CentOS) CentOS perl docs: Advice to autoconfigure first
+		* Fixed #1549: (CentOS) More perl dependencies on CentOS
+		* Fixed #1559: (CentOS) CentOS perl docs: Advice to autoconfigure first
 	- DOCS:
 		* Fixed #1483: Misleading information in INSTALL-files
 	- ENGINE:
