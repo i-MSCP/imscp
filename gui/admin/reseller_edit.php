@@ -41,24 +41,23 @@ $tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit Reseller'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit Reseller'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 // Get Server IPs;
 function get_servers_ips(&$tpl, &$sql, $rip_lst) {
-	$query = <<<SQL_QUERY
-        SELECT
-            ip_id, ip_number, ip_domain
-        FROM
-            server_ips
-        ORDER BY
-            ip_number
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			`ip_id`, `ip_number`, `ip_domain`
+		FROM
+			`server_ips`
+		ORDER BY
+			`ip_number`
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -68,11 +67,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
-					'RSL_IP_LIST' => ''
-				)
-			);
+			array(
+				'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
+				'RSL_IP_LIST' => ''
+			)
+		);
 
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
@@ -119,15 +118,15 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'RSL_IP_NUMBER' => $i + 1,
-						'RSL_IP_LABEL' => $rs->fields['ip_domain'],
-						'RSL_IP_IP' => $rs->fields['ip_number'],
-						'RSL_IP_CKB_NAME' => $ip_var_name,
-						'RSL_IP_CKB_VALUE' => 'asgned',
-						'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned
-					)
-				);
+				array(
+					'RSL_IP_NUMBER' => $i + 1,
+					'RSL_IP_LABEL' => $rs->fields['ip_domain'],
+					'RSL_IP_IP' => $rs->fields['ip_number'],
+					'RSL_IP_CKB_NAME' => $ip_var_name,
+					'RSL_IP_CKB_VALUE' => 'asgned',
+					'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned
+				)
+			);
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 			$rs->MoveNext();
@@ -148,10 +147,10 @@ function check_user_data() {
 	if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 		if (!chk_password($_POST['pass'])) {
 			if(Config::get('PASSWD_STRONG')){
-        set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
-      } else {
-        set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
-      }
+				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
+			} else {
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
+			}
 			return false;
 		}
 		if ($_POST['pass'] != $_POST['pass_rep']) {
@@ -350,7 +349,7 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 				$err = tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service);
 
 				$err .= tr('Edit reseller aborted!');
-			} else if ($new_limit <= $u) { // users are using more than new limit
+			} else if ($new_limit <= $u && $new_limit!=-1 && $u!=0) { // users are using more than new limit
 				$err = tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service);
 
 				$err .= tr('Edit reseller aborted!');
@@ -364,7 +363,7 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 				$err = tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service);
 
 				$err .= tr('Edit reseller aborted!');
-			} else if ($new_limit <= $u) {
+			} else if ($new_limit <= $u && $new_limit!=-1 && $u!=0) {
 				$err = tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service);
 
 				$err .= tr('Edit reseller aborted!');
@@ -410,15 +409,14 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
-        select
-            admin_id
-        from
-            admin
-        where
-            created_by = ?
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			`admin_id`
+		FROM
+			`admin`
+		WHERE
+			`created_by` = ?
+	";
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
@@ -427,21 +425,21 @@ SQL_QUERY;
 	} while (!$res->EOF) {
 		$admin_id = $res->fields['admin_id'];
 
-		$query = <<<SQL_QUERY
-            select
-                domain.domain_id,
-                server_ips.ip_number,
-                server_ips.ip_domain
-            from
-                domain,
+		$query = "
+			SELECT
+				domain.domain_id,
+				server_ips.ip_number,
+				server_ips.ip_domain
+			FROM
+				domain,
 				server_ips
-            where
-                domain.domain_created_id = ?
-              and
-                server_ips.ip_id = domain.domain_ip_id
-              and
-              	server_ips.ip_id = ?
-SQL_QUERY;
+			WHERE
+				domain.domain_created_id = ?
+			AND
+				server_ips.ip_id = domain.domain_ip_id
+			AND
+				server_ips.ip_id = ?
+		";
 
 		$dres = exec_query($sql, $query, array($reseller_id, $ip));
 
@@ -478,10 +476,10 @@ function update_reseller(&$sql) {
 			$street2 = clean_input($_POST['street2']);
 
 			if (empty($_POST['pass'])) {
-				$query = <<<SQL_QUERY
-					update
+				$query = "
+					UPDATE
 						admin
-					set
+					SET
 						fname = ?,
 						lname = ?,
 						firm = ?,
@@ -494,9 +492,9 @@ function update_reseller(&$sql) {
 						street1 = ?,
 						street2 = ?,
 						gender = ?
-					where
+					WHERE
 						admin_id = ?
-SQL_QUERY;
+				";
 				$rs = exec_query($sql, $query, array($fname,
 						$lname,
 						$firm,
@@ -512,10 +510,10 @@ SQL_QUERY;
 						$edit_id));
 			} else {
 				$upass = crypt_user_pass($_POST['pass']);
-				$query = <<<SQL_QUERY
-					update
+				$query = "
+					UPDATE
 						admin
-					set
+					SET
 						admin_pass = ?,
 						fname = ?,
 						lname = ?,
@@ -529,9 +527,9 @@ SQL_QUERY;
 						street1 = ?,
 						street2 = ?,
 						gender = ?
-					where
+					WHERE
 						admin_id = ?
-SQL_QUERY;
+				";
 			$rs = exec_query($sql, $query, array($upass,
 				$fname,
 				$lname,
@@ -559,26 +557,23 @@ SQL_QUERY;
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
 
-			$query = <<<SQL_QUERY
-                update reseller_props
-                set
-                    reseller_ips = ?,
-                    max_dmn_cnt = ?,
-                    max_sub_cnt = ?,
-                    max_als_cnt = ?,
-                    max_mail_cnt = ?,
-                    max_ftp_cnt = ?,
-                    max_sql_db_cnt = ?,
-                    max_sql_user_cnt = ?,
-                    max_traff_amnt = ?,
-                    max_disk_amnt = ?,
-                    customer_id = ?
-
-                where
-
-                    reseller_id = ?
-
-SQL_QUERY;
+			$query = "
+				UPDATE reseller_props
+				SET
+					reseller_ips = ?,
+					max_dmn_cnt = ?,
+					max_sub_cnt = ?,
+					max_als_cnt = ?,
+					max_mail_cnt = ?,
+					max_ftp_cnt = ?,
+					max_sql_db_cnt = ?,
+					max_sql_user_cnt = ?,
+					max_traff_amnt = ?,
+					max_disk_amnt = ?,
+					customer_id = ?
+				WHERE
+					reseller_id = ?
+			";
 
 			$rs = exec_query($sql, $query, array($reseller_ips,
 					$nreseller_max_domain_cnt,
@@ -623,33 +618,31 @@ SQL_QUERY;
 function get_reseller_prop(&$sql) {
 	global $edit_id;
 
-	$query = <<<SQL_QUERY
-        select
-            admin_name, fname,
-            lname, firm,
-            zip, city,
-            country, email,
-            phone, fax,
-            street1, street2,
-
-            max_dmn_cnt, current_dmn_cnt,
-            max_sub_cnt, current_sub_cnt,
-            max_als_cnt, current_als_cnt,
-            max_mail_cnt, current_mail_cnt,
-            max_ftp_cnt, current_ftp_cnt,
-            max_sql_db_cnt, current_sql_db_cnt,
-            max_sql_user_cnt, current_sql_user_cnt,
-            max_traff_amnt, current_traff_amnt,
-            max_disk_amnt, current_disk_amnt,
-            r.customer_id as customer_id, reseller_ips, gender
-        from
-            admin as a,
-            reseller_props as r
-        where
-            a.admin_id = ? and
-            r.reseller_id = a.admin_id
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			admin_name, fname,
+			lname, firm,
+			zip, city,
+			country, email,
+			phone, fax,
+			street1, street2,
+			max_dmn_cnt, current_dmn_cnt,
+			max_sub_cnt, current_sub_cnt,
+			max_als_cnt, current_als_cnt,
+			max_mail_cnt, current_mail_cnt,
+			max_ftp_cnt, current_ftp_cnt,
+			max_sql_db_cnt, current_sql_db_cnt,
+			max_sql_user_cnt, current_sql_user_cnt,
+			max_traff_amnt, current_traff_amnt,
+			max_disk_amnt, current_disk_amnt,
+			r.customer_id as customer_id, reseller_ips, gender
+		FROM
+			admin as a,
+			reseller_props as r
+		WHERE
+			a.admin_id = ? AND
+			r.reseller_id = a.admin_id
+	";
 
 	$rs = exec_query($sql, $query, array($edit_id));
 

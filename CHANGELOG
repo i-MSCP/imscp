@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-10-30 Daniel Andreca
+	- GUI:
+		* Reseller with disabled resources (disabled email) cannot be edited (with same resouces remaining disabled)
+
 2008-11-02 Benedikt Heintel
 	- LANGUAGES:
 		* Updated: Italian
