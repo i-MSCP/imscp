@@ -30,7 +30,7 @@
 #    http://isp-control.net
 #
 
-RELEASE=`cat /etc/lsb-release | awk '{print $1}'`
+RELEASE=`lsb_release -c | awk '{print $$2}' | tr -d "\n"`
 
 export
 
@@ -42,7 +42,7 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/proftpd
 	cp -R ./working $(SYSTEM_CONF)/proftpd
 
-	if [[ ! -d $(ROOT_CONF)/proftpd ]]; then \
+	if [ ! -d $(ROOT_CONF)/proftpd ]; then \
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 	fi
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp;
@@ -50,7 +50,7 @@ install:
 
 	# if: Ubuntu 6.06 (dapper)
 	# else: Ubuntu >= 6.10
-	if test $(RELEASE) = 'dapper' ; then \
+	if [ $(RELEASE) = 'dapper' ] ; then \
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
 	else \
@@ -59,7 +59,7 @@ install:
 		fi ; \
 		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 		cp ./proftpd1.3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
-	fi \
+	fi 
 
 uninstall:
 

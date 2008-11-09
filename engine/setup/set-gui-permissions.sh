@@ -60,7 +60,7 @@ fi
 
 for i in `find $ROOT_DIR/gui/`; do
 
-	if [[ -f $i ]]; then
+	if [ -f $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
 			echo -e "	0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
@@ -69,7 +69,7 @@ for i in `find $ROOT_DIR/gui/`; do
 		chmod 0444 $i;
 		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
-	elif [[ -d $i ]]; then
+	elif [ -d $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
 			echo "0555 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";

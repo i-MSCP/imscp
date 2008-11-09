@@ -32,7 +32,7 @@
 
 ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
-RELEASE=`cat /etc/debian_version | awk '{print $1}'`
+RELEASE:=`lsb_release -c | awk '{print $$2}' | tr -d "\n"`
 
 export
 
@@ -57,7 +57,7 @@ install:
 	cp ./httpd.conf ./parts/ispcp_base.tpl
 
 	# Ubuntu 7.04?
-	if test $(RELEASE) = 'testing/unstable' ; then \
+	if [ $(RELEASE) = 'feisty' ] ; then \
 		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	else \
 		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
