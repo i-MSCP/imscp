@@ -55,7 +55,7 @@ $theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : Config
 
 $tpl = new pTemplate();
 
-if (Config::get('MAINTENANCEMODE') && !isset($_GET['admin'])) {
+if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && !isset($_GET['admin'])) {
 
 	$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/maintenancemode.tpl');
 

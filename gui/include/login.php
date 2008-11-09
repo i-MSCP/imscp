@@ -42,7 +42,7 @@ function register_user($uname, $upass) {
     $udata = array();
     $udata = get_userdata($uname);
 
-  	if (Config::get('MAINTENANCEMODE') && $udata['admin_type'] != 'admin') {
+  	if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
   		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
@@ -137,7 +137,7 @@ SQL_QUERY;
         return false;
     }
 
-    if (Config::get('MAINTENANCEMODE') && $user_type != 'admin') {
+    if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && $user_type != 'admin') {
         unset_user_login_data(true);
         write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
         header("Location: /index.php");
