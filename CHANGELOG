@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-14 Daniel Andreca
+	- CONFIGS:
+		* Fixed #1565: Some issues on CentOS 5.2
+
 2008-11-09 Daniel Andreca
 	- CONFIGS:
 		* Fixed #1283: FTP Wrong password

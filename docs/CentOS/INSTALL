@@ -72,7 +72,7 @@ For the following steps, you will need to be logged in as root.
 5. Change to the newly created directory:
         # cd ./ispcp-omega-1.0.0
 
-3. Next, install the software packages we need. A list is conveniently provided
+6. Next, install the software packages we need. A list is conveniently provided
    and can be used to install by running the following:
         # yum install `cat ./docs/CentOS/centos-packages`
    After that, we need to install a few perl modules that aren't packaged. You
@@ -82,25 +82,46 @@ For the following steps, you will need to be logged in as root.
    Note: If you've never run 'perl -MCPAN -e shell' before, you'll have to do this 
          first and answer 'no' to autoconfigure perl. 
 
-   Now, remove Sendmail so Postfix will be the default MTA
+7. Next, we add remi repository because Centos 5 ships with php 5.1.6 that do not work nice:
+
+        # wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-2.noarch.rpm
+        # wget http://rpms.famillecollet.com/el5.i386/remi-release-5-4.el5.remi.noarch.rpm
+        # rpm -Uvh remi-release-5*.rpm epel-release-5*.rpm
+
+   Then in /etc/yum.repos.d/remi.repo add 
+   Edit the  /etc/yum.repos.d/remi.repo files in /etc/yum.repos.d/ and set up priorities 
+   by adding the line:
+
+        priority=1
+
+   to a repository entry. Do same thing to /etc/yum.repos.d/epel.repo and /etc/yum.repos.d/epel-testing.repo
+   Next lets update php:
+
+        # yum --enablerepo=remi update php*
+
+8. Now, remove Sendmail so Postfix will be the default MTA
+
         # yum remove sendmail
 
-4. Install the Courier IMAP server. Packages for this are not in the default
+9. Install the Courier IMAP server. Packages for this are not in the default
    repositories, but are available from third-party packagers such at at
    http://www.thatfleminggent.com/. The following three packages are the latest
    versions as of the last update, but you should check the package list at the
    previous site to make sure you have the latest versions.
 
-        http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-0.60.6-1.el5.mf.i386.rpm
-        http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-userdb-0.60.6-1.el5.mf.i386.rpm
-        http://www.thatfleminggent.com/packages/centos/5/i386/courier-imap-4.3.1-2.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-0.60.6-1.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-userdb-0.60.6-1.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-imap-4.3.1-2.el5.mf.i386.rpm
+        # rpm -i courier-authlib-0.60.6-1.el5.mf.i386.rpm
+        # rpm -i courier-authlib-userdb-0.60.6-1.el5.mf.i386.rpm
+        # rpm -i courier-imap-4.3.1-2.el5.mf.i386.rpm
 
   You will also need to do some minor configuration by adding a user and group
   for courier. The following commands will acomplish this:
         # groupadd courier -g 3000
         # useradd -u 3000 -c 'Courier Mail Server' -d /dev/null -g courier -s /bin/false courier
 
-4. Now we need to configure MySQL. To do this, it must be running. To make sure
+10. Now we need to configure MySQL. To do this, it must be running. To make sure
    it is running, run the following command:
         # service mysqld start
    After it starts, you can run the mysql_secure_installation script. This will
@@ -110,6 +131,18 @@ For the following steps, you will need to be logged in as root.
         # /usr/bin/mysql_secure_installation
    Make sure to remember the root password for MySQL. You will need it later.
 
+11. Install mod_fcgid. Packages for this are not in the default
+    repositories, but are available from third-party packagers such at at
+    http://centos.karan.org/. The following package are the latest
+    versions as of the last update, but you should check the package list at the
+    previous site to make sure you have the latest versions.
+
+        # wget http://centos.karan.org/el5/extras/testing/i386/RPMS/mod_fcgid-2.2-4.el5.kb.i386.rpm
+        # rpm -i mod_fcgid-2.2-4.el5.kb.i386.rpm
+
+12. Remove all files from /etc/httpd/conf.d
+
+        # rm -f /etc/httpd/conf.d/*
 ================================================================================
 4) Installation
 ---------------
@@ -154,8 +187,8 @@ need to be running.
 
         # chown apache:apache /var/www/ispcp/gui/tools/webmail/data
 
-7. Now it's time to set up the frontend. We need to change into the right
-   directory and run the setup tool:
+7. Now it's time to set up the frontend. When prompted for fastcgi version select fcgid ( press "c").
+   We need to change into the right directory and run the setup tool:
         # cd /var/www/ispcp/engine/setup
         # perl ispcp-setup
 
