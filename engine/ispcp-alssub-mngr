@@ -248,7 +248,6 @@ sub alssub_add_named_cfg_data {
     my $working = undef;
 
     ($rs, $working) = get_file($working_cfg);
-
     return $rs if ($rs != 0);
 
     #
@@ -268,7 +267,6 @@ sub alssub_add_named_cfg_data {
     #
     # Is supdomain extension tags exist in working config ?
     #
-
     ($rs, $rdata) = get_tag($db_sub_entry_b, $db_sub_entry_e, $working);
 
     return $rs if ($rs != 0);
@@ -278,7 +276,6 @@ sub alssub_add_named_cfg_data {
     #
 
     my $db_sub_entry_val = "$db_sub_entry_b_val$db_sub_entry$db_sub_entry_e_val\n$db_sub_entry_b$db_sub_entry_e";
-
     ($rs, $working) = repl_tag($db_sub_entry_b, $db_sub_entry_e, $working, $db_sub_entry_val, "alssub_add_named_cfg_data");
 
     return $rs if ($rs != 0);
@@ -286,14 +283,13 @@ sub alssub_add_named_cfg_data {
     #
     # {TIMESTAMP} must be updated too;
     #
-
     ($rs, $rdata) = get_tag($db_time_b, $db_time_e, $working);
-
     return $rs if ($rs != 0);
 
     my @rdata2 = split(/\n/, $rdata);
     my $seq = $rdata2[1];
 
+    $seq =~ s/;.*//;
     $seq =~ s/^\s+//;
     $seq =~ s/\s+$//;
     $seq = substr($seq, -2);
@@ -323,7 +319,6 @@ sub alssub_add_named_cfg_data {
     #
     # Let's store prepared data;
     #
-
     ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
@@ -497,6 +492,7 @@ sub alssub_del_named_cfg_data {
     my @rdata2 = split(/\n/, $rdata);
     my $seq = $rdata2[1];
 
+    $seq =~ s/;.*//;
     $seq =~ s/^\s+//;
     $seq =~ s/\s+$//;
     $seq = substr($seq, -2);

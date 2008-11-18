@@ -294,6 +294,7 @@ sub sub_add_named_cfg_data {
     my @rdata2 = split(/\n/, $rdata);
     my $seq = $rdata2[1];
 
+    $seq =~ s/;.*//;
     $seq =~ s/^\s+//;
     $seq =~ s/\s+$//;
     $seq = substr($seq, -2);
@@ -497,6 +498,7 @@ sub sub_del_named_cfg_data {
     my @rdata2 = split(/\n/, $rdata);
     my $seq = $rdata2[1];
 
+    $seq =~ s/;.*//;
     $seq =~ s/^\s+//;
     $seq =~ s/\s+$//;
     $seq = substr($seq, -2);
