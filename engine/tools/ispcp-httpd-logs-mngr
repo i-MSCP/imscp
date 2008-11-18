@@ -309,6 +309,102 @@ sub copy_alias_logs {
 
 }
 
+sub copy_subdomain_alias_logs {
+
+    my ($rs, $rows) = (undef, undef);
+
+    push_el(\@main::el, 'copy_subdomain_alias_logs()', 'Starting...');
+
+    my $sql = "
+		select 
+			t1.subdomain_alias_name,
+			t2.alias_mount,
+			t2.alias_name,
+			t3.domain_name,
+			t3.domain_uid
+		from 
+			subdomain_alias as t1,
+			domain_aliasses as t2,
+			domain as t3
+		where 
+			t1.alias_id = t2.alias_id
+		and 
+			t2.domain_id = t3.domain_id
+		and 
+			t1.subdomain_alias_status = 'ok'
+		order by 
+			t1.subdomain_alias_id;
+     ";
+
+    ($rs, $rows) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    if (scalar(@$rows) > 0) {
+
+        foreach (@$rows) {
+
+            my ($sub_pref, $subdomain_alias_mount, $alias_name, $domain_name, $domain_uid) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4]);
+
+            my $subdomain_name = "$sub_pref.$alias_name";
+
+            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-access.log";
+
+            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs/$subdomain_name-access.log";
+
+            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-error.log";
+
+            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs/$subdomain_name-error.log";
+
+            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs";
+
+            if (! -d $dest_dir)
+            {
+               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
+
+               return $rs if ($rs != 0);
+
+            }
+
+            if ( -e $src_access_file ){
+
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+
+               $rs = sys_command($cmd_cp);
+
+               return $rs if ($rs != 0);
+
+               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+
+               return $rs if ($rs != 0);
+
+            }
+
+            if ( -e $src_error_file ){
+
+               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+
+               $rs = sys_command($cmd_cp);
+
+               return $rs if ($rs != 0);
+
+               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+
+               return $rs if ($rs != 0);
+
+            }
+
+        }
+
+    }
+
+    push_el(\@main::el, 'copy_subdomain_alias_logs()', 'Ending...');
+
+    return 0;
+
+}
+
+
 sub httpd_logs_mngr_engine {
 
     my ($rs, $rdata) = (undef, undef);
@@ -320,6 +416,10 @@ sub httpd_logs_mngr_engine {
     return $rs if ($rs != 0);
 
     $rs = copy_domain_logs();
+
+    return $rs if ($rs != 0);
+
+    $rs = copy_subdomain_alias_logs();
 
     return $rs if ($rs != 0);
 
