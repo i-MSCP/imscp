@@ -173,9 +173,9 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$res = exec_query($sql, $query, array($ipaddr));
 
 	if ($res->RecordCount() == 0) {
-   		$query = "INSERT INTO login	(session_id, ipaddr, lastaccess, login_count, captcha_count) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
-   		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type=='bruteforce'),(int)($type=='captcha')));
-	   	return false;
+		$query = "REPLACE INTO login (session_id, ipaddr, lastaccess, login_count, captcha_count) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
+		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type=='bruteforce'),(int)($type=='captcha')));
+		return false;
 	}
 
 	$data = $res->FetchRow();
@@ -205,7 +205,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr=? AND user_name is NULL";
 		}
 
-   		exec_query($sql, $query, $ipaddr);
+		exec_query($sql, $query, $ipaddr);
 		return false;
 	} else {
 		$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
