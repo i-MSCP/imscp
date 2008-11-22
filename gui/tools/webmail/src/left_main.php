@@ -583,3 +583,53 @@ sqimap_logout($imapConnection);
 ?>
 </td></tr></table>
 </body></html>
+*/
+
+?>
+</div>
+<!--</td></tr></table>-->
+<?php
+//
+// Modified by ispCP Omega - http://isp-control.net
+//
+echo "<div id=\"folders_bottom\"></div>\n";
+
+//=======Extras=========
+
+do_hook('smallcal_plugin');
+do_hook('left_main_todo');
+
+echo html_tag ( 'div',
+           html_tag ( 'p',
+                _("Options") ."<a href=\"#\" onclick=\"reveal('extra');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a>"
+           ),
+           NULL, NULL, "id=\"extra_top\""
+     ) .
+     html_tag ( 'div',
+         html_tag ( 'table',
+             html_tag ( 'tr',
+                 html_tag ( 'td',
+                     html_tag ( 'div',
+                         html_tag ( 'p',
+                            "&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br />" .
+                            "&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br />" .
+                            "&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br />" .
+                            "&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br />"
+                        ),
+                        "left", NULL, "id=\"options\""
+                     ),
+                    "center", NULL, "valign=\"top\""
+                )
+            ),
+             NULL, NULL, 'width="99%" border="0" cellpadding="0" cellspacing="0"'
+        ),
+         NULL, NULL, "id=\"extra\""
+     );
+
+//======End Extras=========
+
+//
+// End Modification
+//
+?>
+</body></html>

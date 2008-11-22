@@ -198,9 +198,11 @@ function sqauth_read_password() {
 //
 // taken from functions/auth.php
 // from 1.5.2cvs on 2007/01/24
-// since 1.5.1
+// since 1.5.1 and 1.4.16
 //
-if (!function_exists('sqauth_save_password'))
+if ((!compatibility_check_sm_version(1, 4, 16)
+ || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
+ && !function_exists('sqauth_save_password'))
 {
 function sqauth_save_password($pass) {
     sqgetGlobalVar('base_uri',    $base_uri,   SQ_SESSION);
@@ -223,7 +225,9 @@ function sqauth_save_password($pass) {
 // all 1.4.x and 1.5.x code, but does not support ngettext
 // compatibility that was added to this function in 1.5.x...
 // lowest common denominator...  if you want and need ngettext
-// support, just upgrade to 1.5.1+.
+// support, just upgrade to 1.5.1+ or settle for the crude
+// ngettext replacement herein (which won't provide correct
+// translations in some languages)
 //
 if ((!compatibility_check_sm_version(1, 4, 10)
  || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
@@ -253,6 +257,39 @@ function sq_bindtextdomain($domain,$dir='') {
     }
 
     return $dir;
+}
+}
+
+
+
+//
+// This is a poor quality replacement for ngettext().  It
+// does not include correct plural form support and merely
+// returns the (translated) singluar form string.  This is
+// only here to provide a baseline/fallback ngettext stand-in
+// for systems not running at least SquirrelMail 1.5.1 OR PHP
+// 4.2.0 or better with the gettext extension compiled in.
+//
+// If someone has a clever idea about how to get a translated
+// version of the plural form from the gettext catalog, this
+// function could support at least translated Germanic plural
+// forms, but I couldn't figure out a way to do that.  It'd
+// also have to be compatible with the internal SquirrelMail
+// gettext implementation (replacement).  Really, this is
+// only an issue when in use under SquirrelMail versions 
+// before 1.5.1 and PHP versions before 4.2.0 or any PHP
+// version without the gettext extension.  Users who need
+// correct ngettext() support should simply upgrade to
+// SquirrelMail 1.5.1+ or PHP 4.2.0+ with the gettext
+// extension, as this function is just provided so plugins
+// using ngettext() don't break completely when it's not
+// available.
+//
+if (!function_exists('ngettext'))
+{
+function ngettext($single, $plural, $number)
+{
+   return _($single);
 }
 }
 
