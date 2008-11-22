@@ -3,11 +3,11 @@
 /**
  * Prevents users from reposting their form data after a successful logout.
  *
- * Derived from webmail.php by Ralf Kuser_adddelt <kuser_addde@wiwi.uni-rostock.de>
+ * Derived from webmail.php by Ralf Kraudelt <kraude@wiwi.uni-rostock.de>
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: redirect.php 12848 2008-01-04 07:18:01Z pdontthink $
+ * @version $Id: redirect.php 13290 2008-09-28 13:45:49Z kink $
  * @package squirrelmail
  */
 
@@ -24,7 +24,6 @@ define('SM_PATH','../');
 require_once(SM_PATH . 'functions/global.php');
 require_once(SM_PATH . 'functions/i18n.php');
 require_once(SM_PATH . 'functions/strings.php');
-require_once(SM_PATH . 'config/config.php');
 require_once(SM_PATH . 'functions/prefs.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/plugin.php');
@@ -36,7 +35,6 @@ $base_uri = sqm_baseuri();
 header('Pragma: no-cache');
 $location = get_location();
 
-session_set_cookie_params (0, $base_uri);
 sqsession_is_active();
 
 sqsession_unregister ('user_is_logged_in');
@@ -59,8 +57,7 @@ if (!sqgetGlobalVar('mailtodata', $mailtodata)) {
 
 set_up_language($squirrelmail_language, true);
 /* Refresh the language cookie. */
-setcookie('squirrelmail_language', $squirrelmail_language, time()+2592000,
-          $base_uri);
+sqsetcookie('squirrelmail_language', $squirrelmail_language, time()+2592000, $base_uri);
 
 if (!isset($login_username)) {
     include_once(SM_PATH .  'functions/display_messages.php' );
@@ -94,7 +91,7 @@ if (!sqsession_is_registered('user_is_logged_in')) {
 
     $username = $login_username;
     sqsession_register ($username, 'username');
-    setcookie('key', $key, 0, $base_uri);
+    sqsetcookie('key', $key, 0, $base_uri);
     do_hook ('login_verified');
 
 }

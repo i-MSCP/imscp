@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 12746 2007-10-30 16:28:43Z jangliss $
+ * @version $Id: auth.php 13264 2008-08-17 03:49:09Z pdontthink $
  * @package squirrelmail
  */
 
@@ -119,6 +119,7 @@ function cram_md5_response ($username,$password,$challenge) {
  */
 function digest_md5_response ($username,$password,$challenge,$service,$host) {
     $result=digest_md5_parse_challenge($challenge);
+    //FIXME we should check that $result contains the expected values that we use below
 
     // verify server supports qop=auth
     // $qop = explode(",",$result['qop']);
@@ -173,7 +174,8 @@ function digest_md5_response ($username,$password,$challenge,$service,$host) {
  */
 function digest_md5_parse_challenge($challenge) {
     $challenge=base64_decode($challenge);
-    while (isset($challenge)) {
+    $parsed = array();
+    while (!empty($challenge)) {
         if ($challenge{0} == ',') { // First char is a comma, must not be 1st time through loop
             $challenge=substr($challenge,1);
         }
@@ -252,6 +254,40 @@ function sqauth_read_password() {
     sqgetGlobalVar('onetimepad',  $onetimepad,SQ_SESSION);
 
     return OneTimePadDecrypt($key, $onetimepad);
+}
+
+/**
+ * Saves or updates user password information
+ *
+ * This function is used to update the password information that
+ * SquirrelMail stores in the existing PHP session. It does NOT
+ * modify the password stored in the authentication system used
+ * by the IMAP server.
+ *
+ * This function must be called before any html output is started.
+ * Direct access to password information is deprecated. The saved
+ * password information is available only to the SquirrelMail script
+ * that is called/executed AFTER the current one. If your script
+ * needs access to the saved password after a sqauth_save_password()
+ * call, use the returned OTP encrypted key.
+ *
+ * @param string $pass password
+ *
+ * @return string Password encrypted with OTP. In case the script
+ *                wants to access the password information before
+ *                the end of its execution.
+ *
+ * @since 1.4.16
+ *
+ */
+function sqauth_save_password($pass) {
+    sqgetGlobalVar('base_uri',    $base_uri,   SQ_SESSION);
+
+    $onetimepad = OneTimePadCreate(strlen($pass));
+    sqsession_register($onetimepad,'onetimepad');
+    $key = OneTimePadEncrypt($pass, $onetimepad);
+    sqsetcookie('key', $key, false, $base_uri);
+    return $key;
 }
 
 /**

@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: file_prefs.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: file_prefs.php 13189 2008-06-23 18:32:35Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  * @since 1.2.5
@@ -89,13 +89,16 @@ function cachePrefValues($data_dir, $username) {
 function getPref($data_dir, $username, $string, $default = '') {
     global $prefs_cache;
 
-    $result = do_hook_function('get_pref_override',array($username,$string));
+    $result = do_hook_function('get_pref_override',array($username, $string));
+//FIXME: testing below for !$result means that a plugin cannot fetch its own pref value of 0, '0', '', FALSE, or anything else that evaluates to boolean FALSE.
     if (!$result) {
         cachePrefValues($data_dir, $username);
         if (isset($prefs_cache[$string])) {
             $result = $prefs_cache[$string];
         } else {
-            $result = do_hook_function('get_pref', array($username,$string));
+//FIXME: is there justification for having these TWO hooks so close together?  who uses these?
+            $result = do_hook_function('get_pref', array($username, $string));
+//FIXME: testing below for !$result means that a plugin cannot fetch its own pref value of 0, '0', '', FALSE, or anything else that evaluates to boolean FALSE.
             if (!$result) {
                 $result = $default;
             }

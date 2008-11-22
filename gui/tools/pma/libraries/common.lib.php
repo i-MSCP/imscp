@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11439 2008-07-26 20:05:19Z lem9 $
+ * @version $Id: common.lib.php 11642 2008-10-09 09:41:22Z nijel $
  */
 
 /**
@@ -1022,7 +1022,7 @@ function PMA_showMessage($message, $sql_query = null, $type = 'notice')
             // when the query is large (for example an INSERT of binary
             // data), the parser chokes; so avoid parsing the query
             $query_too_big = true;
-            $query_base = nl2br(htmlspecialchars($sql_query));
+            $shortened_query_base = nl2br(htmlspecialchars(substr($sql_query, 0, $cfg['MaxCharactersInDisplayedSQL']) . '[...]'));
         } elseif (! empty($GLOBALS['parsed_sql'])
          && $query_base == $GLOBALS['parsed_sql']['raw']) {
             // (here, use "! empty" because when deleting a bookmark,
@@ -1177,7 +1177,7 @@ function PMA_showMessage($message, $sql_query = null, $type = 'notice')
 
         echo '<code class="sql">';
         if ($query_too_big) {
-            echo substr($query_base, 0, $cfg['MaxCharactersInDisplayedSQL']) . '[...]';
+            echo $shortened_query_base;
         } else {
             echo $query_base;
         }
@@ -2409,7 +2409,7 @@ window.addEvent('domready', function(){
 }
 
 /**
- * Cache information in the session
+ * Verifies if something is cached in the session 
  *
  * @param unknown_type $var
  * @param unknown_type $val
@@ -2425,7 +2425,7 @@ function PMA_cacheExists($var, $server = 0)
 }
 
 /**
- * Cache information in the session
+ * Gets cached information from the session 
  *
  * @param unknown_type $var
  * @param unknown_type $val
@@ -2445,7 +2445,7 @@ function PMA_cacheGet($var, $server = 0)
 }
 
 /**
- * Cache information in the session
+ * Caches information in the session
  *
  * @param unknown_type $var
  * @param unknown_type $val
@@ -2458,6 +2458,21 @@ function PMA_cacheSet($var, $val = null, $server = 0)
         $server = $GLOBALS['server'];
     }
     $_SESSION['cache']['server_' . $server][$var] = $val;
+}
+
+/**
+ * Removes cached information from the session
+ *
+ * @param unknown_type $var
+ * @param unknown_type $server
+ * @return mixed
+ */
+function PMA_cacheUnset($var, $server = 0)
+{
+    if (true === $server) {
+        $server = $GLOBALS['server'];
+    }
+    unset($_SESSION['cache']['server_' . $server][$var]);
 }
 
 /**

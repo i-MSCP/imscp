@@ -11,7 +11,7 @@
  *
  * @copyright &copy; 1999-2008 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 13158 2008-05-20 16:15:07Z jervfors $
+ * @version $Id: i18n.php 13177 2008-06-14 12:06:11Z jervfors $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -855,6 +855,12 @@ $languages['ko_KR']['CHARSET'] = 'euc-KR';
 // Function does not provide all needed options
 // $languages['ko_KR']['XTRA_CODE'] = 'korean_charset_xtra';
 $languages['ko']['ALIAS']      = 'ko_KR';
+
+$languages['lv_LV']['NAME']    = 'Latvian';
+$languages['lv_LV']['ALTNAME'] = 'Latvi&#371;';
+$languages['lv_LV']['CHARSET'] = 'utf-8';
+$languages['lv_LV']['LOCALE'] = 'lv_LV.UTF-8';
+$languages['lv']['ALIAS'] = 'lv_LV';
 
 $languages['lt_LT']['NAME']    = 'Lithuanian';
 $languages['lt_LT']['CHARSET'] = 'utf-8';

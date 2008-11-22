@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-21 Benedikt Heintel
+	- TOOLS:
+		* Updated SquirrelMail to version 1.4.16
+		* Updated phpMyAdmin to version 3.0.1.1
+
 2008-11-19 Daniel Andreca
 	- GUI:
 		* Fixed #1557: Error -> Duplicate entry 'xxxxx' for key 1 while logging into ISPCP
@@ -583,7 +588,7 @@ ispCP ω 1.0.0 Changelog
 2008-06-03 Benedikt Heintel
 	- TOOLS:
 		* Updated net2ftp to version 0.97
-		* Updates SquirrelMail to version 1.4.15
+		* Updated SquirrelMail to version 1.4.15
 
 2008-06-03 Benedikt Heintel
 	- GUI:

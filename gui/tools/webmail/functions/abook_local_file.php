@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_local_file.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: abook_local_file.php 13188 2008-06-20 07:58:39Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -311,16 +311,27 @@ class abook_local_file extends addressbook_backend {
     }
 
     /**
-     * Lookup alias
-     * @param string $alias alias
+     * Lookup by the indicated field
+     *
+     * @param string  $value Value to look up
+     * @param integer $field The field to look in, should be one
+     *                       of the SM_ABOOK_FIELD_* constants
+     *                       defined in functions/constants.php
+     *                       (OPTIONAL; defaults to nickname field)
+     *                       NOTE: uniqueness is only guaranteed
+     *                       when the nickname field is used here;
+     *                       otherwise, the first matching address
+     *                       is returned.
+     *
      * @return array search results
+     *
      */
-    function lookup($alias) {
-        if(empty($alias)) {
+    function lookup($value, $field=SM_ABOOK_FIELD_NICKNAME) {
+        if(empty($value)) {
             return array();
         }
 
-        $alias = strtolower($alias);
+        $value = strtolower($value);
 
         $this->open();
         @rewind($this->filehandle);
@@ -332,7 +343,7 @@ class abook_local_file extends addressbook_backend {
                 error_box(_("Address book is corrupted. Required fields are missing."),$color);
                 die('</body></html>');
             } else {
-                if(strtolower($row[0]) == $alias) {
+                if(strtolower($row[$field]) == $value) {
                     return array('nickname'  => $row[0],
                                  'name'      => $row[1] . ' ' . $row[2],
                                  'firstname' => $row[1],

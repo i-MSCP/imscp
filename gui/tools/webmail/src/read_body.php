@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php 13133 2008-05-13 09:38:58Z kink $
+ * @version $Id: read_body.php 13238 2008-07-19 07:31:43Z pdontthink $
  * @package squirrelmail
  */
 
@@ -316,17 +316,19 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     } else {
         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
         $deliver = new Deliver_SMTP();
-        global $smtpServerAddress, $smtpPort, $pop_before_smtp;
+        global $smtpServerAddress, $smtpPort, $pop_before_smtp, $pop_before_smtp_host;
 
         $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
 
         $user = '';
         $pass = '';
+        if (empty($pop_before_smtp_host))
+            $pop_before_smtp_host = $smtpServerAddress;
 
         get_smtp_user($user, $pass);
 
         $stream = $deliver->initStream($composeMessage,$domain,0,
-                $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
+                $smtpServerAddress, $smtpPort, $user, $pass, $authPop, $pop_before_smtp_host);
     }
     $success = false;
     if ($stream) {
@@ -909,6 +911,7 @@ if (($attachment_common_show_images) &&
     }
 }
 
+//FIXME: one of these hooks should be removed if we can verify disuse (html_bottom?)
 do_hook('read_body_bottom');
 do_hook('html_bottom');
 sqimap_logout($imapConnection);

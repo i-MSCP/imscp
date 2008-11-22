@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mult_submits.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: mult_submits.inc.php 11649 2008-10-13 13:01:10Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -425,5 +425,7 @@ elseif ($mult_btn == $strYes) {
         // when dropping a db from server_databases
         $GLOBALS['pma']->databases->build();
     }
+} else {
+    $message = PMA_Message::success('strNoModification'); 
 }
 ?>

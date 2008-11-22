@@ -23,7 +23,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: db_prefs.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: db_prefs.php 13218 2008-07-06 20:51:41Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  * @since 1.1.3
@@ -36,7 +36,6 @@ define('SMDB_MYSQL', 1);
 /** PostgreSQL */
 define('SMDB_PGSQL', 2);
 
-require_once(SM_PATH . 'config/config.php');
 if (!include_once('DB.php')) {
     // same error also in abook_database.php
     require_once(SM_PATH . 'functions/display_messages.php');
@@ -154,17 +153,27 @@ class dbPrefs {
     function getKey($user, $key, $default = '') {
         global $prefs_cache;
 
-        cachePrefValues($user);
+        $result = do_hook_function('get_pref_override', array($user, $key));
+//FIXME: testing below for !$result means that a plugin cannot fetch its own pref value of 0, '0', '', FALSE, or anything else that evaluates to boolean FALSE.
+        if (!$result) {
+            cachePrefValues($user);
 
-        if (isset($prefs_cache[$key])) {
-            return $prefs_cache[$key];
-        } else {
-            if (isset($this->default[$key])) {
-                return $this->default[$key];
+            if (isset($prefs_cache[$key])) {
+                $result = $prefs_cache[$key];
             } else {
-                return $default;
+//FIXME: is there justification for having these TWO hooks so close together?  who uses these?
+                $result = do_hook_function('get_pref', array($user, $key));
+//FIXME: testing below for !$result means that a plugin cannot fetch its own pref value of 0, '0', '', FALSE, or anything else that evaluates to boolean FALSE.
+                if (!$result) {
+                    if (isset($this->default[$key])) {
+                        $result = $this->default[$key];
+                    } else {
+                        $result = $default;
+                    }
+                }
             }
         }
+        return $result;
     }
 
     function deleteKey($user, $key) {

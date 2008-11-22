@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 11500 2008-08-21 16:55:31Z lem9 $
+ * @version $Id: server_privileges.php 11656 2008-10-18 23:35:22Z lem9 $
  */
 
 /**
@@ -1167,7 +1167,7 @@ if (isset($_REQUEST['change_pw'])) {
         $local_query      = 'SET PASSWORD FOR \'' . PMA_sqlAddslashes($username) . '\'@\'' . $hostname . '\' = ' . (($pma_pw == '') ? '\'\'' : $hashing_function . '(\'' . PMA_sqlAddslashes($pma_pw) . '\')');
         PMA_DBI_try_query($local_query)
             or PMA_mysqlDie(PMA_DBI_getError(), $sql_query, FALSE, $err_url);
-        $message = PMA_Message::success('strPasswordEmpty');
+        $message = PMA_Message::success('strPasswordChanged');
         $message->addParam('\'' . $username . '\'@\'' . $hostname . '\'');
     }
 }

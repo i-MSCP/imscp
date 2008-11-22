@@ -3,7 +3,7 @@
 /**
  * Get user's global privileges and some db-specific privileges
  *
- * @version $Id: check_user_privileges.lib.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: check_user_privileges.lib.php 11633 2008-10-04 14:43:36Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -147,6 +147,7 @@ function PMA_analyseShowGrant()
 
     PMA_DBI_free_result($rs_usr);
 
+    // must also PMA_cacheUnset() them in libraries/auth/cookie.auth.lib.php
     PMA_cacheSet('is_create_db_priv', $GLOBALS['is_create_db_priv'], true);
     PMA_cacheSet('is_process_priv', $GLOBALS['is_process_priv'], true);
     PMA_cacheSet('is_reload_priv', $GLOBALS['is_reload_priv'], true);

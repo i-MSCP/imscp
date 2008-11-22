@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 13164 2008-05-23 17:31:51Z kink $
+ * @version $Id: strings.php 13291 2008-09-28 13:58:21Z kink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.15';
+$version = '1.4.16';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,15);
+$SQM_INTERNAL_VERSION = array(1,4,16);
 
 /**
  * There can be a circular issue with includes, where the $version string is

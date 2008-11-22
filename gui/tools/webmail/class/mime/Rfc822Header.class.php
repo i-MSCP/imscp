@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 12934 2008-02-10 19:08:30Z pdontthink $
+ * @version $Id: Rfc822Header.class.php 13260 2008-08-11 01:30:53Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -480,7 +480,7 @@ class Rfc822Header {
             $sComment = trim(implode(' ',$aComment));
             $sPersonal .= $sComment;
         }
-        $oAddr =& new AddressStructure();
+        $oAddr = new AddressStructure();
         if ($sPersonal && substr($sPersonal,0,2) == '=?') {
             $oAddr->personal = encodeHeader($sPersonal);
         } else {

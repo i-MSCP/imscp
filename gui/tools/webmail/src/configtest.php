@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: configtest.php 12988 2008-03-03 14:06:36Z kink $
+ * @version $Id: configtest.php 13238 2008-07-19 07:31:43Z pdontthink $
  * @package squirrelmail
  * @subpackage config
  */
@@ -368,15 +368,16 @@ if($useSendmail) {
 
     /* POP before SMTP */
     if($pop_before_smtp) {
-        $stream = fsockopen($smtpServerAddress, 110, $err_no, $err_str);
+        if (empty($pop_before_smtp_host)) $pop_before_smtp_host = $smtpServerAddress;
+        $stream = fsockopen($pop_before_smtp_host, 110, $err_no, $err_str);
         if (!$stream) {
-            do_err("Error connecting to POP Server ($smtpServerAddress:110) "
+            do_err("Error connecting to POP Server ($pop_before_smtp_host:110) "
                 . $err_no . ' : ' . htmlspecialchars($err_str));
         }
 
         $tmp = fgets($stream, 1024);
         if (substr($tmp, 0, 3) != '+OK') {
-            do_err("Error connecting to POP Server ($smtpServerAddress:110)"
+            do_err("Error connecting to POP Server ($pop_before_smtp_host:110)"
                 . ' '.htmlspecialchars($tmp));
         }
         fputs($stream, 'QUIT');

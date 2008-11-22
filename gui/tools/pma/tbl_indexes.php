@@ -3,7 +3,7 @@
 /**
  * Displays index edit/creation form and handles it
  *
- * @version $Id: tbl_indexes.php 11167 2008-03-17 16:42:14Z lem9 $
+ * @version $Id: tbl_indexes.php 11647 2008-10-12 13:03:57Z lem9 $
  */
 
 /**
@@ -170,7 +170,7 @@ echo (isset($_REQUEST['create_index'])
 <div class="formelement">
 <label for="select_index_type"><?php echo $strIndexType; ?></label>
 <select name="index[Index_type]" id="select_index_type" onchange="return checkIndexName()">
-    <?php echo $index->getTypeSelector(); ?>
+    <?php echo $index->generateIndexSelector(); ?>
 </select>
 <?php echo PMA_showMySQLDocu('SQL-Syntax', 'ALTER_TABLE'); ?>
 </div>

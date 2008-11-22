@@ -4,7 +4,7 @@
  * Core script for import, this is just the glue around all other stuff
  *
  * @uses    PMA_Bookmark_getList()
- * @version $Id: import.php 11472 2008-08-09 17:14:28Z lem9 $
+ * @version $Id: import.php 11643 2008-10-09 11:45:58Z lem9 $
  */
 
 /**
@@ -349,6 +349,10 @@ if (!$error) {
         $plugin_param = $import_type;
         require './libraries/import/' . $format . '.php';
     }
+}
+
+if (! $error && $import_handle !== FALSE) {
+    fclose($import_handle);
 }
 
 // Cleanup temporary file

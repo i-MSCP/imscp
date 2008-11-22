@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: left_main.php 12537 2007-07-14 18:34:04Z kink $
+ * @version $Id: left_main.php 13243 2008-07-20 21:17:38Z pdontthink $
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net
@@ -108,11 +108,11 @@ function formatMailboxName($imapConnection, $box_array) {
                     '&nbsp;&nbsp;(<a href="empty_trash.php" style="text-decoration:none">'._("Purge").'</a>)' .
                     '</small>';
         }
-    } else {
-        $line .= concat_hook_function('left_main_after_each_folder',
-                                      array(isset($numMessages) ? $numMessages : '',
-                                            $real_box, $imapConnection));
     }
+
+    $line .= concat_hook_function('left_main_after_each_folder',
+                                  array(isset($numMessages) ? $numMessages : '',
+                                        $real_box, $imapConnection));
 
     /* Return the final product. */
     return ($line);
@@ -517,7 +517,7 @@ for ($i = 0; $i < count($boxes); $i++) {
         $mblevel = substr_count(substr($boxes[$i]['unformatted'], strlen($folder_prefix)), $delimiter) + 1;
 
         /* Create the prefix for the folder name and link. */
-        $prefix = str_repeat('   ',$mblevel);
+        $prefix = str_repeat('  ',$mblevel);
         if (isset($collapse_folders) && $collapse_folders && $boxes[$i]['parent']) {
             $prefix = str_replace(' ','&nbsp;',substr($prefix,0,strlen($prefix)-2)).
                       create_collapse_link($i) . '&nbsp;';
@@ -582,54 +582,4 @@ sqimap_logout($imapConnection);
 
 ?>
 </td></tr></table>
-</body></html>
-*/
-
-?>
-</div>
-<!--</td></tr></table>-->
-<?php
-//
-// Modified by ispCP Omega - http://isp-control.net
-//
-echo "<div id=\"folders_bottom\"></div>\n";
-
-//=======Extras=========
-
-do_hook('smallcal_plugin');
-do_hook('left_main_todo');
-
-echo html_tag ( 'div',
-		   html_tag ( 'p',
-				_("Options") ."<a href=\"#\" onclick=\"reveal('extra');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a>"
-		   ),
-		   NULL, NULL, "id=\"extra_top\""
-	 ) .
-	 html_tag ( 'div',
-	 	html_tag ( 'table',
-	 		html_tag ( 'tr',
-	 			html_tag ( 'td',
-				 	html_tag ( 'div',
-					 	html_tag ( 'p',
-							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br />"
-						),
-						"left", NULL, "id=\"options\""
-					 ),
-					"center", NULL, "valign=\"top\""
-				)
-			),
-	 		NULL, NULL, 'width="99%" border="0" cellpadding="0" cellspacing="0"'
-		),
-	 	NULL, NULL, "id=\"extra\""
-	 );
-
-//======End Extras=========
-
-//
-// End Modification
-//
-?>
 </body></html>

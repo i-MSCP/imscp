@@ -2,6 +2,26 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
+Version 1.4.16 - 28 September 2008
+----------------------------------
+  - Added support for Latvian.
+  - Add submit button type option widget
+  - Allow address book lookups by fields other than nickname/alias
+  - Include hooks in databased-based preference backend that have
+    long been in the file-based preference backend
+  - Removed the Address Take (abook_take) plugin; please see the Add
+    Address (third party) plugin.
+  - Allow a different server address for the POP server to be
+    configured when using POP before SMTP.
+  - Update the left_main_after_each_folder hook to work on the trash
+    folder as well as all other folders.
+  - Fix HTML validity issue with IE conditional construct (#1985916).
+  - Backported sqsetcookie() from 1.5.2, so cookies won't be
+    transmitted under non-SSL connections if the session is
+    started under an SSL (https) connection (CVE-2008-3663).
+    Also limits cookies to HTTPOnly, a feature of IE and Firefox
+    to counter cross site scripting attacks.
+
 Version 1.4.15 - 23 May 2008
 ----------------------------
   - Fix saving of Read Receipts to Sent folder.

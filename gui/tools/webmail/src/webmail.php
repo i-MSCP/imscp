@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: webmail.php 12767 2007-11-15 06:31:24Z jangliss $
+ * @version $Id: webmail.php 13290 2008-09-28 13:45:49Z kink $
  * @package squirrelmail
  */
 
@@ -67,7 +67,7 @@ do_hook('webmail_top');
  */
 $my_language = getPref($data_dir, $username, 'language');
 if ($my_language != $squirrelmail_language) {
-    setcookie('squirrelmail_language', $my_language, time()+2592000, $base_uri);
+    sqsetcookie('squirrelmail_language', $my_language, time()+2592000, $base_uri);
 }
 
 set_up_language($my_language);

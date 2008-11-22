@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13019 2008-03-08 10:53:42Z jervfors $
+ * @version $Id: mime.php 13276 2008-09-11 01:32:19Z pdontthink $
  * @package squirrelmail
  */
 
@@ -1742,11 +1742,66 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
                                 $attvalue = $sQuote . $secremoveimg . $sQuote;
                             } else {
                                 if (isset($aUrl['path'])) {
+
+                                    // No one has been able to show that image URIs
+                                    // can be exploited, so for now, no restrictions
+                                    // are made at all.  If this proves to be a problem,
+                                    // the commented-out code below can be of help.
+                                    // (One consideration is that I see nothing in this
+                                    // function that specifically says that we will
+                                    // only ever arrive here when inspecting an image
+                                    // tag, although that does seem to be the end
+                                    // result - e.g., <script src="..."> where malicious
+                                    // image URIs are in fact a problem are already
+                                    // filtered out elsewhere.
+                                    /* ---------------------------------
                                     // validate image extension.
                                     $ext = strtolower(substr($aUrl['path'],strrpos($aUrl['path'],'.')));
                                     if (!in_array($ext,array('.jpeg','.jpg','xjpeg','.gif','.bmp','.jpe','.png','.xbm'))) {
-                                        $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
+                                        // If URI is to something other than
+                                        // a regular image file, get the contents
+                                        // and try to see if it is an image.
+                                        // Don't use Fileinfo (finfo_file()) because
+                                        // we'd need to make the admin configure the
+                                        // location of the magic.mime file (FIXME: add finfo_file() support later?)
+                                        //
+                                        $mime_type = '';
+                                        if (function_exists('mime_content_type')
+                                         && ($FILE = @fopen($attvalue, 'rb', FALSE))) {
+
+                                            // fetch file
+                                            //
+                                            $file_contents = '';
+                                            while (!feof($FILE)) {
+                                                $file_contents .= fread($FILE, 8192);
+                                            }
+                                            fclose($FILE);
+
+                                            // store file locally
+                                            //
+                                            global $attachment_dir, $username;
+                                            $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
+                                            $localfilename = GenerateRandomString(32, '', 7);
+                                            $full_localfilename = "$hashed_attachment_dir/$localfilename";
+                                            while (file_exists($full_localfilename)) {
+                                                $localfilename = GenerateRandomString(32, '', 7);
+                                                $full_localfilename = "$hashed_attachment_dir/$localfilename";
+                                            }
+                                            $FILE = fopen("$hashed_attachment_dir/$localfilename", 'wb');
+                                            fwrite($FILE, $file_contents);
+                                            fclose($FILE);
+
+                                            // get mime type and remove file
+                                            //
+                                            $mime_type = mime_content_type("$hashed_attachment_dir/$localfilename");
+                                            unlink("$hashed_attachment_dir/$localfilename");
+                                        }
+                                        // debug: echo "$attvalue FILE TYPE IS $mime_type<HR>";
+                                        if (substr(strtolower($mime_type), 0, 5) != 'image') {
+                                            $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
+                                        }
                                     }
+                                    --------------------------------- */
                                 } else {
                                     $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
                                 }

@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 11564 2008-09-07 11:43:11Z lem9 $
+ * @version $Id: config.default.php 11668 2008-10-22 17:03:22Z lem9 $
  */
 
 /**
@@ -736,7 +736,7 @@ $cfg['ShowServerInfo'] = true;
  *
  * @global boolean $cfg['ShowChgPassword']
  */
-$cfg['ShowChgPassword'] = false;
+$cfg['ShowChgPassword'] = true;
 
 /**
  * show create database form

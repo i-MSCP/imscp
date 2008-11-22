@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: page_header.php 12538 2007-07-14 19:04:00Z kink $
+ * @version $Id: page_header.php 13289 2008-09-28 13:19:08Z kink $
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net
@@ -55,14 +55,14 @@ function displayHtmlHeader( $title = 'SquirrelMail', $xtra = '', $do_hook = TRUE
 
     /* work around IE6's scrollbar bug */
     echo <<<ECHO
-<style type="text/css">
 <!--[if IE 6]>
+<style type="text/css">
 /* avoid stupid IE6 bug with frames and scrollbars */
 body {
     width: expression(document.documentElement.clientWidth - 30);
 }
-<![endif]-->
 </style>
+<![endif]-->
 
 ECHO;
 

@@ -1,11 +1,10 @@
 <?php
-/* $Id: hungarian-utf-8.inc.php 11599 2008-09-20 10:52:04Z lem9 $ */
+/* $Id: hungarian-utf-8.inc.php 11640 2008-10-08 20:35:20Z lem9 $ */
 // Peter Bakondy <bakondyp@freemail.hu>
 // Mihály Mészáros <poizon at sth dot sze dot hu>
-// József Tamás Herczeg <localicer @NOSPAM@ gmail.com>
+// József Tamás Herczeg <localicer @NOSPAM@ gmail DOT com>
 
 $charset = 'utf-8';
-$allow_recoding = TRUE;
 $text_dir = 'ltr'; // ('ltr': balról jobbra, 'rtl': jobbról balra)
 $number_thousands_separator = ' ';
 $number_decimal_separator = '.';

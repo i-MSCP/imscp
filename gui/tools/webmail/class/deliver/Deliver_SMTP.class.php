@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver_SMTP.class.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: Deliver_SMTP.class.php 13238 2008-07-19 07:31:43Z pdontthink $
  * @package squirrelmail
  */
 
@@ -27,11 +27,11 @@ class Deliver_SMTP extends Deliver {
         }
     }
 
-    function initStream($message, $domain, $length=0, $host='', $port='', $user='', $pass='', $authpop=false) {
+    function initStream($message, $domain, $length=0, $host='', $port='', $user='', $pass='', $authpop=false, $pop_host='') {
         global $use_smtp_tls, $smtp_auth_mech;
 
         if ($authpop) {
-            $this->authPop($host, '', $user, $pass);
+            $this->authPop($pop_host, '', $user, $pass);
         }
 
         $rfc822_header = $message->rfc822_header;

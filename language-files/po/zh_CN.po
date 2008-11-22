@@ -19,7 +19,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "简单中文(Chinese Simplified)"
+msgstr "简体中文(Chinese Simplified)"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega 虚拟主机管理系统"
@@ -49,7 +49,7 @@ msgid "Lost password"
 msgstr "找回密码"
 
 msgid "Retrieving lost passwords is currently not possible"
-msgstr "当前不能找回忘记的密码"
+msgstr "找回忘记的密码功能目前不可用"
 
 msgid "ispCP - Virtual Hosting Control System"
 msgstr "ispCP - 虚拟主机管理系统"

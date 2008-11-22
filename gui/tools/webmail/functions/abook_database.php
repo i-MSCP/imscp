@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_database.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: abook_database.php 13188 2008-06-20 07:58:39Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -179,6 +179,34 @@ class abook_database extends addressbook_backend {
         $this->dbh = false;
     }
 
+    /**
+     * Determine internal database field name given one of
+     * the SquirrelMail SM_ABOOK_FIELD_* constants
+     *
+     * @param integer $field The SM_ABOOK_FIELD_* contant to look up
+     *
+     * @return string The desired field name, or the string "ERROR"
+     *                if the $field is not understood (the caller
+     *                is responsible for handing errors)
+     *
+     */
+    function get_field_name($field) {
+        switch ($field) {
+            case SM_ABOOK_FIELD_NICKNAME:
+                return 'nickname';
+            case SM_ABOOK_FIELD_FIRSTNAME:
+                return 'firstname';
+            case SM_ABOOK_FIELD_LASTNAME:
+                return 'lastname';
+            case SM_ABOOK_FIELD_EMAIL:
+                return 'email';
+            case SM_ABOOK_FIELD_LABEL:
+                return 'label';
+            default:
+                return 'ERROR';
+        }
+    }
+
     /* ========================== Public ======================== */
 
     /**
@@ -242,23 +270,35 @@ class abook_database extends addressbook_backend {
     }
 
     /**
-     * Lookup alias
-     * @param string $alias alias
+     * Lookup by the indicated field
+     *
+     * @param string  $value Value to look up
+     * @param integer $field The field to look in, should be one
+     *                       of the SM_ABOOK_FIELD_* constants
+     *                       defined in functions/constants.php
+     *                       (OPTIONAL; defaults to nickname field)
+     *                       NOTE: uniqueness is only guaranteed
+     *                       when the nickname field is used here;
+     *                       otherwise, the first matching address
+     *                       is returned.
+     *
      * @return array search results
+     *
      */
-    function lookup($alias) {
-        if (empty($alias)) {
+    function lookup($value, $field=SM_ABOOK_FIELD_NICKNAME) {
+        if (empty($value)) {
             return array();
         }
 
-        $alias = strtolower($alias);
+        $value = strtolower($value);
 
         if (!$this->open()) {
             return false;
         }
 
-        $query = sprintf("SELECT * FROM %s WHERE owner='%s' AND LOWER(nickname)='%s'",
-                         $this->table, $this->owner, $this->dbh->quoteString($alias));
+        $query = sprintf("SELECT * FROM %s WHERE owner = '%s' AND LOWER(%s) = '%s'",
+                         $this->table, $this->owner, $this->get_field_name($field), 
+                         $this->dbh->quoteString($value));
 
         $res = $this->dbh->query($query);
 

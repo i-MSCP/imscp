@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 13112 2008-05-07 21:16:10Z pdontthink $
+ * @version $Id: addressbook.php 13173 2008-06-09 19:04:14Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -152,8 +152,12 @@ function list_writable_backends($name) {
                                'center', $color[4], 'colspan="2"')) . "\n";
 }
 
-/* Create page header before addressbook_init in order to  display error messages correctly. */
-displayPageHeader($color, 'None');
+// Create page header before addressbook_init in order to
+// display error messages correctly, unless we might be
+// redirecting the browser to the compose page. 
+//
+if ((empty($compose_to)) || sizeof($sel) < 1) 
+    displayPageHeader($color, 'None');
 
 /* Open addressbook, with error messages on but without LDAP (the *
  * second "true"). Don't need LDAP here anyway                    */
@@ -277,6 +281,9 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
             if ($lookup_failed || empty($send_to)) {
                 $showaddrlist = true;
                 $defselected  = $sel;
+
+                // we skipped the page header above for this functionality, so add it here
+                displayPageHeader($color, 'None');
             }
 
 

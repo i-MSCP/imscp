@@ -1,5 +1,5 @@
 <?php
-/* $Id: polish-utf-8.inc.php 11613 2008-09-25 15:55:22Z nijel $ */
+/* $Id: polish-utf-8.inc.php 11654 2008-10-18 17:58:07Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -196,7 +196,7 @@ $strDbSpecific = 'specyficzne dla bazy danych';
 $strDefault = 'Domyślnie';
 $strDefaultEngine = '%s to domyślny mechanizm składowania tego serwera MySQL.';
 $strDefaultValueHelp = 'Dla wartości domyślnych, proszę wprowadzić po prostu pojedynczą wartość, bez cytowania odwrotnym ukośnikiem czy ujmowania w cudzysłowy, używając takiego formatu: a';
-$strDefragment = 'Tablica defragmentacji';
+$strDefragment = 'Defragmentuj tabelę';
 $strDelayedInserts = 'Użyj opóźnionych dodań';
 $strDeleteAndFlushDescr = 'Jest to najzgrabniejszy sposób, ale przeładowanie uprawnień może potrwać jakiś czas.';
 $strDeleteAndFlush = 'Usuń użytkowników, a następnie przeładuj uprawnienia.';

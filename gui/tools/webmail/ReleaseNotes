@@ -1,7 +1,7 @@
 /*****************************************************************
- * Release Notes: SquirrelMail 1.4.15                            *
- * The "Plain Old Regular" Release                               *
- * 22 May 2008                                                   *
+ * Release Notes: SquirrelMail 1.4.16                            *
+ * The "Taming the Cookie Monster" Release                       *
+ * 28 September 2008                                             *
  *****************************************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -16,11 +16,33 @@ In this edition of SquirrelMail Release Notes:
 All about this release
 ======================
 
-This release is a bugfix release for a number of issues identified since
-1.4.13 was released.
+This release addresses a security problem in SquirrelMail, aswell
+as your regular collection of bug fixes and some improvements mainly
+targeted at plugins.
 
-Version number 1.4.14 was skipped, because some spammer decided to use this
-version number in a phishing attempt.
+Notable changes:
+ * Security fix, see below.
+ * Latvian was added as a new language.
+ * The abook_take plugin was removed.
+
+Security issue
+==============
+
+An issue was fixed that allowed the cookies of a session started
+over SSL (https) to be transmitted over HTTP aswell. This affects
+installations that offer SquirrelMail both over HTTP and HTTPS.
+This is known as setting the "secure" flag of the cookie.
+
+An override option has been added that can be used when you have
+a need to continue a session over HTTP that has been started over
+HTTPS, although we do not recommend that.
+
+We would like to thank Hanno Boeck for reporting this issue to us.
+It is tracked as CVE-2008-3663.
+
+As an additional fortification, SquirrelMail now sets the HttpOnly
+flag to counter possible future cross site scripting attacks in
+some browsers (Internet Explorer 6+, Firefox 2.0.0.5+).
 
 
 Locales / Translations / Charsets

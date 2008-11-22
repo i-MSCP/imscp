@@ -1,5 +1,5 @@
 <?php
-/* $Id: french-utf-8.inc.php 11577 2008-09-07 16:40:54Z lem9 $ */
+/* $Id: french-utf-8.inc.php 11652 2008-10-18 14:54:47Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -443,7 +443,7 @@ $strLoginInformation = 'Information pour la connexion';
 $strLogout = 'Quitter';
 $strLogPassword = 'Mot de passe&nbsp;:';
 $strLogServer = 'Serveur';
-$strLogUsername = 'Nom d\'utilisateur&nbsp;:';
+$strLogUsername = 'Utilisateur&nbsp;:';
 $strLongOperation = 'Cette opération pourrait être longue. Procéder quand même? ';
 
 $strMaxConnects = 'max. de connexions simultanées';

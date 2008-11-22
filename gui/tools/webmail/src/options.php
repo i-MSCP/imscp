@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 12970 2008-02-26 20:28:56Z pdontthink $
+ * @version $Id: options.php 13241 2008-07-20 20:46:37Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -280,6 +280,7 @@ if ($optmode == SMOPT_MODE_SUBMIT) {
 
 if ($optmode == SMOPT_MODE_SUBMIT) {
     $optpage = SMOPT_PAGE_MAIN;
+    $optpage_title = _("Options");
 }
 
 /***************************************************************/

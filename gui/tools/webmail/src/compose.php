@@ -13,7 +13,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php 13118 2008-05-08 07:37:14Z kink $
+ * @version $Id: compose.php 13238 2008-07-19 07:31:43Z pdontthink $
  * @package squirrelmail
  */
 
@@ -1484,9 +1484,9 @@ function deliverMessage(&$composeMessage, $draft=false) {
         $from_mail = "$popuser@$domain";
     }
     $rfc822_header->from = $rfc822_header->parseAddress($from_mail,true);
+    if (!$rfc822_header->from[0]->host) $rfc822_header->from[0]->host = $domain;
     if ($full_name) {
         $from = $rfc822_header->from[0];
-        if (!$from->host) $from->host = $domain;
         $full_name_encoded = encodeHeader($full_name);
         if ($full_name_encoded != $full_name) {
             $from_addr = $full_name_encoded .' <'.$from->mailbox.'@'.$from->host.'>';
@@ -1561,17 +1561,19 @@ function deliverMessage(&$composeMessage, $draft=false) {
     if (!$useSendmail && !$draft) {
         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
         $deliver = new Deliver_SMTP();
-        global $smtpServerAddress, $smtpPort, $pop_before_smtp;
+        global $smtpServerAddress, $smtpPort, $pop_before_smtp, $pop_before_smtp_host;
 
         $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
         
         $user = '';
         $pass = '';
+        if (empty($pop_before_smtp_host))
+            $pop_before_smtp_host = $smtpServerAddress;
         
         get_smtp_user($user, $pass);
 
         $stream = $deliver->initStream($composeMessage,$domain,0,
-                $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
+                $smtpServerAddress, $smtpPort, $user, $pass, $authPop, $pop_before_smtp_host);
     } elseif (!$draft) {
         require_once(SM_PATH . 'class/deliver/Deliver_SendMail.class.php');
         global $sendmail_path, $sendmail_args;

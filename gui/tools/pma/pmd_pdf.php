@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_pdf.php 11361 2008-06-30 19:07:09Z lem9 $
+ * @version $Id: pmd_pdf.php 11683 2008-10-30 12:47:24Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -61,7 +61,8 @@ require_once './libraries/header_meta_style.inc.php';
 <body>
 <br>
 <div>
-  <form name="form1" method="post" action="pmd_pdf.php?server=<?php echo $server; ?>&db=<?php echo $db; ?>&token=<?php echo $token; ?>">
+  <form name="form1" method="post" action="pmd_pdf.php">
+<?php echo PMA_generate_common_hidden_inputs($db); ?>
     <div>
     <fieldset><legend><?php echo $GLOBALS['strExport'] . '/' . $GLOBALS['strImport']; ?></legend>
     <p><?php echo $strExportImportToScale; ?>:

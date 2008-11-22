@@ -3,7 +3,7 @@
 /**
  * URL/hidden inputs generating.
  *
- * @version $Id: url_generating.lib.php 11410 2008-07-19 15:15:59Z lem9 $
+ * @version $Id: url_generating.lib.php 11638 2008-10-08 12:14:19Z lem9 $
  */
 
 /**
@@ -183,9 +183,17 @@ function PMA_getHiddenFields($values, $pre = '')
  * @uses    implode()
  * @param   mixed    assoc. array with url params or optional string with database name
  *                   if first param is an array there is also an ? prefixed to the url
- * @param   string   optional table name only if first param is array
- * @param   string   character to use instead of '&amp;' for deviding
- *                   multiple URL parameters from each other
+ *
+ * @param   string   - if first param is array: 'html' to use htmlspecialchars()
+ *                   on the resulting URL (for a normal URL displayed in HTML)
+ *                   or something else to avoid using htmlspecialchars() (for
+ *                   a URL sent via a header); if not set,'html' is assumed
+ *                   - if first param is not array:  optional table name 
+ *
+ * @param   string   - if first param is array: optional character to
+ *                   use instead of '?'
+ *                   - if first param is not array: optional character to use 
+ *                    instead of '&amp;' for dividing URL parameters
  * @return  string   string with URL parameters
  * @access  public
  * @author  nijel

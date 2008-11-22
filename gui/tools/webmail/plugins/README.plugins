@@ -1,7 +1,11 @@
 Plugins
 =======
 
-To understand more about plugins, read doc/plugin.txt
+To understand more about plugins, read:
+
+  http://squirrelmail.org/docs/admin/admin-7.html#ss7.1
+  http://squirrelmail.org/docs/devel/devel-4.html
+
 
 For the impatient, here is an extremely brief overview of how to
 install plugins.
@@ -30,5 +34,6 @@ install plugins.
         $ ./conf.pl
 
   6.  Choose option 8 and proceed to add the new plugin following
-      the instructions there.  Save and exit, and your plugin should
-      be in place.
+      the instructions there (move the desired plugin from the "Available
+      Plugins" category to the "Installed Plugins" category by entering
+      its number).  Save and exit, and your plugin should be in place.

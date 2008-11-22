@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 12988 2008-03-03 14:06:36Z kink $
+ * @version $Id: global.php 13290 2008-09-28 13:45:49Z kink $
  * @package squirrelmail
  */
 
@@ -346,8 +346,8 @@ function sqsession_destroy() {
 
     global $base_uri;
 
-    if (isset($_COOKIE[session_name()])) setcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri);
-    if (isset($_COOKIE['key'])) setcookie('key', 'SQMTRASH', 1, $base_uri);
+    if (isset($_COOKIE[session_name()])) sqsetcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri);
+    if (isset($_COOKIE['key'])) sqsetcookie('key', 'SQMTRASH', 1, $base_uri);
 
     $sessid = session_id();
     if (!empty( $sessid )) {
@@ -365,6 +365,104 @@ function sqsession_destroy() {
  */
 
 function sqsession_is_active() {
+    sqsession_start();
+}
+
+/**
+ * Function to start the session and store the cookie with the session_id as
+ * HttpOnly cookie which means that the cookie isn't accessible by javascript
+ * (IE6 only)
+ * Note that as sqsession_is_active() no longer discriminates as to when
+ * it calls this function, session_start() has to have E_NOTICE suppression
+ * (thus the @ sign).
+ *
+ * @return void
+ *
+ * @since 1.4.16
+ *
+ */
+function sqsession_start() {
+    global $base_uri;
+
+    session_set_cookie_params (0, $base_uri);
     @session_start();
+    // could be: sq_call_function_suppress_errors('session_start');
+    $session_id = session_id();
+
+    // session_starts sets the sessionid cookie but without the httponly var
+    // setting the cookie again sets the httponly cookie attribute
+    //
+    // need to check if headers have been sent, since sqsession_is_active()
+    // has become just a passthru to this function, so the sqsetcookie()
+    // below is called every time, even after headers have already been sent
+    //
+    if (!headers_sent())
+       sqsetcookie(session_name(),$session_id,false,$base_uri);
+}
+
+/**
+ * Set a cookie
+ *
+ * @param string  $sName     The name of the cookie.
+ * @param string  $sValue    The value of the cookie.
+ * @param int     $iExpire   The time the cookie expires. This is a Unix
+ *                           timestamp so is in number of seconds since
+ *                           the epoch.
+ * @param string  $sPath     The path on the server in which the cookie
+ *                           will be available on.
+ * @param string  $sDomain   The domain that the cookie is available.
+ * @param boolean $bSecure   Indicates that the cookie should only be
+ *                           transmitted over a secure HTTPS connection.
+ * @param boolean $bHttpOnly Disallow JS to access the cookie (IE6/FF2)
+ * @param boolean $bReplace  Replace previous cookies with same name?
+ *
+ * @return void
+ *
+ * @since 1.4.16 and 1.5.1
+ *
+ */
+function sqsetcookie($sName, $sValue='deleted', $iExpire=0, $sPath="", $sDomain="",
+                     $bSecure=false, $bHttpOnly=true, $bReplace=false) {
+
+    // if we have a secure connection then limit the cookies to https only.
+    if ($sName && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
+        $bSecure = true;
+    }
+
+    // admin config can override the restriction of secure-only cookies
+    //
+    // (we have to check if the value is set and default it to true if
+    // not because when upgrading without re-running conf.pl, it will
+    // not be found in config/config.php and thusly evaluate to false,
+    // but we want to default people who upgrade to true due to security
+    // implications of setting this to false)
+    //
+    global $only_secure_cookies;
+    if (!isset($only_secure_cookies)) $only_secure_cookies = true;
+    if (!$only_secure_cookies)
+        $bSecure = false;
+
+    if (false && check_php_version(5,2)) {
+       // php 5 supports the httponly attribute in setcookie, but because setcookie seems a bit
+       // broken we use the header function for php 5.2 as well. We might change that later.
+       //setcookie($sName,$sValue,(int) $iExpire,$sPath,$sDomain,$bSecure,$bHttpOnly);
+    } else {
+        if (!empty($sDomain)) {
+            // Fix the domain to accept domains with and without 'www.'.
+            if (strtolower(substr($sDomain, 0, 4)) == 'www.')  $sDomain = substr($sDomain, 4);
+            $sDomain = '.' . $sDomain;
+
+            // Remove port information.
+            $Port = strpos($sDomain, ':');
+            if ($Port !== false)  $sDomain = substr($sDomain, 0, $Port);
+        }
+        if (!$sValue) $sValue = 'deleted';
+        header('Set-Cookie: ' . rawurlencode($sName) . '=' . rawurlencode($sValue)
+                            . (empty($iExpire) ? '' : '; expires=' . gmdate('D, d-M-Y H:i:s', $iExpire) . ' GMT')
+                            . (empty($sPath) ? '' : '; path=' . $sPath)
+                            . (empty($sDomain) ? '' : '; domain=' . $sDomain)
+                            . (!$bSecure ? '' : '; secure')
+                            . (!$bHttpOnly ? '' : '; HttpOnly'), $bReplace);
+    }
 }
 

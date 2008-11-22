@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: addressbook.php 13185 2008-06-19 01:07:28Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -416,15 +416,15 @@ class AddressBook {
 
 
     /*
-     *  Lookup an address by alias. Only possible in
-     *  local backends.
+     *  Lookup an address by the indicated field. Only
+     *  possible in local backends.
      */
-    function lookup($alias, $bnum = -1) {
+    function lookup($value, $bnum = -1, $field = SM_ABOOK_FIELD_NICKNAME) {
 
         $ret = array();
 
         if ($bnum > -1) {
-            $res = $this->backends[$bnum]->lookup($alias);
+            $res = $this->backends[$bnum]->lookup($value, $field);
             if (is_array($res)) {
                return $res;
             } else {
@@ -437,13 +437,18 @@ class AddressBook {
         for ($i = 0 ; $i < sizeof($sel) ; $i++) {
             $backend = &$sel[$i];
             $backend->error = '';
-            $res = $backend->lookup($alias);
+            $res = $backend->lookup($value, $field);
+
+            // return an address if one is found
+            // (empty array means lookup concluded
+            // but no result found - in this case,
+            // proceed to next backend)
+            //
             if (is_array($res)) {
-               if(!empty($res))
-              return $res;
+                if (!empty($res)) return $res;
             } else {
-               $this->error = $backend->error;
-               return false;
+                $this->error = $backend->error;
+                return false;
             }
         }
 
@@ -646,7 +651,7 @@ class addressbook_backend {
         return false;
     }
 
-    function lookup($alias) {
+    function lookup($value, $field) {
         $this->set_error('lookup not implemented');
         return false;
     }

@@ -17,7 +17,7 @@
  *
  * @copyright &copy; 2000-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: config_default.php 12522 2007-07-10 14:52:53Z kink $
+ * @version $Id: config_default.php 13238 2008-07-19 07:31:43Z pdontthink $
  * @package squirrelmail
  * @subpackage config
  */
@@ -307,6 +307,18 @@ $optional_delimiter = 'detect';
  * @global bool $pop_before_smtp
  */
 $pop_before_smtp = false;
+
+
+/**
+ * POP before SMTP server address
+ *
+ * When using POP3 before SMTP, if the POP server address is
+ * not the same as the SMTP server address, specify it here.
+ * If this is left empty, the SMTP server address will be
+ * used by default.
+ * @global bool $pop_before_smtp_host
+ */
+$pop_before_smtp_host = '';
 
 
 /*** Folder Settings ***/

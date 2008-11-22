@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: constants.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: constants.php 13185 2008-06-19 01:07:28Z pdontthink $
  * @package squirrelmail
  * @since 1.2.0
  */
@@ -52,6 +52,13 @@ define('SMPREF_TIME_12HR', 2);
 define('SMPREF_JS_OFF', 0);
 define('SMPREF_JS_ON', 1);
 define('SMPREF_JS_AUTODETECT', 2);
+
+/* Define constants for address book functionalities. */
+define('SM_ABOOK_FIELD_NICKNAME', 0);
+define('SM_ABOOK_FIELD_FIRSTNAME', 1);
+define('SM_ABOOK_FIELD_LASTNAME', 2);
+define('SM_ABOOK_FIELD_EMAIL', 3);
+define('SM_ABOOK_FIELD_LABEL', 4);
 
 do_hook('loading_constants');
 
