@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-11-23 Daniel Andreca
 	- CONFIGS:
 		* Fixed #1567: message_size_limit is set twice
+		* Fixed #1531: [Bind] Domain settings are not conformed to Denic registry policy
 
 2008-11-22 Daniel Andreca
 	- TOOLS:

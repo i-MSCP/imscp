@@ -5,7 +5,7 @@ $ORIGIN {DMN_NAME}.
                 {TIMESTAMP}     ; Serial
 ; dmn [{DMN_NAME}] timestamp entry END.
                 8H              ; Refresh
-                15M             ; Retry
+                30M             ; Retry
                 4W              ; Expire
                 3H              ; Minimum TTL
 )
