@@ -30,17 +30,14 @@
 #    http://isp-control.net
 #
 
-# for activating debug, please set to 1;
-DEBUG=0
-
 # read needed entries from ispcp.conf
 if [ -f /usr/local/etc/ispcp/ispcp.conf ]
 then
-	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' | sed -e 's/ //g'`; do
 		export $a
 	done
 else
-	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' | sed -e 's/ //g'`; do
 		export $a
 	done
 fi

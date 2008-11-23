@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-23 Daniel Andreca
+	- CONFIGS:
+		* Fixed #1567: message_size_limit is set twice
+
+2008-11-22 Daniel Andreca
+	- TOOLS:
+		* Updated plugins for SquirrelMail
+
 2008-11-21 Benedikt Heintel
 	- TOOLS:
 		* Updated SquirrelMail to version 1.4.16

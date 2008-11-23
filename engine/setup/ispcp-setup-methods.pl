@@ -1007,9 +1007,6 @@ sub setup_php_master_user_dirs {
 	my ($rs, $rdata) = (undef, undef);
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
-	$rs = make_dir("$starter_dir/master", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
-	return $rs if ($rs != 0);
-
 	# Create php4 directory for Master User
 	#$rs = make_dir("$starter_dir/master/php4", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 	#return $rs if ($rs != 0);

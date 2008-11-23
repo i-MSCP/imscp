@@ -51,9 +51,6 @@ alias_maps 			= hash:{MTA_LOCAL_ALIAS_HASH}
 # Delivering local messages parameters;
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 
-# Mailsize
-message_size_limit           = 1024000
-
 # Mailboxquota
 # => 0 for unlimited
 # => 104857600 for 100 MB
