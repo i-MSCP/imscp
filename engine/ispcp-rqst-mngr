@@ -534,50 +534,50 @@ sub mngr_engine {
     }
 
 	#
-	# .htaccess management BEGIN.
+	# .htusers management BEGIN.
 	#
 
-	$sql = "select id, status from htaccess where status != 'ok' order by id";
+	$sql = "select `id`, `status` from `htaccess_users` where `status` != 'ok' order by `id`";
 
 	($rs, $rdata) = doSQL($sql);
 
-	my $htuser_count = @$rdata;
+	my $htusers_count = @$rdata;
 
-	if ($htuser_count > 0) {
+	if ($htusers_count > 0) {
 
 		foreach (@$rdata) {
 
 			my $row = $_;
 
-			my ($htuser_id, $htuser_status) = (@$row[0], @$row[1]);
+			my ($htusers_id, $htusers_status) = (@$row[0], @$row[1]);
 
-			if ($htuser_status eq "toadd" || $htuser_status eq "change" || $htuser_status eq "delete") {
+			if ($htusers_status eq "toadd" || $htusers_status eq "change" || $htusers_status eq "delete") {
 
-				push_el(\@main::el, 'mngr_engine()', "processing $htuser_id, $htuser_status.")
+				push_el(\@main::el, 'mngr_engine()', "processing $htusers_id, $htusers_status.")
 
 					if (defined($main::engine_debug));
 
-				$rs = sys_command("$main::ispcp_htuser_mngr $htuser_id 1>$main::ispcp_htuser_mngr_stdout 2>$main::ispcp_htuser_mngr_stderr");
+				$rs = sys_command("$main::ispcp_htusers_mngr $htusers_id 1>$main::ispcp_htusers_mngr_stdout 2>$main::ispcp_htusers_mngr_stderr");
 
 				if ($rs != 0) {
 
-					if (-e $main::ispcp_htuser_mngr_el) {
+					if (-e $main::ispcp_htusers_mngr_el) {
 
 						my $rs1 = undef;
 
 						pop_el(\@main::el); # removing 'sys_command()' error message;
 
-						($rs1, $rdata) = get_el_error($main::ispcp_htuser_mngr_el);
+						($rs1, $rdata) = get_el_error($main::ispcp_htusers_mngr_el);
 
 						return $rs1 if ($rs1 != 0);
 
-						push_el(\@main::el, $main::ispcp_htuser_mngr, $rdata);
+						push_el(\@main::el, $main::ispcp_htusers_mngr, $rdata);
 
 					}
 
 					if (!defined($main::engine_debug)) {
 
-						del_file($main::ispcp_htuser_mngr_stdout); del_file($main::ispcp_htuser_mngr_stderr);
+						del_file($main::ispcp_htusers_mngr_stdout); del_file($main::ispcp_htusers_mngr_stderr);
 
 					}
 
@@ -587,29 +587,144 @@ sub mngr_engine {
 
 				if (!defined($main::engine_debug)) {
 
-					del_file($main::ispcp_htuser_mngr_stdout); del_file($main::ispcp_htuser_mngr_stderr);
+					del_file($main::ispcp_htusers_mngr_stdout); del_file($main::ispcp_htusers_mngr_stderr);
 
 				}
-
-				sys_command_rs("rm -rf /tmp/htaccess-*");
 
 			}
 
 		}
 
-	} else {
+	}
 
-		$sql = "delete from htaccess_users where status = 'delete'";
-		($rs, $rdata) = doSQL($sql);
+	#
+	# .htusers management END.
+	#
 
-		$sql = "delete from htaccess_groups where status = 'delete'";
-		($rs, $rdata) = doSQL($sql);
+	#
+	# .htgroups management BEGIN.
+	#
 
-		$sql = "update htaccess_users set status = 'ok' where status = 'toadd' or status = 'change'";
-		($rs, $rdata) = doSQL($sql);
+	$sql = "select `dmn_id`, `id`, `status` from `htaccess_groups` where `status` in ('toadd', 'change', 'delete') group by `dmn_id` order by `dmn_id`";
 
-		$sql = "update htaccess_groups set status = 'ok' where status = 'toadd' or status = 'change'";
-		($rs, $rdata) = doSQL($sql);
+	($rs, $rdata) = doSQL($sql);
+
+	my $htgroups_count = @$rdata;
+
+	if ($htgroups_count > 0) {
+
+		foreach (@$rdata) {
+
+			my $row = $_;
+
+			my ($htdmn_id, $htgroups_id, $htgroups_status) = (@$row[0], @$row[1], @$row[2]);
+
+			push_el(\@main::el, 'mngr_engine()', "processing $htdmn_id -> $htgroups_id, $htgroups_status.")
+
+				if (defined($main::engine_debug));
+
+			$rs = sys_command("$main::ispcp_htgroups_mngr $htdmn_id 1>$main::ispcp_htgroups_mngr_stdout 2>$main::ispcp_htgroups_mngr_stderr");
+
+			if ($rs != 0) {
+
+				if (-e $main::ispcp_htgroups_mngr_el) {
+
+					my $rs1 = undef;
+
+					pop_el(\@main::el); # removing 'sys_command()' error message;
+					($rs1, $rdata) = get_el_error($main::ispcp_htgroups_mngr_el);
+
+					return $rs1 if ($rs1 != 0);
+
+					push_el(\@main::el, $main::ispcp_htgroups_mngr, $rdata);
+
+				}
+
+				if (!defined($main::engine_debug)) {
+
+					del_file($main::ispcp_htgroups_mngr_stdout); del_file($main::ispcp_htgroups_mngr_stderr);
+
+				}
+
+				return $rs;
+
+			}
+
+			if (!defined($main::engine_debug)) {
+
+				del_file($main::ispcp_htgroups_mngr_stdout); del_file($main::ispcp_htgroups_mngr_stderr);
+
+			}
+
+		}
+
+	}
+
+	#
+	# .htgroups management END.
+	#
+
+	#
+	# .htaccess management BEGIN.
+	#
+
+	$sql = "select id, status from htaccess where status != 'ok' order by id";
+
+	($rs, $rdata) = doSQL($sql);
+
+	my $htaccess_count = @$rdata;
+
+	if ($htaccess_count > 0) {
+
+		foreach (@$rdata) {
+
+			my $row = $_;
+
+			my ($htaccess_id, $htaccess_status) = (@$row[0], @$row[1]);
+
+			if ($htaccess_status eq "toadd" || $htaccess_status eq "change" || $htaccess_status eq "delete") {
+
+				push_el(\@main::el, 'mngr_engine()', "processing $htaccess_id, $htaccess_status.")
+
+					if (defined($main::engine_debug));
+
+				$rs = sys_command("$main::ispcp_htaccess_mngr $htaccess_id 1>$main::ispcp_htaccess_mngr_stdout 2>$main::ispcp_htaccess_mngr_stderr");
+
+				if ($rs != 0) {
+
+					if (-e $main::ispcp_htaccess_mngr_el) {
+
+						my $rs1 = undef;
+
+						pop_el(\@main::el); # removing 'sys_command()' error message;
+
+						($rs1, $rdata) = get_el_error($main::ispcp_htaccess_mngr_el);
+
+						return $rs1 if ($rs1 != 0);
+
+						push_el(\@main::el, $main::ispcp_htaccess_mngr, $rdata);
+
+					}
+
+					if (!defined($main::engine_debug)) {
+
+						del_file($main::ispcp_htaccess_mngr_stdout); del_file($main::ispcp_htaccess_mngr_stderr);
+
+					}
+
+					return $rs;
+
+				}
+
+				if (!defined($main::engine_debug)) {
+
+					del_file($main::ispcp_htaccess_mngr_stdout); del_file($main::ispcp_htaccess_mngr_stderr);
+
+				}
+
+			}
+
+		}
 
 	}
 
@@ -617,9 +732,9 @@ sub mngr_engine {
 	# .htaccess management END.
 	#
 
-    push_el(\@main::el, 'mngr_engine()', 'Ending...');
+	push_el(\@main::el, 'mngr_engine()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 

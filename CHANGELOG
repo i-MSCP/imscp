@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-27 Daniel Andreca
+	- ENGINE:
+		* Fixed #837: AWStats password protection
+
 2008-11-23 Daniel Andreca
 	- CONFIGS:
 		* Fixed #1567: message_size_limit is set twice

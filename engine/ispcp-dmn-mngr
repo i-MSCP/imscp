@@ -698,25 +698,30 @@ sub gen_httpd_dmn_group_entry {
 	my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
 	my %tag_hash =
 	(
-		'{DMN_GRP}'                 => $dmn_grp,
-		'{DMN_NAME}'                => $dmn_name,
-		'{SELF}'                    => $dmn_name,
-		'{DMN_IP}'                  => $dmn_ip,
-		'{BASE_SERVER_VHOST}'       => $main::cfg{'BASE_SERVER_VHOST'},
-		'{WWW_DIR}'                 => $main::cfg{'APACHE_WWW_DIR'},
-		'{STARTER_DIR}'             => $main::cfg{'PHP_STARTER_DIR'},
-		'{PHP_VERSION}'             => $main::cfg{'PHP_VERSION'},
-		'{APACHE_LOG_DIR}'          => $main::cfg{'APACHE_LOG_DIR'},
-		'{GUI_ROOT_DIR}'            => $main::cfg{'GUI_ROOT_DIR'},
-		'{SCOREBOARDS_DIR}'         => $main::cfg{'SCOREBOARDS_DIR'},
-		'{PEAR_DIR}'                => $main::cfg{'PEAR_DIR'},
-		'{APACHE_USERS_LOG_DIR}'    => $main::cfg{'APACHE_USERS_LOG_DIR'},
-		'{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-		'{SUEXEC_USER}'             => $suexec_user,
-		'{SUEXEC_GROUP}'            => $suexec_group,
-		'{BWLIMIT}'                 => $dmn_traffic_limit,
-		'{BWLIMIT_DISABLED}'        => $bw_disabled,
-		'##TEMPLATE' 				=> '' 			#Used to prevent apache from parsing commands which are part of the template
+		'{DMN_GRP}'                   => $dmn_grp,
+		'{DMN_NAME}'                  => $dmn_name,
+		'{SELF}'                      => $dmn_name,
+		'{DMN_IP}'                    => $dmn_ip,
+		'{BASE_SERVER_VHOST}'         => $main::cfg{'BASE_SERVER_VHOST'},
+		'{WWW_DIR}'                   => $main::cfg{'APACHE_WWW_DIR'},
+		'{STARTER_DIR}'               => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_VERSION}'               => $main::cfg{'PHP_VERSION'},
+		'{APACHE_LOG_DIR}'            => $main::cfg{'APACHE_LOG_DIR'},
+		'{GUI_ROOT_DIR}'              => $main::cfg{'GUI_ROOT_DIR'},
+		'{SCOREBOARDS_DIR}'           => $main::cfg{'SCOREBOARDS_DIR'},
+		'{PEAR_DIR}'                  => $main::cfg{'PEAR_DIR'},
+		'{APACHE_USERS_LOG_DIR}'      => $main::cfg{'APACHE_USERS_LOG_DIR'},
+		'{CUSTOM_SITES_CONFIG_DIR}'   => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+		
+		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},
+		'{HTACCESS_USERS_FILE_NAME}'  => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
+		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
+		
+		'{SUEXEC_USER}'               => $suexec_user,
+		'{SUEXEC_GROUP}'              => $suexec_group,
+		'{BWLIMIT}'                   => $dmn_traffic_limit,
+		'{BWLIMIT_DISABLED}'          => $bw_disabled,
+		'##TEMPLATE'                  => '' 			#Used to prevent apache from parsing commands which are part of the template
 	);
 	(
 		$rs,

@@ -81,6 +81,7 @@ final class Config {
 		'AWSTATS_ENGINE_DIR' => null,
 		'AWSTATS_WEB_DIR' => null,
 		'AWSTATS_ROOT_DIR' => null,
+		'AWSTATS_GROUP_AUTH' => null,
 		'APACHE_NAME' => null,
 		'APACHE_RESTART_TRY' => null,
 		'APACHE_CONF_DIR' => null,

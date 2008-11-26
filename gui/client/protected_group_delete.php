@@ -33,85 +33,65 @@ if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])
 }
 
 $change_status = Config::get('ITEM_DELETE_STATUS');
+$awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
 
-$query = <<<SQL_QUERY
-        update
-        	htaccess_groups
-        set
-        	status = ?
-        where
-            id = ?
-		and
-			dmn_id = ?
-SQL_QUERY;
+$query = "
+	UPDATE
+		`htaccess_groups`
+	SET
+		`status` = ?
+	WHERE
+		`id` = ?
+	AND
+		`dmn_id` = ?
+	AND
+		`ugroup` != ?
+";
 
-$rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
-
-
-$query = <<<SQL_QUERY
-        select
-            *
-        from
-            htaccess
-        where
-			dmn_id = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($dmn_id));
-
-	while (!$rs -> EOF) {
-
-		$ht_id = $rs -> fields['id'];
-		$grp_id = $rs -> fields['group_id'];
-
-		$grp_id_splited = split(',', $grp_id);
-		for ($i = 0; $i < count($grp_id_splited); $i++) {
-				//Does this group affect some htaccess ?
-			if ($grp_id_splited[$i] == $group_id) {
-				//oh -> our group was used in htaccess
-				  if (count($grp_id_splited) < 2 && count($grp_id_splited) > 0){
-	 	            $status = Config::get('ITEM_DELETE_STATUS');
-	 	          } else {
-					$grp_id = preg_replace("/$group_id/", "", "$grp_id");
-					$grp_id = preg_replace("/,,/", ",", "$grp_id");
-					$grp_id = preg_replace("/^,/", "", "$grp_id");
-					$grp_id = preg_replace("/,$/", "", "$grp_id");
-					$status = Config::get('ITEM_CHANGE_STATUS');
-				}
-				$update_query = <<<SQL_QUERY
-				update
-					htaccess
-				set
-					group_id = ?,
-					status = ?
-				where
-					id = ?
-SQL_QUERY;
-
-		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
-
-			}
+$rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id, $awstats_auth));
 
 
+$query = "
+	SELECT
+		*
+	FROM
+		`htaccess`
+	WHERE
+		`dmn_id` = ?
+";
+
+$rs = exec_query($sql, $query, array($dmn_id));
+
+while (!$rs -> EOF) {
+
+	$ht_id = $rs -> fields['id'];
+	$grp_id = $rs -> fields['group_id'];
+
+	$grp_id_splited = explode(',', $grp_id);
+
+	$key=array_search($group_id,$grp_id_splited);
+	if($key!==false){
+		unset($grp_id_splited[$key]);
+		if (count($grp_id_splited) == 0) {
+			$status = Config::get('ITEM_DELETE_STATUS');
+		} else {
+			$grp_id=implode(",", $grp_id_splited);
+			$status = Config::get('ITEM_CHANGE_STATUS');
 		}
-
-	$rs -> MoveNext();
+		$update_query = "
+			UPDATE
+				`htaccess`
+			SET
+				`group_id` = ?,
+				`status` = ?
+			WHERE
+				`id` = ?
+		";
+		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
 	}
 
-	//we like to have our changes honoured to make group-deletion even without htaccess - relation possible!
-		$status = Config::get('ITEM_CHANGE_STATUS');
-		$query = <<<SQL_QUERY
-   				 update
-  						htaccess
-					set
-						status = ?
-					where
-						dmn_id = ?
-					and
-						status NOT like 'delete'
-SQL_QUERY;
-		 $rs = exec_query($sql, $query, array($status, $dmn_id));
-
+	$rs -> MoveNext();
+}
 
 check_for_lock_file();
 send_request();

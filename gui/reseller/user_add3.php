@@ -308,6 +308,8 @@ function add_user_data($reseller_id) {
 
 	$record_id = $sql->Insert_ID();
 
+	$status = Config::get('ITEM_ADD_STATUS');
+
 	$query = "
 		INSERT INTO `domain` (
 			`domain_name`, `domain_admin_id`,
@@ -324,7 +326,7 @@ function add_user_data($reseller_id) {
 			?, unix_timestamp(),
 			?, ?,
 			?, ?,
-			?, 'toadd',
+			?, ?,
 			?, ?,
 			?, ?, '0',
 			?, ?
@@ -336,10 +338,22 @@ function add_user_data($reseller_id) {
 											$reseller_id, $mail,
 											$ftp, $traff,
 											$sql_db, $sql_user,
+											$status,
 											$sub, $als,
 											$domain_ip,	$disk,
 											$php, $cgi));
 	$dmn_id = $sql->Insert_ID();
+
+	//Add statistics group
+	$awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
+	$query = "
+		INSERT INTO `htaccess_groups`
+				(dmn_id, ugroup, status)
+		VALUES
+				(?, ?, ?)
+	";
+	$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $status));
+
 
 	// Create the 3 default addresses if wanted
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))

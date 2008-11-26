@@ -1,0 +1,375 @@
+#!/usr/bin/perl
+
+# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2008 by isp Control Panel
+# http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ISPCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
+
+
+use FindBin;
+use lib "$FindBin::Bin/";
+require 'ispcp_common_code.pl';
+
+use strict;
+
+use warnings;
+
+$main::htgroup_task_id = undef;
+
+sub htgroup_mngr_start_up {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'htgroup_mngr_start_up()', 'Starting...');
+
+	# checking for master process;
+	$rs = check_master();
+	return $rs if ($rs != 0);
+
+	# Let's clear Execution Logs, if any.
+
+	if (-e $main::ispcp_htgroups_mngr_el) {
+
+		$rs = del_file($main::ispcp_htgroups_mngr_el);
+
+		return $rs if ($rs != 0);
+
+	}
+
+	# config check;
+
+	$rs = get_conf();
+
+	return $rs if ($rs != 0);
+
+	# sql check;
+
+	#
+	# getting initial data also must be done here;
+	#
+
+	my $sql = "
+	SELECT
+		domain_id,
+		domain_name,
+		domain_gid,
+		domain_uid,
+		domain_admin_id,
+		domain_created_id,
+		domain_created,
+		domain_last_modified,
+		domain_mailacc_limit,
+		domain_ftpacc_limit,
+		domain_traffic_limit,
+		domain_sqld_limit,
+		domain_sqlu_limit,
+		domain_status,
+		domain_alias_limit,
+		domain_subd_limit,
+		domain_ip_id,
+		domain_disk_limit,
+		domain_disk_usage,
+		domain_php,
+		domain_cgi
+	FROM
+		domain
+	LIMIT 0,1";
+
+	($rs, $rdata) = doSQL($sql);
+
+	return $rs if ($rs != 0);
+
+	#
+	# getting task id and domain record id;
+	#
+
+	$main::htgroup_task_id = $ARGV[0];
+
+	push_el(\@main::el, 'htgroup_mngr_start_up()', 'Ending...');
+
+	return 0;
+
+}
+
+sub htgroup_mngr_shut_down {
+
+	my $rs = undef;
+
+	push_el(\@main::el, 'htgroup_mngr_shut_down()', 'Starting...');
+
+	push_el(\@main::el, 'htgroup_mngr_shut_down()', 'Ending...');
+
+	return 0;
+
+}
+
+#
+# AuthGroupFile add/remove entries;
+#
+
+sub htgroup_add_group_line_data {
+
+	push_el(\@main::el, 'htgroup_add_group_line_data()', 'Starting...');
+
+	my ($line, $gname, $uname) = @_;
+
+	if ($line !~ /( $uname$)|( $uname )/) {
+
+		$line =~ s/$gname://;
+
+		chomp($line);
+
+		$line = "$gname:$line $uname\n";
+
+	}
+
+	push_el(\@main::el, 'htgroup_add_group_line_data()', 'Ending...');
+
+	return $line;
+}
+
+sub htgroup_add_group_data {
+
+	push_el(\@main::el, 'htgroup_add_group_data()', 'Starting...');
+
+	my ($dmn_name, $gname, $uname) = @_;
+
+	my $rs = undef;
+
+	my $htgroups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+	my $htgroups_file = "$apache_www_dir/$dmn_name/$htgroups_file_name";
+
+	my $htgroups_content = '';
+
+
+	if (-e $htgroups_file) {
+
+		my $gf_edit_flag = 0;
+
+		open(F, '<', $htgroups_file);
+
+		while (!eof(F)) {
+
+			my $line = readline(F);
+
+			if ($line !~ /^$gname:/) {
+
+				$htgroups_content .= $line;
+
+			} else {
+
+				$htgroups_content .= htgroup_add_group_line_data($line, $gname, $uname);
+
+				$gf_edit_flag++;
+
+			}
+
+		}
+
+		$htgroups_content .= "$gname: $uname\n" if ($gf_edit_flag == 0);
+
+		close(F);
+
+	} else {
+
+		$htgroups_content = "$gname: $uname\n";
+
+	}
+
+	$rs = store_file($htgroups_file, $htgroups_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'htgroup_add_group_data()', 'Ending...');
+
+	return 0;
+
+}
+
+sub htgroup_mngr_engine {
+
+	my ($rs, $sql, $rows, $rdata) = (undef, undef, undef, undef);
+
+	push_el(\@main::el, 'htgroup_mngr_engine()', 'Starting...');
+
+	$sql = "
+		select
+			`ugroup`,
+			`members`,
+			`status`,
+			`id`,
+			`domain_name`
+		from
+			`htaccess_groups` as t1,
+			`domain` as t2
+		where
+			t1.`dmn_id`=t2.`domain_id`
+		and
+			t1.`dmn_id` = '".$main::htgroup_task_id."'
+		and
+			t1.`status` in ('toadd', 'change', 'delete', 'ok')
+	";
+
+	($rs, $rows) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	if (scalar(@$rows) != 0) {
+
+		push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
+
+		my $htgroups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+
+		my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+		my $htgroup_dmn = @$rows[0];
+
+		$htgroup_dmn = @$htgroup_dmn[4];
+
+		my $htgroups_file = "$apache_www_dir/$htgroup_dmn/$htgroups_file_name";
+
+		$rs = del_file($htgroups_file);
+
+		foreach (@$rows) {
+
+			my $query_group = $_;
+			my ($htgroup_name, $htgroup_members, $htgroup_status, $htgroup_id) =
+				(@$query_group[0], @$query_group[1], @$query_group[2], @$query_group[3]);
+
+			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
+
+			if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'ok') {
+
+				# only choice atm -> build the group again. Reset the old groupfile
+				if ( defined($htgroup_members) && $htgroup_members ne '' ){
+
+					foreach (split(',', $htgroup_members)) {
+
+						my $id = $_;
+
+						$sql = "select `uname` from `htaccess_users` where `id` = $id";
+
+						($rs, $rdata) = doSQL($sql);
+						return $rs if ($rs != 0);
+
+						$rdata = @$rdata[0];
+
+						my ($uname) = (@$rdata[0]);
+
+						$rs = htgroup_add_group_data($htgroup_dmn, $htgroup_name, $uname);
+
+						return $rs if ($rs != 0);
+
+					}
+
+				}
+
+				push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.$htgroup_id.'...');
+
+				$sql = "update `htaccess_groups` set `status` = 'ok' where `id` = '$htgroup_id'";
+
+			} elsif ($htgroup_status eq 'delete') {
+				# since we build our file again and delete status is handled apart groups with status
+				# 'delete' will get deleted...
+
+				$sql = "delete from `htaccess_groups` where `id` = '$htgroup_id'";
+
+				push_el(\@main::el, 'htuser-usermanagement()', 'Delete Group ID : '.$htgroup_id.'...');
+
+			} else {
+
+				push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htgroup_dmn : $htgroup_name');
+
+				$sql = "update `htaccess_groups` set `status`='failure' where `id` = '$htgroup_id'";
+
+			}
+
+			($rs, $rdata) = doSQL($sql);
+			return $rs if ($rs != 0);
+
+		}
+
+		if ( not -e $htgroups_file ) {
+
+			$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htgroups_file");
+
+			return $rs if ($rs != 0);
+
+
+		}
+
+		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
+	}
+
+	sleep(1);
+
+	push_el(\@main::el, 'htgroup_mngr_engine()', 'Ending...');
+
+	return 0;
+
+}
+
+my $rs = undef;
+
+$rs = htgroup_mngr_start_up();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_htgroups_mngr_el);
+
+    htgroup_mngr_shut_down();
+
+    exit 1;
+
+}
+
+$rs = htgroup_mngr_engine();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_htgroups_mngr_el);
+
+    htgroup_mngr_shut_down();
+
+    exit 1;
+
+}
+
+$rs = htgroup_mngr_shut_down();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_htgroups_mngr_el);
+
+    exit 1;
+
+}
+
+exit 0;

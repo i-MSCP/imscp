@@ -34,13 +34,13 @@ $tpl->define_dynamic('pgroups', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+	)
+);
 
 function padd_user(&$tpl, &$sql, $dmn_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
@@ -62,7 +62,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 				set_page_message(tr('Passwords do not match!'));
 				return;
 			}
-			$change_status = Config::get('ITEM_ADD_STATUS');
+			$status = Config::get('ITEM_ADD_STATUS');
 
 			$uname = clean_input($_POST['username']);
 
@@ -77,45 +77,27 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 				$upass = crypt($_POST['pass']);
 			}
 
-			$query = <<<SQL_QUERY
-        select
-			id
-        from
-            htaccess_users
-        where
-             uname = ?
-			 and
-			 dmn_id = ?
-SQL_QUERY;
-
+			$query = "
+				SELECT
+					`id`
+				FROM
+					`htaccess_users`
+				WHERE
+					`uname` = ?
+				AND
+					`dmn_id` = ?
+			";
 			$rs = exec_query($sql, $query, array($uname, $dmn_id));
 
 			if ($rs->RecordCount() == 0) {
-				$query = <<<SQL_QUERY
 
-            insert into htaccess_users
-
-               (dmn_id, uname, upass, status)
-
-            values
-
-               (?, ?, ?, ?)
-
-SQL_QUERY;
-
-				$rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $change_status));
-
-				$change_status = Config::get('ITEM_CHANGE_STATUS');
-
-				$query = <<<SQL_QUERY
-                    update
-                        htaccess
-                    set
-                        status = ?
-                    where
-                         dmn_id = ?
-SQL_QUERY;
-				$rs = exec_query($sql, $query, array($change_status, $dmn_id));
+				$query = "
+					INSERT INTO `htaccess_users`
+						(`dmn_id`, `uname`, `upass`, `status`)
+					VALUES
+						(?, ?, ?, ?)
+				";
+				$rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $status));
 
 				check_for_lock_file();
 				send_request();
@@ -150,25 +132,25 @@ check_permissions($tpl);
 padd_user($tpl, $sql, get_user_domain_id($sql, $_SESSION['user_id']));
 
 $tpl->assign(
-		array(
-			'TR_HTACCESS' => tr('Protected areas'),
-			'TR_ACTION' => tr('Action'),
-			'TR_USER_MANAGE' => tr('Manage user'),
-			'TR_USERS' => tr('User'),
-			'TR_USERNAME' => tr('Username'),
-			'TR_ADD_USER' => tr('Add user'),
-			'TR_GROUPNAME' => tr('Group name'),
-			'TR_GROUP_MEMBERS' => tr('Group members'),
-			'TR_ADD_GROUP' => tr('Add group'),
-			'TR_EDIT' => tr('Edit'),
-			'TR_GROUP' => tr('Group'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_GROUPS' => tr('Groups'),
-			'TR_PASSWORD' => tr('Password'),
-			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-			'TR_CANCEL' => tr('Cancel'),
-		)
-	);
+	array(
+		'TR_HTACCESS'			=> tr('Protected areas'),
+		'TR_ACTION'				=> tr('Action'),
+		'TR_USER_MANAGE'		=> tr('Manage user'),
+		'TR_USERS'				=> tr('User'),
+		'TR_USERNAME'			=> tr('Username'),
+		'TR_ADD_USER'			=> tr('Add user'),
+		'TR_GROUPNAME'			=> tr('Group name'),
+		'TR_GROUP_MEMBERS'		=> tr('Group members'),
+		'TR_ADD_GROUP'			=> tr('Add group'),
+		'TR_EDIT'				=> tr('Edit'),
+		'TR_GROUP'				=> tr('Group'),
+		'TR_DELETE'				=> tr('Delete'),
+		'TR_GROUPS'				=> tr('Groups'),
+		'TR_PASSWORD'			=> tr('Password'),
+		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
+		'TR_CANCEL'				=> tr('Cancel'),
+	)
+);
 
 gen_page_message($tpl);
 

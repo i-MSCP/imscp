@@ -114,14 +114,34 @@ $main::ispcp_serv_mngr_stdout = "$main::log_dir/ispcp-serv-mngr.stdout";
 $main::ispcp_serv_mngr_stderr = "$main::log_dir/ispcp-serv-mngr.stderr";
 
 #
-# htuser manager variables.
+# htaccess manager variables.
 #
 
-$main::ispcp_htuser_mngr = "$main::root_dir/engine/ispcp-htuser-mngr";
+$main::ispcp_htaccess_mngr = "$main::root_dir/engine/ispcp-htaccess-mngr";
 
-$main::ispcp_htuser_mngr_el = "$main::log_dir/ispcp-htuser-mngr.el";
-$main::ispcp_htuser_mngr_stdout = "$main::log_dir/ispcp-htuser-mngr.stdout";
-$main::ispcp_htuser_mngr_stderr = "$main::log_dir/ispcp-htuser-mngr.stderr";
+$main::ispcp_htaccess_mngr_el = "$main::log_dir/ispcp-htaccess-mngr.el";
+$main::ispcp_htaccess_mngr_stdout = "$main::log_dir/ispcp-htaccess-mngr.stdout";
+$main::ispcp_htaccess_mngr_stderr = "$main::log_dir/ispcp-htaccess-mngr.stderr";
+
+#
+# htusers manager variables.
+#
+
+$main::ispcp_htusers_mngr = "$main::root_dir/engine/ispcp-htusers-mngr";
+
+$main::ispcp_htusers_mngr_el = "$main::log_dir/ispcp-htusers-mngr.el";
+$main::ispcp_htusers_mngr_stdout = "$main::log_dir/ispcp-htusers-mngr.stdout";
+$main::ispcp_htusers_mngr_stderr = "$main::log_dir/ispcp-htusers-mngr.stderr";
+
+#
+# htgroups manager variables.
+#
+
+$main::ispcp_htgroups_mngr = "$main::root_dir/engine/ispcp-htgroups-mngr";
+
+$main::ispcp_htgroups_mngr_el = "$main::log_dir/ispcp-htgroups-mngr.el";
+$main::ispcp_htgroups_mngr_stdout = "$main::log_dir/ispcp-htgroups-mngr.stdout";
+$main::ispcp_htgroups_mngr_stderr = "$main::log_dir/ispcp-htgroups-mngr.stderr";
 
 
 $main::ispcp_vrl_traff = "$main::root_dir/engine/messager/ispcp-vrl-traff";

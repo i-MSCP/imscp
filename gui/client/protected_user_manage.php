@@ -35,25 +35,41 @@ $tpl->define_dynamic('group_members', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+	)
+);
+
+function gen_user_action($id, $status) {
+	if ($status === Config::get('ITEM_OK_STATUS')) {
+		return array(tr('Delete'), "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')", tr('Edit'), "protected_user_edit.php?uname={USER_ID}");
+	} else {
+		return array(tr('N/A'), '', tr('N/A'), '#');
+	}
+}
+
+function gen_group_action($id, $status, $group) {
+	if ( $status === Config::get('ITEM_OK_STATUS') && $group != Config::get('AWSTATS_GROUP_AUTH') ) {
+		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
+	} else {
+		return array(tr('N/A'), '');
+	}
+}
 
 function gen_pusres(&$tpl, &$sql, &$dmn_id) {
-	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            htaccess_users
-        WHERE
-             dmn_id = ?
-        ORDER BY
-            dmn_id DESC
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`htaccess_users`
+		WHERE
+			`dmn_id` = ?
+		ORDER BY
+			`dmn_id` DESC
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
@@ -64,32 +80,37 @@ SQL_QUERY;
 	} else {
 		$tpl->assign('USR_MSG', '');
 		while (!$rs->EOF) {
-			$status = $rs->fields['status'];
+			list($user_delete, $user_delete_script, $user_edit, $user_edit_script) = gen_user_action($rs->fields['id'], $rs->fields['status']);
 			$tpl->assign(
-				array('UNAME' => $rs->fields['uname'],
-					'USTATUS' => translate_dmn_status($status),
-					'USER_ID' => $rs->fields['id'],
-					)
-				);
+				array(
+					'UNAME'					=> $rs->fields['uname'],
+					'USTATUS'				=> translate_dmn_status($rs->fields['status']),
+					'USER_ID'				=> $rs->fields['id'],
+					'USER_DELETE'			=> $user_delete,
+					'USER_DELETE_SCRIPT'	=> $user_delete_script,
+					'USER_EDIT'				=> $user_edit,
+					'USER_EDIT_SCRIPT'		=> $user_edit_script
+				)
+			);
 
 			$tpl->parse('PUSRES', '.pusres');
-			$rs->MoveNext(); //$counter ++;
+			$rs->MoveNext();
 
-		} // end of while
-	} // end of else
-} // function end
+		}
+	}
+}
 
 function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
-	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            htaccess_groups
-        WHERE
-		    dmn_id = ?
-        ORDER BY
-            dmn_id DESC
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`htaccess_groups`
+		WHERE
+			`dmn_id` = ?
+		ORDER BY
+			`dmn_id` DESC
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
@@ -100,30 +121,33 @@ SQL_QUERY;
 	} else {
 		$tpl->assign('GRP_MSG', '');
 		while (!$rs->EOF) {
-			$members = $rs->fields['members'];
-			$status = $rs->fields['status'];
+// 			$members = $rs->fields['members'];
 
+			list($group_delete, $group_delete_script) = gen_group_action($rs->fields['id'], $rs->fields['status'], $rs->fields['ugroup']);
 			$tpl->assign(
-				array('GNAME' => $rs->fields['ugroup'],
-					'GSTATUS' => translate_dmn_status($status),
-					'GROUP_ID' => $rs->fields['id'],
-					)
-				);
+				array(
+					'GNAME'					=> $rs->fields['ugroup'],
+					'GSTATUS'				=> translate_dmn_status($rs->fields['status']),
+					'GROUP_ID'				=> $rs->fields['id'],
+					'GROUP_DELETE'			=> $group_delete,
+					'GROUP_DELETE_SCRIPT'	=> $group_delete_script
+				)
+			);
 
-			if ($members == '') {
+			if ($rs->fields['members'] == '') {
 				$tpl->assign('GROUP_MEMBERS', '');
 			} else {
 				$members = split(',', $rs->fields['members']);
 
 				for ($i = 0; $i < count($members); $i++) {
-					$query = <<<SQL_QUERY
-					select
-						uname
-					from
-						htaccess_users
-					where
-						 id = ?
-SQL_QUERY;
+					$query = "
+						select
+							`uname`
+						from
+							`htaccess_users`
+						where
+							`id` = ?
+					";
 
 					$rs_members = exec_query($sql, $query, array($members[$i]));
 
@@ -140,8 +164,8 @@ SQL_QUERY;
 			$tpl->parse('PGROUPS', '.pgroups');
 			$tpl->assign('GROUP_MEMBERS', '');
 			$rs->MoveNext();
-		} // end of while
-	} // end of else
+		}
+	}
 }
 
 /*
@@ -164,25 +188,24 @@ gen_pusres($tpl, $sql, $dmn_id);
 gen_pgroups($tpl, $sql, $dmn_id);
 
 $tpl->assign(
-		array(
-			'TR_HTACCESS' => tr('Protected areas'),
-			'TR_ACTION' => tr('Action'),
-			'TR_USER_MANAGE' => tr('Manage user'),
-			'TR_USERS' => tr('User'),
-			'TR_USERNAME' => tr('Username'),
-			'TR_ADD_USER' => tr('Add user'),
-			'TR_GROUPNAME' => tr('Group name'),
-			'TR_GROUP_MEMBERS' => tr('Group members'),
-			'TR_ADD_GROUP' => tr('Add group'),
-			'TR_EDIT' => tr('Edit'),
-			'TR_GROUP' => tr('Group'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_GROUPS' => tr('Groups'),
-			'TR_PASSWORD' => tr('Password'),
-			'TR_STATUS' => tr('Status'),
-			'TR_PASSWORD_REPEAT' => tr('Repeat password')
-		)
-	);
+	array(
+		'TR_HTACCESS'			=> tr('Protected areas'),
+		'TR_ACTION'				=> tr('Action'),
+		'TR_USER_MANAGE'		=> tr('Manage user'),
+		'TR_USERS'				=> tr('User'),
+		'TR_USERNAME'			=> tr('Username'),
+		'TR_ADD_USER'			=> tr('Add user'),
+		'TR_GROUPNAME'			=> tr('Group name'),
+		'TR_GROUP_MEMBERS'		=> tr('Group members'),
+		'TR_ADD_GROUP'			=> tr('Add group'),
+		'TR_GROUP'				=> tr('Group'),
+		'TR_GROUPS'				=> tr('Groups'),
+		'TR_PASSWORD'			=> tr('Password'),
+		'TR_STATUS'				=> tr('Status'),
+		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
+		'TR_MESSAGE_DELETE'		=> tr('Are you sure you want to delete %s?', true, '%s')
+	)
+);
 
 gen_page_message($tpl);
 

@@ -36,12 +36,12 @@ $tpl->define_dynamic('not_in_group', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'THEME_COLOR_PATH'	=> "../themes/$theme_color",
+		'THEME_CHARSET'		=> tr('encoding'),
+		'ISP_LOGO'			=> get_logo($_SESSION['user_id'])
+	)
+);
 // ** Functions
 function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 	$query = "
@@ -188,19 +188,6 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 
 		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
-		$change_status = Config::get('ITEM_CHANGE_STATUS');
-
-		$query = "
-			UPDATE
-				`htaccess`
-			SET
-				`status` = ?
-			WHERE
-				`dmn_id` = ?
-		";
-
-		$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
-
 		check_for_lock_file();
 		send_request();
 		set_page_message(tr('User was assigned to the %s group', $rs->fields['ugroup']));
@@ -229,41 +216,33 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 
 		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
 
-		$members = $rs->fields['members'];
-		$members = preg_replace("/$uuser_id/", "", "$members");
-
-		$members = preg_replace("/,,/", ",", "$members");
-		$members = preg_replace("/^,/", "", "$members");
-		$members = preg_replace("/,$/", "", "$members");
-
-		$update_query = "
-			UPDATE
-				`htaccess_groups`
-			SET
-				`members` = ?
-			WHERE
-				`id` = ?
-			AND
-				`dmn_id` = ?
-		";
-
-		$rs_update = exec_query($sql, $update_query, array($members, $group_id, $dmn_id));
-
-		$change_status = Config::get('ITEM_CHANGE_STATUS');
-		$query = "
+		$members = explode(',', $rs->fields['members']);
+		$key=array_search($uuser_id,$members);
+		if($key!==false){
+			unset($members[$key]);
+			$members = implode(",",$members);
+			$change_status = Config::get('ITEM_CHANGE_STATUS');
+			$update_query = "
 				UPDATE
-					`htaccess`
+					`htaccess_groups`
 				SET
+					`members` = ?,
 					`status` = ?
 				WHERE
+					`id` = ?
+				AND
 					`dmn_id` = ?
-		";
-		$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
-
-		check_for_lock_file();
-		send_request();
-
-		set_page_message(tr('User was deleted from the %s group ', $rs->fields['ugroup']));
+			";
+	
+			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
+	
+			check_for_lock_file();
+			send_request();
+	
+			set_page_message(tr('User was deleted from the %s group ', $rs->fields['ugroup']));
+		} else {
+			return;
+		}
 	} else {
 		return;
 	}
@@ -288,15 +267,15 @@ gen_user_assign($tpl, $sql, $dmn_id);
 
 $tpl->assign(
 		array(
-			'TR_HTACCESS' => tr('Protected areas'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_USER_ASSIGN' => tr('User assign'),
-			'TR_ALLREADY' => tr('Already in:'),
-			'TR_MEMBER_OF_GROUP' => tr('Member of group:'),
-			'TR_BACK' => tr('Back'),
-			'TR_REMOVE' => tr('Remove'),
-			'TR_ADD' => tr('Add'),
-			'TR_SELECT_GROUP' => tr('Select group:')
+			'TR_HTACCESS'			=> tr('Protected areas'),
+			'TR_DELETE'				=> tr('Delete'),
+			'TR_USER_ASSIGN'		=> tr('User assign'),
+			'TR_ALLREADY'			=> tr('Already in:'),
+			'TR_MEMBER_OF_GROUP'	=> tr('Member of group:'),
+			'TR_BACK'				=> tr('Back'),
+			'TR_REMOVE'				=> tr('Remove'),
+			'TR_ADD'				=> tr('Add'),
+			'TR_SELECT_GROUP'		=> tr('Select group:')
 		)
 	);
 
