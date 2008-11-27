@@ -59,6 +59,8 @@ Make sure you are logged in as root and MySQL is running.
 	# cd ./ispcp-omega-1.0.0
 
 3. Install the required modules from 'fedora-packages'
+	# wget http://download.fedora.redhat.com/pub/epel/5/ARCH/epel-release-5-3.noarch.rpm
+	# rpm -Uvh epel-release-5-3.noarch.rpm
 	# yum install `cat ./docs/Fedora/fedora-packages`
 
 	# cpan2rpm -i http://search.cpan.org/CPAN/authors/id/P/PH/PHOENIX/Term-ReadPassword-0.07.tar.gz

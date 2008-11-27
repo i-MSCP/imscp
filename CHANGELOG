@@ -1,5 +1,9 @@
 ispCP ω 1.0.0 Changelog
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2008-11-28 Benedikt Heintel
+	- DISTS:
+		* Fixed: (Fedora) rkhunter and chkrootkit getting not installed
 
 2008-11-27 Daniel Andreca
 	- ENGINE:
