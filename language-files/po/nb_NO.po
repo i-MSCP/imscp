@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -99,8 +99,15 @@ msgstr "Administrator"
 msgid "Incorrect username length or syntax!"
 msgstr "Ugyldig lengde eller sammensetning av brukernavn"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Ugyldig lengde eller sammensetning av passord"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Passordet inneholder tegn som ikke er tillatt!"
 
 msgid "Entered passwords do not match!"
 msgstr "Inntastede passord er ikke like!"
@@ -816,18 +823,15 @@ msgstr "Du har <b>%d</b> nye hjelp spørsmål"
 msgid "View"
 msgstr "Vis"
 
-msgid "Update checking is disabled!"
-msgstr ""
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
-
-msgid "New ispCP update is now available"
-msgstr "Ny ispCP oppdatering er nå tilgjengelig"
-
 #, fuzzy
 msgid "A database update is available"
 msgstr "Ingen database oppdateringer tilgjengelig"
+
+msgid "Update checking is disabled!"
+msgstr ""
+
+msgid "New ispCP update is now available"
+msgstr "Ny ispCP oppdatering er nå tilgjengelig"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Du overskirder din trafikk grense!"
@@ -1919,9 +1923,6 @@ msgstr "ispCP - Client : Hjelp system: Vis Saker"
 msgid "Please type your message!"
 msgstr "Vennligst skriv inn til melding!"
 
-msgid "Message was sent!"
-msgstr "Melding sendt"
-
 msgid "Message was sent."
 msgstr "Meldingen ble sendt."
 
@@ -1989,14 +1990,19 @@ msgstr "Ugyldig videresendings form"
 msgid "Domain with this name already exist"
 msgstr "Et domene med det navnet eksisterer allerede!"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Det er et underdomene med samme monteringspunkt!"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Underdomenets monteringspunkt eksisterer allerede!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Pekeren er lagt i kø for aktivering!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Peker lagt i kø for å bli lagt til!"
+
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2033,6 +2039,9 @@ msgstr "Deaktiver"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "En videresendings URL må starte med 'http://'"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr ""
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Sikkerhetskopi lagt i kø for gjennoppretting!"
@@ -2489,10 +2498,6 @@ msgstr "Vennligst spesifiser en avsender email!"
 msgid "Please enter mail account username!"
 msgstr "Vennligst skriv inn brukernavn for mail!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Passordet inneholder tegn som ikke er tillatt!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
 
@@ -2846,7 +2851,8 @@ msgstr "Administrer SQL"
 msgid "Database Name and Users"
 msgstr "Database Navn og Brukere"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -2914,14 +2920,15 @@ msgstr "Grensen for underdomener nådd!"
 msgid "Please specify subdomain name!"
 msgstr "Vennligst spesifiser navn på underdomene!"
 
+#, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Grensen for domene peker nådd!"
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Underdomenet eksisterer allerede eller er ikke tillatt!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Gal form på Underdomenet!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Underdomenets monteringspunkt eksisterer allerede!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Underdomene lagt i kø for å bli lagt til!"
@@ -2945,9 +2952,6 @@ msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 
-msgid "Subdomain scheduled for deletion!"
-msgstr ""
-
 msgid "Please specify message subject!"
 msgstr "Venligs spesifiser meldings emne!"
 
@@ -2959,9 +2963,6 @@ msgstr "ispCP - Hjelp system - Ny hjelp sak"
 
 msgid "New ticket"
 msgstr "Ny sak"
-
-msgid "Message was send!"
-msgstr "Meldingen ble sendt!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr ""
@@ -3154,11 +3155,17 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
+
 msgid "Email and FTP accounts"
 msgstr "Email og FTP kontoer"
 
 msgid "Add mail user"
 msgstr "Legg til mail bruker"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Filbehandler"
@@ -3198,10 +3205,6 @@ msgstr "Videresending av underdomene"
 
 msgid "Unknown type"
 msgstr "Ukjent type"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Database oppdateringer"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Velkommen {USERNAME} til ispCP!"
@@ -3329,7 +3332,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3356,6 +3359,10 @@ msgstr "Du må vente %d sekunder"
 msgid "You have been blocked for %d minutes"
 msgstr "Du har blitt blokkert for %d minutter"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Du tastet inn galt passord."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Systemet er forøyeblikket under vedlikehold! Kun administratorer kan logge "
@@ -3375,9 +3382,6 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s's konto status er ikke ok!"
-
-msgid "You entered an incorrect password."
-msgstr "Du tastet inn galt passord."
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
@@ -3915,6 +3919,9 @@ msgstr "Statestikk"
 msgid "Edit User"
 msgstr "Endre Bruker"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Vis identiteter"
 
@@ -3937,6 +3944,22 @@ msgstr "Bruker ikke avsluttet!"
 
 msgid "This reseller has no domains yet."
 msgstr "Forhandleren har ingen domener enda."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Ugyldig lengde eller sammensetning av passord"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Melding sendt"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Det er et underdomene med samme monteringspunkt!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Meldingen ble sendt!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Database oppdateringer"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Manglende eller gal data!"

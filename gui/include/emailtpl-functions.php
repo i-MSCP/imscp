@@ -318,7 +318,7 @@ Your customer {CUSTOMER} is awaiting for the approval of his new alias:
 {ALIAS}
 
 Once logged in, you can activate his new alias at
-http://{BASE_SERVER_VHOST}/reseller/alias.php
+http://{BASE_SERVER_VHOST}/reseller/domain_alias.php
 
 Thank you for using ispCP services.
 The ispCP Team

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 16:46+0200\n"
+"POT-Creation-Date: 2008-11-27 21:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,7 +95,12 @@ msgstr ""
 msgid "Incorrect username length or syntax!"
 msgstr ""
 
-msgid "Incorrect password length or syntax!"
+#, php-format
+msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgstr ""
+
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 
 msgid "Entered passwords do not match!"
@@ -807,16 +812,13 @@ msgstr ""
 msgid "View"
 msgstr ""
 
+msgid "A database update is available"
+msgstr ""
+
 msgid "Update checking is disabled!"
 msgstr ""
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 msgid "New ispCP update is now available"
-msgstr ""
-
-msgid "A database update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1878,9 +1880,6 @@ msgstr ""
 msgid "Please type your message!"
 msgstr ""
 
-msgid "Message was sent!"
-msgstr ""
-
 msgid "Message was sent."
 msgstr ""
 
@@ -1947,13 +1946,16 @@ msgstr ""
 msgid "Domain with this name already exist"
 msgstr ""
 
-msgid "There is a subdomain with the same mount point!"
+msgid "Mount point already in use!"
 msgstr ""
 
 msgid "Alias scheduled for activation!"
 msgstr ""
 
 msgid "Alias scheduled for addition!"
+msgstr ""
+
+msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
 
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
@@ -1987,6 +1989,9 @@ msgid "Disable"
 msgstr ""
 
 msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
 msgid "Backup archive scheduled for restoring!"
@@ -2423,10 +2428,6 @@ msgstr ""
 msgid "Please enter mail account username!"
 msgstr ""
 
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr ""
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 
@@ -2771,7 +2772,7 @@ msgstr ""
 msgid "Database Name and Users"
 msgstr ""
 
-msgid "PhpMyAdmin"
+msgid "phpMyAdmin"
 msgstr ""
 
 msgid "Database users"
@@ -2835,13 +2836,13 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr ""
 
+msgid "No valid alias domain selected!"
+msgstr ""
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
 msgid "Wrong subdomain syntax!"
-msgstr ""
-
-msgid "Subdomain mount point already exists!"
 msgstr ""
 
 msgid "Subdomain scheduled for addition!"
@@ -2865,9 +2866,6 @@ msgstr ""
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 
-msgid "Subdomain scheduled for deletion!"
-msgstr ""
-
 msgid "Please specify message subject!"
 msgstr ""
 
@@ -2878,9 +2876,6 @@ msgid "ispCP - Support system - New ticket"
 msgstr ""
 
 msgid "New ticket"
-msgstr ""
-
-msgid "Message was send!"
 msgstr ""
 
 msgid "ISPCP - Client/Webtools"
@@ -3072,10 +3067,16 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+
 msgid "Email and FTP accounts"
 msgstr ""
 
 msgid "Add mail user"
+msgstr ""
+
+msgid "PhpMyAdmin"
 msgstr ""
 
 msgid "Filemanager"
@@ -3115,10 +3116,6 @@ msgid "Subdomain forward"
 msgstr ""
 
 msgid "Unknown type"
-msgstr ""
-
-#, php-format
-msgid "Database update %s failed"
 msgstr ""
 
 msgid "Welcome {USERNAME} to ispCP!"
@@ -3207,7 +3204,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3233,6 +3230,9 @@ msgstr ""
 msgid "You have been blocked for %d minutes"
 msgstr ""
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 
@@ -3245,9 +3245,6 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3748,6 +3745,9 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr ""
 
@@ -3767,7 +3767,4 @@ msgid "User not terminated!"
 msgstr ""
 
 msgid "This reseller has no domains yet."
-msgstr ""
-
-msgid "The password must be at least %s long and contain letters and numbers to be valid."
 msgstr ""

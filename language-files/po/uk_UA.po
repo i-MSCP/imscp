@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -95,8 +95,15 @@ msgstr "Адміністратор"
 msgid "Incorrect username length or syntax!"
 msgstr ""
 
-msgid "Incorrect password length or syntax!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Пароль містить недозволені символи!"
 
 msgid "Entered passwords do not match!"
 msgstr ""
@@ -845,18 +852,15 @@ msgid "View"
 msgstr "Переглянути"
 
 #, fuzzy
+msgid "A database update is available"
+msgstr "Немає нових оновлень ispCP"
+
+#, fuzzy
 msgid "Update checking is disabled!"
 msgstr "Оновлення мови встановлене!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 msgid "New ispCP update is now available"
 msgstr "Доступне оновлення ispCP"
-
-#, fuzzy
-msgid "A database update is available"
-msgstr "Немає нових оновлень ispCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Ви вичерпали ліміт трафіку!"
@@ -1964,9 +1968,6 @@ msgstr "ispCP - Клієнт : Система підтримки: Перегля
 msgid "Please type your message!"
 msgstr "Будь ласка, введіть повідомлення!"
 
-msgid "Message was sent!"
-msgstr ""
-
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
 
@@ -2035,8 +2036,8 @@ msgid "Domain with this name already exist"
 msgstr "Такий домен уже існує!"
 
 #, fuzzy
-msgid "There is a subdomain with the same mount point!"
-msgstr "Існують аліаси з ідентичною точкою монтування"
+msgid "Mount point already in use!"
+msgstr "Точка монтування піддомену вже існує!"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2045,6 +2046,13 @@ msgstr "Триває додавання аліасу!"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Триває додавання аліасу!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
+"<br>Спочатку видаліть їх!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2087,6 +2095,9 @@ msgstr "Вимкнути"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Триває видалення піддомену!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Триває відновлення архівів..."
@@ -2535,10 +2546,6 @@ msgstr "Укажіть скриньку відправника!"
 msgid "Please enter mail account username!"
 msgstr "Введіть користувача електронної пошти!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Пароль містить недозволені символи!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
 
@@ -2890,8 +2897,9 @@ msgstr "Керування SQL"
 msgid "Database Name and Users"
 msgstr "Користувачі баз даних"
 
-msgid "PhpMyAdmin"
-msgstr ""
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Адміністратору"
 
 msgid "Database users"
 msgstr "Користувачі баз даних"
@@ -2955,15 +2963,15 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Будь ласка, укажіть назву піддомена!"
 
+msgid "No valid alias domain selected!"
+msgstr ""
+
 #, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Піддомен уже існує!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Невірний запис субдомену!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Точка монтування піддомену вже існує!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Триває додавання піддомену!"
@@ -2990,9 +2998,6 @@ msgstr ""
 "Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
 "видаліть їх!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Триває видалення піддомену!"
-
 msgid "Please specify message subject!"
 msgstr "Будь ласка, укажіть тему повідомлення!"
 
@@ -3004,9 +3009,6 @@ msgstr "ispCP - Система підтримки"
 
 msgid "New ticket"
 msgstr "Новий запит"
-
-msgid "Message was send!"
-msgstr "Повідомлення відправлене!"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
@@ -3204,11 +3206,17 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+
 msgid "Email and FTP accounts"
 msgstr "Користувачі E-mail і FTP"
 
 msgid "Add mail user"
 msgstr "Додати поштову скриньку"
+
+msgid "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлів"
@@ -3248,10 +3256,6 @@ msgstr "Перенаправлення піддомену"
 
 msgid "Unknown type"
 msgstr "Невідомий тип"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Користувачі баз даних"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3340,7 +3344,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3366,6 +3370,9 @@ msgstr "Зачекайте"
 msgid "You have been blocked for %d minutes"
 msgstr "Ви заблоковані за"
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
@@ -3381,9 +3388,6 @@ msgstr "Користувач уже ввійшов, або проблема ви
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3928,6 +3932,9 @@ msgstr "Статистика"
 msgid "Edit User"
 msgstr "Редагувати користувача"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "переглянути аліаси"
@@ -3950,6 +3957,17 @@ msgstr "Користувач не видалений!"
 
 msgid "This reseller has no domains yet."
 msgstr "Цей реселер не має доменів."
+
+#, fuzzy
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Існують аліаси з ідентичною точкою монтування"
+
+#~ msgid "Message was send!"
+#~ msgstr "Повідомлення відправлене!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Користувачі баз даних"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Відсутні або невірні дані!"

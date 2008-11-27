@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Spanish Argentina <es_AR@li.org>\n"
@@ -94,8 +94,15 @@ msgstr "Administrador"
 msgid "Incorrect username length or syntax!"
 msgstr ""
 
-msgid "Incorrect password length or syntax!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Los datos introducidos en la contraseña no están permitidos!"
 
 msgid "Entered passwords do not match!"
 msgstr ""
@@ -844,18 +851,15 @@ msgid "View"
 msgstr "Ver"
 
 #, fuzzy
+msgid "A database update is available"
+msgstr "No hay nuevas actualizaciones de ispCP disponibles!"
+
+#, fuzzy
 msgid "Update checking is disabled!"
 msgstr "Actualización de lenguaje instalada!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 msgid "New ispCP update is now available"
 msgstr "Una nueva actualización de ispCP está disponible"
-
-#, fuzzy
-msgid "A database update is available"
-msgstr "No hay nuevas actualizaciones de ispCP disponibles!"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Está excediendo su limite de trafico!"
@@ -1962,9 +1966,6 @@ msgstr "ispCP - Cliente : Sistema de Soporte: Ver Tickets"
 msgid "Please type your message!"
 msgstr "Por favor ingrese su mensaje!"
 
-msgid "Message was sent!"
-msgstr ""
-
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
 
@@ -2033,8 +2034,8 @@ msgid "Domain with this name already exist"
 msgstr "Ya existe un dominio con ese nombre!"
 
 #, fuzzy
-msgid "There is a subdomain with the same mount point!"
-msgstr "Hay alias con el mismo punto de montaje!"
+msgid "Mount point already in use!"
+msgstr "Ya existe el punto de montaje del subdominio!"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2043,6 +2044,13 @@ msgstr "Alias programado para ser agregado!"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias programado para ser agregado!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"El alias de dominio que intenta eliminar posee cuentas de correo!<br> "
+"eliminelas primero!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2085,6 +2093,9 @@ msgstr "Deshabilitar"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdominio programado para ser eliminado!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "¡Archivo de backup programado para restauración!"
@@ -2536,10 +2547,6 @@ msgstr "Por favor especifique un eMail emisor!"
 msgid "Please enter mail account username!"
 msgstr "Por favor ingrese un nombre de usuario de cuenta de correo!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Los datos introducidos en la contraseña no están permitidos!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 "La lista del subdominio está vacía! No puede agregar cuentas de correo ahi!"
@@ -2892,7 +2899,8 @@ msgstr "Administrar SQL"
 msgid "Database Name and Users"
 msgstr "Usuarios de base de datos"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
 msgid "Database users"
@@ -2958,15 +2966,15 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Por favor especifique el nombre de dominio!"
 
+msgid "No valid alias domain selected!"
+msgstr ""
+
 #, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Ya existe el subdominio!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Sintaxis de subdominio incorrecta!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Ya existe el punto de montaje del subdominio!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdominio programado para ser agregado!"
@@ -2993,9 +3001,6 @@ msgstr ""
 "El subdominio que está tratando de eliminar dispone de cuentas de correo !"
 "<br>Elimínelas primero!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Subdominio programado para ser eliminado!"
-
 msgid "Please specify message subject!"
 msgstr "Por favor especifique el Asunto del mensaje!"
 
@@ -3007,9 +3012,6 @@ msgstr "ispCP - Sistema de Soporte"
 
 msgid "New ticket"
 msgstr "Nuevo ticket"
-
-msgid "Message was send!"
-msgstr "El mensaje fue enviado!"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
@@ -3209,11 +3211,17 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+
 msgid "Email and FTP accounts"
 msgstr "Cuentas de eMail y FTP"
 
 msgid "Add mail user"
 msgstr "Añadir usuario de correo"
+
+msgid "PhpMyAdmin"
+msgstr "phpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Administrador de Archivos"
@@ -3253,10 +3261,6 @@ msgstr "Redireccionamiento<br>de subdominio"
 
 msgid "Unknown type"
 msgstr "tipo desconocido"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Usuarios de base de datos"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3345,7 +3349,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3371,6 +3375,9 @@ msgstr "Debe esperar"
 msgid "You have been blocked for %d minutes"
 msgstr "Dispone de un bloqueo para"
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
@@ -3388,9 +3395,6 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3932,6 +3936,9 @@ msgstr "Estadisticas"
 msgid "Edit User"
 msgstr "Editar usuario"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "Ver aliases"
@@ -3956,6 +3963,17 @@ msgstr "El usuario no fue eliminado!"
 
 msgid "This reseller has no domains yet."
 msgstr "Este reseller aun no posee dominios."
+
+#, fuzzy
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Hay alias con el mismo punto de montaje!"
+
+#~ msgid "Message was send!"
+#~ msgstr "El mensaje fue enviado!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Usuarios de base de datos"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Datos incorrectos o falta información!"

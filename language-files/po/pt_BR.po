@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -96,8 +96,15 @@ msgstr "Administrador"
 msgid "Incorrect username length or syntax!"
 msgstr ""
 
-msgid "Incorrect password length or syntax!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Senha contém caracteres não permitidos!"
 
 msgid "Entered passwords do not match!"
 msgstr ""
@@ -845,18 +852,15 @@ msgid "View"
 msgstr "Ver"
 
 #, fuzzy
+msgid "A database update is available"
+msgstr "Nenhuma atualização do ispCP disponível"
+
+#, fuzzy
 msgid "Update checking is disabled!"
 msgstr "Atualização de idioma feita com sucesso!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 msgid "New ispCP update is now available"
 msgstr "Nova versão do ispCP disponível"
-
-#, fuzzy
-msgid "A database update is available"
-msgstr "Nenhuma atualização do ispCP disponível"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Você excedeu o tráfego máximo!"
@@ -1963,9 +1967,6 @@ msgstr "ispCP - Cliente : Sistema de Suporte: Ver Tickets"
 msgid "Please type your message!"
 msgstr "Por favor, digite a mensagem!"
 
-msgid "Message was sent!"
-msgstr ""
-
 msgid "Message was sent."
 msgstr "Mensagem foi enviada."
 
@@ -2034,8 +2035,8 @@ msgid "Domain with this name already exist"
 msgstr "Nome de domínio existente"
 
 #, fuzzy
-msgid "There is a subdomain with the same mount point!"
-msgstr "Este alias tem um mesmo diretório"
+msgid "Mount point already in use!"
+msgstr "Diretório do sub-domínio já existe"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2044,6 +2045,11 @@ msgstr "Alias programado para inclusão"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias programado para inclusão"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr "Este domínio possui contas de e-mail!<br>remova-as primeiro!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2082,6 +2088,9 @@ msgstr "Desabilita"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Sub-domínio agendado para exclusão!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Arquivo agendado para restauração!"
@@ -2532,10 +2541,6 @@ msgstr "Por favor, informe o e-mail do remetente!"
 msgid "Please enter mail account username!"
 msgstr "Informe o nome da conta de e-mail!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Senha contém caracteres não permitidos!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 "Lista de sub-domínios vazia! Você não pode incluir contas de e-mail aqui!"
@@ -2890,8 +2895,9 @@ msgstr "Gerenciar SQL"
 msgid "Database Name and Users"
 msgstr "Usuários SQL"
 
-msgid "PhpMyAdmin"
-msgstr ""
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Para administrador"
 
 msgid "Database users"
 msgstr "Usuários SQL"
@@ -2955,15 +2961,15 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Por favor, informe o nome do sub-domínio!"
 
+msgid "No valid alias domain selected!"
+msgstr ""
+
 #, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Sub-domínio já existe!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Sintaxe de subdomínio inválida!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Diretório do sub-domínio já existe"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Sub-domínio agendado para inclusão!"
@@ -2989,9 +2995,6 @@ msgid ""
 msgstr ""
 "Este subdomínio não está vazio !<br>Primeiro remova as contas de e-mail !"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Sub-domínio agendado para exclusão!"
-
 msgid "Please specify message subject!"
 msgstr "Por favor, informe o assunto!"
 
@@ -3003,9 +3006,6 @@ msgstr "ispCP - Sistema de Suprote - Novo Ticket"
 
 msgid "New ticket"
 msgstr "Novo ticket"
-
-msgid "Message was send!"
-msgstr "Mensagem enviada!"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
@@ -3203,11 +3203,17 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+
 msgid "Email and FTP accounts"
 msgstr "Contas de e-mail e FTP"
 
 msgid "Add mail user"
 msgstr "Adicionar usuário de e-mail"
+
+msgid "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Gerenciador de arquivos"
@@ -3247,10 +3253,6 @@ msgstr "Redirecionamento de sub-domínio"
 
 msgid "Unknown type"
 msgstr "Tipo desconhecido"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Usuários SQL"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3339,7 +3341,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3365,6 +3367,9 @@ msgstr "Você terá que esperar"
 msgid "You have been blocked for %d minutes"
 msgstr "Você foi bloqueado por"
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
@@ -3380,9 +3385,6 @@ msgstr "Usuário já logado ou ocorreu algum erro! Cancelando..."
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3920,6 +3922,9 @@ msgstr ""
 msgid "Edit User"
 msgstr "Editar usuário"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "Ver aliases"
@@ -3942,6 +3947,17 @@ msgstr "Cliente não finalizado!"
 
 msgid "This reseller has no domains yet."
 msgstr "Este representante ainda não possui domínios."
+
+#, fuzzy
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Este alias tem um mesmo diretório"
+
+#~ msgid "Message was send!"
+#~ msgstr "Mensagem enviada!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Usuários SQL"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Dados inválidos!"

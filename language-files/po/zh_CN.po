@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -78,7 +78,9 @@ msgstr "错误：验证码不正确"
 msgid "Security code"
 msgstr "验证码"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr "（为避免滥用，请输入上面图中显示的连串字母到“验证码”框中）"
 
 msgid "Request password"
@@ -93,8 +95,15 @@ msgstr "管理员"
 msgid "Incorrect username length or syntax!"
 msgstr "用户名长度或拼写错误！"
 
-msgid "Incorrect password length or syntax!"
-msgstr "密码长度不够或拼写错误！（必须要有字母和数字）"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "密码数据短于%s符号或包含不允许字符！"
 
 msgid "Entered passwords do not match!"
 msgstr "输入的密码不匹配！"
@@ -508,7 +517,8 @@ msgstr "是的"
 msgid "No"
 msgstr "不是"
 
-msgid "User does not exist or you do not have permission to access this interface!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr "用户不存在或者您没有权限访问此界面！"
 
 msgid "Incorrect subdomains limit!"
@@ -584,7 +594,8 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr "<em>%s</em> 服务不能被限制！ "
 
 #, php-format
-msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr "指定数小于当前系统里的 <em>%s</em> 条记录！"
 
 #, php-format
@@ -805,17 +816,14 @@ msgstr "您有 <b>%d</b> 新的客户疑问"
 msgid "View"
 msgstr "查阅"
 
+msgid "A database update is available"
+msgstr "有一个数据库更新可用"
+
 msgid "Update checking is disabled!"
 msgstr "更新检查未启用！"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "无法检查更新！更新站点无法访问。"
-
 msgid "New ispCP update is now available"
 msgstr "新的 ispCP 更新现在可用"
-
-msgid "A database update is available"
-msgstr "有一个数据库更新可用"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "您的流量已超出限制！"
@@ -1009,18 +1017,24 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b>已被<b>%2$s</b>服务解除限制！<br>"
 
 #, php-format
-msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr "您不能移动<b>%1$s</b>目的代理商，<br>它正被<b>%2$s</b>服务限制着！"
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr "目的代理商的服务<b>%2$s</b><b>%1$s</b>已超出限制！"
 
 msgid "Moving aborted!"
 msgstr "移动已被终止！"
 
 #, php-format
-msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr "<b>%s</b> 有IP地址不能被目的代理商所管理！<br>此用户不能被移除！"
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1241,14 +1255,16 @@ msgid "Domains"
 msgstr "域名"
 
 #, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr "current_als_cnt 与 actual alias count 冲突: %1$d != %2$d"
 
 msgid "Aliases"
 msgstr "别名"
 
 #, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr "current_ftp_cnt 与 actual ftp count 冲突: %1$d != %2$d"
 
 msgid "SQL Databases"
@@ -1267,21 +1283,28 @@ msgid "Reseller data inconsistency!"
 msgstr "代理商数据冲突！"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr "此代理商已分配有更多/更高<b>%s</b>（账号/限制）于您新输入的。"
 
 msgid "Edit reseller aborted!"
 msgstr "编辑代理商终止！"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr "此代理商的客户正使用/拥有更多/更高<b>%s</b>（账号/限制）于您新输入的。"
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr "此代理商拥有未适当限制服务的客户（们）！<b>%s</b><br>"
 
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "如果您想限制代理商，您必须先限制它的客户！<br>"
 
 #, php-format
@@ -1876,9 +1899,6 @@ msgstr "ispCP - 客户 : 系统支持: 查看疑问"
 msgid "Please type your message!"
 msgstr "请输入您的信息！"
 
-msgid "Message was sent!"
-msgstr "信息已发送！"
-
 msgid "Message was sent."
 msgstr "信息已发送！"
 
@@ -1945,8 +1965,9 @@ msgstr "不正确的转向拼写"
 msgid "Domain with this name already exist"
 msgstr "此域名已经存在"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "已有一个子域名使用相同的挂载点！"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "子域名挂载点已经存在！"
 
 msgid "Alias scheduled for activation!"
 msgstr "别名激活已预定！"
@@ -1954,10 +1975,18 @@ msgstr "别名激活已预定！"
 msgid "Alias scheduled for addition!"
 msgstr "别名增加已预定！"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr "您试图删除的域名别名有邮件账号！<br>请先删除它们！"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr "您试图删除的域名别名有邮件账号！<br>请先删除它们！"
+
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr "您试图删除的域名别名拥FTP账号！<br>请先删除它们！"
 
 msgid "Alias scheduled for deletion!"
@@ -1986,6 +2015,9 @@ msgstr "无效"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "转向URL地址必须以“http://”开始"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "子域名删除已预定！"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "备份存档恢复已预定！"
@@ -2017,7 +2049,8 @@ msgstr "（通常名称"
 msgid "Restore backup"
 msgstr "恢复备份"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr "点击“恢复”按钮系统将恢复到最后的日常备份"
 
 msgid "Restore"
@@ -2425,10 +2458,6 @@ msgstr "请选择至少一个邮件类型！"
 msgid "Please enter mail account username!"
 msgstr "请输入邮件账号用户名！"
 
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "密码数据短于%s符号或包含不允许字符！"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "子域名列表为空！您不能添加邮件账号！"
 
@@ -2773,7 +2802,8 @@ msgstr "管理 SQL"
 msgid "Database Name and Users"
 msgstr "数据库名和用户"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -2837,14 +2867,15 @@ msgstr "子域名数上限！"
 msgid "Please specify subdomain name!"
 msgstr "请指定子域名名称！"
 
+#, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "域名别名限制！"
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr "子域名已经存在或不被允许！"
 
 msgid "Wrong subdomain syntax!"
 msgstr "错误的子域名拼写！"
-
-msgid "Subdomain mount point already exists!"
-msgstr "子域名挂载点已经存在！"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "子域名添加已预定！"
@@ -2864,11 +2895,9 @@ msgstr "子域名"
 msgid "Directory tree mount point"
 msgstr "目录树挂载点"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr "您试图删除的子域名有邮件账号！请先删除它们！"
-
-msgid "Subdomain scheduled for deletion!"
-msgstr "子域名删除已预定！"
 
 msgid "Please specify message subject!"
 msgstr "请指定消息主题！"
@@ -2881,9 +2910,6 @@ msgstr "ispCP - 系统支持 - 新客户疑问"
 
 msgid "New ticket"
 msgstr "新客户疑问"
-
-msgid "Message was send!"
-msgstr "消息已发送！"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ISPCP - 客户/Web工具"
@@ -3080,11 +3106,17 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "无法检查更新！更新站点无法访问。"
+
 msgid "Email and FTP accounts"
 msgstr "Email 和 FTP 账号"
 
 msgid "Add mail user"
 msgstr "添加邮件用户"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "文件管理器"
@@ -3124,10 +3156,6 @@ msgstr "子域名转发"
 
 msgid "Unknown type"
 msgstr "未知类型"
-
-#, php-format
-msgid "Database update %s failed"
-msgstr "数据库更新 %s 失败"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME}，欢迎您使用ispCP！"
@@ -3265,7 +3293,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3279,7 +3307,7 @@ msgstr ""
 "{ALIAS}\n"
 "\n"
 "一旦登录，您可以激活他的新别名在\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "感谢您使用 ispCP 服务。\n"
 "ispCP 团队\n"
@@ -3306,6 +3334,10 @@ msgstr "您需要等待 %d 秒钟"
 msgid "You have been blocked for %d minutes"
 msgstr "您已被冻结 %d 分钟"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "您输入的密码不正确。"
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr "现在系统维护中！只允许管理员登录。"
 
@@ -3319,9 +3351,6 @@ msgstr "用户已经登录或会话分配问题！中止中……"
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s's 账号状态不正常！"
-
-msgid "You entered an incorrect password."
-msgstr "您输入的密码不正确。"
 
 msgid "Request from foreign host was blocked!"
 msgstr "来自国外主机的请求已被封锁！"
@@ -3371,46 +3400,60 @@ msgstr "隐藏别名"
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "您已到达域名数上限。<br>您无法再添加域名！"
 
-msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
+"subdomains!"
 msgstr "您有子域名数限制！<br>您无法添加一个无限制子域名数的用户！"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "您已超出子域名数限制！"
 
-msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "您有别名限制！<br>您无法添加一个无限制别名的用户！"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "您已超出别名数限制！"
 
-msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
+"mail accounts!"
 msgstr "您有邮件账号限制！<br>您无法添加一个无限制邮件账号的用户！"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "您已超出邮件账号数限制！"
 
-msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
+"accounts!"
 msgstr "您有FTP账号限制！<br>您无法添加一个无限制FTP账号的用户！"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "您已超出FTP账号数限制！"
 
-msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr "您有SQL数据库限制！<br>您无法添加一个无限制SQL数据库的用户！"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "您已超出SQL数据库数限制！"
 
-msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
+"users!"
 msgstr "您有SQL用户限制！<br>您无法添加一个无限制SQL用户的用户！"
 
-msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
+"here!"
 msgstr "您已禁止此用户使用SQL数据库！<br>您无法在这获得SQL用户！"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "您已超出SQL数据库限制！"
 
-msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "您有流量限制！<br>您无法添加一个无限制流量的用户！"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
@@ -3475,7 +3518,9 @@ msgstr "个人资料"
 msgid "Check Out"
 msgstr "结算"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
 msgstr "<b>非常感谢您的光临</b><br>您将收到一份具有详细信息的邮件。"
 
 msgid "No available hosting packages"
@@ -3580,16 +3625,21 @@ msgstr "循环"
 msgid "Wrong domain ID!"
 msgstr "错误的域名 ID！"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
 msgstr "您试图删除的域名有email 账号！<br> 请先删除它！"
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr "您试图删除的域名有 FTP 账号！<br> 请先删除它！"
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr "您试图删除的域有域名别名！<br> 请先删除它！"
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
 msgstr "您试图删除的域名有子域名账号！<br> 请先删除它！"
 
 msgid "ispCP - Domain/Edit"
@@ -3828,6 +3878,9 @@ msgstr "统计"
 msgid "Edit User"
 msgstr "编辑别名"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "查看别名"
 
@@ -3840,7 +3893,8 @@ msgstr "用户数据已更新！"
 msgid "User data not updated!"
 msgstr "用户数据未更新！"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr "此用户拥有域名记录！<br>首先从系统中删除域！"
 
 msgid "User not terminated!"
@@ -3849,14 +3903,32 @@ msgstr "用户未到期！"
 msgid "This reseller has no domains yet."
 msgstr "此代理商还没有域名。"
 
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "密码长度不够或拼写错误！（必须要有字母和数字）"
+
+#~ msgid "Message was sent!"
+#~ msgstr "信息已发送！"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "已有一个子域名使用相同的挂载点！"
+
+#~ msgid "Message was send!"
+#~ msgstr "消息已发送！"
+
+#~ msgid "Database update %s failed"
+#~ msgstr "数据库更新 %s 失败"
+
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Missing or wrong data!"
+
 #~ msgid "Password data includes not valid signs!"
 #~ msgstr "Password data includes not valid signs!"
+
 #~ msgid "Unknown domain status!"
 #~ msgstr "Unknown domain status!"
+
 #~ msgid "Unknown account type!"
 #~ msgstr "Unknown account type!"
+
 #~ msgid "Invalid account id!"
 #~ msgstr "Invalid account id!"
-

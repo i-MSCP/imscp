@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
 "Last-Translator: Leszek Taczkowski <leszek.t@simplusnet.pl>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -98,8 +98,15 @@ msgstr "Administrator"
 msgid "Incorrect username length or syntax!"
 msgstr "Błędna długość nazwy użytkownika lub składnia!"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Błędna długość hasła lub składnia!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Hasło jest krótsze niż %s znaków lub zawiera niedozwolone znaki!"
 
 msgid "Entered passwords do not match!"
 msgstr "Wprowadzone hasła nie są jednakowe!"
@@ -814,17 +821,14 @@ msgstr "Masz <b>%d</b> nowych zapytań"
 msgid "View"
 msgstr "Przeglądaj"
 
+msgid "A database update is available"
+msgstr "Aktualizacja bazy jest dostępna"
+
 msgid "Update checking is disabled!"
 msgstr "Sprawdzanie aktualizacji jest wyłączone!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nie można sprawdzić czy są aktualizacje! Strona jest niedostępna."
-
 msgid "New ispCP update is now available"
 msgstr "Nowa aktualizacja ispCP jest dostępna!"
-
-msgid "A database update is available"
-msgstr "Aktualizacja bazy jest dostępna"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Przekraczasz limit transferu!"
@@ -1918,9 +1922,6 @@ msgstr "ispCP - Klient : System Wsparcia: Przeglądaj Bilety"
 msgid "Please type your message!"
 msgstr "Wpisz wiadomość!"
 
-msgid "Message was sent!"
-msgstr "Wiadomość została wysłana!"
-
 msgid "Message was sent."
 msgstr "Wiadomość została wysłana."
 
@@ -1987,14 +1988,22 @@ msgstr "Nieprawidłowa składnia przekierowania"
 msgid "Domain with this name already exist"
 msgstr "Domena o takiej nazwie już istnieje"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Alias z tym samym punktem montowania już istnieje!"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Punkt montowania subdomeny już istnieje!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Alias zaplanowany do aktywacji!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Alias zaplanowany do dodania!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Alias domeny który chcesz usunąć posiada konta pocztowe !<br>Najpierw je "
+"usuń!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2034,6 +2043,9 @@ msgstr "Wyłączone"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Adres URL przekierowania musi zaczynać się od 'http://'"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdomena została zaplanowana do usunięcia!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Kopia zapasowa zaplanowana do przywrócenia!"
@@ -2476,10 +2488,6 @@ msgstr "Proszę wybrać przynajmniej jeden typ poczty!"
 msgid "Please enter mail account username!"
 msgstr "Podaj nazwę użytkownika konta poczty!"
 
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Hasło jest krótsze niż %s znaków lub zawiera niedozwolone znaki!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Lista subdomen jest pusta! Nie możesz dodać kont pocztowych!"
 
@@ -2824,7 +2832,8 @@ msgstr "Zarządzaj bazami SQL"
 msgid "Database Name and Users"
 msgstr "Nazwa i użytkownicy bazy danych"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -2890,14 +2899,15 @@ msgstr " Osiągnięto limit subdomen!"
 msgid "Please specify subdomain name!"
 msgstr "Podaj nazwę subdomeny!"
 
+#, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Limit aliasów domeny został osiągnięty!"
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Taka subdomena już istnieje lub jest niedozwolona!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Niepoprawna składnia subdomeny!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Punkt montowania subdomeny już istnieje!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomena została zaplanowana do dodania!"
@@ -2923,9 +2933,6 @@ msgstr ""
 "Subdomeny które próbujesz usunąć posiadają konta pocztowe!<br>Najpierw je "
 "usuń!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Subdomena została zaplanowana do usunięcia!"
-
 msgid "Please specify message subject!"
 msgstr "Podaj temat wiadomości!"
 
@@ -2937,9 +2944,6 @@ msgstr "ispCP - System Wsparcia - Nowe zgłoszenie"
 
 msgid "New ticket"
 msgstr "Nowe zgłoszenie"
-
-msgid "Message was send!"
-msgstr "Wiadomośc została wysłana!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ispCP - Klient/Narzędzia sieciowe"
@@ -3137,11 +3141,17 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Nie można sprawdzić czy są aktualizacje! Strona jest niedostępna."
+
 msgid "Email and FTP accounts"
 msgstr "Konta poczty i FTP"
 
 msgid "Add mail user"
 msgstr "Dodaj użytkownika poczty"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Menadżer plików"
@@ -3181,10 +3191,6 @@ msgstr "Przekierowanie subdomeny"
 
 msgid "Unknown type"
 msgstr "Nieznany typ"
-
-#, php-format
-msgid "Database update %s failed"
-msgstr "Aktualizacje bazy danych %s nieudana"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Witaj {USERNAME} w systemie ispCP!"
@@ -3322,7 +3328,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3363,6 +3369,10 @@ msgstr "Musisz poczekać %d sekund"
 msgid "You have been blocked for %d minutes"
 msgstr "Zostałeś zablokowany na %d minut"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Wprowadziłeś niepoprawne hasło."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "System jest w takcie prac konserwacyjnych! Tylko administratorzy mogą się "
@@ -3382,9 +3392,6 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "Stan konta %s nie jest ok! "
-
-msgid "You entered an incorrect password."
-msgstr "Wprowadziłeś niepoprawne hasło."
 
 msgid "Request from foreign host was blocked!"
 msgstr "Żądanie ze zdalnego hosta zostało zablokowane!"
@@ -3932,6 +3939,9 @@ msgstr "Statystyki"
 msgid "Edit User"
 msgstr "Edytuj użytkownika"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Przeglądaj aliasy"
 
@@ -3954,6 +3964,21 @@ msgstr "Użytkownik nie usunięty!"
 
 msgid "This reseller has no domains yet."
 msgstr "Ten reseller nie ma jeszcze domen."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Błędna długość hasła lub składnia!"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Wiadomość została wysłana!"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Alias z tym samym punktem montowania już istnieje!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Wiadomośc została wysłana!"
+
+#~ msgid "Database update %s failed"
+#~ msgstr "Aktualizacje bazy danych %s nieudana"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Brak lub niekompletne dane!"

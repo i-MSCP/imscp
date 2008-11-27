@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -97,8 +97,15 @@ msgstr "Администратор"
 msgid "Incorrect username length or syntax!"
 msgstr "Не корректная длина или синтаксис имени пользователя"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Не корректная длина или синтаксис пароля"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Пароль сожержит не разрешенные символы!"
 
 msgid "Entered passwords do not match!"
 msgstr "Введённые пароли не совпадают"
@@ -818,18 +825,15 @@ msgstr "У вас есть новые вопросы поддержки <b>%d</b
 msgid "View"
 msgstr "Просмотр"
 
-msgid "Update checking is disabled!"
-msgstr ""
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Не возможна проверка обновлений! Сайт не отвечает."
-
-msgid "New ispCP update is now available"
-msgstr "Доступно новое обновление ispCP"
-
 #, fuzzy
 msgid "A database update is available"
 msgstr "Нет доступных обновлений ispCP"
+
+msgid "Update checking is disabled!"
+msgstr ""
+
+msgid "New ispCP update is now available"
+msgstr "Доступно новое обновление ispCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Вы превысили Ваше ограничение трафика!"
@@ -1935,9 +1939,6 @@ msgstr "ispCP - Клиент : Служба поддержки: Показать
 msgid "Please type your message!"
 msgstr "Пожалуйста, введите Ваше сообщение!"
 
-msgid "Message was sent!"
-msgstr "Сообщение отправленно!"
-
 msgid "Message was sent."
 msgstr "Сообщение отправлено."
 
@@ -2005,14 +2006,22 @@ msgstr "Не корректный синтакс <i>перенаправлени
 msgid "Domain with this name already exist"
 msgstr "Домен с этим именем уже существует"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Уже есть поддомен с такой же точкой монтирования!"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Такая точка монтирования поддомена уже существует!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Псевдоним в очереди для активации!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Псевдоним в очереди для добавления!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Псевдоним домена, что Вы пытаетесь удалить имеет почтовые ящики !<br>Сперва "
+"удалите их!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2053,6 +2062,9 @@ msgstr "Отключить"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "УРЛ переадресации должен начинаться с 'http://'"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Поддомен в очереди на удаление!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Бекап архив в очереди для восстановления!"
@@ -2501,10 +2513,6 @@ msgstr "Пожалуйста, укажите адрес отправителя!"
 msgid "Please enter mail account username!"
 msgstr "Укажите имя пользователя почтового ящика!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Пароль сожержит не разрешенные символы!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Список поддоменов пуст! Вы не можете добавлять почтовые ящики!"
 
@@ -2853,8 +2861,9 @@ msgstr "Управление SQL"
 msgid "Database Name and Users"
 msgstr "Имя и пользователи базы данных"
 
-msgid "PhpMyAdmin"
-msgstr ""
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Вход в phpMyAdmin"
 
 msgid "Database users"
 msgstr "Пользователи базы данных"
@@ -2919,14 +2928,15 @@ msgid "Please specify subdomain name!"
 msgstr "Укажите имя поддомена!"
 
 #, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Лимит псевдонимов истёк!"
+
+#, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Такой поддомен уже существует!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Неправильный синтаксис поддомена!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Такая точка монтирования поддомена уже существует!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Поддомен в очереди на добавление!"
@@ -2951,9 +2961,6 @@ msgid ""
 msgstr ""
 "У поддомена удаляемого вами есть почтовые ящики !<br>Сперва удалите их!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Поддомен в очереди на удаление!"
-
 msgid "Please specify message subject!"
 msgstr "Пожалуйста, введите тему сообщения!"
 
@@ -2965,9 +2972,6 @@ msgstr "ispCP - Техподдержка - Новый билет"
 
 msgid "New ticket"
 msgstr "Новый билет"
-
-msgid "Message was send!"
-msgstr "Сообщение отослано!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ISPCP - Клиент/Веб-инструменты"
@@ -3167,11 +3171,17 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Не возможна проверка обновлений! Сайт не отвечает."
+
 msgid "Email and FTP accounts"
 msgstr "Учётные записи почты и FTP"
 
 msgid "Add mail user"
 msgstr "Добавить почтовый ящик"
+
+msgid "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлов"
@@ -3211,10 +3221,6 @@ msgstr "Переадресация поддомена"
 
 msgid "Unknown type"
 msgstr "Неизвестный тип"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Пользователи базы данных"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME}, добро пожаловать в ispCP!"
@@ -3353,7 +3359,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3394,6 +3400,10 @@ msgstr "Вы должны подождать %d секунд"
 msgid "You have been blocked for %d minutes"
 msgstr "Вы заблокированы на %d минут"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Вы ввели не корректный пароль."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "На системе в данный момент проводятся работы! Только администраторы могут "
@@ -3409,9 +3419,6 @@ msgstr "Пользователь уже вошел или проблема об�
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s's плохой статус учётной записи!"
-
-msgid "You entered an incorrect password."
-msgstr "Вы ввели не корректный пароль."
 
 msgid "Request from foreign host was blocked!"
 msgstr "Запрос от зарубежного хоста был заблокирован!"
@@ -3964,6 +3971,9 @@ msgstr "Статистика"
 msgid "Edit User"
 msgstr "Редактировать Пользователя"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Смотреть псевдонимы"
 
@@ -3987,6 +3997,22 @@ msgstr "Пользователь не окончен!"
 
 msgid "This reseller has no domains yet."
 msgstr "У реселлера пока что нету доменов."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Не корректная длина или синтаксис пароля"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Сообщение отправленно!"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Уже есть поддомен с такой же точкой монтирования!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Сообщение отослано!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Пользователи базы данных"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Утерянные или неправильные данные!"

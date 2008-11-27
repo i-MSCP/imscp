@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -102,9 +102,15 @@ msgstr "Administrátor"
 msgid "Incorrect username length or syntax!"
 msgstr "Zlá dľžka alebo syntax užívateľského mena!"
 
-#, fuzzy
-msgid "Incorrect password length or syntax!"
-msgstr "Zlá dľžka alebo syntax hesla!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Heslá obsahujú nepovolené znaky!"
 
 #, fuzzy
 msgid "Entered passwords do not match!"
@@ -859,19 +865,15 @@ msgid "View"
 msgstr "Zobraziť"
 
 #, fuzzy
+msgid "A database update is available"
+msgstr "Žiadné nové aktualizácie ispCP"
+
+#, fuzzy
 msgid "Update checking is disabled!"
 msgstr "Aktualizovať nainštalovaný jazyk!"
 
-#, fuzzy
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nemôže skontrolovať aktualizácie!"
-
 msgid "New ispCP update is now available"
 msgstr "Nová aktualizácia ispCP je dostupná"
-
-#, fuzzy
-msgid "A database update is available"
-msgstr "Žiadné nové aktualizácie ispCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Prekročili ste Váš limit!"
@@ -1999,9 +2001,6 @@ msgstr "ispCP - Klient : Podporný systém: Zobraziť Tikety"
 msgid "Please type your message!"
 msgstr "Prosím napíšte svoju správu!"
 
-msgid "Message was sent!"
-msgstr "Správa odoslaná!"
-
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
 
@@ -2070,8 +2069,8 @@ msgid "Domain with this name already exist"
 msgstr "Doména s rovnakým menom už existuje"
 
 #, fuzzy
-msgid "There is a subdomain with the same mount point!"
-msgstr "Už existuje alias s rovnakým bodom pripojenia"
+msgid "Mount point already in use!"
+msgstr "Bod pripojenia sub-domény už existuje!"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2080,6 +2079,13 @@ msgstr "Alias načasovaný na pridanie!"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias načasovaný na pridanie!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
+"odstránte!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2122,6 +2128,9 @@ msgstr "Vypnúť"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Sub-doména načasovaná na zmazanie!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Záložný archív načasovaný na pridanie!"
@@ -2580,10 +2589,6 @@ msgstr "Prosím vyplňte e-mail!"
 msgid "Please enter mail account username!"
 msgstr "Prosím zadajte meno e-mailového konta!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Heslá obsahujú nepovolené znaky!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Zoznam sub-domén je prázdny! Tu nemôžete pridať e-mailové konto!"
 
@@ -2936,7 +2941,8 @@ msgstr "Spravovať SQL"
 msgid "Database Name and Users"
 msgstr "Užívateľia databázy"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -3003,14 +3009,15 @@ msgid "Please specify subdomain name!"
 msgstr "Posím zadajte meno sub-domén!"
 
 #, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Limit aliasov domény dosiahnutý!"
+
+#, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Sub-doména už existuje!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Zlá syntax sub-domény!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Bod pripojenia sub-domény už existuje!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdoména načasovaná na pridanie!"
@@ -3037,9 +3044,6 @@ msgstr ""
 "Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
 "odstránte!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Sub-doména načasovaná na zmazanie!"
-
 msgid "Please specify message subject!"
 msgstr "Prosím vyplňte predmet správy!"
 
@@ -3051,9 +3055,6 @@ msgstr "ispCP - Podporný systém - Nový tiket"
 
 msgid "New ticket"
 msgstr "Nový tiket"
-
-msgid "Message was send!"
-msgstr "Správa bola odoslaná!"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
@@ -3258,11 +3259,18 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+#, fuzzy
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Nemôže skontrolovať aktualizácie!"
+
 msgid "Email and FTP accounts"
 msgstr "E-mail a FTP kontá"
 
 msgid "Add mail user"
 msgstr "Pridať e-mailové konto"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Filemanager"
@@ -3304,10 +3312,6 @@ msgstr "Presmerovanie sub-domeny"
 
 msgid "Unknown type"
 msgstr "Neznámy typ"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Užívateľia databázy"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3396,7 +3400,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3422,6 +3426,9 @@ msgstr "Musíte čakať"
 msgid "You have been blocked for %d minutes"
 msgstr "Boli ste zablkovaný na"
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
@@ -3439,9 +3446,6 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -4003,6 +4007,9 @@ msgstr "Štatistiky"
 msgid "Edit User"
 msgstr "Upraviť užívateľa"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "zozbraziť aliasy"
@@ -4025,6 +4032,24 @@ msgstr "Užívateľ nebol zrušený!"
 
 msgid "This reseller has no domains yet."
 msgstr "Tento predajca nemá žiadne domény zatiaľ"
+
+#, fuzzy
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Zlá dľžka alebo syntax hesla!"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Správa odoslaná!"
+
+#, fuzzy
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Už existuje alias s rovnakým bodom pripojenia"
+
+#~ msgid "Message was send!"
+#~ msgstr "Správa bola odoslaná!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Užívateľia databázy"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Chýbajúce alebo zlé data!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -98,8 +98,15 @@ msgstr "Administrator"
 msgid "Incorrect username length or syntax!"
 msgstr "Nume utilizator incorect: lungime sau sintaxa"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Parola incorecta: lungime sau sintaxa"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Parola contine caractere ce nu sunt permise!"
 
 msgid "Entered passwords do not match!"
 msgstr "Parola introdusa nu corespunde"
@@ -827,20 +834,15 @@ msgstr "Ai <b>%d</b> noi cereri de suport."
 msgid "View"
 msgstr "Vizualizare"
 
-msgid "Update checking is disabled!"
-msgstr ""
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-"Nu s-a putut verifica daca exista actualizari disponibile. Website-ul nu "
-"este disponibil"
-
-msgid "New ispCP update is now available"
-msgstr "O noua actualizare pentru ispCP este disponibila"
-
 #, fuzzy
 msgid "A database update is available"
 msgstr "Nu exista actualizari disponibile pentru baza de date"
+
+msgid "Update checking is disabled!"
+msgstr ""
+
+msgid "New ispCP update is now available"
+msgstr "O noua actualizare pentru ispCP este disponibila"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Limita de trafic depasita!"
@@ -1956,9 +1958,6 @@ msgstr "ispCP - Client : Sistem suport: Vezi Tickete"
 msgid "Please type your message!"
 msgstr "Te rugam scrie mesajul"
 
-msgid "Message was sent!"
-msgstr "Mesajul a fost trimis"
-
 msgid "Message was sent."
 msgstr "Mesajul a fost trimis"
 
@@ -2026,8 +2025,9 @@ msgstr "Sintaxa forward incorecta!"
 msgid "Domain with this name already exist"
 msgstr "Un domeniu cu acest nume deja exista"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Exista un subdomeniu cu acelasi mount point"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Locul montarii subdomeniu deja existent!"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2036,6 +2036,13 @@ msgstr "Alias programat pentru adaugare!"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias programat pentru adaugare!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Aliasul de domeniu pe care incercati sa-l stergeti are conturi de email!"
+"<br>Stergeti-le inainte!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2077,6 +2084,9 @@ msgstr "Dezactiveaza"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Un  forward URL trebuie sa inceapa cu 'http://' "
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdomeniu programat pentru stergere!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Arhiva backup programata pentru restaurare!"
@@ -2524,10 +2534,6 @@ msgstr "Te rugam sa specifici un email la destinatar"
 msgid "Please enter mail account username!"
 msgstr "Introdu un utilizator pentru contul de mail!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Parola contine caractere ce nu sunt permise!"
-
 #, fuzzy
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Lista subdomenii este goala. Nu poti adauga noi conturi de mail!"
@@ -2882,7 +2888,8 @@ msgstr "Administreaza SQL"
 msgid "Database Name and Users"
 msgstr "Nume si Utilizatori de baza de date"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -2946,14 +2953,15 @@ msgstr "Limita subdomenii atinsa!"
 msgid "Please specify subdomain name!"
 msgstr "Specifica nume subdomeniu!"
 
+#, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Limita aliasuri domeniu atinsa!"
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Subdomeniul specificat exista deja sau nu e permis!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Sintaxa subdomeniu gresita!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Locul montarii subdomeniu deja existent!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomeniu programat pentru adaugare!"
@@ -2980,9 +2988,6 @@ msgstr ""
 "Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea "
 "intai!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Subdomeniu programat pentru stergere!"
-
 msgid "Please specify message subject!"
 msgstr "Specifica un subiect pentru mesaj!"
 
@@ -2994,9 +2999,6 @@ msgstr "ispCP - Sistem de suport - Interogare noua"
 
 msgid "New ticket"
 msgstr "Interogare noua"
-
-msgid "Message was send!"
-msgstr "Mesajul a fost trimis!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ispCP - Client/ Instrumente Web"
@@ -3195,11 +3197,19 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+"Nu s-a putut verifica daca exista actualizari disponibile. Website-ul nu "
+"este disponibil"
+
 msgid "Email and FTP accounts"
 msgstr "Conturi Email si FTP"
 
 msgid "Add mail user"
 msgstr "Adauga user de mail"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Manager fisiere"
@@ -3239,10 +3249,6 @@ msgstr "Redirectare subdomeniu"
 
 msgid "Unknown type"
 msgstr "Tip necunoscut"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Actualizari baza de date"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Bun-Venit {USERNAME} in ispCP!"
@@ -3383,7 +3389,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3424,6 +3430,10 @@ msgstr "Trebuie sa asteptati %d secunde"
 msgid "You have been blocked for %d minutes"
 msgstr "Sunteti blocat pentru %d minute"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Ai introdus o parola gresita."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Sistemul isi actualizeaza serviciile si continutul! Numai administratorii se "
@@ -3443,9 +3453,6 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s status-uri de cont in neregula! "
-
-msgid "You entered an incorrect password."
-msgstr "Ai introdus o parola gresita."
 
 msgid "Request from foreign host was blocked!"
 msgstr "Cererea de la host-ul strain a fost blocata!"
@@ -4022,6 +4029,9 @@ msgstr "Statistici"
 msgid "Edit User"
 msgstr "Editare utilizator"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "Alias-e"
@@ -4044,6 +4054,22 @@ msgstr "Utilizatorul nu a fost sters!"
 
 msgid "This reseller has no domains yet."
 msgstr "Acest reseller inca nu are domenii."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Parola incorecta: lungime sau sintaxa"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Mesajul a fost trimis"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Exista un subdomeniu cu acelasi mount point"
+
+#~ msgid "Message was send!"
+#~ msgstr "Mesajul a fost trimis!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Actualizari baza de date"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Date lipsa sau gresite"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -95,8 +95,15 @@ msgstr "Администратор"
 msgid "Incorrect username length or syntax!"
 msgstr "Некоректна дължина или синтаксис на потребителското име"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Некоректна дължина или синтаксис на паролата"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Паролата съдържа неразрешени символи!"
 
 msgid "Entered passwords do not match!"
 msgstr "Въведените пароли не съвпадат"
@@ -826,18 +833,15 @@ msgstr "Имате нови въпроси към поддръжката <b>%d</
 msgid "View"
 msgstr "Преглед"
 
-msgid "Update checking is disabled!"
-msgstr ""
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
-
-msgid "New ispCP update is now available"
-msgstr "Достъпно е ново обновяване за ispCP"
-
 #, fuzzy
 msgid "A database update is available"
 msgstr "Няма достъпни ispCP обновявания"
+
+msgid "Update checking is disabled!"
+msgstr ""
+
+msgid "New ispCP update is now available"
+msgstr "Достъпно е ново обновяване за ispCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Вие сте превишили Вашето ограничение за трафик!"
@@ -1941,9 +1945,6 @@ msgstr "ispCP - Клиент : Служба поддръжка: Показат �
 msgid "Please type your message!"
 msgstr "Моля, въведете Ваше съобщение!"
 
-msgid "Message was sent!"
-msgstr "съобщение отправленно!"
-
 msgid "Message was sent."
 msgstr "съобщението беше изпратено."
 
@@ -2011,14 +2012,22 @@ msgstr "Некоректен синтакс на <i>пренасочване</i>
 msgid "Domain with this name already exist"
 msgstr "Домейн с това име вече съществува"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Вече има поддомейн с такава точка на монтиране!"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Такава точка за монтиране на поддомейна вече съществува!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Псевдонимът е в графика за активации!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Псевдонимът е добавен в графика за добавяне!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Псевдонима на домейна,който искате да изтриете има пощенски кутии !<br>Първо "
+"ги изтрийте!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2059,6 +2068,9 @@ msgstr "Забрани"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "УРЛ преадресацията трябва да започва с 'http://'"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Поддомейна е добавен в графика за изтриване!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Бекап архива е добавен в графика за възстановяване!"
@@ -2509,10 +2521,6 @@ msgstr "Моля, укажете адрес на изпращача!"
 msgid "Please enter mail account username!"
 msgstr "Укажете име за потребителя на пощенска кутия!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Паролата съдържа неразрешени символи!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr ""
 "Списъкът с поддомейни е празен! Вие не може да добавяте пощенски кутии!"
@@ -2864,8 +2872,9 @@ msgstr "Управление SQL"
 msgid "Database Name and Users"
 msgstr "Име и потребители на бази данни"
 
-msgid "PhpMyAdmin"
-msgstr ""
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Вход в phpMyAdmin"
 
 msgid "Database users"
 msgstr "Потребители на бази данни"
@@ -2930,14 +2939,15 @@ msgid "Please specify subdomain name!"
 msgstr "Укажете име за поддомейн!"
 
 #, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Ограничението за псевдоними е достигнато!"
+
+#, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Такъв поддомейн вече съществува!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Неправилен синтаксис на поддомейн!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Такава точка за монтиране на поддомейна вече съществува!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Поддомейна е добавен ф графика за добавяне!"
@@ -2963,9 +2973,6 @@ msgstr ""
 "Поддомейна, който искате да изтриете има пощенски кутии !<br>Първо ги "
 "изтрийте!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Поддомейна е добавен в графика за изтриване!"
-
 msgid "Please specify message subject!"
 msgstr "Моля, въведете тема на съобщението!"
 
@@ -2977,9 +2984,6 @@ msgstr "ispCP - Техно поддръжка - Нов билет"
 
 msgid "New ticket"
 msgstr "Нов билет"
-
-msgid "Message was send!"
-msgstr "Съобщението беше изпратено!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ISPCP - Клиент/Уеб-инструменти"
@@ -3179,11 +3183,17 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
+
 msgid "Email and FTP accounts"
 msgstr "Email и FTP акаунти"
 
 msgid "Add mail user"
 msgstr "Добави пощенска кутия"
+
+msgid "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Файл Мениджър"
@@ -3223,10 +3233,6 @@ msgstr "Преадресация на поддомейна"
 
 msgid "Unknown type"
 msgstr "Неизвестен тип"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Потребители на бази данни"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME}, добро пожаловат в ispCP!"
@@ -3365,7 +3371,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3406,6 +3412,10 @@ msgstr "Вие трябва да изчакате %d секунди"
 msgid "You have been blocked for %d minutes"
 msgstr "Вие сте блокирани за %d минут"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Въвели сте некоректна парола."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "В момента има профилактика на системата! Само администраторите магат да "
@@ -3425,9 +3435,6 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s's лош статус на акаунта!"
-
-msgid "You entered an incorrect password."
-msgstr "Въвели сте некоректна парола."
 
 msgid "Request from foreign host was blocked!"
 msgstr "Запитване от външен хост беше блокирано!"
@@ -3987,6 +3994,9 @@ msgstr "Статистика"
 msgid "Edit User"
 msgstr "Редакция потребител"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Преглед псевдоними"
 
@@ -4009,6 +4019,22 @@ msgstr "Потребителя не е приключен!"
 
 msgid "This reseller has no domains yet."
 msgstr "Този риселър няма домейни засега."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Некоректна дължина или синтаксис на паролата"
+
+#~ msgid "Message was sent!"
+#~ msgstr "съобщение отправленно!"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Вече има поддомейн с такава точка на монтиране!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Съобщението беше изпратено!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Потребители на бази данни"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Липсващи или неправилни данни!"

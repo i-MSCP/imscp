@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:05+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -95,8 +95,15 @@ msgstr "Yll�pit�j�"
 msgid "Incorrect username length or syntax!"
 msgstr ""
 
-msgid "Incorrect password length or syntax!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Salasana sis�lt�� kiellettyj� merkkej�"
 
 msgid "Entered passwords do not match!"
 msgstr ""
@@ -844,18 +851,15 @@ msgid "View"
 msgstr "Katsele"
 
 #, fuzzy
+msgid "A database update is available"
+msgstr "Ei uusia ispCP-p�ivityksi� saatavilla"
+
+#, fuzzy
 msgid "Update checking is disabled!"
 msgstr "P�ivityskieli asennettu!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 msgid "New ispCP update is now available"
 msgstr "Uusi ispCP-p�ivitys saatavilla"
-
-#, fuzzy
-msgid "A database update is available"
-msgstr "Ei uusia ispCP-p�ivityksi� saatavilla"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Olet ylitt�m�ss� kaistanm��r�rajoitusta!"
@@ -1961,9 +1965,6 @@ msgstr "ispCP - Asiakas : Tukij�rjestelm�: Katsele kysymyksi�"
 msgid "Please type your message!"
 msgstr "Anna viesti!"
 
-msgid "Message was sent!"
-msgstr ""
-
 msgid "Message was sent."
 msgstr "Viesti on l�hetetty."
 
@@ -2032,8 +2033,8 @@ msgid "Domain with this name already exist"
 msgstr "Domain t�ll� nimell� on jo olemassa"
 
 #, fuzzy
-msgid "There is a subdomain with the same mount point!"
-msgstr "Alias olemassa samassa liitospisteess�"
+msgid "Mount point already in use!"
+msgstr "Alidomainin liitospiste on jo olemassa!"
 
 #, fuzzy
 msgid "Alias scheduled for activation!"
@@ -2042,6 +2043,13 @@ msgstr "Alias ajoitettu lis�tt�v�ksi!"
 #, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias ajoitettu lis�tt�v�ksi!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Domain-alias jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia!<br>Poista ne "
+"ensin!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2083,6 +2091,9 @@ msgstr "Poista k�yt�st�"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Alidomain poistojonossa!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Varmuuskopio palautusjonossa!"
@@ -2529,10 +2540,6 @@ msgstr "M��rit� vastaanottajan s�hk�posti!"
 msgid "Please enter mail account username!"
 msgstr "Anna s�hk�postin k�ytt�j�nimi!"
 
-#, fuzzy, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Salasana sis�lt�� kiellettyj� merkkej�"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Alidomain-lista on tyhj�! Et voi luoda s�hk�posteja!"
 
@@ -2884,8 +2891,9 @@ msgstr "Hallitse tietokantoja"
 msgid "Database Name and Users"
 msgstr "Tietokantak�ytt�j�t"
 
-msgid "PhpMyAdmin"
-msgstr ""
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Yll�pit�j�lle"
 
 msgid "Database users"
 msgstr "Tietokantak�ytt�j�t"
@@ -2949,15 +2957,15 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "M��rit� alidomainin nimi!"
 
+msgid "No valid alias domain selected!"
+msgstr ""
+
 #, fuzzy
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Alidomain on olemassa!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Virheellinen alidomainsyntaksi!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Alidomainin liitospiste on jo olemassa!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Alidomain lis�ysjonossa!"
@@ -2984,9 +2992,6 @@ msgstr ""
 "Alidomain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia! <br>Poista ensin "
 "ne!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Alidomain poistojonossa!"
-
 msgid "Please specify message subject!"
 msgstr "M��rit� viestin aihe!"
 
@@ -2998,9 +3003,6 @@ msgstr "ispCP - Tukij�rjestelm� - Uusi kysymys"
 
 msgid "New ticket"
 msgstr "Uusi kysymys"
-
-msgid "Message was send!"
-msgstr "Viesti l�etetty!"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
@@ -3198,11 +3200,17 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr ""
+
 msgid "Email and FTP accounts"
 msgstr "Email ja FTP-tunnukset"
 
 msgid "Add mail user"
 msgstr "Lis�� s�hk�postik�ytt�j�"
+
+msgid "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Tiedostonhallinta"
@@ -3242,10 +3250,6 @@ msgstr "Alidomainin ohjaus"
 
 msgid "Unknown type"
 msgstr "Tuntematon tyyppi"
-
-#, fuzzy, php-format
-msgid "Database update %s failed"
-msgstr "Tietokantak�ytt�j�t"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
@@ -3334,7 +3338,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3360,6 +3364,9 @@ msgstr "Sinun t�ytyy odottaa"
 msgid "You have been blocked for %d minutes"
 msgstr ""
 
+msgid "You entered an incorrect username/password."
+msgstr ""
+
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr "J�rjestelm� on huoltotilassa! Vain yll�pit�j�t voivat kirjautua."
@@ -3375,9 +3382,6 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr ""
-
-msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3919,6 +3923,9 @@ msgstr "Tilastot"
 msgid "Edit User"
 msgstr "Muokkaa k�ytt�j��"
 
+msgid "Bandwidth"
+msgstr ""
+
 #, fuzzy
 msgid "View aliases"
 msgstr "n�yt� aliakset"
@@ -3941,6 +3948,17 @@ msgstr "K�ytt�j�� ei poistettu!"
 
 msgid "This reseller has no domains yet."
 msgstr "T�ll� j�lleenmyyj�ll� ei ole viel� domaineja."
+
+#, fuzzy
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Alias olemassa samassa liitospisteess�"
+
+#~ msgid "Message was send!"
+#~ msgstr "Viesti l�etetty!"
+
+#, fuzzy
+#~ msgid "Database update %s failed"
+#~ msgstr "Tietokantak�ytt�j�t"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Uupuvaa tai v��r�� tietoa!"

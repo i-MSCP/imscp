@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 15:15+0200\n"
+"POT-Creation-Date: 2008-11-27 20:35+0200\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -94,8 +94,15 @@ msgstr "Administrátor"
 msgid "Incorrect username length or syntax!"
 msgstr "Nesprávná délka nebo syntaxe uživatelského jména!"
 
-msgid "Incorrect password length or syntax!"
-msgstr "Nesprávná délka nebo syntaxe hesla!"
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
 
 msgid "Entered passwords do not match!"
 msgstr "Zadaná hesla se neshodují!"
@@ -809,17 +816,14 @@ msgstr "Máte <b>%d</b> nových otázek na podporu"
 msgid "View"
 msgstr "Náhled"
 
+msgid "A database update is available"
+msgstr "Je dostupná aktualizace databáze"
+
 msgid "Update checking is disabled!"
 msgstr "Kontrola aktualizací je vypnuta!"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nemohu zkontrolovat aktualizace! Cílová stránka neodpovídá."
-
 msgid "New ispCP update is now available"
 msgstr "Je dostupná nová aktualizace ispCP"
-
-msgid "A database update is available"
-msgstr "Je dostupná aktualizace databáze"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Překročil jste váš limit přenesených dat!"
@@ -1908,9 +1912,6 @@ msgstr "ispCP - Klient : Systém podpory: Zobrazit požadavky"
 msgid "Please type your message!"
 msgstr "Prosím zadejte zprávu!"
 
-msgid "Message was sent!"
-msgstr "Zpráva byla odeslána!"
-
 msgid "Message was sent."
 msgstr "Zpráva byla odeslána."
 
@@ -1977,14 +1978,22 @@ msgstr "Nesprávná syntaxe přesměrování"
 msgid "Domain with this name already exist"
 msgstr "Doména s tímto jménem již existuje!"
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "Je zde subdoména se stejným přípojným bodem!"
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Připojný bod subdomény již existuje!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Aktivace aliasu byla naplánována!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Přidání aliasu bylo naplánováno!"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Odstraňovaný doménový alias je přiřazen poštovním účtům!<br>Nejdříve tyto "
+"účty smažte!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2025,6 +2034,9 @@ msgstr "Vypnout"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Adresa pro přesměrování má začínat 'http://'"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Smazání subdomény bylo naplánováno!"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Obnovení dat ze zálohy bylo naplánováno!"
@@ -2465,10 +2477,6 @@ msgstr "Vyplňte prosím alespoň jeden typ poštovního účtu!"
 msgid "Please enter mail account username!"
 msgstr "Prosím zadejte uživatelské jméno e-mailového účtu!"
 
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
-
 msgid "Subdomain list is empty! You cannot add mail accounts!"
 msgstr "Seznam subdomén je prázdný! Nemůžete přidávat poštovní účty!"
 
@@ -2813,7 +2821,8 @@ msgstr "Správa SQL"
 msgid "Database Name and Users"
 msgstr "Jméno databáze a uživatelé"
 
-msgid "PhpMyAdmin"
+#, fuzzy
+msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Database users"
@@ -2877,14 +2886,15 @@ msgstr "Dosažen limit subdomén!"
 msgid "Please specify subdomain name!"
 msgstr "Prosím zadejte jméno subdomény!"
 
+#, fuzzy
+msgid "No valid alias domain selected!"
+msgstr "Limit doménových aliasů dosažen!"
+
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Subdoména již existuje nebo není povolená!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Špatná syntaxe subdomény!"
-
-msgid "Subdomain mount point already exists!"
-msgstr "Připojný bod subdomény již existuje!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Přidání subdomény bylo naplánováno!"
@@ -2910,9 +2920,6 @@ msgstr ""
 "Subdoména, kterou se snažíte odstranit má poštovní účty!<br>Nejprve je "
 "odstraňte!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Smazání subdomény bylo naplánováno!"
-
 msgid "Please specify message subject!"
 msgstr "Prosím zadejte předmět zprávy!"
 
@@ -2924,9 +2931,6 @@ msgstr "ispCP - Systém podpory - Nový požadavek"
 
 msgid "New ticket"
 msgstr "Nový požadavek"
-
-msgid "Message was send!"
-msgstr "Zpráva byla poslána!"
 
 msgid "ISPCP - Client/Webtools"
 msgstr "ISPCP - Klient/Webnástroje"
@@ -3123,11 +3127,17 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Nemohu zkontrolovat aktualizace! Cílová stránka neodpovídá."
+
 msgid "Email and FTP accounts"
 msgstr "E-mailové a FTP účty"
 
 msgid "Add mail user"
 msgstr "Přidat uživatele pošty"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Souborový manažer"
@@ -3167,10 +3177,6 @@ msgstr "Přesměrování subdomény"
 
 msgid "Unknown type"
 msgstr "Neznámý typ"
-
-#, php-format
-msgid "Database update %s failed"
-msgstr "Aktualizace databáze %s selhala"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Vítáme {USERNAME} do systému ispCP!"
@@ -3308,7 +3314,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3322,7 +3328,7 @@ msgstr ""
 "{ALIAS}\n"
 "\n"
 "Jakmile se příhlásíte, můžete aktivovat zmíněný alias na adrese\n"
-"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
 "\n"
 "Díky, že používáte služby ispCP.\n"
 "Tým ispCP.\n"
@@ -3349,6 +3355,10 @@ msgstr "Musíte počkat %d vteřin"
 msgid "You have been blocked for %d minutes"
 msgstr "Jste zablokován na %d minut"
 
+#, fuzzy
+msgid "You entered an incorrect username/password."
+msgstr "Zadané heslo není správné."
+
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Na serveru právě probíhá údržba. Přihlásit se mohou jen administrátoři."
@@ -3365,9 +3375,6 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "Stav účtu %s není v pořádku!"
-
-msgid "You entered an incorrect password."
-msgstr "Zadané heslo není správné."
 
 msgid "Request from foreign host was blocked!"
 msgstr "Požadavky z jiných hostitelů jsou blokovány!"
@@ -3919,6 +3926,9 @@ msgstr "Statistiky"
 msgid "Edit User"
 msgstr "Upravit uživatele"
 
+msgid "Bandwidth"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Zobrazit aliasy"
 
@@ -3940,6 +3950,21 @@ msgstr "Uživatel není odstraněn!"
 
 msgid "This reseller has no domains yet."
 msgstr "Partner ještě nemá žádné domény."
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Nesprávná délka nebo syntaxe hesla!"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Zpráva byla odeslána!"
+
+#~ msgid "There is a subdomain with the same mount point!"
+#~ msgstr "Je zde subdoména se stejným přípojným bodem!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Zpráva byla poslána!"
+
+#~ msgid "Database update %s failed"
+#~ msgstr "Aktualizace databáze %s selhala"
 
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Chybějící nebo špatná data!"
