@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-11-28 Daniel Andreca
 	- GUI:
 		* Add default user with password to statistics
+	- TEMPLATES
+		* On protected_user_manage.php the size of the edit-icon (edit.png) is 18 pixels instead of 16
 
 2008-11-27 Daniel Andreca
 	- LANGUAGES:

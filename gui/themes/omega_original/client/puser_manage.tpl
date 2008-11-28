@@ -75,7 +75,7 @@ function action_delete(url, mailacc) {
         	<a href="protected_user_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a>
         </td>
         <td width="60" class="content" nowrap="nowrap" align="center">
-        	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle">
+        	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle">
         	<a href="{USER_EDIT_SCRIPT}" class="link">{USER_EDIT}</a>
         </td>
         <td width="60" align="center" nowrap="nowrap" class="content">
