@@ -45,3 +45,4 @@ www-apache/mod_fcgid
 www-servers/apache
 mail-filter/policyd-weight
 mail-filter/postgrey
+dev-db/mysql

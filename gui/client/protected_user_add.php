@@ -66,16 +66,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 
 			$uname = clean_input($_POST['username']);
 
-			if (CRYPT_BLOWFISH == 1) {
-				// suhosin enables blowfish, but apache cannot crypt this, so we don't need that
-				if (CRYPT_MD5 == 1) { // use md5 if available: salt is $1$.microseconds.$
-					$upass = crypt($_POST['pass'], '$1$' . microtime() . '$');
-				} else { // else only DES encryption is used
-					$upass = crypt($_POST['pass'], microtime());
-				}
-			} else {
-				$upass = crypt($_POST['pass']);
-			}
+			$upass = crypt_user_pass_with_salt($_POST['pass']);
 
 			$query = "
 				SELECT

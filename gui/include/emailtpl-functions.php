@@ -171,6 +171,10 @@ Remember to change your password often and the first time you login.
 
 You can login right now at http://{BASE_SERVER_VHOST}
 
+Statistics: http://{USERNAME}/stats/
+User name: {USERNAME}
+Password: {PASSWORD}
+
 Best wishes with ispCP!
 The ispCP Team.
 
@@ -318,7 +322,7 @@ Your customer {CUSTOMER} is awaiting for the approval of his new alias:
 {ALIAS}
 
 Once logged in, you can activate his new alias at
-http://{BASE_SERVER_VHOST}/reseller/domain_alias.php
+http://{BASE_SERVER_VHOST}/reseller/alias.php
 
 Thank you for using ispCP services.
 The ispCP Team

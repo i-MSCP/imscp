@@ -152,7 +152,7 @@ class vfs {
 		// Generate a random userid and password
 		$user = uniqid('tmp_') . '@' . $this->_domain;
 		$this->_passwd = uniqid('tmp_', true);
-		$passwd = crypt_user_ftp_pass($this->_passwd);
+		$passwd = crypt_user_pass_with_salt($this->_passwd);
 		// Create the temporary user
 		$query = <<<SQL_QUERY
 	        insert into ftp_users

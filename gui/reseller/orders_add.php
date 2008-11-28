@@ -215,14 +215,26 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 $dmn_id = $sql->Insert_ID();
 
 //Add statistics group
+
+$query = "
+	INSERT INTO `htaccess_users`
+			(dmn_id, uname, upass, status)
+	VALUES
+			(?, ?, ?, ?)
+";
+$rs = exec_query($sql, $query, array($dmn_id, $dmn_name, crypt_user_pass_with_salt($pure_user_pass), $status));
+
+$user_id = $sql->Insert_ID();
+
 $awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
+
 $query = "
 	INSERT INTO `htaccess_groups`
-			(dmn_id, ugroup, status)
+		(dmn_id, ugroup, members, status)
 	VALUES
-			(?, ?, ?)
+		(?, ?, ?, ?)
 ";
-	$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $status));
+$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
 
 // Create the 3 default addresses if wanted
 if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0

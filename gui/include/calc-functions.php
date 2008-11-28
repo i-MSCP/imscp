@@ -138,7 +138,7 @@ function crypt_user_pass($data) {
  * @param string $data the password in clear text
  * @return string the password encrypted with salt
  */
-function crypt_user_ftp_pass($data) {
+function crypt_user_pass_with_salt($data) {
     $res = crypt($data, generate_rand_salt());
     return $res;
 }

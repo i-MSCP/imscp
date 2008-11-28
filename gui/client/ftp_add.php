@@ -405,7 +405,7 @@ function add_ftp_user(&$sql, $dmn_name) {
     if ($ftp_uid == -1) return;
 
     $ftp_shell = Config::get('CMD_SHELL');
-    $ftp_passwd = crypt_user_ftp_pass($_POST['pass']);
+    $ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
 
     $query = <<<SQL_QUERY
         insert into ftp_users

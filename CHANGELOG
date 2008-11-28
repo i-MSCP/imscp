@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-11-28 Daniel Andreca
+	- GUI:
+		* Add default user with password to statistics
+
 2008-11-27 Daniel Andreca
 	- LANGUAGES:
 		* Fixed #1568: Translations have to be updated because of changed URLs
