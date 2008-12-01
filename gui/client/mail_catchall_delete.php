@@ -27,16 +27,16 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
   $item_delete_status = Config::get('ITEM_DELETE_STATUS');
   $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-  $query = <<<SQL_QUERY
-        select
-             mail_id
-        from
-            mail_users
-        where
-            domain_id = ?
-          and
-            mail_id = ?
-SQL_QUERY;
+  $query = "
+		select
+			mail_id
+		from
+			mail_users
+		where
+			domain_id = ?
+		and
+			mail_id = ?
+	";
 
   $rs = exec_query($sql, $query, array($dmn_id, $mail_id));
 
@@ -46,14 +46,14 @@ SQL_QUERY;
 
   check_for_lock_file();
 
-  $query = <<<SQL_QUERY
-        update
-            mail_users
-        set
-            status = ?
-        where
-            mail_id = ?
-SQL_QUERY;
+  $query = "
+		update
+			mail_users
+		set
+			status = ?
+		where
+			mail_id = ?
+	";
 
   $rs = exec_query($sql, $query, array($item_delete_status, $mail_id));
 

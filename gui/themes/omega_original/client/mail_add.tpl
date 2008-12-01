@@ -9,104 +9,56 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
-	function checkForm() {
-        	var aname  = document.forms[0].elements['username'].value;
-        	var apass  = document.forms[0].elements['pass'].value;
-        	var apass2 = document.forms[0].elements['pass_rep'].value;
-        	var forw   = document.forms[0].elements['forward_list'].value;
-		if (aname == "") {
-			alert(emptyData);
-		}
-
-		if (mailtype == "normal") {
-			if (apass == "" || apass2 == "") {
-				alert(emptyData)
-			} else if (apass != apass2) {
-				alert(passerr);
+    function begin_js() {
+		if (document.getElementsByName('als_id') != null){
+			if(document.getElementById('dmn_type2').checked){
+				document.forms[0].als_id.disabled = false;
 			} else {
-				document.forms[0].submit();
-			}
-		} else {
-			if (forw == "") {
-				alert(emptyData)
-			} else {
-				document.forms[0].submit();
+				document.forms[0].als_id.disabled = true;
 			}
 		}
-    }
-
-	<!-- BDP: js_to_all_domain -->
-    function begin_js() {
-        document.forms[0].als_id.disabled = true;
-        document.forms[0].sub_id.disabled = true;
-        document.forms[0].pass.disabled = false;
-        document.forms[0].pass_rep.disabled = false;
-        document.forms[0].forward_list.disabled = true;
-        document.forms[0].username.focus();
-    }
-
-    function changeDom(what) {
-        if (what == "alias") {
-            document.forms[0].als_id.disabled = false;
-            document.forms[0].sub_id.disabled = true;
-        } else if (what == "real"){
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].sub_id.disabled = true;
-        } else {
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].sub_id.disabled = false;
-        }
-    }
-	<!-- EDP: js_to_all_domain -->
-
-	<!-- BDP: js_not_domain -->
-    function begin_js() {
-        document.forms[0].pass.disabled = false;
-        document.forms[0].pass_rep.disabled = false;
-        document.forms[0].forward_list.disabled = true;
+		if (document.getElementsByName('sub_id') != null){
+			if(document.getElementById('dmn_type3').checked){
+				document.forms[0].sub_id.disabled = false;
+			} else {
+				document.forms[0].sub_id.disabled = true;
+			}
+		}
+		if (document.getElementsByName('als_sub_id') != null){
+			if(document.getElementById('dmn_type4').checked){
+				document.forms[0].als_sub_id.disabled = false;
+			} else {
+				document.forms[0].als_sub_id.disabled = true;
+			}
+		}
+// 		document.forms[0].pass.disabled = false;
+// 		document.forms[0].pass_rep.disabled = false;
+// 		document.forms[0].forward_list.disabled = true;
+		changeType();
 		document.forms[0].username.focus();
     }
-	<!-- EDP: js_not_domain -->
-
-	<!-- BDP: js_to_subdomain -->
-    function begin_js() {
-        document.forms[0].sub_id.disabled = true;
-        document.forms[0].pass.disabled = false;
-        document.forms[0].pass_rep.disabled = false;
-        document.forms[0].forward_list.disabled = true;
-        document.forms[0].username.focus();
-    }
 
     function changeDom(what) {
-        if (what == "alias") {
-            document.forms[0].sub_id.disabled = true;
-        } else if (what == "real"){
-            document.forms[0].sub_id.disabled = true;
-        } else {
-            document.forms[0].sub_id.disabled = false;
-        }
+		if (document.getElementsByName('als_id') != null && what == "alias"){
+			document.forms[0].als_id.disabled = false;
+		}
+		else{
+			document.forms[0].als_id.disabled = true;
+		}
+		if (document.getElementsByName('sub_id') != null && what == "subdom"){
+			document.forms[0].sub_id.disabled = false;
+		}
+		else{
+			document.forms[0].sub_id.disabled = true;
+		}
+		if (document.getElementsByName('als_sub_id') != null && what == "als_subdom"){
+			document.forms[0].als_sub_id.disabled = false;
+		}
+		else{
+			document.forms[0].als_sub_id.disabled = true;
+		}
     }
-	<!-- EDP: js_to_subdomain -->
 
-	<!-- BDP: js_to_alias_domain -->
-    function begin_js() {
-        document.forms[0].als_id.disabled = true;
-        document.forms[0].pass.disabled = false;
-        document.forms[0].pass_rep.disabled = false;
-        document.forms[0].forward_list.disabled = true;
-        document.forms[0].username.focus();
-    }
-
-    function changeDom(what) {
-        if (what == "alias") {
-            document.forms[0].als_id.disabled = false;
-        } else if (what == "real"){
-            document.forms[0].als_id.disabled = true;
-        } else {
-            document.forms[0].als_id.disabled = true;
-        }
-    }
-	<!-- EDP: js_to_alias_domain -->
 
 	function changeType() {
 		if (document.forms[0].elements['mail_type_normal'].checked == true) {
@@ -183,16 +135,26 @@
               </tr>
               <!-- EDP: page_message -->
               <tr>
-                <td nowrap="nowrap" class="content2" width="200"><label for="username">{TR_USERNAME}</label></td>
-                <td valign="middle" nowrap="nowrap" class="content"><input type="text" name="username" id="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content2" width="200">
+                  <label for="username">{TR_USERNAME}</label>
+                </td>
+                <td valign="middle" nowrap="nowrap" class="content">
+                  <input type="text" name="username" id="username" value="{USERNAME}" style="width:210px" class="textinput">
+                </td>
               </tr>
               <tr>
-                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');"><label for="dmn_type1">{TR_TO_MAIN_DOMAIN}</label></td>
+                <td nowrap="nowrap" class="content2" width="200">
+                  <input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">
+                  <label for="dmn_type1">{TR_TO_MAIN_DOMAIN}</label>
+                </td>
                 <td nowrap="nowrap" class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
               <tr>
-                <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');"><label for="dmn_type2">{TR_TO_DMN_ALIAS}</label></td>
+                <td nowrap="nowrap" class="content2" width="200">
+                  <input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">
+                  <label for="dmn_type2">{TR_TO_DMN_ALIAS}</label>
+                </td>
                 <td nowrap="nowrap" class="content"><select name="als_id">
                     <!-- BDP: als_list -->
                     <option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>
@@ -203,7 +165,9 @@
 			  <!-- BDP: to_subdomain -->
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
+                  <input type="radio" name="dmn_type" id="dmn_type3" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">
+                  <label for="dmn_type3">{TR_TO_SUBDOMAIN}</label>
+                </td>
                 <td nowrap="nowrap" class="content"><select name="sub_id">
                     <!-- BDP: sub_list -->
                     <option value="{SUB_ID}" {SUB_SELECTED}>@{SUB_NAME}</option>
@@ -211,6 +175,19 @@
                   </select></td>
               </tr>
 			  <!-- EDP: to_subdomain -->
+			  <!-- BDP: to_alias_subdomain -->
+              <tr>
+                <td nowrap="nowrap" class="content2" width="200">
+                  <input type="radio" name="dmn_type" id="dmn_type4" value="als_sub" {MAIL_ALS_SUB_CHECKED} onclick="changeDom('als_subdom');">
+                  <label for="dmn_type4">{TR_TO_ALS_SUBDOMAIN}</label>
+                </td>
+                <td nowrap="nowrap" class="content"><select name="als_sub_id">
+                    <!-- BDP: als_sub_list -->
+                    <option value="{ALS_SUB_ID}" {ALS_SUB_SELECTED}>@{ALS_SUB_NAME}</option>
+                    <!-- EDP: als_sub_list -->
+                  </select></td>
+              </tr>
+			  <!-- EDP: to_alias_subdomain -->
               <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
                   &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onclick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>

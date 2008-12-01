@@ -6,6 +6,19 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript">
+<!--
+function action_delete(url, mailacc) {
+	if(url.indexOf("delete")==-1){
+		location = url;
+	} else {
+		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", mailacc)))
+			return false;
+		location = url;
+	}
+}
+//-->
+</script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -65,10 +78,12 @@
                             <td nowrap="nowrap" class="{ITEM_CLASS}">{CATCHALL_DOMAIN}</td>
                             <td nowrap="nowrap" class="{ITEM_CLASS}">{CATCHALL_ACC}</td>
                             <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100">{CATCHALL_STATUS}</td>
-                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="200"><!-- BDP: del_icon -->
+                            <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="200">
+                                <!-- BDP: del_icon -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle">
                                 <!-- EDP: del_icon -->
-                              <a href="{CATCHALL_ACTION_SCRIPT}" class="link">{CATCHALL_ACTION}</a></td>
+                              <a href="#" class="link" onclick="action_delete('{CATCHALL_ACTION_SCRIPT}', '{CATCHALL_ACC}')">{CATCHALL_ACTION}</a>
+                            </td>
                           </tr>
                           <!-- EDP: catchall_item -->
                       </table></td>

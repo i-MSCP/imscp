@@ -101,23 +101,29 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
 
 		send_request();
-		// Not correct in use with Subdomains
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
-				t1.mail_acc, t2.domain_name
+				`mail_type`, 
+				IF(`mail_type` like 'normal_%',t2.`domain_name`,
+					IF(`mail_type` like 'alias_%',t3.`alias_name`,
+						IF(`mail_type` like 'subdom_%',CONCAT(t4.`subdomain_name`,'.',t6.`domain_name`),CONCAT(t5.`subdomain_alias_name`,'.',t7.`alias_name`))
+					)
+				) AS mailbox
 			FROM
-				mail_users AS t1,
-				domain AS t2
+				`mail_users` as t1
+			left join (domain as t2) on (t1.domain_id=t2.domain_id)
+			left join (domain_aliasses as t3) on (sub_id=alias_id)
+			left join (subdomain as t4) on (sub_id=subdomain_id)
+			left join (subdomain_alias as t5) on (sub_id=subdomain_alias_id)
+			left join (domain as t6) on (t4.domain_id=t6.domain_id)
+			left join (domain_aliasses as t7) on (t5.alias_id=t7.alias_id)
 			WHERE
-					t1.mail_id = ?
-				AND
-					t1.domain_id = t2.domain_id
-SQL_QUERY;
+				`mail_id` = ?
+		";
 
 		$rs = exec_query($sql, $query, array($mail_id));
-		$mail_name = $rs->fields['mail_acc'];
-		$dmn_name = $rs->fields['domain_name'];
-		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name . "@" . $dmn_name);
+		$mail_name = $rs->fields['mailbox'];
+		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name);
 		set_page_message(tr('Mail account scheduler for modification!'));
 		header("Location: mail_accounts.php");
 		exit(0);
@@ -143,10 +149,14 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE' => tr('ispCP - Client/Enable Mail Auto Responder'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(
+	array(
+		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('ispCP - Client/Enable Mail Auto Responder'),
+		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+		'THEME_CHARSET'								=> tr('encoding'),
+		'ISP_LOGO'									=> get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
@@ -162,11 +172,15 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_ENABLE_MAIL_AUTORESPONDER' => tr('Edit mail auto responder'),
-		'TR_ARSP_MESSAGE' => tr('Your message'),
-		'TR_ENABLE' => tr('Save'),
-		'TR_CANCEL' => tr('Cancel'),
-		'ID' => $mail_id));
+$tpl->assign(
+	array(
+		'TR_ENABLE_MAIL_AUTORESPONDER'	=> tr('Edit mail auto responder'),
+		'TR_ARSP_MESSAGE'				=> tr('Your message'),
+		'TR_ENABLE'						=> tr('Save'),
+		'TR_CANCEL'						=> tr('Cancel'),
+		'ID'							=> $mail_id
+	)
+);
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');

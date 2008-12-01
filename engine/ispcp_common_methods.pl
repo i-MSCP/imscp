@@ -1937,6 +1937,30 @@ sub get_subdom_ids {
 
 }
 
+sub get_alssub_ids {
+
+    my ($rs, $rows, $sql) = ('', '', '');
+
+    $sql = "select subdomain_alias_id, subdomain_alias_name, alias_id from subdomain_alias order by subdomain_alias_id;";
+
+    ($rs, $rows) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    foreach (@$rows) {
+
+        $main::alssub_id_name{@$_[0]} = @$_[1];
+
+        $main::alssub_name_id{@$_[1]} = @$_[0];
+
+        $main::alssub_id_parentid{@$_[0]} = @$_[2];
+
+    }
+
+    return 0;
+
+}
+
 sub get_alias_ids {
 
     my ($rs, $rows, $sql) = ('', '', '');

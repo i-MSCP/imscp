@@ -8,26 +8,26 @@
 #
 #
 # License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the MPL Mozilla Public License
+#	as published by the Free Software Foundation; either version 1.1
+#	of the License, or (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	MPL Mozilla Public License for more details.
 #
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
+#	You may have received a copy of the MPL Mozilla Public License
+#	along with this program.
 #
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
+#	An on-line copy of the MPL Mozilla Public License can be found
+#	http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
 # The ispCP ω Home Page is at:
 #
-#    http://isp-control.net
+#	http://isp-control.net
 #
 
 #
@@ -36,57 +36,57 @@
 
 BEGIN {
 
-    my @needed = (strict,
-                  warnings,
-                  IO::Socket,
-                  DBI,
-                  DBD::mysql,
-                  MIME::Entity,
-                  MIME::Parser,
-                  Crypt::CBC,
-                  Crypt::Blowfish,
-                  MIME::Base64,
-                  Mail::Address,
-                  Term::ReadPassword);
+	my @needed = (strict,
+				  warnings,
+				  IO::Socket,
+				  DBI,
+				  DBD::mysql,
+				  MIME::Entity,
+				  MIME::Parser,
+				  Crypt::CBC,
+				  Crypt::Blowfish,
+				  MIME::Base64,
+				  Mail::Address,
+				  Term::ReadPassword);
 
-    my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
+	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
-    for $mod (@needed) {
+	for $mod (@needed) {
 
-        if (eval "require $mod") {
+		if (eval "require $mod") {
 
-            $mod -> import();
+			$mod -> import();
 
-        } else {
+		} else {
 
-            print STDERR "\nCRITICAL ERROR: Module [$mod] WAS NOT FOUND !\n" ;
+			print STDERR "\nCRITICAL ERROR: Module [$mod] WAS NOT FOUND !\n" ;
 
-            $mod_err = '_on_';
+			$mod_err = '_on_';
 
-            if ($mod_missing eq '') {
+			if ($mod_missing eq '') {
 
-                $mod_missing .= $mod;
+				$mod_missing .= $mod;
 
-            } else {
+			} else {
 
-                $mod_missing .= ", $mod";
+				$mod_missing .= ", $mod";
 
-            }
-        }
+			}
+		}
 
-    }
+	}
 
-    if ($mod_err eq '_on_') {
+	if ($mod_err eq '_on_') {
 
-        print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
+		print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
 
-        exit 1;
+		exit 1;
 
-    } else {
+	} else {
 
-        $| = 1;
+		$| = 1;
 
-    }
+	}
 }
 
 $main::el_sep = "\t#\t";
@@ -95,85 +95,85 @@ $main::el_sep = "\t#\t";
 
 sub push_el {
 
-    my ($el, $sub_name, $msgDebug) = @_;
+	my ($el, $sub_name, $msgDebug) = @_;
 
-    push @$el, "$sub_name".$main::el_sep."$msgDebug";
+	push @$el, "$sub_name".$main::el_sep."$msgDebug";
 
-    if (defined($main::engine_debug)) {
+	if (defined($main::engine_debug)) {
 
 		print STDOUT "push_el() sub_name: $sub_name, msg: $msgDebug\n";
 
-    }
+	}
 
 }
 
 sub pop_el {
 
-    my ($el) = @_;
+	my ($el) = @_;
 
-    my $data = pop @$el;
+	my $data = pop @$el;
 
-    if (!defined($data)) {
+	if (!defined($data)) {
 
-        if (defined($main::engine_debug)) {
+		if (defined($main::engine_debug)) {
 
 			print  STDOUT "DEBUG: pop_el() Empty 'EL' Stack !\n";
 
-        }
+		}
 
-        return undef;
-    }
+		return undef;
+	}
 
-    my ($sub_name, $msgDebug) = split(/$main::el_sep/, $data);
+	my ($sub_name, $msgDebug) = split(/$main::el_sep/, $data);
 
-    if (defined($main::engine_debug)) {
+	if (defined($main::engine_debug)) {
 
 		print STDOUT "DEBUG: pop_el() sub_name: $sub_name, msg: $msgDebug\n";
 
 	}
 
-    return $data;
+	return $data;
 
 }
 
 
 sub dump_el {
 
-    my ($el, $fname) = @_;
+	my ($el, $fname) = @_;
 
 	my $res = undef;
 
-    if ($fname ne 'stdout') {
+	if ($fname ne 'stdout') {
 
-        $res = open(FP, ">>", $fname);
+		$res = open(FP, ">>", $fname);
 
-        if (!defined($res)) {
+		if (!defined($res)) {
 
-            return 0;
+			return 0;
 
-        }
+		}
 
-    }
+	}
 
-    my $el_data = undef;
+	my $el_data = undef;
 
-    while (defined($el_data = pop_el(\@main::el))) {
+	while (defined($el_data = pop_el(\@main::el))) {
 
-        my ($sub_name, $msgDebug) = split(/$main::el_sep/, $el_data);
+		my ($sub_name, $msgDebug) = split(/$main::el_sep/, $el_data);
 
-        if ($fname eq 'stdout') {
+		if ($fname eq 'stdout') {
 
-            printf STDOUT "%-30s | %s\n",  $sub_name, $msgDebug;
+			printf STDOUT "%-30s | %s\n",  $sub_name, $msgDebug;
 
-        } else {
+		} else {
 
-            printf FP "%-30s | %s\n",  $sub_name, $msgDebug;
+			printf FP "%-30s | %s\n",  $sub_name, $msgDebug;
 
-        }
+		}
 
-    }
+	}
 
-    close(FP);
+	close(FP);
 
 }
 
@@ -195,167 +195,167 @@ $main::db = undef;
 
 sub doSQL {
 
-    my ($sql) = @_;
+	my ($sql) = @_;
 
-    my $qr = undef;
+	my $qr = undef;
 
-    push_el(\@main::el, 'doSQL()', 'Starting...');
+	push_el(\@main::el, 'doSQL()', 'Starting...');
 
-    if (!defined($sql) || ($sql eq '')) {
+	if (!defined($sql) || ($sql eq '')) {
 
-        push_el(\@main::el, 'doSQL()', 'ERROR: Undefined SQL query !');
+		push_el(\@main::el, 'doSQL()', 'ERROR: Undefined SQL query !');
 
-        return (-1, '');
+		return (-1, '');
 
-    }
+	}
 
-    if (!defined($main::db) || !ref($main::db)) {
+	if (!defined($main::db) || !ref($main::db)) {
 
-        $main::db = DBI -> connect(@main::db_connect, {PrintError => 0});
+		$main::db = DBI -> connect(@main::db_connect, {PrintError => 0});
 
-        if ( !defined($main::db) ) {
+		if ( !defined($main::db) ) {
 
-            push_el(
-                    \@main::el,
-                    'doSQL()',
-                    'ERROR: Unable to connect SQL server !'
-                   );
+			push_el(
+					\@main::el,
+					'doSQL()',
+					'ERROR: Unable to connect SQL server !'
+				   );
 
-            return (-1, '');
+			return (-1, '');
 
-        }
-    }
+		}
+	}
 
-    if ($sql =~ /select/i) {
+	if ($sql =~ /select/i) {
 
-        $qr = $main::db -> selectall_arrayref($sql);
+		$qr = $main::db -> selectall_arrayref($sql);
 
-    } else {
+	} else {
 
-        $qr = $main::db -> do($sql);
+		$qr = $main::db -> do($sql);
 
-    }
+	}
 
-    if (defined($qr)) {
+	if (defined($qr)) {
 
-        push_el(\@main::el, 'doSQL()', 'Ending...');
+		push_el(\@main::el, 'doSQL()', 'Ending...');
 
-        return (0, $qr);
+		return (0, $qr);
 
-    } else {
+	} else {
 
-        push_el(\@main::el, 'doSQL()', 'ERROR: Incorrect SQL Query -> '.$main::db -> errstr);
+		push_el(\@main::el, 'doSQL()', 'ERROR: Incorrect SQL Query -> '.$main::db -> errstr);
 
-        return (-1, '');
+		return (-1, '');
 
-    }
+	}
 
 
 }
 
 sub get_file {
 
-    my ($fname) = @_;
+	my ($fname) = @_;
 
-    push_el(\@main::el, 'get_file()', 'Starting...');
+	push_el(\@main::el, 'get_file()', 'Starting...');
 
-    if (!defined($fname) || ($fname eq '')) {
+	if (!defined($fname) || ($fname eq '')) {
 
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: Undefined input data, fname: |$fname| !"
-               );
+		push_el(
+			\@main::el,
+			'get_file()',
+			"ERROR: Undefined input data, fname: |$fname| !"
+		);
 
-        return (-1, '');
+		return (-1, '');
 
-    }
+	}
 
-    if (! -e $fname) {
+	if (! -e $fname) {
 
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: File '$fname' does not exist !"
-               );
+		push_el(
+			\@main::el,
+			'get_file()',
+			"ERROR: File '$fname' does not exist !"
+		);
 
-        return (-1, '');
+		return (-1, '');
 
-    }
+	}
 
-    my $res = open(F, '<', $fname);
+	my $res = open(F, '<', $fname);
 
-    if (!defined($res)) {
+	if (!defined($res)) {
 
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: Can't open '$fname' for reading !"
-               );
+		push_el(
+				\@main::el,
+				'get_file()',
+				"ERROR: Can't open '$fname' for reading !"
+			   );
 
-        return (-1, '');
+		return (-1, '');
 
-    }
+	}
 
-    my @fdata = <F>;
+	my @fdata = <F>;
 
-    close(F);
+	close(F);
 
-    my $line = join('', @fdata);
+	my $line = join('', @fdata);
 
-    push_el(\@main::el, 'get_file()', 'Ending...');
+	push_el(\@main::el, 'get_file()', 'Ending...');
 
-    return (0, $line);
+	return (0, $line);
 
 }
 
 sub del_file {
 
-    my ($fname) = @_;
+	my ($fname) = @_;
 
-    push_el(\@main::el, 'del_file()', 'Starting...');
+	push_el(\@main::el, 'del_file()', 'Starting...');
 
-    if (!defined($fname) || ($fname eq '')) {
+	if (!defined($fname) || ($fname eq '')) {
 
-        push_el(
-                \@main::el,
-                'del_file()',
-                "ERROR: Undefined input data, fname: |$fname| !"
-               );
+		push_el(
+			\@main::el,
+			'del_file()',
+			"ERROR: Undefined input data, fname: |$fname| !"
+		);
 
-        return -1;
+		return -1;
 
-    }
+	}
 
-    if (! -e $fname) {
+	if (! -e $fname) {
 
-        push_el(
-                \@main::el,
-                'del_file()',
-                "ERROR: File '$fname' does not exist !"
-               );
+		push_el(
+			\@main::el,
+			'del_file()',
+			"ERROR: File '$fname' does not exist !"
+		);
 
-        return -1;
+		return -1;
 
-    }
+	}
 
-    my $res = unlink ($fname);
+	my $res = unlink ($fname);
 
-    if ($res != 1) {
+	if ($res != 1) {
 
-        push_el(
-                \@main::el,
-                'del_file()',
-                "ERROR: Can't unlink '$fname' !"
-               );
+		push_el(
+			\@main::el,
+			'del_file()',
+			"ERROR: Can't unlink '$fname' !"
+		);
 
-        return -1;
+		return -1;
 
-    }
+	}
 
-    push_el(\@main::el, 'del_file()', 'Ending...');
+	push_el(\@main::el, 'del_file()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -375,143 +375,143 @@ require 'ispcp-db-keys.pl';
 
 sub encrypt_db_password {
 
-    my ($pass) = @_;
+	my ($pass) = @_;
 
-    push_el(\@main::el, 'encrypt_db_password()', 'Starting...');
+	push_el(\@main::el, 'encrypt_db_password()', 'Starting...');
 
-    if (!defined($pass) || $pass eq '') {
+	if (!defined($pass) || $pass eq '') {
 
-        push_el(\@main::el, 'encrypt_db_password()', 'ERROR: Undefined input data ($pass)...');
+		push_el(\@main::el, 'encrypt_db_password()', 'ERROR: Undefined input data ($pass)...');
 
-        return (1, '');
+		return (1, '');
 
-    }
+	}
 
-    my $cipher = Crypt::CBC -> new(
-                                    {
-                                        'key'             => $main::db_pass_key,
+	my $cipher = Crypt::CBC -> new(
+									{
+										'key'			 => $main::db_pass_key,
 										'keysize' 		  => 32,
-                                        'cipher'          => 'Blowfish',
-                                        'iv'              => $main::db_pass_iv,
-                                        'regenerate_key'  => 0,
-                                        'padding'         => 'space',
-                                        'prepend_iv'      => 0
-                                    }
-                                  );
+										'cipher'		  => 'Blowfish',
+										'iv'			  => $main::db_pass_iv,
+										'regenerate_key'  => 0,
+										'padding'		 => 'space',
+										'prepend_iv'	  => 0
+									}
+								  );
 
-    my $ciphertext = $cipher->encrypt($pass);
+	my $ciphertext = $cipher->encrypt($pass);
 
-    my $encoded = encode_base64($ciphertext); chop($encoded);
+	my $encoded = encode_base64($ciphertext); chop($encoded);
 
-    push_el(\@main::el, 'encrypt_db_password()', 'Ending...');
+	push_el(\@main::el, 'encrypt_db_password()', 'Ending...');
 
-    return (0, $encoded);
+	return (0, $encoded);
 
 }
 
 sub decrypt_db_password {
 
-    my ($pass) = @_;
+	my ($pass) = @_;
 
-    push_el(\@main::el, 'decrypt_db_password()', 'Starting...');
+	push_el(\@main::el, 'decrypt_db_password()', 'Starting...');
 
-    if (!defined($pass) || $pass eq '') {
+	if (!defined($pass) || $pass eq '') {
 
-        push_el(\@main::el, 'decrypt_db_password()', 'ERROR: Undefined input data ($pass)...');
+		push_el(\@main::el, 'decrypt_db_password()', 'ERROR: Undefined input data ($pass)...');
 
-        return (1, '');
+		return (1, '');
 
-    }
+	}
 
-    my $cipher = Crypt::CBC -> new(
-                                    {
-                                        'key'             => $main::db_pass_key,
+	my $cipher = Crypt::CBC -> new(
+									{
+										'key'			 => $main::db_pass_key,
 										'keysize' 		  => 32,
-                                        'cipher'          => 'Blowfish',
-                                        'iv'              => $main::db_pass_iv,
-                                        'regenerate_key'  => 0,
-                                        'padding'         => 'space',
-                                        'prepend_iv'      => 0
-                                    }
-                                  );
+										'cipher'		  => 'Blowfish',
+										'iv'			  => $main::db_pass_iv,
+										'regenerate_key'  => 0,
+										'padding'		 => 'space',
+										'prepend_iv'	  => 0
+									}
+								  );
 
-    my $decoded = decode_base64("$pass\n");
+	my $decoded = decode_base64("$pass\n");
 
-    my $plaintext = $cipher -> decrypt($decoded);
+	my $plaintext = $cipher -> decrypt($decoded);
 
 
-    push_el(\@main::el, 'decrypt_db_password()', 'Ending...');
+	push_el(\@main::el, 'decrypt_db_password()', 'Ending...');
 
-    return (0, $plaintext);
+	return (0, $plaintext);
 
 }
 
 sub setup_main_vars {
 
-    push_el(\@main::el, 'setup_main_vars()', 'Starting...');
+	push_el(\@main::el, 'setup_main_vars()', 'Starting...');
 
-    #
-    # Database backend vars;
-    #
+	#
+	# Database backend vars;
+	#
 
-    $main::db_host = $main::cfg{'DATABASE_HOST'};
+	$main::db_host = $main::cfg{'DATABASE_HOST'};
 
-    $main::db_user = $main::cfg{'DATABASE_USER'};
+	$main::db_user = $main::cfg{'DATABASE_USER'};
 
-    $main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
+	$main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
 
-    if ($main::db_pwd ne '') {
+	if ($main::db_pwd ne '') {
 
-        my $rs = undef;
+		my $rs = undef;
 
-        ($rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
+		($rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
 
-    }
+	}
 
 
 
-    $main::db_name = $main::cfg{'DATABASE_NAME'};
+	$main::db_name = $main::cfg{'DATABASE_NAME'};
 
-    @main::db_connect = (
-                         "DBI:mysql:$main::db_name:$main::db_host",
-                         $main::db_user,
-                         $main::db_pwd
-                        );
+	@main::db_connect = (
+						 "DBI:mysql:$main::db_name:$main::db_host",
+						 $main::db_user,
+						 $main::db_pwd
+						);
 
-    push_el(\@main::el, 'setup_main_vars()', 'Ending...');
+	push_el(\@main::el, 'setup_main_vars()', 'Ending...');
 
-    return 0;
+	return 0;
 }
 
 sub get_conf {
 
-    push_el(\@main::el, 'get_conf()', 'Starting...');
+	push_el(\@main::el, 'get_conf()', 'Starting...');
 
-    my ($rs, $fline) = get_file($main::cfg_file);
+	my ($rs, $fline) = get_file($main::cfg_file);
 
-    return -1 if ($rs != 0);
+	return -1 if ($rs != 0);
 
-    my @frows = split(/\n/, $fline);
+	my @frows = split(/\n/, $fline);
 
-    my $i = '';
+	my $i = '';
 
-    for ($i = 0; $i < scalar(@frows); $i++) {
+	for ($i = 0; $i < scalar(@frows); $i++) {
 
-        $frows[$i] = "$frows[$i]\n";
+		$frows[$i] = "$frows[$i]\n";
 
-        if ($frows[$i] =~ /$main::cfg_re/) {
+		if ($frows[$i] =~ /$main::cfg_re/) {
 
-            $main::cfg{$1} = $2;
+			$main::cfg{$1} = $2;
 
-        }
+		}
 
-    }
+	}
 
-    return -1 if (setup_main_vars() != 0);
+	return -1 if (setup_main_vars() != 0);
 
-    push_el(\@main::el, 'get_conf()', 'Ending...');
+	push_el(\@main::el, 'get_conf()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -529,7 +529,7 @@ if ($rs != 0) {
 	exit 0;
 }
 
-#$main::engine_debug = '_on_';
+# $main::engine_debug = '_on_';
 
 # debug dump files;
 $main::log_dir = $main::cfg{'LOG_DIR'};
@@ -555,73 +555,74 @@ my $msg = join('', @msg_rows);
 
 sub arpl_msgr_start_up {
 
-    my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'arpl_msgr_start_up()', 'Starting...');
+	push_el(\@main::el, 'arpl_msgr_start_up()', 'Starting...');
 
-    # Let's clear Execution Logs, if any.
+	# Let's clear Execution Logs, if any.
 
-    if (-e $main::ispcp_arpl_msgr_el) {
+	if (-e $main::ispcp_arpl_msgr_el) {
 
-        $rs = del_file($main::ispcp_arpl_msgr_el);
+		$rs = del_file($main::ispcp_arpl_msgr_el);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
-    }
+	}
 
-    # config check;
+	# config check;
 
-    $rs = get_conf();
+	$rs = get_conf();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    # sql check;
+	# sql check;
 
-    #
-    # getting initial data also must be done here;
-    #
+	#
+	# getting initial data also must be done here;
+	#
 
-    my $sql = "
-    SELECT
-		domain_id,
-		domain_name,
-		domain_gid,
-		domain_uid,
-		domain_admin_id,
-		domain_created_id,
-		domain_created,
-		domain_last_modified,
-		domain_mailacc_limit,
-		domain_ftpacc_limit,
-		domain_traffic_limit,
-		domain_sqld_limit,
-		domain_sqlu_limit,
-		domain_status,
-		domain_alias_limit,
-		domain_ip_id,
-		domain_disk_limit,
-		domain_disk_usage,
-		domain_php,
-		domain_cgi
-	FROM
-		domain
-    ";
+	my $sql = "
+		SELECT
+			domain_id,
+			domain_name,
+			domain_gid,
+			domain_uid,
+			domain_admin_id,
+			domain_created_id,
+			domain_created,
+			domain_last_modified,
+			domain_mailacc_limit,
+			domain_ftpacc_limit,
+			domain_traffic_limit,
+			domain_sqld_limit,
+			domain_sqlu_limit,
+			domain_status,
+			domain_alias_limit,
+			domain_ip_id,
+			domain_disk_limit,
+			domain_disk_usage,
+			domain_php,
+			domain_cgi
+		FROM
+			domain
+		LIMIT 1
+	";
 
-    ($rs, $rdata) = doSQL($sql);
+	($rs, $rdata) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'arpl_msgr_start_up()', 'Ending...');
+	push_el(\@main::el, 'arpl_msgr_start_up()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 sub arpl_msgr_shut_down {
 
-    my $rs = undef;
+	my $rs = undef;
 
-    push_el(\@main::el, 'arpl_msgr_shut_down()', 'Starting...');
+	push_el(\@main::el, 'arpl_msgr_shut_down()', 'Starting...');
 
 	$main::db -> disconnect();
 
@@ -629,19 +630,19 @@ sub arpl_msgr_shut_down {
 
 		$rs = del_file($main::ispcp_arpl_msgr_stdout);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 		$rs = del_file($main::ispcp_arpl_msgr_stderr);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
 
 		push_el(\@main::el, 'arpl_msgr_shut_down()', "delete debugfiles.");
 
 	}
 
-    push_el(\@main::el, 'arpl_msgr_shut_down()', 'Ending...');
+	push_el(\@main::el, 'arpl_msgr_shut_down()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -655,9 +656,9 @@ sub arpl_msgr_engine {
 
 	$msg_parser -> output_to_core(1);
 
-    my $msg_entity = $msg_parser -> parse_data($msg);
+	my $msg_entity = $msg_parser -> parse_data($msg);
 
-    my $head = $msg_entity -> head();
+	my $head = $msg_entity -> head();
 
 	my @from_ma = Mail::Address->parse($head -> get('From'));
 
@@ -667,7 +668,7 @@ sub arpl_msgr_engine {
 
 	my $edmn = undef;
 
-	my @edmn = @_;
+# 	my @edmn = @_;
 
 	my $name = undef;
 
@@ -696,141 +697,183 @@ sub arpl_msgr_engine {
 					else { $name = ""; }
 				}
 
-    			push_el(\@main::el, 'arpl_msgr_engine()', ">>> From: |".$from_ma[0]->address."|, To: |".$to_ma->address."|");
+				push_el(\@main::el, 'arpl_msgr_engine()', ">>> From: |".$from_ma[0]->address."|, To: |".$to_ma->address."|");
 
-    	    	push_el(\@main::el, 'arpl_msgr_engine()', "loop!");
+				push_el(\@main::el, 'arpl_msgr_engine()', "loop!");
 
 				my $ma = $to_ma->address."\n";
 
-				# TODO: Resolve forwards
-                return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)$/));
+# 				# TODO: Resolve forwards
+# 				return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)$/));
+# 
+# 				# postbox with normal_mail, alias_mail or subdom_mail as type, so '_mail'
+# 				$sql = "SELECT `mail_forward`, INSTR(`mail_type`, '_mail') FROM `mail_users` WHERE `mail_addr` = '$ma'";
+# 
+# 				($rs, $ref) = doSQL($sql);
+# 				return $rs if ($rs != 0);
+# 
+# 				my $ref = @$ref[0]; # erster Datensatz
+# 
+# 				# second field = 0 -> no postbox (forward, etc.)
+# 				if (@$ref[1] == 0) {
+# 					# first field -> forward address
+# 					$ma = @$ref[0];
+# 				}
+# 
+# 				$ma = $ma."\n";
 
-                # postbox with normal_mail, alias_mail or subdom_mail as type, so '_mail'
-	            $sql = "SELECT `mail_forward`, INSTR(`mail_type`, '_mail') FROM `mail_users` WHERE `mail_addr` = '$ma'";
+				return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)\n$/));
 
-                ($rs, $ref) = doSQL($sql);
+				my ($user, $dmn) = ($1, $2);
+
+				my ($dmn_id, $sub_id, $pt, $ref) = (undef, undef, undef, undef);
+
+				my ($domainformsubdomain, $subformsubdomain) = (undef, undef);
+
+			 	#@edmn = split(/\./,$2,2);
+
+			 	#$edmn = $edmn[1];
+
+			 	$edmn = $2;
+
+				$sql = "SELECT count(domain_id) AS cnt FROM domain WHERE domain_name = '$edmn'";
+
+				($rs, $ref) = doSQL($sql);
+
 				return $rs if ($rs != 0);
 
-                my $ref = @$ref[0]; # erster Datensatz
+				$ref = @$ref[0];
 
-                # second field = 0 -> no postbox (forward, etc.)
-                if (@$ref[1] == 0) {
-	                # first field -> forward address
-                	$ma = @$ref[0];
-                }
+				if (@$ref[0] == 1) {
 
-                $ma = $ma."\n";
+					$pt = 1;
 
-        		return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)\n$/));
+				} else {
 
-	        	my ($user, $dmn) = ($1, $2);
+					$sql = "SELECT count(alias_id) AS cnt FROM domain_aliasses WHERE alias_name = '$edmn'";
 
-    	    	my ($dmn_id, $sub_id, $pt) = (undef, undef, undef, undef, undef);
+					($rs, $ref) = doSQL($sql);
+					return $rs if ($rs != 0);
 
-       		 	my ($domainformsubdomain, $subformsubdomain) = (undef, undef);
+					$ref = @$ref[0];
 
-       		 	#@edmn = split(/\./,$2,2);
+					if (@$ref[0] == 1) {
 
-       		 	#$edmn = $edmn[1];
+						$pt = 2;
 
-       		 	$edmn = $2;
+					} else {
 
-        		$sql = "select count(domain_id) as cnt from domain where domain_name = '$edmn'";
+						$sql = "
+							SELECT 
+								COUNT(t1.`subdomain_id`) AS cnt
+							FROM 
+								`subdomain` AS t1 
+							LEFT JOIN (`domain` AS t2) on (t1.`domain_id` =t2.`domain_id`)
+							WHERE
+								CONCAT(t1.`subdomain_name`,'.',t2.`domain_name`) ='$edmn'
+						";
 
-	        	($rs, $ref) = doSQL($sql);
+						($rs, $ref) = doSQL($sql);
+						return $rs if ($rs != 0);
 
-    	    	return $rs if ($rs != 0);
+						$ref = @$ref[0];
 
-        		$ref = @$ref[0];
+						if (@$ref[0] == 1) {
 
-        		if (@$ref[0] == 1) {
+							$pt = 3;
 
-            		$pt = 1;
+						} else {
 
-	        	} else {
+							$pt = 4;
 
-        		$sql = "select count(alias_id) as cnt from domain_aliasses where alias_name = '$edmn'";
+						}
 
-	        	($rs, $ref) = doSQL($sql);
+					}
 
-    	    	return $rs if ($rs != 0);
+				}
 
-        		$ref = @$ref[0];
-
-        		if (@$ref[0] == 1) {
-
-	        	$pt = 2;
-
-        		}
-        		else {
-
-        		$pt = 3;
-
-        		}
-
-        		}
-
-        		if ($pt == 1) {
-
-	            	$sql = "
-					SELECT 
-						mail_auto_respond_text 
-					FROM 
-						mail_users 
-					LEFT JOIN 
-						domain ON mail_users.domain_id=domain.domain_id 
-					WHERE
-						mail_acc = '$user' AND 
-						mail_auto_respond=1 AND 
-						domain_name = '$edmn' AND 
-						sub_id=0
-					COLLATE
-						utf-8;";
-
-	    	    } elsif ($pt == 2) {
-
-				$sql = "
-				SELECT 
-					mail_auto_respond_text 
-				FROM 
-					mail_users 
-				LEFT JOIN 
-					domain_aliasses ON mail_users.sub_id=domain_aliasses.alias_id 
-				WHERE 
-					mail_acc = '$user' AND 
-					mail_auto_respond=1 AND 
-					alias_name = '$edmn' 
-				COLLATE 
-					utf-8;";
-
-	       		} elsif ($pt == 3) {
+				if ($pt == 1) {
 
 					$sql = "
-					SELECT 
-						mail_auto_respond_text 
-					FROM 
-						mail_users 
-					LEFT JOIN
-						subdomain ON mail_users.sub_id=subdomain.subdomain_id 
-					LEFT JOIN
-						domain ON subdomain.domain_id=domain.domain_id 
-					WHERE 
-						mail_acc = '$user' AND 
-						mail_auto_respond=1 AND
-						(CONCAT(subdomain_name,'.',domain_name) = '$edmn') 
-					COLLATE 
-						utf-8;";
+						SELECT
+							t1.`mail_auto_respond_text`
+						FROM
+							`mail_users` as t1
+						LEFT JOIN (`domain` as t2) ON (t1.`domain_id`=t2.`domain_id`)
+						WHERE
+							t1.`mail_acc` = '$user'
+						AND
+							t1.`mail_auto_respond`=1
+						AND
+							t2.`domain_name` = '$edmn'
+						AND
+							t1.`sub_id`=0
+						COLLATE utf-8
+					";
 
-		   		}
+				} elsif ($pt == 2) {
 
-    			push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
+					$sql = "
+						SELECT
+							`mail_auto_respond_text`
+						FROM
+							`mail_users` as t1
+						LEFT JOIN (`domain_aliasses` as t2) ON (t1.`sub_id`=t2.`alias_id`)
+						WHERE
+							t1.`mail_acc` = '$user'
+						AND
+							t1.`mail_auto_respond`=1
+						AND
+							t2.`alias_name` = '$edmn'
+						COLLATE utf-8
+					";
 
-	    	    ($rs, $ref) = doSQL($sql);
+				} elsif ($pt == 3) {
 
-	        	return $rs if ($rs != 0);
+					$sql = "
+						SELECT
+							`mail_auto_respond_text`
+						FROM
+							`mail_users` as t1
+						LEFT JOIN (`subdomain` as t2) ON t1.`sub_id`=t2.`subdomain_id`
+						LEFT JOIN (`domain` as t3) ON t2.`domain_id`=t3.`domain_id`
+						WHERE
+							t1.`mail_acc` = '$user'
+						AND
+							t1.`mail_auto_respond`=1
+						AND
+							(CONCAT(t2.`subdomain_name`,'.',t3.`domain_name`) = '$edmn')
+						COLLATE utf-8
+					";
+
+				} elsif ($pt == 4) {
+
+					$sql = "
+						SELECT
+							t1.`mail_auto_respond_text`
+						FROM
+							`mail_users` AS t1
+						LEFT JOIN (`subdomain_alias` AS t2) ON (t1.`sub_id`=t2.`subdomain_alias_id`)
+						LEFT JOIN (`domain_aliasses` AS t3) ON (t2.`alias_id`=t3.`alias_id`)
+						WHERE
+							t1.`mail_acc` = '$user'
+						AND
+							t1.`mail_auto_respond`=1
+						AND
+							(CONCAT(t2.`subdomain_alias_name`,'.',t3.`alias_name`) = '$edmn')
+						COLLATE utf-8
+					";
+
+				}
+
+				push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
+
+				($rs, $ref) = doSQL($sql);
+
+				return $rs if ($rs != 0);
 
 
-		        $ref = @$ref[0];
+				$ref = @$ref[0];
 				my $auto_message = @$ref[0];
 
 				if (length($auto_message) > 0) {
@@ -844,31 +887,31 @@ sub arpl_msgr_engine {
 					}
 
 
-			        my $out = new MIME::Entity;
+					my $out = new MIME::Entity;
 
-            		$mail_to=~s/\@ispcp-arpl./\@/;
+					$mail_to=~s/\@ispcp-arpl./\@/;
 
 					$out -> build(
-    		    	              From => $mail_to,
-        		    	          To => $head -> get('From'),
-            		    	      Subject => "[Autoreply] ".$head -> get('Subject'),
-                		    	  Type => "multipart/mixed",
+								  From => $mail_to,
+								  To => $head -> get('From'),
+								  Subject => "[Autoreply] ".$head -> get('Subject'),
+								  Type => "multipart/mixed",
 								  'X-Autoresponse-From' => $mail_to,
-	                    		  'X-Mailer' => "ispCP $main::cfg{'Version'} Autoreply Manager"
+								  'X-Mailer' => "ispCP $main::cfg{'Version'} Autoreply Manager"
 								);
 
 
 					$out -> attach(
-	                    		  Type => "text/plain",
-    	                		  Encoding => "7bit",
-        	            		  Description => "Mail User Autoreply Message",
-            	        		  Data => $auto_message
+								  Type => "text/plain",
+								  Encoding => "7bit",
+								  Description => "Mail User Autoreply Message",
+								  Data => $auto_message
 								);
 
 					$out -> attach(
-    	                		  Type => "message/rfc822",
-        	            		  Description => "Original Message",
-            	        		  Data => $msg
+								  Type => "message/rfc822",
+								  Description => "Original Message",
+								  Data => $msg
 								);
 
 					open MAIL, "| /usr/sbin/sendmail -t -oi";
@@ -878,7 +921,7 @@ sub arpl_msgr_engine {
 					close MAIL;
 				}
 
-		    	push_el(\@main::el, 'arpl_msgr_engine()', 'Ending...');
+				push_el(\@main::el, 'arpl_msgr_engine()', 'Ending...');
 
 			}
 			else
@@ -901,11 +944,11 @@ $rs = arpl_msgr_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
-    arpl_msgr_shut_down();
+	arpl_msgr_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -913,11 +956,11 @@ $rs = arpl_msgr_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
-    arpl_msgr_shut_down();
+	arpl_msgr_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -925,9 +968,9 @@ $rs = arpl_msgr_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
-    exit 1;
+	exit 1;
 
 }
 

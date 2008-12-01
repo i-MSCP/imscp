@@ -606,6 +606,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 			$type = 'sql_database';
 			break;
 		case 'dmn':
+		case 'normal':
 		case 'domain':
 			if (!is_numeric($id)) {
 				$type = 'domain';
@@ -623,11 +624,19 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 			}
 			break;
 		case 'sub':
+		case 'subdom':
 		case 'subdomain':
 			if (!is_numeric($id)) {
 				$type = 'subdomain';
 			} else {
 				$type = 'subdomain_id';
+			}
+			break;
+		case 'alssub':
+			if (!is_numeric($id)) {
+				$type = 'subdomain_alias';
+			} else {
+				$type = 'subdomain_alias_id';
 			}
 			break;
 	}
@@ -675,6 +684,18 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	$resolvers['subdomain']['pos'] = 1;
 	$resolvers['subdomain']['is_final'] = false;
 	$resolvers['subdomain']['next'] = 'dmn';
+
+	$resolvers['subdomain_alias_id'] = array();
+	$resolvers['subdomain_alias_id']['query'] = 'SELECT alias_id FROM subdomain_alias WHERE subdomain_alias_id = ? LIMIT 1;';
+	$resolvers['subdomain_alias_id']['is_final'] = false;
+	$resolvers['subdomain_alias_id']['next'] = 'alias';
+
+	$resolvers['subdomain_alias'] = array();
+	$resolvers['subdomain_alias']['query'] = false;
+	$resolvers['subdomain_alias']['separator'] = '.';
+	$resolvers['subdomain_alias']['pos'] = 1;
+	$resolvers['subdomain_alias']['is_final'] = false;
+	$resolvers['subdomain_alias']['next'] = 'alias';
 
 	$resolvers['client'] = array();
 	$resolvers['client']['query'] = 'SELECT created_by FROM admin WHERE admin_id = ? LIMIT 1;';

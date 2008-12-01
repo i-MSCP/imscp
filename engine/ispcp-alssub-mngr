@@ -1757,6 +1757,366 @@ sub alssub_del_httpd_data {
 
 }
 
+#
+# Postfix MTA Managment;
+#
+
+sub alssub_add_mta_cfg_data {
+
+    my ($sub_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'alssub_add_mta_cfg_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_add_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $sub_pref = @$sub_data[2];
+
+    my $dmn_name = @$sub_data[7];
+
+    my $sub_name = "$sub_pref.$dmn_name";
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+
+
+    my $tpl_dir = "$conf_dir/postfix/parts";
+
+    my $working_dir = "$conf_dir/postfix/working";
+
+    my $backup_dir = "$conf_dir/postfix/backup";
+
+
+    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+
+    my $working_cfg = "$working_dir/domains";
+
+
+
+    my $timestamp = time;
+
+    my $backup_cfg = "$backup_dir/domains.$timestamp";
+
+    my ($sys, $working) = (undef, undef);
+
+    #
+    # Getting needed configs;
+    #
+
+    ($rs, $sys) = get_file($sys_cfg);
+
+    return $rs if ($rs != 0);
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Checking for domain entry existance;
+    #
+
+    $working =~ s/^$sub_name\t\t\t[^\n]+\n//gim;
+
+    $working .= "$sub_name\t\t\tvalssub-entry\n";
+
+    #
+    # Let's do some backup first;
+    #
+
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's write configs;
+    #
+
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command("$cmd_postmap $sys_cfg");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_add_mta_cfg_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_del_mta_cfg_data {
+
+    my ($sub_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'alssub_del_mta_cfg_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_del_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $sub_pref = @$sub_data[2];
+
+    my $dmn_name = @$sub_data[7];
+
+    my $sub_name = "$sub_pref.$dmn_name";
+
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+
+
+    my $tpl_dir = "$conf_dir/postfix/parts";
+
+    my $working_dir = "$conf_dir/postfix/working";
+
+    my $backup_dir = "$conf_dir/postfix/backup";
+
+
+    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+
+    my $working_cfg = "$working_dir/domains";
+
+
+
+    my $timestamp = time;
+
+    my $backup_cfg = "$backup_dir/domains.$timestamp";
+
+    my ($sys, $working) = (undef, undef);
+
+    #
+    # Getting needed configs;
+    #
+
+    ($rs, $sys) = get_file($sys_cfg);
+
+    return $rs if ($rs != 0);
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Checking for domain entry existance;
+    #
+
+    $working =~ s/^$sub_name\t\t\t[^\n]+\n//gim;
+
+    #
+    # Let's do some backup first;
+    #
+
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's write configs;
+    #
+
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command("$cmd_postmap $sys_cfg");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_del_mta_cfg_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_add_mta_file_data {
+
+    my ($sub_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'sub_add_mta_file_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'sub_add_mta_file_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $sub_pref = @$sub_data[2];
+
+    my $dmn_name = @$sub_data[7];
+
+    my $sub_name = "$sub_pref.$dmn_name";
+
+
+    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
+
+    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
+
+    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
+
+
+    $rs = make_dir(
+                   "$virtual_mail_dir/$sub_name",
+                   $mailbox_uid_name,
+                   $mailbox_gid_name,
+                   0700
+                  );
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'sub_add_mta_file_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_del_mta_file_data {
+
+    my ($sub_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'alssub_del_mta_file_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_del_mta_file_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $sub_pref = @$sub_data[2];
+
+    my $dmn_name = @$sub_data[7];
+
+    my $sub_name = "$sub_pref.$dmn_name";
+
+
+    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
+
+    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
+
+    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
+
+
+    $rs = del_dir("$virtual_mail_dir/$sub_name");
+
+    return $rs if ($rs != 0);
+
+
+    push_el(\@main::el, 'alssub_del_mta_file_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_add_mta_data {
+
+    my ($sub_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'alssub_add_mta_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_add_mta_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = alssub_add_mta_cfg_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    $rs = alssub_add_mta_file_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_add_mta_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_change_mta_data {
+
+    my ($sub_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'alssub_change_mta_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_change_mta_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = alssub_add_mta_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_change_mta_data()', 'Ending...');
+
+    return 0;
+}
+
+sub alssub_del_mta_data {
+
+    my ($sub_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'alssub_del_mta_data()', 'Starting...');
+
+    if (!defined($sub_data) || $sub_data eq '') {
+
+        push_el(\@main::el, 'alssub_del_mta_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = alssub_del_mta_cfg_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    $rs = alssub_del_mta_file_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'alssub_del_mta_data()', 'Ending...');
+
+    return 0;
+}
+
 sub alssub_add_proftpd_cfg_data {
 	my ($sub_data)   = @_;
 	my ($rs, $rdata) = (undef, undef);
@@ -1943,6 +2303,11 @@ sub alssub_add_data {
 
     return $rs if ($rs != 0);
 
+
+    $rs = alssub_add_mta_data($sub_data);
+
+    return $rs if ($rs != 0);
+
     push_el(\@main::el, 'alssub_add_data()', 'Ending...');
 
     return 0;
@@ -1974,6 +2339,10 @@ sub alssub_change_data {
     return $rs if ($rs != 0);
 
     $rs = alssub_change_httpd_data($sub_data);
+
+    return $rs if ($rs != 0);
+
+    $rs = alssub_change_mta_data($sub_data);
 
     return $rs if ($rs != 0);
 
@@ -2011,6 +2380,10 @@ sub alssub_del_data {
 
     return $rs if ($rs != 0);
 
+    $rs = alssub_del_mta_data($sub_data);
+
+    return $rs if ($rs != 0);
+
     push_el(\@main::el, 'alssub_del_data()', 'Ending...');
 
     return 0;
@@ -2023,53 +2396,56 @@ sub alssub_mngr_engine {
 
     push_el(\@main::el, 'alssub_mngr_engine()', 'Starting...');
 
-    my $sql = "
-      SELECT
-        t1.subdomain_alias_id,
-        t1.alias_id,
-        t1.subdomain_alias_name,
-        t1.subdomain_alias_mount,
-        t1.subdomain_alias_status,
-        t2.alias_id,
-        t2.domain_id,
-        t2.alias_name,
-        t2.alias_status,
-        t2.alias_mount,
-        t2.alias_ip_id,
-        t2.url_forward,
-        t3.domain_id,
-        t3.domain_name,
-        t3.domain_gid,
-        t3.domain_uid,
-        t3.domain_admin_id,
-        t3.domain_created_id,
-        t3.domain_created,
-        t3.domain_last_modified,
-        t3.domain_mailacc_limit,
-        t3.domain_ftpacc_limit,
-        t3.domain_traffic_limit,
-        t3.domain_sqld_limit,
-        t3.domain_sqlu_limit,
-        t3.domain_status,
-        t3.domain_alias_limit,
-        t3.domain_subd_limit,
-        t3.domain_ip_id,
-        t3.domain_disk_limit,
-        t3.domain_disk_usage,
-        t3.domain_php,
-        t3.domain_cgi,
-        t4.ip_number
-      FROM
-        subdomain_alias AS t1,
-        domain_aliasses AS t2,
-        domain AS t3,
-        server_ips AS t4
-      WHERE
-            t1.alias_id    = t2.alias_id
-        AND t2.domain_id = t3.domain_id
-        AND t3.domain_ip_id = t4.ip_id
-        AND t1.subdomain_alias_id = $main::alssub_task_id
-    ";
+	my $sql = "
+		SELECT
+			t1.subdomain_alias_id,
+			t1.alias_id,
+			t1.subdomain_alias_name,
+			t1.subdomain_alias_mount,
+			t1.subdomain_alias_status,
+			t2.alias_id,
+			t2.domain_id,
+			t2.alias_name,
+			t2.alias_status,
+			t2.alias_mount,
+			t2.alias_ip_id,
+			t2.url_forward,
+			t3.domain_id,
+			t3.domain_name,
+			t3.domain_gid,
+			t3.domain_uid,
+			t3.domain_admin_id,
+			t3.domain_created_id,
+			t3.domain_created,
+			t3.domain_last_modified,
+			t3.domain_mailacc_limit,
+			t3.domain_ftpacc_limit,
+			t3.domain_traffic_limit,
+			t3.domain_sqld_limit,
+			t3.domain_sqlu_limit,
+			t3.domain_status,
+			t3.domain_alias_limit,
+			t3.domain_subd_limit,
+			t3.domain_ip_id,
+			t3.domain_disk_limit,
+			t3.domain_disk_usage,
+			t3.domain_php,
+			t3.domain_cgi,
+			t4.ip_number
+		FROM
+			subdomain_alias AS t1,
+			domain_aliasses AS t2,
+			domain AS t3,
+			server_ips AS t4
+		WHERE
+				t1.alias_id    = t2.alias_id
+			AND
+				t2.domain_id = t3.domain_id
+			AND
+				t3.domain_ip_id = t4.ip_id
+			AND
+				t1.subdomain_alias_id = $main::alssub_task_id
+	";
 
     ($rs, $rows) = doSQL($sql);
 

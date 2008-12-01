@@ -106,6 +106,24 @@ function edit_mail_account(&$tpl, &$sql) {
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
+			} else if ($mail_type == MT_ALSSUB_MAIL) {
+				$mtype[] = 7;
+				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
+ 				$tmp1 = $res1->FetchRow();
+				$maildomain = $tmp1['subdomain_alias_name'];
+				$alias_id = $tmp1['alias_id'];
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $maildomain . "." . $tmp1['alias_name'];
+			} else if ($mail_type == MT_ALSSUB_FORWARD) {
+ 				$mtype[] = 8;
+				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
+ 				$tmp1 = $res1->FetchRow();
+				$maildomain = $tmp1['subdomain_alias_name'];
+				$alias_id = $tmp1['alias_id'];
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			}
 		}
 
@@ -115,44 +133,44 @@ function edit_mail_account(&$tpl, &$sql) {
 		$mail_acc = decode_idna($mail_acc);
 		$maildomain = decode_idna($maildomain);
 		$tpl->assign(
-				array(
-					'EMAIL_ACCOUNT' => $mail_acc . "@" . $maildomain,
-					'FORWARD_LIST' => str_replace(',', "\n", $mail_forward),
-					'MTYPE' => implode(',', $mtype),
-					'MAIL_TYPE' => $mail_type_list,
-					'MAIL_ID' => $mail_id
-					)
-				);
+			array(
+				'EMAIL_ACCOUNT'	=> $mail_acc . "@" . $maildomain,
+				'FORWARD_LIST'	=> str_replace(',', "\n", $mail_forward),
+				'MTYPE'			=> implode(',', $mtype),
+				'MAIL_TYPE'		=> $mail_type_list,
+				'MAIL_ID'		=> $mail_id
+			)
+		);
 
 		if (($mail_forward !== '_no_') && (count($mtype) > 1)) {
 			$tpl->assign(
-					array(
-						'ACTION' => 'update_pass,update_forward',
-						'FORWARD_MAIL' => '',
-						'FORWARD_MAIL_CHECKED' => 'checked="checked"',
-						'FORWARD_LIST_DISABLED' => 'false'
-						)
-					);
+				array(
+					'ACTION'				=> 'update_pass,update_forward',
+					'FORWARD_MAIL'			=> '',
+					'FORWARD_MAIL_CHECKED'	=> 'checked="checked"',
+					'FORWARD_LIST_DISABLED'	=> 'false'
+				)
+			);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
 		} else if ($mail_forward === '_no_') {
 			$tpl->assign(
-					array(
-						'ACTION' => 'update_pass',
-						'FORWARD_MAIL' => '',
-						'FORWARD_MAIL_CHECKED' => '',
-						'FORWARD_LIST' => '',
-						'FORWARD_LIST_DISABLED' => 'true'
-						)
-					);
+				array(
+					'ACTION'				=> 'update_pass',
+					'FORWARD_MAIL'			=> '',
+					'FORWARD_MAIL_CHECKED'	=> '',
+					'FORWARD_LIST'			=> '',
+					'FORWARD_LIST_DISABLED'	=> 'true'
+				)
+			);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
 		} else {
 			$tpl->assign(
-					array(
-						'ACTION' => 'update_forward',
-						'NORMAL_MAIL' => '',
-						'FORWARD_LIST_DISABLED' => 'false'
-						)
-					);
+				array(
+					'ACTION'				=> 'update_forward',
+					'NORMAL_MAIL'			=> '',
+					'FORWARD_LIST_DISABLED'	=> 'false'
+				)
+			);
 			$tpl->parse('FORWARD_MAIL', '.forward_mail');
 		}
 	}
@@ -241,6 +259,8 @@ function update_email_forward(&$tpl, &$sql) {
 				$mail_type = $_POST['mail_type'] . ',' . MT_ALIAS_FORWARD;
 			} else if ($_POST['mail_type'] == MT_SUBDOM_MAIL) {
 				$mail_type = $_POST['mail_type'] . ',' . MT_SUBDOM_FORWARD;
+			} else if ($_POST['mail_type'] == MT_ALSSUB_MAIL) {
+				$mail_type = $_POST['mail_type'] . ',' . MT_ALSSUB_FORWARD;
 			}
 		} else {
 			// The mail type already contains xxx_forward, so we can use $_POST['mail_type']
@@ -271,13 +291,13 @@ function update_email_forward(&$tpl, &$sql) {
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_CLIENT_EDIT_EMAIL_PAGE_TITLE'	=> tr('ispCP - Manage Mail and FTP / Edit mail account'),
+		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_CHARSET'						=> tr('encoding'),
+		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
@@ -300,17 +320,17 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-		array(
-			'TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
-			'TR_SAVE' => tr('Save'),
-			'TR_PASSWORD' => tr('Password'),
-			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-			'TR_FORWARD_MAIL' => tr('Forward mail'),
-			'TR_FORWARD_TO' => tr('Forward to'),
-			'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
-			'TR_EDIT' => tr('Edit')
-			)
-		);
+	array(
+		'TR_EDIT_EMAIL_ACCOUNT'	=> tr('Edit email account'),
+		'TR_SAVE'				=> tr('Save'),
+		'TR_PASSWORD'			=> tr('Password'),
+		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
+		'TR_FORWARD_MAIL'		=> tr('Forward mail'),
+		'TR_FORWARD_TO'			=> tr('Forward to'),
+		'TR_FWD_HELP'			=> tr("Separate multiple email addresses with a line-break."),
+		'TR_EDIT'				=> tr('Edit')
+	)
+);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');

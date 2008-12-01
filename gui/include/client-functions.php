@@ -147,26 +147,44 @@ SQL_QUERY;
 	$als_mail_acc = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(mail_id) AS cnt
-        FROM
-            mail_users
-        WHERE
-            mail_type RLIKE 'subdom_'
-          AND
-            mail_type NOT LIKE 'subdom_catchall'
-          AND
-            domain_id = ?
+		SELECT
+			COUNT(mail_id) AS cnt
+		FROM
+			mail_users
+		WHERE
+			mail_type RLIKE 'subdom_'
+		AND
+			mail_type NOT LIKE 'subdom_catchall'
+		AND
+			domain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
 	$sub_mail_acc = $rs->fields['cnt'];
 
-	return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc,
+	$query = <<<SQL_QUERY
+		SELECT
+			COUNT(mail_id) AS cnt
+		FROM
+			mail_users
+		WHERE
+			mail_type RLIKE 'alssub_'
+		AND
+			mail_type NOT LIKE 'alssub_catchall'
+		AND
+			domain_id = ?
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($domain_id));
+
+	$alssub_mail_acc = $rs->fields['cnt'];
+
+	return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
 		$dmn_mail_acc,
 		$als_mail_acc,
-		$sub_mail_acc);
+		$sub_mail_acc,
+		$alssub_mail_acc);
 }
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
@@ -351,7 +369,7 @@ function get_domain_running_props_cnt(&$sql, $domain_id) {
 	$sub_cnt = get_domain_running_sub_cnt($sql, $domain_id);
 	$als_cnt = get_domain_running_als_cnt($sql, $domain_id);
 
-	list($mail_acc_cnt, $dmn_mail_acc_cnt, $sub_mail_acc_cnt, $als_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $domain_id);
+	list($mail_acc_cnt, $dmn_mail_acc_cnt, $sub_mail_acc_cnt, $als_mail_acc_cnt, $alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $domain_id);
 	list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($sql, $domain_id);
 	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $domain_id);
 
@@ -640,21 +658,25 @@ SQL_QUERY;
 }
 
 function user_trans_mail_type($mail_type) {
-	if ($mail_type === 'normal_mail') {
+	if ($mail_type === MT_NORMAL_MAIL) {
 		return tr('Domain mail');
-	} else if ($mail_type === 'normal_forward') {
+	} else if ($mail_type === MT_NORMAL_FORWARD) {
 		return tr('Email forward');
-	} else if ($mail_type === 'alias_mail') {
+	} else if ($mail_type === MT_ALIAS_MAIL) {
 		return tr('Alias mail');
-	} else if ($mail_type === 'alias_forward') {
+	} else if ($mail_type === MT_ALIAS_FORWARD) {
 		return tr('Alias forward');
-	} else if ($mail_type === 'subdom_mail') {
+	} else if ($mail_type === MT_SUBDOM_MAIL) {
 		return tr('Subdomain mail');
-	} else if ($mail_type === 'subdom_forward') {
+	} else if ($mail_type === MT_SUBDOM_FORWARD) {
 		return tr('Subdomain forward');
-	} else if ($mail_type === 'normal_catchall') {
+	} else if ($mail_type === MT_ALSSUB_MAIL) {
+		return tr('Alias subdomain mail');
+	} else if ($mail_type === MT_ALSSUB_FORWARD) {
+		return tr('Alias subdomain forward');
+	} else if ($mail_type === MT_NORMAL_CATCHALL) {
 		return tr('Domain mail');
-	} else if ($mail_type === 'alias_catchall') {
+	} else if ($mail_type === MT_ALIAS_CATCHALL) {
 		return tr('Domain mail');
 	} else {
 		return tr('Unknown type');
