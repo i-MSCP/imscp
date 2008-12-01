@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-01 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1540: auto-reply: wrong character encoding
+
 2008-11-28 Daniel Andreca
 	- GUI:
 		* Add default user with password to statistics

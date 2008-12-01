@@ -157,22 +157,6 @@ sub dump_el {
 
     my $el_data = undef;
 
-    #
-    #if ($fname eq 'stdout') {
-    #
-    #    print STDOUT "%-20s | %s\n",  ' function', 'message';
-    #
-    #    print STDOUT "---------------------|---------------------------------------------------------------\n";
-    #
-    #} else {
-    #
-    #    print FP "%-20s | %s\n",  ' function', 'message';
-    #
-    #    print FP "---------------------|---------------------------------------------------------------\n";
-    #
-    #}
-    #
-
     while (defined($el_data = pop_el(\@main::el))) {
 
         my ($sub_name, $msgDebug) = split(/$main::el_sep/, $el_data);
@@ -598,7 +582,7 @@ sub arpl_msgr_start_up {
     #
 
     my $sql = "
-    	SELECT
+    SELECT
 		domain_id,
 		domain_name,
 		domain_gid,
@@ -788,20 +772,56 @@ sub arpl_msgr_engine {
 
         		if ($pt == 1) {
 
-	            	$sql = "select mail_auto_respond_text from mail_users LEFT JOIN domain ON mail_users.domain_id=domain.domain_id where mail_acc = '$user' and mail_auto_respond=1 and domain_name = '$edmn' and sub_id=0;";
+	            	$sql = "
+					SELECT 
+						mail_auto_respond_text 
+					FROM 
+						mail_users 
+					LEFT JOIN 
+						domain ON mail_users.domain_id=domain.domain_id 
+					WHERE
+						mail_acc = '$user' AND 
+						mail_auto_respond=1 AND 
+						domain_name = '$edmn' AND 
+						sub_id=0
+					COLLATE
+						utf-8;";
 
-	    	    }
-			elsif ($pt == 2) {
+	    	    } elsif ($pt == 2) {
 
-				$sql = "select mail_auto_respond_text from mail_users LEFT JOIN domain_aliasses ON mail_users.sub_id=domain_aliasses.alias_id where mail_acc = '$user' and mail_auto_respond=1 and alias_name = '$edmn';";
+				$sql = "
+				SELECT 
+					mail_auto_respond_text 
+				FROM 
+					mail_users 
+				LEFT JOIN 
+					domain_aliasses ON mail_users.sub_id=domain_aliasses.alias_id 
+				WHERE 
+					mail_acc = '$user' AND 
+					mail_auto_respond=1 AND 
+					alias_name = '$edmn' 
+				COLLATE 
+					utf-8;";
 
-	       	}
+	       		} elsif ($pt == 3) {
 
-		       elsif ($pt == 3) {
+					$sql = "
+					SELECT 
+						mail_auto_respond_text 
+					FROM 
+						mail_users 
+					LEFT JOIN
+						subdomain ON mail_users.sub_id=subdomain.subdomain_id 
+					LEFT JOIN
+						domain ON subdomain.domain_id=domain.domain_id 
+					WHERE 
+						mail_acc = '$user' AND 
+						mail_auto_respond=1 AND
+						(CONCAT(subdomain_name,'.',domain_name) = '$edmn') 
+					COLLATE 
+						utf-8;";
 
-					$sql = "select mail_auto_respond_text from mail_users LEFT JOIN subdomain ON mail_users.sub_id=subdomain.subdomain_id LEFT JOIN domain ON subdomain.domain_id=domain.domain_id where mail_acc = '$user' and mail_auto_respond=1 and (CONCAT(subdomain_name,'.',domain_name) = '$edmn');";
-
-		       }
+		   		}
 
     			push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
 
