@@ -2895,6 +2895,7 @@ sub dmn_add_awstats_cfg_data {
 	#
 	my %tag_hash = (
 		'{DOMAIN_NAME}'        => $dmn_name,
+		'{CMD_CAT}'            => $main::cfg{'CMD_CAT'},
 		'{APACHE_LOG_DIR}'     => $main::cfg{'APACHE_LOG_DIR'},
 		'{AWSTATS_CACHE_DIR}'  => $main::cfg{'AWSTATS_CACHE_DIR'},
 		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},

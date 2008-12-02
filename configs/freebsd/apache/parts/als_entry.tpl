@@ -5,7 +5,7 @@
     #Group {SUEXEC_GROUP}
     #
 
-    <IfModule mod_suexec.c>
+    <IfModule suexec_module>
            SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
     </IfModule>
 
@@ -26,6 +26,17 @@
     <IfModule mod_cband.c>
         CBandUser {DMN_GRP}
     </IfModule>
+
+    # httpd awstats support BEGIN.
+    # httpd awstats support END.
+
+    <Location /stats>
+        AuthType Basic
+        AuthName "Statistics for domain {ALS_NAME}"
+        AuthUserFile {WWW_DIR}/{DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
+        AuthGroupFile {WWW_DIR}/{DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
+        Require group {AWSTATS_GROUP_AUTH}
+    </Location>
 
     # httpd als entry redirect entry BEGIN.
     # httpd als entry redirect entry END.

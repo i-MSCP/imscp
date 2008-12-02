@@ -1,0 +1,1 @@
+{MINUTE} {HOUR}  * * *   root perl {AWSTATS_ROOT_DIR}/awstats_buildstaticpages.pl -config={ALS_NAME} -update -lang={USER_LANG} -awstatsprog={AWSTATS_ENGINE_DIR}/awstats.pl -dir={APACHE_WWW_DIR}/{ALS_PATH}/{ALS_NAME}/statistics/ >/dev/null 2>&1

@@ -680,8 +680,12 @@ sub gen_httpd_als_entry {
 		$als_php2_b,
 		$als_php2_entry,
 		$als_php2_e,
+		$als_awstats_b,
+		$als_awstats_dynamic_entry,
+		$als_awstats_static_entry,
+		$als_awstats_e,
 		$als_custom
-	) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+	) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 	(
 		$rs,
 		$als_b,
@@ -699,6 +703,10 @@ sub gen_httpd_als_entry {
 		$als_php2_b,
 		$als_php2_entry,
 		$als_php2_e,
+		$als_awstats_b,
+		$als_awstats_dynamic_entry,
+		$als_awstats_static_entry,
+		$als_awstats_e,
 		$als_custom
 	) = get_tpl (
 		$tpl_dir,
@@ -717,6 +725,10 @@ sub gen_httpd_als_entry {
 		'als_php2_b.tpl',
 		'als_php2_entry.tpl',
 		'als_php2_e.tpl',
+		'als_awstats_b.tpl',
+		'als_awstats_dynamic_entry.tpl',
+		'als_awstats_static_entry.tpl',
+		'als_awstats_e.tpl',
 		'custom.conf.tpl'
 	);
 	return ($rs, '') if ($rs != 0);
@@ -747,6 +759,11 @@ sub gen_httpd_als_entry {
 		'{PEAR_DIR}'                => $main::cfg{'PEAR_DIR'},
 		'{APACHE_USERS_LOG_DIR}'    => $main::cfg{'APACHE_USERS_LOG_DIR'},
 		'{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+
+		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},
+		'{HTACCESS_USERS_FILE_NAME}'  => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
+		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
+
 		'{SUEXEC_USER}'             => $suexec_user,
 		'{SUEXEC_GROUP}'            => $suexec_group
 	);
@@ -759,6 +776,8 @@ sub gen_httpd_als_entry {
 		$als_cgi_entry,
 		$als_php_entry,
 		$als_php2_entry,
+		$als_awstats_dynamic_entry,
+		$als_awstats_static_entry,
 		$als_custom
 	) = prep_tpl(
 		\%tag_hash,
@@ -769,7 +788,33 @@ sub gen_httpd_als_entry {
 		$als_cgi_entry,
 		$als_php_entry,
 		$als_php2_entry,
+		$als_awstats_dynamic_entry,
+		$als_awstats_static_entry,
 		$als_custom
+	);
+	return ($rs, '') if ($rs != 0);
+
+	#
+	# Add AWStats data
+	#
+	my $awstats_entry = undef;
+
+	# AWStats Dynamic
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
+			$awstats_entry = "$als_awstats_b\n$als_awstats_dynamic_entry\n$als_awstats_e";
+	} elsif ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		# AWStats Static
+		$awstats_entry = "$als_awstats_b\n$als_awstats_static_entry\n$als_awstats_e";
+	} else {
+		# No AWStats
+		$awstats_entry = "$als_awstats_b\n$als_awstats_e";
+	}
+	($rs, $als_entry) = repl_tag(
+		$als_awstats_b,
+		$als_awstats_e,
+		$als_entry,
+		$awstats_entry,
+		"gen_httpd_als_entry"
 	);
 	return ($rs, '') if ($rs != 0);
 
@@ -1390,6 +1435,21 @@ sub als_add_httpd_file_data {
 	return $rs if ($rs != 0);
 
 	#
+	# AWStats Directory (if static AWStats is enabled)
+	#
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		if (! -d "$www_dir/$als_name/statistics") {
+			$rs = make_dir(
+				"$www_dir/$als_name/statistics",
+				$sys_user,
+				$sys_group,
+				0755
+			);
+			return $rs if ($rs != 0);
+		}
+	}
+
+	#
 	# Domain WWW files;
 	#
 	($rs, $rdata) = store_file(
@@ -1533,9 +1593,19 @@ sub als_change_httpd_file_data {
 	my $sys_group           = "$suexec_user_pref$sys_gid";
 
 	#
+	# AWStats Directory (if static AWStats is enabled)
+	#
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		if (! -d "$www_dir/$als_name/statistics") {
+			$rs = make_dir("$www_dir/$als_name/statistics", $sys_user, $sys_group, 0755);
+			return $rs if ($rs != 0);
+		}
+	}
+
+	#
 	# Domain WWW directories;
 	#
-	if( ! -d "$www_dir/$dmn_name/phptmp") {
+	if( ! -d "$www_dir/$als_name/phptmp") {
 		$rs = make_dir(
 			"$www_dir/$als_name/phptmp",
 			$sys_user,
@@ -1580,6 +1650,23 @@ sub als_del_httpd_file_data {
 		$rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf");
 		return $rs if ($rs != 0);
 	}
+	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log");
+		return $rs if ($rs != 0);
+	}
+
 	#
 	# Skip data deletion if the mount point is shared
 	#
@@ -2136,6 +2223,491 @@ sub als_del_proftpd_data {
 	return 0;
 }
 
+################################### AWStats ####################################
+################################################################################
+##
+## Add AWStats Data
+##
+sub als_add_awstats_data {
+	my ($als_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'als_add_awstats_data()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_add_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+	$rs = als_add_awstats_cfg_data($als_data);
+	if ($aws_type eq 1) {
+		$rs = als_add_awstats_cron($als_data);
+		return $rs if ($rs != 0);
+	}
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'als_add_awstats_data()', 'Ending...');
+	return 0;
+}
+################################################################################
+##
+## Add AWStats CFG Data
+##
+sub als_add_awstats_cfg_data {
+	my ($als_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'als_add_awstats_cfg_data()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_add_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $als_name      = @$als_data[2];
+	my $conf_dir      = $main::cfg{'CONF_DIR'};
+	my $awstats_dir   = $main::cfg{'AWSTATS_CONFIG_DIR'};
+	my $tpl_dir       = "$conf_dir/awstats";
+	my $awstats_fname = "awstats.$als_name.conf";
+	my $sys_cfg       = "$awstats_dir/$awstats_fname";
+
+	#
+	# Let's get needed tags and templates;
+	#
+	my $entry = '';
+	($rs, $entry) = get_tpl(
+		$tpl_dir,
+		'awstats.ispcp_tpl.conf'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's prepare them;
+	#
+	my %tag_hash = (
+		'{DOMAIN_NAME}'        => $als_name,
+		'{CMD_CAT}'             => $main::cfg{'CMD_CAT'},
+		'{APACHE_LOG_DIR}'     => $main::cfg{'APACHE_LOG_DIR'},
+		'{AWSTATS_CACHE_DIR}'  => $main::cfg{'AWSTATS_CACHE_DIR'},
+		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
+		'{AWSTATS_WEB_DIR}'    => $main::cfg{'AWSTATS_WEB_DIR'}
+	);
+	($rs, $entry) = prep_tpl(
+		\%tag_hash,
+		$entry
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's store generated data;
+	#
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'als_add_awstats_cfg_data()', 'Ending...');
+	return 0;
+}
+################################################################################
+##
+## Change AWStats Data
+##
+sub als_change_awstats_data {
+	my ($als_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'als_change_awstats_data()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_change_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+	$rs = als_add_awstats_cfg_data($als_data);
+	return $rs if ($rs != 0);
+
+	if ($aws_type eq 1) {
+		$rs = als_add_awstats_cron($als_data);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'als_change_awstats_data()', 'Ending...');
+	return 0;
+}
+
+################################################################################
+##
+## Delete AWStats Data
+##
+sub als_del_awstats_data {
+	my ($als_data) = @_;
+	my $rs         = undef;
+
+	push_el(\@main::el, 'als_del_awstats_data()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_del_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+	$rs = als_del_awstats_cfg_data($als_data);
+	return $rs if ($rs != 0);
+
+	if ($aws_type eq 1) {
+		$rs = als_del_awstats_cron($als_data);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'als_del_awstats_data()', 'Ending...');
+	return 0;
+}
+
+################################################################################
+##
+## Delete AWStats CFG Data
+##
+sub als_del_awstats_cfg_data {
+	my ($als_data)   = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'als_del_awstats_cfg_data()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_del_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $als_name      = @$als_data[2];
+	my $awstats_dir   = $main::cfg{'AWSTATS_CONFIG_DIR'};
+	my $awstats_fname = "awstats.$als_name.conf";
+	my $sys_cfg       = "$awstats_dir/$awstats_fname";
+
+	#
+	# Let's delete file, if exists
+	#
+	if ( -e $sys_cfg) {
+		$rs = del_file($sys_cfg);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'als_del_awstats_cfg_data()', 'Ending...');
+	return 0;
+}
+################################################################################
+##
+## Add AWStats Cron Data
+##
+sub als_add_awstats_cron {
+	push_el(\@main::el, 'als_add_awstats_cron()', 'Starting...');
+
+	my ($als_data) = @_;
+	my ($awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
+
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_add_awstats_cron()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $als_name       = @$als_data[2];
+	my $dmn_name       = @$als_data[8];
+	my $cronjob_minute = @$als_data[0];
+
+	# to prevent running all crons at same time
+	$cronjob_minute = $cronjob_minute % 60;
+
+	my $cronjob_hour       = '3';
+	my $conf_dir           = $main::cfg{'CONF_DIR'};
+	my $virtual_dir        = $main::cfg{'APACHE_WWW_DIR'};
+	my $tpl_dir            = "$conf_dir/cron.d/parts";
+	my $working_dir        = "$conf_dir/cron.d/working";
+	my $backup_dir         = "$conf_dir/cron.d/backup";
+	my $working_cfg        = "$working_dir/ispcp";
+	my $timestamp          = time;
+	my $backup_cfg         = "$backup_dir/ispcp.$timestamp";
+	my $user_lang          = "en";
+	my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
+	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
+	my $awstats_web_dir    = $main::cfg{'AWSTATS_WEB_DIR'};
+
+	# Selecting user language
+	my $user_id = @$als_data[1];
+
+	my $sql = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ".$user_id.";";
+	my ($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$rdata = @$rdata[0];
+	$user_id=@$rdata[0];
+
+	$sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
+	($rs, $rdata) = doSQL($sql);
+
+	$rdata = @$rdata[0];
+	return $rs if ($rs != 0);
+
+	my %languages = (
+		"lang_Albanian"         => "al",
+		"lang_Bosnian"          => "ba",
+		"lang_Bulgarian"        => "bg",
+		"lang_Catalan"          => "ca",
+		"lang_ChineseTaiwan"    => "tw",
+		"lang_Chinese"          => "cn",
+		"lang_Czech"            => "cz",
+		"lang_Danish"           => "dk",
+		"lang_Dutch"            => "nl",
+		"lang_English"          => "en",
+		"lang_Estonian"         => "et",
+		"lang_Euskara"          => "eu",
+		"lang_Finish"           => "fi",
+		"lang_FrenchFrance"     => "fr",
+		"lang_Galician"         => "gl",
+		"lang_GermanAustria"    => "de",
+		"lang_GermanGermany"    => "de",
+		"lang_GermanSwiss"      => "de",
+		"lang_Greek"            => "gr",
+		"lang_Hebrew"           => "he",
+		"lang_Hungarian"        => "hu",
+		"lang_Icelandic"        => "is",
+		"lang_Indonesian"       => "id",
+		"lang_Italian"          => "it",
+		"lang_Japanese"         => "jp",
+		"lang_Korean"           => "kr",
+		"lang_Latvian"          => "lv",
+		"lang_NorwegianNyorsk"  => "nn",
+		"lang_NorwegianBokmal"  => "nb",
+		"lang_Polish"           => "pl",
+		"lang_Portuguese"       => "pt",
+		"lang_PortuguesBrazil"  => "br",
+		"lang_Romanian"         => "ro",
+		"lang_Russian"          => "ru",
+		"lang_Serbian"          => "sr",
+		"lang_Slovak"           => "sk",
+		"lang_Slovenian"        => "si",
+		"lang_SpanishArgentina" => "es",
+		"lang_SpanishSpain"     => "es",
+		"lang_Swedisch"         => "se",
+		"lang_Turkish"          => "tr",
+		"lang_Ukrainian"        => "ua",
+		"lang_Welsh"            => "cy"
+	);
+
+	while ( my ($key, $value) = each(%languages) ) {
+		if ($key eq @$rdata[0]) {
+			$user_lang = $value;
+			last;
+		}
+	}
+
+	#
+	# Getting needed templates;
+	#
+	my ($als_awstats_b, $als_awstats_entry, $als_awstats_e) = ('', '', '');
+	(
+		$rs,
+		$als_awstats_b,
+		$als_awstats_entry,
+		$als_awstats_e
+	) = get_tpl(
+		$tpl_dir,
+		'als_awstats_b.tpl',
+		'als_awstats_entry.tpl',
+		'als_awstats_e.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{ALS_NAME}'           => $als_name,
+		'{DMN_NAME}'           => $als_name,
+		'{ALS_PATH}'           => $dmn_name,
+		'{MINUTE}'             => $cronjob_minute,
+		'{HOUR}'               => $cronjob_hour,
+		'{AWSTATS_ROOT_DIR}'   => $awstats_root_dir,
+		'{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
+		'{AWSTATS_WEB_DIR}'    => $awstats_web_dir,
+		'{USER_LANG}'          => $user_lang,
+		'{APACHE_WWW_DIR}'     => $virtual_dir
+	);
+	(
+		$rs,
+		$awstats_b,
+		$awstats_entry,
+		$awstats_e
+	) = prep_tpl (
+		\%tag_hash,
+		$als_awstats_b,
+		$als_awstats_entry,
+		$als_awstats_e
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	$rdata = undef;
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	($rs, $rdata) = get_tag(
+		$awstats_b,
+		$awstats_e,
+		$working
+	);
+	if ($rs == 0) {
+		# We have one! We have to delete it because of possible future changes in this Domain Group entry;
+		($rs, $working) = del_tag(
+			$awstats_b,
+			"$awstats_e\n",
+			$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$als_awstats_b,
+		$als_awstats_e,
+		$working
+	);
+	return $rs if ($rs != 0);
+
+	my $als_awstats_task = "$awstats_b\n$awstats_entry\n$awstats_e\n$als_awstats_b\n$als_awstats_e";
+	($rs, $working) = repl_tag(
+		$als_awstats_b,
+		$als_awstats_e,
+		$working,
+		$als_awstats_task,
+		"als_add_awstats_cron"
+	);
+	return $rs if ($rs != 0);
+
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
+
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'als_add_awstats_cron()', 'Ending...');
+	return 0;
+}
+################################################################################
+##
+## Delete AWStats Cron Data
+##
+sub als_del_awstats_cron {
+
+	my ($als_data) = @_;
+	my ($rs, $awstats_b, $awstats_e) = (undef, '', '', '');
+
+	push_el(\@main::el, 'als_del_awstats_cron()', 'Starting...');
+	if (!defined($als_data) || $als_data eq '') {
+		push_el(\@main::el, 'als_del_awstats_cron()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $als_name       = @$als_data[2];
+# 	my $dmn_name       = @$als_data[8];
+# 	my $cronjob_minute = @$als_data[0];
+	# to prevent running all crons at same time
+# 	$cronjob_minute    = $cronjob_minute % 60;
+# 	my $cronjob_hour   = '3';
+	my $conf_dir       = $main::cfg{'CONF_DIR'};
+	my $tpl_dir        = "$conf_dir/cron.d/parts";
+	my $working_dir    = "$conf_dir/cron.d/working";
+	my $backup_dir     = "$conf_dir/cron.d/backup";
+	my $working_cfg    = "$working_dir/ispcp";
+	my $timestamp      = time;
+	my $backup_cfg     = "$backup_dir/ispcp.$timestamp";
+
+	#
+	# Getting needed templates;
+	#
+	my ($als_awstats_b, $als_awstats_entry, $als_awstats_e) = ('', '', '');
+	(
+		$rs,
+		$als_awstats_b,
+		$als_awstats_e
+	) = get_tpl(
+		$tpl_dir,
+		'als_awstats_b.tpl',
+		'als_awstats_e.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Preparing templates;
+	#
+
+	my %tag_hash = ( '{DMN_NAME}' => $als_name );
+	(
+		$rs,
+		$awstats_b,
+		$awstats_e
+	) = prep_tpl (
+		\%tag_hash,
+		$als_awstats_b,
+		$als_awstats_e
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working, $rdata) = (undef, undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	($rs, $rdata) = get_tag(
+		$awstats_b,
+		$awstats_e,
+		$working
+	);
+
+	push_el(\@main::el, 'als_del_awstats_cron() search', $awstats_b);
+	if ($rs == 0) {
+		# We have one! We have to delete it
+		($rs, $working) = del_tag(
+			$awstats_b,
+			"$awstats_e\n",
+			$working
+		);
+		push_el(\@main::el, 'als_del_awstats_cron() del', $awstats_b);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$als_awstats_b,
+		$als_awstats_e,
+		$working
+	);
+
+	push_el(\@main::el, 'als_del_awstats_cron() search', $als_awstats_b);
+	return $rs if ($rs != 0);
+
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
+
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'als_del_awstats_cron()', 'Ending...');
+	return 0;
+}
 ########################################################
 # high level functions.
 ########################################################
@@ -2153,6 +2725,13 @@ sub als_add_data {
 	if (!defined($als_data) || $als_data eq '') {
 		push_el(\@main::el, 'als_add_data()', 'ERROR: Undefined Input Data...');
 		return -1;
+	}
+
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = als_add_awstats_data($als_data);
+		return $rs if ($rs != 0);
 	}
 
 	$rs = als_add_named_data($als_data);
@@ -2184,6 +2763,14 @@ sub als_change_data {
 		return -1;
 	}
 
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = als_change_awstats_data($als_data);
+		return $rs if ($rs != 0);
+	}
+
 	$rs = als_change_named_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -2211,6 +2798,14 @@ sub als_del_data {
 	if (!defined($als_data) || $als_data eq '') {
 		push_el(\@main::el, 'als_del_data()', 'ERROR: Undefined Input Data...');
 		return -1;
+	}
+
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = als_del_awstats_data($als_data);
+		return $rs if ($rs != 0);
 	}
 
 	$rs = als_del_named_data($als_data);

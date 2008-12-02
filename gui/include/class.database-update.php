@@ -231,7 +231,40 @@ class databaseUpdate extends ispcpUpdate{
 					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 		return $sqlUpd;
-	}	
+	}
+
+
+	/**
+	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @version		1.0
+	 * @since		r1417
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_8() {
+
+		$status=Config::get('ITEM_ADD_STATUS');
+		$statsgroup=Config::get('AWSTATS_GROUP_AUTH');
+		$sql = Database::getInstance();
+
+		$sqlUpd = array();
+
+		$query ="SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup`='{$statsgroup}')";
+		$rs = exec_query($sql, $query);
+
+		if ($rs->RecordCount() != 0) {
+			while (!$rs->EOF) {
+				$sqlUpd[] = "INSERT INTO htaccess_groups (`dmn_id`, `ugroup`,`status`) VALUES ('{$rs->fields['domain_id']}', '{$statsgroup}', '{$status}')";
+				$rs->MoveNext();
+			}
+		}
+
+		return $sqlUpd;
+	}
 
 	/*
 	* DO NOT CHANGE ANYTHING BELOW THIS LINE
