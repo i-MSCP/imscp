@@ -328,7 +328,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 			'RESELLER_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'reseller'),
 			'NORMAL_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'user'),
 			'DOMAINS' => get_cnt($sql, 'domain', 'domain_id', '', ''),
-			'SUBDOMAINS' => get_cnt($sql, 'subdomain', 'subdomain_id', '', ''),
+			'SUBDOMAINS' => get_cnt($sql, 'subdomain', 'subdomain_id', '', '') + get_cnt($sql, 'subdomain_alias', 'subdomain_alias_id', '', ''),
 			'DOMAINS_ALIASES' => get_cnt($sql, 'domain_aliasses', 'alias_id', '', ''),
 			'MAIL_ACCOUNTS' => get_cnt($sql, 'mail_users', 'mail_id', '', ''),
 			'FTP_ACCOUNTS' => get_cnt($sql, 'ftp_users', 'userid', '', ''),

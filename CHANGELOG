@@ -5,8 +5,11 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Add support for alias subdomain mail (part I)
 		* Add support for alias subdomain mail (part II)
+		* Add support for alias subdomain mail (part III)
+		* Alias subdomains are not counted
 	- ENGINE
 		* Fixed #1518: Virtual mail problem
+		* Alias subdomain are not deleted when alais is deleted in same operation
 
 2008-12-01 Benedikt Heintel
 	- ENGINE:

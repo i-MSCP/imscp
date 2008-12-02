@@ -75,7 +75,7 @@ $query = <<<SQL_QUERY
 		
 SQL_QUERY;
 
-$rs = exec_query($sql, $query, array($delete_status, $del_id));
+$rs = exec_query($sql, $query, array($delete_status, $del_id, $del_id));
 
 while (!$rs->EOF) {
 	$rs->MoveNext();
@@ -84,6 +84,7 @@ while (!$rs->EOF) {
 $res = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($del_id));
 $dat = $res->FetchRow();
 
+exec_query($sql, "update subdomain_alias set subdomain_alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
 exec_query($sql, "update domain_aliasses set alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];

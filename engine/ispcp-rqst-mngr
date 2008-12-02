@@ -307,6 +307,67 @@ sub mngr_engine {
 
     }
 
+    $sql = "select subdomain_alias_id, subdomain_alias_name, subdomain_alias_status from subdomain_alias where subdomain_alias_status != 'ok' order by subdomain_alias_id";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    my $alssub_count = @$rdata;
+
+    if ($alssub_count > 0) {
+        foreach (@$rdata) {
+
+            my $row = $_;
+
+            my ($sub_id, $sub_name, $sub_status) = (@$row[0], @$row[1], @$row[2]);
+
+            if ($sub_status eq "toadd" || $sub_status eq "change" || $sub_status eq "delete") {
+
+                if (defined($main::engine_debug)) {
+
+                    push_el(\@main::el, 'mngr_engine()', "processing $sub_id, $sub_name, $sub_status.");
+
+                }
+
+                $rs = sys_command("$main::ispcp_alssub_mngr $sub_id 1>$main::ispcp_alssub_mngr_stdout 2>$main::ispcp_alssub_mngr_stderr");
+
+                if ($rs != 0) {
+
+                    if (-e $main::ispcp_alssub_mngr_el) {
+
+                        my $rs1 = undef;
+
+                        pop_el(\@main::el); # removing 'sys_command()' error message;
+
+                        ($rs1, $rdata) = get_el_error($main::ispcp_alssub_mngr_el);
+
+                        return $rs1 if ($rs1 != 0);
+
+                        push_el(\@main::el, $main::ispcp_alssub_mngr, $rdata);
+
+                    }
+
+                    if (!defined($main::engine_debug)) {
+
+                        del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
+
+                    }
+
+                    return $rs;
+
+                }
+
+                if (!defined($main::engine_debug)) {
+
+                    del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
+
+                }
+
+            }
+
+        }
+
+    }
+
     $sql = "select alias_id, alias_name, alias_status from domain_aliasses where alias_status != 'ok' and alias_status != 'ordered' order by alias_id";
 
     ($rs, $rdata) = doSQL($sql);
@@ -363,67 +424,6 @@ sub mngr_engine {
 
                 }
 
-
-            }
-
-        }
-
-    }
-
-    $sql = "select subdomain_alias_id, subdomain_alias_name, subdomain_alias_status from subdomain_alias where subdomain_alias_status != 'ok' order by subdomain_alias_id";
-
-    ($rs, $rdata) = doSQL($sql);
-
-    my $alssub_count = @$rdata;
-
-    if ($alssub_count > 0) {
-        foreach (@$rdata) {
-
-            my $row = $_;
-
-            my ($sub_id, $sub_name, $sub_status) = (@$row[0], @$row[1], @$row[2]);
-
-            if ($sub_status eq "toadd" || $sub_status eq "change" || $sub_status eq "delete") {
-
-                if (defined($main::engine_debug)) {
-
-                    push_el(\@main::el, 'mngr_engine()', "processing $sub_id, $sub_name, $sub_status.");
-
-                }
-
-                $rs = sys_command("$main::ispcp_alssub_mngr $sub_id 1>$main::ispcp_alssub_mngr_stdout 2>$main::ispcp_alssub_mngr_stderr");
-
-                if ($rs != 0) {
-
-                    if (-e $main::ispcp_alssub_mngr_el) {
-
-                        my $rs1 = undef;
-
-                        pop_el(\@main::el); # removing 'sys_command()' error message;
-
-                        ($rs1, $rdata) = get_el_error($main::ispcp_alssub_mngr_el);
-
-                        return $rs1 if ($rs1 != 0);
-
-                        push_el(\@main::el, $main::ispcp_alssub_mngr, $rdata);
-
-                    }
-
-                    if (!defined($main::engine_debug)) {
-
-                        del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
-
-                    }
-
-                    return $rs;
-
-                }
-
-                if (!defined($main::engine_debug)) {
-
-                    del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
-
-                }
 
             }
 

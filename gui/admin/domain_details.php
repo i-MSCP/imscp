@@ -232,6 +232,9 @@ SQL_QUERY;
 	$query = "select count(subdomain_id) as sub_num from subdomain where domain_id=?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$sub_num_data = $res1->FetchRow();
+	$query="SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?)";
+	$res1 = exec_query($sql, $query, array($domain_id));
+	$alssub_num_data = $res1->FetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
 	// Get domain aliases
 	$query = "select count(alias_id) as alias_num from domain_aliasses where domain_id=?";
@@ -268,7 +271,7 @@ SQL_QUERY;
 				'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
 				'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
 				'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
-				'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num'],
+				'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num']+$alssub_num_data['sub_num'],
 				'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
 				'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
 				'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias

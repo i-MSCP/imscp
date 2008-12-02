@@ -78,19 +78,32 @@ SQL_QUERY;
 
 function get_domain_running_sub_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(subdomain_id) AS cnt
-        FROM
-            subdomain
-        WHERE
-            domain_id = ?
+		SELECT
+			COUNT(`subdomain_id`) AS cnt
+		FROM
+			`subdomain`
+		WHERE
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
 	$sub_count = $rs->fields['cnt'];
 
-	return $sub_count;
+$query = <<<SQL_QUERY
+		SELECT
+			COUNT(`subdomain_alias_id`) AS cnt
+		FROM
+			`subdomain_alias`
+		WHERE
+			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?)
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($domain_id));
+
+	$alssub_count = $rs->fields['cnt'];
+
+	return $sub_count+$alssub_count;
 }
 
 function get_domain_running_als_cnt(&$sql, $domain_id) {

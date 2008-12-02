@@ -503,7 +503,7 @@ SQL_QUERY;
 
 	$data = $res->FetchRow();
 
-	$sub_current = records_count('subdomain_id', 'subdomain', 'domain_id', $user_id);
+	$sub_current = get_domain_running_sub_cnt($sql, $user_id);
 	$sub_max = $data['domain_subd_limit'];
 
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
