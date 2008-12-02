@@ -69,12 +69,14 @@ function makeUser(){
 							  </td>
                               <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
                                 <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} onClick="changeDom('real');">{DOMAIN_NAME}
+                                <!-- BDP: to_alias_domain -->
                                 <input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} onClick="changeDom('alias');">
                                 <select name="als_id">
                                     <!-- BDP: als_list -->
                                     <option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
                                     <!-- EDP: als_list -->
                                 </select>
+                                <!-- EDP: to_alias_domain -->
                                 </td>
                             </tr>
                             <tr>

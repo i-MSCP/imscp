@@ -119,9 +119,13 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign(array('ALS_ID' => '0',
+		$tpl->assign(
+			array(
+				'ALS_ID' => '0',
 				'ALS_SELECTED' => 'selected',
-				'ALS_NAME' => tr('Empty list')));
+				'ALS_NAME' => tr('Empty list')
+			)
+		);
 		$tpl->parse('ALS_LIST', 'als_list');
 		$tpl->assign('TO_ALIAS_DOMAIN', '');
 		$_SESSION['alias_count'] = "no";
@@ -154,9 +158,13 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			}
 
 			$alias_name = decode_idna($rs->fields['alias_name']);
-			$tpl->assign(array('ALS_ID' => $rs->fields['alias_id'],
+			$tpl->assign(
+				array(
+					'ALS_ID' => $rs->fields['alias_id'],
 					'ALS_SELECTED' => $als_selected,
-					'ALS_NAME' => $alias_name));
+					'ALS_NAME' => $alias_name
+				)
+			);
 			$tpl->parse('ALS_LIST', '.als_list');
 			$rs->MoveNext();
 
