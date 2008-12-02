@@ -1560,13 +1560,13 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 			if ($action == 'disable') {
 				$timestamp = time();
 				$pass_prefix = substr(md5($timestamp), 0, 4);
-				if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)){
+				if (preg_match("/^".MT_NORMAL_MAIL."/",$mail_type)||preg_match("/^".MT_ALIAS_MAIL."/",$mail_type)||preg_match("/^".MT_SUBDOM_MAIL."/",$mail_type)||preg_match("/^".MT_ALSSUB_MAIL."/",$mail_type)){
 					$mail_pass=decrypt_db_password($mail_pass);
 					$mail_pass = $pass_prefix . $mail_pass;
 					$mail_pass=encrypt_db_password($mail_pass);
 				}
 			} else if ($action == 'enable') {
-				if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)){
+				if (preg_match("/^".MT_NORMAL_MAIL."/",$mail_type)||preg_match("/^".MT_ALIAS_MAIL."/",$mail_type)||preg_match("/^".MT_SUBDOM_MAIL."/",$mail_type)||preg_match("/^".MT_ALSSUB_MAIL."/",$mail_type)){
 					$mail_pass=decrypt_db_password($mail_pass);
 					$mail_pass = substr($mail_pass, 4, 50);
 					$mail_pass=encrypt_db_password($mail_pass);

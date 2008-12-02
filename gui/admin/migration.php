@@ -23,66 +23,52 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 redirect_to_level_page();
 
-$query = <<<SQL_QUERY
-
-update
-
-domain
-
-set
-
-domain_status = 'toadd'
-
-
-SQL_QUERY;
+$query = "
+	update
+		domain
+	set
+		domain_status = 'toadd'
+";
 
 $rs = execute_query($sql, $query);
 print "Domains updated";
 
-$query = <<<SQL_QUERY
-
-        update
-
-            domain_aliasses
-
-        set
-
-            alias_status = 'toadd'
-
-
-SQL_QUERY;
+$query = "
+	update
+		domain_aliasses
+	set
+		alias_status = 'toadd'
+";
 
 $rs = execute_query($sql, $query);
 print "Domain aliases updated";
 
-$query = <<<SQL_QUERY
-
-        update
-
-            subdomain
-
-        set
-
-            subdomain_status = 'toadd'
-
-
-SQL_QUERY;
+$query = "
+	update
+		subdomain
+	set
+		subdomain_status = 'toadd'
+";
 
 $rs = execute_query($sql, $query);
 print "Subdomains updated";
 
-$query = <<<SQL_QUERY
+$query = "
+	update
+		subdomain_alias
+	set
+		subdomain_alias_status = 'toadd'
+";
 
-        update
+$rs = execute_query($sql, $query);
+print "Subdomains alias updated";
 
-            mail_users
-
-        set
-
-             status = 'toadd'
-
-
-SQL_QUERY;
+$query = "
+	update
+		mail_users
+	set
+		status = 'toadd'
+";
 
 $rs = execute_query($sql, $query);
 print "Emails updated";

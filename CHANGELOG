@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-12-02 Daniel Andreca
 	- GUI:
 		* Add support for alias subdomain mail (part I)
+		* Add support for alias subdomain mail (part II)
 	- ENGINE
 		* Fixed #1518: Virtual mail problem
 

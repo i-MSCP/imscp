@@ -69,12 +69,16 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		FROM
 			`mail_users`
 		WHERE
-			`sub_id` = ?
-		AND
-			`mail_type` LIKE '%alias_%'
-	";
+			(`sub_id` = ?
+			AND
+			`mail_type` LIKE '%alias_%')
+		OR
+			(`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id`=?)
+			AND
+			`mail_type` LIKE '%alssub_%')
+		";
 
-	$rs = exec_query($sql, $query, array($als_id));
+	$rs = exec_query($sql, $query, array($als_id,$als_id));
 
 	if ($rs -> fields['cnt'] > 0 ) {
 		set_page_message(tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'));

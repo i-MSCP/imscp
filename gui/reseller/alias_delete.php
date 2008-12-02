@@ -63,8 +63,16 @@ $query = <<<SQL_QUERY
 		mail_users
 	set
 		status = ?
-	where
-    sub_id = ?
+	WHERE
+		(`sub_id` = ?
+		AND
+		`mail_type` LIKE '%alias_%')
+	OR
+		(`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id`=?)
+		AND
+		`mail_type` LIKE '%alssub_%')
+
+		
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_status, $del_id));

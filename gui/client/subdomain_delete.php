@@ -46,7 +46,7 @@ SQL_QUERY;
   }
 
   // check for mail accounts
-  $query = "select count(mail_id) as cnt from mail_users WHERE (mail_type = 'subdom_mail' OR mail_type = 'subdom_forward') AND sub_id = ?";
+  $query = "select count(mail_id) as cnt from mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
   $rs = exec_query($sql, $query, array($sub_id));
 
   if ($rs -> fields['cnt'] > 0 ) {
