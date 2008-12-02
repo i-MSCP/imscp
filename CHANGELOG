@@ -6,6 +6,7 @@ ispCP ω 1.0.0 Changelog
 		* Add support for alias subdomain mail (part I)
 		* Add support for alias subdomain mail (part II)
 		* Add support for alias subdomain mail (part III)
+		* Add support for alias subdomain mail (part IV)
 		* Alias subdomains are not counted
 	- ENGINE
 		* Fixed #1518: Virtual mail problem

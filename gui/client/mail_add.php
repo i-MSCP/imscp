@@ -32,7 +32,7 @@ $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('als_sub_list', 'page');
 $tpl->define_dynamic('to_alias_domain', 'page');
 $tpl->define_dynamic('to_subdomain', 'page');
-$tpl->define_dynamic('to_als_subdomain', 'page');
+$tpl->define_dynamic('to_alias_subdomain', 'page');
 
 // page functions.
 
@@ -237,13 +237,13 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
 			array(
-				'SUB_ALS_ID'		=> '0',
-				'SUB_ALS_SELECTED'	=> 'selected',
-				'SUB_ALS_NAME'		=> tr('Empty list')
+				'ALS_SUB_ID'		=> '0',
+				'ALS_SUB_SELECTED'	=> 'selected',
+				'ALS_SUB_NAME'		=> tr('Empty list')
 			)
 		);
-		$tpl->parse('SUB_ALS_LIST', 'sub_list');
-		$tpl->assign('TO_ALS_SUBDOMAIN', '');
+		$tpl->parse('ALS_SUB_LIST', 'sub_list');
+		$tpl->assign('TO_ALIAS_SUBDOMAIN', '');
 	} else {
 		$first_passed = false;
 
