@@ -96,6 +96,42 @@ class criticalUpdate extends ispcpUpdate{
 		return $sqlUpd;
 	}
 
+	/**
+	 * Create default group for statistics
+	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+	 *
+	 * @author	Daniel Andreca <sci2tech@gmail.com>
+	 * @copyright 	2006-2008 by ispCP | http://isp-control.net
+	 * @version	1.0
+	 * @since	r1417
+	 *
+	 * @access	protected
+	 * @param	Type 	$engine_run_request	Set to true if is needed to perform an engine request
+	 * @return	Type 	$sqlUpd	Sql statements to be performed
+	 */	
+
+	protected function _criticalUpdate_2(&$engine_run_request) {
+
+		$sqlUpd = array();
+	
+		$status=Config::get('ITEM_ADD_STATUS');
+		$statsgroup=Config::get('AWSTATS_GROUP_AUTH');
+		$sql = Database::getInstance();
+
+		$query ="SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup`='{$statsgroup}')";
+		$rs = exec_query($sql, $query);
+
+		if ($rs->RecordCount() != 0) {
+			while (!$rs->EOF) {
+				$sqlUpd[] = "INSERT INTO htaccess_groups (`dmn_id`, `ugroup`,`status`) VALUES ('{$rs->fields['domain_id']}', '{$statsgroup}', '{$status}')";
+				$rs->MoveNext();
+			}
+		}
+
+		$engine_run_request=true;
+		return $sqlUpd;
+	}
+
 	/*
 	* DO NOT CHANGE ANYTHING BELOW THIS LINE
 	*/

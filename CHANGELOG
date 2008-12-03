@@ -1,9 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-12-02 Daniel Andreca
+2008-12-03 Daniel Andreca
 	- ENGINE
-		* Fixed #1571: Alias Domains: Awstats
+		* Fixed #1571: Alias Domains: Awstats (static awstats)
+		* Moved default statistics group to critical updated (need to perform an engine request)
 
 2008-12-02 Daniel Andreca
 	- GUI:

@@ -241,28 +241,14 @@ class databaseUpdate extends ispcpUpdate{
 	 * @copyright	2006-2008 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1417
+	 * @removed 	r1418
 	 *
 	 * @access		protected
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_8() {
-
-		$status=Config::get('ITEM_ADD_STATUS');
-		$statsgroup=Config::get('AWSTATS_GROUP_AUTH');
-		$sql = Database::getInstance();
-
 		$sqlUpd = array();
-
-		$query ="SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup`='{$statsgroup}')";
-		$rs = exec_query($sql, $query);
-
-		if ($rs->RecordCount() != 0) {
-			while (!$rs->EOF) {
-				$sqlUpd[] = "INSERT INTO htaccess_groups (`dmn_id`, `ugroup`,`status`) VALUES ('{$rs->fields['domain_id']}', '{$statsgroup}', '{$status}')";
-				$rs->MoveNext();
-			}
-		}
-
+		//moved to critical because we need to run engine request
 		return $sqlUpd;
 	}
 
