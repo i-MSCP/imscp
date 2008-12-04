@@ -1,6 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-05 Daniel Andreca
+	- ENGINE:
+		* Fixed #1516: Named, at least for gentoo, is only binding to localhost by default
+		* Fixed #1460: /etc/cron.d/ispcp replacements not happening in gentoo install
+	- DISTS:
+		* Update Gentoo install documentation
+	- CONFIGS
+		* Update Gentoo fcgid setting
+		* Update Gentoo ispcp.conf setting
+
 2008-12-04 Daniel Andreca
 	- TOOLS
 		* Fixed #1572: squirrelmail needs a update

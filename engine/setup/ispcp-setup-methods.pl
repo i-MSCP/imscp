@@ -531,7 +531,7 @@ sub ask_fastcgi {
 
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
-	my $qmsg = "\n\tFastCGI Version:[f]astcgi or f[c]gid. [fastcgi]: ";
+	my $qmsg = "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
 
 	print STDOUT $qmsg;
 
@@ -539,17 +539,17 @@ sub ask_fastcgi {
 	chop($rdata);
 
 	if (!defined($rdata) || $rdata eq '') {
-		$main::ua{'php_fastcgi'} = 'fastcgi';
+		$main::ua{'php_fastcgi'} = 'fcgid';
 	}
 	else {
-		if ($rdata eq 'fastcgi' || $rdata eq 'f') {
-			$main::ua{'php_fastcgi'} = 'fastcgi';
-		}
-		elsif ($rdata eq 'fcgid' || $rdata eq 'c') {
+		if ($rdata eq 'fcgid' || $rdata eq 'f') {
 			$main::ua{'php_fastcgi'} = 'fcgid';
 		}
+		elsif ($rdata eq 'fastcgi' || $rdata eq 'c') {
+			$main::ua{'php_fastcgi'} = 'fastcgi';
+		}
 		else {
-			print STDOUT "\n\tOnly '[f]astcgi' or 'f[c]gid' are allowed!";
+			print STDOUT "\n\tOnly ''[f]cgid' or fast[c]gi' are allowed!";
 			return 1;
 		}
 	}
@@ -704,6 +704,7 @@ sub setup_named {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
+# 	my $distro = "$main::cfg{'SERVER_HOSTNAME'}";
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
@@ -723,7 +724,11 @@ sub setup_named {
 		$cfg = get_file($main::cfg{'BIND_CONF_FILE'});
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg_tpl", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+# 		if( $distro eq 'gentoo'){
+			$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
+# 		}
+
+		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		return $rs if ($rs != 0);
 	}
 

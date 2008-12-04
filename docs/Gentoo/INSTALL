@@ -47,6 +47,71 @@ created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
+4) Preparation
+--------------
+For the following steps, you will need to be logged in as root.
+ 1. Add to your /etc/make.conf following lines:
+	# cat >>/etc/make.conf <<eof
+	# APACHE2_MODULES="actions alias auth_basic auth_digest authn_anon authn_dbd authn_dbm
+	# authn_default authn_file authz_dbm authz_default authz_groupfile authz_host authz_owner
+	# authz_user autoindex dav dav_fs dav_lock dbd deflate dir env expires ext_filter filter
+	# headers ident imagemap include info log_config logio mime mime_magic negotiation proxy
+	# proxy_ajp proxy_balancer proxy_connect proxy_http rewrite setenvif so speling status
+	# unique_id userdir usertrack vhost_alias"
+	# APACHE2_MPMS="worker"
+	# eof
+
+ 2. Customize your use flags. There are a few packages which need some use flags removed. Put
+    the following in /etc/portage/package.use
+
+	# cat >>/etc/portage/package.use<<eof
+	# net-libs/courier-authlib -mysql -pam
+	# mail-mta/postfix -mysql -pam
+	# eof
+
+ 3. Unmask a few packages. A few packages that the default ispCP setup requires are masked.
+    Add the following to the /etc/portage/package.keywords
+
+	# cat >>/etc/portage/package.keywords<<eof
+	=mail-filter/policyd-1.82
+	=mail-filter/policyd-weight-0.1.14.17
+	dev-perl/Net-LibIDN
+	# eof
+
+ 4. Install Postfix, and remove ssmtp
+
+	# emerge --unmerge ssmtp && emerge -uDNva postfix
+
+ 5. Install the required modules:
+
+	# emerge -ua `cat ./docs/Gentoo/gentoo-packages`
+
+ 6. Modify Apache's configuration. Edit /etc/conf.d/apache2 you need to add these to the APACHE2_OPTS line
+
+	  -D PROXY -D CBAND -D FCGID
+
+	Remove:
+
+	  -D PHP5
+
+	edit /etc/apache2/modules.d/10_mod_cband.conf and add allow from etc.. so no one can reset your
+	clients stats
+
+	  <Location /cband-status>
+        SetHandler cband-status
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+	  </Location>
+
+ 7. Setup MySQL
+
+	# /usr/bin/mysql_install_db
+	# /etc/init.d/mysql restart
+	# /usr/bin/mysql_secure_installation
+	# /etc/init.d/mysql restart
+
+================================================================================
 4) Installation
 ---------------
 Make sure you are logged in as root and MySQL is running.
@@ -58,31 +123,74 @@ Make sure you are logged in as root and MySQL is running.
 2. Change to the newly created directory:
 	# cd ./ispcp-omega-1.0.0
 
-3. Install the required modules:
-	# emerge -ua `cat ./docs/Gentoo/gentoo-packages`
+3.	(optional) Check the ispcp.conf and adapt it to your requirements.
 
-4.	(optional) Check the ispcp.conf and adapt it to your requirements.
-
-5. Return to the parent direction and build the System by using make:
+4. Return to the parent direction and build the System by using make:
 	# make -f Makefile.gentoo install
 
-6. Copy all the directories into the system (you may make backups)
+5. Copy all the directories into the system (you may make backups)
 	# cp -RvL /tmp/ispcp/* /
 
-7. Now it's time to set up the frontend. Change into the engine directory:
+6. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-7a.Change or create MySQL root password, remove anonymous users, disallow root
+6a.Change or create MySQL root password, remove anonymous users, disallow root
 	login remotely, remove test database (and access to it), reload privilege tables.
 	# mysql_secure_installation
 
-8. Start the engine setup:
+7. Start the engine setup:
 	# ./ispcp-setup
 
-9. Install ispCP ω step-by-step
+8. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
+
+ 9. Start required services, and set them to start on boot:
+
+	# rc-update add vixie-cron default
+	# rc-update add syslog-ng default
+	# rc-update add apache2 default
+	# rc-update add mysql default
+	# rc-update add named default
+	# rc-update add postfix default
+	# rc-update add proftpd default
+	# rc-update add courier-authlib default
+	# rc-update add courier-imapd default
+	# rc-update add courier-pop3d default
+	# rc-update add courier-imapd-ssl default
+	# rc-update add courier-pop3d-ssl default
+	# rc-update add amavisd default
+	# rc-update add clamd default
+	# rc-update add policyd default
+	# rc-update add policyd-weight default
+	# rc-update add saslauthd default
+	# rc-update add spamd default
+	# rc-update add postgrey default
+	# rc-update add ispcp_daemon default
+	# rc-update add ispcp_network default
+
+	# /etc/init.d/vixie-cron restart
+	# /etc/init.d/syslog-ng restart
+	# /etc/init.d/apache2 restart
+	# /etc/init.d/mysql restart
+	# /etc/init.d/named restart
+	# /etc/init.d/postfix restart
+	# /etc/init.d/proftpd restart
+	# /etc/init.d/courier-authlib restart
+	# /etc/init.d/courier-imapd restart
+	# /etc/init.d/courier-pop3d restart
+	# /etc/init.d/courier-imapd-ssl restart
+	# /etc/init.d/courier-pop3d-ssl restart
+	# /etc/init.d/amavisd restart
+	# /etc/init.d/clamd restart
+	# /etc/init.d/policyd restart
+	# /etc/init.d/policyd-weight restart
+	# /etc/init.d/saslauthd restart
+	# /etc/init.d/spamd restart
+	# /etc/init.d/postgrey restart
+	# /etc/init.d/ispcp_daemon restart
+	# /etc/init.d/ispcp_network restart
 
 10. Clean the temporary folders:
 	# rm -R /tmp/ispcp
