@@ -11,7 +11,7 @@
  *
  * @copyright &copy; 1999-2008 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 13177 2008-06-14 12:06:11Z jervfors $
+ * @version $Id: i18n.php 13309 2008-10-27 23:11:38Z pdontthink $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -51,6 +51,10 @@ function sq_change_text_domain($domain_name, $directory='') {
     global $use_gettext;
     static $domains_already_seen = array();
     $return_value = textdomain(NULL);
+
+    // empty domain defaults to "squirrelmail"
+    //
+    if (empty($domain_name)) $domain_name = 'squirrelmail';
 
     // only need to call bindtextdomain() once unless
     // $use_gettext is turned on

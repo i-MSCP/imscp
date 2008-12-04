@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 13198 2008-06-26 00:09:39Z pdontthink $
+ * @version $Id: options.php 13314 2008-10-30 10:56:01Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -71,6 +71,7 @@ class SquirrelOption {
     var $raw_option_array;
     var $name;
     var $caption;
+    var $caption_wrap;
     var $type;
     var $refresh_level;
     var $size;
@@ -99,6 +100,7 @@ class SquirrelOption {
         $this->raw_option_array = $raw_option_array;
         $this->name = $name;
         $this->caption = $caption;
+        $this->caption_wrap = TRUE;
         $this->type = $type;
         $this->refresh_level = $refresh_level;
         $this->possible_values = $possible_values;
@@ -153,6 +155,11 @@ class SquirrelOption {
     /* Set the new value for this option. */
     function setNewValue($new_value) {
         $this->new_value = $new_value;
+    }
+
+    /* Set whether the caption is allowed to wrap for this option. */
+    function setCaptionWrap($caption_wrap) {
+        $this->caption_wrap = $caption_wrap;
     }
 
     /* Set the size for this option. */
@@ -308,7 +315,7 @@ class SquirrelOption {
 
         $result = "<input type=\"text\" name=\"new_$this->name\" value=\""
                 . htmlspecialchars($this->value)
-                . "\" size=\"$width\" $this->script />" 
+                . "\" size=\"$width\" $this->script /> " 
                 . htmlspecialchars($this->trailing_text) . "\n";
         return $result;
     }
@@ -749,8 +756,8 @@ class SquirrelOption {
                     else $bgcolor = 4;
 
                     $result .= '<tr bgcolor="' . $color[$bgcolor] . '">'
-                             . '<td width="1%"><input type="checkbox" name="new_' . $this->name . '[' . ($index++) . ']" id="' . $this->name . '_list_item_' . $key . '" value="' . $value . '"></td>'
-                             . '<td><label for="' . $this->name . '_list_item_' . $key . '">' . $value . '</label></td>'
+                             . '<td width="1%"><input type="checkbox" name="new_' . $this->name . '[' . ($index++) . ']" id="' . $this->name . '_list_item_' . $key . '" value="' . htmlspecialchars($value) . '"></td>'
+                             . '<td><label for="' . $this->name . '_list_item_' . $key . '">' . htmlspecialchars($value) . '</label></td>'
                              . "</tr>\n";
 
                 }
@@ -925,6 +932,11 @@ function create_option_groups($optgrps, $optvals) {
                 (isset($optset['htmlencoded']) ? $optset['htmlencoded'] : false)
                 );
 
+            /* If provided, set if the caption is allowed to wrap for this option. */
+            if (isset($optset['caption_wrap'])) {
+                $next_option->setCaptionWrap($optset['caption_wrap']);
+            }
+
             /* If provided, set the size for this option. */
             if (isset($optset['size'])) {
                 $next_option->setSize($optset['size']);
@@ -1015,8 +1027,13 @@ function print_option_groups($option_groups) {
                     $option->caption = '<label for="new_' . $option->name . '">'
                                      . $option->caption . '</label>';
 
+                // text area trailing text just goes under the caption
+                //
+                if ($option->type == SMOPT_TYPE_TEXTAREA && !empty($option->trailing_text))
+                    $option->caption .= '<br /><small>' . $option->trailing_text . '</small>';
+
                 echo html_tag( 'tr', "\n".
-                           html_tag( 'td', $option->caption . (!empty($option->caption) ? ':' : ''), 'right' ,'', 'valign="middle"' ) .
+                           html_tag( 'td', $option->caption . (!empty($option->caption) ? ':' : ''), 'right' ,'', 'valign="middle"' . ($option->caption_wrap ? '' : ' style="white-space:nowrap"') ) .
                            html_tag( 'td', $option->createHTMLWidget(), 'left' )
                        ) ."\n";
             } else {

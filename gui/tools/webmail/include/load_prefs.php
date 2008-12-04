@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: load_prefs.php 13280 2008-09-19 23:58:19Z pdontthink $
+ * @version $Id: load_prefs.php 13316 2008-10-30 20:57:38Z pdontthink $
  * @package squirrelmail
  */
 
@@ -188,6 +188,7 @@ if( $ser = getPref($data_dir, $username, 'hililist') ) {
         $message_highlight_list[$i]['match_type'] = $highlight_array[3];
         removePref($data_dir, $username, "highlight$i");
     }
+// NB: The fact that this preference is always set here means that some plugins rely on testing it to know if a user has logged in before - the "old way" above is probably long since obsolete and unneeded, but the setPref() below should not be removed
     /* store in new format for the next time */
     setPref($data_dir, $username, 'hililist', serialize($message_highlight_list));
 }
@@ -222,7 +223,7 @@ $show_html_default =
    getPref($data_dir, $username, 'show_html_default', SMPREF_OFF);
 
 $addrsrch_fullname =
-   getPref($data_dir, $username, 'addrsrch_fullname', SMPREF_OFF);
+   getPref($data_dir, $username, 'addrsrch_fullname', 'fullname');
 
 $enable_forward_as_attachment =
    getPref($data_dir, $username, 'enable_forward_as_attachment', SMPREF_ON);

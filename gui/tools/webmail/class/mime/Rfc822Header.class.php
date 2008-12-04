@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 13260 2008-08-11 01:30:53Z pdontthink $
+ * @version $Id: Rfc822Header.class.php 13311 2008-10-29 23:05:09Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -613,7 +613,10 @@ class Rfc822Header {
         if ($ar) {
             return $aProcessedAddress;
         } else {
-            return $aProcessedAddress[0];
+            if (isset($aProcessedAddress[0]))
+                return $aProcessedAddress[0];
+            else
+                return '';
         }
     }
 

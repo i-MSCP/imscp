@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 13290 2008-09-28 13:45:49Z kink $
+ * @version $Id: global.php 13335 2008-11-26 02:54:09Z pdontthink $
  * @package squirrelmail
  */
 
@@ -82,6 +82,11 @@ if (isset($_SERVER['PHP_SELF'])) {
  */
 require_once(SM_PATH . 'functions/strings.php');
 require_once(SM_PATH . 'config/config.php');
+
+/**
+ * Detect SSL connections
+ */
+$is_secure_connection = is_ssl_secured_connection();
 
 /** set the name of the session cookie */
 if(isset($session_name) && $session_name) {
@@ -425,9 +430,9 @@ function sqsetcookie($sName, $sValue='deleted', $iExpire=0, $sPath="", $sDomain=
                      $bSecure=false, $bHttpOnly=true, $bReplace=false) {
 
     // if we have a secure connection then limit the cookies to https only.
-    if ($sName && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
+    global $is_secure_connection;
+    if ($sName && $is_secure_connection)
         $bSecure = true;
-    }
 
     // admin config can override the restriction of secure-only cookies
     //
@@ -464,5 +469,54 @@ function sqsetcookie($sName, $sValue='deleted', $iExpire=0, $sPath="", $sDomain=
                             . (!$bSecure ? '' : '; secure')
                             . (!$bHttpOnly ? '' : '; HttpOnly'), $bReplace);
     }
+}
+
+/**
+ * Detect whether or not we have a SSL secured (HTTPS)
+ * connection to the browser
+ *
+ * It is thought to be so if you have 'SSLOptions +StdEnvVars'
+ * in your Apache configuration,
+ *     OR if you have HTTPS set to a non-empty value (except "off")
+ *        in your HTTP_SERVER_VARS,
+ *     OR if you have HTTP_X_FORWARDED_PROTO=https in your HTTP_SERVER_VARS,
+ *     OR if you are on port 443.
+ *
+ * Note: HTTP_X_FORWARDED_PROTO could be sent from the client and
+ *       therefore possibly spoofed/hackable - for now, the
+ *       administrator can tell SM to ignore this value by setting 
+ *       $sq_ignore_http_x_forwarded_headers to boolean TRUE in
+ *       config/config_local.php, but in the future we may
+ *       want to default this to TRUE and make administrators
+ *       who use proxy systems turn it off (see 1.5.2+).
+ *
+ * Note: It is possible to run SSL on a port other than 443, and
+ *       if that is the case, the administrator should set
+ *       $sq_https_port to the applicable port number in
+ *       config/config_local.php
+ *
+ * @return boolean TRUE if the current connection is SSL-encrypted;
+ *                 FALSE otherwise.
+ *
+ * @since 1.4.17 and 1.5.2 
+ *
+ */
+function is_ssl_secured_connection()
+{ 
+    global $sq_ignore_http_x_forwarded_headers, $sq_https_port;
+    $https_env_var = getenv('HTTPS');
+    if ($sq_ignore_http_x_forwarded_headers
+     || !sqgetGlobalVar('HTTP_X_FORWARDED_PROTO', $forwarded_proto, SQ_SERVER))
+        $forwarded_proto = '';
+    if (empty($sq_https_port)) // won't work with port 0 (zero)
+       $sq_https_port = 443;
+    if ((isset($https_env_var) && strcasecmp($https_env_var, 'on') === 0)
+     || (sqgetGlobalVar('HTTPS', $https, SQ_SERVER) && !empty($https)
+      && strcasecmp($https, 'off') !== 0)
+     || (strcasecmp($forwarded_proto, 'https') === 0)
+     || (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER)
+      && $server_port == $sq_https_port))
+        return TRUE;
+    return FALSE;
 }
 

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13276 2008-09-11 01:32:19Z pdontthink $
+ * @version $Id: mime.php 13338 2008-12-04 04:17:47Z pdontthink $
  * @package squirrelmail
  */
 
@@ -1806,6 +1806,8 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
                                     $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
                                 }
                             }
+                        } else {
+                            $attvalue = $sQuote . $attvalue . $sQuote;
                         }
                         break;
                     case 'outbind':
@@ -1814,13 +1816,13 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
                          * One day MS might actually make it match something useful, for now, falling
                          * back to using cid2http, so we can grab the blank.png.
                          */
-                        $attvalue = sq_cid2http($message, $id, $attvalue, $mailbox);
+                        $attvalue = $sQuote . sq_cid2http($message, $id, $attvalue, $mailbox) . $sQuote;
                         break;
                     case 'cid':
                         /**
                             * Turn cid: urls into http-friendly ones.
                             */
-                        $attvalue = sq_cid2http($message, $id, $attvalue, $mailbox);
+                        $attvalue = $sQuote . sq_cid2http($message, $id, $attvalue, $mailbox) . $sQuote;
                         break;
                     default:
                         $attvalue = $sQuote . SM_PATH . 'images/blank.png' . $sQuote;

@@ -13,7 +13,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php 13238 2008-07-19 07:31:43Z pdontthink $
+ * @version $Id: compose.php 13307 2008-10-15 20:19:08Z pdontthink $
  * @package squirrelmail
  */
 
@@ -763,7 +763,8 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 $enc_from_name = '"'.$data['full_name'].'" <'. $data['email_address'].'>';
                 if(strtolower($enc_from_name) == strtolower($orig_from)) {
                     $identity = $nr;
-                    break;
+                    // don't stop!  need to build $identities array for idents match below
+                    //break;
                 }
                 $identities[] = $enc_from_name;
             }
@@ -1308,8 +1309,8 @@ function showComposeButtonRow() {
     if ($default_use_mdn) {
         if ($mdn_user_support) {
             echo '          ' . _("Receipt") .': '.
-                addCheckBox('request_mdn', $request_mdn == '1', '1'). _("On Read").
-                addCheckBox('request_dr',  $request_dr  == '1', '1'). _("On Delivery");
+                addCheckBox('request_mdn', $request_mdn == '1', '1', 'id="request_mdn"') . '<label for="request_mdn">' . _("On Read") . '</label>' .
+                addCheckBox('request_dr',  $request_dr  == '1', '1', 'id="request_dr"') . '<label for="request_dr">' . _("On Delivery") . '</label>';
         }
     }
 

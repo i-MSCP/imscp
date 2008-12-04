@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 13185 2008-06-19 01:07:28Z pdontthink $
+ * @version $Id: addressbook.php 13298 2008-10-07 09:39:20Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -351,7 +351,7 @@ class AddressBook {
 
     function full_address($row) {
         global $data_dir, $username;
-        $addrsrch_fullname = getPref($data_dir, $username, 'addrsrch_fullname');
+        $addrsrch_fullname = getPref($data_dir, $username, 'addrsrch_fullname', 'fullname');
         if ($addrsrch_fullname == 'fullname')
             return $row['name'] . ' <' . trim($row['email']) . '>';
         else if ($addrsrch_fullname == 'nickname')
