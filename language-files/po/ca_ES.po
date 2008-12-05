@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-08-22 14:04+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -2053,6 +2053,12 @@ msgstr "Desactivar"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Una URL de redirecció ha de començar amb http://'"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"El subdomini que esteu intentant eliminar té comptes de correu!<br> Primer "
+"elimineu-les!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomini programat per eliminiació!"
 
@@ -2481,9 +2487,6 @@ msgstr "Àlies de correu"
 msgid "Mails total"
 msgstr "Total de correus"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "El format usat és incorrecte!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 "El format de l'adreça de correu a la vostra llista de reenviaments és "
@@ -2504,10 +2507,19 @@ msgstr "Si us plau, tria al menys un tipus de correu!"
 msgid "Please enter mail account username!"
 msgstr "Si us plau introduiu un nom pel compte de correu!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "La llista de subdominis és buida! No podeu afegir comptes de correu!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "El format usat és incorrecte!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "correus del subdominis"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "La llistà d'àlies és buida! No podeu afegir comptes de correu!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "La llistà d'àlies és buida! No podeu afegir comptes de correu!"
 
 msgid "Forward list is empty!"
@@ -2522,6 +2534,10 @@ msgstr "ispCP - Client/Afegir Usuari Correu"
 msgid "Add mail users"
 msgstr "Afegir usuaris de correu"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Al subdomini"
+
 msgid "Normal mail"
 msgstr "Correu normal"
 
@@ -2533,6 +2549,9 @@ msgstr "Reenviar a"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Separeu les diferents adreces de correu amb un salt de línia."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Compte de correu preparat per modificació!"
@@ -2943,12 +2962,6 @@ msgstr "Nom subdomini"
 msgid "Directory tree mount point"
 msgstr "Punt de muntatge de l'arbre directoris"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"El subdomini que esteu intentant eliminar té comptes de correu!<br> Primer "
-"elimineu-les!"
-
 msgid "Please specify message subject!"
 msgstr "Si us plau especifiqueu l'assumpte del missatge"
 
@@ -3205,12 +3218,21 @@ msgstr "Correu de subdomini"
 msgid "Subdomain forward"
 msgstr "Redirecció de subdomini"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Correu de subdomini"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Redirecció de subdomini"
+
 msgid "Unknown type"
 msgstr "Tipus desconegut"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Benvigut {USERNAME} al panell de control ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3226,6 +3248,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3335,6 +3361,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Nova comanda d'àlies per a {CUSTOMER}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3344,7 +3371,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3363,9 +3390,6 @@ msgstr ""
 "Gràcies per utilitzar els serveis de ispCP\n"
 "L'equip de ispCP\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Compte Catchall"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3988,6 +4012,13 @@ msgstr "Usuari no eliminat!"
 
 msgid "This reseller has no domains yet."
 msgstr "Aquest distribuïdor encara no té dominis."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "La llista de subdominis és buida! No podeu afegir comptes de correu!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Compte Catchall"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Llargada o sintaxi de la contrasenya incorrecta"

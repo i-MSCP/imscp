@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP.gl.00.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-08-28 20:35+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galician <infoxeral@ciberirmandade.org>\n"
@@ -2054,6 +2054,12 @@ msgstr "Desactivar"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Un URL de redirección debe comezar con 'http://'"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"O subdominio que estás tentando eliminar ten contas de correo-e!<br>Elimina "
+"estas primeiro!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdominio programado para ser eliminado!"
 
@@ -2485,9 +2491,6 @@ msgstr "Correos de alias"
 msgid "Mails total"
 msgstr "Total de correos"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "O formato empregado de Parte Local de Correo é incorrecto!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 "O formato de correo dun dos enderezos da túa listaxe de reenvío é incorrecto!"
@@ -2507,11 +2510,19 @@ msgstr "Por favor, selecciona polo menos un tipo de correo!"
 msgid "Please enter mail account username!"
 msgstr "Por favor, insire un nome de usuario da conta de correo!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr ""
-"A listaxe de subdominios está baleira! Non podes engadir contas de correo!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "O formato empregado de Parte Local de Correo é incorrecto!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Correos de subdominio"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "A listaxe de alias está baleira! Non podes engadir contas de correo!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "A listaxe de alias está baleira! Non podes engadir contas de correo!"
 
 msgid "Forward list is empty!"
@@ -2526,6 +2537,10 @@ msgstr "ispCP - Cliente/Engadir Usuario de Correo"
 msgid "Add mail users"
 msgstr "Engadir usuario de correo"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "A subdominio"
+
 msgid "Normal mail"
 msgstr "Correo normal"
 
@@ -2538,6 +2553,9 @@ msgstr "Reenviar a"
 msgid "Separate multiple email addresses with a line-break."
 msgstr ""
 "Separa enderezos de correo-e múltiples poñendo cada un nunha liña distinta"
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Conta de correo programada para ser modificada!"
@@ -2946,12 +2964,6 @@ msgstr "Nome do subdominio"
 msgid "Directory tree mount point"
 msgstr "Punto de montaxe da árbore de directorios"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"O subdominio que estás tentando eliminar ten contas de correo-e!<br>Elimina "
-"estas primeiro!"
-
 msgid "Please specify message subject!"
 msgstr "Por favor, especifica o asunto da mensaxe!"
 
@@ -3208,12 +3220,21 @@ msgstr "Correo do subdominio"
 msgid "Subdomain forward"
 msgstr "Redirección do subdominio"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Correo do subdominio"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Redirección do subdominio"
+
 msgid "Unknown type"
 msgstr "Tipo descoñecido"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Benvido ao ispCP, {USERNAME}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3229,6 +3250,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3340,6 +3365,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Novo pedido de alias para {CUSTOMER}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3349,7 +3375,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3368,9 +3394,6 @@ msgstr ""
 "Moitas grazas por empregar os servizos do ispCP.\n"
 "O equipo do ispCP\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Conta recolle-todo"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3998,6 +4021,13 @@ msgstr "Usuario non dado de baixa!"
 
 msgid "This reseller has no domains yet."
 msgstr "Este revendedor aínda non ten dominios."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "A listaxe de subdominios está baleira! Non podes engadir contas de correo!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Conta recolle-todo"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Sintaxe ou longo do contrasinal incorrectos!"

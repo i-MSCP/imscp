@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -2050,6 +2050,12 @@ msgstr "Uitschakelen"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Een Doorstuur URL moet met 'http://' beginnen"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Het subdomein dat u wilt verwijderen bevat e-mail accounts! Verwijder deze "
+"eerst!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomein gepland voor verwijdering"
 
@@ -2473,9 +2479,6 @@ msgstr "Alias e-mails"
 msgid "Mails total"
 msgstr "Mails totaal"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Ongeldig Mail Localpart formaat gebruikt!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Het E-Mail adres formaat in uw doorstuur lijst is incorrect!"
 
@@ -2494,10 +2497,19 @@ msgstr "Selecteer aub minimaal één e-mail type!"
 msgid "Please enter mail account username!"
 msgstr "Gelieve een mail account gebruikersnaam in te vullen"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Er zijn geen subdomeinen. U kan geen mail accounts toevoegen"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Ongeldig Mail Localpart formaat gebruikt!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Subdomein mails"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Er zijn geen aliassen, u kunt hier geen e-mail accounts aanmaken."
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Er zijn geen aliassen, u kunt hier geen e-mail accounts aanmaken."
 
 msgid "Forward list is empty!"
@@ -2512,6 +2524,10 @@ msgstr "ispCP - Klant/Toevoegen E-Mail gebruiker"
 msgid "Add mail users"
 msgstr "Mail gebruikers toevoegen"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Naar subdomein"
+
 msgid "Normal mail"
 msgstr "Normale mail"
 
@@ -2523,6 +2539,9 @@ msgstr "Doorsturen naar"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Scheid meerdere e-mail adressen met een lijn-onderbreking."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Mail account gepland voor aanpassing"
@@ -2934,12 +2953,6 @@ msgstr "Subdomein naam"
 msgid "Directory tree mount point"
 msgstr "Folder boom bevestigingspunt"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Het subdomein dat u wilt verwijderen bevat e-mail accounts! Verwijder deze "
-"eerst!"
-
 msgid "Please specify message subject!"
 msgstr "Gelieve een bericht onderwerp te specificeren"
 
@@ -3195,12 +3208,21 @@ msgstr "Subdomein mail"
 msgid "Subdomain forward"
 msgstr "Subdomein doorsturing"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Subdomein mail"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Subdomein doorsturing"
+
 msgid "Unknown type"
 msgstr "Onbekend type"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Welkom {USERNAME} tot ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3216,6 +3238,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3326,6 +3352,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Nieuwe alias bestelling voor {CUSTOMER}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3335,7 +3362,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3353,9 +3380,6 @@ msgstr ""
 "Bedankt voor het gebruiken van ispCP diensten\n"
 "Het ispCP Team.\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Catchall account"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3980,6 +4004,12 @@ msgstr "Gebruiker niet beeindigd!"
 
 msgid "This reseller has no domains yet."
 msgstr "Deze reseller heeft nog geen domeinen."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Er zijn geen subdomeinen. U kan geen mail accounts toevoegen"
+
+#~ msgid "Catchall account"
+#~ msgstr "Catchall account"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Foutieve paswoord lengte of syntaxis!"

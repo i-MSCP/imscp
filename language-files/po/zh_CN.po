@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -2016,6 +2016,10 @@ msgstr "无效"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "转向URL地址必须以“http://”开始"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "您试图删除的子域名有邮件账号！请先删除它们！"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "子域名删除已预定！"
 
@@ -2437,9 +2441,6 @@ msgstr "别名邮件"
 msgid "Mails total"
 msgstr "邮件总数"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "使用不完整的邮件正文格式！"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "邮件发送地址未从发送列表中找到相一致的地址。"
 
@@ -2458,10 +2459,19 @@ msgstr "请选择至少一个邮件类型！"
 msgid "Please enter mail account username!"
 msgstr "请输入邮件账号用户名！"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "子域名列表为空！您不能添加邮件账号！"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "使用不完整的邮件正文格式！"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "子域名邮件"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "别名列表为空！您不能添加邮件账号！"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "别名列表为空！您不能添加邮件账号！"
 
 msgid "Forward list is empty!"
@@ -2476,6 +2486,10 @@ msgstr "ispCP - 客户/添加邮件用户"
 msgid "Add mail users"
 msgstr "添加邮件用户"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "到子域名"
+
 msgid "Normal mail"
 msgstr "正常邮件"
 
@@ -2487,6 +2501,9 @@ msgstr "转发"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "用line-break分离多个邮件地址。"
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "邮件账号更改已预定！"
@@ -2895,10 +2912,6 @@ msgstr "子域名"
 msgid "Directory tree mount point"
 msgstr "目录树挂载点"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "您试图删除的子域名有邮件账号！请先删除它们！"
-
 msgid "Please specify message subject!"
 msgstr "请指定消息主题！"
 
@@ -3154,12 +3167,21 @@ msgstr "子域名邮件"
 msgid "Subdomain forward"
 msgstr "子域名转发"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "子域名邮件"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "子域名转发"
+
 msgid "Unknown type"
 msgstr "未知类型"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME}，欢迎您使用ispCP！"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3175,6 +3197,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3284,6 +3310,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "{CUSTOMER}的新别名订单！"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3293,7 +3320,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3312,9 +3339,6 @@ msgstr ""
 "感谢您使用 ispCP 服务。\n"
 "ispCP 团队\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Catchall 账号"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3902,6 +3926,12 @@ msgstr "用户未到期！"
 
 msgid "This reseller has no domains yet."
 msgstr "此代理商还没有域名。"
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "子域名列表为空！您不能添加邮件账号！"
+
+#~ msgid "Catchall account"
+#~ msgstr "Catchall 账号"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "密码长度不够或拼写错误！（必须要有字母和数字）"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-08-07 15:56+0200\n"
 "Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
 "Language-Team: Euskara <eu@li.org>\n"
@@ -2054,6 +2054,12 @@ msgstr "Ezgaitua"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Aurrera jarraitze URL-a 'http://'-az hasi behar du"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Ezabatzen saiatzen ari zaren azpidomeinuak posta kontuak ditu !<br>Ezabatu "
+"hauek lehenik!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Azpidomeinua ezabatzeko zain!"
 
@@ -2480,9 +2486,6 @@ msgstr "Ezizenen postak"
 msgid "Mails total"
 msgstr "Postak guztira"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Posta okerra Localpart formatua erabilia!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Posten helbide formatu okerra zure aurrera jarraitze zerrenda!"
 
@@ -2501,11 +2504,19 @@ msgstr "Mesedez aukeratu ezazu posta elektroniko mota bat!"
 msgid "Please enter mail account username!"
 msgstr "Mesedez sar ezazu posta kontuko erabiltzaile izena!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr ""
-"Azpidomeinu zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Posta okerra Localpart formatua erabilia!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Azpidomeinuaren postak"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Ezizenen  zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Ezizenen  zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
 
 msgid "Forward list is empty!"
@@ -2520,6 +2531,10 @@ msgstr "ispCP - Erabiltzailea/Gehitu porta elektroniko erabiltzailea"
 msgid "Add mail users"
 msgstr "Gehitu posta elektroniko erabiltzailea"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Azpidomeinura"
+
 msgid "Normal mail"
 msgstr "Posta arrunta"
 
@@ -2531,6 +2546,9 @@ msgstr "Nora aurrera jarraitu"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Banandu email helbide multzoa lerro-jauziekin."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Posta elektroniko kontua aldatzeko zain!"
@@ -2942,12 +2960,6 @@ msgstr "Azpidomeinu izena"
 msgid "Directory tree mount point"
 msgstr "Direktorio zuhaitzan muntatze puntua"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Ezabatzen saiatzen ari zaren azpidomeinuak posta kontuak ditu !<br>Ezabatu "
-"hauek lehenik!"
-
 msgid "Please specify message subject!"
 msgstr "Mesedez jar ezazu mezuaren gaia!"
 
@@ -3203,12 +3215,21 @@ msgstr "Azpidomeinuen posta"
 msgid "Subdomain forward"
 msgstr "Azpidomeinuen aurrera jarraitzea"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Azpidomeinuen posta"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Azpidomeinuen aurrera jarraitzea"
+
 msgid "Unknown type"
 msgstr "Mota ezezaguna"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Ongi etorri {USERNAME} ispCP-ra!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3224,6 +3245,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3334,6 +3359,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Ezizen berri eskaera {CUSTOMER} erabiltzailearentzat!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3343,7 +3369,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3362,9 +3388,6 @@ msgstr ""
 "Milesker ispCP-ko zerbitzuak erabiltzeagatik.\n"
 "ispCP Taldea\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Catchall kontua"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3988,6 +4011,13 @@ msgstr "Erabiltzailea ez da amaitu!"
 
 msgid "This reseller has no domains yet."
 msgstr "Bersaltzaileak ez dauka domeinurik oraindik."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "Azpidomeinu zerrenda hutsik dago! Ezin duzu posta konturik gehitu hona!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Catchall kontua"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Pasahitzan luzera edo sintaxi okerra!"

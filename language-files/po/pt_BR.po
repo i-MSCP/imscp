@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -2089,6 +2089,11 @@ msgstr "Desabilita"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Este subdomínio não está vazio !<br>Primeiro remova as contas de e-mail !"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sub-domínio agendado para exclusão!"
 
@@ -2519,9 +2524,6 @@ msgstr "E-mails alias"
 msgid "Mails total"
 msgstr "Total de e-mails"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Seção Local do Mail com Formato Inválido!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 
@@ -2541,11 +2543,21 @@ msgstr "Por favor, informe o e-mail do remetente!"
 msgid "Please enter mail account username!"
 msgstr "Informe o nome da conta de e-mail!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr ""
-"Lista de sub-domínios vazia! Você não pode incluir contas de e-mail aqui!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Seção Local do Mail com Formato Inválido!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "E-mails do sub-domínio"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr ""
+"Lista de alias está vazia! Você não pode adicionar usuário de e-mail nesta "
+"conta!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr ""
 "Lista de alias está vazia! Você não pode adicionar usuário de e-mail nesta "
 "conta!"
@@ -2562,6 +2574,10 @@ msgstr "ispCP - Cliente/Adicionar Usuário de E-mail"
 msgid "Add mail users"
 msgstr "Adicionar usuários de e-mail"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Para sub-domínio"
+
 msgid "Normal mail"
 msgstr "E-mail comum"
 
@@ -2572,6 +2588,9 @@ msgid "Forward to"
 msgstr "Responder para"
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -2990,11 +3009,6 @@ msgstr "Nome do sub-domínio"
 msgid "Directory tree mount point"
 msgstr "Árvore de diretórios<br>montados"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Este subdomínio não está vazio !<br>Primeiro remova as contas de e-mail !"
-
 msgid "Please specify message subject!"
 msgstr "Por favor, informe o assunto!"
 
@@ -3251,6 +3265,14 @@ msgstr "E-mail do sub-domínio"
 msgid "Subdomain forward"
 msgstr "Redirecionamento de sub-domínio"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "E-mail do sub-domínio"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Redirecionamento de sub-domínio"
+
 msgid "Unknown type"
 msgstr "Tipo desconhecido"
 
@@ -3272,6 +3294,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3341,14 +3367,11 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
-msgstr ""
-
-msgid "Catchall account"
 msgstr ""
 
 msgid ""
@@ -3947,6 +3970,10 @@ msgstr "Cliente não finalizado!"
 
 msgid "This reseller has no domains yet."
 msgstr "Este representante ainda não possui domínios."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "Lista de sub-domínios vazia! Você não pode incluir contas de e-mail aqui!"
 
 #, fuzzy
 #~ msgid "There is a subdomain with the same mount point!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -2096,6 +2096,12 @@ msgstr "Вимкнути"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Триває видалення піддомену!"
 
@@ -2524,9 +2530,6 @@ msgstr "Поштові аліаси"
 msgid "Mails total"
 msgstr "Усього поштових скриньок"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Використано невірний формат Mail Localpart"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 
@@ -2546,10 +2549,19 @@ msgstr "Укажіть скриньку відправника!"
 msgid "Please enter mail account username!"
 msgstr "Введіть користувача електронної пошти!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Використано невірний формат Mail Localpart"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Пошта піддомена"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Список аліасів порожній! Ви не можете додавати тут поштові скриньки!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Список аліасів порожній! Ви не можете додавати тут поштові скриньки!"
 
 msgid "Forward list is empty!"
@@ -2564,6 +2576,10 @@ msgstr "ispCP - Клієнт/Додавання поштової скриньк�
 msgid "Add mail users"
 msgstr "Додати поштові скриньки"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Піддомену"
+
 msgid "Normal mail"
 msgstr "Нормальний E-mail"
 
@@ -2574,6 +2590,9 @@ msgid "Forward to"
 msgstr "Переслати:"
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -2992,12 +3011,6 @@ msgstr "Ім'я піддомену"
 msgid "Directory tree mount point"
 msgstr "Точка монтування (директорія)"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
-"видаліть їх!"
-
 msgid "Please specify message subject!"
 msgstr "Будь ласка, укажіть тему повідомлення!"
 
@@ -3254,6 +3267,14 @@ msgstr "Пошта піддомена"
 msgid "Subdomain forward"
 msgstr "Перенаправлення піддомену"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Пошта піддомена"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Перенаправлення піддомену"
+
 msgid "Unknown type"
 msgstr "Невідомий тип"
 
@@ -3275,6 +3296,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3344,14 +3369,11 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
-msgstr ""
-
-msgid "Catchall account"
 msgstr ""
 
 msgid ""
@@ -3957,6 +3979,9 @@ msgstr "Користувач не видалений!"
 
 msgid "This reseller has no domains yet."
 msgstr "Цей реселер не має доменів."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
 
 #, fuzzy
 #~ msgid "There is a subdomain with the same mount point!"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -2129,6 +2129,12 @@ msgstr "Vypnúť"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
+"odstránte!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sub-doména načasovaná na zmazanie!"
 
@@ -2567,9 +2573,6 @@ msgstr "Aliasové e-maily"
 msgid "Mails total"
 msgstr "E-maily spolu"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Použitý zlý formát lokálnej časti e-mailu"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Formát e-mailu v zozname presmerovaní je nesprávny!"
 
@@ -2589,10 +2592,19 @@ msgstr "Prosím vyplňte e-mail!"
 msgid "Please enter mail account username!"
 msgstr "Prosím zadajte meno e-mailového konta!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Zoznam sub-domén je prázdny! Tu nemôžete pridať e-mailové konto!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Použitý zlý formát lokálnej časti e-mailu"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Sub-doménové e-maily"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Zoznam aliasov je prázdny! Tu nemôžete pridať e-mailové konto!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Zoznam aliasov je prázdny! Tu nemôžete pridať e-mailové konto!"
 
 msgid "Forward list is empty!"
@@ -2607,6 +2619,10 @@ msgstr "ispCP - Klient/Pridať E-mailové konto"
 msgid "Add mail users"
 msgstr "Pridať E-mailové konto"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "K sub-doméne"
+
 msgid "Normal mail"
 msgstr "Normálny e-mail"
 
@@ -2617,6 +2633,9 @@ msgid "Forward to"
 msgstr "Presmerovať do"
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -3038,12 +3057,6 @@ msgstr "Meno sub-domény"
 msgid "Directory tree mount point"
 msgstr "Strom adresárov<br>prípojný bod"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
-"odstránte!"
-
 msgid "Please specify message subject!"
 msgstr "Prosím vyplňte predmet správy!"
 
@@ -3310,6 +3323,14 @@ msgstr "E-mail sub-domény"
 msgid "Subdomain forward"
 msgstr "Presmerovanie sub-domeny"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "E-mail sub-domény"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Presmerovanie sub-domeny"
+
 msgid "Unknown type"
 msgstr "Neznámy typ"
 
@@ -3331,6 +3352,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3400,15 +3425,12 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
 msgstr ""
-
-msgid "Catchall account"
-msgstr "\"Zachyť všetko\" konto"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4032,6 +4054,12 @@ msgstr "Užívateľ nebol zrušený!"
 
 msgid "This reseller has no domains yet."
 msgstr "Tento predajca nemá žiadne domény zatiaľ"
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Zoznam sub-domén je prázdny! Tu nemôžete pridať e-mailové konto!"
+
+#~ msgid "Catchall account"
+#~ msgstr "\"Zachyť všetko\" konto"
 
 #, fuzzy
 #~ msgid "Incorrect password length or syntax!"

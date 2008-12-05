@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -2069,6 +2069,12 @@ msgstr "Забрани"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "УРЛ преадресацията трябва да започва с 'http://'"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Поддомейна, който искате да изтриете има пощенски кутии !<br>Първо ги "
+"изтрийте!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Поддомейна е добавен в графика за изтриване!"
 
@@ -2499,9 +2505,6 @@ msgstr "Пощенски псевдоними"
 msgid "Mails total"
 msgstr "Кутии Всичко"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Неправилен Формат на Локалната част от Имейла се използва!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Форматът на имейл адреса в списка за пренасочване е некоректен!"
 
@@ -2521,11 +2524,20 @@ msgstr "Моля, укажете адрес на изпращача!"
 msgid "Please enter mail account username!"
 msgstr "Укажете име за потребителя на пощенска кутия!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr ""
-"Списъкът с поддомейни е празен! Вие не може да добавяте пощенски кутии!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Неправилен Формат на Локалната част от Имейла се използва!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Поддомейна поща"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr ""
+"Списъкът с псевдоними е празен! Вие не може да добавяте пощенски кутии!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr ""
 "Списъкът с псевдоними е празен! Вие не може да добавяте пощенски кутии!"
 
@@ -2541,6 +2553,10 @@ msgstr "ispCP - Клиент/Добави пощенска кутия"
 msgid "Add mail users"
 msgstr "Добави потребители"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Към поддомейн"
+
 msgid "Normal mail"
 msgstr "Нормалний имеил"
 
@@ -2552,6 +2568,9 @@ msgstr "Пренасочи към"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Разделете имейл адресите с нов ред."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Пощенската кутия е добавена в графика за промени!"
@@ -2967,12 +2986,6 @@ msgstr "Име поддомейна"
 msgid "Directory tree mount point"
 msgstr "Точка за монтиране на папки"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Поддомейна, който искате да изтриете има пощенски кутии !<br>Първо ги "
-"изтрийте!"
-
 msgid "Please specify message subject!"
 msgstr "Моля, въведете тема на съобщението!"
 
@@ -3231,12 +3244,21 @@ msgstr "Поддомейн Поща"
 msgid "Subdomain forward"
 msgstr "Преадресация на поддомейна"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Поддомейн Поща"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Преадресация на поддомейна"
+
 msgid "Unknown type"
 msgstr "Неизвестен тип"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME}, добро пожаловат в ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3252,6 +3274,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3371,7 +3397,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3390,9 +3416,6 @@ msgstr ""
 "Благодарим, че използвате Услугата на ispCP.\n"
 "Екипът на ispCP\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Catchall акаунт"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4019,6 +4042,13 @@ msgstr "Потребителя не е приключен!"
 
 msgid "This reseller has no domains yet."
 msgstr "Този риселър няма домейни засега."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "Списъкът с поддомейни е празен! Вие не може да добавяте пощенски кутии!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Catchall акаунт"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Некоректна дължина или синтаксис на паролата"

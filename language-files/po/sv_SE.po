@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-08-01 13:00+0100\n"
 "Last-Translator: Ergin �zdemir <ergin@ozdemir.se>\n"
 "Language-Team: Svenska <en_GB@li.org>\n"
@@ -2030,6 +2030,10 @@ msgstr "Avaktivera"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
@@ -2447,9 +2451,6 @@ msgstr ""
 msgid "Mails total"
 msgstr ""
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr ""
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 
@@ -2468,10 +2469,19 @@ msgstr ""
 msgid "Please enter mail account username!"
 msgstr ""
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
+msgid "Invalid Mail Localpart Format used!"
 msgstr ""
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Subdom�ner"
+
+#, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr ""
+
+#, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr ""
 
 msgid "Forward list is empty!"
@@ -2486,6 +2496,9 @@ msgstr ""
 msgid "Add mail users"
 msgstr ""
 
+msgid "To alias subdomain"
+msgstr ""
+
 msgid "Normal mail"
 msgstr ""
 
@@ -2496,6 +2509,9 @@ msgid "Forward to"
 msgstr ""
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -2904,10 +2920,6 @@ msgstr ""
 msgid "Directory tree mount point"
 msgstr "Incorrect <i>mount point</i> syntax!"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-
 msgid "Please specify message subject!"
 msgstr ""
 
@@ -3157,6 +3169,12 @@ msgstr ""
 msgid "Subdomain forward"
 msgstr ""
 
+msgid "Alias subdomain mail"
+msgstr ""
+
+msgid "Alias subdomain forward"
+msgstr ""
+
 msgid "Unknown type"
 msgstr ""
 
@@ -3178,6 +3196,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3246,14 +3268,11 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
-msgstr ""
-
-msgid "Catchall account"
 msgstr ""
 
 msgid ""

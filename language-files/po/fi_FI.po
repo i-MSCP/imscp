@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -2092,6 +2092,12 @@ msgstr "Poista k�yt�st�"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Alidomain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia! <br>Poista ensin "
+"ne!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Alidomain poistojonossa!"
 
@@ -2518,9 +2524,6 @@ msgstr "S�hk�postialiakset"
 msgid "Mails total"
 msgstr "S�hk�posteja yhteens�"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr ""
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 
@@ -2540,10 +2543,19 @@ msgstr "M��rit� vastaanottajan s�hk�posti!"
 msgid "Please enter mail account username!"
 msgstr "Anna s�hk�postin k�ytt�j�nimi!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Alidomain-lista on tyhj�! Et voi luoda s�hk�posteja!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr ""
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Alidomainin s�hk�postit"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Alias-lista on tyhj�! Et voi lis�t� s�hk�postik�ytt�ji�!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Alias-lista on tyhj�! Et voi lis�t� s�hk�postik�ytt�ji�!"
 
 msgid "Forward list is empty!"
@@ -2558,6 +2570,10 @@ msgstr "ispCP - Asiaskas / Lis�� s�hk�postik�ytt�j�"
 msgid "Add mail users"
 msgstr "Lis�� s�hk�postik�ytt�ji�"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Alidomainille"
+
 msgid "Normal mail"
 msgstr "Tavallinen s�hk�posti"
 
@@ -2568,6 +2584,9 @@ msgid "Forward to"
 msgstr "Ohjaa:"
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -2986,12 +3005,6 @@ msgstr "Alidomainin nimi"
 msgid "Directory tree mount point"
 msgstr "Hakemistopuu<br>liitospiste"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Alidomain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia! <br>Poista ensin "
-"ne!"
-
 msgid "Please specify message subject!"
 msgstr "M��rit� viestin aihe!"
 
@@ -3248,6 +3261,14 @@ msgstr "Alidomainin s�hk�posti"
 msgid "Subdomain forward"
 msgstr "Alidomainin ohjaus"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Alidomainin s�hk�posti"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Alidomainin ohjaus"
+
 msgid "Unknown type"
 msgstr "Tuntematon tyyppi"
 
@@ -3269,6 +3290,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3338,14 +3363,11 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
-msgstr ""
-
-msgid "Catchall account"
 msgstr ""
 
 msgid ""
@@ -3948,6 +3970,9 @@ msgstr "K�ytt�j�� ei poistettu!"
 
 msgid "This reseller has no domains yet."
 msgstr "T�ll� j�lleenmyyj�ll� ei ole viel� domaineja."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Alidomain-lista on tyhj�! Et voi luoda s�hk�posteja!"
 
 #, fuzzy
 #~ msgid "There is a subdomain with the same mount point!"

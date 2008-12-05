@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-08-09 02:02+0900\n"
 "Last-Translator: hiroron <hiroron@hiroron.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -2037,6 +2037,12 @@ msgstr "無効"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "転送URLは 'http://' からはじめてください"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"削除しようとしたサブドメインにはメールアカウントがあります！ <br>先に削除して"
+"ください！"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "サブドメインの削除を受け付けました！"
 
@@ -2460,9 +2466,6 @@ msgstr "エイリアスメール"
 msgid "Mails total"
 msgstr "メール アカウント合計"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "メールのローカルパートで使ったフォーマットが無効です！"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "転送リストのアドレスのメールフォーマットが正しくありません！"
 
@@ -2481,10 +2484,19 @@ msgstr "メールタイプを１つは選択してください！"
 msgid "Please enter mail account username!"
 msgstr "メールユーザー名を入力してください"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "サブドメインが登録されてないため、メールユーザーが追加できません"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "メールのローカルパートで使ったフォーマットが無効です！"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "サブドメインメールユーザー数"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "エイリアスリストが空です! メールアカウントを追加できません!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "エイリアスリストが空です! メールアカウントを追加できません!"
 
 msgid "Forward list is empty!"
@@ -2499,6 +2511,10 @@ msgstr "ispCP - クライアント/メールユーザー追加"
 msgid "Add mail users"
 msgstr "メールユーザー追加"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "サブドメインへ"
+
 msgid "Normal mail"
 msgstr "通常のメール"
 
@@ -2510,6 +2526,9 @@ msgstr "転送先アドレス"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "改行で複数のメールアドレスを切り離してください"
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "メールアカウントの変更を受け付けました！"
@@ -2920,12 +2939,6 @@ msgstr "サブドメイン名"
 msgid "Directory tree mount point"
 msgstr "ディレクトリーツリーのマウント先"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"削除しようとしたサブドメインにはメールアカウントがあります！ <br>先に削除して"
-"ください！"
-
 msgid "Please specify message subject!"
 msgstr "件名を指定してください！"
 
@@ -3182,12 +3195,21 @@ msgstr "サブドメインメール"
 msgid "Subdomain forward"
 msgstr "サブドメイン転送"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "サブドメインメール"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "サブドメイン転送"
+
 msgid "Unknown type"
 msgstr "不明"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "{USERNAME} さんispCPへようこそ！"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3203,6 +3225,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3314,6 +3340,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "{CUSTOMER}の新しいエイリアス！"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3323,7 +3350,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3342,9 +3369,6 @@ msgstr ""
 "ispCPサービスを利用してくださりありがとうございます。\n"
 "ispCPチーム\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "キャッチオールアカウント"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3959,6 +3983,12 @@ msgstr "ユーザは終わりません！"
 
 msgid "This reseller has no domains yet."
 msgstr "このユーザにドメインが登録されていません。"
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "サブドメインが登録されてないため、メールユーザーが追加できません"
+
+#~ msgid "Catchall account"
+#~ msgstr "キャッチオールアカウント"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "パスワードが正しくありません！"

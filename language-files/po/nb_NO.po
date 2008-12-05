@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -2040,6 +2040,10 @@ msgstr "Deaktiver"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "En videresendings URL må starte med 'http://'"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
@@ -2476,9 +2480,6 @@ msgstr "Pekermail"
 msgid "Mails total"
 msgstr "Totalt antall mail"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr ""
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Mailformatet på en av adressene i videresendingslisten er gal!"
 
@@ -2498,10 +2499,19 @@ msgstr "Vennligst spesifiser en avsender email!"
 msgid "Please enter mail account username!"
 msgstr "Vennligst skriv inn brukernavn for mail!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr ""
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Underdomene mail"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Pekerlisten er tom! Du kan ikke legge til mail kontoer!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Pekerlisten er tom! Du kan ikke legge til mail kontoer!"
 
 msgid "Forward list is empty!"
@@ -2516,6 +2526,10 @@ msgstr "ispCP - Klient/Legg til Mail Bruker"
 msgid "Add mail users"
 msgstr "Legg til mail bruker"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Til underdomene"
+
 msgid "Normal mail"
 msgstr "Normal mail"
 
@@ -2527,6 +2541,9 @@ msgstr "Videresend til"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Legg til flere email adresser ved å skille de med en linjeskift."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr ""
@@ -2948,10 +2965,6 @@ msgstr "Underdomene navn"
 msgid "Directory tree mount point"
 msgstr "Katalogtreets monteringspunkt"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-
 msgid "Please specify message subject!"
 msgstr "Venligs spesifiser meldings emne!"
 
@@ -3203,12 +3216,21 @@ msgstr "Mail for underdomene"
 msgid "Subdomain forward"
 msgstr "Videresending av underdomene"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Mail for underdomene"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Videresending av underdomene"
+
 msgid "Unknown type"
 msgstr "Ukjent type"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Velkommen {USERNAME} til ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3224,6 +3246,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3332,16 +3358,12 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
 msgstr ""
-
-#, fuzzy
-msgid "Catchall account"
-msgstr "Fang alt konto"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3944,6 +3966,13 @@ msgstr "Bruker ikke avsluttet!"
 
 msgid "This reseller has no domains yet."
 msgstr "Forhandleren har ingen domener enda."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"
+
+#, fuzzy
+#~ msgid "Catchall account"
+#~ msgstr "Fang alt konto"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Ugyldig lengde eller sammensetning av passord"

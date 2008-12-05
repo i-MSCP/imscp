@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -2077,6 +2077,12 @@ msgstr "Kapalı"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Yönlendirme URLsi 'http://' ile başlamak zorunda"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları "
+"siliniz!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomain silme için işleme alındı!"
 
@@ -2507,9 +2513,6 @@ msgstr "Alais postaları"
 msgid "Mails total"
 msgstr "Toplam postalar"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Gerçersiz Posta Localpart Formatı kullanımı! "
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Yönlendirme listenizdeki bir epostanın yazılışı hatalı!"
 
@@ -2528,10 +2531,19 @@ msgstr "Lütfen, en az bir posta tipi seçiniz!"
 msgid "Please enter mail account username!"
 msgstr "Lütfen posta kullanıcı adını yazınız!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Subdomain listesi boş! Oraya posta hesabı ekleyemezsiniz!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Gerçersiz Posta Localpart Formatı kullanımı! "
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Subdomain postaları"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
 
 msgid "Forward list is empty!"
@@ -2546,6 +2558,10 @@ msgstr "ispCP - Müşteri/Posta Kullanıcısı Ekle"
 msgid "Add mail users"
 msgstr "Posta kullanıcıları ekle"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Subdomaine"
+
 msgid "Normal mail"
 msgstr "Normal posta"
 
@@ -2557,6 +2573,9 @@ msgstr "Yönlendir"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Çoklu eposta adreslerini alt alta yazınız."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Posta hesabı düzenlenmesi için kaydedildi"
@@ -2973,12 +2992,6 @@ msgstr "Subdomain adı"
 msgid "Directory tree mount point"
 msgstr "Dizin yapısı monte noktası"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları "
-"siliniz!"
-
 msgid "Please specify message subject!"
 msgstr "Lütfen bir mesaj konusu belirtiniz!"
 
@@ -3236,12 +3249,21 @@ msgstr "Subdomain postası"
 msgid "Subdomain forward"
 msgstr "Subdomain yönlendirme"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Subdomain postası"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Subdomain yönlendirme"
+
 msgid "Unknown type"
 msgstr "Bilinmeyen tip"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "ispCP'ye Hoşgeldiniz {USERNAME}"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3257,6 +3279,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3367,6 +3393,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "{CUSTOMER} müşterisi için yeni alias siparişi"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3376,7 +3403,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3395,9 +3422,6 @@ msgstr ""
 "ispCP servisini kullandığınız için teşekkür ederiz.\n"
 "ispCP Takımı\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "TümünüYakala hesabı"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4028,6 +4052,12 @@ msgstr "Kullanıcı sonlandırılmadı!"
 
 msgid "This reseller has no domains yet."
 msgstr "Bu bayinin henüz domaini yok."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Subdomain listesi boş! Oraya posta hesabı ekleyemezsiniz!"
+
+#~ msgid "Catchall account"
+#~ msgstr "TümünüYakala hesabı"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Şifre uzun veya yazım hatası var"

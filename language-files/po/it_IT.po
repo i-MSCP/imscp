@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Luca Stramenga VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 21:27+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-11-01 19:57+0100\n"
 "Last-Translator: Luca  <sbtluca@gmail.com>\n"
 "Language-Team: Italian <sbtluca@gmail.com>\n"
@@ -2049,6 +2049,12 @@ msgstr "Disabilitare"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "L'indirizzo URL deve iniziare con \"http://\""
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Il sottodominio che stai cercando di rimuovere ha accounts email!<br> e non "
+"può pertanto essere cancellato."
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sottodominio pianificato per essere eliminato!"
 
@@ -2481,9 +2487,6 @@ msgstr "Alias emails"
 msgid "Mails total"
 msgstr "Email totali"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Il Formato utilizzato per il Mail Localpart non è valido!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 "Il formato di un indirizzo inserito nella tua lista di inoltro è errato!"
@@ -2503,12 +2506,20 @@ msgstr "Prego, seleziona almeno un tipo di mail!"
 msgid "Please enter mail account username!"
 msgstr "Inserire lo username dell'account di posta!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr ""
-"La lista dei sottodomini è vuota! Impossibile aggiungere degli account di "
-"posta!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Il Formato utilizzato per il Mail Localpart non è valido!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Email sottodominio"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr ""
+"La lista degli alias è vuota! Non potete aggiungere degli account di posta!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr ""
 "La lista degli alias è vuota! Non potete aggiungere degli account di posta!"
 
@@ -2524,6 +2535,10 @@ msgstr "ispCP - Client/Aggiungere Utente Email"
 msgid "Add mail users"
 msgstr "Aggiungi utenti Email"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Al sottodominio"
+
 msgid "Normal mail"
 msgstr "Email normale"
 
@@ -2535,6 +2550,9 @@ msgstr "Inoltrare a"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Separa indirizzi mail multipli con un interruzione di linea (INVIO)."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Account di posta pianificato per essere modificato!"
@@ -2946,12 +2964,6 @@ msgstr "Nome sottodominio"
 msgid "Directory tree mount point"
 msgstr "Albero directory mount point"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Il sottodominio che stai cercando di rimuovere ha accounts email!<br> e non "
-"può pertanto essere cancellato."
-
 msgid "Please specify message subject!"
 msgstr "Indicare l'oggetto del messaggio!"
 
@@ -3208,12 +3220,21 @@ msgstr "Email sottodominio"
 msgid "Subdomain forward"
 msgstr "Redirezione del sottodominio"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Email sottodominio"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Redirezione del sottodominio"
+
 msgid "Unknown type"
 msgstr "Tipo sconosciuto"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Benvenuto {USERNAME} in ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3229,6 +3250,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3348,7 +3373,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3368,9 +3393,6 @@ msgstr ""
 "Grazie per utilizzare i servizi ispCP.\n"
 "Il Team ispCP\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Catchall account"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3997,6 +4019,14 @@ msgstr "L'utente non è stato disabilitato!"
 
 msgid "This reseller has no domains yet."
 msgstr "Questo rivenditore non ha ancora domini configurati."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr ""
+#~ "La lista dei sottodomini è vuota! Impossibile aggiungere degli account di "
+#~ "posta!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Catchall account"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "La lunghezza o la sintassi della Password è errata!"

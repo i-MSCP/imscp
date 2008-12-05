@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -2035,6 +2035,12 @@ msgstr "Vypnout"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Adresa pro přesměrování má začínat 'http://'"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Subdoména, kterou se snažíte odstranit má poštovní účty!<br>Nejprve je "
+"odstraňte!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Smazání subdomény bylo naplánováno!"
 
@@ -2456,9 +2462,6 @@ msgstr "Maily aliasů"
 msgid "Mails total"
 msgstr "Celkem mailů"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Formát adresy před @ není v pořádku!"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Formát poštovních adres v seznamu pro přesměrování není v pořádku!"
 
@@ -2477,10 +2480,19 @@ msgstr "Vyplňte prosím alespoň jeden typ poštovního účtu!"
 msgid "Please enter mail account username!"
 msgstr "Prosím zadejte uživatelské jméno e-mailového účtu!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Seznam subdomén je prázdný! Nemůžete přidávat poštovní účty!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Formát adresy před @ není v pořádku!"
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Subdoménové maily"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
 
 msgid "Forward list is empty!"
@@ -2495,6 +2507,10 @@ msgstr "ispCP - Klient/Přidat uživatele pošty"
 msgid "Add mail users"
 msgstr "Přidat uživatele pošty"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "K subdoméně"
+
 msgid "Normal mail"
 msgstr "Běžný e-mail"
 
@@ -2506,6 +2522,9 @@ msgstr "Přesměrovat na"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Více emailových adres oddělte novým řádkem."
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Změna poštovního účtu byla naplánována!"
@@ -2914,12 +2933,6 @@ msgstr "Jméno subdomény"
 msgid "Directory tree mount point"
 msgstr "Přípojný bod pro adresář"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Subdoména, kterou se snažíte odstranit má poštovní účty!<br>Nejprve je "
-"odstraňte!"
-
 msgid "Please specify message subject!"
 msgstr "Prosím zadejte předmět zprávy!"
 
@@ -3175,12 +3188,21 @@ msgstr "Email subdomény"
 msgid "Subdomain forward"
 msgstr "Přesměrování subdomény"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Email subdomény"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Přesměrování subdomény"
+
 msgid "Unknown type"
 msgstr "Neznámý typ"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Vítáme {USERNAME} do systému ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3196,6 +3218,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3305,6 +3331,7 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Nová objednávka aliasu pro {CUSTOMER}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3314,7 +3341,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3333,9 +3360,6 @@ msgstr ""
 "Díky, že používáte služby ispCP.\n"
 "Tým ispCP.\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Doménový koš"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3950,6 +3974,12 @@ msgstr "Uživatel není odstraněn!"
 
 msgid "This reseller has no domains yet."
 msgstr "Partner ještě nemá žádné domény."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Seznam subdomén je prázdný! Nemůžete přidávat poštovní účty!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Doménový koš"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe hesla!"

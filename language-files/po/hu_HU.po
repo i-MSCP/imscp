@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2008-10-10 03:08+0200\n"
 "Last-Translator:  Attila Fülöp <fulop.attila@coimbra-grp.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -2029,6 +2029,12 @@ msgstr "Letilt"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "A továbbítás URL-je 'http://'-el kell kezdődjön"
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Az aldomainhez amit törölni próbálsz email hozzáférések tartoznak! <br>Elõbb "
+"töröld azokat!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Aldomain törlés beütemezve!"
 
@@ -2453,9 +2459,6 @@ msgstr "Alias email címek"
 msgid "Mails total"
 msgstr "Összes email"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr ""
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Mailcím formátum a forward listádon helytelen!"
 
@@ -2474,10 +2477,19 @@ msgstr "Válasszon legalább egy levéltípust!"
 msgid "Please enter mail account username!"
 msgstr "Add meg az email hozzáférés nevét!"
 
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Üres aldomain lista! Nem hozhatsz itt létre új email hozzáférést!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr ""
 
-msgid "Alias list is empty! You cannot add mail accounts!"
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Aldomain emailek"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Alias lista üres! Nem hozhatsz létre Email hozzáférést!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Alias lista üres! Nem hozhatsz létre Email hozzáférést!"
 
 msgid "Forward list is empty!"
@@ -2492,6 +2504,10 @@ msgstr "ispCP - Kliens/Új Email Felhasználó"
 msgid "Add mail users"
 msgstr "Email fiók hozzáadása"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Aldomainnek"
+
 msgid "Normal mail"
 msgstr "Normál email"
 
@@ -2502,6 +2518,9 @@ msgid "Forward to"
 msgstr "Továbbítás erre:"
 
 msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "Mail account scheduled for modification!"
@@ -2912,12 +2931,6 @@ msgstr "Aldomain neve"
 msgid "Directory tree mount point"
 msgstr "Könyvtárfa beillesztési pont"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Az aldomainhez amit törölni próbálsz email hozzáférések tartoznak! <br>Elõbb "
-"töröld azokat!"
-
 msgid "Please specify message subject!"
 msgstr "Add meg a levél tárgyát!"
 
@@ -3173,12 +3186,21 @@ msgstr "Aldomain email"
 msgid "Subdomain forward"
 msgstr "Aldomain átirányítás"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Aldomain email"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Aldomain átirányítás"
+
 msgid "Unknown type"
 msgstr "Ismeretlen típus"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Üdvözöllek {USERNAME} "
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3194,6 +3216,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3312,14 +3338,11 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
 "\n"
-msgstr ""
-
-msgid "Catchall account"
 msgstr ""
 
 msgid ""
@@ -3932,6 +3955,9 @@ msgstr "Felhasználó nincs törölve!"
 
 msgid "This reseller has no domains yet."
 msgstr "A viszonteladónak még nincs domainje."
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Üres aldomain lista! Nem hozhatsz itt létre új email hozzáférést!"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Hibás jelszó formátum!"

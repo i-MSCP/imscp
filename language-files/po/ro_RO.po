@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-27 20:35+0200\n"
+"POT-Creation-Date: 2008-12-05 21:02+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -2085,6 +2085,12 @@ msgstr "Dezactiveaza"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Un  forward URL trebuie sa inceapa cu 'http://' "
 
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea "
+"intai!"
+
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomeniu programat pentru stergere!"
 
@@ -2512,9 +2518,6 @@ msgstr "Alias pentru mail-uri"
 msgid "Mails total"
 msgstr "Total e-mailuri"
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Format Localpart pentru mail invalid"
-
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Formatul mail al unei adrese din lista de forward este incorect!"
 
@@ -2534,12 +2537,19 @@ msgstr "Te rugam sa specifici un email la destinatar"
 msgid "Please enter mail account username!"
 msgstr "Introdu un utilizator pentru contul de mail!"
 
-#, fuzzy
-msgid "Subdomain list is empty! You cannot add mail accounts!"
-msgstr "Lista subdomenii este goala. Nu poti adauga noi conturi de mail!"
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Format Localpart pentru mail invalid"
 
 #, fuzzy
-msgid "Alias list is empty! You cannot add mail accounts!"
+msgid "Subdomain alias"
+msgstr "Emailuri subdomeniu"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Lista de alias-e este goala! Nu puteti adauga conturi de mail!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Lista de alias-e este goala! Nu puteti adauga conturi de mail!"
 
 msgid "Forward list is empty!"
@@ -2554,6 +2564,10 @@ msgstr "ispCP - Client/Adauga Utilizator Mail"
 msgid "Add mail users"
 msgstr "Adauga utilizatori mail"
 
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "La subdomeniu"
+
 msgid "Normal mail"
 msgstr "Mail Normal"
 
@@ -2565,6 +2579,9 @@ msgstr "Forward la"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Adrese de e-mail separate cu o linie"
+
+msgid "You did not fill all required fields"
+msgstr ""
 
 msgid "Mail account scheduled for modification!"
 msgstr "Cont e-mail programat pentru modificare!"
@@ -2982,12 +2999,6 @@ msgstr "Nume subdomeniu"
 msgid "Directory tree mount point"
 msgstr "Arbore directoare locul montarii"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea "
-"intai!"
-
 msgid "Please specify message subject!"
 msgstr "Specifica un subiect pentru mesaj!"
 
@@ -3247,12 +3258,21 @@ msgstr "Mail subdomeniu"
 msgid "Subdomain forward"
 msgstr "Redirectare subdomeniu"
 
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Mail subdomeniu"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Redirectare subdomeniu"
+
 msgid "Unknown type"
 msgstr "Tip necunoscut"
 
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Bun-Venit {USERNAME} in ispCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3268,6 +3288,10 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with ispCP!\n"
 "The ispCP Team.\n"
@@ -3389,7 +3413,7 @@ msgid ""
 "{ALIAS}\n"
 "\n"
 "Once logged in, you can activate his new alias at\n"
-"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain-alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3408,9 +3432,6 @@ msgstr ""
 "TMultumim ca ai ales serviciile ispCP.\n"
 "Echipa ispCP\n"
 "\n"
-
-msgid "Catchall account"
-msgstr "Cont mail colector"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4054,6 +4075,13 @@ msgstr "Utilizatorul nu a fost sters!"
 
 msgid "This reseller has no domains yet."
 msgstr "Acest reseller inca nu are domenii."
+
+#, fuzzy
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Lista subdomenii este goala. Nu poti adauga noi conturi de mail!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Cont mail colector"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Parola incorecta: lungime sau sintaxa"

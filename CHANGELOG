@@ -7,9 +7,11 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1460: /etc/cron.d/ispcp replacements not happening in gentoo install
 	- DISTS:
 		* Update Gentoo install documentation
-	- CONFIGS
+	- CONFIGS:
 		* Update Gentoo fcgid setting
 		* Update Gentoo ispcp.conf setting
+	- LANGUAGES:
+		* Updated all languages files
 
 2008-12-04 Daniel Andreca
 	- TOOLS
