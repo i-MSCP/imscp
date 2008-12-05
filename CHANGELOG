@@ -12,6 +12,7 @@ ispCP ω 1.0.0 Changelog
 		* Update Gentoo ispcp.conf setting
 	- LANGUAGES:
 		* Updated all languages files
+		* Add po file for portuguese_portugal. Update portuguese_portugal language
 
 2008-12-04 Daniel Andreca
 	- TOOLS
