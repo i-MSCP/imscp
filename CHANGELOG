@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-06 Benedikt Heintel
+	- LANGUAGES:
+		* Updated: German
+
 2008-12-05 Daniel Andreca
 	- ENGINE:
 		* Fixed #1516: Named, at least for gentoo, is only binding to localhost by default
@@ -26,10 +30,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-12-02 Daniel Andreca
 	- GUI:
-		* Add support for alias subdomain mail (part I)
-		* Add support for alias subdomain mail (part II)
-		* Add support for alias subdomain mail (part III)
-		* Add support for alias subdomain mail (part IV)
+		* Add support for alias subdomain mail
 		* Alias subdomains are not counted
 		* Hide alias domain list when no alias exists
 	- ENGINE
