@@ -1078,11 +1078,11 @@ sub prepare_update {
 	return $rs if ($rs != 0);
 
 	# Abort
-	if ($main::ua{'update'} eq ABORT) {
+	if ($main::ua{'update'} == ABORT) {
 		exit_werror("Script was aborted by user.");
 	}
 	# VHCS update
-	elsif (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
+	elsif (($main::ua{'update'} == VHCS247) || ($main::ua{'update'} == VHCS248)) {
 
 		# look up vhcs2.conf
 		$rs = ask_vhcs2conf();
@@ -1106,7 +1106,7 @@ sub prepare_update {
    	 		exit_werror("ispCP Update failed.");
 		}
 	}
-	# ispCP 1.0.0 RC2/3/4/5 Update
+	# ispCP 1.0.0 RC2/3/4/5/6 Update
 	elsif ($main::ua{'update'} >= RC2) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
@@ -1147,7 +1147,7 @@ sub prepare_update {
 		}
 
 		# ispCP 1.0.0 RC2
-		if ($main::ua{'update'} eq RC2) {
+		if ($main::ua{'update'} == RC2) {
 			$rs = patch_ispcp_rc2();
 			if ($rs == 0) {
 				$rs = patch_ispcp_rc3();
@@ -1155,24 +1155,45 @@ sub prepare_update {
 			if ($rs == 0) {
 				$rs = patch_ispcp_rc4();
 			}
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc5();
+			}
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc6();
+			}
 		}
 		# ispCP 1.0.0 RC3
-		elsif ($main::ua{'update'} eq RC3) {
+		elsif ($main::ua{'update'} == RC3) {
 			$rs = patch_ispcp_rc3();
 			if ($rs == 0) {
 				$rs = patch_ispcp_rc4();
 			}
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc5();
+			}
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc6();
+			}
 		}
 		# ispCP 1.0.0 RC4
-		elsif ($main::ua{'update'} eq RC4) {
+		elsif ($main::ua{'update'} == RC4) {
 			$rs = patch_ispcp_rc4();
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc5();
+			}
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc6();
+			}
 		}
 		# ispCP 1.0.0 RC5
-		elsif ($main::ua{'update'} eq RC5) {
+		elsif ($main::ua{'update'} == RC5) {
 			$rs = patch_ispcp_rc5();
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc6();
+			}
 		}
 		# ispCP 1.0.0 RC6
-		elsif ($main::ua{'update'} eq RC6) {
+		elsif ($main::ua{'update'} == RC6) {
 			$rs = patch_ispcp_rc6();
 		}
 
