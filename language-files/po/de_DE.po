@@ -3813,7 +3813,7 @@ msgid "Domain data has been altered. Please enter again"
 msgstr "Domaindaten haben sich geändert. Bitte erneut versuchen."
 
 msgid "SQL databases limit is not <i>disabled</i>!"
-msgstr "SQL-Datenbank-Limit ist nciht <i>deaktiviert</i>!"
+msgstr "SQL-Datenbank-Limit ist nicht <i>deaktiviert</i>!"
 
 msgid "ispCP - User/Add user"
 msgstr "ispCP - Benutzer/Benutzer anlegen"

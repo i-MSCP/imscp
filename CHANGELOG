@@ -1,7 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-12-08 Daniel Andreca
+2008-12-07 Jochen Manz
+	- LANGUAGES:
+		* small corrections in german language file
+
+2008-12-07 Daniel Andreca
 	- ENGINE:
 		* Update script ready for RC7
 	- CONFIGS:
