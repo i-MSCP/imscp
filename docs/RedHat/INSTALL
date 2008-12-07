@@ -127,11 +127,6 @@ Make sure you are logged in as root and MySQL is running.
 
 9. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-
-   If updating from RC5:
-	# cp -Rv /tmp/ispcp/etc/ispcp/* /etc/ispcp
-
-   else:
 	# cp -Rv /tmp/ispcp/etc/* /etc/
 
 10. Now it's time to update your installation. Change into the engine directory:

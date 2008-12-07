@@ -1371,6 +1371,11 @@ sub setup_httpd {
 	if (-e "/usr/sbin/a2dismod") {
 		sys_command_rs("/usr/sbin/a2dismod fastcgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2dismod fcgid &> /tmp/ispcp-setup-services.log");
+		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
+			sys_command_rs("/usr/sbin/a2dismod fcgid_ispcp &> /tmp/ispcp-setup-services.log");
+		} else {
+			sys_command_rs("/usr/sbin/a2dismod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
+		}
 		sys_command_rs("/usr/sbin/a2dismod php4 &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2dismod php5 &> /tmp/ispcp-setup-services.log");
 	}

@@ -51,6 +51,7 @@ use constant {
         RC3		=> 4,
         RC4		=> 5,
         RC5		=> 6,
+        RC6		=> 7
 	};
 
 ################################################################################
@@ -134,6 +135,7 @@ sub welcome_note {
 \t(4) ispCP OMEGA 1.0.0 RC3
 \t(5) ispCP OMEGA 1.0.0 RC4
 \t(6) ispCP OMEGA 1.0.0 RC5
+\t(7) ispCP OMEGA 1.0.0 RC6
 \t(0) abort
 MSG
 
@@ -143,7 +145,7 @@ MSG
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while ($rdata < 0 || $rdata > 6) {
+	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 7) {
 		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);
@@ -169,7 +171,7 @@ MSG
 		$rdata = readline(\*STDIN);
 		chop($rdata);
 
-		while ($rdata < 0 || $rdata > 1) {
+		while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
 			print STDOUT "\tPlease select an item mentioned above: ";
 			$rdata = readline(\*STDIN);
 			chop($rdata);
@@ -716,6 +718,60 @@ sub update_httpd {
 	return 0;
 }
 
+sub update_ftpd {
+	#
+	# we'll add ispCP ftp SQL user here.
+	#
+	$main::db = undef;
+
+	@main::db_connect = (
+							"DBI:mysql:mysql:$main::db_host",
+							$main::db_user,
+							$main::db_pwd
+						);
+
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	my $vftp_sql_user = $main::ua{'db_ftp_user'};
+	my $vftp_sql_password = $main::ua{'db_ftp_password'};
+	my $hostname = $main::db_host;
+
+	$sql = "DELETE FROM tables_priv WHERE Host = '$hostname' AND Db = '$main::db_name' AND User = '$vftp_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "FLUSH PRIVILEGES";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+}
+
 sub search_and_replace {
     my $dir = shift;
     my ($cmd, $rs) = (undef, undef);
@@ -945,6 +1001,73 @@ sub patch_ispcp_rc5 {
 	return 0;
 }
 
+sub patch_ispcp_rc6 {
+	push_el(\@main::el, 'patch_ispcp_rc6()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	# database upgrade
+    print STDOUT "\tUpgrading database structure...";
+
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc6-ispcp.sql");
+	return $rs if ($rs != 0);
+
+	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$main::db_pwd =~ s/([\'\"])/\\$1/g;
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	if ($rs != 0) {
+	print STDOUT "failed!\n";
+		exit_werror("SQL Update failed.");
+	}
+
+	print STDOUT "done\n";
+
+	# Rebuild system configs:
+	print STDOUT "\tRebuilding system configurations...";
+
+# 	$rs = rebuild_configs();
+	if ( -e "$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	if ( -e "$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	$rs = setup_crontab();
+	return 2 if ($rs != 0);
+
+	$rs = setup_named();
+	return 3 if ($rs != 0);
+
+	$rs = setup_php();
+	return 4 if ($rs != 0);
+	
+	$rs = setup_httpd();
+	return 5 if ($rs != 0);
+
+	$rs = setup_ftpd();
+	return 6 if ($rs != 0);
+
+	$rs = update_ftpd();
+	return 7 if ($rs != 0);
+
+	print STDOUT "done\n";
+
+	push_el(\@main::el, 'patch_ispcp_rc6()', 'Ending...');
+	return 0;
+}
+
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -1048,6 +1171,10 @@ sub prepare_update {
 		elsif ($main::ua{'update'} eq RC5) {
 			$rs = patch_ispcp_rc5();
 		}
+		# ispCP 1.0.0 RC6
+		elsif ($main::ua{'update'} eq RC6) {
+			$rs = patch_ispcp_rc6();
+		}
 
 		if ($rs != 0) {
     		print STDOUT "\t Update failed!\n";
@@ -1108,7 +1235,8 @@ sub update_shut_down {
 \tispCP '$main::cfg{'Version'}' Update completed successfully!
 
 \tPlease type http://$main::cfg{'BASE_SERVER_VHOST'} in your browser,
-\tlog in with your Administrator Account and perform Database Updates if exists.
+\tlog in with your Administrator Account and perform
+\tDatabase Updates if exists.
 
 MSG
 	print STDOUT $shut_down_message;
