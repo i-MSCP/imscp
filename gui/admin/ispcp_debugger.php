@@ -39,56 +39,26 @@ function get_error_domains(&$sql, &$tpl) {
 	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
 	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
 
-	$dmn_query = <<<SQL_QUERY
-        select
-            domain_name, domain_status, domain_id
-        from
-            domain
-        where
-            (domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?
-          and
-            domain_status != ?)
-SQL_QUERY;
+	$dmn_query = "SELECT `domain_name`, `domain_status`, `domain_id` FROM `domain` WHERE `domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	$rs = exec_query($sql, $dmn_query, array($ok_status, $disabled_status, $delete_status, $add_status,
 			$restore_status, $change_status, $toenable_status, $todisable_status));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'DOMAIN_LIST' => '',
-					'TR_DOMAIN_MESSAGE' => tr('No domain system errors'),
-					)
-			);
-
+			array(
+				'DOMAIN_LIST' => '',
+				'TR_DOMAIN_MESSAGE' => tr('No domain system errors'),
+			)
+		);
 		$tpl->parse('DOMAIN_MESSAGE', 'domain_message');
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
 			if ($i % 2 == 0) {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content2',
-							)
-					);
+				$tpl->assign(array('CONTENT' => 'content2'));
 			} else {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content1',
-							)
-					);
+				$tpl->assign(array('CONTENT' => 'content1'));
 			}
 
 			$tpl->assign(
@@ -107,6 +77,7 @@ SQL_QUERY;
 			$rs->MoveNext();
 		}
 	}
+
 }
 
 function get_error_aliases(&$sql, &$tpl) {
@@ -126,23 +97,9 @@ function get_error_aliases(&$sql, &$tpl) {
         from
             domain_aliasses
         where
-            (alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?
-          and
-            alias_status != ?)
+            alias_status
+        NOT IN
+        	(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -216,21 +173,9 @@ function get_error_subdomains(&$sql, &$tpl) {
       from
           subdomain
       where
-          (subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?
-        and
-          subdomain_status != ?)
+          subdomain_status
+      NOT IN
+        	(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -279,6 +224,73 @@ SQL_QUERY;
 	}
 }
 
+function get_error_alias_subdomains(&$sql, &$tpl) {
+	$ok_status = Config::get('ITEM_OK_STATUS');
+	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::get('ITEM_DELETE_STATUS');
+	$add_status = Config::get('ITEM_ADD_STATUS');
+	$restore_status = Config::get('ITEM_RESTORE_STATUS');
+	$change_status = Config::get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
+
+	$dmn_query = <<<SQL_QUERY
+      select
+          subdomain_alias_name, subdomain_alias_status, subdomain_alias_id
+      from
+          subdomain_alias
+      where
+          subdomain_alias_status
+      NOT IN
+        	(?, ?, ?, ?, ?, ?, ?, ?)
+SQL_QUERY;
+
+	$rs = exec_query($sql, $dmn_query, array(
+											$ok_status,
+											$disabled_status,
+											$delete_status,
+											$add_status,
+											$restore_status,
+											$change_status,
+											$toenable_status,
+											$todisable_status));
+
+	if ($rs->RecordCount() == 0) {
+		$tpl->assign(
+				array(
+					'SUBDOMAIN_ALIAS_LIST' => '',
+					'TR_SUBDOMAIN_ALIAS_MESSAGE' => tr('No alias subdomain system errors'),
+					)
+			);
+
+		$tpl->parse('SUBDOMAIN_ALIAS_MESSAGE', 'subdomain_alias_message');
+	} else {
+		$i = 1;
+		while (!$rs->EOF) {
+			if ($i % 2 == 0) {
+				$tpl->assign(array('CONTENT' => 'content'));
+			} else {
+				$tpl->assign(array('CONTENT' => 'content2'));
+			}
+
+			$tpl->assign(
+					array(
+						'SUBDOMAIN_ALIAS_MESSAGE' => '',
+						'TR_SUBDOMAIN_ALIAS_NAME' => $rs->fields['subdomain_alias_name'],
+						'TR_SUBDOMAIN_ALIAS_ERROR' => $rs->fields['subdomain_alias_status'],
+						'CHANGE_ID' => $rs->fields['subdomain_alias_id'],
+						'CHANGE_TYPE' => 'subdomain_alias'
+						)
+				);
+
+			$tpl->parse('SUBDOMAIN_ALIAS_LIST', '.subdomain_alias_list');
+
+			$i ++;
+			$rs->MoveNext();
+		}
+	}
+}
+
 function get_error_mails(&$sql, &$tpl) {
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
@@ -296,23 +308,9 @@ function get_error_mails(&$sql, &$tpl) {
         from
             mail_users
         where
-            (status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?
-              and
-            status != ?)
+            status
+        NOT IN
+        	(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -425,10 +423,12 @@ $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('domain_message', 'page');
 $tpl->define_dynamic('alias_message', 'page');
 $tpl->define_dynamic('subdomain_message', 'page');
+$tpl->define_dynamic('subdomain_alias_message', 'page');
 $tpl->define_dynamic('mail_message', 'page');
 $tpl->define_dynamic('domain_list', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('subdomain_list', 'page');
+$tpl->define_dynamic('subdomain_alias_list', 'page');
 $tpl->define_dynamic('mail_list', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
@@ -456,6 +456,7 @@ $tpl->assign(
 			'TR_DOMAIN_ERRORS' => tr('Domain errors'),
 			'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
 			'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
+			'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
 			'TR_MAIL_ERRORS' => tr('Mail account errors'),
 			'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
 			'TR_EXEC_REQUESTS' => tr('Execute requests'),
@@ -480,6 +481,9 @@ if (isset($_GET['action']) && $exec_count > 0) {
 				break;
 			case 'subdomain':
 				$query = 'UPDATE subdomain SET subdomain_status = "change" WHERE subdomain_id = ?';
+				break;
+			case 'subdomain_alias':
+				$query = 'UPDATE subdomain_alias SET subdomain_alias_status = "change" WHERE subdomain_alias_id = ?';
 				break;
 			case 'mail':
 				$query = 'UPDATE mail_users SET status = "change" WHERE mail_id = ?';
@@ -510,6 +514,8 @@ get_error_domains($sql, $tpl);
 get_error_aliases($sql, $tpl);
 
 get_error_subdomains($sql, $tpl);
+
+get_error_alias_subdomains($sql, $tpl);
 
 get_error_mails($sql, $tpl);
 

@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-08 Daniel Andreca
+	- GUI:
+		* ISPCP debugger now show status for alias subdomains
+	- TOOLS
+		* Small fix for phpMyAdmin theme
+
 2008-12-07 Jochen Manz
 	- LANGUAGES:
 		* small corrections in german language file

@@ -115,6 +115,28 @@
            <table width="100%" cellpadding="5" cellspacing="5">
             <tr>
              <td width="25">&nbsp;</td>
+             <td class="content3"><b>{TR_SUBDOMAIN_ALIAS_ERRORS}</b></td>
+            </tr>
+            <!-- BDP: subdomain_alias_message -->
+            <tr>
+             <td>&nbsp;</td>
+             <td>{TR_SUBDOMAIN_ALIAS_MESSAGE}</td>
+            </tr>
+             <!-- EDP: subdomain_alias_message -->
+             <!-- BDP: subdomain_alias_list -->
+            <tr>
+             <td>&nbsp;</td>
+             <td class="{CONTENT}">
+			  {TR_SUBDOMAIN_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_SUBDOMAIN_ALIAS_ERROR}</span>
+			 </td>
+            </tr>
+            <!-- EDP: subdomain_alias_list -->
+           </table>
+           <br />
+           <table width="100%" cellpadding="5" cellspacing="5">
+            <tr>
+             <td width="25">&nbsp;</td>
              <td class="content3"><b>{TR_MAIL_ERRORS}</b></td>
             </tr>
             <!-- BDP: mail_message -->

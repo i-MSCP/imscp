@@ -15,6 +15,13 @@ if (!defined('PMA_MINIMUM_COMMON')) {
 ?>
 /******************************************************************************/
 /* general tags */
+html {
+    font-size: <?php echo (null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize']); ?>;
+}
+
+input, select, textarea {
+    font-size: 1em;
+}
 
 body {
 <?php if (! empty($GLOBALS['cfg']['FontFamily'])) { ?>
@@ -30,6 +37,13 @@ body {
 
 a img {
     border: 0;
+}
+
+a:link,
+a:visited,
+a:active {
+    text-decoration:    none;
+    color:              #0000FF;
 }
 
 ul {

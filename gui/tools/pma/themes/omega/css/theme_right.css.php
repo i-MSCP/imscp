@@ -587,6 +587,31 @@ td.disabled {
     background-color:   #cccccc;
 }
 
+/**
+ * login form
+ */
+body.loginform h1,
+body.loginform a.logo {
+    display: block;
+    text-align: center;
+}
+
+body.loginform {
+    text-align: center;
+}
+
+body.loginform div.container {
+    text-align: <?php echo $left; ?>;
+    width: 30em;
+    margin: 0 auto;
+}
+
+form.login label {
+    float: <?php echo $left; ?>;
+    width: 10em;
+    font-weight: bolder;
+}
+
 
 /******************************************************************************/
 /* specific elements */
@@ -595,13 +620,13 @@ td.disabled {
 ul#topmenu {
     font-weight:         bold;
     list-style-type:     none;
-    margin:              0;
-    padding:             0;
+    margin:              0 0 0 5;
+    padding:             1 0 0 0;
     background-color:    #cccccc;
 	background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
     background-repeat:   repeat-x;
     background-position: top;
-	height: 			 28px;
+	height: 			 24px;
 }
 
 ul#topmenu li {
