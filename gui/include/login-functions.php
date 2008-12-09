@@ -72,11 +72,11 @@ function unblock($timeout = null, $type = 'bruteforce') {
 
 	switch ($type) {
 	    case 'bruteforce':
-	        $query = "UPDATE login SET login_count='1' WHERE login_count > ? AND lastaccess < ? AND user_name is NULL";
+	        $query = "UPDATE login SET login_count='1' WHERE login_count >= ? AND lastaccess < ? AND user_name is NULL";
 	        $max = Config::get('BRUTEFORCE_MAX_LOGIN');
 	        break;
 	    case 'captcha':
-	        $query = "UPDATE login SET captcha_count='1' WHERE captcha_count > ? AND lastaccess < ? AND user_name is NULL";
+	        $query = "UPDATE login SET captcha_count='1' WHERE captcha_count >= ? AND lastaccess < ? AND user_name is NULL";
 	        $max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
 	        break;
 	    default:
