@@ -86,13 +86,13 @@ class criticalUpdate extends ispcpUpdate{
 		
 		if ($rs->RecordCount() != 0) {
 			while (!$rs->EOF) {
-				$sqlUpd[] = "UPDATE `sql_user` SET `sqlu_pass` = '". encrypt_db_password($rs->fields['sqlu_pass']). "', `status`='$status' WHERE `sqlu_id`='". $rs->fields['sqlu_id'] ."'";
+				$sqlUpd[] = "UPDATE `sql_user` SET `sqlu_pass` = '". encrypt_db_password($rs->fields['sqlu_pass']). "' WHERE `sqlu_id`='". $rs->fields['sqlu_id'] ."'";
 				$rs->MoveNext();
 			}
 		}
 		
 		$engine_run_request=true;
-		
+
 		return $sqlUpd;
 	}
 

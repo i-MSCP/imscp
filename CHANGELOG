@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-09 Daniel Andreca
+	- GUI:
+		* SQL passwords were not encrypted on critical update
+
 2008-12-08 Daniel Andreca
 	- GUI:
 		* ISPCP debugger now show status for alias subdomains
