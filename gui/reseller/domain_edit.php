@@ -387,7 +387,9 @@ SQL_QUERY;
 	if (empty($ed_error)) {
 		// Set domain's status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
-			$query = "UPDATE domain SET domain_status = 'change' WHERE domain_id = ?";
+			$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
+			exec_query($sql, $query, array($user_id));
+			$query = "UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `domain_id` = ?";
 			exec_query($sql, $query, array($user_id));
 			check_for_lock_file();
 			send_request();
