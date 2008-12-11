@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-12-11 Daniel Andreca
 	- GUI:
 		* Ticket #1580: Modifying domain's traffic limit removes subdomain in ispcp.conf
+	- DOCS:
+		* Ticket #1581: OpenSUSE is now using zypper
 
 2008-12-09 Daniel Andreca
 	- GUI:
@@ -13,7 +15,7 @@ ispCP ω 1.0.0 Changelog
 2008-12-08 Daniel Andreca
 	- GUI:
 		* ISPCP debugger now show status for alias subdomains
-	- TOOLS
+	- TOOLS:
 		* Small fix for phpMyAdmin theme
 
 2008-12-07 Jochen Manz
@@ -25,7 +27,7 @@ ispCP ω 1.0.0 Changelog
 		* Update script ready for RC7
 	- CONFIGS:
 		* Configs ready for RC7
-	- DOCS
+	- DOCS:
 		* Install / update instructions ready for RC7
 
 2008-12-06 Benedikt Heintel
@@ -46,11 +48,11 @@ ispCP ω 1.0.0 Changelog
 		* Add po file for portuguese_portugal. Update portuguese_portugal language
 
 2008-12-04 Daniel Andreca
-	- TOOLS
+	- TOOLS:
 		* Fixed #1572: squirrelmail needs a update
 
 2008-12-03 Daniel Andreca
-	- ENGINE
+	- ENGINE:
 		* Fixed #1571: Alias Domains: Awstats (static awstats)
 
 		* Moved default statistics group to critical updated (need to perform an engine request)
@@ -60,7 +62,7 @@ ispCP ω 1.0.0 Changelog
 		* Add support for alias subdomain mail
 		* Alias subdomains are not counted
 		* Hide alias domain list when no alias exists
-	- ENGINE
+	- ENGINE:
 		* Fixed #1518: Virtual mail problem
 		* Alias subdomain are not deleted when alais is deleted in same operation
 
@@ -72,7 +74,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Add default user with password to statistics
 		* Fix regresion introduced on r1408
-	- TEMPLATES
+	- TEMPLATES:
 		* On protected_user_manage.php the size of the edit-icon (edit.png) is 18 pixels instead of 16
 
 2008-11-27 Daniel Andreca
