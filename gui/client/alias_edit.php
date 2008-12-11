@@ -173,7 +173,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$forward_url = "no";
 		}
 
-		$query = <<<SQL
+		$query = "
 			UPDATE
 				domain_aliasses
 			SET
@@ -181,9 +181,19 @@ function check_fwd_data(&$tpl, $alias_id) {
 				alias_status = ?
 			WHERE
 				alias_id = ?
-SQL;
-
+		";
 		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
+
+		$query = "
+			UPDATE
+				subdomain_alias
+			SET
+				subdomain_alias_status = ?
+			WHERE
+				alias_id = ?
+		";
+		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
+
 		check_for_lock_file();
 		send_request();
 
