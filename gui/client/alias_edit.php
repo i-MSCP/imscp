@@ -159,7 +159,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 	$ed_error = '_off_';
 	$admin_login = '';
 
-	if ($forward_url != 'no') {
+	if ($status != '0') {
 		if (!chk_forward_url($forward_url)) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
