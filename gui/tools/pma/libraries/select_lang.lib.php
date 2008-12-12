@@ -3,7 +3,7 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: select_lang.lib.php 11507 2008-08-25 16:48:04Z lem9 $
+ * @version $Id: select_lang.lib.php 11626 2008-10-01 20:48:40Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -348,10 +348,6 @@ $GLOBALS['mysql_charset_map'] = array(
  * Do the work!
  */
 
-/**
- * @global boolean whether charset recoding should be allowed or not
- */
-$GLOBALS['allow_recoding'] = false;
 if (empty($GLOBALS['convcharset'])) {
     if (isset($_COOKIE['pma_charset'])) {
         $GLOBALS['convcharset'] = $_COOKIE['pma_charset'];

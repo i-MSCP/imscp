@@ -3,7 +3,7 @@
 /**
  * Charset conversion functions.
  *
- * @version $Id: charset_conversion.lib.php 11365 2008-07-01 19:21:28Z lem9 $
+ * @version $Id: charset_conversion.lib.php 11626 2008-10-01 20:48:40Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -13,25 +13,18 @@ if (! defined('PHPMYADMIN')) {
  * Loads the recode or iconv extensions if any of it is not loaded yet
  */
 if (isset($cfg['AllowAnywhereRecoding'])
-    && $cfg['AllowAnywhereRecoding']
-    && $allow_recoding) {
+    && $cfg['AllowAnywhereRecoding']) {
 
     if ($cfg['RecodingEngine'] == 'recode') {
         if (!@extension_loaded('recode')) {
-            PMA_dl('recode');
-            if (!@extension_loaded('recode')) {
-                echo $strCantLoadRecodeIconv;
-                exit;
-            }
+            echo $strCantLoadRecodeIconv;
+            exit;
         }
         $PMA_recoding_engine             = 'recode';
     } elseif ($cfg['RecodingEngine'] == 'iconv') {
         if (!@extension_loaded('iconv')) {
-            PMA_dl('iconv');
-            if (!@extension_loaded('iconv')) {
-                echo $strCantLoadRecodeIconv;
-                exit;
-            }
+            echo $strCantLoadRecodeIconv;
+            exit;
         }
         $PMA_recoding_engine             = 'iconv';
     } else {
@@ -40,18 +33,8 @@ if (isset($cfg['AllowAnywhereRecoding'])
         } elseif (@extension_loaded('recode')) {
             $PMA_recoding_engine         = 'recode';
         } else {
-            PMA_dl('iconv');
-            if (!@extension_loaded('iconv')) {
-                PMA_dl('recode');
-                if (!@extension_loaded('recode')) {
-                    echo $strCantLoadRecodeIconv;
-                    exit;
-                } else {
-                    $PMA_recoding_engine = 'recode';
-                }
-            } else {
-                $PMA_recoding_engine     = 'iconv';
-            }
+            echo $strCantLoadRecodeIconv;
+            exit;
         }
     }
 } // end load recode/iconv extension
@@ -68,8 +51,7 @@ if (!isset($cfg['IconvExtraParams'])) {
 
 // Finally detect which function we will use:
 if (isset($cfg['AllowAnywhereRecoding'])
-    && $cfg['AllowAnywhereRecoding']
-    && $allow_recoding) {
+    && $cfg['AllowAnywhereRecoding']) {
 
     if (!isset($PMA_recoding_engine)) {
         $PMA_recoding_engine = $cfg['RecodingEngine'];
@@ -150,9 +132,9 @@ if ($PMA_recoding_engine == PMA_CHARSET_ICONV_AIX) {
  * @author  nijel
  */
 function PMA_convert_charset($what) {
-    global $cfg, $allow_recoding, $charset, $convcharset;
+    global $cfg, $charset, $convcharset;
 
-    if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] && $allow_recoding)
+    if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] )
         || $convcharset == $charset) { // rabus: if input and output charset are the same, we don't have to do anything...
         return $what;
     } else {

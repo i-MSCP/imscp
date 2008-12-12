@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11642 2008-10-09 09:41:22Z nijel $
+ * @version $Id: common.lib.php 12027 2008-11-28 18:23:56Z lem9 $
  */
 
 /**
@@ -355,12 +355,13 @@ function PMA_formatSql($parsed_sql, $unparsed_sql = '')
  * @param string  chapter of "HTML, one page per chapter" documentation
  * @param string  contains name of page/anchor that is being linked
  * @param bool    whether to use big icon (like in left frame)
+ * @param string  anchor to page part
  *
  * @return  string  the html link
  *
  * @access  public
  */
-function PMA_showMySQLDocu($chapter, $link, $big_icon = false)
+function PMA_showMySQLDocu($chapter, $link, $big_icon = false, $anchor = '')
 {
     global $cfg;
 
@@ -377,16 +378,25 @@ function PMA_showMySQLDocu($chapter, $link, $big_icon = false)
             if (empty($chapter)) {
                 $chapter = 'index';
             }
-            $url = $cfg['MySQLManualBase'] . '/' . $chapter . '.html#' . $link;
+            if (empty($anchor)) {
+                $anchor = $link;
+            }
+            $url = $cfg['MySQLManualBase'] . '/' . $chapter . '.html#' . $anchor;
             break;
         case 'big':
-            $url = $cfg['MySQLManualBase'] . '#' . $link;
+            if (empty($anchor)) {
+                $anchor = $link;
+            }
+            $url = $cfg['MySQLManualBase'] . '#' . $anchor;
             break;
         case 'searchable':
             if (empty($link)) {
                 $link = 'index';
             }
             $url = $cfg['MySQLManualBase'] . '/' . $link . '.html';
+            if (!empty($anchor)) {
+                $url .= '#' . $anchor;
+            }
             break;
         case 'viewable':
         default:
@@ -409,6 +419,9 @@ function PMA_showMySQLDocu($chapter, $link, $big_icon = false)
                 }
             }
             $url = $cfg['MySQLManualBase'] . '/' . $mysql . '/' . $lang . '/' . $link . '.html';
+            if (!empty($anchor)) {
+                $url .= '#' . $anchor;
+            }
             break;
     }
 
@@ -473,7 +486,7 @@ function PMA_showHint($message, $bbcode = false, $type = 'notice')
  * @uses    $GLOBALS['pmaThemeImage']
  * @uses    $GLOBALS['strEdit']
  * @uses    $GLOBALS['strMySQLSaid']
- * @uses    $GLOBALS['cfg']['PropertiesIconic'] 
+ * @uses    $GLOBALS['cfg']['PropertiesIconic']
  * @uses    $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']
  * @uses    PMA_backquote()
  * @uses    PMA_DBI_getError()
@@ -748,7 +761,23 @@ function PMA_getTableList($db, $tables = null, $limit_offset = 0, $limit_count =
 
     $table_groups = array();
 
+    // for blobstreaming - list of blobstreaming tables - rajk
+
+    // load PMA configuration
+    $PMA_Config = $_SESSION['PMA_Config'];
+
+    // if PMA configuration exists
+    if (!empty($PMA_Config))
+        $session_bs_tables = $_SESSION['PMA_Config']->get('BLOBSTREAMING_TABLES');
+
     foreach ($tables as $table_name => $table) {
+        // if BS tables exist
+        if (isset($session_bs_tables))
+            // compare table name to tables in list of blobstreaming tables
+            foreach ($session_bs_tables as $table_key=>$table_val)
+                // if table is in list, skip outer foreach loop
+                if ($table_name == $table_key)
+                    continue 2;
 
         // check for correct row count
         if (null === $table['Rows']) {
@@ -764,7 +793,7 @@ function PMA_getTableList($db, $tables = null, $limit_offset = 0, $limit_count =
 
             if ($tbl_is_view) {
                 $table['Rows'] = PMA_Table::countRecords($db, $table['Name'],
-                    $return = true);
+                        $return = true);
             }
         }
 
@@ -926,7 +955,8 @@ function PMA_reloadNavigation()
 <script type="text/javascript">
 //<![CDATA[
 if (typeof(window.parent) != 'undefined'
-    && typeof(window.parent.frame_navigation) != 'undefined') {
+    && typeof(window.parent.frame_navigation) != 'undefined'
+    && window.parent.goTo) {
     window.parent.goTo('<?php echo $reload_url; ?>');
 }
 //]]>
@@ -942,7 +972,7 @@ if (typeof(window.parent) != 'undefined'
  *
  * @param   string  $message    the message to display
  * @param   string  $sql_query  the query to display
- * @param   string  $type       the type (level) of the message 
+ * @param   string  $type       the type (level) of the message
  * @global  array   the configuration array
  * @uses    $cfg
  * @access  public
@@ -971,7 +1001,7 @@ function PMA_showMessage($message, $sql_query = null, $type = 'notice')
         echo "\n";
         echo '<script type="text/javascript">' . "\n";
         echo '//<![CDATA[' . "\n";
-        echo "window.parent.updateTableTitle('" . $uni_tbl . "', '" . PMA_jsFormat($tooltip, false) . "');" . "\n";
+        echo "if (window.parent.updateTableTitle) window.parent.updateTableTitle('" . $uni_tbl . "', '" . PMA_jsFormat($tooltip, false) . "');" . "\n";
         echo '//]]>' . "\n";
         echo '</script>' . "\n";
     } // end if ... elseif
@@ -1091,7 +1121,7 @@ function PMA_showMessage($message, $sql_query = null, $type = 'notice')
         if (! empty($cfg['SQLQuery']['Explain']) && ! $query_too_big) {
             $explain_params = $url_params;
             // Detect if we are validating as well
-            // To preserve the validate URL data
+            // To preserve the validate uRL data
             if (! empty($GLOBALS['validatequery'])) {
                 $explain_params['validatequery'] = 1;
             }
@@ -1490,7 +1520,7 @@ function PMA_getTab($tab)
 
     $tab = array_merge($defaults, $tab);
 
-    // determine additional style-class
+    // determine additionnal style-class
     if (empty($tab['class'])) {
         if ($tab['text'] == $GLOBALS['strEmpty']
             || $tab['text'] == $GLOBALS['strDrop']) {
@@ -1765,26 +1795,25 @@ function PMA_flipstring($string, $Separator = "<br />\n")
         if ($char == '&') {
             $format_string .= $charbuff;
             $charbuff = $char;
-            $append = true;
-        } elseif (!empty($charbuff)) {
-            $charbuff .= $char;
         } elseif ($char == ';' && !empty($charbuff)) {
-            $format_string .= $charbuff;
+            $format_string .= $charbuff . $char;
             $charbuff = false;
             $append = true;
+        } elseif (! empty($charbuff)) {
+            $charbuff .= $char;
         } else {
             $format_string .= $char;
             $append = true;
         }
 
-        if ($append && ($i != strlen($string))) {
+        // do not add separator after the last character
+        if ($append && ($i != strlen($string)-1)) {
             $format_string .= $Separator;
         }
     }
 
     return $format_string;
 }
-
 
 /**
  * Function added to avoid path disclosures.
@@ -1906,7 +1935,11 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
         //
         // But orgtable is present only with mysqli extension so the
         // fix is only for mysqli.
-        if (isset($meta->orgtable) && $meta->table != $meta->orgtable) {
+        // Also, do not use the original table name if we are dealing with 
+        // a view because this view might be updatable.
+        // (The isView() verification should not be costly in most cases
+        // because there is some caching in the function). 
+        if (isset($meta->orgtable) && $meta->table != $meta->orgtable && ! PMA_Table::isView($GLOBALS['db'], $meta->table)) {
             $meta->table = $meta->orgtable;
         }
 
@@ -2281,7 +2314,7 @@ function PMA_externalBug($functionality, $component, $minimum_version, $bugref)
  *
  * @param   string  $html_field_name the checkbox HTML field
  * @param   string  $label
- * @param   boolean $checked is it initially checked? 
+ * @param   boolean $checked is it initially checked?
  * @param   boolean $onclick should it submit the form on click?
  */
 function PMA_generate_html_checkbox($html_field_name, $label, $checked, $onclick) {
@@ -2297,7 +2330,7 @@ function PMA_generate_html_checkbox($html_field_name, $label, $checked, $onclick
  * @param   array   $choices the choices values and labels
  * @param   string  $checked_choice the choice to check by default
  * @param   boolean $line_break whether to add an HTML line break after a choice
- * @param   boolean $escape_label whether to use htmlspecialchars() on label 
+ * @param   boolean $escape_label whether to use htmlspecialchars() on label
  * @param   string  $class enclose each choice with a div of this class
  */
 function PMA_generate_html_radio($html_field_name, $choices, $checked_choice = '', $line_break = true, $escape_label = true, $class='') {
@@ -2323,7 +2356,7 @@ function PMA_generate_html_radio($html_field_name, $choices, $checked_choice = '
 }
 
 /**
- * Generates and echoes an HTML dropdown 
+ * Generates and echoes an HTML dropdown
  *
  * @uses    htmlspecialchars()
  * @param   string  $select_name
@@ -2409,7 +2442,7 @@ window.addEvent('domready', function(){
 }
 
 /**
- * Verifies if something is cached in the session 
+ * Verifies if something is cached in the session
  *
  * @param unknown_type $var
  * @param unknown_type $val
@@ -2425,7 +2458,7 @@ function PMA_cacheExists($var, $server = 0)
 }
 
 /**
- * Gets cached information from the session 
+ * Gets cached information from the session
  *
  * @param unknown_type $var
  * @param unknown_type $val
@@ -2486,8 +2519,8 @@ function PMA_cacheUnset($var, $server = 0)
  * @uses    substr()
  * @uses    sprintf()
  * @param   numeric $value coming from a BIT field
- * @param   integer $length 
- * @return  string  the printable value 
+ * @param   integer $length
+ * @return  string  the printable value
  */
 function PMA_printable_bit_value($value, $length) {
     $printable = '';
@@ -2504,8 +2537,8 @@ function PMA_printable_bit_value($value, $length) {
  * @uses    strpos()
  * @uses    chop()
  * @uses    substr()
- * @param   string $fieldspec 
- * @return  array associative array containing type, spec_in_brackets 
+ * @param   string $fieldspec
+ * @return  array associative array containing type, spec_in_brackets
  *          and possibly enum_set_values (another array)
  * @author  Marc Delisle
  * @author  Joshua Hogendorn
@@ -2528,11 +2561,11 @@ function PMA_extractFieldSpec($fieldspec) {
         $in_string = false;
         $index = 0;
 
-        // While there is another character to process	
+        // While there is another character to process
         while (isset($fieldspec[$index])) {
             // Grab the char to look at
             $char = $fieldspec[$index];
-		
+
             // If it is a single quote, needs to be handled specially
             if ($char == "'") {
                 // If we are not currently in a string, begin one
@@ -2544,12 +2577,12 @@ function PMA_extractFieldSpec($fieldspec) {
                 // Check out the next character (if possible)
                     $has_next = isset($fieldspec[$index + 1]);
                     $next = $has_next ? $fieldspec[$index + 1] : null;
-				
+
                 // If we have reached the end of our 'working' string (because there are no more chars, or the next char is not another quote)
                     if (! $has_next || $next != "'") {
                         $enum_set_values[] = $working;
                         $in_string = false;
-				
+
                     // Otherwise, this is a 'double quote', and can be added to the working string
                     } elseif ($next == "'") {
                         $working .= "'";
@@ -2580,11 +2613,11 @@ function PMA_extractFieldSpec($fieldspec) {
 }
 
 /**
- * Verifies if this table's engine supports foreign keys 
+ * Verifies if this table's engine supports foreign keys
  *
  * @uses    strtoupper()
  * @param   string $engine
- * @return  boolean 
+ * @return  boolean
  */
 function PMA_foreignkey_supported($engine) {
     $engine = strtoupper($engine);
@@ -2593,14 +2626,14 @@ function PMA_foreignkey_supported($engine) {
     } else {
         return false;
     }
-} 
+}
 
 /**
- * Replaces some characters by a displayable equivalent 
+ * Replaces some characters by a displayable equivalent
  *
  * @uses    str_replace()
  * @param   string $content
- * @return  string the content with characters replaced 
+ * @return  string the content with characters replaced
  */
 function PMA_replace_binary_contents($content) {
     $result = str_replace("\x00", '\0', $content);
@@ -2609,5 +2642,53 @@ function PMA_replace_binary_contents($content) {
     $result = str_replace("\x0d", '\r', $result);
     $result = str_replace("\x1a", '\Z', $result);
     return $result;
+}
+
+/**
+ *
+ * If the first character given is \n (CR) we will add an extra \n
+ *
+ * @uses    strpos()
+ * @return  string with the chars replaced
+ */
+
+function PMA_duplicateFirstNewline($string){
+	$first_occurence = strpos($string, "\n");
+	if($first_occurence == 1){
+		$string = "\n".$string;
+	}
+	return $string;
+}
+
+/**
+ * get the action word corresponding to a script name
+ * in order to display it as a title in navigation panel
+ *
+ * @uses    switch()
+ * @uses    $GLOBALS
+ * @param   string  a valid value for $cfg['LeftDefaultTabTable']
+ *                  or $cfg['DefaultTabTable']
+ */
+function PMA_getTitleForTarget($target) {
+    switch ($target) {
+        case 'tbl_structure.php':
+            $message = 'strStructure';
+            break;
+        case 'tbl_sql.php':
+            $message = 'strSQL';
+            break;
+        case 'tbl_select.php':
+            $message = 'strSearch';
+            break;
+        case 'tbl_change.php':
+            $message = 'strInsert';
+            break;
+        case 'sql.php':
+            $message = 'strBrowse';
+            break;
+        default:
+            $message = '';
+    }
+    return $GLOBALS[$message];
 }
 ?>

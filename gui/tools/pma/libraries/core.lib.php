@@ -297,6 +297,33 @@ function PMA_getTableCount($db)
         null, PMA_DBI_QUERY_STORE);
     if ($tables) {
         $num_tables = PMA_DBI_num_rows($tables);
+
+        // for blobstreaming - get blobstreaming tables
+        // for use in determining if a table here is a blobstreaming table - rajk
+
+        // load PMA configuration
+        $PMA_Config = $_SESSION['PMA_Config'];
+
+        // if PMA configuration exists
+        if (!empty($PMA_Config))
+        {
+            // load BS tables
+            $session_bs_tables = $_SESSION['PMA_Config']->get('BLOBSTREAMING_TABLES');
+
+            // if BS tables exist 
+            if (isset ($session_bs_tables))
+                while ($data = PMA_DBI_fetch_assoc($tables))
+                    foreach ($session_bs_tables as $table_key=>$table_val)
+                        // if the table is a blobstreaming table, reduce the table count
+                        if ($data['Tables_in_' . $db] == $table_key)
+                        {
+                            if ($num_tables > 0)
+                                $num_tables--;
+
+                            break;
+                        }
+        } // end if PMA configuration exists
+
         PMA_DBI_free_result($tables);
     } else {
         $num_tables = 0;
@@ -340,71 +367,6 @@ function PMA_get_real_size($size = 0)
 
     return $size;
 } // end function PMA_get_real_size()
-
-/**
- * loads php module
- *
- * @uses    PHP_OS
- * @uses    extension_loaded()
- * @uses    ini_get()
- * @uses    function_exists()
- * @uses    ob_start()
- * @uses    phpinfo()
- * @uses    strip_tags()
- * @uses    ob_get_contents()
- * @uses    ob_end_clean()
- * @uses    preg_match()
- * @uses    strtoupper()
- * @uses    substr()
- * @uses    dl()
- * @param   string  $module name if module to load
- * @return  boolean success loading module
- */
-function PMA_dl($module)
-{
-    static $dl_allowed = null;
-
-    if (extension_loaded($module)) {
-        return true;
-    }
-
-    if (null === $dl_allowed) {
-        if (!@ini_get('safe_mode')
-          && @ini_get('enable_dl')
-          && @function_exists('dl')) {
-            ob_start();
-            phpinfo(INFO_GENERAL); /* Only general info */
-            $a = strip_tags(ob_get_contents());
-            ob_end_clean();
-            if (preg_match('@Thread Safety[[:space:]]*enabled@', $a)) {
-                if (preg_match('@Server API[[:space:]]*\(CGI\|CLI\)@', $a)) {
-                    $dl_allowed = true;
-                } else {
-                    $dl_allowed = false;
-                }
-            } else {
-                $dl_allowed = true;
-            }
-        } else {
-            $dl_allowed = false;
-        }
-    }
-
-    if (!$dl_allowed) {
-        return false;
-    }
-
-    /* Once we require PHP >= 4.3, we might use PHP_SHLIB_SUFFIX here */
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        $module_file = 'php_' . $module . '.dll';
-    } elseif (PHP_OS=='HP-UX') {
-        $module_file = $module . '.sl';
-    } else {
-        $module_file = $module . '.so';
-    }
-
-    return @dl($module_file);
-}
 
 /**
  * merges array recursive like array_merge_recursive() but keyed-values are
@@ -537,9 +499,9 @@ function PMA_checkPageValidity(&$page, $whitelist)
 }
 
 /**
- * tries to find the value for the given environment variable name
+ * trys to find the value for the given environment vriable name
  *
- * searches in $_SERVER, $_ENV then tries getenv() and apache_getenv()
+ * searchs in $_SERVER, $_ENV than trys getenv() and apache_getenv()
  * in this order
  *
  * @uses    $_SERVER
@@ -582,7 +544,7 @@ function PMA_removeCookie($cookie)
 }
 
 /**
- * sets cookie if value is different from current cookie value,
+ * sets cookie if value is different from current cokkie value,
  * or removes if value is equal to default
  *
  * @uses    PMA_Config::isHttps()

@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 11684 2008-10-30 20:22:20Z lem9 $ -->
+<!-- $Id: Documentation.html 12110 2008-12-09 17:22:43Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -11,7 +11,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 3.0.1.1 - Documentation</title>
+    <title>phpMyAdmin 3.1.1 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 3.0.1.1 Documentation</h1>
+<h1>phpMyAdmin 3.1.1 Documentation</h1>
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 11684 2008-10-30 20:22:20Z lem9 $</i>
+        <i>$Id: Documentation.html 12110 2008-12-09 17:22:43Z lem9 $</i>
     </li>
 </ul>
 
@@ -62,6 +62,10 @@
 		and the Standard PHP Library (SPL) extension.
                 </li>
 		<li>To support uploading of ZIP files, you need the PHP <tt>zip</tt> extension.</li>
+        <li>For proper support of multibyte strings (eg. UTF-8, which is
+            currently default), you should install mbstring and ctype
+            extensions.
+        </li>
             <li>You need GD2 support in PHP to display inline
                 thumbnails of JPEGs (&quot;image/jpeg: inline&quot;) with their
                 original aspect ratio</li>
@@ -231,7 +235,7 @@ $cfg['Servers'][$i]['password']      = 'cbb74bc'; // use here your password
                 <a href="#config">Configuration Section</a> of this document.</li>
             <li id="setup_script">Instead of manually editing
                 <tt>config.inc.php</tt>, you can use the
-                <a href="scripts/setup.php">Setup Script</a>. First you must
+                <a href="setup/">Setup Script</a>. First you must
                 manually create a folder <tt>config</tt> in the phpMyAdmin
                 directory. This is a security measure. On a Linux/Unix system you
                 can use the following commands:
@@ -249,7 +253,7 @@ chmod o+w config/config.inc.php     # give it world writable permissions
                 web server has read and write access to it. <a href="#faq1_26">FAQ
                 1.26</a> can help with this.<br /><br />
 
-                Next, open <tt><a href="scripts/setup.php">scripts/setup.php</a>
+                Next, open <tt><a href="setup/">setup/</a>
                 </tt>in your browser. Note that <strong>changes are not saved to
                 disk until explicitly choose <tt>Save</tt></strong> from the
                 <i>Configuration</i> area of the screen. Normally the script saves
@@ -507,6 +511,29 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         one&#8217;s router or firewall will suffice (both of which
         are beyond the scope of this manual but easily searchable with Google).</li>
 </ul>
+<h4 id="swekey">Swekey authentication</h4>
+<p>
+The Swekey is a low cost authentication USB key that can be used in
+web applications.<br /><br />
+When Swekey authentication is activated, phpMyAdmin requires the
+users's Swekey to be plugged before entering the login page (currently
+supported for cookie authentication mode only). Swekey Authentication is 
+disabled by default.<br /><br />
+To enable it, add the following line to <tt>config.inc.php</tt>:
+</p>
+<pre>
+$cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey.conf';
+</pre>
+<p>
+You then have to create the <tt>swekey.conf</tt> file that will associate
+each user with their Swekey Id. It is important to place this file outside
+of your web server's document root (in the example, it is located in <tt>/etc</tt>). A self documented sample file is provided 
+in the <tt>contrib</tt> directory. Feel free to use it with your own 
+users' information.<br /><br />
+If you want to purchase a Swekey please visit
+<a href="http://phpmyadmin.net/auth_key">http://phpmyadmin.net/auth_key</a>
+since this link provides funding for phpMyAdmin.
+</p>
 <!-- CONFIGURATION -->
 <h2 id="config">Configuration</h2>
 
@@ -575,7 +602,12 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         If you are using the &quot;cookie&quot; auth_type, enter here a random
         passphrase of your choice. It will be used internally by the blowfish
         algorithm: you won&#8217;t be prompted for this passphrase. The maximum
-        number of characters for this parameter seems to be 46.</dd>
+        number of characters for this parameter seems to be 46.<br /><br />
+        
+        Since version 3.1.0 phpMyAdmin can generate this on the fly, but it
+        makes a bit weaker security as this generated secret is stored in
+        session and furthermore it makes impossible to recall user name from 
+        cookie.</dd>
 
     <dt id="cfg_Servers">$cfg['Servers'] array</dt>
     <dd>Since version 1.4.2, phpMyAdmin supports the administration of multiple
@@ -1003,7 +1035,13 @@ ALTER TABLE `pma_column_comments`
         up to date.</dd>
     <dt><span id="cfg_Servers_AllowRoot">$cfg['Servers'][$i]['AllowRoot']</span>
         boolean</dt>
-    <dd>Whether to allow root access. This is just simplification of rules below.
+    <dd>Whether to allow root access. This is just a shortcut for the AllowDeny rules below.
+    </dd>
+    <dt><span id="cfg_Servers_AllowNoPasswordRoot">$cfg['Servers'][$i]['AllowNoPasswordRoot']</span>
+        boolean</dt>
+	<dd>Whether to allow access to root user without password. The default
+	value of <tt>false</tt> for this parameter prevents unintended access 
+	to a MySQL server with was left with an empty password for root.
     </dd>
     <dt id="servers_allowdeny_order">
         <span id="cfg_Servers_AllowDeny_order">$cfg['Servers'][$i]['AllowDeny']['order']</span> string
@@ -1158,7 +1196,11 @@ ALTER TABLE `pma_column_comments`
 
     <dt id="cfg_LoginCookieRecall">$cfg['LoginCookieRecall'] boolean</dt>
     <dd>Define whether the previous login should be recalled or not in cookie
-        authentication mode.</dd>
+        authentication mode.<br /><br />
+
+        This is automatically diabled if you do not have configured 
+        <tt><a href="#cfg_blowfish_secret">$cfg['blowfish_secret']</a></tt>.
+        </dd>
 
     <dt id="cfg_LoginCookieValidity">$cfg['LoginCookieValidity'] integer [number of seconds]</dt>
     <dd>Define how long is login cookie valid.</dd>
@@ -1791,6 +1833,7 @@ setfacl -d -m "g:www-data:rwx" tmp
         <code>chmod 777</code>, but it might impose risk of other users on
         system reading and writing data in this directory.
     </dd>
+
     <dt id="cfg_Export">$cfg['Export'] array</dt>
     <dd>
         In this array are defined default parameters for export, names of
@@ -3511,11 +3554,11 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] = array(
 </p>
 
 <h4 id="faq6_2">
-    <a href="#faq6_2">6.2 When I create a table, I click the Index checkbox for 2 fields and
-    phpMyAdmin generates only one index with those 2 fields.
+    <a href="#faq6_2">6.2 When I create a table, I set an index for two fields and
+    phpMyAdmin generates only one index with those two fields.
 </a></h4>
 <p>
-    In phpMyAdmin 2.2.0 and 2.2.1, this is the way to create a multi-fields
+    This is the way to create a multi-fields
     index. If you want two indexes, create the first one when creating the
     table, save, then display the table properties and click the Index link to
     create the other index.
@@ -3900,15 +3943,16 @@ INSERT INTO REL_towns VALUES ('M', 'Montr&eacute;al');
 <p> You have to setup appropriate links between the tables, and also
     setup the &quot;display field&quot; in the foreign table. See
     <a href="#faq6_6"><abbr title="Frequently Asked Questions">FAQ</abbr>
-    6.6</a> for an example. Then, if there are 200 values or less in the
+    6.6</a> for an example. Then, if there are 100 values or less in the
     foreign table, a drop-down list of values will be available.
     You will see two lists of values, the first list containing the key
     and the display field, the second list containing the display field
     and the key. The reason for this is to be able to type the first
     letter of either the key or the display field.<br /><br />
 
-    For 200 values or more, a distinct window will appear, to browse foreign
-    key values and choose one.</p>
+    For 100 values or more, a distinct window will appear, to browse foreign
+    key values and choose one. To change the default limit of 100, see
+    <tt><a href="#cfg_ForeignKeyMaxLimit" class="configrule">$cfg['ForeignKeyMaxLimit']</a></tt>.</p>
 
 <h4 id="faq6_22">
     <a href="#faq6_22">6.22 Bookmarks: Can I execute a default bookmark
@@ -3967,6 +4011,20 @@ chmod o+rwx tmp
 <p> Automatic migration of a table's pmadb-style column comments to the native
     ones is done whenever you enter Structure page for this table.</p>
 
+<h4 id="faq6_25">
+	<a href="#faq6_25">6.25 How does BLOB streaming work in phpMyAdmin?</a></h4>
+
+<p> First, for general information about BLOB streaming on MySQL, visit <a href="http://blobstreaming.org">blobstreaming.org</a>. We currently support streaming if you are running MySQL 5.1 with the PBXT and PBMS storage engines.<br /><br />
+<ol>
+	<li>In <tt>config.inc.php</tt> your host should be defined with a FQDN (fully qualified domain name) instead of something like &quot;localhost&quot;.</li>
+	<li>A current limitation is that your first login via phpMyAdmin to a freshly-started server must be done with an account that has the SUPER privilege.</li>
+	<li>On your target database, go to Operations and in the &quot;BLOB Repository&quot; section, click &quot;Enable&quot;. This creates the PBMS system tables inside your database.</li>
+	<li>Ensure that your target table has a LONGBLOB column.</li>
+	<li>When you insert or update a row in this table, put a checkmark on the &quot;Upload to BLOB repository&quot; optional choice; otherwise, the upload will be done directly in your column instead of the repository.</li>
+	<li>Finally when you browse your table, you'll see in your column a link to stream your data, for example &quot;View image&quot;. A header containing the correct MIME-type will be sent to your browser; this MIME-type was stored at upload time but in case it's incorrect, it's possible to edit it by clicking on the displayed MIME-type.</li> 
+</ol>	
+</p>
+
 <h3 id="faqproject">phpMyAdmin project</h3>
 
 <h4 id="faq7_1">
@@ -3985,7 +4043,7 @@ chmod o+rwx tmp
     existing language, where do I start?</a></h4>
 
 <p> Always use the current SVN version of your language file.
-    For a new language, start from <i>english-iso-8859-1.inc.php</i>. If you
+    For a new language, start from <i>english-utf-8.inc.php</i>. If you
     don't  know how to get the SVN version, please ask one of the developers.
     <br />
     Please note that we try not to use HTML entities like &amp;eacute; in
@@ -4061,8 +4119,8 @@ chmod o+rwx tmp
     <li>Please try to keep up the file-naming conventions. Table-related stuff
         goes to <i>tbl_*.php</i>, db-related code to <i>db_*.php</i>,
         server-related tools to <i>server_*.php</i> and so on.</li>
-    <li>Please don't use verbose strings in your code, instead add the string
-        (at least) to <i>english-iso-8859-1.inc.php</i> and print() it out.</li>
+    <li>Please don't put message strings in your code, instead add the string
+        (at least) to <i>english-utf-8.inc.php</i> and print() it out.</li>
     <li>If you want to be really helpful, write an entry for the ChangeLog.</li>
     <li id="developersdbg">
         The DBG extension (<a href="http://dd.cron.ru/dbg/">PHP
@@ -4221,6 +4279,12 @@ CREDITS, in chronological order
 
 - Ivan A Kirillov
     * new relations Designer
+
+- Raj Kissu Rajandran (Google Summer of Code 2008)
+    * BLOBstreaming support
+
+- Piotr Przybylski (Google Summer of Code 2008)
+    * improved setup script
 
 And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:

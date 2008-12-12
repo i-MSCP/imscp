@@ -3,7 +3,7 @@
 /**
  * Set of functions used to run single signon authentication.
  *
- * @version $Id: signon.auth.lib.php 10424 2007-06-07 17:14:21Z lem9 $
+ * @version $Id: signon.auth.lib.php 11550 2008-09-03 14:07:30Z nijel $
  */
 
 
@@ -109,8 +109,8 @@ function PMA_auth_check()
         }
         session_start();
 
-	/* Set the single signon host */
-	$GLOBALS['cfg']['Server']['host']=$single_signon_host;
+        /* Set the single signon host */
+        $GLOBALS['cfg']['Server']['host']=$single_signon_host;
 
         /* Restore our token */
         if (!empty($pma_token)) {

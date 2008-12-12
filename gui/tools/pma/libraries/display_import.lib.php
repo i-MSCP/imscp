@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_import.lib.php 11571 2008-09-07 15:29:00Z lem9 $
+ * @version $Id: display_import.lib.php 11626 2008-10-01 20:48:40Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -82,7 +82,7 @@ if (!empty($cfg['UploadDir'])) {
 
 // charset of file
 echo '<div class="formelementrow">' . "\n";
-if ($cfg['AllowAnywhereRecoding'] && $allow_recoding) {
+if ($cfg['AllowAnywhereRecoding']) {
     echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>';
     reset($cfg['AvailableCharsets']);
     echo '<select id="charset_of_file" name="charset_of_file" size="1">';

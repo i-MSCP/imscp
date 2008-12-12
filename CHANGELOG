@@ -1,6 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-12 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC7
+
+2008-12-12 Benedikt Heintel
+	- TOOLS:
+		* Updated HTMLPurifier to version 3.2.0
+		* Updated phpMyAdmin to version 3.1.1
+	- LANGUAGES:
+		* Added: Chinese (Hongkong)
+
 2008-12-11 Daniel Andreca
 	- GUI:
 		* Ticket #1580: Modifying domain's traffic limit removes subdomain in ispcp.conf

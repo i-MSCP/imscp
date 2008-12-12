@@ -3,7 +3,7 @@
 /**
  * main css file from theme Original
  *
- * @version $Id: theme_right.css.php 11382 2008-07-10 17:53:31Z lem9 $
+ * @version $Id: theme_right.css.php 12031 2008-11-28 23:22:27Z nijel $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -16,7 +16,8 @@ if (!defined('PMA_MINIMUM_COMMON')) {
 /******************************************************************************/
 /* general tags */
 html {
-    font-size: <?php echo (null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize']);?>;
+    font-size: <?php echo (null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : (
+        isset($_COOKIE['pma_fontsize']) ? $_COOKIE['pma_fontsize'] : '84%'));?>;
 }
 
 input, select, textarea {

@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @version $Id: tbl_properties.inc.php 11493 2008-08-17 11:25:12Z lem9 $
+ * @version $Id: tbl_properties.inc.php 11631 2008-10-04 12:42:22Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -34,6 +34,12 @@ if (is_int($cfg['DefaultPropDisplay'])) {
     }
 } else {
     $display_type = $cfg['DefaultPropDisplay'];
+}
+
+if ('horizontal' == $display_type) {
+    $length_values_input_size = 8;
+} else {
+    $length_values_input_size = 30;
 }
 
 $_form_params = array(
@@ -350,7 +356,7 @@ for ($i = 0; $i < $num_fields; $i++) {
     }
 
     $content_cells[$i][$ci] = '<input id="field_' . $i . '_' . ($ci - $ci_offset) . '"'
-        . ' type="text" name="field_length[' . $i . ']" size="8"'
+        . ' type="text" name="field_length[' . $i . ']" size="' . $length_values_input_size . '"'
         . ' value="' . htmlspecialchars($length_to_display) . '"'
         . ' class="textfield" />';
     $ci++;

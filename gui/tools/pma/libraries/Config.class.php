@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11684 2008-10-30 20:22:20Z lem9 $
+ * @version $Id: Config.class.php 12110 2008-12-09 17:22:43Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.0.1.1');
+        $this->set('PMA_VERSION', '3.1.1');
         /**
          * @deprecated
          */
@@ -200,9 +200,6 @@ class PMA_Config
         } elseif ($this->get('GD2Available') == 'no') {
             $this->set('PMA_IS_GD2', 0);
         } else {
-            if (!@extension_loaded('gd')) {
-                PMA_dl('gd');
-            }
             if (!@function_exists('imagecreatetruecolor')) {
                 $this->set('PMA_IS_GD2', 0);
             } else {
@@ -214,7 +211,7 @@ class PMA_Config
                         $this->set('PMA_IS_GD2', 0);
                     }
                 } else {
-                    /* We must do hard way... */
+                    /* We must do hard way... but almost no chance to execute this */
                     ob_start();
                     phpinfo(INFO_MODULES); /* Only modules */
                     $a = strip_tags(ob_get_contents());
@@ -480,7 +477,7 @@ class PMA_Config
         }
 
         // Check for permissions (on platforms that support it):
-	if ($this->get('CheckConfigurationPermissions')) {
+        if ($this->get('CheckConfigurationPermissions')) {
             $perms = @fileperms($this->getSource());
             if (!($perms === false) && ($perms & 2)) {
                 // This check is normally done after loading configuration
@@ -489,8 +486,8 @@ class PMA_Config
                     $this->source_mtime = 0;
                     die('Wrong permissions on configuration file, should not be world writable!');
                 }
-	    }
-	}
+            }
+        }
 
         return true;
     }
@@ -541,7 +538,7 @@ class PMA_Config
      */
     function getThemeUniqueValue()
     {
-        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : $_COOKIE['pma_fontsize'])) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info) . (isset($_SESSION['userconf']['custom_color']) ? substr($_SESSION['userconf']['custom_color'],1,6) : '');
+        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : (isset($_COOKIE['pma_fontsize']) ? $_COOKIE['pma_fontsize'] : 0))) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info) . (isset($_SESSION['userconf']['custom_color']) ? substr($_SESSION['userconf']['custom_color'],1,6) : '');
     }
 
     /**

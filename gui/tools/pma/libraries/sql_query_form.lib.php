@@ -3,7 +3,7 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: sql_query_form.lib.php 11626 2008-10-01 20:48:40Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
@@ -483,7 +483,6 @@ function PMA_sqlQueryFormBookmark()
  * @uses    $GLOBALS['strLocationTextfile']
  * @uses    $GLOBALS['strWebServerUploadDirectory']
  * @uses    $GLOBALS['strWebServerUploadDirectoryError']
- * @uses    $GLOBALS['allow_recoding']
  * @uses    $GLOBALS['charset']
  * @uses    $GLOBALS['max_upload_size']
  * @uses    PMA_supportedDecompressions()

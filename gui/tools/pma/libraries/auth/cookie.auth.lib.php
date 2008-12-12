@@ -12,7 +12,9 @@ if (! defined('PHPMYADMIN')) {
     exit;
 }
 
-if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
+require './libraries/auth/swekey/swekey.auth.lib.php';
+
+if (function_exists('mcrypt_encrypt')) {
     /**
      * Uses faster mcrypt library if available
      * (as this is not called from anywhere else, put the code in-line
@@ -74,6 +76,24 @@ if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
 }
 
 /**
+ * Returns blowfish secret or generates one if needed.
+ * @uses    $cfg['blowfish_secret']
+ * @uses    $_SESSION['auto_blowfish_secret']
+ *
+ * @access  public
+ */
+function PMA_get_blowfish_secret() {
+    if (empty($GLOBALS['cfg']['blowfish_secret'])) {
+        if (empty($_SESSION['auto_blowfish_secret'])) {
+            $_SESSION['auto_blowfish_secret'] = uniqid('', true);
+        }
+        return $_SESSION['auto_blowfish_secret'];
+    } else {
+        return $GLOBALS['cfg']['blowfish_secret'];
+    }
+}
+
+/**
  * Displays authentication form
  *
  * this function MUST exit/quit the application
@@ -131,7 +151,8 @@ function PMA_auth()
         exit;
     }
 
-    if ($GLOBALS['cfg']['LoginCookieRecall']) {
+    /* No recall if blowfish secret is not configured as it would produce garbage */
+    if ($GLOBALS['cfg']['LoginCookieRecall'] && !empty($GLOBALS['cfg']['blowfish_secret'])) {
         $default_user   = $GLOBALS['PHP_AUTH_USER'];
         $default_server = $GLOBALS['pma_auth_server'];
         $autocomplete   = '';
@@ -200,22 +221,7 @@ if (top != self) {
         // use fieldset, don't show doc link
         PMA_select_language(true, false);
     }
-
-    // Displays the warning message and the login form
-    if (empty($GLOBALS['cfg']['blowfish_secret'])) {
-        PMA_Message::error('strSecretRequired')->display();
-        if ($GLOBALS['error_handler']->hasDisplayErrors()) {
-            echo '<div>';
-            $GLOBALS['error_handler']->dispErrors();
-            echo '</div>';
-        }
-        echo '</div>' . "\n";
-        if (file_exists('./config.footer.inc.php')) {
-            require './config.footer.inc.php';
-        }
-        echo '</body></html>';
-        exit;
-    }
+    
     ?>
 <br />
 <!-- Login form -->
@@ -231,13 +237,13 @@ if (top != self) {
 
 <?php if ($GLOBALS['cfg']['AllowArbitraryServer']) { ?>
         <div class="item">
-            <label for="input_servername"><?php echo $GLOBALS['strLogServer']; ?></label>
-            <input type="text" name="pma_servername" id="input_servername" value="<?php echo htmlspecialchars($default_server); ?>" size="24" class="textfield" />
+            <label for="input_servername" title="<?php echo $GLOBALS['strLogServerHelp']; ?>"><?php echo $GLOBALS['strLogServer']; ?></label>
+            <input type="text" name="pma_servername" id="input_servername" value="<?php echo htmlspecialchars($default_server); ?>" size="24" class="textfield" title="<?php echo $GLOBALS['strLogServerHelp']; ?>" />
         </div>
 <?php } ?>
         <div class="item">
             <label for="input_username"><?php echo $GLOBALS['strLogUsername']; ?></label>
-            <input type="text" name="pma_username" id="input_username" value="<?php echo htmlspecialchars($default_user); ?>" size="24" class="textfield" />
+            <input type="text" name="pma_username" id="input_username" value="<?php echo htmlspecialchars($default_user); ?>" size="24" class="textfield"/>
         </div>
         <div class="item">
             <label for="input_password"><?php echo $GLOBALS['strLogPassword']; ?></label>
@@ -265,7 +271,7 @@ if (top != self) {
     ?>
     </fieldset>
     <fieldset class="tblFooters">
-        <input value="<?php echo $GLOBALS['strGo']; ?>" type="submit" />
+        <input value="<?php echo $GLOBALS['strGo']; ?>" type="submit" id="input_go" />
     <?php
     $_form_params = array();
     if (! empty($GLOBALS['target'])) {
@@ -283,7 +289,13 @@ if (top != self) {
     ?>
     </fieldset>
 </form>
+
     <?php
+
+    // BEGIN Swekey Integration
+    Swekey_login('input_username', 'input_go');
+    // END Swekey Integration
+
     // show the "Cookies required" message only if cookies are disabled
     // (we previously tried to set some cookies)
     if (empty($_COOKIE)) {
@@ -348,7 +360,6 @@ window.setTimeout('PMA_focusInput()', 500);
  * @uses    $GLOBALS['server']
  * @uses    $GLOBALS['from_cookie']
  * @uses    $GLOBALS['pma_auth_server']
- * @uses    $cfg['blowfish_secret']
  * @uses    $cfg['AllowArbitraryServer']
  * @uses    $cfg['LoginCookieValidity']
  * @uses    $cfg['Servers']
@@ -378,10 +389,11 @@ function PMA_auth_check()
     $GLOBALS['PHP_AUTH_USER'] = $GLOBALS['PHP_AUTH_PW'] = '';
     $GLOBALS['from_cookie'] = false;
 
-    // avoid an error in mcrypt
-    if (empty($GLOBALS['cfg']['blowfish_secret'])) {
+    // BEGIN Swekey Integration
+    if (! Swekey_auth_check()) {
         return false;
     }
+    // END Swekey Integration
 
     if (defined('PMA_CLEAR_COOKIES')) {
         foreach($GLOBALS['cfg']['Servers'] as $key => $val) {
@@ -444,7 +456,7 @@ function PMA_auth_check()
 
     $GLOBALS['PHP_AUTH_USER'] = PMA_blowfish_decrypt(
         $_COOKIE['pmaUser-' . $GLOBALS['server']],
-        $GLOBALS['cfg']['blowfish_secret']);
+        PMA_get_blowfish_secret());
 
     // user was never logged in since session start
     if (empty($_SESSION['last_access_time'])) {
@@ -470,7 +482,7 @@ function PMA_auth_check()
 
     $GLOBALS['PHP_AUTH_PW'] = PMA_blowfish_decrypt(
         $_COOKIE['pmaPass-' . $GLOBALS['server']],
-        $GLOBALS['cfg']['blowfish_secret'] /* . $_SESSION['last_access_time'] */);
+        PMA_get_blowfish_secret());
 
     if ($GLOBALS['PHP_AUTH_PW'] == "\xff(blank)") {
         $GLOBALS['PHP_AUTH_PW'] = '';
@@ -492,7 +504,6 @@ function PMA_auth_check()
  * @uses    $GLOBALS['pma_auth_server']
  * @uses    $cfg['Server']
  * @uses    $cfg['AllowArbitraryServer']
- * @uses    $cfg['blowfish_secret']
  * @uses    $cfg['LoginCookieStore']
  * @uses    $cfg['PmaAbsoluteUri']
  * @uses    $_SESSION['last_access_time']
@@ -528,12 +539,24 @@ function PMA_auth_set_user()
         } // end foreach
     } // end if
 
-    $pma_server_changed = false;
     if ($GLOBALS['cfg']['AllowArbitraryServer']
-     && ! empty($GLOBALS['pma_auth_server'])
-     && $cfg['Server']['host'] != $GLOBALS['pma_auth_server']) {
-        $cfg['Server']['host'] = $GLOBALS['pma_auth_server'];
-        $pma_server_changed = true;
+     && ! empty($GLOBALS['pma_auth_server'])) {
+        /* Allow to specify 'host port' */
+        $parts = explode(' ', $GLOBALS['pma_auth_server']);
+        if (count($parts) == 2) {
+            $tmp_host = $parts[0];
+            $tmp_port = $parts[1];
+        } else {
+            $tmp_host = $GLOBALS['pma_auth_server'];
+            $tmp_port = '';
+        }
+        if ($cfg['Server']['host'] != $GLOBALS['pma_auth_server']) {
+            $cfg['Server']['host'] = $tmp_host;
+            if (!empty($tmp_port)) {
+                $cfg['Server']['port'] = $tmp_port;
+            }
+        }
+        unset($tmp_host, $tmp_port, $parts);
     }
     $cfg['Server']['user']     = $GLOBALS['PHP_AUTH_USER'];
     $cfg['Server']['password'] = $GLOBALS['PHP_AUTH_PW'];
@@ -544,12 +567,12 @@ function PMA_auth_set_user()
     // Duration = one month for username
     PMA_setCookie('pmaUser-' . $GLOBALS['server'],
         PMA_blowfish_encrypt($cfg['Server']['user'],
-            $GLOBALS['cfg']['blowfish_secret']));
+            PMA_get_blowfish_secret()));
 
     // Duration = as configured
     PMA_setCookie('pmaPass-' . $GLOBALS['server'],
         PMA_blowfish_encrypt(!empty($cfg['Server']['password']) ? $cfg['Server']['password'] : "\xff(blank)",
-            $GLOBALS['cfg']['blowfish_secret'] /* . $_SESSION['last_access_time'] */),
+            PMA_get_blowfish_secret()),
         null,
         $GLOBALS['cfg']['LoginCookieStore']);
 

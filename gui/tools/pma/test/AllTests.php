@@ -1,9 +1,9 @@
 <?php
-/* vim: expandtab sw=4 ts=4 sts=4: */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * runs all defined tests
  *
- * @version $Id: AllTests.php 11080 2008-01-25 09:34:21Z cybot_tm $
+ * @version $Id: AllTests.php 11813 2008-11-07 17:35:40Z lem9 $
  * @package phpMyAdmin-test
  */
 
@@ -14,6 +14,9 @@ if (! defined('PMA_MAIN_METHOD')) {
     define('PMA_MAIN_METHOD', 'AllTests::main');
     chdir('..');
 }
+
+// required to not die() in some libraries
+define('PHPMYADMIN', true);
 
 /**
  *
@@ -31,8 +34,8 @@ require_once './test/PMA_isValid_test.php';
 require_once './test/PMA_transformation_getOptions_test.php';
 require_once './test/PMA_STR_sub_test.php';
 require_once './test/PMA_generateCommonUrl_test.php';
-//require_once './test/PMA_arrayWalkRecursive_test.php';
 require_once './test/PMA_blowfish_test.php';
+require_once './test/PMA_escapeMySqlWildcards_test.php';
 
 class AllTests
 {

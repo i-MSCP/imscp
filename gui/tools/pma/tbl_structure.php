@@ -3,7 +3,7 @@
 /**
  * Displays table structure infos like fields/columns, indexes, size, rows
  * and allows manipulation of indexes and columns/fields
- * @version $Id: tbl_structure.php 11417 2008-07-21 16:41:17Z lem9 $
+ * @version $Id: tbl_structure.php 12075 2008-12-03 21:49:03Z lem9 $
  */
 
 /**
@@ -340,6 +340,9 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
         } else {
             echo $row['Default']; 
         }
+    }
+    else {
+        echo '<i>' . $strNone . '</i>';
     } ?></td>
     <td nowrap="nowrap"><?php echo $row['Extra']; ?></td>
     <td align="center">
@@ -508,12 +511,8 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
     }
     echo sprintf($strAddFields, '<input type="text" name="num_fields" size="2" maxlength="2" value="1" style="vertical-align: middle" onfocus="this.select()" />');
 
-    // here we want to display a field selector inside the label for
-    // the After choice, and $strAfter contains a parameter to display
-    // this selector at the best place for each language; thus we
-    // set the fifth parameter of PMA_generate_html_radio() to false
-    // in order to avoid the usual escaping with htmlspecialchars() inside
-    // the label
+    // I tried displaying the drop-down inside the label but with Firefox
+    // the drop-down was blinking
     $fieldOptions = '<select name="after_field" style="vertical-align: middle" onclick="this.form.field_where[2].checked=true" onchange="this.form.field_where[2].checked=true">';
     foreach ($aryFields as $fieldname) {
         $fieldOptions .= '<option value="' . htmlspecialchars($fieldname) . '">' . htmlspecialchars($fieldname) . '</option>' . "\n";
@@ -524,9 +523,10 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
     $choices = array(
         'last'  => $strAtEndOfTable,
         'first' => $strAtBeginningOfTable,
-        'after' => sprintf($strAfter, $fieldOptions) 
+        'after' => sprintf($strAfter, '') 
     );
-    PMA_generate_html_radio('field_where', $choices, 'last', false, false);
+    PMA_generate_html_radio('field_where', $choices, 'last', false);
+    echo $fieldOptions;
     unset($fieldOptions, $choices);
     ?>
 <input type="submit" value="<?php echo $strGo; ?>" style="vertical-align: middle" />

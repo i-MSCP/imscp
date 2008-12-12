@@ -1,9 +1,9 @@
 <?php
-/* vim: expandtab sw=4 ts=4 sts=4: */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * tests for PMA_pow()
  *
- * @version $Id: PMA_pow_test.php 10366 2007-05-09 13:02:40Z cybot_tm $
+ * @version $Id: PMA_pow_test.php 11677 2008-10-25 13:37:54Z lem9 $
  * @package phpMyAdmin-test
  */
 

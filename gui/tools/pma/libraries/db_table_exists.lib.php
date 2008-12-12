@@ -4,7 +4,7 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: db_table_exists.lib.php 12100 2008-12-09 13:45:32Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -71,7 +71,7 @@ if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
                  * @todo should this check really only happen if IS_TRANSFORMATION_WRAPPER?
                  */
                 $_result = PMA_DBI_try_query(
-                    'SELECT COUNT(*) FROM `' . PMA_sqlAddslashes($table, true) . '`;',
+                    'SELECT COUNT(*) FROM ' . PMA_backquote($table) . ';',
                     null, PMA_DBI_QUERY_STORE);
                 $is_table = ($_result && @PMA_DBI_num_rows($_result));
                 PMA_DBI_free_result($_result);

@@ -1,9 +1,9 @@
 <?php
-/* vim: expandtab sw=4 ts=4 sts=4: */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * tests for PMA_sanitize()
  *
- * @version $Id: PMA_sanitize_test.php 10140 2007-03-20 08:32:55Z cybot_tm $
+ * @version $Id: PMA_transformation_getOptions_test.php 11813 2008-11-07 17:35:40Z lem9 $
  * @package phpMyAdmin-test
  */
 

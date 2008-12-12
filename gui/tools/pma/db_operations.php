@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 11249 2008-05-09 10:41:16Z cybot_tm $
+ * @version $Id: db_operations.php 12011 2008-11-28 12:47:41Z nijel $
  */
 
 /**
@@ -18,6 +18,9 @@
 require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 require_once './libraries/mysql_charsets.lib.php';
+
+// add blobstreaming library functions
+require_once "./libraries/blobstreaming.lib.php";
 
 /**
  * Rename/move or copy database
@@ -217,6 +220,67 @@ if (strlen($db) && (! empty($db_rename) || ! empty($db_copy))) {
         }
     }
 }
+
+/*
+ * Enable/Disable/Repair BLOB Repository Monitoring for current database
+*/
+if (strlen($db) > 0 && !empty($db_blob_streaming_op))
+{
+    // load PMA_Config
+    $PMA_Config = $_SESSION['PMA_Config'];
+
+    if (!empty($PMA_Config))
+    {
+        if ($PMA_Config->get('PBXT_NAME') !== strtolower($db))
+        {
+            // if Blobstreaming plugins exist, begin checking for Blobstreaming tables
+            if ($PMA_Config->get('BLOBSTREAMING_PLUGINS_EXIST'))
+            {
+                $bs_tables = $PMA_Config->get('BLOBSTREAMABLE_DATABASES');
+                $bs_tables = $bs_tables[$db];
+
+                $oneBSTableExists = FALSE;
+
+                // check if at least one blobstreaming table exists
+                foreach ($bs_tables as $table_key=>$tbl)
+                    if ($bs_tables[$table_key]['Exists'])
+                    {
+                        $oneBSTableExists = TRUE;
+                        break;
+                    }
+
+                switch ($db_blob_streaming_op)
+                {
+                    // enable BLOB repository monitoring
+                    case "enable":
+                        // if blobstreaming tables do not exist, create them
+                        if (!$oneBSTableExists)
+                            PMA_BS_CreateTables($db);
+                    break;
+                    // disable BLOB repository monitoring
+                    case "disable":
+                        // if at least one blobstreaming table exists, execute drop
+                        if ($oneBSTableExists)
+                            PMA_BS_DropTables($db);
+                    break;
+                    // repair BLOB repository
+                    case "repair":
+                        // check if a blobstreaming table is missing
+                        foreach ($bs_tables as $table_key=>$tbl)
+                        if (!$bs_tables[$table_key]['Exists'])
+                        {
+                            PMA_DBI_select_db($db);
+                            PMA_DBI_query(PMA_BS_GetTableStruct($table_key));
+                        }
+                }
+
+                // refresh side menu
+                PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . 'db_operations.php?' . PMA_generate_common_url ('','', '&') . (isset($db) ? '&db=' . urlencode($db) : '') . (isset($token) ? '&token=' . urlencode($token) : '') . (isset($goto) ? '&goto=' . urlencode($goto) : '') . 'reload=1&purge=1');
+            }   // end  if ($PMA_Config->get('BLOBSTREAMING_PLUGINS_EXIST'))
+        }   // end if ($PMA_Config->get('PBXT_NAME') !== strtolower($db))
+    }
+}
+
 /**
  * Settings for relations stuff
  */
@@ -275,7 +339,7 @@ if (!$is_information_schema) {
         </legend>
         <input type="text" name="comment" class="textfield" size="30"
             value="<?php
-            echo htmlspecialchars(PMA_getDbComment($db)); ?>" />
+            echo htmlspecialchars(PMA_getDBComment($db)); ?>" />
         <input type="submit" value="<?php echo $strGo; ?>" />
     </fieldset>
     </form>
@@ -365,7 +429,7 @@ if (!$is_information_schema) {
         <input type="checkbox" name="drop_if_exists" value="true"
             id="checkbox_drop" style="vertical-align: middle" />
         <label for="checkbox_drop"><?php echo sprintf($strAddClause, $drop_clause); ?></label><br />
-        <input type="checkbox" name="sql_auto_increment" value="1"
+        <input type="checkbox" name="sql_auto_increment" value="1" checked="checked"
             id="checkbox_auto_increment" style="vertical-align: middle" />
         <label for="checkbox_auto_increment">
             <?php echo $strAddAutoIncrement; ?></label><br />
@@ -393,6 +457,93 @@ if (!$is_information_schema) {
     </form>
 
     <?php
+    /*
+     * BLOB streaming support
+    */
+
+    // load PMA_Config
+    $PMA_Config = $_SESSION['PMA_Config'];
+
+    // if all blobstreaming plugins exist, begin checking for blobstreaming tables
+    if (!empty($PMA_Config))
+    {
+        if ($PMA_Config->get('PBXT_NAME') !== strtolower($db))
+        {
+            if ($PMA_Config->get('BLOBSTREAMING_PLUGINS_EXIST'))
+            {
+                $bs_tables = $PMA_Config->get('BLOBSTREAMABLE_DATABASES');
+                $bs_tables = $bs_tables[$db];
+
+                $oneBSTableExists = FALSE;
+                $allBSTablesExist = TRUE;
+
+                // first check that all blobstreaming tables do not exist
+                foreach ($bs_tables as $table_key=>$tbl)
+                    if ($bs_tables[$table_key]['Exists'])
+                        $oneBSTableExists = TRUE;
+                    else
+                        $allBSTablesExist = FALSE;
+
+                ?>
+
+                    <form method="post" action="./db_operations.php">
+                    <?php echo PMA_generate_common_hidden_inputs($db); ?>
+                    <fieldset>
+                    <legend>
+                    <?php echo PMA_getIcon('b_edit.png', $strBLOBRepository, false, true); ?>
+                    </legend>
+
+                    <?php echo $strBLOBRepositoryStatus; ?>:
+
+                    <?php
+
+                    // if the blobstreaming tables exist, provide option to disable the BLOB repository
+                    if ($allBSTablesExist)
+                    {
+                        ?>
+                            <?php echo $strBLOBRepositoryEnabled; ?>
+                            </fieldset>
+                            <fieldset class="tblFooters">
+                            <input type="hidden" name="db_blob_streaming_op" value="disable" />
+                            <input type="submit" onclick="return confirmDisableRepository('<?php echo $db; ?>');" value="<?php echo $strBLOBRepositoryDisable; ?>" />
+                            </fieldset>
+                            <?php
+                    }
+                    else
+                    {
+                        // if any of the blobstreaming tables are missing, provide option to repair the BLOB repository
+                        if ($oneBSTableExists && !$allBSTablesExist)
+                        {
+                            ?>
+                                <?php echo $strBLOBRepositoryDamaged; ?>
+                                </fieldset>
+                                <fieldset class="tblFooters">
+                                <input type="hidden" name="db_blob_streaming_op" value="repair" />
+                                <input type="submit" value="<?php echo $strBLOBRepositoryRepair; ?>" />
+                                </fieldset>
+                                <?php
+                        }
+                        // if none of the blobstreaming tables exist, provide option to enable BLOB repository
+                        else
+                        {
+                            ?>
+                                <?php echo $strBLOBRepositoryDisabled; ?>
+                                </fieldset>
+                                <fieldset class="tblFooters">
+                                <input type="hidden" name="db_blob_streaming_op" value="enable" />
+                                <input type="submit" value="<?php echo $strBLOBRepositoryEnable; ?>" />
+                                </fieldset>
+                                <?php
+                        }
+                    }   // end if ($allBSTablesExist)
+
+                ?>
+                    </form>
+                <?php
+            }   // end  if ($PMA_Config->get('BLOBSTREAMING_PLUGINS_EXIST'))
+        }   // end if ($PMA_Config->get('PBXT_NAME') !== strtolower($db))
+    }
+
     /**
      * Change database charset
      */
@@ -479,6 +630,8 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
             </label><br />
         <input type="checkbox" name="with_doc" id="with_doc" checked="checked" />
         <label for="with_doc"><?php echo $strDataDict; ?></label><br />
+		<input type="checkbox" name="show_keys" id="show_keys" />
+        <label for="show_keys"><?php echo $strShowKeys; ?></label><br />
 
         <label for="orientation_opt"><?php echo $strShowDatadictAs; ?></label>
         <select name="orientation" id="orientation_opt">

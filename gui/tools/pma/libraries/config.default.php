@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 11668 2008-10-22 17:03:22Z lem9 $
+ * @version $Id: config.default.php 12032 2008-11-29 19:28:18Z lem9 $
  */
 
 /**
@@ -129,6 +129,12 @@ $cfg['Servers'][$i]['connect_type'] = 'tcp';
  */
 $cfg['Servers'][$i]['extension'] = 'mysql';
 
+/* rajk - added for blobstreaming */
+$cfg['Servers'][$i]['bs_garbage_threshold'] = '';
+$cfg['Servers'][$i]['bs_repository_threshold'] = '';
+$cfg['Servers'][$i]['bs_temp_blob_timeout'] = '';
+$cfg['Servers'][$i]['bs_temp_log_threshold'] = '';
+
 /**
  * Use compressed protocol for the MySQL connection (requires PHP >= 4.3.0)
  *
@@ -159,7 +165,15 @@ $cfg['Servers'][$i]['controlpass'] = '';
  *
  * @global string $cfg['Servers'][$i]['auth_type']
  */
-$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+
+/**
+ * File containing Swekey ids and login names (see /contrib);
+ * leave empty to deactivate Swekey hardware authentication
+ *
+ * @global string $cfg['Servers'][$i]['auth_swekey_config']
+ */
+$cfg['Servers'][$i]['auth_swekey_config'] = '';
 
 /**
  * MySQL user
@@ -322,6 +336,13 @@ $cfg['Servers'][$i]['verbose_check'] = true;
  * @global boolean $cfg['Servers'][$i]['AllowRoot']
  */
 $cfg['Servers'][$i]['AllowRoot'] = true;
+
+/**
+ * whether to allow login of root user with no password (MySQL default)
+ *
+ * @global boolean $cfg['Servers'][$i]['AllowNoPasswordRoot']
+ */
+$cfg['Servers'][$i]['AllowNoPasswordRoot'] = false;
 
 /**
  * Host authentication order, leave blank to not use
@@ -542,8 +563,8 @@ $cfg['AllowArbitraryServer'] = false;
 /*******************************************************************************
  * Error handler configuration
  *
- * this configures phpMyAdmins own error handler, it is used to avoid information
- * dislcosure, gather errors for logging, reporting and displaying
+ * this configures phpMyAdmin's own error handler, it is used to avoid information
+ * disclosure, gather errors for logging, reporting and displaying
  *
  * @global array $cfg['Error_Handler']
  */
@@ -848,28 +869,28 @@ $cfg['ForeignKeyMaxLimit'] = 100;
  */
 
 /**
- * Allow the use of zip/gzip/bzip
+ * Allow for the use of zip compression (requires zip support to be enabled)
  *
  * @global boolean $cfg['ZipDump']
  */
 $cfg['ZipDump'] = true;
 
 /**
- * compression for
+ * Allow for the use of gzip compression (requires zlib)
  *
  * @global boolean $cfg['GZipDump']
  */
 $cfg['GZipDump'] = true;
 
 /**
- * dump files
+ * Allow for the use of bzip2 compression (requires bz2 extension)
  *
  * @global boolean $cfg['BZipDump']
  */
 $cfg['BZipDump'] = true;
 
 /**
- * Will compress gzip/bzip2 exports on fly without need for much memory.
+ * Will compress gzip/bzip2 exports on the fly without the need for much memory.
  * If you encounter problems with created gzip/bzip2 files disable this feature.
  *
  * @global boolean $cfg['CompressOnFly']
@@ -947,7 +968,7 @@ $cfg['DefaultTabTable'] = 'sql.php';
 $cfg['Export'] = array();
 
 /**
- * sql/latex/excel/csv/xml/xls/htmlexcel/htmlword/ods/odt
+ * codegen/csv/excel/htmlexcel/htmlword/latex/ods/odt/pdf/sql/texytext/xls/xml/yaml
  *
  * @global string $cfg['Export']['format']
  */
@@ -1346,6 +1367,13 @@ $cfg['Export']['sql_data'] = true;
 $cfg['Export']['sql_compatibility'] = 'NONE';
 
 /**
+ * Whether to include comments in SQL export.
+ *
+ * @global string $cfg['Export']['sql_include_comments']
+ */
+$cfg['Export']['sql_include_comments'] = true;
+
+/**
  *
  *
  * @global boolean $cfg['Export']['sql_disable_fk']
@@ -1721,7 +1749,7 @@ $cfg['DefaultCharset'] = 'utf-8';
  * Allow character set recoding of MySQL queries, must be also enabled in language
  * file to make harder using other language files than Unicode.
  * Default value is false to avoid problems on servers without the iconv
- * extension and where dl() is not supported
+ * extension
  *
  * @global boolean $cfg['AllowAnywhereRecoding']
  */
@@ -2239,8 +2267,7 @@ $cfg['TempDir'] = '';
 
 /**
  * Is GD >= 2 available? Set to yes/no/auto. 'auto' does auto-detection,
- * which is a bit expensive for PHP < 4.3.0, but it is the only safe way how to
- * determine GD version.
+ * which is the only safe way to determine GD version.
  *
  * @global string $cfg['GD2Available']
  */
@@ -2735,6 +2762,8 @@ $cfg['TextOperators'] = array(
    '!=',
    'REGEXP',
    'NOT REGEXP',
+   "= ''",
+   "!= ''"
 );
 
 /**
@@ -2775,6 +2804,8 @@ $cfg['NullOperators'] = array(
 $cfg['UnaryOperators'] = array(
    'IS NULL' => 1,
    'IS NOT NULL' => 1,
+   "= ''" => 1,
+   "!= ''" => 1
 );
 
 ?>

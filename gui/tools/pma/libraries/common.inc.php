@@ -8,7 +8,7 @@
  *
  * Order of sections for common.inc.php:
  *
- * the authentication libraries must be loaded before db connections
+ * the authentication libraries must be before the connection to db
  *
  * ... so the required order is:
  *
@@ -28,7 +28,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11638 2008-10-08 12:14:19Z lem9 $
+ * @version $Id: common.inc.php 11695 2008-11-02 06:54:27Z rajkissu $
  */
 
 /**
@@ -40,6 +40,7 @@ require_once './libraries/Error_Handler.class.php';
  * initialize the error handler
  */
 $GLOBALS['error_handler'] = new PMA_Error_Handler();
+$cfg['Error_Handler']['display'] = TRUE;
 
 // at this point PMA_PHP_INT_VERSION is not yet defined
 if (version_compare(phpversion(), '6', 'lt')) {
@@ -409,6 +410,10 @@ if (! PMA_isValid($_REQUEST['token']) || $_SESSION[' PMA_token '] != $_REQUEST['
         'pma_lang', 'pma_charset', 'pma_collation_connection',
         /* Possible login form */
         'pma_servername', 'pma_username', 'pma_password',
+        /* rajk - for playing blobstreamable media */
+        'media_type', 'custom_type', 'bs_reference',
+        /* rajk - for changing BLOB repository file MIME type */
+        'bs_db', 'bs_table', 'bs_ref', 'bs_new_mime_type'
     );
     /**
      * Require cleanup functions
@@ -703,7 +708,7 @@ $GLOBALS['pmaThemeImage']   = $_SESSION['PMA_Theme']->getImgPath();
 if (@file_exists($_SESSION['PMA_Theme']->getLayoutFile())) {
     include $_SESSION['PMA_Theme']->getLayoutFile();
     /**
-     * @todo remove if all themes are updated to use Navi instead of Left as frame name
+     * @todo remove if all themes are update use Navi instead of Left as frame name
      */
     if (! isset($GLOBALS['cfg']['NaviWidth'])
      && isset($GLOBALS['cfg']['LeftWidth'])) {
@@ -865,6 +870,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             unset($allowDeny_forbidden); //Clean up after you!
         }
 
+        // is root without password allowed?
+        if (!$cfg['Server']['AllowNoPasswordRoot'] && $cfg['Server']['user'] == 'root' && $cfg['Server']['password'] == '') {
+            $allowDeny_forbidden = true;
+            PMA_auth_fails();
+            unset($allowDeny_forbidden); //Clean up after you!
+        }
+
         // Try to connect MySQL with the control user profile (will be used to
         // get the privileges list for the current user but the true user link
         // must be open after this one so it would be default one for all the
@@ -931,6 +943,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         unset($_SESSION['profiling']);
     }
 
+    // rajk - library file for blobstreaming
+    require_once './libraries/blobstreaming.lib.php';
+
+    // rajk - checks for blobstreaming plugins and databases that support
+    // blobstreaming (by having the necessary tables for blobstreaming)
+    if (checkBLOBStreamingPlugins())
+        checkBLOBStreamableDatabases();
 } // end if !defined('PMA_MINIMUM_COMMON')
 
 // remove sensitive values from session

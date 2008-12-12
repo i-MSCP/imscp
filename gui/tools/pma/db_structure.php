@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_structure.php 11491 2008-08-16 13:04:44Z lem9 $
+ * @version $Id: db_structure.php 12039 2008-11-30 12:28:57Z lem9 $
  */
 
 /**
@@ -96,7 +96,7 @@ function PMA_TableHeader($db_is_information_schema = false)
         .'        ' . $GLOBALS['strAction'] . "\n"
         .'    </th>'
         .'    <th>' . $GLOBALS['strRecords']
-        .PMA_showHint($GLOBALS['strApproximateCount']) . "\n"
+        .PMA_showHint(PMA_sanitize($GLOBALS['strApproximateCount'])) . "\n"
         .'    </th>' . "\n";
     if (!($GLOBALS['cfg']['PropertiesNumColumns'] > 1)) {
         echo '    <th>' . $GLOBALS['strType'] . '</th>' . "\n";
@@ -186,7 +186,27 @@ $hidden_fields = array();
 $odd_row       = true;
 $sum_row_count_pre = '';
 
+// added by rajk - for blobstreaming
+$PMA_Config = $_SESSION['PMA_Config'];
+
+if (!empty ($PMA_Config))
+    $session_bs_tables = $PMA_Config->get('BLOBSTREAMING_TABLES'); // list of blobstreaming tables
+
+$tableReductionCount = 0;   // the amount to reduce the table count by
+
 foreach ($tables as $keyname => $each_table) {
+    if (isset($session_bs_tables))
+    {
+        // compare table name against blobstreaming tables
+        foreach ($session_bs_tables as $table_key=>$table_val)
+            // if the table is a blobstreaming table, reduce table count and skip outer foreach loop
+            if ($table_key == $keyname)
+            {
+                $tableReductionCount++;
+                continue 2;
+            }
+    }
+
     // loic1: Patch from Joshua Nye <josh at boxcarmedia.com> to get valid
     //        statistics whatever is the table type
 
@@ -194,6 +214,9 @@ foreach ($tables as $keyname => $each_table) {
     $table_encoded = urlencode($each_table['TABLE_NAME']);
     // Sets parameters for links
     $tbl_url_query = $url_query . '&amp;table=' . $table_encoded;
+    // do not list the previous table's size info for a view
+    $formatted_size = '-';
+    $unit = '';
 
     switch ( $each_table['ENGINE']) {
         // MyISAM, ISAM or Heap table: Row count, data size and index size
@@ -422,7 +445,14 @@ if ($is_show_stats) {
 <tbody>
 <tr><td></td>
     <th align="center" nowrap="nowrap">
-        <?php echo sprintf($strTables, PMA_formatNumber($num_tables, 0)); ?>
+        <?php
+            // for blobstreaming - if the number of tables is 0, set tableReductionCount to 0
+            // (we don't want negative numbers here) - rajk
+            if ($num_tables == 0)
+                $tableReductionCount = 0;
+
+            echo sprintf($strTables, PMA_formatNumber($num_tables - $tableReductionCount, 0));
+        ?>
     </th>
     <th colspan="<?php echo ($db_is_information_schema ? 3 : 6) ?>" align="center">
         <?php echo $strSum; ?></th>

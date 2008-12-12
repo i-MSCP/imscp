@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 11450 2008-08-01 19:15:01Z lem9 $
+ * @version $Id: export.php 11626 2008-10-01 20:48:40Z lem9 $
  */
 
 /**
@@ -206,13 +206,12 @@ if ($what == 'sql') {
 $output_kanji_conversion = function_exists('PMA_kanji_str_conv') && $type != 'xls';
 
 // Do we need to convert charset?
-$output_charset_conversion = $asfile &&
-    $cfg['AllowAnywhereRecoding'] && $allow_recoding
+$output_charset_conversion = $asfile && $cfg['AllowAnywhereRecoding']
     && isset($charset_of_file) && $charset_of_file != $charset
     && $type != 'xls';
 
-// Use on fly compression?
-$onfly_compression = $GLOBALS['cfg']['CompressOnFly'] && ($compression == 'gzip' | $compression == 'bzip');
+// Use on the fly compression?
+$onfly_compression = $GLOBALS['cfg']['CompressOnFly'] && ($compression == 'gzip' || $compression == 'bzip');
 if ($onfly_compression) {
     $memory_limit = trim(@ini_get('memory_limit'));
     // 2 MB as default
@@ -262,7 +261,7 @@ if ($asfile) {
     }
 
     // convert filename to iso-8859-1, it is safer
-    if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] && $allow_recoding)) {
+    if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] )) {
         $filename = PMA_convert_string($charset, 'iso-8859-1', $filename);
     } else {
         $filename = PMA_convert_string($convcharset, 'iso-8859-1', $filename);

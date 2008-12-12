@@ -3,7 +3,7 @@
 /**
  * URL/hidden inputs generating.
  *
- * @version $Id: url_generating.lib.php 11638 2008-10-08 12:14:19Z lem9 $
+ * @version $Id: url_generating.lib.php 11935 2008-11-21 17:57:32Z lem9 $
  */
 
 /**
@@ -240,7 +240,9 @@ function PMA_generate_common_url()
     $separator = PMA_get_arg_separator();
 
     if (isset($GLOBALS['server'])
-      && $GLOBALS['server'] != $GLOBALS['cfg']['ServerDefault']) {
+        && $GLOBALS['server'] != $GLOBALS['cfg']['ServerDefault']
+            // avoid overwriting when creating navi panel links to servers
+        && ! isset($params['server'])) {
         $params['server'] = $GLOBALS['server'];
     }
 

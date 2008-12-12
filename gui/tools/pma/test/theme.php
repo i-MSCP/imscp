@@ -1,11 +1,11 @@
 <?php
-/* vim: expandtab sw=4 ts=4 sts=4: */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * theme test
  *
  * @uses    libraries/common.inc.php        global fnctions
  * @package phpMyAdmin-test
- * @version $Id: theme.php 11013 2007-12-20 11:27:34Z cybot_tm $
+ * @version $Id: theme.php 11677 2008-10-25 13:37:54Z lem9 $
  */
 
 chdir('..');

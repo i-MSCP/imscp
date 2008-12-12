@@ -2,12 +2,12 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * phpMyAdmin sample configuration, you can use it as base for
- * manual configuration. For easier setup you can use scripts/setup.php
+ * manual configuration. For easier setup you can use setup/
  *
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.cihar.com>.
  *
- * @version $Id: config.sample.inc.php 11456 2008-08-05 17:28:28Z lem9 $
+ * @version $Id: config.sample.inc.php 11781 2008-11-06 05:29:28Z rajkissu $
  */
 
 /*
@@ -33,6 +33,13 @@ $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] = 'mysql';
+
+/* rajk - for blobstreaming */
+$cfg['Servers'][$i]['bs_garbage_threshold'] = 50;
+$cfg['Servers'][$i]['bs_repository_threshold'] = '32M';
+$cfg['Servers'][$i]['bs_temp_blob_timeout'] = 600;
+$cfg['Servers'][$i]['bs_temp_log_threshold'] = '32M';
+
 /* User for advanced features */
 // $cfg['Servers'][$i]['controluser'] = 'pma';
 // $cfg['Servers'][$i]['controlpass'] = 'pmapass';
@@ -47,7 +54,7 @@ $cfg['Servers'][$i]['extension'] = 'mysql';
 // $cfg['Servers'][$i]['history'] = 'pma_history';
 // $cfg['Servers'][$i]['designer_coords'] = 'pma_designer_coords';
 /* Contrib / Swekey authentication */
-// $cfg['Servers'][$i]['auth_swekey_config'] = './swekey.conf';
+// $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
 
 /*
  * End of servers configuration

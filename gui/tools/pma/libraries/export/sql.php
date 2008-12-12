@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build SQL dumps of tables
  *
- * @version $Id: sql.php 11471 2008-08-09 13:58:44Z lem9 $
+ * @version $Id: sql.php 12010 2008-11-28 12:28:49Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -26,6 +26,7 @@ if (isset($plugin_list)) {
             'mime_type' => 'text/x-sql',
             'options' => array(
                 array('type' => 'text', 'name' => 'header_comment', 'text' => 'strAddHeaderComment'),
+                array('type' => 'bool', 'name' => 'include_comments', 'text' => 'strComments'),
                 array('type' => 'bool', 'name' => 'use_transaction', 'text' => 'strEncloseInTransaction'),
                 array('type' => 'bool', 'name' => 'disable_fk', 'text' => 'strDisableForeignChecks'),
                 ),
@@ -103,9 +104,9 @@ if (isset($plugin_list)) {
         $plugin_list['sql']['options'][] =
             array('type' => 'bgroup', 'name' => 'data', 'text' => 'strData', 'force' => 'structure');
         $plugin_list['sql']['options'][] =
-            array('type' => 'bool', 'name' => 'columns', 'text' => 'strCompleteInserts');
+            array('type' => 'bool', 'name' => 'columns', 'text' => 'strCompleteInserts', 'doc' => array('programs', 'mysqldump', 'option_mysqldump_complete-insert-option'));
         $plugin_list['sql']['options'][] =
-            array('type' => 'bool', 'name' => 'extended', 'text' => 'strExtendedInserts');
+            array('type' => 'bool', 'name' => 'extended', 'text' => 'strExtendedInserts', 'doc' => array('programs', 'mysqldump', 'option_mysqldump_extended-insert-option'));
         $plugin_list['sql']['options'][] =
             array('type' => 'text', 'name' => 'max_query_size', 'text' => 'strMaximalQueryLength');
         $plugin_list['sql']['options'][] =
@@ -137,8 +138,12 @@ if (! isset($sql_backquotes)) {
  */
 function PMA_exportComment($text = '')
 {
-    // see http://dev.mysql.com/doc/refman/5.0/en/ansi-diff-comments.html
-    return '--' . (empty($text) ? '' : ' ') . $text . $GLOBALS['crlf'];
+    if ($GLOBALS['sql_include_comments']) {
+        // see http://dev.mysql.com/doc/refman/5.0/en/ansi-diff-comments.html
+        return '--' . (empty($text) ? '' : ' ') . $text . $GLOBALS['crlf'];
+    } else {
+        return '';
+    }
 }
 
 /**
@@ -189,8 +194,13 @@ function PMA_exportHeader()
     global $cfg;
     global $mysql_charset_map;
 
-    if (isset($GLOBALS['sql_compatibility']) && $GLOBALS['sql_compatibility'] != 'NONE') {
-        PMA_DBI_try_query('SET SQL_MODE="' . $GLOBALS['sql_compatibility'] . '"');
+    if (isset($GLOBALS['sql_compatibility'])) {
+        $tmp_compat = $GLOBALS['sql_compatibility'];
+        if ($tmp_compat == 'NONE') {
+            $tmp_compat = '';
+        }
+        PMA_DBI_try_query('SET SQL_MODE="' . $tmp_compat . '"');
+        unset($tmp_compat);
     }
     $head  =  PMA_exportComment('phpMyAdmin SQL Dump')
            .  PMA_exportComment('version ' . PMA_VERSION)
@@ -234,13 +244,13 @@ function PMA_exportHeader()
         // so that a utility like the mysql client can interpret
         // the file correctly
         if (isset($GLOBALS['charset_of_file']) && isset($mysql_charset_map[$GLOBALS['charset_of_file']])) {
-            // $cfg['AllowAnywhereRecoding'] was true so we got a charset from 
+            // $cfg['AllowAnywhereRecoding'] was true so we got a charset from
             // the export dialog
             $set_names = $mysql_charset_map[$GLOBALS['charset_of_file']];
         } else {
             // by default we use the connection charset
-            $set_names = $mysql_charset_map[$GLOBALS['charset']]; 
-        } 
+            $set_names = $mysql_charset_map[$GLOBALS['charset']];
+        }
         $head .=  $crlf
                . '/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;' . $crlf
                . '/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;' . $crlf
@@ -340,7 +350,7 @@ function PMA_exportDBFooter($db)
         }
 
         if ($procedure_names) {
-            $text .= 
+            $text .=
                 PMA_exportComment()
               . PMA_exportComment($GLOBALS['strProcedures'])
               . PMA_exportComment();
@@ -348,13 +358,13 @@ function PMA_exportDBFooter($db)
             foreach($procedure_names as $procedure_name) {
                 if (! empty($GLOBALS['sql_drop_table'])) {
 		    $text .= 'DROP PROCEDURE IF EXISTS ' . PMA_backquote($procedure_name) . $delimiter . $crlf;
-                }	
+                }
                 $text .= PMA_DBI_get_definition($db, 'PROCEDURE', $procedure_name) . $delimiter . $crlf . $crlf;
             }
         }
 
         if ($function_names) {
-            $text .= 
+            $text .=
                 PMA_exportComment()
               . PMA_exportComment($GLOBALS['strFunctions'])
               . PMA_exportComment();
@@ -362,13 +372,13 @@ function PMA_exportDBFooter($db)
             foreach($function_names as $function_name) {
                 if (! empty($GLOBALS['sql_drop_table'])) {
 		    $text .= 'DROP FUNCTION IF EXISTS ' . PMA_backquote($function_name) . $delimiter . $crlf;
-                }	
+                }
                 $text .= PMA_DBI_get_definition($db, 'FUNCTION', $function_name) . $delimiter . $crlf . $crlf;
             }
         }
 
         if ($event_names) {
-            $text .= 
+            $text .=
                 PMA_exportComment()
               . PMA_exportComment($GLOBALS['strEvents'])
               . PMA_exportComment();
@@ -376,7 +386,7 @@ function PMA_exportDBFooter($db)
             foreach($event_names as $event_name) {
                 if (! empty($GLOBALS['sql_drop_table'])) {
 		    $text .= 'DROP EVENT ' . PMA_backquote($event_name) . $delimiter . $crlf;
-                }	
+                }
                 $text .= PMA_DBI_get_definition($db, 'EVENT', $event_name) . $delimiter . $crlf . $crlf;
             }
         }
@@ -432,7 +442,7 @@ function PMA_getTableDefStandIn($db, $view, $crlf) {
  * @param   string   the end of line sequence
  * @param   string   the url to go back in case of error
  * @param   boolean  whether to include creation/update/check dates
- * @param   boolean  whether to add semicolon and end-of-line at the end 
+ * @param   boolean  whether to add semicolon and end-of-line at the end
  *
  * @return  string   resulting schema
  *
@@ -508,7 +518,12 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false, $a
     // Note: SHOW CREATE TABLE, at least in MySQL 5.1.23, does not
     // produce a displayable result for the default value of a BIT
     // field, nor does the mysqldump command. See MySQL bug 35796
-    $result = PMA_DBI_try_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table));
+    /*
+     * We have to select database and not use database name in SHOW CREATE,
+     * otherwise CREATE statement can include database name.
+     */
+    PMA_DBI_select_db($db);
+    $result = PMA_DBI_try_query('SHOW CREATE TABLE ' . PMA_backquote($table));
     // an error can happen, for example the table is crashed
     $tmp_error = PMA_DBI_getError();
     if ($tmp_error) {
@@ -834,7 +849,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     // a possible error: the table has crashed
     $tmp_error = PMA_DBI_getError();
     if ($tmp_error) {
-        return PMA_exportOutputHandler(PMA_exportComment($GLOBALS['strInUse'] . ' (' . $tmp_error . ')')); 
+        return PMA_exportOutputHandler(PMA_exportComment($GLOBALS['strInUse'] . ' (' . $tmp_error . ')'));
     }
 
     if ($result != FALSE) {

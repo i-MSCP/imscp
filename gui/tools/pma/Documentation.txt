@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 3.0.1.1 Documentation
+phpMyAdmin 3.1.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 3.0.1.1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 11684 2008-10-30 20:22:20Z
+  * Documentation version: $Id: Documentation.html 12110 2008-12-09 17:22:43Z
     lem9 $
 
 Requirements
@@ -29,6 +29,8 @@ Requirements
       + You need PHP 5.2.0 or newer, with session support (see FAQ 1.31) and
         the Standard PHP Library (SPL) extension.
       + To support uploading of ZIP files, you need the PHP zip extension.
+      + For proper support of multibyte strings (eg. UTF-8, which is currently
+        default), you should install mbstring and ctype extensions.
       + You need GD2 support in PHP to display inline thumbnails of JPEGs
         ("image/jpeg: inline") with their original aspect ratio
       + When using the "cookie" authentication method, the mcrypt extension is
@@ -166,14 +168,14 @@ Quick Install
         On other platforms, simply create the folder and ensure that your web
         server has read and write access to it. FAQ 1.26 can help with this.
 
-        Next, open scripts/setup.php in your browser. Note that changes are not
-        saved to disk until explicitly choose Save from the Configuration area
-        of the screen. Normally the script saves the new config.inc.php to the
-        config/ directory, but if the webserver does not have the proper
-        permissions you may see the error "Cannot load or save configuration."
-        Ensure that the config/ directory exists and has the proper permissions
-        - or use the Download link to save the config file locally and upload
-        (via FTP or some similar means) to the proper location.
+        Next, open setup/ in your browser. Note that changes are not saved to
+        disk until explicitly choose Save from the Configuration area of the
+        screen. Normally the script saves the new config.inc.php to the config/
+        directory, but if the webserver does not have the proper permissions
+        you may see the error "Cannot load or save configuration." Ensure that
+        the config/ directory exists and has the proper permissions - or use
+        the Download link to save the config file locally and upload (via FTP
+        or some similar means) to the proper location.
 
         Once the file has been saved, it must be moved out of the config/
         directory and the permissions must be reset, again as a security
@@ -359,6 +361,28 @@ Using authentication modes
     which are beyond the scope of this manual but easily searchable with
     Google).
 
+Swekey authentication
+
+The Swekey is a low cost authentication USB key that can be used in web
+applications.
+
+When Swekey authentication is activated, phpMyAdmin requires the users's Swekey
+to be plugged before entering the login page (currently supported for cookie
+authentication mode only). Swekey Authentication is disabled by default.
+
+To enable it, add the following line to config.inc.php:
+
+$cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey.conf';
+
+You then have to create the swekey.conf file that will associate each user with
+their Swekey Id. It is important to place this file outside of your web
+server's document root (in the example, it is located in /etc). A self
+documented sample file is provided in the contrib directory. Feel free to use
+it with your own users' information.
+
+If you want to purchase a Swekey please visit http://phpmyadmin.net/auth_key
+since this link provides funding for phpMyAdmin.
+
 Configuration
 
 Warning for Mac users: PHP does not seem to like Mac end of lines character ("\
@@ -410,6 +434,10 @@ $cfg['blowfish_secret'] string
     your choice. It will be used internally by the blowfish algorithm: you
     won?t be prompted for this passphrase. The maximum number of characters for
     this parameter seems to be 46.
+
+    Since version 3.1.0 phpMyAdmin can generate this on the fly, but it makes a
+    bit weaker security as this generated secret is stored in session and
+    furthermore it makes impossible to recall user name from cookie.
 $cfg['Servers'] array
     Since version 1.4.2, phpMyAdmin supports the administration of multiple
     MySQL servers. Therefore, a $cfg['Servers']-array has been added which
@@ -692,7 +720,12 @@ $cfg['Servers'][$i]['verbose_check'] boolean
     Recommended to set to FALSE, when you are sure, your table structure is up
     to date.
 $cfg['Servers'][$i]['AllowRoot'] boolean
-    Whether to allow root access. This is just simplification of rules below.
+    Whether to allow root access. This is just a shortcut for the AllowDeny
+    rules below.
+$cfg['Servers'][$i]['AllowNoPasswordRoot'] boolean
+    Whether to allow access to root user without password. The default value of
+    false for this parameter prevents unintended access to a MySQL server with
+    was left with an empty password for root.
 $cfg['Servers'][$i]['AllowDeny']['order'] string
     If your rule order is empty, then IP authentication is disabled.
 
@@ -814,6 +847,9 @@ $cfg['Confirm'] boolean
 $cfg['LoginCookieRecall'] boolean
     Define whether the previous login should be recalled or not in cookie
     authentication mode.
+
+    This is automatically diabled if you do not have configured $cfg
+    ['blowfish_secret'].
 $cfg['LoginCookieValidity'] integer [number of seconds]
     Define how long is login cookie valid.
 $cfg['LoginCookieStore'] integer [number of seconds]
@@ -2583,13 +2619,12 @@ Common errors include:
 Also, look at the syntax chapter in the MySQL manual to confirm that your
 syntax is correct.
 
-6.2 When I create a table, I click the Index checkbox for 2 fields and
-phpMyAdmin generates only one index with those 2 fields.
+6.2 When I create a table, I set an index for two fields and phpMyAdmin
+generates only one index with those two fields.
 
-In phpMyAdmin 2.2.0 and 2.2.1, this is the way to create a multi-fields index.
-If you want two indexes, create the first one when creating the table, save,
-then display the table properties and click the Index link to create the other
-index.
+This is the way to create a multi-fields index. If you want two indexes, create
+the first one when creating the table, save, then display the table properties
+and click the Index link to create the other index.
 
 6.3 How can I insert a null value into my table?
 
@@ -2891,14 +2926,15 @@ based on some foreign table?
 
 You have to setup appropriate links between the tables, and also setup the
 "display field" in the foreign table. See FAQ 6.6 for an example. Then, if
-there are 200 values or less in the foreign table, a drop-down list of values
+there are 100 values or less in the foreign table, a drop-down list of values
 will be available. You will see two lists of values, the first list containing
 the key and the display field, the second list containing the display field and
 the key. The reason for this is to be able to type the first letter of either
 the key or the display field.
 
-For 200 values or more, a distinct window will appear, to browse foreign key
-values and choose one.
+For 100 values or more, a distinct window will appear, to browse foreign key
+values and choose one. To change the default limit of 100, see $cfg
+['ForeignKeyMaxLimit'].
 
 6.22 Bookmarks: Can I execute a default bookmark automatically when entering
 Browse mode for a table?
@@ -2942,6 +2978,31 @@ happens to my column comments stored in pmadb?
 Automatic migration of a table's pmadb-style column comments to the native ones
 is done whenever you enter Structure page for this table.
 
+6.25 How does BLOB streaming work in phpMyAdmin?
+
+First, for general information about BLOB streaming on MySQL, visit
+blobstreaming.org. We currently support streaming if you are running MySQL 5.1
+with the PBXT and PBMS storage engines.
+
+
+ 1. In config.inc.php your host should be defined with a FQDN (fully qualified
+    domain name) instead of something like "localhost".
+ 2. A current limitation is that your first login via phpMyAdmin to a
+    freshly-started server must be done with an account that has the SUPER
+    privilege.
+ 3. On your target database, go to Operations and in the "BLOB Repository"
+    section, click "Enable". This creates the PBMS system tables inside your
+    database.
+ 4. Ensure that your target table has a LONGBLOB column.
+ 5. When you insert or update a row in this table, put a checkmark on the
+    "Upload to BLOB repository" optional choice; otherwise, the upload will be
+    done directly in your column instead of the repository.
+ 6. Finally when you browse your table, you'll see in your column a link to
+    stream your data, for example "View image". A header containing the correct
+    MIME-type will be sent to your browser; this MIME-type was stored at upload
+    time but in case it's incorrect, it's possible to edit it by clicking on
+    the displayed MIME-type.
+
 phpMyAdmin project
 
 7.1 I have found a bug. How do I inform developers?
@@ -2956,8 +3017,8 @@ http://sf.net/projects/phpmyadmin/ (and choose Forums)
 language, where do I start?
 
 Always use the current SVN version of your language file. For a new language,
-start from english-iso-8859-1.inc.php. If you don't know how to get the SVN
-version, please ask one of the developers.
+start from english-utf-8.inc.php. If you don't know how to get the SVN version,
+please ask one of the developers.
 Please note that we try not to use HTML entities like &eacute; in the
 translations, since we define the right character set in the file. With HTML
 entities, the text on JavaScript messages would not display correctly. However
@@ -3015,8 +3076,8 @@ If you're planning to contribute source, please read the following information:
   * Please try to keep up the file-naming conventions. Table-related stuff goes
     to tbl_*.php, db-related code to db_*.php, server-related tools to
     server_*.php and so on.
-  * Please don't use verbose strings in your code, instead add the string (at
-    least) to english-iso-8859-1.inc.php and print() it out.
+  * Please don't put message strings in your code, instead add the string (at
+    least) to english-utf-8.inc.php and print() it out.
   * If you want to be really helpful, write an entry for the ChangeLog.
   * The DBG extension (PHP Debugger DBG) is now supported by phpMyAdmin for
     developers to better debug and profile their code.
@@ -3168,6 +3229,12 @@ CREDITS, in chronological order
 
 - Ivan A Kirillov
     * new relations Designer
+
+- Raj Kissu Rajandran (Google Summer of Code 2008)
+    * BLOBstreaming support
+
+- Piotr Przybylski (Google Summer of Code 2008)
+    * improved setup script
 
 And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:

@@ -3,7 +3,7 @@
 /**
  * Set of functions used to run config authentication (ie no authentication).
  *
- * @version $Id: config.auth.lib.php 11468 2008-08-08 16:15:16Z lem9 $
+ * @version $Id: config.auth.lib.php 11533 2008-08-29 18:07:50Z nijel $
  */
 
 
@@ -88,7 +88,7 @@ function PMA_auth_fails()
 <body>
 <br /><br />
 <center>
-    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin'); ?></h1>
+    <h1><?php echo sprintf($GLOBALS['strWelcome'], ' phpMyAdmin '); ?></h1>
 </center>
 <br />
 <table border="0" cellpadding="0" cellspacing="3" align="center" width="80%">
@@ -103,7 +103,7 @@ function PMA_auth_fails()
     } else {
         // Check whether user has configured something
         if ($_SESSION['PMA_Config']->source_mtime == 0) {
-            echo '<p>' . sprintf($GLOBALS['strAccessDeniedCreateConfig'], '<a href="scripts/setup.php">', '</a>') . '</p>' . "\n";
+            echo '<p>' . sprintf($GLOBALS['strAccessDeniedCreateConfig'], '<a href="setup/">', '</a>') . '</p>' . "\n";
         } elseif (!isset($GLOBALS['errno']) || (isset($GLOBALS['errno']) && $GLOBALS['errno'] != 2002) && $GLOBALS['errno'] != 2003) {
         // if we display the "Server not responding" error, do not confuse users
         // by telling them they have a settings problem

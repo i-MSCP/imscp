@@ -3,7 +3,7 @@
 /**
  * Library that provides common import functions that are used by import plugins
  *
- * @version $Id: import.lib.php 11451 2008-08-01 20:02:21Z lem9 $
+ * @version $Id: import.lib.php 11489 2008-08-16 12:17:52Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -82,7 +82,7 @@ function PMA_detectCompression($filepath)
 function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
 {
     global $import_run_buffer, $go_sql, $complete_query, $display_query,
-        $sql_query, $cfg, $my_die, $error, $reload, $timeout_passed,
+        $sql_query, $my_die, $error, $reload, 
         $skip_queries, $executed_queries, $max_sql_len, $read_multiply,
         $cfg, $sql_query_disabled, $db, $run_query, $is_superuser;
     $read_multiply = 1;

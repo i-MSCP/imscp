@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_databases.php 11272 2008-05-11 21:46:07Z lem9 $
+ * @version $Id: server_databases.php 11580 2008-09-09 17:05:58Z lem9 $
  */
 
 /**
@@ -211,7 +211,7 @@ if ($databases_count > 0) {
         }
         echo '    <td class="name">' . "\n"
            . '        <a onclick="'
-           . 'if (window.parent.openDb(\'' . PMA_jsFormat($current['SCHEMA_NAME'], false) . '\')) return false;'
+           . 'if (window.parent.openDb && window.parent.openDb(\'' . PMA_jsFormat($current['SCHEMA_NAME'], false) . '\')) return false;'
            . '" href="index.php?' . $url_query . '&amp;db='
            . urlencode($current['SCHEMA_NAME']) . '" title="'
            . sprintf($strJumpToDB, htmlspecialchars($current['SCHEMA_NAME']))
@@ -251,7 +251,7 @@ if ($databases_count > 0) {
             echo '    <td class="tool">' . "\n"
                . '        <a onclick="
                     // <![CDATA[
-                    window.parent.setDb(\'' . PMA_jsFormat($current['SCHEMA_NAME']) . '\');
+                    if (window.parent.setDb) window.parent.setDb(\'' . PMA_jsFormat($current['SCHEMA_NAME']) . '\');
                     // ]]>" href="./server_privileges.php?' . $url_query
                . '&amp;checkprivs=' . urlencode($current['SCHEMA_NAME'])
                . '" title="' . sprintf($strCheckPrivsLong, htmlspecialchars($current['SCHEMA_NAME']))

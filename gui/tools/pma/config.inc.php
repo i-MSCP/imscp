@@ -35,6 +35,11 @@ $cfg['Servers'][$i]['socket'] 			= '/var/run/mysqld/mysqld.sock';
 $cfg['Servers'][$i]['compress'] 		= true;
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] 		= 'mysql';
+/* rajk - for blobstreaming */
+$cfg['Servers'][$i]['bs_garbage_threshold'] = 50;
+$cfg['Servers'][$i]['bs_repository_threshold'] = '32M';
+$cfg['Servers'][$i]['bs_temp_blob_timeout'] = 600;
+$cfg['Servers'][$i]['bs_temp_log_threshold'] = '32M';
 /* User for advanced features */
 $cfg['Servers'][$i]['controluser'] 		= '{PMA_USER}';
 $cfg['Servers'][$i]['controlpass'] 		= '{PMA_PASS}';
@@ -52,6 +57,8 @@ $cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
 /* Name of the Server displayed */
 /*$cfg['Servers'][$i]['verbose'] 		= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
 $cfg['Servers'][$i]['SignonSession']	= 'ispCP';
+/* Contrib / Swekey authentication */
+// $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
 
 /*
  * End of servers configuration
