@@ -796,7 +796,7 @@ sub arpl_msgr_engine {
 
 					$sql = "
 						SELECT
-							t1.`mail_auto_respond_text`
+							CONVERT(t1.`mail_auto_respond_text` using utf8)
 						FROM
 							`mail_users` as t1
 						LEFT JOIN (`domain` as t2) ON (t1.`domain_id`=t2.`domain_id`)
@@ -808,14 +808,13 @@ sub arpl_msgr_engine {
 							t2.`domain_name` = '$edmn'
 						AND
 							t1.`sub_id`=0
-						COLLATE utf-8
 					";
 
 				} elsif ($pt == 2) {
 
 					$sql = "
 						SELECT
-							`mail_auto_respond_text`
+							CONVERT(t1.`mail_auto_respond_text` using utf8)
 						FROM
 							`mail_users` as t1
 						LEFT JOIN (`domain_aliasses` as t2) ON (t1.`sub_id`=t2.`alias_id`)
@@ -825,14 +824,13 @@ sub arpl_msgr_engine {
 							t1.`mail_auto_respond`=1
 						AND
 							t2.`alias_name` = '$edmn'
-						COLLATE utf-8
 					";
 
 				} elsif ($pt == 3) {
 
 					$sql = "
 						SELECT
-							`mail_auto_respond_text`
+							CONVERT(t1.`mail_auto_respond_text` using utf8)
 						FROM
 							`mail_users` as t1
 						LEFT JOIN (`subdomain` as t2) ON t1.`sub_id`=t2.`subdomain_id`
@@ -843,14 +841,13 @@ sub arpl_msgr_engine {
 							t1.`mail_auto_respond`=1
 						AND
 							(CONCAT(t2.`subdomain_name`,'.',t3.`domain_name`) = '$edmn')
-						COLLATE utf-8
 					";
 
 				} elsif ($pt == 4) {
 
 					$sql = "
 						SELECT
-							t1.`mail_auto_respond_text`
+							CONVERT(t1.`mail_auto_respond_text` using utf8)
 						FROM
 							`mail_users` AS t1
 						LEFT JOIN (`subdomain_alias` AS t2) ON (t1.`sub_id`=t2.`subdomain_alias_id`)
@@ -861,7 +858,6 @@ sub arpl_msgr_engine {
 							t1.`mail_auto_respond`=1
 						AND
 							(CONCAT(t2.`subdomain_alias_name`,'.',t3.`alias_name`) = '$edmn')
-						COLLATE utf-8
 					";
 
 				}
