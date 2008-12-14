@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-12 Daniel Andreca
+	- LANGUAGES:
+		* Updated: Romanian
+		* Updated: Italian
+
 2008-12-13 Daniel Andreca
 	- ENGINE:
 		* Fixed: ERROR: Incorrect SQL Query -> Unknown collation: 'utf' in ispcp-arpl-msgr

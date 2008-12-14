@@ -953,6 +953,7 @@ Error = Eroare
 ispCP - Order Panel = ispCP - Panou Comenzi
 Hello %s!\n\nYou have a new ticket:\n = Salut {TO_NAME} !\n\nAi un nou ticket necitit
 Hello %s!\n\nYou have an answer for this ticket:\n = Salut {TO_NAME} !\n\nAi un nou ticket necitit
+Log in to answer. = Autentifica-te pentru a raspunde.
 Couldn't check for updates! Website not reachable. = Nu s-a putut verifica daca exista actualizari disponibile! Website-ul nu este disponibil.
 Email and FTP accounts = Conturi Email si FTP
 Add mail user = Adauga user de mail
