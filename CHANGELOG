@@ -1,7 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-12-12 Daniel Andreca
+2008-12-15 Daniel Andreca
+	- ENGINE:
+		* Fixed #1587: Catch all after upgrade from RC5 to RC7 not working properly
+		* Fixed #1585: Syntax error on line x of ispcp.conf
+	- GUI:
+		* Reseller statistics are not accessable for administrator
+
+2008-12-14 Daniel Andreca
 	- LANGUAGES:
 		* Updated: Romanian
 		* Updated: Italian

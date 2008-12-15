@@ -801,23 +801,16 @@ sub mbox_del_mta_cfg_autorespond_data {
 
 		$hash_key = "$mail_acc\@$dmn_name";
 
-		if($mail_type =~ /.*_forward.*/){
+		($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
+		return $rs if ($rs != 0);
 
-			($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
-			return $rs if ($rs != 0);
-	
-			if ($rdata ne '') {
-	
-				$rdata =~ s/\,$mail_acc\@ispcp-arpl\.$dmn_name//gi;
-	
-				$rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $rdata);
-				return $rs if ($rs != 0);
-	
-			}
+		if ($rdata ne '') {
 
-		} else {
-			$rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+			$rdata =~ s/\,$mail_acc\@ispcp-arpl\.$dmn_name//gi;
+
+			$rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $rdata);
 			return $rs if ($rs != 0);
+
 		}
 
 		($rs, $working) = get_file($aliases_working_cfg);
