@@ -2063,6 +2063,8 @@ sub als_add_proftpd_cfg_data {
 	#
 	# Initial data we need;
 	#
+	my $alias_id           = @$als_data[0];
+	my $domain_id          = @$als_data[1];
 	my $als_name           = @$als_data[2];
 	my $als_mount_point    = @$als_data[4];
 	my $als_to             = @$als_data[8];
@@ -2079,27 +2081,108 @@ sub als_add_proftpd_cfg_data {
 	my $working_cfg      = "$working_dir/$als_fname";
 	my $sys_cfg          = "$proftpd_conf_dir/$als_fname";
 
-	#
-	# Let's get needed tags and templates;
-	#
-	my $entry = '';
-	($rs, $entry) = get_tpl(
-		$tpl_dir,
-		'proftpd.conf.tpl'
-	);
+# dirty trick to allow mount point sharing
+	my ($entry, $fill) = ('', 1);
+
+# first subdomains
+	my $sql = "
+		SELECT
+			subdomain_name,
+			domain_name
+		FROM
+			subdomain as t1
+		LEFT JOIN 
+			(domain as t2)
+		ON
+			(t1.domain_id=t2.domain_id)
+		WHERE
+			t1.domain_id = '$domain_id'
+		AND
+			t1.subdomain_mount = '$als_mount_point'
+	";
+	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	#
-	# Let's prepare them;
-	#
-	my %tag_hash = (
-		'{PATH}'         => $als_path,
-	);
-	($rs, $entry) = prep_tpl(
-		\%tag_hash,
-		$entry
-	);
+	foreach (@$rdata) {
+		my $row = $_;
+		my $othersub="$proftpd_conf_dir/@$row[0].@$row[1].conf";
+		if(-e $othersub && -s $othersub){
+			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0].@$row[1] share same mount_point. Skipping...");
+			$fill=0;
+		}
+	}
+# first alias
+	$sql = "
+		SELECT
+			alias_name
+		FROM
+			domain_aliasses
+		WHERE
+			domain_id = '$domain_id'
+		AND
+			alias_mount = '$als_mount_point'
+		AND
+			alias_id != '$alias_id'
+	";
+	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
+
+	foreach (@$rdata) {
+		my $row = $_;
+		my $alias="$proftpd_conf_dir/@$row[0].conf";
+		if(-e $alias && -s $alias){
+			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0] share same mount_point. Skipping...");
+			$fill=0;
+		}
+	}
+# then alias subdomain
+	$sql = "
+		SELECT
+			t1.subdomain_alias_name,
+			t2.alias_name
+		FROM
+			subdomain_alias as t1
+		LEFT JOIN 
+			(domain_aliasses as t2)
+		ON
+			(t1.alias_id=t2.alias_id)
+		WHERE
+			t2.domain_id = '$domain_id'
+		AND
+			subdomain_alias_mount = '$als_mount_point'
+	";
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	foreach (@$rdata) {
+		my $row = $_;
+		my $alssub="$proftpd_conf_dir/@$row[0].@$row[1].conf";
+		if(-e $alssub && -s $alssub){
+			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0].@$row[1] share same mount_point. Skipping...");
+			$fill=0;
+		}
+	}
+
+	if ( $fill == 1 && $als_mount_point ne "/" ) {
+
+		($rs, $entry) = get_tpl(
+			$tpl_dir,
+			'proftpd.conf.tpl'
+		);
+		return $rs if ($rs != 0);
+	
+		#
+		# Let's prepare them;
+		#
+		my %tag_hash = (
+			'{PATH}'         => $als_path,
+		);
+		($rs, $entry) = prep_tpl(
+			\%tag_hash,
+			$entry
+		);
+		return $rs if ($rs != 0);
+	}
 
 	#
 	# Let's store generated data;
