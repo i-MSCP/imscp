@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-17 Daniel Andreca
+	- LANGUAGES:
+		* Updated: Japanese
+
 2008-12-16 Daniel Andreca
 	- ENGINE:
 		* Fixed #1586: Alias Domains block proftpd restart
