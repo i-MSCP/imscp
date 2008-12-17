@@ -430,7 +430,7 @@ sub mngr_engine {
 
 	($rs, $rdata) = doSQL($sql);
 
-	$als_count = @$rdata;
+	$als_count += @$rdata;
 
 	if ($als_count > 0) {
 

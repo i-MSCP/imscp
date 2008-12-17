@@ -201,8 +201,14 @@ function add_domain_alias(&$sql, &$err_al) {
 		 $err_al = tr("Domain with this name already exist");
 		}
 
-		if (mount_point_exists($domain_id, $mount_point)) {
-			$err_al = tr('Mount point already in use!');
+		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id`=? AND `subdomain_mount`=?"; 
+		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
+		$subdomdata = $subdomres->FetchRow(); 
+		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?) AND `subdomain_alias_mount`=?"; 
+		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
+		$alssubdomdata = $alssubdomres->FetchRow(); 
+		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) { 
+			$err_al = tr("There is a subdomain with the same mount point!"); 
 		}
 	}
 

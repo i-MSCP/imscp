@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-12-17 Daniel Andreca
 	- LANGUAGES:
 		* Updated: Japanese
+		* Allow aliases to share mount points (including with main domain)
 
 2008-12-16 Daniel Andreca
 	- ENGINE:
