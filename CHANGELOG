@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-20 Daniel Andreca
+	- GUI:
+		* Fixed #1591: Small bug into template - orderpanel - address.tpl
+	- CONFIGS:
+		* Getting ready for Debian 5.0 (lenny)
+
 2008-12-17 Daniel Andreca
 	- LANGUAGES:
 		* Updated: Japanese

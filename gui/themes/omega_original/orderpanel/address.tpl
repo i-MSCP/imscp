@@ -19,7 +19,7 @@
                   <td class="content"><input type="text" name="lname" value="{VL_LAST_USRNAME}" style="width:210px" class="textinput"></td>
                 </tr>
                 <tr>
-                  <td class="content2">{TR_EMAIL} <span style="red;">*</span></td>
+                  <td class="content2">{TR_EMAIL} <span style="color:red;">*</span></td>
                   <td class="content"><input name="email" type="text" class="textinput" style="width:210px" value="{VL_EMAIL}"></td>
                 </tr>
                 <tr>
