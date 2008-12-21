@@ -57,7 +57,7 @@
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><p><a href="protected_user_manage.php"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.gif" width="46" height="46" border="0"></a></p></td>
-                <td><a href="protected_areas.php" class="link">{TR_HTACCESS_USER}</a><br />
+                <td><a href="protected_user_manage.php" class="link">{TR_HTACCESS_USER}</a><br />
                  {TR_HTACCESS_USER}</td>
                </tr>
               </table></td>

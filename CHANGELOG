@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-21 Daniel Andreca
+	- GUI:
+		* Small bug into template webtools.tpl
+
 2008-12-20 Daniel Andreca
 	- GUI:
 		* Fixed #1591: Small bug into template - orderpanel - address.tpl
