@@ -866,7 +866,8 @@ function generate_reseller_users_props ($reseller_id) {
 
 	if ($rs->RowCount() == 0) {
 		return $fresult;
-	} while (!$rs->EOF) {
+	}
+	while (!$rs->EOF) {
 		$admin_id = $rs->fields['admin_id'];
 
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
@@ -1211,7 +1212,6 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 
 		$rs->MoveNext();
 	}
-
 	return $result;
 }
 
@@ -1939,9 +1939,13 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 		$rals_current -= $als_max;
 	}
 
-	$rmail_current -= $mail_max;
+	if ($mail_max != -1) {
+		$rmail_current -= $mail_max;
+	}
 
-	$rftp_current -= $ftp_max;
+	if ($ftp_max != -1) {
+		$rftp_current -= $ftp_max;
+	}
 
 	if ($sql_db_max != -1) {
 		$rsql_db_current -= $sql_db_max;
