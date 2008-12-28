@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-28 Daniel Andreca
+	- CONFIGS:
+		* Corrected fcgid configure file for Ubuntu
+		* Introduced support for Ubuntu 8.10 - Interpid
+
 2008-12-22 Daniel Andreca
 	- GUI:
 		* Fixed reseller update problems inconsistency between current_ftp_cnt and actual ftp count
