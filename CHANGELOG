@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-12-31 Daniel Andreca
+	- GUI:
+		* Fixed #1598: /reseller/domain-alias.php instead /reseller/alias.php in emailtpl-functions.php (thanks FEG)
+
 2008-12-28 Daniel Andreca
 	- CONFIGS:
 		* Corrected fcgid configure file for Ubuntu
