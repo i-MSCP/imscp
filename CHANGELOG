@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-02 Daniel Andreca
+	- CONFIGS:
+		* Fixed #1599: FreeBSD Fixes (thanks FEG)
+
 2009-01-02 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1597: Pop3 statistics with dovecot not created

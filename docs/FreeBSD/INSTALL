@@ -33,11 +33,6 @@ Debian (or even any other *NIX-Distribution)
 
 All FreeBSD required packages are listed in docs/FreeBSD/freebsd-packages
 
-The configuration is customised for use with apache 2.2.x version using suexec
-module enable.
-
-WARNING: DEFAULT setting is using mod_php not fastcgi !!
-
 ================================================================================
 3) Introduction
 ---------------
@@ -92,8 +87,15 @@ and Name Server rndc.key has been setup.
 10. Clean the temporary folders:
 	# rm -fR /tmp/ispcp
 
+WARNING:
+          DEFAULT setting is using mod_php not fastcgi or mod_fcgid !!
+          The configuration is customised for use with apache 2.2.x version
+          using suexec module enable.
+UNDER JAIL:
+          dont forget to modified postfix, prepared for chroot system
+          for mod_fcgid, at master /etc/rc.conf, set jail_sysvipc_allow to YES
 
-================================================================================
+ ================================================================================
 5) Update
 ---------
 Make sure you are logged in as root and MySQL is running.

@@ -6,7 +6,8 @@ Apache 2.2.x		Web System
 	x suexec	( Recomended )
 	+ mod_cband	for bandwitdh management
 	o mod_php	WARNING: security risk for hosting
-	+ mod_fastcgi	( Recomended )
+	+ mod_fastcgi   ( choice for improving security )
+	+ mod_fcgid     ( choice for improving security )
 	+ mod_proxy	Req for awstats
 Proftpd			FTP System
 	x IPV6		IP v6 support ( but disable by ispcp )
@@ -17,6 +18,7 @@ Proftpd			FTP System
 	- delay		Not Available in ports
 	- ctrls_admin	Not Available in ports
 Postfix			Email System
+postfix-policyd-weight Antispam system ( since rc7 )
 Procmail		Mail filter System
 Bash			Shell compatibility with Main Version
 courier-imap		IMAP system, please use version 4.3.x and above
