@@ -222,10 +222,10 @@ SQL_QUERY;
         FROM
             ftp_users
         WHERE
-            userid RLIKE ?
+            userid LIKE ?
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ftp_separator . $dmn_name));
+	$rs = exec_query($sql, $query, array('%' . $ftp_separator . $dmn_name));
 
 	$dmn_ftp_acc_cnt = $rs->fields['cnt'];
 
@@ -268,10 +268,10 @@ SQL_QUERY;
             FROM
                 ftp_users
             WHERE
-                userid RLIKE ?
+                userid LIKE ?
 SQL_QUERY;
 
-		$rs_cnt = exec_query($sql, $query, array($ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']));
+		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']));
 
 		$sub_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
@@ -307,10 +307,10 @@ SQL_QUERY;
             FROM
                 ftp_users
             WHERE
-                userid RLIKE ?
+                userid LIKE ?
 SQL_QUERY;
 
-		$rs_cnt = exec_query($sql, $query, array($ftp_separator . $als_name));
+		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $als_name));
 
 		$als_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 

@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-02 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1597: Pop3 statistics with dovecot not created
+	- GUI:
+		* Fixed #1595: ftp user limit
+
 2008-12-31 Daniel Andreca
 	- GUI:
 		* Fixed #1598: /reseller/domain-alias.php instead /reseller/alias.php in emailtpl-functions.php (thanks FEG)
