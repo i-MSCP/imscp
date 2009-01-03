@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 21:02+0200\n"
+"POT-Creation-Date: 2009-01-03 13:51+0800\n"
 "PO-Revision-Date: 2008-10-10 03:08+0200\n"
 "Last-Translator:  Attila Fülöp <fulop.attila@coimbra-grp.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -648,11 +648,53 @@ msgstr "Minden forgalom"
 msgid "Day"
 msgstr "Nap"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/Új szolgáltatási csomag"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Szolgáltatási Csomag Kezelés"
+
+msgid "Hosting plans"
+msgstr "Szolgáltatási csomagok"
+
+msgid "Manage hosting plans"
+msgstr "Szolgálltatási csomagok kezelése"
+
+msgid "Purchasing"
+msgstr "Vásárlás"
 
 msgid "Add hosting plan"
 msgstr "Szolgáltatási csomag hozzáadása"
+
+msgid "Add new user hosting plan"
+msgstr "Új felhasználói díjcsomag hozzáadása"
+
+msgid "Return to previous menu"
+msgstr "Vissza ez elözõ menübe"
+
+msgid "Hosting plan added!"
+msgstr "Szolgáltatási csomag hozzáadva!"
+
+msgid "Hosting plan deleted!"
+msgstr "Szolgáltatási csomag törölve!"
+
+msgid "Hosting plan updated!"
+msgstr "Szolgáltatási csomag módosítva!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "A szolgáltatási csomag nem törölhető, használatban van!"
+
+msgid "Hosting plans not found!"
+msgstr "Szolgálltatási csomag nem található!"
+
+msgid "No."
+msgstr "Nem."
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Show hosting plan"
+msgstr "Hoszting csomag mutatása"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Új szolgáltatási csomag"
 
 msgid "Hosting plan properties"
 msgstr "Szolgáltatási csomag tulajdonságai"
@@ -768,48 +810,6 @@ msgstr "Helytelen összeg. Pl: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Helytelen beállítás. Pl: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administrator/Szolgáltatási Csomag Kezelés"
-
-msgid "Hosting plans"
-msgstr "Szolgáltatási csomagok"
-
-msgid "Manage hosting plans"
-msgstr "Szolgálltatási csomagok kezelése"
-
-msgid "Purchasing"
-msgstr "Vásárlás"
-
-msgid "Add new user hosting plan"
-msgstr "Új felhasználói díjcsomag hozzáadása"
-
-msgid "Return to previous menu"
-msgstr "Vissza ez elözõ menübe"
-
-msgid "Hosting plan added!"
-msgstr "Szolgáltatási csomag hozzáadva!"
-
-msgid "Hosting plan deleted!"
-msgstr "Szolgáltatási csomag törölve!"
-
-msgid "Hosting plan updated!"
-msgstr "Szolgáltatási csomag módosítva!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "A szolgáltatási csomag nem törölhető, használatban van!"
-
-msgid "Hosting plans not found!"
-msgstr "Szolgálltatási csomag nem található!"
-
-msgid "No."
-msgstr "Nem."
-
-msgid "Name"
-msgstr "Név"
-
-msgid "Show hosting plan"
-msgstr "Hoszting csomag mutatása"
-
 #, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr "<b>%d</b> db új hibajegyed van"
@@ -901,6 +901,10 @@ msgstr "Nincs domain alias, rendszerhiba"
 msgid "No subdomain system errors"
 msgstr "Nincs aldomain, rendszerhiba"
 
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "Nincs aldomain, rendszerhiba"
+
 msgid "No email account system errors"
 msgstr "Nincs email hozzáférés, rendszerhiba"
 
@@ -915,6 +919,10 @@ msgstr "Domain alias hibák"
 
 msgid "Subdomain errors"
 msgstr "Aldomain hibák"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "Aldomain átirányítás"
 
 msgid "Mail account errors"
 msgstr "Email hozzáférés hibák"
@@ -1080,9 +1088,6 @@ msgstr "A felhasználóhóz tartozik egy domain!<br>Előszőr töröld a domaint
 msgid "User was disabled"
 msgstr "A felhasználó letiltva"
 
-msgid "Incorrect data input!"
-msgstr "Hibás bemenõ adat!"
-
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Nemzetköti nyelvek"
 
@@ -1140,6 +1145,9 @@ msgstr "Telepít"
 
 msgid "Export"
 msgstr "Export"
+
+msgid "Incorrect data input!"
+msgstr "Hibás bemenõ adat!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Admin/Jelszóváltás"
@@ -1421,23 +1429,11 @@ msgstr "%s Nemlétezik vagy üres"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits Tools napló ellenörző"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Admin/Server napi statisztika"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Szerver statisztika"
 
-msgid "Server day statistics"
-msgstr "Szerver napi statisztika"
-
-msgid "Month:"
-msgstr "Hónap:"
-
-msgid "Year:"
-msgstr "Év:"
-
-msgid "Day:"
-msgstr "Nap:"
-
-msgid "Hour"
-msgstr "Óra"
+msgid "Server statistics"
+msgstr "Szerver statisztikák"
 
 msgid "Web in"
 msgstr "Web bejövõ"
@@ -1469,11 +1465,23 @@ msgstr "Összes bejövõ"
 msgid "All out"
 msgstr "Összes kimenõ"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Admin/Szerver statisztika"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Server napi statisztika"
 
-msgid "Server statistics"
-msgstr "Szerver statisztikák"
+msgid "Server day statistics"
+msgstr "Szerver napi statisztika"
+
+msgid "Month:"
+msgstr "Hónap:"
+
+msgid "Year:"
+msgstr "Év:"
+
+msgid "Day:"
+msgstr "Nap:"
+
+msgid "Hour"
+msgstr "Óra"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Admin / Rendszereszközök / Szerverállapot"
@@ -1510,6 +1518,96 @@ msgstr "Lehetõségek"
 
 msgid "Kill session"
 msgstr "Folyamat lezárása"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Beállítások"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "HIBA: csak a pozitív számok megengedettek!"
+
+msgid "Settings saved !"
+msgstr "Beállítások elmentve!"
+
+msgid "General settings"
+msgstr "Általános Beállítások"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktivációs link elévülési ideje (percben)"
+
+msgid "Password settings"
+msgstr "Jelszó beállításai"
+
+msgid "Use strong Passwords"
+msgstr "Erős jelszavak használata"
+
+msgid "Password length"
+msgstr "Jelszó hossza"
+
+msgid "Bruteforce detection"
+msgstr "Agresszív támadás detektálása"
+
+msgid "Block time between logins"
+msgstr "Blokkolási idő sikertelen bejelentkezések között"
+
+msgid "Max number of login attempts"
+msgstr "Max próbálkozás"
+
+msgid "Blocktime (minutes)"
+msgstr "Blokkolási idő (percben)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Blokkolási idő sikertelen bejelentkezések között (másodpercben)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "A CAPTCHA érvényesítési kísérletek Max száma"
+
+msgid "Other settings"
+msgstr "További beállítások"
+
+msgid "E-Mail settings"
+msgstr "E-Mail beállítások"
+
+msgid "Create default E-Mail addresses"
+msgstr "Alapértelmezett E-mail címek létrehozása"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "Az E-mail címek fel vannak függesztve"
+
+msgid "Default language"
+msgstr "Alapértelmezett nyelv"
+
+msgid "Support system"
+msgstr "Ügyfélszolgálati rendszer"
+
+msgid "Apply changes"
+msgstr "Változtatások végrehajtása"
+
+msgid "Server ports"
+msgstr "Szerver portok"
+
+msgid "Hosting plans available for"
+msgstr "Elérhető tárhely csomagok"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Domains per page"
+msgstr "Domainek oldalanként"
+
+msgid "Log Level"
+msgstr "Naplózási szint"
+
+msgid "Notices, Warnings and Errors"
+msgstr "Megjegyzések, figyelmeztetések és hibák"
+
+msgid "Warnings and Errors"
+msgstr "Figyelmeztetések és hibák"
+
+msgid "Errors"
+msgstr "Hibák"
+
+msgid "Check for update"
+msgstr "Frissítés keresése"
 
 msgid "You can only upload images!"
 msgstr "Csak képet tölthetsz fel!"
@@ -1592,107 +1690,17 @@ msgstr "Elfelejtett jelszó hivatkozás"
 msgid "Subject"
 msgstr "Tárgy"
 
-msgid "Apply changes"
-msgstr "Változtatások végrehajtása"
-
 msgid "URL to this admin panel"
 msgstr "Ennek az admin panelnek az URL-je"
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Admin/karbantartás mód"
 
-msgid "Settings saved !"
-msgstr "Beállítások elmentve!"
-
 msgid "Maintenance mode"
 msgstr "Karbantartási mód"
 
 msgid "Under this mode only administrators can login"
 msgstr "Ebben a módban csak adminisztrátorok léphetnek be"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Admin/Beállítások"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "HIBA: csak a pozitív számok megengedettek!"
-
-msgid "General settings"
-msgstr "Általános Beállítások"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Aktivációs link elévülési ideje (percben)"
-
-msgid "Password settings"
-msgstr "Jelszó beállításai"
-
-msgid "Use strong Passwords"
-msgstr "Erős jelszavak használata"
-
-msgid "Password length"
-msgstr "Jelszó hossza"
-
-msgid "Bruteforce detection"
-msgstr "Agresszív támadás detektálása"
-
-msgid "Block time between logins"
-msgstr "Blokkolási idő sikertelen bejelentkezések között"
-
-msgid "Max number of login attempts"
-msgstr "Max próbálkozás"
-
-msgid "Blocktime (minutes)"
-msgstr "Blokkolási idő (percben)"
-
-msgid "Block time between logins (seconds)"
-msgstr "Blokkolási idő sikertelen bejelentkezések között (másodpercben)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "A CAPTCHA érvényesítési kísérletek Max száma"
-
-msgid "Other settings"
-msgstr "További beállítások"
-
-msgid "E-Mail settings"
-msgstr "E-Mail beállítások"
-
-msgid "Create default E-Mail addresses"
-msgstr "Alapértelmezett E-mail címek létrehozása"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "Az E-mail címek fel vannak függesztve"
-
-msgid "Default language"
-msgstr "Alapértelmezett nyelv"
-
-msgid "Support system"
-msgstr "Ügyfélszolgálati rendszer"
-
-msgid "Server ports"
-msgstr "Szerver portok"
-
-msgid "Hosting plans available for"
-msgstr "Elérhető tárhely csomagok"
-
-msgid "Admin"
-msgstr "Admin"
-
-msgid "Domains per page"
-msgstr "Domainek oldalanként"
-
-msgid "Log Level"
-msgstr "Naplózási szint"
-
-msgid "Notices, Warnings and Errors"
-msgstr "Megjegyzések, figyelmeztetések és hibák"
-
-msgid "Warnings and Errors"
-msgstr "Figyelmeztetések és hibák"
-
-msgid "Errors"
-msgstr "Hibák"
-
-msgid "Check for update"
-msgstr "Frissítés keresése"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
@@ -1972,9 +1980,8 @@ msgstr "Hibás forward cím formátum!"
 msgid "Domain with this name already exist"
 msgstr "Ilyen nevû domain már létezik!"
 
-#, fuzzy
-msgid "Mount point already in use!"
-msgstr "Aldomain beillesztési pont már létezik !"
+msgid "There is a subdomain with the same mount point!"
+msgstr "Már van egy aldomain ugyanezzel az illesztési ponttal!"
 
 msgid "Alias scheduled for activation!"
 msgstr "Alias hozzáadása beütemezve!"
@@ -2122,6 +2129,24 @@ msgstr "Ütemezés szerkesztése"
 msgid "Cronjobs"
 msgstr "Ütemezések"
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Kliens/Domain Statisztika"
+
+msgid "Web Stats"
+msgstr "Web Statisztika"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+msgid "Sum"
+msgstr "Összes"
+
 msgid "N/A"
 msgstr "NA"
 
@@ -2148,24 +2173,6 @@ msgstr "Továbbít"
 
 msgid "Actions"
 msgstr "Cselekvések"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Kliens/Domain Statisztika"
-
-msgid "Web Stats"
-msgstr "Web Statisztika"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
-
-msgid "Sum"
-msgstr "Összes"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Kliens/Saját Hiba Lapok Kezelése"
@@ -2544,6 +2551,21 @@ msgstr "Az üzeneted"
 msgid "Enable mail auto responder"
 msgstr "Automatikus email válasz engedélyezése"
 
+msgid "Delete CatchAll"
+msgstr "Gyûjtõ cím törlése"
+
+msgid "None"
+msgstr "Nincs"
+
+msgid "Create catch all"
+msgstr "Gyûjtõ cím létrehozása"
+
+msgid "Catch all account"
+msgstr "Gyûjtõ email"
+
+msgid "Catch all"
+msgstr "Gyûjtõ"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Gyûjtõ email létrehozása beütemezve!"
 
@@ -2559,23 +2581,8 @@ msgstr "Gyûjtõ email cím létrehozása"
 msgid "Mail accounts list"
 msgstr "Mail hozzáférések lista"
 
-msgid "Create catch all"
-msgstr "Gyûjtõ cím létrehozása"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "Gyûjtõ email törlése beütemezve!"
-
-msgid "Delete CatchAll"
-msgstr "Gyûjtõ cím törlése"
-
-msgid "None"
-msgstr "Nincs"
-
-msgid "Catch all account"
-msgstr "Gyûjtõ email"
-
-msgid "Catch all"
-msgstr "Gyûjtõ"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Elõbb töröld a jét az  email-nek!"
@@ -2597,6 +2604,30 @@ msgstr "ispCP - Kliens/Jelszóváltás"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Kliens/Személyes Adatok"
+
+msgid "You do not have protected areas"
+msgstr "Nincs védett területed"
+
+msgid "Manage users and groups"
+msgstr "Felhasználók és csoportok kezelése"
+
+msgid "Add user"
+msgstr "Felhasználó hozzáadása"
+
+msgid "Group name"
+msgstr "Csoport neve"
+
+msgid "Group members"
+msgstr "Csoport tagok"
+
+msgid "Add group"
+msgstr "Csoport hozzáadása"
+
+msgid "Group"
+msgstr "Csoport"
+
+msgid "Add new protected area"
+msgstr "Új védett terület hozzáadása"
 
 msgid "Please choose user or group"
 msgstr "Válassz felhasználót vagy csoportot"
@@ -2653,9 +2684,6 @@ msgstr "Terület név"
 msgid "Unprotect it"
 msgstr "Védelem eltávolítása"
 
-msgid "Manage users and groups"
-msgstr "Felhasználók és csoportok kezelése"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "A védett terület státuszak OK kell legyen, ha törölni akarod azt!"
 
@@ -2664,27 +2692,6 @@ msgstr "Védett terület sikeresen törölve!"
 
 msgid "Permission deny!"
 msgstr "Engedély megtagadva!"
-
-msgid "You do not have protected areas"
-msgstr "Nincs védett területed"
-
-msgid "Add user"
-msgstr "Felhasználó hozzáadása"
-
-msgid "Group name"
-msgstr "Csoport neve"
-
-msgid "Group members"
-msgstr "Csoport tagok"
-
-msgid "Add group"
-msgstr "Csoport hozzáadása"
-
-msgid "Group"
-msgstr "Csoport"
-
-msgid "Add new protected area"
-msgstr "Új védett terület hozzáadása"
 
 msgid "Protected area was deleted successful!"
 msgstr "Védett terület sikeresen törölve!"
@@ -2913,6 +2920,10 @@ msgstr "Az aldomain már létezik vagy nem megengedett!"
 msgid "Wrong subdomain syntax!"
 msgstr "Rossz aldomain formátum!"
 
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Aldomain beillesztési pont már létezik !"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Aldomain hozzáadása beütemezve!"
 
@@ -3111,7 +3122,8 @@ msgstr ""
 "\n"
 "Választ kapott erre a hibajegyre:\n"
 
-msgid "Log in to answer."
+#, fuzzy
+msgid "Log in to answer"
 msgstr "Jelentkezzen be a válaszhoz"
 
 #, php-format
@@ -3612,12 +3624,6 @@ msgstr "Díj Beállítás"
 msgid "Performance"
 msgstr "Teljesítmény"
 
-msgid "ispCP Reseller : Add Alias"
-msgstr "ispCP Viszonteladó : Új alias"
-
-msgid "You have no user records."
-msgstr "Nincs felhasználó rekord."
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Domain Kezelés/Alias"
 
@@ -3659,6 +3665,12 @@ msgstr "Hozzárendelt domain alias aktiválva!"
 
 msgid "Ordered domain alias not activated!"
 msgstr "Hozzárendelt domain alias nincs aktiválva!"
+
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Viszonteladó : Új alias"
+
+msgid "You have no user records."
+msgstr "Nincs felhasználó rekord."
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Körlevél"
@@ -3707,6 +3719,12 @@ msgstr ""
 msgid "The <em>%s</em> service can not be unlimited! "
 msgstr ""
 
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Viszonteladó/Kezdõlap"
+
+msgid "View details"
+msgstr "Részletek megtekintése"
+
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Viszonteladó/Új szolgálltatási csomag"
 
@@ -3724,12 +3742,6 @@ msgstr "ispCP - Viszonteladó/Szolgálltatási csomag szerkesztése"
 
 msgid "View hosting plan"
 msgstr "Szolgáltatási csomagok megtekintése"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Viszonteladó/Kezdõlap"
-
-msgid "View details"
-msgstr "Részletek megtekintése"
 
 msgid "User accounts"
 msgstr "Felhasználói hozzáférések"
@@ -3765,45 +3777,6 @@ msgstr "ispCP - Viszonteladó/Rendelés email beállítás"
 msgid "Manage orders"
 msgstr "Rendelések kezelése"
 
-msgid "Wrong order ID!"
-msgstr "Rossz rendelés azonosító!"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Rendelés meghiusult: viszonteladások maximumát elérted!"
-
-msgid "User added!"
-msgstr "Felhasználó hozzáadva!"
-
-msgid "Customer order was removed successful!"
-msgstr "Ügyfél rendelés sikeresen törölve!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Viszonteladó/Rendelés részletek"
-
-msgid "Order data updated successfully!"
-msgstr "Rendelési adatok sikeresen módosítva!"
-
-msgid "Order date"
-msgstr "Rendelés dátum"
-
-msgid "Hosting plan"
-msgstr "Szolgáltatási csomag"
-
-msgid "Hosting details"
-msgstr "Szolgáltatás részletek"
-
-msgid "Order details"
-msgstr "Rendelés részletei"
-
-msgid "Customer data"
-msgstr "Ügyfél adat"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Biztos törölni akarod ezt a rendelést?"
-
-msgid "Add to the system"
-msgstr "Rendszerhez hozzáad"
-
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Viszonteladó/Rendelés beállítás"
 
@@ -3834,11 +3807,50 @@ msgstr "Rendelés módosítás"
 msgid "ID"
 msgstr "Azon."
 
+msgid "Customer data"
+msgstr "Ügyfél adat"
+
 msgid "Order"
 msgstr "Rendelés"
 
+msgid "Hosting plan"
+msgstr "Szolgáltatási csomag"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Biztos törölni akarod ezt a rendelést?"
+
 msgid "Add/Details"
 msgstr "Hozzáad/Részletez"
+
+msgid "Wrong order ID!"
+msgstr "Rossz rendelés azonosító!"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Rendelés meghiusult: viszonteladások maximumát elérted!"
+
+msgid "User added!"
+msgstr "Felhasználó hozzáadva!"
+
+msgid "Customer order was removed successful!"
+msgstr "Ügyfél rendelés sikeresen törölve!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Viszonteladó/Rendelés részletek"
+
+msgid "Order data updated successfully!"
+msgstr "Rendelési adatok sikeresen módosítva!"
+
+msgid "Order date"
+msgstr "Rendelés dátum"
+
+msgid "Hosting details"
+msgstr "Szolgáltatás részletek"
+
+msgid "Order details"
+msgstr "Rendelés részletei"
+
+msgid "Add to the system"
+msgstr "Rendszerhez hozzáad"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Viszonteladó/Jelszóváltás"
@@ -3917,6 +3929,9 @@ msgstr "ispCP - Felhasználók/Szerkesztés"
 msgid "Users list"
 msgstr "Felhasználó lista"
 
+msgid "This reseller has no domains yet."
+msgstr "A viszonteladónak még nincs domainje."
+
 msgid "ispCP - Users"
 msgstr "ispCP - Felhasználók"
 
@@ -3953,9 +3968,6 @@ msgstr ""
 msgid "User not terminated!"
 msgstr "Felhasználó nincs törölve!"
 
-msgid "This reseller has no domains yet."
-msgstr "A viszonteladónak még nincs domainje."
-
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Üres aldomain lista! Nem hozhatsz itt létre új email hozzáférést!"
 
@@ -3964,9 +3976,6 @@ msgstr "A viszonteladónak még nincs domainje."
 
 #~ msgid "Message was sent!"
 #~ msgstr "Üzenet elküldve"
-
-#~ msgid "There is a subdomain with the same mount point!"
-#~ msgstr "Már van egy aldomain ugyanezzel az illesztési ponttal!"
 
 #~ msgid "Message was send!"
 #~ msgstr "Üzenet elküldve!"

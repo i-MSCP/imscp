@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 21:02+0200\n"
+"POT-Creation-Date: 2009-01-03 13:51+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -647,11 +647,53 @@ msgstr "所有流量"
 msgid "Day"
 msgstr "日"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - 管理员/添加主机项目"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - 管理员/主机项目管理"
+
+msgid "Hosting plans"
+msgstr "主机项目"
+
+msgid "Manage hosting plans"
+msgstr "管理主机项目"
+
+msgid "Purchasing"
+msgstr "购买"
 
 msgid "Add hosting plan"
 msgstr "添加主机项目"
+
+msgid "Add new user hosting plan"
+msgstr "添加新的主机项目"
+
+msgid "Return to previous menu"
+msgstr "返回上一级菜单"
+
+msgid "Hosting plan added!"
+msgstr "主机项目添加完成！"
+
+msgid "Hosting plan deleted!"
+msgstr "主机项目删除完成！"
+
+msgid "Hosting plan updated!"
+msgstr "主机项目更新完成！"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "主机项目不能被删除，它们处于工作状态！"
+
+msgid "Hosting plans not found!"
+msgstr "没有发现主机项目！"
+
+msgid "No."
+msgstr "否."
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Show hosting plan"
+msgstr "显示主机项目"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - 管理员/添加主机项目"
 
 msgid "Hosting plan properties"
 msgstr "主机项目属性"
@@ -767,48 +809,6 @@ msgstr "不正确的价格。例: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "不正确的安装费用。例:19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - 管理员/主机项目管理"
-
-msgid "Hosting plans"
-msgstr "主机项目"
-
-msgid "Manage hosting plans"
-msgstr "管理主机项目"
-
-msgid "Purchasing"
-msgstr "购买"
-
-msgid "Add new user hosting plan"
-msgstr "添加新的主机项目"
-
-msgid "Return to previous menu"
-msgstr "返回上一级菜单"
-
-msgid "Hosting plan added!"
-msgstr "主机项目添加完成！"
-
-msgid "Hosting plan deleted!"
-msgstr "主机项目删除完成！"
-
-msgid "Hosting plan updated!"
-msgstr "主机项目更新完成！"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "主机项目不能被删除，它们处于工作状态！"
-
-msgid "Hosting plans not found!"
-msgstr "没有发现主机项目！"
-
-msgid "No."
-msgstr "否."
-
-msgid "Name"
-msgstr "名称"
-
-msgid "Show hosting plan"
-msgstr "显示主机项目"
-
 #, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr "您有 <b>%d</b> 新的客户疑问"
@@ -900,6 +900,10 @@ msgstr "没有域名别名系统错误"
 msgid "No subdomain system errors"
 msgstr "没有子域名系统错误"
 
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "没有子域名系统错误"
+
 msgid "No email account system errors"
 msgstr "没有邮件统计系统错误"
 
@@ -914,6 +918,10 @@ msgstr "域名别名错误"
 
 msgid "Subdomain errors"
 msgstr "子域名错误"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "子域名转发"
 
 msgid "Mail account errors"
 msgstr "邮件统计错误"
@@ -1079,9 +1087,6 @@ msgstr "此用户有域名！<br>要删除用户请先删除此用户的域名�
 msgid "User was disabled"
 msgstr "用户已被禁止"
 
-msgid "Incorrect data input!"
-msgstr "不正确的数据输入！"
-
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理员/语言设置"
 
@@ -1139,6 +1144,9 @@ msgstr "安装"
 
 msgid "Export"
 msgstr "导出"
+
+msgid "Incorrect data input!"
+msgstr "不正确的数据输入！"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - 管理员/修改密码"
@@ -1416,23 +1424,11 @@ msgstr "%s 不存在或为空"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "反Rootkits工具日志检查器"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - 管理员/服务器日统计"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - 管理员/服务器统计"
 
-msgid "Server day statistics"
-msgstr "服务器日统计"
-
-msgid "Month:"
-msgstr "月:"
-
-msgid "Year:"
-msgstr "年:"
-
-msgid "Day:"
-msgstr "日:"
-
-msgid "Hour"
-msgstr "小时"
+msgid "Server statistics"
+msgstr "服务器统计"
 
 msgid "Web in"
 msgstr "Web 接收"
@@ -1464,11 +1460,23 @@ msgstr "全部接收"
 msgid "All out"
 msgstr "全部发送"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - 管理员/服务器统计"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - 管理员/服务器日统计"
 
-msgid "Server statistics"
-msgstr "服务器统计"
+msgid "Server day statistics"
+msgstr "服务器日统计"
+
+msgid "Month:"
+msgstr "月:"
+
+msgid "Year:"
+msgstr "年:"
+
+msgid "Day:"
+msgstr "日:"
+
+msgid "Hour"
+msgstr "小时"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP 管理员 / 系统工具 / 服务器状态"
@@ -1505,6 +1513,96 @@ msgstr "选项"
 
 msgid "Kill session"
 msgstr "终止会话"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - 管理员/设置"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "错误: 只允许接受实际数量！"
+
+msgid "Settings saved !"
+msgstr "设置已保存！"
+
+msgid "General settings"
+msgstr "常规设置"
+
+msgid "Activation link expire time (minutes)"
+msgstr "激活密码链接过期时间（分钟）"
+
+msgid "Password settings"
+msgstr "密码设置"
+
+msgid "Use strong Passwords"
+msgstr "支持较强密码"
+
+msgid "Password length"
+msgstr "密码长度"
+
+msgid "Bruteforce detection"
+msgstr "设置监听"
+
+msgid "Block time between logins"
+msgstr "预设再次登录间隔时间"
+
+msgid "Max number of login attempts"
+msgstr "最多尝试登录次数"
+
+msgid "Blocktime (minutes)"
+msgstr "预设冻结时间 （分钟）"
+
+msgid "Block time between logins (seconds)"
+msgstr "预设两次登录间隔时间（秒）"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "最大尝试登录次数！"
+
+msgid "Other settings"
+msgstr "其它设置"
+
+msgid "E-Mail settings"
+msgstr "邮件设置"
+
+msgid "Create default E-Mail addresses"
+msgstr "创建默认 E-Mail 地址"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "E-Mail 账号是硬挂起状态"
+
+msgid "Default language"
+msgstr "默认语言"
+
+msgid "Support system"
+msgstr "系统支持"
+
+msgid "Apply changes"
+msgstr "应用更改"
+
+msgid "Server ports"
+msgstr "服务器端口"
+
+msgid "Hosting plans available for"
+msgstr "可用的主机项目用于"
+
+msgid "Admin"
+msgstr "管理员"
+
+msgid "Domains per page"
+msgstr "每页显示域名数"
+
+msgid "Log Level"
+msgstr "日志等级"
+
+msgid "Notices, Warnings and Errors"
+msgstr "通知，警告和错误"
+
+msgid "Warnings and Errors"
+msgstr "警告和错误"
+
+msgid "Errors"
+msgstr "错误"
+
+msgid "Check for update"
+msgstr "检查更新"
 
 msgid "You can only upload images!"
 msgstr "您只能上传图像文件！"
@@ -1587,107 +1685,17 @@ msgstr "找回密码链接"
 msgid "Subject"
 msgstr "主题"
 
-msgid "Apply changes"
-msgstr "应用更改"
-
 msgid "URL to this admin panel"
 msgstr "转到管理员面板的 URL"
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - 管理员/维护模式"
 
-msgid "Settings saved !"
-msgstr "设置已保存！"
-
 msgid "Maintenance mode"
 msgstr "维护模式"
 
 msgid "Under this mode only administrators can login"
 msgstr "此模式下只允许管理员登录"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - 管理员/设置"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "错误: 只允许接受实际数量！"
-
-msgid "General settings"
-msgstr "常规设置"
-
-msgid "Activation link expire time (minutes)"
-msgstr "激活密码链接过期时间（分钟）"
-
-msgid "Password settings"
-msgstr "密码设置"
-
-msgid "Use strong Passwords"
-msgstr "支持较强密码"
-
-msgid "Password length"
-msgstr "密码长度"
-
-msgid "Bruteforce detection"
-msgstr "设置监听"
-
-msgid "Block time between logins"
-msgstr "预设再次登录间隔时间"
-
-msgid "Max number of login attempts"
-msgstr "最多尝试登录次数"
-
-msgid "Blocktime (minutes)"
-msgstr "预设冻结时间 （分钟）"
-
-msgid "Block time between logins (seconds)"
-msgstr "预设两次登录间隔时间（秒）"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "最大尝试登录次数！"
-
-msgid "Other settings"
-msgstr "其它设置"
-
-msgid "E-Mail settings"
-msgstr "邮件设置"
-
-msgid "Create default E-Mail addresses"
-msgstr "创建默认 E-Mail 地址"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "E-Mail 账号是硬挂起状态"
-
-msgid "Default language"
-msgstr "默认语言"
-
-msgid "Support system"
-msgstr "系统支持"
-
-msgid "Server ports"
-msgstr "服务器端口"
-
-msgid "Hosting plans available for"
-msgstr "可用的主机项目用于"
-
-msgid "Admin"
-msgstr "管理员"
-
-msgid "Domains per page"
-msgstr "每页显示域名数"
-
-msgid "Log Level"
-msgstr "日志等级"
-
-msgid "Notices, Warnings and Errors"
-msgstr "通知，警告和错误"
-
-msgid "Warnings and Errors"
-msgstr "警告和错误"
-
-msgid "Errors"
-msgstr "错误"
-
-msgid "Check for update"
-msgstr "检查更新"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "错误:只能允许字母、数字、破折号、下划线。"
@@ -1965,9 +1973,8 @@ msgstr "不正确的转向拼写"
 msgid "Domain with this name already exist"
 msgstr "此域名已经存在"
 
-#, fuzzy
-msgid "Mount point already in use!"
-msgstr "子域名挂载点已经存在！"
+msgid "There is a subdomain with the same mount point!"
+msgstr "已有一个子域名使用相同的挂载点！"
 
 msgid "Alias scheduled for activation!"
 msgstr "别名激活已预定！"
@@ -2105,6 +2112,24 @@ msgstr "编辑定时任务"
 msgid "Cronjobs"
 msgstr "定时任务"
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - 客户/域名统计"
+
+msgid "Web Stats"
+msgstr "Web 统计"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+msgid "Sum"
+msgstr "总数"
+
 msgid "N/A"
 msgstr "空"
 
@@ -2131,24 +2156,6 @@ msgstr "转向"
 
 msgid "Actions"
 msgstr "动作"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - 客户/域名统计"
-
-msgid "Web Stats"
-msgstr "Web 统计"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
-
-msgid "Sum"
-msgstr "总数"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - 客户/管理错误自定义页面"
@@ -2526,6 +2533,21 @@ msgstr "您的信息"
 msgid "Enable mail auto responder"
 msgstr "启用邮件自动回复器"
 
+msgid "Delete CatchAll"
+msgstr "删除 CatchAll"
+
+msgid "None"
+msgstr "空"
+
+msgid "Create catch all"
+msgstr "创建 CatchAll"
+
+msgid "Catch all account"
+msgstr "CatchAll 账号"
+
+msgid "Catch all"
+msgstr "CatchAll"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "发觉所有的账号创建已预定！"
 
@@ -2541,23 +2563,8 @@ msgstr "创建 CatchAll 邮件账号"
 msgid "Mail accounts list"
 msgstr "邮件账号列表"
 
-msgid "Create catch all"
-msgstr "创建 CatchAll"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "CatchAll 账号删除已预定！"
-
-msgid "Delete CatchAll"
-msgstr "删除 CatchAll"
-
-msgid "None"
-msgstr "空"
-
-msgid "Catch all account"
-msgstr "CatchAll 账号"
-
-msgid "Catch all"
-msgstr "CatchAll"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "请为此邮件删除第一个 CatchAll 账号！"
@@ -2579,6 +2586,30 @@ msgstr "ispCP - 客户/修改密码"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - 客户/修改个人资料"
+
+msgid "You do not have protected areas"
+msgstr "你没有受保护区域"
+
+msgid "Manage users and groups"
+msgstr "管理用户和组"
+
+msgid "Add user"
+msgstr "添加用户"
+
+msgid "Group name"
+msgstr "组名"
+
+msgid "Group members"
+msgstr "组成员"
+
+msgid "Add group"
+msgstr "添加组"
+
+msgid "Group"
+msgstr "组"
+
+msgid "Add new protected area"
+msgstr "添加新的保护区域"
 
 msgid "Please choose user or group"
 msgstr "请选择用户或组"
@@ -2635,9 +2666,6 @@ msgstr "区域名"
 msgid "Unprotect it"
 msgstr "解除保护"
 
-msgid "Manage users and groups"
-msgstr "管理用户和组"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "如果你想删除保护区域状态，现在应该可以被删除！"
 
@@ -2646,27 +2674,6 @@ msgstr "保护区域删除成功！"
 
 msgid "Permission deny!"
 msgstr "未受权，拒绝！"
-
-msgid "You do not have protected areas"
-msgstr "你没有受保护区域"
-
-msgid "Add user"
-msgstr "添加用户"
-
-msgid "Group name"
-msgstr "组名"
-
-msgid "Group members"
-msgstr "组成员"
-
-msgid "Add group"
-msgstr "添加组"
-
-msgid "Group"
-msgstr "组"
-
-msgid "Add new protected area"
-msgstr "添加新的保护区域"
 
 msgid "Protected area was deleted successful!"
 msgstr "新保护区域删除成功！"
@@ -2894,6 +2901,10 @@ msgstr "子域名已经存在或不被允许！"
 msgid "Wrong subdomain syntax!"
 msgstr "错误的子域名拼写！"
 
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "子域名挂载点已经存在！"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "子域名添加已预定！"
 
@@ -3092,7 +3103,8 @@ msgstr ""
 "\n"
 "您有此疑问的新回复:\n"
 
-msgid "Log in to answer."
+#, fuzzy
+msgid "Log in to answer"
 msgstr "登录回复"
 
 #, php-format
@@ -3592,12 +3604,6 @@ msgstr "安装费用"
 msgid "Performance"
 msgstr "性能"
 
-msgid "ispCP Reseller : Add Alias"
-msgstr "ispCP 代理商 : 添加别名"
-
-msgid "You have no user records."
-msgstr "您没有用户记录。"
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - 管理域名/别名"
 
@@ -3640,6 +3646,12 @@ msgstr "订过的域名别名已激活！"
 msgid "Ordered domain alias not activated!"
 msgstr "订过的域名别名未激活！"
 
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP 代理商 : 添加别名"
+
+msgid "You have no user records."
+msgstr "您没有用户记录。"
+
 msgid "ispCP - Circular"
 msgstr "ispCP - 循环"
 
@@ -3681,6 +3693,12 @@ msgstr "此 <em>%s</em> 服务不能被限制！"
 msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "此 <em>%s</em> 服务不能无限制！"
 
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - 代理商/主索引"
+
+msgid "View details"
+msgstr "查看详细"
+
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - 代理商/添加主机项目"
 
@@ -3698,12 +3716,6 @@ msgstr "ispCP - 代理商/编辑主机项目"
 
 msgid "View hosting plan"
 msgstr "查看主机项目"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - 代理商/主索引"
-
-msgid "View details"
-msgstr "查看详细"
 
 msgid "User accounts"
 msgstr "用户记录"
@@ -3739,45 +3751,6 @@ msgstr "ispCP - 代理商/订单邮件设置"
 msgid "Manage orders"
 msgstr "订单管理"
 
-msgid "Wrong order ID!"
-msgstr "错误的订单 ID！"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "订单取消: 超过最高代理价格"
-
-msgid "User added!"
-msgstr "用户已添加！"
-
-msgid "Customer order was removed successful!"
-msgstr "顾客订单已删除成功！"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - 代理商/订单详细"
-
-msgid "Order data updated successfully!"
-msgstr "订单数据已更新成功！"
-
-msgid "Order date"
-msgstr "订单数据"
-
-msgid "Hosting plan"
-msgstr "主机项目"
-
-msgid "Hosting details"
-msgstr "主机详细资料"
-
-msgid "Order details"
-msgstr "订单详细"
-
-msgid "Customer data"
-msgstr "顾客数据"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "您确定想删除此订单吗？"
-
-msgid "Add to the system"
-msgstr "添加到系统里"
-
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - 代理商/订单设置"
 
@@ -3808,11 +3781,50 @@ msgstr "更新订单"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "顾客数据"
+
 msgid "Order"
 msgstr "订单"
 
+msgid "Hosting plan"
+msgstr "主机项目"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "您确定想删除此订单吗？"
+
 msgid "Add/Details"
 msgstr "添加/详细"
+
+msgid "Wrong order ID!"
+msgstr "错误的订单 ID！"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "订单取消: 超过最高代理价格"
+
+msgid "User added!"
+msgstr "用户已添加！"
+
+msgid "Customer order was removed successful!"
+msgstr "顾客订单已删除成功！"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - 代理商/订单详细"
+
+msgid "Order data updated successfully!"
+msgstr "订单数据已更新成功！"
+
+msgid "Order date"
+msgstr "订单数据"
+
+msgid "Hosting details"
+msgstr "主机详细资料"
+
+msgid "Order details"
+msgstr "订单详细"
+
+msgid "Add to the system"
+msgstr "添加到系统里"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - 代理商/修改密码"
@@ -3889,6 +3901,9 @@ msgstr "ispCP - 用户/编辑"
 msgid "Users list"
 msgstr "用户列表"
 
+msgid "This reseller has no domains yet."
+msgstr "此代理商还没有域名。"
+
 msgid "ispCP - Users"
 msgstr "ispCP - 用户"
 
@@ -3924,9 +3939,6 @@ msgstr "此用户拥有域名记录！<br>首先从系统中删除域！"
 msgid "User not terminated!"
 msgstr "用户未到期！"
 
-msgid "This reseller has no domains yet."
-msgstr "此代理商还没有域名。"
-
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "子域名列表为空！您不能添加邮件账号！"
 
@@ -3938,9 +3950,6 @@ msgstr "此代理商还没有域名。"
 
 #~ msgid "Message was sent!"
 #~ msgstr "信息已发送！"
-
-#~ msgid "There is a subdomain with the same mount point!"
-#~ msgstr "已有一个子域名使用相同的挂载点！"
 
 #~ msgid "Message was send!"
 #~ msgstr "消息已发送！"

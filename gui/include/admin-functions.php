@@ -2059,8 +2059,8 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	} else {
 		$message = tr("Hello %s!\n\nYou have an answer for this ticket:\n", "{TO_NAME}");
 	}
-	$message .= $ticket_message;
-	$message .= tr("\n\nLog in to answer ") . "http://" . Config::get('BASE_SERVER_VHOST');
+	$message .= "\n" . $ticket_message;
+	$message .= "\n\n" . tr("Log in to answer") . " http://" . Config::get('BASE_SERVER_VHOST');
 
 	// Format adresses
 	if ($from_fname && $from_lname) {

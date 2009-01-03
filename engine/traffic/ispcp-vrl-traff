@@ -560,7 +560,7 @@ sub collect_mail_traffic {
 		$rs = sys_command("$cat $rlog|$grep -E '(courierpop3login|pop3d).+user=.+top='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|"
 			."$awk '/courierpop3login/ {print \$7,\$9,substr(\$10,1,length(\$10)-1);} "
 			."/pop3d/ {print \$7,\$10,substr(\$11,1,length(\$11)-1);}'"
-			." 1>$pop3_log");
+			." 1>>$pop3_log");
 		return $rs if ($rs != 0);
 		# POP3 accounting for Dovecot
 		# This should not harm in any way. If Courier / Dovecot is not used, the
@@ -568,7 +568,7 @@ sub collect_mail_traffic {
 		$rs = sys_command("$cat $rlog|$grep 'POP3'| $grep 'Disconnected: Logged out' |"
 			."$awk '/POP3/ {split(\$10,array,\"\/\"); print \"user=\"substr(\$6,6,length(\$6)-7) "
 			."\", top=\"substr(array[2],0,length(array[2])) \", retr=\"substr(\$13,6,length(\$13)) ;}'"
-			." 1>$pop3_log");
+			." 1>>$pop3_log");
 		return $rs if ($rs != 0);
 
 		$res = open(F, '<', $pop3_log);

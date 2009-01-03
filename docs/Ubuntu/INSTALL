@@ -10,13 +10,14 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6) Credits
+6) Uninstall
+7) Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0 RC7
-INSTALL Skript:		1.1
+INSTALL Skript:		1.2
 Maintainer:
 Homepage:			http://isp-contol.net
 Linux Distris:		Ubuntu
@@ -35,6 +36,7 @@ All 6.06 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-edgy
 All 7.04 required packages are listed in ./docs/Ubuntu/ubuntu-packages-feisty
 All 7.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-gutsy
 All 8.04 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-hardy
+All 8.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-interpid
 
 ================================================================================
 3) Introduction
@@ -52,7 +54,6 @@ provides graphic user interfaces for the administrators, resellers and users.
 ================================================================================
 4) Installation
 ---------------
-Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
@@ -63,16 +64,18 @@ Make sure you are logged in as root and MySQL is running.
 
 3. Install the required modules
    First update your system:
-	# apt-get update && apt-get upgrade
+	# sudo apt-get update && apt-get upgrade
 
    for Ubuntu 6.06 LTS please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
    for Ubuntu 7.04 please use:
-   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
+   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
    for Ubuntu 7.10 please use:
-   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
+   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
    for Ubuntu 8.04 please use:
-   	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
+   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
+   for Ubuntu 8.10 please use:
+   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-interpid)
 
    If using Hardy, make sure you have added multiverse into your /etc/apt/sources.list
 
@@ -86,19 +89,19 @@ Make sure you are logged in as root and MySQL is running.
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
 5. Build the System by using make:
-	# make install
+	# sudo make -f Makefile.ubuntu install
 
 6. Copy all the directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp/* /
+	# sudo cp -Rv /tmp/ispcp/* /
 
 7. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
 7a. Set the MySQL password, if not set:
-	# mysqladmin -u root password YOUR_PASSWORD
+	# sudo mysqladmin -u root password YOUR_PASSWORD
 
 8. Start the engine setup:
-	# perl ispcp-setup
+	# sudo perl ispcp-setup
 
 9. Install ispCP ω step-by-step
 
@@ -106,18 +109,19 @@ Make sure you are logged in as root and MySQL is running.
 	http://isp-control.net to solve the problem.
 
 10. Activate php mcrypt extension for ubuntu hardy
-	# cat /etc/php5/conf.d/mcrypt.ini <<eof
-	# extension=mcrypt.so
-	# eof
+	# sudo touch /etc/php5/conf.d/mcrypt.ini
+	# sudo echo "extension=mcrypt.so" > /etc/php5/conf.d/mcrypt.ini
+	# sudo chmod 644 /etc/php5/conf.d/mcrypt.ini
+	# sudo cp /etc/php5/conf.d/mcrypt.ini /etc/php5/cgi/conf.d/
+	# sudo /etc/init.d/apache2 restart
 
 11. Clean the temporary folders:
-	# rm -fR /tmp/ispcp
+	# sudo rm -fR /tmp/ispcp
 
 
 ================================================================================
 5) Update
 ---------
-Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
@@ -128,18 +132,18 @@ Make sure you are logged in as root and MySQL is running.
 
 3. Install the required modules
    first update your system:
-	# apt-get update && apt-get upgrade
+	# sudo apt-get update && apt-get upgrade
 
    for Ubuntu 6.06 LTS please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
    for Ubuntu 7.04 please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
    for Ubuntu 7.10 please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
    for Ubuntu 8.04 please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
    for Ubuntu 8.10 please use:
-	# apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-interpid)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-interpid)
 
 	(when you get to the courier screen select 'no' to web directories)
 	(when you get to the postfix screen select 'internet site' and then type 'root'
@@ -151,34 +155,34 @@ Make sure you are logged in as root and MySQL is running.
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
 5. Build the System by using make:
-	# make install
+	# sudo make install
 
 6. Save files
-	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
-	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messager/
-	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
-	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
+	# sudo cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
+	# sudo cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messager/
+	# sudo cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
+	# sudo cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 
    If updating from RC3 or higher:
-	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
+	# sudo cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 
 7. Delete old files to avoid security risks:
-	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -fR /var/www/ispcp/gui/*.php
+	# sudo rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
+	# sudo rm -fR /var/www/ispcp/gui/*.php
 
 8. Copy /usr and /var directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp/usr/* /usr/
-	# cp -Rv /tmp/ispcp/var/* /var/
+	# sudo cp -Rv /tmp/ispcp/usr/* /usr/
+	# sudo cp -Rv /tmp/ispcp/var/* /var/
 
 9. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
-	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-	# cp -Rv /tmp/ispcp/etc/* /etc/
+	# sudo mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
+	# sudo cp -Rv /tmp/ispcp/etc/* /etc/
 
 10. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
 11. Start the engine update:
-	# perl ispcp-update
+	# sudo perl ispcp-update
 
 12. Update ispCP ω step-by-step
 
@@ -186,13 +190,29 @@ Make sure you are logged in as root and MySQL is running.
 	http://isp-control.net to solve the problem.
 
 13. Clean the temporary folders:
-	# rm -fR /tmp/ispcp/
+	# sudo rm -fR /tmp/ispcp/
 
 ================================================================================
-6) Credits
+6) Uninstall
+------------
+Make sure you are logged in as root and MySQL is running.
+
+1. Change into the engine directory:
+	# cd /var/www/ispcp/engine/setup
+
+2. Start the uninstall script:
+	# perl ispcp-uninstall
+
+3. Clean up ur system
+
+================================================================================
+7) Credits
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.
+ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks 
+of the ispCP | isp Control Panel Project Team.
+
 Please visit our site under http://isp-control.net for further information on
 ispCP ω, ispCP and other themes.
 

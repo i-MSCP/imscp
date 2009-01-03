@@ -10,13 +10,14 @@ Table of Content
 3) Introduction
 4) Installation
 5) Update
-6 Credits
+6) Uninstall
+7) Credits
 
 ================================================================================
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0 RC7
-INSTALL Script:		1.1
+INSTALL Script:		1.2
 Maintainer:
 Homepage:			http://www.isp-contol.net
 Linux Distris:		Slackware 12
@@ -59,10 +60,18 @@ Please have a look in the CentOS INSTALL file
 Please have a look in the CentOS INSTALL file
 
 ================================================================================
-6) Credits
+6) Uninstall
+------------
+Please have a look in the CentOS INSTALL file
+
+================================================================================
+7) Credits
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.
+ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks 
+of the ispCP | isp Control Panel Project Team.
+
 Please visit our site under http://isp-control.net for further information on
 ispCP ω, ispCP and other themes.
 

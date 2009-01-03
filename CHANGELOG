@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-03 Benedikt Heintel
+	- DOCS:
+		* Updates INSTALL files
+	- ENGINE:
+		* Pop3 statistics with error
+	- LANGUAGES:
+		* Language Files updated
+
 2009-01-02 Daniel Andreca
 	- CONFIGS:
 		* Fixed #1599: FreeBSD Fixes (thanks FEG)

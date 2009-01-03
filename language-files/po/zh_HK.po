@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 22:27+0200\n"
+"POT-Creation-Date: 2009-01-03 13:51+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -77,7 +77,9 @@ msgstr "錯誤：驗證碼不正確"
 msgid "Security code"
 msgstr "驗證碼"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr "（為避免濫用，請輸入上面圖中顯示的字母到“驗證碼”欄中）"
 
 msgid "Request password"
@@ -93,7 +95,9 @@ msgid "Incorrect username length or syntax!"
 msgstr "使用者名長度或語法錯誤！"
 
 #, php-format
-msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr "密碼必須最少%s字元，包括字母和數字。"
 
 #, php-format
@@ -512,7 +516,8 @@ msgstr "是"
 msgid "No"
 msgstr "否"
 
-msgid "User does not exist or you do not have permission to access this interface!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr "使用者不存在或你沒有許可權訪問此介面！"
 
 msgid "Incorrect subdomains limit!"
@@ -588,7 +593,8 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr "<em>%s</em> 服務不能被限制！ "
 
 #, php-format
-msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr "指定數小於目前系統裏的 <em>%s</em> 條記錄！"
 
 #, php-format
@@ -640,11 +646,53 @@ msgstr "所有流量"
 msgid "Day"
 msgstr "日"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - 管理員/增加託管計劃"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - 管理員/託管計劃管理"
+
+msgid "Hosting plans"
+msgstr "託管計劃"
+
+msgid "Manage hosting plans"
+msgstr "管理託管計劃"
+
+msgid "Purchasing"
+msgstr "購買"
 
 msgid "Add hosting plan"
 msgstr "增加託管計劃"
+
+msgid "Add new user hosting plan"
+msgstr "增加新的託管計劃"
+
+msgid "Return to previous menu"
+msgstr "返回上一級目錄"
+
+msgid "Hosting plan added!"
+msgstr "託管計劃增加完成！"
+
+msgid "Hosting plan deleted!"
+msgstr "託管計劃刪除完成！"
+
+msgid "Hosting plan updated!"
+msgstr "託管計劃更新完成！"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "託管計劃不能被刪除，它們處於工作狀態！"
+
+msgid "Hosting plans not found!"
+msgstr "沒有發現託管計劃！"
+
+msgid "No."
+msgstr "否."
+
+msgid "Name"
+msgstr "名稱"
+
+msgid "Show hosting plan"
+msgstr "顯示託管計劃"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - 管理員/增加託管計劃"
 
 msgid "Hosting plan properties"
 msgstr "託管計劃屬性"
@@ -760,48 +808,6 @@ msgstr "不正確的價格。例: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "不正確的安裝費用。例:19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - 管理員/託管計劃管理"
-
-msgid "Hosting plans"
-msgstr "託管計劃"
-
-msgid "Manage hosting plans"
-msgstr "管理託管計劃"
-
-msgid "Purchasing"
-msgstr "購買"
-
-msgid "Add new user hosting plan"
-msgstr "增加新的託管計劃"
-
-msgid "Return to previous menu"
-msgstr "返回上一級目錄"
-
-msgid "Hosting plan added!"
-msgstr "託管計劃增加完成！"
-
-msgid "Hosting plan deleted!"
-msgstr "託管計劃刪除完成！"
-
-msgid "Hosting plan updated!"
-msgstr "託管計劃更新完成！"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "託管計劃不能被刪除，它們處於工作狀態！"
-
-msgid "Hosting plans not found!"
-msgstr "沒有發現託管計劃！"
-
-msgid "No."
-msgstr "否."
-
-msgid "Name"
-msgstr "名稱"
-
-msgid "Show hosting plan"
-msgstr "顯示託管計劃"
-
 #, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr "你有 <b>%d</b> 新的客戶疑問"
@@ -893,6 +899,10 @@ msgstr "沒有網域別名系統錯誤"
 msgid "No subdomain system errors"
 msgstr "沒有子網域系統錯誤"
 
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "沒有子網域系統錯誤"
+
 msgid "No email account system errors"
 msgstr "沒有郵件統計系統錯誤"
 
@@ -907,6 +917,10 @@ msgstr "網域別名錯誤"
 
 msgid "Subdomain errors"
 msgstr "子網域錯誤"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "子網域轉寄"
 
 msgid "Mail account errors"
 msgstr "郵件統計錯誤"
@@ -1010,18 +1024,24 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b>的<b>%2$s</b>服務限制已解除！<br>"
 
 #, php-format
-msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr "你不能移動<b>%1$s</b>目的代理商，<br>它正被<b>%2$s</b>服務限制！"
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr "目的代理商的服務<b>%2$s</b><b>%1$s</b>已超出限制！"
 
 msgid "Moving aborted!"
 msgstr "移動已被終止！"
 
 #, php-format
-msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr "<b>%s</b> 有IP位址不能被目的代理商所管理！<br>此使用者不能被移除！"
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1065,9 +1085,6 @@ msgstr "此使用者有網域！<br>要刪除使用者請先刪除此使用者�
 
 msgid "User was disabled"
 msgstr "使用者已被停用"
-
-msgid "Incorrect data input!"
-msgstr "輸入的資料不正確！"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理員/語言設定"
@@ -1126,6 +1143,9 @@ msgstr "安裝"
 
 msgid "Export"
 msgstr "導出"
+
+msgid "Incorrect data input!"
+msgstr "輸入的資料不正確！"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - 管理員/修改密碼"
@@ -1242,14 +1262,16 @@ msgid "Domains"
 msgstr "網域"
 
 #, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr "現時別名數目 與 實際別名數目 衝突: %1$d != %2$d"
 
 msgid "Aliases"
 msgstr "別名"
 
 #, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr "現時ftp數目 與 實際ftp數目 衝突: %1$d != %2$d"
 
 msgid "SQL Databases"
@@ -1268,21 +1290,28 @@ msgid "Reseller data inconsistency!"
 msgstr "代理商數據衝突！"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr "此代理商已分配有更多/更高<b>%s</b>（帳號/限制）於你新輸入的。"
 
 msgid "Edit reseller aborted!"
 msgstr "編輯代理商終止！"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr "此代理商的客戶正使用/擁有更多/更高<b>%s</b>（帳號/限制）於你新輸入的。"
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr "此代理商擁有未適當限制服務的客戶（們）！<b>%s</b><br>"
 
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "如果你想限制代理商，你必須先限制它的客戶！<br>"
 
 #, php-format
@@ -1394,23 +1423,11 @@ msgstr "%s 不存在或為空"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "反Rootkits工具日誌檢查器"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - 管理員/伺服器日統計"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - 管理員/伺服器統計"
 
-msgid "Server day statistics"
-msgstr "伺服器日統計"
-
-msgid "Month:"
-msgstr "月:"
-
-msgid "Year:"
-msgstr "年:"
-
-msgid "Day:"
-msgstr "日:"
-
-msgid "Hour"
-msgstr "小時"
+msgid "Server statistics"
+msgstr "伺服器統計"
 
 msgid "Web in"
 msgstr "Web 接收"
@@ -1442,11 +1459,23 @@ msgstr "全部接收"
 msgid "All out"
 msgstr "全部發送"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - 管理員/伺服器統計"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - 管理員/伺服器日統計"
 
-msgid "Server statistics"
-msgstr "伺服器統計"
+msgid "Server day statistics"
+msgstr "伺服器日統計"
+
+msgid "Month:"
+msgstr "月:"
+
+msgid "Year:"
+msgstr "年:"
+
+msgid "Day:"
+msgstr "日:"
+
+msgid "Hour"
+msgstr "小時"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP 管理員 / 系統工具 / 伺服器狀態"
@@ -1483,6 +1512,96 @@ msgstr "選項"
 
 msgid "Kill session"
 msgstr "終止會話層"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - 管理員/設定"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "錯誤: 只允許正數！"
+
+msgid "Settings saved !"
+msgstr "設定已儲存！"
+
+msgid "General settings"
+msgstr "一般設定"
+
+msgid "Activation link expire time (minutes)"
+msgstr "啟動密碼鏈結過期時間（分鐘）"
+
+msgid "Password settings"
+msgstr "密碼設定"
+
+msgid "Use strong Passwords"
+msgstr "使用較強密碼"
+
+msgid "Password length"
+msgstr "密碼長度"
+
+msgid "Bruteforce detection"
+msgstr "設定監聽"
+
+msgid "Block time between logins"
+msgstr "預設再次登入間隔時間"
+
+msgid "Max number of login attempts"
+msgstr "最多嘗試登入次數"
+
+msgid "Blocktime (minutes)"
+msgstr "預設凍結時間 （分鐘）"
+
+msgid "Block time between logins (seconds)"
+msgstr "預設兩次登入間隔時間（秒）"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "最大嘗試登入次數！"
+
+msgid "Other settings"
+msgstr "其他設定"
+
+msgid "E-Mail settings"
+msgstr "郵件設定"
+
+msgid "Create default E-Mail addresses"
+msgstr "建立默認 E-Mail 地址"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "E-Mail 帳號強制暫停"
+
+msgid "Default language"
+msgstr "默認語言"
+
+msgid "Support system"
+msgstr "系統支援"
+
+msgid "Apply changes"
+msgstr "應用更改"
+
+msgid "Server ports"
+msgstr "伺服器連接埠"
+
+msgid "Hosting plans available for"
+msgstr "可用的託管計劃用於"
+
+msgid "Admin"
+msgstr "管理員"
+
+msgid "Domains per page"
+msgstr "每頁顯示網域數"
+
+msgid "Log Level"
+msgstr "日誌等級"
+
+msgid "Notices, Warnings and Errors"
+msgstr "通知，警告和錯誤"
+
+msgid "Warnings and Errors"
+msgstr "警告和錯誤"
+
+msgid "Errors"
+msgstr "錯誤"
+
+msgid "Check for update"
+msgstr "檢查更新"
 
 msgid "You can only upload images!"
 msgstr "你只能上傳圖像檔！"
@@ -1565,107 +1684,17 @@ msgstr "找回密碼鏈結"
 msgid "Subject"
 msgstr "主題"
 
-msgid "Apply changes"
-msgstr "應用更改"
-
 msgid "URL to this admin panel"
 msgstr "轉到管理員面板的 URL"
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - 管理員/維護模式"
 
-msgid "Settings saved !"
-msgstr "設定已儲存！"
-
 msgid "Maintenance mode"
 msgstr "維護模式"
 
 msgid "Under this mode only administrators can login"
 msgstr "此模式下只允許管理員登入"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - 管理員/設定"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "錯誤: 只允許正數！"
-
-msgid "General settings"
-msgstr "一般設定"
-
-msgid "Activation link expire time (minutes)"
-msgstr "啟動密碼鏈結過期時間（分鐘）"
-
-msgid "Password settings"
-msgstr "密碼設定"
-
-msgid "Use strong Passwords"
-msgstr "使用較強密碼"
-
-msgid "Password length"
-msgstr "密碼長度"
-
-msgid "Bruteforce detection"
-msgstr "設定監聽"
-
-msgid "Block time between logins"
-msgstr "預設再次登入間隔時間"
-
-msgid "Max number of login attempts"
-msgstr "最多嘗試登入次數"
-
-msgid "Blocktime (minutes)"
-msgstr "預設凍結時間 （分鐘）"
-
-msgid "Block time between logins (seconds)"
-msgstr "預設兩次登入間隔時間（秒）"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "最大嘗試登入次數！"
-
-msgid "Other settings"
-msgstr "其他設定"
-
-msgid "E-Mail settings"
-msgstr "郵件設定"
-
-msgid "Create default E-Mail addresses"
-msgstr "建立默認 E-Mail 地址"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "E-Mail 帳號強制暫停"
-
-msgid "Default language"
-msgstr "默認語言"
-
-msgid "Support system"
-msgstr "系統支援"
-
-msgid "Server ports"
-msgstr "伺服器連接埠"
-
-msgid "Hosting plans available for"
-msgstr "可用的託管計劃用於"
-
-msgid "Admin"
-msgstr "管理員"
-
-msgid "Domains per page"
-msgstr "每頁顯示網域數"
-
-msgid "Log Level"
-msgstr "日誌等級"
-
-msgid "Notices, Warnings and Errors"
-msgstr "通知，警告和錯誤"
-
-msgid "Warnings and Errors"
-msgstr "警告和錯誤"
-
-msgid "Errors"
-msgstr "錯誤"
-
-msgid "Check for update"
-msgstr "檢查更新"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "錯誤:只能允許字母、數位、破折號、底線。"
@@ -1943,9 +1972,8 @@ msgstr "不正確的轉向語法"
 msgid "Domain with this name already exist"
 msgstr "此網域已經存在"
 
-#, fuzzy
-msgid "Mount point already in use!"
-msgstr "子網域掛載點已經存在！"
+msgid "There is a subdomain with the same mount point!"
+msgstr "已有一個子網域使用相同的掛載點！"
 
 msgid "Alias scheduled for activation!"
 msgstr "別名啟動已預定！"
@@ -1954,13 +1982,17 @@ msgid "Alias scheduled for addition!"
 msgstr "別名增加已預定！"
 
 #, fuzzy
-msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr "你試圖刪除的網域別名有子網域！<br>請先刪除它們！"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr "你試圖刪除的網域別名有郵件帳號！<br>請先刪除它們！"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr "你試圖刪除的網域別名擁FTP帳號！<br>請先刪除它們！"
 
 msgid "Alias scheduled for deletion!"
@@ -1990,7 +2022,8 @@ msgstr "停用"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "轉向URL地址必須以“http://”開始"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr "你試圖刪除的子網域有郵件帳號！請先刪除它們！"
 
 msgid "Subdomain scheduled for deletion!"
@@ -2026,7 +2059,8 @@ msgstr "（通常名稱"
 msgid "Restore backup"
 msgstr "恢復備份"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr "點擊“恢復”按鈕系統將恢復到最後的日常備份"
 
 msgid "Restore"
@@ -2077,6 +2111,24 @@ msgstr "編輯定時任務"
 msgid "Cronjobs"
 msgstr "定時任務"
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - 客戶/網域統計"
+
+msgid "Web Stats"
+msgstr "Web 統計"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+msgid "Sum"
+msgstr "總數"
+
 msgid "N/A"
 msgstr "空"
 
@@ -2103,24 +2155,6 @@ msgstr "轉向"
 
 msgid "Actions"
 msgstr "動作"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - 客戶/網域統計"
-
-msgid "Web Stats"
-msgstr "Web 統計"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
-
-msgid "Sum"
-msgstr "總數"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - 客戶/管理錯誤自定義頁面"
@@ -2497,6 +2531,21 @@ msgstr "你的訊息"
 msgid "Enable mail auto responder"
 msgstr "啟用郵件自動回覆器"
 
+msgid "Delete CatchAll"
+msgstr "刪除 CatchAll"
+
+msgid "None"
+msgstr "空"
+
+msgid "Create catch all"
+msgstr "建立 CatchAll"
+
+msgid "Catch all account"
+msgstr "CatchAll 帳號"
+
+msgid "Catch all"
+msgstr "CatchAll"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "發覺所有的帳號建立已預定！"
 
@@ -2512,23 +2561,8 @@ msgstr "建立 CatchAll 郵件帳號"
 msgid "Mail accounts list"
 msgstr "郵件帳號列表"
 
-msgid "Create catch all"
-msgstr "建立 CatchAll"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "CatchAll 帳號刪除已預定！"
-
-msgid "Delete CatchAll"
-msgstr "刪除 CatchAll"
-
-msgid "None"
-msgstr "空"
-
-msgid "Catch all account"
-msgstr "CatchAll 帳號"
-
-msgid "Catch all"
-msgstr "CatchAll"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "請為此郵件刪除第一個 CatchAll 帳號！"
@@ -2550,6 +2584,30 @@ msgstr "ispCP - 客戶/修改密碼"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - 客戶/修改個人資料"
+
+msgid "You do not have protected areas"
+msgstr "你沒有受保護區域"
+
+msgid "Manage users and groups"
+msgstr "管理使用者和組"
+
+msgid "Add user"
+msgstr "增加使用者"
+
+msgid "Group name"
+msgstr "組名"
+
+msgid "Group members"
+msgstr "組成員"
+
+msgid "Add group"
+msgstr "增加組"
+
+msgid "Group"
+msgstr "組"
+
+msgid "Add new protected area"
+msgstr "增加新的保護區域"
 
 msgid "Please choose user or group"
 msgstr "請選擇使用者或組"
@@ -2606,9 +2664,6 @@ msgstr "區域名"
 msgid "Unprotect it"
 msgstr "解除保護"
 
-msgid "Manage users and groups"
-msgstr "管理使用者和組"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "如果你想刪除保護區域狀態，現在應該可以被刪除！"
 
@@ -2617,27 +2672,6 @@ msgstr "保護區域已刪除！"
 
 msgid "Permission deny!"
 msgstr "未受權，拒絕！"
-
-msgid "You do not have protected areas"
-msgstr "你沒有受保護區域"
-
-msgid "Add user"
-msgstr "增加使用者"
-
-msgid "Group name"
-msgstr "組名"
-
-msgid "Group members"
-msgstr "組成員"
-
-msgid "Add group"
-msgstr "增加組"
-
-msgid "Group"
-msgstr "組"
-
-msgid "Add new protected area"
-msgstr "增加新的保護區域"
 
 msgid "Protected area was deleted successful!"
 msgstr "新保護區域已刪除！"
@@ -2865,6 +2899,10 @@ msgstr "子網域已經存在或不被允許！"
 msgid "Wrong subdomain syntax!"
 msgstr "錯誤的子網域語法！"
 
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "子網域掛載點已經存在！"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "子網域增加已預定！"
 
@@ -3063,7 +3101,8 @@ msgstr ""
 "\n"
 "你有此疑問的新回覆:\n"
 
-msgid "Log in to answer."
+#, fuzzy
+msgid "Log in to answer"
 msgstr "登入回覆"
 
 #, php-format
@@ -3395,46 +3434,60 @@ msgstr "隱藏別名"
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "你已到達網域上限。<br>你無法再增加網域！"
 
-msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
+"subdomains!"
 msgstr "你有子網域限制！<br>你無法增加一個無限制子網域的使用者！"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "你已超出子網域限制！"
 
-msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr "你有別名限制！<br>你無法增加一個無限制別名的使用者！"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "你已超出別名限制！"
 
-msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
+"mail accounts!"
 msgstr "你有郵件帳號限制！<br>你無法增加一個無限制郵件帳號的使用者！"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "你已超出郵件帳號數限制！"
 
-msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
+"accounts!"
 msgstr "你有FTP帳號限制！<br>你無法增加一個無限制FTP帳號的使用者！"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "你已超出FTP帳號數限制！"
 
-msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr "你有SQL資料庫限制！<br>你無法增加一個無限制SQL資料庫的使用者！"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "你已超出SQL資料庫數限制！"
 
-msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
+"users!"
 msgstr "你有SQL使用者限制！<br>你無法增加一個無限制SQL使用者的使用者！"
 
-msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
+"here!"
 msgstr "你已禁止此使用者使用SQL資料庫！<br>你無法在這獲得SQL使用者！"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "你已超出SQL資料庫限制！"
 
-msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr "你有流量限制！<br>你無法增加一個無限制流量的使用者！"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
@@ -3499,7 +3552,9 @@ msgstr "個人資料"
 msgid "Check Out"
 msgstr "結算"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
 msgstr "<b>非常感謝你的光臨</b><br>你將收到一份具有詳細資訊的郵件。"
 
 msgid "No available hosting packages"
@@ -3547,12 +3602,6 @@ msgstr "安裝費用"
 msgid "Performance"
 msgstr "性能"
 
-msgid "ispCP Reseller : Add Alias"
-msgstr "ispCP 代理商 : 增加別名"
-
-msgid "You have no user records."
-msgstr "你沒有使用者記錄。"
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - 管理網域/別名"
 
@@ -3595,6 +3644,12 @@ msgstr "訂過的網域別名已啟動！"
 msgid "Ordered domain alias not activated!"
 msgstr "訂過的網域別名未啟動！"
 
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP 代理商 : 增加別名"
+
+msgid "You have no user records."
+msgstr "你沒有使用者記錄。"
+
 msgid "ispCP - Circular"
 msgstr "ispCP - 迴圈"
 
@@ -3604,16 +3659,21 @@ msgstr "迴圈"
 msgid "Wrong domain ID!"
 msgstr "錯誤的網域 ID！"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
 msgstr "你試圖刪除的網域有email 帳號！<br> 請先刪除它！"
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr "你試圖刪除的網域有 FTP 帳號！<br> 請先刪除它！"
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr "你試圖刪除的域有網域別名！<br> 請先刪除它！"
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
 msgstr "你試圖刪除的網域有子網域帳號！<br> 請先刪除它！"
 
 msgid "ispCP - Domain/Edit"
@@ -3630,6 +3690,12 @@ msgstr "此 <em>%s</em> 服務不能被限制！"
 #, php-format
 msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "此 <em>%s</em> 服務不能無限制！"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - 代理商/主索引"
+
+msgid "View details"
+msgstr "查看詳細"
 
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - 代理商/增加託管計劃"
@@ -3648,12 +3714,6 @@ msgstr "ispCP - 代理商/編輯託管計劃"
 
 msgid "View hosting plan"
 msgstr "查看託管計劃"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - 代理商/主索引"
-
-msgid "View details"
-msgstr "查看詳細"
 
 msgid "User accounts"
 msgstr "使用者記錄"
@@ -3689,45 +3749,6 @@ msgstr "ispCP - 代理商/訂單郵件設定"
 msgid "Manage orders"
 msgstr "訂單管理"
 
-msgid "Wrong order ID!"
-msgstr "錯誤的訂單 ID！"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "訂單取消: 到達代理商最高限制"
-
-msgid "User added!"
-msgstr "使用者已增加！"
-
-msgid "Customer order was removed successful!"
-msgstr "顧客訂單已被刪除！"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - 代理商/訂單詳細"
-
-msgid "Order data updated successfully!"
-msgstr "訂單資料已更新成功！"
-
-msgid "Order date"
-msgstr "訂單資料"
-
-msgid "Hosting plan"
-msgstr "託管計劃"
-
-msgid "Hosting details"
-msgstr "託管詳細資料"
-
-msgid "Order details"
-msgstr "訂單詳細"
-
-msgid "Customer data"
-msgstr "顧客數據"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "你確定想刪除此訂單嗎？"
-
-msgid "Add to the system"
-msgstr "增加到系統裏"
-
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - 代理商/訂單設定"
 
@@ -3758,11 +3779,50 @@ msgstr "更新訂單"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "顧客數據"
+
 msgid "Order"
 msgstr "訂單"
 
+msgid "Hosting plan"
+msgstr "託管計劃"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "你確定想刪除此訂單嗎？"
+
 msgid "Add/Details"
 msgstr "增加/詳細"
+
+msgid "Wrong order ID!"
+msgstr "錯誤的訂單 ID！"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "訂單取消: 到達代理商最高限制"
+
+msgid "User added!"
+msgstr "使用者已增加！"
+
+msgid "Customer order was removed successful!"
+msgstr "顧客訂單已被刪除！"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - 代理商/訂單詳細"
+
+msgid "Order data updated successfully!"
+msgstr "訂單資料已更新成功！"
+
+msgid "Order date"
+msgstr "訂單資料"
+
+msgid "Hosting details"
+msgstr "託管詳細資料"
+
+msgid "Order details"
+msgstr "訂單詳細"
+
+msgid "Add to the system"
+msgstr "增加到系統裏"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - 代理商/修改密碼"
@@ -3839,6 +3899,9 @@ msgstr "ispCP - 使用者/編輯"
 msgid "Users list"
 msgstr "使用者列表"
 
+msgid "This reseller has no domains yet."
+msgstr "此代理商還沒有網域。"
+
 msgid "ispCP - Users"
 msgstr "ispCP - 使用者"
 
@@ -3867,37 +3930,42 @@ msgstr "使用者資料已更新！"
 msgid "User data not updated!"
 msgstr "使用者資料未更新！"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr "此使用者擁有網域記錄！<br>請先從系統中刪除網域！"
 
 msgid "User not terminated!"
 msgstr "使用者未終止！"
 
-msgid "This reseller has no domains yet."
-msgstr "此代理商還沒有網域。"
-
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "子網域列表為空！你不能增加郵件帳號！"
+
 #~ msgid "Catchall account"
 #~ msgstr "Catchall 帳號"
+
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "密碼長度不夠或語法錯誤！（必須要有字母和數位）"
+
 #~ msgid "Message was sent!"
 #~ msgstr "資訊已發送！"
-#~ msgid "There is a subdomain with the same mount point!"
-#~ msgstr "已有一個子網域使用相同的掛載點！"
+
 #~ msgid "Message was send!"
 #~ msgstr "訊息已發送！"
+
 #~ msgid "Database update %s failed"
 #~ msgstr "資料庫更新 %s 失敗"
+
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Missing or wrong data!"
+
 #~ msgid "Password data includes not valid signs!"
 #~ msgstr "Password data includes not valid signs!"
+
 #~ msgid "Unknown domain status!"
 #~ msgstr "Unknown domain status!"
+
 #~ msgid "Unknown account type!"
 #~ msgstr "Unknown account type!"
+
 #~ msgid "Invalid account id!"
 #~ msgstr "Invalid account id!"
-

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da_DK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 21:02+0200\n"
+"POT-Creation-Date: 2009-01-03 13:51+0800\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -652,11 +652,53 @@ msgstr "Alt trafik"
 msgid "Day"
 msgstr "Dag"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/Tilføj hosting plan"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Hosting Plan Håndtéring"
+
+msgid "Hosting plans"
+msgstr "Hosting Planer"
+
+msgid "Manage hosting plans"
+msgstr "Håndtér hosting planer"
+
+msgid "Purchasing"
+msgstr "Køb"
 
 msgid "Add hosting plan"
 msgstr "Tilføj hosting plan"
+
+msgid "Add new user hosting plan"
+msgstr "Tilføj nyt bruger-hosting produkt"
+
+msgid "Return to previous menu"
+msgstr "Tilbage til foregående menu"
+
+msgid "Hosting plan added!"
+msgstr "Hosting plan tilføjet!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hosting plan slettet!"
+
+msgid "Hosting plan updated!"
+msgstr "Hosting plan opdateret!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hosting plan kan ikke slettes, da der er bestillinger!"
+
+msgid "Hosting plans not found!"
+msgstr "Hosting planer ikke fundet!"
+
+msgid "No."
+msgstr "Nr."
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Show hosting plan"
+msgstr "Vis hosting plan"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Tilføj hosting plan"
 
 msgid "Hosting plan properties"
 msgstr "Hosting plan egenskaber"
@@ -772,48 +814,6 @@ msgstr "Forkert pris. Eks.: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Forkert setup gebyr. Eks.: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administrator/Hosting Plan Håndtéring"
-
-msgid "Hosting plans"
-msgstr "Hosting Planer"
-
-msgid "Manage hosting plans"
-msgstr "Håndtér hosting planer"
-
-msgid "Purchasing"
-msgstr "Køb"
-
-msgid "Add new user hosting plan"
-msgstr "Tilføj nyt bruger-hosting produkt"
-
-msgid "Return to previous menu"
-msgstr "Tilbage til foregående menu"
-
-msgid "Hosting plan added!"
-msgstr "Hosting plan tilføjet!"
-
-msgid "Hosting plan deleted!"
-msgstr "Hosting plan slettet!"
-
-msgid "Hosting plan updated!"
-msgstr "Hosting plan opdateret!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Hosting plan kan ikke slettes, da der er bestillinger!"
-
-msgid "Hosting plans not found!"
-msgstr "Hosting planer ikke fundet!"
-
-msgid "No."
-msgstr "Nr."
-
-msgid "Name"
-msgstr "Navn"
-
-msgid "Show hosting plan"
-msgstr "Vis hosting plan"
-
 #, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr "Du har <b>%d</b> ny(e) support spørgsmål"
@@ -907,6 +907,10 @@ msgstr "Ingen domænealiases systemfejl"
 msgid "No subdomain system errors"
 msgstr "Ingen subdomæne system fejl"
 
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "Ingen subdomæne system fejl"
+
 msgid "No email account system errors"
 msgstr "Ingen emailkonto systemfejl"
 
@@ -921,6 +925,10 @@ msgstr "Domænealias fejl"
 
 msgid "Subdomain errors"
 msgstr "Subdomæne fejl"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "Subdomæne Vidersend"
 
 msgid "Mail account errors"
 msgstr "Mailkonto fejl"
@@ -1096,9 +1104,6 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Bruger blev deaktiveret"
 
-msgid "Incorrect data input!"
-msgstr "Ukorrekt data input!"
-
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Internationalisering"
 
@@ -1156,6 +1161,9 @@ msgstr "Installér"
 
 msgid "Export"
 msgstr "Eksportér"
+
+msgid "Incorrect data input!"
+msgstr "Ukorrekt data input!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Admin/Ændre Adgangskode"
@@ -1443,23 +1451,11 @@ msgstr "%s findes ikke eller er tom"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits Tools Log Checker"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Admin/Server dag statistiker"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP – Admin/Server statistiker"
 
-msgid "Server day statistics"
-msgstr "Server statistik pr. dag"
-
-msgid "Month:"
-msgstr "Måned:"
-
-msgid "Year:"
-msgstr "År:"
-
-msgid "Day:"
-msgstr "Dag:"
-
-msgid "Hour"
-msgstr "Time"
+msgid "Server statistics"
+msgstr "Server statistiker"
 
 msgid "Web in"
 msgstr "Web ind"
@@ -1491,11 +1487,23 @@ msgstr "Alle ind"
 msgid "All out"
 msgstr "Alle ud"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP – Admin/Server statistiker"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Server dag statistiker"
 
-msgid "Server statistics"
-msgstr "Server statistiker"
+msgid "Server day statistics"
+msgstr "Server statistik pr. dag"
+
+msgid "Month:"
+msgstr "Måned:"
+
+msgid "Year:"
+msgstr "År:"
+
+msgid "Day:"
+msgstr "Dag:"
+
+msgid "Hour"
+msgstr "Time"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Admin / System Tools / Server Status"
@@ -1532,6 +1540,100 @@ msgstr "Muligheder"
 
 msgid "Kill session"
 msgstr "Afslut session"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Indstillinger"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "FEJL: Kun positive tal er tilladte!"
+
+msgid "Settings saved !"
+msgstr "Indstillinger gemt !"
+
+msgid "General settings"
+msgstr "Generel indstillinger"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktiverings linkets udløbstid (minutter)"
+
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce detection"
+
+msgid "Block time between logins"
+msgstr "Blokkeringstid mellem logind"
+
+msgid "Max number of login attempts"
+msgstr "Max antal af logind forsøg"
+
+msgid "Blocktime (minutes)"
+msgstr "Blokerings tid (minutter)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Blokkeringstid mellem logind (sekunder)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Max antal af CAPTCHA bekræftelses forsøg"
+
+msgid "Other settings"
+msgstr "Andre indstillinger"
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Default language"
+msgstr "Standard sprog"
+
+msgid "Support system"
+msgstr "Support system"
+
+msgid "Apply changes"
+msgstr "Tilføj ændringer"
+
+msgid "Server ports"
+msgstr "Server porte"
+
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Til Administrator"
+
+msgid "Domains per page"
+msgstr "Domæner pr side"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Niveau"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Fejl"
+
+#, fuzzy
+msgid "Check for update"
+msgstr "Bruger opdateret"
 
 msgid "You can only upload images!"
 msgstr "Du kan kun uploade billeder!"
@@ -1614,111 +1716,17 @@ msgstr "Glemt adgangskode, link"
 msgid "Subject"
 msgstr "Emne"
 
-msgid "Apply changes"
-msgstr "Tilføj ændringer"
-
 msgid "URL to this admin panel"
 msgstr ""
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Admin/Vedligeholdelses mode"
 
-msgid "Settings saved !"
-msgstr "Indstillinger gemt !"
-
 msgid "Maintenance mode"
 msgstr "Vedligeholdelses mode"
 
 msgid "Under this mode only administrators can login"
 msgstr "Under Vedligeholdelses mode, kan kun administratorer logge ind"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Admin/Indstillinger"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "FEJL: Kun positive tal er tilladte!"
-
-msgid "General settings"
-msgstr "Generel indstillinger"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Aktiverings linkets udløbstid (minutter)"
-
-msgid "Password settings"
-msgstr ""
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "Password length"
-msgstr ""
-
-msgid "Bruteforce detection"
-msgstr "Bruteforce detection"
-
-msgid "Block time between logins"
-msgstr "Blokkeringstid mellem logind"
-
-msgid "Max number of login attempts"
-msgstr "Max antal af logind forsøg"
-
-msgid "Blocktime (minutes)"
-msgstr "Blokerings tid (minutter)"
-
-msgid "Block time between logins (seconds)"
-msgstr "Blokkeringstid mellem logind (sekunder)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Max antal af CAPTCHA bekræftelses forsøg"
-
-msgid "Other settings"
-msgstr "Andre indstillinger"
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-msgid "Default language"
-msgstr "Standard sprog"
-
-msgid "Support system"
-msgstr "Support system"
-
-msgid "Server ports"
-msgstr "Server porte"
-
-msgid "Hosting plans available for"
-msgstr ""
-
-#, fuzzy
-msgid "Admin"
-msgstr "Til Administrator"
-
-msgid "Domains per page"
-msgstr "Domæner pr side"
-
-#, fuzzy
-msgid "Log Level"
-msgstr "Niveau"
-
-msgid "Notices, Warnings and Errors"
-msgstr ""
-
-msgid "Warnings and Errors"
-msgstr ""
-
-#, fuzzy
-msgid "Errors"
-msgstr "Fejl"
-
-#, fuzzy
-msgid "Check for update"
-msgstr "Bruger opdateret"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "FEJL: Kun Bogstaver, Tal, Bindestreg og Underscore er tilladte!"
@@ -1996,9 +2004,8 @@ msgstr "Ukorrekt videresend syntaks"
 msgid "Domain with this name already exist"
 msgstr "Der eksisterer allerede et domæne med det navn"
 
-#, fuzzy
-msgid "Mount point already in use!"
-msgstr "Subdomæne monterings punkt eksisterer allerede!"
+msgid "There is a subdomain with the same mount point!"
+msgstr "Der er et subdomæne med samme monterings punkt"
 
 msgid "Alias scheduled for activation!"
 msgstr "Alias planlagt for aktivering!"
@@ -2142,6 +2149,24 @@ msgstr "Rediger Cronjob"
 msgid "Cronjobs"
 msgstr "Cronjobs"
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Bruger/Domæne Statistiker"
+
+msgid "Web Stats"
+msgstr "Web Statistik"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+msgid "Sum"
+msgstr "Sum"
+
 msgid "N/A"
 msgstr "Ikke Tilgængelig"
 
@@ -2168,24 +2193,6 @@ msgstr "Videresend"
 
 msgid "Actions"
 msgstr "Handlinger"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Bruger/Domæne Statistiker"
-
-msgid "Web Stats"
-msgstr "Web Statistik"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
-
-msgid "Sum"
-msgstr "Sum"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Bruger/Håndtere Egne Fejl Sider"
@@ -2568,6 +2575,21 @@ msgstr "Din Meddelse"
 msgid "Enable mail auto responder"
 msgstr "Aktiver mail autosvarer"
 
+msgid "Delete CatchAll"
+msgstr "Slet FangAlle"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Create catch all"
+msgstr "Opret FangAlle"
+
+msgid "Catch all account"
+msgstr "FangAlle konto"
+
+msgid "Catch all"
+msgstr "FangAlle"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "FangAlle planlagt for oprettelse!"
 
@@ -2583,23 +2605,8 @@ msgstr "Opret FangAlle email-konto"
 msgid "Mail accounts list"
 msgstr "Mailkonti liste"
 
-msgid "Create catch all"
-msgstr "Opret FangAlle"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "FangAlle planlagt for sletning!"
-
-msgid "Delete CatchAll"
-msgstr "Slet FangAlle"
-
-msgid "None"
-msgstr "Ingen"
-
-msgid "Catch all account"
-msgstr "FangAlle konto"
-
-msgid "Catch all"
-msgstr "FangAlle"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Slet først FangAlle konto for denne email!"
@@ -2621,6 +2628,30 @@ msgstr "ispCP - Bruger/Ændre Adgangskode"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Bruger/Ændre Personlige Data"
+
+msgid "You do not have protected areas"
+msgstr "Du har ingen beskyttet områder!"
+
+msgid "Manage users and groups"
+msgstr "Håndtér brugere og grupper"
+
+msgid "Add user"
+msgstr "Tilføj bruger"
+
+msgid "Group name"
+msgstr "Gruppe navn"
+
+msgid "Group members"
+msgstr "Gruppe medlemmer"
+
+msgid "Add group"
+msgstr "Tilføj gruppe"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Add new protected area"
+msgstr "Tilføj nyt beskyttet område"
 
 msgid "Please choose user or group"
 msgstr "Vælg brugere eller grupper!"
@@ -2678,9 +2709,6 @@ msgstr "Område navn"
 msgid "Unprotect it"
 msgstr "Fjern beskyttelse"
 
-msgid "Manage users and groups"
-msgstr "Håndtér brugere og grupper"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "Beskyttet område status skal være OK, hvis du ønsker at slette det!"
 
@@ -2689,27 +2717,6 @@ msgstr "Beskyttet Område blev slettet!"
 
 msgid "Permission deny!"
 msgstr "Tilladelse nægtet!"
-
-msgid "You do not have protected areas"
-msgstr "Du har ingen beskyttet områder!"
-
-msgid "Add user"
-msgstr "Tilføj bruger"
-
-msgid "Group name"
-msgstr "Gruppe navn"
-
-msgid "Group members"
-msgstr "Gruppe medlemmer"
-
-msgid "Add group"
-msgstr "Tilføj gruppe"
-
-msgid "Group"
-msgstr "Gruppe"
-
-msgid "Add new protected area"
-msgstr "Tilføj nyt beskyttet område"
 
 msgid "Protected area was deleted successful!"
 msgstr "Beskyttet område blev slettet!"
@@ -2937,6 +2944,10 @@ msgstr "Subdomæne eksistere allerede eller er ikke tilladt!"
 msgid "Wrong subdomain syntax!"
 msgstr "Forkert subdomæne syntax!"
 
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Subdomæne monterings punkt eksisterer allerede!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomæne planlagt til oprettelse!"
 
@@ -3137,7 +3148,7 @@ msgstr ""
 "\n"
 "Du har en ny support sag at læse"
 
-msgid "Log in to answer."
+msgid "Log in to answer"
 msgstr ""
 
 #, php-format
@@ -3660,12 +3671,6 @@ msgstr "Setup Gebyr"
 msgid "Performance"
 msgstr "Ydelser"
 
-msgid "ispCP Reseller : Add Alias"
-msgstr "ispCP Forhandler : Tilføj Alias"
-
-msgid "You have no user records."
-msgstr "Du har ingen bruger oprettet."
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Håndtere Domæne/Alias"
 
@@ -3707,6 +3712,12 @@ msgstr "Bestilte domæne alias er aktiveret!"
 
 msgid "Ordered domain alias not activated!"
 msgstr "Bestilte domæne alias er ikke aktiveret!"
+
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Forhandler : Tilføj Alias"
+
+msgid "You have no user records."
+msgstr "Du har ingen bruger oprettet."
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Rundsend"
@@ -3750,6 +3761,12 @@ msgstr "<em>%s</em> service kan ikke være begrænset!"
 msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "<em>%s</em> service kan ikke være ubegrænset!"
 
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Forhandler/Hoved Index"
+
+msgid "View details"
+msgstr "Se Detaljer"
+
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Forhandler/Tilføj Hosting plan"
 
@@ -3767,12 +3784,6 @@ msgstr "ispCP - Forhandler/Rediger Hosting plan"
 
 msgid "View hosting plan"
 msgstr "Se Hosting Pakker"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Forhandler/Hoved Index"
-
-msgid "View details"
-msgstr "Se Detaljer"
 
 msgid "User accounts"
 msgstr "Bruger kontoer"
@@ -3808,45 +3819,6 @@ msgstr "ispCP - Forhandler/Ordre email setup"
 msgid "Manage orders"
 msgstr "Håndtér bestillinger"
 
-msgid "Wrong order ID!"
-msgstr "Forkert Bestillings ID"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Ordrer Annulleret: Forhandlerens maximum er overskredet!"
-
-msgid "User added!"
-msgstr "Bruger tilføjet!"
-
-msgid "Customer order was removed successful!"
-msgstr "Kunde Ordre er slettet!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Forhandler/Ordre detaljer"
-
-msgid "Order data updated successfully!"
-msgstr "Bestillings data er opdateret!"
-
-msgid "Order date"
-msgstr "Bestillings dato"
-
-msgid "Hosting plan"
-msgstr "Hosting Plan"
-
-msgid "Hosting details"
-msgstr "Hosting Plan detaljer"
-
-msgid "Order details"
-msgstr "Bestillings detaljer"
-
-msgid "Customer data"
-msgstr "Kunde Data"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Er du sikker på du vil slette denne ordre?"
-
-msgid "Add to the system"
-msgstr "Tilføj til systemet"
-
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Forhandler/Ordre indstillinger"
 
@@ -3877,11 +3849,50 @@ msgstr "Opdater Bestilling"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "Kunde Data"
+
 msgid "Order"
 msgstr "Bestilling"
 
+msgid "Hosting plan"
+msgstr "Hosting Plan"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Er du sikker på du vil slette denne ordre?"
+
 msgid "Add/Details"
 msgstr "Tilfø/Detaljer"
+
+msgid "Wrong order ID!"
+msgstr "Forkert Bestillings ID"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Ordrer Annulleret: Forhandlerens maximum er overskredet!"
+
+msgid "User added!"
+msgstr "Bruger tilføjet!"
+
+msgid "Customer order was removed successful!"
+msgstr "Kunde Ordre er slettet!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Forhandler/Ordre detaljer"
+
+msgid "Order data updated successfully!"
+msgstr "Bestillings data er opdateret!"
+
+msgid "Order date"
+msgstr "Bestillings dato"
+
+msgid "Hosting details"
+msgstr "Hosting Plan detaljer"
+
+msgid "Order details"
+msgstr "Bestillings detaljer"
+
+msgid "Add to the system"
+msgstr "Tilføj til systemet"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Forhandler/Ændre Adgangskode"
@@ -3960,6 +3971,9 @@ msgstr "ispCP - Bruger/Rediger"
 msgid "Users list"
 msgstr "Bruger liste"
 
+msgid "This reseller has no domains yet."
+msgstr "Denne Forhandler har endnu ingen Domæner."
+
 msgid "ispCP - Users"
 msgstr "ispCP - Brugere"
 
@@ -3997,9 +4011,6 @@ msgstr ""
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
 
-msgid "This reseller has no domains yet."
-msgstr "Denne Forhandler har endnu ingen Domæner."
-
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Subdomæne liste er tom! Du kan ikke tilføje email konti!"
 
@@ -4011,9 +4022,6 @@ msgstr "Denne Forhandler har endnu ingen Domæner."
 
 #~ msgid "Message was sent!"
 #~ msgstr "Meddelsen blev sendt!"
-
-#~ msgid "There is a subdomain with the same mount point!"
-#~ msgstr "Der er et subdomæne med samme monterings punkt"
 
 #~ msgid "Message was send!"
 #~ msgstr "Meddelsen blev sendt!"
