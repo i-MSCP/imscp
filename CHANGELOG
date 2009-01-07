@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2009-01-06 Daniel Andreca
 	- GUI:
 		* Default user name for awstats is not inserted in order_add.php.
+	- ENGINE:
+		* Fixed #1601: Error in ispcp-dsk-quota
 
 2009-01-06 Jochen Manz
 	- CONFIGS:

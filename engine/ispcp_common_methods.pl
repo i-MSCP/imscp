@@ -2287,3 +2287,48 @@ sub sort_domains {
     return reverse(@domains);
 
 }
+
+sub send_error_mail {
+
+	my ($fname,$errmsg) = @_;
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+
+	push_el(\@main::el, 'send_error_mail()', 'Starting...');
+
+	my $date = get_human_date();
+	my $admin_email = $main::cfg{'DEFAULT_ADMIN_ADDRESS'};
+	my $server_name = $main::cfg{'SERVER_HOSTNAME'};
+	my $server_ip = $main::cfg{'BASE_SERVER_IP'};
+	my $msg_data ="
+Hey There,
+
+I'm the automatic email sent by on your $server_name ($server_ip) server.
+
+A critical error just was encountered while executing function $fname in ".$0."
+
+Error encountered was:
+
+========================================================================
+$errmsg
+========================================================================
+";
+
+	my $out = new MIME::Entity;
+
+	$out -> build(
+				From => "$server_name ($server_ip) <".$admin_email.">",
+				To => $admin_email,
+				Subject => "[$date] Error report.",
+				Data => $msg_data,
+				'X-Mailer' => "ispCP $main::cfg{'Version'} Automatic Error Messenger"
+				);
+
+	open MAIL, "| /usr/sbin/sendmail -t -oi";
+
+	$out -> print(\*MAIL);
+
+	close MAIL;
+
+	push_el(\@main::el, 'send_error_mail()', 'Ending...');
+
+}
