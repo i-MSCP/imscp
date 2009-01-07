@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-06 Daniel Andreca
+	- GUI:
+		* Default user name for awstats is not inserted in order_add.php.
+
 2009-01-06 Jochen Manz
 	- CONFIGS:
 		* Fixed #1600: Awstats configs for non-debian distros are out of sync (thanks to pgentoo)

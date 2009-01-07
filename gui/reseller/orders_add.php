@@ -222,7 +222,7 @@ $query = "
 	VALUES
 			(?, ?, ?, ?)
 ";
-$rs = exec_query($sql, $query, array($dmn_id, $dmn_name, crypt_user_pass_with_salt($pure_user_pass), $status));
+$rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name, crypt_user_pass_with_salt($pure_user_pass), $status));
 
 $user_id = $sql->Insert_ID();
 
