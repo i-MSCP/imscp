@@ -294,6 +294,16 @@
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
+                              <td width="200" class="content2">{TR_STREET_1}</td>
+                              <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
+                            </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td width="200" class="content2">{TR_STREET_2}</td>
+                              <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
+                            </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_ZIP_POSTAL_CODE}</td>
                               <td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput"></td>
                             </tr>
@@ -306,16 +316,6 @@
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_COUNTRY}</td>
                               <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput"></td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td width="200" class="content2">{TR_STREET_1}</td>
-                              <td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td width="200" class="content2">{TR_STREET_2}</td>
-                              <td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>

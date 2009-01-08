@@ -2032,7 +2032,7 @@ RIC;
 	$tpl->assign('PURCHASE_HEADER', $header);
 	$tpl->assign('PURCHASE_FOOTER', $footer);
 }
-// Function by Tribal-Dolphin
+
 function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status) {
 	$sql = Database::getInstance();
 	global $admin_login;
@@ -2053,7 +2053,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	$from_lname = $res->fields['lname'];
 	$from_uname = $res->fields['admin_name'];
 	// Prepare message
-	$subject = tr('[Ticket]') . '{SUBJ}';
+	$subject = tr("[Ticket]") . " {SUBJ}";
 	if ($ticket_status == 0) {
 		$message = tr("Hello %s!\n\nYou have a new ticket:\n", "{TO_NAME}");
 	} else {
