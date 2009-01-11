@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-11 Benedikt Heintel
+	- ENGINE:
+		* Fixed: MySQL database backups counted in quota
+
 2009-01-06 Daniel Andreca
 	- GUI:
 		* Default user name for awstats is not inserted in order_add.php.
