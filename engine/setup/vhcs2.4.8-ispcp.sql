@@ -114,6 +114,15 @@ ALTER IGNORE TABLE `server_traffic` DROP INDEX `traff_time`;
 ALTER IGNORE TABLE `server_traffic` ADD INDEX `i_correction` (`correction`);
 ALTER IGNORE TABLE `server_traffic` ADD INDEX `i_traff_time` (`traff_time`);
 
+CREATE TABLE IF NOT EXISTS `subdomain_alias` (
+					`subdomain_alias_id` int(10) unsigned NOT NULL auto_increment,
+					`alias_id` int(10) unsigned default NULL,
+					`subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
+					`subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
+					`subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
+					PRIMARY KEY  (`subdomain_alias_id`)
+					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Drop useless table
 DROP TABLE IF EXISTS `syslog`;
 

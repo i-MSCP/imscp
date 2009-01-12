@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-12 Benedikt Heintel
+	- DOCS:
+		* Updated and moved README
+	- SETUP:
+		* Fixed #1605: Update VHCS2.4.7.1 to RC7 fails because of missing table
+
 2009-01-11 Benedikt Heintel
 	- ENGINE:
 		* Fixed: MySQL database backups counted in quota
