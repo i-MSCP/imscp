@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-03 13:51+0800\n"
-"PO-Revision-Date: 2008-10-10 03:08+0200\n"
-"Last-Translator:  Attila Fülöp <fulop.attila@coimbra-grp.com>\n"
+"PO-Revision-Date: 2009-01-18 22:08+0100\n"
+"Last-Translator: István Pongrácz <pongracz.istvan@gmail.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgid "_: Localised language"
 msgstr "Hungarian"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ispCP Omega Virtuális Hosting Irányító Rendszer"
+msgstr "ispCP Omega Virtuális Hoszting Irányító Rendszer"
 
 msgid "Administrator login"
 msgstr "Adminisztrátor bejelentkezés"
@@ -74,15 +74,13 @@ msgid "Retry"
 msgstr "Újra"
 
 msgid "ERROR: Security code was not correct!"
-msgstr "HIBA: A biztonsági kód nem megfelelõ!"
+msgstr "HIBA: A biztonsági kód nem megfelelő!"
 
 msgid "Security code"
 msgstr "Biztonsági kód"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgstr "(Az esetleges problémák elkerülése végett kérlek írd be a lenti képen látható betűsorozatot a \"Biztonsági kód\" mezőbe)"
 
 msgid "Request password"
 msgstr "Jelszó kérés"
@@ -94,20 +92,18 @@ msgid "Administrator"
 msgstr "Adminisztrátor"
 
 msgid "Incorrect username length or syntax!"
-msgstr "Hibás felhasználói név formátum!"
+msgstr "Hibás a felhasználói név hosszúsága vagy szintaktikája!"
 
 #, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid."
-msgstr ""
+msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgstr "Az elfogadható jelszónak legalább %s hosszúnak kell lennie és betűket/számokat is tartalmaznia kell."
 
 #, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr ""
+msgstr "A jelszó rövidebb, mint %s karakter vagy nem engedélyezett karaktereket tartalmaz!"
 
 msgid "Entered passwords do not match!"
-msgstr "A begépelt jelszó nem eggyezik!"
+msgstr "A két begépelt jelszó nem egyezik meg!"
 
 msgid "Incorrect email length or syntax!"
 msgstr "Hibás email formátum!"
@@ -116,10 +112,10 @@ msgid "This user name already exist!"
 msgstr "Ez a felhasználó név már létezik!"
 
 msgid "Empty data or wrong field!"
-msgstr "Nincs adat, vagy rossz mezõ!"
+msgstr "Nincs adat, vagy rossz mező!"
 
 msgid "Passwords don't match!"
-msgstr "Jelszó nem eggyezik!"
+msgstr "A jelszavak nem egyeznek!"
 
 msgid "Add admin"
 msgstr "Adminisztrátor hozzáadása"
@@ -128,7 +124,7 @@ msgid "Core data"
 msgstr "Alap információk"
 
 msgid "Repeat password"
-msgstr "Jelszó újra"
+msgstr "Jelszó Újra"
 
 msgid "Email"
 msgstr "Email"
@@ -281,13 +277,13 @@ msgid "Please specify a message content!"
 msgstr "Add meg az üzenet tartalmát!"
 
 msgid "Please specify a sender name!"
-msgstr "Add meg a küldõ nevét!"
+msgstr "Add meg a küldő nevét!"
 
 msgid "Please specify a sender email!"
 msgstr "Add meg a feladó címét!"
 
 msgid "You send email to your users successfully!"
-msgstr "Email sikeresen elküldve a felhasználódnak!"
+msgstr "Email sikeresen elküldve a felhasználóidnak!"
 
 msgid "Email marketing"
 msgstr "Email marketing"
@@ -317,7 +313,7 @@ msgid "Send message"
 msgstr "Üzenet küldése"
 
 msgid "You have no custom menus."
-msgstr "Nincsenek saját menük."
+msgstr "Nem rendelkezel saját menükkel."
 
 msgid "User"
 msgstr "Felhasználó"
@@ -518,12 +514,11 @@ msgstr "Igen"
 msgid "No"
 msgstr "Nem"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "Nincs ilyen felhasználó, vagy nincs jogosultságod ehez a menühöz!"
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Nincs ilyen felhasználó, vagy nincs jogosultságod ehhez a menühöz!"
 
 msgid "Incorrect subdomains limit!"
-msgstr "Hibás subdomain korlát!"
+msgstr "Hibás aldomain korlát!"
 
 msgid "Incorrect aliases limit!"
 msgstr "Hibás alias korlát!"
@@ -584,36 +579,35 @@ msgstr "Domain tulajdonságok sikeresen frissítve!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatás nem tiltható le!"
 
 #, php-format
 msgid "There are <em>%s</em> records on system!"
-msgstr ""
+msgstr "A rendszerben <em>%s</em> rekord található!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be limited! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatás nem korlátozható! "
 
 #, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
+msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr "A megadott szám kisebb, mint a <em>%s</em> rendszeren található rekord!"
 
 #, php-format
 msgid "There are <em>%s</em> records on the system!"
-msgstr ""
+msgstr "A rendszerben <em>%s</em> rekord található!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatás nem lehet korlátlan! "
 
 #, php-format
 msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr ""
+msgstr "Viszonteladói korlát van hozzárendelve a <em>%s</em> szolgáltatáshoz!"
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
+msgstr "Meghaladtad a viszonteladói korlátot a <em>%s</em> szolgáltatáshoz!"
 
 msgid "ispCP - Domain Statistics Data"
 msgstr "ispCP - Domain Statisztikai Adatok"
@@ -655,7 +649,7 @@ msgid "Hosting plans"
 msgstr "Szolgáltatási csomagok"
 
 msgid "Manage hosting plans"
-msgstr "Szolgálltatási csomagok kezelése"
+msgstr "Szolgáltatási csomagok kezelése"
 
 msgid "Purchasing"
 msgstr "Vásárlás"
@@ -667,7 +661,7 @@ msgid "Add new user hosting plan"
 msgstr "Új felhasználói díjcsomag hozzáadása"
 
 msgid "Return to previous menu"
-msgstr "Vissza ez elözõ menübe"
+msgstr "Vissza ez elöző menübe"
 
 msgid "Hosting plan added!"
 msgstr "Szolgáltatási csomag hozzáadva!"
@@ -682,7 +676,7 @@ msgid "Hosting plan can't be deleted, there are orders!"
 msgstr "A szolgáltatási csomag nem törölhető, használatban van!"
 
 msgid "Hosting plans not found!"
-msgstr "Szolgálltatási csomag nem található!"
+msgstr "Szolgáltatási csomag nem található!"
 
 msgid "No."
 msgstr "Nem."
@@ -754,7 +748,7 @@ msgid "Price"
 msgstr "Ár"
 
 msgid "Setup fee"
-msgstr "Díj beállítás"
+msgstr "Beállítási díj"
 
 msgid "Currency"
 msgstr "Pénznem"
@@ -763,7 +757,7 @@ msgid "Payment period"
 msgstr "Fizetési periódus"
 
 msgid "Available for purchasing"
-msgstr "Vásárlásra elérhetõ"
+msgstr "Megvásárolható"
 
 msgid "Description"
 msgstr "Leírás"
@@ -781,7 +775,7 @@ msgid "Incorrect template description length!"
 msgstr "Helytelen sablon tulajdonság hosszúság!"
 
 msgid "Incorrect price syntax!"
-msgstr "Helytelen ár formátum"
+msgstr "Helytelen ár formátum!"
 
 msgid "Incorrect setup fee syntax!"
 msgstr "Hibás telepítési formátum!"
@@ -790,7 +784,7 @@ msgid "Hosting plan with entered name already exists!"
 msgstr "A megadott néven már létezik szolgáltatási csomag!"
 
 msgid "ispCP - Administrator/Edit hosting plan"
-msgstr "ispCP - Administrator/Szolgáltatási csomag módosítás"
+msgstr "ispCP - Adminisztrátor/Szolgáltatási csomag módosítás"
 
 msgid "Price Style"
 msgstr "Ár stílus"
@@ -812,7 +806,7 @@ msgstr "Helytelen beállítás. Pl: 19.99"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
-msgstr "<b>%d</b> db új hibajegyed van"
+msgstr "<b>%d</b> db Új hibajegyed van"
 
 msgid "View"
 msgstr "Megnéz"
@@ -824,10 +818,10 @@ msgid "Update checking is disabled!"
 msgstr "Frissítés ellenőrzése kikapcsolva"
 
 msgid "New ispCP update is now available"
-msgstr "Új ispCP verzió most elérhetõ"
+msgstr "Új ispCP verzió érhető el"
 
 msgid "You are exceeding your traffic limit!"
-msgstr "Túllépted a forgalm maximális korlátját!"
+msgstr "Túllépted a forgalom maximális korlátját!"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
@@ -838,7 +832,7 @@ msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s of %3$s]"
 
 msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Admin/Kezdõlap"
+msgstr "ispCP - Admin/Kezdőlap"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Nem törölheted az utolsó aktív IP címet!"
@@ -901,7 +895,6 @@ msgstr "Nincs domain alias, rendszerhiba"
 msgid "No subdomain system errors"
 msgstr "Nincs aldomain, rendszerhiba"
 
-#, fuzzy
 msgid "No alias subdomain system errors"
 msgstr "Nincs aldomain, rendszerhiba"
 
@@ -909,7 +902,7 @@ msgid "No email account system errors"
 msgstr "Nincs email hozzáférés, rendszerhiba"
 
 msgid "ispCP debugger"
-msgstr "ispCP hibakeresõ"
+msgstr "ispCP hibakereső"
 
 msgid "Domain errors"
 msgstr "Domain hibák"
@@ -920,9 +913,8 @@ msgstr "Domain alias hibák"
 msgid "Subdomain errors"
 msgstr "Aldomain hibák"
 
-#, fuzzy
 msgid "Alias subdomain errors"
-msgstr "Aldomain átirányítás"
+msgstr "Aldomain hiba"
 
 msgid "Mail account errors"
 msgstr "Email hozzáférés hibák"
@@ -934,11 +926,11 @@ msgid "Execute requests"
 msgstr "Kérések végrehajtása"
 
 msgid "Set status to \"change\""
-msgstr ""
+msgstr "Státusz beállítása \"változottra\""
 
 #, php-format
 msgid "Daemon returned %d as status code"
-msgstr ""
+msgstr "A démon %d státuszkóddal tért vissza"
 
 msgid "Unknown type!"
 msgstr "Ismeretlen típus!"
@@ -955,6 +947,7 @@ msgstr "Frissítés bekapcsolása ekkor"
 msgid "Settings"
 msgstr "Beállítások"
 
+#, fuzzy
 msgid "Get it at"
 msgstr ""
 
@@ -965,7 +958,7 @@ msgid "Available ispCP updates"
 msgstr "Rendelkezésre álló ispCP frissítések"
 
 msgid "No new ispCP updates available"
-msgstr "Nincs új ispCP verzió"
+msgstr "Nincs Új ispCP verzió"
 
 msgid "User language updated successfully!"
 msgstr "Felhasználói nyelv sikeresen módosítva!"
@@ -986,7 +979,7 @@ msgid "ispCP - Admin/Manage users/Reseller assignment"
 msgstr "ispCP - Admin/Felhasználók/Viszonteladó hozzárendelés"
 
 msgid "Reseller assignment"
-msgstr "Viszonteladó megbízása"
+msgstr "Viszonteladó hozzárendelése"
 
 msgid "Reseller users"
 msgstr "Viszonteladó felhasználók"
@@ -1016,35 +1009,29 @@ msgid "User was moved"
 msgstr "Felhasználó átmozgatva"
 
 msgid "Please select some user(s)!"
-msgstr "Válassz valamilyen felhasználót(kat)!"
+msgstr "Válassz ki felhasználót vagy felhasználókat!"
 
 msgid "Source and destination reseller are the same!"
 msgstr "A forrás és cél viszonteladó ugyanaz!"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr ""
+msgstr "<b>%1$s</b> korlátlan jogokkal rendelkezik a <b>%2$s</b> szolgáltatás fölött !<br>"
 
 #, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
-msgstr ""
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr "Nem mozgathatod a <b>%1$s</b> felhasználót a cél viszonteladóhoz, <br>akinek a <b>%2$s</b> szolgáltatása korlátozva van!"
 
 #, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
-msgstr ""
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr "<b>%1$s</b> korlátai meghaladják a <b>%2$s</b><br> szolgáltatásra a cél viszonteladó korlátait!<br>"
 
 msgid "Moving aborted!"
 msgstr "Áthelyezés megszakítva!"
 
 #, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller !<br>This user cannot be moved!"
-msgstr ""
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgstr "<b>%s</b> rendelkezik olyan IP-vel, amit a célként megadott viszonteladó nem tud kezelni!<br>Ez a felhasználó nem mozgatható át!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Admin/Felhasználók/Felhasználó hozzárendelés"
@@ -1080,10 +1067,10 @@ msgid "User deleted"
 msgstr "Felhasználó törölve"
 
 msgid "Email Updated"
-msgstr "Email Frisssítve"
+msgstr "Email Frissítve"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "A felhasználóhóz tartozik egy domain!<br>Előszőr töröld a domaint!"
+msgstr "A felhasználóhoz tartozik egy domain!<br>Először töröld a domaint!"
 
 msgid "User was disabled"
 msgstr "A felhasználó letiltva"
@@ -1092,7 +1079,7 @@ msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Nemzetköti nyelvek"
 
 msgid "Default language changed!"
-msgstr "Alapértelmezett nyelv megválzotatva!"
+msgstr "Alapértelmezett nyelv megváltoztatva!"
 
 msgid "Upload file error!"
 msgstr "Hiba a feltöltésben!"
@@ -1147,13 +1134,13 @@ msgid "Export"
 msgstr "Export"
 
 msgid "Incorrect data input!"
-msgstr "Hibás bemenõ adat!"
+msgstr "Hibás bemenő adat!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Admin/Jelszóváltás"
 
 msgid "Please fill up all data fields!"
-msgstr "Töltsd fel minden adatmezõt!"
+msgstr "Töltsd fel minden adatmezőt!"
 
 msgid "Passwords do not match!"
 msgstr "Jelszó nem eggyezik!"
@@ -1264,17 +1251,15 @@ msgid "Domains"
 msgstr "Domainek"
 
 #, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr "Ellentmondásos a current_als_cnt és actual alias count: %1$d != %2$d"
 
 msgid "Aliases"
 msgstr "Aliasok"
 
 #, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr "Ellentmondásos a current_ftp_cnt és actual ftp count: %1$d != %2$d"
 
 msgid "SQL Databases"
 msgstr "SQL adatbázisok"
@@ -1292,37 +1277,26 @@ msgid "Reseller data inconsistency!"
 msgstr "Ellentmondó viszonteladói adat!"
 
 #, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
-msgstr ""
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Ennek a viszonteladónak a korlátai magasabbak (<b>%s</b>) mint az általad most megadott korlátok."
 
 msgid "Edit reseller aborted!"
 msgstr "Viszonteladó szerkesztés megszakítva!"
 
 #, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
-msgstr ""
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Ennek a viszonteladónak az ügyfelei között vannak olyanok, akiknek a beállított korlátai (<b>%s</b>) az újonnan megadott korlátok fölött vannak!"
 
 #, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
-msgstr ""
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr "Ennek a viszonteladónak az egyik (több) ügyfele korlátlan jogokkal rendelkezik a <b>%s</b> szolgáltatásra!<br>"
 
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
-"Ha korlátozni akarod a viszonteladót, először az ügyfeleit kell korlátozni!"
-"<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr "Ha korlátozni akarod a viszonteladót, először az ügyfeleit kell korlátozni!<br>"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr ""
-"Ehez a viszonteladóhoz a következő cím van hozzárendelve <b>%s</b> address!"
-"<br>"
+msgstr "Ennek a viszonteladónak a domain-jei a következő címekhez van hozzárendelve <b>%s</b> !<br>"
 
 msgid "Edit reseller"
 msgstr "Viszonteladó szerkesztése"
@@ -1436,34 +1410,34 @@ msgid "Server statistics"
 msgstr "Szerver statisztikák"
 
 msgid "Web in"
-msgstr "Web bejövõ"
+msgstr "Web bejövő"
 
 msgid "Web out"
-msgstr "Web kimenõ"
+msgstr "Web kimenő"
 
 msgid "Mail in"
-msgstr "Bejövõ levelek"
+msgstr "Bejövő levelek"
 
 msgid "Mail out"
-msgstr "Kimenõ levelek"
+msgstr "Kimenő levelek"
 
 msgid "Pop/IMAP in"
-msgstr "Pop/IMAP bejövõ"
+msgstr "Pop/IMAP bejövő"
 
 msgid "Pop/IMAP out"
-msgstr "Pop/IMAP kimenõ"
+msgstr "Pop/IMAP kimenő"
 
 msgid "Other in"
-msgstr "Egyéb bejövõ"
+msgstr "Egyéb bejövő"
 
 msgid "Other out"
-msgstr "Egyéb kimenõ"
+msgstr "Egyéb kimenő"
 
 msgid "All in"
-msgstr "Összes bejövõ"
+msgstr "Összes bejövő"
 
 msgid "All out"
-msgstr "Összes kimenõ"
+msgstr "Összes kimenő"
 
 msgid "ispCP - Admin/Server day stats"
 msgstr "ispCP - Admin/Server napi statisztika"
@@ -1514,7 +1488,7 @@ msgid "Last access"
 msgstr "Utolsó hozzáférés"
 
 msgid "Options"
-msgstr "Lehetõségek"
+msgstr "Lehetőségek"
 
 msgid "Kill session"
 msgstr "Folyamat lezárása"
@@ -1559,7 +1533,7 @@ msgid "Block time between logins (seconds)"
 msgstr "Blokkolási idő sikertelen bejelentkezések között (másodpercben)"
 
 msgid "Max number of CAPTCHA validation attempts"
-msgstr "A CAPTCHA érvényesítési kísérletek Max száma"
+msgstr "A CAPTCHA érvényesítési kísérletek maximális száma"
 
 msgid "Other settings"
 msgstr "További beállítások"
@@ -1613,7 +1587,7 @@ msgid "You can only upload images!"
 msgstr "Csak képet tölthetsz fel!"
 
 msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "A kép túl kicsi! (min. 195 x 195 pixel)"
+msgstr "A kép tÚl kicsi! (min. 195 x 195 pixel)"
 
 msgid "Your logo was successful uploaded!"
 msgstr "A logód sikeresen feltöltve!"
@@ -1703,9 +1677,7 @@ msgid "Under this mode only administrators can login"
 msgstr "Ebben a módban csak adminisztrátorok léphetnek be"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
-msgstr ""
-"HIBA: Csak betűk, számok, a kötőjel és az alulvonás karakterek vannak "
-"engedélyezve"
+msgstr "HIBA: Csak betűk, számok, a kötőjel és az alul-vonás karakterek vannak engedélyezve"
 
 msgid "ERROR: Port already exists!"
 msgstr "HIBA: Port használatban!"
@@ -1732,7 +1704,7 @@ msgid "ispCP - Admin/Server Traffic Settings"
 msgstr "ispCP - Admin/Server Forgalmi Beállítások"
 
 msgid "Wrong data input!"
-msgstr "Rossz bemenõ adat!"
+msgstr "Rossz bemenő adat!"
 
 msgid "Warning traffic is bigger than max traffic!"
 msgstr "Figyelem, a forgalom nagyobb az engedélyezettnél!"
@@ -1813,7 +1785,7 @@ msgid "Swap"
 msgstr "Swap"
 
 msgid "Up time"
-msgstr "Üzemidõ"
+msgstr "Üzemidő"
 
 msgid "Kernel"
 msgstr "Kernel"
@@ -1921,7 +1893,7 @@ msgid "Ticket was closed!"
 msgstr "A hibajegy le lett zárva!"
 
 msgid "Ticket was reopened!"
-msgstr "Hibajegy újranyitva!"
+msgstr "Hibajegy Újranyitva!"
 
 msgid "ispCP - Admin : Support System: View Tickets"
 msgstr "ispCP - Admin : Support System: Hibajegyek megtekintése"
@@ -1957,7 +1929,7 @@ msgid "Add alias"
 msgstr "Alias hozzáadása"
 
 msgid "You do not need 'www.' ispCP will add it on its own."
-msgstr "A www előtagu aldomaint az isPC már autómatikusan hozzáadta."
+msgstr "A www előtagú aldomaint az isPC már automatikusan hozzáadta."
 
 msgid "Domain alias limit reached!"
 msgstr "Elérted a domain alias korlátot!"
@@ -1966,7 +1938,7 @@ msgid "Incorrect domain name syntax"
 msgstr "Hibás domain név formátum!"
 
 msgid "Domain with that name already exists on the system!"
-msgstr "ilyen nevû domain már létezik!"
+msgstr "ilyen nevű domain már létezik!"
 
 msgid "Incorrect mount point syntax"
 msgstr "Hibás beillesztési pont formátum!"
@@ -1978,7 +1950,7 @@ msgid "Incorrect forward syntax"
 msgstr "Hibás forward cím formátum!"
 
 msgid "Domain with this name already exist"
-msgstr "Ilyen nevû domain már létezik!"
+msgstr "Ilyen nevű domain már létezik!"
 
 msgid "There is a subdomain with the same mount point!"
 msgstr "Már van egy aldomain ugyanezzel az illesztési ponttal!"
@@ -1989,25 +1961,14 @@ msgstr "Alias hozzáadása beütemezve!"
 msgid "Alias scheduled for addition!"
 msgstr "Alias hozzáadása beütemezve!"
 
-#, fuzzy
-msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr ""
-"A törölni kívánt domain aliashoz email cím tartozik!<br>Elõbb azt kell "
-"törölni!"
+msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr "A törölni kívánt domain aliashoz tartozik még aldomain!<br>Előbb törölni!kell az aldomain-eket!"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr ""
-"A törölni kívánt domain aliashoz email cím tartozik!<br>Elõbb azt kell "
-"törölni!"
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "A törölni kívánt domain aliashoz email cím tartozik!<br>Előbb azt kell törölni!"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
-"A törölni kívánt domain aliashoz FTP hozzáférés tartozik!<br>Elõbb azt kell "
-"törölni!"
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "A törölni kívánt domain aliashoz FTP hozzáférés tartozik!<br>Előbb azt kell törölni!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias törlése beütemezve!"
@@ -2016,7 +1977,7 @@ msgid "ispCP - Manage Domain Alias/Edit Alias"
 msgstr "ispCP - Domain Alias Kezelés/Alias Módosítás"
 
 msgid "Edit domain alias"
-msgstr "Domain alias szerkeztése"
+msgstr "Domain alias szerkesztése"
 
 msgid "Alias name"
 msgstr "Alias név"
@@ -2036,17 +1997,14 @@ msgstr "Letilt"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "A továbbítás URL-je 'http://'-el kell kezdődjön"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Az aldomainhez amit törölni próbálsz email hozzáférések tartoznak! <br>Elõbb "
-"töröld azokat!"
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Az aldomainhez amit törölni próbálsz email hozzáférések tartoznak! <br>Előbb töröld azokat!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Aldomain törlés beütemezve!"
 
 msgid "Backup archive scheduled for restoring!"
-msgstr "Mentésbõl való visszaállás beütemezve!"
+msgstr "Mentésből való visszaállás beütemezve!"
 
 msgid "ispCP - Client/Daily Backup"
 msgstr "ispCP - Kliens/Napi Mentés"
@@ -2075,11 +2033,8 @@ msgstr "(rendszerint a neve"
 msgid "Restore backup"
 msgstr "Mentés visszaállítása"
 
-msgid ""
-"Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Kattints a visszaállításra ha azt akarod, hogy a rendszer az előző napi "
-"beállításokat alkalmazza"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr "Kattints a visszaállításra ha azt akarod, hogy a rendszer az előző napi beállításokat alkalmazza"
 
 msgid "Restore"
 msgstr "Visszaállítás"
@@ -2199,7 +2154,7 @@ msgid "Error 404 (not found)"
 msgstr "Hiba 404 (nem található)"
 
 msgid "Error 500 (internal server error)"
-msgstr "Hiba 500 (belsõ szerver hiba)"
+msgstr "Hiba 500 (belső szerver hiba)"
 
 msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (szolgáltatás nem elérhető)"
@@ -2257,7 +2212,7 @@ msgid "Entered passwords differ from the another!"
 msgstr "A megadott jelszavak különböznek egymástól!"
 
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr "Az aldomain lista üres! Itt nem hozhat létre új FTP hozzáférést!"
+msgstr "Az aldomain lista üres! Itt nem hozhat létre Új FTP hozzáférést!"
 
 msgid "Alias list is empty! You can not add FTP accounts there!"
 msgstr "Az alias lista üres! Itt nem hozhat létre FTP hozzáférést!"
@@ -2275,7 +2230,7 @@ msgid "Add FTP user"
 msgstr "FTP felhasználó hozzáadása"
 
 msgid "To main domain"
-msgstr "Elsõdleges domainnek"
+msgstr "Elsődleges domainnek"
 
 msgid "To domain alias"
 msgstr "A domain aliasnak"
@@ -2290,11 +2245,10 @@ msgid "Choose dir"
 msgstr "Válassz könyvtárat"
 
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr ""
-"Nem lehet megnyitni a könyvtárat !<br>Lépj kapcsolatba az adminisztrátorral !"
+msgstr "Nem lehet megnyitni a könyvtárat !<br>Lépj kapcsolatba az adminisztrátorral !"
 
 msgid "Parent Directory"
-msgstr "Szülõ könyvtár"
+msgstr "Szülő könyvtár"
 
 msgid "Protect it"
 msgstr "Védd le"
@@ -2315,7 +2269,7 @@ msgid "FTP account deleted successfully!"
 msgstr "FTP hozzáférés sikeresen törölve!"
 
 msgid "Entered passwords differ!"
-msgstr "A megadott jelszavak különbözõek!"
+msgstr "A megadott jelszavak különbözőek!"
 
 msgid "FTP account data updated!"
 msgstr "FTP hozzáférés módosítva!"
@@ -2330,7 +2284,7 @@ msgid "Save changes"
 msgstr "Változások mentése"
 
 msgid "Hosting plans available for update"
-msgstr "Megújítható szolgáltatási csomag elérhetõ"
+msgstr "MegÚjítható szolgáltatási csomag elérhető"
 
 msgid "Cancel order"
 msgstr "Rendelés visszavonása"
@@ -2342,7 +2296,7 @@ msgid "Purchase"
 msgstr "Vásárlás"
 
 msgid "There are no available updates"
-msgstr "Itt nincsenek elérhetõ frissítések"
+msgstr "Itt nincsenek elérhető frissítések"
 
 msgid "PHP Support: enabled"
 msgstr "PHP támogatás: engedélyezve"
@@ -2369,10 +2323,10 @@ msgid "FTPs"
 msgstr "FTPs"
 
 msgid "free of charge"
-msgstr "feltölthetõ"
+msgstr "ingyenes"
 
 msgid "There are no available hosting plans for update"
-msgstr "Itt nincs elérhetõ szolgáltatási csomag módosításra"
+msgstr "Itt nincs elérhető szolgáltatási csomag módosításra"
 
 msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Szolgáltatási csomag frissítés"
@@ -2402,7 +2356,7 @@ msgstr "tiltva"
 
 #, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "<b>%d</b> db új válasz érkezett a hibajegyedre"
+msgstr "<b>%d</b> db Új válasz érkezett a hibajegyedre"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2413,13 +2367,13 @@ msgid "%1$s%% [%2$s of unlimited]"
 msgstr "%1$s%% [%2$s korlátlan]"
 
 msgid "You are exceeding your disk limit!"
-msgstr "Túllépted a felhasználható helyek maximélis méretét!"
+msgstr "Túllépted a felhasználható helyek maximális méretét!"
 
 msgid "You have no new support questions!"
-msgstr "Nincs új ügyfélszolgálati kérdés!"
+msgstr "Nincs Új ügyfélszolgálati kérdés!"
 
 msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Kliens/Kezdõlap"
+msgstr "ispCP - Kliens/Kezdőlap"
 
 msgid "General information"
 msgstr "Általános információk"
@@ -2467,16 +2421,16 @@ msgid "Mails total"
 msgstr "Összes email"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr "Mailcím formátum a forward listádon helytelen!"
+msgstr "Mailcím formátum a továbbítási listádon helytelen!"
 
 msgid "Mail forward list empty!"
-msgstr "Mail továbítási lista üres!"
+msgstr "Email továbbítási lista üres!"
 
 msgid "Mail account already exists!"
 msgstr "Már létezik ilyen email hozzáférés!"
 
 msgid "Mail account scheduled for addition!"
-msgstr "Email hozzáférés hozáadás beütemezve!"
+msgstr "Email hozzáférés hozzáadás beütemezve!"
 
 msgid "Please select at least one mail type!"
 msgstr "Válasszon legalább egy levéltípust!"
@@ -2485,19 +2439,18 @@ msgid "Please enter mail account username!"
 msgstr "Add meg az email hozzáférés nevét!"
 
 msgid "Invalid Mail Localpart Format used!"
-msgstr ""
+msgstr "Érvénytelen Mail Localpart formátumot használtál!"
 
-#, fuzzy
 msgid "Subdomain alias"
-msgstr "Aldomain emailek"
+msgstr "Aldomain aliasok"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s list is empty! You cannot add mail accounts!"
-msgstr "Alias lista üres! Nem hozhatsz létre Email hozzáférést!"
+msgstr "%s lista üres! Nem hozhatsz létre email fiókokat!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s id is invalid! You cannot add mail accounts!"
-msgstr "Alias lista üres! Nem hozhatsz létre Email hozzáférést!"
+msgstr "%s id érvénytelen! Nem hozhatsz létre email fiókokat!"
 
 msgid "Forward list is empty!"
 msgstr "Továbbító lista üres!"
@@ -2511,7 +2464,6 @@ msgstr "ispCP - Kliens/Új Email Felhasználó"
 msgid "Add mail users"
 msgstr "Email fiók hozzáadása"
 
-#, fuzzy
 msgid "To alias subdomain"
 msgstr "Aldomainnek"
 
@@ -2525,10 +2477,10 @@ msgid "Forward to"
 msgstr "Továbbítás erre:"
 
 msgid "Separate multiple email addresses with a line-break."
-msgstr ""
+msgstr "Több email címet úgy tudsz megadni, hogy minden egyes címet új sorba írsz."
 
 msgid "You did not fill all required fields"
-msgstr ""
+msgstr "Nem töltötted ki az összes szükséges mezőt!"
 
 msgid "Mail account scheduled for modification!"
 msgstr "Email hozzáférés módosítás beütemezve!"
@@ -2552,40 +2504,40 @@ msgid "Enable mail auto responder"
 msgstr "Automatikus email válasz engedélyezése"
 
 msgid "Delete CatchAll"
-msgstr "Gyûjtõ cím törlése"
+msgstr "Gyűjtő cím törlése"
 
 msgid "None"
 msgstr "Nincs"
 
 msgid "Create catch all"
-msgstr "Gyûjtõ cím létrehozása"
+msgstr "Gyűjtő cím létrehozása"
 
 msgid "Catch all account"
-msgstr "Gyûjtõ email"
+msgstr "Gyűjtő email"
 
 msgid "Catch all"
-msgstr "Gyûjtõ"
+msgstr "Gyűjtő"
 
 msgid "Catch all account scheduled for creation!"
-msgstr "Gyûjtõ email létrehozása beütemezve!"
+msgstr "Gyűjtő email létrehozása beütemezve!"
 
 msgid "Mail forward list error!"
 msgstr "Email továbbítás lista hiba!"
 
 msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Kliens/Új Gyûjtö Email"
+msgstr "ispCP - Kliens/Új Gyüjtő Email"
 
 msgid "Create catch all mail account"
-msgstr "Gyûjtõ email cím létrehozása"
+msgstr "Gyűjtő email cím létrehozása"
 
 msgid "Mail accounts list"
 msgstr "Mail hozzáférések lista"
 
 msgid "Catch all account scheduled for deletion!"
-msgstr "Gyûjtõ email törlése beütemezve!"
+msgstr "Gyűjtő email törlése beütemezve!"
 
 msgid "Please delete first CatchAll account for this email!"
-msgstr "Elõbb töröld a jét az  email-nek!"
+msgstr "Előbb töröld a Gyűjtőjét ennek az email-nek!"
 
 msgid "Email account not found!"
 msgstr "Email hozzáférés nem található!"
@@ -2636,14 +2588,14 @@ msgid "Please enter area name"
 msgstr "Add meg a terület nevét"
 
 msgid "Please enter area path"
-msgstr "Add meg a terület útvonalát"
+msgstr "Add meg a terület Útvonalát"
 
 #, php-format
 msgid "%s doesn't exist"
 msgstr "%s nem létezik"
 
 msgid "You can not protect area without selected user(s)"
-msgstr "Nem védheted a területet kiválasztott felasználó(k) nélkül"
+msgstr "Nem védheted a területet kiválasztott felhasználó(k) nélkül"
 
 msgid "You cannot protect area without selected group(s)"
 msgstr "Nem védheted a területet kiválasztott csoport(ok) nélkül"
@@ -2655,7 +2607,7 @@ msgid "Protected area created successfully!"
 msgstr "Védett terület sikeresen létrehozva!"
 
 msgid "Protected area status should be OK if you want to edit it!"
-msgstr "A védett terület státuszak OK kell legyen, ha szerkeszteni akarod azt!"
+msgstr "A védett terület státusza OK kell legyen, ha szerkeszteni akarod azt!"
 
 msgid "You have no users !"
 msgstr "Nincs felhasználód !"
@@ -2685,7 +2637,7 @@ msgid "Unprotect it"
 msgstr "Védelem eltávolítása"
 
 msgid "Protected area status should be OK if you want to delete it!"
-msgstr "A védett terület státuszak OK kell legyen, ha törölni akarod azt!"
+msgstr "A védett terület státuszakOK kell legyen, ha törölni akarod azt!"
 
 msgid "Protected area deleted successfully!"
 msgstr "Védett terület sikeresen törölve!"
@@ -2803,7 +2755,7 @@ msgstr "Kérlek, írd be az SQL kérést!"
 
 #, php-format
 msgid "Could not connect to the SQL server as %s!"
-msgstr "Nem tudott csatlakozni az SQL serverhez %s!"
+msgstr "Nem tudott csatlakozni az SQL szerverhez %s!"
 
 msgid "Execution of SQL query failed!"
 msgstr "SQL kérés végrehajtása sikertelen!"
@@ -2844,7 +2796,6 @@ msgstr "SQL kezelés"
 msgid "Database Name and Users"
 msgstr "Adatbázis Név és Felhasználók"
 
-#, fuzzy
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
@@ -2870,8 +2821,7 @@ msgid "Too user long password!"
 msgstr "Túl hosszú felhasználó jelszó!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
-"SQL felhasználó nem található! Lehet, hogy törölte már egy másik felhasználó!"
+msgstr "SQL felhasználó nem található! Lehet, hogy törölte már egy másik felhasználó!"
 
 msgid "User name too long!"
 msgstr "Felhasználó név túl hosszú!"
@@ -2899,10 +2849,10 @@ msgid "Behind the name"
 msgstr "A név mögött"
 
 msgid "Add existing user"
-msgstr "Létezõ felhasználó hozáadása"
+msgstr "Létező felhasználó hozáadása"
 
 msgid "Existing SQL users"
-msgstr "Létezõ SQL felhasználók"
+msgstr "Létező SQL felhasználók"
 
 msgid "Subdomains limit reached!"
 msgstr "Elérted az aldomain limit korlátot!"
@@ -2910,9 +2860,8 @@ msgstr "Elérted az aldomain limit korlátot!"
 msgid "Please specify subdomain name!"
 msgstr "Add meg az aldomain nevét!"
 
-#, fuzzy
 msgid "No valid alias domain selected!"
-msgstr "Elérted a domain alias korlátot!"
+msgstr "Nincs kiválasztva érvényes alias domain!"
 
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Az aldomain már létezik vagy nem megengedett!"
@@ -2920,9 +2869,8 @@ msgstr "Az aldomain már létezik vagy nem megengedett!"
 msgid "Wrong subdomain syntax!"
 msgstr "Rossz aldomain formátum!"
 
-#, fuzzy
 msgid "Mount point already in use!"
-msgstr "Aldomain beillesztési pont már létezik !"
+msgstr "A csatolási pont már létezik !"
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Aldomain hozzáadása beütemezve!"
@@ -2949,7 +2897,7 @@ msgid "Your message was sent!"
 msgstr "Az üzeneted elküldve!"
 
 msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Ügyfélszolgállat - Új bejelentés"
+msgstr "ispCP - Ügyfélszolgálat - Új bejelentés"
 
 msgid "New ticket"
 msgstr "Új hibajegy"
@@ -3122,9 +3070,8 @@ msgstr ""
 "\n"
 "Választ kapott erre a hibajegyre:\n"
 
-#, fuzzy
 msgid "Log in to answer"
-msgstr "Jelentkezzen be a válaszhoz"
+msgstr "Jelentkezzen be a válaszadáshoz"
 
 #, php-format
 msgid "%.2f PB"
@@ -3163,7 +3110,7 @@ msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
-msgstr "Fájlkezelõ"
+msgstr "Fájlkezelő"
 
 msgid "Web statistics"
 msgstr "Web statisztikák"
@@ -3198,13 +3145,11 @@ msgstr "Aldomain email"
 msgid "Subdomain forward"
 msgstr "Aldomain átirányítás"
 
-#, fuzzy
 msgid "Alias subdomain mail"
-msgstr "Aldomain email"
+msgstr "Alias aldomain email"
 
-#, fuzzy
 msgid "Alias subdomain forward"
-msgstr "Aldomain átirányítás"
+msgstr "Alias aldomain átirányítás"
 
 msgid "Unknown type"
 msgstr "Ismeretlen típus"
@@ -3212,7 +3157,6 @@ msgstr "Ismeretlen típus"
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "Üdvözöllek {USERNAME} "
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3239,7 +3183,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Hello {NAME}!\n"
+"Üdv {NAME}!\n"
 "\n"
 "Az ispCP hozzáférésed elkészült.\n"
 "Információ a hozzáférésedről:\n"
@@ -3248,12 +3192,16 @@ msgstr ""
 "felhasználó név: {USERNAME}\n"
 "Jelszó: {PASSWORD}\n"
 "\n"
-"Ne felejsd el jelszavadat megváltoztatni az első bejelentkezést követően.\n"
+"Ne felejtsd el jelszavadat megváltoztatni az első bejelentkezést követően.\n"
 "\n"
 "Az oldalt itt éred el http://{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Statistics: http://{USERNAME}/stats/\n"
+"A statisztika megtekintéséhez létre kell majd hoznod a Vezérlőpulton egy új felhasználót, aki a Statisztika csoport tagja.\n"
+"Ezzel a felhasználónévvel és jelszóval tudod megnézni a statisztikádat a fenti linken.\n"
+"\n"
+"Üdvözlettel,\n"
+"Az ispCP csapat.\n"
 "\n"
 
 msgid "Please activate your new ispCP password!"
@@ -3330,7 +3278,7 @@ msgstr ""
 "\n"
 "\n"
 "Tisztelt {NAME},\n"
-"Ez egy automatikus domain rendelési visszigazolás:\n"
+"Ez egy automatikus domain rendelési visszaigazolás:\n"
 "\n"
 "{DOMAIN}\n"
 "\n"
@@ -3339,7 +3287,7 @@ msgstr ""
 "\n"
 
 msgid "New alias order for {CUSTOMER}!"
-msgstr ""
+msgstr "Új alias megrendelés a {CUSTOMER} nevű ügyféltől!"
 
 msgid ""
 "\n"
@@ -3356,6 +3304,20 @@ msgid ""
 "The ispCP Team\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Üdv {RESELLER},\n"
+"\n"
+"Az {CUSTOMER} ügyfeled várakozik egy új domain alias jóváhagyására:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Ha bejelentkezel az ispCP Vezérlőpultba, akkor lehetőséged lesz aktiválni az új alias-át a kérésének megfelelően:\n"
+"http://{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"\n"
+"Üdvözlettel,\n"
+"Az ispCP csapat\n"
+"\n"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3365,7 +3327,7 @@ msgstr ""
 "Próbáld meg később."
 
 msgid "Could not get config from database"
-msgstr ""
+msgstr "Nem kérhető le a konfiguráció az adatbázisból"
 
 #, php-format
 msgid "You have to wait %d seconds"
@@ -3375,36 +3337,31 @@ msgstr "Várj %d másodpercet"
 msgid "You have been blocked for %d minutes"
 msgstr "Zárolva vagy %d percre"
 
-#, fuzzy
 msgid "You entered an incorrect username/password."
-msgstr "Hibás jelszó."
+msgstr "Hibás jelszó vagy felhasználónév."
 
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr "A rendszer karbantartás alatt van! Csak adminisztrátor léphet be."
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
-msgstr ""
-"%s felhasználó már be van lépve, vagy munkamenet megosztási probléma! "
-"Megszakítás..."
+msgstr "%s felhasználó már be van lépve, vagy munkamenet megosztási probléma! Megszakítás..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"A felhasználó már be van lépve, vagy folyamat megosztási probléma! "
-"Megszakítva..."
+msgstr "A felhasználó már be van lépve, vagy folyamat megosztási probléma! Megszakítva..."
 
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "%s's hozzáférés állapot nem ok!"
 
 msgid "Request from foreign host was blocked!"
-msgstr ""
+msgstr "A kérés az idegen hosztról blokkolva."
 
 msgid "You do not have permission to access this interface!"
-msgstr "Nincs engedélyed ehez a felülethez!"
+msgstr "Nincs engedélyed ehhez a felülethez!"
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Domain alias"
 
 msgid "Manage Orders"
 msgstr "Rendelések Kezelése"
@@ -3416,7 +3373,7 @@ msgid "Order email setup"
 msgstr "Rendelés email beállítás"
 
 msgid "Please fill up both data fields for password!"
-msgstr "Töltsd fel a jelszó mindkét mezõjét!"
+msgstr "Töltsd fel a jelszó mindkét mezőjét!"
 
 msgid "Addition in progress"
 msgstr "Hozzáadás folyamatban"
@@ -3445,83 +3402,53 @@ msgstr "aliasok elrejtése"
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Elérted a domain korlátot.<br>Nem tudsz több domaint hozzáadni!"
 
-msgid ""
-"You have a subdomains limit!<br>You cannot add an user with unlimited "
-"subdomains!"
-msgstr ""
-"Maximális aldomainjeid száma korlátozva van!<br>Nem tudsz felhasználót "
-"hozzáadni korlátlan aldomain létrehozási lehetőséggel!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgstr "Maximális aldomainjeid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan aldomain létrehozási lehetőséggel!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Túllépted aldomainjeid korlátját!"
 
-msgid ""
-"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
-msgstr ""
-"Maximális aliaszok száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni "
-"korlátlan aliasz hozzáadási lehetőséggel!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgstr "Maximális aliasok száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan alias hozzáadási lehetőséggel!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Túllépted az aliasok maximális számát!"
 
-msgid ""
-"You have a mail accounts limit!<br>You cannot add an user with unlimited "
-"mail accounts!"
-msgstr ""
-"Maximális Mail fiókjaid száma korlátozva van!<br>Nem tudsz felhasználót "
-"hozzáadni korlátlan Mailfiók létrehozási lehetőséggel!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgstr "Maximális Mail fiókjaid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan Mailfiók létrehozási lehetőséggel!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Túllépted mail fiókjaid korlátját!"
 
-msgid ""
-"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
-"accounts!"
-msgstr ""
-"Maximális FTP hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót "
-"hozzáadni korlátlan FTP hozzáférés  létrehozási lehetőséggel!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgstr "Maximális FTP hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan FTP hozzáférés  létrehozási lehetőséggel!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Túllépted FTP hozzáféréseid korlátját!"
 
-msgid ""
-"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
-"databases!"
-msgstr ""
-"Maximális SQL adatbázisaid száma korlátozva van!<br>Nem tudsz felhasználót "
-"hozzáadni korlátlan SQL adatbázis létrehozási lehetőséggel!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgstr "Maximális SQL adatbázisaid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan SQL adatbázis létrehozási lehetőséggel!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Túllépted SQL adatbázisaid korlátját!"
 
-msgid ""
-"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
-"users!"
-msgstr ""
-"Maximális SQL hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót "
-"hozzáadni korlátlan SQL hozzáférés  létrehozási lehetőséggel!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgstr "Maximális SQL hozzáféréseid száma korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan SQL hozzáférés  létrehozási lehetőséggel!"
 
-msgid ""
-"You have disabled SQL databases for this user!<br>You cannot have SQL users "
-"here!"
-msgstr ""
-"Nem engedélyezted az SQL adatbázisokat ennek a felhasználónak!<br>Nem "
-"hozhatsz létre SQL felhasználót!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgstr "Nem engedélyezted az SQL adatbázisokat ennek a felhasználónak!<br>Nem hozhatsz létre SQL felhasználót!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Túllépted SQL hozzáféréseid korlátját!"
 
-msgid ""
-"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
-msgstr ""
-"Maximális adatforgalmad korlátozva van!<br>Nem tudsz felhasználót hozzáadni "
-"korlátlan adatforgalommal!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgstr "Maximális adatforgalmad korlátozva van!<br>Nem tudsz felhasználót hozzáadni korlátlan adatforgalommal!"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
-msgstr ""
+msgstr "Te korlátozott diszk kapacitással rendelkezel!<br>Nem adhatsz hozzá felhasználót korlátlan diszk használattal!"
 
 msgid "You have a new order"
-msgstr "Új rendelő"
+msgstr "Új megrendelésed érkezett"
 
 msgid ""
 "\n"
@@ -3532,6 +3459,14 @@ msgid ""
 "Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Üdv {RESELLER},\n"
+"Új megrendelésed érkezett tőle: {NAME} <{MAIL}>\n"
+"a következő domain névre: {DOMAIN}\n"
+"\n"
+"Kérlek lépj be a sz ispCP vezérlőpultba a részletekért.\n"
+"\n"
 
 msgid "ispCP Error"
 msgstr "ispCP Hiba"
@@ -3552,13 +3487,13 @@ msgid "(e.g. domain-of-your-choice.com)"
 msgstr "(Pl. a_te_domained.com)"
 
 msgid "Please fill out all needed fields!"
-msgstr "Tölts ki minden szükséges mezõt!"
+msgstr "Tölts ki minden szükséges mezőt!"
 
 msgid "Enter Address"
 msgstr "Cím megadás"
 
 msgid "* denotes mandatory field."
-msgstr "* kötelezõen kitöltendõ mezõ."
+msgstr "* kötelezően kitöltendő mező."
 
 msgid "Your Chart"
 msgstr "A grafikonod"
@@ -3572,15 +3507,11 @@ msgstr "Személyes Adatok"
 msgid "Check Out"
 msgstr "Kilépés"
 
-msgid ""
-"<b>Thank You for purchasing</b><br>You will receive an email with more "
-"details and information"
-msgstr ""
-"<b>Köszönjük a vásárlást</b><br>Levélben küldjük a további részletes "
-"információkat"
+msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgstr "<b>Köszönjük a vásárlást</b><br>Levélben küldjük a további részletes információkat"
 
 msgid "No available hosting packages"
-msgstr "Nincs elérhetõ szolgáltatás csomag"
+msgstr "Nincs elérhető szolgáltatás csomag"
 
 msgid "Webspace"
 msgstr "Webhely"
@@ -3619,7 +3550,7 @@ msgid "Package Price"
 msgstr "Csomag Ár"
 
 msgid "Setup Fee"
-msgstr "Díj Beállítás"
+msgstr "Beállítási Díj"
 
 msgid "Performance"
 msgstr "Teljesítmény"
@@ -3637,7 +3568,7 @@ msgid "You have no alias records."
 msgstr "Nincsenek alias rekordok."
 
 msgid "Activate"
-msgstr "Aktívál"
+msgstr "Aktivál"
 
 msgid "Domain alias added for termination!"
 msgstr "Domain alias törlése beütemezve!"
@@ -3681,64 +3612,53 @@ msgstr "Körlevél"
 msgid "Wrong domain ID!"
 msgstr "Rossz domain azonosító!"
 
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-"A törölni kívánt domainhez email cím tartozik !<br>Elõbb azt kell törölni !"
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr "A törölni kívánt domainhez email cím tartozik !<br>Előbb azt kell törölni !"
 
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-"A törölni kívánt domainhez FTP hozzáférés tartozik!<br>Elõbb azt kell "
-"törölni !"
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr "A törölni kívánt domainhez FTP hozzáférés tartozik!<br>Előbb azt kell törölni !"
 
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
-"A törölni kívánt domainhez domin alias tartozik!<br>Elõbb azt kell törölni !"
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr "A törölni kívánt domainhez domain alias tartozik!<br>Előbb azt kell törölni !"
 
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-"A törölni kívánt domainhez aldomain hozzáférés tartozik !<br>Elõbb azt kell "
-"törölni !"
+msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgstr "A törölni kívánt domainhez aldomain hozzáférés tartozik !<br>Előbb azt kell törölni !"
 
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domain/Módosítás"
 
 #, php-format
 msgid "The <em>%s</em> service can not be disabled! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatást nem lehet letiltani!"
 
 #, php-format
 msgid "The <em>%s</em> service can not be limited! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatást nem lehet limitálni!"
 
 #, php-format
 msgid "The <em>%s</em> service can not be unlimited! "
-msgstr ""
+msgstr "A <em>%s</em> szolgáltatást nem lehet végtelenre állítani! "
 
 msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Viszonteladó/Kezdõlap"
+msgstr "ispCP - Viszonteladó/Kezdőlap"
 
 msgid "View details"
 msgstr "Részletek megtekintése"
 
 msgid "ispCP - Reseller/Add hosting plan"
-msgstr "ispCP - Viszonteladó/Új szolgálltatási csomag"
+msgstr "ispCP - Viszonteladó/Új szolgáltatási csomag"
 
 msgid "Price must be a number!"
-msgstr ""
+msgstr "Az árnak csak számot lehet megadni!"
 
 msgid "Setup fee must be a number!"
-msgstr ""
+msgstr "A beállítási díjnak számnak kell lennie!"
 
 msgid "Hosting plan values exceed reseller maximum values!"
-msgstr ""
+msgstr "A szolgáltatási csomag értékei meghaladják a viszonteladó rendelkezésére álló limitet!"
 
 msgid "ispCP - Reseller/Edit hosting plan"
-msgstr "ispCP - Viszonteladó/Szolgálltatási csomag szerkesztése"
+msgstr "ispCP - Viszonteladó/Szolgáltatási csomag szerkesztése"
 
 msgid "View hosting plan"
 msgstr "Szolgáltatási csomagok megtekintése"
@@ -3784,7 +3704,7 @@ msgid "Header"
 msgstr "Fejléc"
 
 msgid "Preview"
-msgstr "Elõnézet"
+msgstr "Előnézet"
 
 msgid "Implementation URL"
 msgstr "Megvalósítás URL"
@@ -3826,7 +3746,7 @@ msgid "Wrong order ID!"
 msgstr "Rossz rendelés azonosító!"
 
 msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Rendelés meghiusult: viszonteladások maximumát elérted!"
+msgstr "Rendelés meghiúsult: viszonteladások maximumát elérted!"
 
 msgid "User added!"
 msgstr "Felhasználó hozzáadva!"
@@ -3883,12 +3803,10 @@ msgid "Personalise template"
 msgstr "Sablon személyre szabása"
 
 msgid "Next step"
-msgstr "Következõ lépés"
+msgstr "Következő lépés"
 
 msgid "You have no hosting plans. Please contact your system administrator."
-msgstr ""
-"Nincs hoszting csomagod. Kérlek, lépj kapcsolatba a rendszer "
-"adminisztrátorral."
+msgstr "Nincs hoszting csomagod. Kérlek, lépj kapcsolatba a rendszer adminisztrátorral."
 
 msgid "ispCP - User/Add user(step2)"
 msgstr "ispCP - Felhasználó/Új felhasználó (lépés 2)"
@@ -3906,7 +3824,7 @@ msgid "Awstats"
 msgstr "Awstats"
 
 msgid "Domain data has been altered. Please enter again"
-msgstr ""
+msgstr "A domain adatai megváloztak. Kérlek lépj be újra"
 
 msgid "SQL databases limit is not <i>disabled</i>!"
 msgstr "SQL adatbázis limit nincs <i>kikapcsolva</i>!"
@@ -3915,10 +3833,10 @@ msgid "ispCP - User/Add user"
 msgstr "ispCP - Felhasználó/Új felhasználó"
 
 msgid "Add other domains to this account"
-msgstr "Domainek hozzáadása ehez a hozzáféréshez"
+msgstr "Domainek hozzáadása ehhez a hozzáféréshez"
 
 msgid "System error with Domain ID "
-msgstr ""
+msgstr "Rendszerhiba a Domain ID-vel"
 
 msgid "User terminated!"
 msgstr "Felhasználó törölve!"
@@ -3937,16 +3855,16 @@ msgstr "ispCP - Felhasználók"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
-msgstr "Biztos cserélni akaroja a domain %s státuszát?"
+msgstr "Biztos meg akarja változtatni a domain %s státuszát?"
 
 msgid "Stats"
 msgstr "Statisztikák"
 
 msgid "Edit User"
-msgstr "Felhasználó Szerkesztése"
+msgstr "Felhasználó szerkesztése"
 
 msgid "Bandwidth"
-msgstr ""
+msgstr "Sávszélesség"
 
 msgid "View aliases"
 msgstr "Aliasok mutatása"
@@ -3960,72 +3878,52 @@ msgstr "Felhasználói adatok módosítva!"
 msgid "User data not updated!"
 msgstr "Felhasználói adatok nem lettek módosítva!"
 
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
-"Ennek a felhasználónak létezik domain rekordja!<br>Először töröld a domaint!"
+msgid "This user has domain record !<br>First remove the domain from the system!"
+msgstr "Ennek a felhasználónak létezik domain rekordja!<br>Először töröld a domaint!"
 
 msgid "User not terminated!"
 msgstr "Felhasználó nincs törölve!"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Üres aldomain lista! Nem hozhatsz itt létre új email hozzáférést!"
-
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Hibás jelszó formátum!"
-
 #~ msgid "Message was sent!"
 #~ msgstr "Üzenet elküldve"
-
 #~ msgid "Message was send!"
 #~ msgstr "Üzenet elküldve!"
-
 #~ msgid "Database update %s failed"
 #~ msgstr "Sikertelen adatbázis frissítés %s"
-
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Hiányzó vagy rossz adat!"
-
 #~ msgid "Unknown domain status!"
 #~ msgstr "Ismeretlen domain státusz!"
-
 #~ msgid "Unknown account type!"
 #~ msgstr "Ismeretlen hozzáférés típus"
-
 #~ msgid "Invalid account id!"
 #~ msgstr "Helytelen hozzáférési azonosító!"
-
 #~ msgid "Max domain count"
 #~ msgstr "Max domain szám"
-
 #~ msgid "Max subdomain count"
 #~ msgstr "Max aldomainek száma"
-
 #~ msgid "Max aliases count"
 #~ msgstr "Max aliasok száma"
-
 #~ msgid "Max mail users count"
 #~ msgstr "Max email felhasználók száma"
-
 #~ msgid "Max FTP users count"
 #~ msgstr "Max FTP felhasználók száma"
-
 #~ msgid "Max SQL databases count"
 #~ msgstr "Max SQL adatbázisok"
-
 #~ msgid "Max SQL users count"
 #~ msgstr "Max SQL felhasználók száma"
-
 #~ msgid "Max traffic amount [MB]"
 #~ msgstr "Max forgalom mennyiség [MB]"
-
 #~ msgid "Max disk amount [MB]"
 #~ msgstr "Max diszk mennyiség [MB]"
 
 #, fuzzy
 #~ msgid "Order in progress"
 #~ msgstr "Hozzáadás folyamatban"
-
 #~ msgid "Uninstall"
 #~ msgstr "Eltávolít"
 
@@ -4064,10 +3962,8 @@ msgstr "Felhasználó nincs törölve!"
 #, fuzzy
 #~ msgid "Incorrect max SQL users number or syntax!"
 #~ msgstr "Hibás max SQL felhasználó szám vagy hibás formátum!"
-
 #~ msgid "Incorrect max traffic amount or syntax!"
 #~ msgstr "Hibás max forgalom mennyiség vagy hibás formátum!"
-
 #~ msgid "Incorrect max disk amount or syntax!"
 #~ msgstr "Hibás max diszk mennyiség vagy hibás formátum!"
 
@@ -4082,95 +3978,67 @@ msgstr "Felhasználó nincs törölve!"
 #, fuzzy
 #~ msgid "Incorrect FTP account count or no number<br />"
 #~ msgstr "Hibáx max FTP szám vagy hibás formátum!"
-
 #~ msgid "Change user interface"
 #~ msgstr "Váltás erre a felületre"
 
 #, fuzzy
 #~ msgid "show"
 #~ msgstr "Mutasd"
-
 #~ msgid "Edit properties"
 #~ msgstr "Tulajdonságok szerkesztése"
-
 #~ msgid "User does not exist!"
 #~ msgstr "Felhasználó nem létezik!"
-
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Sikertelen csatlakozás mint MySQL adminisztrátor!"
-
 #~ msgid "SQL query has error"
 #~ msgstr "SQL kérés hibás"
-
 #~ msgid "SQL query is ok"
 #~ msgstr "SQL kérés OK"
-
 #~ msgid "of"
 #~ msgstr "max:"
-
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Definiálatlan felhasználói hozzáférés hiba!"
-
 #~ msgid "This reseller has already dispatched more <b>"
 #~ msgstr "Ez a viszonteladó már elindított még <b>"
-
 #~ msgid "Then the value you are trying to enter now !<br>"
 #~ msgstr "Aztán az értéket amit most be akarsz írni!<br>"
-
 #~ msgid "This reseller has more <b>"
 #~ msgstr "A viszonteladónak van még <b>"
-
 #~ msgid "Then the value you are trying to enter now!<br>"
 #~ msgstr "Aztán az értéket amit most be akarsz írni!<br>"
-
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Cím!<br> Viszonteladó szerkesztése megszakítva!"
-
 #~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr ""
 #~ "Nem lehet megnyitni a fájlt!<br>Lépj kapcsolatba az adminisztrátorral !"
-
 #~ msgid "Not in:"
 #~ msgstr "Ebben nincs:"
-
 #~ msgid "wait to be added"
 #~ msgstr "hozzáadásra vár"
-
 #~ msgid "wait to be modified"
 #~ msgstr "módosításra vár"
-
 #~ msgid "wait to be deleted"
 #~ msgstr "törlésre vár"
-
 #~ msgid "wait to be enabled"
 #~ msgstr "engedélyezésre vár"
-
 #~ msgid "wait to be suspended"
 #~ msgstr "felfüggesztésre vár"
-
 #~ msgid "unknown status"
 #~ msgstr "ismeretlen státusz"
-
 #~ msgid "You have"
 #~ msgstr "Neked van"
-
 #~ msgid "Support question(s)"
 #~ msgstr "Ügyfélszolgálati kérdés(ek)"
-
 #~ msgid "New"
 #~ msgstr "Új"
-
 #~ msgid "Catch all mail account cannot be created!"
-#~ msgstr "Nem hozható létre gyûjtõ email!"
-
+#~ msgstr "Nem hozható létre gyűjtő email!"
 #~ msgid "support question(s)"
 #~ msgstr "Ügyfélszolgálati kérdés(ek)"
-
 #~ msgid "new"
-#~ msgstr "új"
-
+#~ msgstr "Új"
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias módosítása beütemezve!"
-
 #~ msgid "delete"
 #~ msgstr "törlés"
+
