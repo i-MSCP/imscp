@@ -1,7 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-21 Benedikt Heintel
+	- GUI:
+		* Fixed #1621: if using `admin hosting plan', no `hosting plan update` in client menu (from rc7)
+
 2009-01-20 Benedikt Heintel
+	- DISTS:
+		* Fixed #1617: (OpenBSD) OpenBSD Proftpd pacckage update
+
+2009-01-19 Benedikt Heintel
 	- LANGUAGES:
 		* Updated: Hungarian
 		* Updated: Russian

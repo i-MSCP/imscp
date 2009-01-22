@@ -649,7 +649,9 @@ SQL_QUERY;
 	
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign('ISACTIVE_UPDATE_HP', '');
+		if (Config::get('HOSTING_PLANS_LEVEL') != 'admin') { 
+			$tpl->assign('ISACTIVE_UPDATE_HP', '');
+		}
 	}
 
 	$tpl->parse('MENU', 'menu');
