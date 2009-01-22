@@ -224,7 +224,7 @@ function setColor_js(i, checkbox_hidden) {
 <?php					if ($net2ftp_settings["functionuse_edit"]   == "yes") { ?><td></td><?php } ?>
 <?php					if ($net2ftp_settings["functionuse_update"] == "yes") { ?><td></td><?php } ?>
 <?php				} ?>
-<?php				if ($net2ftp_settings["functionuse_open"]   == "yes") { ?><td onClick="window.open('<?php echo $list_links_js[$i]; ?>');" style="cursor: pointer; cursor: hand;" title="<?php echo __("View the file %1\$s from your HTTP web server", $list_files[$i]["dirfilename_html"]); ?> &#13; <?php echo __("(Note: This link may not work if you don't have your own domain name.)"); ?>"><a href="<?php echo $list_links_js[$i]; ?>">                                                                                                         <?php echo __("Open");    ?></a></td><?php } ?>
+<td>&nbsp;</td>
 			</tr>
 <?php		} // end for ?>
 <?php	} // end if ?>
