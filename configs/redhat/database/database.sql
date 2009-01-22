@@ -336,18 +336,18 @@ CREATE TABLE `login` (
 
 CREATE TABLE `mail_users` (
   `mail_id` int(10) unsigned NOT NULL auto_increment,
-  `mail_acc` varchar(200) DEFAULT NULL,
-  `mail_pass` varchar(150) DEFAULT NULL,
-  `mail_forward` text,
-  `domain_id` int(10) unsigned DEFAULT NULL,
-  `mail_type` varchar(30) DEFAULT NULL,
-  `sub_id` int(10) unsigned DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `mail_auto_respond` BOOL NOT NULL default '0',
-  `mail_auto_respond_text` text,
-  `quota` int(10) DEFAULT '10485760',
-  `mail_addr` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`mail_id`)
+  `mail_acc` varchar(200) collate utf8_unicode_ci default NULL,
+  `mail_pass` varchar(150) collate utf8_unicode_ci default NULL,
+  `mail_forward` text collate utf8_unicode_ci,
+  `domain_id` int(10) unsigned default NULL,
+  `mail_type` varchar(30) collate utf8_unicode_ci default NULL,
+  `sub_id` int(10) unsigned default NULL,
+  `status` varchar(255) collate utf8_unicode_ci default NULL,
+  `mail_auto_respond` tinyint(1) NOT NULL default '0',
+  `mail_auto_respond_text` text collate utf8_unicode_ci,
+  `quota` int(10) default '10485760',
+  `mail_addr` varchar(200) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`mail_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

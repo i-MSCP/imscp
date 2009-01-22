@@ -252,6 +252,28 @@ class databaseUpdate extends ispcpUpdate{
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @version		1.0
+	 * @since		r1462
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_9() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE `mail_users`
+					CHANGE `mail_acc` `mail_acc` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+					CHANGE `mail_pass` `mail_pass` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+					CHANGE `mail_forward` `mail_forward` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+					CHANGE `mail_type` `mail_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+					CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
+		return $sqlUpd;
+	}
+
 	/*
 	* DO NOT CHANGE ANYTHING BELOW THIS LINE
 	*/
