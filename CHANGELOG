@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-29 Daniel Andreca
+	- GUI:
+		* Fixed #1626: Little security bug in AWStats Password protection
+
 2009-01-22 Daniel Andreca
 	- GUI:
 		* Fixed #1616: "Open" link in net2ftp links to http://localhost/...

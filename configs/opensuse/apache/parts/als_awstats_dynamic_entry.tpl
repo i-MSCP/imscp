@@ -9,6 +9,10 @@
    ProxyPassReverse		/stats	http://localhost/stats/{ALS_NAME}
 
    <Location /stats>
+        <IfModule mod_rewrite.c>
+            RewriteEngine on
+            RewriteRule ^(.+)\?config=([^\?\&]+)(.*) $1\?config={ALS_NAME}&$3 [NC,L]
+        </IfModule>
        AuthType Basic
        AuthName "Statistics for domain {ALS_NAME}"
        AuthUserFile {WWW_DIR}/{DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
