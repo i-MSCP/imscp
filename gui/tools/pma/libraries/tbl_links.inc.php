@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_links.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: tbl_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -24,10 +24,7 @@ require_once './libraries/bookmark.lib.php';
 /**
  * Set parameters for links
  */
-if (empty($url_query)
-|| (isset($_POST['table']) && isset($_POST['new_name']) && $_POST['table'] != $_POST['new_name'])) {
-    $url_query = PMA_generate_common_url($db, $table);
-}
+$url_params = array();
 $url_params['db']    = $db;
 $url_params['table'] = $table;
 
@@ -126,7 +123,7 @@ if ($table_info_num_rows == 0 && !$tbl_is_view) {
     $tabs['search']['warning'] = $strTableIsEmpty;
 }
 
-echo PMA_getTabs($tabs);
+echo PMA_getTabs($tabs, $url_params);
 unset($tabs);
 
 /**

@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: excel.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: excel.php 12158 2008-12-25 14:52:28Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -20,7 +20,14 @@ if (isset($plugin_list)) {
         'options' => array(
             array('type' => 'text', 'name' => 'null', 'text' => 'strReplaceNULLBy'),
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
-            array('type' => 'select', 'name' => 'edition', 'values' => array('win' => 'Windows', 'mac' => 'Excel 2003 / Macintosh'), 'text' => 'strExcelEdition'),
+            array(
+                'type' => 'select', 
+                'name' => 'edition', 
+                'values' => array(
+                    'win' => 'Windows',
+                    'mac_excel2003' => 'Excel 2003 / Macintosh', 
+                    'mac_excel2008' => 'Excel 2008 / Macintosh'), 
+                'text' => 'strExcelEdition'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
         'options_text' => 'strOptions',

@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build YAML dumps of tables
  *
- * @version $Id: yaml.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: yaml.php 12133 2008-12-12 13:03:43Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -137,8 +137,18 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     unset($i);
 
     $buffer = '';
+    $record_cnt = 0;
     while ($record = PMA_DBI_fetch_row($result)) {
-        $buffer = '-' . $crlf;
+        $record_cnt++;
+
+        // Output table name as comment if this is the first record of the table
+        if ($record_cnt == 1) {
+            $buffer = '# ' . $db . '.' . $table . $crlf;
+            $buffer .= '-' . $crlf;
+        } else {
+            $buffer = '-' . $crlf;
+        }
+
         for ($i = 0; $i < $columns_cnt; $i++) {
             if (! isset($record[$i])) {
                 continue;

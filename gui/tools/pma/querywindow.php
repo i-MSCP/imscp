@@ -38,7 +38,7 @@
  * @uses    strlen()
  * @uses    preg_replace()
  * @uses    htmlspecialchars()
- * @version $Id: querywindow.php 11376 2008-07-09 14:17:19Z lem9 $
+ * @version $Id: querywindow.php 12166 2009-01-02 13:55:50Z lem9 $
  */
 
 /**
@@ -205,7 +205,7 @@ require_once './libraries/header_scripts.inc.php';
 <?php
 
 if ($tabs) {
-    echo PMA_getTabs($tabs);
+    echo PMA_getTabs($tabs, array());
     unset($tabs);
 }
 

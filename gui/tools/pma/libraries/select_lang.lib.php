@@ -3,7 +3,7 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: select_lang.lib.php 11626 2008-10-01 20:48:40Z lem9 $
+ * @version $Id: select_lang.lib.php 12137 2008-12-14 13:58:06Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -144,8 +144,8 @@ function PMA_langDetect(&$str, $envType)
         if (strpos($expr, '[-_]') === FALSE) {
             $expr = str_replace('|', '([-_][[:alpha:]]{2,3})?|', $expr);
         }
-        if (($envType == 1 && eregi('^(' . $expr . ')(;q=[0-9]\\.[0-9])?$', $str))
-            || ($envType == 2 && eregi('(\(|\[|;[[:space:]])(' . $expr . ')(;|\]|\))', $str))) {
+        if (($envType == 1 && preg_match('/^(' . addcslashes($expr,'/') . ')(;q=[0-9]\\.[0-9])?$/i', $str))
+            || ($envType == 2 && preg_match('/(\(|\[|;[[:space:]])(' . addcslashes($expr,'/') . ')(;|\]|\))/i', $str))) {
             if (PMA_langSet($lang)) {
                 return true;
             }

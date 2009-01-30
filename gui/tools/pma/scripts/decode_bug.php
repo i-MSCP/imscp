@@ -8,7 +8,7 @@
  *
  * Copyright 2002 Robin Johnson <robbat2@users.sourceforge.net>
  *
- * @version $Id: decode_bug.php 10289 2007-04-16 13:32:45Z cybot_tm $
+ * @version $Id: decode_bug.php 12137 2008-12-14 13:58:06Z lem9 $
  * @package phpMyAdmin-debug
  */
 
@@ -84,7 +84,7 @@ if (!empty($bug_encoded)) {
         $bug_encoded = stripslashes($bug_encoded);
     }
 
-    $bug_encoded     = ereg_replace('[[:space:]]', '', $bug_encoded);
+    $bug_encoded     = preg_replace('/[[:space:]]/', '', $bug_encoded);
     $bug_decoded     = base64_decode($bug_encoded);
     if (substr($bug_encoded, 0, 2) == 'eN') {
         if (function_exists('gzuncompress')) {

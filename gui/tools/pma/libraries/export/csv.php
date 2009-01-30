@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: csv.php 11357 2008-06-28 14:17:11Z lem9 $
+ * @version $Id: csv.php 12158 2008-12-25 14:52:28Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -68,7 +68,7 @@ function PMA_exportHeader() {
     // Here we just prepare some values for export
     if ($what == 'excel') {
         $csv_terminated      = "\015\012";
-        $csv_separator          = isset($GLOBALS['excel_edition']) && $GLOBALS['excel_edition'] == 'mac' ? ';' : ',';
+        $csv_separator          = isset($GLOBALS['excel_edition']) && $GLOBALS['excel_edition'] == 'mac_excel2003' ? ';' : ',';
         $csv_enclosed           = '"';
         $csv_escaped            = '"';
         if (isset($GLOBALS['excel_columns'])) {
@@ -178,7 +178,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
             } elseif ($row[$j] == '0' || $row[$j] != '') {
                 // loic1 : always enclose fields
                 if ($what == 'excel') {
-                    $row[$j]       = ereg_replace("\015(\012)?", "\012", $row[$j]);
+                    $row[$j]       = preg_replace("/\015(\012)?/", "\012", $row[$j]);
                 }
                 if ($csv_enclosed == '') {
                     $schema_insert .= $row[$j];

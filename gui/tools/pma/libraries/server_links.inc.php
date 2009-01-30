@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_links.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: server_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -82,7 +82,7 @@ $tabs['import']['icon'] = 'b_import.png';
 $tabs['import']['link'] = 'server_import.php';
 $tabs['import']['text'] = $strImport;
 
-echo PMA_getTabs($tabs);
+echo PMA_getTabs($tabs, array());
 unset($tabs);
 
 

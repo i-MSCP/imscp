@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_operations.php 11378 2008-07-09 15:24:44Z lem9 $
+ * @version $Id: tbl_operations.php 12154 2008-12-23 18:15:56Z lem9 $
  */
 
 /**
@@ -141,7 +141,7 @@ if (isset($_REQUEST['submitoptions'])) {
 
     if (($is_myisam_or_maria || $is_innodb || $is_pbxt)
       &&  ! empty($_REQUEST['new_row_format'])
-      && (! isset($row_format) || $_REQUEST['new_row_format'] !== $row_format)) {
+      && (! isset($row_format) || strtolower($_REQUEST['new_row_format']) !== strtolower($row_format))) {
         $table_alters[] = 'ROW_FORMAT = ' . PMA_sqlAddslashes($_REQUEST['new_row_format']);
     }
 

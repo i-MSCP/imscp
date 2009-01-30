@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 12032 2008-11-29 19:28:18Z lem9 $
+ * @version $Id: config.default.php 12152 2008-12-22 17:32:17Z lem9 $
  */
 
 /**
@@ -580,6 +580,7 @@ $cfg['Error_Handler'] = array();
 $cfg['Error_Handler']['display'] = false;
 
 /**
+ * (NOT IMPLEMENTED YET)
  * where to log errors, false or empty to disable
  *
  * <code>
@@ -594,7 +595,7 @@ $cfg['Error_Handler']['display'] = false;
  * @see     http://php.net/error_log
  * @global  string $cfg['Error_Handler']['log']
  */
-$cfg['Error_Handler']['log'] = false;
+//$cfg['Error_Handler']['log'] = false;
 
 /**
  * gather all errors in session to be displayed on a error reporting page

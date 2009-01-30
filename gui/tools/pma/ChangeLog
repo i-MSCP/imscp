@@ -2,8 +2,30 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 12110 2008-12-09 17:22:43Z lem9 $
+$Id: ChangeLog 12197 2009-01-19 17:32:29Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+3.1.2.0 (2009-01-19)
+- bug #1253252 [display] Can't NULL a column with relation defined 
+- bug #2009500 [SQL] Small improvements in generated SQL (partial fix) 
+- bug #1963184 [export] YAML export improvement,
+ thanks to Bryce Thornton - brycethornton
++ [lang] Dutch update, thanks to Herman van Rink - helmo 
+- patch #2407785 [cleanup] ereg*() deprecated in PHP 5.3,
+  thanks to Alex Frase - atfrase
+- bug #2417058 [properties] Edit fields: losing auto-increment setting 
+- patch #2444082 [changelog] changelog.php linkifies one link wrong,
+  thanks to Robert Xiao - nneonneo
+- bug #2363653 [properties] Various problems with table structure 
+- bug [display] BIT field contents disappear when edited 
++ [lang] Czech update, thanks to Ondřej Vadinský.
+- bug #2461735 [operations] Table operations adds "row_format" 
+- bug #2445213 [export] Commas for CSV Excel 2008 for Mac 
+- bug #2397877 [core] ForceSSL and http auth_type 
+- bug #2473127 [display] Deleting rows displays tbl structure, not contents
+- patch #2478940 [core] PHP 5.2+ warning does not work, 
+  thanks to Jürgen Wind - windkiel
+- bug #2416418 [privileges] Escaping special characters
 
 3.1.1.0 (2008-12-09)
 - patch #2242765 [core] Navi panel server links wrong,
@@ -183,6 +205,9 @@ danbarry
 - bug #2113848 [navi] Page number after database switching 
 - patch #2115966 [GUI] Checkboxes and IE 7, thanks to Martin - maschg 
 - bug #1914066 [core] ForceSSL generates incorrectly escaped redirections 
+
+2.11.9.4 (2008-12-09)
+- [security] possible XSRF on several pages
 
 2.11.9.3 (2008-10-30)
 - [security] XSS in a Designer component 

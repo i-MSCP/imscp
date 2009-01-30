@@ -3,7 +3,7 @@
 /**
  * Generic plugin interface.
  *
- * @version $Id: plugin_interface.lib.php 11556 2008-09-03 15:41:47Z nijel $
+ * @version $Id: plugin_interface.lib.php 12137 2008-12-14 13:58:06Z lem9 $
  */
 
 /**
@@ -15,7 +15,7 @@
  * @uses    opendir()
  * @uses    readdir()
  * @uses    is_file()
- * @uses    eregi()
+ * @uses    preg_match()
  * @param   string  $plugins_dir    directrory with plugins
  * @param   mixed   $plugin_param   parameter to plugin by which they can decide whether they can work
  * @return  array                   list of plugins

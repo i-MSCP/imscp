@@ -28,8 +28,16 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11695 2008-11-02 06:54:27Z rajkissu $
+ * @version $Id: common.inc.php 12165 2009-01-01 23:37:14Z lem9 $
  */
+
+/**
+ * Minimum PHP version; can't call PMA_fatalError() which uses a
+ * PHP 5 function, so cannot easily localize this message.
+ */
+if (version_compare(PHP_VERSION, '5.2.0', 'lt')) {
+    die('PHP 5.2+ is required');
+}
 
 /**
  * the error handler
@@ -72,13 +80,7 @@ require_once './libraries/sanitizing.lib.php';
 
 /**
  * the PMA_Theme class
- * (this one is the first to produce a fatal error under PHP < 5)
- * and let's put here the same minimum requirement as in our doc.
  */
-if (version_compare(PHP_VERSION, '5.2.0') < 0 ) {
-    PMA_fatalError('strUpgrade', array('PHP', '5.2'));
-}
-
 require_once './libraries/Theme.class.php';
 
 /**
@@ -540,6 +542,8 @@ if ($_SESSION['PMA_Config']->get('ForceSSL')
         preg_replace('/^http/', 'https',
             $_SESSION['PMA_Config']->get('PmaAbsoluteUri'))
         . PMA_generate_common_url($_GET, 'text'));
+    // delete the current session, otherwise we get problems (see bug #2397877)
+    PMA_removeCookie($GLOBALS['session_name']);
     exit;
 }
 

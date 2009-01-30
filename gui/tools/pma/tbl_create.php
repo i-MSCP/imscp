@@ -31,7 +31,7 @@
  * @uses    strlen()
  * @uses    sprintf()
  * @uses    htmlspecialchars()
- * @version $Id: tbl_create.php 11243 2008-05-07 14:00:07Z cybot_tm $
+ * @version $Id: tbl_create.php 12094 2008-12-07 13:33:26Z lem9 $
  */
 
 /**
@@ -216,6 +216,7 @@ if (isset($_REQUEST['do_save_data'])) {
     if (!empty($_REQUEST['partition_definition'])) {
         $sql_query .= ' ' . PMA_sqlAddslashes($_REQUEST['partition_definition']);
     }
+    $sql_query .= ';';
 
     // Executes the query
     $result = PMA_DBI_try_query($sql_query);

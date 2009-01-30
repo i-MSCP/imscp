@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 11583 2008-09-11 17:03:49Z lem9 $
+ * @version $Id: sqlparser.lib.php 12137 2008-12-14 13:58:06Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -151,7 +151,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11583 2008-09-11 17:03:49Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12137 2008-12-14 13:58:06Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -2281,8 +2281,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                         && ($typearr[1] != 'punct_level_plus')
                         && (!PMA_STR_binarySearchInArr($arr[$i]['data'], $keywords_no_newline, $keywords_no_newline_cnt))) {
                         // do not put a space before the first token, because
-                        // we use a lot of eregi() checking for the first
-                        // reserved word at beginning of query
+                        // we use a lot of pattern matching checking for the 
+                        // first reserved word at beginning of query
                         // so do not put a newline before
                         //
                         // also we must not be inside a privilege list

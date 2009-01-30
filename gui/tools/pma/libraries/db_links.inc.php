@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_links.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: db_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -128,7 +128,8 @@ if (! $db_is_information_schema) {
     }
 }
 
-echo PMA_getTabs($tabs);
+$url_params['db'] = $db;
+echo PMA_getTabs($tabs, $url_params);
 unset($tabs);
 
 /**

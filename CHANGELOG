@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-30 Daniel Andreca
+	- PHPmyAdmin:
+		* Fixed #1628: update to new phpMyAdmin version 3.1.2
+
 2009-01-29 Daniel Andreca
 	- GUI:
 		* Fixed #1626: Little security bug in AWStats Password protection

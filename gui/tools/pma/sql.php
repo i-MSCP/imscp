@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          what returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 11388 2008-07-14 19:52:16Z lem9 $
+ * @version $Id: sql.php 12163 2009-01-01 21:39:21Z lem9 $
  */
 
 /**
@@ -466,7 +466,7 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
 } // end else "didn't ask to see php code"
 
 // No rows returned -> move back to the calling page
-if ($num_rows < 1 || $is_affected) {
+if (0 == $num_rows || $is_affected) {
     if ($is_delete) {
         $message = PMA_Message::success('strRowsDeleted');
         $message->addParam($num_rows);
@@ -552,7 +552,7 @@ if ($num_rows < 1 || $is_affected) {
         require './' . $goto;
     } else {
         // avoid a redirect loop when last record was deleted
-        if ('sql.php' == $cfg['DefaultTabTable']) {
+        if (0 == $num_rows && 'sql.php' == $cfg['DefaultTabTable']) {
             $goto = str_replace('sql.php','tbl_structure.php',$goto);
         }
         PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . str_replace('&amp;', '&', $goto) . '&message=' . urlencode($message));

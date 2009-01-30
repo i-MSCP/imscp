@@ -5,7 +5,7 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12007 2008-11-27 18:27:01Z lem9 $
+ * @version $Id: tbl_change.php 12164 2009-01-01 21:44:37Z lem9 $
  */
 
 /**
@@ -417,6 +417,7 @@ foreach ($rows as $row_id => $vrow) {
 
         // Prepares the field value
         $real_null_value = FALSE;
+        $special_chars_encoded = '';
         if (isset($vrow)) {
             // On a BLOB that can have a NULL value, the is_null() returns
             // true if it has no content but for me this is different than
@@ -427,7 +428,7 @@ foreach ($rows as $row_id => $vrow) {
                 $special_chars   = '';
                 $data            = $vrow[$field['Field']];
             } elseif ($field['True_Type'] == 'bit') {
-                $special_chars = PMA_printable_bit_value($vrow[$field], $extracted_fieldspec['spec_in_brackets']);
+                $special_chars = PMA_printable_bit_value($vrow[$field['Field']], $extracted_fieldspec['spec_in_brackets']);
             } else {
                 // loic1: special binary "characters"
                 if ($field['is_binary'] || $field['is_blob']) {
@@ -565,6 +566,7 @@ foreach ($rows as $row_id => $vrow) {
 
         // The null column
         // ---------------
+        $foreignData = PMA_getForeignData($foreigners, $field['Field'], false, '', '');
         echo '        <td>' . "\n";
         if ($field['Null'] == 'YES') {
             echo '            <input type="hidden" name="fields_null_prev' . $field_name_appendix . '"';
@@ -590,8 +592,12 @@ foreach ($rows as $row_id => $vrow) {
                     }
                 } elseif (strstr($field['True_Type'], 'set')) {
                     $onclick     .= '3, ';
-                } elseif ($foreigners && isset($foreigners[$field['Field']])) {
+                } elseif ($foreigners && isset($foreigners[$field['Field']]) && $foreignData['foreign_link'] == false) {
+                    // foreign key in a drop-down
                     $onclick     .= '4, ';
+                } elseif ($foreigners && isset($foreigners[$field['Field']]) && $foreignData['foreign_link'] == true) {
+                    // foreign key with a browsing icon 
+                    $onclick     .= '6, ';
                 } else {
                     $onclick     .= '5, ';
                 }
@@ -612,7 +618,6 @@ foreach ($rows as $row_id => $vrow) {
         // See bug #1667887 for the reason why we don't use the maxlength
         // HTML attribute
 
-        $foreignData = PMA_getForeignData($foreigners, $field['Field'], false, '', '');
         echo '        <td>' . "\n";
         if ($foreignData['foreign_link'] == true) {
             echo $backup_field . "\n";
