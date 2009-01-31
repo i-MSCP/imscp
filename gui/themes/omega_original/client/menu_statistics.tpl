@@ -54,6 +54,6 @@
   </td>
  </tr>
  <tr height="53" style="vertical-align: bottom;">
-  <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />{CODENAME}</td>
+  <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

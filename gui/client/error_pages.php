@@ -31,9 +31,13 @@ $tpl->define_dynamic('logged_from', 'page');
 // page functions.
 
 function write_error_page(&$sql, $user_id, $eid) {
+	// Deactivate HTMLPurifyer HTML Tag stripping
+	define('OVERRIDE_PURIFIER', 1);
+
 	$error = stripslashes($_POST['error']);
 	$file = '/errors/' . $eid . '.html';
 	$vfs = &new vfs($_SESSION['user_logged'], $sql);
+	
 	return $vfs->put($file, $error);
 }
 
@@ -55,7 +59,9 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 $domain = $_SESSION['user_logged'];
 $domain = "http://www." . $domain;
 
-$tpl->assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),

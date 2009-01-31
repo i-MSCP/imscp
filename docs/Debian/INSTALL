@@ -74,7 +74,7 @@ Make sure you are logged in as root and MySQL is running.
 
    Make sure you have added the non-free into your /etc/apt/sources.list:
 
-   deb     http://ftp.deispCP | isp Control Panel.bian.org/debian/            etch         main contrib non-free
+   deb     http://ftp.debian.org/debian/            etch         main contrib non-free
    deb     http://security.debian.org/              etch/updates main contrib non-free
 
    If using Sarge, make sure you have added the following backport into your

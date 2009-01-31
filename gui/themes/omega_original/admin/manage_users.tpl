@@ -216,7 +216,7 @@ function sbmt(form, uaction) {
         <tr>
           <td width="25" align="center">&nbsp;</td>
           <td class="{USR_CLASS}" align="center"><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}', '{USR_USERNAME}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
-          <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {USR_USERNAME}</a></td>
+          <td class="{USR_CLASS}"> <a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/>{USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>

@@ -38,7 +38,7 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
 		$tpl->assign(array('ERROR' => htmlentities($error)));
 		return;
 	}
-	// No error info :'(
+	// No error page
 	$tpl->assign(array('ERROR' => ''));
 }
 
@@ -69,7 +69,8 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 	gen_error_page_data($tpl, $sql, $_SESSION['user_id'], $_GET['eid']);
 } else {
 	$tpl->assign(
-		array('ERROR' => tr('Server error - please choose error page'),
+		array(
+			'ERROR' => tr('Server error - please choose error page'),
 			'EID' => '0'
 			)
 		);
@@ -85,7 +86,8 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-	array('TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
+	array(
+		'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),
 		'EID' => $eid

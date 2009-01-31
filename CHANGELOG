@@ -1,8 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-01-31 Benedikt Heintel
+	- GUI:
+		* Fixed #1603: Modify Errorpages doesn't work/save correct.
+		* Added and changed functionality of "Goto" Domains, alias domains and subdomains
+
 2009-01-30 Daniel Andreca
-	- PHPmyAdmin:
+	- TOOLS:
 		* Fixed #1628: update to new phpMyAdmin version 3.1.2
 
 2009-01-29 Daniel Andreca
