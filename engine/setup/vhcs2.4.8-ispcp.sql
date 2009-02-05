@@ -66,6 +66,23 @@ DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Russian`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 
+DROP TABLE IF EXISTS `lang_EnglishBritain`;
+CREATE TABLE `lang_EnglishBritain` (
+  `msgid` text collate utf8_unicode_ci,
+  `msgstr` text collate utf8_unicode_ci,
+  KEY `msgid` (`msgid`(25))
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `lang_EnglishBritain` (`msgid`, `msgstr`) VALUES
+('ispcp_languageSetlocaleValue', 'en_GB'),
+('ispcp_table', 'EnglishBritain'),
+('ispcp_language', 'English (GB)'),
+('encoding', 'UTF-8'),
+('Incorrect domain name syntax', 'Incorrect <i>domain name</i> syntax'),
+('Incorrect forward syntax', 'Incorrect <i>forward</i> syntax!'),
+('Incorrect mount point syntax', 'Incorrect <i>mount point</i> syntax!'),
+('Mail', 'e-mail');
+
 ALTER IGNORE TABLE `log` CHANGE `log_time` `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP;
 
 -- Add Primary key and possibly an index to login table!
@@ -75,6 +92,7 @@ ALTER IGNORE TABLE `login` ADD PRIMARY KEY ( `session_id` );
 
 ALTER IGNORE TABLE `mail_users` ADD `quota` INT( 10 ) NULL DEFAULT '10485760';
 ALTER IGNORE TABLE `mail_users` ADD `mail_addr` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+UPDATE `mail_users` SET `mail_forward` = REPLACE(REPLACE(`mail_forward`, "\n", ","), "\r", "");
 
 ALTER IGNORE TABLE `orders` ADD `gender` varchar(1) default NULL;
 
@@ -137,6 +155,9 @@ UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
 UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
 UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
 UPDATE `mail_users` SET `status` = 'change' WHERE `status` = 'ok';
+UPDATE `htaccess_users` SET `status` = 'toadd';
+UPDATE `htaccess_groups` SET `status` = 'toadd';
+UPDATE `htaccess` SET `status` = 'toadd';
 -- END: Regenerate config files
 
 -- BEGIN: Change to default ispCP Theme :

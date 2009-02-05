@@ -363,7 +363,7 @@ sub remove_vhcs2 {
 
 	push_el(\@main::el, 'remove_vhcs2()', 'Starting...');
 
-	print STDOUT "\tNow you can remove VHCS2. Do you want to remove VHCS2 auomaticly? (yes|no) [yes]: ";
+	print STDOUT "\tNow you can remove VHCS2. Do you want to remove VHCS2 automaticly? (yes|no) [yes]: ";
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
@@ -374,8 +374,8 @@ sub remove_vhcs2 {
 	# Remove VHCS2 files
 	if ($rdata eq 'yes') {
 		# Get vhcs2.conf
-		$rs = get_conf($main::vhcs2conf);
-		return $rs if ($rs != 0);
+# 		$rs = get_conf($main::vhcs2conf);
+# 		return $rs if ($rs != 0);
 
 		# Remove VHCS2 Web/Engine folder
 		print STDOUT "\tRemoving $main::vhcs2{'ROOT_DIR'}...";

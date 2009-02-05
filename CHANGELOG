@@ -1,6 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-06 Daniel Andreca
+	- ENGINE:
+		* Fixed #1613: RC7 update script: htaccess users status NULL
+		* Fixed #1607: Update script failed in RC7
+		* Fixed #1608: RC7 update script: lang_* table missing
+		* Fixed #1611: RC7 update script: forward mail addresses line seperation
+
 2009-01-31 Benedikt Heintel
 	- GUI:
 		* Fixed #1603: Modify Errorpages doesn't work/save correct.
