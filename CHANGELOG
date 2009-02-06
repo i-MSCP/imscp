@@ -11,6 +11,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1632: Update german translation (Thanks Haeber)
 	- CONFIGS:
 		* Fixed #1633: Hide X-Powered-By PHP response header by set expose_php to off in php.ini (Thanks Haeber)
+	- THEMES:
+		* Fixed #1635: A little miss in ../admin/domain_edit.tpl (Thanks Nathariel)
 
 2009-01-31 Benedikt Heintel
 	- GUI:
