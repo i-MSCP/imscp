@@ -18,6 +18,11 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+// Deactivate HTMLPurifyer HTML Tag stripping
+if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error'){
+	define('OVERRIDE_PURIFIER', 1);
+}
+
 require '../include/class.vfs.php';
 require '../include/ispcp-lib.php';
 
@@ -31,13 +36,11 @@ $tpl->define_dynamic('logged_from', 'page');
 // page functions.
 
 function write_error_page(&$sql, $user_id, $eid) {
-	// Deactivate HTMLPurifyer HTML Tag stripping
-	define('OVERRIDE_PURIFIER', 1);
 
 	$error = stripslashes($_POST['error']);
 	$file = '/errors/' . $eid . '.html';
 	$vfs = &new vfs($_SESSION['user_logged'], $sql);
-	
+
 	return $vfs->put($file, $error);
 }
 
