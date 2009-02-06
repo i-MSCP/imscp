@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1633: Hide X-Powered-By PHP response header by set expose_php to off in php.ini (Thanks Haeber)
 	- THEMES:
 		* Fixed #1635: A little miss in ../admin/domain_edit.tpl (Thanks Nathariel)
+		* Fixed #1636: In two html files the css block contains wrong comments (Thanks Haeber)
 	- GUI:
 		* Fixed #1603: Modify Errorpages doesn´t work/save correct (Right way).
 
