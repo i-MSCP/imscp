@@ -7,6 +7,10 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1607: Update script failed in RC7
 		* Fixed #1608: RC7 update script: lang_* table missing
 		* Fixed #1611: RC7 update script: forward mail addresses line seperation
+	- LANGUAGES:
+		* Fixed #1632: Update german translation (Thanks Haeber)
+	- CONFIGS:
+		* Fixed #1633: Hide X-Powered-By PHP response header by set expose_php to off in php.ini (Thanks Haeber)
 
 2009-01-31 Benedikt Heintel
 	- GUI:

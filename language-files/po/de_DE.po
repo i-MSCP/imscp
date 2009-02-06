@@ -904,7 +904,7 @@ msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Sind Sie sicher, dass Sie die IP %s löschen möchten?"
 
 msgid "No domain system errors"
-msgstr "Keine Fehler im Domainsystem"
+msgstr "Keine Fehler im Domain-System"
 
 msgid "No domain alias system errors"
 msgstr "Keine Fehler im Domain-Alias-System"
@@ -912,9 +912,8 @@ msgstr "Keine Fehler im Domain-Alias-System"
 msgid "No subdomain system errors"
 msgstr "Keine Fehler im Subdomain-System"
 
-#, fuzzy
 msgid "No alias subdomain system errors"
-msgstr "Keine Fehler im Subdomain-System"
+msgstr "Keine Fehler im Alias-Subdomain-System"
 
 msgid "No email account system errors"
 msgstr "Keine Fehler im E-Mail-Konten-System"
@@ -923,17 +922,16 @@ msgid "ispCP debugger"
 msgstr "ispCP-Debugger"
 
 msgid "Domain errors"
-msgstr "Domainfehler"
+msgstr "Domain-Fehler"
 
 msgid "Domain alias errors"
 msgstr "Domain-Alias-Fehler"
 
 msgid "Subdomain errors"
-msgstr "Subdomainfehler"
+msgstr "Subdomain-Fehler"
 
-#, fuzzy
 msgid "Alias subdomain errors"
-msgstr "E-Mail-Weiterleitung Alias-Subdomain"
+msgstr "Alias-Subdomain-Fehler"
 
 msgid "Mail account errors"
 msgstr "E-Mail-Konten-Fehler"
