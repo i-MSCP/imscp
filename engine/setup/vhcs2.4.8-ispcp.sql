@@ -92,7 +92,6 @@ ALTER IGNORE TABLE `login` ADD PRIMARY KEY ( `session_id` );
 
 ALTER IGNORE TABLE `mail_users` ADD `quota` INT( 10 ) NULL DEFAULT '10485760';
 ALTER IGNORE TABLE `mail_users` ADD `mail_addr` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
-UPDATE `mail_users` SET `mail_forward` = REPLACE(REPLACE(`mail_forward`, "\n", ","), "\r", "");
 
 ALTER IGNORE TABLE `orders` ADD `gender` varchar(1) default NULL;
 

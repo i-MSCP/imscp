@@ -5,6 +5,10 @@ SET AUTOCOMMIT=0;
 START TRANSACTION;
 USE {DATABASE};
 
+-- BEGIN: Fix for ticket #1611:
+UPDATE `mail_users` SET `mail_forward` = REPLACE(REPLACE(`mail_forward`, "\n", ","), "\r", "");
+-- END: Fix for ticket #1611
+
 -- BEGIN: Upgrade database structure:
 CREATE TABLE IF NOT EXISTS `subdomain_alias` (
 					`subdomain_alias_id` int(10) unsigned NOT NULL auto_increment,
