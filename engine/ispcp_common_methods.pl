@@ -1512,7 +1512,7 @@ sub recv_line {
 
         if (!defined($res)) {
 
-            push_el(\@main::el, 'recv_line()', "ERROR: unexpected IO prebolems !");
+            push_el(\@main::el, 'recv_line()', "ERROR: unexpected IO problems !");
 
             return (-1, '');
 
@@ -1544,7 +1544,7 @@ sub send_line {
 
         if (!defined($res)) {
 
-            push_el(\@main::el, 'send_line()', "ERROR: unexpected IO prebolems !");
+            push_el(\@main::el, 'send_line()', "ERROR: unexpected IO problems !");
 
             return (-1, '');
 

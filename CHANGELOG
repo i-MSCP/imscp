@@ -7,6 +7,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1607: Update script failed in RC7
 		* Fixed #1608: RC7 update script: lang_* table missing
 		* Fixed #1611: RC7 update script: forward mail addresses line seperation
+		* Fixed #1630: Error docs overwritten
 	- LANGUAGES:
 		* Fixed #1632: Update german translation (Thanks Haeber)
 	- CONFIGS:

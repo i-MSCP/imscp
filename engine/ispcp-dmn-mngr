@@ -1498,45 +1498,29 @@ sub dmn_add_httpd_file_data {
 	#
 	my @errordocs = (401, 403, 404, 500, 503);
 	my ($i, $key) = ('', '');
-
 	for($i = 0; $i < scalar(@errordocs); $i++) {
 		$key = $errordocs[$i];
 		if (-e "$root_dir/gui/errordocs/$key.html") {
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+			$rs = sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/ 2>/dev/null");
 			return $rs if ($rs != 0);
 			$rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
+	opendir(DIR, "$root_dir/gui/errordocs/inc/");
+	my @files = readdir(DIR);
+	closedir(DIR);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
+	foreach (@files) {
+		# ignore . and .. :
+		next if ($_ eq "." || $_ eq "..");
+		sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ 2>/dev/null");
+		return $rs if ($rs != 0);
+		
+		$rs = setfmode("$www_dir/$dmn_name/errors/inc/$_", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+	}
 
 	#
 	# Default domain page template;
@@ -1784,41 +1768,26 @@ sub dmn_change_httpd_file_data {
 	for($i = 0; $i < scalar(@errordocs); $i++) {
 		$key = $errordocs[$i];
 		if (-e "$root_dir/gui/errordocs/$key.html") {
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+			$rs = sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/  2>/dev/null");
 			return $rs if ($rs != 0);
 			$rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
+	opendir(DIR, "$root_dir/gui/errordocs/inc/");
+	my @files = readdir(DIR);
+	closedir(DIR);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
+	foreach (@files) {
+		# ignore . and .. :
+		next if ($_ eq "." || $_ eq "..");
+		sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ 2>/dev/null");
+		return $rs if ($rs != 0);
+		
+		$rs = setfmode("$www_dir/$dmn_name/errors/inc/$_", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+	}
 
 	#
 	# php.ini for the domain
