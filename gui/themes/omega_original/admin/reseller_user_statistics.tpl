@@ -84,7 +84,7 @@
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP}</b></td>
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP3}</b></td>
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_SUBDOMAIN}</b></td>
-                                      <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALIAS}</b> </td>
+                                      <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALIAS}</b></td>
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_MAIL}</b></td>
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_FTP}</b></td>
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_SQL_DB}</b></td>

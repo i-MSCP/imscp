@@ -69,16 +69,16 @@
                                     <tr>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b>{DATE}</b></td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_TRAFFIC}</td>
-                                      <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"> {FTP_TRAFFIC} </td>
+                                      <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP_TRAFFIC}</td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SMTP_TRAFFIC}</td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP3_TRAFFIC}</td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_TRAFFIC}</td>
                                     </tr>
                                     <!-- EDP: traffic_table_item -->
                                     <tr>
-                                      <td class="content3" nowrap="nowrap" align="center"><b> <b>{TR_ALL}</b></b></td>
+                                      <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALL}</b></td>
                                       <td class="content3" nowrap="nowrap" align="center"><b>{ALL_WEB_TRAFFIC}</b></td>
-                                      <td class="content3" nowrap="nowrap" align="center"><b> {ALL_FTP_TRAFFIC} </b></td>
+                                      <td class="content3" nowrap="nowrap" align="center"><b>{ALL_FTP_TRAFFIC}</b></td>
                                       <td class="content3" nowrap="nowrap" align="center"><b>{ALL_SMTP_TRAFFIC}</b></td>
                                       <td class="content3" nowrap="nowrap" align="center"><b>{ALL_POP3_TRAFFIC}</b></td>
                                       <td class="content3" nowrap="nowrap" align="center"><b>{ALL_ALL_TRAFFIC}</b></td>

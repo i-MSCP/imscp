@@ -106,12 +106,6 @@
             <td colspan="2" class="title"><span class="message">{TR_NEW_MSGS}</span></td>
           </tr>
           <!-- EDP: msg_entry -->
-          <!--
-			  <tr>
-                <td width="132" class="content">{TR_EXTRAS}</td>
-                <td width="291" class="content2">{EXTRAS}</td>
-              </tr>
-			  -->
         </table>
       <!-- EDP: props_list -->
     </td>

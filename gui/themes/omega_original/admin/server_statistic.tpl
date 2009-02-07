@@ -72,7 +72,7 @@
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_OTHER_IN}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_OTHER_OUT}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALL_IN}</b></td>
-                              <td class="content3" nowrap="nowrap" height="25"><b><b>{TR_ALL_OUT}</b></b></td>
+                              <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALL_OUT}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALL}</b></td>
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_DAY}</b></td>
                             </tr>
@@ -81,7 +81,7 @@
                               <td align="center">&nbsp;</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_IN}</td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"> {WEB_OUT}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_OUT}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_IN}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_OUT}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP_IN}</td>
@@ -91,12 +91,12 @@
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_IN}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL_OUT}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALL}</td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></td>
                             </tr>
                             <!-- EDP: day_list -->
                             <tr>
                               <td nowrap="nowrap" align="center">&nbsp;</td>
-                              <td class="content3" nowrap="nowrap" align="center"><b> {TR_ALL} </b></td>
+                              <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALL}</b></td>
                               <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{WEB_IN_ALL}</strong></span></td>
                               <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{WEB_OUT_ALL}</strong></span></td>
                               <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{MAIL_IN_ALL}</strong></span></td>

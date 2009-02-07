@@ -1,6 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-07 Daniel Andreca
+	- THEMES:
+		* Fixed #1642: Some html problems in reseller/admin statistics (Thanks Haeber)
+		* Fixed #1643: Commented out (useless?) code in admin/reseller_add.php and admin/reseller_edit.php (Thanks Haeber)
+		* Fixed #1640: Typo in comment-block reseller/domain_alias.tpl (Thanks Haeber)
+		* Fixed #1639: Template comment page_massage in index.tpl (login site) is not replaced
+
 2009-02-06 Daniel Andreca
 	- ENGINE:
 		* Fixed #1613: RC7 update script: htaccess users status NULL

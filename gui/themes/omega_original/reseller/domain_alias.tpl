@@ -50,7 +50,7 @@ function delete_account(url, name) {
               <tr>
                 <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
-                      <td height="25" colspan="6" nowrap="nowrap"><!-- serach gose here-->
+                      <td height="25" colspan="6" nowrap="nowrap"><!-- search starts here-->
                           <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr>
@@ -67,7 +67,7 @@ function delete_account(url, name) {
                             </table>
                             <input type="hidden" name="uaction" value="go_search">
                           </form>
-                        <!-- serach end here -->
+                        <!-- search end here -->
 					 </td>
 					</tr>
                     <tr>
