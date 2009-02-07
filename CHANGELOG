@@ -7,6 +7,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1643: Commented out (useless?) code in admin/reseller_add.php and admin/reseller_edit.php (Thanks Haeber)
 		* Fixed #1640: Typo in comment-block reseller/domain_alias.tpl (Thanks Haeber)
 		* Fixed #1639: Template comment page_massage in index.tpl (login site) is not replaced
+		* Fixed #1637: Tiny css fix in omega phpmyadmin theme (Thanks Haeber)
+		* Fixed #1645: Tiny comment problem in reseller/domain_alias.tpl (Thanks Haeber)
 
 2009-02-06 Daniel Andreca
 	- ENGINE:

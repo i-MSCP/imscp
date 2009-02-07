@@ -36,13 +36,13 @@ $tpl->define_dynamic('scroll_next', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain/Alias'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		)
-	);
+	array(
+		'TR_ALIAS_PAGE_TITLE'	=> tr('ispCP - Manage Domain/Alias'),
+		'THEME_COLOR_PATH'		=> "../themes/$theme_color",
+		'THEME_CHARSET'			=> tr('encoding'),
+		'ISP_LOGO'				=> get_logo($_SESSION['user_id']),
+	)
+);
 
 /*
  *
@@ -62,17 +62,17 @@ generate_als_list($tpl, $_SESSION['user_id'], $err_txt);
 generate_als_messages($tpl, $err_txt);
 
 $tpl->assign(
-		array(
-			'TR_MANAGE_ALIAS' => tr('Manage alias'),
-			'TR_NAME' => tr('Name'),
-			'TR_REAL_DOMAIN' => tr('Real domain'),
-			'TR_FORWARD' => tr('Forward'),
-			'TR_STATUS' => tr('Status'),
-			'TR_ACTION' => tr('Action'),
-			'TR_ADD_ALIAS' => tr('Add alias'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-		)
-	);
+	array(
+		'TR_MANAGE_ALIAS'	=> tr('Manage alias'),
+		'TR_NAME'			=> tr('Name'),
+		'TR_REAL_DOMAIN'	=> tr('Real domain'),
+		'TR_FORWARD'		=> tr('Forward'),
+		'TR_STATUS'			=> tr('Status'),
+		'TR_ACTION'			=> tr('Action'),
+		'TR_ADD_ALIAS'		=> tr('Add alias'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s')
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 
@@ -106,133 +106,132 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	}
 
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
+
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
-
 		$_SESSION['search_common'] = $_POST['search_common'];
-
 		$search_for = $_SESSION['search_for'];
-
 		$search_common = $_SESSION['search_common'];
+
 	} else {
+
 		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
 			unset($_SESSION['search_for']);
-
 			unset($_SESSION['search_common']);
 		}
 	}
 	$tpl->assign(
-				array(
-					'PSI' => $current_psi,
-					'SEARCH_FOR' => stripslashes($search_for),
-					'TR_SEARCH' => tr('Search'),
-					'M_ALIAS_NAME' => tr('Alias name'),
-					'M_ACCOUNT_NAME' => tr('Account name'),
-				)
-		);
+		array(
+			'PSI'				=> $current_psi,
+			'SEARCH_FOR'		=> stripslashes($search_for),
+			'TR_SEARCH'			=> tr('Search'),
+			'M_ALIAS_NAME'		=> tr('Alias name'),
+			'M_ACCOUNT_NAME'	=> tr('Account name'),
+		)
+	);
 
 	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
 		if (isset($search_common) && $search_common == 'alias_name') {
-			$query = <<<SQL_QUERY
-        SELECT
-		    t1.*,
-			t2.domain_id,
-			t2.domain_name,
-			t2.domain_created_id
-		FROM
-		    domain_aliasses AS t1,
-			domain AS t2
-		WHERE
-			alias_name RLIKE '$search_for'
-		  AND
-			t2.domain_created_id = ?
-		  AND
-			t1.domain_id = t2.domain_id
-		ORDER BY
-			t1.alias_name ASC
-		LIMIT
-			$start_index, $rows_per_page
-SQL_QUERY;
+			$query = "
+				SELECT
+					t1.*,
+					t2.domain_id,
+					t2.domain_name,
+					t2.domain_created_id
+				FROM
+					domain_aliasses AS t1,
+					domain AS t2
+				WHERE
+					alias_name RLIKE '$search_for'
+				AND
+					t2.domain_created_id = ?
+				AND
+					t1.domain_id = t2.domain_id
+				ORDER BY
+					t1.alias_name ASC
+				LIMIT
+					$start_index, $rows_per_page
+			";
 			// count query
-			$count_query = <<<SQL_QUERY
-        SELECT
-            COUNT(alias_id) AS cnt
-        FROM
-		   	domain_aliasses AS t1,
-			domain AS t2
-		WHERE
-			t2.domain_created_id = ?
-		  AND
-			alias_name RLIKE '$search_for'
-		  AND
-			t1.domain_id = t2.domain_id
-SQL_QUERY;
+			$count_query = "
+				SELECT
+					COUNT(alias_id) AS cnt
+				FROM
+					domain_aliasses AS t1,
+					domain AS t2
+				WHERE
+					t2.domain_created_id = ?
+				AND
+					alias_name RLIKE '$search_for'
+				AND
+					t1.domain_id = t2.domain_id
+			";
 		} else {
-			$query = <<<SQL_QUERY
-        SELECT
-		    t1.*,
-			t2.domain_id,
-			t2.domain_name,
-			t2.domain_created_id
-		FROM
-		    domain_aliasses AS t1,
-			domain AS t2
-		WHERE
-			t2.domain_name RLIKE '$search_for'
-		  AND
-			t1.domain_id = t2.domain_id
-		  AND
-			t2.domain_created_id = ?
-		ORDER BY
-			t1.alias_name ASC
-		LIMIT
-			$start_index, $rows_per_page
-SQL_QUERY;
+			$query = "
+				SELECT
+					t1.*,
+					t2.domain_id,
+					t2.domain_name,
+					t2.domain_created_id
+				FROM
+					domain_aliasses AS t1,
+					domain AS t2
+				WHERE
+					t2.domain_name RLIKE '$search_for'
+				AND
+					t1.domain_id = t2.domain_id
+				AND
+					t2.domain_created_id = ?
+				ORDER BY
+					t1.alias_name ASC
+				LIMIT
+					$start_index, $rows_per_page
+			";
 			// count query
-			$count_query = <<<SQL_QUERY
-        SELECT
-            COUNT(alias_id) AS cnt
-        FROM
-		    domain_aliasses AS t1,
-			domain AS t2
-		WHERE
-			t2.domain_created_id = ?
-		  AND
-			t2.domain_name RLIKE '$search_for'
-		  AND
-			t1.domain_id = t2.domain_id
-SQL_QUERY;
+			$count_query = "
+				SELECT
+					COUNT(alias_id) AS cnt
+				FROM
+					domain_aliasses AS t1,
+					domain AS t2
+				WHERE
+					t2.domain_created_id = ?
+				AND
+					t2.domain_name RLIKE '$search_for'
+				AND
+					t1.domain_id = t2.domain_id
+			";
 		}
 	} else {
-		$query = <<<SQL_QUERY
-        SELECT
-             t1.*,
-			 t2.domain_id,
-			 t2.domain_name,
-			 t2.domain_created_id
-        FROM
-            domain_aliasses AS t1,
-            domain AS t2
-        WHERE
-            t1.domain_id = t2.domain_id
-          AND
-            t2.domain_created_id = ?
-        ORDER BY
-            t1.alias_name ASC
-        LIMIT
-            $start_index, $rows_per_page
-SQL_QUERY;
+		$query = "
+			SELECT
+				t1.*,
+				t2.domain_id,
+				t2.domain_name,
+				t2.domain_created_id
+			FROM
+				domain_aliasses AS t1,
+				domain AS t2
+			WHERE
+				t1.domain_id = t2.domain_id
+			AND
+				t2.domain_created_id = ?
+			ORDER BY
+				t1.alias_name ASC
+			LIMIT
+				$start_index, $rows_per_page
+		";
 		// count query
-		$count_query = <<<SQL_QUERY
-        SELECT
-            COUNT(alias_id) AS cnt
-        FROM
-            domain_aliasses AS t1,
-            domain AS t2
-        WHERE
-            t1.domain_id = t2.domain_id
-          AND
-            t2.domain_created_id = ?
-SQL_QUERY;
+		$count_query = "
+			SELECT
+				COUNT(alias_id) AS cnt
+			FROM
+				domain_aliasses AS t1,
+				domain AS t2
+			WHERE
+				t1.domain_id = t2.domain_id
+			AND
+				t2.domain_created_id = ?
+		";
 	}
 	// lets count
 	$rs = exec_query($sql, $count_query, array($reseller_id));
@@ -242,13 +241,13 @@ SQL_QUERY;
 
 	if ($records_count == 0) {
 		$tpl->assign(
-					array(
-						'TABLE_LIST' => '',
-						'USERS_LIST' => '',
-						'SCROLL_PREV' => '',
-						'SCROLL_NEXT' => '',
-					)
-			);
+			array(
+				'TABLE_LIST'	=> '',
+				'USERS_LIST'	=> '',
+				'SCROLL_PREV'	=> '',
+				'SCROLL_NEXT'	=> '',
+			)
+		);
 
 		if (isset($_SESSION['search_for'])) {
 			$als_err = tr('Not found user records matching the search criteria!');
@@ -263,11 +262,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_PREV_GRAY' => '',
-						'PREV_PSI' => $prev_si
-					)
-				);
+				array(
+					'SCROLL_PREV_GRAY'	=> '',
+					'PREV_PSI'			=> $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -276,11 +275,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_NEXT_GRAY' => '',
-						'NEXT_PSI' => $next_si
-					)
-				);
+				array(
+					'SCROLL_NEXT_GRAY'	=> '',
+					'NEXT_PSI'			=> $next_si
+				)
+			);
 		}
 	}
 
@@ -343,23 +342,23 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-					array(
-						'NAME' => $als_name,
-						'ALIAS_IP' => "$als_ip ($als_ip_name)",
-						'REAL_DOMAIN' => $domain_name,
-						'REAL_DOMAIN_MOUNT' => $als_mount_point,
-						'FORWARD' => $show_als_fwd,
-						'STATUS' => $als_status,
-						'ID' => $als_id,
-						'DELETE' => $action_text,
-						'CONTENT' => $page_cont,
-						'DELETE_LINK' => $delete_link,
-						'EDIT_LINK' => $edit_link,
-						'EDIT' => $edit_text,
-						'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
-						'M_ACCOUN_NAME_SELECTED' => $account_name_selected,
-					)
-			);
+			array(
+				'NAME'						=> $als_name,
+				'ALIAS_IP'					=> "$als_ip ($als_ip_name)",
+				'REAL_DOMAIN'				=> $domain_name,
+				'REAL_DOMAIN_MOUNT'			=> $als_mount_point,
+				'FORWARD'					=> $show_als_fwd,
+				'STATUS'					=> $als_status,
+				'ID'						=> $als_id,
+				'DELETE'					=> $action_text,
+				'CONTENT'					=> $page_cont,
+				'DELETE_LINK'				=> $delete_link,
+				'EDIT_LINK'					=> $edit_link,
+				'EDIT'						=> $edit_text,
+				'M_DOMAIN_NAME_SELECTED'	=> $domain_name_selected,
+				'M_ACCOUN_NAME_SELECTED'	=> $account_name_selected,
+			)
+		);
 
 		$i++;
 		$tpl->parse('TABLE_ITEM', '.table_item');
@@ -371,7 +370,7 @@ function generate_als_messages(&$tpl, $als_err) {
 	if ($als_err != '_off_') {
 		$tpl->assign(
 			array('MESSAGE' => $als_err)
-			);
+		);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 		return;
 	} else if (isset($_SESSION["dahavemail"])) {

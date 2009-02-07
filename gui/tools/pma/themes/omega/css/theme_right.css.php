@@ -620,8 +620,8 @@ form.login label {
 ul#topmenu {
     font-weight:         bold;
     list-style-type:     none;
-    margin:              0 0 0 5;
-    padding:             1 0 0 0;
+    margin:              0px 0px 0px 5px;
+    padding:             1px 0px 0px 0px;
     background-color:    #cccccc;
 	background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
     background-repeat:   repeat-x;
