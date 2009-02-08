@@ -72,8 +72,8 @@ function sbmt(form, uaction) {
                         <td width="25">&nbsp;</td>
                         <td colspan="8" class="title"><span class="message">{MESSAGE}</span></td>
                       </tr>
-                      <tr>
                         <!-- EDP: page_message -->
+                      <tr>
                         <td>&nbsp;</td>
                         <td colspan="6"><table border="0" cellspacing="0" cellpadding="0">
                             <tr>

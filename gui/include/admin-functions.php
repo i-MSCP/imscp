@@ -406,7 +406,7 @@ function gen_admin_list(&$tpl, &$sql) {
 				$tpl->assign(
 					array('ADMIN_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_ADMIN' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
+						'URL_DELETE_ADMIN' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&amp;delete_username=" . $rs->fields['admin_name'],
 						'ADMIN_USERNAME' => $rs->fields['admin_name'],
 						)
 					);
@@ -490,7 +490,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 				$tpl->assign(
 					array('RSL_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_RSL' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
+						'URL_DELETE_RSL' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&amp;delete_username=" . $rs->fields['admin_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['admin_id'],
@@ -689,7 +689,7 @@ function gen_user_list(&$tpl, &$sql) {
 					array('USR_DELETE_SHOW' => '',
 						'DOMAIN_ID' => $rs->fields['domain_id'],
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_USR' => "user_delete.php?delete_id=" . $rs->fields['domain_admin_id'] . "&delete_username=" . $rs->fields['domain_name'],
+						'URL_DELETE_USR' => "user_delete.php?delete_id=" . $rs->fields['domain_admin_id'] . "&amp;delete_username=" . $rs->fields['domain_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],

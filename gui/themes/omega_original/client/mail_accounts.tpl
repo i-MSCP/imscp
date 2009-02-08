@@ -65,8 +65,8 @@ function action_delete(url, mailacc) {
                 <tr>
                   <td colspan="5" nowrap="nowrap" class="title"><span class="message">{MESSAGE}</span></td>
                 </tr>
-                <tr>
                     <!-- EDP: page_message -->
+                <tr>
                    <td nowrap="nowrap" class="content3"><b>{TR_MAIL}</b></td>
                    <td nowrap="nowrap" class="content3" width="150"><b>{TR_TYPE}</b></td>
                    <td nowrap="nowrap" class="content3" align="center" width="180"><b>{TR_STATUS}</b></td>

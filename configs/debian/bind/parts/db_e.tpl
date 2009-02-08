@@ -20,6 +20,8 @@ localhost       IN              A               127.0.0.1
 mail            IN              A               {DMN_IP}
 ns1             IN              A               {BASE_SERVER_IP}
 ns2             IN              A               {SECONDARY_DNS_IP}
+; CNAME for VHCS compatibility
+ns              IN              CNAME           ns1
 ; CNAME for mail transfer
 imap            IN              CNAME           mail
 pop             IN              CNAME           mail

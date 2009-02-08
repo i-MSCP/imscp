@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-08 Daniel Andreca
+	- THEMES:
+		* Fixed #1646: Tiny html special char encoding problem in include/admin-functions.php (Thanks Haeber)
+		* Fixed #1647: Two template fixes (Thanks Haeber)
+		* Fixed #1609: RC7 update script: ns.domain.tld missing from bind templates
+
 2009-02-07 Daniel Andreca
 	- THEMES:
 		* Fixed #1642: Some html problems in reseller/admin statistics (Thanks Haeber)
