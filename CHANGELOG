@@ -1,7 +1,15 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-02-08 Daniel Andreca
+2009-02-09 Daniel Andreca
+	- GUI:
+		* Fixed #1649: Able to login to pma after session times out
+	- THEMES:
+		* Fixed #1646: Tiny html special char encoding problem in include/admin-functions.php (Thanks Haeber)
+		* Fixed #1652: Html structure/tree failure in admin/settings_layout.tpl and reseller/settings_layout.tpl
+		* Fixed #1653: Lost font-tag in reseller/user_add2.tpl (Thanks Haeber)
+
+2009-02-08 Daniel Andrecafile:///_backup/ispcp/CHANGELOG
 	- THEMES:
 		* Fixed #1646: Tiny html special char encoding problem in include/admin-functions.php (Thanks Haeber)
 		* Fixed #1647: Two template fixes (Thanks Haeber)

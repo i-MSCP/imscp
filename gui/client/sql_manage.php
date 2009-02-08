@@ -38,7 +38,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 
 	$query = "
 		SELECT
-			`sqlu_id`, `sqlu_name`, `sqlu_pass`
+			`sqlu_id`, `sqlu_name`
 		FROM
 			`sql_user`
 		WHERE
@@ -51,35 +51,30 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-					array(
-						'DB_MSG' => tr('Database user list is empty!'),
-						'USER_LIST' => ''
-						)
-					);
+			array(
+				'DB_MSG'	=> tr('Database user list is empty!'),
+				'USER_LIST'	=> ''
+			)
+		);
 		$tpl->parse('DB_MESSAGE', 'db_message');
-	}
-	else {
+	} else {
 		$tpl->assign(
-				array(
-					'USER_LIST' => '',
-					'DB_MESSAGE' => ''
-					)
-				);
+			array(
+				'USER_LIST'		=> '',
+				'DB_MESSAGE'	=> ''
+			)
+		);
 
 		while (!$rs->EOF) {
 			$count++;
 			$user_id = $rs->fields['sqlu_id'];
 			$user_mysql = $rs -> fields['sqlu_name'];
-			$pass_mysql = decrypt_db_password($rs -> fields['sqlu_pass']);
 			$tpl->assign(
-					array(
-						'DB_USER' => $user_mysql,
-						'USER_MYSQL'=> "$user_mysql",
-						'PASS_MYSQL'=> "$pass_mysql",
-						'COUNT' => "$count",
-						'USER_ID' => $user_id
-						)
-					);
+				array(
+					'DB_USER'	=> $user_mysql,
+					'USER_ID'	=> $user_id
+				)
+			);
 			$tpl->parse('USER_LIST', '.user_list');
 			$rs->MoveNext();
 		}
@@ -112,8 +107,8 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 			gen_db_user_list($tpl, $sql, $db_id);
 			$tpl->assign(
 				array(
-					'DB_ID' => "$db_id",
-					'DB_NAME' => "$db_name"
+					'DB_ID'		=> "$db_id",
+					'DB_NAME'	=> "$db_name"
 				)
 			);
 			$tpl->parse('DB_LIST', '.db_list');
@@ -154,21 +149,21 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-		array(
-			'TR_MANAGE_SQL' => tr('Manage SQL'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_DATABASE' => tr('Database Name and Users'),
-			'TR_CHANGE_PASSWORD' => tr('Change password'),
-			'TR_ACTION' => tr('Action'),
-			'TR_PHP_MYADMIN' => tr('phpMyAdmin'),
-			'TR_DATABASE_USERS' => tr('Database users'),
-			'TR_ADD_USER' => tr('Add SQL user'),
-			'TR_EXECUTE_QUERY' => tr('Execute query'),
-			'TR_CHANGE_PASSWORD' => tr('Change password'),
-			'TR_LOGIN_PMA' => tr('Login phpMyAdmin'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-			)
-		);
+	array(
+		'TR_MANAGE_SQL'			=> tr('Manage SQL'),
+		'TR_DELETE'				=> tr('Delete'),
+		'TR_DATABASE'			=> tr('Database Name and Users'),
+		'TR_CHANGE_PASSWORD'	=> tr('Change password'),
+		'TR_ACTION'				=> tr('Action'),
+		'TR_PHP_MYADMIN'		=> tr('phpMyAdmin'),
+		'TR_DATABASE_USERS'		=> tr('Database users'),
+		'TR_ADD_USER'			=> tr('Add SQL user'),
+		'TR_EXECUTE_QUERY'		=> tr('Execute query'),
+		'TR_CHANGE_PASSWORD'	=> tr('Change password'),
+		'TR_LOGIN_PMA'			=> tr('Login phpMyAdmin'),
+		'TR_MESSAGE_DELETE'		=> tr('Are you sure you want to delete %s?', true, '%s')
+	)
+);
 
 gen_page_message($tpl);
 

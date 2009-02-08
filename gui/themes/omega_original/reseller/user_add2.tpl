@@ -119,7 +119,6 @@
                           <td>&nbsp;</td>
                           <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}"></td>
                         </tr>
-                        </font>
                       </table>
                     </form>
                   <!-- EDP: add_user -->

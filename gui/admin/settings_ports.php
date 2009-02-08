@@ -197,7 +197,7 @@ SQL_QUERY;
 			}
 
 			if ($custom == 0) {
-				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name\" value=\"" . $name . "\" />"));
+				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name" . $row . "\" value=\"" . $name . "\" />"));
 				$tpl->assign(
 					array(
 						'PORT_READONLY' => 'readonly',
