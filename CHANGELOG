@@ -12,6 +12,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1651: Template variable {DST_RSL_SELECTED} in admin/manage_reseller_users.php is not replaced
 	-CONFIGS:
 		* Fixed #1602: Awstats images (icons/graphs) don't work on gentoo (and maybe others?)
+	- ENGINE:
+		* Fixed #1614: RC7 update script: addressbooks are not migrated
 
 2009-02-08 Daniel Andreca
 	- THEMES:

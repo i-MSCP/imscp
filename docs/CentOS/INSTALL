@@ -225,25 +225,31 @@ need to be running.
 For the following steps, you will need to be logged in as root and MySQL will
 need to be running.
 
-1. Untar or unzip the distribution files to a secure directory:
+1. If you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that
+   ispCP Omega comes with a new webmail client. Please make sure that your
+   customers can still access the address book data. You can ensure this either
+   by make the old webmail client accessable or by using this
+   script: http://www.isp-control.net/ispcp/ticket/1614
+
+2. Untar or unzip the distribution files to a secure directory:
     # cd /root
     # tar xjvf ispcp-omega-1.0.0-rc7.tar.bz2
 
-2. Change to the newly created directory:
+3. Change to the newly created directory:
     # cd ./ispcp-omega-1.0.0
 
-3. Next, install the software packages we need. A list is conveniently provided
+4. Next, install the software packages we need. A list is conveniently provided
    and can be used to install by running the following:
     # yum install `cat ./docs/CentOS/centos-packages`
    After that, we need to install a few perl modules that aren't packaged. You
    can run the following command to install them:
     # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
 
-4. (optional) Check the ispcp.conf and adapt it to your requirements.
-5. Build the System by using make:
+5. (optional) Check the ispcp.conf and adapt it to your requirements.
+6. Build the System by using make:
     # make -f Makefile.centos install
 
-6. Save files
+7. Save files
     # cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
     # cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messager/
     # cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
@@ -252,30 +258,30 @@ need to be running.
    If updating from RC3 or higher:
     # cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 
-7. Delete old files to avoid security risks:
+8. Delete old files to avoid security risks:
 	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -fR /var/www/ispcp/gui/*.php
 
-8. Copy /usr and /var directories into your system (you may make backups)
+9. Copy /usr and /var directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp/usr/* /usr/
 	# cp -Rv /tmp/ispcp/var/* /var/
 
-9. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+10. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
 	# cp -Rv /tmp/ispcp/etc/* /etc/
 
-10. Now it's time to update your installation. Change into the engine directory:
+11. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-11. Start the engine update:
+12. Start the engine update:
 	# perl ispcp-update
 
-12. Update ispCP ω step-by-step
+13. Update ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-13. Clean the temporary folders:
+14. Clean the temporary folders:
 	# rm -fR /tmp/ispcp/
 
 ================================================================================

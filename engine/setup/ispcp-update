@@ -155,15 +155,12 @@ MSG
 
 	if (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
 
-		my $vhcs_update_msg = <<MSG;
-
-\tMake sure you have installed ispCP OMEGA first as described in the INSTALL
-\tdocument.
-
-\tContinue?
-\t(1) Yes
-\t(0) No
-MSG
+		my $vhcs_update_msg =
+			"\tMake sure you have installed ispCP OMEGA first as described in the INSTALL\n".
+			"\tdocument.\n\n".
+			"\tContinue?\n".
+			"\t(1) Yes\n".
+			"\t(0) No\n";
 
 		print STDOUT $vhcs_update_msg;
 		print STDOUT "\tYour selection: ";
@@ -1083,6 +1080,33 @@ sub prepare_update {
 	}
 	# VHCS update
 	elsif (($main::ua{'update'} == VHCS247) || ($main::ua{'update'} == VHCS248)) {
+
+		my $wmsg =
+			"\tIf you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that\n".
+			"\tispCP Omega comes with a new webmail client. Please make sure that your\n".
+			"\tcustomers can still access the address book data. You can ensure this either\n".
+			"\tby make the old webmail client accessable or by using this\n".
+			"\tscript: http://www.isp-control.net/ispcp/ticket/1614\n\n".
+			"\tContinue?\n".
+			"\t(1) Yes\n".
+			"\t(0) No\n";
+
+		print STDOUT $wmsg;
+		print STDOUT "\tYour selection: ";
+
+		$rdata = readline(\*STDIN);
+		chop($rdata);
+
+		while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
+			print STDOUT "\tPlease select an item mentioned above: ";
+			$rdata = readline(\*STDIN);
+			chop($rdata);
+		}
+
+		# Set to 0 if not ready
+		if ($rdata == 0) {
+			exit 0;
+		}
 
 		# look up vhcs2.conf
 		$rs = ask_vhcs2conf();
