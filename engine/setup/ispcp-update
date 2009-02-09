@@ -1134,8 +1134,8 @@ sub prepare_update {
 		my $wmsg =
 			"\tIf you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that\n".
 			"\tispCP Omega comes with a new webmail client. Please make sure that your\n".
-			"\tcustomers can still access the address book data. You can ensure this either\n".
-			"\tby makint the old webmail client accessable or by using this\n".
+			"\tcustomers can still access their address book data. You can ensure this either\n".
+			"\tby making the old webmail client accessable or by using this\n".
 			"\tscript: http://www.isp-control.net/ispcp/ticket/1614\n\n".
 			"\tContinue?\n".
 			"\t(1) Yes\n".

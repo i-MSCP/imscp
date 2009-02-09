@@ -6,6 +6,13 @@ ispCP ω 1.0.0 Changelog
 		* Release preparation
 	- DOCU:
 		* Updated for ispCP ω 1.0.0
+	- ENGINE:
+		* Fixed #1656: small typo in engine/setup/ispcp-update introduced in r1479 (Thanks Haeber)
+		* Updated update script
+	- LANGUAGES:
+		* Updated Russian
+	- THEMES:
+		* Fixed #1655: there is still a style error in reseller/settings_layout.tpl. height-attributes in css-styles need explicit units like px. (Thanks Haeber)
 	- TOOLS:
 		* phpmyadmin: Small fixes in css file
 
