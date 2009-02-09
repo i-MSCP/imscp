@@ -1,4 +1,4 @@
-# ispCP Omega Turkish Language File
+﻿# ispCP Omega Turkish Language File
 # ispCP Omega Türkçe Dil Dosyası
 # Copyright (C) 2008 ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
@@ -107,9 +107,9 @@ msgstr "Kullanıcı adı uzun veya yazım hatası var"
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid."
-msgstr ""
+msgstr "Şifre en az %s karakter uzunluğunda ve harf + sayılardan oluşmalıdır."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Şifre %s karakterden kısa veya izin verilmeyen işaretler var!"
 
@@ -332,7 +332,7 @@ msgstr "Kullanıcı"
 msgid "All"
 msgstr "Tümü"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "%s silmek istediğinize emin misiniz?"
 
@@ -399,26 +399,21 @@ msgstr "Kaydet"
 msgid "Edit button"
 msgstr "Button düzenle"
 
-#, fuzzy
 msgid "Database updates"
 msgstr "Hazır ispCP güncellemeleri"
 
-#, fuzzy
 msgid "Available database updates"
 msgstr "Hazır ispCP güncellemeleri"
 
 msgid "Update details"
 msgstr "Güncelleme ayrıntıları"
 
-#, fuzzy
 msgid "New Database update is now available"
 msgstr "Yeni ispCP güncellemesi var"
 
-#, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Güncellemeleri şimdi yüklemek ister misiniz?"
 
-#, fuzzy
 msgid "No database updates available"
 msgstr "Yeni veritabanı güncellemesi yok"
 
@@ -488,7 +483,6 @@ msgstr "Açık"
 msgid "Disabled"
 msgstr "Kapalı"
 
-#, fuzzy
 msgid "ispCP - Admin/Edit Domain"
 msgstr "ispCP - Yönetici/Domain Düzenle"
 
@@ -501,31 +495,24 @@ msgstr "Domain özellikleri"
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Azami subdomain sayısı<br /><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Azami alias sayısı<br><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Eposta kullanıcısı limiti <br><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP kullanıcısı limiti <br><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL Veritabanı limiti <br><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL kullanıcısı limiti <br><i>(-1 pasif, 0 limitsiz)</i>"
 
-#, fuzzy
 msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
 msgstr "Trafik limiti [MB]<br><i>(0 limitsiz)</i>"
 
-#, fuzzy
 msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
 msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
 
@@ -698,7 +685,6 @@ msgstr "Hosting planı silindi!"
 msgid "Hosting plan updated!"
 msgstr "Hosting planı güncellendi!"
 
-#, fuzzy
 msgid "Hosting plan can't be deleted, there are orders!"
 msgstr "Hosting planı silinemez, verilen siparişler var!"
 
@@ -801,11 +787,9 @@ msgstr "Görünüm adı çok uzun"
 msgid "Incorrect template description length!"
 msgstr "Görünüm açıklaması çok uzun"
 
-#, fuzzy
 msgid "Incorrect price syntax!"
 msgstr "Geçersiz eposta yazımı!"
 
-#, fuzzy
 msgid "Incorrect setup fee syntax!"
 msgstr "Geçersiz kurulum ücreti yazımı!"
 
@@ -815,7 +799,6 @@ msgstr "Bu isimde hosting planı mevcut!"
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Yönetici/Hosting planı düzenle"
 
-#, fuzzy
 msgid "Price Style"
 msgstr "Ücret tipi"
 
@@ -841,7 +824,6 @@ msgstr "<b>%d</b> yeni destek talebiniz var"
 msgid "View"
 msgstr "Görünüm"
 
-#, fuzzy
 msgid "A database update is available"
 msgstr "Yeni veritabanı güncellemesi var"
 
@@ -862,7 +844,6 @@ msgstr "%1$d%% [%2$s / limitsiz]"
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s / %3$s]"
 
-#, fuzzy
 msgid "ispCP - Admin/Main Index"
 msgstr "ispCP - Yönetici/Anamenü"
 
@@ -914,7 +895,7 @@ msgstr "Domain"
 msgid "Add new IP"
 msgstr "Yeni IP ekle"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Bu IPyi silmek istediğinize emin misiniz: %s ?"
 
@@ -927,7 +908,6 @@ msgstr "Domain alias sistem hatası yok"
 msgid "No subdomain system errors"
 msgstr "Subdomain sistem hatası yok"
 
-#, fuzzy
 msgid "No alias subdomain system errors"
 msgstr "Subdomain sistem hatası yok"
 
@@ -946,7 +926,6 @@ msgstr "Domain alias hataları"
 msgid "Subdomain errors"
 msgstr "Subdomain hataları"
 
-#, fuzzy
 msgid "Alias subdomain errors"
 msgstr "Subdomain yönlendirme"
 
@@ -956,7 +935,6 @@ msgstr "Posta hesabı hataları"
 msgid "ispCP Daemon tools"
 msgstr "ispCP Daemon araçları"
 
-#, fuzzy
 msgid "Execute requests"
 msgstr "Talepleri çalıştır"
 
@@ -967,7 +945,6 @@ msgstr "Durumu \"değiştir\" olarak ayarla"
 msgid "Daemon returned %d as status code"
 msgstr "Daemon durum kodu olara %d sonucunu getirdi"
 
-#, fuzzy
 msgid "Unknown type!"
 msgstr "Bilinmeyen tip!"
 
@@ -977,7 +954,6 @@ msgstr "Bitti"
 msgid "Unknown Error"
 msgstr "Bilinmeyen hata"
 
-#, fuzzy
 msgid "Enable update at"
 msgstr "Şurdaki güncellemeleri aktif et"
 
@@ -1120,8 +1096,7 @@ msgid "Email Updated"
 msgstr "Eposta güncellendi"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr ""
-"Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
+msgstr "Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
 
 msgid "User was disabled"
 msgstr "Kullanıcı devre dışı bırakıldı"
@@ -1150,7 +1125,6 @@ msgstr "Yüklenen dosya dil bilgisini içermiyor!"
 msgid "New language installed!"
 msgstr "Yeni dil yüklendi!"
 
-#, fuzzy
 msgid "Language was updated!"
 msgstr "Hosting planı güncellendi!"
 
@@ -1373,7 +1347,6 @@ msgstr "E-posta"
 msgid "unlimited"
 msgstr "limitsiz"
 
-#, fuzzy
 msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
 msgstr "Domain limiti<br><i>(-1 pasif, 0 limitsiz)</i>"
 
@@ -1423,7 +1396,6 @@ msgstr "%s <br/>toplam<br/> <b>limitsiz</b>"
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr "%1$d <br/>toplam<br/> <b>%2$d</b>"
 
-#, fuzzy
 msgid "<b>disabled</b>"
 msgstr "pasif"
 
@@ -1464,7 +1436,7 @@ msgstr "SQl<br>kullanıcısı"
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Yönetici / Sistem Araçları / Anti-Rootkits Araçları Log Checker"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s doesn't exist or is empty"
 msgstr "%s yok veya boş!"
 
@@ -1630,14 +1602,12 @@ msgstr "Server portları"
 msgid "Hosting plans available for"
 msgstr "Kullanılabilir server planları"
 
-#, fuzzy
 msgid "Admin"
 msgstr "Yönetici"
 
 msgid "Domains per page"
 msgstr "Sayfa başı domain"
 
-#, fuzzy
 msgid "Log Level"
 msgstr "Giriş Seviyesi"
 
@@ -1647,11 +1617,9 @@ msgstr "İkazlar, Uyarılar ve Hatalar"
 msgid "Warnings and Errors"
 msgstr "Uyarılar ve Hatalar"
 
-#, fuzzy
 msgid "Errors"
 msgstr "Hatalar"
 
-#, fuzzy
 msgid "Check for update"
 msgstr "Güncelleme için bak"
 
@@ -2015,7 +1983,6 @@ msgstr "Sistemde bu isimde bir domain zaten var!"
 msgid "Incorrect mount point syntax"
 msgstr "Hatalı <i>monte noktası</i> yazımı!"
 
-#, fuzzy
 msgid "Master domain cannot be used!"
 msgstr "Ana domain kullanılamaz!"
 
@@ -2028,15 +1995,12 @@ msgstr "Bu isimde bir domain var"
 msgid "There is a subdomain with the same mount point!"
 msgstr "Aynı monte noktalı bir subdomain var!"
 
-#, fuzzy
 msgid "Alias scheduled for activation!"
 msgstr "Alias aktivasyon için kaydedildi"
 
-#, fuzzy
 msgid "Alias scheduled for addition!"
 msgstr "Alias eklenmesi için kaydedildi"
 
-#, fuzzy
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
@@ -2071,7 +2035,6 @@ msgstr "Alias adı"
 msgid "Mount Point"
 msgstr "Monte noktası"
 
-#, fuzzy
 msgid "Enable Forward"
 msgstr "Eposta yönlendirme"
 
@@ -2117,7 +2080,6 @@ msgstr "Yedek dizinine giriniz"
 msgid "Download the files stored in this directory"
 msgstr "Dizinde bulunan dosyaları kaydediniz"
 
-#, fuzzy
 msgid "(usually named"
 msgstr "(örn. yedek "
 
@@ -2132,7 +2094,6 @@ msgstr ""
 msgid "Restore"
 msgstr "Geri Yükle (restore)"
 
-#, fuzzy
 msgid "Are you sure you want to restore the backup?"
 msgstr "Yedekleri yüklemek istediğinize emin misiniz?"
 
@@ -2163,7 +2124,6 @@ msgstr "Saat"
 msgid "Day(s):"
 msgstr "Gün"
 
-#, fuzzy
 msgid "Month(s):"
 msgstr "Ay:"
 
@@ -2221,7 +2181,6 @@ msgstr "Monte noktası"
 msgid "Forward"
 msgstr "Yönlendir"
 
-#, fuzzy
 msgid "Actions"
 msgstr "Eylem"
 
@@ -2307,11 +2266,9 @@ msgstr "Şifre bilgisi eksik"
 msgid "Entered passwords differ from the another!"
 msgstr "Girilen şifreler birbirinden farklı!"
 
-#, fuzzy
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
 msgstr "Subdomain listesi boş! Oraya FTP hesabı ekleyemezsiniz!"
 
-#, fuzzy
 msgid "Alias list is empty! You can not add FTP accounts there!"
 msgstr "Alias listesi boş! Oraya FTP hesabı ekleyemezsiniz!"
 
@@ -2342,7 +2299,6 @@ msgstr "Farklı bir dizine"
 msgid "Choose dir"
 msgstr "Dizin seç"
 
-#, fuzzy
 msgid "Can not open directory !<br>Please contact your administrator !"
 msgstr "Dizine bağlanılamıyor!<br>Lütfen, yöneticinizle irtibata geçiniz!"
 
@@ -2409,7 +2365,6 @@ msgstr "CGI Desteği: açık"
 msgid "CGI Support: disabled"
 msgstr "CGI Desteği: kapalı"
 
-#, fuzzy
 msgid "Disk limit"
 msgstr "Disk limiti"
 
@@ -2454,7 +2409,7 @@ msgstr "Hosting paketi güncellemesi isteğiniz silindi"
 msgid "disabled"
 msgstr "kapalı"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
 msgstr "Destek sorularınıza  <b>%d</b> yeni cevap var!"
 
@@ -2541,15 +2496,14 @@ msgstr "Lütfen posta kullanıcı adını yazınız!"
 msgid "Invalid Mail Localpart Format used!"
 msgstr "Gerçersiz Posta Localpart Formatı kullanımı! "
 
-#, fuzzy
 msgid "Subdomain alias"
 msgstr "Subdomain postaları"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s list is empty! You cannot add mail accounts!"
 msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s id is invalid! You cannot add mail accounts!"
 msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
 
@@ -2565,7 +2519,6 @@ msgstr "ispCP - Müşteri/Posta Kullanıcısı Ekle"
 msgid "Add mail users"
 msgstr "Posta kullanıcıları ekle"
 
-#, fuzzy
 msgid "To alias subdomain"
 msgstr "Subdomaine"
 
@@ -2582,7 +2535,7 @@ msgid "Separate multiple email addresses with a line-break."
 msgstr "Çoklu eposta adreslerini alt alta yazınız."
 
 msgid "You did not fill all required fields"
-msgstr ""
+msgstr "Lütfen gerekli alanları doldurunuz"
 
 msgid "Mail account scheduled for modification!"
 msgstr "Posta hesabı düzenlenmesi için kaydedildi"
@@ -2696,7 +2649,6 @@ msgstr "Lütfen, alan yolu giriniz"
 msgid "%s doesn't exist"
 msgstr "%s bulunamadı"
 
-#, fuzzy
 msgid "You can not protect area without selected user(s)"
 msgstr "Kullanıcı seçimi yapmadan, alan koruması yapamazsınız"
 
@@ -2751,11 +2703,9 @@ msgstr "Erişim reddedildi!"
 msgid "Protected area was deleted successful!"
 msgstr "Koruma alanı silindi!"
 
-#, fuzzy
 msgid "Invalid group name!"
 msgstr "Geçersiz grup adı"
 
-#, fuzzy
 msgid "Group already exists!"
 msgstr "Böyle bir grup zaten var!"
 
@@ -2768,11 +2718,11 @@ msgstr "Hatalı kullanıcı adı!"
 msgid "User already exist !"
 msgstr "Böyle bir kullanıcı zaten var!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "User was assigned to the %s group"
 msgstr "Kullanıcı %s grubuna atandı"
 
-#, fuzzy, php-format
+#, php-format
 msgid "User was deleted from the %s group "
 msgstr "Kullanıcı %s grubundan silindi"
 
@@ -2855,7 +2805,6 @@ msgstr "SQL veritabanı silindi!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL kullanıcısı silindi!"
 
-#, fuzzy
 msgid "Please enter an SQL query!"
 msgstr "Lütfen, bir SQL sorgusu yazınız!"
 
@@ -2863,11 +2812,9 @@ msgstr "Lütfen, bir SQL sorgusu yazınız!"
 msgid "Could not connect to the SQL server as %s!"
 msgstr "%s olarak SQL servera bağlanılamıyor!"
 
-#, fuzzy
 msgid "Execution of SQL query failed!"
 msgstr "SQL sorgusu çalıştırılamadı!"
 
-#, fuzzy
 msgid "Execution of SQL query succeeded!"
 msgstr "SQL sorgusu başarıyla çalıştırıldı!"
 
@@ -2904,7 +2851,6 @@ msgstr "SQl Düzenle"
 msgid "Database Name and Users"
 msgstr "Veritabanı adı ve kullanıcıları"
 
-#, fuzzy
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
@@ -2930,13 +2876,12 @@ msgid "Too user long password!"
 msgstr "Kullanıcı şifresi çok uzun!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
-"SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
+msgstr "SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
 
 msgid "User name too long!"
 msgstr "Kullanıcı adı çok uzun!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Wilcard olarak % ve ? kabul edilmiyor!"
 
@@ -2970,7 +2915,6 @@ msgstr "Azami subdomain sayısına ulaşıldı!"
 msgid "Please specify subdomain name!"
 msgstr "Lütfen bir subdomain ismi belirtiniz!"
 
-#, fuzzy
 msgid "No valid alias domain selected!"
 msgstr "Azami domain alias sayısına ulaşıldı!"
 
@@ -2980,7 +2924,6 @@ msgstr "Subdomain mevcut veya izin verilmiyor!"
 msgid "Wrong subdomain syntax!"
 msgstr "Hatalı subdomain yazımı!"
 
-#, fuzzy
 msgid "Mount point already in use!"
 msgstr "Subdomain monte noktası zaten var!"
 
@@ -2999,7 +2942,6 @@ msgstr "Subdomain verisi"
 msgid "Subdomain name"
 msgstr "Subdomain adı"
 
-#, fuzzy
 msgid "Directory tree mount point"
 msgstr "Dizin yapısı monte noktası"
 
@@ -3102,7 +3044,6 @@ msgstr "Sistem"
 msgid "Resellers list is empty!"
 msgstr "Bayi Listesi boş!"
 
-#, fuzzy
 msgid "Switch to user interface"
 msgstr "Kullanıcı arayüzüne geç"
 
@@ -3121,7 +3062,6 @@ msgstr "Kullanıcı listesi boş!"
 msgid "Details"
 msgstr "Ayrıntırlar"
 
-#, fuzzy
 msgid "Edit domain"
 msgstr "Domain düzenle"
 
@@ -3185,7 +3125,6 @@ msgstr ""
 "\n"
 "Bu destek talebiniz için yeni bir cevap var:\n"
 
-#, fuzzy
 msgid "Log in to answer"
 msgstr "Cevaba bak."
 
@@ -3261,11 +3200,9 @@ msgstr "Subdomain postası"
 msgid "Subdomain forward"
 msgstr "Subdomain yönlendirme"
 
-#, fuzzy
 msgid "Alias subdomain mail"
 msgstr "Subdomain postası"
 
-#, fuzzy
 msgid "Alias subdomain forward"
 msgstr "Subdomain yönlendirme"
 
@@ -3275,7 +3212,6 @@ msgstr "Bilinmeyen tip"
 msgid "Welcome {USERNAME} to ispCP!"
 msgstr "ispCP'ye Hoşgeldiniz {USERNAME}"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3405,7 +3341,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "{CUSTOMER} müşterisi için yeni alias siparişi"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3445,15 +3380,14 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr "Veritabanından yapılandırmaya ulaşılamıyor"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have to wait %d seconds"
 msgstr "%d saniye beklemeniz gerekiyor"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have been blocked for %d minutes"
 msgstr "%d dakikalığına engellendiniz"
 
-#, fuzzy
 msgid "You entered an incorrect username/password."
 msgstr "Yanlış şifre girdiniz."
 
@@ -3462,14 +3396,10 @@ msgstr "Sistem bakımda! Sadece yöneticiler giriş yapabilir."
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
-msgstr ""
-"%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
+msgstr "%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
+msgstr "Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3505,18 +3435,15 @@ msgstr "Düzenleme işleme alındı"
 msgid "Deletion in progress"
 msgstr "Silme işleme alındı"
 
-#, fuzzy
 msgid "Being enabled"
 msgstr "Aktif ediliyor"
 
-#, fuzzy
 msgid "Being suspended"
 msgstr "Şüpheli duruma getiriliyor"
 
 msgid "Awaiting for approval"
 msgstr "Onay bekliyor"
 
-#, fuzzy
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
 
@@ -3623,11 +3550,9 @@ msgstr ""
 "Lütfen, ayrıntılar için ispCP kontrol panelinize giriş yapınız.\n"
 "\n"
 
-#, fuzzy
 msgid "ispCP Error"
 msgstr "ispCP Hata"
 
-#, fuzzy
 msgid "Error Message"
 msgstr "Hata sayfaları"
 
@@ -3728,7 +3653,6 @@ msgstr "Gerçek domain"
 msgid "You have no alias records."
 msgstr "Alias kaydınız yok."
 
-#, fuzzy
 msgid "Activate"
 msgstr "Etkinleştir"
 
@@ -3750,11 +3674,9 @@ msgstr "Domain alias değiştirildi!"
 msgid "Domain alias not modified!"
 msgstr "Domain alias değiştirilmedi!"
 
-#, fuzzy
 msgid "Ordered domain alias not deleted!"
 msgstr "Sipariş edilen domain aliası silinmedi!"
 
-#, fuzzy
 msgid "Ordered domain alias activated!"
 msgstr "Sipariş edilen domain aliası eklendi!"
 
@@ -3806,7 +3728,7 @@ msgstr "ispCP - Domain/Düzenle"
 
 #, php-format
 msgid "The <em>%s</em> service can not be disabled! "
-msgstr ""
+msgstr "Servis devre dışı bırakılamaz!"
 
 #, php-format
 msgid "The <em>%s</em> service can not be limited! "
@@ -4003,7 +3925,6 @@ msgstr "Awstats"
 msgid "Domain data has been altered. Please enter again"
 msgstr "Domain verisi değiştirildi. Lütfen tekrar giriniz"
 
-#, fuzzy
 msgid "SQL databases limit is not <i>disabled</i>!"
 msgstr "SQL veritabanı limiti <i>pasif edilmemiş</i>!"
 
@@ -4031,21 +3952,19 @@ msgstr "Bu bayinin henüz domaini yok."
 msgid "ispCP - Users"
 msgstr "ispCP - Kullanıcılar"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to change the status of %s?"
 msgstr "%s durumunu değiştirmek istediğinize emin misiniz"
 
 msgid "Stats"
 msgstr "İstatistikler"
 
-#, fuzzy
 msgid "Edit User"
 msgstr "Kullanıcı düzenle"
 
 msgid "Bandwidth"
-msgstr ""
+msgstr "Bant genişliği"
 
-#, fuzzy
 msgid "View aliases"
 msgstr "Aliasları göster"
 
@@ -4080,55 +3999,42 @@ msgstr "Kullanıcı sonlandırılmadı!"
 #~ msgid "Message was send!"
 #~ msgstr "Mesaj gönderildi!"
 
-#, fuzzy
 #~ msgid "Database update %s failed"
 #~ msgstr "Veritabanı güncellemesi %s başarısız"
 
-#, fuzzy
 #~ msgid "Unknown domain status!"
 #~ msgstr "Bilinmeyen domain durumu!"
 
-#, fuzzy
 #~ msgid "Invalid account id!"
 #~ msgstr "Geçersiz hesap idsi!"
 
-#, fuzzy
 #~ msgid "Order in progress"
 #~ msgstr "Sipariş işleme alındı"
 
-#, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Hatalı kullanıcı adı sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect password number or syntax!"
 #~ msgstr "Hatalı şifre sayısı veya yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max domain number or syntax!"
 #~ msgstr "Hatalı azami domain sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max subdomain number or syntax!"
 #~ msgstr "Hatalı azami domain sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max alias number or syntax!"
 #~ msgstr "Hatalı azami alias sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max FTP number or syntax!"
 #~ msgstr "Hatalı azami FTP sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max mail number or syntax!"
 #~ msgstr "Hatalı azami posta sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max SQL databases number or syntax!"
 #~ msgstr "Hatalı azami SQL veritabanı sayısı ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect max SQL users number or syntax!"
 #~ msgstr "Hatalı azami SQL kullanıcı sayısı ya da yazımı!"
 
@@ -4138,7 +4044,6 @@ msgstr "Kullanıcı sonlandırılmadı!"
 #~ msgid "Incorrect max disk amount or syntax!"
 #~ msgstr "Hatalı azami disk değeri ya da yazımı!"
 
-#, fuzzy
 #~ msgid "Incorrect FTP account count or no number<br />"
 #~ msgstr "Hatalı FTP hesabı sayısı ya da girilen rakam değil<br />!"
 

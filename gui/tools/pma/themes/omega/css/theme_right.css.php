@@ -220,7 +220,7 @@ button {
 /* classes */
 
 fieldset.tblFooters {
-    margin-top:         0;
+    margin-top:         0em;
     margin-bottom:      0.5em;
     text-align:         right;
     float:              none;
@@ -262,7 +262,7 @@ table tr.even {
 table tr.marked th,
 table tr.marked {
     background-color:   #FFCC99;
-    color :   #000000;
+    color :   			#000000;
 }
 
 /* hovered table rows */
@@ -329,7 +329,8 @@ img.lightbulb {
 
 /* MySQL Parser */
 .syntax {
-font-size: 10px;}
+	font-size: 1		0px;
+}
 
 .syntax_comment {
     padding-left:       4pt;
@@ -410,7 +411,7 @@ td .icon {
 }
 h1.notice,
 div.notice {
-    margin:             0.5em 0 0.5em 0;
+    margin:             0.5em 0em 0.5em 0em;
     border:             0.1em solid #FFD700;
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
     background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>s_notice.png);
@@ -430,7 +431,7 @@ div.notice {
     border-bottom:      0.1em solid #FFD700;
     font-weight:        bold;
     text-align:         <?php echo $left; ?>;
-    margin:             0 0 0.2em 0;
+    margin:             0em 0em 0.2em 0em;
 }
 
 .warning {
@@ -440,7 +441,7 @@ div.notice {
 p.warning,
 h1.warning,
 div.warning {
-    margin:             0.5em 0 0.5em 0;
+    margin:             0.5em 0em 0.5em 0em;
     border:             0.1em solid #CC0000;
     width:              90%;
 
@@ -462,7 +463,7 @@ div.warning {
     border-bottom:      0.1em solid #cc0000;
     font-weight:        bold;
     text-align:         <?php echo $left; ?>;
-    margin:             0 0 0.2em 0;
+    margin:             0em 0em 0.2em 0em;
 }
 
 .error {
@@ -472,7 +473,7 @@ div.warning {
 
 h1.error,
 div.error {
-    margin:             0.5em 0 0.5em 0;
+    margin:             0.5em 0em 0.5em 0em;
     border:             0.1em solid #ff0000;
     width:              90%;
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
@@ -493,7 +494,7 @@ div.error h1 {
     border-bottom:      0.1em solid #ff0000;
     font-weight:        bold;
     text-align:         <?php echo $left; ?>;
-    margin:             0 0 0.2em 0;
+    margin:             0em 0em 0.2em 0em;
 }
 
 .confirmation {
@@ -543,7 +544,7 @@ fieldset.confirmation legend {
     color:               #ffffff;
     background-color:    #cccccc;
     background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_header.png);
-    background-repeat:  repeat-x;
+    background-repeat:	 repeat-x;
     background-position: top;
 }
 
@@ -592,24 +593,24 @@ td.disabled {
  */
 body.loginform h1,
 body.loginform a.logo {
-    display: block;
-    text-align: center;
+    display: 			block;
+    text-align: 		center;
 }
 
 body.loginform {
-    text-align: center;
+    text-align: 		center;
 }
 
 body.loginform div.container {
-    text-align: <?php echo $left; ?>;
-    width: 30em;
-    margin: 0 auto;
+    text-align: 		<?php echo $left; ?>;
+    width: 				30em;
+    margin: 			0 auto;
 }
 
 form.login label {
-    float: <?php echo $left; ?>;
-    width: 10em;
-    font-weight: bolder;
+    float: 			<?php echo $left; ?>;
+    width: 			10em;
+    font-weight: 	bolder;
 }
 
 
@@ -631,8 +632,8 @@ ul#topmenu {
 
 ul#topmenu li {
     float:               left;
-    margin:              0;
-    padding:             0;
+    margin:              0em;
+    padding:             0em;
     vertical-align:      middle;
 	height: 			 24px;
 }
@@ -646,7 +647,7 @@ ul#topmenu li {
 .tab, .tabcaution, .tabactive {
 	color:               #f4dc6b;
 	font-family:         Verdana, Arial, Helvetica, sans-serif;
-	padding:			 0;
+	padding:			 0em;
     white-space:         nowrap;
 }
 
@@ -704,7 +705,7 @@ ul#topmenu li a.tabactive {
 }
 
 ul#topmenu li {
-    border-bottom:      0;
+    border-bottom:      0em;
 }
 
 /* default tab styles */
@@ -757,11 +758,9 @@ ul#topmenu li a.tabcaution {
     background-repeat:   repeat-x;
     background-position: top;
     padding: 			 4px 8px 8px 8px;
-    border: 			 0;
+    border: 			 0em;
     border-right: 		 1px solid #FFFFFF;
-	margin-right: 		 0;
-	margin: 			 0;
-	margin-left: 		 0px;
+	margin: 			 0em;
 }
 ul#topmenu li a.tabcaution:hover {
 	background-image:    url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>tbl_error2.png);
@@ -778,7 +777,7 @@ a.tabactive {
     background-position: top;
     background-color:    #ffffff;
     padding: 		 	 4px 8px 8px 8px; /* top left bottom right - I just can't memorize this ;) */
-	border: 			 0;
+	border: 			 0em;
     border-right: 		 1px solid #FFFFFF;
 	border-left: 		 1px solid #FFFFFF;
     margin-left: 		 -3px;
@@ -793,9 +792,9 @@ a.tabactive:hover {
 
 a.tab:link, a.tab:active,a.tab:hover, a.tab:visited {
     padding: 			 4px 8px 8px 8px; /* top left bottom right - I just can't memorize this ;) */
-	border: 			 0;
+	border: 			 0em;
     border-right: 		 1px solid #FFFFFF;
-	margin: 			 0;
+	margin: 			 0em;
 	margin-left: 		 0px;
     color:               #FFFFFF;
 }
@@ -807,14 +806,14 @@ a.tab:hover,
 
 /* disabled drop/empty tabs */
 span.tab, span.tabcaution {
-        cursor:             url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>error.ico), default;
+        cursor:          url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>error.ico), default;
 }
 <?php } ?>
 /* end topmenu */
 
 
 #fieldsetexport #exportoptions {
-    float: left;
+    float: 				left;
 }
 
 
@@ -853,19 +852,19 @@ form.clock {
 
 /* table stats */
 div#tablestatistics {
-    border-bottom: 0.1em solid #669999;
-    margin-bottom: 0.5em;
-    padding-bottom: 0.5em;
+    border-bottom: 		0.1em solid #669999;
+    margin-bottom: 		0.5em;
+    padding-bottom: 	0.5em;
 }
 
 div#tablestatistics table {
-    float: left;
-    margin-bottom: 0.5em;
-    margin-right: 0.5em;
+    float: 				left;
+    margin-bottom: 		0.5em;
+    margin-right: 		0.5em;
 }
 
 div#tablestatistics table caption {
-    margin-right: 0.5em;
+    margin-right: 		0.5em;
 }
 /* END table stats */
 
@@ -874,7 +873,7 @@ div#tablestatistics table caption {
 #tableuserrights td,
 #tablespecificuserrights td,
 #tabledatabases td {
-    vertical-align: middle;
+    vertical-align: 	middle;
 }
 /* END server privileges */
 
@@ -905,28 +904,28 @@ div#tablestatistics table caption {
 }
 
 #serverinfo img {
-    margin:             0 0.1em 0 0.1em;
+    margin:             0em 0.1em 0em 0.1em;
 }
 
 /* some styles for IDs: */
 #buttonNo {
     color:              #CC0000;
     font-weight:        bold;
-    padding:            0 10px 0 10px;
-    font-size:        	 10px;
+    padding:            0px 10px 0px 10px;
+    font-size:        	10px;
 }
 
 #buttonYes {
     color:              #006600;
     font-weight:        bold;
-    padding:            0 10px 0 10px;
+    padding:            0px 10px 0px 10px;
     font-size:        	10px;
 }
 
 #buttonGo {
     color:              #006600;
     font-weight:        bold;
-    padding:            0 10px 0 10px;
+    padding:            0px 10px 0px 10px;
 	font-size:        	10px;
 }
 
@@ -942,22 +941,22 @@ div#tablestatistics table caption {
     width:              95%;
     height:             95%;
     font-family:        "Courier New", Courier, mono;
-   font-size:   		 11px;
+   font-size:   		11px;
 }
 
 #TooltipContainer {
     position:           absolute;
     z-index:            99;
-    width:      	  	 250px;
-    height:     	  	 50px;
-    overflow:   	  	 auto;
-    visibility: 	  	 hidden;
+    width:      	   	250px;
+    height:     	  	50px;
+    overflow:   	  	auto;
+    visibility: 	  	hidden;
     background-color:   #ffffcc;
     color:              #006600;
-    border:           	 1px solid #000000;
-    padding:          	 5px;
-    font-family: 	  	 Verdana, Arial, Helvetica, sans-serif;
-    font-size:   	  	 10px;
+    border:           	1px solid #000000;
+    padding:          	5px;
+    font-family: 	  	Verdana, Arial, Helvetica, sans-serif;
+    font-size:   	  	10px;
 }
 
 /* user privileges */
@@ -984,106 +983,106 @@ div#tablestatistics table caption {
 }
 
 #fieldset_add_user_login span.options {
-    float: left;
-    display: block;
-    width: 12em;
-    max-width: 100%;
-    padding-right: 0.5em;
+    float: 				left;
+    display: 			block;
+    width: 				12em;
+    max-width: 			100%;
+    padding-right: 		0.5em;
 }
 
 #fieldset_add_user_login input {
-    width: 12em;
-    clear: right;
-    max-width: 100%;
+    width: 				12em;
+    clear: 				right;
+    max-width: 			100%;
 }
 
 #fieldset_add_user_login span.options input {
-    width: auto;
+    width: 				auto;
 }
 
 #fieldset_user_priv div.item {
-    float: left;
-    width: 8em;
-    max-width: 100%;
+    float: 				left;
+    width: 				8em;
+    max-width: 			100%;
 }
 
 #fieldset_user_priv div.item div.item {
-    float: none;
+    float: 				none;
 }
 
 #fieldset_user_priv div.item label {
-    white-space: nowrap;
+    white-space: 		nowrap;
 }
 
 #fieldset_user_priv div.item select {
-    width: 100%;
+    width: 				100%;
 }
 
 #fieldset_user_global_rights fieldset {
-    float: left;
+    float: 				left;
 }
 /* END user privileges */
 
 
 /* serverstatus */
 div#serverstatus table caption a.top {
-    float: right;
+    float: 				right;
 }
 
 div#serverstatus div#serverstatusqueriesdetails table,
 div#serverstatus table#serverstatustraffic,
 div#serverstatus table#serverstatusconnections {
-    float: left;
+    float: 				left;
 }
 
 #serverstatussection,
 .clearfloat {
-    clear: both;
+    clear: 				both;
 }
 div#serverstatussection table {
-    width: 100%;
-    margin-bottom: 1em;
+    width: 				100%;
+    margin-bottom: 		1em;
 }
 div#serverstatussection table .name {
-    width: 18em;
+    width: 				18em;
 }
 div#serverstatussection table .value {
-    width: 6em;
+    width: 				6em;
 }
 
 div#serverstatus table tbody td.descr a,
 div#serverstatus table .tblFooters a {
-    white-space: nowrap;
+    white-space: 		nowrap;
 }
 div#serverstatus div#statuslinks a:before,
 div#serverstatus div#sectionlinks a:before,
 div#serverstatus table tbody td.descr a:before,
 div#serverstatus table .tblFooters a:before {
-    content: '[';
+    content: 			'[';
 }
 div#serverstatus div#statuslinks a:after,
 div#serverstatus div#sectionlinks a:after,
 div#serverstatus table tbody td.descr a:after,
 div#serverstatus table .tblFooters a:after {
-    content: ']';
+    content: 			']';
 }
 /* end serverstatus */
 
 /* querywindow */
 body#bodyquerywindow {
-    margin: 0;
-    padding: 0;
-    background-color: #F5F5F5;
+    margin: 			0em;
+    padding: 			0em;
+    background-color: 	#F5F5F5;
 }
 
 div#querywindowcontainer {
-    margin: 0;
-    padding: 0;
-    width: 100%;
+    margin: 			0em;
+    padding: 			0em;
+    width: 				100%;
 }
 
 div#querywindowcontainer fieldset {
-    margin-top: 0;
+    margin-top: 		0em;
 }
 /* END querywindow */
 
@@ -1091,29 +1090,29 @@ div#querywindowcontainer fieldset {
 /* querybox */
 
 div#sqlquerycontainer {
-    float: left;
-    width: 69%;
-    /* height: 15em; */
+    float: 				left;
+    width: 				69%;
+    /* height: 			15em; */
 }
 
 div#tablefieldscontainer {
-    float: right;
-    width: 29%;
-    /* height: 15em; */
+    float: 				right;
+    width: 				29%;
+    /* height: 			15em; */
 }
 
 div#tablefieldscontainer select {
-    width: 100%;
-    /* height: 12em; */
+    width: 				100%;
+    /* height: 			12em; */
 }
 
 textarea#sqlquery {
-    width: 100%;
-    /* height: 100%; */
+    width: 					100%;
+    /* height: 				100%; */
 }
 
 div#queryboxcontainer div#bookmarkoptions {
-    margin-top: 0.5em;
+    margin-top: 			0.5em;
 }
 /* end querybox */
 

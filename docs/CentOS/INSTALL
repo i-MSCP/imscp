@@ -1,4 +1,4 @@
-ispCP Ï(OMEGA) HowTo Install for CentOS 5.2
+ispCP ω (OMEGA) HowTo Install for CentOS 5.2
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,7 +16,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP Version:         1.0.0 RC7
+ispCP Version:         1.0.0
 INSTALL Script:        1.2
 Maintainer:
 Homepage:              http://isp-contol.net
@@ -25,11 +25,11 @@ Linux Distros:         CentOS 5.2
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ispCP Ï This is only a recommendation:
+There is no must have for a system using ispCP ω This is only a recommendation:
 
 Pentium III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ispCP Ï
+100 MB disk space (only for install of ispCP ω
 Debian (or even any other *NIX-Distribution)
 
 All required packages are listed in ./docs/CentOS
@@ -37,14 +37,14 @@ All required packages are listed in ./docs/CentOS
 ================================================================================
 3) Introduction
 ---------------
-ispCP Ïdelivers a complete hosting automation appliance by offering significant
+ispCP ω delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ispCP Ïyou can configure your server and applications, create user with
+With ispCP ω you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP Ïare 3 easy-to-use, web-based control panels. ispCP
+created. The core of ispCP ωare 3 easy-to-use, web-based control panels. ispCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
@@ -68,7 +68,7 @@ For the following steps, you will need to be logged in as root.
 
 4. Untar or unzip the distribution files to a secure directory:
         # cd /root
-        # tar xjvf ispcp-omega-1.0.0-rc7.tar.bz2
+        # tar xjvf ispcp-omega-1.0.0.tar.bz2
 
 5. Change to the newly created directory:
         # cd ./ispcp-omega-1.0.0
@@ -228,12 +228,12 @@ need to be running.
 1. If you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that
    ispCP Omega comes with a new webmail client. Please make sure that your
    customers can still access the address book data. You can ensure this either
-   by make the old webmail client accessable or by using this
+   by making the old webmail client accessable or by using this
    script: http://www.isp-control.net/ispcp/ticket/1614
 
 2. Untar or unzip the distribution files to a secure directory:
     # cd /root
-    # tar xjvf ispcp-omega-1.0.0-rc7.tar.bz2
+    # tar xjvf ispcp-omega-1.0.0.tar.bz2
 
 3. Change to the newly created directory:
     # cd ./ispcp-omega-1.0.0

@@ -51,7 +51,8 @@ use constant {
         RC3		=> 4,
         RC4		=> 5,
         RC5		=> 6,
-        RC6		=> 7
+        RC6		=> 7,
+		RC7		=> 8
 	};
 
 ################################################################################
@@ -136,6 +137,7 @@ sub welcome_note {
 \t(5) ispCP OMEGA 1.0.0 RC4
 \t(6) ispCP OMEGA 1.0.0 RC5
 \t(7) ispCP OMEGA 1.0.0 RC6
+\t(8) ispCP OMEGA 1.0.0 RC7
 \t(0) abort
 MSG
 
@@ -1065,6 +1067,54 @@ sub patch_ispcp_rc6 {
 	return 0;
 }
 
+sub patch_ispcp_rc7 {
+	push_el(\@main::el, 'patch_ispcp_rc7()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	# Rebuild system configs:
+	print STDOUT "\tRebuilding system configurations...";
+
+# 	$rs = rebuild_configs();
+	if ( -e "$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	if ( -e "$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp") {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp");
+		return 1 if ($rs != 0);
+	}
+
+	$rs = setup_crontab();
+	return 2 if ($rs != 0);
+
+	$rs = setup_named();
+	return 3 if ($rs != 0);
+
+	$rs = setup_php();
+	return 4 if ($rs != 0);
+	
+	$rs = setup_httpd();
+	return 5 if ($rs != 0);
+
+	$rs = setup_ftpd();
+	return 6 if ($rs != 0);
+
+	$rs = update_ftpd();
+	return 7 if ($rs != 0);
+
+	print STDOUT "done\n";
+
+	push_el(\@main::el, 'patch_ispcp_rc7()', 'Ending...');
+	return 0;
+}
+
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -1085,7 +1135,7 @@ sub prepare_update {
 			"\tIf you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that\n".
 			"\tispCP Omega comes with a new webmail client. Please make sure that your\n".
 			"\tcustomers can still access the address book data. You can ensure this either\n".
-			"\tby make the old webmail client accessable or by using this\n".
+			"\tby makint the old webmail client accessable or by using this\n".
 			"\tscript: http://www.isp-control.net/ispcp/ticket/1614\n\n".
 			"\tContinue?\n".
 			"\t(1) Yes\n".
@@ -1219,6 +1269,10 @@ sub prepare_update {
 		# ispCP 1.0.0 RC6
 		elsif ($main::ua{'update'} == RC6) {
 			$rs = patch_ispcp_rc6();
+		}
+		# ispCP 1.0.0 RC7
+		elsif ($main::ua{'update'} == RC7) {
+			$rs = patch_ispcp_rc7();
 		}
 
 		if ($rs != 0) {
