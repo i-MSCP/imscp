@@ -8,8 +8,12 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1646: Tiny html special char encoding problem in include/admin-functions.php (Thanks Haeber)
 		* Fixed #1652: Html structure/tree failure in admin/settings_layout.tpl and reseller/settings_layout.tpl
 		* Fixed #1653: Lost font-tag in reseller/user_add2.tpl (Thanks Haeber)
+		* Fixed #1654: Small style fix for bug introduced with r1476 in admin/settings_layout.tpl and reseller/settings_layout.tpl (Thanks Haeber)
+		* Fixed #1651: Template variable {DST_RSL_SELECTED} in admin/manage_reseller_users.php is not replaced
+	-CONFIGS:
+		* Fixed #1602: Awstats images (icons/graphs) don't work on gentoo (and maybe others?)
 
-2009-02-08 Daniel Andrecafile:///_backup/ispcp/CHANGELOG
+2009-02-08 Daniel Andreca
 	- THEMES:
 		* Fixed #1646: Tiny html special char encoding problem in include/admin-functions.php (Thanks Haeber)
 		* Fixed #1647: Two template fixes (Thanks Haeber)

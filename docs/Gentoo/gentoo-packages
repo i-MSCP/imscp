@@ -47,7 +47,7 @@ mail-filter/policyd-weight
 awstats
 vixie-cron
 syslog-ng
-mysql
+dev-db/mysql
 gdbm
 db
 logrotate

@@ -69,23 +69,24 @@ SQL_QUERY;
 		} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user') {
 			if (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id']) {
 				$selected = 'selected';
-
 				$reseller_id = $_POST['dst_reseller'];
 			}
 		}
 		$tpl->assign(
 			array(
-				'SRC_RSL_OPTION' => $rs->fields['admin_name'],
-				'SRC_RSL_VALUE' => $rs->fields['admin_id'],
-				'SRC_RSL_SELECTED' => $selected,
+				'SRC_RSL_OPTION'	=> $rs->fields['admin_name'],
+				'SRC_RSL_VALUE'		=> $rs->fields['admin_id'],
+				'SRC_RSL_SELECTED'	=> $selected,
 				)
 			);
 
 		$tpl->assign(
-			array('DST_RSL_OPTION' => $rs->fields['admin_name'],
-				'DST_RSL_VALUE' => $rs->fields['admin_id'],
-				)
-			);
+			array(
+				'DST_RSL_OPTION'	=> $rs->fields['admin_name'],
+				'DST_RSL_VALUE'		=> $rs->fields['admin_id'],
+				'DST_RSL_SELECTED'	=> ''
+			)
+		);
 
 		$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 		$tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
