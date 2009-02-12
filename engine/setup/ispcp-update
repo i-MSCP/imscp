@@ -120,26 +120,52 @@ sub welcome_note {
 
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	my $welcome_message = <<MSG;
+	my $warning =
+		"\tMake sure you have read and performed all steps from docs/distro/INSTALL\n".
+		"\tdocument.\n\n".
+		"\tContinue?\n".
+		"\t(1) Yes\n".
+		"\t(0) No\n";
 
-\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.
-\tThis program will update your VHCS / ispCP OMEGA system on your server.
-\tPlease make sure you have a backup of your server data.
+	print STDOUT $warning;
+	print STDOUT "\tYour selection: ";
 
-\tNOTE: During the migration process some or all services might require to be
-\tshut down or restarted.
+	$rdata = readline(\*STDIN);
+	chop($rdata);
 
-\tPlease select from which version you want to update:
-\t(1) VHCS 2.4.7 or VHCS 2.4.7.1
-\t(2) VHCS 2.4.8 RC1
-\t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)
-\t(4) ispCP OMEGA 1.0.0 RC3
-\t(5) ispCP OMEGA 1.0.0 RC4
-\t(6) ispCP OMEGA 1.0.0 RC5
-\t(7) ispCP OMEGA 1.0.0 RC6
-\t(8) ispCP OMEGA 1.0.0 RC7
-\t(0) abort
-MSG
+	while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
+		print STDOUT "\tPlease select an item mentioned above: ";
+		$rdata = readline(\*STDIN);
+		chop($rdata);
+	}
+
+	# Set to 0 if not ready
+	if ($rdata == 0) {
+		exit 0;
+	}
+
+	# Clear screen
+	system('clear');
+
+	my $welcome_message =
+		"\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n".
+		"\tThis program will update your VHCS / ispCP OMEGA system on your server.\n".
+		"\tPlease make sure you have a backup of your server data.\n\n".
+
+		"\tNOTE: During the migration process some or all services might require to be\n".
+		"\tshut down or restarted.\n\n".
+
+		"\tPlease select from which version you want to update:\n".
+		"\t(1) VHCS 2.4.7 or VHCS 2.4.7.1\n".
+		"\t(2) VHCS 2.4.8 RC1\n".
+		"\t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)\n".
+		"\t(4) ispCP OMEGA 1.0.0 RC3\n".
+		"\t(5) ispCP OMEGA 1.0.0 RC4\n".
+		"\t(6) ispCP OMEGA 1.0.0 RC5\n".
+		"\t(7) ispCP OMEGA 1.0.0 RC6\n".
+		"\t(8) ispCP OMEGA 1.0.0 RC7\n".
+		"\t(0) abort\n";
+
 
 	print STDOUT $welcome_message;
 	print STDOUT "\tYour selection: ";
@@ -147,7 +173,7 @@ MSG
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 7) {
+	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 8) {
 		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);
@@ -1075,31 +1101,7 @@ sub patch_ispcp_rc7 {
 	# Rebuild system configs:
 	print STDOUT "\tRebuilding system configurations...";
 
-# 	$rs = rebuild_configs();
-	if ( -e "$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	if ( -e "$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	$rs = setup_crontab();
-	return 2 if ($rs != 0);
-
-	$rs = setup_named();
-	return 3 if ($rs != 0);
-
-	$rs = setup_php();
-	return 4 if ($rs != 0);
-	
+	# Gentoo need 01_awstats.conf rebuild
 	$rs = setup_httpd();
 	return 5 if ($rs != 0);
 
