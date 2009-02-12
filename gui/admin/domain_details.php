@@ -124,13 +124,13 @@ SQL_QUERY;
 	$query = "select * from server_ips where ip_id = ?";
 	$ipres = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $ipres->FetchRow();
-	// Get staus name
+	// Get status name
 	$dstatus = $data['domain_status'];
 
 	if ($dstatus == Config::get('ITEM_OK_STATUS') || $dstatus == Config::get('ITEM_DISABLED_STATUS') || $dstatus == Config::get('ITEM_DELETE_STATUS') || $dstatus == Config::get('ITEM_ADD_STATUS') || $dstatus == Config::get('ITEM_RESTORE_STATUS') || $dstatus == Config::get('ITEM_CHANGE_STATUS') || $dstatus == Config::get('ITEM_TOENABLE_STATUS') || $dstatus == Config::get('ITEM_TODISABLED_STATUS')) {
 		$dstatus = translate_dmn_status($data['domain_status']);
 	} else {
-		$dstatus = "<b><font size=\"3\" color=red>" . $data['domain_status'] . "</font></b>";
+		$dstatus = "<b><font size=\"3\" color=\"red\">" . $data['domain_status'] . "</font></b>";
 	}
 
 	// Traffic diagram
@@ -228,7 +228,7 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
-	// Get sub domain
+	// Get subdomain
 	$query = "select count(subdomain_id) as sub_num from subdomain where domain_id=?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$sub_num_data = $res1->FetchRow();
@@ -242,7 +242,7 @@ SQL_QUERY;
 	$alias_num_data = $res1->FetchRow();
 
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
-	// Fill in the fileds
+	// Fill in the fields
 	$tpl->assign(
 			array(
 				'DOMAIN_ID' => $data['domain_id'],

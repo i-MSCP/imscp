@@ -1,6 +1,17 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-12 Thomas Häber
+	- THEMES:
+		* typo (missing point) in domain_default_page/index.html
+		* more information with explicit naming of error code in errordocs title, removed ugly capitalized ERROR to Error
+		* extern javascript file in errordocs (errordocs.js) does not need CDATA area
+		* replaced separated robots-meta-tag with one meta-tag (it's default to use 'nofollow, noindex' in one meta-tag), furthermore this means less code
+		* added new line at end of some template-files (cause IDE and Subversion complains about it too often, and I am of suck of it), unfortunately not all now (includes some code cleanup)
+		* removed javascript-tag in header of public sites like login and password tpls, they don't use it: less code + less HTTP requests -> less traffic -> less log-entries
+	- GUI:
+		* typos in some php files and some code cleanup
+
 2009-02-09 Benedikt Heintel
 	- CONFIGS:
 		* Release preparation

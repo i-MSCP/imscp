@@ -2,8 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <title>{TR_PAY_PAGE_TITLE}</title>
-  <meta name="robots" content="noindex">
-  <meta name="robots" content="nofollow">
+<meta name="robots" content="nofollow, noindex">
 <link href="../themes/omega_original/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
 </head>

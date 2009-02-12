@@ -64,7 +64,7 @@ final class Database {
 				$this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, false);
 			}
 		}
-        	return $this->_db->prepare($sql);
+        return $this->_db->prepare($sql);
     }
 
     public function MetaTables() {

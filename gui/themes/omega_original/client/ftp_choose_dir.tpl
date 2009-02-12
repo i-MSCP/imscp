@@ -2,8 +2,7 @@
 <html>
 <head>
 <title>{TR_CLIENT_WEBTOOLS_PAGE_TITLE}</title>
-  <meta name="robots" content="noindex">
-  <meta name="robots" content="nofollow">
+<meta name="robots" content="nofollow, noindex">
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">

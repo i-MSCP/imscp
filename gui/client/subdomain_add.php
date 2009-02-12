@@ -313,7 +313,7 @@ function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)
 
 	$sub_id = $sql->Insert_ID();
 
-	// We do not need to create the default mail adresses, subdomains are
+	// We do not need to create the default mail addresses, subdomains are
 	// related to their domains.
 
 	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name);

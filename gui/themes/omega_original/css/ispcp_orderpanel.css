@@ -5,6 +5,7 @@ body {
 	margin-bottom: 0px;
 	background-color: #FFFFFF;
 }
+
 a.link {color:#000099;text-decoration:underline;font-weight: normal;}
 a.link:link {color:#000099;text-decoration:underline;font-weight: normal;}
 a.link:visited {color:#000099; text-decoration:underline; font-weight:normal}
@@ -20,6 +21,7 @@ a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
 	color:				#f4dc6b;
 	text-decoration:	none;
 }
+
 .title {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	font-size: 16px;
@@ -74,8 +76,8 @@ td.content3 {
 	height: 26px;
 
 }
-.button
-{
+
+.button {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	height: 22px;
 	font-size: 12px;

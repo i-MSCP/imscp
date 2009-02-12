@@ -2,7 +2,7 @@
 <!-- EDP: purchase_header -->
 <form name="address" method="post" action="address.php"><table width="400">
   <tr>
-    <td colspan="2" class="content3"><strong>{TR_ADRESS}</strong></td>
+    <td colspan="2" class="content3"><strong>{TR_ADDRESS}</strong></td>
   </tr>
 
                   <!-- BDP: page_message -->

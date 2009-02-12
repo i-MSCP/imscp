@@ -25,7 +25,7 @@
  *
  * input:
  *   string $in_str - string to be encoded [should be in the $charset charset]
- *   string $charset - chanrset in that string will be encoded
+ *   string $charset - charset in that string will be encoded
  *
  * output:
  *   string - encoded string
@@ -1263,7 +1263,7 @@ function get_user_name($user_id) {
 
 function get_logo($user_id) {
 	$sql = Database::getInstance();
-	// check what logo we should return:
+	// check which logo we should return:
 	$query = "
 		SELECT
 			`admin_id`, `created_by`, `admin_type`
@@ -1308,7 +1308,7 @@ function calc_bar_value($value, $value_max , $bar_width) {
 	} else {
 		$ret_value = ($value * $bar_width) / $value_max;
 
-		return ($ret_value > $bar_width)? $bar_width : $ret_value;
+		return ($ret_value > $bar_width) ? $bar_width : $ret_value;
 	}
 }
 
@@ -1823,8 +1823,8 @@ function rm_rf_user_account($id_user) {
 	// we have all needed user data - let's delete all data for this user
 	substract_from_reseller_props($domain_created_id, $domain_id);
 	// BEGIN - DELETE ALL SYSTEM ENTRIES FOR THIS USER
-	// fist we'll delete all FTP Accounts
-	// delete all FTP Accounts
+	// fist we'll delete all FTP accounts
+	// delete all FTP accounts
 	$query = "DELETE FROM `ftp_users` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
 
@@ -1832,7 +1832,7 @@ function rm_rf_user_account($id_user) {
 	$query = "DELETE FROM `ftp_group` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
 
-	// let's delete all Subdomains for this user
+	// let's delete all subdomains for this user
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
 	$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
@@ -1856,23 +1856,23 @@ function rm_rf_user_account($id_user) {
 	$rs = exec_query($sql, $query, array($domain_id));
 	// end of delete htaccess entires
 
-	//delete asociated traffic
+	// delete asociated traffic
 	$query = "DELETE FROM `domain_traffic` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	//delete error pages
+	// delete error pages
 	$query = "DELETE FROM `error_pages` WHERE `user_id` = ?";
 	$rs = exec_query($sql, $query, array($id_user));
 
-	//delete quotalimits
+	// delete quotalimits
 	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($domain_name));
 
-	//delete quotatallies
+	// delete quotatallies
 	$query = "DELETE FROM `quotatallies` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($domain_name));
 
-	// Lets Delete SQL DBs and Users
+	// Lets delete SQL DBs and Users
 	$query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 
@@ -2062,7 +2062,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	$message .= "\n" . $ticket_message;
 	$message .= "\n\n" . tr("Log in to answer") . " http://" . Config::get('BASE_SERVER_VHOST');
 
-	// Format adresses
+	// Format addresses
 	if ($from_fname && $from_lname) {
 		$from = "\"" . encode($from_fname . ' ' . $from_lname) . "\" <" . $from_email . ">";
 		$fromname = "$from_fname $from_lname";

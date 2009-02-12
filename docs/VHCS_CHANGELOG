@@ -1227,7 +1227,7 @@ Bugfixes:	- 17.08.05 :: Bug 0000124 :: Database names with wildcards fixed
 New Features:   - Purchasing module :: User part is done
 		- Purchasing module :: Reseller level :: Management of customer orders - done
 		- Purchasing module :: Enduser level :: Users can order hosting package update - done
-		-User related variables for the custom menus (expl. {uid} for user id)
+		- User related variables for the custom menus (expl. {uid} for user id)
 
 DB Changes:	 New tables => "orders" and "orders_settings" => needed for the purchasing modul
 

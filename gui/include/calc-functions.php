@@ -88,7 +88,7 @@ function sizeit($bytes, $from = 'B') {
 }
 
 //
-// some password managment.
+// some password management.
 //
 
 /**

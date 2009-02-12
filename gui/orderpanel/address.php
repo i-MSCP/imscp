@@ -236,7 +236,7 @@ gen_address($tpl, $sql, $user_id, $plan_id);
 gen_page_message($tpl);
 
 $tpl->assign(
-    array('TR_ADRESS' => tr('Enter Address'),
+    array('TR_ADDRESS' => tr('Enter Address'),
         'TR_FIRSTNAME' => tr('First name'),
         'TR_LASTNAME' => tr('Last name'),
         'TR_COMPANY' => tr('Company'),
