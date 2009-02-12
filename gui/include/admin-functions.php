@@ -137,9 +137,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			$menu_link = get_menu_vars($rs->fields['menu_link']);
 			$menu_target = $rs->fields['menu_target'];
 
-			if ($menu_target === '') {
-				$menu_target = "";
-			} else {
+			if ($menu_target !== '') {
 				$menu_target = "target=\"" . $menu_target . "\"";
 			}
 
@@ -241,9 +239,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			$menu_link = get_menu_vars($rs->fields['menu_link']);
 			$menu_target = $rs->fields['menu_target'];
 
-			if ($menu_target === '') {
-				$menu_target = "";
-			} else {
+			if ($menu_target !== '') {
 				$menu_target = "target=\"" . $menu_target . "\"";
 			}
 

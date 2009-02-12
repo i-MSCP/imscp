@@ -468,9 +468,7 @@ SQL_QUERY;
 			$menu_target = $rs->fields['menu_target'];
 			$menu_link = str_replace('{ispcp_uname}', $_SESSION['user_logged'], $menu_link);
 
-			if ($menu_target === '') {
-				$menu_target = "";
-			} else {
+			if ($menu_target !== '') {
 				$menu_target = "target=\"" . $menu_target . "\"";
 			}
 
@@ -593,9 +591,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$menu_link = get_menu_vars($rs->fields['menu_link']);
 			$menu_target = $rs->fields['menu_target'];
 
-			if ($menu_target === '') {
-				$menu_target = "";
-			} else {
+			if ($menu_target !== '') {
 				$menu_target = "target=\"" . $menu_target . "\"";
 			}
 

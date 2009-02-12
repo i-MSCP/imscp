@@ -11,6 +11,7 @@ ispCP ω 1.0.0 Changelog
 		* removed javascript-tag in header of public sites like login and password tpls, they don't use it: less code + less HTTP requests -> less traffic -> less log-entries
 	- GUI:
 		* typos in some php files and some code cleanup
+		* removed useless if-clause-block in include/admin-functions.php and include/client-functions.php
 
 2009-02-09 Benedikt Heintel
 	- CONFIGS:
