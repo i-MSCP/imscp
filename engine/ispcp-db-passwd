@@ -61,7 +61,7 @@ sub get_user_pass {
 		}
 		$upass_check = read_password('Please Repeat Your New Database Password:');
 		if ($upass ne $upass_check) {
-			print STDERR ">>> Enterred passwords differ. Please try again !\n";
+			print STDERR ">>> Entered passwords differ. Please try again !\n";
 			return (1, '');
 			} else {
 			return (0, $upass);
@@ -69,7 +69,7 @@ sub get_user_pass {
 	} else {
 		$upass_current = read_password('Please Enter Your Current Password:');
 		if ($upass_current ne $check_with) {
-			print STDERR ">>> Enterred password does not match. Please try again !\n";
+			print STDERR ">>> Entered password does not match. Please try again !\n";
 			return (1, '');
 		}
 		$upass = read_password('Please Enter Your New Database Password:');
@@ -78,7 +78,7 @@ sub get_user_pass {
 		}
 		$upass_check = read_password('Please Repeat Your New Database Password:');
 		if ($upass ne $upass_check) {
-			print STDERR ">>> Enterred passwords differ. Please try again !\n";
+			print STDERR ">>> Entered passwords differ. Please try again !\n";
 			return (1, '');
 			} else {
 			return (0, $upass);
