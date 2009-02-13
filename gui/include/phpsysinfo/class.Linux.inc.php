@@ -48,7 +48,7 @@ class sysinfo {
 			}
 			$this->icon = isset($list[$distro['Distributor ID']]["Image"]) ? $list[$distro['Distributor ID']]["Image"] : $this->icon;
 			$this->distro = $distro['Description'];
-		} else {  // Fall back in case 'lsb_release' does not exist ;)
+		} else { // Fall back in case 'lsb_release' does not exist ;)
 			foreach ($list as $section => $distribution) {
 				if (!isset($distribution["Files"])) {
 					continue;

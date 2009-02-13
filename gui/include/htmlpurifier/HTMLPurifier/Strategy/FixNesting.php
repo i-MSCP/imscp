@@ -77,7 +77,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         
         // iterate through all start nodes. Determining the start node
         // is complicated so it has been omitted from the loop construct
-        for ($i = 0, $size = count($tokens) ; $i < $size; ) {
+        for ($i = 0, $size = count($tokens); $i < $size; ) {
             
             //################################################################//
             // Gather information on children
