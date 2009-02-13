@@ -52,11 +52,11 @@ function update_def_lang() {
 			$user_lang = $_POST['default_language'];
 
 			$query = <<<SQL_QUERY
-				select
+				SELECT
 					*
-				from
+				FROM
 					user_gui_props
-				where
+				WHERE
 					user_id = ?
 SQL_QUERY;
 
@@ -64,14 +64,14 @@ SQL_QUERY;
 
 			if ($rs->RecordCount() == 0) {
 				$query = <<<SQL_QUERY
-						insert into
+						INSERT INTO
 							user_gui_props
 							(
 								user_id,
 								lang,
 								layout
 							)
-						values
+						VALUES
 							(
 								?,
 								?,
@@ -82,11 +82,11 @@ SQL_QUERY;
 				$rs = exec_query($sql, $query, array($user_id, $user_lang, $theme));
 			} else {
 				$query = <<<SQL_QUERY
-					update
+					UPDATE
 						user_gui_props
-					set
+					SET
 						lang = ?
-					where
+					WHERE
 						user_id = ?
 SQL_QUERY;
 
@@ -147,12 +147,12 @@ function install_lang() {
 
 			if ($errors > 3) {
 				set_page_message(tr('Uploaded file is not a valid language file!'));
-				return ;
+				return;
 			}
 
 			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language']) || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $ab['ispcp_languageSetlocaleValue']) || !preg_match('/^[a-z0-9]+$/Di', $ab['ispcp_table'])) {
 				set_page_message(tr('Uploaded file does not contain the language information!'));
-				return ;
+				return;
 			}
 
 			$lang_table = 'lang_' . $ab['ispcp_table'];
@@ -214,34 +214,26 @@ function show_lang(&$tpl, &$sql) {
 		$dat = explode('_', $data);
 
 		$query = <<<SQL_QUERY
-				select
+				SELECT
 					count(msgid) as cnt
-				from
+				FROM
 					$tables[$i]
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array());
 
 		$query = <<<SQL_QUERY
-				select
+				SELECT
 					msgstr
-				from
+				FROM
 					$tables[$i]
-				where
+				WHERE
 					msgid = 'ispcp_language'
 SQL_QUERY;
 		$res = exec_query($sql, $query, array());
 
-		if ($res->RecordCount() == 0) {
-			$language_name = tr('Unknown');
-		} else {
-			$language_name = $res->fields['msgstr'];
-		}
+		$language_name = ($res->RecordCount() == 0) ? tr('Unknown') : $res->fields['msgstr'];
 
-		if ($row++ % 2 == 0) {
-			$tpl->assign('LANG_CLASS', 'content2');
-		} else {
-			$tpl->assign('LANG_CLASS', 'content');
-		}
+		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
 		if ($usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(

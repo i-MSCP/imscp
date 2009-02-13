@@ -76,9 +76,9 @@ SQL_QUERY;
 			'EMAIL'		=> empty($rs->fields['email'])?'':$rs->fields['email'],
 			'PHONE'		=> empty($rs->fields['phone'])?'':$rs->fields['phone'],
 			'FAX'		=> empty($rs->fields['fax'])?'':$rs->fields['fax'],
-			'VL_MALE'	=> (($rs -> fields['gender'] == 'M')? 'selected' : ''),
-			'VL_FEMALE'	=> (($rs -> fields['gender'] == 'F')? 'selected' : ''),
-			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
+			'VL_MALE'	=> (($rs -> fields['gender'] == 'M')? 'selected="selected"' : ''),
+			'VL_FEMALE'	=> (($rs -> fields['gender'] == 'F')? 'selected="selected"' : ''),
+			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : '')
 			)
 		);
 }

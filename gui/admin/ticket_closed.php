@@ -118,7 +118,7 @@ SQL_QUERY;
 				);
 		}
 
-		global $i ;
+		global $i;
 
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];

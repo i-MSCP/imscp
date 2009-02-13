@@ -166,11 +166,8 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($uniqkey));
 
 	if ($res->RecordCount() != 0)
-
 		return true;
-
 	else
-
 		return false;
 }
 

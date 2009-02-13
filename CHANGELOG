@@ -3,11 +3,14 @@ ispCP ω 1.0.0 Changelog
 
 2009-02-13 Thomas Häber
 	- GUI:
-		* code cleanup
+		* code cleanup / coding style (PHP + included SQL)
+		* optimized a lot of control structures (e.g. replaced some slow and hugh loops with internal php functions, or replaced hugh if-else structures with short ?: structure)
+		* some fixes (e.g. for more valid HTML output)
+		* fix typos in PHP comments
 	- ENGINE:
-		* typos
+		* typos in STDERR-output of perl db script
 	- THEMES:
-		* fix for more valid HTML (workaround for confusing screenwidth thing)
+		* fixes for more valid HTML (workaround for confusing screenwidth thing)
 
 2009-02-12 Daniel Andreca
 	- ENGINE:

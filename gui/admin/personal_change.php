@@ -46,7 +46,7 @@ gen_admin_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 function gen_admin_personal_data(&$tpl, &$sql, $user_id) {
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             `fname`,
             `lname`,
             `gender`,
@@ -59,9 +59,9 @@ function gen_admin_personal_data(&$tpl, &$sql, $user_id) {
             `email`,
             `phone`,
             `fax`
-        from
+        FROM
             `admin`
-        where
+        WHERE
             `admin_id` = ?
 SQL_QUERY;
 
@@ -80,9 +80,9 @@ SQL_QUERY;
 				'EMAIL' => empty($rs->fields['email'])?'':$rs->fields['email'],
 				'PHONE' => empty($rs->fields['phone'])?'':$rs->fields['phone'],
 				'FAX' => empty($rs->fields['fax'])?'':$rs->fields['fax'],
-				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected' : ''),
-				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
-				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : ''),
+				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected="selected"' : ''),
+				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected="selected"' : ''),
+				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : ''),
 			)
 		);
 }
@@ -102,9 +102,9 @@ function update_admin_personal_data(&$sql, $user_id) {
 	$fax = clean_input($_POST['fax']);
 
 	$query = <<<SQL_QUERY
-        update
+        UPDATE
             `admin`
-        set
+        SET
             `fname` = ?,
             `lname` = ?,
             `firm` = ?,
@@ -117,7 +117,7 @@ function update_admin_personal_data(&$sql, $user_id) {
             `phone` = ?,
             `fax` = ?,
             `gender` = ?
-        where
+        WHERE
             `admin_id` = ?
 SQL_QUERY;
 

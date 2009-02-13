@@ -42,15 +42,15 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-                select
-                    count(ticket_id) as cnt
-                from
+                SELECT
+                    COUNT(ticket_id) AS cnt
+                FROM
                     tickets
-                where
+                WHERE
                     (ticket_from = ? or ticket_to = ?)
-                  and
+                  AND
                     ticket_status != 0
-                  and
+                  AND
                     ticket_reply  = 0
 SQL_QUERY;
 
@@ -117,7 +117,7 @@ SQL_QUERY;
 				);
 		}
 
-		global $i ;
+		global $i;
 
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];
@@ -163,14 +163,14 @@ SQL_QUERY;
 
 function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 	$query = <<<SQL_QUERY
-		select
+		SELECT
 			ticket_from,
 			ticket_to,
 			ticket_status,
 			ticket_reply
-		from
+		FROM
 			tickets
-		where
+		WHERE
 			ticket_id = ?
 
 SQL_QUERY;

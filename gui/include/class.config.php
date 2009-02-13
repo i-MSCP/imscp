@@ -214,7 +214,8 @@ final class Config {
 		@$fd = fopen(self::$_file, 'r');
 		if (!$fd) {
 			return false;
-		} while (!feof($fd)) {
+		}
+		while (!feof($fd)) {
 			$buffer = fgets($fd, 4096);
 			// remove spaces
 			$buffer = ltrim($buffer);

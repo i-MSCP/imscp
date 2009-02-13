@@ -57,13 +57,13 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 	// count query
 	$count_query = <<<SQL_QUERY
-                select
-                    count(id) as cnt
-                from
+                SELECT
+                    COUNT(id) AS cnt
+                FROM
                     orders
-                where
+                WHERE
                     user_id = ?
-				and
+				AND
 					status != ?
 SQL_QUERY;
 	// lets count
@@ -122,30 +122,27 @@ SQL_QUERY;
 			$order_status = tr('New order');
 			// lets get hosting plan name
 			$planname_query = <<<SQL_QUERY
-        select
+        SELECT
             name
-		from
+		FROM
 	        hosting_plans
-        where
+        WHERE
             id = ?
 SQL_QUERY;
 			$rs_planname = exec_query($sql, $planname_query, array($plan_id));
 			$plan_name = $rs_planname->fields['name'];
 
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
+
 			$status = $rs->fields['status'];
 			if ($status === 'update') {
 				$customer_id = $rs->fields['customer_id'];
 				$cusrtomer_query = <<<SQL_QUERY
-			        select
+			        SELECT
             			*
-					from
+					FROM
 	        			admin
-			        where
+			        WHERE
             			admin_id = ?
 SQL_QUERY;
 				$rs_customer = exec_query($sql, $cusrtomer_query, array($customer_id));
@@ -169,7 +166,7 @@ SQL_QUERY;
 			$tpl->parse('ORDER', '.order');
 
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 	}
 }

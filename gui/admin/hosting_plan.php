@@ -104,6 +104,7 @@ function gen_hp_message () {
 		unset($_SESSION["hp_deleted_ordererror"]);
 	}
 } // End of gen_hp_message()
+
 // Extract and show data for hosting plans
 function gen_hp_table(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
@@ -148,17 +149,8 @@ SQL_QUERY;
 		$i = 1;
 
 		while (($data = $rs->FetchRow())) {
-			if ($i % 2 == 0) {
-				$tpl->assign(array('CLASS_TYPE_ROW' => 'content'));
-			} else {
-				$tpl->assign(array('CLASS_TYPE_ROW' => 'content2'));
-			}
-			$status = $data['status'];
-			if ($status == 1) {
-				$status = tr('Enabled');
-			} else {
-				$status = tr('Disabled');
-			}
+			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
+			$status = ($data['status'] == 1) ? tr('Enabled') : tr('Disabled');
 
 			$tpl->assign(
 					array(

@@ -99,7 +99,7 @@ function update_logo() {
                     break;
                 default:
                     set_page_message(tr('You can only upload images!'));
-                    return ;
+                    return;
                     break;
             }
 
@@ -108,7 +108,7 @@ function update_logo() {
             // Make sure it is really an image
             if (image_type_to_mime_type(exif_imagetype($fname)) != $file_type) {
                 set_page_message(tr('You can only upload images!'));
-                return ;
+                return;
             }
 
             // get the size of the image to prevent over large images

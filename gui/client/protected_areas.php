@@ -43,11 +43,11 @@ $tpl->assign(
 
 function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 	$query = <<<SQL_QUERY
-		select
+		SELECT
 			*
-		from
+		FROM
 			htaccess
-		where
+		WHERE
 			 dmn_id = ?
 SQL_QUERY;
 
@@ -59,11 +59,7 @@ SQL_QUERY;
 	} else {
 		$counter = 0;
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('CLASS', 'content');
-			} else {
-				$tpl->assign('CLASS', 'content2');
-			}
+			$tpl->assign('CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
 			$id = $rs->fields['id'];
 			$user_id = $rs->fields['user_id'];
@@ -81,7 +77,7 @@ SQL_QUERY;
 				);
 			$tpl->parse('DIR_ITEM', '.dir_item');
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 	}
 }

@@ -562,7 +562,7 @@ function rsl_full_domain_check ($data) {
 
 	$last = $res - 1;
 
-	for ($i = 0; $i < $last ; $i++) {
+	for ($i = 0; $i < $last; $i++) {
 		$token = chop($match[0][$i], ".");
 
 		if (!check_dn_rsl_token($token))
@@ -609,11 +609,7 @@ SQL_QUERY;
 		$ip_id = $data['ip_id'];
 
 		if (preg_match("/$ip_id;/", $reseller_ips) == 1) {
-			$selected = '';
-
-			if ($domain_ip === $ip_id) {
-				$selected = 'selected';
-			}
+			$selected = ($domain_ip === $ip_id) ? 'selected' : '';
 
 			$tpl->assign(
 				array('IP_NUM' => $data['ip_number'],
@@ -822,7 +818,7 @@ SQL_QUERY;
 	$dom_part_cnt = 0;
 	$error = 0;
 	// here starts a loop to check if the splitted domain is available for other resellers
-	for($i = 0; $i < count($split_domain) -1; $i++) {
+	for ($i = 0; $i < count($split_domain) -1; $i++) {
 		$dom_part_cnt = $dom_part_cnt + strlen($split_domain[$i]) + 1;
 		$idom = substr($domain_name, $dom_part_cnt);
 		// execute query the redefined queries for domains/accounts and aliases tables
@@ -830,7 +826,7 @@ SQL_QUERY;
 		$res3 = exec_query($sql, $query_alias, array($idom, $reseller_id));
 		// do we have available record. id yes => the variable error get value different 0
 		if ($res2->fields['cnt'] > 0 || $res3->fields['cnt'] > 0) {
-			$error ++;
+			$error++;
 		}
 	}
 	// if we have :
@@ -1143,11 +1139,7 @@ SQL_QUERY;
 				$language_name = $res->fields['msgstr'];
 			}
 
-			if ($matches[0] === $user_def_language) {
-				$selected = 'selected';
-			} else {
-				$selected = '';
-			}
+			$selected = ($matches[0] === $user_def_language) ? 'selected' : '';
 
 			array_push($languages, array($matches[0], $selected, $language_name));
 		}

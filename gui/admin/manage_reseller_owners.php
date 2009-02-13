@@ -63,17 +63,12 @@ SQL_QUERY;
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content2',
-						)
-					);
-			}
+
+			$tpl->assign(
+				array(
+					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$admin_id = $rs->fields['admin_id'];
 
@@ -113,12 +108,13 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	while (!$rs->EOF) {
-		$selected = '';
+		
 
-		if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
-			if (isset($_POST['dest_admin']) && $_POST['dest_admin'] == $rs->fields['admin_id']) {
-				$selected = 'selected';
-			}
+		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
+			&& (isset($_POST['dest_admin']) && $_POST['dest_admin'] == $rs->fields['admin_id'])) {
+			$selected = 'selected';
+		} else {
+			$selected = '';
 		}
 
 		$tpl->assign(

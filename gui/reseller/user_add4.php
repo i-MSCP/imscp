@@ -180,17 +180,12 @@ function gen_al_page(&$tpl, $reseller_id) {
 			$alias_name = decode_idna($rs->fields['alias_name']);
 			$alias_status = translate_dmn_status($rs->fields['alias_status']);
 
-			if ($i % 2 == 0) {
-				$page_cont = 'content';
-			} else {
-				$page_cont = 'content2';
-			}
+			$page_cont = ($i % 2 == 0) ? 'content' : 'content2';
 
 			$tpl->assign(
 				array('DOMAIN_ALIS' => $alias_name,
 					'STATUS' => $alias_status,
 					'CLASS' => $page_cont,
-
 					)
 				);
 

@@ -82,7 +82,7 @@ function check_query($exclude = array()) {
 		$message = "Your PHP version is older than 4.2.2!";
 		write_log($message);
 		system_message($message);
-		die('ERROR: Your PHP version is older than 4.2.2!');
+		die('ERROR: ' . $message);
 	}
 
 	if (!is_array($exclude)) {

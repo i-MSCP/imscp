@@ -65,12 +65,12 @@ function get_domain_trafic($from, $to, $domain_id)
     $sql = Database::getInstance();
     $reseller_id = $_SESSION['user_id'];
     $query = <<<SQL_QUERY
-        select
+        SELECT
           domain_id
-        from
+        FROM
           domain
-        where
-            domain_id = ? and domain_created_id = ?
+        WHERE
+            domain_id = ? AND domain_created_id = ?
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($domain_id, $reseller_id));
@@ -137,12 +137,12 @@ function generate_page (&$tpl, $domain_id) {
         $ltm = mktime(23, 59, 59, $month, $i, $year);
 
         $query = <<<SQL_QUERY
-            select
+            SELECT
                 dtraff_web,dtraff_ftp,dtraff_mail,dtraff_pop,dtraff_time
-            from
+            FROM
                 domain_traffic
-            where
-                domain_id = ? and dtraff_time >= ? and dtraff_time <= ?
+            WHERE
+                domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
 SQL_QUERY;
         $rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 
@@ -161,11 +161,7 @@ SQL_QUERY;
                     'POP3_TRAFFIC' => 0,
                     'ALL_TRAFFIC' => 0));
         } else {
-            if ($counter % 2 == 0) {
-                $tpl->assign('ITEM_CLASS', 'content');
-            } else {
-                $tpl->assign('ITEM_CLASS', 'content2');
-            }
+            $tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
             $sum_web += $web_trf;
             $sum_ftp += $ftp_trf;
@@ -179,7 +175,7 @@ SQL_QUERY;
                     'POP3_TRAFFIC' => sizeit($pop_trf),
                     'ALL_TRAFFIC' => sizeit($web_trf + $ftp_trf + $smtp_trf + $pop_trf)));
             $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
-            $counter ++;
+            $counter++;
         }
 
         $tpl->assign(array('MONTH' => $month,

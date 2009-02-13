@@ -47,7 +47,7 @@ $tpl->assign(
 
 function protect_area(&$tpl, &$sql, $dmn_id) {
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
-		return ;
+		return;
 	}
 
 	if (!isset($_POST['users']) && !isset($_POST['groups'])) {

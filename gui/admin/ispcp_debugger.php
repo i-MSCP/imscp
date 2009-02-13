@@ -55,11 +55,7 @@ function get_error_domains(&$sql, &$tpl) {
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(array('CONTENT' => 'content2'));
-			} else {
-				$tpl->assign(array('CONTENT' => 'content1'));
-			}
+			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content2' : 'content'));
 
 			$tpl->assign(
 					array(
@@ -92,11 +88,11 @@ function get_error_aliases(&$sql, &$tpl) {
 	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-        select
+        SELECT
             alias_name, alias_status, alias_id
-        from
+        FROM
             domain_aliasses
-        where
+        WHERE
             alias_status
         NOT IN
         	(?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -125,19 +121,11 @@ SQL_QUERY;
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content',
-							)
-					);
-			} else {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content2',
-							)
-					);
-			}
+			$tpl->assign(
+				array(
+					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$tpl->assign(
 					array(
@@ -151,7 +139,7 @@ SQL_QUERY;
 
 			$tpl->parse('ALIAS_LIST', '.alias_list');
 
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 	}
@@ -168,11 +156,11 @@ function get_error_subdomains(&$sql, &$tpl) {
 	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-      select
+      SELECT
           subdomain_name, subdomain_status, subdomain_id
-      from
+      FROM
           subdomain
-      where
+      WHERE
           subdomain_status
       NOT IN
         	(?, ?, ?, ?, ?, ?, ?, ?)
@@ -200,11 +188,7 @@ SQL_QUERY;
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(array('CONTENT' => 'content'));
-			} else {
-				$tpl->assign(array('CONTENT' => 'content2'));
-			}
+			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
 
 			$tpl->assign(
 					array(
@@ -218,7 +202,7 @@ SQL_QUERY;
 
 			$tpl->parse('SUBDOMAIN_LIST', '.subdomain_list');
 
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 	}
@@ -235,11 +219,11 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-      select
+      SELECT
           subdomain_alias_name, subdomain_alias_status, subdomain_alias_id
-      from
+      FROM
           subdomain_alias
-      where
+      WHERE
           subdomain_alias_status
       NOT IN
         	(?, ?, ?, ?, ?, ?, ?, ?)
@@ -267,11 +251,7 @@ SQL_QUERY;
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(array('CONTENT' => 'content'));
-			} else {
-				$tpl->assign(array('CONTENT' => 'content2'));
-			}
+			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
 
 			$tpl->assign(
 					array(
@@ -285,7 +265,7 @@ SQL_QUERY;
 
 			$tpl->parse('SUBDOMAIN_ALIAS_LIST', '.subdomain_alias_list');
 
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 	}
@@ -303,11 +283,11 @@ function get_error_mails(&$sql, &$tpl) {
 	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-        select
+        SELECT
             mail_acc, domain_id, mail_type, status, mail_id
-        from
+        FROM
             mail_users
-        where
+        WHERE
             status
         NOT IN
         	(?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -341,29 +321,29 @@ SQL_QUERY;
 
 			if ($rs->fields['mail_type'] == 'normal_mail' || $rs->fields['mail_type'] == 'normal_forward') {
 				$query = <<<SQL_QUERY
-            select
-                 domain_name as domain_name
-            from
-                  domain
-            where
-                  domain_id = ?
+            SELECT
+                domain_name AS domain_name
+            FROM
+                domain
+            WHERE
+                domain_id = ?
 SQL_QUERY;
 			} else if ($rs->fields['mail_type'] == 'subdom_mail' || $rs->fields['mail_type'] == 'subdom_forward') {
 				$query = <<<SQL_QUERY
-            select
-                subdomain_name as domain_name
-            from
+            SELECT
+                subdomain_name AS domain_name
+            FROM
                 subdomain
-            where
+            WHERE
                 subdomain_id = ?
 SQL_QUERY;
 			} else if ($rs->fields['mail_type'] == 'alias_mail' || $rs->fields['mail_type'] == 'alias_forward') {
 				$query = <<<SQL_QUERY
-            select
-                alias_name as domain_name
-            from
+            SELECT
+                alias_name AS domain_name
+            FROM
                 domain_aliasses
-            where
+            WHERE
                 alias_id  = ?
 SQL_QUERY;
 			} else {
@@ -374,19 +354,11 @@ SQL_QUERY;
 			$sr = exec_query($sql, $query, array($searched_id));
 			$domain_name = $sr->fields['domain_name'];
 
-			if ($i % 2 == 0) {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content',
-							)
-					);
-			} else {
-				$tpl->assign(
-						array(
-							'CONTENT' => 'content2',
-							)
-					);
-			}
+			$tpl->assign(
+				array(
+					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2',
+					)
+			);
 
 			$tpl->assign(
 					array(
@@ -400,7 +372,7 @@ SQL_QUERY;
 
 			$tpl->parse('MAIL_LIST', '.mail_list');
 
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 	}

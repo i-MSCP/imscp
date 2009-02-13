@@ -307,11 +307,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$als_ip = $alsip_d['ip_number'];
 		$als_ip_name = $alsip_d['ip_domain'];
 
-		if ($i % 2 == 0) {
-			$page_cont = 'content';
-		} else {
-			$page_cont = 'content2';
-		}
+		$page_cont = ($i % 2 == 0) ? 'content' : 'content2';
 
 		if ($als_status === Config::get('ITEM_OK_STATUS')) {
 			$delete_link = "alias_delete.php?del_id=" . $als_id;
@@ -335,9 +331,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		if (isset($_SESSION['search_common']) && $_SESSION['search_common'] === 'account_name') {
 			$domain_name_selected = "";
-			$account_name_selected = "selected";
+			$account_name_selected = "selected=\"selected\"";
 		} else {
-			$domain_name_selected = "selected";
+			$domain_name_selected = "selected=\"selected\"";
 			$account_name_selected = "";
 		}
 

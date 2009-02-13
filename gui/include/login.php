@@ -266,16 +266,10 @@ function change_user_interface($from_id, $to_id) {
 	}
 
         // we gonna kill all sessions and globals if user get back to admin level
-        if (isset($_SESSION['admin_name']))
         unset($_SESSION['admin_name']);
-
-        if (isset($_SESSION['admin_id']))
         unset($_SESSION['admin_id']);
 
-        if (isset($GLOBALS['admin_name']))
         unset($GLOBALS['admin_name']);
-
-        if (isset($GLOBALS['admin_id']))
         unset($GLOBALS['admin_id']);
         // no more sessions and globals to kill - they were always killed - rest in peace
 

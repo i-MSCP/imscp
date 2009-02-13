@@ -41,11 +41,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
     $user_lang = $_POST['def_language'];
 
     $query = <<<SQL_QUERY
-        update
+        UPDATE
             user_gui_props
-        set
+        SET
             lang = ?
-        where
+        WHERE
             user_id = ?
 SQL_QUERY;
 

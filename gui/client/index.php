@@ -301,7 +301,7 @@ list($sub_cnt,
     $sqld_acc_cnt,
     $sqlu_acc_cnt) = get_domain_running_props_cnt($sql, $dmn_id);
 
-$dtraff_pr = 0 ;
+$dtraff_pr = 0;
 $dmn_traff_usege = 0;
 $dmn_traff_limit = $dmn_traff_limit * 1024 * 1024;
 list($dtraff_pr, $dmn_traff_usege) = make_traff_usege($_SESSION['user_id']);

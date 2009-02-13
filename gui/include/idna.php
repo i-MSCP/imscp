@@ -389,7 +389,7 @@ class idna_convert
         $char     = $this->_initial_n;
 
         for ($enco_idx = ($delim_pos) ? ($delim_pos + 1) : 0; $enco_idx < $enco_len; ++$deco_len) {
-            for ($old_idx = $idx, $w = 1, $k = $this->_base; 1 ; $k += $this->_base) {
+            for ($old_idx = $idx, $w = 1, $k = $this->_base; 1; $k += $this->_base) {
                 $digit = $this->_decode_digit($encoded{$enco_idx++});
                 $idx += $digit * $w;
                 $t = ($k <= $bias) ? $this->_tmin :

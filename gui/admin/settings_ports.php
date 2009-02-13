@@ -172,11 +172,7 @@ SQL_QUERY;
 		set_page_message(tr('You have no custom service ports defined.'));
 	} else {
 		while (!$rs->EOF) {
-			if ($row++ % 2 == 0) {
-				$tpl->assign('CLASS', 'content');
-			} else {
-				$tpl->assign('CLASS', 'content2');
-			}
+			$tpl->assign('CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
 			list($port, $protocol, $name, $status, $custom) = explode(";", $rs->fields['value']);
 

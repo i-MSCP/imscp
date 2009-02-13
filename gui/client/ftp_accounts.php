@@ -68,11 +68,7 @@ SQL_QUERY;
 		reset($ftp_accs);
 
 		for ($i = 0; $i < count($ftp_accs); $i++) {
-			if ($i % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
 
 			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);
 

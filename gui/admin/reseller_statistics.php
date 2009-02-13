@@ -226,13 +226,10 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 		$disk_percent = 100;
 	}
 
-	if ($row % 2 == 0) {
-		$tpl->assign(
-			array('ITEM_CLASS' => 'content'));
-	} else {
-		$tpl->assign(
-			array('ITEM_CLASS' => 'content2'));
-	}
+	$tpl->assign(
+		array('ITEM_CLASS' => ($row % 2 == 0) ? 'content' : 'content2')
+	);
+
 	$tpl->assign(
 			array(
 				'RESELLER_NAME' => $reseller_name,

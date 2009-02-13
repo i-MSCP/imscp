@@ -89,11 +89,7 @@ SQL_QUERY;
 	} else {
 		$counter = 0;
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
 			list($sub_action, $sub_action_script) = gen_user_sub_action($rs->fields['subdomain_id'], $rs->fields['subdomain_status']);
 			$sbd_name = decode_idna($rs->fields['subdomain_name']);
@@ -112,11 +108,7 @@ SQL_QUERY;
 			$counter++;
 		}
 		while (!$rs2->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
 			list($sub_action, $sub_action_script) = gen_user_alssub_action($rs2->fields['subdomain_alias_id'], $rs2->fields['subdomain_alias_status']);
 			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
@@ -193,11 +185,8 @@ SQL_QUERY;
 	} else {
 		$counter = 0;
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
+
 			list($als_action, $als_action_script) = gen_user_als_action($rs->fields['alias_id'], $rs->fields['alias_status']);
 			list($als_forward, $alias_edit_link, $als_edit) = gen_user_als_forward($rs->fields['alias_id'], $rs->fields['alias_status'], $rs->fields['url_forward']);
 
@@ -217,7 +206,7 @@ SQL_QUERY;
 					);
 			$tpl->parse('ALS_ITEM', '.als_item');
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 
 		$tpl->parse('ALS_LIST', 'als_list');

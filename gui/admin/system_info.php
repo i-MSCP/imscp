@@ -69,17 +69,12 @@ function gen_mount_point(&$tpl) {
 	$mount_points = $sysinfo->filesystems();
 
 	while (list($number, $row) = each($mount_points)) {
-		if (($number + 1) % 2 == 0) {
-			$tpl->assign(
-				array('ITEM_CLASS' => 'content',
-					)
-				);
-		} else {
-			$tpl->assign(
-				array('ITEM_CLASS' => 'content2',
-					)
-				);
-		}
+		$tpl->assign(
+			array(
+				'ITEM_CLASS' => (($number + 1) % 2 == 0) ? 'content' : 'content2',
+			)
+		);
+
 		$tpl->assign(
 			array('MOUNT' => $row['mount'],
 				'TYPE' => $row['fstype'],

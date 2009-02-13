@@ -84,19 +84,11 @@ function get_servers_ips(&$tpl, &$sql, $rip_lst) {
 				)
 			);
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-						array(
-							'RSL_IP_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-						array(
-							'RSL_IP_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'RSL_IP_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$ip_id = $rs->fields['ip_id'];
 
@@ -422,7 +414,8 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
 	if ($res->RowCount() == 0) {
 		return false;
-	} while (!$res->EOF) {
+	}
+	while (!$res->EOF) {
 		$admin_id = $res->fields['admin_id'];
 
 		$query = "
@@ -793,9 +786,9 @@ $tpl->assign(
 		'CUSTOMER_ID' => $customer_id,
 		'FIRST_NAME' => $fname,
 		'LAST_NAME' => $lname,
-		'VL_MALE' => (($gender == 'M') ? 'selected' : ''),
-		'VL_FEMALE' => (($gender == 'F') ? 'selected' : ''),
-		'VL_UNKNOWN' => ((($gender == 'U') || (empty($gender))) ? 'selected' : ''),
+		'VL_MALE' => (($gender == 'M') ? 'selected="selected"' : ''),
+		'VL_FEMALE' => (($gender == 'F') ? 'selected="selected"' : ''),
+		'VL_UNKNOWN' => ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : ''),
 
 		'FIRM' => $firm,
 		'ZIP' => $zip,

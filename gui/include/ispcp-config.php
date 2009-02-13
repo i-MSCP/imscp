@@ -22,8 +22,7 @@ require_once(INCLUDEPATH . '/class.config.php');
 
 if (@file_exists('/usr/local/etc/ispcp/ispcp.conf')) {
 	$cfgfile = '/usr/local/etc/ispcp/ispcp.conf';
-}
-else {
+} else {
 	$cfgfile = '/etc/ispcp/ispcp.conf';
 }
 
@@ -50,7 +49,7 @@ function decrypt_db_password ($db_pass) {
 		// Create the IV and determine the keysize length
 		$iv = $ispcp_db_pass_iv;
 
-		// Intialize encryption
+		// Initialize encryption
 		@mcrypt_generic_init ($td, $key, $iv);
 		// Decrypt encrypted string
 		$decrypted = @mdecrypt_generic ($td, $text);
@@ -64,7 +63,7 @@ function decrypt_db_password ($db_pass) {
 	}
 }
 
-function encrypt_db_password($db_pass){
+function encrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 	
 	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
@@ -80,10 +79,9 @@ function encrypt_db_password($db_pass){
 
 		$pads=$block_size-$strlen % $block_size;
 
-		for ($i=0; $i<$pads;$i++){
-			$db_pass.=" ";
-		}
-		// Intialize encryption
+		$db_pass .= str_repeat(' ', $pads);
+
+		// Initialize encryption
 		@mcrypt_generic_init ($td, $key, $iv);
 		//Encrypt string
 		$encrypted = @mcrypt_generic ($td, $db_pass);

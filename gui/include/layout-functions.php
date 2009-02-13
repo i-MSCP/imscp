@@ -26,15 +26,15 @@ if (isset($_SESSION['user_id'])) {
 	}
 }
 
-// THEME_COLOR managment stuff.
+// THEME_COLOR management stuff.
 
 function get_user_gui_props(&$sql, $user_id) {
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             lang, layout
-        from
+        FROM
             user_gui_props
-        where
+        WHERE
             user_id = ?
 SQL_QUERY;
 
@@ -68,15 +68,7 @@ function gen_page_message(&$tpl) {
 function check_language_exist($lang_table) {
 	$sql = Database::getInstance();
 
-	$tables = $sql->MetaTables();
-	$nlang = count($tables);
-	for ($i = 0 ; $i < $nlang; $i++) {
-		$data = $tables[$i];
-		if ($data == $lang_table) {
-			return true;
-		}
-	}
-	return false;
+	return (in_array($lang_table, $sql->MetaTables()) == true) ? true : false;
 }
 
 function set_page_message($message) {
@@ -157,18 +149,14 @@ function gen_def_layout(&$tpl, $user_def_layout) {
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
 	foreach ($layouts as $layout) {
-		if ($layout === $user_def_layout) {
-			$selected = 'selected';
-		} else {
-			$selected = '';
-		}
+		$selected = ($layout === $user_def_layout) ? 'selected="selected"' : '';
 
 		$tpl->assign(
 			array('LAYOUT_VALUE' => $layout,
 				'LAYOUT_SELECTED' => $selected,
 				'LAYOUT_NAME' => $layout
-				)
-			);
+			)
+		);
 
 		$tpl->parse('DEF_LAYOUT', '.def_layout');
 	}

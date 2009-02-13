@@ -119,7 +119,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 
 					$tpl->parse('ALREADY_IN', '.already_in');
 					$grp_in = $group_id;
-					$added_in ++;
+					$added_in++;
 				}
 			}
 			if ($grp_in !== $group_id) {
@@ -130,7 +130,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 					)
 				);
 				$tpl->parse('GRP_AVLB', '.grp_avlb');
-				$not_added_in ++;
+				$not_added_in++;
 			}
 
 			$rs->MoveNext();

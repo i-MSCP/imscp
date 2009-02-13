@@ -240,19 +240,12 @@ function generate_domain_entry (&$tpl, $user_id, $row) {
 		$disk_percent = 100;
 	}
 
-	if ($row % 2 == 0) {
-		$tpl->assign(
-				array(
-					'ITEM_CLASS' => 'content',
-					)
-			);
-	} else {
-		$tpl->assign(
-				array(
-					'ITEM_CLASS' => 'content2',
-					)
-			);
-	}
+
+	$tpl->assign(
+		array(
+			'ITEM_CLASS' => ($row % 2 == 0) ? 'content' : 'content2',
+			)
+	);
 
 	$domain_name = decode_idna($domain_name);
 

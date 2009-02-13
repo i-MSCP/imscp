@@ -182,9 +182,9 @@ SQL_QUERY;
 						'STREET_2' => clean_input($_POST['street2']),
 						'PHONE' => clean_input($_POST['phone']),
 						'FAX' => clean_input($_POST['fax']),
-						'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected' : ''),
-						'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected' : ''),
-						'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected' : '')
+						'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
+						'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
+						'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : '')
 					)
 				);
 		}
@@ -205,7 +205,7 @@ SQL_QUERY;
 					'FAX' => '',
 					'VL_MALE' => '',
 					'VL_FEMALE' => '',
-					'VL_UNKNOWN' => 'selected'
+					'VL_UNKNOWN' => 'selected="selected"'
 				)
 			);
 	} // else

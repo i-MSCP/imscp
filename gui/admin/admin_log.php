@@ -124,19 +124,12 @@ SQL_QUERY;
 		$row = 1;
 
 		while (!$rs->EOF) {
-			if ($row++ % 2 == 0) {
-				$tpl->assign(
-						array(
-							'ROW_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-						array(
-							'ROW_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'ROW_CLASS' => ($row++ % 2 == 0) ? 'content' : 'content2',
+				)
+			);
+
 			$log_message = $rs->fields['log_message'];
 			$replaces = array(
 				'/[^a-zA-Z](delete)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',

@@ -44,9 +44,9 @@ $tpl->assign(
 
 function show_IPs(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             *
-        from
+        FROM
             server_ips
 SQL_QUERY;
 
@@ -60,11 +60,7 @@ SQL_QUERY;
 	}
 
 	while (!$rs->EOF) {
-		if ($row++ % 2 == 0) {
-			$tpl->assign('IP_CLASS', 'content');
-		} else {
-			$tpl->assign('IP_CLASS', 'content2');
-		}
+		$tpl->assign('IP_CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
 		$tpl->assign(
 				array(
@@ -82,8 +78,7 @@ SQL_QUERY;
 							)
 						);
 			$tpl->parse('IP_DELETE_SHOW', 'ip_delete_show');
-		}
-		else {
+		} else {
 			$tpl->assign(
 						array(
 							'IP_DELETE_SHOW' => '',
@@ -113,9 +108,9 @@ function add_ip(&$tpl, &$sql) {
 			$ip_number = trim($ip_number_1) . '.' . trim($ip_number_2) . '.' . trim($ip_number_3) . '.' . trim($ip_number_4);
 
 			$query = <<<SQL_QUERY
-                insert into server_ips
+                INSERT INTO server_ips
                     (ip_number, ip_domain, ip_alias)
-                values
+                VALUES
                     (?, ?, ?)
 SQL_QUERY;
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
@@ -201,11 +196,11 @@ function IP_exists() {
 	$ip_number = trim($ip_number_1) . '.' . trim($ip_number_2) . '.' . trim($ip_number_3) . '.' . trim($ip_number_4);
 
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             *
-        from
+        FROM
             server_ips
-        where
+        WHERE
             ip_number = ?
 SQL_QUERY;
 

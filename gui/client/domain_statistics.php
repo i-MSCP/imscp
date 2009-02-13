@@ -35,13 +35,13 @@ $tpl->define_dynamic('traff_item', 'traff_list');
 
 function gen_page_date(&$tpl, $month, $year) {
 	for ($i = 1; $i <= 12; $i++) {
-		$tpl->assign(array('MONTH_SELECTED' => ($i == $month) ? 'selected' : '',
+		$tpl->assign(array('MONTH_SELECTED' => ($i == $month) ? 'selected="selected"' : '',
 				'MONTH' => $i));
 		$tpl->parse('MONTH_ITEM', '.month_item');
 	}
 
 	for ($i = $year - 1; $i <= $year + 1; $i++) {
-		$tpl->assign(array('YEAR_SELECTED' => ($i == $year) ? 'selected' : '',
+		$tpl->assign(array('YEAR_SELECTED' => ($i == $year) ? 'selected="selected"' : '',
 				'YEAR' => $i));
 		$tpl->parse('YEAR_ITEM', '.year_item');
 	}
@@ -61,18 +61,18 @@ function get_domain_trafic($from, $to, $domain_id) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        select
-            IFNULL(sum(dtraff_web), 0) as web_dr,
-            IFNULL(sum(dtraff_ftp), 0) as ftp_dr,
-            IFNULL(sum(dtraff_mail), 0) as mail_dr,
-            IFNULL(sum(dtraff_pop), 0) as pop_dr
-        from
+        SELECT
+            IFNULL(sum(dtraff_web), 0) AS web_dr,
+            IFNULL(sum(dtraff_ftp), 0) AS ftp_dr,
+            IFNULL(sum(dtraff_mail), 0) AS mail_dr,
+            IFNULL(sum(dtraff_pop), 0) AS pop_dr
+        FROM
             domain_traffic
-        where
+        WHERE
             domain_id = ?
-          and
+          AND
             dtraff_time >= ?
-          and
+          AND
             dtraff_time <= ?
 SQL_QUERY;
 
@@ -93,11 +93,11 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 
 	$domain_admin_id = $_SESSION['user_id'];
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             domain_id
-        from
+        FROM
             domain
-        where
+        WHERE
             domain_admin_id = ?
 SQL_QUERY;
 
@@ -129,15 +129,15 @@ SQL_QUERY;
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 		$query = <<<SQL_QUERY
-        select
+        SELECT
             dtraff_web,dtraff_ftp,dtraff_mail,dtraff_pop,dtraff_time
-        from
+        FROM
             domain_traffic
-        where
+        WHERE
             domain_id = ?
-          and
+          AND
             dtraff_time >= ?
-          and
+          AND
             dtraff_time <= ?
 SQL_QUERY;
 
@@ -149,11 +149,8 @@ SQL_QUERY;
 			$pop_trf,
 			$smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
 
-		if ($counter % 2 == 0) {
-			$tpl->assign('ITEM_CLASS', 'content');
-		} else {
-			$tpl->assign('ITEM_CLASS', 'content2');
-		}
+		$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
+
 		$sum_web += $web_trf;
 		$sum_ftp += $ftp_trf;
 		$sum_mail += $smtp_trf;
@@ -181,7 +178,7 @@ SQL_QUERY;
 				'POP_ALL' => sizeit($sum_pop),
 				'SUM_ALL' => sizeit($sum_web + $sum_ftp + $sum_mail + $sum_pop)));
 		$tpl->parse('TRAFF_ITEM', '.traff_item');
-		$counter ++;
+		$counter++;
 	}
 
 	/*

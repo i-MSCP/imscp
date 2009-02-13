@@ -20,7 +20,7 @@
 
 function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             domain_id,
             domain_name,
             domain_gid,
@@ -41,9 +41,9 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
             domain_disk_usage,
             domain_php,
             domain_cgi
-        from
+        FROM
             domain
-        where
+        WHERE
             domain_admin_id = ?
 SQL_QUERY;
 

@@ -58,7 +58,7 @@ function get_server_trafic($from, $to) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             IFNULL(sum(bytes_in), 0) as sbin,
             IFNULL(sum(bytes_out), 0) as sbout,
             IFNULL(sum(bytes_mail_in), 0) as smbin,
@@ -67,9 +67,9 @@ function get_server_trafic($from, $to) {
             IFNULL(sum(bytes_pop_out), 0) as spbout,
             IFNULL(sum(bytes_web_in), 0) as swbin,
             IFNULL(sum(bytes_web_out), 0) as swbout
-        from
+        FROM
             server_traffic
-        where
+        WHERE
             traff_time > ? and traff_time < ?
 SQL_QUERY;
 
@@ -115,11 +115,11 @@ function generate_page (&$tpl) {
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
 		$query = <<<SQL_QUERY
-          select
-              count(bytes_in) as cnt
-          from
+          SELECT
+              COUNT(bytes_in) AS cnt
+          FROM
               server_traffic
-          where
+          WHERE
               traff_time > ? and traff_time < ?
 SQL_QUERY;
 
@@ -140,11 +140,7 @@ SQL_QUERY;
 
 			$has_data = true;
 
-			if ($i % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
 
 			$tpl->assign(array('DAY' => $i,
 					'YEAR' => $year,
@@ -174,7 +170,7 @@ SQL_QUERY;
 	} //for
 	if (!$has_data) {
 		$tpl->assign('DAY_LIST', '');
-	} ;
+	}
 
 	$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
 	$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);

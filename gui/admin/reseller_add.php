@@ -79,19 +79,11 @@ SQL_QUERY;
 				)
 			);
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array(
-						'RSL_IP_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array(
-						'RSL_IP_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'RSL_IP_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$ip_id = $rs->fields['ip_id'];
 
@@ -132,7 +124,7 @@ SQL_QUERY;
 }
 
 function add_reseller(&$tpl, &$sql) {
-	global $reseller_ips ;
+	global $reseller_ips;
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_reseller') {
 		if (check_user_data()) {
@@ -155,7 +147,7 @@ function add_reseller(&$tpl, &$sql) {
 			$street2 = clean_input($_POST['street2']);
 
 			$query = <<<SQL_QUERY
-                insert into admin
+                INSERT INTO admin
                   (
                     admin_name,
                     admin_pass,
@@ -175,7 +167,7 @@ function add_reseller(&$tpl, &$sql) {
                     street2,
                     gender
                   )
-                values
+                VALUES
                   (
                     ?,
                     ?,
@@ -223,14 +215,14 @@ SQL_QUERY;
 			$user_logo = 0;
 
 			$query = <<<SQL_QUERY
-                insert into user_gui_props
+                INSERT INTO user_gui_props
                   (
                     user_id,
                     lang,
                     layout,
                     logo
                   )
-                values
+                VALUES
                   (
                     ?, ?, ?, ?
                   )
@@ -257,7 +249,7 @@ SQL_QUERY;
 			$customer_id = clean_input($_POST['customer_id']);
 
 			$query = <<<SQL_QUERY
-                insert into reseller_props
+                INSERT INTO reseller_props
                   (
                     reseller_id, reseller_ips,
                     max_dmn_cnt, current_dmn_cnt,
@@ -271,7 +263,7 @@ SQL_QUERY;
                     max_disk_amnt, current_disk_amnt,
                     customer_id
                   )
-                values
+                VALUES
                   (
                     ?, ?,
                     ?, '0',
@@ -331,9 +323,9 @@ SQL_QUERY;
 					'STREET_2' => clean_input($_POST['street2']),
 					'PHONE' => clean_input($_POST['phone']),
 					'FAX' => clean_input($_POST['fax']),
-					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected' : ''),
-					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected' : ''),
-					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected' : ''),
+					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : ''),
 
 					'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
 					'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
@@ -366,7 +358,7 @@ SQL_QUERY;
 				'FAX' => '',
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
-				'VL_UNKNOWN' => 'selected',
+				'VL_UNKNOWN' => 'selected="selected"',
 
 				'MAX_DOMAIN_COUNT' => '',
 				'MAX_SUBDOMAIN_COUNT' => '',

@@ -371,17 +371,11 @@ function gen_admin_list(&$tpl, &$sql) {
 				)
 			);
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array('ADMIN_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('ADMIN_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'ADMIN_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$admin_created = $rs->fields['domain_created'];
 
@@ -463,17 +457,11 @@ function gen_reseller_list(&$tpl, &$sql) {
 				)
 			);
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			if ($rs->fields['created_by'] == '') {
 				$tpl->assign(
@@ -644,17 +632,12 @@ function gen_user_list(&$tpl, &$sql) {
 				)
 			);
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array('USR_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('USR_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'USR_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
+
 			// user status icon
 			$domain_created_id = $rs->fields['domain_created_id'];
 
@@ -1062,7 +1045,8 @@ function sub_records_count ($field, $table, $where, $value, $subfield, $subtable
 
 	if ($rs->RowCount() == 0) {
 		return $result;
-	} while (!$rs->EOF) {
+	}
+	while (!$rs->EOF) {
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {
@@ -1161,8 +1145,7 @@ function generate_user_traffic ($user_id) {
 
 function make_usage_vals ($current, $max) {
 	if ($max == 0) {
-		$max = 1024 * 1024 * 1024 * 1024; // 1 Tera Byte Limit ;) for Unlimited Value
-
+		$max = 1024 * 1024 * 1024 * 1024; // 1 TeraByte Limit ;) for Unlimited Value
 	}
 
 	$percent = 100 * $current / $max;
@@ -1193,7 +1176,8 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 
 	if ($rs->RowCount() == 0) {
 		return $result;
-	} while (!$rs->EOF) {
+	}
+	while (!$rs->EOF) {
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {

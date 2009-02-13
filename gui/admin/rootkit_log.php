@@ -109,7 +109,7 @@ foreach ($config_entries as $config_entry) {
 
 		$contents = preg_replace($search, $replace, $contents);
 	} else {
-		$contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or is empty", $filename) . "</font></b>" ;
+		$contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or is empty", $filename) . "</font></b>";
 	}
 
 	$tpl->assign(

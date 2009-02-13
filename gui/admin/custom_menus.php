@@ -33,7 +33,7 @@ SQL_QUERY;
 
 		set_page_message(tr('You have no custom menus.'));
 	} else {
-		global $i ;
+		global $i;
 
 		while (!$rs->EOF) {
 			$menu_id = $rs->fields['menu_id'];

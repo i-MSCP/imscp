@@ -58,20 +58,19 @@ SQL_QUERY;
 	$reseller_id = $rs->fields['admin_id'];
 
 	while (!$rs->EOF) {
-		$selected = '';
 
-		if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_src') {
-			if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id']) {
-				$selected = 'selected';
-
-				$reseller_id = $_POST['src_reseller'];
-			}
-		} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user') {
-			if (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id']) {
-				$selected = 'selected';
-				$reseller_id = $_POST['dst_reseller'];
-			}
+		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'change_src')
+			&& (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id'])) {
+			$selected = 'selected';
+			$reseller_id = $_POST['src_reseller'];
+		} else if ((isset($_POST['uaction']) && $_POST['uaction'] === 'move_user')
+			&& (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id'])) {
+			$selected = 'selected';
+			$reseller_id = $_POST['dst_reseller'];
+		} else {
+			$selected = '';
 		}
+		
 		$tpl->assign(
 			array(
 				'SRC_RSL_OPTION'	=> $rs->fields['admin_name'],
@@ -108,25 +107,18 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
-	$i = 0;
-
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User list is empty!'));
 
 		$tpl->assign('RESELLER_LIST', '');
 	} else {
+		$i = 0;
 		while (!$rs->EOF) {
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('RSL_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$admin_id = $rs->fields['admin_id'];
 
@@ -152,10 +144,8 @@ SQL_QUERY;
 }
 
 function update_reseller_user($sql) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user') {
-		if (check_user_data()) {
-			set_page_message(tr('User was moved'));
-		}
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user' && check_user_data()) {
+		set_page_message(tr('User was moved'));
 	}
 }
 
@@ -202,11 +192,11 @@ SQL_QUERY;
 	$dst_reseller = $_POST['dst_reseller'];
 
 	$query = <<<SQL_QUERY
-        select
+        SELECT
             reseller_ips
-        from
+        FROM
             reseller_props
-        where
+        WHERE
             reseller_id = ?
 SQL_QUERY;
 
@@ -260,11 +250,11 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 
 	for ($i = 0; $i < count($users_array) - 1; $i++) {
 		$query = <<<SQL_QUERY
-            select
+            SELECT
                 domain_id, domain_name
-            from
+            FROM
                 domain
-            where
+            WHERE
                 domain_admin_id = ?
 SQL_QUERY;
 
@@ -416,11 +406,11 @@ function check_ip_sets($dest, $users, &$err) {
 
 	for ($i = 0; $i < count($users_array); $i++) {
 		$query = <<<SQL_QUERY
-            select
+            SELECT
                 domain_name, domain_ip_id
-            from
+            FROM
                 domain
-            where
+            WHERE
                 domain_admin_id = ?
 SQL_QUERY;
 

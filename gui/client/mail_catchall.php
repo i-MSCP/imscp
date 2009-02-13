@@ -138,11 +138,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		$rs = execute_query($sql, $query);
 
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
 
 			$als_id = $rs->fields['alias_id'];
 
@@ -180,7 +176,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 
 		$query = "
@@ -199,11 +195,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		$rs = execute_query($sql, $query);
 
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
 
 			$als_id = $rs->fields['subdomain_alias_id'];
 
@@ -241,7 +233,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 
 		$query = "
@@ -260,11 +252,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		$rs = execute_query($sql, $query);
 
 		while (!$rs->EOF) {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
 
 			$als_id = $rs->fields['subdomain_id'];
 
@@ -300,7 +288,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->MoveNext();
-			$counter ++;
+			$counter++;
 		}
 }
 

@@ -121,7 +121,7 @@ function clean_input($input, $htmlencode = false) {
 /**
  * Passwort check
  *
- * Check if an password is valid
+ * Check if a password is valid
  *
  * @author		ispCP Team
  * @author		Benedikt Heintel
@@ -239,7 +239,7 @@ function full_domain_check($data) {
 
 	$last = $res - 1;
 
-	for ($i = 0; $i < $last ; $i++) {
+	for ($i = 0; $i < $last; $i++) {
 		$token = chop($match[0][$i], ".");
 
 		$res = check_dn_token($token);

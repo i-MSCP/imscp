@@ -295,19 +295,11 @@ function generate_users_list (&$tpl, $admin_id) {
 
 			$admin_name = decode_idna($rs->fields['domain_name']);
 
-			if ($i % 2 == 0) {
-				$tpl->assign(
-					array(
-						'CLASS_TYPE_ROW' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array(
-						'CLASS_TYPE_ROW' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$dom_created = $rs->fields['domain_created'];
 
@@ -333,7 +325,7 @@ function generate_users_list (&$tpl, $admin_id) {
 
 			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
 			$tpl->parse('USER_ENTRY', '.user_entry');
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 

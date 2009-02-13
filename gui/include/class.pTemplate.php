@@ -77,7 +77,7 @@ class pTemplate {
         $this->tpl_start_rexpr .= $this->tpl_start_tag;
         $this->tpl_start_rexpr .= $this->tpl_start_tag_name;
         $this->tpl_start_rexpr .= $this->tpl_name_rexpr;
-        $this->tpl_start_rexpr .= $this->tpl_end_tag . '/' ;
+        $this->tpl_start_rexpr .= $this->tpl_end_tag . '/';
 
         $this->tpl_end_rexpr = '/';
         $this->tpl_end_rexpr .= $this->tpl_start_tag;
@@ -314,11 +314,11 @@ class pTemplate {
                                     /* new value may also begin with '{' */
                                 } else {
                                     $start_from = $curl_b;
-                                    /* no soutable value found -> go forward */
+                                    /* no suitable value found -> go forward */
                                 }
                             } else {
                                 $start_from = $curl_b;
-                                /* go forward, we have {not varialbe} here :) */
+                                /* go forward, we have {no variable} here :) */
                             }
                         } else {
                             $start_from = $curl_e;
@@ -335,7 +335,7 @@ class pTemplate {
             return $data;
         } else {
             return $data;
-            /* tghere is nothing to substitute in $data */
+            /* there is nothing to substitute in $data */
         }
     }
 
@@ -376,7 +376,8 @@ class pTemplate {
     function find_origin($tname) {
         if (!@$this->dtpl_name[$tname]) {
             return false;
-        } while (!preg_match('/\.[Tt][Pp][Ll]/', $this->dtpl_name[$tname]) && !preg_match('/_no_file_/', $this->dtpl_name[$tname])
+        }
+		while (!preg_match('/\.[Tt][Pp][Ll]/', $this->dtpl_name[$tname]) && !preg_match('/_no_file_/', $this->dtpl_name[$tname])
             ) {
             $tname = $this->dtpl_name[$tname];
         }

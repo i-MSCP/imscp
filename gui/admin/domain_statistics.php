@@ -161,11 +161,8 @@ SQL_QUERY;
 					)
 				);
 		} else {
-			if ($counter % 2 == 0) {
-				$tpl->assign('ITEM_CLASS', 'content');
-			} else {
-				$tpl->assign('ITEM_CLASS', 'content2');
-			}
+			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
+
 			$sum_web += $web_trf;
 			$sum_ftp += $ftp_trf;
 			$sum_mail += $smtp_trf;
@@ -182,7 +179,7 @@ SQL_QUERY;
 				);
 			$tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
 
-			$counter ++;
+			$counter++;
 		}
 
 		$tpl->assign(

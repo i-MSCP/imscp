@@ -74,12 +74,12 @@ function generate_page (&$tpl) {
 	$ltm = mktime(23, 59, 59, $month, $day, $year);
 
 	$query = <<<SQL_QUERY
-        select
-            count(bytes_in) as cnt
-        from
+        SELECT
+            COUNT(bytes_in) AS cnt
+        FROM
             server_traffic
-        where
-            traff_time > ? and traff_time < ?
+        WHERE
+            traff_time > ? AND traff_time < ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftm, $ltm));
@@ -117,17 +117,11 @@ SQL_QUERY;
 			$other_in = $rs1->fields['sbin'] - ($rs1->fields['swbin'] + $rs1->fields['smbin'] + $rs1->fields['spbin']);
 			$other_out = $rs1->fields['sbout'] - ($rs1->fields['swbout'] + $rs1->fields['smbout'] + $rs1->fields['spbout']);
 
-			if ($row++ % 2 == 0) {
-				$tpl->assign(
-					array('ITEM_CLASS' => 'content',
-						)
-					);
-			} else {
-				$tpl->assign(
-					array('ITEM_CLASS' => 'content2',
-						)
-					);
-			}
+			$tpl->assign(
+				array(
+					'ITEM_CLASS' => ($row++ % 2 == 0) ? 'content' : 'content2',
+				)
+			);
 
 			$tpl->assign(
 					array(

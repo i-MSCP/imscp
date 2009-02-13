@@ -316,9 +316,9 @@ $tpl->assign(
 			'FAX' => $rs->fields['fax'],
 			'USERNAME' => $admin_name,
 			'EMAIL' => $rs->fields['email'],
-			'VL_MALE' => (($rs->fields['gender'] === 'M') ? 'selected' : ''),
-			'VL_FEMALE' => (($rs->fields['gender'] === 'F') ? 'selected' : ''),
-			'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected' : ''),
+			'VL_MALE' => (($rs->fields['gender'] === 'M') ? 'selected="selected"' : ''),
+			'VL_FEMALE' => (($rs->fields['gender'] === 'F') ? 'selected="selected"' : ''),
+			'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : ''),
 			'EDIT_ID' => $edit_id
 			)
 	);

@@ -168,17 +168,10 @@ SQL_QUERY;
 		$i = 1;
 
 		while ($data = $rs->FetchRow()) {
-			if ($i % 2 == 0) {
-				$tpl->assign(array('CLASS_TYPE_ROW' => 'content'));
-			} else {
-				$tpl->assign(array('CLASS_TYPE_ROW' => 'content2'));
-			}
-			$status = $data['status'];
-			if ($status == 1) {
-				$status = tr('Enabled');
-			} else {
-				$status = tr('Disabled');
-			}
+
+			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
+
+			$status = ($data['status'] == 1) ? tr('Enabled') : tr('Disabled');
 
 			$tpl->assign(array('PLAN_NOM' => $i++,
 					'PLAN_NAME' => stripslashes($data['name']),

@@ -42,9 +42,9 @@ function kill_session($sql) {
 	if (isset($_GET['kill']) && $_GET['kill'] !== '' && $_GET['kill'] !== $_SESSION['user_logged']) {
 		$admin_name = $_GET['kill'];
 		$query = <<<SQL_QUERY
-        delete from
+        DELETE FROM
             login
-        where
+        WHERE
             session_id = ?
 SQL_QUERY;
 
@@ -56,9 +56,9 @@ SQL_QUERY;
 
 function gen_user_sessions(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-                select
+                SELECT
                     *
-                from
+                FROM
                     login
 SQL_QUERY;
 
@@ -66,17 +66,11 @@ SQL_QUERY;
 
 	$row = 1;
 	while (!$rs->EOF) {
-		if ($row++ % 2 == 0) {
-			$tpl->assign(
-				array('ADMIN_CLASS' => 'content2',
-					)
-				);
-		} else {
-			$tpl->assign(
-				array('ADMIN_CLASS' => 'content',
-					)
-				);
-		}
+		$tpl->assign(
+			array(
+				'ADMIN_CLASS' => ($row++ % 2 == 0) ? 'content2' : 'content',
+			)
+		);
 
 		if ($rs->fields['user_name'] === NULL){
 			$tpl->assign(
