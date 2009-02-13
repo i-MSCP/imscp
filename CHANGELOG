@@ -6,6 +6,8 @@ ispCP ω 1.0.0 Changelog
 		* code cleanup
 	- ENGINE:
 		* typos
+	- THEMES:
+		* fix for more valid HTML (workaround for confusing screenwidth thing)
 
 2009-02-12 Daniel Andreca
 	- ENGINE:
