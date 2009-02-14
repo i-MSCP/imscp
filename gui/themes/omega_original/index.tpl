@@ -2,6 +2,8 @@
  <head>
   <title>{TR_MAIN_INDEX_PAGE_TITLE}</title>
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta name="robots" content="nofollow, noindex">
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
  </head>
@@ -28,7 +30,7 @@
          </tr>
          <tr>
           <td width="19">&nbsp;</td>
-          <td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" alt="" /></div></td>
+          <td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" alt=""></div></td>
           <td width="20">&nbsp;</td>
           <td colspan="4" width="320">&nbsp;</td>
          </tr>
@@ -65,7 +67,7 @@
          </tr>
          <tr>
           <td colspan="5">&nbsp;</td>
-          <td style="width:151px;text-align:right;"><img alt="lock" src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" style="vertical-align:middle" border="0" />&nbsp;&nbsp;<a class="login" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
+          <td style="width:151px;text-align:right;"><img alt="lock" src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" style="vertical-align:middle" border="0">&nbsp;&nbsp;<a class="login" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
 		  <td>&nbsp;</td>
          </tr>
 /* END SSL-Switch */ -->

@@ -39,7 +39,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td><form action="settings_lostpassword.php" method="post" name="frmlostpassword" ID="frmlostpassword">
+                      <td><form action="settings_lostpassword.php" method="post" name="frmlostpassword" id="frmlostpassword">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="40">&nbsp;</td>
@@ -94,14 +94,14 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" width="200">{TR_SUBJECT}</td>
-                              <td class="content" width="35%"><input name="subject1" type="text" class="textinput" ID="subject1" style="width:90%" value="{SUBJECT_VALUE1}"></td>
+                              <td class="content" width="35%"><input name="subject1" type="text" class="textinput" id="subject1" style="width:90%" value="{SUBJECT_VALUE1}"></td>
                               <td class="content" width="35%"><input type="text" name="subject2" value="{SUBJECT_VALUE2}" style="width:90%" class="textinput"></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" style="width:200px;vertical-align:top;">{TR_MESSAGE}</td>
-                              <td class="content" width="35%"><textarea name="message1" rows="20" cols="80" class="textinput2" ID="message1" style="width:90%">{MESSAGE_VALUE1}</textarea></td>
-                              <td class="content" width="35%"><textarea name="message2" rows="20" cols="80" class="textinput2" ID="message2" style="width:90%">{MESSAGE_VALUE2}</textarea></td>
+                              <td class="content" width="35%"><textarea name="message1" rows="20" cols="80" class="textinput2" id="message1" style="width:90%">{MESSAGE_VALUE1}</textarea></td>
+                              <td class="content" width="35%"><textarea name="message2" rows="20" cols="80" class="textinput2" id="message2" style="width:90%">{MESSAGE_VALUE2}</textarea></td>
                             </tr>
                             <tr>
                               <td width="20">&nbsp;</td>

@@ -2,6 +2,7 @@
  <head>
   <title>{TR_SYSTEM_MESSAGE_PAGE_TITLE}</title>
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+  <meta http-equiv="Content-Style-Type" content="text/css">
   <meta name="robots" content="nofollow, noindex">
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
  </head>

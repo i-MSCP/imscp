@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-14 Thomas Häber
+	- THEMES:
+		* fixes for more valid HTML (ID="..."->id="..."; css-/js-meta-tags for HTML attributes onload="javscript:.." and style="...", CSS-Background-fix)
+
 2009-02-13 Thomas Häber
 	- GUI:
 		* code cleanup / coding style (PHP + included SQL)
