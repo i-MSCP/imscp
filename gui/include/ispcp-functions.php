@@ -9,13 +9,13 @@
  * @author 		ispCP Team
  *
  * @license
- *	This program is free software; you can redistribute it and/or modify it under
- *	the terms of the MPL General Public License as published by the Free Software
- *	Foundation; either version 1.1 of the License, or (at your option) any later
- *	version.
- *	You should have received a copy of the MPL Mozilla Public License along with
- *	this program; if not, write to the Open Source Initiative (OSI)
- *	http://opensource.org | osi@opensource.org
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
  */
 
 function check_for_lock_file($wait_lock_timeout = 500000) {

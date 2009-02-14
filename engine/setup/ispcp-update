@@ -1101,6 +1101,11 @@ sub patch_ispcp_rc7 {
 	# Rebuild system configs:
 	print STDOUT "\tRebuilding system configurations...";
 
+	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp" && $main::ua{'update'} == RC7 ) {
+		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
+		return 1 if ($rs != 0);
+	}
+
 	# Gentoo need 01_awstats.conf rebuild
 	$rs = setup_httpd();
 	return 5 if ($rs != 0);

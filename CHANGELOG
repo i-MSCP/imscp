@@ -4,6 +4,9 @@ ispCP ω 1.0.0 Changelog
 2009-02-14 Daniel Andreca
 	- GUI:
 		* Alias subdomains are not rebuilded on domain property change
+		* Hosting plan not readed when a new user is added
+	- ENGINE:
+		* Updated update script
 
 2009-02-14 Thomas Häber
 	- THEMES:
