@@ -205,7 +205,7 @@ SQL_QUERY;
 					);
 				$tpl->parse('PORT_DELETE_SHOW', '');
 			} else {
-				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
+				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name" . $row . "\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
 				$tpl->assign(
 						array(
 							'NAME' => $name,

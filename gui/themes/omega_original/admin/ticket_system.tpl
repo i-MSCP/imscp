@@ -77,7 +77,7 @@ function action_delete(url, subject) {
 			</script>
               {SUBJECT}<script type="text/javascript">
 <!--
-							document.write('</a>');
+							document.write('<\/a>');
 //-->
 						</script></td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
