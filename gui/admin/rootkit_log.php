@@ -103,7 +103,7 @@ foreach ($config_entries as $config_entry) {
 		$search [] = '/not promisc/i';
 		$replace[] = '<span style="color:green">$0</span>';
 		$search [] = '/no suspect file(s|)/i';
-		$replace[] = '<spanstyle="color:green">$0</span>';
+		$replace[] = '<span style="color:green">$0</span>';
 		$search [] = '/([0-9]+) process(|es) hidden/i';
 		$replace[] = '<span style="color:#cfcf00">$0</span>';
 
