@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -1496,16 +1496,20 @@ msgstr "Web ent"
 msgid "Web out"
 msgstr "Web sai"
 
-msgid "Mail in"
-msgstr "Tráfego de e-mail<br>ent"
+#, fuzzy
+msgid "SMTP in"
+msgstr "Tráfego SMTP"
 
-msgid "Mail out"
-msgstr "Tráfego de e-mail<br>sai"
+#, fuzzy
+msgid "SMTP out"
+msgstr "Conta de FTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP ent"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP sai"
 
 msgid "Other in"
@@ -3982,6 +3986,12 @@ msgstr "Este cliente tem um domínio!<br>Remova-o do sistema primeiro!"
 
 msgid "User not terminated!"
 msgstr "Cliente não finalizado!"
+
+#~ msgid "Mail in"
+#~ msgstr "Tráfego de e-mail<br>ent"
+
+#~ msgid "Mail out"
+#~ msgstr "Tráfego de e-mail<br>sai"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

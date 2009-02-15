@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-12-17 17:46+0900\n"
 "Last-Translator: hiroron <hiroron@hiroron.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -1452,16 +1452,20 @@ msgstr "Webサーバ受信"
 msgid "Web out"
 msgstr "Webサーバ送信"
 
-msgid "Mail in"
-msgstr "メール イン"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "メール アウト"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP イン"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP アウト"
 
 msgid "Other in"
@@ -3989,6 +3993,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "ユーザは終わりません！"
+
+#~ msgid "Mail in"
+#~ msgstr "メール イン"
+
+#~ msgid "Mail out"
+#~ msgstr "メール アウト"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "サブドメインが登録されてないため、メールユーザーが追加できません"

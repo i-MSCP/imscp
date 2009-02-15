@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -1435,16 +1435,20 @@ msgstr "Web 接收"
 msgid "Web out"
 msgstr "Web 發送"
 
-msgid "Mail in"
-msgstr "Mail 接收"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail 發送"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP 接收"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP 發送"
 
 msgid "Other in"
@@ -3936,6 +3940,12 @@ msgstr "此使用者擁有網域記錄！<br>請先從系統中刪除網域！"
 
 msgid "User not terminated!"
 msgstr "使用者未終止！"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail 接收"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail 發送"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "子網域列表為空！你不能增加郵件帳號！"

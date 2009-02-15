@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -1463,16 +1463,20 @@ msgstr "Binnenkomende Web"
 msgid "Web out"
 msgstr "Web uit"
 
-msgid "Mail in"
-msgstr "Binnenkomende Mail"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail uit"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Binnekomende Pop/IMAP"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP uit"
 
 msgid "Other in"
@@ -4016,6 +4020,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Gebruiker niet beeindigd!"
+
+#~ msgid "Mail in"
+#~ msgstr "Binnenkomende Mail"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail uit"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Er zijn geen subdomeinen. U kan geen mail accounts toevoegen"

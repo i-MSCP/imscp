@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -1465,16 +1465,20 @@ msgstr "Intrari Web"
 msgid "Web out"
 msgstr "Iesiri Web"
 
-msgid "Mail in"
-msgstr "Intrari Mail"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Iesiri Mail"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP intrari"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP iesiri"
 
 msgid "Other in"
@@ -4007,3 +4011,9 @@ msgstr "Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
 
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
+
+#~ msgid "Mail in"
+#~ msgstr "Intrari Mail"
+
+#~ msgid "Mail out"
+#~ msgstr "Iesiri Mail"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-08-01 13:00+0100\n"
 "Last-Translator: Ergin �zdemir <ergin@ozdemir.se>\n"
 "Language-Team: Svenska <en_GB@li.org>\n"
@@ -1452,16 +1452,20 @@ msgstr "Webb inkommande"
 msgid "Web out"
 msgstr "webb utg�ende"
 
-msgid "Mail in"
-msgstr "Mail inkommande"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail utg�ende"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP inkommande"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP utg�ende"
 
 msgid "Other in"
@@ -3863,6 +3867,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+#~ msgid "Mail in"
+#~ msgstr "Mail inkommande"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail utg�ende"
 
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Felaktig l�senord i l�ngd eller syntax"

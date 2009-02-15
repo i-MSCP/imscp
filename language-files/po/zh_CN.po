@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -1436,16 +1436,20 @@ msgstr "Web 接收"
 msgid "Web out"
 msgstr "Web 发送"
 
-msgid "Mail in"
-msgstr "Mail 接收"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail 发送"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP 接收"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP 发送"
 
 msgid "Other in"
@@ -3938,6 +3942,12 @@ msgstr "此用户拥有域名记录！<br>首先从系统中删除域！"
 
 msgid "User not terminated!"
 msgstr "用户未到期！"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail 接收"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail 发送"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "子域名列表为空！您不能添加邮件账号！"

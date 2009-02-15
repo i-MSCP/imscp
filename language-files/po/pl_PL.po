@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
 "Last-Translator: Leszek Taczkowski <leszek.t@simplusnet.pl>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -1459,16 +1459,20 @@ msgstr "WWW - przychodzące"
 msgid "Web out"
 msgstr "WWW - wychodzące"
 
-msgid "Mail in"
-msgstr "Poczta przychodząca"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Poczta wychodząca"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP przychodząca"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP wychodząca"
 
 msgid "Other in"
@@ -3999,6 +4003,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Użytkownik nie usunięty!"
+
+#~ msgid "Mail in"
+#~ msgstr "Poczta przychodząca"
+
+#~ msgid "Mail out"
+#~ msgstr "Poczta wychodząca"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Lista subdomen jest pusta! Nie możesz dodać kont pocztowych!"

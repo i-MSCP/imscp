@@ -1,16 +1,17 @@
-﻿# ispCP Omega Turkish Language File
+# ispCP Omega Turkish Language File
 # ispCP Omega Türkçe Dil Dosyası
 # Copyright (C) 2008 ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 # Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
 # Seviye Kaloğlu<seviye@gmail.com>, 06/08/2008, eksik kısımları (%50)tercüme ve düzenleme
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -1096,7 +1097,8 @@ msgid "Email Updated"
 msgstr "Eposta güncellendi"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
+msgstr ""
+"Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
 
 msgid "User was disabled"
 msgstr "Kullanıcı devre dışı bırakıldı"
@@ -1455,16 +1457,20 @@ msgstr "Web gelen"
 msgid "Web out"
 msgstr "Web giden"
 
-msgid "Mail in"
-msgstr "Gelen posta"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Giden posta"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP gelen"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP giden"
 
 msgid "Other in"
@@ -2876,7 +2882,8 @@ msgid "Too user long password!"
 msgstr "Kullanıcı şifresi çok uzun!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr "SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
+msgstr ""
+"SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
 
 msgid "User name too long!"
 msgstr "Kullanıcı adı çok uzun!"
@@ -3396,10 +3403,14 @@ msgstr "Sistem bakımda! Sadece yöneticiler giriş yapabilir."
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
-msgstr "%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
+msgstr ""
+"%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
+"ediliyor..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
+msgstr ""
+"Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
+"ediliyor..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3983,6 +3994,12 @@ msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden silini
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
+
+#~ msgid "Mail in"
+#~ msgstr "Gelen posta"
+
+#~ msgid "Mail out"
+#~ msgstr "Giden posta"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Subdomain listesi boş! Oraya posta hesabı ekleyemezsiniz!"

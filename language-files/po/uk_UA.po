@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -1496,16 +1496,20 @@ msgstr ""
 msgid "Web out"
 msgstr ""
 
-msgid "Mail in"
-msgstr "Пошта в"
+#, fuzzy
+msgid "SMTP in"
+msgstr "Трафік SMTP"
 
-msgid "Mail out"
-msgstr "Пошта з"
+#, fuzzy
+msgid "SMTP out"
+msgstr "Користувач FTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP in"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP out"
 
 msgid "Other in"
@@ -3991,6 +3995,12 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
+
+#~ msgid "Mail in"
+#~ msgstr "Пошта в"
+
+#~ msgid "Mail out"
+#~ msgstr "Пошта з"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"

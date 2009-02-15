@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -1455,16 +1455,20 @@ msgstr "Web inn"
 msgid "Web out"
 msgstr "Web ut"
 
-msgid "Mail in"
-msgstr "Mail inn"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail ut"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP inn"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP ut"
 
 msgid "Other in"
@@ -3977,6 +3981,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Bruker ikke avsluttet!"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail inn"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail ut"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Underdomenelisten er tom! Du kan ikke legge til mail kontoer!"

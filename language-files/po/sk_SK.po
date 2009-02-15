@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1522,16 +1522,20 @@ msgstr "Web prichádzajúce"
 msgid "Web out"
 msgstr "Web odchádzajúca"
 
-msgid "Mail in"
-msgstr "Mail prichádzajúce"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail odchádzajúce"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP3/IMAP prichádzajúce"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP3/IMAP odchádzajúce"
 
 msgid "Other in"
@@ -4066,6 +4070,12 @@ msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo 
 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail prichádzajúce"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail odchádzajúce"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Zoznam sub-domén je prázdny! Tu nemôžete pridať e-mailové konto!"
