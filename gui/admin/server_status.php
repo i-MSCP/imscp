@@ -150,7 +150,7 @@ SQL_QUERY;
 	while (!$rs->EOF) {
 		list($port, $protocol, $name, $status, $custom) = explode(";", $rs->fields['value']);
 		if ($status) {
-			$ispcp_status->AddService('localhost', (int)$port, $name, $protocol);
+			$ispcp_status->AddService(Config::get('BASE_SERVER_IP'), (int)$port, $name, $protocol);
 		}
 
 		$rs->MoveNext();

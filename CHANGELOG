@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-15 Daniel Andreca
+	- GUI:
+		* Fixed #1665: Form and td/table tags are mixed-up the wrong way in admin/reseller_edit.tpl
+		* Fixed #1664: ServerStatus running SSHD shows DOWN
+
 2009-02-15 Benedikt Heintel
 	- GUI:
 		* Fixed #1662: change "mail" to "SMTP" in statistics
