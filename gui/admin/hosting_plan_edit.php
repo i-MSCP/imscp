@@ -164,7 +164,7 @@ SQL_QUERY;
 	$readonly = '';
 	$disabled = '';
 	$edit_hp = tr('Edit hosting plan');
-	// $tpl -> parse('FORM', 'page');
+	// $tpl->parse('FORM', 'page');
 	if ($res->RowCount() !== 1) { // Error
 		header('Location: hosting_plan.php');
 		die();

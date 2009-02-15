@@ -41,7 +41,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($id, $dmn_id));
-	$status = $rs -> fields['status'];
+	$status = $rs->fields['status'];
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	if ($status !== $ok_status) {
 		set_page_message(tr('Protected area status should be OK if you want to delete it!'));

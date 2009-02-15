@@ -433,7 +433,7 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($user_id));
 
 	if ($res->RowCount() == 0 || $res->RowCount() > 1) {
-		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$res -> RowCount()."<");
+		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$res->RowCount()."<");
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
 		$data = $res->FetchRow();
@@ -698,11 +698,11 @@ function check_ruser_data (&$tpl, $NoPass) {
 		} else if ($inpass_re !== $inpass) {
 			$user_add_error = tr("Passwords don't match!");
 		} else if (!chk_password($inpass)) {
-			if(Config::get('PASSWD_STRONG')){
-        $user_add_error = sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS'));
-      } else {
-        $user_add_error = sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
-      }
+			if (Config::get('PASSWD_STRONG')) {
+				$user_add_error = sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS'));
+			} else {
+				$user_add_error = sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS'));
+			}
 		}
 	}
 
@@ -711,17 +711,15 @@ function check_ruser_data (&$tpl, $NoPass) {
 	}
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
-	else if(!ispcp_limit_check($customer_id)){
-
+	  else if (!ispcp_limit_check($customer_id)) {
 		$user_add_error = tr('Incorrect customer ID syntax!');
-	}
-	else if(!chk_username($first_name, 40)){
+	} else if(!chk_username($first_name, 40)) {
 
 		$user_add_error = tr('Incorrect first name length or syntax!');
-	}else if(!chk_username($last_name, 40)){
+	} else if(!chk_username($last_name, 40)) {
 
 		$user_add_error = tr('Incorrect second name length or syntax!');
-	}else if(!ispcp_limit_check($zip)){
+	} else if(!ispcp_limit_check($zip)) {
 
 		$user_add_error = tr('Incorrect post code length or syntax!');
 	} */

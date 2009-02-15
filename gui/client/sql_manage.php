@@ -68,7 +68,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 		while (!$rs->EOF) {
 			$count++;
 			$user_id = $rs->fields['sqlu_id'];
-			$user_mysql = $rs -> fields['sqlu_name'];
+			$user_mysql = $rs->fields['sqlu_name'];
 			$tpl->assign(
 				array(
 					'DB_USER'	=> $user_mysql,

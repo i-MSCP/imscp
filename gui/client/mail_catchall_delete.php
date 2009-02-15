@@ -40,7 +40,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
   $rs = exec_query($sql, $query, array($dmn_id, $mail_id));
 
-  if ($rs -> RecordCount() == 0) {
+  if ($rs->RecordCount() == 0) {
     user_goto('mail_catchall.php');
   }
 

@@ -73,7 +73,7 @@ $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
 	add_domain_alias($sql, $err_txt);
 } else {
-// Init fileds
+// Init fields
 	init_empty_data();
 	$tpl-> assign("PAGE_MESSAGE", "");
 }
@@ -136,7 +136,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	} else {
 		$forward = 'no';
 	}
-	$tpl -> assign(
+	$tpl->assign(
 				array(
 						'DOMAIN'	=> $alias_name,
 						'MP'		=> $mount_point,
@@ -165,7 +165,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	";
 
 	$rs = exec_query($sql, $query, array($cr_user_id));
-	$domain_ip = $rs -> fields['domain_ip_id'];
+	$domain_ip = $rs->fields['domain_ip_id'];
 
 	$alias_name = encode_idna($alias_name);
 	$mount_point = array_encode_idna($mount_point, true);
@@ -251,12 +251,12 @@ function gen_page_msg(&$tpl, $erro_txt) {
 
 	if ($erro_txt != '_off_') {
 
-	 $tpl -> assign('MESSAGE', $erro_txt);
-		$tpl -> parse('PAGE_MESSAGE', 'page_message');
+	 $tpl->assign('MESSAGE', $erro_txt);
+		$tpl->parse('PAGE_MESSAGE', 'page_message');
 
 	} else {
 
-	 $tpl -> assign('PAGE_MESSAGE', '');
+	 $tpl->assign('PAGE_MESSAGE', '');
 	}
 }//End of gen_page_msg()
 

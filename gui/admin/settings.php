@@ -186,7 +186,7 @@ if (Config::get('CHECK_FOR_UPDATES')) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
 }
 
-switch(Config::get('LOG_LEVEL')){
+switch (Config::get('LOG_LEVEL')) {
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');

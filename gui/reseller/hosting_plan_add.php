@@ -257,13 +257,13 @@ function check_data_correction(&$tpl) {
 		return true;
 	} else {
 		set_page_message($ahp_error);
-		// $tpl -> assign('MESSAGE', $ahp_error);
+		// $tpl->assign('MESSAGE', $ahp_error);
 		return false;
 	}
 } // End of check_data_correction()
 
 // Add new host plan to DB
-function save_data_to_db(&$tpl, $admin_id){
+function save_data_to_db(&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -277,7 +277,7 @@ function save_data_to_db(&$tpl, $admin_id){
 
 	if ($res->RowCount() == 1) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
-		// $tpl -> parse('AHP_MESSAGE', 'ahp_message');
+		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {
 		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
 		// this id is just for fake and is not used in reseller_limits_check.

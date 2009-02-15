@@ -13,25 +13,22 @@
 	var wdname    = 'Wrong domain name !';
 	var mpointError = 'Please write mount point !';
 
-	function checkForm(){
+	function checkForm() {
             var dname  = document.forms[0].elements['ndomain_name'].value;
             var dmount = document.forms[0].elements['ndomain_mpoint'].value;
             var dd = new String(dmount);
             if (dname == "" || dmount == "") {
                 alert(emptyData);
-            }
-            else if (dname.indexOf('.') == -1) {
+            } else if (dname.indexOf('.') == -1) {
                 alert(wdname);
-            }
-            else if (dd.length < 2){
+            } else if (dd.length < 2) {
                 alert(mpointError);
-            }
-            else {
+            } else {
                 document.forms[0].submit();
             }
     }
 
-	function makeUser(){
+	function makeUser() {
 		var dname  = document.forms[0].elements['ndomain_name'].value;
 		dname = dname.toLowerCase();
 		document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;

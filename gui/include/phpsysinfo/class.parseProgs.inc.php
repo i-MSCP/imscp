@@ -31,13 +31,13 @@ class Parser {
 		
 		if ( ( $strBuff = execute_program( "lspci", "", $this->debug ) ) != "ERROR" ) {
 			$arrLines = split( "\n", $strBuff );
-			foreach( $arrLines as $strLine ) {
+			foreach ($arrLines as $strLine) {
 				list( $strAddr, $strName) = explode( ' ', trim( $strLine ), 2 );
 				$strName = preg_replace( '/\(.*\)/', '', $strName);
 				$arrResults[] = $strName;
 			}
 		}
-		if( empty( $arrResults ) ) {
+		if ( empty( $arrResults ) ) {
 			return false;
 		} else {
 			asort( $arrResults );
@@ -50,13 +50,13 @@ class Parser {
 		$arrResults = array();
 		$intS = 0;
 		
-		if( ( $strBuff = execute_program( "pciconf", "-lv", $this->debug ) ) != "ERROR" ) {
+		if (( $strBuff = execute_program( "pciconf", "-lv", $this->debug ) ) != "ERROR") {
 			$arrLines = explode( "\n", $strBuff );
-			foreach( $arrLines as $strLine ) {
-				if( preg_match( "/(.*) = '(.*)'/", $strLine, $arrParts ) ) {
+			foreach ($arrLines as $strLine) {
+				if (preg_match( "/(.*) = '(.*)'/", $strLine, $arrParts)) {
 					if( trim( $arrParts[1] ) == "vendor" ) {
 						$arrResults[$intS] = trim( $arrParts[2] );
-					} elseif( trim( $arrParts[1]) == "device" ) {
+					} elseif ( trim( $arrParts[1]) == "device" ) {
 						$arrResults[$intS] .= " - " . trim( $arrParts[2] );
 						$intS++;
 					}
@@ -90,7 +90,7 @@ class Parser {
 		$mount = preg_split("/\n/", $mount, -1, PREG_SPLIT_NO_EMPTY);
 		sort($mount);
 		
-		foreach( $df as $df_line) {
+		foreach ($df as $df_line) {
 			$df_buf1  = preg_split("/(\%\s)/", $df_line, 2);
 			if( count($df_buf1) != 2) {
 				continue;
@@ -107,7 +107,7 @@ class Parser {
 				}
 				$df_buf[0] = trim( str_replace("\$", "\\$", $df_buf[0] ) );
 				$current = 0;
-				foreach( $mount as $mount_line ) {
+				foreach ($mount as $mount_line) {
 					if ( preg_match("#" . $df_buf[0] . " on " . $df_buf[5] . " type (.*) \((.*)\)#", $mount_line, $mount_buf) ) {
 						$mount_buf[1] .= "," . $mount_buf[2];
 					} elseif ( !preg_match("#" . $df_buf[0] . "(.*) on " . $df_buf[5] . " \((.*)\)#", $mount_line, $mount_buf) ) {

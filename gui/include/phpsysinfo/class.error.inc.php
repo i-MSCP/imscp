@@ -85,7 +85,7 @@ class Error {
 		$strHTMLfoot = "</table>\n";
 
 		if( $this->errors > 0 ) {
-			foreach( $this->arrErrorList as $arrLine ) {
+			foreach ( $this->arrErrorList as $arrLine ) {
 				if( $arrLine['command'] == "WARN" ) {
 					$strWARNString .= "<font size=\"-1\"><b>WARNING: " . str_replace( "\n", "<br>", htmlspecialchars( $arrLine['message'] ) ) . "</b></font><br>\n";
 				} else {

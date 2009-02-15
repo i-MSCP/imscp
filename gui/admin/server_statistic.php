@@ -125,7 +125,7 @@ SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($ftm, $ltm));
 		$has_data = false;
-		// if ($rs -> fields['cnt'] > 0) {
+		// if ($rs->fields['cnt'] > 0) {
 		if ($rs->RecordCount() > 0) {
 			list($web_in,
 				$web_out,

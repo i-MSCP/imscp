@@ -39,11 +39,11 @@ class sysinfo {
 		$distro_info = execute_program('lsb_release','-a 2> /dev/null', false);  // We have the '2> /dev/null' because Ubuntu gives an error on this command which causes the distro to be unknown
 		if ( $distro_info != 'ERROR') {
 			$distro_tmp = split("\n",$distro_info);
-			foreach( $distro_tmp as $info ) {
+			foreach ($distro_tmp as $info) {
 				$info_tmp = split(':', $info, 2);
 				$distro[ $info_tmp[0] ] = trim($info_tmp[1]);
 			}
-			if( !isset( $list[$distro['Distributor ID']] ) ){
+			if( !isset($list[$distro['Distributor ID']]) ) {
 				return;
 			}
 			$this->icon = isset($list[$distro['Distributor ID']]["Image"]) ? $list[$distro['Distributor ID']]["Image"] : $this->icon;
@@ -169,7 +169,7 @@ class sysinfo {
 			$results = array('cpus' => 0, 'bogomips' => 0);
 			$ar_buf = array();
 
-			foreach( $bufe as $buf ) {
+			foreach ($bufe as $buf) {
 				$arrBuff = preg_split('/\s+:\s+/', trim($buf));
 				if( count( $arrBuff ) == 2 ) {
 					$key = $arrBuff[0];
@@ -255,7 +255,7 @@ class sysinfo {
 
 			// XScale detection code
 			if ( $results['cpus'] == 0 ) {
-				foreach( $bufe as $buf ) {
+				foreach ($bufe as $buf) {
 					$fields = preg_split('/\s*:\s*/', trim($buf), 2);
 					if (sizeof($fields) == 2) {
 						list($key, $value) = $fields;
@@ -304,7 +304,7 @@ class sysinfo {
 			$strBuf = rfts( '/proc/pci', 0, 4096, false );
 			if( $strBuf != "ERROR" ) {
 				$arrBuf = explode( "\n", $strBuf );
-				foreach( $arrBuf as $strLine ) {
+				foreach ($arrBuf as $strLine) {
 					if( preg_match( '/Bus/', $strLine ) ) {
 						$booDevice = true;
 						continue;
@@ -327,7 +327,7 @@ class sysinfo {
     $results = array();
     $bufd = gdc( '/proc/ide', false );
 
-    foreach( $bufd as $file ) {
+    foreach ($bufd as $file) {
       if (preg_match('/^hd/', $file)) {
         $results[$file] = array();
 	$buf = rfts("/proc/ide/" . $file . "/media", 1 );
@@ -351,7 +351,7 @@ class sysinfo {
 	}
 
 	$buf = rfts( "/proc/ide/" . $file . "/model", 1 );
-        if ( $buf != "ERROR" ) {
+        if ($buf != "ERROR") {
           $results[$file]['model'] = trim( $buf );
           if (preg_match('/WDC/', $results[$file]['model'])) {
             $results[$file]['manufacture'] = 'Western Digital';
@@ -386,7 +386,7 @@ class sysinfo {
     }
     if ( $bufr != "ERROR" ) {
       $bufe = explode("\n", $bufr);
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/Vendor/', $buf)) {
           preg_match('/Vendor: (.*) Model: (.*) Rev: (.*)/i', $buf, $dev);
           list($key, $value) = split(': ', $buf, 2);
@@ -417,7 +417,7 @@ class sysinfo {
 	$bufr = rfts( '/proc/bus/usb/devices', 0, 4096, false );
         if ( $bufr != "ERROR" ) {
     	    $bufe = explode("\n", $bufr);
-	    foreach( $bufe as $buf ) {
+	    foreach ($bufe as $buf) {
         	if (preg_match('/^T/', $buf)) {
             	    $devnum += 1;
     		    $results[$devnum] = "";
@@ -433,7 +433,7 @@ class sysinfo {
         }
     } else {
 	$bufe = explode( "\n", $bufr );
-	foreach( $bufe as $buf ) {
+	foreach ($bufe as $buf) {
 	    $device = preg_split("/ /", $buf, 7);
 	    if( isset( $device[6] ) && trim( $device[6] ) != "" ) {
 		$results[$devnum++] = trim( $device[6] );
@@ -457,7 +457,7 @@ class sysinfo {
     $bufr = rfts( '/proc/net/dev' );
     if ( $bufr != "ERROR" ) {
       $bufe = explode("\n", $bufr);
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/:/', $buf)) {
           list($dev_name, $stats_list) = preg_split('/:/', $buf, 2);
           $stats = preg_split('/\s+/', trim($stats_list));
@@ -489,7 +489,7 @@ class sysinfo {
     $bufr = rfts( '/proc/meminfo' );
     if ( $bufr != "ERROR" ) {
       $bufe = explode("\n", $bufr);
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/^MemTotal:\s+(.*)\s*kB/i', $buf, $ar_buf)) {
           $results['ram']['total'] = $ar_buf[1];
         } else if (preg_match('/^MemFree:\s+(.*)\s*kB/i', $buf, $ar_buf)) {

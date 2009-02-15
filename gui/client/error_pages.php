@@ -19,7 +19,7 @@
  */
 
 // Deactivate HTMLPurifyer HTML Tag stripping
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error'){
+if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
 	define('OVERRIDE_PURIFIER', 1);
 }
 

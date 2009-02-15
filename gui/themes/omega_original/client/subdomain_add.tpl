@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
-function makeUser(){
+function makeUser() {
 	var subname  = document.forms[0].elements['subdomain_name'].value;
 	subname = subname.toLowerCase();
 	document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;

@@ -204,7 +204,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 // move cursor to next possible start node
                 $i++;
                 
-            } elseif($result === false) {
+            } elseif ($result === false) {
                 // remove entire node
                 
                 if ($e) {

@@ -82,7 +82,7 @@ $tpl->assign(
 		)
 	);
 
-if(!init_in_values()){
+if (!init_in_values()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
 	unset_messages();
 	header("Location: user_add1.php");
@@ -151,7 +151,7 @@ function gen_user_add3_page(&$tpl) {
 	global $fax;
 
 	$dmn_user_name = decode_idna($dmn_user_name);
-	// Fill in the fileds
+	// Fill in the fields
 	$tpl->assign(
 		array('VL_USERNAME' => $dmn_user_name,
 			'VL_USR_PASS' => passgen(),

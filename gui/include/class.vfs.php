@@ -301,7 +301,7 @@ SQL_QUERY;
 		// We get filenames only from the listing
 		$file = basename($file);
 		// Try to match it
-		foreach($list as $entry) {
+		foreach ($list as $entry) {
 			// Skip non-matching files
 			if ($entry['file'] != $file) {
 				continue;

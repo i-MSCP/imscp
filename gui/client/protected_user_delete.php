@@ -24,7 +24,7 @@ check_login(__FILE__);
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])){
+if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 } else {
 	header( 'Location: protected_areas.php' );
@@ -72,13 +72,13 @@ $query = "
 ";
 $rs = exec_query($sql, $query, array($dmn_id));
 
- if ($rs -> RecordCount() !== 0) {
+ if ($rs->RecordCount() !== 0) {
 
-	 while (!$rs -> EOF) {
-		$members = explode(',',$rs -> fields['members']);
-		$group_id = $rs -> fields['id'];
+	 while (!$rs->EOF) {
+		$members = explode(',',$rs->fields['members']);
+		$group_id = $rs->fields['id'];
 		$key=array_search($uuser_id,$members);
-		if($key!==false){
+		if ($key!==false) {
 			unset($members[$key]);
 			$members=implode(",",$members);
 			$change_status = Config::get('ITEM_CHANGE_STATUS');
@@ -93,7 +93,7 @@ $rs = exec_query($sql, $query, array($dmn_id));
 			";
 			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id));
 		}
-		$rs -> MoveNext();
+		$rs->MoveNext();
 	 }
  }
 
@@ -109,14 +109,14 @@ $query = "
 	
 $rs = exec_query($sql, $query, array($dmn_id));
 
-while (!$rs -> EOF) {
-	$ht_id = $rs -> fields['id'];
-	$usr_id = $rs -> fields['user_id'];
+while (!$rs->EOF) {
+	$ht_id = $rs->fields['id'];
+	$usr_id = $rs->fields['user_id'];
 
 	$usr_id_splited = explode(',', $usr_id);
 
 	$key=array_search($uuser_id,$usr_id_splited);
-	if($key!==false){
+	if ($key!==false) {
 		unset($usr_id_splited[$key]);
 		if (count($usr_id_splited) == 0) {
 			$status = Config::get('ITEM_DELETE_STATUS');
@@ -137,7 +137,7 @@ while (!$rs -> EOF) {
 		$rs_update = exec_query($sql, $update_query, array($usr_id, $status, $ht_id));
 	}
 
-	$rs -> MoveNext();
+	$rs->MoveNext();
 }
 
 check_for_lock_file();

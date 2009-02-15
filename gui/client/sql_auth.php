@@ -35,8 +35,8 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 
 	$rs = exec_query($sql, $query, $db_user_id);
 
-	$user_mysql = $rs -> fields['sqlu_name'];
-	$pass_mysql = decrypt_db_password($rs -> fields['sqlu_pass']);
+	$user_mysql = $rs->fields['sqlu_name'];
+	$pass_mysql = decrypt_db_password($rs->fields['sqlu_pass']);
 
 	$data="pma_username=".urlencode($user_mysql)."&pma_password=".urlencode($pass_mysql)."\r\n\r\n";
 
@@ -58,14 +58,14 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 		while (!feof($fp)) {
 			$line = fgets($fp, 2048);
 			$rs.=$line;
-			if(preg_match("/^Location.+/",$line,$results)) $header=$line;
+			if (preg_match("/^Location.+/",$line,$results)) $header=$line;
 		}
 		fclose($fp);
 		preg_match_all("/(?:Set-Cookie: )(?:(?U)(.+)=(.+)(?:;))(?:(?U)( expires=)(.+)(?:;))?(?:( path=)(.+))?/",$rs,$results,PREG_SET_ORDER);
-		foreach($results as $result){
+		foreach ($results as $result) {
 			setcookie(urldecode($result[1]),urldecode($result[2]),strtotime(urldecode($result[4])),urldecode($result[6]));
 		}
-		if($header){
+		if ($header) {
 			header($header);
 			die();
 		} else {
@@ -74,7 +74,7 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 	}
 }
 
-function error(){
+function error() {
 	set_page_message("Error while authenticating!!!");
 	header("Location: sql_manage.php");
 	die();

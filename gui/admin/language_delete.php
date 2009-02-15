@@ -55,7 +55,7 @@ SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_lang));
 
-if ($rs -> RecordCount () > 0) {
+if ($rs->RecordCount () > 0) {
     /* ERR - we have domain that use this ip */
 
     set_page_message('Error we have user that uses that language!');

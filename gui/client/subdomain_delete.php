@@ -41,7 +41,7 @@ SQL_QUERY;
   $rs = exec_query($sql, $query, array($dmn_id, $sub_id));
   $sub_name = $rs->fields['subdomain_name'];
 
-  if ($rs -> RecordCount() == 0) {
+  if ($rs->RecordCount() == 0) {
     user_goto('domains_manage.php');
   }
 
@@ -49,7 +49,7 @@ SQL_QUERY;
   $query = "select count(mail_id) as cnt from mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
   $rs = exec_query($sql, $query, array($sub_id));
 
-  if ($rs -> fields['cnt'] > 0 ) {
+  if ($rs->fields['cnt'] > 0) {
     set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
     header('Location: domains_manage.php');
     exit(0);

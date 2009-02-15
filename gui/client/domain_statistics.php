@@ -207,9 +207,9 @@ SQL_QUERY;
 
     $rs = execute_query($sql, $query);
 
-    if ($rs -> RecordCount() == 0) {
+    if ($rs->RecordCount() == 0) {
 
-        $tpl -> assign('TRAFF_LIST', '');
+        $tpl->assign('TRAFF_LIST', '');
 
         set_page_message(tr('Traffic accounting for the selected month is missing!'));
 
@@ -217,38 +217,38 @@ SQL_QUERY;
 
         $web_all = 0; $ftp_all = 0; $smtp_all = 0; $pop_all = 0; $sum_all = 0; $i = 1;
 
-        while (!$rs -> EOF) {
+        while (!$rs->EOF) {
 
-            $tpl -> assign(
+            $tpl->assign(
                             array(
-                                    'DATE' => date("d.m.Y, G:i", $rs -> fields['traff_date']),
-                                    'WEB_TRAFF' => sizeit($rs -> fields['web_traff']),
-                                    'FTP_TRAFF' => sizeit($rs -> fields['ftp_traff']),
-                                    'SMTP_TRAFF' => sizeit($rs -> fields['smtp_traff']),
-                                    'POP_TRAFF' => sizeit($rs -> fields['pop_traff']),
-                                    'SUM_TRAFF' => sizeit($rs -> fields['sum_traff']),
+                                    'DATE' => date("d.m.Y, G:i", $rs->fields['traff_date']),
+                                    'WEB_TRAFF' => sizeit($rs->fields['web_traff']),
+                                    'FTP_TRAFF' => sizeit($rs->fields['ftp_traff']),
+                                    'SMTP_TRAFF' => sizeit($rs->fields['smtp_traff']),
+                                    'POP_TRAFF' => sizeit($rs->fields['pop_traff']),
+                                    'SUM_TRAFF' => sizeit($rs->fields['sum_traff']),
                                     'CONTENT' => ($i % 2 == 0) ? 'content3' : 'content2'
 
                                  )
                           );
 
-            $tpl -> parse('TRAFF_ITEM', '.traff_item');
+            $tpl->parse('TRAFF_ITEM', '.traff_item');
 
-            $web_all += $rs -> fields['web_traff'];
+            $web_all += $rs->fields['web_traff'];
 
-            $ftp_all += $rs -> fields['ftp_traff'];
+            $ftp_all += $rs->fields['ftp_traff'];
 
-            $smtp_all += $rs -> fields['smtp_traff'];
+            $smtp_all += $rs->fields['smtp_traff'];
 
-            $pop_all += $rs -> fields['pop_traff'];
+            $pop_all += $rs->fields['pop_traff'];
 
-            $sum_all += $rs -> fields['sum_traff'];
+            $sum_all += $rs->fields['sum_traff'];
 
-            $rs -> MoveNext(); $i++;
+            $rs->MoveNext(); $i++;
 
         }
 
-        $tpl -> assign(
+        $tpl->assign(
                         array(
                                 'WEB_ALL' => sizeit($web_all),
                                 'FTP_ALL' => sizeit($ftp_all),

@@ -199,7 +199,7 @@ $query = "SELECT `name`, `value` FROM `config`";
 if (!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
 } else {
-	while($row = $res -> FetchRow()) {
+	while($row = $res->FetchRow()) {
 		Config::set($row['name'], $row['value']);
 	}
 }

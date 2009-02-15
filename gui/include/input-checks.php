@@ -49,7 +49,7 @@ function check_input($value = '') {
 	if (!empty($value)) {
 		$value = strtolower($value);
 
-		foreach($CHECK_VARS as $VAR) {
+		foreach ($CHECK_VARS as $VAR) {
 			if (preg_match($VAR, $value) > 0) {
 				$message = "Possible hacking attempt. Script terminated.";
 				write_log($message);

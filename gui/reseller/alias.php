@@ -314,7 +314,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
-		} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')){
+		} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')) {
 			$delete_link = "alias_order.php?action=delete&del_id=".$als_id;
 			$edit_link = "alias_order.php?action=activate&act_id=".$als_id;
 			$action_text = tr("Delete order");
@@ -396,16 +396,16 @@ function generate_als_messages(&$tpl, $als_err) {
 			$tpl->assign('MESSAGE', tr('Domain alias not modified!'));
 
 		unset($_SESSION['aledit']);
-	} else if(isset($_SESSION['orderaldel'])){
+	} else if (isset($_SESSION['orderaldel'])) {
 		if('_no_' === $_SESSION['orderaldel']) {
-			$tpl -> assign('MESSAGE', tr('Ordered domain alias not deleted!'));
+			$tpl->assign('MESSAGE', tr('Ordered domain alias not deleted!'));
 		}
         unset($_SESSION['orderaldel']);
-    } else if(isset($_SESSION['orderalact'])){
+    } else if (isset($_SESSION['orderalact'])) {
 		if('_yes_' === $_SESSION['orderalact'])
-        	$tpl -> assign('MESSAGE', tr('Ordered domain alias activated!'));
+        	$tpl->assign('MESSAGE', tr('Ordered domain alias activated!'));
 		else
-			$tpl -> assign('MESSAGE', tr('Ordered domain alias not activated!'));
+			$tpl->assign('MESSAGE', tr('Ordered domain alias not activated!'));
 
         unset($_SESSION['orderalact']);
 	} else {

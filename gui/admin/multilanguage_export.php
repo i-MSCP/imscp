@@ -48,13 +48,13 @@ SQL_QUERY;
 	} else {
 	    $GLOBALS['class']['output']->showSize=false;
 		header( "Content-type: text/plain; charset=".$encoding );
-		while (!$rs -> EOF) {
+		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];
 			$msgstr = $rs->fields['msgstr'];
 			if ($msgid !== '' && $msgstr !== '') {
 				echo $msgid." = ".$msgstr."\n";
 			}
-			$rs -> MoveNext();
+			$rs->MoveNext();
 		}
 	}
 } else {

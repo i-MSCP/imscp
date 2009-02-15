@@ -924,7 +924,7 @@ function get_gender_by_code($code, $nullOnBad = false) {
 	}
 }
 
-function mount_point_exists($dmn_id, $mnt_point){
+function mount_point_exists($dmn_id, $mnt_point) {
 	$sql = Database::getInstance();
 	$query = "
 		SELECT

@@ -28,7 +28,7 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 
 	if(isset($_GET['del_id']) && !empty($_GET['del_id']))
 		$del_id = $_GET['del_id'];
-	else{
+	else {
 		$_SESSION['orderaldel'] = '_no_';
 		header("Location: alias.php");
 		die();
@@ -49,18 +49,18 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 
 	if(isset($_GET['act_id']) && !empty($_GET['act_id']))
 		$act_id = $_GET['act_id'];
-	else{
+	else {
 		$_SESSION['orderalact'] = '_no_';
 		header("Location: alias.php");
 		die();
 	}
 	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id=?";
 	$rs = exec_query($sql, $query, $act_id);
-	if ($rs -> RecordCount() == 0) {
+	if ($rs->RecordCount() == 0) {
 		header('Location: alias.php');
 		die();
 	}
-	$alias_name = $rs -> fields['alias_name'];
+	$alias_name = $rs->fields['alias_name'];
 
 	$query = "UPDATE domain_aliasses SET alias_status='toadd' WHERE alias_id=?";
 	$rs = exec_query($sql, $query, $act_id);
@@ -68,11 +68,11 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	$domain_id = who_owns_this($act_id, 'als_id', true);
 	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id`= ?';
 	$rs = exec_query($sql, $query, $domain_id);
-	if ($rs -> RecordCount() == 0) {
+	if ($rs->RecordCount() == 0) {
 		header('Location: alias.php');
 		die();
 	}
-	$user_email = $rs -> fields['email'];
+	$user_email = $rs->fields['email'];
 	// Create the 3 default addresses if wanted
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($domain_id, $user_email, $alias_name, 'alias', $act_id);
 

@@ -89,7 +89,7 @@ function check_query($exclude = array()) {
 		$exclude = array($exclude);
 	}
 
-	foreach($_REQUEST as $key => $value) {
+	foreach ($_REQUEST as $key => $value) {
 		if (in_array($key, $exclude)) {
 			continue;
 		}
@@ -102,7 +102,7 @@ function check_query($exclude = array()) {
 				die('<b>WARNING</b>: Possible SQL injection detected. Script terminated.');
 			}
 		} else {
-			foreach($value as $skey => $svalue) {
+			foreach ($value as $skey => $svalue) {
 				if (!is_array($svalue)) {
 					if (match_sqlinjection($svalue, $matches)) {
 						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";

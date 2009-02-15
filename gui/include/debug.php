@@ -19,32 +19,32 @@
  */
 
 function dump_gui_debug() {
-    echo '<font color="#0000FF"><u>Content of <b>$_SESSION</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_SESSION</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_SESSION, true));
     echo '</pre>';
-    echo '<font color="#0000FF"><u>Content of <b>$_POST</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_POST</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_POST,    true));
     echo '</pre>';
-    echo '<font color="#0000FF"><u>Content of <b>$_GET</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_GET</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_GET,     true));
     echo '</pre>';
-    echo '<font color="#0000FF"><u>Content of <b>$_COOKIE</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_COOKIE</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_COOKIE,  true));
     echo '</pre>';
-    echo '<font color="#0000FF"><u>Content of <b>$_FILES</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_FILES</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_FILES,   true));
     echo '</pre>';
     return;
-    echo '<font color="#0000FF"><u>Content of <b>$GLOBALS</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$GLOBALS</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($GLOBALS,  true));
     echo '</pre>';
-    echo '<font color="#0000FF"><u>Content of <b>$_SERVER</b>:</u><br /></font>';
+    echo '<span style="color:#0000FF"><u>Content of <b>$_SERVER</b>:</u><br /></span>';
     echo '<pre>';
     echo htmlentities(print_r($_SERVER,  true));
     echo '</pre>';

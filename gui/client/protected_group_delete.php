@@ -25,7 +25,7 @@ check_login(__FILE__);
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 
-if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])){
+if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
 	header( 'Location: protected_areas.php' );
@@ -62,15 +62,15 @@ $query = "
 
 $rs = exec_query($sql, $query, array($dmn_id));
 
-while (!$rs -> EOF) {
+while (!$rs->EOF) {
 
-	$ht_id = $rs -> fields['id'];
-	$grp_id = $rs -> fields['group_id'];
+	$ht_id = $rs->fields['id'];
+	$grp_id = $rs->fields['group_id'];
 
 	$grp_id_splited = explode(',', $grp_id);
 
 	$key=array_search($group_id,$grp_id_splited);
-	if($key!==false){
+	if ($key!==false) {
 		unset($grp_id_splited[$key]);
 		if (count($grp_id_splited) == 0) {
 			$status = Config::get('ITEM_DELETE_STATUS');
@@ -90,7 +90,7 @@ while (!$rs -> EOF) {
 		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
 	}
 
-	$rs -> MoveNext();
+	$rs->MoveNext();
 }
 
 check_for_lock_file();

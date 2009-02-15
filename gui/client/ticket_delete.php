@@ -39,11 +39,11 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
-  if ($rs -> RecordCount() == 0) {
+  if ($rs->RecordCount() == 0) {
     header('Location: ticket_system.php');
     die();
   }
-  $ticket_status = $rs -> fields['ticket_status'];
+  $ticket_status = $rs->fields['ticket_status'];
   if ($ticket_status == 0) {
     $back_url = "ticket_closed.php";
   }
@@ -63,8 +63,8 @@ SQL_QUERY;
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
-  while (!$rs -> EOF) {
-    $rs -> MoveNext();
+  while (!$rs->EOF) {
+    $rs->MoveNext();
   }
 
   write_log($_SESSION['user_logged'].": deletes support ticket");
@@ -84,8 +84,8 @@ SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($user_id));
 
-  while (!$rs -> EOF) {
-    $rs -> MoveNext();
+  while (!$rs->EOF) {
+    $rs->MoveNext();
   }
   set_page_message(tr('All open support tickets deleted successfully!'));
   user_goto('ticket_system.php');
@@ -103,8 +103,8 @@ SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($user_id));
 
-  while (!$rs -> EOF) {
-    $rs -> MoveNext();
+  while (!$rs->EOF) {
+    $rs->MoveNext();
   }
   set_page_message(tr('All closed support tickets deleted successfully!'));
   user_goto('ticket_closed.php');

@@ -191,15 +191,15 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
         $this->doctype = $this->manager->doctype;
         
         foreach ($this->manager->modules as $module) {
-            foreach($module->info_tag_transform as $k => $v) {
+            foreach ($module->info_tag_transform as $k => $v) {
                 if ($v === false) unset($this->info_tag_transform[$k]);
                 else $this->info_tag_transform[$k] = $v;
             }
-            foreach($module->info_attr_transform_pre as $k => $v) {
+            foreach ($module->info_attr_transform_pre as $k => $v) {
                 if ($v === false) unset($this->info_attr_transform_pre[$k]);
                 else $this->info_attr_transform_pre[$k] = $v;
             }
-            foreach($module->info_attr_transform_post as $k => $v) {
+            foreach ($module->info_attr_transform_post as $k => $v) {
                 if ($v === false) unset($this->info_attr_transform_post[$k]);
                 else $this->info_attr_transform_post[$k] = $v;
             }

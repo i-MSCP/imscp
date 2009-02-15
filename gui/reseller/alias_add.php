@@ -69,7 +69,7 @@ $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
 	add_domain_alias($sql, $err_txt);
 } else {
-	// Init fileds
+	// Init fields
 	init_empty_data();
 	$tpl->assign("PAGE_MESSAGE", "");
 }

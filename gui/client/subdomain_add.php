@@ -45,7 +45,7 @@ function check_subdomain_permissions($sql, $user_id) {
 		die();
 	}
 
-	if( @$_POST['dmn_type'] == 'als' ){
+	if (@$_POST['dmn_type'] == 'als') {
 		$query_alias = "
 			SELECT
 				`alias_name`
@@ -76,8 +76,8 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	$tpl->assign(
 		array(
 			'DOMAIN_NAME'		=> '.' . $domainname,	
-			'SUB_DMN_CHECKED'	=> "checked=\"checked\"",
-			'SUB_ALS_CHECKED'	=> ""
+			'SUB_DMN_CHECKED'	=> 'checked="checked"',
+			'SUB_ALS_CHECKED'	=> ''
 		)
 	);
 	gen_dmn_als_list($tpl, $sql, $rs->fields['domain_id'], 'no');
@@ -129,32 +129,15 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->parse('ALS_LIST', 'als_list');
 		$tpl->assign('TO_ALIAS_DOMAIN', '');
 		$_SESSION['alias_count'] = "no";
-	}
-	else {
+	} else {
 		$first_passed = false;
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
-				if (!isset($_POST['als_id'])) {
-					$als_id = "";
-				}
-				else {
-					$als_id = $_POST['als_id'];
-				}
+				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
 
-				if ($als_id == $rs->fields['alias_id']) {
-					$als_selected = 'selected';
-				}
-				else {
-					$als_selected = '';
-				}
-			}
-			else {
-				if (!$first_passed) {
-					$als_selected = 'selected';
-				}
-				else {
-					$als_selected = '';
-				}
+				$als_selected = ($als_id == $rs->fields['alias_id']) ? 'selected="selected"' : '';
+			} else {
+				$als_selected = (!$first_passed) ? 'selected="selected"' : '';
 			}
 
 			$alias_name = decode_idna($rs->fields['alias_name']);
@@ -177,7 +160,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
-	if( $_POST['dmn_type'] == 'als' ){
+	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
 			SELECT
 				count(`subdomain_alias_id`) as cnt
@@ -225,9 +208,8 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 
 	$std_subs = array( 'www', 'mail', 'webmail', 'pop', 'pop3', 'imap', 'smtp', 'pma', 'relay', 'ftp', 'ns1', 'ns2', 'localhost' );
 
-	if ($rs_subdomain->fields['cnt'] == 0 && $rs_domain->fields['cnt'] == 0){
-		if( !in_array( $sub_name, $std_subs ) )
-			return false;
+	if ($rs_subdomain->fields['cnt'] == 0 && $rs_domain->fields['cnt'] == 0 && !in_array($sub_name, $std_subs)) {
+		return false;
 	}
 
 	return true;
@@ -235,7 +217,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 
 function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 
-	if( $_POST['dmn_type'] == 'als' ){
+	if ($_POST['dmn_type'] == 'als') {
 		$query = "
 			SELECT
 				count(`subdomain_alias_id`) as cnt
@@ -272,7 +254,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 		";
 	}
 	$rs = exec_query($sql, $query, array($domain_id, $sub_mnt_pt));
-	if(isset($query2))
+	if (isset($query2))
 		$rs2 = exec_query($sql, $query2, array($domain_id, $sub_mnt_pt));
 
 	if ($rs->fields['cnt'] > 0 || (isset($rs2) && $rs2->fields['cnt'] > 0))
@@ -285,7 +267,7 @@ function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)
 	$status_add = Config::get('ITEM_ADD_STATUS');
 
 	check_for_lock_file();
-	if( $_POST['dmn_type'] == 'als' ){
+	if ($_POST['dmn_type'] == 'als') {
 		$query = "
 			INSERT INTO
 				`subdomain_alias`
@@ -339,8 +321,8 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 			$sub_mnt_pt = "/";
 		}
 		
-		if( $_POST['dmn_type'] === 'als' ){
-			if( !isset($_POST['als_id']) ){
+		if ($_POST['dmn_type'] === 'als') {
+			if (!isset($_POST['als_id'])) {
 				set_page_message(tr('No valid alias domain selected!'));
 				return;
 			}
@@ -355,7 +337,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 	
 			$rs = exec_query($sql, $query_alias, array($_POST['als_id']));
 			$als_mnt = $rs->fields['alias_mount'];
-			if( $sub_mnt_pt[0] != '/' )
+			if ($sub_mnt_pt[0] != '/')
 				$sub_mnt_pt = '/'.$sub_mnt_pt;
 			$sub_mnt_pt = $als_mnt.$sub_mnt_pt;
 			$sub_mnt_pt = str_replace( '//', '/', $sub_mnt_pt );

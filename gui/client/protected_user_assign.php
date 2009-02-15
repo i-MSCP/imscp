@@ -218,7 +218,7 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 
 		$members = explode(',', $rs->fields['members']);
 		$key=array_search($uuser_id,$members);
-		if($key!==false){
+		if ($key!==false) {
 			unset($members[$key]);
 			$members = implode(",",$members);
 			$change_status = Config::get('ITEM_CHANGE_STATUS');

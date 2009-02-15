@@ -108,7 +108,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	if ($rs->RowCount() == 0) {
-		/* $tpl -> assign(
+		/* $tpl->assign(
             array(
                 'TRAFFIC_TABLE' => '',
                 'MESSAGE' => tr('Not found reseller(s) in your system!')

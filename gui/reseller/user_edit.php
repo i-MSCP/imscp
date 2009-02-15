@@ -215,8 +215,8 @@ function gen_edituser_page(&$tpl) {
 		$customer_id = '';
 	}
 
-	// Fill in the fileds
-	$tpl -> assign(array(
+	// Fill in the fields
+	$tpl->assign(array(
 		'VL_USERNAME'		=> decode_idna($dmn_user_name),
 		'VL_MAIL'		=> empty($user_email)?'':$user_email,
 		'VL_USR_ID'		=> empty($customer_id)?'':$customer_id,
@@ -265,7 +265,7 @@ function update_data_in_db($hpid) {
   $street_two 	= clean_input($street_two);
 
   if (empty($inpass)) {
-  // Save with out password
+  // Save without password
     $query = <<<SQL_QUERY
             update
                 admin
@@ -307,7 +307,7 @@ SQL_QUERY;
       // Change password
       if (!chk_password($_POST['userpassword'])) {
 
-          if(Config::get('PASSWD_STRONG')){
+          if (Config::get('PASSWD_STRONG')) {
             set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
           } else {
             set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
@@ -379,7 +379,7 @@ SQL_QUERY;
 SQL_QUERY;
 
       $rs = exec_query($sql, $query, array($admin_name));
-      if ($rs -> RecordCount() != 0) {
+      if ($rs->RecordCount() != 0) {
           set_page_message(tr('User session was killed!'));
           write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");
       }

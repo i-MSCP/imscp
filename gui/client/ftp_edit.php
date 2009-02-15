@@ -82,7 +82,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
                 return;
             }
             if (!chk_password($_POST['pass'])) {
-                if(Config::get('PASSWD_STRONG')){
+                if (Config::get('PASSWD_STRONG')) {
                   set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
                 } else {
                   set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));

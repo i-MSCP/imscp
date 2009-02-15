@@ -133,7 +133,7 @@ SQL_QUERY;
 		$tpl->assign('HP_TABLE', '');
 	} else { // There are data for hosting plants :-)
 		/*if ($GLOBALS['external_event'] == '_off_') {
-			$tpl -> assign('HP_MESSAGE', '');
+			$tpl->assign('HP_MESSAGE', '');
 		}*/
 
 		$tpl->assign(

@@ -158,8 +158,6 @@
                           <input type="checkbox" name="send_data" checked="checked">
                           {TR_SEND_DATA}</td>
                       </tr>
-                      </font>
-
                     </table>
                   <input type="hidden" name="uaction" value="save_changes">
                   <input type="hidden" name="edit_id" value="{EDIT_ID}">

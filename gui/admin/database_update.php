@@ -31,13 +31,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl -> define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/database_update.tpl');
-$tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('hosting_plans', 'page');
-$tpl -> define_dynamic('database_update_message', 'page');
-$tpl -> define_dynamic('database_update_infos', 'page');
+$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/database_update.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic('database_update_message', 'page');
+$tpl->define_dynamic('database_update_infos', 'page');
 
-$tpl -> assign(array(
+$tpl->assign(array(
 	'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE'	=> tr('ispCP - Virtual Hosting Control System'),
 	'THEME_COLOR_PATH'			=> "../themes/" . Config::get('USER_INITIAL_THEME'),
 	'THEME_CHARSET'				=> tr('encoding'),

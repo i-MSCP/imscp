@@ -72,7 +72,7 @@ SQL_QUERY;
 			)
 		);
 
-		if ($rs->fields['user_name'] === NULL){
+		if ($rs->fields['user_name'] === NULL) {
 			$tpl->assign(
 					array(
 						'ADMIN_USERNAME' => tr('Unknown'),

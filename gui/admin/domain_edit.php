@@ -242,7 +242,7 @@ function gen_editdomain_page(&$tpl) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username;
-	// Fill in the fileds
+	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
 
 	$username = decode_idna($username);

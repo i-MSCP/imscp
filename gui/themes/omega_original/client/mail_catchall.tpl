@@ -8,7 +8,7 @@
 <script type="text/javascript">
 <!--
 function action_delete(url, mailacc) {
-	if(url.indexOf("delete")==-1){
+	if (url.indexOf("delete")==-1) {
 		location = url;
 	} else {
 		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", mailacc)))

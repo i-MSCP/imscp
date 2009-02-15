@@ -383,7 +383,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 		return false;
 	}
 
-	if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)||preg_match("/^alssub_mail/",$mail_type)){
+	if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)||preg_match("/^alssub_mail/",$mail_type)) {
 		$mail_pass=encrypt_db_password($mail_pass);
 	}
 
@@ -458,17 +458,17 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 			return false;
 		} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			// Not permitted chars
-			if(Config::get('PASSWD_STRONG')){
-        set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
-      } else {
-        set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
-      }
+			if (Config::get('PASSWD_STRONG')) {
+				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
+			} else {
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
+			}
 			return false;
 		}
 	}
 
 
-	if ($_POST['dmn_type'] === 'sub'){
+	if ($_POST['dmn_type'] === 'sub') {
 		$id='sub_id';
 		$query='
 			SELECT
@@ -485,7 +485,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 		$type=tr('Subdomain');
 	}
 
-	if ($_POST['dmn_type'] === 'als_sub'){
+	if ($_POST['dmn_type'] === 'als_sub') {
 		$id='als_sub_id';
 		$query='
 			SELECT
@@ -502,18 +502,18 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 		$type=tr('Subdomain alias');
 	}
 
-	if ($_POST['dmn_type'] === 'als'){
+	if ($_POST['dmn_type'] === 'als') {
 		$id='als_id';
 		$query='SELECT `alias_name` as name FROM `domain_aliasses` WHERE `alias_id`=? AND `domain_id`=?';
 		$type=tr('Alias');
 	}
 
-	if(in_array($_POST['dmn_type'],array('sub', 'als_sub', 'als'))){
-		if(!isset($_POST[$id])) {
+	if (in_array($_POST['dmn_type'],array('sub', 'als_sub', 'als'))) {
+		if (!isset($_POST[$id])) {
 			set_page_message(sprintf(tr('%s list is empty! You cannot add mail accounts!'),$type));
 			return false;
 		}
-		if(!is_numeric($_POST[$id])){
+		if (!is_numeric($_POST[$id])) {
 			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts!'),$type));
 			return false;
 		}

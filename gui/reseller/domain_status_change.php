@@ -50,23 +50,23 @@ SQL_QUERY;
 $rs = exec_query($sql, $query, array($domain_id));
 
 //lets check if this reseller has rights to disable/enable this domain
-if ($rs -> fields['domain_created_id'] != $_SESSION['user_id']){
+if ($rs->fields['domain_created_id'] != $_SESSION['user_id']) {
 	header( "Location: users.php" );
     die();
 }
 
 $location = 'reseller';
 
-if ($rs -> fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
+if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 
-		//disable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
+		//disable_domain ($sql, $domain_id, $rs->fields['domain_name']);
 		$action = "disable";
-		change_domain_status(&$sql, &$domain_id, $rs -> fields['domain_name'], $action, $location);
-} else if ($rs -> fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
+		change_domain_status(&$sql, &$domain_id, $rs->fields['domain_name'], $action, $location);
+} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 
-	//enable_domain ($sql, $domain_id, $rs -> fields['domain_name']);
+	//enable_domain ($sql, $domain_id, $rs->fields['domain_name']);
 	$action = "enable";
-	change_domain_status(&$sql, &$domain_id, $rs -> fields['domain_name'], $action, $location);
+	change_domain_status(&$sql, &$domain_id, $rs->fields['domain_name'], $action, $location);
 
 } else {
 

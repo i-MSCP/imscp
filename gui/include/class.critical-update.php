@@ -41,16 +41,16 @@ class criticalUpdate extends ispcpUpdate{
 	protected $functionName="_criticalUpdate_";
 	protected $errorMessage="Critical update %s failed";
 
-	public static function getInstance(){
+	public static function getInstance() {
 		static $instance=null;
 		if($instance===null)$instance= new self();
 		return $instance;
 	}
 
 	/*
-	* Insert the update functions below this entry. The revision has to be ascending and unique.
-	* Each criticalUpdate function has to return a array. Even if the array is empty.
-	*/
+	 * Insert the update functions below this entry. The revision has to be ascending and unique.
+	 * Each criticalUpdate function has to return a array. Even if the array is empty.
+	 */
 	
 	/**
 	 * Encrypt email and sql users password in database

@@ -34,7 +34,7 @@ class sysinfo {
     $objLocator = new COM("WbemScripting.SWbemLocator");
     if($strHostname == "") {
         $this->wmi = $objLocator->ConnectServer();
-      } else{
+      } else {
         $this->wmi = $objLocator->ConnectServer($strHostname, "rootcimv2", "$strHostname\$strUser", $strPassword);
       }
   } 
@@ -53,12 +53,10 @@ class sysinfo {
       $arrWEBMCol = $objWEBM->Instances_();
     }
 
-    foreach($arrWEBMCol as $objItem)
-    {
+    foreach ($arrWEBMCol as $objItem) {
         @reset($arrProp);
         $arrInstance = array();
-        foreach($arrProp as $propItem)
-        {
+        foreach ($arrProp as $propItem) {
             eval("\$value = \$objItem->" .$propItem->Name .";");
             if( empty( $strValue ) ) {
               $arrInstance[$propItem->Name] = trim($value);
@@ -236,7 +234,7 @@ class sysinfo {
 	function network () {
 		$results = array();
 		$buffer = $this->_GetWMI( "Win32_PerfRawData_Tcpip_NetworkInterface" );
-		foreach( $buffer as $device ) {
+		foreach ($buffer as $device) {
 			$dev_name = $device["Name"];
 			// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/wmisdk/wmi/win32_perfrawdata_tcpip_networkinterface.asp
 			// there is a possible bug in the wmi interfaceabout uint32 and uint64: http://www.ureader.com/message/1244948.aspx, so that

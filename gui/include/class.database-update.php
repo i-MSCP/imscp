@@ -40,16 +40,16 @@ class databaseUpdate extends ispcpUpdate{
 	protected $functionName="_databaseUpdate_";
 	protected $errorMessage="Database update %s failed";
 
-	public static function getInstance(){
+	public static function getInstance() {
 		static $instance=null;
 		if($instance===null)$instance= new self();
 		return $instance;
 	}
 
 	/*
-	* Insert the update functions below this entry. The revision has to be ascending and unique.
-	* Each databaseUpdate function has to return a array. Even if the array contains only one entry.
-	*/
+	 * Insert the update functions below this entry. The revision has to be ascending and unique.
+	 * Each databaseUpdate function has to return a array. Even if the array contains only one entry.
+	 */
 
 	/**
 	 * Initital Update. Insert the first Revision.
@@ -79,7 +79,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * @since		r1355
 	 *
 	 * @access		protected
-	* @return		sql statements to be performed
+	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_2() {
 		$sqlUpd = array(); // we need several SQL Statements...

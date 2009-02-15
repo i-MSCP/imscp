@@ -211,7 +211,7 @@ function change_user_interface($from_id, $to_id) {
         $rs_from = exec_query($sql, $query, array($from_id));
         $rs_to   = exec_query($sql, $query, array($to_id));
 
-        if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
+        if (($rs_from->RecordCount()) != 1 || ($rs_to->RecordCount()) != 1)  {
             set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
             break;
         }

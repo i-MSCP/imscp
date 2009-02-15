@@ -135,7 +135,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 		$check_en = "checked=\"checked\"";
 		$check_dis = "";
 	}
-	// Fill in the fileds
+	// Fill in the fields
 	$tpl->assign(
 			array(
 				'ALIAS_NAME' => decode_idna($data['alias_name']),

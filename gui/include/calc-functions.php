@@ -177,7 +177,7 @@ function passgen() {
 function translate_limit_value($value, $autosize = false) {
     if ($value == -1) {
         return tr('disabled');
-    } else if ($value == 0){
+    } else if ($value == 0) {
         return tr('unlimited');
     } else {
         if (!$autosize) {

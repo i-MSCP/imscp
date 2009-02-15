@@ -514,7 +514,7 @@ class pTemplate {
     function print_namespace() {
         print "<br><u>'namespace' contents</u><br>";
 
-        foreach($this->namespace as $key => $value) {
+        foreach ($this->namespace as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -522,7 +522,7 @@ class pTemplate {
     function print_tpl_name() {
         print "<br><u>'tpl_name' contents</u><br>";
 
-        foreach($this->tpl_name as $key => $value) {
+        foreach ($this->tpl_name as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -530,7 +530,7 @@ class pTemplate {
     function print_dtpl_name() {
         print "<br><u>'dtpl_name' contents</u><br>";
 
-        foreach($this->dtpl_name as $key => $value) {
+        foreach ($this->dtpl_name as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -538,7 +538,7 @@ class pTemplate {
     function print_tpl_data() {
         print "<br><u>'tpl_data' contents</u><br>";
 
-        foreach($this->tpl_data as $key => $value) {
+        foreach ($this->tpl_data as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -546,7 +546,7 @@ class pTemplate {
     function print_dtpl_data() {
         print "<br><u>'dtpl_data' contents</u><br>";
 
-        foreach($this->dtpl_data as $key => $value) {
+        foreach ($this->dtpl_data as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -554,7 +554,7 @@ class pTemplate {
     function print_dtpl_options() {
         print "<br><u>'dtpl_options' contents</u><br>";
 
-        foreach($this->dtpl_options as $key => $value) {
+        foreach ($this->dtpl_options as $key => $value) {
             print "$key => $value<br>";
         }
     }
@@ -562,7 +562,7 @@ class pTemplate {
     function print_dtpl_values() {
         print "<br><u>'dtpl_values' contents</u><br>";
 
-        foreach($this->dtpl_values as $key => $value) {
+        foreach ($this->dtpl_values as $key => $value) {
             print "$key => $value<br>";
         }
     }

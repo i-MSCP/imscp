@@ -339,7 +339,7 @@ class HTMLPurifier_HTMLModuleManager
         
         // iterate through each module that has registered itself to this
         // element
-        foreach($this->elementLookup[$name] as $module_name) {
+        foreach ($this->elementLookup[$name] as $module_name) {
             
             $module = $this->modules[$module_name];
             

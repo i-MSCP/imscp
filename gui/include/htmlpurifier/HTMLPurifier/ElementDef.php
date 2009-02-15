@@ -109,7 +109,7 @@ class HTMLPurifier_ElementDef
     public function mergeIn($def) {
         
         // later keys takes precedence
-        foreach($def->attr as $k => $v) {
+        foreach ($def->attr as $k => $v) {
             if ($k === 0) {
                 // merge in the includes
                 // sorry, no way to override an include

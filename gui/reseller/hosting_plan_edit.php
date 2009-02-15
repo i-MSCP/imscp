@@ -113,7 +113,7 @@ if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 // * Function definitions
 // *
 // Restore form on any error
-function restore_form(&$tpl, &$sql){
+function restore_form(&$tpl, &$sql) {
 	$tpl->assign(
 			array(
 				'HP_NAME_VALUE' => clean_input($_POST['hp_name']),

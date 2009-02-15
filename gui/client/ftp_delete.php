@@ -45,7 +45,7 @@ SQL_QUERY;
   $rs = exec_query($sql, $query, array($ftp_id, $dmn_name));
   $ftp_name = $rs->fields['userid'];
 
-  if ($rs -> RecordCount() == 0) {
+  if ($rs->RecordCount() == 0) {
     user_goto('ftp_accounts.php');
   }
 
@@ -64,8 +64,8 @@ SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ftp_id));
 
-  $ftp_gid = $rs -> fields['gid'];
-  $ftp_members = $rs -> fields['members'];
+  $ftp_gid = $rs->fields['gid'];
+  $ftp_members = $rs->fields['members'];
   $members = preg_replace("/$ftp_id/", "", "$ftp_members");
   $members = preg_replace("/,,/", ",", "$members");
   $members = preg_replace("/^,/", "", "$members");

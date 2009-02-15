@@ -152,7 +152,7 @@ function update_user_props ( $user_id, $props ) {
 
 	$rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi));
 
-	if ($rs -> RecordCount() == 0) {
+	if ($rs->RecordCount() == 0) {
 		// mama mia, we have to rebuild the system entry for this domain
 		// and also all domain alias and subdomains
 
@@ -313,8 +313,7 @@ function array_encode_idna($arr, $asPath = false) {
 	return $arr;
 }
 
-function decode_idna($input)
-{
+function decode_idna($input) {
 	if (function_exists('idn_to_unicode')) {
 		return idn_to_unicode($input, 'utf-8');
 	}
@@ -322,15 +321,10 @@ function decode_idna($input)
 	$IDN = new idna_convert();
 	$output = $IDN->decode($input);
 
-	if ($output == FALSE){
-		return $input;
-	} else {
-		return $output;
-	}
+	return ($output == FALSE) ? $input : $output;
 }
 
-function encode_idna($input)
-{
+function encode_idna($input) {
 	if (function_exists('idn_to_ascii')) {
 		return idn_to_ascii($input, 'utf-8');
 	}
@@ -359,7 +353,7 @@ function is_basicString($sting) {
 	return false;
 }
 
-function unset_messages () {
+function unset_messages() {
 
 	$glToUnset = array();
 	$glToUnset[] = 'user_page_message';

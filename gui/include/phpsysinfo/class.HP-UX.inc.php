@@ -88,7 +88,7 @@ class sysinfo {
     $bufr = rfts( '/proc/cpuinfo' );
     if( $bufr != "ERROR" ) {
       $bufe = explode( "\n", $bufr );
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         list($key, $value) = preg_split('/\s+:\s+/', trim($buf), 2); 
         // All of the tags here are highly architecture dependant.
         // the only way I could reconstruct them for machines I don't
@@ -162,7 +162,7 @@ class sysinfo {
     $bufr = rfts( '/proc/pci' );
     if( $bufr != "ERROR" ) {
       $bufe = explode( "\n", $bufr );
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/Bus/', $buf)) {
           $device = true;
           continue;
@@ -187,7 +187,7 @@ class sysinfo {
 
     $bufd = gdc( '/proc/ide' );
 
-    foreach( $bufd as $file ) {
+    foreach ( $bufd as $file ) {
       if (preg_match('/^hd/', $file)) {
         $results[$file] = array(); 
         // Check if device is CD-ROM (CD-ROM capacity shows as 1024 GB)
@@ -240,7 +240,7 @@ class sysinfo {
     $bufr = rfts( '/proc/scsi/scsi' );
     if( $bufr != "ERROR" ) {
       $bufe = explode( "\n", $bufr );
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/Vendor/', $buf)) {
           preg_match('/Vendor: (.*) Model: (.*) Rev: (.*)/i', $buf, $dev);
           list($key, $value) = split(': ', $buf, 2);
@@ -270,7 +270,7 @@ class sysinfo {
     $bufr = rfts( '/proc/bus/usb/devices' );
     if( $bufr != "ERROR" ) {
       $bufe = explode( "\n", $bufr );
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/^T/', $buf)) {
           $devnum += 1;
         } 
@@ -330,7 +330,7 @@ class sysinfo {
     $bufr = rfts( '/proc/meminfo' );
     if( $bufr != "ERROR" ) {
       $bufe = explode( "\n", $bufr );
-      foreach( $bufe as $buf ) {
+      foreach ($bufe as $buf) {
         if (preg_match('/Mem:\s+(.*)$/', $buf, $ar_buf)) {
           $ar_buf = preg_split('/\s+/', $ar_buf[1], 6);
 

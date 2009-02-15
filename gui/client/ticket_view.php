@@ -115,7 +115,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
-	if ($rs->RecordCount() == 0){
+	if ($rs->RecordCount() == 0) {
 		return;
 	}
 	while (!$rs->EOF) {

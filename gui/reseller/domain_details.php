@@ -224,7 +224,7 @@ SQL_QUERY;
 	$alias_num_data = $res1->FetchRow();
 
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
-	// Fill in the fileds
+	// Fill in the fields
 	$tpl->assign(
 			array(
 				'DOMAIN_ID' => $data['domain_id'],

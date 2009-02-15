@@ -44,7 +44,7 @@ $tpl->assign(
 
 function padd_group(&$tpl, &$sql, $dmn_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_group') {
-		// we have user to add
+		// we have to add the group
 		if (isset($_POST['groupname'])) {
 			if (!chk_username($_POST['groupname'])) {
 				set_page_message(tr('Invalid group name!'));

@@ -26,7 +26,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 if(isset($_GET['del_id']) && !empty($_GET['del_id']))
 	$del_id = $_GET['del_id'];
-else{
+else {
 	$_SESSION['orderaldel'] = '_no_';
 	header("Location: domains_manage.php");
 	die();

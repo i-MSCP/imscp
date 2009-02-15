@@ -29,30 +29,27 @@ function out(number) {
   }
 }
 
-function MM_jumpMenu(targ,selObj,restore){ //v3.0
+function MM_jumpMenu(targ,selObj,restore) { //v3.0
   eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
   if (restore) selObj.selectedIndex=0;
 }
 
 <!-- BDP: js_to_all_domain -->
-    function begin_js(){
-			document.forms[0].sub_id.disabled = true;
+    function begin_js() {
+            document.forms[0].sub_id.disabled = true;
             document.forms[0].als_id.disabled = true;
             document.forms[0].username.focus();
     }
 
 
     function changeDom(wath) {
-
-        if (wath == "real"){
+        if (wath == "real") {
             document.forms[0].sub_id.disabled = true;
             document.forms[0].als_id.disabled = true;
-        }
-        else if(wath == "subdom"){
+        } else if (wath == "subdom") {
             document.forms[0].sub_id.disabled = false;
             document.forms[0].als_id.disabled = true;
-        }
-        else {
+        } else {
             document.forms[0].sub_id.disabled = true;
             document.forms[0].als_id.disabled = false;
         }
@@ -60,7 +57,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 <!-- EDP: js_to_all_domain -->
 
 <!-- BDP: js_not_domain -->
-    function begin_js(){
+    function begin_js() {
             document.forms[0].username.focus();
     }
 
@@ -68,21 +65,18 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 
 
 <!-- BDP: js_to_subdomain -->
-function begin_js(){
-			document.forms[0].sub_id.disabled = true;
+    function begin_js() {
+            document.forms[0].sub_id.disabled = true;
             document.forms[0].username.focus();
     }
 
 
     function changeDom(wath) {
-
-        if (wath == "real"){
+        if (wath == "real") {
             document.forms[0].sub_id.disabled = true;
-        }
-        else if(wath == "subdom"){
+        } else if (wath == "subdom") {
             document.forms[0].sub_id.disabled = false;
-        }
-        else {
+        } else {
             document.forms[0].sub_id.disabled = true;
         }
     }
@@ -90,21 +84,18 @@ function begin_js(){
 
 
 <!-- BDP: js_to_alias_domain -->
-    function begin_js(){
+    function begin_js() {
             document.forms[0].als_id.disabled = true;
             document.forms[0].username.focus();
     }
 
 
     function changeDom(wath) {
-
-        if (wath == "real"){
+        if (wath == "real") {
             document.forms[0].als_id.disabled = true;
-        }
-        else if(wath == "subdom"){
+        } else if (wath == "subdom") {
             document.forms[0].als_id.disabled = true;
-        }
-        else {
+        } else {
             document.forms[0].als_id.disabled = false;
         }
     }

@@ -45,7 +45,7 @@ abstract class ispcpUpdate{
 	protected $functionName="";
 	protected $errorMessage="";
 	
-	protected function __construct(){
+	protected function __construct() {
 		$this->currentVersion = $this->getCurrentVersion();
 	}
 	protected function getCurrentVersion() {
@@ -59,7 +59,7 @@ abstract class ispcpUpdate{
 	}
 	public function checkUpdateExists() {
 		$functionName = $this->returnFunctionName($this->getNextVersion());
-		if(method_exists($this,$functionName)){
+		if (method_exists($this,$functionName)) {
 			return true;
 		} else {
 			return false;
@@ -72,10 +72,10 @@ abstract class ispcpUpdate{
 		check_for_lock_file();
 		send_request();
 	}
-	protected function addErrorMessage($message){
+	protected function addErrorMessage($message) {
 		$this->errorMessages.=$message;
 	}
-	public function getErrorMessage(){
+	public function getErrorMessage() {
 		return $this->errorMessages;
 	}
 	public function executeUpdates() {
@@ -100,7 +100,7 @@ abstract class ispcpUpdate{
 				$sql->StartTrans();
 
 			// Execute every query in our queryArray
-				foreach($queryArray as $query) {
+				foreach ($queryArray as $query) {
 					$sql->Execute($query);
 				}
 
@@ -108,18 +108,18 @@ abstract class ispcpUpdate{
 				if ($sql->HasFailedTrans())
 					$failedUpdate = true;
 
-			// Complete the Transactin and rollback if nessessary
+			// Complete the Transaction and rollback if necessary
 				$sql->CompleteTrans();
 
-			// Display an error if nessessary
-				if($failedUpdate){
+			// Display an error if necessary
+				if ($failedUpdate) {
 					$this->addErrorMessage(tr($this->errorMessage, $newVersion));
 					break;
 				} else {
 					$this->currentVersion=$newVersion;
 				}
 		}
-		if($engine_run_request){
+		if ($engine_run_request) {
 			$this->sendEngineRequest();
 		}
 	}
@@ -134,12 +134,12 @@ abstract class ispcpUpdate{
  * @see		Other Functions (in other Files)
  * @since	r1355
  */
-class versionUpdate extends ispcpUpdate{
+class versionUpdate extends ispcpUpdate {
 	protected $databaseVariableName="VERSION_UPDATE";
 	protected $errorMessage="Version update %s failed";
-	public static function getInstance(){
+	public static function getInstance() {
 		static $instance=null;
-		if($instance===null)$instance= new self();
+		if ($instance===null) $instance= new self();
 		return $instance;
 	}
 	protected function getCurrentVersion() {
@@ -152,7 +152,7 @@ class versionUpdate extends ispcpUpdate{
 		$old_timeout = ini_set('default_socket_timeout', $timeout);
 		$dh2 = @fopen($last_update, 'r');
 		ini_set('default_socket_timeout', $old_timeout);
-		if (!is_resource($dh2)){
+		if (!is_resource($dh2)) {
 			$this->addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
 			return false;
 		}
@@ -167,7 +167,7 @@ class versionUpdate extends ispcpUpdate{
 	protected function returnFunctionName($version) {
 		return "dummyFunctionThatAllwaysExists";
 	}
-	protected function dummyFunctionThatAllwaysExists(&$engine_run_request){
+	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
 		//uncomment when engine part will be ready
 		/*
 		setConfig_Value('VERSION_UPDATE', $this->getNextVersion());

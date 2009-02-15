@@ -77,7 +77,7 @@ $tpl->assign(
 		)
 	);
 
-if(!get_pageone_param()){
+if (!get_pageone_param()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
 	unset_messages();
 	header("Location: user_add1.php");
@@ -118,7 +118,7 @@ function get_pageone_param() {
 	global $dmn_name;
 	global $dmn_chp;
 
-	if (isset($_SESSION['dmn_name'])){
+	if (isset($_SESSION['dmn_name'])) {
 		$dmn_name = $_SESSION['dmn_name'];
 		$dmn_chp = $_SESSION['dmn_tpl'];
 	} else {
@@ -128,8 +128,8 @@ function get_pageone_param() {
 	return true;
 } // End of get_pageone_param()
 
-// Show page with initial data fileds
-function get_init_au2_page(&$tpl){
+// Show page with initial data fields
+function get_init_au2_page(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
