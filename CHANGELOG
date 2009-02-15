@@ -31,7 +31,7 @@ ispCP ω 1.0.0 Changelog
 		* some fixes (e.g. for more valid HTML output)
 		* fix typos in PHP comments
 	- ENGINE:
-		* typos file:///_backup/ispcp/CHANGELOGin STDERR-output of perl db script
+		* typos in STDERR-output of perl db script
 	- THEMES:
 		* fixes for more valid HTML (workaround for confusing screenwidth thing)
 
