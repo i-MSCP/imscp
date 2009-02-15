@@ -5,6 +5,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1665: Form and td/table tags are mixed-up the wrong way in admin/reseller_edit.tpl
 		* Fixed #1664: ServerStatus running SSHD shows DOWN
+		* Fixed #1669: File Conf /etc/httpd/vhosts/01_awstats.conf for apache_awstats in fedora core 10
 
 2009-02-15 Benedikt Heintel
 	- GUI:
@@ -30,7 +31,7 @@ ispCP ω 1.0.0 Changelog
 		* some fixes (e.g. for more valid HTML output)
 		* fix typos in PHP comments
 	- ENGINE:
-		* typos in STDERR-output of perl db script
+		* typos file:///_backup/ispcp/CHANGELOGin STDERR-output of perl db script
 	- THEMES:
 		* fixes for more valid HTML (workaround for confusing screenwidth thing)
 
