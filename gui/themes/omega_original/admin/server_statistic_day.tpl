@@ -43,8 +43,8 @@
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_HOUR}</b></td>
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_WEB_IN}</b></td>
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_WEB_OUT}</b></td>
-                            <td class="content3" nowrap="nowrap" height="25"><b>{TR_MAIL_IN}</b></td>
-                            <td class="content3" nowrap="nowrap" height="25"><b>{TR_MAIL_OUT}</b></td>
+                            <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP_IN}</b></td>
+                            <td class="content3" nowrap="nowrap" height="25"><b>{TR_SMTP_OUT}</b></td>
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP_IN}</b></td>
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_POP_OUT}</b></td>
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_OTHER_IN}</b></td>
@@ -60,8 +60,8 @@
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b>{HOUR}</b></td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_IN}</td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_OUT}</td>
-                            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_IN}</td>
-                            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_OUT}</td>
+                            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SMTP_IN}</td>
+                            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SMTP_OUT}</td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP_IN}</td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{POP_OUT}</td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{OTHER_IN}</td>
@@ -77,8 +77,8 @@
                             <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALL}</b></td>
                             <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{WEB_IN_ALL}</strong></span></td>
                             <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{WEB_OUT_ALL}</strong></span></td>
-                            <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{MAIL_IN_ALL}</strong></span></td>
-                            <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{MAIL_OUT_ALL}</strong></span></td>
+                            <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{SMTP_IN_ALL}</strong></span></td>
+                            <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{SMTP_OUT_ALL}</strong></span></td>
                             <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{POP_IN_ALL}</strong></span></td>
                             <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{POP_OUT_ALL}</strong></span></td>
                             <td class="content3" nowrap="nowrap" align="center"><span class="content2"><strong>{OTHER_IN_ALL}</strong></span></td>

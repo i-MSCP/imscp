@@ -68,48 +68,48 @@ foreach ($config_entries as $config_entry) {
 		$replace = array();
 		// rkhunter-like log colouring
 		$search [] = '/[^\-]WARNING/i';
-		$replace[] = '<strong><font color="orange">$0</font></strong>';
+		$replace[] = '<strong color="orange">$0</strong>';
 		$search [] = '/([^a-z])(OK)([^a-z])/i';
-		$replace[] = '$1<font color="green">$2</font>$3';
+		$replace[] = '$1<span color="green">$2</span>$3';
 		$search [] = '/[ \t]+clean[ \t]+/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/Not found/i';
-		$replace[] = '<font color="blue">$0</font>';
+		$replace[] = '<span color="blue">$0</span>';
 		$search [] = '/Skipped/i';
-		$replace[] = '<font color="blue">$0</font>';
+		$replace[] = '<span color="blue">$0</span>';
 		$search [] = '/unknown[^)]/i';
-		$replace[] = '<strong><font color="#bf55bf">$0</font></strong>';
+		$replace[] = '<strong color="#bf55bf">$0</strong>';
 		$search [] = '/Unsafe/i';
-		$replace[] = '<strong><font color="#cfcf00">$0</font></strong>';
+		$replace[] = '<strong color="#cfcf00">$0</strong>';
 		$search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
-		$replace[] = '<strong><font color="red">$0</font></strong>';
+		$replace[] = '<strong color="red">$0</strong>';
 		$search [] = '/0[ \t]+vulnerable/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '#(\[[0-9]{2}:[[0-9]{2}:[[0-9]{2}\][ \t]+-{20,35}[ \t]+)([a-zA-Z0-9 ]+)([ \t]+-{20,35})<br />#e';
 		$replace[] = '"</div><a href=\"#\" onclick=\"showHideBlocks(\'rkhuntb" . $blocksCount . "\');return false;\">$1<b>$2</b>$3</a><br /><div id=\"rkhuntb" . $blocksCount++ . "\">"';
 		// chkrootkit-like log colouring
 		$search [] = '/([^a-z][ \t]+)(INFECTED)/i';
-		$replace[] = '$1<strong><font color="red">$2</font></strong>';
+		$replace[] = '$1<strong color="red">$2</strong>';
 		$search [] = '/Nothing found/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/Nothing detected/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/Not infected/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/no packet sniffer/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/(: )(PACKET SNIFFER)/i';
-		$replace[] = '$1<font color="orange">$2</font>';
+		$replace[] = '$1<span color="orange">$2</span>';
 		$search [] = '/not promisc/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/no suspect file(s|)/i';
-		$replace[] = '<font color="green">$0</font>';
+		$replace[] = '<span color="green">$0</span>';
 		$search [] = '/([0-9]+) process(|es) hidden/i';
-		$replace[] = '<font color="#cfcf00">$0</font>';
+		$replace[] = '<span color="#cfcf00">$0</span>';
 
 		$contents = preg_replace($search, $replace, $contents);
 	} else {
-		$contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or is empty", $filename) . "</font></b>";
+		$contents = "<strong color='#FF0000'>" . tr("%s doesn't exist or is empty", $filename) . "</strong>";
 	}
 
 	$tpl->assign(

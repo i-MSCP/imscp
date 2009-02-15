@@ -129,8 +129,8 @@ SQL_QUERY;
 		if ($rs->RecordCount() > 0) {
 			list($web_in,
 				$web_out,
-				$mail_in,
-				$mail_out,
+				$smtp_in,
+				$smtp_out,
 				$pop_in,
 				$pop_out,
 				$other_in,
@@ -147,8 +147,8 @@ SQL_QUERY;
 					'MONTH' => $month,
 					'WEB_IN' => sizeit($web_in),
 					'WEB_OUT' => sizeit($web_out),
-					'MAIL_IN' => sizeit($mail_in),
-					'MAIL_OUT' => sizeit($mail_out),
+					'SMTP_IN' => sizeit($smtp_in),
+					'SMTP_OUT' => sizeit($smtp_out),
 					'POP_IN' => sizeit($pop_in),
 					'POP_OUT' => sizeit($pop_out),
 					'OTHER_IN' => sizeit($other_in),
@@ -158,8 +158,8 @@ SQL_QUERY;
 					'ALL' => sizeit($all_in + $all_out)));
 			$all[0] = $all[0] + $web_in;
 			$all[1] = $all[1] + $web_out;
-			$all[2] = $all[2] + $mail_in;
-			$all[3] = $all[3] + $mail_out;
+			$all[2] = $all[2] + $smtp_in;
+			$all[3] = $all[3] + $smtp_out;
 			$all[4] = $all[4] + $pop_in;
 			$all[5] = $all[5] + $pop_out;
 			$all[6] = $all[6] + $all_in;
@@ -179,8 +179,8 @@ SQL_QUERY;
 			array(
 				'WEB_IN_ALL' => sizeit($all[0]),
 				'WEB_OUT_ALL' => sizeit($all[1]),
-				'MAIL_IN_ALL' => sizeit($all[2]),
-				'MAIL_OUT_ALL' => sizeit($all[3]),
+				'SMTP_IN_ALL' => sizeit($all[2]),
+				'SMTP_OUT_ALL' => sizeit($all[3]),
 				'POP_IN_ALL' => sizeit($all[4]),
 				'POP_OUT_ALL' => sizeit($all[5]),
 				'OTHER_IN_ALL' => sizeit($all_other_in),
@@ -213,10 +213,10 @@ $tpl->assign(
 			'TR_DAY' => tr('Day'),
 			'TR_WEB_IN' => tr('Web in'),
 			'TR_WEB_OUT' => tr('Web out'),
-			'TR_MAIL_IN' => tr('Mail in'),
-			'TR_MAIL_OUT' => tr('Mail out'),
-			'TR_POP_IN' => tr('Pop/IMAP in'),
-			'TR_POP_OUT' => tr('Pop/IMAP out'),
+			'TR_SMTP_IN' => tr('SMTP in'),
+			'TR_SMTP_OUT' => tr('SMTP out'),
+			'TR_POP_IN' => tr('IMAP/POP3 in'),
+			'TR_POP_OUT' => tr('IMAP/POP3 out'),
 			'TR_OTHER_IN' => tr('Other in'),
 			'TR_OTHER_OUT' => tr('Other out'),
 			'TR_ALL_IN' => tr('All in'),
