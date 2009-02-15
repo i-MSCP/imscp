@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-09-10 01:05-0500\n"
 "Last-Translator: Guillermo Siméon <mo@momocello.com>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
@@ -1470,16 +1470,20 @@ msgstr "Web<br>entrant"
 msgid "Web out"
 msgstr "Web<br>sortant"
 
-msgid "Mail in"
-msgstr "Emails<br>entrants"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Emails<br>sortants"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP3/IMAP<br>entrant"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP3/IMAP<br>sortant"
 
 msgid "Other in"
@@ -4043,6 +4047,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Utilisateur non terminé !"
+
+#~ msgid "Mail in"
+#~ msgstr "Emails<br>entrants"
+
+#~ msgid "Mail out"
+#~ msgstr "Emails<br>sortants"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -1449,16 +1449,20 @@ msgstr "Web příchozí"
 msgid "Web out"
 msgstr "Web odchozí"
 
-msgid "Mail in"
-msgstr "Mail příchozí"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail odchozí"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP příchozí"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP odchozí"
 
 msgid "Other in"
@@ -3986,6 +3990,12 @@ msgstr "Uživatel má záznam o doméně!<br>Nejprve smažte doménu ze systému
 
 msgid "User not terminated!"
 msgstr "Uživatel není odstraněn!"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail příchozí"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail odchozí"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Seznam subdomén je prázdný! Nemůžete přidávat poštovní účty!"

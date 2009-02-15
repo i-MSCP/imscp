@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da_DK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -1463,16 +1463,20 @@ msgstr "Web ind"
 msgid "Web out"
 msgstr "Web ud"
 
-msgid "Mail in"
-msgstr "Mail ind"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Mail ud"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP ind"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP ud"
 
 msgid "Other in"
@@ -4010,6 +4014,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
+
+#~ msgid "Mail in"
+#~ msgstr "Mail ind"
+
+#~ msgid "Mail out"
+#~ msgstr "Mail ud"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Subdomæne liste er tom! Du kan ikke tilføje email konti!"

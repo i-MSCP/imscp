@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-08-22 14:04+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -1467,16 +1467,20 @@ msgstr "Web entrada"
 msgid "Web out"
 msgstr "Web sortida"
 
-msgid "Mail in"
-msgstr "Correu entrada"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Correu sortida"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP entrada"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP sortida"
 
 msgid "Other in"
@@ -4024,6 +4028,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Usuari no eliminat!"
+
+#~ msgid "Mail in"
+#~ msgstr "Correu entrada"
+
+#~ msgid "Mail out"
+#~ msgstr "Correu sortida"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

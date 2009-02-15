@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -1494,16 +1494,20 @@ msgstr "Web sis��n"
 msgid "Web out"
 msgstr "Web ulos"
 
-msgid "Mail in"
-msgstr "E-mail sis��n"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP-liikenne"
 
-msgid "Mail out"
-msgstr "E-mail ulos"
+#, fuzzy
+msgid "SMTP out"
+msgstr "FTP-tunnus"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Pop/IMAP sis��n"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Pop/IMAP ulos"
 
 msgid "Other in"
@@ -3982,6 +3986,12 @@ msgstr "T�ll� k�ytt�j�ll� on domain!<br>Poista ensin domain j�rjes
 
 msgid "User not terminated!"
 msgstr "K�ytt�j�� ei poistettu!"
+
+#~ msgid "Mail in"
+#~ msgstr "E-mail sis��n"
+
+#~ msgid "Mail out"
+#~ msgstr "E-mail ulos"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Alidomain-lista on tyhj�! Et voi luoda s�hk�posteja!"

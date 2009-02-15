@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP.gl.00.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-08-28 20:35+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galician <infoxeral@ciberirmandade.org>\n"
@@ -1466,16 +1466,20 @@ msgstr "Entrada web"
 msgid "Web out"
 msgstr "Saída web"
 
-msgid "Mail in"
-msgstr "Entrada correo"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Saída correo"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "Entrada POP/IMAP"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "Saída POP/IMAP"
 
 msgid "Other in"
@@ -4033,6 +4037,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Usuario non dado de baixa!"
+
+#~ msgid "Mail in"
+#~ msgstr "Entrada correo"
+
+#~ msgid "Mail out"
+#~ msgstr "Saída correo"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

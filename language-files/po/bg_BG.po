@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -1476,16 +1476,20 @@ msgstr "Уеб-вход"
 msgid "Web out"
 msgstr "Уеб-изход"
 
-msgid "Mail in"
-msgstr "Поща-вход"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP трафик"
 
-msgid "Mail out"
-msgstr "Поща-изход"
+#, fuzzy
+msgid "SMTP out"
+msgstr "FTP акаунт"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP вход"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP изход"
 
 msgid "Other in"
@@ -4053,6 +4057,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+#~ msgid "Mail in"
+#~ msgstr "Поща-вход"
+
+#~ msgid "Mail out"
+#~ msgstr "Поща-изход"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

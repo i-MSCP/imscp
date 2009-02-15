@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-12-06 17:09+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: German (Germany) <de_DE@li.org>\n"
@@ -1466,16 +1466,20 @@ msgstr "Web (in)"
 msgid "Web out"
 msgstr "Web (out)"
 
-msgid "Mail in"
-msgstr "E-Mail (in)"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "E-Mail (out)"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP3/IMAP (in)"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP3/IMAP (out)"
 
 msgid "Other in"
@@ -4037,6 +4041,12 @@ msgstr "Dieser Benutzer besitzt Domains!<br />Löschen Sie diese zuerst!"
 
 msgid "User not terminated!"
 msgstr "Benutzer wurde nicht gelöscht!"
+
+#~ msgid "Mail in"
+#~ msgstr "E-Mail (in)"
+
+#~ msgid "Mail out"
+#~ msgstr "E-Mail (out)"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

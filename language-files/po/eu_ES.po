@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-08-07 15:56+0200\n"
 "Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
 "Language-Team: Euskara <eu@li.org>\n"
@@ -1467,16 +1467,20 @@ msgstr "Web sarrera"
 msgid "Web out"
 msgstr "Web irteera"
 
-msgid "Mail in"
-msgstr "Posta sarrera"
+#, fuzzy
+msgid "SMTP in"
+msgstr "SMTP"
 
-msgid "Mail out"
-msgstr "Posta irteera"
+#, fuzzy
+msgid "SMTP out"
+msgstr "SMTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP/IMAP sarrera"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP/IMAP irteera"
 
 msgid "Other in"
@@ -4023,6 +4027,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Erabiltzailea ez da amaitu!"
+
+#~ msgid "Mail in"
+#~ msgstr "Posta sarrera"
+
+#~ msgid "Mail out"
+#~ msgstr "Posta irteera"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""

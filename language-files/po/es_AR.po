@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-03 13:51+0800\n"
+"POT-Creation-Date: 2009-02-15 08:46+0800\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Spanish Argentina <es_AR@li.org>\n"
@@ -1493,16 +1493,20 @@ msgstr "Web<br>entrante"
 msgid "Web out"
 msgstr "Web<br>saliente"
 
-msgid "Mail in"
-msgstr "Correo entrante"
+#, fuzzy
+msgid "SMTP in"
+msgstr "Trafico SMTP"
 
-msgid "Mail out"
-msgstr "Correo saliente"
+#, fuzzy
+msgid "SMTP out"
+msgstr "Cuenta FTP"
 
-msgid "Pop/IMAP in"
+#, fuzzy
+msgid "IMAP/POP3 in"
 msgstr "POP3 / IMAP<br>Entrante"
 
-msgid "Pop/IMAP out"
+#, fuzzy
+msgid "IMAP/POP3 out"
 msgstr "POP3 / IMAP<br>Saliente"
 
 msgid "Other in"
@@ -3996,6 +4000,12 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "El usuario no fue eliminado!"
+
+#~ msgid "Mail in"
+#~ msgstr "Correo entrante"
+
+#~ msgid "Mail out"
+#~ msgstr "Correo saliente"
 
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr ""
