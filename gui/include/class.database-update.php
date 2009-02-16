@@ -274,6 +274,25 @@ class databaseUpdate extends ispcpUpdate{
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1610.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @version		1.0
+	 * @since		r1508
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_10() {
+		$sqlUpd = array();
+		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, ';' ) WHERE `name` LIKE \"PORT_%\"";
+		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, 'localhost' ) WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
+		
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
