@@ -14,7 +14,6 @@
       </tr>
     </table>
 	<!-- EDP: logged_from -->
-	<form name="puser_assign" method="post" action="protected_user_assign.php?uname={UNAME}">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -29,7 +28,7 @@
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
           <tr>
-            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <td colspan="3"><form name="puser_assign" method="post" action="protected_user_assign.php?uname={UNAME}"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
