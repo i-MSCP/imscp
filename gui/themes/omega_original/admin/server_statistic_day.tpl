@@ -36,7 +36,7 @@
                       <td valign="top"><table>
                           <tr>
                             <td width="40" nowrap="nowrap">&nbsp;</td>
-                            <td height="25" colspan="13" nowrap="nowrap" class="content">{TR_YEAR} {YEAR}&nbsp;&nbsp;&nbsp;&nbsp; {TR_MONTH}{MONTH}&nbsp;&nbsp;&nbsp;{TR_DAY} {DAY}</td>
+                            <td height="25" colspan="13" nowrap="nowrap" class="content">{TR_YEAR} {YEAR}&nbsp;&nbsp;&nbsp;&nbsp; {TR_MONTH} {MONTH}&nbsp;&nbsp;&nbsp;{TR_DAY} {DAY}</td>
                           </tr>
                           <tr align="center">
                             <td nowrap="nowrap">&nbsp;</td>

@@ -87,15 +87,14 @@
                               <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
-                            <tr style="display:none;" id='normal_mail_block'>
-                              <script type="text/javascript">
+                            <tr style="display:none;" id="normal_mail_block">
+                              <td nowrap="nowrap" class="content2" width="200"><script type="text/javascript">
                               <!--
                               if ("{NORMAL_MAIL}" == 'checked') {
                                   document.getElementById('normal_mail_block').style.display = 'block';
                               }
                               //-->
-                              </script>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
+                              </script><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
                                 <label for="mail_type1">{TR_MAIL_LIST}</label></td>
                               <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->

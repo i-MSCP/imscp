@@ -139,9 +139,9 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
             'VL_STREET2' => $street2,
             'VL_PHONE' => $phone,
             'VL_FAX' => $fax,
-            'VL_MALE' => (($gender === 'M') ? 'checked' : ''),
-            'VL_FEMALE' => (($gender === 'F') ? 'checked' : ''),
-            'VL_UNKNOWN' => (($gender == 'U') ? 'checked' : '')
+            'VL_MALE' => (($gender === 'M') ? 'selected="selected"' : ''),
+            'VL_FEMALE' => (($gender === 'F') ? 'selected="selected"' : ''),
+            'VL_UNKNOWN' => (($gender == 'U') ? 'selected="selected"' : '')
             )
         );
 }
@@ -205,7 +205,7 @@ function check_address_data(&$tpl) {
 *
 */
 
-if (isset($_SESSION['user_id']) && $_SESSION['plan_id']) {
+if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
     $user_id = $_SESSION['user_id'];
     $plan_id = $_SESSION['plan_id'];
 } else {

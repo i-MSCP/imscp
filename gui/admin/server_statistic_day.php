@@ -197,6 +197,8 @@ $tpl->assign(
 			'TR_SMTP_OUT' => tr('SMTP out'),
 			'TR_POP_IN' => tr('IMAP/POP3 in'),
 			'TR_POP_OUT' => tr('IMAP/POP3 out'),
+			'TR_OTHER_IN' => tr('Other in'),
+			'TR_OTHER_OUT' => tr('Other out'),
 			'TR_ALL_IN' => tr('All in'),
 			'TR_ALL_OUT' => tr('All out'),
 			'TR_ALL' => tr('All'),

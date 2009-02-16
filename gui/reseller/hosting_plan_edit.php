@@ -230,18 +230,37 @@ SQL_QUERY;
 			);
 
 	if ('_yes_' === $hp_php) {
-		$tpl->assign(array('TR_PHP_YES' => 'checked'));
-	} else
-		$tpl->assign(array('TR_PHP_NO' => 'checked'));
+		$tpl->assign(array(
+			'TR_PHP_YES' => 'checked="checked"',
+			'TR_PHP_NO' => ''
+		));
+	} else {
+		$tpl->assign(array(
+			'TR_PHP_YES' => '',
+			'TR_PHP_NO' => 'checked="checked"'
+		));
 	if ('_yes_' === $hp_cgi) {
-		$tpl->assign(array('TR_CGI_YES' => 'checked'));
-	} else
-		$tpl->assign(array('TR_CGI_NO' => 'checked'));
-
+		$tpl->assign(array(
+			'TR_CGI_YES' => 'checked="checked"',
+			'TR_CGI_NO' => ''
+		));
+	} else {
+		$tpl->assign(array(
+			'TR_CGI_YES' => '',
+			'TR_CGI_NO' => 'checked="checked"'
+		));
+	}
 	if ($status == 1) {
-		$tpl->assign(array('TR_STATUS_YES' => 'checked'));
-	} else
-		$tpl->assign(array('TR_STATUS_NO' => 'checked'));
+		$tpl->assign(array(
+			'TR_STATUS_YES' => 'checked="checked"',
+			'TR_STATUS_NO' => ''
+		));
+	} else {
+		$tpl->assign(array(
+			'TR_STATUS_YES' => '',
+			'TR_STATUS_NO' => 'checked="checked"'
+		));
+	}
 } // End of gen_load_ehp_page()
 
 // Check correction of input data

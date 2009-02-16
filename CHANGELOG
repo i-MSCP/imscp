@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-16 Thomas Häber
+	- GUI:
+		* fixed uninitialized variable bugs in orderpanel
+		* fixed missing replacement of some template variables
+		* some fixes in hardcoded HTML
+	- THEMES:
+		* fixed some HTML/JS issues + typos
+
 2009-02-15 Daniel Andreca
 	- GUI:
 		* Fixed #1665: Form and td/table tags are mixed-up the wrong way in admin/reseller_edit.tpl

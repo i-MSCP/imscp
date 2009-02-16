@@ -151,6 +151,12 @@ gen_plan_details($tpl, $sql, $user_id, $plan_id);
 gen_page_message($tpl);
 
 $tpl->assign(
+	array(
+		'THEME_CHARSET' => tr('encoding'),
+	)
+);
+
+$tpl->assign(
     array('TR_DOMAINS' => tr('Domains'),
         'TR_WEBSPACE' => tr('Webspace'),
         'TR_HDD' => tr('Disk limit'),

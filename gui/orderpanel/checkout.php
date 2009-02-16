@@ -145,7 +145,7 @@ SQL_QUERY;
 *
 */
 
-if (isset($_SESSION['user_id']) && $_SESSION['plan_id']) {
+if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
     $user_id = $_SESSION['user_id'];
     $plan_id = $_SESSION['plan_id'];
 } else {

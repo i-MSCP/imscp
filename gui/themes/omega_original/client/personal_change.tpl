@@ -57,15 +57,16 @@
                         <td class="content2"><label for="lname">{TR_LAST_NAME}</label></td>
                         <td width="516" class="content"><input type="text" name="lname" id="lname" value="{LAST_NAME}" style="width:210px" class="textinput"></td>
                       </tr>
-                            <tr>
-                            <td width="25">&nbsp;</td>
-                              <td width="200" class="content2"><label for="gender">{TR_GENDER}</label></td>
-                              <td class="content"><select name="gender" id="gender" size="1">
-                                      <option value="M" {VL_MALE}>{TR_MALE}</option>
-                                      <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
-                                      <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
-                                    </select></td>
-                            </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td width="200" class="content2"><label for="gender">{TR_GENDER}</label></td>
+                        <td class="content"><select name="gender" id="gender" size="1">
+                          <option value="M" {VL_MALE}>{TR_MALE}</option>
+                          <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+                          <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+                        </select></td>
+                      </tr>
+                      <tr>
                         <td>&nbsp;</td>
                         <td class="content2"><label for="firm">{TR_COMPANY}</label></td>
                         <td class="content"><input type="text" name="firm" id="firm" value="{FIRM}" style="width:210px" class="textinput"></td>
