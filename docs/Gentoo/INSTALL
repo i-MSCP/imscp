@@ -203,11 +203,12 @@ Make sure you are logged in as root and MySQL is running.
 ---------
 Make sure you are logged in as root and MySQL is running.
 
-1. If you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 please note that
-   ispCP Omega comes with a new webmail client. Please make sure that your
-   customers can still access the address book data. You can ensure this either
-   by making the old webmail client accessable or by using this
-   script: http://www.isp-control.net/ispcp/ticket/1614
+1. If you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 you must first install
+   ISPCP as described in INSTALL sections. Please note that ispCP Omega comes
+   with a new webmail client. Please make sure that your customers can still
+   access the address book data. You can ensure this either by making the old
+   webmail client accessable or by using this script:
+   http://www.isp-control.net/ispcp/ticket/1614.
 
 2. Untar or unzip the distribution files to a secure directory:
 	# cd /root

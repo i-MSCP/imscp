@@ -48,7 +48,7 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 
 	$rs='';
 
-	$fp = fsockopen(Config::get('BASE_SERVER_VHOST'), 80, $errno, $errstr, 5);
+	$fp = fsockopen(Config::get('BASE_SERVER_IP'), 80, $errno, $errstr, 5);
 	if (!$fp) {
 		error();
 	} else {
