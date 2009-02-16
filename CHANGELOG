@@ -4,6 +4,9 @@ ispCP ω 1.0.0 Changelog
 2009-02-16 Daniel Andreca
 	- GUI:
 		* Fixed small typos introduced in r1502
+		* Fixed Language uninstall is always the previous uninstalled
+	- ENGINE:
+		* Fixed #1672: Wrong VHCS Version in Updatescript
 
 2009-02-16 Thomas Häber
 	- GUI:

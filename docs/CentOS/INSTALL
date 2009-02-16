@@ -225,7 +225,7 @@ need to be running.
 For the following steps, you will need to be logged in as root and MySQL will
 need to be running.
 
-1. If you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that
+1. If you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 please note that
    ispCP Omega comes with a new webmail client. Please make sure that your
    customers can still access the address book data. You can ensure this either
    by making the old webmail client accessable or by using this

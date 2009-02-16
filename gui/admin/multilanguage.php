@@ -34,13 +34,13 @@ $tpl->define_dynamic('lang_def', 'lang_row');
 $theme = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_I18N_PAGE_TITLE' => tr('ispCP - Admin/Internationalisation'),
-			'THEME_COLOR_PATH' => "../themes/$theme",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-	);
+	array(
+		'TR_ADMIN_I18N_PAGE_TITLE'	=> tr('ispCP - Admin/Internationalisation'),
+		'THEME_COLOR_PATH'			=> "../themes/$theme",
+		'THEME_CHARSET'				=> tr('encoding'),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id'])
+	)
+);
 
 function update_def_lang() {
 	$sql = Database::getInstance();
@@ -51,50 +51,18 @@ function update_def_lang() {
 			$user_id = $_SESSION['user_id'];
 			$user_lang = $_POST['default_language'];
 
-			$query = <<<SQL_QUERY
-				SELECT
-					*
-				FROM
-					user_gui_props
-				WHERE
-					user_id = ?
-SQL_QUERY;
-
+			$query = "SELECT * FROM `user_gui_props` WHERE `user_id` = ?";
 			$rs = exec_query($sql, $query, array($user_id));
 
 			if ($rs->RecordCount() == 0) {
-				$query = <<<SQL_QUERY
-						INSERT INTO
-							user_gui_props
-							(
-								user_id,
-								lang,
-								layout
-							)
-						VALUES
-							(
-								?,
-								?,
-								?
-							)
-SQL_QUERY;
-
+				$query = "INSERT INTO `user_gui_props` ( `user_id`, `lang`, `layout`) VALUES ( ?, ?, ?)";
 				$rs = exec_query($sql, $query, array($user_id, $user_lang, $theme));
 			} else {
-				$query = <<<SQL_QUERY
-					UPDATE
-						user_gui_props
-					SET
-						lang = ?
-					WHERE
-						user_id = ?
-SQL_QUERY;
-
+				$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
 				$rs = exec_query($sql, $query, array($user_lang, $user_id));
 			}
 
 			$_SESSION['user_def_lang'] = $user_lang;
-
 			set_page_message(tr('Default language changed!'));
 		}
 	}
@@ -171,14 +139,14 @@ function install_lang() {
 			}
 
 			$sql->Execute("CREATE TABLE `$lang_table` (
-								msgid text collate utf8_unicode_ci,
-								msgstr text collate utf8_unicode_ci,
-                                KEY msgid (msgid(25))
-								) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-				);
+							msgid text collate utf8_unicode_ci,
+							msgstr text collate utf8_unicode_ci,
+                               KEY msgid (msgid(25))
+							) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+			);
 
 			foreach ($ab as $msgid => $msgstr) {
-				$query = "INSERT INTO `$lang_table` (msgid, msgstr) VALUES (?, ?)";
+				$query = "INSERT INTO `$lang_table` (`msgid`, `msgstr`) VALUES (?, ?)";
 				exec_query($sql, $query, str_replace("\\n", "\n", array($msgid, $msgstr)));
 			}
 
@@ -213,22 +181,10 @@ function show_lang(&$tpl, &$sql) {
 		}
 		$dat = explode('_', $data);
 
-		$query = <<<SQL_QUERY
-				SELECT
-					count(msgid) as cnt
-				FROM
-					$tables[$i]
-SQL_QUERY;
+		$query = "SELECT count(`msgid`) as cnt FROM $tables[$i]";
 		$rs = exec_query($sql, $query, array());
 
-		$query = <<<SQL_QUERY
-				SELECT
-					msgstr
-				FROM
-					$tables[$i]
-				WHERE
-					msgid = 'ispcp_language'
-SQL_QUERY;
+		$query = "SELECT `msgstr` FROM $tables[$i] WHERE `msgid` = 'ispcp_language'";
 		$res = exec_query($sql, $query, array());
 
 		$language_name = ($res->RecordCount() == 0) ? tr('Unknown') : $res->fields['msgstr'];
@@ -238,48 +194,49 @@ SQL_QUERY;
 		if ($usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(
-					'DEFAULT' => tr('yes'),
-					'LANG_RADIO' => '',
-					)
-				);
+					'DEFAULT'		=> tr('yes'),
+					'LANG_RADIO'	=> '',
+				)
+			);
 			$tpl->parse('LANG_DEF', 'lang_def');
 		} else {
 			$tpl->assign(
 				array(
-					'LANG_DEF' => '',
-					'LANG_VALUE' => 'lang_' . $dat[1],
-					)
-				);
+					'LANG_DEF'		=> '',
+					'LANG_VALUE'	=> 'lang_' . $dat[1],
+				)
+			);
 			$tpl->parse('LANG_RADIO', 'lang_radio');
 		}
 
 		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1] || $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(
-					'TR_UNINSTALL' => tr('uninstall'),
-					'LANG_DELETE_LINK' => '',
-					)
-				);
+					'TR_UNINSTALL'		=> tr('uninstall'),
+					'LANG_DELETE_LINK'	=> '',
+					'LANGUAGE'			=> $language_name,
+				)
+			);
 			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
 		} else {
 			$tpl->assign(
 				array(
-					'TR_UNINSTALL' => tr('uninstall'),
-					'URL_DELETE' => 'language_delete.php?delete_lang=lang_' . $dat[1],
-					'LANG_DELETE_SHOW' => '',
-					)
-				);
+					'TR_UNINSTALL'		=> tr('uninstall'),
+					'URL_DELETE'		=> 'language_delete.php?delete_lang=lang_' . $dat[1],
+					'LANG_DELETE_SHOW'	=> '',
+					'LANGUAGE'			=> $language_name,
+				)
+			);
 			$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
 		}
 		// 'LANGUAGE' => $dat[1],
 		// $res
 		$tpl->assign(
 			array(
-				'LANGUAGE' => $language_name,
-				'MESSAGES' => tr('%d messages translated', $rs->fields['cnt']),
-				'URL_EXPORT' => 'multilanguage_export.php?export_lang=lang_' . $dat[1],
-				)
-			);
+				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']),
+				'URL_EXPORT'	=> 'multilanguage_export.php?export_lang=lang_' . $dat[1],
+			)
+		);
 
 		$tpl->parse('LANG_ROW', '.lang_row');
 	}
@@ -301,22 +258,22 @@ install_lang();
 show_lang($tpl, $sql);
 
 $tpl->assign(
-		array(
-			'TR_MULTILANGUAGE' => tr('Internationalisation'),
-			'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
-			'TR_LANGUAGE' => tr('Language'),
-			'TR_MESSAGES' => tr('Messages'),
-			'TR_DEFAULT' => tr('Default'),
-			'TR_ACTION' => tr('Action'),
-			'TR_SAVE' => tr('Save'),
-			'TR_INSTALL_NEW_LANGUAGE' => tr('Install new language'),
-			'TR_LANGUAGE_FILE' => tr('Language file'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'TR_INSTALL' => tr('Install'),
-			'TR_EXPORT' => tr('Export'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-			)
-	);
+	array(
+		'TR_MULTILANGUAGE'			=> tr('Internationalisation'),
+		'TR_INSTALLED_LANGUAGES'	=> tr('Installed languages'),
+		'TR_LANGUAGE'				=> tr('Language'),
+		'TR_MESSAGES'				=> tr('Messages'),
+		'TR_DEFAULT'				=> tr('Default'),
+		'TR_ACTION'					=> tr('Action'),
+		'TR_SAVE'					=> tr('Save'),
+		'TR_INSTALL_NEW_LANGUAGE'	=> tr('Install new language'),
+		'TR_LANGUAGE_FILE'			=> tr('Language file'),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
+		'TR_INSTALL'				=> tr('Install'),
+		'TR_EXPORT'					=> tr('Export'),
+		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete %s?', true, '%s'),
+	)
+);
 
 gen_page_message($tpl);
 

@@ -1139,7 +1139,7 @@ sub prepare_update {
 	elsif (($main::ua{'update'} == VHCS247) || ($main::ua{'update'} == VHCS248)) {
 
 		my $wmsg =
-			"\tIf you upgrade from VHCS 4.2.7.1 or VHCS OMEGA 2.4.8 please note that\n".
+			"\tIf you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 please note that\n".
 			"\tispCP Omega comes with a new webmail client. Please make sure that your\n".
 			"\tcustomers can still access their address book data. You can ensure this either\n".
 			"\tby making the old webmail client accessable or by using this\n".
