@@ -208,58 +208,71 @@ SQL_QUERY;
 		$value = '';
 
 	$tpl->assign(
-			array(
-				'HP_NAME_VALUE' => stripslashes($hp_name),
-				'TR_EDIT_HOSTING_PLAN' => $edit_hp,
-				'TR_MAX_SUB_LIMITS' => $hp_sub,
-				'TR_MAX_ALS_VALUES' => $hp_als,
-				'HP_MAIL_VALUE' => $hp_mail,
-				'HP_FTP_VALUE' => $hp_ftp,
-				'HP_SQL_DB_VALUE' => $hp_sql_db,
-				'HP_SQL_USER_VALUE' => $hp_sql_user,
-				'HP_TRAFF_VALUE' => $hp_traff,
-				'HP_DISK_VALUE' => $hp_disk,
-				'HP_DESCRIPTION_VALUE' => stripslashes($description),
-				'HP_PRICE' => $price,
-				'HP_SETUPFEE' => $setup_fee,
-				'HP_CURRENCY' => stripslashes($value),
-				'READONLY' => $readonly,
-				'DISBLED' => $disabled,
-				'HP_PAYMENT' => stripslashes($payment)
-				)
-			);
+		array(
+			'HP_NAME_VALUE' => stripslashes($hp_name),
+			'TR_EDIT_HOSTING_PLAN' => $edit_hp,
+			'TR_MAX_SUB_LIMITS' => $hp_sub,
+			'TR_MAX_ALS_VALUES' => $hp_als,
+			'HP_MAIL_VALUE' => $hp_mail,
+			'HP_FTP_VALUE' => $hp_ftp,
+			'HP_SQL_DB_VALUE' => $hp_sql_db,
+			'HP_SQL_USER_VALUE' => $hp_sql_user,
+			'HP_TRAFF_VALUE' => $hp_traff,
+			'HP_DISK_VALUE' => $hp_disk,
+			'HP_DESCRIPTION_VALUE' => stripslashes($description),
+			'HP_PRICE' => $price,
+			'HP_SETUPFEE' => $setup_fee,
+			'HP_CURRENCY' => stripslashes($value),
+			'READONLY' => $readonly,
+			'DISBLED' => $disabled,
+			'HP_PAYMENT' => stripslashes($payment)
+		)
+	);
 
 	if ('_yes_' === $hp_php) {
-		$tpl->assign(array(
-			'TR_PHP_YES' => 'checked="checked"',
-			'TR_PHP_NO' => ''
-		));
+		$tpl->assign(
+			array(
+				'TR_PHP_YES' => 'checked="checked"',
+				'TR_PHP_NO' => ''
+			)
+		);
 	} else {
-		$tpl->assign(array(
-			'TR_PHP_YES' => '',
-			'TR_PHP_NO' => 'checked="checked"'
-		));
+		$tpl->assign(
+			array(
+				'TR_PHP_YES' => '',
+				'TR_PHP_NO' => 'checked="checked"'
+			)
+		);
+	}
 	if ('_yes_' === $hp_cgi) {
-		$tpl->assign(array(
-			'TR_CGI_YES' => 'checked="checked"',
-			'TR_CGI_NO' => ''
-		));
+		$tpl->assign(
+			array(
+				'TR_CGI_YES' => 'checked="checked"',
+				'TR_CGI_NO' => ''
+			)
+		);
 	} else {
-		$tpl->assign(array(
-			'TR_CGI_YES' => '',
-			'TR_CGI_NO' => 'checked="checked"'
-		));
+		$tpl->assign(
+			array(
+				'TR_CGI_YES' => '',
+				'TR_CGI_NO' => 'checked="checked"'
+			)
+		);
 	}
 	if ($status == 1) {
-		$tpl->assign(array(
-			'TR_STATUS_YES' => 'checked="checked"',
-			'TR_STATUS_NO' => ''
-		));
+		$tpl->assign(
+			array(
+				'TR_STATUS_YES' => 'checked="checked"',
+				'TR_STATUS_NO' => ''
+			)
+		);
 	} else {
-		$tpl->assign(array(
-			'TR_STATUS_YES' => '',
-			'TR_STATUS_NO' => 'checked="checked"'
-		));
+		$tpl->assign(
+			array(
+				'TR_STATUS_YES' => '',
+				'TR_STATUS_NO' => 'checked="checked"'
+			)
+		);
 	}
 } // End of gen_load_ehp_page()
 

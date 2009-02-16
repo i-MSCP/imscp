@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-16 Daniel Andreca
+	- GUI:
+		* Fixed small typos introduced in r1502
+
 2009-02-16 Thomas Häber
 	- GUI:
 		* fixed uninitialized variable bugs in orderpanel
