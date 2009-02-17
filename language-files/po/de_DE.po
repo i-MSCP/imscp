@@ -416,6 +416,9 @@ msgstr "Wollen Sie die Updates jetzt einspielen?"
 msgid "No database updates available"
 msgstr "Keine Datenbankupdates verfügbar"
 
+msgid "Execute updates"
+msgstr "Updates ausführen"
+
 msgid "ispCP - Domain/Details"
 msgstr "ispCP - Domain/Details"
 

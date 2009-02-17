@@ -68,7 +68,8 @@ if(databaseUpdate::getInstance()->checkUpdateExists()) {
 		'UPDATE_MESSAGE'		=> '',
 		'DATABASE_UPDATE_MESSAGE'	=> '',
 		'UPDATE'			=> tr('New Database update is now available'),
-		'INFOS'				=> tr('Do you want to execute the Updates now?')
+		'INFOS'				=> tr('Do you want to execute the Updates now?'),
+		'TR_EXECUTE_UPDATE'	=> tr('Execute updates')
 	));
 	$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
 } else {

@@ -407,6 +407,9 @@ msgstr ""
 msgid "No database updates available"
 msgstr ""
 
+msgid "Execute updates"
+msgstr ""
+
 msgid "ispCP - Domain/Details"
 msgstr ""
 
