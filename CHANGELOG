@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-17 Daniel Andreca
+	- GUI:
+		* Fixed #1673: If admin edits personal data of users, the admin template is loaded
+
 2009-02-16 Benedikt Heintel
 	- GUI:
 		* Small fixes
