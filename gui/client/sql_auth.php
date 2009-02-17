@@ -69,13 +69,13 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 			header($header);
 			die();
 		} else {
-			error();
+			auth_error();
 		}
 	}
 }
 
-function error() {
-	set_page_message("Error while authenticating!!!");
+function auth_error() {
+	set_page_message("Error while authenticating!");
 	header("Location: sql_manage.php");
 	die();
 }
