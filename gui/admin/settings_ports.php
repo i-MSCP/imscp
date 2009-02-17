@@ -35,12 +35,12 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo(get_session('user_id'))
-		)
-	);
+		'TR_ADMIN_SETTINGS_PAGE_TITLE'	=> tr('ispCP - Admin/Settings'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo(get_session('user_id'))
+	)
+);
 
 function update_services(&$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
@@ -48,6 +48,7 @@ function update_services(&$sql) {
 		$break = false;
 		$service_name = get_post('name');
 		$var_name = get_post('var_name');
+		$ip = get_post('ip');
 		$port = get_post('port');
 		$protocol = get_post('port_type');
 		$status = get_post('show_val');
@@ -64,6 +65,7 @@ function update_services(&$sql) {
 		if (!$break) {
 			// Adding new Ports!
 			if (isset($_POST['name_new']) AND !empty($_POST['name_new'])) {
+				$ip = get_post('ip_new');
 				$port = get_post('port_new');
 				$name = strtoupper(get_post('name_new'));
 				$protocol = get_post('port_type_new');
@@ -74,20 +76,23 @@ function update_services(&$sql) {
 				} elseif (!is_basicString($name)) {
 					set_page_message(tr('ERROR: Only Letters, Numbers, Dash and Underscore are allowed!'));
 					return;
+				} elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)===false) {
+					set_page_message(tr('Wrong IP number!'));
+					return;
 				} else {
 					// Check if PORT exists
-					$query = <<<SQL_QUERY
-							SELECT
-								name
-							FROM
-								config
-							WHERE
-								name = ?
-SQL_QUERY;
+					$query = "
+						SELECT
+							`name`
+						FROM
+							`config`
+						WHERE
+							`name` = ?
+					";
 					$var = "PORT_" . $name;
 					$rs = exec_query($sql, $query, array($var));
 					if ($rs->RecordCount() == 0) {
-						$value = implode(";", array($port, $protocol, $name, $status, 1));
+						$value = implode(";", array($port, $protocol, $name, $status, 1, $ip));
 						setConfig_Value($var, $value);
 						write_log(get_session('user_logged') . ": add service port $name ({$port})!");
 					} else {
@@ -99,7 +104,7 @@ SQL_QUERY;
 				for ($j = 0; $j < $count; $j++) {
 					$var = $var_name[$j];
 					$name = strtoupper(strip_tags($service_name[$j]));
-					$value = @implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j]));
+					$value = implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j], $ip[$j]));
 					setConfig_Value($var, $value);
 				}
 			}
@@ -116,25 +121,28 @@ function delete_service($port_name) {
 		return;
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
-			config
+			`config`
 		WHERE
-			name = ?
-SQL_QUERY;
+			`name` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($port_name));
-	list($port, $protocol, $name, $status, $custom) = explode(";", $rs->fields['value']);
+
+	$value = ( count(explode(";", $rs->fields['value'])) < 6 ) ? $rs->fields['value'].';' : $rs->fields['value'];
+	list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
 	if ($custom == 1) {
-		$query = <<<SQL_QUERY
-		DELETE FROM
-			config
-		WHERE
-			name = ?
-SQL_QUERY;
+		$query = "
+			DELETE FROM
+				`config`
+			WHERE
+				`name` = ?
+				
+		";
 
 		$rs = exec_query($sql, $query, array($port_name));
 		write_log(get_session('user_logged') . ": remove service port $port_name!");
@@ -149,18 +157,18 @@ SQL_QUERY;
 }
 
 function show_services(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
-			config
+			`config`
 		WHERE
-			name
+			`name`
 		  LIKE
 		  	'PORT_%'
 		ORDER BY
-			name ASC
-SQL_QUERY;
+			`name` ASC
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -174,63 +182,55 @@ SQL_QUERY;
 		while (!$rs->EOF) {
 			$tpl->assign('CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
-			list($port, $protocol, $name, $status, $custom) = explode(";", $rs->fields['value']);
+			$value = ( count(explode(";", $rs->fields['value'])) < 6 ) ? $rs->fields['value'].';' : $rs->fields['value'];
+			list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
-			if ($protocol == 'udp') {
-				$selected_udp = "selected=\"selected\"";
-				$selected_tcp = "";
-			} else {
-				$selected_udp = "";
-				$selected_tcp = "selected=\"selected\"";
-			}
+			$selected_udp	= $protocol == 'udp' ? "selected=\"selected\"" : "";
+			$selected_tcp	= $protocol == 'udp' ? "" : "selected=\"selected\"";
 
-			if ($status == '1') {
-				$selected_on = "selected=\"selected\"";
-				$selected_off = "";
-			} else {
-				$selected_on = "";
-				$selected_off = "selected=\"selected\"";
-			}
+			$selected_on	= $status == '1' ? "selected=\"selected\"" : "";
+			$selected_off	= $status == '1' ? "" : "selected=\"selected\"";
 
 			if ($custom == 0) {
 				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name" . $row . "\" value=\"" . $name . "\" />"));
 				$tpl->assign(
 					array(
-						'PORT_READONLY' => 'readonly',
-						'PROTOCOL_READONLY' => 'disabled',
-						'TR_DELETE' => '-',
-						'PORT_DELETE_LINK' => '',
-						'NUM' => $row
-						)
-					);
+						'PORT_READONLY'		=> 'readonly',
+						'PROTOCOL_READONLY'	=> 'disabled',
+						'TR_DELETE'			=> '-',
+						'PORT_DELETE_LINK'	=> '',
+						'NUM'				=> $row
+					)
+				);
 				$tpl->parse('PORT_DELETE_SHOW', '');
 			} else {
 				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name" . $row . "\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
 				$tpl->assign(
-						array(
-							'NAME' => $name,
-							'PORT_READONLY'		=> '',
-							'PROTOCOL_READONLY'	=> '',
-							'TR_DELETE'			=> tr('Delete'),
-							'URL_DELETE'		=> 'settings_ports.php?delete=' . $rs->fields['name'],
-							'PORT_DELETE_SHOW'	=> '',
-							'NUM'				=> $row
-							)
-						);
+					array(
+						'NAME'				=> $name,
+						'PORT_READONLY'		=> '',
+						'PROTOCOL_READONLY'	=> '',
+						'TR_DELETE'			=> tr('Delete'),
+						'URL_DELETE'		=> 'settings_ports.php?delete=' . $rs->fields['name'],
+						'PORT_DELETE_SHOW'	=> '',
+						'NUM'				=> $row
+					)
+				);
  				$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
 			}
 
 			$tpl->assign(
-					array(
-							'CUSTOM' => $custom,
-							'VAR_NAME' => $rs->fields['name'],
-							'PORT' => $port,
-							'SELECTED_UDP' => $selected_udp,
-							'SELECTED_TCP' => $selected_tcp,
-							'SELECTED_ON' => $selected_on,
-							'SELECTED_OFF' => $selected_off,
-						)
-					);
+				array(
+					'CUSTOM'		=> $custom,
+					'VAR_NAME'		=> $rs->fields['name'],
+					'IP'			=> ($ip=='127.0.0.1'?'localhost':(empty($ip)?Config::get('BASE_SERVER_IP'):$ip)),
+					'PORT'			=> $port,
+					'SELECTED_UDP'	=> $selected_udp,
+					'SELECTED_TCP'	=> $selected_tcp,
+					'SELECTED_ON'	=> $selected_on,
+					'SELECTED_OFF'	=> $selected_off,
+				)
+			);
 
 			$tpl->parse('SERVICE_PORTS', '.service_ports');
 
@@ -258,24 +258,25 @@ show_services($tpl, $sql);
 
 $tpl->assign(
 	array(
-		'TR_ACTION' => tr('Action'),
-		'TR_UDP' => tr('udp'),
-		'TR_TCP' => tr('tcp'),
-		'TR_ENABLED' => tr('Yes'),
-		'TR_DISABLED' => tr('No'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'TR_SERVERPORTS' => tr('Server ports'),
-		'TR_SERVICES' => tr('Services'),
-		'TR_SERVICE' => tr('Service'),
-		'TR_PORT' => tr('Port'),
-		'TR_PROTOCOL' => tr('Protocol'),
-		'TR_SHOW' => tr('Show'),
-		'TR_ACTION' => tr('Action'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_ADD' => tr('Add'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-		)
-	);
+		'TR_ACTION'			=> tr('Action'),
+		'TR_UDP'			=> tr('udp'),
+		'TR_TCP'			=> tr('tcp'),
+		'TR_ENABLED'		=> tr('Yes'),
+		'TR_DISABLED'		=> tr('No'),
+		'TR_APPLY_CHANGES'	=> tr('Apply changes'),
+		'TR_SERVERPORTS'	=> tr('Server ports'),
+		'TR_SERVICES'		=> tr('Services'),
+		'TR_SERVICE'		=> tr('Service'),
+		'TR_IP'				=> tr('IP'),
+		'TR_PORT'			=> tr('Port'),
+		'TR_PROTOCOL'		=> tr('Protocol'),
+		'TR_SHOW'			=> tr('Show'),
+		'TR_ACTION'			=> tr('Action'),
+		'TR_DELETE'			=> tr('Delete'),
+		'TR_ADD'			=> tr('Add'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s')
+	)
+);
 
 gen_page_message($tpl);
 

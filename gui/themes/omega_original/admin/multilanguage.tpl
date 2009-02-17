@@ -76,7 +76,7 @@ function action_delete(url, language) {
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_EXPORT}" class="link" target="_blank">{TR_EXPORT}</a> </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" />
                                 <!-- BDP: lang_delete_show -->
-                                {TR_UNINSTALL}
+                                {TR_UNINSTALL} <!--{LANGUAGE}-->
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
                                 <a href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')" class="link">{TR_UNINSTALL}</a>

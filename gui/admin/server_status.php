@@ -148,9 +148,10 @@ SQL_QUERY;
 
 	// Dynamic added Ports
 	while (!$rs->EOF) {
-		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $rs->fields['value']);
+		$value = ( count(explode(";", $rs->fields['value'])) < 6 ) ? $rs->fields['value'].';' : $rs->fields['value'];
+		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 		if ($status) {
-			$ispcp_status->AddService(empty($ip)?Config::get('BASE_SERVER_IP'):$ip, (int)$port, $name, $protocol);
+			$ispcp_status->AddService(($ip=='127.0.0.1'?'localhost':(empty($ip)?Config::get('BASE_SERVER_IP'):$ip)), (int)$port, $name, $protocol);
 		}
 
 		$rs->MoveNext();

@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2009-02-17 Daniel Andreca
 	- GUI:
 		* Fixed #1673: If admin edits personal data of users, the admin template is loaded
+		* Fixed #1675: Bug in admin/server_status.php
 	- LANGUAGES:
 		* Updated German
 	- CONFIGS:
