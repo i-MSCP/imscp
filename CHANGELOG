@@ -6,6 +6,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1673: If admin edits personal data of users, the admin template is loaded
 	- LANGUAGES:
 		* Updated German
+	- CONFIGS:
+		* Fixed #1674: proftpd: root_domain.conf
 
 2009-02-16 Benedikt Heintel
 	- GUI:
