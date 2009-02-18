@@ -190,6 +190,9 @@ msgstr "Anlegen"
 msgid "ispCP - Admin/Manage users/Edit Administrator"
 msgstr "ispCP - Admin/Benutzerverwaltung/Administrator bearbeiten"
 
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "Admin/Benutzerverwaltung/Benutzer bearbeiten"
+
 msgid "User session was killed!"
 msgstr "Benutzersitzung wurde gelöscht!"
 

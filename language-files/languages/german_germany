@@ -51,6 +51,7 @@ Street 2 = Adresse (Zusatz)
 Phone = Telefon
 Add = Anlegen
 ispCP - Admin/Manage users/Edit Administrator = ispCP - Admin/Benutzerverwaltung/Administrator bearbeiten
+ispCP - Admin/Manage users/Edit User = ispCP - Admin/Benutzerverwaltung/Benutzer bearbeiten
 User session was killed! = Benutzersitzung wurde gelöscht!
 Domain account = Domainkonto
 Edit admin = Administrator bearbeiten

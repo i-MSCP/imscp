@@ -181,6 +181,9 @@ msgstr ""
 msgid "ispCP - Admin/Manage users/Edit Administrator"
 msgstr ""
 
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr ""
+
 msgid "User session was killed!"
 msgstr ""
 
