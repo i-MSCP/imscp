@@ -55,7 +55,7 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 		fwrite($fp, $out);
 		$header=null;
 		while (!feof($fp)) {
-			echo$line = fgets($fp, 2048);
+			$line = fgets($fp, 2048);
 			$rs.=$line;
 			if (preg_match("/^Location.+/",$line,$results)) $header=$line;
 		}
