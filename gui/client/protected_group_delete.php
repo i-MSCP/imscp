@@ -96,7 +96,7 @@ while (!$rs->EOF) {
 check_for_lock_file();
 send_request();
 
-write_log("$admin_login: deletes group ID (protected areas): $groupname");
+write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id");
 header( "Location: protected_user_manage.php" );
 die();
 
