@@ -37,33 +37,32 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 
 	$user_mysql = $rs->fields['sqlu_name'];
 	$pass_mysql = decrypt_db_password($rs->fields['sqlu_pass']);
+	$data="pma_username=".rawurlencode($user_mysql)."&pma_password=".rawurlencode(stripslashes($pass_mysql));
 
-	$data="pma_username=".urlencode($user_mysql)."&pma_password=".urlencode($pass_mysql)."\r\n\r\n";
-
-	$out  = "POST /pma/ HTTP/1.1\r\n";
+	$out  = "POST /pma/ HTTP/1.0\r\n";
 	$out .= "Host: ".Config::get('BASE_SERVER_VHOST')."\r\n";
 	$out .= "Content-Type: application/x-www-form-urlencoded\r\n";
 	$out .= "Content-length: ".strlen($data)."\r\n";
 	$out .= "Connection: Close\r\n\r\n";
+	$out .= $data;
 
 	$rs='';
 
 	$fp = fsockopen(Config::get('BASE_SERVER_IP'), 80, $errno, $errstr, 5);
 	if (!$fp) {
-		error();
+		auth_error();
 	} else {
 		fwrite($fp, $out);
-		fwrite($fp, $data);
 		$header=null;
 		while (!feof($fp)) {
-			$line = fgets($fp, 2048);
+			echo$line = fgets($fp, 2048);
 			$rs.=$line;
 			if (preg_match("/^Location.+/",$line,$results)) $header=$line;
 		}
 		fclose($fp);
 		preg_match_all("/(?:Set-Cookie: )(?:(?U)(.+)=(.+)(?:;))(?:(?U)( expires=)(.+)(?:;))?(?:( path=)(.+))?/",$rs,$results,PREG_SET_ORDER);
 		foreach ($results as $result) {
-			setcookie(urldecode($result[1]),urldecode($result[2]),strtotime(urldecode($result[4])),urldecode($result[6]));
+			setcookie(rawurldecode($result[1]),rawurldecode($result[2]),strtotime(rawurldecode($result[4])),rawurldecode($result[6]));
 		}
 		if ($header) {
 			header($header);
