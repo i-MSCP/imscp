@@ -1,7 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-02-17 Daniel Andreca
+2009-02-19 Daniel Andreca
+	- GUI:
+		* Fixed #1679: Problems in reseller/user_add1.php
+
+2009-02-18 Daniel Andreca
 	- GUI:
 		* Fixed #1678: Escaping problem in admin/admin_log.php
 		* Fixed #1677: Client/protected_group_delete.php missed variables in log

@@ -35,13 +35,13 @@ $tpl->define_dynamic('clear_log', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_ADMIN_LOG_PAGE_TITLE' => tr('ispCP - Admin/Admin Log'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_ADMIN_LOG_PAGE_TITLE'	=> tr('ispCP - Admin/Admin Log'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+	)
+);
 
 function generate_page (&$tpl) {
 	$sql = Database::getInstance();
@@ -53,22 +53,22 @@ function generate_page (&$tpl) {
 		$start_index = intval($_GET['psi']);
 
 	$count_query = "
-        SELECT
-            COUNT(log_id) AS cnt
-        FROM
-            log
-";
+		SELECT
+			COUNT(log_id) AS cnt
+		FROM
+			log
+	";
 
 	$query = "
-        SELECT
-            DATE_FORMAT(log_time,'%Y-%m-%d %H:%i') AS dat, log_message
-        FROM
-            log
-        ORDER BY
-            log_time DESC
-        LIMIT
-           $start_index, $rows_per_page
-";
+		SELECT
+			DATE_FORMAT(log_time,'%Y-%m-%d %H:%i') AS dat, log_message
+		FROM
+			log
+		ORDER BY
+			log_time DESC
+		LIMIT
+			$start_index, $rows_per_page
+	";
 
 	$rs = exec_query($sql, $count_query);
 
@@ -79,15 +79,15 @@ function generate_page (&$tpl) {
 	if ($rs->RowCount() == 0) {
 		// set_page_message(tr('Log is empty!'));
 		$tpl->assign(
-				array(
-					'LOG_ROW' => '',
-					'PAG_MESSAGE' => tr('Log is empty!'),
-					'USERS_LIST' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_NEXT' => '',
-					'CLEAR_LOG' => ''
-				)
-			);
+			array(
+				'LOG_ROW'		=> '',
+				'PAG_MESSAGE'	=> tr('Log is empty!'),
+				'USERS_LIST'	=> '',
+				'SCROLL_PREV'	=> '',
+				'SCROLL_NEXT'	=> '',
+				'CLEAR_LOG'		=> ''
+			)
+		);
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 
@@ -95,11 +95,11 @@ function generate_page (&$tpl) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_PREV_GRAY' => '',
-						'PREV_PSI' => $prev_si
-					)
-				);
+				array(
+					'SCROLL_PREV_GRAY'	=> '',
+					'PREV_PSI'			=> $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -109,17 +109,17 @@ function generate_page (&$tpl) {
 		} else {
 			$tpl->assign(
 					array(
-						'SCROLL_NEXT_GRAY' => '',
-						'NEXT_PSI' => $next_si
+						'SCROLL_NEXT_GRAY'	=> '',
+						'NEXT_PSI'			=> $next_si
 					)
 				);
 		}
 
 		$tpl->assign(
-				array(
-					'PAGE_MESSAGE' => ''
-				)
-			);
+			array(
+				'PAGE_MESSAGE' => ''
+			)
+		);
 
 		$row = 1;
 
@@ -132,14 +132,14 @@ function generate_page (&$tpl) {
 
 			$log_message = $rs->fields['log_message'];
 			$replaces = array(
-				'/[^a-zA-Z](delete)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z](add)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](change)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
-				'/[^a-zA-Z](edit)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](unknown)[^a-zA-Z]/i' => ' <strong style="color:#CC00FF">\\1</strong> ',
-				'/[^a-zA-Z](logged)[^a-zA-Z]/i' => ' <strong style="color:#336600">\\1</strong> ',
-				'/(bad password login data)/i' => ' <strong style="color:#FF0000">\\1</strong> '
-				);
+				'/[^a-zA-Z](delete)[^a-zA-Z]/i'		=> ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z](add)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
+				'/[^a-zA-Z](change)[^a-zA-Z]/i'		=> ' <strong style="color:#3300FF">\\1</strong> ',
+				'/[^a-zA-Z](edit)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
+				'/[^a-zA-Z](unknown)[^a-zA-Z]/i'	=> ' <strong style="color:#CC00FF">\\1</strong> ',
+				'/[^a-zA-Z](logged)[^a-zA-Z]/i'		=> ' <strong style="color:#336600">\\1</strong> ',
+				'/(bad password login data)/i'		=> ' <strong style="color:#FF0000">\\1</strong> '
+			);
 
 			foreach ($replaces as $pattern => $replacement) {
 				$log_message = preg_replace($pattern, $replacement, $log_message);
@@ -147,11 +147,11 @@ function generate_page (&$tpl) {
 
 			$date_formt = Config::get('DATE_FORMAT') . ' H:i';
 			$tpl->assign(
-					array(
-						'MESSAGE' => html_entity_decode($log_message),
-						'DATE' => date($date_formt, strtotime($rs->fields['dat'])),
-					)
-				);
+				array(
+					'MESSAGE'	=> html_entity_decode($log_message),
+					'DATE'		=> date($date_formt, strtotime($rs->fields['dat'])),
+				)
+			);
 
 			$tpl->parse('LOG_ROW', '.log_row');
 
@@ -263,20 +263,20 @@ clear_log();
 generate_page ($tpl);
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_LOG' => tr('Admin Log'),
-			'TR_CLEAR_LOG' => tr('Clear log'),
-			'TR_DATE' => tr('Date'),
-			'TR_MESSAGE' => tr('Message'),
-			'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
-			'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
-			'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
-			'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
-			'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
-			'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
-			'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
-		)
-	);
+	array(
+		'TR_ADMIN_LOG'				=> tr('Admin Log'),
+		'TR_CLEAR_LOG'				=> tr('Clear log'),
+		'TR_DATE'					=> tr('Date'),
+		'TR_MESSAGE'				=> tr('Message'),
+		'TR_CLEAR_LOG_MESSAGE'		=> tr('Delete from log:'),
+		'TR_CLEAR_LOG_EVERYTHING'	=> tr('everything'),
+		'TR_CLEAR_LOG_LAST2'		=> tr('older than 2 weeks'),
+		'TR_CLEAR_LOG_LAST4'		=> tr('older than 1 month'),
+		'TR_CLEAR_LOG_LAST12'		=> tr('older than 3 months'),
+		'TR_CLEAR_LOG_LAST26'		=> tr('older than 6 months'),
+		'TR_CLEAR_LOG_LAST52'		=> tr('older than 12 months'),
+	)
+);
 // gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
