@@ -2417,7 +2417,7 @@ msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Tarif aktualisieren"
 
 msgid "Your request for hosting pack update was added successfully"
-msgstr "Ihr Auftrag für einen Tarifwechsel wurde erfolgreich erhalten"
+msgstr "Ihr Auftrag für einen Tarifwechsel wurde erfolgreich übermittelt"
 
 msgid "[ispCP OrderPanel] - You have an update order"
 msgstr "[ispCP Bestellsystem] - Sie haben einen neuen Tarifwechsel-Antrag"
