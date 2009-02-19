@@ -154,12 +154,12 @@ function check_user_data() {
 function get_empty_au1_page(&$tpl) {
 	$tpl->assign(
 		array('DMN_NAME_VALUE' => '',
-			'CH1' => 'selected',
+			'CH1' => 'selected="selected"',
 			'CH2' => '',
 			'CH3' => '',
 			'CH4' => '',
 			'CHTPL1_VAL' => '',
-			'CHTPL2_VAL' => 'checked'
+			'CHTPL2_VAL' => 'checked="checked"'
 			)
 		);
 	$tpl->assign('MESSAGE', '');
@@ -173,7 +173,7 @@ function get_data_au1_page(&$tpl) {
 
 	$tpl->assign(
 		array('DMN_NAME_VALUE' => $dmn_name,
-			'CH' . $dmn_chp => 'selected',
+			'CH' . $dmn_chp => 'selected="selected"',
 			'CHTPL1_VAL' => '',
 			'CHTPL2_VAL' => ''
 			)
@@ -181,12 +181,12 @@ function get_data_au1_page(&$tpl) {
 
 	if ("_yes_" === $dmn_pt)
 		$tpl->assign(
-			array('CHTPL1_VAL' => 'checked'
+			array('CHTPL1_VAL' => 'checked="checked"'
 				)
 			);
 	else
 		$tpl->assign(
-			array('CHTPL2_VAL' => 'checked'
+			array('CHTPL2_VAL' => 'checked="checked"'
 				)
 			);
 } //End of get_data_au1_page()
