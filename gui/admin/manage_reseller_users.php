@@ -61,11 +61,11 @@ SQL_QUERY;
 
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'change_src')
 			&& (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id'])) {
-			$selected = 'selected';
+			$selected = 'selected="selected"';
 			$reseller_id = $_POST['src_reseller'];
 		} else if ((isset($_POST['uaction']) && $_POST['uaction'] === 'move_user')
 			&& (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id'])) {
-			$selected = 'selected';
+			$selected = 'selected="selected"';
 			$reseller_id = $_POST['dst_reseller'];
 		} else {
 			$selected = '';

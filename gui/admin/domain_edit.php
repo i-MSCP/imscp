@@ -252,7 +252,7 @@ function gen_editdomain_page(&$tpl) {
 	if ($php_sup === 'yes') {
 		$tpl->assign(
 				array(
-					'PHP_YES' => 'selected',
+					'PHP_YES' => 'selected="selected"',
 					'PHP_NO' => '',
 				)
 			);
@@ -260,7 +260,7 @@ function gen_editdomain_page(&$tpl) {
 		$tpl->assign(
 				array(
 					'PHP_YES' => '',
-					'PHP_NO' => 'selected',
+					'PHP_NO' => 'selected="selected"',
 				)
 			);
 	}
@@ -268,7 +268,7 @@ function gen_editdomain_page(&$tpl) {
 	if ($cgi_supp === 'yes') {
 		$tpl->assign(
 				array(
-					'CGI_YES' => 'selected',
+					'CGI_YES' => 'selected="selected"',
 					'CGI_NO' => '',
 				)
 			);
@@ -276,7 +276,7 @@ function gen_editdomain_page(&$tpl) {
 		$tpl->assign(
 				array(
 					'CGI_YES' => '',
-					'CGI_NO' => 'selected',
+					'CGI_NO' => 'selected="selected"',
 				)
 			);
 	}

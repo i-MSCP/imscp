@@ -70,11 +70,11 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
         $tpl->assign(array(
 						'USERNAME' => clean_input($_POST['username']),
 		                'DOMAIN_NAME' => $dmn_name,
-		                'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
-		                'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
-		                'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked' : '',
+		                'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked="checked"' : '',
+		                'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked="checked"' : '',
+		                'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked="checked"' : '',
 		                'OTHER_DIR' => clean_input($_POST['other_dir']),
-		                'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? 'checked' : ''
+		                'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? 'checked="checked"' : ''
                 ));
     }
 }
@@ -99,7 +99,7 @@ SQL_QUERY;
     if ($rs->RecordCount() == 0) {
         $tpl->assign(array(
 						'ALS_ID' => 'n/a',
-		                'ALS_SELECTED' => 'selected',
+		                'ALS_SELECTED' => 'selected="selected"',
 		                'ALS_NAME' => tr('Empty List')
 				));
         $tpl->parse('ALS_LIST', 'als_list');
@@ -116,13 +116,13 @@ SQL_QUERY;
                 }
 
                 if ($als_id == $rs->fields['alias_name']) {
-                    $als_selected = 'selected';
+                    $als_selected = 'selected="selected"';
                 } else {
                     $als_selected = '';
                 }
             } else {
                 if (!$first_passed) {
-                    $als_selected = 'selected';
+                    $als_selected = 'selected="selected"';
                 } else {
                     $als_selected = '';
                 }
@@ -162,7 +162,7 @@ SQL_QUERY;
     if ($rs->RecordCount() == 0) {
         $tpl->assign(array(
 						'SUB_ID' => 'n/a',
-		                'SUB_SELECTED' => 'selected',
+		                'SUB_SELECTED' => 'selected="selected"',
 		                'SUB_NAME' => tr('Empty list')
                 ));
 
@@ -180,13 +180,13 @@ SQL_QUERY;
                 }
 
                 if ($sub_id == $rs->fields['sub_name']) {
-                    $sub_selected = 'selected';
+                    $sub_selected = 'selected="selected"';
                 } else {
                     $sub_selected = '';
                 }
             } else {
                 if (!$first_passed) {
-                    $sub_selected = 'selected';
+                    $sub_selected = 'selected="selected"';
                 } else {
                     $sub_selected = '';
                 }

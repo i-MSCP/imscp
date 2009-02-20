@@ -122,7 +122,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => '0',
-				'ALS_SELECTED' => 'selected',
+				'ALS_SELECTED' => 'selected="selected"',
 				'ALS_NAME' => tr('Empty list')
 			)
 		);

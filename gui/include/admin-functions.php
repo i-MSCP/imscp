@@ -1207,7 +1207,7 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 	}
 
 	for ($i = 1; $i <= 12; $i++) {
-		$selected = ($i == $crnt_month) ? 'selected' : '';
+		$selected = ($i == $crnt_month) ? 'selected="selected"' : '';
 
 		$tpl->assign(
 			array('OPTION_SELECTED' => $selected,
@@ -1219,7 +1219,7 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 	}
 
 	for ($i = $crnt_year - 1; $i <= $crnt_year + 1; $i++) {
-		$selected = ($i == $crnt_year) ? 'selected' : '';
+		$selected = ($i == $crnt_year) ? 'selected="selected"' : '';
 
 		$tpl->assign(
 			array('OPTION_SELECTED' => $selected,

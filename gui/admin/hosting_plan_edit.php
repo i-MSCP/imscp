@@ -133,18 +133,18 @@ function restore_form(&$tpl) {
 			));
 
 	if ('_yes_' === $_POST['php']) {
-		$tpl->assign(array('TR_PHP_YES' => 'checked'));
+		$tpl->assign(array('TR_PHP_YES' => 'checked="checked"'));
 	} else
-		$tpl->assign(array('TR_PHP_NO' => 'checked'));
+		$tpl->assign(array('TR_PHP_NO' => 'checked="checked"'));
 	if ('_yes_' === $_POST['cgi']) {
-		$tpl->assign(array('TR_CGI_YES' => 'checked'));
+		$tpl->assign(array('TR_CGI_YES' => 'checked="checked"'));
 	} else
-		$tpl->assign(array('TR_CGI_NO' => 'checked'));
+		$tpl->assign(array('TR_CGI_NO' => 'checked="checked"'));
 
 	if ($_POST['status'] == 1) {
-		$tpl->assign(array('TR_STATUS_YES' => 'checked'));
+		$tpl->assign(array('TR_STATUS_YES' => 'checked="checked"'));
 	} else
-		$tpl->assign(array('TR_STATUS_NO' => 'checked'));
+		$tpl->assign(array('TR_STATUS_NO' => 'checked="checked"'));
 }
 
 // Generate load data from sql for requested hosting plan

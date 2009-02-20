@@ -123,11 +123,11 @@ function gen_empty_ahp_page(&$tpl) {
 				'HP_PAYMENT' => '',
 				'HP_DESCRIPTION_VALUE' => '',
 		'TR_STATUS_YES'			=> '',
-		'TR_STATUS_NO'			=> 'checked',
+		'TR_STATUS_NO'			=> 'checked="checked"',
 		'TR_PHP_YES'			=> '',
-		'TR_PHP_NO'				=> 'checked',
+		'TR_PHP_NO'				=> 'checked="checked"',
 		'TR_CGI_YES'			=> '',
-		'TR_CGI_NO'				=> 'checked',
+		'TR_CGI_NO'				=> 'checked="checked"',
 		'HP_DISK_VALUE'			=> ''
 	));
 	$tpl->assign('MESSAGE', '');
@@ -161,20 +161,20 @@ function gen_data_ahp_page(&$tpl) {
 			);
 
 	if ('_yes_' === $hp_php) {
-		$tpl->assign(array('TR_PHP_YES' => 'checked'));
+		$tpl->assign(array('TR_PHP_YES' => 'checked="checked"'));
 	} else {
-		$tpl->assign(array('TR_PHP_NO' => 'checked'));
+		$tpl->assign(array('TR_PHP_NO' => 'checked="checked"'));
 	}
 	if ('_yes_' === $hp_cgi) {
 		$tpl->assign(
-			array('TR_CGI_YES' => 'checked'));
+			array('TR_CGI_YES' => 'checked="checked"'));
 	} else {
-		$tpl->assign(array('TR_CGI_NO' => 'checked'));
+		$tpl->assign(array('TR_CGI_NO' => 'checked="checked"'));
 	}
 	if ($status == 1) {
-		$tpl->assign(array('TR_STATUS_YES' => 'checked'));
+		$tpl->assign(array('TR_STATUS_YES' => 'checked="checked"'));
 	} else
-		$tpl->assign(array('TR_STATUS_NO' => 'checked'));
+		$tpl->assign(array('TR_STATUS_NO' => 'checked="checked"'));
 } // End of gen_data_ahp_page()
 
 // Check correction of input data

@@ -90,7 +90,7 @@ SQL_QUERY;
 			$ip_var_name = "ip_$ip_id";
 
 			if (isset($_POST[$ip_var_name]) && $_POST[$ip_var_name] == 'asgned') {
-				$ip_item_assigned = 'checked';
+				$ip_item_assigned = 'checked="checked"';
 
 				$reseller_ips .= "$ip_id;";
 			} else {

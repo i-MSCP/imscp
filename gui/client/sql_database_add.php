@@ -55,13 +55,13 @@ function gen_page_post_data(&$tpl) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_db') {
 		$tpl->assign(array('DB_NAME' => clean_input($_POST['db_name']),
-				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked' : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked' : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked' : ''));
+				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked="checked"' : '',
+				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked="checked"' : '',
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''));
 	} else {
 		$tpl->assign(array('DB_NAME' => '',
 				'USE_DMN_ID' => '',
-				'START_ID_POS_CHECKED' => 'checked',
+				'START_ID_POS_CHECKED' => 'checked="checked"',
 				'END_ID_POS_CHECKED' => ''));
 	}
 }

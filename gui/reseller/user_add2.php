@@ -153,14 +153,14 @@ function get_init_au2_page(&$tpl) {
 	if ("_yes_" === $hp_php) {
 		$tpl->assign(
 			array(
-				'VL_PHPY' => 'checked',
+				'VL_PHPY' => 'checked="checked"',
 				'VL_PHPN' => ''
 				)
 			);
 	} else {
 		$tpl->assign(
 			array(
-				'VL_PHPN' => 'checked',
+				'VL_PHPN' => 'checked="checked"',
 				'VL_PHPY' => '',
 				)
 			);
@@ -168,14 +168,14 @@ function get_init_au2_page(&$tpl) {
 	if ("_yes_" === $hp_cgi) {
 		$tpl->assign(
 			array(
-				'VL_CGIY' => 'checked',
+				'VL_CGIY' => 'checked="checked"',
 				'VL_CGIN' => ''
 				)
 			);
 	} else {
 		$tpl->assign(
 			array(
-				'VL_CGIN' => 'checked',
+				'VL_CGIN' => 'checked="checked"',
 				'VL_CGIY' => '',
 				)
 			);

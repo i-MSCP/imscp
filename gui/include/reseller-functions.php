@@ -609,13 +609,13 @@ SQL_QUERY;
 		$ip_id = $data['ip_id'];
 
 		if (preg_match("/$ip_id;/", $reseller_ips) == 1) {
-			$selected = ($domain_ip === $ip_id) ? 'selected' : '';
+			$selected = ($domain_ip === $ip_id) ? 'selected="selected"' : '';
 
 			$tpl->assign(
 				array('IP_NUM' => $data['ip_number'],
 					'IP_NAME' => $data['ip_domain'],
 					'IP_VALUE' => $ip_id,
-					'IP_SELECTED' => "$selected"
+					'IP_SELECTED' => $selected
 					)
 				);
 
@@ -1137,7 +1137,7 @@ SQL_QUERY;
 				$language_name = $res->fields['msgstr'];
 			}
 
-			$selected = ($matches[0] === $user_def_language) ? 'selected' : '';
+			$selected = ($matches[0] === $user_def_language) ? 'selected="selected"' : '';
 
 			array_push($languages, array($matches[0], $selected, $language_name));
 		}

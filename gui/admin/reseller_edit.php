@@ -97,14 +97,14 @@ function get_servers_ips(&$tpl, &$sql, $rip_lst) {
 
 			if (isset($_POST['uaction']) && $_POST['uaction'] === 'update_reseller') {
 				if (isset($_POST[$ip_var_name]) && $_POST[$ip_var_name] == 'asgned') {
-					$ip_item_assigned = 'checked';
+					$ip_item_assigned = 'checked="checked"';
 					$reseller_ips .= "$ip_id;";
 				} else {
 					$ip_item_assigned = '';
 				}
 			} else {
 				if (preg_match("/$ip_id\;/", $rip_lst) == 1) {
-					$ip_item_assigned = 'checked';
+					$ip_item_assigned = 'checked="checked"';
 					$reseller_ips .= "$ip_id;";
 				}
 			}

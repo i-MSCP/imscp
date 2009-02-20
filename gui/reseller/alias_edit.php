@@ -157,10 +157,10 @@ SQL_QUERY;
 
 	if ($data["url_forward"] == "no") {
 		$check_en = "";
-		$check_dis = "checked=\"checked\"";
+		$check_dis = 'checked="checked"';
 		$url_forward = "";
 	} else {
-		$check_en = "checked=\"checked\"";
+		$check_en = 'checked="checked"';
 		$check_dis = "";
 	}
 	// Fill in the fields

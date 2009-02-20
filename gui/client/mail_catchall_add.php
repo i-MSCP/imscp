@@ -103,9 +103,9 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 			$rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
 			if ($rs->RecordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => 'checked', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => 'checked="checked"', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+				$tpl->assign(array('NORMAL_MAIL' => 'checked="checked"', 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -146,9 +146,9 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
 			if ($rs->RecordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => 'checked', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => 'checked="checked"', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+				$tpl->assign(array('NORMAL_MAIL' => 'checked="checked"', 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -192,9 +192,9 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
 			if ($rs->RecordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => 'checked', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => 'checked="checked"', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+				$tpl->assign(array('NORMAL_MAIL' => 'checked="checked"', 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -238,9 +238,9 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
 			if ($rs->RecordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => 'checked', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => 'checked="checked"', 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+				$tpl->assign(array('NORMAL_MAIL' => 'checked="checked"', 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);

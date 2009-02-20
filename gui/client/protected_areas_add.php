@@ -333,7 +333,7 @@ SQL_QUERY;
 			for ($i = 0; $i < count($grp_id); $i++) {
 				if ($edit == 'yes' && $grp_id[$i] == $rs->fields['id']) {
 					$i = count($grp_id) + 1;
-					$grp_selected = "selected";
+					$grp_selected = 'selected="selected"';
 				} else {
 					$grp_selected = "";
 				}

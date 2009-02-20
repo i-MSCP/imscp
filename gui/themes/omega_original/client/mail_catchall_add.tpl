@@ -90,7 +90,7 @@
                             <tr style="display:none;" id="normal_mail_block">
                               <td nowrap="nowrap" class="content2" width="200"><script type="text/javascript">
                               <!--
-                              if ("{NORMAL_MAIL}" == 'checked') {
+                              if ("{NORMAL_MAIL_CHECK}" == 'checked') {
                                   document.getElementById('normal_mail_block').style.display = 'block';
                               }
                               //-->

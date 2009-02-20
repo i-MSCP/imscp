@@ -161,25 +161,25 @@ SQL_QUERY;
 			$button_view = $rs->fields['menu_level'];
 
 			if ($button_view === 'admin') {
-				$admin_view = "selected";
+				$admin_view = 'selected="selected"';
 				$reseller_view = "";
 				$user_view = "";
 				$all_view = "";
 			} else if ($button_view === 'reseller') {
 				$admin_view = "";
-				$reseller_view = "selected";
+				$reseller_view = 'selected="selected"';
 				$user_view = "";
 				$all_view = "";
 			} else if ($button_view === 'user') {
 				$admin_view = "";
 				$reseller_view = "";
-				$user_view = "selected";
+				$user_view = 'selected="selected"';
 				$all_view = "";
 			} else {
 				$admin_view = "";
 				$reseller_view = "";
 				$user_view = "";
-				$all_view = "selected";
+				$all_view = 'selected="selected"';
 			}
 
 			$tpl->assign(

@@ -300,9 +300,9 @@ SQL_QUERY;
 		$domain_name = $dd['domain_name'];
 
 		if (('' == $cr_user_id) && ($i == 1))
-			$selected = 'selected';
+			$selected = 'selected="selected"';
 		else if ($cr_user_id == $domain_id)
-			$selected = 'selected';
+			$selected = 'selected="selected"';
 
 		$domain_name = decode_idna($domain_name);
 

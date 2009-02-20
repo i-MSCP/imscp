@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-20 Thomas Häber
+	- GUI:
+		* fixed several HTML issues, for more valid HTML
+
 2009-02-19 Daniel Andreca
 	- GUI:
 		* Fixed #1679: Problems in reseller/user_add1.php
