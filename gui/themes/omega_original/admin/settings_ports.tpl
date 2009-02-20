@@ -59,7 +59,7 @@ function enable_for_post() {
 							</tr>
 							<tr>
 								<td valign="top">
-									<form name="frmsettings" method="post" action="settings_ports.php" onSubmit="return enable_for_post();">
+									<form name="frmsettings" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
 										<table width="100%" cellpadding="5" cellspacing="5">
 											<!-- BDP: page_message -->
 											<tr>
