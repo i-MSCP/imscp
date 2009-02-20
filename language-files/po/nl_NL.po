@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -183,9 +183,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Toevoegen"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Beheerder/Beheer gebruikers/Verander Beheerder"
-
 msgid "User session was killed!"
 msgstr "Gebruikerssessie is beeindigd"
 
@@ -195,8 +192,18 @@ msgstr "Reseller"
 msgid "Domain account"
 msgstr "Domein account"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Beheerder/Beheer gebruikers/Verander Beheerder"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Beheer/Beheer gebruikers/Voeg Gebruiker Toe"
+
 msgid "Edit admin"
 msgstr "Wijzig beheerder"
+
+msgid "Edit user"
+msgstr "Wijzig gebruiker"
 
 msgid "Update"
 msgstr "Actualiseren"
@@ -408,6 +415,10 @@ msgstr "Er is een nieuwe database update beschikbaar"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Wilt u de updates nu uitvoeren?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Query uitvoeren"
 
 msgid "No database updates available"
 msgstr "Geen database updates beschikbaar"
@@ -2762,6 +2773,9 @@ msgstr "Wijzig gebruiker"
 msgid "You have no users!"
 msgstr "U heeft geen gebruikers"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Gelieve een gebruiker wachtwoord in te vullen"
 
@@ -3087,9 +3101,6 @@ msgstr "Details"
 
 msgid "Edit domain"
 msgstr "Wijzig domein"
-
-msgid "Edit user"
-msgstr "Wijzig gebruiker"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Weet u zeker dat u de status van het account wilt wijzigen?"

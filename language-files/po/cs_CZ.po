@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -179,9 +179,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Přidat"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Správa uživatelů/Upravit administrátora"
-
 msgid "User session was killed!"
 msgstr "Sezení uživatele bylo ukončeno!"
 
@@ -191,8 +188,18 @@ msgstr "Partner"
 msgid "Domain account"
 msgstr "Doménový účet"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Správa uživatelů/Upravit administrátora"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Správa uživatelů/Přidat uživatele"
+
 msgid "Edit admin"
 msgstr "Upravit administrátora"
+
+msgid "Edit user"
+msgstr "Upravit uživatele"
 
 msgid "Update"
 msgstr "Aktualizace"
@@ -404,6 +411,10 @@ msgstr "Je dostupná nová aktualizace databáze"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Opravdu chcete provést aktualizace?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Spusť dotaz"
 
 msgid "No database updates available"
 msgstr "Nejsou dostupné aktualizace databáze"
@@ -2744,6 +2755,9 @@ msgstr "Aktualizovat uživatele"
 msgid "You have no users!"
 msgstr "Nemáte zvoleny uživatele!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Prosím, napište uživatelské heslo!"
 
@@ -3067,9 +3081,6 @@ msgstr "Detaily"
 
 msgid "Edit domain"
 msgstr "Upravit doménu"
-
-msgid "Edit user"
-msgstr "Upravit uživatele"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Opravdu chcete změnit stav doménového účtu?"

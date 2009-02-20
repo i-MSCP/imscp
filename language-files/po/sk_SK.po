@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -192,10 +192,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Pridať"
 
-#, fuzzy
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
-
 msgid "User session was killed!"
 msgstr "Užívateľské sedenie bolo zrušené!"
 
@@ -205,8 +201,19 @@ msgstr "Predajca"
 msgid "Domain account"
 msgstr "Doménový účet"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Správa užívateľov/pridať užívateľa"
+
 msgid "Edit admin"
 msgstr "Upraviť administrátora"
+
+msgid "Edit user"
+msgstr "Upraviť užívateľa"
 
 msgid "Update"
 msgstr "Aktualizovať"
@@ -423,6 +430,10 @@ msgstr "Nová aktualizácia ispCP je dostupná"
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Ste si istý, že chcete zmazať objenávku?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Vykonať príkaz"
 
 #, fuzzy
 msgid "No database updates available"
@@ -2860,6 +2871,9 @@ msgstr "Aktualizovať užívateľa"
 msgid "You have no users!"
 msgstr "Nemáte užívateľov!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Prosím zadajte heslo užívateľa!"
 
@@ -3198,9 +3212,6 @@ msgstr "Detaily"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Upraviť doménu"
-
-msgid "Edit user"
-msgstr "Upraviť užívateľa"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Ste si istý, že chcete zmeniž status účtu domény?"

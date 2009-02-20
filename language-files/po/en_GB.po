@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English <en_GB@li.org>\n"
@@ -180,12 +180,6 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr ""
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr ""
-
 msgid "User session was killed!"
 msgstr ""
 
@@ -195,7 +189,16 @@ msgstr ""
 msgid "Domain account"
 msgstr ""
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr ""
+
 msgid "Edit admin"
+msgstr ""
+
+msgid "Edit user"
 msgstr ""
 
 msgid "Update"
@@ -409,10 +412,10 @@ msgstr ""
 msgid "Do you want to execute the Updates now?"
 msgstr ""
 
-msgid "No database updates available"
+msgid "Execute updates"
 msgstr ""
 
-msgid "Execute updates"
+msgid "No database updates available"
 msgstr ""
 
 msgid "ispCP - Domain/Details"
@@ -2728,6 +2731,9 @@ msgstr ""
 msgid "You have no users!"
 msgstr ""
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr ""
 
@@ -3048,9 +3054,6 @@ msgid "Details"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
-
-msgid "Edit user"
 msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"

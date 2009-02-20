@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da_DK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -183,9 +183,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Tilføj"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Håndtére bruger/Rediger Administrator"
-
 msgid "User session was killed!"
 msgstr "Bruger session blev afslutet!"
 
@@ -195,8 +192,18 @@ msgstr "Forhandler"
 msgid "Domain account"
 msgstr "Domæne konto"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Håndtére bruger/Rediger Administrator"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Håndtére bruger/Tilføj Bruger"
+
 msgid "Edit admin"
 msgstr "Rediger admin"
+
+msgid "Edit user"
+msgstr "Rediger bruger"
 
 msgid "Update"
 msgstr "Opdater"
@@ -408,6 +415,10 @@ msgstr "Ny Database opdatering er nu til rådighed"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Ønsker du at udføre Opdateringen nu?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Udfør forespørgsel"
 
 msgid "No database updates available"
 msgstr "Ingen database opdateringer til rådighed"
@@ -2766,6 +2777,9 @@ msgstr "Opdater bruger"
 msgid "You have no users!"
 msgstr "Du har ingen brugere!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Indtast bruger adgangskode!"
 
@@ -3090,9 +3104,6 @@ msgstr "Detaljer"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Rediger domæne"
-
-msgid "Edit user"
-msgstr "Rediger bruger"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Er du sikker på du vil ændre status for domæne kontoen?"

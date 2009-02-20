@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-12-06 17:09+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: German (Germany) <de_DE@li.org>\n"
@@ -187,12 +187,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Anlegen"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Benutzerverwaltung/Administrator bearbeiten"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "Admin/Benutzerverwaltung/Benutzer bearbeiten"
-
 msgid "User session was killed!"
 msgstr "Benutzersitzung wurde gelöscht!"
 
@@ -202,8 +196,17 @@ msgstr "Reseller"
 msgid "Domain account"
 msgstr "Domainkonto"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Benutzerverwaltung/Administrator bearbeiten"
+
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "Admin/Benutzerverwaltung/Benutzer bearbeiten"
+
 msgid "Edit admin"
 msgstr "Administrator bearbeiten"
+
+msgid "Edit user"
+msgstr "Benutzer bearbeiten"
 
 msgid "Update"
 msgstr "Aktualisieren"
@@ -416,11 +419,11 @@ msgstr "Neue Datenbankupdates sind verfügbar"
 msgid "Do you want to execute the Updates now?"
 msgstr "Wollen Sie die Updates jetzt einspielen?"
 
-msgid "No database updates available"
-msgstr "Keine Datenbankupdates verfügbar"
-
 msgid "Execute updates"
 msgstr "Updates ausführen"
+
+msgid "No database updates available"
+msgstr "Keine Datenbankupdates verfügbar"
 
 msgid "ispCP - Domain/Details"
 msgstr "ispCP - Domain/Details"
@@ -2784,6 +2787,9 @@ msgstr "Benutzer aktualisieren"
 msgid "You have no users!"
 msgstr "Sie haben noch keine Benutzer angelegt!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Bitte geben Sie ein Benutzerpasswort an!"
 
@@ -3107,9 +3113,6 @@ msgstr "Details"
 
 msgid "Edit domain"
 msgstr "Domain bearbeiten"
-
-msgid "Edit user"
-msgstr "Benutzer bearbeiten"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Sind Sie sicher, dass Sie den Status dieser Domain ändern wollen?"

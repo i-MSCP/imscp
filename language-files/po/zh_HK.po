@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -179,9 +179,6 @@ msgstr "傳真"
 msgid "Add"
 msgstr "增加"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - 管理員/管理使用者/編輯管理員"
-
 msgid "User session was killed!"
 msgstr "使用者會話層已經斷開！"
 
@@ -191,8 +188,18 @@ msgstr "代理商"
 msgid "Domain account"
 msgstr "網域帳戶"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - 管理員/管理使用者/編輯管理員"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - 管理員/管理使用者/增加使用者"
+
 msgid "Edit admin"
 msgstr "編輯管理員"
+
+msgid "Edit user"
+msgstr "編輯使用者"
 
 msgid "Update"
 msgstr "更新"
@@ -404,6 +411,10 @@ msgstr "現在有新的資料庫更新"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "你想現在就執行更新嗎？"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "執行查詢"
 
 msgid "No database updates available"
 msgstr "沒有資料庫更新"
@@ -2721,6 +2732,9 @@ msgstr "更新使用者"
 msgid "You have no users!"
 msgstr "你沒有使用者！"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "請輸入使用者密碼！"
 
@@ -3044,9 +3058,6 @@ msgstr "詳細"
 
 msgid "Edit domain"
 msgstr "編輯網域"
-
-msgid "Edit user"
-msgstr "編輯使用者"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "你確定想改變網域帳號狀態嗎？"

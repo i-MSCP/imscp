@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -184,10 +184,6 @@ msgstr ""
 msgid "Add"
 msgstr "Adiciona"
 
-#, fuzzy
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Usuário"
-
 msgid "User session was killed!"
 msgstr "Seção de usuário cancelada"
 
@@ -197,8 +193,19 @@ msgstr "Representante"
 msgid "Domain account"
 msgstr "Conta de domínio"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Usuário"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Gerenciar Usuários/Adicionar Usuário"
+
 msgid "Edit admin"
 msgstr "Editar administrador"
+
+msgid "Edit user"
+msgstr "Editar usuário"
 
 msgid "Update"
 msgstr "Atualizar"
@@ -415,6 +422,10 @@ msgstr "Nova versão do ispCP disponível"
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Tem certeza que deseja eliminar este pedido?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Executa query"
 
 #, fuzzy
 msgid "No database updates available"
@@ -2815,6 +2826,9 @@ msgstr "Alterar usuário"
 msgid "You have no users!"
 msgstr "Você não possui usuários!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Por favor, informe a senha!"
 
@@ -3150,9 +3164,6 @@ msgstr "Detalhes"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Editar domínio"
-
-msgid "Edit user"
-msgstr "Editar usuário"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Deseja mesmo alterar o status desse domínio?"

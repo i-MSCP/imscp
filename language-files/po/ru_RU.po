@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -183,9 +183,6 @@ msgstr "Факс"
 msgid "Add"
 msgstr "Добавить"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Админ/Управление пользователями/Редактировать администратора"
-
 msgid "User session was killed!"
 msgstr "Сеанс пользователя был прерван!"
 
@@ -195,8 +192,18 @@ msgstr "Реселлер"
 msgid "Domain account"
 msgstr "Учётная запись домена"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Админ/Управление пользователями/Редактировать администратора"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Админ/Управление пользователями/Добавить пользователя"
+
 msgid "Edit admin"
 msgstr "Редактировать админа"
+
+msgid "Edit user"
+msgstr "Редактировать пользователя"
 
 msgid "Update"
 msgstr "Изменить"
@@ -412,6 +419,10 @@ msgstr "Доступно новое обновление ispCP"
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Вы уверены что хотите запустить обновление?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Выполнить запрос"
 
 #, fuzzy
 msgid "No database updates available"
@@ -2785,6 +2796,9 @@ msgstr "Изменить пользователя"
 msgid "You have no users!"
 msgstr "У вас нет пользователей!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Пожалуйста, введите пароль пользователя!"
 
@@ -3112,9 +3126,6 @@ msgstr "Детали"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Редактировать Домен"
-
-msgid "Edit user"
-msgstr "Редактировать пользователя"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Вы уверены что хотите изменить статус учетной записи домена?"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-08-07 15:56+0200\n"
 "Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
 "Language-Team: Euskara <eu@li.org>\n"
@@ -187,9 +187,6 @@ msgstr "Faxa"
 msgid "Add"
 msgstr "Gehitu"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Administraria aldatu"
-
 msgid "User session was killed!"
 msgstr "Erabiltzaile sesioa ezabatua izan da!"
 
@@ -199,8 +196,18 @@ msgstr "Bersaltzailea"
 msgid "Domain account"
 msgstr "Domeinu kontua"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Erabiltzaile kudeaketa/Administraria aldatu"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Erabiltzaileak kudeatu/Erabiltzailea gehitu"
+
 msgid "Edit admin"
 msgstr "Aldatu administratzailea"
+
+msgid "Edit user"
+msgstr "Aldatu erabiltzailea"
 
 msgid "Update"
 msgstr "Eguneratu"
@@ -414,6 +421,10 @@ msgstr "Datubasearen eguneraketa berria dago eskuragarri"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Eguneraketak orain instalatu nahi dituzu?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Exekutatu kontsulta"
 
 msgid "No database updates available"
 msgstr "Ez dago datubasearen eguneraketarik"
@@ -2769,6 +2780,9 @@ msgstr "Eguneratu erabiltzailea"
 msgid "You have no users!"
 msgstr "Ez daukazu erabiltzailerik!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Mesedez idatzi erabiltzailearen pasahitza!"
 
@@ -3094,9 +3108,6 @@ msgstr "Xehetasunak"
 
 msgid "Edit domain"
 msgstr "Aldatu Domeinua"
-
-msgid "Edit user"
-msgstr "Aldatu erabiltzailea"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Ziur zaude domeinuaren kontuaren egoera aldatu nahi duzula?"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-08-22 14:04+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -187,9 +187,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Afegir"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Administrar usuaris/Editar Administrador"
-
 msgid "User session was killed!"
 msgstr "La sessió d'usuari ha estat eliminada!"
 
@@ -199,8 +196,18 @@ msgstr "Distribuïdor"
 msgid "Domain account"
 msgstr "Compte de domini"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Administrar usuaris/Editar Administrador"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Gestionar usuaris/Afegir usuari"
+
 msgid "Edit admin"
 msgstr "Editar admin"
+
+msgid "Edit user"
+msgstr "Editar usuari"
 
 msgid "Update"
 msgstr "Actualitzar"
@@ -412,6 +419,10 @@ msgstr "Hi ha una actualització de la base de dades disponible"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Vols fer les actualitzacions ara?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Executar consulta"
 
 msgid "No database updates available"
 msgstr "No hi ha actualitzacions de la base de dades disponibles"
@@ -2772,6 +2783,9 @@ msgstr "Actualitzar usuari"
 msgid "You have no users!"
 msgstr "No teniu usuaris!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Si us plau escriviu la contrasenya de l'usuari!"
 
@@ -3096,9 +3110,6 @@ msgstr "Detalls"
 
 msgid "Edit domain"
 msgstr "Editar domini"
-
-msgid "Edit user"
-msgstr "Editar usuari"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Esteu segurs que voleu canviar l'estat del domini?"

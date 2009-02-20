@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -189,9 +189,6 @@ msgstr "Faks"
 msgid "Add"
 msgstr "Ekle"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Yönetici/Kullanıcıları düzenle/Yönetici Düzenle"
-
 msgid "User session was killed!"
 msgstr "Kullanıcı sessionı sonlandırıldı"
 
@@ -201,8 +198,18 @@ msgstr "Bayi"
 msgid "Domain account"
 msgstr "Domain hesabı"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Yönetici/Kullanıcıları düzenle/Yönetici Düzenle"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Yönetici/Kullanıcıları Yönet/Kullanıcı Ekle"
+
 msgid "Edit admin"
 msgstr "Yöneticiyi düzenle"
+
+msgid "Edit user"
+msgstr "Kullanıcı düzenle"
 
 msgid "Update"
 msgstr "Güncelleme"
@@ -414,6 +421,10 @@ msgstr "Yeni ispCP güncellemesi var"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Güncellemeleri şimdi yüklemek ister misiniz?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Sorgu çalıştır"
 
 msgid "No database updates available"
 msgstr "Yeni veritabanı güncellemesi yok"
@@ -2750,6 +2761,9 @@ msgstr "Kullanıcı güncelle"
 msgid "You have no users!"
 msgstr "Kullanıcınız yok!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Lütfen kullanıcı şifresini giriniz!"
 
@@ -3071,9 +3085,6 @@ msgstr "Ayrıntırlar"
 
 msgid "Edit domain"
 msgstr "Domain düzenle"
-
-msgid "Edit user"
-msgstr "Kullanıcı düzenle"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Domain hesabının durumunu değiştirmek istediğinize emin misiniz?"

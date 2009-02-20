@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -185,9 +185,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Adauga"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Administrator/Administrare utilizatori/Editeaza Administratori"
-
 msgid "User session was killed!"
 msgstr "Sesiune utilizator terminata!"
 
@@ -197,8 +194,18 @@ msgstr "Reseller"
 msgid "Domain account"
 msgstr "Cont domeniu"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Administrator/Administrare utilizatori/Editeaza Administratori"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Administrator/Administrare utilizatori/Adauga Utilizator"
+
 msgid "Edit admin"
 msgstr "Editare admin"
+
+msgid "Edit user"
+msgstr "Editeaza Utilizator"
 
 msgid "Update"
 msgstr "Actualizare"
@@ -410,6 +417,10 @@ msgstr "O noua actualizare a bazei de date este disponibila acum"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Doresti sa executi actualizarea acum?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Executa interogarea"
 
 msgid "No database updates available"
 msgstr "Nu exista actualizari disponibile pentru baza de date"
@@ -2757,6 +2768,9 @@ msgstr "Actualizeaza utilizatorul"
 msgid "You have no users!"
 msgstr "Nu aveti nici un user!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Introdu parola pentru utilizator!"
 
@@ -3077,9 +3091,6 @@ msgstr "Detalii"
 
 msgid "Edit domain"
 msgstr "Editare domeniu"
-
-msgid "Edit user"
-msgstr "Editeaza Utilizator"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Sigur doriti sa schimbati statusul acestui domeniu?"

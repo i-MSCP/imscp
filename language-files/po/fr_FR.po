@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-09-10 01:05-0500\n"
 "Last-Translator: Guillermo Siméon <mo@momocello.com>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
@@ -188,9 +188,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Ajouter"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Gestion utilisateurs/Editer l'Administrateur"
-
 msgid "User session was killed!"
 msgstr "La session de l'utilisateur a été fermée de force !"
 
@@ -200,8 +197,18 @@ msgstr "Revendeur"
 msgid "Domain account"
 msgstr "Compte de domaine"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Gestion utilisateurs/Editer l'Administrateur"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Gestion utilisateurs/Ajouter un utilisateur"
+
 msgid "Edit admin"
 msgstr "Edition admin"
+
+msgid "Edit user"
+msgstr "Éditer l'utilisateur"
 
 msgid "Update"
 msgstr "Mise à jour"
@@ -413,6 +420,10 @@ msgstr "Nouvelle mise à jour de la base de données disponible"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Voulez-vous exécuter les mises à jour maintenant ?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Exécuter la requête"
 
 msgid "No database updates available"
 msgstr "Aucune mise à jour de la base de données disponible"
@@ -2782,6 +2793,9 @@ msgstr "Mettre l'utilisateur à jour"
 msgid "You have no users!"
 msgstr "Vous n'avez pas d'utiisateurs !"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Entrez le mot de passe de l'utilisateur !"
 
@@ -3107,9 +3121,6 @@ msgstr "Détails"
 
 msgid "Edit domain"
 msgstr "Éditer le domaine"
-
-msgid "Edit user"
-msgstr "Éditer l'utilisateur"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Êtes-vous certain de vouloir changer l'état du domaine ?"

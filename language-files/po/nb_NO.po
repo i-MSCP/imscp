@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -184,9 +184,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Legg til"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Administrer brukere/Endre Administrator"
-
 msgid "User session was killed!"
 msgstr "Brukersesjonen ble drept!"
 
@@ -196,8 +193,18 @@ msgstr "Forhandler"
 msgid "Domain account"
 msgstr "Domene konto"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Administrer brukere/Endre Administrator"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Administrer brukere/Legg til bruker"
+
 msgid "Edit admin"
 msgstr "Endre administrator"
+
+msgid "Edit user"
+msgstr "Endre bruker"
 
 msgid "Update"
 msgstr "Oppdater"
@@ -409,6 +416,10 @@ msgstr "Ny database oppdatering er nå tilgjengelig"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Vil du utføre oppdateringene nå?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Utfør spørring"
 
 msgid "No database updates available"
 msgstr "Ingen database oppdateringer tilgjengelig"
@@ -2768,6 +2779,9 @@ msgstr "Oppdater bruker"
 msgid "You have no users!"
 msgstr "Du har ingen brukere!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Venligst oppgi bruker passord!"
 
@@ -3101,9 +3115,6 @@ msgstr "Detaljer"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Endre domene"
-
-msgid "Edit user"
-msgstr "Endre bruker"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr ""

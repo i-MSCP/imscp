@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-12-17 17:46+0900\n"
 "Last-Translator: hiroron <hiroron@hiroron.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -184,9 +184,6 @@ msgstr "FAX番号"
 msgid "Add"
 msgstr "追加"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - 管理者/ユーザー管理/管理者編集"
-
 msgid "User session was killed!"
 msgstr "ユーザーのセッションは切断されました"
 
@@ -196,8 +193,18 @@ msgstr "代理店"
 msgid "Domain account"
 msgstr "ドメインアカウント"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - 管理者/ユーザー管理/管理者編集"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - 管理者/ユーザー管理/ユーザー追加"
+
 msgid "Edit admin"
 msgstr "アドミンの編集"
+
+msgid "Edit user"
+msgstr "ユーザーの編集"
 
 msgid "Update"
 msgstr "更新"
@@ -409,6 +416,10 @@ msgstr "データベースアップデートが見つかりました"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "いますぐアップデートしますか？"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "クエリーの実行"
 
 msgid "No database updates available"
 msgstr "データベースアップデートは見つかりません"
@@ -2748,6 +2759,9 @@ msgstr "ユーザの更新"
 msgid "You have no users!"
 msgstr "ユーザーが登録されていません!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "ユーザパスワードを入力してください！"
 
@@ -3068,9 +3082,6 @@ msgstr "詳細"
 
 msgid "Edit domain"
 msgstr "ドメイン編集"
-
-msgid "Edit user"
-msgstr "ユーザーの編集"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "ドメインアカウントの状態を変更してよろしいですか?"

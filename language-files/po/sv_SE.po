@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-08-01 13:00+0100\n"
 "Last-Translator: Ergin �zdemir <ergin@ozdemir.se>\n"
 "Language-Team: Svenska <en_GB@li.org>\n"
@@ -182,9 +182,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "L�gg till"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Hantera anv�ndare/Edit Administrat�r"
-
 msgid "User session was killed!"
 msgstr ""
 
@@ -194,8 +191,18 @@ msgstr "Ombud"
 msgid "Domain account"
 msgstr "Dom�n konto"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Hantera anv�ndare/Edit Administrat�r"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Hantera anv�ndare/ L�gg till anv�ndare"
+
 msgid "Edit admin"
 msgstr "Editera ad,om"
+
+msgid "Edit user"
+msgstr ""
 
 msgid "Update"
 msgstr "Uppdatera"
@@ -407,6 +414,10 @@ msgstr ""
 
 msgid "Do you want to execute the Updates now?"
 msgstr ""
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Databs uppdateringar"
 
 msgid "No database updates available"
 msgstr ""
@@ -2733,6 +2744,9 @@ msgstr ""
 msgid "You have no users!"
 msgstr ""
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr ""
 
@@ -3053,9 +3067,6 @@ msgid "Details"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
-
-msgid "Edit user"
 msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -180,9 +180,6 @@ msgstr "Факс"
 msgid "Add"
 msgstr "Добавяне"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Админ/Управление на потребители/Редакция администратор"
-
 msgid "User session was killed!"
 msgstr "Сесията на потребителя беше прекъсната!"
 
@@ -192,8 +189,18 @@ msgstr "Риселър"
 msgid "Domain account"
 msgstr "Домейна акаунт"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Админ/Управление на потребители/Редакция администратор"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Админ/Управление на потребители/Добави потребител"
+
 msgid "Edit admin"
 msgstr "Редакция админ"
+
+msgid "Edit user"
+msgstr "Редакция потребител"
 
 msgid "Update"
 msgstr "Промяна"
@@ -409,6 +416,10 @@ msgstr "Достъпно е ново обновяване за ispCP"
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Изпълни заявка"
 
 #, fuzzy
 msgid "No database updates available"
@@ -2795,6 +2806,9 @@ msgstr "Обнови потребител"
 msgid "You have no users!"
 msgstr "Нямате потребители!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Моля, въведете потребителската парола!"
 
@@ -3122,9 +3136,6 @@ msgstr "Детайли"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Редакция на домейна"
-
-msgid "Edit user"
-msgstr "Редакция потребител"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Сигурни ли сте,че искате да промените статуса на домейн акаунта?"

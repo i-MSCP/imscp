@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2009-01-18 22:08+0100\n"
 "Last-Translator: István Pongrácz <pongracz.istvan@gmail.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -187,9 +187,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Hozzáad"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/ felhasználók/Adminisztrátor módosítása"
-
 msgid "User session was killed!"
 msgstr "Felhasználói folyamat törölve!"
 
@@ -199,8 +196,18 @@ msgstr "Viszonteladó"
 msgid "Domain account"
 msgstr "Domain hozzáférés"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/ felhasználók/Adminisztrátor módosítása"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Felhasználók/Új Felhasználó"
+
 msgid "Edit admin"
 msgstr "Admin szerkesztése"
+
+msgid "Edit user"
+msgstr "Felhasználó szerkesztése"
 
 msgid "Update"
 msgstr "Frissítés"
@@ -412,6 +419,10 @@ msgstr "Új adatbázis frissítés most elérhető"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Biztos végrehajtod a frissítést most?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Kérés végrehajtása"
 
 msgid "No database updates available"
 msgstr "Nincs elérhető adatbázis frissítés"
@@ -2758,6 +2769,9 @@ msgstr "Felhasználó módosítás"
 msgid "You have no users!"
 msgstr "Nincs felhasználód!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Írd be a felhasználó jelszavát!"
 
@@ -3079,9 +3093,6 @@ msgstr "Részletek"
 
 msgid "Edit domain"
 msgstr "Domain szerkesztés"
-
-msgid "Edit user"
-msgstr "Felhasználó szerkesztése"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Biztos cserélni akarod a domain státuszát?"

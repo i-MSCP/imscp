@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
 "Last-Translator: Leszek Taczkowski <leszek.t@simplusnet.pl>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -183,9 +183,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Dodaj"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Zarządzaj użytkownikami/Edytuj Administratora"
-
 msgid "User session was killed!"
 msgstr "Sesja użytkownika została zabita!"
 
@@ -195,8 +192,18 @@ msgstr "Reseller"
 msgid "Domain account"
 msgstr "Konto domeny"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Edytuj Administratora"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Dodaj użytkownika"
+
 msgid "Edit admin"
 msgstr "Edytuj administratora"
+
+msgid "Edit user"
+msgstr "Edytuj użytkownika"
 
 msgid "Update"
 msgstr "Aktualizuj"
@@ -408,6 +415,10 @@ msgstr "Nowa aktualizacja bazy jest dostępna!"
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Czy na pewno zaktualizować?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Wykonaj zapytanie"
 
 msgid "No database updates available"
 msgstr "Brak dostępnych aktualizacji bazy"
@@ -2755,6 +2766,9 @@ msgstr "Aktualizuj użytkownika"
 msgid "You have no users!"
 msgstr "Nie masz użytkowników!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Podaj hasło użytkownika!"
 
@@ -3081,9 +3095,6 @@ msgstr "Szczegóły"
 
 msgid "Edit domain"
 msgstr "Edytuj domenę"
-
-msgid "Edit user"
-msgstr "Edytuj użytkownika"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Czy na pewno chcesz zmienić  stan konta domeny?"

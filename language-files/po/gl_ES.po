@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP.gl.00.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2008-08-28 20:35+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galician <infoxeral@ciberirmandade.org>\n"
@@ -186,9 +186,6 @@ msgstr "Fax"
 msgid "Add"
 msgstr "Engadir"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Xestionar usuarios/Editar Administrador"
-
 msgid "User session was killed!"
 msgstr "Forzouse o remate da sesión de usuario!"
 
@@ -198,8 +195,18 @@ msgstr "Revendedor"
 msgid "Domain account"
 msgstr "Conta do dominio"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Xestionar usuarios/Editar Administrador"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Administrar/Xestionar usuarios/Engadir Usuario"
+
 msgid "Edit admin"
 msgstr "Editar administrador"
+
+msgid "Edit user"
+msgstr "Editar usuario"
 
 msgid "Update"
 msgstr "Actualizar"
@@ -411,6 +418,10 @@ msgstr "Agora mesmo está dispoñible unha nova actualización de banco de datos
 
 msgid "Do you want to execute the Updates now?"
 msgstr "Queres executar as actualizacións agora?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Executar consulta"
 
 msgid "No database updates available"
 msgstr "Non hai actualizacións de banco de datos dispoñibles"
@@ -2775,6 +2786,9 @@ msgstr "Actualizar usuario"
 msgid "You have no users!"
 msgstr "Non tes usuarios!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Por favor, insire o contrasinal de usuario!"
 
@@ -3099,9 +3113,6 @@ msgstr "Pormenores"
 
 msgid "Edit domain"
 msgstr "Editar dominio"
-
-msgid "Edit user"
-msgstr "Editar usuario"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Estás certo de querer mudar o estado da conta do dominio?"

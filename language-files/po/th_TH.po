@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2009-02-01 22:57+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -180,9 +180,6 @@ msgstr ""
 msgid "Add"
 msgstr "เพิ่ม"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr ""
-
 msgid "User session was killed!"
 msgstr ""
 
@@ -192,7 +189,16 @@ msgstr ""
 msgid "Domain account"
 msgstr ""
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr ""
+
 msgid "Edit admin"
+msgstr ""
+
+msgid "Edit user"
 msgstr ""
 
 msgid "Update"
@@ -407,6 +413,9 @@ msgstr ""
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "คุณแน่ใจที่จะต้องการลบการสั่งซื้อนี้?"
+
+msgid "Execute updates"
+msgstr ""
 
 msgid "No database updates available"
 msgstr ""
@@ -2735,6 +2744,9 @@ msgstr ""
 msgid "You have no users!"
 msgstr "คุณยังไม่มีผู้ใช้!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr ""
 
@@ -3058,9 +3070,6 @@ msgstr ""
 #, fuzzy
 msgid "Edit domain"
 msgstr "เพิ่ม subdomain"
-
-msgid "Edit user"
-msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "คุณแน่ใจที่จะต้องการเปลี่ยนสถานะของโดเมน?"

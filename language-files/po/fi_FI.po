@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 08:46+0800\n"
+"POT-Creation-Date: 2009-02-19 00:44+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -183,10 +183,6 @@ msgstr ""
 msgid "Add"
 msgstr "Lis��"
 
-#, fuzzy
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Yll�pito / Hallitse k�ytt�ji� / Muokkaa k�ytt�j��"
-
 msgid "User session was killed!"
 msgstr "K�ytt�j�sessio katkaistu!"
 
@@ -196,8 +192,19 @@ msgstr "J�lleenmyyj�"
 msgid "Domain account"
 msgstr "Domaintunnus"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Yll�pito / Hallitse k�ytt�ji� / Muokkaa k�ytt�j��"
+
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Yll�pito / Hallitse k�ytt�ji� / Lis�� k�ytt�j�"
+
 msgid "Edit admin"
 msgstr "Muokkaa adminia"
+
+msgid "Edit user"
+msgstr "Muokkaa k�ytt�j��"
 
 msgid "Update"
 msgstr "P�ivit�"
@@ -414,6 +421,10 @@ msgstr "Uusi ispCP-p�ivitys saatavilla"
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
 msgstr "Haluatko varmasti poistaa t�m�n tilauksen?"
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Suorita kysely"
 
 #, fuzzy
 msgid "No database updates available"
@@ -2811,6 +2822,9 @@ msgstr "P�ivit� k�ytt�j�"
 msgid "You have no users!"
 msgstr "Sinulla ei ole k�ytt�ji�!"
 
+msgid "Error while authenticating!"
+msgstr ""
+
 msgid "Please type user password!"
 msgstr "Anna k�ytt�j�n salasana!"
 
@@ -3146,9 +3160,6 @@ msgstr "Tiedot"
 #, fuzzy
 msgid "Edit domain"
 msgstr "Muokkaa Domainia"
-
-msgid "Edit user"
-msgstr "Muokkaa k�ytt�j��"
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Oletko varma ett� haluat muuttaa domainin tilaa?"
