@@ -115,8 +115,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_domain_name, // this will be show in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $domain_name // this will be updated wenn we crate cach all
+							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_domain_name, // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $domain_name // this will be updated if we create catch all
 						)
 					);
 
@@ -158,8 +158,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be show in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated wenn we crate cach all
+							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
 						)
 					);
 
@@ -204,8 +204,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be show in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated wenn we create catch all
+							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
 						)
 					);
 
@@ -250,8 +250,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be show in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated wenn we create catch all
+							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
 						)
 					);
 
@@ -359,7 +359,6 @@ function create_catchall_mail_account(&$sql, $id) {
 				$rs = exec_query($sql, $query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['alias_name'];
-
 			} elseif ($item_type === 'subdom') {
 				$mail_type = 'subdom_catchall';
 				$sub_id = $item_id;
