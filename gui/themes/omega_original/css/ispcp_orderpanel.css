@@ -1,16 +1,14 @@
+
 body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
+	margin: 0px;
 	background-color: #FFFFFF;
 }
 
-a.link {color:#000099;text-decoration:underline;font-weight: normal;}
-a.link:link {color:#000099;text-decoration:underline;font-weight: normal;}
+a.link {color:#000099; text-decoration:underline; font-weight:normal;}
+a.link:link {color:#000099; text-decoration:underline; font-weight:normal;}
 a.link:visited {color:#000099; text-decoration:underline; font-weight:normal}
-a.link:hover {color:#000000; text-decoration: none;}
-a.link:active {color:#000000;text-decoration:none;}
+a.link:hover {color:#000000; text-decoration:none;}
+a.link:active {color:#000000; text-decoration:none;}
 a.linkdark, a.linkdark:link, a.linkdark:visited {
 	color:				#cccccc;
 	text-decoration:	underline;
@@ -40,10 +38,7 @@ td.content {
 	white-space: nowrap;
 	background: #e6e3e3;
 	white-space: nowrap;
-	BORDER-TOP: #efefef 1px solid;
-	BORDER-LEFT: #efefef 1px solid;
-	BORDER-RIGHT: #efefef 1px solid;
-	BORDER-BOTTOM: #efefef 1px solid;
+	border: 1px solid #efefef;
 	height: 22px;
 	padding: 2px;
 }
@@ -54,10 +49,7 @@ td.content2 {
 	white-space: nowrap;
 	background: #e2dfdf;
 	white-space: nowrap;
-	BORDER-TOP: #EFF0F7 1px solid;
-	BORDER-LEFT: #EFF0F7 1px solid;
-	BORDER-RIGHT: #EFF0F7 1px solid;
-	BORDER-BOTTOM: #EFF0F7 1px solid;
+	border: 1px solid #eff0f7;
 	height: 22px;
 	padding: 2px;
 }

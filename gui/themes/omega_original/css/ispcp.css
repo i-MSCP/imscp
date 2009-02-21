@@ -1,26 +1,6 @@
-/**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
- *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
- *   This program is free software; you can redistribute it and/or modify it under
- *   the terms of the MPL General Public License as published by the Free Software
- *   Foundation; either version 1.1 of the License, or (at your option) any later
- *   version.
- *   You should have received a copy of the MPL Mozilla Public License along with
- *   this program; if not, write to the Open Source Initiative (OSI)
- *   http://opensource.org | osi@opensource.org
- */
 
 body {
-	margin-left:		0px;
-	margin-top:			0px;
-	margin-right:		0px;
-	margin-bottom:		0px;
+	margin:				0px;
 	background-color:	#ffffff;
 }
 
@@ -243,24 +223,20 @@ td.content4 {
 }
 
 .textinput {
-  background-color: 	white;
-  border-style: 		solid;
-  border-width: 		1px;
-  border-color: 		#cccccc;
-  font-family: 			Verdana;
-  font-size: 			8pt;
-  height: 				21px;
-  margin: 				2px;
+	background-color: 	white;
+	border:				1px solid #cccccc;
+	font-family: 		Verdana;
+	font-size: 			8pt;
+	height: 			21px;
+	margin: 			2px;
 }
 
 .textinput2 {
-  background-color: 	white;
-  border-style: 		solid;
-  border-width: 		1px;
-  border-color: 		#cccccc;
-  font-family: 			Verdana;
-  font-size: 			8pt;
-  margin: 				2px;
+	background-color: 	white;
+	border:				1px solid #cccccc;
+	font-family: 		Verdana;
+	font-size: 			8pt;
+	margin: 			2px;
 }
 
 .button {

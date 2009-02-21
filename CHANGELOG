@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-21 Thomas Häber
+	- THEMES:
+		* optimized CSS and JS files + coding style
+		
 2009-02-20 Benedikt Heintel
 	- SETUP:
 		* Fixed: 00_master.conf remains unchanged with vu2000 while changing prefix or UID/GID
