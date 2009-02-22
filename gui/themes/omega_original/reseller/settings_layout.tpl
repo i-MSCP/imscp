@@ -31,68 +31,65 @@
 				</tr>
 				<tr>
 					<td colspan="3">
-						<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td align="left">
-									<table width="100%" cellpadding="5" cellspacing="5">
-										<tr>
-											<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_layout.png" alt="" width="25" height="25"></td>
-											<td colspan="2" class="title">{TR_LAYOUT_SETTINGS}</td>
-										</tr>
-									</table>
-								</td>
-								<td width="27" align="right">&nbsp;</td>
-							</tr>
-							<tr>
-								<td valign="top">
-									<table width="100%" cellspacing="3">
-										<!-- BDP: page_message -->
-										<tr>
-											<td width="40">&nbsp;</td>
-											<td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
-										</tr>
-										<!-- EDP: page_message -->
-										<tr>
-											<td>&nbsp;</td>
-											<td colspan="2" class="content3"><strong>{TR_UPLOAD_LOGO}</strong></td>
-										</tr>
-										<tr>
-											<td width="40" nowrap="nowrap">&nbsp;</td>
-											<td width="200" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
-											<td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40"></td>
-										</tr>
-										<tr>
-											<td nowrap="nowrap">&nbsp;</td>
-											<td nowrap="nowrap"><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} ">
-												<form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
-													<input type="hidden" name="uaction" value="upload_logo">
-												</form>
-											</td>
-											<td nowrap="nowrap">
-												<form method="post" action="settings_layout.php">
-													<input type="hidden" name="uaction" value="delete_logo">
-													<input name="Submit" type="submit" class="button" value=" {TR_REMOVE} ">
-												</form>
-											</td>
-										</tr>
-										<tr>
-											<td nowrap="nowrap">&nbsp;</td>
-											<td colspan="2" nowrap="nowrap">&nbsp;</td>
-										</tr>
-										<tr>
-											<td nowrap="nowrap">&nbsp;</td>
-											<td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo"></td>
-										</tr>
-									</table>
-									<!-- end of content -->
-								</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-						</table>
+						<form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td align="left">
+										<table width="100%" cellpadding="5" cellspacing="5">
+											<tr>
+												<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_layout.png" alt="" width="25" height="25"></td>
+												<td colspan="2" class="title">{TR_LAYOUT_SETTINGS}</td>
+											</tr>
+										</table>
+									</td>
+									<td width="27" align="right">&nbsp;</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<table width="100%" cellspacing="3">
+											<!-- BDP: page_message -->
+											<tr>
+												<td width="40">&nbsp;</td>
+												<td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
+											</tr>
+											<!-- EDP: page_message -->
+											<tr>
+												<td>&nbsp;</td>
+												<td colspan="2" class="content3"><strong>{TR_UPLOAD_LOGO}</strong></td>
+											</tr>
+											<tr>
+												<td width="40" nowrap="nowrap">&nbsp;</td>
+												<td width="200" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
+												<td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40"></td>
+											</tr>
+											<tr>
+												<td nowrap="nowrap">&nbsp;</td>
+												<td nowrap="nowrap">
+													<input name="upload_logo" type="submit" class="button" value=" {TR_UPLOAD} ">
+												</td>
+												<td nowrap="nowrap">
+													<input name="delete_logo" type="submit" class="button" value=" {TR_REMOVE} ">
+												</td>
+											</tr>
+											<tr>
+												<td nowrap="nowrap">&nbsp;</td>
+												<td colspan="2" nowrap="nowrap">&nbsp;</td>
+											</tr>
+											<tr>
+												<td nowrap="nowrap">&nbsp;</td>
+												<td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo"></td>
+											</tr>
+										</table>
+										<!-- end of content -->
+									</td>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+							</table>
+						</form>
 					</td>
 				</tr>
 			</table>
