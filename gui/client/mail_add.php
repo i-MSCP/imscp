@@ -64,7 +64,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 		$tpl->assign(
 			array(
-				'USERNAME'				=> clean_input($_POST['username']),
+				'USERNAME'				=> clean_input($_POST['username'], true),
 				'DOMAIN_NAME'			=> $dmn_name,
 				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? 'checked="checked"' : "",
 				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? 'checked="checked"' : "",

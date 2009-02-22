@@ -455,18 +455,18 @@ function update_reseller(&$sql) {
 		$user_id = $_SESSION['user_id'];
 
 		if (check_user_data()) {
-			$fname = clean_input($_POST['fname']);
-			$lname = clean_input($_POST['lname']);
+			$fname = clean_input($_POST['fname'], true);
+			$lname = clean_input($_POST['lname'], true);
 			$gender = $_POST['gender'];
-			$firm = clean_input($_POST['firm']);
-			$zip = clean_input($_POST['zip']);
-			$city = clean_input($_POST['city']);
-			$country = clean_input($_POST['country']);
-			$email = clean_input($_POST['email']);
-			$phone = clean_input($_POST['phone']);
-			$fax = clean_input($_POST['fax']);
-			$street1 = clean_input($_POST['street1']);
-			$street2 = clean_input($_POST['street2']);
+			$firm = clean_input($_POST['firm'], true);
+			$zip = clean_input($_POST['zip'], true);
+			$city = clean_input($_POST['city'], true);
+			$country = clean_input($_POST['country'], true);
+			$email = clean_input($_POST['email'], true);
+			$phone = clean_input($_POST['phone'], true);
+			$fax = clean_input($_POST['fax'], true);
+			$street1 = clean_input($_POST['street1'], true);
+			$street2 = clean_input($_POST['street2'], true);
 
 			if (empty($_POST['pass'])) {
 				$query = "

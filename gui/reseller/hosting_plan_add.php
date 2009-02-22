@@ -187,16 +187,16 @@ function check_data_correction(&$tpl) {
 
 	$ahp_error = "_off_";
 
-	$hp_name = clean_input($_POST['hp_name']);
-	$hp_sub = clean_input($_POST['hp_sub']);
-	$hp_als = clean_input($_POST['hp_als']);
-	$hp_mail = clean_input($_POST['hp_mail']);
-	$hp_ftp = clean_input($_POST['hp_ftp']);
-	$hp_sql_db = clean_input($_POST['hp_sql_db']);
-	$hp_sql_user = clean_input($_POST['hp_sql_user']);
-	$hp_traff = clean_input($_POST['hp_traff']);
-	$hp_disk = clean_input($_POST['hp_disk']);
-	$description = clean_input($_POST['hp_description']);
+	$hp_name = clean_input($_POST['hp_name'], true);
+	$hp_sub = clean_input($_POST['hp_sub'], true);
+	$hp_als = clean_input($_POST['hp_als'], true);
+	$hp_mail = clean_input($_POST['hp_mail'], true);
+	$hp_ftp = clean_input($_POST['hp_ftp'], true);
+	$hp_sql_db = clean_input($_POST['hp_sql_db'], true);
+	$hp_sql_user = clean_input($_POST['hp_sql_user'], true);
+	$hp_traff = clean_input($_POST['hp_traff'], true);
+	$hp_disk = clean_input($_POST['hp_disk'], true);
+	$description = clean_input($_POST['hp_description'], true);
 
 	if (empty($_POST['hp_price'])) {
 		$price = 0;

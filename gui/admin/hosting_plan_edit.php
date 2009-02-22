@@ -114,22 +114,22 @@ if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 function restore_form(&$tpl) {
 	$tpl->assign(
 			array(
-				'HP_NAME_VALUE' => clean_input($_POST['hp_name']),
-				'HP_DESCRIPTION_VALUE' => clean_input($_POST['hp_description']),
-				'TR_MAX_SUB_LIMITS' => clean_input($_POST['hp_sub']),
-				'TR_MAX_ALS_VALUES' => clean_input($_POST['hp_als']),
-				'HP_MAIL_VALUE' => clean_input($_POST['hp_mail']),
-				'HP_FTP_VALUE' => clean_input($_POST['hp_ftp']),
-				'HP_SQL_DB_VALUE' => clean_input($_POST['hp_sql_db']),
-				'HP_SQL_USER_VALUE' => clean_input($_POST['hp_sql_user']),
-				'HP_TRAFF_VALUE' => clean_input($_POST['hp_traff']),
-				'HP_TRAFF' => clean_input($_POST['hp_traff']),
-				'HP_DISK_VALUE' => clean_input($_POST['hp_disk']),
-				'HP_PRICE_STYLE' => format_price(clean_input($_POST['hp_style'])),
-				'HP_PRICE' => clean_input($_POST['hp_price']),
-				'HP_SETUPFEE' => clean_input($_POST['hp_setupfee']),
-				'HP_CURRENCY' => clean_input($_POST['hp_currency']),
-				'HP_PAYMENT' => clean_input($_POST['hp_payment'])
+				'HP_NAME_VALUE' => clean_input($_POST['hp_name'], true),
+				'HP_DESCRIPTION_VALUE' => clean_input($_POST['hp_description'], true),
+				'TR_MAX_SUB_LIMITS' => clean_input($_POST['hp_sub'], true),
+				'TR_MAX_ALS_VALUES' => clean_input($_POST['hp_als'], true),
+				'HP_MAIL_VALUE' => clean_input($_POST['hp_mail'], true),
+				'HP_FTP_VALUE' => clean_input($_POST['hp_ftp'], true),
+				'HP_SQL_DB_VALUE' => clean_input($_POST['hp_sql_db'], true),
+				'HP_SQL_USER_VALUE' => clean_input($_POST['hp_sql_user'], true),
+				'HP_TRAFF_VALUE' => clean_input($_POST['hp_traff'], true),
+				'HP_TRAFF' => clean_input($_POST['hp_traff'], true),
+				'HP_DISK_VALUE' => clean_input($_POST['hp_disk'], true),
+				'HP_PRICE_STYLE' => format_price(clean_input($_POST['hp_style'], true)),
+				'HP_PRICE' => clean_input($_POST['hp_price'], true),
+				'HP_SETUPFEE' => clean_input($_POST['hp_setupfee'], true),
+				'HP_CURRENCY' => clean_input($_POST['hp_currency'], true),
+				'HP_PAYMENT' => clean_input($_POST['hp_payment'], true)
 			));
 
 	if ('_yes_' === $_POST['php']) {

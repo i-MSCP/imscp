@@ -252,17 +252,17 @@ function update_data_in_db($hpid) {
 
   $reseller_id = $_SESSION['user_id'];
 
-  $first_name 	= clean_input($first_name);
-  $last_name 	= clean_input($last_name);
-  $firm 	= clean_input($firm);
-  $gender	= clean_input($gender);
-  $zip 		= clean_input($zip);
-  $city 	= clean_input($city);
-  $country 	= clean_input($country);
-  $phone 	= clean_input($phone);
-  $fax 		= clean_input($fax);
-  $street_one 	= clean_input($street_one);
-  $street_two 	= clean_input($street_two);
+  $first_name 	= clean_input($first_name, true);
+  $last_name 	= clean_input($last_name, true);
+  $firm 	= clean_input($firm, true);
+  $gender	= clean_input($gender, true);
+  $zip 		= clean_input($zip, true);
+  $city 	= clean_input($city, true);
+  $country 	= clean_input($country, true);
+  $phone 	= clean_input($phone, true);
+  $fax 		= clean_input($fax, true);
+  $street_one 	= clean_input($street_one, true);
+  $street_two 	= clean_input($street_two, true);
 
   if (empty($inpass)) {
   // Save without password

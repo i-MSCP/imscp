@@ -21,10 +21,10 @@
 // site functions
 function gen_button_list(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-    	select
-          *
-      from
-          custom_menus
+		select
+		  *
+	  from
+		  custom_menus
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -52,16 +52,17 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array('BUTTON_LINK' => $menu_link,
-					'BUTONN_ID' => $menu_id,
-					'LEVEL' => $menu_level,
-					'MENU_NAME' => $menu_name,
-					'LINK' => $menu_link,
-					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2',
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-
-					)
-				);
+				array(
+					'BUTTON_LINK'		=> $menu_link,
+					'BUTONN_ID'			=> $menu_id,
+					'LEVEL'				=> $menu_level,
+					'MENU_NAME'			=> $menu_name,
+					'MENU_NAME2'		=> addslashes(clean_html($menu_name)),
+					'LINK'				=> $menu_link,
+					'CONTENT'			=> ($i % 2 == 0) ? 'content' : 'content2',
+					'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),
+				)
+			);
 
 			$tpl->parse('BUTTON_LIST', '.button_list');
 			$rs->MoveNext();
@@ -76,7 +77,7 @@ function add_new_button(&$sql) {
 	} else if ($_POST['uaction'] != 'new_button') {
 		return;
 	} else {
-		$button_name = clean_input($_POST['bname']);
+		$button_name = clean_input($_POST['bname'], true);
 		$button_link = clean_input($_POST['blink']);
 		$button_target = clean_input($_POST['btarget']);
 		$button_view = $_POST['bview'];
@@ -86,19 +87,26 @@ function add_new_button(&$sql) {
 			return;
 		}
 
-		$query = <<<SQL_QUERY
-    	insert into custom_menus
-          (
-            menu_level,
-            menu_name,
-            menu_link,
-            menu_target
-          )
-        values
-          (
-            ?,?,?,?
-          )
-SQL_QUERY;
+		if(!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)){
+			set_page_message(tr('Invalid URL!'));
+			return;
+		}
+
+		if(!empty($button_target) && !in_array($button_target,array('_blank', '_parent', '_self', '_top' ))){
+			set_page_message(tr('Invalid target!'));
+			return;
+		}
+
+		$query = "
+			INSERT INTO `custom_menus`
+				(
+				`menu_level`,
+				`menu_name`,
+				`menu_link`,
+				`menu_target`
+				)
+			VALUES ( ?, ?, ?, ?)
+		";
 
 		$rs = exec_query($sql, $query, array($button_view,
 				$button_name,
@@ -118,10 +126,10 @@ function delete_button(&$sql) {
 		$delete_id = $_GET['delete_id'];
 
 		$query = <<<SQL_QUERY
-            delete
-                from custom_menus
-            where
-                menu_id  = ?
+			delete
+				from custom_menus
+			where
+				menu_id  = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($delete_id));
@@ -138,14 +146,14 @@ function edit_button(&$tpl, &$sql) {
 	} else {
 		$edit_id = $_GET['edit_id'];
 
-		$query = <<<SQL_QUERY
-      select
-            *
-      from
-            custom_menus
-      where
-            menu_id = ?
-SQL_QUERY;
+		$query = "
+			select
+				*
+			from
+				custom_menus
+			where
+				menu_id = ?
+		";
 
 		$rs = exec_query($sql, $query, array($edit_id));
 		if ($rs->RecordCount() == 0) {
@@ -183,16 +191,17 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array('BUTON_NAME' => $button_name,
-					'BUTON_LINK' => $button_link,
-					'BUTON_TARGET' => $button_target,
-					'ADMIN_VIEW' => $admin_view,
-					'RESELLER_VIEW' => $reseller_view,
-					'USER_VIEW' => $user_view,
-					'ALL_VIEW' => $all_view,
-					'EID' => $_GET['edit_id']
-					)
-				);
+				array(
+					'BUTON_NAME'	=> $button_name,
+					'BUTON_LINK'	=> $button_link,
+					'BUTON_TARGET'	=> $button_target,
+					'ADMIN_VIEW'	=> $admin_view,
+					'RESELLER_VIEW'	=> $reseller_view,
+					'USER_VIEW'		=> $user_view,
+					'ALL_VIEW'		=> $all_view,
+					'EID'			=> $_GET['edit_id']
+				)
+			);
 
 			$tpl->parse('EDIT_BUTTON', '.edit_button');
 		}
@@ -205,7 +214,7 @@ function update_button(&$sql) {
 	} else if ($_POST['uaction'] != 'edit_button') {
 		return;
 	} else {
-		$button_name = clean_input($_POST['bname']);
+		$button_name = clean_input($_POST['bname'], true);
 		$button_link = clean_input($_POST['blink']);
 		$button_target = clean_input($_POST['btarget']);
 		$button_view = $_POST['bview'];
@@ -216,17 +225,27 @@ function update_button(&$sql) {
 			return;
 		}
 
-		$query = <<<SQL_QUERY
-      update
-          custom_menus
-      set
-          menu_level = ?,
-          menu_name = ?,
-          menu_link = ?,
-          menu_target = ?
-      where
-          menu_id = ?
-SQL_QUERY;
+		if(!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)){
+			set_page_message(tr('Invalid URL!'));
+			return;
+		}
+
+		if(!empty($button_target) && !in_array($button_target,array('_blank', '_parent', '_self', '_top' ))){
+			set_page_message(tr('Invalid target!'));
+			return;
+		}
+		
+		$query = "
+			update
+				custom_menus
+			set
+				menu_level = ?,
+				menu_name = ?,
+				menu_link = ?,
+				menu_target = ?
+			where
+				menu_id = ?
+		";
 
 		$rs = exec_query($sql, $query, array($button_view,
 				$button_name,

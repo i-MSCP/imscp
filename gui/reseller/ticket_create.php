@@ -45,8 +45,8 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 
 	$ticket_date = time();
 	$urgency = $_POST['urgency'];
-	$subject = clean_input($_POST['subj']);
-	$user_message = clean_input($_POST["user_message"]);
+	$subject = clean_input($_POST['subj'], true);
+	$user_message = clean_input($_POST["user_message"], true);
 	$ticket_status = 2;
 	$ticket_reply = 0;
 	$ticket_level = 2;
@@ -67,13 +67,10 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_level,	$user_id, $user_created_by,
-			$ticket_status,	$ticket_reply, $urgency, $ticket_date,
-			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+			$ticket_status,	$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($user_created_by, $user_id, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
+	send_tickets_msg($user_created_by, $user_id, $subject, $user_message, $ticket_reply);
 	header("Location: ticket_system.php");
 }
 

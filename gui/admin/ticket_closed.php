@@ -164,7 +164,8 @@ SQL_QUERY;
 					'FROM' 		=> $from,
 					'TO'		=> $to,
 					'LAST_DATE' => $date,
-					'SUBJECT' 	=> stripslashes($rs->fields['ticket_subject']),
+					'SUBJECT' 	=> $rs->fields['ticket_subject'],
+					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'MESSAGE' 	=> $rs->fields['ticket_message'],
 					'CONTENT' 	=> ($i % 2 == 0) ? 'content' : 'content2'
 					)

@@ -145,14 +145,15 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'LAST_DATE' => $date,
-						'FROM'		=> $from,
-						'SUBJECT'	=> stripslashes($rs->fields['ticket_subject']),
-						'ID'		=> $ticket_id,
-						'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
-						)
-					);
+				array(
+					'LAST_DATE' => $date,
+					'FROM'		=> $from,
+					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
+					'ID'		=> $ticket_id,
+					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
+				)
+			);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();

@@ -47,50 +47,50 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi']))
 		$start_index = $_GET['psi'];
 
-	$count_query = <<<SQL_QUERY
-                SELECT
-                    COUNT(ticket_id) as cnt
-                FROM
-                    tickets
-                WHERE
-                    ticket_status != 0
-                  AND
-                    ticket_reply = 0
-SQL_QUERY;
+	$count_query = "
+		SELECT
+			COUNT(ticket_id) as cnt
+		FROM
+			tickets
+		WHERE
+			ticket_status != 0
+		AND
+			ticket_reply = 0
+	";
 
 	$rs = exec_query($sql, $count_query, array());
 	$records_count = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
-          SELECT
-                ticket_id,
-                ticket_status,
-                ticket_urgency,
-                ticket_date,
-                ticket_subject,
-                ticket_message
-          FROM
-                tickets
-          WHERE
-                ticket_status != 0
-            AND
-                ticket_reply = 0
-          ORDER BY
-                ticket_date DESC
-          LIMIT
-                $start_index, $rows_per_page
-SQL_QUERY;
+	$query = "
+		SELECT
+			ticket_id,
+			ticket_status,
+			ticket_urgency,
+			ticket_date,
+			ticket_subject,
+			ticket_message
+		FROM
+			tickets
+		WHERE
+			ticket_status != 0
+		AND
+			ticket_reply = 0
+		ORDER BY
+			ticket_date DESC
+		LIMIT
+			$start_index, $rows_per_page
+	";
 
 	$rs = exec_query($sql, $query, array());
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
 			array(
-				'TICKETS_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => ''
-				)
-			);
+				'TICKETS_LIST'	=> '',
+				'SCROLL_PREV'	=> '',
+				'SCROLL_NEXT'	=> ''
+			)
+		);
 
 		set_page_message(tr('You have no support tickets.'));
 	} else {
@@ -101,10 +101,10 @@ SQL_QUERY;
 		} else {
 			$tpl->assign(
 				array(
-					'SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prev_si
-					)
-				);
+					'SCROLL_PREV_GRAY'	=> '',
+					'PREV_PSI'			=> $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -114,10 +114,10 @@ SQL_QUERY;
 		} else {
 			$tpl->assign(
 				array(
-					'SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $next_si
-					)
-				);
+					'SCROLL_NEXT_GRAY'	=> '',
+					'NEXT_PSI'	=> $next_si
+				)
+			);
 		}
 		global $i;
 
@@ -131,10 +131,7 @@ SQL_QUERY;
 			$ticket_status = $rs->fields['ticket_status'];
 
 			if ($ticket_urgency == 1) {
-				$tpl->assign(
-					array('URGENCY' => tr("Low")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Low")));
 			} elseif ($ticket_urgency == 2) {
 				$tpl->assign(array('URGENCY' => tr("Medium")));
 			} elseif ($ticket_urgency == 3) {
@@ -157,11 +154,12 @@ SQL_QUERY;
 					'FROM' 		=> $from,
 					'TO'		=> $to,
 					'LAST_DATE' => $date,
-					'SUBJECT' 	=> clean_html(stripslashes(wordwrap($rs->fields['ticket_subject']))),
+					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT2'	=> clean_html(addslashes($rs->fields['ticket_subject'])),
 					'MESSAGE' 	=> clean_html($rs->fields['ticket_message']),
 					'CONTENT' 	=> ($i % 2 == 0) ? 'content' : 'content2'
-					)
-				);
+				)
+			);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();
@@ -171,7 +169,7 @@ SQL_QUERY;
 }
 
 function get_ticket_from(&$sql, $ticket_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		select
 			ticket_from,
 			ticket_to,
@@ -181,7 +179,7 @@ function get_ticket_from(&$sql, $ticket_id) {
 			tickets
 		where
 			ticket_id = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_from = $rs->fields['ticket_from'];
@@ -189,7 +187,7 @@ SQL_QUERY;
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			admin_name,
 			admin_type,
@@ -199,7 +197,7 @@ SQL_QUERY;
 			admin
 		WHERE
 			admin_id = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_from));
 	$from_user_name = decode_idna($rs->fields['admin_name']);
@@ -213,7 +211,7 @@ SQL_QUERY;
 }
 
 function get_ticket_to(&$sql, $ticket_id, $user_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		select
 			ticket_from,
 			ticket_to,
@@ -223,7 +221,7 @@ function get_ticket_to(&$sql, $ticket_id, $user_id) {
 			tickets
 		where
 			ticket_id = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_from = $rs->fields['ticket_from'];
@@ -231,7 +229,7 @@ SQL_QUERY;
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			admin_id,
 			admin_name,
@@ -242,7 +240,7 @@ SQL_QUERY;
 			admin
 		WHERE
 			admin_id = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_to));
 	$to_user_name = decode_idna($rs->fields['admin_name']);
@@ -264,12 +262,13 @@ SQL_QUERY;
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE' => tr('ispCP - Client/Enable Mail Autoresponder'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('ispCP - Client/Enable Mail Autoresponder'),
+		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+		'THEME_CHARSET'								=> tr('encoding'),
+		'ISP_LOGO'									=> get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 

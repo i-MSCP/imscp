@@ -26,7 +26,7 @@ function gen_page_data(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
 			array(
-				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], false),
+				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
 				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], false),
 				'SENDER_EMAIL' => clean_input($_POST['sender_email'], false),
 				'SENDER_NAME' => clean_input($_POST['sender_name'], false)

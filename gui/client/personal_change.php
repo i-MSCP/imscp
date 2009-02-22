@@ -84,18 +84,18 @@ SQL_QUERY;
 }
 
 function update_user_personal_data(&$sql, $user_id) {
-	$fname = clean_input($_POST['fname']);
-	$lname = clean_input($_POST['lname']);
+	$fname = clean_input($_POST['fname'], true);
+	$lname = clean_input($_POST['lname'], true);
 	$gender = $_POST['gender'];
-	$firm = clean_input($_POST['firm']);
-	$zip = clean_input($_POST['zip']);
-	$city = clean_input($_POST['city']);
-	$country = clean_input($_POST['country']);
-	$street1 = clean_input($_POST['street1']);
-	$street2 = clean_input($_POST['street2']);
-	$email = clean_input($_POST['email']);
-	$phone = clean_input($_POST['phone']);
-	$fax = clean_input($_POST['fax']);
+	$firm = clean_input($_POST['firm'], true);
+	$zip = clean_input($_POST['zip'], true);
+	$city = clean_input($_POST['city'], true);
+	$country = clean_input($_POST['country'], true);
+	$street1 = clean_input($_POST['street1'], true);
+	$street2 = clean_input($_POST['street2'], true);
+	$email = clean_input($_POST['email'], true);
+	$phone = clean_input($_POST['phone'], true);
+	$fax = clean_input($_POST['fax'], true);
 
 	$query = <<<SQL_QUERY
         update

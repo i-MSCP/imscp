@@ -80,7 +80,7 @@ $tpl->assign(
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'SUBJECT_VALUE' => $data['subject'],
+		'SUBJECT_VALUE' => clean_input(addslashes($data['subject']), true),
 		'MESSAGE_VALUE' => $data['message'],
 		'SENDER_EMAIL_VALUE' => $data['sender_email'],
 		'SENDER_NAME_VALUE' => $data['sender_name']

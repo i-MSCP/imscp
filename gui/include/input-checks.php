@@ -64,7 +64,8 @@ function clean_html($text) {
 	$suche = array ('@<script[^>]*?>.*?</script>@si', // remove JavaScript
 		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
 		'@([\r\n])[\s]+@', // remove spaces,
-		'@&(quot|#34);@i', // change HTML entities
+		'@&(quot|#34|#034);@i', // change HTML entities
+		'@&(apos|#39|#039);@i', // change HTML entities
 		'@&(amp|#38);@i',
 		'@&(lt|#60);@i',
 		'@&(gt|#62);@i',
@@ -72,13 +73,14 @@ function clean_html($text) {
 		'@&(iexcl|#161);@i',
 		'@&(cent|#162);@i',
 		'@&(pound|#163);@i',
-		'@&(copy|#169);@i',
-		'@&#(\d+);@e'); // handle als php
+		'@&(copy|#169);@i'/*,
+		'@&#(\d+);@e'*/); // handle als php
 
 	$ersetze = array ('',
 		'',
 		'\1',
 		'"',
+		"'",
 		'&',
 		'<',
 		'>',
@@ -87,7 +89,7 @@ function clean_html($text) {
 		chr(162),
 		chr(163),
 		chr(169),
-		'chr(\1)');
+		/*'chr(\1)'*/);
 
 	$text = preg_replace($suche, $ersetze, $text);
 	// and second one...
@@ -109,7 +111,7 @@ function clean_input($input, $htmlencode = false) {
 		$input = trim($input, "{..}");
 	}
 
-	$input = stripslashes($input);
+	if(get_magic_quotes_gpc())$input = stripslashes($input);
 
 	if ($htmlencode) {
 		return htmlentities($input, ENT_QUOTES, "UTF-8");
