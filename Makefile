@@ -29,7 +29,6 @@
 #
 #    http://isp-control.net
 #
-
 ifndef INST_PREF
         INST_PREF=/tmp/ispcp
 endif
