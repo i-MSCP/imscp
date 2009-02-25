@@ -7,15 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-08-07 15:56+0200\n"
 "Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
-"Language-Team: Euskara <eu@li.org>\n"
+"Language-Team: Basque (Spain) <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Language: Basque\n"
+"X-Poedit-Country: SPAIN\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -346,6 +347,13 @@ msgstr "Ziur zaude %s ezabatu nahi duzula"
 
 msgid "Missing or incorrect data input!"
 msgstr "Sarrera datu okerrak edo galduak!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Talde izen okerra!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Menu pertsonalizatuen datuak zuzen eguneratuak!"
@@ -2844,37 +2852,6 @@ msgstr "SQL datubasea zuzen ezabatu da!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL erabiltzailea zuzen ezabatu da!"
 
-msgid "Please enter an SQL query!"
-msgstr "MEsedez sartu SQL kontsulta!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Ezin izan da konektatu SQL zerbitzarira %s gisa!"
-
-msgid "Execution of SQL query failed!"
-msgstr "SQL kontsultaren exekusioak huts egin du!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQL kontsulta burutu da!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Erabiltzailea/Exekutatu SQL Kontsulta"
-
-msgid "Execute SQL query"
-msgstr "Exekutatu SQL kontsulta"
-
-msgid "SQL query"
-msgstr "SQL kontsulta"
-
-msgid "Query status"
-msgstr "Kontsultaren egoera"
-
-msgid "Query result"
-msgstr "Kontsultaren erantzuna"
-
-msgid "Execute"
-msgstr "Exekutatu"
-
 msgid "Database user list is empty!"
 msgstr "Datubaseko erabiltzaile zerrenda hutsik dago!"
 
@@ -4038,6 +4015,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Erabiltzailea ez da amaitu!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "MEsedez sartu SQL kontsulta!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Ezin izan da konektatu SQL zerbitzarira %s gisa!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "SQL kontsultaren exekusioak huts egin du!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQL kontsulta burutu da!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Erabiltzailea/Exekutatu SQL Kontsulta"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Exekutatu SQL kontsulta"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL kontsulta"
+
+#~ msgid "Query status"
+#~ msgstr "Kontsultaren egoera"
+
+#~ msgid "Query result"
+#~ msgstr "Kontsultaren erantzuna"
+
+#~ msgid "Execute"
+#~ msgstr "Exekutatu"
 
 #~ msgid "Mail in"
 #~ msgstr "Posta sarrera"

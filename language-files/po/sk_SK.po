@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -351,6 +351,13 @@ msgstr "Ste si istý, že chcete zmazať"
 
 msgid "Missing or incorrect data input!"
 msgstr "Chýbajúce alebo nesprávne údaje!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Zlé časové obdobie!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Vlastné menu bolo úspešne aktualizované!"
@@ -2936,40 +2943,6 @@ msgstr "SQL databáza zmazaná úspešne!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL konto bolo zmazané úspešne!"
 
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Prosím zadajte SQL príkaz!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Vykonať SQL príkaz"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Vykonať SQL príkaz"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Klient/Vykonať SQL príkaz"
-
-msgid "Execute SQL query"
-msgstr "Vykonať SQL príkaz"
-
-msgid "SQL query"
-msgstr "SQL príkaz"
-
-msgid "Query status"
-msgstr "Status príkazu"
-
-msgid "Query result"
-msgstr "Výsledok príkazu"
-
-msgid "Execute"
-msgstr "Vykonať"
-
 msgid "Database user list is empty!"
 msgstr "Zoznam databázovych kont je prázdny!"
 
@@ -4081,6 +4054,36 @@ msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo 
 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
+
+#, fuzzy
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Prosím zadajte SQL príkaz!"
+
+#, fuzzy
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Vykonať SQL príkaz"
+
+#, fuzzy
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Vykonať SQL príkaz"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Klient/Vykonať SQL príkaz"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Vykonať SQL príkaz"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL príkaz"
+
+#~ msgid "Query status"
+#~ msgstr "Status príkazu"
+
+#~ msgid "Query result"
+#~ msgstr "Výsledok príkazu"
+
+#~ msgid "Execute"
+#~ msgstr "Vykonať"
 
 #~ msgid "Mail in"
 #~ msgstr "Mail prichádzajúce"

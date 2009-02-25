@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -340,6 +340,13 @@ msgstr "Weet u zeker dat u %s wilt verwijderen?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Vermiste of onjuiste data input"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Onjuiste groep naam!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Aangepast menuitem informatie succesvol gewijzigd!"
@@ -2837,37 +2844,6 @@ msgstr "MySQL databank is succesvol verwijderd"
 msgid "SQL user was removed successfully!"
 msgstr "MySQL gebruiker is succesvol verwijderd"
 
-msgid "Please enter an SQL query!"
-msgstr "Vul aub een SQL query in!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Kan niet met de SQL server verbinden als %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Uitvoering van de SQL query mislukt!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Uitvoering van de SQL query geslaagd!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Klant/Uitvoeren SQL Query"
-
-msgid "Execute SQL query"
-msgstr "SQL query uitvoeren"
-
-msgid "SQL query"
-msgstr "MySQL query"
-
-msgid "Query status"
-msgstr "Query status"
-
-msgid "Query result"
-msgstr "Query resultaat"
-
-msgid "Execute"
-msgstr "Uitvoeren"
-
 msgid "Database user list is empty!"
 msgstr "Er zijn geen gebruikers voor deze database"
 
@@ -4031,6 +4007,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Gebruiker niet beeindigd!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Vul aub een SQL query in!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Kan niet met de SQL server verbinden als %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Uitvoering van de SQL query mislukt!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Uitvoering van de SQL query geslaagd!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Klant/Uitvoeren SQL Query"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "SQL query uitvoeren"
+
+#~ msgid "SQL query"
+#~ msgstr "MySQL query"
+
+#~ msgid "Query status"
+#~ msgstr "Query status"
+
+#~ msgid "Query result"
+#~ msgstr "Query resultaat"
+
+#~ msgid "Execute"
+#~ msgstr "Uitvoeren"
 
 #~ msgid "Mail in"
 #~ msgstr "Binnenkomende Mail"

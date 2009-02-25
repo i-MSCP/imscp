@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2009-02-01 22:57+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -336,6 +336,12 @@ msgid "Are you sure you want to delete %s?"
 msgstr "คุณแน่ใจที่จะต้องการลบ"
 
 msgid "Missing or incorrect data input!"
+msgstr ""
+
+msgid "Invalid URL!"
+msgstr ""
+
+msgid "Invalid target!"
 msgstr ""
 
 msgid "Custom menu data updated successful!"
@@ -2806,37 +2812,6 @@ msgid "SQL database was removed successfully!"
 msgstr ""
 
 msgid "SQL user was removed successfully!"
-msgstr ""
-
-msgid "Please enter an SQL query!"
-msgstr ""
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-msgid "Execution of SQL query failed!"
-msgstr ""
-
-msgid "Execution of SQL query succeeded!"
-msgstr ""
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr ""
-
-msgid "Execute SQL query"
-msgstr ""
-
-msgid "SQL query"
-msgstr ""
-
-msgid "Query status"
-msgstr ""
-
-msgid "Query result"
-msgstr ""
-
-msgid "Execute"
 msgstr ""
 
 msgid "Database user list is empty!"

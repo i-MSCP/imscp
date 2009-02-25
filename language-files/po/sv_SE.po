@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-08-01 13:00+0100\n"
 "Last-Translator: Ergin �zdemir <ergin@ozdemir.se>\n"
 "Language-Team: Svenska <en_GB@li.org>\n"
@@ -339,6 +339,13 @@ msgstr "�r du s�ker att du vill ta bort"
 
 msgid "Missing or incorrect data input!"
 msgstr ""
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Ogiltig datum period"
 
 msgid "Custom menu data updated successful!"
 msgstr ""
@@ -2808,37 +2815,6 @@ msgstr ""
 msgid "SQL user was removed successfully!"
 msgstr ""
 
-msgid "Please enter an SQL query!"
-msgstr ""
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-msgid "Execution of SQL query failed!"
-msgstr ""
-
-msgid "Execution of SQL query succeeded!"
-msgstr ""
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr ""
-
-msgid "Execute SQL query"
-msgstr ""
-
-msgid "SQL query"
-msgstr "SQL fr�ga"
-
-msgid "Query status"
-msgstr "Fr�ga status"
-
-msgid "Query result"
-msgstr "Fr�ga resultat"
-
-msgid "Execute"
-msgstr "K�r"
-
 msgid "Database user list is empty!"
 msgstr ""
 
@@ -3878,6 +3854,18 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+#~ msgid "SQL query"
+#~ msgstr "SQL fr�ga"
+
+#~ msgid "Query status"
+#~ msgstr "Fr�ga status"
+
+#~ msgid "Query result"
+#~ msgstr "Fr�ga resultat"
+
+#~ msgid "Execute"
+#~ msgstr "K�r"
 
 #~ msgid "Mail in"
 #~ msgstr "Mail inkommande"

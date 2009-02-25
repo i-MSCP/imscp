@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -337,6 +337,13 @@ msgstr "Сигурни ли сте, че искате да го изтриете
 
 msgid "Missing or incorrect data input!"
 msgstr "Пропуснат или некоректен вход!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Неправилно име на група!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Персоналното меню беше успешно обновено!"
@@ -2870,37 +2877,6 @@ msgstr "SQL Базата данни беше успешно изтрита!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL потребителя е изтрит успешно!"
 
-msgid "Please enter an SQL query!"
-msgstr "Моля, въведете SQL заявка!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Не возможно подключится к SQL серверу как %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Виполнит SQL заявка не удалос!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQL заявката е изпълнена успешно!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Клиент/Изпълни SQL заявка"
-
-msgid "Execute SQL query"
-msgstr "Изпълни SQL заявка"
-
-msgid "SQL query"
-msgstr "SQL заявка"
-
-msgid "Query status"
-msgstr "Статус на заявка"
-
-msgid "Query result"
-msgstr "Резултат на заявка"
-
-msgid "Execute"
-msgstr "Изпълни"
-
 msgid "Database user list is empty!"
 msgstr "Списъкът с потребители на бази данни е празен!"
 
@@ -4068,6 +4044,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Моля, въведете SQL заявка!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Не возможно подключится к SQL серверу как %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Виполнит SQL заявка не удалос!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQL заявката е изпълнена успешно!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Клиент/Изпълни SQL заявка"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Изпълни SQL заявка"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL заявка"
+
+#~ msgid "Query status"
+#~ msgstr "Статус на заявка"
+
+#~ msgid "Query result"
+#~ msgstr "Резултат на заявка"
+
+#~ msgid "Execute"
+#~ msgstr "Изпълни"
 
 #~ msgid "Mail in"
 #~ msgstr "Поща-вход"

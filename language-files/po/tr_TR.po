@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -346,6 +346,13 @@ msgstr "%s silmek istediğinize emin misiniz?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Eksik veya hatalı veri girişi"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Geçersiz grup adı"
 
 msgid "Custom menu data updated successful!"
 msgstr "Özel menü verileri güncellendi!"
@@ -2825,37 +2832,6 @@ msgstr "SQL veritabanı silindi!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL kullanıcısı silindi!"
 
-msgid "Please enter an SQL query!"
-msgstr "Lütfen, bir SQL sorgusu yazınız!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "%s olarak SQL servera bağlanılamıyor!"
-
-msgid "Execution of SQL query failed!"
-msgstr "SQL sorgusu çalıştırılamadı!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQL sorgusu başarıyla çalıştırıldı!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Müşteri/SQL Sorgusu Çalıştır"
-
-msgid "Execute SQL query"
-msgstr "SQL sorgusu çalıştır"
-
-msgid "SQL query"
-msgstr "SQL sorgusu"
-
-msgid "Query status"
-msgstr "Sorgu durumu"
-
-msgid "Query result"
-msgstr "Sorgu sonucu"
-
-msgid "Execute"
-msgstr "Çalıştır"
-
 msgid "Database user list is empty!"
 msgstr "Veritabanı kullanıcı ismi boş!"
 
@@ -4005,6 +3981,36 @@ msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden silini
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "%s olarak SQL servera bağlanılamıyor!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "SQL sorgusu çalıştırılamadı!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQL sorgusu başarıyla çalıştırıldı!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Müşteri/SQL Sorgusu Çalıştır"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "SQL sorgusu çalıştır"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL sorgusu"
+
+#~ msgid "Query status"
+#~ msgstr "Sorgu durumu"
+
+#~ msgid "Query result"
+#~ msgstr "Sorgu sonucu"
+
+#~ msgid "Execute"
+#~ msgstr "Çalıştır"
 
 #~ msgid "Mail in"
 #~ msgstr "Gelen posta"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da_DK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-07-22 13:16+0100\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -340,6 +340,13 @@ msgstr "Er du sikker på du vil slette?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Manglende eller ukorrekt data indtastning!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Ugyldigt gruppe navn!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Special menu data opdateret!"
@@ -2841,37 +2848,6 @@ msgstr "SQL database blev fjernet!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL bruger blev fjernet"
 
-msgid "Please enter an SQL query!"
-msgstr "Indtast en SQL forspørgelse!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Kunne ikke oprette forbindelse til SQL serveren som %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Udførsel af SQL forespørgselse fejlede!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Udførsel af  SQL forespørgselse virked!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Bruger/Udfør SQL forespørgsel"
-
-msgid "Execute SQL query"
-msgstr "Udfør SQL forespørgsel"
-
-msgid "SQL query"
-msgstr "SQL forspørgelse"
-
-msgid "Query status"
-msgstr "Forspørgelses status"
-
-msgid "Query result"
-msgstr "Forespørgsels resultat"
-
-msgid "Execute"
-msgstr "Udfør"
-
 msgid "Database user list is empty!"
 msgstr "Databasebrugerlisten er tom!"
 
@@ -4025,6 +4001,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Indtast en SQL forspørgelse!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Kunne ikke oprette forbindelse til SQL serveren som %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Udførsel af SQL forespørgselse fejlede!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Udførsel af  SQL forespørgselse virked!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Bruger/Udfør SQL forespørgsel"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Udfør SQL forespørgsel"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL forspørgelse"
+
+#~ msgid "Query status"
+#~ msgstr "Forspørgelses status"
+
+#~ msgid "Query result"
+#~ msgstr "Forespørgsels resultat"
+
+#~ msgid "Execute"
+#~ msgstr "Udfør"
 
 #~ msgid "Mail in"
 #~ msgstr "Mail ind"

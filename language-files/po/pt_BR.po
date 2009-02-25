@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -343,6 +343,13 @@ msgstr "Deseja prosseguir com a exclusão?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Dados inválidos!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Lista de e-mails"
 
 msgid "Custom menu data updated successful!"
 msgstr "Configuração dos menus atualizadas com sucesso!"
@@ -2890,40 +2897,6 @@ msgstr "Banco de dados excluído com sucesso!"
 msgid "SQL user was removed successfully!"
 msgstr "Usuário de SQL excluído com sucesso!"
 
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Informe o comando SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Executa comando SQL"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Executa comando SQL"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Cliente/Executar Consulta SQL"
-
-msgid "Execute SQL query"
-msgstr "Executa comando SQL"
-
-msgid "SQL query"
-msgstr ""
-
-msgid "Query status"
-msgstr "Status da query"
-
-msgid "Query result"
-msgstr "Resultado da query"
-
-msgid "Execute"
-msgstr "Executa"
-
 msgid "Database user list is empty!"
 msgstr "Lista de usuários SQL vazia!"
 
@@ -3997,6 +3970,33 @@ msgstr "Este cliente tem um domínio!<br>Remova-o do sistema primeiro!"
 
 msgid "User not terminated!"
 msgstr "Cliente não finalizado!"
+
+#, fuzzy
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Informe o comando SQL!"
+
+#, fuzzy
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Executa comando SQL"
+
+#, fuzzy
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Executa comando SQL"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Cliente/Executar Consulta SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Executa comando SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Status da query"
+
+#~ msgid "Query result"
+#~ msgstr "Resultado da query"
+
+#~ msgid "Execute"
+#~ msgstr "Executa"
 
 #~ msgid "Mail in"
 #~ msgstr "Tráfego de e-mail<br>ent"

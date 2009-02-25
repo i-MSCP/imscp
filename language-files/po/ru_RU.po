@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -340,6 +340,13 @@ msgstr "Вы уверены что хотите удалить %s?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Пропущенные или некорректные входные данные!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Неправильное имя группы!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Персональное меню успешно обновлено!"
@@ -2860,37 +2867,6 @@ msgstr "База данных SQL успешно удалена!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL пользователь удалён успешно!"
 
-msgid "Please enter an SQL query!"
-msgstr "Пожалуйста, введите SQL запрос!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Не возможно подключиться к SQL серверу как %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Выполнить SQL запрос не удалось!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQL запрос выполнен успешно!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Клиент/Выполнить SQL запрос"
-
-msgid "Execute SQL query"
-msgstr "Выполнить SQL запрос"
-
-msgid "SQL query"
-msgstr "SQL запрос"
-
-msgid "Query status"
-msgstr "Статус запроса"
-
-msgid "Query result"
-msgstr "Результат запроса"
-
-msgid "Execute"
-msgstr "Выполнить"
-
 msgid "Database user list is empty!"
 msgstr "Список пользователей базы данных пуст!"
 
@@ -4047,6 +4023,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Пользователь не завершил работу!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Пожалуйста, введите SQL запрос!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Не возможно подключиться к SQL серверу как %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Выполнить SQL запрос не удалось!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQL запрос выполнен успешно!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Клиент/Выполнить SQL запрос"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Выполнить SQL запрос"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL запрос"
+
+#~ msgid "Query status"
+#~ msgstr "Статус запроса"
+
+#~ msgid "Query result"
+#~ msgstr "Результат запроса"
+
+#~ msgid "Execute"
+#~ msgstr "Выполнить"
 
 #~ msgid "Mail in"
 #~ msgstr "Почта-вход"

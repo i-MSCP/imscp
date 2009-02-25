@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-12-17 17:46+0900\n"
 "Last-Translator: hiroron <hiroron@hiroron.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -341,6 +341,13 @@ msgstr "%s を削除してもよろしいですか？"
 
 msgid "Missing or incorrect data input!"
 msgstr "入力したデータが不足または間違えています！"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "無効なグループ名！"
 
 msgid "Custom menu data updated successful!"
 msgstr "カスタムメニューデータが更新されました"
@@ -2823,37 +2830,6 @@ msgstr "データベースの削除に成功しました"
 msgid "SQL user was removed successfully!"
 msgstr "SQLユーザは削除されました"
 
-msgid "Please enter an SQL query!"
-msgstr "SQLクエリーを入力してください！"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "%s としてSQLサーバーに接続できませんでした！"
-
-msgid "Execution of SQL query failed!"
-msgstr "SQLクエリーの実行に失敗！"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQLクエリーの実行に成功！"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - クライアント/SQLクエリー実行"
-
-msgid "Execute SQL query"
-msgstr "SQLクエリーの実行"
-
-msgid "SQL query"
-msgstr "SQLクエリー"
-
-msgid "Query status"
-msgstr "クエリのステータス"
-
-msgid "Query result"
-msgstr "クエリの結果"
-
-msgid "Execute"
-msgstr "実行"
-
 msgid "Database user list is empty!"
 msgstr "データベースユーザーリストが空です!"
 
@@ -4004,6 +3980,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "ユーザは終わりません！"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "SQLクエリーを入力してください！"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "%s としてSQLサーバーに接続できませんでした！"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "SQLクエリーの実行に失敗！"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQLクエリーの実行に成功！"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - クライアント/SQLクエリー実行"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "SQLクエリーの実行"
+
+#~ msgid "SQL query"
+#~ msgstr "SQLクエリー"
+
+#~ msgid "Query status"
+#~ msgstr "クエリのステータス"
+
+#~ msgid "Query result"
+#~ msgstr "クエリの結果"
+
+#~ msgid "Execute"
+#~ msgstr "実行"
 
 #~ msgid "Mail in"
 #~ msgstr "メール イン"

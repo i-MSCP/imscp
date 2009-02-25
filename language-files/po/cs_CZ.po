@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -336,6 +336,13 @@ msgstr "Opravdu chcete odstranit %s?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Nesprávné nebo chybějící údaje!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Nesprávné jméno skupiny!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Vlastní menu úspěšně změněno!"
@@ -2819,37 +2826,6 @@ msgstr "SQL databáze byla úspěšně odstraněna!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL uživatel byl odstraněn úspěšně!"
 
-msgid "Please enter an SQL query!"
-msgstr "Zadejte prosím SQL dotaz!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Nemohu se připojit k SQL serveru jako %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Provedení SQL dotazu selhalo!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Provedení SQL dotazu bylo úspěšné!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Klient/Provést SQL dotaz"
-
-msgid "Execute SQL query"
-msgstr "Proveď SQL dotaz"
-
-msgid "SQL query"
-msgstr "SQL dotaz"
-
-msgid "Query status"
-msgstr "Stav dotazu"
-
-msgid "Query result"
-msgstr "Výsledek dotazu"
-
-msgid "Execute"
-msgstr "Proveď"
-
 msgid "Database user list is empty!"
 msgstr "Seznam uživatelů databáze je prázdný!"
 
@@ -4001,6 +3977,36 @@ msgstr "Uživatel má záznam o doméně!<br>Nejprve smažte doménu ze systému
 
 msgid "User not terminated!"
 msgstr "Uživatel není odstraněn!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Zadejte prosím SQL dotaz!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Nemohu se připojit k SQL serveru jako %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Provedení SQL dotazu selhalo!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Provedení SQL dotazu bylo úspěšné!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Klient/Provést SQL dotaz"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Proveď SQL dotaz"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL dotaz"
+
+#~ msgid "Query status"
+#~ msgstr "Stav dotazu"
+
+#~ msgid "Query result"
+#~ msgstr "Výsledek dotazu"
+
+#~ msgid "Execute"
+#~ msgstr "Proveď"
 
 #~ msgid "Mail in"
 #~ msgstr "Mail příchozí"

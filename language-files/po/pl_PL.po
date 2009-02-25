@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
 "Last-Translator: Leszek Taczkowski <leszek.t@simplusnet.pl>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -340,6 +340,13 @@ msgstr "Czy napewno chcesz usunąć %s"
 
 msgid "Missing or incorrect data input!"
 msgstr "Brak danych lub dane niepoprawne!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Błędna nazwa grupy!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Spersonalizowane dane menu zostały zaktualizowane!"
@@ -2830,37 +2837,6 @@ msgstr "Baza danych SQL została usunięta!"
 msgid "SQL user was removed successfully!"
 msgstr "Użytkownik SQL został usunięty!"
 
-msgid "Please enter an SQL query!"
-msgstr "Podaj zapytanie SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Nie można połączyć się z serwerem SQL jako %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Zapytanie SQL nie powiodło się!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Zapytanie SQL zakończone poprawnie!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Klient/Wykonaj Zapytanie SQL"
-
-msgid "Execute SQL query"
-msgstr "Wykonaj zapytanie SQL"
-
-msgid "SQL query"
-msgstr "Zapytanie SQL"
-
-msgid "Query status"
-msgstr "Stan zapytania"
-
-msgid "Query result"
-msgstr "Wynik zapytania"
-
-msgid "Execute"
-msgstr "Wykonaj"
-
 msgid "Database user list is empty!"
 msgstr "Lista użytkowników baz danych jest pusta!"
 
@@ -4014,6 +3990,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Użytkownik nie usunięty!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Podaj zapytanie SQL!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Nie można połączyć się z serwerem SQL jako %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Zapytanie SQL nie powiodło się!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Zapytanie SQL zakończone poprawnie!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Klient/Wykonaj Zapytanie SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Wykonaj zapytanie SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Zapytanie SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Stan zapytania"
+
+#~ msgid "Query result"
+#~ msgstr "Wynik zapytania"
+
+#~ msgid "Execute"
+#~ msgstr "Wykonaj"
 
 #~ msgid "Mail in"
 #~ msgstr "Poczta przychodząca"

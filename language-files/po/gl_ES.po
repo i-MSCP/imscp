@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP.gl.00.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-08-28 20:35+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galician <infoxeral@ciberirmandade.org>\n"
@@ -343,6 +343,13 @@ msgstr "Estás certo de querer eliminar %s?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Datos de entrada non atopados ou incorrectos!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Nome de grupo incorrecto!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Datos de menú personalizado actualizados de xeito correcto!"
@@ -2850,37 +2857,6 @@ msgstr "Banco de datos SQL eliminado de xeito correcto!"
 msgid "SQL user was removed successfully!"
 msgstr "O usuario SQL foi eliminado de xeito correcto!"
 
-msgid "Please enter an SQL query!"
-msgstr "Por favor, insire unha consulta SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Non se puido conectar ao servidor SQL como %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Execución da consulta SQL malograda!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Execución da consulta SQL correcta!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Cliente/Executar Consulta SQL"
-
-msgid "Execute SQL query"
-msgstr "Executar consulta SQL"
-
-msgid "SQL query"
-msgstr "Consulta SQL"
-
-msgid "Query status"
-msgstr "Estado da consulta"
-
-msgid "Query result"
-msgstr "Resultado da consulta"
-
-msgid "Execute"
-msgstr "Executar"
-
 msgid "Database user list is empty!"
 msgstr "A listaxe de usuarios de bancos de datos está baleira!"
 
@@ -4048,6 +4024,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Usuario non dado de baixa!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Por favor, insire unha consulta SQL!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Non se puido conectar ao servidor SQL como %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Execución da consulta SQL malograda!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Execución da consulta SQL correcta!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Cliente/Executar Consulta SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Executar consulta SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Consulta SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Estado da consulta"
+
+#~ msgid "Query result"
+#~ msgstr "Resultado da consulta"
+
+#~ msgid "Execute"
+#~ msgstr "Executar"
 
 #~ msgid "Mail in"
 #~ msgstr "Entrada correo"

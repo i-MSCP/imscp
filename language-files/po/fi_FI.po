@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -342,6 +342,13 @@ msgstr "Oletko varma ett� haluat poistaa"
 
 msgid "Missing or incorrect data input!"
 msgstr "Uupuvaa tai v��r�� tietoa tietueessa!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "S�hk�postik�ytt�jien lista"
 
 msgid "Custom menu data updated successful!"
 msgstr "Vaihtoehtoiset valikon tiedot p�ivitetty!"
@@ -2886,40 +2893,6 @@ msgstr "SQL-tietokanta poistettu onnistuneesti!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL-k�ytt�j� poistettu!"
 
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Anna SQL-kysely!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Suorita SQL-kysely"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Suorita SQL-kysely"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Asiakas / Suorita SQL-kysely"
-
-msgid "Execute SQL query"
-msgstr "Suorita SQL-kysely"
-
-msgid "SQL query"
-msgstr "SQL-kysely"
-
-msgid "Query status"
-msgstr "Kyselyn tila"
-
-msgid "Query result"
-msgstr "Kyselun tulos"
-
-msgid "Execute"
-msgstr "Suorita"
-
 msgid "Database user list is empty!"
 msgstr "Tietokantak�ytt�jien lista on tyhj�!"
 
@@ -3997,6 +3970,36 @@ msgstr "T�ll� k�ytt�j�ll� on domain!<br>Poista ensin domain j�rjes
 
 msgid "User not terminated!"
 msgstr "K�ytt�j�� ei poistettu!"
+
+#, fuzzy
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Anna SQL-kysely!"
+
+#, fuzzy
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Suorita SQL-kysely"
+
+#, fuzzy
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Suorita SQL-kysely"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Asiakas / Suorita SQL-kysely"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Suorita SQL-kysely"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL-kysely"
+
+#~ msgid "Query status"
+#~ msgstr "Kyselyn tila"
+
+#~ msgid "Query result"
+#~ msgstr "Kyselun tulos"
+
+#~ msgid "Execute"
+#~ msgstr "Suorita"
 
 #~ msgid "Mail in"
 #~ msgstr "E-mail sis��n"

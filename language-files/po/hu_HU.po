@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2009-01-18 22:08+0100\n"
 "Last-Translator: István Pongrácz <pongracz.istvan@gmail.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -344,6 +344,13 @@ msgstr "Biztos törölni akarod a(z) %s-t?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Hiányzó vagy hibás adatok!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Hibás csoport név!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Egyedi menüadatok sikeresen frissítve!"
@@ -2833,37 +2840,6 @@ msgstr "SQL adatbázis sikeresen törölve!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL felhasználó sikeresen törölve!"
 
-msgid "Please enter an SQL query!"
-msgstr "Kérlek, írd be az SQL kérést!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Nem tudott csatlakozni az SQL szerverhez %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "SQL kérés végrehajtása sikertelen!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "SQL kérés sikeresen végrehajtva!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Kliens/SQL Kérés Végrehajtása"
-
-msgid "Execute SQL query"
-msgstr "SQL kérés végrehajtása"
-
-msgid "SQL query"
-msgstr "SQL kérés"
-
-msgid "Query status"
-msgstr "Kérés státusza"
-
-msgid "Query result"
-msgstr "Kérés eredménye"
-
-msgid "Execute"
-msgstr "Végrehajt"
-
 msgid "Database user list is empty!"
 msgstr "Adatbázis felhasználó lista üres!"
 
@@ -4024,6 +4000,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Felhasználó nincs törölve!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Kérlek, írd be az SQL kérést!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Nem tudott csatlakozni az SQL szerverhez %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "SQL kérés végrehajtása sikertelen!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "SQL kérés sikeresen végrehajtva!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Kliens/SQL Kérés Végrehajtása"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "SQL kérés végrehajtása"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL kérés"
+
+#~ msgid "Query status"
+#~ msgstr "Kérés státusza"
+
+#~ msgid "Query result"
+#~ msgstr "Kérés eredménye"
+
+#~ msgid "Execute"
+#~ msgstr "Végrehajt"
 
 #~ msgid "Mail in"
 #~ msgstr "Bejövő levelek"

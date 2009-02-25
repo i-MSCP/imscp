@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -342,6 +342,13 @@ msgstr "Ви впевнені, що бажаєте видалити?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Введені дані невірні або відсутні!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Список поштових скриньок"
 
 msgid "Custom menu data updated successful!"
 msgstr "Дані персональних меню успішно оновлені!"
@@ -2892,40 +2899,6 @@ msgstr "База даних SQL успішно видалена!"
 msgid "SQL user was removed successfully!"
 msgstr "Користувач SQL успішно видалений!"
 
-#, fuzzy
-msgid "Please enter an SQL query!"
-msgstr "Введіть запит SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr ""
-
-#, fuzzy
-msgid "Execution of SQL query failed!"
-msgstr "Виконати запит SQL"
-
-#, fuzzy
-msgid "Execution of SQL query succeeded!"
-msgstr "Виконати запит SQL"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Клієнт/Виконання запиту SQL"
-
-msgid "Execute SQL query"
-msgstr "Виконати запит SQL"
-
-msgid "SQL query"
-msgstr "Запит SQL"
-
-msgid "Query status"
-msgstr "Стан запиту"
-
-msgid "Query result"
-msgstr "Результат запиту"
-
-msgid "Execute"
-msgstr "Виконати"
-
 msgid "Database user list is empty!"
 msgstr "Список користувачів баз даних порожній!"
 
@@ -4006,6 +3979,36 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
+
+#, fuzzy
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Введіть запит SQL!"
+
+#, fuzzy
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Виконати запит SQL"
+
+#, fuzzy
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Виконати запит SQL"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Клієнт/Виконання запиту SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Виконати запит SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Запит SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Стан запиту"
+
+#~ msgid "Query result"
+#~ msgstr "Результат запиту"
+
+#~ msgid "Execute"
+#~ msgstr "Виконати"
 
 #~ msgid "Mail in"
 #~ msgstr "Пошта в"

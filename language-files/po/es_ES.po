@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-08-08 09:44+0100\n"
 "Last-Translator: Javier Talens Segui <jtsegui@cistal.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -347,6 +347,13 @@ msgstr "¿Está seguro que desea eliminar %s?"
 
 msgid "Missing or incorrect data input!"
 msgstr "¡Datos ingresados incorrectos o falta información!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "¡Nombre de grupo invalido!"
 
 msgid "Custom menu data updated successful!"
 msgstr "¡Información de menú personalizado actualizada correctamente!"
@@ -2850,37 +2857,6 @@ msgstr "¡La base de datos SQL fue eliminada satisfactoriamente!"
 msgid "SQL user was removed successfully!"
 msgstr "¡El usuario SQL fue eliminado satisfactoriamente!"
 
-msgid "Please enter an SQL query!"
-msgstr "Por favor introduzca la consulta SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "No se puede conectar con el servidor SQL como %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "La consulta de SQL que has ejecutado ha fallado!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "La consulta de SQL que has ejecutado ha funcionado correctamente!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Cliente/Ejecutar consulta SQL"
-
-msgid "Execute SQL query"
-msgstr "Ejecutar consulta SQL"
-
-msgid "SQL query"
-msgstr "Consulta SQL"
-
-msgid "Query status"
-msgstr "Estado de la consulta"
-
-msgid "Query result"
-msgstr "Resultados de la consulta"
-
-msgid "Execute"
-msgstr "Ejecutar"
-
 msgid "Database user list is empty!"
 msgstr "¡La lista de usuarios de la base de datos está vacía!"
 
@@ -4045,6 +4021,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "¡El usuario no fue eliminado!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Por favor introduzca la consulta SQL!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "No se puede conectar con el servidor SQL como %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "La consulta de SQL que has ejecutado ha fallado!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "La consulta de SQL que has ejecutado ha funcionado correctamente!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Cliente/Ejecutar consulta SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Ejecutar consulta SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Consulta SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Estado de la consulta"
+
+#~ msgid "Query result"
+#~ msgstr "Resultados de la consulta"
+
+#~ msgid "Execute"
+#~ msgstr "Ejecutar"
 
 #~ msgid "Mail in"
 #~ msgstr "Correo entrante"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -342,6 +342,13 @@ msgstr "Sigur ca doriti sa stergeti %s"
 
 msgid "Missing or incorrect data input!"
 msgstr "Date incorecte sau incomplete!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Nume grup incorect!"
 
 msgid "Custom menu data updated successful!"
 msgstr "Meniu personalizat actualizat cu succes!"
@@ -2832,37 +2839,6 @@ msgstr "Baza de date SQL stearsa cu succes!"
 msgid "SQL user was removed successfully!"
 msgstr "Utilizatorul SQL sters cu succes!"
 
-msgid "Please enter an SQL query!"
-msgstr "Executa interogarea SQL!"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Nu pot executa conectarea la serverul SQL ca %s!"
-
-msgid "Execution of SQL query failed!"
-msgstr "Interogarea SQL a esuat!"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "Interogarea SQL a reusit!"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Client/ Executa interogare SQL"
-
-msgid "Execute SQL query"
-msgstr "Executa interogarea SQL"
-
-msgid "SQL query"
-msgstr "Interogare SQL"
-
-msgid "Query status"
-msgstr "Status interogare"
-
-msgid "Query result"
-msgstr "rezultat interogare"
-
-msgid "Execute"
-msgstr "Executa"
-
 msgid "Database user list is empty!"
 msgstr "Nu exista utilizatori pentru baza de date"
 
@@ -4022,6 +3998,36 @@ msgstr "Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
 
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Executa interogarea SQL!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Nu pot executa conectarea la serverul SQL ca %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Interogarea SQL a esuat!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Interogarea SQL a reusit!"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Client/ Executa interogare SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Executa interogarea SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Interogare SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Status interogare"
+
+#~ msgid "Query result"
+#~ msgstr "rezultat interogare"
+
+#~ msgid "Execute"
+#~ msgstr "Executa"
 
 #~ msgid "Mail in"
 #~ msgstr "Intrari Mail"

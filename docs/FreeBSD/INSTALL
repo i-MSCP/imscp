@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version	: 1.0.0
-INSTALL Script	: 3.7
+INSTALL Script	: 4.0
 Maintainer		:
 Homepage		: http://www.isp-contol.net
 Distros			: FreeBSD
@@ -61,7 +61,114 @@ and Name Server rndc.key has been setup.
 	# cd ./ispcp-omega-1.0.0
 
 3. Install the required modules
-   see: docs/FreeBSD/freebsd-packages
+	# cd /usr/ports/ports-mgmt/portmaster
+	# make install clean
+	# rehash
+	# portmaster $(cat ./docs/FreeBSD/freebsd-packages)
+
+	Apache22 Options
+ 
+	x threads       option
+ 	x mysql         option
+ 	x suexec        ( Recomended )
+ 	+ mod_cband     for bandwitdh management
+ 	o mod_php       WARNING: security risk for hosting
+ 	+ mod_fastcgi   ( choice for improving security )
+	+ mod_fcgid     ( choice for improving security )
+ 	+ mod_proxy     for awstats
+ 
+	Proftpd Options
+ 
+	x IPV6          IP v6 support ( but disable by ispCP )
+	x mysql         Database module
+	x quota         quota module
+	x ratio         ratio module
+	x ctrls         control module
+	- delay         Not Available in ports ?
+	- ctrls_admin   Not Available in ports ?
+ 
+	courier-imap Options
+ 
+	x userdb        For use with userdb ( ispCP default )
+	x mysql         For use with mysql
+
+	courier-authlib Options
+
+	x userdb
+	x mysql
+ 
+	Perl Options
+
+	+ Compress-Zlib
+	+ Crypt-Blowfish
+	+ Crypt-CBC
+	+ Crypt-DES
+	+ Crypt-PasswdMD5
+	+ Crypt-SSLeay
+	+ DBD-mysql
+	+ DBI
+	+ Digest-HMAC
+	+ Digest-SHA1
+	+ HTML-Parser
+	+ HTML-Tagset
+	+ HTTP-GHTTP
+	+ IO-stringy
+	+ MIME-tools
+	+ Mail-Tools
+	+ Net-DNS
+	+ Net-Daemon
+	+ Net-IP
+	+ Net-LibIDN
+	+ PlRPC
+	+ URI
+	+ libwww
+	+ Term-ReadPassword
+ 
+	PHP5 Options
+ 
+	x apache
+	x CLI
+	x CGI
+	x suhosin
+	+ fastcgi
+ 
+	PHP5-Extensions Options
+ 
+	x pcre
+	x bz2
+	x ctype
+	x curl
+	x dbx
+	x domxml
+	x filepro
+	x gd
+	x imap
+	x mcrypt
+	x mhash
+	x mysql
+	x pear
+	x shmop
+	x xmlrpc
+	x xslt
+	x session
+	x php5-pdo_mysql
+
+4. Configure the system.
+	# cpan upgrade
+	# cpan DBI DBD::mysql MIME::Entity MIME::Parser Crypt::CBC Crypt::Blowfish Crypt::PasswdMD5 Term::ReadPassword
+
+    Edit /etc/rc.conf and add
+	sendmail_enable="NONE"
+	postfix_enable="YES"
+	proftpd_enable="YES"
+	policyd_weight_enable="YES"
+	mysql_enable="YES"
+	apache22_enable="YES"
+	courier_authdaemond_enable="YES"
+	courier_imap_imapd_enable="YES"
+	courier_imap_imapd_ssl_enable="NO"
+	courier_imap_pop3d_enable="YES"
+	courier_imap_pop3d_ssl_enable="NO"
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
@@ -74,19 +181,32 @@ and Name Server rndc.key has been setup.
 7. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /usr/local/www/apache22/ispcp/engine/setup
 
-7a. Set the MySQL password, if not set:
+8. Configure the MySQL Server and set the MySQL password, if not set:
+	# /usr/local/bin/mysql_install_db
+	# chown -R mysql /var/db/mysql/
+	# /usr/local/etc/rc.d/mysql-server start
 	# mysqladmin -u root password YOUR_PASSWORD
 
-8. Start the engine setup:
+9. Start the engine setup:
 	# perl ispcp-setup
 
-9. Install ispCP ω step-by-step
+10. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-10. Clean the temporary folders:
+11. Clean the temporary folders:
 	# rm -fR /tmp/ispcp
+
+12. Load Apache modules
+    Edit /usr/local/etc/apache22/httpd.conf and add for FCGId
+	LoadModule fcgid_module libexec/apache22/mod_fcgid.so
+	Include etc/apache22/extra/fcgid_ispcp.conf
+
+    or for FastCGI
+	LoadModule fcgid_module libexec/apache22/mod_fastcgi.so
+	Include etc/apache22/extra/fastcgi_ispcp.conf
+	
 
 WARNING:
           DEFAULT setting is using mod_php not fastcgi or mod_fcgid !!

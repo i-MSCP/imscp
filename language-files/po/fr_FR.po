@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: 2008-09-10 01:05-0500\n"
 "Last-Translator: Guillermo Siméon <mo@momocello.com>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
@@ -345,6 +345,13 @@ msgstr "Êtes-vous certain de vouloir effacer %s?"
 
 msgid "Missing or incorrect data input!"
 msgstr "Les données entrées sont manquantes ou incorrectes !"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Nom de groupe invalide !"
 
 msgid "Custom menu data updated successful!"
 msgstr "Menu personnalisé mis à jour !"
@@ -2857,37 +2864,6 @@ msgstr "Base SQL supprimée avec succès !"
 msgid "SQL user was removed successfully!"
 msgstr "L'utilisateur SQL a bien été supprimé !"
 
-msgid "Please enter an SQL query!"
-msgstr "Veuillez entrez une requête SQL !"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "Impossible de se connecter au serveur SQL en tant que %s !"
-
-msgid "Execution of SQL query failed!"
-msgstr "L'exécution de la requête SQL a échouée !"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "L'exécution de la requête SQL a réussie !"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - Client/Exécuter une Requête SQL"
-
-msgid "Execute SQL query"
-msgstr "Exécuter la commande SQL"
-
-msgid "SQL query"
-msgstr "Requête SQL"
-
-msgid "Query status"
-msgstr "Demander l'état"
-
-msgid "Query result"
-msgstr "Demander le résultat"
-
-msgid "Execute"
-msgstr "Exécuter"
-
 msgid "Database user list is empty!"
 msgstr "La liste des utilisateurs SQL est vide !"
 
@@ -4058,6 +4034,36 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Utilisateur non terminé !"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Veuillez entrez une requête SQL !"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Impossible de se connecter au serveur SQL en tant que %s !"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "L'exécution de la requête SQL a échouée !"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "L'exécution de la requête SQL a réussie !"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - Client/Exécuter une Requête SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Exécuter la commande SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Requête SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Demander l'état"
+
+#~ msgid "Query result"
+#~ msgstr "Demander le résultat"
+
+#~ msgid "Execute"
+#~ msgstr "Exécuter"
 
 #~ msgid "Mail in"
 #~ msgstr "Emails<br>entrants"

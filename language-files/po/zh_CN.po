@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 00:44+0800\n"
+"POT-Creation-Date: 2009-02-25 20:29+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -337,6 +337,13 @@ msgstr "%s?您确定想删除?"
 
 msgid "Missing or incorrect data input!"
 msgstr "输入的数据不完全或不正确！"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "不完整的组名！"
 
 msgid "Custom menu data updated successful!"
 msgstr "自定义菜单数据更新成功！"
@@ -2798,37 +2805,6 @@ msgstr "SQL 数据库已删除成功！"
 msgid "SQL user was removed successfully!"
 msgstr "SQL 用户已删除成功！"
 
-msgid "Please enter an SQL query!"
-msgstr "请输入 SQL 查询语句！"
-
-#, php-format
-msgid "Could not connect to the SQL server as %s!"
-msgstr "不能以 %s! 连接到 SQL 数据库！"
-
-msgid "Execution of SQL query failed!"
-msgstr "执行 SQL 查询失败！"
-
-msgid "Execution of SQL query succeeded!"
-msgstr "执行 SQL 查询成功！"
-
-msgid "ispCP - Client/Execute SQL Query"
-msgstr "ispCP - 客户/执行 SQL 查询"
-
-msgid "Execute SQL query"
-msgstr "执行 SQL 查询"
-
-msgid "SQL query"
-msgstr "SQL 查询"
-
-msgid "Query status"
-msgstr "查询状态"
-
-msgid "Query result"
-msgstr "查询结果"
-
-msgid "Execute"
-msgstr "执行"
-
 msgid "Database user list is empty!"
 msgstr "数据库用户列表为空！"
 
@@ -3953,6 +3929,36 @@ msgstr "此用户拥有域名记录！<br>首先从系统中删除域！"
 
 msgid "User not terminated!"
 msgstr "用户未到期！"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "请输入 SQL 查询语句！"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "不能以 %s! 连接到 SQL 数据库！"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "执行 SQL 查询失败！"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "执行 SQL 查询成功！"
+
+#~ msgid "ispCP - Client/Execute SQL Query"
+#~ msgstr "ispCP - 客户/执行 SQL 查询"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "执行 SQL 查询"
+
+#~ msgid "SQL query"
+#~ msgstr "SQL 查询"
+
+#~ msgid "Query status"
+#~ msgstr "查询状态"
+
+#~ msgid "Query result"
+#~ msgstr "查询结果"
+
+#~ msgid "Execute"
+#~ msgstr "执行"
 
 #~ msgid "Mail in"
 #~ msgstr "Mail 接收"

@@ -1,6 +1,17 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-25 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0
+	- DOCS:
+		* Updated: FreeBSD INSTALL
+	- LANGUAGES:
+		* Updated all language files
+	- SETUP:
+		* Fixed: 00_master.conf remains unchanged with vu2000 while changing prefix or UID/GID
+	- TOOLS:
+		* Updated: HTMLPurifier to version 3.3.0
+
 2009-02-22 Daniel Andreca
 	- GUI:
 		* Fixed small XSS problem
@@ -9,12 +20,6 @@ ispCP ω 1.0.0 Changelog
 2009-02-21 Thomas Häber
 	- THEMES:
 		* optimized CSS and JS files + coding style
-		
-2009-02-20 Benedikt Heintel
-	- SETUP:
-		* Fixed: 00_master.conf remains unchanged with vu2000 while changing prefix or UID/GID
-	- LANGUAGES:
-		* Updated all language files
 
 2009-02-20 Thomas Häber
 	- GUI:
