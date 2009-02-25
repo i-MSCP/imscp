@@ -3,7 +3,7 @@
 # ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2008 by isp Control Panel
+# Copyright (c) 2006-2009 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -203,10 +203,11 @@ sub htgroup_add_group_data {
 		$htgroups_content = "$gname: $uname\n";
 
 	}
-
-	$rs = store_file($htgroups_file, $htgroups_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-	return $rs if ($rs != 0);
+	
+	if (-e "$apache_www_dir/$dmn_name/") {
+		$rs = store_file($htgroups_file, $htgroups_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+		return $rs if ($rs != 0);
+	}
 
 	push_el(\@main::el, 'htgroup_add_group_data()', 'Ending...');
 
@@ -316,12 +317,10 @@ sub htgroup_mngr_engine {
 
 		}
 
-		if ( not -e $htgroups_file ) {
+		if ((not -e $htgroups_file) && (-e "$apache_www_dir/$htgroup_dmn/")) {
 
 			$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htgroups_file");
-
 			return $rs if ($rs != 0);
-
 
 		}
 

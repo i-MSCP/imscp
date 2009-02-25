@@ -3,7 +3,7 @@
 # ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2008 by isp Control Panel
+# Copyright (c) 2006-2009 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -187,9 +187,10 @@ sub htuser_add_user_system_data {
         Require user $unames
         ", "PROTECTION", "#" );
 
-	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
-
-	return $rs if ($rs != 0);
+	if (-e "$apache_www_dir/$dmn_name/$path/") {
+		$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+		return $rs if ($rs != 0);
+	}
 
 	push_el(\@main::el, 'htuser_add_user_system_data()', 'Ending...');
 

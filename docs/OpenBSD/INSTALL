@@ -221,7 +221,8 @@ Make sure you are logged in as root and MySQL is running.
 
 	Check the ispcp.conf and adapt it to your requirements.
 
-6. Build the System by using make:
+6. Stop the ispcp_deamon and build the System by using make:
+	# /etc/init.d/ispcp_daemon stop
 	# make -f Makefile.inc install
 
 7. Save files

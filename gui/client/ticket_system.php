@@ -126,7 +126,9 @@ SQL_QUERY;
 				$tpl->assign(array('URGENCY' => tr("Very high")));
 			}
 
-			if ($ticket_status == 2) {
+			if ($ticket_status == 1 OR $ticket_status ==  2) {
+				$tpl->assign(array('NEW' => tr("[New]")));
+			} else if ($ticket_status == 4 OR $ticket_status == 5) {
 				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
 				$tpl->assign(array('NEW' => " "));

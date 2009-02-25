@@ -161,7 +161,8 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 5. (optional) Check the ispcp.conf and adapt it to your requirements.
 
-6. Build the System by using make:
+6. Stop the ispcp_deamon and build the System by using make:
+	# sudo /etc/init.d/ispcp_daemon stop
 	# sudo make install
 
 7. Save files

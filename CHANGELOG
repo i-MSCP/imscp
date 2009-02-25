@@ -3,8 +3,14 @@ ispCP ω 1.0.0 Changelog
 
 2009-02-25 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0
+	- Updated all Copyrights
 	- DOCS:
 		* Updated: FreeBSD INSTALL
+		* Updated all INSTALL files
+	- ENGINE:
+		* Fixed: error on update, if domain disabled
+	- GUI:
+		* Fixed: if administrator respond to client ticket, status is not displayed
 	- LANGUAGES:
 		* Updated all language files
 	- SETUP:

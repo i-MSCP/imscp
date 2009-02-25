@@ -3,7 +3,7 @@
 # ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2008 by isp Control Panel
+# Copyright (c) 2006-2009 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -165,9 +165,10 @@ sub htusers_add_user_data {
 
 	}
 
-	$rs = store_file($htusers_file, $htusers_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-	return $rs if ($rs != 0);
+	if (-e "$apache_www_dir/$dmn_name/") {
+		$rs = store_file($htusers_file, $htusers_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+		return $rs if ($rs != 0);
+	}
 
 	push_el(\@main::el, 'htusers_add_user_data()', 'Ending...');
 
@@ -216,8 +217,10 @@ sub htusers_del_user_data {
 		return $rs if ($rs != 0);
 
 	} else {
-		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htusers_file");
-		return $rs if ($rs != 0);
+		if (-e "$apache_www_dir/$dmn_name/") {
+			$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htusers_file");
+			return $rs if ($rs != 0);
+		}
 	}
 
 	push_el(\@main::el, 'htusers_del_user_data()', 'Ending...');
