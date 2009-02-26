@@ -50,7 +50,7 @@ class bsd_common {
 
   // grabs a key from sysctl(8)
   function grab_key ($key) {
-    return execute_program('sysctl', "-n $key");
+    return execute_program('/sbin/sysctl', "-n $key");
   }
   // get our apache SERVER_NAME or vhost
   function hostname () {
@@ -229,7 +229,7 @@ class bsd_common {
 
     $results['ram'] = array();
 
-    $pstat = execute_program('vmstat');
+    $pstat = execute_program('/usr/bin/vmstat');
     $lines = split("\n", $pstat);
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 19);
@@ -251,9 +251,9 @@ class bsd_common {
     $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
 
     if (PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
-      $pstat = execute_program('swapctl', '-l -k');
+      $pstat = execute_program('/sbin/swapctl', '-l -k');
     } else {
-      $pstat = execute_program('swapinfo', '-k');
+      $pstat = execute_program('/usr/sbin/swapinfo', '-k');
     }
 
     $lines = split("\n", $pstat);

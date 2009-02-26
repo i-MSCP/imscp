@@ -18,7 +18,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP Version:         1.0.0
+ispCP Version:         1.0.1
 INSTALL Script:        1.2
 Maintainer:
 Homepage:              http://isp-contol.net
@@ -70,10 +70,10 @@ For the following steps, you will need to be logged in as root.
 
 4. Untar or unzip the distribution files to a secure directory:
         # cd /root
-        # tar xjvf ispcp-omega-1.0.0.tar.bz2
+        # tar xjvf ispcp-omega-1.0.1.tar.bz2
 
 5. Change to the newly created directory:
-        # cd ./ispcp-omega-1.0.0
+        # cd ./ispcp-omega-1.0.1
 
 6. Next, install the software packages we need. A list is conveniently provided
    and can be used to install by running the following:
@@ -236,10 +236,10 @@ need to be running.
 
 2. Untar or unzip the distribution files to a secure directory:
     # cd /root
-    # tar xjvf ispcp-omega-1.0.0.tar.bz2
+    # tar xjvf ispcp-omega-1.0.1.tar.bz2
 
 3. Change to the newly created directory:
-    # cd ./ispcp-omega-1.0.0
+    # cd ./ispcp-omega-1.0.1
 
 4. Next, install the software packages we need. A list is conveniently provided
    and can be used to install by running the following:

@@ -64,6 +64,7 @@ install:
 	# Patch some variable
 	#
 	/usr/bin/sed s/"\/etc\/ispcp\/ispcp.conf"/"\/usr\/local\/etc\/ispcp\/ispcp.conf"/g ./engine/ispcp_common_code.pl > $(SYSTEM_ROOT)/engine/ispcp_common_code.pl
+	/usr/bin/sed s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g ./engine/awstats/awstats_updateall.pl > $(SYSTEM_ROOT)/engine/awstats/awstats_updateall.pl
 
 .if exists ($(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl)
 	#
@@ -94,15 +95,16 @@ install:
 .else
 	cd ${INST_PREF} && cp -R * /
 .endif
+
+	mkdir -p /usr/local/www/data/scoreboards
+	#
+	#
+	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
+	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
+	# to complete upgrade process
 	rm -rf ${INST_PREF}
-        #
-        #
-        # If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
-        # Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
-        # to complete upgrade process
 
 uninstall:
-
 	cd ./tools && $(MAKE) uninstall
 	cd ./configs && $(MAKE) uninstall
 	cd ./engine && $(MAKE) uninstall
@@ -119,7 +121,6 @@ uninstall:
 
 
 clean:
-
 	cd ./tools/daemon && $(MAKE) clean
 
 

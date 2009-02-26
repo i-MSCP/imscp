@@ -16,7 +16,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:	1.0.0
+ispCP ω Version:	1.0.1
 INSTALL Script:		2.4
 Maintainer:			Benedikt Heintel
 Homepage:			http://www.isp-contol.net
@@ -56,10 +56,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp-omega-1.0.0.tar.bz2
+	# tar xjvf ispcp-omega-1.0.1.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.0
+	# cd ./ispcp-omega-1.0.1
 
 3. Install the required modules
    First update your system:
@@ -129,10 +129,10 @@ Make sure you are logged in as root and MySQL is running.
 
 2. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp-omega-1.0.0.tar.bz2
+	# tar xjvf ispcp-omega-1.0.1.tar.bz2
 
 3. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.0
+	# cd ./ispcp-omega-1.0.1
 
 4. Install the required modules
    first update your system:
