@@ -3,7 +3,7 @@
 /**
  * holds the PMA_List_Database class
  *
- * @version $Id: List_Database.class.php 12156 2008-12-25 14:00:56Z lem9 $
+ * @version $Id: List_Database.class.php 12218 2009-02-01 12:52:18Z lem9 $
  */
 
 /**
@@ -281,7 +281,7 @@ require_once './libraries/List.class.php';
             $db_tooltip = '';
 
             if (isset($db_tooltips[$db])) {
-                $db_tooltip = $_db_tooltips[$db];
+                $db_tooltip = $db_tooltips[$db];
             }
 
             if ($GLOBALS['cfg']['LeftFrameDBTree']

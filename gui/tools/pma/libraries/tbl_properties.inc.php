@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @version $Id: tbl_properties.inc.php 12150 2008-12-19 21:29:41Z lem9 $
+ * @version $Id: tbl_properties.inc.php 12212 2009-01-24 17:32:16Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -113,7 +113,7 @@ if (!$is_backup) {
     $header_cells[] = $strIndex;
 }
 
-$header_cells[] = '<abbr title="AUTO_INCREMENT">A_I</abbr>';
+$header_cells[] = '<abbr title="AUTO_INCREMENT">' . ($display_type == 'horizontal' ? 'A_I' : 'AUTO_INCREMENT') . '</abbr>';
 
 require_once './libraries/relation.lib.php';
 require_once './libraries/transformations.lib.php';

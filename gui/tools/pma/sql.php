@@ -2,8 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
- *          what returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 12163 2009-01-01 21:39:21Z lem9 $
+ *          that returns 0 rows - to prevent cyclic redirects or includes
+ * @version $Id: sql.php 12211 2009-01-24 16:43:56Z lem9 $
  */
 
 /**
@@ -105,7 +105,8 @@ if (isset($find_real_end) && $find_real_end) {
  */
 if (isset($store_bkm)) {
     PMA_Bookmark_save($fields, (isset($bkm_all_users) && $bkm_all_users == 'true' ? true : false));
-    PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . $goto);
+    // go back to sql.php to redisplay query; do not use &amp; in this case:
+    PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . $goto . '&label=' . $fields['label']);
 } // end if
 
 /**
@@ -615,6 +616,12 @@ else {
     // hide edit and delete links for information_schema
     if ($db == 'information_schema') {
         $disp_mode = 'nnnn110111';
+    }
+
+    if (isset($label)) {
+        $message = PMA_message::success('strBookmarkCreated');
+        $message->addParam($label);
+        $message->display();
     }
 
     PMA_displayTable($result, $disp_mode, $analyzed_sql);

@@ -5,7 +5,7 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12164 2009-01-01 21:44:37Z lem9 $
+ * @version $Id: tbl_change.php 12189 2009-01-13 21:59:45Z lem9 $
  */
 
 /**
@@ -165,7 +165,7 @@ if (isset($primary_key)) {
     $result             = array();
     $found_unique_key   = false;
     foreach ($primary_key_array as $key_id => $primary_key) {
-        $local_query           = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' WHERE ' . $primary_key . ';';
+        $local_query           = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' WHERE ' . str_replace('&#93;', ']', $primary_key) . ';';
         $result[$key_id]       = PMA_DBI_query($local_query, null, PMA_DBI_QUERY_STORE);
         $rows[$key_id]         = PMA_DBI_fetch_assoc($result[$key_id]);
         $primary_keys[$key_id] = str_replace('\\', '\\\\', $primary_key);

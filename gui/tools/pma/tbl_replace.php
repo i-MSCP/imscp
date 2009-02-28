@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 11495 2008-08-20 17:04:37Z lem9 $
+ * @version $Id: tbl_replace.php 12245 2009-02-23 08:36:34Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -202,6 +202,17 @@ foreach ($loop_array as $rowcount => $primary_key) {
 
 	$primary_field = PMA_BS_GetPrimaryField($GLOBALS['db'], $GLOBALS['table']);
 
+    // Fetch the current values of a row to use in case we have a protected field
+    // @todo possibly move to ./libraries/tbl_replace_fields.inc.php
+    if ($is_insert && $using_key && isset($me_fields_type) &&
+        is_array($me_fields_type) && isset($primary_key)) {
+        $prot_result = PMA_DBI_query('SELECT * FROM ' .
+                PMA_backquote($table) . ' WHERE ' . $primary_key . ';');
+        $prot_row = PMA_DBI_fetch_assoc($prot_result);
+        PMA_DBI_free_result($prot_result);
+        unset($prot_result);
+    }
+
     foreach ($me_fields as $key => $val) {
 
         require './libraries/tbl_replace_fields.inc.php';
@@ -284,7 +295,7 @@ foreach ($loop_array as $rowcount => $primary_key) {
         } else {
             // build update query
             $query[] = 'UPDATE ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($GLOBALS['table'])
-                    . ' SET ' . implode(', ', $query_values) . ' WHERE ' . $primary_key . ' LIMIT 1';
+                    . ' SET ' . implode(', ', $query_values) . ' WHERE ' . str_replace('&#93;', ']', $primary_key) . ' LIMIT 1';
 
         }
     }

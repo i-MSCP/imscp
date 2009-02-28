@@ -3,7 +3,7 @@
 /**
  * Holds class PMA_Error
  *
- * @version $Id: Error.class.php 10800 2007-10-16 08:47:47Z cybot_tm $
+ * @version $Id: Error.class.php 12202 2009-01-20 18:04:20Z lem9 $
  */
 
 /**
@@ -35,6 +35,7 @@ class PMA_Error extends PMA_Message
         E_USER_WARNING       => 'User Warning',
         E_USER_NOTICE        => 'User Notice',
         E_STRICT             => 'Runtime Notice',
+        E_DEPRECATED         => 'Deprecation Notice',
         E_RECOVERABLE_ERROR  => 'Catchable Fatal Error',
     );
 
@@ -56,6 +57,7 @@ class PMA_Error extends PMA_Message
         E_USER_WARNING       => 'warning',
         E_USER_NOTICE        => 'notice',
         E_STRICT             => 'notice',
+        E_DEPRECATED         => 'notice',
         E_RECOVERABLE_ERROR  => 'error',
     );
 
@@ -299,14 +301,14 @@ class PMA_Error extends PMA_Message
                 echo $step['class'] . $step['type'];
             }
             echo $step['function'] . '(';
-            if (count($step['args']) > 1) {
+            if (isset($step['args']) && (count($step['args']) > 1)) {
                 echo "<br />\n";
                 foreach ($step['args'] as $arg) {
                     echo "\t";
                     $this->displayArg($arg, $step['function']);
                     echo ',' . "<br />\n";
                 }
-            } elseif (count($step['args']) > 0) {
+            } elseif (isset($step['args']) && (count($step['args']) > 0)) {
                 foreach ($step['args'] as $arg) {
                     $this->displayArg($arg, $step['function']);
                 }

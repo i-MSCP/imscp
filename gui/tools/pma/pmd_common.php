@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
- * @version $Id: pmd_common.php 11274 2008-05-14 17:30:33Z lem9 $
+ * @version $Id: pmd_common.php 12229 2009-02-10 17:36:28Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -218,11 +218,12 @@ function get_all_keys($unique_only = false)
             if ($unique_only && ! $index->isUnique()) {
                 continue;
             }
-            $column = key($index->getColumns());
-            $keys[$schema . '.' .$table . '.' . $column] = 1;
+            $columns = $index->getColumns();
+            foreach ($columns as $column_name => $dummy) {
+                $keys[$schema . '.' .$table . '.' . $column_name] = 1;
+            }
         }
     }
-    
     return $keys;
 }
 

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_structure.php 12039 2008-11-30 12:28:57Z lem9 $
+ * @version $Id: db_structure.php 12239 2009-02-16 10:56:11Z lem9 $
  */
 
 /**
@@ -225,6 +225,11 @@ foreach ($tables as $keyname => $each_table) {
         case 'ISAM' :
         case 'HEAP' :
         case 'MEMORY' :
+            if ($db_is_information_schema) {
+                $each_table['Rows'] = PMA_Table::countRecords($db,
+                    $each_table['Name'], $return = true);
+            }
+             
             if ($is_show_stats) {
                 $tblsize                    =  doubleval($each_table['Data_length']) + doubleval($each_table['Index_length']);
                 $sum_size                   += $tblsize;
@@ -390,9 +395,11 @@ foreach ($tables as $keyname => $each_table) {
     //  that needs to be repaired
     if (isset($each_table['TABLE_ROWS']) && ($each_table['ENGINE'] != null || $table_is_view)) {
         if ($table_is_view) {
-            $row_count_pre = '~';
-            $sum_row_count_pre = '~';
-            $show_superscript = PMA_showHint(PMA_sanitize(sprintf($strViewHasAtLeast, '[a@./Documentation.html#cfg_MaxExactCountViews@_blank]', '[/a]')));
+            if ($each_table['TABLE_ROWS'] >= $GLOBALS['cfg']['MaxExactCountViews']){
+                $row_count_pre = '~';
+                $sum_row_count_pre = '~';
+                $show_superscript = PMA_showHint(PMA_sanitize(sprintf($strViewHasAtLeast, '[a@./Documentation.html#cfg_MaxExactCountViews@_blank]', '[/a]')));
+            }
         } elseif($each_table['ENGINE'] == 'InnoDB' && (! $each_table['COUNTED'])) {
             // InnoDB table: we did not get an accurate row count
             $row_count_pre = '~';

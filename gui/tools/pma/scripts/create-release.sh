@@ -3,6 +3,7 @@
 # $Id: create-release.sh 12196 2009-01-19 17:26:59Z lem9 $
 # vim: expandtab sw=4 ts=4 sts=4:
 #
+#
 
 KITS="all-languages english"
 COMPRESSIONS="zip-7z tbz tgz 7z"

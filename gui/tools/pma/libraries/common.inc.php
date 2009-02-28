@@ -28,7 +28,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 12165 2009-01-01 23:37:14Z lem9 $
+ * @version $Id: common.inc.php 12202 2009-01-20 18:04:20Z lem9 $
  */
 
 /**
@@ -37,6 +37,13 @@
  */
 if (version_compare(PHP_VERSION, '5.2.0', 'lt')) {
     die('PHP 5.2+ is required');
+}
+
+/**
+ * Backward compatibility for PHP 5.2
+ */
+if (!defined('E_DEPRECATED')) {
+    define('E_DEPRECATED', 8192);
 }
 
 /**

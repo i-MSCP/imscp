@@ -1,5 +1,5 @@
 <?php
-/* $Id: polish-utf-8.inc.php 11963 2008-11-23 20:09:15Z lem9 $ */
+/* $Id: polish-utf-8.inc.php 12228 2009-02-09 17:32:55Z lem9 $ */
 
 $charset = 'utf-8';
 $text_dir = 'ltr';
@@ -1315,8 +1315,8 @@ $strSetupConfirm_name = 'Potwierdzanie zapytań DROP';
 $strSetupConfirm_desc = 'Czy w wypadku ryzyka utraty danych ma być pokazywane ostrzeżenie (&quot;Czy na pewno wykonać…&quot;)';
 $strSetupQueryHistoryDB_name = 'Permanentna historia zapytań';
 $strSetupQueryHistoryDB_desc = 'Enable if you want DB-based query history (requires pmadb). If disabled, this utilizes JS-routines to display query history (lost by window close).';  //to translate
-$strSetupQueryHistoryMax_name = 'Długośc history zapytań';
-$strSetupQueryHistoryMax_desc = 'Ile zapytań na być przechowaywanych w historii';
+$strSetupQueryHistoryMax_name = 'Długość historii zapytań';
+$strSetupQueryHistoryMax_desc = 'Ile zapytań ma być przechowywanych w historii';
 $strSetupIgnoreMultiSubmitErrors_name = 'Ignoruj błędy w ciągu instrukcji';
 $strSetupIgnoreMultiSubmitErrors_desc = 'Włączenie powoduje, że phpMyAdmin będzie kontynuował obliczanie zapytania składającego się z wielu instrukcji, nawet jeśli wykonanie którejś z nich nie udało się';
 $strSetupVerboseMultiSubmit_name = 'Verbose multiple statements';  //to translate
