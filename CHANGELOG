@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-02-28 Thomas Häber
 	- LANGUAGES:
 		* Fixed some text strings
+		* fixed some german text strings
 	- GUI:
 		* typos/coding style (orderpanel, README ...)
 

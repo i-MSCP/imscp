@@ -1898,7 +1898,7 @@ msgid "Close ticket"
 msgstr "Ticket schließen"
 
 msgid "ispCP - Client: Support System: View Ticket"
-msgstr "ispCP -Kunde: Supportsystem: Tickets anzeigen"
+msgstr "ispCP - Kunde: Supportsystem: Ticket anzeigen"
 
 msgid "Please type your message!"
 msgstr "Bitte geben Sie eine Nachricht ein!"
@@ -1913,7 +1913,7 @@ msgid "Ticket was reopened!"
 msgstr "Ticket wurde wieder geöffnet!"
 
 msgid "ispCP - Admin: Support System: View Ticket"
-msgstr "ispCP - Admin: Supportsystem: Tickets anzeigen"
+msgstr "ispCP - Admin: Supportsystem: Ticket anzeigen"
 
 msgid "View support ticket"
 msgstr "Ticket anzeigen"
@@ -3772,7 +3772,7 @@ msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Reseller/Benutzerverwaltung/E-Mail-Einstellungen"
 
 msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispCP - Reseller: Supportsystem: Tickets anzeigen"
+msgstr "ispCP - Reseller: Supportsystem: Ticket anzeigen"
 
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Benutzer/Benutzer anlegen"
