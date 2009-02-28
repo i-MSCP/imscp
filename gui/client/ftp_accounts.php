@@ -39,25 +39,26 @@ $tpl->define_dynamic('no_mails', 'page');
 // page functions.
 
 function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$query = <<<SQL_QUERY
-        SELECT
-			gid,
-			members
+	$query = "
+		SELECT
+			`gid`,
+			`members`
 		FROM
-			ftp_group
+			`ftp_group`
 		WHERE
-			groupname = ?
-SQL_QUERY;
+			`groupname` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_name));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('FTP_MSG' => tr('FTP list is empty!'),
+			array(
+				'FTP_MSG' => tr('FTP list is empty!'),
 				'FTP_ITEM' => '',
 				'FTPS_TOTAL' => ''
-				)
-			);
+			)
+		);
 
 		$tpl->parse('FTP_MESSAGE', 'ftp_message');
 	} else {
@@ -73,10 +74,11 @@ SQL_QUERY;
 			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);
 
 			$tpl->assign(
-				array('FTP_ACCOUNT' => $ftp_accs_encode[$i],
+				array(
+					'FTP_ACCOUNT' => $ftp_accs_encode[$i],
 					'UID' => urlencode ($ftp_accs[$i])
-					)
-				);
+				)
+			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
 		}
@@ -116,12 +118,13 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Client/Manage Users'),
+	array(
+		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Client/Manage Users'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 // dynamic page data.
 
@@ -141,7 +144,8 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-	array('TR_MANAGE_USERS' => tr('Manage users'),
+	array(
+		'TR_MANAGE_USERS' => tr('Manage users'),
 		'TR_TYPE' => tr('Type'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ACTION' => tr('Action'),
@@ -153,8 +157,8 @@ $tpl->assign(
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

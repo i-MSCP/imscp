@@ -1956,7 +1956,7 @@ msgstr "Irekitako txartela"
 msgid "Close ticket"
 msgstr "Itxitako txartela"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Erabiltzailea : Euskarri Sistema: Ikusi Txartelak"
 
 msgid "Please type your message!"
@@ -1971,7 +1971,7 @@ msgstr "Txartela itxia izan da!"
 msgid "Ticket was reopened!"
 msgstr "Txartela berrirekia izan da!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Euskarri Sistema: Ikusi Txartelak"
 
 msgid "View support ticket"
@@ -3917,7 +3917,7 @@ msgstr ""
 "ispCP - Bersaltzailea/Erabiltzaile kudeatzaileak/Posta elektronikoaren "
 "ezarpena"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispcp - Bersaltzailea : Euskarri Sistema: Ikusi Txartela"
 
 msgid "ispCP - Users/Add user"

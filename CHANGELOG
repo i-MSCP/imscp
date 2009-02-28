@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-02-28 Thomas Häber
+	- LANGUAGES:
+		* Fixed some text strings
+	- GUI:
+		* typos/coding style (orderpanel, README ...)
+
 2009-02-25 Benedikt Heintel
 	- DISTROS:
 		* Fixed #1697: FreeBSD Patch

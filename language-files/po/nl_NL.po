@@ -1951,7 +1951,7 @@ msgstr "Open ticket"
 msgid "Close ticket"
 msgstr "Sluit ticket"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Klant : Ondersteuning Systeem: Bekijk Tickets"
 
 msgid "Please type your message!"
@@ -1966,7 +1966,7 @@ msgstr "Ticket is gesloten!"
 msgid "Ticket was reopened!"
 msgstr "Ticket is opnieuw geopend!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Beheer : Ondersteuning Systeem: Bekijk Tickets"
 
 msgid "View support ticket"
@@ -3909,7 +3909,7 @@ msgstr "Link"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Reseller/Beheer gebruikers/E-Mail instellen"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Reseller : Ondersteunings Systeem : Bekijk Tickets"
 
 msgid "ispCP - Users/Add user"

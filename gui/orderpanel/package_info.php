@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -29,120 +29,120 @@ $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 
 /*
-* Functions start
-*/
+ * functions start
+ */
 
-function translate_sse($value)
-{
-    if ($value == '_yes_') {
-        return tr('Yes');
-    } else if ($value == '_no_') {
-        return tr('No');
-    } else {
-        return $value;
-    }
+function translate_sse($value) {
+	if ($value == '_yes_') {
+		return tr('Yes');
+	} else if ($value == '_no_') {
+		return tr('No');
+	} else {
+		return $value;
+	}
 }
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
-    if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-        $query = <<<SQL_QUERY
-			select
+	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+		$query = "
+			SELECT
 				*
-			from
-				hosting_plans
-			where
-				id = ?
-SQL_QUERY;
+			FROM
+				`hosting_plans`
+			WHERE
+				`id` = ?
+		";
 
-        $rs = exec_query($sql, $query, array($plan_id));
-    } else {
-        $query = <<<SQL_QUERY
-			select
+		$rs = exec_query($sql, $query, array($plan_id));
+	} else {
+		$query = "
+			SELECT
 				*
-			from
-				hosting_plans
-			where
-				reseller_id = ?
-			  and
-				id = ?
-SQL_QUERY;
+			FROM
+				`hosting_plans`
+			WHERE
+				`reseller_id` = ?
+			  AND
+				`id` = ?
+		";
 
-        $rs = exec_query($sql, $query, array($user_id, $plan_id));
-    }
-    if ($rs->RecordCount() == 0) {
-        header("Location: index.php?user_id=$user_id");
-        die();
-    } else {
-        $props = $rs->fields['props'];
-        list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
+		$rs = exec_query($sql, $query, array($user_id, $plan_id));
+	}
 
-        $price = $rs->fields['price'];
-        $setup_fee = $rs->fields['setup_fee'];
+	if ($rs->RecordCount() == 0) {
+		header("Location: index.php?user_id=$user_id");
+		die();
+	} else {
+		$props = $rs->fields['props'];
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
 
-        if ($price == 0 || $price == '') {
-            $price = tr('free of charge');
-        } else {
-            $price = $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
-        }
+		$price = $rs->fields['price'];
+		$setup_fee = $rs->fields['setup_fee'];
 
-        if ($setup_fee == 0 || $setup_fee == '') {
-            $setup_fee = tr('free of charge');
-        } else {
-            $setup_fee = $setup_fee . " " . $rs->fields['value'];
-        }
-        $description = $rs->fields['description'];
+		if ($price == 0 || $price == '') {
+			$price = tr('free of charge');
+		} else {
+			$price .= ' ' . $rs->fields['value'] . ' ' . $rs->fields['payment'];
+		}
 
-        $hp_disk = translate_limit_value($hp_disk, true) . "<br>";
+		if ($setup_fee == 0 || $setup_fee == '') {
+			$setup_fee = tr('free of charge');
+		} else {
+			$setup_fee .=' ' . $rs->fields['value'];
+		}
+		$description = $rs->fields['description'];
 
-        $hp_traff = translate_limit_value($hp_traff, true);
+		$hp_disk = translate_limit_value($hp_disk, true) . "<br>";
 
-        $tpl->assign(
-            array('PACK_NAME' => $rs->fields['name'],
-                'DESCRIPTION' => $description,
-                'PACK_ID' => $rs->fields['id'],
-                'USER_ID' => $user_id,
-                'PURCHASE' => tr('Purchase'),
-                'ALIAS' => translate_limit_value($hp_als),
-                'SUBDOMAIN' => translate_limit_value($hp_sub),
-                'HDD' => $hp_disk,
-                'TRAFFIC' => $hp_traff,
-                'PHP' => translate_sse($hp_php),
-                'CGI' => translate_sse($hp_cgi),
-                'MAIL' => translate_limit_value($hp_mail),
-                'FTP' => translate_limit_value($hp_ftp),
-                'SQL_DB' => translate_limit_value($hp_sql_db),
-                'SQL_USR' => translate_limit_value($hp_sql_user),
-                'PRICE' => $price,
-                'SETUP' => $setup_fee,
+		$hp_traff = translate_limit_value($hp_traff, true);
 
-                )
-            );
-    }
+		$tpl->assign(
+			array(
+				'PACK_NAME' => $rs->fields['name'],
+				'DESCRIPTION' => $description,
+				'PACK_ID' => $rs->fields['id'],
+				'USER_ID' => $user_id,
+				'PURCHASE' => tr('Purchase'),
+				'ALIAS' => translate_limit_value($hp_als),
+				'SUBDOMAIN' => translate_limit_value($hp_sub),
+				'HDD' => $hp_disk,
+				'TRAFFIC' => $hp_traff,
+				'PHP' => translate_sse($hp_php),
+				'CGI' => translate_sse($hp_cgi),
+				'MAIL' => translate_limit_value($hp_mail),
+				'FTP' => translate_limit_value($hp_ftp),
+				'SQL_DB' => translate_limit_value($hp_sql_db),
+				'SQL_USR' => translate_limit_value($hp_sql_user),
+				'PRICE' => $price,
+				'SETUP' => $setup_fee,
+			)
+		);
+	}
 }
 
 /*
-* Functions end
-*/
+ * functions end
+ */
 
 /*
-*
-* static page messages.
-*
-*/
+ *
+ * static page messages.
+ *
+ */
 
 if (isset($_GET['id'])) {
-    $plan_id = $_GET['id'];
-    $_SESSION['plan_id'] = $plan_id;
-    if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
-    } else if (isset($_GET['user_id'])) {
-        $user_id = $_GET['user_id'];
-        $_SESSION['user_id'] = $user_id;
-    } else {
-        system_message(tr('You do not have permission to access this interface!'));
-    }
+	$plan_id = $_GET['id'];
+	$_SESSION['plan_id'] = $plan_id;
+	if (isset($_SESSION['user_id'])) {
+		$user_id = $_SESSION['user_id'];
+	} else if (isset($_GET['user_id'])) {
+		$user_id = $_GET['user_id'];
+		$_SESSION['user_id'] = $user_id;
+	} else {
+		system_message(tr('You do not have permission to access this interface!'));
+	}
 } else {
-    system_message(tr('You do not have permission to access this interface!'));
+	system_message(tr('You do not have permission to access this interface!'));
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);
@@ -157,41 +157,42 @@ $tpl->assign(
 );
 
 $tpl->assign(
-    array('TR_DOMAINS' => tr('Domains'),
-        'TR_WEBSPACE' => tr('Webspace'),
-        'TR_HDD' => tr('Disk limit'),
-        'TR_TRAFFIC' => tr('Traffic limit'),
-        'TR_FEATURES' => tr('Domain Features'),
-        'TR_STANDARD_FEATURES' => tr('Package Features'),
-        'TR_WEBMAIL' => tr('Webmail'),
-        'TR_FILEMANAGER' => tr('Filemanager'),
-        'TR_BACKUP' => tr('Backup and Restore'),
-        'TR_ERROR_PAGES' => tr('Custom Error Pages'),
-        'TR_HTACCESS' => tr('Protected Areas'),
-        'TR_PHP_SUPPORT' => tr('PHP support'),
-        'TR_CGI_SUPPORT' => tr('CGI support'),
-        'TR_MYSQL_SUPPORT' => tr('SQL support'),
-        'TR_SUBDOMAINS' => tr('Subdomains'),
-        'TR_DOMAIN_ALIAS' => tr('Domain aliases'),
-        'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-        'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-        'TR_SQL_DATABASES' => tr('SQL databases'),
-        'TR_SQL_USERS' => tr('SQL users'),
-        'TR_STATISTICS' => tr('Statistics'),
-        'TR_CUSTOM_LOGS' => tr('Custom Apache Logs'),
-        'TR_ONLINE_SUPPORT' => tr('Web & E-Mail Support'),
-        'TR_OWN_DOMAIN' => tr('Your Own Domain'),
-        'TR_ISPCP' => tr('ispCP Control Panel'),
-        'TR_UPDATES' => tr('Automatic Updates'),
-        'TR_PRICE' => tr('Price'),
-        'TRR_PRICE' => tr('Package Price'),
-        'TR_SETUP_FEE' => tr('Setup Fee'),
-        'TR_PERFORMANCE' => tr('Performance'),
-        'TR_PURCHASE' => tr('Purchase'),
-        'TR_BACK' => tr('Back'),
-        'YES' => tr('Yes')
-        )
-    );
+	array(
+		'TR_DOMAINS' => tr('Domains'),
+		'TR_WEBSPACE' => tr('Webspace'),
+		'TR_HDD' => tr('Disk limit'),
+		'TR_TRAFFIC' => tr('Traffic limit'),
+		'TR_FEATURES' => tr('Domain Features'),
+		'TR_STANDARD_FEATURES' => tr('Package Features'),
+		'TR_WEBMAIL' => tr('Webmail'),
+		'TR_FILEMANAGER' => tr('Filemanager'),
+		'TR_BACKUP' => tr('Backup and Restore'),
+		'TR_ERROR_PAGES' => tr('Custom Error Pages'),
+		'TR_HTACCESS' => tr('Protected Areas'),
+		'TR_PHP_SUPPORT' => tr('PHP support'),
+		'TR_CGI_SUPPORT' => tr('CGI support'),
+		'TR_MYSQL_SUPPORT' => tr('SQL support'),
+		'TR_SUBDOMAINS' => tr('Subdomains'),
+		'TR_DOMAIN_ALIAS' => tr('Domain aliases'),
+		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'TR_SQL_DATABASES' => tr('SQL databases'),
+		'TR_SQL_USERS' => tr('SQL users'),
+		'TR_STATISTICS' => tr('Statistics'),
+		'TR_CUSTOM_LOGS' => tr('Custom Apache Logs'),
+		'TR_ONLINE_SUPPORT' => tr('Web & E-Mail Support'),
+		'TR_OWN_DOMAIN' => tr('Your Own Domain'),
+		'TR_ISPCP' => tr('ispCP Control Panel'),
+		'TR_UPDATES' => tr('Automatic Updates'),
+		'TR_PRICE' => tr('Price'),
+		'TRR_PRICE' => tr('Package Price'),
+		'TR_SETUP_FEE' => tr('Setup Fee'),
+		'TR_PERFORMANCE' => tr('Performance'),
+		'TR_PURCHASE' => tr('Purchase'),
+		'TR_BACK' => tr('Back'),
+		'YES' => tr('Yes')
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

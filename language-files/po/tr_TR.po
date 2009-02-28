@@ -1937,7 +1937,7 @@ msgstr "Talep aç"
 msgid "Close ticket"
 msgstr "Talep kapa"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Müşteri : Destek Sistemi: Talepleri görüntüle"
 
 msgid "Please type your message!"
@@ -1952,7 +1952,7 @@ msgstr "Talep kapatıldı!"
 msgid "Ticket was reopened!"
 msgstr "Talep tekrar açıldı!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Yönetici : Destek Sistemi: Talepleri Görüntüle"
 
 msgid "View support ticket"
@@ -3880,7 +3880,7 @@ msgstr "Kayıp şifre Linki"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Bayi/Kullanıcıları Düzenle/Eposta Kurulumu"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Bayi : Destek Sistemi: Talepleri Görüntüle"
 
 msgid "ispCP - Users/Add user"

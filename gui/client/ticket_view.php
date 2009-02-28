@@ -183,7 +183,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
+$tpl->assign(array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

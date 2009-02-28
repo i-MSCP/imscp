@@ -30,12 +30,12 @@ if (isset($_SESSION['user_id'])) {
 
 function get_user_gui_props(&$sql, $user_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            lang, layout
-        FROM
-            user_gui_props
-        WHERE
-            user_id = ?
+		SELECT
+			`lang`, `layout`
+		FROM
+			`user_gui_props`
+		WHERE
+			`user_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -84,12 +84,12 @@ function get_menu_vars($menu_link) {
 	$user_id = $_SESSION['user_id'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            customer_id, fname, lname, firm, zip, city, country, email, phone, fax, street1, street2
-        FROM
-            admin
-        WHERE
-            admin_id = ?
+		SELECT
+			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `country`, `email`, `phone`, `fax`, `street1`, `street2`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -127,12 +127,12 @@ SQL_QUERY;
 	$replace[] = $rs->fields['street2'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_name, domain_admin_id
-        FROM
-            domain
-        WHERE
-            domain_admin_id = ?
+		SELECT
+			`domain_name`, `domain_admin_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));

@@ -38,13 +38,13 @@ $tpl->define_dynamic('edit_option', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		)
-	);
+	array(
+		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
 
 if (isset($_SESSION['dmn_name']))
 	unset($_SESSION['dmn_name']);
@@ -97,30 +97,30 @@ $crnt_month = date("m");
 $crnt_year = date("Y");
 
 $tpl->assign(
-		array(
-			'TR_MANAGE_USERS' => tr('Manage users'),
-			'TR_USERS' => tr('Users'),
-			'TR_USER_STATUS' => tr('Status'),
-			'TR_DETAILS' => tr('Details'),
-			'TR_SEARCH' => tr('Search'),
-			'TR_USERNAME' => tr('Username'),
-			'TR_ACTION' => tr('Actions'),
-			'TR_CREATION_DATE' => tr('Creation date'),
-			'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-			'TR_BACK' => tr('Back'),
-			'TR_TITLE_BACK' => tr('Return to previous menu'),
-			'TR_TABLE_NAME' => tr('Users list'),
-			'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
-			'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete %s?', true, '%s'),
-			'TR_STAT' => tr('Stats'),
-			'VL_MONTH' => $crnt_month,
-			'VL_YEAR' => $crnt_year,
-			'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-			'TR_EDIT_USER' => tr('Edit User'),
-			'TR_BW_USAGE' => tr('Bandwidth'),
-			'TR_DISK_USAGE' => tr('Disk')
-		)
-	);
+	array(
+		'TR_MANAGE_USERS' => tr('Manage users'),
+		'TR_USERS' => tr('Users'),
+		'TR_USER_STATUS' => tr('Status'),
+		'TR_DETAILS' => tr('Details'),
+		'TR_SEARCH' => tr('Search'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_ACTION' => tr('Actions'),
+		'TR_CREATION_DATE' => tr('Creation date'),
+		'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
+		'TR_BACK' => tr('Back'),
+		'TR_TITLE_BACK' => tr('Return to previous menu'),
+		'TR_TABLE_NAME' => tr('Users list'),
+		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_STAT' => tr('Stats'),
+		'VL_MONTH' => $crnt_month,
+		'VL_YEAR' => $crnt_year,
+		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
+		'TR_EDIT_USER' => tr('Edit User'),
+		'TR_BW_USAGE' => tr('Bandwidth'),
+		'TR_DISK_USAGE' => tr('Disk')
+	)
+);
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
@@ -160,7 +160,7 @@ function generate_users_list (&$tpl, $admin_id) {
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
-	// Search requet generated ?!
+	// Search request generated ?!
 
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
@@ -191,7 +191,7 @@ function generate_users_list (&$tpl, $admin_id) {
 			$_SESSION['search_for'],
 			$_SESSION['search_common'],
 			$_SESSION['search_status']
-			);
+		);
 
 		gen_manage_domain_search_options($tpl, $_SESSION['search_for'], $_SESSION['search_common'], $_SESSION['search_status']);
 	} else {
@@ -203,7 +203,7 @@ function generate_users_list (&$tpl, $admin_id) {
 			'n/a',
 			'n/a',
 			'n/a'
-			);
+		);
 
 		gen_manage_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
 	}
@@ -223,8 +223,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'SCROLL_NEXT' => '',
 					'TR_VIEW_DETAILS' => tr('View aliases'),
 					'SHOW_DETAILS' => tr("Show")
-					)
-				);
+				)
+			);
 
 			set_page_message(tr('Not found user records matching the search criteria!'));
 
@@ -241,8 +241,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'SCROLL_NEXT' => '',
 					'TR_VIEW_DETAILS' => tr('View aliases'),
 					'SHOW_DETAILS' => tr("Show")
-					)
-				);
+				)
+			);
 
 			set_page_message(tr('You have no users.'));
 		}
@@ -256,8 +256,8 @@ function generate_users_list (&$tpl, $admin_id) {
 				array(
 					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
-					)
-				);
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -269,8 +269,8 @@ function generate_users_list (&$tpl, $admin_id) {
 				array(
 					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
-					)
-				);
+				)
+			);
 		}
 		$i = 1;
 
@@ -290,8 +290,8 @@ function generate_users_list (&$tpl, $admin_id) {
 				array(
 					'STATUS_ICON' => $status_icon,
 					'URL_CHANGE_STATUS' => $status_url,
-					)
-				);
+				)
+			);
 
 			$admin_name = decode_idna($rs->fields['domain_name']);
 
@@ -320,8 +320,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'CHANGE_INTERFACE' => tr('Switch'),
 					'DISK_LIMIT' => $rs->fields['domain_disk_limit'],
 					'DISK_USAGE' => round($rs->fields['domain_disk_usage'] / 1024 / 1024,1)
-					)
-				);
+				)
+			);
 
 			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
 			$tpl->parse('USER_ENTRY', '.user_entry');

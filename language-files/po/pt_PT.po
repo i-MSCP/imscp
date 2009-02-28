@@ -1934,7 +1934,7 @@ msgstr ""
 msgid "Close ticket"
 msgstr ""
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr ""
 
 msgid "Please type your message!"
@@ -1949,7 +1949,7 @@ msgstr ""
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -3756,7 +3756,7 @@ msgstr "Solicitarpw link"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Revendedor: Sistema de Suporte: Ver Tickets"
 
 msgid "ispCP - Users/Add user"

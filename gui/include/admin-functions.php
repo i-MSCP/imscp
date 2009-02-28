@@ -517,7 +517,7 @@ function gen_user_list(&$tpl, &$sql) {
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
-	// Search requet generated ?!
+	// Search request generated ?!
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 

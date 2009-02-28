@@ -1906,7 +1906,7 @@ msgstr "Obrir tiquet"
 msgid "Close ticket"
 msgstr "Tancar tiquet"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Client: Sistema de Suport: Veure Tiquets"
 
 msgid "Please type your message!"
@@ -1921,7 +1921,7 @@ msgstr "El tiquet s'ha tancat!"
 msgid "Ticket was reopened!"
 msgstr "El ticket s'ha reobert!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Sistema de suport: Veure Tiquets"
 
 msgid "View support ticket"
@@ -3790,7 +3790,7 @@ msgstr "Link Pèrdua de contrasenya de correu"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Distribuïdor/Administració usuaris/Configuració Correu"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP-Distribuïdor : Sistema de Suport: Veure Tiquets"
 
 msgid "ispCP - Users/Add user"

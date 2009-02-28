@@ -90,7 +90,7 @@ unset_messages();
 // Check correction of entered user's data
 function check_user_data() {
 	global $dmn_name; // Domain name
-	global $dmn_chp; // choosed hosting plan;
+	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
 	$sql = Database::getInstance();
 	// personal template
@@ -132,7 +132,7 @@ function check_user_data() {
 		header("Location: user_add2.php");
 		die();
 	} else {
-		// check if reseller timits are not touched
+		// check if reseller limits are not touched
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], $dmn_chp)) {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;

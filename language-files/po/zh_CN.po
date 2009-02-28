@@ -1923,7 +1923,7 @@ msgstr "未解疑问"
 msgid "Close ticket"
 msgstr "已解查疑问"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - 客户 : 系统支持: 查看疑问"
 
 msgid "Please type your message!"
@@ -1938,7 +1938,7 @@ msgstr "疑问支持已关闭！"
 msgid "Ticket was reopened!"
 msgstr "疑问支持已打开！"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - 管理员 : 系统支持: 查看疑问"
 
 msgid "View support ticket"
@@ -3835,7 +3835,7 @@ msgstr "忘记密码链接"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - 代理商/管理用户/邮件设置"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - 代理商 : 系统支持: 查看疑问"
 
 msgid "ispCP - Users/Add user"

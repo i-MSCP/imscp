@@ -29,12 +29,12 @@ function save_layout(&$sql) {
 		$user_layout = $_POST['def_layout'];
 
 		$query = <<<SQL_QUERY
-            update
-                user_gui_props
-            set
-                layout = ?
-            where
-                user_id = ?
+			UPDATE
+				`user_gui_props`
+			SET
+				`layout` = ?
+			WHERE
+				`user_id` = ?
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($user_layout, $user_id));
 		$_SESSION['user_theme_color'] = $user_layout;
@@ -114,12 +114,12 @@ function update_user_logo($file_name, $user_id) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        update
-            user_gui_props
-        set
-            logo = ?
-        where
-            user_id = ?
+		UPDATE
+			`user_gui_props`
+		SET
+			`logo` = ?
+		WHERE
+			`user_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($file_name, $user_id));
@@ -140,13 +140,14 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 gen_def_layout($tpl, $_SESSION['user_theme']);
 
 $tpl->assign(
-	array('TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+	array(
+		'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
 		'THEME_CHARSET' => tr('encoding')
-		)
-	);
+	)
+);
 
 /*
  *
@@ -157,7 +158,8 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settin
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
-	array('TR_LAYOUT_SETTINGS' => tr('Layout settings'),
+	array(
+		'TR_LAYOUT_SETTINGS' => tr('Layout settings'),
 		'TR_INSTALLED_LAYOUTS' => tr('Installed layouts'),
 		'TR_LAYOUT_NAME' => tr('Layout name'),
 		'TR_DEFAULT' => tr('default'),
@@ -169,8 +171,8 @@ $tpl->assign(
 		'TR_REMOVE' => tr('Remove'),
 		'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
 		'TR_LAYOUT' => tr('Layout'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

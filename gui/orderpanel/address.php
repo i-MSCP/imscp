@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -27,8 +27,8 @@ $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 
 /*
-* Functions start
-*/
+ * functions start
+ */
 
 function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 	if (isset($_POST['fname'])) {
@@ -197,14 +197,14 @@ function check_address_data(&$tpl) {
 }
 
 /*
-* Functions end
-*/
+ * functions end
+ */
 
 /*
-*
-* static page messages.
-*
-*/
+ *
+ * static page messages.
+ *
+ */
 
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
@@ -256,8 +256,8 @@ $tpl->assign(
 		'TR_CONTINUE' => tr('Continue'),
 		'NEED_FILLED' => tr('* denotes mandatory field.'),
 		'THEME_CHARSET' => tr('encoding')
-		)
-	);
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

@@ -1992,7 +1992,7 @@ msgstr "Відкритий запит"
 msgid "Close ticket"
 msgstr "Закрити запит підтримки"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Клієнт : Система підтримки: Перегляд запитів"
 
 msgid "Please type your message!"
@@ -2007,7 +2007,7 @@ msgstr "Запит закрито!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -3882,7 +3882,7 @@ msgstr "Посилання на відновлення пароля"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Реселер : Система підтримки: Перегляд запитів"
 
 msgid "ispCP - Users/Add user"

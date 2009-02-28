@@ -1955,7 +1955,7 @@ msgstr "Solicitude aberta"
 msgid "Close ticket"
 msgstr "Pechar solicitude"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Cliente: Sistema de Atención: Ver Solicitudes"
 
 msgid "Please type your message!"
@@ -1970,7 +1970,7 @@ msgstr "Solicitude pechada!"
 msgid "Ticket was reopened!"
 msgstr "A solicitude foi aberta de novo!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP- Admin: Sistema de Atención: Ver Solicitudes"
 
 msgid "View support ticket"
@@ -3926,7 +3926,7 @@ msgstr "Ligazón de contrasinal esquecido"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Revendedor/Xestionar usuarios/Configuración de correo-e"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Revendedor : Sistema de Atención : Ver Solicitudes"
 
 msgid "ispCP - Users/Add user"

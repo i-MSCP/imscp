@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
@@ -21,7 +21,7 @@
 function username_exists($username) {
 	$sql = Database::getInstance();
 
-	$query = 'SELECT admin_id FROM admin WHERE admin_name=?';
+	$query = 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?';
 	$res = exec_query($sql, $query, array($username));
 
 	return  ($res->RecordCount() == 1);
@@ -30,7 +30,7 @@ function username_exists($username) {
 function get_userdata($username) {
 	$sql = Database::getInstance();
 
-	$query = 'SELECT * FROM admin WHERE admin_name=?';
+	$query = 'SELECT * FROM `admin` WHERE `admin_name` = ?';
 	$res = exec_query($sql, $query, array($username));
 
 	return $res->FetchRow();
@@ -43,14 +43,14 @@ function is_userdomain_ok($username) {
 	$udata = get_userdata($username);
 
 	if (!is_array($udata)) {
-	    return false;
+		return false;
 	}
 
 	if ($udata['admin_type'] != 'user') {
-	    return true;
+		return true;
 	}
 
-	$query = 'SELECT domain_status FROM domain WHERE domain_admin_id=?';
+	$query = 'SELECT `domain_status` FROM `domain` WHERE `domain_admin_id` = ?';
 
 	$res = exec_query($sql, $query, array($udata['admin_id']));
 
@@ -63,7 +63,7 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	$sql = Database::getInstance();
 
 	if ($timeout === null) {
-	    $timeout = Config::get('BRUTEFORCE_BLOCK_TIME');
+		$timeout = Config::get('BRUTEFORCE_BLOCK_TIME');
 	}
 
 	$max = 0;
@@ -71,17 +71,17 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	$timeout = time() - ($timeout * 60);
 
 	switch ($type) {
-	    case 'bruteforce':
-	        $query = "UPDATE login SET login_count='1' WHERE login_count >= ? AND lastaccess < ? AND user_name is NULL";
-	        $max = Config::get('BRUTEFORCE_MAX_LOGIN');
-	        break;
-	    case 'captcha':
-	        $query = "UPDATE login SET captcha_count='1' WHERE captcha_count >= ? AND lastaccess < ? AND user_name is NULL";
-	        $max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
-	        break;
-	    default:
-	        die('FIXME: '.__FILE__.':'.__LINE__);
-	        break;
+		case 'bruteforce':
+			$query = "UPDATE `login` SET `login_count` = '1' WHERE `login_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
+			$max = Config::get('BRUTEFORCE_MAX_LOGIN');
+			break;
+		case 'captcha':
+			$query = "UPDATE `login` SET `captcha_count` = '1' WHERE `captcha_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
+			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
+			break;
+		default:
+			die('FIXME: '.__FILE__.':'.__LINE__);
+			break;
 	}
 
 	exec_query($sql, $query, array($max, $timeout));
@@ -92,30 +92,30 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	$sql = Database::getInstance();
 
 	if ($ipaddr === null) {
-	    $ipaddr = getipaddr();
+		$ipaddr = getipaddr();
 	}
 
 	$max = 0;
 
 	switch ($type) {
-	    case 'bruteforce':
-	        $query = "SELECT * FROM login WHERE ipaddr=? AND login_count=?";
-	        $max = Config::get('BRUTEFORCE_MAX_LOGIN');
-	        break;
-	    case 'captcha':
-	        $query = "SELECT * FROM login WHERE ipaddr=? AND captcha_count=?";
-	        $max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
-	        break;
-	    default:
-	        die('FIXME: '.__FILE__.':'.__LINE__);
-	        break;
+		case 'bruteforce':
+			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `login_count` = ?";
+			$max = Config::get('BRUTEFORCE_MAX_LOGIN');
+			break;
+		case 'captcha':
+			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `captcha_count` = ?";
+			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
+			break;
+		default:
+			die('FIXME: '.__FILE__.':'.__LINE__);
+			break;
 	}
 	$res = exec_query($sql, $query, array($ipaddr, $max));
 
 	if ($res->RecordCount() == 0) {
-	    return false;
+		return false;
 	} else if (!$autodeny) {
-	    return true;
+		return true;
 	}
 
 	deny_access();
@@ -129,14 +129,14 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 		return false;
 
 	if ($ipaddr === null) {
-	    $ipaddr = getipaddr();
+		$ipaddr = getipaddr();
 	}
 
-	$query = 'SELECT lastaccess FROM login WHERE ipaddr=? AND user_name is NULL';
+	$query = 'SELECT `lastaccess` FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL';
 	$res = exec_query($sql, $query, array($ipaddr));
 
 	if ($res->RecordCount() == 0) {
-	   	return false;
+		return false;
 	}
 
 	$data = $res->FetchRow();
@@ -150,13 +150,13 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	}
 	
 	if ($btime > time()) {
-	    if ($displayMessage) {
+		if ($displayMessage) {
 			$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
-	        system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
-	    }
+			system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
+		}
 		return true;
 	} else {
-	    return false;
+		return false;
 	}
 
 }
@@ -165,16 +165,16 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$sql = Database::getInstance();
 
 	if ($ipaddr === null) {
-	    $ipaddr = getipaddr();
+		$ipaddr = getipaddr();
 	}
 
 	$sess_id = session_id();
-	$query = "SELECT session_id, ipaddr, user_name, lastaccess, login_count, captcha_count FROM login WHERE ipaddr=? AND user_name is NULL";
+	$query = "SELECT `session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`, `captcha_count` FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL";
 	$res = exec_query($sql, $query, array($ipaddr));
 
 	if ($res->RecordCount() == 0) {
-		$query = "REPLACE INTO login (session_id, ipaddr, lastaccess, login_count, captcha_count) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
-		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type=='bruteforce'),(int)($type=='captcha')));
+		$query = "REPLACE INTO `login` (`session_id`, `ipaddr`, `lastaccess`, `login_count`, `captcha_count`) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
+		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type=='bruteforce'), (int)($type=='captcha')));
 		return false;
 	}
 
@@ -185,11 +185,11 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$captchacount = $data['captcha_count'];
 
 	if ($type == 'bruteforce' && Config::get('BRUTEFORCE') && $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
-	    block_ipaddr($ipaddr, 'Login');
+		block_ipaddr($ipaddr, 'Login');
 	}
 
 	if ($type == 'captcha' && Config::get('BRUTEFORCE') && $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA') && Config::get('BRUTEFORCE')) {
-	    block_ipaddr($ipaddr, 'CAPTCHA');
+		block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 
 	if (Config::get('BRUTEFORCE_BETWEEN')) {
@@ -200,9 +200,9 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 	if ($btime < time()) {
 		if ($type == "bruteforce") {
-			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count=login_count+1 WHERE ipaddr=? AND user_name is NULL";
+			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `login_count` = `login_count`+1 WHERE `ipaddr` = ? AND `user_name` is NULL";
 		} else if ($type == "captcha") {
-			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr=? AND user_name is NULL";
+			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `captcha_count` = `captcha_count`+1 WHERE `ipaddr` = ? AND `user_name` is NULL";
 		}
 
 		exec_query($sql, $query, $ipaddr);
@@ -211,7 +211,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
 		
 		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);		
-	    system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
+		system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
 		
 		return false;
 	}
@@ -236,20 +236,19 @@ function do_session_timeout() {
 
 	$ttl = time() - Config::get('SESSION_TIMEOUT') * 60;
 
-	$query = "DELETE FROM login WHERE lastaccess < ?";
+	$query = "DELETE FROM `login` WHERE `lastaccess` < ?";
 	exec_query($sql, $query, array($ttl));
 
 	if (!session_exists(session_id())) {
-	    if (isset($_SESSION['user_logged']))
-	    unset($_SESSION['user_logged']);
-        unset_user_login_data();
+		unset($_SESSION['user_logged']);
+		unset_user_login_data();
 	}
 }
 
 function session_exists($sess_id) {
 	$sql = Database::getInstance();
 
-	$query = "SELECT session_id FROM login WHERE session_id=?";
+	$query = "SELECT `session_id` FROM `login` WHERE `session_id` = ?";
 	$res = exec_query($sql, $query, array($sess_id));
 
 	return ($res->RecordCount() == 1);

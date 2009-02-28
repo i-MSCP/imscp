@@ -1946,7 +1946,7 @@ msgstr "Otwórz zgłoszenie"
 msgid "Close ticket"
 msgstr "Zamknij zgłoszenie"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Klient : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Please type your message!"
@@ -1961,7 +1961,7 @@ msgstr "Zgłoszenia zostały zamknięte!"
 msgid "Ticket was reopened!"
 msgstr "Zgłoszenie zostało ponownie otwarte!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : System wsparcia: Przeglądanie zgłoszeń"
 
 msgid "View support ticket"
@@ -3895,7 +3895,7 @@ msgstr "Zapomniane hasło link"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP – Reseller/Zarządzaj użytkownikami/Zarządzaj kontami pocztowymi"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Reseller : System Wsparcia: Przeglądaj Zgłoszenia"
 
 msgid "ispCP - Users/Add user"

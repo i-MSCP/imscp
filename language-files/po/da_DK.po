@@ -1954,7 +1954,7 @@ msgstr "Åben Support sag"
 msgid "Close ticket"
 msgstr "Luk Support Sag"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Bruger : Support System: Se Support sager"
 
 msgid "Please type your message!"
@@ -1969,7 +1969,7 @@ msgstr "Sagen blev lukket!"
 msgid "Ticket was reopened!"
 msgstr "Support sagen blev genåbnet!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Support System: Se Support sager"
 
 msgid "View support ticket"
@@ -3903,7 +3903,7 @@ msgstr "Glemt Adgangskode Aktiveringslink"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Forhandler/Håndtere Bruger/Email setup"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Forhandler : Support System: Se Biletter"
 
 msgid "ispCP - Users/Add user"

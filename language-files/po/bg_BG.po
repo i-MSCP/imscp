@@ -1969,7 +1969,7 @@ msgstr "Отворен билет"
 msgid "Close ticket"
 msgstr "Затворен билет"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Клиент : Служба поддръжка: Показат Билети"
 
 msgid "Please type your message!"
@@ -1984,7 +1984,7 @@ msgstr "Билет закрит!"
 msgid "Ticket was reopened!"
 msgstr "Билет перезагружен!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Админ : Служба поддръжка: Преглед Билетов"
 
 msgid "View support ticket"
@@ -3948,7 +3948,7 @@ msgstr "Връзка към възстановяване на парола"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Риселър/Управление потребители/Настройка поща"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Риселър : Служба Поддръжка: Преглед Билети"
 
 msgid "ispCP - Users/Add user"

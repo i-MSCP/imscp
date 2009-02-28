@@ -1991,7 +1991,7 @@ msgstr "Ticket aberto"
 msgid "Close ticket"
 msgstr "Fechar ticket"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Cliente : Sistema de Suporte: Ver Tickets"
 
 msgid "Please type your message!"
@@ -2006,7 +2006,7 @@ msgstr "Ticket já fechado!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -3873,7 +3873,7 @@ msgstr "Link da senha perdida"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Representante : Sistema de Suporte: Ver Tickets"
 
 msgid "ispCP - Users/Add user"

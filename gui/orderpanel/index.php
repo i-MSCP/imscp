@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -29,95 +29,94 @@ $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 
 /*
-* Functions start
-*/
+ * functions start
+ */
+
 function gen_packages_list(&$tpl, &$sql, $user_id) {
-    if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-        $query = <<<SQL_QUERY
-			select
+	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+		$query = "
+			SELECT
 				t1.*,
-				t2.admin_id, t2.admin_type
-			from
-				hosting_plans as t1,
-				admin as t2
-			where
-				t2.admin_type=?
-			and
-				t1.reseller_id = t2.admin_id
-			and
-				t1.status=1
-			order by
-				t1.id
-SQL_QUERY;
+				t2.`admin_id`, t2.`admin_type`
+			FROM
+				`hosting_plans` as t1,
+				`admin` as t2
+			WHERE
+				t2.`admin_type` = ?
+			AND
+				t1.`reseller_id` = t2.`admin_id`
+			AND
+				t1.`status`=1
+			ORDER BY
+				t1.`id`
+		";
 
-        $rs = exec_query($sql, $query, array('admin'));
-    } else {
-        $query = <<<SQL_QUERY
-				select
-					*
-				from
-					hosting_plans
-				where
-					reseller_id = ?
-				  and
-					status = '1'
-SQL_QUERY;
+		$rs = exec_query($sql, $query, array('admin'));
+	} else {
+		$query = "
+			SELECT
+				*
+			FROM
+				`hosting_plans`
+			WHERE
+				`reseller_id` = ?
+			  AND
+				`status` = '1'
+		";
 
-        $rs = exec_query($sql, $query, array($user_id));
-    }
+		$rs = exec_query($sql, $query, array($user_id));
+	}
 
-    if ($rs->RecordCount() == 0) {
-        system_message(tr('No available hosting packages'));
-    } else {
-        while (!$rs->EOF) {
-            $description = $rs->fields['description'];
-            if ($description == '') {
-                $description = '';
-            }
-            $price = $rs->fields['price'];
-            if ($price == 0 || $price == '') {
-                $price = "/ " . tr('free of charge');
-            } else {
-                $price = "/ " . $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
-            }
+	if ($rs->RecordCount() == 0) {
+		system_message(tr('No available hosting packages'));
+	} else {
+		while (!$rs->EOF) {
+			$description = $rs->fields['description'];
 
-            $tpl->assign(
-                array('PACK_NAME' => $rs->fields['name'],
-                    'PACK_ID' => $rs->fields['id'],
-                    'USER_ID' => $user_id,
-                    'PURCHASE' => tr('Purchase'),
-                    'PACK_INFO' => $description,
-                    'PRICE' => $price,
-                    )
-                );
+			$price = $rs->fields['price'];
+			if ($price == 0 || $price == '') {
+				$price = "/ " . tr('free of charge');
+			} else {
+				$price = "/ " . $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
+			}
 
-            $tpl->parse('PURCHASE_LIST', '.purchase_list');
+			$tpl->assign(
+				array(
+					'PACK_NAME' => $rs->fields['name'],
+					'PACK_ID' => $rs->fields['id'],
+					'USER_ID' => $user_id,
+					'PURCHASE' => tr('Purchase'),
+					'PACK_INFO' => $description,
+					'PRICE' => $price,
+				)
+			);
 
-            $rs->MoveNext();
-        }
-    }
+			$tpl->parse('PURCHASE_LIST', '.purchase_list');
+
+			$rs->MoveNext();
+		}
+	}
 }
 
 /*
-* Functions end
-*/
+ * functions end
+ */
 
 /*
-*
-* static page messages.
-*
-*/
+ *
+ * static page messages.
+ *
+ */
 
 if (isset($_GET['user_id']) && is_numeric($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
-    $_SESSION['user_id'] = $user_id;
+	$user_id = $_GET['user_id'];
+	$_SESSION['user_id'] = $user_id;
 } else if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+	$user_id = $_SESSION['user_id'];
 } else {
-    system_message(tr('You do not have permission to access this interface!'));
+	system_message(tr('You do not have permission to access this interface!'));
 }
-if (isset($_SESSION['plan_id']))
-    unset($_SESSION['plan_id']);
+unset($_SESSION['plan_id']);
 
 gen_purchase_haf($tpl, $sql, $user_id);
 gen_packages_list($tpl, $sql, $user_id);

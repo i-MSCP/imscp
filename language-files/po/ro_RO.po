@@ -1952,7 +1952,7 @@ msgstr "Ticket deschis"
 msgid "Close ticket"
 msgstr "Ticket inchis"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Client : Sistem suport: Vezi Tickete"
 
 msgid "Please type your message!"
@@ -1967,7 +1967,7 @@ msgstr "Ticket-ul a fost inchis!"
 msgid "Ticket was reopened!"
 msgstr "Ticket-ul a fost redeschis!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Administrator : Sistem Suport: Vezi tickete"
 
 msgid "View support ticket"
@@ -3902,7 +3902,7 @@ msgstr "Link parola pierduta"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Reseller/Administreaza utilizatori/Setare Mail"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Reseller: Sistem Suport: Vezi Cereri"
 
 msgid "ispCP - Users/Add user"

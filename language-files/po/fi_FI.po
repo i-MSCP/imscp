@@ -1989,7 +1989,7 @@ msgstr "Avaa ticketti"
 msgid "Close ticket"
 msgstr "Sulje ticketti"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Asiakas : Tukij�rjestelm�: Katsele kysymyksi�"
 
 msgid "Please type your message!"
@@ -2004,7 +2004,7 @@ msgstr "Kysymys suljettu!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -3873,7 +3873,7 @@ msgstr "Salasanamuistuttajan linkki"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - J�lleenmyyj� : Tukij�rjestelm�: Lue kysymyksi�"
 
 msgid "ispCP - Users/Add user"

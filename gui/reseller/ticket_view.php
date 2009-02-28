@@ -200,7 +200,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller : Support System: View Tickets'),
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller: Support System: View Ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

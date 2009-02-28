@@ -1964,7 +1964,7 @@ msgstr "Открыть тикет"
 msgid "Close ticket"
 msgstr "Закрыть тикет"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Клиент : Служба поддержки: Просмотр тикетов"
 
 msgid "Please type your message!"
@@ -1979,7 +1979,7 @@ msgstr "Тикет закрыт!"
 msgid "Ticket was reopened!"
 msgstr "Тикет реактивирован!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Админ : Служба поддержки: Просмотр тикетов"
 
 msgid "View support ticket"
@@ -3925,7 +3925,7 @@ msgstr "Ссылка для восстановления пароля"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Реселлер/Управление пользователями/Установка почты"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Реселлер : Служба Поддержки: Просмотр тикетов"
 
 msgid "ispCP - Users/Add user"

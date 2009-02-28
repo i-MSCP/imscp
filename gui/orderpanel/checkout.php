@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -27,156 +27,118 @@ $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 
 /*
-* Functions start
-*/
+ * functions start
+ */
 
 function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
-    $date = time();
-    $domain_name = $_SESSION['domainname'];
-    $fname = $_SESSION['fname'];
-    $lname = $_SESSION['lname'];
+	$date = time();
+	$domain_name = $_SESSION['domainname'];
+	$fname = $_SESSION['fname'];
+	$lname = $_SESSION['lname'];
 
-    if (isset($_SESSION['firm'])) {
-        $firm = $_SESSION['firm'];
-    } else {
-        $firm = '';
-    }
+	$firm = (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';
 
-    $zip = $_SESSION['zip'];
-    $city = $_SESSION['city'];
-    $country = $_SESSION['country'];
-    $email = $_SESSION['email'];
-    $phone = $_SESSION['phone'];
+	$zip = $_SESSION['zip'];
+	$city = $_SESSION['city'];
+	$country = $_SESSION['country'];
+	$email = $_SESSION['email'];
+	$phone = $_SESSION['phone'];
 
-    if (isset($_SESSION['fax'])) {
-        $fax = $_SESSION['fax'];
-    } else {
-        $fax = '';
-    }
+	$fax = (isset($_SESSION['fax'])) ? $_SESSION['fax'] : '';
 
-    $street1 = $_SESSION['street1'];
+	$street1 = $_SESSION['street1'];
 
-    if (isset($_SESSION['street2'])) {
-        $street2 = $_SESSION['street2'];
-    } else {
-        $street2 = '';
-    }
+	$street2 = (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
 
-    $status = "new";
+	$status = 'new';
 
-    $query = <<<SQL_QUERY
-              insert into
-			  		orders
-					(user_id,
-					plan_id,
-					date,
-					domain_name,
-					fname,
-					lname,
-					firm,
-					zip,
-					city,
-					country,
-					email,
-					phone,
-					fax,
-					street1,
-					street2,
-					status)
-              values
-                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	$query = "
+		INSERT INTO
+			`orders`
+				(`user_id`,
+				`plan_id`,
+				`date`,
+				`domain_name`,
+				`fname`,
+				`lname`,
+				`firm`,
+				`zip`,
+				`city`,
+				`country`,
+				`email`,
+				`phone`,
+				`fax`,
+				`street1`,
+				`street2`,
+				`status`)
+		VALUES
+			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	";
 
-    $rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $status));
-//     print $sql->ErrorMsg();
-    $order_id = $sql->Insert_ID();
-    send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
+	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $status));
+	//print $sql->ErrorMsg();
+	$order_id = $sql->Insert_ID();
+	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
 
-    if (isset($_SESSION['details']))
-        unset($_SESSION['details']);
-
-    if (isset($_SESSION['domainname']))
-        unset($_SESSION['domainname']);
-
-    if (isset($_SESSION['fname']))
-        unset($_SESSION['fname']);
-
-    if (isset($_SESSION['lname']))
-        unset($_SESSION['lname']);
-
-    if (isset($_SESSION['email']))
-        unset($_SESSION['email']);
-
-    if (isset($_SESSION['firm']))
-        unset($_SESSION['firm']);
-
-    if (isset($_SESSION['zip']))
-        unset($_SESSION['zip']);
-
-    if (isset($_SESSION['city']))
-        unset($_SESSION['city']);
-
-    if (isset($_SESSION['country']))
-        unset($_SESSION['country']);
-
-    if (isset($_SESSION['street1']))
-        unset($_SESSION['street1']);
-
-    if (isset($_SESSION['street2']))
-        unset($_SESSION['street2']);
-
-    if (isset($_SESSION['phone']))
-        unset($_SESSION['phone']);
-
-    if (isset($_SESSION['fax']))
-        unset($_SESSION['fax']);
-
-    if (isset($_SESSION['plan_id']))
-        unset($_SESSION['plan_id']);
+	unset($_SESSION['details']);
+	unset($_SESSION['domainname']);
+	unset($_SESSION['fname']);
+	unset($_SESSION['lname']);
+	unset($_SESSION['email']);
+	unset($_SESSION['firm']);
+	unset($_SESSION['zip']);
+	unset($_SESSION['city']);
+	unset($_SESSION['country']);
+	unset($_SESSION['street1']);
+	unset($_SESSION['street2']);
+	unset($_SESSION['phone']);
+	unset($_SESSION['fax']);
+	unset($_SESSION['plan_id']);
 }
 
 /*
-* Functions end
-*/
+ * functions end
+ */
 
 /*
-*
-* static page messages.
-*
-*/
+ *
+ * static page messages.
+ *
+ */
 
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $plan_id = $_SESSION['plan_id'];
+	$user_id = $_SESSION['user_id'];
+	$plan_id = $_SESSION['plan_id'];
 } else {
-    system_message(tr('You do not have permission to access this interface!'));
+	system_message(tr('You do not have permission to access this interface!'));
 }
 
 if (
-    (isset($_SESSION['fname']) && $_SESSION['fname'] != '') and
-        (isset($_SESSION['lname']) && $_SESSION['lname'] != '') and
-        (isset($_SESSION['email']) && $_SESSION['email'] != '') and
-        (isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
-        (isset($_SESSION['city']) && $_SESSION['city'] != '') and
-        (isset($_SESSION['country']) && $_SESSION['country'] != '') and
-        (isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
-        (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
-        ) {
-    gen_checkout($tpl, $sql, $user_id, $plan_id);
+	(isset($_SESSION['fname']) && $_SESSION['fname'] != '') and
+		(isset($_SESSION['lname']) && $_SESSION['lname'] != '') and
+		(isset($_SESSION['email']) && $_SESSION['email'] != '') and
+		(isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
+		(isset($_SESSION['city']) && $_SESSION['city'] != '') and
+		(isset($_SESSION['country']) && $_SESSION['country'] != '') and
+		(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
+		(isset($_SESSION['phone']) && $_SESSION['phone'] != '')
+	) {
+	gen_checkout($tpl, $sql, $user_id, $plan_id);
 } else {
-    header("Location: index.php?user_id=$user_id");
-    die();
+	header("Location: index.php?user_id=$user_id");
+	die();
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);
 gen_page_message($tpl);
 
 $tpl->assign(
-    array('CHECK_OUT' => tr('Check Out'),
-        'THANK_YOU_MESSAGE' => tr('<b>Thank You for purchasing</b><br>You will receive an email with more details and information'),
-        'THEME_CHARSET' => tr('encoding'),
-        )
-    );
+	array(
+		'CHECK_OUT' => tr('Check Out'),
+		'THANK_YOU_MESSAGE' => tr('<b>Thank You for purchasing</b><br>You will receive an email with more details and information'),
+		'THEME_CHARSET' => tr('encoding'),
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

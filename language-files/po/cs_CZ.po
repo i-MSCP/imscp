@@ -1936,7 +1936,7 @@ msgstr "Otevřít požadavek"
 msgid "Close ticket"
 msgstr "Zavřít požadavek"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Klient : Systém podpory: Zobrazit požadavky"
 
 msgid "Please type your message!"
@@ -1951,7 +1951,7 @@ msgstr "Požadavek byl uzavřen!"
 msgid "Ticket was reopened!"
 msgstr "Požadavek byl znovu otevřen!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Systém podpory: Zobrazit požadavky"
 
 msgid "View support ticket"
@@ -3883,7 +3883,7 @@ msgstr "Lostpw odkaz"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Partner/Správa uživatelů/Email setup"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "ispCP - Users/Add user"

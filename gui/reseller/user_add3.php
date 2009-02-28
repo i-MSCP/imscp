@@ -36,8 +36,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		)
-	);
+	)
+);
 
 /*
  *
@@ -79,8 +79,8 @@ $tpl->assign(
 		'TR_BTN_ADD_USER' => tr('Add user'),
 		'TR_ADD_ALIASES' => tr('Add other domains to this account'),
 		'VL_USR_PASS' => passgen()
-		)
-	);
+	)
+);
 
 if (!init_in_values()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
@@ -262,7 +262,7 @@ function add_user_data($reseller_id) {
 
 	check_for_lock_file();
 	/*Daniel Andreca: If this check is disabled why execute query?
-	// check again if a user like that exits
+	// check again if a user like that exists
 	$query = "
 		SELECT
 			COUNT(*) as count
@@ -297,12 +297,9 @@ function add_user_data($reseller_id) {
 	";
 
 	$res = exec_query($sql, $query, array(
-											$dmn_user_name, $inpass, $reseller_id,
-											$first_name, $last_name, $firm,
-											$zip, $city, $country,
-											$user_email, $phone, $fax,
-											$street_one, $street_two, $customer_id,
-											$gender));
+		$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
+		$zip, $city, $country, $user_email, $phone, $fax,
+		$street_one, $street_two, $customer_id, $gender));
 
 	print $sql->ErrorMsg();
 
@@ -334,14 +331,8 @@ function add_user_data($reseller_id) {
 	";
 
 	$res = exec_query($sql, $query, array(
-											$dmn_name, $record_id,
-											$reseller_id, $mail,
-											$ftp, $traff,
-											$sql_db, $sql_user,
-											$status,
-											$sub, $als,
-											$domain_ip,	$disk,
-											$php, $cgi));
+		$dmn_name, $record_id, $reseller_id, $mail, $ftp, $traff, $sql_db,
+		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi));
 	$dmn_id = $sql->Insert_ID();
 
 	//Add statistics group
@@ -350,7 +341,7 @@ function add_user_data($reseller_id) {
 		INSERT INTO `htaccess_users`
 			(dmn_id, uname, upass, status)
 		VALUES
-				(?, ?, ?, ?)
+			(?, ?, ?, ?)
 	";
 	$rs = exec_query($sql, $query, array($dmn_id, $dmn_name, crypt_user_pass_with_salt($pure_user_pass), $status));
 

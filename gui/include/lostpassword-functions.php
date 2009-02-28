@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -74,11 +74,11 @@ function createImage($strSessionVar) {
 
 		imageline($im, $x1, $y1, $x2, $y2, $white);
 	}
-	// Header schicken
+	// send Header
 	header("Content-type: image/png");
-	// PNG Bild erzeugen und senden
+	// create and send PNG image
 	imagepng($im);
-	// Bild auf dem Server loeschen
+	// destroy image from server
 	imagedestroy($im);
 }
 
@@ -104,13 +104,13 @@ function removeOldKeys($ttl) {
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
 	$query = <<<SQL_QUERY
-  					UPDATE
-            	admin
-						SET
-							uniqkey = NULL,
-							uniqkey_time = NULL
-						WHERE
-							uniqkey_time < ?
+		UPDATE
+			`admin`
+		SET
+			`uniqkey` = NULL,
+			`uniqkey_time` = NULL
+		WHERE
+			`uniqkey_time` < ?
 SQL_QUERY;
 
 	exec_query($sql, $query, array($boundary));
@@ -122,13 +122,13 @@ function setUniqKey($admin_name, $uniqkey) {
 	$timestamp = date('Y-m-d H:i:s', time());
 
 	$query = <<<SQL_QUERY
-  					UPDATE
-            	admin
-            SET
-              uniqkey = ?,
-              uniqkey_time = ?
-            WHERE
-              admin_name = ?
+		UPDATE
+			`admin`
+		SET
+			`uniqkey` = ?,
+			`uniqkey_time` = ?
+		WHERE
+			`admin_name` = ?
 SQL_QUERY;
 
 	exec_query($sql, $query, array($uniqkey, $timestamp, $admin_name));
@@ -140,12 +140,12 @@ function setPassword($uniqkey, $upass) {
 	if ($uniqkey == '') exit;
 
 	$query = <<<SQL_QUERY
-           	UPDATE
-              admin
-            SET
-              admin_pass = ?
-            WHERE
-              uniqkey = ?
+		UPDATE
+			`admin`
+		SET
+			`admin_pass` = ?
+		WHERE
+			`uniqkey` = ?
 SQL_QUERY;
 
 	exec_query($sql, $query, array(crypt_user_pass($upass), $uniqkey));
@@ -155,20 +155,17 @@ function uniqkeyexists($uniqkey) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        		SELECT
-            	uniqkey
-        		FROM
-            	admin
-        		WHERE
-            	uniqkey = ?
+		SELECT
+			`uniqkey`
+		FROM
+			`admin`
+		WHERE
+			`uniqkey` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($uniqkey));
 
-	if ($res->RecordCount() != 0)
-		return true;
-	else
-		return false;
+	return ($res->RecordCount() != 0) ? true : false;
 }
 
 function uniqkeygen() {
@@ -185,12 +182,12 @@ function sendpassword($uniqkey) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        		SELECT
-            	admin_name, created_by, fname, lname, email
-        		FROM
-            	admin
-        		WHERE
-            	uniqkey = ?
+		SELECT
+			`admin_name`, `created_by`, `fname`, `lname`, `email`
+		FROM
+			`admin`
+		WHERE
+			`uniqkey` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($uniqkey));
@@ -213,13 +210,13 @@ SQL_QUERY;
 		write_log("Lostpassword: " . $admin_name . ": password updated");
 
 		$query = <<<SQL_QUERY
-            	UPDATE
-              	admin
-            	SET
-              	uniqkey = ?,
-              	uniqkey_time = ?
-            	WHERE
-              	uniqkey = ?
+			UPDATE
+				`admin`
+			SET
+				`uniqkey` = ?,
+				`uniqkey_time` = ?
+			WHERE
+				`uniqkey` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array('', '', $uniqkey));
@@ -281,12 +278,12 @@ function requestpassword($admin_name) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        		SELECT
-            	created_by, fname, lname, email
-        		FROM
-            	admin
-        		WHERE
-            	admin_name = ?
+		SELECT
+			`created_by`, `fname`, `lname`, `email`
+		FROM
+			`admin`
+		WHERE
+			`admin_name` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($admin_name));

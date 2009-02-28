@@ -1947,7 +1947,7 @@ msgstr "Åpen sak"
 msgid "Close ticket"
 msgstr "Lukket sak"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Client : Hjelp system: Vis Saker"
 
 msgid "Please type your message!"
@@ -1962,7 +1962,7 @@ msgstr "Saken ble lukket!"
 msgid "Ticket was reopened!"
 msgstr "Saken ble gjennåpnet!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Support System: Vis Saker"
 
 msgid "View support ticket"
@@ -3867,7 +3867,7 @@ msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
 #, fuzzy
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
 
 msgid "ispCP - Users/Add user"

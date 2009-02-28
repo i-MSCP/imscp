@@ -73,29 +73,29 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 				array(
 					'URGENCY' => tr("Low"),
 					'URGENCY_ID' => '1',
-					)
-				);
+				)
+			);
 		} elseif ($ticket_urgency == 2) {
 			$tpl->assign(
 				array(
 					'URGENCY' => tr("Medium"),
 					'URGENCY_ID' => '2',
-					)
-				);
+				)
+			);
 		} elseif ($ticket_urgency == 3) {
 			$tpl->assign(
 				array(
 					'URGENCY' => tr("High"),
 					'URGENCY_ID' => '3',
-					)
-				);
+				)
+			);
 		} elseif ($ticket_urgency == 4) {
 			$tpl->assign(
 				array(
 					'URGENCY' => tr("Very high"),
 					'URGENCY_ID' => '4',
-					)
-				);
+				)
+			);
 		}
 
 		get_ticket_from($tpl, $sql, $ticket_id);
@@ -110,8 +110,8 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 				'SUBJECT' => stripslashes($rs->fields['ticket_subject']),
 				'TICKET_CONTENT' => nl2br($ticket_content),
 				'ID' => $rs->fields['ticket_id']
-				)
-			);
+			)
+		);
 
 		$tpl->parse('TICKETS_ITEM', 'tickets_item');
 		get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
@@ -152,8 +152,8 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			array(
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'TICKET_CONTENT' => nl2br($ticket_message)
-				)
-			);
+			)
+		);
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		$rs->MoveNext();
@@ -206,12 +206,12 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	if (!isset($_POST['uaction'])) return;
@@ -404,7 +404,7 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_ticket_system.t
 
 $tpl->assign(
 	array(
-		'TR_SUPPORT_SYSTEM' => tr('ispCP - Admin : Support System: View Tickets'),
+		'TR_SUPPORT_SYSTEM' => tr('ispCP - Admin: Support System: View Ticket'),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 		'TR_TICKET_URGENCY' => tr('Priority'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),

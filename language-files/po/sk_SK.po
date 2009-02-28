@@ -2025,7 +2025,7 @@ msgstr "Otvorený tiket"
 msgid "Close ticket"
 msgstr "Zatvorený tiket"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - Klient : Podporný systém: Zobraziť Tikety"
 
 msgid "Please type your message!"
@@ -2040,7 +2040,7 @@ msgstr "Tiket bol zatvorený!"
 msgid "Ticket was reopened!"
 msgstr "Tiket bol znovu otvorený!"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Podporný systém: Zobraziť Tikety"
 
 msgid "View support ticket"
@@ -3957,7 +3957,7 @@ msgstr "Stratené heslo link"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Predajca/Spravovať užívateľa/E-mail setup"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "ispCP - Users/Add user"

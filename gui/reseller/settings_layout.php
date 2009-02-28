@@ -60,12 +60,10 @@ function update_logo() {
 	if (isset($_POST['delete_logo'])) {
 
 		$logo = get_own_logo($user_id);
-		if (basename($logo) == 'isp_logo.gif') { //default logo
-			return;
+		if (basename($logo) != 'isp_logo.gif') { // default logo
+			update_user_gui_props('', $user_id);
+			unlink($logo);
 		}
-
-		update_user_gui_props('', $user_id);
-		unlink($logo);
 		return;
 
 	} else if (isset($_POST['upload_logo'])) {
@@ -183,4 +181,5 @@ if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
+
 ?>

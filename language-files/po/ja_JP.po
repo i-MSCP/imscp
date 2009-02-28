@@ -1939,7 +1939,7 @@ msgstr "チケットを開く"
 msgid "Close ticket"
 msgstr "チケットの処理"
 
-msgid "ispCP - Client : Support System: View Tickets"
+msgid "ispCP - Client: Support System: View Ticket"
 msgstr "ispCP - クライアント : システムサポート: チケット閲覧"
 
 msgid "Please type your message!"
@@ -1954,7 +1954,7 @@ msgstr "チケットは既にCloseしています"
 msgid "Ticket was reopened!"
 msgstr "チケットは再開しました！"
 
-msgid "ispCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - 管理者 ： サポートシステム ： チケットを見る"
 
 msgid "View support ticket"
@@ -3884,7 +3884,7 @@ msgstr "パスワード紛失リンク"
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - 代理店/ユーザ管理/メール設定"
 
-msgid "ispCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller: Support System: View Ticket"
 msgstr "ispCP - 代理店：サポートシステム：チケットを見る"
 
 msgid "ispCP - Users/Add user"
