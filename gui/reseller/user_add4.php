@@ -32,12 +32,12 @@ $tpl->define_dynamic('alias_entry', 'alias_list');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		)
-	);
+	array(
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
 
 /*
  *
@@ -111,22 +111,22 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_man
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
-			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-			'TR_ADD_ALIAS' => tr('Add domain alias'),
-			'TR_DOMAIN_NAME' => tr('Domain name'),
-			'TR_DOMAIN_ACCOUNT' => tr('User account'),
-			'TR_MOUNT_POINT' => tr('Directory mount point'),
-			'TR_DOMAIN_IP' => tr('Domain IP'),
-			'TR_FORWARD' => tr('Forward to URL'),
-			'TR_ADD' => tr('Add alias'),
-			'TR_DOMAIN_ALIS' => tr('Domain alias'),
-			'TR_STATUS' => tr('Status'),
-			'TR_ADD_USER' => tr('Add user'),
-			'TR_GO_USERS' => tr('Done')
-		)
-	);
+	array(
+		'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
+		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+		'TR_ADD_ALIAS' => tr('Add domain alias'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_ACCOUNT' => tr('User account'),
+		'TR_MOUNT_POINT' => tr('Directory mount point'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_FORWARD' => tr('Forward to URL'),
+		'TR_ADD' => tr('Add alias'),
+		'TR_DOMAIN_ALIS' => tr('Domain alias'),
+		'TR_STATUS' => tr('Status'),
+		'TR_ADD_USER' => tr('Add user'),
+		'TR_GO_USERS' => tr('Done')
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -146,12 +146,13 @@ function init_empty_data() {
 	$mount_point = "";
 
 	$tpl->assign(
-		array('DOMAIN' => $alias_name,
+		array(
+			'DOMAIN' => $alias_name,
 			'MP' => $mount_point,
 			'FORWARD' => 'no'
-			)
-		);
-} //End of init_empty_data()
+		)
+	);
+} // End of init_empty_data()
 
 // Show data fiels
 function gen_al_page(&$tpl, $reseller_id) {
@@ -183,11 +184,12 @@ function gen_al_page(&$tpl, $reseller_id) {
 			$page_cont = ($i % 2 == 0) ? 'content' : 'content2';
 
 			$tpl->assign(
-				array('DOMAIN_ALIS' => $alias_name,
+				array(
+					'DOMAIN_ALIS' => $alias_name,
 					'STATUS' => $alias_status,
 					'CLASS' => $page_cont,
-					)
-				);
+				)
+			);
 
 			$i++;
 			$tpl->parse('ALIAS_ENTRY', '.alias_entry');
@@ -221,9 +223,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	    	$forward .= "/";
 	    }
 	} else {
-		$query="SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name`=?";
+		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));
-		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` =?";
+		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
@@ -244,16 +246,15 @@ function add_domain_alias(&$sql, &$err_al) {
 	check_for_lock_file();
 	$status = Config::get('ITEM_ADD_STATUS');
 	
-	$query="insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
+	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array(
-									$cr_user_id,
-									$alias_name,
-									$mount_point,
-									$status,
-									$domain_ip,
-									$forward
-								)
-	);
+			$cr_user_id,
+			$alias_name,
+			$mount_point,
+			$status,
+			$domain_ip,
+			$forward
+	));
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");
@@ -268,6 +269,6 @@ function gen_page_msg(&$tpl, $erro_txt) {
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
-} //End of gen_page_msg()
+} // End of gen_page_msg()
 
 ?>

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -23,79 +23,58 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-         		SELECT
-            	fname, lname, firm, email
-            FROM
-            	admin
-            WHERE
-             	admin_id = ?
+		SELECT
+			`fname`, `lname`, `firm`, `email`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));
 
 	if ( (trim($rs->fields('fname')) != '') && (trim($rs->fields('lname')) != '') ) {
-
-	    $data['sender_name'] = $rs->fields('fname') . ' ' . $rs->fields('lname');
-
+		$data['sender_name'] = $rs->fields('fname') . ' ' . $rs->fields('lname');
 	} else if (trim($rs->fields('fname')) != '') {
-
-	    $data['sender_name'] = $rs->fields('fname');
-
+		$data['sender_name'] = $rs->fields('fname');
 	} else if (trim($rs->fields('lname')) != '') {
-
-	    $data['sender_name'] = $rs->fields('lname');
-
+		$data['sender_name'] = $rs->fields('lname');
 	} else {
-
-	    $data['sender_name'] = '';
-
+		$data['sender_name'] = '';
 	}
 
 	if ($rs->fields('firm') != '') {
-
-	    if ($data['sender_name'] != '') {
-
-	        $data['sender_name'] = $data['sender_name'] . ' ' . '[' . $rs->fields('firm') . ']';
-
-	    } else {
-
-	        $data['sender_name'] = $rs->fields('firm');
-
-	    }
-
+		if ($data['sender_name'] != '') {
+			$data['sender_name'] .= ' ' . '[' . $rs->fields('firm') . ']';
+		} else {
+			$data['sender_name'] = $rs->fields('firm');
+		}
 	}
 
 	$data['sender_email'] = $rs->fields('email');
 
 	$query = <<<SQL_QUERY
-						SELECT
-    	      	subject, message
-      	    FROM
-        	  	email_tpls
-          	WHERE
-          		owner_id = ?
-          	AND
-          		name = ?
+		SELECT
+			`subject`, `message`
+		FROM
+			`email_tpls`
+		WHERE
+			`owner_id` = ?
+		AND
+			`name` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
 	if ($rs ->RowCount() == 1 ) {
-
-	    $data['subject'] = $rs->fields['subject'];
-
-	    $data['message'] = $rs->fields['message'];
-
+		$data['subject'] = $rs->fields['subject'];
+		$data['message'] = $rs->fields['message'];
 	} else {
-
-	    $data['subject'] = '';
-
-	    $data['message'] = '';
-
+		$data['subject'] = '';
+		$data['message'] = '';
 	}
 
 	return $data;
-
 }
 
 function set_email_tpl_data($admin_id, $tpl_name, $data) {
@@ -103,14 +82,14 @@ function set_email_tpl_data($admin_id, $tpl_name, $data) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-  					SELECT
-            	subject, message
-            FROM
-            	email_tpls
-            WHERE
-            	owner_id = ?
-           	AND
-           		name = ?
+		SELECT
+			`subject`, `message`
+		FROM
+			`email_tpls`
+		WHERE
+			`owner_id` = ?
+		AND
+			`name` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
@@ -118,24 +97,24 @@ SQL_QUERY;
 	if ($rs ->RowCount() == 0 ) {
 
 		$query = <<<SQL_QUERY
-  						INSERT INTO email_tpls
-            		(subject, message, owner_id, name)
-      	  		VALUES
-            		(?, ?, ?, ?)
+			INSERT INTO `email_tpls`
+				(subject, message, owner_id, name)
+			VALUES
+				(?, ?, ?, ?)
 SQL_QUERY;
 
 	} else {
 
 		$query = <<<SQL_QUERY
-  						UPDATE
-  							email_tpls
-  						SET
-  							subject = ?,
-          	    message = ?
-	            WHERE
-  	          	owner_id = ?
-    	        AND
-      	      	name = ?
+			UPDATE
+				`email_tpls`
+			SET
+				`subject` = ?,
+				`message` = ?
+			WHERE
+				`owner_id` = ?
+			AND
+				`name` = ?
 SQL_QUERY;
 
 	}
@@ -149,14 +128,11 @@ function get_welcome_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'add-user-auto-msg');
 
 	if (!$data['subject']) {
-
 		$data['subject'] = tr('Welcome {USERNAME} to ispCP!', true);
-
 	}
 
 	if (!$data['message']) {
-
-	    $data['message'] = tr('
+		$data['message'] = tr('
 
 Hello {NAME}!
 
@@ -183,13 +159,10 @@ The ispCP Team.
 	}
 
 	return $data;
-
 }
 
 function set_welcome_email($admin_id, $data) {
-
 	set_email_tpl_data($admin_id, 'add-user-auto-msg', $data);
-
 }
 
 function get_lostpassword_activation_email($admin_id) {
@@ -197,14 +170,11 @@ function get_lostpassword_activation_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'lostpw-msg-1');
 
 	if (!$data['subject']) {
-
 		$data['subject'] = tr('Please activate your new ispCP password!', true);
-
 	}
 
 	if (!$data['message']) {
-
-	    $data['message'] = tr('
+		$data['message'] = tr('
 
 Hello {NAME}!
 Use this link to activate your new ispCP password:
@@ -219,13 +189,10 @@ The ispCP Team
 	}
 
 	return $data;
-
 }
 
 function set_lostpassword_activation_email($admin_id, $data) {
-
 	set_email_tpl_data($admin_id, 'lostpw-msg-1', $data);
-
 }
 
 function get_lostpassword_password_email($admin_id) {
@@ -233,14 +200,11 @@ function get_lostpassword_password_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'lostpw-msg-2');
 
 	if (!$data['subject']) {
-
 		$data['subject'] = tr('Your new ispCP login!', true);
-
 	}
 
 	if (!$data['message']) {
-
-	    $data['message'] = tr('
+		$data['message'] = tr('
 
 Hello {NAME}!
 
@@ -257,13 +221,10 @@ The ispCP Team
 	}
 
 	return $data;
-
 }
 
 function set_lostpassword_password_email($admin_id, $data) {
-
 	set_email_tpl_data($admin_id, 'lostpw-msg-2', $data);
-
 }
 
 function get_order_email($admin_id) {
@@ -271,14 +232,11 @@ function get_order_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'after-order-msg');
 
 	if (!$data['subject']) {
-
 		$data['subject'] = tr('Confirmation for domain order {DOMAIN}!', true);
-
 	}
 
 	if (!$data['message']) {
-
-	    $data['message'] = tr('
+		$data['message'] = tr('
 
 Dear {NAME},
 This is an automatic confirmation for the order of the domain:
@@ -293,13 +251,10 @@ The ispCP Team
 	}
 
 	return $data;
-
 }
 
 function set_order_email($admin_id, $data) {
-
 	set_email_tpl_data($admin_id, 'after-order-msg', $data);
-
 }
 
 function get_alias_order_email($admin_id) {
@@ -307,14 +262,11 @@ function get_alias_order_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'alias-order-msg');
 
 	if (!$data['subject']) {
-
 		$data['subject'] = tr('New alias order for {CUSTOMER}!', true);
-
 	}
 
 	if (!$data['message']) {
-
-	    $data['message'] = tr('
+		$data['message'] = tr('
 
 Dear {RESELLER},
 Your customer {CUSTOMER} is awaiting for the approval of his new alias:
@@ -332,13 +284,10 @@ The ispCP Team
 	}
 
 	return $data;
-
 }
 
 function set_alias_order_email($admin_id, $data) {
-
 	set_email_tpl_data($admin_id, 'alias-order-msg', $data);
-
 }
 
 ?>

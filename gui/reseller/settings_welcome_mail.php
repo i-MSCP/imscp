@@ -84,8 +84,8 @@ $tpl->assign(
 		'MESSAGE_VALUE' => $data['message'],
 		'SENDER_EMAIL_VALUE' => $data['sender_email'],
 		'SENDER_NAME_VALUE' => $data['sender_name']
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 
