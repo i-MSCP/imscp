@@ -101,6 +101,7 @@ function gen_personal_data(&$tpl) {
 	$company		= (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';
 	$postal_code	= (isset($_SESSION['zip'])) ? $_SESSION['zip'] : '';
 	$city			= (isset($_SESSION['city'])) ? $_SESSION['city'] : '';
+	$state			= (isset($_SESSION['state'])) ? $_SESSION['state'] : '';
 	$country		= (isset($_SESSION['country'])) ? $_SESSION['country'] : '';
 	$street1		= (isset($_SESSION['street1'])) ? $_SESSION['street1'] : '';
 	$street2		= (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
@@ -117,6 +118,7 @@ function gen_personal_data(&$tpl) {
 			'VL_USR_POSTCODE'	=> $postal_code,
 			'VL_USR_GENDER'		=> $gender,
 			'VL_USRCITY'		=> $city,
+			'VL_USRSTATE'		=> $state,
 			'VL_COUNTRY'		=> $country,
 			'VL_STREET1'		=> $street1,
 			'VL_STREET2'		=> $street2,
@@ -165,6 +167,7 @@ $tpl->assign(
 		'TR_COMPANY' => tr('Company'),
 		'TR_POST_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
 		'TR_COUNTRY' => tr('Country'),
 		'TR_STREET1' => tr('Street 1'),
 		'TR_STREET2' => tr('Street 2'),

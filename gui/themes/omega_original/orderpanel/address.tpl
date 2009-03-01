@@ -43,6 +43,10 @@
 		<td class="content"><input type="text" name="city" value="{VL_USRCITY}" style="width:210px" class="textinput" /></td>
 	</tr>
 	<tr>
+		<td width="200" class="content2">{TR_STATE} <span style="color:red;">*</span></td>
+		<td class="content"><input type="text" name="state" value="{VL_USRSTATE}" style="width:210px" class="textinput"></td>
+	</tr>
+	<tr>
 		<td width="200" class="content2">{TR_COUNTRY} <span style="color:red;">*</span></td>
 		<td class="content"><input type="text" name="country" value="{VL_COUNTRY}" style="width:210px" class="textinput" /></td>
 	</tr>

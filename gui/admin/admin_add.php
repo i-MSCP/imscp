@@ -51,6 +51,7 @@ function add_user(&$tpl, &$sql) {
 			$firm = clean_input($_POST['firm'], true);
 			$zip = clean_input($_POST['zip'], true);
 			$city = clean_input($_POST['city'], true);
+			$state = clean_input($_POST['state'], true);
 			$country = clean_input($_POST['country'], true);
 			$email = clean_input($_POST['email'], true);
 			$phone = clean_input($_POST['phone'], true);
@@ -62,49 +63,48 @@ function add_user(&$tpl, &$sql) {
 				$gender = '';
 			}
 
-			$query = <<<SQL_QUERY
-                    insert into
-                            admin
-                            (
-                                admin_name,
-                                admin_pass,
-                                admin_type,
-                                domain_created,
-                                created_by,
-                                fname,
-                                lname,
-                                firm,
-                                zip,
-                                city,
-                                country,
-                                email,
-                                phone,
-                                fax,
-                                street1,
-                                street2,
-                                gender
-                            )
-                            values
-                            (
-                                ?,
-                                ?,
-                                'admin',
-                                unix_timestamp(),
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?
-                            )
-SQL_QUERY;
+			$query = "
+				INSERT INTO `admin`
+					(
+						`admin_name`,
+						`admin_pass`,
+						`admin_type`,
+						`domain_created`,
+						`created_by`,
+						`fname`,
+						`lname`,
+						`firm`,
+						`zip`,
+						`city`,
+						`state`,
+						`country`,
+						`email`,
+						`phone`,
+						`fax`,
+						`street1`,
+						`street2`,
+						`gender`
+					) VALUES (
+						?,
+						?,
+						'admin',
+						unix_timestamp(),
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?,
+						?
+					)
+			";
 
 			$rs = exec_query($sql, $query, array($username,
 					$upass,
@@ -114,6 +114,7 @@ SQL_QUERY;
 					$firm,
 					$zip,
 					$city,
+					$state,
 					$country,
 					$email,
 					$phone,
@@ -132,20 +133,16 @@ SQL_QUERY;
 			$user_theme_color = $_SESSION['user_theme'];
 			$user_logo = 0;
 
-			$query = <<<SQL_QUERY
-                    insert into
-                        user_gui_props
-                            (
-                                user_id,
-                                lang,
-                                layout,
-                                logo
-                            )
-                        values
-                            (
-                              ?,?,?,?
-                            )
-SQL_QUERY;
+			$query = "
+				INSERT INTO `user_gui_props` (
+					`user_id`,
+					`lang`,
+					`layout`,
+					`logo`
+				) VALUES (
+					  ?,?,?,?
+				)
+			";
 
 			$rs = exec_query($sql, $query, array($new_admin_id,
 					$user_def_lang,
@@ -169,24 +166,25 @@ SQL_QUERY;
 		} //check user data
 		else {
 			$tpl->assign(
-					array(
-						'EMAIL' => clean_input($_POST['email']),
-						'USERNAME' => clean_input($_POST['username']),
-						'FIRST_NAME' => clean_input($_POST['fname']),
-						'LAST_NAME' => clean_input($_POST['lname']),
-						'FIRM' => clean_input($_POST['firm']),
-						'ZIP' => clean_input($_POST['zip']),
-						'CITY' => clean_input($_POST['city']),
-						'COUNTRY' => clean_input($_POST['country']),
-						'STREET_1' => clean_input($_POST['street1']),
-						'STREET_2' => clean_input($_POST['street2']),
-						'PHONE' => clean_input($_POST['phone']),
-						'FAX' => clean_input($_POST['fax']),
-						'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
-						'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
-						'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : '')
-					)
-				);
+				array(
+					'EMAIL' => clean_input($_POST['email'], true),
+					'USERNAME' => clean_input($_POST['username'], true),
+					'FIRST_NAME' => clean_input($_POST['fname'], true),
+					'LAST_NAME' => clean_input($_POST['lname'], true),
+					'FIRM' => clean_input($_POST['firm'], true),
+					'ZIP' => clean_input($_POST['zip'], true),
+					'CITY' => clean_input($_POST['city'], true),
+					'STATE' => clean_input($_POST['state'], true),
+					'COUNTRY' => clean_input($_POST['country'], true),
+					'STREET_1' => clean_input($_POST['street1'], true),
+					'STREET_2' => clean_input($_POST['street2'], true),
+					'PHONE' => clean_input($_POST['phone'], true),
+					'FAX' => clean_input($_POST['fax'], true),
+					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : '')
+				)
+			);
 		}
 	} else {
 		$tpl->assign(
@@ -198,6 +196,7 @@ SQL_QUERY;
 					'FIRM' => '',
 					'ZIP' => '',
 					'CITY' => '',
+					'STATE' => '',
 					'COUNTRY' => '',
 					'STREET_1' => '',
 					'STREET_2' => '',
@@ -239,15 +238,15 @@ function check_user_data() {
 		return false;
 	}
 
-	$query = <<<SQL_QUERY
-        select
-            admin_id
-        from
-            admin
-        where
-            admin_name = ?
+	$query = "
+		select
+			admin_id
+		from
+			admin
+		where
+			admin_name = ?
 
-SQL_QUERY;
+";
 
 	$username = clean_input($_POST['username']);
 
@@ -292,6 +291,7 @@ $tpl->assign(
 			'TR_COMPANY' => tr('Company'),
 			'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
 			'TR_CITY' => tr('City'),
+			'TR_STATE' => tr('State/Province'),
 			'TR_COUNTRY' => tr('Country'),
 			'TR_STREET_1' => tr('Street 1'),
 			'TR_STREET_2' => tr('Street 2'),

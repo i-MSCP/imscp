@@ -1621,6 +1621,8 @@ function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 			$add_query = "WHERE firm RLIKE '$search_for' %s";
 		} else if ($search_common === 'city') {
 			$add_query = "WHERE city RLIKE '$search_for' %s";
+		} else if ($search_common === 'state') {
+			$add_query = "WHERE state RLIKE '$search_for' %s";
 		} else if ($search_common === 'country') {
 			$add_query = "WHERE country RLIKE '$search_for' %s";
 		}
@@ -1677,8 +1679,8 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
-
 		$all_selected = "selected";
 		$ok_selected = "";
 		$suspended_selected = "";
@@ -1689,6 +1691,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'customer_id') {
 		$domain_selected = "";
@@ -1696,6 +1699,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'lname') {
 		$domain_selected = "";
@@ -1703,6 +1707,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "selected";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'firm') {
 		$domain_selected = "";
@@ -1710,6 +1715,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "selected";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'city') {
 		$domain_selected = "";
@@ -1717,6 +1723,15 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "selected";
+		$state_selected = "";
+		$country_selected = "";
+	} else if ($search_common === 'state') {
+		$domain_selected = "";
+		$customerid_selected = "";
+		$lastname_selected = "";
+		$company_selected = "";
+		$city_selected = "";
+		$state_selected = "selected";
 		$country_selected = "";
 	} else if ($search_common === 'country') {
 		$domain_selected = "";
@@ -1724,6 +1739,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "selected";
 	}
 	if ($search_status === 'all') {
@@ -1758,6 +1774,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 			'M_LAST_NAME' => tr('Last name'),
 			'M_COMPANY' => tr('Company'),
 			'M_CITY' => tr('City'),
+			'M_STATE' => tr('State/Province'),
 			'M_COUNTRY' => tr('Country'),
 
 			'M_ALL' => tr('All'),
@@ -1770,6 +1787,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 			'M_LAST_NAME_SELECTED' => $lastname_selected,
 			'M_COMPANY_SELECTED' => $company_selected,
 			'M_CITY_SELECTED' => $city_selected,
+			'M_STATE_SELECTED' => $state_selected,
 			'M_COUNTRY_SELECTED' => $country_selected,
 
 			'M_ALL_SELECTED' => $all_selected,

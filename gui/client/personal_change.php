@@ -41,46 +41,47 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 gen_user_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 function gen_user_personal_data(&$tpl, &$sql, $user_id) {
-	$query = <<<SQL_QUERY
-        select
-            fname,
-            lname,
-            gender,
-            firm,
-            zip,
-            city,
-            country,
-            street1,
-            street2,
-            email,
-            phone,
-            fax
-        from
-            admin
-        where
-            admin_id = ?
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			`fname`,
+			`lname`,
+			`gender`,
+			`firm`,
+			`zip`,
+			`city`,
+			`state`,
+			`country`,
+			`street1`,
+			`street2`,
+			`email`,
+			`phone`,
+			`fax`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 	$tpl->assign(
 		array(
 			'FIRST_NAME'	=> empty($rs->fields['fname'])?'':$rs->fields['fname'],
-			'LAST_NAME'	=> empty($rs->fields['lname'])?'':$rs->fields['lname'],
-			'FIRM'		=> empty($rs->fields['firm'])?'':$rs->fields['firm'],
-			'ZIP'		=> empty($rs->fields['zip'])?'':$rs->fields['zip'],
-			'CITY'		=> empty($rs->fields['city'])?'':$rs->fields['city'],
-			'COUNTRY'	=> empty($rs->fields['country'])?'':$rs->fields['country'],
-			'STREET_1'	=> empty($rs->fields['street1'])?'':$rs->fields['street1'],
-			'STREET_2'	=> empty($rs->fields['street2'])?'':$rs->fields['street2'],
-			'EMAIL'		=> empty($rs->fields['email'])?'':$rs->fields['email'],
-			'PHONE'		=> empty($rs->fields['phone'])?'':$rs->fields['phone'],
-			'FAX'		=> empty($rs->fields['fax'])?'':$rs->fields['fax'],
-			'VL_MALE'	=> (($rs->fields['gender'] == 'M')? 'selected="selected"' : ''),
-			'VL_FEMALE'	=> (($rs->fields['gender'] == 'F')? 'selected="selected"' : ''),
+			'LAST_NAME'		=> empty($rs->fields['lname'])?'':$rs->fields['lname'],
+			'FIRM'			=> empty($rs->fields['firm'])?'':$rs->fields['firm'],
+			'ZIP'			=> empty($rs->fields['zip'])?'':$rs->fields['zip'],
+			'CITY'			=> empty($rs->fields['city'])?'':$rs->fields['city'],
+			'STATE'			=> empty($rs->fields['state'])?'':$rs->fields['state'],
+			'COUNTRY'		=> empty($rs->fields['country'])?'':$rs->fields['country'],
+			'STREET_1'		=> empty($rs->fields['street1'])?'':$rs->fields['street1'],
+			'STREET_2'		=> empty($rs->fields['street2'])?'':$rs->fields['street2'],
+			'EMAIL'			=> empty($rs->fields['email'])?'':$rs->fields['email'],
+			'PHONE'			=> empty($rs->fields['phone'])?'':$rs->fields['phone'],
+			'FAX'			=> empty($rs->fields['fax'])?'':$rs->fields['fax'],
+			'VL_MALE'		=> (($rs->fields['gender'] == 'M')? 'selected="selected"' : ''),
+			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F')? 'selected="selected"' : ''),
 			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : '')
-			)
-		);
+		)
+	);
 }
 
 function update_user_personal_data(&$sql, $user_id) {
@@ -90,6 +91,7 @@ function update_user_personal_data(&$sql, $user_id) {
 	$firm = clean_input($_POST['firm'], true);
 	$zip = clean_input($_POST['zip'], true);
 	$city = clean_input($_POST['city'], true);
+	$state = clean_input($_POST['state'], true);
 	$country = clean_input($_POST['country'], true);
 	$street1 = clean_input($_POST['street1'], true);
 	$street2 = clean_input($_POST['street2'], true);
@@ -97,27 +99,28 @@ function update_user_personal_data(&$sql, $user_id) {
 	$phone = clean_input($_POST['phone'], true);
 	$fax = clean_input($_POST['fax'], true);
 
-	$query = <<<SQL_QUERY
-        update
-            admin
-        set
-            fname = ?,
-            lname = ?,
-            firm = ?,
-            zip = ?,
-            city = ?,
-            country = ?,
-            street1 = ?,
-            street2 = ?,
-            email = ?,
-            phone = ?,
-            fax = ?,
-            gender = ?
-        where
-            admin_id = ?
-SQL_QUERY;
+	$query = "
+		UPDATE
+			`admin`
+		SET
+			`fname` = ?,
+			`lname` = ?,
+			`firm` = ?,
+			`zip` = ?,
+			`city` = ?,
+			`state` = ?,
+			`country` = ?,
+			`street1` = ?,
+			`street2` = ?,
+			`email` = ?,
+			`phone` = ?,
+			`fax` = ?,
+			`gender` = ?
+		WHERE
+			`admin_id` = ?
+	";
 
-	$rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $country, $street1, $street2, $email, $phone, $fax, $gender, $user_id));
+	$rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $state, $country, $street1, $street2, $email, $phone, $fax, $gender, $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data");
 	set_page_message(tr('Personal data updated successfully!'));
@@ -138,26 +141,27 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-		'TR_PERSONAL_DATA' => tr('Personal data'),
-		'TR_FIRST_NAME' => tr('First name'),
-		'TR_LAST_NAME' => tr('Last name'),
-		'TR_COMPANY' => tr('Company'),
-		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
-		'TR_CITY' => tr('City'),
-		'TR_COUNTRY' => tr('Country'),
-		'TR_STREET_1' => tr('Street 1'),
-		'TR_STREET_2' => tr('Street 2'),
-		'TR_EMAIL' => tr('Email'),
-		'TR_PHONE' => tr('Phone'),
-		'TR_FAX' => tr('Fax'),
-		'TR_GENDER' => tr('Gender'),
-		'TR_MALE' => tr('Male'),
-		'TR_FEMALE' => tr('Female'),
-		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_UPDATE_DATA' => tr('Update data')
-		)
-	);
+		'TR_CHANGE_PERSONAL_DATA'	=> tr('Change personal data'),
+		'TR_PERSONAL_DATA'			=> tr('Personal data'),
+		'TR_FIRST_NAME'				=> tr('First name'),
+		'TR_LAST_NAME'				=> tr('Last name'),
+		'TR_COMPANY'				=> tr('Company'),
+		'TR_ZIP_POSTAL_CODE'		=> tr('Zip/Postal code'),
+		'TR_CITY'					=> tr('City'),
+		'TR_STATE'					=> tr('State/Province'),
+		'TR_COUNTRY'				=> tr('Country'),
+		'TR_STREET_1'				=> tr('Street 1'),
+		'TR_STREET_2'				=> tr('Street 2'),
+		'TR_EMAIL'					=> tr('Email'),
+		'TR_PHONE'					=> tr('Phone'),
+		'TR_FAX'					=> tr('Fax'),
+		'TR_GENDER'					=> tr('Gender'),
+		'TR_MALE'					=> tr('Male'),
+		'TR_FEMALE'					=> tr('Female'),
+		'TR_UNKNOWN'				=> tr('Unknown'),
+		'TR_UPDATE_DATA'			=> tr('Update data')
+	)
+);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');

@@ -275,7 +275,7 @@ class databaseUpdate extends ispcpUpdate{
 	}
 
 	/**
-	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1610.
+	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
 	 *
 	 * @author		Daniel Andreca
 	 * @copyright	2006-2008 by ispCP | http://isp-control.net
@@ -290,6 +290,24 @@ class databaseUpdate extends ispcpUpdate{
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, ';' ) WHERE `name` LIKE \"PORT_%\"";
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, 'localhost' ) WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
 		
+		return $sqlUpd;
+	}
+	
+	/**
+	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0
+	 * @since		r1550
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_11() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city` ";
 		return $sqlUpd;
 	}
 

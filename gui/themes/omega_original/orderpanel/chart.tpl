@@ -45,6 +45,10 @@
 			<td class="content">{VL_USRCITY}</td>
 		</tr>
 		<tr>
+			<td class="content">{TR_STATE}</td>
+			<td class="content">{VL_USRSTATE}</td>
+		</tr>
+		<tr>
 			<td class="content">{TR_COUNTRY}</td>
 			<td class="content">{VL_COUNTRY}</td>
 		</tr>

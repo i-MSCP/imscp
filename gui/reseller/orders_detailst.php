@@ -31,25 +31,28 @@ $tpl->define_dynamic('page_message', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order details'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Order details'),
+		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_CHARSET'						=> tr('encoding'),
+		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
+	)
+);
 // Functions
 // *
 // *
 function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
-	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            orders
-        where
-           id = ?
-		and
-			user_id = ?
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`orders`
+		WHERE
+			`id` = ?
+		AND
+			`user_id` = ?
+	";
 	$rs = exec_query($sql, $query, array($order_id, $user_id));
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('Permission deny!'));
@@ -62,43 +65,44 @@ SQL_QUERY;
 	$date = date($date_formt, $rs->fields['date']);
 
 	if (isset($_POST['uaction'])) {
-		$domain_name = $_POST['domain'];
-		$customer_id = $_POST['customer_id'];
-		$fname = $_POST['fname'];
-		$lname = $_POST['lname'];
-		$firm = $_POST['firm'];
-		$zip = $_POST['zip'];
-		$city = $_POST['city'];
-		$country = $_POST['country'];
-		$street1 = $_POST['street1'];
-		$street2 = $_POST['street2'];
-		$email = $_POST['email'];
-		$phone = $_POST['phone'];
-		$fax = $_POST['fax'];
+		$domain_name	= $_POST['domain'];
+		$customer_id	= $_POST['customer_id'];
+		$fname			= $_POST['fname'];
+		$lname			= $_POST['lname'];
+		$firm			= $_POST['firm'];
+		$zip			= $_POST['zip'];
+		$city			= $_POST['city'];
+		$state			= $_POST['state'];
+		$country		= $_POST['country'];
+		$street1		= $_POST['street1'];
+		$street2		= $_POST['street2'];
+		$email			= $_POST['email'];
+		$phone			= $_POST['phone'];
+		$fax			= $_POST['fax'];
 	} else {
-		$domain_name = $rs->fields['domain_name'];
-		$customer_id = $rs->fields['customer_id'];
-		$fname = $rs->fields['fname'];
-		$lname = $rs->fields['lname'];
-		$firm = $rs->fields['firm'];
-		$zip = $rs->fields['zip'];
-		$city = $rs->fields['city'];
-		$country = $rs->fields['country'];
-		$email = $rs->fields['email'];
-		$phone = $rs->fields['phone'];
-		$fax = $rs->fields['fax'];
-		$street1 = $rs->fields['street1'];
-		$street2 = $rs->fields['street2'];
+		$domain_name	= $rs->fields['domain_name'];
+		$customer_id	= $rs->fields['customer_id'];
+		$fname			= $rs->fields['fname'];
+		$lname			= $rs->fields['lname'];
+		$firm			= $rs->fields['firm'];
+		$zip			= $rs->fields['zip'];
+		$city			= $rs->fields['city'];
+		$state			= $rs->fields['state'];
+		$country		= $rs->fields['country'];
+		$email			= $rs->fields['email'];
+		$phone			= $rs->fields['phone'];
+		$fax			= $rs->fields['fax'];
+		$street1		= $rs->fields['street1'];
+		$street2		= $rs->fields['street2'];
 	}
-	$query = <<<SQL_QUERY
-        select
-            name, description
-        from
-            hosting_plans
-        where
-           id = ?
-
-SQL_QUERY;
+	$query = "
+		SELECT
+			`name`, `description`
+		FROM
+			`hosting_plans`
+		WHERE
+			`id` = ?
+	";
 	$rs = exec_query($sql, $query, array($plan_id));
 	$plan_name = $rs->fields['name'] . "<br>" . $rs->fields['description'];
 
@@ -106,63 +110,70 @@ SQL_QUERY;
 
 	if ($customer_id === null) $customer_id = '';
 
-	$tpl->assign(array('ID' => $order_id,
-			'DATE' => $date,
-			'HP' => $plan_name,
-			'DOMAINNAME' => $domain_name,
-			'CUSTOMER_ID' => $customer_id,
-			'FNAME' => $fname,
-			'LNAME' => $lname,
-			'FIRM' => $firm,
-			'ZIP' => $zip,
-			'CITY' => $city,
-			'COUNTRY' => $country,
-			'EMAIL' => $email,
-			'PHONE' => $phone,
-			'FAX' => $fax,
-			'STREET1' => $street1,
-			'STREET2' => $street2));
+	$tpl->assign(
+		array(
+			'ID'			=> $order_id,
+			'DATE'			=> $date,
+			'HP'			=> $plan_name,
+			'DOMAINNAME'	=> $domain_name,
+			'CUSTOMER_ID'	=> $customer_id,
+			'FNAME'			=> $fname,
+			'LNAME'			=> $lname,
+			'FIRM'			=> $firm,
+			'ZIP'			=> $zip,
+			'CITY'			=> $city,
+			'STATE'			=> $state,
+			'COUNTRY'		=> $country,
+			'EMAIL'			=> $email,
+			'PHONE'			=> $phone,
+			'FAX'			=> $fax,
+			'STREET1'		=> $street1,
+			'STREET2'		=> $street2
+		)
+	);
 }
 
 function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
-	$domain = strtolower($_POST['domain']);
-	$domain = encode_idna($domain);
-	$customer_id = strip_html($_POST['customer_id']);
-	$fname = strip_html($_POST['fname']);
-	$lname = strip_html($_POST['lname']);
-	$firm = strip_html($_POST['firm']);
-	$zip = strip_html($_POST['zip']);
-	$city = strip_html($_POST['city']);
-	$country = strip_html($_POST['country']);
-	$street1 = strip_html($_POST['street1']);
-	$street2 = strip_html($_POST['street2']);
-	$email = strip_html($_POST['email']);
-	$phone = strip_html($_POST['phone']);
-	$fax = strip_html($_POST['fax']);
+	$domain			= strtolower($_POST['domain']);
+	$domain			= encode_idna($domain);
+	$customer_id	= strip_html($_POST['customer_id']);
+	$fname			= strip_html($_POST['fname']);
+	$lname			= strip_html($_POST['lname']);
+	$firm			= strip_html($_POST['firm']);
+	$zip			= strip_html($_POST['zip']);
+	$city			= strip_html($_POST['city']);
+	$state			= strip_html($_POST['state']);
+	$country		= strip_html($_POST['country']);
+	$street1		= strip_html($_POST['street1']);
+	$street2		= strip_html($_POST['street2']);
+	$email			= strip_html($_POST['email']);
+	$phone			= strip_html($_POST['phone']);
+	$fax			= strip_html($_POST['fax']);
 
-	$query = <<<SQL_QUERY
-            update
-                orders
-            set
-                domain_name=?,
-				customer_id=?,
-                fname=?,
-                lname=?,
-                firm=?,
-                zip=?,
-                city=?,
-                country=?,
-                email=?,
-                phone=?,
-                fax=?,
-                street1=?,
-                street2=?
-            where
-                id=?
-			and
-				user_id=?
-SQL_QUERY;
-	exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
+	$query = "
+		UPDATE
+			`orders`
+		SET
+			`domain_name` = ?,
+			`customer_id` = ?,
+			`fname` = ?,
+			`lname` = ?,
+			`firm` = ?,
+			`zip` = ?,
+			`city` = ?,
+			`state` = ?,
+			`country` = ?,
+			`email` = ?,
+			`phone` = ?,
+			`fax` = ?,
+			`street1` = ?,
+			`street2` = ?
+		WHERE
+			`id` = ?
+		AND
+			`user_id` = ?
+	";
+	exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
 }
 
 // end of functions
@@ -200,30 +211,35 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tp
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
-		'TR_DATE' => tr('Order date'),
-		'TR_HP' => tr('Hosting plan'),
-		'TR_HOSTING_INFO' => tr('Hosting details'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_FIRST_NAME' => tr('First name'),
-		'TR_LAST_NAME' => tr('Last name'),
-		'TR_COMPANY' => tr('Company'),
-		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
-		'TR_CITY' => tr('City'),
-		'TR_COUNTRY' => tr('Country'),
-		'TR_STREET_1' => tr('Street 1'),
-		'TR_STREET_2' => tr('Street 2'),
-		'TR_EMAIL' => tr('Email'),
-		'TR_PHONE' => tr('Phone'),
-		'TR_FAX' => tr('Fax'),
-		'TR_UPDATE_DATA' => tr('Update data'),
-		'TR_ORDER_DETAILS' => tr('Order details'),
-		'TR_CUSTOMER_DATA' => tr('Customer data'),
-		'TR_DELETE_ORDER' => tr('Delete order'),
-		'TR_DMN_IP' => tr('Domain IP'),
-		'TR_CUSTOMER_ID' => tr('Customer ID'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', true),
-		'TR_ADD' => tr('Add to the system')));
+$tpl->assign(
+	array(
+		'TR_MANAGE_ORDERS'			=> tr('Manage Orders'),
+		'TR_DATE'					=> tr('Order date'),
+		'TR_HP'						=> tr('Hosting plan'),
+		'TR_HOSTING_INFO'			=> tr('Hosting details'),
+		'TR_DOMAIN'					=> tr('Domain'),
+		'TR_FIRST_NAME'				=> tr('First name'),
+		'TR_LAST_NAME'				=> tr('Last name'),
+		'TR_COMPANY'				=> tr('Company'),
+		'TR_ZIP_POSTAL_CODE'		=> tr('Zip/Postal code'),
+		'TR_CITY'					=> tr('City'),
+		'TR_STATE'					=> tr('State/Province'),
+		'TR_COUNTRY'				=> tr('Country'),
+		'TR_STREET_1'				=> tr('Street 1'),
+		'TR_STREET_2'				=> tr('Street 2'),
+		'TR_EMAIL'					=> tr('Email'),
+		'TR_PHONE'					=> tr('Phone'),
+		'TR_FAX'					=> tr('Fax'),
+		'TR_UPDATE_DATA'			=> tr('Update data'),
+		'TR_ORDER_DETAILS'			=> tr('Order details'),
+		'TR_CUSTOMER_DATA'			=> tr('Customer data'),
+		'TR_DELETE_ORDER'			=> tr('Delete order'),
+		'TR_DMN_IP'					=> tr('Domain IP'),
+		'TR_CUSTOMER_ID'			=> tr('Customer ID'),
+		'TR_MESSAGE_DELETE_ACCOUNT'	=> tr('Are you sure you want to delete this order?', true),
+		'TR_ADD'					=> tr('Add to the system')
+	)
+);
 
 gen_page_message($tpl);
 

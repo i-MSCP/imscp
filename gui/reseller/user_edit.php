@@ -32,7 +32,7 @@ if (isset($_GET['edit_id'])) {
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/edit_user.tpl');
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
@@ -41,10 +41,10 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_EDIT_USER_PAGE_TITLE' => tr('ispCP - Users/Edit'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'TR_EDIT_USER_PAGE_TITLE'	=> tr('ispCP - Users/Edit'),
+		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
+		'THEME_CHARSET'				=> tr('encoding'),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
 	)
 );
 
@@ -55,31 +55,32 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_EDIT_USER' => tr('Edit user'),
-		'TR_CORE_DATA' => tr('Core data'),
-		'TR_USERNAME' => tr('Username'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_REP_PASSWORD' => tr('Repeat password'),
-		'TR_DMN_IP' => tr('Domain IP'),
-		'TR_USREMAIL' => tr('Email'),
-		'TR_ADDITIONAL_DATA' => tr('Additional data'),
-		'TR_CUSTOMER_ID' => tr('Customer ID'),
-		'TR_FIRSTNAME' => tr('First name'),
-		'TR_LASTNAME' => tr('Last name'),
-		'TR_COMPANY' => tr('Company'),
-		'TR_POST_CODE' => tr('Zip/Postal code'),
-		'TR_CITY' => tr('City'),
-		'TR_COUNTRY' => tr('Country'),
-		'TR_STREET1' => tr('Street 1'),
-		'TR_STREET2' => tr('Street 2'),
-		'TR_MAIL' => tr('Email'),
-		'TR_PHONE' => tr('Phone'),
-		'TR_FAX' => tr('Fax'),
-		'TR_GENDER' => tr('Gender'),
-		'TR_MALE' => tr('Male'),
-		'TR_FEMALE' => tr('Female'),
-		'EDIT_ID' => $edit_id,
-		'TR_BTN_ADD_USER' => tr('Submit changes')
+		'TR_EDIT_USER'			=> tr('Edit user'),
+		'TR_CORE_DATA'			=> tr('Core data'),
+		'TR_USERNAME'			=> tr('Username'),
+		'TR_PASSWORD'			=> tr('Password'),
+		'TR_REP_PASSWORD'		=> tr('Repeat password'),
+		'TR_DMN_IP'				=> tr('Domain IP'),
+		'TR_USREMAIL'			=> tr('Email'),
+		'TR_ADDITIONAL_DATA'	=> tr('Additional data'),
+		'TR_CUSTOMER_ID'		=> tr('Customer ID'),
+		'TR_FIRSTNAME'			=> tr('First name'),
+		'TR_LASTNAME'			=> tr('Last name'),
+		'TR_COMPANY'			=> tr('Company'),
+		'TR_POST_CODE'			=> tr('Zip/Postal code'),
+		'TR_CITY'				=> tr('City'),
+		'TR_STATE'				=> tr('State/Province'),
+		'TR_COUNTRY'			=> tr('Country'),
+		'TR_STREET1'			=> tr('Street 1'),
+		'TR_STREET2'			=> tr('Street 2'),
+		'TR_MAIL'				=> tr('Email'),
+		'TR_PHONE'				=> tr('Phone'),
+		'TR_FAX'				=> tr('Fax'),
+		'TR_GENDER'				=> tr('Gender'),
+		'TR_MALE'				=> tr('Male'),
+		'TR_FEMALE'				=> tr('Female'),
+		'EDIT_ID'				=> $edit_id,
+		'TR_BTN_ADD_USER'		=> tr('Submit changes')
 	)
 );
 
@@ -90,15 +91,15 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_USERS'	=> tr('Manage users'),
-		'TR_USERS'			=> tr('Users'),
-		'TR_NO'				=> tr('No.'),
-		'TR_USERNAME'		=> tr('Username'),
-		'TR_ACTION'			=> tr('Action'),
-		'TR_BACK'			=> tr('Back'),
-		'TR_TITLE_BACK'		=> tr('Return to previous menu'),
-		'TR_TABLE_NAME'		=> tr('Users list'),
-		'TR_SEND_DATA'		=> tr('Send new login data'),
+		'TR_MANAGE_USERS'		=> tr('Manage users'),
+		'TR_USERS'				=> tr('Users'),
+		'TR_NO'					=> tr('No.'),
+		'TR_USERNAME'			=> tr('Username'),
+		'TR_ACTION'				=> tr('Action'),
+		'TR_BACK'				=> tr('Back'),
+		'TR_TITLE_BACK'			=> tr('Return to previous menu'),
+		'TR_TABLE_NAME'			=> tr('Users list'),
+		'TR_SEND_DATA'			=> tr('Send new login data'),
 		'TR_PASSWORD_GENERATE'	=> tr('Generate password')
 	)
 );
@@ -157,7 +158,7 @@ function load_user_data_page($user_id) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
 
@@ -166,7 +167,7 @@ function load_user_data_page($user_id) {
 	$query = "
 		SELECT
 			`admin_name`, `created_by`, `fname`, `lname`, `firm`, `zip`,
-			`city`, `country`, `email`, `phone`, `fax`, `street1`, `street2`,
+			`city`, `state`, `country`, `email`, `phone`, `fax`, `street1`, `street2`,
 			`customer_id`, `gender`
 		FROM
 			`admin`
@@ -187,21 +188,22 @@ function load_user_data_page($user_id) {
 	// Get data from sql
 		$_SESSION['user_name'] = $data['admin_name'];
 
-		$dmn_user_name	=	$data['admin_name'];
-		$user_email		=	$data['email'];
-		$customer_id	=	$data['customer_id'];
-		$first_name		=	$data['fname'];
-		$last_name		=	$data['lname'];
-		$gender			=	$data['gender'];
-		$firm			=	$data['firm'];
-		$zip			=	$data['zip'];
-		$city			=	$data['city'];
-		$country		=	$data['country'];
-		$street_one		=	$data['street1'];
-		$street_two		=	$data['street2'];
-		$mail			=	$data['email'];
-		$phone			=	$data['phone'];
-		$fax			=	$data['fax'];
+		$dmn_user_name	= $data['admin_name'];
+		$user_email		= $data['email'];
+		$customer_id	= $data['customer_id'];
+		$first_name		= $data['fname'];
+		$last_name		= $data['lname'];
+		$gender			= $data['gender'];
+		$firm			= $data['firm'];
+		$zip			= $data['zip'];
+		$city			= $data['city'];
+		$state			= $data['state'];
+		$country		= $data['country'];
+		$street_one		= $data['street1'];
+		$street_two		= $data['street2'];
+		$mail			= $data['email'];
+		$phone			= $data['phone'];
+		$fax			= $data['fax'];
 	}
 
 } // End of gen_load_ehp_page()
@@ -212,7 +214,7 @@ function gen_edituser_page(&$tpl) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
 
@@ -230,6 +232,7 @@ function gen_edituser_page(&$tpl) {
 		'VL_USR_FIRM'		=> empty($firm) ? '' : $firm,
 		'VL_USR_POSTCODE'	=> empty($zip) ? '' : $zip,
 		'VL_USRCITY'		=> empty($city) ? '' : $city,
+		'VL_USRSTATE'		=> empty($state)?'':$state,
 		'VL_COUNTRY'		=> empty($country) ? '' : $country,
 		'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
 		'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
@@ -250,7 +253,7 @@ function update_data_in_db($hpid) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 	global $admin_login;
@@ -263,6 +266,7 @@ function update_data_in_db($hpid) {
 	$gender		= clean_input($gender, true);
 	$zip		= clean_input($zip, true);
 	$city		= clean_input($city, true);
+	$state		= clean_input($state, true);
 	$country	= clean_input($country, true);
 	$phone		= clean_input($phone, true);
 	$fax		= clean_input($fax, true);
@@ -280,6 +284,7 @@ function update_data_in_db($hpid) {
 				`firm` = ?,
 				`zip` = ?,
 				`city` = ?,
+				`state` = ?,
 				`country` = ?,
 				`email` = ?,
 				`phone` = ?,
@@ -299,6 +304,7 @@ function update_data_in_db($hpid) {
 			$firm,
 			$zip,
 			$city,
+			$state,
 			$country,
 			$mail,
 			$phone,
@@ -345,6 +351,7 @@ function update_data_in_db($hpid) {
 				`firm` = ?,
 				`zip` = ?,
 				`city` = ?,
+				`state` = ?,
 				`country` = ?,
 				`email` = ?,
 				`phone` = ?,
@@ -365,6 +372,7 @@ function update_data_in_db($hpid) {
 			$firm,
 			$zip,
 			$city,
+			$state,
 			$country,
 			$mail,
 			$phone,

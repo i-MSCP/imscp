@@ -38,10 +38,14 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order management'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Order management'),
+		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_CHARSET'						=> tr('encoding'),
+		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
+	)
+);
 // Functions
 // *
 // *
@@ -56,34 +60,34 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 	// count query
-	$count_query = <<<SQL_QUERY
-                SELECT
-                    COUNT(id) AS cnt
-                FROM
-                    orders
-                WHERE
-                    user_id = ?
-				AND
-					status != ?
-SQL_QUERY;
+	$count_query = "
+		SELECT
+			COUNT(id) AS cnt
+		FROM
+			`orders`
+		WHERE
+			`user_id` = ?
+		AND
+			`status` != ?
+	";
 	// lets count
 	$rs = exec_query($sql, $count_query, array($user_id, 'added'));
 	$records_count = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            orders
-        WHERE
-            user_id = ?
-		  AND
-			status != ?
-        ORDER BY
-            date DESC
+	$query = "
+		SELECT
+			*
+		FROM
+			`orders`
+		WHERE
+			`user_id` = ?
+		AND
+			`status` != ?
+		ORDER BY
+			`date` DESC
 		LIMIT
 			$start_index, $rows_per_page
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($user_id, 'added'));
 
 	$prev_si = $start_index - $rows_per_page;
@@ -92,10 +96,11 @@ SQL_QUERY;
 		$tpl->assign('SCROLL_PREV', '');
 	} else {
 		$tpl->assign(
-			array('SCROLL_PREV_GRAY' => '',
+			array(
+				'SCROLL_PREV_GRAY' => '',
 				'PREV_PSI' => $prev_si
-				)
-			);
+			)
+		);
 	}
 
 	$next_si = $start_index + $rows_per_page;
@@ -104,10 +109,11 @@ SQL_QUERY;
 		$tpl->assign('SCROLL_NEXT', '');
 	} else {
 		$tpl->assign(
-			array('SCROLL_NEXT_GRAY' => '',
+			array(
+				'SCROLL_NEXT_GRAY' => '',
 				'NEXT_PSI' => $next_si
-				)
-			);
+			)
+		);
 	}
 
 	if ($rs->RecordCount() == 0) {
@@ -121,14 +127,14 @@ SQL_QUERY;
 			$plan_id = $rs->fields['plan_id'];
 			$order_status = tr('New order');
 			// lets get hosting plan name
-			$planname_query = <<<SQL_QUERY
-        SELECT
-            name
-		FROM
-	        hosting_plans
-        WHERE
-            id = ?
-SQL_QUERY;
+			$planname_query = "
+				SELECT
+					`name`
+				FROM
+					`hosting_plans`
+				WHERE
+					`id` = ?
+			";
 			$rs_planname = exec_query($sql, $planname_query, array($plan_id));
 			$plan_name = $rs_planname->fields['name'];
 
@@ -137,34 +143,33 @@ SQL_QUERY;
 			$status = $rs->fields['status'];
 			if ($status === 'update') {
 				$customer_id = $rs->fields['customer_id'];
-				$cusrtomer_query = <<<SQL_QUERY
-			        SELECT
-            			*
+				$cusrtomer_query = "
+					SELECT
+						*
 					FROM
-	        			admin
-			        WHERE
-            			admin_id = ?
-SQL_QUERY;
+						`admin`
+					WHERE
+						`admin_id` = ?
+				";
 				$rs_customer = exec_query($sql, $cusrtomer_query, array($customer_id));
-
-				$user_details = $rs_customer->fields['fname'] . "&nbsp;" . $rs_customer->fields['lname'] . "<br><a href=\"mailto:" . $rs_customer->fields['email'] . "\" class=\"link\">" . $rs_customer->fields['email'] . "</a><br>" . $rs_customer->fields['zip'] . "&nbsp;" . $rs_customer->fields['city'] . "&nbsp;" . $rs_customer->fields['country'];
+				$user_details = $rs_customer->fields['fname'] . "&nbsp;" . $rs_customer->fields['lname'] . "<br><a href=\"mailto:" . $rs_customer->fields['email'] . "\" class=\"link\">" . $rs_customer->fields['email'] . "</a><br>" . $rs_customer->fields['zip'] . "&nbsp;" . $rs_customer->fields['city'] . "&nbsp;" . $rs_customer->fields['state'] . "&nbsp;" . $rs_customer->fields['country'];
 				$order_status = tr('Update order');
 				$tpl->assign('LINK', 'orders_update.php?order_id=' . $rs->fields['id']);
 			} else {
-				$user_details = $rs->fields['fname'] . "&nbsp;" . $rs->fields['lname'] . "<br><a href=\"mailto:" . $rs->fields['email'] . "\" class=\"link\">" . $rs->fields['email'] . "</a><br>" . $rs->fields['zip'] . "&nbsp;" . $rs->fields['city'] . "&nbsp;" . $rs->fields['country'];
+				$user_details = $rs->fields['fname'] . "&nbsp;" . $rs->fields['lname'] . "<br><a href=\"mailto:" . $rs->fields['email'] . "\" class=\"link\">" . $rs->fields['email'] . "</a><br>" . $rs->fields['zip'] . "&nbsp;" . $rs->fields['city'] . "&nbsp;" . $rs->fields['state'] . "&nbsp;" . $rs->fields['country'];
 				$tpl->assign('LINK', 'orders_detailst.php?order_id=' . $rs->fields['id']);
 			}
 			$tpl->assign(
-				array('ID' => $rs->fields['id'],
-					'HP' => $plan_name,
-					'DOMAIN' => $rs->fields['domain_name'],
-					'USER' => $user_details,
-					'STATUS' => $order_status,
-					)
-				);
+				array(
+					'ID'		=> $rs->fields['id'],
+					'HP'		=> $plan_name,
+					'DOMAIN'	=> $rs->fields['domain_name'],
+					'USER'		=> $user_details,
+					'STATUS'	=> $order_status,
+				)
+			);
 
 			$tpl->parse('ORDER', '.order');
-
 			$rs->MoveNext();
 			$counter++;
 		}
@@ -186,18 +191,22 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tp
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
-		'TR_ID' => tr('ID'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_USER' => tr('Customer data'),
-		'TR_ACTION' => tr('Action'),
-		'TR_STATUS' => tr('Order'),
-		'TR_EDIT' => tr('Edit'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_DETAILS' => tr('Details'),
-		'TR_HP' => tr('Hosting plan'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?', true),
-		'TR_ADD' => tr('Add/Details')));
+$tpl->assign(
+	array(
+		'TR_MANAGE_ORDERS'			=> tr('Manage Orders'),
+		'TR_ID'						=> tr('ID'),
+		'TR_DOMAIN'					=> tr('Domain'),
+		'TR_USER'					=> tr('Customer data'),
+		'TR_ACTION'					=> tr('Action'),
+		'TR_STATUS'					=> tr('Order'),
+		'TR_EDIT'					=> tr('Edit'),
+		'TR_DELETE'					=> tr('Delete'),
+		'TR_DETAILS'				=> tr('Details'),
+		'TR_HP'						=> tr('Hosting plan'),
+		'TR_MESSAGE_DELETE_ACCOUNT'	=> tr('Are you sure you want to delete this order?', true),
+		'TR_ADD'					=> tr('Add/Details')
+	)
+);
 
 gen_page_message($tpl);
 

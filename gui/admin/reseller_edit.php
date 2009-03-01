@@ -461,6 +461,7 @@ function update_reseller(&$sql) {
 			$firm = clean_input($_POST['firm'], true);
 			$zip = clean_input($_POST['zip'], true);
 			$city = clean_input($_POST['city'], true);
+			$state = clean_input($_POST['state'], true);
 			$country = clean_input($_POST['country'], true);
 			$email = clean_input($_POST['email'], true);
 			$phone = clean_input($_POST['phone'], true);
@@ -478,6 +479,7 @@ function update_reseller(&$sql) {
 						firm = ?,
 						zip = ?,
 						city = ?,
+						state = ?,
 						country = ?,
 						email = ?,
 						phone = ?,
@@ -493,6 +495,7 @@ function update_reseller(&$sql) {
 						$firm,
 						$zip,
 						$city,
+						$state,
 						$country,
 						$email,
 						$phone,
@@ -513,6 +516,7 @@ function update_reseller(&$sql) {
 						firm = ?,
 						zip = ?,
 						city = ?,
+						state = ?,
 						country = ?,
 						email = ?,
 						phone = ?,
@@ -529,6 +533,7 @@ function update_reseller(&$sql) {
 				$firm,
 				$zip,
 				$city,
+				$state,
 				$country,
 				$email,
 				$phone,
@@ -615,7 +620,7 @@ function get_reseller_prop(&$sql) {
 		SELECT
 			admin_name, fname,
 			lname, firm,
-			zip, city,
+			zip, city, state,
 			country, email,
 			phone, fax,
 			street1, street2,
@@ -650,6 +655,7 @@ function get_reseller_prop(&$sql) {
 		$rs->fields['firm'],
 		$rs->fields['zip'],
 		$rs->fields['city'],
+		$rs->fields['state'],
 		$rs->fields['country'],
 		$rs->fields['email'],
 		$rs->fields['phone'],
@@ -688,7 +694,7 @@ function get_reseller_prop(&$sql) {
 
 list($admin_name, $fname,
 	$lname, $firm,
-	$zip, $city,
+	$zip, $city, $state,
 	$country, $email,
 	$phone, $fax,
 	$street1, $street2, $gender,
@@ -760,6 +766,7 @@ $tpl->assign(
 		'TR_COMPANY' => tr('Company'),
 		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
 		'TR_COUNTRY' => tr('Country'),
 		'TR_STREET_1' => tr('Street 1'),
 		'TR_STREET_2' => tr('Street 2'),
@@ -793,6 +800,7 @@ $tpl->assign(
 		'FIRM' => $firm,
 		'ZIP' => $zip,
 		'CITY' => $city,
+		'STATE' => $state,
 		'COUNTRY' => $country,
 		'STREET_1' => $street1,
 		'STREET_2' => $street2,
@@ -801,8 +809,8 @@ $tpl->assign(
 
 		'EDIT_ID' => $edit_id,
 		'TR_UPDATE' => tr('Update'),
-		)
-	);
+	)
+);
 
 if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', passgen());

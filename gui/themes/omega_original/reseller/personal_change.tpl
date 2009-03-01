@@ -93,6 +93,11 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
+                        <td class="content2">{TR_STATE}</td>
+                        <td class="content"><input type="text" name="state" value="{STATE}" style="width:210px" class="textinput"></td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
                         <td class="content2">{TR_COUNTRY}</td>
                         <td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput"></td>
                       </tr>

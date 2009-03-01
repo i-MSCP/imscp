@@ -87,6 +87,14 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 		$city = '';
 	}
 
+	if (isset($_POST['state'])) {
+		$state = clean_input($_POST['state'], true);
+	} else if (isset($_SESSION['state'])) {
+		$state = $_SESSION['state'];
+	} else {
+		$state = '';
+	}
+
 	if (isset($_POST['country'])) {
 		$country = clean_input($_POST['country'], true);
 	} else if (isset($_SESSION['country'])) {
@@ -135,6 +143,7 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 			'VL_USR_FIRM'		=> $company,
 			'VL_USR_POSTCODE'	=> $postal_code,
 			'VL_USRCITY'		=> $city,
+			'VL_USRSTATE'		=> $state,
 			'VL_COUNTRY'		=> $country,
 			'VL_STREET1'		=> $street1,
 			'VL_STREET2'		=> $street2,
@@ -157,6 +166,7 @@ function check_address_data(&$tpl) {
 			(isset($_POST['lname']) && $_POST['lname'] != '') and
 			(isset($_POST['zip']) && $_POST['zip'] != '') and
 			(isset($_POST['city']) && $_POST['city'] != '') and
+			(isset($_POST['state']) && $_POST['state'] != '') and
 			(isset($_POST['country']) && $_POST['country'] != '') and
 			(isset($_POST['street1']) && $_POST['street1'] != '') and
 			(isset($_POST['phone']) && $_POST['phone'] != '')
@@ -166,6 +176,7 @@ function check_address_data(&$tpl) {
 		$_SESSION['email']		= clean_input($_POST['email'], true);
 		$_SESSION['zip']		= clean_input($_POST['zip'], true);
 		$_SESSION['city']		= clean_input($_POST['city'], true);
+		$_SESSION['state']		= clean_input($_POST['state'], true);
 		$_SESSION['country']	= clean_input($_POST['country'], true);
 		$_SESSION['street1']	= clean_input($_POST['street1'], true);
 		$_SESSION['phone']		= clean_input($_POST['phone'], true);
@@ -222,6 +233,7 @@ if (
 		(isset($_SESSION['lname']) && $_SESSION['lname'] != '') and
 		(isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
 		(isset($_SESSION['city']) && $_SESSION['city'] != '') and
+		(isset($_SESSION['state']) && $_SESSION['state'] != '') and
 		(isset($_SESSION['country']) && $_SESSION['country'] != '') and
 		(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
 		(isset($_SESSION['phone']) && $_SESSION['phone'] != '') and
@@ -243,6 +255,7 @@ $tpl->assign(
 		'TR_COMPANY' => tr('Company'),
 		'TR_POST_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
 		'TR_COUNTRY' => tr('Country'),
 		'TR_STREET1' => tr('Street 1'),
 		'TR_STREET2' => tr('Street 2'),

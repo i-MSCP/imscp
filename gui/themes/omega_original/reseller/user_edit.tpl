@@ -123,6 +123,12 @@
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
+                        <td width="200" class="content2">{TR_STATE}</td>
+                        <td class="content"><input type="text" name="userstate" value="{VL_USRSTATE}" style="width:210px" class="textinput">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="35">&nbsp;</td>
                         <td width="200" class="content2">{TR_COUNTRY}</td>
                         <td class="content"><input type="text" name="usercountry" value="{VL_COUNTRY}" style="width:210px" class="textinput">
                         </td>

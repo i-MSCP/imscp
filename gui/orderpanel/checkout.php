@@ -40,6 +40,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 
 	$zip = $_SESSION['zip'];
 	$city = $_SESSION['city'];
+	$state = $_SESSION['state'];
 	$country = $_SESSION['country'];
 	$email = $_SESSION['email'];
 	$phone = $_SESSION['phone'];
@@ -64,6 +65,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 				`firm`,
 				`zip`,
 				`city`,
+				`state`,
 				`country`,
 				`email`,
 				`phone`,
@@ -72,10 +74,10 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 				`street2`,
 				`status`)
 		VALUES
-			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $status));
+	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
 	//print $sql->ErrorMsg();
 	$order_id = $sql->Insert_ID();
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
@@ -88,6 +90,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	unset($_SESSION['firm']);
 	unset($_SESSION['zip']);
 	unset($_SESSION['city']);
+	unset($_SESSION['state']);
 	unset($_SESSION['country']);
 	unset($_SESSION['street1']);
 	unset($_SESSION['street2']);
@@ -119,6 +122,7 @@ if (
 		(isset($_SESSION['email']) && $_SESSION['email'] != '') and
 		(isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
 		(isset($_SESSION['city']) && $_SESSION['city'] != '') and
+		(isset($_SESSION['state']) && $_SESSION['state'] != '') and
 		(isset($_SESSION['country']) && $_SESSION['country'] != '') and
 		(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
 		(isset($_SESSION['phone']) && $_SESSION['phone'] != '')

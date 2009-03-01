@@ -85,7 +85,7 @@ function get_menu_vars($menu_link) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `country`, `email`, `phone`, `fax`, `street1`, `street2`
+			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`, `fax`, `street1`, `street2`
 		FROM
 			`admin`
 		WHERE
@@ -113,6 +113,8 @@ SQL_QUERY;
 	$replace[] = $rs->fields['zip'];
 	$search [] = '{city}';
 	$replace[] = $rs->fields['city'];
+	$search [] = '{state}';
+	$replace[] = $rs->fields['state'];
 	$search [] = '{country}';
 	$replace[] = $rs->fields['country'];
 	$search [] = '{email}';

@@ -33,27 +33,27 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 }
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	$query = <<<SQL_QUERY
-	select
-		*
-	from
-		orders
-	where
-			id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`orders`
+		WHERE
+			`id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($order_id));
 } else {
-	$query = <<<SQL_QUERY
-	select
-		*
-	from
-		orders
-	where
-			id = ?
-		and
-			user_id = ?
-SQL_QUERY;
+	$query = "
+		SELECT
+			*
+		FROM
+			`orders`
+		WHERE
+			`id` = ?
+		AND
+			`user_id` = ?
+	";
 
 	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
 }
@@ -64,31 +64,31 @@ if ($rs->RecordCount() == 0 || !isset($_SESSION['domain_ip'])) {
 	die();
 }
 
-$domain_ip = $_SESSION['domain_ip'];
-$dmn_user_name = $rs->fields['domain_name'];
-$dmn_user_name = decode_idna($dmn_user_name);
-
-$hpid = $rs->fields['plan_id'];
-$first_name = $rs->fields['fname'];
-$last_name = $rs->fields['lname'];
-$firm = $rs->fields['firm'];
-$zip = $rs->fields['zip'];
-$city = $rs->fields['city'];
-$country = $rs->fields['country'];
-$phone = $rs->fields['phone'];
-$fax = $rs->fields['fax'];
-$street_one = $rs->fields['street1'];
-$street_two = $rs->fields['street2'];
-$customer_id = $rs->fields['customer_id'];
-$user_email = $rs->fields['email'];
+$domain_ip		= $_SESSION['domain_ip'];
+$dmn_user_name	= $rs->fields['domain_name'];
+$dmn_user_name	= decode_idna($dmn_user_name);
+$hpid			= $rs->fields['plan_id'];
+$first_name		= $rs->fields['fname'];
+$last_name		= $rs->fields['lname'];
+$firm			= $rs->fields['firm'];
+$zip			= $rs->fields['zip'];
+$city			= $rs->fields['city'];
+$state			= $rs->fields['state'];
+$country		= $rs->fields['country'];
+$phone			= $rs->fields['phone'];
+$fax			= $rs->fields['fax'];
+$street_one		= $rs->fields['street1'];
+$street_two		= $rs->fields['street2'];
+$customer_id	= $rs->fields['customer_id'];
+$user_email		= $rs->fields['email'];
 // lets check the reseller limits
 $err_msg = "";
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	$query = "select props from hosting_plans where id = ?";
+	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
-	$query = "select props from hosting_plans where reseller_id = ? and id = ?";
+	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($sql, $query, array($reseller_id, $hpid));
 }
 $data = $res->FetchRow();
@@ -136,66 +136,64 @@ if (ispcp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 
 check_for_lock_file();
 
-$query = <<<ISPCP_SQL_QUERY
-            insert into admin
-                      (
-                        admin_name, admin_pass, admin_type, domain_created,
-                        created_by, fname, lname,
-                        firm, zip, city,
-                        country, email, phone,
-                        fax, street1, street2, customer_id
-                      )
-                values
-                      (
-                        ?, ?, 'user', unix_timestamp(),
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                      )
-ISPCP_SQL_QUERY;
+$query = "
+	INSERT INTO `admin` (
+		`admin_name`, `admin_pass`, `admin_type`, `domain_created`,
+		`created_by`, `fname`, `lname`,
+		`firm`, `zip`, `city`, `state`,
+		`country`, `email`, `phone`,
+		`fax`, `street1`, `street2`, `customer_id`
+	) VALUES (
+		?, ?, 'user', unix_timestamp(),
+		?, ?, ?,
+		?, ?, ?, ?,
+		?, ?, ?,
+		?, ?, ?, ?
+	)
+";
 
 $res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
-		$firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
+		$firm, $zip, $city, $state, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
 
 print $sql->ErrorMsg();
 
 $record_id = $sql->Insert_ID();
 
-$query = <<<SQL_QUERY
-	select
-		reseller_ips
-	from
-		reseller_props
-	where
-
-			 reseller_id = ?
-SQL_QUERY;
+$query = "
+	SELECT
+		`reseller_ips`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
+";
 
 $rs = exec_query($sql, $query, array($reseller_id));
 $domain_ip = $rs->fields['reseller_ips'];
 $status = Config::get('ITEM_ADD_STATUS');
 
 
-$query = <<<ISPCP_SQL_QUERY
-            insert into domain (
-                        domain_name, domain_admin_id,
-                        domain_created_id, domain_created,
-                        domain_mailacc_limit, domain_ftpacc_limit,
-                        domain_traffic_limit, domain_sqld_limit,
-                        domain_sqlu_limit, domain_status,
-                        domain_subd_limit, domain_alias_limit,
-                        domain_ip_id, domain_disk_limit,
-                        domain_disk_usage, domain_php, domain_cgi
-                       )
-                values (
-                        ?, ?,
-                        ?, unix_timestamp(),
-                        ?, ?,
-                        ?, ?,
-                        ?, ?,
-                        ?, ?,
-                        ?, ?, '0',
-                        ?, ?
-                       )
-ISPCP_SQL_QUERY;
+$query = "
+	INSERT INTO domain (
+		`domain_name`, `domain_admin_id`,
+		`domain_created_id`, `domain_created`,
+		`domain_mailacc_limit`, `domain_ftpacc_limit`,
+		`domain_traffic_limit`, `domain_sqld_limit`,
+		`domain_sqlu_limit`, `domain_status`,
+		`domain_subd_limit`, `domain_alias_limit`,
+		`domain_ip_id`, `domain_disk_limit`,
+		`domain_disk_usage`, `domain_php`, `domain_cgi`
+	) VALUES (
+		?, ?,
+		?, unix_timestamp(),
+		?, ?,
+		?, ?,
+		?, ?,
+		?, ?,
+		?, ?,
+		'0', ?, ?
+	)
+";
 
 $res = exec_query($sql, $query, array($dmn_user_name,
 		$record_id,
@@ -218,9 +216,9 @@ $dmn_id = $sql->Insert_ID();
 
 $query = "
 	INSERT INTO `htaccess_users`
-			(dmn_id, uname, upass, status)
+		(`dmn_id`, `uname`, `upass`, `status`)
 	VALUES
-			(?, ?, ?, ?)
+		(?, ?, ?, ?)
 ";
 $rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name, crypt_user_pass_with_salt($pure_user_pass), $status));
 
@@ -230,7 +228,7 @@ $awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
 
 $query = "
 	INSERT INTO `htaccess_groups`
-		(dmn_id, ugroup, members, status)
+		(`dmn_id`, `ugroup`, `members`, `status`)
 	VALUES
 		(?, ?, ?, ?)
 ";
@@ -255,13 +253,12 @@ send_add_user_auto_msg ($reseller_id,
 $user_def_lang = $_SESSION['user_def_lang'];
 $user_theme_color = $_SESSION['user_theme'];
 
-$query = <<<SQL_QUERY
-                insert into
-                  user_gui_props
-                      (user_id, lang, layout)
-                  values
-                      (?, ?, ?)
-SQL_QUERY;
+$query = "
+	INSERT INTO `user_gui_props`
+		(`user_id`, `lang`, `layout` )
+	VALUES
+		( ?, ?, ? )
+";
 
 $res = exec_query($sql, $query, array($record_id,
 		$user_def_lang,
@@ -276,14 +273,14 @@ write_log("$admin_login: add domain: $dmn_user_name");
 
 au_update_reseller_props($reseller_id, $props);
 set_page_message(tr('User added!'));
-$query = <<<SQL_QUERY
-            update
-                orders
-            set
-                status=?
-            where
-                id=?
-SQL_QUERY;
+$query = "
+	UPDATE
+		`orders`
+	SET
+		`status` = ?
+	WHERE
+		`id` = ?
+";
 exec_query($sql, $query, array('added', $order_id));
 
 unset($_SESSION['domain_ip']);

@@ -45,14 +45,14 @@ $tpl->assign(
 // Get Server IPs;
 
 function get_server_ip(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
-        SELECT
-            ip_id, ip_number, ip_domain
-        FROM
-            server_ips
-        ORDER BY
-            ip_number
-SQL_QUERY;
+	$query = "
+		SELECT
+			ip_id, ip_number, ip_domain
+		FROM
+			server_ips
+		ORDER BY
+			ip_number
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -139,6 +139,7 @@ function add_reseller(&$tpl, &$sql) {
 			$firm = clean_input($_POST['firm'], true);
 			$zip = clean_input($_POST['zip'], true);
 			$city = clean_input($_POST['city'], true);
+			$state = clean_input($_POST['state'], true);
 			$country = clean_input($_POST['country'], true);
 			$email = clean_input($_POST['email'], true);
 			$phone = clean_input($_POST['phone'], true);
@@ -146,48 +147,47 @@ function add_reseller(&$tpl, &$sql) {
 			$street1 = clean_input($_POST['street1'], true);
 			$street2 = clean_input($_POST['street2'], true);
 
-			$query = <<<SQL_QUERY
-                INSERT INTO admin
-                  (
-                    admin_name,
-                    admin_pass,
-                    admin_type,
-                    domain_created,
-                    created_by,
-                    fname,
-                    lname,
-                    firm,
-                    zip,
-                    city,
-                    country,
-                    email,
-                    phone,
-                    fax,
-                    street1,
-                    street2,
-                    gender
-                  )
-                VALUES
-                  (
-                    ?,
-                    ?,
-                    'reseller',
-                    unix_timestamp(),
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?
-                  )
-SQL_QUERY;
+			$query = "
+				INSERT INTO admin (
+					admin_name,
+					admin_pass,
+					admin_type,
+					domain_created,
+					created_by,
+					fname,
+					lname,
+					firm,
+					zip,
+					city,
+					state,
+					country,
+					email,
+					phone,
+					fax,
+					street1,
+					street2,
+					gender
+				) VALUES (
+					?,
+					?,
+					'reseller',
+					unix_timestamp(),
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?,
+					?
+				)
+			";
 			$rs = exec_query($sql, $query, array($username,
 					$upass,
 					$user_id,
@@ -196,6 +196,7 @@ SQL_QUERY;
 					$firm,
 					$zip,
 					$city,
+					$state,
 					$country,
 					$email,
 					$phone,
@@ -214,19 +215,19 @@ SQL_QUERY;
 			$user_theme_color = $_SESSION['user_theme'];
 			$user_logo = 0;
 
-			$query = <<<SQL_QUERY
-                INSERT INTO user_gui_props
-                  (
-                    user_id,
-                    lang,
-                    layout,
-                    logo
-                  )
-                VALUES
-                  (
-                    ?, ?, ?, ?
-                  )
-SQL_QUERY;
+			$query = "
+				INSERT INTO user_gui_props
+				  (
+					user_id,
+					lang,
+					layout,
+					logo
+				  )
+				VALUES
+				  (
+					?, ?, ?, ?
+				  )
+			";
 
 			$rs = exec_query($sql, $query, array($new_admin_id,
 					$user_def_lang,
@@ -234,8 +235,8 @@ SQL_QUERY;
 					$user_logo));
 
 			/*
-            * 'reseller_props' table entry;
-            */
+			* 'reseller_props' table entry;
+			*/
 
 			$nreseller_max_domain_cnt = clean_input($_POST['nreseller_max_domain_cnt']);
 			$nreseller_max_subdomain_cnt = clean_input($_POST['nreseller_max_subdomain_cnt']);
@@ -248,37 +249,33 @@ SQL_QUERY;
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
 
-			$query = <<<SQL_QUERY
-                INSERT INTO reseller_props
-                  (
-                    reseller_id, reseller_ips,
-                    max_dmn_cnt, current_dmn_cnt,
-                    max_sub_cnt, current_sub_cnt,
-                    max_als_cnt, current_als_cnt,
-                    max_mail_cnt, current_mail_cnt,
-                    max_ftp_cnt, current_ftp_cnt,
-                    max_sql_db_cnt, current_sql_db_cnt,
-                    max_sql_user_cnt, current_sql_user_cnt,
-                    max_traff_amnt, current_traff_amnt,
-                    max_disk_amnt, current_disk_amnt,
-                    customer_id
-                  )
-                VALUES
-                  (
-                    ?, ?,
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?, '0',
-                    ?
-                  )
-
-SQL_QUERY;
+			$query = "
+				INSERT INTO reseller_props (
+					reseller_id, reseller_ips,
+					max_dmn_cnt, current_dmn_cnt,
+					max_sub_cnt, current_sub_cnt,
+					max_als_cnt, current_als_cnt,
+					max_mail_cnt, current_mail_cnt,
+					max_ftp_cnt, current_ftp_cnt,
+					max_sql_db_cnt, current_sql_db_cnt,
+					max_sql_user_cnt, current_sql_user_cnt,
+					max_traff_amnt, current_traff_amnt,
+					max_disk_amnt, current_disk_amnt,
+					customer_id
+				) VALUES (
+					?, ?,
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?, '0',
+					?
+				)
+				";
 
 			$rs = exec_query($sql, $query, array($new_admin_id, $reseller_ips,
 					$nreseller_max_domain_cnt,
@@ -309,20 +306,20 @@ SQL_QUERY;
 		} else {
 			$tpl->assign(
 				array(
-					'EMAIL' => clean_input($_POST['email']),
-					'USERNAME' => clean_input($_POST['username']),
-
-					'FIRST_NAME' => clean_input($_POST['fname']),
-					'CUSTOMER_ID' => clean_input($_POST['customer_id']),
-					'LAST_NAME' => clean_input($_POST['lname']),
-					'FIRM' => clean_input($_POST['firm']),
-					'ZIP' => clean_input($_POST['zip']),
-					'CITY' => clean_input($_POST['city']),
-					'COUNTRY' => clean_input($_POST['country']),
-					'STREET_1' => clean_input($_POST['street1']),
-					'STREET_2' => clean_input($_POST['street2']),
-					'PHONE' => clean_input($_POST['phone']),
-					'FAX' => clean_input($_POST['fax']),
+					'EMAIL' => clean_input($_POST['email'], true),
+					'USERNAME' => clean_input($_POST['username'], true),
+					'FIRST_NAME' => clean_input($_POST['fname'], true),
+					'CUSTOMER_ID' => clean_input($_POST['customer_id'], true),
+					'LAST_NAME' => clean_input($_POST['lname'], true),
+					'FIRM' => clean_input($_POST['firm'], true),
+					'ZIP' => clean_input($_POST['zip'], true),
+					'CITY' => clean_input($_POST['city'], true),
+					'STATE' => clean_input($_POST['state'], true),
+					'COUNTRY' => clean_input($_POST['country'], true),
+					'STREET_1' => clean_input($_POST['street1'], true),
+					'STREET_2' => clean_input($_POST['street2'], true),
+					'PHONE' => clean_input($_POST['phone'], true),
+					'FAX' => clean_input($_POST['fax'], true),
 					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
 					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
 					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : ''),
@@ -336,8 +333,8 @@ SQL_QUERY;
 					'MAX_SQL_USERS_COUNT' => clean_input($_POST['nreseller_max_sql_user_cnt']),
 					'MAX_TRAFFIC_AMOUNT' => clean_input($_POST['nreseller_max_traffic']),
 					'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk'])
-					)
-				);
+				)
+			);
 		}
 	} // not add
 	else {
@@ -351,6 +348,7 @@ SQL_QUERY;
 				'FIRM' => '',
 				'ZIP' => '',
 				'CITY' => '',
+				'STATE' => '',
 				'COUNTRY' => '',
 				'STREET_1' => '',
 				'STREET_2' => '',
@@ -380,14 +378,14 @@ function check_user_data() {
 
 	$username = clean_input($_POST['username']);
 
-	$query = <<<SQL_QUERY
-        SELECT
-            admin_id
-        FROM
-            admin
-        WHERE
-            admin_name=?
-SQL_QUERY;
+	$query = "
+		SELECT
+			admin_id
+		FROM
+			admin
+		WHERE
+			admin_name=?
+	";
 
 	$rs = exec_query($sql, $query, array($username));
 
@@ -533,6 +531,7 @@ $tpl->assign(
 		'TR_COMPANY' => tr('Company'),
 		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
 		'TR_COUNTRY' => tr('Country'),
 		'TR_STREET_1' => tr('Street 1'),
 		'TR_STREET_2' => tr('Street 2'),

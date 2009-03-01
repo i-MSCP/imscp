@@ -629,7 +629,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 
@@ -665,6 +665,9 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 	if (isset($_POST['usercity']))
 		$city = $_POST['usercity'];
+
+	if (isset($_POST['userstate']))
+		$state = $_POST['userstate'];
 
 	if (isset($_POST['usercountry']))
 		$country = $_POST['usercountry'];
@@ -950,6 +953,8 @@ SQL_QUERY;
 			$add_query = "where firm rlike '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'city') {
 			$add_query = "where city rlike '" . addslashes($search_for) . "' %s";
+		} else if ($search_common === 'state') {
+			$add_query = "where state rlike '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'country') {
 			$add_query = "where country rlike '" . addslashes($search_for) . "' %s";
 		}
@@ -1005,6 +1010,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 
 		$all_selected = "selected";
@@ -1017,6 +1023,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'customer_id') {
 		$domain_selected = "";
@@ -1024,6 +1031,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'lname') {
 		$domain_selected = "";
@@ -1031,6 +1039,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "selected";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'firm') {
 		$domain_selected = "";
@@ -1038,6 +1047,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "selected";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'city') {
 		$domain_selected = "";
@@ -1045,6 +1055,15 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "selected";
+		$state_selected = "";
+		$country_selected = "";
+	} else if ($search_common === 'state') {
+		$domain_selected = "";
+		$customerid_selected = "";
+		$lastname_selected = "";
+		$company_selected = "";
+		$city_selected = "";
+		$state_selected = "selected";
 		$country_selected = "";
 	} else if ($search_common === 'country') {
 		$domain_selected = "";
@@ -1052,6 +1071,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
+		$state_selected = "";
 		$country_selected = "selected";
 	}
 	if ($search_status === 'all') {
@@ -1086,6 +1106,7 @@ function gen_manage_domain_search_options (&$tpl,
 			'M_LAST_NAME' => tr('Last name'),
 			'M_COMPANY' => tr('Company'),
 			'M_CITY' => tr('City'),
+			'M_STATE' => tr('State/Province'),
 			'M_COUNTRY' => tr('Country'),
 
 			'M_ALL' => tr('All'),
@@ -1098,6 +1119,7 @@ function gen_manage_domain_search_options (&$tpl,
 			'M_LAST_NAME_SELECTED' => $lastname_selected,
 			'M_COMPANY_SELECTED' => $company_selected,
 			'M_CITY_SELECTED' => $city_selected,
+			'M_STATE_SELECTED' => $state_selected,
 			'M_COUNTRY_SELECTED' => $country_selected,
 
 			'M_ALL_SELECTED' => $all_selected,

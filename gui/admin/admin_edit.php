@@ -49,14 +49,14 @@ function update_data(&$sql) {
 
 	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (check_user_data()) {
-			$user_id = $_SESSION['user_id'];
-
+			$user_id	= $_SESSION['user_id'];
 			$fname		= clean_input($_POST['fname'], true);
 			$lname		= clean_input($_POST['lname'], true);
 			$firm		= clean_input($_POST['firm'], true);
 			$gender		= clean_input($_POST['gender'], true);
 			$zip		= clean_input($_POST['zip'], true);
 			$city		= clean_input($_POST['city'], true);
+			$state		= clean_input($_POST['state'], true);
 			$country	= clean_input($_POST['country'], true);
 			$email		= clean_input($_POST['email'], true);
 			$phone		= clean_input($_POST['phone'], true);
@@ -74,6 +74,7 @@ function update_data(&$sql) {
 						`firm` = ?,
 						`zip` = ?,
 						`city` = ?,
+						`state` = ?,
 						`country` = ?,
 						`email` = ?,
 						`phone` = ?,
@@ -89,6 +90,7 @@ function update_data(&$sql) {
 						$firm,
 						$zip,
 						$city,
+						$state,
 						$country,
 						$email,
 						$phone,
@@ -130,6 +132,7 @@ function update_data(&$sql) {
 						`firm` = ?,
 						`zip` = ?,
 						`city` = ?,
+						`state` = ?,
 						`country` = ?,
 						`email` = ?,
 						`phone` = ?,
@@ -147,6 +150,7 @@ function update_data(&$sql) {
 						$firm,
 						$zip,
 						$city,
+						$state,
 						$country,
 						$email,
 						$phone,
@@ -240,6 +244,7 @@ $query = "
 		`firm`,
 		`zip`,
 		`city`,
+		`state`,
 		`country`,
 		`phone`,
 		`fax`,
@@ -290,6 +295,7 @@ $tpl->assign(
 		'TR_COMPANY'					=> tr('Company'),
 		'TR_ZIP_POSTAL_CODE'			=> tr('Zip/Postal code'),
 		'TR_CITY'						=> tr('City'),
+		'TR_STATE_PROVINCE'				=> tr('State/Province'),
 		'TR_COUNTRY'					=> tr('Country'),
 		'TR_STREET_1'					=> tr('Street 1'),
 		'TR_STREET_2'					=> tr('Street 2'),
@@ -303,16 +309,17 @@ $tpl->assign(
 		'TR_UPDATE'						=> tr('Update'),
 		'TR_SEND_DATA'					=> tr('Send new login data'),
 		'TR_PASSWORD_GENERATE'			=> tr('Generate password'),
-		'FIRST_NAME'					=> $rs->fields['fname'],
-		'LAST_NAME'						=> $rs->fields['lname'],
-		'FIRM'							=> $rs->fields['firm'],
-		'ZIP'							=> $rs->fields['zip'],
-		'CITY'							=> $rs->fields['city'],
-		'COUNTRY'						=> $rs->fields['country'],
-		'STREET_1'						=> $rs->fields['street1'],
-		'STREET_2'						=> $rs->fields['street2'],
-		'PHONE'							=> $rs->fields['phone'],
-		'FAX'							=> $rs->fields['fax'],
+		'FIRST_NAME'					=> empty($rs->fields['fname']) ? '' : $rs->fields['fname'],
+		'LAST_NAME'						=> empty($rs->fields['lname']) ? '' : $rs->fields['lname'],
+		'FIRM'							=> empty($rs->fields['firm']) ? '' : $rs->fields['firm'],
+		'ZIP'							=> empty($rs->fields['zip']) ? '' : $rs->fields['zip'],
+		'CITY'							=> empty($rs->fields['city']) ? '' : $rs->fields['city'],
+		'STATE_PROVINCE'				=> empty($rs->fields['state']) ? '' : $rs->fields['state'],
+		'COUNTRY'						=> empty($rs->fields['country']) ? '' : $rs->fields['country'],
+		'STREET_1'						=> empty($rs->fields['street1']) ? '' : $rs->fields['street1'],
+		'STREET_2'						=> empty($rs->fields['street2']) ? '' : $rs->fields['street2'],
+		'PHONE'							=> empty($rs->fields['phone']) ? '' : $rs->fields['phone'],
+		'FAX'							=> empty($rs->fields['fax']) ? '' : $rs->fields['fax'],
 		'USERNAME'						=> $admin_name,
 		'EMAIL'							=> $rs->fields['email'],
 		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? 'selected="selected"' : ''),

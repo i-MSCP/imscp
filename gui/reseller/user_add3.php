@@ -32,10 +32,10 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'TR_ADD_USER_PAGE_TITLE'	=> tr('ispCP - User/Add user'),
+		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
+		'THEME_CHARSET'				=> tr('encoding'),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
 	)
 );
 
@@ -52,33 +52,34 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_USER' => tr('Add user'),
-		'TR_CORE_DATA' => tr('Core data'),
-		'TR_USERNAME' => tr('Username'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_REP_PASSWORD' => tr('Repeat password'),
-		'TR_DMN_IP' => tr('Domain IP'),
-		'TR_USREMAIL' => tr('Email'),
-		'TR_ADDITIONAL_DATA' => tr('Additional data'),
-		'TR_CUSTOMER_ID' => tr('Customer ID'),
-		'TR_FIRSTNAME' => tr('First name'),
-		'TR_LASTNAME' => tr('Last name'),
-		'TR_GENDER' => tr('Gender'),
-		'TR_MALE' => tr('Male'),
-		'TR_FEMALE' => tr('Female'),
-		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_COMPANY' => tr('Company'),
-		'TR_POST_CODE' => tr('Zip/Postal code'),
-		'TR_CITY' => tr('City'),
-		'TR_COUNTRY' => tr('Country'),
-		'TR_STREET1' => tr('Street 1'),
-		'TR_STREET2' => tr('Street 2'),
-		'TR_MAIL' => tr('Email'),
-		'TR_PHONE' => tr('Phone'),
-		'TR_FAX' => tr('Fax'),
-		'TR_BTN_ADD_USER' => tr('Add user'),
-		'TR_ADD_ALIASES' => tr('Add other domains to this account'),
-		'VL_USR_PASS' => passgen()
+		'TR_ADD_USER'			=> tr('Add user'),
+		'TR_CORE_DATA'			=> tr('Core data'),
+		'TR_USERNAME'			=> tr('Username'),
+		'TR_PASSWORD'			=> tr('Password'),
+		'TR_REP_PASSWORD'		=> tr('Repeat password'),
+		'TR_DMN_IP'				=> tr('Domain IP'),
+		'TR_USREMAIL'			=> tr('Email'),
+		'TR_ADDITIONAL_DATA'	=> tr('Additional data'),
+		'TR_CUSTOMER_ID'		=> tr('Customer ID'),
+		'TR_FIRSTNAME'			=> tr('First name'),
+		'TR_LASTNAME'			=> tr('Last name'),
+		'TR_GENDER'				=> tr('Gender'),
+		'TR_MALE'				=> tr('Male'),
+		'TR_FEMALE'				=> tr('Female'),
+		'TR_UNKNOWN'			=> tr('Unknown'),
+		'TR_COMPANY'			=> tr('Company'),
+		'TR_POST_CODE'			=> tr('Zip/Postal code'),
+		'TR_CITY'				=> tr('City'),
+		'TR_STATE_PROVINCE'		=> tr('State/Province'),
+		'TR_COUNTRY'			=> tr('Country'),
+		'TR_STREET1'			=> tr('Street 1'),
+		'TR_STREET2'			=> tr('Street 2'),
+		'TR_MAIL'				=> tr('Email'),
+		'TR_PHONE'				=> tr('Phone'),
+		'TR_FAX'				=> tr('Fax'),
+		'TR_BTN_ADD_USER'		=> tr('Add user'),
+		'TR_ADD_ALIASES'		=> tr('Add other domains to this account'),
+		'VL_USR_PASS'			=> passgen()
 	)
 );
 
@@ -146,33 +147,35 @@ function gen_user_add3_page(&$tpl) {
 	global $dmn_name, $hpid, $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
 
 	$dmn_user_name = decode_idna($dmn_user_name);
 	// Fill in the fields
 	$tpl->assign(
-		array('VL_USERNAME' => $dmn_user_name,
-			'VL_USR_PASS' => passgen(),
-			'VL_MAIL' => $user_email,
-			'VL_USR_ID' => $customer_id,
-			'VL_USR_NAME' => $first_name,
-			'VL_LAST_USRNAME' => $last_name,
-			'VL_USR_FIRM' => $firm,
-			'VL_USR_POSTCODE' => $zip,
-			'VL_USRCITY' => $city,
-			'VL_MALE' => (($gender == 'M') ? 'selected="selected"' : ''),
-			'VL_FEMALE' => (($gender == 'F') ? 'selected="selected"' : ''),
-			'VL_UNKNOWN' => ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : ''),
-			'VL_COUNTRY' => $country,
-			'VL_STREET1' => $street_one,
-			'VL_STREET2' => $street_two,
-			'VL_MAIL' => $mail,
-			'VL_PHONE' => $phone,
-			'VL_FAX' => $fax
-			)
-		);
+		array(
+			'VL_USERNAME'		=> $dmn_user_name,
+			'VL_USR_PASS'		=> passgen(),
+			'VL_MAIL'			=> $user_email,
+			'VL_USR_ID'			=> $customer_id,
+			'VL_USR_NAME'		=> $first_name,
+			'VL_LAST_USRNAME'	=> $last_name,
+			'VL_USR_FIRM'		=> $firm,
+			'VL_USR_POSTCODE'	=> $zip,
+			'VL_USRCITY'		=> $city,
+			'VL_USRSTATE'		=> $state,
+			'VL_MALE'			=> (($gender == 'M') ? 'selected="selected"' : ''),
+			'VL_FEMALE'			=> (($gender == 'F') ? 'selected="selected"' : ''),
+			'VL_UNKNOWN'		=> ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : ''),
+			'VL_COUNTRY'		=> $country,
+			'VL_STREET1'		=> $street_one,
+			'VL_STREET2'		=> $street_two,
+			'VL_MAIL'			=> $mail,
+			'VL_PHONE'			=> $phone,
+			'VL_FAX'			=> $fax
+		)
+	);
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 	$_SESSION['local_data'] = "$dmn_name;$hpid";
@@ -182,24 +185,25 @@ function gen_user_add3_page(&$tpl) {
 function gen_empty_data() {
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone, $fax;
 
-	$user_email = '';
-	$customer_id = '';
-	$first_name = '';
-	$last_name = '';
-	$gender = 'U';
-	$firm = '';
-	$zip = '';
-	$city = '';
-	$country = '';
-	$street_one = '';
-	$street_two = '';
-	$phone = '';
-	$mail = '';
-	$fax = '';
-	$domain_ip = '';
+	$user_email		= '';
+	$customer_id	= '';
+	$first_name		= '';
+	$last_name		= '';
+	$gender			= 'U';
+	$firm			= '';
+	$zip			= '';
+	$city			= '';
+	$state			= '';
+	$country		= '';
+	$street_one		= '';
+	$street_two		= '';
+	$phone			= '';
+	$mail			= '';
+	$fax			= '';
+	$domain_ip		= '';
 } // End of gen_empty_data()
 
 // Save data for new user in db
@@ -209,7 +213,7 @@ function add_user_data($reseller_id) {
 	global $dmn_name, $dmn_user_name, $admin_login;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
-	global $city, $country, $street_one;
+	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 	// Let's get Desired Hosting Plan Data;
@@ -240,66 +244,56 @@ function add_user_data($reseller_id) {
 		$sql_db, $sql_user,
 		$traff, $disk) = explode(";", $props);
 
-	$php = preg_replace("/\_/", "", $php);
-	$cgi = preg_replace("/\_/", "", $cgi);
-	$pure_user_pass = $inpass;
-	$inpass = crypt_user_pass($inpass, true);
-	$first_name = clean_input($first_name, true);
-	$last_name = clean_input($last_name, true);
-	$firm = clean_input($firm, true);
-	$zip = clean_input($zip, true);
-	$city = clean_input($city, true);
-	$country = clean_input($country, true);
-	$phone = clean_input($phone, true);
-	$fax = clean_input($fax, true);
-	$street_one = clean_input($street_one, true);
-	$street_two = clean_input($street_two, true);
-	$customer_id = clean_input($customer_id, true);
+	$php			= preg_replace("/\_/", "", $php);
+	$cgi			= preg_replace("/\_/", "", $cgi);
+	$pure_user_pass	= $inpass;
+	$inpass			= crypt_user_pass($inpass, true);
+	$first_name		= clean_input($first_name, true);
+	$last_name		= clean_input($last_name, true);
+	$firm			= clean_input($firm, true);
+	$zip			= clean_input($zip, true);
+	$city			= clean_input($city, true);
+	$state			= clean_input($state, true);
+	$country		= clean_input($country, true);
+	$phone			= clean_input($phone, true);
+	$fax			= clean_input($fax, true);
+	$street_one		= clean_input($street_one, true);
+	$street_two		= clean_input($street_two, true);
+	$customer_id	= clean_input($customer_id, true);
 	if (!chk_dname($dmn_user_name)) {
 		// set_page_message(tr("Wrong domain name syntax!"));
 		return;
 	}
 
 	check_for_lock_file();
-	/*Daniel Andreca: If this check is disabled why execute query?
-	// check again if a user like that exists
-	$query = "
-		SELECT
-			COUNT(*) as count
-		FROM
-			`admin`
-		WHERE
-			`admin_name` = ?
-		LIMIT 1
-	";
-
-	$res = exec_query($sql, $query, $dmn_user_name);
-	$data = $res->FetchRow();*/
-
-	/*
-	if ($data['count'] > 0) {
-		set_page_message(tr("There's a conflicting admin / reseller fix that first!"));
-		return;
-	}*/
 
 	$query = "
 		INSERT INTO `admin` (
 			`admin_name`, `admin_pass`, `admin_type`, `domain_created`,
 			`created_by`, `fname`, `lname`,
-			`firm`, `zip`, `city`,
+			`firm`, `zip`, `city`, `state`,
 			`country`, `email`, `phone`,
-			`fax`, `street1`, `street2`, `customer_id`, `gender`
+			`fax`, `street1`, `street2`,
+			`customer_id`, `gender`
 		)
 		VALUES (
 			?, ?, 'user', unix_timestamp(),
-			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+			?, ?, ?,
+			?, ?, ?, ?,
+			?, ?, ?,
+			?, ?, ?,
+			?, ?
 		)
 	";
 
 	$res = exec_query($sql, $query, array(
-		$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
-		$zip, $city, $country, $user_email, $phone, $fax,
-		$street_one, $street_two, $customer_id, $gender));
+										$dmn_user_name, $inpass,
+										$reseller_id, $first_name, $last_name,
+										$firm, $zip, $city, $state,
+										$country, $user_email, $phone,
+										$fax, $street_one, $street_two,
+										$customer_id, $gender
+									));
 
 	print $sql->ErrorMsg();
 
