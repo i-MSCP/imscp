@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-01 Benedikt Heintel
+		* Updated Copyright in all files (commit follow as other changes are made in this files)
+		* activated $Id$ for all files (commit follow as other changes are made in this files)
+
 2009-03-01 Thomas Häber
 	- TEMPLATES
 		* Removed W3C Logos/Links for valid HTML/CSS from errordocs, they aren't useful here -> less traffic & requests
