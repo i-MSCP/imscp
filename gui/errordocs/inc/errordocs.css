@@ -8,7 +8,7 @@ body {
 	text-align: 		center;
 	position: 			absolute;
 	top: 				50%;
-	left: 				0px;
+	left: 				0;
 	width: 				100%;
 	height: 			1px;
 	overflow: 			visible;
@@ -29,18 +29,10 @@ body {
 	position: 			absolute;
 }
 
-#bottom {
-	position:			absolute;
-	bottom:				0px;
-	right:				10px;
-	text-align:			right;
-	z-index:			0;
-}
-
 h2 {
 	color: 				#FF0000;
-	margin: 			0px;
-	padding: 			0px;
+	margin: 			0;
+	padding: 			0;
 }
 
 h3 {
@@ -52,14 +44,4 @@ h3 {
 .path {
 	font-weight: 		bold;
 	color: 				#666666;
-}
-
-.login {
-	font-family:		Geneva, Arial, Helvetica, sans-serif;
-	font-size:			8pt;
-	background-color:	#ffffff;
-	color:				#000000;
-	white-space: 		nowrap;
-	text-decoration:	none;
-	text-align:			right;
 }
