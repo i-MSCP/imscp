@@ -5,6 +5,7 @@ ispCP ω 1.0.1 Changelog
 	- TEMPLATES
 		* Removed W3C Logos/Links for valid HTML/CSS from errordocs, they aren't useful here -> less traffic & requests
 		* Updated stable template (part 2: hosting plan sites)
+		* removed unused font "Cocktails", furthermore there is a unexplained copyright status, which may conflict with existing licenses (GPL)
 
 2009-02-28 Daniel Andreca
 	- TOOLS:
