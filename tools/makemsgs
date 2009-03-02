@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# description:
+#
+# creates the main ispcp.pot file out of any found strings in the php files
+#
+
 set -e
 
 if [ $1 ] && [ -d $1 ]; then
