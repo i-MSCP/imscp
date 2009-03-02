@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -31,7 +31,7 @@
  * Implementing abstract class ispcpUpdate for database update functions
  *
  * @author	Daniel Andreca <sci2tech@gmail.com>
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
  * @since	r1355
  */
@@ -55,7 +55,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Initital Update. Insert the first Revision.
 	 *
 	 * @author		Jochen Manz <zothos@zothos.net>
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -74,7 +74,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail address.
 	 *
 	 * @author		Christian Hernmarck
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -129,7 +129,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -148,7 +148,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -169,7 +169,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -189,7 +189,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #755 http://www.isp-control.net/ispcp/ticket/755.
 	 *
 	 * @author		Markus Milkereit
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -210,7 +210,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1356
 	 *
@@ -238,7 +238,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1417
 	 * @removed 	r1418
@@ -256,7 +256,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1462
 	 *
@@ -278,7 +278,7 @@ class databaseUpdate extends ispcpUpdate{
 	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2008 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1508
 	 *

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -127,7 +127,7 @@ function clean_input($input, $htmlencode = false) {
  *
  * @author		ispCP Team
  * @author		Benedikt Heintel
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version		1.01
  *
  * @access	public

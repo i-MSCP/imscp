@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -164,7 +164,7 @@ require_once(INCLUDEPATH . '/client-functions.php');
 require_once(INCLUDEPATH . '/admin-functions.php');
 require_once(INCLUDEPATH . '/reseller-functions.php');
 require_once(INCLUDEPATH . '/ispcp-functions.php');
-require_once(INCLUDEPATH . '/idna.php');
+require_once(INCLUDEPATH . '/net_idna/idna_convert.class.php');
 require_once(INCLUDEPATH . '/lostpassword-functions.php');
 require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');

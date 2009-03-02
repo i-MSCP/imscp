@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -31,7 +31,7 @@
  *
  * @author	Jochen Manz <zothos@zothos.net>
  * @author	Daniel Andreca <sci2tech@gmail.com>
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
  * @see		critical-update-functions.php, database-update-functions.php
  * @since	r1355
@@ -129,7 +129,7 @@ abstract class ispcpUpdate{
  * Implementing abstract class ispcpUpdate for future online version update functions
  *
  * @author	Daniel Andreca <sci2tech@gmail.com>
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
  * @see		Other Functions (in other Files)
  * @since	r1355
