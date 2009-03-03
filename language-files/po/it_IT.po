@@ -3497,7 +3497,7 @@ msgstr "Dati personali"
 msgid "Check Out"
 msgstr "Conferma"
 
-msgid "<strong>Thank you for purchasing.</strong>\nYou will receive an e-mail with more details and information."
+msgid "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail with more details and information."
 msgstr "<b>Ti ringraziamo per l`acquisto</b><br>Riceverai presto un`email contenente maggiori dettagli e informazioni"
 
 msgid "No available hosting packages"

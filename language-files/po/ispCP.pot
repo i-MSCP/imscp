@@ -3403,7 +3403,7 @@ msgstr ""
 msgid "Check Out"
 msgstr ""
 
-msgid "<strong>Thank you for purchasing.</strong>\nYou will receive an e-mail with more details and information."
+msgid "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail with more details and information."
 msgstr ""
 
 msgid "No available hosting packages"

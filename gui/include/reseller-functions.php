@@ -1597,7 +1597,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-
+	$message = html_entity_decode($message, ENT_NOQUOTES, 'UTF-8');
 	$subject = encode($subject);
 
 	$headers = "From: ". $from . "\n";
