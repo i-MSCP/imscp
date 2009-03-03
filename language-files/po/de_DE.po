@@ -3488,8 +3488,8 @@ msgstr "Persönliche Daten"
 msgid "Check Out"
 msgstr "Bestellen"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>Vielen Dank für Ihre Bestellung</b><br>Sie werden in Kürze eine E-Mail mit weiteren Details und Informationen erhalten."
+msgid "<strong>Thank you for purchasing.</strong>\nYou will receive an e-mail with more details and information."
+msgstr "<strong>Vielen Dank für Ihre Bestellung.</strong>\nSie werden in Kürze eine E-Mail mit weiteren Details und Informationen erhalten."
 
 msgid "No available hosting packages"
 msgstr "Keine verfügbaren Tarife"

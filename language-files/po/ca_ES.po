@@ -3507,7 +3507,7 @@ msgstr "Dades Personals"
 msgid "Check Out"
 msgstr "Procedir al pagament"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgid "<strong>Thank you for purchasing.</strong>\nYou will receive an e-mail with more details and information."
 msgstr "<b> Gràcies per la compra</b><br> Rebreu un correu amb més detalls i informació"
 
 msgid "No available hosting packages"

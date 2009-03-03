@@ -92,7 +92,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		}
 		$description = $rs->fields['description'];
 
-		$hp_disk = translate_limit_value($hp_disk, true) . "<br>";
+		$hp_disk = translate_limit_value($hp_disk, true) . "<br />";
 
 		$hp_traff = translate_limit_value($hp_traff, true);
 
