@@ -1,7 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-03-03
+2009-03-03 Benedikt Heintel
+	- DISTS:
+		* Fixed #1704 (FreeBSD): Error in FreeBSD Proftpd Config
+
+2009-03-03 Thomas Häber
 	- GUI:
 		* fixed some invalid (hardcoded) HTML
 		* code cleanup, typos
