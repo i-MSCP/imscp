@@ -9,10 +9,10 @@
 	</head>
 
 	<body style="color:#000000">
-		<table cellpadding="0" cellspacing="0" style="width:100%; height:100%">
+		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
-					<table style="width:453px; text-align:center; border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
+					<table width="453" align="center" style="border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
 						<tr>
 							<td>
 								<table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -38,7 +38,7 @@
 							</td>
 						</tr>
 					</table>
-					<table align="center" width="453">
+					<table width="453" align="center">
 						<tr>
 							<td align="right" class="login">
 								Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a>
