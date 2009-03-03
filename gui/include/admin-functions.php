@@ -2005,9 +2005,7 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 }
 
 /**
- * @todo use template instead of hardcoded HTML
- * @todo use valid XHTML
- * @todo Is the value for {THEME_CHARSET} in the RIC-string really set?
+ * @todo use template(s) instead of hardcoded (X)HTML
  */
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	$query = "
@@ -2030,27 +2028,29 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	if ($rs->RecordCount() == 0) {
 		$title = tr("ispCP - Order Panel");
 		$header = <<<RIC
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-  <link href="../themes/{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
-  <title>{$title}</title>
- </head>
- <body>
-  <div align="center">
-   <table width="100%" height="95%">
-    <tr align="center">
-     <td align="center">
+	<head>
+		<title>{$title}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<link href="../themes/{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div align="center">
+			<table width="100%" style="height:95%">
+				<tr>
+					<td align="center">
 RIC;
 
-        $footer = <<<RIC
-     </td>
-    </tr>
-   </table>
-  </div>
- </body>
+		$footer = <<<RIC
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
 </html>
 RIC;
 	} else {
