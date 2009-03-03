@@ -73,7 +73,7 @@ function encrypt_db_password($db_pass) {
 		// Create the IV and determine the keysize length
 		$iv = $ispcp_db_pass_iv;
 		
-		//compatibility with used perl pads
+		// compatibility with used perl pads
 		$block_size=@mcrypt_enc_get_block_size($td);
 		$strlen=strlen($db_pass);
 
@@ -83,7 +83,7 @@ function encrypt_db_password($db_pass) {
 
 		// Initialize encryption
 		@mcrypt_generic_init ($td, $key, $iv);
-		//Encrypt string
+		// Encrypt string
 		$encrypted = @mcrypt_generic ($td, $db_pass);
 		@mcrypt_generic_deinit($td);
 		@mcrypt_module_close($td);

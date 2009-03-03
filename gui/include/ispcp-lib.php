@@ -89,7 +89,7 @@ Config::set('ISPCP_SUPPORT_SYSTEM', true);
 // false = disable, true = enable
 Config::set('LOSTPASSWORD', true);
 
-// uniqkeytimeout in minuntes
+// uniqkeytimeout in minutes
 Config::set('LOSTPASSWORD_TIMEOUT', 30);
 // captcha imagehigh
 Config::set('LOSTPASSWORD_CAPTCHA_HEIGHT', 65);
@@ -122,9 +122,9 @@ Config::set('BRUTEFORCE_BETWEEN_TIME', 30);
 Config::set('MAINTENANCEMODE', false);
 // servicemode message
 Config::set('MAINTENANCEMODE_MESSAGE', tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."));
-curlang(null, true); //restore language auto detection
+curlang(null, true); // restore language auto detection
 
-// password chars
+// minimum password chars
 Config::set('PASSWD_CHARS', 6);
 // enable or disable strong passwords
 // false = disable, true = enable

@@ -74,7 +74,8 @@ function clean_html($text) {
 		'@&(cent|#162);@i',
 		'@&(pound|#163);@i',
 		'@&(copy|#169);@i'/*,
-		'@&#(\d+);@e'*/); // handle als php
+		'@&#(\d+);@e'*/
+	); // handle as php
 
 	$ersetze = array ('',
 		'',
@@ -89,7 +90,8 @@ function clean_html($text) {
 		chr(162),
 		chr(163),
 		chr(169),
-		/*'chr(\1)'*/);
+		/*'chr(\1)'*/
+	);
 
 	$text = preg_replace($suche, $ersetze, $text);
 	// and second one...
@@ -104,7 +106,7 @@ function clean_html($text) {
  * @description
  * @param String $input input data (eg. post-var) to be cleaned
  * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
- * @return String {|} trimmed, stripslashed, ev htmlencoded input string
+ * @return String {|} trimmed, stripslashed, eventually htmlencoded input string
  */
 function clean_input($input, $htmlencode = false) {
 	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
@@ -277,8 +279,8 @@ function check_dn_token($data) {
  * @description Function for checking ispcp limits.
  * @param string $data ispcp 'limit' field data (by default valids are numbers greater equal 0)
  * @param misc $extra single extra permitted value or array of permitted values
- * @return boolean false	incorrect syntax (ranges)
- * 										true	correct syntax (ranges)
+ * @return boolean	false	incorrect syntax (ranges)
+ * 					true	correct syntax (ranges)
  * @example ispcp_limit_check($_POST['domains_limit'], null)
  * @example ispcp_limit_check($_POST['ftp_accounts_limit'])
  */
@@ -310,8 +312,8 @@ function ispcp_limit_check($data, $extra = -1) {
  * 					for usage in ispcp_* functions
  * @param String $data token data. Without '\n' at the end
  * @param int $num number of max. chars
- * @return boolean false	incorrect syntax
- * 										true	correct syntax
+ * @return boolean	false	incorrect syntax
+ * 					true	correct syntax
  */
 function check_dn_rsl_token($data) {
 	$match = array();
@@ -331,8 +333,8 @@ function check_dn_rsl_token($data) {
  * 					limited to {dname}.{ext} parts
  * @param String $dname ispcp domain data
  * @param int $num number of max. chars
- * @return boolean false	incorrect syntax
- * 										true	correct syntax
+ * @return boolean	false	incorrect syntax
+ * 					true	correct syntax
  */
 function chk_dname($dname) {
 	// Check for invalid characters first
@@ -356,8 +358,8 @@ function chk_dname($dname) {
  * @function chk_forward_url
  * @description Function for checking URL syntax
  * @param String $url URL data
- * @return boolean false	incorrect syntax
- * 										true	correct syntax
+ * @return boolean	false	incorrect syntax
+ * 					true	correct syntax
  */
 function chk_forward_url($url) {
 	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.';
@@ -377,8 +379,8 @@ function chk_forward_url($url) {
  * @description Function checking for valid mount point
  * @param String $data mountpoint data
  * @param int $num number of max. chars
- * @return boolean false	incorrect syntax
- * 										true	correct syntax
+ * @return boolean	false	incorrect syntax
+ * 					true	correct syntax
  */
 function chk_mountp($data, $num = 50) {
 	if (!preg_match("/^\/(.*)$/D", $data))
@@ -400,9 +402,9 @@ function chk_mountp($data, $num = 50) {
 		return false;
 
 	/*$res = explode("/", trim($data));
-    $cnt_res = count($res);
-    if ($cnt_res > 2)
-    	return FALSE;*/
+	$cnt_res = count($res);
+	if ($cnt_res > 2)
+		return FALSE;*/
 
 	$match = array();
 	$count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
@@ -596,21 +598,21 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	 * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
 	 */
 	$resolvers['domain_id'] = array();
-	$resolvers['domain_id']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_id = ? LIMIT 1;';
+	$resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
 	$resolvers['domain_id']['is_final'] = true;
 
 	$resolvers['alias_id'] = array();
-	$resolvers['alias_id']['query'] = 'SELECT domain_id FROM domain_aliasses WHERE alias_id = ? LIMIT 1;';
+	$resolvers['alias_id']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? LIMIT 1;';
 	$resolvers['alias_id']['is_final'] = false;
 	$resolvers['alias_id']['next'] = 'dmn';
 
 	$resolvers['alias'] = array();
-	$resolvers['alias']['query'] = 'SELECT domain_id FROM domain_aliasses WHERE alias_name = ? LIMIT 1;';
+	$resolvers['alias']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ? LIMIT 1;';
 	$resolvers['alias']['is_final'] = false;
 	$resolvers['alias']['next'] = 'dmn';
 
 	$resolvers['subdomain_id'] = array();
-	$resolvers['subdomain_id']['query'] = 'SELECT domain_id FROM subdomain WHERE subdomain_id = ? LIMIT 1;';
+	$resolvers['subdomain_id']['query'] = 'SELECT `domain_id` FROM `subdomain` WHERE `subdomain_id` = ? LIMIT 1;';
 	$resolvers['subdomain_id']['is_final'] = false;
 	$resolvers['subdomain_id']['next'] = 'dmn';
 
@@ -622,7 +624,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	$resolvers['subdomain']['next'] = 'dmn';
 
 	$resolvers['subdomain_alias_id'] = array();
-	$resolvers['subdomain_alias_id']['query'] = 'SELECT alias_id FROM subdomain_alias WHERE subdomain_alias_id = ? LIMIT 1;';
+	$resolvers['subdomain_alias_id']['query'] = 'SELECT `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ? LIMIT 1;';
 	$resolvers['subdomain_alias_id']['is_final'] = false;
 	$resolvers['subdomain_alias_id']['next'] = 'alias';
 
@@ -634,58 +636,58 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	$resolvers['subdomain_alias']['next'] = 'alias';
 
 	$resolvers['client'] = array();
-	$resolvers['client']['query'] = 'SELECT created_by FROM admin WHERE admin_id = ? LIMIT 1;';
+	$resolvers['client']['query'] = 'SELECT `created_by` FROM `admin` WHERE `admin_id` = ? LIMIT 1;';
 	$resolvers['client']['is_final'] = true;
 
 	$resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
 
 	$resolvers['domain'] = array();
-	$resolvers['domain']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain = ? LIMIT 1;';
+	$resolvers['domain']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain` = ? LIMIT 1;';
 	$resolvers['domain']['is_final'] = true;
 
 	$resolvers['ticket_id'] = array();
-	$resolvers['ticket_id']['query'] = 'SELECT ticket_from FROM ticket WHERE ticket_id = ? LIMIT 1;';
+	$resolvers['ticket_id']['query'] = 'SELECT `ticket_from` FROM `ticket` WHERE `ticket_id` = ? LIMIT 1;';
 	$resolvers['ticket_id']['is_final'] = true;
 
 	$resolvers['uid'] = array();
-	$resolvers['uid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_uid = ? LIMIT 1;';
+	$resolvers['uid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_uid` = ? LIMIT 1;';
 	$resolvers['uid']['is_final'] = true;
 
 	$resolvers['gid'] = array();
-	$resolvers['gid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_gid = ? LIMIT 1;';
+	$resolvers['gid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_gid` = ? LIMIT 1;';
 	$resolvers['gid']['is_final'] = true;
 
 	$resolvers['gid'] = array();
-	$resolvers['gid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_gid = ? LIMIT 1;';
+	$resolvers['gid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_gid` = ? LIMIT 1;';
 	$resolvers['gid']['is_final'] = true;
 
 	$resolvers['ftp_user'] = array();
-	$resolvers['ftp_user']['query'] = 'SELECT uid FROM ftp_users WHERE userid = ? LIMIT 1;';
+	$resolvers['ftp_user']['query'] = 'SELECT `uid` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
 	$resolvers['ftp_user']['is_final'] = false;
 	$resolvers['ftp_user']['next'] = 'uid';
 
 	$resolvers['sql_user_id'] = array();
-	$resolvers['sql_user_id']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_id = ? LIMIT 1;';
+	$resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
 	$resolvers['sql_user_id']['is_final'] = false;
 	$resolvers['sql_user_id']['next'] = 'sqld_id';
 
 	$resolvers['sql_database_id'] = array();
-	$resolvers['sql_database_id']['query'] = 'SELECT domain_id FROM sql_database WHERE sqld_id = ? LIMIT 1;';
+	$resolvers['sql_database_id']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_id` = ? LIMIT 1;';
 	$resolvers['sql_database_id']['is_final'] = false;
 	$resolvers['sql_database_id']['next'] = 'dmn';
 
 	$resolvers['sql_user'] = array();
-	$resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
+	$resolvers['sql_user']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1;';
 	$resolvers['sql_user']['is_final'] = false;
 	$resolvers['sql_user']['next'] = 'sqld_id';
 
 	$resolvers['sql_database'] = array();
-	$resolvers['sql_database']['query'] = 'SELECT domain_id FROM sql_database WHERE sqld_name = ? LIMIT 1;';
+	$resolvers['sql_database']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_name` = ? LIMIT 1;';
 	$resolvers['sql_database']['is_final'] = false;
 	$resolvers['sql_database']['next'] = 'dmn';
 
 	$resolvers['mail_id'] = array();
-	$resolvers['mail_id']['query'] = 'SELECT domain_id FROM mail_users WHERE mail_id = ? LIMIT 1;';
+	$resolvers['mail_id']['query'] = 'SELECT `domain_id` FROM `mail_users` WHERE `mail_id` = ? LIMIT 1;';
 	$resolvers['mail_id']['is_final'] = false;
 	$resolvers['mail_id']['next'] = 'dmn';
 
@@ -697,22 +699,22 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	$resolvers['mail']['next'] = 'dmn';
 
 	$resolvers['htaccess_id'] = array();
-	$resolvers['htaccess_id']['query'] = 'SELECT dmn_id FROM htaccess WHERE id = ? LIMIT 1;';
+	$resolvers['htaccess_id']['query'] = 'SELECT `dmn_id` FROM `htaccess` WHERE `id` = ? LIMIT 1;';
 	$resolvers['htaccess_id']['is_final'] = false;
 	$resolvers['htaccess_id']['next'] = 'dmn';
 
 	$resolvers['htaccess_group_id'] = array();
-	$resolvers['htaccess_group_id']['query'] = 'SELECT dmn_id FROM htaccess_groups WHERE id = ? LIMIT 1;';
+	$resolvers['htaccess_group_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_groups` WHERE `id` = ? LIMIT 1;';
 	$resolvers['htaccess_group_id']['is_final'] = false;
 	$resolvers['htaccess_group_id']['next'] = 'dmn';
 
 	$resolvers['htaccess_user_id'] = array();
-	$resolvers['htaccess_user_id']['query'] = 'SELECT dmn_id FROM htaccess_users WHERE id = ? LIMIT 1;';
+	$resolvers['htaccess_user_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_users` WHERE `id` = ? LIMIT 1;';
 	$resolvers['htaccess_user_id']['is_final'] = false;
 	$resolvers['htaccess_user_id']['next'] = 'dmn';
 
 	$resolvers['hosting_plan_id'] = array();
-	$resolvers['hosting_plan_id']['query'] = 'SELECT reseller_id FROM hosting_plans WHERE id = ? LIMIT 1;';
+	$resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
 	$resolvers['hosting_plan_id']['is_final'] = true;
 
 	if (isset($resolvers[$type])) {

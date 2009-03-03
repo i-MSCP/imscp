@@ -307,7 +307,7 @@ class databaseUpdate extends ispcpUpdate{
 	protected function _databaseUpdate_11() {
 		$sqlUpd = array();
 		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
-		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city` ";
+		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
 		return $sqlUpd;
 	}
 

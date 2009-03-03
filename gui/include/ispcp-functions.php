@@ -107,7 +107,6 @@ function send_request() {
 	socket_close ($socket);
 
 	return $answer;
-
 }
 
 
@@ -134,7 +133,7 @@ function update_user_props ( $user_id, $props ) {
 		$domain_cgi
 	) = explode (";", $props);
 
-	//have to check if PHP and/or CGI and/or IP change
+	// have to check if PHP and/or CGI and/or IP change
 	$domain_last_modified =  time();
 
 	$query = "

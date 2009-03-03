@@ -65,19 +65,19 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
-			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-			)
-		);
+			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup')
+		)
+	);
 
 	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            custom_menus
-        where
-            menu_level = 'reseller'
-          or
-            menu_level = 'all'
+		SELECT
+			*
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'reseller'
+		OR
+			`menu_level` = 'all'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -93,16 +93,17 @@ SQL_QUERY;
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== "") {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
-				array('BUTTON_LINK' => $menu_link,
+				array(
+					'BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -125,7 +126,8 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
-		array('TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
 			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
@@ -153,18 +155,18 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			'VERSION' => Config::get('Version'),
 			'BUILDDATE' => Config::get('BuildDate'),
 			'CODENAME' => Config::get('CodeName')
-			)
-		);
+		)
+	);
 
 	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            custom_menus
-        where
-            menu_level = 'reseller'
-          or
-            menu_level = 'all'
+		SELECT
+			*
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'reseller'
+		OR
+			`menu_level` = 'all'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -180,16 +182,17 @@ SQL_QUERY;
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== "") {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
-				array('BUTTON_LINK' => $menu_link,
+				array(
+					'BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -210,12 +213,12 @@ SQL_QUERY;
 function get_reseller_default_props(&$sql, $reseller_id) {
 	// Make sql query
 	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            reseller_props
-        where
-            reseller_id = ?
+		SELECT
+			*
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
 SQL_QUERY;
 	// send sql query
 	$rs = exec_query($sql, $query, array($reseller_id));
@@ -243,10 +246,10 @@ SQL_QUERY;
 		$rs->fields['max_traff_amnt'],
 		$rs->fields['current_disk_amnt'],
 		$rs->fields['max_disk_amnt']
-		);
+	);
 } // End of get_reseller_default_props()
 
-// Makeing user's probs
+// Making users props
 function generate_reseller_user_props ($reseller_id) {
 	$sql = Database::getInstance();
 	// Init with empty variables
@@ -289,12 +292,12 @@ function generate_reseller_user_props ($reseller_id) {
 		$rdisk_current, $rdisk_max, $rdisk_uf);
 
 	$query = <<<SQL_QUERY
-        select
-            admin_id
-        from
-            admin
-        where
-            created_by = ?
+		SELECT
+			`admin_id`
+		FROM
+			`admin`
+		WHERE
+			`created_by` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($reseller_id));
@@ -307,12 +310,12 @@ SQL_QUERY;
 		$admin_id = $data['admin_id'];
 
 		$query = <<<SQL_QUERY
-	          select
-	              domain_id
-	          from
-	              domain
-	          where
-	              domain_admin_id = ?
+			SELECT
+				`domain_id`
+			FROM
+				`domain`
+			WHERE
+				`domain_admin_id` = ?
 SQL_QUERY;
 
 		$dres = exec_query($sql, $query, array($admin_id));
@@ -409,25 +412,26 @@ SQL_QUERY;
 		$rdisk_current, $rdisk_max, $rdisk_uf);
 	return $ResArray;
 } // End of generate_reseller_user_props()
+
 // Get traffic information for user
-function get_user_traffic($user_id)
-{
+function get_user_traffic($user_id) {
+
 	$sql = Database::getInstance();
 	global $crnt_month, $crnt_year;
 
 	$query = <<<SQL_QUERY
-			select
-				domain_id,
-				IFNULL(domain_disk_usage, 0) as domain_disk_usage,
-				IFNULL(domain_traffic_limit, 0) as domain_traffic_limit,
-				IFNULL(domain_disk_limit,0) as domain_disk_limit,
-				domain_name
-			from
-				domain
-			where
-				domain_id = ?
-			order by
-				domain_id
+		SELECT
+			`domain_id`,
+			IFNULL(`domain_disk_usage`, 0) as domain_disk_usage,
+			IFNULL(`domain_traffic_limit`, 0) as domain_traffic_limit,
+			IFNULL(`domain_disk_limit`,0) as domain_disk_limit,
+			`domain_name`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
+		ORDER BY
+			`domain_id`
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($user_id));
@@ -449,19 +453,19 @@ SQL_QUERY;
 		$domain_name = $data['domain_name'];
 
 		$query = <<<SQL_QUERY
-          select
-              sum(dtraff_web) as web,
-              sum(dtraff_ftp) as ftp,
-              sum(dtraff_mail) as smtp,
-              sum(dtraff_pop) as pop,
-              sum(dtraff_web) +
-              sum(dtraff_ftp) +
-              sum(dtraff_mail) +
-              sum(dtraff_pop) as total
-          from
-              domain_traffic
-          where
-              domain_id = ?
+			SELECT
+				sum(`dtraff_web`) as web,
+				sum(`dtraff_ftp`) as ftp,
+				sum(`dtraff_mail`) as smtp,
+				sum(`dtraff_pop`) as pop,
+				sum(`dtraff_web`) +
+				sum(`dtraff_ftp`) +
+				sum(`dtraff_mail`) +
+				sum(`dtraff_pop`) as total
+			FROM
+				`domain_traffic`
+			WHERE
+				`domain_id` = ?
 SQL_QUERY;
 
 		$res = exec_query($sql, $query, array($domain_id));
@@ -478,21 +482,22 @@ SQL_QUERY;
 			$domain_disk_usage,
 			$domain_traff_limit,
 			$domain_disk_limit
-			);
+		);
 	}
 } //End of get_user_traffic()
+
 // Get user's probs info from sql
-function get_user_props ($user_id)
-{
+function get_user_props ($user_id) {
+
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-    select
-        *
-    from
-        domain
-    where
-        domain_id  = ?
+		SELECT
+			*
+		FROM
+			`domain`
+		WHERE
+			`domain_id`  = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($user_id));
@@ -544,7 +549,7 @@ SQL_QUERY;
 		$sql_db_current, $sql_db_max,
 		$sql_user_current, $sql_user_max,
 		$traff_max, $disk_max
-		);
+	);
 } // End of get_user_props();
 
 function rsl_full_domain_check ($data) {
@@ -585,12 +590,12 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 	global $domain_ip;
 
 	$query = <<<SQL_QUERY
-        select
-            reseller_ips
-        from
-            reseller_props
-        where
-            reseller_id = ?
+		SELECT
+			`reseller_ips`
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($reseller_id));
@@ -600,7 +605,7 @@ SQL_QUERY;
 	$reseller_ips = $data['reseller_ips'];
 
 	$query = <<<SQL_QUERY
-        select * from server_ips
+		SELECT * FROM `server_ips`
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array());
@@ -612,7 +617,8 @@ SQL_QUERY;
 			$selected = ($domain_ip === $ip_id) ? 'selected="selected"' : '';
 
 			$tpl->assign(
-				array('IP_NUM' => $data['ip_number'],
+				array(
+					'IP_NUM' => $data['ip_number'],
 					'IP_NAME' => $data['ip_domain'],
 					'IP_VALUE' => $ip_id,
 					'IP_SELECTED' => $selected
@@ -635,7 +641,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 	$user_add_error = '_off_';
 	$inpass_re = '';
-	// Get data for fields from previus page
+	// Get data for fields from previous page
 	if (isset($_POST['userpassword']))
 		$inpass = $_POST['userpassword'];
 
@@ -712,7 +718,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	if ($user_email == NULL) {
 		$user_add_error = tr('Incorrect email length or syntax!');
 	}
-	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
+	/* we don't want to validate Customer ID, First and Second name and also ZIP
 
 	  else if (!ispcp_limit_check($customer_id)) {
 		$user_add_error = tr('Incorrect customer ID syntax!');
@@ -728,7 +734,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	} */
 
 	if ($user_add_error == '_off_') {
-		// send data throught session
+		// send data through session
 		$_SESSION['Message'] = NULL;
 
 		return true;
@@ -767,51 +773,51 @@ function ispcp_domain_exists ($domain_name, $reseller_id) {
 	$sql = Database::getInstance();
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = <<<SQL_QUERY
-      select
-          count(domain_id) as cnt
-      from
-          domain
-      where
-          domain_name = ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`domain`
+		WHERE
+			`domain_name` = ?
 SQL_QUERY;
 
 	$res_domain = exec_query($sql, $query_domain, array($domain_name));
 	// query to check if the domain name exist in the table for domain aliases
 	$query_alias = <<<SQL_QUERY
-      select
-          count(t1.alias_id) as cnt
-      from
-          domain_aliasses as t1, domain as t2
-      where
-          t1.domain_id = t2.domain_id
-      and
-          t1.alias_name = ?
+		SELECT
+			count(t1.`alias_id`) AS cnt
+		FROM
+			`domain_aliasses` AS t1, `domain` AS t2
+		WHERE
+			t1.`domain_id` = t2.`domain_id`
+		AND
+			t1.`alias_name` = ?
 SQL_QUERY;
 
 	$res_aliases = exec_query($sql, $query_alias, array($domain_name));
-	// redefine query to check in the table domain/acounts if 3th level for this reseller is allowed
+	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
 	$query_domain = <<<SQL_QUERY
-      select
-          count(domain_id) as cnt
-      from
-          domain
-      where
-          domain_name = ?
-      and
-          domain_created_id <> ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`domain`
+		WHERE
+			`domain_name` = ?
+		AND
+			`domain_created_id` <> ?
 SQL_QUERY;
-	// redefine query to check in the table aliases if 3th level for this reseller is allowed
+	// redefine query to check in the table aliases if 3rd level for this reseller is allowed
 	$query_alias = <<<SQL_QUERY
-      select
-          count(t1.alias_id) as cnt
-      from
-          domain_aliasses as t1, domain as t2
-      where
-          t1.domain_id = t2.domain_id
-      and
-          t1.alias_name = ?
-      and
-          t2.domain_created_id <> ?
+		SELECT
+			COUNT(t1.`alias_id`) AS cnt
+		FROM
+			`domain_aliasses` AS t1, `domain` AS t2
+		WHERE
+			t1.`domain_id` = t2.`domain_id`
+		AND
+			t1.`alias_name` = ?
+		AND
+			t2.`domain_created_id` <> ?
 SQL_QUERY;
 	// here we split the domain name by point separator
 	$split_domain = explode(".", trim($domain_name));
@@ -833,14 +839,14 @@ SQL_QUERY;
 	// if we have :
 	// db entry in the tables domain
 	// AND
-	// no problem with 3th level domains
+	// no problem with 3rd level domains
 	// AND
 	// enduser (no reseller)
 	// => the function returns OK => domain can be added
 	if ($res_domain->fields['cnt'] == 0 && $res_aliases->fields['cnt'] == 0 && $error == 0 && $reseller_id == 0) {
 		return false;
 	}
-	// if we have domain addion by end user
+	// if we have domain add one by end user
 	// OR
 	// some error
 	// => the funcion returns ERROR
@@ -850,14 +856,14 @@ SQL_QUERY;
 	// ok we do not have end user and we do not have error => the fun goes on :-)
 	// query to check if the domain does not exist as subdomain
 	$query_build_subdomain = <<<SQL_QUERY
-      select
-          t1.subdomain_name, t2.domain_name
-      from
-          subdomain as t1, domain as t2
-      where
-          t1.domain_id = t2.domain_id
-      and
-          t2.domain_created_id = ?
+		SELECT
+			t1.`subdomain_name`, t2.`domain_name`
+		FROM
+			`subdomain` AS t1, `domain` AS t2
+		WHERE
+			t1.`domain_id` = t2.`domain_id`
+		AND
+			t2.`domain_created_id` = ?
 SQL_QUERY;
 
 	$subdomains = array();
@@ -874,6 +880,10 @@ SQL_QUERY;
 	}
 } // End of ispcp_domain_exists()
 
+/**
+ * @todo see inline comment, about messed up code
+ * @todo use db prepared statements
+ */
 function gen_manage_domain_query (&$search_query, &$count_query,
 	$reseller_id,
 	$start_index,
@@ -885,116 +895,114 @@ function gen_manage_domain_query (&$search_query, &$count_query,
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 
 		// We have pure list query;
-
 		$count_query = <<<SQL_QUERY
-                select
-                    count(domain_id) as cnt
-                from
-                    domain
-                where
-                    domain_created_id = '$reseller_id'
+			SELECT
+				COUNT(*) AS cnt
+			FROM
+				`domain`
+			WHERE
+				`domain_created_id` = '$reseller_id'
 SQL_QUERY;
 
 		$search_query = <<<SQL_QUERY
-                 select
-                    *
-                 from
-
-                    domain
-                 where
-                    domain_created_id = '$reseller_id'
-                 order by
-                    domain_name asc
-                 limit
-                    $start_index, $rows_per_page
+			SELECT
+				*
+			FROM
+				`domain`
+			WHERE
+				`domain_created_id` = '$reseller_id'
+			ORDER BY
+				`domain_name` asc
+			LIMIT
+				$start_index, $rows_per_page
 SQL_QUERY;
 	} else if ($search_for === '' && $search_status != '') {
 		if ($search_status === 'all') {
 			$add_query = <<<SQL_QUERY
-                  domain_created_id = '$reseller_id'
+				`domain_created_id` = '$reseller_id'
 SQL_QUERY;
 		} else {
 			$add_query = <<<SQL_QUERY
-                  domain_created_id = '$reseller_id'
-                and
-                  domain_status = '$search_status'
+					`domain_created_id` = '$reseller_id'
+				AND
+					`domain_status` = '$search_status'
 SQL_QUERY;
 		}
 
 		$count_query = <<<SQL_QUERY
-                select
-                    count(domain_id) as cnt
-                from
-                    domain
-                where
-                   $add_query
+			SELECT
+				count(*) as cnt
+			FROM
+				`domain`
+			WHERE
+				$add_query
 SQL_QUERY;
 
 		$search_query = <<<SQL_QUERY
-                 select
-                    *
-                 from
-                    domain
-                 where
-                    $add_query
-                 order by
-                    domain_name asc
-                 limit
-                    $start_index, $rows_per_page
+			SELECT
+				*
+			FROM
+				`domain`
+			WHERE
+				$add_query
+			ORDER BY
+				`domain_name` asc
+			LIMIT
+				$start_index, $rows_per_page
 SQL_QUERY;
 	} else if ($search_for != '') {
 		if ($search_common === 'domain_name') {
-			$add_query = "where admin_name rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `admin_name` RLIKE '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'customer_id') {
-			$add_query = "where customer_id rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `customer_id` RLIKE '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'lname') {
-			$add_query = "where (lname rlike '" . addslashes($search_for) . "' or fname rlike '" . addslashes($search_for) . "') %s";
+			$add_query = "WHERE (`lname` RLIKE '" . addslashes($search_for) . "' OR `fname` RLIKE '" . addslashes($search_for) . "') %s";
 		} else if ($search_common === 'firm') {
-			$add_query = "where firm rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `firm` RLIKE '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'city') {
-			$add_query = "where city rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `city` RLIKE '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'state') {
-			$add_query = "where state rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `state` RLIKE '" . addslashes($search_for) . "' %s";
 		} else if ($search_common === 'country') {
-			$add_query = "where country rlike '" . addslashes($search_for) . "' %s";
+			$add_query = "WHERE `country` RLIKE '" . addslashes($search_for) . "' %s";
 		}
 
 		if ($search_status != 'all') {
-			$add_query = sprintf($add_query, " and t1.created_by = '$reseller_id' and t2.domain_status = '$search_status'");
+			$add_query = sprintf($add_query, " AND t1.`created_by` = '$reseller_id' AND t2.`domain_status` = '$search_status'");
 			$count_query = <<<SQL_QUERY
-        select
-            count(admin_id) as cnt
-        from
-            admin  as t1,
-            domain as t2
-        $add_query
-          and
-            t1.admin_id = t2.domain_admin_id
+				SELECT
+					COUNT(`admin_id`) AS cnt
+				FROM
+					`admin` AS t1,
+					`domain` AS t2
+				$add_query
+				AND
+					t1.`admin_id` = t2.`domain_admin_id`
 SQL_QUERY;
 		} else {
-			$add_query = sprintf($add_query, " and created_by = '$reseller_id'");
+			$add_query = sprintf($add_query, " AND `created_by` = '$reseller_id'");
 			$count_query = <<<SQL_QUERY
-          select
-              count(admin_id) as cnt
-          from
-              admin
-          $add_query
+				SELECT
+					COUNT(`admin_id`) AS cnt
+				FROM
+					`admin`
+				$add_query
 SQL_QUERY;
 		}
 
 		$search_query = <<<SQL_QUERY
-          select
-              t1.admin_id, t2.*
-          from
-              admin as t1,
-              domain as t2
-          $add_query
-            and
-              t1.admin_id = t2.domain_admin_id
-          order by
-               t2.domain_name asc
-          limit
-               $start_index, $rows_per_page
+			SELECT
+				t1.`admin_id`, t2.*
+			FROM
+				`admin` AS t1,
+				`domain` AS t2
+			$add_query
+			AND
+				t1.`admin_id` = t2.`domain_admin_id`
+			ORDER BY
+				t2.`domain_name` asc
+			LIMIT
+				$start_index, $rows_per_page
 SQL_QUERY;
 	}
 }
@@ -1005,7 +1013,7 @@ function gen_manage_domain_search_options (&$tpl,
 	$search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
-		$domain_selected = "selected";
+		$domain_selected = 'selected="selected"';
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
@@ -1013,12 +1021,12 @@ function gen_manage_domain_search_options (&$tpl,
 		$state_selected = "";
 		$country_selected = "";
 
-		$all_selected = "selected";
+		$all_selected = 'selected="selected"';
 		$ok_selected = "";
 		$suspended_selected = "";
 	}
 	if ($search_common === 'domain_name') {
-		$domain_selected = "selected";
+		$domain_selected = 'selected="selected"';
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
@@ -1027,7 +1035,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$country_selected = "";
 	} else if ($search_common === 'customer_id') {
 		$domain_selected = "";
-		$customerid_selected = "selected";
+		$customerid_selected = 'selected="selected"';
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
@@ -1036,7 +1044,7 @@ function gen_manage_domain_search_options (&$tpl,
 	} else if ($search_common === 'lname') {
 		$domain_selected = "";
 		$customerid_selected = "";
-		$lastname_selected = "selected";
+		$lastname_selected = 'selected="selected"';
 		$company_selected = "";
 		$city_selected = "";
 		$state_selected = "";
@@ -1045,7 +1053,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$domain_selected = "";
 		$customerid_selected = "";
 		$lastname_selected = "";
-		$company_selected = "selected";
+		$company_selected = 'selected="selected"';
 		$city_selected = "";
 		$state_selected = "";
 		$country_selected = "";
@@ -1054,7 +1062,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
-		$city_selected = "selected";
+		$city_selected = 'selected="selected"';
 		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'state') {
@@ -1063,7 +1071,7 @@ function gen_manage_domain_search_options (&$tpl,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
-		$state_selected = "selected";
+		$state_selected = 'selected="selected"';
 		$country_selected = "";
 	} else if ($search_common === 'country') {
 		$domain_selected = "";
@@ -1072,36 +1080,35 @@ function gen_manage_domain_search_options (&$tpl,
 		$company_selected = "";
 		$city_selected = "";
 		$state_selected = "";
-		$country_selected = "selected";
+		$country_selected = 'selected="selected"';
 	}
 	if ($search_status === 'all') {
-		$all_selected = "selected";
+		$all_selected = 'selected="selected"';
 		$ok_selected = "";
 		$suspended_selected = "";
 	} else if ($search_status === 'ok') {
 		$all_selected = "";
-		$ok_selected = "selected";
+		$ok_selected = 'selected="selected"';
 		$suspended_selected = "";
 	} else if ($search_status === 'disabled') {
 		$all_selected = "";
 		$ok_selected = "";
-		$suspended_selected = "selected";
+		$suspended_selected = 'selected="selected"';
 	}
 
 	if ($search_for === "n/a" || $search_for === '') {
 		$tpl->assign(
-			array('SEARCH_FOR' => ""
-				)
-			);
+			array('SEARCH_FOR' => "")
+		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => stripslashes($search_for)
-				)
-			);
+			array('SEARCH_FOR' => stripslashes($search_for))
+		);
 	}
 
 	$tpl->assign(
-		array('M_DOMAIN_NAME' => tr('Domain name'),
+		array(
+			'M_DOMAIN_NAME' => tr('Domain name'),
 			'M_CUSTOMER_ID' => tr('Customer ID'),
 			'M_LAST_NAME' => tr('Last name'),
 			'M_COMPANY' => tr('Company'),
@@ -1125,15 +1132,18 @@ function gen_manage_domain_search_options (&$tpl,
 			'M_ALL_SELECTED' => $all_selected,
 			'M_OK_SELECTED' => $ok_selected,
 			'M_SUSPENDED_SELECTED' => $suspended_selected,
-			)
-		);
+		)
+	);
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$matches = array();
 	$languages = array();
 	$query = <<<SQL_QUERY
-		show tables
+		SHOW TABLES
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -1143,12 +1153,12 @@ SQL_QUERY;
 
 		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table , $matches)) {
 			$query = <<<SQL_QUERY
-                select
-                    msgstr
-                from
-                    $lang_table
-                where
-                    msgid = 'ispcp_language'
+				SELECT
+					`msgstr`
+				FROM
+					$lang_table
+				WHERE
+					`msgid` = 'ispcp_language'
 SQL_QUERY;
 
 			$res = exec_query($sql, $query, array());
@@ -1174,8 +1184,8 @@ SQL_QUERY;
 				'LANG_VALUE'	=> $lang[0],
 				'LANG_SELECTED' => $lang[1],
 				'LANG_NAME'		=> $lang[2]
-				)
-			);
+			)
+		);
 		$tpl->parse('DEF_LANGUAGE', '.def_language');
 	}
 }
@@ -1188,8 +1198,8 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 			array(
 				'TR_VIEW_DETAILS' => tr('view aliases'),
 				'SHOW_DETAILS' => "show",
-				)
-			);
+			)
+		);
 
 		return;
 	} else if (isset($_SESSION['details']) and $_SESSION['details'] === "show") {
@@ -1197,8 +1207,8 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 			array(
 				'TR_VIEW_DETAILS' => tr('hide aliases'),
 				'SHOW_DETAILS' => "hide",
-				)
-			);
+			)
+		);
 
 		$alias_query = <<<SQL_QUERY
 			SELECT
@@ -1226,10 +1236,11 @@ SQL_QUERY;
 		}
 	} else {
 		$tpl->assign(
-			array('TR_VIEW_DETAILS' => tr('view aliases'),
+			array(
+				'TR_VIEW_DETAILS' => tr('view aliases'),
 				'SHOW_DETAILS' => "show",
-				)
-			);
+			)
+		);
 
 		return;
 	}
@@ -1237,28 +1248,28 @@ SQL_QUERY;
 
 function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 	$query = <<<SQL_QUERY
-        insert into domain_extras
-            (dmn_id,
-             admin_id,
-             frontpage ,
-             htaccess ,
-             supportsystem,
-             backup,
-             errorpages,
-             webmail,
-             filemanager,
-             installer)
-        values
-            (?,
-             ?,
-             '0',
-             '1',
-             '1',
-             '1',
-             '1',
-             '1',
-             '1',
-             '0')
+		INSERT INTO `domain_extras`
+			(`dmn_id`,
+			`admin_id`,
+			`frontpage`,
+			`htaccess`,
+			`supportsystem`,
+			`backup`,
+			`errorpages`,
+			`webmail`,
+			`filemanager`,
+			`installer`)
+		VALUES
+			(?,
+			?,
+			'0',
+			'1',
+			'1',
+			'1',
+			'1',
+			'1',
+			'1',
+			'0')
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $admin_id));
@@ -1273,12 +1284,12 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 			$props = $_SESSION["ch_hpprops"];
 		} else {
 			$query = <<<SQL_QUERY
-        		select
-            		props
-        		from
-            		hosting_plans
-        		where
-            		id = ?
+				SELECT
+					`props`
+				FROM
+					`hosting_plans`
+				WHERE
+					`id` = ?
 SQL_QUERY;
 
 			$res = exec_query($sql, $query, array($hpid));
@@ -1296,12 +1307,12 @@ SQL_QUERY;
 		$traff_new, $disk_new) = explode(";", $props);
 
 	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            reseller_props
-        where
-            reseller_id = ?
+		SELECT
+			*
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($reseller_id));
@@ -1447,12 +1458,12 @@ function au_update_reseller_props($reseller_id, $props) {
 		$traff, $disk) = explode(";", $props);
 
 	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            reseller_props
-        where
-            reseller_id = ?
+		SELECT
+			*
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($reseller_id));
@@ -1527,21 +1538,20 @@ SQL_QUERY;
 	$disk += $disk_current;
 
 	$query = <<<SQL_QUERY
-        update
-            reseller_props
-        set
-            current_dmn_cnt = ?,
-            current_sub_cnt = ?,
-            current_als_cnt = ?,
-            current_mail_cnt= ?,
-            current_ftp_cnt = ?,
-            current_sql_db_cnt = ?,
-            current_sql_user_cnt = ?,
-            current_traff_amnt = ?,
-            current_disk_amnt = ?
-        where
-            reseller_id = ?
-
+		UPDATE
+			`reseller_props`
+		SET
+			`current_dmn_cnt` = ?,
+			`current_sub_cnt` = ?,
+			`current_als_cnt` = ?,
+			`current_mail_cnt` = ?,
+			`current_ftp_cnt` = ?,
+			`current_sql_db_cnt` = ?,
+			`current_sql_user_cnt` = ?,
+			`current_traff_amnt` = ?,
+			`current_disk_amnt` = ?
+		WHERE
+			`reseller_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($dmn, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $reseller_id));
@@ -1556,14 +1566,14 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$message = $data['message'];
 
 	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+		$from = '"' . encode($from_name) . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
 		$name = "$ufname $ulname";
-		$to = "\"" . encode($name) . "\" <" . $uemail . ">";
+		$to = '"' . encode($name) . "\" <" . $uemail . ">";
 	} else {
 		if ($ufname) {
 			$name = $ufname;
@@ -1621,7 +1631,7 @@ function send_alias_order_email($alias_name) {
 
 	$reseller_id = who_owns_this($user_id, 'user');
 
-	$query = 'SELECT fname,lname FROM admin WHERE admin_id = ?';
+	$query = 'SELECT `fname`, `lname` FROM `admin` WHERE `admin_id` = ?';
 	$rs = exec_query($sql, $query, $user_id);
 	$ufname = $rs->fields['fname'];
 	$ulname = $rs->fields['lname'];
@@ -1635,7 +1645,7 @@ function send_alias_order_email($alias_name) {
 
 	// to
 	if ($to_name) {
-		$to = "\"" . encode($to_name) . "\" <" . $to_email . ">";
+		$to = '"' . encode($to_name) . "\" <" . $to_email . ">";
 	} else {
 		$to = $to_email;
 	}
@@ -1643,7 +1653,7 @@ function send_alias_order_email($alias_name) {
 	// from
 	if ($ufname && $ulname) {
 		$from_name = "$ufname $ulname";
-		$from = "\"" . encode($from_name) . "\" <" . $uemail . ">";
+		$from = '"' . encode($from_name) . "\" <" . $uemail . ">";
 	} else {
 		if ($ufname) {
 			$from_name = $ufname;
@@ -1681,8 +1691,8 @@ function send_alias_order_email($alias_name) {
 }
 
 // add the 3 mail accounts/forwardings to a new domain...
-function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0)
-{
+function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0) {
+
 	$sql = Database::getInstance();
 
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
@@ -1692,16 +1702,16 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 		// prepare SQL
 		$query = <<<SQL_QUERY
 	INSERT INTO mail_users
-		(mail_acc,
-		 mail_pass,
-		 mail_forward,
-		 domain_id,
-		 mail_type,
-		 sub_id,
-		 status,
-		 mail_auto_respond,
-		 quota,
-		 mail_addr)
+		(`mail_acc`,
+		 `mail_pass`,
+		 `mail_forward`,
+		 `domain_id`,
+		 `mail_type`,
+		 `sub_id`,
+		 `status`,
+		 `mail_auto_respond`,
+		 `quota`,
+		 `mail_addr`)
 	VALUES
 		(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;

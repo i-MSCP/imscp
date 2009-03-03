@@ -33,16 +33,16 @@
  */
 function ticketGetLastDate(&$sql, $ticket_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            `ticket_date`
-        FROM
-            `tickets`
-        WHERE
-            `ticket_id` = ?
-          OR
-            `ticket_reply` = ?
-        ORDER BY
-            `ticket_date` DESC
+		SELECT
+			`ticket_date`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_id` = ?
+		OR
+			`ticket_reply` = ?
+		ORDER BY
+			`ticket_date` DESC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));

@@ -36,7 +36,7 @@ function createImage($strSessionVar) {
 
 	$iRandVal = strrand(8, $strSessionVar);
 
-	$im = imagecreate($x, $y) or die("Cannot Initialize new GD image stream");
+	$im = imagecreate($x, $y) or die("Cannot initialize new GD image stream.");
 
 	$background_color = imagecolorallocate($im, $rgBgColor[0],
 		$rgBgColor[1],
@@ -315,7 +315,7 @@ SQL_QUERY;
 	$base_vhost = Config::get('BASE_SERVER_VHOST');
 
 	if ($from_name) {
-		$from = "\"" . $from_name . "\" <" . $from_email . ">";
+		$from = '"' . $from_name . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}

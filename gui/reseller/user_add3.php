@@ -114,7 +114,7 @@ if (Config::get('DUMP_GUI_DEBUG'))
 
 // FUNCTION declaration
 
-// Get data from previus page
+// Get data from previous page
 function init_in_values() {
 	global $dmn_name, $dmn_user_name, $hpid;
 

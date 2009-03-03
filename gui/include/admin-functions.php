@@ -18,7 +18,7 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-/*
+/**
  * encode() - encode string to be valid as mail header
  *
  * source: php.net/manual/en/function.mail.php
@@ -30,7 +30,7 @@
  * output:
  *   string - encoded string
  *
- * comment: need to check emails with ? and space in subject - some probs can occur
+ * @todo need to check emails with ? and space in subject - some probs can occur
  */
 function encode($in_str, $charset = 'UTF-8') {
 	$out_str = $in_str;
@@ -113,8 +113,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports')
-			)
-		);
+		)
+	);
 
 	$query = "
 		SELECT
@@ -138,16 +138,17 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
-				array('BUTTON_LINK' => $menu_link,
+				array(
+					'BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -216,15 +217,15 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'VERSION' => Config::get('Version'),
 			'BUILDDATE' => Config::get('BuildDate'),
 			'CODENAME' => Config::get('CodeName')
-			)
-		);
+		)
+	);
 	$query = "
 		SELECT
 			*
-		from
-			custom_menus
-		where
-			menu_level = 'admin1'
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'admin1'
 ";
 
 	$rs = exec_query($sql, $query, array());
@@ -233,23 +234,23 @@ function gen_admin_menu(&$tpl, $menu_file) {
 	} else {
 		global $i;
 		$i = 100;
-
 		while (!$rs->EOF) {
 			$menu_name = $rs->fields['menu_name'];
 			$menu_link = get_menu_vars($rs->fields['menu_link']);
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
-				array('BUTTON_LINK' => $menu_link,
+				array(
+					'BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -268,7 +269,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 }
 
 function get_cnt_of_user(&$sql, $user_type) {
-	$query = "SELECT count(`admin_id`) as cnt FROM `admin` WHERE `admin_type`=?";
+	$query = "SELECT COUNT(*) AS cnt FROM `admin` WHERE `admin_type`=?";
 
 	$rs = exec_query($sql, $query, array($user_type));
 
@@ -277,13 +278,16 @@ function get_cnt_of_user(&$sql, $user_type) {
 	return $admin_cnt;
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function get_cnt(&$sql, $table, $field, $where, $value) {
 	if ($where != '') {
-		$query = "SELECT count(?) as cnt FROM $table WHERE $where = ?";
-		$rs = exec_query($sql, $query, array($field, $value));
+		$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
+		$rs = exec_query($sql, $query, array($value));
 	} else {
-		$query = "SELECT count(?) as cnt FROM $table ";
-		$rs = exec_query($sql, $query, array($field));
+		$query = "SELECT COUNT(*) AS cnt FROM $table ";
+		$rs = exec_query($sql, $query, array());
 	}
 
 	$cnt = $rs->fields['cnt'];
@@ -291,7 +295,7 @@ function get_cnt(&$sql, $table, $field, $where, $value) {
 }
 
 function get_sql_user_count($sql) {
-	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user` ";
+	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
 
 	$rs = exec_query($sql, $query, false);
 
@@ -300,7 +304,8 @@ function get_sql_user_count($sql) {
 
 function get_admin_general_info(&$tpl, &$sql) {
 	$tpl->assign(
-		array('TR_GENERAL_INFORMATION' => tr('General information'),
+		array(
+			'TR_GENERAL_INFORMATION' => tr('General information'),
 			'TR_ACCOUNT_NAME' => tr('Account name'),
 			'TR_ADMIN_USERS' => tr('Admin users'),
 			'TR_RESELLER_USERS' => tr('Reseller users'),
@@ -315,11 +320,12 @@ function get_admin_general_info(&$tpl, &$sql) {
 			'TR_SYSTEM_MESSAGES' => tr('System messages'),
 			'TR_NO_NEW_MESSAGES' => tr('No new messages'),
 			'TR_SERVER_TRAFFIC' => tr('Server traffic')
-			)
-		);
+		)
+	);
 
 	$tpl->assign(
-		array('ACCOUNT_NAME' => $_SESSION['user_logged'],
+		array(
+			'ACCOUNT_NAME' => $_SESSION['user_logged'],
 			'ADMIN_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'admin'),
 			'RESELLER_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'reseller'),
 			'NORMAL_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'user'),
@@ -330,8 +336,8 @@ function get_admin_general_info(&$tpl, &$sql) {
 			'FTP_ACCOUNTS' => get_cnt($sql, 'ftp_users', 'userid', '', ''),
 			'SQL_DATABASES' => get_cnt($sql, 'sql_database', 'sqld_id', '', ''),
 			'SQL_USERS' => get_sql_user_count($sql)
-			)
-		);
+		)
+	);
 }
 
 function gen_admin_list(&$tpl, &$sql) {
@@ -341,7 +347,7 @@ function gen_admin_list(&$tpl, &$sql) {
 			FROM
 				`admin` AS t1
 			LEFT JOIN
-				`admin` AS t2 ON t1.created_by = t2.admin_id
+				`admin` AS t2 ON t1.created_by = t2.`admin_id`
 			WHERE
 				t1.`admin_type`='admin'
 			ORDER BY
@@ -351,14 +357,13 @@ function gen_admin_list(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query, array());
 
-	$i = 0;
-
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('ADMIN_MESSAGE' => tr('Administrators list is empty!'),
+			array(
+				'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
 				'ADMIN_LIST' => ''
-				)
-			);
+			)
+		);
 
 		$tpl->parse('ADMIN_MESSAGE', 'admin_message');
 	} else {
@@ -368,8 +373,10 @@ function gen_admin_list(&$tpl, &$sql) {
 				'TR_ADMIN_CREATED_ON' => tr('Creation date'),
 				'TR_ADMIN_CREATED_BY' => tr('Created by'),
 				'TR_ADMIN_OPTIONS' => tr('Options'),
-				)
-			);
+			)
+		);
+		
+		$i = 0;
 		while (!$rs->EOF) {
 			$tpl->assign(
 				array(
@@ -388,28 +395,29 @@ function gen_admin_list(&$tpl, &$sql) {
 
 			if ($rs->fields['created_by'] == '' || $rs->fields['admin_id'] == $_SESSION['user_id']) {
 				$tpl->assign(
-					array('ADMIN_DELETE_LINK' => ''
-						)
-					);
+					array('ADMIN_DELETE_LINK' => '')
+				);
 				$tpl->parse('ADMIN_DELETE_SHOW', 'admin_delete_show');
 			} else {
 				$tpl->assign(
-					array('ADMIN_DELETE_SHOW' => '',
+					array(
+						'ADMIN_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_ADMIN' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&amp;delete_username=" . $rs->fields['admin_name'],
 						'ADMIN_USERNAME' => $rs->fields['admin_name'],
-						)
-					);
+					)
+				);
 				$tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
 			}
 
 			$tpl->assign(
-				array('ADMIN_USERNAME' => $rs->fields['admin_name'],
+				array(
+					'ADMIN_USERNAME' => $rs->fields['admin_name'],
 					'ADMIN_CREATED_ON' => $admin_created,
 					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null) ? $rs->fields['created_by'] : tr("System"),
 					'URL_EDIT_ADMIN' => "admin_edit.php?edit_id=" . $rs->fields['admin_id'],
-					)
-				);
+				)
+			);
 
 			$tpl->parse('ADMIN_ITEM', '.admin_item');
 			$rs->MoveNext();
@@ -427,11 +435,11 @@ function gen_reseller_list(&$tpl, &$sql) {
 		SELECT
 			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`, IFNULL(t2.`admin_name`, '') AS created_by
 		FROM
-			`admin` as t1
+			`admin` AS t1
 		LEFT JOIN
 			`admin` AS t2 ON t1.created_by = t2.`admin_id`
 		WHERE
-			t1.`admin_type`='reseller'
+			t1.`admin_type` = 'reseller'
 		ORDER BY
 			t1.`admin_name`
 		ASC
@@ -439,23 +447,25 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query, array());
 
-	$i = 0;
-
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('RSL_MESSAGE' => tr('Resellers list is empty!'),
+			array(
+				'RSL_MESSAGE' => tr('Resellers list is empty!'),
 				'RSL_LIST' => ''
-				)
-			);
+			)
+		);
 
 		$tpl->parse('RSL_MESSAGE', 'rsl_message');
 	} else {
 		$tpl->assign(
-			array('TR_RSL_USERNAME' => tr('Username'),
+			array(
+				'TR_RSL_USERNAME' => tr('Username'),
 				'TR_RSL_CREATED_BY' => tr('Created by'),
 				'TR_RSL_OPTIONS' => tr('Options'),
-				)
-			);
+			)
+		);
+
+		$i = 0;
 		while (!$rs->EOF) {
 			$tpl->assign(
 				array(
@@ -465,21 +475,23 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 			if ($rs->fields['created_by'] == '') {
 				$tpl->assign(
-					array('TR_DELETE' => tr('Delete'),
+					array(
+						'TR_DELETE' => tr('Delete'),
 						'RSL_DELETE_LINK' => '',
-						)
-					);
+					)
+				);
 				$tpl->parse('RSL_DELETE_SHOW', 'rsl_delete_show');
 			} else {
 				$tpl->assign(
-					array('RSL_DELETE_SHOW' => '',
+					array(
+						'RSL_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_RSL' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&amp;delete_username=" . $rs->fields['admin_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['admin_id'],
-						)
-					);
+					)
+				);
 				$tpl->parse('RSL_DELETE_LINK', 'rsl_delete_link');
 			}
 
@@ -493,12 +505,13 @@ function gen_reseller_list(&$tpl, &$sql) {
 			}
 
 			$tpl->assign(
-				array('RSL_USERNAME' => $rs->fields['admin_name'],
+				array(
+					'RSL_USERNAME' => $rs->fields['admin_name'],
 					'RESELLER_CREATED_ON' => $reseller_created,
 					'RSL_CREATED_BY' => $rs->fields['created_by'],
 					'URL_EDIT_RSL' => "reseller_edit.php?edit_id=" . $rs->fields['admin_id'],
-					)
-				);
+				)
+			);
 
 			$tpl->parse('RSL_ITEM', '.rsl_item');
 			$rs->MoveNext();
@@ -520,9 +533,7 @@ function gen_user_list(&$tpl, &$sql) {
 	// Search request generated ?!
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
-
 		$_SESSION['search_common'] = $_POST['search_common'];
-
 		$_SESSION['search_status'] = $_POST['search_status'];
 
 		$start_index = 0;
@@ -530,9 +541,7 @@ function gen_user_list(&$tpl, &$sql) {
 		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
 			// He have not got scroll through patient records.
 			unset($_SESSION['search_for']);
-
 			unset($_SESSION['search_common']);
-
 			unset($_SESSION['search_status']);
 		}
 	}
@@ -570,30 +579,30 @@ function gen_user_list(&$tpl, &$sql) {
 	if ($rs->RecordCount() == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(
-				array('USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
+				array(
+					'USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
 					'USR_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
 					'TR_VIEW_DETAILS' => tr('view aliases'),
 					'SHOW_DETAILS' => "show",
-					)
-				);
+				)
+			);
 
 			unset($_SESSION['search_for']);
-
 			unset($_SESSION['search_common']);
-
 			unset($_SESSION['search_status']);
 		} else {
 			$tpl->assign(
-				array('USR_MESSAGE' => tr('Users list is empty!'),
+				array(
+					'USR_MESSAGE' => tr('Users list is empty!'),
 					'USR_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
 					'TR_VIEW_DETAILS' => tr('view aliases'),
 					'SHOW_DETAILS' => "show",
-					)
-				);
+				)
+			);
 		}
 
 		$tpl->parse('USR_MESSAGE', 'usr_message');
@@ -604,10 +613,11 @@ function gen_user_list(&$tpl, &$sql) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_PREV_GRAY' => '',
+				array(
+					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
-					)
-				);
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -616,21 +626,22 @@ function gen_user_list(&$tpl, &$sql) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_NEXT_GRAY' => '',
+				array(
+					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
-					)
-				);
+				)
+			);
 		}
 
 		$tpl->assign(
-			array('TR_USR_USERNAME' => tr('Username'),
+			array(
+				'TR_USR_USERNAME' => tr('Username'),
 				'TR_USR_CREATED_BY' => tr('Created by'),
 				'TR_USR_OPTIONS' => tr('Options'),
 				'TR_USER_STATUS' => tr('Status'),
-				'TR_DETAILS' => tr('Details'),
-
-				)
-			);
+				'TR_DETAILS' => tr('Details')
+			)
+		);
 		while (!$rs->EOF) {
 			$tpl->assign(
 				array(
@@ -648,7 +659,7 @@ function gen_user_list(&$tpl, &$sql) {
 				FROM
 					`admin`
 				WHERE
-					`admin_id`=?
+					`admin_id` = ?
 				ORDER BY
 					`admin_name`
 				ASC
@@ -658,14 +669,16 @@ function gen_user_list(&$tpl, &$sql) {
 
 			if ($rs2->fields['admin_name'] == '') {
 				$tpl->assign(
-					array('TR_DELETE' => tr('Delete'),
+					array(
+						'TR_DELETE' => tr('Delete'),
 						'USR_DELETE_LINK' => '',
-						)
-					);
+					)
+				);
 				$tpl->parse('USR_DELETE_SHOW', 'usr_delete_show');
 			} else {
 				$tpl->assign(
-					array('USR_DELETE_SHOW' => '',
+					array(
+						'USR_DELETE_SHOW' => '',
 						'DOMAIN_ID' => $rs->fields['domain_id'],
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_USR' => "user_delete.php?delete_id=" . $rs->fields['domain_admin_id'] . "&amp;delete_username=" . $rs->fields['domain_name'],
@@ -675,8 +688,8 @@ function gen_user_list(&$tpl, &$sql) {
 						'USR_USERNAME' => $rs->fields['domain_name'],
 						'TR_EDIT_DOMAIN' => tr('Edit domain'),
 						'TR_EDIT_USR' => tr('Edit user'),
-						)
-					);
+					)
+				);
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 			}
 
@@ -695,10 +708,11 @@ function gen_user_list(&$tpl, &$sql) {
 			}
 
 			$tpl->assign(
-				array('STATUS_ICON' => $status_icon,
-					'URL_CHNAGE_STATUS' => $status_url,
-					)
-				);
+				array(
+					'STATUS_ICON' => $status_icon,
+					'URL_CHANGE_STATUS' => $status_url,
+				)
+			);
 			// end of user status icon
 			$admin_name = decode_idna($rs->fields['domain_name']);
 
@@ -712,15 +726,16 @@ function gen_user_list(&$tpl, &$sql) {
 			}
 
 			$tpl->assign(
-				array('USR_USERNAME' => $admin_name,
+				array(
+					'USR_USERNAME' => $admin_name,
 					'USER_CREATED_ON' => $domain_created,
 					'USR_CREATED_BY' => $rs2->fields['admin_name'],
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
 					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?', true),
-					)
-				);
+				)
+			);
 
 			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
 
@@ -738,7 +753,8 @@ function gen_user_list(&$tpl, &$sql) {
 
 function get_admin_manage_users(&$tpl, &$sql) {
 	$tpl->assign(
-		array('TR_MANAGE_USERS' => tr('Manage users'),
+		array(
+			'TR_MANAGE_USERS' => tr('Manage users'),
 			'TR_ADMINISTRATORS' => tr('Administrators'),
 			'TR_RESELLERS' => tr('Resellers'),
 			'TR_USERS' => tr('Users'),
@@ -746,8 +762,8 @@ function get_admin_manage_users(&$tpl, &$sql) {
 			'TR_CREATED_ON' => tr('Creation date'),
 			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 			'TR_EDIT' => tr("Edit")
-			)
-		);
+		)
+	);
 
 	gen_admin_list($tpl, $sql);
 
@@ -793,7 +809,7 @@ function generate_reseller_props ($reseller_id) {
 
 		$rs->fields['current_disk_amnt'],
 		$rs->fields['max_disk_amnt']
-		);
+	);
 }
 
 function generate_reseller_users_props ($reseller_id) {
@@ -827,8 +843,8 @@ function generate_reseller_users_props ($reseller_id) {
 	$rdisk_max = 0;
 	$rdisk_uf = '_off_';
 
-	$fresult =
-	array($rdmn_current, $rdmn_max, $rdmn_uf,
+	$fresult = array(
+		$rdmn_current, $rdmn_max, $rdmn_uf,
 		$rsub_current, $rsub_max, $rsub_uf,
 		$rals_current, $rals_max, $rals_uf,
 		$rmail_current, $rmail_max, $rmail_uf,
@@ -837,7 +853,7 @@ function generate_reseller_users_props ($reseller_id) {
 		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
 		$rtraff_current, $rtraff_max, $rtraff_uf,
 		$rdisk_current, $rdisk_max, $rdisk_uf
-		);
+	);
 
 	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
 
@@ -883,7 +899,7 @@ function generate_reseller_users_props ($reseller_id) {
 				$rsub_uf = '_on_';
 
 			$rsub_current += $sub_current;
-			$rsub_max += ($sub_max>0)?$sub_max:0;
+			$rsub_max += ($sub_max > 0) ? $sub_max : 0;
 		}
 
 		if ($als_max != -1) {
@@ -891,27 +907,27 @@ function generate_reseller_users_props ($reseller_id) {
 				$rals_uf = '_on_';
 
 			$rals_current += $als_current;
-			$rals_max += ($als_max>0)?$als_max:0;
+			$rals_max += ($als_max > 0) ? $als_max : 0;
 		}
 
 		if ($mail_max == 0)
 			$rmail_uf = '_on_';
 
 		$rmail_current += $mail_current;
-		$rmail_max += ($mail_max>0)?$mail_max:0;
+		$rmail_max += ($mail_max > 0) ? $mail_max : 0;
 
 		if ($ftp_max == 0)
 			$rftp_uf = '_on_';
 
 		$rftp_current += $ftp_current;
-		$rftp_max += ($ftp_max>0)?$ftp_max:0;
+		$rftp_max += ($ftp_max > 0) ? $ftp_max : 0;
 
 		if ($sql_db_max != -1) {
 			if ($sql_db_max == 0)
 				$rsql_db_uf = '_on_';
 
 			$rsql_db_current += $sql_db_current;
-			$rsql_db_max += ($sql_db_max>0)?$sql_db_max:0;
+			$rsql_db_max += ($sql_db_max > 0) ? $sql_db_max : 0;
 		}
 
 		if ($sql_user_max != -1) {
@@ -919,7 +935,7 @@ function generate_reseller_users_props ($reseller_id) {
 				$rsql_user_uf = '_on_';
 
 			$rsql_user_current += $sql_user_current;
-			$rsql_user_max += ($sql_user_max>0)?$sql_user_max:0;
+			$rsql_user_max += ($sql_user_max > 0) ? $sql_user_max : 0;
 		}
 
 		if ($traff_max == 0)
@@ -937,8 +953,8 @@ function generate_reseller_users_props ($reseller_id) {
 		$rs->MoveNext();
 	}
 
-	$fresult =
-	array($rdmn_current, $rdmn_max, $rdmn_uf,
+	$fresult = array(
+		$rdmn_current, $rdmn_max, $rdmn_uf,
 		$rsub_current, $rsub_max, $rsub_uf,
 		$rals_current, $rals_max, $rals_uf,
 		$rmail_current, $rmail_max, $rmail_uf,
@@ -947,11 +963,14 @@ function generate_reseller_users_props ($reseller_id) {
 		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
 		$rtraff_current, $rtraff_max, $rtraff_uf,
 		$rdisk_current, $rdisk_max, $rdisk_uf
-		);
+	);
 
 	return $fresult;
 }
 
+/**
+ * @todo explain/comment the hack
+ */
 function generate_user_props($user_id) {
 	$sql = Database::getInstance();
 
@@ -968,11 +987,11 @@ function generate_user_props($user_id) {
 
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
-	// Sorry for the strange Hack, but it works - RatS
+	// Sorry for the strange hack, but it works - RatS
 	$mail_current = records_count('mail_id', 'mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
-	$ftp_current = sub_records_rlike_count( 'domain_name', 'domain', 'domain_id', $user_id,
+	$ftp_current = sub_records_rlike_count(	'domain_name', 'domain', 'domain_id', $user_id,
 											'userid', 'ftp_users', 'userid', '@', '');
 
 	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
@@ -996,40 +1015,50 @@ function generate_user_props($user_id) {
 	$disk_max = $rs->fields['domain_disk_limit'];
 
 	return array(
-			$sub_current, $sub_max, $als_current, $als_max,
-			$mail_current, $mail_max, $ftp_current, $ftp_max,
-			$sql_db_current, $sql_db_max, $sql_user_current,
-			$sql_user_max, $traff_max, $disk_max);
+		$sub_current, $sub_max, $als_current, $als_max,
+		$mail_current, $mail_max, $ftp_current, $ftp_max,
+		$sql_db_current, $sql_db_max, $sql_user_current,
+		$sql_user_max, $traff_max, $disk_max
+	);
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function records_count($field, $table, $where, $value) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = "SELECT COUNT($field) AS cnt FROM $table WHERE $where = ?";
+		$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
 		$rs = exec_query($sql, $query, array($value));
 	} else {
-		$query = "SELECT COUNT($field) AS cnt FROM $table";
+		$query = "SELECT COUNT(*) AS cnt FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
 	return $rs->fields['cnt'];
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function records_rlike_count ($field, $table, $where, $value, $a, $b) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = "SELECT COUNT($field) AS cnt FROM $table WHERE $where RLIKE ?";
+		$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where RLIKE ?";
 		$rs = exec_query($sql, $query, array($a . $value . $b));
 	} else {
-		$query = "SELECT COUNT($field) AS cnt FROM $table";
+		$query = "SELECT COUNT(*) AS cnt FROM $table";
 		$rs = exec_query($sql, $query, array());
 	}
 
 	return $rs->fields['cnt'];
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function sub_records_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere) {
 	$sql = Database::getInstance();
 
@@ -1050,7 +1079,7 @@ function sub_records_count ($field, $table, $where, $value, $subfield, $subtable
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {
-			$query = "SELECT COUNT($subfield) AS cnt FROM $subtable WHERE $subwhere = ?";
+			$query = "SELECT COUNT(*) AS cnt FROM $subtable WHERE $subwhere = ?";
 		} else {
 			return $result;
 		}
@@ -1098,13 +1127,9 @@ function generate_user_traffic ($user_id) {
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
 		$domain_id = $rs->fields['domain_id'];
-
 		$domain_disk_usage = $rs->fields['domain_disk_usage'];
-
 		$domain_traff_limit = $rs->fields['domain_traffic_limit'];
-
 		$domain_disk_limit = $rs->fields['domain_disk_limit'];
-
 		$domain_name = $rs->fields['domain_name'];
 
 		$query = "
@@ -1129,7 +1154,8 @@ function generate_user_traffic ($user_id) {
 
 		$rs1 = exec_query($sql, $query, array($domain_id, $from_timestamp, $to_timestamp));
 
-		return array($domain_name,
+		return array(
+			$domain_name,
 			$domain_id,
 			$rs1->fields['web'],
 			$rs1->fields['ftp'],
@@ -1139,7 +1165,7 @@ function generate_user_traffic ($user_id) {
 			$domain_disk_usage,
 			$domain_traff_limit,
 			$domain_disk_limit
-			);
+		);
 	}
 }
 
@@ -1154,13 +1180,12 @@ function make_usage_vals ($current, $max) {
 
 	$red = (int) $percent;
 
-	if ($red > 100) {
-		return array($percent, 100, 0);
-	} else {
-		return array($percent, $red, 100 - $red);
-	}
+	return ($red > 100) ? array($percent, 100, 0) : array($percent, $red, 100 - $red);
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b) {
 	$sql = Database::getInstance();
 
@@ -1181,7 +1206,7 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 		$contents = $rs->fields['field'];
 
 		if ($subwhere != '') {
-			$query = "SELECT COUNT($subfield) AS cnt FROM $subtable WHERE $subwhere RLIKE ?";
+			$query = "SELECT COUNT(*) AS cnt FROM $subtable WHERE $subwhere RLIKE ?";
 		} else {
 			return $result;
 		}
@@ -1210,10 +1235,11 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 		$selected = ($i == $crnt_month) ? 'selected="selected"' : '';
 
 		$tpl->assign(
-			array('OPTION_SELECTED' => $selected,
+			array(
+				'OPTION_SELECTED' => $selected,
 				'MONTH_VALUE' => $i
-				)
-			);
+			)
+		);
 
 		$tpl->parse('MONTH_LIST', '.month_list');
 	}
@@ -1222,10 +1248,11 @@ function gen_select_lists (&$tpl, $user_month, $user_year) {
 		$selected = ($i == $crnt_year) ? 'selected="selected"' : '';
 
 		$tpl->assign(
-			array('OPTION_SELECTED' => $selected,
+			array(
+				'OPTION_SELECTED' => $selected,
 				'YEAR_VALUE' => $i
-				)
-			);
+			)
+		);
 
 		$tpl->parse('YEAR_LIST', '.year_list');
 	}
@@ -1266,6 +1293,9 @@ function get_own_logo($user_id) {
 	return get_admin_logo($user_id);
 }
 
+/**
+ * @todo logo path shouldn't be hardcoded in this function, use a config file and/or global variable
+ */
 function get_admin_logo($user_id) {
 	$sql = Database::getInstance();
 
@@ -1302,7 +1332,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 	} else {
 		$client_ip = "unknown";
 	}
-	$msg = replace_html(htmlentities($msg . "<br><small>User IP: " . $client_ip . "</small>", ENT_COMPAT, tr('encoding')));
+	$msg = replace_html(htmlentities($msg . "<br /><small>User IP: " . $client_ip . "</small>", ENT_COMPAT, tr('encoding')));
 
 	$query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
 
@@ -1365,9 +1395,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$data = get_welcome_email($admin_id);
 
 	$from_name = $data['sender_name'];
-
 	$from_email = $data['sender_email'];
-
 	$message = $data['message'];
 
 	$base_vhost = Config::get('BASE_SERVER_VHOST');
@@ -1387,9 +1415,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	}
 
 	$username = $uname;
-
 	$password = $upass;
-
 	$subject = $data['subject'];
 
 	$search = array();
@@ -1431,7 +1457,7 @@ function update_reseller_props ($reseller_id, $props) {
 		return;
 	}
 
-	list ($dmn_current, $dmn_max,
+	list($dmn_current, $dmn_max,
 		$sub_current, $sub_max,
 		$als_current, $als_max,
 		$mail_current, $mail_max,
@@ -1440,7 +1466,7 @@ function update_reseller_props ($reseller_id, $props) {
 		$sql_user_current, $sql_user_max,
 		$traff_current, $traff_max,
 		$disk_current, $disk_max
-		) = explode (";", $props);
+	) = explode (";", $props);
 
 	$query = "
 		UPDATE
@@ -1493,8 +1519,9 @@ function update_reseller_props ($reseller_id, $props) {
 function gen_logged_from(&$tpl) {
 	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 		$tpl->assign(
-			array('YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])),
-				'TR_GO_BACK' => tr('Go back'),
+			array(
+				'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])),
+				'TR_GO_BACK' => tr('Go back')
 				)
 			);
 
@@ -1540,16 +1567,22 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 			if ($action == 'disable') {
 				$timestamp = time();
 				$pass_prefix = substr(md5($timestamp), 0, 4);
-				if (preg_match("/^".MT_NORMAL_MAIL."/",$mail_type)||preg_match("/^".MT_ALIAS_MAIL."/",$mail_type)||preg_match("/^".MT_SUBDOM_MAIL."/",$mail_type)||preg_match("/^".MT_ALSSUB_MAIL."/",$mail_type)) {
-					$mail_pass=decrypt_db_password($mail_pass);
+				if (preg_match("/^".MT_NORMAL_MAIL."/", $mail_type)
+					|| preg_match("/^".MT_ALIAS_MAIL."/", $mail_type)
+					|| preg_match("/^".MT_SUBDOM_MAIL."/", $mail_type)
+					|| preg_match("/^".MT_ALSSUB_MAIL."/", $mail_type)) {
+					$mail_pass = decrypt_db_password($mail_pass);
 					$mail_pass = $pass_prefix . $mail_pass;
-					$mail_pass=encrypt_db_password($mail_pass);
+					$mail_pass = encrypt_db_password($mail_pass);
 				}
 			} else if ($action == 'enable') {
-				if (preg_match("/^".MT_NORMAL_MAIL."/",$mail_type)||preg_match("/^".MT_ALIAS_MAIL."/",$mail_type)||preg_match("/^".MT_SUBDOM_MAIL."/",$mail_type)||preg_match("/^".MT_ALSSUB_MAIL."/",$mail_type)) {
-					$mail_pass=decrypt_db_password($mail_pass);
+				if (preg_match("/^".MT_NORMAL_MAIL."/",$mail_type)
+					|| preg_match("/^".MT_ALIAS_MAIL."/", $mail_type)
+					|| preg_match("/^".MT_SUBDOM_MAIL."/", $mail_type)
+					|| preg_match("/^".MT_ALSSUB_MAIL."/", $mail_type)) {
+					$mail_pass = decrypt_db_password($mail_pass);
 					$mail_pass = substr($mail_pass, 4, 50);
-					$mail_pass=encrypt_db_password($mail_pass);
+					$mail_pass = encrypt_db_password($mail_pass);
 				}
 			} else {
 				return;
@@ -1592,11 +1625,15 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 	die();
 }
 
+/**
+ * @todo use db prepared statements
+ * @todo cleanup/comment confusing query salad
+ */
 function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 	$rows_per_page, $search_for, $search_common, $search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// We have pure list query;
-		$count_query = "SELECT COUNT(domain_id) AS cnt FROM `domain`";
+		$count_query = "SELECT COUNT(*) AS cnt FROM `domain`";
 
 		$search_query = "SELECT * FROM `domain` ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page";
 	} else if ($search_for === '' && $search_status != '') {
@@ -1606,7 +1643,7 @@ function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 			$add_query = "WHERE `domain_status` = '$search_status'";
 		}
 
-		$count_query = "SELECT COUNT(domain_id) AS cnt FROM `domain` $add_query";
+		$count_query = "SELECT COUNT(*) AS cnt FROM `domain` $add_query";
 
 		$search_query = "SELECT * FROM `domain` $add_query ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page";
 
@@ -1614,56 +1651,56 @@ function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 		if ($search_common === 'domain_name') {
 			$add_query = "WHERE `admin_name` RLIKE '$search_for' %s";
 		} else if ($search_common === 'customer_id') {
-			$add_query = "WHERE customer_id RLIKE '$search_for' %s";
+			$add_query = "WHERE `customer_id` RLIKE '$search_for' %s";
 		} else if ($search_common === 'lname') {
-			$add_query = "WHERE (lname RLIKE '$search_for' OR fname RLIKE '$search_for') %s";
+			$add_query = "WHERE (`lname` RLIKE '$search_for' OR `fname` RLIKE '$search_for') %s";
 		} else if ($search_common === 'firm') {
-			$add_query = "WHERE firm RLIKE '$search_for' %s";
+			$add_query = "WHERE `firm` RLIKE '$search_for' %s";
 		} else if ($search_common === 'city') {
-			$add_query = "WHERE city RLIKE '$search_for' %s";
+			$add_query = "WHERE `city` RLIKE '$search_for' %s";
 		} else if ($search_common === 'state') {
-			$add_query = "WHERE state RLIKE '$search_for' %s";
+			$add_query = "WHERE `state` RLIKE '$search_for' %s";
 		} else if ($search_common === 'country') {
-			$add_query = "WHERE country RLIKE '$search_for' %s";
+			$add_query = "WHERE `country` RLIKE '$search_for' %s";
 		}
 
 		if ($search_status != 'all') {
-			// $add_query = sprintf($add_query, " and t1.created_by = '$reseller_id' and t2.domain_status = '$search_status'");
-			$add_query = sprintf($add_query, " and t2.domain_status = '$search_status'");
+			// $add_query = sprintf($add_query, " AND t1.created_by = '$reseller_id' AND t2.domain_status = '$search_status'");
+			$add_query = sprintf($add_query, " AND t2.`domain_status` = '$search_status'");
 
 			$count_query = "
 				SELECT
-					COUNT(admin_id) AS cnt
+					COUNT(*) AS cnt
 				FROM
-					admin AS t1,
-					domain AS t2
+					`admin` AS t1,
+					`domain` AS t2
 				$add_query
 				AND
-					t1.admin_id = t2.domain_admin_id
+					t1.`admin_id` = t2.`domain_admin_id`
 			";
 		} else {
 			$add_query = sprintf($add_query, " ");
 
 			$count_query = "
 				SELECT
-					COUNT(admin_id) AS cnt
+					COUNT(*) AS cnt
 				FROM
-					admin
+					`admin`
 				$add_query
 			";
 		}
 
 		$search_query = "
 			SELECT
-				t1.admin_id, t2.*
+				t1.`admin_id`, t2.*
 			FROM
-				admin as t1,
-				domain as t2
+				`admin` as t1,
+				`domain` as t2
 				$add_query
 			AND
-				t1.admin_id = t2.domain_admin_id
+				t1.`admin_id` = t2.`domain_admin_id`
 			ORDER BY
-				t2.domain_name ASC
+				t2.`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
 		";
@@ -1674,19 +1711,19 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 	$search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
-		$domain_selected = "selected";
+		$domain_selected = 'selected="selected"';
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
 		$state_selected = "";
 		$country_selected = "";
-		$all_selected = "selected";
+		$all_selected = 'selected="selected"';
 		$ok_selected = "";
 		$suspended_selected = "";
 	}
 	if ($search_common === 'domain_name') {
-		$domain_selected = "selected";
+		$domain_selected = 'selected="selected"';
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
@@ -1695,7 +1732,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$country_selected = "";
 	} else if ($search_common === 'customer_id') {
 		$domain_selected = "";
-		$customerid_selected = "selected";
+		$customerid_selected = 'selected="selected"';
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
@@ -1704,7 +1741,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 	} else if ($search_common === 'lname') {
 		$domain_selected = "";
 		$customerid_selected = "";
-		$lastname_selected = "selected";
+		$lastname_selected = 'selected="selected"';
 		$company_selected = "";
 		$city_selected = "";
 		$state_selected = "";
@@ -1713,7 +1750,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$domain_selected = "";
 		$customerid_selected = "";
 		$lastname_selected = "";
-		$company_selected = "selected";
+		$company_selected = 'selected="selected"';
 		$city_selected = "";
 		$state_selected = "";
 		$country_selected = "";
@@ -1722,7 +1759,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$customerid_selected = "";
 		$lastname_selected = "";
 		$company_selected = "";
-		$city_selected = "selected";
+		$city_selected = 'selected="selected"';
 		$state_selected = "";
 		$country_selected = "";
 	} else if ($search_common === 'state') {
@@ -1731,7 +1768,7 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$lastname_selected = "";
 		$company_selected = "";
 		$city_selected = "";
-		$state_selected = "selected";
+		$state_selected = 'selected="selected"';
 		$country_selected = "";
 	} else if ($search_common === 'country') {
 		$domain_selected = "";
@@ -1740,43 +1777,41 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 		$company_selected = "";
 		$city_selected = "";
 		$state_selected = "";
-		$country_selected = "selected";
+		$country_selected = 'selected="selected"';
 	}
 	if ($search_status === 'all') {
-		$all_selected = "selected";
+		$all_selected = 'selected="selected"';
 		$ok_selected = "";
 		$suspended_selected = "";
 	} else if ($search_status === 'ok') {
 		$all_selected = "";
-		$ok_selected = "selected";
+		$ok_selected = 'selected="selected"';
 		$suspended_selected = "";
 	} else if ($search_status === 'disabled') {
 		$all_selected = "";
 		$ok_selected = "";
-		$suspended_selected = "selected";
+		$suspended_selected = 'selected="selected"';
 	}
 
 	if ($search_for === "n/a" || $search_for === '') {
 		$tpl->assign(
-			array('SEARCH_FOR' => ""
-				)
-			);
+			array('SEARCH_FOR' => "")
+		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => stripslashes($search_for)
-				)
-			);
+			array('SEARCH_FOR' => stripslashes($search_for))
+		);
 	}
 
 	$tpl->assign(
-		array('M_DOMAIN_NAME' => tr('Domain name'),
+		array(
+			'M_DOMAIN_NAME' => tr('Domain name'),
 			'M_CUSTOMER_ID' => tr('Customer ID'),
 			'M_LAST_NAME' => tr('Last name'),
 			'M_COMPANY' => tr('Company'),
 			'M_CITY' => tr('City'),
 			'M_STATE' => tr('State/Province'),
 			'M_COUNTRY' => tr('Country'),
-
 			'M_ALL' => tr('All'),
 			'M_OK' => tr('OK'),
 			'M_SUSPENDED' => tr('Suspended'),
@@ -1789,14 +1824,13 @@ function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
 			'M_CITY_SELECTED' => $city_selected,
 			'M_STATE_SELECTED' => $state_selected,
 			'M_COUNTRY_SELECTED' => $country_selected,
-
 			'M_ALL_SELECTED' => $all_selected,
 			'M_OK_SELECTED' => $ok_selected,
 			'M_SUSPENDED_SELECTED' => $suspended_selected,
-
-			)
-		);
+		)
+	);
 }
+
 function rm_rf_user_account($id_user) {
 	$sql = Database::getInstance();
 
@@ -1821,7 +1855,7 @@ function rm_rf_user_account($id_user) {
 	// we have all needed user data - let's delete all data for this user
 	substract_from_reseller_props($domain_created_id, $domain_id);
 	// BEGIN - DELETE ALL SYSTEM ENTRIES FOR THIS USER
-	// fist we'll delete all FTP accounts
+	// first we'll delete all FTP accounts
 	// delete all FTP accounts
 	$query = "DELETE FROM `ftp_users` WHERE `gid` = ?";
 	$rs = exec_query($sql, $query, array($domain_gid));
@@ -1906,7 +1940,7 @@ function remove_users_common_properties($id_user) {
 }
 
 function substract_from_reseller_props($reseller_id, $domain_id) {
-	// function update reseller props bevore deleting account
+	// function update reseller props before deleting account
 	list ($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
@@ -1970,14 +2004,19 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 	update_reseller_props($reseller_id, $rprops);
 }
 
+/**
+ * @todo use template instead of hardcoded HTML
+ * @todo use valid XHTML
+ * @todo Is the value for {THEME_CHARSET} in the RIC-string really set?
+ */
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	$query = "
 		SELECT
-			header, footer
+			`header`, `footer`
 		FROM
-			orders_settings
+			`orders_settings`
 		WHERE
-			user_id = ?
+			`user_id` = ?
 	";
 
 	if (isset($_SESSION['user_theme'])) {
@@ -2031,13 +2070,14 @@ RIC;
 	$tpl->assign('PURCHASE_FOOTER', $footer);
 }
 
+
 function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status) {
 	$sql = Database::getInstance();
 	global $admin_login;
 	// To information
-	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = '$to_id'";
+	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = ?";
 
-	$res = execute_query($sql, $query);
+	$res = exec_query($sql, $query, $to_id);
 	$to_email = $res->fields['email'];
 	$to_fname = $res->fields['fname'];
 	$to_lname = $res->fields['lname'];
@@ -2062,7 +2102,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 
 	// Format addresses
 	if ($from_fname && $from_lname) {
-		$from = "\"" . encode($from_fname . ' ' . $from_lname) . "\" <" . $from_email . ">";
+		$from = '"' . encode($from_fname . ' ' . $from_lname) . "\" <" . $from_email . ">";
 		$fromname = "$from_fname $from_lname";
 	} else {
 		$from = $from_email;
@@ -2070,7 +2110,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	}
 
 	if ($to_fname && $to_lname) {
-		$to = "\"" . encode($to_fname . ' ' . $to_lname) . "\" <" . $to_email . ">";
+		$to = '"' . encode($to_fname . ' ' . $to_lname) . "\" <" . $to_email . ">";
 		$toname = "$to_fname $to_lname";
 	} else {
 		$toname = $to_uname;
@@ -2102,21 +2142,22 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!", $_SESSION['user_logged'], $toname . ": " . $to_email, $fromname . ": " . $from_email, $mail_status));
 }
 
+
 function setConfig_Value($name, $value) {
 	$sql = Database::getInstance();
 
-	$query = "SELECT `name` FROM `config` WHERE `name`='" . $name . "'";
+	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
 
-	$res = exec_query($sql, $query, array());
+	$res = exec_query($sql, $query, array($name));
 
 	if ($res->RecordCount() == 0) {
-		$query = "INSERT INTO `config` (`name`, `value`) VALUES ('" . $name . "','" . $value . "')";
+		$query = "INSERT INTO `config` (`name`, `value`) VALUES (?, ?)";
 
-		exec_query($sql, $query, array());
+		exec_query($sql, $query, array($name, $value));
 	} else {
-		$query = "UPDATE `config` SET	`value`='" . $value . "' WHERE `name`='" . $name . "'";
+		$query = "UPDATE `config` SET `value` = ? WHERE `name`= ?";
 
-		$res = exec_query($sql, $query, array());
+		$res = exec_query($sql, $query, array($value, $name));
 	}
 
 	Config::set($name, $value);

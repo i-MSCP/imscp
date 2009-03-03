@@ -113,7 +113,7 @@ if (Config::get('DUMP_GUI_DEBUG'))
 
 // Function declaration
 
-// get param of previus page
+// get param of previous page
 function get_pageone_param() {
 	global $dmn_name;
 	global $dmn_chp;
@@ -227,7 +227,7 @@ function check_user_data(&$tpl) {
 	global $dmn_chp;
 
 	$ehp_error = '';
-	// Get data for fields from previus page
+	// Get data for fields from previous page
 	if (isset($_POST['template']))
 		$hp_name = $_POST['template'];
 

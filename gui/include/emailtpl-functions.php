@@ -98,7 +98,7 @@ SQL_QUERY;
 
 		$query = <<<SQL_QUERY
 			INSERT INTO `email_tpls`
-				(subject, message, owner_id, name)
+				(`subject`, `message`, `owner_id`, `name`)
 			VALUES
 				(?, ?, ?, ?)
 SQL_QUERY;
@@ -120,7 +120,6 @@ SQL_QUERY;
 	}
 
 	exec_query($sql, $query, array($data['subject'], $data['message'], $admin_id, $tpl_name));
-
 }
 
 function get_welcome_email($admin_id) {

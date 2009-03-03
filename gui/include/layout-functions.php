@@ -146,7 +146,7 @@ SQL_QUERY;
 	return $menu_link;
 }
 
-// curently not being used because there's only one layout/theme
+// currently not being used because there's only one layout/theme
 function gen_def_layout(&$tpl, $user_def_layout) {
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
@@ -154,7 +154,8 @@ function gen_def_layout(&$tpl, $user_def_layout) {
 		$selected = ($layout === $user_def_layout) ? 'selected="selected"' : '';
 
 		$tpl->assign(
-			array('LAYOUT_VALUE' => $layout,
+			array(
+				'LAYOUT_VALUE' => $layout,
 				'LAYOUT_SELECTED' => $selected,
 				'LAYOUT_NAME' => $layout
 			)

@@ -20,31 +20,31 @@
 
 function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_id,
-            domain_name,
-            domain_gid,
-            domain_uid,
-            domain_created_id,
-            domain_created,
-            domain_last_modified,
-            domain_mailacc_limit,
-            domain_ftpacc_limit,
-            domain_traffic_limit,
-            domain_sqld_limit,
-            domain_sqlu_limit,
-            domain_status,
-            domain_alias_limit,
-            domain_subd_limit,
-            domain_ip_id,
-            domain_disk_limit,
-            domain_disk_usage,
-            domain_php,
-            domain_cgi
-        FROM
-            domain
-        WHERE
-            domain_admin_id = ?
+		SELECT
+			`domain_id`,
+			`domain_name`,
+			`domain_gid`,
+			`domain_uid`,
+			`domain_created_id`,
+			`domain_created`,
+			`domain_last_modified`,
+			`domain_mailacc_limit`,
+			`domain_ftpacc_limit`,
+			`domain_traffic_limit`,
+			`domain_sqld_limit`,
+			`domain_sqlu_limit`,
+			`domain_status`,
+			`domain_alias_limit`,
+			`domain_subd_limit`,
+			`domain_ip_id`,
+			`domain_disk_limit`,
+			`domain_disk_usage`,
+			`domain_php`,
+			`domain_cgi`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_admin_id));
@@ -70,7 +70,8 @@ SQL_QUERY;
 			$rs->fields['domain_disk_limit'],
 			$rs->fields['domain_disk_usage'],
 			$rs->fields['domain_php'],
-			$rs->fields['domain_cgi']);
+			$rs->fields['domain_cgi']
+		);
 	} else {
 		return $rs->fields;
 	}
@@ -79,7 +80,7 @@ SQL_QUERY;
 function get_domain_running_sub_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(`subdomain_id`) AS cnt
+			COUNT(*) AS cnt
 		FROM
 			`subdomain`
 		WHERE
@@ -96,7 +97,7 @@ $query = <<<SQL_QUERY
 		FROM
 			`subdomain_alias`
 		WHERE
-			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?)
+			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -108,13 +109,12 @@ SQL_QUERY;
 
 function get_domain_running_als_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(alias_id) AS cnt
-        FROM
-            domain_aliasses
-        WHERE
-            domain_id = ?
-
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`domain_aliasses`
+		WHERE
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -126,16 +126,16 @@ SQL_QUERY;
 
 function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(mail_id) AS cnt
-        FROM
-            mail_users
-        WHERE
-            mail_type RLIKE 'normal_'
-          AND
-            mail_type NOT LIKE 'normal_catchall'
-          AND
-            domain_id = ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`mail_users`
+		WHERE
+			`mail_type` RLIKE 'normal_'
+		AND
+			`mail_type` NOT LIKE 'normal_catchall'
+		AND
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -143,16 +143,16 @@ SQL_QUERY;
 	$dmn_mail_acc = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(mail_id) AS cnt
-        FROM
-            mail_users
-        WHERE
-            mail_type RLIKE 'alias_'
-          AND
-            mail_type NOT LIKE 'alias_catchall'
-          AND
-            domain_id = ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`mail_users`
+		WHERE
+			`mail_type` RLIKE 'alias_'
+		AND
+			`mail_type` NOT LIKE 'alias_catchall'
+		AND
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -161,15 +161,15 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(mail_id) AS cnt
+			COUNT(*) AS cnt
 		FROM
-			mail_users
+			`mail_users`
 		WHERE
-			mail_type RLIKE 'subdom_'
+			`mail_type` RLIKE 'subdom_'
 		AND
-			mail_type NOT LIKE 'subdom_catchall'
+			`mail_type` NOT LIKE 'subdom_catchall'
 		AND
-			domain_id = ?
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -178,38 +178,40 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(mail_id) AS cnt
+			COUNT(*) AS cnt
 		FROM
-			mail_users
+			`mail_users`
 		WHERE
-			mail_type RLIKE 'alssub_'
+			`mail_type` RLIKE 'alssub_'
 		AND
-			mail_type NOT LIKE 'alssub_catchall'
+			`mail_type` NOT LIKE 'alssub_catchall'
 		AND
-			domain_id = ?
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
 	$alssub_mail_acc = $rs->fields['cnt'];
 
-	return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
+	return array(
+		$dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
 		$dmn_mail_acc,
 		$als_mail_acc,
 		$sub_mail_acc,
-		$alssub_mail_acc);
+		$alssub_mail_acc
+	);
 }
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
 
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_name
-        FROM
-            domain
-        WHERE
-            domain_id = ?
+		SELECT
+			`domain_name`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -217,12 +219,12 @@ SQL_QUERY;
 	$dmn_name = $rs->fields['domain_name'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(userid) AS cnt
-        FROM
-            ftp_users
-        WHERE
-            userid LIKE ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`ftp_users`
+		WHERE
+			`userid` LIKE ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array('%' . $ftp_separator . $dmn_name));
@@ -235,23 +237,23 @@ SQL_QUERY;
 function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
-        SELECT
-            subdomain_name
-        FROM
-            subdomain
-        WHERE
-            domain_id = ?
-        ORDER BY
-            subdomain_id
+		SELECT
+			`subdomain_name`
+		FROM
+			`subdomain`
+		WHERE
+			`domain_id` = ?
+		ORDER BY
+			`subdomain_id`
 SQL_QUERY;
 
 	$query2 = <<<SQL_QUERY
-        SELECT
-            domain_name
-        FROM
-            domain
-        WHERE
-            domain_id = ?
+		SELECT
+			`domain_name`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
 SQL_QUERY;
 
 	$dmn = exec_query($sql, $query2, array($domain_id));
@@ -263,12 +265,12 @@ SQL_QUERY;
 		$sub_name = $rs->fields['subdomain_name'];
 
 		$query = <<<SQL_QUERY
-            SELECT
-                COUNT(userid) AS cnt
-            FROM
-                ftp_users
-            WHERE
-                userid LIKE ?
+			SELECT
+				COUNT(*) AS cnt
+			FROM
+				`ftp_users`
+			WHERE
+				`userid` LIKE ?
 SQL_QUERY;
 
 		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']));
@@ -284,14 +286,14 @@ SQL_QUERY;
 function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
-        SELECT
-            alias_name
-        FROM
-            domain_aliasses
-        WHERE
-            domain_id = ?
-        ORDER BY
-            alias_id
+		SELECT
+			`alias_name`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`domain_id` = ?
+		ORDER BY
+			`alias_id`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -302,12 +304,12 @@ SQL_QUERY;
 		$als_name = $rs->fields['alias_name'];
 
 		$query = <<<SQL_QUERY
-            SELECT
-                COUNT(userid) AS cnt
-            FROM
-                ftp_users
-            WHERE
-                userid LIKE ?
+			SELECT
+				COUNT(*) AS cnt
+			FROM
+				`ftp_users`
+			WHERE
+				`userid` LIKE ?
 SQL_QUERY;
 
 		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $als_name));
@@ -330,17 +332,18 @@ function get_domain_running_ftp_acc_cnt(&$sql, $domain_id) {
 		$dmn_ftp_acc_cnt + $sub_ftp_acc_cnt + $als_ftp_acc_cnt,
 		$dmn_ftp_acc_cnt,
 		$sub_ftp_acc_cnt,
-		$als_ftp_acc_cnt);
+		$als_ftp_acc_cnt
+	);
 }
 
 function get_domain_running_sqld_acc_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(sqld_id) AS cnt
-        FROM
-            sql_database
-        WHERE
-            domain_id = ?
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`sql_database`
+		WHERE
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -352,14 +355,14 @@ SQL_QUERY;
 
 function get_domain_running_sqlu_acc_cnt(&$sql, $domain_id) {
 	$query = <<<SQL_QUERY
-        SELECT DISTINCT
-            t1.sqlu_name
-        FROM
-            sql_user AS t1, sql_database AS t2
-        WHERE
-            t2.domain_id = ?
-          AND
-            t2.sqld_id = t1.sqld_id
+		SELECT DISTINCT
+			t1.`sqlu_name`
+		FROM
+			`sql_user` AS t1, `sql_database` AS t2
+		WHERE
+			t2.`domain_id` = ?
+		AND
+			t2.`sqld_id` = t1.`sqld_id`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -402,57 +405,57 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
-			array(
-				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-				'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-				'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-				'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
-				'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
-				'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
-				'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
-				'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
-				'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
-				'TR_MENU_ERROR_PAGES' => tr('Error pages'),
-				'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
-				'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
-				'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
-				'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-				'TR_MENU_NEW_TICKET' => tr('New ticket'),
-				'TR_MENU_LOGOUT' => tr('Logout'),
-				'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
-				'TR_WEBMAIL' => tr('Webmail'),
-				'TR_FILEMANAGER' => tr('Filemanager'),
-				'TR_MENU_WEBTOOLS' => tr('Webtools'),
-				'TR_HTACCESS' => tr('Protected areas'),
-				'TR_AWSTATS' => tr('Web statistics'),
-				'TR_HTACCESS_USER' => tr('Group/User management'),
-				'TR_MENU_OVERVIEW' => tr('Overview'),
-				'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
-				'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
-				'TR_MENU_LANGUAGE' => tr('Language'),
-				'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
-				'TR_MENU_ADD_ALIAS' => tr('Add alias'),
-				'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-				'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
-				'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
-				'WEBMAIL_PATH' => Config::get('WEBMAIL_PATH'),
-				'WEBMAIL_TARGET' => Config::get('WEBMAIL_TARGET'),
-				'PMA_PATH' => Config::get('PMA_PATH'),
-				'PMA_TARGET' => Config::get('PMA_TARGET'),
-				'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
-				'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
-			)
-		);
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+			'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+			'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
+			'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
+			'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
+			'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
+			'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
+			'TR_MENU_ERROR_PAGES' => tr('Error pages'),
+			'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+			'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+			'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+			'TR_MENU_NEW_TICKET' => tr('New ticket'),
+			'TR_MENU_LOGOUT' => tr('Logout'),
+			'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
+			'TR_WEBMAIL' => tr('Webmail'),
+			'TR_FILEMANAGER' => tr('Filemanager'),
+			'TR_MENU_WEBTOOLS' => tr('Webtools'),
+			'TR_HTACCESS' => tr('Protected areas'),
+			'TR_AWSTATS' => tr('Web statistics'),
+			'TR_HTACCESS_USER' => tr('Group/User management'),
+			'TR_MENU_OVERVIEW' => tr('Overview'),
+			'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
+			'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+			'TR_MENU_LANGUAGE' => tr('Language'),
+			'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
+			'TR_MENU_ADD_ALIAS' => tr('Add alias'),
+			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
+			'WEBMAIL_PATH' => Config::get('WEBMAIL_PATH'),
+			'WEBMAIL_TARGET' => Config::get('WEBMAIL_TARGET'),
+			'PMA_PATH' => Config::get('PMA_PATH'),
+			'PMA_TARGET' => Config::get('PMA_TARGET'),
+			'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
+			'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
+		)
+	);
 
 	$query = <<<SQL_QUERY
-        SELECT
-            *
-        FROM
-            custom_menus
-        WHERE
-            menu_level = 'user'
-          OR
-            menu_level = 'all'
+		SELECT
+			*
+		FROM
+			`custom_menus`
+		WHERE
+			`menu_level` = 'user'
+		OR
+			`menu_level` = 'all'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -469,17 +472,17 @@ SQL_QUERY;
 			$menu_link = str_replace('{ispcp_uname}', $_SESSION['user_logged'], $menu_link);
 
 			if ($menu_target !== '') {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
-					array(
-						'BUTTON_LINK' => $menu_link,
-						'BUTTON_NAME' => $menu_name,
-						'BUTTON_TARGET' => $menu_target,
-						'BUTTON_ID' => $i,
-						)
-				);
+				array(
+					'BUTTON_LINK' => $menu_link,
+					'BUTTON_NAME' => $menu_name,
+					'BUTTON_TARGET' => $menu_target,
+					'BUTTON_ID' => $i,
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -487,15 +490,16 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-         $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-         $dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-         $dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+	list(
+		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
+		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
+		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
+		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-    if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
+	if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
 	if (($dmn_als_limit == -1) && ($dmn_subd_limit == -1)) $tpl->assign('ISACTIVE_DOMAIN', '');
-    if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
-    if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
+	if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
+	if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
 
 	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
@@ -508,8 +512,8 @@ SQL_QUERY;
 			array(
 				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
 				'AWSTATS_TARGET' => '_blank'
-				)
-			);
+			)
+		);
 	}
 
 	$tpl->parse('MAIN_MENU', 'menu');
@@ -523,50 +527,50 @@ function gen_client_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('isactive_update_hp', 'menu');
 
 	$tpl->assign(
-			array(
-				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-				'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-				'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-				'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
-				'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
-				'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
-				'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
-				'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
-				'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
-				'TR_MENU_ERROR_PAGES' => tr('Error pages'),
-				'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
-				'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
-				'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
-				'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-				'TR_MENU_NEW_TICKET' => tr('New ticket'),
-				'TR_MENU_LOGOUT' => tr('Logout'),
-				'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
-				'TR_WEBMAIL' => tr('Webmail'),
-				'TR_FILEMANAGER' => tr('Filemanager'),
-				'TR_MENU_WEBTOOLS' => tr('Webtools'),
-				'TR_HTACCESS' => tr('Protected areas'),
-				'TR_AWSTATS' => tr('Web statistics'),
-				'TR_HTACCESS_USER' => tr('Group/User management'),
-				'TR_MENU_OVERVIEW' => tr('Overview'),
-				'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
-				'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
-				'TR_MENU_LANGUAGE' => tr('Language'),
-				'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
-				'TR_MENU_ADD_ALIAS' => tr('Add alias'),
-				'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-				'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
-				'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
-				'WEBMAIL_PATH' => Config::get('WEBMAIL_PATH'),
-				'WEBMAIL_TARGET' => Config::get('WEBMAIL_TARGET'),
-				'PMA_PATH' => Config::get('PMA_PATH'),
-				'PMA_TARGET' => Config::get('PMA_TARGET'),
-				'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
-				'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
-				'VERSION' => Config::get('Version'),
-				'BUILDDATE' => Config::get('BuildDate'),
-				'CODENAME' => Config::get('CodeName')
-				)
-		);
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+			'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+			'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
+			'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
+			'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
+			'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
+			'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
+			'TR_MENU_ERROR_PAGES' => tr('Error pages'),
+			'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+			'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+			'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+			'TR_MENU_NEW_TICKET' => tr('New ticket'),
+			'TR_MENU_LOGOUT' => tr('Logout'),
+			'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
+			'TR_WEBMAIL' => tr('Webmail'),
+			'TR_FILEMANAGER' => tr('Filemanager'),
+			'TR_MENU_WEBTOOLS' => tr('Webtools'),
+			'TR_HTACCESS' => tr('Protected areas'),
+			'TR_AWSTATS' => tr('Web statistics'),
+			'TR_HTACCESS_USER' => tr('Group/User management'),
+			'TR_MENU_OVERVIEW' => tr('Overview'),
+			'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
+			'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+			'TR_MENU_LANGUAGE' => tr('Language'),
+			'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
+			'TR_MENU_ADD_ALIAS' => tr('Add alias'),
+			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
+			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
+			'WEBMAIL_PATH' => Config::get('WEBMAIL_PATH'),
+			'WEBMAIL_TARGET' => Config::get('WEBMAIL_TARGET'),
+			'PMA_PATH' => Config::get('PMA_PATH'),
+			'PMA_TARGET' => Config::get('PMA_TARGET'),
+			'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
+			'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
+			'VERSION' => Config::get('Version'),
+			'BUILDDATE' => Config::get('BuildDate'),
+			'CODENAME' => Config::get('CodeName')
+		)
+	);
 
 	$query = "
 		SELECT
@@ -592,7 +596,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = "target=\"" . $menu_target . "\"";
+				$menu_target = 'target="' . $menu_target . '"';
 			}
 
 			$tpl->assign(
@@ -601,8 +605,8 @@ function gen_client_menu(&$tpl, $menu_file) {
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
 			$rs->MoveNext();
@@ -613,12 +617,13 @@ function gen_client_menu(&$tpl, $menu_file) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
-	list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-         $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-         $dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-         $dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+	list(
+		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
+		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
+		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
+		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-    if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
+	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
 
 	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
@@ -627,20 +632,20 @@ function gen_client_menu(&$tpl, $menu_file) {
 			array(
 				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
 				'AWSTATS_TARGET' => '_blank'
-				)
-			);
+			)
+		);
 	}
 
 	# Hide 'Update Hosting Package'-Button, if there are none
 	$query = <<<SQL_QUERY
-	 SELECT
-	     id
-	 FROM
-	     hosting_plans
-	 WHERE
-	     reseller_id = ?
-	   AND
-	     status = '1'
+		SELECT
+			`id`
+		FROM
+			`hosting_plans`
+		WHERE
+			`reseller_id` = ?
+		AND
+			`status` = '1'
 SQL_QUERY;
 	
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
@@ -655,12 +660,12 @@ SQL_QUERY;
 
 function get_user_domain_id(&$sql, $user_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_id
-        FROM
-            domain
-        WHERE
-            domain_admin_id = ?
+		SELECT
+			`domain_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -702,11 +707,11 @@ function user_goto($dest) {
 function count_sql_user_by_name(&$sql, $sqlu_name) {
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(sqlu_id) AS cnt
+			COUNT(*) AS cnt
 		FROM
-			sql_user
+			`sql_user`
 		WHERE
-			sqlu_name = ?
+			`sqlu_name` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($sqlu_name));
@@ -714,32 +719,36 @@ SQL_QUERY;
 	return $rs->fields['cnt'];
 }
 
+/**
+ * @todo see dirty hack
+ */
 function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 	// let's get sql user common data;
 	$query = <<<SQL_QUERY
-         SELECT
-            t1.sqld_id, t1.sqlu_name, t2.sqld_name, t1.sqlu_name
-         FROM
-            sql_user AS t1,
-            sql_database AS t2
-         WHERE
-            t1.sqld_id = t2.sqld_id
-           AND
-            t2.domain_id = ?
-           AND
-            t1.sqlu_id = ?
+		SELECT
+			t1.`sqld_id`, t1.`sqlu_name`, t2.`sqld_name`, t1.`sqlu_name`
+		FROM
+			`sql_user` AS t1,
+			`sql_database` AS t2
+		WHERE
+			t1.`sqld_id` = t2.`sqld_id`
+		AND
+			t2.`domain_id` = ?
+		AND
+			t1.`sqlu_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_user_id));
 
 	if ($rs->RecordCount() == 0) {
-		//dirty hack admin can't delete users without database
-		if($_SESSION['user_type']==='admin' || $_SESSION['user_type']==='reseller')
+		// dirty hack admin can't delete users without database
+		if ($_SESSION['user_type'] === 'admin'
+			|| $_SESSION['user_type'] === 'reseller')
 			return;
 		user_goto('sql_manage.php');
 	}
 	// remove from ispcp sql_user table.
-	$query = 'delete from sql_user where sqlu_id = ?';
+	$query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
 	exec_query($sql, $query, array($db_user_id));
 
 	$db_name = quoteIdentifier($rs->fields['sqld_name']);
@@ -749,13 +758,15 @@ SQL_QUERY;
 		$db_id = $rs->fields['sqld_id'];
 		// revoke grants on global level, if any;
 		$query = <<<SQL_QUERY
-       		REVOKE ALL ON *.* FROM ?@'%'
+			REVOKE ALL ON *.* FROM ?@'%'
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
+
 		$query = <<<SQL_QUERY
 			REVOKE ALL ON *.* FROM ?@localhost
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
+
 		// delete user record from mysql.user table;
 		$query = <<<SQL_QUERY
 			DROP USER ?@'%';
@@ -767,6 +778,7 @@ SQL_QUERY;
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($db_user_name));
+
 		// flush privileges.
 		$query = <<<SQL_QUERY
 			FLUSH PRIVILEGES;
@@ -778,6 +790,7 @@ SQL_QUERY;
 			REVOKE ALL ON $new_db_name.* FROM ?@'%'
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
+
 		$query = <<<SQL_QUERY
 			REVOKE ALL ON $new_db_name.* FROM ?@localhost
 SQL_QUERY;
@@ -804,7 +817,8 @@ function check_permissions(&$tpl) {
 	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == "no") {
 		$tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
 	}
-	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == "no" && isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
+	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == "no"
+		&& isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
 		$tpl->assign('DMN_MNGMNT', '');
 	}
 }
@@ -838,20 +852,20 @@ function check_ftp_perms($sql, $ftp_acc) {
 
 function delete_sql_database(&$sql, $dmn_id, $db_id) {
 	$query = <<<SQL_QUERY
-        SELECT
-            sqld_name AS db_name
-        FROM
-            sql_database
-        WHERE
-            domain_id = ?
-          AND
-            sqld_id = ?
+		SELECT
+			`sqld_name` AS db_name
+		FROM
+			`sql_database`
+		WHERE
+			`domain_id` = ?
+		AND
+			`sqld_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
 	if ($rs->RecordCount() == 0) {
-		if($_SESSION['user_type'] === 'admin' || $_SESSION['user_type'] === 'reseller') {
+		if ($_SESSION['user_type'] === 'admin' || $_SESSION['user_type'] === 'reseller') {
 			return;
 		}
 		user_goto('sql_manage.php');
@@ -860,18 +874,18 @@ SQL_QUERY;
 	$db_name = quoteIdentifier($rs->fields['db_name']);
 	// have we any users assigned to this database;
 	$query = <<<SQL_QUERY
-        SELECT
-            t2.sqlu_id AS db_user_id,
-            t2.sqlu_name AS db_user_name
-        FROM
-            sql_database AS t1,
-            sql_user AS t2
-        WHERE
-            t1.sqld_id = t2.sqld_id
-          AND
-            t1.domain_id = ?
-          AND
-            t1.sqld_id = ?
+		SELECT
+			t2.`sqlu_id` AS db_user_id,
+			t2.`sqlu_name` AS db_user_name
+		FROM
+			`sql_database` AS t1,
+			`sql_user` AS t2
+		WHERE
+			t1.`sqld_id` = t2.`sqld_id`
+		AND
+			t1.`domain_id` = ?
+		AND
+			t1.`sqld_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
@@ -888,19 +902,19 @@ SQL_QUERY;
 		}
 	}
 	// drop desired database;
-	$query = "DROP DATABASE IF EXISTS ".$db_name.";";
+	$query = "DROP DATABASE IF EXISTS ?";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query, array($db_name));
 
 	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
 	// delete desired database from the ispcp sql_database table;
 	$query = <<<SQL_QUERY
-        DELETE FROM
-            sql_database
-        WHERE
-            domain_id = ?
-          AND
-            sqld_id = ?
+		DELETE FROM
+			`sql_database`
+		WHERE
+			`domain_id` = ?
+		AND
+			`sqld_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
@@ -915,11 +929,7 @@ function get_gender_by_code($code, $nullOnBad = false) {
 			return tr('Female');
 			break;
 		default:
-			if (!$nullOnBad) {
-				return tr('Unknown');
-			} else {
-				return null;
-			}
+			return (!$nullOnBad) ? tr('Unknown') : null;
 			break;
 	}
 }
@@ -958,4 +968,5 @@ function mount_point_exists($dmn_id, $mnt_point) {
 	if ($rs->RowCount() > 0) return true;
 	return false;
 }
+
 ?>
