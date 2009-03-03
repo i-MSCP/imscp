@@ -2031,7 +2031,6 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<html>
 	<head>
 		<title>{$title}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
