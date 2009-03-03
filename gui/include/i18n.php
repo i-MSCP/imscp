@@ -60,6 +60,7 @@ function curlang($newlang = null, $force = false) {
  * 	@param		String	$msgid			string to translate
  *  @param		Mixed	$substitution	prevent the returned string from being replaced with html entities
  * 	@return		String					translated or original string
+ *  @todo use db prepared statements
  **/
 function tr($msgid, $substitution = false) {
 	$sql = Database::getInstance();
@@ -135,9 +136,11 @@ function tr($msgid, $substitution = false) {
  * 	@return					string with replaced chars
  **/
 function replace_html($string) {
-	$pattern = array (
+	$pattern = array(
 		'#&lt;[ ]*b[ ]*&gt;#i',
 		'#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
+		'#&lt;[ ]*strong[ ]*&gt;#i',
+		'#&lt;[ ]*/[ ]*strong[ ]*&gt;#i',
 		'#&lt;[ ]*em[ ]*&gt;#i',
 		'#&lt;[ ]*/[ ]*em[ ]*&gt;#i',
 		'#&lt;[ ]*i[ ]*&gt;#i',
@@ -147,9 +150,11 @@ function replace_html($string) {
 		'#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'
 	);
 
-	$replacement = array (
+	$replacement = array(
 		'<b>',
 		'</b>',
+		'<strong>',
+		'</strong>',
 		'<em>',
 		'</em>',
 		'<i>',

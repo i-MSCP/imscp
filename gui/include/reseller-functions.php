@@ -1620,6 +1620,7 @@ Please login into your ispCP control panel for more details.
 	$search [] = '{RESELLER}';
 	$replace[] = $from_name;
 	$message = str_replace($search, $replace, $message);
+	$message = html_entity_decode($message, ENT_NOQUOTES, 'UTF-8');
 
 	$mail_result = mail($from, $subject, $message, $headers);
 }

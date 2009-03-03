@@ -1401,13 +1401,13 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$base_vhost = Config::get('BASE_SERVER_VHOST');
 
 	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+		$from = '"' . encode($from_name) . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
-		$to = "\"" . encode($ufname . ' ' . $ulname) . "\" <" . $uemail . ">";
+		$to = '"' . encode($ufname . ' ' . $ulname) . "\" <" . $uemail . ">";
 		$name = "$ufname $ulname";
 	} else {
 		$name = $uname;
@@ -1522,8 +1522,8 @@ function gen_logged_from(&$tpl) {
 			array(
 				'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])),
 				'TR_GO_BACK' => tr('Go back')
-				)
-			);
+			)
+		);
 
 		$tpl->parse('LOGGED_FROM', '.logged_from');
 	} else {
