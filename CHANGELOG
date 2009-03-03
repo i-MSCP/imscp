@@ -9,6 +9,7 @@ ispCP ω 1.0.1 Changelog
 	- GUI:
 		* fixed some invalid (hardcoded) HTML
 		* code cleanup, typos
+		* Fixed #1711: Login page looks wrong
 
 2009-03-02 Benedikt Heintel
 	- GUI:

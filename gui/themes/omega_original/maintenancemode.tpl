@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
 	<head>
 		<title>{TR_PAGE_TITLE}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+		<meta http-equiv="Content-Style-Type" content="text/css">
+		<meta name="robots" content="nofollow, noindex">
+		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
 	<body style="color:#000000">
-		<table width="100%" align="center" cellpadding="0" cellspacing="0" style="height:100%">
+		<table cellpadding="0" cellspacing="0" style="width:100%; height:100%">
 			<tr>
-				<td>
-					<table width="453" style="border:solid 1px #CCCCCC;" align="center" cellpadding="0" cellspacing="0">
+				<td style="vertical-align:middle; text-align:center;">
+					<table style="width:453px; text-align:center; border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
 						<tr>
 							<td>
 								<table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
