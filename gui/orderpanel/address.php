@@ -55,7 +55,7 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 		$email = '';
 	}
 
-	if (isset($_POST['gender'])) {
+	if (isset($_POST['gender']) && (in_array($_POST['gender'], array('M', 'F', 'U')))) {
 		$gender = $_POST['gender'];
 	} else if (isset($_SESSION['gender'])) {
 		$gender = $_SESSION['gender'];

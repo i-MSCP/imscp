@@ -69,6 +69,7 @@ function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
 		$customer_id	= $_POST['customer_id'];
 		$fname			= $_POST['fname'];
 		$lname			= $_POST['lname'];
+		$gender			= $_POST['gender'];
 		$firm			= $_POST['firm'];
 		$zip			= $_POST['zip'];
 		$city			= $_POST['city'];
@@ -84,6 +85,7 @@ function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
 		$customer_id	= $rs->fields['customer_id'];
 		$fname			= $rs->fields['fname'];
 		$lname			= $rs->fields['lname'];
+		$gender			= $rs->fields['gender'];
 		$firm			= $rs->fields['firm'];
 		$zip			= $rs->fields['zip'];
 		$city			= $rs->fields['city'];
@@ -128,7 +130,10 @@ function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
 			'PHONE'			=> $phone,
 			'FAX'			=> $fax,
 			'STREET1'		=> $street1,
-			'STREET2'		=> $street2
+			'STREET2'		=> $street2,
+			'VL_MALE' 		=> (($gender == 'M') ? 'selected="selected"' : ''),
+			'VL_FEMALE' 	=> (($gender == 'F') ? 'selected="selected"' : ''),
+			'VL_UNKNOWN' 	=> ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : '')
 		)
 	);
 }
@@ -139,6 +144,7 @@ function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	$customer_id	= strip_html($_POST['customer_id']);
 	$fname			= strip_html($_POST['fname']);
 	$lname			= strip_html($_POST['lname']);
+	$gender			= in_array($_POST['gender'],array('M', 'F', 'U')) ? $_POST['gender'] : 'U';
 	$firm			= strip_html($_POST['firm']);
 	$zip			= strip_html($_POST['zip']);
 	$city			= strip_html($_POST['city']);
@@ -158,6 +164,7 @@ function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
 			`customer_id` = ?,
 			`fname` = ?,
 			`lname` = ?,
+			`gender` = ?,
 			`firm` = ?,
 			`zip` = ?,
 			`city` = ?,
@@ -173,7 +180,7 @@ function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
 		AND
 			`user_id` = ?
 	";
-	exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
+	exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
 }
 
 // end of functions
@@ -220,6 +227,10 @@ $tpl->assign(
 		'TR_DOMAIN'					=> tr('Domain'),
 		'TR_FIRST_NAME'				=> tr('First name'),
 		'TR_LAST_NAME'				=> tr('Last name'),
+		'TR_GENDER'					=> tr('Gender'),
+		'TR_MALE'					=> tr('Male'),
+		'TR_FEMALE'					=> tr('Female'),
+		'TR_UNKNOWN'				=> tr('Unknown'),
 		'TR_COMPANY'				=> tr('Company'),
 		'TR_ZIP_POSTAL_CODE'		=> tr('Zip/Postal code'),
 		'TR_CITY'					=> tr('City'),

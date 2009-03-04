@@ -923,9 +923,11 @@ SQL_QUERY;
 function get_gender_by_code($code, $nullOnBad = false) {
 	switch (strtolower($code)) {
 		case 'm':
+		case 'M':
 			return tr('Male');
 			break;
 		case 'f':
+		case 'F':
 			return tr('Female');
 			break;
 		default:

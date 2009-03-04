@@ -107,6 +107,17 @@ function delete_order(url, name) {
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
+                        <td class="content2">{TR_GENDER}</td>
+                        <td class="content">
+                            <select name="gender" size="1">
+                               <option value="M" {VL_MALE}>{TR_MALE}</option>
+                               <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+                               <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+                            </select>
+                         </td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
                         <td class="content2">{TR_COMPANY}</td>
                         <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput"></td>
                       </tr>

@@ -35,6 +35,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	$domain_name = $_SESSION['domainname'];
 	$fname = $_SESSION['fname'];
 	$lname = $_SESSION['lname'];
+	$gender = $_SESSION['gender'];
 
 	$firm = (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';
 
@@ -62,6 +63,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 				`domain_name`,
 				`fname`,
 				`lname`,
+				`gender`,
 				`firm`,
 				`zip`,
 				`city`,
@@ -74,10 +76,10 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 				`street2`,
 				`status`)
 		VALUES
-			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
+	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
 	//print $sql->ErrorMsg();
 	$order_id = $sql->Insert_ID();
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
@@ -86,6 +88,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	unset($_SESSION['domainname']);
 	unset($_SESSION['fname']);
 	unset($_SESSION['lname']);
+	unset($_SESSION['gender']);
 	unset($_SESSION['email']);
 	unset($_SESSION['firm']);
 	unset($_SESSION['zip']);
