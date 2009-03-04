@@ -6,7 +6,6 @@
 # Copyright (c) 2006-2009 by isp Control Panel
 # http://isp-control.net
 #
-#
 # License:
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of the MPL Mozilla Public License
