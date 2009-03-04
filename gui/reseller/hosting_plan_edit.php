@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -94,7 +94,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 		restore_form($tpl, $sql);
 	}
 } else {
-	// Get hosting plan id tha come for edit
+	// Get hosting plan id that comes for edit
 	if (isset($_GET['hpid'])) {
 		$hpid = $_GET['hpid'];
 	}
@@ -134,14 +134,14 @@ function restore_form(&$tpl, &$sql) {
 		)
 	);
 
-	$tpl->assign(array('TR_PHP_YES'	=> ($_POST['php'] === '_yes_') ? 'checked="checked"': ''));
-	$tpl->assign(array('TR_PHP_NO'	=> ($_POST['php'] === '_yes_') ? '': 'checked="checked"'));
+	$tpl->assign(array('TR_PHP_YES'	=> ($_POST['php'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_PHP_NO'	=> ($_POST['php'] === '_yes_') ? '' : 'checked="checked"'));
 
-	$tpl->assign(array('TR_CGI_YES'	=> ($_POST['cgi'] === '_yes_') ? 'checked="checked"': ''));
-	$tpl->assign(array('TR_CGI_NO'	=> ($_POST['cgi'] === '_yes_') ? '': 'checked="checked"'));
+	$tpl->assign(array('TR_CGI_YES'	=> ($_POST['cgi'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_CGI_NO'	=> ($_POST['cgi'] === '_yes_') ? '' : 'checked="checked"'));
 
-	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] === '_yes_') ? 'checked="checked"': ''));
-	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] === '_yes_') ? '': 'checked="checked"'));
+	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
 }
 
 // Generate load data from sql for requested hosting plan
@@ -158,8 +158,8 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 				`id` = ?;
 		";
 		$res = exec_query($sql, $query, array($hpid));
-		$readonly = 'readonly';
-		$disabled = 'disabled';
+		$readonly = 'readonly="readonly"';
+		$disabled = 'disabled="disabled"';
 		$edit_hp = tr('View hosting plan');
 		$tpl->assign('FORM', "");
 	} else {
@@ -229,11 +229,11 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$tpl->assign(
 		array(
 			'TR_PHP_YES'	=> ($hp_php === '_yes_') ? 'checked="checked"' : '',
-			'TR_PHP_NO'		=> ($hp_php === '_yes_') ? '' : 'checked="checked"'
+			'TR_PHP_NO'		=> ($hp_php === '_yes_') ? '' : 'checked="checked"',
 			'TR_CGI_YES'	=> ($hp_cgi === '_yes_') ? 'checked="checked"' : '',
-			'TR_CGI_NO'		=> ($hp_cgi === '_yes_') ? '' : 'checked="checked"'
-			'TR_STATUS_YES'	=> ($status === '_yes_') ? 'checked="checked"' : '',
-			'TR_STATUS_NO'	=> ($status === '_yes_') ? '' : 'checked="checked"'
+			'TR_CGI_NO'		=> ($hp_cgi === '_yes_') ? '' : 'checked="checked"',
+			'TR_STATUS_YES'	=> ($status == 1) ? 'checked="checked"' : '',
+			'TR_STATUS_NO'	=> ($status == 1) ? '' : 'checked="checked"'
 		)
 	);
 } // End of gen_load_ehp_page()
@@ -266,7 +266,7 @@ function check_data_iscorrect(&$tpl) {
 		$ahp_error = tr('Undefined reference to data!');
 	// put hosting plan id into session value
 	$_SESSION['hpid'] = $hpid;
-	// Get values from previes page and check him correction
+	// Get values from previous page and check him correction
 	if (isset($_POST['php']))
 		$hp_php = $_POST['php'];
 
@@ -360,7 +360,8 @@ function save_data_to_db() {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 		return false;
 	}
-} //End of save_data_to_db()
+} // End of save_data_to_db()
+
 die();
 
 ?>

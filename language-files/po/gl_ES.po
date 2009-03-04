@@ -3410,11 +3410,11 @@ msgid "Could not get config from database"
 msgstr "Non se puido obter a configuración dende o banco de datos"
 
 #, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "Terás que agardar %d segundos"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr "Fuches bloqueado por %d minutos"
 
 #, fuzzy

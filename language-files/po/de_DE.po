@@ -3312,12 +3312,12 @@ msgid "Could not get config from database"
 msgstr "Konnte die Konfiguration nicht aus der Datenbank laden"
 
 #, php-format
-msgid "You have to wait %d seconds"
-msgstr "Sie müssen noch %d Sekunden warten"
+msgid "You have to wait %d seconds."
+msgstr "Sie müssen noch %d Sekunden warten."
 
 #, php-format
-msgid "You have been blocked for %d minutes"
-msgstr "Sie wurden für %d Minuten gesperrt"
+msgid "You have been blocked for %d minutes."
+msgstr "Sie wurden für %d Minuten gesperrt."
 
 msgid "You entered an incorrect username/password."
 msgstr "Benutzername oder Passwort ist nicht korrekt."

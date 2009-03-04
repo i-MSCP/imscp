@@ -11,6 +11,7 @@ ispCP ω 1.0.1 Changelog
 		* code cleanup, typos
 		* Fixed #1711: Login page looks wrong
 		* fixed decoding problem in order mails of order panel 
+		* Fixed #1719: Error on hosting_plan_edit.php
 
 2009-03-02 Benedikt Heintel
 	- GUI:

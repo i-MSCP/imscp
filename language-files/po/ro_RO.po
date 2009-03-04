@@ -3388,11 +3388,11 @@ msgid "Could not get config from database"
 msgstr "Nu pot obtine config-ul din baza de date"
 
 #, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "Trebuie sa asteptati %d secunde"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr "Sunteti blocat pentru %d minute"
 
 msgid "You entered an incorrect username/password."

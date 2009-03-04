@@ -3354,11 +3354,11 @@ msgid "Could not get config from database"
 msgstr "不能从数据库获得配置"
 
 #, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "您需要等待 %d 秒钟"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr "您已被冻结 %d 分钟"
 
 #, fuzzy

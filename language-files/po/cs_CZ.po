@@ -3375,11 +3375,11 @@ msgid "Could not get config from database"
 msgstr "Nemohu získat konfiguraci z databáze"
 
 #, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "Musíte počkat %d vteřin"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr "Jste zablokován na %d minut"
 
 #, fuzzy

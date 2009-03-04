@@ -3379,11 +3379,11 @@ msgid "Could not get config from database"
 msgstr ""
 
 #, fuzzy, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "Sinun t�ytyy odottaa"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr ""
 
 msgid "You entered an incorrect username/password."

@@ -3388,11 +3388,11 @@ msgid "Could not get config from database"
 msgstr "Nie można uzyskać konfiguracji z bazy danych"
 
 #, php-format
-msgid "You have to wait %d seconds"
+msgid "You have to wait %d seconds."
 msgstr "Musisz poczekać %d sekund"
 
 #, php-format
-msgid "You have been blocked for %d minutes"
+msgid "You have been blocked for %d minutes."
 msgstr "Zostałeś zablokowany na %d minut"
 
 #, fuzzy
