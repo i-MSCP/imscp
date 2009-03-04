@@ -329,7 +329,7 @@ img.lightbulb {
 
 /* MySQL Parser */
 .syntax {
-	font-size: 1		0px;
+	font-size:          10px;
 }
 
 .syntax_comment {

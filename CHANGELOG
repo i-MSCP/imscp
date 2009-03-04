@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-04 Thomas Häber
+	- GUI:
+		* Fixed #1719: Error on hosting_plan_edit.php
+	- Tools
+		* Fixed #1718: tiny CSS bug in omega pma theme
+
 2009-03-03 Benedikt Heintel
 	- DISTS:
 		* Fixed #1704 (FreeBSD): Error in FreeBSD Proftpd Config
@@ -11,7 +17,6 @@ ispCP ω 1.0.1 Changelog
 		* code cleanup, typos
 		* Fixed #1711: Login page looks wrong
 		* fixed decoding problem in order mails of order panel 
-		* Fixed #1719: Error on hosting_plan_edit.php
 
 2009-03-02 Benedikt Heintel
 	- GUI:
