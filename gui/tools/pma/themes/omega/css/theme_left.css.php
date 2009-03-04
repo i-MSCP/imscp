@@ -32,7 +32,7 @@ body {
 	background-repeat: 		repeat-y;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     margin:             0;
-    padding:            0.2em 0.2em 0.2em 0.2em;
+    padding:            0.2em;
 }
 
 a img {
@@ -61,7 +61,7 @@ select#lightm_db {
     width:              100%;
 }
 
-/* buttons in some browsers (eg. Konqueror) are block elements,
+/* buttons in some browsers (eg. Konqueror) block elements,
    this breaks design */
 button {
     display:            inline;

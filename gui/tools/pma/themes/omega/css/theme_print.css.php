@@ -1,41 +1,29 @@
 /* For printview */
 body {
-    font-family:       Verdana, Arial, Helvetica, sans-serif;
-    font-size:         10px;
+    font:              10px Verdana, Arial, Helvetica, sans-serif;
     color:             #000000;
     background-color:  #ffffff;
 }
 h1 {
-    font-family:       Verdana, Arial, Helvetica, sans-serif;
-    font-size:         16px;
-    font-weight:       bold;
+    font:              bold 16px Verdana, Arial, Helvetica, sans-serif;
     color:             #000000;
 }
 table {
-    border-width:      1px;
-    border-color:      #000000;
-    border-style:      solid;
+    border:            1px solid #000000;
     border-collapse:   collapse;
     border-spacing:    0;
 }
 th {
-    font-family:       Verdana, Arial, Helvetica, sans-serif;
-    font-size:         10px;
-    font-weight:       bold;
+    font:              bold 10px Verdana, Arial, Helvetica, sans-serif;
     color:             #000000;
     background-color:  #e5e5e5;
-    border-width:      1px;
-    border-color:      #000000;
-    border-style:      solid;
+    border:            1px solid #000000;
     padding:           2px;
 }
 td {
-    font-family:       Verdana, Arial, Helvetica, sans-serif;
-    font-size:         10px;
+    font:              10px Verdana, Arial, Helvetica, sans-serif;
     color:             #000000;
     background-color:  #ffffff;
-    border-width:      1px;
-    border-color:      #000000;
-    border-style:      solid;
+    border:            1px solid #000000;
     padding:           2px;
 }

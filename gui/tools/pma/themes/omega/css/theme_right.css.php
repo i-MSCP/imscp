@@ -12,52 +12,49 @@ html {
 }
 
 body {
-    font-family:        Verdana, Arial, Helvetica, sans-serif;
-    font-size:          10px;
-    color:            	 #000000;
+    font:               10px Verdana, Arial, Helvetica, sans-serif;
+    color:              #000000;
     background-color:   #ffffff;
     margin:             5px;
-	padding: 			0px;
+	padding:            0px;
 }
 
 /* gecko FIX, font size is not correctly assigned to all child elements */
 body * {
-    font-family:        inherit;
-    font-size:          inherit;
+    font:                inherit inherit;
 }
 
 h1 {
-    font-size:        	 18px;
-    font-weight:      	 bold;
+    font-size:          18px;
+    font-weight:        bold;
 }
 
 h2 {
-    font-size:        	 13px;
-    font-weight:      	 bold;
+    font-size:          13px;
+    font-weight:        bold;
 }
 
 h3 {
-    font-size:        	 12px;
-    font-weight:      	 bold;
+    font-size:          12px;
+    font-weight:        bold;
 }
 
 pre, tt, code{
-    font-size:        	 11px;
+    font-size:          11px;
 }
 
 a:link,
 a:visited,
 a:active {
-    font-size:        	 11px;
-    text-decoration:  	 none;
-    color:            	 #333333;
-
+    font-size:          11px;
+    text-decoration:    none;
+    color:              #333333;
 }
 
 a:hover {
-    font-size:        	 11px;
-    text-decoration:  	 underline;
-    color:            	 #8897AE;
+    font-size:          11px;
+    text-decoration:    underline;
+    color:              #8897AE;
 }
 
 dfn {
@@ -190,7 +187,7 @@ fieldset legend {
     color:       		#333333;
     font-weight: 		bold;
     background-color: 	#ffffff;
-    padding:            2px 2px 2px 2px;
+    padding:            2px;
 	font-size:        	11px;
 }
 
@@ -279,7 +276,7 @@ table .value {
     text-align:         right;
     white-space:        nowrap;
 }
-/* IE doesnt handles 'pre' right */
+/* IE doesn't handles 'pre' right */
 table [class=value] {
     white-space:        pre;
 }
@@ -891,7 +888,7 @@ div#tablestatistics table caption {
 }
 
 #serverinfo .item {
-    white-space:        nowrap;
+    white-space:         nowrap;
     font-size:      	 12px;
     font-weight:    	 bolder;
 	color:				 #000000;
@@ -1107,13 +1104,12 @@ div#tablefieldscontainer select {
 }
 
 textarea#sqlquery {
-    width: 					100%;
-    /* height: 				100%; */
+    width: 				100%;
+    /* height: 			100%; */
 }
 
 div#queryboxcontainer div#bookmarkoptions {
-    margin-top: 			0.5em;
+    margin-top: 		0.5em;
 }
 /* end querybox */
-
 
