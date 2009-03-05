@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (c) 2007-2008 by ispCP
+# Copyright (c) 2007-2009 by ispCP
 # http://isp-control.net
 #
 #
@@ -112,15 +112,15 @@ sub ask_eth {
 sub check_eth {
 
 	my ($ip) = @_;
-	return 0 if (!($ip  =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/));
+	return 0 if (!($ip =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/));
 
-	$ip  =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
+	$ip =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
 	my ($d1, $d2, $d3, $d4) = ($1, $2, $3, $4);
 
-	return 0 if (($d1 <= 0) || ($d1 >= 255));
-	return 0 if (($d2 < 0)  || ($d2 > 255));
-	return 0 if (($d3 < 0)  || ($d3 > 255));
-	return 0 if (($d4 <= 0) || ($d4 >= 255));
+	return 0 if (($d1 <= 0)	|| ($d1 >= 255));
+	return 0 if (($d2 < 0)	|| ($d2 > 255));
+	return 0 if (($d3 < 0)	|| ($d3 > 255));
+	return 0 if (($d4 <= 0)	|| ($d4 >= 255));
 
 	return 1;
 }
@@ -633,9 +633,9 @@ sub setup_crontab {
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
 	my ($rs, $rdata, $awstats, $rkhunter, $ckrootkit) = (undef, undef, '');
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/cron.d";
-	my $bk_dir = "$cfg_dir/backup";
-	my $wrk_dir = "$cfg_dir/working";
+	my $cfg_dir = $main::cfg{'CONF_DIR'} . '/cron.d';
+	my $bk_dir = $cfg_dir . '/backup';
+	my $wrk_dir = $cfg_dir . '/working';
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
 	if (! -e "$bk_dir/ispcp") {
@@ -652,26 +652,26 @@ sub setup_crontab {
 		$rkhunter = `which rkhunter`;
 		$ckrootkit = `which chkrootkit`;
 
-    	$rkhunter =~ s/[ \t\n]$//g;
-    	$ckrootkit =~ s/[ \t\n]$//g;
+		$rkhunter =~ s/[ \t\n]$//g;
+		$ckrootkit =~ s/[ \t\n]$//g;
 
 		my %tag_hash = (
-						'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
-						'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-						'{QUOTA_ROOT_DIR}' => $main::cfg{'QUOTA_ROOT_DIR'},
-						'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
-						'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
-						'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'},
-						'{AWSTATS_ROOT_DIR}' => $main::cfg{'AWSTATS_ROOT_DIR'},
-						'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-						'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-						'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
-						'{AW-ENABLED}' => $awstats,
-						'{RK-ENABLED}' => !length($rkhunter)? "#" : "",
-						'{RKHUNTER}'   => $rkhunter,
-						'{CR-ENABLED}' => !length($ckrootkit)? "#" : "",
-						'{CHKROOTKIT}'  => $ckrootkit
-					   );
+			'{LOG_DIR}'				=> $main::cfg{'LOG_DIR'},
+			'{CONF_DIR}'			=> $main::cfg{'CONF_DIR'},
+			'{QUOTA_ROOT_DIR}'		=> $main::cfg{'QUOTA_ROOT_DIR'},
+			'{TRAFF_ROOT_DIR}'		=> $main::cfg{'TRAFF_ROOT_DIR'},
+			'{TOOLS_ROOT_DIR}'		=> $main::cfg{'TOOLS_ROOT_DIR'},
+			'{BACKUP_ROOT_DIR}'		=> $main::cfg{'BACKUP_ROOT_DIR'},
+			'{AWSTATS_ROOT_DIR}'	=> $main::cfg{'AWSTATS_ROOT_DIR'},
+			'{RKHUNTER_LOG}'		=> $main::cfg{'RKHUNTER_LOG'},
+			'{CHKROOTKIT_LOG}'		=> $main::cfg{'CHKROOTKIT_LOG'},
+			'{AWSTATS_ENGINE_DIR}'	=> $main::cfg{'AWSTATS_ENGINE_DIR'},
+			'{AW-ENABLED}'			=> $awstats,
+			'{RK-ENABLED}'			=> !length($rkhunter)? "#" : "",
+			'{RKHUNTER}'			=> $rkhunter,
+			'{CR-ENABLED}'			=> !length($ckrootkit)? "#" : "",
+			'{CHKROOTKIT}'			=> $ckrootkit
+		);
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 		return $rs if ($rs != 0);
@@ -704,7 +704,7 @@ sub setup_named {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
-# 	my $distro = "$main::cfg{'SERVER_HOSTNAME'}";
+#	my $distro = "$main::cfg{'SERVER_HOSTNAME'}";
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
@@ -724,9 +724,9 @@ sub setup_named {
 		$cfg = get_file($main::cfg{'BIND_CONF_FILE'});
 		return $rs if ($rs != 0);
 
-# 		if( $distro eq 'gentoo'){
+#		if( $distro eq 'gentoo'){
 			$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
-# 		}
+#		}
 
 		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		return $rs if ($rs != 0);
@@ -750,158 +750,158 @@ sub setup_named {
 #
 
 sub add_named_cfg_data {
-    push_el(\@main::el, 'add_named_cfg_data()', 'Starting...');
+	push_el(\@main::el, 'add_named_cfg_data()', 'Starting...');
 
-    my ($base_vhost) = @_;
-    my ($rs, $rdata) = (undef, undef);
+	my ($base_vhost) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    if (!defined($base_vhost) || $base_vhost eq '') {
-        push_el(\@main::el, 'add_named_cfg_data()', 'ERROR: Undefined Input Data...');
-        return -1;
-    }
+	if (!defined($base_vhost) || $base_vhost eq '') {
+		push_el(\@main::el, 'add_named_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    #
-    # Initial data we need;
-    #
+	#
+	# Initial data we need;
+	#
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-    my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
 
-    my $tpl_dir = "$conf_dir/bind/parts";
-    my $backup_dir = "$conf_dir/bind/backup";
-    my $working_dir = "$conf_dir/bind/working";
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
 
-    my $timestamp = time;
-    my $backup_cfg = "$backup_dir/named.conf.$timestamp";
-    my $working_cfg = "$working_dir/named.conf";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/named.conf.$timestamp";
+	my $working_cfg = "$working_dir/named.conf";
 
-    #
-    #  BEGIN/END tags, and templates needed for this config;
-    #
+	#
+	# BEGIN/END tags, and templates needed for this config;
+	#
 
-    my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
+	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
 
-    (
-     $rs,
-     $dta_b,
-     $dta_e,
-     $entry_b,
-     $entry_e,
-     $entry
-    ) = get_tpl(
-                $tpl_dir,
-                'cfg_dta_b.tpl',
-                'cfg_dta_e.tpl',
-                'cfg_entry_b.tpl',
-                'cfg_entry_e.tpl',
-                'cfg_entry.tpl'
-               );
+	(
+	 $rs,
+	 $dta_b,
+	 $dta_e,
+	 $entry_b,
+	 $entry_e,
+	 $entry
+	) = get_tpl(
+		$tpl_dir,
+		'cfg_dta_b.tpl',
+		'cfg_dta_e.tpl',
+		'cfg_entry_b.tpl',
+		'cfg_entry_e.tpl',
+		'cfg_entry.tpl'
+	);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    #
-    # Let's construct needed tags and entries;
-    #
+	#
+	# Let's construct needed tags and entries;
+	#
 
-    my %tag_hash = (
-                    '{DMN_NAME}' => $base_vhost,
-                    '{DB_DIR}' => $named_db_dir
-                   );
+	my %tag_hash = (
+		'{DMN_NAME}' => $base_vhost,
+		'{DB_DIR}' => $named_db_dir
+	);
 
-    my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
 
-    (
-     $rs,
-     $entry_b_val,
-     $entry_e_val,
-     $entry_val
-    ) = prep_tpl(
-                 \%tag_hash,
-                 $entry_b,
-                 $entry_e,
-                 $entry
-                );
+	(
+	 $rs,
+	 $entry_b_val,
+	 $entry_e_val,
+	 $entry_val
+	) = prep_tpl(
+		\%tag_hash,
+		$entry_b,
+		$entry_e,
+		$entry
+	);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    #
-    # Let's get System and Working config files;
-    #
+	#
+	# Let's get System and Working config files;
+	#
 
-    my ($sys, $working) = ('', '');
+	my ($sys, $working) = ('', '');
 
-    ($rs, $sys) = get_file($sys_cfg);
-    return $rs  if ($rs != 0);
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs if ($rs != 0);
 
-    ($rs, $working) = get_file($working_cfg);
-    return $rs  if ($rs != 0);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
-    return $rs if ($rs != 0);
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
+	return $rs if ($rs != 0);
 
-    #
-    # Is the new domain entry exists ?
-    #
+	#
+	# Does the new domain entry exists?
+	#
 
-    ($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
+	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
 
-    if ($rs == 0) {
-        # Yes it exists ! Then we must delete it !
-        ($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
-        return $rs if ($rs != 0);
-    }
+	if ($rs == 0) {
+		# Yes it exists! Then we must delete it!
+		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
+		return $rs if ($rs != 0);
+	}
 
-    ($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
-    return $rs if ($rs != 0);
+	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
+	return $rs if ($rs != 0);
 
-    #
-    # Let's construct the replacement and do it;
-    #
+	#
+	# Let's construct the replacement and do it;
+	#
 
-    my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
+	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
-    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "add_named_cfg_data");
-    return $rs if ($rs != 0);
+	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "add_named_cfg_data");
+	return $rs if ($rs != 0);
 
-    #
-    # Here we'll backup production config file;
-    #
+	#
+	# Here we'll backup production config file;
+	#
 
-    $rs = sys_command("cp -p $sys_cfg $backup_cfg");
-    return $rs if ($rs != 0);
+	$rs = sys_command("cp -p $sys_cfg $backup_cfg");
+	return $rs if ($rs != 0);
 
-    #
-    # Let's save working copy;
-    #
+	#
+	# Let's save working copy;
+	#
 
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-    return $rs if ($rs != 0);
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    #
-    # Here we'll replace data in production config file with data in working
-    # confing file. A little workaround will be done. If working copy data does not exist
-    # in production config then we will add it;
-    #
+	#
+	# Here we'll replace data in production config file with data in working
+	# config file. A little workaround will be done. If working copy data does not exist
+	# in production config then we will add it;
+	#
 
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
 
-    if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "add_named_cfg_data");
-        return $rs if ($rs != 0);
-    }
+	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
+		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "add_named_cfg_data");
+		return $rs if ($rs != 0);
+	}
 	elsif ($rs == -5) {
-        $sys .= $working;
-    }
+		$sys .= $working;
+	}
 	else {
-        return $rs;
-    }
+		return $rs;
+	}
 
-    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-    return $rs if ($rs != 0);
+	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'add_named_cfg_data()', 'Ending...');
-    return 0;
+	push_el(\@main::el, 'add_named_cfg_data()', 'Ending...');
+	return 0;
 }
 
 #
@@ -909,56 +909,56 @@ sub add_named_cfg_data {
 #
 
 sub add_named_db_data {
-    push_el(\@main::el, 'add_named_db_data()', 'Starting...');
+	push_el(\@main::el, 'add_named_db_data()', 'Starting...');
 
-    my ($base_ip, $base_vhost) = @_;
-    my ($rs, $rdata) = (undef, undef);
-    if (!defined($base_vhost) || $base_vhost eq '') {
-        push_el(\@main::el, 'add_named_db_data()', 'ERROR: Undefined Input Data...');
-        return -1;
-    }
+	my ($base_ip, $base_vhost) = @_;
+	my ($rs, $rdata) = (undef, undef);
+	if (!defined($base_vhost) || $base_vhost eq '') {
+		push_el(\@main::el, 'add_named_db_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    #
-    # Initial data we need;
-    #
+	#
+	# Initial data we need;
+	#
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-    my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
 
-    #
-    # Any secondary DNS defined;
-    #
+	#
+	# Any secondary DNS defined;
+	#
 
 	if (!$sec_dns_ip) {
 		$sec_dns_ip = $base_ip;
 	}
 
-    my $tpl_dir = "$conf_dir/bind/parts";
-    my $backup_dir = "$conf_dir/bind/backup";
-    my $working_dir = "$conf_dir/bind/working";
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
 
-    my $db_fname = "$base_vhost.db";
+	my $db_fname = "$base_vhost.db";
 
-    my $sys_cfg = "$named_db_dir/$db_fname";
-    my $working_cfg = "$working_dir/$db_fname";
+	my $sys_cfg = "$named_db_dir/$db_fname";
+	my $working_cfg = "$working_dir/$db_fname";
 
-    #
-    # Let's get needed tags and templates;
-    #
+	#
+	# Let's get needed tags and templates;
+	#
 
-    my ($entry, $dns2_b, $dns2_e) = ('', '', '');
+	my ($entry, $dns2_b, $dns2_e) = ('', '', '');
 
-    ($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
-                                              $tpl_dir,
-                                              'db_master_e.tpl',
-                                              'db_dns2_b.tpl',
-                                              'db_dns2_e.tpl'
-                                             );
+	($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
+		$tpl_dir,
+		'db_master_e.tpl',
+		'db_dns2_b.tpl',
+		'db_dns2_e.tpl'
+	);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    my $seq = 0;
+	my $seq = 0;
 
 	#
 	# RFC 1912
@@ -967,39 +967,39 @@ sub add_named_db_data {
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
-    #
-    # Let's prepare them;
-    #
+	#
+	# Let's prepare them;
+	#
 
-    my %tag_hash = (
-                    '{DMN_NAME}' => $base_vhost,
-                    '{DMN_IP}' => $base_ip,
-                    '{BASE_SERVER_IP}' => $base_ip,
-                    '{SECONDARY_DNS_IP}' => $sec_dns_ip,
-                    '{TIMESTAMP}' => $time2
-                   );
+	my %tag_hash = (
+		'{DMN_NAME}' => $base_vhost,
+		'{DMN_IP}' => $base_ip,
+		'{BASE_SERVER_IP}' => $base_ip,
+		'{SECONDARY_DNS_IP}' => $sec_dns_ip,
+		'{TIMESTAMP}' => $time2
+	);
 
-    ($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
-                                               \%tag_hash,
-                                               $entry,
-                                               $dns2_b,
-                                               $dns2_e
-                                              );
+	($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
+		\%tag_hash,
+		$entry,
+		$dns2_b,
+		$dns2_e
+	);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    #
-    # Let's store generated data;
-    #
+	#
+	# Let's store generated data;
+	#
 
-    $rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-    return $rs if ($rs != 0);
+	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-    return $rs if ($rs != 0);
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'add_named_db_data()', 'Ending...');
-    return 0;
+	push_el(\@main::el, 'add_named_db_data()', 'Ending...');
+	return 0;
 }
 
 #
@@ -1041,12 +1041,12 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	my %tag_hash = (
-					'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-					'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
-					'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
-					);
+		'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+		'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
+		'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
+		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1059,16 +1059,16 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load") {
-            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load";
-            $rs = sys_command($cmd);
-            return $rs if ($rs != 0);
+		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
 
-            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
-            return $rs if ($rs != 0);
+		($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
+		return $rs if ($rs != 0);
 
-            $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
-            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
-            return $rs if ($rs != 0);
+		$rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
+		$rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
+		return $rs if ($rs != 0);
 	}
 
 	#
@@ -1082,8 +1082,8 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
-					);
+		'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1096,16 +1096,16 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load") {
-            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fcgid.load $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load";
-            $rs = sys_command($cmd);
-            return $rs if ($rs != 0);
+		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fcgid.load $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
 
-            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load");
-            return $rs if ($rs != 0);
+		($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load");
+		return $rs if ($rs != 0);
 
-            $rdata = "<IfModule !mod_fcgid.c>\n" . $rdata . "</IfModule>\n";
-            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load", $rdata);
-            return $rs if ($rs != 0);
+		$rdata = "<IfModule !mod_fcgid.c>\n" . $rdata . "</IfModule>\n";
+		$rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load", $rdata);
+		return $rs if ($rs != 0);
 	}
 
 	#
@@ -1145,10 +1145,10 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-					'{DMN_NAME}' => "master"
-					);
+		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+		'{DMN_NAME}' => "master"
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1163,7 +1163,7 @@ sub setup_php {
 	my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
 
 	if ( $other_rk_log ne '' ) {
-	   $other_rk_log = ':' .  $other_rk_log;
+		$other_rk_log = ':' . $other_rk_log;
 	}
 
 	## php4.ini
@@ -1185,7 +1185,7 @@ sub setup_php {
 	#($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	#return $rs if ($rs != 0);
 	#
-    #$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
+	#$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
 	#
 	#return $rs if ($rs != 0);
 
@@ -1194,16 +1194,16 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
-					'{DMN_NAME}' => "gui",
-					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
-					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-					'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-					'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-					'{OTHER_ROOTKIT_LOG}' => $other_rk_log
-					);
+		'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+		'{DMN_NAME}' => "gui",
+		'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
+		'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+		'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
+		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+		'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+		'{OTHER_ROOTKIT_LOG}' => $other_rk_log
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1239,27 +1239,27 @@ sub setup_httpd {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
-					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
-					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
-					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
-					'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
-					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
-					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
-					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'},
-					'{WWW_DIR}'					=> $main::cfg{'ROOT_DIR'},
-					'{DMN_NAME}'				=> 'gui',
-					'{CONF_DIR}'				=> $main::cfg{'CONF_DIR'},
-					'{MR_LOCK_FILE}'			=> $main::cfg{'MR_LOCK_FILE'},
-					'{RKHUNTER_LOG}'			=> $main::cfg{'RKHUNTER_LOG'},
-					'{CHKROOTKIT_LOG}'			=> $main::cfg{'CHKROOTKIT_LOG'},
-					'{PEAR_DIR}'				=> $main::cfg{'PEAR_DIR'},
-					'{OTHER_ROOTKIT_LOG}'		=> $main::cfg{'OTHER_ROOTKIT_LOG'},
-					'{APACHE_SUEXEC_USER_PREF}'	=> $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-					'{APACHE_SUEXEC_MIN_UID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-					'{APACHE_SUEXEC_MIN_GID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_GID'}
-					);
+		'{BASE_SERVER_IP}'			=> $main::cfg{'BASE_SERVER_IP'},
+		'{BASE_SERVER_VHOST}'		=> $main::cfg{'BASE_SERVER_VHOST'},
+		'{DEFAULT_ADMIN_ADDRESS}'	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+		'{ROOT_DIR}'				=> $main::cfg{'ROOT_DIR'},
+		'{APACHE_WWW_DIR}'			=> $main::cfg{'APACHE_WWW_DIR'},
+		'{APACHE_USERS_LOG_DIR}'	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+		'{APACHE_LOG_DIR}'			=> $main::cfg{'APACHE_LOG_DIR'},
+		'{PHP_STARTER_DIR}'			=> $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'},
+		'{WWW_DIR}'					=> $main::cfg{'ROOT_DIR'},
+		'{DMN_NAME}'				=> 'gui',
+		'{CONF_DIR}'				=> $main::cfg{'CONF_DIR'},
+		'{MR_LOCK_FILE}'			=> $main::cfg{'MR_LOCK_FILE'},
+		'{RKHUNTER_LOG}'			=> $main::cfg{'RKHUNTER_LOG'},
+		'{CHKROOTKIT_LOG}'			=> $main::cfg{'CHKROOTKIT_LOG'},
+		'{PEAR_DIR}'				=> $main::cfg{'PEAR_DIR'},
+		'{OTHER_ROOTKIT_LOG}'		=> $main::cfg{'OTHER_ROOTKIT_LOG'},
+		'{APACHE_SUEXEC_USER_PREF}'	=> $main::cfg{'APACHE_SUEXEC_USER_PREF'},
+		'{APACHE_SUEXEC_MIN_UID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+		'{APACHE_SUEXEC_MIN_GID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1271,9 +1271,9 @@ sub setup_httpd {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{AWSTATS_ENGINE_DIR}' 		=> $main::cfg{'AWSTATS_ENGINE_DIR'},
-					'{AWSTATS_WEB_DIR}' 		=> $main::cfg{'AWSTATS_WEB_DIR'}
-					);
+		'{AWSTATS_ENGINE_DIR}' 		=> $main::cfg{'AWSTATS_ENGINE_DIR'},
+		'{AWSTATS_WEB_DIR}' 		=> $main::cfg{'AWSTATS_WEB_DIR'}
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1284,11 +1284,11 @@ sub setup_httpd {
 	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
-    $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
-    return $rs if ($rs != 0);
+	$rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
+	return $rs if ($rs != 0);
 
-    $rs = add_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
-    return $rs if ($rs != 0);
+	$rs = add_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
+	return $rs if ($rs != 0);
 
 	#
 	# Default vhost file
@@ -1298,8 +1298,8 @@ sub setup_httpd {
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
-					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
-					);
+		'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
+	);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
@@ -1434,7 +1434,7 @@ sub setup_mta {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/postfix";
-	my $bk_dir  = "$cfg_dir/backup";
+	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 	my $vrl_dir = "$cfg_dir/ispcp";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
@@ -1444,45 +1444,45 @@ sub setup_mta {
 	}
 
 	if (! -e "$bk_dir/main.cf.ispcp") {
-            if ( -e "$main::cfg{'POSTFIX_CONF_FILE'}") {
-                    $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_CONF_FILE'} $bk_dir/main.cf.system";
-                    $rs = sys_command($cmd);
-                    return $rs if ($rs != 0);
-            }
-            if ( -e "$main::cfg{'POSTFIX_MASTER_CONF_FILE'}") {
-                    $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_MASTER_CONF_FILE'} $bk_dir/master.cf.system";
-                    $rs = sys_command($cmd);
-                    return $rs if ($rs != 0);
-            }
+		if ( -e "$main::cfg{'POSTFIX_CONF_FILE'}") {
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_CONF_FILE'} $bk_dir/main.cf.system";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
+		}
+		if ( -e "$main::cfg{'POSTFIX_MASTER_CONF_FILE'}") {
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_MASTER_CONF_FILE'} $bk_dir/master.cf.system";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
+		}
 
-            ($rs, $cfg_tpl) = get_tpl($cfg_dir, 'main.cf');
-            return $rs if ($rs != 0);
+		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'main.cf');
+		return $rs if ($rs != 0);
 
-            my %tag_hash = (
-                            '{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
-                            '{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
-                            '{MTA_VERSION}' => $main::cfg{'Version'},
-                            '{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
-                            '{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
-                            '{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
-                            '{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
-                            '{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
-                            '{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
-                            '{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
-                            '{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
-                            '{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
-                            '{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'}
-                           );
+		my %tag_hash = (
+			'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
+			'{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
+			'{MTA_VERSION}' => $main::cfg{'Version'},
+			'{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
+			'{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
+			'{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
+			'{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
+			'{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
+			'{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
+			'{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
+			'{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
+			'{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
+			'{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'}
+		);
 
-                ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-                return $rs if ($rs != 0);
+		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+		return $rs if ($rs != 0);
 
-                $rs = store_file("$bk_dir/main.cf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-                return $rs if ($rs != 0);
+		$rs = store_file("$bk_dir/main.cf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+		return $rs if ($rs != 0);
 
-                $cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/master.cf $bk_dir/master.cf.ispcp";
-                $rs = sys_command($cmd);
-                return $rs if ($rs != 0);
+		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/master.cf $bk_dir/master.cf.ispcp";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
 	}
 
 
@@ -1625,7 +1625,7 @@ sub setup_ftpd {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/proftpd";
-	my $bk_dir  = "$cfg_dir/backup";
+	my $bk_dir = "$cfg_dir/backup";
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
 	if ($main::cfg{'CMD_FTPD'} ne 'no') {
@@ -1663,14 +1663,14 @@ sub setup_ftpd {
 		}
 
 		my %tag_hash = (
-						'{HOST_NAME}'     => $main::cfg{'SERVER_HOSTNAME'},
-						'{DATABASE_NAME}' => $main::db_name,
-						'{DATABASE_HOST}' => $main::db_host,
-						'{DATABASE_USER}' => $main::ua{'db_ftp_user'},
-						'{DATABASE_PASS}' => $main::ua{'db_ftp_password'},
-						'{FTPD_MIN_UID}'  => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-						'{FTPD_MIN_GID}'  => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
-					   );
+			'{HOST_NAME}'		=> $main::cfg{'SERVER_HOSTNAME'},
+			'{DATABASE_NAME}'	=> $main::db_name,
+			'{DATABASE_HOST}'	=> $main::db_host,
+			'{DATABASE_USER}'	=> $main::ua{'db_ftp_user'},
+			'{DATABASE_PASS}'	=> $main::ua{'db_ftp_password'},
+			'{FTPD_MIN_UID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+			'{FTPD_MIN_GID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+		);
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 		return $rs if ($rs != 0);
@@ -1724,13 +1724,13 @@ sub setup_ispcpd {
 	elsif ( -x "/usr/lib/lsb/install_initd" ) { #LSB 3.1 Core section 20.4 compatibility
 		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
-    }
+	}
 
-    if ( ! -e "/etc/init.d/vhcs2_daemon" ) {
-        sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
-        sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");
+	if ( ! -e "/etc/init.d/vhcs2_daemon" ) {
+		sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");
 
-    }
+	}
 
 	$rs = del_file("/tmp/ispcp-setup-services.log");
 	return $rs if ($rs != 0);
