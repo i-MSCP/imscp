@@ -70,7 +70,7 @@ SQL_QUERY;
 			$ticket_status,	$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($user_created_by, $user_id, $subject, $user_message, $ticket_reply);
+	send_tickets_msg($user_created_by, $user_id, html_entity_decode($subject, ENT_QUOTES, 'UTF-8'), html_entity_decode($user_message, ENT_QUOTES, 'UTF-8'), $ticket_reply);
 	header("Location: ticket_system.php");
 }
 

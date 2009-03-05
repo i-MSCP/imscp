@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-05 Daniel Andreca
+	- GUI:
+		* Fixed #1721: e-Mail from Supportsystem has problems with special chars
+	- DISTS:
+		* Fixed #1714:  Correct FreeBSD FastCGI/fcgid config
+
 2009-03-04 Daniel Andreca
 	- GUI:
 		* Gender not displayed for reseller on order display

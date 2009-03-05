@@ -206,8 +206,8 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	}
 
 	$ticket_date = time();
-	$subject = clean_html($_POST['subject']);
-	$user_message = clean_input($_POST["user_message"]);
+	$subject = clean_input($_POST['subject'], true);
+	$user_message = clean_input($_POST["user_message"],true);
 	$ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
@@ -229,9 +229,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
-			$ticket_reply, $urgency, $ticket_date,
-			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+			$ticket_reply, $urgency, $ticket_date,$subject,$user_message));
 
 	// Update all Replays -> Status 1
 	$query = "
@@ -252,8 +250,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	}
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($ticket_to, $ticket_from, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
+	send_tickets_msg($ticket_to, $ticket_from, html_entity_decode($subject, ENT_QUOTES, 'UTF-8'), html_entity_decode($user_message, ENT_QUOTES, 'UTF-8'), $ticket_reply);
 }
 
 function change_ticket_status($sql, $ticket_id) {

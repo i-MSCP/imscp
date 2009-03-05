@@ -285,8 +285,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($ticket_from, $ticket_to, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
+	send_tickets_msg($ticket_from, $ticket_to, $subject, $user_message, $ticket_reply);
 }
 
 function get_send_to_who(&$sql, &$ticket_reply) {
