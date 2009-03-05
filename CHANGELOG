@@ -1,12 +1,16 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-05 Thomas Häber
+	- GUI:
+		* fixed HTML in ftp_choose_dir.tpl
+
 2009-03-05 Daniel Andreca
 	- GUI:
 		* Fixed #1721: e-Mail from Supportsystem has problems with special chars
 		* Fixed #1703: Databeseupdate r1555 don't work correct
 	- DISTS:
-		* Fixed #1714:  Correct FreeBSD FastCGI/fcgid config
+		* Fixed #1714: Correct FreeBSD FastCGI/fcgid config
 
 2009-03-04 Daniel Andreca
 	- GUI:

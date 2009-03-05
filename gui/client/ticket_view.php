@@ -84,12 +84,16 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		$date_formt = Config::get('DATE_FORMAT');
 		$ticket_content = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
 
-		$tpl->assign(array('TR_ACTION' => $tr_action,
+		$tpl->assign(
+			array(
+				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'SUBJECT' => stripslashes($rs->fields['ticket_subject']),
 				'TICKET_CONTENT' => nl2br($ticket_content),
-				'ID' => $rs->fields['ticket_id']));
+				'ID' => $rs->fields['ticket_id']
+			)
+		);
 
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
@@ -183,11 +187,14 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		));
+	)
+);
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	if (!isset($_POST['uaction'])) return;
@@ -207,7 +214,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 
 	$ticket_date = time();
 	$subject = clean_input($_POST['subject'], true);
-	$user_message = clean_input($_POST["user_message"],true);
+	$user_message = clean_input($_POST["user_message"], true);
 	$ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
@@ -229,7 +236,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
-			$ticket_reply, $urgency, $ticket_date,$subject,$user_message));
+			$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
 
 	// Update all Replays -> Status 1
 	$query = "
@@ -362,7 +369,9 @@ gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_ticket_system
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
+$tpl->assign(
+	array(
+		'TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 		'TR_TICKET_URGENCY' => tr('Priority'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),
 		'TR_TICKET_DATE' => tr('Date'),
@@ -371,7 +380,9 @@ $tpl->assign(array('TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 		'TR_REPLY' => tr('Send reply'),
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets')));
+		'TR_CLOSED_TICKETS' => tr('Closed tickets')
+	)
+);
 
 gen_page_message($tpl);
 

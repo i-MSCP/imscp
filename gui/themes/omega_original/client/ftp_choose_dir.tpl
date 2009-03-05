@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>{TR_CLIENT_WEBTOOLS_PAGE_TITLE}</title>
@@ -27,24 +27,24 @@
 			<table width="450" cellpadding="5" cellspacing="5" style="empty-cells:show">
 				<!-- BDP: page_message -->
 				<tr>
-					<td width="100%" nowrap="nowrap" class="content3"><span class="message">{MESSAGE}</span></td>
+					<td width="100%" style="white-space:nowrap;" class="content3"><span class="message">{MESSAGE}</span></td>
 				</tr>
 				<!-- EDP: page_message -->
 				<tr>
-					<td width="410" class="content3" nowrap="nowrap" colspan="4"><strong>{TR_DIRECTORY_TREE}</strong></td>
+					<td width="410" class="content3" style="white-space:nowrap;" colspan="4"><strong>{TR_DIRECTORY_TREE}</strong></td>
 				</tr>
 				<tr>
 					<td width="40" class="content2" colspan="2"></td>
-					<td width="310" class="content2" nowrap="nowrap"><strong>{TR_DIRS}</strong></td>
-					<td width="60" class="content2" nowrap="nowrap" align="center"><strong>{TR__ACTION}</strong></td>
+					<td width="310" class="content2" style="white-space:nowrap;"><strong>{TR_DIRS}</strong></td>
+					<td width="60" class="content2" style="white-space:nowrap;" align="center"><strong>{TR__ACTION}</strong></td>
 				</tr>
 				<!-- BDP: dir_item -->
 				<tr>
 					<!-- BDP: list_item -->
 					<td width="40" class="content" colspan="2" align="center"><img src="{THEME_COLOR_PATH}/images/icons/bc_{ICON}.png" alt="" /></td>
-					<td width="310" class="content" nowrap="nowrap"><a href="{LINK}" class="link">{DIR_NAME}</a></td>
+					<td width="310" class="content" style="white-space:nowrap;"><a href="{LINK}" class="link">{DIR_NAME}</a></td>
 					<!-- BDP: action_link -->
-					<td width="60" class="content" nowrap="nowrap" align="center">
+					<td width="60" class="content" style="white-space:nowrap;" align="center">
 						<a href="javascript:CopyText('{CHOOSE_IT}');" class="link">{CHOOSE}</a>
 					<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}" /></td>
 					<!-- EDP: action_link -->

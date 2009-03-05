@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -31,13 +31,13 @@ $tpl->define_dynamic('props_list', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 $blocksCount = 0;
 
@@ -113,11 +113,11 @@ foreach ($config_entries as $config_entry) {
 	}
 
 	$tpl->assign(
-			array(
-				'LOG' => $contents,
-				'FILENAME' => $filename
-			)
-		);
+		array(
+			'LOG' => $contents,
+			'FILENAME' => $filename
+		)
+	);
 	$tpl->parse('PROPS_LIST', '.props_list');
 }
 
@@ -130,10 +130,10 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
-		array(
-			'TR_ROOTKIT_LOG' => tr('Anti-Rootkits Tools Log Checker'),
-		)
-	);
+	array(
+		'TR_ROOTKIT_LOG' => tr('Anti-Rootkits Tools Log Checker'),
+	)
+);
 
 gen_page_message($tpl);
 
