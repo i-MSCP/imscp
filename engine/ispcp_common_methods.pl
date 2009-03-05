@@ -373,7 +373,7 @@ sub doHashSQL {
 #
 # @author		VHCS/ispCP Team
 # @author		Benedikt Heintel
-# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @copyright 	2006-2009 by ispCP | http://isp-control.net
 # @version		1.1
 #
 # @access	public
@@ -498,7 +498,7 @@ sub get_file {
 # If $fgid set to 'null' this function will get the GID from /etc/passwd.
 #
 # @author		VHCS/ispCP Team
-# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @copyright 	2006-2009 by ispCP | http://isp-control.net
 # @version		1.0
 #
 # @access	public
@@ -542,7 +542,7 @@ sub store_file {
 # Changes the content of a file.
 #
 # @author		VHCS/ispCP Team
-# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @copyright 	2006-2009 by ispCP | http://isp-control.net
 # @version		1.0
 #
 # @access	public
