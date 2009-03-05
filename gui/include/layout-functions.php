@@ -83,15 +83,14 @@ function get_menu_vars($menu_link) {
 
 	$user_id = $_SESSION['user_id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`, `fax`, `street1`, `street2`
+			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, ".(Config::get('DATABASE_REVISION')>=11 ? '`state`, ':'')."`country`, `email`, `phone`, `fax`, `street1`, `street2`
 		FROM
 			`admin`
 		WHERE
 			`admin_id` = ?
-SQL_QUERY;
-
+	";
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$search = array();
@@ -113,8 +112,10 @@ SQL_QUERY;
 	$replace[] = $rs->fields['zip'];
 	$search [] = '{city}';
 	$replace[] = $rs->fields['city'];
-	$search [] = '{state}';
-	$replace[] = $rs->fields['state'];
+	if(Config::get('DATABASE_REVISION')>=11){
+		$search [] = '{state}';
+		$replace[] = $rs->fields['state'];
+	}
 	$search [] = '{country}';
 	$replace[] = $rs->fields['country'];
 	$search [] = '{email}';
