@@ -155,7 +155,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 					'TO'		=> $to,
 					'LAST_DATE' => $date,
 					'SUBJECT'	=> $rs->fields['ticket_subject'],
-					'SUBJECT2'	=> clean_html(addslashes($rs->fields['ticket_subject'])),
+					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'MESSAGE' 	=> clean_html($rs->fields['ticket_message']),
 					'CONTENT' 	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
