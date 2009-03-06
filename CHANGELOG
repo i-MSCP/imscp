@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-06 Thomas Häber
+	- Backend:
+		* Fixed #1724: German to English language description
+ 
 2009-03-05 Thomas Häber
 	- GUI:
 		* fixed HTML in ftp_choose_dir.tpl

@@ -39,50 +39,50 @@ use warnings;
 
 sub lock_backup_all_system {
 
-    my ($lock_file) = @_;
+	my ($lock_file) = @_;
 
-    push_el(\@main::el, 'lock_backup_all_system()', 'Starting...');
+	push_el(\@main::el, 'lock_backup_all_system()', 'Starting...');
 
-    if ($main::cfg{'BACKUP_DOMAINS'} ne 'yes') {
+	if ($main::cfg{'BACKUP_DOMAINS'} ne 'yes') {
 
-        push_el(\@main::el, 'lock_backup_all_system()', 'NOTICE: domain backups are disabled');
+		push_el(\@main::el, 'lock_backup_all_system()', 'NOTICE: domain backups are disabled');
 
-        return 2;
-    }
+		return 2;
+	}
 
-    if (-e $lock_file) {
+	if (-e $lock_file) {
 
-        push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked !');
+		push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked !');
 
-        return 1;
+		return 1;
 
-    }
+	}
 
-    my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $lock_file";
+	my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $lock_file";
 
-    my $rs = sys_command($touch_cmd);
+	my $rs = sys_command($touch_cmd);
 
-    return 1 if ($rs != 0);
+	return 1 if ($rs != 0);
 
-    push_el(\@main::el, 'lock_backup_all_system()', 'Ending...');
+	push_el(\@main::el, 'lock_backup_all_system()', 'Ending...');
 
-    return 0;
+	return 0;
 }
 
 
 sub unlock_backup_all_system {
 
-    my ($lock_file) = @_;
+	my ($lock_file) = @_;
 
-    push_el(\@main::el, 'unlock_backup_all_system()', 'Starting...');
+	push_el(\@main::el, 'unlock_backup_all_system()', 'Starting...');
 
 	my $rs = del_file($lock_file);
 
 	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'unlock_backup_all_system()', 'Ending...');
+	push_el(\@main::el, 'unlock_backup_all_system()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -90,54 +90,54 @@ sub unlock_backup_all_system {
 
 sub backup_all_start_up {
 
-    my ($lock_file) = @_;
+	my ($lock_file) = @_;
 
-    my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'backup_all_start_up()', 'Starting...');
+	push_el(\@main::el, 'backup_all_start_up()', 'Starting...');
 
-    $rs = lock_backup_all_system($lock_file);
+	$rs = lock_backup_all_system($lock_file);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    # config check;
+	# config check;
 
-    $rs = get_conf();
+	$rs = get_conf();
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    #
-    # getting initial data also must be done here;
-    #
+	#
+	# getting initial data also must be done here;
+	#
 
-    #my $sql = "select * from domain where domain_status = 'ok' ;";
+	#my $sql = "SELECT * FROM domain WHERE domain_status = 'ok' ;";
 
-    #($rs, $rdata) = doSQL($sql);
+	#($rs, $rdata) = doSQL($sql);
 
-    #return $rs if ($rs != 0);
+	#return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'backup_all_start_up()', 'Ending...');
+	push_el(\@main::el, 'backup_all_start_up()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
 
 sub backup_all_shut_down {
 
-    my ($lock_file) = @_;
+	my ($lock_file) = @_;
 
-    my $rs = undef;
+	my $rs = undef;
 
-    push_el(\@main::el, 'backup_all_shut_down()', 'Starting...');
+	push_el(\@main::el, 'backup_all_shut_down()', 'Starting...');
 
-    $rs = unlock_backup_all_system($lock_file);
+	$rs = unlock_backup_all_system($lock_file);
 
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'backup_all_shut_down()', 'Ending...');
+	push_el(\@main::el, 'backup_all_shut_down()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -163,8 +163,8 @@ sub backup_all_mail_task {
 
 	$sql = "
 		SELECT
-	    		admin_name,
-	    		email
+			admin_name,
+			email
 		FROM
 			admin
 		WHERE
@@ -212,12 +212,12 @@ MESSAGE_TEXT
 	my $out = new MIME::Entity;
 
 	$out -> build(
-				From => "Automatic Backup Manager <".$admin_email.">",
-				To => $admin_email,
-				Subject => "[$date] Backup report.",
-				Data => $msg_data,
-				'X-Mailer' => "$main::cfg{'Version'} Automatic Backup Messanger"
-				);
+		From		=> "Automatic Backup Manager <".$admin_email.">",
+		To			=> $admin_email,
+		Subject		=> "[$date] Backup report.",
+		Data		=> $msg_data,
+		'X-Mailer'	=> "$main::cfg{'Version'} Automatic Backup Messanger"
+	);
 
 	open MAIL, "| /usr/sbin/sendmail -t -oi";
 
@@ -313,9 +313,9 @@ sub backup_all_engine {
 		}
 
 		#
-		# User Database Backup
-		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der ISPCP-DB auslesen
-		# MYSQLDUMP mit den Datenbanken durchfÃ¼hren und die Ausgabe in das Backup-Verzeichnis umleiten
+		# User Database Backup - practice:
+		# - read databases from ispcp database for actual domain
+		# - execute MYSQLDUMP with database tables and redirect it to the backup folder
 		#
 
 		$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
@@ -405,15 +405,15 @@ sub backup_all_engine {
 
 			push_el(\@main::el, 'backup_all_engine()', "ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
 
-                        if ( -e "$dmn_dir/$backup_filename" ) {
+						if ( -e "$dmn_dir/$backup_filename" ) {
 
-                            $rs = del_file("$dmn_dir/$backup_filename");
+							$rs = del_file("$dmn_dir/$backup_filename");
 
-                            return $rs if ($rs != 0);
+							return $rs if ($rs != 0);
 
-                        }
+						}
 
-                }
+				}
 
 	}
 
