@@ -315,7 +315,7 @@ sub backup_all_engine {
 		#
 		# User Database Backup - practice:
 		# - read databases from ispcp database for actual domain
-		# - execute MYSQLDUMP with database tables and redirect it to the backup folder
+		# - execute MYSQLDUMP with databases and redirect it to the backup folder
 		#
 
 		$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";

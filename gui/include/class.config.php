@@ -1,6 +1,6 @@
 <?php
 
-// this class will parse config file and get all variables avaible in PHP
+// this class will parse the config file and get all variables available in PHP
 final class Config {
 	// config filename
 	private static $_file;
@@ -172,7 +172,7 @@ final class Config {
 		'HTPASSWD_CMD' => null,
 		'BACKUP_FILE_DIR' => null,
 		'DEBUG' => null
-		);
+	);
 	private static $_status = false;
 
 	public static function load($cfg = '/etc/ispcp/ispcp.conf') {
