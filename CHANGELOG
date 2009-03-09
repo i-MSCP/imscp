@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-09 Daniel Andreca
+	- GUI:
+		* User can not delete database
+
 2009-03-06 Thomas Häber
 	- Backend:
 		* Fixed #1724: German to English language description
