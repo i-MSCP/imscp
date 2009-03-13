@@ -3464,7 +3464,7 @@ sub dmn_restore_data {
 					return $rs if ($rs != 0);
 					$rdata2=@$rdata2[0];
 					my $dbuser = @$rdata2[0];
-					my $dbpass = @$rdata2[1];
+					my $dbpass = decrypt_db_password(@$rdata2[1]);
 					# if username and pass for db exists - restore database from file
 					if ($dbuser && $dbpass) {
 						$dbpass =~ s/([\'\"])/\\$1/g;
