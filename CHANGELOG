@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-16 Thomas Häber
+	- GUI:
+		* optimization: prevent 2nd gzip compression of GUI files
+
 2009-03-11 Daniel Andreca
 	- ENGINE:
 		* Fixed #1729: Backup restore problem

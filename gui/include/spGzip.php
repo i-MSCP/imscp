@@ -28,6 +28,10 @@
  * @input: bool $debug use debug mode (no compression)
  * @input: bool $showSize show the compression in html
  * @return: mixed the output
+ *
+ * @todo prevent compression, if contents/buffer is empty (cause otherwise
+ * 		 0.00 KB files grow up to 0.01 KB gzipped files, this means more load
+ * 		 and more traffic)
  */
 class spOutput {
 	/**
@@ -107,7 +111,7 @@ class spOutput {
 			$this->encoding = false;
 		}
 
-		/* There might be some Problems */
+		/* There might be some problems */
 		if (headers_sent()
 			|| connection_status() != 0
 			|| !$this->encoding
@@ -115,7 +119,8 @@ class spOutput {
 			|| @ini_get('output_handler') == 'ob_gzhandler'
 			|| @ini_get('zlib.output_compression')
 			|| (isset($GLOBALS['data']['error'])
-			&& !empty($GLOBALS['data']['error']))) {
+				&& !empty($GLOBALS['data']['error']))
+			) {
 			return $this->contents;
 		}
 
@@ -139,7 +144,7 @@ class spOutput {
 	
 			$this->level = (1-($this->serverload/$this->MaxServerload))*10;
 	
-			/* OK, that looks terrible, but its faster than a min/max construction */
+			/* OK, that looks terrible, but it's faster than a min/max construction */
 			$this->level = ($this->level > $this->MinCompression)
 							? (($this->level < $this->MaxCompression)
 								? intval($this->level)
@@ -151,15 +156,19 @@ class spOutput {
 		$this->gzdata = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
 
 		/*
-		 * Maybe you want some extra information
-		 * This is not the ideal because you need to
-		 * compress the output twice
+		 * compress the output (before the showSize block to prevent a 2nd
+		 * compression)
+		 */
+		$compressed_contents = gzcompress($this->contents, $this->level);
+		$this->size = strlen($this->contents);
+		/*
+		 * show some extra information
 		 */
 		if ($this->showSize) {
 			/* We need some vars for the information */
-			$uncompressed	= round(strlen($this->contents)/1024, 2);
+			$uncompressed	= round($this->size/1024, 2);
 			$start			= $this->getMicrotime();
-			$compressed		= round(strlen(gzcompress($this->contents, $this->level))/1024, 2);
+			$compressed		= round(strlen($compressed_contents)/1024, 2);
 			$time			= round(($this->getMicrotime()-$start)*1000, 2);
 			$savingkb		= $uncompressed-$compressed;
 			$saving			= $uncompressed > '0' ? @round($savingkb/$uncompressed*100, 0) : '0';
@@ -169,9 +178,9 @@ class spOutput {
 			$this->contents .= "\n".'<!--'."\n\t".'Compression level: '.$this->level.$showlevel."\n\t".'Original size: '.$uncompressed.' kb'."\n\t".'New size: '.$compressed.' kb'."\n\t".'Saving: '.$savingkb.' kb ('.$saving.' %)'."\n\t".'Time: '.$time.' ms'."\n\t".'Serverload: '.round($this->serverload, 2)."\n".'-->';
 		}
 
-		/* Compress the output */
-		$this->size = strlen($this->contents);
-		$this->gzdata .= substr(gzcompress($this->contents, $this->level), 0, - 4);
+		/* create & concat the full output */
+		$this->gzdata .= substr($compressed_contents, 0, - 4);
+		unset($compressed_contents);
 		$this->gzdata .= pack('V', crc32($this->contents));
 		$this->gzdata .= pack('V', $this->size);
 		$this->gzsize = strlen($this->gzdata);
