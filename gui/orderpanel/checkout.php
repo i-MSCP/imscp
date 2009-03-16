@@ -119,16 +119,15 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	system_message(tr('You do not have permission to access this interface!'));
 }
 
-if (
-	(isset($_SESSION['fname']) && $_SESSION['fname'] != '') and
-		(isset($_SESSION['lname']) && $_SESSION['lname'] != '') and
-		(isset($_SESSION['email']) && $_SESSION['email'] != '') and
-		(isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
-		(isset($_SESSION['city']) && $_SESSION['city'] != '') and
-		(isset($_SESSION['state']) && $_SESSION['state'] != '') and
-		(isset($_SESSION['country']) && $_SESSION['country'] != '') and
-		(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
-		(isset($_SESSION['phone']) && $_SESSION['phone'] != '')
+if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
+	&& (isset($_SESSION['lname']) && $_SESSION['lname'] != '')
+	&& (isset($_SESSION['email']) && $_SESSION['email'] != '')
+	&& (isset($_SESSION['zip']) && $_SESSION['zip'] != '')
+	&& (isset($_SESSION['city']) && $_SESSION['city'] != '')
+	&& (isset($_SESSION['state']) && $_SESSION['state'] != '')
+	&& (isset($_SESSION['country']) && $_SESSION['country'] != '')
+	&& (isset($_SESSION['street1']) && $_SESSION['street1'] != '')
+	&& (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
 	) {
 	gen_checkout($tpl, $sql, $user_id, $plan_id);
 } else {

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -36,7 +36,7 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	check_input(trim($_POST['upass']));
 
 	if (register_user($uname, $_POST['upass'])) {
-	    redirect_to_level_page();
+		redirect_to_level_page();
 	}
 
 	header('Location: index.php');
@@ -82,7 +82,7 @@ if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdat
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
 			// @todo: make this configurable by ispcp-lib
-			'TR_SSL_LINK'				=> isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST']) : 'https://'.htmlentities($_SERVER['HTTP_HOST']),
+			'TR_SSL_LINK'				=> isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
 			'TR_SSL_IMAGE'				=> isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 			'TR_SSL_DESCRIPTION'		=> !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
 		)

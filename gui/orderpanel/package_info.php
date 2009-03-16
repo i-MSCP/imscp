@@ -62,7 +62,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				`hosting_plans`
 			WHERE
 				`reseller_id` = ?
-			  AND
+			AND
 				`id` = ?
 		";
 
@@ -98,23 +98,23 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
 		$tpl->assign(
 			array(
-				'PACK_NAME' => $rs->fields['name'],
-				'DESCRIPTION' => $description,
-				'PACK_ID' => $rs->fields['id'],
-				'USER_ID' => $user_id,
-				'PURCHASE' => tr('Purchase'),
-				'ALIAS' => translate_limit_value($hp_als),
-				'SUBDOMAIN' => translate_limit_value($hp_sub),
-				'HDD' => $hp_disk,
-				'TRAFFIC' => $hp_traff,
-				'PHP' => translate_sse($hp_php),
-				'CGI' => translate_sse($hp_cgi),
-				'MAIL' => translate_limit_value($hp_mail),
-				'FTP' => translate_limit_value($hp_ftp),
-				'SQL_DB' => translate_limit_value($hp_sql_db),
-				'SQL_USR' => translate_limit_value($hp_sql_user),
-				'PRICE' => $price,
-				'SETUP' => $setup_fee,
+				'PACK_NAME'		=> $rs->fields['name'],
+				'DESCRIPTION'	=> $description,
+				'PACK_ID'		=> $rs->fields['id'],
+				'USER_ID'		=> $user_id,
+				'PURCHASE'		=> tr('Purchase'),
+				'ALIAS'			=> translate_limit_value($hp_als),
+				'SUBDOMAIN'		=> translate_limit_value($hp_sub),
+				'HDD'			=> $hp_disk,
+				'TRAFFIC'		=> $hp_traff,
+				'PHP'			=> translate_sse($hp_php),
+				'CGI'			=> translate_sse($hp_cgi),
+				'MAIL'			=> translate_limit_value($hp_mail),
+				'FTP'			=> translate_limit_value($hp_ftp),
+				'SQL_DB' 		=> translate_limit_value($hp_sql_db),
+				'SQL_USR'		=> translate_limit_value($hp_sql_user),
+				'PRICE'			=> $price,
+				'SETUP'			=> $setup_fee,
 			)
 		);
 	}
@@ -158,39 +158,39 @@ $tpl->assign(
 
 $tpl->assign(
 	array(
-		'TR_DOMAINS' => tr('Domains'),
-		'TR_WEBSPACE' => tr('Webspace'),
-		'TR_HDD' => tr('Disk limit'),
-		'TR_TRAFFIC' => tr('Traffic limit'),
-		'TR_FEATURES' => tr('Domain Features'),
-		'TR_STANDARD_FEATURES' => tr('Package Features'),
-		'TR_WEBMAIL' => tr('Webmail'),
-		'TR_FILEMANAGER' => tr('Filemanager'),
-		'TR_BACKUP' => tr('Backup and Restore'),
-		'TR_ERROR_PAGES' => tr('Custom Error Pages'),
-		'TR_HTACCESS' => tr('Protected Areas'),
-		'TR_PHP_SUPPORT' => tr('PHP support'),
-		'TR_CGI_SUPPORT' => tr('CGI support'),
-		'TR_MYSQL_SUPPORT' => tr('SQL support'),
-		'TR_SUBDOMAINS' => tr('Subdomains'),
-		'TR_DOMAIN_ALIAS' => tr('Domain aliases'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-		'TR_SQL_DATABASES' => tr('SQL databases'),
-		'TR_SQL_USERS' => tr('SQL users'),
-		'TR_STATISTICS' => tr('Statistics'),
-		'TR_CUSTOM_LOGS' => tr('Custom Apache Logs'),
-		'TR_ONLINE_SUPPORT' => tr('Web & E-Mail Support'),
-		'TR_OWN_DOMAIN' => tr('Your Own Domain'),
-		'TR_ISPCP' => tr('ispCP Control Panel'),
-		'TR_UPDATES' => tr('Automatic Updates'),
-		'TR_PRICE' => tr('Price'),
-		'TRR_PRICE' => tr('Package Price'),
-		'TR_SETUP_FEE' => tr('Setup Fee'),
-		'TR_PERFORMANCE' => tr('Performance'),
-		'TR_PURCHASE' => tr('Purchase'),
-		'TR_BACK' => tr('Back'),
-		'YES' => tr('Yes')
+		'TR_DOMAINS'			=> tr('Domains'),
+		'TR_WEBSPACE'			=> tr('Webspace'),
+		'TR_HDD'				=> tr('Disk limit'),
+		'TR_TRAFFIC'			=> tr('Traffic limit'),
+		'TR_FEATURES'			=> tr('Domain Features'),
+		'TR_STANDARD_FEATURES'	=> tr('Package Features'),
+		'TR_WEBMAIL'			=> tr('Webmail'),
+		'TR_FILEMANAGER'		=> tr('Filemanager'),
+		'TR_BACKUP'				=> tr('Backup and Restore'),
+		'TR_ERROR_PAGES'		=> tr('Custom Error Pages'),
+		'TR_HTACCESS'			=> tr('Protected Areas'),
+		'TR_PHP_SUPPORT'		=> tr('PHP support'),
+		'TR_CGI_SUPPORT'		=> tr('CGI support'),
+		'TR_MYSQL_SUPPORT'		=> tr('SQL support'),
+		'TR_SUBDOMAINS'			=> tr('Subdomains'),
+		'TR_DOMAIN_ALIAS'		=> tr('Domain aliases'),
+		'TR_MAIL_ACCOUNTS'		=> tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts'),
+		'TR_SQL_DATABASES'		=> tr('SQL databases'),
+		'TR_SQL_USERS'			=> tr('SQL users'),
+		'TR_STATISTICS'			=> tr('Statistics'),
+		'TR_CUSTOM_LOGS'		=> tr('Custom Apache Logs'),
+		'TR_ONLINE_SUPPORT'		=> tr('Web & E-Mail Support'),
+		'TR_OWN_DOMAIN'			=> tr('Your Own Domain'),
+		'TR_ISPCP'				=> tr('ispCP Control Panel'),
+		'TR_UPDATES'			=> tr('Automatic Updates'),
+		'TR_PRICE'				=> tr('Price'),
+		'TRR_PRICE'				=> tr('Package Price'),
+		'TR_SETUP_FEE'			=> tr('Setup Fee'),
+		'TR_PERFORMANCE'		=> tr('Performance'),
+		'TR_PURCHASE'			=> tr('Purchase'),
+		'TR_BACK'				=> tr('Back'),
+		'YES'					=> tr('Yes')
 	)
 );
 

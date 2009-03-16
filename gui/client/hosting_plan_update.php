@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -41,14 +41,14 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	$hp_title = tr('Hosting plans available for update');
 	// lets see if we have an order
 	$query = "
-		select
+		SELECT
 			*
-		from
-			orders
-		where
-			customer_id=?
-		and
-			status<>?
+		FROM
+			`orders`
+		WHERE
+			`customer_id` = ?
+		AND
+			`status` <> ?
 	";
 	$rs = exec_query($sql, $query, array($user_id, 'added'));
 
@@ -57,12 +57,12 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$availabe_hp_id = $rs->fields['plan_id'];
 
 		$query = "
-			select
+			SELECT
 				*
-			from
-				hosting_plans
-			where
-				id=?
+			FROM
+				`hosting_plans`
+			WHERE
+				`id` = ?
 		";
 
 		$rs = exec_query($sql, $query, array($availabe_hp_id));
@@ -76,18 +76,18 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			$query = "
 				SELECT
 					t1.*,
-					t2.admin_id, t2.admin_type
+					t2.`admin_id`, t2.`admin_type`
 				FROM
 					hosting_plans as t1,
 					admin as t2
 				WHERE
-					t2.admin_type = ?
-				  AND
-					t1.reseller_id = t2.admin_id
-				  AND
-					t1.status=1
+					t2.`admin_type` = ?
+				AND
+					t1.`reseller_id` = t2.`admin_id`
+				AND
+					t1.`status` = '1'
 				ORDER BY
-					t1.name
+					t1.`name`
 			";
 
 			$rs = exec_query($sql, $query, array('admin'));
@@ -99,22 +99,22 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				SELECT
 					*
 				FROM
-					hosting_plans
+					`hosting_plans`
 				WHERE
-				 	reseller_id = ?
+				 	`reseller_id` = ?
 				AND
-					status='1'
+					`status` = '1'
 			";
 
 			$count_query = "
 				SELECT
-					COUNT(id) AS cnum
+					COUNT(*) AS cnum
 				FROM
-					hosting_plans
+					`hosting_plans`
 				WHERE
-					reseller_id = ?
+					`reseller_id` = ?
 				AND
-					status='1'
+					`status` = '1'
 			";
 
 			$cnt = exec_query($sql, $count_query, array($_SESSION['user_created_by']));
@@ -128,13 +128,13 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-					array(
-						'TR_HOSTING_PLANS' => $hp_title,
-						'HOSTING_PLANS' => '',
-						'HP_ORDER' => '',
-						'COLSPAN' => 2
-					)
-			);
+			array(
+				'TR_HOSTING_PLANS' => $hp_title,
+				'HOSTING_PLANS' => '',
+				'HP_ORDER' => '',
+				'COLSPAN' => 2
+			)
+		);
 
 		set_page_message(tr('There are no available updates'));
 		return;
@@ -181,49 +181,49 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		}
 
 		$check_query = "
-			select
-				domain_id
-			from
-				domain
-			where
-				domain_admin_id=?
-			and
-				domain_mailacc_limit=?
-			and
-				domain_ftpacc_limit=?
-			and
-				domain_traffic_limit=?
-			and
-				domain_sqld_limit=?
-			and
-				domain_sqlu_limit=?
-			and
-				domain_alias_limit=?
-			and
-				domain_subd_limit=?
-			and
-				domain_disk_limit=?
-			and
-				domain_php=?
-			and
-				domain_cgi=?
+			SELECT
+				`domain_id`
+			FROM
+				`domain`
+			WHERE
+				`domain_admin_id` = ?
+			AND
+				`domain_mailacc_limit` = ?
+			AND
+				`domain_ftpacc_limit` = ?
+			AND
+				`domain_traffic_limit` = ?
+			AND
+				`domain_sqld_limit` = ?
+			AND
+				`domain_sqlu_limit` = ?
+			AND
+				`domain_alias_limit` = ?
+			AND
+				`domain_subd_limit` = ?
+			AND
+				`domain_disk_limit` = ?
+			AND
+				`domain_php` = ?
+			AND
+				`domain_cgi` = ?
 		";
 
 		$check = exec_query($sql, $check_query, array($_SESSION['user_id'], $hp_mail, $hp_ftp, $hp_traff, $hp_sql_db, $hp_sql_user, $hp_als, $hp_sub, $hp_disk, $php, $cgi));
 		if ($check->RecordCount() == 0) {
 			$tpl->assign(
-						array(
-							'HP_NAME' => stripslashes($rs->fields['name']),
-							'HP_DESCRIPTION' => stripslashes($rs->fields['description']),
-							'HP_DETAILS' => stripslashes($details),
-							'HP_COSTS' => $price,
-							'ID' => $rs->fields['id'],
-							'TR_PURCHASE' => $purchase_text,
-							'LINK' => $purchase_link,
-							'TR_HOSTING_PLANS' => $hp_title,
-							'ITHEM' => ($i % 2 == 0) ? 'content' : 'content2'
-						)
-				);
+				array(
+					'HP_NAME' => stripslashes($rs->fields['name']),
+					'HP_DESCRIPTION' => stripslashes($rs->fields['description']),
+					'HP_DETAILS' => stripslashes($details),
+					'HP_COSTS' => $price,
+					'ID' => $rs->fields['id'],
+					'TR_PURCHASE' => $purchase_text,
+					'LINK' => $purchase_link,
+					'TR_HOSTING_PLANS' => $hp_title,
+					'ITHEM' => ($i % 2 == 0) ? 'content' : 'content2'
+				)
+			);
 
 			$tpl->parse('HOSTING_PLANS', '.hosting_plans');
 			$tpl->parse('HP_ORDER', '.hp_order');
@@ -234,13 +234,13 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	}
 	if ($i == 0) {
 		$tpl->assign(
-					array(
-						'HOSTING_PLANS' => '',
-						'HP_ORDER' => '',
-						'TR_HOSTING_PLANS' => $hp_title,
-						'COLSPAN' => '2'
-					)
-				);
+			array(
+				'HOSTING_PLANS' => '',
+				'HP_ORDER' => '',
+				'TR_HOSTING_PLANS' => $hp_title,
+				'COLSPAN' => '2'
+			)
+		);
 
 		set_page_message(tr('There are no available hosting plans for update'));
 	}
@@ -248,37 +248,40 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 $tpl->assign(
-			array(
-				'TR_CLIENT_UPDATE_HP' => tr('ispCP - Update hosting plan'),
-				'THEME_COLOR_PATH' => "../themes/$theme_color",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-				)
-	);
+	array(
+		'TR_CLIENT_UPDATE_HP' => tr('ispCP - Update hosting plan'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
+/**
+ * @todo the 2nd query has 2 identical tables in FROM-clause, is this OK?
+ */
 function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$date = time();
 	$status = "update";
 	$query = "
-		INSERT INTO orders
-			(user_id,
-			plan_id,
-			date,
-			domain_name,
-			customer_id,
-			fname,
-			lname,
-			firm,
-			zip,
-			city,
-			state,
-			country,
-			email,
-			phone,
-			fax,
-			street1,
-			street2,
-			status)
+		INSERT INTO `orders`
+			(`user_id`,
+			`plan_id`,
+			`date`,
+			`domain_name`,
+			`customer_id`,
+			`fname`,
+			`lname`,
+			`firm`,
+			`zip`,
+			`city`,
+			`state`,
+			`country`,
+			`email`,
+			`phone`,
+			`fax`,
+			`street1`,
+			`street2`,
+			`status`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
@@ -289,15 +292,15 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$query = "
 			SELECT
-				t1.email AS reseller_mail,
-				t2.email AS user_mail
+				t1.`email` AS reseller_mail,
+				t2.`email` AS user_mail
 			FROM
-				admin AS t1,
-				admin AS t2
+				`admin` AS t1,
+				`admin` AS t2
 			WHERE
-				t1.admin_id = ?
+				t1.`admin_id` = ?
 			AND
-				t2.admin_id = ?
+				t2.`admin_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $_SESSION['user_id']));
@@ -323,12 +326,12 @@ Please login into your ispCP control panel for more details');
 
 function del_order(&$tpl, &$sql, $order_id, $user_id) {
 	$query = "
-		delete from
-			orders
-		where
-			user_id=?
-		and
-			customer_id = ?
+		DELETE FROM
+			`orders`
+		WHERE
+			`user_id` = ?
+		AND
+			`customer_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $user_id));
@@ -359,11 +362,11 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-			array(
-				'TR_LANGUAGE' => tr('Language'),
-				'TR_SAVE' => tr('Save'),
-				)
-			);
+	array(
+		'TR_LANGUAGE' => tr('Language'),
+		'TR_SAVE' => tr('Save'),
+	)
+);
 
 gen_page_message($tpl);
 

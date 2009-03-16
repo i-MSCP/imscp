@@ -157,20 +157,19 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 }
 
 function check_address_data(&$tpl) {
-	if (isset($_GET['edit']))
-		unset($_GET['edit']);
-	if (
-		(isset($_POST['fname']) && $_POST['fname'] != '') and
-			(isset($_POST['email']) && $_POST['email'] != '') and
-			chk_email($_POST['email']) and
-			(isset($_POST['lname']) && $_POST['lname'] != '') and
-			(isset($_POST['zip']) && $_POST['zip'] != '') and
-			(isset($_POST['city']) && $_POST['city'] != '') and
-			(isset($_POST['state']) && $_POST['state'] != '') and
-			(isset($_POST['country']) && $_POST['country'] != '') and
-			(isset($_POST['street1']) && $_POST['street1'] != '') and
-			(isset($_POST['phone']) && $_POST['phone'] != '')
-			) {
+
+	unset($_GET['edit']);
+	if ((isset($_POST['fname']) && $_POST['fname'] != '')
+		&& (isset($_POST['email']) && $_POST['email'] != '')
+		&& chk_email($_POST['email'])
+		&& (isset($_POST['lname']) && $_POST['lname'] != '')
+		&& (isset($_POST['zip']) && $_POST['zip'] != '')
+		&& (isset($_POST['city']) && $_POST['city'] != '')
+		&& (isset($_POST['state']) && $_POST['state'] != '')
+		&& (isset($_POST['country']) && $_POST['country'] != '')
+		&& (isset($_POST['street1']) && $_POST['street1'] != '')
+		&& (isset($_POST['phone']) && $_POST['phone'] != '')
+		) {
 		$_SESSION['fname']		= clean_input($_POST['fname'], true);
 		$_SESSION['lname']		= clean_input($_POST['lname'], true);
 		$_SESSION['email']		= clean_input($_POST['email'], true);
@@ -227,18 +226,17 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'address')
 	check_address_data($tpl);
 
-if (
-	(isset($_SESSION['fname']) && $_SESSION['fname'] != '') and
-		(isset($_SESSION['email']) && $_SESSION['email'] != '') and
-		(isset($_SESSION['lname']) && $_SESSION['lname'] != '') and
-		(isset($_SESSION['zip']) && $_SESSION['zip'] != '') and
-		(isset($_SESSION['city']) && $_SESSION['city'] != '') and
-		(isset($_SESSION['state']) && $_SESSION['state'] != '') and
-		(isset($_SESSION['country']) && $_SESSION['country'] != '') and
-		(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
-		(isset($_SESSION['phone']) && $_SESSION['phone'] != '') and
-		!isset($_GET['edit'])
-		) {
+if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
+	&& (isset($_SESSION['email']) && $_SESSION['email'] != '')
+	&& (isset($_SESSION['lname']) && $_SESSION['lname'] != '')
+	&& (isset($_SESSION['zip']) && $_SESSION['zip'] != '')
+	&& (isset($_SESSION['city']) && $_SESSION['city'] != '')
+	&& (isset($_SESSION['state']) && $_SESSION['state'] != '')
+	&& (isset($_SESSION['country']) && $_SESSION['country'] != '')
+	&& (isset($_SESSION['street1']) && $_SESSION['street1'] != '')
+	&& (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
+	&& !isset($_GET['edit'])
+	) {
 	header("Location: chart.php");
 	die();
 }
@@ -249,26 +247,27 @@ gen_address($tpl, $sql, $user_id, $plan_id);
 gen_page_message($tpl);
 
 $tpl->assign(
-	array('TR_ADDRESS' => tr('Enter Address'),
-		'TR_FIRSTNAME' => tr('First name'),
-		'TR_LASTNAME' => tr('Last name'),
-		'TR_COMPANY' => tr('Company'),
-		'TR_POST_CODE' => tr('Zip/Postal code'),
-		'TR_CITY' => tr('City'),
-		'TR_STATE' => tr('State/Province'),
-		'TR_COUNTRY' => tr('Country'),
-		'TR_STREET1' => tr('Street 1'),
-		'TR_STREET2' => tr('Street 2'),
-		'TR_EMAIL' => tr('Email'),
-		'TR_PHONE' => tr('Phone'),
-		'TR_GENDER' => tr('Gender'),
-		'TR_MALE' => tr('Male'),
-		'TR_FEMALE' => tr('Female'),
-		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_FAX' => tr('Fax'),
-		'TR_CONTINUE' => tr('Continue'),
-		'NEED_FILLED' => tr('* denotes mandatory field.'),
-		'THEME_CHARSET' => tr('encoding')
+	array(
+		'TR_ADDRESS'	=> tr('Enter Address'),
+		'TR_FIRSTNAME'	=> tr('First name'),
+		'TR_LASTNAME'	=> tr('Last name'),
+		'TR_COMPANY'	=> tr('Company'),
+		'TR_POST_CODE'	=> tr('Zip/Postal code'),
+		'TR_CITY'		=> tr('City'),
+		'TR_STATE'		=> tr('State/Province'),
+		'TR_COUNTRY'	=> tr('Country'),
+		'TR_STREET1'	=> tr('Street 1'),
+		'TR_STREET2'	=> tr('Street 2'),
+		'TR_EMAIL'		=> tr('Email'),
+		'TR_PHONE'		=> tr('Phone'),
+		'TR_GENDER'		=> tr('Gender'),
+		'TR_MALE'		=> tr('Male'),
+		'TR_FEMALE'		=> tr('Female'),
+		'TR_UNKNOWN'	=> tr('Unknown'),
+		'TR_FAX'		=> tr('Fax'),
+		'TR_CONTINUE'	=> tr('Continue'),
+		'NEED_FILLED'	=> tr('* denotes mandatory field.'),
+		'THEME_CHARSET'	=> tr('encoding')
 	)
 );
 

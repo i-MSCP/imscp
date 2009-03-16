@@ -60,7 +60,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 				`hosting_plans`
 			WHERE
 				`reseller_id` = ?
-			  AND
+			AND
 				`status` = '1'
 		";
 
@@ -82,12 +82,12 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 
 			$tpl->assign(
 				array(
-					'PACK_NAME' => $rs->fields['name'],
-					'PACK_ID' => $rs->fields['id'],
-					'USER_ID' => $user_id,
-					'PURCHASE' => tr('Purchase'),
-					'PACK_INFO' => $description,
-					'PRICE' => $price,
+					'PACK_NAME'	=> $rs->fields['name'],
+					'PACK_ID'	=> $rs->fields['id'],
+					'USER_ID'	=> $user_id,
+					'PURCHASE'	=> tr('Purchase'),
+					'PACK_INFO'	=> $description,
+					'PRICE'		=> $price,
 				)
 			);
 

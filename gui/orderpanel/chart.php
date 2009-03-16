@@ -50,7 +50,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 				`hosting_plans`
 			WHERE
 				`reseller_id` = ?
-			  AND
+			AND
 				`id` = ?
 		";
 

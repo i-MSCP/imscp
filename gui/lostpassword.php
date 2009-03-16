@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2009 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -50,27 +50,27 @@ if (isset($_GET['key'])) {
 		$tpl = new pTemplate();
 		$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
 		$tpl->assign(
-				array(
-					'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-					'THEME_COLOR_PATH' => "themes/$theme_color",
-					'THEME_CHARSET' => tr('encoding')
-					)
-				);
+			array(
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'THEME_COLOR_PATH' => "themes/$theme_color",
+				'THEME_CHARSET' => tr('encoding')
+			)
+		);
 
 		if (sendpassword($_GET['key'])) {
 			$tpl->assign(
-					array(
-						'TR_MESSAGE' => tr('Password sent'),
-						'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
-						)
-					);
+				array(
+					'TR_MESSAGE' => tr('Password sent'),
+					'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
+				)
+			);
 		} else {
 			$tpl->assign(
-					array(
-						'TR_MESSAGE' => tr('ERROR: Password was not sent'),
-						'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
-						)
-					);
+				array(
+					'TR_MESSAGE' => tr('ERROR: Password was not sent'),
+					'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
+				)
+			);
 		}
 
 		$tpl->parse('PAGE', 'page');
@@ -92,36 +92,36 @@ if (isset($_POST['uname'])) {
 		$tpl = new pTemplate();
 		$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
 		$tpl->assign(
-				array(
-					'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-					'THEME_COLOR_PATH' => "themes/$theme_color",
-					'THEME_CHARSET' => tr('encoding')
-					)
-				);
+			array(
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'THEME_COLOR_PATH' => "themes/$theme_color",
+				'THEME_CHARSET' => tr('encoding')
+			)
+		);
 
 		if ($_SESSION['image'] == $_POST['capcode']) {
 			if (requestpassword($_POST['uname'])) {
 				$tpl->assign(
-						array(
-							'TR_MESSAGE' => tr('The password was requested'),
-							'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Back') . "</a>"
-							)
-						);
+					array(
+						'TR_MESSAGE' => tr('The password was requested'),
+						'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Back') . "</a>"
+					)
+				);
 			} else {
 				$tpl->assign(
-						array(
-							'TR_MESSAGE' => tr('ERROR: Unknown user'),
-							'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
-							)
-						);
+					array(
+						'TR_MESSAGE' => tr('ERROR: Unknown user'),
+						'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
+					)
+				);
 			}
 		} else {
 			$tpl->assign(
-					array(
-						'TR_MESSAGE' => tr('ERROR: Security code was not correct!') . ' ' . $_SESSION['image'],
-						'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
-						)
-					);
+				array(
+					'TR_MESSAGE' => tr('ERROR: Security code was not correct!') . ' ' . $_SESSION['image'],
+					'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
+				)
+			);
 		}
 
 		$tpl->parse('PAGE', 'page');
@@ -139,18 +139,18 @@ is_ipaddr_blocked(null, 'captcha', true);
 $tpl = new pTemplate();
 $tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword.tpl');
 $tpl->assign(
-			array(
-				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-				'THEME_COLOR_PATH' => Config::get('LOGIN_TEMPLATE_PATH'),
-				'THEME_CHARSET' => tr('encoding'),
-				'TR_CAPCODE' => tr('Security code'),
-				'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
-				'TR_IMGCAPCODE' => "<img src=\"imagecode.php\" border=\"0\" alt=\"\">",
-				'TR_USERNAME' => tr('Username'),
-				'TR_SEND' => tr('Request password'),
-				'TR_BACK' => tr('Back')
-				)
-			);
+	array(
+		'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'THEME_COLOR_PATH' => Config::get('LOGIN_TEMPLATE_PATH'),
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_CAPCODE' => tr('Security code'),
+		'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
+		'TR_IMGCAPCODE' => "<img src=\"imagecode.php\" border=\"0\" alt=\"\">",
+		'TR_USERNAME' => tr('Username'),
+		'TR_SEND' => tr('Request password'),
+		'TR_BACK' => tr('Back')
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

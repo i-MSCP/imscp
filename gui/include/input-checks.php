@@ -63,7 +63,7 @@ function check_input($value = '') {
 function clean_html($text) {
 	$suche = array ('@<script[^>]*?>.*?</script>@si', // remove JavaScript
 		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
-		'@([\r\n])[\s]+@', // remove spaces,
+		'@([\r\n])[\s]+@', // remove spaces
 		'@&(quot|#34|#034);@i', // change HTML entities
 		'@&(apos|#39|#039);@i', // change HTML entities
 		'@&(amp|#38);@i',
