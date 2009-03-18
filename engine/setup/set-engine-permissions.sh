@@ -76,7 +76,7 @@ fi
 #chmod ug+r,u+w,o-r rkhunter.log
 if [ -f /var/log/rkhunter.log ]
 then
-	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_USER /var/log/rkhunter.log
+	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_GROUP /var/log/rkhunter.log
 fi
 
 for i in `find $ROOT_DIR/engine/`; do

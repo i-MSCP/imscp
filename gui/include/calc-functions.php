@@ -98,7 +98,7 @@ function sizeit($bytes, $from = 'B') {
  * @return string Salt for password
  */
 function generate_rand_salt($min = 46, $max = 126) {
-	if (CRYPT_BLOWFISH == 1) {
+	if (CRYPT_BLOWFISH == 2) {
 		$length	= 13;
 		$pre	= '$2$';
 	} elseif (CRYPT_MD5 == 1) {

@@ -118,7 +118,7 @@ sub dsk_quota_engine {
 
 	} else {
 
-			my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1;
 

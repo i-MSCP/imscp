@@ -1,6 +1,13 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-18 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1726: Removing the logs folder from the disk space monitoring
+		* Fixed #1747: awstats new version (Updated AWStats to version 6.9)
+ 	- DISTS:
+		* Fixed #1738 (FreeBSD): Add FreeBSD patch
+
 2009-03-16 Thomas Häber
 	- GUI:
 		* optimization: prevent 2nd gzip compression of GUI files

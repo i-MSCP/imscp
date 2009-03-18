@@ -3,7 +3,7 @@
 # Launch awstats with -staticlinks option to build all static pages.
 # See COPYING.TXT file about AWStats GNU General Public License.
 #------------------------------------------------------------------------------
-# $Revision: 1.36 $ - $Author: eldy $ - $Date: 2007/11/11 19:40:33 $
+# $Revision: 1.37 $ - $Author: eldy $ - $Date: 2008/09/25 17:08:25 $
 
 #$|=1;
 #use warnings;		# Must be used in test mode only. This reduce a little process speed
@@ -15,7 +15,7 @@ use Time::Local;	# use Time::Local 'timelocal_nocheck' is faster but not support
 #------------------------------------------------------------------------------
 # Defines
 #------------------------------------------------------------------------------
-my $REVISION='$Revision: 1.36 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+my $REVISION='$Revision: 1.37 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
 my $VERSION="1.2 (build $REVISION)";
 
 # ---------- Init variables --------
@@ -115,7 +115,7 @@ sub debug {
 	my $level = $_[1] || 1;
 	if ($Debug >= $level) {
 		my $debugstring = $_[0];
-		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br>"; }
+		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br />"; }
 		print localtime(time)." - DEBUG $level - $debugstring\n";
 	}
 }

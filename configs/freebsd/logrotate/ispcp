@@ -1,4 +1,4 @@
-/var/log/apache2/users/*.log {
+/usr/local/www/logs/users/*.log {
   weekly
   missingok
   rotate 52
@@ -8,14 +8,14 @@
   create 640 root adm
   sharedscripts
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /usr/local/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    /etc/init.d/apache2 reload > /dev/null
+    /usr/local/etc/rc.d/apache22 reload > /dev/null
   endscript
 }
 
-/var/log/apache2/backup/*.log.perv {
+/usr/local/www/logs/backup/*.log.perv {
   size 5M
   missingok
   rotate 5
