@@ -23,12 +23,12 @@ body.left small {
 }
 
 pre {
-	font-family: verdana;
+	font-family: Verdana;
 	font-size: 9px;
 }
 
 body {
-	font-family: verdana;
+	font-family: Verdana;
 	background-image: url(../../skins/omega/header_right_bg.png);
 	font-size: 9px;
 	background-repeat: no-repeat;
@@ -66,7 +66,7 @@ td {
 }
 
 .top_bar_header {
-	font-family: verdana;
+	font-family: Verdana;
 	font-size: 13px;
 	color: #000000;
 }
@@ -75,7 +75,7 @@ td {
 }
 
 .inbox_bar_header {
-	font-family: verdana;
+	font-family: Verdana;
 	font-size: 10px;
 	padding: 10px 1px;
 	color: #000000;
@@ -87,7 +87,7 @@ td {
 }
 
 .company_text {
-	font-family: verdana;
+	font-family: Verdana;
 	font-size: 20px;
 	font-style: italic;
 	color: #c9d3e4;
@@ -116,9 +116,9 @@ td {
 }
 
 #company_table {
-	padding: 10px 0px 0px 0px;
+	padding: 10px 0 0;
 	float: right;
-	margin: -6px 0px 0px 0px;
+	margin: -6px 0 0px;
 }
 
 .current_folder {
@@ -205,7 +205,7 @@ frame {
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center left;
-	margin: 20em auto 0em auto;
+	margin: 20em auto 0;
 	width: 474px;
 	height: 273px;
 	position: relative;
@@ -216,7 +216,7 @@ frame {
 	font-size: 1em;
 	color: #FFFFFF;
 	width: 375px;
-	margin: 65px 20px 0px 0px;
+	margin: 65px 20px 0 0;
 	position: absolute;
 	top: -10px;
 	left: 25px;
@@ -237,7 +237,7 @@ frame {
 	font-weight: bold;
 	color: #c0c0c0;
 	vertical-align: super;
-	margin: 3px 0 0 0;
+	margin: 3px 0 0;
 }
 
 #container input {
@@ -266,12 +266,12 @@ frame {
 	background-position: top left;
 	padding: 0px 60px 60px 60px;
 	float: right;
-	margin: 0px 0px 0px -3px;
+	margin: 0 0 -3px;
 	cursor: hand;
 }
 */
 p.button_text {
-	margin: 55px 0px 0px 10px;
+	margin: 55px 0 0 10px;
 	font-size: 9px;
 	font-weight: bold;
 	text-decoration: none;
@@ -284,9 +284,9 @@ p.button_text {
 	background: url(../../skins/omega/inbox.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 35px 5px 0px;
+	padding: 0 35px 5px 0;
 	float: left;
-	margin: 3px 0px 0px 65px;
+	margin: 3px 0 0 65px;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -296,9 +296,9 @@ p.button_text {
 	background-image: url(../../skins/omega/compose.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 35px 5px 0px;
+	padding: 0 35px 5px 0;
 	float: left;
-	margin: 1px 0px 0px 0px;
+	margin: 1px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -308,9 +308,9 @@ p.button_text {
 	background-image: url(../../skins/omega/address_book.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 35px 5px 0px;
+	padding: 0 35px 5px 0;
 	float: left;
-	margin: 1px 0px 0px 0px;
+	margin: 1px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -320,9 +320,9 @@ p.button_text {
 	background-image: url(../../skins/omega/folders.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 35px 5px 0px;
+	padding: 0 35px 5px 0;
 	float: left;
-	margin: 1px 0px 0px 0px;
+	margin: 1px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -332,9 +332,9 @@ p.button_text {
 	background-image: url(../../skins/omega/options.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 35px 5px 0px;
+	padding: 0 35px 5px 0;
 	float: left;
-	margin: 1px 0px 0px 0px;
+	margin: 1px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -345,9 +345,9 @@ p.button_text {
 	background-image: url(../../skins/omega/todo.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -357,9 +357,9 @@ p.button_text {
 	background-image: url(../../skins/omega/notes.png);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -369,9 +369,9 @@ p.button_text {
 	background-image: url(../../skins/omega/bookmarks.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -380,9 +380,9 @@ p.button_text {
 	background-image: url(../../skins/omega/calendar.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -391,9 +391,9 @@ p.button_text {
 	background-image: url(../../skins/omega/fetchmail.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -402,9 +402,9 @@ p.button_text {
 	background-image: url(../../skins/omega/help.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -413,9 +413,9 @@ p.button_text {
 	background-image: url(../../skins/omega/search.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -424,9 +424,9 @@ p.button_text {
 	background-image: url(../../skins/omega/exit.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-	padding: 0px 16px 5px 0px;
+	padding: 0 16px 5px 0;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 40px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -435,9 +435,9 @@ p.button_text {
 	/*background-image: url(../../skins/omega/file_manager.png);*/
 	background-repeat: no-repeat;
 	background-position: top left;
-	padding: 0px 15px 5px 0px;
+	padding: 0 15px 5px 0;
 	float: left;
-	margin: 5px 0px 0px 0px;
+	margin: 5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -469,7 +469,7 @@ p.button_text {
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -478,7 +478,7 @@ p.button_text {
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -487,7 +487,7 @@ p.button_text {
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -496,7 +496,7 @@ p.button_text {
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -505,7 +505,7 @@ p.button_text {
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	cursor: hand;
 	cursor: pointer;
 }
@@ -514,18 +514,18 @@ p.button_text {
 	background-image: url(../../skins/omega/header_bg.png);
 	float: none;
 	height:117px;
-	margin: 0px 0px 0px 0px;
+	margin: 0 0 0px;
 }
 
 .left_button_text {
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	font-size: 9px;
 }
 
 #left_hook {
-	padding: 0px 30px 60px 40px;
+	padding: 0 30px 60px 40px;
 	float: none;
-	margin: 20px 0px 0px 40px;
+	margin: 20px 0 40px;
 }
 
 .mbox {
@@ -548,8 +548,8 @@ p.button_text {
 	width: 100%;
 	height: 16px;
 	position: relative;
-	margin-top: 0px;
-	padding: 0 0 12px 0;
+	margin-top: 0;
+	padding: 0 0 12px;
 }
 
 #folders {
@@ -731,7 +731,7 @@ p.button_text {
 }
 
 .move_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -746,7 +746,7 @@ p.button_text {
 }
 
 .forward_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -761,7 +761,7 @@ p.button_text {
 }
 
 .read_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -776,7 +776,7 @@ p.button_text {
 }
 
 .unread_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -791,7 +791,7 @@ p.button_text {
 }
 
 .delete_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -806,7 +806,7 @@ p.button_text {
 }
 
 .unflag_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -821,7 +821,7 @@ p.button_text {
 }
 
 .flag_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -836,7 +836,7 @@ p.button_text {
 }
 /*
 .savedraft_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -850,7 +850,7 @@ p.button_text {
 }
 
 .send_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -864,7 +864,7 @@ p.button_text {
 }
 
 .encrypt_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -878,7 +878,7 @@ p.button_text {
 }
 
 .decrypt_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -892,7 +892,7 @@ p.button_text {
 }
 
 .address_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -906,7 +906,7 @@ p.button_text {
 }
 
 .signature_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -920,7 +920,7 @@ p.button_text {
 }
 
 .spellcheck_button {
-	font-family: tahoma;
+	font-family: Tahoma;
 	font-size: 11px;
 	font-weight: normal;
 	text-decoration: none;
@@ -973,7 +973,7 @@ th a:hover, .calhead a:hover {
 }
 
 .left_button_text {
-	margin: -5px 0px 0px 0px;
+	margin: -5px 0 0;
 	font-size: 9px;
 }
 

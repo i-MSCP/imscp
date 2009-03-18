@@ -1,9 +1,9 @@
 <?php
 header("Content-type: text/css");
-if (isset($_GET["ltr"]) == true && $_GET["ltr"] != "rtl") { $left = "left"; $right = "right"; }
-else                                                      { $left = "right"; $right = "left"; }
-if (isset($_GET["image_url"]) == true) { $image_url = preg_replace("/[\\:\\*\\?\\<\\>\\|]/", "", $_GET["image_url"]); }
-else                                   { $image_url = ""; }
+if (isset($_GET["ltr"]) == true && $_GET["ltr"] != "rtl")	{ $left = "left"; $right = "right"; }
+else														{ $left = "right"; $right = "left"; }
+if (isset($_GET["image_url"]) == true)	{ $image_url = preg_replace("/[\\:\\*\\?\\<\\>\\|]/", "", $_GET["image_url"]); }
+else									{ $image_url = ""; }
 ?>
 
 /* CSS document colors
@@ -323,42 +323,42 @@ http://pear.laurent-laville.org/HTML_Progress/examples/horizontal/string.php
 ------------------------------------------------------------------------*/
 
 .p_ba7428 .progressBar, .p_ba7428 .progressBarBorder {
-    width: 172px;
-    height: 24px;
-    position: relative;
-    left: 0;
-    top: 0;
+	width: 172px;
+	height: 24px;
+	position: relative;
+	left: 0;
+	top: 0;
 }
 
 .p_ba7428 .progressBarBorder {
-    border-width: 0;
-    border-style: solid;
-    border-color: #666666;
+	border-width: 0;
+	border-style: solid;
+	border-color: #666666;
 }
 
 .p_ba7428 .installationProgress {
-    width: 350px;
-    text-align: left;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    color: #000000;
+	width: 350px;
+	text-align: left;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
 }
 
 .p_ba7428 .cellI, .p_ba7428 .cellA {
-    width: 15px;
-    height: 20px;
-    font-family: Courier, Verdana;
-    font-size: 0.8em;
-    float: left;
+	width: 15px;
+	height: 20px;
+	font-family: Courier, Verdana;
+	font-size: 0.8em;
+	float: left;
 }
 
 .p_ba7428 .cellI {
-    background-color: #666666;
+	background-color: #666666;
 }
 
 .p_ba7428 .cellA {
-    background-color: #666666;
-    visibility: hidden;
+	background-color: #666666;
+	visibility: hidden;
 }
 
 #buttonsright {
@@ -366,22 +366,22 @@ http://pear.laurent-laville.org/HTML_Progress/examples/horizontal/string.php
 	top: 68px; 
 }
 .login {
-	font-family: 		geneva, arial, helvetica, sans-serif;
-	font-size: 			11px;
-	color: 				#000;
-	white-space: 		nowrap;
-	text-decoration: 	none;
+	font-family:		geneva, arial, helvetica, sans-serif;
+	font-size:			11px;
+	color:				#000;
+	white-space:		nowrap;
+	text-decoration:	none;
 }
 
 a.login, a.login:link, a.login:visited {
-	font-family: 		geneva, arial, helvetica, sans-serif;
-	font-size: 			11px;
-	color: 				#3b73ca;
-	white-space: 		nowrap;
-	text-decoration: 	underline;
+	font-family:		geneva, arial, helvetica, sans-serif;
+	font-size:			11px;
+	color:				#3b73ca;
+	white-space:		nowrap;
+	text-decoration:	underline;
 }
 
 a.login:hover, a.login:active, a.login:hover {
-	color: 				#000000;
-	text-decoration: 	none;
+	color:				#000000;
+	text-decoration:	none;
 }

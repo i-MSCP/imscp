@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-18 Thomas Häber
+	- ENGINE:
+		* Fixed #1668: Add the LZMA compression to the possible backup zipping algorithms (currently only for debian lenny)
+
 2009-03-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1726: Removing the logs folder from the disk space monitoring

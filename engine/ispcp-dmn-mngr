@@ -3411,6 +3411,13 @@ sub dmn_restore_data {
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
 		}
+		# Restore 7z files
+		if ($fname =~ m/.tar.7z/i) {
+		# decode: 7za x -so directory.tar.7z | tar xf -
+			$cmd = "7za x -so $dmn_bk_dir/$fname | $cmd_tar --extract --preserve-permissions --directory=$dmn_dir";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0)
+		}
 		# Restore gz files
 		if ($fname =~ m/.tar.gz/i) {
 			$cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";

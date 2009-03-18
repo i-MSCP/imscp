@@ -16,6 +16,7 @@ final class Config {
 		'BASE_SERVER_IP' => null,
 		'BASE_SERVER_VHOST' => null,
 		'MR_LOCK_FILE' => null,
+		'CMD_7Z' => null,
 		'CMD_AWK' => null,
 		'CMD_BZCAT' => null,
 		'CMD_BZIP' => null,
