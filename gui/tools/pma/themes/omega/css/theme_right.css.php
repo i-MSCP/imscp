@@ -21,7 +21,7 @@ body {
 
 /* gecko FIX, font size is not correctly assigned to all child elements */
 body * {
-	font:				inherit inherit;
+	font:				inherit;
 }
 
 h1 {
