@@ -2,6 +2,7 @@ app-forensics/chkrootkit
 app-forensics/rkhunter
 app-admin/apache-tools
 app-admin/apachetop
+app-arch/p7zip
 app-crypt/mcrypt
 app-crypt/mhash
 app-text/htmltidy

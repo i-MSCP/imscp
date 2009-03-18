@@ -357,6 +357,10 @@ sub backup_all_engine {
 						$db_filename = "$db_backup_file.gz";
 						$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
 					}
+					elsif ($zip eq "7z") {
+						$db_filename = "$db_backup_file.7z";
+						$db_compresscmd = "$main::cfg{'CMD_7Z'} a \'$db_backup_file\'";
+					}
 					else {
 						push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
 

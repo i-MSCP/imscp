@@ -32,6 +32,7 @@ mod_auth_mysql
 mysql
 mysql-server
 net-snmp-perl
+p7zip
 patch
 perl-Archive-Tar
 perl-Archive-Zip

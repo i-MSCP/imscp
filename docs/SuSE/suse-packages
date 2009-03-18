@@ -5,6 +5,7 @@ apache2-mod_perl
 apache2-mod_php5
 apache2-prefork
 libapr0
+p7zip
 php5
 php5-bcmath
 php5-bz2

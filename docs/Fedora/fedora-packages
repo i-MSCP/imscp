@@ -33,6 +33,7 @@ mod_ssl
 mod_auth_mysql
 mysql
 mysql-server
+p7zip
 patch
 perl-Archive-Tar
 perl-Archive-Zip
