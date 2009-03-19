@@ -9,11 +9,11 @@
 set -e
 
 if [ ! -d language-files ]; then
-	if [ ! -d ../language-files ]; then
-		echo 'Neither language-files nor ../language-files are valid directories!'
+	if [ ! -d ../../language-files ]; then
+		echo 'Neither language-files nor ../../language-files are valid directories!'
 		exit 1
 	else
-		cd ../language-files/po
+		cd ../../language-files/po
 	fi
 else
 	cd language-files/po

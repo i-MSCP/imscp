@@ -4,8 +4,8 @@
 
 Introduction
 ------------
-Try to keep the default order. If there are no new strings in the GUI php files
-you can jump to point 3.
+Try to keep the default order. If there aren't any new strings in the GUI php
+files you can jump to point 3.
 
 
 Default order
@@ -16,8 +16,8 @@ Default order
 	the ispcp.pot file
 
 2. updateToPot
-	Use the shell script "updateToPot" to merge automatically the new (see
-	point 1.) ispcp.pot file with the language specific *.po files.
+	Use the shell script "updateToPot" to merge automatically the new ispcp.pot
+	file (see point 1) with the language specific *.po files.
 
 3. modify *.po files
 	Add translations for empty strings or fix wrong translations in the language
