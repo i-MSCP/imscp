@@ -3389,6 +3389,7 @@ sub dmn_restore_data {
 	my $dmn_dir      = "$www_dir/$dmn_name";
 	my $dmn_bk_dir   = "$www_dir/$dmn_name/backups";
 	my $cmd_tar      = $main::cfg{'CMD_TAR'};
+	my $cmd_7z       = $main::cfg{'CMD_7Z'};
 	my $cmd_bzcat    = $main::cfg{'CMD_BZCAT'};
 	my $cmd_gzcat    = $main::cfg{'CMD_GZCAT'};
 	my $cmd_mysql    = $main::cfg{'CMD_MYSQL'};
@@ -3405,16 +3406,15 @@ sub dmn_restore_data {
 	my ($cmd,$rdata2,$rdata3,$sql) = ('','','','');
 	foreach(@bk_files) {
 		my ($fname) = ($_);
-		# Restore bzip2 files
-		if ($fname =~ m/.tar.bz2/i) {
-			$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+		# Restore 7z files
+		if ($fname =~ m/.tar.7z/i) {
+			$cmd = "$cmd_7z x -so $dmn_bk_dir/$fname | $cmd_tar --extract --preserve-permissions --directory=$dmn_dir";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
 		}
-		# Restore 7z files
-		if ($fname =~ m/.tar.7z/i) {
-		# decode: 7za x -so directory.tar.7z | tar xf -
-			$cmd = "7za x -so $dmn_bk_dir/$fname | $cmd_tar --extract --preserve-permissions --directory=$dmn_dir";
+		# Restore bzip2 files
+		if ($fname =~ m/.tar.bz2/i) {
+			$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
 		}
@@ -3424,17 +3424,46 @@ sub dmn_restore_data {
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
 		}
+		# Restore 7z SQL files
+		if ($fname =~ m/.sql.7z/i) {
+			# Extract databasename
+			$fname =~ /(.*).sql.7z/;
+			my $dbf_name = $1;
+			$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+			($rs,$rdata3) = doSQL($sql);
+			return $rs if ($rs != 0);
+			foreach (@$rdata3) {
+				my $db_id = @$_[0];
+				my $db_name = @$_[1];
+				# if databasename eq filedatabasename get SQL user and pass
+				if ($db_name eq $dbf_name) {
+					$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+					($rs,$rdata2) = doSQL($sql);
+					return $rs if ($rs != 0);
+					$rdata2=@$rdata2[0];
+					my $dbuser = @$rdata2[0];
+					my $dbpass = decrypt_db_password(@$rdata2[1]);
+					# if username and pass for db exists - restore database from file
+					if ($dbuser && $dbpass) {
+						$dbpass =~ s/([\'\"])/\\$1/g;
+						$cmd = "$cmd_7z e -so $dmn_bk_dir/$fname | $cmd_mysql --user=\"$dbuser\" --password=\"$dbpass\" --database=\"$db_name\"";
+						$rs = sys_command($cmd);
+						return $rs if ($rs != 0);
+					}
+				}
+			}
+		}
 		# Restore bz2 SQL files
 		if ($fname =~ m/.sql.bz2/i) {
 			# Extract databasename
 			$fname =~ /(.*).sql.bz2/;
 			my $dbf_name = $1;
-			$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+			$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 			($rs,$rdata3) = doSQL($sql);
 			return $rs if ($rs != 0);
-			foreach(@$rdata3) {
-				my $db_id=@$_[0];
-				my $db_name=@$_[1];
+			foreach (@$rdata3) {
+				my $db_id = @$_[0];
+				my $db_name = @$_[1];
 				# if databasename eq filedatabasename get SQL user and pass
 				if ($db_name eq $dbf_name) {
 					$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
@@ -3458,12 +3487,12 @@ sub dmn_restore_data {
 			# Extract databasename
 			$fname =~ /(.*).sql.gz/;
 			my $dbf_name = $1;
-			$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+			$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 			($rs,$rdata3) = doSQL($sql);
 			return $rs if ($rs != 0);
-			foreach(@$rdata3) {
-				my $db_id=@$_[0];
-				my $db_name=@$_[1];
+			foreach (@$rdata3) {
+				my $db_id = @$_[0];
+				my $db_name = @$_[1];
 				# if databasename eq filedatabasename get SQL user and pass
 				if ($db_name eq $dbf_name) {
 					$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";

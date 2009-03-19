@@ -2,6 +2,7 @@ apache2
 apache2-common
 apache2-mpm-worker
 awstats
+bash
 bind9
 bzip2
 courier-authdaemon
@@ -45,7 +46,10 @@ libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
 libmysqlclient14
+libnet-libidn-perl
 locales
+lsb-base
+lzma
 make
 mysql-client-4.1
 mysql-common
@@ -56,6 +60,7 @@ patch
 perl
 perl-base
 perl-modules
+php4-idn
 php5-cgi
 php5-gd
 php5-imap
@@ -70,7 +75,3 @@ sasl2-bin
 ssh
 tar
 wget
-bash
-libnet-libidn-perl
-php4-idn
-lsb-base

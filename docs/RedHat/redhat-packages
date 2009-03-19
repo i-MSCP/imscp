@@ -21,6 +21,7 @@ httpd
 iptables
 libdbi-dbd-mysql
 libmcrypt
+lzma
 mod_auth_mysql
 mod_perl
 mod_ssl

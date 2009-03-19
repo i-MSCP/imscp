@@ -87,7 +87,7 @@ sub dsk_quota_engine {
 
 	push_el(\@main::el, 'dsk_quota_engine()', 'Starting...');
 
-	my $sql = "select domain_id, domain_name from domain where domain_status = 'ok';";
+	my $sql = "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok';";
 
 	($rs, $ref) = doSQL($sql);
 
@@ -105,37 +105,37 @@ sub dsk_quota_engine {
 
 		my $size = 0;
 
-	# BSD/NUX Command
-	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		# BSD/NUX Command
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			# @todo Why '-I "*.tar.bz2" -I "*.tar.7z"' and not '-I "*.bz2" -I "*.7z"', too?
+			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -I "*.tar.7z" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
-			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
-
-		$s =~ /^(\d+)/; $size += $1*1024;
+			$s =~ /^(\d+)/; $size += $1*1024;
 
 			$s = `$cmd_du -d 0 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1*1024;
 
-	} else {
+		} else {
 
-			my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			my $s = `$cmd_du --exclude="backups/$domain_name-*.7z" --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.7z" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1;
 
 			$s = `$cmd_du -s -B1 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1;
-	}
+		}
 
 		if ($size > 0) {
 
-			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
 
 			($rs, $rdata) = doSQL($sql);
 
 			return $rs if ($rs != 0);
 
-			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
 
 			($rs, $rdata) = doSQL($sql);
 
@@ -147,7 +147,7 @@ sub dsk_quota_engine {
 
 			if ($quota_ent > 0) {
 
-				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
 
 				($rs, $rdata) = doSQL($sql);
 
@@ -171,7 +171,7 @@ sub mysqldb_quota_by_mysql_engine {
 
 	push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Starting...');
 
-	my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
+	my $sql = "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = 'ok';";
 
 	($rs, $ref) = doSQL($sql);
 
@@ -187,7 +187,7 @@ sub mysqldb_quota_by_mysql_engine {
 
 		my $domain_id   = @$_[0];
 
-		my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
+		my $sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = '$domain_id';";
 
 		($rs, $ref) = doSQL($sql);
 
@@ -224,13 +224,13 @@ sub mysqldb_quota_by_mysql_engine {
 
 			$size += $disk_usage;
 
-			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
 
 			($rs, $rdata) = doSQL($sql);
 
 			return $rs if ($rs != 0);
 
-			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
 
 			($rs, $rdata) = doSQL($sql);
 
@@ -242,7 +242,7 @@ sub mysqldb_quota_by_mysql_engine {
 
 			if ($quota_ent > 0) {
 
-				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
 
 				($rs, $rdata) = doSQL($sql);
 
@@ -265,7 +265,7 @@ sub mysqldb_quota_by_dir_engine {
 
 	push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Starting...');
 
-	my $sql = "select domain_id, domain_name, domain_disk_usage from domain where domain_status = 'ok';";
+	my $sql = "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = 'ok';";
 
 	($rs, $ref) = doSQL($sql);
 
@@ -283,7 +283,7 @@ sub mysqldb_quota_by_dir_engine {
 
 		my $domain_id   = @$_[0];
 
-		my $sql = "select sqld_id, sqld_name from sql_database where domain_id = '$domain_id';";
+		my $sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = '$domain_id';";
 
 		($rs, $ref) = doSQL($sql);
 
@@ -319,13 +319,13 @@ sub mysqldb_quota_by_dir_engine {
 
 			$size += $disk_usage;
 
-			$sql = "update domain set domain_disk_usage='$size' where domain_id='$domain_id'";
+			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
 
 			($rs, $rdata) = doSQL($sql);
 
 			return $rs if ($rs != 0);
 
-			$sql = "select count(name) as cnt from quotatallies where name = '$domain_name'";
+			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
 
 			($rs, $rdata) = doSQL($sql);
 
@@ -337,7 +337,7 @@ sub mysqldb_quota_by_dir_engine {
 
 			if ($quota_ent > 0) {
 
-				$sql = "update quotatallies set bytes_in_used = '$size' where name = '$domain_name'";
+				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
 
 				($rs, $rdata) = doSQL($sql);
 

@@ -26,6 +26,7 @@ libdbi-dbd-mysql
 libmcrypt
 libtool-ltdl
 lsb-readhat
+lzma
 mod_perl
 mod_ssl
 mod_auth_mysql

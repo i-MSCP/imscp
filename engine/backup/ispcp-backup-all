@@ -309,7 +309,7 @@ sub backup_all_engine {
 		elsif ($zip eq "7z") {
 			$backup_filename = "$dmn_name-backup-$date.tar.7z";
 			
-			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename | $main::cfg{'CMD_7Z'} a -si $dmn_dir/$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
 		else {
 			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
@@ -323,8 +323,8 @@ sub backup_all_engine {
 		# - execute MYSQLDUMP with databases and redirect it to the backup folder
 		#
 
-		$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
-		($rs,my $rdata3) = doSQL($sql);
+		$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+		($rs, my $rdata3) = doSQL($sql);
 
 		foreach(@$rdata3) {
 			my $db_id=@$_[0];

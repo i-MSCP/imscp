@@ -28,6 +28,7 @@ glibc-devel
 gzip
 iptables
 lha
+lzma
 mailx
 make
 mhash

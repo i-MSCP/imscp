@@ -46,11 +46,13 @@ libterm-readpassword-perl
 libtimedate-perl
 libmysqlclient15off
 locales
+lzma
 make
 mysql-client
 mysql-common
 mysql-server
 original-awk
+p7zip-full
 patch
 perl
 perl-base
