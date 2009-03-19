@@ -306,8 +306,8 @@ sub backup_all_engine {
 
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
-		elsif ($zip eq "7z") {
-			$backup_filename = "$dmn_name-backup-$date.tar.7z";
+		elsif ($zip eq "lzma") {
+			$backup_filename = "$dmn_name-backup-$date.tar.lzma";
 			
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
@@ -357,9 +357,9 @@ sub backup_all_engine {
 						$db_filename = "$db_backup_file.gz";
 						$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
 					}
-					elsif ($zip eq "7z") {
-						$db_filename = "$db_backup_file.7z";
-						$db_compresscmd = "$main::cfg{'CMD_7Z'} a \'$db_backup_file\'";
+					elsif ($zip eq "lzma") {
+						$db_filename = "$db_backup_file.lzma";
+						$db_compresscmd = "$main::cfg{'CMD_LZMA'} --force \'$db_backup_file\'";
 					}
 					else {
 						push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");

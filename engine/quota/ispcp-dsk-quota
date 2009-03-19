@@ -107,8 +107,8 @@ sub dsk_quota_engine {
 
 		# BSD/NUX Command
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			# @todo Why '-I "*.tar.bz2" -I "*.tar.7z"' and not '-I "*.bz2" -I "*.7z"', too?
-			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -I "*.tar.7z" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			# @todo Why '-I "*.tar.bz2" -I "*.tar.lzma"' and not '-I "*.bz2" -I "*.lzma"', too?
+			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -I "*.tar.lzma" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1*1024;
 
@@ -118,7 +118,7 @@ sub dsk_quota_engine {
 
 		} else {
 
-			my $s = `$cmd_du --exclude="backups/$domain_name-*.7z" --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.7z" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+			my $s = `$cmd_du --exclude="backups/$domain_name-*.lzma" --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.lzma" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
 			$s =~ /^(\d+)/; $size += $1;
 

@@ -80,8 +80,8 @@ if (Config::get('ZIP') == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";
 } else if (Config::get('ZIP') == "bzip2") {
 	$name = "backup_YYYY_MM_DD.tar.bz2";
-} else { // Config::get('ZIP') == "7z"
-	$name = "backup_YYYY_MM_DD.tar.7z";
+} else { // Config::get('ZIP') == "lzma"
+	$name = "backup_YYYY_MM_DD.tar.lzma";
 }
 
 $tpl->assign(

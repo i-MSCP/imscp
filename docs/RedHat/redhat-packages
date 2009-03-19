@@ -28,7 +28,6 @@ mod_ssl
 mod_fcgi
 mysql
 mysql-server
-p7zip
 patch
 perl-Archive-Tar
 perl-Archive-Zip

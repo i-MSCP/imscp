@@ -55,7 +55,6 @@ mysql-client
 mysql-common
 mysql-server
 original-awk
-p7zip-full
 patch
 perl
 perl-base
