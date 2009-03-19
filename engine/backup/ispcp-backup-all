@@ -306,7 +306,7 @@ sub backup_all_engine {
 
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
-		elseif ($zip eq "7z") {
+		elsif ($zip eq "7z") {
 			$backup_filename = "$dmn_name-backup-$date.tar.7z";
 			
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename | $main::cfg{'CMD_7Z'} a -si $dmn_dir/$backup_filename . 2> $dmn_dir/$backup_filename.log";
@@ -414,15 +414,15 @@ sub backup_all_engine {
 
 			push_el(\@main::el, 'backup_all_engine()', "ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
 
-						if ( -e "$dmn_dir/$backup_filename" ) {
+			if ( -e "$dmn_dir/$backup_filename" ) {
 
-							$rs = del_file("$dmn_dir/$backup_filename");
+				$rs = del_file("$dmn_dir/$backup_filename");
 
-							return $rs if ($rs != 0);
+				return $rs if ($rs != 0);
 
-						}
+			}
 
-				}
+		}
 
 	}
 
