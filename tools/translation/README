@@ -1,0 +1,29 @@
+################################################################################
+# Readme to work with translations.                                            #
+################################################################################
+
+Introduction
+------------
+Try to keep the default order. If there are no new strings in the GUI php files
+you can jump to point 3.
+
+
+Default order
+-------------
+
+1. makemsgs
+	Use the shell script "makemsgs" to get all strings from GUI php files within
+	the ispcp.pot file
+
+2. updateToPot
+	Use the shell script "updateToPot" to merge automatically the new (see
+	point 1.) ispcp.pot file with the language specific *.po files.
+
+3. modify *.po files
+	Add translations for empty strings or fix wrong translations in the language
+	specific *.po files.
+
+4. create language text files
+	Create/export language specific (.ini-like) text files with a language tool
+	out of language specific *.po files. These text files can be used to upload
+	them to the ispCP GUI panel.
