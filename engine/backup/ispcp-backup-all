@@ -37,6 +37,7 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
+
 sub lock_backup_all_system {
 
 	my ($lock_file) = @_;
@@ -52,7 +53,7 @@ sub lock_backup_all_system {
 
 	if (-e $lock_file) {
 
-		push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked !');
+		push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked!');
 
 		return 1;
 
@@ -87,7 +88,6 @@ sub unlock_backup_all_system {
 }
 
 
-
 sub backup_all_start_up {
 
 	my ($lock_file) = @_;
@@ -110,7 +110,7 @@ sub backup_all_start_up {
 	# getting initial data also must be done here;
 	#
 
-	#my $sql = "SELECT * FROM domain WHERE domain_status = 'ok' ;";
+	#my $sql = "SELECT * FROM domain WHERE domain_status = 'ok'";
 
 	#($rs, $rdata) = doSQL($sql);
 
@@ -140,6 +140,7 @@ sub backup_all_shut_down {
 	return 0;
 
 }
+
 
 sub err_exit {
 
@@ -326,18 +327,18 @@ sub backup_all_engine {
 		$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 		($rs, my $rdata3) = doSQL($sql);
 
-		foreach(@$rdata3) {
-			my $db_id=@$_[0];
-			my $db_name=@$_[1];
+		foreach (@$rdata3) {
+			my $db_id = @$_[0];
+			my $db_name = @$_[1];
 			$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
-			($rs,my $rdata2) = doSQL($sql);
+			($rs, my $rdata2) = doSQL($sql);
 			my $dbuser = "";
 			my $dbpass = "";
 
 			if (@$rdata2) {
-				foreach(@$rdata2) {
+				foreach (@$rdata2) {
 					$dbuser = @$_[0];
-					if($main::use_crypted_pwd){
+					if ($main::use_crypted_pwd) {
 						$dbpass = decrypt_db_password(@$_[1]);
 					} else {
 						$dbpass = @$_[1];
@@ -391,7 +392,7 @@ sub backup_all_engine {
 
 		$rs = sys_command($backup_cmd);
 
-		# do not return if backup throws an error, otherwise other domains will not be backuped
+		# do not return, if backup throws an error, otherwise other domains will not be backuped
 		if ($rs == 0) { # everything ok
 
 			$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
@@ -432,6 +433,7 @@ sub backup_all_engine {
 
 }
 
+
 sub use_crypted_pwd {
 
 	my ($rs, $rdata, $sql) = (undef, undef, undef);
@@ -453,8 +455,8 @@ sub use_crypted_pwd {
 
 }
 
-my $rs = undef;
 
+my $rs = undef;
 my $proceed = $ARGV[0];
 
 
@@ -468,7 +470,7 @@ if (!defined($proceed) || $proceed eq '') {
 
 if ($proceed ne 'yes') {
 
-	push_el(\@main::el, 'main()', "NOTE: If you want full backup of your domain data, please run this script with 'yes' command line parameter!");
+	push_el(\@main::el, 'main()', "NOTICE: If you want full backup of your domain data, please run this script with 'yes' command line parameter!");
 
 	err_exit();
 
@@ -483,6 +485,7 @@ err_exit() if ($rs != 0 && $rs != 2);
 exit 0 if ($rs == 2); # $rs == 2 when backups are disabled
 
 $rs = use_crypted_pwd();
+
 err_exit() if ($rs != 0);
 
 $rs = backup_all_engine();
