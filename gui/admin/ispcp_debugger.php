@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -58,14 +58,14 @@ function get_error_domains(&$sql, &$tpl) {
 			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content2' : 'content'));
 
 			$tpl->assign(
-					array(
-						'DOMAIN_MESSAGE' => '',
-						'TR_DOMAIN_NAME' => $rs->fields['domain_name'],
-						'TR_DOMAIN_ERROR' => $rs->fields['domain_status'],
-						'CHANGE_ID' => $rs->fields['domain_id'],
-						'CHANGE_TYPE' => 'domain',
-						)
-				);
+				array(
+					'DOMAIN_MESSAGE' => '',
+					'TR_DOMAIN_NAME' => $rs->fields['domain_name'],
+					'TR_DOMAIN_ERROR' => $rs->fields['domain_status'],
+					'CHANGE_ID' => $rs->fields['domain_id'],
+					'CHANGE_TYPE' => 'domain',
+				)
+			);
 
 			$tpl->parse('DOMAIN_LIST', '.domain_list');
 
@@ -88,14 +88,14 @@ function get_error_aliases(&$sql, &$tpl) {
 	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-        SELECT
-            alias_name, alias_status, alias_id
-        FROM
-            domain_aliasses
-        WHERE
-            alias_status
-        NOT IN
-        	(?, ?, ?, ?, ?, ?, ?, ?, ?)
+		SELECT
+			alias_name, alias_status, alias_id
+		FROM
+			domain_aliasses
+		WHERE
+			alias_status
+		NOT IN
+			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -111,11 +111,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'ALIAS_LIST' => '',
-					'TR_ALIAS_MESSAGE' => tr('No domain alias system errors'),
-					)
-			);
+			array(
+				'ALIAS_LIST' => '',
+				'TR_ALIAS_MESSAGE' => tr('No domain alias system errors'),
+			)
+		);
 
 		$tpl->parse('ALIAS_MESSAGE', 'alias_message');
 	} else {
@@ -128,14 +128,14 @@ SQL_QUERY;
 			);
 
 			$tpl->assign(
-					array(
-						'ALIAS_MESSAGE' => '',
-						'TR_ALIAS_NAME' => $rs->fields['alias_name'],
-						'TR_ALIAS_ERROR' => $rs->fields['alias_status'],
-						'CHANGE_ID' => $rs->fields['alias_id'],
-						'CHANGE_TYPE' => 'alias',
-						)
-				);
+				array(
+					'ALIAS_MESSAGE' => '',
+					'TR_ALIAS_NAME' => $rs->fields['alias_name'],
+					'TR_ALIAS_ERROR' => $rs->fields['alias_status'],
+					'CHANGE_ID' => $rs->fields['alias_id'],
+					'CHANGE_TYPE' => 'alias',
+				)
+			);
 
 			$tpl->parse('ALIAS_LIST', '.alias_list');
 
@@ -156,14 +156,14 @@ function get_error_subdomains(&$sql, &$tpl) {
 	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-      SELECT
-          subdomain_name, subdomain_status, subdomain_id
-      FROM
-          subdomain
-      WHERE
-          subdomain_status
-      NOT IN
-        	(?, ?, ?, ?, ?, ?, ?, ?)
+		SELECT
+			subdomain_name, subdomain_status, subdomain_id
+		FROM
+			subdomain
+		WHERE
+			subdomain_status
+		NOT IN
+			(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -178,11 +178,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'SUBDOMAIN_LIST' => '',
-					'TR_SUBDOMAIN_MESSAGE' => tr('No subdomain system errors'),
-					)
-			);
+			array(
+				'SUBDOMAIN_LIST' => '',
+				'TR_SUBDOMAIN_MESSAGE' => tr('No subdomain system errors'),
+			)
+		);
 
 		$tpl->parse('SUBDOMAIN_MESSAGE', 'subdomain_message');
 	} else {
@@ -191,14 +191,14 @@ SQL_QUERY;
 			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
 
 			$tpl->assign(
-					array(
-						'SUBDOMAIN_MESSAGE' => '',
-						'TR_SUBDOMAIN_NAME' => $rs->fields['subdomain_name'],
-						'TR_SUBDOMAIN_ERROR' => $rs->fields['subdomain_status'],
-						'CHANGE_ID' => $rs->fields['subdomain_id'],
-						'CHANGE_TYPE' => 'subdomain'
-						)
-				);
+				array(
+					'SUBDOMAIN_MESSAGE' => '',
+					'TR_SUBDOMAIN_NAME' => $rs->fields['subdomain_name'],
+					'TR_SUBDOMAIN_ERROR' => $rs->fields['subdomain_status'],
+					'CHANGE_ID' => $rs->fields['subdomain_id'],
+					'CHANGE_TYPE' => 'subdomain'
+				)
+			);
 
 			$tpl->parse('SUBDOMAIN_LIST', '.subdomain_list');
 
@@ -219,14 +219,14 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-      SELECT
-          subdomain_alias_name, subdomain_alias_status, subdomain_alias_id
-      FROM
-          subdomain_alias
-      WHERE
-          subdomain_alias_status
-      NOT IN
-        	(?, ?, ?, ?, ?, ?, ?, ?)
+		SELECT
+			subdomain_alias_name, subdomain_alias_status, subdomain_alias_id
+		FROM
+			subdomain_alias
+		WHERE
+			subdomain_alias_status
+		NOT IN
+			(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -241,11 +241,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'SUBDOMAIN_ALIAS_LIST' => '',
-					'TR_SUBDOMAIN_ALIAS_MESSAGE' => tr('No alias subdomain system errors'),
-					)
-			);
+			array(
+				'SUBDOMAIN_ALIAS_LIST' => '',
+				'TR_SUBDOMAIN_ALIAS_MESSAGE' => tr('No alias subdomain system errors'),
+			)
+		);
 
 		$tpl->parse('SUBDOMAIN_ALIAS_MESSAGE', 'subdomain_alias_message');
 	} else {
@@ -254,14 +254,14 @@ SQL_QUERY;
 			$tpl->assign(array('CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
 
 			$tpl->assign(
-					array(
-						'SUBDOMAIN_ALIAS_MESSAGE' => '',
-						'TR_SUBDOMAIN_ALIAS_NAME' => $rs->fields['subdomain_alias_name'],
-						'TR_SUBDOMAIN_ALIAS_ERROR' => $rs->fields['subdomain_alias_status'],
-						'CHANGE_ID' => $rs->fields['subdomain_alias_id'],
-						'CHANGE_TYPE' => 'subdomain_alias'
-						)
-				);
+				array(
+					'SUBDOMAIN_ALIAS_MESSAGE' => '',
+					'TR_SUBDOMAIN_ALIAS_NAME' => $rs->fields['subdomain_alias_name'],
+					'TR_SUBDOMAIN_ALIAS_ERROR' => $rs->fields['subdomain_alias_status'],
+					'CHANGE_ID' => $rs->fields['subdomain_alias_id'],
+					'CHANGE_TYPE' => 'subdomain_alias'
+				)
+			);
 
 			$tpl->parse('SUBDOMAIN_ALIAS_LIST', '.subdomain_alias_list');
 
@@ -283,14 +283,14 @@ function get_error_mails(&$sql, &$tpl) {
 	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
-        SELECT
-            mail_acc, domain_id, mail_type, status, mail_id
-        FROM
-            mail_users
-        WHERE
-            status
-        NOT IN
-        	(?, ?, ?, ?, ?, ?, ?, ?, ?)
+		SELECT
+			mail_acc, domain_id, mail_type, status, mail_id
+		FROM
+			mail_users
+		WHERE
+			status
+		NOT IN
+			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
@@ -306,11 +306,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'MAIL_LIST' => '',
-					'TR_MAIL_MESSAGE' => tr('No email account system errors'),
-					)
-			);
+			array(
+				'MAIL_LIST' => '',
+				'TR_MAIL_MESSAGE' => tr('No email account system errors'),
+			)
+		);
 
 		$tpl->parse('MAIL_MESSAGE', 'mail_message');
 	} else {
@@ -321,30 +321,30 @@ SQL_QUERY;
 
 			if ($rs->fields['mail_type'] == 'normal_mail' || $rs->fields['mail_type'] == 'normal_forward') {
 				$query = <<<SQL_QUERY
-            SELECT
-                domain_name AS domain_name
-            FROM
-                domain
-            WHERE
-                domain_id = ?
+					SELECT
+						domain_name AS domain_name
+					FROM
+						domain
+					WHERE
+						domain_id = ?
 SQL_QUERY;
 			} else if ($rs->fields['mail_type'] == 'subdom_mail' || $rs->fields['mail_type'] == 'subdom_forward') {
 				$query = <<<SQL_QUERY
-            SELECT
-                subdomain_name AS domain_name
-            FROM
-                subdomain
-            WHERE
-                subdomain_id = ?
+					SELECT
+						subdomain_name AS domain_name
+					FROM
+						subdomain
+					WHERE
+						subdomain_id = ?
 SQL_QUERY;
 			} else if ($rs->fields['mail_type'] == 'alias_mail' || $rs->fields['mail_type'] == 'alias_forward') {
 				$query = <<<SQL_QUERY
-            SELECT
-                alias_name AS domain_name
-            FROM
-                domain_aliasses
-            WHERE
-                alias_id  = ?
+					SELECT
+						alias_name AS domain_name
+					FROM
+						domain_aliasses
+					WHERE
+						alias_id  = ?
 SQL_QUERY;
 			} else {
 				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
@@ -361,14 +361,14 @@ SQL_QUERY;
 			);
 
 			$tpl->assign(
-					array(
-						'MAIL_MESSAGE' => '',
-						'TR_MAIL_NAME' => $rs->fields['mail_acc'] . "@" . $domain_name,
-						'TR_MAIL_ERROR' => $rs->fields['status'],
-						'CHANGE_ID' => $rs->fields['mail_id'],
-						'CHANGE_TYPE' => 'mail',
-						)
-				);
+				array(
+					'MAIL_MESSAGE' => '',
+					'TR_MAIL_NAME' => $rs->fields['mail_acc'] . "@" . $domain_name,
+					'TR_MAIL_ERROR' => $rs->fields['status'],
+					'CHANGE_ID' => $rs->fields['mail_id'],
+					'CHANGE_TYPE' => 'mail',
+				)
+			);
 
 			$tpl->parse('MAIL_LIST', '.mail_list');
 
@@ -406,13 +406,13 @@ $tpl->define_dynamic('mail_list', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-	);
+	array(
+		'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
  *
@@ -423,19 +423,19 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
-		array(
-			'TR_DEBUGGER_TITLE' => tr('ispCP debugger'),
-			'TR_DOMAIN_ERRORS' => tr('Domain errors'),
-			'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
-			'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
-			'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
-			'TR_MAIL_ERRORS' => tr('Mail account errors'),
-			'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
-			'TR_EXEC_REQUESTS' => tr('Execute requests'),
-			'TR_CHANGE_STATUS' => tr('Set status to "change"'),
-			'EXEC_COUNT' => $exec_count,
-			)
-	);
+	array(
+		'TR_DEBUGGER_TITLE' => tr('ispCP debugger'),
+		'TR_DOMAIN_ERRORS' => tr('Domain errors'),
+		'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
+		'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
+		'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
+		'TR_MAIL_ERRORS' => tr('Mail account errors'),
+		'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
+		'TR_EXEC_REQUESTS' => tr('Execute requests'),
+		'TR_CHANGE_STATUS' => tr('Set status to "change"'),
+		'EXEC_COUNT' => $exec_count,
+	)
+);
 
 if (isset($_GET['action']) && $exec_count > 0) {
 	if ($_GET['action'] == 'run_engine') {

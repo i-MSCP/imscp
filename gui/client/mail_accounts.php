@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Users'),
-		'THEME_COLOR_PATH' 						=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'						=> "../themes/$theme_color",
 		'THEME_CHARSET'							=> tr('encoding'),
 		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
 	)
@@ -53,7 +53,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 }
 
 function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
-// 	if (preg_match('/_mail/', $mail_type) == 1) {
+//	if (preg_match('/_mail/', $mail_type) == 1) {
 		if ($mail_status === Config::get('ITEM_OK_STATUS')) {
 			if ($mail_auto_respond == false) {
 				$tpl->assign(
@@ -87,17 +87,17 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
 				)
 			);
 		}
-// 	} else {
-// 		$tpl->assign(
-// 			array(
-// 				'AUTO_RESPOND_DISABLE'			=> tr('Please wait for update'),
-// 				'AUTO_RESPOND_DISABLE_SCRIPT'	=> '',
-// 				'AUTO_RESPOND_EDIT'				=> '',
-// 				'AUTO_RESPOND_EDIT_SCRIPT'		=> '',
-// 				'AUTO_RESPOND_VIS'				=> 'none'
-// 			)
-// 		);
-// 	}
+//	} else {
+//		$tpl->assign(
+//			array(
+//				'AUTO_RESPOND_DISABLE'			=> tr('Please wait for update'),
+//				'AUTO_RESPOND_DISABLE_SCRIPT'	=> '',
+//				'AUTO_RESPOND_EDIT'				=> '',
+//				'AUTO_RESPOND_EDIT_SCRIPT'		=> '',
+//				'AUTO_RESPOND_VIS'				=> 'none'
+//			)
+//		);
+//	}
 }
 
 function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
@@ -367,10 +367,10 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$show_als_name = decode_idna($rs->fields['als_name']);
 
- 			$mail_types = explode(',', $rs->fields['mail_type']);
+			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
- 			foreach ($mail_types as $type) {
+			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 				if (strpos($type, '_forward') !== false) $mail_type .= ': ' . str_replace(array("\r\n", "\n", "\r"), ", ", $rs->fields['mail_forward']);
 				$mail_type .= '<br />';
@@ -385,8 +385,8 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT'=> $mail_delete_script,
 					'MAIL_EDIT'			=> $mail_edit,
 					'MAIL_EDIT_SCRIPT'	=> $mail_edit_script
-					)
-				);
+				)
+			);
 
 			gen_user_mail_auto_respond($tpl,
 				$rs->fields['mail_id'],

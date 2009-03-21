@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -28,29 +27,29 @@ function check_email_user(&$sql) {
 	$mail_id = $_GET['id'];
 
 	$query = "
-		select
-		  t1.*,
-		  t2.domain_id,
-		  t2.domain_name
-		from
-		  mail_users as t1,
-		  domain as t2
-		where
-		  t1.mail_id = ?
-		and
-		  t2.domain_id = t1.domain_id
-		and
-		  t2.domain_name = ?
+		SELECT
+			t1.*,
+			t2.domain_id,
+			t2.domain_name
+		FROM
+			mail_users as t1,
+			domain as t2
+		WHERE
+			t1.mail_id = ?
+		AND
+			t2.domain_id = t1.domain_id
+		AND
+			t2.domain_name = ?
 ";
 
-  	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
-  	$mail_acc = $rs->fields['mail_acc'];
+	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+	$mail_acc = $rs->fields['mail_acc'];
 
-  	if ($rs->RecordCount() == 0) {
+	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		header('Location: mail_accounts.php');
 		die();
-  	}
+	}
 }
 
 check_email_user($sql);
@@ -61,16 +60,16 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	check_for_lock_file();
 
 	$query = "
-		update
+		UPDATE
 			mail_users
-		set
+		SET
 			status = ?,
 			mail_auto_respond = 0
-		where
+		WHERE
 			mail_id = ?
 	";
 
-  	$rs = exec_query($sql, $query, array($item_change_status, $mail_id));
+	$rs = exec_query($sql, $query, array($item_change_status, $mail_id));
 
 	send_request();
 	$query = "
@@ -101,8 +100,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	exit(0);
 }
 else {
-  	header('Location: mail_accounts.php');
-  	exit(0);
+	header('Location: mail_accounts.php');
+	exit(0);
 }
 
 ?>

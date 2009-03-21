@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -107,7 +107,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 
 			$members = explode(",", $members);
 			$grp_in = 0;
-			// lets generete all groups wher the user is  assignet
+			// let's generete all groups wher the user is assigned
 			for($i = 0; $i < count($members);$i++) {
 				if ($uuser_id == $members[$i]) {
 					$tpl->assign(
@@ -266,18 +266,18 @@ delete_user_from_group($tpl, $sql, $dmn_id);
 gen_user_assign($tpl, $sql, $dmn_id);
 
 $tpl->assign(
-		array(
-			'TR_HTACCESS'			=> tr('Protected areas'),
-			'TR_DELETE'				=> tr('Delete'),
-			'TR_USER_ASSIGN'		=> tr('User assign'),
-			'TR_ALLREADY'			=> tr('Already in:'),
-			'TR_MEMBER_OF_GROUP'	=> tr('Member of group:'),
-			'TR_BACK'				=> tr('Back'),
-			'TR_REMOVE'				=> tr('Remove'),
-			'TR_ADD'				=> tr('Add'),
-			'TR_SELECT_GROUP'		=> tr('Select group:')
-		)
-	);
+	array(
+		'TR_HTACCESS'			=> tr('Protected areas'),
+		'TR_DELETE'				=> tr('Delete'),
+		'TR_USER_ASSIGN'		=> tr('User assign'),
+		'TR_ALLREADY'			=> tr('Already in:'),
+		'TR_MEMBER_OF_GROUP'	=> tr('Member of group:'),
+		'TR_BACK'				=> tr('Back'),
+		'TR_REMOVE'				=> tr('Remove'),
+		'TR_ADD'				=> tr('Add'),
+		'TR_SELECT_GROUP'		=> tr('Select group:')
+	)
+);
 
 gen_page_message($tpl);
 

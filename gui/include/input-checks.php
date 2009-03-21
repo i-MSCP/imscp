@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -101,9 +101,8 @@ function clean_html($text) {
 }
 
 /**
+ * clean_input
  *
- * @function clean_input
- * @description
  * @param String $input input data (eg. post-var) to be cleaned
  * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
  * @return String {|} trimmed, stripslashed, eventually htmlencoded input string
@@ -129,14 +128,14 @@ function clean_input($input, $htmlencode = false) {
  *
  * @author		ispCP Team
  * @author		Benedikt Heintel
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.01
  *
  * @access	public
- * @param 	String 	$data		username to be checked
- * @param 	int		$num		number of max. chars
- * @param	String	$permitted	RegExp of permitted chars
- * @return 	boolean				valid password or not
+ * @param	string	$data		username to be checked
+ * @param	int		$num		number of max. chars
+ * @param	string	$permitted	RegExp of permitted chars
+ * @return	boolean				valid password or not
  */
 function chk_password($password, $num = 50, $permitted = "") {
 	global $cfg;
@@ -164,9 +163,8 @@ function chk_password($password, $num = 50, $permitted = "") {
 }
 
 /**
+ * chk_username
  *
- * @function chk_username
- * @description
  * @param String $data username to be checked
  * @param int $num number of max. chars
  * @return boolean valid username or not
@@ -274,11 +272,10 @@ function check_dn_token($data) {
 }
 
 /**
+ * Function for checking ispcp limits.
  *
- * @function ispcp_limit_check
- * @description Function for checking ispcp limits.
  * @param string $data ispcp 'limit' field data (by default valids are numbers greater equal 0)
- * @param misc $extra single extra permitted value or array of permitted values
+ * @param mixed $extra single extra permitted value or array of permitted values
  * @return boolean	false	incorrect syntax (ranges)
  * 					true	correct syntax (ranges)
  * @example ispcp_limit_check($_POST['domains_limit'], null)
@@ -306,10 +303,9 @@ function ispcp_limit_check($data, $extra = -1) {
 }
 
 /**
+ * Function for checking domain name tokens; Internel function,
+ * for usage in ispcp_* functions
  *
- * @function check_dn_rsl_token
- * @description Function for checking domain name tokens; Internel function,
- * 					for usage in ispcp_* functions
  * @param String $data token data. Without '\n' at the end
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
@@ -327,10 +323,9 @@ function check_dn_rsl_token($data) {
 }
 
 /**
+ * Function for checking ispCP domains syntax. Here domains are
+ * limited to {dname}.{ext} parts
  *
- * @function chk_dname
- * @description Function for checking ispCP domains syntax. Here domains are
- * 					limited to {dname}.{ext} parts
  * @param String $dname ispcp domain data
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
@@ -354,9 +349,8 @@ function chk_dname($dname) {
 }
 
 /**
+ * Function for checking URL syntax
  *
- * @function chk_forward_url
- * @description Function for checking URL syntax
  * @param String $url URL data
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
@@ -374,9 +368,8 @@ function chk_forward_url($url) {
 }
 
 /**
+ * Function checking for valid mount point
  *
- * @function chk_mountp
- * @description Function checking for valid mount point
  * @param String $data mountpoint data
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
@@ -448,22 +441,15 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 }
 
 /**
- * Description:
+ * Function for checking ispCP subdomain syntax. 
  *
- * Function for checking ispCP subdomain syntax. Here subdomains are
- * limited to {subname}.{dname}.{ext} parts. Data passed to this
- * function must be in the upper form, not only subdomain part for
- * example.
+ * Here subdomains are limited to {subname}.{dname}.{ext} parts.
+ * Data passed to this function must be in the upper form, not
+ * only subdomain part for example.
  *
- * Input:
- *
- * $data - ispcp subdomain data;
- *
- * Output:
- *
- * false - incorrect syntax;
- *
- * true - correct syntax;
+ * @param string $subdname ispcp subdomain data;
+ * @return	false - incorrect syntax;
+ *			true - correct syntax;
  */
 function chk_subdname($subdname) {
 	if (!full_domain_check($subdname)) {
@@ -486,9 +472,9 @@ function chk_subdname($subdname) {
 /**
  * All in one function to check who owns what =)
  *
- * @param misc $id FTP/mail/domain/alias/subdomain/etc id to check
+ * @param mixed $id FTP/mail/domain/alias/subdomain/etc id to check
  * @param string $type What kind of id $id is
- * @param bool $forcefinal Ignore the resolver's is_final value (force as yes)
+ * @param boolean $forcefinal Ignore the resolver's is_final value (force as yes)
  * @return numeric The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false) {

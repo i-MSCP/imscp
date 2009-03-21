@@ -40,7 +40,7 @@ a.menu:hover, a.menu:active, a.menu:focus {
 	text-decoration:	none;
 }
 
-a.menu_active, a.menu_active:link, a.menu_active:visited  {
+a.menu_active, a.menu_active:link, a.menu_active:visited {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			9pt;
 	color:				#000000;
@@ -83,16 +83,16 @@ a.submenu:hover, a.submenu:active, a.submenu:focus {
 .logoutbutton a, .logoutbutton a:link, .logoutbutton a:visited {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-weight:		bold;
-	font-size: 			14px;
-	color: 				#ffffff;
-	height: 			24px;
-	padding: 			1px;
-	white-space: 		nowrap;
+	font-size:			14px;
+	color:				#ffffff;
+	height:				24px;
+	padding:			1px;
+	white-space:		nowrap;
 	text-decoration:	none;
 }
 
 .logoutbutton a:hover, .logoutbutton a:active, .logoutbutton a:focus {
-	color: 				#f4dc6b;
+	color:				#f4dc6b;
 }
 
 .logoutbutton img {
@@ -198,12 +198,12 @@ td.content2 {
 }
 
 td.content3 {
-	font-size: 			12px;
-	color: 				#ffffff;
-	white-space: 		nowrap;
-	background: 		#000000;
-	height: 			30px;
-	padding: 			2px;
+	font-size:			12px;
+	color:				#ffffff;
+	white-space:		nowrap;
+	background:			#000000;
+	height:				30px;
+	padding:			2px;
 	padding-left:		5px;
 	border-bottom:		2px solid #000000;
 	border-right:		2px solid #000000;
@@ -214,39 +214,39 @@ td.content3 {
 }
 
 td.content4 {
-	font-size: 			12px;
-	color: 				#333333;
-	white-space: 		nowrap;
-	background: 		#dddddd;
-	height: 			22px;
-	padding: 			2px;
+	font-size:			12px;
+	color:				#333333;
+	white-space:		nowrap;
+	background:			#dddddd;
+	height:				22px;
+	padding:			2px;
 }
 
 .textinput {
-	background-color: 	white;
+	background-color:	white;
 	border:				1px solid #cccccc;
-	font-family: 		Verdana;
-	font-size: 			8pt;
-	height: 			21px;
-	margin: 			2px;
+	font-family:		Verdana;
+	font-size:			8pt;
+	height:				21px;
+	margin:				2px;
 }
 
 .textinput2 {
-	background-color: 	white;
+	background-color:	white;
 	border:				1px solid #cccccc;
-	font-family: 		Verdana;
-	font-size: 			8pt;
-	margin: 			2px;
+	font-family:		Verdana;
+	font-size:			8pt;
+	margin:				2px;
 }
 
 .button {
-	font-family: 		Arial, Helvetica, sans-serif;
-	height: 			21px;
-	font-size: 			12px;
-	color: 				#ffffff;
-	text-align: 		center;
-	background-color: 	#323232;
-	background-image: 	url(../images/button.jpg);
+	font-family:		Arial, Helvetica, sans-serif;
+	height:				21px;
+	font-size:			12px;
+	color:				#ffffff;
+	text-align:			center;
+	background-color:	#323232;
+	background-image:	url(../images/button.jpg);
 	background-repeat:	repeat-x;
 	border-bottom:		1px solid #000000;
 	border-right:		1px solid #000000;
@@ -256,16 +256,16 @@ td.content4 {
 }
 
 .login_bottom {
-	font-size: 			10px;
-	color: 				#99a0b1;
+	font-size:			10px;
+	color:				#99a0b1;
 }
 
 .login_text {
-	color: 				#334163;
+	color:				#334163;
 }
 
 .login_time {
-	color: 				#99a0b1;
-	font-size: 			24px;
-	font-weight: 		bold;
+	color:				#99a0b1;
+	font-size:			24px;
+	font-weight:		bold;
 }

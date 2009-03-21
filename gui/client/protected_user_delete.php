@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -28,7 +28,7 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 	$uuser_id = $_GET['uname'];
 } else {
 	header( 'Location: protected_areas.php' );
-    die();
+	die();
 }
 
 $query = "
@@ -46,7 +46,7 @@ $rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
 $uname = $rs->fields['uname'];
 
 $change_status = Config::get('ITEM_DELETE_STATUS');
-// lets delete the user from the SQL
+// let's delete the user from the SQL
 $query = "
 	UPDATE
 		`htaccess_users`
@@ -60,7 +60,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($change_status, $uuser_id, $dmn_id));
 
-// lets delete this user if assignet to a group
+// let's delete this user if assigned to a group
 $query = "
 	SELECT
 		`id`,

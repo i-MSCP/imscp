@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -48,35 +48,35 @@ function save_haf(&$tpl, &$sql) {
 	$footer = $_POST['footer'];
 
 	$query = <<<SQL_QUERY
-        select
-            id
-        from
-            orders_settings
-        where
-            user_id = ?
+		SELECT
+			id
+		FROM
+			orders_settings
+		WHERE
+			user_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() !== 0) {
 		// update query
 		$query = <<<SQL_QUERY
-        update
-            orders_settings
-        set
-            header = ?,
-			footer = ?
-        where
-            user_id = ?
+			UPDATE
+				orders_settings
+			SET
+				header = ?,
+				footer = ?
+			WHERE
+				user_id = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($header, $footer, $user_id));
 	} else {
 		// create query
 		$query = <<<SQL_QUERY
-              insert into
-			  		orders_settings(user_id, header, footer)
-              values
-                 (?, ?, ?)
+			INSERT INTO
+				orders_settings(user_id, header, footer)
+			VALUES
+				(?, ?, ?)
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id, $header, $footer));
@@ -100,13 +100,17 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tp
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
+$tpl->assign(
+	array(
+		'TR_MANAGE_ORDERS' => tr('Manage Orders'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_HEADER' => tr('Header'),
 		'TR_PREVIEW' => tr('Preview'),
 		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
 		'TR_IMPLEMENT_URL' => 'http://' . Config::get('BASE_SERVER_VHOST') . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
-		'TR_FOOTER' => tr('Footer')));
+		'TR_FOOTER' => tr('Footer')
+	)
+);
 
 gen_page_message($tpl);
 

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -37,20 +37,20 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
 
 	if (!Config::get('CHECK_FOR_UPDATES')) {
 		$tpl->assign(
-				array(
-					'UPDATE_MESSAGE'	=> '',
-					'UPDATE'		=> tr('Update checking is disabled!'),
-					'INFOS' 		=> tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . "</a>"
-					)
-				);
+			array(
+				'UPDATE_MESSAGE'	=> '',
+				'UPDATE'			=> tr('Update checking is disabled!'),
+				'INFOS'				=> tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . "</a>"
+			)
+		);
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 		return false;
 	}
@@ -61,8 +61,8 @@ function get_update_infos(&$tpl) {
 				'UPDATE_MESSAGE' => '',
 				'UPDATE' => tr('New ispCP update is now available'),
 				'INFOS' => tr('Get it at') . " <a href=\"http://www.isp-control.net/download.html\" class=\"link\" target=\"ispcp\">http://www.isp-control.net/download.html</a>"
-				)
-			);
+			)
+		);
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 	} else {
@@ -89,8 +89,8 @@ $tpl->assign(
 		'TR_MESSAGE' => tr('No new ispCP updates available'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_INFOS' => tr('Update details')
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

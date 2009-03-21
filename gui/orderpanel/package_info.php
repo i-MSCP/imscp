@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -88,7 +88,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		if ($setup_fee == 0 || $setup_fee == '') {
 			$setup_fee = tr('free of charge');
 		} else {
-			$setup_fee .=' ' . $rs->fields['value'];
+			$setup_fee .= ' ' . $rs->fields['value'];
 		}
 		$description = $rs->fields['description'];
 
@@ -111,7 +111,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'CGI'			=> translate_sse($hp_cgi),
 				'MAIL'			=> translate_limit_value($hp_mail),
 				'FTP'			=> translate_limit_value($hp_ftp),
-				'SQL_DB' 		=> translate_limit_value($hp_sql_db),
+				'SQL_DB'		=> translate_limit_value($hp_sql_db),
 				'SQL_USR'		=> translate_limit_value($hp_sql_user),
 				'PRICE'			=> $price,
 				'SETUP'			=> $setup_fee,

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -398,10 +398,10 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_awstats', 'menu');
 	$tpl->define_dynamic('isactive_domain', 'menu');
-    $tpl->define_dynamic('isactive_email', 'menu');
-    $tpl->define_dynamic('isactive_ftp', 'menu');
-    $tpl->define_dynamic('isactive_sql', 'menu');
-    $tpl->define_dynamic('isactive_support', 'menu');
+	$tpl->define_dynamic('isactive_email', 'menu');
+	$tpl->define_dynamic('isactive_ftp', 'menu');
+	$tpl->define_dynamic('isactive_sql', 'menu');
+	$tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(

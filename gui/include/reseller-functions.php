@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		$ID$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -33,7 +33,7 @@ define('MT_ALIAS_CATCHALL', 'alias_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
-    	$sql = Database::getInstance();
+	$sql = Database::getInstance();
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -117,7 +117,9 @@ SQL_QUERY;
 	$tpl->parse('MAIN_MENU', 'menu');
 } // End of gen_reseller_menu()
 
-// Function to generate the manu data for reseller
+/**
+ * Function to generate the menu data for reseller
+ */
 function gen_reseller_menu(&$tpl, $menu_file) {
 	$sql = Database::getInstance();
 
@@ -209,7 +211,9 @@ SQL_QUERY;
 	$tpl->parse('MENU', 'menu');
 } // End of gen_reseller_menu()
 
-// Get data for page of reseller
+/**
+ * Get data for page of reseller
+ */
 function get_reseller_default_props(&$sql, $reseller_id) {
 	// Make sql query
 	$query = <<<SQL_QUERY
@@ -249,7 +253,9 @@ SQL_QUERY;
 	);
 } // End of get_reseller_default_props()
 
-// Making users props
+/**
+ * Making users props
+ */
 function generate_reseller_user_props ($reseller_id) {
 	$sql = Database::getInstance();
 	// Init with empty variables
@@ -413,7 +419,9 @@ SQL_QUERY;
 	return $ResArray;
 } // End of generate_reseller_user_props()
 
-// Get traffic information for user
+/**
+ * Get traffic information for user
+ */
 function get_user_traffic($user_id) {
 
 	$sql = Database::getInstance();
@@ -484,9 +492,11 @@ SQL_QUERY;
 			$domain_disk_limit
 		);
 	}
-} //End of get_user_traffic()
+} // End of get_user_traffic()
 
-// Get user's probs info from sql
+/**
+ * Get user's probs info from db via sql
+ */
 function get_user_props ($user_id) {
 
 	$sql = Database::getInstance();
@@ -497,7 +507,7 @@ function get_user_props ($user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_id`  = ?
+			`domain_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($user_id));
@@ -582,9 +592,11 @@ function rsl_full_domain_check ($data) {
 	if ($res == 0) return 0;
 
 	return 1;
-} // End of  full_domain_check()
+} // End of full_domain_check()
 
-// Generate ip list
+/**
+ * Generate IP list
+ */
 function generate_ip_list(&$tpl, &$reseller_id) {
 	$sql = Database::getInstance();
 	global $domain_ip;
@@ -622,15 +634,17 @@ SQL_QUERY;
 					'IP_NAME' => $data['ip_domain'],
 					'IP_VALUE' => $ip_id,
 					'IP_SELECTED' => $selected
-					)
-				);
+				)
+			);
 
 			$tpl->parse('IP_ENTRY', '.ip_entry');
 		}
 	} // End loop
 } // End of generate_ip_list()
 
-// Check validity of input data
+/**
+ * Check validity of input data
+ */
 function check_ruser_data (&$tpl, $NoPass) {
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
@@ -743,9 +757,11 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		return false;
 	}
-} //End of check_ruser_data()
+} // End of check_ruser_data()
 
-// Translate domain status
+/**
+ * Translate domain status
+ */
 function translate_dmn_status ($status) {
 	if ($status == Config::get('ITEM_OK_STATUS')) {
 		return tr('OK');
@@ -768,7 +784,9 @@ function translate_dmn_status ($status) {
 	}
 } // End of translate_dmn_status()
 
-// Check if the domain already exist
+/**
+ * Check if the domain already exist
+ */
 function ispcp_domain_exists ($domain_name, $reseller_id) {
 	$sql = Database::getInstance();
 	// query to check if the domain name exist in the table for domains/accounts
@@ -782,7 +800,7 @@ function ispcp_domain_exists ($domain_name, $reseller_id) {
 SQL_QUERY;
 
 	$res_domain = exec_query($sql, $query_domain, array($domain_name));
-	// query to check if the domain name exist in the table for domain aliases
+	// query to check if the domain name exists in the table for domain aliases
 	$query_alias = <<<SQL_QUERY
 		SELECT
 			count(t1.`alias_id`) AS cnt
@@ -881,7 +899,7 @@ SQL_QUERY;
 } // End of ispcp_domain_exists()
 
 /**
- * @todo see inline comment, about messed up code
+ * @todo see inline comment, about the messed up code
  * @todo use db prepared statements
  */
 function gen_manage_domain_query (&$search_query, &$count_query,
@@ -1606,7 +1624,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$mail_result = mail($to, $subject, $message, $headers);
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	// lets send mail to the reseller => new order
+	// let's send mail to the reseller => new order
 	$subject = encode(tr("You have a new order"));
 
 	$message = tr('
@@ -1691,7 +1709,9 @@ function send_alias_order_email($alias_name) {
 
 }
 
-// add the 3 mail accounts/forwardings to a new domain...
+/**
+ * add the 3 mail accounts/forwardings to a new domain...
+ */
 function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0) {
 
 	$sql = Database::getInstance();

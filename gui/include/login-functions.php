@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -24,7 +24,7 @@ function username_exists($username) {
 	$query = 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?';
 	$res = exec_query($sql, $query, array($username));
 
-	return  ($res->RecordCount() == 1);
+	return ($res->RecordCount() == 1);
 }
 
 function get_userdata($username) {
@@ -141,7 +141,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 	$data = $res->FetchRow();
 
-	$lastaccess  = $data['lastaccess'];
+	$lastaccess = $data['lastaccess'];
 
 	if (Config::get('BRUTEFORCE_BETWEEN')) {
 		$btime = $lastaccess + Config::get('BRUTEFORCE_BETWEEN_TIME');
@@ -180,8 +180,8 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 	$data = $res->FetchRow();
 
-	$lastaccess  = $data['lastaccess'];
-	$logincount  = $data['login_count'];
+	$lastaccess = $data['lastaccess'];
+	$logincount = $data['login_count'];
 	$captchacount = $data['captcha_count'];
 
 	if ($type == 'bruteforce' && Config::get('BRUTEFORCE') && $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {

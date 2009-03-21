@@ -2,8 +2,8 @@
 /**
  *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @link		http://isp-control.net
  *  @author		ispCP Team
  *
  *  @license
@@ -14,7 +14,7 @@
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GPL General Public License for more details.
  *
  *   You may have received a copy of the GPL General Public License
@@ -22,7 +22,7 @@
  *
  *   An on-line copy of the GPL General Public License can be found
  *   http://www.fsf.org/licensing/licenses/gpl.txt
- **/
+ */
 
 require 'include/ispcp-lib.php';
 

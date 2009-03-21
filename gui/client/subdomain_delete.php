@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -23,10 +23,10 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
-  $sub_id = $_GET['id'];
-  $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$sub_id = $_GET['id'];
+	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         select
              subdomain_id,
              subdomain_name
@@ -38,26 +38,26 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
             subdomain_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($dmn_id, $sub_id));
-  $sub_name = $rs->fields['subdomain_name'];
+	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
+	$sub_name = $rs->fields['subdomain_name'];
 
-  if ($rs->RecordCount() == 0) {
-    user_goto('domains_manage.php');
-  }
+	if ($rs->RecordCount() == 0) {
+		user_goto('domains_manage.php');
+	}
 
-  // check for mail accounts
-  $query = "select count(mail_id) as cnt from mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
-  $rs = exec_query($sql, $query, array($sub_id));
+	// check for mail accounts
+	$query = "select count(mail_id) as cnt from mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
+	$rs = exec_query($sql, $query, array($sub_id));
 
-  if ($rs->fields['cnt'] > 0) {
-    set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
-    header('Location: domains_manage.php');
-    exit(0);
-  }
+	if ($rs->fields['cnt'] > 0) {
+		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
+		header('Location: domains_manage.php');
+		exit(0);
+	}
 
-  check_for_lock_file();
+	check_for_lock_file();
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         update
             subdomain
         set
@@ -66,17 +66,17 @@ SQL_QUERY;
             subdomain_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($sub_id));
-  send_request();
-  write_log($_SESSION['user_logged'].": deletes subdomain: ".$sub_name);
-  set_page_message(tr('Subdomain scheduled for deletion!'));
-  header('Location: domains_manage.php');
-  exit(0);
+	$rs = exec_query($sql, $query, array($sub_id));
+	send_request();
+	write_log($_SESSION['user_logged'].": deletes subdomain: ".$sub_name);
+	set_page_message(tr('Subdomain scheduled for deletion!'));
+	header('Location: domains_manage.php');
+	exit(0);
 
 } else {
 
-  header('Location: domains_manage.php');
-  exit(0);
+	header('Location: domains_manage.php');
+	exit(0);
 
 }
 

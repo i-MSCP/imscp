@@ -1,12 +1,17 @@
 <?php
 
-// this class will parse the config file and get all variables available in PHP
+/**
+ * this class will parse the config file and get all variables available in PHP
+ */
 final class Config {
-	// config filename
+	/**
+	 * config filename
+	 */
 	private static $_file;
-
-	// IMPORTANT: any adding & removing of variables in /etc/ispcp/ispcp.conf should also be made here!
-	// array with all options from config file - predefined with null
+	/**
+	 * IMPORTANT: any adding & removing of variables in /etc/ispcp/ispcp.conf should also be made here!
+	 * array with all options from config file - predefined with null
+	 */
 	private static $_values = array(
 		'BuildDate' => null,
 		'Version' => null,
@@ -178,10 +183,10 @@ final class Config {
 
 	public static function load($cfg = '/etc/ispcp/ispcp.conf') {
 		self::$_file = $cfg;
-		
+
 		if (!self::_parseFile())
 			throw new Exception('Cannot open the ispcp.conf config file!');
-		
+
 		self::$_status = true;
 	}
 	

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -30,13 +30,13 @@ $tpl->define_dynamic('hosting_plans', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Admin/Change Password'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Admin/Change Password'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 function update_password() {
 	$sql = Database::getInstance();
@@ -62,12 +62,12 @@ function update_password() {
 			$user_id = $_SESSION['user_id'];
 
 			$query = <<<SQL_QUERY
-                update
-                    admin
-                set
-                    admin_pass = ?
-                where
-                    admin_id = ?
+				UPDATE
+					admin
+				SET
+					admin_pass = ?
+				WHERE
+					admin_id = ?
 SQL_QUERY;
 			$rs = exec_query($sql, $query, array($upass, $user_id));
 
@@ -80,12 +80,12 @@ function check_udata($id, $pass) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        SELECT
-        	admin_name, admin_pass
-        FROM
-          admin
-        WHERE
-          admin_id = ?
+		SELECT
+			admin_name, admin_pass
+		FROM
+			admin
+		WHERE
+			admin_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id));
@@ -116,8 +116,8 @@ $tpl->assign(
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_UPDATE_PASSWORD' => tr('Update password'),
 		'TR_CURR_PASSWORD' => tr('Current password')
-		)
-	);
+	)
+);
 
 update_password();
 

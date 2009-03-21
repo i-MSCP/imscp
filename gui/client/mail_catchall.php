@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -65,8 +65,8 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 				'CATCHALL_STATUS'			=> tr('N/A'),
 				'CATCHALL_ACTION'			=> tr('Create catch all'),
 				'CATCHALL_ACTION_SCRIPT'	=> "mail_catchall_add.php?id=$dmn_id;$ca_type"
-				)
-			);
+			)
+		);
 	} else {
 		list($catchall_action, $catchall_action_script) = gen_user_catchall_action($mail_id, $mail_status);
 
@@ -85,21 +85,24 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 	}
 }
 
+/**
+ * @todo use db prepared statements
+ */
 function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	global $counter;
 
 	$tpl->assign('CATCHALL_MESSAGE', '');
 
 		$query = "
-			select
+			SELECT
 				mail_id, mail_acc, status
-			from
+			FROM
 				mail_users
-			where
+			WHERE
 				domain_id = '$dmn_id'
-			  and
+			AND
 				sub_id = 0
-			  and
+			AND
 				mail_type = 'normal_catchall'
 		";
 
@@ -125,13 +128,13 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		$tpl->parse('CATCHALL_ITEM', 'catchall_item');
 
 		$query = "
-			select
+			SELECT
 				alias_id, alias_name
-			from
+			FROM
 				domain_aliasses
-			where
+			WHERE
 				domain_id = '$dmn_id'
-			  and
+			AND
 				alias_status = 'ok'
 		";
 
@@ -145,15 +148,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$als_name = $rs->fields['alias_name'];
 
 			$query = "
-				select
+				SELECT
 					mail_id, mail_acc, status
-				from
+				FROM
 					mail_users
-				where
+				WHERE
 					domain_id = '$dmn_id'
-				  and
+				AND
 					sub_id = '$als_id'
-				  and
+				AND
 					mail_type = 'alias_catchall'
 			";
 
@@ -180,15 +183,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		}
 
 		$query = "
-			select
+			SELECT
 				a.subdomain_alias_id, CONCAT(a.subdomain_alias_name,'.',b.alias_name) as subdomain_name
-			from
+			FROM
 				subdomain_alias as a, domain_aliasses as b
-			where
+			WHERE
 				b.alias_id IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`='$dmn_id')
-			and
-			   	a.alias_id = b.alias_id
-			and
+			AND
+				a.alias_id = b.alias_id
+			AND
 				a.subdomain_alias_status = 'ok'
 		";
 
@@ -202,15 +205,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$als_name = $rs->fields['subdomain_name'];
 
 			$query = "
-				select
+				SELECT
 					mail_id, mail_acc, status
-				from
+				FROM
 					mail_users
-				where
+				WHERE
 					domain_id = '$dmn_id'
-				  and
+				AND
 					sub_id = '$als_id'
-				  and
+				AND
 					mail_type = 'alssub_catchall'
 			";
 
@@ -237,15 +240,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		}
 
 		$query = "
-			select
+			SELECT
 				a.subdomain_id, CONCAT(a.subdomain_name,'.',b.domain_name) as subdomain_name
-			from
+			FROM
 				subdomain as a, domain as b
-			where
+			WHERE
 				a.domain_id = '$dmn_id'
-			and
-			   	a.domain_id = b.domain_id
-			and
+			AND
+				a.domain_id = b.domain_id
+			AND
 				a.subdomain_status = 'ok'
 		";
 
@@ -259,15 +262,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$als_name = $rs->fields['subdomain_name'];
 
 			$query = "
-				select
+				SELECT
 					mail_id, mail_acc, status
-				from
+				FROM
 					mail_users
-				where
+				WHERE
 					domain_id = '$dmn_id'
-				  and
+				AND
 					sub_id = '$als_id'
-				  and
+				AND
 					mail_type = 'subdom_catchall'
 			";
 

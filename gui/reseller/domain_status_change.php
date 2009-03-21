@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -23,13 +23,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (!isset($_GET['domain_id'])) {
-    header( "Location: users.php" );
-    die();
+	header( "Location: users.php" );
+	die();
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-    header( "Location: users.php" );
-    die();
+	header( "Location: users.php" );
+	die();
 }
 
 // so we have domain id and lets disable or enable it
@@ -37,14 +37,14 @@ $domain_id = $_GET['domain_id'];
 
 // check status to know if have to disable or enable it
 $query = <<<SQL_QUERY
-    select
-        domain_name,
-        domain_status,
-        domain_created_id
-    from
-        domain
-    where
-        domain_id = ?
+	SELECT
+		domain_name,
+		domain_status,
+		domain_created_id
+	FROM
+		domain
+	WHERE
+		domain_id = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($domain_id));

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -34,19 +34,19 @@ function check_email_user(&$sql) {
 	$mail_id = $_GET['id'];
 
 	$query = "
-		select
-		  t1.*,
-		  t2.domain_id,
-		  t2.domain_name
-		from
-		  mail_users as t1,
-		  domain as t2
-		where
-		  t1.mail_id = ?
-		and
-		  t2.domain_id = t1.domain_id
-		and
-		  t2.domain_name = ?
+		SELECT
+			t1.*,
+			t2.domain_id,
+			t2.domain_name
+		FROM
+			mail_users as t1,
+			domain as t2
+		WHERE
+			t1.mail_id = ?
+		AND
+			t2.domain_id = t1.domain_id
+		AND
+			t2.domain_name = ?
 	";
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
@@ -71,13 +71,13 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		check_for_lock_file();
 
 		$query = "
-			update
+			UPDATE
 				mail_users
-			set
+			SET
 				status = ?,
 				mail_auto_respond = 1,
 				mail_auto_respond_text = ?
-			where
+			WHERE
 				mail_id = ?
 		";
 
@@ -115,7 +115,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		$query = "
 			SELECT
 				mail_auto_respond_text, mail_acc
- 			FROM
+			FROM
 				mail_users
 			WHERE
 				mail_id = ?

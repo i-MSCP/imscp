@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -25,29 +25,29 @@ function dump_gui_debug() {
 	echo '</pre>';
 	echo '<span style="color:#0000FF"><u>Content of <b>$_POST</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($_POST,    true));
+	echo htmlentities(print_r($_POST, true));
 	echo '</pre>';
 	echo '<span style="color:#0000FF"><u>Content of <b>$_GET</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($_GET,     true));
+	echo htmlentities(print_r($_GET, true));
 	echo '</pre>';
 	echo '<span style="color:#0000FF"><u>Content of <b>$_COOKIE</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($_COOKIE,  true));
+	echo htmlentities(print_r($_COOKIE, true));
 	echo '</pre>';
 	echo '<span style="color:#0000FF"><u>Content of <b>$_FILES</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($_FILES,   true));
+	echo htmlentities(print_r($_FILES, true));
 	echo '</pre>';
 	return;
 	/* // cause of "return;" the following code is not executed
 	echo '<span style="color:#0000FF"><u>Content of <b>$GLOBALS</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($GLOBALS,  true));
+	echo htmlentities(print_r($GLOBALS, true));
 	echo '</pre>';
 	echo '<span style="color:#0000FF"><u>Content of <b>$_SERVER</b>:</u><br /></span>';
 	echo '<pre>';
-	echo htmlentities(print_r($_SERVER,  true));
+	echo htmlentities(print_r($_SERVER, true));
 	echo '</pre>';
 	*/
 }

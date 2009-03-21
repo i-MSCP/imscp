@@ -25,7 +25,7 @@ ispCP ω 1.0.1 Changelog
 2009-02-22 Daniel Andreca
 	- GUI:
 		* Fixed small XSS problem
-		* Reseller can not upload logo
+		* Reseller cannot upload logo
 
 2009-02-21 Thomas Häber
 	- THEMES:

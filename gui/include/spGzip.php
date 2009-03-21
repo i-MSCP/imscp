@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -21,6 +21,7 @@
 /**
  * This class checks the output buffer
  * zips the input if necessary
+ *
  * @param: int $MaxServerload the maximum serverload
  * @param: int $MinCompression the minimum compression level
  * @param: int $MaxCompression the maximum compression level
@@ -32,16 +33,17 @@
  * @todo prevent compression, if contents/buffer is empty (cause otherwise
  * 		 0.00 KB files grow up to 0.01 KB gzipped files, this means more load
  * 		 and more traffic)
+ * @todo check if-clause about "There might be some problems"
  */
 class spOutput {
 	/**
-	 * Public vars
+	 * public vars
 	 */
 	var $MaxServerload = '2';
 	var $MinCompression = '2';
 	var $MaxCompression = '8';
 	/**
-	 * Private vars
+	 * private vars
 	 */
 	var $contents;
 	var $gzdata;
@@ -55,7 +57,7 @@ class spOutput {
 	var $showSize;
 
 	/**
-	 * Constructor
+	 * constructor
 	 */
 	function spOutput($level = '3', $debug = false, $showSize = true) {
 		$this->level = $level;
@@ -65,6 +67,9 @@ class spOutput {
 
 	/**
 	 * Let's work a bit with the buffer
+	 *
+	 * @param string $buffer
+	 * @return string
 	 */
 	function output($buffer) {
 		$this->contents = $buffer;
@@ -209,6 +214,7 @@ class spOutput {
 
 	/**
 	 * Returns the actual microtime
+	 *
 	 * @return: int the actual microtime
 	 */
 	function getMicrotime() {

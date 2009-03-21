@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -150,14 +150,14 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 			$tpl->assign(
 				array(
-					'ID' 		=> $ticket_id,
-					'FROM' 		=> $from,
+					'ID'		=> $ticket_id,
+					'FROM'		=> $from,
 					'TO'		=> $to,
-					'LAST_DATE' => $date,
+					'LAST_DATE'	=> $date,
 					'SUBJECT'	=> $rs->fields['ticket_subject'],
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE' 	=> clean_html($rs->fields['ticket_message']),
-					'CONTENT' 	=> ($i % 2 == 0) ? 'content' : 'content2'
+					'MESSAGE'	=> clean_html($rs->fields['ticket_message']),
+					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
 
@@ -170,14 +170,14 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 function get_ticket_from(&$sql, $ticket_id) {
 	$query = "
-		select
+		SELECT
 			ticket_from,
 			ticket_to,
 			ticket_status,
 			ticket_reply
-		from
+		FROM
 			tickets
-		where
+		WHERE
 			ticket_id = ?
 	";
 
@@ -212,14 +212,14 @@ function get_ticket_from(&$sql, $ticket_id) {
 
 function get_ticket_to(&$sql, $ticket_id, $user_id) {
 	$query = "
-		select
+		SELECT
 			ticket_from,
 			ticket_to,
 			ticket_status,
 			ticket_reply
-		from
+		FROM
 			tickets
-		where
+		WHERE
 			ticket_id = ?
 	";
 
@@ -283,19 +283,19 @@ $tpl->assign(
 	array(
 		'TR_SUPPORT_SYSTEM'	=> tr('Support system'),
 		'TR_SUPPORT_TICKETS'=> tr('Support tickets'),
-		'TR_TICKET_FROM' 	=> tr('From'),
-		'TR_TICKET_TO' 		=> tr('To'),
-		'TR_STATUS' 		=> tr('Status'),
-		'TR_NEW' 			=> ' ',
-		'TR_ACTION' 		=> tr('Action'),
-		'TR_URGENCY' 		=> tr('Priority'),
-		'TR_SUBJECT' 		=> tr('Subject'),
-		'TR_LAST_DATA' 		=> tr('Last reply'),
-		'TR_DELETE_ALL' 	=> tr('Delete all'),
-		'TR_OPEN_TICKETS' 	=> tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		'TR_DELETE' 		=> tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s') ,
+		'TR_TICKET_FROM'	=> tr('From'),
+		'TR_TICKET_TO'		=> tr('To'),
+		'TR_STATUS'			=> tr('Status'),
+		'TR_NEW'			=> ' ',
+		'TR_ACTION'			=> tr('Action'),
+		'TR_URGENCY'		=> tr('Priority'),
+		'TR_SUBJECT'		=> tr('Subject'),
+		'TR_LAST_DATA'		=> tr('Last reply'),
+		'TR_DELETE_ALL'		=> tr('Delete all'),
+		'TR_OPEN_TICKETS'	=> tr('Open tickets'),
+		'TR_CLOSED_TICKETS'	=> tr('Closed tickets'),
+		'TR_DELETE'			=> tr('Delete'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s') ,
 		)
 	);
 

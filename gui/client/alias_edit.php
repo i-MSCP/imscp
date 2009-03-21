@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -30,13 +30,13 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
  *
@@ -44,21 +44,21 @@ $tpl->assign(
  *
  */
 $tpl->assign(
-		array(
-			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-			'TR_EDIT_ALIAS' => tr('Edit domain alias'),
-			'TR_ALIAS_NAME' => tr('Alias name'),
-			'TR_DOMAIN_IP' => tr('Domain IP'),
-			'TR_FORWARD' => tr('Forward to URL'),
-			'TR_MOUNT_POINT' => tr('Mount Point'),
-			'TR_MODIFY' => tr('Modify'),
-			'TR_CANCEL' => tr('Cancel'),
-			'TR_ENABLE_FWD' => tr("Enable Forward"),
-			'TR_ENABLE' => tr("Enable"),
-			'TR_DISABLE' => tr("Disable"),
-			'TR_FWD_HELP' => tr("A Forward URL has to start with 'http://'")
-		)
-	);
+	array(
+		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+		'TR_EDIT_ALIAS' => tr('Edit domain alias'),
+		'TR_ALIAS_NAME' => tr('Alias name'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_FORWARD' => tr('Forward to URL'),
+		'TR_MOUNT_POINT' => tr('Mount Point'),
+		'TR_MODIFY' => tr('Modify'),
+		'TR_CANCEL' => tr('Cancel'),
+		'TR_ENABLE_FWD' => tr("Enable Forward"),
+		'TR_ENABLE' => tr("Enable"),
+		'TR_DISABLE' => tr("Disable"),
+		'TR_FWD_HELP' => tr("A Forward URL has to start with 'http://'")
+	)
+);
 
 gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
@@ -104,7 +104,9 @@ unset_messages();
 
 // Begin function block
 
-// Show user data
+/**
+ * Show user data
+ */
 function gen_editalias_page(&$tpl, $edit_id) {
 	$sql = Database::getInstance();
 	// Get data from sql
@@ -117,7 +119,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 		die();
 	}
 	$data = $res->FetchRow();
-	// Get ip-data
+	// Get IP data
 	$ipres = exec_query($sql, "select * from server_ips where ip_id=?", array($data['alias_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
@@ -137,19 +139,21 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	// Fill in the fields
 	$tpl->assign(
-			array(
-				'ALIAS_NAME' => decode_idna($data['alias_name']),
-				'DOMAIN_IP' => $ip_data,
-				'FORWARD' => $url_forward,
-				'MOUNT_POINT' => $data['alias_mount'],
-				'CHECK_EN' => $check_en,
-				'CHECK_DIS' => $check_dis,
-				'ID' => $edit_id
-			)
-		);
+		array(
+			'ALIAS_NAME' => decode_idna($data['alias_name']),
+			'DOMAIN_IP' => $ip_data,
+			'FORWARD' => $url_forward,
+			'MOUNT_POINT' => $data['alias_mount'],
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis,
+			'ID' => $edit_id
+		)
+	);
 } // End of gen_editalias_page()
 
-// Check input data
+/**
+ * Check input data
+ */
 function check_fwd_data(&$tpl, $alias_id) {
 	$sql = Database::getInstance();
 
@@ -164,8 +168,8 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
 		if (!preg_match("/\/$/", $forward_url)) {
-	    	$forward_url .= "/";
-	    }
+			$forward_url .= "/";
+		}
 	}
 
 	if ($ed_error === '_off_') {
@@ -207,6 +211,6 @@ function check_fwd_data(&$tpl, $alias_id) {
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 		return false;
 	}
-} //End of check_user_data()
+} // End of check_user_data()
 
 ?>

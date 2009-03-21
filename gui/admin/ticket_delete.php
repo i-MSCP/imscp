@@ -1,13 +1,13 @@
 <?php
 /**
- *  ispCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
- *  @license
+ * @license
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the MPL General Public License as published by the Free Software
  *  Foundation; either version 1.1 of the License, or (at your option) any later
@@ -15,8 +15,7 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- **/
-
+ */
 
 require '../include/ispcp-lib.php';
 
@@ -27,14 +26,14 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$ticket_id = $_GET['ticket_id'];
 
 	$query = <<<SQL_QUERY
-      SELECT
-          ticket_status
-      FROM
-        	tickets
-      WHERE
-        	ticket_id = ?
-      ORDER BY
-          ticket_date ASC
+		SELECT
+			ticket_status
+		FROM
+			tickets
+		WHERE
+			ticket_id = ?
+		ORDER BY
+			ticket_date ASC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id));
@@ -46,11 +45,12 @@ SQL_QUERY;
 
 
 	$query = <<<SQL_QUERY
-    	delete from tickets
-      where
-          ticket_id = ?
-        or
-          ticket_reply = ?
+		DELETE FROM
+			tickets
+		WHEREe
+			ticket_id = ?
+		OR
+			ticket_reply = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
@@ -61,21 +61,19 @@ SQL_QUERY;
 
 	set_page_message(tr('Support ticket deleted successfully!'));
 
-    user_goto($back_url);
+	user_goto($back_url);
 
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
 
 	$user_id = $_SESSION['user_id'];
 
 	$query = <<<SQL_QUERY
-    	delete from
-          tickets
-      where
-          (ticket_from = ?
-        or
-          ticket_to = ?)
-        and
-          ticket_status != '0'
+		DELETE FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR	ticket_to = ?)
+		AND
+			ticket_status != '0'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
@@ -92,12 +90,12 @@ SQL_QUERY;
 	$user_id = $_SESSION['user_id'];
 
 	$query = <<<SQL_QUERY
-      delete from
-          tickets
-      where
-          (ticket_from = ? or ticket_to = ?)
-        and
-          ticket_status = '0'
+		DELETE FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_status = '0'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));

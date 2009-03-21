@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -131,9 +131,9 @@ function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
 			'FAX'			=> $fax,
 			'STREET1'		=> $street1,
 			'STREET2'		=> $street2,
-			'VL_MALE' 		=> (($gender == 'M') ? 'selected="selected"' : ''),
-			'VL_FEMALE' 	=> (($gender == 'F') ? 'selected="selected"' : ''),
-			'VL_UNKNOWN' 	=> ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : '')
+			'VL_MALE'		=> (($gender == 'M') ? 'selected="selected"' : ''),
+			'VL_FEMALE'		=> (($gender == 'F') ? 'selected="selected"' : ''),
+			'VL_UNKNOWN'	=> ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : '')
 		)
 	);
 }

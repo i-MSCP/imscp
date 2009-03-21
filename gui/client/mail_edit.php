@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -74,7 +74,7 @@ function edit_mail_account(&$tpl, &$sql) {
 				$mtype[] = 1;
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
- 				$maildomain = $tmp1['domain_name'];
+				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
@@ -93,13 +93,13 @@ function edit_mail_account(&$tpl, &$sql) {
 			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
 				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
- 				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_SUBDOM_FORWARD) {
- 				$mtype[] = 6;
+				$mtype[] = 6;
 				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
@@ -109,16 +109,16 @@ function edit_mail_account(&$tpl, &$sql) {
 			} else if ($mail_type == MT_ALSSUB_MAIL) {
 				$mtype[] = 7;
 				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
- 				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALSSUB_FORWARD) {
- 				$mtype[] = 8;
+				$mtype[] = 8;
 				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
- 				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));

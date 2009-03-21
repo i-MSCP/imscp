@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -30,35 +30,41 @@ $tpl->define_dynamic('service_status', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ispCP Admin / System Tools / Server Status'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ispCP Admin / System Tools / Server Status'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
-Site functions
-*/
+ * Site functions
+ */
 
 class status {
 	var $all = array();
 	var $log = false;
 
-	// AddService adds a service to a multi-dimensional array
+	/**
+	 * AddService adds a service to a multi-dimensional array
+	 */
 	function AddService($ip, $port, $service, $type) {
 		$small_array = array('ip' => $ip, 'port' => $port, 'service' => $service, 'type' => $type, 'status' => '');
 		array_push($this->all, $small_array);
 		return $this->all;
 	}
 
-	// GetCount returns the number of services added
+	/**
+	 * GetCount returns the number of services added
+	 */
 	function GetCount() {
 		return count($this->all);
 	}
 
-	// CheckStatus checks the status
+	/**
+	 * CheckStatus checks the status
+	 */
 	function CheckStatus($timeout = 5) {
 		$x = $this->GetCount();
 		for($i = 0; $i <= $x - 1; $i++) {
@@ -97,12 +103,16 @@ class status {
 		}
 	}
 
-	// GetStatus a unecessary function to return the status
+	/**
+	 * GetStatus a unecessary function to return the status
+	 */
 	function GetStatus() {
 		return $this->all;
 	}
 
-	// GetSingleStatus will get the status of single address
+	/**
+	 * GetSingleStatus will get the status of single address
+	 */
 	function GetSingleStatus($ip, $port, $type, $timeout = 5) {
 		$errno = null;
 		$errstr = null;
@@ -131,9 +141,7 @@ function get_server_status(&$tpl, &$sql) {
 		FROM
 			config
 		WHERE
-			name
-		  LIKE
-		  	'PORT_%'
+			name LIKE 'PORT_%'
 		ORDER BY
 			name ASC
 SQL_QUERY;
@@ -155,14 +163,14 @@ SQL_QUERY;
 		}
 
 		$rs->MoveNext();
-	} //while
+	} // end while
 
 	$ispcp_status->CheckStatus(5);
 	$data = $ispcp_status->GetStatus();
 	$up = tr('UP');
 	$down = tr('DOWN');
 
-	for($i = 0, $c = count($data); $i < $c; $i++) {
+	for ($i = 0, $c = count($data); $i < $c; $i++) {
 		if ($data[$i]['status']) {
 			$img = $up;
 			$class = "content up";
@@ -182,14 +190,14 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-				array(
-					'HOST' => $data[$i]['ip'],
-					'PORT' => $data[$i]['port'],
-					'SERVICE' => $data[$i]['service'],
-					'STATUS' => $img,
-					'CLASS' => $class,
-					)
-				);
+			array(
+				'HOST' => $data[$i]['ip'],
+				'PORT' => $data[$i]['port'],
+				'SERVICE' => $data[$i]['service'],
+				'STATUS' => $img,
+				'CLASS' => $class,
+			)
+		);
 
 		$tpl->parse('SERVICE_STATUS', '.service_status');
 	}
@@ -204,13 +212,13 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_genera
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 $tpl->assign(
-		array(
-			'TR_HOST' => tr('Host'),
-			'TR_SERVICE' => tr('Service'),
-			'TR_STATUS' => tr('Status'),
-			'TR_SERVER_STATUS' => tr('Server status'),
-			)
-		);
+	array(
+		'TR_HOST' => tr('Host'),
+		'TR_SERVICE' => tr('Service'),
+		'TR_STATUS' => tr('Status'),
+		'TR_SERVER_STATUS' => tr('Server status'),
+	)
+);
 
 get_server_status($tpl, $sql);
 

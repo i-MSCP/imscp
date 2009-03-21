@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -23,13 +23,13 @@
  *
  * @author		ispCP Team
  * @author		Benedikt Heintel
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.0
  *
  * @access	public
- * @param 	reference	$sql		reference to sql connection
+ * @param	reference	$sql		reference to sql connection
  * @param	int			$ticket_id	ticket to get last date for
- * @return 	date					last date
+ * @return	date					last date
  */
 function ticketGetLastDate(&$sql, $ticket_id) {
 	$query = <<<SQL_QUERY

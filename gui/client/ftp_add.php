@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -349,8 +349,8 @@ function add_ftp_user(&$sql, $dmn_name) {
 	    set_page_message(tr("Incorrect username length or syntax!"));
 	    return;
 	}
-	// Set default values ($ftp_home may be overriden if user
-	// has specified a mount point
+	// Set default values ($ftp_home may be overwritten if user
+	// has specified a mount point)
     switch ($_POST['dmn_type']) {
 		// Default moint point for a domain
 	    case 'dmn':

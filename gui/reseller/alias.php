@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -400,14 +400,14 @@ function generate_als_messages(&$tpl, $als_err) {
 		if('_no_' === $_SESSION['orderaldel']) {
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not deleted!'));
 		}
-        unset($_SESSION['orderaldel']);
-    } else if (isset($_SESSION['orderalact'])) {
+		unset($_SESSION['orderaldel']);
+	} else if (isset($_SESSION['orderalact'])) {
 		if('_yes_' === $_SESSION['orderalact'])
-        	$tpl->assign('MESSAGE', tr('Ordered domain alias activated!'));
+			$tpl->assign('MESSAGE', tr('Ordered domain alias activated!'));
 		else
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not activated!'));
 
-        unset($_SESSION['orderalact']);
+		unset($_SESSION['orderalact']);
 	} else {
 		$tpl->assign('MESSAGE', '');
 		$tpl->assign('PAGE_MESSAGE', "");

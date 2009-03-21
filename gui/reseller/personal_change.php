@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -70,24 +70,24 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$tpl->assign(
-			array(
-			'FIRST_NAME' 	=> (($rs->fields['fname'] == null) 		? '' : $rs->fields['fname']),
-			'LAST_NAME' 	=> (($rs->fields['lname'] == null) 		? '' : $rs->fields['lname']),
-			'FIRM' 			=> (($rs->fields['firm'] == null) 		? '' : $rs->fields['firm']),
-			'ZIP' 			=> (($rs->fields['zip'] == null) 		? '' : $rs->fields['zip']),
-			'CITY' 			=> (($rs->fields['city'] == null) 		? '' : $rs->fields['city']),
-			'STATE' 		=> (($rs->fields['state'] == null) 		? '' : $rs->fields['state']),
-			'COUNTRY' 		=> (($rs->fields['country'] == null) 	? '' : $rs->fields['country']),
-			'STREET_1' 		=> (($rs->fields['street1'] == null) 	? '' : $rs->fields['street1']),
-			'STREET_2' 		=> (($rs->fields['street2'] == null) 	? '' : $rs->fields['street2']),
-			'EMAIL' 		=> (($rs->fields['email'] == null) 		? '' : $rs->fields['email']),
-			'PHONE' 		=> (($rs->fields['phone'] == null) 		? '' : $rs->fields['phone']),
-			'FAX' 			=> (($rs->fields['fax'] == null) 		? '' : $rs->fields['fax']),
-			'VL_MALE' 		=> (($rs->fields['gender'] == 'M') 		? 'selected="selected"' : ''),
-			'VL_FEMALE' 	=> (($rs->fields['gender'] == 'F') 		? 'selected="selected"' : ''),
-			'VL_UNKNOWN' 	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : '')
-			)
-		);
+		array(
+			'FIRST_NAME'	=> (($rs->fields['fname'] == null)		? '' : $rs->fields['fname']),
+			'LAST_NAME'		=> (($rs->fields['lname'] == null)		? '' : $rs->fields['lname']),
+			'FIRM'			=> (($rs->fields['firm'] == null)		? '' : $rs->fields['firm']),
+			'ZIP'			=> (($rs->fields['zip'] == null)		? '' : $rs->fields['zip']),
+			'CITY'			=> (($rs->fields['city'] == null)		? '' : $rs->fields['city']),
+			'STATE'			=> (($rs->fields['state'] == null)		? '' : $rs->fields['state']),
+			'COUNTRY'		=> (($rs->fields['country'] == null)	? '' : $rs->fields['country']),
+			'STREET_1'		=> (($rs->fields['street1'] == null)	? '' : $rs->fields['street1']),
+			'STREET_2'		=> (($rs->fields['street2'] == null)	? '' : $rs->fields['street2']),
+			'EMAIL'			=> (($rs->fields['email'] == null)		? '' : $rs->fields['email']),
+			'PHONE'			=> (($rs->fields['phone'] == null)		? '' : $rs->fields['phone']),
+			'FAX'			=> (($rs->fields['fax'] == null)		? '' : $rs->fields['fax']),
+			'VL_MALE'		=> (($rs->fields['gender'] == 'M')		? 'selected="selected"' : ''),
+			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F')		? 'selected="selected"' : ''),
+			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : '')
+		)
+	);
 }
 
 function update_reseller_personal_data(&$sql, $user_id) {

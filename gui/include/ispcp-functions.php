@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -50,13 +50,13 @@ function send_request() {
 
 	@$socket = socket_create (AF_INET, SOCK_STREAM, 0);
 	if ($socket < 0) {
-		$errno =  "socket_create() failed.\n";
+		$errno = "socket_create() failed.\n";
 		return $errno;
 	}
 
 	@$result = socket_connect ($socket, '127.0.0.1', 9876);
 	if ($result == FALSE) {
-		$errno =  "socket_connect() failed.\n";
+		$errno = "socket_connect() failed.\n";
 		return $errno;
 	}
 
@@ -70,7 +70,7 @@ function send_request() {
 
 	/* send hello query */
 	$query = "helo  $Version\r\n";
-	socket_write ($socket, $query, strlen ($query));
+	socket_write($socket, $query, strlen ($query));
 
 	/* read one line with helo answer */
 	$out = read_line($socket);
@@ -134,7 +134,7 @@ function update_user_props ( $user_id, $props ) {
 	) = explode (";", $props);
 
 	// have to check if PHP and/or CGI and/or IP change
-	$domain_last_modified =  time();
+	$domain_last_modified = time();
 
 	$query = "
 		SELECT
@@ -142,7 +142,7 @@ function update_user_props ( $user_id, $props ) {
 		FROM
 			`domain`
 		WHERE
-			`domain_id`  = ?
+			`domain_id` = ?
 		AND
 			`domain_php` = ?
 		AND
@@ -202,7 +202,7 @@ function update_user_props ( $user_id, $props ) {
 			)
 		);
 
-		// lets update all alias domains for this domain
+		// let's update all alias domains for this domain
 
 		$query = "
 			UPDATE
@@ -210,22 +210,22 @@ function update_user_props ( $user_id, $props ) {
 			SET
 				`alias_status` = ?
 			WHERE
-				`domain_id`  = ?
+				`domain_id` = ?
 		";
 		$rs = exec_query($sql, $query, array($update_status, $user_id));
 
-		// lets update all subdomains for this domain
+		// let's update all subdomains for this domain
 		$query = "
 			UPDATE
 				`subdomain`
 			SET
 				`subdomain_status` = ?
 			WHERE
-				`domain_id`  = ?
+				`domain_id` = ?
 		";
 		$rs = exec_query($sql, $query, array($update_status, $user_id));
 
-		// lets update all alias subdomains for this domain
+		// let's update all alias subdomains for this domain
 		$query = "
 			UPDATE
 				`subdomain_alias`

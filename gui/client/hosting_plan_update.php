@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -39,7 +39,7 @@ $tpl->define_dynamic('hp_order', 'page');
 function gen_hp(&$tpl, &$sql, $user_id) {
 	$availabe_order = 0;
 	$hp_title = tr('Hosting plans available for update');
-	// lets see if we have an order
+	// let's see if we have an order
 	$query = "
 		SELECT
 			*
@@ -101,7 +101,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				FROM
 					`hosting_plans`
 				WHERE
-				 	`reseller_id` = ?
+					`reseller_id` = ?
 				AND
 					`status` = '1'
 			";
@@ -291,16 +291,16 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	set_page_message(tr('Your request for hosting pack update was added successfully'));
 
 	$query = "
-			SELECT
-				t1.`email` AS reseller_mail,
-				t2.`email` AS user_mail
-			FROM
-				`admin` AS t1,
-				`admin` AS t2
-			WHERE
-				t1.`admin_id` = ?
-			AND
-				t2.`admin_id` = ?
+		SELECT
+			t1.`email` AS reseller_mail,
+			t2.`email` AS user_mail
+		FROM
+			`admin` AS t1,
+			`admin` AS t2
+		WHERE
+			t1.`admin_id` = ?
+		AND
+			t2.`admin_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $_SESSION['user_id']));

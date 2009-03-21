@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  *  @license
  *   This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GPL General Public License for more details.
  *
  *   You may have received a copy of the GPL General Public License
@@ -24,25 +24,25 @@
  *
  *   An on-line copy of the GPL General Public License can be found
  *   http://www.fsf.org/licensing/licenses/gpl.txt
- **/
+ */
 
 
 /**
  * Implementing abstract class ispcpUpdate for database update functions
  *
  * @author	Daniel Andreca <sci2tech@gmail.com>
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
  * @since	r1355
  */
 class databaseUpdate extends ispcpUpdate{
-	protected $databaseVariableName="DATABASE_REVISION";
-	protected $functionName="_databaseUpdate_";
-	protected $errorMessage="Database update %s failed";
+	protected $databaseVariableName = "DATABASE_REVISION";
+	protected $functionName = "_databaseUpdate_";
+	protected $errorMessage = "Database update %s failed";
 
 	public static function getInstance() {
-		static $instance=null;
-		if($instance===null)$instance= new self();
+		static $instance = null;
+		if ($instance === null) $instance = new self();
 		return $instance;
 	}
 
@@ -85,38 +85,38 @@ class databaseUpdate extends ispcpUpdate{
 		$sqlUpd = array(); // we need several SQL Statements...
 	
 		// domain mail + forward
-		$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `domain`"
 					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
 					. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
 					. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward');";
 
 		// domain-alias mail + forward
-		$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `domain_aliasses`"
 					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)"
 					. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
 					. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward');";
 
 		// subdomain mail + forward
-		$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `subdomain`, `domain`"
 					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)"
 					. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 					. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
 					. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward');";
 
 		// domain catchall
-		$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `domain`"
 					. "SET `mail_addr` = CONCAT('@',`domain_name`)"
 					. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
 					. "AND `mail_type` = 'normal_catchall';";
 
 		// domain-alias catchall
-		$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `domain_aliasses`"
 					. "SET `mail_addr` = CONCAT('@',`alias_name`)"
 					. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
 					. "AND `mail_type` = 'alias_catchall';";
 
 		// subdomain catchall
-		$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
+		$sqlUpd[]	= "UPDATE `mail_users`, `subdomain`, `domain`"
 					. "SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)"
 					. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 					. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
@@ -227,12 +227,11 @@ class databaseUpdate extends ispcpUpdate{
 					`subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
 					`subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
 					`subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
-					PRIMARY KEY  (`subdomain_alias_id`)
-					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+					PRIMARY KEY (`subdomain_alias_id`)
+					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 		return $sqlUpd;
 	}
-
 
 	/**
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
@@ -241,14 +240,14 @@ class databaseUpdate extends ispcpUpdate{
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1417
-	 * @removed 	r1418
+	 * @removed		r1418
 	 *
 	 * @access		protected
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_8() {
 		$sqlUpd = array();
-		//moved to critical because we need to run engine request
+		// moved to critical because we need to run engine request
 		return $sqlUpd;
 	}
 
@@ -315,4 +314,5 @@ class databaseUpdate extends ispcpUpdate{
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
 }
+
 ?>

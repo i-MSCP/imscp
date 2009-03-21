@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -50,18 +50,17 @@ function curlang($newlang = null, $force = false) {
 }
 
 /**
- * 	Function:		tr
- * 	Description:	translates a given string into the selected language, if exists
+ * translates a given string into the selected language, if exists
  *
- * 	@access			public
- * 	@version		2.2
- *  @author			ispCP Team, Benedikt Heintel (2007), Raphael Geissert (2007)
+ * @access		public
+ * @version		2.2
+ * @author		ispCP Team, Benedikt Heintel (2007), Raphael Geissert (2007)
  *
- * 	@param		String	$msgid			string to translate
- *  @param		Mixed	$substitution	prevent the returned string from being replaced with html entities
- * 	@return		String					translated or original string
- *  @todo use db prepared statements
- **/
+ * @param		String	$msgid			string to translate
+ * @param		Mixed	$substitution	prevent the returned string from being replaced with html entities
+ * @return		String					translated or original string
+ * @todo use db prepared statements
+ */
 function tr($msgid, $substitution = false) {
 	$sql = Database::getInstance();
 	static $cache = array();
@@ -125,16 +124,15 @@ function tr($msgid, $substitution = false) {
 }
 
 /**
- * 	Function:		replace_html
- * 	Description:	replaces special encoded strings back to their original signs
+ * replaces special encoded strings back to their original signs
  *
- * 	@access			public
- * 	@version		1.0
- *  @author			ispCP Team, Benedikt Heintel (2007)
+ * @access		public
+ * @version		1.0
+ * @author		ispCP Team, Benedikt Heintel (2007)
  *
- * 	@param		$string		string to replace chars
- * 	@return					string with replaced chars
- **/
+ * @param		string	$string	string to replace chars
+ * @return		string	string with replaced chars
+ */
 function replace_html($string) {
 	$pattern = array(
 		'#&lt;[ ]*b[ ]*&gt;#i',

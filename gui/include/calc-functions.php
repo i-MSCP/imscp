@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -65,22 +65,22 @@ function sizeit($bytes, $from = 'B') {
 	}
 
 	if ($bytes > pow(1024, 5)) {
-		$bytes = $bytes/pow(1024, 5);
-		$ret   = tr('%.2f PB', $bytes);
+		$bytes	= $bytes/pow(1024, 5);
+		$ret	= tr('%.2f PB', $bytes);
 	} else if ($bytes > pow(1024, 4)) {
-		$bytes = $bytes/pow(1024, 4);
-		$ret   = tr('%.2f TB', $bytes);
+		$bytes	= $bytes/pow(1024, 4);
+		$ret	= tr('%.2f TB', $bytes);
 	} else if ($bytes > pow(1024, 3)) {
-		$bytes = $bytes/pow(1024, 3);
-		$ret   = tr('%.2f GB', $bytes);
+		$bytes	= $bytes/pow(1024, 3);
+		$ret	= tr('%.2f GB', $bytes);
 	} else if ($bytes > pow(1024, 2) ) {
-		$bytes = $bytes/pow(1024, 2);
-		$ret   = tr('%.2f MB', $bytes);
+		$bytes	= $bytes/pow(1024, 2);
+		$ret	= tr('%.2f MB', $bytes);
 	} else if ($bytes > pow(1024, 1)) {
-		$bytes = $bytes/pow(1024, 1);
-		$ret   = tr('%.2f KB', $bytes);
+		$bytes	= $bytes/pow(1024, 1);
+		$ret	= tr('%.2f KB', $bytes);
 	} else {
-		$ret   = tr('%d B', $bytes);
+		$ret	= tr('%d B', $bytes);
 	}
 
 	return $ret;

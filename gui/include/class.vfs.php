@@ -2,10 +2,10 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -43,35 +43,26 @@ define('VFS_BINARY', FTP_BINARY);
 class vfs {
 	/**
 	 * Domain name of this filesystem
-	 *
 	 * @var string
 	 */
 	var $_domain = '';
-
 	/**
 	 * FTP connection handle
-	 *
 	 * @var resource
 	 */
 	var $_handle = null;
-
 	/**
 	 * Database connection handle
-	 *
 	 * @var resource
 	 */
 	var $_db = null;
-
 	/**
 	 * FTP temporary user name
-	 *
 	 * @var string
 	 */
 	var $_user = '';
-
 	/**
 	 * FTP password
-	 *
 	 * @var string
 	 */
 	var $_passwd = '';
@@ -138,13 +129,14 @@ class vfs {
 	/**
 	 * Create a temporary FTP user
 	 *
-	 * @return boolean Returns TRUE on succes or FALSE on failure.
+	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function _createTmpUser() {
 		// Get domain data
-		$query = 'select domain_uid, domain_gid
-				  from   domain
-				  where  domain_name = ?';
+		$query = '
+			SELECT domain_uid, domain_gid
+			FROM domain
+			WHERE domain_name = ?';
 		$rs = exec_query($this->_db, $query, array($this->_domain));
 		if (!$rs) {
 			return false;
@@ -155,10 +147,10 @@ class vfs {
 		$passwd = crypt_user_pass_with_salt($this->_passwd);
 		// Create the temporary user
 		$query = <<<SQL_QUERY
-	        insert into ftp_users
-	            (userid, passwd, uid, gid, shell, homedir)
-	        values
-	            (?, ?, ?, ?, ?, ?)
+			INSERT INTO ftp_users
+				(userid, passwd, uid, gid, shell, homedir)
+			VALUES
+				(?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
 				Config::get('CMD_SHELL'), Config::get('FTP_HOMEDIR') . '/' . $this->_domain
@@ -174,12 +166,12 @@ SQL_QUERY;
 	/**
 	 * Removes the temporary FTP user
 	 *
-	 * @return Returns TRUE on succes or FALSE on failure.
+	 * @return Returns TRUE on success or FALSE on failure.
 	 */
 	function _removeTmpUser() {
 		$query = <<<SQL_QUERY
-			delete from ftp_users
-			where  userid = ?
+			DELETE FROM ftp_users
+			WHERE userid = ?
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($this->_user));
 
@@ -189,7 +181,7 @@ SQL_QUERY;
 	/**
 	 * Open the virtual file system
 	 *
-	 * @return boolean Returns TRUE on succes or FALSE on failure.
+	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function open() {
 		// Check if we're already open
@@ -262,9 +254,10 @@ SQL_QUERY;
 			return false;
 		}
 		$len = count($list);
-		for($i = 0; $i < $len; $i++) {
+		for ($i = 0; $i < $len; $i++) {
 			$parts = preg_split("/[\s]+/", $list[$i], 9);
-			$list[$i] = array('perms' => $parts[0],
+			$list[$i] = array(
+				'perms' => $parts[0],
 				'number' => $parts[1],
 				'owner' => $parts[2],
 				'group' => $parts[3],
@@ -274,7 +267,7 @@ SQL_QUERY;
 				'time' => $parts[7],
 				'file' => $parts[8],
 				'type' => substr($parts[0], 0, 1),
-				);
+			);
 		}
 
 		return $list;
@@ -320,7 +313,7 @@ SQL_QUERY;
 	 *
 	 * @param string $file VFS file path.
 	 * @param int $ VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
-	 * @return boolean Returns TRUE on succes or FALSE on failure.
+	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function get($file, $mode = VFS_ASCII) {
 		// Ensure that we're open

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -207,26 +207,26 @@ function change_user_interface($from_id, $to_id) {
 	while (1) { // used to easily exit
 		$query = 'SELECT `admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by` FROM `admin` WHERE binary `admin_id` = ?';
 
-		$rs_from = exec_query($sql, $query, array($from_id));
-		$rs_to   = exec_query($sql, $query, array($to_id));
+		$rs_from	= exec_query($sql, $query, array($from_id));
+		$rs_to		= exec_query($sql, $query, array($to_id));
 
-		if (($rs_from->RecordCount()) != 1 || ($rs_to->RecordCount()) != 1)  {
+		if (($rs_from->RecordCount()) != 1 || ($rs_to->RecordCount()) != 1) {
 			set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 			break;
 		}
 
-		$from_udata = $rs_from->FetchRow();
-		$to_udata   = $rs_to->FetchRow();
+		$from_udata	= $rs_from->FetchRow();
+		$to_udata	= $rs_to->FetchRow();
 
 		if (!is_userdomain_ok($to_udata['admin_name'])) {
 			set_page_message(tr("%s's account status is not ok!", decode_idna($to_udata['admin_name'])));
 			break;
 		}
 
-		$to_admin_type   = strtolower($to_udata['admin_type']);
-		$from_admin_type = strtolower($from_udata['admin_type']);
+		$to_admin_type		= strtolower($to_udata['admin_type']);
+		$from_admin_type	= strtolower($from_udata['admin_type']);
 
-		$allowed_changes = array();
+		$allowed_changes	= array();
 
 		$allowed_changes['admin']['admin']		= 'manage_users.php';
 		$allowed_changes['admin']['BACK']		= 'manage_users.php';
@@ -260,7 +260,7 @@ function change_user_interface($from_id, $to_id) {
 
 	}
 	if ($from_admin_type == 'user') { // Ticket 830 - remove the 'logged_from' if back from user
-		unset($_SESSION['logged_from']);  // maybe integrated in the construction above...
+		unset($_SESSION['logged_from']); // maybe integrated in the construction above...
 		unset($_SESSION['logged_from_id']);
 	}
 

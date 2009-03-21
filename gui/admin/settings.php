@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -34,27 +34,27 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
-	$lostpassword 						= $_POST['lostpassword'];
-	$lostpassword_timeout 				= clean_input($_POST['lostpassword_timeout']);
-	$passwd_chars 						= clean_input($_POST['passwd_chars']);
-	$passwd_strong 						= $_POST['passwd_strong'];
-	$bruteforce 						= $_POST['bruteforce'];
-	$bruteforce_between 				= $_POST['bruteforce_between'];
-	$bruteforce_max_login				= clean_input($_POST['bruteforce_max_login']);
-	$bruteforce_block_time 				= clean_input($_POST['bruteforce_block_time']);
-	$bruteforce_between_time 			= clean_input($_POST['bruteforce_between_time']);
-	$bruteforce_max_capcha				= clean_input($_POST['bruteforce_max_capcha']);
-	$create_default_email_addresses 	= $_POST['create_default_email_addresses'];
-	$hard_mail_suspension 				= $_POST['hard_mail_suspension'];
-	$user_initial_lang 					= $_POST['def_language'];
-	$support_system 					= $_POST['support_system'];
-	$hosting_plan_level					= $_POST['hosting_plan_level'];
-	$domain_rows_per_page 				= clean_input($_POST['domain_rows_per_page']);
-	$checkforupdate						= $_POST['checkforupdate'];
+	$lostpassword					= $_POST['lostpassword'];
+	$lostpassword_timeout			= clean_input($_POST['lostpassword_timeout']);
+	$passwd_chars					= clean_input($_POST['passwd_chars']);
+	$passwd_strong					= $_POST['passwd_strong'];
+	$bruteforce						= $_POST['bruteforce'];
+	$bruteforce_between				= $_POST['bruteforce_between'];
+	$bruteforce_max_login			= clean_input($_POST['bruteforce_max_login']);
+	$bruteforce_block_time			= clean_input($_POST['bruteforce_block_time']);
+	$bruteforce_between_time		= clean_input($_POST['bruteforce_between_time']);
+	$bruteforce_max_capcha			= clean_input($_POST['bruteforce_max_capcha']);
+	$create_default_email_addresses	= $_POST['create_default_email_addresses'];
+	$hard_mail_suspension			= $_POST['hard_mail_suspension'];
+	$user_initial_lang				= $_POST['def_language'];
+	$support_system					= $_POST['support_system'];
+	$hosting_plan_level				= $_POST['hosting_plan_level'];
+	$domain_rows_per_page			= clean_input($_POST['domain_rows_per_page']);
+	$checkforupdate					= $_POST['checkforupdate'];
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
 		case "E_USER_NOTICE":
@@ -109,9 +109,9 @@ $tpl->assign(
 		'BRUTEFORCE_BETWEEN_TIME_VALUE' => Config::get('BRUTEFORCE_BETWEEN_TIME'),
 		'BRUTEFORCE_MAX_CAPTCHA' => Config::get('BRUTEFORCE_MAX_CAPTCHA'),
 		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE')
-		)
-	);
-$language=Config::get('USER_INITIAL_LANG');
+	)
+);
+$language = Config::get('USER_INITIAL_LANG');
 gen_def_language($tpl, $sql, $language);
 
 if (Config::get('LOSTPASSWORD')) {
@@ -256,8 +256,8 @@ $tpl->assign(
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
 		'TR_CHECK_FOR_UPDATES' => tr('Check for update')
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

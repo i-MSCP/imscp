@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -75,9 +75,9 @@ Config::set('MAX_SQL_DATABASE_LENGTH', 64);
 Config::set('MAX_SQL_USER_LENGTH', 16);
 Config::set('MAX_SQL_PASS_LENGTH', 32);
 
-// the following variables are overriden via admin cp
+// the following variables are overwritten via admin cp
 Config::set('DOMAIN_ROWS_PER_PAGE', 10);
-// 'admin' => hosting plans are available only in admin level, reseller can not make custom changes
+// 'admin' => hosting plans are available only in admin level, reseller cannot make custom changes
 // 'reseller' => hosting plans are available only in reseller level
 Config::set('HOSTING_PLANS_LEVEL', 'reseller');
 

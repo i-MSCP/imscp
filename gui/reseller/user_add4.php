@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -79,7 +79,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		WHERE
 			`domain_id` = ?
 		AND
-			(`domain_status` = ? or `domain_status` = ?)
+			(`domain_status` = ? OR `domain_status` = ?)
 	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $ok_status, $add_status));
@@ -220,15 +220,15 @@ function add_domain_alias(&$sql, &$err_al) {
 			$err_al = tr("Incorrect forward syntax");
 		}
 		if (!preg_match("/\/$/", $forward)) {
-	    	$forward .= "/";
-	    }
+			$forward .= "/";
+		}
 	} else {
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));
 		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
-			// we already have domain with this name
+			// we already have a domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
 

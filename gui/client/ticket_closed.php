@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -40,52 +40,52 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-                select
-                    count(ticket_id) as cnt
-                from
-                    tickets
-                where
-                    ticket_from = ?
-                  and
-                    ticket_status = 0
-                  and
-                    ticket_reply  = 0
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			tickets
+		WHERE
+			ticket_from = ?
+		AND
+			ticket_status = 0
+		AND
+			ticket_reply  = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id));
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-      SELECT
-          ticket_id,
-          ticket_status,
-          ticket_urgency,
-          ticket_date,
-          ticket_subject
-      FROM
-          tickets
-      WHERE
-          ticket_from = ?
-        AND
-          ticket_status = 0
-        AND
-          ticket_reply  = 0
-      ORDER BY
-            ticket_date DESC
-      LIMIT
-            $start_index, $rows_per_page
+		SELECT
+			ticket_id,
+			ticket_status,
+			ticket_urgency,
+			ticket_date,
+			ticket_subject
+		FROM
+			tickets
+		WHERE
+			ticket_from = ?
+		AND
+			ticket_status = 0
+		AND
+			ticket_reply  = 0
+		ORDER BY
+			ticket_date DESC
+		LIMIT
+			$start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'TICKETS_LIST' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_NEXT' => ''
-					)
-				);
+			array(
+				'TICKETS_LIST' => '',
+				'SCROLL_PREV' => '',
+				'SCROLL_NEXT' => ''
+			)
+		);
 		set_page_message(tr('You have no support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
@@ -93,11 +93,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_PREV_GRAY' => '',
-						'PREV_PSI' => $prev_si
-						)
-					);
+				array(
+					'SCROLL_PREV_GRAY' => '',
+					'PREV_PSI' => $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -106,11 +106,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_NEXT_GRAY' => '',
-						'NEXT_PSI' => $next_si
-						)
-					);
+				array(
+					'SCROLL_NEXT_GRAY' => '',
+					'NEXT_PSI' => $next_si
+				)
+			);
 		}
 
 		global $i;
@@ -132,15 +132,15 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'NEW' 		=> " ",
-						'LAST_DATE' => $date,
-						'SUBJECT' 	=> $rs->fields['ticket_subject'],
-						'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-						'ID'		=> $rs->fields['ticket_id'],
-						'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
-						)
-					);
+				array(
+					'NEW'		=> " ",
+					'LAST_DATE' => $date,
+					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
+					'ID'		=> $rs->fields['ticket_id'],
+					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
+				)
+			);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();
@@ -152,10 +152,14 @@ SQL_QUERY;
 // common page data.
 
 $theme_color = Config::get('USER_INITIAL_THEME');
-$tpl->assign(array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
@@ -176,22 +180,22 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-		array(
-			'TR_SUPPORT_SYSTEM' => tr('Support system'),
-			'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-			'TR_STATUS' => tr('Status'),
-			'TR_NEW' => ' ',
-			'TR_ACTION' => tr('Action'),
-			'TR_URGENCY' => tr('Priority'),
-			'TR_SUBJECT' => tr('Subject'),
-			'TR_LAST_DATA' => tr('Last reply'),
-			'TR_DELETE_ALL' => tr('Delete all'),
-			'TR_OPEN_TICKETS' => tr('Open tickets'),
-			'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-			)
-	    );
+	array(
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
+		'TR_STATUS' => tr('Status'),
+		'TR_NEW' => ' ',
+		'TR_ACTION' => tr('Action'),
+		'TR_URGENCY' => tr('Priority'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_LAST_DATA' => tr('Last reply'),
+		'TR_DELETE_ALL' => tr('Delete all'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+	)
+);
 
 gen_page_message($tpl);
 

@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2009 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net
+ * @author		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -21,14 +21,11 @@
 /**
  * encode() - encode string to be valid as mail header
  *
- * source: php.net/manual/en/function.mail.php
+ * @source	php.net/manual/en/function.mail.php
  *
- * input:
- *   string $in_str - string to be encoded [should be in the $charset charset]
- *   string $charset - charset in that string will be encoded
- *
- * output:
- *   string - encoded string
+ * @param	string	$in_str		string to be encoded [should be in the $charset charset]
+ * @param	string	$charset	charset in that string will be encoded
+ * @return	string	encoded string
  *
  * @todo need to check emails with ? and space in subject - some probs can occur
  */
@@ -1322,8 +1319,11 @@ function calc_bar_value($value, $value_max , $bar_width) {
 	}
 }
 
+/**
+ * log function
+ */
 function write_log($msg, $level = E_USER_WARNING) {
-	/* log function */
+
 	$sql = Database::getInstance();
 	global $send_log_to;
 
@@ -1342,7 +1342,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	$send_log_to = Config::get('DEFAULT_ADMIN_ADDRESS');
 
-	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
+	// now send email if DEFAULT_ADMIN_ADDRESS != ''
 	if ($send_log_to != '' && $level <= Config::get('LOG_LEVEL')) {
 		global $default_hostname, $default_base_server_ip, $Version, $BuildDate, $admin_login;
 
@@ -1627,7 +1627,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 
 /**
  * @todo use db prepared statements
- * @todo cleanup/comment confusing query salad
+ * @todo cleanup and/or comment confusing query salad
  */
 function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 	$rows_per_page, $search_for, $search_common, $search_status) {
