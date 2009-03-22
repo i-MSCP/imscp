@@ -399,12 +399,12 @@ SQL_QUERY;
 
 		$rtraff_current += $traff_current;
 		$rtraff_max += $traff_max;
-		// print $rtraff_current."<br>"; //- debug shit
+		// print $rtraff_current."<br>"; // for debugging
 		if ($disk_max == 0) $rdisk_uf = '_on_';
 
 		$rdisk_current += $disk_current;
 		$rdisk_max += $disk_max;
-		// print $rdisk_current."<br>"; //- debug shit
+		// print $rdisk_current."<br>"; // for debugging
 	}
 
 	$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
