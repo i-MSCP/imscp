@@ -394,7 +394,7 @@ if (isset($_GET['ticket_id'])) {
 } else {
 	set_page_message(tr('Ticket not found!'));
 
-	Header("Location: ticket_system.php");
+	header("Location: ticket_system.php");
 	die();
 }
 // static page messages.
@@ -415,8 +415,8 @@ $tpl->assign(
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

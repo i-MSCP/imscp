@@ -65,13 +65,13 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 }
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('ispCP - Admin/Reseller User Statistics'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('ispCP - Admin/Reseller User Statistics'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 function generate_page (&$tpl, $reseller_id, $reseller_name) {
 	$sql = Database::getInstance();
@@ -88,34 +88,36 @@ function generate_page (&$tpl, $reseller_id, $reseller_name) {
 	}
 
 	$tpl->assign(
-		array('POST_PREV_PSI' => $start_index
-			)
-		);
+		array(
+			'POST_PREV_PSI' => $start_index
+		)
+	);
+	
 	// count query
 	$count_query = <<<SQL_QUERY
-        SELECT
-            COUNT(admin_id) AS cnt
-        FROM
-            admin
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			admin
 		WHERE
-		     admin_type = 'user'
-          AND
-            created_by = ?
+			admin_type = 'user'
+		AND
+			created_by = ?
 SQL_QUERY;
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id
-        FROM
-            admin
-        WHERE
-            admin_type = 'user'
-          AND
-            created_by = ?
-        ORDER BY
-            admin_name DESC
-        LIMIT
-            $start_index, $rows_per_page
+		SELECT
+			admin_id
+		FROM
+			admin
+		WHERE
+			admin_type = 'user'
+		AND
+			created_by = ?
+		ORDER BY
+			admin_name DESC
+		LIMIT
+			$start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($reseller_id));
@@ -124,19 +126,20 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($reseller_id));
 
 	$tpl->assign(
-		array('RESELLER_NAME' => $reseller_name,
+		array(
+			'RESELLER_NAME' => $reseller_name,
 			'RESELLER_ID' => $reseller_id
-			)
-		);
+		)
+	);
 
 	if ($rs->RowCount() == 0) {
 		$tpl->assign(
-			array('DOMAIN_LIST' => '',
+			array(
+				'DOMAIN_LIST' => '',
 				'SCROLL_PREV' => '',
 				'SCROLL_NEXT' => '',
-
-				)
-			);
+			)
+		);
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 
@@ -144,11 +147,12 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_PREV_GRAY' => '',
+				array(
+					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si,
 					'RID' => $rid
-					)
-				);
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -157,17 +161,19 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_NEXT_GRAY' => '',
+				array(
+					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si,
 					'RID' => $rid
-					)
-				);
+				)
+			);
 		}
 
 		$tpl->assign(
-			array('PAGE_MESSAGE' => ''
-				)
-			);
+			array(
+				'PAGE_MESSAGE' => ''
+			)
+		);
 
 		$tpl->assign('NO_DOMAINS', '');
 
@@ -177,12 +183,12 @@ SQL_QUERY;
 			$admin_id = $rs->fields['admin_id'];
 
 			$query = <<<SQL_QUERY
-                select
-                    domain_id
-                from
-                    domain
-                where
-                    domain_admin_id = ?
+				SELECT
+					domain_id
+				FROM
+					domain
+				WHERE
+					domain_admin_id = ?
 SQL_QUERY;
 
 			$dres = exec_query ($sql, $query, array($admin_id));
@@ -244,78 +250,76 @@ function generate_domain_entry (&$tpl, $user_id, $row) {
 	$tpl->assign(
 		array(
 			'ITEM_CLASS' => ($row % 2 == 0) ? 'content' : 'content2',
-			)
+		)
 	);
 
 	$domain_name = decode_idna($domain_name);
 
 	$tpl->assign(
-			array(
-				'DOMAIN_NAME' => $domain_name,
+		array(
+			'DOMAIN_NAME' => $domain_name,
 
-				'MONTH' => $crnt_month,
-				'YEAR' => $crnt_year,
-				'DOMAIN_ID' => $domain_id,
+			'MONTH' => $crnt_month,
+			'YEAR' => $crnt_year,
+			'DOMAIN_ID' => $domain_id,
 
-				'TRAFF_SHOW_PERCENT' => $traff_show_percent,
-				'TRAFF_PERCENT' => $traff_percent,
-				'TRAFF_RED' => $traff_red,
-				'TRAFF_GREEN' => $traff_green,
+			'TRAFF_SHOW_PERCENT' => $traff_show_percent,
+			'TRAFF_PERCENT' => $traff_percent,
+			'TRAFF_RED' => $traff_red,
+			'TRAFF_GREEN' => $traff_green,
 
-				'TRAFF_MSG' => ($utraff_max) ?
-					tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($utraff_current), sizeit($utraff_max)) :
-                    tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current)),
-
-
-				'DISK_SHOW_PERCENT' => $disk_show_percent,
-				'DISK_PERCENT' => $disk_percent,
-				'DISK_RED' => $disk_red,
-				'DISK_GREEN' => $disk_green,
-
-				'DISK_MSG' => ($udisk_max) ?
-					tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($udisk_current), sizeit($udisk_max)) :
-                    tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current)),
+			'TRAFF_MSG' => ($utraff_max)
+				? tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($utraff_current), sizeit($utraff_max))
+				: tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current)),
 
 
-				'WEB' => sizeit($web),
-				'FTP' => sizeit($ftp),
-				'SMTP' => sizeit($smtp),
-				'POP3' => sizeit($pop3),
+			'DISK_SHOW_PERCENT' => $disk_show_percent,
+			'DISK_PERCENT' => $disk_percent,
+			'DISK_RED' => $disk_red,
+			'DISK_GREEN' => $disk_green,
 
-				'SUB_MSG' => ($usub_max)? (
-					($usub_max > 0) ?
-						tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($usub_current), $usub_max) :
-						tr('<b>disabled</b>')
-					) : tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($usub_current)),
+			'DISK_MSG' => ($udisk_max)
+				? tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($udisk_current), sizeit($udisk_max))
+				: tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current)),
 
-				'ALS_MSG' => ($uals_max)? (
-					($uals_max > 0) ?
-						tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($uals_current), $uals_max) :
-						tr('<b>disabled</b>')
-					) : tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
 
-				'MAIL_MSG' => ($umail_max) ?
-					tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max) :
-					tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
+			'WEB' => sizeit($web),
+			'FTP' => sizeit($ftp),
+			'SMTP' => sizeit($smtp),
+			'POP3' => sizeit($pop3),
 
-				'FTP_MSG' => ($uftp_max)?
-				tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max):
-				tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
+			'SUB_MSG' => ($usub_max)
+				? (($usub_max > 0)
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($usub_current), $usub_max)
+					: tr('<b>disabled</b>'))
+				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($usub_current)),
 
-				'SQL_DB_MSG' => ($usql_db_max) ? (
-					($usql_db_max > 0) ?
-						tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_db_current, $usql_db_max) :
-						tr('<b>disabled</b>')
-					) : tr('%d <br/>of<br/> <b>unlimited</b>', $usql_db_current),
+			'ALS_MSG' => ($uals_max)
+				? (($uals_max > 0)
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($uals_current), $uals_max)
+					: tr('<b>disabled</b>'))
+				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
 
-				'SQL_USER_MSG' => ($usql_user_max)? (
-					($usql_user_max > 0) ?
-						tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_user_current, $usql_user_max) :
-						tr('<b>disabled</b>')
-					) : tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)
+			'MAIL_MSG' => ($umail_max)
+				? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
+				: tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
 
-				)
-		);
+			'FTP_MSG' => ($uftp_max)
+				? tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max)
+				: tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
+
+			'SQL_DB_MSG' => ($usql_db_max)
+				? ($usql_db_max > 0)
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_db_current, $usql_db_max)
+					: tr('<b>disabled</b>'))
+				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_db_current),
+			'SQL_USER_MSG' => ($usql_user_max)
+				? (($usql_user_max > 0)
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_user_current, $usql_user_max)
+					: tr('<b>disabled</b>'))
+				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)
+		)
+	);
 }
 
 /*

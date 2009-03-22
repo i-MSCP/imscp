@@ -23,51 +23,42 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 /* do we have a proper delete_id ? */
-
 if (!isset($_GET['delete_lang'])) {
-
-    header( "Location: multilanguage.php" );
-
-    die();
+	header( "Location: multilanguage.php" );
+	die();
 }
 
 $delete_lang = $_GET['delete_lang'];
 
+/* ERROR - we have domains that use this ip */
 if ($delete_lang == Config::get('USER_INITIAL_LANG')) {
-    /* ERR - we have domain that use this ip */
+	set_page_message('Error we can\'t delete system default language!');
 
-    set_page_message('Error we can\'t delete system default language!');
-
-    header( "Location: multilanguage.php" );
-    die();
+	header( "Location: multilanguage.php" );
+	die();
 }
 
-/* check if some one still use that lang */
-
+/* check if someone still uses that lang */
 $query = <<<SQL_QUERY
-    select
-        *
-    from
-         user_gui_props
-    where
-        lang = ?
+	SELECT
+		*
+	FROM
+		user_gui_props
+	WHERE
+		lang = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_lang));
 
+/* ERROR - we have domains that use this ip */
 if ($rs->RecordCount () > 0) {
-    /* ERR - we have domain that use this ip */
+	set_page_message('Error we have user that uses that language!');
 
-    set_page_message('Error we have user that uses that language!');
-
-    header( "Location: multilanguage.php" );
-    die();
+	header( "Location: multilanguage.php" );
+	die();
 }
 
-
-$query = <<<SQL_QUERY
-    drop table $delete_lang
-SQL_QUERY;
+$query = "DROP TABLE $delete_lang";
 
 $rs = exec_query($sql, $query, array());
 

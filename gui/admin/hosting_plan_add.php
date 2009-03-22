@@ -102,7 +102,9 @@ if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 // Function definitions
 
-// Generate empty form
+/**
+ * Generate empty form
+ */
 function gen_empty_ahp_page(&$tpl) {
 	$tpl->assign(
 		array(
@@ -131,7 +133,9 @@ function gen_empty_ahp_page(&$tpl) {
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
 
-// Show last entered data for new hp
+/**
+ * Show last entered data for new hp
+ */
 function gen_data_ahp_page(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -168,7 +172,9 @@ function gen_data_ahp_page(&$tpl) {
 	$tpl->assign(array('TR_STATUS_NO'	=> ($status === '_yes_') ? '' : 'checked="checked"'));
 } // End of gen_data_ahp_page()
 
-// Check correction of input data
+/**
+ * Check correction of input data
+ */
 function check_data_correction(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -243,7 +249,9 @@ function check_data_correction(&$tpl) {
 	}
 } // End of check_data_correction()
 
-// Add new host plan to DB
+/**
+ * Add new host plan to DB
+ */
 function save_data_to_db(&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 	global $hp_name, $description, $hp_php, $hp_cgi;
@@ -267,7 +275,6 @@ function save_data_to_db(&$tpl, $admin_id) {
 		AND
 			t1.name=?
 	";
-	// $rs = exec_query($sql, $query, array());
 	$res = exec_query($sql, $query, array('admin', $hp_name));
 
 	if ($res->RowCount() == 1) {
@@ -278,23 +285,23 @@ function save_data_to_db(&$tpl, $admin_id) {
 		$query = "
 			INSERT INTO
 				hosting_plans(
-								reseller_id,
-								name,
-								description,
-								props,
-								price,
-								setup_fee,
-								value,
-								payment,
-								status)
+					reseller_id,
+					name,
+					description,
+					props,
+					price,
+					setup_fee,
+					value,
+					payment,
+					status)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 		";
 		$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
 		$_SESSION['hp_added'] = '_yes_';
-		Header("Location: hosting_plan.php");
+		header("Location: hosting_plan.php");
 		die();
 	}
-} //End of save_data_to_db()
+} // End of save_data_to_db()
 
 ?>

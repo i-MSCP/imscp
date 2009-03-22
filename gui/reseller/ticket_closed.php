@@ -42,52 +42,53 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-                select
-                    count(ticket_id) as cnt
-                from
-                    tickets
-                where
-                    (ticket_from = ? or ticket_to = ?)
-                  and
-                    ticket_status = 0
-                  and
-                    ticket_reply  = 0
+		SELECT
+			count(*) AS cnt
+		FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_status = 0
+		AND
+			ticket_reply  = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            ticket_id,
-            ticket_status,
-            ticket_urgency,
-            ticket_date,
-            ticket_subject,
-            ticket_message
-        FROM
-            tickets
-        WHERE
-            (ticket_from = ? OR ticket_to = ?)
-          AND
-            ticket_status = 0
-          AND
-            ticket_reply  = 0
-        ORDER BY
-            ticket_date DESC
-        LIMIT
-            $start_index, $rows_per_page
+		SELECT
+			ticket_id,
+			ticket_status,
+			ticket_urgency,
+			ticket_date,
+			ticket_subject,
+			ticket_message
+		FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_status = 0
+		AND
+			ticket_reply  = 0
+		ORDER BY
+			ticket_date DESC
+		LIMIT
+			$start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('TICKETS_LIST' => '',
+			array(
+				'TICKETS_LIST' => '',
 				'SCROLL_PREV' => '',
 				'SCROLL_NEXT' => ''
-				)
-			);
+			)
+		);
 
 		set_page_message(tr('You have no support tickets.'));
 	} else {
@@ -97,10 +98,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_PREV_GRAY' => '',
+				array(
+					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
-					)
-				);
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -109,10 +111,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_NEXT_GRAY' => '',
+				array(
+					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
-					)
-				);
+				)
+			);
 		}
 
 		global $i;
@@ -136,15 +139,15 @@ SQL_QUERY;
 			$tpl->assign(array('NEW' => " "));
 
 			$tpl->assign(
-					array(
-						'LAST_DATE'	=> $date,
-						'SUBJECT'	=> $rs->fields['ticket_subject'],
-						'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-						'MESSAGE'	=> $rs->fields['ticket_message'],
-						'ID'		=> $ticket_id,
-						'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
-						)
-					);
+				array(
+					'LAST_DATE'	=> $date,
+					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
+					'MESSAGE'	=> $rs->fields['ticket_message'],
+					'ID'		=> $ticket_id,
+					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
+				)
+			);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();
@@ -163,13 +166,13 @@ if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
+	array(
+		'TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-
-		)
-	);
+	)
+);
 
 gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
@@ -181,22 +184,22 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_sy
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_SUPPORT_SYSTEM' => tr('Support system'),
-			'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-			'TR_STATUS' => tr('Status'),
-			'TR_NEW' => ' ',
-			'TR_ACTION' => tr('Action'),
-			'TR_URGENCY' => tr('Priority'),
-			'TR_SUBJECT' => tr('Subject'),
-			'TR_LAST_DATA' => tr('Last reply'),
-			'TR_DELETE_ALL' => tr('Delete all'),
-			'TR_OPEN_TICKETS' => tr('Open tickets'),
-			'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-		)
-	);
+	array(
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
+		'TR_STATUS' => tr('Status'),
+		'TR_NEW' => ' ',
+		'TR_ACTION' => tr('Action'),
+		'TR_URGENCY' => tr('Priority'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_LAST_DATA' => tr('Last reply'),
+		'TR_DELETE_ALL' => tr('Delete all'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+	)
+);
 
 gen_page_message($tpl);
 

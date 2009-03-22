@@ -31,21 +31,22 @@ $tpl->define_dynamic('user_session', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_MANAGE_SESSIONS_PAGE_TITLE' => tr('ispCP - Admin/Manage Sessions'),
+	array(
+		'TR_ADMIN_MANAGE_SESSIONS_PAGE_TITLE' => tr('ispCP - Admin/Manage Sessions'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 function kill_session($sql) {
 	if (isset($_GET['kill']) && $_GET['kill'] !== '' && $_GET['kill'] !== $_SESSION['user_logged']) {
 		$admin_name = $_GET['kill'];
 		$query = <<<SQL_QUERY
-        DELETE FROM
-            login
-        WHERE
-            session_id = ?
+		DELETE FROM
+			login
+		WHERE
+			session_id = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($admin_name));
@@ -56,10 +57,10 @@ SQL_QUERY;
 
 function gen_user_sessions(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-                SELECT
-                    *
-                FROM
-                    login
+		SELECT
+			*
+		FROM
+			login
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -74,18 +75,18 @@ SQL_QUERY;
 
 		if ($rs->fields['user_name'] === NULL) {
 			$tpl->assign(
-					array(
-						'ADMIN_USERNAME' => tr('Unknown'),
-						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
-						)
-					);
+				array(
+					'ADMIN_USERNAME' => tr('Unknown'),
+					'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
+				)
+			);
 		} else {
 			$tpl->assign(
-					array(
-						'ADMIN_USERNAME' => $rs->fields['user_name'],
-						'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
-						)
-					);
+				array(
+					'ADMIN_USERNAME' => $rs->fields['user_name'],
+					'LOGIN_TIME' => date("G:i:s", $rs->fields['lastaccess'])
+				)
+			);
 		}
 
 		$sess_id = session_id();
@@ -115,22 +116,24 @@ kill_session($sql);
 gen_user_sessions($tpl, $sql);
 
 $tpl->assign(
-	array('TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
+	array(
+		'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_USERTYPE' => tr('User type'),
 		'TR_LOGIN_ON' => tr('Last access'),
 		'TR_OPTIONS' => tr('Options'),
 		'TR_DELETE' => tr('Kill session'),
-		)
-	);
-// gen_page_message($tpl);
+	)
+);
+
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

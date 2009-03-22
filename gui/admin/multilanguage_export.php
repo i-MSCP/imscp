@@ -24,14 +24,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
-  $language_table = $_GET['export_lang'];
-  $encoding  = $sql->Execute("SELECT `msgstr` FROM `$language_table` WHERE `msgid` = 'encoding';");
-  if ($encoding && $encoding->RowCount() > 0 && $encoding->fields['msgstr'] != '') {
-      $encoding = $encoding->fields['msgstr'];
-  } else {
-      $encoding = 'UTF-8';
-  }
-  $query = <<<SQL_QUERY
+	$language_table = $_GET['export_lang'];
+	$encoding  = $sql->Execute("SELECT `msgstr` FROM `$language_table` WHERE `msgid` = 'encoding';");
+	if ($encoding && $encoding->RowCount() > 0 && $encoding->fields['msgstr'] != '') {
+		$encoding = $encoding->fields['msgstr'];
+	} else {
+		$encoding = 'UTF-8';
+	}
+	$query = <<<SQL_QUERY
 			SELECT
 				msgid,
 				msgstr
@@ -46,7 +46,7 @@ SQL_QUERY;
 		header( "Location: multilanguage.php" );
 		die();
 	} else {
-	    $GLOBALS['class']['output']->showSize=false;
+		$GLOBALS['class']['output']->showSize=false;
 		header( "Content-type: text/plain; charset=".$encoding );
 		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];

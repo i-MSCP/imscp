@@ -65,7 +65,7 @@ gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domain
 
 gen_logged_from($tpl);
 
-// "Modify" button has ben pressed
+// "Modify" button has been pressed
 if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	if (isset($_GET['edit_id'])) {
 		$editid = $_GET['edit_id'];
@@ -85,7 +85,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		die();
 	}
 } else {
-	// Get user id that come for edit
+	// Get user id that comes for edit
 	if (isset($_GET['edit_id'])) {
 		$editid = $_GET['edit_id'];
 	}
@@ -111,7 +111,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	$sql = Database::getInstance();
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
-	$res = exec_query($sql, "select * from domain_aliasses where alias_id = ? and domain_id = ?", array($edit_id, $domain_id));
+	$res = exec_query($sql, "SELECT * FROM domain_aliasses WHERE alias_id = ? AND domain_id = ?", array($edit_id, $domain_id));
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -120,14 +120,15 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	$data = $res->FetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "select * from server_ips where ip_id=?", array($data['alias_ip_id']));
+	$ipres = exec_query($sql, "SELECT * FROM server_ips WHERE ip_id = ?", array($data['alias_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
-	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify'))
+	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 		$url_forward = decode_idna($_POST['forward']);
-	else
+	} else {
 		$url_forward = decode_idna($data['url_forward']);
+	}
 
 	if ($data["url_forward"] == "no") {
 		$check_en = "";

@@ -100,8 +100,8 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 				'SUBJECT' => $rs->fields['ticket_subject'],
 				'TICKET_CONTENT' => nl2br($ticket_content),
 				'ID' => $rs->fields['ticket_id']
-				)
-			);
+			)
+		);
 
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
@@ -143,8 +143,8 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 			array(
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'TICKET_CONTENT' => nl2br($ticket_content)
-				)
-			);
+			)
+		);
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		$rs->MoveNext();
@@ -191,7 +191,8 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
 
 	$tpl->assign(
-		array('FROM' => $from_name));
+		array('FROM' => $from_name)
+	);
 }
 
 // common page data.
@@ -204,8 +205,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwidth) {
 	if (!isset($_POST['uaction'])) {
@@ -427,7 +428,7 @@ if (isset($_GET['ticket_id'])) {
 } else {
 	set_page_message(tr('Ticket not found!'));
 
-	Header("Location: ticket_system.php");
+	header("Location: ticket_system.php");
 	die();
 }
 
@@ -449,8 +450,8 @@ $tpl->assign(
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

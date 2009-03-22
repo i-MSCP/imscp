@@ -212,8 +212,7 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 		$cgi));
 $dmn_id = $sql->Insert_ID();
 
-//Add statistics group
-
+// Add statistics group
 $query = "
 	INSERT INTO `htaccess_users`
 		(`dmn_id`, `uname`, `upass`, `status`)

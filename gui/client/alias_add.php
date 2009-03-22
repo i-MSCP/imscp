@@ -32,12 +32,12 @@ $tpl->define_dynamic('ip_entry', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		 array(
-				'THEME_COLOR_PATH' => '../themes/' . $theme_color,
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id']),
-				)
-			);
+	array(
+		'THEME_COLOR_PATH' => '../themes/' . $theme_color,
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
 
 /*
  *
@@ -53,19 +53,19 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-			 array(
-						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Client : Add Alias'),
-						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-						'TR_ADD_ALIAS' => tr('Add domain alias'),
-						'TR_DOMAIN_NAME' => tr('Domain name'),
-						'TR_DOMAIN_ACCOUNT' => tr('User account'),
-						'TR_MOUNT_POINT' => tr('Directory mount point'),
-						'TR_DOMAIN_IP' => tr('Domain IP'),
-						'TR_FORWARD' => tr('Forward to URL'),
-						'TR_ADD' => tr('Add alias'),
-						'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
-					)
-			);
+	 array(
+		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Client : Add Alias'),
+		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+		'TR_ADD_ALIAS' => tr('Add domain alias'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_ACCOUNT' => tr('User account'),
+		'TR_MOUNT_POINT' => tr('Directory mount point'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_FORWARD' => tr('Forward to URL'),
+		'TR_ADD' => tr('Add alias'),
+		'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
+	)
+);
 
 check_domainalias_permissions($sql, $_SESSION['user_id']);
 
@@ -73,14 +73,14 @@ $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
 	add_domain_alias($sql, $err_txt);
 } else {
-// Init fields
+	// Init fields
 	init_empty_data();
 	$tpl-> assign("PAGE_MESSAGE", "");
 }
 
-//
-// Begin function declaration lines
-//
+/*
+ * Begin function declaration lines
+ */
 
 function check_domainalias_permissions($sql, $user_id) {
 
@@ -105,7 +105,6 @@ function check_domainalias_permissions($sql, $user_id) {
 		$dmn_php,
 		$dmn_cgi) = get_domain_default_props($sql, $user_id);
 
-
 		$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
 
 		if ($dmn_als_limit != 0 &&  $als_cnt >= $dmn_als_limit) {
@@ -124,10 +123,10 @@ function init_empty_data() {
 	$forward	= "";
 	$mount_point= "";
 
-}//End of init_empty_data()
+} // End of init_empty_data()
 
 
-// Show data fiels
+// Show data fields
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
@@ -137,14 +136,14 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$forward = 'no';
 	}
 	$tpl->assign(
-				array(
-						'DOMAIN'	=> $alias_name,
-						'MP'		=> $mount_point,
-						'FORWARD'	=> $forward
-				)
+		array(
+			'DOMAIN'	=> $alias_name,
+			'MP'		=> $mount_point,
+			'FORWARD'	=> $forward
+		)
 	);
 
-}// End of gen_al_page()
+} // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
@@ -189,7 +188,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			$forward .= "/";
 		}
 	} else {
-		//now lets fix the mountpoint
+		// now lets fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
 
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name`=?";
@@ -198,13 +197,13 @@ function add_domain_alias(&$sql, &$err_al) {
 		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
-		 $err_al = tr("Domain with this name already exist");
+			$err_al = tr("Domain with this name already exist");
 		}
 
-		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id`=? AND `subdomain_mount`=?"; 
+		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id` = ? AND `subdomain_mount` = ?"; 
 		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
 		$subdomdata = $subdomres->FetchRow(); 
-		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?) AND `subdomain_alias_mount`=?"; 
+		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?) AND `subdomain_alias_mount` = ?"; 
 		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
 		$alssubdomdata = $alssubdomres->FetchRow(); 
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) { 
@@ -241,24 +240,23 @@ function add_domain_alias(&$sql, &$err_al) {
 		set_page_message(tr('Alias scheduled for addition!'));
 	}
 
-
 	header( "Location: domains_manage.php" );
 	die();
-}// End of add_domain_alias();
+} // End of add_domain_alias();
 
 
 function gen_page_msg(&$tpl, $erro_txt) {
 
 	if ($erro_txt != '_off_') {
 
-	 $tpl->assign('MESSAGE', $erro_txt);
+		$tpl->assign('MESSAGE', $erro_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 
 	} else {
 
-	 $tpl->assign('PAGE_MESSAGE', '');
+		$tpl->assign('PAGE_MESSAGE', '');
 	}
-}//End of gen_page_msg()
+} // End of gen_page_msg()
 
 gen_al_page($tpl, $_SESSION['user_id']);
 gen_page_msg($tpl, $err_txt);

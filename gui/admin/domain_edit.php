@@ -35,13 +35,13 @@ if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLA
 }
 
 $tpl->assign(
-			array(
-				'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Admin/Edit Domain'),
-				'THEME_COLOR_PATH' => "../themes/$theme_color",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Admin/Edit Domain'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
  *
@@ -49,28 +49,28 @@ $tpl->assign(
  *
  */
 $tpl->assign(
-			array(
-				'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-				'TR_DOMAIN_PROPERTIES' => tr('Domain properties'),
-				'TR_DOMAIN_NAME' => tr('Domain name'),
-				'TR_DOMAIN_IP' => tr('Domain IP'),
-				'TR_PHP_SUPP' => tr('PHP support'),
-				'TR_CGI_SUPP' => tr('CGI support'),
-				'TR_SUBDOMAINS' => tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_ALIAS' => tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAIL_ACCOUNT' => tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_FTP_ACCOUNTS' => tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_SQL_DB' => tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_SQL_USERS' => tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_TRAFFIC' => tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
-				'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
-				'TR_USER_NAME' => tr('Username'),
-				'TR_UPDATE_DATA' => tr('Submit changes'),
-				'TR_CANCEL' => tr('Cancel'),
-				'TR_YES' => tr('Yes'),
-				'TR_NO' => tr('No')
-			)
-		);
+	array(
+		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
+		'TR_DOMAIN_PROPERTIES' => tr('Domain properties'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_PHP_SUPP' => tr('PHP support'),
+		'TR_CGI_SUPP' => tr('CGI support'),
+		'TR_SUBDOMAINS' => tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_ALIAS' => tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAIL_ACCOUNT' => tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_DB' => tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_USERS' => tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_TRAFFIC' => tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_USER_NAME' => tr('Username'),
+		'TR_UPDATE_DATA' => tr('Submit changes'),
+		'TR_CANCEL' => tr('Cancel'),
+		'TR_YES' => tr('Yes'),
+		'TR_NO' => tr('No')
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
@@ -121,10 +121,10 @@ function get_reseller_id($domain_id) {
 		domain d, admin a
 	WHERE
 		d.domain_id = ?
-	    AND d.domain_admin_id = a.admin_id
+	AND d.domain_admin_id = a.admin_id
 SQL_QUERY;
 
-	$rs    = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, array($domain_id));
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
@@ -147,12 +147,12 @@ function load_user_data($user_id, $domain_id) {
 	global $username;
 
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_id
-        FROM
-            domain
-        WHERE
-            domain_id = ?
+		SELECT
+			domain_id
+		FROM
+			domain
+		WHERE
+			domain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -173,7 +173,7 @@ SQL_QUERY;
 		) = generate_user_props($domain_id);;
 
 	load_additional_data($user_id, $domain_id);
-} //End of load_user_data()
+} // End of load_user_data()
 
 // Load additional data
 function load_additional_data($user_id, $domain_id) {
@@ -182,16 +182,16 @@ function load_additional_data($user_id, $domain_id) {
 	global $cgi_supp, $username;
 	// Get domain data
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_name,
+		SELECT
+			domain_name,
 			domain_ip_id,
 			domain_php,
 			domain_cgi,
 			domain_admin_id
-        FROM
-            domain
-        WHERE
-            domain_id = ?
+		FROM
+			domain
+		WHERE
+			domain_id = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_id));
@@ -204,13 +204,13 @@ SQL_QUERY;
 	$domain_admin_id = $data['domain_admin_id'];
 	// Get IP of domain
 	$query = <<<SQL_QUERY
-        SELECT
-            ip_number,
+		SELECT
+			ip_number,
 			ip_domain
-        FROM
-            server_ips
-        WHERE
-            ip_id = ?
+		FROM
+			server_ips
+		WHERE
+			ip_id = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_ip_id));
@@ -219,21 +219,21 @@ SQL_QUERY;
 	$domain_ip = $data['ip_number'] . '&nbsp;(' . $data['ip_domain'] . ')';
 	// Get username of domain
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_name
-        FROM
-            admin
-        WHERE
-            admin_id = ?
-        AND
-            admin_type = 'user'
+		SELECT
+			admin_name
+		FROM
+			admin
+		WHERE
+			admin_id = ?
+		AND
+			admin_type = 'user'
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_admin_id));
 	$data = $res->FetchRow();
 
 	$username = $data['admin_name'];
-} //End of load_additional_data()
+} // End of load_additional_data()
 
 // Show user data
 function gen_editdomain_page(&$tpl) {
@@ -251,51 +251,51 @@ function gen_editdomain_page(&$tpl) {
 
 	if ($php_sup === 'yes') {
 		$tpl->assign(
-				array(
-					'PHP_YES' => 'selected="selected"',
-					'PHP_NO' => '',
-				)
-			);
+			array(
+				'PHP_YES' => 'selected="selected"',
+				'PHP_NO' => '',
+			)
+		);
 	} else {
 		$tpl->assign(
-				array(
-					'PHP_YES' => '',
-					'PHP_NO' => 'selected="selected"',
-				)
-			);
+			array(
+				'PHP_YES' => '',
+				'PHP_NO' => 'selected="selected"',
+			)
+		);
 	}
 
 	if ($cgi_supp === 'yes') {
 		$tpl->assign(
-				array(
-					'CGI_YES' => 'selected="selected"',
-					'CGI_NO' => '',
-				)
-			);
+			array(
+				'CGI_YES' => 'selected="selected"',
+				'CGI_NO' => '',
+			)
+		);
 	} else {
 		$tpl->assign(
-				array(
-					'CGI_YES' => '',
-					'CGI_NO' => 'selected="selected"',
-				)
-			);
+			array(
+				'CGI_YES' => '',
+				'CGI_NO' => 'selected="selected"',
+			)
+		);
 	}
 
 	$tpl->assign(
-			array(
-				'VL_DOMAIN_NAME' => $domain_name,
-				'VL_DOMAIN_IP' => $domain_ip,
-				'VL_DOM_SUB' => $sub,
-				'VL_DOM_ALIAS' => $als,
-				'VL_DOM_MAIL_ACCOUNT' => $mail,
-				'VL_FTP_ACCOUNTS' => $ftp,
-				'VL_SQL_DB' => $sql_db,
-				'VL_SQL_USERS' => $sql_user,
-				'VL_TRAFFIC' => $traff,
-				'VL_DOM_DISK' => $disk,
-				'VL_USER_NAME' => $username
-			)
-		);
+		array(
+			'VL_DOMAIN_NAME' => $domain_name,
+			'VL_DOMAIN_IP' => $domain_ip,
+			'VL_DOM_SUB' => $sub,
+			'VL_DOM_ALIAS' => $als,
+			'VL_DOM_MAIL_ACCOUNT' => $mail,
+			'VL_FTP_ACCOUNTS' => $ftp,
+			'VL_SQL_DB' => $sql_db,
+			'VL_SQL_USERS' => $sql_user,
+			'VL_TRAFFIC' => $traff,
+			'VL_DOM_DISK' => $disk,
+			'VL_USER_NAME' => $username
+		)
+	);
 } // End of gen_editdomain_page()
 
 // Check input data
@@ -402,7 +402,7 @@ SQL_QUERY;
 	}
 
 	if (empty($ed_error)) {
-		// Set domain's status to 'change' to update mod_cband's limit
+		// Set domains status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE domain SET domain_status = 'change' WHERE domain_id = ?";
 			exec_query($sql, $query, array($user_id));
@@ -434,18 +434,17 @@ SQL_QUERY;
 		$reseller_props .= "$rdisk_current;$rdisk_max";
 
 		if (!update_reseller_props($reseller_id, $reseller_props)) {
+			set_page_message(tr('Domain properties could not be updated!'));
 
-		    set_page_message(tr('Domain properties could not be updated!'));
-
-		    return false;
+			return false;
 		}
 
-		// update the sql quotas too
-		$query = "SELECT domain_name FROM domain WHERE domain_id=?";
+		// update the sql quotas, too
+		$query = "SELECT domain_name FROM domain WHERE domain_id = ?";
 		$rs = exec_query($sql, $query, array($user_id));
 		$temp_dmn_name = $rs->fields['domain_name'];
 
-		$query = "SELECT COUNT(name) AS cnt FROM quotalimits WHERE name=?";
+		$query = "SELECT COUNT(*) AS cnt FROM quotalimits WHERE name = ?";
 		$rs = exec_query($sql, $query, array($temp_dmn_name));
 		if ($rs->fields['cnt'] > 0) {
 			// we need to update it
@@ -455,7 +454,7 @@ SQL_QUERY;
 				$dlim = $disk * 1024 * 1024;
 			}
 
-			$query = "UPDATE quotalimits SET bytes_in_avail = ? WHERE name=?";
+			$query = "UPDATE quotalimits SET bytes_in_avail = ? WHERE name = ?";
 			$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
 		}
 
@@ -468,7 +467,7 @@ SQL_QUERY;
 
 		return false;
 	}
-} //End of check_user_data()
+} // End of check_user_data()
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	if ($rmax == 0 && $umax == -1) {

@@ -141,7 +141,7 @@ function install_lang() {
 			$sql->Execute("CREATE TABLE `$lang_table` (
 							msgid text collate utf8_unicode_ci,
 							msgstr text collate utf8_unicode_ci,
-                               KEY msgid (msgid(25))
+							KEY msgid (msgid(25))
 							) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 			);
 
@@ -172,7 +172,7 @@ function show_lang(&$tpl, &$sql) {
 
 	$usr_def_lng = explode('_', $user_def_lang);
 
-	for($i = 0;$i < $nlang;$i++) {
+	for ($i = 0;$i < $nlang;$i++) {
 		$data = $tables[$i];
 		$pos = strpos($data, "lang_");
 		if ($pos === false) {
@@ -181,7 +181,7 @@ function show_lang(&$tpl, &$sql) {
 		}
 		$dat = explode('_', $data);
 
-		$query = "SELECT count(`msgid`) as cnt FROM $tables[$i]";
+		$query = "SELECT COUNT(`msgid`) as cnt FROM $tables[$i]";
 		$rs = exec_query($sql, $query, array());
 
 		$query = "SELECT `msgstr` FROM $tables[$i] WHERE `msgid` = 'ispcp_language'";

@@ -274,7 +274,7 @@ SQL_QUERY;
 	}
 
 	/**
-	 * Checks for file existance
+	 * Checks for file existence
 	 *
 	 * @param string $file VFS file path.
 	 * @param int $type Type of the file to match. Must be either VFS_TYPE_DIR,
@@ -368,7 +368,7 @@ SQL_QUERY;
 }
 
 /**
- * Make sure we have needed file_put_contents() functionality
+ * Make sure we have needed file_put_contents() functionallity
  */
 if (!function_exists('file_put_contents')) {
 	function file_put_contents($filename, $content) {

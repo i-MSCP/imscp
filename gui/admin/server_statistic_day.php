@@ -30,13 +30,13 @@ $tpl->define_dynamic('hour_list', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('ispCP - Admin/Server day stats'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('ispCP - Admin/Server day stats'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 global $month, $year, $day;
 
@@ -74,12 +74,12 @@ function generate_page (&$tpl) {
 	$ltm = mktime(23, 59, 59, $month, $day, $year);
 
 	$query = <<<SQL_QUERY
-        SELECT
-            COUNT(bytes_in) AS cnt
-        FROM
-            server_traffic
-        WHERE
-            traff_time > ? AND traff_time < ?
+		SELECT
+			COUNT(bytes_in) AS cnt
+		FROM
+			server_traffic
+		WHERE
+			traff_time > ? AND traff_time < ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftm, $ltm));
@@ -87,21 +87,20 @@ SQL_QUERY;
 	$dnum = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-        select
-            traff_time as ttime,
-            bytes_in as sbin,
-            bytes_out as sbout,
-            bytes_mail_in as smbin,
-            bytes_mail_out as smbout,
-            bytes_pop_in as spbin,
-            bytes_pop_out as spbout,
-            bytes_web_in as swbin,
-            bytes_web_out as swbout
-        from
-            server_traffic
-        where
-            traff_time > ? and traff_time < ?
-
+		SELECT
+			traff_time AS ttime,
+			bytes_in AS sbin,
+			bytes_out AS sbout,
+			bytes_mail_in AS smbin,
+			bytes_mail_out AS smbout,
+			bytes_pop_in AS spbin,
+			bytes_pop_out AS spbout,
+			bytes_web_in AS swbin,
+			bytes_web_out AS swbout
+		FROM
+			server_traffic
+		WHERE
+			traff_time > ? AND traff_time < ?
 SQL_QUERY;
 
 	$rs1 = exec_query($sql, $query, array($ftm, $ltm));
@@ -124,21 +123,21 @@ SQL_QUERY;
 			);
 
 			$tpl->assign(
-					array(
-						'HOUR' => $ttime,
-						'WEB_IN' => sizeit($rs1->fields['swbin']),
-						'WEB_OUT' => sizeit($rs1->fields['swbout']),
-						'SMTP_IN' => sizeit($rs1->fields['smbin']),
-						'SMTP_OUT' => sizeit($rs1->fields['smbout']),
-						'POP_IN' => sizeit($rs1->fields['spbin']),
-						'POP_OUT' => sizeit($rs1->fields['spbout']),
-						'OTHER_IN' => sizeit($other_in),
-						'OTHER_OUT' => sizeit($other_out),
-						'ALL_IN' => sizeit($rs1->fields['sbin']),
-						'ALL_OUT' => sizeit($rs1->fields['sbout']),
-						'ALL' => sizeit($rs1->fields['sbin'] + $rs1->fields['sbout']),
-					)
-				);
+				array(
+					'HOUR' => $ttime,
+					'WEB_IN' => sizeit($rs1->fields['swbin']),
+					'WEB_OUT' => sizeit($rs1->fields['swbout']),
+					'SMTP_IN' => sizeit($rs1->fields['smbin']),
+					'SMTP_OUT' => sizeit($rs1->fields['smbout']),
+					'POP_IN' => sizeit($rs1->fields['spbin']),
+					'POP_OUT' => sizeit($rs1->fields['spbout']),
+					'OTHER_IN' => sizeit($other_in),
+					'OTHER_OUT' => sizeit($other_out),
+					'ALL_IN' => sizeit($rs1->fields['sbin']),
+					'ALL_OUT' => sizeit($rs1->fields['sbout']),
+					'ALL' => sizeit($rs1->fields['sbin'] + $rs1->fields['sbout']),
+				)
+			);
 
 			$all[0] = $all[0] + $rs1->fields['swbin'];
 			$all[1] = $all[1] + $rs1->fields['swbout'];
@@ -152,7 +151,7 @@ SQL_QUERY;
 			$tpl->parse('HOUR_LIST', '.hour_list');
 
 			$rs1->MoveNext();
-		} //for
+		} // end for
 		$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
 		$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
 	} // if dnum
@@ -160,20 +159,20 @@ SQL_QUERY;
 		$tpl->assign('HOUR_LIST', '');
 	}
 	$tpl->assign(
-			array(
-				'WEB_IN_ALL' => sizeit($all[0]),
-				'WEB_OUT_ALL' => sizeit($all[1]),
-				'SMTP_IN_ALL' => sizeit($all[2]),
-				'SMTP_OUT_ALL' => sizeit($all[3]),
-				'POP_IN_ALL' => sizeit($all[4]),
-				'POP_OUT_ALL' => sizeit($all[5]),
-				'OTHER_IN_ALL' => sizeit($all_other_in),
-				'OTHER_OUT_ALL' => sizeit($all_other_out),
-				'ALL_IN_ALL' => sizeit($all[6]),
-				'ALL_OUT_ALL' => sizeit($all[7]),
-				'ALL_ALL' => sizeit($all[6] + $all[7]),
-			)
-		);
+		array(
+			'WEB_IN_ALL' => sizeit($all[0]),
+			'WEB_OUT_ALL' => sizeit($all[1]),
+			'SMTP_IN_ALL' => sizeit($all[2]),
+			'SMTP_OUT_ALL' => sizeit($all[3]),
+			'POP_IN_ALL' => sizeit($all[4]),
+			'POP_OUT_ALL' => sizeit($all[5]),
+			'OTHER_IN_ALL' => sizeit($all_other_in),
+			'OTHER_OUT_ALL' => sizeit($all_other_out),
+			'ALL_IN_ALL' => sizeit($all[6]),
+			'ALL_OUT_ALL' => sizeit($all[7]),
+			'ALL_ALL' => sizeit($all[6] + $all[7]),
+		)
+	);
 }
 
 /*
@@ -185,30 +184,30 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_statis
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
 $tpl->assign(
-		array(
-			'TR_SERVER_DAY_STATISTICS' => tr('Server day statistics'),
-			'TR_MONTH' => tr('Month:'),
-			'TR_YEAR' => tr('Year:'),
-			'TR_DAY' => tr('Day:'),
-			'TR_HOUR' => tr('Hour'),
-			'TR_WEB_IN' => tr('Web in'),
-			'TR_WEB_OUT' => tr('Web out'),
-			'TR_SMTP_IN' => tr('SMTP in'),
-			'TR_SMTP_OUT' => tr('SMTP out'),
-			'TR_POP_IN' => tr('IMAP/POP3 in'),
-			'TR_POP_OUT' => tr('IMAP/POP3 out'),
-			'TR_OTHER_IN' => tr('Other in'),
-			'TR_OTHER_OUT' => tr('Other out'),
-			'TR_ALL_IN' => tr('All in'),
-			'TR_ALL_OUT' => tr('All out'),
-			'TR_ALL' => tr('All'),
-			'TR_BACK' => tr('Back'),
+	array(
+		'TR_SERVER_DAY_STATISTICS' => tr('Server day statistics'),
+		'TR_MONTH' => tr('Month:'),
+		'TR_YEAR' => tr('Year:'),
+		'TR_DAY' => tr('Day:'),
+		'TR_HOUR' => tr('Hour'),
+		'TR_WEB_IN' => tr('Web in'),
+		'TR_WEB_OUT' => tr('Web out'),
+		'TR_SMTP_IN' => tr('SMTP in'),
+		'TR_SMTP_OUT' => tr('SMTP out'),
+		'TR_POP_IN' => tr('IMAP/POP3 in'),
+		'TR_POP_OUT' => tr('IMAP/POP3 out'),
+		'TR_OTHER_IN' => tr('Other in'),
+		'TR_OTHER_OUT' => tr('Other out'),
+		'TR_ALL_IN' => tr('All in'),
+		'TR_ALL_OUT' => tr('All out'),
+		'TR_ALL' => tr('All'),
+		'TR_BACK' => tr('Back'),
 
-			'MONTH' => $month,
-			'YEAR' => $year,
-			'DAY' => $day
-			)
-	);
+		'MONTH' => $month,
+		'YEAR' => $year,
+		'DAY' => $day
+	)
+);
 
 gen_page_message($tpl);
 generate_page ($tpl);

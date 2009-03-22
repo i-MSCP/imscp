@@ -236,7 +236,7 @@ SQL_QUERY;
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
 	// Get subdomain
-	$query = "SELECT COUNT(subdomain_id) AS sub_num FROM subdomain WHERE domain_id = ?";
+	$query = "SELECT COUNT(*) AS sub_num FROM subdomain WHERE domain_id = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$sub_num_data = $res1->FetchRow();
 	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";

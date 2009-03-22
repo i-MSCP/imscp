@@ -23,7 +23,6 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 /* do we have a proper delete_id ? */
-
 if (!isset($_GET['delete_id'])) {
 	header("Location: ip_manage.php");
 	die();
@@ -37,33 +36,32 @@ if (!is_numeric($_GET['delete_id'])) {
 
 $delete_id = $_GET['delete_id'];
 
-/* check for domain that user this ip */
-
+/* check for domains that use this IP */
 $query = <<<SQL_QUERY
-    select
-        count(domain_id) as dcnt
-    from
-        domain
-    where
-        domain_ip_id=?
+	SELECT
+		COUNT(*) AS dcnt
+	FROM
+		domain
+	WHERE
+		domain_ip_id = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));
 
 if ($rs->fields['dcnt'] > 0) {
-	/* ERR - we have domain that use this ip */
+	/* ERROR - we have domain(s) that use this IP */
 
 	set_page_message(tr('Error: we have a domain using this IP!'));
 
 	header("Location: ip_manage.php");
 	die();
 }
-// check if the IP is assignet to reseller
+// check if the IP is assigned to reseller
 $query = <<<SQL_QUERY
-        select
-            reseller_ips
-        from
-            reseller_props
+	SELECT
+		reseller_ips
+	FROM
+		reseller_props
 SQL_QUERY;
 
 $res = exec_query($sql, $query, array());
@@ -77,12 +75,12 @@ while (($data = $res->FetchRow())) {
 }
 
 $query = <<<SQL_QUERY
-    select
-        *
-    from
-        server_ips
-    where
-        ip_id=?
+	SELECT
+		*
+	FROM
+		server_ips
+	WHERE
+		ip_id = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));
@@ -95,10 +93,10 @@ write_log("$user_logged: deletes IP address $ip_number");
 
 /* delete it ! */
 $query = <<<SQL_QUERY
-    delete from
-        server_ips
-    where
-        ip_id = ?
+	DELETE FROM
+		server_ips
+	WHERE
+		ip_id = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));

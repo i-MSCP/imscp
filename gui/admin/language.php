@@ -36,20 +36,20 @@ $tpl->define_dynamic('logged_from', 'page');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
-    $user_id = $_SESSION['user_id'];
+	$user_id = $_SESSION['user_id'];
 
-    $user_lang = $_POST['def_language'];
+	$user_lang = $_POST['def_language'];
 
-    $query = <<<SQL_QUERY
-        UPDATE
-            user_gui_props
-        SET
-            lang = ?
-        WHERE
-            user_id = ?
+	$query = <<<SQL_QUERY
+		UPDATE
+			user_gui_props
+		SET
+			lang = ?
+		WHERE
+			user_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($user_lang, $user_id));
+	$rs = exec_query($sql, $query, array($user_lang, $user_id));
 
 	unset($_SESSION['user_def_lang']);
 	$_SESSION['user_def_lang'] = $user_lang;
@@ -69,13 +69,13 @@ if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 gen_def_language($tpl, $sql, $user_def_lang);
 
 $tpl->assign(
-                array(
-                        'TR_CLIENT_LANGUAGE_TITLE' => tr('ispCP - Admin/Change Language'),
-                        'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'),
-						'ISP_LOGO' => get_logo($_SESSION['user_id'])
-                     )
-              );
+	array(
+		'TR_CLIENT_LANGUAGE_TITLE' => tr('ispCP - Admin/Change Language'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 
 
@@ -93,12 +93,12 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-                array(
-                       'TR_LANGUAGE' => tr('Language'),
-                        'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-                        'TR_SAVE' => tr('Save'),
-                     )
-              );
+	array(
+		'TR_LANGUAGE' => tr('Language'),
+		'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
+		'TR_SAVE' => tr('Save'),
+	)
+);
 
 gen_page_message($tpl);
 

@@ -28,26 +28,26 @@ if (isset($_GET['id'])) {
 	$usid = $_GET['id'];
 } else {
 	$_SESSION['user_deleted'] = '_no_';
-	Header("Location: users.php");
+	header("Location: users.php");
 	die();
 }
 
 $reseller_id = $_SESSION['user_id'];
 
 $query = <<<SQL_QUERY
-    select
-        domain_id
-    from
-        domain
-    where
-        domain_admin_id = ?
-      and
-        domain_created_id = ?
+	SELECT
+		domain_id
+	FROM
+		domain
+	WHERE
+		domain_admin_id = ?
+	AND
+		domain_created_id = ?
 SQL_QUERY;
 $res = exec_query($sql, $query, array($usid, $reseller_id));
 
 if ($res->RowCount() !== 1) {
-	Header("Location: users.php");
+	header("Location: users.php");
 	die();
 } else {
 	// delete the user

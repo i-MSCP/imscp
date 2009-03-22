@@ -34,19 +34,19 @@ function check_email_user(&$sql) {
 	$mail_id = $_GET['id'];
 
 	$query = <<<SQL_QUERY
-		select
-		  t1.*,
-		  t2.domain_id,
-		  t2.domain_name
-		from
-		  mail_users as t1,
-		  domain as t2
-		where
-		  t1.mail_id = ?
-		and
-		  t2.domain_id = t1.domain_id
-		and
-		  t2.domain_name = ?
+		SELECT
+			t1.*,
+			t2.domain_id,
+			t2.domain_name
+		FROM
+			mail_users AS t1,
+			domain AS t2
+		WHERE
+			t1.mail_id = ?
+		AND
+			t2.domain_id = t1.domain_id
+		AND
+			t2.domain_name = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
@@ -89,13 +89,13 @@ SQL_QUERY;
 		}
 
 		$query = <<<SQL_QUERY
-            UPDATE
-                `mail_users`
-            SET
-                `status` = ?,
-                `mail_auto_respond_text` = ?
-            WHERE
-                `mail_id` = ?
+			UPDATE
+				`mail_users`
+			SET
+				`status` = ?,
+				`mail_auto_respond_text` = ?
+			WHERE
+				`mail_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
@@ -111,12 +111,12 @@ SQL_QUERY;
 				) AS mailbox
 			FROM
 				`mail_users` as t1
-			left join (domain as t2) on (t1.domain_id=t2.domain_id)
-			left join (domain_aliasses as t3) on (sub_id=alias_id)
-			left join (subdomain as t4) on (sub_id=subdomain_id)
-			left join (subdomain_alias as t5) on (sub_id=subdomain_alias_id)
-			left join (domain as t6) on (t4.domain_id=t6.domain_id)
-			left join (domain_aliasses as t7) on (t5.alias_id=t7.alias_id)
+			LEFT JOIN (domain as t2) on (t1.domain_id=t2.domain_id)
+			LEFT JOIN (domain_aliasses as t3) on (sub_id=alias_id)
+			LEFT JOIN (subdomain as t4) on (sub_id=subdomain_id)
+			LEFT JOIN (subdomain_alias as t5) on (sub_id=subdomain_alias_id)
+			LEFT JOIN (domain as t6) on (t4.domain_id=t6.domain_id)
+			LEFT JOIN (domain_aliasses as t7) on (t5.alias_id=t7.alias_id)
 			WHERE
 				`mail_id` = ?
 		";

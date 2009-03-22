@@ -40,12 +40,14 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array(
-	'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
-	'THEME_COLOR_PATH' => "../themes/$theme_color",
-	'THEME_CHARSET' => tr('encoding'),
-	'ISP_LOGO' => get_logo($_SESSION['user_id'])
-));
+$tpl->assign(
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
  *
@@ -105,7 +107,9 @@ function gen_hp_message () {
 	}
 } // End of gen_hp_message()
 
-// Extract and show data for hosting plans
+/**
+ * Extract and show data for hosting plans
+ */
 function gen_hp_table(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 

@@ -108,7 +108,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				// in in the root of the user (no absolute paths are allowed here!)
 	
 				$other_dir = Config::get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged']
-						   . clean_input($_POST['other_dir']);
+							. clean_input($_POST['other_dir']);
 
 				$query = <<<SQL_QUERY
 					UPDATE
@@ -150,10 +150,10 @@ SQL_QUERY;
 				$ftp_home = Config::get('FTP_HOMEDIR') . "/$dmn_name/" . $other_dir;
 				// Strip possible double-slashes
 				$ftp_home = str_replace('//', '/', $other_dir);
-				// Check for $other_dir existance
+				// Check for $other_dir existence
 				// Create a virtual filesystem (it's important to use =&!)
 				$vfs =& new vfs($dmn_name, $sql);
-				// Check for directory existance
+				// Check for directory existence
 				$res = $vfs->exists($other_dir);
 				if (!$res) {
 					set_page_message(tr('%s does not exist', $other_dir));

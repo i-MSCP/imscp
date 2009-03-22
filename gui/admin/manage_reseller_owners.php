@@ -35,17 +35,17 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 function gen_reseller_table(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-        SELECT
-            t1.admin_id, t1.admin_name, t2.admin_name AS created_by
-        FROM
-            admin AS t1,
+		SELECT
+			t1.admin_id, t1.admin_name, t2.admin_name AS created_by
+		FROM
+			admin AS t1,
 			admin AS t2
-        WHERE
-            t1.admin_type = 'reseller'
-		  AND
-            t1.created_by = t2.admin_id
-        ORDER BY
-            created_by,
+		WHERE
+			t1.admin_type = 'reseller'
+		AND
+			t1.created_by = t2.admin_id
+		ORDER BY
+			created_by,
 			admin_id
 SQL_QUERY;
 
@@ -55,10 +55,11 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('MESSAGE' => tr('Reseller list is empty!'),
+			array(
+				'MESSAGE' => tr('Reseller list is empty!'),
 				'RESELLER_LIST' => '',
-				)
-			);
+			)
+		);
 
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
@@ -75,12 +76,13 @@ SQL_QUERY;
 			$admin_id_var_name = "admin_id_$admin_id";
 
 			$tpl->assign(
-				array('NUMBER' => $i + 1,
+				array(
+					'NUMBER' => $i + 1,
 					'RESELLER_NAME' => $rs->fields['admin_name'],
 					'OWNER' => $rs->fields['created_by'],
 					'CKB_NAME' => $admin_id_var_name,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
 
@@ -95,14 +97,14 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id, admin_name
-        FROM
-            admin
-        WHERE
-            admin_type = 'admin'
-        ORDER BY
-            admin_name
+		SELECT
+			admin_id, admin_name
+		FROM
+			admin
+		WHERE
+			admin_type = 'admin'
+		ORDER BY
+			admin_name
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -118,11 +120,12 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-			array('OPTION' => $rs->fields['admin_name'],
+			array(
+				'OPTION' => $rs->fields['admin_name'],
 				'VALUE' => $rs->fields['admin_id'],
 				'SELECTED' => $selected,
-				)
-			);
+			)
+		);
 
 		$tpl->parse('SELECT_ADMIN_OPTION', '.select_admin_option');
 
@@ -139,14 +142,14 @@ SQL_QUERY;
 function update_reseller_owner($sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 		$query = <<<SQL_QUERY
-            SELECT
-                admin_id
-            FROM
-                admin
-            WHERE
-                admin_type = 'reseller'
-            ORDER BY
-                admin_name
+			SELECT
+				admin_id
+			FROM
+				admin
+			WHERE
+				admin_type = 'reseller'
+			ORDER BY
+				admin_name
 SQL_QUERY;
 
 		$rs = execute_query($sql, $query);
@@ -160,12 +163,12 @@ SQL_QUERY;
 				$dest_admin = $_POST['dest_admin'];
 
 				$query = <<<SQL_QUERY
-                    UPDATE
-                        admin
-                    SET
-                        created_by = ?
-                    WHERE
-                        admin_id  = ?
+					UPDATE
+						admin
+					SET
+						created_by = ?
+					WHERE
+						admin_id  = ?
 SQL_QUERY;
 
 				$up = exec_query($sql, $query, array($dest_admin, $admin_id));
@@ -183,12 +186,13 @@ SQL_QUERY;
  */
 
 $tpl->assign(
-	array('TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
+	array(
+		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
@@ -198,7 +202,8 @@ update_reseller_owner($sql);
 gen_reseller_table($tpl, $sql);
 
 $tpl->assign(
-	array('TR_RESELLER_ASSIGNMENT' => tr('Reseller assignment'),
+	array(
+		'TR_RESELLER_ASSIGNMENT' => tr('Reseller assignment'),
 		'TR_RESELLER_USERS' => tr('Reseller users'),
 		'TR_NUMBER' => tr('No.'),
 		'TR_MARK' => tr('Mark'),
@@ -206,8 +211,8 @@ $tpl->assign(
 		'TR_OWNER' => tr('Owner'),
 		'TR_TO_ADMIN' => tr('To Admin'),
 		'TR_MOVE' => tr('Move'),
-		)
-	);
+	)
+);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

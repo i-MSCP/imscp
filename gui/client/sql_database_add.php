@@ -54,21 +54,29 @@ function gen_page_post_data(&$tpl) {
 	}
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_db') {
-		$tpl->assign(array('DB_NAME' => clean_input($_POST['db_name']),
+		$tpl->assign(
+			array(
+				'DB_NAME' => clean_input($_POST['db_name']),
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked="checked"' : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked="checked"' : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''));
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''
+			)
+		);
 	} else {
-		$tpl->assign(array('DB_NAME' => '',
+		$tpl->assign(
+			array(
+				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => 'checked="checked"',
-				'END_ID_POS_CHECKED' => ''));
+				'END_ID_POS_CHECKED' => ''
+			)
+		);
 	}
 }
 
 function check_db_name(&$sql, $db_name) {
 	$query = <<<SQL_QUERY
-        show databases
+		SHOW DATABASES
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -96,7 +104,6 @@ function add_sql_database(&$sql, $user_id) {
 	if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') {
 
 		// we'll use domain_id in the name of the database;
-
 		if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
 			$db_name = $dmn_id . "_" . clean_input($_POST['db_name']);
 		} else if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
@@ -112,13 +119,11 @@ function add_sql_database(&$sql, $user_id) {
 	}
 
 	// have we such database in the system!?
-
 	if (check_db_name($sql, $db_name)) {
 		set_page_message(tr('Specified database name already exists!'));
 		return;
 	}
 	// are wildcards used?
-
 	if (preg_match("/[%|\?]+/", $db_name)) {
 		set_page_message(tr('Wildcards such as %% and ? are not allowed!'));
 		return;
@@ -128,10 +133,10 @@ function add_sql_database(&$sql, $user_id) {
 	$rs = exec_query($sql, $query, array());
 
 	$query = <<<SQL_QUERY
-        insert into sql_database
-            (domain_id, sqld_name)
-        values
-            (?, ?)
+		INSERT INTO sql_database
+			(domain_id, sqld_name)
+		VALUES
+			(?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
@@ -143,7 +148,9 @@ SQL_QUERY;
 
 // common page data.
 
-// check User sql permision
+/**
+ * check user sql permision
+ */
 function check_sql_permissions($sql, $user_id) {
 	if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 		header("Location: index.php");
@@ -181,10 +188,14 @@ function check_sql_permissions($sql, $user_id) {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
@@ -201,12 +212,16 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_ADD_DATABASE' => tr('Add SQL database'),
+$tpl->assign(
+	array(
+		'TR_ADD_DATABASE' => tr('Add SQL database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('Before the name'),
 		'TR_END_ID_POS' => tr('After the name'),
-		'TR_ADD' => tr('Add')));
+		'TR_ADD' => tr('Add')
+	)
+);
 
 gen_page_message($tpl);
 

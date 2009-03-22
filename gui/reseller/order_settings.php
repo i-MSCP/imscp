@@ -35,13 +35,19 @@ $tpl->define_dynamic('page_message', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order settings'),
+$tpl->assign(
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Order settings'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
-// Functions
-// *
-// *
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
+
+/*
+ * Functions
+ */
+
 function save_haf(&$tpl, &$sql) {
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
@@ -121,4 +127,5 @@ if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
+
 ?>

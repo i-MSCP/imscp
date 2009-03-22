@@ -27,15 +27,15 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 	$query = <<<SQL_QUERY
-        select
-             subdomain_id,
-             subdomain_name
-        from
-            subdomain
-        where
-            domain_id = ?
-          and
-            subdomain_id = ?
+		SELECT
+			subdomain_id,
+			subdomain_name
+		FROM
+			subdomain
+		WHERE
+			domain_id = ?
+		AND
+			subdomain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
@@ -46,7 +46,7 @@ SQL_QUERY;
 	}
 
 	// check for mail accounts
-	$query = "select count(mail_id) as cnt from mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
+	$query = "SELECT COUNT(*) AS cnt FROM mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
 	$rs = exec_query($sql, $query, array($sub_id));
 
 	if ($rs->fields['cnt'] > 0) {
@@ -58,12 +58,12 @@ SQL_QUERY;
 	check_for_lock_file();
 
 	$query = <<<SQL_QUERY
-        update
-            subdomain
-        set
-            subdomain_status = 'delete'
-        where
-            subdomain_id = ?
+		UPDATE
+			subdomain
+		SET
+			subdomain_status = 'delete'
+		WHERE
+			subdomain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($sub_id));
@@ -74,10 +74,8 @@ SQL_QUERY;
 	exit(0);
 
 } else {
-
 	header('Location: domains_manage.php');
 	exit(0);
-
 }
 
 ?>

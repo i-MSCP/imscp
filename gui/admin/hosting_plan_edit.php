@@ -38,6 +38,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
  * static page messages.
  *
  */
+ 
 global $hpid;
 // Show main menu
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
@@ -86,7 +87,6 @@ $tpl->assign(
 
 /*
  * Dynamic page process
- *
  */
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	// Process data
@@ -223,7 +223,9 @@ SQL_QUERY;
 	);
 } // End of gen_load_ehp_page()
 
-// Check correction of input data
+/**
+ * Check correction of input data
+ */
 function check_data_iscorrect(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -290,7 +292,9 @@ function check_data_iscorrect(&$tpl) {
 	}
 } // End of check_data_iscorrect()
 
-// Add new host plan to DB
+/**
+ * Add new host plan to DB
+ */
 function save_data_to_db() {
 	$sql = Database::getInstance();
 	global $hp_name, $hp_php, $hp_cgi;
@@ -325,7 +329,7 @@ function save_data_to_db() {
 SQL_QUERY;
 	$res = exec_query($sql, $query, array($hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $hpid));
 	$_SESSION['hp_updated'] = "_yes_";
-	Header("Location: hosting_plan.php");
+	header("Location: hosting_plan.php");
 	die();
 } // End of save_data_to_db()
 

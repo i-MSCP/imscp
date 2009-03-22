@@ -46,9 +46,11 @@ $tpl->assign(
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
 	)
 );
-// Functions
-// *
-// *
+
+/*
+ * Functions
+ */
+
 function gen_order_page (&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 	$current_psi = 0;
@@ -62,7 +64,7 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 	// count query
 	$count_query = "
 		SELECT
-			COUNT(id) AS cnt
+			COUNT(*) AS cnt
 		FROM
 			`orders`
 		WHERE

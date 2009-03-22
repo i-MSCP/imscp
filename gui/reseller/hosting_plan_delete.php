@@ -42,7 +42,7 @@ if ($data['0'] > 0) {
 }
 
 // Try to delete hosting plan from db
-$query = "delete from hosting_plans where id=? and reseller_id=?";
+$query = "DELETE FROM hosting_plans WHERE id = ? AND reseller_id = ?";
 $res = exec_query($sql, $query, array($hpid, $_SESSION['user_id']));
 
 $_SESSION['hp_deleted'] = '_yes_';

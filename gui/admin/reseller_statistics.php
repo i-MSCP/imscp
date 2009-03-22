@@ -39,13 +39,13 @@ $tpl->define_dynamic('scroll_next', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_RESELLER_STATISTICS_PAGE_TITLE' => tr('ispCP - Reseller statistics'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-	);
+	array(
+		'TR_ADMIN_RESELLER_STATISTICS_PAGE_TITLE' => tr('ispCP - Reseller statistics'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 $year = 0;
 $month = 0;
@@ -75,31 +75,32 @@ function generate_page (&$tpl) {
 	}
 
 	$tpl->assign(
-			array(
-				'POST_PREV_PSI' => $start_index
-				)
-		);
+		array(
+			'POST_PREV_PSI' => $start_index
+		)
+	);
+
 	// count query
 	$count_query = <<<SQL_QUERY
-        SELECT
-            COUNT(admin_id) AS cnt
-        FROM
-            admin
-        WHERE
-            admin_type = 'reseller'
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			admin
+		WHERE
+			admin_type = 'reseller'
 SQL_QUERY;
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id, admin_name
-        FROM
-            admin
-        WHERE
-            admin_type = 'reseller'
-        ORDER BY
-            admin_name DESC
-        LIMIT
-            $start_index, $rows_per_page
+		SELECT
+			admin_id, admin_name
+		FROM
+			admin
+		WHERE
+			admin_type = 'reseller'
+		ORDER BY
+			admin_name DESC
+		LIMIT
+			$start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array());
@@ -108,19 +109,14 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	if ($rs->RowCount() == 0) {
-		/* $tpl->assign(
-            array(
-                'TRAFFIC_TABLE' => '',
-                'MESSAGE' => tr('Not found reseller(s) in your system!')
-                )
-            ); */
+
 		$tpl->assign(
-				array(
-					'TRAFFIC_TABLE' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_NEXT' => ''
-					)
-			);
+			array(
+				'TRAFFIC_TABLE' => '',
+				'SCROLL_PREV' => '',
+				'SCROLL_NEXT' => ''
+			)
+		);
 
 		set_page_message(tr('Not found reseller(s) in your system!'));
 		return;
@@ -131,11 +127,11 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_PREV_GRAY' => '',
-						'PREV_PSI' => $prev_si
-						)
-				);
+				array(
+					'SCROLL_PREV_GRAY' => '',
+					'PREV_PSI' => $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -144,18 +140,18 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_NEXT_GRAY' => '',
-						'NEXT_PSI' => $next_si
-						)
-				);
+				array(
+					'SCROLL_NEXT_GRAY' => '',
+					'NEXT_PSI' => $next_si
+				)
+			);
 		}
 
 		$tpl->assign(
-				array(
-					'PAGE_MESSAGE' => ''
-					)
-			);
+			array(
+				'PAGE_MESSAGE' => ''
+			)
+		);
 
 		gen_select_lists($tpl, @$month, @$year);
 
@@ -231,55 +227,55 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 	);
 
 	$tpl->assign(
-			array(
-				'RESELLER_NAME' => $reseller_name,
-				'RESELLER_ID' => $reseller_id,
-				'MONTH' => $crnt_month,
-				'YEAR' => $crnt_year,
+		array(
+			'RESELLER_NAME' => $reseller_name,
+			'RESELLER_ID' => $reseller_id,
+			'MONTH' => $crnt_month,
+			'YEAR' => $crnt_year,
 
-				'TRAFF_SHOW_PERCENT' => $traff_show_percent,
-				'TRAFF_PERCENT' => $traff_percent,
+			'TRAFF_SHOW_PERCENT' => $traff_show_percent,
+			'TRAFF_PERCENT' => $traff_percent,
 
-				'TRAFF_MSG' => ($rtraff_max) ?
-				tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
-				tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
+			'TRAFF_MSG' => ($rtraff_max)
+				? tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max))
+				: tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
-				'DISK_SHOW_PERCENT' => $disk_show_percent,
-				'DISK_PERCENT' => $disk_percent,
+			'DISK_SHOW_PERCENT' => $disk_show_percent,
+			'DISK_PERCENT' => $disk_percent,
 
-				'DISK_MSG' => ($rdisk_max) ?
-				tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
-				tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
+			'DISK_MSG' => ($rdisk_max)
+				? tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max))
+				: tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
-				'DMN_MSG' => ($rdmn_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $udmn_current, $rdmn_current),
+			'DMN_MSG' => ($rdmn_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $udmn_current, $rdmn_current),
 
-				'SUB_MSG' => ($rsub_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usub_current, $rsub_current),
+			'SUB_MSG' => ($rsub_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usub_current, $rsub_current),
 
-				'ALS_MSG' => ($rals_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uals_current, $rals_current, $rals_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uals_current, $rals_current),
+			'ALS_MSG' => ($rals_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uals_current, $rals_current, $rals_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uals_current, $rals_current),
 
-				'MAIL_MSG' => ($rmail_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $umail_current, $rmail_current),
+			'MAIL_MSG' => ($rmail_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $umail_current, $rmail_current),
 
-				'FTP_MSG' => ($rftp_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uftp_current, $rftp_current),
+			'FTP_MSG' => ($rftp_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uftp_current, $rftp_current),
 
-				'SQL_DB_MSG' => ($rsql_db_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_db_current, $rsql_db_current),
+			'SQL_DB_MSG' => ($rsql_db_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_db_current, $rsql_db_current),
 
-				'SQL_USER_MSG' => ($rsql_user_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current)
-				)
-		);
+			'SQL_USER_MSG' => ($rsql_user_max)
+				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
+				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current)
+		)
+	);
 
 	$tpl->parse('RESELLER_ENTRY', '.reseller_entry');
 }
@@ -299,23 +295,23 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl'
 generate_page ($tpl);
 
 $tpl->assign(
-		array(
-			'TR_RESELLER_STATISTICS' => tr('Reseller statistics table'),
-			'TR_MONTH' => tr('Month'),
-			'TR_YEAR' => tr('Year'),
-			'TR_SHOW' => tr('Show'),
-			'TR_RESELLER_NAME' => tr('Reseller name'),
-			'TR_TRAFF' => tr('Traffic'),
-			'TR_DISK' => tr('Disk'),
-			'TR_DOMAIN' => tr('Domain'),
-			'TR_SUBDOMAIN' => tr('Subdomain'),
-			'TR_ALIAS' => tr('Alias'),
-			'TR_MAIL' => tr('Mail'),
-			'TR_FTP' => tr('FTP'),
-			'TR_SQL_DB' => tr('SQL database'),
-			'TR_SQL_USER' => tr('SQL user'),
-			)
-		);
+	array(
+		'TR_RESELLER_STATISTICS' => tr('Reseller statistics table'),
+		'TR_MONTH' => tr('Month'),
+		'TR_YEAR' => tr('Year'),
+		'TR_SHOW' => tr('Show'),
+		'TR_RESELLER_NAME' => tr('Reseller name'),
+		'TR_TRAFF' => tr('Traffic'),
+		'TR_DISK' => tr('Disk'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_SUBDOMAIN' => tr('Subdomain'),
+		'TR_ALIAS' => tr('Alias'),
+		'TR_MAIL' => tr('Mail'),
+		'TR_FTP' => tr('FTP'),
+		'TR_SQL_DB' => tr('SQL database'),
+		'TR_SQL_USER' => tr('SQL user'),
+	)
+);
 
 gen_page_message($tpl);
 

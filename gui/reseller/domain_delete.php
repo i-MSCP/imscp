@@ -30,7 +30,7 @@ if (isset($_GET['domain_id']))
 	$del_id = $_GET['domain_id'];
 else {
 	set_page_message(tr('Wrong domain ID!'));
-	Header("Location: users.php");
+	header("Location: users.php");
 	die();
 }
 
@@ -49,7 +49,7 @@ $query = "SELECT COUNT(mail_id) AS mailnum FROM mail_users WHERE domain_id=?";
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['mailnum'] > 0) {
-	/* ERR - we have mail acc in this domain */
+	/* ERROR - we have mail acc in this domain */
 	set_page_message(tr('Domain you are trying to remove has email accounts !<br> first remove them !'));
 	header("Location: users.php");
 	die();
@@ -60,7 +60,7 @@ $query = "SELECT COUNT(fg.gid) AS ftpnum FROM ftp_group fg,domain d WHERE d.doma
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['ftpnum'] > 0) {
-	/* ERR -  we have ftp acc in this domain */
+	/* ERROR -  we have ftp acc in this domain */
 	set_page_message(tr('Domain you are trying to remove has FTP accounts !<br> first remove them !'));
 	header("Location: users.php");
 	die();
@@ -71,7 +71,7 @@ $query = "SELECT COUNT(alias_id) AS aliasnum FROM domain_aliasses WHERE domain_i
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['aliasnum'] > 0) {
-	/* ERR -  we have domain aliases for this domain */
+	/* ERROR - we have domain aliases for this domain */
 	set_page_message(tr('Domain you are trying to remove has domain alias!<br> first remove them !'));
 	header("Location: users.php");
 	die();
@@ -82,7 +82,7 @@ $query = "SELECT COUNT(subdomain_id) AS subnum FROM subdomain WHERE domain_id = 
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['subnum'] > 0) {
-	/* ERR - we have subdomain for this domain */
+	/* ERROR - we have subdomain for this domain */
 	set_page_message(tr('Domain you are trying to remove has subdomains accounts !<br> first remove them !'));
 	header("Location: users.php");
 	die();
@@ -90,12 +90,12 @@ if ($data['subnum'] > 0) {
 
 substract_from_reseller_props($_SESSION['user_id'], $del_id);
 
-$query = "UPDATE domain SET domain_status='delete' WHERE domain_id = ?";
+$query = "UPDATE domain SET domain_status = 'delete' WHERE domain_id = ?";
 $res = exec_query($sql, $query, array($del_id));
 send_request();
 
 /* delete admin of this domain */
-$query = "SELECT domain_admin_id,domain_name FROM domain WHERE domain_id = ?";
+$query = "SELECT domain_admin_id, domain_name FROM domain WHERE domain_id = ?";
 $res = exec_query($sql, $query, array($del_id));
 $dat = $res->FetchRow();
 

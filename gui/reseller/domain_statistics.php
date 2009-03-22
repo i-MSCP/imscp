@@ -70,9 +70,9 @@ function get_domain_trafic($from, $to, $domain_id) {
 	$reseller_id = $_SESSION['user_id'];
 	$query = <<<SQL_QUERY
 		SELECT
-		  domain_id
+			domain_id
 		FROM
-		  domain
+			domain
 		WHERE
 			domain_id = ? AND domain_created_id = ?
 SQL_QUERY;
@@ -144,7 +144,7 @@ function generate_page (&$tpl, $domain_id) {
 
 		$query = <<<SQL_QUERY
 			SELECT
-				dtraff_web,dtraff_ftp,dtraff_mail,dtraff_pop,dtraff_time
+				dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop, dtraff_time
 			FROM
 				domain_traffic
 			WHERE

@@ -108,11 +108,11 @@ function generate_page (&$tpl) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-					array(
-						'SCROLL_NEXT_GRAY'	=> '',
-						'NEXT_PSI'			=> $next_si
-					)
-				);
+				array(
+					'SCROLL_NEXT_GRAY'	=> '',
+					'NEXT_PSI'			=> $next_si
+				)
+			);
 		}
 
 		$tpl->assign(
@@ -156,7 +156,7 @@ function generate_page (&$tpl) {
 			$tpl->parse('LOG_ROW', '.log_row');
 
 			$rs->MoveNext();
-		} //while
+		} // end while
 	}
 }
 
@@ -169,23 +169,17 @@ function clear_log() {
 
 		switch ($_POST['uaction_clear']) {
 			case 0:
-				$query = "
-					delete
-						from
-					log
-				";
+				$query = "DELETE FROM log";
 				$msg = tr('%s deleted the full admin log!', $_SESSION['user_logged']);
 				break;
 
 			case 2:
 				// 2 Weeks
 				$query = "
-					delete
-						from
-					log
-						where
-					DATE_SUB(CURDATE(), INTERVAL 14 DAY)
-						>= log_time
+					DELETE FROM
+						log
+					WHERE
+						DATE_SUB(CURDATE(), INTERVAL 14 DAY) >= log_time
 				";
 				$msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
 
@@ -193,12 +187,10 @@ function clear_log() {
 
 			case 4:
 				$query = "
-					delete
-						from
-					log
-						where
-					DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-						>= log_time
+					DELETE FROM
+						log
+					WHERE
+						DATE_SUB(CURDATE(), INTERVAL 1 MONTH) >= log_time
 				";
 				$msg = tr('%s deleted the admin log older than one month!', $_SESSION['user_logged']);
 
@@ -206,36 +198,30 @@ function clear_log() {
 
 			case 12:
 				$query = "
-					delete
-						from
-					log
-						where
-					DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-						>= log_time
+					DELETE FROM
+						log
+					WHERE
+						DATE_SUB(CURDATE(), INTERVAL 3 MONTH) >= log_time
 				";
 				$msg = tr('%s deleted the admin log older than three months!', $_SESSION['user_logged']);
 				break;
 
 			case 26:
 				$query = "
-					delete
-						from
-					log
-						where
-					DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-						>= log_time
+					DELETE FROM
+						log
+					WHERE
+						DATE_SUB(CURDATE(), INTERVAL 6 MONTH) >= log_time
 				";
 				$msg = tr('%s deleted the admin log older than six months!', $_SESSION['user_logged']);
 				break;
 
 			case 52;
 				$query = "
-					delete
-						from
-					log
-						where
-					DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-						>= log_time
+					DELETE FROM
+						log
+					WHERE
+						DATE_SUB(CURDATE(), INTERVAL 1 YEAR) >= log_time
 				";
 				$msg = tr('%s deleted the admin log older than one year!', $_SESSION['user_logged']);
 

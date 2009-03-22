@@ -55,17 +55,23 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'order_email') {
  *
  */
 
-$tpl->assign(array('TR_RESELLER_ORDER_EMAL' => tr('ispCP - Reseller/Order email setup'),
+$tpl->assign(
+	array(
+		'TR_RESELLER_ORDER_EMAL' => tr('ispCP - Reseller/Order email setup'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_orders.tpl');
 gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_orders.tpl');
 
 gen_logged_from($tpl);
 
-$tpl->assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
+$tpl->assign(
+	array(
+		'TR_EMAIL_SETUP' => tr('Email setup'),
 		'TR_MANAGE_ORDERS' => tr('Manage orders'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
@@ -80,7 +86,9 @@ $tpl->assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
 		'SUBJECT_VALUE' => $data['subject'],
 		'MESSAGE_VALUE' => $data['message'],
 		'SENDER_EMAIL_VALUE' => $data['sender_email'],
-		'SENDER_NAME_VALUE' => $data['sender_name']));
+		'SENDER_NAME_VALUE' => $data['sender_name']
+	)
+);
 
 gen_page_message($tpl);
 

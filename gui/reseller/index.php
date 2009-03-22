@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo translate the foreign language comment at the end of this file
+ */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -40,16 +44,16 @@ function gen_system_message(&$tpl, &$sql) {
 	$user_id = $_SESSION['user_id'];
 
 	$query = <<<SQL_QUERY
-        select
-            count(ticket_id) as cnum
-        from
-            tickets
-        where
-            (ticket_to = ? or ticket_from = ?)
-          and
-            (ticket_status = '1' or ticket_status = '4')
-          and
-            ticket_reply = 0
+		SELECT
+			COUNT(*) AS cnum
+		FROM
+			tickets
+		WHERE
+			(ticket_to = ? OR ticket_from = ?)
+		AND
+			(ticket_status = '1' OR ticket_status = '4')
+		AND
+			ticket_reply = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
@@ -60,11 +64,11 @@ SQL_QUERY;
 		$tpl->assign(array('MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(
-				array(
-					'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-					'TR_VIEW' => tr('View')
-					)
-			);
+			array(
+				'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+				'TR_VIEW' => tr('View')
+			)
+		);
 
 		$tpl->parse('MSG_ENTRY', 'msg_entry');
 	}
@@ -82,10 +86,11 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	}
 
 	$tpl->assign(
-		array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
+		array(
+			'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
 			'TRAFFIC_BARS' => $bars
-			)
-		);
+		)
+	);
 }
 
 function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
@@ -99,10 +104,11 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	}
 
 	$tpl->assign(
-		array('DISK_USAGE_DATA' => $traffic_usage_data,
+		array(
+			'DISK_USAGE_DATA' => $traffic_usage_data,
 			'DISK_BARS' => $bars
-			)
-		);
+		)
+	);
 }
 
 function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
@@ -170,8 +176,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 
 	if ($rtraff_max > 0) {
 		if ($utraff_current > $rtraff_max) {
-			$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!')
-				);
+			$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
 		} else {
 			$tpl->assign('TRAFF_WARN', '');
 		}
@@ -191,21 +196,21 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	}
 
 	$tpl->assign(
-			array(
-				'ACCOUNT_NAME' => tr("Account name"),
-				'GENERAL_INFO' => tr("General information"),
-				"DOMAINS" => tr("User accounts"),
-				"SUBDOMAINS" => tr("Subdomains"),
-				"ALIASES" => tr("Aliases"),
-				"MAIL_ACCOUNTS" => tr("Mail account"),
-				"TR_FTP_ACCOUNTS" => tr("FTP account"),
-				"SQL_DATABASES" => tr("SQL databases"),
-				"SQL_USERS" => tr("SQL users"),
-				"TRAFFIC" => tr("Traffic"),
-				"DISK" => tr("Disk"),
-				"TR_EXTRAS" => tr("Extras")
-				)
-		);
+		array(
+			"ACCOUNT_NAME" => tr("Account name"),
+			"GENERAL_INFO" => tr("General information"),
+			"DOMAINS" => tr("User accounts"),
+			"SUBDOMAINS" => tr("Subdomains"),
+			"ALIASES" => tr("Aliases"),
+			"MAIL_ACCOUNTS" => tr("Mail account"),
+			"TR_FTP_ACCOUNTS" => tr("FTP account"),
+			"SQL_DATABASES" => tr("SQL databases"),
+			"SQL_USERS" => tr("SQL users"),
+			"TRAFFIC" => tr("Traffic"),
+			"DISK" => tr("Disk"),
+			"TR_EXTRAS" => tr("Extras")
+		)
+	);
 
 	$tpl->assign(
 		array(
@@ -215,61 +220,61 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			'TRAFF_GREEN' => $traff_green * 3,
 			'TRAFF_PERCENT' => $traff_percent,
 
-			'TRAFF_MSG' => ($rtraff_max) ?
-			tr('%1$s / %2$s of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)) :
-			tr('%1$s / %2$s of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
+			'TRAFF_MSG' => ($rtraff_max)
+				? tr('%1$s / %2$s of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max))
+				: tr('%1$s / %2$s of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
-			'DISK_MSG' => ($rdisk_max) ?
-			tr('%1$s / %2$s of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)) :
-			tr('%1$s / %2$s of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
+			'DISK_MSG' => ($rdisk_max)
+				? tr('%1$s / %2$s of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max))
+				: tr('%1$s / %2$s of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
-			'DMN_MSG' => ($rdmn_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $udmn_current, $rdmn_current),
+			'DMN_MSG' => ($rdmn_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $udmn_current, $rdmn_current),
 
-			'SUB_MSG' => ($rsub_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $usub_current, $rsub_current),
+			'SUB_MSG' => ($rsub_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $usub_current, $rsub_current),
 
-			'ALS_MSG' => ($rals_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $uals_current, $rals_current, $rals_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $uals_current, $rals_current),
+			'ALS_MSG' => ($rals_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $uals_current, $rals_current, $rals_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $uals_current, $rals_current),
 
-			'MAIL_MSG' => ($rmail_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rmail_current),
+			'MAIL_MSG' => ($rmail_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rmail_current),
 
-			'FTP_MSG' => ($rftp_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $uftp_current, $rftp_current),
+			'FTP_MSG' => ($rftp_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $uftp_current, $rftp_current),
 
-			'SQL_DB_MSG' => ($rsql_db_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $usql_db_current, $rsql_db_current),
+			'SQL_DB_MSG' => ($rsql_db_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $usql_db_current, $rsql_db_current),
 
-			'SQL_USER_MSG' => ($rsql_user_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max):
-			tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current),
+			'SQL_USER_MSG' => ($rsql_user_max)
+				? tr('%1$d / %2$d of <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
+				: tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current),
+			
 			'EXTRAS' => ''
-
-			)
-		);
+		)
+	);
 }
 
 function gen_messages_table (&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-          select
-              ticket_id
-          from
-              tickets
-          where
-              (ticket_from = ? or ticket_to = ?)
-            and
-              ticket_reply = '0'
-            and
-              (ticket_status = '1' or ticket_status = '4')
+		SELECT
+			ticket_id
+		FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_reply = '0'
+		AND
+			(ticket_status = '1' OR ticket_status = '4')
 SQL_QUERY;
 	$res = exec_query($sql, $query, array($admin_id, $admin_id));
 
@@ -277,17 +282,19 @@ SQL_QUERY;
 
 	if ($questions == 0) {
 		$tpl->assign(
-			array('TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
+			array(
+				'TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
 				'MSG_ENTRY' => ''
-				)
-			);
+			)
+		);
 	} else {
 		$tpl->assign(
-			array('TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $questions),
+			array(
+				'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $questions),
 				'NO_MESSAGES' => '',
 				'TR_VIEW' => tr('View')
-				)
-			);
+			)
+		);
 
 		$tpl->parse('MSG_ENTRY', '.msg_entry');
 	}
@@ -295,25 +302,26 @@ SQL_QUERY;
 // common page data.
 
 $tpl->assign(
-		array(
-			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
-			'TR_SAVE' => tr('Save'),
-			'TR_MESSAGES' => tr('Messages'),
-			'TR_LANGUAGE' => tr('Language'),
-			'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-			'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
-			'TR_LAYOUT' => tr('Layout'),
-			'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-			'TR_DISK_USAGE' => tr ('Disk usage'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-	);
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
+		'TR_SAVE' => tr('Save'),
+		'TR_MESSAGES' => tr('Messages'),
+		'TR_LANGUAGE' => tr('Language'),
+		'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
+		'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
+		'TR_LAYOUT' => tr('Layout'),
+		'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
+		'TR_DISK_USAGE' => tr ('Disk usage'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
 generate_page_data($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
+
 // ko ima jump from other user interface neka esik i optica da ostanat tezi na
 // ska4ashtijat user
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {

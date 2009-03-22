@@ -33,13 +33,13 @@ $tpl->define_dynamic('day_list', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ispCP - Admin/Server statistics'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ispCP - Admin/Server statistics'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 global $month, $year;
 
@@ -58,19 +58,19 @@ function get_server_trafic($from, $to) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        SELECT
-            IFNULL(sum(bytes_in), 0) as sbin,
-            IFNULL(sum(bytes_out), 0) as sbout,
-            IFNULL(sum(bytes_mail_in), 0) as smbin,
-            IFNULL(sum(bytes_mail_out), 0) as smbout,
-            IFNULL(sum(bytes_pop_in), 0) as spbin,
-            IFNULL(sum(bytes_pop_out), 0) as spbout,
-            IFNULL(sum(bytes_web_in), 0) as swbin,
-            IFNULL(sum(bytes_web_out), 0) as swbout
-        FROM
-            server_traffic
-        WHERE
-            traff_time > ? and traff_time < ?
+		SELECT
+			IFNULL(sum(bytes_in), 0) AS sbin,
+			IFNULL(sum(bytes_out), 0) AS sbout,
+			IFNULL(sum(bytes_mail_in), 0) AS smbin,
+			IFNULL(sum(bytes_mail_out), 0) AS smbout,
+			IFNULL(sum(bytes_pop_in), 0) AS spbin,
+			IFNULL(sum(bytes_pop_out), 0) AS spbout,
+			IFNULL(sum(bytes_web_in), 0) AS swbin,
+			IFNULL(sum(bytes_web_out), 0) AS swbout
+		FROM
+			server_traffic
+		WHERE
+			traff_time > ? AND traff_time < ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($from, $to));
@@ -115,12 +115,12 @@ function generate_page (&$tpl) {
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
 		$query = <<<SQL_QUERY
-          SELECT
-              COUNT(bytes_in) AS cnt
-          FROM
-              server_traffic
-          WHERE
-              traff_time > ? and traff_time < ?
+			SELECT
+				COUNT(bytes_in) AS cnt
+			FROM
+				server_traffic
+			WHERE
+				traff_time > ? and traff_time < ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($ftm, $ltm));
@@ -142,7 +142,9 @@ SQL_QUERY;
 
 			$tpl->assign('ITEM_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
 
-			$tpl->assign(array('DAY' => $i,
+			$tpl->assign(
+				array(
+					'DAY' => $i,
 					'YEAR' => $year,
 					'MONTH' => $month,
 					'WEB_IN' => sizeit($web_in),
@@ -155,7 +157,9 @@ SQL_QUERY;
 					'OTHER_OUT' => sizeit($other_out),
 					'ALL_IN' => sizeit($all_in),
 					'ALL_OUT' => sizeit($all_out),
-					'ALL' => sizeit($all_in + $all_out)));
+					'ALL' => sizeit($all_in + $all_out)
+				)
+			);
 			$all[0] = $all[0] + $web_in;
 			$all[1] = $all[1] + $web_out;
 			$all[2] = $all[2] + $smtp_in;
@@ -167,7 +171,7 @@ SQL_QUERY;
 
 			$tpl->parse('DAY_LIST', '.day_list');
 		} // if count
-	} //for
+	} // end for
 	if (!$has_data) {
 		$tpl->assign('DAY_LIST', '');
 	}
@@ -176,20 +180,20 @@ SQL_QUERY;
 	$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
 
 	$tpl->assign(
-			array(
-				'WEB_IN_ALL' => sizeit($all[0]),
-				'WEB_OUT_ALL' => sizeit($all[1]),
-				'SMTP_IN_ALL' => sizeit($all[2]),
-				'SMTP_OUT_ALL' => sizeit($all[3]),
-				'POP_IN_ALL' => sizeit($all[4]),
-				'POP_OUT_ALL' => sizeit($all[5]),
-				'OTHER_IN_ALL' => sizeit($all_other_in),
-				'OTHER_OUT_ALL' => sizeit($all_other_out),
-				'ALL_IN_ALL' => sizeit($all[6]),
-				'ALL_OUT_ALL' => sizeit($all[7]),
-				'ALL_ALL' => sizeit($all[6] + $all[7])
-			)
-		);
+		array(
+			'WEB_IN_ALL' => sizeit($all[0]),
+			'WEB_OUT_ALL' => sizeit($all[1]),
+			'SMTP_IN_ALL' => sizeit($all[2]),
+			'SMTP_OUT_ALL' => sizeit($all[3]),
+			'POP_IN_ALL' => sizeit($all[4]),
+			'POP_OUT_ALL' => sizeit($all[5]),
+			'OTHER_IN_ALL' => sizeit($all_other_in),
+			'OTHER_OUT_ALL' => sizeit($all_other_out),
+			'ALL_IN_ALL' => sizeit($all[6]),
+			'ALL_OUT_ALL' => sizeit($all[7]),
+			'ALL_ALL' => sizeit($all[6] + $all[7])
+		)
+	);
 }
 
 /*
@@ -205,25 +209,25 @@ gen_select_lists($tpl, $month, $year);
 generate_page($tpl);
 
 $tpl->assign(
-		array(
-			'TR_SERVER_STATISTICS' => tr('Server statistics'),
-			'TR_MONTH' => tr('Month'),
-			'TR_YEAR' => tr('Year'),
-			'TR_SHOW' => tr('Show'),
-			'TR_DAY' => tr('Day'),
-			'TR_WEB_IN' => tr('Web in'),
-			'TR_WEB_OUT' => tr('Web out'),
-			'TR_SMTP_IN' => tr('SMTP in'),
-			'TR_SMTP_OUT' => tr('SMTP out'),
-			'TR_POP_IN' => tr('IMAP/POP3 in'),
-			'TR_POP_OUT' => tr('IMAP/POP3 out'),
-			'TR_OTHER_IN' => tr('Other in'),
-			'TR_OTHER_OUT' => tr('Other out'),
-			'TR_ALL_IN' => tr('All in'),
-			'TR_ALL_OUT' => tr('All out'),
-			'TR_ALL' => tr('All')
-		)
-	);
+	array(
+		'TR_SERVER_STATISTICS' => tr('Server statistics'),
+		'TR_MONTH' => tr('Month'),
+		'TR_YEAR' => tr('Year'),
+		'TR_SHOW' => tr('Show'),
+		'TR_DAY' => tr('Day'),
+		'TR_WEB_IN' => tr('Web in'),
+		'TR_WEB_OUT' => tr('Web out'),
+		'TR_SMTP_IN' => tr('SMTP in'),
+		'TR_SMTP_OUT' => tr('SMTP out'),
+		'TR_POP_IN' => tr('IMAP/POP3 in'),
+		'TR_POP_OUT' => tr('IMAP/POP3 out'),
+		'TR_OTHER_IN' => tr('Other in'),
+		'TR_OTHER_OUT' => tr('Other out'),
+		'TR_ALL_IN' => tr('All in'),
+		'TR_ALL_OUT' => tr('All out'),
+		'TR_ALL' => tr('All')
+	)
+);
 
 gen_page_message($tpl);
 

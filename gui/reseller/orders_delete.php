@@ -29,41 +29,42 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	Header("Location: orders.php");
+	header("Location: orders.php");
 	die();
 }
 
 $query = <<<SQL_QUERY
-	select
+	SELECT
 		id
-	from
+	FROM
 		orders
-	where
-			id = ?
-		and
-			user_id = ?
+	WHERE
+		id = ?
+	AND
+		user_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
 
-		if ($rs->RecordCount() == 0) {
-			set_page_message(tr('Permission deny!'));
-			header('Location: orders.php');
-			die();
-		}
+	if ($rs->RecordCount() == 0) {
+		set_page_message(tr('Permission deny!'));
+		header('Location: orders.php');
+		die();
+	}
 
-//delete all FTP Accounts
-  $query = <<<SQL_QUERY
-          delete from
-              orders
-          where
-              id = ?
+	// delete all FTP Accounts
+	$query = <<<SQL_QUERY
+		DELETE FROM
+			orders
+		WHERE
+			id = ?
 SQL_QUERY;
-  $rs = exec_query($sql, $query, array($order_id));
+	$rs = exec_query($sql, $query, array($order_id));
 
 set_page_message(tr('Customer order was removed successful!'));
 
 write_log($_SESSION['user_logged'].": deletes customer order.");
 header( "Location: orders.php");
 die();
+
 ?>

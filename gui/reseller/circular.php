@@ -30,20 +30,20 @@ function gen_page_data(&$tpl, &$sql) {
 				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], false),
 				'SENDER_EMAIL' => clean_input($_POST['sender_email'], false),
 				'SENDER_NAME' => clean_input($_POST['sender_name'], false)
-				)
-			);
+			)
+		);
 	} else {
 		$user_id = $_SESSION['user_id'];
 
 		$query = <<<SQL_QUERY
-            select
-                fname, lname, email
-            from
-                admin
-            where
-                admin_id = ?
-            group by
-                email
+			SELECT
+				fname, lname, email
+			FROM
+				admin
+			WHERE
+				admin_id = ?
+			GROUP BY
+				email
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id));
@@ -64,8 +64,8 @@ SQL_QUERY;
 				'MESSAGE_TEXT' => '',
 				'SENDER_EMAIL' => $rs->fields['email'],
 				'SENDER_NAME' => $sender_name
-				)
-			);
+			)
+		);
 	}
 }
 
@@ -121,14 +121,14 @@ function send_reseller_users_message (&$sql, $admin_id) {
 	$sender_name = clean_input($_POST['sender_name'], false);
 
 	$query = <<<SQL_QUERY
-        select
-            fname, lname, email
-        from
-            admin
-        where
-            admin_type = 'user' and created_by = ?
-        group by
-            email
+		SELECT
+			fname, lname, email
+		FROM
+			admin
+		WHERE
+			admin_type = 'user' AND created_by = ?
+		GROUP BY
+			email
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));
@@ -163,14 +163,13 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ispCP - Circular'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			)
-		);
+	array(
+		'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ispCP - Circular'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
 
 /*
  *
@@ -184,22 +183,22 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_man
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_CIRCULAR' => tr('Circular'),
-			'TR_CORE_DATA' => tr('Core data'),
-			'TR_SEND_TO' => tr('Send message to'),
-			'TR_ALL_USERS' => tr('All users'),
-			'TR_ALL_RESELLERS' => tr('All resellers'),
-			'TR_ALL_USERS_AND_RESELLERS' => tr('All users & resellers'),
-			'TR_MESSAGE_SUBJECT' => tr('Message subject'),
-			'TR_MESSAGE_TEXT' => tr('Message'),
-			'TR_ADDITIONAL_DATA' => tr('Additional data'),
-			'TR_SENDER_EMAIL' => tr('Senders email'),
-			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_SEND_MESSAGE' => tr('Send message'),
-			'TR_SENDER_NAME' => tr('Senders name'),
-			)
-		);
+	array(
+		'TR_CIRCULAR' => tr('Circular'),
+		'TR_CORE_DATA' => tr('Core data'),
+		'TR_SEND_TO' => tr('Send message to'),
+		'TR_ALL_USERS' => tr('All users'),
+		'TR_ALL_RESELLERS' => tr('All resellers'),
+		'TR_ALL_USERS_AND_RESELLERS' => tr('All users & resellers'),
+		'TR_MESSAGE_SUBJECT' => tr('Message subject'),
+		'TR_MESSAGE_TEXT' => tr('Message'),
+		'TR_ADDITIONAL_DATA' => tr('Additional data'),
+		'TR_SENDER_EMAIL' => tr('Senders email'),
+		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_SEND_MESSAGE' => tr('Send message'),
+		'TR_SENDER_NAME' => tr('Senders name'),
+	)
+);
 
 send_circular($tpl, $sql);
 

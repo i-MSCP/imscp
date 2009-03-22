@@ -37,14 +37,14 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 function gen_user_table(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id, admin_name
-        FROM
-            admin
-        WHERE
-            admin_type = 'reseller'
-        ORDER BY
-            admin_name
+		SELECT
+			admin_id, admin_name
+		FROM
+			admin
+		WHERE
+			admin_type = 'reseller'
+		ORDER BY
+			admin_name
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -76,8 +76,8 @@ SQL_QUERY;
 				'SRC_RSL_OPTION'	=> $rs->fields['admin_name'],
 				'SRC_RSL_VALUE'		=> $rs->fields['admin_id'],
 				'SRC_RSL_SELECTED'	=> $selected,
-				)
-			);
+			)
+		);
 
 		$tpl->assign(
 			array(
@@ -93,16 +93,16 @@ SQL_QUERY;
 	}
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id, admin_name
-        FROM
-            admin
-        WHERE
-            admin_type = 'user'
-          AND
-            created_by = ?
-        ORDER BY
-            admin_name
+		SELECT
+			admin_id, admin_name
+		FROM
+			admin
+		WHERE
+			admin_type = 'user'
+		  AND
+			created_by = ?
+		ORDER BY
+			admin_name
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($reseller_id));
@@ -131,8 +131,8 @@ SQL_QUERY;
 					'NUMBER' => $i + 1,
 					'USER_NAME' => $show_admin_name,
 					'CKB_NAME' => $admin_id_var_name,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
 			$rs->MoveNext();
@@ -153,14 +153,14 @@ function check_user_data() {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id
-        FROM
-            admin
-        WHERE
-            admin_type = 'user'
-        ORDER BY
-            admin_name
+		SELECT
+			admin_id
+		FROM
+			admin
+		WHERE
+			admin_type = 'user'
+		ORDER BY
+			admin_name
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -192,12 +192,12 @@ SQL_QUERY;
 	$dst_reseller = $_POST['dst_reseller'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            reseller_ips
-        FROM
-            reseller_props
-        WHERE
-            reseller_id = ?
+		SELECT
+			reseller_ips
+		FROM
+			reseller_props
+		WHERE
+			reseller_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dst_reseller));
@@ -250,12 +250,12 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 
 	for ($i = 0; $i < count($users_array) - 1; $i++) {
 		$query = <<<SQL_QUERY
-            SELECT
-                domain_id, domain_name
-            FROM
-                domain
-            WHERE
-                domain_admin_id = ?
+			SELECT
+				domain_id, domain_name
+			FROM
+				domain
+			WHERE
+				domain_admin_id = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));
@@ -318,10 +318,10 @@ SQL_QUERY;
 	update_reseller_props($dest_reseller, $dest_reseller_props);
 
 	for ($i = 0; $i < count($users_array) - 1; $i++) {
-		$query = "update admin set created_by = ? where admin_id = ?";
+		$query = "UPDATE admin SET created_by = ? WHERE admin_id = ?";
 		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
 
-		$query = "update domain set domain_created_id = ? where domain_admin_id = ?";
+		$query = "UPDATE domain SET domain_created_id = ? WHERE domain_admin_id = ?";
 		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
 	}
 
@@ -406,12 +406,12 @@ function check_ip_sets($dest, $users, &$err) {
 
 	for ($i = 0; $i < count($users_array); $i++) {
 		$query = <<<SQL_QUERY
-            SELECT
-                domain_name, domain_ip_id
-            FROM
-                domain
-            WHERE
-                domain_admin_id = ?
+			SELECT
+				domain_name, domain_ip_id
+			FROM
+				domain
+			WHERE
+				domain_admin_id = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));
@@ -445,8 +445,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
@@ -465,8 +465,8 @@ $tpl->assign(
 		'TR_FROM_RESELLER' => tr('From reseller'),
 		'TR_TO_RESELLER' => tr('To reseller'),
 		'TR_MOVE' => tr('Move'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

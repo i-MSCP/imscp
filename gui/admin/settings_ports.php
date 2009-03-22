@@ -233,8 +233,8 @@ function show_services(&$tpl, &$sql) {
 			$tpl->parse('SERVICE_PORTS', '.service_ports');
 
 			$rs->MoveNext();
-		} //while
-	} //else
+		} // end while
+	} // end else
 }
 // Fetch delete request
 if (isset($_GET['delete'])) {

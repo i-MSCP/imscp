@@ -34,6 +34,7 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
 // page functions.
+
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
@@ -41,16 +42,16 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-	select
-		count(ticket_id) as cnt
-	from
-		`tickets`
-	where
-		`ticket_from`= ?
-	and
-		`ticket_status` != 0
-	and
-		`ticket_reply` = 0
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			`tickets`
+		WHERE
+			`ticket_from`= ?
+		AND
+			`ticket_status` != 0
+		AND
+			`ticket_reply` = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id));
@@ -81,31 +82,37 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign(array(
-			'TICKETS_LIST' => '',
-			'SCROLL_PREV' => '',
-			'SCROLL_NEXT' => ''
-		));
+		$tpl->assign(
+			array(
+				'TICKETS_LIST' => '',
+				'SCROLL_PREV' => '',
+				'SCROLL_NEXT' => ''
+			)
+		);
 		set_page_message(tr('You have no support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 		if ($start_index == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
-			$tpl->assign(array(
+			$tpl->assign(
+				array(
 					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
-			));
+				)
+			);
 		}
 		$next_si = $start_index + $rows_per_page;
 
 		if ($next_si + 1 > $records_count) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
-			$tpl->assign(array(
+			$tpl->assign(
+				array(
 					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
-			));
+				)
+			);
 		}
 
 		global $i;
@@ -141,8 +148,8 @@ SQL_QUERY;
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'ID'		=> $ticket_id,
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
-					)
-				);
+				)
+			);
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->MoveNext();
 			$i++;
@@ -153,12 +160,14 @@ SQL_QUERY;
 // common page data.
 
 $theme_color = Config::get('USER_INITIAL_THEME');
-$tpl->assign(array(
-	'TR_CLIENT_QUESTION_PAGE_TITLE'	=> tr('ispCP - Client/Questions & Comments'),
-	'THEME_COLOR_PATH'		=> "../themes/$theme_color",
-	'THEME_CHARSET'			=> tr('encoding'),
-	'ISP_LOGO'			=> get_logo($_SESSION['user_id'])
-));
+$tpl->assign(
+	array(
+		'TR_CLIENT_QUESTION_PAGE_TITLE'	=> tr('ispCP - Client/Questions & Comments'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 

@@ -358,7 +358,7 @@ if (isset($_GET['ticket_id'])) {
 	gen_tickets_list($tpl, $sql, $ticket_id, $screenwidth);
 } else {
 	set_page_message(tr('Ticket not found!'));
-	Header("Location: ticket_system.php");
+	header("Location: ticket_system.php");
 	die();
 }
 

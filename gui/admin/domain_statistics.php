@@ -38,8 +38,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 if (isset($_POST['domain_id'])) {
 	$domain_id = $_POST['domain_id'];
@@ -62,22 +62,21 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 
 if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 	header("Location: reseller_statistics.php");
-
 	die();
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
 	$sql = Database::getInstance();
 	$query = <<<SQL_QUERY
-        select
-            IFNULL(sum(dtraff_web), 0) as web_dr,
-            IFNULL(sum(dtraff_ftp), 0) as ftp_dr,
-            IFNULL(sum(dtraff_mail), 0) as mail_dr,
-            IFNULL(sum(dtraff_pop), 0) as pop_dr
-        from
-            domain_traffic
-        where
-            domain_id=? and dtraff_time>=? and dtraff_time<=?
+		SELECT
+			IFNULL(SUM(dtraff_web), 0) AS web_dr,
+			IFNULL(SUM(dtraff_ftp), 0) AS ftp_dr,
+			IFNULL(SUM(dtraff_mail), 0) AS mail_dr,
+			IFNULL(SUM(dtraff_pop), 0) AS pop_dr
+		FROM
+			domain_traffic
+		WHERE
+			domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
@@ -85,11 +84,12 @@ SQL_QUERY;
 	if ($rs->RecordCount() == 0) {
 		return array(0, 0, 0, 0);
 	} else {
-		return
-		array($rs->fields['web_dr'], $rs->fields['ftp_dr'],
-
-			$rs->fields['pop_dr'], $rs->fields['mail_dr'],
-			);
+		return array(
+			$rs->fields['web_dr'],
+			$rs->fields['ftp_dr'],
+			$rs->fields['pop_dr'],
+			$rs->fields['mail_dr'],
+		);
 	}
 }
 
@@ -128,12 +128,12 @@ function generate_page (&$tpl, $domain_id) {
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
 		$query = <<<SQL_QUERY
-            select
-                dtraff_web,dtraff_ftp,dtraff_mail,dtraff_pop,dtraff_time
-            from
-                domain_traffic
-            where
-                domain_id=? and dtraff_time>=? and dtraff_time<=?
+			SELECT
+				dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop, dtraff_time
+			FROM
+				domain_traffic
+			WHERE
+				domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
@@ -157,9 +157,8 @@ SQL_QUERY;
 					'SMTP_TRAFFIC' => 0,
 					'POP3_TRAFFIC' => 0,
 					'ALL_TRAFFIC' => 0,
-
-					)
-				);
+				)
+			);
 		} else {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
@@ -175,8 +174,8 @@ SQL_QUERY;
 					'SMTP_TRAFFIC' => sizeit($smtp_trf),
 					'POP3_TRAFFIC' => sizeit($pop_trf),
 					'ALL_TRAFFIC' => sizeit($web_trf + $ftp_trf + $smtp_trf + $pop_trf),
-					)
-				);
+				)
+			);
 			$tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
 
 			$counter++;
@@ -186,14 +185,13 @@ SQL_QUERY;
 			array('MONTH' => $month,
 				'YEAR' => $year,
 				'DOMAIN_ID' => $domain_id,
-
 				'ALL_WEB_TRAFFIC' => sizeit($sum_web),
 				'ALL_FTP_TRAFFIC' => sizeit($sum_ftp),
 				'ALL_SMTP_TRAFFIC' => sizeit($sum_mail),
 				'ALL_POP3_TRAFFIC' => sizeit($sum_pop),
 				'ALL_ALL_TRAFFIC' => sizeit($sum_web + $sum_ftp + $sum_mail + $sum_pop),
-				)
-			);
+			)
+		);
 
 		$tpl->parse('TRAFFIC_TABLE', 'traffic_table');
 	}
@@ -209,7 +207,8 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_statis
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
 
 $tpl->assign(
-	array('TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+	array(
+		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
 		'TR_SHOW' => tr('Show'),
@@ -220,8 +219,8 @@ $tpl->assign(
 		'TR_ALL_TRAFFIC' => tr('All traffic'),
 		'TR_ALL' => tr('All'),
 		'TR_DAY' => tr('Day'),
-		)
-	);
+	)
+);
 
 gen_select_lists($tpl, $month, $year);
 
@@ -236,4 +235,5 @@ $tpl->prnt();
 if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 
 unset_messages();
+
 ?>

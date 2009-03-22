@@ -35,14 +35,22 @@ $tpl->define_dynamic('traff_item', 'traff_list');
 
 function gen_page_date(&$tpl, $month, $year) {
 	for ($i = 1; $i <= 12; $i++) {
-		$tpl->assign(array('MONTH_SELECTED' => ($i == $month) ? 'selected="selected"' : '',
-				'MONTH' => $i));
+		$tpl->assign(
+			array(
+				'MONTH_SELECTED' => ($i == $month) ? 'selected="selected"' : '',
+				'MONTH' => $i
+			)
+		);
 		$tpl->parse('MONTH_ITEM', '.month_item');
 	}
 
 	for ($i = $year - 1; $i <= $year + 1; $i++) {
-		$tpl->assign(array('YEAR_SELECTED' => ($i == $year) ? 'selected="selected"' : '',
-				'YEAR' => $i));
+		$tpl->assign(
+			array(
+				'YEAR_SELECTED' => ($i == $year) ? 'selected="selected"' : '',
+				'YEAR' => $i
+			)
+		);
 		$tpl->parse('YEAR_ITEM', '.year_item');
 	}
 }
@@ -81,9 +89,12 @@ SQL_QUERY;
 	if ($rs->RecordCount() == 0) {
 		return array(0, 0, 0, 0);
 	} else {
-		return
-		array($rs->fields['web_dr'], $rs->fields['ftp_dr'],
-			$rs->fields['pop_dr'], $rs->fields['mail_dr']);
+		return array(
+			$rs->fields['web_dr'],
+			$rs->fields['ftp_dr'],
+			$rs->fields['pop_dr'],
+			$rs->fields['mail_dr']
+		);
 	}
 }
 
@@ -133,7 +144,7 @@ SQL_QUERY;
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 		$query = <<<SQL_QUERY
 			SELECT
-				dtraff_web,dtraff_ftp,dtraff_mail,dtraff_pop,dtraff_time
+				dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop, dtraff_time
 			FROM
 				domain_traffic
 			WHERE
@@ -328,4 +339,5 @@ if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
 unset_messages();
+
 ?>

@@ -42,40 +42,40 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-                SELECT
-                    COUNT(ticket_id) AS cnt
-                FROM
-                    tickets
-                WHERE
-                    (ticket_from = ? or ticket_to = ?)
-                  AND
-                    ticket_status != 0
-                  AND
-                    ticket_reply  = 0
+		SELECT
+			COUNT(*) AS cnt
+		FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_status != 0
+		AND
+			ticket_reply  = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
-        SELECT
-            ticket_id,
-            ticket_status,
-            ticket_urgency,
-            ticket_date,
-            ticket_subject
-        FROM
-            tickets
-        WHERE
-            (ticket_from = ? OR ticket_to = ?)
-          AND
-            ticket_status != 0
-          AND
-            ticket_reply  = 0
-        ORDER BY
-            ticket_date DESC
-        LIMIT
-            $start_index, $rows_per_page
+		SELECT
+			ticket_id,
+			ticket_status,
+			ticket_urgency,
+			ticket_date,
+			ticket_subject
+		FROM
+			tickets
+		WHERE
+			(ticket_from = ? OR ticket_to = ?)
+		AND
+			ticket_status != 0
+		AND
+			ticket_reply = 0
+		ORDER BY
+			ticket_date DESC
+		LIMIT
+			$start_index, $rows_per_page
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
@@ -100,8 +100,8 @@ SQL_QUERY;
 				array(
 					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
-					)
-				);
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -113,8 +113,8 @@ SQL_QUERY;
 				array(
 					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
-					)
-				);
+				)
+			);
 		}
 
 		global $i;
@@ -173,7 +173,6 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 			tickets
 		WHERE
 			ticket_id = ?
-
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id));
@@ -215,13 +214,13 @@ if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
+	array(
+		'TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-
-		)
-	);
+	)
+);
 
 gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
@@ -233,7 +232,8 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_sy
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array('TR_SUPPORT_SYSTEM' => tr('Support system'),
+	array(
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_STATUS' => tr('Status'),
@@ -247,8 +247,8 @@ $tpl->assign(
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

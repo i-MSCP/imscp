@@ -30,20 +30,21 @@ $tpl->define_dynamic('hosting_plans', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_CHANGE_SERVER_TRAFFIC_SETTINGS_TITLE' => tr('ispCP - Admin/Server Traffic Settings'),
+	array(
+		'TR_ADMIN_CHANGE_SERVER_TRAFFIC_SETTINGS_TITLE' => tr('ispCP - Admin/Server Traffic Settings'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 function update_server_settings(&$sql) {
 	if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
 		return;
 	}
 	/*global $data;
-    $match = array();
-    preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data, $match);*/
+	$match = array();
+	preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data, $match);*/
 
 	$max_traffic = clean_input($_POST['max_traffic']);
 
@@ -67,11 +68,11 @@ function update_server_settings(&$sql) {
 	}
 
 	$query = <<<SQL_QUERY
-                update
-                    straff_settings
-                set
-                    straff_max = ?,
-                    straff_warn  = ?
+		UPDATE
+			straff_settings
+		SET
+			straff_max = ?,
+			straff_warn  = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 
@@ -80,21 +81,21 @@ SQL_QUERY;
 
 function generate_server_data(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-        select
-           straff_max,
-           straff_warn
-        from
-            straff_settings
+		SELECT
+			straff_max,
+			straff_warn
+		FROM
+			straff_settings
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
 
 	$tpl->assign(
-		array('MAX_TRAFFIC' => $rs->fields['straff_max'],
+		array(
+			'MAX_TRAFFIC' => $rs->fields['straff_max'],
 			'TRAFFIC_WARNING' => $rs->fields['straff_warn'],
-
-			)
-		);
+		)
+	);
 }
 
 /*
@@ -111,8 +112,8 @@ $tpl->assign(
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Set server traffic settings'),
 		'TR_MAX_TRAFFIC' => tr('Max traffic [MB]'),
 		'TR_WARNING' => tr('Warning traffic [MB]'),
-		)
-	);
+	)
+);
 
 update_server_settings($sql);
 

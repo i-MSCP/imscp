@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo check the hugh out commented code block, can we remove it?
+ */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -32,12 +36,12 @@ $tpl->define_dynamic('ip_entry', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 /*
  *
@@ -51,19 +55,19 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_man
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Reseller : Add Alias'),
-			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-			'TR_ADD_ALIAS' => tr('Add domain alias'),
-			'TR_DOMAIN_NAME' => tr('Domain name'),
-			'TR_DOMAIN_ACCOUNT' => tr('User account'),
-			'TR_MOUNT_POINT' => tr('Directory mount point'),
-			'TR_DOMAIN_IP' => tr('Domain IP'),
-			'TR_FORWARD' => tr('Forward to URL'),
-			'TR_ADD' => tr('Add alias'),
-			'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
-		)
-	);
+	array(
+		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Reseller : Add Alias'),
+		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+		'TR_ADD_ALIAS' => tr('Add domain alias'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_ACCOUNT' => tr('User account'),
+		'TR_MOUNT_POINT' => tr('Directory mount point'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_FORWARD' => tr('Forward to URL'),
+		'TR_ADD' => tr('Add alias'),
+		'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
+	)
+);
 
 $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
@@ -93,9 +97,11 @@ function init_empty_data() {
 	$domain_ip = "";
 	$forward = "";
 	$mount_point = "";
-} //End of init_empty_data()
+} // End of init_empty_data()
 
-// Show data fiels
+/**
+ * Show data fields
+ */
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
@@ -105,11 +111,12 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$forward = 'no';
 	}
 	$tpl->assign(
-		array('DOMAIN' => $alias_name,
+		array(
+			'DOMAIN' => $alias_name,
 			'MP' => $mount_point,
 			'FORWARD' => $forward
-			)
-		);
+		)
+	);
 
 	generate_ip_list($tpl, $reseller_id);
 	gen_users_list($tpl, $reseller_id);
@@ -124,12 +131,12 @@ function add_domain_alias(&$sql, &$err_al) {
 	$forward = strtolower($_POST['forward']);
 
 	$query = <<<SQL_QUERY
-        SELECT
-            domain_ip_id
-        FROM
-            domain
-        WHERE
-            domain_id = ?
+		SELECT
+			domain_ip_id
+		FROM
+			domain
+		WHERE
+			domain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($cr_user_id));
@@ -183,64 +190,64 @@ SQL_QUERY;
 	$status = Config::get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
-		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
+		"INSERT INTO domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) VALUES (?, ?, ?, ?, ?, ?)",
 		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
-		$als_id = $sql->Insert_ID();
+	$als_id = $sql->Insert_ID();
 
 
-		$query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
-		$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
-		$user_email = $rs->fields['email'];
+	$query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
+	$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
+	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 /*
-    if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
-        $query = <<<SQL_QUERY
-            INSERT INTO mail_users
-                (mail_acc,
-                 mail_pass,
-                 mail_forward,
-                 domain_id,
-                 mail_type,
-                 sub_id,
-                 status,
-                 mail_auto_respond)
-            VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?)
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
+		$query = <<<SQL_QUERY
+			INSERT INTO mail_users
+				(mail_acc,
+				 mail_pass,
+				 mail_forward,
+				 domain_id,
+				 mail_type,
+				 sub_id,
+				 status,
+				 mail_auto_respond)
+			VALUES
+				(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-        // create default forwarder for webmaster@alias.tld to the account's owner
-        $rs = exec_query($sql, $query, array('webmaster',
-                '_no_',
-                $user_email,
-                $cr_user_id,
-                'alias_forward',
-                $als_id,
-                Config::get('ITEM_ADD_STATUS'),
-                '_no_'));
+		// create default forwarder for webmaster@alias.tld to the account's owner
+		$rs = exec_query($sql, $query, array('webmaster',
+				'_no_',
+				$user_email,
+				$cr_user_id,
+				'alias_forward',
+				$als_id,
+				Config::get('ITEM_ADD_STATUS'),
+				'_no_'));
 
-        // create default forwarder for postmaster@alias.tld to the account's reseller
-        $rs = exec_query($sql, $query, array('postmaster',
-                '_no_',
-                $_SESSION['user_email'],
-                $cr_user_id,
-                'alias_forward',
-                $als_id,
-                Config::get('ITEM_ADD_STATUS'),
-                '_no_'));
+		// create default forwarder for postmaster@alias.tld to the account's reseller
+		$rs = exec_query($sql, $query, array('postmaster',
+				'_no_',
+				$_SESSION['user_email'],
+				$cr_user_id,
+				'alias_forward',
+				$als_id,
+				Config::get('ITEM_ADD_STATUS'),
+				'_no_'));
 
-        // create default forwarder for abuse@alias.tld to the account's reseller
-        $rs = exec_query($sql, $query, array('abuse',
-                '_no_',
-                $_SESSION['user_email'],
-                $cr_user_id,
-                'alias_forward',
-                $als_id,
-                Config::get('ITEM_ADD_STATUS'),
-                '_no_'));
-    }
+		// create default forwarder for abuse@alias.tld to the account's reseller
+		$rs = exec_query($sql, $query, array('abuse',
+				'_no_',
+				$_SESSION['user_email'],
+				$cr_user_id,
+				'alias_forward',
+				$als_id,
+				Config::get('ITEM_ADD_STATUS'),
+				'_no_'));
+	}
 */
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
@@ -256,16 +263,16 @@ function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
 
 	$query = <<<SQL_QUERY
-        SELECT
-            admin_id
-        FROM
-            admin
-        WHERE
-                admin_type = 'user'
-            AND
-                created_by = ?
-        ORDER BY
-            admin_name
+		SELECT
+			admin_id
+		FROM
+			admin
+		WHERE
+			admin_type = 'user'
+		AND
+			created_by = ?
+		ORDER BY
+			admin_name
 SQL_QUERY;
 
 	$ar = exec_query($sql, $query, array($reseller_id));
@@ -284,13 +291,13 @@ SQL_QUERY;
 		$selected = '';
 		// Get domain data
 		$query = <<<SQL_QUERY
-            SELECT
-                domain_id,
-                IFNULL(domain_name, '') AS domain_name
-            FROM
-                domain
-            WHERE
-                domain_admin_id = ?
+			SELECT
+				domain_id,
+				IFNULL(domain_name, '') AS domain_name
+			FROM
+				domain
+			WHERE
+				domain_admin_id = ?
 SQL_QUERY;
 
 		$dr = exec_query($sql, $query, array($admin_id));
@@ -307,15 +314,15 @@ SQL_QUERY;
 		$domain_name = decode_idna($domain_name);
 
 		$tpl->assign(
-				array(
-					'USER' => $domain_id,
-					'USER_DOMAIN_ACCOUN' => $domain_name,
-					'SELECTED' => $selected
-				)
-			);
+			array(
+				'USER' => $domain_id,
+				'USER_DOMAIN_ACCOUN' => $domain_name,
+				'SELECTED' => $selected
+			)
+		);
 		$i++;
 		$tpl->parse('USER_ENTRY', '.user_entry');
-	} //End of loop
+	} // end of loop
 	return true;
 } // End of gen_users_list()
 
@@ -326,6 +333,6 @@ function gen_page_msg(&$tpl, $erro_txt) {
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
-} //End of gen_page_msg()
+} // End of gen_page_msg()
 
 ?>

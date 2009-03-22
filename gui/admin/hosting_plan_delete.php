@@ -32,12 +32,12 @@ if(isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
 else {
 	$_SESSION['hp_deleted'] = '_no_';
-	Header('Location: hosting_plan.php');
+	header('Location: hosting_plan.php');
 	die();
 }
 
 // Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(id) FROM `orders` WHERE `plan_id`=? AND `status`='new'", array($hpid));
+$res = exec_query($sql, "SELECT COUNT(*) FROM `orders` WHERE `plan_id` = ? AND `status` = 'new'", array($hpid));
 $data = $res->FetchRow();
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';
@@ -46,7 +46,7 @@ if ($data['0'] > 0) {
 }
 
 // Try to delete hosting plan from db
-$query = 'delete from hosting_plans where id = ?';
+$query = 'DELETE FROM hosting_plans WHERE id = ?';
 $res = exec_query($sql, $query, array($hpid));
 
 $_SESSION['hp_deleted'] = '_yes_';

@@ -52,18 +52,18 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 	$ticket_level = 2;
 
 	$query = <<<SQL_QUERY
-        insert into tickets
-            (ticket_level,
-             ticket_from,
-             ticket_to,
-             ticket_status,
-             ticket_reply,
-             ticket_urgency,
-             ticket_date,
-             ticket_subject,
-             ticket_message)
-        values
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO tickets
+			(ticket_level,
+			 ticket_from,
+			 ticket_to,
+			 ticket_status,
+			 ticket_reply,
+			 ticket_urgency,
+			 ticket_date,
+			 ticket_subject,
+			 ticket_message)
+		VALUES
+			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_level,	$user_id, $user_created_by,
@@ -79,12 +79,13 @@ SQL_QUERY;
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
+	array(
+		'TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		)
-	);
+	)
+);
 
 // dynamic page data.
 
@@ -103,7 +104,8 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_sy
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array('TR_NEW_TICKET' => tr('New ticket'),
+	array(
+		'TR_NEW_TICKET' => tr('New ticket'),
 		'TR_LOW' => tr('Low'),
 		'TR_MEDIUM' => tr('Medium'),
 		'TR_HIGH' => tr('High'),
@@ -115,8 +117,8 @@ $tpl->assign(
 		'TR_SEND_MESSAGE' => tr('Send message'),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 
@@ -124,7 +126,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

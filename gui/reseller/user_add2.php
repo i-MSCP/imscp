@@ -109,11 +109,13 @@ $tpl->prnt();
 if (Config::get('DUMP_GUI_DEBUG'))
 	dump_gui_debug();
 
-// unset_messages();
+//unset_messages();
 
 // Function declaration
 
-// get param of previous page
+/**
+ * get param of previous page
+ */
 function get_pageone_param() {
 	global $dmn_name;
 	global $dmn_chp;
@@ -128,7 +130,9 @@ function get_pageone_param() {
 	return true;
 } // End of get_pageone_param()
 
-// Show page with initial data fields
+/**
+ * Show page with initial data fields
+ */
 function get_init_au2_page(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -182,7 +186,9 @@ function get_init_au2_page(&$tpl) {
 	}
 } // End of get_init_au2_page()
 
-// Get data for hosting plan
+/**
+ * Get data for hosting plan
+ */
 function get_hp_data($hpid, $admin_id) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -217,7 +223,9 @@ function get_hp_data($hpid, $admin_id) {
 	}
 } // End of get_hp_data()
 
-// Check validity of input data
+/**
+ * Check validity of input data
+ */
 function check_user_data(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -296,15 +304,17 @@ function check_user_data(&$tpl) {
 
 	if (empty($ehp_error) && empty($_SESSION['user_page_message'])) {
 		$tpl->assign('MESSAGE', '');
-		// send data throught session
+		// send data through session
 		return true;
 	} else {
 		$tpl->assign('MESSAGE', $ehp_error);
 		return false;
 	}
-} //End of check_user_data()
+} // End of check_user_data()
 
-// Check is hosting plan with this name already exists!
+/**
+ * Check if hosting plan with this name already exists!
+ */
 function check_hosting_plan_name($admin_id) {
 	global $hp_name;
 	$sql = Database::getInstance();

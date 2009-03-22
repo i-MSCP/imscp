@@ -87,7 +87,9 @@ unset_messages();
 
 // Function declaration path
 
-// Check correction of entered user's data
+/**
+ * Check correction of entered users data
+ */
 function check_user_data() {
 	global $dmn_name; // Domain name
 	global $dmn_chp; // choosed hosting plan
@@ -149,7 +151,9 @@ function check_user_data() {
 	}
 } // End of check_user_data()
 
-// Show empty page
+/**
+ * Show empty page
+ */
 function get_empty_au1_page(&$tpl) {
 	$tpl->assign(
 		array(
@@ -159,9 +163,11 @@ function get_empty_au1_page(&$tpl) {
 		)
 	);
 	$tpl->assign('MESSAGE', '');
-} //End of get_empty_au1_page()
+} // End of get_empty_au1_page()
 
-// Show first page of add user with data
+/**
+ * Show first page of add user with data
+ */
 function get_data_au1_page(&$tpl) {
 	global $dmn_name; // Domain name
 	global $dmn_chp; // choosed hosting plan;
@@ -174,9 +180,11 @@ function get_data_au1_page(&$tpl) {
 			'CHTPL2_VAL'		=> $dmn_pt === "_yes_" ? '' : 'checked="checked"'
 		)
 	);
-} //End of get_data_au1_page()
+} // End of get_data_au1_page()
 
-// Get list with hosting plan for selection
+/**
+ * Get list with hosting plan for selection
+ */
 function get_hp_data_list(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 	global $dmn_chp;

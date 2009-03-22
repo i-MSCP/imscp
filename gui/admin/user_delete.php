@@ -23,7 +23,6 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 /* do we have a proper delete_id ? */
-
 if (!isset($_GET['delete_id']) or !is_numeric($_GET['delete_id'])) {
 	header( "Location: manage_users.php" );
 	die();
@@ -60,7 +59,7 @@ if ($local_admin_type == 'admin') {
 	$rs = exec_query($sql, $query, array($delete_id));
 	
 	$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
-    $rs = exec_query($sql, $query, array($delete_id));
+	$rs = exec_query($sql, $query, array($delete_id));
 
 	// delete orders
 	$query = "DELETE FROM `orders` WHERE `user_id` = ?";

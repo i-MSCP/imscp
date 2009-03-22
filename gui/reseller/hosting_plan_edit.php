@@ -34,6 +34,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
  * static page messages.
  *
  */
+ 
 global $hpid;
 // Show main menu
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
@@ -83,9 +84,8 @@ $tpl->assign(
 );
 
 /*
-* Dynamic page process
-*
-*/
+ * Dynamic page process
+ */
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	// Process data
 	if (check_data_iscorrect($tpl)) { // Save data to db
@@ -112,7 +112,10 @@ if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
 // *******************************************************
 // * Function definitions
 // *
-// Restore form on any error
+
+/**
+ * Restore form on any error
+ */
 function restore_form(&$tpl, &$sql) {
 	$tpl->assign(
 		array(
@@ -144,7 +147,9 @@ function restore_form(&$tpl, &$sql) {
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
 }
 
-// Generate load data from sql for requested hosting plan
+/**
+ * Generate load data from sql for requested hosting plan
+ */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$_SESSION['hpid'] = $hpid;
 
@@ -238,7 +243,9 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	);
 } // End of gen_load_ehp_page()
 
-// Check correction of input data
+/**
+ * Check correction of input data
+ */
 function check_data_iscorrect(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -304,7 +311,9 @@ function check_data_iscorrect(&$tpl) {
 	}
 } // End of check_data_iscorrect()
 
-// Add new host plan to DB
+/**
+ * Add new host plan to DB
+ */
 function save_data_to_db() {
 	$sql = Database::getInstance();
 	global $tpl;

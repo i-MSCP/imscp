@@ -117,7 +117,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 		$hpid = $_SESSION['edit_ID'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-		Header('Location: users.php');
+		header('Location: users.php');
 		die();
 	}
 
@@ -125,7 +125,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 		$dmn_user_name = $_SESSION['user_name'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-		Header('Location: users.php');
+		header('Location: users.php');
 		die();
 	}
 
@@ -326,7 +326,7 @@ function update_data_in_db($hpid) {
 				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
 			}
 
-			header( "Location: user_edit.php?edit_id=$hpid" );
+			header("Location: user_edit.php?edit_id=$hpid");
 			die();
 		}
 		
@@ -334,7 +334,7 @@ function update_data_in_db($hpid) {
 
 			set_page_message( tr("Entered passwords do not match!"));
 
-			header( "Location: user_edit.php?edit_id=$hpid" );
+			header("Location: user_edit.php?edit_id=$hpid");
 			die();
 		}
 		$pure_user_pass = $inpass;

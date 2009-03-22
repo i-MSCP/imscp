@@ -108,7 +108,9 @@ function gen_hp_message (&$tpl) {
 	}
 } // End of gen_hp_message()
 
-// Extract and show data for hosting plans
+/**
+ * Extract and show data for hosting plans
+ */
 function gen_hp_table(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 	global $external_event;
@@ -123,9 +125,9 @@ function gen_hp_table(&$tpl, $reseller_id) {
 				`admin` AS t2
 			WHERE
 				t2.`admin_type` = ?
-			  AND
+			AND
 				t1.`reseller_id` = t2.`admin_id`
-			  AND
+			AND
 				t1.`status` = 1
 			ORDER BY
 				t1.`name`

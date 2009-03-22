@@ -293,7 +293,6 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
 	if ($err == '_off_') {
 		calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk storage'));
-								// ($data,               $r,           &$rmax,         $u,                         $umax,       $uf,    &$err, $obj)
 	}
 
 	if ($err == '_off_') {
