@@ -30,13 +30,13 @@ $tpl->define_dynamic('custom_buttons', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_DETAILS_DOMAIN_PAGE_TITLE' => tr('ispCP - Domain/Details'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			)
-	);
+	array(
+		'TR_DETAILS_DOMAIN_PAGE_TITLE' => tr('ispCP - Domain/Details'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
 
 /*
  *
@@ -45,35 +45,35 @@ $tpl->assign(
  */
 
 $tpl->assign(
-		array(
-			'TR_DOMAIN_DETAILS' => tr('Domain details'),
-			'TR_DOMAIN_NAME' => tr('Domain name'),
-			'TR_DOMAIN_IP' => tr('Domain IP'),
-			'TR_STATUS' => tr('Status'),
-			'TR_PHP_SUPP' => tr('PHP support'),
-			'TR_CGI_SUPP' => tr('CGI support'),
-			'TR_MYSQL_SUPP' => tr('MySQL support'),
-			'TR_TRAFFIC' => tr('Traffic in MB'),
-			'TR_DISK' => tr('Disk in MB'),
-			'TR_FEATURE' => tr('Feature'),
-			'TR_USED' => tr('Used'),
-			'TR_LIMIT' => tr('Limit'),
-			'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-			'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-			'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
-			'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
-			'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
-			'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-			'TR_UPDATE_DATA' => tr('Submit changes'),
-			'TR_BACK' => tr('Back'),
-			)
-	);
+	array(
+		'TR_DOMAIN_DETAILS' => tr('Domain details'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_STATUS' => tr('Status'),
+		'TR_PHP_SUPP' => tr('PHP support'),
+		'TR_CGI_SUPP' => tr('CGI support'),
+		'TR_MYSQL_SUPP' => tr('MySQL support'),
+		'TR_TRAFFIC' => tr('Traffic in MB'),
+		'TR_DISK' => tr('Disk in MB'),
+		'TR_FEATURE' => tr('Feature'),
+		'TR_USED' => tr('Used'),
+		'TR_LIMIT' => tr('Limit'),
+		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
+		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
+		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
+		'TR_UPDATE_DATA' => tr('Submit changes'),
+		'TR_BACK' => tr('Back'),
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_page_message($tpl);
-// Get user id that come for manage domain
+// Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
 	header('Location: manage_users.php');
 	die();
@@ -96,13 +96,13 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$sql = Database::getInstance();
 	// Get domain data
 	$query = <<<SQL_QUERY
-      select
-          *,
-          IFNULL(domain_disk_usage, 0) as domain_disk_usage
-      from
-          domain
-      where
-          domain_id = ?;
+		SELECT
+			*,
+			IFNULL(domain_disk_usage, 0) AS domain_disk_usage
+		FROM
+			domain
+		WHERE
+			domain_id = ?;
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_id));
@@ -113,21 +113,28 @@ SQL_QUERY;
 		die();
 	}
 	// Get admin data
-	$query = "select admin_name from admin where admin_id = ?";
+	$query = "SELECT admin_name FROM admin WHERE admin_id = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id']));
 	$data1 = $res1->FetchRow();
 	if ($res1->RecordCount() <= 0) {
 		header('Location: manage_users.php');
 		die();
 	}
-	// Get IP-info
-	$query = "select * from server_ips where ip_id = ?";
+	// Get IP info
+	$query = "SELECT * FROM server_ips WHERE ip_id = ?";
 	$ipres = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	// Get status name
 	$dstatus = $data['domain_status'];
 
-	if ($dstatus == Config::get('ITEM_OK_STATUS') || $dstatus == Config::get('ITEM_DISABLED_STATUS') || $dstatus == Config::get('ITEM_DELETE_STATUS') || $dstatus == Config::get('ITEM_ADD_STATUS') || $dstatus == Config::get('ITEM_RESTORE_STATUS') || $dstatus == Config::get('ITEM_CHANGE_STATUS') || $dstatus == Config::get('ITEM_TOENABLE_STATUS') || $dstatus == Config::get('ITEM_TODISABLED_STATUS')) {
+	if ($dstatus == Config::get('ITEM_OK_STATUS')
+		|| $dstatus == Config::get('ITEM_DISABLED_STATUS')
+		|| $dstatus == Config::get('ITEM_DELETE_STATUS')
+		|| $dstatus == Config::get('ITEM_ADD_STATUS')
+		|| $dstatus == Config::get('ITEM_RESTORE_STATUS')
+		|| $dstatus == Config::get('ITEM_CHANGE_STATUS')
+		|| $dstatus == Config::get('ITEM_TOENABLE_STATUS')
+		|| $dstatus == Config::get('ITEM_TODISABLED_STATUS')) {
 		$dstatus = translate_dmn_status($data['domain_status']);
 	} else {
 		$dstatus = "<b><font size=\"3\" color=\"red\">" . $data['domain_status'] . "</font></b>";
@@ -137,19 +144,19 @@ SQL_QUERY;
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
 	$query = <<<SQL_QUERY
-        select
-            IFNULL(sum(dtraff_web),0) as dtraff_web,
-            IFNULL(sum(dtraff_ftp), 0) as dtraff_ftp,
-            IFNULL(sum(dtraff_mail), 0) as dtraff_mail,
-            IFNULL(sum(dtraff_pop),0) as dtraff_pop
-        from
-            domain_traffic
-        where
-            domain_id = ?
-          and
-            dtraff_time > ?
-          and
-            dtraff_time < ?
+		SELECT
+			IFNULL(sum(dtraff_web), 0) AS dtraff_web,
+			IFNULL(sum(dtraff_ftp), 0) AS dtraff_ftp,
+			IFNULL(sum(dtraff_mail), 0) AS dtraff_mail,
+			IFNULL(sum(dtraff_pop), 0) AS dtraff_pop
+		FROM
+			domain_traffic
+		WHERE
+			domain_id = ?
+		AND
+			dtraff_time > ?
+		AND
+			dtraff_time < ?
 SQL_QUERY;
 
 	$res7 = exec_query($sql, $query, array($data['domain_id'], $fdofmnth, $ldofmnth));
@@ -160,7 +167,7 @@ SQL_QUERY;
 	$month = date("m");
 	$year = date("Y");
 
-	$query = "select * from server_ips where ip_id=?";
+	$query = "SELECT * FROM server_ips WHERE ip_id = ?";
 	$res8 = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $res8->FetchRow();
 
@@ -200,18 +207,18 @@ SQL_QUERY;
 
 	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
 	// Get current mail count
-	$res6 = exec_query($sql, "SELECT COUNT(mail_id) AS mcnt FROM mail_users WHERE domain_id = ? AND mail_type NOT RLIKE '_catchall'", array($data['domain_id']));
+	$res6 = exec_query($sql, "SELECT COUNT(*) AS mcnt FROM mail_users WHERE domain_id = ? AND mail_type NOT RLIKE '_catchall'", array($data['domain_id']));
 	$dat3 = $res6->FetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat
-	$query = "select gid from ftp_group where groupname = ?";
+	$query = "SELECT gid FROM ftp_group WHERE groupname = ?";
 	$res4 = exec_query($sql, $query, array($data['domain_name']));
 	$ftp_gnum = $res4->RowCount();
 	if ($ftp_gnum == 0) {
 		$used_ftp_acc = 0;
 	} else {
 		$dat1 = $res4->FetchRow();
-		$query = "select count(uid) as ftp_cnt from ftp_users where gid=?";
+		$query = "SELECT COUNT(*) AS ftp_cnt FROM ftp_users WHERE gid = ?";
 		$res5 = exec_query($sql, $query, array($dat1['gid']));
 		$dat2 = $res5->FetchRow();
 
@@ -219,64 +226,64 @@ SQL_QUERY;
 	}
 	$ftp_limit = translate_limit_value($data['domain_ftpacc_limit']);
 	// Get sql database count
-	$query = "select count(sqld_id) as dnum from sql_database where domain_id=?";
+	$query = "SELECT COUNT(*) AS dnum FROM sql_database WHERE domain_id = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat5 = $res->FetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
 	// Get sql users count
-	$query = "select count(u.sqlu_id) as ucnt from sql_user u,sql_database d where u.sqld_id=d.sqld_id and d.domain_id=?";
+	$query = "SELECT COUNT(u.sqlu_id) AS ucnt FROM sql_user u, sql_database d WHERE u.sqld_id = d.sqld_id AND d.domain_id = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
 	// Get subdomain
-	$query = "select count(subdomain_id) as sub_num from subdomain where domain_id=?";
+	$query = "SELECT COUNT(subdomain_id) AS sub_num FROM subdomain WHERE domain_id = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$sub_num_data = $res1->FetchRow();
-	$query="SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?)";
+	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
 	$res1 = exec_query($sql, $query, array($domain_id));
 	$alssub_num_data = $res1->FetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
 	// Get domain aliases
-	$query = "select count(alias_id) as alias_num from domain_aliasses where domain_id=?";
+	$query = "SELECT COUNT(*) AS alias_num FROM domain_aliasses WHERE domain_id = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$alias_num_data = $res1->FetchRow();
 
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(
-			array(
-				'DOMAIN_ID' => $data['domain_id'],
-				'VL_DOMAIN_NAME' => decode_idna($data['domain_name']),
-				'VL_DOMAIN_IP' => $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
-				'VL_STATUS' => $dstatus,
+		array(
+			'DOMAIN_ID' => $data['domain_id'],
+			'VL_DOMAIN_NAME' => decode_idna($data['domain_name']),
+			'VL_DOMAIN_IP' => $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
+			'VL_STATUS' => $dstatus,
 
-				'VL_PHP_SUPP' => ($data['domain_php'] == 'yes')?
-				                tr('Enabled') : tr('Disabled'),
-				'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes')?
-				                tr('Enabled') : tr('Disabled'),
-				'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0)?
-				                tr('Enabled') : tr('Disabled'),
+			'VL_PHP_SUPP' => ($data['domain_php'] == 'yes') ?
+								tr('Enabled') : tr('Disabled'),
+			'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes') ?
+								tr('Enabled') : tr('Disabled'),
+			'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0) ?
+								tr('Enabled') : tr('Disabled'),
 
-				'VL_TRAFFIC_PERCENT' => $traffic_percent,
-				'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
-				'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
-				'VL_DISK_PERCENT' => $disk_percent,
-				'VL_DISK_USED' => $domduh,
-				'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
-				'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
-				'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
-				'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,
-				'VL_FTP_ACCOUNTS_LIIT' => $ftp_limit,
-				'VL_SQL_DB_ACCOUNTS_USED' => $dat5['dnum'],
-				'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
-				'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
-				'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
-				'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num']+$alssub_num_data['sub_num'],
-				'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
-				'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
-				'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias
-				)
-		);
-} //End of load_user_data();
+			'VL_TRAFFIC_PERCENT' => $traffic_percent,
+			'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
+			'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
+			'VL_DISK_PERCENT' => $disk_percent,
+			'VL_DISK_USED' => $domduh,
+			'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
+			'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
+			'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
+			'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,
+			'VL_FTP_ACCOUNTS_LIIT' => $ftp_limit,
+			'VL_SQL_DB_ACCOUNTS_USED' => $dat5['dnum'],
+			'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
+			'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
+			'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
+			'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
+			'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
+			'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
+			'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias
+		)
+	);
+} // End of load_user_data();
 
 ?>
