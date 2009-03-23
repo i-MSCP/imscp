@@ -19,7 +19,7 @@
  */
 
 function calc_bars($crnt, $max, $bars_max) {
-	if($max != 0) {
+	if ($max != 0) {
 		$percent_usage = (100*$crnt)/$max;
 	} else {
 		$percent_usage = 0;
@@ -60,7 +60,7 @@ function sizeit($bytes, $from = 'B') {
 			break;
 	}
 
-	if ($bytes == '' || $bytes < 0 ) {
+	if ($bytes == '' || $bytes < 0) {
 		$bytes = 0;
 	}
 
@@ -73,7 +73,7 @@ function sizeit($bytes, $from = 'B') {
 	} else if ($bytes > pow(1024, 3)) {
 		$bytes	= $bytes/pow(1024, 3);
 		$ret	= tr('%.2f GB', $bytes);
-	} else if ($bytes > pow(1024, 2) ) {
+	} else if ($bytes > pow(1024, 2)) {
 		$bytes	= $bytes/pow(1024, 2);
 		$ret	= tr('%.2f MB', $bytes);
 	} else if ($bytes > pow(1024, 1)) {
@@ -142,7 +142,7 @@ function crypt_user_pass_with_salt($data) {
 	return $res;
 }
 
-function check_user_pass($crdata, $data ) {
+function check_user_pass($crdata, $data) {
 	$salt = get_salt_from($crdata);
 	$udata = crypt($data, $salt);
 	return ($udata == $crdata);

@@ -22,9 +22,9 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* do we have a proper delete_id ? */
+/* Do we have a proper delete_id? */
 if (!isset($_GET['delete_id']) or !is_numeric($_GET['delete_id'])) {
-	header( "Location: manage_users.php" );
+	header("Location: manage_users.php");
 	die();
 }
 
@@ -80,10 +80,11 @@ if ($local_admin_type == 'admin') {
 	send_request();
 }
 
-	$user_logged= $_SESSION['user_logged'];
-	$local_admin_name = $_GET['delete_username'];
-	write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
-	$_SESSION['user_deleted'] = 1;
-	header("Location: manage_users.php");
-	die();
+$user_logged= $_SESSION['user_logged'];
+$local_admin_name = $_GET['delete_username'];
+write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
+$_SESSION['user_deleted'] = 1;
+header("Location: manage_users.php");
+die();
+
 ?>

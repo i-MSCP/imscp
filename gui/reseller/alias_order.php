@@ -24,9 +24,9 @@ check_login(__FILE__);
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-if(isset($_GET['action']) && $_GET['action'] === "delete") {
+if (isset($_GET['action']) && $_GET['action'] === "delete") {
 
-	if(isset($_GET['del_id']) && !empty($_GET['del_id']))
+	if (isset($_GET['del_id']) && !empty($_GET['del_id']))
 		$del_id = $_GET['del_id'];
 	else {
 		$_SESSION['orderaldel'] = '_no_';
@@ -47,7 +47,7 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 
 } else if (isset($_GET['action']) && $_GET['action'] === "activate") {
 
-	if(isset($_GET['act_id']) && !empty($_GET['act_id']))
+	if (isset($_GET['act_id']) && !empty($_GET['act_id']))
 		$act_id = $_GET['act_id'];
 	else {
 		$_SESSION['orderalact'] = '_no_';

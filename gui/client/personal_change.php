@@ -29,10 +29,14 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-$tpl->assign(array('TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Client/Change Personal Data'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Client/Change Personal Data'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_user_personal_data($sql, $_SESSION['user_id']);

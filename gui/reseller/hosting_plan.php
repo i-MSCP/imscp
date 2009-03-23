@@ -86,20 +86,17 @@ function gen_hp_message (&$tpl) {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan added!'));
 		unset($_SESSION["hp_added"]);
-		if (isset($GLOBALS['hp_added']))
-			unset($GLOBALS['hp_added']);
+		unset($GLOBALS['hp_added']);
 	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan deleted!'));
 		unset($_SESSION["hp_deleted"]);
-		if (isset($GLOBALS['hp_deleted']))
-			unset($GLOBALS['hp_deleted']);
+		unset($GLOBALS['hp_deleted']);
 	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan updated!'));
 		unset($_SESSION["hp_updated"]);
-		if (isset($GLOBALS['hp_updated']))
-			unset($GLOBALS['hp_updated']);
+		unset($GLOBALS['hp_updated']);
 	}
 	else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
@@ -191,7 +188,7 @@ SQL_QUERY;
 				)
 			);
 			$tpl->parse('HP_ENTRY', '.hp_entry');
-		} // End  loop
+		} // end while
 		$tpl->parse('HP_TABLE', 'hp_table');
 	}
 } // End of gen_hp_table()

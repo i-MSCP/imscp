@@ -34,7 +34,8 @@ $tpl->define_dynamic('traffic_table_item', 'traffic_table');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
+	array(
+		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -148,7 +149,8 @@ SQL_QUERY;
 		$date_formt = Config::get('DATE_FORMAT');
 		if ($web_trf == 0 && $ftp_trf == 0 && $smtp_trf == 0 && $pop_trf == 0) {
 			$tpl->assign(
-				array('MONTH' => $month,
+				array(
+					'MONTH' => $month,
 					'YEAR' => $year,
 					'DOMAIN_ID' => $domain_id,
 					'DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
@@ -168,7 +170,8 @@ SQL_QUERY;
 			$sum_pop += $pop_trf;
 
 			$tpl->assign(
-				array('DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
+				array(
+					'DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
 					'WEB_TRAFFIC' => sizeit($web_trf),
 					'FTP_TRAFFIC' => sizeit($ftp_trf),
 					'SMTP_TRAFFIC' => sizeit($smtp_trf),
@@ -232,7 +235,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

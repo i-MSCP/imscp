@@ -29,13 +29,13 @@ $tpl->define_dynamic('page_message', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add User'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add User'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 function add_user(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
@@ -139,9 +139,7 @@ function add_user(&$tpl, &$sql) {
 					`lang`,
 					`layout`,
 					`logo`
-				) VALUES (
-					  ?,?,?,?
-				)
+				) VALUES (?,?,?,?)
 			";
 
 			$rs = exec_query($sql, $query, array($new_admin_id,
@@ -163,8 +161,7 @@ function add_user(&$tpl, &$sql) {
 
 			header("Location: manage_users.php");
 			die();
-		} //check user data
-		else {
+		} else { // check user data
 			$tpl->assign(
 				array(
 					'EMAIL' => clean_input($_POST['email'], true),
@@ -188,26 +185,26 @@ function add_user(&$tpl, &$sql) {
 		}
 	} else {
 		$tpl->assign(
-				array(
-					'EMAIL' => '',
-					'USERNAME' => '',
-					'FIRST_NAME' => '',
-					'LAST_NAME' => '',
-					'FIRM' => '',
-					'ZIP' => '',
-					'CITY' => '',
-					'STATE' => '',
-					'COUNTRY' => '',
-					'STREET_1' => '',
-					'STREET_2' => '',
-					'PHONE' => '',
-					'FAX' => '',
-					'VL_MALE' => '',
-					'VL_FEMALE' => '',
-					'VL_UNKNOWN' => 'selected="selected"'
-				)
-			);
-	} // else
+			array(
+				'EMAIL' => '',
+				'USERNAME' => '',
+				'FIRST_NAME' => '',
+				'LAST_NAME' => '',
+				'FIRM' => '',
+				'ZIP' => '',
+				'CITY' => '',
+				'STATE' => '',
+				'COUNTRY' => '',
+				'STREET_1' => '',
+				'STREET_2' => '',
+				'PHONE' => '',
+				'FAX' => '',
+				'VL_MALE' => '',
+				'VL_FEMALE' => '',
+				'VL_UNKNOWN' => 'selected="selected"'
+			)
+		);
+	} // end else
 }
 
 function check_user_data() {
@@ -239,13 +236,12 @@ function check_user_data() {
 	}
 
 	$query = "
-		select
+		SELECT
 			admin_id
-		from
+		FROM
 			admin
-		where
+		WHERE
 			admin_name = ?
-
 ";
 
 	$username = clean_input($_POST['username']);
@@ -266,43 +262,43 @@ function check_user_data() {
  * static page messages.
  *
  */
+
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 add_user($tpl, $sql);
 
 $tpl->assign(
-		array(
-			'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-			'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
-			'TR_ADD_ADMIN' => tr('Add admin'),
-			'TR_CORE_DATA' => tr('Core data'),
-			'TR_USERNAME' => tr('Username'),
-			'TR_PASSWORD' => tr('Password'),
-			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-			'TR_EMAIL' => tr('Email'),
-			'TR_ADDITIONAL_DATA' => tr('Additional data'),
-			'TR_FIRST_NAME' => tr('First name'),
-			'TR_LAST_NAME' => tr('Last name'),
-			'TR_GENDER' => tr('Gender'),
-			'TR_MALE' => tr('Male'),
-			'TR_FEMALE' => tr('Female'),
-			'TR_UNKNOWN' => tr('Unknown'),
-			'TR_COMPANY' => tr('Company'),
-			'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
-			'TR_CITY' => tr('City'),
-			'TR_STATE' => tr('State/Province'),
-			'TR_COUNTRY' => tr('Country'),
-			'TR_STREET_1' => tr('Street 1'),
-			'TR_STREET_2' => tr('Street 2'),
-			'TR_PHONE' => tr('Phone'),
-			'TR_FAX' => tr('Fax'),
-			'TR_PHONE' => tr('Phone'),
-			'TR_ADD' => tr('Add'),
-			'GENPAS' => passgen()
-		)
-
-	);
+	array(
+		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
+		'TR_ADD_ADMIN' => tr('Add admin'),
+		'TR_CORE_DATA' => tr('Core data'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_EMAIL' => tr('Email'),
+		'TR_ADDITIONAL_DATA' => tr('Additional data'),
+		'TR_FIRST_NAME' => tr('First name'),
+		'TR_LAST_NAME' => tr('Last name'),
+		'TR_GENDER' => tr('Gender'),
+		'TR_MALE' => tr('Male'),
+		'TR_FEMALE' => tr('Female'),
+		'TR_UNKNOWN' => tr('Unknown'),
+		'TR_COMPANY' => tr('Company'),
+		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
+		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
+		'TR_COUNTRY' => tr('Country'),
+		'TR_STREET_1' => tr('Street 1'),
+		'TR_STREET_2' => tr('Street 2'),
+		'TR_PHONE' => tr('Phone'),
+		'TR_FAX' => tr('Fax'),
+		'TR_PHONE' => tr('Phone'),
+		'TR_ADD' => tr('Add'),
+		'GENPAS' => passgen()
+	)
+);
 
 gen_page_message($tpl);
 

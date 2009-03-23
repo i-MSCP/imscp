@@ -112,7 +112,8 @@ function clean_input($input, $htmlencode = false) {
 		$input = trim($input, "{..}");
 	}
 
-	if(get_magic_quotes_gpc())$input = stripslashes($input);
+	if (get_magic_quotes_gpc())
+		$input = stripslashes($input);
 
 	if ($htmlencode) {
 		return htmlentities($input, ENT_QUOTES, "UTF-8");
@@ -191,10 +192,10 @@ function chk_email($email, $num = 50) {
 		return false;
 
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
+	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
 
-	$nqtext = "[^\\\\$nonascii\015\012\"]"; # all not qouteable chars
-	$qchar = "\\\\[^$nonascii]";			# matched quoted chars
+	$nqtext = "[^\\\\$nonascii\015\012\"]"; // all not qouteable chars
+	$qchar = "\\\\[^$nonascii]";			// matched quoted chars
 
 	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
@@ -215,7 +216,7 @@ function ispcp_check_local_part($email, $num = 50) {
 		return false;
 
 	// RegEx begin
-	$nonascii = "\x80-\xff"; # non ASCII chars are not allowed
+	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
 
 	$nqtext = "[^\\\\$nonascii\015\012\"]";
 	$qchar = "\\\\[^$nonascii]";

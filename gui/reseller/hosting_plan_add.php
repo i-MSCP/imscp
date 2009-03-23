@@ -101,11 +101,14 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 // Function definitions
 
-// Generate empty form
+/**
+ * Generate empty form
+ */
 function gen_empty_ahp_page(&$tpl) {
 	$tpl->assign(
 		array(
@@ -134,7 +137,9 @@ function gen_empty_ahp_page(&$tpl) {
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
 
-// Show last entered data for new hp
+/**
+ * Show last entered data for new hp
+ */
 function gen_data_ahp_page(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -178,7 +183,9 @@ function gen_data_ahp_page(&$tpl) {
 		$tpl->assign(array('TR_STATUS_NO' => 'checked="checked"'));
 } // End of gen_data_ahp_page()
 
-// Check correction of input data
+/**
+ * Check correction of input data
+ */
 function check_data_correction(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -263,7 +270,9 @@ function check_data_correction(&$tpl) {
 	}
 } // End of check_data_correction()
 
-// Add new host plan to DB
+/**
+ * Add new host plan to DB
+ */
 function save_data_to_db(&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 	global $hp_name, $description, $hp_php, $hp_cgi;

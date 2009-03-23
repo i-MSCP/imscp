@@ -54,13 +54,13 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 			$groupname = $_POST['groupname'];
 
 			$query = "
-				select
+				SELECT
 					`id`
-				from
+				FROM
 					`htaccess_groups`
-				where
+				WHERE
 					`ugroup` = ?
-				and
+				AND
 					`dmn_id` = ?
 			";
 

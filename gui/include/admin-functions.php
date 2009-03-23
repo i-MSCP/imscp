@@ -1601,7 +1601,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 	$rs = exec_query($sql, $query, array($new_status, $domain_id));
 
 	send_request();
-	// lets get back to user overview after the system changes are finished
+	// let's get back to user overview after the system changes are finished
 	$user_logged = $_SESSION['user_logged'];
 
 	if ($action == 'disable') {
@@ -1904,7 +1904,7 @@ function rm_rf_user_account($id_user) {
 	$query = "DELETE FROM `quotatallies` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($domain_name));
 
-	// Lets delete SQL DBs and Users
+	// let's delete SQL DBs and Users
 	$query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($domain_id));
 

@@ -28,6 +28,7 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
+
 // check if we have only hosting plans for admins - reseller should not edit them
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	header("Location: users.php");
@@ -196,7 +197,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_traff, $hp_disk;
 	$sql = Database::getInstance();
 
-	$query = "select name, props from hosting_plans where reseller_id = ? and id = ?";
+	$query = "SELECT name, props FROM hosting_plans WHERE reseller_id = ? AND id = ?";
 
 	$res = exec_query($sql, $query, array($admin_id, $hpid));
 
@@ -319,7 +320,7 @@ function check_hosting_plan_name($admin_id) {
 	global $hp_name;
 	$sql = Database::getInstance();
 
-	$query = "select id from hosting_plans where name = ? and reseller_id = ?";
+	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 	if ($res->RowCount() !== 0) {
 		return false;

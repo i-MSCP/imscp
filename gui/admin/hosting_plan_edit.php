@@ -109,12 +109,16 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
-// *******************************************************
-// * Function definitions
-// *
-// Restore form on any error
+/*
+ * Function definitions
+ */
+
+/**
+ * Restore form on any error
+ */
 function restore_form(&$tpl) {
 	$tpl->assign(
 		array(

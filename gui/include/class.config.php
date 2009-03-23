@@ -191,17 +191,17 @@ final class Config {
 	}
 	
 	public static function getValues() {
-		if(!self::$_status)
+		if (!self::$_status)
 			throw new Exception('Config not loaded!');
 
 		return self::$_values;
 	}
 	
 	public static function get($param) {
-		if(!isset(self::$_values[$param]))
+		if (!isset(self::$_values[$param]))
 			throw new Exception("Config variable '$param' is missing!");
 
-		if(!self::$_status)
+		if (!self::$_status)
 			throw new Exception('Config not loaded!');
 
 		return self::$_values[$param];

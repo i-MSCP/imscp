@@ -149,7 +149,7 @@ SQL_QUERY;
 // common page data.
 
 /**
- * check user sql permision
+ * check user sql permission
  */
 function check_sql_permissions($sql, $user_id) {
 	if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {

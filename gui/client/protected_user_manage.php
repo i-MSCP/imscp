@@ -52,7 +52,8 @@ function gen_user_action($id, $status) {
 }
 
 function gen_group_action($id, $status, $group) {
-	if ( $status === Config::get('ITEM_OK_STATUS') && $group != Config::get('AWSTATS_GROUP_AUTH') ) {
+	if ($status === Config::get('ITEM_OK_STATUS')
+		&& $group != Config::get('AWSTATS_GROUP_AUTH')) {
 		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
 	} else {
 		return array(tr('N/A'), '');

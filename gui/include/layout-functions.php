@@ -112,7 +112,7 @@ function get_menu_vars($menu_link) {
 	$replace[] = $rs->fields['zip'];
 	$search [] = '{city}';
 	$replace[] = $rs->fields['city'];
-	if(Config::get('DATABASE_REVISION')>=11){
+	if (Config::get('DATABASE_REVISION')>=11) {
 		$search [] = '{state}';
 		$replace[] = $rs->fields['state'];
 	}

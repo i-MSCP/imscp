@@ -33,7 +33,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));
 
-	if ( (trim($rs->fields('fname')) != '') && (trim($rs->fields('lname')) != '') ) {
+	if ((trim($rs->fields('fname')) != '') && (trim($rs->fields('lname')) != '')) {
 		$data['sender_name'] = $rs->fields('fname') . ' ' . $rs->fields('lname');
 	} else if (trim($rs->fields('fname')) != '') {
 		$data['sender_name'] = $rs->fields('fname');
@@ -66,7 +66,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
-	if ($rs ->RowCount() == 1 ) {
+	if ($rs->RowCount() == 1) {
 		$data['subject'] = $rs->fields['subject'];
 		$data['message'] = $rs->fields['message'];
 	} else {
@@ -94,7 +94,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
-	if ($rs ->RowCount() == 0 ) {
+	if ($rs->RowCount() == 0) {
 
 		$query = <<<SQL_QUERY
 			INSERT INTO `email_tpls`

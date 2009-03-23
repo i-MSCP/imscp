@@ -39,8 +39,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 // Get Server IPs;
 
@@ -65,8 +65,8 @@ function get_server_ip(&$tpl, &$sql) {
 			array(
 				'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
 				'RSL_IP_LIST' => ''
-				)
-			);
+			)
+		);
 
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
@@ -76,8 +76,8 @@ function get_server_ip(&$tpl, &$sql) {
 				'TR_RSL_IP_ASSIGN' => tr('Assign'),
 				'TR_RSL_IP_LABEL' => tr('Label'),
 				'TR_RSL_IP_IP' => tr('Number'),
-				)
-			);
+			)
+		);
 		while (!$rs->EOF) {
 			$tpl->assign(
 				array(
@@ -105,8 +105,8 @@ function get_server_ip(&$tpl, &$sql) {
 					'RSL_IP_CKB_NAME' => $ip_var_name,
 					'RSL_IP_CKB_VALUE' => 'asgned',
 					'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned,
-					)
-				);
+				)
+			);
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 
@@ -217,16 +217,14 @@ function add_reseller(&$tpl, &$sql) {
 
 			$query = "
 				INSERT INTO user_gui_props
-				  (
+					(
 					user_id,
 					lang,
 					layout,
 					logo
-				  )
+					)
 				VALUES
-				  (
-					?, ?, ?, ?
-				  )
+					(?, ?, ?, ?)
 			";
 
 			$rs = exec_query($sql, $query, array($new_admin_id,
@@ -235,8 +233,8 @@ function add_reseller(&$tpl, &$sql) {
 					$user_logo));
 
 			/*
-			* 'reseller_props' table entry;
-			*/
+			 * 'reseller_props' table entry;
+			 */
 
 			$nreseller_max_domain_cnt = clean_input($_POST['nreseller_max_domain_cnt']);
 			$nreseller_max_subdomain_cnt = clean_input($_POST['nreseller_max_subdomain_cnt']);
@@ -367,8 +365,8 @@ function add_reseller(&$tpl, &$sql) {
 				'MAX_SQL_USERS_COUNT' => '',
 				'MAX_TRAFFIC_AMOUNT' => '',
 				'MAX_DISK_AMOUNT' => ''
-				)
-			);
+			)
+		);
 	}
 }
 
@@ -540,15 +538,16 @@ $tpl->assign(
 		'TR_PHONE' => tr('Phone'),
 		'TR_ADD' => tr('Add'),
 		'GENPAS' => passgen()
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

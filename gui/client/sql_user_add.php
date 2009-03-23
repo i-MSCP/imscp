@@ -86,8 +86,8 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 		SELECT
 			t1.`sqld_id`, t2.`domain_id`, t2.`domain_name`
 		FROM
-			`sql_database` as t1,
-			`domain` as t2
+			`sql_database` AS t1,
+			`domain` AS t2
 		WHERE
 			t1.`sqld_id` = ?
 		AND
@@ -128,7 +128,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 	$oldrs_name = '';
 	$userlist = get_sqluser_list_of_current_db($sql, $db_id);
 	$dmn_id = get_user_domain_id($sql, $user_id);
-	// Lets select all sqlusers of the current domain except the users of the current database
+	// Let's select all sqlusers of the current domain except the users of the current database
 	$query = "
 		SELECT
 			t1.`sqlu_name`,
@@ -172,7 +172,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 		}
 		$rs->MoveNext();
 	}
-	// Lets hide the combobox in case there are no other sqlusers
+	// let's hide the combobox in case there are no other sqlusers
 	if (!$user_found) {
 		$tpl->assign('SHOW_SQLUSER_LIST', '');
 		return false;
@@ -182,7 +182,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 }
 
 function check_db_user(&$sql, $db_user) {
-	$query = "SELECT count(User) AS cnt FROM mysql.user WHERE User=?";
+	$query = "SELECT COUNT(User) AS cnt FROM mysql.user WHERE User=?";
 
 	$rs = exec_query($sql, $query, array($db_user));
 	return $rs->fields['cnt'];
@@ -191,7 +191,7 @@ function check_db_user(&$sql, $db_user) {
 function add_sql_user(&$sql, $user_id, $db_id) {
 	if (!isset($_POST['uaction'])) return;
 
-	// let's check user input;
+	// let's check user input
 
 	if (empty($_POST['user_name']) && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Please type user name!'));
@@ -203,17 +203,17 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		return;
 	}
 
-	if ((isset($_POST['pass']) AND isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] AND !isset($_POST['Add_Exist'])) {
+	if ((isset($_POST['pass']) && isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Entered passwords do not match!'));
 		return;
 	}
 
-	if (isset($_POST['pass']) AND strlen($_POST['pass']) > Config::get('MAX_SQL_PASS_LENGTH') && !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass']) && strlen($_POST['pass']) > Config::get('MAX_SQL_PASS_LENGTH') && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password!'));
 		return;
 	}
 
-	if (isset($_POST['pass']) AND !chk_password($_POST['pass']) AND !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass']) && !chk_password($_POST['pass']) && !isset($_POST['Add_Exist'])) {
 		if (Config::get('PASSWD_STRONG')) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
 		} else {
@@ -240,9 +240,15 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	if (!isset($_POST['Add_Exist'])) {
 
 		// we'll use domain_id in the name of the database;
-		if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
+		if (isset($_POST['use_dmn_id'])
+			&& $_POST['use_dmn_id'] === 'on'
+			&& isset($_POST['id_pos'])
+			&& $_POST['id_pos'] === 'start') {
 			$db_user = $dmn_id . "_" . clean_input($_POST['user_name']);
-		} else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
+		} else if (isset($_POST['use_dmn_id'])
+			&& $_POST['use_dmn_id'] === 'on'
+			&& isset($_POST['id_pos'])
+			&& $_POST['id_pos'] === 'end') {
 			$db_user = clean_input($_POST['user_name']) . "_" . $dmn_id;
 		} else {
 			$db_user = clean_input($_POST['user_name']);
@@ -284,7 +290,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	$query = "
 		SELECT
-			`sqld_name` as `db_name`
+			`sqld_name` AS `db_name`
 		FROM
 			`sql_database`
 		WHERE
@@ -299,9 +305,9 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	// add user in the mysql system tables;
 
 	$new_db_name = ereg_replace("_", "\\_", $db_name);
-	$query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'localhost\' identified by ?';
+	$query = 'GRANT ALL ON ' . quoteIdentifier($new_db_name) . '.* to ?@\'localhost\' identified by ?';
 	$rs = exec_query($sql, $query, array($db_user, $user_pass));
-	$query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?';
+	$query = 'GRANT ALL ON ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?';
 	$rs = exec_query($sql, $query, array($db_user, $user_pass));
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . $db_user);
@@ -329,15 +335,23 @@ function gen_page_post_data(&$tpl, $db_id) {
 	}
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-		$tpl->assign(array('USER_NAME' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
+		$tpl->assign(
+			array(
+				'USER_NAME' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked="checked"' : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked="checked"' : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''));
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''
+			)
+		);
 	} else {
-		$tpl->assign(array('USER_NAME' => '',
+		$tpl->assign(
+			array(
+				'USER_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => '',
-				'END_ID_POS_CHECKED' => 'checked="checked"'));
+				'END_ID_POS_CHECKED' => 'checked="checked"'
+			)
+		);
 	}
 
 	$tpl->assign('ID', $db_id);
@@ -350,10 +364,14 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 }
 
 $theme_color = Config::get('USER_INITIAL_THEME');
-$tpl->assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ispCP - Client/Add SQL User'),
+$tpl->assign(
+	array(
+		'TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ispCP - Client/Add SQL User'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 // dynamic page data.
 
@@ -371,7 +389,9 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_ADD_SQL_USER' => tr('Add SQL user'),
+$tpl->assign(
+	array(
+		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('In front the name'),
@@ -381,7 +401,9 @@ $tpl->assign(array('TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_ADD_EXIST' => tr('Add existing user'),
 		'TR_PASS' => tr('Password'),
 		'TR_PASS_REP' => tr('Repeat password'),
-		'TR_SQL_USER_NAME' => tr('Existing SQL users')));
+		'TR_SQL_USER_NAME' => tr('Existing SQL users')
+	)
+);
 
 gen_page_message($tpl);
 

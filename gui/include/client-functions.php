@@ -636,7 +636,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 		);
 	}
 
-	# Hide 'Update Hosting Package'-Button, if there are none
+	// Hide 'Update Hosting Package'-Button, if there are none
 	$query = <<<SQL_QUERY
 		SELECT
 			`id`

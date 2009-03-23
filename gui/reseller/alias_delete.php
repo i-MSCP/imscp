@@ -34,17 +34,18 @@ else {
 $reseller_id = $_SESSION['user_id'];
 
 $query = <<<SQL_QUERY
-	select
-		t1.domain_id, t1.alias_id, t1.alias_name, t2.domain_id, t2.domain_created_id
-	from
-		domain_aliasses as t1,
-		domain as t2
-	where
-			t1.alias_id = ?
-		and
-			t1.domain_id = t2.domain_id
-		and
-			t2.domain_created_id = ?
+	SELECT
+		t1.domain_id, t1.alias_id, t1.alias_name,
+		t2.domain_id, t2.domain_created_id
+	FROM
+		domain_aliasses AS t1,
+		domain AS t2
+	WHERE
+		t1.alias_id = ?
+	AND
+		t1.domain_id = t2.domain_id
+	AND
+		t2.domain_created_id = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($del_id, $reseller_id));
@@ -59,9 +60,9 @@ $delete_status = Config::get('ITEM_DELETE_STATUS');
 
 /* check for mail acc in ALIAS domain (ALIAS MAIL) and delete them */
 $query = <<<SQL_QUERY
-	update
+	UPDATE
 		mail_users
-	set
+	SET
 		status = ?
 	WHERE
 		(`sub_id` = ?
@@ -81,11 +82,11 @@ while (!$rs->EOF) {
 	$rs->MoveNext();
 }
 
-$res = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($del_id));
+$res = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id = ?", array($del_id));
 $dat = $res->FetchRow();
 
-exec_query($sql, "update subdomain_alias set subdomain_alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
-exec_query($sql, "update domain_aliasses set alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' where alias_id=?", array($del_id));
+exec_query($sql, "UPDATE subdomain_alias SET subdomain_alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' WHERE alias_id = ?", array($del_id));
+exec_query($sql, "UPDATE domain_aliasses SET alias_status='" . Config::get('ITEM_DELETE_STATUS') . "' WHERE alias_id = ?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);

@@ -72,7 +72,7 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 		AND
 			`status` != ?
 	";
-	// lets count
+	// let's count
 	$rs = exec_query($sql, $count_query, array($user_id, 'added'));
 	$records_count = $rs->fields['cnt'];
 
@@ -128,7 +128,7 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 		while (!$rs->EOF) {
 			$plan_id = $rs->fields['plan_id'];
 			$order_status = tr('New order');
-			// lets get hosting plan name
+			// let's get hosting plan name
 			$planname_query = "
 				SELECT
 					`name`

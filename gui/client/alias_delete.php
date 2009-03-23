@@ -48,7 +48,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for subdomains
 	$query = "
 		SELECT
-			count(`subdomain_alias_id`) as `count`
+			COUNT(*) AS `count`
 		FROM
 			`subdomain_alias`
 		WHERE
@@ -56,7 +56,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	";
 
 	$rs = exec_query($sql, $query, array($als_id));
-	if ($rs->fields['count'] > 0 ) {
+	if ($rs->fields['count'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has subdomains!<br>First remove them!'));
 		header('Location: domains_manage.php');
 		exit(0);
@@ -65,7 +65,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for mail accounts
 	$query = "
 		SELECT
-			count(`mail_id`) as `cnt`
+			COUNT(*) AS `cnt`
 		FROM
 			`mail_users`
 		WHERE
@@ -80,7 +80,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($als_id,$als_id));
 
-	if ($rs->fields['cnt'] > 0 ) {
+	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'));
 		header('Location: domains_manage.php');
 		exit(0);
@@ -105,7 +105,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	";
 
 	$rs = exec_query($sql, $query, array($als_id));
-	if ($rs->fields['ftpnum'] > 0 ) {
+	if ($rs->fields['ftpnum'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has FTP accounts!<br>First remove them!'));
 		header('Location: domains_manage.php');
 		exit(0);

@@ -21,10 +21,10 @@
 // site functions
 function gen_button_list(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
-		select
-		  *
-	  from
-		  custom_menus
+		SELECT
+			*
+		FROM
+			custom_menus
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -87,12 +87,13 @@ function add_new_button(&$sql) {
 			return;
 		}
 
-		if(!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)){
+		if (!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
 			set_page_message(tr('Invalid URL!'));
 			return;
 		}
 
-		if(!empty($button_target) && !in_array($button_target,array('_blank', '_parent', '_self', '_top' ))){
+		if (!empty($button_target)
+			&& !in_array($button_target, array('_blank', '_parent', '_self', '_top'))) {
 			set_page_message(tr('Invalid target!'));
 			return;
 		}
@@ -105,7 +106,7 @@ function add_new_button(&$sql) {
 				`menu_link`,
 				`menu_target`
 				)
-			VALUES ( ?, ?, ?, ?)
+			VALUES (?, ?, ?, ?)
 		";
 
 		$rs = exec_query($sql, $query, array($button_view,
@@ -126,9 +127,9 @@ function delete_button(&$sql) {
 		$delete_id = $_GET['delete_id'];
 
 		$query = <<<SQL_QUERY
-			delete
-				from custom_menus
-			where
+			DELETE FROM
+				custom_menus
+			WHERE
 				menu_id  = ?
 SQL_QUERY;
 
@@ -147,11 +148,11 @@ function edit_button(&$tpl, &$sql) {
 		$edit_id = $_GET['edit_id'];
 
 		$query = "
-			select
+			SELECT
 				*
-			from
+			FROM
 				custom_menus
-			where
+			WHERE
 				menu_id = ?
 		";
 
@@ -225,33 +226,36 @@ function update_button(&$sql) {
 			return;
 		}
 
-		if(!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)){
+		if (!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
 			set_page_message(tr('Invalid URL!'));
 			return;
 		}
 
-		if(!empty($button_target) && !in_array($button_target,array('_blank', '_parent', '_self', '_top' ))){
+		if (!empty($button_target)
+			&& !in_array($button_target, array('_blank', '_parent', '_self', '_top'))) {
 			set_page_message(tr('Invalid target!'));
 			return;
 		}
 		
 		$query = "
-			update
+			UPDATE
 				custom_menus
-			set
+			SET
 				menu_level = ?,
 				menu_name = ?,
 				menu_link = ?,
 				menu_target = ?
-			where
+			WHERE
 				menu_id = ?
 		";
 
-		$rs = exec_query($sql, $query, array($button_view,
+		$rs = exec_query($sql, $query, array(
+				$button_view,
 				$button_name,
 				$button_link,
 				$button_target,
-				$button_id));
+				$button_id)
+		);
 
 		set_page_message(tr('Custom menu data updated successful!'));
 		return;
@@ -274,12 +278,13 @@ $tpl->define_dynamic('edit_button', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ispCP - Admin - Manage custom menus'),
+	array(
+		'TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ispCP - Admin - Manage custom menus'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
@@ -298,27 +303,27 @@ update_button($sql);
 gen_button_list($tpl, $sql);
 
 $tpl->assign(
-		array(
-			'TR_TITLE_CUSTOM_MENUS' => tr('Manage custom menus'),
-			'TR_ADD_NEW_BUTTON' => tr('Add new button'),
-			'TR_BUTTON_NAME' => tr('Button name'),
-			'TR_BUTTON_LINK' => tr('Button link'),
-			'TR_BUTTON_TARGET' => tr('Button target'),
-			'TR_VIEW_FROM' => tr('Show in'),
-			'ADMIN' => tr('Administrator level'),
-			'RESELLER' => tr('Reseller level'),
-			'USER' => tr('Enduser level'),
-			'RESSELER_AND_USER' => tr('Reseller and enduser level'),
-			'TR_ADD' => tr('Add'),
-			'TR_MENU_NAME' => tr('Menu button'),
-			'TR_ACTON' => tr('Action'),
-			'TR_EDIT' => tr('Edit'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_LEVEL' => tr('Level'),
-			'TR_SAVE' => tr('Save'),
-			'TR_EDIT_BUTTON' => tr('Edit button')
-		)
-	);
+	array(
+		'TR_TITLE_CUSTOM_MENUS' => tr('Manage custom menus'),
+		'TR_ADD_NEW_BUTTON' => tr('Add new button'),
+		'TR_BUTTON_NAME' => tr('Button name'),
+		'TR_BUTTON_LINK' => tr('Button link'),
+		'TR_BUTTON_TARGET' => tr('Button target'),
+		'TR_VIEW_FROM' => tr('Show in'),
+		'ADMIN' => tr('Administrator level'),
+		'RESELLER' => tr('Reseller level'),
+		'USER' => tr('Enduser level'),
+		'RESSELER_AND_USER' => tr('Reseller and enduser level'),
+		'TR_ADD' => tr('Add'),
+		'TR_MENU_NAME' => tr('Menu button'),
+		'TR_ACTON' => tr('Action'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_LEVEL' => tr('Level'),
+		'TR_SAVE' => tr('Save'),
+		'TR_EDIT_BUTTON' => tr('Edit button')
+	)
+);
 
 gen_page_message($tpl);
 

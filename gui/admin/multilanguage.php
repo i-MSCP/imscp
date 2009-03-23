@@ -55,7 +55,7 @@ function update_def_lang() {
 			$rs = exec_query($sql, $query, array($user_id));
 
 			if ($rs->RecordCount() == 0) {
-				$query = "INSERT INTO `user_gui_props` ( `user_id`, `lang`, `layout`) VALUES ( ?, ?, ?)";
+				$query = "INSERT INTO `user_gui_props` (`user_id`, `lang`, `layout`) VALUES (?, ?, ?)";
 				$rs = exec_query($sql, $query, array($user_id, $user_lang, $theme));
 			} else {
 				$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
@@ -118,7 +118,11 @@ function install_lang() {
 				return;
 			}
 
-			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language']) || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $ab['ispcp_languageSetlocaleValue']) || !preg_match('/^[a-z0-9]+$/Di', $ab['ispcp_table'])) {
+			if (empty($ab['ispcp_languageSetlocaleValue'])
+				|| empty($ab['ispcp_table'])
+				|| empty($ab['ispcp_language'])
+				|| !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $ab['ispcp_languageSetlocaleValue'])
+				|| !preg_match('/^[a-z0-9]+$/Di', $ab['ispcp_table'])) {
 				set_page_message(tr('Uploaded file does not contain the language information!'));
 				return;
 			}

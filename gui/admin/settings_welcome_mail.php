@@ -47,10 +47,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 		$message .= tr('Please specify message!');
 	}
 
-	if(!empty($message)) {
+	if (!empty($message)) {
 		set_page_message($message);
-	}
-	else {
+	} else {
 		set_welcome_email($user_id, $data);
 		set_page_message(tr('Auto email template data updated!'));
 	}

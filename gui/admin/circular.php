@@ -67,9 +67,9 @@ SQL_QUERY;
 
 		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['fname'] . " " . $rs->fields['lname'];
-		} elseif(isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
+		} elseif (isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['fname'];
-		} elseif(!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
+		} elseif (!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['lname'];
 		} else {
 			$sender_name = "";

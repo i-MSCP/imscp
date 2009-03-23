@@ -81,7 +81,7 @@ $street_one		= $rs->fields['street1'];
 $street_two		= $rs->fields['street2'];
 $customer_id	= $rs->fields['customer_id'];
 $user_email		= $rs->fields['email'];
-// lets check the reseller limits
+// let's check the reseller limits
 $err_msg = "";
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
@@ -152,8 +152,11 @@ $query = "
 	)
 ";
 
-$res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
-		$firm, $zip, $city, $state, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
+$res = exec_query($sql, $query, array(
+	$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
+	$zip, $city, $state, $country, $user_email, $phone, $fax, $street_one,
+	$street_two, $customer_id)
+);
 
 print $sql->ErrorMsg();
 
@@ -234,19 +237,20 @@ $query = "
 $rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
 
 // Create the 3 default addresses if wanted
-if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
+if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+	client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
 
 // ispcp 2.5 feature
 // add_domain_extras($dmn_id, $record_id, $sql);
-// lets send mail to user
-send_add_user_auto_msg ($reseller_id,
+// let's send mail to user
+send_add_user_auto_msg($reseller_id,
 	$dmn_user_name,
 	$pure_user_pass,
 	$user_email,
 	$first_name,
 	$last_name,
 	tr('Domain account')
-	);
+);
 
 // add user into user_gui_props => domain looser needs language and skin too :-)
 $user_def_lang = $_SESSION['user_def_lang'];
@@ -254,9 +258,9 @@ $user_theme_color = $_SESSION['user_theme'];
 
 $query = "
 	INSERT INTO `user_gui_props`
-		(`user_id`, `lang`, `layout` )
+		(`user_id`, `lang`, `layout`)
 	VALUES
-		( ?, ?, ? )
+		(?, ?, ?)
 ";
 
 $res = exec_query($sql, $query, array($record_id,

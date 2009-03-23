@@ -286,8 +286,8 @@ class databaseUpdate extends ispcpUpdate{
 	 */
 	protected function _databaseUpdate_10() {
 		$sqlUpd = array();
-		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, ';' ) WHERE `name` LIKE \"PORT_%\"";
-		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT( `value`, 'localhost' ) WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
+		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, ';') WHERE `name` LIKE \"PORT_%\"";
+		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, 'localhost') WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
 		
 		return $sqlUpd;
 	}
@@ -305,8 +305,8 @@ class databaseUpdate extends ispcpUpdate{
 	 */
 	protected function _databaseUpdate_11() {
 		$sqlUpd = array();
-		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
-		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
 		return $sqlUpd;
 	}
 

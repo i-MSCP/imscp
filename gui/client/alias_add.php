@@ -126,7 +126,9 @@ function init_empty_data() {
 } // End of init_empty_data()
 
 
-// Show data fields
+/**
+ * Show data fields
+ */
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
@@ -188,12 +190,12 @@ function add_domain_alias(&$sql, &$err_al) {
 			$forward .= "/";
 		}
 	} else {
-		// now lets fix the mountpoint
+		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
 
-		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name`=?";
+		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));
-		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name`=?";
+		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
@@ -211,7 +213,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		}
 	}
 
-	if('_off_' !== $err_al) {
+	if ('_off_' !== $err_al) {
 		return;
 	}
 
@@ -221,7 +223,7 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$status = Config::get('ITEM_ORDERED_STATUS');
 
-	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) values (?, ?, ?, ?, ?, ?)";
+	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
@@ -240,7 +242,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		set_page_message(tr('Alias scheduled for addition!'));
 	}
 
-	header( "Location: domains_manage.php" );
+	header("Location: domains_manage.php");
 	die();
 } // End of add_domain_alias();
 

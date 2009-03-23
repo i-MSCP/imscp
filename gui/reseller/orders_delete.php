@@ -64,7 +64,7 @@ SQL_QUERY;
 set_page_message(tr('Customer order was removed successful!'));
 
 write_log($_SESSION['user_logged'].": deletes customer order.");
-header( "Location: orders.php");
+header("Location: orders.php");
 die();
 
 ?>

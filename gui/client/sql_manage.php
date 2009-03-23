@@ -119,7 +119,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 
 // common page data.
 
-// check User sql permision
+// check User sql permission
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	header("Location: index.php");
 	exit;

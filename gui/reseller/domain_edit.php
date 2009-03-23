@@ -99,7 +99,7 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	}
 	load_additional_data($_SESSION['user_id'], $editid);
 } else {
-	// Get user id that come for edit
+	// Get user id that comes for edit
 	if (isset($_GET['edit_id'])) {
 		$editid = $_GET['edit_id'];
 	}
@@ -114,7 +114,9 @@ gen_editdomain_page($tpl);
 
 // Begin function block
 
-// Load data from sql
+/**
+ * Load data from sql
+ */
 function load_user_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
 
@@ -156,7 +158,9 @@ SQL_QUERY;
 	load_additional_data($user_id, $domain_id);
 } // End of load_user_data()
 
-// Load additional data
+/**
+ * Load additional data
+ */
 function load_additional_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
 	global $domain_name, $domain_ip, $php_sup;
@@ -218,7 +222,9 @@ SQL_QUERY;
 	$username = $data['admin_name'];
 } // End of load_additional_data()
 
-// Show user data
+/**
+ * Show user data
+ */
 function gen_editdomain_page(&$tpl) {
 	global $domain_name, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
@@ -281,7 +287,9 @@ function gen_editdomain_page(&$tpl) {
 	);
 } // End of gen_editdomain_page()
 
-// Check input data
+/**
+ * Check input data
+ */
 function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql, $domain_ip, $domain_php, $domain_cgi;
 
@@ -583,7 +591,8 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

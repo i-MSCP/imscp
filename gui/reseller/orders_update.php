@@ -32,7 +32,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	die();
 }
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = <<<SQL_QUERY
 		SELECT
 			*
@@ -71,7 +72,7 @@ if ($rs->RecordCount() == 0) {
 $hpid = $rs->fields['plan_id'];
 $customer_id = $rs->fields['customer_id'];
 $dmn_id = get_user_domain_id($sql, $customer_id);
-// lets check the reseller limits
+// let's check the reseller limits
 $err_msg = '';
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {

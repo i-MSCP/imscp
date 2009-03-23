@@ -85,7 +85,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 // Begin function declaration lines
 
@@ -160,17 +161,17 @@ SQL_QUERY;
 			$forward .= "/";
 		}
 	} else {
-		// now lets fix the mountpoint
+		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
 
-		$res = exec_query($sql, "select domain_id from domain_aliasses where alias_name=?", array($alias_name));
-		$res2 = exec_query($sql, "select domain_id from domain where domain_name = ?", array($alias_name));
+		$res = exec_query($sql, "SELECT domain_id FROM domain_aliasses WHERE alias_name = ?", array($alias_name));
+		$res2 = exec_query($sql, "SELECT domain_id FROM domain WHERE domain_name = ?", array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
 
-		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id`=? AND `subdomain_mount`=?"; 
+		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id` = ? AND `subdomain_mount` = ?"; 
 		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
 		$subdomdata = $subdomres->FetchRow(); 
 		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?) AND `subdomain_alias_mount`=?"; 

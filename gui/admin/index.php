@@ -40,13 +40,13 @@ function gen_system_message(&$tpl, &$sql) {
 
 	$query = "
 		SELECT
-			count(`ticket_id`) as cnum
+			COUNT(*) AS cnum
 		FROM
 			`tickets`
 		WHERE
 			`ticket_to` = ?
 		AND
-			(`ticket_status` = '2' or `ticket_status` = '5')
+			(`ticket_status` = '2' OR `ticket_status` = '5')
 		AND
 			`ticket_reply` = 0
 	";
@@ -59,11 +59,11 @@ function gen_system_message(&$tpl, &$sql) {
 		$tpl->assign(array('MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(
-				array(
-					'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-					'TR_VIEW' => tr('View')
-					)
-			);
+			array(
+				'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+				'TR_VIEW' => tr('View')
+			)
+		);
 
 		$tpl->parse('MSG_ENTRY', 'msg_entry');
 	}
@@ -75,16 +75,15 @@ function get_update_infos(&$tpl) {
 
 	if (criticalUpdate::getInstance()->checkUpdateExists()) {
 		criticalUpdate::getInstance()->executeUpdates();
-		if(criticalUpdate::getInstance()->getErrorMessage()!="")
+		if (criticalUpdate::getInstance()->getErrorMessage()!="")
 			system_message(criticalUpdate::getInstance()->getErrorMessage());
 		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
 		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
-	}
-	else {
+	} else {
 		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
 	}
 
-	if(databaseUpdate::getInstance()->checkUpdateExists()) {
+	if (databaseUpdate::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
@@ -101,7 +100,7 @@ function get_update_infos(&$tpl) {
 		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class="link">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
-		if( versionUpdate::getInstance()->getErrorMessage() != "" ) {
+		if (versionUpdate::getInstance()->getErrorMessage() != "") {
 			$tpl->assign(array('UPDATE' => versionUpdate::getInstance()->getErrorMessage()));
 			$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		} else {
@@ -175,13 +174,13 @@ function gen_server_trafic(&$tpl, &$sql) {
  */
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Admin/Main Index'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'THEME_CHARSET' => tr('encoding')
-			)
-	);
+	array(
+		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Admin/Main Index'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'THEME_CHARSET' => tr('encoding')
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');

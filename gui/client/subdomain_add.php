@@ -163,7 +163,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
 			SELECT
-				count(`subdomain_alias_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`subdomain_alias`
 			WHERE
@@ -174,7 +174,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	
 		$query_domain = "
 			SELECT
-				count(`alias_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`domain_aliasses`
 			WHERE
@@ -183,7 +183,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	} else {
 		$query_subdomain = "
 			SELECT
-				count(`subdomain_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`subdomain`
 			WHERE
@@ -194,7 +194,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	
 		$query_domain = "
 			SELECT
-				count(`domain_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`domain`
 			WHERE
@@ -206,9 +206,14 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	$rs_subdomain = exec_query($sql, $query_subdomain, array($domain_id, $sub_name));
 	$rs_domain = exec_query($sql, $query_domain, array($domain_name));
 
-	$std_subs = array( 'www', 'mail', 'webmail', 'pop', 'pop3', 'imap', 'smtp', 'pma', 'relay', 'ftp', 'ns1', 'ns2', 'localhost' );
+	$std_subs = array(
+		'www', 'mail', 'webmail', 'pop', 'pop3', 'imap', 'smtp', 'pma', 'relay',
+		'ftp', 'ns1', 'ns2', 'localhost'
+	);
 
-	if ($rs_subdomain->fields['cnt'] == 0 && $rs_domain->fields['cnt'] == 0 && !in_array($sub_name, $std_subs)) {
+	if ($rs_subdomain->fields['cnt'] == 0
+		&& $rs_domain->fields['cnt'] == 0
+		&& !in_array($sub_name, $std_subs)) {
 		return false;
 	}
 
@@ -220,7 +225,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
 			SELECT
-				count(`subdomain_alias_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`subdomain_alias`
 			WHERE
@@ -233,7 +238,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	} else {
 		$query = "
 			SELECT
-				count(`subdomain_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`subdomain`
 			WHERE
@@ -244,7 +249,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	
 		$query2 = "
 			SELECT
-				count(`alias_id`) as cnt
+				COUNT(*) AS cnt
 			FROM
 				`domain_aliasses`
 			WHERE
@@ -340,7 +345,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 			if ($sub_mnt_pt[0] != '/')
 				$sub_mnt_pt = '/'.$sub_mnt_pt;
 			$sub_mnt_pt = $als_mnt.$sub_mnt_pt;
-			$sub_mnt_pt = str_replace( '//', '/', $sub_mnt_pt );
+			$sub_mnt_pt = str_replace('//', '/', $sub_mnt_pt);
 			$domain_id = $_POST['als_id'];
 		}
 
@@ -353,7 +358,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		} else if (!chk_mountp($sub_mnt_pt)) {
 			set_page_message(tr('Incorrect mount point syntax'));
 		} else {
-			// now lets fix the mountpoint
+			// now let's fix the mountpoint
 			$sub_mnt_pt = array_decode_idna($sub_mnt_pt, true);
 
 			subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt);
@@ -366,7 +371,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 
 // common page data.
 
-// check User sql permision
+// check user sql permission
 if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
 	header("Location: index.php");
 }

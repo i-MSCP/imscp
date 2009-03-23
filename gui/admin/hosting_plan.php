@@ -168,12 +168,13 @@ SQL_QUERY;
 				)
 			);
 			$tpl->parse('HP_ENTRY', '.hp_entry');
-		} // End  loop
+		} // end while
 		$tpl->parse('HP_TABLE', 'hp_table');
 	}
 } // End of gen_hp_table()
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo check/replace/remove dirty HTMLPurifier hack
+ */
+
 //dirty hack (disable HTMLPurifier until figure out how to let pass post arrays)
 define('OVERRIDE_PURIFIER', null);
 
@@ -132,7 +136,9 @@ function delete_service($port_name) {
 
 	$rs = exec_query($sql, $query, array($port_name));
 
-	$value = ( count(explode(";", $rs->fields['value'])) < 6 ) ? $rs->fields['value'].';' : $rs->fields['value'];
+	$value = (count(explode(";", $rs->fields['value'])) < 6)
+		? $rs->fields['value'].';'
+		: $rs->fields['value'];
 	list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
 	if ($custom == 1) {
@@ -180,7 +186,9 @@ function show_services(&$tpl, &$sql) {
 		while (!$rs->EOF) {
 			$tpl->assign('CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
-			$value = ( count(explode(";", $rs->fields['value'])) < 6 ) ? $rs->fields['value'].';' : $rs->fields['value'];
+			$value = (count(explode(";", $rs->fields['value'])) < 6)
+				? $rs->fields['value'].';'
+				: $rs->fields['value'];
 			list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
 			$selected_udp	= $protocol == 'udp' ? "selected=\"selected\"" : "";
@@ -221,7 +229,7 @@ function show_services(&$tpl, &$sql) {
 				array(
 					'CUSTOM'		=> $custom,
 					'VAR_NAME'		=> $rs->fields['name'],
-					'IP'			=> ($ip=='127.0.0.1'?'localhost':(empty($ip)?Config::get('BASE_SERVER_IP'):$ip)),
+					'IP'			=> ($ip=='127.0.0.1' ? 'localhost' : (empty($ip) ? Config::get('BASE_SERVER_IP') : $ip)),
 					'PORT'			=> $port,
 					'SELECTED_UDP'	=> $selected_udp,
 					'SELECTED_TCP'	=> $selected_tcp,

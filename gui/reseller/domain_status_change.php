@@ -23,16 +23,16 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (!isset($_GET['domain_id'])) {
-	header( "Location: users.php" );
+	header("Location: users.php");
 	die();
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-	header( "Location: users.php" );
+	header("Location: users.php");
 	die();
 }
 
-// so we have domain id and lets disable or enable it
+// so we have domain id and let's disable or enable it
 $domain_id = $_GET['domain_id'];
 
 // check status to know if have to disable or enable it
@@ -49,9 +49,9 @@ SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($domain_id));
 
-//lets check if this reseller has rights to disable/enable this domain
+// let's check if this reseller has rights to disable/enable this domain
 if ($rs->fields['domain_created_id'] != $_SESSION['user_id']) {
-	header( "Location: users.php" );
+	header("Location: users.php");
 	die();
 }
 
@@ -69,7 +69,8 @@ if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 	change_domain_status(&$sql, &$domain_id, $rs->fields['domain_name'], $action, $location);
 
 } else {
-	header( "Location: users.php" );
+	header("Location: users.php");
 	die();
 }
+
 ?>

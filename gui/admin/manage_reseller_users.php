@@ -99,7 +99,7 @@ SQL_QUERY;
 			admin
 		WHERE
 			admin_type = 'user'
-		  AND
+		AND
 			created_by = ?
 		ORDER BY
 			admin_name
@@ -144,7 +144,9 @@ SQL_QUERY;
 }
 
 function update_reseller_user($sql) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user' && check_user_data()) {
+	if (isset($_POST['uaction'])
+		&& $_POST['uaction'] === 'move_user'
+		&& check_user_data()) {
 		set_page_message(tr('User was moved'));
 	}
 }
@@ -224,7 +226,7 @@ SQL_QUERY;
 function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 	$sql = Database::getInstance();
 
-	list ($dest_dmn_current, $dest_dmn_max,
+	list($dest_dmn_current, $dest_dmn_max,
 		$dest_sub_current, $dest_sub_max,
 		$dest_als_current, $dest_als_max,
 		$dest_mail_current, $dest_mail_max,
@@ -235,7 +237,7 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 		$dest_disk_current, $dest_disk_max
 		) = generate_reseller_props($dest_reseller);
 
-	list ($src_dmn_current, $src_dmn_max,
+	list($src_dmn_current, $src_dmn_max,
 		$src_sub_current, $src_sub_max,
 		$src_als_current, $src_als_max,
 		$src_mail_current, $src_mail_max,
@@ -264,7 +266,7 @@ SQL_QUERY;
 
 		$domain_id = $rs->fields['domain_id'];
 
-		list ($sub_current, $sub_max,
+		list($sub_current, $sub_max,
 			$als_current, $als_max,
 			$mail_current, $mail_max,
 			$ftp_current, $ftp_max,
@@ -473,7 +475,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

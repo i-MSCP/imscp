@@ -28,8 +28,8 @@ $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
-	header( 'Location: protected_areas.php' );
-   die();
+	header('Location: protected_areas.php');
+	die();
 }
 
 $change_status = Config::get('ITEM_DELETE_STATUS');
@@ -69,13 +69,13 @@ while (!$rs->EOF) {
 
 	$grp_id_splited = explode(',', $grp_id);
 
-	$key=array_search($group_id,$grp_id_splited);
-	if ($key!==false) {
+	$key = array_search($group_id,$grp_id_splited);
+	if ($key !== false) {
 		unset($grp_id_splited[$key]);
 		if (count($grp_id_splited) == 0) {
 			$status = Config::get('ITEM_DELETE_STATUS');
 		} else {
-			$grp_id=implode(",", $grp_id_splited);
+			$grp_id = implode(",", $grp_id_splited);
 			$status = Config::get('ITEM_CHANGE_STATUS');
 		}
 		$update_query = "
@@ -97,7 +97,7 @@ check_for_lock_file();
 send_request();
 
 write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id");
-header( "Location: protected_user_manage.php" );
+header("Location: protected_user_manage.php");
 die();
 
 ?>

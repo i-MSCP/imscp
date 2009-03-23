@@ -233,7 +233,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 				t2.domain_created_id = ?
 		";
 	}
-	// lets count
+	// let's count
 	$rs = exec_query($sql, $count_query, array($reseller_id));
 	$records_count = $rs->fields['cnt'];
 	// Get all alias records
@@ -299,7 +299,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		if ($als_mount_point == '') $als_mount_point = "/";
 
-		$query = "select ip_number, ip_domain from server_ips where ip_id = ?";
+		$query = "SELECT ip_number, ip_domain FROM server_ips WHERE ip_id = ?";
 
 		$alsip_r = exec_query($sql, $query, array($als_ip_id));
 		$alsip_d = $alsip_r->FetchRow();
@@ -397,12 +397,12 @@ function generate_als_messages(&$tpl, $als_err) {
 
 		unset($_SESSION['aledit']);
 	} else if (isset($_SESSION['orderaldel'])) {
-		if('_no_' === $_SESSION['orderaldel']) {
+		if ('_no_' === $_SESSION['orderaldel']) {
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not deleted!'));
 		}
 		unset($_SESSION['orderaldel']);
 	} else if (isset($_SESSION['orderalact'])) {
-		if('_yes_' === $_SESSION['orderalact'])
+		if ('_yes_' === $_SESSION['orderalact'])
 			$tpl->assign('MESSAGE', tr('Ordered domain alias activated!'));
 		else
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not activated!'));

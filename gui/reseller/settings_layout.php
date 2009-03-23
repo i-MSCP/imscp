@@ -169,8 +169,8 @@ $tpl->assign(
 		'TR_UPLOAD'					=> tr('Upload'),
 		'TR_REMOVE'					=> tr('Remove'),
 		'TR_CHOOSE_DEFAULT_LAYOUT'	=> tr('Choose default layout'),
-	 )
- );
+	)
+);
 
 gen_page_message($tpl);
 

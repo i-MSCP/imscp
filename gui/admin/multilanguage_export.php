@@ -42,12 +42,12 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	if ($rs->RecordCount() == 0) {
-		set_page_message( tr("Incorrect data input!"));
-		header( "Location: multilanguage.php" );
+		set_page_message(tr("Incorrect data input!"));
+		header("Location: multilanguage.php");
 		die();
 	} else {
 		$GLOBALS['class']['output']->showSize=false;
-		header( "Content-type: text/plain; charset=".$encoding );
+		header("Content-type: text/plain; charset=".$encoding);
 		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];
 			$msgstr = $rs->fields['msgstr'];
@@ -59,7 +59,7 @@ SQL_QUERY;
 	}
 } else {
 	set_page_message(tr("Incorrect data input!"));
-	header( "Location: multilanguage.php" );
+	header("Location: multilanguage.php");
 	die();
 }
 

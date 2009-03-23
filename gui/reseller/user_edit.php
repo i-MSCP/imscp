@@ -134,7 +134,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 	}
 
 } else {
-	// Get user id that come for edit
+	// Get user id that comes for edit
 	$hpid = $edit_id;
 	load_user_data_page($hpid);
 	$_SESSION['edit_ID'] = $hpid;
@@ -144,15 +144,18 @@ gen_edituser_page($tpl);
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 //unset_messages();
 
-//
-// Begin function block
-//
+/*
+ * Begin function block
+ */
 
-// Load data from sql
+/**
+ * Load data from sql
+ */
 function load_user_data_page($user_id) {
 	$sql = Database::getInstance();
 	global $dmn_user_name;
@@ -167,8 +170,8 @@ function load_user_data_page($user_id) {
 	$query = "
 		SELECT
 			`admin_name`, `created_by`, `fname`, `lname`, `firm`, `zip`,
-			`city`, `state`, `country`, `email`, `phone`, `fax`, `street1`, `street2`,
-			`customer_id`, `gender`
+			`city`, `state`, `country`, `email`, `phone`, `fax`, `street1`,
+			`street2`, `customer_id`, `gender`
 		FROM
 			`admin`
 		WHERE
@@ -209,7 +212,9 @@ function load_user_data_page($user_id) {
 } // End of gen_load_ehp_page()
 
 
-// Show user data
+/**
+ * Show user data
+ */
 function gen_edituser_page(&$tpl) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
@@ -247,7 +252,9 @@ function gen_edituser_page(&$tpl) {
 } // End of gen_edituser_page()
 
 
-// Function to update changes into db
+/**
+ * Function to update changes into db
+ */
 function update_data_in_db($hpid) {
 	$sql = Database::getInstance();
 	global $dmn_user_name;
@@ -332,7 +339,7 @@ function update_data_in_db($hpid) {
 		
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
-			set_page_message( tr("Entered passwords do not match!"));
+			set_page_message(tr("Entered passwords do not match!"));
 
 			header("Location: user_edit.php?edit_id=$hpid");
 			die();

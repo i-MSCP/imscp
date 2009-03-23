@@ -28,7 +28,7 @@ function check_for_lock_file($wait_lock_timeout = 500000) {
 		usleep($wait_lock_timeout);
 		clearstatcache();
 		// and send header to keep connection
-		header( "Cache-Control: no-store, no-cache, must-revalidate" );
+		header("Cache-Control: no-store, no-cache, must-revalidate");
 	}
 }
 
@@ -110,7 +110,7 @@ function send_request() {
 }
 
 
-function update_user_props ( $user_id, $props ) {
+function update_user_props($user_id, $props) {
 
 	$sql = Database::getInstance();
 
@@ -281,7 +281,7 @@ function update_user_props ( $user_id, $props ) {
 
 /* end */
 
-function escape_user_data ( $data ) {
+function escape_user_data($data) {
 
 	$res_one = preg_replace("/\\\\/", "", $data);
 	$res = preg_replace("/'/", "\\\'", $res_one);

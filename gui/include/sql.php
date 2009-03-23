@@ -52,7 +52,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 	if (!$rs && $failDie) {
 //		var_dump($query);
 //		var_dump($data);
-		if($query instanceof PDOStatement)
+		if ($query instanceof PDOStatement)
 			$msg = $query->errorInfo();
 		else
 			$msg = $sql->errorInfo();

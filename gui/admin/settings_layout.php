@@ -102,7 +102,7 @@ function update_logo() {
 
 		$logoFile = $path . '/themes/user_logos/' . $newFName;
 		move_uploaded_file($fname, $logoFile);
-		chmod ($logoFile, 0644);
+		chmod($logoFile, 0644);
 
 		update_user_logo($newFName, $user_id);
 
@@ -154,6 +154,7 @@ $tpl->assign(
  * static page messages.
  *
  */
+
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
@@ -180,7 +181,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

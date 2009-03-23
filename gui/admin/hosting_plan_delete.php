@@ -28,9 +28,9 @@ if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
 }
 
 
-if(isset($_GET['hpid']) && is_numeric($_GET['hpid']))
+if (isset($_GET['hpid']) && is_numeric($_GET['hpid'])) {
 	$hpid = $_GET['hpid'];
-else {
+} else {
 	$_SESSION['hp_deleted'] = '_no_';
 	header('Location: hosting_plan.php');
 	die();

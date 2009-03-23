@@ -23,16 +23,16 @@ check_login(__FILE__);
 
 
 if (!isset($_GET['domain_id'])) {
-	header( "Location: manage_users.php" );
+	header("Location: manage_users.php");
 	die();
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-	header( "Location: manage_users.php" );
+	header("Location: manage_users.php");
 	die();
 }
 
-// so we have domain id and lets disable or enable it
+// so we have domain id and let's disable or enable it
 $domain_id = $_GET['domain_id'];
 
 // check status to know if have to disable or enable it
@@ -63,7 +63,8 @@ if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 	change_domain_status(&$sql, $domain_id, $rs->fields['domain_name'], $action, $location);
 
 } else {
-	header('Location: manage_users.php's);
+	header('Location: manage_users.php');
 	die();
 }
+
 ?>

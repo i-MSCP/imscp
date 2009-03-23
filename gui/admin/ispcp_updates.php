@@ -66,7 +66,7 @@ function get_update_infos(&$tpl) {
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 	} else {
-		if( versionUpdate::getInstance()->getErrorMessage() != "" ) {
+		if (versionUpdate::getInstance()->getErrorMessage() != "") {
 			$tpl->assign(array('TR_MESSAGE' => versionUpdate::getInstance()->getErrorMessage()));
 		}
 		$tpl->assign('UPDATE_INFOS', '');
@@ -79,6 +79,7 @@ function get_update_infos(&$tpl) {
  * static page messages.
  *
  */
+
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
@@ -99,7 +100,8 @@ get_update_infos($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

@@ -55,8 +55,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 if (isset($_POST['details']) && !empty($_POST['details'])) {
 	$_SESSION['details'] = $_POST['details'];
@@ -116,7 +116,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

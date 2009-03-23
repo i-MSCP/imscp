@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* do we have a proper delete_id ? */
+/* Do we have a proper delete_id? */
 if (!isset($_GET['delete_id'])) {
 	header("Location: ip_manage.php");
 	die();

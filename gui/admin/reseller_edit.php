@@ -48,7 +48,10 @@ $tpl->assign(
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
-// Get Server IPs;
+
+/**
+ * Get Server IPs
+ */
 function get_servers_ips(&$tpl, &$sql, $rip_lst) {
 	$query = "
 		SELECT
@@ -450,7 +453,9 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 function update_reseller(&$sql) {
 	global $edit_id, $reseller_ips;
 
-	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'update_reseller') {
+	if (isset($_POST['Submit'])
+		&& isset($_POST['uaction'])
+		&& $_POST['uaction'] === 'update_reseller') {
 		$user_id = $_SESSION['user_id'];
 
 		if (check_user_data()) {
@@ -607,7 +612,6 @@ function update_reseller(&$sql) {
 
 			header("Location: manage_users.php");
 			die();
-		} else {
 		}
 	}
 }
@@ -632,10 +636,10 @@ function get_reseller_prop(&$sql) {
 			max_sql_user_cnt, current_sql_user_cnt,
 			max_traff_amnt, current_traff_amnt,
 			max_disk_amnt, current_disk_amnt,
-			r.customer_id as customer_id, reseller_ips, gender
+			r.customer_id AS customer_id, reseller_ips, gender
 		FROM
-			admin as a,
-			reseller_props as r
+			admin AS a,
+			reseller_props AS r
 		WHERE
 			a.admin_id = ? AND
 			r.reseller_id = a.admin_id
@@ -648,7 +652,8 @@ function get_reseller_prop(&$sql) {
 		die();
 	}
 
-	return array($rs->fields['admin_name'],
+	return array(
+		$rs->fields['admin_name'],
 		$rs->fields['fname'],
 		$rs->fields['lname'],
 		$rs->fields['firm'],
@@ -682,7 +687,8 @@ function get_reseller_prop(&$sql) {
 		$rs->fields['max_disk_amnt'],
 		$rs->fields['current_disk_amnt'],
 		$rs->fields['customer_id'],
-		$rs->fields['reseller_ips']);
+		$rs->fields['reseller_ips']
+	);
 }
 
 /*
@@ -822,7 +828,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

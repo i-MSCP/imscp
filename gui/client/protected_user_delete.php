@@ -27,7 +27,7 @@ $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 } else {
-	header( 'Location: protected_areas.php' );
+	header('Location: protected_areas.php');
 	die();
 }
 
@@ -77,10 +77,10 @@ $rs = exec_query($sql, $query, array($dmn_id));
 	 while (!$rs->EOF) {
 		$members = explode(',',$rs->fields['members']);
 		$group_id = $rs->fields['id'];
-		$key=array_search($uuser_id,$members);
-		if ($key!==false) {
+		$key = array_search($uuser_id,$members);
+		if ($key !== false) {
 			unset($members[$key]);
-			$members=implode(",",$members);
+			$members = implode(",",$members);
 			$change_status = Config::get('ITEM_CHANGE_STATUS');
 			$update_query = "
 				UPDATE
@@ -97,7 +97,7 @@ $rs = exec_query($sql, $query, array($dmn_id));
 	 }
  }
 
-// lets delete or update htaccess files if this user is assigned
+// let's delete or update htaccess files if this user is assigned
 $query = "
 	SELECT
 		*
@@ -115,13 +115,13 @@ while (!$rs->EOF) {
 
 	$usr_id_splited = explode(',', $usr_id);
 
-	$key=array_search($uuser_id,$usr_id_splited);
-	if ($key!==false) {
+	$key = array_search($uuser_id,$usr_id_splited);
+	if ($key !== false) {
 		unset($usr_id_splited[$key]);
 		if (count($usr_id_splited) == 0) {
 			$status = Config::get('ITEM_DELETE_STATUS');
 		} else {
-			$usr_id=implode(",", $usr_id_splited);
+			$usr_id = implode(",", $usr_id_splited);
 			$status = Config::get('ITEM_CHANGE_STATUS');
 		}
 		$update_query = "
@@ -144,7 +144,7 @@ check_for_lock_file();
 send_request();
 
 write_log("$admin_login: deletes user ID (protected areas): $uname");
-header( "Location: protected_user_manage.php" );
+header("Location: protected_user_manage.php");
 die();
 
 ?>

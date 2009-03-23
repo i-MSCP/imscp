@@ -138,7 +138,8 @@ function init_in_values() {
 	list($dmn_name, $hpid) = explode(";", $step_two);
 	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
 	$dmn_user_name = $dmn_name;
-	if(!chk_dname($dmn_name) || ($hpid==''))return false;
+	if (!chk_dname($dmn_name) || ($hpid==''))
+		return false;
 	return true;
 } // End of init_in_values()
 
@@ -228,7 +229,8 @@ function add_user_data($reseller_id) {
 		$props = $_SESSION["ch_hpprops"];
 		unset($_SESSION["ch_hpprops"]);
 	} else {
-		if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
+		if (Config::exists('HOSTING_PLANS_LEVEL')
+			&& strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {
@@ -287,13 +289,13 @@ function add_user_data($reseller_id) {
 	";
 
 	$res = exec_query($sql, $query, array(
-										$dmn_user_name, $inpass,
-										$reseller_id, $first_name, $last_name,
-										$firm, $zip, $city, $state,
-										$country, $user_email, $phone,
-										$fax, $street_one, $street_two,
-										$customer_id, $gender
-									));
+		$dmn_user_name, $inpass,
+		$reseller_id, $first_name, $last_name,
+		$firm, $zip, $city, $state,
+		$country, $user_email, $phone,
+		$fax, $street_one, $street_two,
+		$customer_id, $gender
+	));
 
 	print $sql->ErrorMsg();
 
@@ -356,7 +358,7 @@ function add_user_data($reseller_id) {
 		client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
 
 	// add_domain_extras($dmn_id, $record_id, $sql);
-	// lets send mail to user
+	// let's send mail to user
 	send_add_user_auto_msg ($reseller_id,
 		$dmn_user_name,
 		$pure_user_pass,

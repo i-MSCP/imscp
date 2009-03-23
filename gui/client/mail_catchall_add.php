@@ -170,7 +170,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		} else if ($item_type === 'subdom') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, CONCAT( t2.subdomain_name, '.', t3.domain_name ) AS subdomain_name, t1.mail_acc
+					t1.mail_id, t1.mail_type, CONCAT(t2.subdomain_name, '.', t3.domain_name) AS subdomain_name, t1.mail_acc
 				FROM
 					mail_users AS t1,
 					subdomain AS t2,
@@ -216,7 +216,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		} else if ($item_type === 'alssub') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, CONCAT( t2.subdomain_alias_name, '.', t3.alias_name ) AS subdomain_name, t1.mail_acc
+					t1.mail_id, t1.mail_type, CONCAT(t2.subdomain_alias_name, '.', t3.alias_name) AS subdomain_name, t1.mail_acc
 				FROM
 					mail_users AS t1,
 					subdomain_alias AS t2,
@@ -394,7 +394,7 @@ function create_catchall_mail_account(&$sql, $id) {
 			foreach ($faray as $value) {
 				$value = trim($value);
 				if (!chk_email($value) && $value !== '') {
-					/* ERR .. strange :) not email in this line - warning */
+					/* ERROR .. strange :) not email in this line - warning */
 					set_page_message(tr("Mail forward list error!"));
 					return;
 				} else if ($value === '') {

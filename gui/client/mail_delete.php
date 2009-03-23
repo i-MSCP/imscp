@@ -29,7 +29,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	user_goto('mail_accounts.php');
 }
 
-/* do we have a proper delete_id ? */
+/* Do we have a proper delete_id? */
 if (!isset($delete_id)) {
 	header("Location: mail_accounts.php");
 	die();

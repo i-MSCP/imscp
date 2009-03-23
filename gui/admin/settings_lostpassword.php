@@ -53,10 +53,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$err_message = tr('Please specify message!');
 	}
 
-	if(!empty($err_message)) {
+	if (!empty($err_message)) {
 		set_page_message($err_message);
-	}
-	else {
+	} else {
 		set_lostpassword_activation_email($user_id, $data_1);
 		set_lostpassword_password_email($user_id, $data_2);
 		set_page_message(tr('Auto email template data updated!'));

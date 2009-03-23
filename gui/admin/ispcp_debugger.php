@@ -23,7 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 function count_requests(&$sql, $id_name, $table) {
-	$query = "select `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
+	$query = "SELECT `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
 	$rs = exec_query($sql, $query, array(Config::get('ITEM_OK_STATUS'), Config::get('ITEM_DISABLED_STATUS'), Config::get('ITEM_ORDERED_STATUS')));
 	$count = $rs->RecordCount();
 	return $count;

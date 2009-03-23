@@ -86,6 +86,7 @@ $tpl->assign(
 /*
  * Dynamic page process
  */
+
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	// Process data
 	if (check_data_iscorrect($tpl)) { // Save data to db
@@ -107,11 +108,12 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
-// *******************************************************
-// * Function definitions
-// *
+/*
+ * Function definitions
+ */
 
 /**
  * Restore form on any error
@@ -153,7 +155,8 @@ function restore_form(&$tpl, &$sql) {
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$_SESSION['hpid'] = $hpid;
 
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				*
@@ -364,8 +367,7 @@ function save_data_to_db() {
 			header("Location: hosting_plan.php");
 			die();
 		}
-	}
-	else {
+	} else {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 		return false;
 	}

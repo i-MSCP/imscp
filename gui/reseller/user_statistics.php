@@ -304,30 +304,29 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_statistic
 gen_logged_from($tpl);
 
 $tpl->assign(
-			array(
-				'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
-				'TR_MONTH' => tr('Month'),
-				'TR_YEAR' => tr('Year'),
-				'TR_SHOW' => tr('Show'),
-				'TR_NO_DOMAINS' => tr('This reseller has no domains yet.'),
-				'TR_DOMAIN_NAME' => tr('Domain'),
-				'TR_TRAFF' => tr('Traffic<br>usage'),
-				'TR_DISK' => tr('Disk<br>usage'),
-				'TR_WEB' => tr('Web<br>traffic'),
-				'TR_FTP_TRAFF' => tr('FTP<br>traffic'),
-				'TR_SMTP' => tr('SMTP<br>traffic'),
-				'TR_POP3' => tr('POP3/IMAP<br>traffic'),
-				'TR_SUBDOMAIN' => tr('Subdomain'),
-				'TR_ALIAS' => tr('Alias'),
-				'TR_MAIL' => tr('Mail'),
-				'TR_FTP' => tr('FTP'),
-				'TR_SQL_DB' => tr('SQL<br>database'),
-				'TR_SQL_USER' => tr('SQL<br>user'),
-
-				'VALUE_NAME' => $name,
-				'VALUE_RID' => $rid
-			)
-	);
+	array(
+		'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
+		'TR_MONTH' => tr('Month'),
+		'TR_YEAR' => tr('Year'),
+		'TR_SHOW' => tr('Show'),
+		'TR_NO_DOMAINS' => tr('This reseller has no domains yet.'),
+		'TR_DOMAIN_NAME' => tr('Domain'),
+		'TR_TRAFF' => tr('Traffic<br>usage'),
+		'TR_DISK' => tr('Disk<br>usage'),
+		'TR_WEB' => tr('Web<br>traffic'),
+		'TR_FTP_TRAFF' => tr('FTP<br>traffic'),
+		'TR_SMTP' => tr('SMTP<br>traffic'),
+		'TR_POP3' => tr('POP3/IMAP<br>traffic'),
+		'TR_SUBDOMAIN' => tr('Subdomain'),
+		'TR_ALIAS' => tr('Alias'),
+		'TR_MAIL' => tr('Mail'),
+		'TR_FTP' => tr('FTP'),
+		'TR_SQL_DB' => tr('SQL<br>database'),
+		'TR_SQL_USER' => tr('SQL<br>user'),
+		'VALUE_NAME' => $name,
+		'VALUE_RID' => $rid
+	)
+);
 
 gen_select_lists($tpl, $month, $year);
 
@@ -338,7 +337,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

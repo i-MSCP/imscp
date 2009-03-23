@@ -22,19 +22,19 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* do we have a proper delete_id ? */
+/* Do we have a proper delete_id? */
 if (!isset($_GET['delete_lang'])) {
-	header( "Location: multilanguage.php" );
+	header("Location: multilanguage.php");
 	die();
 }
 
 $delete_lang = $_GET['delete_lang'];
 
-/* ERROR - we have domains that use this ip */
+/* ERROR - we have domains that use this IP */
 if ($delete_lang == Config::get('USER_INITIAL_LANG')) {
 	set_page_message('Error we can\'t delete system default language!');
 
-	header( "Location: multilanguage.php" );
+	header("Location: multilanguage.php");
 	die();
 }
 
@@ -50,11 +50,11 @@ SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_lang));
 
-/* ERROR - we have domains that use this ip */
+/* ERROR - we have domains that use this IP */
 if ($rs->RecordCount () > 0) {
 	set_page_message('Error we have user that uses that language!');
 
-	header( "Location: multilanguage.php" );
+	header("Location: multilanguage.php");
 	die();
 }
 
@@ -66,7 +66,7 @@ write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_l
 
 set_page_message('Language was removed!');
 
-header( "Location: multilanguage.php" );
+header("Location: multilanguage.php");
 die();
 
 ?>

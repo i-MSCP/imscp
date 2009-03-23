@@ -57,12 +57,13 @@ $tpl->define_dynamic('disk_list_item', 'disk_list');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+	array(
+		'TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 function gen_mount_point(&$tpl) {
 	global $sysinfo;
@@ -76,15 +77,16 @@ function gen_mount_point(&$tpl) {
 		);
 
 		$tpl->assign(
-			array('MOUNT' => $row['mount'],
+			array(
+				'MOUNT' => $row['mount'],
 				'TYPE' => $row['fstype'],
 				'PARTITION' => $row['disk'],
 				'PERCENT' => $row['percent'],
 				'FREE' => sizeit($row['free'], 'KB'),
 				'USED' => sizeit($row['used'], 'KB'),
 				'SIZE' => sizeit($row['size'], 'KB'),
-				)
-			);
+			)
+		);
 
 		$tpl->parse('DISK_LIST_ITEM', '.disk_list_item');
 	}
@@ -97,6 +99,7 @@ function gen_mount_point(&$tpl) {
  * static page messages.
  *
  */
+
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
@@ -124,7 +127,8 @@ if (!isset($cpu['cache'])) {
 }
 
 $tpl->assign(
-	array('TR_SYSTEM_INFO_TITLE' => tr('System info'),
+	array(
+		'TR_SYSTEM_INFO_TITLE' => tr('System info'),
 		'TR_SYSTEM_INFO' => tr('Vital system info'),
 		'TR_CPU_SYSTEM_INFO' => tr('CPU system Info'),
 		'TR_CPU_MODEL' => tr('CPU model'),
@@ -160,8 +164,8 @@ $tpl->assign(
 		'TR_PARTITION' => tr('Partition'),
 		'TR_PERCENT' => tr('Percent'),
 		'TR_SIZE' => tr('Size')
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 
@@ -169,7 +173,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 

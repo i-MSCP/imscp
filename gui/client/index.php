@@ -57,15 +57,15 @@ function gen_system_message(&$tpl, &$sql) {
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
-		select
-			count(ticket_id) as cnum
-		from
+		SELECT
+			COUNT(*) AS cnum
+		FROM
 			tickets
-		where
-			(ticket_to = ? or ticket_from = ?)
-		  and
+		WHERE
+			(ticket_to = ? OR ticket_from = ?)
+		AND
 			ticket_status IN ('1', '2')
-		  and
+		AND
 			ticket_reply = 0
 	";
 
@@ -180,21 +180,25 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
 		$tpl->parse('T_CGI_SUPPORT', '.t_cgi_support');
 	}
 }
-// Calculate the usege traffic/ return array (persent/value)
+
+/**
+ * Calculate the usege traffic/ return array (persent/value)
+ */
 function make_traff_usege($domain_id) {
 	$sql = Database::getInstance();
 
-	$res = exec_query($sql, "select domain_id from domain where domain_admin_id=?", array($domain_id));
+	$res = exec_query($sql, "SELECT domain_id FROM domain WHERE domain_admin_id = ?", array($domain_id));
 	$dom_id = $res->FetchRow();
 	$domain_id = $dom_id['domain_id'];
 
-	$res = exec_query($sql, "select domain_traffic_limit from domain where domain_id=?", array($domain_id));
+	$res = exec_query($sql, "SELECT domain_traffic_limit FROM domain WHERE domain_id = ?", array($domain_id));
 	$dat = $res->FetchRow();
 
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
 	$res = exec_query($sql,
-		"select IFNULL(sum(dtraff_web) + sum(dtraff_ftp) + sum(dtraff_mail) + sum(dtraff_pop),0) " . "as traffic from domain_traffic " . "where domain_id=? and dtraff_time>? and dtraff_time<?",
+		"SELECT IFNULL(SUM(dtraff_web) + SUM(dtraff_ftp) + SUM(dtraff_mail) + SUM(dtraff_pop), 0) "
+		. "AS traffic FROM domain_traffic " . "WHERE domain_id = ? AND dtraff_time > ? AND dtraff_time < ?",
 		array($domain_id, $fdofmnth, $ldofmnth));
 	$data = $res->FetchRow();
 	$traff = ($data['traffic'] / 1024) / 1024;
@@ -211,13 +215,13 @@ function make_traff_usege($domain_id) {
 
 function gen_user_messages_label(&$tpl, &$sql, &$user_id) {
 	$query = "
-		select
-			count(ticket_id) as cnum
-		from
+		SELECT
+			COUNT(*) AS cnum
+		FROM
 			tickets
-		where
+		WHERE
 			ticket_from = ?
-		and
+		AND
 			ticket_status = '2'
 	";
 
@@ -257,13 +261,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 	$user_layout = $_POST['def_layout'];
 
 	$query = "
-		update
+		UPDATE
 			user_gui_props
-		set
+		SET
 			layout = ?
-		where
+		WHERE
 			user_id = ?
-
 	";
 	$rs = exec_query($sql, $query, array($user_layout, $user_id));
 	$theme_color = $user_layout;

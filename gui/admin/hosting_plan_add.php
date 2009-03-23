@@ -98,7 +98,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 // Function definitions
 
@@ -266,8 +267,8 @@ function save_data_to_db(&$tpl, $admin_id) {
 			t1.id, t1.name, t1.reseller_id, t1.name, t1.props, t1.status,
 			t2.admin_id, t2.admin_type
 		FROM
-			hosting_plans as t1,
-			admin as t2
+			hosting_plans AS t1,
+			admin AS t2
 		WHERE
 			t2.admin_type=?
 		AND

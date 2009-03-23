@@ -22,11 +22,13 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) &&
-	isset($_GET['action']) && $_GET['action'] == "go_back") {
+if (isset($_SESSION['logged_from'])
+	&& isset($_SESSION['logged_from_id'])
+	&& isset($_GET['action'])
+	&& $_GET['action'] == "go_back") {
 
-	$from_id = $_SESSION['user_id'];
-	$to_id   = $_SESSION['logged_from_id'];
+	$from_id	= $_SESSION['user_id'];
+	$to_id		= $_SESSION['logged_from_id'];
 
 	change_user_interface($from_id, $to_id);
 

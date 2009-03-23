@@ -37,14 +37,17 @@ $tpl->define_dynamic('unprotect_it', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
+/**
+ * @todo use db prepared statements
+ */
 function protect_area(&$tpl, &$sql, $dmn_id) {
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
 		return;
@@ -114,7 +117,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		}
 		$user_id = 0;
 	}
-	// lets check if we have to update or to make new enrie
+	// let's check if we have to update or to make new enrie
 	$alt_path = $path . "/";
 	$query = <<<SQL_QUERY
 		SELECT
@@ -124,9 +127,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		WHERE
 			`dmn_id` = ?
 		AND
-			(`path` = ?
-		OR
-			`path` = ?);
+			(`path` = ? OR `path` = ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
@@ -181,8 +182,8 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 				'PATH' => '',
 				'AREA_NAME' => '',
 				'UNPROTECT_IT' => '',
-				)
-			);
+			)
+		);
 	} else {
 		$edit = 'yes';
 		$ht_id = $_GET['id'];
@@ -224,41 +225,41 @@ SQL_QUERY;
 			array(
 				'PATH' => $path,
 				'AREA_NAME' => $auth_name,
-				)
-			);
-		// lets get the htaccess management type
+			)
+		);
+		// let's get the htaccess management type
 		if ($user_id !== 0 and $group_id == 0) {
-			// we habe only user htaccess
+			// we have only user htaccess
 			$type = 'user';
 		} else if ($group_id !== 0 and $user_id == 0) {
-			// we habe only groups htaccess
+			// we have only groups htaccess
 			$type = 'group';
 		} else if ($group_id == 0 and $user_id == 0) {
-			// we habe unsr and groups htaccess
+			// we have unsr and groups htaccess
 			$type = 'both';
 		}
 	}
 	// this area is not secured by htaccess
 	if ($edit = 'no' || $rs->RecordCount() == 0 || $type == 'user') {
 		$tpl->assign(
-				array(
-					'USER_CHECKED' => " checked ",
-					'GROUP_CHECKED' => "",
-					'USER_FORM_ELEMENS' => "false",
-					'GROUP_FORM_ELEMENS' => "true",
-					)
-				);
+			array(
+				'USER_CHECKED' => " checked ",
+				'GROUP_CHECKED' => "",
+				'USER_FORM_ELEMENS' => "false",
+				'GROUP_FORM_ELEMENS' => "true",
+			)
+		);
 	}
 
 	if ($type == 'group') {
 		$tpl->assign(
-				array(
-					'USER_CHECKED' => "",
-					'GROUP_CHECKED' => " checked ",
-					'USER_FORM_ELEMENS' => "true",
-					'GROUP_FORM_ELEMENS' => "false",
-					)
-			);
+			array(
+				'USER_CHECKED' => "",
+				'GROUP_CHECKED' => " checked ",
+				'USER_FORM_ELEMENS' => "true",
+				'GROUP_FORM_ELEMENS' => "false",
+			)
+		);
 	}
 
 	$query = <<<SQL_QUERY
@@ -278,8 +279,8 @@ SQL_QUERY;
 				'USER_VALUE' => "-1",
 				'USER_LABEL' => tr('You have no users !'),
 				'USER_SELECTED' => ''
-				)
-			);
+			)
+		);
 		$tpl->parse('USER_ITEM', 'user_item');
 	} else {
 		while (!$rs->EOF) {
@@ -294,12 +295,12 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'USER_VALUE' => $rs->fields['id'],
-						'USER_LABEL' => $rs->fields['uname'],
-						'USER_SELECTED' => $usr_selected,
-						)
-					);
+				array(
+					'USER_VALUE' => $rs->fields['id'],
+					'USER_LABEL' => $rs->fields['uname'],
+					'USER_SELECTED' => $usr_selected,
+				)
+			);
 
 			$tpl->parse('USER_ITEM', '.user_item');
 
@@ -320,12 +321,12 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-				array(
-					'GROUP_VALUE' => "-1",
-					'GROUP_LABEL' => tr('You have no groups!'),
-					'GROUP_SELECTED' => ''
-					)
-				);
+			array(
+				'GROUP_VALUE' => "-1",
+				'GROUP_LABEL' => tr('You have no groups!'),
+				'GROUP_SELECTED' => ''
+			)
+		);
 		$tpl->parse('GROUP_ITEM', 'group_item');
 	} else {
 		while (!$rs->EOF) {
@@ -340,12 +341,12 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-					array(
-						'GROUP_VALUE' => $rs->fields['id'],
-						'GROUP_LABEL' => $rs->fields['ugroup'],
-						'GROUP_SELECTED' => $grp_selected,
-						)
-					);
+				array(
+					'GROUP_VALUE' => $rs->fields['id'],
+					'GROUP_LABEL' => $rs->fields['ugroup'],
+					'GROUP_SELECTED' => $grp_selected,
+				)
+			);
 			$tpl->parse('GROUP_ITEM', '.group_item');
 			$rs->MoveNext();
 		}
@@ -372,24 +373,24 @@ protect_area($tpl, $sql, $dmn_id);
 gen_protect_it($tpl, $sql, $dmn_id);
 
 $tpl->assign(
-		array(
-			'TR_HTACCESS' => tr('Protected areas'),
-			'TR_PROTECT_DIR' => tr('Protect this area'),
-			'TR_PATH' => tr('Path'),
-			'TR_USER' => tr('Users'),
-			'TR_GROUPS' => tr('Groups'),
-			'TR_PROTECT_IT' => tr('Protect it'),
-			'TR_USER_AUTH' => tr('User auth'),
-			'TR_GROUP_AUTH' => tr('Group auth'),
-			'TR_AREA_NAME' => tr('Area name'),
-			'TR_PROTECT_IT' => tr('Protect it'),
-			'TR_UNPROTECT_IT' => tr('Unprotect it'),
-			'TR_AREA_NAME' => tr('Area name'),
-			'TR_CANCEL' => tr('Cancel'),
-			'TR_MANAGE_USRES' => tr('Manage users and groups'),
-			'CHOOSE_DIR' => tr('Choose dir'),
-			)
-		);
+	array(
+		'TR_HTACCESS' => tr('Protected areas'),
+		'TR_PROTECT_DIR' => tr('Protect this area'),
+		'TR_PATH' => tr('Path'),
+		'TR_USER' => tr('Users'),
+		'TR_GROUPS' => tr('Groups'),
+		'TR_PROTECT_IT' => tr('Protect it'),
+		'TR_USER_AUTH' => tr('User auth'),
+		'TR_GROUP_AUTH' => tr('Group auth'),
+		'TR_AREA_NAME' => tr('Area name'),
+		'TR_PROTECT_IT' => tr('Protect it'),
+		'TR_UNPROTECT_IT' => tr('Unprotect it'),
+		'TR_AREA_NAME' => tr('Area name'),
+		'TR_CANCEL' => tr('Cancel'),
+		'TR_MANAGE_USRES' => tr('Manage users and groups'),
+		'CHOOSE_DIR' => tr('Choose dir'),
+	)
+);
 
 gen_page_message($tpl);
 

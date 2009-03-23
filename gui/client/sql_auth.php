@@ -23,6 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 // page functions.
+
 function get_db_user_passwd(&$sql, $db_user_id) {
 	$query = "
 		SELECT
@@ -53,16 +54,16 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 		auth_error();
 	} else {
 		fwrite($fp, $out);
-		$header=null;
+		$header = null;
 		while (!feof($fp)) {
 			$line = fgets($fp, 2048);
 			$rs.=$line;
 			if (preg_match("/^Location.+/",$line,$results)) $header=$line;
 		}
 		fclose($fp);
-		preg_match_all("/(?:Set-Cookie: )(?:(?U)(.+)=(.+)(?:;))(?:(?U)( expires=)(.+)(?:;))?(?:( path=)(.+))?/",$rs,$results,PREG_SET_ORDER);
+		preg_match_all("/(?:Set-Cookie: )(?:(?U)(.+)=(.+)(?:;))(?:(?U)( expires=)(.+)(?:;))?(?:( path=)(.+))?/", $rs, $results, PREG_SET_ORDER);
 		foreach ($results as $result) {
-			setcookie(rawurldecode($result[1]),rawurldecode($result[2]),strtotime(rawurldecode($result[4])),rawurldecode($result[6]));
+			setcookie(rawurldecode($result[1]), rawurldecode($result[2]), strtotime(rawurldecode($result[4])), rawurldecode($result[6]));
 		}
 		if ($header) {
 			header($header);
@@ -79,7 +80,7 @@ function auth_error() {
 	die();
 }
 
-// check User sql permision
+// check User sql permission
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	header("Location: index.php");
 	exit;

@@ -712,8 +712,8 @@ function check_ruser_data (&$tpl, $NoPass) {
 	} else {
 		$gender = '';
 	}
-	// if(isset($_SESSION['local_data']) )
-	// list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
+	//if (isset($_SESSION['local_data']))
+	//	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
 	// Begin checking...
 	if ('_no_' == $NoPass) {
 		if (('' === $inpass_re) || ('' === $inpass)) {
@@ -736,13 +736,13 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 	  else if (!ispcp_limit_check($customer_id)) {
 		$user_add_error = tr('Incorrect customer ID syntax!');
-	} else if(!chk_username($first_name, 40)) {
+	} else if (!chk_username($first_name, 40)) {
 
 		$user_add_error = tr('Incorrect first name length or syntax!');
-	} else if(!chk_username($last_name, 40)) {
+	} else if (!chk_username($last_name, 40)) {
 
 		$user_add_error = tr('Incorrect second name length or syntax!');
-	} else if(!ispcp_limit_check($zip)) {
+	} else if (!ispcp_limit_check($zip)) {
 
 		$user_add_error = tr('Incorrect post code length or syntax!');
 	} */

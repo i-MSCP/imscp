@@ -42,7 +42,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 
 function gen_user_catchall_action($mail_id, $mail_status) {
 	if ($mail_status === Config::get('ITEM_ADD_STATUS')) {
-		return array(tr('N/A'), '#');//Addition in progress
+		return array(tr('N/A'), '#'); // Addition in progress
 	} else if ($mail_status === Config::get('ITEM_OK_STATUS')) {
 		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mail_id");
 	} else if ($mail_status === Config::get('ITEM_CHANGE_STATUS')) {
@@ -184,11 +184,11 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$query = "
 			SELECT
-				a.subdomain_alias_id, CONCAT(a.subdomain_alias_name,'.',b.alias_name) as subdomain_name
+				a.subdomain_alias_id, CONCAT(a.subdomain_alias_name,'.',b.alias_name) AS subdomain_name
 			FROM
-				subdomain_alias as a, domain_aliasses as b
+				subdomain_alias AS a, domain_aliasses AS b
 			WHERE
-				b.alias_id IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`='$dmn_id')
+				b.alias_id IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
 			AND
 				a.alias_id = b.alias_id
 			AND
@@ -367,7 +367,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) dump_gui_debug();
+if (Config::get('DUMP_GUI_DEBUG'))
+	dump_gui_debug();
 
 unset_messages();
 
