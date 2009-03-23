@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 13173 2008-06-09 19:04:14Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  * @subpackage addressbook
  */

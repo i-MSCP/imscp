@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: personal.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id$
  * @package squirrelmail
  */
 

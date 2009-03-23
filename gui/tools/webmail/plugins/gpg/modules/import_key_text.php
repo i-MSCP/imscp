@@ -9,7 +9,7 @@
  * @author Brian Peterson
  * @author Joshua Vermette
  *
- * $Id: import_key_text.php,v 1.17 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 
 //include the gpg system header, so's everything will be in place.

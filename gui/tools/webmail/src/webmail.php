@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: webmail.php 13290 2008-09-28 13:45:49Z kink $
+ * @version $Id$
  * @package squirrelmail
  */
 

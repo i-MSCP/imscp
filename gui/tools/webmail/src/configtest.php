@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: configtest.php 13238 2008-07-19 07:31:43Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  * @subpackage config
  */

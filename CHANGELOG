@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-23 Benedikt Heintel
+	- GUI:
+		* Added new Favicon
+	- TOOLS:
+		* Fixed #1728: update net2ftp to version 0.97
+
 2009-03-22 Thomas Häber
 	- GUI:
 		* Fixed #1758: domain_details.php error.

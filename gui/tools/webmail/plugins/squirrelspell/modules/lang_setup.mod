@@ -11,7 +11,7 @@
  * him/her choose which ones s/he wants to check messages with.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: lang_setup.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

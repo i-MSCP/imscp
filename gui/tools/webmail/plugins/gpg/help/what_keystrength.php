@@ -14,7 +14,7 @@ echo  "<p \>\n"
 
 
 /**
- * $Id: what_keystrength.php,v 1.7 2004/01/18 15:25:05 brian Exp $
+ * $Id$
  *
  * $Log: what_keystrength.php,v $
  * Revision 1.7  2004/01/18 15:25:05  brian

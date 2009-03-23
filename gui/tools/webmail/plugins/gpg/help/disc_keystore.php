@@ -17,7 +17,7 @@ echo  _("Public web servers are not always secure!")
 
 
 /**
- * $Id: disc_keystore.php,v 1.8 2004/01/18 15:25:17 brian Exp $
+ * $Id$
  *
  * $Log: disc_keystore.php,v $
  * Revision 1.8  2004/01/18 15:25:17  brian

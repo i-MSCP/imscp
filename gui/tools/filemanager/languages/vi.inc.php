@@ -159,6 +159,8 @@ $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "B&#7843;ng 
 
 // logAccess(), logLogin(), logError()
 $net2ftp_messages["Unable to execute the SQL query."] = "Kh&#244;ng th&#7875; th&#7921;c hi&#7879;n SQL query.";
+$net2ftp_messages["Unable to open the system log."] = "Unable to open the system log.";
+$net2ftp_messages["Unable to write a message to the system log."] = "Unable to write a message to the system log.";
 
 // checkAdminUsernamePassword()
 $net2ftp_messages["You did not enter your Administrator username or password."] = "Ban chua nhap ten dung hoac mat khau.";
@@ -322,6 +324,7 @@ $net2ftp_messages["Transferring files to the FTP server"] = "&#272;ang chuy&#787
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "&#272;ang m&#7903; l&#432;u tr&#7919; nr %1\$s: <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "L&#432;u tr&#7919; <b>%1\$s</b> kh&#244;ng th&#7875; gi&#7843;i n&#233;n b&#7903;i v&#236; lo&#7841;i t&#7879;p n&#224;y kh&#244;ng &#273;&#432;&#7907;c ch&#7845;p nh&#7853;n. Ch&#7881; c&#243; nh&#7919;ng l&#432;u tr&#7919; d&#7841;ng zip, tar, tgz v&#224; gz &#273;&#432;&#7907;c h&#7895; tr&#7907; t&#7841;i th&#7901;i &#273;i&#7875;m n&#224;y.";
 $net2ftp_messages["Unable to extract the files and directories from the archive"] = "Unable to extract the files and directories from the archive";
+$net2ftp_messages["Archive contains filenames with ../ or ..\\ - aborting the extraction"] = "Archive contains filenames with ../ or ..\\ - aborting the extraction";
 $net2ftp_messages["Created directory %1\$s"] = "Created directory %1\$s";
 $net2ftp_messages["Could not create directory %1\$s"] = "Could not create directory %1\$s";
 $net2ftp_messages["Copied file %1\$s"] = "Copied file %1\$s";

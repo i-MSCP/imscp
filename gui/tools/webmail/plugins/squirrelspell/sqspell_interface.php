@@ -11,7 +11,7 @@
  * SquirrelSpell.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: sqspell_interface.php 11491 2006-08-09 07:07:21Z tokul $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

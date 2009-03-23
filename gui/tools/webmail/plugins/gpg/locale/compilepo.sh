@@ -12,7 +12,7 @@ MONAME=gpg.mo
 # ** Philipe Mingo <mingo@rotedic.com>
 # ** Konstantin Riabitsev <icon@duke.edu>
 # **
-# **  $Id: compilepo.sh,v 1.1 2004/01/06 21:07:19 brian Exp $
+# **  $Id$
 
 if [ -z "$1" ]; then
  echo "USAGE: compilepo [localename]"

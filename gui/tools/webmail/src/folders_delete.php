@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_delete.php 12540 2007-07-16 07:18:02Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

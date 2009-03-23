@@ -9,7 +9,7 @@
  * @author Brian Peterson
  * @author Joshua Vermette
  *
- * $Id: uploadkey.php,v 1.2 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 
 //include the gpg system header, so's everything will be in place.

@@ -11,7 +11,7 @@
  * after CHECK_ME module.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: forget_me_not.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

@@ -11,7 +11,7 @@
  * this plugin displays a menu which gives the user a choice of mailinglist
  * commands such as (un)subscribe, help and list archives.
  *
- * $Id: setup.php 12546 2007-07-16 22:27:13Z kink $
+ * $Id$
  * @package plugins
  * @subpackage listcommands
  */

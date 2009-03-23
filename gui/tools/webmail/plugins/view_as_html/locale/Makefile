@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2003/12/14 21:30:05 indiri69 Exp $
+# $Id$
 .SUFFIXES:
 .SUFFIXES: .po .mo
 

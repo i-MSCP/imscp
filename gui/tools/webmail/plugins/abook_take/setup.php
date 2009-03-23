@@ -10,7 +10,7 @@
  * the To, Cc, From and Reply-To headers, also searches the body of the
  * message.
  *
- * $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
+ * $Id$
  */
 
 if (!defined('SM_PATH'))  {

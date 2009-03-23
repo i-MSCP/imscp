@@ -33,7 +33,7 @@
   //  For obvious reasons, be careful to escape backslashes and quote marks
   //  according to PHP rules.  Or, avoid them entirely.  Doesn't matter.
 
-  define('DEFAULT_MD5_SALT', 'Replace this by your own salt to improve security! 229450455034058679120494'); // empty string is illegal
+  define('DEFAULT_MD5_SALT', $net2ftp_settings["md5_salt"]); // empty string is illegal
 
   // examples:
   //

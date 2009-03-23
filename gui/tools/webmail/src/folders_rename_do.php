@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_rename_do.php 12537 2007-07-14 18:34:04Z kink $
+ * @version $Id$
  * @package squirrelmail
  */
 

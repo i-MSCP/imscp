@@ -12,7 +12,7 @@
  * the interface window.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: check_me.mod 12340 2007-03-19 13:44:39Z avel $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

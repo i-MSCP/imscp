@@ -8,7 +8,7 @@
  *
  * Default page called when accessing GPG plugin options.
  *
- * $Id: options_main.mod,v 1.27 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 
 /**

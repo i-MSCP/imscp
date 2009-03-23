@@ -3,7 +3,7 @@
  * -----------------
  * Some client-side form-checks. Trivial stuff.
  *
- * $Id: decrypt_error.js 2301 2002-01-31 03:45:53Z graf25 $
+ * $Id$
  *
  * @author Konstantin Riabitsev <icon@duke.edu> ($Author: graf25 $)
  * @version $Date: 2002-01-30 19:45:53 -0800 (Wed, 30 Jan 2002) $

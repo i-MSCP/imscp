@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: $Id: view_as_html.po,v 1.2 2003/09/26 02:44:38 indiri69 Exp $\n"
+"Project-Id-Version: $Id$\n"
 "POT-Creation-Date: 2002-11-01 12:33-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"

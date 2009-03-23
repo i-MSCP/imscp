@@ -6,7 +6,7 @@
     **  Copyright (c) 1999-2006 The SquirrelMail Project Team
     **  Licensed under the GNU GPL. For full terms see the file COPYING.
     **
-    **  $Id: options.php 12600 2007-08-27 03:04:10Z pdontthink $
+    **  $Id$
     **/
 
 define('SM_PATH','../../');

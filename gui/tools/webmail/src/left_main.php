@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: left_main.php 13243 2008-07-20 21:17:38Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net

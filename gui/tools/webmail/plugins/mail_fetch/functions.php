@@ -12,7 +12,7 @@
  **  and josh@superfork.com (extracted from php manual)
  **  Adapted for MailFetch by Philippe Mingo <mingo@rotedic.com>
  **
- **  $Id: functions.php 10633 2006-02-03 22:27:56Z jervfors $
+ **  $Id$
  **/
 
 /** declare plugin globals */

@@ -11,7 +11,7 @@
  *
  * Copyright (c) 2002-2005 Braverock Ventures
  *
- * $Id: keyring_main_chunk.php,v 1.6 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  *
  */
 

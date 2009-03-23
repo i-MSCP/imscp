@@ -11,7 +11,7 @@
  * old password, or erases the file if everything else fails. :(
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: crypto_badkey.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

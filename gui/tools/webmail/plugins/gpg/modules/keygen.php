@@ -8,7 +8,7 @@
  *
  * @author Aaron van Meerten 
  *
- * $Id: keygen.php,v 1.4 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 
 //include the gpg system header, so's everything will be in place.

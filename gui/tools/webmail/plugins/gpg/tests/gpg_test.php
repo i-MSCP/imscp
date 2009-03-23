@@ -7,7 +7,7 @@
  *
  *
  * @author Aaron van Meerten
- * $Id: gpg_test.php,v 1.1 2005/11/11 07:22:53 ke Exp $
+ * $Id$
 */
 require_once("PHPUnit/GUI/HTML.php");
 

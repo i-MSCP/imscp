@@ -8,7 +8,7 @@
  *
  * This is a standard Squirrelmail-1.2 API for plugins.
  *
- * $Id: setup.php 13029 2008-03-11 05:07:17Z pdontthink $
+ * $Id$
  */
 
 /* This button fills out a form with your setup information already

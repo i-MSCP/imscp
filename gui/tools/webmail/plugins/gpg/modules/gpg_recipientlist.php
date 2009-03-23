@@ -9,7 +9,7 @@
  * @package gpg
  * @author Walter Torres
  *
- * $Id: gpg_recipientlist.php,v 1.5 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  *
  * @todo check help file include for security breach in gpg_help.php
  */

@@ -22,23 +22,27 @@
 
 // Enter your email address
 // This is used as "from" address when sending files in attachment
-$net2ftp_settings["email_feedback"] = "webmaster@net2ftp.com";
+$net2ftp_settings["email_feedback"] = "webmaster@enter-your-domain-here.com";
 
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
-$net2ftp_settings["default_skin"]     = "omega";
+$net2ftp_settings["default_skin"]     = "blue";
+
 // Enter the address of your help pages, support forum or ticket system
 // This will add a link in the footer; leave empty if you don't have this
 $net2ftp_settings["help_text"] = "";
 $net2ftp_settings["help_link"] = "";
 
 // PHP error reporting
-$net2ftp_settings["error_reporting"] = "NONE";
-//$net2ftp_settings["error_reporting"] = "standard";
+//$net2ftp_settings["error_reporting"] = "NONE";
+$net2ftp_settings["error_reporting"] = "standard";
 //$net2ftp_settings["error_reporting"] = "ALL";
 
 // Fix transparent PNG images in IE
 $net2ftp_settings["fix_png"] = "yes";
+
+// MD5 salt and encryption string (change them to improve security)
+$net2ftp_settings["encryption_string"] = "462E16CB7C3F369BD9F4DBEE0A926F8F14FFB3";
 
 
 // ----------------------------------------------------------------------------------
@@ -58,8 +62,8 @@ $net2ftp_settings["message_browse"] = "";
 
 
 // ----------------------------------------------------------------------------------
-// A MySQL database is optional. It can be used for: logging the users,
-// checking the consumption of network and server resources (data transfer
+// A MySQL database is optional. It can be used for: logging the users, 
+// checking the consumption of network and server resources (data transfer 
 // volume and script execution time), and checking the user's home directory
 // ----------------------------------------------------------------------------------
 
@@ -122,12 +126,6 @@ $net2ftp_settings["max_consumption_ftpserver_executiontime"] = 1500; // per FTP 
 // Check the user's home directory?
 $net2ftp_settings["check_homedirectory"] = "yes";
 
-// ----------------------------------------------------------------------------------
-// TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
-// ----------------------------------------------------------------------------------
-$tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
-$_ENV['PHP_TMPDIR'] = $tmpdir;
-putenv("PHP_TMPDIR=" . $tmpdir);
 
 // ----------------------------------------------------------------------------------
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
@@ -139,7 +137,7 @@ $net2ftp_settings["application_build_nr"] = "44";
 // Is this net2ftp.com, or a net2ftp installation elsewhere
 $net2ftp_settings["net2ftpdotcom"] = "no";
 
-// Google Adsense advertisements
+// Google Adsense advertisements 
 // Not shown when using HTTPS to avoid warnings on each pageload
 $net2ftp_settings["show_google_ads"] = "no";
 

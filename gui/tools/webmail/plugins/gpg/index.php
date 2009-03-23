@@ -10,7 +10,7 @@
  * people to the login screen. At this point no attempt is made to see if
  * the person is logged or not.
  *
- * $Id: index.php,v 1.1.1.1 2002/12/05 16:47:55 brian Exp $
+ * $Id$
  */
 
 header("Location: ../../index.php");

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: download.php 12746 2007-10-30 16:28:43Z jangliss $
+ * @version $Id$
  * @package squirrelmail
  */
 

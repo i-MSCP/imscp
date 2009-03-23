@@ -10,7 +10,7 @@
  * @package gpg
  * @author Brian Peterson
  *
- * $Id: gpg_config.php,v 1.31 2005/07/27 14:07:48 brian Exp $
+ * $Id$
  */
 
 // Report all errors except E_NOTICE

@@ -10,7 +10,7 @@
  * Author: Aaron van Meerten
  * Initial Author: Brian Peterson
  * 
- * $Id: gpgsubmitpass.js,v 1.8 2005/10/09 13:58:52 brian Exp $
+ * $Id$
  *
  */
 

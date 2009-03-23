@@ -26,7 +26,7 @@
  * OSI Certified Open Source Software
  *
  * Initial Author: Walter Torres
- * $Id: formValidation.js,v 1.11 2005/10/09 13:58:52 brian Exp $
+ * $Id$
  *
  */
 

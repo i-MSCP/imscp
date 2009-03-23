@@ -9,7 +9,7 @@
  * Default page called when accessing SquirrelSpell's options.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: options_main.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

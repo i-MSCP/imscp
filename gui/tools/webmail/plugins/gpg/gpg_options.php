@@ -10,7 +10,7 @@
  *
  * @package gpg
  *
- * $Id: gpg_options.php,v 1.15 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  *
  * @todo modify options_main and gpg_module_footer to accept a backlink defined by the module file that is included
  *

@@ -5,7 +5,7 @@
 # Changes for your local configuration should be made in 
 # the gpg_local_prefs.txt file
 #
-# $Id: gpg_system_defaults.txt,v 1.13 2006/01/08 02:47:20 ke Exp $
+# $Id$
 #
 path_to_gpg=/usr/bin/gpg 
 allowprivatekeys=true 

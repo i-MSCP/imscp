@@ -77,7 +77,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($domain_id, $user_email, $alias_name, 'alias', $act_id);
 
 	// enable "ordered"/pending email accounts
-// ??? are there pending mail_addresses ???, joximu
+	// ??? are there pending mail_addresses ???, joximu
 	$query = "UPDATE mail_users SET status=? WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
 	$rs = exec_query($sql, $query, array(Config::get('ITEM_ADD_STATUS'), $act_id, $domain_id, Config::get('ITEM_ORDERED_STATUS')));
 

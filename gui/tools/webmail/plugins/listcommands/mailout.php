@@ -5,7 +5,7 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * $Id: mailout.php 12279 2007-02-27 17:27:12Z kink $
+ * $Id$
  * @package plugins
  * @subpackage listcommands
  */

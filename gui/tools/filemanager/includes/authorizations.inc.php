@@ -22,18 +22,39 @@
 function encryptPassword($password) {
 
 // --------------
-// Stone PHP SafeCrypt
-// http://blog.sc.tri-bit.com/archives/101
+// This function encrypts the FTP password
 // --------------
 
-	$packed = PackCrypt($password, "Replace this by your own salt to improve security! 229450455034058679120494");
+// -------------------------------------------------------------------------
+// Global variables and settings
+// -------------------------------------------------------------------------
+	global $net2ftp_settings;
 
-	if ($packed["success"] == true) { 
-		return $packed["output"];
-	}
-	else { 
-		setErrorVars(false, "An error occured when trying to encrypt the password: " . $packed["reason"], debug_backtrace(), __FILE__, __LINE__);		
-	}
+// -------------------------------------------------------------------------
+// If mcrypt libraries are available, encrypt the password with the Stone PHP SafeCrypt library
+// http://blog.sc.tri-bit.com/archives/101
+// -------------------------------------------------------------------------
+//	if (function_exists("mcrypt_module_open") == true) {
+//		$packed = PackCrypt($password, DEFAULT_MD5_SALT);
+//		if ($packed["success"] == true) { return $packed["output"]; }
+//		else { 
+//			setErrorVars(false, "An error occured when trying to encrypt the password: " . $packed["reason"], debug_backtrace(), __FILE__, __LINE__);		
+//		}
+//	}
+// -------------------------------------------------------------------------
+// Else, XOR it with a random string
+// -------------------------------------------------------------------------
+//	else {
+		$password_encrypted = "";
+		$encryption_string = sha1($net2ftp_settings["encryption_string"]);
+		if ($encryption_string % 2 == 1) { // we need even number of characters
+			$encryption_string .= $encryption_string{0};
+		}
+		for ($i=0; $i < strlen($password); $i++) { // encrypts one character - two bytes at once
+			$password_encrypted .= sprintf("%02X", hexdec(substr($encryption_string, 2*$i % strlen($encryption_string), 2)) ^ ord($password{$i}));
+		}
+		return $password_encrypted;
+//	}
 
 } // End function encryptPassword
 
@@ -54,18 +75,40 @@ function encryptPassword($password) {
 function decryptPassword($password_encrypted) {
 
 // --------------
-// Stone PHP SafeCrypt
-// http://blog.sc.tri-bit.com/archives/101
+// This function decrypts the FTP password
 // --------------
 
-	$unpacked = UnpackCrypt($password_encrypted, "Replace this by your own salt to improve security! 229450455034058679120494");
+// -------------------------------------------------------------------------
+// Global variables and settings
+// -------------------------------------------------------------------------
+	global $net2ftp_settings;
 
-	if ($unpacked["success"] == true) { 
-		return $unpacked["output"]; 
-	}
-	else { 
-		setErrorVars(false, "An error occured when trying to decrypt the password: " . $unpacked["reason"], debug_backtrace(), __FILE__, __LINE__);		
-	}
+// -------------------------------------------------------------------------
+// If mcrypt libraries are available, encrypt the password with the Stone PHP SafeCrypt library
+// http://blog.sc.tri-bit.com/archives/101
+// -------------------------------------------------------------------------
+//	if (function_exists("mcrypt_module_open") == true) {
+//		$unpacked = UnpackCrypt($password_encrypted, DEFAULT_MD5_SALT);
+//		if ($unpacked["success"] == true) { return $unpacked["output"]; }
+//		else { 
+//			setErrorVars(false, "An error occured when trying to decrypt the password: " . $unpacked["reason"], debug_backtrace(), __FILE__, __LINE__);		
+//		}
+//	}
+
+// -------------------------------------------------------------------------
+// Else, XOR it with a random string
+// -------------------------------------------------------------------------
+//	else {
+		$password = "";
+		$encryption_string = sha1($net2ftp_settings["encryption_string"]);
+		if ($encryption_string % 2 == 1) { // we need even number of characters
+			$encryption_string .= $encryption_string{0};
+		}
+		for ($i=0; $i < strlen($password_encrypted); $i += 2) { // decrypts two bytes - one character at once
+			$password .= chr(hexdec(substr($encryption_string, $i % strlen($encryption_string), 2)) ^ hexdec(substr($password_encrypted, $i, 2)));
+		}
+		return $password;
+//	}
 
 } // End function decryptPassword
 

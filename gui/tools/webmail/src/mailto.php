@@ -29,7 +29,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailto.php 12785 2007-11-27 01:14:57Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

@@ -4,7 +4,7 @@
  *
  * @author Brian Peterson
  *
- * $Id: gpg_popup_header.php,v 1.3 2004/01/18 15:18:12 brian Exp $
+ * $Id$
  */
 
 if (!defined ('SM_PATH')){

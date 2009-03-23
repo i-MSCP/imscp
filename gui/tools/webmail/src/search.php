@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: search.php 12750 2007-10-31 21:10:47Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  * @subpackage search
  */

@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage delete_move_next
  */

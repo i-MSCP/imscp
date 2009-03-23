@@ -5,7 +5,7 @@
  * Code for displaying link only when an HTML part exists
  * Ben Brillat and Pete Walker
  *
- * $Id: setup.php,v 1.9 2006/03/05 04:50:22 indiri69 Exp $
+ * $Id$
  */
     require_once(SM_PATH . 'functions/global.php');
 

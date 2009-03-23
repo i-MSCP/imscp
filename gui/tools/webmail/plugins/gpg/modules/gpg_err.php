@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: gpg_err.php,v 1.7 2005/11/09 14:17:12 brian Exp $
+ * $Id$
  */
 
 if (is_array($err) and count($err))

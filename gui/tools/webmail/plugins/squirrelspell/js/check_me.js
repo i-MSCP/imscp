@@ -8,7 +8,7 @@
  * main spellchecker window. Hope you have as much pain figuring
  * it out as it took to write. ;))
  *
- * $Id: check_me.js 10633 2006-02-03 22:27:56Z jervfors $
+ * $Id$
  */
 
 var CurrentError=0;

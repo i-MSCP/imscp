@@ -13,7 +13,7 @@
  *
  * This is a standard Squirrelmail-1.2 API for plugins.
  *
- * @version $Id: bug_report.php 13029 2008-03-11 05:07:17Z pdontthink $
+ * @version $Id$
  * @package plugins
  * @subpackage bug_report
  */

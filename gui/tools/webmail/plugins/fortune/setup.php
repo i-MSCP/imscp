@@ -10,7 +10,7 @@
  *
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: setup.php 13016 2008-03-07 19:28:17Z pdontthink $
+ * @version $Id$
  * @package plugins
  * @subpackage fortune
  *

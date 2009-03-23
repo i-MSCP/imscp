@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: load_prefs.php 13316 2008-10-30 20:57:38Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

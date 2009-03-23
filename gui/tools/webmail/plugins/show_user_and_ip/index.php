@@ -8,7 +8,7 @@
  *
  * Redirects to the login page.
  *
- * $Id: index.php,v 1.14.2.1 2003/07/27 19:38:44 kink Exp $
+ * $Id$
  */
 
 header('Location: src/login.php');

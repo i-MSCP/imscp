@@ -2,8 +2,8 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @link		http://isp-control.net
+ *  @copyright 	2006-2009 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
  * @author		ispCP Team
  *
  * @license

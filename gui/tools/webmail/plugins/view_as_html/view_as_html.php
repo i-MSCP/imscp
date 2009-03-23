@@ -1,6 +1,6 @@
 <?php
     /*
-     * $Id: view_as_html.php,v 1.5 2006/02/28 19:44:34 indiri69 Exp $
+     * $Id$
      */
     require_once(SM_PATH . 'functions/global.php');
 

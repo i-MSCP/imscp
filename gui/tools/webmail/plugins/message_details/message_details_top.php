@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
  * @copyright Copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: message_details_top.php 12687 2007-09-15 01:18:09Z pdontthink $
+ * @version $Id$
  * @package plugins
  * @subpackage message_details
  */

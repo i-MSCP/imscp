@@ -12,7 +12,7 @@
  * @author Brian Peterson
  * @author Aaron van Meerten
  *
- * $Id: gpg_key_functions.php,v 1.63 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  *
  */
 /*********************************************************************/

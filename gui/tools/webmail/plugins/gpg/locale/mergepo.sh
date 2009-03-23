@@ -14,7 +14,7 @@ POTNAME=gpg.pot
 # ** Philipe Mingo <mingo@rotedic.com>
 # ** Konstantin Riabitsev <icon@duke.edu>
 # **
-# **  $Id: mergepo.sh,v 1.1 2004/01/06 21:07:19 brian Exp $
+# **  $Id$
 
 if [ -z "$1" ]; then
  echo "USAGE: mergepo [localename]"

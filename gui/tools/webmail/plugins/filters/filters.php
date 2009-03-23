@@ -18,7 +18,7 @@
  *
  * Also view plugins/README.plugins for more information.
  *
- * @version $Id: filters.php 12330 2007-03-10 04:03:46Z jangliss $
+ * @version $Id$
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package plugins

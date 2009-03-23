@@ -27,7 +27,8 @@
   if (defined('STONE_PHP_SAFE_CRYPT_HOST_DIRECTORY')) {
     $basedir = STONE_PHP_SAFE_CRYPT_HOST_DIRECTORY;
   } else {
-    $basedir = '';
+// net2ftp
+    $basedir = $net2ftp_globals["application_includesdir"] . "/";
   }
 
   /////////

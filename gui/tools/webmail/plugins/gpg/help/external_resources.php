@@ -44,7 +44,7 @@ echo "\n</ul>";
 
 
 /**
- * $Id: external_resources.php,v 1.4 2004/01/20 12:16:32 alexl Exp $
+ * $Id$
  *
  * $Log: external_resources.php,v $
  * Revision 1.4  2004/01/20 12:16:32  alexl

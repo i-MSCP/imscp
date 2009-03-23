@@ -7,7 +7,7 @@
  *
  *
  * @author Aaron van Meerten
- * $Id: gpg_test_class.php,v 1.1 2005/11/11 07:25:15 ke Exp $
+ * $Id$
 */
 if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){

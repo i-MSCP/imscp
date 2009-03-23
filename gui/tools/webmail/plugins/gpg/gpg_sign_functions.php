@@ -13,7 +13,7 @@
  * @author Brian Peterson
  * @author Aaron van Meerten
  *
- * $Id: gpg_sign_functions.php,v 1.43 2005/10/09 07:12:11 ke Exp $
+ * $Id$
  *
  */
 /*********************************************************************/

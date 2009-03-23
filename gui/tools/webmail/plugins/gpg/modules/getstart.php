@@ -15,7 +15,7 @@
  * @todo modify getstart.php to use SM_PATH
  * @todo modify getstart.php to use new module interface
  *
- * $Id: getstart.php,v 1.14 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 /*********************************************************************/
 

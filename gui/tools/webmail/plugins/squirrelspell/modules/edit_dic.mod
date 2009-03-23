@@ -10,7 +10,7 @@
  * This module lets the user edit his/her personal dictionary.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: edit_dic.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

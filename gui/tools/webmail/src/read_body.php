@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php 13238 2008-07-19 07:31:43Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

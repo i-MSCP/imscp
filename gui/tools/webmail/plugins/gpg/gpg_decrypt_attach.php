@@ -13,7 +13,7 @@
  * @todo change the file includes to set SM_PATH
  * @todo modify to work without passphrase caching
  *
- * $Id: gpg_decrypt_attach.php,v 1.28 2005/11/09 18:33:00 jangliss Exp $
+ * $Id$
  */
 /*********************************************************************/
 

@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display.php 13103 2008-05-07 16:28:41Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

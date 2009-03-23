@@ -159,6 +159,8 @@ $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "net2ftp_use
 
 // logAccess(), logLogin(), logError()
 $net2ftp_messages["Unable to execute the SQL query."] = "SQL sorgusunu gerçekleþtiremiyor.";
+$net2ftp_messages["Unable to open the system log."] = "Unable to open the system log.";
+$net2ftp_messages["Unable to write a message to the system log."] = "Unable to write a message to the system log.";
 
 // checkAdminUsernamePassword()
 $net2ftp_messages["You did not enter your Administrator username or password."] = "Yönetici kullanýcý adýnýzý veya þifrenizi girmediniz.";
@@ -322,6 +324,7 @@ $net2ftp_messages["Transferring files to the FTP server"] = "FTP sunucusuna dosy
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "Arþiv paketini %1\$s iþleme alýyor: <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "Arþiv paketi <b>%1\$s</b> iþleme alýnmadý çünkü dosya uzantýsý tanýnmadý. þu an sadece zip, tar, tgz ve gz arþiv paketleri destekleniyor.";
 $net2ftp_messages["Unable to extract the files and directories from the archive"] = "Arþiv paketinden dosya ve dizinleri çýkartamýyor";
+$net2ftp_messages["Archive contains filenames with ../ or ..\\ - aborting the extraction"] = "Archive contains filenames with ../ or ..\\ - aborting the extraction";
 $net2ftp_messages["Created directory %1\$s"] = "Dizini %1\$s yarattý";
 $net2ftp_messages["Could not create directory %1\$s"] = "Dizini %1\$s yaratamýyor";
 $net2ftp_messages["Copied file %1\$s"] = "Dosyayý %1\$s kopyaladý";

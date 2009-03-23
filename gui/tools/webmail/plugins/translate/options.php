@@ -8,7 +8,7 @@
  *
  * Pick your translator to translate the body of incoming mail messages
  *
- * @version $Id: options.php 11589 2006-08-15 14:17:29Z tokul $
+ * @version $Id$
  * @package plugins
  * @subpackage translate
  */

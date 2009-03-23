@@ -5,7 +5,7 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * @version $Id: sqspell_config.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

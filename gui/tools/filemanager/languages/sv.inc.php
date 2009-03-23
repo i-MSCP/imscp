@@ -159,6 +159,8 @@ $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Tabellen ne
 
 // logAccess(), logLogin(), logError()
 $net2ftp_messages["Unable to execute the SQL query."] = "Kunde inte utföra SQL fråga.";
+$net2ftp_messages["Unable to open the system log."] = "Unable to open the system log.";
+$net2ftp_messages["Unable to write a message to the system log."] = "Unable to write a message to the system log.";
 
 // checkAdminUsernamePassword()
 $net2ftp_messages["You did not enter your Administrator username or password."] = "Du skrev inte in ditt Administratörs användarnamn eller lösenord.";
@@ -322,6 +324,7 @@ $net2ftp_messages["Transferring files to the FTP server"] = "Överför filer till 
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "Bearbetar arkiv nr %1\$s: <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "Arkiv <b>%1\$s</b> ej bearbetat, filnamnsförlängning inte igenkänt. Bara zip, tar, tgz och gz arkiv stödjs för tillfället.";
 $net2ftp_messages["Unable to extract the files and directories from the archive"] = "Kunde inte extrahera filer och bibliotek från arkivet";
+$net2ftp_messages["Archive contains filenames with ../ or ..\\ - aborting the extraction"] = "Archive contains filenames with ../ or ..\\ - aborting the extraction";
 $net2ftp_messages["Created directory %1\$s"] = "Skapade bibliotek %1\$s";
 $net2ftp_messages["Could not create directory %1\$s"] = "Kunde inte skapa bibliotek %1\$s";
 $net2ftp_messages["Copied file %1\$s"] = "Kopierade fil %1\$s";

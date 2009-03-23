@@ -14,7 +14,7 @@
  * @author Ryan
  * @author Aaron van Meerten
  *
- * $Id: gpg.php,v 1.58 2005/12/21 02:55:46 ke Exp $
+ * $Id$
  *
  */
 

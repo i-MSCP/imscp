@@ -4,7 +4,7 @@
  *
  * Plugin allows remote administration.
  *
- * @version $Id: setup.php 12565 2007-07-20 17:13:46Z kink $
+ * @version $Id$
  * @author Philippe Mingo
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License

@@ -7,7 +7,7 @@
  *
  * @package plugins
  * @subpackage notes
- * @version $Id: setup.php,v 1.1 2005/01/05 15:02:26 cigamit Exp $
+ * @version $Id$
  */
 
 function notes_version() { 

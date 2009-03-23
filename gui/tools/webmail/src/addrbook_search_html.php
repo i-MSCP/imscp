@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addrbook_search_html.php 12726 2007-10-07 03:01:49Z jangliss $
+ * @version $Id$
  * @package squirrelmail
  * @subpackage addressbook
  */

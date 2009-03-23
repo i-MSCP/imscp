@@ -8,7 +8,7 @@
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: sqspell_options.php 11491 2006-08-09 07:07:21Z tokul $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

@@ -2,7 +2,7 @@
 #
 # Make changes to this file to change the plugin defaults.
 #
-# $Id: gpg_local_prefs.txt,v 1.16 2006/01/08 02:47:20 ke Exp $
+# $Id$
 #
 path_to_gpg=/usr/bin/gpg 
 allowprivatekeys=true 

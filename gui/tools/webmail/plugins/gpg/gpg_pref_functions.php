@@ -12,7 +12,7 @@
  * @author Vinay
  * @author Brian Peterson
  *
- * $Id: gpg_pref_functions.php,v 1.28 2006/08/18 21:31:32 brian Exp $
+ * $Id$
  *
  */
 

@@ -13,7 +13,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php 13307 2008-10-15 20:19:08Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  */
 

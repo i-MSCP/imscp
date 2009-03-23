@@ -324,6 +324,7 @@ $net2ftp_messages["Transferring files to the FTP server"] = "Transferring files 
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "Processing archive nr %1\$s: <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment.";
 $net2ftp_messages["Unable to extract the files and directories from the archive"] = "Unable to extract the files and directories from the archive";
+$net2ftp_messages["Archive contains filenames with ../ or ..\\ - aborting the extraction"] = "Archive contains filenames with ../ or ..\\ - aborting the extraction";
 $net2ftp_messages["Created directory %1\$s"] = "Created directory %1\$s";
 $net2ftp_messages["Could not create directory %1\$s"] = "Could not create directory %1\$s";
 $net2ftp_messages["Copied file %1\$s"] = "Copied file %1\$s";

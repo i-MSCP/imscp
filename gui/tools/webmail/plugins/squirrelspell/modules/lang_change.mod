@@ -11,7 +11,7 @@
  * for the user. Called after LANG_SETUP module.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: lang_change.mod 12578 2007-08-09 06:53:57Z pdontthink $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

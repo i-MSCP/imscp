@@ -8,7 +8,7 @@
  *
  * Setup of the mailfetch plugin.
  *
- * $Id: options.php 12472 2007-06-25 20:17:12Z kink $
+ * $Id$
  */
 
 define('SM_PATH','../../');

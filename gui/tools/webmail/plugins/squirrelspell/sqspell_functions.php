@@ -8,7 +8,7 @@
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: sqspell_functions.php 12546 2007-07-16 22:27:13Z kink $
+ * @version $Id$
  * @package plugins
  * @subpackage squirrelspell
  */

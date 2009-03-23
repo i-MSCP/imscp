@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: view_text.php 12581 2007-08-12 19:08:47Z kink $
+ * @version $Id$
  * @package squirrelmail
  */
 

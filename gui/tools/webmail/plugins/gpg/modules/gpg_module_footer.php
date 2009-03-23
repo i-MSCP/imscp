@@ -4,7 +4,7 @@
  *
  * @author Brian Peterson
  *
- * $Id: gpg_module_footer.php,v 1.9 2004/08/09 18:00:24 ke Exp $
+ * $Id$
  *
  * @todo specify a backlink so that the libk on the bottom of the screen
  *       may be defined by the calling page

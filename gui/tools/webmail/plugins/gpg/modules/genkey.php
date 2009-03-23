@@ -10,7 +10,7 @@
  * @author Aaron Van Meerten
  * @author Brian Peterson
  *
- * $Id: genkey.php,v 1.33 2005/07/27 14:07:49 brian Exp $
+ * $Id$
  */
 
 if (!defined ('SM_PATH')){

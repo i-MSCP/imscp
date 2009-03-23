@@ -9,7 +9,7 @@
  * @package gpg
  * @author Walter Torres
  *
- * $Id: gpg_help.php,v 1.16 2006/08/18 20:57:25 ke Exp $
+ * $Id$
  */
 if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){

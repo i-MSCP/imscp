@@ -13,7 +13,7 @@
     *
     * pop3 class
     *
-    * $Id: class.POP3.php 12426 2007-05-30 18:52:34Z kink $
+    * $Id$
     */
 
 class POP3 {

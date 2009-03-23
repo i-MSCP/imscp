@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: move_messages.php 12542 2007-07-16 21:04:37Z kink $
+ * @version $Id$
  * @package squirrelmail
  */
 

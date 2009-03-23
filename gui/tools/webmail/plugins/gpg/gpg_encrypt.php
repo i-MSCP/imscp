@@ -10,7 +10,7 @@
  * @package gpg
  * @author Brian Peterson
  *
- * $Id: gpg_encrypt.php,v 1.80 2005/07/27 14:07:48 brian Exp $
+ * $Id$
  *
  */
 ob_start();

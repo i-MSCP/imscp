@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 13241 2008-07-20 20:46:37Z pdontthink $
+ * @version $Id$
  * @package squirrelmail
  * @subpackage prefs
  */

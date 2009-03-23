@@ -159,6 +159,8 @@ $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "¥Æ¡¼¥Ö¥ë ne
 
 // logAccess(), logLogin(), logError()
 $net2ftp_messages["Unable to execute the SQL query."] = "SQL¥¯¥¨¥ê¤ò¼Â¹Ô¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤»¤ó¡£";
+$net2ftp_messages["Unable to open the system log."] = "Unable to open the system log.";
+$net2ftp_messages["Unable to write a message to the system log."] = "Unable to write a message to the system log.";
 
 // checkAdminUsernamePassword()
 $net2ftp_messages["You did not enter your Administrator username or password."] = "´ÉÍý¼Ô¤Î¥æ¡¼¥¶Ì¾¤«¥Ñ¥¹¥ï¡¼¥É¤òÆþÎÏ¤·¤Æ¤Þ¤»¤ó¡£";
@@ -322,6 +324,7 @@ $net2ftp_messages["Transferring files to the FTP server"] = "¥Õ¥¡¥¤¥ë¤ò FTP¥µ¡¼¥
 $net2ftp_messages["Processing archive nr %1\$s: <b>%2\$s</b>"] = "°µ½Ì¥Õ¥¡¥¤¥ë¤Î½èÍý¥¨¥é¡¼ %1\$s: <b>%2\$s</b>";
 $net2ftp_messages["Archive <b>%1\$s</b> was not processed because its filename extension was not recognized. Only zip, tar, tgz and gz archives are supported at the moment."] = "¥Õ¥¡¥¤¥ë³ÈÄ¥»Ò¤¬È½ÊÌÉÔÇ½¤Ê¤¿¤á¡¢°µ½Ì¥Õ¥¡¥¤¥ë <b>%1\$s</b> ¤Ï½èÍý¤µ¤ì¤Þ¤»¤ó¤Ç¤·¤¿¡£¸½ºß¥µ¥Ý¡¼¥È¤µ¤ì¤Æ¤¤¤ë°µ½Ì¥Õ¥¡¥¤¥ë¤Ï zip, tar, tgz, gz ¤À¤±¤Ç¤¹¡£";
 $net2ftp_messages["Unable to extract the files and directories from the archive"] = "Unable to extract the files and directories from the archive";
+$net2ftp_messages["Archive contains filenames with ../ or ..\\ - aborting the extraction"] = "Archive contains filenames with ../ or ..\\ - aborting the extraction";
 $net2ftp_messages["Created directory %1\$s"] = "Created directory %1\$s";
 $net2ftp_messages["Could not create directory %1\$s"] = "Could not create directory %1\$s";
 $net2ftp_messages["Copied file %1\$s"] = "Copied file %1\$s";
