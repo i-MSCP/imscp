@@ -139,11 +139,53 @@ sub gen_log_file {
 
 	return ($rs, '') if ($rs != 0);
 
+	#Log Enhancement begin
+
+	my $logdb_file = "$dest_dir/logdb";
+
+	my %logdb;
+
+	my $pos = 0;
+
+	#Creating the logdb file where the log position for each log reside if not already created
+		
+	if (!-e "$logdb_file") {
+	
+		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $logdb_file");
+			
+		return ($rs, '') if ($rs != 0);
+			
+	}
+
+	push_el(\@main::el, 'gen_log_file()', "Taking the domain log positions from '$logdb_file'...");
+
+	$rs = open (LOGDB,'+<',"$logdb_file");
+		
+	if (!defined($rs)) {
+
+		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$logdb_file' for reading !");
+
+		return (-1, '');
+
+	}
+
+	while (<LOGDB>) {
+
+		my ($logdb_key,$logdb_val) = split(' ',$_);
+
+		$logdb{$logdb_key} = $logdb_val;
+
+	}
+
 	if (-e $dest_file_prev) {
 
-		if (diff_command("$main::cfg{'CMD_CMP'} -s $dest_file $dest_file_prev") == 0) {
+		#There is almost no chance two log files to have the same size and not to be identical. However if you find your logs too precious, keep the byte by byte cmp ;) 
+
+		if (-s $dest_file == -s $dest_file_prev) {
 
 			$rs = del_file($dest_file);
+
+			push_el(\@main::el, 'gen_log_file()', "No changes in $dest_file , msg: Ending...");
 
 			return ($rs, '') if ($rs != 0);
 
@@ -153,7 +195,156 @@ sub gen_log_file {
 
 		$log_file = $dest_file.".diff";
 
-		diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | $main::cfg{'CMD_EGREP'} '^<' | $main::cfg{'CMD_SED'} 's/^< //' 1> $log_file");
+		$rs = open(DESTLOG,'<',$dest_file);
+
+		if (!defined($rs)) {
+
+			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
+			
+			return (-1, '');
+
+		}
+
+		$rs = open(LOGFILE, '>',$log_file);
+
+		if (!defined($rs)) {
+
+			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$log_file' for writing !");
+			
+			return (-1, '');
+
+		}
+		
+		#We check if we have last saved position for this domain log
+
+		if (exists($logdb{$fname})) { 
+
+			$pos = $logdb{$fname};
+
+			#The log is not rotated so we just copy the remaining entries from our last saved position to the end
+
+			if (-s $dest_file > -s $dest_file_prev) {
+				
+				push_el(\@main::el, 'gen_log_file'," Parsing for $dest_file begins at position $pos.");
+
+				seek(DESTLOG,$pos,0);
+
+				while (<DESTLOG>) {
+					
+					print LOGFILE $_;
+					
+					$pos = tell(DESTLOG) if (eof(DESTLOG));
+				
+				}
+				
+				$logdb{$fname} = $pos;
+
+			}
+
+			#The log was rotated so we need to use the old log and copy the remaining entries and then continue from the new one.
+
+			else {
+
+				my $old_src_file = "$src_file.1";
+
+				my $old_dest_file = "$dest_file.1";
+
+				if (-e $old_src_file) { 
+				
+					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated. Parsing begins at position $pos in  $old_src_file");
+
+					$rs = sys_command("$main::cfg{'CMD_CP'} $old_src_file $old_dest_file");
+				
+					return ($rs, '') if ($rs != 0);
+			
+					$rs = open (OLDLOG,'<',$old_dest_file);
+	
+					if (!defined($rs)) {
+
+						push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$old_dest_file' for reading !");
+			
+						return (-1, '');
+
+					}
+		
+					seek(OLDLOG,$pos,0);
+
+					while (<OLDLOG>) {
+		
+						print LOGFILE $_;
+
+					}
+
+					close OLDLOG;
+
+					$rs = del_file($old_dest_file);
+				
+					return ($rs, '') if ($rs != 0);
+
+				}
+
+				else { 
+
+					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated but no $old_src_file found!");
+
+				}
+
+				while (<DESTLOG>) {
+
+					print LOGFILE $_;
+
+					$pos = tell(DESTLOG) if (eof(DESTLOG));
+					
+				}
+
+				$logdb{$fname} = $pos;
+			}
+
+		}
+		
+		#We have no entry for this domain log. Lets create one!
+		else {
+			
+			if (-s $dest_file > -s $dest_file_prev) {
+
+
+				$rs = open(DESTLOGPREV,'<',$dest_file_prev);
+
+				if (!defined($rs)) {
+
+					push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
+			
+					return (-1, '');
+
+				}
+				
+				push_el(\@main::el, 'gen_log_file',"No log db entry for $dest_file. Checking last position in $dest_file_prev.");
+
+				seek(DESTLOGPREV,0,2);
+
+				$pos = tell(DESTLOGPREV);
+
+				close(DESTLOGPREV);
+
+			}
+			
+			seek(DESTLOG,$pos,0);
+
+			while (<DESTLOG>) {
+				
+				print LOGFILE $_;
+
+				$pos = tell(DESTLOG) if (eof(DESTLOG));
+				
+			}
+			
+			$logdb{$fname} = $pos;
+
+		}
+
+		close DESTLOG;
+
+		close LOGFILE;
 
 		$rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
 
@@ -165,7 +356,42 @@ sub gen_log_file {
 
 		return ($rs, '') if ($rs != 0);
 
+		$rs = open(DESTLOG,'<',$dest_file);
+
+		if (!defined($rs)) {
+
+			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
+			
+			return (-1, '');
+
+		}
+
+		push_el(\@main::el, 'gen_log_file',"We have no .prev file. Parsing the whole '$dest_file'.");
+
+		seek(DESTLOG,0,2);
+
+		$pos = tell(DESTLOG);
+				
+		
+		$logdb{$fname} = $pos;
+
 	}
+
+	#Let's write the new position back to the log db
+		
+	push_el(\@main::el, 'gen_log_file()', "Saving new domain log positions in '$logdb_file'...");
+
+	seek(LOGDB,0,0);
+
+	truncate(LOGDB,0);
+
+	foreach my $logdb_key (keys %logdb) {
+
+		print LOGDB "$logdb_key $logdb{$logdb_key}\n";
+
+	}
+
+	close LOGDB;
 
 	push_el(\@main::el, 'gen_log_file()', 'Ending...');
 
