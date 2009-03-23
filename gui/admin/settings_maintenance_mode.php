@@ -28,13 +28,13 @@ $tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings_mai
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('ispCP - Admin/Maintenance mode'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('ispCP - Admin/Maintenance mode'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 $selected_on = '';
 
@@ -66,18 +66,18 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
-		array(
-			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-			'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
-			'TR_MESSAGE' => tr('Message'),
-			'MESSAGE_VALUE' => Config::get('MAINTENANCEMODE_MESSAGE'),
-			'SELECTED_ON' => $selected_on,
-			'SELECTED_OFF' => $selected_off,
-			'TR_ENABLED' => tr('Enabled'),
-			'TR_DISABLED' => tr('Disabled'),
-			'TR_APPLY_CHANGES' => tr('Apply changes')
-			)
-		);
+	array(
+		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
+		'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
+		'TR_MESSAGE' => tr('Message'),
+		'MESSAGE_VALUE' => Config::get('MAINTENANCEMODE_MESSAGE'),
+		'SELECTED_ON' => $selected_on,
+		'SELECTED_OFF' => $selected_off,
+		'TR_ENABLED' => tr('Enabled'),
+		'TR_DISABLED' => tr('Disabled'),
+		'TR_APPLY_CHANGES' => tr('Apply changes')
+	)
+);
 
 gen_page_message($tpl);
 

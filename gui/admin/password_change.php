@@ -93,7 +93,8 @@ SQL_QUERY;
 	if ($rs->RecordCount() == 1) {
 		$rs = $rs->FetchRow();
 
-		if ((crypt($pass, $rs['admin_pass']) == $rs['admin_pass']) || (md5($pass) == $rs['admin_pass'])) {
+		if ((crypt($pass, $rs['admin_pass']) == $rs['admin_pass'])
+			|| (md5($pass) == $rs['admin_pass'])) {
 			return true;
 		}
 	}
@@ -110,7 +111,8 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_genera
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 $tpl->assign(
-	array('TR_CHANGE_PASSWORD' => tr('Change password'),
+	array(
+		'TR_CHANGE_PASSWORD' => tr('Change password'),
 		'TR_PASSWORD_DATA' => tr('Password data'),
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),

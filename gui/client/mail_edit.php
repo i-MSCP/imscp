@@ -46,8 +46,8 @@ function edit_mail_account(&$tpl, &$sql) {
 		SELECT
 			t1.*, t2.`domain_id`, t2.`domain_name`
 		FROM
-			`mail_users` as t1,
-			`domain` as t2
+			`mail_users` AS t1,
+			`domain` AS t2
 		WHERE
 			t1.`mail_id` = ?
 		AND
@@ -72,56 +72,56 @@ function edit_mail_account(&$tpl, &$sql) {
 		foreach (explode(',', $mail_type_list) as $mail_type) {
 			if ($mail_type == MT_NORMAL_MAIL) {
 				$mtype[] = 1;
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALIAS_MAIL) {
 				$mtype[] = 2;
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
-				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_SUBDOM_FORWARD) {
 				$mtype[] = 6;
-				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id`=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALSSUB_MAIL) {
 				$mtype[] = 7;
-				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($alias_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALSSUB_FORWARD) {
 				$mtype[] = 8;
-				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id`=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id`=?", array($alias_id));
+				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($alias_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			}
@@ -223,7 +223,8 @@ function update_email_forward(&$tpl, &$sql) {
 	if (!isset($_POST['uaction'])) {
 		return false;
 	}
-	if (preg_match('/update_forward/', $_POST['uaction']) == 0 && !isset($_POST['mail_forward'])) {
+	if (preg_match('/update_forward/', $_POST['uaction']) == 0
+		&& !isset($_POST['mail_forward'])) {
 		return true;
 	}
 
@@ -232,13 +233,14 @@ function update_email_forward(&$tpl, &$sql) {
 	$forward_list = clean_input($_POST['forward_list']);
 	$mail_accs = array();
 
-	if (isset($_POST['mail_forward']) || $_POST['uaction'] == 'update_forward') {
+	if (isset($_POST['mail_forward'])
+		|| $_POST['uaction'] == 'update_forward') {
 		$faray = preg_split ('/[\n\s,]+/', $forward_list);
 
 		foreach ($faray as $value) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
-				/* ERR .. strange :) not email in this line - warning */
+				/* ERROR .. strange :) not email in this line - warning */
 				set_page_message(tr("Mail forward list error!"));
 				return false;
 			} else if ($value === '') {

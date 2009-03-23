@@ -7,7 +7,7 @@
  * @link		http://isp-control.net
  * @author		ispCP Team
  *
- *  @license
+ * @license
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the MPL General Public License as published by the Free Software
  *  Foundation; either version 1.1 of the License, or (at your option) any later

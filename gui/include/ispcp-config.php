@@ -74,7 +74,7 @@ function encrypt_db_password($db_pass) {
 		$iv = $ispcp_db_pass_iv;
 		
 		// compatibility with used perl pads
-		$block_size=@mcrypt_enc_get_block_size($td);
+		$block_size = @mcrypt_enc_get_block_size($td);
 		$strlen=strlen($db_pass);
 
 		$pads=$block_size-$strlen % $block_size;
@@ -89,7 +89,7 @@ function encrypt_db_password($db_pass) {
 		@mcrypt_module_close($td);
 
 		$text = @base64_encode("$encrypted");
-		$text=trim($text);
+		$text = trim($text);
 		return $text;
 	} else {
 		//system_message("ERROR: The php-extension 'mcrypt' not loaded!");

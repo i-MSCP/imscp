@@ -340,11 +340,7 @@ class pTemplate {
 	}
 
 	function is_safe($fname) {
-		if (file_exists(($this->root_dir) . '/' . $fname)) {
-			return true;
-		}
-
-		return false;
+		return (file_exists(($this->root_dir) . '/' . $fname)) ? true : false;
 	}
 
 	function get_file($fname) {
@@ -377,8 +373,8 @@ class pTemplate {
 		if (!@$this->dtpl_name[$tname]) {
 			return false;
 		}
-		while (!preg_match('/\.[Tt][Pp][Ll]/', $this->dtpl_name[$tname]) && !preg_match('/_no_file_/', $this->dtpl_name[$tname])
-			) {
+		while (!preg_match('/\.[Tt][Pp][Ll]/', $this->dtpl_name[$tname])
+			&& !preg_match('/_no_file_/', $this->dtpl_name[$tname])) {
 			$tname = $this->dtpl_name[$tname];
 		}
 
@@ -390,7 +386,8 @@ class pTemplate {
 		$parent = '';
 		$swap = '';
 
-		if (!preg_match('/\.[Tt][Pp][Ll]/', @$this->dtpl_name[$tname]) && !preg_match('/_no_file_/', @$this->dtpl_name[$tname])) {
+		if (!preg_match('/\.[Tt][Pp][Ll]/', @$this->dtpl_name[$tname])
+			&& !preg_match('/_no_file_/', @$this->dtpl_name[$tname])) {
 			$CHILD = true;
 
 			$parent = $this->find_origin($tname);
@@ -452,7 +449,8 @@ class pTemplate {
 			$ADD_FLAG = true;
 		}
 
-		if (@$this->tpl_name[$tname] == '_no_file_' || preg_match('/\.[Tt][Pp][Ll]/', @$this->tpl_name[$tname])) {
+		if (@$this->tpl_name[$tname] == '_no_file_'
+			|| preg_match('/\.[Tt][Pp][Ll]/', @$this->tpl_name[$tname])) {
 			/* static NO FILE *//* static FILE */
 
 			if (@$this->tpl_data[$tname] == '') {
@@ -466,7 +464,9 @@ class pTemplate {
 			}
 
 			$this->last_parsed = $this->namespace[$pname];
-		} else if (@$this->dtpl_name[$tname] == '_no_file_' || preg_match('/\.[Tt][Pp][Ll]/', @$this->dtpl_name[$tname]) || $this->find_origin($tname)) {
+		} else if (@$this->dtpl_name[$tname] == '_no_file_'
+			|| preg_match('/\.[Tt][Pp][Ll]/', @$this->dtpl_name[$tname])
+			|| $this->find_origin($tname)) {
 			/* dynamic NO FILE *//* dynamic FILE */
 
 			$dres = $this->parse_dynamic($pname, $tname, $ADD_FLAG);

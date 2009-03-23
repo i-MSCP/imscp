@@ -71,9 +71,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} // switch
 
 	if ((!is_number($lostpassword_timeout)) OR (!is_number($passwd_chars))
-			OR (!is_number($bruteforce_max_login)) OR (!is_number($bruteforce_block_time))
-			OR (!is_number($bruteforce_between_time)) OR (!is_number($bruteforce_max_capcha))
-			OR (!is_number($domain_rows_per_page))) {
+		OR (!is_number($bruteforce_max_login)) OR (!is_number($bruteforce_block_time))
+		OR (!is_number($bruteforce_between_time)) OR (!is_number($bruteforce_max_capcha))
+		OR (!is_number($domain_rows_per_page))) {
 		set_page_message(tr('ERROR: Only positive numbers are allowed !'));
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;

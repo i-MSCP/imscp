@@ -38,7 +38,9 @@ function curlang($newlang = null, $force = false) {
 	if ($language === null || ($newlang !== null && $newlang !== false)) {
 
 		if ($newlang === true || (($newlang === null || $newlang === false) && $language === null)) {
-			$newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : Config::get('USER_INITIAL_LANG');
+			$newlang = (isset($_SESSION['user_def_lang']))
+				? $_SESSION['user_def_lang']
+				: Config::get('USER_INITIAL_LANG');
 		}
 
 		if ($newlang !== false) {

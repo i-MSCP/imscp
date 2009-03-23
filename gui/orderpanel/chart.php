@@ -31,7 +31,8 @@ $tpl->define_dynamic('purchase_footer', 'page');
  */
 
 function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				*

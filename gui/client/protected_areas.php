@@ -33,13 +33,13 @@ $tpl->define_dynamic('protected_areas', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	array(
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 	$query = <<<SQL_QUERY
@@ -73,8 +73,8 @@ SQL_QUERY;
 					'AREA_PATH' => $path,
 					'PID' => $id,
 					'STATUS' => translate_dmn_status($status)
-					)
-				);
+				)
+			);
 			$tpl->parse('DIR_ITEM', '.dir_item');
 			$rs->MoveNext();
 			$counter++;
@@ -100,25 +100,25 @@ $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 gen_htaccess_entries($tpl, $sql, $dmn_id);
 
 $tpl->assign(
-		array(
-			'TR_HTACCESS' => tr('Protected areas'),
-			'TR_DIRECTORY_TREE' => tr('Directory tree'),
-			'TR_DIRS' => tr('Name'),
-			'TR__ACTION' => tr('Action'),
-			'TR_MANAGE_USRES' => tr('Manage users and groups'),
-			'TR_USERS' => tr('User'),
-			'TR_USERNAME' => tr('Username'),
-			'TR_ADD_USER' => tr('Add user'),
-			'TR_GROUPNAME' => tr('Group name'),
-			'TR_GROUP_MEMBERS' => tr('Group members'),
-			'TR_ADD_GROUP' => tr('Add group'),
-			'TR_EDIT' => tr('Edit'),
-			'TR_GROUP' => tr('Group'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_STATUS' => tr('Status'),
-			'TR_ADD_AREA' => tr('Add new protected area')
-		)
-	);
+	array(
+		'TR_HTACCESS' => tr('Protected areas'),
+		'TR_DIRECTORY_TREE' => tr('Directory tree'),
+		'TR_DIRS' => tr('Name'),
+		'TR__ACTION' => tr('Action'),
+		'TR_MANAGE_USRES' => tr('Manage users and groups'),
+		'TR_USERS' => tr('User'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_ADD_USER' => tr('Add user'),
+		'TR_GROUPNAME' => tr('Group name'),
+		'TR_GROUP_MEMBERS' => tr('Group members'),
+		'TR_ADD_GROUP' => tr('Add group'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_GROUP' => tr('Group'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_STATUS' => tr('Status'),
+		'TR_ADD_AREA' => tr('Add new protected area')
+	)
+);
 
 gen_page_message($tpl);
 

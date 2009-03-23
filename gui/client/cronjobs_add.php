@@ -30,17 +30,19 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
+	array(
+		'TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
-/* TODO: Implement */
+/**
+ * @todo Implement this function
+ */
 function add_cron_job(&$tpl, &$sql, $user_id) {
-
-} // End of add_cron_job();
+} // End of add_cron_job()
 
 /*
  *
@@ -58,7 +60,8 @@ check_permissions($tpl);
 add_cron_job($tpl, $sql, $_SESSION['user_id']);
 
 $tpl->assign(
-	array('TR_CRON_MANAGER' => tr('Cronjob Manager'),
+	array(
+		'TR_CRON_MANAGER' => tr('Cronjob Manager'),
 		'TR_ADD_CRONJOB' => tr('Add Cronjob'),
 		'TR_NAME' => tr('Name'),
 		'TR_DESCRIPTION' => tr('Description'),
@@ -75,8 +78,8 @@ $tpl->assign(
 		'TR_ADD' => tr('Add'),
 		'TR_RESET' => tr('Reset'),
 		'TR_CANCEL' => tr('Cancel'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

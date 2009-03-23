@@ -169,7 +169,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	}
 
 	$sess_id = session_id();
-	$query = "SELECT `session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`, `captcha_count` FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL";
+	$query = "SELECT `session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`, `captcha_count` FROM `login` WHERE `ipaddr` = ? AND `user_name` IS NULL";
 	$res = exec_query($sql, $query, array($ipaddr));
 
 	if ($res->RecordCount() == 0) {
@@ -184,11 +184,13 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$logincount = $data['login_count'];
 	$captchacount = $data['captcha_count'];
 
-	if ($type == 'bruteforce' && Config::get('BRUTEFORCE') && $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
+	if ($type == 'bruteforce' && Config::get('BRUTEFORCE')
+		&& $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
 		block_ipaddr($ipaddr, 'Login');
 	}
 
-	if ($type == 'captcha' && Config::get('BRUTEFORCE') && $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA') && Config::get('BRUTEFORCE')) {
+	if ($type == 'captcha' && Config::get('BRUTEFORCE')
+		&& $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA') && Config::get('BRUTEFORCE')) {
 		block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 
@@ -200,9 +202,9 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 	if ($btime < time()) {
 		if ($type == "bruteforce") {
-			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `login_count` = `login_count`+1 WHERE `ipaddr` = ? AND `user_name` is NULL";
+			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `login_count` = `login_count`+1 WHERE `ipaddr` = ? AND `user_name` IS NULL";
 		} else if ($type == "captcha") {
-			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `captcha_count` = `captcha_count`+1 WHERE `ipaddr` = ? AND `user_name` is NULL";
+			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `captcha_count` = `captcha_count`+1 WHERE `ipaddr` = ? AND `user_name` IS NULL";
 		}
 
 		exec_query($sql, $query, $ipaddr);
@@ -210,7 +212,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	} else {
 		$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
 		
-		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);		
+		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
 		
 		return false;

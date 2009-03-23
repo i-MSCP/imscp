@@ -150,7 +150,7 @@ function generate_users_list (&$tpl, $admin_id) {
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
-	if (isset($_POST['details']) AND !empty($_POST['details'])) {
+	if (isset($_POST['details']) && !empty($_POST['details'])) {
 		$_SESSION['details'] = $_POST['details'];
 	} else {
 		if (!isset($_SESSION['details'])) {
@@ -279,7 +279,12 @@ function generate_users_list (&$tpl, $admin_id) {
 				$status_icon = "ok.png";
 			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
-			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
+			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS')
+				|| $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS')
+				|| $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS')
+				|| $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS')
+				|| $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS')
+				|| $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 			} else {
 				$status_icon = "error.png";

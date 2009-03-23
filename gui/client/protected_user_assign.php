@@ -71,7 +71,9 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 
 		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
 		$tpl->assign('UID', $uuser_id);
-	} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'])) {
+	} else if (isset($_POST['nadmin_name'])
+		&& !empty($_POST['nadmin_name'])
+		&& is_numeric($_POST['nadmin_name'])) {
 		$uuser_id = $_POST['nadmin_name'];
 
 		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
@@ -146,7 +148,10 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 }
 
 function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups']) && !empty($_POST['groups']) && isset($_POST['nadmin_name']) && is_numeric($_POST['groups']) && is_numeric($_POST['nadmin_name'])) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add'
+		&& isset($_POST['groups']) && !empty($_POST['groups'])
+		&& isset($_POST['nadmin_name']) && is_numeric($_POST['groups'])
+		&& is_numeric($_POST['nadmin_name'])) {
 		$uuser_id = clean_input($_POST['nadmin_name']);
 		$group_id = $_POST['groups'];
 
@@ -197,7 +202,10 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 }
 
 function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove' && isset($_POST['groups_in']) && !empty($_POST['groups_in']) && isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in']) && is_numeric($_POST['nadmin_name'])) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove'
+		&& isset($_POST['groups_in']) && !empty($_POST['groups_in'])
+		&& isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in'])
+		&& is_numeric($_POST['nadmin_name'])) {
 		$group_id = $_POST['groups_in'];
 		$uuser_id = clean_input($_POST['nadmin_name']);
 
@@ -217,10 +225,10 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
 
 		$members = explode(',', $rs->fields['members']);
-		$key=array_search($uuser_id,$members);
-		if ($key!==false) {
+		$key = array_search($uuser_id, $members);
+		if ($key !== false) {
 			unset($members[$key]);
-			$members = implode(",",$members);
+			$members = implode(",", $members);
 			$change_status = Config::get('ITEM_CHANGE_STATUS');
 			$update_query = "
 				UPDATE

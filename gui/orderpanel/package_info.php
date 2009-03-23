@@ -43,7 +43,8 @@ function translate_sse($value) {
 }
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				*

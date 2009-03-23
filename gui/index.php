@@ -28,7 +28,10 @@ do_session_timeout();
 
 init_login();
 
-if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) && !empty($_POST['upass'])) {
+if (isset($_POST['uname'])
+	&& isset($_POST['upass'])
+	&& !empty($_POST['uname'])
+	&& !empty($_POST['upass'])) {
 
 	$uname = encode_idna($_POST['uname']);
 
@@ -43,19 +46,22 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	exit();
 }
 
-if (check_user_login()) {
-	if (!redirect_to_level_page()) {
-		unset_user_login_data();
-	}
+if (check_user_login() && !redirect_to_level_page()) {
+	unset_user_login_data();
 }
 
 shall_user_wait();
 
-$theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : Config::get('USER_INITIAL_THEME');
+$theme_color = isset($_SESSION['user_theme'])
+	? $_SESSION['user_theme']
+	: Config::get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
 
-if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && !isset($_GET['admin'])) {
+if ((Config::get('MAINTENANCEMODE')
+	|| databaseUpdate::getInstance()->checkUpdateExists()
+	|| criticalUpdate::getInstance()->checkUpdateExists())
+	&& !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', Config::get('LOGIN_TEMPLATE_PATH') . '/maintenancemode.tpl');
 	$tpl->assign(

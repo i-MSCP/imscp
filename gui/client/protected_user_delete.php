@@ -77,10 +77,10 @@ $rs = exec_query($sql, $query, array($dmn_id));
 	 while (!$rs->EOF) {
 		$members = explode(',',$rs->fields['members']);
 		$group_id = $rs->fields['id'];
-		$key = array_search($uuser_id,$members);
+		$key = array_search($uuser_id, $members);
 		if ($key !== false) {
 			unset($members[$key]);
-			$members = implode(",",$members);
+			$members = implode(",", $members);
 			$change_status = Config::get('ITEM_CHANGE_STATUS');
 			$update_query = "
 				UPDATE

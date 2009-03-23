@@ -52,8 +52,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 // dynamic page data.
 
@@ -72,8 +72,8 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 		array(
 			'ERROR' => tr('Server error - please choose error page'),
 			'EID' => '0'
-			)
-		);
+		)
+	);
 }
 
 // static page messages.
@@ -91,8 +91,8 @@ $tpl->assign(
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),
 		'EID' => $eid
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

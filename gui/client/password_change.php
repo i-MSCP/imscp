@@ -90,9 +90,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id, md5($pass)));
 
-	if (($rs->RecordCount()) != 1)
-		return false;
-	else return true;
+	return (($rs->RecordCount()) != 1) ? false : true;
 }
 
 /*

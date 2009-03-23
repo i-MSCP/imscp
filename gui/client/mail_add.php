@@ -150,7 +150,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
 	$query = "
 		SELECT
-			`subdomain_id` as sub_id, `subdomain_name` as sub_name
+			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
 		FROM
 			`subdomain`
 		WHERE
@@ -220,12 +220,14 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 	$query = "
 		SELECT
-			t1.`subdomain_alias_id` as als_sub_id, t1.`subdomain_alias_name` as als_sub_name, t2.`alias_name` as als_name
+			t1.`subdomain_alias_id` AS als_sub_id,
+			t1.`subdomain_alias_name` AS als_sub_name,
+			t2.`alias_name` AS als_name
 		FROM
-			`subdomain_alias` as t1
-		LEFT JOIN (`domain_aliasses` as t2) ON (t1.`alias_id`=t2.`alias_id`)
+			`subdomain_alias` AS t1
+		LEFT JOIN (`domain_aliasses` AS t2) ON (t1.`alias_id` = t2.`alias_id`)
 		WHERE
-			t1.`alias_id` in (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+			t1.`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 		AND
 			t1.`subdomain_alias_status` = ?
 		ORDER BY
@@ -346,7 +348,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 		foreach ($farray as $value) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
-				/* ERR .. strange :) not email in this line - warning */
+				/* ERROR .. strange :) not email in this line - warning */
 				set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
 				return false;
 			} else if ($value === '') {
@@ -363,7 +365,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
 	$check_acc_query = "
 		SELECT
-			COUNT(mail_id) AS cnt
+			COUNT(*) AS cnt
 		FROM
 			`mail_users`
 		WHERE
@@ -383,7 +385,10 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 		return false;
 	}
 
-	if (preg_match("/^normal_mail/",$mail_type)||preg_match("/^alias_mail/",$mail_type)||preg_match("/^subdom_mail/",$mail_type)||preg_match("/^alssub_mail/",$mail_type)) {
+	if (preg_match("/^normal_mail/", $mail_type)
+		|| preg_match("/^alias_mail/", $mail_type)
+		|| preg_match("/^subdom_mail/", $mail_type)
+		|| preg_match("/^alssub_mail/", $mail_type)) {
 		$mail_pass=encrypt_db_password($mail_pass);
 	}
 
@@ -469,46 +474,46 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 
 
 	if ($_POST['dmn_type'] === 'sub') {
-		$id='sub_id';
-		$query='
+		$id = 'sub_id';
+		$query = '
 			SELECT
-				CONCAT(t1.`subdomain_name`,\'.\',t2.`domain_name`) as name
+				CONCAT(t1.`subdomain_name`,\'.\',t2.`domain_name`) AS name
 			FROM
-				`subdomain` as t1,`domain` as t2
+				`subdomain` AS t1,`domain` AS t2
 			WHERE
-				t1.`domain_id`=t2.`domain_id`
+				t1.`domain_id` = t2.`domain_id`
 			AND
-				t1.`subdomain_id`=?
+				t1.`subdomain_id` = ?
 			AND
-				t1.`domain_id`=?
+				t1.`domain_id` = ?
 		';
-		$type=tr('Subdomain');
+		$type = tr('Subdomain');
 	}
 
 	if ($_POST['dmn_type'] === 'als_sub') {
-		$id='als_sub_id';
-		$query='
+		$id = 'als_sub_id';
+		$query = '
 			SELECT
-				CONCAT(t1.`subdomain_alias_name`,\'.\',t2.`alias_name`) as name
+				CONCAT(t1.`subdomain_alias_name`,\'.\',t2.`alias_name`) AS name
 			FROM
-				`subdomain_alias` as t1
-			LEFT JOIN (`domain_aliasses` as t2) ON (t1.`alias_id`=t2.`alias_id`)
-			LEFT JOIN (`domain` as t3) ON (t2.`domain_id`=t3.`domain_id`)
+				`subdomain_alias` AS t1
+			LEFT JOIN (`domain_aliasses` AS t2) ON (t1.`alias_id` = t2.`alias_id`)
+			LEFT JOIN (`domain` AS t3) ON (t2.`domain_id` = t3.`domain_id`)
 			WHERE 
-				t1.`subdomain_alias_id`=?
+				t1.`subdomain_alias_id` = ?
 			AND
-				t3.`domain_id`=?
+				t3.`domain_id` = ?
 		';
-		$type=tr('Subdomain alias');
+		$type = tr('Subdomain alias');
 	}
 
 	if ($_POST['dmn_type'] === 'als') {
-		$id='als_id';
-		$query='SELECT `alias_name` as name FROM `domain_aliasses` WHERE `alias_id`=? AND `domain_id`=?';
-		$type=tr('Alias');
+		$id = 'als_id';
+		$query = 'SELECT `alias_name` AS name FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?';
+		$type = tr('Alias');
 	}
 
-	if (in_array($_POST['dmn_type'],array('sub', 'als_sub', 'als'))) {
+	if (in_array($_POST['dmn_type'], array('sub', 'als_sub', 'als'))) {
 		if (!isset($_POST[$id])) {
 			set_page_message(sprintf(tr('%s list is empty! You cannot add mail accounts!'),$type));
 			return false;
@@ -566,7 +571,7 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
 		header("Location: mail_accounts.php");
 		die();
 	} else {
-		$post_check=isset($_POST['uaction'])?'yes':'no';
+		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
 		gen_page_form_data($tpl, $dmn_name, $post_check);
 		gen_dmn_als_list($tpl, $sql, $dmn_id, $post_check);
 		gen_dmn_sub_list($tpl, $sql, $dmn_id, $dmn_name, $post_check);

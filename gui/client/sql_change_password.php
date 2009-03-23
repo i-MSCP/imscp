@@ -120,13 +120,13 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-			'TR_CLIENT_SQL_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Client/Change SQL User Password'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_CLIENT_SQL_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Client/Change SQL User Password'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 
 // dynamic page data.
@@ -143,14 +143,14 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-		array(
-			'TR_CHANGE_SQL_USER_PASSWORD' => tr('Change SQL user password'),
-			'TR_USER_NAME' => tr('User name'),
-			'TR_PASS' => tr('Password'),
-			'TR_PASS_REP' => tr('Repeat password'),
-			'TR_CHANGE' => tr('Change')
-			)
-		);
+	array(
+		'TR_CHANGE_SQL_USER_PASSWORD' => tr('Change SQL user password'),
+		'TR_USER_NAME' => tr('User name'),
+		'TR_PASS' => tr('Password'),
+		'TR_PASS_REP' => tr('Repeat password'),
+		'TR_CHANGE' => tr('Change')
+	)
+);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');

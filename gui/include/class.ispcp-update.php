@@ -64,11 +64,8 @@ abstract class ispcpUpdate {
 
 	public function checkUpdateExists() {
 		$functionName = $this->returnFunctionName($this->getNextVersion());
-		if (method_exists($this,$functionName)) {
-			return true;
-		} else {
-			return false;
-		}
+		
+		return (method_exists($this, $functionName)) ? true : false;
 	}
 
 	protected function returnFunctionName($version) {
@@ -155,7 +152,7 @@ class versionUpdate extends ispcpUpdate {
 	}
 
 	protected function getCurrentVersion() {
-		return	(int)Config::get('BuildDate');
+		return (int)Config::get('BuildDate');
 	}
 
 	protected function getNextVersion() {
@@ -175,8 +172,7 @@ class versionUpdate extends ispcpUpdate {
 	}
 
 	public function checkUpdateExists() {
-		if ($this->getNextVersion()>$this->currentVersion) return true;
-		else return false;
+		return ($this->getNextVersion()>$this->currentVersion) ? true : false;
 	}
 
 	protected function returnFunctionName($version) {

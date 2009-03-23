@@ -184,7 +184,8 @@ function check_address_data(&$tpl) {
 			$_SESSION['firm'] = clean_input($_POST['firm'], true);
 		}
 
-		if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
+		if (isset($_POST['gender'])
+			&& get_gender_by_code($_POST['gender'], true) !== null) {
 			$_SESSION['gender'] = $_POST['gender'];
 		} else {
 			$_SESSION['gender'] = '';

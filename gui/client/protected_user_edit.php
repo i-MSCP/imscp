@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo use db prepared statements
+ */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -152,7 +156,9 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 			)
 		);
 	}
-} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'])) {
+} else if (isset($_POST['nadmin_name'])
+	&& !empty($_POST['nadmin_name'])
+	&& is_numeric($_POST['nadmin_name'])) {
 	$uuser_id = clean_input($_POST['nadmin_name']);
 
 	$query = "

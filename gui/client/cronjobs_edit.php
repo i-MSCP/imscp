@@ -30,20 +30,25 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array('TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
+	array(
+		'TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
-/* TODO: Implement */
+/**
+ * @todo Implement this function
+ */
 function update_cron_job(&$tpl, &$sql, $cron_id) {
+} // End of update_cron_job()
 
-} // End of update_cron_job();
+/**
+ * @todo Implement this function
+ */
 function gen_cron_job(&$tpl, &$sql, $user_id) {
-
-} // End of gen_cron_job();
+} // End of gen_cron_job()
 
 /*
  *
@@ -58,13 +63,14 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-if (isset($_GET['cron_id']) && is_numeric($_GET['cron_id']))
+if (isset($_GET['cron_id']) && is_numeric($_GET['cron_id'])) {
 	update_cron_job($tpl, $sql, $_GET['cron_id']);
-
+}
 gen_cron_job($tpl, $sql, $_SESSION['user_id']);
 
 $tpl->assign(
-	array('TR_CRON_MANAGER' => tr('Cronjob Manager'),
+	array(
+		'TR_CRON_MANAGER' => tr('Cronjob Manager'),
 		'TR_EDIT_CRONJOB' => tr('Edit Cronjob'),
 		'TR_NAME' => tr('Name'),
 		'TR_DESCRIPTION' => tr('Description'),
@@ -80,8 +86,8 @@ $tpl->assign(
 		'TR_WEEKDAYS' => tr('Weekday(s):'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_CANCEL' => tr('Cancel'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

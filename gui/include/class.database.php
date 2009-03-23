@@ -44,11 +44,11 @@ final class Database {
 
 	public function Execute($sql, $param = null) {
 		if ($sql instanceof PDOStatement) {
-			if (is_array($param))
+			if (is_array($param)) {
 				$ret = $sql->execute($param);
-			elseif (is_string($param) || is_int($param))
+			} elseif (is_string($param) || is_int($param)) {
 				$ret = $sql->execute(array($param));
-			else
+			} else
 				$ret = $sql->execute();
 
 			if ($ret) return new DatabaseResult($sql);
@@ -75,9 +75,9 @@ final class Database {
 		$tables = array();
 
 		$result = $this->_db->query('SHOW TABLES');
-		while ($result instanceof PDOStatement && $row = $result->fetch(PDO::FETCH_NUM))
-		$tables[] = $row[0];
-
+		while ($result instanceof PDOStatement && $row = $result->fetch(PDO::FETCH_NUM)) {
+			$tables[] = $row[0];
+		}
 		return $tables;
 	}
 
@@ -108,8 +108,9 @@ final class DatabaseResult {
 	protected $_fields = null;
 
 	public function __construct($result) {
-		if (!$result instanceof PDOStatement) return false;
-
+		if (!$result instanceof PDOStatement) {
+			return false;
+		}
 		$this->_result = $result;
 	}
 

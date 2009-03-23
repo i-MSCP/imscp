@@ -39,7 +39,7 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
-	if (empty($_POST['pass']) OR empty($_POST['pass_rep']) OR empty($_POST['curr_pass'])) {
+	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 		set_page_message(tr('Please fill up all data fields!'));
 	} else if ($_POST['pass'] !== $_POST['pass_rep']) {
 		set_page_message(tr('Passwords do not match!'));

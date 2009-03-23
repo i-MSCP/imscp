@@ -33,20 +33,21 @@ $tpl->define_dynamic('purchase_footer', 'page');
  */
 
 function gen_packages_list(&$tpl, &$sql, $user_id) {
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				t1.*,
 				t2.`admin_id`, t2.`admin_type`
 			FROM
-				`hosting_plans` as t1,
-				`admin` as t2
+				`hosting_plans` AS t1,
+				`admin` AS t2
 			WHERE
 				t2.`admin_type` = ?
 			AND
 				t1.`reseller_id` = t2.`admin_id`
 			AND
-				t1.`status`=1
+				t1.`status` = 1
 			ORDER BY
 				t1.`id`
 		";

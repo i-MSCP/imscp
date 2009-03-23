@@ -35,8 +35,8 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
+	)
+);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_admin_personal_data($sql, $_SESSION['user_id']);
@@ -172,8 +172,8 @@ $tpl->assign(
 		'TR_FEMALE' => tr('Female'),
 		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_UPDATE_DATA' => tr('Update data'),
-		)
-	);
+	)
+);
 
 gen_page_message($tpl);
 

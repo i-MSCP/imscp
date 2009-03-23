@@ -1,12 +1,12 @@
 <?php
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @link		http://isp-control.net
- *  @author		ispCP Team
+ * @author		ispCP Team
  *
- *  @license
+ * @license
  *   This program is free software; you can redistribute it and/or
  *   modify it under the terms of the GPL General Public License
  *   as published by the Free Software Foundation; either version 2.0

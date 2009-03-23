@@ -24,7 +24,8 @@ check_login(__FILE__);
 
 // let's back to admin interface - am I admin or what ? :-)
 
-if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) && $_GET['action'] == "go_back") {
+if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])
+	&& isset($_GET['action']) && $_GET['action'] == "go_back") {
 	change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
 } else if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 

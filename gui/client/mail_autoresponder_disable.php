@@ -32,8 +32,8 @@ function check_email_user(&$sql) {
 			t2.domain_id,
 			t2.domain_name
 		FROM
-			mail_users as t1,
-			domain as t2
+			mail_users AS t1,
+			domain AS t2
 		WHERE
 			t1.mail_id = ?
 		AND
@@ -77,17 +77,17 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`mail_type`, 
 			IF(`mail_type` like 'normal_%',t2.`domain_name`,
 				IF(`mail_type` like 'alias_%',t3.`alias_name`,
-					IF(`mail_type` like 'subdom_%',CONCAT(t4.`subdomain_name`,'.',t6.`domain_name`),CONCAT(t5.`subdomain_alias_name`,'.',t7.`alias_name`))
+					IF(`mail_type` like 'subdom_%', CONCAT(t4.`subdomain_name`,'.',t6.`domain_name`), CONCAT(t5.`subdomain_alias_name`,'.',t7.`alias_name`))
 				)
 			) AS mailbox
 		FROM
-			`mail_users` as t1
-		left join (domain as t2) on (t1.domain_id=t2.domain_id)
-		left join (domain_aliasses as t3) on (sub_id=alias_id)
-		left join (subdomain as t4) on (sub_id=subdomain_id)
-		left join (subdomain_alias as t5) on (sub_id=subdomain_alias_id)
-		left join (domain as t6) on (t4.domain_id=t6.domain_id)
-		left join (domain_aliasses as t7) on (t5.alias_id=t7.alias_id)
+			`mail_users` AS t1
+		left join (domain AS t2) ON (t1.domain_id = t2.domain_id)
+		left join (domain_aliasses AS t3) ON (sub_id = alias_id)
+		left join (subdomain AS t4) ON (sub_id = subdomain_id)
+		left join (subdomain_alias AS t5) ON (sub_id = subdomain_alias_id)
+		left join (domain AS t6) ON (t4.domain_id = t6.domain_id)
+		left join (domain_aliasses AS t7) ON (t5.alias_id = t7.alias_id)
 		WHERE
 			`mail_id` = ?
 	";

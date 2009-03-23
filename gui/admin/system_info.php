@@ -150,7 +150,7 @@ $tpl->assign(
 		'TR_KERNEL' => tr('Kernel'),
 		'KERNEL' => $kernel,
 		'TR_LOAD' => tr('Load'),
-		'LOAD' => $load['avg'][0] . ' ' . $load['avg'][1] . '  ' . $load['avg'][2] ,
+		'LOAD' => $load['avg'][0] . ' ' . $load['avg'][1] . ' ' . $load['avg'][2],
 		'RAM' => tr('RAM'),
 		'RAM_TOTAL' => sizeit($mem['ram']['total'], 'KB'),
 		'RAM_USED' => sizeit($mem['ram']['used'], 'KB'),
