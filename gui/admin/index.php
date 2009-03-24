@@ -40,7 +40,7 @@ function gen_system_message(&$tpl, &$sql) {
 
 	$query = "
 		SELECT
-			COUNT(*) AS cnum
+			COUNT(`ticket_id`) AS cnum
 		FROM
 			`tickets`
 		WHERE
@@ -122,7 +122,7 @@ function gen_server_trafic(&$tpl, &$sql) {
 
 	$query = "
 		SELECT
-			IFNULL((sum(`bytes_in`) + sum(`bytes_out`)), 0) AS traffic
+			IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) AS traffic
 		FROM
 			`server_traffic`
 		WHERE

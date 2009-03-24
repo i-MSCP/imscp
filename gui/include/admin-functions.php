@@ -266,7 +266,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 }
 
 function get_cnt_of_user(&$sql, $user_type) {
-	$query = "SELECT COUNT(*) AS cnt FROM `admin` WHERE `admin_type`=?";
+	$query = "SELECT COUNT(*) AS cnt FROM `admin` WHERE `admin_type` = ?";
 
 	$rs = exec_query($sql, $query, array($user_type));
 

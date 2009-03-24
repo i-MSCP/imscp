@@ -318,7 +318,7 @@ function save_data_to_db() {
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			`䠀Psting_plans`
+			`hosting_plans`
 		SET
 			`name` = ?,
 			`description` = ?,

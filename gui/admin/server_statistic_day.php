@@ -75,11 +75,11 @@ function generate_page (&$tpl) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(bytes_in) AS cnt
+			COUNT(`bytes_in`) AS cnt
 		FROM
-			server_traffic
+			`server_traffic`
 		WHERE
-			traff_time > ? AND traff_time < ?
+			`traff_time` > ? AND `traff_time` < ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftm, $ltm));
@@ -88,19 +88,19 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			traff_time AS ttime,
-			bytes_in AS sbin,
-			bytes_out AS sbout,
-			bytes_mail_in AS smbin,
-			bytes_mail_out AS smbout,
-			bytes_pop_in AS spbin,
-			bytes_pop_out AS spbout,
-			bytes_web_in AS swbin,
-			bytes_web_out AS swbout
+			`traff_time` AS ttime,
+			`bytes_in` AS sbin,
+			`bytes_out` AS sbout,
+			`bytes_mail_in` AS smbin,
+			`bytes_mail_out` AS smbout,
+			`bytes_pop_in` AS spbin,
+			`bytes_pop_out` AS spbout,
+			`bytes_web_in` AS swbin,
+			`bytes_web_out` AS swbout
 		FROM
-			server_traffic
+			`server_traffic`
 		WHERE
-			traff_time > ? AND traff_time < ?
+			`traff_time` > ? AND `traff_time` < ?
 SQL_QUERY;
 
 	$rs1 = exec_query($sql, $query, array($ftm, $ltm));

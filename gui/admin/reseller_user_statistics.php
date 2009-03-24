@@ -96,26 +96,26 @@ function generate_page (&$tpl, $reseller_id, $reseller_name) {
 	// count query
 	$count_query = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`admin_id`) AS cnt
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user'
+			`admin_type` = 'user'
 		AND
-			created_by = ?
+			`created_by` = ?
 SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id
+			`admin_id`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user'
+			`admin_type` = 'user'
 		AND
-			created_by = ?
+			`created_by` = ?
 		ORDER BY
-			admin_name DESC
+			`admin_name` DESC
 		LIMIT
 			$start_index, $rows_per_page
 SQL_QUERY;
@@ -184,11 +184,11 @@ SQL_QUERY;
 
 			$query = <<<SQL_QUERY
 				SELECT
-					domain_id
+					`domain_id`
 				FROM
-					domain
+					`domain`
 				WHERE
-					domain_admin_id = ?
+					`domain_admin_id` = ?
 SQL_QUERY;
 
 			$dres = exec_query ($sql, $query, array($admin_id));

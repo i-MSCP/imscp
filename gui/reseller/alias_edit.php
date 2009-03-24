@@ -115,20 +115,20 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			t1.domain_id,
-			t1.alias_id,
-			t1.alias_name,
-			t2.domain_id,
-			t2.domain_created_id
+			t1.`domain_id`,
+			t1.`alias_id`,
+			t1.`alias_name`,
+			t2.`domain_id`,
+			t2.`domain_created_id`
 		FROM
-			domain_aliasses as t1,
-			domain as t2
+			`domain_aliasses` as t1,
+			`domain` as t2
 		WHERE
-			t1.alias_id = ?
+			t1.`alias_id` = ?
 		AND
-			t1.domain_id = t2.domain_id
+			t1.`domain_id` = t2.`domain_id`
 		AND
-			t2.domain_created_id = ?
+			t2.`domain_created_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($edit_id, $reseller_id));
@@ -139,7 +139,7 @@ SQL_QUERY;
 		die();
 	}
 	// Get data from sql
-	$res = exec_query($sql, "SELECT * FROM domain_aliasses WHERE alias_id = ?", array($edit_id));
+	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", array($edit_id));
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -148,7 +148,7 @@ SQL_QUERY;
 	}
 	$data = $res->FetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "SELECT * FROM server_ips WHERE ip_id = ?", array($data['alias_ip_id']));
+	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['alias_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
@@ -207,22 +207,22 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		$query = "
 			UPDATE
-				domain_aliasses
+				`domain_aliasses`
 			SET
-				url_forward = ?,
-				alias_status = ?
+				`url_forward` = ?,
+				`alias_status` = ?
 			WHERE
-				alias_id = ?
+				`alias_id` = ?
 		";
 		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		$query = "
 			UPDATE
-				subdomain_alias
+				`subdomain_alias`
 			SET
-				subdomain_alias_status = ?
+				`subdomain_alias_status` = ?
 			WHERE
-				alias_id = ?
+				`alias_id` = ?
 		";
 		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 

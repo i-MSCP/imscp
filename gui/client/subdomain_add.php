@@ -163,7 +163,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`subdomain_alias_id`) AS cnt
 			FROM
 				`subdomain_alias`
 			WHERE
@@ -174,7 +174,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	
 		$query_domain = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`alias_id`) AS cnt
 			FROM
 				`domain_aliasses`
 			WHERE
@@ -183,7 +183,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	} else {
 		$query_subdomain = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`subdomain_id`) AS cnt
 			FROM
 				`subdomain`
 			WHERE
@@ -194,7 +194,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	
 		$query_domain = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`domain_id`) AS cnt
 			FROM
 				`domain`
 			WHERE
@@ -225,7 +225,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`subdomain_alias_id`) AS cnt
 			FROM
 				`subdomain_alias`
 			WHERE
@@ -238,7 +238,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	} else {
 		$query = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`subdomain_id`) AS cnt
 			FROM
 				`subdomain`
 			WHERE
@@ -249,7 +249,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	
 		$query2 = "
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`alias_id`) AS cnt
 			FROM
 				`domain_aliasses`
 			WHERE

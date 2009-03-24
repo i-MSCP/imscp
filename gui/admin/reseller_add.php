@@ -337,7 +337,8 @@ function add_reseller(&$tpl, &$sql) {
 	} // not add
 	else {
 		$tpl->assign(
-			array('EMAIL' => '',
+			array(
+				'EMAIL' => '',
 				'USERNAME' => '',
 
 				'FIRST_NAME' => '',
@@ -382,7 +383,7 @@ function check_user_data() {
 		FROM
 			admin
 		WHERE
-			admin_name=?
+			admin_name = ?
 	";
 
 	$rs = exec_query($sql, $query, array($username));

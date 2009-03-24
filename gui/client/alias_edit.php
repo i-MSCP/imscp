@@ -112,7 +112,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	$sql = Database::getInstance();
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
-	$res = exec_query($sql, "SELECT * FROM domain_aliasses WHERE alias_id = ? AND domain_id = ?", array($edit_id, $domain_id));
+	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -121,7 +121,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	$data = $res->FetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "SELECT * FROM server_ips WHERE ip_id = ?", array($data['alias_ip_id']));
+	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['alias_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
@@ -181,22 +181,22 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		$query = "
 			UPDATE
-				domain_aliasses
+				`domain_aliasses`
 			SET
-				url_forward = ?,
-				alias_status = ?
+				`url_forward` = ?,
+				`alias_status` = ?
 			WHERE
-				alias_id = ?
+				`alias_id` = ?
 		";
 		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		$query = "
 			UPDATE
-				subdomain_alias
+				`subdomain_alias`
 			SET
-				subdomain_alias_status = ?
+				`subdomain_alias_status` = ?
 			WHERE
-				alias_id = ?
+				`alias_id` = ?
 		";
 		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 

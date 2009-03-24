@@ -78,8 +78,8 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					t1.*,
 					t2.`admin_id`, t2.`admin_type`
 				FROM
-					hosting_plans as t1,
-					admin as t2
+					`hosting_plans` AS t1,
+					`admin` AS t2
 				WHERE
 					t2.`admin_type` = ?
 				AND
@@ -108,7 +108,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 			$count_query = "
 				SELECT
-					COUNT(*) AS cnum
+					COUNT(`id`) AS cnum
 				FROM
 					`hosting_plans`
 				WHERE

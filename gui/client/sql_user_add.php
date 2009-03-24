@@ -182,7 +182,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 }
 
 function check_db_user(&$sql, $db_user) {
-	$query = "SELECT COUNT(User) AS cnt FROM mysql.user WHERE User=?";
+	$query = "SELECT COUNT(`User`) AS cnt FROM mysql.`user` WHERE `User` = ?";
 
 	$rs = exec_query($sql, $query, array($db_user));
 	return $rs->fields['cnt'];

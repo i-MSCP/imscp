@@ -43,15 +43,15 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$count_query = <<<SQL_QUERY
 		SELECT
-			count(*) AS cnt
+			COUNT(`ticket_id`) AS cnt
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			(ticket_from = ? OR ticket_to = ?)
+			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
-			ticket_status = 0
+			`ticket_status` = 0
 		AND
-			ticket_reply  = 0
+			`ticket_reply`  = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
@@ -59,22 +59,22 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			ticket_id,
-			ticket_status,
-			ticket_urgency,
-			ticket_date,
-			ticket_subject,
-			ticket_message
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			(ticket_from = ? OR ticket_to = ?)
+			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
-			ticket_status = 0
+			`ticket_status` = 0
 		AND
-			ticket_reply  = 0
+			`ticket_reply`  = 0
 		ORDER BY
-			ticket_date DESC
+			`ticket_date` DESC
 		LIMIT
 			$start_index, $rows_per_page
 SQL_QUERY;

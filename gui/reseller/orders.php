@@ -64,7 +64,7 @@ function gen_order_page (&$tpl, &$sql, $user_id) {
 	// count query
 	$count_query = "
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`id`) AS cnt
 		FROM
 			`orders`
 		WHERE

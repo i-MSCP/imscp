@@ -83,22 +83,22 @@ function generate_page (&$tpl) {
 	// count query
 	$count_query = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`admin_id`) AS cnt
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'reseller'
+			`admin_type` = 'reseller'
 SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, admin_name
+			`admin_id`, `admin_name`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'reseller'
+			`admin_type` = 'reseller'
 		ORDER BY
-			admin_name DESC
+			`admin_name` DESC
 		LIMIT
 			$start_index, $rows_per_page
 SQL_QUERY;

@@ -455,7 +455,7 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($user_id));
 		$temp_dmn_name = $rs->fields['domain_name'];
 
-		$query = "SELECT COUNT(*) AS cnt FROM quotalimits WHERE name = ?";
+		$query = "SELECT COUNT(name) AS cnt FROM quotalimits WHERE name = ?";
 		$rs = exec_query($sql, $query, array($temp_dmn_name));
 		if ($rs->fields['cnt'] > 0) {
 			// we need to update it

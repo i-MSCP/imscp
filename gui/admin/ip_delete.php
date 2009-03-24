@@ -39,11 +39,11 @@ $delete_id = $_GET['delete_id'];
 /* check for domains that use this IP */
 $query = <<<SQL_QUERY
 	SELECT
-		COUNT(*) AS dcnt
+		COUNT(`domain_id`) AS dcnt
 	FROM
-		domain
+		`domain`
 	WHERE
-		domain_ip_id = ?
+		`domain_ip_id` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));
@@ -57,12 +57,7 @@ if ($rs->fields['dcnt'] > 0) {
 	die();
 }
 // check if the IP is assigned to reseller
-$query = <<<SQL_QUERY
-	SELECT
-		reseller_ips
-	FROM
-		reseller_props
-SQL_QUERY;
+$query = "SELECT `reseller_ips` FROM `reseller_props`";
 
 $res = exec_query($sql, $query, array());
 
@@ -78,9 +73,9 @@ $query = <<<SQL_QUERY
 	SELECT
 		*
 	FROM
-		server_ips
+		`server_ips`
 	WHERE
-		ip_id = ?
+		`ip_id` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));
@@ -94,9 +89,9 @@ write_log("$user_logged: deletes IP address $ip_number");
 /* delete it ! */
 $query = <<<SQL_QUERY
 	DELETE FROM
-		server_ips
+		`server_ips`
 	WHERE
-		ip_id = ?
+		`ip_id` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_id));

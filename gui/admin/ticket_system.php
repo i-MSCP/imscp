@@ -49,13 +49,13 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$count_query = "
 		SELECT
-			COUNT(*) as cnt
+			COUNT(`ticket_id`) as cnt
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_status != 0
+			`ticket_status` != 0
 		AND
-			ticket_reply = 0
+			`ticket_reply` = 0
 	";
 
 	$rs = exec_query($sql, $count_query, array());
@@ -63,20 +63,20 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$query = "
 		SELECT
-			ticket_id,
-			ticket_status,
-			ticket_urgency,
-			ticket_date,
-			ticket_subject,
-			ticket_message
+			`ticket_id`,
+			`ticket_status`,
+			`ticket_urgency`,
+			`ticket_date`,
+			`ticket_subject`,
+			`ticket_message`
 		FROM
-			tickets
+			`tickets
 		WHERE
-			ticket_status != 0
+			`ticket_status` != 0
 		AND
-			ticket_reply = 0
+			`ticket_reply` = 0
 		ORDER BY
-			ticket_date DESC
+			`ticket_date` DESC
 		LIMIT
 			$start_index, $rows_per_page
 	";
@@ -171,14 +171,14 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 function get_ticket_from(&$sql, $ticket_id) {
 	$query = "
 		SELECT
-			ticket_from,
-			ticket_to,
-			ticket_status,
-			ticket_reply
+			`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
+			`ticket_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
@@ -189,14 +189,14 @@ function get_ticket_from(&$sql, $ticket_id) {
 
 	$query = "
 		SELECT
-			admin_name,
-			admin_type,
-			fname,
-			lname
+			`admin_name`,
+			`admin_type`,
+			`fname`,
+			`lname`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
+			`admin_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_from));
@@ -213,14 +213,14 @@ function get_ticket_from(&$sql, $ticket_id) {
 function get_ticket_to(&$sql, $ticket_id, $user_id) {
 	$query = "
 		SELECT
-			ticket_from,
-			ticket_to,
-			ticket_status,
-			ticket_reply
+			`ticket_from`,
+			`ticket_to`,
+			`ticket_status`,
+			`ticket_reply`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
+			`ticket_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
@@ -231,15 +231,15 @@ function get_ticket_to(&$sql, $ticket_id, $user_id) {
 
 	$query = "
 		SELECT
-			admin_id,
-			admin_name,
-			admin_type,
-			fname,
-			lname
+			`admin_id`,
+			`admin_name`,
+			`admin_type`,
+			`fname`,
+			`lname`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
+			`admin_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_to));

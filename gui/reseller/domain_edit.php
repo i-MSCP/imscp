@@ -128,13 +128,13 @@ function load_user_data($user_id, $domain_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			domain_id
+			`domain_id`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			domain_created_id = ?
+			`domain_created_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $user_id));
@@ -168,15 +168,15 @@ function load_additional_data($user_id, $domain_id) {
 	// Get domain data
 	$query = <<<SQL_QUERY
 		SELECT
-			domain_name,
-			domain_ip_id,
-			domain_php,
-			domain_cgi,
-			domain_admin_id
+			`domain_name`,
+			`domain_ip_id`,
+			`domain_php`,
+			`domain_cgi`,
+			`domain_admin_id`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_id));
@@ -190,12 +190,12 @@ SQL_QUERY;
 	// Get IP of domain
 	$query = <<<SQL_QUERY
 		SELECT
-			ip_number,
-			ip_domain
+			`ip_number`,
+			`ip_domain`
 		FROM
-			server_ips
+			`server_ips`
 		WHERE
-			ip_id = ?
+			`ip_id` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_ip_id));
@@ -205,15 +205,15 @@ SQL_QUERY;
 	// Get username of domain
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_name
+			`admin_name`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
+			`admin_id` = ?
 		AND
-			admin_type = 'user'
+			`admin_type` = 'user'
 		AND
-			created_by = ?
+			`created_by` = ?
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_admin_id, $user_id));
@@ -373,14 +373,14 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	if (empty($ed_error)) {
 		$query = <<<SQL_QUERY
 			SELECT
-				COUNT(su.sqlu_id) AS cnt
+				COUNT(su.`sqlu_id`) AS cnt
 			FROM
-				sql_user AS su,
-				sql_database AS sd
+				`sql_user` AS su,
+				`sql_database` AS sd
 			WHERE
-				su.sqld_id = sd.sqld_id
+				su.`sqld_id` = sd.`sqld_id`
 			AND
-				sd.domain_id = ?
+				sd.`domain_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($_SESSION['edit_id']));
@@ -433,11 +433,11 @@ SQL_QUERY;
 		}
 
 		// update the sql quotas, too
-		$query = "SELECT domain_name FROM domain WHERE domain_id = ?";
+		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
 		$rs = exec_query($sql, $query, array($user_id));
 		$temp_dmn_name = $rs->fields['domain_name'];
 
-		$query = "SELECT COUNT(*) AS cnt FROM quotalimits WHERE name = ?";
+		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
 		$rs = exec_query($sql, $query, array($temp_dmn_name));
 		if ($rs->fields['cnt'] > 0) {
 			// we need to update it
@@ -447,7 +447,7 @@ SQL_QUERY;
 				$dlim = $disk * 1024 * 1024;
 			}
 
-			$query = "UPDATE quotalimits SET bytes_in_avail = ? WHERE name = ?";
+			$query = "UPDATE `quotalimits` SET` bytes_in_avail` = ? WHERE `name` = ?";
 			$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
 		}
 

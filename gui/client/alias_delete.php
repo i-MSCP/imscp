@@ -48,7 +48,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for subdomains
 	$query = "
 		SELECT
-			COUNT(*) AS `count`
+			COUNT(`subdomain_alias_id`) AS `count`
 		FROM
 			`subdomain_alias`
 		WHERE
@@ -65,7 +65,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for mail accounts
 	$query = "
 		SELECT
-			COUNT(*) AS `cnt`
+			COUNT(`mail_id`) AS `cnt`
 		FROM
 			`mail_users`
 		WHERE
@@ -73,7 +73,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			AND
 			`mail_type` LIKE '%alias_%')
 		OR
-			(`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id`=?)
+			(`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
 			AND
 			`mail_type` LIKE '%alssub_%')
 		";

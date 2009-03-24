@@ -26,17 +26,17 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 	$query = <<<SQL_QUERY
-		SELECTt
-			subdomain_alias_id,
-			subdomain_alias_name
+		SELECT
+			`subdomain_alias_id`,
+			`subdomain_alias_name`
 		FROM
-			subdomain_alias JOIN domain_aliasses
+			`subdomain_alias` JOIN `domain_aliasses`
 		ON
-			subdomain_alias.alias_id = domain_aliasses.alias_id
+			subdomain_alias.`alias_id` = domain_aliasses.`alias_id`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			subdomain_alias_id = ?
+			`subdomain_alias_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
@@ -47,7 +47,7 @@ SQL_QUERY;
 	}
 
 	// check for mail accounts
-	$query = "SELECT COUNT(*) AS cnt FROM mail_users WHERE (mail_type LIKE '".MT_ALSSUB_MAIL."%' OR mail_type = '".MT_ALSSUB_FORWARD."') AND sub_id = ?";
+	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_ALSSUB_MAIL."%' OR `mail_type` = '".MT_ALSSUB_FORWARD."') AND `sub_id` = ?";
 	$rs = exec_query($sql, $query, array($sub_id));
 
 	if ($rs->fields['cnt'] > 0) {
@@ -60,11 +60,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			subdomain_alias
+			`subdomain_alias`
 		SET
-			subdomain_alias_status = 'delete'
+			`subdomain_alias_status` = 'delete'
 		WHERE
-			subdomain_alias_id = ?
+			`subdomain_alias_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($sub_id));

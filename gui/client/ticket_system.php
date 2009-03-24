@@ -43,7 +43,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$count_query = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`ticket_id`) AS cnt
 		FROM
 			`tickets`
 		WHERE

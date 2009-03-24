@@ -323,7 +323,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
  * @param string $ &$err Error message returned in case something is not good
  * @param string $service The 'service' name, like domains, subdomains, mail accounts, sql users, etc
  */
-function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
+function calculate_new_reseller_vals($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
 	if ($unlimited == '_off_') {
 		// We have something like that: $u <= ($umax = $r) <= $rmax
 		if ($umax != $r && $u > 0) { // ... && $u != unlimited
@@ -724,7 +724,8 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 $tpl->assign(
-	array('TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
+	array(
+		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
 		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
 		'TR_EDIT_RESELLER' => tr('Edit reseller'),
 		'TR_CORE_DATA' => tr('Core data'),

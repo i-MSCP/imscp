@@ -28,14 +28,14 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			subdomain_id,
-			subdomain_name
+			`subdomain_id`,
+			`subdomain_name`
 		FROM
-			subdomain
+			`subdomain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			subdomain_id = ?
+			`subdomain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
@@ -46,7 +46,7 @@ SQL_QUERY;
 	}
 
 	// check for mail accounts
-	$query = "SELECT COUNT(*) AS cnt FROM mail_users WHERE (mail_type LIKE '".MT_SUBDOM_MAIL."%' OR mail_type = '".MT_SUBDOM_FORWARD."') AND sub_id = ?";
+	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_SUBDOM_MAIL."%' OR `mail_type` = '".MT_SUBDOM_FORWARD."') AND `sub_id` = ?";
 	$rs = exec_query($sql, $query, array($sub_id));
 
 	if ($rs->fields['cnt'] > 0) {
@@ -59,11 +59,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			subdomain
+			`subdomain`
 		SET
-			subdomain_status = 'delete'
+			`subdomain_status` = 'delete'
 		WHERE
-			subdomain_id = ?
+			`subdomain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($sub_id));

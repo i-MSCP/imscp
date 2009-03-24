@@ -38,11 +38,11 @@ if (Config::exists('HOSTING_PLANS_LEVEL')
 		SELECT
 			*
 		FROM
-			orders
+			`orders`
 		WHERE
-			id = ?
+			`id` = ?
 		AND
-			status = 'update'
+			`status` = 'update'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($order_id));
@@ -51,13 +51,13 @@ SQL_QUERY;
 		SELECT
 			*
 		FROM
-			orders
+			`orders`
 		WHERE
-			id = ?
+			`id` = ?
 		AND
-			user_id = ?
+			`user_id` = ?
 		AND
-			status = 'update'
+			`status` = 'update'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
@@ -76,10 +76,10 @@ $dmn_id = get_user_domain_id($sql, $customer_id);
 $err_msg = '';
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	$query = "SELECT PROPS FROM hosting_plans WHERE id = ?";
+	$query = "SELECT PROPS FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
-	$query = "SELECT PROPS FROM hosting_plans WHERE reseller_id = ? AND id = ?";
+	$query = "SELECT PROPS FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($sql, $query, array($reseller_id, $hpid));
 }
 $data = $res->FetchRow();
@@ -194,11 +194,11 @@ if (empty($ed_error)) {
 
 	update_reseller_props($reseller_id, $reseller_props);
 	// update the sql quotas, too
-	$query = "SELECT domain_name FROM domain WHERE domain_id=?";
+	$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($dmn_id));
 	$temp_dmn_name = $rs->fields['domain_name'];
 
-	$query = "SELECT COUNT(*) AS cnt FROM quotalimits WHERE name = ?";
+	$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
 	$rs = exec_query($sql, $query, array($temp_dmn_name));
 	if ($rs->fields['cnt'] > 0) {
 		// we need to update it
@@ -208,17 +208,17 @@ if (empty($ed_error)) {
 			$dlim = $disk * 1024 * 1024;
 		}
 
-		$query = "UPDATE quotalimits SET bytes_in_avail = ? WHERE name = ?";
+		$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?";
 		$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
 	}
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			orders
+			`orders`
 		SET
-			status = ?
+			`status` = ?
 		WHERE
-			id = ?
+			`id` = ?
 SQL_QUERY;
 	exec_query($sql, $query, array('added', $order_id));
 	set_page_message(tr('Domain properties updated successfully!'));

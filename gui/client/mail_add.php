@@ -365,7 +365,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
 	$check_acc_query = "
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`mail_id`) AS cnt
 		FROM
 			`mail_users`
 		WHERE
@@ -395,17 +395,17 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 	check_for_lock_file();
 
 	$query = "
-		INSERT INTO mail_users (
-			mail_acc,
-			mail_pass,
-			mail_forward,
-			domain_id,
-			mail_type,
-			sub_id,
-			status,
-			mail_auto_respond,
-			mail_auto_respond_text,
-			mail_addr
+		INSERT INTO `mail_users` (
+			`mail_acc`,
+			`mail_pass`,
+			`mail_forward`,
+			`domain_id`,
+			`mail_type`,
+			`sub_id`,
+			`status`,
+			`mail_auto_respond`,
+			`mail_auto_respond_text`,
+			`mail_addr`
 		) VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";

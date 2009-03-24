@@ -43,11 +43,11 @@ $tpl->define_dynamic('js_not_domain', 'page');
 function get_alias_mount_point(&$sql, $alias_name) {
 	$query = <<<SQL_QUERY
 		SELECT
-			alias_mount
+			`alias_mount`
 		FROM
-			domain_aliasses
+			`domain_aliasses`
 		WHERE
-			alias_name = ?
+			`alias_name` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($alias_name));
@@ -88,15 +88,15 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			alias_id, alias_name
+			`alias_id`, `alias_name`
 		FROM
-			domain_aliasses
+			`domain_aliasses`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			alias_status = ?
+			`alias_status` = ?
 		ORDER BY
-			alias_name
+			`alias_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
@@ -156,15 +156,15 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	$query = <<<SQL_QUERY
 		SELECT
-			subdomain_id AS sub_id, subdomain_name AS sub_name
+			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
 		FROM
-			subdomain
+			`subdomain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			subdomain_status = ?
+			`subdomain_status` = ?
 		ORDER BY
-			subdomain_name
+			`subdomain_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
@@ -225,7 +225,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 	global $max_gid;
 
 	$query = <<<SQL_QUERY
-		  SELECT gid, members FROM ftp_group WHERE groupname = ?
+		  SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_name));
@@ -254,7 +254,7 @@ SQL_QUERY;
 
 		$query = <<<SQL_QUERY
 			INSERT INTO ftp_group
-				(groupname, gid, members)
+				(`groupname`, `gid`, `members`)
 			VALUES
 				(?, ?, ?)
 SQL_QUERY;
@@ -262,7 +262,7 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($dmn_name, $temp_dmn_gid, $ftp_user));
 		// add entries in the quota tables
 		// first check if we have it by one or other reason
-		$query = "SELECT COUNT(*) as cnt FROM quotalimits WHERE name = ?";
+		$query = "SELECT COUNT(`name`) as cnt FROM `quotalimits` WHERE `name` = ?";
 		$rs = exec_query($sql, $query, array($temp_dmn_name));
 		if ($rs->fields['cnt'] == 0) {
 			// ok insert it
@@ -273,8 +273,10 @@ SQL_QUERY;
 			}
 
 			$query = <<<SQL_QUERY
-				INSERT INTO quotalimits
-					(name, quota_type, per_session, limit_type, bytes_in_avail, bytes_out_avail, bytes_xfer_avail, files_in_avail, files_out_avail, files_xfer_avail)
+				INSERT INTO `quotalimits`
+					(`name`, `quota_type`, `per_session`, `limit_type`,
+					`bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`,
+					`files_in_avail`, `files_out_avail`, `files_xfer_avail`)
 				VALUES
 					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
@@ -293,13 +295,13 @@ SQL_QUERY;
 
 		$query = <<<SQL_QUERY
 			UPDATE
-				ftp_group
+				`ftp_group`
 			SET
-				members = ?
+				`members` = ?
 			WHERE
-				gid = ?
+				`gid` = ?
 			AND
-				groupname = ?
+				`groupname` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($members, $ftp_gid, $dmn_name));
@@ -312,11 +314,11 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			uid
+			`uid`
 		FROM
-			ftp_users
+			`ftp_users`
 		WHERE
-			userid = ?
+			`userid` = ?
 		AND
 			gid = ?
 SQL_QUERY;
@@ -423,7 +425,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
 	$query = <<<SQL_QUERY
 		INSERT INTO ftp_users
-			(userid, passwd, uid, gid, shell, homedir)
+			(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
 		VALUES
 			(?, ?, ?, ?, ?, ?)
 SQL_QUERY;

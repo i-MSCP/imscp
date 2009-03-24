@@ -59,18 +59,18 @@ function get_server_trafic($from, $to) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			IFNULL(sum(bytes_in), 0) AS sbin,
-			IFNULL(sum(bytes_out), 0) AS sbout,
-			IFNULL(sum(bytes_mail_in), 0) AS smbin,
-			IFNULL(sum(bytes_mail_out), 0) AS smbout,
-			IFNULL(sum(bytes_pop_in), 0) AS spbin,
-			IFNULL(sum(bytes_pop_out), 0) AS spbout,
-			IFNULL(sum(bytes_web_in), 0) AS swbin,
-			IFNULL(sum(bytes_web_out), 0) AS swbout
+			IFNULL(SUM(`bytes_in`), 0) AS sbin,
+			IFNULL(SUM(`bytes_out`), 0) AS sbout,
+			IFNULL(SUM(`bytes_mail_in`), 0) AS smbin,
+			IFNULL(SUM(`bytes_mail_out`), 0) AS smbout,
+			IFNULL(SUM(`bytes_pop_in`), 0) AS spbin,
+			IFNULL(SUM(`bytes_pop_out`), 0) AS spbout,
+			IFNULL(SUM(`bytes_web_in`), 0) AS swbin,
+			IFNULL(SUM(`bytes_web_out`), 0) AS swbout
 		FROM
-			server_traffic
+			`server_traffic`
 		WHERE
-			traff_time > ? AND traff_time < ?
+			`traff_time` > ? AND `traff_time` < ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($from, $to));
@@ -116,11 +116,11 @@ function generate_page (&$tpl) {
 
 		$query = <<<SQL_QUERY
 			SELECT
-				COUNT(bytes_in) AS cnt
+				COUNT(`bytes_in`) AS cnt
 			FROM
-				server_traffic
+				`server_traffic`
 			WHERE
-				traff_time > ? and traff_time < ?
+				`traff_time` > ? and `traff_time` < ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($ftm, $ltm));
