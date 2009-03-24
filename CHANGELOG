@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-24 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1627: Accented characters in UTF8 encoding Autoreplay message - ispcp-arpl
+	- GUI:
+		* Fixed #678: deleting a mysql database also deletes the user without askint to.
+
 2009-03-23 Jochen Manz
 	- ENGINE
 		* Added Nathariels ispcp-vrl-traff improvements

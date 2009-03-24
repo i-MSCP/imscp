@@ -212,6 +212,7 @@ sub doSQL {
 	if (!defined($main::db) || !ref($main::db)) {
 
 		$main::db = DBI -> connect(@main::db_connect, {PrintError => 0});
+		$main::db -> do('SET NAMES utf8'); # Use UTF-8 encoding
 
 		if ( !defined($main::db) ) {
 
@@ -891,14 +892,14 @@ sub arpl_msgr_engine {
 								  From => $mail_to,
 								  To => $head -> get('From'),
 								  Subject => "[Autoreply] ".$head -> get('Subject'),
-								  Type => "multipart/mixed",
+								  Type => "multipart/mixed; charset=utf-8",
 								  'X-Autoresponse-From' => $mail_to,
 								  'X-Mailer' => "ispCP $main::cfg{'Version'} Autoreply Manager"
 								);
 
 
 					$out -> attach(
-								  Type => "text/plain",
+								  Type => "text/plain; charset=utf-8",
 								  Encoding => "7bit",
 								  Description => "Mail User Autoreply Message",
 								  Data => $auto_message
