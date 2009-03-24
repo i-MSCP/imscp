@@ -430,9 +430,9 @@ function get_user_traffic($user_id) {
 	$query = <<<SQL_QUERY
 		SELECT
 			`domain_id`,
-			IFNULL(`domain_disk_usage`, 0) as domain_disk_usage,
-			IFNULL(`domain_traffic_limit`, 0) as domain_traffic_limit,
-			IFNULL(`domain_disk_limit`,0) as domain_disk_limit,
+			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage,
+			IFNULL(`domain_traffic_limit`, 0) AS domain_traffic_limit,
+			IFNULL(`domain_disk_limit`,0) AS domain_disk_limit,
 			`domain_name`
 		FROM
 			`domain`
@@ -462,14 +462,14 @@ SQL_QUERY;
 
 		$query = <<<SQL_QUERY
 			SELECT
-				sum(`dtraff_web`) as web,
-				sum(`dtraff_ftp`) as ftp,
-				sum(`dtraff_mail`) as smtp,
-				sum(`dtraff_pop`) as pop,
-				sum(`dtraff_web`) +
-				sum(`dtraff_ftp`) +
-				sum(`dtraff_mail`) +
-				sum(`dtraff_pop`) as total
+				SUM(`dtraff_web`) AS web,
+				SUM(`dtraff_ftp`) AS ftp,
+				SUM(`dtraff_mail`) AS smtp,
+				SUM(`dtraff_pop`) AS pop,
+				SUM(`dtraff_web`) +
+				SUM(`dtraff_ftp`) +
+				SUM(`dtraff_mail`) +
+				SUM(`dtraff_pop`) AS total
 			FROM
 				`domain_traffic`
 			WHERE
@@ -616,9 +616,7 @@ SQL_QUERY;
 
 	$reseller_ips = $data['reseller_ips'];
 
-	$query = <<<SQL_QUERY
-		SELECT * FROM `server_ips`
-SQL_QUERY;
+	$query = "SELECT * FROM `server_ips`";
 
 	$res = exec_query($sql, $query, array());
 
@@ -639,7 +637,7 @@ SQL_QUERY;
 
 			$tpl->parse('IP_ENTRY', '.ip_entry');
 		}
-	} // End loop
+	} // end loop
 } // End of generate_ip_list()
 
 /**
@@ -707,7 +705,8 @@ function check_ruser_data (&$tpl, $NoPass) {
 	if (isset($_POST['userfax']))
 		$fax = $_POST['userfax'];
 
-	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
+	if (isset($_POST['gender'])
+		&& get_gender_by_code($_POST['gender'], true) !== null) {
 		$gender = $_POST['gender'];
 	} else {
 		$gender = '';
@@ -787,12 +786,12 @@ function translate_dmn_status ($status) {
 /**
  * Check if the domain already exist
  */
-function ispcp_domain_exists ($domain_name, $reseller_id) {
+function ispcp_domain_exists($domain_name, $reseller_id) {
 	$sql = Database::getInstance();
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`domain_id`) AS cnt
 		FROM
 			`domain`
 		WHERE
@@ -803,7 +802,7 @@ SQL_QUERY;
 	// query to check if the domain name exists in the table for domain aliases
 	$query_alias = <<<SQL_QUERY
 		SELECT
-			count(t1.`alias_id`) AS cnt
+			COUNT(t1.`alias_id`) AS cnt
 		FROM
 			`domain_aliasses` AS t1, `domain` AS t2
 		WHERE
@@ -816,7 +815,7 @@ SQL_QUERY;
 	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
 	$query_domain = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnt
+			COUNT(`domain_id`) AS cnt
 		FROM
 			`domain`
 		WHERE
@@ -861,7 +860,9 @@ SQL_QUERY;
 	// AND
 	// enduser (no reseller)
 	// => the function returns OK => domain can be added
-	if ($res_domain->fields['cnt'] == 0 && $res_aliases->fields['cnt'] == 0 && $error == 0 && $reseller_id == 0) {
+	if ($res_domain->fields['cnt'] == 0
+		&& $res_aliases->fields['cnt'] == 0
+		&& $error == 0 && $reseller_id == 0) {
 		return false;
 	}
 	// if we have domain add one by end user
@@ -902,7 +903,7 @@ SQL_QUERY;
  * @todo see inline comment, about the messed up code
  * @todo use db prepared statements
  */
-function gen_manage_domain_query (&$search_query, &$count_query,
+function gen_manage_domain_query(&$search_query, &$count_query,
 	$reseller_id,
 	$start_index,
 	$rows_per_page,
@@ -915,7 +916,7 @@ function gen_manage_domain_query (&$search_query, &$count_query,
 		// We have pure list query;
 		$count_query = <<<SQL_QUERY
 			SELECT
-				COUNT(*) AS cnt
+				COUNT(`domain_id`) AS cnt
 			FROM
 				`domain`
 			WHERE
@@ -930,7 +931,7 @@ SQL_QUERY;
 			WHERE
 				`domain_created_id` = '$reseller_id'
 			ORDER BY
-				`domain_name` asc
+				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
 SQL_QUERY;
@@ -949,7 +950,7 @@ SQL_QUERY;
 
 		$count_query = <<<SQL_QUERY
 			SELECT
-				count(*) as cnt
+				COUNT(`domain_id`) AS cnt
 			FROM
 				`domain`
 			WHERE
@@ -964,7 +965,7 @@ SQL_QUERY;
 			WHERE
 				$add_query
 			ORDER BY
-				`domain_name` asc
+				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
 SQL_QUERY;
@@ -1018,7 +1019,7 @@ SQL_QUERY;
 			AND
 				t1.`admin_id` = t2.`domain_admin_id`
 			ORDER BY
-				t2.`domain_name` asc
+				t2.`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
 SQL_QUERY;
@@ -1160,9 +1161,7 @@ function gen_manage_domain_search_options (&$tpl,
 function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$matches = array();
 	$languages = array();
-	$query = <<<SQL_QUERY
-		SHOW TABLES
-SQL_QUERY;
+	$query = "SHOW TABLES";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -1466,7 +1465,9 @@ SQL_QUERY;
 	return true;
 }
 
-// Update reseller props
+/**
+ * Update reseller props
+ */
 function au_update_reseller_props($reseller_id, $props) {
 	$sql = Database::getInstance();
 
@@ -1615,7 +1616,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-	$message = html_entity_decode($message, ENT_NOQUOTES, 'UTF-8');
+	$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
 	$subject = encode($subject);
 
 	$headers = "From: ". $from . "\n";
@@ -1638,7 +1639,7 @@ Please login into your ispCP control panel for more details.
 	$search [] = '{RESELLER}';
 	$replace[] = $from_name;
 	$message = str_replace($search, $replace, $message);
-	$message = html_entity_decode($message, ENT_NOQUOTES, 'UTF-8');
+	$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
 
 	$mail_result = mail($from, $subject, $message, $headers);
 }

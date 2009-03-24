@@ -45,15 +45,15 @@ function gen_system_message(&$tpl, &$sql) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			COUNT(*) AS cnum
+			COUNT(`ticket_id`) AS cnum
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			(ticket_to = ? OR ticket_from = ?)
+			(`ticket_to` = ? OR `ticket_from` = ?)
 		AND
-			(ticket_status = '1' OR ticket_status = '4')
+			(`ticket_status` = '1' OR `ticket_status` = '4')
 		AND
-			ticket_reply = 0
+			`ticket_reply` = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
@@ -266,15 +266,15 @@ function gen_messages_table (&$tpl, $admin_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			ticket_id
+			`ticket_id`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			(ticket_from = ? OR ticket_to = ?)
+			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
-			ticket_reply = '0'
+			`ticket_reply` = '0'
 		AND
-			(ticket_status = '1' OR ticket_status = '4')
+			(`ticket_status` = '1' OR `ticket_status` = '4')
 SQL_QUERY;
 	$res = exec_query($sql, $query, array($admin_id, $admin_id));
 
