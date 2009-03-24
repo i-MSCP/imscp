@@ -160,7 +160,7 @@ msgstr "PLZ"
 msgid "City"
 msgstr "Ort"
 
-msgid "State/Provinz"
+msgid "State/Province"
 msgstr "Bundesland/Provinz"
 
 msgid "Country"
