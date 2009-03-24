@@ -160,6 +160,9 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+msgid "State/Province"
+msgstr ""
+
 msgid "Country"
 msgstr ""
 
