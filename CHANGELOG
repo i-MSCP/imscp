@@ -1,6 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-24 Thomas Häber
+	- GUI:
+		* Fixed #1762: MySQL Syntax Error (regression)
+		* Fixed #1763: Wrong Harddisk Usage
+
 2009-03-24 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1627: Accented characters in UTF8 encoding Autoreplay message - ispcp-arpl

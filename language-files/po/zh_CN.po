@@ -1346,7 +1346,7 @@ msgstr "邮件"
 msgid "unlimited"
 msgstr "无限制"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "域名限制<br><i>((-1 无效, 0 无限制)</i>"
 
 msgid "ispCP - Reseller statistics"

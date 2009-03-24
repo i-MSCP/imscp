@@ -1362,7 +1362,7 @@ msgstr "メールアドレス"
 msgid "unlimited"
 msgstr "無制限"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "ドメイン制限<br><i>(-1:無効, 0:無制限)</i>"
 
 msgid "ispCP - Reseller statistics"

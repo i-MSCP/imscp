@@ -1309,7 +1309,7 @@ msgstr "Correo Electrónico"
 msgid "unlimited"
 msgstr "ilimitado"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de dominios<br /><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
 msgid "ispCP - Reseller statistics"

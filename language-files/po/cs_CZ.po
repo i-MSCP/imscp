@@ -1359,7 +1359,7 @@ msgstr "E-mail"
 msgid "unlimited"
 msgstr "bez omezení"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Limit domén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
 msgid "ispCP - Reseller statistics"

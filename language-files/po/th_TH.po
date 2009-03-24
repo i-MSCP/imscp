@@ -1357,7 +1357,7 @@ msgstr ""
 msgid "unlimited"
 msgstr ""
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "ispCP - Reseller statistics"

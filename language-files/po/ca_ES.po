@@ -1329,7 +1329,7 @@ msgstr "Correu"
 msgid "unlimited"
 msgstr "il·limitat"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límit de dominis <br><i>((-1 desactivat, 0 il·limitat)</i>"
 
 msgid "ispCP - Reseller statistics"

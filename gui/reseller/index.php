@@ -221,11 +221,11 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			'TRAFF_PERCENT' => $traff_percent,
 
 			'TRAFF_MSG' => ($rtraff_max)
-				? tr('%1$s / %2$s of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max))
+				? tr('%1$s / %2$s of <b>%3$s</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max))
 				: tr('%1$s / %2$s of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
 			'DISK_MSG' => ($rdisk_max)
-				? tr('%1$s / %2$s of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max))
+				? tr('%1$s / %2$s of <b>%3$s</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max))
 				: tr('%1$s / %2$s of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
 			'DMN_MSG' => ($rdmn_max)

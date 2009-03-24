@@ -1402,7 +1402,7 @@ msgid "unlimited"
 msgstr "rajoittamaton"
 
 #, fuzzy
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL-k�ytt�jien rajoitus<br><i>(-1 pois k�yt�st�, 0 rajoittamaton)</i>"
 
 msgid "ispCP - Reseller statistics"

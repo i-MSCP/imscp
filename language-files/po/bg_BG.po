@@ -1384,7 +1384,7 @@ msgid "unlimited"
 msgstr "без Ограничение"
 
 #, fuzzy
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Ограничение поддомейни<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
 msgid "ispCP - Reseller statistics"

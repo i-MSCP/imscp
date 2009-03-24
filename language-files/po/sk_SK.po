@@ -1429,7 +1429,7 @@ msgid "unlimited"
 msgstr "Bez obmedzení"
 
 #, fuzzy
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximálny počet subdomén<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "ispCP - Reseller statistics"

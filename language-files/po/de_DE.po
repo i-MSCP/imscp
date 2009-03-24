@@ -1322,7 +1322,7 @@ msgstr "E-Mail-Adresse"
 msgid "unlimited"
 msgstr "unbegrenzt"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Anzahl Domains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "ispCP - Reseller statistics"
@@ -3668,6 +3668,10 @@ msgstr "%1$d / %2$d von <b>%3$d</b>"
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d von <b>unbegrenzt</b>"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
+msgstr "%1$s / %2$s von <b>%3$s</b>"
 
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Reseller/Sprache ändern"

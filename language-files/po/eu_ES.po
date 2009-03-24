@@ -1377,7 +1377,7 @@ msgstr "Posta elektronikoa"
 msgid "unlimited"
 msgstr "mugagabea"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Domeinuen muga<br><i>(-1 ez gaitua, 0 mugagabea)</i>"
 
 msgid "ispCP - Reseller statistics"

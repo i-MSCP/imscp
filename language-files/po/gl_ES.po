@@ -1374,7 +1374,7 @@ msgstr "Correo-e"
 msgid "unlimited"
 msgstr "sen límite"
 
-msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de dominios<br><i>((-1 desactivado, 0 sen límite)</i>"
 
 msgid "ispCP - Reseller statistics"
