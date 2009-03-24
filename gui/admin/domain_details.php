@@ -99,11 +99,11 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$query = <<<SQL_QUERY
 		SELECT
 			*,
-			IFNULL(domain_disk_usage, 0) AS domain_disk_usage
+			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_id = ?;
+			`domain_id` = ?;
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($domain_id));
@@ -114,7 +114,7 @@ SQL_QUERY;
 		die();
 	}
 	// Get admin data
-	$query = "SELECT admin_name FROM admin WHERE admin_id = ?";
+	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id']));
 	$data1 = $res1->FetchRow();
 	if ($res1->RecordCount() <= 0) {
@@ -122,7 +122,7 @@ SQL_QUERY;
 		die();
 	}
 	// Get IP info
-	$query = "SELECT * FROM server_ips WHERE ip_id = ?";
+	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
 	$ipres = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	// Get status name
@@ -146,18 +146,18 @@ SQL_QUERY;
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
 	$query = <<<SQL_QUERY
 		SELECT
-			IFNULL(sum(dtraff_web), 0) AS dtraff_web,
-			IFNULL(sum(dtraff_ftp), 0) AS dtraff_ftp,
-			IFNULL(sum(dtraff_mail), 0) AS dtraff_mail,
-			IFNULL(sum(dtraff_pop), 0) AS dtraff_pop
+			IFNULL(SUM(`dtraff_web`), 0) AS dtraff_web,
+			IFNULL(SUM(`dtraff_ftp`), 0) AS dtraff_ftp,
+			IFNULL(SUM(`dtraff_mail`), 0) AS dtraff_mail,
+			IFNULL(SUM(`dtraff_pop`), 0) AS dtraff_pop
 		FROM
-			domain_traffic
+			`domain_traffic`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			dtraff_time > ?
+			`dtraff_time` > ?
 		AND
-			dtraff_time < ?
+			`dtraff_time` < ?
 SQL_QUERY;
 
 	$res7 = exec_query($sql, $query, array($data['domain_id'], $fdofmnth, $ldofmnth));
@@ -168,7 +168,7 @@ SQL_QUERY;
 	$month = date("m");
 	$year = date("Y");
 
-	$query = "SELECT * FROM server_ips WHERE ip_id = ?";
+	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
 	$res8 = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $res8->FetchRow();
 
@@ -208,18 +208,18 @@ SQL_QUERY;
 
 	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
 	// Get current mail count
-	$res6 = exec_query($sql, "SELECT COUNT(*) AS mcnt FROM mail_users WHERE domain_id = ? AND mail_type NOT RLIKE '_catchall'", array($data['domain_id']));
+	$res6 = exec_query($sql, "SELECT COUNT(*) AS mcnt FROM `mail_users` WHERE `domain_id` = ? AND `mail_type` NOT RLIKE '_catchall'", array($data['domain_id']));
 	$dat3 = $res6->FetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat
-	$query = "SELECT gid FROM ftp_group WHERE groupname = ?";
+	$query = "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?";
 	$res4 = exec_query($sql, $query, array($data['domain_name']));
 	$ftp_gnum = $res4->RowCount();
 	if ($ftp_gnum == 0) {
 		$used_ftp_acc = 0;
 	} else {
 		$dat1 = $res4->FetchRow();
-		$query = "SELECT COUNT(*) AS ftp_cnt FROM ftp_users WHERE gid = ?";
+		$query = "SELECT COUNT(*) AS ftp_cnt FROM `ftp_users` WHERE `gid` = ?";
 		$res5 = exec_query($sql, $query, array($dat1['gid']));
 		$dat2 = $res5->FetchRow();
 
@@ -227,17 +227,17 @@ SQL_QUERY;
 	}
 	$ftp_limit = translate_limit_value($data['domain_ftpacc_limit']);
 	// Get sql database count
-	$query = "SELECT COUNT(*) AS dnum FROM sql_database WHERE domain_id = ?";
+	$query = "SELECT COUNT(*) AS dnum FROM `sql_database` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat5 = $res->FetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
 	// Get sql users count
-	$query = "SELECT COUNT(u.sqlu_id) AS ucnt FROM sql_user u, sql_database d WHERE u.sqld_id = d.sqld_id AND d.domain_id = ?";
+	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM sql_user u, sql_database d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
 	// Get subdomain
-	$query = "SELECT COUNT(*) AS sub_num FROM subdomain WHERE domain_id = ?";
+	$query = "SELECT COUNT(`subdomain_id`) AS sub_num FROM `subdomain` WHERE `domain_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$sub_num_data = $res1->FetchRow();
 	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
@@ -245,7 +245,7 @@ SQL_QUERY;
 	$alssub_num_data = $res1->FetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
 	// Get domain aliases
-	$query = "SELECT COUNT(*) AS alias_num FROM domain_aliasses WHERE domain_id = ?";
+	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$alias_num_data = $res1->FetchRow();
 
