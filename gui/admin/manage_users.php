@@ -102,7 +102,8 @@ if (isset($_SESSION['user_added'])) {
  *
  */
 
-if (!Config::exists('HOSTING_PLANS_LEVEL') || strtolower(Config::get('HOSTING_PLANS_LEVEL')) !== 'admin') {
+if (!Config::exists('HOSTING_PLANS_LEVEL')
+	|| strtolower(Config::get('HOSTING_PLANS_LEVEL')) !== 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 

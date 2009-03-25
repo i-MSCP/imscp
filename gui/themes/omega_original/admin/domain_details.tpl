@@ -145,7 +145,7 @@
                           </tr>
                           <tr>
                             <td>&nbsp;</td>
-                            <td colspan="3"><form name="buttons" method="post" action="#">
+                            <td colspan="3"><form name="buttons" method="post" action="?">
                                 <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','manage_users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
                               &nbsp;&nbsp;&nbsp;
                             </form></td>
