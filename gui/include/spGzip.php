@@ -162,16 +162,12 @@ class spOutput {
 		$this->gzdata = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
 
 		/*
-		 * get length of uncompressed (default) output
-		 */
-		$this->size = strlen($this->contents);
-		/*
 		 * show some extra information
 		 * this means compress the content two times 
 		 */
 		if ($this->showSize) {
 			/* We need some vars for the information */
-			$uncompressed	= round($this->size/1024, 2);
+			$uncompressed	= round(strlen($this->contents)/1024, 2);
 			$start			= $this->getMicrotime();
 			$compressed		= round(strlen(gzcompress($this->contents, $this->level))/1024, 2);
 			$time			= round(($this->getMicrotime()-$start)*1000, 2);
@@ -187,7 +183,7 @@ class spOutput {
 		$this->gzdata .= substr(gzcompress($this->contents, $this->level), 0, - 4);
 		unset($compressed_contents);
 		$this->gzdata .= pack('V', crc32($this->contents));
-		$this->gzdata .= pack('V', $this->size);
+		$this->gzdata .= pack('V', strlen($this->contents));
 		$this->gzsize = strlen($this->gzdata);
 
 		/* This prevents stupid IEs from displaying blank pages */
@@ -230,7 +226,7 @@ $GLOBALS['class']['output'] = new spOutput('auto', false);
 
 
 // look in config if enable/disable extra (server load) informations
-if (Config::get('OUTPUT_SHOWINFO')) {
+if (Config::get('SHOW_SERVERLOAD')) {
 	$GLOBALS['class']['output']->showSize = true;
 } else {
 	$GLOBALS['class']['output']->showSize = false;
