@@ -32,7 +32,6 @@ if (!isset($_SESSION)) {
 // setting for development edition - see all error messages
 error_reporting(E_ALL);
 
-require_once(INCLUDEPATH . '/spGzip.php');
 require_once(INCLUDEPATH . '/class.pTemplate.php');
 require_once(INCLUDEPATH . '/i18n.php');
 
@@ -57,6 +56,12 @@ define('E_USER_OFF', 0);
 // variable for development edition => shows all php variables under the pages
 // false = disable, true = enable
 Config::set('DUMP_GUI_DEBUG', false);
+
+// show extra (server load) information in HTML as comment
+// will get overwritten by db config table entry
+// (true = show, false = hide)
+Config::set('SHOW_SERVERLOAD', true); 
+
 
 // session timeout in minutes
 Config::set('SESSION_TIMEOUT', 30);
@@ -193,9 +198,13 @@ $query = "SELECT `name`, `value` FROM `config`";
 if (!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
 } else {
-	while($row = $res->FetchRow()) {
+	while ($row = $res->FetchRow()) {
 		Config::set($row['name'], $row['value']);
 	}
 }
+
+// compress/gzip output for less traffic
+require_once(INCLUDEPATH . '/spGzip.php');
+
 
 ?>

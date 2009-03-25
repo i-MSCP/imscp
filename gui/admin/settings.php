@@ -55,6 +55,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hosting_plan_level				= $_POST['hosting_plan_level'];
 	$domain_rows_per_page			= clean_input($_POST['domain_rows_per_page']);
 	$checkforupdate					= $_POST['checkforupdate'];
+	$show_serverload				= $_POST['show_serverload'];
+
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
 		case "E_USER_NOTICE":
@@ -96,6 +98,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		setConfig_Value('LOG_LEVEL', $log_level);
 		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
+		setConfig_Value('SHOW_SERVERLOAD', $show_serverload);
 		set_page_message(tr('Settings saved !'));
 	}
 }
@@ -186,6 +189,14 @@ if (Config::get('CHECK_FOR_UPDATES')) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
 }
 
+if (Config::get('SHOW_SERVERLOAD')) {
+	$tpl->assign('SHOW_SERVERLOAD_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('SHOW_SERVERLOAD_SELECTED_OFF', '');
+} else {
+	$tpl->assign('SHOW_SERVERLOAD_SELECTED_ON', '');
+	$tpl->assign('SHOW_SERVERLOAD_SELECTED_OFF', 'selected="selected"');
+}
+
 switch (Config::get('LOG_LEVEL')) {
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
@@ -255,7 +266,8 @@ $tpl->assign(
 		'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
-		'TR_CHECK_FOR_UPDATES' => tr('Check for update')
+		'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
+		'TR_SHOW_SERVERLOAD' => tr('Show server load')
 	)
 );
 

@@ -35,7 +35,7 @@
  * @version	1.0
  * @since	r1355
  */
-class databaseUpdate extends ispcpUpdate{
+class databaseUpdate extends ispcpUpdate {
 	protected $databaseVariableName = "DATABASE_REVISION";
 	protected $functionName = "_databaseUpdate_";
 	protected $errorMessage = "Database update %s failed";
@@ -307,6 +307,24 @@ class databaseUpdate extends ispcpUpdate{
 		$sqlUpd = array();
 		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
 		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		return $sqlUpd;
+	}
+
+
+	/**
+	 * add variable SHOW_SERVERLOAD to config table
+	 *
+	 * @author		Thomas Häber
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1614
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_12() {
+		$sqlUpd = array();
+		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('SHOW_SERVERLOAD' , '1')";
 		return $sqlUpd;
 	}
 

@@ -33,8 +33,8 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	}
 	$query = <<<SQL_QUERY
 			SELECT
-				msgid,
-				msgstr
+				`msgid`,
+				`msgstr`
 			FROM
 				$language_table
 SQL_QUERY;
@@ -46,7 +46,7 @@ SQL_QUERY;
 		header("Location: multilanguage.php");
 		die();
 	} else {
-		$GLOBALS['class']['output']->showSize=false;
+		$GLOBALS['class']['output']->showSize = false;
 		header("Content-type: text/plain; charset=".$encoding);
 		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];

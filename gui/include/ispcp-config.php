@@ -34,7 +34,7 @@ try {
 }
 
 
-function decrypt_db_password ($db_pass) {
+function decrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
 	if ($db_pass == '')
@@ -43,17 +43,17 @@ function decrypt_db_password ($db_pass) {
 	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
 		$text = @base64_decode($db_pass . "\n");
 		// Open the cipher
-		$td = @mcrypt_module_open ('blowfish', '', 'cbc', '');
+		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
 		// Create key
 		$key = $ispcp_db_pass_key;
 		// Create the IV and determine the keysize length
 		$iv = $ispcp_db_pass_iv;
 
 		// Initialize encryption
-		@mcrypt_generic_init ($td, $key, $iv);
+		@mcrypt_generic_init($td, $key, $iv);
 		// Decrypt encrypted string
 		$decrypted = @mdecrypt_generic ($td, $text);
-		@mcrypt_module_close ($td);
+		@mcrypt_module_close($td);
 
 		// Show string
 		return trim($decrypted);
@@ -67,7 +67,7 @@ function encrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 	
 	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
-		$td = @mcrypt_module_open (MCRYPT_BLOWFISH, '', 'cbc', '');
+		$td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
 		// Create key
 		$key = $ispcp_db_pass_key;
 		// Create the IV and determine the keysize length
@@ -75,22 +75,23 @@ function encrypt_db_password($db_pass) {
 		
 		// compatibility with used perl pads
 		$block_size = @mcrypt_enc_get_block_size($td);
-		$strlen=strlen($db_pass);
+		$strlen = strlen($db_pass);
 
-		$pads=$block_size-$strlen % $block_size;
+		$pads = $block_size-$strlen % $block_size;
 
 		$db_pass .= str_repeat(' ', $pads);
 
 		// Initialize encryption
-		@mcrypt_generic_init ($td, $key, $iv);
+		@mcrypt_generic_init($td, $key, $iv);
 		// Encrypt string
 		$encrypted = @mcrypt_generic ($td, $db_pass);
 		@mcrypt_generic_deinit($td);
 		@mcrypt_module_close($td);
 
 		$text = @base64_encode("$encrypted");
-		$text = trim($text);
-		return $text;
+
+		// Show encrypted string
+		return trim($text);
 	} else {
 		//system_message("ERROR: The php-extension 'mcrypt' not loaded!");
 		die("ERROR: The php-extension 'mcrypt' not loaded!");

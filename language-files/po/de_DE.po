@@ -3872,6 +3872,9 @@ msgstr "Dieser Benutzer besitzt Domains!<br />Löschen Sie diese zuerst!"
 msgid "User not terminated!"
 msgstr "Benutzer wurde nicht gelöscht!"
 
+msgid "Show server load"
+msgstr "Zeige Serverauslastung"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

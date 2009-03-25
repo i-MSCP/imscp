@@ -120,7 +120,8 @@ class spOutput {
 		if (headers_sent()
 			|| connection_status() != 0
 			|| !$this->encoding
-			|| $this->contents === false || !extension_loaded('zlib')
+			|| $this->contents === false
+			|| !extension_loaded('zlib')
 			|| @ini_get('output_handler') == 'ob_gzhandler'
 			|| @ini_get('zlib.output_compression')
 			|| (isset($GLOBALS['data']['error'])
@@ -161,19 +162,18 @@ class spOutput {
 		$this->gzdata = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
 
 		/*
-		 * compress the output (before the showSize block to prevent a 2nd
-		 * compression)
+		 * get length of uncompressed (default) output
 		 */
-		$compressed_contents = gzcompress($this->contents, $this->level);
 		$this->size = strlen($this->contents);
 		/*
 		 * show some extra information
+		 * this means compress the content two times 
 		 */
 		if ($this->showSize) {
 			/* We need some vars for the information */
 			$uncompressed	= round($this->size/1024, 2);
 			$start			= $this->getMicrotime();
-			$compressed		= round(strlen($compressed_contents)/1024, 2);
+			$compressed		= round(strlen(gzcompress($this->contents, $this->level))/1024, 2);
 			$time			= round(($this->getMicrotime()-$start)*1000, 2);
 			$savingkb		= $uncompressed-$compressed;
 			$saving			= $uncompressed > '0' ? @round($savingkb/$uncompressed*100, 0) : '0';
@@ -184,7 +184,7 @@ class spOutput {
 		}
 
 		/* create & concat the full output */
-		$this->gzdata .= substr($compressed_contents, 0, - 4);
+		$this->gzdata .= substr(gzcompress($this->contents, $this->level), 0, - 4);
 		unset($compressed_contents);
 		$this->gzdata .= pack('V', crc32($this->contents));
 		$this->gzdata .= pack('V', $this->size);
@@ -200,8 +200,7 @@ class spOutput {
 
 		/* Maybe you just want to see the result of all this */
 		if ($this->debug) {
-			$this->contents = $this->contents."\n".'<!--'."\n\t".'spGzip is in debug mode. The shown output is uncompressed'."\n".'-->';
-			return $this->contents;
+			return $this->contents . "\n".'<!--'."\n\t".'spGzip is in debug mode. The shown output is uncompressed'."\n".'-->';
 		}
 
 		/* Send the special header */
@@ -220,13 +219,23 @@ class spOutput {
 	function getMicrotime() {
 		return array_sum(explode(' ', microtime()));
 	}
+
 } // end of class
 
 
 /**
  * construct the object
  */
-$GLOBALS['class']['output'] = new spOutput('auto', false, true);
+$GLOBALS['class']['output'] = new spOutput('auto', false);
+
+
+// look in config if enable/disable extra (server load) informations
+if (Config::get('OUTPUT_SHOWINFO')) {
+	$GLOBALS['class']['output']->showSize = true;
+} else {
+	$GLOBALS['class']['output']->showSize = false;
+}
+
 
 /**
  * Start the output buffering

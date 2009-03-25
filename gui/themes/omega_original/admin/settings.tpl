@@ -175,6 +175,14 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td class="content2">{TR_SHOW_SERVERLOAD}</td>
+                              <td class="content"><select name="show_serverload" id="show_serverload">
+                                  <option value="0" {SHOW_SERVERLOAD_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {SHOW_SERVERLOAD_SELECTED_ON}>{TR_ENABLED}</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td class="content2">{TR_HOSTING_PLANS_LEVEL}</td>
                               <td class="content"><select name="hosting_plan_level" id="hosting_plan_level">
                                   <option value="admin" {HOSTING_PLANS_LEVEL_ADMIN}>{TR_ADMIN}</option>

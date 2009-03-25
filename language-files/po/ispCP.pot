@@ -3786,3 +3786,6 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+msgid "Show server load"
+msgstr ""

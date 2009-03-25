@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-25 Thomas Häber
+	- GUI:
+		* Fixed #1667: It should be possible to (de)activate the log-comment on logon/password ispcp gui footer.
+
 2009-03-24 Thomas Häber
 	- GUI:
 		* Fixed #1762: MySQL Syntax Error (regression)
