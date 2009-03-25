@@ -447,7 +447,7 @@ SQL_QUERY;
 				$dlim = $disk * 1024 * 1024;
 			}
 
-			$query = "UPDATE `quotalimits` SET` bytes_in_avail` = ? WHERE `name` = ?";
+			$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?";
 			$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
 		}
 

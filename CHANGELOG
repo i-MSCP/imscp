@@ -4,6 +4,8 @@ ispCP ω 1.0.1 Changelog
 2009-03-25 Thomas Häber
 	- GUI:
 		* Fixed #1667: It should be possible to (de)activate the log-comment on logon/password ispcp gui footer.
+		* Fixed #1767: Incorrect table name 'tickets WHERE ' (regression in SQL code)
+		* Fixed #1771: creating new users generated passwords don't match (regression in SQL code)
 
 2009-03-24 Thomas Häber
 	- GUI:

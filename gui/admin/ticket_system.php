@@ -70,7 +70,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_subject`,
 			`ticket_message`
 		FROM
-			`tickets
+			`tickets`
 		WHERE
 			`ticket_status` != 0
 		AND
