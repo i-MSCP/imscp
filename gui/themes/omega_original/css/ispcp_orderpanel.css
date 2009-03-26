@@ -44,7 +44,7 @@ td.content {
 
 div.contentdiv {
 	white-space:normal;
-	height:3em;
+	max-height:3em;
 	overflow:auto;
 }
 
