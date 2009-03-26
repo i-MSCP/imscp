@@ -68,6 +68,9 @@ add_rules() {
 	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "$LOGFILE"
 	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "$LOGFILE"
 
+	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 465 2>> "$LOGFILE"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 465 2>> "$LOGFILE"
+
 	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 587 2>> "$LOGFILE"
 	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 587 2>> "$LOGFILE"
 

@@ -84,3 +84,18 @@ ${IPTABLES} -I OUTPUT -p tcp --sport 143
 ${IPTABLES} -I INPUT  -p tcp --dport 25
 ${IPTABLES} -I OUTPUT -p tcp --sport 25
 
+${IPTABLES} -I INPUT  -p tcp --dport 25
+${IPTABLES} -I OUTPUT -p tcp --sport 25
+
+${IPTABLES} -I INPUT  -p tcp --dport 465
+${IPTABLES} -I OUTPUT -p tcp --sport 465
+
+${IPTABLES} -I INPUT  -p tcp --dport 587
+${IPTABLES} -I OUTPUT -p tcp --sport 587
+
+${IPTABLES} -I INPUT  -p tcp --dport 995
+${IPTABLES} -I OUTPUT -p tcp --sport 995
+
+${IPTABLES} -I INPUT  -p tcp --dport 993
+${IPTABLES} -I OUTPUT -p tcp --sport 993
+

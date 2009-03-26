@@ -152,7 +152,7 @@ sub srv_traff_engine {
 
 				$smtp_in += $bytes if ($port == 25);
 
-				$smtp_in += $bytes if ($port == 456);
+				$smtp_in += $bytes if ($port == 465);
 
 				$pop3_in += $bytes if ($port == 110);
 
@@ -192,7 +192,7 @@ sub srv_traff_engine {
 
 				$smtp_out += $bytes if ($port == 25);
 
-				$smtp_out += $bytes if ($port == 456);
+				$smtp_out += $bytes if ($port == 465);
 
 				$pop3_out += $bytes if ($port == 110);
 

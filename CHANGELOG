@@ -6,6 +6,7 @@ ispCP ω 1.0.1 Changelog
 		* Fixed #1745: Trim hostingplan description on overview page
 	- ENGINE:
 		* Fixed #1774: Missing secure Ports in ispcp-vrl-traff
+		* Fixed #1770: Wrong Port in ispcp-srv-traff
 
 2009-03-25 Thomas Häber
 	- GUI:
