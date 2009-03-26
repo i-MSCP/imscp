@@ -40,14 +40,17 @@ $tpl->assign(
 );
 
 /*
- * Functions start
+ * functions start
  */
 
+/**
+ * @todo implement this function
+ */
 function gen_cron_jobs(&$tpl, &$sql, $user_id) {
 } // End of gen_cron_job();
 
 /*
- * Functions end
+ * functions end
  */
 
 /*

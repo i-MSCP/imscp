@@ -85,7 +85,9 @@ unset_messages();
 
 // Function declaration
 
-// Generate domain alias list
+/**
+ * Generate domain alias list
+ */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = Database::getInstance();
 
@@ -134,103 +136,103 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 			$query = "
 				SELECT
 					t1.*,
-					t2.domain_id,
-					t2.domain_name,
-					t2.domain_created_id
+					t2.`domain_id`,
+					t2.`domain_name`,
+					t2.`domain_created_id`
 				FROM
-					domain_aliasses AS t1,
-					domain AS t2
+					`domain_aliasses` AS t1,
+					`domain` AS t2
 				WHERE
-					alias_name RLIKE '$search_for'
+					`alias_name` RLIKE '$search_for'
 				AND
-					t2.domain_created_id = ?
+					t2.`domain_created_id` = ?
 				AND
-					t1.domain_id = t2.domain_id
+					t1.`domain_id` = t2.`domain_id`
 				ORDER BY
-					t1.alias_name ASC
+					t1.`alias_name` ASC
 				LIMIT
 					$start_index, $rows_per_page
 			";
 			// count query
 			$count_query = "
 				SELECT
-					COUNT(alias_id) AS cnt
+					COUNT(`alias_id`) AS cnt
 				FROM
-					domain_aliasses AS t1,
-					domain AS t2
+					`domain_aliasses` AS t1,
+					`domain` AS t2
 				WHERE
-					t2.domain_created_id = ?
+					t2.`domain_created_id` = ?
 				AND
-					alias_name RLIKE '$search_for'
+					`alias_name` RLIKE '$search_for'
 				AND
-					t1.domain_id = t2.domain_id
+					t1.`domain_id` = t2.`domain_id`
 			";
 		} else {
 			$query = "
 				SELECT
 					t1.*,
-					t2.domain_id,
-					t2.domain_name,
-					t2.domain_created_id
+					t2.`domain_id`,
+					t2.`domain_name`,
+					t2.`domain_created_id`
 				FROM
-					domain_aliasses AS t1,
-					domain AS t2
+					`domain_aliasses` AS t1,
+					`domain` AS t2
 				WHERE
-					t2.domain_name RLIKE '$search_for'
+					t2.`domain_name` RLIKE '$search_for'
 				AND
-					t1.domain_id = t2.domain_id
+					t1.`domain_id` = t2.`domain_id`
 				AND
-					t2.domain_created_id = ?
+					t2.`domain_created_id` = ?
 				ORDER BY
-					t1.alias_name ASC
+					t1.`alias_name` ASC
 				LIMIT
 					$start_index, $rows_per_page
 			";
 			// count query
 			$count_query = "
 				SELECT
-					COUNT(alias_id) AS cnt
+					COUNT(`alias_id`) AS cnt
 				FROM
-					domain_aliasses AS t1,
-					domain AS t2
+					`domain_aliasses` AS t1,
+					`domain` AS t2
 				WHERE
-					t2.domain_created_id = ?
+					t2.`domain_created_id` = ?
 				AND
-					t2.domain_name RLIKE '$search_for'
+					t2.`domain_name` RLIKE '$search_for'
 				AND
-					t1.domain_id = t2.domain_id
+					t1.`domain_id` = t2.`domain_id`
 			";
 		}
 	} else {
 		$query = "
 			SELECT
 				t1.*,
-				t2.domain_id,
-				t2.domain_name,
-				t2.domain_created_id
+				t2.`domain_id`,
+				t2.`domain_name`,
+				t2.`domain_created_id`
 			FROM
-				domain_aliasses AS t1,
-				domain AS t2
+				`domain_aliasses` AS t1,
+				`domain` AS t2
 			WHERE
-				t1.domain_id = t2.domain_id
+				t1.`domain_id` = t2.`domain_id`
 			AND
-				t2.domain_created_id = ?
+				t2.`domain_created_id` = ?
 			ORDER BY
-				t1.alias_name ASC
+				t1.`alias_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
 		";
 		// count query
 		$count_query = "
 			SELECT
-				COUNT(alias_id) AS cnt
+				COUNT(`alias_id`) AS cnt
 			FROM
-				domain_aliasses AS t1,
-				domain AS t2
+				`domain_aliasses` AS t1,
+				`domain` AS t2
 			WHERE
-				t1.domain_id = t2.domain_id
+				t1.`domain_id` = t2.domain_id
 			AND
-				t2.domain_created_id = ?
+				t2.`domain_created_id` = ?
 		";
 	}
 	// let's count

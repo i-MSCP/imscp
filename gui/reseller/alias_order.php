@@ -34,12 +34,12 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 		die();
 	}
 
-	$query = "DELETE FROM domain_aliasses WHERE alias_id=?";
+	$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = ?";
 	$rs = exec_query($sql, $query, $del_id);
 
 	// delete "ordered"/pending email accounts
 	$domain_id = who_owns_this($del_id, 'als_id', true);
-	$query = "DELETE FROM mail_users WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
+	$query = "DELETE FROM `mail_users` WHERE `sub_id` = ? AND `domain_id` = ? AND `status` = ? AND `mail_type` LIKE 'alias%'";
 	$rs = exec_query($sql, $query, array($del_id, $domain_id, Config::get('ITEM_ORDERED_STATUS')));
 
 	header("Location: alias.php");
@@ -54,7 +54,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 		header("Location: alias.php");
 		die();
 	}
-	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id=?";
+	$query = "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
 	$rs = exec_query($sql, $query, $act_id);
 	if ($rs->RecordCount() == 0) {
 		header('Location: alias.php');
@@ -62,11 +62,11 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 	}
 	$alias_name = $rs->fields['alias_name'];
 
-	$query = "UPDATE domain_aliasses SET alias_status='toadd' WHERE alias_id=?";
+	$query = "UPDATE `domain_aliasses` SET `alias_status` = 'toadd' WHERE `alias_id` = ?";
 	$rs = exec_query($sql, $query, $act_id);
 
 	$domain_id = who_owns_this($act_id, 'als_id', true);
-	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id`= ?';
+	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id` = ?';
 	$rs = exec_query($sql, $query, $domain_id);
 	if ($rs->RecordCount() == 0) {
 		header('Location: alias.php');
@@ -78,7 +78,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 
 	// enable "ordered"/pending email accounts
 	// ??? are there pending mail_addresses ???, joximu
-	$query = "UPDATE mail_users SET status=? WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
+	$query = "UPDATE `mail_users` SET `status` = ? WHERE `sub_id` = ? AND `domain_id` = ? AND `status` = ? AND `mail_type` LIKE 'alias%'";
 	$rs = exec_query($sql, $query, array(Config::get('ITEM_ADD_STATUS'), $act_id, $domain_id, Config::get('ITEM_ORDERED_STATUS')));
 
 	send_request();

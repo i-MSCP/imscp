@@ -89,7 +89,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for ftp accounts
 	$query = "
 		SELECT
-			count(`fg`.`gid`) as `ftpnum`
+			COUNT(`fg`.`gid`) AS `ftpnum`
 		FROM
 			`ftp_group` `fg`,
 			`domain` `dmn`,

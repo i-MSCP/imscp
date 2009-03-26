@@ -43,9 +43,9 @@ $query = <<<SQL_QUERY
 	SELECT
 		*
 	FROM
-		user_gui_props
+		`user_gui_props`
 	WHERE
-		lang = ?
+		`lang` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_lang));

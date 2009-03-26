@@ -45,11 +45,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			user_gui_props
+			`user_gui_props`
 		SET
-			lang = ?
+			`lang` = ?
 		WHERE
-			user_id = ?
+			`user_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_lang, $user_id));

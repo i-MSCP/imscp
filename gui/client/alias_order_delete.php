@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo use db prepared statements
+ */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -32,7 +36,7 @@ if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 	die();
 }
 
-$query = "DELETE FROM domain_aliasses WHERE alias_id='".$del_id."'";
+$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = '".$del_id."'";
 $rs = exec_query($sql, $query);
 header("Location: domains_manage.php");
 die();

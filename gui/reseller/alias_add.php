@@ -133,11 +133,11 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			domain_ip_id
+			`domain_ip_id`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($cr_user_id));
@@ -164,8 +164,8 @@ SQL_QUERY;
 		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
 
-		$res = exec_query($sql, "SELECT domain_id FROM domain_aliasses WHERE alias_name = ?", array($alias_name));
-		$res2 = exec_query($sql, "SELECT domain_id FROM domain WHERE domain_name = ?", array($alias_name));
+		$res = exec_query($sql, "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?", array($alias_name));
+		$res2 = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?", array($alias_name));
 		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
@@ -174,7 +174,7 @@ SQL_QUERY;
 		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id` = ? AND `subdomain_mount` = ?"; 
 		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
 		$subdomdata = $subdomres->FetchRow(); 
-		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id`=?) AND `subdomain_alias_mount`=?"; 
+		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?) AND `subdomain_alias_mount` = ?"; 
 		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point)); 
 		$alssubdomdata = $alssubdomres->FetchRow(); 
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) { 
@@ -191,13 +191,13 @@ SQL_QUERY;
 	$status = Config::get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
-		"INSERT INTO domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) VALUES (?, ?, ?, ?, ?, ?)",
+		"INSERT INTO `domain_aliasses`(`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
 		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
 
 
-	$query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
+	$query = 'SELECT `email` FROM `admin` WHERE `admin_id` = ? LIMIT 1';
 	$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
 	$user_email = $rs->fields['email'];
 
@@ -206,15 +206,15 @@ SQL_QUERY;
 /*
 	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 		$query = <<<SQL_QUERY
-			INSERT INTO mail_users
-				(mail_acc,
-				 mail_pass,
-				 mail_forward,
-				 domain_id,
-				 mail_type,
-				 sub_id,
-				 status,
-				 mail_auto_respond)
+			INSERT INTO `mail_users`
+				(`mail_acc`,
+				`mail_pass`,
+				`mail_forward`,
+				`domain_id`,
+				`mail_type`,
+				`sub_id`,
+				`status`,
+				`mail_auto_respond`)
 			VALUES
 				(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
@@ -265,15 +265,15 @@ function gen_users_list(&$tpl, $reseller_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id
+			`admin_id`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user'
+			`admin_type` = 'user'
 		AND
-			created_by = ?
+			`created_by` = ?
 		ORDER BY
-			admin_name
+			`admin_name`
 SQL_QUERY;
 
 	$ar = exec_query($sql, $query, array($reseller_id));
@@ -293,12 +293,12 @@ SQL_QUERY;
 		// Get domain data
 		$query = <<<SQL_QUERY
 			SELECT
-				domain_id,
-				IFNULL(domain_name, '') AS domain_name
+				`domain_id`,
+				IFNULL(`domain_name`, '') AS domain_name
 			FROM
-				domain
+				`domain`
 			WHERE
-				domain_admin_id = ?
+				`domain_admin_id` = ?
 SQL_QUERY;
 
 		$dr = exec_query($sql, $query, array($admin_id));

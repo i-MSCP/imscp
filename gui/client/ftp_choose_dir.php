@@ -63,11 +63,13 @@ function gen_directories(&$tpl) {
 	// Show directories only
 	foreach ($list as $entry) {
 		// Skip non-directory entries
-		if ($entry['type'] != VFS_TYPE_DIR)
+		if ($entry['type'] != VFS_TYPE_DIR) {
 			continue;
+		}
 		// Skip '.' and '..'
-		if ($entry['file'] == '.' || $entry['file'] == '..')
+		if ($entry['file'] == '.' || $entry['file'] == '..') {
 			continue;
+		}
 		// Check for .htaccess existence to display another icon
 		$dr = $path . '/' . $entry['file'];
 		$tfile = $dr . '/.htaccess';

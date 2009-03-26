@@ -115,23 +115,12 @@ SQL_QUERY;
 		$first_passed = false;
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
-				if (!isset($_POST['als_id'])) {
-					$als_id = "";
-				} else {
-					$als_id = $_POST['als_id'];
-				}
-
-				if ($als_id == $rs->fields['alias_name']) {
-					$als_selected = 'selected="selected"';
-				} else {
-					$als_selected = '';
-				}
+				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
+				$als_selected = ($als_id == $rs->fields['alias_name'])
+					? 'selected="selected"'
+					: '';
 			} else {
-				if (!$first_passed) {
-					$als_selected = 'selected="selected"';
-				} else {
-					$als_selected = '';
-				}
+				$als_selected = (!$first_passed) ? 'selected="selected"' : '';
 			}
 
 			$als_menu_name = decode_idna($rs->fields['alias_name']);
@@ -185,23 +174,12 @@ SQL_QUERY;
 		$first_passed = false;
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
-				if (!isset($_POST['sub_id'])) {
-					$sub_id = "";
-				} else {
-					$sub_id = $_POST['sub_id'];
-				}
-
-				if ($sub_id == $rs->fields['sub_name']) {
-					$sub_selected = 'selected="selected"';
-				} else {
-					$sub_selected = '';
-				}
+				$sub_id = (!isset($_POST['sub_id'])) ? '' : $_POST['sub_id'];
+				$sub_selected = ($sub_id == $rs->fields['sub_name'])
+					? 'selected="selected"'
+					: '';
 			} else {
-				if (!$first_passed) {
-					$sub_selected = 'selected="selected"';
-				} else {
-					$sub_selected = '';
-				}
+				$sub_selected = (!$first_passed) ? 'selected="selected"' : '';
 			}
 
 			$sub_menu_name = decode_idna($rs->fields['sub_name']);
@@ -320,7 +298,7 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 		WHERE
 			`userid` = ?
 		AND
-			gid = ?
+			`gid` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftp_user, $ftp_user_gid));
@@ -443,7 +421,9 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		return;
 	}
 
-	if (!isset($_POST['pass']) || empty($_POST['pass']) || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
+	if (!isset($_POST['pass']) || empty($_POST['pass'])
+		|| !isset($_POST['pass_rep'])
+		|| $_POST['pass_rep'] === '') {
 		set_page_message(tr('Password data is missing!'));
 		return;
 	}
@@ -524,22 +504,25 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 }
 
 function gen_page_js(&$tpl) {
-	if (isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no subdomains and no alias
+	if (isset($_SESSION['subdomain_count'])
+		&& isset($_SESSION['alias_count'])) { // no subdomains and no alias
 		$tpl->parse('JS_NOT_DOMAIN', 'js_not_domain');
 		$tpl->assign('JS_TO_SUBDOMAIN', '');
 		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
 		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (isset($_SESSION['subdomain_count']) && !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
+	} else if (isset($_SESSION['subdomain_count'])
+		&& !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
 		$tpl->assign('JS_NOT_DOMAIN', '');
 		$tpl->assign('JS_TO_SUBDOMAIN', '');
 		$tpl->parse('JS_TO_ALIAS_DOMAIN', 'js_to_alias_domain');
 		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (!isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no alias - subdomain available
+	} else if (!isset($_SESSION['subdomain_count'])
+		&& isset($_SESSION['alias_count'])) { // no alias - subdomain available
 		$tpl->assign('JS_NOT_DOMAIN', '');
 		$tpl->parse('JS_TO_SUBDOMAIN', 'js_to_subdomain');
 		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
 		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else { // ther are subdomains and aliases
+	} else { // there are subdomains and aliases
 		$tpl->assign('JS_NOT_DOMAIN', '');
 		$tpl->assign('JS_TO_SUBDOMAIN', '');
 		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');

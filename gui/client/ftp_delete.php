@@ -28,18 +28,18 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			t1.userid,
-			t1.uid,
-			t2.domain_gid
+			t1.`userid`,
+			t1.`uid`,
+			t2.`domain_gid`
 		FROM
-			ftp_users AS t1,
-			domain AS t2
+			`ftp_users` AS t1,
+			`domain` AS t2
 		WHERE
-			t1.userid = ?
+			t1.`userid` = ?
 		AND
-			t1.uid = t2.domain_gid
+			t1.`uid` = t2.`domain_gid`
 		AND
-			t2.domain_name = ?
+			t2.`domain_name` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftp_id, $dmn_name));
@@ -51,15 +51,15 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			t1.gid,
-			t2.members
+			t1.`gid`,
+			t2.`members`
 		FROM
-			ftp_users AS t1,
-			ftp_group AS t2
+			`ftp_users` AS t1,
+			`ftp_group` AS t2
 		WHERE
-			t1.gid = t2.gid
+			t1.`gid` = t2.`gid`
 		AND
-			t1.userid = ?
+			t1.`userid` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftp_id));
@@ -74,9 +74,9 @@ SQL_QUERY;
 	if (strlen($members) == 0) {
 		$query = <<<SQL_QUERY
 			DELETE FROM
-				ftp_group
+				`ftp_group`
 			WHERE
-				gid = ?
+				`gid` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($ftp_gid));
@@ -84,11 +84,11 @@ SQL_QUERY;
 	} else {
 		$query = <<<SQL_QUERY
 			UPDATE
-				ftp_group
+				`ftp_group`
 			SET
-				members = ?
+				`members` = ?
 			WHERE
-				gid = ?
+				`gid` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($members, $ftp_gid));
@@ -96,9 +96,9 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		DELETE FROM
-			ftp_users
+			`ftp_users`
 		WHERE
-			userid = ?
+			`userid` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ftp_id));
