@@ -116,123 +116,130 @@ sub srv_traff_shut_down {
 sub srv_traff_engine {
 
 	if ($main::cfg{'CMD_IPTABLES'} ne 'no') {
-	
+
 		my ($rs, $ref) = (undef, undef);
-	
+
 		my ($input_log, $output_log) = (
 			"$main::log_dir/ispcp-iptables-input.log",
 			"$main::log_dir/ispcp-iptables-output.log"
 		);
-	
+
 		push_el(\@main::el, 'srv_traff_engine()', 'Starting...');
-	
+
 		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_INPUT 1>$input_log");
-	
+
 		return $rs if ($rs != 0);
-	
+
 		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_OUTPUT 1>$output_log");
-	
+
 		return $rs if ($rs != 0);
-	
+
 		my $input_line = get_file($input_log); my @input_rows = split(/\n/, $input_line);
-	
+
 		my ($smtp_in, $pop3_in, $imap_in, $http_in, $all_in) = (0, 0, 0, 0, 0);
-	
+
 		my ($line, $bytes, $port) = (undef, undef, undef);
-	
+
 		foreach (@input_rows) {
-	
+
 			$line = $_."\n"; $bytes = 0; $port = 0;
-	
+
 			$bytes = $2 if ($line =~ /^ *(\d+) *(\d+) */);
-	
+
 			$port = $1 if ($line =~ /dpt\:(\d+) *$/);
-	
+
 			if (defined($port) && $port > 0) {
-	
+
 				$smtp_in += $bytes if ($port == 25);
-	
+
 				$smtp_in += $bytes if ($port == 456);
-	
+
 				$pop3_in += $bytes if ($port == 110);
-	
+
 				$pop3_in += $bytes if ($port == 995);
-	
+
 				$imap_in += $bytes if ($port == 143);
-	
+
 				$imap_in += $bytes if ($port == 993);
-	
+
 				$http_in += $bytes if ($port == 80);
-	
+
 				$http_in += $bytes if ($port == 443);
-	
+
 			} else {
-	
+
 				$all_in = $bytes if (defined($bytes));
-	
+
 			}
-	
+
 		}
-	
+
 		$pop3_in += $imap_in;
-	
+
 		my $output_line = get_file($output_log); my @output_rows = split(/\n/, $output_line);
-	
+
 		my ($smtp_out, $pop3_out, $imap_out, $http_out, $all_out) = (0, 0, 0, 0, 0);
-	
+
 		foreach (@output_rows) {
-	
+
 			$line = $_."\n"; $bytes = 0; $port = 0;
-	
+
 			$bytes = $2 if ($line =~ /^ *(\d+) *(\d+) */);
-	
+
 			$port = $1 if ($line =~ /spt\:(\d+) *$/);
-	
+
 			if (defined($port) && $port > 0) {
-	
-				$smtp_out = $bytes if ($port == 25);
 
-				$pop3_out = $bytes if ($port == 110);
+				$smtp_out += $bytes if ($port == 25);
 
-				$imap_out = $bytes if ($port == 143);
+				$smtp_out += $bytes if ($port == 456);
 
-				$http_out = $bytes if ($port == 80);
+				$pop3_out += $bytes if ($port == 110);
 
-	
+				$pop3_out += $bytes if ($port == 995);
+
+				$imap_out += $bytes if ($port == 143);
+
+				$imap_out += $bytes if ($port == 993);
+
+				$http_out += $bytes if ($port == 80);
+
+				$http_out += $bytes if ($port == 443);
+
 			} else {
-	
+
 				$all_out = $bytes if (defined($bytes));
-	
+
 			}
-	
+
 		}
-	
+
 		$pop3_out += $imap_out;
-	
+
 		my $timestamp = time;
-	
+
 		# timestamp has floor down for the last half'n our to make timestamps in
 		# server_traffic and domain_traffic the same
 		$timestamp -= ($timestamp % 1800);
-	
+
 		my $sql = "INSERT INTO server_traffic (traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out) VALUES ($timestamp, $all_in, $all_out, $smtp_in, $smtp_out, $pop3_in, $pop3_out, $http_in, $http_out);";
-	
+
 		($rs, $ref) = doSQL($sql);
-	
+
 		return $rs if ($rs != 0);
-	
-	
+
+
 		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_INPUT");
-	
+
 		return $rs if ($rs != 0);
-	
-	
+
+
 		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_OUTPUT");
-	
+
 		return $rs if ($rs != 0);
-	
+
 		push_el(\@main::el, 'srv_traff_engine()', 'Ending...');
-	
+
 		return 0;
 
 	} else {
