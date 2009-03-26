@@ -72,7 +72,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 		system_message(tr('No available hosting packages'));
 	} else {
 		while (!$rs->EOF) {
-			$description = wordwrap($rs->fields['description'], 70, '<br />');
+			$description = $rs->fields['description'];
 
 			$price = $rs->fields['price'];
 			if ($price == 0 || $price == '') {

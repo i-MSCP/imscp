@@ -37,7 +37,6 @@ td.content {
 	color: #333333;
 	white-space: nowrap;
 	background: #e6e3e3;
-	white-space: nowrap;
 	border: 1px solid #efefef;
 	height: 22px;
 	padding: 2px;
@@ -48,7 +47,6 @@ td.content2 {
 	color: #333333;
 	white-space: nowrap;
 	background: #e2dfdf;
-	white-space: nowrap;
 	border: 1px solid #eff0f7;
 	height: 22px;
 	padding: 2px;
@@ -60,7 +58,6 @@ td.content3 {
 	white-space: nowrap;
 	background-image:	url(../images/content/tableheader.jpg);
 	background-repeat:	repeat-x;
-	white-space: nowrap;
 	border-bottom:		2px solid #000000;
 	border-right:		2px solid #000000;
 	border-top:			2px solid #eeeeee;
