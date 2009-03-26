@@ -42,6 +42,12 @@ td.content {
 	padding: 2px;
 }
 
+div.contentdiv {
+	white-space:normal;
+	height:3em;
+	overflow:auto;
+}
+
 td.content2 {
 	font-size: 12px;
 	color: #333333;
