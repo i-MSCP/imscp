@@ -8,8 +8,8 @@
 <script type="text/javascript">
 <!--
 function begin_js() {
-	document.forms[0].elements["users[]"].disabled = {USER_FORM_ELEMENS}
-	document.forms[0].elements["groups[]"].disabled = {GROUP_FORM_ELEMENS}
+	document.forms[0].elements["users[]"].disabled = {USER_FORM_ELEMENS};
+	document.forms[0].elements["groups[]"].disabled = {GROUP_FORM_ELEMENS};
 }
 
 function changeType(wath) {
@@ -78,14 +78,7 @@ function changeType(wath) {
                                 <td width="80">{TR_PATH} </td>
                                 <td><input name="other_dir" type="text" class="textinput" id="path" style="width:170px" value="{PATH}">
                                     <input type="hidden" name="use_other_dir">
-                                    <script type="text/javascript">
-					<!--
-						function OpenTree() {
-						  libwindow = window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-						}
-					//-->
-					</script>
-                                  <a href="javascript:OpenTree();" class="link">{CHOOSE_DIR}</a> </td>
+                                  <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                               </tr>
                           </table></td>
                         </tr>

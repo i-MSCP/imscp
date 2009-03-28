@@ -68,7 +68,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		sort($ftp_accs);
 		reset($ftp_accs);
 
-		for ($i = 0; $i < count($ftp_accs); $i++) {
+		for ($i = 0, $cnt_ftp_accs = count($ftp_accs); $i < $cnt_ftp_accs; $i++) {
 			$tpl->assign('ITEM_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
 
 			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);

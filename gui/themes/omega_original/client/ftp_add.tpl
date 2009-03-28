@@ -8,104 +8,85 @@
 <script type="text/javascript">
 <!--
 function over(number) {
-  document.images["image"+number+"_1"].src='{THEME_COLOR_PATH}/images/bars/menu_button_left.gif';
-  document.images["image"+number+"_2"].src='{THEME_COLOR_PATH}/images/bars/menu_button_right.gif';
-  if (document.layers) {
-    document.layers["m"+number].background.src='{THEME_COLOR_PATH}/images/bars/menu_button_background.gif';
-  }
-  else if (document.all) {
-    window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.gif)';
-  }
+	document.images["image"+number+"_1"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_left.gif';
+	document.images["image"+number+"_2"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_right.gif';
+	if (document.layers) {
+		document.layers["m"+number].background.src = '{THEME_COLOR_PATH}/images/bars/menu_button_background.gif';
+	} else if (document.all) {
+		window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.gif)';
+	}
 }
 
 function out(number) {
-  document.images["image"+number+"_1"].src='../images/menubutton_left.gif';
-  document.images["image"+number+"_2"].src='../images/menubutton_right.gif';
-  if (document.layers) {
-    document.layers["m"+number].background.src='../images/menubutton_background.gif';
-  }
-  else if (document.all) {
-    window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.gif)';
-  }
-}
-
-function MM_jumpMenu(targ,selObj,restore) { //v3.0
-  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
-  if (restore) selObj.selectedIndex=0;
+	document.images["image"+number+"_1"].src = '../images/menubutton_left.gif';
+	document.images["image"+number+"_2"].src = '../images/menubutton_right.gif';
+	if (document.layers) {
+		document.layers["m"+number].background.src = '../images/menubutton_background.gif';
+	} else if (document.all) {
+		window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.gif)';
+	}
 }
 
 <!-- BDP: js_to_all_domain -->
-    function begin_js() {
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].username.focus();
-    }
+function begin_js() {
+	document.forms[0].sub_id.disabled = true;
+	document.forms[0].als_id.disabled = true;
+	document.forms[0].username.focus();
+}
 
-
-    function changeDom(wath) {
-        if (wath == "real") {
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].als_id.disabled = true;
-        } else if (wath == "subdom") {
-            document.forms[0].sub_id.disabled = false;
-            document.forms[0].als_id.disabled = true;
-        } else {
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].als_id.disabled = false;
-        }
-    }
+function changeDom(wath) {
+	if (wath == "real") {
+		document.forms[0].sub_id.disabled = true;
+		document.forms[0].als_id.disabled = true;
+	} else if (wath == "subdom") {
+		document.forms[0].sub_id.disabled = false;
+		document.forms[0].als_id.disabled = true;
+	} else {
+		document.forms[0].sub_id.disabled = true;
+		document.forms[0].als_id.disabled = false;
+	}
+}
 <!-- EDP: js_to_all_domain -->
 
 <!-- BDP: js_not_domain -->
-    function begin_js() {
-            document.forms[0].username.focus();
-    }
-
+function begin_js() {
+	document.forms[0].username.focus();
+}
 <!-- EDP: js_not_domain -->
 
-
 <!-- BDP: js_to_subdomain -->
-    function begin_js() {
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].username.focus();
-    }
+function begin_js() {
+	document.forms[0].sub_id.disabled = true;
+	document.forms[0].username.focus();
+}
 
-
-    function changeDom(wath) {
-        if (wath == "real") {
-            document.forms[0].sub_id.disabled = true;
-        } else if (wath == "subdom") {
-            document.forms[0].sub_id.disabled = false;
-        } else {
-            document.forms[0].sub_id.disabled = true;
-        }
-    }
+function changeDom(wath) {
+	if (wath == "real") {
+		document.forms[0].sub_id.disabled = true;
+	} else if (wath == "subdom") {
+		document.forms[0].sub_id.disabled = false;
+	} else {
+		document.forms[0].sub_id.disabled = true;
+	}
+}
 <!-- EDP: js_to_subdomain -->
 
-
 <!-- BDP: js_to_alias_domain -->
-    function begin_js() {
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].username.focus();
-    }
-
-
-    function changeDom(wath) {
-        if (wath == "real") {
-            document.forms[0].als_id.disabled = true;
-        } else if (wath == "subdom") {
-            document.forms[0].als_id.disabled = true;
-        } else {
-            document.forms[0].als_id.disabled = false;
-        }
-    }
-
-<!-- EDP: js_to_alias_domain -->
-
-function OpenTree() {
-  libwindow = window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-
+function begin_js() {
+	document.forms[0].als_id.disabled = true;
+	document.forms[0].username.focus();
 }
+
+function changeDom(wath) {
+	if (wath == "real") {
+		document.forms[0].als_id.disabled = true;
+	} else if (wath == "subdom") {
+		document.forms[0].als_id.disabled = true;
+	} else {
+		document.forms[0].als_id.disabled = false;
+	}
+}
+<!-- EDP: js_to_alias_domain -->
 //-->
 </script>
 </head>
@@ -185,7 +166,7 @@ function OpenTree() {
                                 <label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
                               <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
                                   <br>
-                                <a href="javascript:OpenTree();" class="link">{CHOOSE_DIR} </a></td>
+                                <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value=" {TR_ADD} ">

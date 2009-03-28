@@ -250,7 +250,7 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 
 	$users_array = explode(";", $users);
 
-	for ($i = 0; $i < count($users_array) - 1; $i++) {
+	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
 		$query = <<<SQL_QUERY
 			SELECT
 				domain_id, domain_name
@@ -319,7 +319,7 @@ SQL_QUERY;
 
 	update_reseller_props($dest_reseller, $dest_reseller_props);
 
-	for ($i = 0; $i < count($users_array) - 1; $i++) {
+	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
 		$query = "UPDATE admin SET created_by = ? WHERE admin_id = ?";
 		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
 
@@ -406,7 +406,7 @@ function check_ip_sets($dest, $users, &$err) {
 
 	$users_array = explode(";", $users);
 
-	for ($i = 0; $i < count($users_array); $i++) {
+	for ($i = 0, $cnt_users_array = count($users_array); $i < $cnt_users_array; $i++) {
 		$query = <<<SQL_QUERY
 			SELECT
 				domain_name, domain_ip_id

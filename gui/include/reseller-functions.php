@@ -842,7 +842,7 @@ SQL_QUERY;
 	$dom_part_cnt = 0;
 	$error = 0;
 	// here starts a loop to check if the splitted domain is available for other resellers
-	for ($i = 0; $i < count($split_domain) -1; $i++) {
+	for ($i = 0, $cnt_split_domain = count($split_domain) - 1; $i < $cnt_split_domain; $i++) {
 		$dom_part_cnt = $dom_part_cnt + strlen($split_domain[$i]) + 1;
 		$idom = substr($domain_name, $dom_part_cnt);
 		// execute query the redefined queries for domains/accounts and aliases tables

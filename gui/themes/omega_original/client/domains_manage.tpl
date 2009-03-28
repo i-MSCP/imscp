@@ -7,7 +7,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-function action_delete(url,alias_or_subdomain) {
+function action_delete(url, alias_or_subdomain) {
 	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", alias_or_subdomain)))
 		return false;
 	location = url;

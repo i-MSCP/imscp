@@ -43,6 +43,9 @@ $CHECK_VARS[] = "/\n/";
 $CHECK_VARS[] = "/%0a/";
 $CHECK_VARS[] = "/%0d/";
 
+/**
+ * @todo document this function
+ */
 function check_input($value = '') {
 	global $CHECK_VARS;
 
@@ -60,8 +63,12 @@ function check_input($value = '') {
 	}
 }
 
+/**
+ * @todo document this function
+ */
 function clean_html($text) {
-	$suche = array ('@<script[^>]*?>.*?</script>@si', // remove JavaScript
+	$search = array(
+		'@<script[^>]*?>.*?</script>@si', // remove JavaScript
 		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
 		'@([\r\n])[\s]+@', // remove spaces
 		'@&(quot|#34|#034);@i', // change HTML entities
@@ -77,7 +84,8 @@ function clean_html($text) {
 		'@&#(\d+);@e'*/
 	); // handle as php
 
-	$ersetze = array ('',
+	$replace = array(
+		'',
 		'',
 		'\1',
 		'"',
@@ -93,7 +101,7 @@ function clean_html($text) {
 		/*'chr(\1)'*/
 	);
 
-	$text = preg_replace($suche, $ersetze, $text);
+	$text = preg_replace($search, $replace, $text);
 	// and second one...
 	$text = strip_tags($text);
 
@@ -108,7 +116,8 @@ function clean_html($text) {
  * @return String {|} trimmed, stripslashed, eventually htmlencoded input string
  */
 function clean_input($input, $htmlencode = false) {
-	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
+	if ((strpos($input, "{") == 0)
+		&& (strpos($input, "}") == strlen($input)-1)) {
 		$input = trim($input, "{..}");
 	}
 
@@ -157,7 +166,8 @@ function chk_password($password, $num = 50, $permitted = "") {
 	}
 
 	if (Config::get('PASSWD_STRONG')) {
-		return (bool)(preg_match("/[0-9]/", $password) && preg_match("/[a-zA-Z]/", $password));
+		return (bool)(preg_match("/[0-9]/", $password)
+			&& preg_match("/[a-zA-Z]/", $password));
 	} else {
 		return true;
 	}
@@ -187,6 +197,9 @@ function chk_username($username, $length = null) {
 	return true;
 }
 
+/**
+ * @todo document this function
+ */
 function chk_email($email, $num = 50) {
 	if (strlen($email) > $num)
 		return false;
@@ -211,6 +224,9 @@ function chk_email($email, $num = 50) {
 	return (bool) preg_match("/^$regex$/", $email);
 }
 
+/**
+ * @todo document this function
+ */
 function ispcp_check_local_part($email, $num = 50) {
 	if (strlen($email) > $num)
 		return false;
@@ -230,6 +246,9 @@ function ispcp_check_local_part($email, $num = 50) {
 	return (bool) preg_match("/^$regex$/", $email);
 }
 
+/**
+ * @todo document this function
+ */
 function full_domain_check($data) {
 	$data .= ".";
 	$match = array();
@@ -259,6 +278,9 @@ function full_domain_check($data) {
 	return true;
 }
 
+/**
+ * @todo document this function
+ */
 function check_dn_token($data) {
 	if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data))
 		return false;
@@ -311,6 +333,7 @@ function ispcp_limit_check($data, $extra = -1) {
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
+ * @todo check if we can remove the outcommented code block or comment why not
  */
 function check_dn_rsl_token($data) {
 	$match = array();
@@ -375,6 +398,7 @@ function chk_forward_url($url) {
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
+ * @todo check if we can remove the outcommented code block or comment why not
  */
 function chk_mountp($data, $num = 50) {
 	if (!preg_match("/^\/(.*)$/D", $data))
@@ -416,6 +440,9 @@ function chk_mountp($data, $num = 50) {
 	return true;
 }
 
+/**
+ * @todo document this function
+ */
 function get_post($value) {
 	if (array_key_exists($value, $_POST))
 		return $_POST[$value];
@@ -423,6 +450,9 @@ function get_post($value) {
 		return null;
 }
 
+/**
+ * @todo document this function
+ */
 function get_session($value) {
 	if (array_key_exists($value, $_SESSION))
 		return $_SESSION[$value];
@@ -430,6 +460,9 @@ function get_session($value) {
 		return null;
 }
 
+/**
+ * @todo document this function
+ */
 function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 	if ($realPath) {
 		$base_domain = realpath($base_domain);

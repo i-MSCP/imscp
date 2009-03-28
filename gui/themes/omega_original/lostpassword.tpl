@@ -9,7 +9,7 @@
 		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
-	<body onload="javascript:document.frm.uname.focus()">
+	<body onload="document.frm.uname.focus()">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">

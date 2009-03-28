@@ -66,8 +66,7 @@ class status {
 	 * CheckStatus checks the status
 	 */
 	function CheckStatus($timeout = 5) {
-		$x = $this->GetCount();
-		for($i = 0; $i <= $x - 1; $i++) {
+		for ($i = 0, $x = $this->GetCount() - 1; $i <= $x; $i++) {
 			$ip = $this->all[$i]['ip'];
 			$port = $this->all[$i]['port'];
 			$errno = null;
@@ -172,7 +171,7 @@ SQL_QUERY;
 	$up = tr('UP');
 	$down = tr('DOWN');
 
-	for ($i = 0, $c = count($data); $i < $c; $i++) {
+	for ($i = 0, $cnt_data = count($data); $i < $cnt_data; $i++) {
 		if ($data[$i]['status']) {
 			$img = $up;
 			$class = "content up";

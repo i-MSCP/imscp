@@ -140,7 +140,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 			} else {
 				$members = split(',', $rs->fields['members']);
 
-				for ($i = 0; $i < count($members); $i++) {
+				for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
 					$query = "
 						SELECT
 							`uname`
@@ -152,7 +152,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 
 					$rs_members = exec_query($sql, $query, array($members[$i]));
 
-					if (count($members) == 1 || count($members) == $i + 1) {
+					if ($cnt_members == 1 || $cnt_members == $i + 1) {
 						$tpl->assign('MEMBER', $rs_members->fields['uname']);
 					} else {
 						$tpl->assign('MEMBER', $rs_members->fields['uname'] . ", ");

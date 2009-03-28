@@ -75,7 +75,8 @@ final class Database {
 		$tables = array();
 
 		$result = $this->_db->query('SHOW TABLES');
-		while ($result instanceof PDOStatement && $row = $result->fetch(PDO::FETCH_NUM)) {
+		while ($result instanceof PDOStatement
+			&& $row = $result->fetch(PDO::FETCH_NUM)) {
 			$tables[] = $row[0];
 		}
 		return $tables;

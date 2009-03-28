@@ -5,10 +5,24 @@
 <meta name="robots" content="nofollow, noindex">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
-    function begin_js() {
+	function changeType() {
+		if (document.forms[0].elements['mail_type_normal'].checked == true) {
+			document.forms[0].pass.disabled = false;
+			document.forms[0].pass_rep.disabled = false;
+		} else {
+			document.forms[0].pass.disabled = true;
+			document.forms[0].pass_rep.disabled = true;
+		}
+		if (document.forms[0].elements['mail_type_forward'].checked == true) {
+			document.forms[0].forward_list.disabled = false;
+		} else {
+			document.forms[0].forward_list.disabled = true;
+		}
+	}
+
+	function begin_js() {
 		if (document.getElementsByName('als_id') != null) {
 			if(document.getElementById('dmn_type2').checked) {
 				document.forms[0].als_id.disabled = false;
@@ -30,47 +44,28 @@
 				document.forms[0].als_sub_id.disabled = true;
 			}
 		}
-// 		document.forms[0].pass.disabled = false;
-// 		document.forms[0].pass_rep.disabled = false;
-// 		document.forms[0].forward_list.disabled = true;
+//		document.forms[0].pass.disabled = false;
+//		document.forms[0].pass_rep.disabled = false;
+//		document.forms[0].forward_list.disabled = true;
 		changeType();
 		document.forms[0].username.focus();
-    }
+	}
 
-    function changeDom(what) {
+	function changeDom(what) {
 		if (document.getElementsByName('als_id') != null && what == "alias") {
 			document.forms[0].als_id.disabled = false;
-		}
-		else {
+		} else {
 			document.forms[0].als_id.disabled = true;
 		}
 		if (document.getElementsByName('sub_id') != null && what == "subdom") {
 			document.forms[0].sub_id.disabled = false;
-		}
-		else {
+		} else {
 			document.forms[0].sub_id.disabled = true;
 		}
 		if (document.getElementsByName('als_sub_id') != null && what == "als_subdom") {
 			document.forms[0].als_sub_id.disabled = false;
-		}
-		else {
+		} else {
 			document.forms[0].als_sub_id.disabled = true;
-		}
-    }
-
-
-	function changeType() {
-		if (document.forms[0].elements['mail_type_normal'].checked == true) {
-			document.forms[0].pass.disabled = false;
-			document.forms[0].pass_rep.disabled = false;
-		} else {
-			document.forms[0].pass.disabled = true;
-			document.forms[0].pass_rep.disabled = true;
-		}
-		if (document.forms[0].elements['mail_type_forward'].checked == true) {
-			document.forms[0].forward_list.disabled = false;
-		} else {
-			document.forms[0].forward_list.disabled = true;
 		}
 	}
 //-->

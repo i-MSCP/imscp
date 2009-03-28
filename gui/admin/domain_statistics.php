@@ -123,7 +123,7 @@ function generate_page (&$tpl, $domain_id) {
 	$all[7] = 0;
 
 	$counter = 0;
-	for($i = 1;$i <= $curday;$i++) {
+	for ($i = 1; $i <= $curday; $i++) {
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
@@ -185,7 +185,8 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-			array('MONTH' => $month,
+			array(
+				'MONTH' => $month,
 				'YEAR' => $year,
 				'DOMAIN_ID' => $domain_id,
 				'ALL_WEB_TRAFFIC' => sizeit($sum_web),

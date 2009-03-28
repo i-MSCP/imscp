@@ -18,13 +18,6 @@ function delete_account(url, dmn_name) {
 		return false;
 	location = url;
 }
-
-function sbmt(form, uaction) {
-	form.details.value = uaction;
-	form.submit();
-
-	return false;
-}
 //-->
 </script>
 </head>
@@ -96,7 +89,7 @@ function sbmt(form, uaction) {
                             </tr>
                         </table></td>
                         <td colspan="3" align="right"><input type="hidden" name="details" value="">
-                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle"> <a href="#" class="link" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
+                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle"> <a href="#" class="link" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>

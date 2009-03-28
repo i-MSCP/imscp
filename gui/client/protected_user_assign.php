@@ -110,7 +110,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 			$members = explode(",", $members);
 			$grp_in = 0;
 			// let's generete all groups wher the user is assigned
-			for($i = 0; $i < count($members);$i++) {
+			for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
 				if ($uuser_id == $members[$i]) {
 					$tpl->assign(
 						array(

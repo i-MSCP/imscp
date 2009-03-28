@@ -8,34 +8,34 @@
 <script type="text/javascript">
 <!--
 	function checkForm() {
-            var forw = document.forms[0].elements['forward_list'].value;
+		var forw = document.forms[0].elements['forward_list'].value;
 
-            if (mailtype == "normal") {
-                 document.forms[0].submit();
-            } else {
-                if (forw == "") {
-                    alert(emptyData)
-                } else {
-                    document.forms[0].submit();
-                }
-            }
-    }
+		if (mailtype == "normal") {
+			 document.forms[0].submit();
+		} else {
+			if (forw == "") {
+				alert(emptyData);
+			} else {
+				document.forms[0].submit();
+			}
+		}
+	}
 
-    function begin_js() {
-            document.forms[0].forward_list.disabled = true;
-	        document.forms[0].mail_id.disabled = false;
-			document.forms[0].mail_id.focus();
-    }
+	function begin_js() {
+		document.forms[0].forward_list.disabled = true;
+		document.forms[0].mail_id.disabled = false;
+		document.forms[0].mail_id.focus();
+	}
 
-    function changeType(what) {
-        if (what == "normal") {
-	        document.forms[0].mail_id.disabled = false;
-            document.forms[0].forward_list.disabled = true;
-        } else {
-	        document.forms[0].mail_id.disabled = true;
-            document.forms[0].forward_list.disabled = false;
-        }
-    }
+	function changeType(what) {
+		if (what == "normal") {
+			document.forms[0].mail_id.disabled = false;
+			document.forms[0].forward_list.disabled = true;
+		} else {
+			document.forms[0].mail_id.disabled = true;
+			document.forms[0].forward_list.disabled = false;
+		}
+	}
 //-->
 </script>
 <style type="text/css">

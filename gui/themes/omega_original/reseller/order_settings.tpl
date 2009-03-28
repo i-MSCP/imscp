@@ -5,13 +5,6 @@
 <meta name="robots" content="nofollow, noindex">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript">
-<!--
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-</script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -94,7 +87,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         <td>&nbsp;</td>
                         <td><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}">
                           &nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onclick="MM_openBrWindow('/orderpanel/','preview','width=770,height=480')" value="{TR_PREVIEW}"></td>
+                          <input name="Button" type="button" class="button" onclick="window.open('/orderpanel/', 'preview', 'width=770,height=480')" value="{TR_PREVIEW}"></td>
                       </tr>
                     </table>
                 </form></td>

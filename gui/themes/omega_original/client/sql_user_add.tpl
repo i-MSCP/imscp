@@ -7,21 +7,18 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-  document.captureEvents(Event.KEYPRESS);
+document.captureEvents(Event.KEYPRESS);
 
-  function Check_Key(e) {
-  document.captureEvents(Event.KEYPRESS);
-    if (document.layers && event.keyCode == 13) {
-        document.sql_add_user_frm.Add_New.click();
-        return false;
-      }
-    else {
-      if (e.which == 13) {
-        document.sql_add_user_frm.Add_New.click();
-        return false;
-      }
-  	}
-  }
+function Check_Key(e) {
+	document.captureEvents(Event.KEYPRESS);
+	if (document.layers && event.keyCode == 13) {
+		document.sql_add_user_frm.Add_New.click();
+		return false;
+	} else if (e.which == 13) {
+		document.sql_add_user_frm.Add_New.click();
+		return false;
+	}
+}
 //-->
 </script>
 </head>

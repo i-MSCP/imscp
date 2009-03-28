@@ -5,7 +5,6 @@
 <meta name="robots" content="nofollow, noindex">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script type="text/javascript">
 <!--
 function makeUser() {

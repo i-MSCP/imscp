@@ -90,7 +90,7 @@ abstract class ispcpUpdate {
 		$sql = Database::getInstance();
 		$failedUpdate = false;
 
-		while($this->checkUpdateExists()) {
+		while ($this->checkUpdateExists()) {
 			// Get the next database update Version
 			$newVersion		= $this->getNextVersion();
 

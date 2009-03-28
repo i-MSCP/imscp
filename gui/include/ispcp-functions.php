@@ -23,7 +23,7 @@ function check_for_lock_file($wait_lock_timeout = 500000) {
 	set_time_limit(0);
 	// @ prevents the Warning:
 	// File(/var/log/chkrootkit.log) is not within the allowed path(s)
-	while(@file_exists(Config::get('MR_LOCK_FILE'))) {
+	while (@file_exists(Config::get('MR_LOCK_FILE'))) {
 
 		usleep($wait_lock_timeout);
 		clearstatcache();
@@ -38,7 +38,7 @@ function read_line(&$socket) {
 	do {
 		$ch = socket_read($socket, 1);
 		$line = $line . $ch;
-	} while($ch != "\r" && $ch != "\n");
+	} while ($ch != "\r" && $ch != "\n");
 	return $line;
 }
 

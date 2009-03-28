@@ -176,7 +176,7 @@ function show_lang(&$tpl, &$sql) {
 
 	$usr_def_lng = explode('_', $user_def_lang);
 
-	for ($i = 0;$i < $nlang;$i++) {
+	for ($i = 0; $i < $nlang; $i++) {
 		$data = $tables[$i];
 		$pos = strpos($data, "lang_");
 		if ($pos === false) {
@@ -185,7 +185,7 @@ function show_lang(&$tpl, &$sql) {
 		}
 		$dat = explode('_', $data);
 
-		$query = "SELECT COUNT(`msgid`) as cnt FROM $tables[$i]";
+		$query = "SELECT COUNT(`msgid`) AS cnt FROM $tables[$i]";
 		$rs = exec_query($sql, $query, array());
 
 		$query = "SELECT `msgstr` FROM $tables[$i] WHERE `msgid` = 'ispcp_language'";

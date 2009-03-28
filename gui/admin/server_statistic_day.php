@@ -108,7 +108,7 @@ SQL_QUERY;
 	$row = 1;
 
 	if ($dnum != 0) {
-		for($i = 0;$i < $dnum;$i++) {
+		for ($i = 0; $i < $dnum; $i++) {
 			/* make it in kb mb or bytes :) */
 			$ttime = date('H:i', $rs1->fields['ttime']);
 

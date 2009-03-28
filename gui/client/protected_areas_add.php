@@ -91,8 +91,8 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	$user_id = '';
 	$group_id = '';
 	if ($ptype == 'user') {
-		for($i = 0;$i < count($users);$i++) {
-			if (count($users) == 1 || count($users) == $i + 1) {
+		for ($i = 0, $cnt_users = count($users); $i < $cnt_users; $i++) {
+			if ($cnt_users == 1 || $cnt_users == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
 					set_page_message(tr('You can not protect area without selected user(s)'));
@@ -104,8 +104,8 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		}
 		$group_id = 0;
 	} else {
-		for($i = 0;$i < count($groups);$i++) {
-			if (count($groups) == 1 || count($groups) == $i + 1) {
+		for ($i = 0, $cnt_groups = count($groups); $i < $cnt_groups; $i++) {
+			if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
 					set_page_message(tr('You cannot protect area without selected group(s)'));
@@ -285,9 +285,9 @@ SQL_QUERY;
 	} else {
 		while (!$rs->EOF) {
 			$usr_id = split(',', $user_id);
-			for ($i = 0; $i < count($usr_id); $i++) {
+			for ($i = 0, $cnt_usr_id = count($usr_id); $i < $cnt_usr_id; $i++) {
 				if ($edit == 'yes' && $usr_id[$i] == $rs->fields['id']) {
-					$i = count($usr_id) + 1;
+					$i = $cnt_usr_id + 1;
 					$usr_selected = " selected ";
 				} else {
 					$usr_selected = "";
@@ -331,9 +331,9 @@ SQL_QUERY;
 	} else {
 		while (!$rs->EOF) {
 			$grp_id = split(',', $group_id);
-			for ($i = 0; $i < count($grp_id); $i++) {
+			for ($i = 0, $cnt_grp_id = count($grp_id); $i < $cnt_grp_id; $i++) {
 				if ($edit == 'yes' && $grp_id[$i] == $rs->fields['id']) {
-					$i = count($grp_id) + 1;
+					$i = $cnt_grp_id + 1;
 					$grp_selected = 'selected="selected"';
 				} else {
 					$grp_selected = "";

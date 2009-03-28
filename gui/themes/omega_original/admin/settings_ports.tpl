@@ -14,14 +14,13 @@ function action_delete(url, service) {
 }
 
 function enable_for_post() {
-	for (var i = 0; i < document.frmsettings.length; i++) {
-		for (var a = 0; a < document.frmsettings.elements[i].length; a++) {
+	for (var i = 0, len = document.frmsettings.length; i < len; i++) {
+		for (var j = 0, len2 = document.frmsettings.elements[i].length; j < len2; j++) {
 			if (document.frmsettings.elements[i].name == "port_type[]") {
 				document.frmsettings.elements[i].disabled = false;
 			}
 		}
 	}
-
 	return true;
 }
 //-->

@@ -110,7 +110,7 @@ function generate_page (&$tpl) {
 	$all[6] = 0;
 	$all[7] = 0;
 
-	for($i = 1; $i <= $curday; $i++) {
+	for ($i = 1; $i <= $curday; $i++) {
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
@@ -120,7 +120,7 @@ function generate_page (&$tpl) {
 			FROM
 				`server_traffic`
 			WHERE
-				`traff_time` > ? and `traff_time` < ?
+				`traff_time` > ? AND `traff_time` < ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($ftm, $ltm));

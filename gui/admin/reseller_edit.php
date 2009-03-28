@@ -380,7 +380,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 	} else {
 		$rip_array = explode(";", $r_ips);
 
-		for ($i = 0; $i < count($rip_array) - 1; $i++) {
+		for ($i = 0, $cnt_rip_array = count($rip_array) - 1; $i < $cnt_rip_array; $i++) {
 			$ip = $rip_array[$i];
 
 			if (!preg_match("/$ip;/", $u_ips)) {

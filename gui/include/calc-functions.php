@@ -114,7 +114,7 @@ function generate_rand_salt($min = 46, $max = 126) {
 
 	$salt = $pre;
 
-	for($i = 0; $i < $length; $i++) {
+	for ($i = 0; $i < $length; $i++) {
 		$salt .= chr(mt_rand($min, $max));
 	}
 
@@ -151,12 +151,13 @@ function check_user_pass($crdata, $data) {
 function _passgen() {
 	$pw = '';
 
-	for ($i = 0; $i <= Config::get('PASSWD_CHARS'); $i++) {
+
+	for ($i = 0, $passwd_chars = Config::get('PASSWD_CHARS'); $i <= $passwd_chars; $i++) {
 		$z = 0;
 
 		do {
 			$z = mt_rand(42, 123);
-		} while($z >= 91 && $z <= 96);
+		} while ($z >= 91 && $z <= 96);
 		$pw .= chr($z);
 	}
 	return $pw;
