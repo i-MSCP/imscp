@@ -7,10 +7,9 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-	var emptyData	= 'Empty data or wrong field!';
-	var passerr		= 'Password not match!';
-	var wdname		= 'Wrong domain name!';
-	var mpointError	= 'Please write mount point!';
+	var emptyData	= '{TR_JS_EMPTYDATA}';
+	var wdname		= '{TR_JS_WDNAME}';
+	var mpointError	= '{TR_JS_MPOINTERROR}';
 
 	function checkForm() {
 		var dname = document.forms[0].elements['ndomain_name'].value;

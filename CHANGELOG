@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-03-29 Thomas Häber
+	- LANGUAGES:
+		* made hardcoded english JavaScript strings in alias_add translateable + german translations
+ 
 2009-03-28 Thomas Häber
 	- THEMES:
 		* some refactoring of the JavaScript code (better documentation, replace use of eval, delete unused code/functions, merge use of functions, optimized loops ...)
