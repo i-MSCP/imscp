@@ -3789,9 +3789,3 @@ msgstr ""
 
 msgid "Show server load"
 msgstr ""
-
-msgid "Wrong domain name!"
-msgstr ""
-
-msgid "Please write mount point!"
-msgstr ""

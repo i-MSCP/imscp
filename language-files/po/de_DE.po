@@ -3875,12 +3875,6 @@ msgstr "Benutzer wurde nicht gelöscht!"
 msgid "Show server load"
 msgstr "Zeige Serverauslastung"
 
-msgid "Wrong domain name!"
-msgstr "Falscher Domainname!"
-
-msgid "Please write mount point!"
-msgstr "Bitte den Einhängepunkt angeben!"
-
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

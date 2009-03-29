@@ -3,7 +3,7 @@ ispCP ω 1.0.1 Changelog
 
 2009-03-29 Thomas Häber
 	- LANGUAGES:
-		* made hardcoded english JavaScript strings in alias_add translateable + german translations
+		* removed unused JavaScript function checkForm()
  
 2009-03-28 Thomas Häber
 	- THEMES:

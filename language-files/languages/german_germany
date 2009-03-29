@@ -1158,5 +1158,3 @@ User data not updated! = Benutzerdaten wurden nicht aktualisiert!
 This user has domain record !<br>First remove the domain from the system! = Dieser Benutzer besitzt Domains!<br />Löschen Sie diese zuerst!
 User not terminated! = Benutzer wurde nicht gelöscht!
 Show server load = Zeige Serverauslastung
-Wrong domain name! = Falscher Domainname!
-Please write mount point! = Bitte den Einhängepunkt angeben!

@@ -7,25 +7,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-	var emptyData	= '{TR_JS_EMPTYDATA}';
-	var wdname		= '{TR_JS_WDNAME}';
-	var mpointError	= '{TR_JS_MPOINTERROR}';
-
-	function checkForm() {
-		var dname = document.forms[0].elements['ndomain_name'].value;
-		var dmount = document.forms[0].elements['ndomain_mpoint'].value;
-		var dd = new String(dmount);
-		if (dname == "" || dmount == "") {
-			alert(emptyData);
-		} else if (dname.indexOf('.') == -1) {
-			alert(wdname);
-		} else if (dd.length < 2) {
-			alert(mpointError);
-		} else {
-			document.forms[0].submit();
-		}
-	}
-
 	function makeUser() {
 		var dname = document.forms[0].elements['ndomain_name'].value;
 		dname = dname.toLowerCase();
