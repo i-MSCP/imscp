@@ -42,16 +42,17 @@ $tpl->assign(
 	)
 );
 
-// Get Server IPs;
-
+/**
+ * Get Server IPs
+ */
 function get_server_ip(&$tpl, &$sql) {
 	$query = "
 		SELECT
-			ip_id, ip_number, ip_domain
+			`ip_id`, `ip_number`, `ip_domain`
 		FROM
-			server_ips
+			`server_ips`
 		ORDER BY
-			ip_number
+			`ip_number`
 	";
 
 	$rs = exec_query($sql, $query, array());
@@ -149,24 +150,24 @@ function add_reseller(&$tpl, &$sql) {
 
 			$query = "
 				INSERT INTO admin (
-					admin_name,
-					admin_pass,
-					admin_type,
-					domain_created,
-					created_by,
-					fname,
-					lname,
-					firm,
-					zip,
-					city,
-					state,
-					country,
-					email,
-					phone,
-					fax,
-					street1,
-					street2,
-					gender
+					`admin_name`,
+					`admin_pass`,
+					`admin_type`,
+					`domain_created`,
+					`created_by`,
+					`fname`,
+					`lname`,
+					`firm`,
+					`zip`,
+					`city`,
+					`state`,
+					`country`,
+					`email`,
+					`phone`,
+					`fax`,
+					`street1`,
+					`street2`,
+					`gender`
 				) VALUES (
 					?,
 					?,
@@ -203,7 +204,8 @@ function add_reseller(&$tpl, &$sql) {
 					$fax,
 					$street1,
 					$street2,
-					$gender));
+					$gender)
+			);
 
 			$new_admin_id = $sql->Insert_ID();
 
@@ -216,12 +218,12 @@ function add_reseller(&$tpl, &$sql) {
 			$user_logo = 0;
 
 			$query = "
-				INSERT INTO user_gui_props
+				INSERT INTO `user_gui_props`
 					(
-					user_id,
-					lang,
-					layout,
-					logo
+					`user_id`,
+					`lang`,
+					`layout`,
+					`logo`
 					)
 				VALUES
 					(?, ?, ?, ?)
@@ -230,7 +232,8 @@ function add_reseller(&$tpl, &$sql) {
 			$rs = exec_query($sql, $query, array($new_admin_id,
 					$user_def_lang,
 					$user_theme_color,
-					$user_logo));
+					$user_logo)
+			);
 
 			/*
 			 * 'reseller_props' table entry;
@@ -249,17 +252,17 @@ function add_reseller(&$tpl, &$sql) {
 
 			$query = "
 				INSERT INTO reseller_props (
-					reseller_id, reseller_ips,
-					max_dmn_cnt, current_dmn_cnt,
-					max_sub_cnt, current_sub_cnt,
-					max_als_cnt, current_als_cnt,
-					max_mail_cnt, current_mail_cnt,
-					max_ftp_cnt, current_ftp_cnt,
-					max_sql_db_cnt, current_sql_db_cnt,
-					max_sql_user_cnt, current_sql_user_cnt,
-					max_traff_amnt, current_traff_amnt,
-					max_disk_amnt, current_disk_amnt,
-					customer_id
+					`reseller_id`, `reseller_ips`,
+					`max_dmn_cnt`, `current_dmn_cnt`,
+					`max_sub_cnt`, `current_sub_cnt`,
+					`max_als_cnt`, `current_als_cnt`,
+					`max_mail_cnt`, `current_mail_cnt`,
+					`max_ftp_cnt`, `current_ftp_cnt`,
+					`max_sql_db_cnt`, `current_sql_db_cnt`,
+					`max_sql_user_cnt`, `current_sql_user_cnt`,
+					`max_traff_amnt`, `current_traff_amnt`,
+					`max_disk_amnt`, `current_disk_amnt`,
+					`customer_id`
 				) VALUES (
 					?, ?,
 					?, '0',
@@ -285,9 +288,10 @@ function add_reseller(&$tpl, &$sql) {
 					$nreseller_max_sql_user_cnt,
 					$nreseller_max_traffic,
 					$nreseller_max_disk,
-					$customer_id));
+					$customer_id)
+			);
 
-			send_add_user_auto_msg ($user_id,
+			send_add_user_auto_msg($user_id,
 				clean_input($_POST['username']),
 				$_POST['pass'],
 				clean_input($_POST['email']),
@@ -295,7 +299,7 @@ function add_reseller(&$tpl, &$sql) {
 				clean_input($_POST['lname']),
 				tr('Reseller'),
 				$gender
-				);
+			);
 
 			$_SESSION['reseller_added'] = 1;
 
@@ -379,11 +383,11 @@ function check_user_data() {
 
 	$query = "
 		SELECT
-			admin_id
+			`admin_id`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_name = ?
+			`admin_name` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($username));

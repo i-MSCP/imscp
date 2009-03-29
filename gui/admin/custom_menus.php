@@ -24,7 +24,7 @@ function gen_button_list(&$tpl, &$sql) {
 		SELECT
 			*
 		FROM
-			custom_menus
+			`custom_menus`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -128,9 +128,9 @@ function delete_button(&$sql) {
 
 		$query = <<<SQL_QUERY
 			DELETE FROM
-				custom_menus
+				`custom_menus`
 			WHERE
-				menu_id  = ?
+				`menu_id`  = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($delete_id));
@@ -151,9 +151,9 @@ function edit_button(&$tpl, &$sql) {
 			SELECT
 				*
 			FROM
-				custom_menus
+				`custom_menus`
 			WHERE
-				menu_id = ?
+				`menu_id` = ?
 		";
 
 		$rs = exec_query($sql, $query, array($edit_id));
@@ -239,14 +239,14 @@ function update_button(&$sql) {
 		
 		$query = "
 			UPDATE
-				custom_menus
+				`custom_menus`
 			SET
-				menu_level = ?,
-				menu_name = ?,
-				menu_link = ?,
-				menu_target = ?
+				`menu_level` = ?,
+				`menu_name` = ?,
+				`menu_link` = ?,
+				`menu_target` = ?
 			WHERE
-				menu_id = ?
+				`menu_id` = ?
 		";
 
 		$rs = exec_query($sql, $query, array(
@@ -254,7 +254,8 @@ function update_button(&$sql) {
 				$button_name,
 				$button_link,
 				$button_target,
-				$button_id)
+				$button_id
+			)
 		);
 
 		set_page_message(tr('Custom menu data updated successful!'));

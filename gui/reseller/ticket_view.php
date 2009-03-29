@@ -380,7 +380,9 @@ function change_ticket_status_view($sql, $ticket_id) {
 
 	$ticket_status = 3;
 	// Did the reseller write an answer?
-	if (isset($_POST['uaction']) && $_POST['uaction'] != "open" && $_POST['uaction'] != "close") {
+	if (isset($_POST['uaction'])
+		&& $_POST['uaction'] != "open"
+		&& $_POST['uaction'] != "close") {
 		if ($ticket_level != 2) {
 			// if ticket to user
 			$ticket_status = 2;

@@ -42,6 +42,9 @@ $tpl->assign(
  * Site functions
  */
 
+/**
+ * @todo respect naming convention: getSth not GetSth and class Status not status
+ */
 class status {
 	var $all = array();
 	var $log = false;
@@ -138,11 +141,11 @@ function get_server_status(&$tpl, &$sql) {
 		SELECT
 			*
 		FROM
-			config
+			`config`
 		WHERE
-			name LIKE 'PORT_%'
+			`name` LIKE 'PORT_%'
 		ORDER BY
-			name ASC
+			`name` ASC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());

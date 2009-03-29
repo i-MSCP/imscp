@@ -282,7 +282,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $price, $setup_fee, $value, $payment, $status;
 
 	$err_msg = "";
-	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
+	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 
 	if ($res->RowCount() == 1) {
@@ -300,16 +300,16 @@ function save_data_to_db(&$tpl, $admin_id) {
 			} else {
 				$query = <<<SQL_QUERY
 					INSERT INTO
-						hosting_plans(
-							reseller_id,
-							name,
-							description,
-							props,
-							price,
-							setup_fee,
-							value,
-							payment,
-							status
+						`hosting_plans`(
+							`reseller_id`,
+							`name`,
+							`description`,
+							`props`,
+							`price`,
+							`setup_fee`,
+							`value`,
+							`payment`,
+							`status`
 						)
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;

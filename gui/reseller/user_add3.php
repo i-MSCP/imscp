@@ -91,7 +91,9 @@ if (!init_in_values()) {
 }
 
 // Process the action ...
-if (isset($_POST['uaction']) && ("user_add3_nxt" === $_POST['uaction']) && !isset($_SESSION['step_two_data'])) {
+if (isset($_POST['uaction'])
+	&& ("user_add3_nxt" === $_POST['uaction'])
+	&& !isset($_SESSION['step_two_data'])) {
 	if (check_ruser_data($tpl, '_no_')) {
 		add_user_data($_SESSION['user_id']);
 	}
@@ -114,7 +116,9 @@ if (Config::get('DUMP_GUI_DEBUG'))
 
 // FUNCTION declaration
 
-// Get data from previous page
+/**
+ * Get data from previous page
+ */
 function init_in_values() {
 	global $dmn_name, $dmn_user_name, $hpid;
 
@@ -143,7 +147,9 @@ function init_in_values() {
 	return true;
 } // End of init_in_values()
 
-// generate page add user 3
+/**
+ * generate page add user 3
+ */
 function gen_user_add3_page(&$tpl) {
 	global $dmn_name, $hpid, $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
@@ -182,7 +188,9 @@ function gen_user_add3_page(&$tpl) {
 	$_SESSION['local_data'] = "$dmn_name;$hpid";
 } // End of gen_user_add3_page()
 
-// Init global value with empty values
+/**
+ * Init global value with empty values
+ */
 function gen_empty_data() {
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
@@ -207,7 +215,9 @@ function gen_empty_data() {
 	$domain_ip		= '';
 } // End of gen_empty_data()
 
-// Save data for new user in db
+/**
+ * Save data for new user in db
+ */
 function add_user_data($reseller_id) {
 	$sql = Database::getInstance();
 	global $hpid;
@@ -331,11 +341,11 @@ function add_user_data($reseller_id) {
 		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi));
 	$dmn_id = $sql->Insert_ID();
 
-	//Add statistics group
+	// Add statistics group
 
 	$query = "
 		INSERT INTO `htaccess_users`
-			(dmn_id, uname, upass, status)
+			(`dmn_id`, `uname`, `upass`, `status`)
 		VALUES
 			(?, ?, ?, ?)
 	";
@@ -347,7 +357,7 @@ function add_user_data($reseller_id) {
 
 	$query = "
 		INSERT INTO `htaccess_groups`
-			(dmn_id, ugroup, members, status)
+			(`dmn_id`, `ugroup`, `members`, `status`)
 		VALUES
 			(?, ?, ?, ?)
 	";
@@ -366,7 +376,7 @@ function add_user_data($reseller_id) {
 		$first_name,
 		$last_name,
 		tr('Domain account')
-		);
+	);
 	// add user into user_gui_props => domain looser needs language and skin too :-)
 	$user_def_lang = $_SESSION['user_def_lang'];
 	$user_theme_color = $_SESSION['user_theme'];

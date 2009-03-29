@@ -8,7 +8,7 @@
  * @link		http://isp-control.net
  * @author		ispCP Team
  *
- *  @license
+ * @license
  *   This program is free software; you can redistribute it and/or
  *   modify it under the terms of the GPL General Public License
  *   as published by the Free Software Foundation; either version 2.0
@@ -91,8 +91,9 @@ if (databaseUpdate::getInstance()->checkUpdateExists()) {
 // Execute all available db updates and redirect back to database_update.php
 if ($execute) {
 	databaseUpdate::getInstance()->executeUpdates();
-	if (databaseUpdate::getInstance()->getErrorMessage() != "")
+	if (databaseUpdate::getInstance()->getErrorMessage() != "") {
 		system_message(databaseUpdate::getInstance()->getErrorMessage());
+	}
 	header('Location:' . $_SERVER['PHP_SELF']);
 }
 

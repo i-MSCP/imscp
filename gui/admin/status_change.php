@@ -1,20 +1,21 @@
 <?php
 /**
- * ispCP ? (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2009 by ispCP | http://isp-control.net
+ * @version		SVN: $Id$
  * @link		http://isp-control.net
  * @author		ispCP Team
  *
  * @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
  */
 
 require '../include/ispcp-lib.php';
@@ -38,12 +39,12 @@ $domain_id = $_GET['domain_id'];
 // check status to know if have to disable or enable it
 $query = <<<SQL_QUERY
 	SELECT
-		domain_name,
-		domain_status
+		`domain_name`,
+		`domain_status`
 	FROM
-		domain
+		`domain`
 	WHERE
-		domain_id = ?
+		`domain_id` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($domain_id));

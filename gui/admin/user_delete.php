@@ -30,14 +30,14 @@ if (!isset($_GET['delete_id']) or !is_numeric($_GET['delete_id'])) {
 
 $delete_id = $_GET['delete_id'];
 
-$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id`=?";
+$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
 
 $rs = exec_query($sql, $query, array($delete_id));
 
 $local_admin_type = $rs->fields['admin_type'];
 
 if ($local_admin_type == 'admin' || $local_admin_type == 'reseller') {
-	$query = "SELECT count(`admin_id`) as children FROM `admin` WHERE `created_by` = ?";
+	$query = "SELECT COUNT(`admin_id`) AS children FROM `admin` WHERE `created_by` = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
 	if ($rs->fields['children'] > 0) {
 		/* this user have domain ! */

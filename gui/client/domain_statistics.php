@@ -70,18 +70,18 @@ function get_domain_trafic($from, $to, $domain_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			IFNULL(sum(dtraff_web), 0) AS web_dr,
-			IFNULL(sum(dtraff_ftp), 0) AS ftp_dr,
-			IFNULL(sum(dtraff_mail), 0) AS mail_dr,
-			IFNULL(sum(dtraff_pop), 0) AS pop_dr
+			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
+			IFNULL(SUM(`dtraff_ftp`), 0) AS ftp_dr,
+			IFNULL(SUM(`dtraff_mail`), 0) AS mail_dr,
+			IFNULL(SUM(`dtraff_pop`), 0) AS pop_dr
 		FROM
-			domain_traffic
+			`domain_traffic`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		AND
-			dtraff_time >= ?
+			`dtraff_time` >= ?
 		AND
-			dtraff_time <= ?
+			`dtraff_time` <= ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
@@ -108,11 +108,11 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 	$domain_admin_id = $_SESSION['user_id'];
 	$query = <<<SQL_QUERY
 		SELECT
-			domain_id
+			`domain_id`
 		FROM
-			domain
+			`domain`
 		WHERE
-			domain_admin_id = ?
+			`domain_admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_admin_id));
@@ -144,15 +144,15 @@ SQL_QUERY;
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 		$query = <<<SQL_QUERY
 			SELECT
-				dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop, dtraff_time
+				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
 			FROM
-				domain_traffic
+				`domain_traffic`
 			WHERE
-				domain_id = ?
+				`domain_id` = ?
 			AND
-				dtraff_time >= ?
+				`dtraff_time` >= ?
 			AND
-				dtraff_time <= ?
+				`dtraff_time` <= ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
@@ -209,22 +209,22 @@ SQL_QUERY;
 	$dmn_id = get_user_domain_id($sql, $user_id);
 	$query = <<<SQL_QUERY
 		SELECT
-			dtraff_time as traff_date,
-			dtraff_web as web_traff,
-			dtraff_ftp as ftp_traff,
-			dtraff_mail as smtp_traff,
-			dtraff_pop as pop_traff,
-			(dtraff_web + dtraff_ftp + dtraff_mail + dtraff_pop) as sum_traff
+			`dtraff_time` AS traff_date,
+			`dtraff_web` AS web_traff,
+			`dtraff_ftp` AS ftp_traff,
+			`dtraff_mail` AS smtp_traff,
+			`dtraff_pop` AS pop_traff,
+			(`dtraff_web` + `dtraff_ftp` + `dtraff_mail` + `dtraff_pop`) AS sum_traff
 		FROM
-			domain_traffic
+			`domain_traffic`
 		WHERE
-			domain_id = '$dmn_id'
+			`domain_id` = '$dmn_id'
 		AND
-			dtraff_time >= '$start_date'
+			`dtraff_time` >= '$start_date'
 		AND
-			dtraff_time < '$end_date'
+			`dtraff_time` < '$end_date'
 		ORDER BY
-			dtraff_time
+			`dtraff_time`
 SQL_QUERY;
 
 	$rs = execute_query($sql, $query);

@@ -29,13 +29,13 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			ticket_status
+			`ticket_status`
 		FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
+			`ticket_id` = ?
 		AND
-			(ticket_from = ? OR ticket_to = ?)
+			(`ticket_from` = ? OR `ticket_to` = ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
@@ -50,11 +50,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		DELETE FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_id = ?
+			`ticket_id` = ?
 		OR
-			ticket_reply = ?
+			`ticket_reply` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
@@ -70,11 +70,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		DELETE FROM
-			tickets
+			`tickets`
 		WHERE
-			ticket_from = ?
+			`ticket_from` = ?
 		AND
-			ticket_status != '0'
+			`ticket_status` != '0'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -89,11 +89,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		DELETE FROM
-			tickets
-		wWHERE
-			ticket_from = ?
+			`tickets`
+		WHERE
+			`ticket_from` = ?
 		AND
-			ticket_status = '0'
+			`ticket_status` = '0'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));

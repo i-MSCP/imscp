@@ -25,9 +25,9 @@ redirect_to_level_page();
 
 $query = "
 	UPDATE
-		domain
+		`domain`
 	SET
-		domain_status = 'toadd'
+		`domain_status` = 'toadd'
 ";
 
 $rs = execute_query($sql, $query);
@@ -35,9 +35,9 @@ print "Domains updated";
 
 $query = "
 	UPDATE
-		domain_aliasses
+		`domain_aliasses`
 	SET
-		alias_status = 'toadd'
+		`alias_status` = 'toadd'
 ";
 
 $rs = execute_query($sql, $query);
@@ -45,9 +45,9 @@ print "Domain aliases updated";
 
 $query = "
 	UPDATE
-		subdomain
+		`subdomain`
 	SET
-		subdomain_status = 'toadd'
+		`subdomain_status` = 'toadd'
 ";
 
 $rs = execute_query($sql, $query);
@@ -55,9 +55,9 @@ print "Subdomains updated";
 
 $query = "
 	UPDATE
-		subdomain_alias
+		`subdomain_alias`
 	SET
-		subdomain_alias_status = 'toadd'
+		`subdomain_alias_status` = 'toadd'
 ";
 
 $rs = execute_query($sql, $query);
@@ -65,9 +65,9 @@ print "Subdomains alias updated";
 
 $query = "
 	UPDATE
-		mail_users
+		`mail_users`
 	SET
-		status = 'toadd'
+		`status` = 'toadd'
 ";
 
 $rs = execute_query($sql, $query);

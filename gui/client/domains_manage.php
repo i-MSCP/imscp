@@ -56,28 +56,30 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			subdomain_id, subdomain_name, subdomain_mount, subdomain_status, domain_name
+			`subdomain_id`, `subdomain_name`, `subdomain_mount`,
+			`subdomain_status`, `domain_name`
 		FROM
-			subdomain join domain
+			`subdomain` JOIN `domain`
 		ON
-			subdomain.domain_id = domain.domain_id
+			`subdomain`.`domain_id` = `domain`.`domain_id`
 		WHERE
-			subdomain.domain_id = ?
+			`subdomain.domain_id` = ?
 		ORDER BY
-			subdomain_name
+			`subdomain_name`
 SQL_QUERY;
 
 	$query2 = <<<SQL_QUERY
 		SELECT
-			subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_status, alias_name
+			`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`,
+			`subdomain_alias_status`, `alias_name`
 		FROM
-			subdomain_alias join domain_aliasses
+			`subdomain_alias` JOIN `domain_aliasses`
 		ON
-			subdomain_alias.alias_id = domain_aliasses.alias_id
+			`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		ORDER BY
-			subdomain_alias_name
+			`subdomain_alias_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -167,14 +169,15 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward
+			`alias_id`, `alias_name`, `alias_status`, `alias_mount`,
+			`alias_ip_id`, `url_forward`
 		FROM
-			domain_aliasses
+			`domain_aliasses`
 		WHERE
-			domain_id = ?
+			`domain_id` = ?
 		ORDER BY
-			alias_mount,
-			alias_name
+			`alias_mount`,
+			`alias_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));

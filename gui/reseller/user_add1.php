@@ -67,8 +67,9 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction'])) {
-	if (!check_user_data())
+	if (!check_user_data()) {
 		get_data_au1_page($tpl);
+	}
 } else {
 	get_empty_au1_page($tpl);
 }
@@ -91,7 +92,7 @@ unset_messages();
  * Check correction of entered users data
  */
 function check_user_data() {
-	global $dmn_name; // Domain name
+	global $dmn_name; // domain name
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
 	$sql = Database::getInstance();
@@ -116,15 +117,15 @@ function check_user_data() {
 		$even_txt = tr('Master domain cannot be used!');
 	}
 	// we have plans only for admins
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$dmn_pt = '_no_';
 	}
 
 	if (!empty($even_txt)) { // There are wrong input data
 		set_page_message($even_txt);
 		return false;
-	}
-	else if ($dmn_pt == '_yes_' || !isset($_POST['dmn_tpl'])) {
+	} else if ($dmn_pt == '_yes_' || !isset($_POST['dmn_tpl'])) {
 		// send through the session the data
 		$_SESSION['dmn_name']	= $dmn_name;
 		$_SESSION['dmn_tpl']	= $dmn_chp;
@@ -189,7 +190,8 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 	global $dmn_chp;
 
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				t1.`id`,

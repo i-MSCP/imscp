@@ -142,7 +142,8 @@ list ($usub_current, $usub_max,
 	$uftp_current, $uftp_max,
 	$usql_db_current, $usql_db_max,
 	$usql_user_current, $usql_user_max,
-	$utraff_max, $udisk_max) = generate_user_props($dmn_id);
+	$utraff_max, $udisk_max
+) = generate_user_props($dmn_id);
 
 list ($rdmn_current, $rdmn_max,
 	$rsub_current, $rsub_max,
@@ -153,7 +154,7 @@ list ($rdmn_current, $rdmn_max,
 	$rsql_user_current, $rsql_user_max,
 	$rtraff_current, $rtraff_max,
 	$rdisk_current, $rdisk_max
-	) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
+) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
 
 list ($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($dmn_id);
 

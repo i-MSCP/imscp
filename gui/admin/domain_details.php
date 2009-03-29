@@ -232,7 +232,7 @@ SQL_QUERY;
 	$dat5 = $res->FetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
 	// Get sql users count
-	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM sql_user u, sql_database d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
+	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM `sql_user` u, `sql_database` d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);

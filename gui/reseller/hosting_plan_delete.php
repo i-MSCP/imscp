@@ -33,7 +33,7 @@ else {
 }
 
 // Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(id) FROM orders WHERE plan_id=?", array($hpid));
+$res = exec_query($sql, "SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", array($hpid));
 $data = $res->FetchRow();
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';
@@ -42,7 +42,7 @@ if ($data['0'] > 0) {
 }
 
 // Try to delete hosting plan from db
-$query = "DELETE FROM hosting_plans WHERE id = ? AND reseller_id = ?";
+$query = "DELETE FROM `hosting_plans` WHERE `id` = ? AND `reseller_id` = ?";
 $res = exec_query($sql, $query, array($hpid, $_SESSION['user_id']));
 
 $_SESSION['hp_deleted'] = '_yes_';

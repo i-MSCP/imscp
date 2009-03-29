@@ -237,11 +237,11 @@ function check_user_data() {
 
 	$query = "
 		SELECT
-			admin_id
+			`admin_id`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_name = ?
+			`admin_name` = ?
 ";
 
 	$username = clean_input($_POST['username']);

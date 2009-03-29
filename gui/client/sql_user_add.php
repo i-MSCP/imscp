@@ -104,7 +104,10 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 		die();
 	}
 }
-// Returns an array with a list of the sqlusers of the current database
+
+/**
+ * Returns an array with a list of the sqlusers of the current database
+ */
 function get_sqluser_list_of_current_db(&$sql, $db_id) {
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
 
@@ -198,22 +201,29 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		return;
 	}
 
-	if (empty($_POST['pass']) && empty($_POST['pass_rep']) && !isset($_POST['Add_Exist'])) {
+	if (empty($_POST['pass']) && empty($_POST['pass_rep'])
+		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Please type user password!'));
 		return;
 	}
 
-	if ((isset($_POST['pass']) && isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] && !isset($_POST['Add_Exist'])) {
+	if ((isset($_POST['pass']) && isset($_POST['pass_rep']))
+		&& $_POST['pass'] !== $_POST['pass_rep']
+		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Entered passwords do not match!'));
 		return;
 	}
 
-	if (isset($_POST['pass']) && strlen($_POST['pass']) > Config::get('MAX_SQL_PASS_LENGTH') && !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass'])
+		&& strlen($_POST['pass']) > Config::get('MAX_SQL_PASS_LENGTH')
+		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password!'));
 		return;
 	}
 
-	if (isset($_POST['pass']) && !chk_password($_POST['pass']) && !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass'])
+		&& !chk_password($_POST['pass'])
+		&& !isset($_POST['Add_Exist'])) {
 		if (Config::get('PASSWD_STRONG')) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
 		} else {
@@ -254,7 +264,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 			$db_user = clean_input($_POST['user_name']);
 		}
 	} else {
-		$query = "SELECT sqlu_name FROM sql_user WHERE sqlu_id = ?";
+		$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
 		$rs = exec_query($sql, $query, array($_POST['sqluser_id']));
 		$db_user = $rs->fields['sqlu_name'];
 	}

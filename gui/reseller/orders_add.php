@@ -32,7 +32,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	die();
 }
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "
 		SELECT
 			*
@@ -84,7 +85,8 @@ $user_email		= $rs->fields['email'];
 // let's check the reseller limits
 $err_msg = "";
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
@@ -212,7 +214,8 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 		$domain_ip,
 		$disk,
 		$php,
-		$cgi));
+		$cgi)
+);
 $dmn_id = $sql->Insert_ID();
 
 // Add statistics group

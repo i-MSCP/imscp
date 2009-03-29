@@ -30,7 +30,8 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 // check if we have only hosting plans for admins - reseller should not edit them
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	header("Location: users.php");
 	die();
 }
@@ -85,7 +86,9 @@ if (!get_pageone_param()) {
 	die();
 }
 
-if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
+if (isset($_POST['uaction'])
+	&& ("user_add2_nxt" === $_POST['uaction'])
+	&& (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
 		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
@@ -197,7 +200,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_traff, $hp_disk;
 	$sql = Database::getInstance();
 
-	$query = "SELECT name, props FROM hosting_plans WHERE reseller_id = ? AND id = ?";
+	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 
 	$res = exec_query($sql, $query, array($admin_id, $hpid));
 
@@ -237,42 +240,42 @@ function check_user_data(&$tpl) {
 
 	$ehp_error = '';
 	// Get data for fields from previous page
-	if (isset($_POST['template']))
+	if (isset($_POST['template'])) {
 		$hp_name = $_POST['template'];
-
-	if (isset($_POST['nreseller_max_domain_cnt']))
+	}
+	if (isset($_POST['nreseller_max_domain_cnt'])) {
 		$hp_dmn = clean_input($_POST['nreseller_max_domain_cnt']);
-
-	if (isset($_POST['nreseller_max_subdomain_cnt']))
+	}
+	if (isset($_POST['nreseller_max_subdomain_cnt'])) {
 		$hp_sub = clean_input($_POST['nreseller_max_subdomain_cnt']);
-
-	if (isset($_POST['nreseller_max_alias_cnt']))
+	}
+	if (isset($_POST['nreseller_max_alias_cnt'])) {
 		$hp_als = clean_input($_POST['nreseller_max_alias_cnt']);
-
-	if (isset($_POST['nreseller_max_mail_cnt']))
+	}
+	if (isset($_POST['nreseller_max_mail_cnt'])) {
 		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
-
-	if (isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1)
+	}
+	if (isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1) {
 		$hp_ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
-
-	if (isset($_POST['nreseller_max_sql_db_cnt']))
+	}
+	if (isset($_POST['nreseller_max_sql_db_cnt'])) {
 		$hp_sql_db = clean_input($_POST['nreseller_max_sql_db_cnt']);
-
-	if (isset($_POST['nreseller_max_sql_user_cnt']))
+	}
+	if (isset($_POST['nreseller_max_sql_user_cnt'])) {
 		$hp_sql_user = clean_input($_POST['nreseller_max_sql_user_cnt']);
-
-	if (isset($_POST['nreseller_max_traffic']))
+	}
+	if (isset($_POST['nreseller_max_traffic'])) {
 		$hp_traff = clean_input($_POST['nreseller_max_traffic']);
-
-	if (isset($_POST['nreseller_max_disk']))
+	}
+	if (isset($_POST['nreseller_max_disk'])) {
 		$hp_disk = clean_input($_POST['nreseller_max_disk']);
-
-	if (isset($_POST['php']))
+	}
+	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
-
-	if (isset($_POST['cgi']))
+	}
+	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
-
+	}
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		set_page_message(tr('Incorrect subdomains limit!'));
@@ -320,7 +323,7 @@ function check_hosting_plan_name($admin_id) {
 	global $hp_name;
 	$sql = Database::getInstance();
 
-	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
+	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 	if ($res->RowCount() !== 0) {
 		return false;

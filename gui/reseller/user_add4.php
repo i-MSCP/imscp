@@ -154,7 +154,9 @@ function init_empty_data() {
 	);
 } // End of init_empty_data()
 
-// Show data fields
+/**
+ * Show data fields
+ */
 function gen_al_page(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 

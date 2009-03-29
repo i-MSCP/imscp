@@ -110,7 +110,9 @@ if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', '');
 }
 
-if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
+if (isset($_POST['Submit'])
+	&& isset($_POST['uaction'])
+	&& ('save_changes' === $_POST['uaction'])) {
 	// Process data
 
 	if (isset($_SESSION['edit_ID'])) {
@@ -188,7 +190,7 @@ function load_user_data_page($user_id) {
 		header('Location: users.php');
 		die();
 	} else {
-	// Get data from sql
+		// Get data from sql
 		$_SESSION['user_name'] = $data['admin_name'];
 
 		$dmn_user_name	= $data['admin_name'];
@@ -228,24 +230,26 @@ function gen_edituser_page(&$tpl) {
 	}
 
 	// Fill in the fields
-	$tpl->assign(array(
-		'VL_USERNAME'		=> decode_idna($dmn_user_name),
-		'VL_MAIL'			=> empty($user_email) ? '' : $user_email,
-		'VL_USR_ID'			=> empty($customer_id) ? '' : $customer_id,
-		'VL_USR_NAME'		=> empty($first_name) ? '' : $first_name,
-		'VL_LAST_USRNAME'	=> empty($last_name) ? '' : $last_name,
-		'VL_USR_FIRM'		=> empty($firm) ? '' : $firm,
-		'VL_USR_POSTCODE'	=> empty($zip) ? '' : $zip,
-		'VL_USRCITY'		=> empty($city) ? '' : $city,
-		'VL_USRSTATE'		=> empty($state)?'':$state,
-		'VL_COUNTRY'		=> empty($country) ? '' : $country,
-		'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
-		'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
-		'VL_MALE'			=> ($gender == 'M') ? 'checked="checked"' : '',
-		'VL_FEMALE'			=> ($gender == 'F') ? 'checked="checked"' : '',
-		'VL_PHONE'			=> empty($phone) ? '' : $phone,
-		'VL_FAX'			=> empty($fax) ? '' : $fax
-	));
+	$tpl->assign(
+		array(
+			'VL_USERNAME'		=> decode_idna($dmn_user_name),
+			'VL_MAIL'			=> empty($user_email) ? '' : $user_email,
+			'VL_USR_ID'			=> empty($customer_id) ? '' : $customer_id,
+			'VL_USR_NAME'		=> empty($first_name) ? '' : $first_name,
+			'VL_LAST_USRNAME'	=> empty($last_name) ? '' : $last_name,
+			'VL_USR_FIRM'		=> empty($firm) ? '' : $firm,
+			'VL_USR_POSTCODE'	=> empty($zip) ? '' : $zip,
+			'VL_USRCITY'		=> empty($city) ? '' : $city,
+			'VL_USRSTATE'		=> empty($state)?'':$state,
+			'VL_COUNTRY'		=> empty($country) ? '' : $country,
+			'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
+			'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
+			'VL_MALE'			=> ($gender == 'M') ? 'checked="checked"' : '',
+			'VL_FEMALE'			=> ($gender == 'F') ? 'checked="checked"' : '',
+			'VL_PHONE'			=> empty($phone) ? '' : $phone,
+			'VL_FAX'			=> empty($fax) ? '' : $fax
+		)
+	);
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 

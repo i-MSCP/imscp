@@ -37,13 +37,13 @@ function gen_page_data(&$tpl, &$sql) {
 
 		$query = <<<SQL_QUERY
 			SELECT
-				fname, lname, email
+				`fname`, `lname`, `email`
 			FROM
-				admin
+				`admin`
 			WHERE
-				admin_id = ?
+				`admin_id` = ?
 			GROUP BY
-				email
+				`email`
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id));
@@ -122,13 +122,13 @@ function send_reseller_users_message (&$sql, $admin_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			fname, lname, email
+			`fname`, `lname`, `email`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user' AND created_by = ?
+			`admin_type` = 'user' AND `created_by` = ?
 		GROUP BY
-			email
+			`email`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));

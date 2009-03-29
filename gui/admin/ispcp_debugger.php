@@ -89,25 +89,26 @@ function get_error_aliases(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
-			alias_name, alias_status, alias_id
+			`alias_name`, `alias_status`, `alias_id`
 		FROM
-			domain_aliasses
+			`domain_aliasses`
 		WHERE
-			alias_status
+			`alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
-											$ok_status,
-											$disabled_status,
-											$delete_status,
-											$add_status,
-											$restore_status,
-											$change_status,
-											$toenable_status,
-											$todisable_status,
-											$ordered_status));
+			$ok_status,
+			$disabled_status,
+			$delete_status,
+			$add_status,
+			$restore_status,
+			$change_status,
+			$toenable_status,
+			$todisable_status,
+			$ordered_status)
+	);
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
@@ -157,24 +158,25 @@ function get_error_subdomains(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
-			subdomain_name, subdomain_status, subdomain_id
+			`subdomain_name`, `subdomain_status`, `subdomain_id`
 		FROM
-			subdomain
+			`subdomain`
 		WHERE
-			subdomain_status
+			`subdomain_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
-											$ok_status,
-											$disabled_status,
-											$delete_status,
-											$add_status,
-											$restore_status,
-											$change_status,
-											$toenable_status,
-											$todisable_status));
+			$ok_status,
+			$disabled_status,
+			$delete_status,
+			$add_status,
+			$restore_status,
+			$change_status,
+			$toenable_status,
+			$todisable_status)
+	);
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
@@ -220,24 +222,25 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
-			subdomain_alias_name, subdomain_alias_status, subdomain_alias_id
+			`subdomain_alias_name`, `subdomain_alias_status`, `subdomain_alias_id`
 		FROM
-			subdomain_alias
+			`subdomain_alias`
 		WHERE
-			subdomain_alias_status
+			`subdomain_alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
-											$ok_status,
-											$disabled_status,
-											$delete_status,
-											$add_status,
-											$restore_status,
-											$change_status,
-											$toenable_status,
-											$todisable_status));
+			$ok_status,
+			$disabled_status,
+			$delete_status,
+			$add_status,
+			$restore_status,
+			$change_status,
+			$toenable_status,
+			$todisable_status)
+	);
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
@@ -284,25 +287,26 @@ function get_error_mails(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
-			mail_acc, domain_id, mail_type, status, mail_id
+			`mail_acc`, `domain_id`, `mail_type`, `status`, `mail_id`
 		FROM
-			mail_users
+			`mail_users`
 		WHERE
-			status
+			`status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array(
-											$ok_status,
-											$disabled_status,
-											$delete_status,
-											$add_status,
-											$restore_status,
-											$change_status,
-											$toenable_status,
-											$todisable_status,
-											$ordered_status));
+			$ok_status,
+			$disabled_status,
+			$delete_status,
+			$add_status,
+			$restore_status,
+			$change_status,
+			$toenable_status,
+			$todisable_status,
+			$ordered_status)
+	);
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
@@ -319,32 +323,35 @@ SQL_QUERY;
 			$searched_id = $rs->fields['domain_id'];
 			$query = '';
 
-			if ($rs->fields['mail_type'] == 'normal_mail' || $rs->fields['mail_type'] == 'normal_forward') {
+			if ($rs->fields['mail_type'] == 'normal_mail'
+				|| $rs->fields['mail_type'] == 'normal_forward') {
 				$query = <<<SQL_QUERY
 					SELECT
-						domain_name AS domain_name
+						`domain_name`
 					FROM
-						domain
+						`domain`
 					WHERE
-						domain_id = ?
+						`domain_id` = ?
 SQL_QUERY;
-			} else if ($rs->fields['mail_type'] == 'subdom_mail' || $rs->fields['mail_type'] == 'subdom_forward') {
+			} else if ($rs->fields['mail_type'] == 'subdom_mail'
+				|| $rs->fields['mail_type'] == 'subdom_forward') {
 				$query = <<<SQL_QUERY
 					SELECT
-						subdomain_name AS domain_name
+						`subdomain_name` AS domain_name
 					FROM
-						subdomain
+						`subdomain`
 					WHERE
-						subdomain_id = ?
+						`subdomain_id` = ?
 SQL_QUERY;
-			} else if ($rs->fields['mail_type'] == 'alias_mail' || $rs->fields['mail_type'] == 'alias_forward') {
+			} else if ($rs->fields['mail_type'] == 'alias_mail'
+				|| $rs->fields['mail_type'] == 'alias_forward') {
 				$query = <<<SQL_QUERY
 					SELECT
-						alias_name AS domain_name
+						`alias_name` AS domain_name
 					FROM
-						domain_aliasses
+						`domain_aliasses`
 					WHERE
-						alias_id  = ?
+						`alias_id`  = ?
 SQL_QUERY;
 			} else {
 				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
@@ -446,19 +453,19 @@ if (isset($_GET['action']) && $exec_count > 0) {
 			isset($_GET['id']) && isset($_GET['type']))) {
 		switch ($_GET['type']) {
 			case 'domain':
-				$query = 'UPDATE domain SET domain_status = "change" WHERE domain_id = ?';
+				$query = 'UPDATE `domain` SET `domain_status` = "change" WHERE `domain_id` = ?';
 				break;
 			case 'alias':
-				$query = 'UPDATE domain_aliasses SET alias_status = "change" WHERE alias_id = ?';
+				$query = 'UPDATE `domain_aliasses` SET `alias_status` = "change" WHERE `alias_id` = ?';
 				break;
 			case 'subdomain':
-				$query = 'UPDATE subdomain SET subdomain_status = "change" WHERE subdomain_id = ?';
+				$query = 'UPDATE `subdomain` SET `subdomain_status` = "change" WHERE `subdomain_id` = ?';
 				break;
 			case 'subdomain_alias':
-				$query = 'UPDATE subdomain_alias SET subdomain_alias_status = "change" WHERE subdomain_alias_id = ?';
+				$query = 'UPDATE `subdomain_alias` SET `subdomain_alias_status` = "change" WHERE `subdomain_alias_id` = ?';
 				break;
 			case 'mail':
-				$query = 'UPDATE mail_users SET status = "change" WHERE mail_id = ?';
+				$query = 'UPDATE `mail_users` SET `status` = "change" WHERE `mail_id` = ?';
 				break;
 			default:
 				set_page_message(tr('Unknown type!'));

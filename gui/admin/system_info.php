@@ -25,7 +25,7 @@ require_once('../include/phpsysinfo/class.' . PHP_OS . '.inc.php');
 $sysinfo = new sysinfo;
 $error = new error;
 
-function compat_array_keys ($arr) {
+function compat_array_keys($arr) {
 	$result = array();
 
 	while (list($key, $val) = each($arr)) {
@@ -34,7 +34,7 @@ function compat_array_keys ($arr) {
 	return $result;
 }
 
-function compat_in_array ($value, $arr) {
+function compat_in_array($value, $arr) {
 	while (list($key, $val) = each($arr)) {
 		if ($value == $val) {
 			return true;

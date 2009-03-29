@@ -61,11 +61,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		$query = <<<SQL_QUERY
 			UPDATE
-				admin
+				`admin`
 			SET
-				admin_pass = ?
+				`admin_pass` = ?
 			WHERE
-				admin_id = ?
+				`admin_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($upass, $user_id));
@@ -79,13 +79,13 @@ function check_udata($id, $pass) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, admin_pass
+			`admin_id`, `admin_pass`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
+			`admin_id` = ?
 		AND
-			admin_pass = ?
+			`admin_pass` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id, md5($pass)));

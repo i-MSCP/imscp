@@ -51,10 +51,10 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 	$ticket_level = 1;
 
 	$query = <<<SQL_QUERY
-		INSERT INTO tickets
-			(ticket_level, ticket_from, ticket_to,
-			 ticket_status, ticket_reply, ticket_urgency,
-			 ticket_date, ticket_subject, ticket_message)
+		INSERT INTO `tickets`
+			(`ticket_level`, `ticket_from`, `ticket_to`,
+			 `ticket_status`, `ticket_reply`, `ticket_urgency`,
+			 `ticket_date`, `ticket_subject`, `ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;

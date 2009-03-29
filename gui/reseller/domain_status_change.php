@@ -38,13 +38,13 @@ $domain_id = $_GET['domain_id'];
 // check status to know if have to disable or enable it
 $query = <<<SQL_QUERY
 	SELECT
-		domain_name,
-		domain_status,
-		domain_created_id
+		`domain_name`,
+		`domain_status`,
+		`domain_created_id`
 	FROM
-		domain
+		`domain`
 	WHERE
-		domain_id = ?
+		`domain_id` = ?
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($domain_id));

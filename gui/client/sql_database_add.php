@@ -75,9 +75,7 @@ function gen_page_post_data(&$tpl) {
 }
 
 function check_db_name(&$sql, $db_name) {
-	$query = <<<SQL_QUERY
-		SHOW DATABASES
-SQL_QUERY;
+	$query = "SHOW DATABASES";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -133,8 +131,8 @@ function add_sql_database(&$sql, $user_id) {
 	$rs = exec_query($sql, $query, array());
 
 	$query = <<<SQL_QUERY
-		INSERT INTO sql_database
-			(domain_id, sqld_name)
+		INSERT INTO `sql_database`
+			(`domain_id`, `sqld_name`)
 		VALUES
 			(?, ?)
 SQL_QUERY;

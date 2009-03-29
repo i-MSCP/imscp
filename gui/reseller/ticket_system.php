@@ -34,6 +34,7 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
 // page functions
+
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 

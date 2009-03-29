@@ -55,11 +55,11 @@ function save_haf(&$tpl, &$sql) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			id
+			`id`
 		FROM
-			orders_settings
+			`orders_settings`
 		WHERE
-			user_id = ?
+			`user_id` = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -67,12 +67,12 @@ SQL_QUERY;
 		// update query
 		$query = <<<SQL_QUERY
 			UPDATE
-				orders_settings
+				`orders_settings`
 			SET
-				header = ?,
-				footer = ?
+				`header` = ?,
+				`footer` = ?
 			WHERE
-				user_id = ?
+				`user_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($header, $footer, $user_id));
@@ -80,7 +80,7 @@ SQL_QUERY;
 		// create query
 		$query = <<<SQL_QUERY
 			INSERT INTO
-				orders_settings(user_id, header, footer)
+				`orders_settings`(`user_id`, `header`, `footer`)
 			VALUES
 				(?, ?, ?)
 SQL_QUERY;
@@ -96,9 +96,10 @@ SQL_QUERY;
  * static page messages.
  *
  */
-if (isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer']) && $_POST['footer'] !== '')
+if (isset($_POST['header']) && $_POST['header'] !== ''
+	&& isset ($_POST['footer']) && $_POST['footer'] !== '') {
 	save_haf($tpl, $sql);
-
+}
 gen_purchase_haf($tpl, $sql, $_SESSION['user_id'], true);
 
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_orders.tpl');

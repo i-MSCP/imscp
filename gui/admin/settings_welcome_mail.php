@@ -62,38 +62,38 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
  */
 
 $tpl->assign(
-			array(
-				'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Email setup'),
-				'THEME_COLOR_PATH' => "../themes/$theme_color",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Email setup'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
-		array(
-			'TR_EMAIL_SETUP' => tr('Email setup'),
-			'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
-			'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
-			'TR_USER_PASSWORD' => tr('User password'),
-			'TR_USER_REAL_NAME' => tr('User real (first and last) name'),
-			'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-			'TR_SUBJECT' => tr('Subject'),
-			'TR_MESSAGE' => tr('Message'),
-			'TR_SENDER_EMAIL' => tr('Senders email'),
-			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_APPLY_CHANGES' => tr('Apply changes'),
-			'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
-			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-			'SUBJECT_VALUE' => addslashes(clean_input($data['subject'],true)),
-			'MESSAGE_VALUE' => $data['message'],
-			'SENDER_EMAIL_VALUE' => $data['sender_email'],
-			'SENDER_NAME_VALUE' => $data['sender_name']
-			)
-		);
+	array(
+		'TR_EMAIL_SETUP' => tr('Email setup'),
+		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
+		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
+		'TR_USER_PASSWORD' => tr('User password'),
+		'TR_USER_REAL_NAME' => tr('User real (first and last) name'),
+		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_MESSAGE' => tr('Message'),
+		'TR_SENDER_EMAIL' => tr('Senders email'),
+		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
+		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
+		'SUBJECT_VALUE' => addslashes(clean_input($data['subject'],true)),
+		'MESSAGE_VALUE' => $data['message'],
+		'SENDER_EMAIL_VALUE' => $data['sender_email'],
+		'SENDER_NAME_VALUE' => $data['sender_name']
+	)
+);
 
 gen_page_message($tpl);
 

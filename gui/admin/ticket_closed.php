@@ -43,8 +43,9 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
-	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
-
+	if (isset($_GET['psi'])) {
+		$start_index = $_GET['psi'];
+	}
 	$count_query = <<<SQL_QUERY
 		SELECT
 			COUNT(`ticket_id`) AS cnt

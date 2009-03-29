@@ -40,13 +40,14 @@ $tpl->assign(
 );
 
 function kill_session($sql) {
-	if (isset($_GET['kill']) && $_GET['kill'] !== '' && $_GET['kill'] !== $_SESSION['user_logged']) {
+	if (isset($_GET['kill']) && $_GET['kill'] !== ''
+		&& $_GET['kill'] !== $_SESSION['user_logged']) {
 		$admin_name = $_GET['kill'];
 		$query = <<<SQL_QUERY
 		DELETE FROM
-			login
+			`login`
 		WHERE
-			session_id = ?
+			`session_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($admin_name));
@@ -60,7 +61,7 @@ function gen_user_sessions(&$tpl, &$sql) {
 		SELECT
 			*
 		FROM
-			login
+			`login`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());

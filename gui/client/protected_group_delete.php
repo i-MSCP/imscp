@@ -25,7 +25,9 @@ check_login(__FILE__);
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 
-if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])) {
+if (isset($_GET['gname'])
+	&& $_GET['gname'] !== ''
+	&& is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
 	header('Location: protected_areas.php');

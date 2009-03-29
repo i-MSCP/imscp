@@ -38,7 +38,7 @@ $tpl->assign(
 	)
 );
 
-function gen_page_data (&$tpl, &$sql) {
+function gen_page_data(&$tpl, &$sql) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
@@ -54,13 +54,13 @@ function gen_page_data (&$tpl, &$sql) {
 
 		$query = <<<SQL_QUERY
 			SELECT
-				fname, lname, email
+				`fname`, `lname`, `email`
 			FROM
-				admin
+				`admin`
 			WHERE
-				admin_id = ?
+				`admin_id` = ?
 			GROUP BY
-				email
+				`email`
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id));
@@ -86,7 +86,7 @@ SQL_QUERY;
 	}
 }
 
-function check_user_data (&$tpl) {
+function check_user_data(&$tpl) {
 	global $msg_subject, $msg_text, $sender_email, $sender_name;
 
 	$err_message = '';
@@ -120,7 +120,7 @@ function check_user_data (&$tpl) {
 	}
 }
 
-function send_reseller_message (&$sql) {
+function send_reseller_message(&$sql) {
 
 	$user_id = $_SESSION['user_id'];
 
@@ -131,13 +131,13 @@ function send_reseller_message (&$sql) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, fname, lname, email
+			`admin_id`, `fname`, `lname`, `email`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'reseller' AND created_by = ?
+			`admin_type` = 'reseller' AND `created_by` = ?
 		GROUP BY
-			email
+			`email`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -170,7 +170,7 @@ function send_circular(&$tpl, &$sql) {
 	}
 }
 
-function send_reseller_users_message (&$sql, $admin_id) {
+function send_reseller_users_message(&$sql, $admin_id) {
 
 	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
@@ -179,13 +179,13 @@ function send_reseller_users_message (&$sql, $admin_id) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			fname, lname, email
+			`fname`, `lname`, `email`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user' AND created_by = ?
+			`admin_type` = 'user' AND `created_by` = ?
 		GROUP BY
-			email
+			`email`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));
@@ -197,7 +197,7 @@ SQL_QUERY;
 	}
 }
 
-function send_circular_email ($to, $from, $subject, $message) {
+function send_circular_email($to, $from, $subject, $message) {
 	$subject = encode($subject);
 
 	$headers  = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";

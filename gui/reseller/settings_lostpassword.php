@@ -71,13 +71,13 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
  */
 
 $tpl->assign(
-			array(
-				'TR_LOSTPW_EMAL_SETUP' => tr('ispCP - Reseller/Lostpw email setup'),
-				'THEME_COLOR_PATH' => "../themes/$theme_color",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_LOSTPW_EMAL_SETUP' => tr('ispCP - Reseller/Lostpw email setup'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
+);
 
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
@@ -85,30 +85,30 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_man
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_LOSTPW_EMAIL' => tr('Lostpw email'),
-			'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
-			'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-			'SUBJECT_VALUE1' => clean_input(addslashes($data_1['subject']), true),
-			'MESSAGE_VALUE1' => $data_1['message'],
-			'SUBJECT_VALUE2' => clean_input(addslashes($data_2['subject']), true),
-			'MESSAGE_VALUE2' => $data_2['message'],
-			'SENDER_EMAIL_VALUE' => $data_1['sender_email'],
-			'SENDER_NAME_VALUE' => $data_1['sender_name'],
-			'TR_ACTIVATION_EMAIL' => tr('Activation E-Mail'),
-			'TR_PASSWORD_EMAIL' => tr('Password E-Mail'),
-			'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
-			'TR_USER_PASSWORD' => tr('User password'),
-			'TR_USER_REAL_NAME' => tr('User (first and last) name'),
-			'TR_LOSTPW_LINK' => tr('Lostpw link'),
-			'TR_SUBJECT' => tr('Subject'),
-			'TR_MESSAGE' => tr('Message'),
-			'TR_SENDER_EMAIL' => tr('Senders email'),
-			'TR_SENDER_NAME' => tr('Senders name'),
-			'TR_APPLY_CHANGES' => tr('Apply changes'),
-			'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel')
-			)
-		);
+	array(
+		'TR_LOSTPW_EMAIL' => tr('Lostpw email'),
+		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
+		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
+		'SUBJECT_VALUE1' => clean_input(addslashes($data_1['subject']), true),
+		'MESSAGE_VALUE1' => $data_1['message'],
+		'SUBJECT_VALUE2' => clean_input(addslashes($data_2['subject']), true),
+		'MESSAGE_VALUE2' => $data_2['message'],
+		'SENDER_EMAIL_VALUE' => $data_1['sender_email'],
+		'SENDER_NAME_VALUE' => $data_1['sender_name'],
+		'TR_ACTIVATION_EMAIL' => tr('Activation E-Mail'),
+		'TR_PASSWORD_EMAIL' => tr('Password E-Mail'),
+		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
+		'TR_USER_PASSWORD' => tr('User password'),
+		'TR_USER_REAL_NAME' => tr('User (first and last) name'),
+		'TR_LOSTPW_LINK' => tr('Lostpw link'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_MESSAGE' => tr('Message'),
+		'TR_SENDER_EMAIL' => tr('Senders email'),
+		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel')
+	)
+);
 
 gen_page_message($tpl);
 

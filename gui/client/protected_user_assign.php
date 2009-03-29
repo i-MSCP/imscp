@@ -42,7 +42,11 @@ $tpl->assign(
 		'ISP_LOGO'			=> get_logo($_SESSION['user_id'])
 	)
 );
-// ** Functions
+
+/*
+ * functions
+ */
+
 function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 	$query = "
 		SELECT
@@ -66,7 +70,9 @@ function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 }
 
 function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
-	if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
+	if (isset($_GET['uname'])
+		&& $_GET['uname'] !== ''
+		&& is_numeric($_GET['uname'])) {
 		$uuser_id = $_GET['uname'];
 
 		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));

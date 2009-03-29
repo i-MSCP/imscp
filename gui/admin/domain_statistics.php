@@ -70,14 +70,14 @@ function get_domain_trafic($from, $to, $domain_id) {
 	$sql = Database::getInstance();
 	$query = <<<SQL_QUERY
 		SELECT
-			IFNULL(SUM(dtraff_web), 0) AS web_dr,
-			IFNULL(SUM(dtraff_ftp), 0) AS ftp_dr,
-			IFNULL(SUM(dtraff_mail), 0) AS mail_dr,
-			IFNULL(SUM(dtraff_pop), 0) AS pop_dr
+			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
+			IFNULL(SUM(`dtraff_ftp`), 0) AS ftp_dr,
+			IFNULL(SUM(`dtraff_mail`), 0) AS mail_dr,
+			IFNULL(SUM(`dtraff_pop`), 0) AS pop_dr
 		FROM
-			domain_traffic
+			`domain_traffic`
 		WHERE
-			domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
+			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
@@ -130,11 +130,11 @@ function generate_page (&$tpl, $domain_id) {
 
 		$query = <<<SQL_QUERY
 			SELECT
-				dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop, dtraff_time
+				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
 			FROM
-				domain_traffic
+				`domain_traffic`
 			WHERE
-				domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
+				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));

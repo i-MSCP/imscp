@@ -47,7 +47,7 @@ function show_IPs(&$tpl, &$sql) {
 		SELECT
 			*
 		FROM
-			server_ips
+			`server_ips`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -108,8 +108,8 @@ function add_ip(&$tpl, &$sql) {
 			$ip_number = trim($ip_number_1) . '.' . trim($ip_number_2) . '.' . trim($ip_number_3) . '.' . trim($ip_number_4);
 
 			$query = <<<SQL_QUERY
-				INSERT INTO server_ips
-					(ip_number, ip_domain, ip_alias)
+				INSERT INTO `server_ips`
+					(`ip_number`, `ip_domain`, `ip_alias`)
 				VALUES
 					(?, ?, ?)
 SQL_QUERY;
@@ -199,9 +199,9 @@ function IP_exists() {
 		SELECT
 			*
 		FROM
-			server_ips
+			`server_ips`
 		WHERE
-			ip_number = ?
+			`ip_number` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ip_number));

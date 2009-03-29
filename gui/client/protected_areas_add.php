@@ -156,7 +156,7 @@ SQL_QUERY;
 	} else {
 		$query = <<<SQL_QUERY
 			INSERT INTO `htaccess`
-				(dmn_id, user_id, group_id, auth_type, auth_name, path, status)
+				(`dmn_id`, `user_id`, `group_id`, `auth_type`, `auth_name`, `path`, `status`)
 			VALUES
 				(?, ?, ?, ?, ?, ?, ?);
 SQL_QUERY;

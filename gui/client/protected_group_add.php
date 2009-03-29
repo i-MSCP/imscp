@@ -70,9 +70,9 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 				$change_status = Config::get('ITEM_ADD_STATUS');
 
 				$query = "
-					insert into `htaccess_groups`
-						(dmn_id, ugroup, status)
-					values
+					INSERT INTO `htaccess_groups`
+						(`dmn_id`, `ugroup`, `status`)
+					VALUES
 						(?, ?, ?)
 				";
 

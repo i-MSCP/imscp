@@ -63,11 +63,11 @@ function update_password() {
 
 			$query = <<<SQL_QUERY
 				UPDATE
-					admin
+					`admin`
 				SET
-					admin_pass = ?
+					`admin_pass` = ?
 				WHERE
-					admin_id = ?
+					`admin_id` = ?
 SQL_QUERY;
 			$rs = exec_query($sql, $query, array($upass, $user_id));
 
@@ -81,11 +81,11 @@ function check_udata($id, $pass) {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_name, admin_pass
+			`admin_name`, `admin_pass`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_id = ?
+			`admin_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id));

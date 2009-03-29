@@ -38,13 +38,13 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 function gen_user_table(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, admin_name
+			`admin_id`, `admin_name`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'reseller'
+			`admin_type` = 'reseller'
 		ORDER BY
-			admin_name
+			`admin_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -94,15 +94,15 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, admin_name
+			`admin_id`, `admin_name`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user'
+			`admin_type` = 'user'
 		AND
-			created_by = ?
+			`created_by` = ?
 		ORDER BY
-			admin_name
+			`admin_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($reseller_id));
@@ -156,13 +156,13 @@ function check_user_data() {
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id
+			`admin_id`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'user'
+			`admin_type` = 'user'
 		ORDER BY
-			admin_name
+			`admin_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -195,11 +195,11 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			reseller_ips
+			`reseller_ips`
 		FROM
-			reseller_props
+			`reseller_props`
 		WHERE
-			reseller_id = ?
+			`reseller_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dst_reseller));
@@ -253,11 +253,11 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
 		$query = <<<SQL_QUERY
 			SELECT
-				domain_id, domain_name
+				`domain_id`, `domain_name`
 			FROM
-				domain
+				`domain`
 			WHERE
-				domain_admin_id = ?
+				`domain_admin_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));
@@ -320,10 +320,10 @@ SQL_QUERY;
 	update_reseller_props($dest_reseller, $dest_reseller_props);
 
 	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
-		$query = "UPDATE admin SET created_by = ? WHERE admin_id = ?";
+		$query = "UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?";
 		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
 
-		$query = "UPDATE domain SET domain_created_id = ? WHERE domain_admin_id = ?";
+		$query = "UPDATE `domain` SET `domain_created_id` = ? WHERE `domain_admin_id` = ?";
 		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
 	}
 
@@ -409,11 +409,11 @@ function check_ip_sets($dest, $users, &$err) {
 	for ($i = 0, $cnt_users_array = count($users_array); $i < $cnt_users_array; $i++) {
 		$query = <<<SQL_QUERY
 			SELECT
-				domain_name, domain_ip_id
+				`domain_name`, `domain_ip_id`
 			FROM
-				domain
+				`domain`
 			WHERE
-				domain_admin_id = ?
+				`domain_admin_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));

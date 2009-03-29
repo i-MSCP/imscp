@@ -201,12 +201,12 @@ function check_data_correction(&$tpl) {
 	$payment		= clean_input($_POST['hp_payment'], true);
 	$status			= $_POST['status'];
 
-	if (isset($_POST['php']))
+	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
-
-	if (isset($_POST['cgi']))
+	}
+	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];;
-
+	}
 	if (empty($hp_name)) {
 		$ahp_error = tr('Incorrect template name length!');
 	}
@@ -261,20 +261,20 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
 
-	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
+	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$query = "
 		SELECT
-			t1.id, t1.name, t1.reseller_id, t1.name, t1.props, t1.status,
-			t2.admin_id, t2.admin_type
+			t1.`id`, t1.`name`, t1.`reseller_id`, t1.`name`, t1.`props`,
+			t1.`status`, t2.`admin_id`, t2.`admin_type`
 		FROM
-			hosting_plans AS t1,
-			admin AS t2
+			`hosting_plans` AS t1,
+			`admin` AS t2
 		WHERE
-			t2.admin_type=?
+			t2.`admin_type` = ?
 		AND
-			t1.reseller_id = t2.admin_id
+			t1.`reseller_id` = t2.`admin_id`
 		AND
-			t1.name=?
+			t1.`name` = ?
 	";
 	$res = exec_query($sql, $query, array('admin', $hp_name));
 

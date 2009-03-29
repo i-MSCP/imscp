@@ -82,23 +82,26 @@ function gen_hp_message (&$tpl) {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	global $external_event;
 
-	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
+	if (isset($_SESSION["hp_added"])
+		&& $_SESSION["hp_added"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan added!'));
 		unset($_SESSION["hp_added"]);
 		unset($GLOBALS['hp_added']);
-	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
+	} else if (isset($_SESSION["hp_deleted"])
+		&& $_SESSION["hp_deleted"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan deleted!'));
 		unset($_SESSION["hp_deleted"]);
 		unset($GLOBALS['hp_deleted']);
-	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
+	} else if (isset($_SESSION["hp_updated"])
+		&& $_SESSION["hp_updated"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan updated!'));
 		unset($_SESSION["hp_updated"]);
 		unset($GLOBALS['hp_updated']);
-	}
-	else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
+	} else if (isset($_SESSION["hp_deleted_ordererror"])
+		&& $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
 		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'));
 		unset($_SESSION["hp_deleted_ordererror"]);
@@ -112,7 +115,8 @@ function gen_hp_table(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 	global $external_event;
 
-	if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = <<<SQL_QUERY
 			SELECT
 				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,

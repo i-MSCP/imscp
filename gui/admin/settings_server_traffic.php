@@ -38,6 +38,9 @@ $tpl->assign(
 	)
 );
 
+/**
+ * @todo What's about the outcommented code?
+ */
 function update_server_settings(&$sql) {
 	if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
 		return;
@@ -69,10 +72,10 @@ function update_server_settings(&$sql) {
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			straff_settings
+			`straff_settings`
 		SET
-			straff_max = ?,
-			straff_warn  = ?
+			`straff_max` = ?,
+			`straff_warn`  = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 
@@ -82,10 +85,10 @@ SQL_QUERY;
 function generate_server_data(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
 		SELECT
-			straff_max,
-			straff_warn
+			`straff_max`,
+			`straff_warn`
 		FROM
-			straff_settings
+			`straff_settings`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -107,7 +110,8 @@ gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settin
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 $tpl->assign(
-	array('TR_MODIFY' => tr('Modify'),
+	array(
+		'TR_MODIFY' => tr('Modify'),
 		'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Set server traffic settings'),
 		'TR_MAX_TRAFFIC' => tr('Max traffic [MB]'),

@@ -36,13 +36,13 @@ $reseller_id = $_SESSION['user_id'];
 
 $query = <<<SQL_QUERY
 	SELECT
-		domain_id
+		`domain_id`
 	FROM
-		domain
+		`domain`
 	WHERE
-		domain_admin_id = ?
+		`domain_admin_id` = ?
 	AND
-		domain_created_id = ?
+		`domain_created_id` = ?
 SQL_QUERY;
 $res = exec_query($sql, $query, array($usid, $reseller_id));
 

@@ -46,41 +46,18 @@ $tpl->assign(
 	)
 );
 
-if (isset($_SESSION['dmn_name']))
-	unset($_SESSION['dmn_name']);
-
-if (isset($_SESSION['ch_hpprops']))
-	unset($_SESSION['ch_hpprops']);
-
-if (isset($_SESSION['local_data']))
-	unset($_SESSION['local_data']);
-
-if (isset($_SESSION['dmn_ip']))
-	unset($_SESSION['dmn_ip']);
-
-if (isset($_SESSION['dmn_id']))
-	unset($_SESSION['dmn_id']);
-
-if (isset($GLOBALS['dmn_name']))
-	unset($GLOBALS['dmn_name']);
-
-if (isset($GLOBALS['ch_hpprops']))
-	unset($GLOBALS['ch_hpprops']);
-
-if (isset($GLOBALS['local_data']))
-	unset($GLOBALS['local_data']);
-
-if (isset($GLOBALS['user_add3_added']))
-	unset($GLOBALS['user_add3_added']);
-
-if (isset($GLOBALS['user_add3_added']))
-	unset($GLOBALS['user_add3_added']);
-
-if (isset($GLOBALS['dmn_ip']))
-	unset($GLOBALS['dmn_ip']);
-
-if (isset($GLOBALS['dmn_id']))
-	unset($GLOBALS['dmn_id']);
+unset($_SESSION['dmn_name']);
+unset($_SESSION['ch_hpprops']);
+unset($_SESSION['local_data']);
+unset($_SESSION['dmn_ip']);
+unset($_SESSION['dmn_id']);
+unset($GLOBALS['dmn_name']);
+unset($GLOBALS['ch_hpprops']);
+unset($GLOBALS['local_data']);
+unset($GLOBALS['user_add3_added']);
+unset($GLOBALS['user_add3_added']);
+unset($GLOBALS['dmn_ip']);
+unset($GLOBALS['dmn_id']);
 
 /*
  *
@@ -229,9 +206,7 @@ function generate_users_list (&$tpl, $admin_id) {
 			set_page_message(tr('Not found user records matching the search criteria!'));
 
 			unset($_SESSION['search_for']);
-
 			unset($_SESSION['search_common']);
-
 			unset($_SESSION['search_status']);
 		} else {
 			$tpl->assign(

@@ -18,6 +18,10 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo see outcommented code
+ */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -186,16 +190,16 @@ function check_user_data() {
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL databases limit!'));
 		return false;
-	}
-	else if ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
+	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1
+		&& $_POST['nreseller_max_sql_user_cnt'] != -1) {
 		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
 		return false;
-	}
-	else if ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
+	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1
+		&& $_POST['nreseller_max_sql_user_cnt'] == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
 		return false;
 	}
@@ -272,14 +276,15 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		/* if ($umail_max != $rmail_current && $umail_current > 0)
 			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d', $umail_max, $rmail_current);
 		else */
-			calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
+		calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
 	}
 
 	if ($err == '_off_') {
-		if ($uftp_max != $rftp_current && $uftp_current > 0)
+		if ($uftp_max != $rftp_current && $uftp_current > 0) {
 			$err = tr('Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d', $uftp_max, $rftp_current);
-		else
+		} else {
 			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
+		}
 	}
 
 	if ($err == '_off_') {
@@ -422,18 +427,18 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
 		$query = "
 			SELECT
-				domain.domain_id,
-				server_ips.ip_number,
-				server_ips.ip_domain
+				`domain`.`domain_id`,
+				`server_ips`.`ip_number`,
+				`server_ips`.`ip_domain`
 			FROM
-				domain,
-				server_ips
+				`domain`,
+				`server_ips`
 			WHERE
-				domain.domain_created_id = ?
+				`domain`.`domain_created_id` = ?
 			AND
-				server_ips.ip_id = domain.domain_ip_id
+				`server_ips`.`ip_id` = `domain`.`domain_ip_id`
 			AND
-				server_ips.ip_id = ?
+				`server_ips`.`ip_id` = ?
 		";
 
 		$dres = exec_query($sql, $query, array($reseller_id, $ip));
@@ -476,23 +481,23 @@ function update_reseller(&$sql) {
 			if (empty($_POST['pass'])) {
 				$query = "
 					UPDATE
-						admin
+						`admin`
 					SET
-						fname = ?,
-						lname = ?,
-						firm = ?,
-						zip = ?,
-						city = ?,
-						state = ?,
-						country = ?,
-						email = ?,
-						phone = ?,
-						fax = ?,
-						street1 = ?,
-						street2 = ?,
-						gender = ?
+						`fname` = ?,
+						`lname` = ?,
+						`firm` = ?,
+						`zip` = ?,
+						`city` = ?,
+						`state` = ?,
+						`country` = ?,
+						`email` = ?,
+						`phone` = ?,
+						`fax` = ?,
+						`street1` = ?,
+						`street2` = ?,
+						`gender` = ?
 					WHERE
-						admin_id = ?
+						`admin_id` = ?
 				";
 				$rs = exec_query($sql, $query, array($fname,
 						$lname,
@@ -512,24 +517,24 @@ function update_reseller(&$sql) {
 				$upass = crypt_user_pass($_POST['pass']);
 				$query = "
 					UPDATE
-						admin
+						`admin`
 					SET
-						admin_pass = ?,
-						fname = ?,
-						lname = ?,
-						firm = ?,
-						zip = ?,
-						city = ?,
-						state = ?,
-						country = ?,
-						email = ?,
-						phone = ?,
-						fax = ?,
-						street1 = ?,
-						street2 = ?,
-						gender = ?
+						`admin_pass` = ?,
+						`fname` = ?,
+						`lname` = ?,
+						`firm` = ?,
+						`zip` = ?,
+						`city` = ?,
+						`state` = ?,
+						`country` = ?,
+						`email` = ?,
+						`phone` = ?,
+						`fax` = ?,
+						`street1` = ?,
+						`street2` = ?,
+						`gender` = ?
 					WHERE
-						admin_id = ?
+						`admin_id` = ?
 				";
 			$rs = exec_query($sql, $query, array($upass,
 				$fname,
@@ -560,21 +565,22 @@ function update_reseller(&$sql) {
 			$customer_id = clean_input($_POST['customer_id']);
 
 			$query = "
-				UPDATE reseller_props
+				UPDATE
+					`reseller_props`
 				SET
-					reseller_ips = ?,
-					max_dmn_cnt = ?,
-					max_sub_cnt = ?,
-					max_als_cnt = ?,
-					max_mail_cnt = ?,
-					max_ftp_cnt = ?,
-					max_sql_db_cnt = ?,
-					max_sql_user_cnt = ?,
-					max_traff_amnt = ?,
-					max_disk_amnt = ?,
-					customer_id = ?
+					`reseller_ips` = ?,
+					`max_dmn_cnt` = ?,
+					`max_sub_cnt` = ?,
+					`max_als_cnt` = ?,
+					`max_mail_cnt` = ?,
+					`max_ftp_cnt` = ?,
+					`max_sql_db_cnt` = ?,
+					`max_sql_user_cnt` = ?,
+					`max_traff_amnt` = ?,
+					`max_disk_amnt` = ?,
+					`customer_id` = ?
 				WHERE
-					reseller_id = ?
+					`reseller_id` = ?
 			";
 
 			$rs = exec_query($sql, $query, array($reseller_ips,
@@ -588,7 +594,8 @@ function update_reseller(&$sql) {
 					$nreseller_max_traffic,
 					$nreseller_max_disk,
 					$customer_id,
-					$edit_id));
+					$edit_id)
+			);
 
 			$edit_username = clean_input($_POST['edit_username']);
 
@@ -604,7 +611,8 @@ function update_reseller(&$sql) {
 					clean_input($_POST['fname']),
 					clean_input($_POST['lname']),
 					tr('Reseller'),
-					$gender);
+					$gender
+				);
 			}
 
 			$_SESSION['user_updated'] = 1;
@@ -621,28 +629,22 @@ function get_reseller_prop(&$sql) {
 
 	$query = "
 		SELECT
-			admin_name, fname,
-			lname, firm,
-			zip, city, state,
-			country, email,
-			phone, fax,
-			street1, street2,
-			max_dmn_cnt, current_dmn_cnt,
-			max_sub_cnt, current_sub_cnt,
-			max_als_cnt, current_als_cnt,
-			max_mail_cnt, current_mail_cnt,
-			max_ftp_cnt, current_ftp_cnt,
-			max_sql_db_cnt, current_sql_db_cnt,
-			max_sql_user_cnt, current_sql_user_cnt,
-			max_traff_amnt, current_traff_amnt,
-			max_disk_amnt, current_disk_amnt,
-			r.customer_id AS customer_id, reseller_ips, gender
+			`admin_name`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
+			`country`, `email`, `phone`, `fax`, `street1`, `street2`,
+			`max_dmn_cnt`, `current_dmn_cnt`, `max_sub_cnt`,
+			`current_sub_cnt`, `max_als_cnt`, `current_als_cnt`,
+			`max_mail_cnt`, `current_mail_cnt`, `max_ftp_cnt`,
+			`current_ftp_cnt`, `max_sql_db_cnt`, `current_sql_db_cnt`,
+			`max_sql_user_cnt`, `current_sql_user_cnt`, `max_traff_amnt`,
+			`current_traff_amnt`, `max_disk_amnt`, `current_disk_amnt`,
+			r.`customer_id` AS customer_id, `reseller_ips`, `gender`
 		FROM
-			admin AS a,
-			reseller_props AS r
+			`admin` AS a,
+			`reseller_props` AS r
 		WHERE
-			a.admin_id = ? AND
-			r.reseller_id = a.admin_id
+			a.`admin_id` = ?
+		AND
+			r.`reseller_id` = a.`admin_id`
 	";
 
 	$rs = exec_query($sql, $query, array($edit_id));

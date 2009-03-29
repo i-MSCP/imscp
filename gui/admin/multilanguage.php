@@ -81,7 +81,8 @@ function install_lang() {
 			return;
 		}
 
-		if ($file_type !== "text/plain" && $file_type !== "application/octet-stream") {
+		if ($file_type !== "text/plain"
+			&& $file_type !== "application/octet-stream") {
 			set_page_message(tr('You can upload only text files!'));
 			return;
 		} else {
@@ -143,9 +144,9 @@ function install_lang() {
 			}
 
 			$sql->Execute("CREATE TABLE `$lang_table` (
-							msgid text collate utf8_unicode_ci,
-							msgstr text collate utf8_unicode_ci,
-							KEY msgid (msgid(25))
+							`msgid` text collate utf8_unicode_ci,
+							`msgstr` text collate utf8_unicode_ci,
+							KEY `msgid` (msgid(25))
 							) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 			);
 

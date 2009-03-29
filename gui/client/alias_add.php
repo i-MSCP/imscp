@@ -150,7 +150,6 @@ function gen_al_page(&$tpl, $reseller_id) {
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
-
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);
 	$mount_point = strtolower($_POST['ndomain_mpoint']);
@@ -250,14 +249,12 @@ function add_domain_alias(&$sql, &$err_al) {
 function gen_page_msg(&$tpl, $erro_txt) {
 
 	if ($erro_txt != '_off_') {
-
 		$tpl->assign('MESSAGE', $erro_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
-
 	} else {
-
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
+
 } // End of gen_page_msg()
 
 gen_al_page($tpl, $_SESSION['user_id']);

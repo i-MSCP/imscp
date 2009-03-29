@@ -33,20 +33,23 @@ $tpl->define_dynamic('select_admin_option', 'select_admin');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
+/**
+ * @todo check if it's useful to have the table admin two times in the same query
+ */
 function gen_reseller_table(&$tpl, &$sql) {
 	$query = <<<SQL_QUERY
 		SELECT
-			t1.admin_id, t1.admin_name, t2.admin_name AS created_by
+			t1.`admin_id`, t1.`admin_name`, t2.`admin_name` AS created_by
 		FROM
-			admin AS t1,
-			admin AS t2
+			`admin` AS t1,
+			`admin` AS t2
 		WHERE
-			t1.admin_type = 'reseller'
+			t1.`admin_type` = 'reseller'
 		AND
-			t1.created_by = t2.admin_id
+			t1.`created_by` = t2.`admin_id`
 		ORDER BY
-			created_by,
-			admin_id
+			`created_by`,
+			`admin_id`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -98,13 +101,13 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		SELECT
-			admin_id, admin_name
+			`admin_id`, `admin_name`
 		FROM
-			admin
+			`admin`
 		WHERE
-			admin_type = 'admin'
+			`admin_type` = 'admin'
 		ORDER BY
-			admin_name
+			`admin_name`
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
@@ -113,7 +116,8 @@ SQL_QUERY;
 		
 
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
-			&& (isset($_POST['dest_admin']) && $_POST['dest_admin'] == $rs->fields['admin_id'])) {
+			&& (isset($_POST['dest_admin'])
+				&& $_POST['dest_admin'] == $rs->fields['admin_id'])) {
 			$selected = 'selected="selected"';
 		} else {
 			$selected = '';
@@ -143,13 +147,13 @@ function update_reseller_owner($sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 		$query = <<<SQL_QUERY
 			SELECT
-				admin_id
+				`admin_id`
 			FROM
-				admin
+				`admin`
 			WHERE
-				admin_type = 'reseller'
+				`admin_type` = 'reseller'
 			ORDER BY
-				admin_name
+				`admin_name`
 SQL_QUERY;
 
 		$rs = execute_query($sql, $query);
@@ -164,11 +168,11 @@ SQL_QUERY;
 
 				$query = <<<SQL_QUERY
 					UPDATE
-						admin
+						`admin`
 					SET
-						created_by = ?
+						`created_by` = ?
 					WHERE
-						admin_id  = ?
+						`admin_id`  = ?
 SQL_QUERY;
 
 				$up = exec_query($sql, $query, array($dest_admin, $admin_id));

@@ -46,9 +46,9 @@ function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 		SELECT
 			*
 		FROM
-			htaccess
+			`htaccess`
 		WHERE
-			 dmn_id = ?
+			`dmn_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id));
@@ -69,7 +69,8 @@ SQL_QUERY;
 			$auth_name = $rs->fields['auth_name'];
 
 			$tpl->assign(
-				array('AREA_NAME' => $auth_name,
+				array(
+					'AREA_NAME' => $auth_name,
 					'AREA_PATH' => $path,
 					'PID' => $id,
 					'STATUS' => translate_dmn_status($status)

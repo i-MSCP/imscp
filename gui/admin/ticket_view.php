@@ -214,8 +214,9 @@ $tpl->assign(
 );
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
-	if (!isset($_POST['uaction'])) return;
-	// close ticket
+	if (!isset($_POST['uaction'])) {
+		return;
+	} // close ticket
 	elseif ($_POST['uaction'] == "close") {
 		close_ticket($sql, $ticket_id);
 		return;
@@ -228,7 +229,6 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	// no message check->error
 	elseif ($_POST['user_message'] === '') {
 		set_page_message(tr('Please type your message!'));
-
 		return;
 	}
 
@@ -279,7 +279,8 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
 			$ticket_reply, $urgency, $ticket_date,
 			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"))
+	);
 
 	// Update all Replays -> Status 1
 	$query = "
@@ -369,6 +370,7 @@ function open_ticket($sql, $ticket_id) {
 
 	set_page_message(tr('Ticket was reopened!'));
 }
+
 // dynamic page data.
 $reseller_id = $_SESSION['user_created_by'];
 

@@ -40,8 +40,9 @@ $tpl->assign(
 
 global $month, $year, $day;
 
-if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day']) &&
-		is_numeric($_GET['month']) && is_numeric($_GET['year']) && is_numeric($_GET['day'])) {
+if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
+	&& is_numeric($_GET['month']) && is_numeric($_GET['year'])
+	&& is_numeric($_GET['day'])) {
 	$year = $_GET['year'];
 
 	$month = $_GET['month'];

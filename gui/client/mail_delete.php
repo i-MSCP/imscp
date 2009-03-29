@@ -44,16 +44,16 @@ $dmn_name = $_SESSION['user_logged'];
 
 $query = "
 	SELECT
-		t1.mail_id, t2.domain_id, t2.domain_name
+		t1.`mail_id`, t2.`domain_id`, t2.`domain_name`
 	FROM
-		mail_users AS t1,
-		domain AS t2
+		`mail_users` AS t1,
+		`domain` AS t2
 	WHERE
-		t1.mail_id = ?
+		t1.`mail_id` = ?
 	AND
-		t1.domain_id = t2.domain_id
+		t1.`domain_id` = t2.`domain_id`
 	AND
-		t2.domain_name = ?
+		t2.`domain_name` = ?
 ";
 
 $rs = exec_query($sql, $query, array($delete_id, $dmn_name));
@@ -62,7 +62,7 @@ if ($rs->RecordCount() == 0) {
 }
 
 /* check for catchall assigment !! */
-$query = "SELECT mail_acc, domain_id, sub_id, mail_type FROM mail_users WHERE mail_id=?";
+$query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
 $res = exec_query($sql, $query, array($delete_id));
 $data = $res->FetchRow();
 
@@ -72,22 +72,22 @@ if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_
 	$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
 } else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
 	/* mail to domain alias*/
-	$res_tmp = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($data['sub_id']));
+	$res_tmp = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
 } else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
 	/* mail to subdomain*/
-	$res_tmp = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($data['sub_id']));
+	$res_tmp = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
 } else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
 	/* mail to subdomain*/
-	$res_tmp = exec_query($sql, "SELECT subdomain_alias_name, alias_name FROM subdomain_alias AS t1, domain_aliasses AS t2 WHERE t1.alias_id=t2.alias_id AND subdomain_alias_id=?", array($data['sub_id']));
+	$res_tmp = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];
 }
 
-$query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc`=? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
+$query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
 $res_tmp = exec_query($sql, $query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
 $num = $res_tmp->RowCount();
 if ($num > 0) {

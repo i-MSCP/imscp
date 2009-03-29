@@ -35,13 +35,13 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// let's see the status of this thing
 	$query = <<<SQL_QUERY
 		SELECT
-			status
+			`status`
 		FROM
-			htaccess
+			`htaccess`
 		WHERE
-			id = ?
+			`id` = ?
 		AND
-			dmn_id = ?
+			`dmn_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id, $dmn_id));
@@ -55,13 +55,13 @@ SQL_QUERY;
 
 	$query = <<<SQL_QUERY
 		UPDATE
-			htaccess
+			`htaccess`
 		SET
-			status = '$delete_status'
+			`status` = '$delete_status'
 		WHERE
-			id = ?
+			`id` = ?
 		AND
-			dmn_id = ?
+			`dmn_id` = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id, $dmn_id));
