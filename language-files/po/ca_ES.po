@@ -2238,10 +2238,10 @@ msgstr "Falta la contrasenya!"
 msgid "Entered passwords differ from the another!"
 msgstr "Les contrasenyes introduïdes són diferents!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "La llista de subdominis és buida! No podeu hi afegir comptes FTP!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "La llista d'àlies és buida! No hi podeu afegir comptes FTP!"
 
 msgid "Please specify other FTP account dir!"
@@ -2271,7 +2271,7 @@ msgstr "Utilitzar un altre directori"
 msgid "Choose dir"
 msgstr "Escollir directori"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "No es pot obrir el directori!<br> Si us plau contacteu amb el vostre administrador !"
 
 msgid "Parent Directory"
@@ -2623,7 +2623,7 @@ msgstr "Si us plau introduïu la ruta de l'àrea"
 msgid "%s doesn't exist"
 msgstr "%s no existeix"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "No podeu protegir l'àrea sense seleccionar usuari(s)"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3628,15 +3628,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domini/Editar"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "El servei de <em>%s</em> no es pot desactivar! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "El servei de <em>%s</em> no es pot limitar! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "El servei de <em>%s</em> no es pot il·limitar! "
 
 msgid "ispCP - Reseller/Main Index"

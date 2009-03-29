@@ -2283,10 +2283,10 @@ msgstr "Şifre bilgisi eksik"
 msgid "Entered passwords differ from the another!"
 msgstr "Girilen şifreler birbirinden farklı!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomain listesi boş! Oraya FTP hesabı ekleyemezsiniz!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias listesi boş! Oraya FTP hesabı ekleyemezsiniz!"
 
 msgid "Please specify other FTP account dir!"
@@ -2316,7 +2316,7 @@ msgstr "Farklı bir dizine"
 msgid "Choose dir"
 msgstr "Dizin seç"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Dizine bağlanılamıyor!<br>Lütfen, yöneticinizle irtibata geçiniz!"
 
 msgid "Parent Directory"
@@ -2666,7 +2666,7 @@ msgstr "Lütfen, alan yolu giriniz"
 msgid "%s doesn't exist"
 msgstr "%s bulunamadı"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Kullanıcı seçimi yapmadan, alan koruması yapamazsınız"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3718,15 +3718,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domain/Düzenle"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Servis devre dışı bırakılamaz!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "<em>%s</em> servisi sınırlandırılamaz!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> servisi limitsiz olamaz!"
 
 msgid "ispCP - Reseller/Main Index"

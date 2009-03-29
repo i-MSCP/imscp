@@ -2299,11 +2299,11 @@ msgid "Entered passwords differ from the another!"
 msgstr "De indtastede kodeord er forskellige fra hinanden."
 
 #, fuzzy
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomæne liste er tom! Du kan ikke tilføje FTP konti der!"
 
 #, fuzzy
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias listen er tom! Du kan ikke tilføje FTP konti der!"
 
 msgid "Please specify other FTP account dir!"
@@ -2334,7 +2334,7 @@ msgid "Choose dir"
 msgstr "Vælg bibliotek"
 
 #, fuzzy
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Kan ikke åbne bibliotek !<br> Kontakt venligst din administrator!"
 
 msgid "Parent Directory"
@@ -2689,7 +2689,7 @@ msgid "%s doesn't exist"
 msgstr "%s findes ikke"
 
 #, fuzzy
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Du kan ikke beskytte område(r) uden at vælge bruger(e)"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3741,15 +3741,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domæne/Rediger"
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "<em>%s</em> service kan ikke deaktiveres!"
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "<em>%s</em> service kan ikke være begrænset!"
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> service kan ikke være ubegrænset!"
 
 msgid "ispCP - Reseller/Main Index"

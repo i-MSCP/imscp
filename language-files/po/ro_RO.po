@@ -2297,10 +2297,10 @@ msgstr "Datele parolei lipsesc !"
 msgid "Entered passwords differ from the another!"
 msgstr "Parolele nu sunt identice!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Lista subdomenii este goala! Nu poti adauga conturi FTP acolo!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Lista de alias-e este goala! Nu puteti adauga conturi FTP!"
 
 msgid "Please specify other FTP account dir!"
@@ -2330,7 +2330,7 @@ msgstr "Foloseste alt director"
 msgid "Choose dir"
 msgstr "Alege director"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Nu se poate deschide directorul!<br>Contactati administratorul!"
 
 msgid "Parent Directory"
@@ -2680,7 +2680,7 @@ msgstr "Introdu calea spre zona"
 msgid "%s doesn't exist"
 msgstr "%s nu exista"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Nu poti proteja o zona fara utilizator(i) selectati!"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3740,15 +3740,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domeniu/Editeaza"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Serviciul <em>%s</em> nu poate fi dezactivat! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "Acest <em>%s</em> serviciu nu poate fi limitat!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Acest <em>%s</em> serviciu nu poate fi nelimitat!"
 
 msgid "ispCP - Reseller/Main Index"

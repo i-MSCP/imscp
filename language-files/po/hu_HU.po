@@ -2296,10 +2296,10 @@ msgstr "Hiányzó jelszó adat!"
 msgid "Entered passwords differ from the another!"
 msgstr "A megadott jelszavak különböznek egymástól!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Az aldomain lista üres! Itt nem hozhat létre Új FTP hozzáférést!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Az alias lista üres! Itt nem hozhat létre FTP hozzáférést!"
 
 msgid "Please specify other FTP account dir!"
@@ -2329,7 +2329,7 @@ msgstr "Másik könyvtár használata"
 msgid "Choose dir"
 msgstr "Válassz könyvtárat"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr ""
 "Nem lehet megnyitni a könyvtárat !<br>Lépj kapcsolatba az adminisztrátorral !"
 
@@ -2681,7 +2681,7 @@ msgstr "Add meg a terület Útvonalát"
 msgid "%s doesn't exist"
 msgstr "%s nem létezik"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Nem védheted a területet kiválasztott felhasználó(k) nélkül"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3739,15 +3739,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domain/Módosítás"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "A <em>%s</em> szolgáltatást nem lehet letiltani!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "A <em>%s</em> szolgáltatást nem lehet limitálni!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "A <em>%s</em> szolgáltatást nem lehet végtelenre állítani! "
 
 msgid "ispCP - Reseller/Main Index"

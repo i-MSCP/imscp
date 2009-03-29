@@ -2299,10 +2299,10 @@ msgstr "Wachtwoord informatie is onvindbaar"
 msgid "Entered passwords differ from the another!"
 msgstr "Ingevulde wachtwoorden verschillen van elkaar!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomeinen lijst is leeg! U kunt er geen FTP account aan toegoeven!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Aliassen lijst is leeg! U kunt er geen FTP account aan toegoeven!"
 
 msgid "Please specify other FTP account dir!"
@@ -2332,7 +2332,7 @@ msgstr "Gebruik andere map"
 msgid "Choose dir"
 msgstr "Kies map"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Kan de map niet openen! <br>Neem aub contact op met uw beheerder !"
 
 msgid "Parent Directory"
@@ -2685,7 +2685,7 @@ msgstr "Gelieve gebiedspad in te voeren"
 msgid "%s doesn't exist"
 msgstr "%s bestaat niet"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "U kan het gebied niet beschermen zonder geselecteerde gebruiker(s)"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3747,15 +3747,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domein/Wijzig"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "De <em>%s</em> service kan niet worden uitgeschakeld! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "De <em>%s</em> dienst kan niet worden gelimiteerd! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "De <em>%s</em> dienst kan niet ongelimiteerd zijn! "
 
 msgid "ispCP - Reseller/Main Index"

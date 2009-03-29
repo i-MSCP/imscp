@@ -598,7 +598,7 @@ msgstr "Domaineigenschaften wurden erfolgreich aktualisiert!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "Der Dienst <em>%s</em> kann nicht deaktiviert werden! "
+msgstr "Der Dienst <em>%s</em> kann nicht deaktiviert werden!"
 
 #, php-format
 msgid "There are <em>%s</em> records on system!"
@@ -2231,10 +2231,10 @@ msgstr "Passwortdaten fehlen!"
 msgid "Entered passwords differ from the another!"
 msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Es sind keine Subdomains vorhanden, Sie können keinen FTP-Zugang erstellen!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Keine Aliase vorhanden, Sie können keinen FTP-Zugang erstellen!"
 
 msgid "Please specify other FTP account dir!"
@@ -2264,7 +2264,7 @@ msgstr "Anderes Verzeichnis benutzen"
 msgid "Choose dir"
 msgstr "Verzeichnis auswählen"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Es ist nicht möglich dieses Verzeichnis zu öffnen.<br />Bitte kontaktieren Sie Ihren Administrator!"
 
 msgid "Parent Directory"
@@ -2614,7 +2614,7 @@ msgstr "Bitte wählen Sie ein Verzeichnis aus, das Sie schützen wollen!"
 msgid "%s doesn't exist"
 msgstr "%s existiert nicht"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Sie können keine geschützten Verzeichnisse erstellen ohne mind. einen Benutzer auszuwählen"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3612,15 +3612,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domain/Bearbeiten"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Der Dienst <em>%s</em> kann nicht deaktiviert werden! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "Der Dienst <em>%s</em> kann nicht beschränkt werden!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Der Dienst <em>%s</em> darf nicht unbeschränkt sein!"
 
 msgid "ispCP - Reseller/Main Index"

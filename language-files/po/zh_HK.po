@@ -2260,10 +2260,10 @@ msgstr "密碼資料丟失！"
 msgid "Entered passwords differ from the another!"
 msgstr "輸入的密碼不同於另外一個！"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "子網域列表為空！在那你無法增加 FTP 帳號！"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "別名列表為空！在那你無法增加 FTP 帳號！"
 
 msgid "Please specify other FTP account dir!"
@@ -2293,7 +2293,7 @@ msgstr "使用其他目錄"
 msgid "Choose dir"
 msgstr "選擇目錄"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "無法打開目錄！<br />請聯繫你的管理員！"
 
 msgid "Parent Directory"
@@ -2644,7 +2644,7 @@ msgstr "請輸入區域街道"
 msgid "%s doesn't exist"
 msgstr "%s 不存在"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "你無法在未選擇使用者（們）情況下保護區域"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3671,15 +3671,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - 網域/編輯"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "此 <em>%s</em> 服務不能被禁止！"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "此 <em>%s</em> 服務不能被限制！"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "此 <em>%s</em> 服務不能無限制！"
 
 msgid "ispCP - Reseller/Main Index"

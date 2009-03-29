@@ -2230,10 +2230,10 @@ msgstr "Mancano i dati della password!"
 msgid "Entered passwords differ from the another!"
 msgstr "Password diversa dall'altra!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "La lista dei sottodomini è vuota! Impossibile aggiungere degli account FTP qua!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "La lista degli alias è vuota! Non potete aggiungere degli account FTP qua!"
 
 msgid "Please specify other FTP account dir!"
@@ -2263,7 +2263,7 @@ msgstr "Usa un'altra directory"
 msgid "Choose dir"
 msgstr "Scegli la directory"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Impossibile aprire la directory!<br>Contattare il proprio amministratore !"
 
 msgid "Parent Directory"
@@ -2614,7 +2614,7 @@ msgstr "Prego, inserisci il percorso dell`area"
 msgid "%s doesn't exist"
 msgstr "%s non esiste"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Prima di proteggere un'area devi selezionare uno o più utenti autorizzati"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3618,15 +3618,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Dominio/Modificare"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Il servizio <em>%s</em> non può essere disabilitato!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "Il servizio <em>%s</em> non può essere limitato! "
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Il servizio<em>%s</em>non può essere illimitato! "
 
 msgid "ispCP - Reseller/Main Index"

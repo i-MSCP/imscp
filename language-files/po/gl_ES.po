@@ -2303,11 +2303,11 @@ msgstr "Non se atoparon os datos de contrasinal!"
 msgid "Entered passwords differ from the another!"
 msgstr "Os contrasinais inseridos difiren do outro!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr ""
 "A listaxe de subdominios está baleira! Non podes engadir aquí contas FTP!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "A listaxe de alias está baleira! Non podes engadir aquí contas FTP!"
 
 msgid "Please specify other FTP account dir!"
@@ -2337,7 +2337,7 @@ msgstr "Empregar outro directorio"
 msgid "Choose dir"
 msgstr "Escoller directorio"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr ""
 "Non se pode abrir o directori o!<br>Por favor, contacta co teu "
 "administrador !"
@@ -2698,7 +2698,7 @@ msgstr "Por favor, insire a ruta da área"
 msgid "%s doesn't exist"
 msgstr "%s non existe"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Non podes protexer unha área sen usuario(s) seleccionado(s)"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3763,15 +3763,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Dominio/Editar"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "O servizo <em>%s</em> non pode ser desactivado!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "O servizo <em>%s</em> non pode ser limitado!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "O servizo <em>%s</em> non pode ser ilimitado!"
 
 msgid "ispCP - Reseller/Main Index"

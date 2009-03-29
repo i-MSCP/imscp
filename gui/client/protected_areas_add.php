@@ -95,7 +95,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			if ($cnt_users == 1 || $cnt_users == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You can not protect area without selected user(s)'));
+					set_page_message(tr('You cannot protect area without selected user(s)!'));
 					return;
 				}
 			} else {

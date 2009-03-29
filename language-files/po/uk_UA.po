@@ -2348,11 +2348,11 @@ msgid "Entered passwords differ from the another!"
 msgstr "Паролі не співпадають!"
 
 #, fuzzy
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
 
 #, fuzzy
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr ""
 "Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
 
@@ -2384,7 +2384,7 @@ msgid "Choose dir"
 msgstr "Вибір директорії"
 
 #, fuzzy
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr ""
 "Не можу відкрити директорію!<br>Зверніться до Вашого системного "
 "адміністратора!"
@@ -2738,7 +2738,7 @@ msgid "%s doesn't exist"
 msgstr ""
 
 #, fuzzy
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Ви не можете створити захищену зону без вибору групи або груп"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3719,15 +3719,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Домен/Редагування"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
 msgid "ispCP - Reseller/Main Index"

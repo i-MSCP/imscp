@@ -110,7 +110,37 @@ function MM_swapImgRestore() {
 	}
 }
 
+
 /**
+ * @see MM_swapImage()
+ */
+function MM_findObj(n, d) {
+	var p, x;
+	if (!d) {
+		d = document;
+	}
+	if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+		d = parent.frames[n.substring(p+1)].document;
+		n = n.substring(0,p);
+	}
+	if (!(x = d[n]) && d.all) {
+		x = d.all[n];
+	}
+	for (var i = 0, len = d.forms.length; !x && i < len; i++) {
+		x = d.forms[i][n];
+	}
+	for (i = 0, len = d.layers.length; !x && d.layers && i < len; i++) {
+		x = MM_findObj(n, d.layers[i].document);
+	}
+	if (!x && d.getElementById) {
+		x = d.getElementById(n);
+	}
+	return x;
+}
+
+
+/**
+ * @see MM_findObj()
  * @link ../admin|client|reseller/main_menu_.*
  *
  * @todo remove JS image preloading/swapping und use CSS instead
@@ -309,6 +339,7 @@ function showFileTree() {
 
 
 
+
 /*
  * here are old moved unused/deprecated functions for archive
  * absolutly useless functions got removed completly, search repository
@@ -317,35 +348,31 @@ function showFileTree() {
 
 /*
 
-function MM_findObj(n, d) {
-	var p, i, x;
-	if (!d) {
-		d = document;
-	}
-	if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
-		d = parent.frames[n.substring(p+1)].document;
-		n = n.substring(0,p);
-	}
-	if (!(x = d[n]) && d.all) {
-		x = d.all[n];
-	}
-	for (i = 0; !x && i < d.forms.length; i++) {
-		x = d.forms[i][n];
-	}
-	for (i = 0; !x && d.layers && i < d.layers.length; i++) {
-		x = MM_findObj(n, d.layers[i].document);
-	}
-	if (!x && d.getElementById) {
-		x = d.getElementById(n);
-	}
-	return x;
-}
-
 // eval is evil
 function MM_jumpMenu(targ,selObj,restore) {
 	eval(targ + ".location='" + selObj.options[selObj.selectedIndex].value + "'");
 	if (restore) {
 		selObj.selectedIndex = 0;
+	}
+}
+
+// copied from reseller/alias_add.tpl + client/alias_add.tpl
+var emptyData	= 'Empty data or wrong field!';
+var wdname		= 'Wrong domain name!';
+var mpointError	= 'Please write mount point!';
+
+function checkForm() {
+	var dname = document.forms[0].elements['ndomain_name'].value;
+	var dmount = document.forms[0].elements['ndomain_mpoint'].value;
+	var dd = new String(dmount);
+	if (dname == "" || dmount == "") {
+		alert(emptyData);
+	} else if (dname.indexOf('.') == -1) {
+		alert(wdname);
+	} else if (dd.length < 2) {
+		alert(mpointError);
+	} else {
+		document.forms[0].submit();
 	}
 }
 

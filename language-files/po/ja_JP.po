@@ -2286,10 +2286,10 @@ msgstr "パスワードが一致しません!"
 msgid "Entered passwords differ from the another!"
 msgstr "他の異なるパスワードを入力してください！"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "サブドメインが登録されてないため、FTPアカウントが追加できません！"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "エイリアスが登録されていないため、FTPアカウントを追加できません！"
 
 msgid "Please specify other FTP account dir!"
@@ -2319,7 +2319,7 @@ msgstr "他のディレクトリを使用する"
 msgid "Choose dir"
 msgstr "ディレクトリ選択"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "ディレクトリを開くことが出来ません！<br>管理者に問い合わせてください！"
 
 msgid "Parent Directory"
@@ -2671,7 +2671,7 @@ msgstr "エリアのパスを入力してください"
 msgid "%s doesn't exist"
 msgstr "%s が見つかりません"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "ユーザの選択なしでは領域を保護できません"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3722,15 +3722,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - ドメイン/編集"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "<em>%s</em> サービスを無効にすることができません！"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "<em>%s</em> サービスを制限できません！"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> サービスは無制限にすることはできません！"
 
 msgid "ispCP - Reseller/Main Index"

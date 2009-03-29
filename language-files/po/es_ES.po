@@ -2213,10 +2213,10 @@ msgstr "¡Falta la información de contraseña!"
 msgid "Entered passwords differ from the another!"
 msgstr "¡Las contraseñas ingresadas difieren una de la otra!"
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "¡La lista de subdominios está vacía! ¡No puede agregar cuentas FTP ahi!"
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "¡La lista de alias está vacía! ¡No puede agregar cuentas de FTP ahi!"
 
 msgid "Please specify other FTP account dir!"
@@ -2246,7 +2246,7 @@ msgstr "Usar otro directorio"
 msgid "Choose dir"
 msgstr "Seleccionar directorio"
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "¡No se puede abrir el directorio !<br>Por favor contacte con su administrador!"
 
 msgid "Parent Directory"
@@ -2596,7 +2596,7 @@ msgstr "Por favor introduzca la ruta del área"
 msgid "%s doesn't exist"
 msgstr "%s no existe"
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "No puedes proteger un área sin seleccionar los usuarios"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3628,15 +3628,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Dominio/Editar"
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "¡El servicio <em>%s</em> no se puede desactivar!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "¡El servicio <em>%s</em> no puede ser limitado!"
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "¡El servicio <em>%s</em> no puede ser ilimitado!"
 
 msgid "ispCP - Reseller/Main Index"

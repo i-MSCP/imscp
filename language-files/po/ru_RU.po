@@ -2314,11 +2314,11 @@ msgid "Entered passwords differ from the another!"
 msgstr "Ввведенные пароли отличаются!"
 
 #, fuzzy
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Список поддоменов пуст! Вы не можете добавить туда учётные записи FTP!"
 
 #, fuzzy
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Список алиасов пуст! Вы не можете добавить туда учётные записи FTP!"
 
 msgid "Please specify other FTP account dir!"
@@ -2349,7 +2349,7 @@ msgid "Choose dir"
 msgstr "Выбрать директорию"
 
 #, fuzzy
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr "Невозможно открыть директорию !<br> Свяжитесь с администратором !"
 
 msgid "Parent Directory"
@@ -2705,7 +2705,7 @@ msgid "%s doesn't exist"
 msgstr "%s не существует"
 
 #, fuzzy
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr "Вы не можете защитить зону без указанных пользователей"
 
 msgid "You cannot protect area without selected group(s)"
@@ -3763,15 +3763,15 @@ msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Домен/Редактировать"
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Сервис <em>%s</em> не может быть отключен! "
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr "Сервис <em>%s</em> не может быть ограничен!"
 
 #, fuzzy, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Сервис <em>%s</em> не может быть безлимитным! "
 
 msgid "ispCP - Reseller/Main Index"

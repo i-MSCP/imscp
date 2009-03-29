@@ -2265,10 +2265,10 @@ msgstr ""
 msgid "Entered passwords differ from the another!"
 msgstr ""
 
-msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr ""
 
-msgid "Alias list is empty! You can not add FTP accounts there!"
+msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr ""
 
 msgid "Please specify other FTP account dir!"
@@ -2298,7 +2298,7 @@ msgstr ""
 msgid "Choose dir"
 msgstr ""
 
-msgid "Can not open directory !<br>Please contact your administrator !"
+msgid "Cannot open directory!<br>Please contact your administrator!"
 msgstr ""
 
 msgid "Parent Directory"
@@ -2644,7 +2644,7 @@ msgstr ""
 msgid "%s doesn't exist"
 msgstr ""
 
-msgid "You can not protect area without selected user(s)"
+msgid "You cannot protect area without selected user(s)!"
 msgstr ""
 
 msgid "You cannot protect area without selected group(s)"
@@ -3585,15 +3585,15 @@ msgid "ispCP - Domain/Edit"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be disabled! "
+msgid "The <em>%s</em> service cannot be disabled!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be limited! "
+msgid "The <em>%s</em> service cannot be limited!"
 msgstr ""
 
 #, php-format
-msgid "The <em>%s</em> service can not be unlimited! "
+msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
 msgid "ispCP - Reseller/Main Index"
