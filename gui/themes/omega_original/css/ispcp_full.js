@@ -112,7 +112,7 @@ function MM_swapImgRestore() {
 
 
 /**
- * @see MM_swapImage()
+ * @usedby MM_swapImage()
  */
 function MM_findObj(n, d) {
 	var p, x;
@@ -129,8 +129,10 @@ function MM_findObj(n, d) {
 	for (var i = 0, len = d.forms.length; !x && i < len; i++) {
 		x = d.forms[i][n];
 	}
-	for (i = 0, len = d.layers.length; !x && d.layers && i < len; i++) {
-		x = MM_findObj(n, d.layers[i].document);
+	if (d.layers) {
+		for (i = 0, len = d.layers.length; !x && d.layers && i < len; i++) {
+			x = MM_findObj(n, d.layers[i].document);
+		}
 	}
 	if (!x && d.getElementById) {
 		x = d.getElementById(n);
@@ -140,7 +142,7 @@ function MM_findObj(n, d) {
 
 
 /**
- * @see MM_findObj()
+ * @uses MM_findObj()
  * @link ../admin|client|reseller/main_menu_.*
  *
  * @todo remove JS image preloading/swapping und use CSS instead
@@ -335,8 +337,6 @@ function showFileTree() {
 	libwindow = window.open("ftp_choose_dir.php", "FileTreeDialogPage", "menubar=no,width=470,height=350,scrollbars=yes");
 	return false; // return false to prevent loading of new main page
 }
-
-
 
 
 

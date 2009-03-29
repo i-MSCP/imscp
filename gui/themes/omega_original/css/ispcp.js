@@ -8,7 +8,7 @@ function MM_findObj(n,d){var p,x;if(!d){d=document;}
 if((p=n.indexOf("?"))>0&&parent.frames.length){d=parent.frames[n.substring(p+1)].document;n=n.substring(0,p);}
 if(!(x=d[n])&&d.all){x=d.all[n];}
 for(var i=0,len=d.forms.length;!x&&i<len;i++){x=d.forms[i][n];}
-for(i=0,len=d.layers.length;!x&&d.layers&&i<len;i++){x=MM_findObj(n,d.layers[i].document);}
+if(d.layers){for(i=0,len=d.layers.length;!x&&d.layers&&i<len;i++){x=MM_findObj(n,d.layers[i].document);}}
 if(!x&&d.getElementById){x=d.getElementById(n);}
 return x;}
 function MM_swapImage(){var j=0,x,a=MM_swapImage.arguments;document.MM_sr=[];for(var i=0,len=a.length-2;i<len;i+=3){if((x=MM_findObj(a[i]))!==null){document.MM_sr[j++]=x;if(!x.oSrc){x.oSrc=x.src;}
