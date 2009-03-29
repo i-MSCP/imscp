@@ -130,7 +130,7 @@ function MM_findObj(n, d) {
 		x = d.forms[i][n];
 	}
 	if (d.layers) {
-		for (i = 0, len = d.layers.length; !x && d.layers && i < len; i++) {
+		for (i = 0, len = d.layers.length; !x && i < len; i++) {
 			x = MM_findObj(n, d.layers[i].document);
 		}
 	}

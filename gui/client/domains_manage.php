@@ -63,7 +63,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 		ON
 			`subdomain`.`domain_id` = `domain`.`domain_id`
 		WHERE
-			`subdomain.domain_id` = ?
+			`subdomain`.`domain_id` = ?
 		ORDER BY
 			`subdomain_name`
 SQL_QUERY;

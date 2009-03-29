@@ -7,12 +7,6 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
-	function begin_js() {
-		document.forms[0].forward_list.disabled = true;
-		document.forms[0].mail_id.disabled = false;
-		document.forms[0].mail_id.focus();
-	}
-
 	function changeType(what) {
 		if (what == "normal") {
 			document.forms[0].mail_id.disabled = false;

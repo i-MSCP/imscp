@@ -309,7 +309,7 @@ function generate_domain_entry (&$tpl, $user_id, $row) {
 				: tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
 
 			'SQL_DB_MSG' => ($usql_db_max)
-				? ($usql_db_max > 0)
+				? (($usql_db_max > 0)
 					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_db_current, $usql_db_max)
 					: tr('<b>disabled</b>'))
 				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_db_current),

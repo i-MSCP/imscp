@@ -23,22 +23,22 @@
 	}
 
 	function begin_js() {
-		if (document.getElementsByName('als_id') != null) {
-			if(document.getElementById('dmn_type2').checked) {
+		if (document.getElementsByName('als_id').length !== 0) {
+			if (document.getElementById('dmn_type2').checked) {
 				document.forms[0].als_id.disabled = false;
 			} else {
 				document.forms[0].als_id.disabled = true;
 			}
 		}
-		if (document.getElementsByName('sub_id') != null) {
-			if(document.getElementById('dmn_type3').checked) {
+		if (document.getElementsByName('sub_id').length !== 0) {
+			if (document.getElementById('dmn_type3').checked) {
 				document.forms[0].sub_id.disabled = false;
 			} else {
 				document.forms[0].sub_id.disabled = true;
 			}
 		}
-		if (document.getElementsByName('als_sub_id') != null) {
-			if(document.getElementById('dmn_type4').checked) {
+		if (document.getElementsByName('als_sub_id').length !== 0) {
+			if (document.getElementById('dmn_type4').checked) {
 				document.forms[0].als_sub_id.disabled = false;
 			} else {
 				document.forms[0].als_sub_id.disabled = true;
@@ -52,17 +52,17 @@
 	}
 
 	function changeDom(what) {
-		if (document.getElementsByName('als_id') != null && what == "alias") {
+		if (document.getElementsByName('als_id').length !== 0 && what == "alias") {
 			document.forms[0].als_id.disabled = false;
 		} else {
 			document.forms[0].als_id.disabled = true;
 		}
-		if (document.getElementsByName('sub_id') != null && what == "subdom") {
+		if (document.getElementsByName('sub_id').length !== 0 && what == "subdom") {
 			document.forms[0].sub_id.disabled = false;
 		} else {
 			document.forms[0].sub_id.disabled = true;
 		}
-		if (document.getElementsByName('als_sub_id') != null && what == "als_subdom") {
+		if (document.getElementsByName('als_sub_id').length !== 0 && what == "als_subdom") {
 			document.forms[0].als_sub_id.disabled = false;
 		} else {
 			document.forms[0].als_sub_id.disabled = true;
