@@ -88,7 +88,7 @@ function MM_preloadImages() {
 			d.MM_p = [];
 		}
 		var j = d.MM_p.length, a = MM_preloadImages.arguments;
-		for (var i = 0, len = a.length; i < len; i++) {
+		for (var i = 0; i < a.length; i++) {
 			if (a[i].indexOf("#") !== 0) {
 				d.MM_p[j] = new Image();
 				d.MM_p[j++].src = a[i];
@@ -105,7 +105,7 @@ function MM_preloadImages() {
  */
 function MM_swapImgRestore() {
 	var x, a = document.MM_sr;
-	for (var i = 0, len = a.length; a && i < len && (x = a[i]) && x.oSrc; i++) {
+	for (var i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) {
 		x.src = x.oSrc;
 	}
 }
@@ -113,6 +113,8 @@ function MM_swapImgRestore() {
 
 /**
  * @usedby MM_swapImage()
+ *
+ * @todo remove JS image preloading/swapping und use CSS instead
  */
 function MM_findObj(n, d) {
 	var p, x;
@@ -126,11 +128,11 @@ function MM_findObj(n, d) {
 	if (!(x = d[n]) && d.all) {
 		x = d.all[n];
 	}
-	for (var i = 0, len = d.forms.length; !x && i < len; i++) {
+	for (var i = 0; !x && i < d.forms.length; i++) {
 		x = d.forms[i][n];
 	}
 	if (d.layers) {
-		for (i = 0, len = d.layers.length; !x && i < len; i++) {
+		for (i = 0; !x && i < d.layers.length; i++) {
 			x = MM_findObj(n, d.layers[i].document);
 		}
 	}
