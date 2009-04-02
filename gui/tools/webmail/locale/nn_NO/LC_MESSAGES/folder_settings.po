@@ -1,0 +1,51 @@
+# translation of folder_settings.po to Nynorsk
+# This file is distributed under the same license as the SquirrelMail package.
+# Copyright (C) The SquirrelMail Project Team, 2006
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2006.
+# $Id: folder_settings.po 10856 2006-03-03 23:34:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings 0.3\n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2006-03-04 00:25+0100\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Folder Sorting Options"
+msgstr "Mappesorteringval"
+
+msgid "Enable per-folder sorting"
+msgstr "Slå på mappesortering"
+
+msgid "Default sort_order"
+msgstr "Standard sorteingsrekkjefølje"
+
+msgid "Date (descending)"
+msgstr "Dato (synkande)"
+
+msgid "Date (ascending)"
+msgstr "Dato (stigande)"
+
+msgid "From (descending)"
+msgstr "Frå (synkande)"
+
+msgid "From (ascending)"
+msgstr "Frå (stigande)"
+
+msgid "Subject (descending)"
+msgstr "Emne (synkande)"
+
+msgid "Subject (ascending)"
+msgstr "Emne (stigande)"
+
+msgid "Unsorted"
+msgstr "Usortert"
+
+msgid ""
+"Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr ""
+"Mappeoppsett programtillegg skulle ikkje vert brukt med denne versjonen av "
+"Squirrelmail."

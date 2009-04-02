@@ -1,0 +1,53 @@
+<chapter>
+   <title>
+      Introducció a SquirrelMail
+   </title>
+   <summary>
+      SquirrelMail proporciona un mecanisme per comprovar el teu correu
+      des de qualsevol lloc d'Internet
+   </summary>
+   <description>
+      <p>
+      Que es exactament <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      Es un interfície de correu que esta escrit en <A HREF="http://www.php.net">PHP4</A>.
+      Esta dissenyat per accedir al correu que hi ha al servidor des de
+      qualsevol lloc del mon per via WEB. Mes informació d'això i de com
+      treballa el protocol IMAP a <A HREF="http://imap.org">aquí</A>.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Les coses bàsiques
+   </title>
+   <description>
+      <p>
+      Si tu tens alguna pregunta concreta, pots mirar les FAQ's.
+      </p>
+      <p>
+      SquirrelMail esta dividit en dues parts anomenades frames. La part de
+      la esquerra llista les carpetes que actualment estan donades d'alta.
+      A la secció "Carpetes" d'aquesta documentació es troba mes informació
+      d'aquesta part.
+      </p>
+      <p>
+      A la part de la dreta hi ha la informació dels missatges. A la part de
+      dalt, hi ha una barra de tasques. Desconnectar-se es la forma correcta de
+      sortir quan terminem d'utilitzar-lo. La carpeta actual indica quina
+      carpeta s'ha seleccionat al menú de l'esquerra. Desprès d'entrar al
+      programa, la carpeta INBOX es la que aparegui per defecte.
+      </p>
+      <p>
+      La barra de tasques de dalt, conte les següents opcions:      
+         <ul>
+            <li><b>Redactar</b> - Per escriure i enviar un e-mail. Aquest pot incloure fitxers adjunts. 
+            <li><b>Direccions</b> - Mostra la llista de direccions que tens a la teva llibreta de direccions personal.
+            <li><b>Carpetes</b> - Tot per modificar les opcions de carpetes.  Tu pots suprimir, crear, canviar el nom, donar d'alta i de baixa les carpetes. 
+            <li><b>Opcions</b> - Canvia preferències de com SquirrelMail actuarà i el veurà.
+            <li><b>Buscar</b> - Amb aquesta eina, tu pots buscar qualsevol cosa als missatges utilitzant un criteri. 
+            <li><b>Ajut</b> - Tu ets ara aquí! 
+         </ul>
+      </p>
+   </description>
+</section>   

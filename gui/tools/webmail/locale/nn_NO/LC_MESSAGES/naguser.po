@@ -1,0 +1,50 @@
+# translation of naguser.po to Nynorsk
+# This file is distributed under the same license as the naguser plugin.
+# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004
+# $Id: naguser.po 9939 2005-08-13 05:35:44Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: naguser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-05-12 21:10+0300\n"
+"PO-Revision-Date: 2004-06-16 09:22+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Rules of engagement"
+msgstr "Reglar for engasjement"
+
+msgid "You have to read and understand program usage rules:"
+msgstr "Ein må lesa og forstå reglane for programbruk:"
+
+msgid ""
+"Your browser does not support inline frames. Please read related document by "
+"checking usage instructions."
+msgstr ""
+"Vevlesaren støttar ikkje rammer. Les relevante dokument for å sjekka bruken."
+
+msgid "Usage instructions"
+msgstr "Brukarinstruksjonar"
+
+msgid "Yes, I understand"
+msgstr "Ja eg forstår"
+
+msgid "Terms of service"
+msgstr "Vilkår for tenesten"
+
+msgid ""
+"URL to usage rules is not available. Please contact your system "
+"administrator."
+msgstr ""
+"URL til brukar regler er ikkje tilgjengelege. Kontakt systemadministrator."
+
+msgid "You can find interface usage rules by following the link."
+msgstr "Kan finna reglar for rensesnittet på fylgjande lenkje."
+
+msgid "Usage rules"
+msgstr "Brukar reglar"

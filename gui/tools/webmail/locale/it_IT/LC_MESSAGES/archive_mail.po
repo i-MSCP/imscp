@@ -1,0 +1,166 @@
+# Italian translation of Squirrelmail archive_main plugin
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the plugin's package.
+# Luca Francesconi <luca.francesconi@ariannaconsulting.it>, 2005.
+# $Id: archive_mail.po 10125 2005-10-03 14:00:52Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: archive_mail 1.2\n"
+"POT-Creation-Date: 2004-07-31 11:09+0300\n"
+"PO-Revision-Date: 2005-09-28 17:15+0100\n"
+"Last-Translator: Luca Francesconi <luca.francesconi@ariannaconsulting.it>\n"
+"Language-Team: The SquirrelMail Project Team <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+
+#: ../includes/archive_mail_bottom.php:28
+msgid "Archive disabled (zlib not supported)"
+msgstr "Archivio non disponibile (zlib non supportato)"
+
+#: ../includes/archive_mail.php:27
+#: ../includes/archive_mail_bottom.php:32
+msgid "Archive"
+msgstr "Archivio"
+
+#: ../includes/display_inside.php:39
+msgid "Format Emails as"
+msgstr "Formato emails..."
+
+#: ../includes/display_inside.php:45
+msgid "EML Messages"
+msgstr "Messaggi EML"
+
+#: ../includes/display_inside.php:50
+msgid "Mbox"
+msgstr "Mbox"
+
+#: ../includes/display_inside.php:55
+msgid "Maildir"
+msgstr "Maildir"
+
+#: ../includes/display_inside.php:65
+msgid "Separate Entities"
+msgstr "Entità distinte"
+
+#: ../includes/display_inside.php:70
+msgid "Save Attachments"
+msgstr "Salva allegati"
+
+#: ../includes/display_inside.php:74
+msgid "Yes"
+msgstr "Conferma"
+
+#: ../includes/display_inside.php:77
+msgid "No"
+msgstr "Annulla"
+
+#: ../includes/display_inside.php:80
+#: ../includes/display_inside.php:188
+msgid "Save"
+msgstr "Salva"
+
+#: ../includes/display_inside.php:87
+msgid "Separate Entities Options"
+msgstr "Opzioni entià distinte"
+
+#: ../includes/display_inside.php:90
+msgid "EML Messages Options"
+msgstr "Opzioni messaggi EML"
+
+#: ../includes/display_inside.php:93
+msgid "Mbox Options"
+msgstr "Opzioni Mbox"
+
+#: ../includes/display_inside.php:96
+msgid "Maildir Options"
+msgstr "Opzioni Maildir"
+
+#: ../includes/display_inside.php:102
+msgid "Compress Type"
+msgstr "Modalità di compressione"
+
+#: ../includes/display_inside.php:108
+msgid "Tar"
+msgstr "Archivio Tar"
+
+#: ../includes/display_inside.php:113
+msgid "Tar.GZ"
+msgstr "Archivio Tar.GZ"
+
+#: ../includes/display_inside.php:119
+msgid "Text"
+msgstr "Testo"
+
+#: ../includes/display_inside.php:125
+msgid "Zip"
+msgstr "Archivio Zip"
+
+#: ../includes/display_inside.php:131
+msgid "Email Filename"
+msgstr "Nome file email"
+
+#: ../includes/display_inside.php:137
+msgid "Numbered"
+msgstr "Numerato"
+
+#: ../includes/display_inside.php:142
+#: ../includes/display_inside.php:147
+#: ../includes/display_inside.php:152
+#: ../includes/display_inside.php:162
+#: ../includes/display_inside.php:182
+#: ../includes/formats/separate.php:105
+#: ../includes/formats/separate.php:110
+#: ../includes/formats/separate.php:118
+msgid "Date"
+msgstr "Data"
+
+#: ../includes/display_inside.php:147
+#: ../includes/display_inside.php:157
+#: ../includes/display_inside.php:162
+#: ../includes/display_inside.php:167
+#: ../includes/display_inside.php:177
+msgid "Email"
+msgstr "Email"
+
+#: ../includes/display_inside.php:152
+#: ../includes/display_inside.php:167
+#: ../includes/display_inside.php:172
+#: ../includes/display_inside.php:177
+#: ../includes/display_inside.php:182
+#: ../includes/formats/separate.php:102
+#: ../includes/formats/separate.php:107
+#: ../includes/formats/separate.php:112
+msgid "Subject"
+msgstr "Oggetto"
+
+#: ../includes/display_options.php:23
+msgid "Archive Settings"
+msgstr "Impostazioni archivio messaggi"
+
+#: ../includes/display_options.php:25
+msgid "These settings allow you to modify the way you archive messages."
+msgstr "Tramite queste  impostazioni è possibile configurare  la modalità di archiviazione dei messaggi emails"
+
+#: ../includes/formats/separate.php:25
+msgid "m/d/Y g:i a"
+msgstr "m/d/Y g:i a"
+
+#: ../includes/formats/separate.php:42
+msgid "No Subject"
+msgstr "Nessun Oggetto"
+
+#: ../includes/formats/separate.php:103
+#: ../includes/formats/separate.php:108
+#: ../includes/formats/separate.php:114
+msgid "From"
+msgstr "Da"
+
+#: ../includes/formats/separate.php:104
+#: ../includes/formats/separate.php:109
+#: ../includes/formats/separate.php:116
+msgid "To"
+msgstr "A"
+

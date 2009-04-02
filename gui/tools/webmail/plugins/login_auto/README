@@ -1,0 +1,47 @@
+
+Login Auto Plugin
+aka "The Plugin formerly know as Auto Login"
+By Jay Guerette <JayGuerette@pobox.com>
+v1.1 (c) 2003 (GNU GPL - see ../../COPYING)
+
+This plugin saves the username and/or password by encrypted persistent cookie.
+
+The encryption uses a random XOR technique, MD5, and a private key. It's
+portable without relying on the MCRYPT library; it's also fairly strong. Take
+a look at the code. It's nifty.
+
+Once installed, you will need to edit/look at 'config.php.sample' in 
+the 'login_auto' plugin directory. At the very least you should change the
+encryption key and copy the file to 'config.php'.
+
+A 'signout' will erase the cookies.
+
+If you enable the security document link in the config file, and want to use
+the included 'security.php' file, make sure you put it someplace accessible,
+and update the url in the config file.
+
+Please contact me with any questions or problems.
+
+
+History
+
+v1.1 (Paul Lesneiwski <pdontthink@angrynerds.com>)
+ - Minor fix in config sample file (which completely broke v1.0)
+
+v1.0 (Paul Lesneiwski <pdontthink@angrynerds.com>)
+ - Updated for compatibility with SquirrelMail version 1.4
+ - Internationalized plugin output
+ - Updated for new plugin version reporting APIs
+ - New small setup.php for faster overall SquirrelMail performance
+ - Miscellaneous small bug fixes
+
+v0.2 (beta)
+Changed name from auto_login to login_auto, because Tyler Akins scares me.
+... Ok, actually, he had a good idea, and hey, it's beta, I can do that.
+Can handle multiple encryption keys, as many as you want! Go paranoia!
+Clears the cookies if the login fails, so you can login normally.
+Forgets your username properly if you uncheck the remember username box.
+
+v0.1 (alpha)
+initial public release
+

@@ -1,0 +1,65 @@
+# Lithuanian Translation of
+# SquirrelMail folder_settings plugin.
+# Copyright (c) 2006 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: folder_settings.po 11288 2006-06-21 20:08:18Z tokul $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2006-06-21 08:24+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+
+#: functions.php:21
+msgid "Folder Sorting Options"
+msgstr "Aplankų rūšiavimo nustatymai"
+
+#: functions.php:25
+msgid "Enable per-folder sorting"
+msgstr "Naudoti skirtingą atskirų aplankų rūšiavimą"
+
+#: functions.php:31
+msgid "Default sort_order"
+msgstr "Įprasta rūšiavimo tvarka"
+
+#: functions.php:34
+msgid "Date (descending)"
+msgstr "Data (mažėjančiai)"
+
+#: functions.php:35
+msgid "Date (ascending)"
+msgstr "Data (didėjančiai)"
+
+#: functions.php:36
+msgid "From (descending)"
+msgstr "Siuntėjas (mažėjančiai)"
+
+#: functions.php:37
+msgid "From (ascending)"
+msgstr "Siuntėjas (didėjančiai)"
+
+#: functions.php:38
+msgid "Subject (descending)"
+msgstr "Tema (mažėjančiai)"
+
+#: functions.php:39
+msgid "Subject (ascending)"
+msgstr "Tema (didėjančiai)"
+
+#: functions.php:40
+msgid "Unsorted"
+msgstr "Nerūšiuota"
+
+#: functions.php:68
+msgid ""
+"Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr ""
+"Folder Settings priedas nesuderinamas su šia SquirrelMail versija."
+

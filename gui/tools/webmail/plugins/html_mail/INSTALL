@@ -1,0 +1,79 @@
+Installing HTML Mail Plugin
+===========================
+
+1) Start with untaring the file into the plugins directory.
+   Here is a example for the 1.0 version of the html_mail plugin.
+
+  $ cd plugins
+  $ tar -zxvf html_mail-1.0-1.4.tar.gz
+
+2) If you do not need to change the default plugin settings,
+   skip to the next step.  Otherwise, change into the html_mail 
+   directory, copy config.php.sample to config.php and edit 
+   config.php, making adjustments as you deem necessary.
+
+  $ cd html_mail
+  $ cp config.php.sample config.php
+  $ vi config.php
+
+3) If you have SquirrelMail version 1.4.2 or higher, skip to 
+   step 4.  Otherwise, you need to patch the SquirrelMail 
+   source code.  Do so from the html_mail directory:
+
+  $ patch -p0 < patches/squirrelmail-1.4-html_mail.diff
+
+   Make sure that you use the patch file that matches your
+   SquirrelMail version.
+
+   Note for Windows users: you can get native patch functionality
+   by installing this very useful package:
+   http://unxutils.sourceforge.net/
+
+4) If will be using the FCKeditor engine, or you do not wish to 
+   provide emoticon functionality, skip to step 5.  Otherwise, 
+   you need to patch the SquirrelMail source code.  Do so from 
+   the html_mail directory:
+
+  $ patch -p0 < patches/squirrelmail-1.4.2-emoticons.diff
+
+   Make sure that you use the patch file that matches your
+   SquirrelMail version.
+
+   Note for Windows users: you can get native patch functionality
+   by installing this very useful package:
+   http://unxutils.sourceforge.net/
+
+5) Then go to your config directory and run conf.pl.  Choose
+   option 8 and move the plugin from the "Available Plugins"
+   category to the "Installed Plugins" category.  Save and exit.
+
+  $ cd ../../config/
+  $ ./conf.pl
+
+6) If you plan to use the HTMLArea engine with its integrated 
+   spell checking mechanism, configure your server to allow 
+   CGI execution in the spell checker directory and make sure 
+   your Perl installation has the correct modules.  See the 
+   README file for more information.
+
+
+
+Upgrading HTML Mail Plugin
+==========================
+
+1) Start with untaring the file into the plugins directory.
+   Here is a example for the 1.0 version of the html_mail plugin.
+
+  $ cd plugins
+  $ tar -zxvf html_mail-1.0-1.4.tar.gz
+
+2) Change into the html_mail directory, check your config.php
+   file against the new version, to see if there are any new
+   settings that you must add to your config.php file.
+
+  $ diff -Nau config.php config.php.sample
+
+   Or simply replace your config.php file with the provided sample
+   and reconfigure the plugin from scratch (see step 2 under the
+   installation procedure above).
+

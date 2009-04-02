@@ -1,0 +1,127 @@
+# translation of change_sqlpass.po to Nynorsk
+# This file is distributed under the same license as the SquirrelMail package.
+# Copyright (c) 2004-2006 SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004-2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: change_sqlpass\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-05-28 11:18+0200\n"
+"PO-Revision-Date: 2006-08-09 12:23+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Could not find Pear DB library"
+msgstr "Kan ikkje finna Pear DB biblioteket"
+
+msgid "Could not make database connection"
+msgstr "Kan ikkje kople til databasen"
+
+msgid "DATABASE ERROR: could not lookup force change password flag: %s"
+msgstr "DATABASE FEIL: kan ikkje slå opp endra passord flag: %s"
+
+msgid ""
+"Force change password query result is: %s<br />Query was: %s<br /><br />"
+msgstr ""
+"Tvungen bytte av passord resultat er %s <br/> Spørsmålet var: %s<br/><br/>"
+
+msgid "Change Password"
+msgstr "Endra passord"
+
+msgid "Use this to change your email password."
+msgstr "Bruk denne for å endra epostpassordet."
+
+msgid ""
+"Password changed successfully.<br />Please use your new password to log in "
+"from now on."
+msgstr ""
+"Vellukka endring av passord.<br/>Bruk nytt passord til innlogging frå nå av."
+
+msgid "Password change cancelled.<br />Your password has NOT been changed."
+msgstr "Passordet endring avbroten.<br/> Passordet er ikkje endra."
+
+msgid ""
+"Periodically, we ask that you change your password.  This is done to help "
+"maintain good security for your email account."
+msgstr ""
+"Med jamne mellomrom, spør ein om ein skal endra passord. Dette er gjort til "
+"hjelp for å halda eit sikkert epostsystem."
+
+msgid "Change Password - Secure"
+msgstr "Endra passord - trygt"
+
+msgid "Old Password"
+msgstr "Gammalt passord"
+
+msgid "New Password"
+msgstr "Nytt passord"
+
+msgid "Verify New Password"
+msgstr "Stadfest nytt passord"
+
+msgid "Submit"
+msgstr "Send"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "DATABASE ERROR: could not lookup salt: %s"
+msgstr "DATABASE FEIL: Kan ikkje finna salt: %s"
+
+msgid "Password query result is: %s<br />Query was: %s<br /><br />"
+msgstr "Passord oppslag resultat: %s<br/> Oppslag var %s<br/><br/>"
+
+msgid "You must type in your old password"
+msgstr "Skriv inn gammalt passord."
+
+msgid "Your old password is not correct"
+msgstr "Gammalt passord er ikkje korrekt."
+
+msgid "DATABASE ERROR: could not lookup old password: %s"
+msgstr "DATABASE FEIL: Kan ikkje slåopp gamalt passord: %s"
+
+msgid "Your old password does not match"
+msgstr "Gammalt passord er passar ikkje"
+
+msgid "You must type in a new password"
+msgstr "Skriv in eit nytt passord."
+
+msgid "Your new password is too short.  It must be at least %s characters long"
+msgstr "Nytt passord er for kort. Det må minst vera %s karakterar langt"
+
+msgid ""
+"Your new password is too long.  It must be no more than %s characters long"
+msgstr "Nytt passord er for langt. Det må ikkje vera lengre enn %s teikn"
+
+msgid "Please include at least one digit in your new password"
+msgstr "Ha med minst eit siffer i ditt nye passord"
+
+msgid "Please include at least one upper-case letter in your new password"
+msgstr "Ha med minst ein stor bokstav i ditt nye passord"
+
+msgid "Please include at least one lower-case letter in your new password"
+msgstr "Ha med minst ein liten bokstav i ditt nye passord"
+
+msgid ""
+"Please include at least one non-alphanumeric character (such as @, - or _) "
+"in your new password"
+msgstr ""
+"Ha med minst ein ikkje alfanummerisk teikn (slik som @, - eller _) i ditt "
+"nye passord"
+
+msgid "You must also type in your new password in the verify box"
+msgstr "Må altid skriva inn nytt passord i kontroll boksen."
+
+msgid "Your new password does not match the verify password"
+msgstr "Nytt passord og kontroll passord er ikkje like."
+
+msgid "Your new password must be different than your old password"
+msgstr "Nytt passord må vera forskjelleg frå gammalt passord."
+
+msgid "DATABASE ERROR: could not update password: %s"
+msgstr "DATABASE FEIL: kan ikkje opdatera passordet: %s"

@@ -1,0 +1,1 @@
+xgettext --keyword=_ -d view_as_html -s -C *.php

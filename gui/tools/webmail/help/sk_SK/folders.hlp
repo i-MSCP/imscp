@@ -1,0 +1,102 @@
+<chapter>
+   <title>   
+      Prieèinky
+   </title>   
+   <summary>
+      Správy si mô¾te ulo¾i» v rôznych prieèinkov. Toto je zvlá¹» u¾itoèné ak
+      máte mno¾stvo správ a chcete aby boli organizované. Mo¾nos» "Prieèinky"
+      vám umo¾òuje manipulova» s prieèinkami.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Prihlásené prieèinky a µavý rámec
+   </title>
+   <description>
+      <p>
+      Aktuálne prihlásené prieèinky sú zobrazené vo vyfarbenom priestore do µava.
+      Tento µavý rámec sa dá v polo¾ke "Mo¾nosti" nastavi» tak, aby sa automaticky
+      znovu zaktualizoval. Navrchu µavého rámca je veµký a tuèný nadpis. Ak ste
+      urobili zmeny nastavenia v prihlásených prieèinkoch pomocou polo¾ky v menu
+      "Prieèinky", mo¾te zobrazenie aktulizova» kliknutím na odkaz pod týmto názvom
+      (aktualizova» zoznam zlo¾iek). Ten sa zaktualizuje taktie¾.
+      </p><p>
+      Prvý tu zobrazený prieèinok obsahuje prijatú po¹tu. Od prvého prieèinka
+      vpravo v zátvorke "( )" je poèet <I>nepreèítaných</I> správ.  Toto èíslo
+      sa pravdepodobne odli¹uje od celkového poètu správ zobrazených v pravom rámci.
+      Pod hlavným prieèinkom sú pravdepodobne ïal¹ie prieèinky a pod-prieèinky.
+      Farby týchto prieèinkov sa menia v závislosti od aktuálne zvolenej schémy
+      na stránke "Mo¾nosti".
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Odstráni» prieèinok
+   </title>
+   <description>
+      <p>
+      Mô¾te zmaza» akýkoµvek prieèinok zobrazený v rolovacom menu vµavo od tlaèidla
+      "Odstráni»". Je treba poznamena», ¾e tento zoznam <B>nemusí</B> obsahova» v¹etky
+      prieèinky. ©peciálne prieèinky ako napríklad Odoslaná po¹ta a Kô¹ nemô¾u by»
+      odstránené a samozrejme nemô¾te zmaza» prieèinok "Doruèená po¹ta".
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Vytvori» prieèinok
+   </title>
+   <description>
+      <p>
+      Prieèinky mô¾u vy» vytvorené jednoduchým napísaním mena to textové políèka
+      a stisnutím tlaèidla Vytvori» prieèinok. Ak si prajete aby tento prieèinok
+      bol pod-prieèinom iného prieèinku, mô¾te si v rolovacom menu prieèinkov
+      vybra» tento prieèinok.
+      </p>
+      <p>
+      Na niektorých po¹tových serveroch sú dva typy prieèinkov. Jeden z nich
+      obsahuje správy a druhý obsahuje prieèinky. Tu mô¾te vidie» voµbu nazvanú
+      "Nech tento prieèinok obsahuje podprieèinky". Ak ste to urobili a túto voµbu
+      pou¾ili, prieèinok bude môc» obsahova» len podpieèinky, nie správy. Inak v
+      òom budete môc» uklada» len správy, nie prieèinky.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Premenova» prieèinok
+   </title>
+   <description>
+      <p>
+      Akýkoµvek prieèinok zobrazený v rolovacom menu vµavo od tlaèidla "Premenova»"
+      mô¾te premonova» tlaèidlom Premenova». Je treba poznamena», ¾e tento zoznam
+      <B>nemusí</B> obsahova» v¹etky prieèinky. Zo zrejmých príèin nemô¾te
+      premenova» prieèinky Doruèená po¹ta, Odoslaná po¹ta a Kô¹.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prihlási»/Odhlási»
+   </title>
+   <description>
+      Definície:<br>
+      <i>Prihlási»</i>: Zaregistrovanie prieèinku k po¹tovému serveru vám umo¾ní
+                        ho zobrazi» v zozname prieèinkov.
+      <i>Odhlási»</i>: Opak k prihláseniu. Toto odregistruje prieèinok od po¹tovéhu
+      servera.
+      <br><p>
+      Z políèka Prihlási» alebo z políèka Odhlási» si mô¾te si zvoli» tak veµa
+      prieèinkov ako si ¾eláte, potom naò kliknú» na tlaèidlo pod políèkom aby
+      sa nastavenie pou¾ilo. Je treba poznamena», ¾e toto presunie prieèinky do
+      iného políèka. Ak si ¾eláte, mô¾te ich znovu prihlási», alebo odhlási».
+      </p>
+   </description>
+</section>

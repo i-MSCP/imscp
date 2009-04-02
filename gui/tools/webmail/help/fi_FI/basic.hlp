@@ -1,0 +1,57 @@
+<chapter>
+   <title>
+      Johdanto SquirrelMailiin
+   </title>
+   <summary>
+      SquirrelMail antaa mahdollisuuden säköpostin käsittelyyn
+      verkkoselaimella.
+   </summary>
+   <description>
+      <p>
+      Mitä
+      <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>
+      oikein on?
+      Se on sähköpostityökalu joka on tehty
+      <A HREF="http://www.php.net">PHP4</A> kielellä.
+      Se on suunniteltu mahdollistamaan sähköpostin käsittely mistä
+      tahansa kunhan sinulla on yhteys Internettiin ja verkkoselain.
+      Lisätietoja tekniikasta saat <A HREF="http://imap.org">tästä</A>
+      osoitteesta.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Perusasiat
+   </title>
+   <description>
+      <p>
+      Jos sinulla on kysymyksiä, katso ensiksi "Useimmin Esitettyjä Kysymyksiä".
+      </p>
+      <p>
+      Squirrelmailin sivut muodostuvat kahdesta osasta, englanniksi näistä
+      käytetään nimeä "frame". Toinen niistä näyttää käytössä olevat
+      kansiot. Tästä löytyy enemmän tietoa "Kansiot" osassa.
+      </p>
+      <p>
+      Suurempi osa näyttöä on se missä viestien lukeminen, kirjoitus
+      ja kaikki muut toiminnot tehdään. Kun olet kirjautunut sisään
+      niin esnimmäiseksi tässä osassa on saapuneitten viestien lista.
+      </p>
+      <p>
+      Yläpalkin alla on joukko linkkejä:
+         <ul>
+            <li><b>Uusi Viesti</b> - Kirjoita ja lähetä viestejä. Voit myös
+            liittää tiedostoja viesteihin.
+            <li><b>Osoitteet</b> - Henkilökohtainen osoitekirjasi.
+            <li><b>Kansiot</b> - Kansioitten käsittely. Voit poistaa, luoda,
+            muuttaa nimeä, ottaa käyttöön ja poistaa käytöstä.
+            <li><b>Asetukset</b> - Voit vaihtaa SquirrelMailin asetuksia.
+            <li><b>Etsi</b> - Tällä työkalulla voit etsiä viestejä jotka
+            sisältävät annetun hakutekstin.
+            <li><b>Apua</b> - Olet juuri nyt lukemassa tätä osaa.
+         </ul>
+      </p>
+   </description>
+</section>   

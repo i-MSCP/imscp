@@ -1,0 +1,42 @@
+<chapter>
+   <title>
+      Introdu&ccedil;&atilde;o ao SquirrelMail
+   </title>
+   <summary>
+SquirrelMail &eacute; um sistema que permite verificar seu correio atrav&eacute;s 
+da "World Wide Web" (www). </summary> <description> 
+<p> O que &eacute; exatamente o <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>? 
+  Se trata de uma interface para correio escrita em<A HREF="http://www.php.net"> 
+  PHP4</A>. Foi projetado para permitir acesso ao correio através de seu servidor 
+  de qualquer parte do mundo atrav&eacute;s da "web". Maiores informa&ccedil;&otilde;es 
+  sobre seu funcionamento e sobre o protocolo IMAP podem ser encontradas em <A HREF="http://imap.org">imap.org</A>. 
+</p>
+</description> </chapter> <section> 
+<title> O B&aacute;sico</title>
+<description> 
+<p> Se sua pergunta &eacute; simples e r&aacute;pida, talvez voc&ecirc; perfira 
+  dar uma olhada em FAQ, que armazena as perguntas mais frequentes. </p>
+<p> O Squirrelmail está estruturado em dois segmentos principais chamados "frames". 
+  O frame da esquerda mostra a lista de pastas subscritas. Maiores detalhes sobre 
+  o frame da esquerda podem ser encontradas na se&ccedil;&atilde;o &quot;Folders&quot; 
+  deste help.</p>
+<p> Do lado direito se processa a maior parte do trabalho. Na parte superior está 
+  a barra de menu. A op&ccedil;&atilde;o &quot;Desconectar&quot; ir&aacute; desconect&aacute;-lo 
+  do programa de forma segura quando voc&ecirc; sair. "Current Folder" mostra 
+  qual das pastas listadas do lado esquerdo se encontra ativa. Por default, a 
+  pasta INBOX ser&aacute; sempre a primeira pasta exibida no momento do login.</p>
+<p> Abaixo da barra de menu h&aacute; uma fila de op&ccedil;&otilde;es: 
+<ul>
+  <li><b>Nova Mensagem </b>- Redigir e enviar mensagens que podem conter arquivos 
+    atachados. 
+  <li><b>Cat&aacute;logo Particular</b> - Cont&eacute;m sua lista de endere&ccedil;os. 
+  <li><b>Pastas</b> - Permite manipular pastas. Aqui &eacute; poss&iacute;vel 
+    deletar, criar, renomear, subescrever e retirar as pastas de correio. 
+  <li><b>Op&ccedil;&otilde;es</b> - Para ajustar as op&ccedil;&otilde;es de forma 
+    de resposta e apar&ecirc;ncia do Squirrelmail. 
+  <li><b>pesquisar</b> - Com esta ferramenta &eacute; poss&iacute;vel localizar 
+    um determinado crit&eacute;rio em seu mailbox. 
+  <li><b>Ajuda</b> - J&aacute; está aqui!!!! 
+</ul>
+<p></p>
+</description> </section> 

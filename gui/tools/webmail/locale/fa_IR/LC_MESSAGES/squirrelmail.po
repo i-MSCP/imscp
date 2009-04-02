@@ -1,0 +1,4598 @@
+# translation of squirrelmail.po to Farsi (Persian)
+# Reza Mohammadi <remohammadi@cs.sharif.edu>.
+# Hessam MirArmandehi <hessam@cs.sharif.edu>.
+# Azin Azadi <kavir@cs.sharif.edu>.
+# Niousha Bolandzadeh <bolandzadeh@cs.sharif.edu>
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (c) 2005 SquirrelMail Project Team, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: squirrelmail\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2005-03-08 16:42+0330\n"
+"Last-Translator: Reza Mohammadi <remohammadi@cs.sharif.edu>\n"
+"Language-Team: Farsi (Persian) <farsi@ims.ir>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Address Book"
+msgstr "دفترچه‌آدرس"
+
+msgid "Name"
+msgstr "نام"
+
+msgid "E-mail"
+msgstr "پست الکترونیکی"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+msgid "Source"
+msgstr "منبع"
+
+msgid "To"
+msgstr "به"
+
+msgid "Cc"
+msgstr "رونوشت"
+
+msgid "Bcc"
+msgstr "رونوشت پنهان"
+
+msgid "No persons matching your search were found"
+msgstr "شخص موردنظر پیدا نشد"
+
+msgid "Search for"
+msgstr "جستجو برای"
+
+msgid "in"
+msgstr "در"
+
+msgid "All address books"
+msgstr "تمامی دفترچه‌آدرس‌ها"
+
+msgid "Search"
+msgstr "جستجو"
+
+msgid "List all"
+msgstr "همه را لیست کن"
+
+msgid "Close"
+msgstr "بستن"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "ناتوان در لیست همه آدرس‌ها از %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "جستجوی شما با خطا روبرو شد"
+
+msgid "All"
+msgstr "همه"
+
+msgid "Use Addresses"
+msgstr "از آدرس‌ها استفاده کن"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "تغییر"
+
+msgid "Address Book Search"
+msgstr "جستجوی دفترچه‌آدرس‌ها"
+
+msgid "Return"
+msgstr "بازگشت"
+
+msgid "Nickname"
+msgstr "نام مستعار"
+
+msgid "Must be unique"
+msgstr "باید یکتا باشد"
+
+msgid "E-mail address"
+msgstr "آدرس پست الکترونیکی"
+
+msgid "Last name"
+msgstr "نام خانوادگی"
+
+msgid "First name"
+msgstr "نام"
+
+msgid "Additional info"
+msgstr "اطلاعات بیشتر"
+
+msgid "Add to:"
+msgstr "اضافه به:"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "دفترچه‌آدرس شخصی تعریف نشده است. به مدیر مراجعه کنید."
+
+msgid "You can only edit one address at the time"
+msgstr "شما فقط یک آدرس را در یک زمان میتوانید ویرایش کنید."
+
+msgid "Update address"
+msgstr "به‌روزسازی آدرس"
+
+msgid "ERROR"
+msgstr "خطا"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "اضافه کردن آدرس"
+
+msgid "Edit selected"
+msgstr "ویرایش"
+
+msgid "Delete selected"
+msgstr "حذف"
+
+#, php-format
+msgid "Add to %s"
+msgstr "اضافه کن به %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr ""
+
+msgid "quote"
+msgstr "نقل کرد"
+
+msgid "who"
+msgstr "شخص"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "موضوع"
+
+msgid "From"
+msgstr "از"
+
+msgid "Date"
+msgstr "تاریخ"
+
+msgid "Original Message"
+msgstr "پیغام اصلی"
+
+msgid "Draft Email Saved"
+msgstr "پست الکترونیکی پیش‌نویس ذخیره شد"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "نمیتوان فایل را کپی و یا جابه‌جا کرد. فایل ضمیمه نشده است"
+
+msgid "Draft Saved"
+msgstr "پیش‌نویس ذخیره شد"
+
+msgid "Your Message has been sent."
+msgstr "پیغام شما فرستاده شد"
+
+msgid "From:"
+msgstr "از:"
+
+msgid "Send"
+msgstr "بفرست"
+
+msgid "Attach:"
+msgstr "ضمیمه:"
+
+msgid "Add"
+msgstr "اضافه کن"
+
+msgid "Delete selected attachments"
+msgstr "ضمایم مشخص شده را حذف کن"
+
+msgid "Priority"
+msgstr "اولویت"
+
+msgid "High"
+msgstr "بالا"
+
+msgid "Normal"
+msgstr "معمولی"
+
+msgid "Low"
+msgstr "پایین"
+
+msgid "Receipt"
+msgstr "رسید"
+
+msgid "On Read"
+msgstr "هنگام خواندن"
+
+msgid "On Delivery"
+msgstr "هنگام جابه‌جایی"
+
+msgid "Signature"
+msgstr "امضا"
+
+msgid "Addresses"
+msgstr "آدرس‌ها"
+
+msgid "Save Draft"
+msgstr "ذخیره پیش‌نویس"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "شما قسمت \"به:\" را وارد نکردید."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "خطا: پوشه پیش‌نویس %s وجود ندارد"
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "جواب میزبان"
+
+msgid "Folders"
+msgstr "پوشه‌ها"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "با موفقیت مشترک شد!"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "با موفقیت از اشتراک خارج شد!"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "پوشه با موفقیت حذف شد!"
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "پوشه با موفقیت ایجاد شد!"
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "تغییر نام با موفقیت انجام شد!"
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "اشتراک موفقیت‌آمیز نبود - پوشه وجود ندارد."
+
+msgid "refresh folder list"
+msgstr "به‌روز رسانی لیست"
+
+msgid "Create Folder"
+msgstr "ایجاد پوشه"
+
+msgid "as a subfolder of"
+msgstr "به‌عنوان یک زیرپوشه از"
+
+msgid "None"
+msgstr "هیچکدام"
+
+msgid "Let this folder contain subfolders"
+msgstr "به این پوشه اجازه داشتن زیرپوشه را بده"
+
+msgid "Create"
+msgstr "ایجاد"
+
+msgid "Rename a Folder"
+msgstr "تغییر نام پوشه"
+
+msgid "Select a folder"
+msgstr "یک پوشه را انتخاب کن"
+
+msgid "Rename"
+msgstr "تغییر نام"
+
+msgid "No folders found"
+msgstr "پوشه‌ای یافت نشد"
+
+msgid "Delete Folder"
+msgstr "حذف پوشه"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Unsubscribe"
+msgstr "خروج از اشتراک"
+
+msgid "Subscribe"
+msgstr "اشتراک"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "پوشه‌ای برای خروج از اشتراک یافت نشد!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "پوشه‌ای برای اشتراک پیدا نشد!"
+
+msgid "Subscribe to:"
+msgstr "اشتراک در:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "نام پوشه نادرست است. لطفاً نام دیگری را انتخاب کنید."
+
+msgid "Click here to go back"
+msgstr "اینجا را برای بازگشت کلیک کنید."
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "شما پوشه‌ای برای حذف انتخاب نکرده‌اید."
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "آیا مطمئنید که میخواهید پوشه %s را حذف کنید؟"
+
+msgid "Yes"
+msgstr "بله"
+
+msgid "No"
+msgstr "خیر"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "شما پوشه‌ای را برای تغییر نام انتخاب نکرده‌اید"
+
+msgid "Rename a folder"
+msgstr "تغییر نام پوشه"
+
+msgid "New name:"
+msgstr "نام جدید:"
+
+msgid "Submit"
+msgstr "تایید"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "خطا: فایل‌های راهنما مشکل دارند!"
+
+msgid "Help"
+msgstr "راهنما"
+
+#, php-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr "راهنما به زبان %s ترجمه نشده است و به زبان انگلیسی نمایش داده میشود."
+
+msgid "Some or all of the help documents are not present!"
+msgstr "قسمتی از راهنما پیدا نمیشود!"
+
+msgid "Table of Contents"
+msgstr "فهرست"
+
+msgid "Previous"
+msgstr "قبلی"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "Top"
+msgstr "بالا"
+
+msgid "Viewing an image attachment"
+msgstr "نمایش ضمیمه تصویری"
+
+msgid "View message"
+msgstr "نمایش پیغام"
+
+msgid "Download this as a file"
+msgstr "دریافت در قالب فایل"
+
+msgid "INBOX"
+msgstr "رسیده‌ها"
+
+msgid "Purge"
+msgstr "تخلیه"
+
+msgid "Login"
+msgstr "ورود"
+
+#, php-format
+msgid "%s Logo"
+msgstr "آرم %s"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail نسخه %s"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "تهیه‌شده توسط تیم برنامه‌نویسی SquirrelMail"
+
+#, php-format
+msgid "%s Login"
+msgstr "ورود به سیستم ایمیل %s"
+
+msgid "Name:"
+msgstr "نام:"
+
+msgid "Password:"
+msgstr "گذرواژه:"
+
+msgid "No messages were selected."
+msgstr "پیغامی انتخاب نشده است."
+
+msgid "Personal Information"
+msgstr "اطلاعات شخصی"
+
+msgid "Display Preferences"
+msgstr "تنظیمات نما"
+
+msgid "Message Highlighting"
+msgstr "رنگ‌آمیزی پیغام‌ها"
+
+msgid "Folder Preferences"
+msgstr "تنظیمات پوشه‌ها"
+
+msgid "Index Order"
+msgstr "ترتیب فهرست"
+
+msgid "Options"
+msgstr "تنظیمات"
+
+msgid "Error(s) occurred while saving your options"
+msgstr ""
+
+msgid "Some of your preference changes were not applied."
+msgstr ""
+
+msgid "Successfully Saved Options"
+msgstr "تنظیمات با موفقیت ذخیره شد."
+
+msgid "Refresh Folder List"
+msgstr "بازخوانی لیست"
+
+msgid "Refresh Page"
+msgstr "بازخوانی صفحه"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"در این قسمت اطلاعاتی مانند نام و آدرس پست الکترونیکی خود را میتوانید مشخص "
+"کنید."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"شما میتوانید نمای ظاهری این برنامه را عوض کنید. مثلاً تغییر رنگ یا زبان."
+
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"برای راحت‌تر تمیز دادن پیغام‌هایتان میتوانید تنظیماتی در این قسمت انجام دهید "
+"تا رنگ آنها بر اساس موضوعشان در لیست متفاوت باشد."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "در این قسمت ساختار پوشه‌بندی خود را میتوانید تغییر دهید."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr "ترتیب نمایش نامه‌هایتان در لیست را میتوانید از این قسمت تغییر دهید."
+
+msgid "New"
+msgstr "جدید"
+
+msgid "Done"
+msgstr "انجام شد."
+
+msgid "To or Cc"
+msgstr "به یا رونوشت"
+
+msgid "subject"
+msgstr "موضوع"
+
+msgid "Edit"
+msgstr "ویرایش"
+
+msgid "Up"
+msgstr "بالا"
+
+msgid "Down"
+msgstr "پایین"
+
+msgid "No highlighting is defined"
+msgstr "رنگ‌آمیزی‌ای مشخص نشده است"
+
+msgid "Identifying name"
+msgstr "نام مشخص‌کننده"
+
+msgid "Color"
+msgstr "رنگ"
+
+msgid "Dark Blue"
+msgstr "آبی پررنگ"
+
+msgid "Dark Green"
+msgstr "سبز پررنگ"
+
+msgid "Dark Yellow"
+msgstr "زرد پررنگ"
+
+msgid "Dark Cyan"
+msgstr "فیروزه‌ای پررنگ"
+
+msgid "Dark Magenta"
+msgstr "بنفش پررنگ"
+
+msgid "Light Blue"
+msgstr "آبی روشن"
+
+msgid "Light Green"
+msgstr "سبز روشن"
+
+msgid "Light Yellow"
+msgstr "زرد کم‌رنگ"
+
+msgid "Light Cyan"
+msgstr "فیروزه‌ای روشن"
+
+msgid "Light Magenta"
+msgstr "صورتی"
+
+msgid "Dark Gray"
+msgstr "خاکستری پررنگ"
+
+msgid "Medium Gray"
+msgstr "خاکستری"
+
+msgid "Light Gray"
+msgstr "خاکستری کم‌رنگ"
+
+msgid "White"
+msgstr "سفید"
+
+msgid "Other:"
+msgstr "غیره:"
+
+msgid "Ex: 63aa7f"
+msgstr "مثال: 63aa7f"
+
+msgid "Matches"
+msgstr "مطابق باشه با"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr ""
+
+msgid "Advanced Identities"
+msgstr "مشخصات (پیشرفته)"
+
+msgid "Default Identity"
+msgstr "شناسه پیش‌فرض"
+
+msgid "Add a New Identity"
+msgstr "اضافه کردن یک شناسه جدید"
+
+msgid "Full Name"
+msgstr "نام (کامل)"
+
+msgid "E-Mail Address"
+msgstr "آدرس پست الکترونیکی"
+
+msgid "Reply To"
+msgstr "پاسخ به"
+
+msgid "Save / Update"
+msgstr "ذخیره"
+
+msgid "Make Default"
+msgstr "تبدیل به پیش‌فرض"
+
+msgid "Move Up"
+msgstr "ببر بالا"
+
+msgid "Checkbox"
+msgstr "گزینه"
+
+msgid "Flags"
+msgstr "پرچم‌ها"
+
+msgid "Size"
+msgstr "اندازه"
+
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"در این قسمت شما میتوانید ترتیب نمایش پیغام‌هایتان را تغییر دهید و یا ستونی "
+"برای نمایش جزئیات پیغام‌ها اضافه و یا حذف نمایید."
+
+msgid "up"
+msgstr "بالا"
+
+msgid "down"
+msgstr "پایین"
+
+msgid "remove"
+msgstr "حذف"
+
+msgid "Return to options page"
+msgstr "برگشت به صفحه تنظیمات"
+
+msgid "Message not printable"
+msgstr "پیغام غیر قابل چاپ"
+
+msgid "Invalid URL"
+msgstr "URL نادرست"
+
+msgid "Printer Friendly"
+msgstr "نسخه مناسب چاپ"
+
+msgid "Print"
+msgstr "چاپ"
+
+msgid "View Printable Version"
+msgstr "نمایش نسخه قابل چاپ"
+
+msgid "Read:"
+msgstr "خواندن:"
+
+msgid "Your message"
+msgstr "پیغامتان"
+
+msgid "Sent"
+msgstr "فرستاده شده"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "در %s نمایش داده شده"
+
+msgid "less"
+msgstr "کمتر"
+
+msgid "more"
+msgstr "بیشتر"
+
+msgid "Unknown sender"
+msgstr "فرستنده ناشناس"
+
+msgid "Mailer"
+msgstr "نامه‌رسان"
+
+msgid "Read receipt"
+msgstr "خواندن رسید"
+
+msgid "sent"
+msgstr "فرستاده شد"
+
+msgid "requested"
+msgstr "درخواست شده"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"فرستنده پیغام میخواهد از خواندن پیغام مطمئن شود. آیا شما با فرستادن رسید "
+"موافقید؟"
+
+msgid "Send read receipt now"
+msgstr "هم‌اکنون رسید را بفرست"
+
+msgid "Search Results"
+msgstr "نتایج جستجو"
+
+msgid "Message List"
+msgstr "لیست پیغام‌ها"
+
+msgid "Resume Draft"
+msgstr "بازیابی پیش‌نویس"
+
+msgid "Edit Message as New"
+msgstr "به‌عنوان پیغام جدید ویرایش کن"
+
+msgid "View Message"
+msgstr "نمایش پیغام"
+
+msgid "Forward"
+msgstr "فرستادن"
+
+msgid "Forward as Attachment"
+msgstr "فرستادن به عنوان ضمیمه"
+
+msgid "Reply"
+msgstr "پاسخ"
+
+msgid "Reply All"
+msgstr "پاسخ به همه"
+
+msgid "View Full Header"
+msgstr "نمایش کامل سرآمد"
+
+msgid "Attachments"
+msgstr "ضمائم"
+
+msgid "You must be logged in to access this page."
+msgstr "شما برای دسترسی به این صفحه ابتدا باید وارد سیستم شوید."
+
+msgid "Folder:"
+msgstr "پوشه:"
+
+msgid "edit"
+msgstr "ویرایش"
+
+msgid "search"
+msgstr "جستجو"
+
+msgid "delete"
+msgstr "حذف"
+
+msgid "Recent Searches"
+msgstr "جستجوهای اخیر"
+
+msgid "save"
+msgstr "ذخیره کن"
+
+msgid "forget"
+msgstr "فراموش کن"
+
+msgid "Current Search"
+msgstr "جستجوی فعلی"
+
+msgid "All Folders"
+msgstr "تمامی پوشه‌ها"
+
+msgid "Body"
+msgstr "متن"
+
+msgid "Everywhere"
+msgstr "همه جا"
+
+msgid "No Messages Found"
+msgstr "پیغامی یافت نشد"
+
+msgid "Signout"
+msgstr "خروج"
+
+msgid "Sign Out"
+msgstr "خروج"
+
+msgid "You have been successfully signed out."
+msgstr "شما با موفقیت از سیستم خارج شدید."
+
+msgid "Click here to log back in."
+msgstr "اینجا را برای ورود دوباره کلیک کنید."
+
+msgid "Viewing a Business Card"
+msgstr "نمایش یک کارت کاری"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+"vCard نسخه %s پشتیبانی نمیشود. بعضی از اطلاعات ممکن است به درستی تبدیل نشوند."
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "Email"
+msgstr "پست الکترونیکی"
+
+msgid "Web Page"
+msgstr "صفحه وب"
+
+msgid "Organization / Department"
+msgstr "سازمان/دپارتمان"
+
+msgid "Address"
+msgstr "آدرس"
+
+msgid "Work Phone"
+msgstr "شماره تلفن محل کار"
+
+msgid "Home Phone"
+msgstr "شماره تلفن منزل"
+
+msgid "Cellular Phone"
+msgstr "تلفن همراه"
+
+msgid "Fax"
+msgstr "دورنگار"
+
+msgid "Note"
+msgstr "یادداشت"
+
+msgid "Add to Addressbook"
+msgstr "به دفترچه‌آدرس اضافه کن"
+
+msgid "Title & Org. / Dept."
+msgstr "عنوان و سمت."
+
+msgid "Add to Address Book"
+msgstr "به دفترچه‌آدرس اضافه کن"
+
+msgid "Viewing Full Header"
+msgstr "نمایش کامل سرآمد"
+
+msgid "Viewing a text attachment"
+msgstr "نمایش ضمیمه متنی"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "لطفاً با مدیر سیستم تماس بگیرید و مشکل را گزارش کنید."
+
+msgid "Personal address book"
+msgstr "دفترچه‌آدرس شخصی"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "خطای ساختار اطلاعاتی: %s"
+
+msgid "Addressbook is read-only"
+msgstr "دفترچه‌آدرس غیر قابل ویرایش است"
+
+#, php-format
+msgid "User '%s' already exist"
+msgstr "کاربر '%s' وجود دارد"
+
+#, php-format
+msgid "User '%s' does not exist"
+msgstr "کاربر '%s' وجود ندارد"
+
+msgid "Not a file name"
+msgstr "نام فایل نمیباشد"
+
+msgid "No such file or directory"
+msgstr "چنین فایل و یا دایرکتوری‌ای یافت نشد"
+
+msgid "Open failed"
+msgstr "ناتوان در خواندن"
+
+msgid "Write failed"
+msgstr "ناتوان در نوشتن"
+
+msgid "Unable to update"
+msgstr "ناتوان در بازنویسی"
+
+msgid "Could not lock datafile"
+msgstr "نمیتوان فایل اطلاعات را قفل کرد"
+
+msgid "Write to addressbook failed"
+msgstr "ناتوان در نوشتن دفترچه‌آدرس"
+
+msgid "Error initializing addressbook database."
+msgstr "آماده‌سازی ساختار اطلاعاتی دفترچه‌آدرس با خطا مواجه شد."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "ناتوان در خواندن فایل %s"
+
+msgid "Global address book"
+msgstr "دفترچه‌آدرس همگانی"
+
+msgid "Error initializing global addressbook."
+msgstr "آماده‌سازی دفترچه‌آدرس با خطا مواجه شد."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "خطا در آماده‌سازی میزبان LDAP: %s"
+
+msgid "Invalid input data"
+msgstr "اطلاعات ورودی نادرست"
+
+msgid "Name is missing"
+msgstr "نام وارد نشده"
+
+msgid "E-mail address is missing"
+msgstr "پست الکترونیکی وارد نشده"
+
+msgid "Nickname contains illegal characters"
+msgstr "اسم مستعار حاوی کاراکترهای غیرمجاز است"
+
+msgid "View"
+msgstr "نمایش"
+
+msgid "View Business Card"
+msgstr "نمایش کارت کاری"
+
+msgid "Sunday"
+msgstr "یک‌شنبه"
+
+msgid "Monday"
+msgstr "دوشنبه"
+
+msgid "Tuesday"
+msgstr "سه‌شنبه"
+
+msgid "Wednesday"
+msgstr "چهارشنبه"
+
+msgid "Thursday"
+msgstr "پنج‌شنبه"
+
+msgid "Friday"
+msgstr "جمعه"
+
+msgid "Saturday"
+msgstr "شنبه"
+
+msgid "Sun"
+msgstr "۱ش"
+
+msgid "Mon"
+msgstr "۲ش"
+
+msgid "Tue"
+msgstr "۳ش"
+
+msgid "Wed"
+msgstr "۴ش"
+
+msgid "Thu"
+msgstr "۵ش"
+
+msgid "Fri"
+msgstr "جمعه"
+
+msgid "Sat"
+msgstr "شنبه"
+
+msgid "January"
+msgstr "ژانویه"
+
+msgid "February"
+msgstr "فوریه"
+
+msgid "March"
+msgstr "مارس"
+
+msgid "April"
+msgstr "آوریل"
+
+msgid "May"
+msgstr "می"
+
+msgid "June"
+msgstr "ژوئن"
+
+msgid "July"
+msgstr "ژوئیه"
+
+msgid "August"
+msgstr "اوت"
+
+msgid "September"
+msgstr "سپتامبر"
+
+msgid "October"
+msgstr "اکتبر"
+
+msgid "November"
+msgstr "نوامبر"
+
+msgid "December"
+msgstr "دسامبر"
+
+msgid "Jan"
+msgstr "ژانویه"
+
+msgid "Feb"
+msgstr "فوریه"
+
+msgid "Mar"
+msgstr "مارس"
+
+msgid "Apr"
+msgstr "آوریل"
+
+msgid "Ma&#121;"
+msgstr "می"
+
+msgid "Jun"
+msgstr "ژوئن"
+
+msgid "Jul"
+msgstr "ژوئیه"
+
+msgid "Aug"
+msgstr "اوت"
+
+msgid "Sep"
+msgstr "سپتامبر"
+
+msgid "Oct"
+msgstr "اکتبر"
+
+msgid "Nov"
+msgstr "نوامبر"
+
+msgid "Dec"
+msgstr "دسامبر"
+
+msgid "D, F j, Y g:i a"
+msgstr ""
+
+msgid "D, F j, Y H:i"
+msgstr ""
+
+msgid "M j, Y"
+msgstr ""
+
+msgid "g:i a"
+msgstr ""
+
+msgid "H:i"
+msgstr ""
+
+msgid "D, g:i a"
+msgstr ""
+
+msgid "D, H:i"
+msgstr ""
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr ""
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "اینجا را برای بازگشت به %s کلیک کنید"
+
+msgid "Go to the login page"
+msgstr "برو به صفحه ورود"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"فایل تنظیمات نما، %s، موجود نمیباشد. از سیستم خارج شده و دوباره وارد شوید تا "
+"این فایل با استفاده از مقادیر پیش‌فرض ساخته شود."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+
+#, php-format
+msgid "Error opening %s"
+msgstr "خطا در خواندن %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "فایل تنظیمات نمای پیش‌فرض وجود ندارد و یا قابل خواندن نیست!"
+
+msgid "Could not create initial preference file!"
+msgstr "فایل اولیه تنظیمات نما را نمیتوانم بسازم!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s باید برای کاربر %s قابل نوشتن باشد."
+
+msgid "Signature is too big."
+msgstr "امضا زیادی طولانی است."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"فایل امضا، %s، قابل خواندن نمیباشد. لطفاً جهت رفع مشکل با مدیر سیستم تماس "
+"بگیرید."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"فایل امضا، %s، قابل نوشتن نمیباشد. لطفاً جهت رفع مشکل با مدیر سیستم تماس "
+"بگیرید."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"فایل امضا، %s، قابل تهیه از نسخه موقت، %s، نمیباشد. لطفاً جهت رفع مشکل با "
+"مدیر سیستم تماس بگیرید."
+
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"میبایست php4 را با قابلیت رشته‌های چندبایتی نصب میکردید)از --enable-mbstring "
+"استفاده کنید(."
+
+#, fuzzy
+msgid "ERROR: No available IMAP stream."
+msgstr "خطا: imapstream وجود ندارد."
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr ""
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "خطا: نمیتوان پیغام را اضافه کرد به"
+
+msgid "Query:"
+msgstr ""
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "علت:"
+
+msgid "ERROR: Bad or malformed request."
+msgstr ""
+
+msgid "Server responded:"
+msgstr "جواب میزبان:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr ""
+
+msgid "ERROR: Unknown IMAP response."
+msgstr ""
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr ""
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, php-format
+msgid "Bad request: %s"
+msgstr ""
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr ""
+
+msgid "Read data:"
+msgstr "اطلاعات خوانده‌شده:"
+
+msgid "Unknown user or password incorrect."
+msgstr "کاربر وجود ندارد و یا گذرواژه نادرست وارد گشته است."
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "خطا: نمیتوان پیغام را اضافه کرد به"
+
+#, fuzzy
+msgid "Solution:"
+msgstr "راه حل:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr "پیغام‌های غیر ضروری را از پوشه حذف کنید. از سطل آشغال شروع کنید."
+
+msgid "(no subject)"
+msgstr "(بدون موضوع)"
+
+msgid "Unknown Sender"
+msgstr "فرستنده ناشناس"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "جواب ناشناخته از میزبان IMAP:"
+
+msgid "The server couldn't find the message you requested."
+msgstr "میزبان نتوانست پیغام مورد درخواست شما را بیابد."
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+
+msgid "Unknown date"
+msgstr "تاریخ نامعلوم"
+
+msgid "A"
+msgstr ""
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr ""
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr ""
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "این پوشه خالی میباشد!"
+
+msgid "Move Selected To"
+msgstr "منتقل کن به"
+
+msgid "Transform Selected Messages"
+msgstr "تغییر وضعیت پیغام‌های انتخاب شده"
+
+msgid "Move"
+msgstr "انتقال"
+
+msgid "Expunge"
+msgstr ""
+
+msgid "mailbox"
+msgstr "فضای پست الکترونیکی"
+
+msgid "Read"
+msgstr "خوانده‌شده"
+
+msgid "Unread"
+msgstr "خوانده‌نشده"
+
+msgid "Unthread View"
+msgstr "نمایش غیرریسمانی"
+
+msgid "Thread View"
+msgstr "نمایش ریسمانی"
+
+msgid "Toggle All"
+msgstr "همه گزینه‌ها را برعکس کن"
+
+msgid "Unselect All"
+msgstr "انتخاب هیچ گزینه"
+
+msgid "Select All"
+msgstr "انتخاب تمام گزینه‌ها"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "نمایش پیغام‌های %s تا %s (از مجموع %s پیغام)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "نمایش پیغام %s (از مجموع %s پیغام)"
+
+msgid "Paginate"
+msgstr "صفحه‌بندی"
+
+msgid "Show All"
+msgstr "نمایش همه"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "برنامه نتوانست ساختار پیغام را تشخیص دهد"
+
+msgid "the provided bodystructure by your imap-server"
+msgstr "ساختار ارائه شده توسط میزبان imap"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+
+msgid "Command:"
+msgstr "دستور:"
+
+msgid "Response:"
+msgstr "پاسخ:"
+
+msgid "Message:"
+msgstr "پیغام:"
+
+msgid "FETCH line:"
+msgstr "خط دریافت:"
+
+msgid "Hide Unsafe Images"
+msgstr "پنهان‌سازی تصاویر نا اَمن"
+
+msgid "View Unsafe Images"
+msgstr "نمایش تصاویر نا اَمن"
+
+msgid "Download"
+msgstr "دریافت"
+
+msgid "sec_remove_eng.png"
+msgstr ""
+
+msgid "This external link will open in a new window"
+msgstr "این لینک خارج از سیستم در پنجره دیگری باز میگردد"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr ""
+
+msgid "Current Folder"
+msgstr "پوشه فعلی"
+
+msgid "Compose"
+msgstr "نوشتن پیغام"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "خطایی در ساخت دایرکتوری %s بوجود آمد."
+
+msgid "Could not create hashed directory structure!"
+msgstr ""
+
+msgid "Service not available, closing channel"
+msgstr ""
+
+msgid "A password transition is needed"
+msgstr ""
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "Requested action aborted: error in processing"
+msgstr ""
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr ""
+
+msgid "Temporary authentication failure"
+msgstr ""
+
+msgid "Syntax error; command not recognized"
+msgstr ""
+
+msgid "Syntax error in parameters or arguments"
+msgstr ""
+
+msgid "Command not implemented"
+msgstr ""
+
+msgid "Bad sequence of commands"
+msgstr ""
+
+msgid "Command parameter not implemented"
+msgstr ""
+
+msgid "Authentication required"
+msgstr ""
+
+msgid "Authentication mechanism is too weak"
+msgstr ""
+
+msgid "Authentication failed"
+msgstr ""
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr ""
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "User not local; please try forwarding"
+msgstr ""
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr ""
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr ""
+
+msgid "Transaction failed"
+msgstr ""
+
+msgid "Unknown response"
+msgstr ""
+
+msgid "General Display Options"
+msgstr "تنظیمات عمومی نما"
+
+msgid "Theme"
+msgstr "رنگ‌بندی"
+
+msgid "Default"
+msgstr "پیش‌فرض"
+
+msgid "Custom Stylesheet"
+msgstr "سبک نمایش دلخواه"
+
+msgid "Language"
+msgstr "زبان"
+
+msgid "Use Javascript"
+msgstr "استفاده از Javascript"
+
+msgid "Autodetect"
+msgstr "تشخیص خودکار"
+
+msgid "Always"
+msgstr "همیشه"
+
+msgid "Never"
+msgstr "هیچ‌وقت"
+
+msgid "Mailbox Display Options"
+msgstr "تنظیمات نمای فضای پیغام‌ها"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "تعداد پیغام‌هایی که در فهرست میآیند"
+
+msgid "Enable Alternating Row Colors"
+msgstr "رنگ‌آمیزی یکی‌درمیان سطرها"
+
+msgid "Enable Page Selector"
+msgstr "اجازه انتخاب صفحه"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "حداکثر تعداد صفحات برای نمایش"
+
+msgid "Always Show Full Date"
+msgstr "همیشه تاریخ را به‌طور کامل نمایش بده"
+
+msgid "Message Display and Composition"
+msgstr "تنظیمات نمایش پیغام"
+
+msgid "Wrap Incoming Text At"
+msgstr "برش متن رسیده در"
+
+msgid "Width of Editor Window"
+msgstr "طول پنجره ویرایشگر"
+
+msgid "Height of Editor Window"
+msgstr "عرض پنجره ویرایشگر"
+
+msgid "Location of Buttons when Composing"
+msgstr "مکان دکمه‌ها در ویرایش پیغام جدید"
+
+msgid "Before headers"
+msgstr "قبل از سرآمد"
+
+msgid "Between headers and message body"
+msgstr "بین سرآمد و متن پیغام"
+
+msgid "After message body"
+msgstr "پس از متن پیغام"
+
+msgid "Addressbook Display Format"
+msgstr "نحوه نمایش دفترچه‌آدرس"
+
+msgid "Javascript"
+msgstr ""
+
+msgid "HTML"
+msgstr ""
+
+msgid "Show HTML Version by Default"
+msgstr "نمایش نسخه HTML به طور پیش‌فرض"
+
+msgid "Enable Forward as Attachment"
+msgstr "امکان فرستادن پیغام رسیده به‌عنوان ضمیمه یک پیغام جدید"
+
+msgid "Include CCs when Forwarding Messages"
+msgstr "آوردن اسامی رونوشت‌ها در پیغام جدید"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "آوردن من در لیست رونوشت‌ها در هنگام پاسخ به همه"
+
+msgid "Enable Mailer Display"
+msgstr "نمایش اسم نامه‌رسان پیغام"
+
+msgid "Display Attached Images with Message"
+msgstr "نمایش تصاویر ضمیمه‌شده به پیغام"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "فعال‌سازی نمایش نسخه مناسب چاپ"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "فعال‌سازی اعلام جابه‌جایی پیغام"
+
+msgid "Compose Messages in New Window"
+msgstr "نوشتن پیغام در پنجره جدید"
+
+msgid "Width of Compose Window"
+msgstr "طول پنجره پیغام جدید"
+
+msgid "Height of Compose Window"
+msgstr "عرض پنجره پیغام جدید"
+
+msgid "Append Signature before Reply/Forward Text"
+msgstr "اضافه کردن امضا قبل از متن جوابیه/قدیم"
+
+#, fuzzy
+msgid "Prefix for Original Message when Replying"
+msgstr "مکان کٍرسِر هنگام جواب دادن پیغام"
+
+msgid "Cursor Position when Replying"
+msgstr "مکان کٍرسِر هنگام جواب دادن پیغام"
+
+msgid "To: field"
+msgstr "فیلد «به»"
+
+msgid "Focus in body"
+msgstr "متن پیغام"
+
+msgid "Select body"
+msgstr "انتخاب متن"
+
+msgid "No focus"
+msgstr "مرورگر"
+
+msgid "Sort by Received Date"
+msgstr "ترتیب نامه‌های بر اساس زمان رسیدن باشد"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "فعال‌سازی ترتیب ریسمانی با سرآمد منابع"
+
+msgid "Special Folder Options"
+msgstr "تنظیمات خاص پوشه"
+
+msgid "Folder Path"
+msgstr "مسیر پوشه"
+
+msgid "Do not use Trash"
+msgstr "از سطل آشغال استفاده نکن"
+
+msgid "Trash Folder"
+msgstr "پوشه سطل آشغال"
+
+msgid "Do not use Drafts"
+msgstr "از پیش‌نویس استفاده نکن"
+
+msgid "Draft Folder"
+msgstr "پوشه پیش‌نویس"
+
+msgid "Do not use Sent"
+msgstr "از فرستاده‌شده‌ها استفاده نکن"
+
+msgid "Sent Folder"
+msgstr "پوشه فرستاده‌شده‌ها "
+
+msgid "Folder List Options"
+msgstr "تنظیمات لیست پوشه‌ها"
+
+msgid "Location of Folder List"
+msgstr "مکان لیست پوشه‌ها"
+
+# Left & Right are translated in place of each other because of right to left special problems !
+msgid "Left"
+msgstr "راست"
+
+msgid "Right"
+msgstr "چپ"
+
+msgid "pixels"
+msgstr "پیکسل"
+
+msgid "Width of Folder List"
+msgstr "طول لیست پوشه‌ها"
+
+msgid "Minutes"
+msgstr "دقیقه"
+
+msgid "Seconds"
+msgstr "ثانیه"
+
+msgid "Minute"
+msgstr "دقیقه"
+
+msgid "Auto Refresh Folder List"
+msgstr "به‌روزرسانی خودکار لیست پوشه‌ها"
+
+msgid "Enable Unread Message Notification"
+msgstr "فعال‌سازی اعلام وجود پیغام نخوانده"
+
+msgid "No Notification"
+msgstr "اعلام نشود"
+
+msgid "Only INBOX"
+msgstr "فقط برای رسیده‌ها"
+
+msgid "Unread Message Notification Type"
+msgstr "نوع اعلام پیغام‌های نخوانده"
+
+msgid "Only Unseen"
+msgstr "فقط دیده‌نشده‌ها"
+
+msgid "Unseen and Total"
+msgstr "دیده‌نشده‌ها و مجموع"
+
+msgid "Enable Collapsable Folders"
+msgstr "فعال‌سازیی پوشه‌های جمع‌شو"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "فعال‌سازی اعلام پیغام‌های نخوانده جمعی"
+
+msgid "Show Clock on Folders Panel"
+msgstr "نمایش ساعت در صفحه لیست پوشه‌ها"
+
+msgid "International date and time"
+msgstr "تاریخ و ساعت بین‌المللی"
+
+msgid "American date and time"
+msgstr "زمان و تاریخ آمریکایی"
+
+msgid "European date and time"
+msgstr "زمان و تاریخ اروپایی"
+
+msgid "Show weekday and time"
+msgstr "نمایش روز هفته و ساعت"
+
+msgid "Show time with seconds"
+msgstr "نمایش ساعت با ثانیه‌شمار"
+
+msgid "Show time"
+msgstr "نمایش ساعت"
+
+msgid "No Clock"
+msgstr "بدون ساعت"
+
+msgid "Hour Format"
+msgstr "فرمت ساعت"
+
+msgid "12-hour clock"
+msgstr "دوازده ساعته"
+
+msgid "24-hour clock"
+msgstr "بیست و چهار ساعته"
+
+msgid "Memory Search"
+msgstr "جستجوی حافظه"
+
+msgid "Disabled"
+msgstr "غیر فعال"
+
+msgid "Folder Selection Options"
+msgstr "تنظیمات انتخاب پوشه"
+
+msgid "Selection List Style"
+msgstr "سبک لیست انتخاب"
+
+#, fuzzy
+msgid "Long:"
+msgstr "بلند:"
+
+msgid "Folder"
+msgstr "پوشه"
+
+msgid "Subfolder"
+msgstr "زیرپوشه"
+
+#, fuzzy
+msgid "Indented:"
+msgstr "تو در تو:"
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "محدود:"
+
+msgid "Name and Address Options"
+msgstr "تنظیمات نام و آدرس"
+
+msgid "Email Address"
+msgstr "آدرس پست الکترونیکی"
+
+msgid "Edit Advanced Identities"
+msgstr "ویرایش مشخصات (پیشرفته)"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(چنانچه کلیک کنید، تغییراتی که هم‌اکنون انجام داده‌اید از بین میرود)"
+
+msgid "Multiple Identities"
+msgstr "چند شناسه‌ای"
+
+msgid "Same as server"
+msgstr "همانند میزبان"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "خطا در خواندن تنظیمات زمانی‌مکانی، با مدیر تماس بگیرید."
+
+msgid "Timezone Options"
+msgstr "تنظیمات زمانی‌مکانی"
+
+msgid "Your current timezone"
+msgstr "منطقه زمانی فعلی"
+
+msgid "Reply Citation Options"
+msgstr "تنظیمات نقل پیغام در جوابیه"
+
+msgid "Reply Citation Style"
+msgstr "سبک نقل پیغام در جوابیه"
+
+msgid "No Citation"
+msgstr "بدون نقل"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "«فرستنده» گفت"
+
+#, fuzzy
+msgid "On DATE, AUTHOR Wrote"
+msgstr "در «تاریخ»، «فرستنده» گفت"
+
+msgid "Quote Who XML"
+msgstr "نقل XMLای"
+
+msgid "User-Defined"
+msgstr "تعریف کاربر"
+
+msgid "User-Defined Citation Start"
+msgstr "شروع&nbsp;نقل&nbsp;پیغام&nbsp;در&nbsp;تعریف&nbsp;کاربر"
+
+msgid "User-Defined Citation End"
+msgstr "پایان&nbsp;نقل&nbsp;پیغام&nbsp;در&nbsp;تعریف&nbsp;کاربر"
+
+msgid "Signature Options"
+msgstr "تنظیمات امضاء"
+
+msgid "Use Signature"
+msgstr "استفاده از امضاء"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "خط قبل امضاء (--)"
+
+msgid "Take Address"
+msgstr ""
+
+msgid "Address Book Take:"
+msgstr ""
+
+msgid "Try to verify addresses"
+msgstr ""
+
+msgid "Config File Version"
+msgstr ""
+
+msgid "SquirrelMail Version"
+msgstr ""
+
+msgid "PHP Version"
+msgstr ""
+
+msgid "Organization Preferences"
+msgstr ""
+
+msgid "Organization Name"
+msgstr ""
+
+msgid "Organization Logo"
+msgstr ""
+
+msgid "Organization Logo Width"
+msgstr ""
+
+msgid "Organization Logo Height"
+msgstr ""
+
+msgid "Organization Title"
+msgstr ""
+
+msgid "Signout Page"
+msgstr ""
+
+msgid "Provider Link URI"
+msgstr ""
+
+msgid "Provider Name"
+msgstr ""
+
+msgid "Top Frame"
+msgstr ""
+
+msgid "Server Settings"
+msgstr ""
+
+msgid "Mail Domain"
+msgstr ""
+
+msgid "IMAP Server Address"
+msgstr ""
+
+msgid "IMAP Server Port"
+msgstr ""
+
+msgid "IMAP Server Type"
+msgstr ""
+
+msgid "Cyrus IMAP server"
+msgstr ""
+
+msgid "University of Washington's IMAP server"
+msgstr ""
+
+msgid "Microsoft Exchange IMAP server"
+msgstr ""
+
+msgid "Courier IMAP server"
+msgstr ""
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+msgid "hMailServer IMAP server"
+msgstr ""
+
+msgid "Not one of the above servers"
+msgstr ""
+
+msgid "IMAP Folder Delimiter"
+msgstr ""
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr ""
+
+msgid "Use TLS for IMAP Connections"
+msgstr ""
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr ""
+
+msgid "IMAP Authentication Type"
+msgstr ""
+
+msgid "IMAP login"
+msgstr ""
+
+msgid "Use Sendmail Binary"
+msgstr ""
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr ""
+
+msgid "SMTP Server Address"
+msgstr ""
+
+msgid "SMTP Server Port"
+msgstr ""
+
+msgid "Use TLS for SMTP Connections"
+msgstr ""
+
+msgid "SMTP Authentication Type"
+msgstr ""
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr ""
+
+msgid "Invert Time"
+msgstr ""
+
+msgid "Folders Defaults"
+msgstr ""
+
+msgid "Default Folder Prefix"
+msgstr ""
+
+msgid "Show Folder Prefix Option"
+msgstr ""
+
+msgid "By default, move to trash"
+msgstr "به طور پیش‌فرض به سطل آشغال منتقل کن"
+
+msgid "By default, move to sent"
+msgstr "به طور پیش‌فرض به فرستاده‌شده‌ها منتقل کن"
+
+msgid "By default, save as draft"
+msgstr ""
+
+msgid "List Special Folders First"
+msgstr ""
+
+msgid "Show Special Folders Color"
+msgstr ""
+
+msgid "Auto Expunge"
+msgstr ""
+
+msgid "Default Sub. of INBOX"
+msgstr ""
+
+msgid "Show 'Contain Sub.' Option"
+msgstr ""
+
+msgid "Default Unseen Notify"
+msgstr ""
+
+msgid "Default Unseen Type"
+msgstr ""
+
+msgid "Auto Create Special Folders"
+msgstr ""
+
+msgid "Auto delete folders"
+msgstr ""
+
+msgid "Enable /NoSelect folder fix"
+msgstr ""
+
+msgid "General Options"
+msgstr ""
+
+msgid "Data Directory"
+msgstr ""
+
+msgid "Temp Directory"
+msgstr ""
+
+msgid "Hash Level"
+msgstr ""
+
+msgid "Hash Disabled"
+msgstr ""
+
+msgid "Moderate"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Default Left Size"
+msgstr ""
+
+msgid "Usernames in Lowercase"
+msgstr ""
+
+msgid "Allow use of priority"
+msgstr ""
+
+msgid "Hide SM attributions"
+msgstr ""
+
+msgid "Enable use of delivery receipts"
+msgstr ""
+
+msgid "Allow editing of identities"
+msgstr ""
+
+msgid "Allow editing of full name"
+msgstr ""
+
+msgid "Use server-side sorting"
+msgstr ""
+
+msgid "Use server-side thread sorting"
+msgstr ""
+
+msgid "Allow server charset search"
+msgstr ""
+
+msgid "UID support"
+msgstr ""
+
+msgid "PHP session name"
+msgstr ""
+
+msgid "Message of the Day"
+msgstr ""
+
+msgid "Database"
+msgstr ""
+
+msgid "Address book DSN"
+msgstr ""
+
+msgid "Address book table"
+msgstr ""
+
+msgid "Preferences DSN"
+msgstr ""
+
+msgid "Preferences table"
+msgstr ""
+
+msgid "Preferences username field"
+msgstr ""
+
+msgid "Preferences key field"
+msgstr ""
+
+msgid "Preferences value field"
+msgstr ""
+
+msgid "Global address book DSN"
+msgstr ""
+
+msgid "Global address book table"
+msgstr ""
+
+msgid "Allow writing into global address book"
+msgstr ""
+
+msgid "Allow listing of global address book"
+msgstr ""
+
+msgid "Language settings"
+msgstr "تنظیمات زبان"
+
+msgid "Default Language"
+msgstr "زبان پیش‌فرض"
+
+msgid "Default Charset"
+msgstr ""
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+msgid "Address Books"
+msgstr ""
+
+msgid "Default Javascript Addressbook"
+msgstr ""
+
+msgid "Global address book file"
+msgstr ""
+
+msgid "Allow writing into global address book file"
+msgstr ""
+
+msgid "Themes"
+msgstr "رنگ‌بندی‌ها"
+
+msgid "Style Sheet URL (css)"
+msgstr ""
+
+msgid "Default theme"
+msgstr "رنگ‌بندی پیش‌فرض"
+
+msgid "Use index number of theme"
+msgstr ""
+
+msgid "Configuration Administrator"
+msgstr ""
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr ""
+
+msgid "Theme Path"
+msgstr ""
+
+msgid "Plugins"
+msgstr "متصل‌شونده‌ها"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr ""
+
+msgid "Test Configuration"
+msgstr ""
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+
+msgid "Submit a Bug Report"
+msgstr ""
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+"مطمئن شوید که از جدیدترین نسخه %s استفاده میکنید. شما دارید از نسخه %s "
+"استفاده میکنید."
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+" برای رفع مشکل خود %sلیست مشکلات%s را نگاه کنید. چنانچه در لیست موجود بود, "
+"ما از بروز این مشکل آگاهی داریم و در پی برطرف کردن آنیم."
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+"مطمئن شوید که هر اطلاعاتی را که داشته اید نوشته اید. در این صورت شما این "
+"شانس را به بقیه داده اید که مشکلاتشان را راحت‌تر پیدا و حل کنند. با فرستادن "
+"این مشکل، آن را در لیست مشکلات قرار نمیدهید. بلکه کسی که پیغام شما را دریافت "
+"میکند، ممکن است آن را برای شما اضافه کند."
+
+msgid "This bug involves"
+msgstr "این مشکل شامل"
+
+msgid "the general program"
+msgstr "کلیت برنامه"
+
+msgid "a specific plugin"
+msgstr "یکی از متصل‌شونده‌ها"
+
+msgid "Start Bug Report Form"
+msgstr "نمایش فرم گزارش مشکلات"
+
+msgid "Bug"
+msgstr "مشکل"
+
+msgid "Bug Reports:"
+msgstr "گزارش‌های مشکلات:"
+
+msgid "Show button in toolbar"
+msgstr "نمایش دکمه در نوار ابزار"
+
+msgid "TODAY"
+msgstr "امروز"
+
+msgid "Go"
+msgstr "برو"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr ""
+
+msgid "l, F j Y"
+msgstr ""
+
+msgid "ADD"
+msgstr "بیافزا"
+
+msgid "EDIT"
+msgstr "تغییر"
+
+msgid "DEL"
+msgstr "حذف"
+
+msgid "Start time:"
+msgstr "زمان شروع:"
+
+msgid "Length:"
+msgstr "طول:"
+
+msgid "Priority:"
+msgstr "اولویت:"
+
+msgid "Title:"
+msgstr "موضوع:"
+
+msgid "Set Event"
+msgstr "رویداد را تنظیم کن"
+
+msgid "Event Has been added!"
+msgstr "رویداد اضافه گشت!"
+
+msgid "Date:"
+msgstr "تاریخ:"
+
+msgid "Time:"
+msgstr "زمان:"
+
+msgid "Day View"
+msgstr "چشم‌انداز روز"
+
+msgid "Do you really want to delete this event?"
+msgstr "آیا واقعاً می خواهید این رویداد را پاک کنید؟"
+
+msgid "Event deleted!"
+msgstr "رویداد پاک شد!"
+
+msgid "Nothing to delete!"
+msgstr "چیزی برای پاک کردن وجود ندارد!"
+
+msgid "Update Event"
+msgstr "رویداد را به روز کن"
+
+msgid "Do you really want to change this event from:"
+msgstr "آیا شما واقعاٌ می خواهید رویداد را تغییر دهید؟"
+
+msgid "to:"
+msgstr "به:"
+
+msgid "Event updated!"
+msgstr "رویداد به روز شد"
+
+msgid "Month View"
+msgstr "چشم‌انداز ماه"
+
+msgid "0 min."
+msgstr "۰ دقیقه"
+
+msgid "15 min."
+msgstr "۱۵ دقیقه"
+
+msgid "30 min."
+msgstr "۳۰ دقیقه"
+
+msgid "45 min."
+msgstr "۴۵ دقیقه"
+
+msgid "1 hr."
+msgstr "۱ ساعت"
+
+msgid "1.5 hr."
+msgstr "۱.۵ ساعت"
+
+msgid "2 hr."
+msgstr "۲ ساعت"
+
+msgid "2.5 hr."
+msgstr "۲.۵ ساعت"
+
+msgid "3 hr."
+msgstr "۳ ساعت"
+
+msgid "3.5 hr."
+msgstr "۳.۵ ساعت"
+
+msgid "4 hr."
+msgstr "۴ ساعت"
+
+msgid "5 hr."
+msgstr "۵ ساعت"
+
+msgid "6 hr."
+msgstr "۶ ساعت"
+
+msgid "Calendar"
+msgstr "تقویم"
+
+msgid "Delete & Prev"
+msgstr "حذف و برگشت به قبلی"
+
+msgid "Delete & Next"
+msgstr "حذف و رفتن به بعدی"
+
+msgid "Move to:"
+msgstr "منتقل کن به:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "دکمه‌های حذف/انتقال/بعدی:"
+
+msgid "Display at top"
+msgstr "بالا نمایششان بده"
+
+msgid "with move option"
+msgstr "با امکان جابه‌جایی"
+
+msgid "Display at bottom"
+msgstr "پایین نمایششان بده"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr ""
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr ""
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr ""
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr ""
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr ""
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr ""
+
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr ""
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr ""
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr ""
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr ""
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+
+msgid "WARNING! You must enter something to search for."
+msgstr ""
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "نوع پویش ذخیره گشت"
+
+msgid "Message Filtering"
+msgstr "تنظیمات صافی پیغام‌ها"
+
+msgid "What to Scan:"
+msgstr "چه چیزهایی پویش شوند:"
+
+msgid "All messages"
+msgstr "همه پیغام‌ها"
+
+msgid "Only unread messages"
+msgstr "فقط نخوانده‌ها"
+
+msgid "Save"
+msgstr "ذخیره شود"
+
+msgid "Match:"
+msgstr "مورد تطبیق:"
+
+msgid "Header"
+msgstr "سرآمد"
+
+msgid "Contains:"
+msgstr "شامل باشه:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "اگز %s شامل %s باشه، آنگاه به %s منتقلش کن"
+
+msgid "Message Filters"
+msgstr "صافی‌های پیغام‌ها"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"صافی پیغام‌ها این امکان را به شما میدهد تا پیغام‌هایتان را براساس معیار‌هایی به "
+"طور خودکار دسته‌بندی نمایید تا سازمان‌دهی آنها راحت‌تر باشد."
+
+msgid "SPAM Filters"
+msgstr "صافی‌های هرزنامه‌ها"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"شما میتوانید در این قسمت با استفاده از لیست‌های سیاه نامه‌های تبلیغاتی و "
+"هرزنامه را به طور خودکار شناسایی کرده و به پوشه دیگری منتقل کنید."
+
+msgid "You must select a spam folder."
+msgstr "شما باید یک پوشه برای هرزنامه‌ها انتخاب کنید."
+
+msgid "You must select a scan type."
+msgstr "شما باید نوع پویش را مشخص کنید."
+
+msgid "Spam Filtering"
+msgstr "تنظیمات صافی هرزنامه‌ها"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "هشدار! به مدیریت بگویید که متغیر %s را تنظیم کند"
+
+msgid "Move spam to:"
+msgstr "هرزنامه را منتقل کن به:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+
+msgid "Unread messages only"
+msgstr "فقط پیغام‌های خوانده نشده"
+
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "هرزنامه به %s ارسال شد"
+
+msgid "not set yet"
+msgstr "هنوز تنظیم نشده"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "پویش هرزنامه‌ها به %s محدود است."
+
+msgid "ON"
+msgstr "روشن"
+
+msgid "OFF"
+msgstr "خاموش"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s پیدا نشد."
+
+msgid "Today's Fortune"
+msgstr "طالع امروز:"
+
+msgid "Fortunes:"
+msgstr "طالع‌ها:"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "طالع روز را بالای فضای پیغام‌ها نمایش بده"
+
+msgid "Plugin is disabled."
+msgstr "متصل‌شونده فعال نیست."
+
+msgid "IMAP server information"
+msgstr "اطلاعات میزبان IMAP"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+
+msgid "Mailinglist"
+msgstr ""
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+
+msgid "Send Mail"
+msgstr "ارسال پیغام"
+
+msgid "Post to List"
+msgstr "پست به لیست"
+
+msgid "Reply to List"
+msgstr "پاسخ به لیست"
+
+msgid "List Archives"
+msgstr "لیست آرشیوها"
+
+msgid "Contact Listowner"
+msgstr ""
+
+msgid "Mailing List"
+msgstr ""
+
+msgid "POP3 connect:"
+msgstr "اتصال POP3:"
+
+msgid "No server specified"
+msgstr "میزبانی مشخص نشده"
+
+msgid "Error "
+msgstr "خطا"
+
+msgid "POP3 user:"
+msgstr "POP3 کاربر:"
+
+msgid "no login ID submitted"
+msgstr "شناسه کاربری ارسال نشده"
+
+msgid "connection not established"
+msgstr "اتصال برقرار نشده"
+
+msgid "POP3 pass:"
+msgstr ""
+
+msgid "No password submitted"
+msgstr "اسم رمز ارسال نشده"
+
+msgid "authentication failed "
+msgstr "تائید هویت صورت نگرفت"
+
+msgid "POP3 apop:"
+msgstr ""
+
+msgid "No connection to server"
+msgstr "اتصالی با میزبان برقرار نیست"
+
+msgid "No login ID submitted"
+msgstr "شناسه کاربری ارسال نشده"
+
+msgid "No server banner"
+msgstr ""
+
+msgid "abort"
+msgstr ""
+
+msgid "apop authentication failed"
+msgstr "apop تائید هویت انجام نشد"
+
+msgid "POP3 login:"
+msgstr "POP3 ورود:"
+
+msgid "POP3 top:"
+msgstr ""
+
+msgid "POP3 pop_list:"
+msgstr ""
+
+msgid "Premature end of list"
+msgstr ""
+
+msgid "POP3 get:"
+msgstr ""
+
+msgid "POP3 last:"
+msgstr ""
+
+msgid "POP3 reset:"
+msgstr ""
+
+msgid "POP3 send_cmd:"
+msgstr ""
+
+msgid "Empty command string"
+msgstr "رشته دستور خالی"
+
+msgid "POP3 quit:"
+msgstr ""
+
+msgid "connection does not exist"
+msgstr "اتصال وجود ندارد"
+
+msgid "POP3 uidl:"
+msgstr ""
+
+msgid "POP3 delete:"
+msgstr ""
+
+msgid "No msg number submitted"
+msgstr ""
+
+msgid "Command failed "
+msgstr "دستور اجرا نشد"
+
+msgid "Remote POP server Fetching Mail"
+msgstr ""
+
+msgid "Select Server:"
+msgstr "انتخاب میزبان:"
+
+msgid "Password for"
+msgstr "اسم رمز برای"
+
+msgid "Fetch Mail"
+msgstr "دریافت پیغام"
+
+msgid "Fetching from "
+msgstr "در حال دریافت از"
+
+msgid "Oops, "
+msgstr "اوخ،"
+
+msgid "Opening IMAP server"
+msgstr "در حال بازکردن میزبان IMAP"
+
+msgid "Opening POP server"
+msgstr "در حال بازکردن میزبان POP"
+
+msgid "Login Failed:"
+msgstr "خطا در ورود"
+
+msgid "Login OK: No new messages"
+msgstr "ورود موفق: پیغام جدیدی وجود ندارد"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "ورود موفق: Inbox خالی میباشد"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "ورود موفق: Inbox شامل %s پیغام میباشده"
+
+msgid "Fetching UIDL..."
+msgstr ""
+
+msgid "Server does not support UIDL."
+msgstr ""
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "باقی گذاشتن پیغام بر روی میزبان"
+
+msgid "Deleting messages from server..."
+msgstr "پاک کردن پیغام از میزبان"
+
+msgid "Fetching message "
+msgstr "در حال دریافت پیغام"
+
+#, fuzzy
+msgid "Server error. Disconnect"
+msgstr "خطای میزبان...قطع اتصال"
+
+msgid "Reconnect from dead connection"
+msgstr "برقراری اتصال مجدد"
+
+msgid "Saving UIDL"
+msgstr ""
+
+msgid "Refetching message "
+msgstr ""
+
+msgid "Error Appending Message!"
+msgstr "خطا در الحاق پیغام"
+
+msgid "Closing POP"
+msgstr ""
+
+msgid "Logging out from IMAP"
+msgstr "در حال خروج از IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "پیغام به فضای پیغام‌ها الحاق شد"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr ""
+
+msgid "Delete failed:"
+msgstr "پاک نشده‌ها:"
+
+msgid "Remote POP server settings"
+msgstr ""
+
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr ""
+
+msgid "Encrypt passwords (informative only)"
+msgstr ""
+
+msgid "Add Server"
+msgstr "افزودن میزبان"
+
+msgid "Server:"
+msgstr "میزبان:"
+
+msgid "Port:"
+msgstr ""
+
+msgid "Alias:"
+msgstr ""
+
+msgid "Username:"
+msgstr "نام کاربری"
+
+msgid "Store in Folder:"
+msgstr "ذخیره سازی در پوشه :"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "پست الکترونیکی را بر روی میزبان نگه دار"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "بازخوانی"
+
+msgid "Check mail at folder refresh"
+msgstr ""
+
+msgid "Modify Server"
+msgstr "تغییر میزبان"
+
+msgid "Server Name:"
+msgstr "نام میزبان"
+
+msgid "Modify"
+msgstr "تغییر دادن"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "خطایی یافت نشد"
+
+msgid "Fetching Servers"
+msgstr "میزبانان دریافت"
+
+msgid "Confirm Deletion of a Server"
+msgstr "تائید پاک کردن از میزبان"
+
+msgid "Selected Server:"
+msgstr "میزبان انتخاب شده:"
+
+msgid "Confirm delete of selected server?"
+msgstr "تائید پاک کردن از میزبان انتخاب شده؟"
+
+msgid "Confirm Delete"
+msgstr "تائید پاک کردن"
+
+msgid "Leave Mail on Server"
+msgstr "پست الکترونیکی را بر روی میزبان نگه دار"
+
+msgid "Undefined Function"
+msgstr "تابع تعریف نشده"
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "دریافت"
+
+msgid "Warning, "
+msgstr "هشدار،"
+
+msgid "Mail Fetch Result:"
+msgstr "نتیجه‌ی دریافت پست الکترونیکی"
+
+msgid "POP3 Fetch Mail"
+msgstr "دریافت پست الکترونیکی از روش POP3"
+
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"در این قسمت میتوانید مشخص کنید که از چه میزبان‌های POP3 ای میخواهید "
+"پیغام‌هایتان دریافت شود."
+
+msgid "Message Details"
+msgstr "جزئیات پیغام"
+
+msgid "Bodystructure"
+msgstr "ساختار بدنه"
+
+msgid "Entity"
+msgstr ""
+
+msgid "Content-Type"
+msgstr "نوع محتویات"
+
+msgid "Encoding"
+msgstr ""
+
+msgid "RFC822 Message body"
+msgstr ""
+
+msgid "Close Window"
+msgstr "بستن پنجره"
+
+msgid "Save Message"
+msgstr "ذخیره سازی پیغام"
+
+msgid "View Message details"
+msgstr "نمایش جزئیات پیغام"
+
+msgid "New Mail"
+msgstr "پیغام جدید"
+
+msgid "SquirrelMail Notice:"
+msgstr ""
+
+#, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "شما %s پیغام جدید دارید"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "شما %s پیغام جدید دارید"
+
+msgid "New Mail Notification"
+msgstr "آگاه کننده دریافت پست الکترونیکی جدید"
+
+#, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+
+msgid "Check all boxes, not just INBOX"
+msgstr "تمام جعبه‌ها را چک کن، نه فقط INBOX را"
+
+#, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+
+msgid "Show popup window on new mail"
+msgstr ""
+
+#, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+
+msgid "Count only messages that are RECENT"
+msgstr "فقط پیغام‌هایی که اخیراً ارسال شده را بشمار"
+
+#, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+
+msgid "Change title on supported browsers"
+msgstr "تغییرعنوان را در مرورگرهای پشتیبانی شده "
+
+#, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+
+msgid "Enable Media Playing"
+msgstr "فعالسازی اجرای صوت "
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+
+msgid "Select server file"
+msgstr "پرونده میزبان را انتخاب کن"
+
+msgid "(none)"
+msgstr "(خالی)"
+
+msgid "requires JavaScript to work"
+msgstr "به JavaScript جهت کار احتیاج است"
+
+msgid "Try"
+msgstr "سعی کن"
+
+msgid "Current File:"
+msgstr "پرونده جاری"
+
+msgid "NewMail Options"
+msgstr "تنظیمات پست جدید"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"وقتی پیغام جدیدی میرسد با توجه به تنظیمات این قسمت صدایی پخش میشود و یا یک "
+"پنجره کوچک باز میشود."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s پیغام‌ جدید"
+
+#, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s پیغام جدید"
+
+msgid "Test Sound"
+msgstr "آزمایش صدا"
+
+msgid "No sound specified"
+msgstr "هیچ صدایی مشخص نشده"
+
+msgid "Loading the sound..."
+msgstr "اجرا کردن صدا..."
+
+msgid "Sent Subfolders Options"
+msgstr "تنظیمات زیرپوشه ارسال‌شده‌ها"
+
+msgid "Use Sent Subfolders"
+msgstr "از زیرپوشه ارسال‌شده‌ها استفاده کن"
+
+msgid "Monthly"
+msgstr "ماهانه"
+
+msgid "Quarterly"
+msgstr "هر فصل"
+
+msgid "Yearly"
+msgstr "سالانه"
+
+msgid "Base Sent Folder"
+msgstr "پوشه اصلی ارسال‌شده‌ها"
+
+msgid "Enabled"
+msgstr "فعال شده"
+
+msgid "Disable it"
+msgstr "غیرفعالش کن"
+
+msgid "Enable it"
+msgstr "فعالش کن"
+
+msgid "Spam reporting"
+msgstr "گزارش هرزنامه"
+
+msgid "SpamCop link is:"
+msgstr ""
+
+msgid "Delete spam when reported:"
+msgstr "هرزنامه را پس از گزارش شدن پاک کن:"
+
+msgid "Only works with email-based reporting"
+msgstr ""
+
+msgid "Spam Reporting Method:"
+msgstr "روش گزارش هرزنامه:"
+
+msgid "Quick email-based reporting"
+msgstr ""
+
+msgid "Thorough email-based reporting"
+msgstr "از طریق گزارش پست الکترونیکی "
+
+msgid "Web-based form"
+msgstr "فرم تحت وب"
+
+msgid "Save Method"
+msgstr "روش ذخیره سازی"
+
+msgid "Your SpamCop authorization code:"
+msgstr ""
+
+msgid "see below"
+msgstr "به پایین مراجعه کنید"
+
+msgid "Save ID"
+msgstr "ذخیره شناسه"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+
+msgid "Before you sign up, be warned"
+msgstr "قبل از ثبت نام، آگاه باشید"
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+
+msgid "Email-based reporting"
+msgstr "گزارش دهنده تحت پست الکترونیک "
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+
+msgid "Web-based reporting"
+msgstr "گزارش دهنده‌ی تحت وب"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+msgid "More information"
+msgstr "اطلاعات بیشتر"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+
+msgid "Report as Spam"
+msgstr ""
+
+msgid "SpamCop - Spam Reporting"
+msgstr ""
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+
+msgid "Cancel / Done"
+msgstr "انصراف / انجام شد"
+
+msgid "Send Spam Report"
+msgstr "ارسال گزارش هرزنامه"
+
+msgid "SpellChecker Options"
+msgstr "تنظیمات غلط املایی یاب"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"دراینجا شما میتوانید تنظیم کنید که چگونه دیکشنری شخصی شما برپا گردد، چگونه "
+"آنرا ویرایش کنید، یا اینکه کدام زبان برای چک کردن املا شما مورد استفاده قرار "
+"گیرد."
+
+msgid "Check Spelling"
+msgstr "چک کردن املا"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "برگشت به صفحه غلط املایی یاب"
+
+msgid "ATTENTION:"
+msgstr "توجه:"
+
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+
+msgid "Delete my dictionary and start a new one"
+msgstr "دیکشنری من را پاک کن و یکی از نو شروع کن"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr ""
+
+msgid "Proceed"
+msgstr "ادامه بده"
+
+msgid "You must make a choice"
+msgstr "شما باید گزینه ای را انتخاب کنید"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr ""
+"شما میتوانید دیکشنری خود را پاک کرده یا اینکه گذرواژه قدیمی خود را وارد "
+"کنید. "
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr ""
+
+msgid "Error Decrypting Dictionary"
+msgstr ""
+
+msgid "Cute."
+msgstr ""
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "نمیتوان فایل اطلاعات را قفل کرد"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "سعی کردم که '%s' را اجرا کنم ولی مقدار برگشتی برابر بود با:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "غلط املایی یاب تنظیم نشده است."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "غلط املایی یاب کارش را به پایان رساند. تغییرات اعمال شود؟"
+
+msgid "No changes were made."
+msgstr "تغییری ایجاد نشده است."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "در حال ذخیره‌سازی دیکشنری شخصی شما... لطفاً صبر کنید."
+
+msgid "SquirrelSpell Results"
+msgstr "نتایج غلط املایی یاب"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s خطا پیدا شد"
+
+msgid "Line with an error:"
+msgstr "خطا در خط:"
+
+msgid "Error:"
+msgstr "خطا:"
+
+msgid "Suggestions:"
+msgstr "پیشنهادات:"
+
+msgid "Suggestions"
+msgstr "پیشنهادات"
+
+msgid "Change to:"
+msgstr "تغییر به:"
+
+msgid "Occurs times:"
+msgstr "تعداد تکرارها:"
+
+msgid "Change this word"
+msgstr "تغییر این لغت"
+
+msgid "Change"
+msgstr "تغییر"
+
+msgid "Change ALL occurances of this word"
+msgstr "تغییر همه تکرارهای این لغت"
+
+msgid "Change All"
+msgstr "تغییر همه"
+
+msgid "Ignore this word"
+msgstr "این لغت را نادیده بگیر"
+
+msgid "Ignore"
+msgstr "نادیده بگیر"
+
+msgid "Ignore ALL occurances this word"
+msgstr "تمام تکرارهای این لغت را نادیده بگیر"
+
+msgid "Ignore All"
+msgstr "همه را نادیده بگیر"
+
+msgid "Add this word to your personal dictionary"
+msgstr "این کلمه را به دیکشنری شخصی اضافه کن"
+
+msgid "Add to Dic"
+msgstr "بیافزا به دیکشنری"
+
+msgid "Close and Commit"
+msgstr "تایید و بستن"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr ""
+
+msgid "Close and Cancel"
+msgstr "انصراف و بستن"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+
+msgid "No errors found"
+msgstr "خطایی یافت نشد"
+
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr ""
+
+msgid "Your personal dictionary was erased."
+msgstr "دیکشنری شخصی شما پاک شد."
+
+msgid "Dictionary Erased"
+msgstr "دیکشنری پاک شد"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+
+msgid "Close this Window"
+msgstr "بستن پنجره"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+
+msgid "Successful re-encryption"
+msgstr ""
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+
+msgid "Dictionary re-encrypted"
+msgstr ""
+
+msgid "Personal Dictionary"
+msgstr ""
+
+msgid "No words in your personal dictionary."
+msgstr ""
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr ""
+
+#, php-format
+msgid "%s dictionary"
+msgstr "دیکشنری %s"
+
+msgid "Delete checked words"
+msgstr "حذف لغات چک‌شده"
+
+msgid "Edit your Personal Dictionary"
+msgstr "ویرایش دیکشنری شخصی"
+
+msgid "Please make your selection first."
+msgstr "لطفاً ابتدا انتخاب کنید."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr ""
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr ""
+
+msgid "Change crypto settings"
+msgstr ""
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr ""
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr ""
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "پاک کردن ورودی ذیل از دایرکتوری %s : "
+
+msgid "All done!"
+msgstr "انجام شد!"
+
+msgid "Personal Dictionary Updated"
+msgstr "دیکشنری شخصی بروزرسانی شد"
+
+msgid "No changes requested."
+msgstr "تغییری درخواست نشده بود."
+
+msgid "Please wait, communicating with the server..."
+msgstr "لطفا صبر کنید، در حال برقراری ارتباط با میزبان..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr "لطفاً دیکشنری مورد نظر خود را برای چک کردن نوشتار را انتخاب کنید:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "در حال اجرای SquirrelSpell"
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr ""
+"تنظیمات بر اساس %s با استفاده از %s به عنوان دیکشنری اصلی بر‌قرار گردید. "
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "استفاده از دیکشنری %s به عنوان دیکشنری اصلی جهت چک کردن نوشتار."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "ترجیحات دیکشنری بین‌المللی بروز شد"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+
+msgid "Make this dictionary my default selection:"
+msgstr "این دیکشنری را پیش‌فرض من کن:"
+
+msgid "Make these changes"
+msgstr "تغییرات را اعمال کن"
+
+msgid "Add International Dictionaries"
+msgstr "اضافه‌کردن دیکشنری‌های بین‌المللی"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "لطفاً تنظیماتی را که میخواهید اعمال شود را انتخاب کنید:"
+
+msgid "Edit your personal dictionary"
+msgstr "ویرایش دیکشنری شخصی"
+
+msgid "Set up international dictionaries"
+msgstr "تنظیم دیکشنری‌های بین‌المللی"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr ""
+
+msgid "not available"
+msgstr "موجود نیست"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "تنظیمات منوی غلط املایی یاب"
+
+msgid "Translator"
+msgstr "مترجم"
+
+msgid "Saved Translation Options"
+msgstr "تنظیمات ذخیره شده ی ترجمه"
+
+msgid "Your server options are as follows:"
+msgstr "تنظیمات میزبان شما بدین گونه میباشد:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr ""
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "تعداد  جفت زبان‌های پشتیبانی شده: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr ""
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "تعداد زبان‌های پشتیبانی شده: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr ""
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr ""
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr ""
+"شما همچنین میتوانید در مورد نمایش داده شدن فضای ترجمه و مکان آن تصمیم بگیرید."
+
+msgid "Select your translator:"
+msgstr "مترجم خود را انتخاب کنید:"
+
+msgid "When reading:"
+msgstr "هنگام خواندن:"
+
+msgid "Show translation box"
+msgstr "نمایش فضای ترجمه"
+
+msgid "to the left"
+msgstr "به سمت چپ"
+
+msgid "in the center"
+msgstr "وسط"
+
+msgid "to the right"
+msgstr "به سمت راست"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "ترجمه در داخل فریم برنامه"
+
+msgid "Translation Options"
+msgstr "تنظیمات ترجمه‌گر"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "در صورت دریافت یک نامه به زبان خارجی از کدام مترجم باید استفاده شود؟"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s به %s"
+
+msgid "Chinese, Simplified"
+msgstr "چینی ساده‌شده"
+
+msgid "English"
+msgstr "انگلیسی"
+
+msgid "Chinese, Traditional"
+msgstr "چینی سنتی"
+
+msgid "Dutch"
+msgstr "هلندی"
+
+msgid "French"
+msgstr "فرانسوی"
+
+msgid "German"
+msgstr "آلمانی"
+
+msgid "Greek"
+msgstr "یونانی"
+
+msgid "Italian"
+msgstr "ایتالیایی"
+
+msgid "Japanese"
+msgstr "ژاپنی"
+
+msgid "Korean"
+msgstr "کره‌ای"
+
+msgid "Portuguese"
+msgstr "پرتغالی"
+
+msgid "Russian"
+msgstr "روسی"
+
+msgid "Spanish"
+msgstr "اسپانیایی"
+
+msgid "Translate"
+msgstr "ترجمه"
+
+msgid "Brazilian Portuguese"
+msgstr "پرتغالی برزیلی"
+
+msgid "Bulgarian"
+msgstr "بلغاری"
+
+msgid "Croatian"
+msgstr "کره‌ای"
+
+msgid "Czech"
+msgstr "چکی"
+
+msgid "Danish"
+msgstr "دانمارکی"
+
+msgid "Filipino (Tagalog)"
+msgstr "فلیپینی"
+
+msgid "Finnish"
+msgstr "فنلاندی"
+
+msgid "Hungarian"
+msgstr "مجاری"
+
+msgid "Icelandic"
+msgstr "ایسلند"
+
+msgid "Latin"
+msgstr "لاتین"
+
+msgid "Latin American Spanish"
+msgstr "لاتین اسپانیایی آمریکایی"
+
+msgid "Norwegian"
+msgstr "نروژی"
+
+msgid "Polish"
+msgstr "لهستانی"
+
+msgid "Romanian"
+msgstr "رمانی"
+
+msgid "Serbian"
+msgstr "صربی"
+
+msgid "Slovenian"
+msgstr "اسلوانیایی"
+
+msgid "Swedish"
+msgstr "سوئدی"
+
+msgid "Turkish"
+msgstr "ترکی"
+
+msgid "Welsh"
+msgstr "ولزی"
+
+msgid "Indonesian"
+msgstr "اندونزیایی"
+
+msgid "to English"
+msgstr "به انگلیسی"
+
+msgid "from English"
+msgstr "از انگلیسی"
+
+msgid "Interface language"
+msgstr "زبان ظاهر برنامه"
+
+msgid "Translation direction"
+msgstr "جهت ترجمه"
+
+#, fuzzy, php-format
+msgid "About SquirrelMail %s"
+msgstr "SquirrelMail نسخه %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "اطلاعات بیشتر"
+
+#, fuzzy, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "SquirrelMail نسخه %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+msgid "sort by name"
+msgstr "ترتیب براساس نام"
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+msgid "Add to address book"
+msgstr "اضافه کن به دفترچه‌آدرس"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "پوشه‌ای برای خروج از اشتراک یافت نشد!"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "پوشه‌ای برای اشتراک پیدا نشد!"
+
+msgid "Last Refresh"
+msgstr "آخرین بازخوانی"
+
+msgid "Check mail"
+msgstr "بازخوانی"
+
+msgid "Save folder tree"
+msgstr "ذخیره درخت پوشه‌ها"
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "SquirrelMail نسخه %s"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "تنظیمات پوشه‌ها"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "Received"
+msgstr "رسید"
+
+msgid "As Attachment"
+msgstr "به عنوان ضمیمه"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr ""
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+msgid "Error in criteria argument"
+msgstr ""
+
+msgid "(Illegal date)"
+msgstr ""
+
+msgid "(Wrong date)"
+msgstr ""
+
+msgid "In"
+msgstr "در"
+
+msgid "(Missing argument)"
+msgstr ""
+
+msgid "(Spurious argument)"
+msgstr ""
+
+msgid "Fold"
+msgstr "تا کن"
+
+msgid "Unfold"
+msgstr "باز کن"
+
+msgid "Saved Searches"
+msgstr "جستجوهای ذخیره‌شده"
+
+msgid "Missing"
+msgstr ""
+
+msgid "and&nbsp;subfolders:"
+msgstr ""
+
+msgid "Exclude Criteria:"
+msgstr ""
+
+msgid "Search Criteria"
+msgstr "معیارهای جستجو"
+
+msgid "Add New Criteria"
+msgstr "افزودن معیار جدید"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr ""
+
+msgid "Not"
+msgstr "غیر"
+
+msgid "Answered"
+msgstr ""
+
+msgid "Before"
+msgstr "قبل از"
+
+msgid "Message Body"
+msgstr "متن پیغام"
+
+msgid "Deleted"
+msgstr "حذف‌شده"
+
+msgid "Draft"
+msgstr "پیش‌نویس"
+
+msgid "Flagged"
+msgstr "پرچم‌دار"
+
+msgid "Sent By"
+msgstr "فرستاده‌شده توسط"
+
+msgid "Header Field"
+msgstr "فیلد سرآمد"
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Larger Than"
+msgstr ""
+
+msgid "Old"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Recent"
+msgstr "اخیر"
+
+msgid "Seen"
+msgstr "دیده‌شده"
+
+msgid "Sent Before"
+msgstr "فرستاده‌شده قبل از"
+
+msgid "Sent On"
+msgstr "فرستاده شده در"
+
+msgid "Sent Since"
+msgstr ""
+
+msgid "Since"
+msgstr "از"
+
+msgid "Smaller Than"
+msgstr ""
+
+msgid "Subject Contains"
+msgstr "موضوع شامل باشه:"
+
+msgid "Header and Body"
+msgstr ""
+
+msgid "Sent To"
+msgstr "فرستاده شود به"
+
+msgid "And In"
+msgstr ""
+
+msgid "Or In"
+msgstr ""
+
+msgid "And"
+msgstr "و"
+
+msgid "Or"
+msgstr ""
+
+msgid "Standard search"
+msgstr ""
+
+msgid "Advanced search"
+msgstr ""
+
+msgid "Folder List"
+msgstr "لیست پوشه‌ها"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr "نام پوشه نادرست است. لطفاً نام دیگری را انتخاب کنید."
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "شما پوشه‌ای را برای تغییر نام انتخاب نکرده‌اید"
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "شما پوشه‌ای را برای تغییر نام انتخاب نکرده‌اید"
+
+msgid "Possible reason:"
+msgstr ""
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+msgid "Reason:"
+msgstr "علت:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+msgid "Unknown recipient"
+msgstr ""
+
+msgid "Unflag"
+msgstr ""
+
+msgid "Flag"
+msgstr "پرچم"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "حذف"
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "تنظیمات نمایش پیغام"
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "آوردن اسامی رونوشت‌ها در پیغام جدید"
+
+#, fuzzy
+msgid "Strip signature when replying"
+msgstr "مکان کٍرسِر هنگام جواب دادن پیغام"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "اجازه انتخاب صفحه"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "تنظیمات عمومی نما"
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "پیغام اصلی"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "دقیقه"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+#, fuzzy
+msgid "Hide SquirrelMail Header"
+msgstr "نمایش کامل سرآمد"
+
+#, fuzzy
+msgid "Search functions"
+msgstr "جستجو برای"
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "اجازه انتخاب صفحه"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "ثانیه"
+
+#, fuzzy
+msgid "Use PHP recode functions"
+msgstr "جستجو برای"
+
+#, fuzzy
+msgid "Use PHP iconv functions"
+msgstr "جستجو برای"
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+#, fuzzy
+msgid "Show System Specifications"
+msgstr "نمایش ساعت با ثانیه‌شمار"
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "لیست آرشیوها"
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "جستجو برای"
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "آدرس پست الکترونیکی"
+
+msgid "Mailing list:"
+msgstr ""
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "SquirrelMail نسخه %s"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "SquirrelMail نسخه %s"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "SquirrelMail نسخه %s"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "SquirrelMail نسخه %s"
+
+msgid "Sort by:"
+msgstr ""
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "لیست آرشیوها"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "حذف پوشه"
+
+msgid "Summary keyword:"
+msgstr ""
+
+msgid "Sort By:"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Summary"
+msgstr "جمع‌بندی"
+
+msgid "Open Date"
+msgstr "تاریخ باز کردن"
+
+msgid "Close Date"
+msgstr "تاریخ بستن"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "تایید"
+
+msgid "Assignee"
+msgstr ""
+
+msgid "Order:"
+msgstr "ترتیب:"
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Search Bugtracker"
+msgstr ""
+
+msgid "You must type in a new password."
+msgstr "شما بایستی یک گذرواژه جدید وارد کنید."
+
+msgid "You must also type in your new password in the verify box."
+msgstr "شما بایستی گذرواژه جدید را در جعبه تایید دوباره وارد نمایید."
+
+msgid "Your new password does not match the verify password."
+msgstr "گذرواژه جدید شما با گذرواژه جعبه تایید یکسان نمیباشد."
+
+msgid "You must type in your current password."
+msgstr "شما بایستی گذرواژه فعلی خود را وارد نمایید."
+
+msgid "Your current password is not correct."
+msgstr "کاربر وجود ندارد و یا گذرواژه نادرست وارد گشته است."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "اسم مستعار حاوی کاراکترهای غیرمجاز است"
+
+msgid "Change Password"
+msgstr "تغییر گذرواژه"
+
+msgid "Current Password:"
+msgstr "کلمه‌عبور فعلی:"
+
+msgid "New Password:"
+msgstr "کلمه‌عبور جدید:"
+
+msgid "Verify New Password:"
+msgstr "تکرار کلمه‌عبور جدید:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "کلمه‌عبور جدید:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "ناتوان در بازنویسی"
+
+#, fuzzy, php-format
+msgid "Error: %s"
+msgstr "خطا"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Server replied: %s"
+msgstr "جواب میزبان"
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "اتصالی با میزبان برقرار نیست"
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "جستجو برای"
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "تاریخ نامعلوم"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+msgid "Cannot change password!"
+msgstr "نمیتوان گذرواژه را تغییر داد!"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "اتصالی با میزبان برقرار نیست"
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+#, fuzzy
+msgid "Invalid user."
+msgstr "URL نادرست"
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "رشته دستور خالی"
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "رشته دستور خالی"
+
+#, fuzzy
+msgid "Empty username"
+msgstr "نام کاربری"
+
+#, fuzzy
+msgid "Empty new password"
+msgstr "کلمه‌عبور جدید:"
+
+msgid "Server Capability response:"
+msgstr ""
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+msgid "Select"
+msgstr "انتخاب"
+
+msgid "Test Name"
+msgstr ""
+
+msgid "IMAP command string"
+msgstr "رشته دستور IMAP"
+
+msgid "Request:"
+msgstr "درخواست:"
+
+#, fuzzy
+msgid "No POP3 servers configured yet."
+msgstr "میزبانی مشخص نشده"
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "اینجا را برای ورود دوباره کلیک کنید."
+
+#, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] ""
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "طول پنجره پیغام جدید"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "عرض پنجره پیغام جدید"
+
+msgid "uploaded media file"
+msgstr ""
+
+#, fuzzy
+msgid "none"
+msgstr "(خالی)"
+
+msgid "Upload Media File:"
+msgstr ""
+
+msgid "Uploaded Media File:"
+msgstr ""
+
+#, fuzzy
+msgid "unavailable"
+msgstr "موجود نیست"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+msgid "Spam Service Type:"
+msgstr ""
+
+#, fuzzy
+msgid "Free reporting"
+msgstr "گزارش دهنده‌ی تحت وب"
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "نوع پویش ذخیره گشت"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "گزارش هرزنامه"
+
+msgid "Translation Theme:"
+msgstr "نما ترجمه"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "تنظیمات نما"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr ""
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr ""
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+#, fuzzy
+msgid "When composing:"
+msgstr "هنگام خواندن:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr ""
+
+msgid "Delivery error report"
+msgstr "گزارش خطا در ارسال"
+
+msgid "Undelivered Message Headers"
+msgstr "سرآمدهای پیغام منتقل نشده"
+
+msgid "This image has been removed for security reasons"
+msgstr "این تصویر به دلایل امنیتی حذف شده است"
+
+#~ msgid "Unknown error"
+#~ msgstr "خطای نامشخص"
+
+#~ msgid "said"
+#~ msgstr "گفت"
+
+#~ msgid "Message "
+#~ msgstr "پیغام"
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "آهای! دنبال چی میگردی؟"

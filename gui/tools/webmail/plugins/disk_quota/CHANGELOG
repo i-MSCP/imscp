@@ -1,0 +1,143 @@
+Jan 23, 2004 - version 3.1.1
+- The swf files had a strange problem which seems to be happening from
+  a bug in Flash. That is if quota and the limit had a difference of
+  multiplies of 10 (5000 and 10000 for example) the red line was not being
+  drawn. Now it is corrected. Thanks to Eldon Rosenberg for his help on
+  identifying this issue.
+- Added Portuguese translations by Tiago Augusto Wegner.
+
+Nov 18, 2003 - version 3.1
+- Added a new variable to show aliases instead of filesystem names.
+  With this, the administrator can configure what the users will see
+  for the filesystem name. An example is showing "Mail Folder" instead
+  of "/dev/hda4". Thanks to Paul McAvoy for his help on this addition.
+- Fixed small problems on the flash movies.
+- Added Spanish translations by Carlos Francisco Castillo. (Dec 17, 2003)
+
+Nov 10, 2003 - version 3.0.3
+- Fixed some problems with the configuration where SM and IMAP are
+  on different machines.
+- Added small cosmetic corrections to config.php
+- Thanks to Eldon Rosenberg for his feedback about these problems
+  (Eldon, I replied to your message but you are using spamlist.org which
+  blacklists our complete country!)
+- This is the day our great leader Mustafa Kemal Ataturk passed away in 1938.
+  We remember his presence with all our respect...
+
+Nov 04, 2003 - version 3.0.2
+- Fixed a bug where the filesystem name was too long causing the
+  quota information of the user to be shown on a second line.
+- Removed the restrictions on localising the strings.
+- Fixed minor bugs. 
+- Added Catalan translations by Marc Revenga.
+- Removed the Spanish translations by Carlos Francisco Castillo as they
+  were not the translations of 3.x branch. I hope Carlos sends 3.x
+  translations in the future.
+- Thanks to Tomas Kuliavas for his comments about translation problems.
+
+Oct 20, 2003 - version 3.0.1
+- Fixed a bug where I wrote a variable name wrong, so the plugin
+  broke on some systems.
+- Fixed some minor issues with Flash movies.
+- Added the option to show or hide the details link again.
+- Added Spanish localisations by Carlos Francisco Castillo.
+- Added more modifications to make the plugin more compliant to
+  the Plugin Standards of SquirrelMail.
+
+Oct 16, 2003 - version 3.0
+- Now, we are on a new branch that incorporates Flash!
+- Thanks to Mike Smith for his work in my absence.
+- Cleaned up so much php code that, this is a nearly
+  brand-new plugin now.
+- The bar on the left pane is now a Flash movie.
+- The details page has been changed also into a Flash movie and has an
+  interactive help display no quota plugin ever had for more user friendliness.
+- Most of the unnecessary options have been removed and has fewer
+  but more productive options now.
+- It is much more easy to install because the number of its pages have decreased.
+- Tested on FreeBSD, should work on Linux but I am not sure about Solaris
+  because the quota binaries behave differently on these operating systems.
+  You are welcome to test and send feedback :-)
+- Modified to comply with "http://squirrelmail.org/wiki/wiki.php?PluginStandards"
+  so that SquirrelMail developers don't get into trouble :-)
+- Probably requires Flash Player 6 or better (May work with Flash 5 but I am not sure).
+- When SquirrelMail and IMAP server are on different machines, because of a PHP bug in 4.3.2 and 4.3.3,
+  the plugin (all versions) doesn't work for now. That should be solved in a new PHP release. Until then
+  we don't have different machines support.
+
+Apr 11, 2003 - version 2.6.5 ( mike@ftl.com )
+- Bug with showing details with version 1.4+ (fixed)
+
+Apr 10, 2003 - version 2.6.4 ( mike@ftl.com )
+- Improves the look of the bar graph.
+  Thanks go out to Ron Nash (nash@rohan.sdsu.edu) for the update.
+- Look for a rewrite soon :)
+
+Jan 10, 2003 - version 2.6.3 ( mike@ftl.com )
+- Promlem with broken images now fixed. 
+  $_SESSION['prefs_cache']['left_size'] was only being set if you changed
+  'Width of Folder List' under 'Folder Preferences'. Thanks to Ken Gilmour
+  for bringing this to my attention.
+
+Dec, 26, 2002 - version 2.6.2 ( mike@ftl.com )
+- Small error in left_quota.php when array didn't exist. Thanks Jeroen.
+
+Dec, 16, 2002 - version 2.6.1 ( mike@ftl.com )
+- DOH! Little Divide by zero error in the HTML graph. Thanks Serge.
+- Added an alt tag to the GD image to show more verbose usage.
+
+Dec, 13, 2002 - version 2.6.0 ( mike@ftl.com )
+- Bumbed the version number so we have a clean start for the GD tree.
+- Added support for GD.
+- Cleaned up some code in left_quota.php.
+- I've only tested this on Linux. 
+
+Nov, 27, 2002 - version 2.5.1
+- Added SM's index.php to document root of the plugin for
+  redirection.
+- Added transparent background to OK.png and EXCEED.png
+  (Thanks to Rob Speicher for sending me the new pngs. :-)
+
+Nov, 19, 2002 - version 2.5
+- Now has an option in options.php to work with 1.3.x branch or
+  older versions. So this solves incompatibility with 1.3.x
+  branch.
+- Removed the unneeded inclusion of imap.php
+
+Nov, 14, 2002 - version 2.4
+- The quota binary on modern linux systems give a different output for
+  users that don't have quota limit. So, the left_quota.php gave a
+  "Divide by zero" error. Now that you can set a variable named
+  $dq_strange_binary for the plugin to run on these systems correctly.
+- Also the check_quota.php doesn't show EXCEEDED image for non-quota
+  users on these systems.
+- Thanks to Uwe S. Fuerst and Patrick Kwan for sending this bug to me.
+ 
+Nov, 13, 2002 - version 2.3.1
+- Completely rewritten the code for HTML 4.0 compatibility and simplicity.
+- Everything needs to be configured for once (not four times :-) now in a
+  new file named options.php
+- Added a lot of options to options.php like verbose showing, filesystem showing
+  etc. Experiment yourself a little bit.
+- Added a very detailed INSTALL file.
+- Thanks to my three beta testers, who gave me lots of support and ideas.
+  Chris Franklin
+  Jeroen Scheerder
+  Mark Boos
+
+Nov, 11, 2002 - version 2.1.1
+- Displays your disk quota usage as graph under the folders link now. Also has
+  changed the "Check Quota" link to "Details".
+- If the user has no quota limitation, the plugin will not break and say
+  "You have no limitations" to the user.
+
+Nov, 11, 2002 - version 2.0.2
+- Minor language fixes and nbsp; fixes.
+
+Oct, 31, 2002 - version 2.0
+- I have changed the code for better handling on most platforms and
+  also now you can have your mail and web servers seperate. Plugin works
+  on different servers without problems.
+- Also localised the plugin with disk_quota.po (Kerem)
+- Good luck on your thesis Claudio :-)
+

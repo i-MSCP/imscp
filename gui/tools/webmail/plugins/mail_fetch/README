@@ -1,0 +1,122 @@
+Mail Fetch
+
+Downloads mail from a pop3 server to your SquirrelMail account.
+
+Features
+========
+
+* Copies messages from remote server
+* Saves server, alias, username, and password in prefs file...
+* Remembers where to resume downloading messages if
+  your pop server supports UIDL.
+* Optionally deletes mail from the remote server.
+* Allow an infinite amount of remote servers
+* Optional to not save password - prompt on check
+* Save messages into a local IMAP folder instead of INBOX
+* Check mail during login (Needs SM 1.1.3 or older).
+* Check mail during folder refreshes.
+* Allows gettext translations.
+
+
+Description
+===========
+
+Feel like grabbing your messages from a different mail server into
+SquirrelMail?  This might be able to help.
+
+
+Configuration
+=============
+
+Under the options you can add, delete or modify server list where
+fetching mail.  For each server you can set also username and password;
+if you leave password blank, the password whore required when you fetch
+mail.  Make sure "Leave Mail On Server" is checked if you do not want
+Mail_Fetch to delete it from the remote server.  Once configured,
+click 'Fetch' in the SquirrelMail menu to get your mail; you can fetch
+mail from all server instead or from only one by selecting the options
+dispayed.
+
+If you want to check mail periodicaly choose "Check mail during login"
+or "Check mail during folder refresh". Of course passwords have to be
+entered in order for this to work.
+
+In order to secure a little bit the system, pop3 passwords can be encrypted.
+The encryption key may be defined in to places. The first, and more secure,
+is in the httpd configuration as an enviromental variable called MF_TIT
+only accesible from the SquirrelMail directory.
+
+the way you can do this from apache is adding the following directives to
+httpd.conf (supposing that SquirrelMail is located at /usr/local) or an
+included configuration file:
+
+<Directory "/usr/local/squirrelmail">
+    SetEnv MF_TIT "MailFetch Secure for SquirrelMail 1.x"
+</Directory>
+
+Of course, you should replace the text inside double quotes with the key
+you want to (some kind of secret text). A please remember that the file
+where you decided to place this must be root only readable.
+
+The second way is to edit functions.php and look for:
+
+    if( !isset( $MF_TIT ) ) {
+        $MF_TIT = "MailFetch Secure for SquirrelMail 1.x";
+    }
+
+Once again change the text "MailFetch Secure for SquirrelMail 1.x"
+with a secret text.
+
+Please note that you must redefine passwords each time you change the key.
+
+To maintain compatibilty with older systems, mail_fetch can work with old
+pref files, with no encrypted passwords. If this occurs, you'll see that
+the "Encrypt Password" checkbox in the option page is not checked. If you
+reenter account's passwords the system will switch to encrypted mode.
+
+
+Future Work
+===========
+
+* Add IMAP server stealing
+
+* Limit number of pop accounts
+
+
+Installation
+============
+
+Go back to the main directory, run configure and add the plugin.
+
+Some plugin settings can be adjusted in config/mail_fetch_config.php or
+plugins/mail_fetch/config.php files. 
+
+See plugins/mail_fetch/config_sample.php
+
+
+Note for mod_gzip users
+=======================
+
+As fetching module shows information while fetching is taking place, it
+is a good idea to disable compression for that operation. The way to do
+this with mod_gzip is:
+
+mod_gzip_item_exclude       file fetch.php
+
+
+Note for Newmail Plugin users
+=============================
+
+In order to Newmail plugin detect new mails during folder refreshes
+make sure that Mail_Fetch is listed first that Newmail in the
+SM configuration. To do so you only have to remove Newmail plugin
+and then add it again.
+
+
+Credits
+=======
+
+This plugin has been originally created by Tyler Akins, with contributions
+from Philippe Mingo, Tomaso Minelli and Joshua Pollak. It's now maintained
+by the SquirrelMail Project Team.
+

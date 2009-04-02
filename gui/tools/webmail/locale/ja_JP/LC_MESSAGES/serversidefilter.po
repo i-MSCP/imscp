@@ -1,0 +1,116 @@
+# Japanese (ja_JP) serversidefilter translation (SquirrelMail plugin)
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.5-1.2.7-RC1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-05-20 17:26-0700\n"
+"PO-Revision-Date: 2005-11-07 11:49-0500\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Body"
+msgstr "本文"
+
+msgid "Any Header"
+msgstr "どんなヘッダー"
+
+msgid "Anywhere"
+msgstr "どこでも"
+
+msgid "Contains"
+msgstr "含む"
+
+msgid "Begins With"
+msgstr "始まる"
+
+msgid "Ends With"
+msgstr "終わる"
+
+msgid "Is Exactly"
+msgstr "一致する"
+
+msgid "Matches Regex"
+msgstr "正規表現に合う"
+
+msgid "Mail Filters"
+msgstr "メールフィルター"
+
+msgid "Sort your incoming mail into designated folders."
+msgstr "受信メールを指定フォルダに振り分ける"
+
+msgid "From"
+msgstr "差出人"
+
+msgid "Subject"
+msgstr "件名"
+
+msgid "To"
+msgstr "宛先"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Enter A New Filter:"
+msgstr "新しいフィルターを入力する："
+
+msgid "If"
+msgstr "もし"
+
+msgid "then"
+msgstr "それから"
+
+msgid "move"
+msgstr "移動"
+
+msgid "copy"
+msgstr "コピー"
+
+msgid "delete"
+msgstr "削除"
+
+msgid "Folder"
+msgstr "フォルダ"
+
+msgid "Email"
+msgstr "メール"
+
+#, fuzzy
+msgid "If message is marked as"
+msgstr "もし、メッセージは著しい"
+
+msgid "SPAM"
+msgstr "スパム"
+
+msgid "to"
+msgstr "に"
+
+msgid "save new"
+msgstr "新しいとして保存"
+
+msgid "UNSURE"
+msgstr "不確かな"
+
+msgid "Existing Filters:"
+msgstr "既存のフィルター："
+
+msgid "Notice:"
+msgstr "注意。"
+
+msgid ""
+"Use of these filters may prevent the reading of mail in non-IMAP mail "
+"clients."
+msgstr ""
+"このフィルターの使用は非 IMAP のメールクライアントにメール読み取りを予防する"
+"できます。"
+
+msgid "To or Cc"
+msgstr "宛先または Cc"

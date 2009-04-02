@@ -1,0 +1,64 @@
+# Translation of folder_settings.po to Faroese (Faroe Islands)
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the squirrelmail package.
+# Danial Olsen <danial@com-data.fo>, 2005.
+# $Id: folder_settings.po 10513 2005-12-29 09:13:52Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2005-12-27 22:17+0000\n"
+"Last-Translator: Danial Olsen <danial@com-data.fo>\n"
+"Language-Team: Faroese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11\n"
+
+#: functions.php:21
+msgid "Folder Sorting Options"
+msgstr "Uppseting av skjáttuskiljing"
+
+#: functions.php:25
+msgid "Enable per-folder sorting"
+msgstr "Gilda skiljing fyri hvørja skjáttu"
+
+#: functions.php:31
+msgid "Default sort_order"
+msgstr "Sjálvsett skiljingarraðfylgja"
+
+#: functions.php:34
+msgid "Date (descending)"
+msgstr "Dagfesting (lækkandi)"
+
+#: functions.php:35
+msgid "Date (ascending)"
+msgstr "Dagfesting (hækkandi)"
+
+#: functions.php:36
+msgid "From (descending)"
+msgstr "Frá (lækkandi)"
+
+#: functions.php:37
+msgid "From (ascending)"
+msgstr "Frá (hækkandi)"
+
+#: functions.php:38
+msgid "Subject (descending)"
+msgstr "Evni (lækkandi)"
+
+#: functions.php:39
+msgid "Subject (ascending)"
+msgstr "Evni (hækkandi)"
+
+#: functions.php:40
+msgid "Unsorted"
+msgstr "Ongin skiljing"
+
+#: functions.php:68
+msgid "Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr ""
+"Skjáttuuppsetingar plugin eigur ikki at verða brúkt við hesari útgávuni "
+"av SquirrelMail."
+

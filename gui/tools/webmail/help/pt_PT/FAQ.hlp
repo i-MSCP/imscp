@@ -1,0 +1,85 @@
+<chapter>
+   <title>
+      Perguntas Freq&uuml;entes
+   </title>   
+   <summary>
+As pessoas costumam ter as mesmas perguntas que j&aacute; foram feitas v&aacute;rias 
+vezes antes. Esta &eacute; uma lista das perguntas que com freq&uuml;&ecirc;ncia 
+s&atilde;o feitas pelos usu&aacute;rios do SquirrelMail. </summary> </chapter> 
+<section> 
+<title> Eu posso usar v&aacute;rios nomes (endere&ccedil;os) da agenda de endere&ccedil;os? 
+</title>
+   <description>
+      
+<p> Sim. Uma pesquisa na agenda de endere&ccedil;os ir&aacute; exibir todos os 
+  endere&ccedil;os que correspondam ao crit&eacute;rio utilizado no box de pesquisa. 
+  Se 10 ou mais nomes forem exibidos, todos ou alguns deles poder&atilde;o ser 
+  selecionados e usados para preencher os campos &quot;Para:&quot; ou &quot;CC:&quot;. 
+  Todos os endere&ccedil;os selecionados ser&atilde;o inseridos no campo apropriado 
+  quando o bot&atilde;o &quot;Use Endere&ccedil;os&quot; for pressionado.</p>
+   </description>
+</section>   
+
+<section>
+   
+<title> Posso adicionar nomes diretamente de um email para a agenda de endere&ccedil;os? 
+</title>
+   <description>
+      
+<p> N&atilde;o. At&eacute; o momento isso n&atilde;o &eacute; poss&iacute;vel. 
+  Entretanto, o que voc&ecirc; pode fazer &eacute;, usando o bot&atilde;o direito 
+  do mouse sobre o endere&ccedil;o, copiar e em seguida colar o endere&ccedil;o 
+  na agenda. </p>
+   </description>
+</section>
+
+<section>
+   
+<title> Quem desenvolveu o SquirrelMail? </title>
+   <description>
+      
+<p> Muita gente. Para ver a lista voc&ecirc; pode visitar nossa página web <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>. 
+</p>
+   </description>
+</section>
+
+<section>
+   
+<title> O que &eacute; webmail? </title>
+   <description>
+      
+<p> No caso do SquirrelMail, se trata de uma ferramenta para dar acesso &agrave; 
+  sua conta de correio usando o protocolo IMAP e através da WWW. Isto significa 
+  que voc&ecirc; n&atilde;o ter&aacute; que compreender como setar milh&otilde;es 
+  de coisas apenas para checar seu email.</p>
+</description></section> <section> 
+<title> Onde posso usar este webmail? </title>
+   <description>
+      
+<p> De qualquer navegador da Internet. At&eacute; o presente momento, acesso sem 
+  fio (WAP/WML) n&atilde;o faz parte deste projeto. </p>
+   </description>
+</section>
+
+<section>
+   
+<title> Por que usar webmail ao inv&eacute;s de um cliente de correio padr&atilde;o? 
+</title>
+   <description>
+      
+<p> Provavelmente o webmail n&atilde;o pretende ser um substituto completo para 
+  os clientes de correio tradicionais. Mas, quem sabe? De qualquer forma o webmail 
+  nos dá a liberdade de consultar nosso correio de qualquer ponto, mesmo que este 
+  se encontre centralizado no servidor, sem a necessidade de instalar e depois 
+  configurar clientes de correio. Desta forma teremos acesso a nosso correio de 
+  qualquer navegador que encontremos conectado a Internet. SquirrelMail est&aacute; 
+  projetado para complementar nosso cliente de correio normal. </p>
+</description> </section> <section> 
+<title> Como &eacute; que ele funciona?</title>
+<description> 
+<p> SquirrelMail utiliza o protocolo IMAP, informa&ccedil;&otilde;es sobre ele 
+  podem ser encontradas em <A HREF="http://imap.org"/>http://imap.org/</A>. O 
+  programa utiliza suas pr&oacute;prias fun&ccedil;&otilde;es IMAP, evitando aquelas 
+  internas do PHP4, o que s&oacute; faz diferen&ccedil;a para aqueles respons&aacute;veis 
+  por sua instala&ccedil;&atilde;o.</p>
+</description> </section> 

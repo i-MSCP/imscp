@@ -1,0 +1,55 @@
+<chapter>
+   <title>
+      Introduktion til SquirrelMail
+   </title>
+   <summary>
+      SquirrelMail giver dig mulighed for at håndtere dine e-mails over
+      internettet (www).
+   </summary>
+   <description>
+      <p>
+      Hvad er <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A> lige præcis?
+      Det er en web-brugerflade til e-mails, der er lavet i <A HREF="http://www.php.net">PHP4</A>.
+      Den er lavet for at give dig adgang til din e-mailkonto
+      fra et hvilket som helst sted i verden ved hjælp af webbet. Mere
+      information om præcis hvordan det virker og omkring IMAP protokollen kan
+      findes <A HREF="http://imap.org">her</A>.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Det basale
+   </title>
+   <description>
+      <p>
+      Hvis du bare har et hurtigt spørgsmål, så kig i 
+      "<a href="help.php?chapter=9">Ofte stillede spørgsmål</a>".
+      </p>
+      <p>
+      SquirrelMail er opdelt i to primære områder, der kaldes rammer.
+      Rammen til venstre indeholder listen over aktive mapper.
+      Mere information om denne ramme kan findes under 
+      "<a href="help.php?chapter=6">Mapper</a>" her i hjælpen.
+      </p>
+      <p>
+      I rammen til højre vil de fleste ting foregå. Øverst ser du en menulinie.
+      "Log ud" kan du bruge til at lukke pænt for din adgang til mailserveren,
+      når du er færdig med at bruge den. "Aktuel mappe" viser hvilken mappe
+      fra den venstre ramme, der netop nu vises indholdet af. Når du lige har
+      logget ind, vil din indbakke blive vist.
+      </p>
+      <p>
+      Under denne øverste linie er der en række menupunkter:
+         <ul>
+            <li><b>Skriv ny</b> - Skriv og send e-mails herfra. De kan indeholde vedhæftede filer.
+            <li><b>Adresser</b> - Indeholder en liste over adresser fra din personlige adressebog.
+            <li><b>Mapper</b> - Alle ændringer af mapper foregår her. Du kan slette, oprette eller omdøbe mapper samt gøre dem aktive eller passive.
+            <li><b>Indstillinger</b> - Her kan du ændre hvordan SquirrelMail opfører sig og ser ud.
+            <li><b>Søg</b> - Med dette værktøj kan du søge igennem dine mapper efter et bestemt kriterie.
+            <li><b>Hjælp</b> - Det er her du er!
+         </ul>
+      </p>
+   </description>
+</section>

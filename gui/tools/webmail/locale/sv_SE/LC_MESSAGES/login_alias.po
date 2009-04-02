@@ -1,0 +1,26 @@
+# Swedish (sv_SE) login_alias Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
+# $Id: login_alias.po 9522 2005-06-05 11:50:09Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: login_alias\n"
+"POT-Creation-Date: 2003-11-11 21:03+0200\n"
+"PO-Revision-Date: 2004-12-08 23:24+0100\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Login Alias"
+msgstr "Inloggningsalias"
+
+msgid ""
+"You can use this or your regular account name to log in to your account."
+msgstr ""
+"Du kan använda detta eller ditt vanliga användarnamn för att logga in."
+
+msgid "Alias is already in use.  Please select another alias."
+msgstr "Detta alias används redan. Vänligen välj ett annat."

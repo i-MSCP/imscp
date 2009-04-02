@@ -1,0 +1,71 @@
+<chapter>
+   <title>
+      Etsi
+   </title>
+   <summary>
+      Etsi kansiossa olevista viesteistä.
+   </summary>
+   <description>
+      <p>
+      Tällä kätevällä hakuvälineellä löydät kansiossa olevista
+      viesteistä ne jotka täyttävät annetut ehdot.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Yleistä
+   </title>
+   <description>
+      <p>
+      Valitse kansio, kirjoita haettava teksti ja valitse mistä kentistä
+      tekstiä haetaan. Kun painat "Etsi" nappia niin hakukaavakkeen alle
+      ilmestyy lista viesteistä. Voit avata haluamasi viestin listalta ja
+      lukea sen tavalliseen tapaan.
+      </p>
+      <p>
+      Huomaa että mennessäsi hakusivulle "Tämänhetkinen Kansio" on alustavasti
+      valittu. Jos olet esimerkiksi lukemassa lähetettyjen kansiossa ja
+      painat "Etsi" nappia niin se on alustavasti valittu hakukansioksi.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Mistä etsiä
+   </title>
+   <description>
+      <p>
+      Tekstiruudun oikealla puolella on hakukenttien valintanappi.
+      Valittavissa on itse viesti, kaikki kentät, aihe, lähettäjä,
+      cc (kopion vastaanottaja) tai vastaanottaja.
+      </p>
+      <p>
+      <b>Viesti</b> - Haku suoritetaan viestin tekstiosassa.
+      </p>
+      <p>
+      <b>Kaikki kentät</b> - Haku suoritetaan koko viestissä,
+      otsikkotiedot mukaanlukien. Jos et tiedä varmasti mistä hakea,
+      valitse tämä.
+      </p>
+      <p>
+      <b>Aihe</b> - Haku suoritetaan vain aiheriveiltä (subject).
+      </p>
+      <p>
+      <b>Lähettäjä</b> - Haku suoritetaan lähettäjätiedoista (from). Huomaa
+      että tämä voi sisältää enemmän kuin mitä on näytössä viestejä lukiessasi.
+      Tavanomainen lähettäjätieto sisältää nimen ja sähköpostiosoitteen,
+      mutta SquirrelMail näyttää tavallisesti vain nimen. Haku suoritetaan
+      kuitenkin kaikista lähettäjätiedoista.
+      </p>
+      <p>
+      <b>Vastaanottaja</b> - Haku suoritetaan vastaanotajalistasta (to).
+      Tämä voi olla useampiakin kuin vain yksi osoite.
+      </p>
+      <p>
+      <b>Kopio</b> - Samoin kuin edellinen, mutta kopion vastaanottajista (cc).
+      </p>
+   </description>
+</section>

@@ -1,0 +1,85 @@
+<chapter>
+   <title>
+      常见问题及解答
+   </title>   
+   <summary>
+      人们经常会问到相同或相似的问题，在这里我们列出了常见的问题及其解释。
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      在撰写邮件时，能否在地址簿中一次选择多个联系人呢？
+   </title>
+   <description>
+      <p>
+      您当然可以！只需在联系人前面的复选框中，钩上该收件人的收件方式即可。在您选择好收件人及其收件方式后，点击“确认并返回”。所有的联系人将会被自动的插入到相应的栏目中。如果您使用的是基于Javascript的地址簿，您也许会看到：“To”，“Cc”和“Bcc”。“To”的意思是“收件人”；“Cc”是“抄送人”；“Bcc”是“密件抄送”。您只需点击相应的收件方式，该联系人就会被即时地插入到新邮件里相应的栏目中了。
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      我能否直接从一个邮件中取出发件人的信息，并添加到地址簿呢？
+   </title>
+   <description>
+      <p>
+      现在还不行。也许在将来的版本中会有此项功能。（译注：据我所知，有一个插件可完成此功能。您可以让网管到这里“http://www.squirrelmail.org”下载，并安装它。）
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      小松鼠邮件系统是由谁开发的呢？ 
+   </title>
+   <description>
+      <p>
+      很多人。由于这是一个开放源代码的自由软件，来自世界各地的许多人都在为这套系统无偿的贡献着自己的力量。（譬如我，:-D）您可以到这个网站来看看<a href="http://www.squirrelmail.org" target=_blank>www.squirrelmail.org</a>。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      什么是基于网页的邮件系统。
+   </title>
+   <description>
+      <p>
+      就本套邮件系统而言，提供了一个可以在网上处理信件的工具。您可以在任何地方，任何时间，访问您的邮件。雅虎，263，Hotmail都是属于这一类邮件系统。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      我在哪里可以访问这套邮件系统呢？
+   </title>
+   <description>
+      <p>
+      只要您能上网，并能浏览网页的任何地方。不过，目前还不支持无线上网设备(WAP/WML)，如：可上网的手机等。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      为什么要使用网页邮件系统，而不是通常的电子邮件软件（如：OUTLOOK, NETSCAPE）呢？
+   </title>
+   <description>
+      <p>
+      网页邮件系统能否完全取代通常的电子邮件软件，是值得怀疑的。然而，相对于通常的电子邮件软件，网页邮件系统拥有其自身的优势。如果您曾经在旅行，出差或探亲时，希望能够与公司或家人通过电子邮件联系的话，您也许就会明白它的价值了。网页邮件系统不需要反复设置，易于使用，仅需要一个能上网的计算机和一个网页浏览器（如今，所有的操作系统都带有一个浏览器）。您可以随时处理自己的邮件，无论您在哪里。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      小松鼠网页邮件系统是怎样工作的呢？
+   </title>
+   <description>
+      <p>
+      小松鼠邮件系统使用IMAP协议。您可以在 <A HREF="http://imap.org"/>这里</A> 了解到更多IMAP协议的细节。小松鼠邮件系统使用自己的IMAP模块，而不是那些PHP4提供的IMAP功能。多数人不须关心这些技术细节，除了那些负责安装这套系统的网管们。请相信我们，这些IMAP模块绝无问题。事实上，很多人都很赞赏我们的工作。
+      </p>
+   </description>
+</section>

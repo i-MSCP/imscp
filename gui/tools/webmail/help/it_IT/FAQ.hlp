@@ -1,0 +1,114 @@
+<chapter>
+   <title>
+      Frequently Asked Questions
+   </title>   
+   <summary>
+      Spesso si fanno domande a cui si è già risposto.
+      Questa è una lista delle domande più frequenti e delle relative risposte.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Posso usare più nomi provenienti dalla rubrica indirizzi?
+   </title>
+   <description>
+      <p>
+      Si.  La ricerca sulla rubrica indirizzi visualizzerà tutti gli indirizzi
+      corrispondenti ai criteri di ricerca.  Se sono visualizzati 10 nomi, è
+      possibile utilizzare qualsiasi combinazione per i campi <B>A:</B> o <B>CC:</B> 
+      Tutti gli indirizzi selezionati saranno inseriti nei propri campi quanto
+      verrà premuto il pulsante Usa Indirizzi.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Posso aggiungere alla rubrica degli indirizzi direttamente
+      da un messaggio email?
+   </title>
+   <description>
+      <p>
+      No.  Al momento non è possibile aggiungere dei nomi direttamente
+      da un messaggio ricevuto alla rubrica indirizzi.  E' possibile,
+      tuttavia, fare click col il pulsante destro del mouse sopra 
+      l'indirizzo e salvarlo negli appunti di Windows, quindi "incollarlo"
+      nella rubrica indirizzi.  Provate a non rimanere delusi.  SquirrelMail
+      è continuamente in sviluppo e questa caratteristica potrebbe essere
+      aggiunta in futuro in un modo o nell'altro.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Chi ha scritto SquirrelMail? 
+   </title>
+   <description>
+      <p>
+      Molta gente ha collaborato.  Per avere una lista, potete visitare il nostro
+      sito web <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cosa significa webmail?
+   </title>
+   <description>
+      <p>
+      Nel caso di SquirrelMail è la possibilità di accedere attraverso il protocollo IMAP
+      al vostro account email.  Questo significa che non occorre capire esattamente come
+      funziona, ma più semplicemente controllare la vostra posta.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Dove è possibile usare questa webmail?
+   </title>
+   <description>
+      <p>
+      Ovunque vi sia la disponibilità di un browser.
+      L'accesso Wireless (WAP/WML) non è attualmente previsto.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Perchè usare la webmail anzichè un normale client di posta?
+   </title>
+   <description>
+      <p>
+      Non è certo che la webmail possa essere un completo sostituto
+      di un normale client di posta elettronica. Ma hey, chi può
+      affermarlo con certezza?  In ogni modo, se vi trovate a casa di
+      un amico, in viaggio, a casa o al lavoro e lontani dal vostro
+      computer e volete controllare la vostra posta, già avete capito
+      perchè!
+      Perchè è alquanto scomodo configurare il vostro accont di posta
+      su un altro computer per poi doverlo immediatamente cancellare.
+      SquirrelMail è disegnato per essere un supplemento al vostro normale
+      client di posta elettronica.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Come funziona questa cosa?
+   </title>
+   <description>
+      <p>
+      SquirrelMail usa il protocollo IMAP, maggiori informazioni possono
+      essere trovate <A HREF="http://imap.org"/>qui</A>.  Il programma usa
+      anche proprie funzioni IMAP, non quelle compilate in PHP4.
+      Questa informazione è riservata per i responsabili del vostro sistema
+      che sapranno apprezzarne il valore.
+      </p>
+   </description>
+</section>

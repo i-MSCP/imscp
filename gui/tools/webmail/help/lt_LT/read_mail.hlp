@@ -1,0 +1,157 @@
+<chapter>
+   <title>
+      Pašto žinučių skaitymas
+   </title>
+   <summary>
+      Gebėjimas skaityti pašto žinutes yra privaloma kiekvienos pašto
+      programos savybė. SquirrelMail turi kelias paprastas galimybes.
+      Šioje pagalbos sistemos dalyje jūs galite rasti, ką tokio ir kaip 
+		galima padaryti.
+   </summary>
+   <description>
+      <p>
+	Žinutės turinys yra parodomas spragtelėjus ant jos antraštės. Pašto
+	ir interneto adresai paprastai atrodo kaip nuorodos ir spragtelėję 
+	ant jų jūs galite pradėti rašyti laišką arba nukeliauti į kokį nors
+	puslapį. Be to susijusios žinutės paprastai yra skiriamos spalviniais
+	kodais. Atsakymo į žinutę standartas yra pažymėti anktesnės žinutės
+	tekstus su ">" simboliu. Sąuirrelmail atpažįsta šį simbolį ir 
+  	nuspalvina visa kita tos eilutes tekstą kita spalva. Visa tai veikia 
+	dviem lygiais (antra ir aukštesnė žinutė turės tą pačią spalvą). Be to
+	pasirodo dar viena meniu juosta, kuri leidžia ištrinti žinutę arba
+	grįžti į žinučių sąrašą. Taip pat pateikiamos judėjimo tarp žinučių 
+	nuorodos bei galimybės atsakyti į žinutes arba jas persiųsti trečiam
+	asmeniui.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Žinučių sąrašas
+   </title>
+   <description>
+      <p>
+      Paspaudę čia Jūs grįšite į žinučių sąrašą.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ištrinti
+   </title>
+   <description>
+      <p>
+      Nuoroda leidžia ištrinti tą žinutę, kurią šiuo metu skaitote. Bus
+	ištrinta ne tik žinutė bet ir visi prie jos prikabinti failai. Todėl
+	jei nenorite prarasti tų dokumentų - nepamirškite jų parsisiųsti
+	arba netrinkite svarbių žinučių.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Judėjimas
+   </title>
+   <description>
+      <p>
+      Juostos viduryje yra judėjimo mygtukai. Nuoroda "Ankstesnis" parodys jums
+	žinutę, atėjusią anksčiau. Nuoroda veiks tik tuo atveju, jei atitinkama 
+	žinutė egzistuos. Kitu atveju ji niekur neves ir bus neaktyvi.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kitas
+   </title>
+   <description>
+      <p>
+	Nuoroda "Kitas" naujesnę žinutę (laišką). Nuoroda veiks tik tuo atveju, 
+	jei atitinkama  žinutė egzistuos. Kitu atveju ji niekur neves ir bus neaktyvi.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Persiųsti
+   </title>
+   <description>
+      <p>
+      Nuoroda Persiųsti atidarys žinutės rašymo langą kuriame bus išvestas 
+	laiško turinys atskirtas žyme "--Originali žinutė--".  Fwd: bus įterptas
+	naujojo laiško temoje priešais senojo laiško temos pavadinimą. Visos kitos 
+	atsiverusio puslapio opcijos atitiks standartinį žinučių rašymo puslapį 
+	apie kurį yra parašytas atskiras pagalbos sistemos puslapis.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Atsakyti
+   </title>
+   <description>
+      <p>
+      Paspaudę ant šios nuorodos jūs galite parašyti naują žinutę žmogui,
+		kuris atsiuntė jums laišką. "Re:" užrašas yra automatiškai pridedamas
+		prie ankstesnės žinutės pavadinimo. Senoji žinutė yra cituojama naujoje
+		po ">" simbolių. Atsakydami jūs galite rašyti tekstą bet kurioje žinutės
+		lango dalyje bei prikabinti papildomus priedus prie laiško.
+		</p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Atsakyti visiems
+   </title>
+   <description>
+      <p>
+      Visas taip pat kaip ir paprasto "Atsakyti" atveju, tik laišką gaus visi
+		kurių adresai yra laiško antraštėse.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Peržiūrėti visas antraštes
+   </title>
+   <description>
+      <p>
+	Nuoroda parodys pilnas laiško antraštes. Ten paprastai būna nurodyta,
+	per kur ėjo laiškas ir tam tikra tarnybinė laiško informacija.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Parsisiųsti kaip failą
+   </title>
+   <description>
+      <p>
+      Ši nuoroda leidžia išsaugoti laišką kaip paprasta tekstinį dokumentą
+	tame kompiuteryje su kuriuo jūs dirbate. Kartu bus išsaugota ir trumpa
+	laiško antraštė.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Priedai
+   </title>
+   <description>
+      <p>
+	Bet kokie su laišku atėję priedai parodomi žemiau žinutės teksto. Kartu yra
+	nusakomas priedo tipas ir duodama nuoroda, kuri leidžia parsisiųsti prikabintą
+	failą arba jį peržiūrėti.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,23 @@
+# Japanese (ja_JP) archive_mail translation (SquirrelMail plugin)
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-11 12:41+0300\n"
+"PO-Revision-Date: 2005-10-23 20:38-0400\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:63
+msgid "This interface requires cookie support in browser."
+msgstr "このインターフェースはクッキーを有効にするが必要です。"
+
+#: functions.php:64
+msgid "Cookie Warning"
+msgstr "クッキー警報"

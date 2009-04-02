@@ -1,0 +1,74 @@
+# translation of vkeyboard.po to Nederlands
+# vkeyboard plugin for Squirrelmail project.
+# Copyright (C) 2004 Daniel K. Imori
+# This file is distributed under the same license as the vkeyboard package.
+#
+# Daniel K. Imori <daniel@bastion.com.br>, 2004.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: vkeyboard\n"
+"Report-Msgid-Bugs-To: Daniel K. Imori <daniel@bastion.com.br>\n"
+"POT-Creation-Date: 2006-09-10 01:15+0200\n"
+"PO-Revision-Date: 2007-04-15 09:54+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Are you using a public computer?"
+msgstr "Brûke jo in publike kompjûter?"
+
+msgid "Enter your password with the "
+msgstr "Fier jo wachtwurd yn mei it "
+
+msgid "virtual keyboard"
+msgstr "firtuele toetseboerd"
+
+msgid "Open Virtual Keyboard"
+msgstr "Firtueel toetseboerd iepenje"
+
+msgid "Virtual Keyboard: Help"
+msgstr "Firtueel toetseboerd: help"
+
+msgid "What's a virtual keyboard?"
+msgstr "Wat is in firtueel toetseboerd?"
+
+msgid "It's a keyboard that simulates a real keyboard. ;)"
+msgstr "It is in toetseboerd dat in echt toetseboerd simulearret. ;)"
+
+msgid "It protects your password against keyloggers, which are hidden programs that capture everything that you type or click."
+msgstr "Dit beskermet jo wachtwurd tsjin toetsloggers. Dat binne programma's dy't al jo toetsoanslaggen registrearje."
+
+msgid "So, you can increase your security, using the virtual keyboard and its \"automatic click\" function."
+msgstr "Troch it brûken fan it firtuele toeteboerd en syn \"automatyske klik\"-funksje kinne jo jo befeiliging ferheegje."
+
+msgid "For this, you must point the mouse and keep it for few seconds on the key that you want to type."
+msgstr "Om de winske toets oan te tsjutten, moatte jo mei de mûs de toets oanwize en der in pear sekonden op stean bliuwe."
+
+msgid "Virtual Keyboard"
+msgstr "Firtueel toetseboerd"
+
+msgid "Enter your password:"
+msgstr "Fier jo wachtwurd yn:"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "The key will be pressed in "
+msgstr "De toets sil yndrukt wurde nei "
+
+msgid " seconds."
+msgstr " sekonden."
+
+msgid "Login"
+msgstr "Ynlogje"
+
+msgid "Clear"
+msgstr "Wiskje"
+
+msgid "Close"
+msgstr "Slute"
+

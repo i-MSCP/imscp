@@ -1,0 +1,99 @@
+<?php
+
+/*
+ * This is the options page that you will set how
+ * Disk Quota Plugin behaves.
+*/
+
+/*
+ * This is the path to your quota binary.
+ * See INSTALL for details.
+*/
+
+$dq_quota_binary = "sudo /usr/bin/quota";
+
+/*
+ * This determines your path for the Flash files. It has to be
+ * an absolute path so we define this variable. Set this variable
+ * as the http (or https if you use a secure webserver) address
+ * of your SquirrelMail server.
+*/
+
+$dq_sm_server = "http://smserver.yourdomain.com";
+
+/*
+ * This determines if SquirrelMail and IMAP server are both
+ * on the same machine.
+ * If they are on the same machine, set to : 0
+ * If they are on different machines, set to : 1
+*/
+
+$dq_check_on_remote = 0;
+
+/*
+ * This is the path to the disk_quota.php which checks the quota
+ * information. If you use SquirrelMail and IMAP on different machines,
+ * you must set this variable to the virtual host you created on your
+ * IMAP server (i.e. $dq_check_on_remote = 1 ) (see INSTALL for details.)
+ * server that SquirrelMail is installed (that is SquirrelMail is
+ * not installed on your IMAP server. If you use SM and IMAP on the same
+ * machine you don't need to set this variable. 
+*/
+
+$dq_imap_server = "http://quota.yourdomain.com";
+
+/*
+ * These variables set the width and height of the bar
+ * on the left pane. The Flash movie for the bar is originally
+ * 200x20 so you should set these variables with 10:1 ratio for
+ * optimal visual performance. The best width and height for a
+ * 150 pixels wide left pane are 120 to 12 pixels.
+*/
+
+$dq_bar_width = "120";
+$dq_bar_height = "12";
+
+/*
+ * This is the table border size of details.php that
+ * shows the detailed quota status of the user.
+ * Be careful to set this variable to '"number"' not
+ * "number" or 'number'.
+*/
+
+$dq_table_border_size = '"0"';
+
+/*
+ * This shows or hides the filesystem names for the user's
+ * files. If set to 1, the bar on the left and the details 
+ * page will show the filesystem names. on which the user
+ * has quota enabled. 
+ * To show filesystem names, set to : 1
+ * To hide filesystem names, set to : 0
+*/
+
+$dq_show_filesystem = 0;
+
+/*
+ * You can use this array to show different names to your users
+ * instead of your actual filesystems. For example you can
+ * show "Mail Folder" instead of "/dev/hda4" etc. Leave it empty
+ * to show the actual filesystem names [That is, simply remove the
+ * lines between "(" and ")"]. If $dq_show_filesystem is
+ * set to "0" this array will have no meaning.
+*/
+
+$dq_fs_alias = array (
+        "/dev/hda4" => "Mail",
+        "/dev/hda5" => "Data",
+        );
+
+/*
+ * This shows or hides the details link and the details text
+ * in the left quota bar.
+ * To show the details link, set to : 1
+ * To hide the details link, set to : 0
+*/
+ 
+$dq_show_details = 1;
+
+?>

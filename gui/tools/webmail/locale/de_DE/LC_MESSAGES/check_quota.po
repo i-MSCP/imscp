@@ -1,0 +1,72 @@
+# German translation of SquirrelMail check_quota plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Florian Daumling <jam@qv90.de>, 2005.
+# $Id: check_quota.po 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota 1.4\n"
+"POT-Creation-Date: 2005-06-13 09:54+0200\n"
+"PO-Revision-Date: 2005-09-06 23:35+0200\n"
+"Last-Translator: Florian Daumling <jam@qv90.de>\n"
+"Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:33
+#, php-format
+msgid "%s%s of %s%s"
+msgstr "%s%s von %s%s"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:35
+#, php-format
+msgid "%s%% of %s%s"
+msgstr "%s%% von %s%s"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:49
+msgid "Quota Usage:"
+msgstr "Speicherplatz belegt:"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:110
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:194
+msgid "OVER QUOTA!"
+msgstr "ZU VIEL SPEICHERPLATZ BELEGT!"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:117
+#, php-format
+msgid "%s of %s files"
+msgstr "%s von %s Dateien"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:119
+#, php-format
+msgid "%s%% of %s files"
+msgstr "%s%% von %s Dateien"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_graph.php:133
+msgid "File Usage:"
+msgstr "Dateinutzung:"
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_motd.php:12
+msgid ""
+"<strong>WARNING:</strong> Your quota usage is currently "
+"<strong>###PERCENT_USED###%</strong>. To avoid losing any email, you should "
+"immediately empty out your Trash and Sent folders and delete any emails with "
+"large attachments."
+msgstr ""
+"<strong>WARNUNG:</strong> Sie belegen momentan "
+"<strong>###PERCENT_USED###%</strong> Ihres freigegebenen Speicherplatzes. "
+"Um zu verhinden, dass sie E-Mails verlieren sollten Sie"
+"umgehend Ihren 'Trash' und 'Sent' Ordner leeren und alle E-Mails mit grossen"
+"Anhängen löschen."
+
+#: /usr/share/squirrelmail/plugins/check_quota/show_motd.php:15
+msgid ""
+"<strong>WARNING:</strong> Your quota usage is currently "
+"<strong>###PERCENT_USED###%</strong>. You may want to make sure you empty "
+"out your Trash and clean your Sent folder."
+msgstr ""
+"<strong>WARNUNG:</strong> Sie belegen momentan "
+"<strong>###PERCENT_USED###%</strong> Ihres freigegebenen Speicherplatzes. "
+"Sie sollten Ihren 'Trash' und 'Sent' Ordner leeren."
+

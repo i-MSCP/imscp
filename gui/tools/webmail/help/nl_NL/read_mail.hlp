@@ -1,0 +1,170 @@
+<chapter>
+   <title>
+      E-mail lezen
+   </title>
+   <summary>
+      De mogelijkheid e-mailberichten te lezen is een van de basiselementen
+      van een e-mailprogramma. Webmail heeft een aantal functies die u
+      kunnen helpen bij het lezen van u mail. Hier vindt u uitleg daarover.
+   </summary>
+   <description>
+      <p>
+      Klik op het onderwerp van een e-mailbericht om de inhoud van dat bericht
+      weer te geven. In dit bericht zijn web- en e-mailadressen omgezet in
+      links zodat u erop kunt klikken en de webpagina kunt bekijken of naar dat
+      adres een mail kunt versturen.
+      Verschillende berichtthreads worden weergegeven met verschillende kleuren.
+      Een bericht waarop geantwoord is zal worden weergegeven in een andere kleur
+      (deze tekst is ook herkenbaar aan de ">" voor elke regel)
+      dan de toegevoegde tekst.<BR>
+      Tijdens het lezen van een bericht is er een extra menubalk beschikbaar.
+      Deze is verdeeld in drie onderdelen. Aan de linker kant kunt u het bericht
+      verwijderen of terugkeren naar de berichtenlijst. In het midden is het mogelijk
+      om te navigeren tussen verschillende berichten. Aan de rechterkant staan uiteenlopende
+      opties betreffende het bericht.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Berichtenlijst
+   </title>
+   <description>
+      <p>
+      Door op deze link te klikken keert u terug naar de berichtenlijst.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Verwijder
+   </title>
+   <description>
+      <p>
+      Klik hierop om dit bericht te verwijderen. Alle bijlages (attachments)
+      worden ook verwijderd. Als u de bijlages wilt bewaren, kunt u ze eerst
+      downloaden (dit wordt verderop uitgelegd).<BR>
+      Verwijderen betekent hier dat het bericht in kwestie wordt verplaatst naar
+      de Trash-folder. Als u het toch nog wilt bewaren, ga dan naar die folder
+      en verplaats het bericht terug naar uw INBOX.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigatie
+   </title>
+   <description>
+      <p>
+      In het midden van de menubalk zijn navigatielinks. <I>Vorige</I> is een link als die
+      gebruikt kan worden en gewone tekst anderszins. Door hier op te klikken gaat
+      u direct naar het vorige bericht zonder terug te hoeven keren naar de berichtenlijst.
+      Hetzelfde geldt voor de link <I>Volgende</I>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Doorsturen
+   </title>
+   <description>
+      <p>
+      Aan de rechterkant kunt u klikken op de link <I>Doorsturen</I>. Deze opent
+      de pagina <I>Nieuw bericht</I> met het bericht in het tekstveld onder een regel
+      "--Oorspronkelijk bericht--". Aan het onderwerp is de tekst "Fwd:" toegevoegd.
+      U dient wel nog het veld/de velden in te vullen betreffende waar het
+      bericht heen gestuurd dient te worden. U kunt ook nog tekst toevoegen
+      in het tekstveld of bijlagen toevoegen aan het bericht.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Beantwoorden
+   </title>
+   <description>
+      <p>
+      Door hier op te klikken kunt u een bericht terugsturen naar de afzender
+      van dit bericht. De tekst "Re:" wordt toegevoegd aan het onderwerp
+      en de originele tekst verschijnt in het tekstveld, voorafgegaan door
+      het ">" symbool. U kunt uw eigen tekst boven of onder het originele bericht
+      toevoegen of tussen de regels door. Ook kunt u bijlagen toevoegen.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Allen Beantwoorden
+   </title>
+   <description>
+      <p>
+      Dit is hetzelfde als 'gewoon' antwoorden, met het verschil dat het bericht
+      niet naar de afzender wordt gestuurd maar naar iedereen naar wie het oorspronkelijke
+      bericht was gestuurd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bekijk volledige berichtinformatie
+   </title>
+   <description>
+      <p>
+      Deze optie geeft alle headers weer van het e-mailbericht. Headers geven
+      veel gedetailleerde technische informatie over het bericht, bijvoorbeeld
+      over de route die het heeft afgelegd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Printvriendelijke versie
+   </title>
+   <description>
+      <P>Als u een bericht wilt printen, kunt u op deze link klikken. Dat geeft u
+      een nieuw venster met het bericht, maar zonder overbodige informatie en menu's,
+      klaar om af te drukken. Druk op Print om dat ook daadwerkelijk te doen, of Sluiten
+      om terug te keren naar uw bericht.</P>
+   </description>
+</section>
+
+<section>
+   <title>
+      Download dit als een bestand
+   </title>
+   <description>
+      <p>
+      Aan de onderrand vindt u deze link. Hierop klikken stelt u in staat deze
+      mail op te slaan op uw eigen computer als een platte-tekstbestand. Bovenaan
+      zal ook een beperkte header worden toegevoegd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bijlagen (attachments)
+   </title>
+   <description>
+      <p>
+      Als een e-mailbericht bijlagen bevat zullen deze onderaan het bericht
+      worden weergegeven. De bestanden worden weergegeven als een link met
+      de omschrijving van het bestandstype ernaast. Klikken op de link geeft
+      het attachment weer of geeft u een dialoogvenster om het bestand te downloaden.
+      Dit is afhankelijk van het bestandstype. Door op de 'download' link te
+      klikken downloadt u het bestand sowieso, ook al kan het door uw browser
+      worden weergegeven.<BR>
+      Als uw browser ondersteuning heeft voor het weergeven van dit type bestand,
+      zal er een extra "bekijk" link staan waarmee u de bijlage direct in uw browser
+      kunt weergeven.
+      </p>
+   </description>
+</section>

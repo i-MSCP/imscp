@@ -1,0 +1,103 @@
+<chapter>
+   <title>
+      H&auml;ufig gestellte Fragen
+   </title>
+   <summary>
+      Viele Kunden haben gleiche oder &auml;hnliche Fragen die h&auml;ufig gestellt werden.
+      Hier ist eine Liste von h&auml;ufig gestellten Fragen und Antworten.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Kann ich mehrere Namen verwenden vom Adressbuch?
+   </title>
+   <description>
+      <p>
+      Ja.  Das Adressbuch kann alle Suchkriterien anzeigen die in der Suchbox
+      eingeben worden sind. Wenn 10 Namen angezeigt werden, k&ouml;nnen alle Felder
+      ausgew&auml;hlt werden wie <B>To:</B> or <B>CC:</B> Feld. Alle ausgew&auml;hlten Adressen
+      werden in das vorgesehene Feld kopiert wenn Sie das Adressfeld gedr&uuml;ckt haben.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kann ich direkt Adressen vom E-Mail aus speichern??
+   </title>
+   <description>
+      <p>
+      Nein.  Zu dieser Zeit kann die E-Mail Adresse vom empfangenen Mail nicht direkt im
+      Adressbuch gespeichert werden. Sie k&ouml;nnen aber die Adresse kopieren (Ctrl + C) und
+      einf&uuml;gen mit (Ctrl + V) ins Adressbuch.  SquirrelMail wird st&auml;ndig weiterentwickelt
+      und in Zukunft wird diese Option dabei sein.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Wer hat SquirrelMail entwickelt?
+   </title>
+   <description>
+      <p>
+      Viele Leute haben geholfen. Wenn Sie die Liste anschauen wollen, k&ouml;nnen Sie unsere
+      Website <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Was ist ein Webmail???
+   </title>
+   <description>
+      <p>
+      SquirrelMail ermöglicht den Zugang zum E-Mail Account mit IMAP Protokoll.
+      Das heisst, dass Sie dieses Programm ausschliesslich zum abrufen der E-Mails verwenden.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Wo kann ich dieses Webmail verwenden?
+   </title>
+   <description>
+      <p>
+      Ist &uuml;berall erreichbar wenn ein Browser installiert ist auf dem PC.
+      Wireless access (WAP/WML) wird nicht unterst&uuml;tzt zur Zeit.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Warum Webmail ben&uuml;tzen und nicht ein Standard E-Mail Client?
+   </title>
+   <description>
+      <p>
+      Webmail kann nicht mit dem Komfort verschiedener E-Mail Clienten mithalten.
+      Aber wenn Sie z.B. bei einem Kollegen zu Besuch sind, auf Reisen oder an
+      der Arbeit weit weg vom eigenen Computer, dann wissen Sie wie und wo die
+      E-Mails abrufen auf sehr einfache Art. Es ist recht m&uuml;hsam jedesmal das
+      E-Mail Konto einzurichten und nachher wieder zu entfernen. SquirrelMail ist
+      programmiert worden als Erg&auml;nzung zu den normalen E-Mail Programmen.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Wie funktioniert dieses Webmail?
+   </title>
+   <description>
+      <p>
+      SquirrelMail n&uuml;tzt das IMAP protocol, Informationen k&ouml;nnen Sie unter
+      folgendem Link finden: <A HREF="http://imap.org"/>here</A>.  Das Programm
+      n&uuml;tzt verschieden IMAP funktionen, aber ist nicht aufgebaut in PHP4 Form.
+      Dies beeinflusst Ihr arbeiten mit SquirrelMail nicht weiters.
+      </p>
+   </description>
+</section>

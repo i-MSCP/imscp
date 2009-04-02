@@ -1,0 +1,17 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (c) 2005 SquirrelMail Project Team
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: AskUserInfo SM Plugin\n"
+"POT-Creation-Date: 2003-09-11 05:04+0100\n"
+"PO-Revision-Date: 2003-10-12 19:23+0100\n"
+"Last-Translator: Philippe Mingo <philippe@squirrelmail.org>\n"
+"Language-Team: SPANISH <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "NOTE: You need to supply your full name and email address."
+msgstr "NOTA: Debe aportar su nombre completo y dirección electrónica."

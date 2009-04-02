@@ -1,0 +1,103 @@
+# Italian translation of Squirrelmail vacation_local plugin
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the plugin's package.
+# Luca Francesconi <luca.francesconi@ariannaconsulting.it>, 2005.
+# $Id: vacation_local.po 10125 2005-10-03 14:00:52Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: vacation_local 2.0\n"
+"POT-Creation-Date: 2005-07-20 17:05+0200\n"
+"PO-Revision-Date: 2005-09-28 13:40+0100\n"
+"Last-Translator: Luca Francesconi <luca.francesconi@ariannaconsulting.it>\n"
+"Language-Team: The SquirrelMail Project Team <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+
+msgid "Vacation Message"
+msgstr "Messaggio d'assenza"
+
+msgid "Set up an auto-reply message and optionally forward your incoming email. This can be useful when you are away on vacation."
+msgstr "Configura un messaggio di risposta automatica ed eventualmente inoltra le mail in ingresso verso un altro tuo indirizzo email alternativoQuesta caratteristica è utile per quando si è assenti e non è possibile leggere la propria email"
+
+msgid "Bad characters in list of forwarding address."
+msgstr "Caratteri non consentiti nella lista degli indirizzi di inoltro"
+
+msgid "Options"
+msgstr "Opzioni"
+
+msgid "Change Vacation Message"
+msgstr "Modifica messaggio d'assenza"
+
+msgid "Settings Saved"
+msgstr "Impostazioni salvate"
+
+msgid "Send auto-reply to sender?"
+msgstr "Inviare la risposta automatica al mittente?"
+
+msgid "Vacation subject:"
+msgstr "Oggetto assenza:"
+
+msgid "Vacation message:"
+msgstr "Messaggio assenza:"
+
+msgid "Forward incoming messages to addresses listed below?"
+msgstr "Inoltrare i messaggi in arrivo agli indirizzi indicati nella lista?"
+
+msgid "No local delivery; forward and/or auto-reply only."
+msgstr "Impossibile recapitare localmente; operazioni permesse inoltro e/o risposta automatica"
+
+msgid "Forwarding email addresses (one address per line)"
+msgstr "Indirizzi di inoltro (uno per linea)"
+
+msgid "Submit"
+msgstr "Invia"
+
+msgid "Error: Could not bind to LDAP server."
+msgstr "Errore:Impossibile collegarsi con il server LDAP"
+
+#, php-format
+msgid "Error: Could not find FTP server for %s in LDAP server."
+msgstr "Errore:Impossibile trovare FTP server per %s nel server LDAP"
+
+msgid "Error: Could not connect to LDAP server."
+msgstr "Errore: Impossibile connettersi al server LDAP"
+
+msgid "Error: Unable to connect to FTP server. Please try again later."
+msgstr "Errore: Impossibile connettersi al server FTP. Riprovare più tardi"
+
+msgid "Error: Unable to log in to FTP server. Please contact your system administrator."
+msgstr "Errore: Impossibile autenticarsi al server FTP.Contattare l'amministratore di sistema"
+
+msgid "Error: Unable to switch to passive FTP mode. Please contact your system administrator."
+msgstr "Errore: Impossibile passare in modalità passiva per FTP.Contattare l'amministratore di sitema"
+
+msgid "Error: Unable to upload file. Please contact your system administrator."
+msgstr "Errore: impossibile caricare il file.Contattare l'amministratore di sistema"
+
+msgid "An error occurred uploading the file:"
+msgstr "Si è verificato un errore durante il caricamento del file:"
+
+msgid "Error: unable to download file. Please contact your system administrator."
+msgstr "Errore: Impossibile scaricare il file.Contattare l'amministratore di sistema"
+
+msgid "An error occurred downloading the file:"
+msgstr "Si è verificato un errore durante lo scaricamento del file:"
+
+msgid "Error: unable to delete file. Please contact your system administrator."
+msgstr "Errore: Impossibile cancellare il file.Contattare l'amministratore di sistema"
+
+msgid "An error occurred deleting the file:"
+msgstr "Si è verificato un errore nella cancellazione del file:"
+
+msgid "Unknown action:"
+msgstr "Azione sconosciuta:"
+
+msgid "An error occurred attempting to read temp file; check permissions on attachments directory."
+msgstr "Si è verificato un errore nella lettura del file temporaneo; controllare i permessi sulla directory degli allegati"
+
+msgid "An error occurred attempting to create temp file; check permissions on attachments directory."
+msgstr "Si è verificato un errore durante la creazione del file temporaneo; controllare i permessi sulla directory degli allegati"
+

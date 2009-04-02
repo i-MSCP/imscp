@@ -1,0 +1,696 @@
+# Lithuanian Translation of SquirrelMail shared_calendar plugin.
+# Copyright (c) 2005-2006 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: calendar.po 11579 2006-08-13 13:50:15Z tokul $
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: shared_calendar 2.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-07 15:56+0300\n"
+"PO-Revision-Date: 2006-06-21 09:34+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+
+msgid "Badly formatted header color"
+msgstr "Nurodyta klaidinga antraštės spalva"
+
+msgid "Badly formatted today color"
+msgstr "Nurodyta klaidinga šiandienos spalva"
+
+msgid "Badly formatted event color"
+msgstr "Nurodyta klaidinga įvykio spalva"
+
+msgid "Badly formatted day color"
+msgstr "Nurodyta klaidinga dienos spalva"
+
+msgid "Day view start time must come before end time"
+msgstr "Dienos peržiūroje pradžios laikas turi būti ankstesnis už pabaigos laiką"
+
+msgid "Unknown"
+msgstr "Nežinoma"
+
+msgid "Emergency"
+msgstr "Labai skubu"
+
+msgid "Urgent"
+msgstr "Skubu"
+
+msgid "Serious"
+msgstr "Rimta"
+
+msgid "Important"
+msgstr "Svarbu"
+
+msgid "Normal"
+msgstr "Normalus"
+
+msgid "Secondary"
+msgstr "Antrinis"
+
+msgid "Low"
+msgstr "Žemas"
+
+msgid "Insignificant"
+msgstr "Nereikšminga"
+
+msgid "Ignore"
+msgstr "Ignoruoti"
+
+msgid "Days"
+msgstr "dienos"
+
+msgid "Weeks"
+msgstr "savaitės"
+
+msgid "Months"
+msgstr "mėnesiai"
+
+msgid "Years"
+msgstr "metai"
+
+msgid "Event Created Successfully"
+msgstr "Įvykis sėkmingai išsaugotas."
+
+msgid "Event Updated Successfully"
+msgstr "Įvykis sėkmingai atnaujintas"
+
+#, php-format
+msgid "Personal Calendar for %s"
+msgstr "%s asmeninis kalendorius"
+
+msgid "Today"
+msgstr "Šiandien"
+
+msgid "All Day"
+msgstr "Visa dieną"
+
+msgid "Calendar"
+msgstr "Kalendorius"
+
+msgid "Calendar Preferences"
+msgstr "Kalendoriaus nustatymai"
+
+msgid ""
+"Change the way your calendars behave and are displayed, including the "
+"miniature calendar beneath the folder list."
+msgstr ""
+
+msgid "Calendar Administration"
+msgstr "Kalendorių valdymas"
+
+msgid ""
+"Create and maintain shared calendars. Edit holidays, assign calendar access "
+"by user, or create publicly available calendars."
+msgstr ""
+
+msgid "Sunday"
+msgstr "Sekmadienis"
+
+msgid "Monday"
+msgstr "Pirmadienis"
+
+msgid "Tuesday"
+msgstr "Antradienis"
+
+msgid "Wednesday"
+msgstr "Trečiadienis"
+
+msgid "Thursday"
+msgstr "Ketvirtadienis"
+
+msgid "Friday"
+msgstr "Penktadienis"
+
+msgid "Saturday"
+msgstr "Šeštadienis"
+
+#, php-format
+msgid "%d min."
+msgstr "%d min."
+
+#, php-format
+msgid "%s hr."
+msgstr "%s val."
+
+#, php-format
+msgid "%s day"
+msgstr "%s diena"
+
+#, php-format
+msgid "%s days"
+msgstr "%s dienų(os)"
+
+#, php-format
+msgid "%s wk."
+msgstr "%s sav."
+
+#, php-format
+msgid "%sam"
+msgstr "%sam"
+
+#, php-format
+msgid "%spm"
+msgstr "%spm"
+
+msgid "Could not load external calendar"
+msgstr "Nepavyko įkelti išorinio kalendoriaus"
+
+msgid "Could not load external calendar; bad address"
+msgstr "Nepavyko įkelti išorinio kalendoriaus: blogas adresas"
+
+msgid "Converting old calendar. . ."
+msgstr "Konvertuojamas senasis kalendorius. . ."
+
+#, php-format
+msgid "Problem converting old calendar; please contact your administrator (%s)"
+msgstr "Nepavyko konvertuoti senojo kalendoriaus. Susisiekite su sistemos administratoriumi (%s)"
+
+#, php-format
+msgid "Can't rename %s to %s"
+msgstr "Nepavyko pervardinti %s į %s"
+
+#, php-format
+msgid ""
+"Problem converting old calendar; please contact your administrator (cannot "
+"execute %s)"
+msgstr ""
+
+#, php-format
+msgid "Can't find old personal calendar: %s"
+msgstr "Nepavyko rasti senojo asmeninio kalendoriaus: %s"
+
+#, php-format
+msgid "Successfully merged calendar into \"%s\""
+msgstr "Sėkmingai įkeltas kalendorius į \"%s\""
+
+msgid ""
+"You already have a calendar with the same ID.  Are you sure you don't want "
+"to merge/synch the calendar you are uploading?"
+msgstr ""
+
+msgid "..."
+msgstr "..."
+
+msgid "Must have domain information"
+msgstr "Reikia nurodyti domeno informaciją"
+
+msgid "Valid event type must be specified"
+msgstr "Reikia nurodyti tinkamą įvykio tipą"
+
+msgid "Must specify valid recurrence type"
+msgstr "Reikia nurodyti tinkamą pasikartojimo tipą"
+
+msgid ""
+"Overall end of recurrence for recurring events must come after end of "
+"initial occurrence"
+msgstr ""
+
+msgid "Must specify valid recurrence interval"
+msgstr "Reikia nurodyti tinkamą pasikartojimo intervalą"
+
+msgid "Event must have a summary/title"
+msgstr ""
+
+msgid "Must specify valid event priority"
+msgstr "Reikia nurodyti tinkamą įvykio prioritetą"
+
+msgid "Event must have a valid start date/time"
+msgstr ""
+
+msgid "Event must have a valid end date/time"
+msgstr ""
+
+msgid "End date/time must come after start date and time"
+msgstr ""
+
+msgid "At least one parent calendar must be given"
+msgstr ""
+
+msgid "Event must have a creator"
+msgstr ""
+
+msgid "Event must have a creation date"
+msgstr ""
+
+msgid "Event must have at least one owner"
+msgstr "Įvykyje turi būti nurodytas bent vienas savininkas"
+
+msgid "Error:"
+msgstr "Klaida:"
+
+msgid "Create New Calendar"
+msgstr "Sukurti naują kalendorių"
+
+msgid "Name"
+msgstr "Vardas"
+
+msgid "Create"
+msgstr "Sukurti"
+
+msgid "Calendar Setup"
+msgstr "Kalendoriaus derinimas"
+
+msgid ""
+"Create shared access calendars for select users\n"
+" or public calendars for all users.\n"
+msgstr ""
+
+msgid "Manage user permissions for your shared calendars.\n"
+msgstr ""
+
+msgid "Calendars"
+msgstr "Kalendoriai"
+
+msgid "Users"
+msgstr "Vartotojai"
+
+msgid ""
+"<b>Shared</b> calendars can be assigned to users with read only or read/"
+"write access. To manage user access to your shared calendars, use the \"Users"
+"\" button."
+msgstr ""
+
+msgid ""
+"<b>Public</b> calendars are available to all users in addition to their "
+"private personal calendar."
+msgstr ""
+
+msgid "Shared Calendars"
+msgstr "Bendri kalendoriai"
+
+msgid "Shared calendars"
+msgstr "Bendri kalendoriai"
+
+msgid "No Shared Calendars Defined"
+msgstr "Nenustatyti jokie bendri kalendoriai"
+
+msgid "Public Calendars"
+msgstr "Vieši kalendoriai"
+
+msgid "Public calendars"
+msgstr "Vieši kalendoriai"
+
+msgid "No Public Calendars Defined"
+msgstr "Nenustatyti jokie vieši kalendoriai"
+
+msgid "Delete"
+msgstr "Ištrinti"
+
+msgid "Add a new calender"
+msgstr "Pridėti naują kalendorių"
+
+msgid "make <b>PUBLIC</b> (read/write for all users)"
+msgstr ""
+
+msgid "Add"
+msgstr "Pridėti"
+
+msgid ""
+"<b>To delete one or more users</b> from a calendar, check the box next to "
+"each username and click the 'Delete Users' button."
+msgstr ""
+
+msgid ""
+"<b>To add a user</b> to a calendar, type in the username below the calendar, "
+"choose the user's access level, and click the 'Add User' button."
+msgstr ""
+
+msgid ""
+"Note that you may use wildcards in user names: * means \"zero or more "
+"characters\" and ? means \"exactly one alphanumeric character\". For "
+"example, \"*@mydomain.com\" will give everyone in \"mydomain.com\" access to "
+"the calendars you assign to that username.\n"
+msgstr ""
+
+msgid ""
+"<b>To update user access levels</b> for a calendar, adjust the 'Access "
+"Level' selections, then click the 'Save' button below that calendar."
+msgstr ""
+
+msgid ""
+"Note that only owners of public calendars will have write access to those "
+"calendars.\n"
+msgstr ""
+
+msgid "No Shared Calendars Have Been Defined"
+msgstr "Nenustatyti jokie bendri kalendoriai"
+
+msgid "Public"
+msgstr "Viešas"
+
+msgid "Edit Holidays"
+msgstr "Keisti švenčių dienas"
+
+msgid "User"
+msgstr "Vartotojas"
+
+msgid "Access Level"
+msgstr "Priėjimo lygis"
+
+msgid "No users defined for this calendar"
+msgstr ""
+
+msgid "Read"
+msgstr "Skaityta"
+
+msgid "Write"
+msgstr "Rašymo"
+
+msgid "Owner"
+msgstr "Savininkas"
+
+msgid "Delete Users"
+msgstr "Ištrinti vartotojus"
+
+msgid "Add User"
+msgstr "Pridėti vartotoją"
+
+msgid "Save"
+msgstr "Išsaugoti"
+
+msgid "<b>To create a holiday,</b> blah blah and click the 'Blah Blah' button."
+msgstr ""
+
+msgid ""
+"Note that you must also add the new holiday to your calendar if desired.\n"
+msgstr ""
+
+msgid ""
+"<b>To add a holiday</b> to a calendar, blah blah blah and click the 'Blah "
+"Blah' button."
+msgstr ""
+
+msgid ""
+"<b>To remove a holiday</b> from a calendar, blah blah blah, then click the "
+"'Blah' button below that calendar."
+msgstr ""
+
+msgid "No Holidays Have Been Defined"
+msgstr "Nenustatytos švenčių dienos"
+
+msgid "General Calendar Options"
+msgstr "Bendriniai kalendoriaus nustatymai"
+
+msgid "First Day of Week:"
+msgstr "Pirma savaitės diena:"
+
+msgid "Priority at which Events Are Highlighted:"
+msgstr ""
+
+msgid "Show Daily Add Event Buttons in Month View:"
+msgstr ""
+
+msgid "Yes"
+msgstr "Taip"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Show Week Numbers in Month View:"
+msgstr ""
+
+msgid "Show Event Start Times in Month View:"
+msgstr ""
+
+msgid "Maximum Number Events Shown Per Day in Month View:"
+msgstr ""
+
+msgid "Click on Event in Month View Goes To:"
+msgstr ""
+
+msgid "Event View"
+msgstr "Įvykių peržiūra"
+
+msgid "Day View"
+msgstr "Dienos peržiūra"
+
+msgid "Show Compacted Time of Day in Day View:"
+msgstr ""
+
+msgid "Show Hourly Add Event Buttons in Day View:"
+msgstr ""
+
+msgid "Day View Start Time:"
+msgstr "Dienos pradžia:"
+
+msgid "Day View End Time:"
+msgstr "Dienos pabaiga:"
+
+msgid "Clock Skew To Remotely Hosted Calendars:"
+msgstr ""
+
+msgid "Small Calendar"
+msgstr "Mini kalendorius"
+
+msgid "Show Small Calendar Under Folder List:"
+msgstr ""
+
+msgid "Small Calendar Source:"
+msgstr "Mini kalendoriaus šaltinis:"
+
+msgid "Personal"
+msgstr "Asmeninis"
+
+msgid "Small Calendar Size:"
+msgstr "Mini kalendoriaus dydis:"
+
+msgid "Default"
+msgstr "Standartinė"
+
+msgid "10px"
+msgstr "10px"
+
+msgid "12px"
+msgstr "12px"
+
+msgid "14px"
+msgstr "14px"
+
+msgid "16px"
+msgstr "16px"
+
+msgid "Small Calendar Separator:"
+msgstr "Mini kalendorius skirtukas:"
+
+msgid "None"
+msgstr "Joks"
+
+msgid "Horizontal rule"
+msgstr "Horizontali linija"
+
+msgid "Box"
+msgstr "Rėmelis"
+
+msgid "Show Year Title Above Small Calendar:"
+msgstr ""
+
+msgid "Show Today Link Above Small Calendar:"
+msgstr ""
+
+msgid "Show Day Headers Above Small Calendar:"
+msgstr "Rodyti dienų antraštes virš mini kalendoriaus:"
+
+msgid "Use Same Background Colors for Days as Regular Calendar:"
+msgstr ""
+
+msgid "Header Color:"
+msgstr "Antraštės spalva:"
+
+msgid "Today Color:"
+msgstr "Šiandienos spalva:"
+
+msgid "Event Color:"
+msgstr "Įvykių spalva:"
+
+msgid "Day Color:"
+msgstr "Dienos spalva:"
+
+msgid "Event Text Style:"
+msgstr "Įvykio teksto stilius:"
+
+msgid "normal"
+msgstr "normalus"
+
+msgid "italic"
+msgstr "kursyvas"
+
+msgid "Submit"
+msgstr "Vykdyti"
+
+msgid "Year View"
+msgstr "Metų peržiūra"
+
+msgid "Month View"
+msgstr "Mėnesio peržiūra"
+
+msgid "Tasks"
+msgstr "Užduotys"
+
+msgid "Color Picker"
+msgstr "Spalvos pasirinkimas"
+
+msgid ""
+"Click a box and the hexadecimal color will be shown below.  Use these hex "
+"values for color box settings."
+msgstr ""
+
+msgid "Hex Value"
+msgstr "Hex reikšmė"
+
+msgid "More"
+msgstr "Daugiau"
+
+msgid "Go"
+msgstr "Pirmyn"
+
+msgid "Add Event"
+msgstr "Pridėti įvykį"
+
+msgid "Edit Calendar"
+msgstr "Keisti kalendorių"
+
+msgid "Update Event"
+msgstr "Atnaujinti įrašą"
+
+msgid "Create Event"
+msgstr "Įvesti įvykį"
+
+msgid "Summary:"
+msgstr "Santrauka"
+
+msgid "Start:"
+msgstr "Pradžia:"
+
+msgid "End:"
+msgstr "Pabaiga:"
+
+msgid "Duration:"
+msgstr "Trukmė:"
+
+msgid "Recurrence:"
+msgstr "Pasikartojimas:"
+
+msgid "One Time"
+msgstr "Vienkartinis"
+
+msgid "Recurring Every"
+msgstr ""
+
+msgid "Help"
+msgstr "Pagalba"
+
+msgid "On"
+msgstr "Tarp"
+
+msgid "Sun"
+msgstr "Sek"
+
+msgid "Mon"
+msgstr "Pir"
+
+msgid "Tue"
+msgstr "Ant"
+
+msgid "Wed"
+msgstr "Tre"
+
+msgid "Thu"
+msgstr "Ket"
+
+msgid "Fri"
+msgstr "Pen"
+
+msgid "Sat"
+msgstr "Šeš"
+
+msgid "End Recurrence:"
+msgstr "Pasikartojimo pabaiga:"
+
+msgid "Recurrence Count:"
+msgstr "Pasikartojimų kiekis:"
+
+msgid "Priority:"
+msgstr "Prioritetas:"
+
+msgid "Reminder:"
+msgstr "Priminimas:"
+
+msgid "before event start"
+msgstr ""
+
+msgid "Description:"
+msgstr "Aprašymas:"
+
+msgid "Delete Event"
+msgstr "Ištrinti įvykį"
+
+msgid "Last Updated:"
+msgstr "Atnaujinta:"
+
+msgid "Created:"
+msgstr "Sukurta:"
+
+msgid "Reminder not set"
+msgstr "Priminimas nenustatytas"
+
+msgid "Occurrences"
+msgstr "Pasikartojimai"
+
+msgid "Confirm Deletion"
+msgstr "Patvirtinkite trynimą"
+
+msgid "Calendar Helper"
+msgstr "Kalendoriaus pagalbininkas"
+
+msgid "TODAY"
+msgstr "ŠIANDIEN"
+
+msgid "Time Helper"
+msgstr "Laiko pagalbininkas"
+
+msgid "Available Calendars"
+msgstr "Esami kalendoriai"
+
+msgid "remove"
+msgstr "išmesti"
+
+msgid "edit"
+msgstr "taisyti"
+
+msgid "export"
+msgstr "eksportuoti"
+
+msgid "Add Personal Calendar"
+msgstr "Pridėti asmeninį kalendorių"
+
+msgid "Add External Calendar"
+msgstr "Pridėti išorinį kalendorių"
+
+msgid "Address:"
+msgstr "Adresas:"
+
+msgid "Override Name:"
+msgstr "Pakeitimo vardas:"
+
+msgid "Import Calendar"
+msgstr "Įkelti kalendorių"
+
+msgid "Synch/Merge With"
+msgstr "Sulyginti su"
+
+msgid "Auto-detect"
+msgstr "Atpažinti automatiškai"
+
+msgid "S M T W T F S"
+msgstr "S P A T K P Š"
+
+msgid "cont'd"
+msgstr "tęsinys"
+

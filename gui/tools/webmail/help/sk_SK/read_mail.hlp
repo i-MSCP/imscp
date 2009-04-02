@@ -1,0 +1,175 @@
+<chapter>
+   <title>
+      Èítanie elektonickej správy
+   </title>
+   <summary>
+      Schopnos» èíta» správy (e-maily) je jedna z najzákladnej¹ích schopností
+      po¹tového programu. Ale, SquirrelMail má niekoµko zaujímavostí na chvíµu,
+      kým èítate správy. Táto sekcia pomocníka vysvetµuje, èo v¹etky robia.
+   </summary>
+   <description>
+      <p>
+      Kliknutím na predmet èiastoèných správ sa správy zobrazia. Mali by sme e¹te
+      pripomenú», ¾e e-maily a internetové adresy sú skutoèné odkazy, tak¾e na
+      nich mô¾te kliknú» a tak napísa» novú správu, èi otvori» web stránku.
+      Ïal¹ia skutoène ¹ikovnou èrtou SquirrelMailu je ¾e èasti textov správ sú
+      zobrazované inými farbami. ©tandard pre pri odpovedi na správu je, ¾e citát
+      predchádzajúcej správy zaèína znakom ">" pred ka¾dým riadkom správy. Keï
+      toto SquirrelMail zistí, zobrazí ho odli¹nou farbou. Odpovedaná správa je 
+      zobrazená inou farbou, ako text na ktorý odpovedáte, a tiez inou farbou ako
+      text novej spravy. Toto funguje v dvoch vrstvách. Ïal¹ia li¹ta s menu je
+      pod voµbami hlavného menu. Táto li¹ta má tri sekcie. Na µavej strane je
+      mazanie alebo moznost návratu na zoznam správ. V strede je mo¾ná navigácia
+      medzi správami. V pravo sú rôzne funkcie na odosielanie po¹ty.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Zoznam správ
+   </title>
+   <description>
+      <p>
+      Kliknite na tento odkaz pre návrat do prieèinka, z ktorého ste pri¹li.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odstráni»
+   </title>
+   <description>
+      <p>
+      Kliknite na tento odkaz pre odstránenie správy, ktorú práve pí¹ete. V¹etky
+      prílohy odstránenej správy sú taktie¾ automaticky odstránené. Strate správ
+      v budúcnosti mô¾te jednoducho zabráni» stiahnutím si príloh e¹te pri èítaní
+      správy.(ïalej vysvetlené v tejto kapitole).<BR>
+      V tomto kontexte, zmazanie znamená, ¾e správa bude presunutá do prieèinka
+      nazvaného Kô¹. Ak chcete po tomto necha» správu, presuòte ju von z prieèinka
+      Kô¹.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigácia
+   </title>
+   <description>
+      <p>
+      V strede panela sú navigaèné tlaèidlá. Tlaèidlo "Predchádzajúci" mô¾e by»
+      znázornené ako textový odkaz. Kliknutím na tento odkaz sa zobrazí predchádzajúca
+      správa bez toho, aby ste museli znova ís» do zoznamu správ. To isté platí
+      aj pre odkaz  "Ïal¹í" ktorý vas premiestni na ïal¹iu správu nasledujúcu
+      ihneï po správu, ktorú si teraz prezeráte.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      "Preposla»"
+   </title>
+   <description>
+      <p>
+      Ak kliknete na odkaz "Preposla»", ktorý je vpravo, otvorí sa stránka "Nová
+      správa" s pred chvíµou èítanou správou v textovom poli pod názvom 
+      --Pôvodná správa--".  "Fwd:" je predpona ktorá sa v tomto prípade dopí¹e na
+      zaèiatok správneho poµa. Mno¾stvo polí pre poslanie na po¹tové adresy vás
+      èaká pre dokonèením správy. Pozícia kurzoru mô¾e by» v textovom poli v poradí
+      pre pridanie komentára do u¾ existujúceho textu. Mô¾te tie¾ vyu¾i» mo¾nos»
+      Preposla» ako prílohu.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odpoveda»
+   </title>
+   <description>
+      <p>
+     Kliknutím na tento odkaz sa dostanete na písanie novej správy odosielateµovi
+     pred chvíµou èítanej správy. 
+     Click this link to return a new message to the originator of the
+      previously viewed message.  "Re:" je predpona ktorá sa dopí¹e na zaèiatok
+      riadku poµa "Predmet". Taktie¾ sa symbol ">" dopí¹e pred ka¾dý riadok pôvodnej
+      správy. Text ktorým odpovedáte, nebude tento znak na zaèiatku ka¾dého riadku.
+      Toto mô¾e zapríèini» ze funkcia zalomenia riadkov spôsobí neèitateµnos»
+      správy. Skúste sa teda v nastavení nastavi» voµbu <i>Zalomi» prichádzajúci
+      text</i> na väè¹ie èíslo. Va¹e komnetáre mô¾ete urobi» kdekoµvek v textovom
+      poli alebo ich aj prida» ku citovanej správe. Mô¾te taktie¾ vyu¾i» mo¾nos»
+      s prílohou.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odpoveda» v¹etkým
+   </title>
+   <description>
+      <p>
+      Je to to isté ako voµba "Odpoveda»", ale odpoviete v¹etkým ktorý túto správu
+      dostali (v hlavièke správy boli uvedení ako prijímatelia).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      	Zobrazi» celú Hlavièku
+   </title>
+   <description>
+      <p>
+      Toto zobrazí úplnú hlavièku správy. To zahàòa trasu odkiaµ správa ide kam,
+      a mnono detailných informácií o správe samej.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Zobrazi» Verziu pre Tlaè
+   </title>
+   <description>
+      <p>
+      Ak chcete vytlaèi» správu, pravdepodobne budete chcie» kliknú» na tento
+      odkaz. Vytvorí nové okno, obsahujúce správu, ale s odstránenými v¹etkými
+      nepotrebnými informáciami a menu, pripravenú na tlaè. Kliknutím na tlaèítko
+      Tlaèi» v tomto okne to urobíte, Pre návrat na pôvodnú správu kliknite na
+      Zavrie».
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Stiahnu» toto ako súbor
+   </title>
+   <description>
+      <p>
+      Dole nad spodnou li¹tou nájdete tento odkaz. Kliknutím na tento odkaz ulo¾íte
+      túto správu ako jednoduchý text. Zjednodu¹ená hlavièka správy sa vlo¾i na
+      zaèiatok správy.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prílohy
+   </title>
+   <description>
+      <p>
+      V¹etky prílohy poslané s prijatou správou sa zobrazia na spodku správy vo
+      vyfarbenom políèku. Vpravo je súbor reprezentovaný odkazom s popisom typu
+      súboru. Kliknutím na meno súboru sa zobrazí dialóg na stihnutie súboru.
+      Kliknite na "Stiahnu»" na pravej strane. <BR>
+      Ak vá¹ prehliadaè podporuje prezeranie typu súboru prílohy, iný odkaz,
+      "Zobrazi»", vám zobrazí priamo v prehliadaèi èo obsahuje súbor.
+      </p>
+   </description>
+</section>

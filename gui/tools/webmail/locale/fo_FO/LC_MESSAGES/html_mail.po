@@ -1,0 +1,85 @@
+# Translation of html_mail.po to Faroese (Faroe Islands)
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the squirrelmail package.
+# Danial Olsen <danial@com-data.fo>, 2005.
+# $Id: html_mail.po 10513 2005-12-29 09:13:52Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: html_mail\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-10-24 21:00+0300\n"
+"PO-Revision-Date: 2005-12-27 23:18+0000\n"
+"Last-Translator: Danial Olsen <danial@com-data.fo>\n"
+"Language-Team: Faroese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11\n"
+
+#, php-format
+msgid "ERROR (%s): can't load config file"
+msgstr "VILLA (%s): fái ikki lisið uppsetingarfílu inn"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid ""
+"Warning: all special formatting will be lost.  Are you sure you want to send "
+"your message in plain text format?"
+msgstr ""
+"Ávaring: alt serligt snið blívur burtur. Ert tú vís(ur) í at tú vilt senda tíni boð "
+"í vanligum tekst sniði?"
+
+msgid "Plain Text"
+msgstr "Vanligur tekstur"
+
+msgid "Compose in HTML"
+msgstr "Skriva í HTML"
+
+#, php-format
+msgid ""
+"FATAL: HTML_Mail plugin must come AFTER %s in plugins array.  Please modify "
+"plugin order using conf.pl or by editing config/config.php"
+msgstr ""
+"VILLA: HTML_Mail plugin má koma AFTANÁ %s í plugin listanum.  Vinarliga "
+"broyt plugin raðfylgjuna í conf.pl, ella við at broyta config/config.php"
+
+msgid "Subject"
+msgstr "Evni"
+
+msgid "From"
+msgstr "Frá"
+
+msgid "Default Email Composition Format:"
+msgstr "Sjálvsett t-post snið:"
+
+msgid "Use Emoticons:"
+msgstr "Brúka kenslu ímyndir:"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nei"
+
+msgid "Only Reply In HTML When Viewing HTML Format:"
+msgstr "Bert svara í HTML, tá vísi í HTML sniði:"
+
+msgid "(Always Attempt To Reply In HTML)"
+msgstr "(Royn altíð at svara í HTML)"
+
+msgid "Only Allow Unsafe Images In HTML Replies When Viewing Unsafe Images:"
+msgstr "Loyv bert ótryggum myndum í HTML svari, tá ótryggar myndir verða vístar:"
+
+msgid "(Always Include Unsafe Images)"
+msgstr "(Tak altíð ótryggar myndir við)"
+
+msgid "HTML Editor Type:"
+msgstr "HTML ritla slag:"
+
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+msgid "HTMLArea"
+msgstr "HTMLArea"
+

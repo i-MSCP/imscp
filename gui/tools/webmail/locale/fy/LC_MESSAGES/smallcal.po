@@ -1,0 +1,99 @@
+# translation of smallcal.po to Nederlands
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) smallcal Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: smallcal.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: smallcal\n"
+"POT-Creation-Date: 2003-10-20 16:27+0300\n"
+"PO-Revision-Date: 2007-04-15 09:53+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "S M T W T F S"
+msgstr "S M T W T F S S"
+
+msgid "Today"
+msgstr "Hjoed"
+
+msgid "Color Picker"
+msgstr "Kleurekiezer"
+
+msgid "Click a box and the hexadecimal color will be shown <br>below. Use these hex values for color box settings."
+msgstr "Klik op in fak en de heksadesimale kleurkoade sil <br>hjirûnder toand wurde. Brûk de heks-wearden foar kleurfakynstellingen."
+
+msgid "Hex Value"
+msgstr "Heks-wearde"
+
+msgid "Small Calendar Options"
+msgstr "Opsjes foar lytse aginda"
+
+msgid "Small Calendar:"
+msgstr "Lytse aginda:"
+
+msgid "Show small calendar in left bar"
+msgstr "Lytse aginda yn lofter balke toane"
+
+msgid "Use Default Theme:"
+msgstr "Standerttema brûke:"
+
+msgid "This will override values below"
+msgstr "Dit sil ûndersteande wearden ferfange"
+
+msgid "Header Color:"
+msgstr "Kopkleur:"
+
+msgid "Day Color:"
+msgstr "Deikleur:"
+
+msgid "Today Color:"
+msgstr "Hjoedkleur:"
+
+msgid "Event Color:"
+msgstr "Foarfalkleur:"
+
+msgid "Calendar separator:"
+msgstr "Skiedingsteken foar aginda:"
+
+msgid "None"
+msgstr "Gjint"
+
+msgid "Horizontal rule"
+msgstr "Horizontale line"
+
+msgid "Box"
+msgstr "Box"
+
+msgid "Calendar size:"
+msgstr "Agindagrutte:"
+
+msgid "Default size"
+msgstr "Standertgrutte"
+
+msgid "10 px"
+msgstr "10 px"
+
+msgid "12 px"
+msgstr "12 px"
+
+msgid "14 px"
+msgstr "14 px"
+
+msgid "16 px"
+msgstr "16 px"
+
+msgid "Use Shared Calendar:"
+msgstr "Dielde aginda brûke"
+
+msgid "Use the shared calendar selected below as your<br>small calendar (default is Personal calendar)"
+msgstr "Brûk de hjirûnder selektearre dielde aginda<br> as jo lytse aginda (standert wurdt de persoanlike aginda brûkt)."
+
+msgid "Shared Calendar:"
+msgstr "Dielde aginda:"
+

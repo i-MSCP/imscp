@@ -1,0 +1,151 @@
+<chapter>
+   <title>
+      Att läsa meddelanden
+   </title>
+   <summary>
+      Att läsa meddelanden är grundfunktionen av E-postläsare. SquirrelMailil
+      har några ytterligare funktioner att använda när man läser meddelanden.
+      Här är finns förklaringar.
+   </summary>
+   <description>
+      <p>
+      Klicka på ämnet på en av meddelanden och meddelandet visas. En sak som
+      du noterar är att www- och E-post-adresser är klickbara länkar, du kan
+      klicka dessa för att gå till en sida eller att skriva ett nytt
+      meddelande.
+      En annan fin egenskap är att meddelandet visas med olika färger.
+      Normalt är ett svar identifierat med ">" tecken. SquirrelMail kan
+      skilja upp till två svar i rad och visa texten med olika färger.
+      På extramenun (under de vamliga) finns tre fält. Den vänstra kan du
+      klicka på för att radera meddelandet eller att gå tillbaks till
+      listan. I mitten finn länkar till föregående och nästa meddelande.
+      På högra sidan finns postfunktioner.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Meddelandelista
+   </title>
+   <description>
+      <p>
+      Tar dig tillbala till meddelandelistan.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ta bort
+   </title>
+   <description>
+      <p>
+      Klicka för att radera meddelandet. Eventuella bilagor raderas samtidigt.
+      Spara de bilagor du vill ha kvar innan du tar bort meddelandet.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigering
+   </title>
+   <description>
+      <p>
+      I mitten finns länkar till tidigare och nästa meddelande i denna mapp.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Nästa
+   </title>
+   <description>
+      <p>
+      Klicka för att läsa nästa meddelande.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Framåt
+   </title>
+   <description>
+      <p>
+      Till höger. Klicka och du kan editera meddelandet och skicka det
+      vidare. Du kan skriva dina kommentar och välja mottagare.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Svar
+   </title>
+   <description>
+      <p>
+      Klicka för att svara till avsändaren. Det ursprungliga meddelandet
+      markeras med ">" tecken. Det är möjligt att somliga rader inte börjar
+      med ">", detta kan tyvärr inte undvikas. Du kan försöka att ändra
+      antalet tecken per rad i inställningarna.
+      Du kan skriva kommentar var som helst i meddelandet, du kan också lägga
+      till bilagor.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Svar till alla
+   </title>
+   <description>
+      <p>
+      Som "Svar" men meddelandet skickas både till avsändaren och till
+      samtliga mottagare av det ursprungliga meddelandet.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Näytä kaikki otsaketiedot
+   </title>
+   <description>
+      <p>
+      Tämä tuo näyttöön kaikki viestin ostikkotiedot. Näihin kuuluu myös
+      koko se reitti jonka viesti on kulkenut sekä paljon muutä tietoa
+      itse viestin sisällöstä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Lataa tämä tiedostona
+   </title>
+   <description>
+      <p>
+      Aivan sivun alalaidassa. Klikkaamalla tätä voit ladata näytössäolevan
+      viestin tekstitiedostona kovalevyllesi. Osa otsikkotiedoista tulee
+      myös mukaan.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Liitteet
+   </title>
+   <description>
+      <p>
+      Viestin liitteet löydät viestin alalaidasta värjätystä palkista.
+      Klikkaamalla viestin nimeä se joko näytetään selaimessa tai talletetaan,
+      tämä riippuu liitteen tiedostotyypistä. Jos haluat tallettaa liitteen
+      sen tiedostotyypistä riippumatta klikkaa "download"
+      linkkiä rivin oikeassa laidassa.
+      </p>
+   </description>
+</section>

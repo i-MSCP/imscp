@@ -1,0 +1,122 @@
+<chapter>
+   <title>
+      Adresy
+   </title>
+   <summary>
+      Adresár mô¾e u¹etri» mnoho èasu a písania. Mô¾te si tam ulo¾i»
+      adresy µudí ktorých èasto pí¹ete a potom ich len pou¾íva»
+      znovu a znovu..
+      
+   </summary>
+   <description>
+      <p>
+      Adresáre sú výborným prostriedkom ¹etrenia èasu. Tu si mô¾te uklada» 
+      èasto pou¾ívané adresy. LDAP servery (sú èasto pou¾ívané vo spoloènostiach
+      a univerzitách za úèelom organizácie a µahkej dostupnosti veµkého mno¾stva
+      adries) sú taktie¾ podporované.
+      </p>
+      <p>
+      Ak vá¹ prehliadaè podporuje JavaScript, potom si mô¾te povoli» funkciu
+      "Formát Zobrazenia Adresára: JavaScript" v menu Mo¾nosti. Je to skutoène 
+      ¹ikovná malá vec vo vyskakovacom okne. Èisté HTML zoznamy adries sú
+      podporované taktie¾ prehliadaèmi bez podpory JavaScriptu, èi¾e aj pri HTML
+      adresári je mo¾né vyu¾íva» SquirrelMail bez akejkoµvek straty jeho
+      funkènosti.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Prezývka
+   </title>
+   <description>
+      <p>
+      Tu vlo¾te svoju prezývku-meno pod ktorých vás v¹etci poznajú. Toto vám
+      pomô¾e spomenú» si. Napí¹te hocièo èo výsti¾ne vystihuje danú osobu na
+      ktorú sa e-mailová adresa via¾e.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      E-mailová adresa
+   </title>
+   <description>
+      <p>
+      Tu musíte uvies» presnú e-mailovú adresu. Pokiaµ nieje správne zapísaná,
+      e-mail nebude danej osobe doruèený. E-mailová adresa sa skladá z 3 èastí.
+      Najprv je to identifikátor príjemcu napríklad "peterk". Ïal¹ou èas»ou je
+      sekcia s doménovým menom. napr "centrum", "pobox", "hotmail" a iné..
+      Poslednou tre»ou èas»ou je identifikátor domény najvy¹¹ej úrovne. Je to
+      napríklad "sk" "cz" "com" a iné.. Tieto 3 èasti musia nasledova» priamo za
+      sebou. Napríklad "peterk@pobox.sk". Pokiaµ nieje e-mailová adresa zadaná
+      správne, mail sa vám vráti ako nedoruèená správa.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Info
+   </title>
+   <description>
+      <p>
+      Toto je ïal¹ie pole, kde mô¾te napísa» nieèo, èo vám pripomenie o ktorú
+      osobu sa jedná. Je to dlh¹ie pole ako "Prezývka". Napríklad ak sa jedná o
+      obchodný kontakt, mô¾te si tam napísa» napr. "stretol som ho na sympóziu v
+      Sydney"
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Upravi» a Zmaza»
+   </title>
+   <description>
+      <p>
+      Tieto 2 tlaèítka vám umo¾òujú zvoli» si jednu adresu a potom zmeni»
+      akúkoµvek z horeuvedených polí, alebo zmaza» celý kontakt na danú osobu.
+      Pre úpravu si mô¾te naraz vybra» iba jeden kontakt.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prida» do osobného adresára
+   </title>
+   <description>
+      <p>
+      Vyplòte tu zobrazené polia. Prvé tri polia (Prezývka, E-mailová adresa
+      a prvé meno) musia by» vyplnené. Priezvisko a ïal¹ie polia su nepovinné.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+      LDAP je protokol pre centrálne ulo¾enie a vzdialený prístup k informáciám. 
+      Napríklad: univerzita mô¾e pou¾íva» LDAP ako jednotné miesto pre v¹etkých
+      ¹tudentov, zamestnancov a pracovísk.E-mailové adresy sú ulo¾ené a dostupné
+      centrálne. Ak nastavíte univerzitný LDAP server, SquirrelMail bude môc»
+      zobrazi» v¹etky univerzitné email-ové adresy(zároveò s ostatnými adresármi
+      ak sú dostupné). LDAP je v tomto skutoène výkonný nástroj. <I>Kombinuje</I>
+      vá¹ lokálny osobný adresár a informácie o adresách na LDAP serveri. V¹etky
+      tieto informácie sú prezentované ako jeden adresár.
+      </p><p>
+      LDAP nastavenie mô¾e by» nakonfigurované na pou¾itie akéhokoµvek LDAP
+      servera. Túto funkciu mô¾te taktie¾ povoli» èi zakáza». Ak máte ¹pecifické
+      otázky musíte kontaktova» vá¹ho systémového administrátora.
+      </p><p>
+      LDAP nastavenia sú mimo systému SquirrelMail-u. Musia sa vklada» do niekým
+      s právomocami administrátora.
+      </p>
+   </description>
+</section>

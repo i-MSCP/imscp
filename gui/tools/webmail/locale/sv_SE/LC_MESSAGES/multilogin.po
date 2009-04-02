@@ -1,0 +1,24 @@
+# Swedish (sv_SE) multilogin Translation (SquirrelMail plugin)
+# Copyright (c) 2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
+# $Id: multilogin.po 10507 2005-12-27 14:36:32Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: multilogin 2.3.2\n"
+"POT-Creation-Date: 2005-10-24 21:10+0300\n"
+"PO-Revision-Date: 2005-12-27 15:35+0100\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Invalid server selection"
+msgstr "Ogiltigt serverval"
+
+msgid "Log in to"
+msgstr "Logga in på"
+
+msgid "Remember login server"
+msgstr "Kom ihåg inloggningsserver"

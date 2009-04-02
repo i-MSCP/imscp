@@ -1,0 +1,120 @@
+# translation of contactclean.po to Nynorsk
+# Copyright (c) 2004-2005 SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: contactclean\n"
+"POT-Creation-Date: 2003-09-06 14:01+0300\n"
+"PO-Revision-Date: 2004-05-27 10:40+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "Stadfest kontaktane i adresse-bok/bøkene"
+
+msgid "Register my Old Address(es)"
+msgstr "Registrer mi gamle adresse(r)"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(forkast endringer gjordt i dette skjema til nå)"
+
+msgid "Previous address"
+msgstr "Tidlegare adresse"
+
+msgid "Email Address History"
+msgstr "E-postadresse historie"
+
+msgid "Current address"
+msgstr "Noverande adresse"
+
+msgid "Old address"
+msgstr "Gamal adresse"
+
+msgid "Once you've registered an old address you can:"
+msgstr "Når ein registrere ei gamal adress kan ein:"
+
+msgid ""
+"You haven't set your email address yet. You need to go back to the Personal "
+"Information options page and set your own email before you can register any "
+"old addresses."
+msgstr ""
+"Har ikkje set e-postadressa ennå. Treng å gå tilbake til Pesonleg "
+"Informasjon val sida og setja di eiga e-postadresse før ein kan registrera "
+"gamle adresser."
+
+msgid ""
+"You haven't set your email address yet.<br><br>You need to go to the "
+"Personal Information options page and set your own email address before you "
+"can verify your address book"
+msgstr ""
+"Har ikkje set e-postadressa ennå.<br/><br/> Treng å gå tilbake til Pesonleg "
+"Informasjon val sida og setja di eiga e-postadresse før ein kan registrera "
+"gamle adresser."
+
+msgid "No personal address book is defined. Contact your administrator."
+msgstr "Inga personleg adressebok er definert. Kontakt systemadministrator."
+
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr "Tom adressebok ( er det som forventa?) - ingenting å gjera"
+
+msgid ""
+"ERROR: You need to select some addresses to use the 'Replace Selected' "
+"button!"
+msgstr "FEIL: Treng å velja nokre adresserfor å bruka 'Bytt ut Merka' knappen!"
+
+msgid "Updating the addressbook"
+msgstr "Oppdaterer adresseboka"
+
+#, c-format
+msgid "Replacing %s with %s"
+msgstr "Byt ut %s med %s"
+
+#, c-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "Endre frå %s => %s ved ContactClean programtillegget %s"
+
+msgid "ERROR"
+msgstr "FEIL"
+
+msgid ""
+"The following new addresses have been found!<p>Select the ones you want to "
+"update in your addressbook.<p>"
+msgstr ""
+"Følgjande nye adresser er funne!<p> Vel dei du ynskjer å oppdatere i "
+"adresseboka.<p>"
+
+msgid "Nickname"
+msgstr "Kalenamn"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "E-mail"
+msgstr "E-post"
+
+msgid "Replace?"
+msgstr "Byt ut"
+
+msgid "Replace with"
+msgstr "Byt ut med"
+
+msgid "Your address book seems completely up to date."
+msgstr "Adresseboke ser ut til å vera heilt oppdatert."
+
+msgid ""
+"Some parts of your addressbook search may have been registered with the "
+"MailLocate.com database to await authorisation with the searchee. Please try "
+"again in a few days time in case you have been authorised to see some new "
+"addresses."
+msgstr ""
+"Nokre deler av adresseboksøket er kanskje registrert hjå MailLocate.com "
+"databasen for å venta på autorisasjon avsøket. Prøv på nytt etter nokre daga "
+"i tillfelle ein er autorisert for å sjå etter nye adresser."
+
+msgid "Powered by"
+msgstr "Dreven av"

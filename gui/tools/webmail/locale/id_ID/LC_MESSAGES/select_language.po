@@ -1,0 +1,29 @@
+# Bahasa Indonesia (id_ID) select_language Translation (SquirrelMail plugin)
+# Copyright (c) 2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2006.
+# $Id: select_language.po 11668 2006-09-01 09:31:52Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: select_language 1.1\n"
+"POT-Creation-Date: 2005-07-27 10:34+0300\n"
+"PO-Revision-Date: 2006-08-14 15:55+0700\n"
+"Last-Translator: Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>\n"
+"Language-Team: Bahasa Indonesia <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. i18n: translated string for custom_charset plugin.
+#: functions.php:130
+msgid "English (custom charset)"
+msgstr "Inggris (gugus karakter pilihan)"
+
+#. i18n: 'Default' as in 'Default Language'. Already configured language or default interface language
+#: functions.php:144
+msgid "Default"
+msgstr "Standar"
+
+#: functions.php:148
+msgid "Language:"
+msgstr "Bahasa:"

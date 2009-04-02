@@ -1,0 +1,54 @@
+Installing The SQL Backend for SquirrelMail Calendar Plugin
+===========================================================
+
+1) Start with untaring the file into the plugins directory.
+   Here is a example for the 1.0 version of this plugin.
+
+  $ cd plugins
+  $ tar -zxvf calendar_sql_backend-1.0-2.0.tar.gz
+
+
+2) Change into the calendar_sql_backend directory, copy
+   config.php.sample to config.php and edit config.php,
+   adjusting your database login information and any 
+   other settings as needed.  Typically, only the DSN
+   will need to be changed if you use the data schema 
+   provided in the README file.
+
+  $ cd calendar_sql_backend
+  $ cp config.php.sample config.php
+  $ vi config.php
+
+
+3) Then go to your config directory and run conf.pl.
+   Choose option 8 and move the plugin from the
+   "Available Plugins" category to the "Installed
+   Plugins" category.  Save and exit.
+
+  $ cd ../../../config/
+  $ ./conf.pl
+
+
+
+Upgrading The SQL Backend for SquirrelMail Calendar Plugin
+==========================================================
+
+1) Start with untaring the file into the plugins directory.
+   Here is a example for the 1.0 version of this plugin.
+
+  $ cd plugins
+  $ tar -zxvf calendar_sql_backend-1.0-2.0.tar.gz
+
+
+2) Change into the calendar_sql_backend directory, check your 
+   config.php file against the new version, to see if there 
+   are any new settings that you must add to your config.php 
+   file.
+
+  $ cd calendar_sql_backend
+  $ diff -Nau config.php config.php.sample
+
+   Or simply replace your config.php file with the provided sample
+   and reconfigure the plugin from scratch (see step 2 under the
+   installation procedure above).
+

@@ -1,0 +1,666 @@
+# Lithuanian translation of
+# SquirrelMail's ldapquery plugin.
+# Copyright (c) 2003-2006 SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: ldapquery.po 11579 2006-08-13 13:50:15Z tokul $
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ldapquery 2.1\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-03-26 17:23+0300\n"
+"PO-Revision-Date: 2006-06-21 09:59+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Personal address book is not available."
+msgstr "Asmeninė adresų knyga neprieinama."
+
+#. checked email field
+msgid "Email address is not set or empty."
+msgstr "Nenustatytas elektroninio pašto adresas."
+
+#. checked both name fields
+msgid "Name is not set or empty."
+msgstr "Nenustatytas vardas"
+
+#, php-format
+msgid "Nickname %s is already in use."
+msgstr "Jau yra įrašas, naudojantis trumpą vardą %s."
+
+msgid "Can't create address book entry."
+msgstr "Nepavyko išsaugoti adresų knygos įrašo"
+
+msgid "Nickname: "
+msgstr "Trumpas vardas: "
+
+msgid "First name: "
+msgstr "Vardas: "
+
+msgid "Last name: "
+msgstr "Pavardė: "
+
+msgid "E-mail: "
+msgstr "E-paštas: "
+
+msgid "Info: "
+msgstr "Info: "
+
+msgid "Add address"
+msgstr "Išsaugoti adresą"
+
+msgid "Address book entry is saved."
+msgstr "Įrašas išsaugotas adresų knygoje."
+
+msgid "Return to search results"
+msgstr "Grįžti į paieškos rezultatus"
+
+#, php-format
+msgid "Dublicate ldap attribute definition: %s."
+msgstr "Pasikartojantis LDAP požymio aprašymas: %s."
+
+#, php-format
+msgid "Dublicate ldap object definition: %s."
+msgstr "Pasikartojantis LDAP objekto aprašymas: %s."
+
+msgid "Any"
+msgstr "Bet koks"
+
+msgid "Directory"
+msgstr "Katalogas"
+
+msgid "Directory Preferences"
+msgstr "Katalogo Nustatymai"
+
+msgid ""
+"These settings control what type of output you will see when you use the "
+"Directory link to search Directory Services."
+msgstr "Šie nustatymai valdo tai, kas bus išvedama ieškant LDAP kataloge."
+
+msgid "No records found"
+msgstr "Nerasta jokių įrašų"
+
+msgid "Save"
+msgstr "Išsaugoti"
+
+msgid "Add to address book"
+msgstr "Įtraukti į adresų knygą"
+
+msgid "Plugin requires PHP with LDAP support."
+msgstr "Priedui būtina PHP su LDAP palaikymu."
+
+msgid "LDAP address books are not configured in SquirrelMail configuration."
+msgstr "SquirrelMail konfigūracijoje nenustatyta jokia LDAP adresų knyga."
+
+#. Get the userdn to authenticate with
+msgid "User DN:"
+msgstr "Vartotojo DN:"
+
+#. Get the user password
+msgid "Password:"
+msgstr "Slaptažodis:"
+
+#. Get the objectclass the user wants to search for
+msgid "Search For:"
+msgstr "Ieškoti:"
+
+#. Get the attribute the user wants to search by
+msgid "Where:"
+msgstr "Tarp:"
+
+msgid "Contains"
+msgstr "Turi"
+
+msgid "Is"
+msgstr "Yra"
+
+#. Sort By menu
+msgid "Sort By:"
+msgstr "Rūšiuoti pagal:"
+
+msgid "Search in:"
+msgstr "Ieškoti tarp:"
+
+msgid "All LDAP address books"
+msgstr "Visų LDAP adresų knygų"
+
+msgid "Search"
+msgstr "Ieškoti"
+
+msgid "Search Results"
+msgstr "Paieškos Rezultatai"
+
+#, php-format
+msgid "Comparetype is %s"
+msgstr "Naudojamas palyginimo tipas %s"
+
+#, php-format
+msgid "QUERY is %s"
+msgstr "Užklausa yra %s"
+
+#.
+#. * Used in debug mode
+#. * Example output "Querying: ldap-server-address on port some-port with base ldap-base-dn"
+#. * See http://www.php.net/sprintf if you want to rearrange order of arguments
+#.
+#, php-format
+msgid "Querying: %s on port %d with base %s"
+msgstr "Užklausiama: %s mazgo jungtis %d naudojant bazę %s"
+
+#, php-format
+msgid "Could not connect to LDAP server %s"
+msgstr "Nepavyko prisijungti prie LDAP serverio %s"
+
+msgid "Unable to bind to LDAP server"
+msgstr "Nepavyko užsiregistruoti LDAP serveryje"
+
+msgid "Nothing found!"
+msgstr "Nerasta jokių įrašų!"
+
+#, php-format
+msgid "output type is %s"
+msgstr "naudojamas išvedimo tipas %s"
+
+#, php-format
+msgid "output sorted by %s"
+msgstr "išvedimas surūšiuotas pagal %s"
+
+msgid "Options - Directory Preferences"
+msgstr "Nustatymai - Katalogo Nustatymai"
+
+msgid "Output types can be:"
+msgstr "Galimi išvedimo tipai:"
+
+msgid "One Table"
+msgstr "Viena Lentelė"
+
+msgid ""
+"One big table with one row per record found and each selected attribute as a "
+"separate column."
+msgstr ""
+"Rezultatai rodomi vienoje didelėje lentelėje. Kiekvienam įrašui skiriama po "
+"vieną eilutę ir kiekvienam atributui skiriamas atskiras stulpelis."
+
+msgid "Multiple Tables"
+msgstr "Kelios Lentelės"
+
+msgid ""
+"One table per record found with 2 columns for each table. One column "
+"contains attribute names and the 2nd column shows values for each "
+"attribute.  This format is best if you have many attributes selected or if "
+"the values for some of the attributes you have selected can be very long "
+"with no spaces (like labeledurl)."
+msgstr ""
+"Viena lentelė įrašui su dviem stulpeliais. Pirmame stulpelyje surašyti "
+"atributų vardai, o antrame jų reikšmės. Šis formatas yra priimtinesnis, jei "
+"Jūs pasirinkote didesnį išvedamų atributų skaičių arba kai dalis reikšmių "
+"yra ilgi žodžiai be tarpų."
+
+msgid "Select Output Type:"
+msgstr "Pasirinkite išvedimo tipą:"
+
+msgid "Select Displayed Fields"
+msgstr "Pasirinkite išvedamus laukus"
+
+msgid "Submit"
+msgstr "Nustatyti"
+
+#. openldap system schemas
+msgid "Common Name"
+msgstr "Bendras Vardas"
+
+msgid "Knowledge Information"
+msgstr "Tarnybinė informacija"
+
+msgid "Surname"
+msgstr "Pavardė"
+
+msgid "Serial Number"
+msgstr "Serijos Numeris"
+
+msgid "Country Name"
+msgstr "Šalis"
+
+msgid "Locality Name"
+msgstr "Vietovės Pavadinimas"
+
+msgid "State or Province Name"
+msgstr "Valstija ar apygarda"
+
+msgid "Street Address"
+msgstr "Gatvės Adresas"
+
+msgid "Organisation Name"
+msgstr "Organizacijos Pavadinimas"
+
+msgid "Organisational Unit Name"
+msgstr "Organizacijos padalinio pavadinimas"
+
+msgid "Title"
+msgstr "Pareigos"
+
+msgid "Description"
+msgstr "Aprašymas"
+
+msgid "Search Guide"
+msgstr "Paieškos vadovas"
+
+msgid "Business Category"
+msgstr "Verslo Kategorija"
+
+msgid "Postal Address"
+msgstr "Pašto Adresas"
+
+msgid "Postal Code"
+msgstr "Pašto Kodas"
+
+msgid "Post Office Box"
+msgstr "Pašto Dėžutė"
+
+msgid "Physical Delivery Office Name"
+msgstr "Ofiso pašto pristatymo pavadinimas"
+
+msgid "Telephone Number"
+msgstr "Telefono Numeris"
+
+msgid "Telex Number"
+msgstr "Teleksas"
+
+msgid "Teletex Terminal Identifier"
+msgstr "Telekso Terminalo ID"
+
+msgid "Facsimile (Fax) Telephone Number"
+msgstr "Fakso Numeris"
+
+msgid "X.121 Address"
+msgstr "X.121 Adresas"
+
+msgid "International ISDN Number"
+msgstr "Tarptautinis ISDN Numeris"
+
+msgid "Registered Postal Address"
+msgstr "Registruotas Pašto Adresas"
+
+msgid "Destination Indicator"
+msgstr "Pristatymo indikatorius"
+
+msgid "Preferred Delivery Method"
+msgstr "Pageidaujamas Pristatymo Būdas"
+
+msgid "Presentation Address"
+msgstr "Viešasis Adresas"
+
+msgid "Supported Application Context"
+msgstr "Palaikomas aplikacijos turinys"
+
+msgid "Member of a group"
+msgstr "Grupės narys"
+
+msgid "Owner"
+msgstr "Savininkas"
+
+msgid "Occupant of role"
+msgstr "Užsiėmimas"
+
+msgid "See also"
+msgstr "Taip pat žr,"
+
+msgid "User Certificate"
+msgstr "Vartotojo sertifikatas"
+
+msgid "CA Certificate"
+msgstr "CA Sertifikatas"
+
+msgid "Authority Revocation List"
+msgstr "Autorizacijos atšaukimo sąrašas"
+
+msgid "Certificate Revocation List"
+msgstr "Sertifikato atšaukimo sąrašas"
+
+msgid "Cross Certificate Pair"
+msgstr "Susietų sertifikatų pora"
+
+msgid "First Name"
+msgstr "Vardas"
+
+msgid "Initials"
+msgstr "Inicialai"
+
+msgid "Generation Qualifier"
+msgstr "Kartos kvalifikacija"
+
+msgid "X.500 unique identifier"
+msgstr "Unikalus X.500 identifikatorius"
+
+msgid "DN qualifier"
+msgstr "DN kvalifikacija"
+
+msgid "Enhanced Search Guide"
+msgstr "Išplėstos paieškos vadovas"
+
+msgid "Protocol Information"
+msgstr "Protokolo informacija"
+
+msgid "unique member of a group"
+msgstr "unikalus grupės narys"
+
+msgid "House Identifier"
+msgstr "Namo identifikatorius"
+
+msgid "Supported Algorithms"
+msgstr "Palaikomi Algoritmai"
+
+msgid "Delta Revocation List"
+msgstr "Delta atšaukimo sąrašas"
+
+#. Attribute specifies a directory management domain (DMD),
+#. the administrative authority which operates the directory server.
+msgid "Name of DMD"
+msgstr "DMD vardas"
+
+msgid "Labelled URI"
+msgstr "Internetinis adresas"
+
+msgid "User ID"
+msgstr "Vartotojo ID"
+
+msgid "Mail"
+msgstr "Paštas"
+
+msgid "Domain Component"
+msgstr "Domeno komponentė"
+
+msgid "Associated Domain"
+msgstr "Susietas domenas"
+
+msgid "Email Address"
+msgstr "E-pašto Adresas"
+
+#. * Object Classes
+msgid "Country"
+msgstr "Šalis"
+
+msgid "Locality"
+msgstr "Vietovė"
+
+msgid "Organisation"
+msgstr "Organizacija"
+
+msgid "Organisational Unit"
+msgstr "Organizacijos Padalinys"
+
+msgid "Person"
+msgstr "Asmuo"
+
+msgid "Organisational Person"
+msgstr "Organizacijos asmuo"
+
+msgid "Organisational Role"
+msgstr "Organizacinės pareigos"
+
+msgid "Group of Names"
+msgstr "Vardų grupė"
+
+msgid "Residential Person"
+msgstr "Rezidentas"
+
+msgid "Application Process"
+msgstr "Aplikacijos procesas"
+
+msgid "Application Entity"
+msgstr "Aplikacijos įrašas"
+
+#. RFC2256: a directory system agent (a server)
+msgid "DSA"
+msgstr "DSA"
+
+msgid "Device"
+msgstr "Įrenginys"
+
+msgid "Strong Authentication User"
+msgstr "Sustiprinto autorizavimo vartotojas"
+
+msgid "Certificate Authority"
+msgstr "Sertifikatų autorizatorius"
+
+msgid "Group of Unique Names"
+msgstr "Unikalių vardų grupė"
+
+msgid "User Security Information"
+msgstr "Vartotojo saugumo informacija"
+
+msgid "Certificate Authority V2"
+msgstr "Sertifikatų autorizatorius (V2)"
+
+msgid "CRL Distribution Point"
+msgstr "CRL platinimo vieta"
+
+#. a directory management domain object
+msgid "dmd"
+msgstr "dmd"
+
+msgid "PKI User"
+msgstr "PKI Vartotojas"
+
+msgid "PKI CA"
+msgstr "PKI CA"
+
+msgid "Delta CRL"
+msgstr "Delta CRL"
+
+msgid "Labeled URI Object"
+msgstr "Internetinio Adreso Objektas"
+
+msgid "Simple Security Object"
+msgstr "Paprastas Saugumo Objektas"
+
+msgid "DC Object"
+msgstr "DC Objektas"
+
+msgid "UID Object"
+msgstr "UID Objektas"
+
+msgid "Encoded Text or Address"
+msgstr "Koduotas tekstas ar adresas"
+
+msgid "Info"
+msgstr "Info"
+
+#. Favorite drink (noun)
+msgid "Drink"
+msgstr "Gėrimas"
+
+msgid "Room Number"
+msgstr "Kambario Numeris"
+
+msgid "Photo"
+msgstr "Foto"
+
+msgid "Category of user"
+msgstr "Vartotojo kategorija"
+
+msgid "Host"
+msgstr "Mazgas"
+
+msgid "Manager"
+msgstr "Valdytojas"
+
+msgid "Document identifier"
+msgstr "Dokumento Identifikatorius"
+
+msgid "Document Title"
+msgstr "Dokumento Antraštė"
+
+msgid "Document version"
+msgstr "Dokumento versija"
+
+msgid "Document author"
+msgstr "Dokumento autorius"
+
+msgid "Location of document"
+msgstr "Dokumento vieta"
+
+msgid "Home Phone"
+msgstr "Namų Telefonas"
+
+msgid "Secretary"
+msgstr "Sekretorius"
+
+msgid "Other Mailbox"
+msgstr "Kita pašto dėžė"
+
+#. DNS A record entries
+msgid "A Record"
+msgstr "A Įrašas"
+
+#. DNS MD record entries
+msgid "MD Record"
+msgstr "MD Įrašas"
+
+#. DNS MX record entries
+msgid "MX Record"
+msgstr "MX Įrašas"
+
+#. DNS NS record entries
+msgid "NS Record"
+msgstr "NS Įrašas"
+
+#. DNS SOA record entries
+msgid "SOA Record"
+msgstr "SOA Įrašas"
+
+#. DNS CNAME record entries
+msgid "CNAME Record"
+msgstr "CNAME Įrašas"
+
+msgid "Associated Name"
+msgstr "Susietas vardas"
+
+msgid "Home Postal Address"
+msgstr "Namų Pašto Adresas"
+
+msgid "Personal Title"
+msgstr "Asmens pareigos"
+
+msgid "Mobile Phone Number"
+msgstr "Mobilaus telefono numeris"
+
+msgid "Pager"
+msgstr "Pranešimų gaviklis"
+
+msgid "Unique Identifier"
+msgstr "Unikalus identifikatorius"
+
+msgid "Organizational status"
+msgstr "Organizacinė būsena"
+
+#. Mail address in rfc733 format
+msgid "Janet mailbox"
+msgstr "RFC733 adresas"
+
+msgid "Mail Preference Option"
+msgstr "Priimtino pašto formato nustatymas"
+
+msgid "Name of building"
+msgstr "Pastato pavadinimas"
+
+msgid "DSA Quality"
+msgstr "DSA kokybė"
+
+msgid "Single Level Quality"
+msgstr ""
+
+msgid "Subtree Minimum Quality"
+msgstr ""
+
+msgid "Subtree Maximum Quality"
+msgstr ""
+
+msgid "Personal Signature"
+msgstr "Asmens parašas"
+
+#. Redirection to other entry in directory
+msgid "DIT Redirect"
+msgstr "DIT Nukreipimas"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Publisher of document"
+msgstr "Dokumento išleidėjas"
+
+msgid "Pilot Person"
+msgstr ""
+
+msgid "Account"
+msgstr "Sąskaita"
+
+msgid "Document"
+msgstr "Dokumentas"
+
+msgid "Room"
+msgstr "Kambarys"
+
+msgid "Document Series"
+msgstr "Dokumento serija"
+
+#. can represent dns and nrs domain objects
+msgid "Domain"
+msgstr "Domenas"
+
+msgid "RFC822 Local Part"
+msgstr "Lokali RFC822 dalis"
+
+msgid "DNS Domain"
+msgstr "DNS Domenas"
+
+msgid "Object related to domain"
+msgstr "Objektas susijęs su domenu"
+
+msgid "Friendly Country"
+msgstr "Draugiška šalis"
+
+msgid "Pilot Organisation"
+msgstr ""
+
+msgid "Pilot DSA"
+msgstr ""
+
+msgid "Quality Labelled Data"
+msgstr ""
+
+msgid "Car License"
+msgstr "Vairuotojo teisės"
+
+msgid "Department Number"
+msgstr "Skyriaus Numeris"
+
+msgid "Displayed Name"
+msgstr "Išvedamas vardas"
+
+msgid "Employee Number"
+msgstr "Darbuotojo Numeris"
+
+msgid "Employee Type"
+msgstr "Darbuotojo tipas"
+
+msgid "JPEG Photo"
+msgstr "JPEG Foto"
+
+msgid "Preferred Language"
+msgstr "Pasirinkta Kalba"
+
+msgid "User SMIME Certificate"
+msgstr "Vartotojo SMIME Sertifikatas"
+
+msgid "User PKCS12"
+msgstr "Vartotojo PKCS12"
+
+msgid "Internet Organizational Person"
+msgstr "Internetinės organizacijos asmuo"
+

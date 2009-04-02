@@ -1,0 +1,52 @@
+Disk Quota Plugin
+By Kerem Erkan <kerem.erkan@hacettepe.edu.tr>
+
+based on Disk Quota Plugin v1.1
+By Claudio Panichi <claudio@roma2.infn.it>
+
+Latest version is: 3.1.1
+
+===================================================================
+
+WHAT IS THIS?
+
+This is a simple plugin that, when installed, shows the quota
+usage of the user logged in to SquirrelMail. It uses the *nix
+quota binary to get information about the user's quota.
+
+It has two functions:
+
+1. Shows the disk usage of the user as a bar graph on the left
+pane under folders list.
+2. Can show the detailed quota information of the user on the
+main window.
+
+The "quota" binary must be setuid.
+
+===================================================================
+
+WHAT'S THE LICENSE?
+
+License is obviously GPL-2, so you can use it, modify but
+re-distribute your product with the same license.
+
+===================================================================
+
+INSTALLATION
+
+See "INSTALL" file for details.
+
+===================================================================
+
+FAQ
+
+There's a FAQ file for your questions. If you can't find the answer
+to your question, feel free to contact me:
+<kerem.erkan@hacettepe.edu.tr>
+
+===================================================================
+
+IMPORTANT!!!
+
+You use this software at your own risk. None is anyway responsible
+for any damage that will result from an inappropriate use of it!

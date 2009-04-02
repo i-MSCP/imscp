@@ -1,0 +1,130 @@
+<chapter>
+   <title>
+      Direcciones
+   </title>
+   <summary>
+      La agenda de direcciones puede ahorrar mucho tiempo y pulsaciones
+      de tecla. Puede introducir las direcciones de las personas a las
+      que escriba habitualmente y volver a usarlas una y otra vez.
+   </summary>
+   <description>
+      <p>
+      La agenda de direcciones es una característica ideal para ahorrar tiempo.
+      Las direcciones que se empleen con frecuencia pueden almacenarse aquí.
+      Los servidores LDAP (Usados a menudo en empresas y universidades para
+      poner a disposición de todos las direcciones del personal) también están
+      soportados.
+      </p>
+      <p>
+      Si su navegador permite Javascript puede activar las libretas de 
+      direcciones basadas en java en el menu de opciones. También existe la
+      posibilidad de utilizar listas confeccionadas en HTML puro, de 
+      manera que puedan ser empleadas en navegadores sin Javascript.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Apodo
+   </title>
+   <description>
+      <p>
+      Ponga el nombre con el que se refiera familiarmente a la persona. Algo
+      que le permita asociarlo rápidamente con el propietario de la dirección
+      de correo al que pertenezca. Recuerde que debe de ser único.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Correo Electrónico
+   </title>
+   <description>
+      <p>
+      Debe contener la dirección de correo completa de la persona. El contenido
+      no puede improvisarse. Una dirección de correo electrónico se compone de
+      tres partes: primero del identificador del destinatario, como por ejemplo
+      "johnq", le sigue el nombre de sección de su dominio precedido de una 
+      arroba (@), por ejemplo "tayloru", finalmente el dominio tope precedido 
+      por un punto, que puede ser algo así como "edu", "es", "com", "net", etc.
+      Si ponemos todo junto obtenemos algo así como "johnq@tayloru.edu". Si
+      introduce mal este dato es probable que le devuelvan todo lo que le
+      escriba.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Información
+   </title>
+   <description>
+      <p>
+      Este campo también puede emplearse para introducir algún dato que
+      permita recordar quien es la persona a la que pertenece. Está pensado
+      para ser más largo que el "Apodo", asimismo puede repetirse por lo que
+      puede emplearse para introducir el nombre de la empresa a la que
+      pertenece.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Editar o Borrar Seleccionados
+   </title>
+   <description>
+      <p>
+      Estos dos botones permiten editar o borrar respectivamente las
+      direcciones seleccionadas mediante un visé en el recuadro que las 
+      precede. Recuerde que solo puede marcar una dirección a la vez en
+      el caso de la edición.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Agregar Dirección
+   </title>
+   <description>
+      <p>
+      Rellene los campos listados, los tres primeros son obligatorios (Apodo,
+      Dirección y Nombre). Los demás, Apellidos e Información Adicional
+      pueden omitirse.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+      LDAP es un protocolo orientado a centralizar el almacenamiento y 
+      acceso remoto de información. Una universidad, por ejemplo, puede
+      utilizar LDAP como único lugar en el que se centraliza el suministro
+      de la información relativa a estudiantes, profesorado y direcciones
+      de correo electrónico de la facultad. Si Squirrelmail se configura
+      para acceder al servidor LDAP de la universidad, será posible consultar
+      desde el mismo todas las direcciones del campus junto con las que
+      se hayan dado de alta manualmente desde el Squirrel.
+      </p><p>
+      El empleo de LDAP bajo Squirrelmail resulta tremendamente útil ya que
+      <i>combina</i> su libreta local de direcciones con servidores de
+      direcciones LDAP como si fuera un único listín.      
+      </p><p>
+      El LDAP puede configurarse para emplear cualquier servidor LDAP, pero
+      también puede desactivarse del todo. Tendrá que preguntar al 
+      administrador de su sistema acerca de esta posibilidad si tiene 
+      preguntas más específicas.
+      </p><p>
+      La configuración del LDAP solo puede hacerse por personas con derechos
+      de administración sobre el sistema, puesto que afecta a todo el
+      servicio en su conjunto.
+      </p>
+   </description>
+</section>

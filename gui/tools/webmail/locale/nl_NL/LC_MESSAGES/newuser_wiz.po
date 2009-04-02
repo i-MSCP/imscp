@@ -1,0 +1,41 @@
+# translation of newuser_wiz.po to Dutch
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) newuser_wiz Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: newuser_wiz.pot 11025 2006-04-05 19:23:55Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: newuser_wiz\n"
+"Report-Msgid-Bugs-To: Angelo Bertolli <angelo.bertolli@gmail.com>\n"
+"POT-Creation-Date: 2006-04-03 09:09+0200\n"
+"PO-Revision-Date: 2007-04-02 22:31+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: functions.php:30
+msgid "Welcome to"
+msgstr "Welkom bij"
+
+#: functions.php:31
+msgid ""
+"Since it appears as though you're new to this system, please fill in the "
+"following information."
+msgstr "Het lijkt er op dat u dit systeem voor het eerst gebruikt. Vul de volgende informatie in:"
+
+#: functions.php:33
+msgid "Full Name:"
+msgstr "Volledige naam:"
+
+#: functions.php:34
+msgid "Email Address:"
+msgstr "E-mailadres:"
+
+#: functions.php:36
+msgid "Submit"
+msgstr "Indienen"
+

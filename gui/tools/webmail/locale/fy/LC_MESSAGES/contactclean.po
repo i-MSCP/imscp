@@ -1,0 +1,98 @@
+# translation of contactclean.po to Frisian
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# LANGUAGE (xx_XX) contactclean Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: contactclean.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: contactclean\n"
+"POT-Creation-Date: 2003-09-06 14:01+0300\n"
+"PO-Revision-Date: 2007-05-03 21:36+0100\n"
+"Last-Translator: Douwe VDM <dvandermeulen@hetnet.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "Kontaktpersoanen yn adresboek(en) ferifiearjen"
+
+msgid "Register my Old Address(es)"
+msgstr "Myn âlde adressen registrearje"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(negear de feroaringen yn dit formulier)"
+
+msgid "Previous address"
+msgstr "Foarrich adres"
+
+msgid "Email Address History"
+msgstr "E-mailadres skiednis"
+
+msgid "Current address"
+msgstr "Besteand adres"
+
+msgid "Old address"
+msgstr "Ald adres"
+
+msgid "Once you've registered an old address you can:"
+msgstr "As jo ienkear in âld adres registrearre hawwe kinne jo:"
+
+msgid "You haven't set your email address yet. You need to go back to the Personal Information options page and set your own email before you can register any old addresses."
+msgstr "Jo hawwe jo e-mailadres noch net ynsteld. Jo moatte weromgean nei de side mei opsjes foar persoanlike ynformaasje en jo eigen e-mailadres ynstelle foardat jo in âld adres registrearje kinne."
+
+msgid "You haven't set your email address yet.<br><br>You need to go to the Personal Information options page and set your own email address before you can verify your address book"
+msgstr "Jo hawwe jo eigen e-mailadres noch net ynsteld.<br><br>Jo moatte werom gean foar persoanlike ynformaasje om jo e-mailadres yn te stellen foardat jo jo adresboek ferifiearje kinne."
+
+msgid "No personal address book is defined. Contact your administrator."
+msgstr "Der is gjin persoanlik adresboek definiearre. Nim kontakt op mei jo systeembehearder."
+
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr "Neat yn it adresboek (hienen jo dat ferwachte?Neat te dwaan)"
+
+msgid "ERROR: You need to select some addresses to use the 'Replace Selected' button!"
+msgstr "FOUT: Om de knop 'Seleksje ferfange' brûke te kinnen moatte jo earst in pear adressen selektearje."
+
+msgid "Updating the addressbook"
+msgstr "It adresboek bywurkje"
+
+#, c-format
+msgid "Replacing %s with %s"
+msgstr "Ferfangt %s troch %s"
+
+#, c-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "Feroare fan %s => %s troch ContactClean-plugin %s"
+
+msgid "ERROR"
+msgstr "FOUT"
+
+msgid "The following new addresses have been found!<p>Select the ones you want to update in your addressbook.<p>"
+msgstr "De folgjende nije adressen binne fûn!<p>Selektearje dejingen dy't jo yn jo adresboek bywurkje wolle."
+
+msgid "Nickname"
+msgstr "Bynamme"
+
+msgid "Name"
+msgstr "Namme"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Replace?"
+msgstr "Ferfange?"
+
+msgid "Replace with"
+msgstr "Ferfange troch"
+
+msgid "Your address book seems completely up to date."
+msgstr "Jo adresboek blykt hielendal by de tiid te wêzen."
+
+msgid "Some parts of your addressbook search may have been registered with the MailLocate.com database to await authorisation with the searchee. Please try again in a few days time in case you have been authorised to see some new addresses."
+msgstr "Guon dielen fan jo adresboek-sykopdracht kinne autorisaasje fan de sochte persoanen fereaskje by de MailLocate.com-databank. Besykje it nochris oer in pear dagen as jo tastimming krigen hawwe om inkele nije adressen te besjen."
+
+msgid "Powered by"
+msgstr "Oanstjoerd troch"
+

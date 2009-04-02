@@ -1,0 +1,26 @@
+/*******************************************************************************
+
+    Author ......... Jimmy Conner
+    Contact ........ jimmy@advcs.org
+    Home Site ...... http://www.advcs.org/
+    Program ........ Plugin Updates
+    Version ........ 0.5
+    Purpose ........ Check your currently installed plugins for updates
+
+*******************************************************************************/
+
+
+----[ Installation
+
+    Installation is very simple really.  If you want to change the plugin directory for installation
+       just edit the update.php, setup.php, and editv.php files.
+    Edit the admin.php file and put your username there (leave the #)
+    As of this point, this plugin is unsupport by all the others, so you may have to add support manually
+       by adding one small file to the root of each plugin directory (try looking at the one in this directory).
+       This file just consists of the plugin name (has to be the same as in my pluginlist.txt file, which is the
+       same name as they have on the site) and on the next line, the version number.  (It will automatically
+       create this file for you now)
+    Do not change the data files unless you know what your doing!!  If I update my version of the file
+       your version will detect it and ask you to download it!!
+    Then just edit the Unknown version to the version of your plugin.
+    That is it!  No other changes are needed.  Hopefully future changes to any plugins will include this small file.

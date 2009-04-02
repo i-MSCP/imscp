@@ -1,0 +1,53 @@
+# Lithuanian Translation of 
+# SquirrelMail advanced_settings plugin.
+# Copyright (c) 2006 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: advanced_settings.po 11288 2006-06-21 20:08:18Z tokul $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: advanced_settings 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-15 09:10+0300\n"
+"PO-Revision-Date: 2006-06-21 08:17+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+
+#: functions.php:28 functions.php:48
+msgid "Advanced Settings"
+msgstr "Specialūs nustatymai"
+
+#: functions.php:50
+msgid "You can control advanced interface options here."
+msgstr "Čia Jūs galite valdyti specialius programos nustatymus."
+
+#. * Settings related to mailbox
+#: options.php:30
+msgid "Advanced Mailbox Options"
+msgstr "Specialūs pašto dėžės nustatymai"
+
+#: options.php:35
+msgid "Auto expunge"
+msgstr "Valyti automatiškai"
+
+#: options.php:41
+msgid "Use special folder color"
+msgstr "Pakeisti specialių aplankų spalvą"
+
+#: options.php:48
+msgid "List special folders first"
+msgstr "Rodyti specialius aplankus pirmiau"
+
+#. * Message composition options
+#: options.php:55
+msgid "Advanced Message Composition Options"
+msgstr "Specialūs žinučių kūrimo nustatymai"
+
+#: options.php:59
+msgid "Use email priorities"
+msgstr "Naudoti žinučių prioritetus"
+

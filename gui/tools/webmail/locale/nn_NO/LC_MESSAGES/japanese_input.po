@@ -1,0 +1,24 @@
+# translation of japanese_input.po to Nynorsk
+# Copyright (c) 2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# $Id: japanese_input.po 12743 2007-10-27 11:27:09Z jervfors $
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
+msgid ""
+msgstr ""
+"Project-Id-Version: japanese_input\n"
+"POT-Creation-Date: 2004-02-26 00:24-0800\n"
+"PO-Revision-Date: 2006-08-10 08:18+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+#: functions.php:27
+msgid "Japanese"
+msgstr "Japansk"
+
+#: functions.php:50
+msgid "Show Japanese Input Button"
+msgstr "Syn japanske knappar"

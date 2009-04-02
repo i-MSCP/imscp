@@ -1,0 +1,278 @@
+# German translation of SquirrelMail abook_import_export plugin.
+# Copyright (c) 2005-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Florian Daeumling <jam@qv90.de>, 2006.
+# $Id: abook_import_export.po 11495 2006-08-09 07:28:55Z tokul $
+msgid ""
+msgstr ""
+"Project-Id-Version: abook_import_export 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-03 12:37+0200\n"
+"PO-Revision-Date: 2006-08-03 23:35+0200\n"
+"Last-Translator: Florian Daeumling <jam@qv90.de>\n"
+"Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_export.php:90
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:177
+msgid "You must use different symbols for text and field delimiters."
+msgstr "Sie müssen unterschiedliche Zeichen als Begrenzungszeichen "
+"für Texte und Felder verwenden."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_export.php:91
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_export.php:100
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:113
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:375
+#, php-format
+msgid "Return to main %sAddress Book%s page."
+msgstr "Rückkehr zur %sAdressbuch%s Seite."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_export.php:99
+msgid "Selected address book is empty."
+msgstr "Das ausgewählte Adressbuch ist leer."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:85
+msgid "Please select a file for uploading."
+msgstr "Bitte wählen Sie eine Datei zum hochladen aus."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:89
+msgid "The uploaded file exceeds PHP upload_max_filesize limits."
+msgstr "Die Größe der hochzuladenden Datei überschreitet die in PHP angegebene "
+"max. zulässige Größe (UPLOAD_MAX_FILESIZE)."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:92
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML."
+msgstr "Die Größe der hochzuladenden Datei überschreitet die in HTML "
+"angegebene max. zulässig Größe (MAX_FILE_SIZE)."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:95
+msgid "The uploaded file was only partially uploaded."
+msgstr "Die Datei wurde teilweise hochgeladen."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:98
+msgid "No file was uploaded."
+msgstr "Es wurde keine Datei angegeben."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:101
+msgid "Missing a temporary directory."
+msgstr "Temporäres Verzeichnis fehlt."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:104
+msgid "Failed to write file to disk."
+msgstr "Fehler beim Speichern der Datei."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:107
+msgid "Unknown upload error."
+msgstr "Unbekannter Fehler beim Hochladen der Datei."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:116
+msgid "Upload error"
+msgstr "Fehler beim Hochladen der Datei"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:119
+#, php-format
+msgid ""
+"Imported CSV file is too big. Contact your system administrator, if you want "
+"to import files, that are bigger than %s."
+msgstr ""
+"Die zu importierede CSV-Datei ist zu groß. Bitte kontaktieren Sie Ihren "
+"System-Administrator, wenn Sie Dateien importieren wollen die größer als "
+"%s sind."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:150
+msgid "Error, could not open address file."
+msgstr "Fehler, konnte Adressbuch-Datei nicht öffnen."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:265
+msgid "No#"
+msgstr "Nr."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:267
+msgid "Omit"
+msgstr "Auslassen"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:319
+msgid "Add to address book: "
+msgstr "Zum Adressbuch hinzufügen: "
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:326
+msgid "Finish"
+msgstr "Weiter"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:333
+msgid "Nothing to import"
+msgstr "Nichts zum Importieren gefunden"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:334
+msgid "Return to Address Book"
+msgstr "Zum Adressbuch zurück kehren"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:339
+msgid "The following rows have errors"
+msgstr "Die folgenden Zeilen enthalten Fehler"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:344
+msgid "Can't move uploaded file to attachment directory."
+msgstr "Fehler beim Verschieben der hochgeladenen Datei in das "
+"Anhangsverzeichnis."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:374
+msgid "Unable to access uploaded data. Contact your system administrator."
+msgstr "Fehler beim Zugriff auf die hochgeladenen Daten. Bitte kontaktieren "
+"Sie Ihren Systemadministrator."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:446
+#, php-format
+msgid "Row %d:"
+msgstr "Zeile %d:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:464
+msgid ""
+"There were errors uploading the data, as listed below. Entries not listed "
+"here were uploaded."
+msgstr ""
+"Beim Hochladen der Daten traten Fehler auf. Alle in der folgenden Liste "
+"aufgeführten Einträge konnten nicht übernommen werden."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:468
+msgid "Upload Completed!"
+msgstr "Hochladen der Daten beendet!"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:470
+msgid "Click on the link below to verify your work."
+msgstr ""
+"Klicken Sie bitte auf den unten aufgeführten Link, um Ihre Daten zu "
+"verfizieren."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/address_book_import.php:474
+msgid "Addresses"
+msgstr "Adressen"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:101
+msgid "Single quotes (')"
+msgstr "Einfache Anführungszeichen (')"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:102
+msgid "Double quotes (\")"
+msgstr "Anführungszeichen (\")"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:103
+msgid "Comma (,)"
+msgstr "Komma (,)"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:104
+msgid "Semicolon (;)"
+msgstr "Semikolon (;)"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:105
+msgid "Custom delimiter"
+msgstr "Benutzerdefiniert"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:112
+msgid "Address book import"
+msgstr "Adressbuch importieren"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:125
+msgid "Select file:"
+msgstr "Datei auswählen:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:130
+msgid "Max:"
+msgstr "Max.:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:134
+msgid "Input character set:"
+msgstr "Eingabezeichensatz:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:138
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:187
+msgid "Field delimiter:"
+msgstr "Feld-Begrenzungszeichen:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:142
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:191
+msgid "Custom field delimiter:"
+msgstr "Benutzerdefiniert:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:148
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:201
+msgid "Text delimiter:"
+msgstr "Text-Begrenzungszeichen:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:152
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:205
+msgid "Custom text delimiter:"
+msgstr "Benutzerdefiniert:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:157
+msgid "Import CSV File"
+msgstr "CSV-Datei importieren"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:165
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:529
+msgid "ERROR"
+msgstr "FEHLER"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:167
+msgid "Address book uploads are disabled."
+msgstr "Das Hochladen von Adressbüchern is nicht zugelassen."
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:175
+msgid "Address book export"
+msgstr "Adressbuch exportieren"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:212
+msgid "Use address book:"
+msgstr "Verwende Adressbuch:"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:219
+msgid "Export to CSV File"
+msgstr "CSV-Datei exportieren"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:241
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:243
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:245
+#, php-format
+msgid "%s B"
+msgstr "%s B"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:271
+msgid "Nickname"
+msgstr "Kürzel"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:273
+msgid "First Name"
+msgstr "Vorname"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:275
+msgid "Last Name"
+msgstr "Nachname"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:277
+msgid "Email"
+msgstr "E-Mail-Adresse"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:279
+msgid "Additional Info"
+msgstr "Zusätzliche Informationen"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:281
+msgid "Do Not Include"
+msgstr "Nicht mit aufnehmen"
+
+#: /var/www/sm-1.4.7/plugins/abook_import_export/functions.php:318
+msgid "LDIF import is not supported."
+msgstr "Import von LDIF-Dateien wird nicht unterstützt."
+
