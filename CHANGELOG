@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-03 Benedikt Heintel
+	- GUI:
+		* Fixed #918: Mail Management UI improvement
+
 2009-03-29 Thomas Häber
 	- LANGUAGES:
 		* removed unused JavaScript function checkForm()
@@ -37,6 +41,7 @@ ispCP ω 1.0.1 Changelog
 		* Fixed #1627: Accented characters in UTF8 encoding Autoreplay message - ispcp-arpl
 	- GUI:
 		* Fixed #678: deleting a mysql database also deletes the user without askint to.
+		* Fixed #1762: MySQL Syntax Error
 
 2009-03-23 Jochen Manz
 	- ENGINE

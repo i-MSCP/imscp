@@ -102,23 +102,21 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
 }
 
 function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$dmn_query ="
-		SELECT
-			`mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`, CONCAT(LEFT(`mail_forward`, 50), IF(LENGTH(`mail_forward`) > 50, '...', '')) AS 'mail_forward'
-		FROM
-			`mail_users`
-		WHERE
-			`domain_id` = ?
-		AND
-			`sub_id` = 0
-		AND
-			(`mail_type` LIKE '%".MT_NORMAL_MAIL."%' OR `mail_type` LIKE '%".MT_NORMAL_FORWARD."%')
-		ORDER BY
-			`mail_acc` ASC,
-			`mail_type` DESC
-	";
+	$dmn_query = "SELECT `mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`, "  
+				. "CONCAT( LEFT(`mail_forward`, 50), IF( LENGTH(`mail_forward`) > 50, '...', '') ) as 'mail_forward' "  
+				. "FROM `mail_users` "  
+				. "WHERE `domain_id` = ? "  
+				. "AND `sub_id` = 0 "  
+				. "AND (`mail_type` LIKE '%".MT_NORMAL_MAIL."%' OR `mail_type` LIKE '%".MT_NORMAL_FORWARD."%') ";  
+	if (isset($_POST['uaction']) && $_POST['uaction'] != 'show') {   
+		$dmn_query .= "AND `mail_acc` != 'abuse' "  
+					. "AND `mail_acc` != 'postmaster' "  
+					. "AND `mail_acc` != 'webmaster' ";  
+	}  
+	$dmn_query .= "ORDER BY `mail_acc` ASC, `mail_type` DESC"; 
 
 	$rs = exec_query($sql, $dmn_query, array($dmn_id));
+
 	if ($rs->RecordCount() == 0) {
 		return 0;
 	} else {
@@ -169,32 +167,26 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 }
 
 function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$sub_query = "
-		SELECT
-			t1.`subdomain_id` AS sub_id,
-			t1.`subdomain_name` AS sub_name,
-			t2.`mail_id`,
-			t2.`mail_acc`,
-			t2.`mail_type`,
-			t2.`status`,
-			t2.`mail_auto_respond`,
-			CONCAT(LEFT(t2.`mail_forward`, 50), IF(LENGTH(t2.`mail_forward`) > 50, '...', '')) AS 'mail_forward'
-		FROM
-			`subdomain` AS t1,
-			`mail_users` AS t2
-		WHERE
-			t1.`domain_id` = ?
-		AND
-			t2.`domain_id` = ?
-		AND
-			(t2.`mail_type` LIKE '%".MT_SUBDOM_MAIL."%' OR t2.`mail_type` LIKE '%".MT_SUBDOM_FORWARD."%')
-		AND
-			t1.`subdomain_id` = t2.`sub_id`
-		ORDER BY
-			t2.`mail_acc` ASC,
-			t2.`mail_type` DESC
-	";
-
+	$sub_query = "SELECT t1.`subdomain_id` AS sub_id, " 
+				. "t1.`subdomain_name` AS sub_name, " 
+				. "t2.`mail_id`, "  
+				. "t2.`mail_acc`, "  
+				. "t2.`mail_type`, "  
+				. "t2.`status`, "  
+				. "t2.`mail_auto_respond`, "  
+				. "CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) as 'mail_forward' "  
+				. "FROM `subdomain` AS t1, "  
+				. "`mail_users` AS t2 "  
+				. "WHERE t1.`domain_id` = ? "  
+				. "AND t2.`domain_id` = ? "  
+				. "AND (t2.`mail_type` LIKE '%".MT_SUBDOM_MAIL."%' OR t2.`mail_type` LIKE '%".MT_SUBDOM_FORWARD."%') "  
+				. "AND t1.`subdomain_id` = t2.`sub_id` ";  
+	if (isset($_POST['uaction']) && $_POST['uaction'] != 'show') {  
+		$sub_query .= "AND `mail_acc` != 'abuse' "
+				. "AND `mail_acc` != 'postmaster' " 
+				. "AND `mail_acc` != 'webmaster' ";
+	}
+	$sub_query .= "ORDER BY t2.`mail_acc` ASC, t2.`mail_type` DESC";
 	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
 
 	if ($rs->RecordCount() == 0) {
@@ -250,28 +242,24 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 }
 
 function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$sub_query = '
-		SELECT
-			t1.`mail_id`,
-			t1.`mail_acc`,
-			t1.`mail_type`,
-			t1.`status`,
-			t1.`mail_auto_respond`,
-			CONCAT(LEFT(t1.`mail_forward`, 50), IF(LENGTH(t1.`mail_forward`) > 50, \'...\', \'\')) AS \'mail_forward\',
-			CONCAT(t2.`subdomain_alias_name`,\'.\',t3.`alias_name`) AS \'alssub_name\'
-		FROM
-			`mail_users` AS t1
-		LEFT JOIN (`subdomain_alias` as t2) ON (t1.`sub_id`=t2.`subdomain_alias_id`)
-		LEFT JOIN (`domain_aliasses` as t3) ON (t2.`alias_id`=t3.`alias_id`)
-		WHERE
-			t1.`domain_id` = ?
-		AND
-			(t1.`mail_type` LIKE \'%'.MT_ALSSUB_MAIL.'%\' OR t1.`mail_type` LIKE \'%'.MT_ALSSUB_FORWARD.'%\')
-		ORDER BY
-			t1.`mail_acc` ASC,
-			t1.`mail_type` DESC
-	';
-
+	$sub_query = "SELECT t1.`mail_id`, "  
+				. "t1.`mail_acc`, "  
+				. "t1.`mail_type`, "  
+				. "t1.`status`, "  
+				. "t1.`mail_auto_respond`, "  
+				. "CONCAT( LEFT(t1.`mail_forward`, 50), IF( LENGTH(t1.`mail_forward`) > 50, '...', '') ) AS 'mail_forward', "  
+				. "CONCAT(t2.`subdomain_alias_name`,'.',t3.`alias_name`) AS 'alssub_name' "  
+				. "FROM `mail_users` AS t1 "  
+				. "LEFT JOIN (`subdomain_alias` as t2) ON (t1.`sub_id`=t2.`subdomain_alias_id`) "  
+				. "LEFT JOIN (`domain_aliasses` as t3) ON (t2.`alias_id`=t3.`alias_id`) "  
+				. "WHERE t1.`domain_id` = ? "  
+				. "AND (t1.`mail_type` LIKE '%".MT_ALSSUB_MAIL."%' OR t1.`mail_type` LIKE '%".MT_ALSSUB_FORWARD."%') ";  
+	if (isset($_POST['uaction']) && $_POST['uaction'] != 'show') {  
+		$sub_query .= "AND `mail_acc` != 'abuse' "  
+					. "AND `mail_acc` != 'postmaster' "  
+					. "AND `mail_acc` != 'webmaster' ";  
+	}  
+	$sub_query .= "ORDER BY t1.`mail_acc` ASC, t1.`mail_type` DESC";  
 	$rs = exec_query($sql, $sub_query, array($dmn_id));
 
 	if ($rs->RecordCount() == 0) {
@@ -326,32 +314,26 @@ function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 }
 
 function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	$als_query = "
-		SELECT
-			t1.`alias_id` AS als_id,
-			t1.`alias_name` AS als_name,
-			t2.`mail_id`,
-			t2.`mail_acc`,
-			t2.`mail_type`,
-			t2.`status`,
-			t2.`mail_auto_respond`,
-			CONCAT(LEFT(t2.`mail_forward`, 50), IF(LENGTH(t2.`mail_forward`) > 50, '...', '')) AS 'mail_forward'
-		FROM
-			`domain_aliasses` AS t1,
-			`mail_users` AS t2
-		WHERE
-			t1.`domain_id` = ?
-		AND
-			t2.`domain_id` = ?
-		AND
-			t1.`alias_id` = t2.`sub_id`
-		AND
-			(t2.`mail_type` LIKE '%".MT_ALIAS_MAIL."%' OR t2.`mail_type` LIKE '%".MT_ALIAS_FORWARD."%')
-		ORDER BY
-			t2.`mail_acc` ASC,
-			t2.`mail_type` DESC
-	";
-
+	$als_query = "SELECT t1.`alias_id` AS als_id, "  
+				. "t1.`alias_name` AS als_name, "  
+				. "t2.`mail_id`, "  
+				. "t2.`mail_acc`, "  
+				. "t2.`mail_type`, "  
+				. "t2.`status`, "  
+				. "t2.`mail_auto_respond`, "  
+				. "CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) as 'mail_forward' "  
+				. "FROM `domain_aliasses` AS t1, "  
+				. "`mail_users` AS t2 "  
+				. "WHERE t1.`domain_id` = ? "  
+				. "AND t2.`domain_id` = ? "  
+				. "AND t1.`alias_id` = t2.`sub_id` "  
+				. "AND (t2.`mail_type` LIKE '%".MT_ALIAS_MAIL."%' OR t2.`mail_type` LIKE '%".MT_ALIAS_FORWARD."%') ";  
+	if (isset($_POST['uaction']) && $_POST['uaction'] != 'show') {    
+		$als_query .= "AND `mail_acc` != 'abuse' "  
+				. "AND `mail_acc` != 'postmaster' "  
+				. "AND `mail_acc` != 'webmaster' ";  
+	}  
+	$als_query .= "ORDER BY t2.`mail_acc` ASC, t2.`mail_type` DESC";
 	$rs = exec_query($sql, $als_query, array($dmn_id, $dmn_id));
 
 	if ($rs->RecordCount() == 0) {
@@ -431,7 +413,30 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	$sub_mails = gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	$alssub_mails = gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	$als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-	$total_mails = $dmn_mails + $sub_mails + $als_mails+$alssub_mails;
+	$total_mails = $dmn_mails + $sub_mails + $als_mails + $alssub_mails; 
+	
+	//Check admin COUNT_DEFAULT_EMAIL_ADDRESSES 
+	//true: total emails will count default emails even if "hidden" 
+	//false: total emails won't count default email even if "shown" 
+	$query = "SELECT COUNT(mail_id) AS cnt " 
+	       . "FROM `mail_users` " 
+	       . "WHERE `domain_id` = ? " 
+	       . "AND (`mail_acc` = 'abuse' " 
+	       . "OR `mail_acc` = 'postmaster' " 
+	       . "OR `mail_acc` = 'webmaster')"; 
+	$rs = exec_query($sql, $query, array($dmn_id)); 
+	$default_mails = $rs->fields['cnt']; 
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
+		if (isset($_POST['uaction']) && $_POST['uaction'] == 'show') {           
+			$total_mails -= $default_mails; 
+		} 
+	} else { 
+		if (isset($_POST['uaction']) && $_POST['uaction'] == 'show') { 
+	
+		} else { 
+			$total_mails += $default_mails; 
+		} 
+	}
 
 	if ($total_mails > 0) {
 		$tpl->assign(
@@ -491,7 +496,8 @@ $tpl->assign(
 		'TR_ALS_MAILS'				=> tr('Alias mails'),
 		'TR_TOTAL_MAIL_ACCOUNTS'	=> tr('Mails total'),
 		'TR_DELETE'					=> tr('Delete'),
-		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete %s?', true, '%s')
+		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_SHOW_DEFAULT_EMAILS' 	=> tr('Show  default E-Mail addresses') 
 	)
 );
 

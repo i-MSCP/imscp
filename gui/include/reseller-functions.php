@@ -524,7 +524,15 @@ SQL_QUERY;
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $data['domain_alias_limit'];
 
-	$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
+		$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id); 
+	} else { 
+		$where = "`mail_acc` != 'abuse' " 
+		       . "AND `mail_acc` != 'postmaster' " 
+		       . "AND `mail_acc` != 'webmaster' " 
+		       . "AND `domain_id`"; 
+		$mail_current = records_count('mail_id', 'mail_users', $where, $user_id); 
+	}
 	$mail_max = $data['domain_mailacc_limit'];
 
 	$ftp_current = sub_records_rlike_count('domain_name', 'domain', 'domain_id', $user_id,

@@ -208,7 +208,16 @@ SQL_QUERY;
 
 	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
 	// Get current mail count
-	$res6 = exec_query($sql, "SELECT COUNT(*) AS mcnt FROM `mail_users` WHERE `domain_id` = ? AND `mail_type` NOT RLIKE '_catchall'", array($data['domain_id']));
+	$query = "SELECT COUNT(mail_id) AS mcnt " 
+ 		. "FROM `mail_users` " 
+ 		. "WHERE `domain_id` = ? " 
+ 		. "AND `mail_type` NOT RLIKE '_catchall' "; 
+ 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
+ 		$query .= "AND `mail_acc` != 'abuse' " 
+ 			. "AND `mail_acc` != 'postmaster' " 
+ 			. "AND `mail_acc` != 'webmaster'"; 
+ 	} 
+ 	$res6 = exec_query($sql, $query, array($data['domain_id']))
 	$dat3 = $res6->FetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat

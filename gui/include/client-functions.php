@@ -125,72 +125,57 @@ SQL_QUERY;
 }
 
 function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
-	$query = <<<SQL_QUERY
-		SELECT
-			COUNT(*) AS cnt
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'normal_'
-		AND
-			`mail_type` NOT LIKE 'normal_catchall'
-		AND
-			`domain_id` = ?
-SQL_QUERY;
+	$qr_dmn = "SELECT COUNT(mail_id) AS cnt " 
+			. "FROM `mail_users` " 
+			. "WHERE `mail_type` RLIKE 'normal_' " 
+			. "AND `mail_type` NOT LIKE 'normal_catchall' " 
+			. "AND `domain_id` = ? ";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$qr_als = "SELECT COUNT(mail_id) AS cnt " 
+			. "FROM `mail_users` " 
+			. "WHERE `mail_type` RLIKE 'alias_' " 
+			. "AND `mail_type` NOT LIKE 'alias_catchall' " 
+			. "AND `domain_id` = ? "; 
 
+	$qr_sub = "SELECT COUNT(mail_id) AS cnt " 
+			. "FROM `mail_users` " 
+			. "WHERE `mail_type` RLIKE 'subdom_' " 
+			. "AND `mail_type` NOT LIKE 'subdom_catchall' " 
+			. "AND `domain_id` = ? "; 
+
+	$qr_alssub = "SELECT COUNT(mail_id) AS cnt " 
+			. "FROM `mail_users` " 
+			. "WHERE `mail_type` RLIKE 'alssub_' " 
+			. "AND `mail_type` NOT LIKE 'alssub_catchall' " 
+			. "AND `domain_id` = ? "; 
+
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
+		$qr_dmn .= "AND `mail_acc` != 'abuse' " 
+			     . "AND `mail_acc` != 'postmaster' " 
+			     . "AND `mail_acc` != 'webmaster'"; 
+
+		$qr_als .= "AND `mail_acc` != 'abuse' " 
+			     . "AND `mail_acc` != 'postmaster' " 
+			     . "AND `mail_acc` != 'webmaster'"; 
+
+		$qr_sub .= "AND `mail_acc` != 'abuse' " 
+			     . "AND `mail_acc` != 'postmaster' " 
+			     . "AND `mail_acc` != 'webmaster'"; 
+
+		$qr_alssub .= "AND `mail_acc` != 'abuse' " 
+			        . "AND `mail_acc` != 'postmaster' " 
+			        . "AND `mail_acc` != 'webmaster'"; 
+	} 
+	$rs = exec_query($sql, $qr_dmn, array($domain_id));
 	$dmn_mail_acc = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
-		SELECT
-			COUNT(*) AS cnt
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'alias_'
-		AND
-			`mail_type` NOT LIKE 'alias_catchall'
-		AND
-			`domain_id` = ?
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($domain_id));
-
+	$rs = exec_query($sql, $qr_als, array($domain_id));
 	$als_mail_acc = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
-		SELECT
-			COUNT(*) AS cnt
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'subdom_'
-		AND
-			`mail_type` NOT LIKE 'subdom_catchall'
-		AND
-			`domain_id` = ?
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($domain_id));
-
+	$rs = exec_query($sql, $qr_sub, array($domain_id));
 	$sub_mail_acc = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
-		SELECT
-			COUNT(*) AS cnt
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'alssub_'
-		AND
-			`mail_type` NOT LIKE 'alssub_catchall'
-		AND
-			`domain_id` = ?
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($domain_id));
-
+	$rs = exec_query($sql, $qr_alssub, array($domain_id));
 	$alssub_mail_acc = $rs->fields['cnt'];
 
 	return array(

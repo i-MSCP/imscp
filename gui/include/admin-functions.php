@@ -320,6 +320,17 @@ function get_admin_general_info(&$tpl, &$sql) {
 		)
 	);
 
+	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails] 
+	$retrieve_total_emails = get_cnt($sql, 'mail_users', 'mail_id', '', ''); 
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
+		$show_total_emails = $retrieve_total_emails; 
+	} else { 
+		$retrieve_total_default_emails = get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'abuse'); 
+		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'webmaster'); 
+		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'postmaster'); 
+		$show_total_emails = ($retrieve_total_emails-$retrieve_total_default_emails)."/".$retrieve_total_emails; 
+	} 
+
 	$tpl->assign(
 		array(
 			'ACCOUNT_NAME' => $_SESSION['user_logged'],
@@ -329,7 +340,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 			'DOMAINS' => get_cnt($sql, 'domain', 'domain_id', '', ''),
 			'SUBDOMAINS' => get_cnt($sql, 'subdomain', 'subdomain_id', '', '') + get_cnt($sql, 'subdomain_alias', 'subdomain_alias_id', '', ''),
 			'DOMAINS_ALIASES' => get_cnt($sql, 'domain_aliasses', 'alias_id', '', ''),
-			'MAIL_ACCOUNTS' => get_cnt($sql, 'mail_users', 'mail_id', '', ''),
+			'MAIL_ACCOUNTS' => $show_total_emails,
 			'FTP_ACCOUNTS' => get_cnt($sql, 'ftp_users', 'userid', '', ''),
 			'SQL_DATABASES' => get_cnt($sql, 'sql_database', 'sqld_id', '', ''),
 			'SQL_USERS' => get_sql_user_count($sql)

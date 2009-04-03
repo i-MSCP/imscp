@@ -49,6 +49,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$bruteforce_between_time		= clean_input($_POST['bruteforce_between_time']);
 	$bruteforce_max_capcha			= clean_input($_POST['bruteforce_max_capcha']);
 	$create_default_email_addresses	= $_POST['create_default_email_addresses'];
+	$count_default_email_addresses	= $_POST['count_default_email_addresses']; 
 	$hard_mail_suspension			= $_POST['hard_mail_suspension'];
 	$user_initial_lang				= $_POST['def_language'];
 	$support_system					= $_POST['support_system'];
@@ -94,6 +95,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('BRUTEFORCE_BETWEEN_TIME', $bruteforce_between_time);
 		setConfig_Value('BRUTEFORCE_MAX_CAPTCHA', $bruteforce_max_capcha);
 		setConfig_Value('CREATE_DEFAULT_EMAIL_ADDRESSES', $create_default_email_addresses);
+		setConfig_Value('COUNT_DEFAULT_EMAIL_ADDRESSES', $count_default_email_addresses);
 		setConfig_Value('HARD_MAIL_SUSPENSION', $hard_mail_suspension);
 		setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
 		setConfig_Value('ISPCP_SUPPORT_SYSTEM', $support_system);
@@ -166,6 +168,14 @@ if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 } else {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', '');
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
+}
+
+if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"'); 
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', ''); 
+} else { 
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', ''); 
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"'); 
 }
 
 if (Config::get('HARD_MAIL_SUSPENSION')) {
@@ -253,6 +263,7 @@ $tpl->assign(
 		'TR_OTHER_SETTINGS' => tr('Other settings'),
 		'TR_MAIL_SETTINGS' => tr('E-Mail settings'),
 		'TR_CREATE_DEFAULT_EMAIL_ADDRESSES' => tr('Create default E-Mail addresses'),
+		'TR_COUNT_DEFAULT_EMAIL_ADDRESSES' => tr('Count default E-Mail addresses'),
 		'TR_HARD_MAIL_SUSPENSION' => tr('E-Mail accounts are hard suspended'),
 		'TR_USER_INITIAL_LANG' => tr('Default language'),
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),

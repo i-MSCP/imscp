@@ -109,6 +109,18 @@ list($domain_php, $domain_cgi, $sub,
 $domain_php = preg_replace("/\_/", "", $domain_php);
 $domain_cgi = preg_replace("/\_/", "", $domain_cgi);
 
+if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
+	$query = "SELECT COUNT(mail_id) AS cnt " 
+	       . "FROM `mail_users` " 
+	       . "WHERE `domain_id` = ? " 
+	       . "AND (`mail_acc` = 'abuse' " 
+	       . "OR `mail_acc` = 'postmaster' " 
+	       .   "OR `mail_acc` = 'webmaster')"; 
+	$rs = exec_query($sql, $query, array($dmn_id)); 
+	$default_mails = $rs->fields['cnt']; 
+	$mail += $default_mails; 
+}
+
 $ed_error = '';
 
 if (!ispcp_limit_check($sub, -1)) {
@@ -170,6 +182,9 @@ if (empty($ed_error)) {
 }
 
 if (empty($ed_error)) {
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
+		$umail_max -= $default_mails; 
+	}
 	$user_props = "$usub_current;$usub_max;";
 	$user_props .= "$uals_current;$uals_max;";
 	$user_props .= "$umail_current;$umail_max;";

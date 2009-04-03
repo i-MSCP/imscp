@@ -148,6 +148,11 @@ Config::set('LOG_LEVEL', E_USER_NOTICE);
 // Set to false to disable creation of webmaster, postmaster and abuse forwarders when domain/alias/subdomain is created
 Config::set('CREATE_DEFAULT_EMAIL_ADDRESSES', true);
 
+//Count default e-mail addresses (abuse,postmaster,webmaster) in user limit 
+//true: default e-mail are counted 
+//false: default e-mail are NOT counted 
+Config::set('COUNT_DEFAULT_EMAIL_ADDRESSES', false); 
+
 // Use hard mail suspension when suspending a domain:
 // true: email accounts are hard suspended (completely unreachable)
 // false: email accounts are soft suspended (passwords are modified so user can't access the accounts)
