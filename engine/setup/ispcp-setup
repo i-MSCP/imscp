@@ -225,7 +225,7 @@ sub user_dialog {
 
 	} while ($rs == 1);
 
-	if ($main::ua{'awstats_on'} eq 'yes') {
+	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 		do {
 
 			$rs = ask_awstats_dyn();
@@ -547,7 +547,7 @@ sub setup_system_dirs {
 
 	# AWStats dir, use of $main::ua{'awstats_on'}, instead of $main::cfg{'AWSTATS_ACTIVE'},
 	# because variable not yet set.
-	if ($main::ua{'awstats_on'} eq 'yes') {
+	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 		$rs = make_dir($main::cfg{'AWSTATS_CACHE_DIR'}, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0755);
 
 		return $rs if ($rs != 0);

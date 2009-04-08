@@ -392,7 +392,7 @@ sub remove_vhcs2 {
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if (!defined($rdata) || $rdata eq 'y' || $rdata eq '') {
 		$rdata = 'yes';
 	}
 
@@ -454,7 +454,7 @@ sub remove_vhcs2 {
 		if (!defined($rdata) || $rdata eq '') {
 			$rdata = 'no';
 		}
-		if ($rdata eq 'yes') {
+		if ($rdata eq 'yes' || $rdata eq 'y') {
 			print STDOUT "\tRemoving crontab...";
 			sys_command("crontab -r");
 			print STDOUT "done\n";
@@ -869,7 +869,7 @@ sub patch_ispcp_rc2 {
 		$rs = ask_awstats_on();
 	} while ($rs == 1);
 
-	if ($main::ua{'awstats_on'} eq 'yes') {
+	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 		do {
 			$rs = ask_awstats_dyn();
 		} while ($rs == 1);
