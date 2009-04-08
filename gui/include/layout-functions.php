@@ -17,8 +17,9 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-if (isset($_SESSION['user_id'])) {
-	if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
+if (isset($_SESSION['user_id'])
+	&& !isset($_SESSION['logged_from'])
+	&& !isset($_SESSION['logged_from_id'])) {
 		list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 
 		$_SESSION['user_theme'] = $user_def_layout;
@@ -40,17 +41,18 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	if ($rs->RecordCount() == 0 || (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
+	if ($rs->RecordCount() == 0
+		|| (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
 		// values for user id, some default stuff
 		return array(Config::get('USER_INITIAL_LANG'), Config::get('USER_INITIAL_THEME'));
-	}
-	else if (empty($rs->fields['lang'])) {
+	} else if (empty($rs->fields['lang'])) {
+
 		return array(Config::get('USER_INITIAL_LANG'), $rs->fields['layout']);
-	}
-	else if (empty($rs->fields['layout'])) {
+	} else if (empty($rs->fields['layout'])) {
+
 		return array($rs->fields['lang'], Config::get('USER_INITIAL_THEME'));
-	}
-	else {
+	} else {
+
 		return array($rs->fields['lang'], $rs->fields['layout']);
 	}
 }
@@ -72,12 +74,16 @@ function check_language_exist($lang_table) {
 }
 
 function set_page_message($message) {
-	if (isset($_SESSION['user_page_message']))
+	if (isset($_SESSION['user_page_message'])) {
 		$_SESSION['user_page_message'] .= "<br />$message\n";
-	else
+	} else {
 		$_SESSION['user_page_message'] = $message;
+	}
 }
 
+/**
+ * @todo remove checks for DATABASE_REVISION >= 11, this produces unmaintainable code
+ */
 function get_menu_vars($menu_link) {
 	$sql = Database::getInstance();
 
@@ -85,7 +91,9 @@ function get_menu_vars($menu_link) {
 
 	$query = "
 		SELECT
-			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, ".(Config::get('DATABASE_REVISION')>=11 ? '`state`, ':'')."`country`, `email`, `phone`, `fax`, `street1`, `street2`
+			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`,"
+			. (Config::get('DATABASE_REVISION') >= 11 ? '`state`, ' : '')
+			. "`country`, `email`, `phone`, `fax`, `street1`, `street2`
 		FROM
 			`admin`
 		WHERE
@@ -112,7 +120,7 @@ function get_menu_vars($menu_link) {
 	$replace[] = $rs->fields['zip'];
 	$search [] = '{city}';
 	$replace[] = $rs->fields['city'];
-	if (Config::get('DATABASE_REVISION')>=11) {
+	if (Config::get('DATABASE_REVISION') >= 11) {
 		$search [] = '{state}';
 		$replace[] = $rs->fields['state'];
 	}
@@ -147,7 +155,9 @@ SQL_QUERY;
 	return $menu_link;
 }
 
-// currently not being used because there's only one layout/theme
+/**
+ * @todo currently not being used because there's only one layout/theme
+ */
 function gen_def_layout(&$tpl, $user_def_layout) {
 	$layouts = array('blue', 'green', 'red', 'yellow');
 

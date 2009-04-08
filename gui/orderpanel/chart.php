@@ -57,7 +57,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 
 		$rs = exec_query($sql, $query, array($user_id, $plan_id));
 	}
-	
+
 	if ($rs->RecordCount() == 0) {
 		header("Location: index.php");
 		die();
@@ -96,7 +96,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 }
 
 function gen_personal_data(&$tpl) {
-	
+
 	$first_name		= (isset($_SESSION['fname'])) ? $_SESSION['fname'] : '';
 	$last_name		= (isset($_SESSION['lname'])) ? $_SESSION['lname'] : '';
 	$company		= (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';

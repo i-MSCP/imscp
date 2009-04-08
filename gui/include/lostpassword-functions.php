@@ -21,6 +21,9 @@ function check_gd() {
 	return function_exists('imagecreatetruecolor');
 }
 
+/**
+ * @todo use file_exists in try-catch block
+ */
 function captcha_fontfile_exists() {
 	return file_exists(Config::get('LOSTPASSWORD_CAPTCHA_FONT'));
 }
@@ -137,7 +140,7 @@ SQL_QUERY;
 function setPassword($uniqkey, $upass) {
 	$sql = Database::getInstance();
 
-	if ($uniqkey == '') exit;
+	if ($uniqkey == '') { exit; }
 
 	$query = <<<SQL_QUERY
 		UPDATE
@@ -168,6 +171,9 @@ SQL_QUERY;
 	return ($res->RecordCount() != 0) ? true : false;
 }
 
+/**
+ * @todo use more secure hash algorithm (see PHP mcrypt extension)
+ */
 function uniqkeygen() {
 	$uniqkey = '';
 
@@ -303,7 +309,7 @@ SQL_QUERY;
 
 	write_log("Lostpassword: " . $admin_name . ": uniqkey created", E_USER_NOTICE);
 
-	if ($created_by == 0) $created_by = 1;
+	if ($created_by == 0) { $created_by = 1; }
 
 	$data = get_lostpassword_activation_email($created_by);
 
@@ -320,7 +326,7 @@ SQL_QUERY;
 		$from = $from_email;
 	}
 
-	$prot = isset($_SERVER['https'])? 'https' : 'http';
+	$prot = isset($_SERVER['https']) ? 'https' : 'http';
 
 	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
 

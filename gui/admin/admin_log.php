@@ -43,7 +43,7 @@ $tpl->assign(
 	)
 );
 
-function generate_page (&$tpl) {
+function generate_page(&$tpl) {
 	$sql = Database::getInstance();
 
 	$start_index = 0;

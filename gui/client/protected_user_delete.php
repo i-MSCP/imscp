@@ -108,7 +108,7 @@ $query = "
 	WHERE
 		`dmn_id` = ?
 ";
-	
+
 $rs = exec_query($sql, $query, array($dmn_id));
 
 while (!$rs->EOF) {

@@ -27,6 +27,9 @@ function init_login() {
 	}
 }
 
+/**
+ * @todo use more secure hash algorithm (see PHP mcrypt extension)
+ */
 function register_user($uname, $upass) {
 	$sql = Database::getInstance();
 	$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
@@ -42,13 +45,17 @@ function register_user($uname, $upass) {
 	$udata = array();
 	$udata = get_userdata($uname);
 
-	if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && $udata['admin_type'] != 'admin') {
+	if ((Config::get('MAINTENANCEMODE')
+		|| databaseUpdate::getInstance()->checkUpdateExists()
+		|| criticalUpdate::getInstance()->checkUpdateExists())
+		&& $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
 		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
 	}
 
-	if (crypt($upass, $udata['admin_pass']) == $udata['admin_pass'] || md5($upass) == $udata['admin_pass']) {
+	if (crypt($upass, $udata['admin_pass']) == $udata['admin_pass']
+		|| md5($upass) == $udata['admin_pass']) {
 
 		if (isset($_SESSION['user_logged'])) {
 			write_log(tr("%s user already logged or session sharing problem! Aborting...", $uname));
@@ -190,7 +197,8 @@ function check_login($fName = null, $checkReferer = true) {
 
 			$info = parse_url($_SERVER['HTTP_REFERER']);
 			if (isset($info['host']) && !empty($info['host'])) {
-				if ($info['host'] != $_SERVER['HTTP_HOST'] || $info['host'] != $_SERVER['SERVER_NAME']) {
+				if ($info['host'] != $_SERVER['HTTP_HOST']
+					|| $info['host'] != $_SERVER['SERVER_NAME']) {
 					set_page_message(tr('Request from foreign host was blocked!'));
 					if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']), strlen($_SERVER['REDIRECT_URL'])) === $_SERVER['REDIRECT_URL'])) {
 						redirect_to_level_page();
@@ -281,7 +289,7 @@ function change_user_interface($from_id, $to_id) {
 		$_SESSION['user_created_by'] = $to_udata['created_by'];
 		$_SESSION['user_login_time'] = time();
 
-		$query = 'INSERT INTO login (`session_id`, `user_name`, `lastaccess`) VALUES (?, ?, ?) ';
+		$query = 'INSERT INTO login (`session_id`, `user_name`, `lastaccess`) VALUES (?, ?, ?)';
 
 		exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
@@ -292,7 +300,7 @@ function change_user_interface($from_id, $to_id) {
 	redirect_to_level_page($index);
 }
 
-function unset_user_login_data ($ignorePreserve = false) {
+function unset_user_login_data($ignorePreserve = false) {
 	$sql = Database::getInstance();
 
 	if (isset($_SESSION['user_logged'])) {

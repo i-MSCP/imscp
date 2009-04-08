@@ -44,7 +44,7 @@ $tpl->assign(
  * Functions
  */
 
-function gen_order_details (&$tpl, &$sql, $user_id, $order_id) {
+function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	$query = "
 		SELECT
 			*

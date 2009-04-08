@@ -115,7 +115,7 @@ SQL_QUERY;
 	}
 
 	$tpl->parse('MAIN_MENU', 'menu');
-} // End of gen_reseller_menu()
+} // end of gen_reseller_menu()
 
 /**
  * Function to generate the menu data for reseller
@@ -209,7 +209,7 @@ SQL_QUERY;
 	}
 
 	$tpl->parse('MENU', 'menu');
-} // End of gen_reseller_menu()
+} // end of gen_reseller_menu()
 
 /**
  * Get data for page of reseller
@@ -251,12 +251,12 @@ SQL_QUERY;
 		$rs->fields['current_disk_amnt'],
 		$rs->fields['max_disk_amnt']
 	);
-} // End of get_reseller_default_props()
+} // end of get_reseller_default_props()
 
 /**
  * Making users props
  */
-function generate_reseller_user_props ($reseller_id) {
+function generate_reseller_user_props($reseller_id) {
 	$sql = Database::getInstance();
 	// Init with empty variables
 	$rdmn_current = 0;
@@ -286,16 +286,6 @@ function generate_reseller_user_props ($reseller_id) {
 	$rdisk_current = 0;
 	$rdisk_max = 0;
 	$rdisk_uf = '_off_';
-
-	$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
-		$rsub_current, $rsub_max, $rsub_uf,
-		$rals_current, $rals_max, $rals_uf,
-		$rmail_current, $rmail_max, $rmail_uf,
-		$rftp_current, $rftp_max, $rftp_uf,
-		$rsql_db_current, $rsql_db_max, $rsql_db_uf,
-		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
-		$rtraff_current, $rtraff_max, $rtraff_uf,
-		$rdisk_current, $rdisk_max, $rdisk_uf);
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -330,16 +320,16 @@ SQL_QUERY;
 
 		$user_id = $ddata['domain_id'];
 
-		list ($sub_current, $sub_max,
+		list($sub_current, $sub_max,
 			$als_current, $als_max,
 			$mail_current, $mail_max,
 			$ftp_current, $ftp_max,
 			$sql_db_current, $sql_db_max,
 			$sql_user_current, $sql_user_max,
 			$traff_max, $disk_max
-			) = get_user_props($user_id);
+		) = get_user_props($user_id);
 
-		list ($tmpval1,
+		list($tmpval1,
 			$tmpval2,
 			$tmpval3,
 			$tmpval4,
@@ -349,7 +339,7 @@ SQL_QUERY;
 			$disk_current,
 			$tmpval7,
 			$tmpval8
-			) = generate_user_traffic($user_id);
+		) = generate_user_traffic($user_id);
 
 		$rdmn_current += 1;
 
@@ -407,7 +397,7 @@ SQL_QUERY;
 		// print $rdisk_current."<br>"; // for debugging
 	}
 
-	$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
+	return array($rdmn_current, $rdmn_max, $rdmn_uf,
 		$rsub_current, $rsub_max, $rsub_uf,
 		$rals_current, $rals_max, $rals_uf,
 		$rmail_current, $rmail_max, $rmail_uf,
@@ -416,8 +406,7 @@ SQL_QUERY;
 		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
 		$rtraff_current, $rtraff_max, $rtraff_uf,
 		$rdisk_current, $rdisk_max, $rdisk_uf);
-	return $ResArray;
-} // End of generate_reseller_user_props()
+} // end of generate_reseller_user_props()
 
 /**
  * Get traffic information for user
@@ -492,12 +481,12 @@ SQL_QUERY;
 			$domain_disk_limit
 		);
 	}
-} // End of get_user_traffic()
+} // end of get_user_traffic()
 
 /**
  * Get user's probs info from db via sql
  */
-function get_user_props ($user_id) {
+function get_user_props($user_id) {
 
 	$sql = Database::getInstance();
 
@@ -524,14 +513,14 @@ SQL_QUERY;
 	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $data['domain_alias_limit'];
 
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
-		$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id); 
-	} else { 
-		$where = "`mail_acc` != 'abuse' " 
-		       . "AND `mail_acc` != 'postmaster' " 
-		       . "AND `mail_acc` != 'webmaster' " 
-		       . "AND `domain_id`"; 
-		$mail_current = records_count('mail_id', 'mail_users', $where, $user_id); 
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+		$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
+	} else {
+		$where = "`mail_acc` != 'abuse'
+		AND `mail_acc` != 'postmaster'
+		AND `mail_acc` != 'webmaster'
+		AND `domain_id`";
+		$mail_current = records_count('mail_id', 'mail_users', $where, $user_id);
 	}
 	$mail_max = $data['domain_mailacc_limit'];
 
@@ -568,9 +557,9 @@ SQL_QUERY;
 		$sql_user_current, $sql_user_max,
 		$traff_max, $disk_max
 	);
-} // End of get_user_props();
+} // end of get_user_props();
 
-function rsl_full_domain_check ($data) {
+function rsl_full_domain_check($data) {
 	$data .= '.';
 	$match = array();
 	$last_match = array();
@@ -588,8 +577,9 @@ function rsl_full_domain_check ($data) {
 	for ($i = 0; $i < $last; $i++) {
 		$token = chop($match[0][$i], ".");
 
-		if (!check_dn_rsl_token($token))
+		if (!check_dn_rsl_token($token)) {
 			return 0;
+		}
 	}
 
 	$res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
@@ -597,10 +587,8 @@ function rsl_full_domain_check ($data) {
 		$last_match
 		);
 
-	if ($res == 0) return 0;
-
-	return 1;
-} // End of full_domain_check()
+	return ($res == 0) ? 0 : 1;
+} // end of full_domain_check()
 
 /**
  * Generate IP list
@@ -646,12 +634,14 @@ SQL_QUERY;
 			$tpl->parse('IP_ENTRY', '.ip_entry');
 		}
 	} // end loop
-} // End of generate_ip_list()
+} // end of generate_ip_list()
 
 /**
  * Check validity of input data
+ *
+ * @todo check if we can remove out commented code block
  */
-function check_ruser_data (&$tpl, $NoPass) {
+function check_ruser_data(&$tpl, $noPass) {
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
@@ -722,7 +712,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	//if (isset($_SESSION['local_data']))
 	//	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
 	// Begin checking...
-	if ('_no_' == $NoPass) {
+	if ('_no_' == $noPass) {
 		if (('' === $inpass_re) || ('' === $inpass)) {
 			$user_add_error = tr('Please fill up both data fields for password!');
 		} else if ($inpass_re !== $inpass) {
@@ -764,32 +754,24 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		return false;
 	}
-} // End of check_ruser_data()
+} // end of check_ruser_data()
 
 /**
  * Translate domain status
  */
-function translate_dmn_status ($status) {
-	if ($status == Config::get('ITEM_OK_STATUS')) {
-		return tr('OK');
-	} else if ($status == Config::get('ITEM_ADD_STATUS')) {
-		return tr('Addition in progress');
-	} else if ($status == Config::get('ITEM_CHANGE_STATUS')) {
-		return tr('Modification in progress');
-	} else if ($status == Config::get('ITEM_DELETE_STATUS')) {
-		return tr('Deletion in progress');
-	} else if ($status == Config::get('ITEM_DISABLED_STATUS')) {
-		return tr('Suspended');
-	} else if ($status == Config::get('ITEM_TOENABLE_STATUS')) {
-		return tr('Being enabled');
-	} else if ($status == Config::get('ITEM_TODISABLED_STATUS')) {
-		return tr('Being suspended');
-	} else if ($status == Config::get('ITEM_ORDERED_STATUS')) {
-		return tr('Awaiting for approval');
-	} else {
-		return tr('Unknown error');
+function translate_dmn_status($status) {
+	switch ($status) {
+		case Config::get('ITEM_OK_STATUS'): return tr('OK');
+		case Config::get('ITEM_ADD_STATUS'): return tr('Addition in progress');
+		case Config::get('ITEM_CHANGE_STATUS'): return tr('Modification in progress');
+		case Config::get('ITEM_DELETE_STATUS'): return tr('Deletion in progress');
+		case Config::get('ITEM_DISABLED_STATUS'): return tr('Suspended');
+		case Config::get('ITEM_TOENABLE_STATUS'): return tr('Being enabled');
+		case Config::get('ITEM_TODISABLED_STATUS'): return tr('Being suspended');
+		case Config::get('ITEM_ORDERED_STATUS'): return tr('Awaiting for approval');
+		default: return tr('Unknown error');
 	}
-} // End of translate_dmn_status()
+} // end of translate_dmn_status()
 
 /**
  * Check if the domain already exist
@@ -905,7 +887,7 @@ SQL_QUERY;
 	} else {
 		return true;
 	}
-} // End of ispcp_domain_exists()
+} // end of ispcp_domain_exists()
 
 /**
  * @todo see inline comment, about the messed up code
@@ -919,7 +901,8 @@ function gen_manage_domain_query(&$search_query, &$count_query,
 	$search_common,
 	$search_status) {
 	// IMHO, this code is an unmaintainable mess and should be replaced - Cliff
-	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
+	if ($search_for === 'n/a' && $search_common === 'n/a'
+		&& $search_status === 'n/a') {
 
 		// We have pure list query;
 		$count_query = <<<SQL_QUERY
@@ -1034,11 +1017,12 @@ SQL_QUERY;
 	}
 }
 
-function gen_manage_domain_search_options (&$tpl,
+function gen_manage_domain_search_options(&$tpl,
 	$search_for,
 	$search_common,
 	$search_status) {
-	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
+	if ($search_for === 'n/a' && $search_common === 'n/a'
+		&& $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
 		$domain_selected = 'selected="selected"';
 		$customerid_selected = "";
@@ -1164,7 +1148,7 @@ function gen_manage_domain_search_options (&$tpl,
 }
 
 /**
- * @todo use db prepared statements
+ * @todo implement use of more secure dynamic table in SQL query
  */
 function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$matches = array();
@@ -1218,7 +1202,7 @@ SQL_QUERY;
 function gen_domain_details(&$tpl, &$sql, $domain_id) {
 	$tpl->assign('USER_DETAILS', '');
 
-	if (isset($_SESSION['details']) and $_SESSION['details'] == 'hide') {
+	if (isset($_SESSION['details']) && $_SESSION['details'] == 'hide') {
 		$tpl->assign(
 			array(
 				'TR_VIEW_DETAILS' => tr('view aliases'),
@@ -1227,7 +1211,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 		);
 
 		return;
-	} else if (isset($_SESSION['details']) and $_SESSION['details'] === "show") {
+	} else if (isset($_SESSION['details']) && $_SESSION['details'] === "show") {
 		$tpl->assign(
 			array(
 				'TR_VIEW_DETAILS' => tr('hide aliases'),
@@ -1582,7 +1566,7 @@ SQL_QUERY;
 SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($dmn, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $reseller_id));
-} // End of au_update_reseller_props()
+} // end of au_update_reseller_props()
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
 	$data = get_order_email($admin_id);
@@ -1672,11 +1656,7 @@ function send_alias_order_email($alias_name) {
 	$message = $data['message'];
 
 	// to
-	if ($to_name) {
-		$to = '"' . encode($to_name) . "\" <" . $to_email . ">";
-	} else {
-		$to = $to_email;
-	}
+	$to = ($to_name) ? '"' . encode($to_name) . "\" <" . $to_email . ">" : $to_email;
 
 	// from
 	if ($ufname && $ulname) {

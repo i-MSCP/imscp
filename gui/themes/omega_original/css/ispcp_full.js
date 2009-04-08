@@ -1,28 +1,28 @@
-/** 
- * ispCP ω (OMEGA) a Virtual Hosting Control System 
- * 
+/**
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
+ *
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		SVN: $id: $
+ * @version		SVN: $Id$
  * @link		http://isp-control.net
  * @author		ispCP Team
  *
  * @license
- *   This program is free software; you can redistribute it and/or 
- *   modify it under the terms of the GPL General Public License 
- *   as published by the Free Software Foundation; either version 2.0 
- *   of the License, or (at your option) any later version. 
- * 
- *   This program is distributed in the hope that it will be useful, 
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of 
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- *   GPL General Public License for more details. 
- * 
- *   You may have received a copy of the GPL General Public License 
- *   along with this program. 
- * 
- *   An on-line copy of the GPL General Public License can be found 
- *   http://www.fsf.org/licensing/licenses/gpl.txt 
- */ 
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GPL General Public License
+ *   as published by the Free Software Foundation; either version 2.0
+ *   of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GPL General Public License for more details.
+ *
+ *   You may have received a copy of the GPL General Public License
+ *   along with this program.
+ *
+ *   An on-line copy of the GPL General Public License can be found
+ *   http://www.fsf.org/licensing/licenses/gpl.txt
+ */
 
 
 /**
@@ -284,13 +284,16 @@ function sprintf() {
  * @todo try to merge with hideTip(), eventually with optional parameter
  */
 function showTip(id, e) {
-	var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
-	var y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
-
-	var tip = document.getElementById(id);
-
+	var x, y, tip = document.getElementById(id);
+	if (window.event) {
+		x = window.event.x + document.body.scrollLeft;
+		y = window.event.y + document.body.scrollTop;
+	} else {
+		x = e.pageX;
+		y = e.pageY;
+	}
 	tip.style.left = (x + 10) + "px";
-	tip.style.top  = (y + 10) + "px";
+	tip.style.top = (y + 10) + "px";
 	tip.style.display = "block";
 }
 

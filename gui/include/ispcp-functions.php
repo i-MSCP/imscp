@@ -18,6 +18,9 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo use of @ is problematic, instead use try-catch
+ */
 function check_for_lock_file($wait_lock_timeout = 500000) {
 
 	set_time_limit(0);
@@ -42,6 +45,9 @@ function read_line(&$socket) {
 	return $line;
 }
 
+/**
+ * @todo use of @ is problematic, instead use try-catch
+ */
 function send_request() {
 
 	global $Version;
@@ -55,7 +61,7 @@ function send_request() {
 	}
 
 	@$result = socket_connect ($socket, '127.0.0.1', 9876);
-	if ($result == FALSE) {
+	if ($result == false) {
 		$errno = "socket_connect() failed.\n";
 		return $errno;
 	}
@@ -114,7 +120,7 @@ function update_user_props($user_id, $props) {
 
 	$sql = Database::getInstance();
 
-	list (
+	list(
 		$sub_current,
 		$sub_max,
 		$als_current,
@@ -345,8 +351,8 @@ function is_number($integer) {
 	return false;
 }
 
-function is_basicString($sting) {
-	if (preg_match('/^[a-zA-Z0-9_-]+$/D', $sting)) {
+function is_basicString($string) {
+	if (preg_match('/^[a-zA-Z0-9_-]+$/D', $string)) {
 		return true;
 	}
 	return false;
@@ -385,8 +391,9 @@ function unset_messages() {
 	$glToUnset[] = 'local_data';
 
 	foreach ($glToUnset as $toUnset) {
-		if (array_key_exists($toUnset,$GLOBALS))
+		if (array_key_exists($toUnset, $GLOBALS)) {
 			unset($GLOBALS[$toUnset]);
+		}
 	}
 
 	$sessToUnset = array();
@@ -416,8 +423,9 @@ function unset_messages() {
 	$sessToUnset[] = 'local_data';
 
 	foreach ($sessToUnset as $toUnset) {
-		if (array_key_exists($toUnset,$_SESSION))
+		if (array_key_exists($toUnset, $_SESSION)) {
 			unset($_SESSION[$toUnset]);
+		}
 	}
 }
 

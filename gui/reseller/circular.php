@@ -69,7 +69,7 @@ SQL_QUERY;
 	}
 }
 
-function check_user_data (&$tpl) {
+function check_user_data(&$tpl) {
 	global $msg_subject, $msg_text, $sender_email, $sender_name;
 
 	$err_message = '';
@@ -113,7 +113,7 @@ function send_circular(&$tpl, &$sql) {
 	}
 }
 
-function send_reseller_users_message (&$sql, $admin_id) {
+function send_reseller_users_message(&$sql, $admin_id) {
 
 	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
@@ -145,7 +145,7 @@ SQL_QUERY;
 	write_log("Mass email was sended from Reseller " . $sender_name . " <" . $sender_email . ">");
 }
 
-function send_circular_email ($to, $from, $subject, $message) {
+function send_circular_email($to, $from, $subject, $message) {
 	$subject = encode($subject);
 
 	$headers  = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";

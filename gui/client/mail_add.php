@@ -447,7 +447,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 		set_page_message(tr('Please enter mail account username!'));
 		return false;
 	}
-	
+
 	$mail_acc = strtolower(clean_input($_POST['username']));
 	if (ispcp_check_local_part($mail_acc) == "0") {
 		set_page_message(tr("Invalid Mail Localpart Format used!"));
@@ -499,7 +499,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 				`subdomain_alias` AS t1
 			LEFT JOIN (`domain_aliasses` AS t2) ON (t1.`alias_id` = t2.`alias_id`)
 			LEFT JOIN (`domain` AS t3) ON (t2.`domain_id` = t3.`domain_id`)
-			WHERE 
+			WHERE
 				t1.`subdomain_alias_id` = ?
 			AND
 				t3.`domain_id` = ?

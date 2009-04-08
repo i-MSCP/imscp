@@ -19,7 +19,7 @@
  */
 
 /**
- * encode() - encode string to be valid as mail header
+ * encode string to be valid as mail header
  *
  * @source	php.net/manual/en/function.mail.php
  *
@@ -320,16 +320,16 @@ function get_admin_general_info(&$tpl, &$sql) {
 		)
 	);
 
-	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails] 
-	$retrieve_total_emails = get_cnt($sql, 'mail_users', 'mail_id', '', ''); 
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
-		$show_total_emails = $retrieve_total_emails; 
-	} else { 
-		$retrieve_total_default_emails = get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'abuse'); 
-		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'webmaster'); 
-		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'postmaster'); 
-		$show_total_emails = ($retrieve_total_emails-$retrieve_total_default_emails)."/".$retrieve_total_emails; 
-	} 
+	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails]
+	$retrieve_total_emails = get_cnt($sql, 'mail_users', 'mail_id', '', '');
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+		$show_total_emails = $retrieve_total_emails;
+	} else {
+		$retrieve_total_default_emails = get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'abuse');
+		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'webmaster');
+		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'postmaster');
+		$show_total_emails = ($retrieve_total_emails-$retrieve_total_default_emails)."/".$retrieve_total_emails;
+	}
 
 	$tpl->assign(
 		array(
@@ -351,13 +351,14 @@ function get_admin_general_info(&$tpl, &$sql) {
 function gen_admin_list(&$tpl, &$sql) {
 	$query = "
 			SELECT
-				t1.`admin_id`, t1.`admin_name`, t1.`domain_created`, IFNULL(t2.`admin_name`, '') AS created_by
+				t1.`admin_id`, t1.`admin_name`, t1.`domain_created`,
+				IFNULL(t2.`admin_name`, '') AS created_by
 			FROM
 				`admin` AS t1
 			LEFT JOIN
 				`admin` AS t2 ON t1.created_by = t2.`admin_id`
 			WHERE
-				t1.`admin_type`='admin'
+				t1.`admin_type` = 'admin'
 			ORDER BY
 				t1.`admin_name`
 			ASC
@@ -383,7 +384,7 @@ function gen_admin_list(&$tpl, &$sql) {
 				'TR_ADMIN_OPTIONS' => tr('Options'),
 			)
 		);
-		
+
 		$i = 0;
 		while (!$rs->EOF) {
 			$tpl->assign(
@@ -441,7 +442,8 @@ function gen_admin_list(&$tpl, &$sql) {
 function gen_reseller_list(&$tpl, &$sql) {
 	$query = "
 		SELECT
-			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`, IFNULL(t2.`admin_name`, '') AS created_by
+			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`,
+			IFNULL(t2.`admin_name`, '') AS created_by
 		FROM
 			`admin` AS t1
 		LEFT JOIN
@@ -780,7 +782,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 	gen_user_list($tpl, $sql);
 }
 
-function generate_reseller_props ($reseller_id) {
+function generate_reseller_props($reseller_id) {
 	$sql = Database::getInstance();
 
 	$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
@@ -820,7 +822,7 @@ function generate_reseller_props ($reseller_id) {
 	);
 }
 
-function generate_reseller_users_props ($reseller_id) {
+function generate_reseller_users_props($reseller_id) {
 	$sql = Database::getInstance();
 
 	$rdmn_current = 0;
@@ -851,24 +853,22 @@ function generate_reseller_users_props ($reseller_id) {
 	$rdisk_max = 0;
 	$rdisk_uf = '_off_';
 
-	$fresult = array(
-		$rdmn_current, $rdmn_max, $rdmn_uf,
-		$rsub_current, $rsub_max, $rsub_uf,
-		$rals_current, $rals_max, $rals_uf,
-		$rmail_current, $rmail_max, $rmail_uf,
-		$rftp_current, $rftp_max, $rftp_uf,
-		$rsql_db_current, $rsql_db_max, $rsql_db_uf,
-		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
-		$rtraff_current, $rtraff_max, $rtraff_uf,
-		$rdisk_current, $rdisk_max, $rdisk_uf
-	);
-
 	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
 	if ($rs->RowCount() == 0) {
-		return $fresult;
+		return array(
+			$rdmn_current, $rdmn_max, $rdmn_uf,
+			$rsub_current, $rsub_max, $rsub_uf,
+			$rals_current, $rals_max, $rals_uf,
+			$rmail_current, $rmail_max, $rmail_uf,
+			$rftp_current, $rftp_max, $rftp_uf,
+			$rsql_db_current, $rsql_db_max, $rsql_db_uf,
+			$rsql_user_current, $rsql_user_max, $rsql_user_uf,
+			$rtraff_current, $rtraff_max, $rtraff_uf,
+			$rdisk_current, $rdisk_max, $rdisk_uf
+		);
 	}
 	while (!$rs->EOF) {
 		$admin_id = $rs->fields['admin_id'];
@@ -879,16 +879,16 @@ function generate_reseller_users_props ($reseller_id) {
 
 		$user_id = $dres->fields['domain_id'];
 
-		list ($sub_current, $sub_max,
+		list($sub_current, $sub_max,
 			$als_current, $als_max,
 			$mail_current, $mail_max,
 			$ftp_current, $ftp_max,
 			$sql_db_current, $sql_db_max,
 			$sql_user_current, $sql_user_max,
 			$traff_max, $disk_max
-			) = generate_user_props($user_id);
+		) = generate_user_props($user_id);
 
-		list ($a,
+		list($a,
 			$b,
 			$c,
 			$d,
@@ -898,7 +898,7 @@ function generate_reseller_users_props ($reseller_id) {
 			$disk_current,
 			$g,
 			$h
-			) = generate_user_traffic($user_id);
+		) = generate_user_traffic($user_id);
 
 		$rdmn_current += 1;
 
@@ -961,7 +961,7 @@ function generate_reseller_users_props ($reseller_id) {
 		$rs->MoveNext();
 	}
 
-	$fresult = array(
+	return array(
 		$rdmn_current, $rdmn_max, $rdmn_uf,
 		$rsub_current, $rsub_max, $rsub_uf,
 		$rals_current, $rals_max, $rals_uf,
@@ -972,12 +972,10 @@ function generate_reseller_users_props ($reseller_id) {
 		$rtraff_current, $rtraff_max, $rtraff_uf,
 		$rdisk_current, $rdisk_max, $rdisk_uf
 	);
-
-	return $fresult;
 }
 
 /**
- * @todo explain/comment the hack
+ * @todo explain or replace the hack
  */
 function generate_user_props($user_id) {
 	$sql = Database::getInstance();
@@ -1031,7 +1029,7 @@ function generate_user_props($user_id) {
 }
 
 /**
- * @todo use db prepared statements
+ * @todo implement check for dynamic table/row in SQL query
  */
 function records_count($field, $table, $where, $value) {
 	$sql = Database::getInstance();
@@ -1048,9 +1046,9 @@ function records_count($field, $table, $where, $value) {
 }
 
 /**
- * @todo use db prepared statements
+ * @todo implement check for dynamic table/row in SQL query
  */
-function records_rlike_count ($field, $table, $where, $value, $a, $b) {
+function records_rlike_count($field, $table, $where, $value, $a, $b) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
@@ -1065,9 +1063,9 @@ function records_rlike_count ($field, $table, $where, $value, $a, $b) {
 }
 
 /**
- * @todo use db prepared statements
+ * @todo implement check for dynamic table/row in SQL query
  */
-function sub_records_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere) {
+function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
@@ -1100,7 +1098,7 @@ function sub_records_count ($field, $table, $where, $value, $subfield, $subtable
 	return $result;
 }
 
-function generate_user_traffic ($user_id) {
+function generate_user_traffic($user_id) {
 	$sql = Database::getInstance();
 	global $crnt_month, $crnt_year;
 
@@ -1115,9 +1113,9 @@ function generate_user_traffic ($user_id) {
 	$query = "
 		SELECT
 			`domain_id`,
-			IFNULL(`domain_disk_usage`,0) AS domain_disk_usage,
-			IFNULL(`domain_traffic_limit`,0) AS domain_traffic_limit,
-			IFNULL(`domain_disk_limit`,0) AS domain_disk_limit,
+			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage,
+			IFNULL(`domain_traffic_limit`, 0) AS domain_traffic_limit,
+			IFNULL(`domain_disk_limit`, 0) AS domain_disk_limit,
 			`domain_name`
 		FROM
 			`domain`
@@ -1177,7 +1175,7 @@ function generate_user_traffic ($user_id) {
 	}
 }
 
-function make_usage_vals ($current, $max) {
+function make_usage_vals($current, $max) {
 	if ($max == 0) {
 		$max = 1024 * 1024 * 1024 * 1024; // 1 TeraByte Limit ;) for Unlimited Value
 	}
@@ -1192,9 +1190,9 @@ function make_usage_vals ($current, $max) {
 }
 
 /**
- * @todo use db prepared statements
+ * @todo implement check for dynamic table/row in SQL query
  */
-function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b) {
+function sub_records_rlike_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
@@ -1228,7 +1226,7 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 	return $result;
 }
 
-function gen_select_lists (&$tpl, $user_month, $user_year) {
+function gen_select_lists(&$tpl, $user_month, $user_year) {
 	global $crnt_month, $crnt_year;
 
 	if (!$user_month == '' || !$user_year == '') {
@@ -1461,7 +1459,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	write_log("$admin_login: Auto Add User To: |$name <$uemail>|, From: |$from_name <$from_email>|, Status: |$mail_status|!");
 }
 
-function update_reseller_props ($reseller_id, $props) {
+function update_reseller_props($reseller_id, $props) {
 	$sql = Database::getInstance();
 
 	if ($props == '') {
@@ -1640,7 +1638,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
  * @todo use db prepared statements
  * @todo cleanup and/or comment confusing query salad
  */
-function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
+function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 	$rows_per_page, $search_for, $search_common, $search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// We have pure list query;
@@ -1718,7 +1716,7 @@ function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 	}
 }
 
-function gen_admin_domain_search_options (&$tpl, $search_for, $search_common,
+function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	$search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
@@ -1952,7 +1950,7 @@ function remove_users_common_properties($id_user) {
 
 function substract_from_reseller_props($reseller_id, $domain_id) {
 	// function update reseller props before deleting account
-	list ($rdmn_current, $rdmn_max,
+	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
 		$rmail_current, $rmail_max,
@@ -1961,16 +1959,16 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 		$rsql_user_current, $rsql_user_max,
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
-		) = generate_reseller_props($reseller_id);
+	) = generate_reseller_props($reseller_id);
 
-	list ($sub_current, $sub_max,
+	list($sub_current, $sub_max,
 		$als_current, $als_max,
 		$mail_current, $mail_max,
 		$ftp_current, $ftp_max,
 		$sql_db_current, $sql_db_max,
 		$sql_user_current, $sql_user_max,
 		$traff_max, $disk_max
-		) = generate_user_props($domain_id);
+	) = generate_user_props($domain_id);
 
 	$rdmn_current -= 1;
 
@@ -2017,6 +2015,7 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 
 /**
  * @todo use template(s) instead of hardcoded (X)HTML
+ * @todo possible SESSION hijackin for $_SESSION['user_theme']
  */
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	$query = "

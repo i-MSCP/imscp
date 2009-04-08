@@ -168,14 +168,14 @@ SQL_QUERY;
 		die();
 	}
 
-	list ($a, $sub,
+	list($a, $sub,
 		$b, $als,
 		$c, $mail,
 		$d, $ftp,
 		$e, $sql_db,
 		$f, $sql_user,
 		$traff, $disk
-		) = generate_user_props($domain_id);;
+	) = generate_user_props($domain_id);;
 
 	load_additional_data($user_id, $domain_id);
 } // End of load_user_data()
@@ -360,17 +360,18 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	// $user_props = generate_user_props($user_id);
 	// $reseller_props = generate_reseller_props($reseller_id);
-	list ($usub_current, $usub_max,
+	list($usub_current, $usub_max,
 		$uals_current, $uals_max,
 		$umail_current, $umail_max,
 		$uftp_current, $uftp_max,
 		$usql_db_current, $usql_db_max,
 		$usql_user_current, $usql_user_max,
-		$utraff_max, $udisk_max) = generate_user_props($user_id);
+		$utraff_max, $udisk_max
+	) = generate_user_props($user_id);
 
 	$previous_utraff_max = $utraff_max;
 
-	list ($rdmn_current, $rdmn_max,
+	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
 		$rmail_current, $rmail_max,
@@ -379,8 +380,8 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$rsql_user_current, $rsql_user_max,
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
-		) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
-	list ($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
+	) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
+	list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
 
 	if (empty($ed_error)) {
 		calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, $ed_error, tr('Subdomain'));

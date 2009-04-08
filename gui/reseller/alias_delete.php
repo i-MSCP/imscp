@@ -73,7 +73,6 @@ $query = <<<SQL_QUERY
 		AND
 		`mail_type` LIKE '%alssub_%')
 
-		
 SQL_QUERY;
 
 $rs = exec_query($sql, $query, array($delete_status, $del_id, $del_id));

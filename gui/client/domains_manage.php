@@ -128,9 +128,9 @@ SQL_QUERY;
 			$rs2->MoveNext();
 			$counter++;
 		}
-		
+
 		$tpl->parse('SUB_LIST', 'sub_list');
-		$tpl->assign('SUB_MESSAGE', '');		
+		$tpl->assign('SUB_MESSAGE', '');
 	}
 }
 

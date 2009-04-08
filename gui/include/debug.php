@@ -18,6 +18,9 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * @todo check if we can remove commented code
+ */
 function dump_gui_debug() {
 	echo '<span style="color:#0000FF"><u>Content of <b>$_SESSION</b>:</u><br /></span>';
 	echo '<pre>';

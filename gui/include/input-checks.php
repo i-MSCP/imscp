@@ -121,9 +121,9 @@ function clean_input($input, $htmlencode = false) {
 		$input = trim($input, "{..}");
 	}
 
-	if (get_magic_quotes_gpc())
+	if (get_magic_quotes_gpc()) {
 		$input = stripslashes($input);
-
+	}
 	if ($htmlencode) {
 		return htmlentities($input, ENT_QUOTES, "UTF-8");
 	} else {
@@ -201,9 +201,9 @@ function chk_username($username, $length = null) {
  * @todo document this function
  */
 function chk_email($email, $num = 50) {
-	if (strlen($email) > $num)
+	if (strlen($email) > $num) {
 		return false;
-
+	}
 	// RegEx begin
 	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
 
@@ -228,9 +228,9 @@ function chk_email($email, $num = 50) {
  * @todo document this function
  */
 function ispcp_check_local_part($email, $num = 50) {
-	if (strlen($email) > $num)
+	if (strlen($email) > $num) {
 		return false;
-
+	}
 	// RegEx begin
 	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
 
@@ -266,15 +266,16 @@ function full_domain_check($data) {
 
 		$res = check_dn_token($token);
 
-		if (!$res)
+		if (!$res) {
 			return false;
+		}
 	}
 
 	$res = preg_match("/^[A-Za-z0-9][A-Za-z0-9]*[A-Za-z0-9]\.$/", $match[0][$last]);
 
-	if (!$res)
+	if (!$res) {
 		return false;
-
+	}
 	return true;
 }
 
@@ -303,6 +304,8 @@ function check_dn_token($data) {
  * 					true	correct syntax (ranges)
  * @example ispcp_limit_check($_POST['domains_limit'], null)
  * @example ispcp_limit_check($_POST['ftp_accounts_limit'])
+ *
+ * @todo foreach and "=" inner this loop is unusual
  */
 function ispcp_limit_check($data, $extra = -1) {
 	if ($extra !== null && !is_bool($extra)) {
@@ -311,7 +314,7 @@ function ispcp_limit_check($data, $extra = -1) {
 			$max = count($extra);
 
 			foreach ($extra as $n => $element) {
-				$nextra = $element . ($n < $max)? '|' : '';
+				$nextra = $element . ($n < $max) ? '|' : '';
 			}
 
 			$extra = $nextra;
@@ -337,9 +340,9 @@ function ispcp_limit_check($data, $extra = -1) {
  */
 function check_dn_rsl_token($data) {
 	$match = array();
-	if (!preg_match("/^([A-Za-z0-9])([a-z0-9A-Z\-]*)([A-Za-z0-9])$/D", $data, $match))
+	if (!preg_match("/^([A-Za-z0-9])([a-z0-9A-Z\-]*)([A-Za-z0-9])$/D", $data, $match)) {
 		return false;
-
+	}
 	/*if (preg_match("/\-\-/", $match[2]))
 		return FALSE;*/
 
@@ -361,14 +364,14 @@ function chk_dname($dname) {
 		return false;
 	}
 
-	if (!rsl_full_domain_check($dname))
+	if (!rsl_full_domain_check($dname)) {
 		return false;
-
+	}
 	$match = array();
 
-	if (preg_match_all("/\./", $dname, $match, PREG_PATTERN_ORDER) <= 0)
+	if (preg_match_all("/\./", $dname, $match, PREG_PATTERN_ORDER) <= 0) {
 		return false;
-
+	}
 	return true;
 }
 
@@ -385,9 +388,9 @@ function chk_forward_url($url) {
 	$dom_tldpart = '[a-zA-Z]{2,5}';
 	$domain = $dom_subpart . $dom_mainpart . $dom_tldpart;
 
-	if (!preg_match("/^(http|https|ftp)\:\/\/" . $domain . "/", $url))
+	if (!preg_match("/^(http|https|ftp)\:\/\/" . $domain . "/", $url)) {
 		return false;
-
+	}
 	return true;
 }
 
@@ -401,24 +404,24 @@ function chk_forward_url($url) {
  * @todo check if we can remove the outcommented code block or comment why not
  */
 function chk_mountp($data, $num = 50) {
-	if (!preg_match("/^\/(.*)$/D", $data))
+	if (!preg_match("/^\/(.*)$/D", $data)) {
 		return false;
-
-	if (preg_match("/^\/htdocs$/D", $data))
+	}
+	if (preg_match("/^\/htdocs$/D", $data)) {
 		return false;
-
-	if (preg_match("/^\/backups$/D", $data))
+	}
+	if (preg_match("/^\/backups$/D", $data)) {
 		return false;
-
-	if (preg_match("/^\/cgi-bin$/D", $data))
+	}
+	if (preg_match("/^\/cgi-bin$/D", $data)) {
 		return false;
-
-	if (preg_match("/^\/errors$/D", $data))
+	}
+	if (preg_match("/^\/errors$/D", $data)) {
 		return false;
-
-	if (preg_match("/^\/logs$/D", $data))
+	}
+	if (preg_match("/^\/logs$/D", $data)) {
 		return false;
-
+	}
 	/*$res = explode("/", trim($data));
 	$cnt_res = count($res);
 	if ($cnt_res > 2)
@@ -427,14 +430,15 @@ function chk_mountp($data, $num = 50) {
 	$match = array();
 	$count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
 
-	if (!$count)
+	if (!$count) {
 		return false;
-
+	}
 	for ($i = 0; $i < $count; $i++) {
 		$token = substr($match[0][$i], 1);
 
-		if (!chk_username($token, $num))
+		if (!chk_username($token, $num)) {
 			return false;
+		}
 	}
 
 	return true;
@@ -444,20 +448,22 @@ function chk_mountp($data, $num = 50) {
  * @todo document this function
  */
 function get_post($value) {
-	if (array_key_exists($value, $_POST))
+	if (array_key_exists($value, $_POST)) {
 		return $_POST[$value];
-	else
+	} else {
 		return null;
+	}
 }
 
 /**
  * @todo document this function
  */
 function get_session($value) {
-	if (array_key_exists($value, $_SESSION))
+	if (array_key_exists($value, $_SESSION)) {
 		return $_SESSION[$value];
-	else
+	} else {
 		return null;
+	}
 }
 
 /**
@@ -475,7 +481,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 }
 
 /**
- * Function for checking ispCP subdomain syntax. 
+ * Function for checking ispCP subdomain syntax.
  *
  * Here subdomains are limited to {subname}.{dname}.{ext} parts.
  * Data passed to this function must be in the upper form, not
@@ -599,7 +605,6 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 			break;
 	}
 
-	$resolvers = array();
 	/**
 	 * $resolvers is a multi-dimensional array.
 	 * Its elements keys are the value that will be matched by $type.
@@ -617,6 +622,8 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	 *
 	 * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
 	 */
+	$resolvers = array();
+
 	$resolvers['domain_id'] = array();
 	$resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
 	$resolvers['domain_id']['is_final'] = true;

@@ -142,12 +142,16 @@ function crypt_user_pass_with_salt($data) {
 	return $res;
 }
 
+
 function check_user_pass($crdata, $data) {
 	$salt = get_salt_from($crdata);
 	$udata = crypt($data, $salt);
 	return ($udata == $crdata);
 }
 
+/**
+ * @todo using loop with "=" operator in loop is unusual
+ */
 function _passgen() {
 	$pw = '';
 
@@ -163,6 +167,9 @@ function _passgen() {
 	return $pw;
 }
 
+/**
+ * @todo using loop with "=" operator in loop is unusual
+ */
 function passgen() {
 	$pw = null;
 
@@ -174,12 +181,10 @@ function passgen() {
 }
 
 function translate_limit_value($value, $autosize = false) {
-	if ($value == -1) {
-		return tr('disabled');
-	} else if ($value == 0) {
-		return tr('unlimited');
-	} else {
-		return (!$autosize) ? $value : sizeit($value, 'MB');
+	switch ($value) {
+		case -1: return tr('disabled');
+		case 0: return tr('unlimited');
+		default: return (!$autosize) ? $value : sizeit($value, 'MB');
 	}
 }
 

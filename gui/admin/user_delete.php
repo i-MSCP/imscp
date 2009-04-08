@@ -51,13 +51,13 @@ if ($local_admin_type == 'admin' || $local_admin_type == 'reseller') {
 if ($local_admin_type == 'admin') {
 	$query = "DELETE FROM `email_tpls` WHERE `owner_id` = ? AND `name` = 'add-user-auto-msg'";
 	$rs = exec_query($sql, $query, array($delete_id));
-	
+
 	remove_users_common_properties($delete_id);
-		
+
 } else if ($local_admin_type == 'reseller') {
 	$query = "DELETE FROM `email_tpls` WHERE `owner_id` = ? AND `name` = 'add-user-auto-msg'";
 	$rs = exec_query($sql, $query, array($delete_id));
-	
+
 	$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
 
@@ -71,7 +71,7 @@ if ($local_admin_type == 'admin') {
 
 	$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
-	
+
 	remove_users_common_properties($delete_id);
 
 } else if ($local_admin_type == 'user') {

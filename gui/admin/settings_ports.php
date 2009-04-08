@@ -147,7 +147,6 @@ function delete_service($port_name) {
 				`config`
 			WHERE
 				`name` = ?
-				
 		";
 
 		$rs = exec_query($sql, $query, array($port_name));

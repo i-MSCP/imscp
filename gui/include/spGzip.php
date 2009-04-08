@@ -137,19 +137,19 @@ class spOutput {
 				$fh = @fopen('/proc/loadavg', 'r');
 				$load_averages = @fread($fh, 64);
 				@fclose($fh);
-	
+
 				$load_averages = @explode(' ', $load_averages);
 				$this->serverload = ((float)$load_averages[0]+(float)$load_averages[1]+(float)$load_averages[2])/3;
-	
+
 			} elseif (preg_match('/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/i', @exec('uptime'), $load_averages)) {
-	
+
 				$this->serverload = ((float)$load_averages[1]+(float)$load_averages[2]+(float)$load_averages[3])/3;
 			} else {
 				$this->serverload = '1';
 			}
-	
+
 			$this->level = (1-($this->serverload/$this->MaxServerload))*10;
-	
+
 			/* OK, that looks terrible, but it's faster than a min/max construction */
 			$this->level = ($this->level > $this->MinCompression)
 							? (($this->level < $this->MaxCompression)
@@ -163,7 +163,7 @@ class spOutput {
 
 		/*
 		 * show some extra information
-		 * this means compress the content two times 
+		 * this means compress the content two times
 		 */
 		if ($this->showSize) {
 			/* We need some vars for the information */

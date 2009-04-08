@@ -48,8 +48,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 
 	$date_formt = Config::get('DATE_FORMAT');
-	$last_date = date($date_formt, $rs->fields['ticket_date']);
-	return $last_date;
+	return date($date_formt, $rs->fields['ticket_date']); // last date
 }
 
 ?>

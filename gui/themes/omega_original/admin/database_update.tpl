@@ -31,7 +31,7 @@
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_update.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_UPDATES_TITLE}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -67,7 +67,7 @@
     	    <td class="content2" align='left'><input type='submit' name='submit' value='{TR_EXECUTE_UPDATE}'></td>
 	   </form>
           </tr>
-      <!-- EDP: database_update_infos --> 
+      <!-- EDP: database_update_infos -->
       </table>
       <br />
         <!-- EDP: props_list --></td>

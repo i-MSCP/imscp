@@ -70,7 +70,7 @@ SQL_QUERY;
 		} else {
 			$selected = '';
 		}
-		
+
 		$tpl->assign(
 			array(
 				'SRC_RSL_OPTION'	=> $rs->fields['admin_name'],
@@ -223,7 +223,7 @@ SQL_QUERY;
 	return true;
 }
 
-function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
+function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 	$sql = Database::getInstance();
 
 	list($dest_dmn_current, $dest_dmn_max,
@@ -235,7 +235,7 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 		$dest_sql_user_current, $dest_sql_user_max,
 		$dest_traff_current, $dest_traff_max,
 		$dest_disk_current, $dest_disk_max
-		) = generate_reseller_props($dest_reseller);
+	) = generate_reseller_props($dest_reseller);
 
 	list($src_dmn_current, $src_dmn_max,
 		$src_sub_current, $src_sub_max,
@@ -246,7 +246,7 @@ function manage_reseller_limits ($dest_reseller, $src_reseller, $users, &$err) {
 		$src_sql_user_current, $src_sql_user_max,
 		$src_traff_current, $src_traff_max,
 		$src_disk_current, $src_disk_max
-		) = generate_reseller_props($src_reseller);
+	) = generate_reseller_props($src_reseller);
 
 	$users_array = explode(";", $users);
 

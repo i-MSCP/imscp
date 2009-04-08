@@ -1,6 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-09 Thomas Häber
+	- GUI:
+		* Fixed #1783: js-errors
+		* code cleanup (coding style, whitespaces ...)
+
 2009-04-03 Benedikt Heintel
 	- GUI:
 		* Fixed #918: Mail Management UI improvement

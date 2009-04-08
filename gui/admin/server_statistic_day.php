@@ -53,7 +53,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 	die();
 }
 
-function generate_page (&$tpl) {
+function generate_page(&$tpl) {
 	$sql = Database::getInstance();
 	global $month, $year, $day;
 

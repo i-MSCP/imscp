@@ -38,7 +38,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
  * static page messages.
  *
  */
- 
+
 global $hpid;
 // Show main menu
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');

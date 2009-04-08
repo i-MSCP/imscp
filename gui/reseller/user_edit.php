@@ -340,7 +340,7 @@ function update_data_in_db($hpid) {
 			header("Location: user_edit.php?edit_id=$hpid");
 			die();
 		}
-		
+
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
 			set_page_message(tr("Entered passwords do not match!"));

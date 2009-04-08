@@ -32,7 +32,8 @@ else if(pType=='x'){subst=(''+parseInt(param).toString(16)).toLowerCase();}
 else if(pType=='X'){subst=(''+parseInt(param).toString(16)).toUpperCase();}}
 str=leftpart+subst+rightPart;}
 return str;}
-function showTip(id,e){var x=(document.all)?window.event.x+document.body.scrollLeft:e.pageX;var y=(document.all)?window.event.y+document.body.scrollTop:e.pageY;var tip=document.getElementById(id);tip.style.left=(x+10)+"px";tip.style.top=(y+10)+"px";tip.style.display="block";}
+function showTip(id,e){var x,y,tip=document.getElementById(id);if(window.event){x=window.event.x+document.body.scrollLeft;y=window.event.y+document.body.scrollTop;}else{x=e.pageX;y=e.pageY;}
+tip.style.left=(x+10)+"px";tip.style.top=(y+10)+"px";tip.style.display="block";}
 function hideTip(id){document.getElementById(id).style.display="none";}
 function showHideBlocks(id){if(document.getElementById(id).style.display=="none"){document.getElementById(id).style.display="block";}else{document.getElementById(id).style.display="none";}}
 function showFileTree(){libwindow=window.open("ftp_choose_dir.php","FileTreeDialogPage","menubar=no,width=470,height=350,scrollbars=yes");return false;}

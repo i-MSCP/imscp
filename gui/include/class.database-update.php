@@ -61,7 +61,7 @@ class databaseUpdate extends ispcpUpdate {
 	 *
 	 * @access		protected
 	 * @return		sql statements to be performed
-	 */	
+	 */
 	protected function _databaseUpdate_1() {
 		$sqlUpd = array();
 
@@ -69,7 +69,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail address.
 	 *
@@ -83,7 +83,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_2() {
 		$sqlUpd = array(); // we need several SQL Statements...
-	
+
 		// domain mail + forward
 		$sqlUpd[]	= "UPDATE `mail_users`, `domain`"
 					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
@@ -121,7 +121,7 @@ class databaseUpdate extends ispcpUpdate {
 					. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 					. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
 					. "AND `mail_type` = 'subdom_catchall';";
-	
+
 		return $sqlUpd;
 	}
 
@@ -288,10 +288,10 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, ';') WHERE `name` LIKE \"PORT_%\"";
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, 'localhost') WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
-		
+
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
 	 *

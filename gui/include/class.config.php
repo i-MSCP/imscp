@@ -189,14 +189,14 @@ final class Config {
 
 		self::$_status = true;
 	}
-	
+
 	public static function getValues() {
 		if (!self::$_status)
 			throw new Exception('Config not loaded!');
 
 		return self::$_values;
 	}
-	
+
 	public static function get($param) {
 		if (!isset(self::$_values[$param]))
 			throw new Exception("Config variable '$param' is missing!");
@@ -206,7 +206,7 @@ final class Config {
 
 		return self::$_values[$param];
 	}
-	
+
 	public static function set($param, $value) {
 		self::$_values[$param] = $value;
 	}
@@ -214,7 +214,7 @@ final class Config {
 	public static function exists($param) {
 		return isset(self::$_values[$param]);
 	}
-	
+
 	private static function _parseFile() {
 		// open file ... parse it and put it in $cfg_values
 		@$fd = fopen(self::$_file, 'r');
@@ -225,8 +225,8 @@ final class Config {
 			$buffer = fgets($fd, 4096);
 			// remove spaces
 			$buffer = ltrim($buffer);
-			if (strlen($buffer) > 3 && $buffer[0] != '#' && $buffer[0] != ';' &&
-				strpos($buffer, '=') !== false) {
+			if (strlen($buffer) > 3 && $buffer[0] != '#' && $buffer[0] != ';'
+				&& strpos($buffer, '=') !== false) {
 				$pair = explode('=', $buffer, 2);
 
 				$pair[0] = trim($pair[0]);

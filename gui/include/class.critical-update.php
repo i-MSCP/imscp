@@ -33,7 +33,7 @@
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
  * @since	r1355
- * @todo	use prepared statements
+ * @todo	use db prepared statements
  */
 class criticalUpdate extends ispcpUpdate{
 
@@ -51,7 +51,7 @@ class criticalUpdate extends ispcpUpdate{
 	 * Insert the update functions below this entry. The revision has to be ascending and unique.
 	 * Each criticalUpdate function has to return a array. Even if the array is empty.
 	 */
-	
+
 	/**
 	 * Encrypt email and sql users password in database
 	 *

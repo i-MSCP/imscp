@@ -125,9 +125,9 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	$sql = Database::getInstance();
 
-	if (!Config::get('BRUTEFORCE'))
+	if (!Config::get('BRUTEFORCE')) {
 		return false;
-
+	}
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
 	}
@@ -148,7 +148,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	} else {
 		return false;
 	}
-	
+
 	if ($btime > time()) {
 		if ($displayMessage) {
 			$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
@@ -211,10 +211,10 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		return false;
 	} else {
 		$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
-		
+
 		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
-		
+
 		return false;
 	}
 }

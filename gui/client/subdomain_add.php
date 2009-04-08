@@ -75,7 +75,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	$domainname = decode_idna($rs->fields['domain_name']);
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME'		=> '.' . $domainname,	
+			'DOMAIN_NAME'		=> '.' . $domainname,
 			'SUB_DMN_CHECKED'	=> 'checked="checked"',
 			'SUB_ALS_CHECKED'	=> ''
 		)
@@ -171,7 +171,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 			AND
 				`subdomain_alias_name` = ?
 		";
-	
+
 		$query_domain = "
 			SELECT
 				COUNT(`alias_id`) AS cnt
@@ -191,7 +191,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 			AND
 				`subdomain_name` = ?
 		";
-	
+
 		$query_domain = "
 			SELECT
 				COUNT(`domain_id`) AS cnt
@@ -246,7 +246,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 			AND
 				`subdomain_mount` = ?
 		";
-	
+
 		$query2 = "
 			SELECT
 				COUNT(`alias_id`) AS cnt
@@ -325,7 +325,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		} else {
 			$sub_mnt_pt = "/";
 		}
-		
+
 		if ($_POST['dmn_type'] === 'als') {
 			if (!isset($_POST['als_id'])) {
 				set_page_message(tr('No valid alias domain selected!'));
@@ -339,7 +339,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 				WHERE
 					`alias_id` = ?
 			";
-	
+
 			$rs = exec_query($sql, $query_alias, array($_POST['als_id']));
 			$als_mnt = $rs->fields['alias_mount'];
 			if ($sub_mnt_pt[0] != '/')

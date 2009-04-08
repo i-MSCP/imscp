@@ -120,7 +120,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	$tmpArr = get_reseller_default_props($sql, $reseller_id);
 	// $tmpArr = generate_reseller_props($reseller_id);
 	if ($tmpArr != NULL) { // there are data in db
-		list ($rdmn_current, $rdmn_max,
+		list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,
 			$rals_current, $rals_max,
 			$rmail_current, $rmail_max,
@@ -129,9 +129,9 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			$rsql_user_current, $rsql_user_max,
 			$rtraff_current, $rtraff_max,
 			$rdisk_current, $rdisk_max
-			) = $tmpArr;
+		) = $tmpArr;
 	} else {
-		list ($rdmn_current, $rdmn_max,
+		list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,
 			$rals_current, $rals_max,
 			$rmail_current, $rmail_max,
@@ -140,10 +140,10 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			$rsql_user_current, $rsql_user_max,
 			$rtraff_current, $rtraff_max,
 			$rdisk_current, $rdisk_max
-			) = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		) = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
-	list ($udmn_current, $udmn_max, $udmn_uf,
+	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
 		$umail_current, $umail_max, $umail_uf,
@@ -152,7 +152,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 		$usql_user_current, $usql_user_max, $usql_user_uf,
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
-		) = generate_reseller_user_props($reseller_id);
+	) = generate_reseller_user_props($reseller_id);
 	// Convert into MB values
 	$rtraff_max = $rtraff_max * 1024 * 1024;
 
@@ -255,13 +255,13 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			'SQL_USER_MSG' => ($rsql_user_max)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
 				: tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current),
-			
+
 			'EXTRAS' => ''
 		)
 	);
 }
 
-function gen_messages_table (&$tpl, $admin_id) {
+function gen_messages_table(&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY

@@ -236,7 +236,7 @@ function update_button(&$sql) {
 			set_page_message(tr('Invalid target!'));
 			return;
 		}
-		
+
 		$query = "
 			UPDATE
 				`custom_menus`

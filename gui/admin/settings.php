@@ -49,7 +49,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$bruteforce_between_time		= clean_input($_POST['bruteforce_between_time']);
 	$bruteforce_max_capcha			= clean_input($_POST['bruteforce_max_capcha']);
 	$create_default_email_addresses	= $_POST['create_default_email_addresses'];
-	$count_default_email_addresses	= $_POST['count_default_email_addresses']; 
+	$count_default_email_addresses	= $_POST['count_default_email_addresses'];
 	$hard_mail_suspension			= $_POST['hard_mail_suspension'];
 	$user_initial_lang				= $_POST['def_language'];
 	$support_system					= $_POST['support_system'];
@@ -170,12 +170,12 @@ if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
 }
 
-if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) { 
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"'); 
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', ''); 
-} else { 
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', ''); 
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"'); 
+if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"');
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', '');
+} else {
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', '');
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
 }
 
 if (Config::get('HARD_MAIL_SUSPENSION')) {

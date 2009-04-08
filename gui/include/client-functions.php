@@ -125,47 +125,47 @@ SQL_QUERY;
 }
 
 function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
-	$qr_dmn = "SELECT COUNT(mail_id) AS cnt " 
-			. "FROM `mail_users` " 
-			. "WHERE `mail_type` RLIKE 'normal_' " 
-			. "AND `mail_type` NOT LIKE 'normal_catchall' " 
-			. "AND `domain_id` = ? ";
+	$qr_dmn = "SELECT COUNT(`mail_id`) AS cnt
+		FROM `mail_users`
+		WHERE `mail_type` RLIKE 'normal_'
+		AND `mail_type` NOT LIKE 'normal_catchall'
+		AND `domain_id` = ?";
 
-	$qr_als = "SELECT COUNT(mail_id) AS cnt " 
-			. "FROM `mail_users` " 
-			. "WHERE `mail_type` RLIKE 'alias_' " 
-			. "AND `mail_type` NOT LIKE 'alias_catchall' " 
-			. "AND `domain_id` = ? "; 
+	$qr_als = "SELECT COUNT(`mail_id`) AS cnt
+		FROM `mail_users`
+		WHERE `mail_type` RLIKE 'alias_'
+		AND `mail_type` NOT LIKE 'alias_catchall'
+		AND `domain_id` = ?";
 
-	$qr_sub = "SELECT COUNT(mail_id) AS cnt " 
-			. "FROM `mail_users` " 
-			. "WHERE `mail_type` RLIKE 'subdom_' " 
-			. "AND `mail_type` NOT LIKE 'subdom_catchall' " 
-			. "AND `domain_id` = ? "; 
+	$qr_sub = "SELECT COUNT(`mail_id`) AS cnt
+		FROM `mail_users`
+		WHERE `mail_type` RLIKE 'subdom_'
+		AND `mail_type` NOT LIKE 'subdom_catchall'
+		AND `domain_id` = ?";
 
-	$qr_alssub = "SELECT COUNT(mail_id) AS cnt " 
-			. "FROM `mail_users` " 
-			. "WHERE `mail_type` RLIKE 'alssub_' " 
-			. "AND `mail_type` NOT LIKE 'alssub_catchall' " 
-			. "AND `domain_id` = ? "; 
+	$qr_alssub = "SELECT COUNT(`mail_id`) AS cnt
+		FROM `mail_users`
+		WHERE `mail_type` RLIKE 'alssub_'
+		AND `mail_type` NOT LIKE 'alssub_catchall'
+		AND `domain_id` = ?";
 
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
-		$qr_dmn .= "AND `mail_acc` != 'abuse' " 
-			     . "AND `mail_acc` != 'postmaster' " 
-			     . "AND `mail_acc` != 'webmaster'"; 
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+		$qr_dmn .= " AND `mail_acc` != 'abuse'
+			AND `mail_acc` != 'postmaster'
+			AND `mail_acc` != 'webmaster'";
 
-		$qr_als .= "AND `mail_acc` != 'abuse' " 
-			     . "AND `mail_acc` != 'postmaster' " 
-			     . "AND `mail_acc` != 'webmaster'"; 
+		$qr_als .= " AND `mail_acc` != 'abuse'
+			AND `mail_acc` != 'postmaster'
+			AND `mail_acc` != 'webmaster'";
 
-		$qr_sub .= "AND `mail_acc` != 'abuse' " 
-			     . "AND `mail_acc` != 'postmaster' " 
-			     . "AND `mail_acc` != 'webmaster'"; 
+		$qr_sub .= " AND `mail_acc` != 'abuse'
+			AND `mail_acc` != 'postmaster'
+			AND `mail_acc` != 'webmaster'";
 
-		$qr_alssub .= "AND `mail_acc` != 'abuse' " 
-			        . "AND `mail_acc` != 'postmaster' " 
-			        . "AND `mail_acc` != 'webmaster'"; 
-	} 
+		$qr_alssub .= " AND `mail_acc` != 'abuse'
+			AND `mail_acc` != 'postmaster'
+			AND `mail_acc` != 'webmaster'";
+	}
 	$rs = exec_query($sql, $qr_dmn, array($domain_id));
 	$dmn_mail_acc = $rs->fields['cnt'];
 
@@ -188,7 +188,7 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 }
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
-	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
+	$ftp_separator = Config::get('FTP_USERNAME_SEPARATOR');
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -214,13 +214,12 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array('%' . $ftp_separator . $dmn_name));
 
-	$dmn_ftp_acc_cnt = $rs->fields['cnt'];
-
-	return $dmn_ftp_acc_cnt;
+	// domain ftp account count
+	return $rs->fields['cnt'];
 }
 
 function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
-	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
+	$ftp_separator = Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
 		SELECT
 			`subdomain_name`
@@ -269,7 +268,7 @@ SQL_QUERY;
 }
 
 function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
-	$ftp_separator=Config::get('FTP_USERNAME_SEPARATOR');
+	$ftp_separator = Config::get('FTP_USERNAME_SEPARATOR');
 	$query = <<<SQL_QUERY
 		SELECT
 			`alias_name`
@@ -476,9 +475,10 @@ SQL_QUERY;
 	} // end else
 
 	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
+		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
+		$dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit,
+		$dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
+		$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
 		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
@@ -632,10 +632,10 @@ function gen_client_menu(&$tpl, $menu_file) {
 		AND
 			`status` = '1'
 SQL_QUERY;
-	
+
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
 	if ($rs->RecordCount() == 0) {
-		if (Config::get('HOSTING_PLANS_LEVEL') != 'admin') { 
+		if (Config::get('HOSTING_PLANS_LEVEL') != 'admin') {
 			$tpl->assign('ISACTIVE_UPDATE_HP', '');
 		}
 	}
@@ -728,8 +728,9 @@ SQL_QUERY;
 	if ($rs->RecordCount() == 0) {
 		// dirty hack admin can't delete users without database
 		if ($_SESSION['user_type'] === 'admin'
-			|| $_SESSION['user_type'] === 'reseller')
+			|| $_SESSION['user_type'] === 'reseller') {
 			return;
+		}
 		user_goto('sql_manage.php');
 	}
 	// remove from ispcp sql_user table.
@@ -850,7 +851,8 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
 	if ($rs->RecordCount() == 0) {
-		if ($_SESSION['user_type'] === 'admin' || $_SESSION['user_type'] === 'reseller') {
+		if ($_SESSION['user_type'] === 'admin'
+			|| $_SESSION['user_type'] === 'reseller') {
 			return;
 		}
 		user_goto('sql_manage.php');
@@ -910,14 +912,11 @@ function get_gender_by_code($code, $nullOnBad = false) {
 		case 'm':
 		case 'M':
 			return tr('Male');
-			break;
 		case 'f':
 		case 'F':
 			return tr('Female');
-			break;
 		default:
 			return (!$nullOnBad) ? tr('Unknown') : null;
-			break;
 	}
 }
 
@@ -926,17 +925,17 @@ function mount_point_exists($dmn_id, $mnt_point) {
 	$query = "
 		SELECT
 			t1.`domain_id`, t2.`alias_mount`, t3.`subdomain_mount`, t4.`subdomain_alias_mount`
-		FROM 
+		FROM
 			`domain` as t1
-		LEFT JOIN 
+		LEFT JOIN
 			(`domain_aliasses` as t2)
 		ON
 			(t1.`domain_id` = t2.`domain_id`)
-		LEFT JOIN 
+		LEFT JOIN
 			(`subdomain` as t3)
 		ON
 			(t1.`domain_id` = t3.`domain_id`)
-		LEFT JOIN 
+		LEFT JOIN
 			(`subdomain_alias` as t4)
 		ON
 			(t2.`alias_id` = t4.`alias_id`)
@@ -952,7 +951,7 @@ function mount_point_exists($dmn_id, $mnt_point) {
 			)
 	";
 	$rs = exec_query($sql, $query, array($dmn_id, $mnt_point, $mnt_point, $mnt_point));
-	if ($rs->RowCount() > 0) return true;
+	if ($rs->RowCount() > 0) { return true; }
 	return false;
 }
 

@@ -119,7 +119,7 @@ unset_messages();
 
 // Begin function block
 
-function generate_users_list (&$tpl, $admin_id) {
+function generate_users_list(&$tpl, $admin_id) {
 	$sql = Database::getInstance();
 	global $externel_event;
 

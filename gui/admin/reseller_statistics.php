@@ -60,7 +60,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = $_GET['year'];
 }
 
-function generate_page (&$tpl) {
+function generate_page(&$tpl) {
 	global $month, $year;
 	$sql = Database::getInstance();
 
@@ -167,10 +167,10 @@ SQL_QUERY;
 	$tpl->parse('TRAFFIC_TABLE', 'traffic_table');
 }
 
-function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
+function generate_reseller_entry(&$tpl, $reseller_id, $reseller_name, $row) {
 	global $crnt_month, $crnt_year;
 
-	list ($rdmn_current, $rdmn_max,
+	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
 		$rmail_current, $rmail_max,
@@ -179,9 +179,9 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 		$rsql_user_current, $rsql_user_max,
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
-		) = generate_reseller_props($reseller_id);
+	) = generate_reseller_props($reseller_id);
 
-	list ($udmn_current, $udmn_max, $udmn_uf,
+	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
 		$umail_current, $umail_max, $umail_uf,
@@ -190,7 +190,7 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 		$usql_user_current, $usql_user_max, $usql_user_uf,
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
-		) = generate_reseller_users_props($reseller_id);
+	) = generate_reseller_users_props($reseller_id);
 
 	$rtraff_max = $rtraff_max * 1024 * 1024;
 

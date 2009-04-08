@@ -86,7 +86,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		send_request();
 		$query = "
 			SELECT
-				`mail_type`, 
+				`mail_type`,
 				IF(`mail_type` like 'normal_%',t2.`domain_name`,
 					IF(`mail_type` like 'alias_%',t3.`alias_name`,
 						IF(`mail_type` like 'subdom_%',CONCAT(t4.`subdomain_name`,'.',t6.`domain_name`), CONCAT(t5.`subdomain_alias_name`,'.',t7.`alias_name`))

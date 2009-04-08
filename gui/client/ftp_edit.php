@@ -97,16 +97,16 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
 
 				$other_dir = clean_input($_POST['other_dir']);
-	
+
 				$rs = $vfs->exists($other_dir);
 				if (!$rs) {
 					set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
 					return;
 				} // domain_id
-	
+
 				// append the full path (vfs is always checking per ftp so it's logged
 				// in in the root of the user (no absolute paths are allowed here!)
-	
+
 				$other_dir = Config::get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged']
 							. clean_input($_POST['other_dir']);
 

@@ -113,7 +113,6 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	while (!$rs->EOF) {
-		
 
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
 			&& (isset($_POST['dest_admin'])

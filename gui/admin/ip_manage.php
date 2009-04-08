@@ -151,7 +151,7 @@ SQL_QUERY;
 	}
 }
 
-function check_user_data () {
+function check_user_data() {
 	global $ip_number_1, $ip_number_2, $ip_number_3, $ip_number_4;
 
 	$ip_number_1 = $_POST['ip_number_1'];

@@ -87,7 +87,7 @@ SQL_QUERY;
 	}
 }
 
-function generate_page (&$tpl) {
+function generate_page(&$tpl) {
 	$sql = Database::getInstance();
 	global $month, $year;
 

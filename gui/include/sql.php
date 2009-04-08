@@ -28,7 +28,7 @@ Config::set('DB_NAME', Config::get('DATABASE_NAME'));
 
 
 @$sql = Database::connect(Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_TYPE'), Config::get('DB_HOST'), Config::get('DB_NAME'))
-	or system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
+	|| system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
 
 // switch optionally to utf8 based communication with the database
 if (Config::exists('DATABASE_UTF8') && Config::get('DATABASE_UTF8') == 'yes') {
@@ -39,7 +39,7 @@ if (Config::exists('DATABASE_UTF8') && Config::get('DATABASE_UTF8') == 'yes') {
 Config::set('DB_USER', null);
 Config::set('DB_PASS', null);
 
-function execute_query (&$sql, $query) {
+function execute_query(&$sql, $query) {
 	$rs = $sql->Execute($query);
 	if (!$rs) system_message($sql->ErrorMsg());
 	return $rs;
@@ -52,10 +52,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 	if (!$rs && $failDie) {
 //		var_dump($query);
 //		var_dump($data);
-		if ($query instanceof PDOStatement)
-			$msg = $query->errorInfo();
-		else
-			$msg = $sql->errorInfo();
+		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : sql->errorInfo();
 		system_message(isset($msg[2]) ? $msg[2] : $msg);
 	}
 
@@ -75,6 +72,9 @@ function match_sqlinjection($value, &$matches) {
 	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $matches) > 0);
 }
 
+/**
+ * @todo remove check for PHP <= 4.2.2, this produces unmantainable code
+ */
 function check_query($exclude = array()) {
 	$matches = null;
 

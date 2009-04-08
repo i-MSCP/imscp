@@ -94,7 +94,7 @@ SQL_QUERY;
 	}
 }
 
-function generate_page (&$tpl, $domain_id) {
+function generate_page(&$tpl, $domain_id) {
 	$sql = Database::getInstance();
 	global $month, $year;
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,

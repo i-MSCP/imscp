@@ -51,7 +51,7 @@ $tpl->assign(
  * Functions
  */
 
-function gen_order_page (&$tpl, &$sql, $user_id) {
+function gen_order_page(&$tpl, &$sql, $user_id) {
 	$start_index = 0;
 	$current_psi = 0;
 

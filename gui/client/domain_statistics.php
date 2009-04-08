@@ -301,7 +301,7 @@ $tpl->assign(
 
 $current_month = date("m", time());
 $current_year = date("Y", time());
-list ($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
+list($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
 gen_dmn_traff_list($tpl, $sql, $current_month, $current_year, $_SESSION['user_id']);
 
 // static page messages.

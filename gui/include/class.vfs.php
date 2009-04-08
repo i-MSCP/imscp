@@ -134,9 +134,9 @@ class vfs {
 	function _createTmpUser() {
 		// Get domain data
 		$query = '
-			SELECT domain_uid, domain_gid
-			FROM domain
-			WHERE domain_name = ?';
+			SELECT `domain_uid`, `domain_gid`
+			FROM `domain`
+			WHERE `domain_name` = ?';
 		$rs = exec_query($this->_db, $query, array($this->_domain));
 		if (!$rs) {
 			return false;
@@ -147,8 +147,8 @@ class vfs {
 		$passwd = crypt_user_pass_with_salt($this->_passwd);
 		// Create the temporary user
 		$query = <<<SQL_QUERY
-			INSERT INTO ftp_users
-				(userid, passwd, uid, gid, shell, homedir)
+			INSERT INTO `ftp_users`
+				(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
 			VALUES
 				(?, ?, ?, ?, ?, ?)
 SQL_QUERY;
@@ -170,8 +170,8 @@ SQL_QUERY;
 	 */
 	function _removeTmpUser() {
 		$query = <<<SQL_QUERY
-			DELETE FROM ftp_users
-			WHERE userid = ?
+			DELETE FROM `ftp_users`
+			WHERE `userid` = ?
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($this->_user));
 
@@ -253,8 +253,8 @@ SQL_QUERY;
 		if (!$list) {
 			return false;
 		}
-		$len = count($list);
-		for ($i = 0; $i < $len; $i++) {
+
+		for ($i = 0, $len = count($list); $i < $len; $i++) {
 			$parts = preg_split("/[\s]+/", $list[$i], 9);
 			$list[$i] = array(
 				'perms' => $parts[0],
@@ -300,8 +300,9 @@ SQL_QUERY;
 				continue;
 			}
 			// Check type
-			if ($type !== null && $entry['type'] != $type)
+			if ($type !== null && $entry['type'] != $type) {
 				return false;
+			}
 			// Matched and same type (or no type specified)
 			return true;
 		}
@@ -312,7 +313,7 @@ SQL_QUERY;
 	 * Retrieves a file from the virtual file system
 	 *
 	 * @param string $file VFS file path.
-	 * @param int $ VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function get($file, $mode = VFS_ASCII) {
@@ -340,7 +341,7 @@ SQL_QUERY;
 	 *
 	 * @param string $file VFS file path.
 	 * @param string $content File contents.
-	 * @param int $ VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function put($file, $content, $mode = VFS_ASCII) {
@@ -369,6 +370,8 @@ SQL_QUERY;
 
 /**
  * Make sure we have needed file_put_contents() functionallity
+ *
+ * @todo don't use this switch for downward compatible, this produces unmantainable code
  */
 if (!function_exists('file_put_contents')) {
 	function file_put_contents($filename, $content) {

@@ -79,7 +79,7 @@ $tpl->prnt();
 
 // BEGIN FUNCTION DECLARE PATH
 
-function gen_hp_message () {
+function gen_hp_message() {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	// global $external_event;
 	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {

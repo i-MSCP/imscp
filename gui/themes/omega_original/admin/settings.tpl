@@ -146,11 +146,11 @@
                                 </select></td>
                             </tr>
 			    <tr>
-			      <td>&nbsp;</td> 
-			      <td class="content2">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</td> 
-			      <td class="content"><select name="count_default_email_addresses" id="count_default_email_addresses"> 
-				  <option value="0" {COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option> 
-				  <option value="1" {COUNT_DEFAULT_EMAIL_ADDRESSES_ON}>{TR_ENABLED}</option> 
+			      <td>&nbsp;</td>
+			      <td class="content2">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</td>
+			      <td class="content"><select name="count_default_email_addresses" id="count_default_email_addresses">
+				  <option value="0" {COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
+				  <option value="1" {COUNT_DEFAULT_EMAIL_ADDRESSES_ON}>{TR_ENABLED}</option>
 				</select></td>
 			    </tr>
                             <tr>

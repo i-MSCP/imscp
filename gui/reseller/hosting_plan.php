@@ -78,7 +78,7 @@ $tpl->prnt();
 
 // BEGIN FUNCTION DECLARE PATH
 
-function gen_hp_message (&$tpl) {
+function gen_hp_message(&$tpl) {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	global $external_event;
 

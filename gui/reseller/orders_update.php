@@ -75,7 +75,8 @@ $dmn_id = get_user_domain_id($sql, $customer_id);
 // let's check the reseller limits
 $err_msg = '';
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "SELECT PROPS FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
@@ -109,16 +110,16 @@ list($domain_php, $domain_cgi, $sub,
 $domain_php = preg_replace("/\_/", "", $domain_php);
 $domain_cgi = preg_replace("/\_/", "", $domain_cgi);
 
-if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
-	$query = "SELECT COUNT(mail_id) AS cnt " 
-	       . "FROM `mail_users` " 
-	       . "WHERE `domain_id` = ? " 
-	       . "AND (`mail_acc` = 'abuse' " 
-	       . "OR `mail_acc` = 'postmaster' " 
-	       .   "OR `mail_acc` = 'webmaster')"; 
-	$rs = exec_query($sql, $query, array($dmn_id)); 
-	$default_mails = $rs->fields['cnt']; 
-	$mail += $default_mails; 
+if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+	$query = "SELECT COUNT(`mail_id`) AS cnt
+		FROM `mail_users`
+		WHERE `domain_id` = ?
+		AND (`mail_acc` = 'abuse'
+		OR `mail_acc` = 'postmaster'
+		OR `mail_acc` = 'webmaster')";
+	$rs = exec_query($sql, $query, array($dmn_id));
+	$default_mails = $rs->fields['cnt'];
+	$mail += $default_mails;
 }
 
 $ed_error = '';
@@ -148,7 +149,7 @@ if (!ispcp_limit_check($disk, null)) {
 	$ed_error .= tr('Incorrect disk quota limit!');
 }
 
-list ($usub_current, $usub_max,
+list($usub_current, $usub_max,
 	$uals_current, $uals_max,
 	$umail_current, $umail_max,
 	$uftp_current, $uftp_max,
@@ -157,7 +158,7 @@ list ($usub_current, $usub_max,
 	$utraff_max, $udisk_max
 ) = generate_user_props($dmn_id);
 
-list ($rdmn_current, $rdmn_max,
+list($rdmn_current, $rdmn_max,
 	$rsub_current, $rsub_max,
 	$rals_current, $rals_max,
 	$rmail_current, $rmail_max,
@@ -168,7 +169,7 @@ list ($rdmn_current, $rdmn_max,
 	$rdisk_current, $rdisk_max
 ) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
 
-list ($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($dmn_id);
+list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($dmn_id);
 
 if (empty($ed_error)) {
 	calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, $ed_error, tr('Subdomain'));
@@ -182,8 +183,8 @@ if (empty($ed_error)) {
 }
 
 if (empty($ed_error)) {
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) { 
-		$umail_max -= $default_mails; 
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+		$umail_max -= $default_mails;
 	}
 	$user_props = "$usub_current;$usub_max;";
 	$user_props .= "$uals_current;$uals_max;";
@@ -385,6 +386,6 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		}
 	}
-} // End of calculate_user_dvals()
+} // end of calculate_user_dvals()
 
 ?>

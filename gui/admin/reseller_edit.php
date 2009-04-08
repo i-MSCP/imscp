@@ -232,7 +232,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 	$reseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
 	$reseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 
-	list ($udmn_current, $udmn_max, $udmn_uf,
+	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
 		$umail_current, $umail_max, $umail_uf,
@@ -241,9 +241,9 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		$usql_user_current, $usql_user_max, $usql_user_uf,
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
-		) = generate_reseller_users_props($reseller_id);
+	) = generate_reseller_users_props($reseller_id);
 
-	list ($rdmn_current, $rdmn_max,
+	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
 		$rmail_current, $rmail_max,
@@ -252,7 +252,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		$rsql_user_current, $rsql_user_max,
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
-		) = generate_reseller_props($reseller_id);
+	) = generate_reseller_props($reseller_id);
 
 	$err = '_off_';
 

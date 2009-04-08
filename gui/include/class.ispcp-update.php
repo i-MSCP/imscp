@@ -46,7 +46,7 @@ abstract class ispcpUpdate {
 	protected $databaseVariableName = "";
 	protected $functionName = "";
 	protected $errorMessage = "";
-	
+
 	protected function __construct() {
 		$this->currentVersion = $this->getCurrentVersion();
 	}
@@ -64,7 +64,7 @@ abstract class ispcpUpdate {
 
 	public function checkUpdateExists() {
 		$functionName = $this->returnFunctionName($this->getNextVersion());
-		
+
 		return (method_exists($this, $functionName)) ? true : false;
 	}
 

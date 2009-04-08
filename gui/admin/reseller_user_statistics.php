@@ -73,7 +73,7 @@ $tpl->assign(
 	)
 );
 
-function generate_page (&$tpl, $reseller_id, $reseller_name) {
+function generate_page(&$tpl, $reseller_id, $reseller_name) {
 	$sql = Database::getInstance();
 	global $rid;
 
@@ -92,7 +92,7 @@ function generate_page (&$tpl, $reseller_id, $reseller_name) {
 			'POST_PREV_PSI' => $start_index
 		)
 	);
-	
+
 	// count query
 	$count_query = <<<SQL_QUERY
 		SELECT
@@ -202,10 +202,10 @@ SQL_QUERY;
 	}
 }
 
-function generate_domain_entry (&$tpl, $user_id, $row) {
+function generate_domain_entry(&$tpl, $user_id, $row) {
 	global $crnt_month, $crnt_year;
 
-	list ($domain_name,
+	list($domain_name,
 		$domain_id,
 		$web,
 		$ftp,
@@ -215,24 +215,24 @@ function generate_domain_entry (&$tpl, $user_id, $row) {
 		$udisk_current,
 		$i,
 		$j
-		) = generate_user_traffic($user_id);
+	) = generate_user_traffic($user_id);
 
-	list ($usub_current, $usub_max,
+	list($usub_current, $usub_max,
 		$uals_current, $uals_max,
 		$umail_current, $umail_max,
 		$uftp_current, $uftp_max,
 		$usql_db_current, $usql_db_max,
 		$usql_user_current, $usql_user_max,
 		$utraff_max, $udisk_max
-		) = generate_user_props($user_id);
+	) = generate_user_props($user_id);
 
 	$utraff_max = $utraff_max * 1024 * 1024;
 
 	$udisk_max = $udisk_max * 1024 * 1024;
 
-	list ($traff_percent, $traff_red, $traff_green) = make_usage_vals($utraff_current, $utraff_max);
+	list($traff_percent, $traff_red, $traff_green) = make_usage_vals($utraff_current, $utraff_max);
 
-	list ($disk_percent, $disk_red, $disk_green) = make_usage_vals($udisk_current, $udisk_max);
+	list($disk_percent, $disk_red, $disk_green) = make_usage_vals($udisk_current, $udisk_max);
 
 	$traff_show_percent = $traff_percent;
 
