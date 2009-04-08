@@ -11,7 +11,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: FormDisplay.class.php 11673 2008-10-23 11:09:33Z crackpl $
+ * @version    $Id: FormDisplay.class.php 12304 2009-03-24 12:56:58Z nijel $
  */
 
 require_once './setup/lib/FormDisplay.tpl.php';
@@ -565,7 +565,7 @@ class FormDisplay
         if ($test == 'Export') {
             $opt_name = substr($opt_name, 7);
         }
-        return 'http://wiki.cihar.com/pma/Config#' . $opt_name;
+        return 'http://wiki.phpmyadmin.net/pma/Config#' . $opt_name;
     }
 
     /**

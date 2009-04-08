@@ -33,10 +33,13 @@
         {
             // retrieve BS server variables from PMA configuration
             $bs_server = $PMA_Config->get('BLOBSTREAMING_SERVER');
+            if (empty($bs_server)) die('No blob streaming server configured!');
+
             $bs_file_path = "http://" . $bs_server . '/' . $bsReference;
 
 	    if (isset($customType) && $customType)
-		    $bs_file_path = "bs_disp_as_mime_type.php?file_path=" . urlencode($bs_file_path) . "&c_type=" . urlencode($mediaType);
+
+		    $bs_file_path = 'bs_disp_as_mime_type.php' . PMA_generate_common_url(array('reference' => $bsReference, 'c_type' => $mediaType));
 
             ?>
 <html>
@@ -50,12 +53,12 @@
             {
                 // audio content
                 case 'audio/mpeg':
-                    ?><embed width=620 height=100 src="<?php echo $bs_file_path; ?>" autostart=true></embed><?php
+                    ?><embed width=620 height=100 src="<?php echo htmlspecialchars($bs_file_path); ?>" autostart=true></embed><?php
                     break;
                 // video content
                 case 'application/x-flash-video':
                 case 'video/mpeg':
-                    ?><embed width=620 height=460 src="<?php echo $bs_file_path; ?>" autostart=true></embed><?php
+                    ?><embed width=620 height=460 src="<?php echo htmlspecialchars($bs_file_path); ?>" autostart=true></embed><?php
                     break;
                 default:
                     // do nothing

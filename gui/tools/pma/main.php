@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: main.php 11668 2008-10-22 17:03:22Z lem9 $
+ * @version $Id: main.php 12304 2009-03-24 12:56:58Z nijel $
  */
 
 /**
@@ -230,7 +230,7 @@ echo '<h2>phpMyAdmin</h2>';
 echo '<ul>';
 PMA_printListItem($strVersionInformation . ': ' . PMA_VERSION, 'li_pma_version');
 PMA_printListItem($strDocu, 'li_pma_docs', 'Documentation.html', null, '_blank');
-PMA_printListItem($strWiki, 'li_pma_wiki', 'http://wiki.cihar.com', null, '_blank');
+PMA_printListItem($strWiki, 'li_pma_wiki', 'http://wiki.phpmyadmin.net', null, '_blank');
 
 // does not work if no target specified, don't know why
 PMA_printListItem($strHomepageOfficial, 'li_pma_homepage', 'http://www.phpMyAdmin.net/', null, '_blank');

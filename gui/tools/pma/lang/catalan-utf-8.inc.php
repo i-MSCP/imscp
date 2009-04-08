@@ -1,5 +1,5 @@
 <?php
-/* $Id: catalan-utf-8.inc.php 12080 2008-12-04 13:39:20Z lem9 $ */
+/* $Id: catalan-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -1010,7 +1010,7 @@ $strSetupServers_auth_swekey_config_desc = 'El camí de l\'arxiu de configuraci�
 $strSetupServers_auth_swekey_config_name = 'Arxiu de configuració SweKey';
 $strSetupServers_auth_type_desc = 'Mètode d\'autenticació a usar';
 $strSetupServers_auth_type_name = 'Tipus d\'autenticació';
-$strSetupServers_bookmarktable_desc = 'Deixa en blanc per desactivar les [a@http://wiki.cihar.com/pma/bookmark]consultes desades[/a], predeterminat: [kbd]pma_bookmark[/kbd]';
+$strSetupServers_bookmarktable_desc = 'Deixa en blanc per desactivar les [a@http://wiki.phpmyadmin.net/pma/bookmark]consultes desades[/a], predeterminat: [kbd]pma_bookmark[/kbd]';
 $strSetupServers_bookmarktable_name = 'Taula de consultes desades';
 $strSetupServers_column_info_desc = 'Deixa en blanc per no usar comentaris de columna o tipus MIME, predeterminat: [kbd]pma_column_info[/kbd]';
 $strSetupServers_column_info_name = 'Taula d\'informació de columna';
@@ -1019,7 +1019,7 @@ $strSetupServers_compress_name = 'Connexió comprimida';
 $strSetupServers_connect_type_desc = 'Cóm connectar al servidor, deixa tcp si no estàs segur';
 $strSetupServers_connect_type_name = 'Tipus de connexió';
 $strSetupServers_controlpass_name = 'Contrasenya de l\'usuari de control';
-$strSetupServers_controluser_desc = 'Usuari MySQL especial configurat amb permissos restringits, més informació disponible al [a@http://wiki.cihar.com/pma/controluser]wiki[/a]';
+$strSetupServers_controluser_desc = 'Usuari MySQL especial configurat amb permissos restringits, més informació disponible al [a@http://wiki.phpmyadmin.net/pma/controluser]wiki[/a]';
 $strSetupServers_controluser_name = 'Usuari de control';
 $strSetupServers_CountTables_desc = 'Comptar les taules al mostrar la llista de bases de dades';
 $strSetupServers_CountTables_name = 'Comptar les taules';
@@ -1046,15 +1046,15 @@ $strSetupServers_password_desc = 'Deixa en blanc si no utilitzes l\'autenticaci�
 $strSetupServers_password_name = 'Contrasenya autenticació config';
 $strSetupServers_pdf_pages_desc = 'Deixa en blanc per desactivar el suport d\'esquemes PDF, predeterminat: [kbd]pma_pdf_pages[/kbd]';
 $strSetupServers_pdf_pages_name = 'Esquema PDF: taula de pàgines';
-$strSetupServers_pmadb_desc = 'Base de dades usada per a relacions, consultes desades i característiques dels PDF. Consulta [a@http://wiki.cihar.com/pma/pmadb]pmadb[/a] per tenir informació més completa. Deixa en blanc per no utilitzar. Predeterminat: [kbd]phpmyadmin[/kbd]';
+$strSetupServers_pmadb_desc = 'Base de dades usada per a relacions, consultes desades i característiques dels PDF. Consulta [a@http://wiki.phpmyadmin.net/pma/pmadb]pmadb[/a] per tenir informació més completa. Deixa en blanc per no utilitzar. Predeterminat: [kbd]phpmyadmin[/kbd]';
 $strSetupServers_pmadb_name = 'Base de dades PMA';
 $strSetupServers_port_desc = 'Port ón el servidor MySQL està escoltatt, deixa en blanc per al predeterminat';
 $strSetupServers_port_name = 'Port del servidor';
-$strSetupServers_relation_desc = 'Deixa en blanc per desactivar els [a@http://wiki.cihar.com/pma/relation]enllaços de relacions[/a], predeterminat: [kbd]pma_relation[/kbd]';
+$strSetupServers_relation_desc = 'Deixa en blanc per desactivar els [a@http://wiki.phpmyadmin.net/pma/relation]enllaços de relacions[/a], predeterminat: [kbd]pma_relation[/kbd]';
 $strSetupServers_relation_name = 'Taula de relacions';
 $strSetupServers_ShowDatabasesCommand_desc = 'Ordre SQL per obtenir les bases de dades disponibles';
 $strSetupServers_ShowDatabasesCommand_name = 'Ordre SHOW DATABASES';
-$strSetupServers_SignonSession_desc = 'Consulta [a@http://wiki.cihar.com/pma/auth_types#signon]tipus d\'autenticació[/a] per veure exemples';
+$strSetupServers_SignonSession_desc = 'Consulta [a@http://wiki.phpmyadmin.net/pma/auth_types#signon]tipus d\'autenticació[/a] per veure exemples';
 $strSetupServers_SignonSession_name = 'Nom de sessió signon';
 $strSetupServers_SignonURL_name = 'URL signon';
 $strSetupServerSslMsg = 'Hauries de fer servir connexions SSL si el teu servidor web ho permet';

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_export.lib.php 11626 2008-10-01 20:48:40Z lem9 $
+ * @version $Id: display_export.lib.php 12302 2009-03-24 08:55:07Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -172,19 +172,19 @@ echo PMA_pluginGetJavascript($export_list);
         echo ' value="';
         if ($export_type == 'database') {
             if (isset($_COOKIE) && !empty($_COOKIE['pma_db_filename_template'])) {
-                echo $_COOKIE['pma_db_filename_template'];
+                echo htmlspecialchars($_COOKIE['pma_db_filename_template']);
             } else {
                 echo $GLOBALS['cfg']['Export']['file_template_database'];
             }
         } elseif ($export_type == 'table') {
             if (isset($_COOKIE) && !empty($_COOKIE['pma_table_filename_template'])) {
-                echo $_COOKIE['pma_table_filename_template'];
+                echo htmlspecialchars($_COOKIE['pma_table_filename_template']);
             } else {
                 echo $GLOBALS['cfg']['Export']['file_template_table'];
             }
         } else {
             if (isset($_COOKIE) && !empty($_COOKIE['pma_server_filename_template'])) {
-                echo $_COOKIE['pma_server_filename_template'];
+                echo htmlspecialchars($_COOKIE['pma_server_filename_template']);
             } else {
                 echo $GLOBALS['cfg']['Export']['file_template_server'];
             }
