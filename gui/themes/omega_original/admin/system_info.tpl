@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
@@ -32,7 +32,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -72,7 +72,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_CPU_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -114,7 +114,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_MEMRY_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -164,7 +164,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_FILE_SYSTEM_INFO}</td>
 	</tr>
 </table>

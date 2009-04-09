@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
 <!--
@@ -52,7 +52,7 @@ function action_delete(url, alias_or_subdomain) {
     </tr>
     <!-- EDP: page_message -->
 	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25"></td>
+		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_DOMAIN_ALIASES}</td>
 	</tr>
 </table>
@@ -102,7 +102,7 @@ function action_delete(url, alias_or_subdomain) {
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25"></td>
+		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_SUBDOMAINS}</td>
 	</tr>
 </table>

@@ -163,6 +163,9 @@ Config::set('CHECK_FOR_UPDATES', true);
 
 Config::set('CRITICAL_UPDATE_REVISION', 0);
 
+if (empty(Config::get('ISPCP_SUPPORT_SYSTEM_TARGET')) == true) {
+	Config::set('ISPCP_SUPPORT_SYSTEM_TARGET', '_self');
+}
 
 require_once(INCLUDEPATH . '/date-functions.php');
 require_once(INCLUDEPATH . '/input-checks.php');

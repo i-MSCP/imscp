@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
@@ -38,7 +38,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_general.png" width="25" height="25"></td>
+		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_general.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{GENERAL_INFO}</td>
 	</tr>
 </table>
@@ -124,7 +124,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_traffic.png" width="25" height="25"></td>
+		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_traffic.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_TRAFFIC_USAGE}</td>
 	</tr>
 </table>
@@ -147,15 +147,15 @@
         <td width="25">&nbsp;</td>
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20"></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" /></td>
             <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFFIC_BARS}" height="1"></td>
-                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
+                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
+                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFFIC_BARS}" height="1" /></td>
+                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
               </tr>
             </table></td>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20"></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" /></td>
           </tr>
         </table></td>
       </tr>
@@ -172,7 +172,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_diskusage.png" width="25" height="25"></td>
+		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_diskusage.png" width="25" height="25" /></td>
 		<td colspan="2" class="title">{TR_DISK_USAGE}</td>
 	</tr>
 </table>
@@ -195,15 +195,15 @@
         <td width="25">&nbsp;</td>
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20"></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" /></td>
             <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_BARS}" height="1"></td>
-                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
+                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
+                <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_BARS}" height="1" /></td>
+                <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
               </tr>
             </table></td>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20"></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" /></td>
           </tr>
         </table></td>
       </tr>
