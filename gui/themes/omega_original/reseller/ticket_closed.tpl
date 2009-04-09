@@ -86,16 +86,16 @@ function action_delete(url, subject) {
                             <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','ticket_delete.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
                             <td colspan="3" nowrap="nowrap"><div align="right">
                                 <!-- BDP: scroll_prev_gray -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                                <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                                 <!-- EDP: scroll_prev_gray -->
                                 <!-- BDP: scroll_prev -->
-                                <a href="ticket_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                                <a href="ticket_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                                 <!-- EDP: scroll_prev -->
                                 <!-- BDP: scroll_next_gray -->
-                              &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                              &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                               <!-- EDP: scroll_next_gray -->
                               <!-- BDP: scroll_next -->
-                              &nbsp;<a href="ticket_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                              &nbsp;<a href="ticket_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                               <!-- EDP: scroll_next -->
                             </div></td>
                           </tr>

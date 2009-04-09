@@ -68,7 +68,7 @@ function update_services(&$sql) {
 
 		if (!$break) {
 			// Adding new Ports!
-			if (isset($_POST['name_new']) AND !empty($_POST['name_new'])) {
+			if (isset($_POST['name_new']) && !empty($_POST['name_new'])) {
 				$ip = get_post('ip_new');
 				$port = get_post('port_new');
 				$name = strtoupper(get_post('name_new'));
@@ -200,8 +200,8 @@ function show_services(&$tpl, &$sql) {
 				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name" . $row . "\" value=\"" . $name . "\" />"));
 				$tpl->assign(
 					array(
-						'PORT_READONLY'		=> 'readonly',
-						'PROTOCOL_READONLY'	=> 'disabled',
+						'PORT_READONLY'		=> 'readonly="readonly"',
+						'PROTOCOL_READONLY'	=> 'disabled="disabled"',
 						'TR_DELETE'			=> '-',
 						'PORT_DELETE_LINK'	=> '',
 						'NUM'				=> $row

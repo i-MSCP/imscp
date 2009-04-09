@@ -15,15 +15,15 @@
 <!-- BDP: logged_from -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" alt="" width="16" height="16" border="0" align="middle"></a> {YOU_ARE_LOGGED_AS}</td>
+		<td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" alt="" width="16" height="16" border="0" align="middle" /></a> {YOU_ARE_LOGGED_AS}</td>
 	</tr>
 </table>
 <!-- EDP: logged_from -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;border-collapse: collapse;padding:0;margin:0;">
 	<tr>
-		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" alt="" border="0"></td>
-		<td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" alt="" border="0"></td>
-		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" alt="" border="0"></td>
+		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" alt="" border="0" /></td>
+		<td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" alt="" border="0" /></td>
+		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" alt="" border="0" /></td>
 	</tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
@@ -31,7 +31,7 @@
 			<table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr style="height: 95px;">
 					<td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" alt="" border="0"></td>
+					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" alt="" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -81,7 +81,7 @@
 											</tr>
 											<tr>
 												<td nowrap="nowrap">&nbsp;</td>
-												<td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo"></td>
+												<td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo" /></td>
 											</tr>
 										</table>
 										<!-- end of content -->

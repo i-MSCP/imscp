@@ -149,30 +149,30 @@
                             <tr>
                               <td><div align="left"><br />
                                       <!-- BDP: scroll_prev_gray -->
-                                      <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                                      <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                                       <!-- EDP: scroll_prev_gray -->
                                       <!-- BDP: scroll_prev -->
-                                      <a href="user_statistics.php?psi={PREV_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                                      <a href="user_statistics.php?psi={PREV_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                                       <!-- EDP: scroll_prev -->
                                       <!-- BDP: scroll_next_gray -->
-                                &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                                &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                                 <!-- EDP: scroll_next_gray -->
                                 <!-- BDP: scroll_next -->
-                                &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                                &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                                 <!-- EDP: scroll_next -->
                               </div></td>
                               <td><div align="right"><br />
                                       <!-- BDP: scroll_prev_gray -->
-                                      <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                                      <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                                       <!-- EDP: scroll_prev_gray -->
                                       <!-- BDP: scroll_prev -->
-                                      <a href="user_statistics.php?psi={PREV_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                                      <a href="user_statistics.php?psi={PREV_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                                       <!-- EDP: scroll_prev -->
                                       <!-- BDP: scroll_next_gray -->
-                                &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                                &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                                 <!-- EDP: scroll_next_gray -->
                                 <!-- BDP: scroll_next -->
-                                &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                                &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                                 <!-- EDP: scroll_next -->
                               </div></td>
                             </tr>

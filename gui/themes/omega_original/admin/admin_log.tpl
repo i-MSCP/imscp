@@ -60,16 +60,16 @@
                           </table>
                         <div align="right"><br />
                               <!-- BDP: scroll_prev_gray -->
-                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                               <!-- EDP: scroll_prev_gray -->
                               <!-- BDP: scroll_prev -->
-                              <a href="admin_log.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                              <a href="admin_log.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                               <!-- EDP: scroll_prev -->
                               <!-- BDP: scroll_next_gray -->
-                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                           <!-- EDP: scroll_next_gray -->
                           <!-- BDP: scroll_next -->
-                          &nbsp;<a href="admin_log.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                          &nbsp;<a href="admin_log.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                           <!-- EDP: scroll_next -->
                         </div>
                         <!-- BDP: clear_log -->

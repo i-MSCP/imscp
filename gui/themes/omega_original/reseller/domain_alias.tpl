@@ -110,16 +110,16 @@ function delete_account(url, name) {
                         </td>
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->
-                            <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                            <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
                             <!-- EDP: scroll_prev_gray -->
                             <!-- BDP: scroll_prev -->
-                            <a href="alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                            <a href="alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
                             <!-- EDP: scroll_prev -->
                             <!-- BDP: scroll_next_gray -->
-                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
                           <!-- EDP: scroll_next_gray -->
                           <!-- BDP: scroll_next -->
-                          &nbsp;<a href="alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                          &nbsp;<a href="alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
                           <!-- EDP: scroll_next -->
                         </div></td>
                       </tr>
