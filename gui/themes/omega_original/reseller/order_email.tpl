@@ -60,7 +60,7 @@
                         <td class="content">{NAME}</td>
                       </tr>
                     </table>
-                  <br>
+                  <br />
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -75,7 +75,7 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_SUBJECT}</td>
-                        <td class="content"><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:90%" class="textinput">
+                        <td class="content"><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:90%" class="textinput" />
                         </td>
                       </tr>
                       <tr>

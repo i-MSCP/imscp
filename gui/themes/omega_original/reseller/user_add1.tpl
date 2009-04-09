@@ -65,7 +65,7 @@
 						 {TR_DOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 						</td>
                         <td class="content">
-                          <input type="text" name="dmn_name" value="{DMN_NAME_VALUE}" style="width:210px" class="textinput">
+                          <input type="text" name="dmn_name" value="{DMN_NAME_VALUE}" style="width:210px" class="textinput" />
                         </td>
                       </tr>
                       <!-- BDP: add_user -->

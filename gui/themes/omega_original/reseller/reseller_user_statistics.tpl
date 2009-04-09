@@ -72,7 +72,7 @@
                             <input type="hidden" name="name" value="{VALUE_NAME}">
                             <input type="hidden" name="rid" value="{VALUE_RID}">
                           </form>
-                        <br>
+                        <br />
                           <table width="100%" cellspacing="3">
                             <!-- BDP: no_domains -->
                             <tr>
@@ -114,7 +114,7 @@
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" /></td>
                                   </tr>
                                 </table>
-                                  <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br>
+                                  <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br />
                                 {TRAFF_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
@@ -129,7 +129,7 @@
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" /></td>
                                   </tr>
                                 </table>
-                                  <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br>
+                                  <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br />
                                 {DISK_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP}</td>
@@ -147,7 +147,7 @@
                           </table>
                         <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td><div align="left"><br>
+                              <td><div align="left"><br />
                                       <!-- BDP: scroll_prev_gray -->
                                       <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                                       <!-- EDP: scroll_prev_gray -->
@@ -161,7 +161,7 @@
                                 &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
                                 <!-- EDP: scroll_next -->
                               </div></td>
-                              <td><div align="right"><br>
+                              <td><div align="right"><br />
                                       <!-- BDP: scroll_prev_gray -->
                                       <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                                       <!-- EDP: scroll_prev_gray -->

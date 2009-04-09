@@ -65,7 +65,7 @@ function action_delete(url, subject) {
                           <!-- BDP: button_list -->
                           <tr>
                             <td>&nbsp;</td>
-                            <td class="{CONTENT}"><a href="{LINK}" class="link" target="_blank"><strong>{MENU_NAME}</strong></a><br>
+                            <td class="{CONTENT}"><a href="{LINK}" class="link" target="_blank"><strong>{MENU_NAME}</strong></a><br />
                               {LINK}</td>
                             <td class="{CONTENT}" align="center">{LEVEL}</td>
                             <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle"> <a href="custom_menus.php?edit_id={BUTONN_ID}" class="link">{TR_EDIT}</a></td>
@@ -73,7 +73,7 @@ function action_delete(url, subject) {
                           </tr>
                           <!-- EDP: button_list -->
                         </table>
-                          <br>
+                          <br />
                           <form name="add_new_button_frm" method="post" action="custom_menus.php">
                             <!-- BDP: add_button -->
                             <table width="100%" cellpadding="5" cellspacing="5">

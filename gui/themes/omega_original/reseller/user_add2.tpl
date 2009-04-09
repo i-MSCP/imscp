@@ -65,42 +65,42 @@
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SUBDOMAIN}</td>
-                          <td class="content"><input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="175">{TR_MAX_DOMAIN_ALIAS}</td>
-                          <td class="content"><input type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_MAIL_COUNT}</td>
-                          <td class="content"><input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_FTP}</td>
-                          <td class="content"><input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SQL_DB}</td>
-                          <td class="content"><input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SQL_USERS}</td>
-                          <td class="content"><input type="text" name="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_TRAFFIC}</td>
-                          <td class="content"><input type="text" name="nreseller_max_traffic" value="{VL_MAX_TRAFFIC}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_traffic" value="{VL_MAX_TRAFFIC}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_DISK_USAGE}</td>
-                          <td class="content"><input type="text" name="nreseller_max_disk" value="{VL_MAX_DISK_USAGE}" style="width:140px" class="textinput"></td>
+                          <td class="content"><input type="text" name="nreseller_max_disk" value="{VL_MAX_DISK_USAGE}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>

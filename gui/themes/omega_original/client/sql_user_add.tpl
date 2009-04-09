@@ -67,7 +67,7 @@
                             <!-- BDP: create_sqluser -->
                             <tr>
                               <td width="200" class="content2">{TR_USER_NAME}</td>
-                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput">
+                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>
@@ -80,7 +80,7 @@
                                 {TR_USE_DMN_ID}</td>
                               <td class="content"><!-- BDP: mysql_prefix_all -->
                                   <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED}>
-                                {TR_START_ID_POS}<br>
+                                {TR_START_ID_POS}<br />
                                 <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED}>
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
@@ -96,12 +96,12 @@
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_PASS}</td>
-                              <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_PASS_REP}</td>
-                              <td class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>

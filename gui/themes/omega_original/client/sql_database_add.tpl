@@ -57,7 +57,7 @@
                             <tr>
                               <td width="5">&nbsp;</td>
                               <td width="200" class="content2">{TR_DB_NAME}</td>
-                              <td class="content"><input type="text" name="db_name" value="{DB_NAME}" style="width:170px" class="textinput"></td>
+                              <td class="content"><input type="text" name="db_name" value="{DB_NAME}" style="width:170px" class="textinput" /></td>
                             </tr>
                             <tr>
                               <td width="5">&nbsp;</td>
@@ -70,7 +70,7 @@
                                 {TR_USE_DMN_ID}</td>
                               <td class="content"><!-- BDP: mysql_prefix_all -->
                                   <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED}>
-                                {TR_START_ID_POS}<br>
+                                {TR_START_ID_POS}<br />
                                 <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED}>
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->

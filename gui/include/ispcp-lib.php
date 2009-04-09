@@ -163,7 +163,7 @@ Config::set('CHECK_FOR_UPDATES', true);
 
 Config::set('CRITICAL_UPDATE_REVISION', 0);
 
-if (empty(Config::get('ISPCP_SUPPORT_SYSTEM_TARGET')) == true) {
+if (!Config::get('ISPCP_SUPPORT_SYSTEM_TARGET')) {
 	Config::set('ISPCP_SUPPORT_SYSTEM_TARGET', '_self');
 }
 

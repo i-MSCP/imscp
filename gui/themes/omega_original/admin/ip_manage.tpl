@@ -80,7 +80,7 @@ function action_delete(url, ip) {
                           </tr>
                           <!-- EDP: ip_row -->
                         </table>
-                          <br>
+                          <br />
                           <form name="add_new_ip_frm" method="post" action="ip_manage.php">
                             <table width="100%" cellpadding="5" cellspacing="5">
                               <tr>
@@ -102,13 +102,13 @@ function action_delete(url, ip) {
                               <tr>
                                 <td width="25" nowrap="nowrap">&nbsp;</td>
                                 <td width="200" class="content2" nowrap="nowrap">{TR_DOMAIN}</td>
-                                <td nowrap="nowrap" class="content"><input type="text" name="domain" value="{VALUE_DOMAIN}" style="width:180px" class="textinput">
+                                <td nowrap="nowrap" class="content"><input type="text" name="domain" value="{VALUE_DOMAIN}" style="width:180px" class="textinput" />
                                 </td>
                               </tr>
                               <tr>
                                 <td width="25" nowrap="nowrap">&nbsp;</td>
                                 <td width="200" class="content2" nowrap="nowrap">{TR_ALIAS}</td>
-                                <td nowrap="nowrap" class="content"><input type="text" name="alias" value="{VALUE_ALIAS}" style="width:180px" class="textinput">
+                                <td nowrap="nowrap" class="content"><input type="text" name="alias" value="{VALUE_ALIAS}" style="width:180px" class="textinput" />
                                 </td>
                               </tr>
                               <tr>

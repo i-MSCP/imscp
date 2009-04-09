@@ -74,7 +74,7 @@ function delete_account(url, dmn_name) {
                         <td colspan="6"><table border="0" cellspacing="0" cellpadding="0">
                             <tr>
                               <td nowrap="nowrap"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
-                                  <select name="search_common" class="textinput">
+                                  <select name="search_common" class="textinput" />
                                     <option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
                                     <option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
                                     <option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
@@ -83,7 +83,7 @@ function delete_account(url, dmn_name) {
                                     <option value="state" {M_STATE_SELECTED}>{M_STATE}</option>
                                     <option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
                                   </select>
-                                  <select name="search_status" class="textinput">
+                                  <select name="search_status" class="textinput" />
                                     <option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
                                     <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                                     <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
@@ -132,7 +132,7 @@ function delete_account(url, dmn_name) {
                     </table>
                   <input type="hidden" name="uaction" value="go_search">
                   </form>
-                    <div align="right"><br>
+                    <div align="right"><br />
                         <!-- BDP: scroll_prev_gray -->
                         <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
                         <!-- EDP: scroll_prev_gray -->

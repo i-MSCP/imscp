@@ -83,7 +83,7 @@ function makeUser() {
                             </tr>
                             <tr>
                               <td width="250" class="content2"><label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label></td>
-                              <td class="content"><input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput"></td>
+                              <td class="content"><input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" style="width:170px" class="textinput" /></td>
                             </tr>
                             <tr>
                               <td colspan="2">&nbsp;</td>

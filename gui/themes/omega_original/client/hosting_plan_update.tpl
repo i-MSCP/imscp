@@ -57,11 +57,11 @@
                     <!-- BDP: hosting_plans -->
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td valign="top" class="{ITHEM}"><strong>{HP_NAME}</strong><br>
-                        {HP_DESCRIPTION}<br>
-                        <br>
-                        {HP_DETAILS}<br>
-                        <br>
+                      <td valign="top" class="{ITHEM}"><strong>{HP_NAME}</strong><br />
+                        {HP_DESCRIPTION}<br />
+                        <br />
+                        {HP_DETAILS}<br />
+                        <br />
                         <strong>{HP_COSTS}</strong></td>
                     </tr>
                     <tr>

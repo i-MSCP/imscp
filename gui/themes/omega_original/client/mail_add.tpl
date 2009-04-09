@@ -143,7 +143,7 @@
                   <label for="username">{TR_USERNAME}</label>
                 </td>
                 <td valign="middle" nowrap="nowrap" class="content">
-                  <input type="text" name="username" id="username" value="{USERNAME}" style="width:210px" class="textinput">
+                  <input type="text" name="username" id="username" value="{USERNAME}" style="width:210px" class="textinput" />
                 </td>
               </tr>
               <tr>
@@ -198,11 +198,11 @@
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
-                <td nowrap="nowrap" class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput" /></td>
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD_REPEAT}</td>
-                <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput"></td>
+                <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput" /></td>
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">

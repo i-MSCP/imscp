@@ -93,7 +93,7 @@
                               </form></td>
                             </tr>
                           </table>
-                        <br>
+                        <br />
                           <!-- EDP: traffic_table --></td>
                       <td>&nbsp;</td>
                     </tr>

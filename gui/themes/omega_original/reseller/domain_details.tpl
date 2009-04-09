@@ -90,7 +90,7 @@
                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" /></td>
                           </tr>
                         </table>
-                          <br>
+                          <br />
                         {VL_TRAFFIC_USED} / {VL_TRAFFIC_LIMIT} </td>
                     </tr>
                     <tr>
@@ -109,7 +109,7 @@
                             <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" /></td>
                           </tr>
                         </table>
-                          <br>
+                          <br />
                         {VL_DISK_USED} / {VL_DISK_LIMIT} </td>
                     <tr>
                       <td>&nbsp;</td>

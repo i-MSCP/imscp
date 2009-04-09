@@ -60,12 +60,12 @@
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_PASS}</td>
-                              <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_PASS_REP}</td>
-                              <td class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>

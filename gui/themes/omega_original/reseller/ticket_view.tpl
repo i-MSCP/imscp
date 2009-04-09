@@ -57,12 +57,12 @@
           <!-- EDP: page_message -->
           <!-- BDP: tickets_list -->
           <tr>
-            <td nowrap="nowrap" class="content3"> {TR_TICKET_URGENCY}: {URGENCY}<br>
+            <td nowrap="nowrap" class="content3"> {TR_TICKET_URGENCY}: {URGENCY}<br />
               {TR_TICKET_SUBJECT}: {SUBJECT}</td>
           </tr>
           <!-- BDP: tickets_item -->
           <tr>
-            <td nowrap="nowrap" class="content2"><span class="content">{TR_TICKET_FROM}: {FROM}</span><br>
+            <td nowrap="nowrap" class="content2"><span class="content">{TR_TICKET_FROM}: {FROM}</span><br />
               {TR_TICKET_DATE}: {DATE}</td>
           </tr>
           <tr>

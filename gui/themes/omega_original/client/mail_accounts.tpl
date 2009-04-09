@@ -84,7 +84,7 @@ function action_delete(url, mailacc) {
                 <tr>
                    <td nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="16" style="vertical-align:middle" />&nbsp;{MAIL_ACC}
                           <!-- BDP: auto_respond --><div style="display: {AUTO_RESPOND_VIS};">
-						  <br><span class="style1">
+						  <br /><span class="style1">
 						  {TR_AUTORESPOND}: [&nbsp;&nbsp;
                           <a href="{AUTO_RESPOND_DISABLE_SCRIPT}" class="link">{AUTO_RESPOND_DISABLE}</a>&nbsp;&nbsp;
 						  <a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="link">{AUTO_RESPOND_EDIT}</a>

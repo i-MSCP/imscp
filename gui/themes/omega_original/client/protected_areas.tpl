@@ -60,7 +60,7 @@
                     <!-- BDP: dir_item -->
                     <tr>
                       <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
-                      <td class="{CLASS}" nowrap="nowrap">{AREA_NAME}<br>
+                      <td class="{CLASS}" nowrap="nowrap">{AREA_NAME}<br />
                           <u>{AREA_PATH}</u></td>
                       <td width="80" class="{CLASS}" nowrap="nowrap" align="center">{STATUS}</td>
                       <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="protected_areas_add.php?id={PID}" class="link">{TR_EDIT}</a> </td>

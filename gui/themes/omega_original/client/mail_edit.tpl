@@ -93,13 +93,13 @@
                <tr>
                 <td width="200" class="content2"><label for="pass">{TR_PASSWORD}</label></td>
                 <td class="content">
-                 <input type="password" name="pass" id="pass" value="" style="width:210px" class="textinput">
+                 <input type="password" name="pass" id="pass" value="" style="width:210px" class="textinput" />
                 </td>
                </tr>
                <tr>
                 <td width="200" class="content2"><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
                 <td class="content">
-                 <input type="password" name="pass_rep" id="pass_rep" value="" style="width:210px" class="textinput">
+                 <input type="password" name="pass_rep" id="pass_rep" value="" style="width:210px" class="textinput" />
                 </td>
                </tr>
                <tr>

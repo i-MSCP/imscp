@@ -14,7 +14,7 @@
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;border-collapse: collapse;padding:0px;margin:0px;">
 	<tr>
-		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0" alt=""></td>
+		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0" alt="" /></td>
 		<td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0" alt="" /></td>
 		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0" alt="" /></td>
 	</tr>
@@ -33,7 +33,7 @@
 								<td align="left">
 									<table width="100%" cellpadding="5" cellspacing="5">
 										<tr>
-											<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25" alt=""></td>
+											<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25" alt="" /></td>
 											<td colspan="2" class="title">{TR_EDIT_RESELLER}</td>
 										</tr>
 									</table>
@@ -63,7 +63,7 @@
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_PASSWORD}</td>
 												<td class="content">
-													<input type="password" name="pass" value="{VAL_PASSWORD}" style="width:210px" class="textinput">
+													<input type="password" name="pass" value="{VAL_PASSWORD}" style="width:210px" class="textinput" />
 													&nbsp;&nbsp;&nbsp;
 													<input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} ">
 												</td>
@@ -72,77 +72,77 @@
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
 												<td class="content">
-													<input type="password" name="pass_rep" value="{VAL_PASSWORD}" style="width:210px" class="textinput">
+													<input type="password" name="pass_rep" value="{VAL_PASSWORD}" style="width:210px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_EMAIL}</td>
 												<td class="content">
-													<input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput">
+													<input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_DOMAIN_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_domain_cnt" value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_domain_cnt" value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SUBDOMAIN_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_ALIASES_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_alias_cnt" value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_alias_cnt" value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_MAIL_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_FTP_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SQLDB_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SQL_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_sql_user_cnt" value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_sql_user_cnt" value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_TRAFFIC_AMOUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_traffic" value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_traffic" value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_DISK_AMOUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput">
+													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
 									<!--
@@ -289,17 +289,17 @@
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_CUSTOMER_ID}</td>
-												<td class="content"><input type="text" name="customer_id" value="{CUSTOMER_ID}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="customer_id" value="{CUSTOMER_ID}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_FIRST_NAME}</td>
-												<td class="content"><input type="text" name="fname" value="{FIRST_NAME}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="fname" value="{FIRST_NAME}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_LAST_NAME}</td>
-												<td class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
@@ -315,47 +315,47 @@
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_COMPANY}</td>
-												<td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_ZIP_POSTAL_CODE}</td>
-												<td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput"></td>
+												<td class="content"><input type="text" name="zip" value="{ZIP}" style="width:80px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_CITY}</td>
-												<td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="city" value="{CITY}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_STATE}</td>
-												<td class="content"><input type="text" name="state" value="{STATE}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="state" value="{STATE}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_COUNTRY}</td>
-												<td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="country" value="{COUNTRY}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_STREET_1}</td>
-												<td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="street1" value="{STREET_1}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_STREET_2}</td>
-												<td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="street2" value="{STREET_2}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_PHONE}</td>
-												<td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="phone" value="{PHONE}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_FAX}</td>
-												<td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput"></td>
+												<td class="content"><input type="text" name="fax" value="{FAX}" style="width:210px" class="textinput" /></td>
 											</tr>
 											<tr>
 												<td>&nbsp;</td>

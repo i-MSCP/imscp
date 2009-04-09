@@ -130,8 +130,8 @@ function changeType(wath) {
                             <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas_delete.php?id={CDIR}');return document.MM_returnValue" value="{TR_UNPROTECT_IT}">
                             &nbsp;&nbsp;&nbsp;
                             <!-- EDP: unprotect_it -->
-                            <br>
-                            <br>
+                            <br />
+                            <br />
                             <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}">
                             &nbsp;&nbsp;&nbsp;
                             <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}">

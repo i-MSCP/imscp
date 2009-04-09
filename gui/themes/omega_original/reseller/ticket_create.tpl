@@ -65,7 +65,7 @@
                             </tr>
                             <tr>
                               <td class="content2" style="width:200px;">{TR_SUBJECT}</td>
-                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput">
+                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput" />
                               </td>
                             </tr>
                             <tr>

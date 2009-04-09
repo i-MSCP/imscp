@@ -58,7 +58,7 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_TEMPLATE_NAME}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_name"  value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_name"  value="{HP_NAME_VALUE}" style="width:210px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
@@ -69,49 +69,49 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SUBDOMAINS}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_ALIASES}</td>
-                        <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
+                        <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_MAILACCOUNTS}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_FTP}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SQL}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SQL_USERS}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_TRAFFIC}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DISK_LIMIT}</td>
-                        <td class="content"><input type="text" {READONLY} name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" {READONLY} name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>

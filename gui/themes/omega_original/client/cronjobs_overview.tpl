@@ -68,7 +68,7 @@ function action_delete(url, name) {
                     <tr>
                       <!-- BDP: cronjobs -->
                       <td nowrap="nowrap">&nbsp;</td>
-                      <td nowrap="nowrap" class="{ITEM_CLASS}"><strong>{NAME}</strong><br>
+                      <td nowrap="nowrap" class="{ITEM_CLASS}"><strong>{NAME}</strong><br />
                         {DESCRIPTION}</td>
                       <td width="100" align="center" nowrap="nowrap" class="{ITEM_CLASS}">{ACTIVE}</td>
                       <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" style="vertical-align:middle" /> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>

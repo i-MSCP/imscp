@@ -83,19 +83,19 @@ function out(number) {
                             </tr>
                             <tr>
                               <td nowrap="nowrap" class="content2" width="200"><label for="pass">{TR_PASSWORD}</label></td>
-                              <td nowrap="nowrap" class="content"><input type="password" name="pass" id="pass" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass" id="pass" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>
                               <td nowrap="nowrap" class="content2" width="200"><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-                              <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" id="pass_rep" value="" style="width:170px" class="textinput">
+                              <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" id="pass_rep" value="" style="width:170px" class="textinput" />
                               </td>
                             </tr>
                             <tr>
                               <td nowrap="nowrap" class="content2" width="200"><input type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
                                 {TR_USE_OTHER_DIR}</td>
-                              <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
-                                  <br>
+                              <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput" />
+                                  <br />
                                 <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>

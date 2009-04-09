@@ -88,49 +88,49 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_SUBDOMAINS}</td>
-                        <td class="content"><input type="text" name="dom_sub" value="{VL_DOM_SUB}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_sub" value="{VL_DOM_SUB}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_ALIAS}</td>
-                        <td class="content"><input type="text" name="dom_alias" value="{VL_DOM_ALIAS}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_alias" value="{VL_DOM_ALIAS}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAIL_ACCOUNT}</td>
-                        <td class="content"><input type="text" name="dom_mail_acCount" value="{VL_DOM_MAIL_ACCOUNT}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_mail_acCount" value="{VL_DOM_MAIL_ACCOUNT}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_FTP_ACCOUNTS}</td>
-                        <td class="content"><input type="text" name="dom_ftp_acCounts" value="{VL_FTP_ACCOUNTS}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_ftp_acCounts" value="{VL_FTP_ACCOUNTS}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_SQL_DB}</td>
-                        <td class="content"><input type="text" name="dom_sqldb" value="{VL_SQL_DB}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_sqldb" value="{VL_SQL_DB}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_SQL_USERS}</td>
-                        <td class="content"><input type="text" name="dom_sql_users" value="{VL_SQL_USERS}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_sql_users" value="{VL_SQL_USERS}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_TRAFFIC}</td>
-                        <td class="content"><input type="text" name="dom_traffic" value="{VL_TRAFFIC}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_traffic" value="{VL_TRAFFIC}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DISK}</td>
-                        <td class="content"><input type="text" name="dom_disk" value="{VL_DOM_DISK}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="dom_disk" value="{VL_DOM_DISK}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
                       <tr>

@@ -60,7 +60,7 @@ function delete_account(url, name) {
                               <tr>
                                 <td width="40" nowrap="nowrap">&nbsp;</td>
                                 <td width="300" nowrap="nowrap" class="content"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
-                                    <select name="search_common" class="textinput">
+                                    <select name="search_common" class="textinput" />
                                       <option value="alias_name" {M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
                                       <option value="account_name" {M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
                                     </select>
@@ -92,7 +92,7 @@ function delete_account(url, name) {
                     <!-- BDP: table_item -->
                     <tr>
                       <td width="25" align="center">&nbsp;</td>
-                      <td class="{CONTENT}" nowrap="nowrap"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" align="left" border="0" style="vertical-align:middle" /> {NAME}</a><br>
+                      <td class="{CONTENT}" nowrap="nowrap"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" align="left" border="0" style="vertical-align:middle" /> {NAME}</a><br />
                         {ALIAS_IP}</td>
                       <td class="{CONTENT}" nowrap="nowrap">{REAL_DOMAIN}<br />
                         {REAL_DOMAIN_MOUNT}</td>
