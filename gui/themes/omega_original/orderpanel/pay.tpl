@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>{TR_PAY_PAGE_TITLE}</title>
+		<meta name="robots" content="nofollow, noindex" />
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
-		<meta name="robots" content="nofollow, noindex" />
 		<link href="../themes/omega_original/css/ispcp.css" rel="stylesheet" type="text/css">
 		<script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
 	</head>

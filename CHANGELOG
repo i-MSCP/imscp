@@ -5,6 +5,11 @@ ispCP ω 1.0.1 Changelog
 	- GUI:
 		* Fixed #1783: js-errors
 		* code cleanup (coding style, whitespaces ...)
+		* reverted r1557 (which was a part revert of r1550) with modifications
+		* a lot of HTML updates for more valid (X)HTML
+		* fixed wrong HTML size of some icons
+		* hardened input-checks.php::clean_html()
+		* removed svn property "debian" from root folder
 
 2009-04-03 Benedikt Heintel
 	- GUI:

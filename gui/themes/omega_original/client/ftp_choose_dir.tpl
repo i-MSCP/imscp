@@ -11,10 +11,7 @@
 		<script type="text/javascript">
 			<!--
 			function CopyText(inputname) {
-				var buf1 = '';
-				var buf2 = document.forms[0].elements[inputname].value;
-				var buf3 = buf1 + buf2;
-				window.opener.document.forms[0].other_dir.value = buf3;
+				window.opener.document.forms[0].other_dir.value = document.forms[0].elements[inputname].value;
 				window.opener.document.forms[0].use_other_dir.checked = true;
 				self.close();
 			}

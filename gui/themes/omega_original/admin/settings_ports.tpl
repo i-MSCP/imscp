@@ -1,8 +1,12 @@
-<html>
+<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <title>{TR_ADMIN_SETTINGS_PAGE_TITLE}</title>
-<meta name="robots" content="nofollow, noindex">
+<meta name="robots" content="nofollow, noindex" />
+<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script type="text/javascript">
@@ -14,8 +18,8 @@ function action_delete(url, service) {
 }
 
 function enable_for_post() {
-	for (var i = 0, len = document.frmsettings.length; i < len; i++) {
-		for (var j = 0, len2 = document.frmsettings.elements[i].length; j < len2; j++) {
+	for (var i = 0; i < document.frmsettings.length; i++) {
+		for (var j = 0; j < document.frmsettings.elements[i].length; j++) {
 			if (document.frmsettings.elements[i].name == "port_type[]") {
 				document.frmsettings.elements[i].disabled = false;
 			}
@@ -30,9 +34,9 @@ function enable_for_post() {
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 	<tr>
-		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
-		<td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0"></td>
-		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0"></td>
+		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0" alt="ispCP Logogram" /></td>
+		<td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0" alt="" /></td>
+		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0" alt="" /></td>
 	</tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
@@ -40,7 +44,7 @@ function enable_for_post() {
 			<table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr height="95">
 					<td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
+					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0" alt="" /></td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -111,7 +115,7 @@ function enable_for_post() {
 													<!-- EDP: port_delete_show -->
 													<!-- BDP: port_delete_link -->
 													<a href="#" onclick="action_delete('{URL_DELETE}', '{NAME}')" class="link">
-													<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">{TR_DELETE}</a>
+													<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />{TR_DELETE}</a>
 													<!-- EDP: port_delete_link -->
 												</td>
 											</tr>
