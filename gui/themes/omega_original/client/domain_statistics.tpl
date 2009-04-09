@@ -61,7 +61,7 @@
                                   <option {YEAR_SELECTED}>{YEAR}</option>
                                   <!-- EDP: year_item -->
                                 </select></td>
-                              <td class="content"><input name="Submit" type="submit" class="button" value="{TR_SHOW}">
+                              <td class="content"><input name="Submit" type="submit" class="button" value="{TR_SHOW}" />
                               </td>
                             </tr>
                           </table>
@@ -101,7 +101,7 @@
                             <!-- EDP: traff_list -->
                           </table>
                         <!-- end of content -->
-                          <input name="uaction" type="hidden" value="show_traff"></form></td>
+                          <input name="uaction" type="hidden" value="show_traff" /></form></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

@@ -60,7 +60,7 @@
 						<tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_TEMPLATE_NAME}</td>
-                          <td class="content"><input name="template" type="hidden" id="template" value="{VL_TEMPLATE_NAME}">{VL_TEMPLATE_NAME} </td>
+                          <td class="content"><input name="template" type="hidden" id="template" value="{VL_TEMPLATE_NAME}" />{VL_TEMPLATE_NAME} </td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
@@ -105,22 +105,22 @@
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_PHP}</td>
-                          <td class="content"><input name="php" type="radio" value="yes" {VL_PHPY}>
+                          <td class="content"><input name="php" type="radio" value="yes" {VL_PHPY} />
                             {TR_YES}
-                            <input type="radio" name="php" value="no" {VL_PHPN}>
+                            <input type="radio" name="php" value="no" {VL_PHPN} />
                             {TR_NO}</td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_CGI}</td>
-                          <td class="content"><input name="cgi" type="radio" value="yes" {VL_CGIY}>
+                          <td class="content"><input name="cgi" type="radio" value="yes" {VL_CGIY} />
                             {TR_YES}
-                            <input type="radio" name="cgi" value="no" {VL_CGIN}>
+                            <input type="radio" name="cgi" value="no" {VL_CGIN} />
                             {TR_NO}</td>
                         </tr>
                         <tr>
                           <td>&nbsp;</td>
-                          <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}"></td>
+                          <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" /></td>
                         </tr>
                       </table>
                     </form>

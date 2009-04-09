@@ -89,9 +89,9 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}">
+                        <td><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
                           &nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onclick="window.open('/orderpanel/', 'preview', 'width=770,height=480')" value="{TR_PREVIEW}"></td>
+                          <input name="Button" type="button" class="button" onclick="window.open('/orderpanel/', 'preview', 'width=770,height=480')" value="{TR_PREVIEW}" /></td>
                       </tr>
                     </table>
                 </form></td>

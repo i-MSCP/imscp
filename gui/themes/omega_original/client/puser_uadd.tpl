@@ -55,7 +55,7 @@
                     <tr>
                       <td>&nbsp;</td>
                       <td width="200" class="content2">{TR_USERNAME}</td>
-                      <td class="content"><input name="username" type="text" class="textinput" style="width:170px" value=""></td>
+                      <td class="content"><input name="username" type="text" class="textinput" style="width:170px" value="" /></td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
@@ -69,10 +69,10 @@
                     </tr>
                     <tr>
                       <td>&nbsp;</td>
-                      <td colspan="2"><input type="hidden" name="uaction" value="add_user">
-                          <input name="Submit" type="submit" class="button" value="{TR_ADD_USER}">
+                      <td colspan="2"><input type="hidden" name="uaction" value="add_user" />
+                          <input name="Submit" type="submit" class="button" value="{TR_ADD_USER}" />
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
                     </tr>
                 </table></form></td>
                 <td>&nbsp;</td>

@@ -140,13 +140,13 @@
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
-                                <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                                <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " /></td>
                               </tr>
                               <tr>
                                 <td colspan="3">&nbsp;</td>
                               </tr>
                             </table>
-                            <input type="hidden" name="uaction" value="add_user">
+                            <input type="hidden" name="uaction" value="add_user" />
                           </form>
                         <!-- EDP: props_list -->
                       </td>

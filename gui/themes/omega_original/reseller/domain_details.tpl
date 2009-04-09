@@ -156,10 +156,10 @@
                     <tr>
                       <td>&nbsp;</td>
                       <td colspan="3"><form name="buttons" method="post" action="?">
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  " />
                         &nbsp;&nbsp;&nbsp;
                         <!-- BDP: edit_option -->
-                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
+                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   " />
                         <!-- EDP: edit_option -->
                       </form></td>
                     </tr>

@@ -82,24 +82,24 @@
                         <td width="200" class="content2">
 						 {TR_DOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 						</td>
-                        <td class="content">http://<input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onblur="makeUser();"></td>
+                        <td class="content">http://<input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onblur="makeUser();" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2">{TR_MOUNT_POINT}</td>
-                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px"></td>
+                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px" /></td>
                       </tr>
                       <tr>
                         <td width="25" nowrap="nowrap">&nbsp;</td>
                         <td width="200" nowrap="nowrap" class="content2">{TR_FORWARD}</td>
-                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}"></td>
+                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " /></td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="add_alias">
+                  <input type="hidden" name="uaction" value="add_alias" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

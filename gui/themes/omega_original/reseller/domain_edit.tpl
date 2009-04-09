@@ -147,12 +147,12 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}">
+                        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}" />
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
                       </tr>
                       <tr>
-                        <td colspan="3"><input type="hidden" name="uaction" value="sub_data">
+                        <td colspan="3"><input type="hidden" name="uaction" value="sub_data" />
                         </td>
                       </tr>
                     </table></form></td>

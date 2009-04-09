@@ -142,13 +142,13 @@ function changeDom(wath) {
                               <td class="content" nowrap="nowrap"><input type="text" name="username" value="{USERNAME}" style="width:170px" class="textinput" /></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" onfocus="changeDom('real');" {DMN_TYPE_CHECKED}>
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" onfocus="changeDom('real');" {DMN_TYPE_CHECKED} />
                                 {TR_TO_MAIN_DOMAIN}</td>
                               <td class="content" nowrap="nowrap">{FTP_SEPARATOR}{DOMAIN_NAME}</td>
                             </tr>
                             <!-- BDP: to_alias_domain -->
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" onfocus="changeDom('alias');" {ALS_TYPE_CHECKED}>
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" onfocus="changeDom('alias');" {ALS_TYPE_CHECKED} />
                                 {TR_TO_DOMAIN_ALIAS}</td>
                               <td class="content" nowrap="nowrap"><select name="als_id">
                                   <!-- BDP: als_list -->
@@ -166,15 +166,15 @@ function changeDom(wath) {
                               <td nowrap="nowrap" class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput" /></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
+                              <td nowrap="nowrap" class="content2" width="200"><input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />
                                 <label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
                               <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput" />
                                   <br />
                                 <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>
-                        <input name="Submit" type="submit" class="button" value=" {TR_ADD} ">
-                          <input type="hidden" name="uaction" value="add_user">
+                        <input name="Submit" type="submit" class="button" value=" {TR_ADD} " />
+                          <input type="hidden" name="uaction" value="add_user" />
                       </form></td>
                     </tr>
                 </table></td>

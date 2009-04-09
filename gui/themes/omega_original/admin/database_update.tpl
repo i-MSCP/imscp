@@ -66,9 +66,9 @@
           <tr>
            <td width="25">&nbsp;</td>
  	   <form name='database_update' action='database_update.php' method='POST' enctype='application/x-www-form-urlencoded'>
-	    <input type='hidden' name='execute' id='execute' value='true'>
+	    <input type='hidden' name='execute' id='execute' value='true' />
 	    <td class="content">&nbsp;</td>
-    	    <td class="content2" align='left'><input type='submit' name='submit' value='{TR_EXECUTE_UPDATE}'></td>
+    	    <td class="content2" align='left'><input type='submit' name='submit' value='{TR_EXECUTE_UPDATE}' /></td>
 	   </form>
           </tr>
       <!-- EDP: database_update_infos -->

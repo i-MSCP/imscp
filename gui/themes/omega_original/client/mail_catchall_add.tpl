@@ -78,7 +78,7 @@
                                   document.getElementById('normal_mail_block').style.display = 'block';
                               }
                               //-->
-                              </script><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
+                              </script><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');" />
                                 <label for="mail_type1">{TR_MAIL_LIST}</label></td>
                               <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
@@ -87,7 +87,7 @@
                                 </select></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
+                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');" />
                                 <label for="mail_type2">{TR_FORWARD_MAIL}</label></td>
                             </tr>
                             <tr>
@@ -95,7 +95,7 @@
                               <td nowrap="nowrap" class="content"><textarea name="forward_list" id="forward_list" cols="35" rows="5" style="width:210px"></textarea></td>
                             </tr>
                           </table>
-                        <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}">
+                        <input name="Submit" type="submit" class="button" value="{TR_CREATE_CATCHALL}" />
                           <input type="hidden" name="uaction" value="create_catchall" />
                           <input type="hidden" name="id" value="{ID}" />
                       </form></td>

@@ -89,7 +89,7 @@ function action_delete(url, mailacc) {
       <!-- EDP: pusres -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}">
+        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}" />
           &nbsp;&nbsp; </td>
       </tr>
     </table></td>
@@ -144,7 +144,7 @@ function action_delete(url, mailacc) {
       <!-- EDP: pgroups -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue">
+        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue" />
           &nbsp; </td>
       </tr>
     </table></td>

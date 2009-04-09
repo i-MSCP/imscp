@@ -59,17 +59,17 @@ function delete_account(url, name) {
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr>
                                 <td width="40" nowrap="nowrap">&nbsp;</td>
-                                <td width="300" nowrap="nowrap" class="content"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
-                                    <select name="search_common" class="textinput" />
+                                <td width="300" nowrap="nowrap" class="content"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px" />
+                                    <select name="search_common" class="textinput">
                                       <option value="alias_name" {M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
                                       <option value="account_name" {M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
                                     </select>
                                 </td>
-                                <td nowrap="nowrap" class="content"><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  ">
+                                <td nowrap="nowrap" class="content"><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
                                 </td>
                               </tr>
                             </table>
-                            <input type="hidden" name="uaction" value="go_search">
+                            <input type="hidden" name="uaction" value="go_search" />
                           </form>
                         <!-- search end here -->
 					 </td>
@@ -106,7 +106,7 @@ function delete_account(url, name) {
                     <table width="100%" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="30">&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
+                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   " />
                         </td>
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->

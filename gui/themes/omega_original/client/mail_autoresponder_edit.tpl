@@ -61,10 +61,10 @@
                               </td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="enable_arsp">
-                          <input type="hidden" name="id" value="{ID}">
-                          <input name="Submit" type="submit" class="button" value="{TR_ENABLE}">
-                          <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onclick="location = 'mail_accounts.php'">
+                        <input type="hidden" name="uaction" value="enable_arsp" />
+                          <input type="hidden" name="id" value="{ID}" />
+                          <input name="Submit" type="submit" class="button" value="{TR_ENABLE}" />
+                          <input type="button" name="Submit2" value="{TR_CANCEL}" class="button" onclick="location = 'mail_accounts.php'" />
                       </form></td>
                     </tr>
                 </table></td>

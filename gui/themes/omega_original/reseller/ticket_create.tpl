@@ -74,8 +74,8 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}">
-                                  <input name="uaction" type="hidden" value="send_msg"></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}" />
+                                  <input name="uaction" type="hidden" value="send_msg" /></td>
                             </tr>
                           </table>
                         <!-- end of content -->

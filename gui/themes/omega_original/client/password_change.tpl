@@ -68,8 +68,8 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2"><input type="hidden" name="uaction" value="updt_pass">
-                            <input name="Submit" type="submit" class="button" value="{TR_UPDATE_PASSWORD}"></td>
+                        <td colspan="2"><input type="hidden" name="uaction" value="updt_pass" />
+                            <input name="Submit" type="submit" class="button" value="{TR_UPDATE_PASSWORD}" /></td>
                       </tr>
                     </table>
                 </form></td>

@@ -69,11 +69,11 @@
                     </tr>
                     <tr>
                       <td>&nbsp;</td>
-                      <td colspan="2"><input type="hidden" name="nadmin_name" value="{UID}">
-                          <input type="hidden" name="uaction" value="modify_user">
-                          <input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">
+                      <td colspan="2"><input type="hidden" name="nadmin_name" value="{UID}" />
+                          <input type="hidden" name="uaction" value="modify_user" />
+                          <input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  " />
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
                     </tr>
                 </table></form></td>
                 <td>&nbsp;</td>

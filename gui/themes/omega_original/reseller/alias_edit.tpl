@@ -82,16 +82,16 @@
                         <td width="200" class="content2">
 						 {TR_FORWARD} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
 						</td>
-                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}"></td>
+                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  ">
+                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  " />
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="modify">
+                  <input type="hidden" name="uaction" value="modify" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

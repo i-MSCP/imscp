@@ -77,7 +77,7 @@ function action_delete(url, name) {
                     </tr>
                     <tr>
                       <td nowrap="nowrap">&nbsp;</td>
-                      <td colspan="4"><input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}"></td>
+                      <td colspan="4"><input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}" /></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

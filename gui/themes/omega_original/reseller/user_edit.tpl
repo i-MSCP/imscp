@@ -65,7 +65,7 @@
                         <td class="content2" width="200">{TR_PASSWORD}</td>
                         <td class="content"><input type="password" name="userpassword" value="{VAL_PASSWORD}" style="width:210px" class="textinput" />
                           &nbsp;&nbsp;&nbsp;
-                          <input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} ">
+                          <input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} " />
                         </td>
                       </tr>
                       <tr>
@@ -163,14 +163,14 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  ">
+                        <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  " />
                           &nbsp;&nbsp;&nbsp;
-                          <input type="checkbox" name="send_data" checked="checked">
+                          <input type="checkbox" name="send_data" checked="checked" />
                           {TR_SEND_DATA}</td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="save_changes">
-                  <input type="hidden" name="edit_id" value="{EDIT_ID}">
+                  <input type="hidden" name="uaction" value="save_changes" />
+                  <input type="hidden" name="edit_id" value="{EDIT_ID}" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

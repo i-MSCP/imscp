@@ -148,7 +148,7 @@
                                   <!-- BDP: rsl_ip_item -->
                                   <tr>
                                     <td width="10%" align="center" class="{RSL_IP_CLASS}">{RSL_IP_NUMBER}</td>
-                                    <td width="20%" align="center" class="{RSL_IP_CLASS}"><input type="checkbox" name="{RSL_IP_CKB_NAME}" value="{RSL_IP_CKB_VALUE}" {RSL_IP_ITEM_ASSIGNED}></td>
+                                    <td width="20%" align="center" class="{RSL_IP_CLASS}"><input type="checkbox" name="{RSL_IP_CKB_NAME}" value="{RSL_IP_CKB_VALUE}" {RSL_IP_ITEM_ASSIGNED} /></td>
                                     <td width="35%" class="{RSL_IP_CLASS}">{RSL_IP_LABEL}</td>
                                     <td width="35%" class="{RSL_IP_CLASS}">{RSL_IP_IP}</td>
                                   </tr>
@@ -231,13 +231,13 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " /></td>
                             </tr>
                             <tr>
                               <td colspan="3">&nbsp;</td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="add_reseller">
+                        <input type="hidden" name="uaction" value="add_reseller" />
                       </form></td>
                       <td>&nbsp;</td>
                     </tr>

@@ -116,8 +116,8 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}">
-                                  <input type="hidden" name="uaction" value="updt_data"></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}" />
+                                  <input type="hidden" name="uaction" value="updt_data" /></td>
                             </tr>
                           </table></form></td>
                       <td>&nbsp;</td>

@@ -78,7 +78,7 @@ function out(number) {
                             <!-- EDP: page_message -->
                             <tr>
                               <td nowrap="nowrap" class="content2" width="200">{TR_FTP_ACCOUNT}</td>
-                              <td nowrap="nowrap" class="content"><input type="text" name="ftp_account" value="{FTP_ACCOUNT}" style="width:170px" class="textinput" readonly="readonly">
+                              <td nowrap="nowrap" class="content"><input type="text" name="ftp_account" value="{FTP_ACCOUNT}" style="width:170px" class="textinput" readonly="readonly" />
                               </td>
                             </tr>
                             <tr>
@@ -92,16 +92,16 @@ function out(number) {
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
+                              <td nowrap="nowrap" class="content2" width="200"><input type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />
                                 {TR_USE_OTHER_DIR}</td>
                               <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput" />
                                   <br />
                                 <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="edit_user">
-                          <input type="hidden" name="id" value="{ID}">
-                          <input name="Submit" type="submit" class="button" value=" {TR_EDIT} ">
+                        <input type="hidden" name="uaction" value="edit_user" />
+                          <input type="hidden" name="id" value="{ID}" />
+                          <input name="Submit" type="submit" class="button" value=" {TR_EDIT} " />
                       </form></td>
                     </tr>
                 </table></td>

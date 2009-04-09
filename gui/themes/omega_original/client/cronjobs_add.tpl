@@ -58,12 +58,12 @@
                       <tr>
                         <td nowrap="nowrap">&nbsp;</td>
                         <td nowrap="nowrap" class="content2">{TR_NAME}</td>
-                        <td colspan="4" class="content"><input name="name" type="text" class="textinput" id="name" style="width:170px"></td>
+                        <td colspan="4" class="content"><input name="name" type="text" class="textinput" id="name" style="width:170px" /></td>
                       </tr>
                       <tr>
                         <td nowrap="nowrap">&nbsp;</td>
                         <td nowrap="nowrap" class="content2">{TR_DESCRIPTION}</td>
-                        <td colspan="4" class="content"><input name="description" type="text" class="textinput" id="description" style="width:170px"></td>
+                        <td colspan="4" class="content"><input name="description" type="text" class="textinput" id="description" style="width:170px" /></td>
                       </tr>
                       <tr>
                         <td nowrap="nowrap">&nbsp;</td>
@@ -83,7 +83,7 @@
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="5" class="content"><input name="command_line" type="text" class="textinput" id="command_line" style="width:370px"></td>
+                        <td colspan="5" class="content"><input name="command_line" type="text" class="textinput" id="command_line" style="width:370px" /></td>
                       </tr>
                       <tr>
                         <td nowrap="nowrap">&nbsp;</td>
@@ -254,14 +254,14 @@
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="5"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  ">
+                        <td colspan="5"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " />
                           &nbsp;&nbsp;
-                          <input name="Reset" type="reset" class="button" value="{TR_RESET}">
+                          <input name="Reset" type="reset" class="button" value="{TR_RESET}" />
                           &nbsp;&nbsp;
-                          <input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                          <input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="add_cronjob">
+                  <input type="hidden" name="uaction" value="add_cronjob" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

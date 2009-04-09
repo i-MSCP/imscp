@@ -90,13 +90,13 @@ function action_delete(url, ip) {
                               <tr>
                                 <td width="25" nowrap="nowrap">&nbsp;</td>
                                 <td width="200" class="content2" nowrap="nowrap">{TR_IP}</td>
-                                <td nowrap="nowrap" class="content"><input name="ip_number_1" type="text" class="textinput" style="width:31px" value="{VALUE_IP1}" maxlength="3">
+                                <td nowrap="nowrap" class="content"><input name="ip_number_1" type="text" class="textinput" style="width:31px" value="{VALUE_IP1}" maxlength="3" />
                                   .
-                                  <input name="ip_number_2" type="text" class="textinput" style="width:31px" value="{VALUE_IP2}" maxlength="3">
+                                  <input name="ip_number_2" type="text" class="textinput" style="width:31px" value="{VALUE_IP2}" maxlength="3" />
                                   .
-                                  <input name="ip_number_3" type="text" class="textinput" style="width:31px" value="{VALUE_IP3}" maxlength="3">
+                                  <input name="ip_number_3" type="text" class="textinput" style="width:31px" value="{VALUE_IP3}" maxlength="3" />
                                   .
-                                  <input name="ip_number_4" type="text" class="textinput" style="width:31px" value="{VALUE_IP4}" maxlength="3">
+                                  <input name="ip_number_4" type="text" class="textinput" style="width:31px" value="{VALUE_IP4}" maxlength="3" />
                                 </td>
                               </tr>
                               <tr>
@@ -113,10 +113,10 @@ function action_delete(url, ip) {
                               </tr>
                               <tr>
                                 <td nowrap="nowrap">&nbsp;</td>
-                                <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                                <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " /></td>
                               </tr>
                             </table>
-                            <input type="hidden" name="uaction" value="add_ip">
+                            <input type="hidden" name="uaction" value="add_ip" />
                         </form></td>
                       <td>&nbsp;</td>
                     </tr>

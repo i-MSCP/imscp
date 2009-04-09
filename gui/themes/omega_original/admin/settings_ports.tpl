@@ -146,8 +146,8 @@ function enable_for_post() {
 											<tr>
 												<td>&nbsp;</td>
 												<td colspan="6">
-													<input type="hidden" name="uaction" value="apply">
-													<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}">
+													<input type="hidden" name="uaction" value="apply" />
+													<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
 												</td>
 											</tr>
 										</table>

@@ -114,7 +114,7 @@
           <tr>
             <td colspan="3">
 	<form name="add_mail_acc_frm" method="post" action="mail_add.php">
-	<input type="hidden" name="uaction" value="add_user">
+	<input type="hidden" name="uaction" value="add_user" />
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td align="left">
@@ -148,7 +148,7 @@
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">
-                  <input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">
+                  <input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');" />
                   <label for="dmn_type1">{TR_TO_MAIN_DOMAIN}</label>
                 </td>
                 <td nowrap="nowrap" class="content" colspan="2">@{DOMAIN_NAME}</td>
@@ -156,7 +156,7 @@
 			  <!-- BDP: to_alias_domain -->
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">
-                  <input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">
+                  <input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');" />
                   <label for="dmn_type2">{TR_TO_DMN_ALIAS}</label>
                 </td>
                 <td nowrap="nowrap" class="content"><select name="als_id">
@@ -169,7 +169,7 @@
 			  <!-- BDP: to_subdomain -->
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">
-                  <input type="radio" name="dmn_type" id="dmn_type3" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">
+                  <input type="radio" name="dmn_type" id="dmn_type3" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');" />
                   <label for="dmn_type3">{TR_TO_SUBDOMAIN}</label>
                 </td>
                 <td nowrap="nowrap" class="content"><select name="sub_id">
@@ -182,7 +182,7 @@
 			  <!-- BDP: to_alias_subdomain -->
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">
-                  <input type="radio" name="dmn_type" id="dmn_type4" value="als_sub" {MAIL_ALS_SUB_CHECKED} onclick="changeDom('als_subdom');">
+                  <input type="radio" name="dmn_type" id="dmn_type4" value="als_sub" {MAIL_ALS_SUB_CHECKED} onclick="changeDom('als_subdom');" />
                   <label for="dmn_type4">{TR_TO_ALS_SUBDOMAIN}</label>
                 </td>
                 <td nowrap="nowrap" class="content"><select name="als_sub_id">
@@ -194,7 +194,7 @@
 			  <!-- EDP: to_alias_subdomain -->
               <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onclick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onclick="changeType();" {NORMAL_MAIL_CHECKED} />{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
@@ -206,7 +206,7 @@
               </tr>
               <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType();">{TR_FORWARD_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType();" />{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
@@ -214,7 +214,7 @@
                 <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px">{FORWARD_LIST}</textarea></td>
 	          </tr>
               <tr>
-             <td colspan="2"><input name="Submit" type="submit" class="button" value=" {TR_ADD} "></td>
+             <td colspan="2"><input name="Submit" type="submit" class="button" value=" {TR_ADD} " /></td>
                 </tr>
             </table></td>
           </tr>

@@ -84,20 +84,20 @@
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="200">{TR_PERSONALIZE_TEMPLATE}</td>
                         <td class="content">{TR_YES}
-                          <input type="radio" name="chtpl" value="_yes_" {CHTPL1_VAL}>
+                          <input type="radio" name="chtpl" value="_yes_" {CHTPL1_VAL} />
                           {TR_NO}
-                          <input type="radio" name="chtpl" value="_no_" {CHTPL2_VAL}>
+                          <input type="radio" name="chtpl" value="_no_" {CHTPL2_VAL} />
                         </td>
                       </tr>
                       <!-- EDP: personalize -->
                       <!-- EDP: add_user -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}"></td>
+                        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" /></td>
                       </tr>
                       <!-- EDP: add_form -->
                     </table>
-                  <input type="hidden" name="uaction" value="user_add_nxt">
+                  <input type="hidden" name="uaction" value="user_add_nxt" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>

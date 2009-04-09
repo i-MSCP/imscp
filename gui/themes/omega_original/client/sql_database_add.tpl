@@ -62,35 +62,35 @@
                             <tr>
                               <td width="5">&nbsp;</td>
                               <td width="200" class="content2"><!-- BDP: mysql_prefix_yes -->
-                                  <input type="checkbox" name="use_dmn_id" {USE_DMN_ID}>
+                                  <input type="checkbox" name="use_dmn_id" {USE_DMN_ID} />
                                   <!-- EDP: mysql_prefix_yes -->
                                   <!-- BDP: mysql_prefix_no -->
-                                  <input type="hidden" name="use_dmn_id" value="on">
+                                  <input type="hidden" name="use_dmn_id" value="on" />
                                   <!-- EDP: mysql_prefix_no -->
                                 {TR_USE_DMN_ID}</td>
                               <td class="content"><!-- BDP: mysql_prefix_all -->
-                                  <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED}>
+                                  <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED} />
                                 {TR_START_ID_POS}<br />
-                                <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED}>
+                                <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED} />
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
                                 <!-- BDP: mysql_prefix_infront -->
-                                <input type="hidden" name="id_pos" value="start" checked="checked">
+                                <input type="hidden" name="id_pos" value="start" checked="checked" />
                                 {TR_START_ID_POS}
                                 <!-- EDP: mysql_prefix_infront -->
                                 <!-- BDP: mysql_prefix_behind -->
-                                <input type="hidden" name="id_pos" value="end" checked="checked">
+                                <input type="hidden" name="id_pos" value="end" checked="checked" />
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_behind -->
                               </td>
                             </tr>
                             <tr>
                               <td width="5">&nbsp;</td>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  "></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  " /></td>
                             </tr>
                           </table>
                         <!-- end of content -->
-                          <input type="hidden" name="uaction" value="add_db"></form></td>
+                          <input type="hidden" name="uaction" value="add_db" /></form></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

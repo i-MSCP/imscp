@@ -84,7 +84,7 @@ function action_delete(url, subject) {
                           </tr>
                           <!-- EDP: tickets_item -->
                           <tr>
-                            <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','ticket_delete.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
+                            <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','ticket_delete.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
                             <td colspan="3" nowrap="nowrap"><div align="right">
                                 <!-- BDP: scroll_prev_gray -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">

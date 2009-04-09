@@ -68,8 +68,8 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="2"><input type="hidden" name="uaction" value="save_lang">
-                            <input name="Submit" type="submit" class="button" value="{TR_SAVE}"></td>
+                        <td colspan="2"><input type="hidden" name="uaction" value="save_lang" />
+                            <input name="Submit" type="submit" class="button" value="{TR_SAVE}" /></td>
                       </tr>
                     </table>
                 </form></td>

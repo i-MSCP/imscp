@@ -108,7 +108,7 @@ function action_delete(url, subject) {
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
-                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'new_button');"></td>
+                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'new_button');" /></td>
                               </tr>
                             </table>
                             <!-- EDP: add_button -->

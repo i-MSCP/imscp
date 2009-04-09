@@ -104,7 +104,7 @@
                </tr>
                <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
-                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');"><label for="mail_forward">{TR_FORWARD_MAIL}</label>
+                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label>
                 </td>
                </tr>
                <tr>
@@ -128,11 +128,11 @@
               </table>
               <!-- EDP: forward_mail -->
               <br />
-              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'{ACTION}');">
-              <input type="hidden" name="id" value="{MAIL_ID}">
-              <input type="hidden" name="mail_type" value="{MAIL_TYPE}">
-              <input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}">
-              <input type="hidden" name="uaction" value="{ACTION}">
+              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'{ACTION}');" />
+              <input type="hidden" name="id" value="{MAIL_ID}" />
+              <input type="hidden" name="mail_type" value="{MAIL_TYPE}" />
+              <input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}" />
+              <input type="hidden" name="uaction" value="{ACTION}" />
               </form>
              </td>
             </tr>

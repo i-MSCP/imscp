@@ -55,7 +55,7 @@
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="200" class="content2">{TR_USER_NAME}</td>
-                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput" readonly="readonly">
+                              <td class="content"><input type="text" name="user_name" value="{USER_NAME}" style="width:170px" class="textinput" readonly="readonly" />
                               </td>
                             </tr>
                             <tr>
@@ -72,13 +72,13 @@
                               <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CHANGE}  ">
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CHANGE}  " />
                               </td>
                             </tr>
                           </table>
                         <!-- end of content -->
-                          <input type="hidden" name="uaction" value="change_pass">
-                          <input type="hidden" name="id" value="{ID}">
+                          <input type="hidden" name="uaction" value="change_pass" />
+                          <input type="hidden" name="id" value="{ID}" />
                       </form></td>
                     </tr>
                 </table></td>

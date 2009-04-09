@@ -70,9 +70,9 @@
                     <!-- EDP: protected_areas -->
                     <tr>
                       <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
-                      <td colspan="4" nowrap="nowrap"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas_add.php');return document.MM_returnValue" value="{TR_ADD_AREA}">
+                      <td colspan="4" nowrap="nowrap"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas_add.php');return document.MM_returnValue" value="{TR_ADD_AREA}" />
                         &nbsp;&nbsp;&nbsp;
-                        <input name="Button2" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}"></td>
+                        <input name="Button2" type="button" class="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}" /></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

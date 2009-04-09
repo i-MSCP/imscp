@@ -64,15 +64,15 @@
 											<tr>
 												<td width="40" nowrap="nowrap">&nbsp;</td>
 												<td width="200" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
-												<td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40"></td>
+												<td class="content" nowrap="nowrap"><input type="file" name="logo_file" size="40" /></td>
 											</tr>
 											<tr>
 												<td nowrap="nowrap">&nbsp;</td>
 												<td nowrap="nowrap">
-													<input name="upload_logo" type="submit" class="button" value=" {TR_UPLOAD} ">
+													<input name="upload_logo" type="submit" class="button" value=" {TR_UPLOAD} " />
 												</td>
 												<td nowrap="nowrap">
-													<input name="delete_logo" type="submit" class="button" value=" {TR_REMOVE} ">
+													<input name="delete_logo" type="submit" class="button" value=" {TR_REMOVE} " />
 												</td>
 											</tr>
 											<tr>

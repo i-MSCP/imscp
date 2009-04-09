@@ -58,9 +58,9 @@
 														<td width="230" class="content2" nowrap="nowrap">{TR_LOGO_FILE}</td>
 														<td class="content" nowrap="nowrap">
 															<form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
-																<input type="file" name="logo_file" size="40">
-																<input type="hidden" name="uaction" value="upload_logo">
-																<input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} ">
+																<input type="file" name="logo_file" size="40" />
+																<input type="hidden" name="uaction" value="upload_logo" />
+																<input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
 															</form>
 														</td>
 													</tr>
@@ -72,8 +72,8 @@
 														<td class="content2"><img src="{OWN_LOGO}" alt="admin logo"></td>
 														<td class="content">
 															<form method="post" action="settings_layout.php">
-																<input type="hidden" name="uaction" value="delete_logo">
-																<input name="Submit" type="submit" class="button" value=" {TR_REMOVE} ">
+																<input type="hidden" name="uaction" value="delete_logo" />
+																<input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
 															</form>
 														</td>
 													</tr>

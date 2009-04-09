@@ -102,21 +102,21 @@
           <table width="100%" cellspacing="5">
             <tr>
               <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="12"></textarea>
-                      <input name="subject" type="hidden" value="{SUBJECT}">
-                      <input name="urgency" type="hidden" value="{URGENCY_ID}">
+                      <input name="subject" type="hidden" value="{SUBJECT}" />
+                      <input name="urgency" type="hidden" value="{URGENCY_ID}" />
               </td>
             </tr>
             <tr>
-              <td><input name="Button" type="button" class="button" value="{TR_REPLY}" onclick="return sbmt(document.forms[0],'send_msg');">
+              <td><input name="Button" type="button" class="button" value="{TR_REPLY}" onclick="return sbmt(document.forms[0],'send_msg');" />
                 &nbsp;&nbsp;&nbsp;
-                <input name="Button" type="button" class="button" value="{TR_ACTION}" onclick="return sbmt(document.forms[0],'{ACTION}');">
+                <input name="Button" type="button" class="button" value="{TR_ACTION}" onclick="return sbmt(document.forms[0],'{ACTION}');" />
               </td>
             </tr>
             <!-- EDP: tickets_list -->
           </table>
           <!-- end of content -->
-          <input name="uaction" type="hidden" value="">
-          <input name="screenwidth" type="hidden" value="{SCREENWIDTH}">
+          <input name="uaction" type="hidden" value="" />
+          <input name="screenwidth" type="hidden" value="{SCREENWIDTH}" />
         </form></td>
       </tr>
     </table></td>

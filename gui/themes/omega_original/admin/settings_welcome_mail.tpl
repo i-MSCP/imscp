@@ -105,10 +105,10 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" /></td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="email_setup">
+                        <input type="hidden" name="uaction" value="email_setup" />
                       </form></td>
                       <td>&nbsp;</td>
                     </tr>

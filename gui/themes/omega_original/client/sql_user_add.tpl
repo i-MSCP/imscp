@@ -61,7 +61,7 @@
                                   <!-- EDP: sqluser_list -->
                                 </select>
                                 &nbsp;&nbsp;
-                                <input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}" class="button" tabindex="1"></td>
+                                <input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}" class="button" tabindex="1" /></td>
                             </tr>
                             <!-- EDP: show_sqluser_list -->
                             <!-- BDP: create_sqluser -->
@@ -72,24 +72,24 @@
                             </tr>
                             <tr>
                               <td width="200" class="content2"><!-- BDP: mysql_prefix_yes -->
-                                  <input type="checkbox" name="use_dmn_id" {USE_DMN_ID}>
+                                  <input type="checkbox" name="use_dmn_id" {USE_DMN_ID} />
                                   <!-- EDP: mysql_prefix_yes -->
                                   <!-- BDP: mysql_prefix_no -->
-                                  <input type="hidden" name="use_dmn_id" value="on">
+                                  <input type="hidden" name="use_dmn_id" value="on" />
                                   <!-- EDP: mysql_prefix_no -->
                                 {TR_USE_DMN_ID}</td>
                               <td class="content"><!-- BDP: mysql_prefix_all -->
-                                  <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED}>
+                                  <input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED} />
                                 {TR_START_ID_POS}<br />
-                                <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED}>
+                                <input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED} />
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_all -->
                                 <!-- BDP: mysql_prefix_infront -->
-                                <input type="hidden" name="id_pos" value="start" checked="checked">
+                                <input type="hidden" name="id_pos" value="start" checked="checked" />
                                 {TR_START_ID_POS}
                                 <!-- EDP: mysql_prefix_infront -->
                                 <!-- BDP: mysql_prefix_behind -->
-                                <input type="hidden" name="id_pos" value="end" checked="checked">
+                                <input type="hidden" name="id_pos" value="end" checked="checked" />
                                 {TR_END_ID_POS}
                                 <!-- EDP: mysql_prefix_behind -->
                               </td>
@@ -108,15 +108,15 @@
                               <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td colspan="2"><input name="Add_New" type="submit" class="button" id="Add_New" value="  {TR_ADD}  ">
+                              <td colspan="2"><input name="Add_New" type="submit" class="button" id="Add_New" value="  {TR_ADD}  " />
                                 &nbsp;&nbsp;&nbsp;
-                                <input type="button" name="Submit" value="   {TR_CANCEL}   " onclick="location.href = 'sql_manage.php'" class="button"></td>
+                                <input type="button" name="Submit" value="   {TR_CANCEL}   " onclick="location.href = 'sql_manage.php'" class="button" /></td>
                             </tr>
                             <!-- EDP: create_sqluser -->
                           </table>
                         <!-- end of content -->
-                          <input type="hidden" name="uaction" value="add_user">
-                          <input type="hidden" name="id" value="{ID}">
+                          <input type="hidden" name="uaction" value="add_user" />
+                          <input type="hidden" name="id" value="{ID}" />
                       </form></td>
                     </tr>
                 </table></td>

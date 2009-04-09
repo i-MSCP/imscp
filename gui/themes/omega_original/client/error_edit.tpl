@@ -51,14 +51,14 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td><input type="hidden" name="uaction" value="updt_error">
-                            <input type="hidden" name="eid" value="{EID}"></td>
+                        <td><input type="hidden" name="uaction" value="updt_error" />
+                            <input type="hidden" name="eid" value="{EID}" /></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" value=" {TR_SAVE} ">
+                        <td><input name="Submit" type="submit" class="button" value=" {TR_SAVE} " />
                           &nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','error_pages.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','error_pages.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
                       </tr>
                     </table>
                 </form></td>

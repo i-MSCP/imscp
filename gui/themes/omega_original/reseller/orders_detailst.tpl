@@ -77,7 +77,7 @@ function delete_order(url, name) {
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2">{TR_DOMAIN}</td>
-                        <td class="content"><input name="domain" type="text" class="textinput" id="domain" style="width:210px" value="{DOMAINNAME}">
+                        <td class="content"><input name="domain" type="text" class="textinput" id="domain" style="width:210px" value="{DOMAINNAME}" />
                         </td>
                       </tr>
                       <tr>
@@ -97,7 +97,7 @@ function delete_order(url, name) {
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2">{TR_CUSTOMER_ID}</td>
-                        <td class="content"><input name="customer_id" type="text" class="textinput" id="customer_id" style="width:210px" value="{CUSTOMER_ID}"></td>
+                        <td class="content"><input name="customer_id" type="text" class="textinput" id="customer_id" style="width:210px" value="{CUSTOMER_ID}" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -172,13 +172,13 @@ function delete_order(url, name) {
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2"><input name="add" type="button" onclick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}">
+                        <td colspan="2"><input name="add" type="button" onclick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}" />
                           &nbsp;&nbsp;
-                          <input name="update" type="button" onclick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}">
+                          <input name="update" type="button" onclick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}" />
                           &nbsp;&nbsp;
-                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="button" value="{TR_DELETE_ORDER}">
-                          <input type="hidden" name="uaction" value="">
-                          <input name="order_id" type="hidden" value="{ID}"></td>
+                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="button" value="{TR_DELETE_ORDER}" />
+                          <input type="hidden" name="uaction" value="" />
+                          <input name="order_id" type="hidden" value="{ID}" /></td>
                       </tr>
                     </table>
                 </form></td>

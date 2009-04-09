@@ -147,7 +147,7 @@
                                 {TR_SEND_DATA}</td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="edit_user">
+                          <input type="hidden" name="uaction" value="edit_user" />
                           <input type="hidden" name="edit_id" value="{EDIT_ID}" />
                           <input type="hidden" name="edit_username" value="{USERNAME}" />
                       </form></td>

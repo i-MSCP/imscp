@@ -85,11 +85,11 @@
                                     <option value="26">{TR_CLEAR_LOG_LAST26}</option>
                                     <option value="52">{TR_CLEAR_LOG_LAST52}</option>
                                 </select>
-                                <input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  "></td>
+                                <input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  " /></td>
                             </tr>
                           </table>
                         <!-- EDP: clear_log -->
-                          <input type="hidden" name="uaction" value="clear_log">
+                          <input type="hidden" name="uaction" value="clear_log" />
                       </form></td>
                       <td>&nbsp;</td>
                     </tr>

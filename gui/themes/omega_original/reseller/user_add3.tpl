@@ -45,7 +45,7 @@
               <tr>
                 <td valign="top"><!-- BDP: add_user -->
                     <form name="reseller_add_users_first_frm" method="post" action="user_add3.php">
-                      <input type="hidden" name="uaction" value="user_add3_nxt">
+                      <input type="hidden" name="uaction" value="user_add3_nxt" />
                       <table width="100%" cellpadding="5" cellspacing="5">
                         <!-- BDP: page_message -->
                         <tr>
@@ -93,7 +93,7 @@
                         <tr>
                           <td>&nbsp;</td>
                           <td class="content2">{TR_ADD_ALIASES}</td>
-                          <td class="content"><input name="add_alias" type="checkbox" id="add_alias" value="on"></td>
+                          <td class="content"><input name="add_alias" type="checkbox" id="add_alias" value="on" /></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>

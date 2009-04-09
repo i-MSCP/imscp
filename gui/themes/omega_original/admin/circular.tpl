@@ -84,10 +84,10 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}"></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}" /></td>
                             </tr>
                           </table>
-                        <input type="hidden" name="uaction" value="send_circular">
+                        <input type="hidden" name="uaction" value="send_circular" />
                       </form></td>
                       <td>&nbsp;</td>
                     </tr>

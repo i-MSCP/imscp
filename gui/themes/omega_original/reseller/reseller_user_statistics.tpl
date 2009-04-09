@@ -64,13 +64,13 @@
                                     <!-- EDP: year_list -->
                                   </select>
                                 </td>
-                                <td class="content"><input name="Submit" type="submit" class="button" value=" {TR_SHOW} ">
+                                <td class="content"><input name="Submit" type="submit" class="button" value=" {TR_SHOW} " />
                                 </td>
                               </tr>
                             </table>
-                            <input type="hidden" name="uaction" value="show">
-                            <input type="hidden" name="name" value="{VALUE_NAME}">
-                            <input type="hidden" name="rid" value="{VALUE_RID}">
+                            <input type="hidden" name="uaction" value="show" />
+                            <input type="hidden" name="name" value="{VALUE_NAME}" />
+                            <input type="hidden" name="rid" value="{VALUE_RID}" />
                           </form>
                         <br />
                           <table width="100%" cellspacing="3">

@@ -69,10 +69,10 @@ function makeUser() {
                               <td width="250" class="content2">
 							   <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
-                              <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();">
-                                <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} onclick="changeDom('real');">{DOMAIN_NAME}
+                              <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();" />
+                                <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} onclick="changeDom('real');" />{DOMAIN_NAME}
                                 <!-- BDP: to_alias_domain -->
-                                <input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} onclick="changeDom('alias');">
+                                <input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} onclick="changeDom('alias');" />
                                 <select name="als_id">
                                     <!-- BDP: als_list -->
                                     <option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
@@ -89,8 +89,8 @@ function makeUser() {
                               <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_ADD}">
-                                  <input type="hidden" name="uaction" value="add_subd"></td>
+                              <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_ADD}" />
+                                  <input type="hidden" name="uaction" value="add_subd" /></td>
                             </tr>
                           </table></form></td>
                     </tr>

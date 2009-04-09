@@ -98,7 +98,7 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_SUBJECT}</td>
-                        <td class="content" width="35%"><input name="subject1" type="text" class="textinput" id="subject1" style="width:90%" value="{SUBJECT_VALUE1}"></td>
+                        <td class="content" width="35%"><input name="subject1" type="text" class="textinput" id="subject1" style="width:90%" value="{SUBJECT_VALUE1}" /></td>
                         <td class="content" width="35%"><input type="text" name="subject2" value="{SUBJECT_VALUE2}" style="width:90%" class="textinput" /></td>
                       </tr>
                       <tr>
@@ -123,10 +123,10 @@
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td colspan="3"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"></td>
+                        <td colspan="3"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" /></td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="apply">
+                  <input type="hidden" name="uaction" value="apply" />
                 </form></td>
                 <td>&nbsp;</td>
               </tr>
