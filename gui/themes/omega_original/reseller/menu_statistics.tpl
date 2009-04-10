@@ -39,7 +39,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

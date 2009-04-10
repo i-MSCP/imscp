@@ -12,7 +12,7 @@
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0" alt="ispCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0" alt="" /></td>
@@ -21,7 +21,7 @@
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
 	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
-				<tr height="95">
+				<tr style="height:95px;">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0" alt="" /></td>
 				</tr>
@@ -102,7 +102,7 @@
                                             <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
-                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1" /></td>
+                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{TRAFF_PERCENT}" height="1" alt="" /></td>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
                                                 </tr>
                                             </table></td>
@@ -117,7 +117,7 @@
                                             <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" /></td>
-                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1" /></td>
+                                                  <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{DISK_PERCENT}" height="1" alt="" /></td>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" /></td>
                                                 </tr>
                                             </table></td>
@@ -144,30 +144,30 @@
                                     <tr>
                                       <td><div align="left"><br />
                                               <!-- BDP: scroll_prev_gray -->
-                                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
+                                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
+                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
-                                        &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
+                                        &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
+                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                       <td><div align="right"><br />
                                               <!-- BDP: scroll_prev_gray -->
-                                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
+                                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
+                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
-                                        &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
+                                        &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
+                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                     </tr>

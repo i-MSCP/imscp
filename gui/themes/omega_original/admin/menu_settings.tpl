@@ -16,55 +16,55 @@
      <td><a href="settings.php" class="submenu">{TR_GENERAL_SETTINGS}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="multilanguage.php" class="submenu">{TR_MENU_I18N}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_layout.php" class="submenu">{TR_MENU_LAYOUT_TEMPLATES}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="custom_menus.php" class="submenu">{TR_CUSTOM_MENUS}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="ip_manage.php" class="submenu">{TR_MENU_MANAGE_IPS}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_server_traffic.php" class="submenu">{TR_MENU_SERVER_TRAFFIC_SETTINGS}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_welcome_mail.php" class="submenu">{TR_MENU_EMAIL_SETUP}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_lostpassword.php" class="submenu">{TR_MENU_LOSTPW_EMAIL}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_ports.php" class="submenu">{TR_SERVERPORTS}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td>&nbsp;</td>
@@ -93,7 +93,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

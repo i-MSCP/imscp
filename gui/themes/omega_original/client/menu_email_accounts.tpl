@@ -16,25 +16,25 @@
     <td><a href="mail_accounts.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="mail_add.php" class="submenu">{TR_MENU_ADD_MAIL_USER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="mail_catchall.php" class="submenu">{TR_MENU_CATCH_ALL_MAIL}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="submenu">{TR_WEBMAIL}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td>&nbsp;</td>
@@ -63,7 +63,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

@@ -217,7 +217,7 @@ SQL_QUERY;
  			AND `mail_acc` != 'postmaster'
  			AND `mail_acc` != 'webmaster'";
  	}
- 	$res6 = exec_query($sql, $query, array($data['domain_id']))
+ 	$res6 = exec_query($sql, $query, array($data['domain_id']));
 	$dat3 = $res6->FetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat

@@ -16,31 +16,31 @@
     <td><a href="index.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="password_change.php" class="submenu">{TR_MENU_CHANGE_PASSWORD}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="personal_change.php" class="submenu">{TR_MENU_CHANGE_PERSONAL_DATA}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="language.php" class="submenu">{TR_MENU_LANGUAGE}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="settings_layout.php" class="submenu">{TR_MENU_LAYOUT_SETTINGS}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td>&nbsp;</td>
@@ -69,7 +69,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

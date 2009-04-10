@@ -16,37 +16,37 @@
     <td><a href="users.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="user_add1.php" class="submenu">{TR_MENU_ADD_USER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="alias.php" class="submenu">{TR_MENU_DOMAIN_ALIAS}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="settings_welcome_mail.php" class="submenu">{TR_MENU_E_MAIL_SETUP}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="settings_lostpassword.php" class="submenu">{TR_MENU_LOSTPW_EMAIL}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td><a href="circular.php" class="submenu">{TR_MENU_CIRCULAR}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td>&nbsp;</td>
@@ -75,7 +75,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

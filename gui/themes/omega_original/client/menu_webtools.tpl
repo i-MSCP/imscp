@@ -16,52 +16,52 @@
     <td><a href="webtools.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="protected_areas.php" class="submenu">{TR_HTACCESS}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="protected_user_manage.php" class="submenu">{TR_HTACCESS_USER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td><a href="error_pages.php" class="submenu">{TR_MENU_ERROR_PAGES}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td><a href="backup.php" class="submenu">{TR_MENU_DAILY_BACKUP}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <!-- BDP: active_webmail -->
     <tr>
     <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="submenu">{TR_WEBMAIL}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <!-- EDP: active_webmail -->
     <tr>
     <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="submenu">{TR_FILEMANAGER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <!-- BDP: active_awstats -->
   <tr>
     <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="submenu">{TR_AWSTATS}</a></td>
   </tr>
    <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
   <!-- EDP: active_awstats -->
    <tr>
@@ -85,7 +85,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

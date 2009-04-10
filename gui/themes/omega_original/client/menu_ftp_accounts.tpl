@@ -16,19 +16,19 @@
     <td><a href="ftp_accounts.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="ftp_add.php" class="submenu">{TR_MENU_ADD_FTP_USER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
   <tr>
     <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="submenu">{TR_FILEMANAGER}</a></td>
   </tr>
   <tr>
-    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td>&nbsp;</td>
@@ -57,7 +57,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>

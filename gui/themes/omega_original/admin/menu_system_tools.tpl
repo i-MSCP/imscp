@@ -16,37 +16,37 @@
      <td><a href="system_info.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="settings_maintenance_mode.php" class="submenu">{TR_MAINTENANCEMODE}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="ispcp_updates.php" class="submenu">{TR_MENU_ISPCP_UPDATE}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="database_update.php" class="submenu">{TR_MENU_ISPCP_DATABASE_UPDATE}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="ispcp_debugger.php" class="submenu">{TR_MENU_ISPCP_DEBUGGER}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td><a href="rootkit_log.php" class="submenu">{TR_MENU_ROOTKIT_LOG}</a></td>
     </tr>
     <tr>
-     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
      <td>&nbsp;</td>
@@ -75,7 +75,7 @@
    </table>
   </td>
  </tr>
- <tr height="53" style="vertical-align: bottom;">
+ <tr style="height:53px;vertical-align: bottom;">
   <td class="bottom" align="center">ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</td>
  </tr>
 </table>
