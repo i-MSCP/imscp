@@ -96,17 +96,17 @@ Config::set('LOSTPASSWORD', true);
 
 // uniqkeytimeout in minutes
 Config::set('LOSTPASSWORD_TIMEOUT', 30);
-// captcha imagehigh
-Config::set('LOSTPASSWORD_CAPTCHA_HEIGHT', 65);
 // captcha imagewidth
-Config::set('LOSTPASSWORD_CAPTCHA_WIDTH', 210);
+Config::set('LOSTPASSWORD_CAPTCHA_WIDTH', 260);
+// captcha imagehigh
+Config::set('LOSTPASSWORD_CAPTCHA_HEIGHT', 70);
 // captcha background color
 Config::set('LOSTPASSWORD_CAPTCHA_BGCOLOR', array(229,243,252));
 // captcha text color
 Config::set('LOSTPASSWORD_CAPTCHA_TEXTCOLOR', array(0,53,92));
 
 /**
- * captcha ttf fontfiles (have to be under compatible license)
+ * captcha ttf fontfiles (have to be under compatible open source license)
  */
 $fonts = array(
 	'Essays1743.ttf',
