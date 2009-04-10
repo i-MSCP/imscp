@@ -97,7 +97,7 @@ Config::set('LOSTPASSWORD', true);
 // uniqkeytimeout in minutes
 Config::set('LOSTPASSWORD_TIMEOUT', 30);
 // captcha imagewidth
-Config::set('LOSTPASSWORD_CAPTCHA_WIDTH', 260);
+Config::set('LOSTPASSWORD_CAPTCHA_WIDTH', 280);
 // captcha imagehigh
 Config::set('LOSTPASSWORD_CAPTCHA_HEIGHT', 70);
 // captcha background color
@@ -113,7 +113,6 @@ $fonts = array(
 	'Essays1743-Bold.ttf',
 	'Essays1743-BoldItalic.ttf',
 	'Essays1743-Italic.ttf',
-	'Isabella.ttf',
 	'StayPuft.ttf'
 );
 // set random catcha font file
