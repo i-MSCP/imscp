@@ -110,7 +110,8 @@
                           </tr>
                         </table>
                           <br />
-                        {VL_DISK_USED} / {VL_DISK_LIMIT} </td>
+                        {VL_DISK_USED} / {VL_DISK_LIMIT}</td>
+                    </tr>
                     <tr>
                       <td>&nbsp;</td>
                       <td class="content3"><strong>{TR_FEATURE}</strong></td>

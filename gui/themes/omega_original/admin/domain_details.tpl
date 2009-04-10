@@ -85,7 +85,7 @@
                                 </tr>
                               </table>
                                 <br />
-                              {VL_TRAFFIC_USED} / {VL_TRAFFIC_LIMIT} </td>
+                              {VL_TRAFFIC_USED} / {VL_TRAFFIC_LIMIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
@@ -105,6 +105,7 @@
                               </table>
                                 <br />
                               {VL_DISK_USED} / {VL_DISK_LIMIT}</td>
+                          </tr>
                           <tr>
                             <td>&nbsp;</td>
                             <td class="content3"><strong>{TR_FEATURE}</strong></td>

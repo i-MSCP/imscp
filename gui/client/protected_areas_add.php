@@ -243,7 +243,7 @@ SQL_QUERY;
 	if ($edit = 'no' || $rs->RecordCount() == 0 || $type == 'user') {
 		$tpl->assign(
 			array(
-				'USER_CHECKED' => " checked ",
+				'USER_CHECKED' => 'checked="checked"',
 				'GROUP_CHECKED' => "",
 				'USER_FORM_ELEMENS' => "false",
 				'GROUP_FORM_ELEMENS' => "true",
@@ -255,7 +255,7 @@ SQL_QUERY;
 		$tpl->assign(
 			array(
 				'USER_CHECKED' => "",
-				'GROUP_CHECKED' => " checked ",
+				'GROUP_CHECKED' => 'checked="checked"',
 				'USER_FORM_ELEMENS' => "true",
 				'GROUP_FORM_ELEMENS' => "false",
 			)

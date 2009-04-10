@@ -48,9 +48,9 @@ final class Database {
 				$ret = $sql->execute($param);
 			} elseif (is_string($param) || is_int($param)) {
 				$ret = $sql->execute(array($param));
-			} else
+			} else {
 				$ret = $sql->execute();
-
+			}
 			if ($ret) return new DatabaseResult($sql);
 		} else {
 			$ret = $this->_db->query($sql);

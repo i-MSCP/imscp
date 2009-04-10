@@ -148,29 +148,29 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$details = '';
 
 		if ($hp_php === '_yes_') {
-			$details = tr('PHP Support: enabled') . "<br>";
+			$details = tr('PHP Support: enabled') . "<br />";
 			$php = "yes";
 		} else {
-			$details = tr('PHP Support: disabled') . "<br>";
+			$details = tr('PHP Support: disabled') . "<br />";
 			$php = "no";
 		}
 		if ($hp_cgi === '_yes_') {
 			$cgi = "yes";
-			$details .= tr('CGI Support: enabled') . "<br>";
+			$details .= tr('CGI Support: enabled') . "<br />";
 		} else {
 			$cgi = "no";
-			$details .= tr('CGI Support: disabled') . "<br>";
+			$details .= tr('CGI Support: disabled') . "<br />";
 		}
-		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br>";
+		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
 
 		$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
 
-		$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br>";
-		$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br>";
-		$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br>";
-		$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br>";
-		$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br>";
-		$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br>";
+		$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
+		$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
+		$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
+		$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
+		$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
+		$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br />";
 		$details .= $hdd_usage . $traffic_usage;
 
 		$price = $rs->fields['price'];
@@ -258,6 +258,7 @@ $tpl->assign(
 
 /**
  * @todo the 2nd query has 2 identical tables in FROM-clause, is this OK?
+ * @todo ? and params in array have different count
  */
 function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$date = time();

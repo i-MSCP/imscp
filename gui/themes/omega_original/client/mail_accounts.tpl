@@ -102,12 +102,10 @@ function action_delete(url, mailacc) {
                     <tr>
                       <td colspan="5" align="right" nowrap="nowrap" class="content3">{TR_TOTAL_MAIL_ACCOUNTS}:&nbsp;<b>{TOTAL_MAIL_ACCOUNTS}</b>/{ALLOWED_MAIL_ACCOUNTS}</td>
                     </tr>
-		    <form action="mail_accounts.php" method="post" name="showdefault" id="showdefault">
 		      <tr>
-			<td colspan="2"><input type="hidden" name="uaction" value="show" />
-			  <input name="Submit" type="submit" class="button" value="{TR_SHOW_DEFAULT_EMAILS}" /></td>
+			<td colspan="2"><form action="mail_accounts.php" method="post" name="showdefault" id="showdefault"><input type="hidden" name="uaction" value="show" />
+			  <input name="Submit" type="submit" class="button" value="{TR_SHOW_DEFAULT_EMAILS}" /></form></td>
 		      </tr>
-		    </form>
                     <!-- EDP: mails_total -->
                   </table></td>
                 </tr>

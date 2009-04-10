@@ -61,7 +61,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME' => '',
 				'DOMAIN_NAME' => $dmn_name,
-				'DMN_TYPE_CHECKED' => 'checked',
+				'DMN_TYPE_CHECKED' => 'checked="checked"',
 				'ALS_TYPE_CHECKED' => '',
 				'SUB_TYPE_CHECKED' => '',
 				'OTHER_DIR' => '',

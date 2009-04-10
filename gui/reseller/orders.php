@@ -154,11 +154,11 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 						`admin_id` = ?
 				";
 				$rs_customer = exec_query($sql, $cusrtomer_query, array($customer_id));
-				$user_details = $rs_customer->fields['fname'] . "&nbsp;" . $rs_customer->fields['lname'] . "<br><a href=\"mailto:" . $rs_customer->fields['email'] . "\" class=\"link\">" . $rs_customer->fields['email'] . "</a><br>" . $rs_customer->fields['zip'] . "&nbsp;" . $rs_customer->fields['city'] . "&nbsp;" . $rs_customer->fields['state'] . "&nbsp;" . $rs_customer->fields['country'];
+				$user_details = $rs_customer->fields['fname'] . "&nbsp;" . $rs_customer->fields['lname'] . "<br /><a href=\"mailto:" . $rs_customer->fields['email'] . "\" class=\"link\">" . $rs_customer->fields['email'] . "</a><br />" . $rs_customer->fields['zip'] . "&nbsp;" . $rs_customer->fields['city'] . "&nbsp;" . $rs_customer->fields['state'] . "&nbsp;" . $rs_customer->fields['country'];
 				$order_status = tr('Update order');
 				$tpl->assign('LINK', 'orders_update.php?order_id=' . $rs->fields['id']);
 			} else {
-				$user_details = $rs->fields['fname'] . "&nbsp;" . $rs->fields['lname'] . "<br><a href=\"mailto:" . $rs->fields['email'] . "\" class=\"link\">" . $rs->fields['email'] . "</a><br>" . $rs->fields['zip'] . "&nbsp;" . $rs->fields['city'] . "&nbsp;" . $rs->fields['state'] . "&nbsp;" . $rs->fields['country'];
+				$user_details = $rs->fields['fname'] . "&nbsp;" . $rs->fields['lname'] . "<br /><a href=\"mailto:" . $rs->fields['email'] . "\" class=\"link\">" . $rs->fields['email'] . "</a><br />" . $rs->fields['zip'] . "&nbsp;" . $rs->fields['city'] . "&nbsp;" . $rs->fields['state'] . "&nbsp;" . $rs->fields['country'];
 				$tpl->assign('LINK', 'orders_detailst.php?order_id=' . $rs->fields['id']);
 			}
 			$tpl->assign(

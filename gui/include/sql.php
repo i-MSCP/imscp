@@ -28,7 +28,7 @@ Config::set('DB_NAME', Config::get('DATABASE_NAME'));
 
 
 @$sql = Database::connect(Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_TYPE'), Config::get('DB_HOST'), Config::get('DB_NAME'))
-	or system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: ' . $sql->ErrorMsg());
+	or system_message('ERROR: Unable to connect to SQL server !<br />SQL returned: ' . $sql->ErrorMsg());
 
 // switch optionally to utf8 based communication with the database
 if (Config::exists('DATABASE_UTF8') && Config::get('DATABASE_UTF8') == 'yes') {

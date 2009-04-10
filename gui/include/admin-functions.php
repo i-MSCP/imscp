@@ -582,7 +582,6 @@ function gen_user_list(&$tpl, &$sql) {
 	}
 
 	$records_count = $rs->fields['cnt'];
-	// print "records count: ".$records_count."<br>";
 	$rs = execute_query($sql, $search_query);
 
 	$i = 0;

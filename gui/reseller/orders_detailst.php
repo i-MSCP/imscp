@@ -108,7 +108,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 			`id` = ?
 	";
 	$rs = exec_query($sql, $query, array($plan_id));
-	$plan_name = $rs->fields['name'] . "<br>" . $rs->fields['description'];
+	$plan_name = $rs->fields['name'] . "<br />" . $rs->fields['description'];
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 

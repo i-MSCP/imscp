@@ -58,7 +58,7 @@ SQL_QUERY;
 		$odir = "";
 		$oins = "";
 	} else {
-		$odir = " checked ";
+		$odir = 'checked="checked"';
 		$oins = substr($homedir, strlen($nftp_dir));
 	}
 
