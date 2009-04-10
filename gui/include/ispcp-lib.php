@@ -104,8 +104,20 @@ Config::set('LOSTPASSWORD_CAPTCHA_WIDTH', 210);
 Config::set('LOSTPASSWORD_CAPTCHA_BGCOLOR', array(229,243,252));
 // captcha text color
 Config::set('LOSTPASSWORD_CAPTCHA_TEXTCOLOR', array(0,53,92));
-// captcha ttf fontfile
-Config::set('LOSTPASSWORD_CAPTCHA_FONT', Config::get('LOGIN_TEMPLATE_PATH') . '/font/cap.ttf');
+
+/**
+ * captcha ttf fontfiles (have to be under compatible license)
+ */
+$fonts = array(
+	'Essays1743.ttf',
+	'Essays1743-Bold.ttf',
+	'Essays1743-BoldItalic.ttf',
+	'Essays1743-Italic.ttf',
+	'Isabella.ttf',
+	'StayPuft.ttf'
+);
+// set random catcha font file
+Config::set('LOSTPASSWORD_CAPTCHA_FONT', INCLUDEPATH.'/fonts/' . $fonts[mt_rand(0, count($fonts)-1)]);
 
 // enable or disable bruteforcedetection
 // false = disable, true = enable
