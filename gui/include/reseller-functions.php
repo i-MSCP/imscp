@@ -1153,7 +1153,7 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$languages = array();
 	$query = "SHOW TABLES";
 
-	$res1 = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query, array());
 
 	while (!$rs->EOF) {
 		$lang_table = $rs->fields[0];
@@ -1197,7 +1197,7 @@ SQL_QUERY;
 			array_push($languages, array($matches[0], $selected, $language_name));
 		}
 
-		$res1->MoveNext();
+		$rs->MoveNext();
 	}
 
 	asort($languages[0], SORT_STRING);

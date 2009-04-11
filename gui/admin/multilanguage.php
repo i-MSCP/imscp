@@ -194,7 +194,7 @@ function show_lang(&$tpl, &$sql) {
 		$dat = explode('_', $data);
 
 		$query = "SELECT COUNT(`msgid`) AS cnt FROM " . $tables[$i];
-		$res1 = exec_query($sql, $query, array());
+		$rs = exec_query($sql, $query, array());
 
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_language'";
 		$res2 = exec_query($sql, $query, array());
@@ -271,7 +271,7 @@ function show_lang(&$tpl, &$sql) {
 		// $res
 		$tpl->assign(
 			array(
-				'MESSAGES'		=> tr('%d messages translated', $res1->fields['cnt']),
+				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']),
 				'URL_EXPORT'	=> 'multilanguage_export.php?export_lang=lang_' . $dat[1],
 			)
 		);
