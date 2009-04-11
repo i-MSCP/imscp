@@ -204,7 +204,7 @@ function show_lang(&$tpl, &$sql) {
 
 		$language_name = ($res2->RecordCount() == 0) ? tr('Unknown') : $res2->fields['msgstr'];
 
-		if ($res3->RecordCount() !== 0 && class_exists('DateTime')) {
+		if ($res3->RecordCount() !== 0 && $res3->fields['msgstr'] != '' && class_exists('DateTime')) {
 			$tmp_lang = new DateTime($res3->fields['msgstr']);
 			$language_revision = $tmp_lang->format('Y-m-d H:i');
 			unset($tmp_lang);

@@ -3875,6 +3875,9 @@ msgstr "Benutzer wurde nicht gelöscht!"
 msgid "Show server load"
 msgstr "Zeige Serverauslastung"
 
+msgid "Language was removed!"
+msgstr "Sprache wurde deinstalliert."
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

@@ -3789,3 +3789,6 @@ msgstr ""
 
 msgid "Show server load"
 msgstr ""
+
+msgid "Language was removed!"
+msgstr ""
