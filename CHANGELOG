@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-04-12 Thomas Häber
 	- GUI:
 		* added GUI settings to enable/disable login from external source/website seperated for admin/reseller/client
+		* added missing translation string for "Count default E-Mail addresses"
 
 2009-04-11 Thomas Häber
 	- GUI:

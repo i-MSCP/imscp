@@ -1192,3 +1192,4 @@ zh_HK = Chinesisch (Langzeichen)
 Prevent external login for admins = Verhindere Login aus externer Quelle für Admins
 Prevent external login for resellers = Verhindere Login aus externer Quelle für Reseller
 Prevent external login for clients = Verhindere Login aus externer Quelle für Benutzer
+Count default E-Mail addresses = Berechne die Standard-E-Mail-Adressen mit ein

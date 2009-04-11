@@ -3888,3 +3888,6 @@ msgstr ""
 
 msgid "Prevent external login for clients"
 msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""

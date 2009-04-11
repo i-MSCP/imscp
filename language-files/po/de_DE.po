@@ -3974,6 +3974,9 @@ msgstr "Verhindere Login aus externer Quelle für Reseller"
 msgid "Prevent external login for clients"
 msgstr "Verhindere Login aus externer Quelle für Benutzer"
 
+msgid "Count default E-Mail addresses"
+msgstr "Berechne die Standard-E-Mail-Adressen mit ein"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"
