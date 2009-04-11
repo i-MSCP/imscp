@@ -199,13 +199,25 @@ function show_lang(&$tpl, &$sql) {
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_language'";
 		$res2 = exec_query($sql, $query, array());
 
-		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageRevision'";
+		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageSetlocaleValue'";
 		$res3 = exec_query($sql, $query, array());
 
-		$language_name = ($res2->RecordCount() == 0) ? tr('Unknown') : $res2->fields['msgstr'];
+		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageRevision'";
+		$res4 = exec_query($sql, $query, array());
 
-		if ($res3->RecordCount() !== 0 && $res3->fields['msgstr'] != '' && class_exists('DateTime')) {
-			$tmp_lang = new DateTime($res3->fields['msgstr']);
+		if ($res2->RecordCount() == 0 || $res3->RecordCount() == 0) {
+			$language_name = tr('Unknown');
+		} else {
+			$tr_langcode = tr($res3->fields['msgstr']);
+			if ($res3->fields['msgstr'] == $tr_langcode) { // no translation found
+				$language_name = $res2->fields['msgstr'];
+			} else { // found translation
+				$language_name = $tr_langcode;
+			}
+		}
+
+		if ($res4->RecordCount() !== 0 && $res4->fields['msgstr'] != '' && class_exists('DateTime')) {
+			$tmp_lang = new DateTime($res4->fields['msgstr']);
 			$language_revision = $tmp_lang->format('Y-m-d H:i');
 			unset($tmp_lang);
 		} else {

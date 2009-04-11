@@ -64,7 +64,7 @@ $rs = exec_query($sql, $query, array());
 
 write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_lang));
 
-set_page_message('Language was removed!');
+set_page_message(tr('Language was removed!'));
 
 header("Location: multilanguage.php");
 die();

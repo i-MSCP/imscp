@@ -4,6 +4,9 @@ ispCP ω 1.0.1 Changelog
 2009-04-11 Thomas Häber
 	- GUI:
 		* Fixed #1788: captcha fontfile not found (with new implemented font loading and LGPL fonts)
+		* added field revision(-date) for translations in admin panel for administrator
+		* added possibility to translate language names (+ german trqanslations)
+		* added missing translation string "Language was removed!"
 
 2009-04-09 Thomas Häber
 	- GUI:

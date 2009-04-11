@@ -3878,6 +3878,93 @@ msgstr "Zeige Serverauslastung"
 msgid "Language was removed!"
 msgstr "Sprache wurde deinstalliert."
 
+msgid "bg_BG"
+msgstr "Bulgarisch"
+
+msgid "ca_ES"
+msgstr "Katalanisch"
+
+msgid "cs_CZ"
+msgstr "Tchechisch"
+
+msgid "da_DK"
+msgstr "Dänisch"
+
+msgid "de_DE"
+msgstr "Deutsch"
+
+msgid "en_GB"
+msgstr "Englisch (Britisch)"
+
+msgid "es_AR"
+msgstr "Spanisch (Argentinien)"
+
+msgid "es_ES"
+msgstr "Spanisch (Spanien)"
+
+msgid "eu_ES"
+msgstr "Baskisch"
+
+msgid "fi_FI"
+msgstr "Finnisch"
+
+msgid "fr_FR"
+msgstr "Französisch"
+
+msgid "gl_ES"
+msgstr "Galicisch"
+
+msgid "hu_HU"
+msgstr "Ungarisch"
+
+msgid "it_IT"
+msgstr "Italienisch"
+
+msgid "ja_JP"
+msgstr "Japanisch"
+
+msgid "nb_NO"
+msgstr "Norwegisch"
+
+msgid "nl_NL"
+msgstr "Niederländisch"
+
+msgid "pl_PL"
+msgstr "Polnisch"
+
+msgid "pt_BR"
+msgstr "Portugisisch (Brasilien)"
+
+msgid "pt_PT"
+msgstr "Portugisisch (Portugal)"
+
+msgid "ro_RO"
+msgstr "Romänisch"
+
+msgid "ru_RU"
+msgstr "Russisch"
+
+msgid "sk_SK"
+msgstr "Slowakisch"
+
+msgid "sv_SE"
+msgstr "Schwedisch"
+
+msgid "th_TH"
+msgstr "Thailändisch"
+
+msgid "tr_TR"
+msgstr "Türkisch"
+
+msgid "uk_UA"
+msgstr "Ukrainisch"
+
+msgid "zh_CN"
+msgstr "Chinesisch (Kurzzeichen)"
+
+msgid "zh_HK"
+msgstr "Chinesisch (Langzeichen)"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

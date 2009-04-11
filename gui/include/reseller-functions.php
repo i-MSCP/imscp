@@ -1153,12 +1153,12 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$languages = array();
 	$query = "SHOW TABLES";
 
-	$rs = exec_query($sql, $query, array());
+	$res1 = exec_query($sql, $query, array());
 
 	while (!$rs->EOF) {
 		$lang_table = $rs->fields[0];
 
-		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table , $matches)) {
+		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table, $matches)) {
 			$query = <<<SQL_QUERY
 				SELECT
 					`msgstr`
@@ -1168,12 +1168,28 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 					`msgid` = 'ispcp_language'
 SQL_QUERY;
 
-			$res = exec_query($sql, $query, array());
+			$res2 = exec_query($sql, $query, array());
 
-			if ($res->RecordCount() == 0) {
+			$query = <<<SQL_QUERY
+				SELECT
+					`msgstr`
+				FROM
+					$lang_table
+				WHERE
+					`msgid` = 'ispcp_languageSetlocaleValue'
+SQL_QUERY;
+
+			$res3 = exec_query($sql, $query, array());
+
+			if ($res2->RecordCount() == 0 || $res3->RecordCount() == 0) {
 				$language_name = tr('Unknown');
 			} else {
-				$language_name = $res->fields['msgstr'];
+				$tr_langcode = tr($res3->fields['msgstr']);
+				if ($res3->fields['msgstr'] == $tr_langcode) { // no translation found
+					$language_name = $res2->fields['msgstr'];
+				} else { // found translation
+					$language_name = $tr_langcode;
+				}
 			}
 
 			$selected = ($matches[0] === $user_def_language) ? 'selected="selected"' : '';
@@ -1181,7 +1197,7 @@ SQL_QUERY;
 			array_push($languages, array($matches[0], $selected, $language_name));
 		}
 
-		$rs->MoveNext();
+		$res1->MoveNext();
 	}
 
 	asort($languages[0], SORT_STRING);
