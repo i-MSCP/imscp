@@ -60,10 +60,10 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-		list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
+	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {
-		$user_def_layout = $_SESSION['user_theme'];
-		$user_def_lang = $_SESSION['user_def_lang'];
+	$user_def_layout = $_SESSION['user_theme'];
+	$user_def_lang = $_SESSION['user_def_lang'];
 }
 
 gen_def_language($tpl, $sql, $user_def_lang);

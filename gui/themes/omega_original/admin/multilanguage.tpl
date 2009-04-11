@@ -51,26 +51,28 @@ function action_delete(url, language) {
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
+                              <td colspan="6" class="title"><span class="message">{MESSAGE}</span></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="5" class="content3"><b>{TR_INSTALLED_LANGUAGES}</b></td>
+                              <td colspan="6" class="content3"><b>{TR_INSTALLED_LANGUAGES}</b></td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td class="content2"><b>{TR_LANGUAGE}</b></td>
-                              <td class="content2"><b>{TR_MESSAGES}</b></td>
-                              <td class="content2" width="100" align="center"><b>{TR_DEFAULT}</b></td>
-                              <td width="100" colspan="2" align="center" class="content2"><b>{TR_ACTION}</b></td>
+                              <td class="content2"><strong>{TR_LANGUAGE}</strong></td>
+                              <td class="content2"><strong>{TR_MESSAGES}</strong></td>
+                              <td class="content2"><strong>{TR_LANG_REV}</strong></td>
+                              <td class="content2" width="80" align="center"><strong>{TR_DEFAULT}</strong></td>
+                              <td width="100" colspan="2" align="center" class="content2"><strong>{TR_ACTION}</strong></td>
                             </tr>
                             <!-- BDP: lang_row -->
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" align="left" /> {LANGUAGE}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{MESSAGES}</td>
-                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap" align="center"><!-- BDP: lang_def -->
+                              <td class="{LANG_CLASS}" nowrap="nowrap">{LANGUAGE_REVISION}</td>
+                              <td class="{LANG_CLASS}" width="80" nowrap="nowrap" align="center"><!-- BDP: lang_def -->
                                 {DEFAULT}
                                 <!-- EDP: lang_def -->
                 <!-- BDP: lang_radio -->

@@ -1,7 +1,7 @@
 ispcp_table = SpanishSpain
 ispcp_language = Español (España)
 ispcp_languageSetlocaleValue = es_ES
-encoding = UTF-8
+ispcp_languageRevision = 2009-02-16 21:07+0100
 encoding = UTF-8
 ispCP Omega a Virtual Hosting Control System = ispCP Omega - Gestor de hostings virtuales
 Administrator login = Inciar sesión como administrador

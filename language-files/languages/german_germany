@@ -1,6 +1,7 @@
 ispcp_table = GermanGermany
 ispcp_language = Deutsch
 ispcp_languageSetlocaleValue = de_DE
+ispcp_languageRevision = 2009-02-25 20:55+0730
 encoding = UTF-8
 ispCP Omega a Virtual Hosting Control System = ispCP Omega ein Virtual Hosting Control System
 Administrator login = Administrator-Anmeldung

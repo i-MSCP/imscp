@@ -76,7 +76,9 @@ function install_lang() {
 		$file_type = $_FILES['lang_file']['type'];
 		$file = $_FILES['lang_file']['tmp_name'];
 
-		if (empty($_FILES['lang_file']['name']) || !file_exists($file) || !is_readable($file)) {
+		if (empty($_FILES['lang_file']['name'])
+			|| !file_exists($file)
+			|| !is_readable($file)) {
 			set_page_message(tr('Upload file error!'));
 			return;
 		}
@@ -94,7 +96,12 @@ function install_lang() {
 			}
 
 			$t = '';
-			$ab = array('ispcp_languageSetlocaleValue' => '', 'ispcp_table' => '', 'ispcp_language' => '');
+			$ab = array(
+				'ispcp_languageRevision' => '',
+				'ispcp_languageSetlocaleValue' => '',
+				'ispcp_table' => '',
+				'ispcp_language' => ''
+			);
 			$errors = 0;
 
 			while (!feof($fp) && $errors <= 3) {
@@ -186,14 +193,25 @@ function show_lang(&$tpl, &$sql) {
 		}
 		$dat = explode('_', $data);
 
-		$query = "SELECT COUNT(`msgid`) AS cnt FROM $tables[$i]";
-		$rs = exec_query($sql, $query, array());
+		$query = "SELECT COUNT(`msgid`) AS cnt FROM " . $tables[$i];
+		$res1 = exec_query($sql, $query, array());
 
-		$query = "SELECT `msgstr` FROM $tables[$i] WHERE `msgid` = 'ispcp_language'";
-		$res = exec_query($sql, $query, array());
+		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_language'";
+		$res2 = exec_query($sql, $query, array());
 
-		$language_name = ($res->RecordCount() == 0) ? tr('Unknown') : $res->fields['msgstr'];
+		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageRevision'";
+		$res3 = exec_query($sql, $query, array());
 
+		$language_name = ($res2->RecordCount() == 0) ? tr('Unknown') : $res2->fields['msgstr'];
+
+		if ($res3->RecordCount() !== 0 && class_exists('DateTime')) {
+			$tmp_lang = new DateTime($res3->fields['msgstr']);
+			$language_revision = $tmp_lang->format('Y-m-d H:i');
+			unset($tmp_lang);
+		} else {
+			$language_revision = tr('Unknown');
+		}
+		
 		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
 		if ($usr_def_lng[1] == $dat[1]) {
@@ -214,12 +232,14 @@ function show_lang(&$tpl, &$sql) {
 			$tpl->parse('LANG_RADIO', 'lang_radio');
 		}
 
-		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1] || $usr_def_lng[1] == $dat[1]) {
+		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1]
+			|| $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(
 					'TR_UNINSTALL'		=> tr('uninstall'),
 					'LANG_DELETE_LINK'	=> '',
 					'LANGUAGE'			=> $language_name,
+					'LANGUAGE_REVISION'	=> $language_revision,
 				)
 			);
 			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
@@ -230,6 +250,7 @@ function show_lang(&$tpl, &$sql) {
 					'URL_DELETE'		=> 'language_delete.php?delete_lang=lang_' . $dat[1],
 					'LANG_DELETE_SHOW'	=> '',
 					'LANGUAGE'			=> $language_name,
+					'LANGUAGE_REVISION'	=> $language_revision,
 				)
 			);
 			$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
@@ -238,7 +259,7 @@ function show_lang(&$tpl, &$sql) {
 		// $res
 		$tpl->assign(
 			array(
-				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']),
+				'MESSAGES'		=> tr('%d messages translated', $res1->fields['cnt']),
 				'URL_EXPORT'	=> 'multilanguage_export.php?export_lang=lang_' . $dat[1],
 			)
 		);
@@ -268,6 +289,7 @@ $tpl->assign(
 		'TR_INSTALLED_LANGUAGES'	=> tr('Installed languages'),
 		'TR_LANGUAGE'				=> tr('Language'),
 		'TR_MESSAGES'				=> tr('Messages'),
+		'TR_LANG_REV'				=> tr('Date'),
 		'TR_DEFAULT'				=> tr('Default'),
 		'TR_ACTION'					=> tr('Action'),
 		'TR_SAVE'					=> tr('Save'),
