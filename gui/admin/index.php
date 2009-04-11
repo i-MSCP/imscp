@@ -20,7 +20,7 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__);
+check_login(__FILE__, Config::get('PREVENT_EXTERNAL_LOGIN_ADMIN'));
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 

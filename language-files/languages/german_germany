@@ -1189,3 +1189,6 @@ tr_TR = Türkisch
 uk_UA = Ukrainisch
 zh_CN = Chinesisch (Kurzzeichen)
 zh_HK = Chinesisch (Langzeichen)
+Prevent external login for admins = Verhindere Login aus externer Quelle für Admins
+Prevent external login for resellers = Verhindere Login aus externer Quelle für Reseller
+Prevent external login for clients = Verhindere Login aus externer Quelle für Benutzer

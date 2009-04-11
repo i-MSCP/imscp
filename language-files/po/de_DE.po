@@ -3965,6 +3965,15 @@ msgstr "Chinesisch (Kurzzeichen)"
 msgid "zh_HK"
 msgstr "Chinesisch (Langzeichen)"
 
+msgid "Prevent external login for admins"
+msgstr "Verhindere Login aus externer Quelle für Admins"
+
+msgid "Prevent external login for resellers"
+msgstr "Verhindere Login aus externer Quelle für Reseller"
+
+msgid "Prevent external login for clients"
+msgstr "Verhindere Login aus externer Quelle für Benutzer"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

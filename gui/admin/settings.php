@@ -57,6 +57,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$domain_rows_per_page			= clean_input($_POST['domain_rows_per_page']);
 	$checkforupdate					= $_POST['checkforupdate'];
 	$show_serverload				= $_POST['show_serverload'];
+	$prevent_external_login_admin	= $_POST['prevent_external_login_admin'];
+	$prevent_external_login_reseller= $_POST['prevent_external_login_reseller'];
+	$prevent_external_login_client	= $_POST['prevent_external_login_client'];
 
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
@@ -74,12 +77,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} // switch
 
 	if ((!is_number($lostpassword_timeout))
-		OR (!is_number($passwd_chars))
-		OR (!is_number($bruteforce_max_login))
-		OR (!is_number($bruteforce_block_time))
-		OR (!is_number($bruteforce_between_time))
-		OR (!is_number($bruteforce_max_capcha))
-		OR (!is_number($domain_rows_per_page))) {
+		|| (!is_number($passwd_chars))
+		|| (!is_number($bruteforce_max_login))
+		|| (!is_number($bruteforce_block_time))
+		|| (!is_number($bruteforce_between_time))
+		|| (!is_number($bruteforce_max_capcha))
+		|| (!is_number($domain_rows_per_page))) {
 		set_page_message(tr('ERROR: Only positive numbers are allowed !'));
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
@@ -104,6 +107,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('LOG_LEVEL', $log_level);
 		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
 		setConfig_Value('SHOW_SERVERLOAD', $show_serverload);
+		setConfig_Value('PREVENT_EXTERNAL_LOGIN_ADMIN', $prevent_external_login_admin);
+		setConfig_Value('PREVENT_EXTERNAL_LOGIN_RESELLER', $prevent_external_login_reseller);
+		setConfig_Value('PREVENT_EXTERNAL_LOGIN_CLIENT', $prevent_external_login_client);
 		set_page_message(tr('Settings saved !'));
 	}
 }
@@ -210,6 +216,30 @@ if (Config::get('SHOW_SERVERLOAD')) {
 	$tpl->assign('SHOW_SERVERLOAD_SELECTED_OFF', 'selected="selected"');
 }
 
+if (Config::get('PREVENT_EXTERNAL_LOGIN_ADMIN')) {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', '');
+} else {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', '');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', 'selected="selected"');
+}
+
+if (Config::get('PREVENT_EXTERNAL_LOGIN_RESELLER')) {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', '');
+} else {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', '');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', 'selected="selected"');
+}
+
+if (Config::get('PREVENT_EXTERNAL_LOGIN_CLIENT')) {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', '');
+} else {
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', '');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', 'selected="selected"');
+}
+
 switch (Config::get('LOG_LEVEL')) {
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
@@ -281,7 +311,10 @@ $tpl->assign(
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
 		'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
-		'TR_SHOW_SERVERLOAD' => tr('Show server load')
+		'TR_SHOW_SERVERLOAD' => tr('Show server load'),
+		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
+		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
+		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
 	)
 );
 

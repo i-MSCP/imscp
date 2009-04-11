@@ -219,6 +219,30 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td class="content2">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</td>
+                              <td class="content"><select name="prevent_external_login_admin" id="prevent_external_login_admin">
+                                  <option value="0" {PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON}>{TR_ENABLED}</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</td>
+                              <td class="content"><select name="prevent_external_login_reseller" id="prevent_external_login_reseller">
+                                  <option value="0" {PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON}>{TR_ENABLED}</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</td>
+                              <td class="content"><select name="prevent_external_login_client" id="prevent_external_login_client">
+                                  <option value="0" {PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON}>{TR_ENABLED}</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td colspan="2"><input type="hidden" name="uaction" value="apply" />
                                   <input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" /></td>
                             </tr>

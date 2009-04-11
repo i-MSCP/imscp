@@ -169,7 +169,15 @@ Config::set('COUNT_DEFAULT_EMAIL_ADDRESSES', false);
 // false: email accounts are soft suspended (passwords are modified so user can't access the accounts)
 Config::set('HARD_MAIL_SUSPENSION', true);
 
-// false: disable automatic serch for new version
+// prevent external login (ie. check for valid local referer)
+// separated in admin, reseller and client
+// true = prevent external login, check for referer, more secure
+// false = allow external login, do not check for referere, less security (risky)
+Config::set('PREVENT_EXTERNAL_LOGIN_ADMIN', true);
+Config::set('PREVENT_EXTERNAL_LOGIN_RESELLER', true);
+Config::set('PREVENT_EXTERNAL_LOGIN_CLIENT', true);
+
+// false: disable automatic search for new version
 Config::set('CHECK_FOR_UPDATES', true);
 
 Config::set('CRITICAL_UPDATE_REVISION', 0);

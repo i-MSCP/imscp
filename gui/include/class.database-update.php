@@ -328,6 +328,25 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * add variables PREVENT_EXTERNAL_LOGIN for each user type to config table
+	 *
+	 * @author		Thomas Häber
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1659
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_13() {
+		$sqlUpd = array();
+		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_ADMIN' , '1')";
+		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_RESELLER' , '1')";
+		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_CLIENT' , '1')";
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

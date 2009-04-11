@@ -3879,3 +3879,12 @@ msgstr ""
 
 msgid "zh_HK"
 msgstr ""
+
+msgid "Prevent external login for admins"
+msgstr ""
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""

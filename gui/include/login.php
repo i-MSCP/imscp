@@ -166,7 +166,13 @@ SQL_QUERY;
 	return true;
 }
 
-function check_login($fName = null, $checkReferer = true) {
+/**
+ * check for valid user login and valid file request/call
+ *
+ * @param string $fName full path and filename of the file ie. with magic constant __FILE__
+ * @param boolean $preventExternalLogin check HTTP Referer for valid request/call, ie. to prevent login from external websites
+ */
+function check_login($fName = null, $preventExternalLogin = true) {
 
 	// session-type check:
 	if (!check_user_login()) {
@@ -192,7 +198,8 @@ function check_login($fName = null, $checkReferer = true) {
 		}
 	}
 
-	if ($checkReferer) {
+	// prevent external login / check for referer
+	if ($preventExternalLogin) {
 		if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
 
 			$info = parse_url($_SERVER['HTTP_REFERER']);
