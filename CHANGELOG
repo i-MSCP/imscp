@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-14 Thomas Häber
+	- GUI:
+		* added and improved highlighting expressions for admin log
+
 2009-04-12 Thomas Häber
 	- GUI:
 		* added GUI settings to enable/disable login from external source/website seperated for admin/reseller/client

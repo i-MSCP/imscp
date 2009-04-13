@@ -132,13 +132,17 @@ function generate_page(&$tpl) {
 
 			$log_message = $rs->fields['log_message'];
 			$replaces = array(
-				'/[^a-zA-Z](delete)[^a-zA-Z]/i'		=> ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z](add)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](change)[^a-zA-Z]/i'		=> ' <strong style="color:#3300FF">\\1</strong> ',
-				'/[^a-zA-Z](edit)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](unknown)[^a-zA-Z]/i'	=> ' <strong style="color:#CC00FF">\\1</strong> ',
-				'/[^a-zA-Z](logged)[^a-zA-Z]/i'		=> ' <strong style="color:#336600">\\1</strong> ',
-				'/(bad password login data)/i'		=> ' <strong style="color:#FF0000">\\1</strong> '
+				'/[^a-zA-Z](delete[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z](add(s|ed)?)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
+				'/[^a-zA-Z](change[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#3300FF">\\1</strong> ',
+				'/[^a-zA-Z](update[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#3300FF">\\1</strong> ',
+				'/[^a-zA-Z](edit(s|ed)?)[^a-zA-Z]/i'	=> ' <strong style="color:#33CC66">\\1</strong> ',
+				'/[^a-zA-Z](unknown)[^a-zA-Z]/i'		=> ' <strong style="color:#CC00FF">\\1</strong> ',
+				'/[^a-zA-Z](logged)[^a-zA-Z]/i'			=> ' <strong style="color:#336600">\\1</strong> ',
+				'/[^a-zA-Z](manipulation)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z]*(Warning[\!]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
+				'/(bad password login data)/i'			=> ' <strong style="color:#FF0000">\\1</strong> '
 			);
 
 			foreach ($replaces as $pattern => $replacement) {

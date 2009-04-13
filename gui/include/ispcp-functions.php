@@ -352,7 +352,7 @@ function is_number($integer) {
 }
 
 function is_basicString($string) {
-	if (preg_match('/^[a-zA-Z0-9_-]+$/D', $string)) {
+	if (preg_match('/^[\w\-]+$/D', $string)) {
 		return true;
 	}
 	return false;
