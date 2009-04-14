@@ -258,7 +258,6 @@ $tpl->assign(
 
 /**
  * @todo the 2nd query has 2 identical tables in FROM-clause, is this OK?
- * @todo ? and params in array have different count
  */
 function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$date = time();
@@ -287,8 +286,10 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
-										 $user_id, '', '', '', '', '', '', '', '', '', '', '', $status));
+	$rs = exec_query($sql, $query, array(
+		$_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
+		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
+	));
 	set_page_message(tr('Your request for hosting pack update was added successfully'));
 
 	$query = "

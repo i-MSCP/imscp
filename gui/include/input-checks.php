@@ -748,7 +748,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 		$r = $resolvers[$type];
 		if ($r['query']) {
 			$matches = array();
-			if (!preg_match('/SELECT[ \t]+`([a-z0-9\_]+)`[ \t]+FROM/i', $r['query'], $matches)) {
+			if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
 				system_message(tr('Unknown Error'));
 			}
 			$select = $matches[1];
