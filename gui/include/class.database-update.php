@@ -347,6 +347,22 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fixed #1761: Hosting plan description (to short field description in SQL table hosting_plan)
+	 *
+	 * @author		Thomas Häber
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1663
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_14() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
+		return $sqlUpd;
+	}
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

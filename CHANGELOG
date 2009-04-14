@@ -5,6 +5,7 @@ ispCP ω 1.0.1 Changelog
 	- GUI:
 		* added and improved highlighting expressions for admin log
 		* Fixed bug in client/hosting_plan_update.php (introduced with r1555)
+		* Fixed #1761: Hosting plan description (to short field description in SQL table hosting_plan)
 
 2009-04-12 Thomas Häber
 	- GUI:
