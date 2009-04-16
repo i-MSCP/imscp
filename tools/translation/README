@@ -8,12 +8,18 @@ Try to keep the default order. If there aren't any new strings in the GUI php
 files you can jump to point 3.
 
 
+System Requirements
+-------------------
+Be sure that you have installed gettext. If not install gettext.
+
+
 Default order
 -------------
 
 1. makemsgs
 	Use the shell script "makemsgs" to get all strings from GUI php files within
-	the ispcp.pot file
+	the ispcp.pot file. But be aware that this will remove all existing
+	strings in ispCP.pot that aren't hardcoded in the GUI PHP files.
 
 2. updateToPot
 	Use the shell script "updateToPot" to merge automatically the new ispcp.pot

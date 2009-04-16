@@ -1,6 +1,13 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-16 Thomas Häber
+	- GUI:
+		* Fixed encoding (html replace) problem in mail of client/hosting_plan_update.php
+	- LANGUAGES:
+		* Fixed pathes in translation tool makemsgs
+		* updated po files
+
 2009-04-14 Thomas Häber
 	- GUI:
 		* added and improved highlighting expressions for admin log

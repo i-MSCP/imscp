@@ -314,12 +314,12 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 	$headers .= "X-Mailer: ispCP auto mailer";
 
-	$subject = tr("[ispCP OrderPanel] - You have an update order");
+	$subject = tr("[ispCP OrderPanel] - You have an update order", true);
 
 	$message = tr('You have an update order for the account {ACCOUNT}
 
 
-Please login into your ispCP control panel for more details');
+Please login into your ispCP control panel for more details', true);
 
 	$message = str_replace('{ACCOUNT}', $_SESSION['user_logged'], $message);
 

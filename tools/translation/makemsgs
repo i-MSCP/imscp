@@ -4,6 +4,10 @@
 #
 # creates the main ispcp.pot file out of any found strings in the php files
 #
+# Warning: This script will remove any strings which aren't present in the GUI
+# php files, this means dynamic strings or strings out of the database will
+# ignored.
+#
 
 set -e
 
