@@ -165,6 +165,10 @@ msgstr "Postnummer"
 msgid "City"
 msgstr "By"
 
+#, fuzzy
+msgid "State/Province"
+msgstr "Service"
+
 msgid "Country"
 msgstr "Land"
 
@@ -3610,9 +3614,10 @@ msgstr "Personlig Data!"
 msgid "Check Out"
 msgstr "Afslut Bestilling"
 
+#, fuzzy
 msgid ""
-"<b>Thank You for purchasing</b><br>You will receive an email with more "
-"details and information"
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
 msgstr ""
 "<b>Tak for din bestilling</b><br>Du vil modtage en E-Mail med flere Detaljer "
 "og Information"
@@ -3800,6 +3805,10 @@ msgstr "%1$d / %2$d af <b>%3$d</b>"
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d af <b>ubegrænset</b>"
+
+#, fuzzy, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
+msgstr "%1$s / %2$s af <b>%3$d</b>"
 
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Forhandler/Vælg Sprog"
@@ -4001,6 +4010,113 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Sproget blev opdateret!"
+
+msgid "bg_BG"
+msgstr ""
+
+msgid "ca_ES"
+msgstr ""
+
+msgid "cs_CZ"
+msgstr ""
+
+msgid "da_DK"
+msgstr ""
+
+msgid "de_DE"
+msgstr ""
+
+msgid "en_GB"
+msgstr ""
+
+msgid "es_AR"
+msgstr ""
+
+msgid "es_ES"
+msgstr ""
+
+msgid "eu_ES"
+msgstr ""
+
+msgid "fi_FI"
+msgstr ""
+
+msgid "fr_FR"
+msgstr ""
+
+msgid "gl_ES"
+msgstr ""
+
+msgid "hu_HU"
+msgstr ""
+
+msgid "it_IT"
+msgstr ""
+
+msgid "ja_JP"
+msgstr ""
+
+msgid "nb_NO"
+msgstr ""
+
+msgid "nl_NL"
+msgstr ""
+
+msgid "pl_PL"
+msgstr ""
+
+msgid "pt_BR"
+msgstr ""
+
+msgid "pt_PT"
+msgstr ""
+
+msgid "ro_RO"
+msgstr ""
+
+msgid "ru_RU"
+msgstr ""
+
+msgid "sk_SK"
+msgstr ""
+
+msgid "sv_SE"
+msgstr ""
+
+msgid "th_TH"
+msgstr ""
+
+msgid "tr_TR"
+msgstr ""
+
+msgid "uk_UA"
+msgstr ""
+
+msgid "zh_CN"
+msgstr ""
+
+msgid "zh_HK"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Venligst indtast dine logind informationer"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Indtast en SQL forspørgelse!"

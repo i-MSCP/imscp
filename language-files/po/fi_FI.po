@@ -165,6 +165,10 @@ msgstr "Postinumero"
 msgid "City"
 msgstr "Kaupunki"
 
+#, fuzzy
+msgid "State/Province"
+msgstr "Palvelu"
+
 msgid "Country"
 msgstr "Maa"
 
@@ -3572,9 +3576,10 @@ msgstr "Henkil�kohtaiset tiedot"
 msgid "Check Out"
 msgstr "Kuittaus"
 
+#, fuzzy
 msgid ""
-"<b>Thank You for purchasing</b><br>You will receive an email with more "
-"details and information"
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
 msgstr ""
 "<b>Kiitoksia tilauksesta</b><br>Sinulle on l�hetetty s�hk�posti miss� "
 "tarkemmat tiedot tilauksesta"
@@ -3768,6 +3773,10 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
 msgstr ""
 
 #, fuzzy
@@ -3970,6 +3979,113 @@ msgstr "T�ll� k�ytt�j�ll� on domain!<br>Poista ensin domain j�rjes
 
 msgid "User not terminated!"
 msgstr "K�ytt�j�� ei poistettu!"
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Vaihtoehtoinen virhesivu p�ivitetty!"
+
+msgid "bg_BG"
+msgstr ""
+
+msgid "ca_ES"
+msgstr ""
+
+msgid "cs_CZ"
+msgstr ""
+
+msgid "da_DK"
+msgstr ""
+
+msgid "de_DE"
+msgstr ""
+
+msgid "en_GB"
+msgstr ""
+
+msgid "es_AR"
+msgstr ""
+
+msgid "es_ES"
+msgstr ""
+
+msgid "eu_ES"
+msgstr ""
+
+msgid "fi_FI"
+msgstr ""
+
+msgid "fr_FR"
+msgstr ""
+
+msgid "gl_ES"
+msgstr ""
+
+msgid "hu_HU"
+msgstr ""
+
+msgid "it_IT"
+msgstr ""
+
+msgid "ja_JP"
+msgstr ""
+
+msgid "nb_NO"
+msgstr ""
+
+msgid "nl_NL"
+msgstr ""
+
+msgid "pl_PL"
+msgstr ""
+
+msgid "pt_BR"
+msgstr ""
+
+msgid "pt_PT"
+msgstr ""
+
+msgid "ro_RO"
+msgstr ""
+
+msgid "ru_RU"
+msgstr ""
+
+msgid "sk_SK"
+msgstr ""
+
+msgid "sv_SE"
+msgstr ""
+
+msgid "th_TH"
+msgstr ""
+
+msgid "tr_TR"
+msgstr ""
+
+msgid "uk_UA"
+msgstr ""
+
+msgid "zh_CN"
+msgstr ""
+
+msgid "zh_HK"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Anna kirjautumistiedot"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
 
 #, fuzzy
 #~ msgid "Please enter an SQL query!"

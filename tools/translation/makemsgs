@@ -24,9 +24,9 @@ if [ ! -f ${GUI}/index.php ]; then
 	exit 1
 fi
 
-#/usr/bin/xgettext --language=PHP --output-dir=${GUI}../../language-files/po --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot
-/usr/bin/xgettext --language=PHP --output-dir=${GUI}../../language-files/po --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}/include/i18n.php ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot --no-location
+#/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files/po --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot
+/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files/po --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}/include/i18n.php ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot --no-location
 
-sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../../language-files/po/ispCP.pot
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../language-files/po/ispCP.pot
 
 exit 1

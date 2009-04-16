@@ -5,7 +5,7 @@
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 # Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
 # Seviye Kaloğlu<seviye@gmail.com>, 06/08/2008, eksik kısımları (%50)tercüme ve düzenleme
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -170,6 +170,10 @@ msgstr "Posta kodu"
 
 msgid "City"
 msgstr "Şehir"
+
+#, fuzzy
+msgid "State/Province"
+msgstr "Servis"
 
 msgid "Country"
 msgstr "Ülke"
@@ -3580,9 +3584,10 @@ msgstr "Kişisel Bilgi"
 msgid "Check Out"
 msgstr "Ödeme"
 
+#, fuzzy
 msgid ""
-"<b>Thank You for purchasing</b><br>You will receive an email with more "
-"details and information"
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
 msgstr ""
 "<b>Ödeme için teşekkür ederiz</b><br>Ayrıntılı bilgi içeren bir posta, "
 "adresinize gönderilmiştir"
@@ -3777,6 +3782,10 @@ msgstr "%1$d / %2$d toplam <b>%3$d</b>"
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d toplam <b>limitsiz</b>"
+
+#, fuzzy, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
+msgstr "%1$s / %2$s toplam <b>%3$d</b>"
 
 msgid "ispCP - Reseller/Change Language"
 msgstr "ispCP - Bayi/Dil Seçimini Değiştir"
@@ -3974,6 +3983,114 @@ msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden silini
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Hosting planı güncellendi!"
+
+msgid "bg_BG"
+msgstr ""
+
+msgid "ca_ES"
+msgstr ""
+
+msgid "cs_CZ"
+msgstr ""
+
+msgid "da_DK"
+msgstr ""
+
+msgid "de_DE"
+msgstr ""
+
+msgid "en_GB"
+msgstr ""
+
+msgid "es_AR"
+msgstr ""
+
+msgid "es_ES"
+msgstr ""
+
+msgid "eu_ES"
+msgstr ""
+
+msgid "fi_FI"
+msgstr ""
+
+msgid "fr_FR"
+msgstr ""
+
+msgid "gl_ES"
+msgstr ""
+
+msgid "hu_HU"
+msgstr ""
+
+msgid "it_IT"
+msgstr ""
+
+msgid "ja_JP"
+msgstr ""
+
+msgid "nb_NO"
+msgstr ""
+
+msgid "nl_NL"
+msgstr ""
+
+msgid "pl_PL"
+msgstr ""
+
+msgid "pt_BR"
+msgstr ""
+
+msgid "pt_PT"
+msgstr ""
+
+msgid "ro_RO"
+msgstr ""
+
+msgid "ru_RU"
+msgstr ""
+
+msgid "sk_SK"
+msgstr ""
+
+msgid "sv_SE"
+msgstr ""
+
+msgid "th_TH"
+msgstr ""
+
+msgid "tr_TR"
+msgstr ""
+
+msgid "uk_UA"
+msgstr ""
+
+msgid "zh_CN"
+msgstr ""
+
+msgid "zh_HK"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Lütfen giriş bilgilerinizi giriniz"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Count default E-Mail addresses"
+msgstr "Varsayılan Eposta adresi oluştur"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
