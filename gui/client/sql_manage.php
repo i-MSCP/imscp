@@ -161,7 +161,7 @@ $tpl->assign(
 		'TR_EXECUTE_QUERY'		=> tr('Execute query'),
 		'TR_CHANGE_PASSWORD'	=> tr('Change password'),
 		'TR_LOGIN_PMA'			=> tr('Login phpMyAdmin'),
-		'TR_MESSAGE_DELETE'		=> tr('This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database.\n\nAre you sure you want to delete %s?', true, '%s')
+		'TR_MESSAGE_DELETE'		=> tr('This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database.\n\nAre you sure you want to delete %s?')
 	)
 );
 
