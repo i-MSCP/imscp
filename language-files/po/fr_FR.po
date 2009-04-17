@@ -4152,6 +4152,19 @@ msgstr ""
 msgid "Count default E-Mail addresses"
 msgstr "Créer les emails par défault"
 
+#, fuzzy
+msgid "Show default E-Mail addresses"
+msgstr "Créer les emails par défault"
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database.\n"
+"\n"
+"Are you sure you want to delete %s?"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Veuillez entrez une requête SQL !"
 

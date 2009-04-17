@@ -4133,6 +4133,19 @@ msgstr ""
 msgid "Count default E-Mail addresses"
 msgstr "Sortu berezkoa Posta elektronikoak"
 
+#, fuzzy
+msgid "Show default E-Mail addresses"
+msgstr "Sortu berezkoa Posta elektronikoak"
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database.\n"
+"\n"
+"Are you sure you want to delete %s?"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "MEsedez sartu SQL kontsulta!"
 
