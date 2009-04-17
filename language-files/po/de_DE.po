@@ -3977,6 +3977,13 @@ msgstr "Verhindere Login aus externer Quelle für Benutzer"
 msgid "Count default E-Mail addresses"
 msgstr "Berechne die Standard-E-Mail-Adressen mit ein"
 
+msgid "Show default E-Mail addresses"
+msgstr "Zeige die Standard-E-Mail-Adressen"
+
+#, php-format
+msgid "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database.\n\nAre you sure you want to delete %s?"
+msgstr "Diese Datenbank wird endgültig gelöscht. DIeser Vorgang kann nicht rückgängig gemacht werden. Alle ausschließlich dieser Datenbank angehörigen Nutzer werden ebenfalls gelöscht.\n\nSind Sie sicher, dass sie die Datenbank %s löschen möchten?"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"
