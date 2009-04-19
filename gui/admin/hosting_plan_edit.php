@@ -149,6 +149,7 @@ function restore_form(&$tpl) {
 
 	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
+} // end of function restore_form
 
 // Generate load data from sql for requested hosting plan
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
@@ -294,7 +295,7 @@ function check_data_iscorrect(&$tpl) {
 		set_page_message($ahp_error);
 		return false;
 	}
-} // End of check_data_iscorrect()
+} // end of check_data_iscorrect()
 
 /**
  * Add new host plan to DB
@@ -335,7 +336,7 @@ SQL_QUERY;
 	$_SESSION['hp_updated'] = "_yes_";
 	header("Location: hosting_plan.php");
 	die();
-} // End of save_data_to_db()
+} // end of save_data_to_db()
 
 die();
 

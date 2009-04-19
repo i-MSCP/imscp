@@ -147,7 +147,7 @@ function restore_form(&$tpl, &$sql) {
 
 	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
-}
+} // end of function restore_form()
 
 /**
  * Generate load data from sql for requested hosting plan

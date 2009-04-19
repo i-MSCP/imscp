@@ -3,7 +3,8 @@ ispCP ω 1.0.1 Changelog
 
 2009-04-19 Thomas Häber
 	- GUI:
-		* fixed word wrap problem with long descriptions, which results in hugh webpage widths
+		* Fixed word wrap problem with long descriptions, which results in hugh webpage widths
+		* Fixed syntax bug in admin/hosting_plan_edit.php, thanks to tomdooley
 
 2009-04-16 Thomas Häber
 	- GUI:
