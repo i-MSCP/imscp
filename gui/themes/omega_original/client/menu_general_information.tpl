@@ -66,7 +66,7 @@
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td align="center"><img src="{ISP_LOGO}" /></td>
+      <td align="center"><img src="{ISP_LOGO}" alt="" /></td>
     </tr>
    </table>
   </td>
