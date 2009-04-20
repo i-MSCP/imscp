@@ -20,6 +20,7 @@ final class Config {
 		'SERVER_HOSTNAME' => null,
 		'BASE_SERVER_IP' => null,
 		'BASE_SERVER_VHOST' => null,
+		'BASE_SERVER_VHOST_PREFIX' => null,
 		'MR_LOCK_FILE' => null,
 		'CMD_AWK' => null,
 		'CMD_BZCAT' => null,

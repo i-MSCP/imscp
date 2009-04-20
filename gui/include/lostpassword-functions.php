@@ -241,13 +241,15 @@ SQL_QUERY;
 
 		$base_vhost = Config::get('BASE_SERVER_VHOST');
 
+		$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');		
+
 		if ($from_name) {
 			$from = "\"" . $from_name . "\" <" . $from_email . ">";
 		} else {
 			$from = $from_email;
 		}
 
-		$search = array();
+		search = array();
 		$replace = array();
 
 		$search [] = '{USERNAME}';
@@ -258,7 +260,9 @@ SQL_QUERY;
 		$replace[] = $upass;
 		$search [] = '{BASE_SERVER_VHOST}';
 		$replace[] = $base_vhost;
-
+		$search [] = '{BASE_SERVER_VHOST_PREFIX}'; 
+		$replace[] = $base_vhost_prefix;	
+		
 		$subject = str_replace($search, $replace, $subject);
 		$message = str_replace($search, $replace, $message);
 
@@ -319,6 +323,7 @@ SQL_QUERY;
 	$message = $data['message'];
 
 	$base_vhost = Config::get('BASE_SERVER_VHOST');
+	$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX') ;
 
 	if ($from_name) {
 		$from = '"' . $from_name . "\" <" . $from_email . ">";
@@ -341,6 +346,8 @@ SQL_QUERY;
 	$replace[] = $link;
 	$search [] = '{BASE_SERVER_VHOST}';
 	$replace[] = $base_vhost;
+	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+	$replace[] = $base_vhost_prefix;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);

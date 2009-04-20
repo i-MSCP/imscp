@@ -151,7 +151,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 	if ($btime > time()) {
 		if ($displayMessage) {
-			$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
+			$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 			system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
 		}
 		return true;
@@ -210,7 +210,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		exec_query($sql, $query, $ipaddr);
 		return false;
 	} else {
-		$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
+		$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 
 		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
@@ -225,7 +225,7 @@ function block_ipaddr($ipaddr, $type = 'General') {
 }
 
 function deny_access() {
-	$backButtonDestination = "http://" . Config::get('BASE_SERVER_VHOST');
+	$backButtonDestination =Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 	system_message(tr('You have been blocked for %d minutes.', Config::get('BRUTEFORCE_BLOCK_TIME')), $backButtonDestination);
 }
 

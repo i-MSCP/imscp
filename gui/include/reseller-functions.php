@@ -1697,6 +1697,8 @@ function send_alias_order_email($alias_name) {
 	$replace[] = $alias_name;
 	$search [] = '{BASE_SERVER_VHOST}';
 	$replace[] = Config::get('BASE_SERVER_VHOST');
+	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+	$replace[] = Config::get('BASE_SERVER_VHOST_PREFIX');
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);

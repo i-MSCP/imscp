@@ -32,7 +32,7 @@ function init_login() {
  */
 function register_user($uname, $upass) {
 	$sql = Database::getInstance();
-	$backButtonDestination = 'http://' . Config::get('BASE_SERVER_VHOST');
+	$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 
 	check_ipaddr();
 

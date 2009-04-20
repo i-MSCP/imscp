@@ -114,7 +114,7 @@ $tpl->assign(
 		'TR_HEADER' => tr('Header'),
 		'TR_PREVIEW' => tr('Preview'),
 		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
-		'TR_IMPLEMENT_URL' => 'http://' . Config::get('BASE_SERVER_VHOST') . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
+		'TR_IMPLEMENT_URL' => Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST') . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
 		'TR_FOOTER' => tr('Footer')
 	)
 );
