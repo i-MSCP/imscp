@@ -1,20 +1,20 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 2009-04-20 Malte Geierhos
-	- ENGINE: 
+	- CONFIG FILES:
+		* Fixed #1793: Optimize the fcgid Config
+	- ENGINE:
 		* Added specfile for rpmbuild thanks to George Machitidze
-		* Fixed #1752
-		* Fixed #1775 (changed regex to match imap.log for dovecot as well -> thx Bene) 
-	- GUI: 
-		* Fixed #1618 (added vhost prefix to allow setting either http:// or https:// ) 	
-		
+		* Fixed #1752: Adding od domain aliases broken in r1584
+		* Fixed #1775 (changed regex to match imap.log for dovecot as well -> thx Bene)
+	- GUI:
+		* Fixed #1618 (added vhost prefix to allow setting either http:// or https:// )
+
 2009-04-20 Thomas Häber
 	- LANGUAGES:
 		* Fixed #1796: deutsch / englisch BUG in the Stable 1.0
-
-2009-04-20 Malte Geierhos
-	- CONFIG FILES:
-		* Fixed #1793: Optimize the fcgid Config
+	- THEMES:
+		* Partially fix for Ticket #1787: Broken layout in IE because of doctype definition
 
 2009-04-19 Thomas Häber
 	- GUI:
