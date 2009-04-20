@@ -3,7 +3,8 @@ ispCP ω 1.0.1 Changelog
 2009-04-20 Malte Geierhos
 	- ENGINE: 
 		* Added specfile for rpmbuild thanks to George Machitidze
-		* Fixed #1752 
+		* Fixed #1752
+		* Fixed #1775 (changed regex to match imap.log for dovecot as well -> thx Bene) 
 	- GUI: 
 		* Fixed #1618 (added vhost prefix to allow setting either http:// or https:// ) 	
 		

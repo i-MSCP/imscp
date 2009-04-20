@@ -695,7 +695,7 @@ sub collect_mail_traffic {
 
 		# IMAP
 		#$rs = sys_command("$cat $rlog|$grep 'imaplogin'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
-		$rs = sys_command("$cat $rlog|$grep 'imapd'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		$rs = sys_command("$cat $rlog|$grep 'imap'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
 		return $rs if ($rs != 0);
 
