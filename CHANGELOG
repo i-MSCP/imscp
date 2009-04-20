@@ -2,8 +2,8 @@ ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 2009-04-20 Malte Geierhos
 	- ENGINE: 
-		* Fixed #1793 (better fcgid config)
-		* Added specfile for rpmbuild thanks to George Machitidze 
+		* Added specfile for rpmbuild thanks to George Machitidze
+		* Fixed #1752 
 	- GUI: 
 		* Fixed #1618 (added vhost prefix to allow setting either http:// or https:// ) 	
 		
