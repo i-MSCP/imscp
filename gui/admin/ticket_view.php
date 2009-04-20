@@ -216,20 +216,13 @@ $tpl->assign(
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	if (!isset($_POST['uaction'])) {
 		return;
-	} // close ticket
-	elseif ($_POST['uaction'] == "close") {
-		close_ticket($sql, $ticket_id);
-		return;
-	}
-	// open ticket
-	elseif ($_POST['uaction'] == "open") {
-		open_ticket($sql, $ticket_id);
-		return;
-	}
+	} 
 	// no message check->error
 	elseif ($_POST['user_message'] === '') {
-		set_page_message(tr('Please type your message!'));
-		return;
+		if (($_POST['uaction'] != "open") && ($_POST['uaction'] != "close")) { 
+		         set_page_message(tr('Please type your message!'));
+ 	                 return; 
+         	}	 
 	}
 
 	$ticket_date = time();
@@ -276,6 +269,15 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
+	if ($_POST['uaction'] == "close") { 
+ 	       if ($user_message != '') $user_message .= "\n\n"; 
+		$user_message .= "Ticket was closed!"; 
+ 		} 
+ 	elseif ($_POST['uaction'] == "open") { 
+		if ($user_message != '') $user_message .= "\n\n"; 
+		$user_message .= "Ticket was reopened!"; 
+ 	 } 
+
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
 			$ticket_reply, $urgency, $ticket_date,
 			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
@@ -300,6 +302,15 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 		$rs->MoveNext();
 	}
 
+	// close ticket 
+	if ($_POST['uaction'] == "close") { 
+             close_ticket($sql, $ticket_id); 
+	 } 
+        // open ticket 
+        elseif ($_POST['uaction'] == "open") { 
+             open_ticket($sql, $ticket_id); 
+ 	 }
+ 
 	set_page_message(tr('Message was sent.'));
 	send_tickets_msg($ticket_to, $ticket_from, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
