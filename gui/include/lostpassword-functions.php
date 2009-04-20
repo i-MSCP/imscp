@@ -249,7 +249,7 @@ SQL_QUERY;
 			$from = $from_email;
 		}
 
-		search = array();
+		$search = array();
 		$replace = array();
 
 		$search [] = '{USERNAME}';
