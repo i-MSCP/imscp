@@ -149,9 +149,11 @@ function restore_form(&$tpl) {
 
 	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
-} // end of function restore_form
+} // end of function restore_form()
 
-// Generate load data from sql for requested hosting plan
+/**
+ * Generate load data from sql for requested hosting plan
+ */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$_SESSION['hpid'] = $hpid;
 
@@ -226,7 +228,7 @@ SQL_QUERY;
 			'TR_STATUS_NO'	=> ($status == 1) ? '' : 'checked="checked"'
 		)
 	);
-} // End of gen_load_ehp_page()
+} // end of gen_load_ehp_page()
 
 /**
  * Check correction of input data

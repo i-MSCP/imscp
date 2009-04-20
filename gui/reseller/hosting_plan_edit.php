@@ -244,7 +244,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'TR_STATUS_NO'	=> ($status == 1) ? '' : 'checked="checked"'
 		)
 	);
-} // End of gen_load_ehp_page()
+} // end of gen_load_ehp_page()
 
 /**
  * Check correction of input data
@@ -312,7 +312,7 @@ function check_data_iscorrect(&$tpl) {
 		set_page_message($ahp_error);
 		return false;
 	}
-} // End of check_data_iscorrect()
+} // end of check_data_iscorrect()
 
 /**
  * Add new host plan to DB
@@ -371,7 +371,7 @@ function save_data_to_db() {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 		return false;
 	}
-} // End of save_data_to_db()
+} // end of save_data_to_db()
 
 die();
 

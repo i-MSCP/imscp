@@ -132,7 +132,7 @@ function gen_empty_ahp_page(&$tpl) {
 		)
 	);
 	$tpl->assign('MESSAGE', '');
-} // End of gen_empty_hp_page()
+} // end of gen_empty_hp_page()
 
 /**
  * Show last entered data for new hp
@@ -248,7 +248,7 @@ function check_data_correction(&$tpl) {
 		// $tpl->assign('MESSAGE', $ahp_error);
 		return false;
 	}
-} // End of check_data_correction()
+} // end of check_data_correction()
 
 /**
  * Add new host plan to DB
@@ -303,6 +303,6 @@ function save_data_to_db(&$tpl, $admin_id) {
 		header("Location: hosting_plan.php");
 		die();
 	}
-} // End of save_data_to_db()
+} // end of save_data_to_db()
 
 ?>

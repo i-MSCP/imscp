@@ -135,7 +135,7 @@ function gen_empty_ahp_page(&$tpl) {
 		)
 	);
 	$tpl->assign('MESSAGE', '');
-} // End of gen_empty_hp_page()
+} // end of gen_empty_hp_page()
 
 /**
  * Show last entered data for new hp
@@ -181,7 +181,7 @@ function gen_data_ahp_page(&$tpl) {
 		$tpl->assign(array('TR_STATUS_YES' => 'checked="checked"'));
 	} else
 		$tpl->assign(array('TR_STATUS_NO' => 'checked="checked"'));
-} // End of gen_data_ahp_page()
+} // end of gen_data_ahp_page()
 
 /**
  * Check correction of input data
@@ -268,7 +268,7 @@ function check_data_correction(&$tpl) {
 		// $tpl->assign('MESSAGE', $ahp_error);
 		return false;
 	}
-} // End of check_data_correction()
+} // end of check_data_correction()
 
 /**
  * Add new host plan to DB
@@ -325,6 +325,6 @@ SQL_QUERY;
 			return false;
 		}
 	}
-} // End of save_data_to_db()
+} // end of save_data_to_db()
 
 ?>

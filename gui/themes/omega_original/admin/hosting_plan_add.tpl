@@ -58,7 +58,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
-                              <td class="content"><textarea name="hp_description" class="textinput2" style="width:210px">{HP_DESCRIPTION_VALUE}</textarea></td>
+                              <td class="content"><textarea name="hp_description" class="textinput2" style="width:210px" cols="40" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>

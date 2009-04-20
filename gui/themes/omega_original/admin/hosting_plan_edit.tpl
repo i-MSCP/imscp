@@ -58,7 +58,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
-                              <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px">{HP_DESCRIPTION_VALUE}</textarea></td>
+                              <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px" cols="40" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
@@ -111,9 +111,9 @@
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_PHP}</td>
-                              <td class="content"><input type="radio" {DISABLED} name="php" value="_yes_" {TR_PHP_YES} />
+                              <td class="content"><input type="radio" {DISBLED} name="php" value="_yes_" {TR_PHP_YES} />
                                 {TR_YES}
-                                <input type="radio" {DISABLED} name="php" value="_no_" {TR_PHP_NO} />
+                                <input type="radio" {DISBLED} name="php" value="_no_" {TR_PHP_NO} />
                                 {TR_NO}</td>
                             </tr>
                             <tr>
