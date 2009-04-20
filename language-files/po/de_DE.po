@@ -961,7 +961,7 @@ msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 
 msgid "Enable update at"
-msgstr "Update aktivieren um"
+msgstr "Aktiviere die Updates in den"
 
 msgid "Settings"
 msgstr "Einstellungen"
