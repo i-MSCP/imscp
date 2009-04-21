@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 3.1.3.1 Documentation
+phpMyAdmin 3.1.3.2 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 3.1.3.1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 12312 2009-03-24 20:32:19Z
+  * Documentation version: $Id: Documentation.html 12351 2009-04-14 16:32:06Z
     lem9 $
 
 Requirements
@@ -183,6 +183,7 @@ Quick Install
 
         mv config/config.inc.php .         # move file to current directory
         chmod o-rw config.inc.php          # remove world read and write permissions
+        rm -rf config                      # remove not needed directory
 
         Now the file is ready to be used. You can choose to review or edit the
         file with your favorite editor, if you prefer to set some advanced

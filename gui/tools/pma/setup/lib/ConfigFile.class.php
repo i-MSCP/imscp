@@ -5,7 +5,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: ConfigFile.class.php 12301 2009-03-24 08:34:23Z nijel $
+ * @version    $Id: ConfigFile.class.php 12342 2009-04-10 07:29:13Z nijel $
  */
 class ConfigFile
 {
@@ -281,7 +281,7 @@ class ConfigFile
             $ret .= "/* Servers configuration */$crlf\$i = 0;" . $crlf . $crlf;
             foreach ($c['Servers'] as $id => $server) {
                 $k = preg_replace('/[^A-Za-z0-9_]/', '_', $k);
-                $ret .= '/* Server: ' . $this->getServerName($id) . " [$id] */" . $crlf
+                $ret .= '/* Server: ' . strtr($this->getServerName($id), '*/', '-') . " [$id] */" . $crlf
                     . '$i++;' . $crlf;
                 foreach ($server as $k => $v) {
                     $ret .= "\$cfg['Servers'][\$i]['$k'] = "
