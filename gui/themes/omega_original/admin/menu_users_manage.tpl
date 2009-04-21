@@ -1,4 +1,4 @@
-<table style="width:100%;height:100%;border-collapse: collapse;padding:0;margin:0;">
+<table style="width:100%;height:100%;padding:0;margin:0;" cellspacing="0">
 	<tr style="height:53px;">
 		<td style="width:100%; background-image:url({THEME_COLOR_PATH}/images/top/menu_top.jpg);padding-left:5px;vertical-align:middle;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">

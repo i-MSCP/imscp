@@ -241,7 +241,7 @@ SQL_QUERY;
 
 		$base_vhost = Config::get('BASE_SERVER_VHOST');
 
-		$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');		
+		$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');
 
 		if ($from_name) {
 			$from = "\"" . $from_name . "\" <" . $from_email . ">";
@@ -323,7 +323,7 @@ SQL_QUERY;
 	$message = $data['message'];
 
 	$base_vhost = Config::get('BASE_SERVER_VHOST');
-	$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX') ;
+	$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');
 
 	if ($from_name) {
 		$from = '"' . $from_name . "\" <" . $from_email . ">";

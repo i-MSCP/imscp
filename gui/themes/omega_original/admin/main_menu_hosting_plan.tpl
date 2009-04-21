@@ -66,7 +66,7 @@
       <td class="menu"><div align="center"><a href="{BUTTON_LINK}" {BUTTON_TARGET} onmouseover="MM_swapImage('custom_link_{BUTTON_ID}','','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif',1)" onmouseout="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/custom_link.gif" name="custom_link_{BUTTON_ID}" width="47" height="46" border="0" id="custom_link_{BUTTON_ID}" /></a></div></td>
   </tr><tr>
     <td class="menu"><div align="center"><a href="{BUTTON_LINK}" {BUTTON_TARGET} class="menu_active" onmouseover="MM_swapImage('custom_link_{BUTTON_ID}','','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif',1)" onmouseout="MM_swapImgRestore()">{BUTTON_NAME}</a></div></td>
-	  </tr>
+  </tr>
 </table></td>
 <!-- EDP: custom_buttons -->
   </tr>
