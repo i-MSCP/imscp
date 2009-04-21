@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-22 Andreca Daniel
+	- CONFIGS:
+		* Add support for Debian Squeeze
+
 2009-04-21 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1792: Debian Version-Check need an Update for 5.0.1

@@ -30,7 +30,7 @@
 #    http://isp-control.net
 #
 
-RELEASE=`cat /etc/debian_version | awk '{print $1}'`
+RELEASE=`lsb_release -c | awk '{print $$2}' | tr -d "\n"`
 
 export
 
@@ -48,21 +48,21 @@ install:
 	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp;
 
 	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) = '4.0' ]]; then \
+	if [[ $(RELEASE) = 'sarge' ]]; then \
+		cp ./proftpd.conf $(ROOT_CONF) ; \
+		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
+	elif [[ $(RELEASE) = 'etch' ]]; then \
 		if [[ -e /etc/proftpd.conf ]] ; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \
 		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 		cp ./proftpd1.3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
-	elif [[ $(RELEASE) = '5.0' ]] || [[ $(RELEASE) = '5.0.1' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
+	elif [[ $(RELEASE) = 'lenny' ]] || [[ $(RELEASE) = 'squeeze' ]]; then \
 		if [[ -e /etc/proftpd.conf ]] ; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \
 		cp ./proftpd1.3.conf.lenny $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 		cp ./proftpd1.3.conf.lenny $(ROOT_CONF)/proftpd/proftpd.conf ; \
-	else \
-		cp ./proftpd.conf $(ROOT_CONF) ; \
-		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
 	fi \
 
 

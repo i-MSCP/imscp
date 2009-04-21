@@ -42,4 +42,3 @@ install:
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/fcgi
-

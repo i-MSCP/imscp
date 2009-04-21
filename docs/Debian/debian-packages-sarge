@@ -49,6 +49,7 @@ libmysqlclient14
 libnet-libidn-perl
 locales
 lsb-base
+lsb-release
 lzma
 make
 mysql-client-4.1
