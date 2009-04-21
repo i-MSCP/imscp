@@ -211,22 +211,17 @@ $tpl->assign(
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwidth) {
 	if (!isset($_POST['uaction'])) {
 		return;
-	} else if (empty($_POST['user_message'])) {
+	} elseif (empty($_POST['user_message'])) { // no message check->error
 		if (($_POST['uaction'] != "open") && ($_POST['uaction'] != "close")) {
-			// no message check->error
 			set_page_message(tr('Please type your message!'));
 			return;
 		}
 	}
 
 	$ticket_date = time();
-
 	$subject = clean_input($_POST['subject']);
-
 	$user_message = clean_input($_POST["user_message"]);
-
 	$ticket_status = 2;
-
 	$ticket_reply = $_GET['ticket_id'];
 
 	$query = "

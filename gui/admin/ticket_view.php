@@ -216,7 +216,7 @@ $tpl->assign(
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	if (!isset($_POST['uaction'])) {
 		return;
-	} else if ($_POST['user_message'] === '') { // no message check->error
+	} elseif (empty($_POST['user_message'])) { // no message check->error
 		if (($_POST['uaction'] != "open") && ($_POST['uaction'] != "close")) {
 			set_page_message(tr('Please type your message!'));
 			return; 
