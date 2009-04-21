@@ -26,7 +26,7 @@ $net2ftp_settings["email_feedback"] = "webmaster@enter-your-domain-here.com";
 
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
-$net2ftp_settings["default_skin"]     = "blue";
+$net2ftp_settings["default_skin"]     = "omega";
 
 // Enter the address of your help pages, support forum or ticket system
 // This will add a link in the footer; leave empty if you don't have this
@@ -122,6 +122,13 @@ $net2ftp_settings["max_consumption_ftpserver_datatransfer"] = 50000000; // per F
 // Maximum script execution time per day (in seconds)
 $net2ftp_settings["max_consumption_ipaddress_executiontime"] = 1500; // per IP address
 $net2ftp_settings["max_consumption_ftpserver_executiontime"] = 1500; // per FTP server
+
+// ----------------------------------------------------------------------------------
+// TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
+// ----------------------------------------------------------------------------------
+$tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
+$_ENV['PHP_TMPDIR'] = $tmpdir;
+putenv("PHP_TMPDIR=" . $tmpdir);
 
 // Check the user's home directory?
 $net2ftp_settings["check_homedirectory"] = "yes";

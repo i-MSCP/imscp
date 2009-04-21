@@ -31,9 +31,9 @@ function getSkinArray() {
 // -------------------------------------------------------------------------
 // Blue
 // -------------------------------------------------------------------------
-	$skinArray["blue"]["name"]             = __("Blue");
+	$skinArray["blue"]["name"]             = __("omega");
 	$skinArray["blue"]["iconset"]          = "nuvola";
-	$skinArray["blue"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/blue/images";
+	$skinArray["blue"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/omega/images";
 	$skinArray["blue"]["icon_size_mime"]   = "16";
 
 // -------------------------------------------------------------------------
@@ -47,10 +47,10 @@ function getSkinArray() {
 // -------------------------------------------------------------------------
 // India
 // -------------------------------------------------------------------------
-	$skinArray["india"]["name"]              = "India";
-	$skinArray["india"]["iconset"]           = "nuvola";
-	$skinArray["india"]["image_url"]         = $net2ftp_globals["application_rootdir_url"] . "/skins/india/images";
-	$skinArray["india"]["icon_size_mime"]    = "32";
+//	$skinArray["india"]["name"]              = "India";
+//	$skinArray["india"]["iconset"]           = "nuvola";
+//	$skinArray["india"]["image_url"]         = $net2ftp_globals["application_rootdir_url"] . "/skins/india/images";
+//	$skinArray["india"]["icon_size_mime"]    = "32";
 
 // -------------------------------------------------------------------------
 // Mobile

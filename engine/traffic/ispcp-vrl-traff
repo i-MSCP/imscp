@@ -636,7 +636,7 @@ sub collect_mail_traffic {
 
 		return $rs if ($rs != 0);
 
-# 		$rs = del_file($smtp_delivery_log);
+ 		$rs = del_file($smtp_delivery_log);
 
 		return $rs if ($rs != 0);
 
@@ -669,7 +669,6 @@ sub collect_mail_traffic {
 				else {
 					$main::smtp_traffic{$smtp_to_domain} += $traffic_size;
 				}
-
 			}
 
 		}
@@ -688,7 +687,7 @@ sub collect_mail_traffic {
 
 		}
 
-# 		$rs = del_file($smtp_log);
+ 		$rs = del_file($smtp_log);
 
 		return $rs if ($rs != 0);
 
