@@ -161,7 +161,7 @@
         <td>&nbsp;</td>
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" /></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" alt="" /></td>
             <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
@@ -169,7 +169,7 @@
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
               </tr>
             </table></td>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" /></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" alt="" /></td>
           </tr>
         </table></td>
       </tr>
@@ -209,7 +209,7 @@
         <td>&nbsp;</td>
         <td class="content"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" /></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_left.gif" width="33" height="20" alt="" /></td>
             <td width="405" class="stats"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
@@ -217,7 +217,7 @@
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
               </tr>
             </table></td>
-            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" /></td>
+            <td width="33"><img src="{THEME_COLOR_PATH}/images/stats_right.gif" width="33" height="20" alt="" /></td>
           </tr>
         </table></td>
       </tr>

@@ -69,7 +69,7 @@ function action_delete(url, language) {
                             <!-- BDP: lang_row -->
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
-                              <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" align="left" /> {LANGUAGE}</td>
+                              <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" style="vertical-align:middle" alt="" /> {LANGUAGE}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{MESSAGES}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{LANGUAGE_REVISION}</td>
                               <td class="{LANG_CLASS}" width="80" nowrap="nowrap" align="center"><!-- BDP: lang_def -->

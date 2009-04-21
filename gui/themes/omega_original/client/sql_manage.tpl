@@ -76,7 +76,7 @@ function action_delete(url, sql) {
                <!-- BDP: db_list -->
                <tr>
                 <td height="48" align="left" class="content4">&nbsp;&nbsp;&nbsp;<strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.png" width="16" height="16" style="vertical-align:middle" alt="" />&nbsp;{DB_NAME}</strong></td>
-                <td colspan="2" width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" alt="add_user" width="26" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_user_add.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>
+                <td colspan="2" width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" width="26" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_user_add.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>
                 <td align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME}')">{TR_DELETE}</a></td>
                </tr>
                <!-- BDP: db_message -->

@@ -114,7 +114,7 @@
              <td class="content">
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.gif" alt="awstats" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.gif" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="link">{TR_AWSTATS}</a><br />
                  {TR_AWSTATS_TEXT}</td>
                </tr>

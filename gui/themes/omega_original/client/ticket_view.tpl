@@ -51,8 +51,8 @@
         <td width="40">&nbsp;</td>
         <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
           <colgroup>
-            <col width="500">
-            </colgroup>
+            <col width="500" />
+          </colgroup>
           <!-- BDP: page_message -->
           <tr>
             <td class="title"><span class="message">{MESSAGE}</span></td>
