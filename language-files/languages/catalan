@@ -1,6 +1,7 @@
 ispcp_table = Catalan
 ispcp_language = Catalan
 ispcp_languageSetlocaleValue = ca_ES
+encoding = UTF-8
 ispCP Omega a Virtual Hosting Control System = ispCP Omega un Sistema de control de Hosting
 Administrator login = Accedir com a administrador
 Login = Accedir
