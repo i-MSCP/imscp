@@ -53,8 +53,8 @@ install:
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
 
-	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = '5.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
+	# greater equal Debian 4.0 "Etch"?
+	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = '5.0' ]] || [[ $(RELEASE) = '5.0.1' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
 		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	else \
 		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \

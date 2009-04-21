@@ -54,7 +54,7 @@ install:
 		fi ; \
 		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 		cp ./proftpd1.3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
-	elif [[ $(RELEASE) = '5.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
+	elif [[ $(RELEASE) = '5.0' ]] || [[ $(RELEASE) = '5.0.1' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
 		if [[ -e /etc/proftpd.conf ]] ; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \

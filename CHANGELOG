@@ -2,6 +2,8 @@ ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2009-04-21 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1792: Debian Version-Check need an Update for 5.0.1
 	- LANGUAGES:
 		* Fixed #1779: Catalan translation update
 
