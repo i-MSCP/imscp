@@ -49,7 +49,7 @@
              <td>&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><p><a href="protected_areas.php"><img src="{THEME_COLOR_PATH}/images/icons/htaccessicon.gif" width="46" height="46" border="0" /></a></p></td>
+                <td width="65"><p><a href="protected_areas.php"><img src="{THEME_COLOR_PATH}/images/icons/htaccessicon.gif" width="46" height="46" border="0" alt="" /></a></p></td>
                 <td><a href="protected_areas.php" class="link">{TR_HTACCESS}</a><br />
                  {TR_HTACCESS_TEXT}</td>
                </tr>
@@ -59,7 +59,7 @@
              <td>&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><p><a href="protected_user_manage.php"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.gif" width="46" height="46" border="0" /></a></p></td>
+                <td width="65"><p><a href="protected_user_manage.php"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.gif" width="47" height="46" border="0" alt="" /></a></p></td>
                 <td><a href="protected_user_manage.php" class="link">{TR_HTACCESS_USER}</a><br />
                  {TR_HTACCESS_USER}</td>
                </tr>
@@ -69,7 +69,7 @@
              <td width="25">&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.gif" width="46" height="46" border="0" /></a></td>
+                <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.gif" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="error_pages.php" class="link">{TR_ERROR_PAGES}</a><br />
                  {TR_ERROR_PAGES_TEXT}</td>
                </tr>
@@ -79,7 +79,7 @@
              <td>&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="backup.php"><img src="{THEME_COLOR_PATH}/images/icons/backupicon.gif" width="46" height="46" border="0" /></a></td>
+                <td width="65"><a href="backup.php"><img src="{THEME_COLOR_PATH}/images/icons/backupicon.gif" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="backup.php" class="link">{TR_BACKUP}</a><br />
                  {TR_BACKUP_TEXT}</td>
                </tr>
@@ -90,7 +90,7 @@
              <td>&nbsp;</td>
              <td class="content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/webmailicon.gif" width="46" height="46" border="0" /></a></td>
+                <td width="65"><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/webmailicon.gif" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="link">{TR_WEBMAIL}</a><br />
                  {TR_WEBMAIL_TEXT}</td>
                </tr>
@@ -102,7 +102,7 @@
              <td class="content">
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filemanagericon.gif" width="46" height="46" border="0" /></a></td>
+                <td width="65"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filemanagericon.gif" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="link">{TR_FILEMANAGER}</a><br />
                  {TR_FILEMANAGER_TEXT}</td>
                </tr>
@@ -114,7 +114,7 @@
              <td class="content">
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.gif" alt="awstats" width="46" height="46" border="0" /></a></td>
+                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.gif" alt="awstats" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="link">{TR_AWSTATS}</a><br />
                  {TR_AWSTATS_TEXT}</td>
                </tr>

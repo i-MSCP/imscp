@@ -67,7 +67,7 @@ function makeUser() {
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="250" class="content2">
-							   <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
+							   <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
                               <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();" />
                                 <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} onclick="changeDom('real');" />{DOMAIN_NAME}

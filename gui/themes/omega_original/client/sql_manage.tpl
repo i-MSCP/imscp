@@ -76,8 +76,8 @@ function action_delete(url, sql) {
                <!-- BDP: db_list -->
                <tr>
                 <td height="48" align="left" class="content4">&nbsp;&nbsp;&nbsp;<strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.png" width="16" height="16" style="vertical-align:middle" alt="" />&nbsp;{DB_NAME}</strong></td>
-                <td colspan="2" width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" alt="add_user" width="26" height="16" border="0" style="vertical-align:middle" />&nbsp;<a href="sql_user_add.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>
-                <td align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME}')">{TR_DELETE}</a></td>
+                <td colspan="2" width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" alt="add_user" width="26" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_user_add.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>
+                <td align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME}')">{TR_DELETE}</a></td>
                </tr>
                <!-- BDP: db_message -->
                <tr>
@@ -86,10 +86,10 @@ function action_delete(url, sql) {
                <!-- EDP: db_message -->
                <!-- BDP: user_list -->
                <tr>
-                <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" style="vertical-align:middle" />&nbsp;{DB_USER}</td>
-                <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" style="vertical-align:middle" />&nbsp;<a href="sql_auth.php?id={USER_ID}" class="link" target="_blank">{TR_PHP_MYADMIN}</a></td>
-                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="16" height="16" border="0" style="vertical-align:middle" />&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>
-                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_delete_user.php?id={USER_ID}', '{DB_USER}')">{TR_DELETE}</a></td>
+                <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" style="vertical-align:middle" alt="" />&nbsp;{DB_USER}</td>
+                <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_auth.php?id={USER_ID}" class="link" target="_blank">{TR_PHP_MYADMIN}</a></td>
+                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>
+                <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;&nbsp;<a href="#" class="link" onclick="action_delete('sql_delete_user.php?id={USER_ID}', '{DB_USER}')">{TR_DELETE}</a></td>
                </tr>
                <!-- EDP: user_list -->
                <!-- EDP: db_list -->

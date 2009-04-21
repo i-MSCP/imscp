@@ -84,8 +84,8 @@ function delete_order(url, domain) {
              <td class="{ITEM_CLASS}">{HP}</td>
              <td class="{ITEM_CLASS}">{USER}</td>
              <td align="center" class="{ITEM_CLASS}">{STATUS}</td>
-             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="{LINK}" class="link">{TR_ADD}</a></td>
-             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="link">{TR_DELETE}</a></td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{LINK}" class="link">{TR_ADD}</a></td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="link">{TR_DELETE}</a></td>
             </tr>
             <!-- EDP: order -->
             <!-- EDP: orders_table -->

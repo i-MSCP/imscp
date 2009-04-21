@@ -70,7 +70,7 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">
-						 <label for="ndomain_name">{TR_DOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
+						 <label for="ndomain_name">{TR_DOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 						</td>
                         <td class="content">http://<input name="ndomain_name" id="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onblur="makeUser();" /></td>
                       </tr>

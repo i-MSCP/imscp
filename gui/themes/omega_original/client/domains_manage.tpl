@@ -83,7 +83,7 @@ function action_delete(url, alias_or_subdomain) {
             <td class="{ITEM_CLASS}" nowrap="nowrap">{ALS_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_FORWARD}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -131,7 +131,7 @@ function action_delete(url, alias_or_subdomain) {
             <td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="link" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
             <td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
+            <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
           </tr>
           <!-- EDP: sub_item -->
           <!-- EDP: sub_list -->

@@ -92,13 +92,13 @@ function delete_account(url, name) {
                     <!-- BDP: table_item -->
                     <tr>
                       <td width="25" align="center">&nbsp;</td>
-                      <td class="{CONTENT}" nowrap="nowrap"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" align="left" border="0" style="vertical-align:middle" /> {NAME}</a><br />
+                      <td class="{CONTENT}" nowrap="nowrap"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" border="0" style="float:left; vertical-align:middle" alt="" /> {NAME}</a><br />
                         {ALIAS_IP}</td>
                       <td class="{CONTENT}" nowrap="nowrap">{REAL_DOMAIN}<br />
                         {REAL_DOMAIN_MOUNT}</td>
                       <td align="center" nowrap="nowrap" class="{CONTENT}">{FORWARD}</td>
                       <td class="{CONTENT}" nowrap="nowrap" align="center">{STATUS}</td>
-                      <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" onclick="delete_account('{DELETE_LINK}', '{NAME}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
+                      <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="delete_account('{DELETE_LINK}', '{NAME}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
                     </tr>
                     <!-- EDP: table_item -->
                     <!-- EDP: table_list -->

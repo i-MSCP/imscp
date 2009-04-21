@@ -71,9 +71,9 @@ function delete_account(url, plan) {
                       <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
                       <td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?user_id={RESELLER_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
                       <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
-                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="hosting_plan_edit.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
+                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="hosting_plan_edit.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
                       <!-- BDP: hp_delete -->
-                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="hosting_plan_delete.php?hpid={HP_ID}" onclick="return delete_account('hosting_plan_delete.php?hpid={HP_ID}', '{PLAN_NAME2}')" class="link">{PLAN_ACTION}</a></td>
+                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="hosting_plan_delete.php?hpid={HP_ID}" onclick="return delete_account('hosting_plan_delete.php?hpid={HP_ID}', '{PLAN_NAME2}')" class="link">{PLAN_ACTION}</a></td>
                       <!-- EDP: hp_delete -->
                     </tr>
                     <!-- EDP: hp_entry -->

@@ -83,7 +83,7 @@ function action_delete(url, mailacc) {
                             <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100">{CATCHALL_STATUS}</td>
                             <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="200">
                                 <!-- BDP: del_icon -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" style="vertical-align:middle" />
+                                <img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
                                 <!-- EDP: del_icon -->
                               <a href="#" class="link" onclick="action_delete('{CATCHALL_ACTION_SCRIPT}', '{CATCHALL_ACC}')">{CATCHALL_ACTION}</a>
                             </td>

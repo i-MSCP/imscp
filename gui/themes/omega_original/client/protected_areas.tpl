@@ -63,8 +63,8 @@
                       <td class="{CLASS}" nowrap="nowrap">{AREA_NAME}<br />
                           <u>{AREA_PATH}</u></td>
                       <td width="80" class="{CLASS}" nowrap="nowrap" align="center">{STATUS}</td>
-                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="protected_areas_add.php?id={PID}" class="link">{TR_EDIT}</a> </td>
-                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="protected_areas_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
+                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="protected_areas_add.php?id={PID}" class="link">{TR_EDIT}</a> </td>
+                      <td width="60" class="{CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="protected_areas_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
                     </tr>
                     <!-- EDP: dir_item -->
                     <!-- EDP: protected_areas -->

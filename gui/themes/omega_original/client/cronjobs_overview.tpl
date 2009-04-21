@@ -72,7 +72,7 @@ function action_delete(url, name) {
                         {DESCRIPTION}</td>
                       <td width="100" align="center" nowrap="nowrap" class="{ITEM_CLASS}">{ACTIVE}</td>
                       <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>
-                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}', '{NAME}')">{TR_DELETE}</a></td>
+                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}', '{NAME}')">{TR_DELETE}</a></td>
                       <!-- EDP: cronjobs -->
                     </tr>
                     <tr>

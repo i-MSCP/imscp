@@ -78,11 +78,11 @@ function action_delete(url, mailacc) {
         	<a href="protected_user_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a>
         </td>
         <td width="60" class="content" nowrap="nowrap" align="center">
-        	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" />
+        	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
         	<a href="{USER_EDIT_SCRIPT}" class="link">{USER_EDIT}</a>
         </td>
         <td width="60" align="center" nowrap="nowrap" class="content">
-        	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />
+        	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
         	<a href="#" class="link" onclick="{USER_DELETE_SCRIPT}">{USER_DELETE}</a>
         </td>
       </tr>
@@ -137,7 +137,7 @@ function action_delete(url, mailacc) {
         </td>
         <td width="80" align="center" nowrap="nowrap" class="content">{GSTATUS}</td>
         <td width="100" colspan="2" align="center" nowrap="nowrap" class="content">
-        	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />
+        	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
         	<a href="#" class="link" onclick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a>
         </td>
       </tr>

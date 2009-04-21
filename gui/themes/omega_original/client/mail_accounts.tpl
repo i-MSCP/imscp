@@ -94,8 +94,8 @@ function action_delete(url, mailacc) {
                       </td>
                    <td nowrap="nowrap" class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
                    <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="#" class="link" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a></td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_EDIT}</a></td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a></td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_EDIT}</a></td>
                     </tr>
                     <!-- EDP: mail_item -->
                     <!-- BDP: mails_total -->

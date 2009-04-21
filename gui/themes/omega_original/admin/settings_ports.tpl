@@ -115,7 +115,7 @@ function enable_for_post() {
 													<!-- EDP: port_delete_show -->
 													<!-- BDP: port_delete_link -->
 													<a href="#" onclick="action_delete('{URL_DELETE}', '{NAME}')" class="link">
-													<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" />{TR_DELETE}</a>
+													<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />{TR_DELETE}</a>
 													<!-- EDP: port_delete_link -->
 												</td>
 											</tr>

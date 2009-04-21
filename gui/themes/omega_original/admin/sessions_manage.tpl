@@ -55,7 +55,7 @@
                             <td width="25">&nbsp;</td>
                             <td class="{ADMIN_CLASS}">{ADMIN_USERNAME}</td>
                             <td class="{ADMIN_CLASS}">{LOGIN_TIME}</td>
-                            <td width="150" class="{ADMIN_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="{KILL_LINK}" class="link">{TR_DELETE}</a> </td>
+                            <td width="150" class="{ADMIN_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{KILL_LINK}" class="link">{TR_DELETE}</a> </td>
                           </tr>
                           <!-- EDP: user_session -->
                       </table></td>

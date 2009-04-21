@@ -81,7 +81,7 @@ function action_delete(url, subject) {
 			</td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
-            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="ticket_delete.php?ticket_id={ID}" onclick="return action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT2}')" class="link">{TR_DELETE}</a></td>
+            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="ticket_delete.php?ticket_id={ID}" onclick="return action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT2}')" class="link">{TR_DELETE}</a></td>
           </tr>
           <!-- EDP: tickets_item -->
           <tr>

@@ -66,7 +66,7 @@
                     </tr>
                     <tr>
                       <td>&nbsp;</td>
-                      <td class="content3"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" /> <a href="hosting_plan_update.php?{LINK}={ID}" class="linkdark">{TR_PURCHASE}</a></td>
+                      <td class="content3"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="hosting_plan_update.php?{LINK}={ID}" class="linkdark">{TR_PURCHASE}</a></td>
                     </tr>
                     <!-- EDP: hosting_plans -->
                 </table></td>
