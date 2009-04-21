@@ -64,7 +64,7 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td class="logoutbutton"><a href="../index.php?logout"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.png" border="0" height="24" width="24" alt="{TR_MENU_LOGOUT}" />{TR_MENU_LOGOUT}</a></td>
+					<td class="logoutbutton"><a href="../index.php?logout"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.png" width="24" height="24" border="0" alt="" />{TR_MENU_LOGOUT}</a></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>

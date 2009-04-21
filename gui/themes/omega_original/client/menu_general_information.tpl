@@ -3,7 +3,7 @@
   <td style="width:100%; background-image:url({THEME_COLOR_PATH}/images/top/menu_top.jpg);padding-left:5px;vertical-align:middle;">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-     <td><img src="{THEME_COLOR_PATH}/images/icons/general_big.gif" width="32" height="33" /></td>
+     <td><img src="{THEME_COLOR_PATH}/images/icons/general_big.gif" width="32" height="33" alt="" /></td>
      <td><span class="titlemenu">{TR_MENU_GENERAL_INFORMATION}</span></td>
     </tr>
    </table>
@@ -54,7 +54,7 @@
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td class="logoutbutton"><a href="../index.php?logout"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.png" border="0" height="24" width="24" />{TR_MENU_LOGOUT}</a></td>
+      <td class="logoutbutton"><a href="../index.php?logout"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.png" width="24" height="24" border="0" alt="" />{TR_MENU_LOGOUT}</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
