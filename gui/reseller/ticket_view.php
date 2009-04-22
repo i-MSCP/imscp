@@ -273,12 +273,12 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 		if ($user_message != '') {
 			$user_message .= "\n\n";
 		}
-		$user_message .= "Ticket was closed!";
+		$user_message .= tr("Ticket was closed!");
 	} elseif ($_POST['uaction'] == "open") {
 		if ($user_message != '') {
 			$user_message .= "\n\n";
 		}
-		$user_message .= "Ticket was reopened!";
+		$user_message .= tr("Ticket was reopened!");
 	}
 	
 	$rs = exec_query($sql, $query, array($ticket_to, $ticket_from,

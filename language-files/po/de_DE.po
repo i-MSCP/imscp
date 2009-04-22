@@ -1910,7 +1910,7 @@ msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
 
 msgid "Ticket was closed!"
-msgstr "Ticket wurde geschlossen"
+msgstr "Ticket wurde geschlossen!"
 
 msgid "Ticket was reopened!"
 msgstr "Ticket wurde wieder geöffnet!"
