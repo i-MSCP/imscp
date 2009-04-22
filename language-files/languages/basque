@@ -876,7 +876,6 @@ Please type user name! = Mesedez idatzi erabiltzailearen izena!
 Too user long password! = Erabiltzailearen pasahitza luzeegia!
 SQL-user not found! Maybe it was deleted by another user! = SQL erabiltzailea ez da aurkitu! Agian beste erabiltzaile batek ezabatua izan da!
 User name too long! = Erabiltzaile izena luzeegia!
-Wildcards as %% and ? are not allowed! = Ordezkatzaileak ala nola %% eta ? ez dira onartzen!
 Specified SQL username name already exists! = Sartutako SQL erabiltzailea iadanik badago!
 SQL user successfully added! = SQL erabiltzailea zuzen gehitua!
 ispCP - Client/Add SQL User = ispCP - Erabiltzailea/Gehitu SQL erabiltzailea

@@ -860,7 +860,6 @@ Please type user name! = Prosím, napište uživatelské jméno!
 Too user long password! = Příliš dlouhé uživatelské heslo!
 SQL-user not found! Maybe it was deleted by another user! = SQL uživatel nenalezen! Možná byl smazán jiným uživatelem!
 User name too long! = Uživatelské jméno je příliš dlouhé!
-Wildcards as %% and ? are not allowed! = Znaky jako %% a ? nejsou povoleny!
 Specified SQL username name already exists! = Zadané SQL uživatelské jméno existuje!
 SQL user successfully added! = SQL uživatel úspěšně přidán!
 ispCP - Client/Add SQL User = ispCP - Klient/Přidat SQL uživatele

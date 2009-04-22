@@ -873,7 +873,6 @@ Please type user name! = Por favor, insire o nome de usuario!
 Too user long password! = Contrasinal de usuario longo de máis!
 SQL-user not found! Maybe it was deleted by another user! = Usuario SQL non atopado! Pode que fose eliminado por outro usuario!
 User name too long! = Nome de usuario longo de máis!
-Wildcards as %% and ? are not allowed! = Non se permiten os comodíns do tipo ? e %% !
 Specified SQL username name already exists! = O nome de usuario SQL especificado xa existe!
 SQL user successfully added! = Usuario SQL engadido de xeito correcto!
 ispCP - Client/Add SQL User = ispCP - Cliente/Engadir Usuario SQL

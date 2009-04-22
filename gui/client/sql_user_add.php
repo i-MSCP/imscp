@@ -276,7 +276,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	// are wildcards used?
 
 	if (preg_match("/[%|\?]+/", $db_user)) {
-		set_page_message(tr('Wildcards as %% and ? are not allowed!'));
+		set_page_message(tr('Wildcards such as %% and ? are not allowed!'));
 		return;
 	}
 

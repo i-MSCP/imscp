@@ -2855,10 +2855,6 @@ msgstr "SQL-用户未找到！也许已被其他用户删除！"
 msgid "User name too long!"
 msgstr "用户名太长！"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "不允许使用如 %% 和 ? 通配符！"
-
 msgid "Specified SQL username name already exists!"
 msgstr "指定的 SQL 用户名已经存在！"
 

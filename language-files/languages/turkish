@@ -882,7 +882,6 @@ Please type user name! = Lütfen, kullanıcı adını giriniz!
 Too user long password! = Kullanıcı şifresi çok uzun!
 SQL-user not found! Maybe it was deleted by another user! = SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!
 User name too long! = Kullanıcı adı çok uzun!
-Wildcards as %% and ? are not allowed! = Wilcard olarak % ve ? kabul edilmiyor!
 Specified SQL username name already exists! = Belirtilen isimde bir SQL kullanıcısı zaten var!
 SQL user successfully added! = SQL kullanıcısı eklendi!
 ispCP - Client/Add SQL User = ispCP - Müşteri/SQL Kullanıcısı Ekle

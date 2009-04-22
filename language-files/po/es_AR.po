@@ -2953,10 +2953,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "El nombre del usuario es demasiado largo!"
 
-#, fuzzy, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Los comodines como % y ? no están permitidos!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Ya existe el nombre de usuario SQL especificado!"
 

@@ -865,7 +865,6 @@ Please type user name! = Introdu un nume de utilizator!
 Too user long password! = Parola utilizator prea lunga!
 SQL-user not found! Maybe it was deleted by another user! = Utilizator SQL negasit! Poate a fost sters de alt utilizator!
 User name too long! = Nume utilizator prea lung!
-Wildcards as %% and ? are not allowed! = Wildcard-uri ca  %% si ? nu sunt permise!
 Specified SQL username name already exists! = Numele utilizatorului SQL deja exista!
 SQL user successfully added! = Utilizator SQL adaugat cu succes!
 ispCP - Client/Add SQL User = ispCP - Client/ Adauga utilizator SQL

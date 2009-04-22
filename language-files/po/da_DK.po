@@ -2898,10 +2898,6 @@ msgstr "SQL-bruger ikke fundet! Måske slettet af en anden bruger!"
 msgid "User name too long!"
 msgstr "Brugernavn er for langt!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Wildcards som %% og ? er ikke tilladte!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "SQL brugernavn eksisterer allerede!"
 

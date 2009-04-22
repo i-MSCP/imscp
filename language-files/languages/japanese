@@ -875,7 +875,6 @@ Please type user name! = ユーザ名を入力してください！
 Too user long password! = ユーザのパスワードが長すぎます
 SQL-user not found! Maybe it was deleted by another user! = SQLユーザが見つかりません！ たぶん他のユーザによって削除されました！
 User name too long! = ユーザー名が長すぎます
-Wildcards as %% and ? are not allowed! = %% と ? のワイルドカードは許可されていません！
 Specified SQL username name already exists! = 指定されたSQLユーザ名は既に存在しています！
 SQL user successfully added! = SQLユーザーは追加されました
 ispCP - Client/Add SQL User = ispCP - クライアント/データベースユーザー追加

@@ -2888,10 +2888,6 @@ msgstr "Utilizator SQL negasit! Poate a fost sters de alt utilizator!"
 msgid "User name too long!"
 msgstr "Nume utilizator prea lung!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Wildcard-uri ca  %% si ? nu sunt permise!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Numele utilizatorului SQL deja exista!"
 

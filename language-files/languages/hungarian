@@ -869,7 +869,6 @@ Please type user name! = Írd be a felhasználónevet!
 Too user long password! = Túl hosszú felhasználó jelszó!
 SQL-user not found! Maybe it was deleted by another user! = SQL felhasználó nem található! Lehet, hogy törölte már egy másik felhasználó!
 User name too long! = Felhasználó név túl hosszú!
-Wildcards as %% and ? are not allowed! = Különleges karakterek mint %% és ? nem engedélyezettek!
 Specified SQL username name already exists! = A megadott SQL felhasználó már létezik!
 SQL user successfully added! = SQL felhasználó sikeresen hozzáadva!
 ispCP - Client/Add SQL User = ispCP - Kliens/Új SQL Felhasználó

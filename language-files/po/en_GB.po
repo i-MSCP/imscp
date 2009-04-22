@@ -2851,10 +2851,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr ""
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr ""
-
 msgid "Specified SQL username name already exists!"
 msgstr ""
 

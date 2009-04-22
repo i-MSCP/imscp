@@ -2907,10 +2907,6 @@ msgstr "Usuario SQL non atopado! Pode que fose eliminado por outro usuario!"
 msgid "User name too long!"
 msgstr "Nome de usuario longo de máis!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Non se permiten os comodíns do tipo ? e %% !"
-
 msgid "Specified SQL username name already exists!"
 msgstr "O nome de usuario SQL especificado xa existe!"
 

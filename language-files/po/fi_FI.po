@@ -2945,10 +2945,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Liian pitk� k�ytt�j�nimi!"
 
-#, fuzzy, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Merkit % ja ? eiv�t ole sallittuja!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "M��ritelty SQL-k�ytt�j� on jo olemassa!"
 

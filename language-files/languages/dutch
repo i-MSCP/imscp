@@ -851,7 +851,6 @@ Please type user name! = Gelieve een gebruikersnaam in te vullen
 Too user long password! = Te lang gebruikerswachtwoord!
 SQL-user not found! Maybe it was deleted by another user! = SQL-gebruiker niet gevonden!. Misschien was deze verwijderd door een andere gebruiker!
 User name too long! = Gebruikersnaam is te lang
-Wildcards as %% and ? are not allowed! = Vervangingen zoals %% en ? zijn niet toegestaan!
 Specified SQL username name already exists! = Gegeven MySQL gebruikersnaam bestaat al
 SQL user successfully added! = MySQL gebruiker succesvol toegevoegd
 ispCP - Client/Add SQL User = ispCP - Klant/Toevoegen SQL Gebruiker

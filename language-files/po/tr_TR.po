@@ -2875,10 +2875,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Kullanıcı adı çok uzun!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Wilcard olarak % ve ? kabul edilmiyor!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Belirtilen isimde bir SQL kullanıcısı zaten var!"
 

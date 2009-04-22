@@ -805,7 +805,6 @@ Please type user name! = Indtast brugernavn!
 Too user long password! = For lang bruger adgangskode!
 SQL-user not found! Maybe it was deleted by another user! = SQL-bruger ikke fundet! Måske slettet af en anden bruger!
 User name too long! = Brugernavn er for langt!
-Wildcards as %% and ? are not allowed! = Wildcards som %% og ? er ikke tilladte!
 Specified SQL username name already exists! = SQL brugernavn eksisterer allerede!
 SQL user successfully added! = SQL bruger til tilføjet!
 ispCP - Client/Add SQL User = ispCP - Bruger/Tilføj SQL Bruger

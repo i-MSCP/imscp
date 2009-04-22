@@ -859,7 +859,6 @@ Please type user name! = Si us plau escriviu el nom d'usuari!
 Too user long password! = Contrasenya d'usuari massa llarga!
 SQL-user not found! Maybe it was deleted by another user! = No s'ha trobat l'usuari SQL! Potser ha estat eliminat per un altre usuari!
 User name too long! = Nom d'usuari massa llarg!
-Wildcards as %% and ? are not allowed! = Wildcards com %% i ? no estan permesos!
 Specified SQL username name already exists! = El nom d'usuari SQL especificat ja existeix!
 SQL user successfully added! = Usuari SQL afegit correctament!
 ispCP - Client/Add SQL User = ispCP - Client/Afegir usuari SQL

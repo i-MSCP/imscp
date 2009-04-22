@@ -870,7 +870,6 @@ Please type user name! = 请输入用户名！
 Too user long password! = 用户密码太长！
 SQL-user not found! Maybe it was deleted by another user! = SQL-用户未找到！也许已被其他用户删除！
 User name too long! = 用户名太长！
-Wildcards as %% and ? are not allowed! = 不允许使用如 %% 和 ? 通配符！
 Specified SQL username name already exists! = 指定的 SQL 用户名已经存在！
 SQL user successfully added! = SQL 用户成功添加！
 ispCP - Client/Add SQL User = ispCP - 客户/添加 SQL 用户

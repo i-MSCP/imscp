@@ -2951,10 +2951,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Занадто довге ім'я користувача!"
 
-#, fuzzy, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Маски (% та ?) заборонені!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Вказаний користувач бази даних уже існує!"
 

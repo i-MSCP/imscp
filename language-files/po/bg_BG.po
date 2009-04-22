@@ -2928,10 +2928,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Потребителското име е твърде дълго!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Картичка като %% и ? не е позволена!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Указаното SQL потребителско име вече съществува!"
 

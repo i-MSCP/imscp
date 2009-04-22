@@ -2853,10 +2853,6 @@ msgstr "SQL-使用者未找到！也許已被其他使用者刪除！"
 msgid "User name too long!"
 msgstr "使用者名太長！"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "不允許使用如 %% 和 ? 通配符！"
-
 msgid "Specified SQL username name already exists!"
 msgstr "指定的 SQL 使用者名稱已經存在！"
 

@@ -2890,10 +2890,6 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Felhasználó név túl hosszú!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Különleges karakterek mint %% és ? nem engedélyezettek!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "A megadott SQL felhasználó már létezik!"
 

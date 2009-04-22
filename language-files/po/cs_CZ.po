@@ -2876,10 +2876,6 @@ msgstr "SQL uživatel nenalezen! Možná byl smazán jiným uživatelem!"
 msgid "User name too long!"
 msgstr "Uživatelské jméno je příliš dlouhé!"
 
-#, php-format
-msgid "Wildcards as %% and ? are not allowed!"
-msgstr "Znaky jako %% a ? nejsou povoleny!"
-
 msgid "Specified SQL username name already exists!"
 msgstr "Zadané SQL uživatelské jméno existuje!"
 
