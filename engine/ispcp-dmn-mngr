@@ -3383,8 +3383,10 @@ sub dmn_restore_data {
 	}
 
 	my ($rs, $rdata) = ('', '');
+	my ($rs0, $rdata0) = ('','');
 	my $dmn_id       = @$dmn_data[0];
 	my $dmn_name     = @$dmn_data[1];
+	my $dmn_uid	 = @$dmn_data[3];
 	my $www_dir      = $main::cfg{'APACHE_WWW_DIR'};
 	my $dmn_dir      = "$www_dir/$dmn_name";
 	my $dmn_bk_dir   = "$www_dir/$dmn_name/backups";
@@ -3393,6 +3395,7 @@ sub dmn_restore_data {
 	my $cmd_bzcat    = $main::cfg{'CMD_BZCAT'};
 	my $cmd_gzcat    = $main::cfg{'CMD_GZCAT'};
 	my $cmd_mysql    = $main::cfg{'CMD_MYSQL'};
+	my $cmd_chown	 = $main::cfg{'CMD_CHOWN'};
 
 	$rs = opendir(DIR, $dmn_bk_dir);
 	if (!$rs) {
@@ -3412,18 +3415,46 @@ sub dmn_restore_data {
 			$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
+			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+
 		}
 		# Restore gz files
 		if ($fname =~ m/.tar.gz/i) {
 			$cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
+			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
 		}
 		# Restore lzma files
 		if ($fname =~ m/.tar.lzma/i) {
 			$cmd = "$cmd_lzma -dc $dmn_bk_dir/$fname | $cmd_tar --extract --preserve-permissions --directory=$dmn_dir";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0)
+			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
+                        $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
+                        $rs0 = sys_command($cmd);
+			return $rs0 if ($rs0 != 0); 
 		}
 
 		# Restore bz2 SQL files
