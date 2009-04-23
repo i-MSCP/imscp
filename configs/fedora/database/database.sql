@@ -72,6 +72,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_SSH', '22;tcp;SSH;1;0'),
 ('PORT_TELNET', '23;tcp;TELNET;1;0'),
 ('PORT_SMTP', '25;tcp;SMTP;1;0'),
+(`PORT_SMTP-SSL`,'465:tcp;SMTP-SSL;1;0'),
 ('PORT_DNS', '53;tcp;DNS;1;0'),
 ('PORT_HTTP', '80;tcp;HTTP;1;0'),
 ('PORT_HTTPS', '443;tcp;HTTPS;0;0'),
@@ -128,6 +129,7 @@ CREATE TABLE `domain` (
   `domain_disk_usage` bigint(20) unsigned DEFAULT NULL,
   `domain_php` varchar(15) DEFAULT NULL,
   `domain_cgi` varchar(15) DEFAULT NULL,
+  `allowbackup` varchar(8) DEFAULT NULL,
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
