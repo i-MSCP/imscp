@@ -277,7 +277,7 @@ sub backup_all_engine {
 
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
-	my ($backup_filename, $backup_cmd) = (undef, undef);
+	my ($backup_filename, $backup_cmd) = (undef,"");
 
 	foreach (@$rdata) {
 
@@ -299,7 +299,7 @@ sub backup_all_engine {
 			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
 
 			return $rs if ($rs != 0);
-		}
+		}		
 
 		if ($zip eq "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
@@ -321,7 +321,6 @@ sub backup_all_engine {
 		}		
 		else {
 			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
-
 			return 1;
 		}
 
@@ -399,41 +398,43 @@ sub backup_all_engine {
 			}
 		}
 	}
-		$rs = sys_command($backup_cmd);
 
-		# do not return, if backup throws an error, otherwise other domains will not be backuped
-		if ($rs == 0) { # everything ok
+		if (length($backup_cmd)!=0) {
+			$rs = sys_command($backup_cmd);
 
-			$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
+			# do not return, if backup throws an error, otherwise other domains will not be backuped
+			if ($rs == 0) { # everything ok
 
-			return $rs if ($rs != 0);
+				$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
+	
+				return $rs if ($rs != 0);
 
-			$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
-
-			return $rs if ($rs != 0);
-
-			$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
-
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
-
-			return $rs if ($rs != 0);
-
-		} else { # some error occurred
-
-			push_el(\@main::el, 'backup_all_engine()', "ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
-
-			if ( -e "$dmn_dir/$backup_filename" ) {
-
-				$rs = del_file("$dmn_dir/$backup_filename");
+				$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
 
 				return $rs if ($rs != 0);
 
+				$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+
+				return $rs if ($rs != 0);
+
+				$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
+
+				return $rs if ($rs != 0);
+
+			} else { # some error occurred
+
+				push_el(\@main::el, 'backup_all_engine()', "ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
+
+				if ( -e "$dmn_dir/$backup_filename" ) {
+
+					$rs = del_file("$dmn_dir/$backup_filename");
+
+					return $rs if ($rs != 0);
+
+				}
+
 			}
-
 		}
-
 } else {
 	push_el(\@main::el, 'backup_all_engine()', "ERROR: the type of backup (*$allowbackup*) is not allowed!");
 }	

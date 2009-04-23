@@ -1,6 +1,13 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-23 Malte Geierhos
+	- ENGINE: 
+		* Added FISA4 backup per domain switch. 
+	- GUI:
+		* Added FISA4 backup per domain switch
+		* Fixed #1794 (smtps - missing in serverstatus)  
+
 2009-04-23 Thomas Häber
 	- THEMES:
 		* Fixed problem in JavaScript confirmation in client's ticket system, thanks to Thomas Wacker
