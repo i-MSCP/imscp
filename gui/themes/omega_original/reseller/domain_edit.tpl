@@ -92,6 +92,17 @@
                           </select>
                         </td>
                       </tr>
+		      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="193">{TR_BACKUP}</td>
+                        <td class="content"><select name="backup">
+                            <option value="domain" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
+                            <option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
+                            <option value="full" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
+                            <option value="no" {BACKUP_NO}>{TR_BACKUP_NO}</option>
+                          </select>
+                        </td>
+                      </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_SUBDOMAINS}</td>

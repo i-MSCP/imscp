@@ -73,6 +73,11 @@ $tpl->assign(
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_NEXT_STEP' => tr('Next step'),
+		'TR_BACKUP' => tr('Backup'),
+                'TR_BACKUP_DOMAIN' => tr('Domain'),
+                'TR_BACKUP_SQL' => tr('SQL'),
+                'TR_BACKUP_FULL' => tr('Full'),
+                'TR_BACKUP_NO' => tr('No'),
 		'TR_BACKUP_RESTORE' => tr('Backup / Restore'),
 		'TR_APACHE_LOGS' => tr('Apache logs'),
 		'TR_AWSTATS' => tr('Awstats')
@@ -91,7 +96,7 @@ if (isset($_POST['uaction'])
 	&& (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
-		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
+		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_allowbackup;";
 
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
 			header("Location: user_add3.php");
@@ -141,7 +146,7 @@ function get_init_au2_page(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk;
+	global $hp_traff, $hp_disk, $hp_allowbackup;
 
 	$tpl->assign(
 		array(
@@ -188,6 +193,45 @@ function get_init_au2_page(&$tpl) {
 			)
 		);
 	}
+
+	if ("_domain_" === $hp_allowbackup) {
+                $tpl->assign(
+                        array(
+                                'VL_BACKUPD' => 'checked="checked"',
+                                'VL_BACKUPS' => '',
+                                'VL_BACKUPF' => '',
+                                'VL_BACKUPN' => ''
+                        )
+                );
+        } else if("_sql_" === $hp_allowbackup) {
+                $tpl->assign(
+                        array(
+                                'VL_BACKUPD' => '',
+                                'VL_BACKUPS' => 'checked="checked"',
+                                'VL_BACKUPF' => '',
+                                'VL_BACKUPN' => '',
+                        )
+                );
+	} else if("_full_" === $hp_allowbackup) {
+                $tpl->assign(
+                        array(
+                                'VL_BACKUPD' => '',
+                                'VL_BACKUPS' => '',
+                                'VL_BACKUPF' => 'checked="checked"',
+                                'VL_BACKUPN' => '',
+                        )
+                );
+        } else {
+                $tpl->assign(
+                        array(
+                                'VL_BACKUPD' => '',
+                                'VL_BACKUPS' => '',
+                                'VL_BACKUPF' => '',
+                                'VL_BACKUPN' => 'checked="checked"',
+                        )
+                );
+        }
+
 } // End of get_init_au2_page()
 
 /**
@@ -197,7 +241,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk;
+	global $hp_traff, $hp_disk, $hp_allowbackup;
 	$sql = Database::getInstance();
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
@@ -209,7 +253,7 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_allowbackup) = explode(";", $props);
 
 		$hp_name = $data['name'];
 	} else {
@@ -224,6 +268,7 @@ function get_hp_data($hpid, $admin_id) {
 		$hp_traff = '';
 		$hp_disk = '';
 		$hp_name = 'Custom';
+		$hp_allowbackup = '';
 	}
 } // End of get_hp_data()
 
@@ -234,7 +279,7 @@ function check_user_data(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_dmn;
+	global $hp_traff, $hp_disk, $hp_dmn, $hp_allowbackup;
 	$sql = Database::getInstance();
 	global $dmn_chp;
 
@@ -276,6 +321,9 @@ function check_user_data(&$tpl) {
 	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
 	}
+	if (isset($_POST['allowbackup'])) {
+                $hp_allowbackup  = $_POST['allowbackup'];
+        }
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		set_page_message(tr('Incorrect subdomains limit!'));

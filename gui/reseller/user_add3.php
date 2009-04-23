@@ -227,6 +227,7 @@ function add_user_data($reseller_id) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
+	global $allowbackup;
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';
 
@@ -254,10 +255,11 @@ function add_user_data($reseller_id) {
 	list($php, $cgi, $sub,
 		$als, $mail, $ftp,
 		$sql_db, $sql_user,
-		$traff, $disk) = explode(";", $props);
+		$traff, $disk, $allowbackup) = explode(";", $props);
 
 	$php			= preg_replace("/\_/", "", $php);
 	$cgi			= preg_replace("/\_/", "", $cgi);
+	$allowbackup            = clean_input($allowbackup, true);
 	$pure_user_pass	= $inpass;
 	$inpass			= crypt_user_pass($inpass, true);
 	$first_name		= clean_input($first_name, true);
@@ -322,7 +324,8 @@ function add_user_data($reseller_id) {
 			`domain_sqlu_limit`, `domain_status`,
 			`domain_subd_limit`, `domain_alias_limit`,
 			`domain_ip_id`, `domain_disk_limit`,
-			`domain_disk_usage`, `domain_php`, `domain_cgi`
+			`domain_disk_usage`, `domain_php`, `domain_cgi`,
+			`allowbackup`
 		)
 		VALUES (
 			?, ?,
@@ -332,13 +335,14 @@ function add_user_data($reseller_id) {
 			?, ?,
 			?, ?,
 			?, ?, '0',
-			?, ?
+			?, ?,
+			?
 		)
 	";
 
 	$res = exec_query($sql, $query, array(
 		$dmn_name, $record_id, $reseller_id, $mail, $ftp, $traff, $sql_db,
-		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi));
+		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi, $allowbackup));
 	$dmn_id = $sql->Insert_ID();
 
 	// Add statistics group

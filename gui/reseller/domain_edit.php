@@ -66,6 +66,11 @@ $tpl->assign(
 		'TR_TRAFFIC' => tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
 		'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
 		'TR_USER_NAME' => tr('Username'),
+		'TR_BACKUP' => tr('Backup'),
+        	'TR_BACKUP_DOMAIN' => tr('Domain'),
+        	'TR_BACKUP_SQL' => tr('SQL'),
+        	'TR_BACKUP_FULL' => tr('Full'),
+        	'TR_BACKUP_NO' => tr('No'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_YES' => tr('Yes'),
@@ -164,7 +169,7 @@ SQL_QUERY;
 function load_additional_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
 	global $domain_name, $domain_ip, $php_sup;
-	global $cgi_supp, $username;
+	global $cgi_supp, $username, $allowbackup;
 	// Get domain data
 	$query = <<<SQL_QUERY
 		SELECT
@@ -172,7 +177,8 @@ function load_additional_data($user_id, $domain_id) {
 			`domain_ip_id`,
 			`domain_php`,
 			`domain_cgi`,
-			`domain_admin_id`
+			`domain_admin_id`,
+			`allowbackup`
 		FROM
 			`domain`
 		WHERE
@@ -186,6 +192,7 @@ SQL_QUERY;
 	$domain_ip_id = $data['domain_ip_id'];
 	$php_sup = $data['domain_php'];
 	$cgi_supp = $data['domain_cgi'];
+	$allowbackup = $data['allowbackup'];
 	$domain_admin_id = $data['domain_admin_id'];
 	// Get IP of domain
 	$query = <<<SQL_QUERY
@@ -230,7 +237,7 @@ function gen_editdomain_page(&$tpl) {
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
-	global $username;
+	global $username, $allowbackup;
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
 
@@ -269,6 +276,44 @@ function gen_editdomain_page(&$tpl) {
 			)
 		);
 	}
+	
+	if ($allowbackup === 'domain') {
+                $tpl->assign(
+                                array(
+                                        'BACKUP_DOMAIN' => 'selected="selected"',
+                                        'BACKUP_SQL' => '',
+                                        'BACKUP_FULL' => '',
+                                        'BACKUP_NO' => '',
+                                )
+                        );
+        } else if ($allowbackup === 'sql')  {
+                $tpl->assign(
+                                array(
+                                        'BACKUP_DOMAIN' => '',
+                                        'BACKUP_SQL' => 'selected="selected"',
+                                        'BACKUP_FULL' => '',
+                                        'BACKUP_NO' => '',
+                                )
+                        );
+        } else if ($allowbackup === 'full')  {
+                $tpl->assign(
+                                array(
+                                        'BACKUP_DOMAIN' => '',
+                                        'BACKUP_SQL' => '',
+                                        'BACKUP_FULL' => 'selected="selected"',
+                                        'BACKUP_NO' => '',
+                                )
+                        );
+        } else if ($allowbackup === 'no')  {
+                $tpl->assign(
+                                array(
+                                        'BACKUP_DOMAIN' => '',
+                                        'BACKUP_SQL' => '',
+                                        'BACKUP_FULL' => '',
+                                        'BACKUP_NO' => 'selected="selected"',
+                                )
+                        );
+        }
 
 	$tpl->assign(
 		array(
@@ -291,7 +336,10 @@ function gen_editdomain_page(&$tpl) {
  * Check input data
  */
 function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
-	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql, $domain_ip, $domain_php, $domain_cgi;
+	global $sub, $als, $mail, $ftp;
+	global $sql_db, $sql_user, $traff;
+	global $disk, $sql, $domain_ip, $domain_php;
+	global $domain_cgi, $allowbackup;
 
 	$sub = clean_input($_POST['dom_sub']);
 	$als = clean_input($_POST['dom_alias']);
@@ -304,6 +352,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	// $domain_ip = $_POST['domain_ip'];
 	$domain_php = $_POST['domain_php'];
 	$domain_cgi = $_POST['domain_cgi'];
+	$allowbackup = $_POST['backup'];
 
 	$ed_error = '';
 
@@ -432,6 +481,10 @@ SQL_QUERY;
 
 			return false;
 		}
+
+		// Backup Settings
+                $query = "UPDATE `domain` SET `allowbackup` = '$allowbackup' WHERE `domain_id` = ?";
+                $rs = exec_query($sql, $query, array($user_id));
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";

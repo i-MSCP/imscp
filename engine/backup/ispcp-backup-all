@@ -249,6 +249,7 @@ sub backup_all_engine {
 			t1.domain_status,
 			t1.domain_uid,
 			t1.domain_gid,
+			t1.allowbackup,
 			t2.admin_name,
 			t2.email
 		FROM
@@ -257,6 +258,7 @@ sub backup_all_engine {
 		WHERE
 				t1.domain_status	= 'ok'
 			AND	t1.domain_admin_id	= t2.admin_id
+			AND 	t1.allowbackup		!= 'no'
 		ORDER BY
 			t1.domain_id
 	";
@@ -279,8 +281,10 @@ sub backup_all_engine {
 
 	foreach (@$rdata) {
 
-		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6]);
-
+		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $allowbackup, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6], @$_[7]);
+		
+		if ($allowbackup eq "full" || $allowbackup eq "domain" || $allowbackup eq "sql") {		
+		
 		my $date = get_human_date();
 
 		my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
@@ -299,19 +303,22 @@ sub backup_all_engine {
 
 		if ($zip eq "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
-
-			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			if ($allowbackup eq "full" || $allowbackup eq "domain") {
+				$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			}
 		}
 		elsif ($zip eq "gzip") {
 			$backup_filename = "$dmn_name-backup-$date.tar.gz";
-
+			if ($allowbackup eq "full" || $allowbackup eq "domain") {
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			}
 		}
 		elsif ($zip eq "lzma") {
-			$backup_filename = "$dmn_name-backup-$date.tar.lzma";
-			
-			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
-		}
+                        $backup_filename = "$dmn_name-backup-$date.tar.lzma";
+			if ($allowbackup eq "full" || $allowbackup eq "domain") {
+                        	$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+                	}
+		}		
 		else {
 			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
 
@@ -323,7 +330,9 @@ sub backup_all_engine {
 		# - read databases from ispcp database for actual domain
 		# - execute MYSQLDUMP with databases and redirect it to the backup folder
 		#
-
+			
+		if ($allowbackup eq "full" || $allowbackup eq "sql") {
+		
 		$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 		($rs, my $rdata3) = doSQL($sql);
 
@@ -389,7 +398,7 @@ sub backup_all_engine {
 				}
 			}
 		}
-
+	}
 		$rs = sys_command($backup_cmd);
 
 		# do not return, if backup throws an error, otherwise other domains will not be backuped
@@ -425,6 +434,9 @@ sub backup_all_engine {
 
 		}
 
+} else {
+	push_el(\@main::el, 'backup_all_engine()', "ERROR: the type of backup (*$allowbackup*) is not allowed!");
+}	
 	}
 
 	push_el(\@main::el, 'backup_all_engine()', 'Ending...');

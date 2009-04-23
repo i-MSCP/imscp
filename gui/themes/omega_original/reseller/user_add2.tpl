@@ -118,6 +118,17 @@
                             <input type="radio" name="cgi" value="no" {VL_CGIN} />
                             {TR_NO}</td>
                         </tr>
+			<tr>
+                          <td width="25">&nbsp;</td>
+                          <td class="content2" width="200">{TR_BACKUP}</td>
+                          <td class="content"><input name="allowbackup" type="radio" value="domain" {VL_BACKUPD}>
+                            {TR_BACKUP_DOMAIN}
+                            <input type="radio" name="allowbackup" value="sql" {VL_BACKUPS}>
+                            {TR_BACKUP_SQL}<input name="allowbackup" type="radio" value="full" {VL_BACKUPF}>
+                            {TR_BACKUP_FULL}
+                            <input type="radio" name="allowbackup" value="no" {VL_BACKUPN}>
+                            {TR_BACKUP_NO}</td>
+                        </tr>
                         <tr>
                           <td>&nbsp;</td>
                           <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" /></td>
