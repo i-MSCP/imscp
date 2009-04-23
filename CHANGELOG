@@ -1,5 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-04-23 Thomas Häber
+	- THEMES:
+		* Fixed problem in JavaScript confirmation in client's ticket system, thanks to Thomas Wacker
+
 2009-04-22 Malte Geierhos
 	- ENGINE:
 		* Fixed #1777 (invalid Permissions after Backup Restore) 
