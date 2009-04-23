@@ -29,66 +29,12 @@ function getSkinArray() {
 	global $net2ftp_globals;
 
 // -------------------------------------------------------------------------
-// Blue
+// ispCP Omega  
 // -------------------------------------------------------------------------
 	$skinArray["blue"]["name"]             = __("omega");
 	$skinArray["blue"]["iconset"]          = "nuvola";
 	$skinArray["blue"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/omega/images";
 	$skinArray["blue"]["icon_size_mime"]   = "16";
-
-// -------------------------------------------------------------------------
-// Openlaszlo
-// -------------------------------------------------------------------------
-//	$skinArray["openlaszlo"]["name"]           = "OpenLaszlo";
-//	$skinArray["openlaszlo"]["iconset"]        = "";
-//	$skinArray["openlaszlo"]["image_url"]      = $net2ftp_globals["application_rootdir_url"] . "/skins/openlaszlo/images";
-//	$skinArray["openlaszlo"]["icon_size_mime"] = "16";
-
-// -------------------------------------------------------------------------
-// India
-// -------------------------------------------------------------------------
-//	$skinArray["india"]["name"]              = "India";
-//	$skinArray["india"]["iconset"]           = "nuvola";
-//	$skinArray["india"]["image_url"]         = $net2ftp_globals["application_rootdir_url"] . "/skins/india/images";
-//	$skinArray["india"]["icon_size_mime"]    = "32";
-
-// -------------------------------------------------------------------------
-// Mobile
-// -------------------------------------------------------------------------
-	$skinArray["mobile"]["name"]           = "Mobile";
-	$skinArray["mobile"]["iconset"]        = "nuvola";
-	$skinArray["mobile"]["image_url"]      = $net2ftp_globals["application_rootdir_url"] . "/skins/mobile/images";
-	$skinArray["mobile"]["icon_size_mime"] = "0";
-
-// -------------------------------------------------------------------------
-// Mambo
-// -------------------------------------------------------------------------
-	if (defined("_VALID_MOS") == true) {
-		$skinArray["mambo"]["name"]            = "Mambo";
-		$skinArray["mambo"]["iconset"]         = "nuvola";
-		$skinArray["mambo"]["image_url"]       = $net2ftp_globals["application_rootdir_url"] . "/skins/blue/images";
-		$skinArray["mambo"]["icon_size_mime"]  = "16";
-	}
-
-// -------------------------------------------------------------------------
-// Xoops
-// -------------------------------------------------------------------------
-	if (defined("XOOPS_ROOT_PATH") == true) {
-		$skinArray["xoops"]["name"]            = "Xoops";
-		$skinArray["xoops"]["iconset"]         = "nuvola";
-		$skinArray["xoops"]["image_url"]       = $net2ftp_globals["application_rootdir_url"] . "/skins/blue/images";
-		$skinArray["xoops"]["icon_size_mime"]  = "16";
-	}
-
-// -------------------------------------------------------------------------
-// Drupal
-// -------------------------------------------------------------------------
-	if (defined("CACHE_PERMANENT") == true) {
-		$skinArray["drupal"]["name"]           = "Drupal";
-		$skinArray["drupal"]["iconset"]        = "nuvola";
-		$skinArray["drupal"]["image_url"]      = $net2ftp_globals["application_rootdir_url"] . "/skins/blue/images";
-		$skinArray["drupal"]["icon_size_mime"] = "16";
-	}
 
 	return $skinArray;
 
