@@ -3414,7 +3414,7 @@ sub dmn_restore_data {
 		if ($fname =~ m/.tar.bz2/i) {
 			$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0)
+			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
 			return $rs0 if ($rs0 != 0); 
@@ -3430,7 +3430,7 @@ sub dmn_restore_data {
 		if ($fname =~ m/.tar.gz/i) {
 			$cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0)
+			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
 			return $rs0 if ($rs0 != 0); 
@@ -3445,7 +3445,7 @@ sub dmn_restore_data {
 		if ($fname =~ m/.tar.lzma/i) {
 			$cmd = "$cmd_lzma -dc $dmn_bk_dir/$fname | $cmd_tar --extract --preserve-permissions --directory=$dmn_dir";
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0)
+			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
 			return $rs0 if ($rs0 != 0); 
