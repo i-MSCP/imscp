@@ -31,10 +31,10 @@ function getSkinArray() {
 // -------------------------------------------------------------------------
 // ispCP Omega  
 // -------------------------------------------------------------------------
-	$skinArray["blue"]["name"]             = __("omega");
-	$skinArray["blue"]["iconset"]          = "nuvola";
-	$skinArray["blue"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/omega/images";
-	$skinArray["blue"]["icon_size_mime"]   = "16";
+	$skinArray["omega"]["name"]             = __("omega");
+	$skinArray["omega"]["iconset"]          = "nuvola";
+	$skinArray["omega"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/omega/images";
+	$skinArray["omega"]["icon_size_mime"]   = "16";
 
 	return $skinArray;
 
