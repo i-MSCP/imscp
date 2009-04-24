@@ -1,5 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-04-24 Jochen Manz
+	- GUI:
+		* missing db updates for per-domain backup #2
+
 2009-04-24 Malte Geierhos
 	- GUI: 
 		* Fixed #1803 (wrong link) -> disabled the function

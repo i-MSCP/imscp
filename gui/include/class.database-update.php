@@ -363,6 +363,24 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
 		return $sqlUpd;
 	}
+	
+	/**
+	 * missing db updates for per-domain backup
+	 *
+	 * @author		Jochen Manz
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1663
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_15() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
+		return $sqlUpd;
+		
+	}
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
