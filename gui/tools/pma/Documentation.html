@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 12312 2009-03-24 20:32:19Z lem9 $ -->
+<!-- $Id: Documentation.html 12379 2009-04-25 11:28:17Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -11,7 +11,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 3.1.3.1 - Documentation</title>
+    <title>phpMyAdmin 3.1.4 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 3.1.3.1 Documentation</h1>
+<h1>phpMyAdmin 3.1.4 Documentation</h1>
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 12312 2009-03-24 20:32:19Z lem9 $</i>
+        <i>$Id: Documentation.html 12379 2009-04-25 11:28:17Z lem9 $</i>
     </li>
 </ul>
 
@@ -270,6 +270,7 @@ chmod o+w config/config.inc.php     # give it world writable permissions
 <pre>
 mv config/config.inc.php .         # move file to current directory
 chmod o-rw config.inc.php          # remove world read and write permissions
+rm -rf config                      # remove not needed directory
 </pre>
                 Now the file is ready to be used. You can choose to review or edit
                 the file with your favorite editor, if you prefer to set some
@@ -1198,7 +1199,7 @@ ALTER TABLE `pma_column_comments`
     <dd>Define whether the previous login should be recalled or not in cookie
         authentication mode.<br /><br />
 
-        This is automatically diabled if you do not have configured 
+        This is automatically disabled if you do not have configured 
         <tt><a href="#cfg_blowfish_secret">$cfg['blowfish_secret']</a></tt>.
         </dd>
 
@@ -2906,6 +2907,48 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
 	    <tt>SuhosinDisableWarning</tt> directive</a>.
     </p>
 
+<h4 id="faq1_39">
+    <a href="#faq1_39">1.39 When I try to connect via https, I can log in, 
+    but then my connection is redirected back to http. What can cause this 
+    behavior?</a></h4>
+
+<p> Be sure that you have enabled <tt>SSLOptions</tt> and <tt>StdEnvVars</tt>
+in your Apache configuration. See <a href="http://httpd.apache.org/docs/2.0/mod/mod_ssl.html#ssloptions">http://httpd.apache.org/docs/2.0/mod/mod_ssl.html#ssloptions</a>.</p>
+
+<h4 id="faq1_40">
+    <a href="#faq1_40">1.40 When accessing phpMyAdmin via an Apache reverse proxy, cookie login does not work,</a></h4>
+
+<p>To be able to use cookie auth Apache must know that it has to rewrite the set-cookie headers.<br />
+	Example from the Apache 2.2 documentation:</p>
+<pre>
+ProxyPass /mirror/foo/ http://backend.example.com/
+ProxyPassReverse /mirror/foo/ http://backend.example.com/
+ProxyPassReverseCookieDomain backend.example.com public.example.com 
+ProxyPassReverseCookiePath / /mirror/foo/ 
+</pre>
+
+<p>Note: if the backend url looks like http://host/~user/phpmyadmin,
+	the tilde (~) must be url encoded as %7E in the ProxyPassReverse* lines.
+	This is not specific to phpmyadmin, it's just the behavior of Apache.
+	</p>
+
+<pre>
+ProxyPass /mirror/foo/ http://backend.example.com/~user/phpmyadmin
+ProxyPassReverse /mirror/foo/
+http://backend.example.com/%7Euser/phpmyadmin
+ProxyPassReverseCookiePath /%7Euser/phpmyadmin /mirror/foo
+</pre>
+
+	<p>See <a href="http://httpd.apache.org/docs/2.2/mod/mod_proxy.html">http://httpd.apache.org/docs/2.2/mod/mod_proxy.html</a>
+	for more details.</p>
+
+<h4 id="faq1_41">
+	<a href="#faq1_41">1.41 When I view a database and ask to see its
+	       privileges, I get an error about an unknown column.</a></h4>
+
+<p> The MySQL server's privilege tables are not up to date, you need to run
+the <tt>mysql_upgrade</tt> command on the server.</p>
+
 <h3 id="faqconfig">Configuration</h3>
 
 <h4 id="faq2_1">
@@ -4016,7 +4059,7 @@ chmod o+rwx tmp
 	<li>In <tt>config.inc.php</tt> your host should be defined with a FQDN (fully qualified domain name) instead of something like &quot;localhost&quot;.</li>
 	<li>A current limitation is that your first login via phpMyAdmin to a freshly-started server must be done with an account that has the SUPER privilege.</li>
 	<li>On your target database, go to Operations and in the &quot;BLOB Repository&quot; section, click &quot;Enable&quot;. This creates the PBMS system tables inside your database.</li>
-	<li>Ensure that your target table has a LONGBLOB column.</li>
+	<li>Ensure that your target table is under the PBXT storage engine and has a LONGBLOB column.</li>
 	<li>When you insert or update a row in this table, put a checkmark on the &quot;Upload to BLOB repository&quot; optional choice; otherwise, the upload will be done directly in your column instead of the repository.</li>
 	<li>Finally when you browse your table, you'll see in your column a link to stream your data, for example &quot;View image&quot;. A header containing the correct MIME-type will be sent to your browser; this MIME-type was stored at upload time but in case it's incorrect, it's possible to edit it by clicking on the displayed MIME-type.</li> 
 </ol>	

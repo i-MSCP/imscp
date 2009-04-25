@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 11634 2008-10-04 15:06:00Z lem9 $
+ * @version $Id: cookie.auth.lib.php 12277 2009-03-03 13:30:49Z nijel $
  */
 
 if (! defined('PHPMYADMIN')) {
@@ -230,8 +230,14 @@ if (top != self) {
     <legend>
 <?php
     echo $GLOBALS['strLogin'];
-    // no real need to put a link to doc here, and it would reveal the
-    // version number
+    echo '<a href="./Documentation.html" target="documentation" ' .
+        'title="' . $GLOBALS['strPmaDocumentation'] . '">';
+    if ($GLOBALS['cfg']['ReplaceHelpImg']) {
+        echo '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_help.png" width="11" height="11" alt="' . $GLOBALS['strPmaDocumentation'] . '" />';
+    } else {
+        echo '(*)';
+    }
+    echo '</a>';
 ?>
 </legend>
 

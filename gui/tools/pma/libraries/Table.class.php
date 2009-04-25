@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 11579 2008-09-08 17:10:58Z lem9 $
+ * @version $Id: Table.class.php 12267 2009-03-01 13:05:35Z lem9 $
  */
 
 /**
@@ -637,7 +637,9 @@ class PMA_Table
             }
             unset($analyzed_sql);
             $server_sql_mode = PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'sql_mode'", 0, 1);
-            if ('ANSI_QUOTES' == $server_sql_mode) {
+            // ANSI_QUOTES might be a subset of sql_mode, for example 
+            // REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ANSI
+            if (false !== strpos($server_sql_mode, 'ANSI_QUOTES')) {
                 $table_delimiter = 'quote_double';
             } else {
                 $table_delimiter = 'quote_backtick';

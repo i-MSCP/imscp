@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 12239 2009-02-16 10:56:11Z lem9 $
+ * @version $Id: common.lib.php 12334 2009-04-04 13:06:20Z helmo $
  */
 
 /**
@@ -2551,7 +2551,7 @@ function PMA_printable_bit_value($value, $length) {
 function PMA_extractFieldSpec($fieldspec) {
     $first_bracket_pos = strpos($fieldspec, '(');
     if ($first_bracket_pos) {
-        $spec_in_brackets = chop(substr($fieldspec, $first_bracket_pos + 1, (strpos($fieldspec, ')') - $first_bracket_pos - 1)));
+        $spec_in_brackets = chop(substr($fieldspec, $first_bracket_pos + 1, (strrpos($fieldspec, ')') - $first_bracket_pos - 1)));
         // convert to lowercase just to be sure
         $type = strtolower(chop(substr($fieldspec, 0, $first_bracket_pos)));
     } else {

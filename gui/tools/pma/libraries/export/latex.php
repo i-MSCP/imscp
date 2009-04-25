@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build dumps of tables
  *
- * @version $Id: latex.php 12137 2008-12-14 13:58:06Z lem9 $
+ * @version $Id: latex.php 12349 2009-04-14 13:34:20Z helmo $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -416,7 +416,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
             $zerofill     = preg_match('/ZEROFILL/i', $row['Type']);
         }
         if (!isset($row['Default'])) {
-            if ($row['Null'] != '') {
+            if ($row['Null'] != 'NO') {
                 $row['Default'] = 'NULL';
             }
         } else {
@@ -425,7 +425,9 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
 
         $field_name = $row['Field'];
 
-        $local_buffer = $field_name . "\000" . $type . "\000" . (($row['Null'] == '') ? $GLOBALS['strNo'] : $GLOBALS['strYes'])  . "\000" . (isset($row['Default']) ? $row['Default'] : '');
+        $local_buffer = $field_name . "\000" . $type . "\000" 
+            . (($row['Null'] == '' || $row['Null'] == 'NO') ? $GLOBALS['strNo'] : $GLOBALS['strYes'])  
+            . "\000" . (isset($row['Default']) ? $row['Default'] : '');
 
         if ($do_relation && $have_rel) {
             $local_buffer .= "\000";

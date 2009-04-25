@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 12245 2009-02-23 08:36:34Z lem9 $
+ * @version $Id: tbl_replace.php 12292 2009-03-12 20:18:42Z helmo $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -159,6 +159,8 @@ $func_no_param = array(
     'RAND',
     'USER',
     'LAST_INSERT_ID',
+    'UUID',
+    'CURRENT_USER',
 );
 
 foreach ($loop_array as $rowcount => $primary_key) {

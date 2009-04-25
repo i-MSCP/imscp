@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: odt.php 12137 2008-12-14 13:58:06Z lem9 $
+ * @version $Id: odt.php 12349 2009-04-14 13:34:20Z helmo $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -355,7 +355,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
             . '<text:p>' . htmlspecialchars($type) . '</text:p>'
             . '</table:table-cell>';
         if (!isset($row['Default'])) {
-            if ($row['Null'] != '') {
+            if ($row['Null'] != 'NO') {
                 $row['Default'] = 'NULL';
             } else {
                 $row['Default'] = '';
@@ -364,7 +364,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
             $row['Default'] = $row['Default'];
         }
         $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
-            . '<text:p>' . htmlspecialchars(($row['Null'] == '') ? $GLOBALS['strNo'] : $GLOBALS['strYes']) . '</text:p>'
+            . '<text:p>' . htmlspecialchars(($row['Null'] == '' || $row['Null'] == 'NO') ? $GLOBALS['strNo'] : $GLOBALS['strYes']) . '</text:p>'
             . '</table:table-cell>';
         $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
             . '<text:p>' . htmlspecialchars($row['Default']) . '</text:p>'

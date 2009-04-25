@@ -1,21 +1,25 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-04-26 Benedikt Heintel
+	- TOOLS:
+		* Update phpMyAdmin to version 3.1.4
+
 2009-04-24 Jochen Manz
 	- GUI:
 		* missing db updates for per-domain backup #2
 
 2009-04-24 Malte Geierhos
-	- GUI: 
+	- GUI:
 		* Fixed #1803 (wrong link) -> disabled the function
-		* Fixed Image_URL always wrong in Filemanager 
+		* Fixed Image_URL always wrong in Filemanager
 
 2009-04-23 Malte Geierhos
-	- ENGINE: 
-		* Added FISA4 backup per domain switch. 
+	- ENGINE:
+		* Added FISA4 backup per domain switch.
 	- GUI:
 		* Added FISA4 backup per domain switch
-		* Fixed #1794 (smtps - missing in serverstatus)  
+		* Fixed #1794 (smtps - missing in serverstatus)
 
 2009-04-23 Thomas Häber
 	- THEMES:
@@ -23,7 +27,7 @@ ispCP ω 1.0.1 Changelog
 
 2009-04-22 Malte Geierhos
 	- ENGINE:
-		* Fixed #1777 (invalid Permissions after Backup Restore) 
+		* Fixed #1777 (invalid Permissions after Backup Restore)
 
 2009-04-22 Andreca Daniel
 	- CONFIGS:
@@ -38,7 +42,7 @@ ispCP ω 1.0.1 Changelog
 2009-04-21 Malte Geierhos
 	- TOOLS:
 		* Fixed #1789: update phpMyAdmin to 3.1.3.2
-		* Fixed #1780: reenabled omega style in filemanager 
+		* Fixed #1780: reenabled omega style in filemanager
 
 2009-04-20 Malte Geierhos
 	- CONFIG FILES:

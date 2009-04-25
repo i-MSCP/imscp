@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 12167 2009-01-04 20:26:23Z lem9 $
+ * @version $Id: server_privileges.php 12288 2009-03-05 16:57:43Z lem9 $
  */
 
 /**
@@ -1360,7 +1360,8 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
                 // a automatic repair feature soon.
                 $raw = 'Your privilege table structure seems to be older than'
                     . ' this MySQL version!<br />'
-                    . 'Please run the script <tt>mysql_fix_privilege_tables</tt>'
+                    . 'Please run the <tt>mysql_upgrade</tt> command'
+                    . '(<tt>mysql_fix_privilege_tables</tt> on older systems)'
                     . ' that should be included in your MySQL server distribution'
                     . ' to solve this problem!';
                 PMA_Message::rawError($raw)->display();

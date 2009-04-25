@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 12351 2009-04-14 16:32:06Z lem9 $
+ * @version $Id: Config.class.php 12379 2009-04-25 11:28:17Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.1.3.2');
+        $this->set('PMA_VERSION', '3.1.4');
         /**
          * @deprecated
          */
@@ -401,6 +401,8 @@ class PMA_Config
         //$this->checkPmaAbsoluteUri();
         $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
 
+        $this->checkPermissions();
+
         // Handling of the collation must be done after merging of $cfg
         // (from config.inc.php) so that $cfg['DefaultConnectionCollation']
         // can have an effect. Note that the presence of collation
@@ -475,6 +477,15 @@ class PMA_Config
             die('Existing configuration file (' . $this->getSource() . ') is not readable.');
         }
 
+        return true;
+    }
+
+    /**
+     * verifies the permissions on config file (if asked by configuration) 
+     * (must be called after config.inc.php has been merged)
+     */
+    function checkPermissions()
+    {
         // Check for permissions (on platforms that support it):
         if ($this->get('CheckConfigurationPermissions')) {
             $perms = @fileperms($this->getSource());
@@ -487,8 +498,6 @@ class PMA_Config
                 }
             }
         }
-
-        return true;
     }
 
     /**

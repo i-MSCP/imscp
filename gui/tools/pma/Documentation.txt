@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 3.1.3.2 Documentation
+phpMyAdmin 3.1.4 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 3.1.3.2 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 12351 2009-04-14 16:32:06Z
+  * Documentation version: $Id: Documentation.html 12379 2009-04-25 11:28:17Z
     lem9 $
 
 Requirements
@@ -849,7 +849,7 @@ $cfg['LoginCookieRecall'] boolean
     Define whether the previous login should be recalled or not in cookie
     authentication mode.
 
-    This is automatically diabled if you do not have configured $cfg
+    This is automatically disabled if you do not have configured $cfg
     ['blowfish_secret'].
 $cfg['LoginCookieValidity'] integer [number of seconds]
     Define how long is login cookie valid.
@@ -2138,6 +2138,42 @@ primary key. Tuning information is available at http://www.hardened-php.net/
 hphp/troubleshooting.html, although the parameter names have changed (suhosin
 instead of hphp). See also the SuhosinDisableWarning directive.
 
+1.39 When I try to connect via https, I can log in, but then my connection is
+redirected back to http. What can cause this behavior?
+
+Be sure that you have enabled SSLOptions and StdEnvVars in your Apache
+configuration. See http://httpd.apache.org/docs/2.0/mod/mod_ssl.html#ssloptions
+.
+
+1.40 When accessing phpMyAdmin via an Apache reverse proxy, cookie login does
+not work,
+
+To be able to use cookie auth Apache must know that it has to rewrite the
+set-cookie headers.
+Example from the Apache 2.2 documentation:
+
+ProxyPass /mirror/foo/ http://backend.example.com/
+ProxyPassReverse /mirror/foo/ http://backend.example.com/
+ProxyPassReverseCookieDomain backend.example.com public.example.com
+ProxyPassReverseCookiePath / /mirror/foo/
+
+Note: if the backend url looks like http://host/~user/phpmyadmin, the tilde (~)
+must be url encoded as %7E in the ProxyPassReverse* lines. This is not specific
+to phpmyadmin, it's just the behavior of Apache.
+
+ProxyPass /mirror/foo/ http://backend.example.com/~user/phpmyadmin
+ProxyPassReverse /mirror/foo/
+http://backend.example.com/%7Euser/phpmyadmin
+ProxyPassReverseCookiePath /%7Euser/phpmyadmin /mirror/foo
+
+See http://httpd.apache.org/docs/2.2/mod/mod_proxy.html for more details.
+
+1.41 When I view a database and ask to see its privileges, I get an error about
+an unknown column.
+
+The MySQL server's privilege tables are not up to date, you need to run the
+mysql_upgrade command on the server.
+
 Configuration
 
 2.1 The error message "Warning: Cannot add header information - headers already
@@ -2992,7 +3028,8 @@ with the PBXT and PBMS storage engines.
  3. On your target database, go to Operations and in the "BLOB Repository"
     section, click "Enable". This creates the PBMS system tables inside your
     database.
- 4. Ensure that your target table has a LONGBLOB column.
+ 4. Ensure that your target table is under the PBXT storage engine and has a
+    LONGBLOB column.
  5. When you insert or update a row in this table, put a checkmark on the
     "Upload to BLOB repository" optional choice; otherwise, the upload will be
     done directly in your column instead of the repository.

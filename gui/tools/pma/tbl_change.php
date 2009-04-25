@@ -5,7 +5,7 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12189 2009-01-13 21:59:45Z lem9 $
+ * @version $Id: tbl_change.php 12341 2009-04-09 15:08:47Z helmo $
  */
 
 /**
@@ -463,6 +463,7 @@ foreach ($rows as $row_id => $vrow) {
                 $special_chars = htmlspecialchars($field['Default']);
             }
             $backup_field  = '';
+            $special_chars_encoded = PMA_duplicateFirstNewline($special_chars);
         }
 
         $idindex  = ($o_rows * $fields_cnt) + $i + 1;

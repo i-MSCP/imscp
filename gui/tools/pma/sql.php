@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          that returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 12211 2009-01-24 16:43:56Z lem9 $
+ * @version $Id: sql.php 12340 2009-04-09 14:20:44Z nijel $
  */
 
 /**
@@ -504,7 +504,7 @@ if (0 == $num_rows || $is_affected) {
         // the form should not have priority over
         // errors like $strEmptyResultSet
     } elseif (!empty($zero_rows) && !$is_select) {
-        $message = PMA_Message::rawSuccess($zero_rows);
+        $message = PMA_Message::rawSuccess(htmlspecialchars($zero_rows));
     } elseif (!empty($GLOBALS['show_as_php'])) {
         $message = PMA_Message::success('strShowingPhp');
     } elseif (isset($GLOBALS['show_as_php'])) {

@@ -3,13 +3,13 @@
 /**
  * Simple script to set correct charset for changelog
  *
- * @version $Id: changelog.php 12149 2008-12-18 17:37:58Z lem9 $
+ * @version $Id: changelog.php 12326 2009-03-25 16:50:28Z lem9 $
  */
 
 $changelog = htmlspecialchars(file_get_contents('ChangeLog'));
 
 $replaces = array(
-    '@(http://[./a-zA-Z0-9.-_]*[/a-zA-Z0-9_])@'
+    '@(http://[./a-zA-Z0-9.-_-]*[/a-zA-Z0-9_])@'
     => '<a href="\\1">\\1</a>',
 
     // sourceforge users
