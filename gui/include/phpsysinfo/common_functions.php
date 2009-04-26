@@ -152,7 +152,12 @@ function execute_program ($strProgramname, $strArgs = '', $booErrorRep = true ) 
 	$strBuffer = '';
 	$strError = '';
 	
-	$strProgram = find_program($strProgramname);
+        if ( preg_match('/^\//', $strProgramname)) {
+                $strProgram = $strProgramname ;
+        } else {
+                $strProgram = find_program($strProgramname);
+	}
+		
 	if ( ! $strProgram ) {
 		if( $booErrorRep ) {
 			$error->addError( 'find_program(' . $strProgramname . ')', 'program not found on the machine', __LINE__, __FILE__);
@@ -226,7 +231,7 @@ function format_bytesize ($intKbytes, $intDecplaces = 2) {
 	if( $intKbytes > 1048576 ) {
 		$strResult = sprintf( '%.' . $intDecplaces . 'f', $intKbytes / 1048576 );
 		$strResult .= $strSpacer . $text['gb'];
-	} elseif ( $intKbytes > 1024 ) {
+	} elseif( $intKbytes > 1024 ) {
 		$strResult = sprintf( '%.' . $intDecplaces . 'f', $intKbytes / 1024);
 		$strResult .= $strSpacer . $text['mb'];
 	} else {
@@ -333,8 +338,8 @@ function finddups( $arrInput ) {
 	
 	if( is_array( $arrInput ) ) {
 		$arrBuffer = array_count_values( $arrInput );
-		foreach ($arrBuffer as $strKey => $intValue) {
-			if($intValue > 1) {
+		foreach( $arrBuffer as $strKey => $intValue) {
+			if( $intValue > 1 ) {
 				$arrResult[] = "(" . $intValue . "x) " . $strKey;
 			} else {
 				$arrResult[] = $strKey;

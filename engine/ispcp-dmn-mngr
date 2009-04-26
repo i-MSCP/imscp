@@ -2537,11 +2537,21 @@ sub dmn_del_crontab_data {
 	#
 	# Now we'll proceed system config;
 	#
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+        }
+        return $rs if ($rs != 0);
 
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+        }
+        return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_del_crontab_data()', 'Ending...');
 	return 0;
@@ -2670,11 +2680,21 @@ sub dmn_add_bkp_crontab_data {
 	#
 	# Now we'll proceed system config;
 	#
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+        }
+        return $rs if ($rs != 0);
 
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+        }
+        return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Ending...');
 	return 0;
@@ -2790,11 +2810,21 @@ sub dmn_del_bkp_crontab_data {
 	#
 	# Now we'll proceed system config;
 	#
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+        }
+        return $rs if ($rs != 0);
 
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+        }
+        return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Ending...');
 	return 0;
@@ -3156,11 +3186,21 @@ sub dmn_add_awstats_cron {
 	#
 	# Now we'll proceed system config;
 	#
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+        }
+        return $rs if ($rs != 0);
 
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+        }
+        return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_add_awstats_cron()', 'Ending...');
 	return 0;
@@ -3261,11 +3301,21 @@ sub dmn_del_awstats_cron {
 	#
 	# Now we'll proceed system config;
 	#
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+        }
+        return $rs if ($rs != 0);
 
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-	return $rs if ($rs != 0);
+        # BSD/NUX Command
+        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+        } else {
+                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+        }
+        return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_del_awstats_cron()', 'Ending...');
 	return 0;

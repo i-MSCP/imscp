@@ -86,7 +86,11 @@ class Parser {
 			$df2 = preg_split("/\n/", $df2, -1, PREG_SPLIT_NO_EMPTY);
 			sort( $df2 );
 		}
-		$mount = execute_program('mount');
+		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD') {
+			$mount = execute_program('/sbin/mount');
+		} else {
+			$mount = execute_program('mount');
+		}
 		$mount = preg_split("/\n/", $mount, -1, PREG_SPLIT_NO_EMPTY);
 		sort($mount);
 		

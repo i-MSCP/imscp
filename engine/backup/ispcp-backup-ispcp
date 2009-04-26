@@ -58,7 +58,7 @@ sub lock_backup_ispcp_system {
 
     }
 
-    my $touch_cmd = "/bin/touch $lock_file";
+    my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $lock_file";
 
     my $rs = sys_command($touch_cmd);
 
