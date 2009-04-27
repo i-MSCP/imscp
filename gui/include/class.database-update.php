@@ -379,8 +379,26 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
 		return $sqlUpd;
-		
 	}
+	
+	/**
+	 * update SMTP-SSL to the original Port list, see ticket #1806
+	 * http://www.isp-control.net/ispcp/ticket/1806.
+	 *
+	 * @author		Christian Hernmarck
+	 * @copyright		2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1714 (ca)
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_16() {
+		$sqlUpd = array();
+		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0')";
+		return $sqlUpd;
+	}
+	
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

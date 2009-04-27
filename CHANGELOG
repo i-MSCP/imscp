@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-04-27 Christian Hernmarck
 	- CONFIGS:
 		* Fixed #1806 - Typo/Error in: configs/debian/database/database.sql
+		# added - SMPT-SSL in the db-update script...
 
 2009-04-26 Benedikt Heintel
 	- DISTS:
