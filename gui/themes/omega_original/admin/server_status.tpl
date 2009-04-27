@@ -54,7 +54,7 @@
                               <td align="center" class="content3"><strong>{TR_STATUS}</strong></td>
                             </tr>
                             <!-- BDP: service_status -->
-                            <tr>
+                            <tr class="hl">
                               <td>&nbsp;</td>
                               <td class="{CLASS}">{HOST} &nbsp;&nbsp;(Port {PORT})</td>
                               <td class="{CLASS}">{SERVICE} </td>

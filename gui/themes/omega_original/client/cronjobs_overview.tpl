@@ -65,7 +65,7 @@ function action_delete(url, name) {
                       <td align="center" class="content3"><strong>{TR_ACTIVE}</strong></td>
                       <td colspan="2" align="center" class="content3"><strong>{TR_ACTION}</strong></td>
                     </tr>
-                    <tr>
+                    <tr class="hl">
                       <!-- BDP: cronjobs -->
                       <td nowrap="nowrap">&nbsp;</td>
                       <td nowrap="nowrap" class="{ITEM_CLASS}"><strong>{NAME}</strong><br />

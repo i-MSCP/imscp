@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                       <td><form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
-                          <table width="100%" cellpadding="5" cellspacing="5">
+                          <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td colspan="2" class="content3"><b>{TR_MESSAGE_TEMPLATE_INFO}</b></td>

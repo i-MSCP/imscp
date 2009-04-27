@@ -44,7 +44,7 @@
               </tr>
               <tr>
                 <td valign="top"><form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
-                    <table width="100%" cellspacing="3">
+                    <table width="100%" cellspacing="3" class="hl">
                       <tr>
                         <td align="left">&nbsp;</td>
                         <td colspan="2" align="left" class="content3"><b>{TR_HOSTING PLAN PROPS}</b></td>

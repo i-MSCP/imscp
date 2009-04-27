@@ -78,7 +78,7 @@ function action_delete(url, alias_or_subdomain) {
             <td class="content3" nowrap="nowrap" align="center"><b>{TR_ALS_ACTION}</b></td>
           </tr>
           <!-- BDP: als_item -->
-          <tr>
+          <tr class="hl">
             <td class="{ITEM_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="http://{ALS_NAME}/" class="link" title="{ALS_NAME}">{ALS_NAME}</a></td>
             <td class="{ITEM_CLASS}" nowrap="nowrap">{ALS_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_FORWARD}</td>
@@ -127,7 +127,7 @@ function action_delete(url, alias_or_subdomain) {
             <td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_ACTION}</b></td>
           </tr>
           <!-- BDP: sub_item -->
-          <tr>
+          <tr class="hl">
             <td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="link" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
             <td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>

@@ -74,7 +74,7 @@
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_ALL_TRAFFIC}</b></td>
                             </tr>
                             <!-- BDP: traffic_table_item -->
-                            <tr>
+                            <tr class="hl">
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b>{DATE}</b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_TRAFFIC}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP_TRAFFIC}</td>

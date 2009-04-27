@@ -47,7 +47,7 @@
   </tr>
   <tr>
     <td><!-- BDP: props_list -->
-        <table width="100%" cellspacing="7">
+        <table width="100%" cellspacing="7" class="hl">
           <!-- BDP: page_message -->
            <tr>
              <td>&nbsp;</td>

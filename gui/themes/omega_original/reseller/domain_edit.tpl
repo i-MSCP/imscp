@@ -45,7 +45,7 @@
               </tr>
               <tr>
                 <td><form name="reseller_edit_domain_frm" method="post" action="domain_edit.php">
-                    <table width="100%" cellpadding="5" cellspacing="5">
+                    <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                       <tr>
                         <td width="25" align="left">&nbsp;</td>
                         <td colspan="2" align="left" class="content3"><b>{TR_DOMAIN_PROPERTIES}</b></td>

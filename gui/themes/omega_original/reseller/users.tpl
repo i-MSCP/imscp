@@ -105,7 +105,7 @@ function delete_account(url, dmn_name) {
                       </tr>
                       <!-- BDP: users_list -->
                       <!-- BDP: user_entry -->
-                      <tr>
+                      <tr class="hl">
                         <td align="center">&nbsp;</td>
                         <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onclick="change_status('{URL_CHANGE_STATUS}', '{NAME}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" alt="" /></a></td>
                         <td class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" alt="" /> <a href="http://{NAME}/" target="_blank" class="link">{NAME}</a></td>

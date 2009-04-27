@@ -81,7 +81,7 @@
                             <!-- EDP: page_message -->
                             <!-- BDP: traff_list -->
                             <!-- BDP: traff_item -->
-                            <tr>
+                            <tr class="hl">
                               <td class="{CONTENT}" nowrap="nowrap" align="center">{DATE}</td>
                               <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{WEB_TRAFF}</td>
                               <td class="{CONTENT}" nowrap="nowrap" align="center" valign="top">{FTP_TRAFF}</td>

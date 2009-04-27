@@ -60,7 +60,7 @@ function delete_account(url, plan) {
                             <td width="200" colspan="2" align="center" class="content3"><b>{TR_ACTION}</b></td>
                           </tr>
                           <!-- BDP: hp_entry -->
-                          <tr>
+                          <tr class="hl">
                       		<td width="35" align="center">&nbsp;</td>
                             <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
                       		<td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?user_id={ADMIN_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>

@@ -84,7 +84,7 @@ function enable_for_post() {
 												<td class="content3"><strong>{TR_ACTION}</strong></td>
 											</tr>
 											<!-- BDP: service_ports -->
-											<tr>
+											<tr class="hl">
 												<td width="25">&nbsp;</td>
 												<td class="{CLASS}">
 													{SERVICE}

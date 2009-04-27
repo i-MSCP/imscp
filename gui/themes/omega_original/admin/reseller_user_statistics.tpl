@@ -94,7 +94,7 @@
                                       <td class="content3" nowrap="nowrap" height="25"><b>{TR_SQL_USER}</b></td>
                                     </tr>
                                     <!-- BDP: domain_entry -->
-                                    <tr>
+                                    <tr class="hl">
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{DOMAIN_NAME}</a></b></td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                           <tr>

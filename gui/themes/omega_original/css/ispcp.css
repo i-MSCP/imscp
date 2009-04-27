@@ -228,6 +228,15 @@ td.content4 {
 	padding:			2px;
 }
 
+/* Hover Lines, two ways */
+tr.hl:hover td.content,
+tr.hl:hover td.content2,
+table.hl tr:hover td.content,
+table.hl tr:hover td.content2
+{
+	background-color: lightgrey;
+}
+
 .textinput {
 	background-color:	white;
 	border:				1px solid #cccccc;

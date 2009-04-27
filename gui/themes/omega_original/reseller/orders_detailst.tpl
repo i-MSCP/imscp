@@ -53,7 +53,7 @@ function delete_order(url, name) {
               </tr>
               <tr>
                 <td><form name="order_details" method="post" action="orders_detailst.php?order_id={ID}">
-                    <table width="100%" cellpadding="5" cellspacing="5">
+                    <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>

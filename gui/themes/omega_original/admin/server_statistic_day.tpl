@@ -59,7 +59,7 @@
                             <td class="content3" nowrap="nowrap" height="25"><b>{TR_HOUR}</b></td>
                           </tr>
                           <!-- BDP: hour_list -->
-                          <tr>
+                          <tr class="hl">
                             <td nowrap="nowrap" align="center">&nbsp;</td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b>{HOUR}</b></td>
                             <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_IN}</td>

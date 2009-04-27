@@ -44,7 +44,7 @@
               </tr>
               <tr>
                 <td height="420"><form name="client_change_personal_frm" method="post" action="personal_change.php">
-                    <table width="100%" cellpadding="5" cellspacing="5">
+                    <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                       <!-- BDP: page_message -->
                       <tr>
                         <td>&nbsp;</td>

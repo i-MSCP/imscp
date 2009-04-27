@@ -58,7 +58,7 @@
                       <td width="" colspan="2" align="center" nowrap="nowrap" class="content3"><b>{TR__ACTION}</b></td>
                     </tr>
                     <!-- BDP: dir_item -->
-                    <tr>
+                    <tr class="hl">
                       <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
                       <td class="{CLASS}" nowrap="nowrap">{AREA_NAME}<br />
                           <u>{AREA_PATH}</u></td>

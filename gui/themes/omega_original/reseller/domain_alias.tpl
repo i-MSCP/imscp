@@ -90,7 +90,7 @@ function delete_account(url, name) {
                     <!-- EDP: page_message -->
                     <!-- BDP: table_list -->
                     <!-- BDP: table_item -->
-                    <tr>
+                    <tr class="hl">
                       <td width="25" align="center">&nbsp;</td>
                       <td class="{CONTENT}" nowrap="nowrap"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" border="0" style="float:left; vertical-align:middle" alt="" /> {NAME}</a><br />
                         {ALIAS_IP}</td>

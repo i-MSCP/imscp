@@ -43,7 +43,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><table width="100%" cellpadding="5" cellspacing="5">
+                <td><table width="100%" cellpadding="5" cellspacing="5" class="hl">
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_DOMAIN_NAME}</td>

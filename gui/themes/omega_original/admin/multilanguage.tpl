@@ -67,7 +67,7 @@ function action_delete(url, language) {
                               <td width="100" colspan="2" align="center" class="content2"><strong>{TR_ACTION}</strong></td>
                             </tr>
                             <!-- BDP: lang_row -->
-                            <tr>
+                            <tr class="hl">
                               <td width="25" nowrap="nowrap">&nbsp;</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" style="vertical-align:middle" alt="" /> {LANGUAGE}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{MESSAGES}</td>

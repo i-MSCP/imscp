@@ -80,7 +80,7 @@
                               <td class="content3" nowrap="nowrap" height="25"><b>{TR_DAY}</b></td>
                             </tr>
                             <!-- BDP: day_list -->
-                            <tr>
+                            <tr class="hl">
                               <td align="center">&nbsp;</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{WEB_IN}</td>

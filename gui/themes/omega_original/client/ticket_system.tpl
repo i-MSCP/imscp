@@ -68,7 +68,7 @@ function action_delete(url, subject) {
                             <td width="100" align="center" class="content3"><strong>{TR_ACTION}</strong></td>
                           </tr>
                           <!-- BDP: tickets_item -->
-                          <tr>
+                          <tr class="hl">
                             <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
                             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="16" height="16" style="vertical-align:middle" alt="" />
 								<script type="text/javascript">

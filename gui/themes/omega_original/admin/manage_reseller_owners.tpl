@@ -54,7 +54,7 @@
                               <td class="content3"><b>{TR_OWNER}</b></td>
                             </tr>
                             <!-- BDP: reseller_item -->
-                            <tr>
+                            <tr class="hl">
                               <td width="25" align="center">&nbsp;</td>
                               <td class="{RSL_CLASS}" width="50" align="center">{NUMBER}</td>
                               <td class="{RSL_CLASS}" width="80" align="center"><input type="checkbox" name="{CKB_NAME}" />

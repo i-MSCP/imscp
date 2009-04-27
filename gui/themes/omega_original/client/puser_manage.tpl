@@ -69,7 +69,7 @@ function action_delete(url, mailacc) {
       </tr>
       <!-- EDP: usr_msg -->
       <!-- BDP: pusres -->
-      <tr>
+      <tr class="hl">
         <td nowrap="nowrap" align="center">&nbsp;</td>
         <td nowrap="nowrap" class="content" colspan="2">{UNAME}</td>
         <td width="80" align="center" nowrap="nowrap" class="content">{USTATUS}</td>
@@ -128,7 +128,7 @@ function action_delete(url, mailacc) {
       </tr>
       <!-- EDP: grp_msg -->
       <!-- BDP: pgroups -->
-      <tr>
+      <tr class="hl">
         <td nowrap="nowrap" align="center">&nbsp;</td>
         <td nowrap="nowrap" class="content">{GNAME}</td>
         <td nowrap="nowrap" class="content"><!-- BDP: group_members -->

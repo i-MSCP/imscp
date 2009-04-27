@@ -76,7 +76,7 @@ function action_delete(url, dmn_name) {
             <td colspan="2" align="center" class="content3"><b>{TR_ADMIN_OPTIONS}</b></td>
           </tr>
           <!-- BDP: admin_item -->
-          <tr>
+          <tr class="hl">
             <td width="25">&nbsp;</td>
             <td class="{ADMIN_CLASS}">{ADMIN_USERNAME}</td>
             <td class="{ADMIN_CLASS}" align="center">{ADMIN_CREATED_ON}</td>

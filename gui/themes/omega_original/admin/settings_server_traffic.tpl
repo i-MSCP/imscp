@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                       <td valign="top"><form action="settings_server_traffic.php" method="post" name="admin_modify_server_traffic_settings" id="admin_modify_server_traffic_settings">
-                          <table width="100%" cellpadding="5" cellspacing="5">
+                          <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td colspan="2" class="content3"><b>{TR_SET_SERVER_TRAFFIC_SETTINGS}</b></td>

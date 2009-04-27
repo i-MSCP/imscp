@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                       <td valign="top"><form action="settings.php" method="post" name="frmsettings" id="frmsettings">
-                          <table width="100%" cellpadding="5" cellspacing="5">
+                          <table width="100%" cellpadding="5" cellspacing="5" class="hl">
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>

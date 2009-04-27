@@ -77,7 +77,7 @@ function delete_order(url, domain) {
              <td width="200" colspan="2" align="center" class="content3"><b>{TR_ACTION}</b></td>
             </tr>
             <!-- BDP: order -->
-            <tr>
+            <tr class="hl">
              <td width="35" align="center">&nbsp;</td>
              <td class="{ITEM_CLASS}" width="20" align="center">{ID}</td>
              <td class="{ITEM_CLASS}">{DOMAIN}</td>

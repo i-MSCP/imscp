@@ -85,7 +85,7 @@ function action_delete(url, sql) {
                </tr>
                <!-- EDP: db_message -->
                <!-- BDP: user_list -->
-               <tr>
+               <tr class="hl">
                 <td height="48" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="21" height="21" style="vertical-align:middle" alt="" />&nbsp;{DB_USER}</td>
                 <td width="14%" align="left" class="content">&nbsp;&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/pma.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_auth.php?id={USER_ID}" class="link" target="_blank">{TR_PHP_MYADMIN}</a></td>
                 <td align="left" class="content">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_change_password.php?id={USER_ID}" class="link">{TR_CHANGE_PASSWORD}</a></td>

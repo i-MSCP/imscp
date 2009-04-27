@@ -51,7 +51,7 @@
                             <td width="150" class="content3"><b>{TR_OPTIONS}</b></td>
                           </tr>
                           <!-- BDP: user_session -->
-                          <tr>
+                          <tr class="hl">
                             <td width="25">&nbsp;</td>
                             <td class="{ADMIN_CLASS}">{ADMIN_USERNAME}</td>
                             <td class="{ADMIN_CLASS}">{LOGIN_TIME}</td>
