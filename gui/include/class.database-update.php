@@ -386,7 +386,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * http://www.isp-control.net/ispcp/ticket/1806.
 	 *
 	 * @author		Christian Hernmarck
-	 * @copyright		2006-2009 by ispCP | http://isp-control.net
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1714 (ca)
 	 *
@@ -398,7 +398,43 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0')";
 		return $sqlUpd;
 	}
-	
+
+	/**
+	 * Clean ticket database: Remove html entities from subjects and messages
+	 * Related to ticket #1721 http://www.isp-control.net/ispcp/ticket/1721.
+	 *
+	 * @author		Thomas Wacker
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1718
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_17() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+		$query	= "SELECT `ticket_id`, `ticket_subject`, `ticket_message`"
+				. " FROM `tickets` ORDER BY `ticket_id`";
+		$rs = exec_query($sql, $query);
+		if ($rs->RecordCount() != 0) {
+			while (!$rs->EOF) {
+				$subject = html_entity_decode($rs->fields['ticket_subject'], ENT_QUOTES, 'UTF-8');
+				$message = html_entity_decode($rs->fields['ticket_message'], ENT_QUOTES, 'UTF-8');
+				if ($subject != $rs->fields['ticket_subject']
+					|| $message != $rs->fields['ticket_message']) {
+					$sqlUpd[] = "UPDATE `tickets` SET"
+							. " `ticket_subject` = '".addslashes($subject)."'"
+							. ", `ticket_message` = '".addslashes($message)."'"
+							. " WHERE `ticket_id` = '".addslashes($rs->fields['ticket_id'])."'";
+				}
+				$rs->MoveNext();
+			}
+		}
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

@@ -202,9 +202,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 	global $last_gid;
 	global $max_gid;
 
-	$query = <<<SQL_QUERY
-		  SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?
-SQL_QUERY;
+	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
 
 	$rs = exec_query($sql, $query, array($dmn_name));
 

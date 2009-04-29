@@ -40,7 +40,7 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 	$pass_mysql = decrypt_db_password($rs->fields['sqlu_pass']);
 	$data = "pma_username=".rawurlencode($user_mysql)."&pma_password=".rawurlencode(stripslashes($pass_mysql));
 
-	$out  = "POST /pma/ HTTP/1.0\r\n";
+	$out = "POST /pma/ HTTP/1.0\r\n";
 	$out .= "Host: ".Config::get('BASE_SERVER_VHOST')."\r\n";
 	$out .= "Content-Type: application/x-www-form-urlencoded\r\n";
 	$out .= "Content-length: ".strlen($data)."\r\n";

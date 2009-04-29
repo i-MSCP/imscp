@@ -74,10 +74,10 @@ $tpl->assign(
 		'TR_NO' => tr('no'),
 		'TR_NEXT_STEP' => tr('Next step'),
 		'TR_BACKUP' => tr('Backup'),
-                'TR_BACKUP_DOMAIN' => tr('Domain'),
-                'TR_BACKUP_SQL' => tr('SQL'),
-                'TR_BACKUP_FULL' => tr('Full'),
-                'TR_BACKUP_NO' => tr('No'),
+		'TR_BACKUP_DOMAIN' => tr('Domain'),
+		'TR_BACKUP_SQL' => tr('SQL'),
+		'TR_BACKUP_FULL' => tr('Full'),
+		'TR_BACKUP_NO' => tr('No'),
 		'TR_BACKUP_RESTORE' => tr('Backup / Restore'),
 		'TR_APACHE_LOGS' => tr('Apache logs'),
 		'TR_AWSTATS' => tr('Awstats')
@@ -195,42 +195,42 @@ function get_init_au2_page(&$tpl) {
 	}
 
 	if ("_domain_" === $hp_allowbackup) {
-                $tpl->assign(
-                        array(
-                                'VL_BACKUPD' => 'checked="checked"',
-                                'VL_BACKUPS' => '',
-                                'VL_BACKUPF' => '',
-                                'VL_BACKUPN' => ''
-                        )
-                );
-        } else if("_sql_" === $hp_allowbackup) {
-                $tpl->assign(
-                        array(
-                                'VL_BACKUPD' => '',
-                                'VL_BACKUPS' => 'checked="checked"',
-                                'VL_BACKUPF' => '',
-                                'VL_BACKUPN' => '',
-                        )
-                );
+		$tpl->assign(
+			array(
+				'VL_BACKUPD' => 'checked="checked"',
+				'VL_BACKUPS' => '',
+				'VL_BACKUPF' => '',
+				'VL_BACKUPN' => ''
+			)
+		);
+	} else if("_sql_" === $hp_allowbackup) {
+		$tpl->assign(
+			array(
+				'VL_BACKUPD' => '',
+				'VL_BACKUPS' => 'checked="checked"',
+				'VL_BACKUPF' => '',
+				'VL_BACKUPN' => '',
+			)
+		);
 	} else if("_full_" === $hp_allowbackup) {
-                $tpl->assign(
-                        array(
-                                'VL_BACKUPD' => '',
-                                'VL_BACKUPS' => '',
-                                'VL_BACKUPF' => 'checked="checked"',
-                                'VL_BACKUPN' => '',
-                        )
-                );
-        } else {
-                $tpl->assign(
-                        array(
-                                'VL_BACKUPD' => '',
-                                'VL_BACKUPS' => '',
-                                'VL_BACKUPF' => '',
-                                'VL_BACKUPN' => 'checked="checked"',
-                        )
-                );
-        }
+		$tpl->assign(
+			array(
+				'VL_BACKUPD' => '',
+				'VL_BACKUPS' => '',
+				'VL_BACKUPF' => 'checked="checked"',
+				'VL_BACKUPN' => '',
+			)
+		);
+	} else {
+		$tpl->assign(
+			array(
+				'VL_BACKUPD' => '',
+				'VL_BACKUPS' => '',
+				'VL_BACKUPF' => '',
+				'VL_BACKUPN' => 'checked="checked"',
+			)
+		);
+	}
 
 } // End of get_init_au2_page()
 
@@ -322,8 +322,8 @@ function check_user_data(&$tpl) {
 		$hp_cgi = $_POST['cgi'];
 	}
 	if (isset($_POST['allowbackup'])) {
-                $hp_allowbackup  = $_POST['allowbackup'];
-        }
+		$hp_allowbackup = $_POST['allowbackup'];
+	}
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		set_page_message(tr('Incorrect subdomains limit!'));
@@ -344,7 +344,7 @@ function check_user_data(&$tpl) {
 	}
 	if (!ispcp_limit_check($hp_sql_user, -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
-	} else if ($hp_sql_user == -1 &&  $hp_sql_db!= -1) {
+	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
 		set_page_message(tr('SQL databases limit is not <i>disabled</i>!'));
 	}
 	if (!ispcp_limit_check($hp_traff, null)) {

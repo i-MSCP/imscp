@@ -67,10 +67,10 @@ $tpl->assign(
 		'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
 		'TR_USER_NAME' => tr('Username'),
 		'TR_BACKUP' => tr('Backup'),
-        	'TR_BACKUP_DOMAIN' => tr('Domain'),
-        	'TR_BACKUP_SQL' => tr('SQL'),
-        	'TR_BACKUP_FULL' => tr('Full'),
-        	'TR_BACKUP_NO' => tr('No'),
+		'TR_BACKUP_DOMAIN' => tr('Domain'),
+		'TR_BACKUP_SQL' => tr('SQL'),
+		'TR_BACKUP_FULL' => tr('Full'),
+		'TR_BACKUP_NO' => tr('No'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_YES' => tr('Yes'),
@@ -278,42 +278,42 @@ function gen_editdomain_page(&$tpl) {
 	}
 	
 	if ($allowbackup === 'domain') {
-                $tpl->assign(
-                                array(
-                                        'BACKUP_DOMAIN' => 'selected="selected"',
-                                        'BACKUP_SQL' => '',
-                                        'BACKUP_FULL' => '',
-                                        'BACKUP_NO' => '',
-                                )
-                        );
-        } else if ($allowbackup === 'sql')  {
-                $tpl->assign(
-                                array(
-                                        'BACKUP_DOMAIN' => '',
-                                        'BACKUP_SQL' => 'selected="selected"',
-                                        'BACKUP_FULL' => '',
-                                        'BACKUP_NO' => '',
-                                )
-                        );
-        } else if ($allowbackup === 'full')  {
-                $tpl->assign(
-                                array(
-                                        'BACKUP_DOMAIN' => '',
-                                        'BACKUP_SQL' => '',
-                                        'BACKUP_FULL' => 'selected="selected"',
-                                        'BACKUP_NO' => '',
-                                )
-                        );
-        } else if ($allowbackup === 'no')  {
-                $tpl->assign(
-                                array(
-                                        'BACKUP_DOMAIN' => '',
-                                        'BACKUP_SQL' => '',
-                                        'BACKUP_FULL' => '',
-                                        'BACKUP_NO' => 'selected="selected"',
-                                )
-                        );
-        }
+		$tpl->assign(
+			array(
+				'BACKUP_DOMAIN' => 'selected="selected"',
+				'BACKUP_SQL' => '',
+				'BACKUP_FULL' => '',
+				'BACKUP_NO' => '',
+			)
+		);
+	} else if ($allowbackup === 'sql')  {
+		$tpl->assign(
+			array(
+				'BACKUP_DOMAIN' => '',
+				'BACKUP_SQL' => 'selected="selected"',
+				'BACKUP_FULL' => '',
+				'BACKUP_NO' => '',
+			)
+		);
+	} else if ($allowbackup === 'full')  {
+		$tpl->assign(
+			array(
+				'BACKUP_DOMAIN' => '',
+				'BACKUP_SQL' => '',
+				'BACKUP_FULL' => 'selected="selected"',
+				'BACKUP_NO' => '',
+			)
+		);
+	} else if ($allowbackup === 'no')  {
+		$tpl->assign(
+			array(
+				'BACKUP_DOMAIN' => '',
+				'BACKUP_SQL' => '',
+				'BACKUP_FULL' => '',
+				'BACKUP_NO' => 'selected="selected"',
+			)
+		);
+	}
 
 	$tpl->assign(
 		array(
@@ -483,8 +483,8 @@ SQL_QUERY;
 		}
 
 		// Backup Settings
-                $query = "UPDATE `domain` SET `allowbackup` = '$allowbackup' WHERE `domain_id` = ?";
-                $rs = exec_query($sql, $query, array($user_id));
+		$query = "UPDATE `domain` SET `allowbackup` = '$allowbackup' WHERE `domain_id` = ?";
+		$rs = exec_query($sql, $query, array($user_id));
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";

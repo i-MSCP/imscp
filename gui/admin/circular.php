@@ -200,7 +200,7 @@ SQL_QUERY;
 function send_circular_email($to, $from, $subject, $message) {
 	$subject = encode($subject);
 
-	$headers  = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= "From: " . $from . "\n";
 	$headers .= "X-Mailer: ispCP marketing mailer";
 

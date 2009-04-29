@@ -57,8 +57,8 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		set_page_message(tr('Ticket not found!'));
 	} else {
 		$ticket_urgency = $rs->fields['ticket_urgency'];
-		$ticket_subject = clean_html(stripslashes($rs->fields['ticket_subject']));
-		$ticket_status = clean_html($rs->fields['ticket_status']);
+		$ticket_subject = $rs->fields['ticket_subject'];
+		$ticket_status = $rs->fields['ticket_status'];
 
 		if ($ticket_status == 0) {
 			$tr_action = tr("Open ticket");
@@ -68,47 +68,20 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			$action = "close";
 		}
 
-		if ($ticket_urgency == 1) {
-			$tpl->assign(
-				array(
-					'URGENCY' => tr("Low"),
-					'URGENCY_ID' => '1',
-				)
-			);
-		} elseif ($ticket_urgency == 2) {
-			$tpl->assign(
-				array(
-					'URGENCY' => tr("Medium"),
-					'URGENCY_ID' => '2',
-				)
-			);
-		} elseif ($ticket_urgency == 3) {
-			$tpl->assign(
-				array(
-					'URGENCY' => tr("High"),
-					'URGENCY_ID' => '3',
-				)
-			);
-		} elseif ($ticket_urgency == 4) {
-			$tpl->assign(
-				array(
-					'URGENCY' => tr("Very high"),
-					'URGENCY_ID' => '4',
-				)
-			);
-		}
+		$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency),
+			'URGENCY_ID' => $ticket_urgency));
 
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$date_formt = Config::get('DATE_FORMAT');
-		$ticket_content = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
+		$ticket_content = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
 				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'SUBJECT' => stripslashes($rs->fields['ticket_subject']),
-				'TICKET_CONTENT' => nl2br($ticket_content),
+				'SUBJECT' => htmlspecialchars($ticket_subject),
+				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_content)),
 				'ID' => $rs->fields['ticket_id']
 			)
 		);
@@ -144,14 +117,14 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	while (!$rs->EOF) {
 		$ticket_id = $rs->fields['ticket_id'];
 		$ticket_subject = $rs->fields['ticket_subject'];
-		$ticket_date = clean_html($rs->fields['ticket_date']);
-		$ticket_message = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
+		$ticket_date = $rs->fields['ticket_date'];
+		$ticket_message = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
 
 		$date_formt = Config::get('DATE_FORMAT');
 		$tpl->assign(
 			array(
-				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'TICKET_CONTENT' => nl2br($ticket_message)
+				'DATE' => date($date_formt, $ticket_date),
+				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_message))
 			)
 		);
 		get_ticket_from($tpl, $sql, $ticket_id);
@@ -198,7 +171,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
 
-	$tpl->assign(array('FROM' => $from_name));
+	$tpl->assign(array('FROM' => htmlspecialchars($from_name)));
 }
 // common page data.
 
@@ -281,11 +254,10 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 
 	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
 			$ticket_reply, $urgency, $ticket_date,
-			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"))
+			$subject, $user_message)
 	);
 
-	// Update all Replays -> Status 1
+	// Update all Replys -> Status 1
 	$query = "
 		UPDATE
 			`tickets`
@@ -311,8 +283,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	}
  
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($ticket_to, $ticket_from, htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8"), $ticket_reply);
+	send_tickets_msg($ticket_to, $ticket_from, $subject, $user_message, $ticket_reply, $urgency);
 }
 
 function change_ticket_status($sql, $ticket_id) {

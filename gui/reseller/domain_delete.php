@@ -60,7 +60,7 @@ $query = "SELECT COUNT(fg.`gid`) AS ftpnum FROM `ftp_group` fg, `domain` d WHERE
 $res = exec_query($sql, $query, array($del_id));
 $data = $res->FetchRow();
 if ($data['ftpnum'] > 0) {
-	/* ERROR -  we have ftp acc in this domain */
+	/* ERROR - we have ftp acc in this domain */
 	set_page_message(tr('Domain you are trying to remove has FTP accounts !<br> first remove them !'));
 	header("Location: users.php");
 	die();
@@ -162,7 +162,7 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 
 	$rdisk_current -= $disk_max;
 
-	$rprops  = "$rdmn_current;$rdmn_max;";
+	$rprops = "$rdmn_current;$rdmn_max;";
 	$rprops .= "$rsub_current;$rsub_max;";
 	$rprops .= "$rals_current;$rals_max;";
 	$rprops .= "$rmail_current;$rmail_max;";

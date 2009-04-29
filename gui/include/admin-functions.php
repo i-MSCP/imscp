@@ -2079,7 +2079,7 @@ RIC;
 }
 
 
-function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status) {
+function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status, $urgency) {
 	$sql = Database::getInstance();
 	global $admin_login;
 	// To information
@@ -2105,6 +2105,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	} else {
 		$message = tr("Hello %s!\n\nYou have an answer for this ticket:\n", "{TO_NAME}");
 	}
+	$message .= "\n".tr("Priority: %s\n", "{PRIORITY}");
 	$message .= "\n" . $ticket_message;
 	$message .= "\n\n" . tr("Log in to answer") . Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 
@@ -2125,6 +2126,8 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 		$to = $to_email;
 	}
 
+	$priority = get_ticket_urgency($urgency);
+
 	// Prepare and send mail
 	$search = array();
 	$replace = array();
@@ -2135,6 +2138,8 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	$replace[] = $toname;
 	$search [] = '{FROM_NAME}';
 	$replace[] = $fromname;
+	$search [] = '{PRIORITY}';
+	$replace[] = $priority;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
@@ -2171,6 +2176,33 @@ function setConfig_Value($name, $value) {
 	Config::set($name, $value);
 
 	return true;
+}
+
+/**
+ * Get language dependend priority string
+ *
+ * @param integer $ticket_urgency values from 1 to 4
+ * @return string language dependend priority string
+ */
+function get_ticket_urgency($ticket_urgency) {
+	switch ($ticket_urgency) {
+		case 1:
+			$result = tr("Low");
+			break;
+		case 2:
+			$result = tr("Medium");
+			break;
+		case 3:
+			$result = tr("High");
+			break;
+		case 4:
+			$result = tr("Very high");
+			break;
+		default:
+			$result = tr("Medium");
+			break;
+	}
+	return $result;
 }
 
 ?>

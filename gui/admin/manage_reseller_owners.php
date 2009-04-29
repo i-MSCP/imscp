@@ -171,7 +171,7 @@ SQL_QUERY;
 					SET
 						`created_by` = ?
 					WHERE
-						`admin_id`  = ?
+						`admin_id` = ?
 SQL_QUERY;
 
 				$up = exec_query($sql, $query, array($dest_admin, $admin_id));

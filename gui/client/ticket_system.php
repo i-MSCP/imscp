@@ -123,19 +123,11 @@ SQL_QUERY;
 			$ticket_urgency = $rs->fields['ticket_urgency'];
 			$ticket_status	= $rs->fields['ticket_status'];
 
-			if ($ticket_urgency == 1) {
-				$tpl->assign(array('URGENCY' => tr("Low")));
-			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(array('URGENCY' => tr("Medium")));
-			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(array('URGENCY' => tr("High")));
-			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(array('URGENCY' => tr("Very high")));
-			}
+			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
 
-			if ($ticket_status == 1 OR $ticket_status ==  2) {
+			if ($ticket_status == 1 || $ticket_status == 2) {
 				$tpl->assign(array('NEW' => tr("[New]")));
-			} else if ($ticket_status == 4 OR $ticket_status == 5) {
+			} else if ($ticket_status == 4 || $ticket_status == 5) {
 				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
 				$tpl->assign(array('NEW' => " "));
@@ -144,7 +136,7 @@ SQL_QUERY;
 			$tpl->assign(
 				array(
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'ID'		=> $ticket_id,
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'

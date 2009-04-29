@@ -72,33 +72,20 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 			$tr_action = tr("Close ticket");
 			$action = "close";
 		}
-		if ($ticket_urgency == 1) {
-			$urgency = tr("Low");
-			$urgency_id = '1';
-		} else if ($ticket_urgency == 2) {
-			$urgency = tr("Medium");
-			$urgency_id = '2';
-		} else if ($ticket_urgency == 3) {
-			$urgency = tr("High");
-			$urgency_id = '3';
-		} else if ($ticket_urgency == 4) {
-			$urgency = tr("Very high");
-			$urgency_id = '4';
-		}
-
+		
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$date_formt = Config::get('DATE_FORMAT');
-		$ticket_content = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
+		$ticket_content = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
 				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
-				'URGENCY' => $urgency,
-				'URGENCY_ID' => $urgency_id,
+				'URGENCY' => get_ticket_urgency($ticket_urgency),
+				'URGENCY_ID' => $ticket_urgency,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'SUBJECT' => $rs->fields['ticket_subject'],
-				'TICKET_CONTENT' => nl2br($ticket_content),
+				'SUBJECT' => htmlspecialchars($rs->fields['ticket_subject']),
+				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_content)),
 				'ID' => $rs->fields['ticket_id']
 			)
 		);
@@ -134,15 +121,15 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 	while (!$rs->EOF) {
 		$ticket_id = $rs->fields['ticket_id'];
 		$ticket_date = $rs->fields['ticket_date'];
-		$ticket_message = clean_html($rs->fields['ticket_message']);
+		$ticket_message = $rs->fields['ticket_message'];
 
 		$date_formt = Config::get('DATE_FORMAT');
-		$ticket_content = wordwrap(html_entity_decode($rs->fields['ticket_message']), round(($screenwidth-200) / 7), "\n");
+		$ticket_content = wordwrap($ticket_message, round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
-				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'TICKET_CONTENT' => nl2br($ticket_content)
+				'DATE' => date($date_formt, $ticket_date),
+				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_content))
 			)
 		);
 		get_ticket_from($tpl, $sql, $ticket_id);
@@ -283,8 +270,8 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 	
 	$rs = exec_query($sql, $query, array($ticket_to, $ticket_from,
 			$ticket_status, $ticket_reply, $urgency, $ticket_date,
-			htmlspecialchars($subject, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+			$subject, $user_message
+			));
 
 	// close ticket
 	if ($_POST['uaction'] == "close") {
@@ -294,7 +281,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 	}
 
 	set_page_message(tr('Message was sent.'));
-	send_tickets_msg($ticket_from, $ticket_to, $subject, $user_message, $ticket_reply);
+	send_tickets_msg($ticket_from, $ticket_to, $subject, $user_message, $ticket_reply, $urgency);
 }
 
 function get_send_to_who(&$sql, &$ticket_reply) {

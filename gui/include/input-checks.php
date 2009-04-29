@@ -609,12 +609,12 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 	 * $resolvers is a multi-dimensional array.
 	 * Its elements keys are the value that will be matched by $type.
 	 * Each element is an array, containing at least two elements:
-	 *   'query' and 'is_final'
+	 * 'query' and 'is_final'
 	 * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.
 	 * The latter is a boolean which specifies whether the result of that 'resolver' is an admin id or not
 	 *
 	 * Other elements might be:
-	 *   'next', 'separator', 'pos'
+	 * 'next', 'separator', 'pos'
 	 *
 	 * 'next' is the $type value for the next call to who_owns_this (only used when 'is_final' is false)
 	 * 'separator' is the separator to be used when exploding the $id (only used when 'query' is false)

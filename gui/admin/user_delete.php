@@ -66,7 +66,7 @@ if ($local_admin_type == 'admin') {
 	$rs = exec_query($sql, $query, array($delete_id));
 
 	// delete orders settings
-	$query = "DELETE FROM `orders_settings` WHERE `user_id`  = ?";
+	$query = "DELETE FROM `orders_settings` WHERE `user_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_id));
 
 	$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";

@@ -75,7 +75,7 @@ function update_server_settings(&$sql) {
 			`straff_settings`
 		SET
 			`straff_max` = ?,
-			`straff_warn`  = ?
+			`straff_warn` = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 

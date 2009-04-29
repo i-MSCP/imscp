@@ -49,7 +49,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 	$reseller_id = $_SESSION['user_id'];
 	$domain_id = $_SESSION['dmn_id'];
 
-	$query =  "
+	$query = "
 		SELECT
 			`domain_id`
 		FROM
@@ -71,7 +71,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	$add_status = Config::get('ITEM_ADD_STATUS');
 
-	$query =  "
+	$query = "
 		SELECT
 			`domain_id`
 		FROM

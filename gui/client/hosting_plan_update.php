@@ -310,7 +310,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$to = $rs->fields['reseller_mail'];
 	$from = $rs->fields['user_mail'];
 
-	$headers  = "From: " . $from . "\n";
+	$headers = "From: " . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 	$headers .= "X-Mailer: ispCP auto mailer";
 

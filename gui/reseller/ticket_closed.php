@@ -51,7 +51,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 		AND
 			`ticket_status` = 0
 		AND
-			`ticket_reply`  = 0
+			`ticket_reply` = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
@@ -72,7 +72,7 @@ SQL_QUERY;
 		AND
 			`ticket_status` = 0
 		AND
-			`ticket_reply`  = 0
+			`ticket_reply` = 0
 		ORDER BY
 			`ticket_date` DESC
 		LIMIT
@@ -126,24 +126,16 @@ SQL_QUERY;
 			$ticket_status	= $rs->fields['ticket_status'];
 			$date			= ticketGetLastDate($sql, $ticket_id);
 
-			if ($ticket_urgency == 1) {
-				$tpl->assign(array('URGENCY' => tr("Low")));
-			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(array('URGENCY' => tr("Medium")));
-			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(array('URGENCY' => tr("High")));
-			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(array('URGENCY' => tr("Very high")));
-			}
+			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
 
 			$tpl->assign(array('NEW' => " "));
 
 			$tpl->assign(
 				array(
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> $rs->fields['ticket_message'],
+					'MESSAGE'	=> htmlspecialchars($rs->fields['ticket_message']),
 					'ID'		=> $ticket_id,
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)

@@ -178,11 +178,11 @@ function load_user_data_page($user_id) {
 			`admin`
 		WHERE
 			`admin_id` = ?
-		  AND
+		AND
 			`created_by` = ?
 	";
 
-	$res  = exec_query($sql, $query, array($user_id, $reseller_id));
+	$res = exec_query($sql, $query, array($user_id, $reseller_id));
 	$data = $res->FetchRow();
 
 	if ($res->RecordCount() == 0) {

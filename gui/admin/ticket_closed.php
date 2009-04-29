@@ -54,7 +54,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 		WHERE
 			`ticket_status` = 0
 		AND
-			`ticket_reply`  = 0
+			`ticket_reply` = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $count_query, array());
@@ -129,45 +129,22 @@ SQL_QUERY;
 			$ticket_urgency	= $rs->fields['ticket_urgency'];
 			$ticket_status	= $rs->fields['ticket_status'];
 
-			if ($ticket_urgency == 1) {
-				$tpl->assign(
-					array(
-						'URGENCY' => tr("Low"),
-						'NEW' => " "
-					)
-				);
-			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(
-					array(
-						'URGENCY' => tr("Medium"),
-						'NEW' => " "
-					)
-				);
-			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(
-					array(
-						'URGENCY' => tr("High"),
-						'NEW' => " "
-					)
-				);
-			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(
-					array(
-						'URGENCY' => tr("Very high"),
-						'NEW' => " "
-					)
-				);
-			}
+			$tpl->assign(
+				array(
+					'URGENCY' => get_ticket_urgency($ticket_urgency),
+					'NEW' => " "
+				)
+			);
 
 			$tpl->assign(
 				array(
 					'ID'		=> $ticket_id,
-					'FROM'		=> $from,
-					'TO'		=> $to,
+					'FROM'		=> htmlspecialchars($from),
+					'TO'		=> htmlspecialchars($to),
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> $rs->fields['ticket_message'],
+					'MESSAGE'	=> htmlspecialchars($rs->fields['ticket_message']),
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);

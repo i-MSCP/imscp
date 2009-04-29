@@ -130,7 +130,7 @@ function delete_button(&$sql) {
 			DELETE FROM
 				`custom_menus`
 			WHERE
-				`menu_id`  = ?
+				`menu_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($delete_id));

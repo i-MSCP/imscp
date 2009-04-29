@@ -70,7 +70,7 @@ SQL_QUERY;
 		AND
 			`ticket_status` = 0
 		AND
-			`ticket_reply`  = 0
+			`ticket_reply` = 0
 		ORDER BY
 			`ticket_date` DESC
 		LIMIT
@@ -120,23 +120,14 @@ SQL_QUERY;
 
 		while (!$rs->EOF) {
 			$ticket_urgency = $rs->fields['ticket_urgency'];
-			$ticket_status = $rs->fields['ticket_status'];
 
-			if ($ticket_urgency == 1) {
-				$tpl->assign(array('URGENCY' => tr("Low")));
-			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(array('URGENCY' => tr("Medium")));
-			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(array('URGENCY' => tr("High")));
-			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(array('URGENCY' => tr("Very high")));
-			}
+			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
 
 			$tpl->assign(
 				array(
 					'NEW'		=> " ",
 					'LAST_DATE' => $date,
-					'SUBJECT'	=> $rs->fields['ticket_subject'],
+					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'ID'		=> $rs->fields['ticket_id'],
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'

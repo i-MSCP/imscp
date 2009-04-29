@@ -351,7 +351,7 @@ SQL_QUERY;
 					FROM
 						`domain_aliasses`
 					WHERE
-						`alias_id`  = ?
+						`alias_id` = ?
 SQL_QUERY;
 			} else {
 				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
