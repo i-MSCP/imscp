@@ -116,6 +116,9 @@ $load = $sysinfo->loadavg();
 $cpu = $sysinfo->cpu_info();
 $mem = $sysinfo->memory();
 
+if (!isset($cpu['cpus'])) {
+	$cpu['cpus'] = "n.a.";
+}
 if (!isset($cpu['cpuspeed'])) {
 	$cpu['cpuspeed'] = "n.a.";
 }
@@ -132,10 +135,12 @@ $tpl->assign(
 		'TR_SYSTEM_INFO' => tr('Vital system info'),
 		'TR_CPU_SYSTEM_INFO' => tr('CPU system Info'),
 		'TR_CPU_MODEL' => tr('CPU model'),
+		'TR_CPU_COUNT' => tr('Number of CPU Cores'),
 		'TR_CPU_MHZ' => tr('CPU MHz'),
 		'TR_CPU_CACHE' => tr('CPU cache'),
 		'TR_CPU_BOGOMIPS' => tr('CPU bogomips'),
 		'CPU_MODEL' => $cpu['model'],
+		'CPU_COUNT' => $cpu['cpus'],
 		'CPU_MHZ' => $cpu['cpuspeed'],
 		'CPU_CACHE' => $cpu['cache'],
 		'CPU_BOGOMIPS' => $cpu['bogomips'],

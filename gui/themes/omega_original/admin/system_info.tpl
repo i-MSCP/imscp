@@ -88,17 +88,22 @@
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td width="200" class="content">{TR_CPU_MHZ}</td>
+        <td width="200" class="content">{TR_CPU_COUNT}</td>
+        <td class="content2">{CPU_COUNT}</td>
+      </tr>
+      <tr>
+        <td width="25">&nbsp;</td>
+        <td width="200" class="content2">{TR_CPU_MHZ}</td>
         <td class="content">{CPU_MHZ}</td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td width="200" class="content2">{TR_CPU_CACHE}</td>
+        <td width="200" class="content">{TR_CPU_CACHE}</td>
         <td class="content2">{CPU_CACHE}</td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td width="200" class="content">{TR_CPU_BOGOMIPS}</td>
+        <td width="200" class="content2">{TR_CPU_BOGOMIPS}</td>
         <td class="content">{CPU_BOGOMIPS}</td>
       </tr>
     </table></td>
