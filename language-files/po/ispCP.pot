@@ -3897,3 +3897,6 @@ msgstr ""
 
 msgid "Number of CPU Cores"
 msgstr ""
+
+msgid "Full"
+msgstr ""
