@@ -1,7 +1,7 @@
 # Russian Language File
 # Copyright (C) 2009 ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -4148,6 +4148,12 @@ msgid ""
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Пожалуйста, введите SQL запрос!"
 
@@ -4233,39 +4239,39 @@ msgstr ""
 #~ msgid "Uninstall"
 #~ msgstr "Удалить"
 
-# 
+#
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Некорректное число или синтаксис имени пользователя!"
 
-# 
+#
 #~ msgid "Incorrect password number or syntax!"
 #~ msgstr "Некорректное число или синтаксис пароля!"
 
-# 
+#
 #~ msgid "Incorrect max domain number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения доменов!"
 
-# 
+#
 #~ msgid "Incorrect max subdomain number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения поддоменов!"
 
-# 
+#
 #~ msgid "Incorrect max alias number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения псевдонимов!"
 
-# 
+#
 #~ msgid "Incorrect max FTP number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения FTP пользователей!"
 
-# 
+#
 #~ msgid "Incorrect max mail number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения почтовых ящиков!"
 
-# 
+#
 #~ msgid "Incorrect max SQL databases number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения SQL баз данных!"
 
-# 
+#
 #~ msgid "Incorrect max SQL users number or syntax!"
 #~ msgstr "Некорректное число или синтаксис ограничения SQL пользователей!"
 
@@ -4276,14 +4282,14 @@ msgstr ""
 #~ msgstr ""
 #~ "Некорректное число или синтаксис ограничения дискового пространства!"
 
-# 
+#
 #~ msgid "Incorrect FTP account count or no number<br />"
 #~ msgstr "Некорректное число или синтаксис учётных записей FTP<br />"
 
 #~ msgid "Change user interface"
 #~ msgstr "Изменить интерфейс пользователя"
 
-# 
+#
 #~ msgid "show"
 #~ msgstr "показать"
 

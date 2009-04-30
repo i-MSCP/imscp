@@ -4093,6 +4093,12 @@ msgid ""
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Anna SQL-kysely!"

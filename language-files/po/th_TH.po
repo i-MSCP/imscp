@@ -3978,6 +3978,12 @@ msgid ""
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"

@@ -3975,5 +3975,11 @@ msgid ""
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Comprimento incorreto da palavra chave ou sintaxe!"

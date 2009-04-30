@@ -4052,6 +4052,12 @@ msgid ""
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "請輸入 SQL 查詢語句！"
 
