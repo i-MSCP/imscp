@@ -267,7 +267,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 		}
 		$user_message .= tr("Ticket was reopened!");
 	}
-	
+
 	$rs = exec_query($sql, $query, array($ticket_to, $ticket_from,
 			$ticket_status, $ticket_reply, $urgency, $ticket_date,
 			$subject, $user_message

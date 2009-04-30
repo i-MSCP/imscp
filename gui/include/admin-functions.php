@@ -2107,7 +2107,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $t
 	}
 	$message .= "\n".tr("Priority: %s\n", "{PRIORITY}");
 	$message .= "\n" . $ticket_message;
-	$message .= "\n\n" . tr("Log in to answer") . Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
+	$message .= "\n\n" . tr("Log in to answer") . ' ' . Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 
 	// Format addresses
 	if ($from_fname && $from_lname) {
