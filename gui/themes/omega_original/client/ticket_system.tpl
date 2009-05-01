@@ -73,7 +73,7 @@ function action_delete(url, subject) {
                             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="16" height="16" style="vertical-align:middle" alt="" />
 								<script type="text/javascript">
 <!--
-								document.write('<a href="ticket_view.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">{SUBJECT}</a>');
+								document.write('<a href="ticket_view.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">{SUBJECT2}</a>');
 //-->
 								</script>
 								<noscript><a href="ticket_view.php?ticket_id={ID}&amp;screenwidth='800'" class="link"> {SUBJECT}</a></noscript>
