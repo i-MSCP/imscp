@@ -3984,7 +3984,7 @@ msgid "Number of CPU Cores"
 msgstr "Anzahl der CPU-Kerne"
 
 msgid "Full"
-msgstr "Komplett"
+msgstr "Vollständig"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
@@ -4034,4 +4034,3 @@ msgstr "Komplett"
 #~ msgstr "Unbekannter Kontotyp"
 #~ msgid "Invalid account id!"
 #~ msgstr "Ungültiger Konto-ID!"
-
