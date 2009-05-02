@@ -74,7 +74,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_SSH', '22;tcp;SSH;1;0;'),
 ('PORT_TELNET', '23;tcp;TELNET;1;0;'),
 ('PORT_SMTP', '25;tcp;SMTP;1;0;'),
-('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0'),
+('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0;'),
 ('PORT_DNS', '53;tcp;DNS;1;0;'),
 ('PORT_HTTP', '80;tcp;HTTP;1;0;'),
 ('PORT_HTTPS', '443;tcp;HTTPS;0;0;'),

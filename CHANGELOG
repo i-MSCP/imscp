@@ -4,6 +4,8 @@ ispCP ω 1.0.1 Changelog
 2009-05-02 Daniel Andreca
 	- Engine:
 		* Added Feature: Virtual network cards can be added with addon ip from gui.
+	- GUI:
+		* Fixed #1810: bug in admin/server_status.php
 
 2009-04-29 Thomas Häber
 	- GUI:
@@ -13,7 +15,7 @@ ispCP ω 1.0.1 Changelog
 
 2009-04-27 Christian Hernmarck
 	- GUI:
-		* Fixed #1499 - "where am I?" - highlighting the <tr> line under mouse...
+		* Fixed #1499: "where am I?" - highlighting the <tr> line under mouse...
 
 2009-04-27 Benedikt Heintel
 	- DISTS:

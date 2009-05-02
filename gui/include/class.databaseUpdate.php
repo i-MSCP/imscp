@@ -435,6 +435,26 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #1810 http://www.isp-control.net/ispcp/ticket/1810.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1726
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_18() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$query	= "UPDATE `config` SET `value` = '465:tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
