@@ -448,10 +448,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_18() {
 		$sqlUpd = array();
-		$sql = Database::getInstance();
-
-		$query	= "UPDATE `config` SET `value` = '465:tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
-
+		$sqlUpd[] = "UPDATE `config` SET `value` = '465:tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
 		return $sqlUpd;
 	}
 
