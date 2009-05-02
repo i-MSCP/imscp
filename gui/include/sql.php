@@ -18,8 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-require_once(INCLUDEPATH . '/class.database.php');
-
 Config::set('DB_TYPE', Config::get('DATABASE_TYPE'));
 Config::set('DB_HOST', Config::get('DATABASE_HOST'));
 Config::set('DB_USER', Config::get('DATABASE_USER'));

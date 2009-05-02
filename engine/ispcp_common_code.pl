@@ -113,6 +113,10 @@ $main::ispcp_serv_mngr_el = "$main::log_dir/ispcp-serv-mngr.el";
 $main::ispcp_serv_mngr_stdout = "$main::log_dir/ispcp-serv-mngr.stdout";
 $main::ispcp_serv_mngr_stderr = "$main::log_dir/ispcp-serv-mngr.stderr";
 
+$main::ispcp_net_interfaces_mngr = "$main::root_dir/engine/tools/ispcp-net-interfaces-mngr";
+$main::ispcp_net_interfaces_mngr_el = "$main::log_dir/ispcp-net-interfaces-mngr.el";
+$main::ispcp_net_interfaces_mngr_stdout = "$main::log_dir/ispcp-net-interfaces-mngr.log";
+
 #
 # htaccess manager variables.
 #

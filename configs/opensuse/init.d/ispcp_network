@@ -45,6 +45,10 @@ IPTABLES=/usr/sbin/iptables
 LOGDIR=/var/log/ispcp
 LOGFILE=${LOGDIR}/${NAME}.log
 DIETIME=3
+ENGINEPATH="/srv/www/ispcp/engine"
+ENGINETOOLSPATH=${ENGINEPATH}"/tools"
+NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
+
 
 START=1
 
@@ -141,6 +145,14 @@ remove_rules() {
 	rm $LFILE
 }
 
+add_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
+remove_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
 case "$1" in
   start)
 	log_daemon_msg "Starting $DESC" "$NAME"
@@ -149,6 +161,7 @@ case "$1" in
 		echo ""
 	   	log_warning_msg "${NAME} is already started" >&2
 	else
+		add_interfaces
 		add_rules
 	fi
 
@@ -161,6 +174,7 @@ case "$1" in
 		log_warning_msg "${NAME} is already stopped" >&2
 	else
 		remove_rules
+		remove_interfaces
 	fi
 
 	log_end_msg $?
@@ -173,12 +187,14 @@ case "$1" in
 		log_warning_msg "${NAME} is already stopped" >&2
 	else
 		remove_rules
+		remove_interfaces
 		log_end_msg $?
 		[ -n "$DIETIME" ] && sleep "$DIETIME"
 	fi
 
 	log_daemon_msg "Starting $DESC" "$NAME"
 
+	add_interfaces
 	add_rules
 
 	log_end_msg $?

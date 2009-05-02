@@ -131,6 +131,37 @@ class criticalUpdate extends ispcpUpdate{
 		return $sqlUpd;
 	}
 
+	/**
+	 * Create default group for statistics
+	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+	 *
+	 * @author	Daniel Andreca <sci2tech@gmail.com>
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version	1.0
+	 * @since	r1725
+	 *
+	 * @access	protected
+	 * @param	Type	$engine_run_request	Set to true if is needed to perform an engine request
+	 * @return	Type	$sqlUpd	Sql statements to be performed
+	 */
+	protected function _criticalUpdate_3(&$engine_run_request) {
+
+		$sqlUpd = array();
+
+		$sql = Database::getInstance();
+		$interfaces=new networkCard();
+		$card = $interfaces->ip2NetworkCard(Config::get('BASE_SERVER_IP'));
+
+		$sqlUpd[] = "ALTER TABLE `server_ips`
+					ADD `ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+					ADD `ip_ssl_domain_id` INT( 10 ) NULL,
+					ADD `ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
+		$sqlUpd[] = "UPDATE `server_ips` SET `ip_card` = '" . $card . "', `ip_status` = '" . Config::get('ITEM_CHANGE_STATUS') . "'";
+
+		$engine_run_request = true;
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

@@ -23,7 +23,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
 	define('OVERRIDE_PURIFIER', 1);
 }
 
-require '../include/class.vfs.php';
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);

@@ -18,7 +18,7 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-require_once(INCLUDEPATH . '/class.config.php');
+// require_once(INCLUDEPATH . '/class.config.php');
 
 if (@file_exists('/usr/local/etc/ispcp/ispcp.conf')) {
 	$cfgfile = '/usr/local/etc/ispcp/ispcp.conf';

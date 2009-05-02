@@ -120,6 +120,7 @@ install:
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
 	$(CMD_INSTALL) ./tools/ispcpphptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcpphptemp.sh
+	$(CMD_INSTALL) ./tools/ispcp-net-interfaces-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-net-interfaces-mngr
 
 	$(CMD_INSTALL) ./traffic/ispcp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff $(SYSTEM_ENGINE_ROOT)/traffic

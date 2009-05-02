@@ -1,0 +1,181 @@
+#!/usr/bin/perl
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2006-2009 by isp Control Panel
+# http://isp-control.net
+#
+#
+# License:
+#	This program is free software;  you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by 
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
+#
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+#
+#	You may have received a copy of theGNU General Public License
+#	along with this program; if not, write to the
+#	Free Software Foundation, Inc.,
+#	59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+# The ispCP ω Home Page is at:
+#
+#	http://isp-control.net
+#
+
+# @author Daniel Andreca, sci2tech@gmail.com
+# @version $Id: ispcp-net-interfaces-mngr,v 1.0 2009/05/01 19:20:20 sci2tech Exp $
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'ispcp_common_code.pl';
+
+use strict;
+
+use warnings;
+
+my $rs = undef;
+our $proceed = $ARGV[0];
+
+sub net_interfaces_mngr_start_up {
+
+	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Starting...');
+
+	if (-e $main::ispcp_net_interfaces_mngr_el) {
+		$rs = del_file($main::ispcp_net_interfaces_mngr_el);
+		return $rs if ($rs != 0);
+	}
+
+	$rs = get_conf();
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Ending...');
+	return 0;
+
+}
+
+sub virtual_netcard_add(){
+
+	my $ref = undef;
+
+	push_el(\@main::el, 'virtual_netcard_add()', 'Starting...');
+
+	my $sql = "SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips` WHERE `ip_number` != '$main::cfg{'BASE_SERVER_IP'}';";
+
+	($rs, $ref) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	my $server_ips = $ref;
+
+	foreach (@$server_ips) {
+
+		my $ip_id = @$_[0];
+		my $ip_number  = @$_[1];
+		my $ip_card = @$_[2];
+
+		push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
+		$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
+		if ($rs != 0){
+			send_error_mail('virtual_netcard_add()', "Error while tring to add addon ip ${ip_number} to network card '${ip_card}'!")
+		}
+	}
+
+	push_el(\@main::el, 'virtual_netcard_add()', 'Ending...');
+	return 0;
+}
+
+sub virtual_netcard_remove(){
+
+	my $ref = undef;
+
+	push_el(\@main::el, 'virtual_netcard_remove()', 'Starting...');
+
+	my $sql = "SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips` WHERE `ip_number` != '$main::cfg{'BASE_SERVER_IP'}';";
+
+	($rs, $ref) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	my $server_ips = $ref;
+
+	foreach (@$server_ips) {
+
+		my $ip_id = @$_[0];
+		my $ip_number  = @$_[1];
+		my $ip_card = @$_[2];
+
+		push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
+		$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
+		send_error_mail('virtual_netcard_add()', "Error while tring to remove addon ip ${ip_number} to network card '${ip_card}'!") if ($rs != 0);
+
+	}
+
+	push_el(\@main::el, 'virtual_netcard_remove()', 'Ending...');
+	return 0;
+}
+
+sub net_interfaces_mngr_engine {
+
+	my $ref = undef;
+
+	push_el(\@main::el, 'net_interfaces_mngr_engine()', 'Starting...');
+
+	if ($proceed eq 'start') {
+		$rs = virtual_netcard_add();
+	} else {
+		$rs = virtual_netcard_remove();
+	}
+	return $rs if ($rs != 0);
+
+	my $sql = "DELETE FROM `server_ips` WHERE `ip_status` = 'delete';";
+	($rs, $ref) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "UPDATE `server_ips` SET `ip_status` = 'ok';";
+	($rs, $ref) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'net_interfaces_mngr_engine()', 'Ending...');
+	return 0;
+
+}
+
+sub net_interfaces_mngr_shut_down {
+
+	push_el(\@main::el, 'net_interfaces_mngr_shut_down()', 'Starting...');
+
+	push_el(\@main::el, 'net_interfaces_mngr_shut_down()', 'Ending...');
+	return 0;
+
+}
+
+$rs = net_interfaces_mngr_start_up();
+if ($rs != 0) {
+
+	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	net_interfaces_mngr_shut_down();
+	exit 1;
+
+}
+
+
+$rs = net_interfaces_mngr_engine();
+if ($rs != 0) {
+
+	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	net_interfaces_mngr_shut_down();
+	exit 1;
+
+}
+
+$rs = net_interfaces_mngr_shut_down();
+if ($rs != 0) {
+	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	exit 1;
+
+}
+
+exit 0;
+

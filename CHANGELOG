@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-02 Daniel Andreca
+	- Engine:
+		* Added Feature: Virtual network cards can be added with addon ip from gui.
+
 2009-04-29 Thomas Häber
 	- GUI:
 		* Added Feature: Show cpu cores in admin system tools - thanks to qisback

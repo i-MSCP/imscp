@@ -785,6 +785,40 @@ sub mngr_engine {
 	# .htaccess management END.
 	#
 
+
+	#
+	# Network card management BEGIN.
+	#
+
+	$sql = "SELECT COUNT(*) FROM `server_ips` WHERE `ip_status` != 'ok'";
+	($rs, $rdata) = doSQL($sql);
+
+	my $ip_count = @$rdata;
+
+	if ($ip_count > 0) {
+
+		$rs = sys_command("$main::ispcp_net_interfaces_mngr stop 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+
+		if (!defined($main::engine_debug)) {
+			del_file($main::ispcp_net_interfaces_mngr_stdout);
+		}
+
+		return $rs if($rs != 0);
+
+		$rs = sys_command("$main::ispcp_net_interfaces_mngr start 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+
+		if (!defined($main::engine_debug)) {
+			del_file($main::ispcp_net_interfaces_mngr_stdout);
+		}
+
+		return $rs if($rs != 0);
+
+	}
+
+	#
+	# Network card management END.
+	#
+
 	push_el(\@main::el, 'mngr_engine()', 'Ending...');
 
 	return 0;

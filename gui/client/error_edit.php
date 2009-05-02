@@ -18,7 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-require '../include/class.vfs.php';
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);

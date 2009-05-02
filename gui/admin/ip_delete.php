@@ -37,14 +37,14 @@ if (!is_numeric($_GET['delete_id'])) {
 $delete_id = $_GET['delete_id'];
 
 /* check for domains that use this IP */
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		COUNT(`domain_id`) AS dcnt
 	FROM
 		`domain`
 	WHERE
 		`domain_ip_id` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($delete_id));
 
@@ -69,14 +69,14 @@ while (($data = $res->FetchRow())) {
 	}
 }
 
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		*
 	FROM
 		`server_ips`
 	WHERE
 		`ip_id` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($delete_id));
 
@@ -87,14 +87,19 @@ $ip_number = $rs->fields['ip_number'];
 write_log("$user_logged: deletes IP address $ip_number");
 
 /* delete it ! */
-$query = <<<SQL_QUERY
-	DELETE FROM
+$query = "
+	UPDATE
 		`server_ips`
+	SET
+		`ip_status` = ?
 	WHERE
 		`ip_id` = ?
-SQL_QUERY;
+	LIMIT 1
+";
+$rs = exec_query($sql, $query, array(Config::get('ITEM_DELETE_STATUS'),$delete_id));
 
-$rs = exec_query($sql, $query, array($delete_id));
+check_for_lock_file();
+send_request();
 
 set_page_message(tr('IP was deleted!'));
 

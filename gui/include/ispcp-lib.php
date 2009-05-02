@@ -18,7 +18,14 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+
 define('INCLUDEPATH', realpath(dirname(__FILE__)));
+
+function autoload_class($className){
+	require_once(INCLUDEPATH . "/class.$className.php");
+}
+spl_autoload_register('autoload_class');
+
 require_once(INCLUDEPATH . '/ispcp-config.php');
 
 session_name('ispCP');
@@ -32,7 +39,6 @@ if (!isset($_SESSION)) {
 // setting for development edition - see all error messages
 error_reporting(E_ALL);
 
-require_once(INCLUDEPATH . '/class.pTemplate.php');
 require_once(INCLUDEPATH . '/i18n.php');
 
 // Template pathes
@@ -201,9 +207,6 @@ require_once(INCLUDEPATH . '/lostpassword-functions.php');
 require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
-require_once(INCLUDEPATH . '/class.ispcp-update.php');
-require_once(INCLUDEPATH . '/class.database-update.php');
-require_once(INCLUDEPATH . '/class.critical-update.php');
 require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
 //require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.func.php');
 

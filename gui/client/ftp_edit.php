@@ -19,7 +19,6 @@
  */
 
 require '../include/ispcp-lib.php';
-require '../include/class.vfs.php';
 
 check_login(__FILE__);
 

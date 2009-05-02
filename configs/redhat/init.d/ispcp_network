@@ -39,6 +39,9 @@ NAME=ispcp_network
 LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
 LOG_DIR=/var/log/ispcp
+ENGINEPATH="/var/www/ispcp/engine"
+ENGINETOOLSPATH=${ENGINEPATH}"/tools"
+NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
 
 START=1
 
@@ -114,6 +117,14 @@ remove_rules()
 	rm $LFILE
 }
 
+add_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
+remove_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
 case "$1" in
   start)
 	echo -n "Starting $DESC:"
@@ -121,6 +132,7 @@ case "$1" in
 	   echo " ${NAME} is already started" >&2
 	   exit 1
 	fi
+	add_interfaces
 	add_rules
 	echo " $NAME."
 	;;
@@ -131,6 +143,7 @@ case "$1" in
 	   exit 1
 	fi
 	remove_rules
+	remove_interfaces
 	echo " $NAME."
 	;;
   restart|force-reload)
@@ -139,8 +152,10 @@ case "$1" in
 	   echo "${NAME} is already stopped" >&2
 	else
 	   remove_rules
+	   remove_interfaces
 	   sleep 2
 	fi
+	add_interfaces
 	add_rules
 	echo " $NAME."
 	;;

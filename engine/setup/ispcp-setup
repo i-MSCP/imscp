@@ -745,7 +745,7 @@ sub setup_sql {
 
 	return $rs if ($rs != 0);
 
-	$sql = "INSERT INTO server_ips VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', '$main::ua{'hostname'}');";
+	$sql = "INSERT INTO server_ips (ip_id, ip_number, ip_domain, ip_alias) VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', '$main::ua{'hostname'}');";
 
 	($rs, $rdata) = doSQL($sql);
 

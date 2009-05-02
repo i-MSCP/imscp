@@ -31,6 +31,10 @@
 IPTABLES=${IPTABLES:-$(which iptables)}
 LOGDIR=${LOGDIR:-"/var/log/ispcp"}
 LOGFILE=${LOGFILE:-"${LOGDIR}/${SVCNAME}.log"}
+ENGINEPATH="/var/www/ispcp/engine"
+ENGINETOOLSPATH=${ENGINEPATH}"/tools"
+NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
+
 
 depend() {
 	need net
@@ -94,8 +98,17 @@ remove_rules() {
 	${IPTABLES} -X ISPCP_OUTPUT 2>> "$LOGFILE"
 }
 
+add_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
+remove_interfaces(){
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+}
+
 start() {
 	ebegin "Starting $SVCNAME"
+	add_interfaces
 	add_rules
 	eend $?
 }
@@ -103,6 +116,7 @@ start() {
 stop() {
 	ebegin "Stopping $SVCNAME"
 	remove_rules
+	remove_interfaces
 	eend $?
 }
 
