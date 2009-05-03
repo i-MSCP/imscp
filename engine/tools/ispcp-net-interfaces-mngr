@@ -42,6 +42,8 @@ our $proceed = $ARGV[0];
 
 sub net_interfaces_mngr_start_up {
 
+	my $ref = undef;
+
 	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Starting...');
 
 	if (-e $main::ispcp_net_interfaces_mngr_el) {
@@ -51,6 +53,15 @@ sub net_interfaces_mngr_start_up {
 
 	$rs = get_conf();
 	return $rs if ($rs != 0);
+
+	my $sql = "SELECT `value` FROM `config` WHERE `name` = 'DATABASE_REVISION';";
+	($rs, $ref) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	my $version = @$ref[0];
+	if (@$version[0] < 18){
+		$proceed = "";
+	}
 
 	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Ending...');
 	return 0;
@@ -76,10 +87,12 @@ sub virtual_netcard_add(){
 		my $ip_number  = @$_[1];
 		my $ip_card = @$_[2];
 
-		push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
-		$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
-		if ($rs != 0){
-			send_error_mail('virtual_netcard_add()', "Error while tring to add addon ip ${ip_number} to network card '${ip_card}'!")
+		if (defined($ip_card)){
+			push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
+			$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
+			if ($rs != 0){
+				send_error_mail('virtual_netcard_add()', "Error while tring to add addon ip ${ip_number} to network card '${ip_card}'!")
+			}
 		}
 	}
 
@@ -106,9 +119,9 @@ sub virtual_netcard_remove(){
 		my $ip_number  = @$_[1];
 		my $ip_card = @$_[2];
 
-		push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
+		push_el(\@main::el, 'virtual_netcard_remove()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
 		$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
-		send_error_mail('virtual_netcard_add()', "Error while tring to remove addon ip ${ip_number} to network card '${ip_card}'!") if ($rs != 0);
+		send_error_mail('virtual_netcard_remove()', "Error while tring to remove addon ip ${ip_number} to network card '${ip_card}'!") if ($rs != 0);
 
 	}
 
@@ -124,10 +137,12 @@ sub net_interfaces_mngr_engine {
 
 	if ($proceed eq 'start') {
 		$rs = virtual_netcard_add();
-	} else {
-		$rs = virtual_netcard_remove();
+		return $rs if ($rs != 0);
 	}
-	return $rs if ($rs != 0);
+	if ($proceed eq 'stop') {
+		$rs = virtual_netcard_remove();
+		return $rs if ($rs != 0);
+	}
 
 	my $sql = "DELETE FROM `server_ips` WHERE `ip_status` = 'delete';";
 	($rs, $ref) = doSQL($sql);
@@ -139,7 +154,6 @@ sub net_interfaces_mngr_engine {
 
 	push_el(\@main::el, 'net_interfaces_mngr_engine()', 'Ending...');
 	return 0;
-
 }
 
 sub net_interfaces_mngr_shut_down {
@@ -148,7 +162,6 @@ sub net_interfaces_mngr_shut_down {
 
 	push_el(\@main::el, 'net_interfaces_mngr_shut_down()', 'Ending...');
 	return 0;
-
 }
 
 $rs = net_interfaces_mngr_start_up();
@@ -157,7 +170,6 @@ if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
 	net_interfaces_mngr_shut_down();
 	exit 1;
-
 }
 
 
@@ -167,14 +179,12 @@ if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
 	net_interfaces_mngr_shut_down();
 	exit 1;
-
 }
 
 $rs = net_interfaces_mngr_shut_down();
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
 	exit 1;
-
 }
 
 exit 0;

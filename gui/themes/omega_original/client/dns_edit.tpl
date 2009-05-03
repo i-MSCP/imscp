@@ -223,7 +223,7 @@ function action_delete(url, alias_or_subdomain) {
 													<input type="hidden" name="uaction" value="add">
 													<!-- EDP: form_add_mode -->
 													&nbsp;&nbsp;&nbsp;
-													<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','manage_domains.php');return document.MM_returnValue" value=" {TR_CANCEL} ">
+													<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} ">
 												</td>
 											</tr>
 										</table>

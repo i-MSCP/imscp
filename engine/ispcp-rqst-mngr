@@ -790,12 +790,18 @@ sub mngr_engine {
 	# Network card management BEGIN.
 	#
 
-	$sql = "SELECT COUNT(*) FROM `server_ips` WHERE `ip_status` != 'ok'";
+	$sql = "SELECT `ip_id` FROM `server_ips` WHERE `ip_status` != 'ok'";
 	($rs, $rdata) = doSQL($sql);
 
 	my $ip_count = @$rdata;
 
-	if ($ip_count > 0) {
+	$sql = "SELECT `value` FROM `config` WHERE `name` = 'DATABASE_REVISION';";
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	my $version = @$rdata[0];
+
+	if ($ip_count > 0 && @$version[0] >= 18) {
 
 		$rs = sys_command("$main::ispcp_net_interfaces_mngr stop 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
 
@@ -805,7 +811,7 @@ sub mngr_engine {
 
 		return $rs if($rs != 0);
 
-		$rs = sys_command("$main::ispcp_net_interfaces_mngr start 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+		$rs = sys_command("$main::ispcp_net_interfaces_mngr start 1>>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
 
 		if (!defined($main::engine_debug)) {
 			del_file($main::ispcp_net_interfaces_mngr_stdout);

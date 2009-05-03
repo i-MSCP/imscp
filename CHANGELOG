@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-05-03 Daniel Andreca
 	- Engine:
 		* Added Feature: DNS management support. - thanks to Blondak
+		* Ticket #1814: r1725 raises regression
 	- GUI:
 		* Fixed Double encoding in logs
 
