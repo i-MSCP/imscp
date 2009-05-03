@@ -1340,7 +1340,8 @@ function write_log($msg, $level = E_USER_WARNING) {
 	} else {
 		$client_ip = "unknown";
 	}
-	$msg = replace_html(htmlentities($msg . "<br /><small>User IP: " . $client_ip . "</small>", ENT_COMPAT, tr('encoding')));
+
+	$msg = replace_html($msg . "<br /><small>User IP: " . $client_ip . "</small>", ENT_COMPAT, tr('encoding'));
 
 	$query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
 
@@ -1439,6 +1440,8 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$replace[] = $password;
 	$search [] = '{BASE_SERVER_VHOST}';
 	$replace[] = $base_vhost;
+	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+	$replace[] = Config::get('BASE_SERVER_VHOST_PREFIX');
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
