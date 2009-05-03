@@ -160,7 +160,7 @@ function action_delete(url, alias_or_subdomain) {
 									<td align="left">
 										<table width="100%" cellpadding="5" cellspacing="5">
 											<tr>
-												<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25"></td>
+												<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25" alt="" /></td>
 												<td colspan="2" class="title">{TR_DNS}</td>
 											</tr>
 										</table>
@@ -190,14 +190,14 @@ function action_delete(url, alias_or_subdomain) {
 													</tr>
 													<!-- BDP: dns_item -->
 													<tr>
-														<td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{DNS_DOMAIN}</td>
+														<td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left" alt="" />{DNS_DOMAIN}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap">{DNS_NAME}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap">{DNS_CLASS}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DNS_TYPE}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DNS_DATA}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">
-															<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a class="link" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>
-															<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{DNS_ACTION_SCRIPT_DELETE}')" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
+															<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a class="link" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>
+															<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{DNS_ACTION_SCRIPT_DELETE}')" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
 														</td>
 													</tr>
 													<!-- EDP: dns_item -->

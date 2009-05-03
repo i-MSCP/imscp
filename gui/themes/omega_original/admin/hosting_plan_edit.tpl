@@ -121,17 +121,15 @@
                               <td class="content"><input type="radio" {DISBLED} name="cgi" value="_yes_" {TR_CGI_YES} />
                                 {TR_YES}
                                 <input type="radio" {DISBLED} name="cgi" value="_no_" {TR_CGI_NO} />
-                                {TR_NO}
-                              </td>
+                                {TR_NO}</td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content2" width="193">{TR_DNS}</td>
-                              <td class="content"><input type="radio" {DISBLED} name="dns" value="_yes_" {TR_DNS_YES}>
+                              <td class="content"><input type="radio" {DISBLED} name="dns" value="_yes_" {TR_DNS_YES} />
                                 {TR_YES}
-                                <input type="radio" {DISBLED} name="dns" value="_no_" {TR_DNS_NO}>
-                                {TR_NO}
-                              </td>
+                                <input type="radio" {DISBLED} name="dns" value="_no_" {TR_DNS_NO} />
+                                {TR_NO}</td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>

@@ -123,9 +123,9 @@
                       <tr>
 		         <td width="35">&nbsp;</td>
 		         <td class="content2" width="250">{TR_DNS}</td>
-		         <td class="content"><input type="radio" name="dns" value="_yes_" {TR_DNS_YES}>
+		         <td class="content"><input type="radio" name="dns" value="_yes_" {TR_DNS_YES} />
 		           {TR_YES}
-		           <input type="radio" name="dns" value="_no_" {TR_DNS_NO}>
+		           <input type="radio" name="dns" value="_no_" {TR_DNS_NO} />
 		           {TR_NO}</td>
 		      </tr>
 		      <tr>

@@ -88,7 +88,7 @@ function action_delete(url, alias_or_subdomain) {
 <!-- BDP: logged_from -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> {YOU_ARE_LOGGED_AS}</td>
+		<td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
 	</tr>
 </table>
 <!-- EDP: logged_from -->
@@ -104,7 +104,7 @@ function action_delete(url, alias_or_subdomain) {
 			<table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr height="95">
 					<td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
+					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -113,7 +113,7 @@ function action_delete(url, alias_or_subdomain) {
 								<td align="left">
 									<table width="100%" cellpadding="5" cellspacing="5">
 										<tr>
-											<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25"></td>
+											<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25" alt="" /></td>
 											<td colspan="2" class="title">{TR_MANAGE_DOMAIN_DNS}</td>
 										</tr>
 									</table>
@@ -215,15 +215,15 @@ function action_delete(url, alias_or_subdomain) {
 												<td width="25">&nbsp;</td>
 												<td colspan="2">
 													<!-- BDP: form_edit_mode -->
-													<input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  ">
-													<input type="hidden" name="uaction" value="modify">
+													<input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  " />
+													<input type="hidden" name="uaction" value="modify" />
 													<!-- EDP: form_edit_mode -->
 													<!-- BDP: form_add_mode -->
-													<input name="Submit" type="submit" class="button" value="  {TR_ADD}  ">
-													<input type="hidden" name="uaction" value="add">
+													<input name="Submit" type="submit" class="button" value="  {TR_ADD}  " />
+													<input type="hidden" name="uaction" value="add" />
 													<!-- EDP: form_add_mode -->
 													&nbsp;&nbsp;&nbsp;
-													<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} ">
+													<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} " />
 												</td>
 											</tr>
 										</table>

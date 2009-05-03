@@ -44,7 +44,7 @@
               <tr>
                 <td valign="top"><!-- BDP: add_user -->
                     <form name="reseller_add_users_first_frm" method="post" action="user_add2.php">
-                      <input type="hidden" name="uaction" value="user_add2_nxt">
+                      <input type="hidden" name="uaction" value="user_add2_nxt" />
                       <table width="100%" cellpadding="5" cellspacing="5">
                         <tr>
                           <td width="25">&nbsp;</td>
@@ -120,12 +120,12 @@
 			<tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_BACKUP}</td>
-                          <td class="content"><input name="allowbackup" type="radio" value="domain" {VL_BACKUPD}>
+                          <td class="content"><input name="allowbackup" type="radio" value="domain" {VL_BACKUPD} />
                             {TR_BACKUP_DOMAIN}
-                            <input type="radio" name="allowbackup" value="sql" {VL_BACKUPS}>
-                            {TR_BACKUP_SQL}<input name="allowbackup" type="radio" value="full" {VL_BACKUPF}>
+                            <input type="radio" name="allowbackup" value="sql" {VL_BACKUPS} />
+                            {TR_BACKUP_SQL}<input name="allowbackup" type="radio" value="full" {VL_BACKUPF} />
                             {TR_BACKUP_FULL}
-                            <input type="radio" name="allowbackup" value="no" {VL_BACKUPN}>
+                            <input type="radio" name="allowbackup" value="no" {VL_BACKUPN} />
                             {TR_BACKUP_NO}</td>
                         </tr>
                         <tr>
