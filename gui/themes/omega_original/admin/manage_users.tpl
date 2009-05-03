@@ -131,7 +131,7 @@ function action_delete(url, dmn_name) {
         <td colspan="3" align="center" class="content3"><b>{TR_RSL_OPTIONS}</b></td>
       </tr>
       <!-- BDP: rsl_item -->
-      <tr>
+      <tr class="hl">
         <td width="25">&nbsp;</td>
         <td class="{RSL_CLASS}">{RSL_USERNAME} </td>
         <td class="{RSL_CLASS}" align="center">{RESELLER_CREATED_ON}</td>
@@ -209,7 +209,7 @@ function action_delete(url, dmn_name) {
           <td colspan="5" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
         <!-- BDP: usr_item -->
-        <tr>
+        <tr class="hl">
           <td width="25" align="center">&nbsp;</td>
           <td class="{USR_CLASS}" align="center"><a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{USR_USERNAME}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" alt="" /></a></td>
           <td class="{USR_CLASS}"> <a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" alt="" />{USR_USERNAME}</a></td>
