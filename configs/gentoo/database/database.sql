@@ -74,7 +74,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_SSH', '22;tcp;SSH;1;0;'),
 ('PORT_TELNET', '23;tcp;TELNET;1;0;'),
 ('PORT_SMTP', '25;tcp;SMTP;1;0;'),
-('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0;'),
+('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;'),
 ('PORT_DNS', '53;tcp;DNS;1;0;'),
 ('PORT_HTTP', '80;tcp;HTTP;1;0;'),
 ('PORT_HTTPS', '443;tcp;HTTPS;0;0;'),
@@ -90,7 +90,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '18'),
+('DATABASE_REVISION', '19'),
 ('CRITICAL_UPDATE_REVISION', 3);
 
 -- --------------------------------------------------------
@@ -137,6 +137,7 @@ CREATE TABLE `domain` (
   `domain_php` varchar(15) collate utf8_unicode_ci default NULL,
   `domain_cgi` varchar(15) collate utf8_unicode_ci default NULL,
   `allowbackup` varchar(8) collate utf8_unicode_ci NOT NULL default 'full',
+  `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
@@ -157,6 +158,23 @@ CREATE TABLE `domain_aliasses` (
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`alias_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `domain_dns`
+--
+
+CREATE TABLE `domain_dns` (
+  `domain_dns_id` int(11) NOT NULL auto_increment,
+  `domain_id` int(11) NOT NULL,
+  `alias_id` int(11) default NULL,
+  `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
+  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS ​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+  `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
+  PRIMARY KEY  (`domain_dns_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

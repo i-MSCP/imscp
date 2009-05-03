@@ -32,8 +32,92 @@ $tpl->define_dynamic('als_item', 'als_list');
 $tpl->define_dynamic('sub_message', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('sub_item', 'sub_list');
+$tpl->define_dynamic('dns_message', 'page');
+$tpl->define_dynamic('dns_list', 'page');
+$tpl->define_dynamic('dns_item','dns_list');
+
 
 // page functions.
+
+function gen_user_dns_list(&$tpl, &$sql, $user_id){
+	$domain_id = get_user_domain_id($sql, $user_id);
+
+	$query = "
+		SELECT
+			`domain_dns`.`domain_dns_id`,
+			`domain_dns`.`domain_id`,
+			`domain_dns`.`domain_dns`,
+			`domain_dns`.`domain_class`,
+			`domain_dns`.`domain_type`,
+			`domain_dns`.`domain_text`,
+			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) as domain_name,
+			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) as domain_status
+		FROM
+			`domain_dns`
+			LEFT JOIN `domain_aliasses` USING (`alias_id`, `domain_id`),
+			`domain`
+		WHERE
+			`domain_dns`.`domain_id` = ?
+		AND
+			`domain`.`domain_id` = `domain_dns`.`domain_id`
+		ORDER BY
+				`domain_id`,
+				`alias_id`,
+				`domain_dns`,
+				`domain_type`
+	";
+
+	$rs = exec_query($sql, $query, array($domain_id));
+	if ($rs->RecordCount() == 0) {
+		$tpl->assign(array('DNS_MSG' => tr('Manual zone\'s records list is empty!'), 'DNS_LIST' => ''));
+		$tpl->parse('DNS_MESSAGE', 'dns_message');
+	} else {
+		$counter = 0;
+
+		while (!$rs->EOF) {
+			if ($counter % 2 == 0) {
+				$tpl->assign('ITEM_CLASS', 'content');
+			} else {
+				$tpl->assign('ITEM_CLASS', 'content2');
+			}
+
+			list($dns_action_delete, $dns_action_script_delete) = gen_user_dns_action('Delete', $rs->fields['domain_dns_id'], $rs->fields['domain_status']);
+			list($dns_action_edit, $dns_action_script_edit) = gen_user_dns_action('Edit', $rs->fields['domain_dns_id'], $rs->fields['domain_status']);
+
+			$domain_name = decode_idna($rs->fields['domain_name']);
+			$sbd_name = $rs->fields['domain_dns'];
+			$sbd_data = $rs->fields['domain_text'];
+			$tpl->assign(
+				array(
+					'DNS_DOMAIN'				=> $domain_name,
+					'DNS_NAME'					=> $sbd_name,
+					'DNS_CLASS'					=> $rs->fields['domain_class'],
+					'DNS_TYPE'					=> $rs->fields['domain_type'],
+					'DNS_DATA'					=> $sbd_data,
+//					'DNS_ACTION_SCRIPT_EDIT'	=> $sub_action,
+					'DNS_ACTION_SCRIPT_DELETE'	=> $dns_action_script_delete,
+					'DNS_ACTION_DELETE'			=> $dns_action_delete,
+					'DNS_ACTION_SCRIPT_EDIT'	=>  $dns_action_script_edit,
+					'DNS_ACTION_EDIT'			=>  $dns_action_edit
+				)
+			);
+			$tpl->parse('DNS_ITEM', '.dns_item');
+			$rs->MoveNext();
+			$counter++;
+		}
+
+		$tpl->parse('DNS_LIST', 'dns_list');
+		$tpl->assign('DNS_MESSAGE', '');
+	}
+}
+
+function gen_user_dns_action($action, $dns_id, $status) {
+	if ($status === Config::get('ITEM_OK_STATUS')) {
+		return array(tr($action), 'dns_'.strtolower($action).'.php?edit_id='.$dns_id);
+	} else {
+		return array(tr('N/A'), '#');
+	}
+}
 
 function gen_user_sub_action($sub_id, $sub_status) {
 	if ($sub_status === Config::get('ITEM_OK_STATUS')) {
@@ -54,10 +138,13 @@ function gen_user_alssub_action($sub_id, $sub_status) {
 function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 	$domain_id = get_user_domain_id($sql, $user_id);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			`subdomain_id`, `subdomain_name`, `subdomain_mount`,
-			`subdomain_status`, `domain_name`
+			`subdomain_id`,
+			`subdomain_name`,
+			`subdomain_mount`,
+			`subdomain_status`,
+			`domain_name`
 		FROM
 			`subdomain` JOIN `domain`
 		ON
@@ -66,12 +153,15 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			`subdomain`.`domain_id` = ?
 		ORDER BY
 			`subdomain_name`
-SQL_QUERY;
+";
 
-	$query2 = <<<SQL_QUERY
+	$query2 = "
 		SELECT
-			`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`,
-			`subdomain_alias_status`, `alias_name`
+			`subdomain_alias_id`,
+			`subdomain_alias_name`,
+			`subdomain_alias_mount`,
+			`subdomain_alias_status`,
+			`alias_name`
 		FROM
 			`subdomain_alias` JOIN `domain_aliasses`
 		ON
@@ -80,7 +170,7 @@ SQL_QUERY;
 			`domain_id` = ?
 		ORDER BY
 			`subdomain_alias_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
 	$rs2 = exec_query($sql, $query2, array($domain_id));
@@ -97,12 +187,12 @@ SQL_QUERY;
 			$sbd_name = decode_idna($rs->fields['subdomain_name']);
 			$tpl->assign(
 				array(
-					'SUB_NAME' => $sbd_name,
+					'SUB_NAME'			=> $sbd_name,
 					'SUB_ALIAS_NAME'	=>	$rs->fields['domain_name'],
-					'SUB_MOUNT' => $rs->fields['subdomain_mount'],
-					'SUB_STATUS' => translate_dmn_status($rs->fields['subdomain_status']),
-					'SUB_ACTION' => $sub_action,
-					'SUB_ACTION_SCRIPT' => $sub_action_script
+					'SUB_MOUNT'			=> $rs->fields['subdomain_mount'],
+					'SUB_STATUS'		=> translate_dmn_status($rs->fields['subdomain_status']),
+					'SUB_ACTION'		=> $sub_action,
+					'SUB_ACTION_SCRIPT'	=> $sub_action_script
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
@@ -116,12 +206,12 @@ SQL_QUERY;
 			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
 			$tpl->assign(
 				array(
-					'SUB_NAME' => $sbd_name,
-					'SUB_ALIAS_NAME'	=>	$rs2->fields['alias_name'],
-					'SUB_MOUNT' => $rs2->fields['subdomain_alias_mount'],
-					'SUB_STATUS' => translate_dmn_status($rs2->fields['subdomain_alias_status']),
-					'SUB_ACTION' => $sub_action,
-					'SUB_ACTION_SCRIPT' => $sub_action_script
+					'SUB_NAME'			=> $sbd_name,
+					'SUB_ALIAS_NAME'	=> $rs2->fields['alias_name'],
+					'SUB_MOUNT'			=> $rs2->fields['subdomain_alias_mount'],
+					'SUB_STATUS'		=> translate_dmn_status($rs2->fields['subdomain_alias_status']),
+					'SUB_ACTION'		=> $sub_action,
+					'SUB_ACTION_SCRIPT'	=> $sub_action_script
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
@@ -167,10 +257,14 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 function gen_user_als_list(&$tpl, &$sql, $user_id) {
 	$domain_id = get_user_domain_id($sql, $user_id);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
-			`alias_id`, `alias_name`, `alias_status`, `alias_mount`,
-			`alias_ip_id`, `url_forward`
+			`alias_id`,
+			`alias_name`,
+			`alias_status`,
+			`alias_mount`,
+			`alias_ip_id`,
+			`url_forward`
 		FROM
 			`domain_aliasses`
 		WHERE
@@ -178,7 +272,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 		ORDER BY
 			`alias_mount`,
 			`alias_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
@@ -197,14 +291,14 @@ SQL_QUERY;
 			$als_forward = decode_idna($als_forward);
 			$tpl->assign(
 				array(
-					'ALS_NAME' => $alias_name,
-					'ALS_MOUNT' => $rs->fields['alias_mount'],
-					'ALS_STATUS' => translate_dmn_status($rs->fields['alias_status']),
-					'ALS_FORWARD' => $als_forward,
-					'ALS_EDIT_LINK' => $alias_edit_link,
-					'ALS_EDIT' => $als_edit,
-					'ALS_ACTION' => $als_action,
-					'ALS_ACTION_SCRIPT' => $als_action_script
+					'ALS_NAME'			=> $alias_name,
+					'ALS_MOUNT'			=> $rs->fields['alias_mount'],
+					'ALS_STATUS'		=> translate_dmn_status($rs->fields['alias_status']),
+					'ALS_FORWARD'		=> $als_forward,
+					'ALS_EDIT_LINK'		=> $alias_edit_link,
+					'ALS_EDIT'			=> $als_edit,
+					'ALS_ACTION'		=> $als_action,
+					'ALS_ACTION_SCRIPT'	=> $als_action_script
 				)
 			);
 			$tpl->parse('ALS_ITEM', '.als_item');
@@ -223,10 +317,10 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE' => tr('ispCP - Client/Manage Domains'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Domains'),
+		'THEME_COLOR_PATH'						=> "../themes/$theme_color",
+		'THEME_CHARSET'							=> tr('encoding'),
+		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -234,7 +328,7 @@ $tpl->assign(
 
 gen_user_sub_list($tpl, $sql, $_SESSION['user_id']);
 gen_user_als_list($tpl, $sql, $_SESSION['user_id']);
-
+gen_user_dns_list($tpl, $sql, $_SESSION['user_id']);
 // static page messages.
 
 gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
@@ -246,19 +340,26 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_DOMAINS' => tr('Manage domains'),
-		'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-		'TR_ALS_NAME' => tr('Name'),
-		'TR_ALS_MOUNT' => tr('Mount point'),
-		'TR_ALS_FORWARD' => tr('Forward'),
-		'TR_ALS_STATUS' => tr('Status'),
-		'TR_ALS_ACTION' => tr('Action'),
-		'TR_SUBDOMAINS' => tr('Subdomains'),
-		'TR_SUB_NAME' => tr('Name'),
-		'TR_SUB_MOUNT' => tr('Mount point'),
-		'TR_SUB_STATUS' => tr('Status'),
-		'TR_SUB_ACTION' => tr('Actions'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+		'TR_MANAGE_DOMAINS'	=> tr('Manage domains'),
+		'TR_DOMAIN_ALIASES'	=> tr('Domain aliases'),
+		'TR_ALS_NAME'		=> tr('Name'),
+		'TR_ALS_MOUNT'		=> tr('Mount point'),
+		'TR_ALS_FORWARD'	=> tr('Forward'),
+		'TR_ALS_STATUS'		=> tr('Status'),
+		'TR_ALS_ACTION'		=> tr('Action'),
+		'TR_SUBDOMAINS'		=> tr('Subdomains'),
+		'TR_SUB_NAME'		=> tr('Name'),
+		'TR_SUB_MOUNT'		=> tr('Mount point'),
+		'TR_SUB_STATUS'		=> tr('Status'),
+		'TR_SUB_ACTION'		=> tr('Actions'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_DNS'			=> tr('DNS zone\'s records'),
+		'TR_DNS_NAME'		=> tr('Name'),
+		'TR_DNS_CLASS'		=> tr('Class'),
+		'TR_DNS_TYPE'		=> tr('Type'),
+		'TR_DNS_ACTION'		=> tr('Actions'),
+		'TR_DNS_DATA'		=> tr('Record data'),
+		'TR_DOMAIN_NAME'	=> tr('Domain')
 	)
 );
 

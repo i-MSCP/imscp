@@ -66,6 +66,7 @@ $tpl->assign(
 		'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_PHP'					=> tr('PHP'),
 		'TR_CGI'					=> tr('CGI / Perl'),
+		'TR_DNS' 					=> tr('Allow adding records to DNS zone'),
 		'TR_BACKUP_RESTORE'			=> tr('Backup and restore'),
 		'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
 		'TR_AWSTATS'				=> tr('AwStats'),
@@ -128,7 +129,9 @@ function gen_empty_ahp_page(&$tpl) {
 			'TR_PHP_YES'			=> '',
 			'TR_PHP_NO'				=> 'checked="checked"',
 			'TR_CGI_YES'			=> '',
-			'TR_CGI_NO'				=> 'checked="checked"'
+			'TR_CGI_NO'				=> 'checked="checked"',
+			'TR_DNS_YES'			=> '',
+			'TR_DNS_NO'				=> 'checked="checked"'
 		)
 	);
 	$tpl->assign('MESSAGE', '');
@@ -143,6 +146,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
+	global $hp_dns;
 
 	$tpl->assign(
 		array(
@@ -171,6 +175,9 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(array('TR_STATUS_YES'	=> ($status === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($status === '_yes_') ? '' : 'checked="checked"'));
+	
+	$tpl->assign(array('TR_DNS_YES'	=> ($hp_dns === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_DNS_NO'	=> ($hp_dns === '_yes_') ? '' : 'checked="checked"'));
 } // End of gen_data_ahp_page()
 
 /**
@@ -182,6 +189,7 @@ function check_data_correction(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
+	global $hp_dns;
 
 	$ahp_error = "_off_";
 
@@ -205,7 +213,10 @@ function check_data_correction(&$tpl) {
 		$hp_php = $_POST['php'];
 	}
 	if (isset($_POST['cgi'])) {
-		$hp_cgi = $_POST['cgi'];;
+		$hp_cgi = $_POST['cgi'];
+	}
+	if (isset($_POST['dns'])){
+		$hp_dns = $_POST['dns'];
 	}
 	if (empty($hp_name)) {
 		$ahp_error = tr('Incorrect template name length!');
@@ -260,6 +271,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
+	global $hp_dns;
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$query = "
@@ -282,7 +294,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
 		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {
-		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
+		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;";
 		$query = "
 			INSERT INTO
 				hosting_plans(

@@ -34,7 +34,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 
 if (Config::exists('HOSTING_PLANS_LEVEL')
 	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -43,11 +43,11 @@ if (Config::exists('HOSTING_PLANS_LEVEL')
 			`id` = ?
 		AND
 			`status` = 'update'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($order_id));
 } else {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -58,7 +58,7 @@ SQL_QUERY;
 			`user_id` = ?
 		AND
 			`status` = 'update'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
 }
@@ -77,10 +77,10 @@ $err_msg = '';
 
 if (Config::exists('HOSTING_PLANS_LEVEL')
 	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	$query = "SELECT PROPS FROM `hosting_plans` WHERE `id` = ?";
-	$res = exec_query($sql, $query, array($hpid));
+	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
+	$res = exec_query($sql, $query, $hpid);
 } else {
-	$query = "SELECT PROPS FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
+	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($sql, $query, array($reseller_id, $hpid));
 }
 $data = $res->FetchRow();
@@ -105,10 +105,11 @@ unset($_SESSION["ch_hpprops"]);
 list($domain_php, $domain_cgi, $sub,
 	$als, $mail, $ftp,
 	$sql_db, $sql_user,
-	$traff, $disk) = explode(";", $props);
+	$traff, $disk, $domain_dns) = explode(";", $props);
 
 $domain_php = preg_replace("/\_/", "", $domain_php);
 $domain_cgi = preg_replace("/\_/", "", $domain_cgi);
+$domain_dns = preg_replace("/\_/", "", $domain_dns);
 
 if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
 	$query = "SELECT COUNT(`mail_id`) AS cnt
@@ -196,7 +197,8 @@ if (empty($ed_error)) {
 	$user_props .= "$udisk_max;";
 	// $user_props .= "$domain_ip;";
 	$user_props .= "$domain_php;";
-	$user_props .= "$domain_cgi";
+	$user_props .= "$domain_cgi;";
+	$user_props .= "$domain_dns";
 	update_user_props($dmn_id, $user_props);
 
 	$reseller_props = "$rdmn_current;$rdmn_max;";
@@ -229,14 +231,14 @@ if (empty($ed_error)) {
 		$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`orders`
 		SET
 			`status` = ?
 		WHERE
 			`id` = ?
-SQL_QUERY;
+	";
 	exec_query($sql, $query, array('added', $order_id));
 	set_page_message(tr('Domain properties updated successfully!'));
 	header('Location: users.php');

@@ -85,20 +85,32 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_CGI_SUPP}</td>
-                        <td class="content"><select name="domain_cgi" id="domain_cgi">
+                        <td class="content">
+                          <select name="domain_cgi" id="domain_cgi">
                             <option value="yes" {CGI_YES}>{TR_YES}</option>
                             <option value="no" {CGI_NO}>{TR_NO}</option>
                           </select>
                         </td>
                       </tr>
-		      <tr>
+                      <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_BACKUP}</td>
-                        <td class="content"><select name="backup">
+                        <td class="content">
+                          <select name="backup">
                             <option value="domain" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
                             <option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
                             <option value="full" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
                             <option value="no" {BACKUP_NO}>{TR_BACKUP_NO}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="193">{TR_DNS_SUPP}</td>
+                        <td class="content">
+                          <select name="domain_dns" id="domain_dns">
+                            <option value="yes" {DNS_YES}>{TR_YES}</option>
+                            <option value="no" {DNS_NO}>{TR_NO}</option>
                           </select>
                         </td>
                       </tr>

@@ -32,3 +32,6 @@ smtp            IN              CNAME           mail
 ftp             IN              CNAME           www
 ; sub [{SUB_NAME}] entry BEGIN.
 ; sub [{SUB_NAME}] entry END.
+
+; dns [{MANUAL_DNS_ID}] entry BEGIN.
+; dns [{MANUAL_DNS_ID}] entry END.

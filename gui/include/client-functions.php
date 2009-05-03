@@ -40,7 +40,8 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
 			`domain_disk_limit`,
 			`domain_disk_usage`,
 			`domain_php`,
-			`domain_cgi`
+			`domain_cgi`,
+			`domain_dns`
 		FROM
 			`domain`
 		WHERE
@@ -70,7 +71,8 @@ SQL_QUERY;
 			$rs->fields['domain_disk_limit'],
 			$rs->fields['domain_disk_usage'],
 			$rs->fields['domain_php'],
-			$rs->fields['domain_cgi']
+			$rs->fields['domain_cgi'],
+			$rs->fields['domain_dns']
 		);
 	} else {
 		return $rs->fields;
@@ -428,6 +430,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			'PMA_TARGET' => Config::get('PMA_TARGET'),
 			'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
 			'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
+			'TR_MENU_ADD_DNS' => tr('Add DNS zone record')
 		)
 	);
 
@@ -606,9 +609,11 @@ function gen_client_menu(&$tpl, $menu_file) {
 		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
 		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
 		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_php, $dmn_cgi, $dmn_dns) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
+
+	if($dmn_dns != 'yes') $tpl->assign('ISACTIVE_DNS_MENU', '');
 
 	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');

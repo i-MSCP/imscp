@@ -114,10 +114,11 @@ unset($_SESSION["ch_hpprops"]);
 list($php, $cgi, $sub,
 	$als, $mail, $ftp,
 	$sql_db, $sql_user,
-	$traff, $disk) = explode(";", $props);
+	$traff, $disk, $dns) = explode(";", $props);
 
 $php = preg_replace("/\_/", "", $php);
 $cgi = preg_replace("/\_/", "", $cgi);
+$dns = preg_replace("/\_/", "", $dns);
 
 $timestamp = time();
 $pure_user_pass = substr($timestamp, 0, 6);
@@ -187,7 +188,8 @@ $query = "
 		`domain_sqlu_limit`, `domain_status`,
 		`domain_subd_limit`, `domain_alias_limit`,
 		`domain_ip_id`, `domain_disk_limit`,
-		`domain_disk_usage`, `domain_php`, `domain_cgi`
+		`domain_disk_usage`, `domain_php`, `domain_cgi`,
+		domain_dns
 	) VALUES (
 		?, ?,
 		?, unix_timestamp(),
@@ -196,7 +198,8 @@ $query = "
 		?, ?,
 		?, ?,
 		?, ?,
-		'0', ?, ?
+		'0', ?, ?,
+		?
 	)
 ";
 
@@ -214,7 +217,8 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 		$domain_ip,
 		$disk,
 		$php,
-		$cgi)
+		$cgi,
+		$dns)
 );
 $dmn_id = $sql->Insert_ID();
 

@@ -395,7 +395,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_16() {
 		$sqlUpd = array();
-		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465:tcp;SMTP-SSL;1;0')";
+		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;')";
 		return $sqlUpd;
 	}
 
@@ -448,7 +448,36 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_18() {
 		$sqlUpd = array();
-		$sqlUpd[] = "UPDATE `config` SET `value` = '465:tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
+		//moved to 19
+		return $sqlUpd;
+	}
+
+	/**
+	 * Add suport for DNS management.
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1727
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_19() {
+		$sqlUpd = array();
+		$sqlUpd[]	= "CREATE TABLE IF NOT EXISTS `domain_dns` (
+					`domain_dns_id` int(11) NOT NULL auto_increment,
+					`domain_id` int(11) NOT NULL,
+					`alias_id` int(11) default NULL,
+					`domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
+					`domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
+					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS ​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+					`domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
+					PRIMARY KEY  (`domain_dns_id`)
+					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+		$sqlUpd[]	= "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
+		$sqlUpd[]	= "UPDATE `hosting_plans` SET `props`=CONCAT(`props`,'_no_;') ";
+		$sqlUpd[]	= "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
 		return $sqlUpd;
 	}
 

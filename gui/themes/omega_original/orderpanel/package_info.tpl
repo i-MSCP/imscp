@@ -47,6 +47,10 @@
 		<td style="white-space:nowrap;" class="content2">{CGI}</td>
 	</tr>
 	<tr>
+		<td class="content">{TR_DNS_SUPPORT}</td>
+		<td nowrap="nowrap" class="content2">{DNS}</td>
+	</tr>
+	<tr>
 		<td class="content">{TR_MAIL_ACCOUNTS}</td>
 		<td style="white-space:nowrap;" class="content2">{MAIL}</td>
 	</tr>

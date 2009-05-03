@@ -30,6 +30,14 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
+<!-- BDP: isactive_dns_menu -->
+  <tr>
+    <td><a href="dns_add.php" class="submenu">{TR_MENU_ADD_DNS}</a></td>
+  </tr>
+  <tr>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+  </tr>
+<!-- EDP: isactive_dns_menu -->
     <tr>
     <td>&nbsp;</td>
   </tr>

@@ -129,10 +129,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
 			array(
-				'TR_HOSTING_PLANS' => $hp_title,
-				'HOSTING_PLANS' => '',
-				'HP_ORDER' => '',
-				'COLSPAN' => 2
+				'TR_HOSTING_PLANS'	=> $hp_title,
+				'HOSTING_PLANS'		=> '',
+				'HP_ORDER'			=> '',
+				'COLSPAN'			=> 2
 			)
 		);
 
@@ -143,7 +143,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	$tpl->assign('COLSPAN', $count);
 	$i = 0;
 	while (!$rs->EOF) {
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $rs->fields['props']);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $rs->fields['props']);
 
 		$details = '';
 
@@ -160,6 +160,13 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		} else {
 			$cgi = "no";
 			$details .= tr('CGI Support: disabled') . "<br />";
+		}
+		if($hp_dns ==='_yes_'){
+			$dns = "yes";
+			$details .= tr('DNS Support: enabled') . "<br />";
+		} else {
+			$dns = "no";
+			$details .= tr('DNS Support: disabled') . "<br />";
 		}
 		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
 
@@ -207,21 +214,23 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				`domain_php` = ?
 			AND
 				`domain_cgi` = ?
+			AND
+				`domain_dns` = ?
 		";
 
-		$check = exec_query($sql, $check_query, array($_SESSION['user_id'], $hp_mail, $hp_ftp, $hp_traff, $hp_sql_db, $hp_sql_user, $hp_als, $hp_sub, $hp_disk, $php, $cgi));
+		$check = exec_query($sql, $check_query, array($_SESSION['user_id'], $hp_mail, $hp_ftp, $hp_traff, $hp_sql_db, $hp_sql_user, $hp_als, $hp_sub, $hp_disk, $php, $cgi, $dns));
 		if ($check->RecordCount() == 0) {
 			$tpl->assign(
 				array(
-					'HP_NAME' => stripslashes($rs->fields['name']),
-					'HP_DESCRIPTION' => stripslashes($rs->fields['description']),
-					'HP_DETAILS' => stripslashes($details),
-					'HP_COSTS' => $price,
-					'ID' => $rs->fields['id'],
-					'TR_PURCHASE' => $purchase_text,
-					'LINK' => $purchase_link,
-					'TR_HOSTING_PLANS' => $hp_title,
-					'ITHEM' => ($i % 2 == 0) ? 'content' : 'content2'
+					'HP_NAME'			=> stripslashes($rs->fields['name']),
+					'HP_DESCRIPTION'	=> stripslashes($rs->fields['description']),
+					'HP_DETAILS'		=> stripslashes($details),
+					'HP_COSTS'			=> $price,
+					'ID'				=> $rs->fields['id'],
+					'TR_PURCHASE'		=> $purchase_text,
+					'LINK'				=> $purchase_link,
+					'TR_HOSTING_PLANS'	=> $hp_title,
+					'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
 
@@ -235,10 +244,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	if ($i == 0) {
 		$tpl->assign(
 			array(
-				'HOSTING_PLANS' => '',
-				'HP_ORDER' => '',
-				'TR_HOSTING_PLANS' => $hp_title,
-				'COLSPAN' => '2'
+				'HOSTING_PLANS'		=> '',
+				'HP_ORDER'			=> '',
+				'TR_HOSTING_PLANS'	=> $hp_title,
+				'COLSPAN'			=> '2'
 			)
 		);
 
@@ -249,10 +258,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 $theme_color = Config::get('USER_INITIAL_THEME');
 $tpl->assign(
 	array(
-		'TR_CLIENT_UPDATE_HP' => tr('ispCP - Update hosting plan'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_CLIENT_UPDATE_HP'	=> tr('ispCP - Update hosting plan'),
+		'THEME_COLOR_PATH'		=> "../themes/$theme_color",
+		'THEME_CHARSET'			=> tr('encoding'),
+		'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -365,8 +374,8 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_LANGUAGE' => tr('Language'),
-		'TR_SAVE' => tr('Save'),
+		'TR_LANGUAGE'	=> tr('Language'),
+		'TR_SAVE'		=> tr('Save'),
 	)
 );
 

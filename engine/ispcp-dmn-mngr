@@ -404,12 +404,15 @@ sub dmn_add_named_db_data {
 	#
 	# Let's get needed tags and templates;
 	#
-	my ($entry, $dns2_b, $dns2_e) = ('', '', '');
-	($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
+	my ($entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry) = ('', '', '', '', '', '');
+	($rs, $entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry) = get_tpl(
 		$tpl_dir,
 		'db_e.tpl',
 		'db_dns2_b.tpl',
-		'db_dns2_e.tpl'
+		'db_dns2_e.tpl',
+                'db_dns_entry_b.tpl',                                                                                                                                                                                                        
+                'db_dns_entry_e.tpl',                                                                                                                                                                                                        
+	        'db_dns_entry.tpl'                                                                                                                                                                                                           
 	);
 	return $rs if ($rs != 0);
 
@@ -449,6 +452,55 @@ sub dmn_add_named_db_data {
 	#   ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
 	#    return $rs if ($rs != 0);
 	#}
+#blondak : support for manual DNS records : begin
+        my $domain_id    = @$dmn_data[0];
+	
+	my $sql = "
+	    SELECT
+		domain_dns_id,
+		domain_id,
+		alias_id,
+		domain_dns,
+		domain_text,
+		domain_class,
+		domain_type
+	    FROM
+		domain_dns
+	    WHERE 
+		    domain_dns.alias_id IS NULL
+		AND domain_dns.domain_id = $domain_id
+	    ;
+	";
+	
+	my $rows;
+	($rs, $rows) = doSQL($sql);
+	if ($rs == 0){
+	
+    	    my ($row, $test);
+	    my ($db_dns_entry_b_val, $db_dns_entry_e_val, $db_dns_entry_val) = (undef, undef, undef);
+	    foreach $row (@$rows){
+		%tag_hash = (
+		    '{MANUAL_DNS_NAME}' => @$row[3],
+		    '{MANUAL_DNS_ID}' => @$row[0],
+		    '{MANUAL_DNS_DATA}' => @$row[4],
+		    '{MANUAL_DNS_CLASS}' => @$row[5],
+		    '{MANUAL_DNS_TYPE}' => @$row[6]
+		);	    
+		($rs, $db_dns_entry_val, $db_dns_entry_b_val, $db_dns_entry_e_val) = prep_tpl(
+		    \%tag_hash,
+		    $db_dns_entry,
+		    $db_dns_entry_b,
+		    $db_dns_entry_e
+		);
+		$db_dns_entry_val = "$db_dns_entry_b_val$db_dns_entry_val$db_dns_entry_e_val\n$db_dns_entry_b$db_dns_entry_e";
+		($rs, $test) = repl_tag($db_dns_entry_b, $db_dns_entry_e, $entry, $db_dns_entry_val, "als_add_named_db_data_test");
+		if ($rs==0){
+		    $entry = $test;
+		}
+	    }
+	}
+#blondak : support for manual DNS records : end
+
 	#
 	# Let's store generated data;
 	#

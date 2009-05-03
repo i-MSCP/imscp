@@ -75,7 +75,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		die();
 	} else {
 		$props = $rs->fields['props'];
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $props);
 
 		$price = $rs->fields['price'];
 		$setup_fee = $rs->fields['setup_fee'];
@@ -110,6 +110,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'TRAFFIC'		=> $hp_traff,
 				'PHP'			=> translate_sse($hp_php),
 				'CGI'			=> translate_sse($hp_cgi),
+				'DNS'			=> translate_sse($hp_dns),
 				'MAIL'			=> translate_limit_value($hp_mail),
 				'FTP'			=> translate_limit_value($hp_ftp),
 				'SQL_DB'		=> translate_limit_value($hp_sql_db),
@@ -172,6 +173,7 @@ $tpl->assign(
 		'TR_HTACCESS'			=> tr('Protected Areas'),
 		'TR_PHP_SUPPORT'		=> tr('PHP support'),
 		'TR_CGI_SUPPORT'		=> tr('CGI support'),
+		'TR_DNS_SUPPORT'		=> tr('Manual DNS support'),
 		'TR_MYSQL_SUPPORT'		=> tr('SQL support'),
 		'TR_SUBDOMAINS'			=> tr('Subdomains'),
 		'TR_DOMAIN_ALIAS'		=> tr('Domain aliases'),

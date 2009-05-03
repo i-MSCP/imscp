@@ -67,6 +67,7 @@ $tpl->assign(
 		'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_PHP' => tr('PHP'),
 		'TR_CGI' => tr('CGI / Perl'),
+		'TR_DNS' => tr('Allow adding records to DNS zone'),
 		'TR_BACKUP_RESTORE' => tr('Backup and restore'),
 		'TR_APACHE_LOGS' => tr('Apache logfiles'),
 		'TR_AWSTATS' => tr('AwStats'),
@@ -147,6 +148,9 @@ function restore_form(&$tpl) {
 	$tpl->assign(array('TR_CGI_YES'	=> ($_POST['cgi'] === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_CGI_NO'	=> ($_POST['cgi'] === '_yes_') ? '' : 'checked="checked"'));
 
+	$tpl->assign(array('TR_DNS_YES' => ($_POST['dns'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_DNS_NO'  => ($_POST['dns'] === '_yes_') ? '' : 'checked="checked"'));
+	
 	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
 } // end of function restore_form()
@@ -184,7 +188,7 @@ SQL_QUERY;
 	$value = $data['value'];
 	$payment = $data['payment'];
 	$status = $data['status'];
-	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
+	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $props);
 	$hp_name = $data['name'];
 
 	if ($description == '')
@@ -224,6 +228,8 @@ SQL_QUERY;
 			'TR_PHP_NO'		=> ($hp_php === '_yes_') ? '' : 'checked="checked"',
 			'TR_CGI_YES'	=> ($hp_cgi === '_yes_') ? 'checked="checked"' : '',
 			'TR_CGI_NO'		=> ($hp_cgi === '_yes_') ? '' : 'checked="checked"',
+			'TR_DNS_YES'	=> ($hp_dns === '_yes_') ? 'checked="checked"' : '',
+			'TR_DNS_NO'		=> ($hp_dns === '_yes_') ? '' : 'checked="checked"',
 			'TR_STATUS_YES'	=> ($status == 1) ? 'checked="checked"' : '',
 			'TR_STATUS_NO'	=> ($status == 1) ? '' : 'checked="checked"'
 		)
@@ -239,6 +245,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $hpid;
+	global $hp_dns;
 
 	$ahp_error		= '_off_';
 	$hp_name		= clean_input($_POST['hp_name']);
@@ -263,6 +270,10 @@ function check_data_iscorrect(&$tpl) {
 
 	if (isset($_POST['cgi']))
 		$hp_cgi = $_POST['cgi'];;
+
+	if (isset($_POST['dns']))
+		$hp_dns = $_POST['dns'];;
+
 
 	if (!is_numeric($_POST['hp_price'])) {
 		$ahp_error = tr('Incorrect price. Example: 9.99');
@@ -309,6 +320,7 @@ function save_data_to_db() {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $hpid;
+	global $hp_dns;
 
 	$description	= clean_input($_POST['hp_description']);
 	$price			= clean_input($_POST['hp_price']);
@@ -317,7 +329,7 @@ function save_data_to_db() {
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= clean_input($_POST['status']);
 
-	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
+	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;";
 
 	$query = <<<SQL_QUERY
 		UPDATE

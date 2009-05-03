@@ -136,7 +136,8 @@ function update_user_props($user_id, $props) {
 		$traff_max,
 		$disk_max,
 		$domain_php,
-		$domain_cgi
+		$domain_cgi,
+		$domain_dns
 	) = explode (";", $props);
 
 	// have to check if PHP and/or CGI and/or IP change
@@ -153,9 +154,11 @@ function update_user_props($user_id, $props) {
 			`domain_php` = ?
 		AND
 			`domain_cgi` = ?
+		AND
+			`domain_dns` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi));
+	$rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi, $domain_dns));
 
 	if ($rs->RecordCount() == 0) {
 		// mama mia, we have to rebuild the system entry for this domain
@@ -183,7 +186,8 @@ function update_user_props($user_id, $props) {
 				`domain_subd_limit` = ?,
 				`domain_disk_limit` = ?,
 				`domain_php` = ?,
-				`domain_cgi` = ?
+				`domain_cgi` = ?,
+				`domain_dns` = ?
 			WHERE
 				`domain_id` = ?
 		";
@@ -204,6 +208,7 @@ function update_user_props($user_id, $props) {
 				$disk_max,
 				$domain_php,
 				$domain_cgi,
+				$domain_dns,
 				$user_id
 			)
 		);

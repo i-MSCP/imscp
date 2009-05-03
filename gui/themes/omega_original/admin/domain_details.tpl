@@ -64,6 +64,11 @@
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
+                            <td class="content2" width="193">{TR_DNS_SUPP}</td>
+                            <td class="content" colspan="2">{VL_DNS_SUPP}</td>
+                          </tr>
+                          <tr>
+                            <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_MYSQL_SUPP}</td>
                             <td class="content" colspan="2">{VL_MYSQL_SUPP}</td>
                           </tr>

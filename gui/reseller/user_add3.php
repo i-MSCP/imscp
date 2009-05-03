@@ -255,10 +255,11 @@ function add_user_data($reseller_id) {
 	list($php, $cgi, $sub,
 		$als, $mail, $ftp,
 		$sql_db, $sql_user,
-		$traff, $disk, $allowbackup) = explode(";", $props);
+		$traff, $disk, $allowbackup, $dns) = explode(";", $props);
 
 	$php			= preg_replace("/\_/", "", $php);
 	$cgi			= preg_replace("/\_/", "", $cgi);
+	$dns 			= preg_replace("/\_/", "", $dns);
 	$allowbackup	= clean_input($allowbackup, true);
 	$pure_user_pass	= $inpass;
 	$inpass			= crypt_user_pass($inpass, true);
@@ -325,7 +326,7 @@ function add_user_data($reseller_id) {
 			`domain_subd_limit`, `domain_alias_limit`,
 			`domain_ip_id`, `domain_disk_limit`,
 			`domain_disk_usage`, `domain_php`, `domain_cgi`,
-			`allowbackup`
+			`allowbackup`, `domain_dns`
 		)
 		VALUES (
 			?, ?,
@@ -336,13 +337,13 @@ function add_user_data($reseller_id) {
 			?, ?,
 			?, ?, '0',
 			?, ?,
-			?
+			?, ?
 		)
 	";
 
 	$res = exec_query($sql, $query, array(
 		$dmn_name, $record_id, $reseller_id, $mail, $ftp, $traff, $sql_db,
-		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi, $allowbackup));
+		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi, $allowbackup, $dns));
 	$dmn_id = $sql->Insert_ID();
 
 	// Add statistics group

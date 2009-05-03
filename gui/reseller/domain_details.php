@@ -30,10 +30,10 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_DETAILS_DOMAIN_PAGE_TITLE' => tr('ispCP - Domain/Details'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_DETAILS_DOMAIN_PAGE_TITLE'	=> tr('ispCP - Domain/Details'),
+		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -44,27 +44,28 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_DOMAIN_DETAILS' => tr('Domain details'),
-		'TR_DOMAIN_NAME' => tr('Domain name'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_STATUS' => tr('Status'),
-		'TR_PHP_SUPP' => tr('PHP support'),
-		'TR_CGI_SUPP' => tr('CGI support'),
-		'TR_MYSQL_SUPP' => tr('MySQL support'),
-		'TR_TRAFFIC' => tr('Traffic in MB'),
-		'TR_DISK' => tr('Disk in MB'),
-		'TR_FEATURE' => tr('Feature'),
-		'TR_USED' => tr('Used'),
-		'TR_LIMIT' => tr('Limit'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
-		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
-		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
-		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_BACK' => tr('Back'),
-		'TR_EDIT' => tr('Edit'),
+		'TR_DOMAIN_DETAILS'		=> tr('Domain details'),
+		'TR_DOMAIN_NAME'		=> tr('Domain name'),
+		'TR_DOMAIN_IP'			=> tr('Domain IP'),
+		'TR_STATUS'				=> tr('Status'),
+		'TR_PHP_SUPP'			=> tr('PHP support'),
+		'TR_CGI_SUPP'			=> tr('CGI support'),
+		'TR_DNS_SUPP'			=> tr('Manual DNS support'),
+		'TR_MYSQL_SUPP'			=> tr('MySQL support'),
+		'TR_TRAFFIC'			=> tr('Traffic in MB'),
+		'TR_DISK'				=> tr('Disk in MB'),
+		'TR_FEATURE'			=> tr('Feature'),
+		'TR_USED'				=> tr('Used'),
+		'TR_LIMIT'				=> tr('Limit'),
+		'TR_MAIL_ACCOUNTS'		=> tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts'),
+		'TR_SQL_DB_ACCOUNTS'	=> tr('SQL databases'),
+		'TR_SQL_USER_ACCOUNTS'	=> tr('SQL users'),
+		'TR_SUBDOM_ACCOUNTS'	=> tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS'	=> tr('Domain aliases'),
+		'TR_UPDATE_DATA'		=> tr('Submit changes'),
+		'TR_BACK'				=> tr('Back'),
+		'TR_EDIT'				=> tr('Edit'),
 	)
 );
 
@@ -101,7 +102,7 @@ unset_messages();
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$sql = Database::getInstance();
 	// Get domain data
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*,
 			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage
@@ -109,7 +110,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			`domain`
 		WHERE
 			`domain_id` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($domain_id));
 
@@ -121,16 +122,16 @@ SQL_QUERY;
 	}
 	// Get admin data
 	$created_by = $_SESSION['user_id'];
-	$res1 = exec_query($sql,
-		"SELECT `admin_name` FROM `admin` WHERE `admin_id` = ? AND `created_by` = ?",
-		array($data['domain_admin_id'], $created_by));
+	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ? AND `created_by` = ?";
+	$res1 = exec_query($sql, $query, array($data['domain_admin_id'], $created_by));
 	$data1 = $res1->FetchRow();
 	if ($res1->RecordCount() <= 0) {
 		header('Location: users.php');
 		die();
 	}
 	// Get IP info
-	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['domain_ip_id']));
+	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
+	$ipres = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $ipres->FetchRow();
 	// Get staus name
 	$dstatus = translate_dmn_status($data['domain_status']);
@@ -138,8 +139,7 @@ SQL_QUERY;
 	// Traffic diagram
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
-	$res7 = exec_query($sql,
-		"SELECT
+	$query = "SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS dtraff_web,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS dtraff_ftp,
 			IFNULL(SUM(`dtraff_mail`), 0) AS dtraff_mail,
@@ -151,8 +151,9 @@ SQL_QUERY;
 		AND
 			`dtraff_time` > ?
 		AND
-			`dtraff_time` < ?",
-		array($data['domain_id'], $fdofmnth, $ldofmnth));
+			`dtraff_time` < ?
+	";
+	$res7 = exec_query($sql, $query, array($data['domain_id'], $fdofmnth, $ldofmnth));
 	$dtraff = $res7->FetchRow();
 
 	$sumtraff = $dtraff['dtraff_web'] + $dtraff['dtraff_ftp'] + $dtraff['dtraff_mail'] + $dtraff['dtraff_pop'];
@@ -161,7 +162,8 @@ SQL_QUERY;
 	$month = date("m");
 	$year = date("Y");
 
-	$res8 = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['domain_ip_id']));
+	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
+	$res8 = exec_query($sql, $query, array($data['domain_ip_id']));
 	$ipdat = $res8->FetchRow();
 
 	$domain_traffic_limit = $data['domain_traffic_limit'];
@@ -214,72 +216,73 @@ SQL_QUERY;
 	$dat3 = $res6->FetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat
-	$res4 = exec_query($sql, "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?", array($data['domain_name']));
+	$query = "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?";
+	$res4 = exec_query($sql, $query, array($data['domain_name']));
 	$ftp_gnum = $res4->RowCount();
 	if ($ftp_gnum == 0) {
 		$used_ftp_acc = 0;
 	} else {
 		$dat1 = $res4->FetchRow();
-		$res5 = exec_query($sql, "SELECT COUNT(*) AS ftp_cnt FROM `ftp_users` WHERE `gid` = ?", array($dat1['gid']));
+		$query = "SELECT COUNT(*) AS ftp_cnt FROM `ftp_users` WHERE `gid` = ?";
+		$res5 = exec_query($sql, $query, array($dat1['gid']));
 		$dat2 = $res5->FetchRow();
 
 		$used_ftp_acc = $dat2['ftp_cnt'];
 	}
 	$ftp_limit = translate_limit_value($data['domain_ftpacc_limit']);
 	// Get sql database count
-	$res = exec_query($sql, "SELECT COUNT(*) AS dnum FROM `sql_database` WHERE `domain_id` = ?", array($data['domain_id']));
+	$query = "SELECT COUNT(*) AS dnum FROM `sql_database` WHERE `domain_id` = ?";
+	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat5 = $res->FetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
 	// Get sql users count
-	$res = exec_query($sql,
-		"SELECT COUNT(u.`sqlu_id`) AS ucnt FROM sql_user u, sql_database d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?",
-		array($data['domain_id']));
+	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM sql_user u, sql_database d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
+	$res = exec_query($sql, $query, array($data['domain_id']));
 	$dat6 = $res->FetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
 	// Get subdomain
-	$res1 = exec_query($sql, "SELECT COUNT(`subdomain_id`) AS sub_num FROM `subdomain` WHERE `domain_id` = ?", array($domain_id));
+	$query = "SELECT COUNT(`subdomain_id`) AS sub_num FROM `subdomain` WHERE `domain_id` = ?";
+	$res1 = exec_query($sql, $query, array($domain_id));
 	$sub_num_data = $res1->FetchRow();
-	$res1 = exec_query($sql, "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)", array($domain_id));
+	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
+	$res1 = exec_query($sql, $query, array($domain_id));
 	$alssub_num_data = $res1->FetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
 	// Get domain aliases
-	$res1 = exec_query($sql, "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?", array($domain_id));
+	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
+	$res1 = exec_query($sql, $query, array($domain_id));
 	$alias_num_data = $res1->FetchRow();
 
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'DOMAIN_ID' => $data['domain_id'],
-			'VL_DOMAIN_NAME' => decode_idna($data['domain_name']),
-			'VL_DOMAIN_IP' => $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
-			'VL_STATUS' => $dstatus,
-
-			'VL_PHP_SUPP' => ($data['domain_php'] == 'yes') ?
-								tr('Enabled') : tr('Disabled'),
-			'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes') ?
-								tr('Enabled') : tr('Disabled'),
-			'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0) ?
-								tr('Enabled') : tr('Disabled'),
-
-			'VL_TRAFFIC_PERCENT' => $traffic_percent,
-			'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
-			'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
-			'VL_DISK_PERCENT' => $disk_percent,
-			'VL_DISK_USED' => $domduh,
-			'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
-			'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
-			'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
-			'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,
-			'VL_FTP_ACCOUNTS_LIIT' => $ftp_limit,
-			'VL_SQL_DB_ACCOUNTS_USED' => $dat5['dnum'],
-			'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
-			'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
-			'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
-			'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
-			'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
-			'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
-			'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias
+			'DOMAIN_ID'					=> $data['domain_id'],
+			'VL_DOMAIN_NAME'			=> decode_idna($data['domain_name']),
+			'VL_DOMAIN_IP'				=> $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
+			'VL_STATUS'					=> $dstatus,
+			'VL_PHP_SUPP'				=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_CGI_SUPP'				=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_DNS_SUPP'				=> ($data['domain_dns'] == 'yes')? tr('Enabled') : tr('Disabled'),
+			'VL_MYSQL_SUPP'				=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
+			'VL_TRAFFIC_PERCENT'		=> $traffic_percent,
+			'VL_TRAFFIC_USED'			=> sizeit($domain_all_traffic),
+			'VL_TRAFFIC_LIMIT'			=> sizeit($domain_traffic_limit, 'MB'),
+			'VL_DISK_PERCENT'			=> $disk_percent,
+			'VL_DISK_USED'				=> $domduh,
+			'VL_DISK_LIMIT'				=> sizeit($data['domain_disk_limit'], 'MB'),
+			'VL_MAIL_ACCOUNTS_USED'		=> $dat3['mcnt'],
+			'VL_MAIL_ACCOUNTS_LIIT'		=> $mail_limit,
+			'VL_FTP_ACCOUNTS_USED'		=> $used_ftp_acc,
+			'VL_FTP_ACCOUNTS_LIIT'		=> $ftp_limit,
+			'VL_SQL_DB_ACCOUNTS_USED'	=> $dat5['dnum'],
+			'VL_SQL_DB_ACCOUNTS_LIIT'	=> $sql_db,
+			'VL_SQL_USER_ACCOUNTS_USED'	=> $dat6['ucnt'],
+			'VL_SQL_USER_ACCOUNTS_LIIT'	=> $sql_users,
+			'VL_SUBDOM_ACCOUNTS_USED'	=> $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
+			'VL_SUBDOM_ACCOUNTS_LIIT'	=> $sub_dom,
+			'VL_DOMALIAS_ACCOUNTS_USED'	=> $alias_num_data['alias_num'],
+			'VL_DOMALIAS_ACCOUNTS_LIIT'	=> $dom_alias
 		)
 	);
 } // end of load_user_data();

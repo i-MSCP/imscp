@@ -808,7 +808,7 @@ $tpl->assign(
 		'FIRM' => $firm,
 		'ZIP' => $zip,
 		'CITY' => $city,
-		'STATE' => $state,
+		'STATE' => ($state === NULL ? '' : $state),
 		'COUNTRY' => $country,
 		'STREET_1' => $street1,
 		'STREET_2' => $street2,

@@ -37,10 +37,10 @@ if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') 
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Domain/Edit'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_EDIT_DOMAIN_PAGE_TITLE'	=> tr('ispCP - Domain/Edit'),
+		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
+		'THEME_CHARSET'				=> tr('encoding'),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -51,30 +51,31 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-		'TR_DOMAIN_PROPERTIES' => tr('Domain properties'),
-		'TR_DOMAIN_NAME' => tr('Domain name'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_PHP_SUPP' => tr('PHP support'),
-		'TR_CGI_SUPP' => tr('CGI support'),
-		'TR_SUBDOMAINS' => tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_ALIAS' => tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAIL_ACCOUNT' => tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_FTP_ACCOUNTS' => tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_SQL_DB' => tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_SQL_USERS' => tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_TRAFFIC' => tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
-		'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
-		'TR_USER_NAME' => tr('Username'),
-		'TR_BACKUP' => tr('Backup'),
-		'TR_BACKUP_DOMAIN' => tr('Domain'),
-		'TR_BACKUP_SQL' => tr('SQL'),
-		'TR_BACKUP_FULL' => tr('Full'),
-		'TR_BACKUP_NO' => tr('No'),
-		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_YES' => tr('Yes'),
-		'TR_NO' => tr('No')
+		'TR_EDIT_DOMAIN'		=> tr('Edit Domain'),
+		'TR_DOMAIN_PROPERTIES'	=> tr('Domain properties'),
+		'TR_DOMAIN_NAME'		=> tr('Domain name'),
+		'TR_DOMAIN_IP'			=> tr('Domain IP'),
+		'TR_PHP_SUPP'			=> tr('PHP support'),
+		'TR_CGI_SUPP'			=> tr('CGI support'),
+		'TR_DNS_SUPP'			=> tr('Manual DNS support'),
+		'TR_SUBDOMAINS'			=> tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_ALIAS'				=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAIL_ACCOUNT'		=> tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_DB'				=> tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_USERS'			=> tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_TRAFFIC'			=> tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_DISK'				=> tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_USER_NAME'			=> tr('Username'),
+		'TR_BACKUP'				=> tr('Backup'),
+		'TR_BACKUP_DOMAIN'		=> tr('Domain'),
+		'TR_BACKUP_SQL'			=> tr('SQL'),
+		'TR_BACKUP_FULL'		=> tr('Full'),
+		'TR_BACKUP_NO'			=> tr('No'),
+		'TR_UPDATE_DATA'		=> tr('Submit changes'),
+		'TR_CANCEL'				=> tr('Cancel'),
+		'TR_YES'				=> tr('Yes'),
+		'TR_NO'					=> tr('No')
 	)
 );
 
@@ -130,8 +131,9 @@ function load_user_data($user_id, $domain_id) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username;
+	global $dns_supp;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_id`
 		FROM
@@ -140,7 +142,7 @@ function load_user_data($user_id, $domain_id) {
 			`domain_id` = ?
 		AND
 			`domain_created_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $user_id));
 
@@ -170,32 +172,35 @@ function load_additional_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
 	global $domain_name, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
+	global $dns_supp;
 	// Get domain data
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_name`,
 			`domain_ip_id`,
 			`domain_php`,
 			`domain_cgi`,
 			`domain_admin_id`,
-			`allowbackup`
+			`allowbackup`,
+			`domain_dns`
 		FROM
 			`domain`
 		WHERE
 			`domain_id` = ?
-SQL_QUERY;
+	";
 
-	$res = exec_query($sql, $query, array($domain_id));
+	$res = exec_query($sql, $query, $domain_id);
 	$data = $res->FetchRow();
 
-	$domain_name = $data['domain_name'];
-	$domain_ip_id = $data['domain_ip_id'];
-	$php_sup = $data['domain_php'];
-	$cgi_supp = $data['domain_cgi'];
-	$allowbackup = $data['allowbackup'];
-	$domain_admin_id = $data['domain_admin_id'];
+	$domain_name		= $data['domain_name'];
+	$domain_ip_id		= $data['domain_ip_id'];
+	$php_sup			= $data['domain_php'];
+	$cgi_supp			= $data['domain_cgi'];
+	$allowbackup		= $data['allowbackup'];
+	$domain_admin_id	= $data['domain_admin_id'];
+	$dns_supp			= $data['domain_dns'];
 	// Get IP of domain
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`ip_number`,
 			`ip_domain`
@@ -203,14 +208,14 @@ SQL_QUERY;
 			`server_ips`
 		WHERE
 			`ip_id` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($domain_ip_id));
 	$data = $res->FetchRow();
 
 	$domain_ip = $data['ip_number'] . '&nbsp;(' . $data['ip_domain'] . ')';
 	// Get username of domain
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_name`
 		FROM
@@ -221,7 +226,7 @@ SQL_QUERY;
 			`admin_type` = 'user'
 		AND
 			`created_by` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($domain_admin_id, $user_id));
 	$data = $res->FetchRow();
@@ -238,6 +243,7 @@ function gen_editdomain_page(&$tpl) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
+	global $dns_supp;
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
 
@@ -245,38 +251,6 @@ function gen_editdomain_page(&$tpl) {
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 
-	if ($php_sup === 'yes') {
-		$tpl->assign(
-			array(
-				'PHP_YES' => 'selected="selected"',
-				'PHP_NO' => '',
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'PHP_YES' => '',
-				'PHP_NO' => 'selected="selected"',
-			)
-		);
-	}
-
-	if ($cgi_supp === 'yes') {
-		$tpl->assign(
-			array(
-				'CGI_YES' => 'selected="selected"',
-				'CGI_NO' => '',
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'CGI_YES' => '',
-				'CGI_NO' => 'selected="selected"',
-			)
-		);
-	}
-	
 	if ($allowbackup === 'domain') {
 		$tpl->assign(
 			array(
@@ -317,17 +291,23 @@ function gen_editdomain_page(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'VL_DOMAIN_NAME' => $domain_name,
-			'VL_DOMAIN_IP' => $domain_ip,
-			'VL_DOM_SUB' => $sub,
-			'VL_DOM_ALIAS' => $als,
-			'VL_DOM_MAIL_ACCOUNT' => $mail,
-			'VL_FTP_ACCOUNTS' => $ftp,
-			'VL_SQL_DB' => $sql_db,
-			'VL_SQL_USERS' => $sql_user,
-			'VL_TRAFFIC' => $traff,
-			'VL_DOM_DISK' => $disk,
-			'VL_USER_NAME' => $username
+			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected':'',
+			'PHP_NO' 				=> ($php_sup != 'yes') ? 'selected':'',
+			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected':'',
+			'CGI_NO' 				=> ($cgi_supp != 'yes') ? 'selected':'',
+			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected':'',
+			'DNS_NO' 				=> ($dns_supp != 'yes') ? 'selected':'',
+			'VL_DOMAIN_NAME'		=> $domain_name,
+			'VL_DOMAIN_IP'			=> $domain_ip,
+			'VL_DOM_SUB'			=> $sub,
+			'VL_DOM_ALIAS'			=> $als,
+			'VL_DOM_MAIL_ACCOUNT'	=> $mail,
+			'VL_FTP_ACCOUNTS'		=> $ftp,
+			'VL_SQL_DB'				=> $sql_db,
+			'VL_SQL_USERS'			=> $sql_user,
+			'VL_TRAFFIC'			=> $traff,
+			'VL_DOM_DISK'			=> $disk,
+			'VL_USER_NAME'			=> $username
 		)
 	);
 } // End of gen_editdomain_page()
@@ -340,6 +320,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	global $sql_db, $sql_user, $traff;
 	global $disk, $sql, $domain_ip, $domain_php;
 	global $domain_cgi, $allowbackup;
+	global $domain_dns;
 
 	$sub = clean_input($_POST['dom_sub']);
 	$als = clean_input($_POST['dom_alias']);
@@ -352,6 +333,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	// $domain_ip = $_POST['domain_ip'];
 	$domain_php = $_POST['domain_php'];
 	$domain_cgi = $_POST['domain_cgi'];
+	$domain_dns = $_POST['domain_dns'];
 	$allowbackup = $_POST['backup'];
 
 	$ed_error = '';
@@ -421,7 +403,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	}
 
 	if (empty($ed_error)) {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				COUNT(su.`sqlu_id`) AS cnt
 			FROM
@@ -431,7 +413,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 				su.`sqld_id` = sd.`sqld_id`
 			AND
 				sd.`domain_id` = ?
-SQL_QUERY;
+";
 
 		$rs = exec_query($sql, $query, array($_SESSION['edit_id']));
 		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, $ed_error, tr('SQL User'));
@@ -463,7 +445,8 @@ SQL_QUERY;
 		$user_props .= "$udisk_max;";
 		// $user_props .= "$domain_ip;";
 		$user_props .= "$domain_php;";
-		$user_props .= "$domain_cgi";
+		$user_props .= "$domain_cgi;";
+		$user_props .= "$domain_dns";
 		update_user_props($user_id, $user_props);
 
 		$reseller_props = "$rdmn_current;$rdmn_max;";
@@ -483,8 +466,8 @@ SQL_QUERY;
 		}
 
 		// Backup Settings
-		$query = "UPDATE `domain` SET `allowbackup` = '$allowbackup' WHERE `domain_id` = ?";
-		$rs = exec_query($sql, $query, array($user_id));
+		$query = "UPDATE `domain` SET `allowbackup` = ? WHERE `domain_id` = ?";
+		$rs = exec_query($sql, $query, array($allowbackup, $user_id));
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
