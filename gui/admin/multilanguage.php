@@ -271,7 +271,7 @@ function show_lang(&$tpl, &$sql) {
 		// $res
 		$tpl->assign(
 			array(
-				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']),
+				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']-5), // -5, because of meta strings
 				'URL_EXPORT'	=> 'multilanguage_export.php?export_lang=lang_' . $dat[1],
 			)
 		);
