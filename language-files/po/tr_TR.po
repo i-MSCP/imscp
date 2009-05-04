@@ -4109,6 +4109,10 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr "Durumu \"değiştir\" olarak ayarla"
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "MySQL desteği"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
 

@@ -4150,6 +4150,10 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr "Ezarri egoera \"aldatua\""
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "MySQL euskarria"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "MEsedez sartu SQL kontsulta!"
 

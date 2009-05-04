@@ -4147,6 +4147,10 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr "Cambia el estado a \"cambiar\""
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "Soporte MySQL"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Por favor introduzca la consulta SQL!"
 

@@ -4064,6 +4064,10 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr "设定状态到 \"change\""
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "支持 MySQL"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "请输入 SQL 查询语句！"
 

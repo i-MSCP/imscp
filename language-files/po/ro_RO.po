@@ -4133,6 +4133,10 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr "Modifica status-ul in \"modificare\" pentru reconstructie"
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "Suport MySQL"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"
 
