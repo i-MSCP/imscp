@@ -4111,6 +4111,10 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "状態を \"変更\" に設定"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "SQLクエリーを入力してください！"
 

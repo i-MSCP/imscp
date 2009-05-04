@@ -4130,6 +4130,9 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+msgid "Set status to 'change'"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Indtast en SQL forspørgelse!"
 

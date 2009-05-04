@@ -4129,6 +4129,10 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "Modifica status-ul in \"modificare\" pentru reconstructie"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"
 

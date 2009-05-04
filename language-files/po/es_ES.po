@@ -4143,6 +4143,10 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "Cambia el estado a \"cambiar\""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Por favor introduzca la consulta SQL!"
 

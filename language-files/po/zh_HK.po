@@ -4058,6 +4058,10 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "設定狀態到 \"更改\""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "請輸入 SQL 查詢語句！"
 

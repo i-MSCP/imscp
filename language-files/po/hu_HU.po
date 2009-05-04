@@ -4131,6 +4131,10 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "Státusz beállítása \"változottra\""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Kérlek, írd be az SQL kérést!"
 

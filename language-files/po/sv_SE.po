@@ -3982,6 +3982,9 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+msgid "Set status to 'change'"
+msgstr ""
+
 #~ msgid "SQL query"
 #~ msgstr "SQL fr�ga"
 

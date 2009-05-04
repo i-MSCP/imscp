@@ -4094,6 +4094,9 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
+msgid "Set status to 'change'"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Venligst skriv inn en SQL spørring!"
 
