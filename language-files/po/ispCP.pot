@@ -3900,3 +3900,6 @@ msgstr ""
 
 msgid "Full"
 msgstr ""
+
+msgid "Set status to 'change'"
+msgstr ""

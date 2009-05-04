@@ -3986,6 +3986,9 @@ msgstr "Anzahl der CPU-Kerne"
 msgid "Full"
 msgstr "Vollständig"
 
+msgid "Set status to 'change'"
+msgstr "Setze Status auf 'change'"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

@@ -439,7 +439,7 @@ $tpl->assign(
 		'TR_MAIL_ERRORS' => tr('Mail account errors'),
 		'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),
-		'TR_CHANGE_STATUS' => tr('Set status to "change"'),
+		'TR_CHANGE_STATUS' => tr("Set status to 'change'"),
 		'EXEC_COUNT' => $exec_count,
 	)
 );

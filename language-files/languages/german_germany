@@ -1196,3 +1196,4 @@ Show default E-Mail addresses = Zeige die Standard-E-Mail-Adressen
 This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete %s? = Diese Datenbank wird endgültig gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden. Alle ausschließlich dieser Datenbank zugehörigen Nutzer werden ebenfalls gelöscht. Sind Sie sicher, dass sie die Datenbank %s löschen möchten?
 Number of CPU Cores = Anzahl der CPU-Kerne
 Full = Vollständig
+Set status to 'change' = Setze Status auf 'change'
