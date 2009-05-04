@@ -27,11 +27,11 @@ if (!Config::get('LOSTPASSWORD')) {
 
 // check for gd >= 2.x
 if (!check_gd()) {
-	system_message("ERROR: php-extension 'gd' not loaded !");
+	system_message("ERROR: php-extension 'gd' not loaded!");
 }
 
 if (!captcha_fontfile_exists()) {
-	system_message("ERROR: captcha fontfile not found !");
+	system_message("ERROR: captcha fontfile not found!");
 }
 
 // remove old uniqkeys
