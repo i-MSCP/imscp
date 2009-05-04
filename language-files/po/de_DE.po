@@ -3333,7 +3333,7 @@ msgstr "Der Benutzer ist bereits angemeldet oder es gibt ein Problem mit der Ses
 
 #, php-format
 msgid "%s's account status is not ok!"
-msgstr "%ss Kontostatus ist nicht OK!"
+msgstr "Der Kontostatus von %s ist nicht in Ordnung!"
 
 msgid "Request from foreign host was blocked!"
 msgstr "Eine Anfrage von einem fremden Host wurde blockiert!"
