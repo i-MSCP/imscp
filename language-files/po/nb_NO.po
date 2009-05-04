@@ -1486,12 +1486,12 @@ msgid "SMTP out"
 msgstr "SMTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "POP/IMAP inn"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP inn"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "POP/IMAP ut"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP ut"
 
 msgid "Other in"
 msgstr "Annet inn"
@@ -2182,8 +2182,8 @@ msgstr "WEB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Sum"
@@ -4095,6 +4095,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #~ msgid "Please enter an SQL query!"

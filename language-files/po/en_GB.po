@@ -1472,10 +1472,10 @@ msgstr ""
 msgid "SMTP out"
 msgstr ""
 
-msgid "IMAP/POP3 in"
+msgid "POP3/IMAP in"
 msgstr ""
 
-msgid "IMAP/POP3 out"
+msgid "POP3/IMAP out"
 msgstr ""
 
 msgid "Other in"
@@ -2153,7 +2153,7 @@ msgstr ""
 msgid "SMTP"
 msgstr ""
 
-msgid "POP/IMAP"
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "Sum"
@@ -3967,6 +3967,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy

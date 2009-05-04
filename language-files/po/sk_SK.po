@@ -1553,11 +1553,11 @@ msgid "SMTP out"
 msgstr "SMTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
+msgid "POP3/IMAP in"
 msgstr "POP3/IMAP prichádzajúce"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
+msgid "POP3/IMAP out"
 msgstr "POP3/IMAP odchádzajúce"
 
 msgid "Other in"
@@ -2272,8 +2272,8 @@ msgstr "WEB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Spolu"
@@ -4184,6 +4184,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy

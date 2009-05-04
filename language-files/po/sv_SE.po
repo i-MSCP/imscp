@@ -1483,12 +1483,12 @@ msgid "SMTP out"
 msgstr "SMTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "POP/IMAP inkommande"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP inkommande"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "POP/IMAP utg�ende"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP utg�ende"
 
 msgid "Other in"
 msgstr "Annat inkommande"
@@ -2165,8 +2165,8 @@ msgstr "WEBB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Tot"
@@ -3983,6 +3983,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #~ msgid "SQL query"

@@ -692,7 +692,7 @@ msgid "SMTP traffic"
 msgstr "Трафік SMTP"
 
 msgid "POP3/IMAP traffic"
-msgstr "Трафік POP/IMAP"
+msgstr "Трафік POP3/IMAP"
 
 msgid "All traffic"
 msgstr "Весь трафік"
@@ -1487,7 +1487,7 @@ msgid "SMTP<br>traffic"
 msgstr "Трафік<br>SMTP"
 
 msgid "POP3/IMAP<br>traffic"
-msgstr "Трафік<br>POP/IMAP"
+msgstr "Трафік<br>POP3/IMAP"
 
 msgid "SQL<br>database"
 msgstr "БД<br>SQL"
@@ -1527,12 +1527,12 @@ msgid "SMTP out"
 msgstr "Користувач FTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "POP/IMAP in"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP in"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "POP/IMAP out"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP out"
 
 msgid "Other in"
 msgstr "Інші в"
@@ -2235,7 +2235,7 @@ msgstr ""
 msgid "SMTP"
 msgstr ""
 
-msgid "POP/IMAP"
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "Sum"
@@ -4109,6 +4109,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy

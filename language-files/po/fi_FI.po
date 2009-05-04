@@ -1525,12 +1525,12 @@ msgid "SMTP out"
 msgstr "FTP-tunnus"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "Pop/IMAP sis��n"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP sis��n"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "Pop/IMAP ulos"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP ulos"
 
 msgid "Other in"
 msgstr "Muut sis��n"
@@ -2232,7 +2232,7 @@ msgstr ""
 msgid "SMTP"
 msgstr ""
 
-msgid "POP/IMAP"
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "Sum"
@@ -4100,6 +4100,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy

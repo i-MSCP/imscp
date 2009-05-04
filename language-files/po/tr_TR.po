@@ -1482,11 +1482,11 @@ msgstr "SMTP gelen"
 msgid "SMTP out"
 msgstr "SMTP giden"
 
-msgid "IMAP/POP3 in"
-msgstr "Pop/IMAP gelen"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP gelen"
 
-msgid "IMAP/POP3 out"
-msgstr "IMAP/POP3 giden"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP giden"
 
 msgid "Other in"
 msgstr "Diğer gelenler"
@@ -2172,8 +2172,8 @@ msgstr "WEB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Toplam"

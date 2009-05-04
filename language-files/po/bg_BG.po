@@ -1507,12 +1507,12 @@ msgid "SMTP out"
 msgstr "FTP акаунт"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "POP/IMAP вход"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP вход"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "POP/IMAP изход"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP изход"
 
 msgid "Other in"
 msgstr "Други-вход"
@@ -2208,7 +2208,7 @@ msgstr "Уеб"
 msgid "SMTP"
 msgstr ""
 
-msgid "POP/IMAP"
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "Sum"
@@ -4174,6 +4174,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #~ msgid "Please enter an SQL query!"

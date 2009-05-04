@@ -669,7 +669,7 @@ msgid "SMTP traffic"
 msgstr "SMTP forgalom"
 
 msgid "POP3/IMAP traffic"
-msgstr "POP/IMAP forgalom"
+msgstr "POP3/IMAP forgalom"
 
 msgid "All traffic"
 msgstr "Minden forgalom"
@@ -1452,7 +1452,7 @@ msgid "SMTP<br>traffic"
 msgstr "SMTP<br>forgalom"
 
 msgid "POP3/IMAP<br>traffic"
-msgstr "POP/IMAP <br>forgalom"
+msgstr "POP3/IMAP <br>forgalom"
 
 msgid "SQL<br>database"
 msgstr "SQL<br>adatbázis"
@@ -1491,12 +1491,12 @@ msgid "SMTP out"
 msgstr "SMTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "Pop/IMAP bejövő"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP bejövő"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "Pop/IMAP kimenő"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP kimenő"
 
 msgid "Other in"
 msgstr "Egyéb bejövő"
@@ -2185,8 +2185,8 @@ msgstr "WEB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Összes"

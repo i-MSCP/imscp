@@ -325,7 +325,7 @@ $tpl->assign(
 		'TR_WEB_TRAFF' => tr('WEB'),
 		'TR_FTP_TRAFF' => tr('FTP'),
 		'TR_SMTP_TRAFF' => tr('SMTP'),
-		'TR_POP_TRAFF' => tr('POP/IMAP'),
+		'TR_POP_TRAFF' => tr('POP3/IMAP'),
 		'TR_SUM' => tr('Sum'),
 		'TR_ALL' => tr('Total')
 	)

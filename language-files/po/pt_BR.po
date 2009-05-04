@@ -1527,12 +1527,12 @@ msgid "SMTP out"
 msgstr "Conta de FTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "POP/IMAP ent"
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP ent"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "POP/IMAP sai"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP sai"
 
 msgid "Other in"
 msgstr "Outro em"
@@ -2228,7 +2228,7 @@ msgstr ""
 msgid "SMTP"
 msgstr ""
 
-msgid "POP/IMAP"
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "Sum"
@@ -4100,6 +4100,9 @@ msgid "Full"
 msgstr ""
 
 msgid "Set status to 'change'"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy

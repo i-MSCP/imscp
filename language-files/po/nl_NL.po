@@ -1494,12 +1494,12 @@ msgid "SMTP out"
 msgstr "SMTP"
 
 #, fuzzy
-msgid "IMAP/POP3 in"
-msgstr "Binnekomende Pop/IMAP"
+msgid "POP3/IMAP in"
+msgstr "Binnekomende POP3/IMAP"
 
 #, fuzzy
-msgid "IMAP/POP3 out"
-msgstr "Pop/IMAP uit"
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP uit"
 
 msgid "Other in"
 msgstr "Andere in"
@@ -2188,8 +2188,8 @@ msgstr "WEB"
 msgid "SMTP"
 msgstr "SMTP"
 
-msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
 
 msgid "Sum"
 msgstr "Som"
