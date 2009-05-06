@@ -120,11 +120,7 @@ function check_domainalias_permissions($sql, $user_id) {
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
-	$cr_user_id = '';
-	$alias_name	= '';
-	$domain_ip	= '';
-	$forward	= '';
-	$mount_point= '';
+	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
 } // End of init_empty_data()
 

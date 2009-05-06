@@ -3906,3 +3906,6 @@ msgstr ""
 
 msgid "Manual DNS support"
 msgstr ""
+
+msgid "Network interface"
+msgstr ""

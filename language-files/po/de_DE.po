@@ -3990,6 +3990,9 @@ msgstr "Setze Status auf 'change'"
 msgid "Manual DNS support"
 msgstr "Manuelle DNS-Unterstützung"
 
+msgid "Network interface"
+msgstr "Netzwerk-Schnittstelle"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"
