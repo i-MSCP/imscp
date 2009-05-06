@@ -1,6 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-07 Benedikt Heintel
+	- LANGUAGES:
+		* Upated: Catalan
+		* Update: Portugese (Brazil)
+
 2009-05-03 Daniel Andreca
 	- Engine:
 		* Added Feature: DNS management support. - thanks to Blondak
@@ -27,7 +32,7 @@ ispCP ω 1.0.1 Changelog
 
 2009-04-27 Benedikt Heintel
 	- DISTS:
-		* Updated: (Ubuntu) Added Ubuntu 9.04 Jaunty Jackalope
+		* Updated: (Ubuntu) Added support for Ubuntu 9.04 Jaunty Jackalope
 
 2009-04-27 Christian Hernmarck
 	- CONFIGS:
