@@ -4154,6 +4154,10 @@ msgstr "Ezarri egoera \"aldatua\""
 msgid "Manual DNS support"
 msgstr "MySQL euskarria"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Aldatu erabiltzaile interfazera"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "MEsedez sartu SQL kontsulta!"
 

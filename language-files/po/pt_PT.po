@@ -3987,5 +3987,8 @@ msgstr ""
 msgid "Manual DNS support"
 msgstr ""
 
+msgid "Network interface"
+msgstr ""
+
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Comprimento incorreto da palavra chave ou sintaxe!"

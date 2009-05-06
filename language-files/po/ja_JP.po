@@ -4119,6 +4119,10 @@ msgstr "状態を \"変更\" に設定"
 msgid "Manual DNS support"
 msgstr "MySQLのサポート"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "ユーザインターフェースを変更"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "SQLクエリーを入力してください！"
 

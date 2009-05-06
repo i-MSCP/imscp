@@ -4100,6 +4100,9 @@ msgstr ""
 msgid "Manual DNS support"
 msgstr ""
 
+msgid "Network interface"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Venligst skriv inn en SQL spørring!"
 

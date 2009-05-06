@@ -4137,6 +4137,10 @@ msgstr "Modifica status-ul in \"modificare\" pentru reconstructie"
 msgid "Manual DNS support"
 msgstr "Suport MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Schimba pe interfata utilizator"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"
 

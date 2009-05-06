@@ -4066,6 +4066,10 @@ msgstr "設定狀態到 \"更改\""
 msgid "Manual DNS support"
 msgstr "支援 MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "切換使用者介面"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "請輸入 SQL 查詢語句！"
 

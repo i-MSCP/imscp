@@ -4173,6 +4173,10 @@ msgstr "Changez le status pour \"change\""
 msgid "Manual DNS support"
 msgstr "Support MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Basculer sur l'interface utilisateur"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Veuillez entrez une requête SQL !"
 

@@ -4068,6 +4068,10 @@ msgstr "设定状态到 \"change\""
 msgid "Manual DNS support"
 msgstr "支持 MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "切换用户界面"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "请输入 SQL 查询语句！"
 

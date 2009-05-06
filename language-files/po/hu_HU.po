@@ -4139,6 +4139,10 @@ msgstr "Státusz beállítása \"változottra\""
 msgid "Manual DNS support"
 msgstr "MySQL támogatás"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Váltás a felhasználó kezelőfelületére"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Kérlek, írd be az SQL kérést!"
 

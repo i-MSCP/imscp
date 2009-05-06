@@ -4146,6 +4146,10 @@ msgstr "Zet status to \"change\""
 msgid "Manual DNS support"
 msgstr "MySQL ondersteuning"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Verander naar gebruiks interface"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Vul aub een SQL query in!"
 

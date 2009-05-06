@@ -4115,6 +4115,10 @@ msgid "Manual DNS support"
 msgstr ""
 
 #, fuzzy
+msgid "Network interface"
+msgstr "Змінити інтерфейс користувача"
+
+#, fuzzy
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Введіть запит SQL!"
 

@@ -3972,6 +3972,9 @@ msgstr ""
 msgid "Manual DNS support"
 msgstr ""
 
+msgid "Network interface"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"

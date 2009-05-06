@@ -4116,6 +4116,10 @@ msgstr "Nastavit stav na \"změna\""
 msgid "Manual DNS support"
 msgstr "podpora MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Přepnout do uživatelského rozhraní"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Zadejte prosím SQL dotaz!"
 

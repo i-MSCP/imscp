@@ -125,7 +125,6 @@ function action_delete(url, ip) {
 												<td width="200" class="content2" nowrap="nowrap">{TR_NETWORK_CARD}</td>
 												<td nowrap="nowrap" class="content">
 													<select name="ip_card">
-														<option></option>
 														<!-- BDP: card_list -->
 														<option>{NETWORK_CARDS}</option>
 														<!-- EDP: card_list -->

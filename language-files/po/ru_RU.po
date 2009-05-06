@@ -4162,6 +4162,10 @@ msgstr "Сменить статус на \"изменено\""
 msgid "Manual DNS support"
 msgstr "Поддержка MySQL"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Переключить на интерфейс пользователя"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Пожалуйста, введите SQL запрос!"
 

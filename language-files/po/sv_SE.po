@@ -3988,6 +3988,9 @@ msgstr ""
 msgid "Manual DNS support"
 msgstr ""
 
+msgid "Network interface"
+msgstr ""
+
 #~ msgid "SQL query"
 #~ msgstr "SQL fr�ga"
 

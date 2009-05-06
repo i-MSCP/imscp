@@ -4113,6 +4113,10 @@ msgstr "Durumu \"değiştir\" olarak ayarla"
 msgid "Manual DNS support"
 msgstr "MySQL desteği"
 
+#, fuzzy
+msgid "Network interface"
+msgstr "Kullanıcı arayüzüne geç"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
 
