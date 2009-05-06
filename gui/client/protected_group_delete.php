@@ -101,5 +101,3 @@ send_request();
 write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id");
 header("Location: protected_user_manage.php");
 die();
-
-?>

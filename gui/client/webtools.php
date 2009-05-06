@@ -47,8 +47,9 @@ list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn
 	$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']
 );
 
-if ($dmn_mailacc_limit == -1)
+if ($dmn_mailacc_limit == -1) {
 	$tpl->assign('ACTIVE_EMAIL', '');
+}
 
 /*
  *
@@ -82,9 +83,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

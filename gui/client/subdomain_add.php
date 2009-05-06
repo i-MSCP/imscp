@@ -134,7 +134,6 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
-
 				$als_selected = ($als_id == $rs->fields['alias_id']) ? 'selected="selected"' : '';
 			} else {
 				$als_selected = (!$first_passed) ? 'selected="selected"' : '';
@@ -151,7 +150,9 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			$tpl->parse('ALS_LIST', '.als_list');
 			$rs->MoveNext();
 
-			if (!$first_passed) $first_passed = true;
+			if (!$first_passed) {
+				$first_passed = true;
+			}
 		}
 	}
 }
@@ -262,9 +263,9 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	if (isset($query2))
 		$rs2 = exec_query($sql, $query2, array($domain_id, $sub_mnt_pt));
 
-	if ($rs->fields['cnt'] > 0 || (isset($rs2) && $rs2->fields['cnt'] > 0))
+	if ($rs->fields['cnt'] > 0 || (isset($rs2) && $rs2->fields['cnt'] > 0)) {
 		return true;
-
+	}
 	return false;
 }
 
@@ -418,7 +419,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
-?>
+}

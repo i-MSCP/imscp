@@ -31,8 +31,8 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			`domain_dns`.`domain_dns_id`,
 			`domain_dns`.`domain_dns`,
 			`domain_dns`.`alias_id`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) as domain_name,
-			IFNULL(`domain_aliasses`.`alias_id`, `domain_dns`.`domain_id`) as id
+			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS domain_name,
+			IFNULL(`domain_aliasses`.`alias_id`, `domain_dns`.`domain_id`) AS id
 		FROM
 			`domain_dns`
 			LEFT JOIN `domain_aliasses` USING (`alias_id`, `domain_id`),
@@ -65,7 +65,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($dns_id));
 
-	$table = empty($rs->fields['alias_id'])?$table = 'domain':'domain_aliasses';
+	$table = empty($rs->fields['alias_id']) ? $table = 'domain' : 'domain_aliasses';
 	
 	$query = "
 		UPDATE 
@@ -81,7 +81,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	
 	send_request();
 
-	write_log($_SESSION['user_logged'] . ": deletes dns zone record: " . $dns_name. ' of domain '.$dom_name);
+	write_log($_SESSION['user_logged'] . ": deletes dns zone record: " . $dns_name . ' of domain ' . $dom_name);
 	set_page_message(tr('DNZ zone record scheduled for deletion!'));
 	header('Location: domains_manage.php');
 	exit(0);
@@ -89,5 +89,3 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	header('Location: domains_manage.php');
 	exit(0);
 }
-
-?>

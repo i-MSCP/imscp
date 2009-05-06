@@ -98,9 +98,9 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
 
 // Begin function block
@@ -132,12 +132,12 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 
 	if ($data["url_forward"] == "no") {
-		$check_en = "";
+		$check_en = '';
 		$check_dis = 'checked="checked"';
-		$url_forward = "";
+		$url_forward = '';
 	} else {
 		$check_en = 'checked="checked"';
-		$check_dis = "";
+		$check_dis = '';
 	}
 	// Fill in the fields
 	$tpl->assign(
@@ -214,5 +214,3 @@ function check_fwd_data(&$tpl, $alias_id) {
 		return false;
 	}
 } // End of check_user_data()
-
-?>

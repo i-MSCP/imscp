@@ -36,17 +36,17 @@ function check_email_user(&$sql) {
 	$query = "
 		SELECT
 			t1.*,
-			t2.domain_id,
-			t2.domain_name
+			t2.`domain_id`,
+			t2.`domain_name`
 		FROM
-			mail_users as t1,
-			domain as t2
+			`mail_users` AS t1,
+			`domain` AS t2
 		WHERE
-			t1.mail_id = ?
+			t1.`mail_id` = ?
 		AND
-			t2.domain_id = t1.domain_id
+			t2.`domain_id` = t1.`domain_id`
 		AND
-			t2.domain_name = ?
+			t2.`domain_name` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
@@ -72,13 +72,13 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 
 		$query = "
 			UPDATE
-				mail_users
+				`mail_users`
 			SET
-				status = ?,
-				mail_auto_respond = 1,
-				mail_auto_respond_text = ?
+				`status` = ?,
+				`mail_auto_respond` = 1,
+				`mail_auto_respond_text` = ?
 			WHERE
-				mail_id = ?
+				`mail_id` = ?
 		";
 
 		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
@@ -94,12 +94,12 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 				) AS mailbox
 			FROM
 				`mail_users` AS t1
-			LEFT JOIN (domain AS t2) ON (t1.domain_id = t2.domain_id)
-			LEFT JOIN (domain_aliasses AS t3) ON (sub_id = alias_id)
+			LEFT JOIN (domain AS t2) ON (t1.`domain_id` = t2.`domain_id`)
+			LEFT JOIN (domain_aliasses AS t3) ON (`sub_id` = `alias_id`)
 			LEFT JOIN (subdomain AS t4) ON (sub_id = subdomain_id)
-			LEFT JOIN (subdomain_alias AS t5) ON (sub_id = subdomain_alias_id)
-			LEFT JOIN (domain AS t6) ON (t4.domain_id = t6.domain_id)
-			LEFT JOIN (domain_aliasses AS t7) ON (t5.alias_id = t7.alias_id)
+			LEFT JOIN (subdomain_alias AS t5) ON (`sub_id` = `subdomain_alias_id`)
+			LEFT JOIN (domain AS t6) ON (t4.`domain_id` = t6.`domain_id`)
+			LEFT JOIN (domain_aliasses AS t7) ON (t5.`alias_id` = t7.`alias_id`)
 			WHERE
 				`mail_id` = ?
 		";
@@ -114,11 +114,11 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		// Get Message
 		$query = "
 			SELECT
-				mail_auto_respond_text, mail_acc
+				`mail_auto_respond_text`, `mail_acc`
 			FROM
-				mail_users
+				`mail_users`
 			WHERE
-				mail_id = ?
+				`mail_id` = ?
 		";
 
 		$rs = exec_query($sql, $query, array($mail_id));
@@ -183,9 +183,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

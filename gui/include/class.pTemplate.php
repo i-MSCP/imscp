@@ -567,5 +567,3 @@ class pTemplate {
 		}
 	}
 }
-
-?>

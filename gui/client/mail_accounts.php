@@ -53,6 +53,9 @@ function gen_user_mail_action($mail_id, $mail_status) {
 	}
 }
 
+/**
+ * @todo What about the out commented code block?
+ */
 function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
 //	if (preg_match('/_mail/', $mail_type) == 1) {
 		if ($mail_status === Config::get('ITEM_OK_STATUS')) {
@@ -321,7 +324,7 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				. "t2.`mail_type`, "
 				. "t2.`status`, "
 				. "t2.`mail_auto_respond`, "
-				. "CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) as 'mail_forward' "
+				. "CONCAT( LEFT(t2.`mail_forward`, 50), IF( LENGTH(t2.`mail_forward`) > 50, '...', '') ) AS 'mail_forward' "
 				. "FROM `domain_aliasses` AS t1, "
 				. "`mail_users` AS t2 "
 				. "WHERE t1.`domain_id` = ? "
@@ -504,9 +507,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

@@ -68,5 +68,3 @@ set_page_message(tr('Language was removed!'));
 
 header("Location: multilanguage.php");
 die();
-
-?>

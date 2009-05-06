@@ -109,9 +109,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 /*
  * Function definitions
  */
@@ -338,7 +338,7 @@ function save_data_to_db() {
 	global $hpid;
 	global $hp_dns;
 
-	$err_msg		= "";
+	$err_msg		= '';
 	$description	= clean_input($_POST['hp_description']);
 	$price			= clean_input($_POST['hp_price']);
 	$setup_fee		= clean_input($_POST['hp_setupfee']);
@@ -386,5 +386,3 @@ function save_data_to_db() {
 } // end of save_data_to_db()
 
 die();
-
-?>

@@ -38,5 +38,3 @@ write_log($_SESSION['user_logged'].": deletes SQL user ".$db_user_id."!");
 set_page_message(tr('SQL user was removed successfully!'));
 
 user_goto('sql_manage.php');
-
-?>

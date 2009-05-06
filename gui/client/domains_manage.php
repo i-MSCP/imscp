@@ -39,7 +39,7 @@ $tpl->define_dynamic('dns_item','dns_list');
 
 // page functions.
 
-function gen_user_dns_list(&$tpl, &$sql, $user_id){
+function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 	$domain_id = get_user_domain_id($sql, $user_id);
 
 	$query = "
@@ -50,8 +50,8 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id){
 			`domain_dns`.`domain_class`,
 			`domain_dns`.`domain_type`,
 			`domain_dns`.`domain_text`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) as domain_name,
-			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) as domain_status
+			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS domain_name,
+			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS domain_status
 		FROM
 			`domain_dns`
 			LEFT JOIN `domain_aliasses` USING (`alias_id`, `domain_id`),
@@ -367,9 +367,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

@@ -87,9 +87,9 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
 
 // Begin function block
@@ -292,5 +292,3 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 		)
 	);
 } // End of load_user_data();
-
-?>

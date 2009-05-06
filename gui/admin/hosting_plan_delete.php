@@ -53,5 +53,3 @@ $_SESSION['hp_deleted'] = '_yes_';
 
 header('Location: hosting_plan.php');
 die();
-
-?>

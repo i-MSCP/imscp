@@ -81,7 +81,7 @@ gen_logged_from($tpl);
 $tpl->assign($add_mode?'FORM_EDIT_MODE':'FORM_ADD_MODE', '');
 
 // "Modify" button has ben pressed
-$editid=null;
+$editid = null;
 if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	if (isset($_GET['edit_id'])) {
 		$editid = $_GET['edit_id'];
@@ -97,7 +97,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		header("Location: domains_manage.php");
 		die();
 	}
-} elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')){
+} elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')) {
 	if (check_fwd_data($tpl, true)) {
 		$_SESSION['dnsedit'] = "_yes_";
 		header("Location: domains_manage.php");
@@ -119,44 +119,44 @@ gen_editdns_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-unset_messages();
+}unset_messages();
 
 // Begin function block
 
-function mysql_get_enum(&$sql, $object, &$default=null) {
+function mysql_get_enum(&$sql, $object, &$default = null) {
 	list($table, $col) = explode(".", $object);
 	$res = exec_query($sql,"SHOW COLUMNS FROM ".$table." LIKE '".$col."'");
 	$row = $res->fetchRow();
-//	var_dump($row);
 	$default = $row['Default'];
-	return ($row ? explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row['Type'])) : array(0=>'None'));
+	return ($row ? explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row['Type'])) : array(0 => 'None'));
 }
 
-function create_options($data, $value=null){
-	$res = "";
+function create_options($data, $value = null) {
+	$res = '';
 	reset($data);
-	foreach($data as $item)
-	$res.='<option value="'.$item.'"'.($item==$value?' selected="selected"':'').'>'.$item.'</option>';
+	foreach ($data as $item) {
+		$res .= '<option value="'.$item.'"'.($item==$value?' selected="selected"':'').'>'.$item.'</option>';
+	}
 	return $res;
 }
 
 // Show user data
 
-function not_allowed(){
+function not_allowed() {
 	$_SESSION['dnsedit'] = '_no_';
 	header('Location: domains_manage.php');
 	die();
 }
 
-function decode_zone_data($data){
-	$address = $addressv6 =  $srv_name = $srv_proto = $cname = $txt = $name = '';
+function decode_zone_data($data) {
+	$address = $addressv6 = $srv_name = $srv_proto = $cname = $txt = $name = '';
 	$srv_TTL = $srv_prio = $srv_weight = $srv_host = $srv_port = '';
 	
-	if (is_array($data)){
+	if (is_array($data)) {
 	$name = $data['domain_dns'];
-		switch ($data['domain_type']){
+		switch ($data['domain_type']) {
 			case 'A' : 
 			$address = $data['domain_text']; 
 		break;
@@ -168,12 +168,12 @@ function decode_zone_data($data){
 		break;
 		case 'SRV' : 
 		$name = ''; 
-		if (preg_match('~_([^\.]+)\._([^\s]+)[\s]+([\d]+)~',$data['domain_dns'],$srv)){
+		if (preg_match('~_([^\.]+)\._([^\s]+)[\s]+([\d]+)~',$data['domain_dns'],$srv)) {
 			$srv_name = $srv[1];
 			$srv_proto = $srv[2];
 			$srv_TTL = $srv[3];
 		}
-		if (preg_match('~([\d]+)[\s]+([\d]+)[\s]+([\d]+)[\s]+([^\s]+)+~',$data['domain_text'],$srv)){
+		if (preg_match('~([\d]+)[\s]+([\d]+)[\s]+([\d]+)[\s]+([^\s]+)+~',$data['domain_text'],$srv)) {
 			$srv_prio = $srv[1];
 			$srv_weight = $srv[2];
 			$srv_port = $srv[3];
@@ -182,7 +182,7 @@ function decode_zone_data($data){
 		break;
 		case 'MX' :
 		$name = ''; 
-		if (preg_match('~([\d]+)[\s]+([^\s]+)+~',$data['domain_text'],$srv)){
+		if (preg_match('~([\d]+)[\s]+([^\s]+)+~',$data['domain_text'],$srv)) {
 			$srv_prio = $srv[1];
 			$srv_host = $srv[2];
 		}
@@ -221,14 +221,15 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$dmn_cgi,
 		$dmn_dns) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-	if ($dmn_dns!='yes') not_allowed();
-
-	if ($GLOBALS['add_mode']){
+	if ($dmn_dns != 'yes') {
+		not_allowed();
+	}
+	if ($GLOBALS['add_mode']) {
 		$data = null;
 		$query = "
 			SELECT
-				NULL as `alias_id`,
-				domain.domain_name as `domain_name`
+				NULL AS `alias_id`,
+				domain.`domain_name` AS `domain_name`
 			FROM
 				`domain`
 			WHERE
@@ -298,70 +299,71 @@ function gen_editdns_page(&$tpl, $edit_id) {
 
 // Check input data
 
-function tryPost($id, $data){
-	if (isset($_POST[$id]))
+function tryPost($id, $data) {
+	if (isset($_POST[$id])) {
 		return $_POST[$id];
+	}
 	return $data;
 }
 
-function validate_CNAME($record,&$err=null){
-	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $record['dns_cname'],$e)){
+function validate_CNAME($record, &$err = null) {
+	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $record['dns_cname'],$e)) {
 		$err .= sprintf(tr('Use of disallowed char("%s") in CNAME'),$e[1]);
 		return false;
 	}
-	if (empty($record['dns_name'])){
+	if (empty($record['dns_name'])) {
 		$err .= tr('Name must be filled.');
 		return false;
 	}
 	return true;
 }
 
-function validate_A($record,&$err=null){
-	if (filter_var($record['dns_A_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)===false){
+function validate_A($record, &$err = null) {
+	if (filter_var($record['dns_A_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
 		$err .= sprintf(tr('Wrong IPv4 address ("%s").'), $record['dns_A_address']);
 		return false;
 	}
-	if (empty($record['dns_name'])){
+	if (empty($record['dns_name'])) {
 		$err .= tr('Name must be filled.');
 		return false;
 	}
 	return true;
 }
 
-function validate_AAAA($record,&$err=null){
-	if (filter_var($record['dns_AAAA_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)===false){
+function validate_AAAA($record, &$err = null) {
+	if (filter_var($record['dns_AAAA_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
 		$err .= sprintf(tr('Wrong IPv6 address ("%s").'), $record['dns_AAAA_address']);
 		return false;
 	}
-	if (empty($record['dns_name'])){
+	if (empty($record['dns_name'])) {
 		$err .= tr('Name must be filled.');
 		return false;
 	}
 	return true;
 }
 
-function validate_SRV($record, &$err, &$dns, &$text){
-	if (!preg_match('~^([\d]+)$~',$record['dns_srv_port'])){
+function validate_SRV($record, &$err, &$dns, &$text) {
+	if (!preg_match('~^([\d]+)$~',$record['dns_srv_port'])) {
 		$err .= tr('Port must be a number!');
 		return false;
 	}
-	if (!preg_match('~^([\d]+)$~',$record['dns_srv_ttl'])){
+	if (!preg_match('~^([\d]+)$~',$record['dns_srv_ttl'])) {
 		$err .= tr('TTL must be a number!');
 		return false;
 	}
-	if (!preg_match('~^([\d]+)$~',$record['dns_srv_prio'])){
+	if (!preg_match('~^([\d]+)$~',$record['dns_srv_prio'])) {
 		$err .= tr('Priority must be a number!');
 		return false;
 	}
-	if (!preg_match('~^([\d]+)$~',$record['dns_srv_weight'])){
+	if (!preg_match('~^([\d]+)$~',$record['dns_srv_weight'])) {
 		$err .= tr('Relative weight must be a number!');
 		return false;
 	}
-	if (empty($record['dns_srv_name'])){
+	if (empty($record['dns_srv_name'])) {
 		$err .= tr('Service must be filled.');
 		return false;
 	}
-	if (empty($record['dns_srv_host'])){
+	if (empty($record['dns_srv_host'])) {
 		$err .= tr('Host must be filled.');
 		return false;
 	}
@@ -372,12 +374,12 @@ function validate_SRV($record, &$err, &$dns, &$text){
 	return true;
 }
 
-function validate_MX($record, &$err, &$text){
-	if (!preg_match('~^([\d]+)$~',$record['dns_srv_prio'])){
+function validate_MX($record, &$err, &$text) {
+	if (!preg_match('~^([\d]+)$~',$record['dns_srv_prio'])) {
 		$err .= tr('Priority must be a number!');
 		return false;
 	}
-	if (empty($record['dns_srv_host'])){
+	if (empty($record['dns_srv_host'])) {
 		$err .= tr('Host must be filled.');
 		return false;
 	}
@@ -385,25 +387,27 @@ function validate_MX($record, &$err, &$text){
 	return true;
 }
 
-function check_CNAME_conflict($domain,&$err){
+function check_CNAME_conflict($domain,&$err) {
 	$resolver = new Net_DNS_resolver();
 	$resolver->nameservers = array('localhost');
 		$res = $resolver->query($domain,'CNAME');
-	if ($res === false)
+	if ($res === false) {
 		return true;
+	}
 	$err .= tr('conflict with CNAME record');
 	return false;
 }
 
-function validate_NAME($domain, &$err){
-	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $domain['name'],$e)){
+function validate_NAME($domain, &$err) {
+	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $domain['name'],$e)) {
 		$err .= sprintf(tr('Use of disallowed char("%s") in NAME'),$e[1]);
 		return false;
 	}
-	if (preg_match('/\.$/',$domain['name']))
-	if (!preg_match('/'.str_replace('.','\.',$domain['domain']).'\.$/',$domain['name'])){
-		$err .= sprintf(tr('Record "%s" is not part of domain "%s".',$domain['name'],$domain['domain']));
-		return false;
+	if (preg_match('/\.$/',$domain['name'])) {
+		if (!preg_match('/'.str_replace('.','\.',$domain['domain']).'\.$/',$domain['name'])) {
+			$err .= sprintf(tr('Record "%s" is not part of domain "%s".',$domain['name'],$domain['domain']));
+			return false;
+		}
 	}
 	return true;
 }
@@ -424,14 +428,14 @@ function check_fwd_data(&$tpl, $edit_id) {
 	$_type = $_POST['type'];
 
 	list($dmn_id) = get_domain_default_props($sql, $_SESSION['user_id']);
-	if ($add_mode){
+	if ($add_mode) {
 		$query = "
 			SELECT
 				*
 			FROM (
 				SELECT
-					NULL as `alias_id`,
-					`domain`.`domain_name` as `domain_name`
+					NULL AS `alias_id`,
+					`domain`.`domain_name` AS `domain_name`
 				FROM
 					`domain`
 				WHERE
@@ -444,14 +448,14 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain_aliasses`
 				WHERE
 					`domain_aliasses`.`domain_id` = ?
-			) as `tbl`
+			) AS `tbl`
 			WHERE
-				IFNULL(`tbl`.`alias_id`,0) = ?
+				IFNULL(`tbl`.`alias_id`, 0) = ?
 		";
 		$res = exec_query($sql, $query, array($dmn_id, $dmn_id, $_POST['alias_id']));
-		if ($res->RecordCount() <= 0) 
+		if ($res->RecordCount() <= 0) {
 			not_allowed();
-		
+		}
 		$alias_id = $res->FetchRow();
 		$record_domain = $alias_id['domain_name'];
 		$alias_id = $alias_id['alias_id']; 
@@ -471,18 +475,19 @@ function check_fwd_data(&$tpl, $edit_id) {
 		`domain_id` = ?
 		"
 		, array($edit_id, $dmn_id));
-		if ($res->RecordCount() <= 0) 
+		if ($res->RecordCount() <= 0) {
 			not_allowed();
+		}
 		$data = $res->FetchRow();
 		$record_domain = $data['domain_name'];
 		$alias_id = $data['alias_id']; 
 		$_dns = $data['domain_dns'];
 	}
 
-	if (!validate_NAME(array('name'=>$_POST['dns_name'],'domain'=>$record_domain),$err))
+	if (!validate_NAME(array('name'=>$_POST['dns_name'],'domain'=>$record_domain),$err)) {
 		$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'),$_POST['type'],$err);
-	
-	switch ($_POST['type']){
+	}
+	switch ($_POST['type']) {
 		case 'CNAME' : 
 			if (!validate_CNAME($_POST,$err))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'),$_POST['type'],$err);
@@ -520,7 +525,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 	
 	if ($ed_error === '_off_') {
 
-		if ($add_mode){
+		if ($add_mode) {
 			$query = "
 				INSERT INTO
 					`domain_dns`
@@ -558,7 +563,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			exec_query($sql, $query, array($_dns, $_class, $_type, $_text, $edit_id));
 		}
 
-		if (empty($alias_id)){
+		if (empty($alias_id)) {
 			$query = "
 				UPDATE
 					`domain`
@@ -568,7 +573,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain_id` = ?
 			";
 			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));		
-		}else{
+		} else{
 			$query = "
 				UPDATE
 					`domain_aliasses`
@@ -596,6 +601,4 @@ function check_fwd_data(&$tpl, $edit_id) {
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 		return false;
 	}
-} //End of check_user_data()
-
-?>
+} // End of check_user_data()

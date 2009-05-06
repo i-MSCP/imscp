@@ -613,7 +613,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 
 	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
 
-	if($dmn_dns != 'yes') $tpl->assign('ISACTIVE_DNS_MENU', '');
+	if ($dmn_dns != 'yes') $tpl->assign('ISACTIVE_DNS_MENU', '');
 
 	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
@@ -931,17 +931,17 @@ function mount_point_exists($dmn_id, $mnt_point) {
 		SELECT
 			t1.`domain_id`, t2.`alias_mount`, t3.`subdomain_mount`, t4.`subdomain_alias_mount`
 		FROM
-			`domain` as t1
+			`domain` AS t1
 		LEFT JOIN
-			(`domain_aliasses` as t2)
+			(`domain_aliasses` AS t2)
 		ON
 			(t1.`domain_id` = t2.`domain_id`)
 		LEFT JOIN
-			(`subdomain` as t3)
+			(`subdomain` AS t3)
 		ON
 			(t1.`domain_id` = t3.`domain_id`)
 		LEFT JOIN
-			(`subdomain_alias` as t4)
+			(`subdomain_alias` AS t4)
 		ON
 			(t2.`alias_id` = t4.`alias_id`)
 		WHERE
@@ -956,8 +956,8 @@ function mount_point_exists($dmn_id, $mnt_point) {
 			)
 	";
 	$rs = exec_query($sql, $query, array($dmn_id, $mnt_point, $mnt_point, $mnt_point));
-	if ($rs->RowCount() > 0) { return true; }
+	if ($rs->RowCount() > 0) {
+		return true;
+	}
 	return false;
 }
-
-?>

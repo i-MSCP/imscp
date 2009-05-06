@@ -116,17 +116,20 @@ $load = $sysinfo->loadavg();
 $cpu = $sysinfo->cpu_info();
 $mem = $sysinfo->memory();
 
+if (!isset($cpu['model'])) {
+	$cpu['model'] = "n.a.";
+}
 if (!isset($cpu['cpus'])) {
 	$cpu['cpus'] = "n.a.";
 }
 if (!isset($cpu['cpuspeed'])) {
 	$cpu['cpuspeed'] = "n.a.";
 }
-if (!isset($cpu['bogomips'])) {
-	$cpu['bogomips'] = "n.a.";
-}
 if (!isset($cpu['cache'])) {
 	$cpu['cache'] = "n.a.";
+}
+if (!isset($cpu['bogomips'])) {
+	$cpu['bogomips'] = "n.a.";
 }
 
 $tpl->assign(
@@ -178,9 +181,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

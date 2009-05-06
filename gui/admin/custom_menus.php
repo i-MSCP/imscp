@@ -171,23 +171,23 @@ function edit_button(&$tpl, &$sql) {
 
 			if ($button_view === 'admin') {
 				$admin_view = 'selected="selected"';
-				$reseller_view = "";
-				$user_view = "";
-				$all_view = "";
+				$reseller_view = '';
+				$user_view = '';
+				$all_view = '';
 			} else if ($button_view === 'reseller') {
-				$admin_view = "";
+				$admin_view = '';
 				$reseller_view = 'selected="selected"';
-				$user_view = "";
-				$all_view = "";
+				$user_view = '';
+				$all_view = '';
 			} else if ($button_view === 'user') {
-				$admin_view = "";
-				$reseller_view = "";
+				$admin_view = '';
+				$reseller_view = '';
 				$user_view = 'selected="selected"';
-				$all_view = "";
+				$all_view = '';
 			} else {
-				$admin_view = "";
-				$reseller_view = "";
-				$user_view = "";
+				$admin_view = '';
+				$reseller_view = '';
+				$user_view = '';
 				$all_view = 'selected="selected"';
 			}
 
@@ -338,9 +338,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

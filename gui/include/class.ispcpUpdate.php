@@ -42,10 +42,10 @@
  */
 abstract class ispcpUpdate {
 	protected $currentVersion = 0;
-	protected $errorMessages = "";
-	protected $databaseVariableName = "";
-	protected $functionName = "";
-	protected $errorMessage = "";
+	protected $errorMessages = '';
+	protected $databaseVariableName = '';
+	protected $functionName = '';
+	protected $errorMessage = '';
 
 	protected function __construct() {
 		$this->currentVersion = $this->getCurrentVersion();
@@ -179,6 +179,9 @@ class versionUpdate extends ispcpUpdate {
 		return "dummyFunctionThatAllwaysExists";
 	}
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
 		// uncomment when engine part will be ready
 		/*
@@ -187,5 +190,3 @@ class versionUpdate extends ispcpUpdate {
 		*/
 	}
 }
-
-?>

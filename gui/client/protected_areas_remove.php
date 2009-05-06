@@ -22,7 +22,9 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* do we have a proper cdir? */
+/**
+ * @todo Do we have a proper cdir?
+ */
 if (!isset($_GET['cdir'])) {
 	header("Location: protected_areas.php");
 	die();
@@ -36,5 +38,3 @@ set_page_message(tr('Protected area was deleted successful!'));
 
 header("Location: protected_areas.php?cur_dir=$cdir");
 die();
-
-?>

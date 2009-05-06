@@ -79,5 +79,3 @@ SQL_QUERY;
 	header('Location: domains_manage.php');
 	exit(0);
 }
-
-?>

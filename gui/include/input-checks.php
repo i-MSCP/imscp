@@ -344,7 +344,7 @@ function check_dn_rsl_token($data) {
 		return false;
 	}
 	/*if (preg_match("/\-\-/", $match[2]))
-		return FALSE;*/
+		return false;*/
 
 	return true;
 }
@@ -425,7 +425,7 @@ function chk_mountp($data, $num = 50) {
 	/*$res = explode("/", trim($data));
 	$cnt_res = count($res);
 	if ($cnt_res > 2)
-		return FALSE;*/
+		return false;*/
 
 	$match = array();
 	$count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
@@ -776,5 +776,3 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 
 	return $who;
 }
-
-?>

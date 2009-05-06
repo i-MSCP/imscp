@@ -59,9 +59,9 @@ $location = 'reseller';
 
 if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 
-		//disable_domain($sql, $domain_id, $rs->fields['domain_name']);
-		$action = "disable";
-		change_domain_status(&$sql, &$domain_id, $rs->fields['domain_name'], $action, $location);
+	//disable_domain($sql, $domain_id, $rs->fields['domain_name']);
+	$action = "disable";
+	change_domain_status(&$sql, &$domain_id, $rs->fields['domain_name'], $action, $location);
 } else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
 
 	//enable_domain($sql, $domain_id, $rs->fields['domain_name']);
@@ -72,5 +72,3 @@ if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 	header("Location: users.php");
 	die();
 }
-
-?>

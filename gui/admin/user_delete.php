@@ -84,7 +84,6 @@ $user_logged= $_SESSION['user_logged'];
 $local_admin_name = $_GET['delete_username'];
 write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
 $_SESSION['user_deleted'] = 1;
+
 header("Location: manage_users.php");
 die();
-
-?>

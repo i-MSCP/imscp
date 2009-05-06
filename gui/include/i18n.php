@@ -37,7 +37,9 @@ function curlang($newlang = null, $force = false) {
 
 	if ($language === null || ($newlang !== null && $newlang !== false)) {
 
-		if ($newlang === true || (($newlang === null || $newlang === false) && $language === null)) {
+		if ($newlang === true
+			|| (($newlang === null || $newlang === false) && $language === null)
+			) {
 			$newlang = (isset($_SESSION['user_def_lang']))
 				? $_SESSION['user_def_lang']
 				: Config::get('USER_INITIAL_LANG');
@@ -100,7 +102,9 @@ function tr($msgid, $substitution = false) {
 	// Detect comments and strip them if $msgid == $msgstr
 	// e.g.
 	// tr('_: This is just a comment\nReal message to translate here')
-	if ($msgid == $msgstr && substr($msgid, 0, 3) == '_: ' && count($l = explode("\n", $msgid)) > 1) {
+	if ($msgid == $msgstr
+		&& substr($msgid, 0, 3) == '_: '
+		&& count($l = explode("\n", $msgid)) > 1) {
 		unset($l[0]);
 		$msgstr = implode("\n", $l);
 	}
@@ -176,5 +180,3 @@ function replace_html($string) {
 if (false) {
 	tr('_: Localised language');
 }
-
-?>

@@ -74,7 +74,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 			break;
 		default:
 			$log_level = E_USER_OFF;
-	} // switch
+	} // end switch
 
 	if ((!is_number($lostpassword_timeout))
 		|| (!is_number($passwd_chars))
@@ -264,7 +264,7 @@ switch (Config::get('LOG_LEVEL')) {
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', 'selected="selected"');
-} // switch
+} // end switch
 
 /*
  *
@@ -323,9 +323,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

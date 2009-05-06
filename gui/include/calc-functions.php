@@ -27,7 +27,9 @@ function calc_bars($crnt, $max, $bars_max) {
 
 	$bars = ($percent_usage * $bars_max)/100;
 
-	if ($bars > $bars_max) $bars = $bars_max;
+	if ($bars > $bars_max) {
+		$bars = $bars_max;
+	}
 
 	return array(
 		sprintf("%.2f", $percent_usage),
@@ -187,5 +189,3 @@ function translate_limit_value($value, $autosize = false) {
 		default: return (!$autosize) ? $value : sizeit($value, 'MB');
 	}
 }
-
-?>

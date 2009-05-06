@@ -47,7 +47,7 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 	$out .= "Connection: Close\r\n\r\n";
 	$out .= $data;
 
-	$rs='';
+	$rs = '';
 
 	$fp = fsockopen(Config::get('BASE_SERVER_IP'), 80, $errno, $errstr, 5);
 	if (!$fp) {
@@ -94,5 +94,3 @@ if (isset($_GET['id'])) {
 
 check_usr_sql_perms($sql, $db_user_id);
 get_db_user_passwd($sql, $db_user_id);
-
-?>

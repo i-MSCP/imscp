@@ -103,5 +103,3 @@ else {
 	header('Location: mail_accounts.php');
 	exit(0);
 }
-
-?>

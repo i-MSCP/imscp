@@ -99,9 +99,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 // Function definitions
 
 /**
@@ -215,7 +215,7 @@ function check_data_correction(&$tpl) {
 	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
 	}
-	if (isset($_POST['dns'])){
+	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
 	if (empty($hp_name)) {
@@ -316,5 +316,3 @@ function save_data_to_db(&$tpl, $admin_id) {
 		die();
 	}
 } // end of save_data_to_db()
-
-?>

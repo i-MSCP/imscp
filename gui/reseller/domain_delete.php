@@ -174,5 +174,3 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 
 	update_reseller_props($reseller_id, $rprops);
 }
-
-?>

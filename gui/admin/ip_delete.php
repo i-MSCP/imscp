@@ -105,5 +105,3 @@ set_page_message(tr('IP was deleted!'));
 
 header("Location: ip_manage.php");
 die();
-
-?>

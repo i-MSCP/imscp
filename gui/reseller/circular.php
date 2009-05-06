@@ -49,13 +49,13 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($user_id));
 
 		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
-			$sender_name = $rs->fields['fname'] . " " . $rs->fields['lname'];
+			$sender_name = $rs->fields['fname'] . ' ' . $rs->fields['lname'];
 		} elseif (isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['fname'];
 		} elseif (!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['lname'];
 		} else {
-			$sender_name = "";
+			$sender_name = '';
 		}
 
 		$tpl->assign(
@@ -209,9 +209,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

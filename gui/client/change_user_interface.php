@@ -36,5 +36,3 @@ if (isset($_SESSION['logged_from'])
 	header('Location: index.php');
 	die();
 }
-
-?>

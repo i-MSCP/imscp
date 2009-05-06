@@ -78,9 +78,9 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
 
 // Function declaration
@@ -301,7 +301,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		if ($als_mount_point == '') $als_mount_point = "/";
 
-		$query = "SELECT ip_number, ip_domain FROM server_ips WHERE ip_id = ?";
+		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
 		$alsip_r = exec_query($sql, $query, array($als_ip_id));
 		$alsip_d = $alsip_r->FetchRow();
@@ -331,12 +331,13 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$als_name = decode_idna($als_name);
 		$show_als_fwd = decode_idna($show_als_fwd);
 
-		if (isset($_SESSION['search_common']) && $_SESSION['search_common'] === 'account_name') {
-			$domain_name_selected = "";
+		if (isset($_SESSION['search_common'])
+			&& $_SESSION['search_common'] === 'account_name') {
+			$domain_name_selected = '';
 			$account_name_selected = "selected=\"selected\"";
 		} else {
 			$domain_name_selected = "selected=\"selected\"";
-			$account_name_selected = "";
+			$account_name_selected = '';
 		}
 
 		$tpl->assign(
@@ -415,5 +416,3 @@ function generate_als_messages(&$tpl, $als_err) {
 		$tpl->assign('PAGE_MESSAGE', "");
 	}
 } // End of generate_als_messages()
-
-?>

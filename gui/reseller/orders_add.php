@@ -83,7 +83,7 @@ $street_two		= $rs->fields['street2'];
 $customer_id	= $rs->fields['customer_id'];
 $user_email		= $rs->fields['email'];
 // let's check the reseller limits
-$err_msg = "";
+$err_msg = '';
 
 if (Config::exists('HOSTING_PLANS_LEVEL')
 	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
@@ -294,7 +294,6 @@ $query = "
 exec_query($sql, $query, array('added', $order_id));
 
 unset($_SESSION['domain_ip']);
+
 header("Location: users.php");
 die();
-
-?>

@@ -192,7 +192,9 @@ function check_db_user(&$sql, $db_user) {
 }
 
 function add_sql_user(&$sql, $user_id, $db_id) {
-	if (!isset($_POST['uaction'])) return;
+	if (!isset($_POST['uaction'])) {
+		return;
+	}
 
 	// let's check user input
 
@@ -420,9 +422,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

@@ -110,5 +110,3 @@ SQL_QUERY;
 } else {
 	user_goto('ticket_system.php');
 }
-
-?>

@@ -115,9 +115,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 //unset_messages();
 
 // Function declaration
@@ -203,7 +203,7 @@ function get_init_au2_page(&$tpl) {
 				'VL_BACKUPN' => ''
 			)
 		);
-	} else if("_sql_" === $hp_allowbackup) {
+	} else if ("_sql_" === $hp_allowbackup) {
 		$tpl->assign(
 			array(
 				'VL_BACKUPD' => '',
@@ -212,7 +212,7 @@ function get_init_au2_page(&$tpl) {
 				'VL_BACKUPN' => '',
 			)
 		);
-	} else if("_full_" === $hp_allowbackup) {
+	} else if ("_full_" === $hp_allowbackup) {
 		$tpl->assign(
 			array(
 				'VL_BACKUPD' => '',
@@ -379,5 +379,3 @@ function check_hosting_plan_name($admin_id) {
 
 	return true;
 } // End of check_hosting_plan_name()
-
-?>

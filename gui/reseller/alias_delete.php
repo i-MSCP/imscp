@@ -91,7 +91,6 @@ $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);
 
 $_SESSION['aldel'] = '_yes_';
+
 header("Location: alias.php");
 die()
-
-?>

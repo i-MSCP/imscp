@@ -39,5 +39,3 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 	header('Location: manage_users.php');
 	die();
 }
-
-?>

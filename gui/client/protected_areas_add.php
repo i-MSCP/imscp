@@ -227,13 +227,13 @@ SQL_QUERY;
 			)
 		);
 		// let's get the htaccess management type
-		if ($user_id !== 0 and $group_id == 0) {
+		if ($user_id !== 0 && $group_id == 0) {
 			// we have only user htaccess
 			$type = 'user';
-		} else if ($group_id !== 0 and $user_id == 0) {
+		} else if ($group_id !== 0 && $user_id == 0) {
 			// we have only groups htaccess
 			$type = 'group';
-		} else if ($group_id == 0 and $user_id == 0) {
+		} else if ($group_id == 0 && $user_id == 0) {
 			// we have unsr and groups htaccess
 			$type = 'both';
 		}
@@ -289,7 +289,7 @@ SQL_QUERY;
 					$i = $cnt_usr_id + 1;
 					$usr_selected = " selected ";
 				} else {
-					$usr_selected = "";
+					$usr_selected = '';
 				}
 			}
 
@@ -335,7 +335,7 @@ SQL_QUERY;
 					$i = $cnt_grp_id + 1;
 					$grp_selected = 'selected="selected"';
 				} else {
-					$grp_selected = "";
+					$grp_selected = '';
 				}
 			}
 
@@ -396,9 +396,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

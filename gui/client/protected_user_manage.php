@@ -101,6 +101,9 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 	}
 }
 
+/**
+ * @todo Why is $member = ... out commented?
+ */
 function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 	$query = "
 		SELECT
@@ -213,9 +216,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

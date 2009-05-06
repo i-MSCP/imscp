@@ -103,5 +103,3 @@ function encrypt_db_password($db_pass) {
 		die("ERROR: The php-extension 'mcrypt' not loaded!");
 	}
 }
-
-?>

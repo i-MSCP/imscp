@@ -1023,85 +1023,85 @@ function gen_manage_domain_search_options(&$tpl,
 		&& $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
 		$domain_selected = 'selected="selected"';
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 
 		$all_selected = 'selected="selected"';
-		$ok_selected = "";
-		$suspended_selected = "";
+		$ok_selected = '';
+		$suspended_selected = '';
 	}
 	if ($search_common === 'domain_name') {
 		$domain_selected = 'selected="selected"';
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'customer_id') {
-		$domain_selected = "";
+		$domain_selected = '';
 		$customerid_selected = 'selected="selected"';
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'lname') {
-		$domain_selected = "";
-		$customerid_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
 		$lastname_selected = 'selected="selected"';
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'firm') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
 		$company_selected = 'selected="selected"';
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'city') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
 		$city_selected = 'selected="selected"';
-		$state_selected = "";
-		$country_selected = "";
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'state') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
 		$state_selected = 'selected="selected"';
-		$country_selected = "";
+		$country_selected = '';
 	} else if ($search_common === 'country') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
 		$country_selected = 'selected="selected"';
 	}
 	if ($search_status === 'all') {
 		$all_selected = 'selected="selected"';
-		$ok_selected = "";
-		$suspended_selected = "";
+		$ok_selected = '';
+		$suspended_selected = '';
 	} else if ($search_status === 'ok') {
-		$all_selected = "";
+		$all_selected = '';
 		$ok_selected = 'selected="selected"';
-		$suspended_selected = "";
+		$suspended_selected = '';
 	} else if ($search_status === 'disabled') {
-		$all_selected = "";
-		$ok_selected = "";
+		$all_selected = '';
+		$ok_selected = '';
 		$suspended_selected = 'selected="selected"';
 	}
 
@@ -1790,5 +1790,3 @@ SQL_QUERY;
 	}
 
 } // end client_mail_add_default_accounts
-
-?>

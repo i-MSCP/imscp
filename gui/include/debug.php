@@ -54,5 +54,3 @@ function dump_gui_debug() {
 	echo '</pre>';
 	*/
 }
-
-?>

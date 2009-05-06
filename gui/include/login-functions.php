@@ -174,7 +174,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 	if ($res->RecordCount() == 0) {
 		$query = "REPLACE INTO `login` (`session_id`, `ipaddr`, `lastaccess`, `login_count`, `captcha_count`) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
-		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type=='bruteforce'), (int)($type=='captcha')));
+		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type == 'bruteforce'), (int)($type == 'captcha')));
 		return false;
 	}
 
@@ -255,5 +255,3 @@ function session_exists($sess_id) {
 
 	return ($res->RecordCount() == 1);
 }
-
-?>

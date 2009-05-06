@@ -100,7 +100,10 @@ if ($num > 0) {
 /* if we are locket wait to unlock */
 check_for_lock_file();
 
-$query = "UPDATE mail_users SET status='" . Config::get('ITEM_DELETE_STATUS') . "' WHERE mail_id = ?";
+/**
+ * @todo useDB prepared statements
+ */
+$query = "UPDATE `mail_users` SET `status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `mail_id` = ?";
 exec_query($sql, $query, array($delete_id));
 
 send_request();
@@ -108,7 +111,6 @@ $admin_login = decode_idna($_SESSION['user_logged']);
 write_log("$admin_login: deletes mail account: " . $mail_name);
 $maildel = 1;
 session_register("maildel");
+
 header("Location: mail_accounts.php");
 die();
-
-?>

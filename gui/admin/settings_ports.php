@@ -228,7 +228,7 @@ function show_services(&$tpl, &$sql) {
 				array(
 					'CUSTOM'		=> $custom,
 					'VAR_NAME'		=> $rs->fields['name'],
-					'IP'			=> ($ip=='127.0.0.1' ? 'localhost' : (empty($ip) ? Config::get('BASE_SERVER_IP') : $ip)),
+					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::get('BASE_SERVER_IP') : $ip)),
 					'PORT'			=> $port,
 					'SELECTED_UDP'	=> $selected_udp,
 					'SELECTED_TCP'	=> $selected_tcp,
@@ -288,9 +288,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

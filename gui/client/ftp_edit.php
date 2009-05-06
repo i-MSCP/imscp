@@ -54,8 +54,8 @@ SQL_QUERY;
 	$nftp_dir = Config::get('FTP_HOMEDIR') . "/" . $domain_ftp;
 
 	if ($nftp_dir == $homedir) {
-		$odir = "";
-		$oins = "";
+		$odir = '';
+		$oins = '';
 	} else {
 		$odir = 'checked="checked"';
 		$oins = substr($homedir, strlen($nftp_dir));
@@ -239,9 +239,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

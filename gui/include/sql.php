@@ -48,8 +48,6 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 	$rs = $sql->Execute($query, $data);
 
 	if (!$rs && $failDie) {
-//		var_dump($query);
-//		var_dump($data);
 		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : $sql->errorInfo();
 		system_message(isset($msg[2]) ? $msg[2] : $msg);
 	}
@@ -113,5 +111,3 @@ function check_query($exclude = array()) {
 		}
 	}
 }
-
-?>

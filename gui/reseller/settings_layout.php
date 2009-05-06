@@ -107,10 +107,10 @@ function update_logo() {
 		}
 
 		$newFName = get_user_name($user_id) . '.' . $fext;
-		$path = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/settings_layout.php')+1);
+		$path = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/settings_layout.php') + 1);
 		$logoFile = $path . '/themes/user_logos/' . $newFName;
 		move_uploaded_file($fname, $logoFile);
-		chmod ($logoFile, 0644);
+		chmod($logoFile, 0644);
 		update_user_gui_props($newFName, $user_id);
 		set_page_message(tr('Your logo was successful uploaded!'));
 	}
@@ -177,9 +177,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

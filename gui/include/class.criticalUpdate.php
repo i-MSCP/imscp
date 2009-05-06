@@ -166,5 +166,3 @@ class criticalUpdate extends ispcpUpdate{
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
 }
-
-?>

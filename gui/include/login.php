@@ -377,5 +377,3 @@ function redirect_to_level_page($file = null, $force = false) {
 	}
 	exit();
 }
-
-?>

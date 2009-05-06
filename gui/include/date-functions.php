@@ -64,5 +64,3 @@ function split_date($date) {
 
 	return '';
 }
-
-?>

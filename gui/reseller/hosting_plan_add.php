@@ -89,9 +89,9 @@ $tpl->assign(
 
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	// Process data
-	if (check_data_correction($tpl))
+	if (check_data_correction($tpl)) {
 		save_data_to_db($tpl, $_SESSION['user_id']);
-
+	}
 	gen_data_ahp_page($tpl);
 } else {
 	gen_empty_ahp_page($tpl);
@@ -102,9 +102,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 // Function definitions
 
 /**
@@ -287,7 +287,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_dns;
 
-	$err_msg = "";
+	$err_msg = '';
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 
@@ -332,5 +332,3 @@ function save_data_to_db(&$tpl, $admin_id) {
 		}
 	}
 } // end of save_data_to_db()
-
-?>

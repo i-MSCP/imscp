@@ -331,7 +331,7 @@ function decode_idna($input) {
 	$IDN = new idna_convert();
 	$output = $IDN->decode($input);
 
-	return ($output == FALSE) ? $input : $output;
+	return ($output == false) ? $input : $output;
 }
 
 function encode_idna($input) {
@@ -433,5 +433,3 @@ function unset_messages() {
 		}
 	}
 }
-
-?>

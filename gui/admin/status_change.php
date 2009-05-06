@@ -67,5 +67,3 @@ if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 	header('Location: manage_users.php');
 	die();
 }
-
-?>

@@ -110,9 +110,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-// unset_messages();
+}// unset_messages();
 
 // FUNCTION declaration
 
@@ -142,8 +142,9 @@ function init_in_values() {
 	list($dmn_name, $hpid) = explode(";", $step_two);
 	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
 	$dmn_user_name = $dmn_name;
-	if (!chk_dname($dmn_name) || ($hpid==''))
+	if (!chk_dname($dmn_name) || ($hpid == '')) {
 		return false;
+	}
 	return true;
 } // End of init_in_values()
 
@@ -418,5 +419,3 @@ function add_user_data($reseller_id) {
 		die();
 	}
 } // End of add_user_data()
-
-?>

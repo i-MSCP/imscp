@@ -149,7 +149,7 @@ function add_reseller(&$tpl, &$sql) {
 			$street2 = clean_input($_POST['street2'], true);
 
 			$query = "
-				INSERT INTO admin (
+				INSERT INTO `admin` (
 					`admin_name`,
 					`admin_pass`,
 					`admin_type`,
@@ -251,7 +251,7 @@ function add_reseller(&$tpl, &$sql) {
 			$customer_id = clean_input($_POST['customer_id']);
 
 			$query = "
-				INSERT INTO reseller_props (
+				INSERT INTO `reseller_props` (
 					`reseller_id`, `reseller_ips`,
 					`max_dmn_cnt`, `current_dmn_cnt`,
 					`max_sub_cnt`, `current_sub_cnt`,
@@ -551,9 +551,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

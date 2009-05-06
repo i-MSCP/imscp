@@ -37,7 +37,9 @@ if (isset($_GET['id'])) {
 
 // page functions.
 function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
-	if (!isset($_POST['uaction'])) return;
+	if (!isset($_POST['uaction'])) {
+		return;
+	}
 
 	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
 		set_page_message(tr('Please type user password!'));
@@ -156,9 +158,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

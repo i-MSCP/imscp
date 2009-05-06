@@ -110,7 +110,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				if (!isset($_POST['als_id'])) {
-					$als_id = "";
+					$als_id = '';
 				} else {
 					$als_id = $_POST['als_id'];
 				}
@@ -179,7 +179,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				if (!isset($_POST['sub_id'])) {
-					$sub_id = "";
+					$sub_id = '';
 				} else {
 					$sub_id = $_POST['sub_id'];
 				}
@@ -252,7 +252,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				if (!isset($_POST['als_sub_id'])) {
-					$als_sub_id = "";
+					$als_sub_id = '';
 				} else {
 					$als_sub_id = $_POST['als_sub_id'];
 				}
@@ -635,7 +635,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
-?>
+}

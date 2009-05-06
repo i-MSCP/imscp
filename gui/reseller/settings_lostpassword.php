@@ -39,25 +39,24 @@ $data_2 = get_lostpassword_password_email($user_id);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
-	$err_message = "";
+	$err_message = '';
 
 	$data_1['subject'] = clean_input($_POST['subject1'], false);
 	$data_1['message'] = clean_input($_POST['message1'], false);
 	$data_2['subject'] = clean_input($_POST['subject2'], false);
 	$data_2['message'] = clean_input($_POST['message2'], false);
 
-	if (empty($data_1['subject']) OR empty($data_2['subject'])) {
+	if (empty($data_1['subject']) || empty($data_2['subject'])) {
 		$err_message = tr('Please specify a subject!');
 	}
-	if (empty($data_1['message']) OR empty($data_2['message'])) {
+	if (empty($data_1['message']) || empty($data_2['message'])) {
 		$err_message = tr('Please specify message!');
 	}
 
 	if (!empty($err_message)) {
 		set_page_message($err_message);
 		return false;
-	}
-	else {
+	} else {
 		set_lostpassword_activation_email($user_id, $data_1);
 		set_lostpassword_password_email($user_id, $data_2);
 		set_page_message(tr('Auto email template data updated!'));
@@ -115,9 +114,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

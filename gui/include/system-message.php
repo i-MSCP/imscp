@@ -63,5 +63,3 @@ function system_message($msg, $backButtonDestination = "") {
 
 	die();
 }
-
-?>

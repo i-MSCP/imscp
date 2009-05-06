@@ -1,3 +1,2 @@
 <?php
-    include ('./dns_edit.php');
-?>
+include ('./dns_edit.php');

@@ -389,5 +389,3 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 		}
 	}
 } // end of calculate_user_dvals()
-
-?>

@@ -18,6 +18,12 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+
+/**
+ * @todo use DB prepared statements!
+ */
+
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -95,15 +101,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$query = "
 			SELECT
-				mail_id, mail_acc, status
+				`mail_id`, `mail_acc`, `status`
 			FROM
-				mail_users
+				`mail_users`
 			WHERE
-				domain_id = '$dmn_id'
+				`domain_id` = '$dmn_id'
 			AND
-				sub_id = 0
+				`sub_id` = 0
 			AND
-				mail_type = 'normal_catchall'
+				`mail_type` = 'normal_catchall'
 		";
 
 		$rs = execute_query($sql, $query);
@@ -129,13 +135,13 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$query = "
 			SELECT
-				alias_id, alias_name
+				`alias_id`, `alias_name`
 			FROM
-				domain_aliasses
+				`domain_aliasses`
 			WHERE
-				domain_id = '$dmn_id'
+				`domain_id` = '$dmn_id'
 			AND
-				alias_status = 'ok'
+				`alias_status` = 'ok'
 		";
 
 		$rs = execute_query($sql, $query);
@@ -149,15 +155,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$query = "
 				SELECT
-					mail_id, mail_acc, status
+					`mail_id`, `mail_acc`, `status`
 				FROM
-					mail_users
+					`mail_users`
 				WHERE
-					domain_id = '$dmn_id'
+					`domain_id` = '$dmn_id'
 				AND
-					sub_id = '$als_id'
+					`sub_id` = '$als_id'
 				AND
-					mail_type = 'alias_catchall'
+					`mail_type` = 'alias_catchall'
 			";
 
 			$rs_als = execute_query($sql, $query);
@@ -184,15 +190,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$query = "
 			SELECT
-				a.subdomain_alias_id, CONCAT(a.subdomain_alias_name,'.',b.alias_name) AS subdomain_name
+				a.`subdomain_alias_id`, CONCAT(a.`subdomain_alias_name`,'.',b.`alias_name`) AS `subdomain_name`
 			FROM
-				subdomain_alias AS a, domain_aliasses AS b
+				`subdomain_alias` AS a, `domain_aliasses` AS b
 			WHERE
-				b.alias_id IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
+				b.`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
 			AND
-				a.alias_id = b.alias_id
+				a.`alias_id` = b.`alias_id`
 			AND
-				a.subdomain_alias_status = 'ok'
+				a.`subdomain_alias_status` = 'ok'
 		";
 
 		$rs = execute_query($sql, $query);
@@ -206,15 +212,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$query = "
 				SELECT
-					mail_id, mail_acc, status
+					`mail_id`, `mail_acc`, `status`
 				FROM
-					mail_users
+					`mail_users`
 				WHERE
-					domain_id = '$dmn_id'
+					`domain_id` = '$dmn_id'
 				AND
-					sub_id = '$als_id'
+					`sub_id` = '$als_id'
 				AND
-					mail_type = 'alssub_catchall'
+					`mail_type` = 'alssub_catchall'
 			";
 
 			$rs_als = execute_query($sql, $query);
@@ -241,15 +247,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$query = "
 			SELECT
-				a.subdomain_id, CONCAT(a.subdomain_name,'.',b.domain_name) as subdomain_name
+				a.`subdomain_id`, CONCAT(a.`subdomain_name`,'.',b.`domain_name`) AS `subdomain_name`
 			FROM
-				subdomain as a, domain as b
+				`subdomain` AS a, `domain` AS b
 			WHERE
-				a.domain_id = '$dmn_id'
+				a.`domain_id` = '$dmn_id'
 			AND
-				a.domain_id = b.domain_id
+				a.`domain_id` = b.`domain_id`
 			AND
-				a.subdomain_status = 'ok'
+				a.`subdomain_status` = 'ok'
 		";
 
 		$rs = execute_query($sql, $query);
@@ -263,15 +269,15 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$query = "
 				SELECT
-					mail_id, mail_acc, status
+					`mail_id`, `mail_acc`, `status`
 				FROM
-					mail_users
+					`mail_users`
 				WHERE
-					domain_id = '$dmn_id'
+					`domain_id` = '$dmn_id'
 				AND
-					sub_id = '$als_id'
+					`sub_id` = '$als_id'
 				AND
-					mail_type = 'subdom_catchall'
+					`mail_type` = 'subdom_catchall'
 			";
 
 			$rs_als = execute_query($sql, $query);
@@ -367,9 +373,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

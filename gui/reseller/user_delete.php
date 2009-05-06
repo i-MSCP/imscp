@@ -58,5 +58,3 @@ if ($res->RowCount() !== 1) {
 	header("Location: users.php");
 	die();
 }
-
-?>

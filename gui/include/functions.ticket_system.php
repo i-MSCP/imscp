@@ -50,5 +50,3 @@ SQL_QUERY;
 	$date_formt = Config::get('DATE_FORMAT');
 	return date($date_formt, $rs->fields['ticket_date']); // last date
 }
-
-?>

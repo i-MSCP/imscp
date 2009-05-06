@@ -72,5 +72,3 @@ $query = "
 
 $rs = execute_query($sql, $query);
 print "Emails updated";
-
-?>

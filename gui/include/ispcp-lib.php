@@ -21,7 +21,7 @@
 
 define('INCLUDEPATH', realpath(dirname(__FILE__)));
 
-function autoload_class($className){
+function autoload_class($className) {
 	require_once(INCLUDEPATH . "/class.$className.php");
 }
 spl_autoload_register('autoload_class');
@@ -235,6 +235,3 @@ if (!$res = exec_query($sql, $query, array())) {
 
 // compress/gzip output for less traffic
 require_once(INCLUDEPATH . '/spGzip.php');
-
-
-?>

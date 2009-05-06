@@ -28,5 +28,3 @@
 require 'include/ispcp-lib.php';
 
 createImage('image');
-
-?>

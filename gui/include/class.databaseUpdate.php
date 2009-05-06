@@ -485,5 +485,3 @@ class databaseUpdate extends ispcpUpdate {
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
 }
-
-?>

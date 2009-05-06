@@ -37,5 +37,3 @@ delete_sql_database($sql, $dmn_id, $db_id);
 set_page_message(tr('SQL database was removed successfully!'));
 
 user_goto('sql_manage.php');
-
-?>

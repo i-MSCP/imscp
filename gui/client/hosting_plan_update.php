@@ -161,7 +161,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			$cgi = "no";
 			$details .= tr('CGI Support: disabled') . "<br />";
 		}
-		if($hp_dns ==='_yes_'){
+		if ($hp_dns === '_yes_') {
 			$dns = "yes";
 			$details .= tr('DNS Support: enabled') . "<br />";
 		} else {
@@ -385,9 +385,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

@@ -412,5 +412,3 @@ if (!function_exists('file_put_contents')) {
 		return $bytes;
 	}
 }
-
-?>

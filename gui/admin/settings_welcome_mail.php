@@ -38,10 +38,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	$data['subject'] = clean_input($_POST['auto_subject'], false);
 	$data['message'] = clean_input($_POST['auto_message'], false);
 
-	$message = "";
+	$message = '';
 
 	if (empty($data['subject'])) {
-		$message .= tr('Please specify a subject!').'<br />';
+		$message .= tr('Please specify a subject!') . '<br />';
 	}
 	if (empty($data['message'])) {
 		$message .= tr('Please specify message!');
@@ -100,9 +100,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

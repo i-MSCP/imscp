@@ -54,5 +54,3 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])
 	header('Location: index.php');
 	die();
 }
-
-?>

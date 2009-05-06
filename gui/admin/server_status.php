@@ -183,7 +183,7 @@ SQL_QUERY;
 			$class = "content down";
 		}
 
-		if ($data[$i]['port'] == 23/*telnet*/) {
+		if ($data[$i]['port'] == 23) { // 23 = telnet
 			if ($data[$i]['status']) {
 				$class = 'content2 down';
 				$img = '<b>' . $up . '</b>';
@@ -231,9 +231,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

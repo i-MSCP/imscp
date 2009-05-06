@@ -85,20 +85,20 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		if ($item_type === 'normal') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, t2.domain_name, t1.mail_acc
+					t1.`mail_id`, t1.`mail_type`, t2.`domain_name`, t1.`mail_acc`
 				FROM
-					mail_users AS t1,
-					domain AS t2
+					`mail_users` AS t1,
+					`domain` AS t2
 				WHERE
-					t1.domain_id = ?
+					t1.`domain_id` = ?
 				AND
-					t2.domain_id = ?
+					t2.`domain_id` = ?
 				AND
-					t1.sub_id = '0'
+					t1.`sub_id` = '0'
 				AND
-					t1.status = ?
+					t1.`status` = ?
 				ORDER BY
-					t1.mail_type DESC, t1.mail_acc
+					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
 			$rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
@@ -127,20 +127,20 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		} else if ($item_type === 'alias') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, t2.alias_name, t1.mail_acc
+					t1.`mail_id`, t1.`mail_type`, t2.`alias_name`, t1.`mail_acc`
 				FROM
-					mail_users AS t1,
-					domain_aliasses AS t2
+					`mail_users` AS t1,
+					`domain_aliasses` AS t2
 				WHERE
-					t1.sub_id = t2.alias_id
+					t1.`sub_id` = t2.`alias_id`
 				AND
-					t1.status = ?
+					t1.`status` = ?
 				AND
-					t1.mail_type LIKE 'alias_%'
+					t1.`mail_type` LIKE 'alias_%'
 				AND
-					t2.alias_id = ?
+					t2.`alias_id` = ?
 				ORDER BY
-					t1.mail_type DESC, t1.mail_acc
+					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
@@ -170,23 +170,23 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		} else if ($item_type === 'subdom') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, CONCAT(t2.subdomain_name, '.', t3.domain_name) AS subdomain_name, t1.mail_acc
+					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_name`, '.', t3.`domain_name`) AS subdomain_name, t1.`mail_acc`
 				FROM
-					mail_users AS t1,
-					subdomain AS t2,
-					domain AS t3
+					`mail_users` AS t1,
+					`subdomain` AS t2,
+					`domain` AS t3
 				WHERE
-					t1.sub_id = t2.subdomain_id
+					t1.`sub_id` = t2.`subdomain_id`
 				AND
-					t2.domain_id = t3.domain_id
+					t2.`domain_id` = t3.`domain_id`
 				AND
-					t1.status = ?
+					t1.`status` = ?
 				AND
-					t1.mail_type LIKE 'subdom_%'
+					t1.`mail_type` LIKE 'subdom_%'
 				AND
-					t2.subdomain_id = ?
+					t2.`subdomain_id` = ?
 				ORDER BY
-					t1.mail_type DESC, t1.mail_acc
+					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
@@ -216,23 +216,23 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		} else if ($item_type === 'alssub') {
 			$query = "
 				SELECT
-					t1.mail_id, t1.mail_type, CONCAT(t2.subdomain_alias_name, '.', t3.alias_name) AS subdomain_name, t1.mail_acc
+					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_alias_name`, '.', t3.`alias_name`) AS subdomain_name, t1.`mail_acc`
 				FROM
-					mail_users AS t1,
-					subdomain_alias AS t2,
-					domain_aliasses AS t3
+					`mail_users` AS t1,
+					`subdomain_alias` AS t2,
+					`domain_aliasses` AS t3
 				WHERE
-					t1.sub_id = t2.subdomain_alias_id
+					t1.`sub_id` = t2.`subdomain_alias_id`
 				AND
-					t2.alias_id = t3.alias_id
+					t2.`alias_id` = t3.`alias_id`
 				AND
-					t1.status = ?
+					t1.`status` = ?
 				AND
-					t1.mail_type LIKE 'alssub_%'
+					t1.`mail_type` LIKE 'alssub_%'
 				AND
-					t2.subdomain_alias_id = ?
+					t2.`subdomain_alias_id` = ?
 				ORDER BY
-					t1.mail_type DESC, t1.mail_acc
+					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
@@ -296,11 +296,11 @@ function create_catchall_mail_account(&$sql, $id) {
 
 				$query = "
 					SELECT
-						domain_id, sub_id
+						`domain_id`, `sub_id`
 					FROM
-						mail_users
+						`mail_users`
 					WHERE
-						mail_id = ?
+						`mail_id` = ?
 				";
 
 				$rs = exec_query($sql, $query, array($mail_id));
@@ -316,16 +316,16 @@ function create_catchall_mail_account(&$sql, $id) {
 
 				$query = "
 					INSERT INTO `mail_users`
-						(mail_acc,
-						mail_pass,
-						mail_forward,
-						domain_id,
-						mail_type,
-						sub_id,
-						status,
-						mail_auto_respond,
-						quota,
-						mail_addr)
+						(`mail_acc`,
+						`mail_pass`,
+						`mail_forward`,
+						`domain_id`,
+						`mail_type`,
+						`sub_id`,
+						`status`,
+						`mail_auto_respond`,
+						`quota`,
+						`mail_addr`)
 					VALUES
 						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				";
@@ -376,8 +376,8 @@ function create_catchall_mail_account(&$sql, $id) {
 						t2.`alias_name`,
 						t2.`domain_id`
 					FROM
-						`subdomain_alias` as t1,
-						`domain_aliasses` as t2
+						`subdomain_alias` AS t1,
+						`domain_aliasses` AS t2
 					WHERE
 						t1.`subdomain_alias_id` = ?
 					AND
@@ -409,16 +409,16 @@ function create_catchall_mail_account(&$sql, $id) {
 
 			$query = "
 				INSERT INTO `mail_users`
-					(mail_acc,
-					mail_pass,
-					mail_forward,
-					domain_id,
-					mail_type,
-					sub_id,
-					status,
-					mail_auto_respond,
-					quota,
-					mail_addr)
+					(`mail_acc`,
+					`mail_pass`,
+					`mail_forward`,
+					`domain_id`,
+					`mail_type`,
+					`sub_id`,
+					`status`,
+					`mail_auto_respond`,
+					`quota`,
+					`mail_addr`)
 				VALUES
 					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			";
@@ -478,9 +478,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

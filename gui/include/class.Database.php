@@ -21,16 +21,16 @@ final class Database {
 	}
 
 	public static function getInstance($connection = 'default') {
-		if (!isset(self::$_instances[$connection]))
+		if (!isset(self::$_instances[$connection])) {
 			throw new Exception('Database error: Not connected to ' . $connection);
-
+		}
 		return self::$_instances[$connection];
 	}
 
 	public static function connect($user, $pass, $type, $host, $name, $connection = 'default') {
-		if (isset(self::$_instances[$connection]))
+		if (isset(self::$_instances[$connection])) {
 			$_instances[$connection]->close();
-
+		}
 		return self::$_instances[$connection] = new Database($user, $pass, $type, $host, $name);
 	}
 
@@ -73,7 +73,6 @@ final class Database {
 
 	public function MetaTables() {
 		$tables = array();
-
 		$result = $this->_db->query('SHOW TABLES');
 		while ($result instanceof PDOStatement
 			&& $row = $result->fetch(PDO::FETCH_NUM)) {
@@ -101,6 +100,7 @@ final class Database {
 	public function HasFailedTrans() {
 		return false;
 	}
+
 }
 
 final class DatabaseResult {
@@ -136,8 +136,7 @@ final class DatabaseResult {
 		return $this->fields[$param];
 	}
 
-	public function RowCount()
-	{
+	public function RowCount() {
 		return $this->_result->rowCount();
 	}
 
@@ -152,6 +151,5 @@ final class DatabaseResult {
 	public function MoveNext() {
 		$this->_fields = $this->_result->fetch();
 	}
-}
 
-?>
+}

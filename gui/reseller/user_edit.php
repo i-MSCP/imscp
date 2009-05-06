@@ -146,9 +146,9 @@ gen_edituser_page($tpl);
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 //unset_messages();
 
 /*
@@ -434,5 +434,3 @@ function update_data_in_db($hpid) {
 	header("Location: users.php");
 	die();
 } // End of update_data_in_db()
-
-?>

@@ -110,5 +110,3 @@ SQL_QUERY;
 } else {
 	user_goto('ftp_accounts.php');
 }
-
-?>

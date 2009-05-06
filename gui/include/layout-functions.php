@@ -174,5 +174,3 @@ function gen_def_layout(&$tpl, $user_def_layout) {
 		$tpl->parse('DEF_LAYOUT', '.def_layout');
 	}
 }
-
-?>

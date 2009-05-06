@@ -120,11 +120,11 @@ function check_domainalias_permissions($sql, $user_id) {
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
-	$cr_user_id = "";
-	$alias_name	= "";
-	$domain_ip	= "";
-	$forward	= "";
-	$mount_point= "";
+	$cr_user_id = '';
+	$alias_name	= '';
+	$domain_ip	= '';
+	$forward	= '';
+	$mount_point= '';
 
 } // End of init_empty_data()
 
@@ -199,7 +199,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$res = exec_query($sql, $query, array($alias_name));
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
-		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
+		if ($res->RowCount() > 0 || $res2->RowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
@@ -268,7 +268,6 @@ gen_page_msg($tpl, $err_txt);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
-?>
+}

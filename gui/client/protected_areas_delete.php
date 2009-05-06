@@ -75,5 +75,3 @@ SQL_QUERY;
 	set_page_message(tr('Permission deny!'));
 	user_goto('protected_areas.php');
 }
-
-?>

@@ -148,5 +148,3 @@ send_request();
 write_log("$admin_login: deletes user ID (protected areas): $uname");
 header("Location: protected_user_manage.php");
 die();
-
-?>

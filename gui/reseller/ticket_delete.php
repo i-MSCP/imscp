@@ -46,11 +46,7 @@ SQL_QUERY;
 	}
 	$ticket_status = $rs->fields['ticket_status'];
 
-	if ($ticket_status == 0) {
-		$back_url = "ticket_closed.php";
-	} else {
-		$back_url = "ticket_system.php";
-	}
+	$back_url = ($ticket_status == 0) ? "ticket_closed.php" : "ticket_system.php";
 
 	$ticket_id = $_GET['ticket_id'];
 
@@ -116,5 +112,3 @@ SQL_QUERY;
 } else {
 	user_goto('ticket_system.php');
 }
-
-?>

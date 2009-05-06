@@ -65,5 +65,3 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 } else {
 	user_goto('mail_catchall.php');
 }
-
-?>

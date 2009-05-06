@@ -26,9 +26,9 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 if (isset($_GET['action']) && $_GET['action'] === "delete") {
 
-	if (isset($_GET['del_id']) && !empty($_GET['del_id']))
+	if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 		$del_id = $_GET['del_id'];
-	else {
+	} else {
 		$_SESSION['orderaldel'] = '_no_';
 		header("Location: alias.php");
 		die();
@@ -97,5 +97,3 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 	header("Location: alias.php");
 	die();
 }
-
-?>

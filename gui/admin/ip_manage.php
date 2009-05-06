@@ -162,7 +162,7 @@ function check_user_data() {
 
 	$err_msg = '_off_';
 
-	if (filter_var($ip_number, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)===false) {
+	if (filter_var($ip_number, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
 		$err_msg = tr('Wrong IP number!');
 	} elseif ($domain == '') {
 		$err_msg = tr('Please specify domain!');
@@ -170,7 +170,7 @@ function check_user_data() {
 		$err_msg = tr('Please specify alias!');
 	} elseif (IP_exists()) {
 		$err_msg = tr('This IP already exist!');
-	} elseif(!in_array($ip_card, $interfaces->getAvailableInterface())){
+	} elseif (!in_array($ip_card, $interfaces->getAvailableInterface())) {
 		$err_msg = tr('Please select nework interface!');
 	}
 
@@ -198,17 +198,17 @@ function IP_exists() {
 
 	$rs = exec_query($sql, $query, array($ip_number));
 
-	if ($rs->RowCount() == 0)
+	if ($rs->RowCount() == 0) {
 		return false;
-
+	}
 	return true;
 }
 
-function show_Network_Cards(&$tpl, &$interfaces){
-	if($interfaces->getErrors()!=''){
+function show_Network_Cards(&$tpl, &$interfaces) {
+	if ($interfaces->getErrors() != '') {
 		set_page_message($interfaces->getErrors());
 	}
-	foreach ($interfaces->getAvailableInterface() as $interface){
+	foreach ($interfaces->getAvailableInterface() as $interface) {
 		$tpl->assign(
 			array(
 				'NETWORK_CARDS'	=> $interface
@@ -252,9 +252,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

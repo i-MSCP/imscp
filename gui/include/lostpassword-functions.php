@@ -86,7 +86,7 @@ function createImage($strSessionVar) {
 }
 
 function strrand($length, $strSessionVar) {
-	$str = "";
+	$str = '';
 
 	while (strlen($str) < $length) {
 		$random = mt_rand(48, 122);
@@ -366,5 +366,3 @@ SQL_QUERY;
 
 	return true;
 }
-
-?>

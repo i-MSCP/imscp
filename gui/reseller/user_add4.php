@@ -131,19 +131,15 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 // Begin function declaration lines
 
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $tpl;
 
-	$cr_user_id = "";
-	$alias_name = "";
-	$domain_ip = "";
-	$forward = "";
-	$mount_point = "";
+	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
 	$tpl->assign(
 		array(
@@ -229,7 +225,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$res = exec_query($sql, $query, array($alias_name));
 		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
-		if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
+		if ($res->RowCount() > 0 || $res2->RowCount() > 0) {
 			// we already have a domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
@@ -272,5 +268,3 @@ function gen_page_msg(&$tpl, $erro_txt) {
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
 } // End of gen_page_msg()
-
-?>

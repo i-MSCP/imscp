@@ -1649,7 +1649,7 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 		$search_query = "SELECT * FROM `domain` ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page";
 	} else if ($search_for === '' && $search_status != '') {
 		if ($search_status === 'all') {
-			$add_query = "";
+			$add_query = '';
 		} else {
 			$add_query = "WHERE `domain_status` = '$search_status'";
 		}
@@ -1723,84 +1723,84 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
 		$domain_selected = 'selected="selected"';
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 		$all_selected = 'selected="selected"';
-		$ok_selected = "";
-		$suspended_selected = "";
+		$ok_selected = '';
+		$suspended_selected = '';
 	}
 	if ($search_common === 'domain_name') {
 		$domain_selected = 'selected="selected"';
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'customer_id') {
-		$domain_selected = "";
+		$domain_selected = '';
 		$customerid_selected = 'selected="selected"';
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'lname') {
-		$domain_selected = "";
-		$customerid_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
 		$lastname_selected = 'selected="selected"';
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'firm') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
 		$company_selected = 'selected="selected"';
-		$city_selected = "";
-		$state_selected = "";
-		$country_selected = "";
+		$city_selected = '';
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'city') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
 		$city_selected = 'selected="selected"';
-		$state_selected = "";
-		$country_selected = "";
+		$state_selected = '';
+		$country_selected = '';
 	} else if ($search_common === 'state') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
 		$state_selected = 'selected="selected"';
-		$country_selected = "";
+		$country_selected = '';
 	} else if ($search_common === 'country') {
-		$domain_selected = "";
-		$customerid_selected = "";
-		$lastname_selected = "";
-		$company_selected = "";
-		$city_selected = "";
-		$state_selected = "";
+		$domain_selected = '';
+		$customerid_selected = '';
+		$lastname_selected = '';
+		$company_selected = '';
+		$city_selected = '';
+		$state_selected = '';
 		$country_selected = 'selected="selected"';
 	}
 	if ($search_status === 'all') {
 		$all_selected = 'selected="selected"';
-		$ok_selected = "";
-		$suspended_selected = "";
+		$ok_selected = '';
+		$suspended_selected = '';
 	} else if ($search_status === 'ok') {
-		$all_selected = "";
+		$all_selected = '';
 		$ok_selected = 'selected="selected"';
-		$suspended_selected = "";
+		$suspended_selected = '';
 	} else if ($search_status === 'disabled') {
-		$all_selected = "";
-		$ok_selected = "";
+		$all_selected = '';
+		$ok_selected = '';
 		$suspended_selected = 'selected="selected"';
 	}
 
@@ -2207,5 +2207,3 @@ function get_ticket_urgency($ticket_urgency) {
 	}
 	return $result;
 }
-
-?>

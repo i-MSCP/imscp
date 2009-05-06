@@ -134,6 +134,9 @@ if (isset($_GET['uname'])
 	&& is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 
+/**
+ * @todo use DB prepared statements
+ */
 	$query = "
 		SELECT
 			`uname`
@@ -163,6 +166,9 @@ if (isset($_GET['uname'])
 	&& is_numeric($_POST['nadmin_name'])) {
 	$uuser_id = clean_input($_POST['nadmin_name']);
 
+/**
+ * @todo use DB prepared statements
+ */
 	$query = "
 		SELECT
 			`uname`
@@ -220,9 +226,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
-
-?>

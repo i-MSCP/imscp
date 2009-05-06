@@ -81,9 +81,9 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}
 unset_messages();
 
 // Function declaration path
@@ -97,7 +97,7 @@ function check_user_data() {
 	global $dmn_pt;
 	$sql = Database::getInstance();
 	// personal template
-	$even_txt = "";
+	$even_txt = '';
 
 	if (isset($_POST['dmn_name'])) {
 		$dmn_name = strtolower(trim($_POST['dmn_name']));
@@ -255,5 +255,3 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 		$tpl->assign('ADD_USER', '');
 	}
 } // End of get_hp_data_list()
-
-?>
