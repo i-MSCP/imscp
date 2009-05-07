@@ -29,8 +29,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	header("Location: orders.php");
-	die();
+	user_goto('orders.php');
 }
 
 $query = <<<SQL_QUERY
@@ -48,8 +47,7 @@ $rs = exec_query($sql, $query, array($order_id, $reseller_id));
 
 if ($rs->RecordCount() == 0) {
 	set_page_message(tr('Permission deny!'));
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 // delete all FTP Accounts
@@ -64,5 +62,4 @@ $rs = exec_query($sql, $query, array($order_id));
 set_page_message(tr('Customer order was removed successful!'));
 
 write_log($_SESSION['user_logged'].": deletes customer order.");
-header("Location: orders.php");
-die();
+user_goto('orders.php');

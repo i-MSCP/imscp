@@ -59,8 +59,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 	}
 
 	if ($rs->RecordCount() == 0) {
-		header("Location: index.php");
-		die();
+		user_goto('index.php');
 	} else {
 		$price = $rs->fields['price'];
 		$setup_fee = $rs->fields['setup_fee'];

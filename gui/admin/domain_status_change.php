@@ -22,13 +22,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (!isset($_GET['domain_id'])) {
-	header("Location: manage_users.php");
-	die();
+	user_goto('manage_users.php');
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-	header("Location: manage_users.php");
-	die();
+	user_goto('manage_users.php');
 }
 
 $domain_id = $_GET['domain_id'];
@@ -54,6 +52,5 @@ if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
 	$action = "enable";
 	change_domain_status(&$sql, $domain_id, $rs->fields['domain_name'], $action, $location);
 } else {
-	header("Location: manage_users.php");
-	die();
+	user_goto('manage_users.php');
 }

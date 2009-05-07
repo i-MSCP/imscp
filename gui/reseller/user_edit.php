@@ -119,16 +119,14 @@ if (isset($_POST['Submit'])
 		$hpid = $_SESSION['edit_ID'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 
 	if (isset($_SESSION['user_name'])) {
 		$dmn_user_name = $_SESSION['user_name'];
 	} else {
 		$_SESSION['edit'] = '_no_';
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 
 	if (check_ruser_data($tpl, '_yes_')) { // Save data to db
@@ -187,8 +185,7 @@ function load_user_data_page($user_id) {
 
 	if ($res->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	} else {
 		// Get data from sql
 		$_SESSION['user_name'] = $data['admin_name'];
@@ -336,17 +333,14 @@ function update_data_in_db($hpid) {
 			} else {
 				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
 			}
-
-			header("Location: user_edit.php?edit_id=$hpid");
-			die();
+			user_goto('user_edit.php?edit_id=' . $hpid);
 		}
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
 			set_page_message(tr("Entered passwords do not match!"));
 
-			header("Location: user_edit.php?edit_id=$hpid");
-			die();
+			user_goto('user_edit.php?edit_id=' . $hpid);
 		}
 		$pure_user_pass = $inpass;
 
@@ -431,6 +425,5 @@ function update_data_in_db($hpid) {
 	unset($_SESSION['user_name']);
 
 	$_SESSION['edit'] = "_yes_";
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 } // End of update_data_in_db()

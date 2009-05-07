@@ -76,8 +76,7 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tp
 gen_page_message($tpl);
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
-	header('Location: manage_users.php');
-	die();
+	user_goto('manage_users.php');
 }
 
 $editid = $_GET['domain_id'];
@@ -111,16 +110,14 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$data = $res->FetchRow();
 
 	if ($res->RecordCount() <= 0) {
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 	// Get admin data
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id']));
 	$data1 = $res1->FetchRow();
 	if ($res1->RecordCount() <= 0) {
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 	// Get IP info
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";

@@ -98,8 +98,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 
 			$admin_login = $_SESSION['user_logged'];
 			write_log("$admin_login: modify user ID (protected areas): $uname");
-			header("Location: protected_user_manage.php");
-			die();
+			user_goto('protected_user_manage.php');
 		}
 	} else {
 		return;
@@ -151,8 +150,7 @@ if (isset($_GET['uname'])
 	$rs = execute_query($sql, $query);
 
 	if ($rs->RecordCount() == 0) {
-		header('Location: protected_user_manage.php');
-		die();
+		user_goto('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
@@ -183,8 +181,7 @@ if (isset($_GET['uname'])
 	$rs = execute_query($sql, $query);
 
 	if ($rs->RecordCount() == 0) {
-		header('Location: protected_user_manage.php');
-		die();
+		user_goto('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
@@ -195,8 +192,7 @@ if (isset($_GET['uname'])
 		pedit_user($tpl, $sql, $dmn_id, $uuser_id);
 	}
 } else {
-	header('Location: protected_user_manage.php');
-	die();
+	user_goto('protected_user_manage.php');
 }
 
 $tpl->assign(

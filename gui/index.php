@@ -42,8 +42,7 @@ if (isset($_POST['uname'])
 		redirect_to_level_page();
 	}
 
-	header('Location: index.php');
-	exit();
+	user_goto('index.php');
 }
 
 if (check_user_login() && !redirect_to_level_page()) {

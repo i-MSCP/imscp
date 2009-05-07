@@ -1,6 +1,14 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-07 Thomas Häber
+	- LANGUAGES:
+		* added (missing) translation strings
+		* fixed translations for e-mails with {BASE_SERVER_VHOST_PREFIX}
+	- GUI:
+		* code cleanup (some refactoring, coding style ...)
+		* added hint about {BASE_SERVER_VHOST_PREFIX} in table header
+
 2009-05-07 Benedikt Heintel
 	- LANGUAGES:
 		* Upated: Catalan

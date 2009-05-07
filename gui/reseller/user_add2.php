@@ -32,8 +32,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 // check if we have only hosting plans for admins - reseller should not edit them
 if (Config::exists('HOSTING_PLANS_LEVEL')
 	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 $tpl->assign(
@@ -87,8 +86,7 @@ $tpl->assign(
 if (!get_pageone_param()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
 	unset_messages();
-	header("Location: user_add1.php");
-	die();
+	user_goto('user_add1.php');
 }
 
 if (isset($_POST['uaction'])
@@ -99,8 +97,7 @@ if (isset($_POST['uaction'])
 		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_allowbackup;";
 
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
-			header("Location: user_add3.php");
-			die();
+			user_goto('user_add3.php');
 		}
 	}
 } else {

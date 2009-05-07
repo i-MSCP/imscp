@@ -95,8 +95,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 
 				$admin_login = $_SESSION['user_logged'];
 				write_log("$admin_login: add user (protected areas): $uname");
-				header('Location: protected_user_manage.php');
-				die();
+				user_goto('protected_user_manage.php');
 			} else {
 				set_page_message(tr('User already exist !'));
 				return;

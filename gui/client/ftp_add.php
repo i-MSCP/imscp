@@ -408,8 +408,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
 	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user");
 	set_page_message(tr('FTP account added!'));
-	header('Location: ftp_accounts.php');
-	exit(0);
+	user_goto('ftp_accounts.php');
 }
 
 function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
@@ -483,8 +482,7 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 
 	if ($dmn_ftpacc_limit != 0 && $ftp_acc_cnt >= $dmn_ftpacc_limit) {
 		set_page_message(tr('FTP accounts limit reached!'));
-		header("Location: ftp_accounts.php");
-		die();
+		user_goto('ftp_accounts.php');
 	} else {
 		if (!isset($_POST['uaction'])) {
 			gen_page_form_data($tpl, $dmn_name, 'no');

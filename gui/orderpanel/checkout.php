@@ -131,8 +131,7 @@ if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	) {
 	gen_checkout($tpl, $sql, $user_id, $plan_id);
 } else {
-	header("Location: index.php?user_id=$user_id");
-	die();
+	user_goto('index.php?user_id=' . $user_id);
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);

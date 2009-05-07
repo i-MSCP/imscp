@@ -193,8 +193,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	}
 
 	if ($res->RowCount() !== 1) { // Error
-		header('Location: hosting_plan.php');
-		die();
+		user_goto('hosting_plan.php');
 	}
 
 	$data = $res->FetchRow();
@@ -376,8 +375,7 @@ function save_data_to_db() {
 				$setup_fee, $currency, $payment, $status, $hpid));
 
 			$_SESSION['hp_updated'] = '_yes_';
-			header("Location: hosting_plan.php");
-			die();
+			user_goto('hosting_plan.php');
 		}
 	} else {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));

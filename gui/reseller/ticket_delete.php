@@ -41,8 +41,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
 	if ($rs->RecordCount() == 0) {
-		header('Location: ticket_system.php');
-		die();
+		user_goto('ticket_system.php');
 	}
 	$ticket_status = $rs->fields['ticket_status'];
 

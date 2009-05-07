@@ -81,8 +81,7 @@ gen_logged_from($tpl);
 gen_page_message($tpl);
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
-	header('Location: users.php');
-	die();
+	user_goto('users.php');
 }
 
 $editid = $_GET['domain_id'];
@@ -117,8 +116,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$data = $res->FetchRow();
 
 	if ($res->RecordCount() <= 0) {
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 	// Get admin data
 	$created_by = $_SESSION['user_id'];
@@ -126,8 +124,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id'], $created_by));
 	$data1 = $res1->FetchRow();
 	if ($res1->RecordCount() <= 0) {
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 	// Get IP info
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";

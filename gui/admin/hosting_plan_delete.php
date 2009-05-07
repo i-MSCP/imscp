@@ -23,8 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
-	header('Location: index.php');
-	die();
+	user_goto('index.php');
 }
 
 
@@ -32,8 +31,7 @@ if (isset($_GET['hpid']) && is_numeric($_GET['hpid'])) {
 	$hpid = $_GET['hpid'];
 } else {
 	$_SESSION['hp_deleted'] = '_no_';
-	header('Location: hosting_plan.php');
-	die();
+	user_goto('hosting_plan.php');
 }
 
 // Check if there is no order for this plan
@@ -41,8 +39,7 @@ $res = exec_query($sql, "SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ? AN
 $data = $res->FetchRow();
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';
-	header("Location: hosting_plan.php");
-	die();
+	user_goto('hosting_plan.php');
 }
 
 // Try to delete hosting plan from db
@@ -51,5 +48,4 @@ $res = exec_query($sql, $query, array($hpid));
 
 $_SESSION['hp_deleted'] = '_yes_';
 
-header('Location: hosting_plan.php');
-die();
+user_goto('hosting_plan.php');

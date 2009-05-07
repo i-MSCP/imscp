@@ -363,6 +363,9 @@ function is_basicString($string) {
 	return false;
 }
 
+/**
+ * @todo please add a descrition for this function
+ */
 function unset_messages() {
 
 	$glToUnset = array();

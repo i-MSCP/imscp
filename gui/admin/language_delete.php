@@ -24,8 +24,7 @@ check_login(__FILE__);
 
 /* Do we have a proper delete_id? */
 if (!isset($_GET['delete_lang'])) {
-	header("Location: multilanguage.php");
-	die();
+	user_goto('multilanguage.php');
 }
 
 $delete_lang = $_GET['delete_lang'];
@@ -34,8 +33,7 @@ $delete_lang = $_GET['delete_lang'];
 if ($delete_lang == Config::get('USER_INITIAL_LANG')) {
 	set_page_message('Error we can\'t delete system default language!');
 
-	header("Location: multilanguage.php");
-	die();
+	user_goto('multilanguage.php');
 }
 
 /* check if someone still uses that lang */
@@ -54,8 +52,7 @@ $rs = exec_query($sql, $query, array($delete_lang));
 if ($rs->RecordCount () > 0) {
 	set_page_message('Error we have user that uses that language!');
 
-	header("Location: multilanguage.php");
-	die();
+	user_goto('multilanguage.php');
 }
 
 $query = "DROP TABLE $delete_lang";
@@ -66,5 +63,4 @@ write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_l
 
 set_page_message(tr('Language was removed!'));
 
-header("Location: multilanguage.php");
-die();
+user_goto('multilanguage.php');

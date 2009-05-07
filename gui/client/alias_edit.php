@@ -75,14 +75,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		unset($_SESSION['edit_ID']);
 
 		$_SESSION['aledit'] = '_no_';
-		header('Location: domains_manage.php');
-		die();
+		user_goto('domains_manage.php');
 	}
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		$_SESSION['aledit'] = "_yes_";
-		header("Location: domains_manage.php");
-		die();
+		user_goto('domains_manage.php');
 	}
 } else {
 	// Get user id that comes for edit
@@ -116,8 +114,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
-		header('Location: domains_manage.php');
-		die();
+		user_goto('domains_manage.php');
 	}
 	$data = $res->FetchRow();
 	// Get IP data

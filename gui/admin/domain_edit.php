@@ -30,8 +30,7 @@ $tpl->define_dynamic('ip_entry', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) !== 'admin') {
-	header("Location: manage_users.php");
-	die();
+	user_goto('manage_users.php');
 }
 
 $tpl->assign(
@@ -90,14 +89,12 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		unset($_SESSION['edit_id']);
 		$_SESSION['edit'] = '_no_';
 
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 
 	if (check_user_data($tpl, $sql, get_reseller_id($editid), $editid)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
-		header("Location: manage_users.php");
-		die();
+		user_goto('manage_users.php');
 	}
 	load_additional_data(get_reseller_id($editid), $editid);
 } else {
@@ -137,8 +134,7 @@ function get_reseller_id($domain_id) {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 
 	$data = $rs->FetchRow();
@@ -171,8 +167,7 @@ function load_user_data($user_id, $domain_id) {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 
 	list($a, $sub,

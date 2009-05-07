@@ -105,8 +105,7 @@ function update_data(&$sql) {
 				if ($_POST['pass'] != $_POST['pass_rep']) {
 					set_page_message(tr("Entered passwords do not match!"));
 
-					header("Location: admin_edit.php?edit_id=$edit_id");
-					die();
+					user_goto('admin_edit.php?edit_id=' . $edit_id);
 				}
 
 				if (!chk_password($_POST['pass'])) {
@@ -116,8 +115,7 @@ function update_data(&$sql) {
 						set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
 					}
 
-					header("Location: admin_edit.php?edit_id=$edit_id");
-					die();
+					user_goto('admin_edit.php?edit_id=' . $edit_id);
 				}
 
 				$upass = crypt_user_pass($_POST['pass']);
@@ -208,8 +206,7 @@ function update_data(&$sql) {
 
 			$_SESSION['user_updated'] = 1;
 
-			header("Location: manage_users.php");
-			die();
+			user_goto('manage_users.php');
 		}
 	}
 }
@@ -225,8 +222,7 @@ function check_user_data() {
 }
 
 if ($edit_id == $_SESSION['user_id']) {
-	header('Location: personal_change.php');
-	die();
+	user_goto('personal_change.php');
 }
 
 /*
@@ -261,8 +257,7 @@ $query = "
 $rs = exec_query($sql, $query, array($edit_id));
 
 if ($rs->RecordCount() <= 0) {
-	header('Location: manage_users.php');
-	die();
+	user_goto('manage_users.php');
 }
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');

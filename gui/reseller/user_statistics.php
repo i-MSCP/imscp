@@ -55,8 +55,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 }
 
 if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
-	header("Location: ./reseller_statistics.php");
-	die();
+	user_goto('./reseller_statistics.php');
 }
 
 $tpl->assign(

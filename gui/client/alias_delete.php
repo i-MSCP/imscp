@@ -58,8 +58,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($sql, $query, array($als_id));
 	if ($rs->fields['count'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has subdomains!<br>First remove them!'));
-		header('Location: domains_manage.php');
-		exit(0);
+		user_goto('domains_manage.php');
 	}
 
 	// check for mail accounts
@@ -82,8 +81,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'));
-		header('Location: domains_manage.php');
-		exit(0);
+		user_goto('domains_manage.php');
 	}
 
 	// check for ftp accounts
@@ -107,8 +105,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($sql, $query, array($als_id));
 	if ($rs->fields['ftpnum'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has FTP accounts!<br>First remove them!'));
-		header('Location: domains_manage.php');
-		exit(0);
+		user_goto('domains_manage.php');
 	}
 
 	check_for_lock_file();
@@ -127,9 +124,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias ".$alias_name."!");
 	set_page_message(tr('Alias scheduled for deletion!'));
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 } else {
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 }

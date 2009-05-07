@@ -26,8 +26,7 @@ check_login(__FILE__);
  * @todo Do we have a proper cdir?
  */
 if (!isset($_GET['cdir'])) {
-	header("Location: protected_areas.php");
-	die();
+	user_goto('protected_areas.php');
 }
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
@@ -36,5 +35,4 @@ unlink(Config::get('FTP_HOMEDIR') . '/' . $domain_name . $cdir . '.htaccess');
 
 set_page_message(tr('Protected area was deleted successful!'));
 
-header("Location: protected_areas.php?cur_dir=$cdir");
-die();
+user_goto('protected_areas.php?cur_dir=' . $cdir);

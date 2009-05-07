@@ -71,8 +71,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 	}
 
 	if ($rs->RecordCount() == 0) {
-		header("Location: index.php?user_id=$user_id");
-		die();
+		user_goto('index.php?user_id=' . $user_id);
 	} else {
 		$props = $rs->fields['props'];
 		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $props);

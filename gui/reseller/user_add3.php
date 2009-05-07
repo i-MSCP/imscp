@@ -86,8 +86,7 @@ $tpl->assign(
 if (!init_in_values()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
 	unset_messages();
-	header("Location: user_add1.php");
-	die();
+	user_goto('user_add1.php');
 }
 
 // Process the action ...
@@ -410,12 +409,10 @@ function add_user_data($reseller_id) {
 		// we have to add some aliases for this looser
 		$_SESSION['dmn_id'] = $dmn_id;
 		$_SESSION['dmn_ip'] = $domain_ip;
-		header("Location: user_add4.php?accout=$dmn_id");
-		die();
+		user_goto('user_add4.php?accout=' . $dmn_id);
 	} else {
 		// we have not to add alias
 		$_SESSION['user_add3_added'] = "_yes_";
-		header("Location: users.php");
-		die();
+		user_goto('users.php');
 	}
 } // End of add_user_data()

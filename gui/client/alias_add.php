@@ -112,8 +112,7 @@ function check_domainalias_permissions($sql, $user_id) {
 
 		if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
 			set_page_message(tr('Domain alias limit reached!'));
-			header("Location: domains_manage.php");
-			die();
+			user_goto('domains_manage.php');
 		}
 }
 
@@ -240,8 +239,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		set_page_message(tr('Alias scheduled for addition!'));
 	}
 
-	header("Location: domains_manage.php");
-	die();
+	user_goto('domains_manage.php');
 } // End of add_domain_alias();
 
 

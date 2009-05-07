@@ -42,8 +42,7 @@ function addon_domain($dmn_name) {
 	}
 
 	$_SESSION['domainname'] = $dmn_name;
-	header("Location: address.php");
-	die();
+	user_goto('address.php');
 }
 
 /**
@@ -70,8 +69,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (isset($_SESSION['domainname'])) {
-	header("Location: address.php");
-	die();
+	user_goto('address.php');
 }
 
 if (isset($_POST['domainname']) && $_POST['domainname'] != '') {

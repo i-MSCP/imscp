@@ -60,8 +60,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 }
 
 if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
-	header("Location: reseller_statistics.php");
-	die();
+	user_goto('reseller_statistics.php');
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
@@ -80,8 +79,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id, $reseller_id));
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: user_statistics.php');
-		die();
+		user_goto('user_statistics.php');
 	}
 
 	$query = <<<SQL_QUERY

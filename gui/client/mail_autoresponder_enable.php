@@ -53,8 +53,7 @@ function check_email_user(&$sql) {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: mail_accounts.php');
-		die();
+		user_goto('mail_accounts.php');
 	}
 }
 
@@ -108,8 +107,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		$mail_name = $rs->fields['mailbox'];
 		write_log($_SESSION['user_logged'] . ": add mail autoresponder: " . $mail_name);
 		set_page_message(tr('Mail account scheduler for modification!'));
-		header("Location: mail_accounts.php");
-		exit(0);
+		user_goto('mail_accounts.php');
 	} else {
 		// Get Message
 		$query = "
@@ -136,8 +134,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$mail_id = $_POST['id'];
 } else {
-	header("Location: mail_accounts.php");
-	exit(0);
+	user_goto('mail_accounts.php');
 }
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {

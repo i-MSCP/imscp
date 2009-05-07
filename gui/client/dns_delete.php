@@ -83,9 +83,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
 	write_log($_SESSION['user_logged'] . ": deletes dns zone record: " . $dns_name . ' of domain ' . $dom_name);
 	set_page_message(tr('DNZ zone record scheduled for deletion!'));
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 } else {
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 }

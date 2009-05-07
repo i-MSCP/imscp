@@ -200,8 +200,7 @@ SQL_QUERY;
 // common page data.
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header("Location: index.php");
-	die();
+	user_goto('index.php');
 }
 
 $theme_color = Config::get('USER_INITIAL_THEME');

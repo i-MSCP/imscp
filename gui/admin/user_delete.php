@@ -24,8 +24,7 @@ check_login(__FILE__);
 
 /* Do we have a proper delete_id? */
 if (!isset($_GET['delete_id']) or !is_numeric($_GET['delete_id'])) {
-	header("Location: manage_users.php");
-	die();
+	user_goto('manage_users.php');
 }
 
 $delete_id = $_GET['delete_id'];
@@ -43,8 +42,7 @@ if ($local_admin_type == 'admin' || $local_admin_type == 'reseller') {
 		/* this user have domain ! */
 		$hdomain = 1;
 		$_SESSION['hdomain'] = 1;
-		header("Location: manage_users.php");
-		die();
+		user_goto('manage_users.php');
 	}
 }
 
@@ -85,5 +83,4 @@ $local_admin_name = $_GET['delete_username'];
 write_log("$user_logged: deletes user $local_admin_name, $local_admin_type, $delete_id!");
 $_SESSION['user_deleted'] = 1;
 
-header("Location: manage_users.php");
-die();
+user_goto('manage_users.php');

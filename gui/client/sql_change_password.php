@@ -116,7 +116,7 @@ SQL_QUERY;
 // common page data.
 
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	header("Location: index.php");
+	user_goto('index.php');
 }
 
 $theme_color = Config::get('USER_INITIAL_THEME');

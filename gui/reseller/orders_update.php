@@ -28,8 +28,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	header("Location: orders.php");
-	die();
+	user_goto('orders.php');
 }
 
 if (Config::exists('HOSTING_PLANS_LEVEL')
@@ -65,8 +64,7 @@ if (Config::exists('HOSTING_PLANS_LEVEL')
 
 if ($rs->RecordCount() == 0) {
 	set_page_message(tr('Permission deny!'));
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 $hpid = $rs->fields['plan_id'];
@@ -90,15 +88,13 @@ $_SESSION["ch_hpprops"] = $props;
 
 if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
 	set_page_message(tr("Order Canceled: resellers maximum exceeded!"));
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 if (!empty($err_msg)) {
 	set_page_message($err_msg);
 	unset($_SESSION['domain_ip']);
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 unset($_SESSION["ch_hpprops"]);
 
@@ -241,12 +237,10 @@ if (empty($ed_error)) {
 	";
 	exec_query($sql, $query, array('added', $order_id));
 	set_page_message(tr('Domain properties updated successfully!'));
-	header('Location: users.php');
-	die();
+	user_goto('users.php');
 } else {
 	set_page_message($ed_error);
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {

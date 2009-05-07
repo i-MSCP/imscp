@@ -254,8 +254,7 @@ SQL_QUERY;
 	write_log("$admin_login: add domain alias: $alias_name");
 
 	$_SESSION["aladd"] = '_yes_';
-	header("Location: alias.php");
-	die();
+	user_goto('alias.php');
 } // End of add_domain_alias();
 
 function gen_users_list(&$tpl, $reseller_id) {
@@ -279,8 +278,7 @@ SQL_QUERY;
 
 	if ($ar->RowCount() == 0) {
 		set_page_message(tr('You have no user records.'));
-		header("Location: alias.php");
-		die();
+		user_goto('alias.php');
 		$tpl->assign('USER_ENTRY', '');
 		return false;
 	}

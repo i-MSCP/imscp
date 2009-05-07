@@ -62,8 +62,7 @@ function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 	$rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
 
 	if ($rs->RecordCount() == 0) {
-		header('Location: protected_user_manage.php');
-		die();
+		user_goto('protected_user_manage.php');
 	} else {
 		return $rs->fields['uname'];
 	}
@@ -85,8 +84,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
 		$tpl->assign('UID', $uuser_id);
 	} else {
-		header('Location: protected_user_manage.php');
-		die();
+		user_goto('protected_user_manage.php');
 	}
 	// get groups
 	$query = "
@@ -102,8 +100,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('You have no groups!'));
-		header('Location: protected_user_manage.php');
-		die();
+		user_goto('protected_user_manage.php');
 	} else {
 		$added_in = 0;
 		$not_added_in = 0;

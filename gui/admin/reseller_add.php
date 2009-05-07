@@ -303,8 +303,7 @@ function add_reseller(&$tpl, &$sql) {
 
 			$_SESSION['reseller_added'] = 1;
 
-			header("Location: manage_users.php");
-			die();
+			user_goto('manage_users.php');
 		} else {
 			$tpl->assign(
 				array(

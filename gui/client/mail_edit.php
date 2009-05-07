@@ -34,8 +34,7 @@ $tpl->define_dynamic('forward_mail', 'page');
 function edit_mail_account(&$tpl, &$sql) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Email account not found!'));
-		header('Location: mail_accounts.php');
-		die();
+		user_goto('mail_accounts.php');
 	} else {
 		$mail_id = $_GET['id'];
 	}
@@ -60,8 +59,7 @@ function edit_mail_account(&$tpl, &$sql) {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: mail_accounts.php');
-		die();
+		user_goto('mail_accounts.php');
 	} else {
 		$mail_acc = $rs->fields['mail_acc'];
 		$domain_id = $rs->fields['domain_id'];
@@ -308,8 +306,7 @@ edit_mail_account($tpl, $sql);
 if (update_email_pass($sql) && update_email_forward($tpl, $sql)) {
 	set_page_message(tr("Mail were updated successfully!"));
 	send_request();
-	header("Location: mail_accounts.php");
-	die();
+	user_goto('mail_accounts.php');
 }
 
 // static page messages.

@@ -24,14 +24,12 @@ check_login(__FILE__);
 
 /* Do we have a proper delete_id? */
 if (!isset($_GET['delete_id'])) {
-	header("Location: ip_manage.php");
-	die();
+	user_goto('ip_manage.php');
 }
 
 if (!is_numeric($_GET['delete_id'])) {
 	set_page_message(tr('You cannot delete the last active IP address!'));
-	header("Location: ip_manage.php");
-	die();
+	user_goto('ip_manage.php');
 }
 
 $delete_id = $_GET['delete_id'];
@@ -53,8 +51,7 @@ if ($rs->fields['dcnt'] > 0) {
 
 	set_page_message(tr('Error: we have a domain using this IP!'));
 
-	header("Location: ip_manage.php");
-	die();
+	user_goto('ip_manage.php');
 }
 // check if the IP is assigned to reseller
 $query = "SELECT `reseller_ips` FROM `reseller_props`";
@@ -64,8 +61,7 @@ $res = exec_query($sql, $query, array());
 while (($data = $res->FetchRow())) {
 	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
 		set_page_message(tr('Error: we have a reseller using this IP!'));
-		header("Location: ip_manage.php");
-		die();
+		user_goto('ip_manage.php');
 	}
 }
 
@@ -103,5 +99,4 @@ send_request();
 
 set_page_message(tr('IP was deleted!'));
 
-header("Location: ip_manage.php");
-die();
+user_goto('ip_manage.php');

@@ -689,9 +689,14 @@ function user_trans_mail_type($mail_type) {
 	}
 }
 
+/**
+ * goto the given destination file 
+ *
+ * @param string $dest destination for header location (path + filename + params)
+ */
 function user_goto($dest) {
-	header("Location: $dest");
-	exit(0);
+	header('Location: ' . $dest);
+	die();
 }
 
 function count_sql_user_by_name(&$sql, $sqlu_name) {
@@ -818,8 +823,7 @@ function check_usr_sql_perms(&$sql, $db_user_id) {
 	if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: sql_manage.php');
-		die();
+		user_goto('sql_manage.php');
 	}
 }
 
@@ -827,8 +831,7 @@ function check_db_sql_perms(&$sql, $db_id) {
 	if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: sql_manage.php');
-		die();
+		user_goto('sql_manage.php');
 	}
 }
 
@@ -836,8 +839,7 @@ function check_ftp_perms($sql, $ftp_acc) {
 	if (who_owns_this($ftp_acc, 'ftp_user') != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: ftp_accounts.php');
-		die();
+		user_goto('ftp_accounts.php');
 	}
 }
 

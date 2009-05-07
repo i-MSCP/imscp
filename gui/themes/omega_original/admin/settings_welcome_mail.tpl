@@ -67,6 +67,11 @@
                               <td class="content2">{TR_BASE_SERVER_VHOST}</td>
                               <td class="content">{BASE_SERVER_VHOST}</td>
                             </tr>
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td class="content2">{TR_BASE_SERVER_VHOST_PREFIX}</td>
+                              <td class="content">{BASE_SERVER_VHOST_PREFIX}</td>
+                            </tr>
                           </table>
                         <br />
                           <table width="100%" cellpadding="5" cellspacing="5">

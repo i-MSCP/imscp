@@ -28,8 +28,7 @@ if (isset($_GET['id'])) {
 	$usid = $_GET['id'];
 } else {
 	$_SESSION['user_deleted'] = '_no_';
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 $reseller_id = $_SESSION['user_id'];
@@ -47,14 +46,12 @@ SQL_QUERY;
 $res = exec_query($sql, $query, array($usid, $reseller_id));
 
 if ($res->RowCount() !== 1) {
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 } else {
 	// delete the user
 	rm_rf_user_account ($usid);
 	check_for_lock_file();
 	send_request();
 	set_page_message(tr('User terminated!'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }

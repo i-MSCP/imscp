@@ -49,8 +49,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 
 	$day = $_GET['day'];
 } else {
-	header("Location: server_statistic.php");
-	die();
+	user_goto('server_statistic.php');
 }
 
 function generate_page(&$tpl) {

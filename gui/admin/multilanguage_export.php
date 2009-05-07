@@ -45,8 +45,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr("Incorrect data input!"));
-		header("Location: multilanguage.php");
-		die();
+		user_goto('multilanguage.php');
 	} else {
 		$GLOBALS['class']['output']->showSize = false;
 		header('Content-type: text/plain; charset=' . $encoding);
@@ -61,6 +60,5 @@ SQL_QUERY;
 	}
 } else {
 	set_page_message(tr("Incorrect data input!"));
-	header("Location: multilanguage.php");
-	die();
+	user_goto('multilanguage.php');
 }

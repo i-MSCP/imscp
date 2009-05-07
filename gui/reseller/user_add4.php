@@ -64,8 +64,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 	// check main domain status
 	$ok_status = Config::get('ITEM_OK_STATUS');
@@ -85,13 +84,11 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 	$rs = exec_query($sql, $query, array($domain_id, $ok_status, $add_status));
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('System error with Domain ID ') . "$domain_id");
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 } else {
 	set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-	header('Location: users.php');
-	die();
+	user_goto('users.php');
 }
 
 $err_txt = '_off_';

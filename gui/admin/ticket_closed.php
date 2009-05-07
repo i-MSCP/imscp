@@ -23,8 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header('Location: index.php');
-	die();
+	user_goto('index.php');
 }
 
 $tpl = new pTemplate();

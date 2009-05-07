@@ -51,8 +51,7 @@ SQL_QUERY;
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
-		header('Location: domains_manage.php');
-		exit(0);
+		user_goto('domains_manage.php');
 	}
 
 	check_for_lock_file();
@@ -70,10 +69,8 @@ SQL_QUERY;
 	send_request();
 	write_log($_SESSION['user_logged'].": deletes subdomain: ".$sub_name);
 	set_page_message(tr('Subdomain scheduled for deletion!'));
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 
 } else {
-	header('Location: domains_manage.php');
-	exit(0);
+	user_goto('domains_manage.php');
 }

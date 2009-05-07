@@ -159,8 +159,7 @@ function add_user(&$tpl, &$sql) {
 
 			$_SESSION['user_added'] = 1;
 
-			header("Location: manage_users.php");
-			die();
+			user_goto('manage_users.php');
 		} else { // check user data
 			$tpl->assign(
 				array(

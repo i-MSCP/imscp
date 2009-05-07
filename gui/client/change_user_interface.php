@@ -33,6 +33,5 @@ if (isset($_SESSION['logged_from'])
 	change_user_interface($from_id, $to_id);
 
 } else {
-	header('Location: index.php');
-	die();
+	user_goto('index.php');
 }

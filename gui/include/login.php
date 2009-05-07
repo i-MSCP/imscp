@@ -147,8 +147,7 @@ SQL_QUERY;
 	if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && $user_type != 'admin') {
 		unset_user_login_data(true);
 		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
-		header("Location: /index.php");
-		die();
+		user_goto('/index.php');
 	}
 	/* if user login data correct - update session and lastaccess */
 	$_SESSION['user_login_time'] = time();
@@ -176,8 +175,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 	// session-type check:
 	if (!check_user_login()) {
-		header("Location: /index.php");
-		die();
+		user_goto('/index.php');
 	}
 
 	if ($fName != null) {
@@ -191,8 +189,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 			case 'reseller':
 				if ($level != $_SESSION['user_type']) {
 					write_log('Warning! user |'.$_SESSION['user_logged'].'| requested |'.$_SERVER["REQUEST_URI"].'| with REQUEST_METHOD |'.$_SERVER["REQUEST_METHOD"].'|');
-					header("Location: /index.php");
-					die();
+					user_goto('/index.php');
 				}
 				break;
 		}
@@ -375,5 +372,5 @@ function redirect_to_level_page($file = null, $force = false) {
 			die("FIXME! " . __FILE__ . ":" . __LINE__);
 			break;
 	}
-	exit();
+	die();
 }

@@ -200,8 +200,8 @@ class spOutput {
 		}
 
 		/* Send the special header */
-		header('Content-Encoding: '.$this->encoding);
-		header('Content-Length: '.$this->gzsize);
+		header('Content-Encoding: ' . $this->encoding);
+		header('Content-Length: ' . $this->gzsize);
 
 		/* Exit the class and send all data to the browser */
 		return $this->gzdata;

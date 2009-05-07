@@ -23,8 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
-	header('Location: index.php');
-	die();
+	user_goto('index.php');
 }
 
 $tpl = new pTemplate();
@@ -312,7 +311,6 @@ function save_data_to_db(&$tpl, $admin_id) {
 		$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
 		$_SESSION['hp_added'] = '_yes_';
-		header("Location: hosting_plan.php");
-		die();
+		user_goto('hosting_plan.php');
 	}
 } // end of save_data_to_db()

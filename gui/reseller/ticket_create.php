@@ -71,7 +71,7 @@ SQL_QUERY;
 
 	set_page_message(tr('Message was sent.'));
 	send_tickets_msg($user_created_by, $user_id, $subject, $user_message, $ticket_reply, $urgency);
-	header("Location: ticket_system.php");
+	header('Location: ticket_system.php');
 }
 
 // common page data.
@@ -90,8 +90,7 @@ $tpl->assign(
 // dynamic page data.
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header("Location: index.php");
-	die();
+	user_goto('index.php');
 }
 
 send_user_message($sql, $_SESSION['user_id'], $_SESSION['user_created_by']);

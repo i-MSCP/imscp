@@ -76,9 +76,10 @@ if (isset($_GET['key'])) {
 		$tpl->parse('PAGE', 'page');
 		$tpl->prnt();
 
-		if (Config::get('DUMP_GUI_DEBUG'))
+		if (Config::get('DUMP_GUI_DEBUG')) {
 			dump_gui_debug();
-		exit(0);
+		}
+		die();
 	}
 }
 
@@ -127,9 +128,10 @@ if (isset($_POST['uname'])) {
 		$tpl->parse('PAGE', 'page');
 		$tpl->prnt();
 
-		if (Config::get('DUMP_GUI_DEBUG'))
+		if (Config::get('DUMP_GUI_DEBUG')) {
 			dump_gui_debug();
-		exit(0);
+		}
+		die();
 	}
 }
 

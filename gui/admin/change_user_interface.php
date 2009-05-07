@@ -36,6 +36,5 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 
 	change_user_interface($from_id, $to_id);
 } else {
-	header('Location: manage_users.php');
-	die();
+	user_goto('manage_users.php');
 }

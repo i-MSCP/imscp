@@ -179,8 +179,7 @@ function check_sql_permissions($sql, $user_id) {
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
 		set_page_message(tr('SQL accounts limit reached!'));
-		header("Location: sql_manage.php");
-		die();
+		user_goto('sql_manage.php');
 	}
 }
 

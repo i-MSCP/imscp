@@ -72,8 +72,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'));
-		header("Location: mail_catchall.php");
-		die();
+		user_goto('mail_catchall.php');
 	}
 
 	$ok_status = Config::get('ITEM_OK_STATUS');

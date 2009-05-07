@@ -73,8 +73,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
 			set_page_message(tr('SQL users limit reached!'));
-			header("Location: sql_manage.php");
-			die();
+			user_goto('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
 		}
@@ -100,8 +99,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		header('Location: sql_manage.php');
-		die();
+		user_goto('sql_manage.php');
 	}
 }
 

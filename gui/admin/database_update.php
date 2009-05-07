@@ -94,7 +94,7 @@ if ($execute) {
 	if (databaseUpdate::getInstance()->getErrorMessage() != "") {
 		system_message(databaseUpdate::getInstance()->getErrorMessage());
 	}
-	header('Location:' . $_SERVER['PHP_SELF']);
+	header('Location: ' . $_SERVER['PHP_SELF']);
 }
 
 $tpl->parse('PAGE', 'page');

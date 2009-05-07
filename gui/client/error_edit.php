@@ -58,8 +58,7 @@ $tpl->assign(
 
 if (!isset($_GET['eid'])) {
 	set_page_message(tr('Server error - please choose error page'));
-	header("Location: error_pages.php");
-	die();
+	user_goto('error_pages.php');
 } else {
 	$eid = intval($_GET['eid']);
 }

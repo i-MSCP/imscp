@@ -199,8 +199,7 @@ function check_address_data(&$tpl) {
 			$_SESSION['fax'] = clean_input($_POST['fax'], true);
 		}
 
-		header("Location: chart.php");
-		die();
+		user_goto('chart.php');
 	} else {
 		set_page_message(tr('Please fill out all needed fields!'));
 		$_GET['edit'] = "yes";
@@ -238,8 +237,7 @@ if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	&& (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
 	&& !isset($_GET['edit'])
 	) {
-	header("Location: chart.php");
-	die();
+	user_goto('chart.php');
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);

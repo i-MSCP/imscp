@@ -30,8 +30,7 @@ if (isset($_GET['domain_id']))
 	$del_id = $_GET['domain_id'];
 else {
 	set_page_message(tr('Wrong domain ID!'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 /* check for domain owns */
@@ -40,8 +39,7 @@ $res = exec_query($sql, $query, array($del_id, $reseller));
 $data = $res->FetchRow();
 if ($data['domain_id'] == 0) {
 	set_page_message(tr('Wrong domain ID!'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 /* check for mail acc in MAIN domain */
@@ -51,8 +49,7 @@ $data = $res->FetchRow();
 if ($data['mailnum'] > 0) {
 	/* ERROR - we have mail acc in this domain */
 	set_page_message(tr('Domain you are trying to remove has email accounts !<br> first remove them !'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 /* check for ftp acc in MAIN domain */
@@ -62,8 +59,7 @@ $data = $res->FetchRow();
 if ($data['ftpnum'] > 0) {
 	/* ERROR - we have ftp acc in this domain */
 	set_page_message(tr('Domain you are trying to remove has FTP accounts !<br> first remove them !'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 /* check for alias domains */
@@ -73,8 +69,7 @@ $data = $res->FetchRow();
 if ($data['aliasnum'] > 0) {
 	/* ERROR - we have domain aliases for this domain */
 	set_page_message(tr('Domain you are trying to remove has domain alias!<br> first remove them !'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 /* check for subdomains */
@@ -84,8 +79,7 @@ $data = $res->FetchRow();
 if ($data['subnum'] > 0) {
 	/* ERROR - we have subdomain for this domain */
 	set_page_message(tr('Domain you are trying to remove has subdomains accounts !<br> first remove them !'));
-	header("Location: users.php");
-	die();
+	user_goto('users.php');
 }
 
 substract_from_reseller_props($_SESSION['user_id'], $del_id);
@@ -110,8 +104,7 @@ $res = exec_query($sql, $query, array($dat['domain_admin_id']));
 write_log($_SESSION['user_logged'] .": deletes domain " . $dat['domain_name']);
 
 $_SESSION['ddel'] = '_yes_';
-header("Location: users.php");
-die();
+user_goto('users.php');
 
 // Function declaration
 

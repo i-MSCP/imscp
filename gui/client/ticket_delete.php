@@ -40,8 +40,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 	if ($rs->RecordCount() == 0) {
-		header('Location: ticket_system.php');
-		die();
+		user_goto('ticket_system.php');
 	}
 
 	$back_url = ($rs->fields['ticket_status'] == 0) ? "ticket_closed.php" : "ticket_system.php";

@@ -30,9 +30,9 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-	header("Location: users.php");
-	die();
+if (Config::exists('HOSTING_PLANS_LEVEL')
+	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	user_goto('users.php');
 }
 
 $tpl->assign(
@@ -94,14 +94,12 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		unset($_SESSION['edit_id']);
 		$_SESSION['edit'] = '_no_';
 
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 
 	if (check_user_data($tpl, $sql, $_SESSION['user_id'], $editid)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
-		header("Location: users.php");
-		die();
+		user_goto('users.php');
 	}
 	load_additional_data($_SESSION['user_id'], $editid);
 } else {
@@ -149,8 +147,7 @@ function load_user_data($user_id, $domain_id) {
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		header('Location: users.php');
-		die();
+		user_goto('users.php');
 	}
 
 	list($a, $sub,

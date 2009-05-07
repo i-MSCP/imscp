@@ -28,8 +28,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	header("Location: orders.php");
-	die();
+	user_goto('orders.php');
 }
 
 if (Config::exists('HOSTING_PLANS_LEVEL')
@@ -61,8 +60,7 @@ if (Config::exists('HOSTING_PLANS_LEVEL')
 
 if ($rs->RecordCount() == 0 || !isset($_SESSION['domain_ip'])) {
 	set_page_message(tr('Permission deny!'));
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 $domain_ip		= $_SESSION['domain_ip'];
@@ -100,15 +98,13 @@ $_SESSION["ch_hpprops"] = $props;
 
 if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
 	set_page_message(tr("Order Canceled: resellers maximum exceeded!"));
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 if (!empty($err_msg)) {
 	set_page_message($err_msg);
 	unset($_SESSION['domain_ip']);
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 unset($_SESSION["ch_hpprops"]);
 list($php, $cgi, $sub,
@@ -127,14 +123,12 @@ $inpass = crypt_user_pass($pure_user_pass);
 if (!chk_dname($dmn_user_name)) {
 	set_page_message(tr('Wrong domain name syntax!'));
 	unset($_SESSION['domain_ip']);
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 if (ispcp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 	set_page_message(tr('Domain with that name already exists on the system!'));
 	unset($_SESSION['domain_ip']);
-	header('Location: orders.php');
-	die();
+	user_goto('orders.php');
 }
 
 check_for_lock_file();
@@ -295,5 +289,4 @@ exec_query($sql, $query, array('added', $order_id));
 
 unset($_SESSION['domain_ip']);
 
-header("Location: users.php");
-die();
+user_goto('users.php');

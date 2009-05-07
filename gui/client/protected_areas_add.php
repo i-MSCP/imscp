@@ -166,8 +166,7 @@ SQL_QUERY;
 		set_page_message(tr('Protected area created successfully!'));
 	}
 
-	header("Location: protected_areas.php");
-	die();
+	user_goto('protected_areas.php');
 }
 
 function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
@@ -204,8 +203,7 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($dmn_id, $ht_id));
 
 		if ($rs->RecordCount() == 0) {
-			header('Location: protected_areas_add.php');
-			die();
+			user_goto('protected_areas_add.php');
 		}
 
 		$user_id = $rs->fields['user_id'];
@@ -216,8 +214,7 @@ SQL_QUERY;
 		$ok_status = Config::get('ITEM_OK_STATUS');
 		if ($status !== $ok_status) {
 			set_page_message(tr('Protected area status should be OK if you want to edit it!'));
-			header("Location: protected_areas.php");
-			die();
+			user_goto('protected_areas.php');
 		}
 
 		$tpl->assign(

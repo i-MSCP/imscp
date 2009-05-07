@@ -23,8 +23,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header('Location: index.php');
-	die();
+	user_goto('index.php');
 }
 
 $tpl = new pTemplate();
@@ -377,8 +376,7 @@ if (isset($_GET['ticket_id'])) {
 } else {
 	set_page_message(tr('Ticket not found!'));
 
-	header("Location: ticket_system.php");
-	die();
+	user_goto('ticket_system.php');
 }
 // static page messages.
 

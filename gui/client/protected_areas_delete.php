@@ -49,8 +49,7 @@ SQL_QUERY;
 	$ok_status = Config::get('ITEM_OK_STATUS');
 	if ($status !== $ok_status) {
 		set_page_message(tr('Protected area status should be OK if you want to delete it!'));
-		header("Location: protected_areas.php");
-		die();
+		user_goto('protected_areas.php');
 	}
 
 	$query = <<<SQL_QUERY

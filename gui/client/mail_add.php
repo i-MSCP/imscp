@@ -424,8 +424,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 	write_log($_SESSION['user_logged'] . ": adds new mail account: " . (isset($mail_addr) ? $mail_addr : $mail_acc));
 	set_page_message(tr('Mail account scheduled for addition!'));
 	send_request();
-	header("Location: mail_accounts.php");
-	exit(0);
+	user_goto('mail_accounts.php');
 }
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
@@ -568,8 +567,7 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'));
-		header("Location: mail_accounts.php");
-		die();
+		user_goto('mail_accounts.php');
 	} else {
 		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
 		gen_page_form_data($tpl, $dmn_name, $post_check);

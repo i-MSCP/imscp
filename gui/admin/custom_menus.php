@@ -59,8 +59,7 @@ SQL_QUERY;
 					'MENU_NAME'			=> $menu_name,
 					'MENU_NAME2'		=> addslashes(clean_html($menu_name)),
 					'LINK'				=> $menu_link,
-					'CONTENT'			=> ($i % 2 == 0) ? 'content' : 'content2',
-					'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),
+					'CONTENT'			=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
 
@@ -322,7 +321,8 @@ $tpl->assign(
 		'TR_DELETE' => tr('Delete'),
 		'TR_LEVEL' => tr('Level'),
 		'TR_SAVE' => tr('Save'),
-		'TR_EDIT_BUTTON' => tr('Edit button')
+		'TR_EDIT_BUTTON' => tr('Edit button'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s')
 	)
 );
 

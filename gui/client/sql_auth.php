@@ -76,14 +76,12 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 
 function auth_error() {
 	set_page_message(tr("Error while authenticating!"));
-	header("Location: sql_manage.php");
-	die();
+	user_goto('sql_manage.php');
 }
 
 // check User sql permission
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	header("Location: index.php");
-	exit;
+	user_goto('index.php');
 }
 
 if (isset($_GET['id'])) {

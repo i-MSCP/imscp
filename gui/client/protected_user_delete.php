@@ -29,8 +29,7 @@ if (isset($_GET['uname'])
 	&& is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 } else {
-	header('Location: protected_areas.php');
-	die();
+	user_goto('protected_areas.php');
 }
 
 $query = "
@@ -146,5 +145,4 @@ check_for_lock_file();
 send_request();
 
 write_log("$admin_login: deletes user ID (protected areas): $uname");
-header("Location: protected_user_manage.php");
-die();
+user_goto('protected_user_manage.php');

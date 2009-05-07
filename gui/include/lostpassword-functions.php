@@ -140,7 +140,9 @@ SQL_QUERY;
 function setPassword($uniqkey, $upass) {
 	$sql = Database::getInstance();
 
-	if ($uniqkey == '') { exit; }
+	if ($uniqkey == '') {
+		die();
+	}
 
 	$query = <<<SQL_QUERY
 		UPDATE

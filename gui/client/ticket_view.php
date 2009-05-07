@@ -323,8 +323,7 @@ function open_ticket(&$sql, $ticket_id) {
 // dynamic page data.
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header("Location: index.php");
-	die();
+	user_goto('index.php');
 }
 
 $reseller_id = $_SESSION['user_created_by'];
@@ -347,8 +346,7 @@ if (isset($_GET['ticket_id'])) {
 	gen_tickets_list($tpl, $sql, $ticket_id, $screenwidth);
 } else {
 	set_page_message(tr('Ticket not found!'));
-	header("Location: ticket_system.php");
-	die();
+	user_goto('ticket_system.php');
 }
 
 // static page messages.

@@ -156,8 +156,7 @@ $tpl->assign(
 // dynamic page data.
 
 if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
-	header("Location: index.php");
-	die();
+	user_goto('index.php');
 }
 
 gen_tickets_list($tpl, $sql, $_SESSION['user_id']);

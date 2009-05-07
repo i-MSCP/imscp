@@ -132,8 +132,7 @@ function check_user_data() {
 		$_SESSION['chtpl']		= $dmn_pt;
 		$_SESSION['step_one']	= "_yes_";
 
-		header("Location: user_add2.php");
-		die();
+		user_goto('user_add2.php');
 	} else {
 		// check if reseller limits are not touched
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], $dmn_chp)) {
@@ -143,8 +142,7 @@ function check_user_data() {
 			$_SESSION['chtpl']		= $dmn_pt;
 			$_SESSION['step_one']	= "_yes_";
 
-			header("Location: user_add3.php");
-			die();
+			user_goto('user_add3.php');
 		} else {
 			set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 			return false;

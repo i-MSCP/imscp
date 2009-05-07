@@ -51,8 +51,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('Reseller or user list is empty!'));
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 
 	$reseller_id = $rs->fields['admin_id'];

@@ -121,8 +121,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 
 // check User sql permission
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	header("Location: index.php");
-	exit;
+	user_goto('index.php');
 }
 
 $theme_color = Config::get('USER_INITIAL_THEME');

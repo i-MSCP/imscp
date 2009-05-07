@@ -31,13 +31,11 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 /* Do we have a proper delete_id? */
 if (!isset($delete_id)) {
-	header("Location: mail_accounts.php");
-	die();
+	user_goto('mail_accounts.php');
 }
 
 if (!is_numeric($delete_id)) {
-	header("Location: mail_accounts.php");
-	die();
+	user_goto('mail_accounts.php');
 }
 
 $dmn_name = $_SESSION['user_logged'];
@@ -94,8 +92,7 @@ if ($num > 0) {
 	$catchall_assigned = 1;
 	set_page_message(tr('Please delete first CatchAll account for this email!'));
 	session_register("catchall_assigned");
-	header("Location: mail_accounts.php");
-	die();
+	user_goto('mail_accounts.php');
 }
 /* if we are locket wait to unlock */
 check_for_lock_file();
@@ -112,5 +109,4 @@ write_log("$admin_login: deletes mail account: " . $mail_name);
 $maildel = 1;
 session_register("maildel");
 
-header("Location: mail_accounts.php");
-die();
+user_goto('mail_accounts.php');

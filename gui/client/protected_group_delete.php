@@ -30,8 +30,7 @@ if (isset($_GET['gname'])
 	&& is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
-	header('Location: protected_areas.php');
-	die();
+	user_goto('protected_areas.php');
 }
 
 $change_status = Config::get('ITEM_DELETE_STATUS');
@@ -99,5 +98,4 @@ check_for_lock_file();
 send_request();
 
 write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id");
-header("Location: protected_user_manage.php");
-die();
+user_goto('protected_user_manage.php');

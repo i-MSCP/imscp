@@ -618,8 +618,7 @@ function update_reseller(&$sql) {
 			$_SESSION['user_updated'] = 1;
 			$_SESSION['reseller_ips'] = $reseller_ips;
 
-			header("Location: manage_users.php");
-			die();
+			user_goto('manage_users.php');
 		}
 	}
 }
@@ -650,8 +649,7 @@ function get_reseller_prop(&$sql) {
 	$rs = exec_query($sql, $query, array($edit_id));
 
 	if ($rs->RecordCount() <= 0) {
-		header('Location: manage_users.php');
-		die();
+		user_goto('manage_users.php');
 	}
 
 	return array(

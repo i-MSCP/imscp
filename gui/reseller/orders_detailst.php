@@ -58,8 +58,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	$rs = exec_query($sql, $query, array($order_id, $user_id));
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('Permission deny!'));
-		header("Location: orders.php");
-		die();
+		user_goto('orders.php');
 	}
 	$plan_id = $rs->fields['plan_id'];
 
@@ -197,8 +196,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	header("Location: orders.php");
-	die();
+	user_goto('orders.php');
 }
 
 if (isset($_POST['uaction'])) {
@@ -208,8 +206,7 @@ if (isset($_POST['uaction'])) {
 		set_page_message(tr('Order data updated successfully!'));
 	} else if ($_POST['uaction'] === 'add_user') {
 		$_SESSION['domain_ip'] = @$_POST['domain_ip'];
-		header("Location: orders_add.php?order_id=" . $order_id);
-		die();
+		user_goto('orders_add.php?order_id=' . $order_id);
 	}
 }
 

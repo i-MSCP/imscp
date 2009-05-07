@@ -157,8 +157,7 @@ function delete_service($port_name) {
 		set_page_message('ERROR: You are not allowed to remove this port entry!');
 	}
 
-	header("Location: settings_ports.php");
-	exit();
+	user_goto('settings_ports.php');
 }
 
 function show_services(&$tpl, &$sql) {
