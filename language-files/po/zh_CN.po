@@ -4072,6 +4072,13 @@ msgstr "支持 MySQL"
 msgid "Network interface"
 msgstr "切换用户界面"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "协议"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "请输入 SQL 查询语句！"
 

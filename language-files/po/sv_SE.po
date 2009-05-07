@@ -3991,6 +3991,12 @@ msgstr ""
 msgid "Network interface"
 msgstr ""
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+msgid "URL protocol"
+msgstr ""
+
 #~ msgid "SQL query"
 #~ msgstr "SQL fr�ga"
 

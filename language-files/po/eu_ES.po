@@ -4158,6 +4158,13 @@ msgstr "MySQL euskarria"
 msgid "Network interface"
 msgstr "Aldatu erabiltzaile interfazera"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protokoloa"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "MEsedez sartu SQL kontsulta!"
 

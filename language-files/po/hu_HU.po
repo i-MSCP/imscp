@@ -3313,7 +3313,8 @@ msgstr ""
 "Felhasználói neve: {USERNAME}\n"
 "Jelszava: {PASSWORD}\n"
 "\n"
-"Bejelentkezni a {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} weboldalon tud.\n"
+"Bejelentkezni a {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} weboldalon "
+"tud.\n"
 "\n"
 "Sok sikert kívánunk a vezérlőpult használatához!\n"
 "ispCP csapat\n"
@@ -4142,6 +4143,13 @@ msgstr "MySQL támogatás"
 #, fuzzy
 msgid "Network interface"
 msgstr "Váltás a felhasználó kezelőfelületére"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protokol"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Kérlek, írd be az SQL kérést!"

@@ -3253,7 +3253,8 @@ msgstr ""
 "Nu uita sa schimba parola din cand in cand si prima oara cand accesezi "
 "contul.\n"
 "\n"
-"Poti sa te autentifici imediat la {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"Poti sa te autentifici imediat la {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
 "\n"
 "Statistici: http://{USERNAME}/stats/\n"
 "Nume utilizator: {USERNAME}\n"
@@ -4140,6 +4141,13 @@ msgstr "Suport MySQL"
 #, fuzzy
 msgid "Network interface"
 msgstr "Schimba pe interfata utilizator"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protocol"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"

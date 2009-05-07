@@ -4140,6 +4140,13 @@ msgstr ""
 msgid "Network interface"
 msgstr "Skift til bruger interface"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protokol"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Indtast en SQL forspørgelse!"
 

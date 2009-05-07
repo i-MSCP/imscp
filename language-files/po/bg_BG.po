@@ -3298,7 +3298,8 @@ msgstr ""
 "\n"
 "Препоръчваме Ви да сменяте често вашата парола, след первото Ви влизане.\n"
 "\n"
-"Вие можете да влезете сега на адрес: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"Вие можете да влезете сега на адрес: {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
 "\n"
 "С най-добри пожелания ispCP!\n"
 "Екипът на ispCP.\n"
@@ -4182,6 +4183,13 @@ msgstr ""
 #, fuzzy
 msgid "Network interface"
 msgstr "Превключи на потребителски интерфейс"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Протокол"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Моля, въведете SQL заявка!"

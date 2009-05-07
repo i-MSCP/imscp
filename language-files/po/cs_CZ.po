@@ -3299,7 +3299,8 @@ msgstr ""
 "Vaše ispCP uživatelské jméno je: {USERNAME}\n"
 "Vaše ispCP heslo je: {PASSWORD}\n"
 "\n"
-"Můžete se přihlásit do systému na {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"Můžete se přihlásit do systému na {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
 "\n"
 "Přejeme mnoho zdaru se systémem ispCP!\n"
 "Tým ispCP.\n"
@@ -4119,6 +4120,13 @@ msgstr "podpora MySQL"
 #, fuzzy
 msgid "Network interface"
 msgstr "Přepnout do uživatelského rozhraní"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protocol"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Zadejte prosím SQL dotaz!"

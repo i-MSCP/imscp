@@ -4070,6 +4070,13 @@ msgstr "支援 MySQL"
 msgid "Network interface"
 msgstr "切換使用者介面"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "協議"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "請輸入 SQL 查詢語句！"
 

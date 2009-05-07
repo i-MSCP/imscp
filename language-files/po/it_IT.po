@@ -3265,7 +3265,8 @@ msgstr ""
 "\n"
 "Dopo il primo accesso, ricorda di cambiare la password.\n"
 "\n"
-"Per accedere al sistema clicca su {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"Per accedere al sistema clicca su {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
 "\n"
 "Statistiche: http://{USERNAME}/stats/\n"
 "Nome Utente: {USERNAME}\n"
@@ -4156,6 +4157,13 @@ msgstr "Supporto MySQL"
 #, fuzzy
 msgid "Network interface"
 msgstr "Passa a interfaccia utente"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protocollo"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Prego, inserire una query SQL!"

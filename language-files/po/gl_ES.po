@@ -4167,6 +4167,13 @@ msgstr "Soporte MySQL"
 msgid "Network interface"
 msgstr "Mudar á interface de usuario"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protocolo"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Por favor, insire unha consulta SQL!"
 

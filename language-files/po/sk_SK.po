@@ -4193,6 +4193,13 @@ msgstr ""
 msgid "Network interface"
 msgstr "Zmeniť užívateľské rozhranie"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protokol"
+
 #, fuzzy
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Prosím zadajte SQL príkaz!"

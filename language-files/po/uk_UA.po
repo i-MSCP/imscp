@@ -4118,6 +4118,13 @@ msgstr ""
 msgid "Network interface"
 msgstr "Змінити інтерфейс користувача"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Протокол"
+
 #, fuzzy
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Введіть запит SQL!"

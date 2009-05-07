@@ -3288,7 +3288,8 @@ msgstr ""
 "\n"
 "Рекомендуем вам сменить пароль сразу же после входа.\n"
 "\n"
-"Вы можете войти прямо сейчас по адресу: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"Вы можете войти прямо сейчас по адресу: {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
 "\n"
 "С наилучшими пожеланиями ispCP!\n"
 "Комманда ispCP.\n"
@@ -4165,6 +4166,13 @@ msgstr "Поддержка MySQL"
 #, fuzzy
 msgid "Network interface"
 msgstr "Переключить на интерфейс пользователя"
+
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Протокол"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Пожалуйста, введите SQL запрос!"

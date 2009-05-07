@@ -3990,5 +3990,11 @@ msgstr ""
 msgid "Network interface"
 msgstr ""
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+msgid "URL protocol"
+msgstr ""
+
 #~ msgid "Incorrect password length or syntax!"
 #~ msgstr "Comprimento incorreto da palavra chave ou sintaxe!"

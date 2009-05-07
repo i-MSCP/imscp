@@ -4150,6 +4150,13 @@ msgstr "MySQL ondersteuning"
 msgid "Network interface"
 msgstr "Verander naar gebruiks interface"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Protocol"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Vul aub een SQL query in!"
 

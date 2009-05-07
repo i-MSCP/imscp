@@ -4123,6 +4123,13 @@ msgstr "MySQLのサポート"
 msgid "Network interface"
 msgstr "ユーザインターフェースを変更"
 
+msgid "Allow adding records to DNS zone"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "プロトコル"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "SQLクエリーを入力してください！"
 
