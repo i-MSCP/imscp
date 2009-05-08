@@ -50,7 +50,7 @@ function curlang($newlang = null, $force = false) {
 		}
 	}
 
-	return ($_language !== null)? $_language : $language;
+	return ($_language !== null) ? $_language : $language;
 }
 
 /**

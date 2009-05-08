@@ -237,7 +237,7 @@ function gen_edituser_page(&$tpl) {
 			'VL_USR_FIRM'		=> empty($firm) ? '' : $firm,
 			'VL_USR_POSTCODE'	=> empty($zip) ? '' : $zip,
 			'VL_USRCITY'		=> empty($city) ? '' : $city,
-			'VL_USRSTATE'		=> empty($state)?'':$state,
+			'VL_USRSTATE'		=> empty($state) ?'':$state,
 			'VL_COUNTRY'		=> empty($country) ? '' : $country,
 			'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
 			'VL_STREET2'		=> empty($street_two) ? '' : $street_two,

@@ -266,7 +266,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			'VL_STATUS'					=> $dstatus,
 			'VL_PHP_SUPP'				=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_CGI_SUPP'				=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_DNS_SUPP'				=> ($data['domain_dns'] == 'yes')? tr('Enabled') : tr('Disabled'),
+			'VL_DNS_SUPP'				=> ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_MYSQL_SUPP'				=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
 			'VL_TRAFFIC_PERCENT'		=> $traffic_percent,
 			'VL_TRAFFIC_USED'			=> sizeit($domain_all_traffic),

@@ -243,7 +243,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 				array(
 					'HP_NAME'			=> $data['name'],
 					'CHN'				=> $data['id'],
-					'CH'.$data['id']	=> $data['id']==$dmn_chp?'selected="selected"':''
+					'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? 'selected="selected"' : ''
 				)
 			);
 			$tpl->parse('HP_ENTRY', '.hp_entry');

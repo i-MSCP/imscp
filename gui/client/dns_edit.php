@@ -35,11 +35,11 @@ $add_mode = preg_match('~dns_add.php~',$_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DNS_PAGE_TITLE'	=> $add_mode?tr('ispCP - Manage Domain Alias/Add DNS zone\'s record'):tr('ispCP - Manage Domain Alias/Edit DNS zone\'s record'),
+		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr('ispCP - Manage Domain Alias/Add DNS zone\'s record') : tr('ispCP - Manage Domain Alias/Edit DNS zone\'s record'),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
-		'ACTION_MODE'				=> $add_mode?'add':'edit'
+		'ACTION_MODE'				=> ($add_mode) ? 'add' : 'edit'
 	)
 );
 
@@ -78,7 +78,7 @@ gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_mana
 gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
-$tpl->assign($add_mode?'FORM_EDIT_MODE':'FORM_ADD_MODE', '');
+$tpl->assign(($add_mode) ? 'FORM_EDIT_MODE' : 'FORM_ADD_MODE', '');
 
 // "Modify" button has ben pressed
 $editid = null;
@@ -128,14 +128,16 @@ function mysql_get_enum(&$sql, $object, &$default = null) {
 	$res = exec_query($sql,"SHOW COLUMNS FROM ".$table." LIKE '".$col."'");
 	$row = $res->fetchRow();
 	$default = $row['Default'];
-	return ($row ? explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row['Type'])) : array(0 => 'None'));
+	return (($row)
+		? explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row['Type']))
+		: array(0 => 'None'));
 }
 
 function create_options($data, $value = null) {
 	$res = '';
 	reset($data);
 	foreach ($data as $item) {
-		$res .= '<option value="'.$item.'"'.($item==$value?' selected="selected"':'').'>'.$item.'</option>';
+		$res .= '<option value="'.$item.'"'.(($item == $value) ? ' selected="selected"' : '') . '>' . $item . '</option>';
 	}
 	return $res;
 }
@@ -456,7 +458,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 		$alias_id = $res->FetchRow();
 		$record_domain = $alias_id['domain_name'];
 		$alias_id = $alias_id['alias_id']; 
-		$alias_id = ($alias_id==0)?null:$alias_id;
+		$alias_id = ($alias_id == 0) ? null : $alias_id;
 	} else {
 		$res = exec_query($sql, "
 		SELECT
@@ -588,7 +590,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: ".($add_mode?'add new':' modify')." dns zone record.");
+		write_log("$admin_login: " . (($add_mode) ? 'add new' : ' modify' ) . " dns zone record.");
 
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");

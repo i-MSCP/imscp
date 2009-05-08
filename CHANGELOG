@@ -8,6 +8,7 @@ ispCP ω 1.0.1 Changelog
 	- GUI:
 		* code cleanup (some refactoring, coding style ...)
 		* added hint about {BASE_SERVER_VHOST_PREFIX} in table header
+		* added Zend as external repository into include library of ispCP GUI
 
 2009-05-07 Benedikt Heintel
 	- LANGUAGES:

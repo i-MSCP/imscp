@@ -67,7 +67,7 @@ class networkCard {
 			return false;
 		}
 
-		preg_match_all("/(?isU)([^ ]{1,}) {1,}.+(?:(?:\n\n)|$)/",$message,$this->interfaces_info);
+		preg_match_all("/(?isU)([^ ]{1,}) {1,}.+(?:(?:\n\n)|$)/", $message, $this->interfaces_info);
 		
 		foreach ($this->interfaces_info[0] as $a) {
 			if (preg_match("/inet addr\:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/",$a,$b)) {
