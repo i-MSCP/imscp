@@ -78,10 +78,10 @@ function action_delete(url, ip) {
 											<td class="{IP_CLASS}" nowrap="nowrap" align="center">{NETWORK_CARD}</td>
 											<td class="{IP_CLASS}" nowrap="nowrap" align="center">
 											<!-- BDP: ip_delete_show -->
-												-
+												{IP_ACTION}
 											<!-- EDP: ip_delete_show -->
 											<!-- BDP: ip_delete_link -->
-												<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="action_delete('ip_delete.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a>
+												<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="action_delete('{IP_ACTION_SCRIPT}', '{IP}')"  title="{IP_ACTION}" class="link">{IP_ACTION}</a>
 											<!-- EDP: ip_delete_link -->
 											</td>
 										</tr>

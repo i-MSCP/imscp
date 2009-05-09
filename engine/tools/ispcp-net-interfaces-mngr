@@ -106,7 +106,7 @@ sub virtual_netcard_remove(){
 
 	push_el(\@main::el, 'virtual_netcard_remove()', 'Starting...');
 
-	my $sql = "SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips` WHERE `ip_number` != '$main::cfg{'BASE_SERVER_IP'}';";
+	my $sql = "SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips` WHERE `ip_number` != '$main::cfg{'BASE_SERVER_IP'}' AND `ip_status` !='toadd';";
 
 	($rs, $ref) = doSQL($sql);
 	return $rs if ($rs != 0);

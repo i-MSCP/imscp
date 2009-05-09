@@ -48,14 +48,12 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp;
 	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp;
 
-	# if: Ubuntu 6.06 (dapper)
-	# else: Ubuntu >= 6.10
 	if [ $(RELEASE) = 'dapper' ] ; then \
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
-	elif [ $(RELEASE) = 'interpid' ] ; then \
-		cp ./proftpd1.3.conf.interpid $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-		cp ./proftpd1.3.conf.interpid $(ROOT_CONF)/proftpd/proftpd.conf ; \
+	elif [ $(RELEASE) = 'intrepid' ] || [ $(RELEASE) = 'jaunty' ] ; then \
+		cp ./proftpd1.3.intrepid.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
+		cp ./proftpd1.3.intrepid.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
 	else \
 		if test -e /etc/proftpd.conf; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \

@@ -45,6 +45,14 @@ $tpl->assign(
 	)
 );
 
+function gen_ip_action($ip_id, $status) {
+	if ($status === Config::get('ITEM_OK_STATUS')) {
+		return array(tr('Remove IP'), 'ip_delete.php?delete_id='.$ip_id);
+	} else {
+		return array(tr('N/A'), '#');
+	}
+}
+
 function show_IPs(&$tpl, &$sql) {
 	$query = "
 		SELECT
@@ -64,6 +72,8 @@ function show_IPs(&$tpl, &$sql) {
 	while (!$rs->EOF) {
 		$tpl->assign('IP_CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
+		list($ip_action, $ip_action_script) = gen_ip_action($rs->fields['ip_id'], $rs->fields['ip_status']);
+
 		$tpl->assign(
 			array(
 				'IP'			=> $rs->fields['ip_number'],
@@ -76,8 +86,8 @@ function show_IPs(&$tpl, &$sql) {
 		if ($single == true) {
 			$tpl->assign(
 				array(
-					'IP_DELETE_LINK' => '',
-					'TR_UNINSTALL' => ''
+					'IP_DELETE_LINK' =>'',
+					'IP_ACTION' => tr('N/A')
 				)
 			);
 			$tpl->parse('IP_DELETE_SHOW', 'ip_delete_show');
@@ -85,8 +95,8 @@ function show_IPs(&$tpl, &$sql) {
 			$tpl->assign(
 				array(
 					'IP_DELETE_SHOW'	=> '',
-					'TR_UNINSTALL'		=> tr('Remove IP'),
-					'DELETE_ID'			=> $rs->fields['ip_id']
+					'IP_ACTION'			=> ( Config::get('BASE_SERVER_IP') == $rs->fields['ip_number'] ) ? tr('N/A') : $ip_action,
+					'IP_ACTION_SCRIPT'	=> ( Config::get('BASE_SERVER_IP') == $rs->fields['ip_number'] ) ? '#' : $ip_action_script
 				)
 			);
 			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
@@ -111,7 +121,7 @@ function add_ip(&$tpl, &$sql) {
 					(?, ?, ?, ?, ?, ?)
 			";
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::get('ITEM_CHANGE_STATUS')));
+			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::get('ITEM_ADD_STATUS')));
 
 			check_for_lock_file();
 			send_request();
