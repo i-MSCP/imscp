@@ -354,6 +354,9 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 			} else if ($value === '') {
 				set_page_message(tr("Mail forward list empty!"));
 				return false;
+			} else if ($mail_acc.'@'.decode_idna($dmn_name) == $value){
+				set_page_message(tr("Forward to same address is not allowed!"));
+				return false;
 			}
 			$mail_accs[] = $value;
 		}

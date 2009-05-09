@@ -38,7 +38,7 @@ function gen_directories(&$tpl) {
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
 	// Create the virtual file system and open it so it can be used
-	$vfs = &new vfs($domain, $sql);
+	$vfs = new vfs($domain, $sql);
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {

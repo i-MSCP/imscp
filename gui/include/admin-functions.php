@@ -1880,6 +1880,11 @@ function rm_rf_user_account($id_user) {
 	$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
 
+	// let's delete all alises subdomains for this user
+	$delete_status = Config::get('ITEM_DELETE_STATUS');
+	$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
+	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
+
 	// let's delete all domain aliases for this user
 	$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));

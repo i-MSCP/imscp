@@ -381,7 +381,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 		$ftp_home = str_replace('//', '/', $ftp_home);
 		// Check for $ftp_vhome existence
 		// Create a virtual filesystem (it's important to use =&!)
-		$vfs =& new vfs($dmn_name, $sql);
+		$vfs = new vfs($dmn_name, $sql);
 		// Check for directory existence
 		$res = $vfs->exists($ftp_vhome);
 

@@ -6,6 +6,8 @@ ispCP ω 1.0.1 Changelog
 		* Repair support for Ubuntu
 	- GUI:
 		* Improve ip management
+		* Fixed #1826: Alias Subdomains aren't deleted from DB
+		* Fixed #1820: Email forward validation missing
 
 2009-05-07 Thomas Häber
 	- LANGUAGES:
