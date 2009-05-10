@@ -27,7 +27,7 @@
 #
 
 # @author Daniel Andreca, sci2tech@gmail.com
-# @version $Id: ispcp-net-interfaces-mngr,v 1.0 2009/05/01 19:20:20 sci2tech Exp $
+# @version $Id$
 
 use FindBin;
 use lib "$FindBin::Bin/..";
