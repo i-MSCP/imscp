@@ -92,7 +92,7 @@ $query = "
 		`ip_id` = ?
 	LIMIT 1
 ";
-$rs = exec_query($sql, $query, array(Config::get('ITEM_DELETE_STATUS'),$delete_id));
+$rs = exec_query($sql, $query, array(Config::get('ITEM_DELETE_STATUS'), $delete_id));
 
 check_for_lock_file();
 send_request();

@@ -3999,6 +3999,17 @@ msgstr "Erlaube das Hinzufügen von DNS-Einträgen"
 msgid "URL protocol"
 msgstr "URL-Protokoll"
 
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "Die Datei %s existiert nicht oder kann nicht gelesen werden!"
+
+msgid "Error while trying to obtain list of network cards!"
+msgstr "Fehler beim Beziehen der Liste von Netzwerkkarten!"
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "Diese IP (%s) ist keiner Netzwerkkarte zugeordnet!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"
 #~ msgid "Could not connect to the SQL server as %s!"

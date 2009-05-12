@@ -40,24 +40,29 @@ class networkCard {
 		$this->_getInterface();
 		$this->_populateInterfaces();
 	}
-	function read( $filename ) {
-		if ( ($result = @file_get_contents($filename)) ===false ) {
-			$this->errors .= sprintf(tr("File %s do not exists or can not be reach!\n"), $filename);
+
+	function read($filename) {
+		if (($result = @file_get_contents($filename)) === false) {
+			$this->errors .= sprintf(tr("File %s does not exists or cannot be reached!"), $filename);
 			return '';
+		} else {
+			return $result;
 		}
-		else return $result;
 	}
-	function network () {
-		$file = $this->read( '/proc/net/dev' );
+
+	function network() {
+		$file = $this->read('/proc/net/dev');
 		preg_match_all('/(.+):.+/', $file, $dev_name);
 		return $dev_name[1];
 	}
+
 	protected function _getInterface() {
 		$interfaces_info = array();
 		foreach ($this->network() as $key => $value) {
-			$this->interfaces[]=trim($value);
+			$this->interfaces[] = trim($value);
 		}
 	}
+
 	protected function executeExternal($strProgram, &$strError) {
 		$strBuffer = '';
 	
@@ -82,8 +87,8 @@ class networkCard {
 		$strBuffer = trim($strBuffer);
 		
 		if (!empty($strError) || $return_value <> 0) {
-				$strError .= "\nReturn value: " . $return_value;
-				return false;
+			$strError .= "\nReturn value: " . $return_value;
+			return false;
 		}
 		return $strBuffer;
 	}
@@ -93,7 +98,7 @@ class networkCard {
 		$message = $this->executeExternal(config::Get('CMD_IFCONFIG'), $err);
 
 		if (!$message) {
-			$this->errors .= tr("Error while trying to obtain list of network card!\n") . $err;
+			$this->errors .= tr("Error while trying to obtain list of network cards!") . $err;
 			return false;
 		}
 
@@ -106,8 +111,8 @@ class networkCard {
 				$this->interfaces_info[2][] = '';
 			}
 		}
-		$this->offline_interfaces=array_diff($this->interfaces, $this->interfaces_info[1]);
-		$this->virtual_interfaces=array_diff($this->interfaces_info[1], $this->interfaces);
+		$this->offline_interfaces = array_diff($this->interfaces, $this->interfaces_info[1]);
+		$this->virtual_interfaces = array_diff($this->interfaces_info[1], $this->interfaces);
 		$this->available_interfaces = array_diff($this->interfaces, $this->offline_interfaces, $this->virtual_interfaces, array('lo'));
 	}
 
@@ -122,7 +127,7 @@ class networkCard {
 	public function ip2NetworkCard($ip) {
 		$key = array_search($ip,$this->interfaces_info[2]);
 		if ($key === false) {
-			$this->errors .= sprintf(tr("This ip (%s) is not assignet to any network card!\n"), $ip);
+			$this->errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"), $ip);
 		} else {
 			return $this->interfaces_info[1][$key];
 		}

@@ -1203,3 +1203,6 @@ Manual DNS support = Manuelle DNS-Unterstützung
 Network interface = Netzwerk-Schnittstelle
 Allow adding records to DNS zone = Erlaube das Hinzufügen von DNS-Einträgen
 URL protocol = URL-Protokoll
+File %s does not exists or cannot be reached! = Die Datei %s existiert nicht oder kann nicht gelesen werden!
+Error while trying to obtain list of network cards! = Fehler beim Beziehen der Liste von Netzwerkkarten!
+This IP (%s) is not assigned to any network card! = Diese IP (%s) ist keiner Netzwerkkarte zugeordnet!

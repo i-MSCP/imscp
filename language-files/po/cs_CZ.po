@@ -4128,6 +4128,17 @@ msgstr ""
 msgid "URL protocol"
 msgstr "Protocol"
 
+#, fuzzy, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "%s neexistuje nebo nelze přečíst."
+
+msgid "Error while trying to obtain list of network cards!"
+msgstr ""
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Zadejte prosím SQL dotaz!"
 
@@ -4289,9 +4300,6 @@ msgstr "Protocol"
 
 #~ msgid "Uninstall"
 #~ msgstr "Odinstalovat"
-
-#~ msgid "%s doesn't exist or can't be read."
-#~ msgstr "%s neexistuje nebo nelze přečíst."
 
 #~ msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
 #~ msgstr "http://admin.vase-ispCP-domena.tld/orderpanel/index.php?user_id=%d"

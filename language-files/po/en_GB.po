@@ -3981,6 +3981,17 @@ msgstr ""
 msgid "URL protocol"
 msgstr ""
 
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr ""
+
+msgid "Error while trying to obtain list of network cards!"
+msgstr ""
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"

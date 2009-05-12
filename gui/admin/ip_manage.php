@@ -47,7 +47,7 @@ $tpl->assign(
 
 function gen_ip_action($ip_id, $status) {
 	if ($status === Config::get('ITEM_OK_STATUS')) {
-		return array(tr('Remove IP'), 'ip_delete.php?delete_id='.$ip_id);
+		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ip_id);
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -79,7 +79,7 @@ function show_IPs(&$tpl, &$sql) {
 				'IP'			=> $rs->fields['ip_number'],
 				'DOMAIN'		=> $rs->fields['ip_domain'],
 				'ALIAS'			=> $rs->fields['ip_alias'],
-				'NETWORK_CARD'	=> ($rs->fields['ip_card'] === NULL ? '' : $rs->fields['ip_card'])
+				'NETWORK_CARD'	=> ($rs->fields['ip_card'] === NULL) ? '' : $rs->fields['ip_card']
 			)
 		);
 
@@ -95,8 +95,8 @@ function show_IPs(&$tpl, &$sql) {
 			$tpl->assign(
 				array(
 					'IP_DELETE_SHOW'	=> '',
-					'IP_ACTION'			=> ( Config::get('BASE_SERVER_IP') == $rs->fields['ip_number'] ) ? tr('N/A') : $ip_action,
-					'IP_ACTION_SCRIPT'	=> ( Config::get('BASE_SERVER_IP') == $rs->fields['ip_number'] ) ? '#' : $ip_action_script
+					'IP_ACTION'			=> (Config::get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
+					'IP_ACTION_SCRIPT'	=> (Config::get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? '#' : $ip_action_script
 				)
 			);
 			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
@@ -116,7 +116,8 @@ function add_ip(&$tpl, &$sql) {
 
 			$query = "
 				INSERT INTO `server_ips`
-					(`ip_number`, `ip_domain`, `ip_alias`, `ip_card`, `ip_ssl_domain_id`, `ip_status`)
+					(`ip_number`, `ip_domain`, `ip_alias`, `ip_card`,
+					`ip_ssl_domain_id`, `ip_status`)
 				VALUES
 					(?, ?, ?, ?, ?, ?)
 			";
@@ -162,7 +163,10 @@ function add_ip(&$tpl, &$sql) {
 function check_user_data() {
 	global $ip_number, $interfaces;
 
-	$ip_number = trim($_POST['ip_number_1']) . '.' . trim($_POST['ip_number_2']) . '.' . trim($_POST['ip_number_3']) . '.' . trim($_POST['ip_number_4']);
+	$ip_number = trim($_POST['ip_number_1'])
+		. '.' . trim($_POST['ip_number_2'])
+		. '.' . trim($_POST['ip_number_3'])
+		. '.' . trim($_POST['ip_number_4']);
 
 	global $domain, $alias, $ip_card;
 
@@ -218,7 +222,7 @@ function show_Network_Cards(&$tpl, &$interfaces) {
 	if ($interfaces->getErrors() != '') {
 		set_page_message($interfaces->getErrors());
 	}
-	if($interfaces->getAvailableInterface() != array()){
+	if ($interfaces->getAvailableInterface() != array()) {
 		foreach ($interfaces->getAvailableInterface() as $interface) {
 			$tpl->assign(
 				array(
