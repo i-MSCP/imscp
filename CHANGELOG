@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-12 Daniel Andreca
+	- GUI:
+		* Fixed #1837: admin/ip_manage.php error
+
 2009-05-03 Daniel Andreca
 	- CONFIGS:
 		* Repair support for Ubuntu

@@ -218,10 +218,19 @@ function show_Network_Cards(&$tpl, &$interfaces) {
 	if ($interfaces->getErrors() != '') {
 		set_page_message($interfaces->getErrors());
 	}
-	foreach ($interfaces->getAvailableInterface() as $interface) {
+	if($interfaces->getAvailableInterface() != array()){
+		foreach ($interfaces->getAvailableInterface() as $interface) {
+			$tpl->assign(
+				array(
+					'NETWORK_CARDS'	=> $interface
+				)
+			);
+			$tpl->parse('CARD_LIST', '.card_list');
+		}
+	} else {
 		$tpl->assign(
 			array(
-				'NETWORK_CARDS'	=> $interface
+				'NETWORK_CARDS'	=> ''
 			)
 		);
 		$tpl->parse('CARD_LIST', '.card_list');

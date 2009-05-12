@@ -1,5 +1,32 @@
 <?php
-
+/* ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ * Copyright (c) 2006-2009 by isp Control Panel
+ * http://isp-control.net
+ *
+ *
+ * License:
+ *	This program is free software;  you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by 
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
+ *
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You may have received a copy of theGNU General Public License
+ *	along with this program; if not, write to the
+ *	Free Software Foundation, Inc.,
+ *	59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * The ispCP ω Home Page is at:
+ *
+ *	http://isp-control.net
+ *
+ * @author Daniel Andreca, sci2tech@gmail.com
+ * @version $Id$
+ */
 class networkCard {
 
 	protected $interfaces_info = array();
@@ -10,24 +37,27 @@ class networkCard {
 	protected $errors = '';
 
 	public function __construct() {
-		define('IN_PHPSYSINFO', true);
-		require_once('phpsysinfo/class.error.inc.php');
-		require_once('phpsysinfo/common_functions.php');
-		require_once('phpsysinfo/class.' . PHP_OS . '.inc.php');
-		$this->sysinfo = new sysinfo;
-		$this->sysinfoerror = new error;
-
 		$this->_getInterface();
 		$this->_populateInterfaces();
 	}
-
-	protected function _getInterface() {
-		foreach ($this->sysinfo->network() as $key => $value) {
-			$interfaces_info[trim($key)]=$value;
+	function read( $filename ) {
+		if ( ($result = @file_get_contents($filename)) ===false ) {
+			$this->errors .= sprintf(tr("File %s do not exists or can not be reach!\n"), $filename);
+			return '';
 		}
-		$this->interfaces = array_keys($interfaces_info);
+		else return $result;
 	}
-
+	function network () {
+		$file = $this->read( '/proc/net/dev' );
+		preg_match_all('/(.+):.+/', $file, $dev_name);
+		return $dev_name[1];
+	}
+	protected function _getInterface() {
+		$interfaces_info = array();
+		foreach ($this->network() as $key => $value) {
+			$this->interfaces[]=trim($value);
+		}
+	}
 	protected function executeExternal($strProgram, &$strError) {
 		$strBuffer = '';
 	
@@ -92,7 +122,7 @@ class networkCard {
 	public function ip2NetworkCard($ip) {
 		$key = array_search($ip,$this->interfaces_info[2]);
 		if ($key === false) {
-			$this->errors .= tr("This ip ({$ip}) is not assignet to any network card!\n");
+			$this->errors .= sprintf(tr("This ip (%s) is not assignet to any network card!\n"), $ip);
 		} else {
 			return $this->interfaces_info[1][$key];
 		}
