@@ -45,6 +45,7 @@ libterm-readpassword-perl
 libtimedate-perl
 libmysqlclient15off
 locales
+lynx
 lzma
 make
 mysql-client

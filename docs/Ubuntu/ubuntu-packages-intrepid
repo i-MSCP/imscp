@@ -50,6 +50,7 @@ libtimedate-perl
 libmysqlclient15off
 locales
 lsb-base
+lynx
 lzma
 make
 mysql-client

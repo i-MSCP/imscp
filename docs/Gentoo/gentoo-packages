@@ -43,6 +43,7 @@ net-mail/courier-imap
 net-misc/curl
 sys-devel/gettext
 www-apache/mod_fcgid
+www-client/lynx
 www-servers/apache
 mail-filter/policyd-weight
 awstats

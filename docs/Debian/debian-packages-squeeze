@@ -51,6 +51,7 @@ libmysqlclient15off
 locales
 lsb-base
 lsb-release
+lynx
 lzma
 make
 mysql-client
