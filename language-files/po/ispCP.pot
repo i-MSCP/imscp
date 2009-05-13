@@ -4014,3 +4014,6 @@ msgstr ""
 
 msgid "Plain record data"
 msgstr ""
+
+msgid "DNS zone record scheduled for deletion!"
+msgstr ""

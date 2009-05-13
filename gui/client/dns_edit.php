@@ -273,8 +273,8 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$plain
 		) = decode_zone_data($data);
 		
-	$dns_type = create_options(array_intersect($DNS_allowed_types,mysql_get_enum($sql, "domain_dns.domain_type")),tryPost('type', $data['domain_type']));
-	$dns_class = create_options(mysql_get_enum($sql, "domain_dns.domain_class"),tryPost('class', $data['domain_class']));
+	$dns_type = create_options(array_intersect($DNS_allowed_types,mysql_get_enum($sql, "domain_dns.domain_type")), tryPost('type', $data['domain_type']));
+	$dns_class = create_options(mysql_get_enum($sql, "domain_dns.domain_class"), tryPost('class', $data['domain_class']));
 	
 	$tpl->assign(
 		array(

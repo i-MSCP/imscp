@@ -82,7 +82,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	send_request();
 
 	write_log($_SESSION['user_logged'] . ": deletes dns zone record: " . $dns_name . ' of domain ' . $dom_name);
-	set_page_message(tr('DNZ zone record scheduled for deletion!'));
+	set_page_message(tr('DNS zone record sheduled for deletion!'));
 	user_goto('domains_manage.php');
 } else {
 	user_goto('domains_manage.php');

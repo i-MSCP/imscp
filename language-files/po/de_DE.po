@@ -4224,36 +4224,36 @@ msgstr "Der Eintrag %s konnte nicht validiert werden. Der Grund lautet: '%s'."
 
 #, php-format
 msgid "Wrong IPv4 address (\"%s\")."
-msgstr ""
+msgstr "Ungültige IPv4-Adresse (\"%s\")."
 
 #, php-format
 msgid "Wrong IPv6 address (\"%s\")."
-msgstr ""
+msgstr "Ungültige IPv6-Adresse (\"%s\")."
 
 msgid "Name must be filled."
-msgstr ""
+msgstr "Es muss ein Name angegeben werden."
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr ""
+msgstr "Nutzung eines nicht erlaubten Zeichens (\"%s\") im CNAME"
 
 msgid "Port must be a number!"
-msgstr ""
+msgstr "Der Port muss eine natürliche Zahl sein."
 
 msgid "TTL must be a number!"
-msgstr ""
+msgstr "Die TTL muss eine natürliche Zahl sein."
 
 msgid "Priority must be a number!"
-msgstr ""
+msgstr "Die Priorität muss eine natürliche Zahl sein."
 
 msgid "Relative weight must be a number!"
-msgstr ""
+msgstr "Die relative Gewichtung muss eine natürliche Zahl sein."
 
 msgid "Service must be filled."
-msgstr ""
+msgstr "Der Service muss angegeben werden."
 
 msgid "Host must be filled."
-msgstr ""
+msgstr "Der Host muss angegeben werden."
 
 msgid "Target host"
 msgstr ""
@@ -4266,6 +4266,9 @@ msgstr ""
 
 msgid "Plain record data"
 msgstr ""
+
+msgid "DNS zone record scheduled for deletion!"
+msgstr "DNS-Zonen-Eintrag ist zur Löschung festgesetzt."
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"

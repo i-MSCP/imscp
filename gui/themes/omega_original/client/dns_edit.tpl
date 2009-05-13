@@ -18,9 +18,9 @@ function action_delete(url, alias_or_subdomain) {
 //-->
 </script>
 <style type="text/css">
-	tr.DNS{
-	display : none;
-	}
+tr.DNS {
+	display: none;
+}
 </style>
 </head>
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -28,15 +28,16 @@ function action_delete(url, alias_or_subdomain) {
 /* <![CDATA[ */
 
 	var oStyleSheet;
-	if( document.styleSheets ) {
-	for( var oSsDmCt = 0; oSsDmCt < document.styleSheets.length; oSsDmCt++ ) {
-		if( document.styleSheets[oSsDmCt].href!=null && document.styleSheets[oSsDmCt].href.indexOf('demostyles.css') + 1 ) {
-			oStyleSheet = document.styleSheets[oSsDmCt];
-			break;
+	if (document.styleSheets) {
+		for (var oSsDmCt = 0; oSsDmCt < document.styleSheets.length; oSsDmCt++) {
+			if (document.styleSheets[oSsDmCt].href != null && document.styleSheets[oSsDmCt].href.indexOf('demostyles.css') + 1) {
+				oStyleSheet = document.styleSheets[oSsDmCt];
+				break;
+			}
 		}
-	}
-	if( !oStyleSheet )
-		oStyleSheet = document.styleSheets[document.styleSheets.length-1];
+		if (!oStyleSheet) {
+			oStyleSheet = document.styleSheets[document.styleSheets.length-1];
+		}
 	}
 
 	function showNoDOMSSWarning() { alert('Your browser does not support DOM 2 Style Sheets'); }
@@ -45,19 +46,22 @@ function action_delete(url, alias_or_subdomain) {
 	function showNoDemoWarning() { alert('Your browser does not allow me to find the demonstration stylesheet'); }
 	function showNoBothSSWarning() { alert('Your browser does not correctly support DOM 2 Style Sheets or the Internet Explorer stylesheets model'); }
 
-								
+
 	var lastRule = null;
-						
-	function dns_type_changed(sender){
-	if( !document.styleSheets ) { showNoSSWarning(); return; }
-	if( !document.styleSheets.length ) { showNoSSFoundWarning(); return; }
-	if( !oStyleSheet ) { showNoDemoWarning(); return; }
-	if( !oStyleSheet.insertRule || !oStyleSheet.cssRules || !oStyleSheet.cssRules.length ) { showNoDOMSSWarning(); return; }
-	try {
-		if (lastRule != null)
-		oStyleSheet.deleteRule(lastRule);
-		lastRule = oStyleSheet.insertRule('tr.DNS_'+sender+' { display : table-row;}',oStyleSheet.cssRules.length);
-	} catch(e) { showNoDOMSSWarning(); }
+
+	function dns_type_changed(sender) {
+		if(!document.styleSheets) { showNoSSWarning(); return; }
+		if(!document.styleSheets.length) { showNoSSFoundWarning(); return; }
+		if(!oStyleSheet) { showNoDemoWarning(); return; }
+		if(!oStyleSheet.insertRule || !oStyleSheet.cssRules || !oStyleSheet.cssRules.length) { showNoDOMSSWarning(); return; }
+		try {
+			if (lastRule != null) {
+				oStyleSheet.deleteRule(lastRule);
+			}
+			lastRule = oStyleSheet.insertRule('tr.DNS_'+sender+' { display : table-row;}', oStyleSheet.cssRules.length);
+		} catch(e) {
+			showNoDOMSSWarning();
+		}
 	}
 
 	var IPADDRESS = "[0-9\.]";
@@ -65,19 +69,19 @@ function action_delete(url, alias_or_subdomain) {
 	var NUMBERS = "[0-9]";
 	
 	function filterChars(e, allowed){
-	e = e || window.event; 
-	var keynum = e? e.which:event.keyCode;
+		e = e || window.event; 
+		var keynum = e ? e.which : event.keyCode;
 	
-	if ((keynum == 8) || (keynum == 0))
-		return true;
+		if ((keynum == 8) || (keynum == 0)) {
+			return true;
+		}
+		var keychar = String.fromCharCode(keynum);
 
-	var keychar = String.fromCharCode(keynum);
-
-	if (e.ctrlKey && ((keychar="C") || (keychar="c") || (keychar="V") || (keychar="v")))
-		return true;
-
-	var re = new RegExp(allowed);
-	return re.test(keychar);
+		if (e.ctrlKey && ((keychar="C") || (keychar="c") || (keychar="V") || (keychar="v"))) {
+			return true;
+		}
+		var re = new RegExp(allowed);
+		return re.test(keychar);
 	}
 
 /* ]]> */
