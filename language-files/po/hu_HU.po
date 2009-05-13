@@ -4162,6 +4162,108 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Email hozzáférés lista üres!"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP - Domain Alias Kezelés/Alias Módosítás"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP - Domain Alias Kezelés/Alias Módosítás"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Szerver portok"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Cím megadás"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Aliasok"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Alap információk"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "Az árnak csak számot lehet megadni!"
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "Az árnak csak számot lehet megadni!"
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "Az árnak csak számot lehet megadni!"
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "A beállítási díjnak számnak kell lennie!"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "Az árnak csak számot lehet megadni!"
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Szerver portok"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Jelszó adat"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Kérlek, írd be az SQL kérést!"
 

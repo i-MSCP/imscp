@@ -4158,6 +4158,108 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Mailkonti liste er tom!"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP - Håndtere Domæne Alias/Rediger Alias"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP - Håndtere Domæne Alias/Rediger Alias"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Server porte"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Indtast Adresse"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Aliaser"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Hoved Data"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "Pris skal være et tal!"
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "Pris skal være et tal!"
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "Pris skal være et tal!"
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "Setup Gebyr skal være et tal!"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "Pris skal være et tal!"
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Server porte"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Adgangskode data"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Indtast en SQL forspørgelse!"
 

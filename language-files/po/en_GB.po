@@ -3992,6 +3992,94 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+msgid "Manual zone's records list is empty!"
+msgstr ""
+
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr ""
+
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+msgid "Service protocol"
+msgstr ""
+
+msgid "IP address"
+msgstr ""
+
+msgid "IPv6 address"
+msgstr ""
+
+msgid "Class"
+msgstr ""
+
+msgid "Record data"
+msgstr ""
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+msgid "Port must be a number!"
+msgstr ""
+
+msgid "TTL must be a number!"
+msgstr ""
+
+msgid "Priority must be a number!"
+msgstr ""
+
+msgid "Relative weight must be a number!"
+msgstr ""
+
+msgid "Service must be filled."
+msgstr ""
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+msgid "Target port"
+msgstr ""
+
+msgid "Canonical name"
+msgstr ""
+
+msgid "Plain record data"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"

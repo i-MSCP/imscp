@@ -4090,6 +4090,108 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "邮件统计表为空！"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP - 管理域名别名/编辑别名"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP - 管理域名别名/编辑别名"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "服务器端口"
+
+#, fuzzy
+msgid "IP address"
+msgstr "输入地址"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "别名"
+
+#, fuzzy
+msgid "Record data"
+msgstr "核心数据"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "价格必须为数字！"
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "价格必须为数字！"
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "价格必须为数字！"
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "安装费用必须为数字！"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "价格必须为数字！"
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "服务器端口"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "密码数据"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "请输入 SQL 查询语句！"
 

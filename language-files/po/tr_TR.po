@@ -4137,6 +4137,108 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Posta hesapları listesi boş!"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Server portları"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Adres giriniz"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Aliaslar"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Core verisi"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "Ücret rakam ile yazılmalıdır."
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "Ücret rakam ile yazılmalıdır."
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "Ücret rakam ile yazılmalıdır."
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "Kurulum ücreti bir sayı olmak zorunda!"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "Ücret rakam ile yazılmalıdır."
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Server portları"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Şifre bilgisi"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
 

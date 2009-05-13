@@ -4158,3 +4158,105 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "La llista de comptes de correu és buida!"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP - Administrar Àlies de Domini/Editar Àlies"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP - Administrar Àlies de Domini/Editar Àlies"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Ports del servidor"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Entrar Adreça"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Àlies"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Dades principals"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "El preu ha de ser un número!"
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "El preu ha de ser un número!"
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "El preu ha de ser un número!"
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "L'alta ha de ser un número"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "El preu ha de ser un número!"
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Ports del servidor"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Dades de contrasenya"

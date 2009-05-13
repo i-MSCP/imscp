@@ -4160,6 +4160,108 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Lista de conturi mail este goala!"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "ispCP -  Administrare Alias Domeniu/ Editeaza Alias"
+
+#, fuzzy
+msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "ispCP -  Administrare Alias Domeniu/ Editeaza Alias"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Edit DNS zone's record"
+msgstr ""
+
+msgid "Add DNS zone record"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Porturi server"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Introdu adresa"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Alias-e"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Date nucleu"
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+#, fuzzy
+msgid "Port must be a number!"
+msgstr "Pretul trebuie sa contina cifra"
+
+#, fuzzy
+msgid "TTL must be a number!"
+msgstr "Pretul trebuie sa contina cifra"
+
+#, fuzzy
+msgid "Priority must be a number!"
+msgstr "Pretul trebuie sa contina cifra"
+
+#, fuzzy
+msgid "Relative weight must be a number!"
+msgstr "Costurile trebuie sa contina cifre !"
+
+#, fuzzy
+msgid "Service must be filled."
+msgstr "Pretul trebuie sa contina cifra"
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Porturi server"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Date Parola"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"
 
