@@ -69,7 +69,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id));
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign(array('DNS_MSG' => tr('Manual zone\'s records list is empty!'), 'DNS_LIST' => ''));
+		$tpl->assign(array('DNS_MSG' => tr("Manual zone's records list is empty!"), 'DNS_LIST' => ''));
 		$tpl->parse('DNS_MESSAGE', 'dns_message');
 	} else {
 		$counter = 0;
@@ -97,8 +97,8 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 //					'DNS_ACTION_SCRIPT_EDIT'	=> $sub_action,
 					'DNS_ACTION_SCRIPT_DELETE'	=> $dns_action_script_delete,
 					'DNS_ACTION_DELETE'			=> $dns_action_delete,
-					'DNS_ACTION_SCRIPT_EDIT'	=>  $dns_action_script_edit,
-					'DNS_ACTION_EDIT'			=>  $dns_action_edit
+					'DNS_ACTION_SCRIPT_EDIT'	=> $dns_action_script_edit,
+					'DNS_ACTION_EDIT'			=> $dns_action_edit
 				)
 			);
 			$tpl->parse('DNS_ITEM', '.dns_item');
@@ -188,7 +188,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign(
 				array(
 					'SUB_NAME'			=> $sbd_name,
-					'SUB_ALIAS_NAME'	=>	$rs->fields['domain_name'],
+					'SUB_ALIAS_NAME'	=> $rs->fields['domain_name'],
 					'SUB_MOUNT'			=> $rs->fields['subdomain_mount'],
 					'SUB_STATUS'		=> translate_dmn_status($rs->fields['subdomain_status']),
 					'SUB_ACTION'		=> $sub_action,
@@ -226,9 +226,9 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 
 function gen_user_als_action($als_id, $als_status) {
 	if ($als_status === Config::get('ITEM_OK_STATUS')) {
-		return array(tr('Delete'), "alias_delete.php?id=$als_id");
+		return array(tr('Delete'), 'alias_delete.php?id=' $als_id);
 	} else if ($als_status === Config::get('ITEM_ORDERED_STATUS')) {
-		return array(tr('Delete order'), "alias_order_delete.php?del_id=$als_id");
+		return array(tr('Delete order'), 'alias_order_delete.php?del_id=' . $als_id);
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -353,7 +353,7 @@ $tpl->assign(
 		'TR_SUB_STATUS'		=> tr('Status'),
 		'TR_SUB_ACTION'		=> tr('Actions'),
 		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),
-		'TR_DNS'			=> tr('DNS zone\'s records'),
+		'TR_DNS'			=> tr("DNS zone's records"),
 		'TR_DNS_NAME'		=> tr('Name'),
 		'TR_DNS_CLASS'		=> tr('Class'),
 		'TR_DNS_TYPE'		=> tr('Type'),

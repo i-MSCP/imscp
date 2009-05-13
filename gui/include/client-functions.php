@@ -430,7 +430,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			'PMA_TARGET' => Config::get('PMA_TARGET'),
 			'FILEMANAGER_PATH' => Config::get('FILEMANAGER_PATH'),
 			'FILEMANAGER_TARGET' => Config::get('FILEMANAGER_TARGET'),
-			'TR_MENU_ADD_DNS' => tr('Add DNS zone record')
+			'TR_MENU_ADD_DNS' => tr("Add DNS zone's record")
 		)
 	);
 

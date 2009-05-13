@@ -148,7 +148,7 @@ function restore_form(&$tpl, &$sql) {
 			'TR_CGI_NO'		=> ($_POST['cgi'] !== '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_YES'	=> ($_POST['dns'] === '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_NO'		=> ($_POST['dns'] !== '_yes_')	? 'checked="checked"' : '',
-			'TR_STATUS_YES'	=> ($_POST['status'] == 1) 		? 'checked="checked"' : '',
+			'TR_STATUS_YES'	=> ($_POST['status'] == 1)		? 'checked="checked"' : '',
 			'TR_STATUS_NO'	=> ($_POST['status'] != 1)		? 'checked="checked"' : ''
 		)
 	);

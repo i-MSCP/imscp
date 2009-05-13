@@ -65,7 +65,7 @@ $tpl->assign(
 		'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_PHP'					=> tr('PHP'),
 		'TR_CGI'					=> tr('CGI / Perl'),
-		'TR_DNS' 					=> tr('Allow adding records to DNS zone'),
+		'TR_DNS'					=> tr('Allow adding records to DNS zone'),
 		'TR_BACKUP_RESTORE'			=> tr('Backup and restore'),
 		'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
 		'TR_AWSTATS'				=> tr('AwStats'),

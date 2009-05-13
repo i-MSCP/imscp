@@ -288,12 +288,12 @@ function gen_editdomain_page(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected':'',
-			'PHP_NO' 				=> ($php_sup != 'yes') ? 'selected':'',
-			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected':'',
-			'CGI_NO' 				=> ($cgi_supp != 'yes') ? 'selected':'',
-			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected':'',
-			'DNS_NO' 				=> ($dns_supp != 'yes') ? 'selected':'',
+			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected="selected"' : '',
+			'PHP_NO'				=> ($php_sup != 'yes') ? 'selected="selected"' : '',
+			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
+			'CGI_NO'				=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
+			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
+			'DNS_NO'				=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
 			'VL_DOMAIN_NAME'		=> $domain_name,
 			'VL_DOMAIN_IP'			=> $domain_ip,
 			'VL_DOM_SUB'			=> $sub,
