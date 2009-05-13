@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-05-13 Benedikt Heintel
 	- GUI:
 		* Fixed #1776: translate foreign language comments
+		* Fixed #1812: order e-mail misses link url to admin panel
 
 2009-05-13 Malte Geierhos
 	- ENGINE:
