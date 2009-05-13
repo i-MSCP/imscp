@@ -12,9 +12,9 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
-    RedirectMatch permanent ^/ftp([\/]?)		http://{BASE_SERVER_VHOST}/ftp/
-    RedirectMatch permanent ^/pma([\/]?)		http://{BASE_SERVER_VHOST}/pma/
-    RedirectMatch permanent ^/webmail([\/]?)	http://{BASE_SERVER_VHOST}/webmail/
+    RedirectMatch permanent ^/ftp([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
+    RedirectMatch permanent ^/pma([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
+    RedirectMatch permanent ^/webmail([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
 
     ErrorDocument 401 /errors/401.html
     ErrorDocument 403 /errors/403.html

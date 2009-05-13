@@ -755,6 +755,7 @@ sub gen_httpd_dmn_group_entry {
 		'{SELF}'                      => $dmn_name,
 		'{DMN_IP}'                    => $dmn_ip,
 		'{BASE_SERVER_VHOST}'         => $main::cfg{'BASE_SERVER_VHOST'},
+		'{BASE_SERVER_VHOST_PREFIX}'  => $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
 		'{WWW_DIR}'                   => $main::cfg{'APACHE_WWW_DIR'},
 		'{STARTER_DIR}'               => $main::cfg{'PHP_STARTER_DIR'},
 		'{PHP_VERSION}'               => $main::cfg{'PHP_VERSION'},

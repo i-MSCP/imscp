@@ -1,5 +1,9 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2009-05-13 Malte Geierhos
+	- ENGINE: 
+		* Fixed #1841: (wrong package name in centos packagelist)
+		* Fixed #1842: BASE_SERVER_VHOST_PREFIX missing in dmn_entry.tpl
 
 2009-05-12 Daniel Andreca
 	- GUI:

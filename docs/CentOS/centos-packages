@@ -25,7 +25,7 @@ iptables
 libdbi-dbd-mysql
 libmcrypt
 libtool-ltdl
-lsb-readhat
+redhat-lsb
 lzma
 mod_perl
 mod_ssl
