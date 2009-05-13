@@ -18,10 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-/**
- * @todo translate the foreign language comment at the end of this file
- */
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__, Config::get('PREVENT_EXTERNAL_LOGIN_RESELLER'));
@@ -322,8 +318,7 @@ $tpl->assign(
 
 generate_page_data($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 
-// ko ima jump from other user interface neka esik i optica da ostanat tezi na
-// ska4ashtijat user
+// Makes sure that the language selected is the reseller's language
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {

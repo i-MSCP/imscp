@@ -18,10 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-/**
- * @todo translate foreign language comment to english
- */
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -57,13 +53,12 @@ SQL_QUERY;
 }
 
 $theme_color = Config::get('USER_INITIAL_THEME');
-// ko ima jump from other user interface neka esik i optica da ostanat tezi na
-// ska4ashtijat user
+
+// Makes sure that the language selected is the client's language
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {
 	$user_def_layout = $_SESSION['user_theme'];
-
 	$user_def_lang = $_SESSION['user_def_lang'];
 }
 

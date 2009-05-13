@@ -1,7 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-05-13 Benedikt Heintel
+	- GUI:
+		* Fixed #1776: translate foreign language comments
+
 2009-05-13 Malte Geierhos
-	- ENGINE: 
+	- ENGINE:
 		* Fixed #1841: (wrong package name in centos packagelist)
 		* Fixed #1842: BASE_SERVER_VHOST_PREFIX missing in dmn_entry.tpl
 
@@ -11,7 +16,7 @@ ispCP ω 1.0.1 Changelog
 
 2009-05-03 Daniel Andreca
 	- CONFIGS:
-		* Repair support for Ubuntu
+		* Repaired support for Ubuntu
 	- GUI:
 		* Improve ip management
 		* Fixed #1826: Alias Subdomains aren't deleted from DB
