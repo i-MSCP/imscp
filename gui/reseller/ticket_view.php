@@ -71,7 +71,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 			$tr_action = tr("Close ticket");
 			$action = "close";
 		}
-		
+
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$date_formt = Config::get('DATE_FORMAT');
 		$ticket_content = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
@@ -275,7 +275,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 	// close ticket
 	if ($_POST['uaction'] == "close") {
 		close_ticket($sql, $ticket_id);
-	} elseif ($_POST['uaction'] == "open") { // open ticket 
+	} elseif ($_POST['uaction'] == "open") { // open ticket
 		open_ticket($sql, $ticket_id);
 	}
 

@@ -191,7 +191,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	} elseif (empty($_POST['user_message'])) { // no message check->error
 		if (($_POST['uaction'] != "open") && ($_POST['uaction'] != "close")) {
 			set_page_message(tr('Please type your message!'));
-			return; 
+			return;
 		}
 	}
 
@@ -280,7 +280,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	} elseif ($_POST['uaction'] == "open") { // open ticket
 		open_ticket($sql, $ticket_id);
 	}
- 
+
 	set_page_message(tr('Message was sent.'));
 	send_tickets_msg($ticket_to, $ticket_from, $subject, $user_message, $ticket_reply, $urgency);
 }

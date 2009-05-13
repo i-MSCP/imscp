@@ -4201,7 +4201,7 @@ msgid "Add DNS zone record"
 msgstr "Erstelle DNS-Zonen-Eintrag"
 
 msgid "Relative weight for records with the same priority"
-msgstr "Relative Gewichtung von Einträgen der selben Priorität"
+msgstr "Relative Gewichtung von Einträgen derselben Priorität"
 
 msgid "Service protocol"
 msgstr "Service-Protokoll"
@@ -4269,6 +4269,14 @@ msgstr ""
 
 msgid "DNS zone record scheduled for deletion!"
 msgstr "DNS-Zonen-Eintrag ist zur Löschung festgesetzt."
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr "Zonen-Eintrag \"%s\" ist kein Bestandteil der Domain \"%s\"."
+
+#, php-format
+msgid "Unknown zone type %s!"
+msgstr "Unbekannter Zonen-Typ %s!"
 
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Bitte geben Sie eine SQL-Abfrage ein!"

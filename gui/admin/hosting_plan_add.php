@@ -172,11 +172,11 @@ function gen_data_ahp_page(&$tpl) {
 	$tpl->assign(array('TR_CGI_YES'		=> ($hp_cgi === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_CGI_NO'		=> ($hp_cgi === '_yes_') ? '' : 'checked="checked"'));
 
+	$tpl->assign(array('TR_DNS_YES'		=> ($hp_dns === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_DNS_NO'		=> ($hp_dns === '_yes_') ? '' : 'checked="checked"'));
+
 	$tpl->assign(array('TR_STATUS_YES'	=> ($status === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($status === '_yes_') ? '' : 'checked="checked"'));
-	
-	$tpl->assign(array('TR_DNS_YES'	=> ($hp_dns === '_yes_') ? 'checked="checked"' : ''));
-	$tpl->assign(array('TR_DNS_NO'	=> ($hp_dns === '_yes_') ? '' : 'checked="checked"'));
 } // End of gen_data_ahp_page()
 
 /**

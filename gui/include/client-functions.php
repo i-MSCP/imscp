@@ -690,7 +690,7 @@ function user_trans_mail_type($mail_type) {
 }
 
 /**
- * goto the given destination file 
+ * goto the given destination file
  *
  * @param string $dest destination for header location (path + filename + params)
  */

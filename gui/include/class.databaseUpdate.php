@@ -363,7 +363,7 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * missing db updates for per-domain backup
 	 *
@@ -380,7 +380,7 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * update SMTP-SSL to the original Port list, see ticket #1806
 	 * http://www.isp-control.net/ispcp/ticket/1806.

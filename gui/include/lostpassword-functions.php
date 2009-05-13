@@ -39,7 +39,7 @@ function createImage($strSessionVar) {
 
 	$iRandVal = strrand(8, $strSessionVar);
 
-	$im = imagecreate($x, $y) or die("Cannot initialize new GD image stream.");
+	$im = imagecreate($x, $y) or die('Cannot initialize new GD image stream.');
 
 	$background_color = imagecolorallocate($im, $rgBgColor[0],
 		$rgBgColor[1],
@@ -215,7 +215,7 @@ SQL_QUERY;
 
 		setPassword($uniqkey, $upass);
 
-		write_log("Lostpassword: " . $admin_name . ": password updated");
+		write_log('Lostpassword: ' . $admin_name . ': password updated');
 
 		$query = <<<SQL_QUERY
 			UPDATE
@@ -229,7 +229,7 @@ SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array('', '', $uniqkey));
 
-		if ($created_by == 0) $created_by = 1;
+		if ($created_by == 0) { $created_by = 1; }
 
 		$data = get_lostpassword_password_email($created_by);
 
@@ -246,7 +246,7 @@ SQL_QUERY;
 		$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');
 
 		if ($from_name) {
-			$from = "\"" . $from_name . "\" <" . $from_email . ">";
+			$from = '"' . $from_name . '" <' . $from_email . '>';
 		} else {
 			$from = $from_email;
 		}
@@ -262,17 +262,17 @@ SQL_QUERY;
 		$replace[] = $upass;
 		$search [] = '{BASE_SERVER_VHOST}';
 		$replace[] = $base_vhost;
-		$search [] = '{BASE_SERVER_VHOST_PREFIX}'; 
-		$replace[] = $base_vhost_prefix;	
-		
+		$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+		$replace[] = $base_vhost_prefix;
+
 		$subject = str_replace($search, $replace, $subject);
 		$message = str_replace($search, $replace, $message);
 
-		$headers = "From: " . $from . "\n";
+		$headers = 'From: ' . $from . "\n";
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .= "X-Mailer: ispCP lostpassword mailer";
+		$headers .= 'X-Mailer: ispCP lostpassword mailer';
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
@@ -335,7 +335,7 @@ SQL_QUERY;
 
 	$prot = isset($_SERVER['https']) ? 'https' : 'http';
 
-	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
+	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . '?key=' . $uniqkey;
 
 	$search = array();
 	$replace = array();
@@ -354,11 +354,11 @@ SQL_QUERY;
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
 
-	$headers = "From: " . $from . "\n";
+	$headers = 'From: ' . $from . "\n";
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .= "X-Mailer: ispCP lostpassword mailer";
+	$headers .= 'X-Mailer: ispCP lostpassword mailer';
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 

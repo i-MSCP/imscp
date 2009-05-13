@@ -141,15 +141,15 @@ function restore_form(&$tpl) {
 		)
 	);
 
-	$tpl->assign(array('TR_PHP_YES'	=> ($_POST['php'] === '_yes_') ? 'checked="checked"' : ''));
-	$tpl->assign(array('TR_PHP_NO'	=> ($_POST['php'] === '_yes_') ? '' : 'checked="checked"'));
+	$tpl->assign(array('TR_PHP_YES'		=> ($_POST['php'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_PHP_NO'		=> ($_POST['php'] === '_yes_') ? '' : 'checked="checked"'));
 
-	$tpl->assign(array('TR_CGI_YES'	=> ($_POST['cgi'] === '_yes_') ? 'checked="checked"' : ''));
-	$tpl->assign(array('TR_CGI_NO'	=> ($_POST['cgi'] === '_yes_') ? '' : 'checked="checked"'));
+	$tpl->assign(array('TR_CGI_YES'		=> ($_POST['cgi'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_CGI_NO'		=> ($_POST['cgi'] === '_yes_') ? '' : 'checked="checked"'));
 
-	$tpl->assign(array('TR_DNS_YES' => ($_POST['dns'] === '_yes_') ? 'checked="checked"' : ''));
-	$tpl->assign(array('TR_DNS_NO'  => ($_POST['dns'] === '_yes_') ? '' : 'checked="checked"'));
-	
+	$tpl->assign(array('TR_DNS_YES'		=> ($_POST['dns'] === '_yes_') ? 'checked="checked"' : ''));
+	$tpl->assign(array('TR_DNS_NO'		=> ($_POST['dns'] === '_yes_') ? '' : 'checked="checked"'));
+
 	$tpl->assign(array('TR_STATUS_YES'	=> ($_POST['status'] == 1) ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($_POST['status'] == 1) ? '' : 'checked="checked"'));
 } // end of function restore_form()

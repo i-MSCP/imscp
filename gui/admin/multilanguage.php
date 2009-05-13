@@ -223,7 +223,7 @@ function show_lang(&$tpl, &$sql) {
 		} else {
 			$language_revision = tr('Unknown');
 		}
-		
+
 		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
 		if ($usr_def_lng[1] == $dat[1]) {

@@ -4017,3 +4017,11 @@ msgstr ""
 
 msgid "DNS zone record scheduled for deletion!"
 msgstr ""
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "Unknown zone type %s!"
+msgstr ""

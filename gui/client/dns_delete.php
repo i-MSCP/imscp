@@ -49,14 +49,14 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$dom_name = $rs->fields['domain_name'];
 	$dns_name = $rs->fields['domain_dns'];
 	$id =  $rs->fields['id'];
-	
+
 	if ($rs->RecordCount() == 0) {
 		user_goto('domains_manage.php');
 	}
 
 
 	$query = "
-		DELETE FROM 
+		DELETE FROM
 			`domain_dns`
 		WHERE
 			`domain_dns_id` = ?
@@ -65,10 +65,10 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($dns_id));
 
-	$table = empty($rs->fields['alias_id']) ? $table = 'domain' : 'domain_aliasses';
-	
+	$table = empty($rs->fields['alias_id']) ? 'domain' : 'domain_aliasses';
+
 	$query = "
-		UPDATE 
+		UPDATE
 			`{$table}`
 		SET
 			`{$table}_status` = ?
@@ -76,13 +76,13 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			`{$table}_id` = ?
 		LIMIT 1
 	";
-	
+
 	$rs = exec_query($sql, $query, array( Config::get('ITEM_CHANGE_STATUS'), $id));
-	
+
 	send_request();
 
-	write_log($_SESSION['user_logged'] . ": deletes dns zone record: " . $dns_name . ' of domain ' . $dom_name);
-	set_page_message(tr('DNS zone record sheduled for deletion!'));
+	write_log($_SESSION['user_logged'] . ': deletes dns zone record: ' . $dns_name . ' of domain ' . $dom_name);
+	set_page_message(tr('DNS zone record scheduled for deletion!'));
 	user_goto('domains_manage.php');
 } else {
 	user_goto('domains_manage.php');

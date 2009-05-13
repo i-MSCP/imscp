@@ -61,14 +61,14 @@ if (isset($_GET['key'])) {
 			$tpl->assign(
 				array(
 					'TR_MESSAGE' => tr('Password sent'),
-					'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
+					'TR_LINK' => '<a class="link" href="index.php">' . tr('Login') . '</a>'
 				)
 			);
 		} else {
 			$tpl->assign(
 				array(
 					'TR_MESSAGE' => tr('ERROR: Password was not sent'),
-					'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Login') . "</a>"
+					'TR_LINK' => '<a class="link" href="index.php">' . tr('Login') . '</a>'
 				)
 			);
 		}
@@ -105,14 +105,14 @@ if (isset($_POST['uname'])) {
 				$tpl->assign(
 					array(
 						'TR_MESSAGE' => tr('The password was requested'),
-						'TR_LINK' => "<a class=\"link\" href=\"index.php\">" . tr('Back') . "</a>"
+						'TR_LINK' => '<a class="link" href="index.php">' . tr('Back') . '</a>'
 					)
 				);
 			} else {
 				$tpl->assign(
 					array(
 						'TR_MESSAGE' => tr('ERROR: Unknown user'),
-						'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
+						'TR_LINK' => '<a class="link" href="lostpassword.php">' . tr('Retry') . '</a>'
 					)
 				);
 			}
@@ -120,7 +120,7 @@ if (isset($_POST['uname'])) {
 			$tpl->assign(
 				array(
 					'TR_MESSAGE' => tr('ERROR: Security code was not correct!') . ' ' . $_SESSION['image'],
-					'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">" . tr('Retry') . "</a>"
+					'TR_LINK' => '<a class="link" href="lostpassword.php">' . tr('Retry') . '</a>'
 				)
 			);
 		}
@@ -147,7 +147,7 @@ $tpl->assign(
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_CAPCODE' => tr('Security code'),
 		'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
-		'TR_IMGCAPCODE' => "<img src=\"imagecode.php\" width=\"" . Config::get('LOSTPASSWORD_CAPTCHA_WIDTH') . "\" height=\"" . Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT') . "\" border=\"0\" alt=\"captcha image\">",
+		'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . Config::get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
 		'TR_USERNAME' => tr('Username'),
 		'TR_SEND' => tr('Request password'),
 		'TR_BACK' => tr('Back')

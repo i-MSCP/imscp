@@ -22,6 +22,7 @@ require_once '../include/ispcp-lib.php';
 require_once '../include/Net_DNS/DNS.php';
 
 check_login(__FILE__);
+
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -31,7 +32,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $DNS_allowed_types = array('A','AAAA','SRV','CNAME','MX');
 
-$add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
+$add_mode = ('dns_add.php' == basename($_SERVER['REQUEST_URI']));
 
 $tpl->assign(
 	array(
@@ -54,7 +55,7 @@ $tpl->assign(
 		'TR_CANCEL'				=> tr('Cancel'),
 		'TR_ADD'				=> tr('Add'),
 		'TR_DOMAIN'				=> tr('Domain'),
-		'TR_EDIT_DNS'			=> $add_mode ? tr("Add DNS zone's record") : tr("Edit DNS zone's record"),
+		'TR_EDIT_DNS'			=> ($add_mode) ? tr("Add DNS zone's record") : tr("Edit DNS zone's record"),
 		'TR_DNS'				=> tr("DNS zone's records"),
 		'TR_DNS_NAME'			=> tr('Name'),
 		'TR_DNS_CLASS'			=> tr('Class'),
@@ -80,7 +81,7 @@ gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domain
 gen_logged_from($tpl);
 $tpl->assign(($add_mode) ? 'FORM_EDIT_MODE' : 'FORM_ADD_MODE', '');
 
-// "Modify" button has ben pressed
+// "Modify" button has been pressed
 $editid = null;
 if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	if (isset($_GET['edit_id'])) {
@@ -134,6 +135,9 @@ function mysql_get_enum(&$sql, $object, &$default = null) {
 		: array(0 => 'None'));
 }
 
+/**
+ * @todo use template loop instead of this hardcoded HTML
+ */
 function create_options($data, $value = null) {
 	$res = '';
 	reset($data);
@@ -153,48 +157,53 @@ function not_allowed() {
 function decode_zone_data($data) {
 	$address = $addressv6 = $srv_name = $srv_proto = $cname = $txt = $name = '';
 	$srv_TTL = $srv_prio = $srv_weight = $srv_host = $srv_port = '';
-	
+
 	if (is_array($data)) {
-	$name = $data['domain_dns'];
+		$name = $data['domain_dns'];
 		switch ($data['domain_type']) {
-			case 'A' : 
-			$address = $data['domain_text']; 
-		break;
-		case 'AAAA' : 
-		$addressv6 = $data['domain_text']; 
-		break;
-		case 'CNAME' :
-		$cname = $data['domain_text'];
-		break;
-		case 'SRV' : 
-		$name = ''; 
-		if (preg_match('~_([^\.]+)\._([^\s]+)[\s]+([\d]+)~', $data['domain_dns'], $srv)) {
-			$srv_name = $srv[1];
-			$srv_proto = $srv[2];
-			$srv_TTL = $srv[3];
+			case 'A':
+				$address = $data['domain_text'];
+				break;
+			case 'AAAA':
+				$addressv6 = $data['domain_text'];
+				break;
+			case 'CNAME':
+				$cname = $data['domain_text'];
+				break;
+			case 'SRV':
+				$name = '';
+				if (preg_match('~_([^\.]+)\._([^\s]+)[\s]+([\d]+)~', $data['domain_dns'], $srv)) {
+					$srv_name = $srv[1];
+					$srv_proto = $srv[2];
+					$srv_TTL = $srv[3];
+				}
+				if (preg_match('~([\d]+)[\s]+([\d]+)[\s]+([\d]+)[\s]+([^\s]+)+~', $data['domain_text'], $srv)) {
+					$srv_prio = $srv[1];
+					$srv_weight = $srv[2];
+					$srv_port = $srv[3];
+					$srv_host = $srv[4];
+				}
+				break;
+			case 'MX':
+				$name = '';
+				if (preg_match('~([\d]+)[\s]+([^\s]+)+~', $data['domain_text'], $srv)) {
+					$srv_prio = $srv[1];
+					$srv_host = $srv[2];
+				}
+				break;
+			default:
+				$txt = $data['domain_text'];
 		}
-		if (preg_match('~([\d]+)[\s]+([\d]+)[\s]+([\d]+)[\s]+([^\s]+)+~', $data['domain_text'], $srv)) {
-			$srv_prio = $srv[1];
-			$srv_weight = $srv[2];
-			$srv_port = $srv[3];
-			$srv_host = $srv[4];
-		}
-		break;
-		case 'MX' :
-		$name = ''; 
-		if (preg_match('~([\d]+)[\s]+([^\s]+)+~', $data['domain_text'], $srv)) {
-			$srv_prio = $srv[1];
-			$srv_host = $srv[2];
-		}
-		break;
-		
-		default : 
-		$txt = $data['domain_text'];
 	}
-	}
-	return array($name, $address, $addressv6, $srv_name, $srv_proto, $srv_TTL, $srv_prio, $srv_weight, $srv_host, $srv_port, $cname, $txt);
+	return array(
+		$name, $address, $addressv6, $srv_name, $srv_proto, $srv_TTL, $srv_prio,
+		$srv_weight, $srv_host, $srv_port, $cname, $txt
+	);
 }
 
+/**
+ * @todo use template loop instead of this hardcoded HTML
+ */
 function gen_editdns_page(&$tpl, $edit_id) {
 	global $sql;
 	global $DNS_allowed_types;
@@ -246,10 +255,11 @@ function gen_editdns_page(&$tpl, $edit_id) {
 
 		$res = exec_query($sql, $query, array($dmn_id, $dmn_id));
 		$sel = '';
-		while ($row = $res->FetchRow())
-		$sel.='<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';
+		while ($row = $res->FetchRow()) {
+			$sel.= '<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';
+		}
 		$tpl->assign('SELECT_ALIAS', $sel);
-	
+
 	} else {
 		$res = exec_query($sql, "SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?", array($edit_id, $dmn_id));
 		if ( $res->RecordCount() <= 0)
@@ -272,10 +282,10 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$cname,
 		$plain
 		) = decode_zone_data($data);
-		
-	$dns_type = create_options(array_intersect($DNS_allowed_types,mysql_get_enum($sql, "domain_dns.domain_type")), tryPost('type', $data['domain_type']));
+
+	$dns_type = create_options(array_intersect($DNS_allowed_types, mysql_get_enum($sql, "domain_dns.domain_type")), tryPost('type', $data['domain_type']));
 	$dns_class = create_options(mysql_get_enum($sql, "domain_dns.domain_class"), tryPost('class', $data['domain_class']));
-	
+
 	$tpl->assign(
 		array(
 			'SELECT_DNS_TYPE'			=> $dns_type,
@@ -458,7 +468,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 		}
 		$alias_id = $res->FetchRow();
 		$record_domain = $alias_id['domain_name'];
-		$alias_id = $alias_id['alias_id']; 
+		$alias_id = $alias_id['alias_id'];
 		$alias_id = ($alias_id == 0) ? null : $alias_id;
 	} else {
 		$res = exec_query($sql, "
@@ -470,31 +480,30 @@ function check_fwd_data(&$tpl, $edit_id) {
 			LEFT JOIN `domain_aliasses` USING (`domain_id`, `alias_id`)
 			LEFT JOIN `domain` USING (`domain_id`)
 		WHERE
-			`domain_dns_id` = ? 
-		AND 
+			`domain_dns_id` = ?
+		AND
 		`domain_id` = ?
-		"
-		, array($edit_id, $dmn_id));
+		", array($edit_id, $dmn_id));
 		if ($res->RecordCount() <= 0) {
 			not_allowed();
 		}
 		$data = $res->FetchRow();
 		$record_domain = $data['domain_name'];
-		$alias_id = $data['alias_id']; 
+		$alias_id = $data['alias_id'];
 		$_dns = $data['domain_dns'];
 	}
 
-	if (!validate_NAME(array('name'=>$_POST['dns_name'],'domain'=>$record_domain), $err)) {
+	if (!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $err)) {
 		$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 	}
 	switch ($_POST['type']) {
-		case 'CNAME' : 
+		case 'CNAME':
 			if (!validate_CNAME($_POST, $err))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 			$_text = $_POST['dns_cname'];
 			$_dns = $_POST['dns_name'];
 			break;
-		case 'A' : 
+		case 'A':
 			if (!validate_A($_POST, $err))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
@@ -502,7 +511,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			$_text = $_POST['dns_A_address'];
 			$_dns = $_POST['dns_name'];
 			break;
-		case 'AAAA' : 
+		case 'AAAA':
 			if (!validate_AAAA($_POST, $err))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
@@ -510,19 +519,19 @@ function check_fwd_data(&$tpl, $edit_id) {
 			$_text = $_POST['dns_AAAA_address'];
 			$_dns = $_POST['dns_name'];
 			break;
-		case 'SRV' : 
+		case 'SRV':
 			if (!validate_SRV($_POST, $err, $_dns, $_text))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 			break;
-		case 'MX' :
+		case 'MX':
 			$_dns = '';
 			if (!validate_MX($_POST, $err, $_text))
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
 			break;
 		default :
-			$ed_error = sprintf(tr('Uknown zone type %s !'), $_POST['type']);
+			$ed_error = sprintf(tr('Unknown zone type %s!'), $_POST['type']);
 	}
-	
+
 	if ($ed_error === '_off_') {
 
 		if ($add_mode) {
@@ -549,17 +558,17 @@ function check_fwd_data(&$tpl, $edit_id) {
 			";
 			exec_query($sql, $query, array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text));
 		} else {
-				$query = "
-					UPDATE
-						`domain_dns`
-					SET
-						`domain_dns` = ?,
-						`domain_class` = ?,
-						`domain_type` = ?,
-						`domain_text` = ?
-					WHERE
-						`domain_dns_id` = ?
-				";
+			$query = "
+				UPDATE
+					`domain_dns`
+				SET
+					`domain_dns` = ?,
+					`domain_class` = ?,
+					`domain_type` = ?,
+					`domain_text` = ?
+				WHERE
+					`domain_dns_id` = ?
+			";
 			exec_query($sql, $query, array($_dns, $_class, $_type, $_text, $edit_id));
 		}
 
@@ -572,7 +581,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 				WHERE
 					`domain_id` = ?
 			";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));		
+			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
 		} else{
 			$query = "
 				UPDATE
@@ -584,7 +593,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 				AND
 					`alias_id` = ?
 			";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));		
+			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
 		}
 
 		check_for_lock_file();
