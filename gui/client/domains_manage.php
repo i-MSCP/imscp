@@ -98,7 +98,8 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 					'DNS_ACTION_SCRIPT_DELETE'	=> $dns_action_script_delete,
 					'DNS_ACTION_DELETE'			=> $dns_action_delete,
 					'DNS_ACTION_SCRIPT_EDIT'	=> $dns_action_script_edit,
-					'DNS_ACTION_EDIT'			=> $dns_action_edit
+					'DNS_ACTION_EDIT'			=> $dns_action_edit,
+					'DNS_TYPE_RECORD'			=> tr("%s record", $rs->fields['domain_type'])
 				)
 			);
 			$tpl->parse('DNS_ITEM', '.dns_item');

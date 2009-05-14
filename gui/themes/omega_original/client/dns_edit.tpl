@@ -126,7 +126,7 @@ tr.DNS {
 							</tr>
 							<tr>
 								<td>
-									<form name="edit_alias_frm" method="post" action="dns_{ACTION_MODE}.php?edit_id={ID}">
+									<form name="edit_alias_frm" method="post" action="{ACTION_MODE}">
 										<table width="100%" cellpadding="5" cellspacing="5">
 											<tr>
 												<td width="25">&nbsp;</td>

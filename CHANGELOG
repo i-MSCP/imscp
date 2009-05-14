@@ -1,5 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2009-05-15 Daniel Andreca
+	- GUI:
+		* Fixed #1839: Part of DNS JS delete message has undefined var in client/domains_manage.php
+		* Fixed #1840: Variable {ID} not parsed in client/dns_add.php anytime
+
 2009-05-14 Malte Geierhos
 	- ENGINE:
 		* Fixed #1843: Missing Alias for Awstats static icons

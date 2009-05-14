@@ -32,7 +32,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $DNS_allowed_types = array('A','AAAA','SRV','CNAME','MX');
 
-$add_mode = ('dns_add.php' == basename($_SERVER['REQUEST_URI']));
+$add_mode = preg_match('~dns_add.php~',$_SERVER['REQUEST_URI']); //@haeber let it like this!!!
 
 $tpl->assign(
 	array(
@@ -40,7 +40,7 @@ $tpl->assign(
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
-		'ACTION_MODE'				=> ($add_mode) ? 'add' : 'edit'
+		'ACTION_MODE'				=> ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'
 	)
 );
 
@@ -310,7 +310,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 // Check input data
 
 function tryPost($id, $data) {
-	if (isset($_POST[$id])) {
+	if (array_key_exists($id,$_POST)) {
 		return $_POST[$id];
 	}
 	return $data;
