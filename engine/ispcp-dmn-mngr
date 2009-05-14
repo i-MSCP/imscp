@@ -766,6 +766,7 @@ sub gen_httpd_dmn_group_entry {
 		'{APACHE_USERS_LOG_DIR}'      => $main::cfg{'APACHE_USERS_LOG_DIR'},
 		'{CUSTOM_SITES_CONFIG_DIR}'   => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 		
+		'{AWSTATS_WEB_DIR}'    	      => $main::cfg{'AWSTATS_WEB_DIR'}
 		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},
 		'{HTACCESS_USERS_FILE_NAME}'  => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
 		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
@@ -822,7 +823,8 @@ sub gen_httpd_dmn_group_entry {
 
 	# AWStats Dynamic
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
-			$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_dynamic_entry\n$dmn_awstats_e";
+		# AWStats Dynamic
+		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_dynamic_entry\n$dmn_awstats_e";
 	} elsif ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		# AWStats Static
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_static_entry\n$dmn_awstats_e";

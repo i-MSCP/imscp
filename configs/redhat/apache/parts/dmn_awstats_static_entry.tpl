@@ -1,4 +1,5 @@
-    Alias /stats    {WWW_DIR}/{DMN_NAME}/statistics/
+    Alias /awstatsicons 	"{AWSTATS_WEB_DIR}/icon/"
+    Alias /stats    		"{WWW_DIR}/{DMN_NAME}/statistics/"
 
     <Directory "{WWW_DIR}/{DMN_NAME}/statistics">
         AllowOverride AuthConfig

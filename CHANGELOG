@@ -1,5 +1,9 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2009-05-14 Malte Geierhos
+	- ENGINE:
+		* Fixed #1843: Missing Alias for Awstats static icons
+		* Fixed #1844: outdated Centos Packages (thanks to Laurence Alfred Barlow)
 
 2009-05-13 Benedikt Heintel
 	- GUI:
