@@ -4243,6 +4243,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "パスワードデータ"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "サブドメインの削除を受け付けました！"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "不明なタイプ！"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "SQLクエリーを入力してください！"
 

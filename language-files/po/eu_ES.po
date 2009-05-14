@@ -4278,6 +4278,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Pasahitz datua"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Azpidomeinua ezabatzeko zain!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Mota ezezaguna!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "MEsedez sartu SQL kontsulta!"
 

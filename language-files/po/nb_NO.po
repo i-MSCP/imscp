@@ -4223,6 +4223,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Passord data"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Peker lagt i kø for sletting!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Ukjent type"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Venligst skriv inn en SQL spørring!"
 

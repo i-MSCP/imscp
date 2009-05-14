@@ -4190,6 +4190,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "密碼資料"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "子網域刪除已預定！"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "未知類型！"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "請輸入 SQL 查詢語句！"
 

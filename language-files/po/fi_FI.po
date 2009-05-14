@@ -4225,6 +4225,18 @@ msgid "Plain record data"
 msgstr "Salasanatiedot"
 
 #, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Alidomain poistojonossa!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Tuntematon tyyppi"
+
+#, fuzzy
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Anna SQL-kysely!"
 

@@ -4304,6 +4304,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "данни парола"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Поддомейна е добавен в графика за изтриване!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Неизвестен тип"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Моля, въведете SQL заявка!"
 

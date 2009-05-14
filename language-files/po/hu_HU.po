@@ -4264,6 +4264,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Jelszó adat"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Aldomain törlés beütemezve!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Ismeretlen típus!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Kérlek, írd be az SQL kérést!"
 

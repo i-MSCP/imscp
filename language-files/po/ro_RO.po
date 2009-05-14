@@ -4262,6 +4262,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Date Parola"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Subdomeniu programat pentru stergere!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Tip necunoscut!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Executa interogarea SQL!"
 

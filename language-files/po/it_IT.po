@@ -4278,6 +4278,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Dati della password"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Sottodominio pianificato per essere eliminato!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Tipo sconosciuto!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Prego, inserire una query SQL!"
 

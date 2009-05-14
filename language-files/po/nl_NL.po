@@ -4270,6 +4270,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Wachtwoord informatie"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Subdomein gepland voor verwijdering"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Onbekend type!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Vul aub een SQL query in!"
 

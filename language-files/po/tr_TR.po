@@ -4239,6 +4239,18 @@ msgstr ""
 msgid "Plain record data"
 msgstr "Şifre bilgisi"
 
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Subdomain silme için işleme alındı!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Bilinmeyen tip!"
+
 #~ msgid "Please enter an SQL query!"
 #~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
 

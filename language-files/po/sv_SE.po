@@ -4106,6 +4106,17 @@ msgstr ""
 msgid "Plain record data"
 msgstr "L�senordsdata"
 
+msgid "DNS zone record scheduled for deletion!"
+msgstr ""
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "Unknown zone type %s!"
+msgstr ""
+
 #~ msgid "SQL query"
 #~ msgstr "SQL fr�ga"
 

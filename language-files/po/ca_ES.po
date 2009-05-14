@@ -4260,3 +4260,15 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "Dades de contrasenya"
+
+#, fuzzy
+msgid "DNS zone record scheduled for deletion!"
+msgstr "Subdomini programat per eliminiació!"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Tipus desconegut!"
