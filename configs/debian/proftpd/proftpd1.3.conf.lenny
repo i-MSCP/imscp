@@ -106,16 +106,18 @@ Group                      nogroup
 
 # Loading required modules
 <IfModule !mod_sql.c>
-  LoadModule mod_sql.c
+  LoadModule               mod_sql.c
+  AuthOrder                mod_sql.c
 </IfModule>
 <IfModule !mod_sql_mysql.c>
-  LoadModule mod_sql_mysql.c
+  LoadModule               mod_sql_mysql.c
+  AuthOrder                mod_sql_mysql.c
 </IfModule>
 <IfModule !mod_quotatab.c>
-  LoadModule mod_quotatab.c
+  LoadModule               mod_quotatab.c
 </IfModule>
 <IfModule !mod_quotatab_sql.c>
-  LoadModule mod_quotatab_sql.c
+  LoadModule               mod_quotatab_sql.c
 </IfModule>
 
 
