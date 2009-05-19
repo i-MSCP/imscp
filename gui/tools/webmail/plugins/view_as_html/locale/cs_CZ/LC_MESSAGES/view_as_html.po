@@ -1,0 +1,22 @@
+# Czech (cs_CZ) view_as_html plugin translation.
+# Copyright (C) 2002-2003 The SquirrelMail Development Team.
+# Ivo Panacek <ivop@regionet.cz>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id\n"
+"POT-Creation-Date: 2002-06-18 11:22-0600\n"
+"PO-Revision-Date: 2002-06-19 13:55-0700\n"
+"Last-Translator: Ivo Panacek <ivop@regionet.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:77
+msgid "View as HTML"
+msgstr "Ukázat jako HTML"
+
+#: setup.php:72
+msgid "View as plain text"
+msgstr "Ukázat zdrojový text"

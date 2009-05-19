@@ -3,12 +3,13 @@
 /**
  * mail_fetch/fetch.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Fetch code.
  *
- * $Id$
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id$
+ * @package plugins
+ * @subpackage mail_fetch
  */
 
 define('SM_PATH','../../');
@@ -17,6 +18,11 @@ require_once(SM_PATH . 'include/validate.php');
 include_once(SM_PATH . 'functions/imap.php');
 include_once(SM_PATH . 'plugins/mail_fetch/class.POP3.php');
 include_once(SM_PATH . 'plugins/mail_fetch/functions.php' );
+
+// don't load this page if this plugin is not enabled
+//
+global $plugins;
+if (!in_array('mail_fetch', $plugins)) exit;
 
 /* globals */
 sqgetGlobalVar('username',   $username,   SQ_SESSION);
@@ -194,7 +200,7 @@ for ($i_loop=$i_start;$i_loop<$i_stop;$i_loop++) {
         Mail_Fetch_Status(_("Server does not support UIDL."));
 
     if ($mailfetch_lmos == 'on') {
-        Mail_Fetch_Status(_("Leaving mail on server..."));
+        Mail_Fetch_Status(_("Leaving messages on server..."));
     } else {
         Mail_Fetch_Status(_("Deleting messages from server..."));
     }

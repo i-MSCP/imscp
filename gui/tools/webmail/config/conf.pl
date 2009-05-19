@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 # conf.pl
 #
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Licensed under the GNU GPL. For full terms see COPYING.
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 13290 2008-09-28 13:45:49Z kink $
+# $Id: conf.pl 13537 2009-04-13 16:52:57Z jervfors $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -140,7 +140,7 @@ if ( -e "config.php" ) {
         print "  should get the 'config_default.php' that matches the version\n";
         print "  of SquirrelMail that you are running. You can get this from\n";
         print "  the SquirrelMail web page by going to the following URL:\n";
-        print "      http://www.squirrelmail.org.\n";
+        print "      http://squirrelmail.org.\n";
         print "\n";
         print "Continue loading with old config_default.php (a bad idea) [y/N]? ";
         $ctu = <STDIN>;
@@ -298,7 +298,7 @@ $delete_folder = "false"               if ( !$delete_folder );
 $noselect_fix_enable = "false"         if ( !$noselect_fix_enable );
 $frame_top = "_top"                    if ( !$frame_top );
 
-$provider_uri = "http://www.squirrelmail.org/" if ( !$provider_uri );
+$provider_uri = "http://squirrelmail.org/" if ( !$provider_uri );
 $provider_name = "SquirrelMail"        if ( !$provider_name );
 
 $edit_identity = "true"                if ( !$edit_identity );
@@ -396,7 +396,7 @@ $list_supported_imap_servers =
 
 #####################################################################################
 if ( $config_use_color == 1 ) {
-    $WHT = "\x1B[37;1m";
+    $WHT = "\x1B[1m";
     $NRM = "\x1B[0m";
 } else {
     $WHT              = "";
@@ -681,7 +681,7 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
             $NRM              = "";
         } else {
             $config_use_color = 1;
-            $WHT              = "\x1B[37;1m";
+            $WHT              = "\x1B[1m";
             $NRM              = "\x1B[0m";
         }
     } elsif ( $command eq "d" && $menu == 0 ) {
@@ -842,7 +842,7 @@ sub command2 {
     print "    to use the default logo, use ../images/sm_logo.png\n";
     print "  - To specify a logo defined outside the SquirrelMail source tree\n";
     print "    use the absolute URL the webserver would use to include the file\n";
-    print "    e.g. http://www.example.com/images/mylogo.gif or /images/mylogo.jpg\n";
+    print "    e.g. http://example.com/images/mylogo.gif or /images/mylogo.jpg\n";
     print "\n";
     print "[$WHT$org_logo$NRM]: $WHT";
     $new_org_logo = <STDIN>;
@@ -940,12 +940,12 @@ sub command6 {
 # Default link to provider
 sub command7 {
     print "Here you can set the link on the right of the page.\n";
-    print "The default is 'http://www.squirrelmail.org/'\n";
+    print "The default is 'http://squirrelmail.org/'\n";
     print "\n";
     print "[$WHT$provider_uri$NRM]: $WHT";
     $new_provider_uri = <STDIN>;
     if ( $new_provider_uri eq "\n" ) {
-        $new_provider_uri = 'http://www.squirrelmail.org/';
+        $new_provider_uri = 'http://squirrelmail.org/';
     } else {
         $new_provider_uri =~ s/[\r|\n]//g;
         $new_provider_uri =~ s/^\s+$//g;
@@ -1498,17 +1498,22 @@ sub command113 {
 
 # $encode_header_key
 sub command114{
-    print "Encryption key allows to hide SquirrelMail Received: headers\n";
-    print "in outbound messages. Interface uses encryption key to encode\n";
-    print "username, remote address and proxied address, then stores encoded\n";
-    print "information in X-Squirrel-* headers.\n";
+    print "This encryption key allows the hiding of SquirrelMail Received:\n";
+    print "headers in outbound messages.  SquirrelMail uses the encryption\n";
+    print "key to encode the username, remote address, and proxied address\n";
+    print "and then stores that encoded information in X-Squirrel-* headers.\n";
     print "\n";
-    print "Warning: used encryption function is not bulletproof. When used\n";
-    print "with static encryption keys, it provides only minimal security\n";
-    print "measures and information can be decoded quickly.\n";
+    print "Warning: the encryption function used to accomplish this is not\n";
+    print "bulletproof. When used with a static encryption key as it is here,\n";
+    print "it provides only minimal security and the encoded user information\n";
+    print "in the X-Squirrel-* headers can be decoded quickly by a skilled\n";
+    print "attacker.\n";
     print "\n";
-    print "Encoded information can be decoded with decrypt_headers.php script\n";
-    print "from SquirrelMail contrib/ directory.\n";
+    print "When you need to inspect an email sent from your system with the\n";
+    print "X-Squirrel-* headers, you can decode the user information therein\n";
+    print "by using the decrypt_headers.php script found in the SquirrelMail\n";
+    print "contrib/ directory. You'll need the encryption key that you\n";
+    print "defined here when doing so.\n";
     print "\n";
     print "Enter encryption key: ";
     $new_encode_header_key = <STDIN>;
@@ -2227,9 +2232,13 @@ sub command38 {
 }
 
 sub command39 {
-    print "This allows you to prevent the editing of the user's name and ";
-    print "email address. This is mainly useful when used with the ";
-    print "retrieveuserdata plugin\n";
+    print "In loosely managed environments, you may want to allow users\n";
+    print "to edit their full name and email address. In strictly managed\n";
+    print "environments, you may want to force users to use the name\n";
+    print "and email address assigned to them.\n";
+    print "\n";
+    print "'y' - allow a user to edit their full name and email address,\n";
+    print "'n' - users must use the assigned values.\n";
     print "\n";
 
     if ( lc($edit_identity) eq "true" ) {
@@ -2252,8 +2261,9 @@ sub command39 {
 }
 
 sub command39a {
-    print "As a follow-up, this option allows you to choose if the user ";
-    print "can edit their full name even when you don't want them to ";
+    print $NRM;
+    print "\nAs a follow-up, this option allows you to choose if the user\n";
+    print "can edit their full name even when you don't want them to\n";
     print "change their username\n";
     print "\n";
 
@@ -2273,14 +2283,22 @@ sub command39a {
 }
 
 sub command39b {
-    print "SquirrelMail adds username information to every sent email.";
-    print "It is done in order to prevent possible sender forging when ";
-    print "end users are allowed to change their email and name ";
-    print "information.\n";
+    print $NRM;
+    print "\nSquirrelMail adds username information to every outgoing\n";
+    print "email in order to prevent possible sender forging when\n";
+    print "users are allowed to change their email and/or full name.\n";
     print "\n";
-    print "You can disable this header, if you think that it violates ";
-    print "user's privacy or security. Please note, that setting will ";
-    print "work only when users are not allowed to change their identity.\n";
+    print "You can remove user information from this header (y) if you\n";
+    print "think that it violates privacy or security.\n";
+    print "\n";
+    print "Note: SquirrelMail will refuse to remove that information\n";
+    print "from the email headers if users are allowed to change their\n";
+    print "identities, regardless of what you have set here.\n";
+    print "\n";
+    print "Note: If you have defined a header encryption key in your SMTP\n";
+    print "or Sendmail settings (see the \"Server Settings\" option page),\n";
+    print "this setting is ignored because all user information in outgoing\n";
+    print "messages is encoded.\n";
     print "\n";
 
     if ( lc($hide_auth_header) eq "true" ) {
@@ -2605,7 +2623,7 @@ sub command42 {
     print "    to use the themes directory, use ../themes/css/newdefault.css\n";
     print "  - To specify a css file defined outside the SquirrelMail source tree\n";
     print "    use the absolute URL the webserver would use to include the file\n";
-    print "    e.g. http://www.example.com/css/mystyle.css or /css/mystyle.css\n";
+    print "    e.g. http://example.com/css/mystyle.css or /css/mystyle.css\n";
     print "\n";
     print "[$WHT$theme_css$NRM]: $WHT";
     $new_theme_css = <STDIN>;

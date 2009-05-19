@@ -5,9 +5,9 @@
  *
  * This implements all functions that manipulate mailboxes
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_mailbox.php 12669 2007-09-03 11:37:39Z kink $
+ * @version $Id: imap_mailbox.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage imap
  */

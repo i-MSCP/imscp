@@ -5,9 +5,9 @@
  *
  * Delivery backend for the Deliver class.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver_IMAP.class.php 12830 2007-12-19 08:23:46Z pdontthink $
+ * @version $Id: Deliver_IMAP.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 

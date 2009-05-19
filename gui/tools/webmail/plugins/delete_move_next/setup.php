@@ -7,7 +7,7 @@
  *   deletes or moves currently displayed message and displays
  *   next or previous message.
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
+ * Copyright (c) 1999-2009 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * $Id$
@@ -278,7 +278,7 @@ function delete_move_next_delete() {
     sqgetGlobalVar('delete_id', $delete_id, SQ_GET);
     sqgetGlobalVar('mailbox', $mailbox, SQ_GET);
 
-    sqimap_messages_delete($imapConnection, $delete_id, $delete_id, $mailbox);
+    sqimap_msgs_list_delete($imapConnection, $mailbox, $delete_id);
     if ($auto_expunge) {
         delete_move_expunge_from_all($delete_id);
         // sqimap_mailbox_expunge($imapConnection, $mailbox, true);
@@ -293,8 +293,7 @@ function delete_move_next_move() {
     sqgetGlobalVar('targetMailbox', $targetMailbox, SQ_POST);
 
     // Move message
-    sqimap_messages_copy($imapConnection, $move_id, $move_id, $targetMailbox);
-    sqimap_messages_flag($imapConnection, $move_id, $move_id, 'Deleted', true);
+    sqimap_msgs_list_move($imapConnection, $move_id, $targetMailbox);
     if ($auto_expunge) {
         delete_move_expunge_from_all($move_id);
         // sqimap_mailbox_expunge($imapConnection, $mailbox, true);

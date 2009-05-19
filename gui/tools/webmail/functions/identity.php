@@ -5,9 +5,9 @@
  *
  * This contains utility functions for dealing with multiple identities
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: identity.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: identity.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @since 1.4.2
  */

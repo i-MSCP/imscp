@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# PaJaSoft <PaJaSoft@PaJaSoftovi.Cz>, 2005.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: show_user_and_ip\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-01-27 13:45+0200\n"
+"PO-Revision-Date: 2005-02-09 16:20+0100\n"
+"Last-Translator: PaJasoft <PaJaSoft@PaJaSoftovi.Cz>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Your username:"
+msgstr "Přihlašovací jméno:"
+
+msgid "Your IP address:"
+msgstr "IP adresa:"
+
+msgid "Your Hostname:"
+msgstr "Název počítače:"
+
+msgid "Welcome,"
+msgstr "Vítejte,"
+
+msgid "INFO:"
+msgstr "Info:"
+
+#, c-format
+msgid ""
+"your last connection was from <strong>%s%s</strong> on <strong>%s</strong>."
+msgstr "Vaše poslední přihlášení bylo z <strong>%s%s</strong> dne <strong>%s</strong>."
+
+msgid "Show username under folders list:"
+msgstr "Zobraz uživatelské jméno pod seznamem složek:"
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Show IP address under folders list:"
+msgstr "Zobraz IP adresu pod seznamem složek:"
+
+msgid "Show hostname under folders list:"
+msgstr "Zobraz název počítače pod seznamem složek:"

@@ -6,9 +6,9 @@
  * This contains functions that display mailbox information, such as the
  * table row that has sender, date, subject, etc...
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: mailbox_display.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 

@@ -19,7 +19,7 @@
  * Also view plugins/README.plugins for more information.
  *
  * @version $Id$
- * @copyright (c) 1999-2006 The SquirrelMail Project Team
+ * @copyright (c) 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package plugins
  * @subpackage filters
@@ -340,9 +340,8 @@ function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
              */
             for ($j=2, $num = count($ids); $j < $num; $j++) {
                 $id = trim($ids[$j]);
-                if (sqimap_messages_copy ($imap, $id, $id, $where_to, false)) {
+                if (sqimap_msgs_list_move($imap, $id, $where_to)) {
                     $del_id[] = $id;
-                    sqimap_messages_flag ($imap, $id, $id, 'Deleted', false);
                 }
             }
         }
@@ -369,118 +368,101 @@ function spam_filters($imap_stream) {
        filters_LoadCache();
     }
 
-    $run = 0;
+    $run = false;
 
     foreach ($filters as $Key=> $Value) {
         if ($Value['enabled']) {
-            $run ++;
+            $run = true;
+            break;
         }
     }
 
     // short-circuit
-    if ($run == 0) {
+    if (!$run) {
         return;
     }
 
     sqimap_mailbox_select($imap_stream, 'INBOX');
 
-    // Ask for a big list of all "Received" headers in the inbox with
-    // flags for each message.  Kinda big.
-    if ($filters_spam_scan != 'new') {
-        $read = sqimap_run_command($imap_stream, 'FETCH 1:* (FLAGS BODY.PEEK[HEADER.FIELDS ' .
-            '(RECEIVED)])', true, $response, $message, $uid_support);
-    } else {
+    $search_array = array();
+    if ($filters_spam_scan == 'new') {
         $read = sqimap_run_command($imap_stream, 'SEARCH UNSEEN', true, $response, $message, $uid_support);
-        if ($response != 'OK' || trim($read[0]) == '* SEARCH') {
-            $read = sqimap_run_command($imap_stream, 'FETCH 1:* (FLAGS BODY.PEEK[HEADER.FIELDS ' .
-            '(RECEIVED)])', true, $response, $message, $uid_support);
-        } else {
-            if (isset($read[0])) {
-                if (preg_match("/^\* SEARCH (.+)$/", $read[0], $regs)) {
-                    $search_array = preg_split("/ /", trim($regs[1]));
+        if (isset($read[0])) {
+            for ($i = 0, $iCnt = count($read); $i < $iCnt; ++$i) {
+                if (preg_match("/^\* SEARCH (.+)$/", $read[$i], $regs)) {
+                    $search_array = explode(' ', trim($regs[1]));
+                    break;
                 }
             }
-            $msgs_str = sqimap_message_list_squisher($search_array);
-            $imap_query = 'FETCH '.$msgs_str;
-            $imap_query .= ' (FLAGS BODY.PEEK[HEADER.FIELDS ';
-            $imap_query .= '(RECEIVED)])';
-            $read = sqimap_run_command($imap_stream,$imap_query, true, $response, $message, $uid_support);
         }
     }
+    
+    if ($filters_spam_scan == 'new' && count($search_array)) {
+        $msg_str = sqimap_message_list_squisher($search_array);
+        $imap_query = 'FETCH ' . $msg_str . ' (FLAGS BODY.PEEK[HEADER.FIELDS (RECEIVED)])';
+    } else if ($filters_spam_scan != 'new') {
+        $imap_query = 'FETCH 1:* (FLAGS BODY.PEEK[HEADER.FIELDS (RECEIVED)])';
+    } else {
+        return;
+    }
+    
+    $read = sqimap_run_command_list($imap_stream, $imap_query, true, $response, $message, $uid_support);
     
     if (isset($response) && $response != 'OK') {
         return;
     }
+    
+    $messages = parseFetch($read, $search_array);
+    
+    $bulkquery = (strlen($SpamFilters_BulkQuery) > 0 ? true : false);
 
-    if (strlen($SpamFilters_BulkQuery) > 0) {
-       filters_bulkquery($filters_spam_scan, $filters, $read);
-    }
-
-    $i = 0;
-    while ($i < count($read)) {
-        // EIMS will give funky results
-        $Chunks = explode(' ', $read[$i]);
-        if ($Chunks[0] != '*') {
-            $i ++;
-            continue;
+    foreach($messages as $id=>$message) {
+        if (isset($message['UID'])) {
+            $MsgNum = $message['UID'];
+        } else {
+            $MsgNum = $id;
         }
-        $MsgNum = $Chunks[1];
-
-        $IPs = array();
-        $i ++;
-        $IsSpam = 0;
-
-        // Look through all of the Received headers for IP addresses
-        // Stop when I get ")" on a line
-        // Stop if I get "*" on a line (don't advance)
-        // and above all, stop if $i is bigger than the total # of lines
-        while (($i < count($read)) &&
-                ($read[$i][0] != ')' && $read[$i][0] != '*' &&
-                $read[$i][0] != "\n") && (! $IsSpam)) {
-            // Check to see if this line is the right "Received from" line
-            // to check
-            if (is_int(strpos($read[$i], $SpamFilters_YourHop))) {
-
-                // short-circuit and skip work if we don't scan this one
-                $read[$i] = ereg_replace('[^0-9\.]', ' ', $read[$i]);
-                $elements = explode(' ', $read[$i]);
-                foreach ($elements as $value) {
-                    if ($value != '' &&
-                        ereg('[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}',
-                            $value, $regs)) {
-                        $Chunks = explode('.', $value);
-                        if (filters_spam_check_site($Chunks[0],
-                                $Chunks[1], $Chunks[2], $Chunks[3],
-                                $filters)) {
-                            $IsSpam ++;
-                            break;  // no sense in checking more IPs
+        
+        if (isset($message['received'])) {
+            foreach($message['received'] as $received) {
+                if (is_int(strpos($received, $SpamFilters_YourHop))) {
+                    if (preg_match('/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/', $received, $matches)) {
+                        $IsSpam = false;
+                        if (filters_spam_check_site($matches[1], $matches[2], $matches[3], $matches[4], $filters)) {
+                            $aSpamIds[] = $MsgNum;
+                            $IsSpam = true;                            
                         }
-                        // If we've checked one IP and YourHop is
-                        // just a space
-                        if ($SpamFilters_YourHop == ' ') {
-                            break;  // don't check any more
+                        
+                        if ($bulkquery) {
+                            array_shift($matches);
+                            $IP = explode('.', $matches);
+                            foreach($filters as $key=>$value) {
+                                if ($filters[$key]['enabled'] && $filters[$key]['dns']) {
+                                    if (strlen($SpamFilters_DNScache[$IP . '.' . $filters[$key]['dns']]) == 0) {
+                                        $IPs[$IP] = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if ($SpamFilters_YourHop == ' ' || $IsSpam) {
+                            break;
                         }
                     }
                 }
             }
-            $i ++;
-        }
-
-        // Lookie!  It's spam!  Yum!
-        if ($IsSpam) {
-            if (sqimap_mailbox_exists($imap_stream, $filters_spam_folder)) {
-                // check if message copy was successful
-                if (sqimap_messages_copy ($imap_stream, $MsgNum, $MsgNum,
-                                          $filters_spam_folder, false)) {
-                    sqimap_messages_flag ($imap_stream, $MsgNum, $MsgNum,
-                                          'Deleted', false);
-                }
-            }
-        } else {
         }
     }
-
-    sqimap_mailbox_expunge($imap_stream, 'INBOX');
+    
+    if (count($aSpamIds) && sqimap_mailbox_exists($imap_stream, $filters_spam_folder)) {
+        sqimap_msgs_list_move($imap_stream, $aSpamIds, $filters_spam_folder);
+        sqimap_mailbox_expunge($imap_stream, 'INBOX', true, $aSpamIds);
+    }
+    
+    if ($bulkquery && count($IPs)) {
+        filters_bulkquery($filters, $IPs);
+    }
 
     if ($SpamFilters_SharedCache) {
        filters_SaveCache();

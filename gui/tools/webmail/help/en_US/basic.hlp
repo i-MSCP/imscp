@@ -8,8 +8,8 @@
    </summary>
    <description>
       <p>
-      So what exactly is <a href="http://www.squirrelmail.org/">SquirrelMail</a>?
-      It's a web interface to email that's written in <a href="http://www.php.net">PHP</a>.
+      So what exactly is <a href="http://squirrelmail.org/">SquirrelMail</a>?
+      It's a web interface to email that's written in <a href="http://php.net">PHP</a>.
       It was designed to allow email access through your server from 
       anywhere in the world via the Web.  More information about exactly 
       how it does this and the IMAP protocol can be found <a href="http://imap.org">here</a>.

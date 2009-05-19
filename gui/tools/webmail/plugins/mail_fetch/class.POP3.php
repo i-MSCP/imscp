@@ -1,20 +1,22 @@
-<?php 
+<?php
 
-   /**
-    * mail_fetch/setup.php
-    *
-    * Copyright (c) 1999-2006 The SquirrelMail Project Team
-    *
-    * Copyright (c) 1999 CDI (cdi@thewebmasters.net) All Rights Reserved
-    * Modified by Philippe Mingo 2001 mingo@rotedic.com
-    * An RFC 1939 compliant wrapper class for the POP3 protocol.
-    *
-    * Licensed under the GNU GPL. For full terms see the file COPYING.
-    *
-    * pop3 class
-    *
-    * $Id$
-    */
+/**
+ * mail_fetch/setup.php
+ *
+ * Copyright (c) 1999-2009 CDI (cdi@thewebmasters.net) All Rights Reserved
+ * Modified by Philippe Mingo 2001-2009 mingo@rotedic.com
+ * An RFC 1939 compliant wrapper class for the POP3 protocol.
+ *
+ * Licensed under the GNU GPL. For full terms see the file COPYING.
+ *
+ * POP3 class
+ *
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id$
+ * @package plugins
+ * @subpackage mail_fetch
+ */
 
 class POP3 {
     var $ERROR      = '';       //  Error string.
@@ -647,4 +649,3 @@ class POP3 {
     }
 
 }   // End class
-

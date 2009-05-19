@@ -5,9 +5,9 @@
  *
  * Redirects to the login page.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: index.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 

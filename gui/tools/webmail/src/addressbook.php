@@ -5,7 +5,7 @@
  *
  * Manage personal address book.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -216,7 +216,7 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
             $delfailed = false;
 
             for ($i = 0 ; (($i < sizeof($sel)) && !$delfailed) ; $i++) {
-                list($sbackend, $snick) = explode(':', $sel[$i]);
+                list($sbackend, $snick) = explode(':', $sel[$i], 2);
 
                 /* When we get to a new backend, process addresses in *
                  * previous one.                                      */
@@ -262,7 +262,7 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
             $send_to = '';
 
             for ($i = 0 ; (($i < sizeof($sel)) && !$lookup_failed) ; $i++) {
-                list($sbackend, $snick) = explode(':', $sel[$i]);
+                list($sbackend, $snick) = explode(':', $sel[$i], 2);
 
                 $data = $abook->lookup($snick, $sbackend);
 
@@ -309,7 +309,7 @@ if(sqgetGlobalVar('REQUEST_METHOD', $req_method, SQ_SERVER) && $req_method == 'P
                         $defselected = $sel;
                     } else {
                         $abortform = true;
-                        list($ebackend, $enick) = explode(':', $sel[0]);
+                        list($ebackend, $enick) = explode(':', $sel[0], 2);
                         $olddata = $abook->lookup($enick, $ebackend);
 
                         /* Display the "new address" form */

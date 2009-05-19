@@ -1,9 +1,9 @@
 Compatibility plugin for SquirrelMail
 =====================================
-Ver 2.0.13, 2008/07/26
+Ver 2.0.11, 2008/02/29
 
-
-Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
+Original author: Paul Lesniewski <paul@squirrelmail.org>
+Original idea: Bruce Richardson <itsbruce@uklinux.net>
 
 
 
@@ -33,8 +33,8 @@ Donations
 
 If you or your company make regular use of this software, please
 consider supporting Open Source development by donating to the authors
-or inquire about hiring them to consult on other projects.  Donation/
-wish list links for the author(s) are as follows:
+or inquire about hiring them to consult on other projects.  Donation
+links for the author(s) are as follows:
 
 Paul Lesniewski: https://sourceforge.net/donate/index.php?user_id=508228
 
@@ -44,27 +44,6 @@ Requirements
 ============
 
   * None
-
-
-
-Troubleshooting
-===============
-
-  * If you experience errors that look similar to the following:
-
-       Fatal error: Call to undefined function php_self() in .../compatibility/includes/1.5.0/global.php on line 25
-    
-    You have a plugin installed that requires version 1.x of the
-    Compatibility plugin.  There is a list of plugins that have
-    this requirement here:
-
-       http://www.squirrelmail.org/wiki/CompatibilityDependencies
-
-    Note that you generally cannot use plugins that require
-    Compatibility 1.x with ones that require Compatibility 2.x.
-    The best approach to solving this problem is to contact the
-    plugin author of the outdated plugin and work with them to
-    update that code.
 
 
 
@@ -185,11 +164,6 @@ SquirrelMail versions 1.4.10 and 1.5.2 and above, use it with the
 $disable_config_check at the top of the functions.php file in the 
 Compatibility Plugin.
 
-A function called check_file_contents() is also available for plugins
-that would like to check if the SquirrelMail source code has been
-properly patched if needed by that plugin.  See that function's
-documentation in the functions.php file for more information if needed.
-
 There are also some advanced utility functions for use by plugins needing
 to add, remove or re-order other plugins (or themselves) called add_plugin(),
 remove_plugin(), get_current_hook_name() and reposition_plugin_on_hook().
@@ -256,22 +230,6 @@ TODO
 
 Change Log
 ==========
-
-  v2.0.13  2008/07/26  Paul Lesniewski <paul@squirrelmail.org>
-    * Synchronized sq_send_mail() and sqauth_save_password()
-      with changes in SquirrelMail
-    * Synchronized get_plugin_requirement() with changes in
-      SquirrelMail
-
-  v2.0.12  2008/05/21  Paul Lesniewski <paul@squirrelmail.org>
-    * Added set_uri_vars()
-    * Added check_file_contents()
-    * Added $load_only_one to load_config()
-    * Added include directories for 1.4.15 and 1.4.16
-    * Added lame-duck stand-in for ngettext() when needed
-      under SquirrelMail versions less than 1.5.1 that
-      are not running at least PHP 4.2.0 with the gettext
-      extension
 
   v2.0.11  2008/02/29  Paul Lesniewski <paul@squirrelmail.org>
     * Moved sq_send_mail(), since it was added to SM core

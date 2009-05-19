@@ -19,7 +19,7 @@
  * Also view plugins/README.plugins for more information.
  *
  * @version $Id$
- * @copyright (c) 1999-2006 The SquirrelMail Project Team
+ * @copyright (c) 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package plugins
  * @subpackage filters

@@ -1,5 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-05-19 Benedikt Heintel
+	- TOOLS:
+		* Fixed #1838: Updated Squirrelmail to version 1.4.18
+
 2009-05-15 Daniel Andreca
 	- GUI:
 		* Fixed #1839: Part of DNS JS delete message has undefined var in client/domains_manage.php

@@ -5,7 +5,7 @@
  *
  * Enables message moving between folders on the IMAP server.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -231,7 +231,7 @@ if(isset($expungeButton)) {
     if (count($id)) {
         // move messages only when target mailbox is not the same as source mailbox
         if ($mailbox!=$targetMailbox) {
-            sqimap_msgs_list_copy($imapConnection,$id,$targetMailbox);
+            sqimap_msgs_list_move($imapConnection,$id,$targetMailbox);
             if ($auto_expunge) {
                 $cnt = sqimap_mailbox_expunge($imapConnection, $mailbox, true);
             } else {

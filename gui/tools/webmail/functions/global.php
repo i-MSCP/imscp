@@ -3,9 +3,9 @@
 /**
  * global.php
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 13335 2008-11-26 02:54:09Z pdontthink $
+ * @version $Id: global.php 13676 2009-05-11 22:48:03Z pdontthink $
  * @package squirrelmail
  */
 
@@ -64,14 +64,28 @@ if ((bool) ini_get('register_globals') &&
     unset($GLOBALS['value']);
 }
 
-/*
- * strip any tags added to the url from PHP_SELF.
+/**
+ * Strip any tags added to the url from PHP_SELF.
  * This fixes hand crafted url XXS expoits for any
- * page that uses PHP_SELF as the FORM action
+ * page that uses PHP_SELF as the FORM action.
  * Must be executed before strings.php is loaded (php_self() call in strings.php).
+ * Update: strip_tags() won't catch something like
+ * src/right_main.php?sort=0&startMessage=1&mailbox=INBOX&xxx="><script>window.open("http://example.com")</script>
+ * or
+ * contrib/decrypt_headers.php/%22%20onmouseover=%22alert(%27hello%20world%27)%22%3E
+ * because it doesn't bother with broken tags.
+ * htmlspecialchars() is the preferred method.
  */
 if (isset($_SERVER['PHP_SELF'])) {
-    $_SERVER['PHP_SELF'] = strip_tags($_SERVER['PHP_SELF']);
+    $_SERVER['PHP_SELF'] = htmlspecialchars($_SERVER['PHP_SELF']);
+}
+/*
+ * same needed for QUERY_STRING because SquirrelMail
+ * uses it along with PHP_SELF when using location
+ * strings
+ */
+if (isset($_SERVER['QUERY_STRING'])) {
+    $_SERVER['QUERY_STRING'] = htmlspecialchars($_SERVER['QUERY_STRING']);
 }
 
 /**
@@ -114,6 +128,13 @@ if (!(bool)ini_get('session.use_cookies') ||
     ini_get('session.use_cookies') == 'off') {
     ini_set('session.use_cookies','1');
 }
+
+/**
+ * Make sure to have $base_uri always initialized to avoid having session
+ * cookie set separately for each $base_uri subdirectory that receives direct
+ * requests from user's browser (typically $base_uri and $base_uri/src).
+ */
+$base_uri = sqm_baseuri();
 
 sqsession_is_active();
 
@@ -351,8 +372,28 @@ function sqsession_destroy() {
 
     global $base_uri;
 
-    if (isset($_COOKIE[session_name()])) sqsetcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri);
+    if (isset($_COOKIE[session_name()])) {
+        sqsetcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri);
+
+        /*
+         * Make sure to kill /src and /src/ cookies, just in case there are
+         * some left-over or malicious ones set in user's browser.
+         * NB: Note that an attacker could try to plant a cookie for one
+         *     of the /plugins/* directories.  Such cookies can block
+         *     access to certain plugin pages, but they do not influence
+         *     or fixate the $base_uri cookie, so we don't worry about
+         *     trying to delete all of them here.
+         */
+        sqsetcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri . 'src');
+        sqsetcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri . 'src/');
+    }
+
     if (isset($_COOKIE['key'])) sqsetcookie('key', 'SQMTRASH', 1, $base_uri);
+
+    /* Make sure new session id is generated on subsequent session_start() */
+    unset($_COOKIE[session_name()]);
+    unset($_GET[session_name()]);
+    unset($_POST[session_name()]);
 
     $sessid = session_id();
     if (!empty( $sessid )) {
@@ -517,6 +558,35 @@ function is_ssl_secured_connection()
      || (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER)
       && $server_port == $sq_https_port))
         return TRUE;
+    return FALSE;
+}
+
+/**
+ * Determine if there are lines in a file longer than a given length
+ *
+ * @param string $filename   The full file path of the file to inspect
+ * @param int    $max_length If any lines in the file are GREATER THAN
+ *                           this number, this function returns TRUE.
+ *
+ * @return boolean TRUE as explained above, otherwise, (no long lines
+ *                 found) FALSE is returned.
+ *
+ */
+function file_has_long_lines($filename, $max_length) {
+
+    $FILE = @fopen($filename, 'rb');
+
+    if ($FILE) {
+        while (!feof($FILE)) {
+            $buffer = fgets($FILE, 4096);
+            if (strlen($buffer) > $max_length) {
+                fclose($FILE);
+                return TRUE;
+            }
+        }
+        fclose($FILE);
+    }
+
     return FALSE;
 }
 

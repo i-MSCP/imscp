@@ -7,9 +7,9 @@
  * a delivery backend.
  *
  * @author Marc Groot Koerkamp
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 13066 2008-04-28 02:18:58Z pdontthink $
+ * @version $Id: Deliver.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 
@@ -281,15 +281,50 @@ class Deliver {
                 global $username, $attachment_dir;
                 $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
                 $filename = $message->att_local_name;
+
+                // inspect attached file for lines longer than allowed by RFC,
+                // in which case we'll be using base64 encoding (so we can split
+                // the lines up without corrupting them) instead of 8bit unencoded...
+                // (see RFC 2822/2.1.1)
+                //
+                // using 990 because someone somewhere is folding lines at
+                // 990 instead of 998 and I'm too lazy to find who it is
+                //
+                $file_has_long_lines = file_has_long_lines($hashed_attachment_dir
+                                                           . '/' . $filename, 990);
+
                 $file = fopen ($hashed_attachment_dir . '/' . $filename, 'rb');
-                while ($body_part = fgets($file, 4096)) {
-                    $length += $this->clean_crlf($body_part);
-                    if ($stream) {
-                        $this->preWriteToStream($body_part);
-                        $this->writeToStream($stream, $body_part);
+
+                // long lines were found, need to use base64 encoding
+                //
+                if ($file_has_long_lines) {
+                    while ($tmp = fread($file, 570)) {
+                        $body_part = chunk_split(base64_encode($tmp));
+                        // Up to 4.3.10 chunk_split always appends a newline,
+                        // while in 4.3.11 it doesn't if the string to split
+                        // is shorter than the chunk length.
+                        if( substr($body_part, -1 , 1 ) != "\n" )
+                            $body_part .= "\n";
+                        $length += $this->clean_crlf($body_part);
+                        if ($stream) {
+                            $this->writeToStream($stream, $body_part);
+                        }
                     }
-                    $last = $body_part;
                 }
+
+                // no excessively long lines - normal 8bit
+                //
+                else {
+                    while ($body_part = fgets($file, 4096)) {
+                        $length += $this->clean_crlf($body_part);
+                        if ($stream) {
+                            $this->preWriteToStream($body_part);
+                            $this->writeToStream($stream, $body_part);
+                        }
+                        $last = $body_part;
+                    }
+                }
+
                 fclose($file);
             }
             break;
@@ -458,10 +493,29 @@ class Deliver {
             $encoding = $mime_header->encoding;
             $header[] = 'Content-Transfer-Encoding: ' . $mime_header->encoding . $rn;
         } else {
-            if ($mime_header->type0 == 'text' || $mime_header->type0 == 'message') {
-                $header[] = 'Content-Transfer-Encoding: 8bit' .  $rn;
-            } else if ($mime_header->type0 == 'multipart' || $mime_header->type0 == 'alternative') {
+
+            // inspect attached file for lines longer than allowed by RFC,
+            // in which case we'll be using base64 encoding (so we can split
+            // the lines up without corrupting them) instead of 8bit unencoded...
+            // (see RFC 2822/2.1.1)
+            //
+            if (!empty($message->att_local_name)) { // is this redundant? I have no idea
+                global $username, $attachment_dir;
+                $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
+                $filename = $hashed_attachment_dir . '/' . $message->att_local_name;
+
+                // using 990 because someone somewhere is folding lines at
+                // 990 instead of 998 and I'm too lazy to find who it is
+                //
+                $file_has_long_lines = file_has_long_lines($filename, 990);
+            } else
+                $file_has_long_lines = FALSE;
+
+            if ($mime_header->type0 == 'multipart' || $mime_header->type0 == 'alternative') {
                 /* no-op; no encoding needed */
+            } else if (($mime_header->type0 == 'text' || $mime_header->type0 == 'message')
+                    && !$file_has_long_lines) {
+                $header[] = 'Content-Transfer-Encoding: 8bit' .  $rn;
             } else {
                 $header[] = 'Content-Transfer-Encoding: base64' .  $rn;
             }
@@ -488,7 +542,7 @@ class Deliver {
         $cnt = count($header);
         $hdr_s = '';
         for ($i = 0 ; $i < $cnt ; $i++)    {
-            $hdr_s .= $this->foldLine($header[$i], 78,str_pad('',4));
+            $hdr_s .= $this->foldLine($header[$i], 78);
         }
         $header = $hdr_s;
         $header .= $rn; /* One blank line to separate mimeheader and body-entity */
@@ -721,7 +775,7 @@ class Deliver {
             case 'From':
                 $hdr_s .= $header[$i];
                 break;
-            default: $hdr_s .= $this->foldLine($header[$i], 78, str_pad('',4)); break;
+            default: $hdr_s .= $this->foldLine($header[$i], 78); break;
             }
         }
         $header = $hdr_s;
@@ -849,7 +903,7 @@ class Deliver {
      * @return string $result with timezone and offset
      */
     function timezone () {
-        global $invert_time;
+        global $invert_time, $show_timezone_name;
 
         $diff_second = date('Z');
         if ($invert_time) {
@@ -863,9 +917,24 @@ class Deliver {
         $diff_second = abs($diff_second);
         $diff_hour = floor ($diff_second / 3600);
         $diff_minute = floor (($diff_second-3600*$diff_hour) / 60);
-        $zonename = '('.strftime('%Z').')';
-        $result = sprintf ("%s%02d%02d %s", $sign, $diff_hour, $diff_minute,
-                       $zonename);
+
+        // If an administrator wants to add the timezone name to the
+        // end of the date header, they can set $show_timezone_name
+        // to boolean TRUE in config/config_local.php, but that is
+        // NOT RFC-822 compliant (see section 5.1).  Moreover, some
+        // Windows users reported that strftime('%Z') was returning
+        // the full zone name (not the abbreviation) which in some
+        // cases included 8-bit characters (not allowed as is in headers).
+        // The PHP manual actually does NOT promise what %Z will return
+        // for strftime!:  "The time zone offset/abbreviation option NOT
+        // given by %z (depends on operating system)"
+        //
+        if ($show_timezone_name) {
+            $zonename = '('.strftime('%Z').')';
+            $result = sprintf ("%s%02d%02d %s", $sign, $diff_hour, $diff_minute, $zonename);
+        } else {
+            $result = sprintf ("%s%02d%02d", $sign, $diff_hour, $diff_minute);
+        }
         return ($result);
     }
 

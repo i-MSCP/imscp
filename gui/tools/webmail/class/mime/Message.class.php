@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle mime messages.
  *
- * @copyright &copy; 2003-2007 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 12757 2007-11-04 10:08:07Z kink $
+ * @version $Id: Message.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -362,7 +362,7 @@ class Message {
                                 $hdr = new MessageHeader();
                                 $hdr->type0 = 'text';
                                 $hdr->type1 = 'plain';
-                                $hdr->encoding = 'us-ascii';
+                                $hdr->encoding = '7bit';
                             } else {
                                 $msg->header->type0 = 'multipart';
                                 $msg->type0 = 'multipart';

@@ -9,9 +9,9 @@
  * Internally the output character set is used. Other characters are
  * encoded using Unicode entities according to HTML 4.0.
  *
- * @copyright &copy; 1999-2008 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 13309 2008-10-27 23:11:38Z pdontthink $
+ * @version $Id: i18n.php 13656 2009-05-07 21:55:44Z pdontthink $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -279,10 +279,12 @@ function charset_convert($in_charset,$string,$out_charset,$htmlencode=true) {
  * @since 1.5.1 and 1.4.4
  */
 function fixcharset($charset) {
-    /* remove minus and characters that might be used in paths from charset
+
+    /* Remove minus and characters that might be used in paths from charset
      * name in order to be able to use it in function names and include calls.
+     * Also make sure it's in lower case (ala "UTF" --> "utf")
      */
-    $charset=preg_replace("/[-:.\/\\\]/",'_',$charset);
+    $charset=preg_replace("/[-:.\/\\\]/",'_', strtolower($charset));
 
     // OE ks_c_5601_1987 > cp949 
     $charset=str_replace('ks_c_5601_1987','cp949',$charset);
@@ -599,34 +601,34 @@ function japanese_charset_xtra() {
             $ret = mb_strimwidth($ret, 0, $width, '...');
             break;
         case 'encodeheader':
-            $result = '';
-            if (strlen($ret) > 0) {
-                $tmpstr = mb_substr($ret, 0, 1);
-                $prevcsize = strlen($tmpstr);
-                for ($i = 1; $i < mb_strlen($ret); $i++) {
-                    $tmp = mb_substr($ret, $i, 1);
-                    if (strlen($tmp) == $prevcsize) {
-                        $tmpstr .= $tmp;
-                    } else {
-                        if ($prevcsize == 1) {
-                            $result .= $tmpstr;
-                        } else {
-                            $result .= str_replace(' ', '',
-                                                   mb_encode_mimeheader($tmpstr,'iso-2022-jp','B',''));
-                        }
-                        $tmpstr = $tmp;
-                        $prevcsize = strlen($tmp);
-                    }
-                }
-                if (strlen($tmpstr)) {
-                    if (strlen(mb_substr($tmpstr, 0, 1)) == 1)
-                        $result .= $tmpstr;
-                    else
-                        $result .= str_replace(' ', '',
-                                               mb_encode_mimeheader($tmpstr,'iso-2022-jp','B',''));
-                }
+            /**
+             * First argument ($ret) contains header string.
+             * SquirrelMail ja_JP translation uses euc-jp as internal encoding.
+             * euc-jp stores Japanese letters in 0xA1-0xFE block (source:
+             * JIS X 0208 unicode.org mapping. see euc_jp.php in extra decoding
+             * library). Standard SquirrelMail 8bit test should detect if text
+             * is in euc or in ascii.
+             */
+            if (sq_is8bit($ret)) {
+                /**
+                 * Minimize dependency on mb_mime_encodeheader(). PHP 4.4.1 bug
+                 * and maybe other bugs.
+                 *
+                 * Convert text from euc-jp (internal encoding) to iso-2022-jp
+                 * (commonly used Japanese encoding) with mbstring functions.
+                 *
+                 * Use SquirrelMail internal B encoding function. 'encodeheader'
+                 * XTRA_CODE is executed in encodeHeader() function, so
+                 * functions/mime.php (encodeHeaderBase64) and functions/strings.php 
+                 * (sq_is8bit) are already loaded.
+                 */
+                $ret = encodeHeaderBase64(mb_convert_encoding($ret,'ISO-2022-JP','EUC-JP'),
+                                          'iso-2022-jp');
             }
-            $ret = $result;
+            /**
+             * if text is in ascii, we leave it unchanged. If some ASCII
+             * chars must be encoded, add code here in else statement.
+             */
             break;
         case 'decodeheader':
             $ret = str_replace("\t", "", $ret);
@@ -740,11 +742,16 @@ $languages['bg_BG']['CHARSET'] = 'windows-1251';
 $languages['bg_BG']['LOCALE']  = 'bg_BG.CP1251';
 $languages['bg']['ALIAS']      = 'bg_BG';
 
-$languages['bn_IN']['NAME']    = 'Bengali';
+$languages['bn_BD']['NAME']    = 'Bengali (Bangladesh)';
+//$languages['bn_BD']['ALTNAME'] = 'Bangla';
+$languages['bn_BD']['ALTNAME'] = '&#x09AC;&#x09BE;&#x0982;&#x09B2;&#x09BE;';
+$languages['bn_BD']['CHARSET'] = 'utf-8';
+$languages['bn_BD']['LOCALE']  = array('bn_BD.UTF-8', 'bn_BD.UTF8', 'bn_BD', 'bn.UTF-8', 'bn.UTF8', 'bn');
+$languages['bn']['ALIAS'] = 'bn_BD';
+
+$languages['bn_IN']['NAME']    = 'Bengali (India)';
 $languages['bn_IN']['CHARSET'] = 'utf-8';
-$languages['bn_IN']['LOCALE']  = 'bn_IN.UTF-8';
-$languages['bn_BD']['ALIAS'] = 'bn_IN';
-$languages['bn']['ALIAS'] = 'bn_IN';
+$languages['bn_IN']['LOCALE']  = array('bn_IN.UTF-8', 'bn_IN.UTF8');
 
 $languages['ca_ES']['NAME']    = 'Catalan';
 $languages['ca_ES']['CHARSET'] = 'iso-8859-1';
@@ -752,8 +759,9 @@ $languages['ca_ES']['LOCALE']  = array('ca_ES.ISO8859-1','ca_ES.ISO-8859-1','ca_
 $languages['ca']['ALIAS']      = 'ca_ES';
 
 $languages['cs_CZ']['NAME']    = 'Czech';
-$languages['cs_CZ']['CHARSET'] = 'iso-8859-2';
-$languages['cs_CZ']['LOCALE']  = array('cs_CZ.ISO8859-2','cs_CZ.ISO-8859-2','cs_CZ');
+$languages['cs_CZ']['ALTNAME'] = '&#268;e&scaron;tina';
+$languages['cs_CZ']['CHARSET'] = 'utf-8';
+$languages['cs_CZ']['LOCALE']  = array('cs_CZ.UTF-8', 'cs_CZ.UTF8', 'cs_CZ');
 $languages['cs']['ALIAS']      = 'cs_CZ';
 
 $languages['cy_GB']['NAME']    = 'Welsh';
@@ -766,7 +774,8 @@ $languages['da_DK']['CHARSET'] = 'iso-8859-1';
 $languages['da_DK']['LOCALE']  = array('da_DK.ISO8859-1','da_DK.ISO-8859-1','da_DK');
 $languages['da']['ALIAS']      = 'da_DK';
 
-$languages['de_DE']['NAME']    = 'Deutsch';
+$languages['de_DE']['NAME']    = 'German';
+$languages['de_DE']['ALTNAME'] = 'Deutsch';
 $languages['de_DE']['CHARSET'] = 'iso-8859-1';
 $languages['de_DE']['LOCALE']  = array('de_DE.ISO8859-1','de_DE.ISO-8859-1','de_DE');
 $languages['de']['ALIAS']      = 'de_DE';
@@ -776,9 +785,14 @@ $languages['el_GR']['CHARSET'] = 'iso-8859-7';
 $languages['el_GR']['LOCALE']  = array('el_GR.ISO8859-7','el_GR.ISO-8859-7','el_GR');
 $languages['el']['ALIAS']      = 'el_GR';
 
+/* This translation is disabled because it contains less than 50%
+ * translated strings. In those cases where British and American English are
+ * spelled the same, the translation should indicate that by copy the "msgid" to
+ * the "msgstr" instead of leaving the "msgstr" blank.
 $languages['en_GB']['NAME']    = 'British';
 $languages['en_GB']['CHARSET'] = 'iso-8859-15';
 $languages['en_GB']['LOCALE']  = array('en_GB.ISO8859-15','en_GB.ISO-8859-15','en_GB');
+*/
 
 $languages['en_US']['NAME']    = 'English';
 $languages['en_US']['CHARSET'] = 'iso-8859-1';
@@ -817,7 +831,7 @@ $languages['fr']['ALIAS']      = 'fr_FR';
 
 $languages['fy']['NAME']       = 'Frisian';
 $languages['fy']['CHARSET']    = 'utf-8';
-$languages['fy']['LOCALE']     = array('fy.UTF-8','fy_NL.UTF-8');
+$languages['fy']['LOCALE']     = array('fy.UTF-8', 'fy.UTF8', 'fy_NL.UTF-8', 'fy_NL.UTF8');
 
 $languages['hr_HR']['NAME']    = 'Croatian';
 $languages['hr_HR']['CHARSET'] = 'iso-8859-2';
@@ -825,8 +839,9 @@ $languages['hr_HR']['LOCALE']  = array('hr_HR.ISO8859-2','hr_HR.ISO-8859-2','hr_
 $languages['hr']['ALIAS']      = 'hr_HR';
 
 $languages['hu_HU']['NAME']    = 'Hungarian';
-$languages['hu_HU']['CHARSET'] = 'iso-8859-2';
-$languages['hu_HU']['LOCALE']  = array('hu_HU.ISO8859-2','hu_HU.ISO-8859-2','hu_HU');
+$languages['hu_HU']['ALTNAME'] = 'Magyar';
+$languages['hu_HU']['CHARSET'] = 'utf-8';
+$languages['hu_HU']['LOCALE']  = array('hu_HU.UTF-8', 'hu_HU.UTF8', 'hu_HU');
 $languages['hu']['ALIAS']      = 'hu_HU';
 
 $languages['id_ID']['NAME']    = 'Bahasa Indonesia';
@@ -840,8 +855,9 @@ $languages['is_IS']['LOCALE']  = array('is_IS.ISO8859-1','is_IS.ISO-8859-1','is_
 $languages['is']['ALIAS']      = 'is_IS';
 
 $languages['it_IT']['NAME']    = 'Italian';
-$languages['it_IT']['CHARSET'] = 'iso-8859-1';
-$languages['it_IT']['LOCALE']  = array('it_IT.ISO8859-1','it_IT.ISO-8859-1','it_IT');
+$languages['it_IT']['ALTNAME'] = 'Italiano';
+$languages['it_IT']['CHARSET'] = 'utf-8';
+$languages['it_IT']['LOCALE']  = array('it_IT.UTF-8','it_IT-UTF8','it_IT');
 $languages['it']['ALIAS']      = 'it_IT';
 
 $languages['ja_JP']['NAME']    = 'Japanese';
@@ -851,8 +867,14 @@ $languages['ja']['ALIAS']      = 'ja_JP';
 
 $languages['ka']['NAME']       = 'Georgian';
 $languages['ka']['CHARSET']    = 'utf-8';
-$languages['ka']['LOCALE']     = array('ka_GE.UTF-8','ka_GE','ka');
+$languages['ka']['LOCALE']     = array('ka_GE.UTF-8', 'ka_GE.UTF8', 'ka_GE', 'ka');
 $languages['ka_GE']['ALIAS']   = 'ka';
+
+$languages['km']['NAME']       = 'Khmer';
+$languages['km']['ALTNAME']    = '&#6017;&#6098;&#6040;&#6082;&#6042;';
+$languages['km']['CHARSET']    = 'utf-8';
+$languages['km']['LOCALE']     = array('km.UTF-8', 'km.UTF8', 'km_KH.UTF-8', 'km_KH.UTF8', 'km', 'km_KH');
+$languages['km_KH']['ALIAS']   = 'km';
 
 $languages['ko_KR']['NAME']    = 'Korean';
 $languages['ko_KR']['CHARSET'] = 'euc-KR';
@@ -863,17 +885,17 @@ $languages['ko']['ALIAS']      = 'ko_KR';
 $languages['lv_LV']['NAME']    = 'Latvian';
 $languages['lv_LV']['ALTNAME'] = 'Latvi&#371;';
 $languages['lv_LV']['CHARSET'] = 'utf-8';
-$languages['lv_LV']['LOCALE'] = 'lv_LV.UTF-8';
+$languages['lv_LV']['LOCALE'] = array('lv_LV.UTF-8', 'lv_LV.UTF8');
 $languages['lv']['ALIAS'] = 'lv_LV';
 
 $languages['lt_LT']['NAME']    = 'Lithuanian';
 $languages['lt_LT']['CHARSET'] = 'utf-8';
-$languages['lt_LT']['LOCALE']  = 'lt_LT.UTF-8';
+$languages['lt_LT']['LOCALE']  = array('lt_LT.UTF-8', 'lt_LT.UTF8');
 $languages['lt']['ALIAS']      = 'lt_LT';
 
 $languages['mk']['NAME']       = 'Macedonian';
 $languages['mk']['CHARSET']    = 'utf-8';
-$languages['mk']['LOCALE']     = array('mk.UTF-8','mk_MK.UTF-8');
+$languages['mk']['LOCALE']     = array('mk.UTF-8', 'mk.UTF8', 'mk_MK.UTF-8', 'mk_MK.UTF8');
 
 $languages['ms_MY']['NAME']    = 'Bahasa Melayu';
 $languages['ms_MY']['CHARSET'] = 'iso-8859-1';
@@ -887,7 +909,7 @@ $languages['nl']['ALIAS']      = 'nl_NL';
 
 $languages['nb_NO']['NAME']    = 'Norwegian (Bokm&aring;l)';
 $languages['nb_NO']['CHARSET'] = 'utf-8';
-$languages['nb_NO']['LOCALE']  = array('nb_NO.UTF-8','nb_NO');
+$languages['nb_NO']['LOCALE']  = array('nb_NO.UTF-8', 'nb_NO.UTF8', 'nb_NO');
 $languages['nb']['ALIAS']      = 'nb_NO';
 
 $languages['nn_NO']['NAME']    = 'Norwegian (Nynorsk)';
@@ -910,17 +932,33 @@ $languages['pt_BR']['LOCALE']  = array('pt_BR.ISO8859-1','pt_BR.ISO-8859-1','pt_
 
 $languages['ro_RO']['NAME']    = 'Romanian';
 $languages['ro_RO']['CHARSET'] = 'utf-8';
-$languages['ro_RO']['LOCALE']  = array('ro_RO.UTF-8','ro_RO');
+$languages['ro_RO']['LOCALE']  = array('ro_RO.UTF-8', 'ro_RO.UTF8', 'ro_RO');
 $languages['ro']['ALIAS']      = 'ro_RO';
 
 $languages['ru_RU']['NAME']    = 'Russian';
 $languages['ru_RU']['CHARSET'] = 'utf-8';
-$languages['ru_RU']['LOCALE']  = 'ru_RU.UTF-8';
+$languages['ru_RU']['LOCALE']  = array('ru_RU.UTF-8', 'ru_RU.UTF8');
 $languages['ru']['ALIAS']      = 'ru_RU';
+
+/* This translation is disabled because it is supposedly
+ * Russian slang and is in need of updating.
+$languages['ru_UA']['NAME']    = 'Russian (Ukrainian)';
+$languages['ru_UA']['CHARSET'] = 'koi8-r';
+$languages['ru_UA']['LOCALE']  = 'ru_UA.KOI8-R';
+*/
+
+/* This translation is disabled because it contains less than 50%
+ * translated strings
+$languages['si_LK']['NAME']    = 'Sinhala';
+$languages['si_LK']['ALTNAME'] = '&#3523;&#3538;&#3458;&#3524;&#3517;';
+$languages['si_LK']['CHARSET'] = 'utf-8';
+$languages['si_LK']['LOCALE']  = array('si_LK.UTF-8', 'si_LK.UTF8');
+$languages['si']['ALIAS'] = 'si_LK';
+*/
 
 $languages['sk_SK']['NAME']    = 'Slovak';
 $languages['sk_SK']['CHARSET'] = 'utf-8';
-$languages['sk_SK']['LOCALE']  = array('sk_SK.UTF-8','sk_SK');
+$languages['sk_SK']['LOCALE']  = array('sk_SK.UTF-8', 'sk_SK.UTF8', 'sk_SK');
 $languages['sk']['ALIAS']      = 'sk_SK';
 
 $languages['sl_SI']['NAME']    = 'Slovenian';
@@ -935,15 +973,29 @@ $languages['sr']['ALIAS']      = 'sr_YU';
 
 $languages['sv_SE']['NAME']    = 'Swedish';
 $languages['sv_SE']['CHARSET'] = 'utf-8';
-$languages['sv_SE']['LOCALE']  = array('sv_SE.UTF-8','sv_SE');
+$languages['sv_SE']['LOCALE']  = array('sv_SE.UTF-8', 'sv_SE.UTF8', 'sv_SE');
 $languages['sv']['ALIAS']      = 'sv_SE';
 
-/* translation is disabled because it contains less than 50%
+$languages['ta_LK']['NAME']    = 'Tamil';
+$languages['ta_LK']['ALTNAME'] = '&#2980;&#2990;&#3007;&#2996;&#3021;';
+$languages['ta_LK']['CHARSET'] = 'utf-8';
+$languages['ta_LK']['LOCALE']  = array('ta_LK.UTF-8', 'ta_LK.UTF8', 'ta_LK', 'ta.UTF-8', 'ta.UTF8', 'ta');
+$languages['ta']['ALIAS'] = 'ta_LK';
+
+/* This translation is disabled because it contains less than 50%
  * translated strings
 $languages['th_TH']['NAME']    = 'Thai';
 $languages['th_TH']['CHARSET'] = 'tis-620';
 $languages['th_TH']['LOCALE']  = 'th_TH.TIS-620';
 $languages['th']['ALIAS'] = 'th_TH';
+*/
+
+/* This translation is disabled because it contains less than 50%
+ * translated strings
+$languages['tl_PH']['NAME']    = 'Tagalog';
+$languages['tl_PH']['CHARSET'] = 'iso-8859-1';
+$languages['tl_PH']['LOCALE']  = array('tl_PH.ISO8859-1','tl_PH.ISO-8859-1','tl_PH');
+$languages['tl']['ALIAS'] = 'tl_PH';
 */
 
 $languages['tr_TR']['NAME']    = 'Turkish';
@@ -953,7 +1005,7 @@ $languages['tr']['ALIAS']      = 'tr_TR';
 
 $languages['zh_TW']['NAME']    = 'Chinese Trad';
 $languages['zh_TW']['CHARSET'] = 'utf-8';
-$languages['zh_TW']['LOCALE']  = 'zh_TW.UTF-8';
+$languages['zh_TW']['LOCALE']  = array('zh_TW.UTF-8', 'zh_TW.UTF8');
 $languages['tw']['ALIAS']      = 'zh_TW';
 
 $languages['zh_CN']['NAME']    = 'Chinese Simp';
@@ -963,7 +1015,7 @@ $languages['cn']['ALIAS']      = 'zh_CN';
 
 $languages['uk_UA']['NAME']    = 'Ukrainian';
 $languages['uk_UA']['CHARSET'] = 'utf-8';
-$languages['uk_UA']['LOCALE']  = array('uk_UA.UTF-8','uk_UA','uk');
+$languages['uk_UA']['LOCALE']  = array('uk_UA.UTF-8', 'uk_UA.UTF8', 'uk_UA', 'uk');
 $languages['uk']['ALIAS'] = 'uk_UA';
 
 $languages['vi_VN']['NAME']    = 'Vietnamese';
@@ -979,7 +1031,7 @@ $languages['ar']['DIR']     = 'rtl';
 $languages['fa_IR']['NAME']    = 'Persian';
 $languages['fa_IR']['CHARSET'] = 'utf-8';
 $languages['fa_IR']['DIR']     = 'rtl';
-$languages['fa_IR']['LOCALE']  = 'fa_IR.UTF-8';
+$languages['fa_IR']['LOCALE']  = array('fa_IR.UTF-8', 'fa_IR.UTF8');
 $languages['fa']['ALIAS']      = 'fa_IR';
 
 $languages['he_IL']['NAME']    = 'Hebrew';

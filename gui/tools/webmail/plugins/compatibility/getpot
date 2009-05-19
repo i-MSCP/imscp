@@ -1,5 +1,5 @@
 #!/bin/sh
-XGETTEXT_OPTIONS="--keyword=_ -keyword=N_ --default-domain=compatibility --no-wrap --no-location --add-comments=i18n"
+XGETTEXT_OPTIONS="--keyword=_ -keyword=N_ --default-domain=compatibility --no-location"
 
 # Allows controlling language option
 # (gettext v.0.10.40 = -C, gettext 0.11+ = -L php).

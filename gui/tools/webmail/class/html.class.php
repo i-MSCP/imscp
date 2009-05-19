@@ -5,9 +5,9 @@
  *
  * This contains functions needed to generate html output.
  *
- * @copyright &copy; 2003-2007 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: html.class.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: html.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 

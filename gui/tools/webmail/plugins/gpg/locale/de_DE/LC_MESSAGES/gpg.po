@@ -1,4 +1,4 @@
-# Deutsch (German) Translation File for GPG Plugin
+# Deutsch (German) Translation File for GPG Plugin 
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Roland Fritz <roland.fritz@fritz-internet.de>, 2003
@@ -1700,7 +1700,7 @@ msgstr "Dies ist der SIGNATUR Schlüssel"
 
 #: modules/keyview.php:270
 msgid "This is my TRUSTED key"
-msgstr "Dies ist der VERTrauTE Schlüssel"
+msgstr "Dies ist der VERTRAUTE Schlüssel"
 
 #: modules/general.mod:294
 msgid "This key has the properties:"

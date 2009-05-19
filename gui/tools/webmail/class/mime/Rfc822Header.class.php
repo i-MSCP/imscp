@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle headers in mime messages.
  *
- * @copyright &copy; 2003-2007 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 13311 2008-10-29 23:05:09Z pdontthink $
+ * @version $Id: Rfc822Header.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2

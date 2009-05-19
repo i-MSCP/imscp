@@ -6,9 +6,9 @@
  * takes a string of unicode entities and converts it to a iso-8859-15 encoded string
  * Unsupported characters are replaced with ?.
  *
- * @copyright &copy; 2004-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2004-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: iso_8859_15.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: iso_8859_15.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage encode
  */

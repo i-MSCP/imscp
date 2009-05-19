@@ -15,9 +15,9 @@
  * passwords being leaked to e.g. other system users. Take extra care when
  * the webserver is shared with untrusted users.
  *
- * @copyright &copy; 2000-2007 The SquirrelMail Project Team
+ * @copyright &copy; 2000-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: config_default.php 13238 2008-07-19 07:31:43Z pdontthink $
+ * @version $Id: config_default.php 13537 2009-04-13 16:52:57Z jervfors $
  * @package squirrelmail
  * @subpackage config
  */
@@ -103,7 +103,7 @@ $provider_name = 'SquirrelMail';
  * option set to true.
  * @global string $provider_uri
  */
-$provider_uri = 'http://www.squirrelmail.org/';
+$provider_uri = 'http://squirrelmail.org/';
 
 /*** Server Settings ***/
 /**
@@ -666,8 +666,8 @@ $session_name = 'SQMSESSID';
  * https://webmail.example.com:6691
  *
  * To be clear: do not include any of the path elements, so if
- * SquirrelMail is at http://www.example.net/web/mail/src/login.php, you
- * write: http://www.example.net
+ * SquirrelMail is at http://example.net/web/mail/src/login.php, you
+ * write: http://example.net
  *
  * @global string $config_location_base
  * @since 1.4.8

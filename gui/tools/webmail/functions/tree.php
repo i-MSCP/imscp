@@ -6,9 +6,9 @@
  * This file provides functions to walk trees of folders, for
  * instance to delete a whole tree.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: tree.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: tree.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 
@@ -145,7 +145,7 @@ function walkTreeInPostOrderCreatingFoldersUnderTrash($index, $imap_stream, $tre
         $mbx_response = sqimap_mailbox_select($imap_stream, $tree[$index]['value']);
         $messageCount = $mbx_response['EXISTS'];
         if ($messageCount > 0) {
-            sqimap_messages_copy($imap_stream, 1, '*', $trash_folder . $delimiter . $subFolderName);
+            sqimap_msgs_list_copy($imap_stream, '1:*', $trash_folder . $delimiter . $subFolderName);
         }
         // after copy close the mailbox to get in unselected state
         sqimap_run_command($imap_stream,'CLOSE',false,$response,$message);
@@ -156,7 +156,7 @@ function walkTreeInPostOrderCreatingFoldersUnderTrash($index, $imap_stream, $tre
         $mbx_response = sqimap_mailbox_select($imap_stream, $tree[$index]['value']);
         $messageCount = $mbx_response['EXISTS'];
         if ($messageCount > 0) {
-            sqimap_messages_copy($imap_stream, 1, '*', $trash_folder . $delimiter . $subFolderName);
+            sqimap_msgs_list_copy($imap_stream, '1:*', $trash_folder . $delimiter . $subFolderName);
         }
         // after copy close the mailbox to get in unselected state
         sqimap_run_command($imap_stream,'CLOSE',false,$response,$message);

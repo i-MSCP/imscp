@@ -7,9 +7,9 @@
  *
  * http://www.imc.org/pdi/vcard-21.txt
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: VCard.class.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: VCard.class.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @since 1.3.2
  */

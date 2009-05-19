@@ -1,0 +1,10 @@
+--- ../src/validate.php.orig        2005-05-05 02:16:13.041876608 -0700
++++ ../src/validate.php     2005-05-05 02:16:10.068328656 -0700
+@@ -23,6 +23,7 @@
+ require_once('../functions/auth.php');
+ require_once('../functions/strings.php');
+ require_once('../src/global.php');
++include_once('../plugins/compatibility/functions.php');
+
+ is_logged_in();
+
