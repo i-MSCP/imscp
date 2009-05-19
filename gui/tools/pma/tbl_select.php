@@ -7,7 +7,7 @@
  * and include sql.php to execute it
  *
  * @todo display search form again if no results from previous search
- * @version $Id: tbl_select.php 11417 2008-07-21 16:41:17Z lem9 $
+ * @version $Id: tbl_select.php 12387 2009-04-29 17:26:27Z lem9 $
  */
 
 /**
@@ -232,7 +232,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         ?>
                     <script type="text/javascript">
                     //<![CDATA[
-                    document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
+                    document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\', \'\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
                     //]]>
                     </script>
         <?php

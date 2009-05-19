@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build XML dumps of tables
  *
- * @version $Id: xml.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: xml.php 12378 2009-04-19 12:24:45Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -95,6 +95,7 @@ function PMA_exportHeader() {
  */
 function PMA_exportDBHeader($db) {
     global $crlf;
+    $db = str_replace(' ', '_', $db);
     $head = '<!--' . $crlf
           . '- ' . $GLOBALS['strDatabase'] . ': ' . (isset($GLOBALS['use_backquotes']) ? PMA_backquote($db) : '\'' . $db . '\''). $crlf
           . '-->' . $crlf
@@ -113,6 +114,7 @@ function PMA_exportDBHeader($db) {
  */
 function PMA_exportDBFooter($db) {
     global $crlf;
+    $db = str_replace(' ', '_', $db);
     return PMA_exportOutputHandler('</' . $db . '>' . $crlf);
 }
 
@@ -144,11 +146,13 @@ function PMA_exportDBCreate($db) {
  * @access  public
  */
 function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
+    $db = str_replace(' ', '_', $db);
+    $table = str_replace(' ', '_', $table);
     $result      = PMA_DBI_query($sql_query, null, PMA_DBI_QUERY_UNBUFFERED);
 
     $columns_cnt = PMA_DBI_num_fields($result);
     for ($i = 0; $i < $columns_cnt; $i++) {
-        $columns[$i] = stripslashes(PMA_DBI_field_name($result, $i));
+        $columns[$i] = stripslashes(str_replace(' ', '_', PMA_DBI_field_name($result, $i)));
     }
     unset($i);
 

@@ -28,7 +28,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 12202 2009-01-20 18:04:20Z lem9 $
+ * @version $Id: common.inc.php 12397 2009-05-08 14:15:55Z lem9 $
  */
 
 /**
@@ -239,9 +239,7 @@ if (isset($_POST['usesubform'])) {
 // end check if a subform is submitted
 
 // remove quotes added by php
-// (get_magic_quotes_gpc() is deprecated in PHP 5.3, but compare with 5.2.99
-// to be able to test with 5.3.0-dev)
-if (function_exists('get_magic_quotes_gpc') && -1 == version_compare(PHP_VERSION, '5.2.99') && get_magic_quotes_gpc()) {
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
     PMA_arrayWalkRecursive($_GET, 'stripslashes', true);
     PMA_arrayWalkRecursive($_POST, 'stripslashes', true);
     PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);

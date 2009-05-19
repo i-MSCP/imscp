@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 12267 2009-03-01 13:05:35Z lem9 $
+ * @version $Id: Table.class.php 12392 2009-05-06 08:29:26Z helmo $
  */
 
 /**
@@ -245,8 +245,10 @@ class PMA_Table
         // from 5.0.13 returns 'VIEW'.
         // use substr() because the comment might contain something like:
         // (VIEW 'BASE2.VTEST' REFERENCES INVALID TABLE(S) OR COLUMN(S) OR FUNCTION)
+        // use 'Engine' == NULL to exclude regular tables where the comment starts with the word 'view'
         $comment = strtoupper(PMA_Table::sGetStatusInfo($db, $table, 'Comment'));
-        return substr($comment, 0, 4) == 'VIEW';
+        $engine = PMA_Table::sGetStatusInfo($db, $table, 'Engine');
+        return ( substr($comment, 0, 4) == 'VIEW' && $engine == NULL);
     }
     
     static public function sGetToolTip($db, $table)

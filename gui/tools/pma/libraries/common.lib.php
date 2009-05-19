@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 12334 2009-04-04 13:06:20Z helmo $
+ * @version $Id: common.lib.php 12385 2009-04-29 10:18:34Z lem9 $
  */
 
 /**
@@ -140,7 +140,9 @@ function PMA_getIcon($icon, $alternate = '', $container = false, $force_text = f
  */
 function PMA_displayMaximumUploadSize($max_upload_size)
 {
-    list($max_size, $max_unit) = PMA_formatByteDown($max_upload_size);
+    // I have to reduce the second parameter (sensitiveness) from 6 to 4
+    // to avoid weird results like 512 kKib
+    list($max_size, $max_unit) = PMA_formatByteDown($max_upload_size, 4);
     return '(' . sprintf($GLOBALS['strMaximumSize'], $max_size, $max_unit) . ')';
 }
 
