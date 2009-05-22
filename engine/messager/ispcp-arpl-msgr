@@ -627,7 +627,7 @@ sub arpl_msgr_shut_down {
 
 	$main::db -> disconnect();
 
-	if (!defined($main::engine_debug)) {
+	if (defined($main::engine_debug)) {
 
 		$rs = del_file($main::ispcp_arpl_msgr_stdout);
 
