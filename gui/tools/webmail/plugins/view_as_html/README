@@ -1,5 +1,5 @@
 $Id$
-view_as_html -- Version 3.7a-1.4.x
+view_as_html
 By Seth Randall <indiri69@users.sourceforge.net>
 
 Description
@@ -18,7 +18,7 @@ only when there is a HTML part.
 
 Copyright
 =========
-Copyright (C) 2001-2005 Seth E. Randall 
+Copyright (C) 2001-2009 Seth E. Randall 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

@@ -2,7 +2,7 @@
 /** 
  *  setup.php -- SpamCop plugin           
  *
- *  Copyright (c) 1999-2008 The SquirrelMail Project Team
+ *  Copyright (c) 1999-2009 The SquirrelMail Project Team
  *  Licensed under the GNU GPL. For full terms see the file COPYING.
  *  
  *  $Id$                                                         
@@ -131,8 +131,7 @@ function spamcop_while_sending() {
        if ($spamcop_delete) {
            $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
            sqimap_mailbox_select($imapConnection, $mailbox);
-           sqimap_messages_delete($imapConnection, $spamcop_is_composing, 
-                                  $spamcop_is_composing, $mailbox);
+           sqimap_msgs_list_delete($imapConnection, $mailbox, $spamcop_is_composing);
            if ($auto_expunge)
                sqimap_mailbox_expunge($imapConnection, $mailbox, true);
        }

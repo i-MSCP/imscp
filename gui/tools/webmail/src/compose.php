@@ -11,7 +11,7 @@
  *    - Send mail
  *    - Save As Draft
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -588,6 +588,8 @@ elseif (isset($sigappend)) {
         foreach($delete as $index) {
             if (!empty($composeMessage->entities) && isset($composeMessage->entities[$index])) {
                 $composeMessage->entities[$index]->purgeAttachments();
+                // FIXME: one person reported that unset() didn't do anything at all here, so this is a work-around... but it triggers PHP notices if the unset() doesn't work, which should be fixed... but bigger question is if unset() doesn't work here, what about everywhere else?  Anyway, uncomment this if you think you need it
+                //$composeMessage->entities[$index] = NULL;
                 unset ($composeMessage->entities[$index]);
             }
         }
@@ -1198,10 +1200,10 @@ function showInputForm ($session, $values=false) {
         }
 
         if(count($sizes) > 0) {
-            $maxsize = '(max.&nbsp;' . show_readable_size( min( $sizes ) ) . ')' .
-                addHidden('MAX_FILE_SIZE', min( $sizes ));
+            $maxsize_text = '(max.&nbsp;' . show_readable_size( min( $sizes ) ) . ')';
+            $maxsize_input = addHidden('MAX_FILE_SIZE', min( $sizes ));
         } else {
-            $maxsize = '';
+            $maxsize_text = $maxsize_input = '';
         }
         echo '   <tr>' . "\n" .
             '      <td colspan="2">' . "\n" .
@@ -1215,10 +1217,11 @@ function showInputForm ($session, $values=false) {
             html_tag( 'td', '', 'right', '', 'valign="middle"' ) .
             _("Attach:") . '</td>' . "\n" .
             html_tag( 'td', '', 'left', '', 'valign="middle"' ) .
+            $maxsize_input .
             '                          <input name="attachfile" size="48" type="file" />' . "\n" .
             '                          &nbsp;&nbsp;<input type="submit" name="attach"' .
             ' value="' . _("Add") .'" />' . "\n" .
-            $maxsize .
+            $maxsize_text .
             '                       </td>' . "\n" .
             '                    </tr>' . "\n";
 

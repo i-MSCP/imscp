@@ -3,7 +3,7 @@
 /**
  * index.php
  *
- * Copyright (c) 1999-2002 The SquirrelMail Project Team
+ * Copyright (c) 1999-2009 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This file simply takes any attempt to view source files and sends those

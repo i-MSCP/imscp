@@ -5,9 +5,9 @@
  *
  * Contains functions used to do authentication.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 13264 2008-08-17 03:49:09Z pdontthink $
+ * @version $Id: auth.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  */
 
@@ -33,8 +33,8 @@ if (! isset($use_smtp_tls)) {
  * Check if user has previously logged in to the SquirrelMail session.  If user
  * has not logged in, execution will stop inside this function.
  *
- * @return int A positive value is returned if user has previously logged in
- * successfully.
+ * @return void This function returns ONLY if user has previously logged in
+ * successfully (otherwise, execution terminates herein).
  */
 function is_logged_in() {
 

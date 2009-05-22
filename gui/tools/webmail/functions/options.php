@@ -5,9 +5,9 @@
  *
  * Functions needed to display the options pages.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 13314 2008-10-30 10:56:01Z pdontthink $
+ * @version $Id: options.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -33,6 +33,8 @@ define('SMOPT_TYPE_BOOLEAN_CHECKBOX', 12);
 define('SMOPT_TYPE_BOOLEAN_RADIO', 13);
 define('SMOPT_TYPE_STRLIST_RADIO', 14);
 define('SMOPT_TYPE_SUBMIT', 15);
+define('SMOPT_TYPE_INFO', 16);
+define('SMOPT_TYPE_PASSWORD', 17);
 
 /* Define constants for the layout scheme for edit lists. */
 define('SMOPT_EDIT_LIST_LAYOUT_LIST', 0);
@@ -132,7 +134,9 @@ class SquirrelOption {
         }
 
         /* Set the default save function. */
-        if (($type != SMOPT_TYPE_HIDDEN) && ($type != SMOPT_TYPE_COMMENT)) {
+        if ($type != SMOPT_TYPE_HIDDEN
+         && $type != SMOPT_TYPE_INFO
+         && $type != SMOPT_TYPE_COMMENT) {
             $this->save_function = SMOPT_SAVE_DEFAULT;
         } else {
             $this->save_function = SMOPT_SAVE_NOOP;
@@ -231,6 +235,9 @@ class SquirrelOption {
             case SMOPT_TYPE_STRING:
                 $result = $this->createWidget_String();
                 break;
+            case SMOPT_TYPE_PASSWORD:
+                $result = $this->createWidget_String(TRUE);
+                break;
             case SMOPT_TYPE_STRLIST:
                 $result = $this->createWidget_StrList();
                 break;
@@ -276,6 +283,9 @@ class SquirrelOption {
             case SMOPT_TYPE_SUBMIT:
                 $result = $this->createWidget_Submit();
                 break;
+            case SMOPT_TYPE_INFO:
+                $result = $this->createWidget_Info();
+                break;
             default:
                $result = '<font color="' . $color[2] . '">'
                        . sprintf(_("Option Type '%s' Not Found"), $this->type)
@@ -294,7 +304,22 @@ class SquirrelOption {
         return $result;
     }
 
-    function createWidget_String() {
+    function createWidget_Info() {
+        $result = htmlspecialchars($this->value) . "\n";
+        return $result;
+    }
+
+    /**
+     * Create text box
+     *
+     * @param boolean $password When TRUE, the text in the input
+     *                          widget will be obscured (OPTIONAL;
+     *                          default = FALSE).
+     *
+     * @return string html formated text input
+     *
+     */
+    function createWidget_String($password=FALSE) {
         switch ($this->size) {
             case SMOPT_SIZE_TINY:
                 $width = 5;
@@ -313,7 +338,9 @@ class SquirrelOption {
                 $width = 25;
         }
 
-        $result = "<input type=\"text\" name=\"new_$this->name\" value=\""
+        $result = "<input type=\"" 
+                . ($password ? 'password' : 'text') 
+                . "\" name=\"new_$this->name\" value=\""
                 . htmlspecialchars($this->value)
                 . "\" size=\"$width\" $this->script /> " 
                 . htmlspecialchars($this->trailing_text) . "\n";
@@ -1032,10 +1059,17 @@ function print_option_groups($option_groups) {
                 if ($option->type == SMOPT_TYPE_TEXTAREA && !empty($option->trailing_text))
                     $option->caption .= '<br /><small>' . $option->trailing_text . '</small>';
 
-                echo html_tag( 'tr', "\n".
-                           html_tag( 'td', $option->caption . (!empty($option->caption) ? ':' : ''), 'right' ,'', 'valign="middle"' . ($option->caption_wrap ? '' : ' style="white-space:nowrap"') ) .
-                           html_tag( 'td', $option->createHTMLWidget(), 'left' )
-                       ) ."\n";
+                global $color;
+                //$info_bgcolor = 0;
+                $info_bgcolor = 4;
+                $info_width = 80;
+                if ($option->type == SMOPT_TYPE_INFO)
+                    echo html_tag('tr', "\n" . html_tag('td', "\n" . html_tag('table', "\n" . html_tag('tr', "\n" . html_tag('td', "\n" . $option->createHTMLWidget())), '', $color[$info_bgcolor], 'width="' . $info_width . '%"'), 'center' ,'', 'colspan="2" valign="middle"')) ."\n";
+                else
+                    echo html_tag( 'tr', "\n".
+                               html_tag( 'td', $option->caption . (!empty($option->caption) ? ':' : ''), 'right' ,'', 'valign="middle"' . ($option->caption_wrap ? '' : ' style="white-space:nowrap"') ) .
+                               html_tag( 'td', $option->createHTMLWidget(), 'left' )
+                           ) ."\n";
             } else {
                 $hidden_options .= $option->createHTMLWidget();
             }

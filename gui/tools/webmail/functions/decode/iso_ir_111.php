@@ -37,9 +37,9 @@
  * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
  * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: iso_ir_111.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: iso_ir_111.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage decode
  */

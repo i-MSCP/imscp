@@ -4,7 +4,7 @@
  * ------------------
  * Squirrelspell module
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
+ * Copyright (c) 1999-2009 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This module saves the added words into the user dictionary. Called
@@ -74,13 +74,3 @@ $msg = '<form onsubmit="return false"><div align="center">'
    . '<input type="submit" value="  '
    . _("Close") . '  " onclick="self.close()" /></div></form>';
 sqspell_makeWindow($onload, _("Personal Dictionary Updated"), null, $msg);
-
-/**
- * For Emacs weenies:
- * Local variables:
- * mode: php
- * End:
- * vim: syntax=php
- */
-
-?>

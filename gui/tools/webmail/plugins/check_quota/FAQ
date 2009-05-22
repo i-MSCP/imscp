@@ -1,0 +1,35 @@
+1. I use Courier-IMAP with the user quota set, but nothing shows up.
+
+   The "QUOTA" capability may not be listed in the configuration file 
+   by default.  To turn this on, make sure that "QUOTA" is in the 
+   CAPABILITY configuration setting inside /usr/lib/courier-imap/etc/imapd, 
+   then restart the IMAP server.
+
+   NOTE: Courier-IMAP may NOT report a quota if usage is 0%.  If you
+   believe that you have it setup correctly, try sending a message to the
+   user, then check again.
+
+2. When using UNIX quotas, the plugin does not show anything.
+
+   If you are using UNIX quotas and cannot see quota information for your
+   account, check your quota output from a command shell using the command:
+
+   $ quota -v your_username
+
+   If you do not have any quota or limit set, the plugin will not show
+   anything.  Set a quota and limit for your account and you should be able
+   to see the quota information via the plugin.
+
+3. When using cPanel quotas, the plugin does not show anything.
+
+   You probably did not set your cPanel root variable correctly in the
+   config.php file.  Also, the quota file for your domain may not be world
+   readable.  You may want to change that file's permissions to be able to
+   check this type of quotas.
+
+4. Why doesn't the plugin show any output when quota is not set?
+
+   This is because it will not have any number to compare to your usage.  So
+   it will not be able to check if you have exceeded your quota, or it will
+   not be able to draw any graphs.
+

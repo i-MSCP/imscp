@@ -3,12 +3,13 @@
 /**
  * mail_fetch/options.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Setup of the mailfetch plugin.
  *
- * $Id$
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id$
+ * @package plugins
+ * @subpackage mail_fetch
  */
 
 define('SM_PATH','../../');
@@ -16,6 +17,11 @@ define('SM_PATH','../../');
 require_once(SM_PATH . 'include/validate.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'include/load_prefs.php');
+
+// don't load this page if this plugin is not enabled
+//
+global $plugins;
+if (!in_array('mail_fetch', $plugins)) exit;
 
 /* globals */
 sqgetGlobalVar('username',   $username,   SQ_SESSION);

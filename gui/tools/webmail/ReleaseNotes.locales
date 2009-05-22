@@ -1,0 +1,61 @@
+SquirrelMail 1.4.13 locales
+
+This is the first SquirrelMail 1.4.13 translation release, released on
+2007-12-20.
+
+Unfortunately there were no language packs released for
+SquirrelMail 1.4.10--1.4.12.
+
+The current translation status is:
+------------------------------------
+Lithuanian (lt_LT)            100.00
+Swedish (sv_SE)               100.00
+Russian (ru_RU)                99.22
+Basque (eu_ES)                 99.13
+Dutch (nl_NL)                  99.13
+Frisian (fy)                   99.13
+Faroese (fo_FO)                99.04
+Turkish (tr_TR)                98.87
+Spanish (es_ES)                98.78
+Bahasa Indonesia (id_ID)       97.91
+Polish (pl_PL)                 97.74
+Norwegian Bokmål (nb_NO)       96.69
+Czech (cs_CZ)                  96.34
+Norwegian Nynorsk (nn_NO)      96.25
+French (fr_FR)                 95.82
+Portuguese (pt_PT)             95.47
+Ukrainian (uk_UA)              95.30
+German (de_DE)                 94.51
+Brazilian Portuguese (pt_BR)   94.25
+Serbian (sr_YU)                93.82
+Georgian (ka)                  93.64
+Greek (el_GR)                  92.68
+Finnish (fi_FI)                90.42
+Japanese (ja_JP)               85.19
+Hungarian (hu_HU)              78.66
+Slovak (sk_SK)                 78.66
+Bengali (bn_IN)                78.40
+Italian (it_IT)                77.70
+Romanian (ro_RO)               77.70
+Slovenian (sl_SI)              74.22
+Estonian (et_EE)               74.04
+Bahasa Melayu (ms_MY)          73.26
+Icelandic (is_IS)              72.65
+Bulgarian (bg_BG)              71.34
+Korean (ko_KR)                 70.91
+Croatian (hr_HR)               69.34
+Arabic (ar)                    69.08
+Danish (da_DK)                 68.47
+Uighur (ug)                    65.85
+Farsi (fa_IR)                  64.11
+Catalan (ca_ES)                63.15
+Welsh (cy_GB)                  62.98
+Chinese Simplified (zh_CN)     60.98
+Hebrew (he_IL)                 58.28
+Chinese Traditional (zh_TW)    57.58
+British (en_GB)                 2.00
+------------------------------------
+
+The main changes in this release are:
+
+The addition of a new language - Frisian.

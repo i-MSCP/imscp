@@ -10,6 +10,10 @@ ispCP ω 1.0.1 Changelog
 		* Updated INSTALL files
 	- ENGINE:
 		* Added possible fix for autoresponder with amavis enabled
+	- TOOLS:
+		* Updated Squirrelmail to version 1.4.19
+		* Fixed #1852: Squirrelmail page header modifications missing
+		* Fixed #1853: Webmail Error r1793
 
 2009-05-19 Benedikt Heintel
 	- CONFIGS:

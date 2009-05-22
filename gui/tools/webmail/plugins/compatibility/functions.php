@@ -2,7 +2,7 @@
 
 /**
   * SquirrelMail Compatibility Plugin
-  * Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
+  * Copyright (c) 2004-2009 Paul Lesniewski <paul@squirrelmail.org>
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * SquirrelMail developers, see below under "SQUIRRELMAIL DEVELOPER 
@@ -193,7 +193,7 @@
          '1.5.2', '1.5.1', '1.5.0',
          // in-between includes not needed:
          //'1.4.x-to-1.5.0',
-         '1.4.16', '1.4.15', '1.4.14',
+         '1.4.18', '1.4.17', '1.4.16', '1.4.15', '1.4.14',
          '1.4.13', '1.4.12', '1.4.11', '1.4.10', '1.4.9', '1.4.8', '1.4.7', 
          '1.4.6', '1.4.5', '1.4.4', '1.4.3', '1.4.2', '1.4.1', '1.4.0',
          // skipping 1.3.x, not supported for now

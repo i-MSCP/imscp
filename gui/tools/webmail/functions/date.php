@@ -8,9 +8,9 @@
  *       <Tue,> 29 Jun 1999 09:52:11 -0500 (EDT)
  * (as specified in RFC 822) -- 'Tue' is optional
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: date.php 12421 2007-05-29 15:22:28Z kink $
+ * @version $Id: date.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage date
  */

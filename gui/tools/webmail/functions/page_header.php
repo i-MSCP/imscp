@@ -5,9 +5,9 @@
  *
  * Prints the page header (duh)
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: page_header.php 13289 2008-09-28 13:19:08Z kink $
+ * @version $Id: page_header.php 13537 2009-04-13 16:52:57Z jervfors $
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net
@@ -326,7 +326,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
     if (!$hide_sm_attributions)
     {
         echo html_tag( 'td', '', 'right' ) ."\n";
-        if (!isset($provider_uri)) $provider_uri= 'http://www.squirrelmail.org/';
+        if (!isset($provider_uri)) $provider_uri= 'http://squirrelmail.org/';
         if (!isset($provider_name)) $provider_name= 'SquirrelMail';
         echo '<a href="'.$provider_uri.'" target="_blank">'.$provider_name.'</a>';
         echo "</td>\n";
@@ -351,7 +351,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	do_hook('todo_plugin');
 	echo "      </td>";
     echo "   </tr>\n".
-        "</table>\n\n";
+        "</table><br>\n\n";
 
     // Welcome Bar
 	//

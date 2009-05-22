@@ -70,29 +70,7 @@ function sqsession_unregister ($name) {
 if (!function_exists('sqsession_is_active'))
 {
 function sqsession_is_active() {
-    $sessid = session_id();
-    if ( empty( $sessid ) ) {
-        sqsession_start();
-    }
-}
-}
-
-
-
-if (!function_exists('sqsession_start'))
-{
-function sqsession_start() {
-    global $PHP_SELF;
-
-    $dirs = array('|src/.*|', '|plugins/.*|', '|functions/.*|');
-    $repl = array('', '', '');
-    $base_uri = preg_replace($dirs, $repl, $PHP_SELF);
-
-    session_start();
-    $sessid = session_id();
-    // session_starts sets the sessionid cookie buth without the httponly var
-    // setting the cookie again sets the httponly cookie attribute
-    sqsetcookie(session_name(),$sessid,false,$base_uri);
+    sqsession_start();
 }
 }
 

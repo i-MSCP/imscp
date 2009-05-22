@@ -717,6 +717,10 @@ function sq_change_text_domain($domain_name, $directory='') {
     static $domains_already_seen = array();
     $return_value = textdomain(NULL);
 
+    // empty domain defaults to "squirrelmail"
+    //
+    if (empty($domain_name)) $domain_name = 'squirrelmail';
+
     // only need to call bindtextdomain() once unless
     // $use_gettext is turned on
     //
@@ -917,6 +921,172 @@ function set_uri_vars($uri, $values, $sanitize=TRUE) {
         else
           $uri = set_url_var($uri, $key, $value, $sanitize);
     return $uri;
+}
+}
+
+
+
+//
+// taken from 1.5.2-svn functions/global.php on 2008/11/26
+// since 1.5.2 and 1.4.17
+//
+if ((!compatibility_check_sm_version(1, 4, 17)
+ || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 2)))
+ && !function_exists('is_ssl_secured_connection'))
+{
+function is_ssl_secured_connection()
+{
+    global $sq_ignore_http_x_forwarded_headers, $sq_https_port;
+    $https_env_var = getenv('HTTPS');
+    if ($sq_ignore_http_x_forwarded_headers
+     || !sqgetGlobalVar('HTTP_X_FORWARDED_PROTO', $forwarded_proto, SQ_SERVER))
+        $forwarded_proto = '';
+    if (empty($sq_https_port)) // won't work with port 0 (zero)
+       $sq_https_port = 443;
+    if ((isset($https_env_var) && strcasecmp($https_env_var, 'on') === 0)
+     || (sqgetGlobalVar('HTTPS', $https, SQ_SERVER) && !empty($https)
+      && strcasecmp($https, 'off') !== 0)
+     || (strcasecmp($forwarded_proto, 'https') === 0)
+     || (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER)
+      && $server_port == $sq_https_port))
+        return TRUE;
+    return FALSE;
+}
+global $is_secure_connection;
+$is_secure_connection = is_ssl_secured_connection();
+}
+
+
+
+//
+// taken from 1.5.2-svn functions/files.php on 2008/11/26
+// since 1.5.2
+//
+if (!function_exists('sq_is_writable'))
+{
+global $server_os;
+if (DIRECTORY_SEPARATOR == '\\') $server_os = 'windows'; else $server_os = '*nix';
+function sq_is_writable($path) {          
+  
+   global $server_os;
+  
+  
+   // under *nix with safe_mode off, use the native is_writable()
+   //                                              
+   if ($server_os == '*nix' && !(bool)ini_get('safe_mode'))
+      return is_writable($path);                   
+  
+  
+   // if it's a directory, that means we have to create a temporary
+   // file therein                                 
+   //                                              
+   $delete_temp_file = FALSE;             
+   if (@is_dir($path) && ($temp_filename = @sq_create_tempfile($path)))
+   {                                      
+      $path .= DIRECTORY_SEPARATOR . $temp_filename;
+      $delete_temp_file = TRUE;           
+   }
+  
+  
+   // try to open the file for writing (without trying to create it)
+   //
+   if (!@is_dir($path) && ($FILE = @fopen($path, 'r+')))
+   {
+      @fclose($FILE);
+
+      // delete temp file if needed
+      //
+      if ($delete_temp_file)
+         @unlink($path);
+
+      return TRUE;
+   }
+
+
+   // delete temp file if needed
+   //
+   if ($delete_temp_file)
+      @unlink($path);
+
+   return FALSE;
+
+}
+}
+
+
+
+//
+// taken from 1.5.2-svn functions/files.php on 2008/11/26
+// since 1.5.2
+//
+if (!function_exists('sq_create_tempfile'))
+{
+function sq_create_tempfile($directory)
+{
+
+    // give up after 1000 tries
+    $maximum_tries = 1000;
+
+    // using PHP >= 4.3.2 we can be truly atomic here
+    $filemods = check_php_version(4, 3, 2) ? 'x' : 'w';
+
+    for ($try = 0; $try < $maximum_tries; ++$try) {
+
+        $localfilename = GenerateRandomString(32, '', 7);
+        $full_localfilename = $directory . DIRECTORY_SEPARATOR . $localfilename;
+
+        // filename collision. try again
+        if ( file_exists($full_localfilename) ) {
+            continue;
+        }
+
+        // try to open for (binary) writing
+        $fp = @fopen( $full_localfilename, $filemods);
+
+        if ($fp !== FALSE) {
+            // success! make sure it's not readable, close and return filename
+            chmod($full_localfilename, 0600);
+            fclose($fp);
+            return $localfilename;
+        }
+
+    }
+
+    // we tried as many times as we could but didn't succeed.
+    return FALSE;
+
+}
+}
+
+
+
+//
+// taken from 1.5.2-svn functions/global.php on 2008/12/04
+// since 1.5.2
+//
+if (!function_exists('get_process_owner_info'))
+{
+function get_process_owner_info()
+{
+    if (!function_exists('posix_getuid'))
+        return FALSE;
+
+    $process_info['uid'] = posix_getuid();
+    $process_info['euid'] = posix_geteuid();
+    $process_info['gid'] = posix_getgid();
+    $process_info['egid'] = posix_getegid();
+
+    $user_info = posix_getpwuid($process_info['uid']);
+    $euser_info = posix_getpwuid($process_info['euid']);
+    $group_info = posix_getgrgid($process_info['gid']);
+    $egroup_info = posix_getgrgid($process_info['egid']);
+
+    $process_info['name'] = $user_info['name'];
+    $process_info['ename'] = $euser_info['name'];
+    $process_info['group'] = $user_info['name'];
+    $process_info['egroup'] = $euser_info['name'];
+
+    return $process_info;
 }
 }
 

@@ -12,8 +12,8 @@ HTMLArea.I18N = {
 	tooltips: {
 		bold:           "Paryškinti",
 		italic:         "Kursyvas",
-		underline:      "Pabuser_addkti",
-		strikethrough:  "Perbuser_addkti",
+		underline:      "Pabraukti",
+		strikethrough:  "Perbraukti",
 		subscript:      "Apatinis indeksas",
 		superscript:    "Viršutinis indeksas",
 		justifyleft:    "Lygiavimas pagal kairę",

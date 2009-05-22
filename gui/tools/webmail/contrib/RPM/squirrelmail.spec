@@ -1,5 +1,5 @@
 ##
-# $Id: squirrelmail.spec 9899 2005-08-03 21:24:35Z kink $
+# $Id: squirrelmail.spec 13537 2009-04-13 16:52:57Z jervfors $
 %define spec_release 1
 
 ##
@@ -23,7 +23,7 @@ Name:           squirrelmail
 Version:        1.4.3
 Release:        %{rpm_release}
 License:        GPL
-URL:            http://www.squirrelmail.org/
+URL:            http://squirrelmail.org/
 Vendor:         squirrelmail.org
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.bz2

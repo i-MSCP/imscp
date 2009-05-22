@@ -17,7 +17,7 @@ $org_title     = "SquirrelMail $version";
 $signout_page  = '';
 $frame_top     = '_top';
 
-$provider_uri     = 'http://www.squirrelmail.org/';
+$provider_uri     = 'http://squirrelmail.org/';
 
 $provider_name     = 'SquirrelMail';
 

@@ -16,9 +16,9 @@
  *   Date:          04/15/98
  *   Contact:       cpxlate@microsoft.com
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: cp1258.php 12932 2008-02-10 16:49:47Z kink $
+ * @version $Id: cp1258.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage decode
  */

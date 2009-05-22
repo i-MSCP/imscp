@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Miklós Szél <mukka@pozor.hu>, 2005.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-02-02 13:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Miklós Szél <mukka@pozor.hu>\n"
+"Language-Team: hu <hu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Your username:"
+msgstr "Felhasználó neve:"
+
+msgid "Your IP address:"
+msgstr "IP cím:"
+
+msgid "Your Hostname:"
+msgstr "Hostnév:"
+
+msgid "Welcome,"
+msgstr "Üdvözlet, "
+
+msgid "INFO:"
+msgstr "INFO: "
+
+#, c-format
+msgid ""
+"your last connection was from <strong>%s%s</strong> on <strong>%s</strong>."
+msgstr "Utolsó belépés helye: <strong>%s%s</strong>, ideje: <strong>%s</strong>."
+
+msgid "Show username under folders list:"
+msgstr "Mutassa a felhasználónevet a könyvtárak alatt:"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Show IP address under folders list:"
+msgstr "Mutassa az IP-címet a könyvtárak alatt:"
+
+msgid "Show hostname under folders list:"
+msgstr "Mutassa a hostnevet a könyvtárak alatt:"

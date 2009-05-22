@@ -2,7 +2,7 @@
 
 /**
   * SquirrelMail Compatibility Plugin
-  * Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
+  * Copyright (c) 2004-2009 Paul Lesniewski <paul@squirrelmail.org>
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins
@@ -27,7 +27,7 @@ function compatibility_info()
                        'sm_site_username' => 'pdontthink',
                     ),
                  ),
-                 'version' => '2.0.13',
+                 'version' => '2.0.14',
                  'required_sm_version' => '1.0',
                  'requires_configuration' => 0,
                  'requires_source_patch' => 2,

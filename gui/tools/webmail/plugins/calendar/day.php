@@ -3,7 +3,7 @@
 /**
  * Displays the day page (day view).
  *
- * @copyright &copy; 2002-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2002-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

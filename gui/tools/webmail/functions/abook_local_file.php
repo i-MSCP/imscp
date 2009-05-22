@@ -3,9 +3,9 @@
 /**
  * abook_local_file.php
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_local_file.php 13188 2008-06-20 07:58:39Z pdontthink $
+ * @version $Id: abook_local_file.php 13549 2009-04-15 22:00:49Z jervfors $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -254,6 +254,7 @@ class abook_local_file extends addressbook_backend {
           return $this->set_error($this->filename . ':' . _("Unable to update"));
         }
         @unlink($this->filename . '.tmp');
+        @chmod($this->filename, 0600);
         $this->unlock();
         $this->open(true);
         return true;

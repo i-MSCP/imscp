@@ -1,0 +1,369 @@
+Installing Check Quota
+======================
+
+1) To install Check Quota, you must untar and gunzip the quota file you
+   downloaded.  This is an example to do this with version 2.2 of the
+   plugin:
+
+   On Linux, FreeBSD, etc:
+
+   $ cd plugins
+   $ tar -xvfz check_quota-2.2-1.4.0.tar.gz
+
+   On Solaris, when using Solaris native tar:
+
+   $ cd plugins
+   $ gzip -d check_quota-2.2-1.4.0.tar.gz
+   $ tar -xvf check_quota-2.2-1.4.0.tar
+
+2) Change into the check_quota directory, copy config.sample.php to
+   config.php and edit config.php, making adjustments as you deem
+   necessary (see "Configuring Check Quota" below).
+
+   $ cd check_quota
+   $ cp config.sample.php config.php
+   $ vi config.php
+
+3) Then go to your SquirrelMail root directory and run configure.  Choose
+   option 8 and move the plugin from the "Available Plugins" category to
+   the "Installed Plugins" category.  Save and exit.
+
+   $ cd ../../
+   $ ./configure
+
+   PLEASE NOTE that if you are using the MOTD warning functionality in
+   Check Quota and you have any other plugins that modify the MOTD, you
+   should usually make sure that Check Quota is listed AFTER the other
+   MOTD-related plugins.
+
+
+Updating Check Quota
+=====================
+
+1) Untar the plugin as explained in step 1 in the "Installing Check Quota" 
+   section.
+
+2) Change to the check_quota directory, check your config.php file against
+   the new version, to see if there are any new or obsolete settings that
+   you must add to or remove from your config.php file.
+
+   $ diff -u config.php config.sample.php
+
+   Or simply replace your config.php file with the provided sample and
+   reconfigure the plugin from scratch (see step 2 in the "Installing 
+   Check Quota" section). This is the recommended procedure when 
+   upgrading from one major version to another (e.g. from 1.x to 2.x).
+
+
+Configuring Check Quota
+=======================
+
+Check Quota supports three different types of quota systems, which 
+are UNIX (filesystem), IMAP-based and cPanel quotas.  The configuration 
+process differs depending upon which quota system you have.
+
+1) Configuration for IMAP-based quotas:
+
+   Not much to do here; if you have installed Check Quota as told in
+   previous sections, the only thing you have to do is to edit the
+   config.php file and set "quota_type" to 1.  That's it, you can jump 
+   to the end of this file now.
+
+2) Configuration for UNIX (filesystem) quotas:
+
+   This type is trickier, but it is not hard.  If your web server and 
+   IMAP server are on different machines, see section 2.5 below for
+   information on how to check remote UNIX quotas, but you should still
+   read sections 2.1 through 2.4 in order to understand the basic 
+   aspects of configuring this kind of system:
+
+   2.1) First you must know how to check your users' quotas.  In UNIX, 
+        Linux, FreeBSD, etc., quotas are checked using the "quota -v" 
+        command and only the "root" user has permission to check other 
+        users' quotas with this command.
+
+        You also need to determine what user account your web server 
+        runs under. If you are using Apache, you can do this with the 
+        "ps" command:
+
+        On Linux, Solaris etc.:
+
+        # ps -ef | grep httpd
+
+        On FreeBSD, OpenBSD, or other BSD based systems:
+
+        # ps aux | grep httpd
+
+        This command will show output similar to this:
+
+        root     17728  [trimmed info]  /usr/apache/bin/httpd -k start
+        nobody    6514  [trimmed info]  /usr/apache/bin/httpd -k start
+        nobody    6515  [trimmed info]  /usr/apache/bin/httpd -k start
+        nobody    6516  [trimmed info]  /usr/apache/bin/httpd -k start  
+        nobody    6517  [trimmed info]  /usr/apache/bin/httpd -k start
+
+        We see that the "root" user started the web server and the web server
+        switched to the "nobody" user after startup.  In this example, then,
+        the web server runs under the "nobody" user account.  This user must 
+        be able to check anyone's quota, so we must give it some root 
+        privileges.  Since this involves some amount of security risk, please
+        read the following instructions carefully.
+
+   2.2) The "sudo" command is how this is achieved.  You can find out if 
+        "sudo" is installed on your system by using the "which" command:
+
+        # which sudo
+
+        This may give output like:
+
+        /usr/bin/sudo
+
+        This is the path to the "sudo" command on your system.  Note this 
+        path, since you will need it later.  If the command above gives no 
+        output or gives an error such as "no sudo found", you will have to 
+        install "sudo" first.  You can download the latest "sudo" source 
+        from:
+
+        http://www.sudo.ws/
+
+        Or you can search to see if your UNIX/Linux distribution has a
+        package for sudo.  Installing sudo is beyond the scope of this 
+        document - please look for assitance elsewhere for this task.
+
+        You also need to find where the "quota" command resides using 
+        the "which" command again:
+
+        # which quota
+
+        This should show the path to the "quota" command, which should be
+        similar to the following (this is what will be used in examples
+        below):
+
+        /usr/bin/quota
+
+   2.3) There are two ways to use "sudo" and "quota" to allow the web
+        server to check user quotas.  Please choose one of the following:
+
+        a) This method is simpler but is NOT SECURE if your users have 
+           shell access to your system and they are able to switch to 
+           the "nobody" (or whatever user your web server runs as) user 
+           using "su - nobody".  While this should be impossible on most 
+           production systems, there may be some systems that are 
+           vulnerable when using this configuration and should therefore 
+           use use the method described in section b below.
+
+           Use the "visudo" command to edit sudoers file.  Add the 
+           following line to the file that is opened in the editor:
+
+           nobody  ALL=NOPASSWD: /usr/bin/quota -v *
+
+           Of course, replace "nobody" and "/usr/bin/quota" with the 
+           values you found on your system in section 2.2.
+
+           If there is no "visudo" command on your system, use your 
+           favorite text editor to create or edit the /etc/sudoers file 
+           and add the line shown above.
+
+        b) Copy the "quota" binary to another name such as "cqck" so
+           that the "quota" binary will be disguised under a name that
+           your users may not expect.  This method is technically NOT
+           ANY MORE SECURE than the method above, but attempts to achieve
+           security through obscurity and will prevent most novice hackers
+           from being harmful.
+
+           # cp /usr/bin/quota /usr/bin/cqck
+
+           Of course, substitute the correct path here as found in 
+           section 2.2.
+
+           Hereafter, this method is identical to the one described above.
+           As already explained, edit the sudoers file and add this line:   
+
+           nobody  ALL=NOPASSWD: /usr/bin/cqck -v *
+
+           Of course, replace "nobody" with the name of the user under
+           which the web server runs, and "/usr/bin/cqck" should be 
+           whatever you chose to rename the "quota" binary to.
+
+        After following either method a or method b above, su to the 
+        "nobody" user (or whomever your web server runs as) and try to 
+        check a user's quota:
+
+        # su - nobody
+        $ /usr/bin/sudo /usr/bin/quota -v some_user
+
+        Or:
+
+        $ /usr/bin/sudo /usr/bin/cqck -v some_user
+
+        If you get quota output for the user, you have correctly 
+        configured your system to work with this plugin.  If "sudo"
+        complains about not finding the sudoers file, prompts you to 
+        enter a password, or if you don't get any quota output for the 
+        commands above, "sudo" may be looking for the sudoers file in a 
+        different directory which may include:
+
+        /usr/etc
+        /usr/local/etc
+
+        If this is the case for you, try editing the sudoers file in 
+        these directories.  Also, you can find information about this 
+        file with these commands:
+
+        $ man sudo
+        $ man sudoers
+
+   2.4) After configuring "quota" and "sudo", all you have to do is edit 
+        the config.php file of the Check Quota plugin and set "quota_type" 
+        to 0 (zero), set "sudo_binary" to "/usr/bin/sudo", and set 
+        "quota_binary" to "/usr/bin/quota" or "/usr/bin/cqck".  You will 
+        need to adjust the paths in this example according to your system,
+        per step 2.2 above.  You can now check UNIX quotas in SquirrelMail.
+
+   2.5) If your IMAP and web servers are on different machines, you will
+        need to check UNIX (filesystem) quotas remotely. To achieve this, 
+        you have to take some extra steps:
+
+        2.5.1) First be sure that the user which runs your web server (in
+               our case, the "nobody" user) has a valid home directory. 
+               You can change the home directory for a user using the 
+               following command:
+
+               # usermod -d /var/nobody nobody
+
+               The command above set the home directory of the "nobody" 
+               user to "/var/nobody".  Obviously, you will have to create 
+               this directory if it does not exist.
+
+        2.5.2) Go to the /var/nobody directory and create a folder named
+               ".ssh" (the dot in front of the directory name is important).
+
+        2.5.3) Enter the ".ssh" directory and execute the following
+               command:
+
+               # ssh-keygen -b 2048 -C check_quota -f id_rsa -t rsa
+
+               When you are prompted for a password, give an empty 
+               password (just press enter/return).  This will create 
+               two files named id_rsa and id_rsa.pub.  Be careful that
+               the names are EXACTLY id_rsa and id_rsa.pub.
+
+               Be sure that the ".ssh" directory and the files inside it
+               are owned by your web server user.  Use the "chown" command
+               from the /var/nobody directory if they are not:
+
+               # chown -R nobody .ssh
+
+        2.5.4) Login to your IMAP server and create a user which will
+               check quotas for you.  Be sure that it DOES NOT have a
+               password.  It MUST have a valid home directory and a valid
+               shell.  For this example, we'll use a user named "cquotauser".
+
+        2.5.5) Copy the id_rsa.pub (NOT id_rsa) file from your web server to
+               your IMAP server.
+
+        2.5.6) Create a ".ssh" directory in the home directory of the
+               cquotauser user and add the contents of id_rsa.pub to a file
+               named "authorized_keys" under this ".ssh" directory.
+
+               Be sure that the ".ssh" directory and its contents are owned 
+               by cquotauser, again using "chown" as needed:
+
+               # chown -R cquotauser .ssh
+
+        2.5.7) Add the following line to your "sudoers" file on your IMAP
+               server (be careful - this is on your IMAP server, NOT on 
+               your web server!).
+
+               cquotauser  ALL=NOPASSWD: /usr/bin/quota -v *
+
+               If you need assitance with this step, please refer to 
+               sections 2.2 and 2.3 above for more detailed information
+               about editing the "sudoers" file.
+
+        2.5.8) On your web server, "su" to the user that your web server 
+               runs under and execute this command:
+
+               $ /usr/bin/ssh cquotauser@IMAP.server.ip.address
+
+               The server will prompt about the authenticity of your IMAP
+               server.  Continue connecting, so that your IMAP server will
+               be added to "known hosts".
+
+               Now logout from cquotauser and and execute this command
+               with your web server user:
+
+               $ /usr/bin/ssh cquotauser@IMAP.server.ip.address /usr/bin/sudo /usr/bin/quota -v some_user
+
+               You must adjust the paths in the command above according to
+               your system (see section 2.2 above).
+
+               If you get quota information after doing so, you are ready 
+               to use the Check Quota plugin.  Otherwise, go back to the 
+               beginning of section 2.5 and verify that you have completed 
+               all steps correctly.
+
+        2.5.9) After correctly configuring both servers as described above, 
+               edit the config.php file of the Check Quota plugin and set 
+               "quota_type" to 0 (zero), set "sudo_binary" to "/usr/bin/sudo", 
+               set "quota_binary" to "/usr/bin/quota", set "ssh_binary" to 
+               "/usr/bin/ssh", set "check_unix_on_remote_server" to 1, 
+               set "remote_unix_user" to "cquotauser" and set 
+               "remote_unix_server" to the IP address of your IMAP server. 
+               You will need to adjust the paths in this example according 
+               to your system.  You can now check remote UNIX quotas in
+               SquirrelMail.
+               
+
+3) Configuration for cPanel quotas:
+
+   This type is also trickier, but it is simpler than checking UNIX 
+   (filesystem) quotas.
+
+   3.1) cPanel does not use UNIX or IMAP quotas and has its own way of
+        implementing quota support.  cPanel appears to hold quota 
+        information in a file called "quota" which resides in 
+        /cpanel_root/reseller/etc/user_domain/
+
+        Also, the mails for an account in that domain reside in
+        /cpanel_root/reseller/mail/user_domain/username
+
+        First, then, the Check Quota plugin needs to know what the cPanel
+        root directory is.  Do this by filling in "cpanel_root" in the 
+        config.php file of the Check Quota plugin.  Be careful that you 
+        DO NOT in the "reseller" part; you only need the "cpanel_root" 
+        path.  "reseller" will be determined automatically.
+
+   3.2) After that, Check Quota will be able to obtain users' quotas,
+        but it still needs to determine users' current usage levels. 
+        This is done by using the "du" command.
+
+        While it may appear that the cPanel http daemon runs as the 
+        "nobody" user, it actually runs as the "reseller" account for 
+        each reseller.  So the daemon will already be granted the rights 
+        to read the quota information or use the "du" command to calculate 
+        a user's current usage.
+
+        The only thing you will have to do is tell the Check Quota plugin
+        what the path to the "du" binary is.  Execute this command:
+
+        $ which du
+
+        You should see output similar to:
+
+        /usr/bin/du
+
+        Now simply edit the config.php file of the Check Quota plugin
+        and set "quota_type" to 2, and set "du_binary" to "/usr/bin/du". 
+        You will need to adjust the path in this example according to 
+        your system.  You can now check cPanel quotas in SquirrelMail.
+
+
+After you have configured your system according to the type of quota system
+you have, you may also (optionally) configure the display options for Check 
+Quota.  You can do change how the quota graph is displayed and when the MOTD
+quota warnings are shown by editing the "General Display Options" settings 
+in config.php.  Each setting is amply documented therein.
+
+That's all. Have fun.
+

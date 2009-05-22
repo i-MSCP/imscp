@@ -5,7 +5,7 @@
  *
  * Derived from webmail.php by Ralf Kraudelt <kraude@wiwi.uni-rostock.de>
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -29,8 +29,6 @@ require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/plugin.php');
 require_once(SM_PATH . 'functions/constants.php');
 require_once(SM_PATH . 'functions/page_header.php');
-
-$base_uri = sqm_baseuri();
 
 header('Pragma: no-cache');
 $location = get_location();
@@ -67,6 +65,26 @@ if (!isset($login_username)) {
 
 if (!sqsession_is_registered('user_is_logged_in')) {
     do_hook ('login_before');
+
+    /**
+     * Regenerate session id to make sure that authenticated session uses
+     * different ID than one used before user authenticated.  This is a
+     * countermeasure against session fixation attacks.
+     * NB: session_regenerate_id() was added in PHP 4.3.2 (and new session
+     *     cookie is only sent out in this call as of PHP 4.3.3), but PHP 4
+     *     is not vulnerable to session fixation problems in SquirrelMail
+     *     because it prioritizes $base_uri subdirectory cookies differently
+     *     than PHP 5, which is otherwise vulnerable.  If we really want to,
+     *     we could define our own session_regenerate_id() when one does not
+     *     exist, but there seems to be no reason to do so.
+     */
+    if (function_exists('session_regenerate_id')) {
+        session_regenerate_id();
+
+        // re-send session cookie so we get the right parameters on it
+        // (such as HTTPOnly, if necessary - PHP doesn't do this itself
+        sqsetcookie(session_name(),session_id(),false,$base_uri);
+    }
 
     $onetimepad = OneTimePadCreate(strlen($secretkey));
     $key = OneTimePadEncrypt($secretkey, $onetimepad);

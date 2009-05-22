@@ -6,7 +6,7 @@
  * Displays the options page. Pulls from proper user preference files
  * and config.php. Displays preferences as selected and other options.
  *
- * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -320,7 +320,8 @@ if ($optpage == SMOPT_PAGE_MAIN) {
             echo '<b>' . _("Some of your preference changes were not applied.") . "</b><br />\n";
         } else {
             /* Display a message indicating a successful save. */
-            echo '<b>' . _("Successfully Saved Options") . ": $optpage_name</b><br />\n";
+            // i18n: The %s represents the name of the option page saving the options
+            echo '<b>' . sprintf(_("Successfully Saved Options: %s"), $optpage_name) . "</b><br />\n";
         }
 
         /* If $max_refresh != SMOPT_REFRESH_NONE, provide a refresh link. */
