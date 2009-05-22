@@ -374,7 +374,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	// End Modification
 	//
 	echo "   </tr>\n
-		  </table><br>\n\n";
+		  </table>\n\n";
 }
 
 /* blatently copied/truncated/modified from the above function */
