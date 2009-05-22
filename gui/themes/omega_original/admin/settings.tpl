@@ -56,6 +56,19 @@
                                   <option value="1" {CHECK_FOR_UPDATES_SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>
                             </tr>
+							<tr>
+                              <td width="25">&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_SSL}</strong></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td width="200" class="content2">{TR_PANEL_ACCESS}</td>
+                              <td class="content"><select name="panelssl">
+                                  <option value="0" {SSL_HTTP}>{TR_HTTP}</option>
+                                  <option value="1" {SSL_HTTPS}>{TR_HTTPS}</option>
+								  <option value="2" {SSL_HTTP_HTTPS}>{TR_HTTP_HTTPS}</option>
+                              </select></td>
+                            </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_LOSTPASSWORD}</strong></td>

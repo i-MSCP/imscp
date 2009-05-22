@@ -20,6 +20,9 @@
 
 // require_once(INCLUDEPATH . '/class.config.php');
 
+/**
+ * @todo use of @ is problematic, instead use try-catch
+ */
 if (@file_exists('/usr/local/etc/ispcp/ispcp.conf')) {
 	$cfgfile = '/usr/local/etc/ispcp/ispcp.conf';
 } else {

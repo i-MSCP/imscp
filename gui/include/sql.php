@@ -68,18 +68,8 @@ function match_sqlinjection($value, &$matches) {
 	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $matches) > 0);
 }
 
-/**
- * @todo remove check for PHP <= 4.2.2, this produces unmantainable code
- */
 function check_query($exclude = array()) {
 	$matches = null;
-
-	if (phpversion() <= '4.2.2') {
-		$message = "Your PHP version is older than 4.2.2!";
-		write_log($message);
-		system_message($message);
-		die('ERROR: ' . $message);
-	}
 
 	if (!is_array($exclude)) {
 		$exclude = array($exclude);
