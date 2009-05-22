@@ -1,10 +1,6 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-05-22 Benedikt Heintel
-	- ENGINE:
-		* Added possible fix for autoresponder
-
 2009-05-19 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1852: Add "AuthOrder" to the proftpd.conf

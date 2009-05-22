@@ -76,7 +76,7 @@ if ((Config::get('MAINTENANCEMODE')
 } else {
 
 	$tpl->define_dynamic('page', Config::get('LOGIN_TEMPLATE_PATH') . '/index.tpl');
-	$tpl->define_dynamic('ssl_switch', 'page');
+
 	$tpl->assign(
 		array(
 			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP Omega a Virtual Hosting Control System'),
@@ -86,6 +86,7 @@ if ((Config::get('MAINTENANCEMODE')
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
+			// @todo: make this configurable by ispcp-lib
 			'TR_SSL_LINK'				=> isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
 			'TR_SSL_IMAGE'				=> isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 			'TR_SSL_DESCRIPTION'		=> !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
@@ -100,9 +101,6 @@ if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('TR_LOSTPW', '');
 }
 
-if (!Config::get('ISPCP_PANEL_SSL'))
-	$tpl->assign('ssl_switch', '');
-
 $tpl->define_dynamic('page_message', 'page');
 gen_page_message($tpl);
 
@@ -111,4 +109,4 @@ $tpl->prnt();
 
 if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
-
+}

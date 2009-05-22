@@ -481,23 +481,6 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
-	/**
-	 * add variable ISPCP_PANEL_SSL to config table
-	 *
-	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version		1.0.1
-	 * @since		r1xxx
-	 *
-	 * @access		protected
-	 * @return		sql statements to be performed
-	 */
-	protected function _databaseUpdate_20() {
-		$sqlUpd = array();
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('ISPCP_PANEL_SSL', '0')";
-		return $sqlUpd;
-	}
-
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

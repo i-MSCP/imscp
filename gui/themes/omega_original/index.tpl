@@ -62,7 +62,7 @@
 											<td align="right"><input type="submit" name="Submit" class="button" value="    {TR_LOGIN}    " tabindex="3"></td>
 											<td align="right">&nbsp;</td>
 										</tr>
-										<!-- BDP: ssl_switch -->
+										<!-- /* Uncomment this, to use SSL-Switch */
 										<tr>
 											<td colspan="7">&nbsp;</td>
 										</tr>
@@ -71,7 +71,7 @@
 											<td style="width:151px;text-align:right;"><img src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" style="vertical-align:middle" border="0" alt="lock">&nbsp;&nbsp;<a class="login" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
 											<td>&nbsp;</td>
 										</tr>
-										<!-- EDP: ssl_switch -->
+										/* END SSL-Switch */ -->
 									</table>
 								</form>
 							</td>

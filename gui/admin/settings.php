@@ -107,7 +107,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('LOG_LEVEL', $log_level);
 		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
 		setConfig_Value('SHOW_SERVERLOAD', $show_serverload);
-		setConfig_Value('ISPCP_PANEL_SSL', $panelssl);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_ADMIN', $prevent_external_login_admin);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_RESELLER', $prevent_external_login_reseller);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_CLIENT', $prevent_external_login_client);
@@ -128,20 +127,6 @@ $tpl->assign(
 );
 $language = Config::get('USER_INITIAL_LANG');
 gen_def_language($tpl, $sql, $language);
-
-if (Config::get('ISPCP_PANEL_SSL') == 1) {
-	$tpl->assign('SSL_HTTPS', 'selected="selected"');
-	$tpl->assign('SSL_HTTP', '');
-	$tpl->assign('SSL_HTTP_HTTPS', '');
-} else if (Config::get('ISPCP_PANEL_SSL') == 2) {
-	$tpl->assign('SSL_HTTPS', '');
-	$tpl->assign('SSL_HTTP', '');
-	$tpl->assign('SSL_HTTP_HTTPS', 'selected="selected"');
-} else {
-	$tpl->assign('SSL_HTTPS', '');
-	$tpl->assign('SSL_HTTP', 'selected="selected"');
-	$tpl->assign('SSL_HTTP_HTTPS', '');
-}
 
 if (Config::get('LOSTPASSWORD')) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', 'selected="selected"');
@@ -327,9 +312,6 @@ $tpl->assign(
 		'TR_E_USER_ERROR' => tr('Errors'),
 		'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
 		'TR_SHOW_SERVERLOAD' => tr('Show server load'),
-		'TR_SSL_HTTP' => tr('HTTP'),
-		'TR_SSL_HTTPS' => tr('HTTPS'),
-		'TR_SSL_HTTP_HTTPS' => tr('HTTP+HTTPS'),
 		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
 		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),

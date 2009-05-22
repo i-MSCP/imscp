@@ -160,7 +160,6 @@ final class Config {
 		'FTP_USERNAME_SEPARATOR' => null,
 		'FTP_HOMEDIR' => null,
 		'IPS_LOGO_PATH' => null,
-		'ISPCP_PANEL_SSL' => null,
 		'ISPCP_SUPPORT_SYSTEM_PATH' => null,
 		'ISPCP_SUPPORT_SYSTEM_TARGET' => null,
 		'MYSQL_PREFIX' => null,
