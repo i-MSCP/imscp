@@ -55,31 +55,32 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_USER' => tr('Add user'),
-		'TR_HOSTING_PLAN_PROPERTIES' => tr('Hosting plan properties'),
-		'TR_TEMPLATE_NAME' => tr('Template name'),
-		'TR_MAX_DOMAIN' => tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SUBDOMAIN' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_DOMAIN_ALIAS' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_MAIL_COUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_DB' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_MAX_DISK_USAGE' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_PHP' => tr('PHP'),
-		'TR_CGI' => tr('CGI / Perl'),
-		'TR_YES' => tr('yes'),
-		'TR_NO' => tr('no'),
-		'TR_NEXT_STEP' => tr('Next step'),
-		'TR_BACKUP' => tr('Backup'),
-		'TR_BACKUP_DOMAIN' => tr('Domain'),
-		'TR_BACKUP_SQL' => tr('SQL'),
-		'TR_BACKUP_FULL' => tr('Full'),
-		'TR_BACKUP_NO' => tr('No'),
-		'TR_BACKUP_RESTORE' => tr('Backup / Restore'),
-		'TR_APACHE_LOGS' => tr('Apache logs'),
-		'TR_AWSTATS' => tr('Awstats')
+		'TR_ADD_USER'					=> tr('Add user'),
+		'TR_HOSTING_PLAN_PROPERTIES'	=> tr('Hosting plan properties'),
+		'TR_TEMPLATE_NAME'				=> tr('Template name'),
+		'TR_MAX_DOMAIN'					=> tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SUBDOMAIN'				=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_DOMAIN_ALIAS'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_MAIL_COUNT'				=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_FTP'					=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL_DB'					=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL_USERS'				=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_TRAFFIC'				=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+		'TR_MAX_DISK_USAGE'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+		'TR_PHP'						=> tr('PHP'),
+		'TR_CGI'						=> tr('CGI / Perl'),
+		'TR_DNS'						=> tr('Manual DNS support'),
+		'TR_YES'						=> tr('yes'),
+		'TR_NO'							=> tr('no'),
+		'TR_NEXT_STEP'					=> tr('Next step'),
+		'TR_BACKUP'						=> tr('Backup'),
+		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
+		'TR_BACKUP_SQL'					=> tr('SQL'),
+		'TR_BACKUP_FULL'				=> tr('Full'),
+		'TR_BACKUP_NO'					=> tr('No'),
+		'TR_BACKUP_RESTORE'				=> tr('Backup / Restore'),
+		'TR_APACHE_LOGS'				=> tr('Apache logs'),
+		'TR_AWSTATS'					=> tr('Awstats')
 	)
 );
 
@@ -94,7 +95,7 @@ if (isset($_POST['uaction'])
 	&& (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
-		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_allowbackup;";
+		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_allowbackup;$hp_dns;";
 
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
 			user_goto('user_add3.php');
@@ -143,55 +144,30 @@ function get_init_au2_page(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_allowbackup;
+	global $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns;
 
 	$tpl->assign(
 		array(
-			'VL_TEMPLATE_NAME' => $hp_name,
-			'MAX_DMN_CNT' => '',
-			'MAX_SUBDMN_CNT' => $hp_sub,
-			'MAX_DMN_ALIAS_CNT' => $hp_als,
-			'MAX_MAIL_CNT' => $hp_mail,
-			'MAX_FTP_CNT' => $hp_ftp,
-			'MAX_SQL_CNT' => $hp_sql_db,
-			'VL_MAX_SQL_USERS' => $hp_sql_user,
-			'VL_MAX_TRAFFIC' => $hp_traff,
-			'VL_MAX_DISK_USAGE' => $hp_disk
+			'VL_TEMPLATE_NAME'	=> $hp_name,
+			'MAX_DMN_CNT'		=> '',
+			'MAX_SUBDMN_CNT'	=> $hp_sub,
+			'MAX_DMN_ALIAS_CNT'	=> $hp_als,
+			'MAX_MAIL_CNT'		=> $hp_mail,
+			'MAX_FTP_CNT'		=> $hp_ftp,
+			'MAX_SQL_CNT'		=> $hp_sql_db,
+			'VL_MAX_SQL_USERS'	=> $hp_sql_user,
+			'VL_MAX_TRAFFIC'	=> $hp_traff,
+			'VL_MAX_DISK_USAGE'	=> $hp_disk,
+			'VL_PHPY'			=> ($hp_php == 'yes') ? 'checked="checked"' : '',
+			'VL_PHPN'			=> ($hp_php != 'yes') ? 'checked="checked"' : '',
+			'VL_CGIY'			=> ($hp_cgi == 'yes') ? 'checked="checked"' : '',
+			'VL_CGIN'			=> ($hp_cgi != 'yes') ? 'checked="checked"' : '',
+			'VL_DNSY'			=> ($hp_dns == 'yes') ? 'checked="checked"' : '',
+			'VL_DNSN'			=> ($hp_dns != 'yes') ? 'checked="checked"' : ''
 		)
 	);
 
-	if ("_yes_" === $hp_php) {
-		$tpl->assign(
-			array(
-				'VL_PHPY' => 'checked="checked"',
-				'VL_PHPN' => ''
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'VL_PHPN' => 'checked="checked"',
-				'VL_PHPY' => '',
-			)
-		);
-	}
-	if ("_yes_" === $hp_cgi) {
-		$tpl->assign(
-			array(
-				'VL_CGIY' => 'checked="checked"',
-				'VL_CGIN' => ''
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'VL_CGIN' => 'checked="checked"',
-				'VL_CGIY' => '',
-			)
-		);
-	}
-
-	if ("_domain_" === $hp_allowbackup) {
+	if ("domain" === $hp_allowbackup) {
 		$tpl->assign(
 			array(
 				'VL_BACKUPD' => 'checked="checked"',
@@ -200,7 +176,7 @@ function get_init_au2_page(&$tpl) {
 				'VL_BACKUPN' => ''
 			)
 		);
-	} else if ("_sql_" === $hp_allowbackup) {
+	} else if ("sql" === $hp_allowbackup) {
 		$tpl->assign(
 			array(
 				'VL_BACKUPD' => '',
@@ -209,7 +185,7 @@ function get_init_au2_page(&$tpl) {
 				'VL_BACKUPN' => '',
 			)
 		);
-	} else if ("_full_" === $hp_allowbackup) {
+	} else if ("full" === $hp_allowbackup) {
 		$tpl->assign(
 			array(
 				'VL_BACKUPD' => '',
@@ -238,7 +214,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_allowbackup;
+	global $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns;
 	$sql = Database::getInstance();
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
@@ -250,12 +226,13 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_allowbackup) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns) = explode(";", $props);
 
 		$hp_name = $data['name'];
 	} else {
 		$hp_php = '';
 		$hp_cgi = '';
+		$hp_dns = '';
 		$hp_sub = '';
 		$hp_als = '';
 		$hp_mail = '';
@@ -276,7 +253,7 @@ function check_user_data(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_dmn, $hp_allowbackup;
+	global $hp_traff, $hp_disk, $hp_dmn, $hp_allowbackup, $hp_dns;
 	$sql = Database::getInstance();
 	global $dmn_chp;
 
@@ -317,6 +294,9 @@ function check_user_data(&$tpl) {
 	}
 	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
+	}
+	if (isset($_POST['dns'])) {
+		$hp_dns = $_POST['dns'];
 	}
 	if (isset($_POST['allowbackup'])) {
 		$hp_allowbackup = $_POST['allowbackup'];

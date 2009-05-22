@@ -117,7 +117,15 @@
                             <input type="radio" name="cgi" value="no" {VL_CGIN} />
                             {TR_NO}</td>
                         </tr>
-			<tr>
+                        <tr>
+                          <td width="25">&nbsp;</td>
+                          <td class="content2" width="200">{TR_DNS}</td>
+                          <td class="content"><input name="dns" type="radio" value="yes" {VL_DNSY} />
+                            {TR_YES}
+                            <input type="radio" name="dns" value="no" {VL_DNSN} />
+                            {TR_NO}</td>
+                        </tr>
+                        <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_BACKUP}</td>
                           <td class="content"><input name="allowbackup" type="radio" value="domain" {VL_BACKUPD} />

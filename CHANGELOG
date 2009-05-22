@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-22 Daniel Andreca
+	- GUI:
+		* Fixed #1847: Manual DNS support us missing in user_add2.php
+
 2009-05-22 Benedikt Heintel
 	- DOCS:
 		* Updated INSTALL files
