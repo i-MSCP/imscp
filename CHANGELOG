@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-05-22 Benedikt Heintel
+	- DOCS:
+		* Updated INSTALL files
+	- ENGINE:
+		* Added possible fix for autoresponder with amavis enabled
+
 2009-05-19 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1852: Add "AuthOrder" to the proftpd.conf

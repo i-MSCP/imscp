@@ -330,34 +330,22 @@ sub del_file {
 
 	if (! -e $fname) {
 
-		push_el(
-			\@main::el,
-			'del_file()',
-			"ERROR: File '$fname' does not exist !"
-		);
+		push_el(\@main::el, 'del_file()', "WARNING: File '$fname' does not exist !");
 
-		return -1;
+	} else {
 
-	}
+		my $res = unlink ($fname);
 
-	my $res = unlink ($fname);
-
-	if ($res != 1) {
-
-		push_el(
-			\@main::el,
-			'del_file()',
-			"ERROR: Can't unlink '$fname' !"
-		);
-
-		return -1;
+		if ($res != 1) {
+			push_el(\@main::el,	'del_file()', "ERROR: Can't unlink '$fname' !");
+			return -1;
+		}
 
 	}
 
 	push_el(\@main::el, 'del_file()', 'Ending...');
 
 	return 0;
-
 }
 
 # Global variables

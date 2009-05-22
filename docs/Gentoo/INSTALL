@@ -232,7 +232,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 
-   If updating from RC3 or higher:
+   If updating from ispCP 1.0.0 RC3 or higher:
 	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 
 8. Delete old files to avoid security risks:
@@ -272,7 +272,7 @@ Make sure you are logged in as root and MySQL is running.
 2. Start the uninstall script:
 	# perl ispcp-uninstall
 
-3. Clean up ur system
+3. Clean up your system
 
 ================================================================================
 7) Credits
