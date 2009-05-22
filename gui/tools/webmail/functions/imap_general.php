@@ -5,9 +5,9 @@
  *
  * This implements all functions that do general IMAP functions.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_general.php 13674 2009-05-11 22:17:35Z pdontthink $
+ * @version $Id: imap_general.php 12943 2008-02-14 22:22:22Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -973,7 +973,7 @@ function sqimap_get_user_server ($imap_server, $username) {
  * LDAP whatever way to find the users IMAP server.
  */
 function map_yp_alias($username) {
-   $yp = `ypmatch ' . escapeshellarg($username) . ' aliases`;
+   $yp = `ypmatch $username aliases`;
    return chop(substr($yp, strlen($username)+1));
 }
 

@@ -11,7 +11,7 @@
  *    - Send mail
  *    - Save As Draft
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -588,8 +588,6 @@ elseif (isset($sigappend)) {
         foreach($delete as $index) {
             if (!empty($composeMessage->entities) && isset($composeMessage->entities[$index])) {
                 $composeMessage->entities[$index]->purgeAttachments();
-                // FIXME: one person reported that unset() didn't do anything at all here, so this is a work-around... but it triggers PHP notices if the unset() doesn't work, which should be fixed... but bigger question is if unset() doesn't work here, what about everywhere else?  Anyway, uncomment this if you think you need it
-                //$composeMessage->entities[$index] = NULL;
                 unset ($composeMessage->entities[$index]);
             }
         }

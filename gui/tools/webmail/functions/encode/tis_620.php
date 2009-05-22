@@ -6,9 +6,9 @@
  * takes a string of unicode entities and converts it to a tis-620 encoded string
  * Unsupported characters are replaced with ?.
  *
- * @copyright &copy; 2004-2009 The SquirrelMail Project Team
+ * @copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: tis_620.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: tis_620.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  * @subpackage encode
  */

@@ -5,9 +5,9 @@
  *
  * This contains functions for manipulating user preferences in files
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: file_prefs.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: file_prefs.php 13189 2008-06-23 18:32:35Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  * @since 1.2.5

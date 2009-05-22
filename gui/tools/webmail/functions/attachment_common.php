@@ -5,9 +5,9 @@
  *
  * This file provides the handling of often-used attachment types.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: attachment_common.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: attachment_common.php 12932 2008-02-10 16:49:47Z kink $
  * @package squirrelmail
  */
 

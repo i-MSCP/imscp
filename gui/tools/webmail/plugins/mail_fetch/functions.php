@@ -1,20 +1,19 @@
 <?php
 
 /**
- * mail_fetch/functions.php
- *
- * Functions for the mailfetch plugin.
- *
- * Original code from LexZEUS <lexzeus@mifinca.com>
- * and josh@superfork.com (extracted from PHP manual)
- * Adapted for MailFetch by Philippe Mingo <mingo@rotedic.com>
- *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id$
- * @package plugins
- * @subpackage mail_fetch
- */
+ **  mail_fetch/functions.php
+ **
+ **  Copyright (c) 1999-2006 The SquirrelMail Project Team
+ **  Licensed under the GNU GPL. For full terms see the file COPYING.
+ **
+ **  Functions for the mailfetch plugin.
+ **
+ **  Original code from LexZEUS <lexzeus@mifinca.com>
+ **  and josh@superfork.com (extracted from php manual)
+ **  Adapted for MailFetch by Philippe Mingo <mingo@rotedic.com>
+ **
+ **  $Id$
+ **/
 
 /** declare plugin globals */
 global $mail_fetch_allow_unsubscribed;
@@ -125,3 +124,4 @@ function mail_fetch_check_noselect($imap_stream,$imap_folder) {
     }
     return false;
 }
+?>

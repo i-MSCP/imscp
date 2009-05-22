@@ -6,69 +6,30 @@
  * This implements functions that manipulate messages
  * NOTE: Quite a few functions in this file are obsolete
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 13604 2009-04-25 04:00:34Z pdontthink $
+ * @version $Id: imap_messages.php 13039 2008-03-14 09:38:23Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
 
 
 /**
- * Copies a set of messages ($id) to another mailbox ($mailbox)
- * 
- * NOTE: Verions of this function BEFORE SquirrelMail 1.4.18
- *       actually *moved* messages instead of copying them
- * 
- * @param int    $imap_stream The resource ID for the IMAP socket
- * @param mixed  $id          A string or array of messages to copy
- * @param string $mailbox     The mailbox to copy messages to
- *
- * @return bool Returns true on successful copy, false on failure
- *
+ * Moves a set of messages ($id) to another mailbox ($mailbox)
+ * WARNING: function name does not match performed operation.
+ * Function performs message copy and flags existing messages 
+ * as deleted
  */
 function sqimap_msgs_list_copy($imap_stream, $id, $mailbox) {
     global $uid_support;
     $msgs_id = sqimap_message_list_squisher($id);
     $read = sqimap_run_command ($imap_stream, "COPY $msgs_id \"$mailbox\"", true, $response, $message, $uid_support);
-    
-    if ($response == 'OK') {
-        return true;
-    } else {
-        return false;
-    }
+    $read = sqimap_run_command ($imap_stream, "STORE $msgs_id +FLAGS (\\Deleted)", true, $response, $message, $uid_support);
 }
 
 
 /**
- * Moves a set of messages ($id) to another mailbox ($mailbox)
- * 
- * @param int    $imap_stream   The resource ID for the IMAP socket
- * @param mixed  $id            A string or array of messages to copy
- * @param string $mailbox       The destination mailbox
- * @param bool   $handle_errors Show error messages in case of a NO, BAD, or BYE response
- *
- * @return bool If move completed without error.
- *
- * @since 1.4.18
- *
- */
-function sqimap_msgs_list_move($imap_stream, $id, $mailbox, $handle_errors = true) {
-    if (sqimap_msgs_list_copy ($imap_stream, $id, $mailbox, $handle_errors)) {
-        return sqimap_toggle_flag($imap_stream, $id, '\\Deleted', true, true);
-    } else {
-        return false;
-    }
-}
-
-/**
- * Deletes one or more message(s) and move
- * it/them to trash or expunge the mailbox
- * 
- * @param int    $imap_stream The resource ID for the IMAP socket
- * @param string $mailbox     The mailbox to delete messages from
- * @param mixed  $id          A string or array of messages to delete
- *
+ * Deletes a message and move it to trash or expunge the mailbox
  */
 function sqimap_msgs_list_delete($imap_stream, $mailbox, $id) {
     global $move_to_trash, $trash_folder, $uid_support;
@@ -516,173 +477,6 @@ function parseArray($read,&$i) {
     } else {
         return false;
     }
-}
-
-
-/**
- * Parses a fetch response
- * 
- * @param array		$aResponse IMAP Response
- * @param array		$aMessageList Placeholder array for results.  The keys of the 
- * 							placeholder array should be the UID so we can reconstruct the order.
- * @return array	$aMessageList Associative array with messages.
- */
-function parseFetch(&$aResponse, $aMessageList = array()) {
-    for($j=0, $iCnt = count($aResponse);$j<$iCnt; ++$j) {
-        $aMsg = array();
-        
-        $read = implode('', $aResponse[$j]);
-        // Clear up some memory
-        unset($aResponse[$j]);
-        
-        /*
-			*<space>#id<space>FETCH<space>(....
-         */
-        
-        $i_space = strpos($read,' ', 2);
-        $id = substr($read, 2, $i_space - 2);
-        $aMsg['ID'] = $id;
-        $fetch = substr($read, $i_space+1,5);
-        
-        if (!is_numeric($id) && $fetch !== 'FETCH') {
-            $aMsg['ERROR'] = $read;
-            break;
-        }
-        
-        $i = strpos($read, '(', $i_space+5);
-        $read = substr($read, $i+1);
-        $i_len = strlen($read);
-        $i = 0;
-        
-        while($i < $i_len && $i !== false) {
-            $read = trim(substr($read, $i));
-            $i_len = strlen($read);
-            $i = strpos($read, ' ');
-            $arg = substr($read,0,$i);
-            ++$i;
-            
-            switch($arg) {
-                case 'UID':
-                    $i_pos = strpos($read,' ',$i);
-                    if (!$i_pos) {
-                        $i_pos = strpos($read, ')', $i);
-                    }
-                    if ($i_pos) {
-                        $unique_id = substr($read, $i, $i_pos-$i);
-                        $i = $i_pos + 1;
-                    } else {
-                        break 3;
-                    }
-                    break;
-                case 'FLAGS':
-                    $flags = parseArray($read, $i);
-                    if (!$flags) break 3;
-                    $aFlags = array();
-                    foreach($flags as $flag) {
-                        $flag = strtolower($flag);
-                        $aFlags[$flag] = true;                        
-                    }
-                    $aMsg['FLAGS'] = $aFlags;
-                    break;
-                case 'RFC822.SIZE':
-                    $i_pos = strpos($read, ' ', $i);
-                    if (!$i_pos) {
-                        $i_pos = strpos($read, ')', $i);                    
-                    }
-                    if ($i_pos) {
-                        $aMsg['SIZE'] = substr($read,$i,$i_pos-$i);
-                        $i = $i_pos + 1;
-                    } else {
-                        break 3;
-                    }
-                    break;
-            case 'ENVELOPE':
-                // sqimap_parse_address($read,$i,$aMsg);
-                break; // to be implemented, moving imap code out of the Message class
-            case 'BODYSTRUCTURE':
-                break; // to be implemented, moving imap code out of the Message class
-            case 'INTERNALDATE':
-                $aMsg['INTERNALDATE'] = trim(str_replace('  ', ' ',parseString($read,$i)));
-                break;
-            case 'BODY.PEEK[HEADER.FIELDS':
-            case 'BODY[HEADER.FIELDS':
-                $i = strpos($read,'{',$i); // header is always returned as literal because it contain \n characters
-                $header = parseString($read,$i);
-                if ($header === false) break 2;
-                /* First we replace all \r\n by \n, and unfold the header */
-                $hdr = trim(str_replace(array("\r\n", "\n\t", "\n "),array("\n", ' ', ' '), $header));
-                /* Now we can make a new header array with
-                   each element representing a headerline  */
-                $aHdr = explode("\n" , $hdr);
-                $aReceived = array();
-                foreach ($aHdr as $line) {
-                    $pos = strpos($line, ':');
-                    if ($pos > 0) {
-                        $field = strtolower(substr($line, 0, $pos));
-                        if (!strstr($field,' ')) { /* valid field */
-                            $value = trim(substr($line, $pos+1));
-                            switch($field) {
-                                case 'date':
-                                    $aMsg['date'] = trim(str_replace('  ', ' ', $value));
-                                    break;
-                                case 'x-priority': $aMsg['x-priority'] = ($value) ? (int) $value{0} : 3; break;
-                                case 'priority':
-                                case 'importance':
-                                    // duplicate code with Rfc822Header.cls:parsePriority()
-                                    if (!isset($aMsg['x-priority'])) {
-                                        $aPrio = preg_split('/\s/',trim($value));
-                                        $sPrio = strtolower(array_shift($aPrio));
-                                        if  (is_numeric($sPrio)) {
-                                            $iPrio = (int) $sPrio;
-                                        } elseif ( $sPrio == 'non-urgent' || $sPrio == 'low' ) {
-                                            $iPrio = 5;
-                                        } elseif ( $sPrio == 'urgent' || $sPrio == 'high' ) {
-                                            $iPrio = 1;
-                                        } else {
-                                            // default is normal priority
-                                            $iPrio = 3;
-                                        }
-                                        $aMsg['x-priority'] = $iPrio;
-                                    }
-                                    break;
-                                case 'content-type':
-                                    $type = $value;
-                                    if ($pos = strpos($type, ";")) {
-                                        $type = substr($type, 0, $pos);
-                                    }
-                                    $type = explode("/", $type);
-                                    if(!is_array($type) || count($type) < 2) {
-                                        $aMsg['content-type'] = array('text','plain');
-                                    } else {
-                                        $aMsg['content-type'] = array(strtolower($type[0]),strtolower($type[1]));
-                                    }
-                                    break;
-                                case 'received':
-                                    $aMsg['received'][] = $value;
-                                    break;
-                                default:
-                                    $aMsg[$field] = $value;
-                                    break;
-                            }
-                        }
-                    }
-                }
-                break;
-            default:
-                ++$i;
-                break;
-            }
-        }
-        if (!empty($unique_id)) {
-            $msgi = "$unique_id";
-            $aMsg['UID'] = $unique_id;
-       } else {
-            $msgi = '';
-       }
-       $aMessageList[$msgi] = $aMsg;
-       $aResponse[$j] = NULL;
-    }
-    return $aMessageList;
 }
 
 /**

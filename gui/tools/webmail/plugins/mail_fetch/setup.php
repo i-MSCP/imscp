@@ -1,16 +1,15 @@
 <?php
 
 /**
- * mail_fetch/setup.php
- *
- * Setup of the mailfetch plugin.
- *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id$
- * @package plugins
- * @subpackage mail_fetch
- */
+ **  mail_fetch/setup.php
+ **
+ **  Copyright (c) 1999-2006 The SquirrelMail Project Team
+ **  Licensed under the GNU GPL. For full terms see the file COPYING.
+ **
+ **  Setup of the mailfetch plugin.
+ **
+ **  $Id$
+ **/
 
 /** @ignore*/
 if (! defined('SM_PATH')) define('SM_PATH','../../');
@@ -268,3 +267,4 @@ function mail_fetch_folderact($args) {
         }
     }
 }
+?>

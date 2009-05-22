@@ -3,9 +3,9 @@
 /**
  * Script provides form to decode encrypted header information.
  *
- * @copyright &copy; 2005-2009 The SquirrelMail Project Team
+ * @copyright &copy; 2005-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: decrypt_headers.php 13672 2009-05-11 22:04:44Z pdontthink $
+ * @version $Id: decrypt_headers.php 12562 2007-07-20 16:58:38Z kink $
  * @package squirrelmail
  */
 
@@ -16,7 +16,7 @@
 define('SM_PATH','../');
 
 /**
- * include SquirrelMail string and generic functions
+ * include SquirrelMail string functions
  * script needs OneTimePadDecrypt() (functions/strings.php)
  * and sqgetGlobalVar() (functions/global.php)
  */
@@ -59,30 +59,23 @@ echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'
     ."</head><body>";
 
 if (sqgetGlobalVar('submit',$submit,SQ_POST)) {
-    $continue = TRUE;
     if (! sqgetGlobalVar('secret',$secret,SQ_POST) ||
-        empty($secret)) {
-        $continue = FALSE;
-        echo "<p>You must enter an encryption key.</p>\n";
-    }
+        empty($secret))
+        echo "<p>You must enter encryption key.</p>\n";
     if (! sqgetGlobalVar('enc_string',$enc_string,SQ_POST) ||
-        empty($enc_string)) {
-        $continue = FALSE;
-        echo "<p>You must enter an encrypted string.</p>\n";
-    }
+        empty($enc_string))
+        echo "<p>You must enter encrypted string.</p>\n";
 
-    if ($continue) {
-        if (isset($enc_string) && ! base64_decode($enc_string)) {
-            echo "<p>Encrypted string should be BASE64 encoded.<br />\n"
-                ."Please enter all characters that are listed after header name.</p>\n";
-        } elseif (isset($secret)) {
-            $string=OneTimePadDecrypt($enc_string,base64_encode($secret));
+    if (isset($enc_string) && ! base64_decode($enc_string)) {
+        echo "<p>Encrypted string should be BASE64 encoded.<br />\n"
+            ."Please enter all characters that are listed after header name.</p>\n";
+    } elseif (isset($secret)) {
+        $string=OneTimePadDecrypt($enc_string,base64_encode($secret));
 
-            if (sqgetGlobalVar('ip_addr',$is_addr,SQ_POST)) {
-                $string=hex2ip($string);
-            }
-            echo "<p>Decoded string: ".htmlspecialchars($string)."</p>\n";
+        if (sqgetGlobalVar('ip_addr',$is_addr,SQ_POST)) {
+            $string=hex2ip($string);
         }
+        echo "<p>Decoded string: ".$string."</p>\n";
     }
     echo "<hr />";
 }
@@ -91,7 +84,7 @@ if (sqgetGlobalVar('submit',$submit,SQ_POST)) {
 <p>
 Secret key: <input type="password" name="secret"><br />
 Encrypted string: <input type="text" name="enc_string"><br />
-<label for="ip_addr">Check here if you are decoding an address string (FromHash/ProxyHash): </label><input type="checkbox" name="ip_addr" id="ip_addr" /><br />
+Check, if it is an address string: <input type="checkbox" name="ip_addr" /><br />
 <button type="submit" name="submit" value="submit">Submit</button>
 </p>
 </form>

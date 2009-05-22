@@ -6,7 +6,7 @@
  * This file is used for reading the msgs array and displaying
  * the resulting emails in the right frame.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -266,7 +266,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     if ($special_encoding) {
         $mime_header->encoding = $special_encoding;
     } else {
-        $mime_header->encoding = '7bit';
+        $mime_header->encoding = 'us-ascii';
     }
     if ($default_charset) {
         $mime_header->parameters['charset'] = $default_charset;
@@ -291,7 +291,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     $mime_header = new MessageHeader;
     $mime_header->type0 = 'message';
     $mime_header->type1 = 'disposition-notification';
-    $mime_header->encoding = '7bit';
+    $mime_header->encoding = 'us-ascii';
     $part2->mime_header = $mime_header;
 
     $composeMessage = new Message();

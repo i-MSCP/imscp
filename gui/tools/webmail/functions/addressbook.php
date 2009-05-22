@@ -5,9 +5,9 @@
  *
  * Functions require SM_PATH and support of forms.php functions
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: addressbook.php 13298 2008-10-07 09:39:20Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -352,26 +352,12 @@ class AddressBook {
     function full_address($row) {
         global $data_dir, $username;
         $addrsrch_fullname = getPref($data_dir, $username, 'addrsrch_fullname', 'fullname');
-
-        // allow multiple addresses in one row (poor person's grouping - bah)
-        // (separate with commas)
-        //
-        $return = '';
-        $addresses = explode(',', $row['email']);
-        foreach ($addresses as $address) {
-
-            if (!empty($return)) $return .= ', ';
-
-            if ($addrsrch_fullname == 'fullname')
-                $return .= '"' . $row['name'] . '" <' . trim($address) . '>';
-            else if ($addrsrch_fullname == 'nickname')
-                $return .= '"' . $row['nickname'] . '" <' . trim($address) . '>';
-            else // "noprefix"
-                $return .= trim($address);
-
-        }
-
-        return $return;
+        if ($addrsrch_fullname == 'fullname')
+            return $row['name'] . ' <' . trim($row['email']) . '>';
+        else if ($addrsrch_fullname == 'nickname')
+            return $row['nickname'] . ' <' . trim($row['email']) . '>';
+        else // "noprefix"
+            return trim($row['email']);
     }
 
     /*

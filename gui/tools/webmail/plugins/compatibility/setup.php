@@ -27,7 +27,7 @@ function compatibility_info()
                        'sm_site_username' => 'pdontthink',
                     ),
                  ),
-                 'version' => '2.0.11',
+                 'version' => '2.0.13',
                  'required_sm_version' => '1.0',
                  'requires_configuration' => 0,
                  'requires_source_patch' => 2,

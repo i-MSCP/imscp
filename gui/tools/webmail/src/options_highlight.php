@@ -5,7 +5,7 @@
  *
  * Displays message highlighting options
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -412,7 +412,6 @@ if ($action == 'edit' || $action == 'add') {
         addInput('newcolor_input',
             (($selected_input && isset($theid)) ? $message_highlight_list[$theid]['color'] : ''),
             '7');
-    // i18n: This is an example on how to write a color in RGB, literally meaning "For example: 63aa7f".
     echo _("Ex: 63aa7f")."<br />\n";
     echo "      </td>\n";
     echo "   </tr>\n";

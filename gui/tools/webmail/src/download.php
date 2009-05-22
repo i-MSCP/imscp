@@ -6,7 +6,7 @@
  * Handles attachment downloads to the users computer.
  * Also allows displaying of attachments when possible.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -78,7 +78,7 @@ if ($ent_id) {
     /* raw message */
     $type0 = 'message';
     $type1 = 'rfc822';
-    $encoding = '7bit';
+    $encoding = 'US-ASCII';
     $header = $message->header;
 }
 

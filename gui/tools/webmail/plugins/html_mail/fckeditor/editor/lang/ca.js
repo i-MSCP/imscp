@@ -1,18 +1,18 @@
 ﻿/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2005 Frederico Caldeira Knabben
- * 
+ *
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
+ *
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
+ *
  * "Support Open Source software. What about a donation today?"
- * 
+ *
  * File Name: ca.js
  * 	Catalan language file.
- * 
+ *
  * File Authors:
  * 		Jordi Cerdan (nan@myp.ad)
  */
@@ -318,7 +318,7 @@ DlgReplaceReplaceLbl	: "Remplaçar per:",
 DlgReplaceCaseChk		: "Sensible a Majúscules",
 DlgReplaceReplaceBtn	: "Remplaçar",
 DlgReplaceReplAllBtn	: "Remplaçar Tot",
-DlgReplaceWordChk		: "Cercar Paraula Completa",
+DlgReplaceWordChk		: "Cercar Pauser_addla Completa",
 
 // Paste Operations / Dialog
 PasteErrorPaste	: "La seguretat del vostre navigador no permet executar automàticament les operacions d'enganxat. Si us plau, utilitzeu el teclat (Ctrl+V).",

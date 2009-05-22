@@ -3,8 +3,8 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
 # $Id: calendar.po 11579 2006-08-13 13:50:15Z tokul $
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: shared_calendar 2.0.1\n"

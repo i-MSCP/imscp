@@ -1,10 +1,10 @@
-# Lithuanian translation of 
+# Lithuanian translation of
 # SquirrelMail's unsafe_image_rules plugin.
 # Copyright (c) 2003-2006 SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
 # $Id: unsafe_image_rules.po 11288 2006-06-21 20:08:18Z tokul $
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: unsafe_image_rules 0.8\n"

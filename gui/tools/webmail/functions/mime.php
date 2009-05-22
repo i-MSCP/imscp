@@ -6,9 +6,9 @@
  * This contains the functions necessary to detect and decode MIME
  * messages.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13667 2009-05-11 21:17:50Z pdontthink $
+ * @version $Id: mime.php 13338 2008-12-04 04:17:47Z pdontthink $
  * @package squirrelmail
  */
 
@@ -1965,12 +1965,6 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
     /**
      * Fix stupid css declarations which lead to vulnerabilities
      * in IE.
-     *
-     * Also remove "position" attribute, as it can easily be set
-     * to "fixed" or "absolute" with "left" and "top" attributes
-     * of zero, taking over the whole content frame.  It can also
-     * be set to relative and move itself anywhere it wants to,
-     * displaying content in areas it shouldn't be allowed to touch.
      */
     $match   = Array('/\/\*.*\*\//',
                     '/expression/i',
@@ -1978,9 +1972,8 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
                     '/binding/i',
                     '/include-source/i',
                     '/javascript/i',
-                    '/script/i',
-                    '/position/i');
-    $replace = Array('','idiocy', 'idiocy', 'idiocy', 'idiocy', 'idiocy', 'idiocy', '');
+                    '/script/i');
+    $replace = Array('','idiocy', 'idiocy', 'idiocy', 'idiocy', 'idiocy', 'idiocy');
     $contentNew = preg_replace($match, $replace, $contentTemp);
     if ($contentNew !== $contentTemp) {
         // insecure css declarations are used. From now on we don't care
@@ -2373,28 +2366,12 @@ function magicHTML($body, $id, $message, $mailbox = 'INBOX', $take_mailto_links 
                     "/binding/i",
                     "/behaviou*r/i",
                     "/include-source/i",
-
-                    // position:relative can also be exploited
-                    // to put content outside of email body area
-                    // and position:fixed is similarly exploitable
-                    // as position:absolute, so we'll remove it
-                    // altogether....
-                    //
-                    // Does this screw up legitimate HTML messages?
-                    // If so, the only fix I see is to allow position
-                    // attributes (any values?  I think we still have
-                    // to block static and fixed) only if $use_iframe
-                    // is enabled (1.5.0+)
-                    //
-                    // was:   "/position\s*:\s*absolute/i",
-                    //
-                    "/position\s*:/i",
-
+                    "/position\s*:\s*absolute/i",
                     "/(\\\\)?u(\\\\)?r(\\\\)?l(\\\\)?/i",
                     "/url\s*\(\s*([\'\"])\s*\S+script\s*:.*([\'\"])\s*\)/si",
                     "/url\s*\(\s*([\'\"])\s*mocha\s*:.*([\'\"])\s*\)/si",
                     "/url\s*\(\s*([\'\"])\s*about\s*:.*([\'\"])\s*\)/si",
-                    "/(.*)\s*:\s*url\s*\(\s*([\'\"]*)\s*\S+script\s*:.*([\'\"]*)\s*\)/si",
+                    "/(.*)\s*:\s*url\s*\(\s*([\'\"]*)\s*\S+script\s*:.*([\'\"]*)\s*\)/si"
                     ),
                 Array(
                     "",

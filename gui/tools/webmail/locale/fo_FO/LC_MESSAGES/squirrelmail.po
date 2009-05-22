@@ -1815,7 +1815,7 @@ msgid "User-Defined Citation Start"
 msgstr "Brúkara uppsett byrjan á sitati"
 
 msgid "User-Defined Citation End"
-msgstr "Brúkarauppsett endi á sitati"
+msgstr "Brúkauser_addppsett endi á sitati"
 
 msgid "Signature Options"
 msgstr "Uppsetingar av undirskrift"

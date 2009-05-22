@@ -281,14 +281,15 @@ function check_plugin_version($plugin_name,
 
 
 //
-// taken from functions/plugin.php on 2007/06/29
+// taken from functions/plugin.php on 2008/07/22
 // since 1.5.2
 //
 if (!function_exists('get_plugin_requirement'))
 {
 function get_plugin_requirement($plugin_name, $requirement,
+                                $ignore_incompatible = TRUE,
                                 $force_inclusion = FALSE)
-{                               
+{
 
    $info_function = $plugin_name . '_info';
    $plugin_info = array();
@@ -384,10 +385,19 @@ function get_plugin_requirement($plugin_name, $requirement,
          $b = $version_array[1];
          $c = $version_array[2];
 
+         // complicated way to say we are interested in these overrides
+         // if the version is applicable to us and if the overrides include
+         // the requirement we are looking for, or if the plugin is not
+         // compatible with this version of SquirrelMail (unless we are
+         // told to ignore such)
+         //
          if (check_sm_version($a, $b, $c)
-          && ( !empty($requirement_overrides[SQ_INCOMPATIBLE])
-          || (isset($requirement_overrides[$requirement])
-          && !is_null($requirement_overrides[$requirement]))))
+          && ((!$ignore_incompatible
+            && (!empty($requirement_overrides[SQ_INCOMPATIBLE])
+             || $requirement_overrides === SQ_INCOMPATIBLE))
+           || (is_array($requirement_overrides)
+            && isset($requirement_overrides[$requirement])
+            && !is_null($requirement_overrides[$requirement]))))
          {
 
             if (empty($highest_version_array)
@@ -399,7 +409,8 @@ function get_plugin_requirement($plugin_name, $requirement,
              && $highest_version_array[2] < $c))
             {
                $highest_version_array = $version_array;
-               if (!empty($requirement_overrides[SQ_INCOMPATIBLE]))
+               if (!empty($requirement_overrides[SQ_INCOMPATIBLE])
+                || $requirement_overrides === SQ_INCOMPATIBLE)
                   $requirement_value_override = SQ_INCOMPATIBLE;
                else
                   $requirement_value_override = $requirement_overrides[$requirement];
@@ -810,10 +821,7 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
 {
 
    require_once(SM_PATH . 'functions/mime.php');
-   require_once(SM_PATH . 'class/mime/Message.class.php');
-   require_once(SM_PATH . 'class/mime/Rfc822Header.class.php');
-   require_once(SM_PATH . 'class/mime/ContentType.class.php');
-   require_once(SM_PATH . 'class/mime/AddressStructure.class.php');
+   require_once(SM_PATH . 'class/mime.class.php');
 
    if (empty($message))
    {
@@ -849,14 +857,16 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
    if (!$useSendmail) {
       require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
       $deliver = new Deliver_SMTP();
-      global $smtpServerAddress, $smtpPort, $pop_before_smtp, $domain;
+      global $smtpServerAddress, $smtpPort, $pop_before_smtp,
+             $domain, $pop_before_smtp_host;
 
       $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
+      if (empty($pop_before_smtp_host)) $pop_before_smtp_host = $smtpServerAddress;
       $user = '';
       $pass = '';
       get_smtp_user($user, $pass);
       $stream = $deliver->initStream($message,$domain,0,
-                $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
+                $smtpServerAddress, $smtpPort, $user, $pass, $authPop, $pop_before_smtp_host);
    } else {
       require_once(SM_PATH . 'class/deliver/Deliver_SendMail.class.php');
       global $sendmail_path, $sendmail_args;
@@ -886,6 +896,27 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
 
    return array($success, $message_id);
 
+}
+}
+
+
+
+//
+// taken from functions/html.php on 2008/05/21
+// since 1.5.2
+//
+if (!function_exists('set_uri_vars'))
+{
+function set_uri_vars($uri, $values, $sanitize=TRUE) {
+    foreach ($values as $key => $value)
+        if (is_array($value)) {
+          $i = 0;
+          foreach ($value as $val)
+             $uri = set_url_var($uri, $key . '[' . $i++ . ']', $val, $sanitize);
+        }
+        else
+          $uri = set_url_var($uri, $key, $value, $sanitize);
+    return $uri;
 }
 }
 

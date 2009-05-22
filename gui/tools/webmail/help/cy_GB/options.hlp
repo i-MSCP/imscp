@@ -7,7 +7,7 @@ Gallwch deilwrior modd y mae SquirrelMail yn edrych ac yn ymateb i chi trwy osod
    </summary>
    <description>
       <p>
-Un or pethau gwych am SquirrelMail ywr modd y gallwch ei deilwrio. Gan ddibynnu ar y ffurfwedd, efallai y bydd gennych 
+Un or pethau gwych am SquirrelMail ywr modd y gallwch ei deilwrio. Gan ddibynnu ar y ffurfwedd, efallai y bydd gennych
 sawl dewis o ran themâu, ieithoedd, ffolderi a dewisiadau eraill. Gallwch newid pob un or rhain heb effeithio ar unrhyw ddefn
 yddiwr arall ar y system. Mae pump prif ran o leiaf ir Options: Personal, Display, Message Highlighting, Folders ac Index Ord
 er. Gall fod mwy o rannau ar gael. Bydd hyn yn dibynnu ar y modd y mae eich SquirrelMail wedi ei osod.
@@ -22,7 +22,7 @@ er. Gall fod mwy o rannau ar gael. Bydd hyn yn dibynnu ar y modd y mae eich Squi
    <description>
       <b>Enw Llawn</b><br>
       Dylech roi eich enw cyflawn yma. Er enghraifft, "John Jones". Dymar hyn syn cael ei ddangos i bobl syn derbyn neges gen
-nych. Byddant yn gweld ei fod yn dod oddi wrth "John Jones". Os na fyddwch chin ei deipio i mewn, yna byddant yn ei weld och 
+nych. Byddant yn gweld ei fod yn dod oddi wrth "John Jones". Os na fyddwch chin ei deipio i mewn, yna byddant yn ei weld och
 cyfeiriad e-bost, "jjones@mydomain.org".
       <br><br>
 
@@ -38,13 +38,13 @@ cyfeiriad e-bost, "jjones@mydomain.org".
 
       <b>Multiple Identities</b><BR>
 Cliciwch ar y cyswllt yma i olygu mwy ag un dynodiad. Mae hwn yn ddefnyddiol os ydych chi eisiau dewis rhwng gwahanol linella
-u From ar gyfer negesau gwahanol (yn cynnwys eich cyfeiriad e-bost gartref neu yn y gwaith er enghraifft.) Gallwch ychwanegu 
+u From ar gyfer negesau gwahanol (yn cynnwys eich cyfeiriad e-bost gartref neu yn y gwaith er enghraifft.) Gallwch ychwanegu
 cynifer o ddynodiadau ag y dymunwch ar y dudalen syn ymddangos. Byddwch yn cael cynnig dewis or rhain wrth gyfansoddi neges.
 <br><br>
 
       <b>Dyfynnu Ateb</b><BR>
       Os ydych chin pwyso Reply ar neges, byddwch yn gweld y ffurflen Compose âr neges wreiddiol wedi ei dyfynnu arni. O flae
-n y neges yma syn cael ei dyfynnu, gall fod brawddeg  fel  <tt>Ysgrifennodd John Jones</tt>: wedi ei gosod (os daeth y neges 
+n y neges yma syn cael ei dyfynnu, gall fod brawddeg  fel  <tt>Ysgrifennodd John Jones</tt>: wedi ei gosod (os daeth y neges
 yr ydych yn ei hateb oddi wrth John Jones yn wreiddiol). Y llinell ddyfyniad ywr enw ar hyn. Gallwch ddewis sut y maer llinel
 l yn edrych yma.
 
@@ -53,13 +53,13 @@ l yn edrych yma.
       <LI><B>No Citation</B><br>
       Dim llinell ddyfyniad o fath yn y byd.<br><br>
       <LI><B>Author Said</B><br>
-      Mae hwn yn cynhyrchur llinell: <tt>Meddai John Jones</tt>: lle y bydd John Jones yn cael ei newid i enwr sawl yr ydych 
+      Mae hwn yn cynhyrchur llinell: <tt>Meddai John Jones</tt>: lle y bydd John Jones yn cael ei newid i enwr sawl yr ydych
 yn ateb ei neges.
 <br><br>
       <LI><B>Quote Who XML</B><br>
       Mae hwn yn cynhyrchur llinell: <TT>&lt;quote who="John Doe"&gt;</TT>.<br><br>
       <LI><B>User-Defined</B><br>
-     Mae hyn yn fodd i chi  ddiffinio eich llinell ddyfyniad eich hun. Yn y ddau flwch testun isod, gallwch deipio dechrau a 
+     Mae hyn yn fodd i chi  ddiffinio eich llinell ddyfyniad eich hun. Yn y ddau flwch testun isod, gallwch deipio dechrau a
 diwedd y dyfyniad. Bydd enwr awdur yn cael ei gynnwys rhwng y rhain.
       </UL><br><br>
 
@@ -133,7 +133,7 @@ adau mwy deniadol.
       <br><br>
 
       <b>Dangos Fersiwn HTML Heb Ofyn</b><br>
-      Os ydych chin derbyn neges yn y fformat text a HTML, gallwch ddewis a ydych chi eisiau gweld y fersiwn HTML (Yes) neur 
+      Os ydych chin derbyn neges yn y fformat text a HTML, gallwch ddewis a ydych chi eisiau gweld y fersiwn HTML (Yes) neur
 fersiwn text (No) heb ofyn.
 br><br>
 
@@ -164,7 +164,7 @@ Mae hwn yn nodir modd y bydd y cyswllt Fersiwn y gellir ei Argraffu yn cael ei d
       Gan ddibynnu ar ffurfwedd eich arsefydliad SquirrelMail, efallai y bydd mwy o ddewisiadau iw gweld yma. Gyda lwc byddan
 t yn ddigon hawdd eu deall.
       <br><br>
- 
+
    </description>
 </section>
 
@@ -173,7 +173,7 @@ t yn ddigon hawdd eu deall.
       Message Highlighting
    </title>
    <description>
-      Deilliodd y syniad yma or ffaith ei bod yn anodd iawn gwahaniaethu rhwng pa negesau a ddaeth o ble wrth ddarllen trwyr 
+      Deilliodd y syniad yma or ffaith ei bod yn anodd iawn gwahaniaethu rhwng pa negesau a ddaeth o ble wrth ddarllen trwyr
 rhestr o negesau os ydych chi wedi tanysgrifio i nifer o restrau postio. O ddefnyddio Message Highlighting, gallwch gael lliw
  cefndir pob neges o un rhestr bostio yn wahanol i liw rhestr arall.
 
@@ -280,11 +280,11 @@ edi eu harddangos. Gallwch grebachu ffolder trwy glicio ar y - y drws nesaf iddo
 
       <b> Chwilior Cof
 </b><br>
-      Os fyddwch chin chwilio blwch postio, bydd y chwiliad yn cael ei gadw fel y gallwch ei gyrchun gyflym yn ddiweddarach. 
+      Os fyddwch chin chwilio blwch postio, bydd y chwiliad yn cael ei gadw fel y gallwch ei gyrchun gyflym yn ddiweddarach.
 Mae hwn yn diffinio sawl chwiliad blwch post fydd yn cael eu cadw.
 
       <br><br>
- 
+
    </description>
 </section>
 
@@ -293,7 +293,7 @@ Mae hwn yn diffinio sawl chwiliad blwch post fydd yn cael eu cadw.
       Index Order
    </title>
    <description>
-      Maer adran yman rhoi rheolaeth i chi dros y rhestr negesau. Gallwch ddewis faint o wybodaeth rydych chi ei eisiau yn y 
+      Maer adran yman rhoi rheolaeth i chi dros y rhestr negesau. Gallwch ddewis faint o wybodaeth rydych chi ei eisiau yn y
 rhestr negesau ac ym mha drefn y dylai gael ei arddangos.
       <br><br>
       Defnyddiwch y cysylltau  Up and Down i symud colofnau o gwmpas, Del i fynd â cholofn or arddangosydd ac Add i ychwanegu

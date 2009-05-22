@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver_SMTP.class.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: Deliver_SMTP.class.php 13729 2009-05-21 09:20:01Z pdontthink $
  * @package squirrelmail
  */
 
@@ -85,6 +85,11 @@ class Deliver_SMTP extends Deliver {
         } else { // For some reason, HTTP_HOST is not set - revert to old behavior
             $helohost = $domain;
         }
+
+        // if the host is an IPv4 address, enclose it in brackets
+        //
+        if (preg_match('/^\d+\.\d+\.\d+\.\d+$/', $helohost))
+            $helohost = '[' . $helohost . ']';
 
         /* Lets introduce ourselves */
         fputs($stream, "EHLO $helohost\r\n");
