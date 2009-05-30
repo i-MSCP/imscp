@@ -58,7 +58,7 @@ function ftp_openconnection() {
 	}
 
 // Login with username and password
-	$login_result = ftp_login($conn_id, $net2ftp_globals["username"], $net2ftp_password);
+	$login_result = @ftp_login($conn_id, $net2ftp_globals["username"], $net2ftp_password);
 	if ($login_result == false) { 
 		$errormessage = __("Unable to login to FTP server <b>%1\$s</b> with username <b>%2\$s</b>.<br /><br />Are you sure your username and password are correct? Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver"], $net2ftp_globals["username"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
@@ -126,7 +126,7 @@ function ftp_openconnection2() {
 	}
 
 // Login with username and password
-	$login_result = ftp_login($conn_id, $net2ftp_globals["username2"], $net2ftp_globals["password2"]);
+	$login_result = @ftp_login($conn_id, $net2ftp_globals["username2"], $net2ftp_globals["password2"]);
 	if ($login_result == false) { 
 		$errormessage = __("Unable to login to the second (target) FTP server <b>%1\$s</b> with username <b>%2\$s</b>.<br /><br />Are you sure your username and password are correct? Please contact your ISP helpdesk or system administrator for help.<br />", $net2ftp_globals["ftpserver2"], $net2ftp_globals["username2"]);
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
@@ -2744,7 +2744,7 @@ function htmlEncode2($string) {
 
 // --------------
 // This function HTML-encodes a string with *htmlspecialchars* to print it on a page.
-// Only some special characters are encoded, otherwise special characters (e.g. é) appear encoded (&eacute).
+// Only some special characters are encoded, otherwise special characters (e.g. ï¿½) appear encoded (&eacute).
 // --------------
 
 	$isocode = __("iso-8859-1");
