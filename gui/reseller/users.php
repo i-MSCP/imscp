@@ -127,6 +127,8 @@ function generate_users_list(&$tpl, $admin_id) {
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
+	$disk_space = disk_total_space(dirname(__FILE__));
+	$tpl->assign(array('TR_DISK_USAGE_PERCENT' => tr('Disk Usage Percent')));
 	if (isset($_POST['details']) && !empty($_POST['details'])) {
 		$_SESSION['details'] = $_POST['details'];
 	} else {
@@ -290,6 +292,11 @@ function generate_users_list(&$tpl, $admin_id) {
 				$dom_created = date($date_formt, $dom_created);
 			}
 
+			if ($disk_space > 0) {
+				$percent_usage = sprintf('%2.3f', round($rs->fields['domain_disk_usage'] / $disk_space * 100));
+			} else {
+				$percent_usage = 0;
+			}
 			$tpl->assign(
 				array(
 					'CREATION_DATE' => $dom_created,
@@ -299,7 +306,8 @@ function generate_users_list(&$tpl, $admin_id) {
 					'USER_ID' => $rs->fields['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),
 					'DISK_LIMIT' => $rs->fields['domain_disk_limit'],
-					'DISK_USAGE' => round($rs->fields['domain_disk_usage'] / 1024 / 1024,1)
+					'DISK_USAGE' => round($rs->fields['domain_disk_usage'] / 1024 / 1024,1),
+					'DISK_USAGE_PERCENT' => $percent_usage
 				)
 			);
 

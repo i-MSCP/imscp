@@ -536,6 +536,8 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 function gen_user_list(&$tpl, &$sql) {
 	$start_index = 0;
+	
+	$disk_space = disk_total_space(dirname(__FILE__));
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
 
@@ -648,7 +650,8 @@ function gen_user_list(&$tpl, &$sql) {
 				'TR_USR_CREATED_BY' => tr('Created by'),
 				'TR_USR_OPTIONS' => tr('Options'),
 				'TR_USER_STATUS' => tr('Status'),
-				'TR_DETAILS' => tr('Details')
+				'TR_DETAILS' => tr('Details'),
+				'TR_DISK_USAGE_PERCENT' => tr('Disk Usage Percent'),
 			)
 		);
 		while (!$rs->EOF) {
@@ -685,6 +688,15 @@ function gen_user_list(&$tpl, &$sql) {
 				);
 				$tpl->parse('USR_DELETE_SHOW', 'usr_delete_show');
 			} else {
+				// Get disk usage by user
+				$traffic = get_user_traffic($rs->fields['domain_id']);
+				$disk_usage = isset($traffic[7]) ? $traffic[7] : 0;
+				if ($disk_space > 0) {
+					$percent_usage = sprintf('%2.3f', round($disk_usage / $disk_space * 100));
+				} else {
+					$percent_usage = 0;
+				}
+				
 				$tpl->assign(
 					array(
 						'USR_DELETE_SHOW' => '',
@@ -697,6 +709,7 @@ function gen_user_list(&$tpl, &$sql) {
 						'USR_USERNAME' => $rs->fields['domain_name'],
 						'TR_EDIT_DOMAIN' => tr('Edit domain'),
 						'TR_EDIT_USR' => tr('Edit user'),
+						'DISK_USAGE_PERCENT' => $percent_usage
 					)
 				);
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
