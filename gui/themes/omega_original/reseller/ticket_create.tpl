@@ -55,21 +55,21 @@
                             <tr>
                               <td class="content2" style="width:200px;">{TR_URGENCY}</td>
                               <td class="content"><select name="urgency">
-                                  <option value="1">{TR_LOW}</option>
-                                  <option value="2">{TR_MEDIUM}</option>
-                                  <option value="3">{TR_HIGH}</option>
-                                  <option value="4">{TR_VERI_HIGH}</option>
+                                  <option value="1" {OPT_URGENCY_1}>{TR_LOW}</option>
+                                  <option value="2" {OPT_URGENCY_2}>{TR_MEDIUM}</option>
+                                  <option value="3" {OPT_URGENCY_3}>{TR_HIGH}</option>
+                                  <option value="4" {OPT_URGENCY_4}>{TR_VERI_HIGH}</option>
                                 </select>
                               </td>
                             </tr>
                             <tr>
                               <td class="content2" style="width:200px;">{TR_SUBJECT}</td>
-                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput" />
+                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput" value="{SUBJECT}" />
                               </td>
                             </tr>
                             <tr>
                               <td class="content2" style="width:200px;vertical-align:top;">{TR_YOUR_MESSAGE}</td>
-                              <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" cols="80" rows="12"></textarea>
+                              <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" cols="80" rows="12">{USER_MESSAGE}</textarea>
                               </td>
                             </tr>
                             <tr>

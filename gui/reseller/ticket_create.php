@@ -102,6 +102,30 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_sy
 
 gen_logged_from($tpl);
 
+$userdata = array('OPT_URGENCY_1'=>'', 'OPT_URGENCY_2'=>'', 'OPT_URGENCY_3'=>'', 'OPT_URGENCY_4'=>'');
+if (isset($_POST['urgency'])) {
+	$userdata['URGENCY'] = intval($_POST['urgency']);
+} else {
+	$userdata['URGENCY'] = 2;
+}
+switch ($userdata['URGENCY']) {
+	case 1:
+		$userdata['OPT_URGENCY_1'] = ' selected="selected"';  
+		break;
+	case 3:
+		$userdata['OPT_URGENCY_3'] = ' selected="selected"';  
+		break;
+	case 4:
+		$userdata['OPT_URGENCY_4'] = ' selected="selected"';  
+		break;
+	default:
+		$userdata['OPT_URGENCY_2'] = ' selected="selected"';  
+		break;
+}
+$userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';
+$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message'], true) : '';
+$tpl->assign($userdata);
+
 $tpl->assign(
 	array(
 		'TR_NEW_TICKET' => tr('New ticket'),
