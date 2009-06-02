@@ -71,6 +71,7 @@ SQL_QUERY;
 			$tpl->assign(
 				array(
 					'AREA_NAME' => $auth_name,
+					'JS_AREA_NAME' => addslashes(strip_tags($auth_name)),
 					'AREA_PATH' => $path,
 					'PID' => $id,
 					'STATUS' => translate_dmn_status($status)
@@ -116,6 +117,7 @@ $tpl->assign(
 		'TR_EDIT' => tr('Edit'),
 		'TR_GROUP' => tr('Group'),
 		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ADD_AREA' => tr('Add new protected area')
 	)
