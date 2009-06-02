@@ -325,7 +325,10 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$subject = tr("[ispCP OrderPanel] - You have an update order", true);
 
-	$message = sprintf(tr("You have an update order for the account %s\n\nPlease login into your ispCP control panel at %s for more details", true), $_SESSION['user_logged'], Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST'));
+	$message = tr("You have an update order for the account %s\n\nPlease login into your ispCP control panel at %s for more details",
+		true,
+		$_SESSION['user_logged'], 
+		Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST'));
 
 	$mail_result = mail($to, $subject, $message, $headers);
 }
