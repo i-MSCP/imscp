@@ -8,7 +8,7 @@
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
 
     ServerName      {DMN_NAME}
-    ServerAlias     www.{DMN_NAME} {DMN_NAME} *.{DMN_NAME}
+    ServerAlias     www.{DMN_NAME} {DMN_NAME} *.{DMN_NAME} {SUEXEC_USER}.{BASE_SERVER_VHOST}
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
