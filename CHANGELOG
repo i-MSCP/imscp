@@ -1,6 +1,14 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-06-10 Benedikt Heintel
+	- LANGUAGES:
+		* Added Azerbaijani
+
+2009-06-09 Thomas Wacker
+	- GUI:
+		* Fixed #1848: Suexecuser on Domain.ltd
+
 2009-05-22 Daniel Andreca
 	- GUI:
 		* Fixed #1847: Manual DNS support us missing in user_add2.php

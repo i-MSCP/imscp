@@ -1,0 +1,14 @@
+ispcp_table = AzricAzrbaycan
+ispcp_language = Azərbaycanca
+ispcp_languageSetlocaleValue = az_AZ
+encoding = UTF-8
+Administrator login = Administrator ləqəbi
+Login = Ləqəb
+Username = İstifadəçi adı
+Password = Şifrə
+Please enter your login information = İstifadəçi adınız barədə məlumatı daxil edin
+Secure Connection = Təhlükəsiz qoşulma
+Normal Connection = Normal qoşulma
+Lost password = İtirilmiş şifrə
+Retrieving lost passwords is currently not possible = İtirilmiş şifrəni bərpa etmək hal-hazırda mümkün deyil.
+Password sent = Şifrə göndərildi
