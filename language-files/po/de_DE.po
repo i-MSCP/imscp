@@ -3274,7 +3274,7 @@ msgstr "Details"
 
 #, fuzzy
 msgid "Disk Usage Percent"
-msgstr "Speicherplatzverbrauch"
+msgstr "Prozentualer Speicherplatzverbrauch"
 
 msgid "Edit domain"
 msgstr "Domain bearbeiten"

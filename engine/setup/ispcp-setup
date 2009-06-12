@@ -5,25 +5,16 @@
 # http://www.molesoftware.com
 # Copyright (c) 2006-2009 by ispCP
 # http://isp-control.net
-#
+# SVN: $Id$
 #
 # License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
-#
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
-#
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
-#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the MPL General Public License as published by the Free Software
+# Foundation; either version 1.1 of the License, or (at your option) any later
+# version.
+# You should have received a copy of the MPL Mozilla Public License along with
+# this program; if not, write to the Open Source Initiative (OSI)
+# http://opensource.org | osi@opensource.org
 #
 # The ispCP ω Home Page is at:
 #
@@ -31,7 +22,6 @@
 #
 
 use FindBin;
-
 use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
@@ -80,17 +70,17 @@ sub get_sys_hostname {
 
 	chomp($rdata);
 
-        if ($rdata !~ m/\./) { # hostname contains no dot -> use "hostname -f"
-                my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
+    if ($rdata !~ m/\./) { # hostname contains no dot -> use "hostname -f"
+            my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
 
-                $rs = sys_command($cmd);
-                return ($rs, '') if ($rs != 0);
+            $rs = sys_command($cmd);
+            return ($rs, '') if ($rs != 0);
 
-                ($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
-                return ($rs, '') if ($rs != 0);
+            ($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+            return ($rs, '') if ($rs != 0);
 
-                chomp($rdata);
-        }
+            chomp($rdata);
+    }
 
 	$rs = del_file("/tmp/ispcp-setup.hostname");
 	return ($rs, '') if ($rs != 0);
@@ -120,9 +110,7 @@ sub user_dialog {
 	return $rs if ($rs != 0);
 
 	do {
-
 		$rs = ask_eth();
-
 	} while ($rs == 1);
 
 	do {
@@ -134,21 +122,16 @@ sub user_dialog {
 	#
 
 	$rs = ask_db_host();
-
 	return $rs if ($rs != 0);
 
 	$rs = ask_db_name();
-
 	return $rs if ($rs != 0);
 
 	$rs = ask_db_user();
-
 	return $rs if ($rs != 0);
 
 	do {
-
 		$rs = ask_db_password();
-
 	} while ($rs == 1);
 
 	#
@@ -180,19 +163,14 @@ sub user_dialog {
 	#
 
 	$rs = ask_admin();
-
 	return $rs if ($rs != 0);
 
 	do {
-
 		$rs = ask_admin_password();
-
 	} while ($rs == 1);
 
 	do {
-
 		$rs = ask_admin_email();
-
 	} while ($rs == 1);
 
 	#
@@ -220,19 +198,15 @@ sub user_dialog {
 	#
 
 	do {
-
 		$rs = ask_awstats_on();
-
 	} while ($rs == 1);
 
 	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 		do {
-
 			$rs = ask_awstats_dyn();
-
 		} while ($rs == 1);
 	} else {
-		# Just a dummy to prevent warnings
+		# dummy to prevent warnings
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
@@ -246,7 +220,7 @@ sub user_dialog {
 	push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
 	push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
 	push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
-	push_el(\@main::el, 'user_dialog()', "db_password: $main::ua{'db_password'}");
+	push_el(\@main::el, 'user_dialog()', "db_password");
 	push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
 	push_el(\@main::el, 'user_dialog()', "admin_password");
 	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
@@ -267,15 +241,12 @@ sub setup_start_up {
 	push_el(\@main::el, 'setup_start_up()', 'Starting...');
 
 	# config check;
-
 	$rs = get_conf();
-
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_start_up()', 'Ending...');
 
 	return 0;
-
 }
 
 sub setup_shut_down {
@@ -331,9 +302,7 @@ sub check_host_interface {
 	$rs = sys_command($cmd);
 
 	if ($rs != 0) {
-
 		push_el(\@main::el, 'check_host_interface()', "ERROR: Can't find $main::ua{'eth'} device!");
-
 		return $rs;
 	}
 
@@ -342,7 +311,6 @@ sub check_host_interface {
 	$rs = sys_command($cmd);
 
 	($rs, $rdata) = get_file("/tmp/ispcp-setup-iface-data.stdout");
-
 	return $rs if ($rs != 0);
 
 	$rdata =~ /([^\n]+)\n([^\n]+)\n/;
@@ -352,19 +320,15 @@ sub check_host_interface {
 	$main::ua{'eth_ip'} = $2;
 
 	$rs = del_file("/tmp/ispcp-setup-iface.stdout");
-
 	return $rs if ($rs != 0);
 
 	$rs = del_file("/tmp/ispcp-setup-iface.stderr");
-
 	return $rs if ($rs != 0);
 
 	$rs = del_file("/tmp/ispcp-setup-iface-data.stdout");
-
 	return $rs if ($rs != 0);
 
 	$rs = del_file("/tmp/ispcp-setup-iface-data.stderr");
-
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'check_host_interface()', 'Ending...');
@@ -422,7 +386,6 @@ sub check_host_system {
 	push_el(\@main::el, 'check_host_system()', 'Ending...');
 
 	return 0;
-
 }
 
 sub setup_system_users {
@@ -1004,7 +967,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = user_dialog();
@@ -1018,7 +980,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = check_host_system();
@@ -1032,7 +993,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = setup_host_system();
@@ -1046,7 +1006,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = setup_shut_down();
@@ -1060,5 +1019,4 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }

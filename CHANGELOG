@@ -1,6 +1,13 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-06-12 Benedikt Heintel
+	- DOCS:
+		* Updated Debian INSTALL
+		* Updated Ubuntu INSTALL
+	- GUI:
+		* Fixed #1854: Lost password page reword
+
 2009-06-10 Benedikt Heintel
 	- LANGUAGES:
 		* Added Azerbaijani

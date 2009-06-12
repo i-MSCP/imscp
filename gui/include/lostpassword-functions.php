@@ -315,7 +315,9 @@ SQL_QUERY;
 
 	write_log("Lostpassword: " . $admin_name . ": uniqkey created", E_USER_NOTICE);
 
-	if ($created_by == 0) { $created_by = 1; }
+	if ($created_by == 0) {
+		$created_by = 1;
+	}
 
 	$data = get_lostpassword_activation_email($created_by);
 
@@ -334,7 +336,6 @@ SQL_QUERY;
 	}
 
 	$prot = isset($_SERVER['https']) ? 'https' : 'http';
-
 	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . '?key=' . $uniqkey;
 
 	$search = array();
@@ -355,9 +356,7 @@ SQL_QUERY;
 	$message = str_replace($search, $replace, $message);
 
 	$headers = 'From: ' . $from . "\n";
-
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-
 	$headers .= 'X-Mailer: ispCP lostpassword mailer';
 
 	$mail_result = mail($to, encode($subject), $message, $headers);

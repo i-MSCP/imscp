@@ -60,14 +60,14 @@ if (isset($_GET['key'])) {
 		if (sendpassword($_GET['key'])) {
 			$tpl->assign(
 				array(
-					'TR_MESSAGE' => tr('Password sent'),
+					'TR_MESSAGE' => tr('Your new password has been sent.'),
 					'TR_LINK' => '<a class="link" href="index.php">' . tr('Login') . '</a>'
 				)
 			);
 		} else {
 			$tpl->assign(
 				array(
-					'TR_MESSAGE' => tr('ERROR: Password was not sent'),
+					'TR_MESSAGE' => tr('New password could not been sent.'),
 					'TR_LINK' => '<a class="link" href="index.php">' . tr('Login') . '</a>'
 				)
 			);
@@ -100,26 +100,17 @@ if (isset($_POST['uname'])) {
 			)
 		);
 
-		if ($_SESSION['image'] == $_POST['capcode']) {
-			if (requestpassword($_POST['uname'])) {
-				$tpl->assign(
-					array(
-						'TR_MESSAGE' => tr('The password was requested'),
-						'TR_LINK' => '<a class="link" href="index.php">' . tr('Back') . '</a>'
-					)
-				);
-			} else {
-				$tpl->assign(
-					array(
-						'TR_MESSAGE' => tr('ERROR: Unknown user'),
-						'TR_LINK' => '<a class="link" href="lostpassword.php">' . tr('Retry') . '</a>'
-					)
-				);
-			}
+		if ($_SESSION['image'] == $_POST['capcode'] && requestpassword($_POST['uname'])) {
+			$tpl->assign(
+				array(
+					'TR_MESSAGE' => tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.', Config::get('LOSTPASSWORD_TIMEOUT')),
+					'TR_LINK' => '<a class="link" href="index.php">' . tr('Back') . '</a>'
+				)
+			);
 		} else {
 			$tpl->assign(
 				array(
-					'TR_MESSAGE' => tr('ERROR: Security code was not correct!') . ' ' . $_SESSION['image'],
+					'TR_MESSAGE' => tr('User or security code was incorrect!'),
 					'TR_LINK' => '<a class="link" href="lostpassword.php">' . tr('Retry') . '</a>'
 				)
 			);

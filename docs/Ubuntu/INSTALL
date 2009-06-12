@@ -66,19 +66,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 3. Install the required modules
    First update your system:
 	# sudo apt-get update && apt-get upgrade
-
-   for Ubuntu 6.06 LTS please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
-   for Ubuntu 7.04 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
-   for Ubuntu 7.10 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
-   for Ubuntu 8.04 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
-   for Ubuntu 8.10 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-interpid)
-   for Ubuntu 9.04 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-jaunty)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
    If using Hardy, make sure you have added multiverse into your /etc/apt/sources.list
 
@@ -143,19 +131,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 4. Install the required modules
    first update your system:
 	# sudo apt-get update && apt-get upgrade
-
-   for Ubuntu 6.06 LTS please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-edgy)
-   for Ubuntu 7.04 please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-feisty)
-   for Ubuntu 7.10 please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-gutsy)
-   for Ubuntu 8.04 please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-hardy)
-   for Ubuntu 8.10 please use:
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-interpid)
-   for Ubuntu 9.04 please use:
-   	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-jaunty)
+	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
 	(when you get to the courier screen select 'no' to web directories)
 	(when you get to the postfix screen select 'internet site' and then type 'root'
