@@ -224,7 +224,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
-
+	
+	update_reseller_c_props(get_reseller_id($cr_user_id));
+	
 	$admin_login = $_SESSION['user_logged'];
 
 	if ($status == Config::get('ITEM_ORDERED_STATUS')) {

@@ -250,6 +250,9 @@ function add_domain_alias(&$sql, &$err_al) {
 			$domain_ip,
 			$forward
 	));
+
+	update_reseller_c_props(get_reseller_id($cr_user_id));
+
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");

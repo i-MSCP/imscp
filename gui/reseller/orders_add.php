@@ -275,7 +275,8 @@ $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_user_name)");
 write_log("$admin_login: add domain: $dmn_user_name");
 
-au_update_reseller_props($reseller_id, $props);
+update_reseller_c_props($reseller_id);
+
 set_page_message(tr('User added!'));
 $query = "
 	UPDATE

@@ -298,6 +298,8 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	$rs = exec_query($sql, $query, array($db_id, $db_user, encrypt_db_password($user_pass)));
 
+	update_reseller_c_props(get_reseller_id($dmn_id));
+
 	$query = "
 		SELECT
 			`sqld_name` AS `db_name`

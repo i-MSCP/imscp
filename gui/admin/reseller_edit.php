@@ -262,10 +262,12 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 	}
 
 	if ($err == '_off_') {
-		if ($uals_max != $rals_current && $uals_current > 0)
-			$err = tr('Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d', $uals_max, $rals_current);
-		else
+		// if ($uals_max != $rals_current && $uals_current > 0)
+		if ($uals_current != $rals_current && $rals_max > 0) {
+			$err = tr('Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d', $uals_current, $rals_current);
+		} else {
 			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Aliases'));
+		}
 	}
 
 	if ($err == '_off_') {
@@ -280,8 +282,8 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 	}
 
 	if ($err == '_off_') {
-		if ($uftp_max != $rftp_current && $uftp_current > 0) {
-			$err = tr('Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d', $uftp_max, $rftp_current);
+		if ($uftp_current != $rftp_current && $rftp_max > 0) {
+			$err = tr('Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d', $uftp_current, $rftp_current);
 		} else {
 			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
 		}
@@ -331,8 +333,8 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 function calculate_new_reseller_vals($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
 	if ($unlimited == '_off_') {
 		// We have something like that: $u <= ($umax = $r) <= $rmax
-		if ($umax != $r && $u > 0) { // ... && $u != unlimited
-			$err = tr('Reseller data inconsistency!'); //really?
+		if ($r != $u && $r > 0) { // ... && $u != unlimited
+			$err = tr('Reseller data inconsistency!').' '.$service; //really?
 
 			return;
 		}

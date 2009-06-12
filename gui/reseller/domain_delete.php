@@ -120,6 +120,18 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 		$rdisk_current, $rdisk_max
 	) = generate_reseller_props($reseller_id);
 
+	list($tmpval1,
+		$tmpval2,
+		$tmpval3,
+		$tmpval4,
+		$tmpval5,
+		$tmpval16,
+		$traff_current,
+		$disk_current,
+		$tmpval7,
+		$tmpval8
+	) = generate_user_traffic($domain_id);
+
 	list($sub_current, $sub_max,
 		$als_current, $als_max,
 		$mail_current, $mail_max,
@@ -131,29 +143,14 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 
 	$rdmn_current -= 1;
 
-	if ($sub_max != -1) {
-		$rsub_current -= $sub_max;
-	}
-
-	if ($als_max != -1) {
-		$rals_current -= $als_max;
-	}
-
-	$rmail_current -= $mail_max;
-
-	$rftp_current -= $ftp_max;
-
-	if ($sql_db_max != -1) {
-		$rsql_db_current -= $sql_db_max;
-	}
-
-	if ($sql_user_max != -1) {
-		$rsql_user_current -= $sql_user_max;
-	}
-
-	$rtraff_current -= $traff_max;
-
-	$rdisk_current -= $disk_max;
+	$rsub_current -= $sub_current;
+	$rals_current -= $als_current;
+	$rmail_current -= $mail_current;
+	$rftp_current -= $ftp_current;
+	$rsql_db_current -= $sql_db_current;
+	$rsql_user_current -= $sql_user_current;
+	$rtraff_current -= $traff_current;
+	$rdisk_current -= $disk_current;
 
 	$rprops = "$rdmn_current;$rdmn_max;";
 	$rprops .= "$rsub_current;$rsub_max;";

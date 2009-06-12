@@ -121,6 +121,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($als_id));
 
+	update_reseller_c_props(get_reseller_id($dmn_id));
+
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias ".$alias_name."!");
 	set_page_message(tr('Alias scheduled for deletion!'));

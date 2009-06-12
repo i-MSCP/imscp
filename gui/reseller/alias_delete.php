@@ -73,17 +73,16 @@ $query = <<<SQL_QUERY
 
 SQL_QUERY;
 
-$rs = exec_query($sql, $query, array($delete_status, $del_id, $del_id));
-
-while (!$rs->EOF) {
-	$rs->MoveNext();
-}
+exec_query($sql, $query, array($delete_status, $del_id, $del_id));
 
 $res = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($del_id));
 $dat = $res->FetchRow();
 
 exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
 exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
+
+update_reseller_c_props($reseller_id);
+
 send_request();
 $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);

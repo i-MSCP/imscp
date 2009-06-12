@@ -92,18 +92,28 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		user_goto('manage_users.php');
 	}
 
-	if (check_user_data($tpl, $sql, get_reseller_id($editid), $editid)) { // Save data to db
+	$reseller_id = get_reseller_id($editid);
+	if (empty($reseller_id)) {
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		user_goto('manage_users.php');
+	}
+	if (check_user_data($tpl, $sql, $reseller_id, $editid)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
 		user_goto('manage_users.php');
 	}
-	load_additional_data(get_reseller_id($editid), $editid);
+	load_additional_data($reseller_id, $editid);
 } else {
 	// Get user id that comes for edit
 	if (isset($_GET['edit_id'])) {
 		$editid = $_GET['edit_id'];
 	}
 
-	load_user_data(get_reseller_id($editid), $editid);
+	$reseller_id = get_reseller_id($editid);
+	if (empty($reseller_id)) {
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		user_goto('manage_users.php');
+	}
+	load_user_data($reseller_id, $editid);
 	// $_SESSION['edit_ID'] = $editid;
 	$_SESSION['edit_id'] = $editid;
 	$tpl->assign('MESSAGE', "");
@@ -112,34 +122,6 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 gen_editdomain_page($tpl);
 
 // Begin function block
-
-/**
- * Get the reseller id of a domain
- */
-function get_reseller_id($domain_id) {
-	$sql = Database::getInstance();
-
-	$query = "
-	SELECT
-		a.`created_by`
-	FROM
-		`domain` d, `admin` a
-	WHERE
-		d.`domain_id` = ?
-	AND
-		d.`domain_admin_id` = a.`admin_id`
-";
-
-	$rs = exec_query($sql, $query, array($domain_id));
-
-	if ($rs->RecordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		user_goto('manage_users.php');
-	}
-
-	$data = $rs->FetchRow();
-	return $data['created_by'];
-}
 
 /**
  * Load data from sql

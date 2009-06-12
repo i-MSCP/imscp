@@ -139,6 +139,8 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
 
+	update_reseller_c_props(get_reseller_id($dmn_id));
+
 	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . $db_name);
 	set_page_message(tr('SQL database created successfully!'));
 	user_goto('sql_manage.php');

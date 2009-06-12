@@ -103,6 +103,8 @@ check_for_lock_file();
 $query = "UPDATE `mail_users` SET `status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `mail_id` = ?";
 exec_query($sql, $query, array($delete_id));
 
+update_reseller_c_props(get_reseller_id($data['domain_id']));
+
 send_request();
 $admin_login = decode_idna($_SESSION['user_logged']);
 write_log("$admin_login: deletes mail account: " . $mail_name);

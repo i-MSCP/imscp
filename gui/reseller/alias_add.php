@@ -195,6 +195,7 @@ SQL_QUERY;
 
 	$als_id = $sql->Insert_ID();
 
+	update_reseller_c_props(get_reseller_id($cr_user_id));
 
 	$query = 'SELECT `email` FROM `admin` WHERE `admin_id` = ? LIMIT 1';
 	$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));

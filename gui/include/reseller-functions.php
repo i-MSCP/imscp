@@ -1471,116 +1471,6 @@ SQL_QUERY;
 	return true;
 }
 
-/**
- * Update reseller props
- */
-function au_update_reseller_props($reseller_id, $props) {
-	$sql = Database::getInstance();
-
-	list($php, $cgi, $sub,
-		$als, $mail, $ftp,
-		$sql_db, $sql_user,
-		$traff, $disk) = explode(";", $props);
-
-	$query = <<<SQL_QUERY
-		SELECT
-			*
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-SQL_QUERY;
-
-	$res = exec_query($sql, $query, array($reseller_id));
-	$data = $res->FetchRow();
-
-	$dmn_current = $data['current_dmn_cnt'];
-	$dmn_max = $data['max_dmn_cnt'];
-
-	$sub_current = $data['current_sub_cnt'];
-	$sub_max = $data['max_sub_cnt'];
-
-	$als_current = $data['current_als_cnt'];
-	$als_max = $data['max_als_cnt'];
-
-	$mail_current = $data['current_mail_cnt'];
-	$mail_max = $data['max_mail_cnt'];
-
-	$ftp_current = $data['current_ftp_cnt'];
-	$ftp_max = $data['max_ftp_cnt'];
-
-	$sql_db_current = $data['current_sql_db_cnt'];
-	$sql_db_max = $data['max_sql_db_cnt'];
-
-	$sql_user_current = $data['current_sql_user_cnt'];
-	$sql_user_max = $data['max_sql_user_cnt'];
-
-	$traff_current = $data['current_traff_amnt'];
-	$traff_max = $data['max_traff_amnt'];
-
-	$disk_current = $data['current_disk_amnt'];
-	$disk_max = $data['max_disk_amnt'];
-
-	$dmn = $dmn_current + 1;
-
-	if ($sub != -1) {
-		$sub += $sub_current;
-	} else {
-		$sub = $sub_current;
-	}
-
-	if ($als != -1) {
-		$als += $als_current;
-	} else {
-		$als = $als_current;
-	}
-
-	if ($mail != -1) {
-		$mail += $mail_current;
-	} else {
-		$mail = $mail_current;
-	}
-
-	if ($ftp != -1) {
-		$ftp += $ftp_current;
-	} else {
-		$ftp = $ftp_current;
-	}
-
-	if ($sql_db != -1) {
-		$sql_db += $sql_db_current;
-	} else {
-		$sql_db = $sql_db_current;
-	}
-
-	if ($sql_user != -1) {
-		$sql_user += $sql_user_current;
-	} else {
-		$sql_user = $sql_user_current;
-	}
-
-	$traff += $traff_current;
-	$disk += $disk_current;
-
-	$query = <<<SQL_QUERY
-		UPDATE
-			`reseller_props`
-		SET
-			`current_dmn_cnt` = ?,
-			`current_sub_cnt` = ?,
-			`current_als_cnt` = ?,
-			`current_mail_cnt` = ?,
-			`current_ftp_cnt` = ?,
-			`current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?,
-			`current_traff_amnt` = ?,
-			`current_disk_amnt` = ?
-		WHERE
-			`reseller_id` = ?
-SQL_QUERY;
-
-	$res = exec_query($sql, $query, array($dmn, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $reseller_id));
-} // end of au_update_reseller_props()
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
 	$data = get_order_email($admin_id);
@@ -1790,3 +1680,148 @@ SQL_QUERY;
 	}
 
 } // end client_mail_add_default_accounts
+
+/**
+ * Get count from table by given domain_id's 
+ * @param $tablename string database table name
+ * @param $ua array domain_ids
+ * @return integer count
+ */
+function get_reseller_detail_count($tablename, $ua) {
+	global $sql;
+	
+	$delstatus = Config::get('ITEM_DELETE_STATUS');
+	
+	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
+	if ($tablename == 'ftp_users') {
+		$fieldname = 'uid';
+	} else {
+		$fieldname = 'domain_id';
+	}
+	$query .= "` WHERE `".$fieldname."` IN (".implode(',', $ua).")";
+	if ($tablename == 'mail_users') {
+		$query .= " AND `mail_acc` != 'abuse'
+			AND `mail_acc` != 'postmaster'
+			AND `mail_acc` != 'webmaster'
+			AND `mail_type` NOT RLIKE '_catchall'";
+		$query .= " AND status != '".$delstatus."'";
+	} else if ($tablename == 'subdomain') {
+		$query .= " AND subdomain_status != '".$delstatus."'";
+	} else if ($tablename == 'domain_aliasses') {
+		$query .= " AND alias_status != '".$delstatus."'";
+	}
+	$res = exec_query($sql, $query);
+
+	return $res->fields['cnt'];
+}
+
+/**
+ * Recalculate current_ properties of reseller
+ * @param $reseller_id integer ID of the reseller
+ * @return array list of properties
+ */
+function recalc_reseller_c_props($reseller_id) {
+	global $sql;
+
+	// current_dmn_cnt = domain
+	// current_sub_cnt = subdomain
+	// current_als_cnt = domain_aliasses
+	// current_mail_cnt = mail_users
+	// current_ftp_cnt = ftp_users
+	// current_sql_db_cnt = sql_database
+	// current_sql_user_cnt = sql_user
+
+	$delstatus = Config::get('ITEM_DELETE_STATUS');
+
+	// Get all users of reseller:
+	$query = <<<SQL_QUERY
+		SELECT 
+			`domain_id`, `domain_uid`
+		FROM
+			`domain`
+		WHERE
+			`domain_created_id` = ?
+			AND `domain_status` != ?
+SQL_QUERY;
+	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
+	$user_array = $systemuser_array = array();
+	while ($data = $res->FetchRow()) {
+		$user_array[] = $data['domain_id'];
+		$systemuser_array[] = $data['domain_uid'];
+	}
+	$current_dmn_cnt = count($user_array);
+	$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
+	$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
+	$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
+	$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
+	$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
+
+	$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
+	$query .= " WHERE `sqld_id` IN (";
+	$query .= "SELECT sqld_id FROM sql_database";
+	$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
+	$res = exec_query($sql, $query);
+	$current_sql_user_cnt = $res->fields['cnt'];
+
+	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt, 
+		$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt, 
+		$current_sql_user_cnt);
+}
+
+/**
+ * Recalculate current_ properties of reseller
+ * @param $reseller_id integer ID of the reseller
+ */
+function update_reseller_c_props($reseller_id) {
+	global $sql;
+
+	$query = <<<SQL_QUERY
+		UPDATE
+			`reseller_props`
+		SET
+			`current_dmn_cnt` = ?,
+			`current_sub_cnt` = ?,
+			`current_als_cnt` = ?,
+			`current_mail_cnt` = ?,
+			`current_ftp_cnt` = ?,
+			`current_sql_db_cnt` = ?,
+			`current_sql_user_cnt` = ?
+		WHERE
+			`reseller_id` = ?
+SQL_QUERY;
+
+	$props = recalc_reseller_c_props($reseller_id);
+	$props[] = $reseller_id;
+
+	exec_query($sql, $query, $props);
+}
+
+/**
+ * Get the reseller id of a domain
+ * moved from admin/domain_edit.php to reseller-functions.php
+ * @param $domain_id integer ID of domain
+ * @return integer ID of reseller or 0 in case of error
+ */
+function get_reseller_id($domain_id) {
+	$sql = Database::getInstance();
+
+	$query = "
+	SELECT
+		a.`created_by`
+	FROM
+		`domain` d, `admin` a
+	WHERE
+		d.`domain_id` = ?
+	AND
+		d.`domain_admin_id` = a.`admin_id`
+";
+
+	$rs = exec_query($sql, $query, array($domain_id));
+
+	if ($rs->RecordCount() == 0) {
+		return 0;
+	}
+
+	$data = $rs->FetchRow();
+	return $data['created_by'];
+}

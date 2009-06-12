@@ -481,6 +481,43 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * Correct some reseller properties
+	 *
+	 * @author		Thomas Wacker
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1834
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_20() {
+		$sqlUpd = array();
+		
+		$sql = Database::getInstance();
+		$query	= "SELECT `reseller_id`"
+				. " FROM `reseller_props` ORDER BY `reseller_id`";
+		$rs = exec_query($sql, $query);
+		if ($rs->RecordCount() != 0) {
+			while (!$rs->EOF) {
+				$props = recalc_reseller_c_props($rs->fields['reseller_id']);
+				$sql = "UPDATE `reseller_props` SET ";
+				$sql .= "`current_dmn_cnt` = '".$props[0]."',";
+				$sql .= "`current_sub_cnt` = '".$props[1]."',";
+				$sql .= "`current_als_cnt` = '".$props[2]."',";
+				$sql .= "`current_mail_cnt` = '".$props[3]."',";
+				$sql .= "`current_ftp_cnt` = '".$props[4]."',";
+				$sql .= "`current_sql_db_cnt` = '".$props[5]."',";
+				$sql .= "`current_sql_user_cnt` = '".$props[6]."'";
+				$sql .= " WHERE `reseller_id`=".$rs->fields['reseller_id'];
+				$sqlUpd[] = $sql;
+				$rs->MoveNext();
+			}
+		}
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

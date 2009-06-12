@@ -403,7 +403,7 @@ function add_user_data($reseller_id) {
 	write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_name)");
 	write_log("$admin_login: add domain: $dmn_name");
 
-	au_update_reseller_props($reseller_id, $props);
+	update_reseller_c_props($reseller_id);
 
 	if (isset($_POST['add_alias']) && $_POST['add_alias'] === 'on') {
 		// we have to add some aliases for this looser

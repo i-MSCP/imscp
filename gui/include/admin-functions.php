@@ -1628,6 +1628,8 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 	// let's get back to user overview after the system changes are finished
 	$user_logged = $_SESSION['user_logged'];
 
+	update_reseller_c_props(get_reseller_id($domain_id));
+	
 	if ($action == 'disable') {
 		write_log("$user_logged: suspended domain: $domain_name");
 
@@ -1955,6 +1957,8 @@ function rm_rf_user_account($id_user) {
 	$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_admin_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $id_user));
 
+	update_reseller_c_props($domain_created_id);
+	
 	remove_users_common_properties($id_user);
 }
 
@@ -1990,36 +1994,29 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 		$traff_max, $disk_max
 	) = generate_user_props($domain_id);
 
+	list($tmpval1,
+		$tmpval2,
+		$tmpval3,
+		$tmpval4,
+		$tmpval5,
+		$tmpval16,
+		$traff_current,
+		$disk_current,
+		$tmpval7,
+		$tmpval8
+	) = generate_user_traffic($domain_id);
+
 	$rdmn_current -= 1;
 
-	if ($sub_max != -1) {
-		$rsub_current -= $sub_max;
-	}
-
-	if ($als_max != -1) {
-		$rals_current -= $als_max;
-	}
-
-	if ($mail_max != -1) {
-		$rmail_current -= $mail_max;
-	}
-
-	if ($ftp_max != -1) {
-		$rftp_current -= $ftp_max;
-	}
-
-	if ($sql_db_max != -1) {
-		$rsql_db_current -= $sql_db_max;
-	}
-
-	if ($sql_user_max != -1) {
-		$rsql_user_current -= $sql_user_max;
-	}
-
-	$rtraff_current -= $traff_max;
-
-	$rdisk_current -= $disk_max;
-
+	$rsub_current -= $sub_current;
+	$rals_current -= $als_current;
+	$rmail_current -= $mail_current;
+	$rftp_current -= $ftp_current;
+	$rsql_db_current -= $sql_db_current;
+	$rsql_user_current -= $sql_user_current;
+	$rtraff_current -= $traff_current;
+	$rdisk_current -= $disk_current;
+	
 	$rprops = "$rdmn_current;$rdmn_max;";
 	$rprops .= "$rsub_current;$rsub_max;";
 	$rprops .= "$rals_current;$rals_max;";
