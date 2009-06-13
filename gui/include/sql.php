@@ -49,6 +49,25 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 
 	if (!$rs && $failDie) {
 		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : $sql->errorInfo();
+		$backtrace = debug_backtrace();
+		$output = isset($msg[2]) ? $msg[2] : $msg;
+		$output .= "\n";
+		foreach ($backtrace as $entry) {
+			$output .= "File: ".$entry['file']." (Line: ".$entry['line'].")";
+			$output .= " Function: ".$entry['function']."\n";
+		}
+		// Send error output via email to admin
+		$admin_email = Config::get('DEFAULT_ADMIN_ADDRESS');
+		if (!empty($admin_email)) {
+			$default_hostname = Config::get('SERVER_HOSTNAME');
+			$default_base_server_ip = Config::get('BASE_SERVER_IP');
+			$Version = Config::get('Version');
+			$headers = "From: \"ispCP Logging Daemon\" <" . $admin_email . ">\n";
+			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
+			$headers .= "X-Mailer: ispCP $Version Logging Mailer";
+			$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
+			$mail_result = mail($admin_email, $subject, $output, $headers);
+		}
 		system_message(isset($msg[2]) ? $msg[2] : $msg);
 	}
 
