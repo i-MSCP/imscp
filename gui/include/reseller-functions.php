@@ -1750,18 +1750,27 @@ SQL_QUERY;
 		$systemuser_array[] = $data['domain_uid'];
 	}
 	$current_dmn_cnt = count($user_array);
-	$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
-	$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
-	$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
-	$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
-	$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
-
-	$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
-	$query .= " WHERE `sqld_id` IN (";
-	$query .= "SELECT sqld_id FROM sql_database";
-	$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
-	$res = exec_query($sql, $query);
-	$current_sql_user_cnt = $res->fields['cnt'];
+	if ($current_dmn_cnt > 0) {
+		$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
+		$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
+		$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
+		$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
+		$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
+	
+		$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
+		$query .= " WHERE `sqld_id` IN (";
+		$query .= "SELECT sqld_id FROM sql_database";
+		$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
+		$res = exec_query($sql, $query);
+		$current_sql_user_cnt = $res->fields['cnt'];
+	} else {
+		$current_sub_cnt = 
+		$current_als_cnt =
+		$current_mail_cnt =
+		$current_ftp_cnt =
+		$current_sql_db_cnt = 
+		$current_sql_user_cnt = 0; 
+	}
 
 	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt, 
 		$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt, 
