@@ -1,9 +1,10 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Set of functions used to build CSV dumps of tables
+ * Set of functions used to build OpenDocument Spreadsheet dumps of tables
  *
- * @version $Id: ods.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @package phpMyAdmin-Export-ODS
+ * @version $Id: ods.php 11972 2008-11-24 09:14:31Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

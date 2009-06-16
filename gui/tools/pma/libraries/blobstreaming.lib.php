@@ -30,18 +30,22 @@ function checkBLOBStreamingPlugins()
 
     // retrieve current server configuration
     $serverCfg = $PMA_Config->get('Servers');
-    $serverCfg = $serverCfg[$GLOBALS['server']];
+
+    if (isset($serverCfg[$GLOBALS['server']]))
+        $serverCfg = $serverCfg[$GLOBALS['server']];
+    else
+	$serverCfg = null;
 
     // return if unable to retrieve current server configuration
-    if (! $serverCfg)
+    if (!isset($serverCfg))
         return FALSE;
 
     // if PHP extension in use is 'mysql', specify element 'PersistentConnections'
-    if ($serverCfg['extension'] == "mysql")
+    if (isset($serverCfg['extension']) && "mysql" == $serverCfg['extension'])
         $serverCfg['PersistentConnections'] = $PMA_Config->settings['PersistentConnections'];
 
     // if connection type is TCP, unload socket variable
-    if (strtolower($serverCfg['connect_type']) == "tcp")
+    if (isset($serverCfg['connect_type']) && "tcp" == strtolower($serverCfg['connect_type']))
         $serverCfg['socket'] = "";
 
     // define BS Plugin variables
@@ -75,10 +79,10 @@ function checkBLOBStreamingPlugins()
         // retrieve BS variables from PMA configuration
         $bs_set_variables = array();
 
-        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_garbage_threshold'] = (isset($serverCfg['bs_garbage_threshold'])) ? $server['bs_garbage_threshold'] : NULL;
-        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_repository_threshold'] = (isset($serverCfg['bs_repository_threshold'])) ? $server['bs_repository_threshold'] : NULL;
-        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_temp_blob_timeout'] = (isset($serverCfg['bs_temp_blob_timeout'])) ? $server['bs_temp_blob_timeout'] : NULL;
-        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_temp_log_threshold'] = (isset($serverCfg['bs_temp_log_threshold'])) ? $server['bs_temp_log_threshold'] : NULL;
+        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_garbage_threshold'] = (isset($serverCfg['bs_garbage_threshold'])) ? $serverCfg['bs_garbage_threshold'] : NULL;
+        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_repository_threshold'] = (isset($serverCfg['bs_repository_threshold'])) ? $serverCfg['bs_repository_threshold'] : NULL;
+        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_temp_blob_timeout'] = (isset($serverCfg['bs_temp_blob_timeout'])) ? $serverCfg['bs_temp_blob_timeout'] : NULL;
+        $bs_set_variables[$PMA_Config->get('PBMS_NAME') . '_temp_log_threshold'] = (isset($serverCfg['bs_temp_log_threshold'])) ? $serverCfg['bs_temp_log_threshold'] : NULL;
 
         // set BS variables to PMA configuration defaults
         PMA_BS_SetVariables($bs_set_variables);

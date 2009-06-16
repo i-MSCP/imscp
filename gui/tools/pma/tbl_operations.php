@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_operations.php 12154 2008-12-23 18:15:56Z lem9 $
+ * @version $Id: tbl_operations.php 12297 2009-03-22 12:05:21Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -179,6 +180,9 @@ if (isset($_REQUEST['submit_partition']) && ! empty($_REQUEST['partition_operati
 } // end if
 
 if ($reread_info) {
+    // to avoid showing the old value (for example the AUTO_INCREMENT) after
+    // a change, clear the cache
+    PMA_Table::$cache = array(); 
     $page_checksum = $checksum = $delay_key_write = 0;
     require './libraries/tbl_info.inc.php';
 }
@@ -190,7 +194,7 @@ unset($reread_info);
 require_once './libraries/tbl_links.inc.php';
 
 if (isset($result)) {
-    // set to success by default, because result set could be empty 
+    // set to success by default, because result set could be empty
     // (for example, a table rename)
     $_type = 'success';
     if (empty($_message)) {
@@ -701,13 +705,13 @@ if ($cfgRelation['relwork'] && ! $is_innodb) {
 require_once './libraries/footer.inc.php';
 
 
-function PMA_set_global_variables_for_engine($tbl_type) 
+function PMA_set_global_variables_for_engine($tbl_type)
 {
     global $is_myisam_or_maria, $is_innodb, $is_isam, $is_berkeleydb, $is_maria, $is_pbxt;
 
     $is_myisam_or_maria = $is_isam = $is_innodb = $is_berkeleydb = $is_maria = $is_pbxt = false;
     $upper_tbl_type = strtoupper($tbl_type);
-    
+
     //Options that apply to MYISAM usually apply to MARIA
     $is_myisam_or_maria = ($upper_tbl_type == 'MYISAM' || $upper_tbl_type == 'MARIA');
     $is_maria = ($upper_tbl_type == 'MARIA');

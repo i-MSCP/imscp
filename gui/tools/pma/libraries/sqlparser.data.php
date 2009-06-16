@@ -19,7 +19,8 @@
  * It's easier to use only uppercase for proper sorting. In case of
  * doubt, use the DEBUG code after this function's definition.
  *
- * @version$Id: sqlparser.data.php 12395 2009-05-06 16:54:30Z lem9 $
+ * @version $Id: sqlparser.data.php 12432 2009-05-17 22:20:16Z helmo $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -696,7 +697,7 @@ $PMA_SQPdata_reserved_word = array (
  */
 $PMA_SQPdata_reserved_word_cnt = 289;
 /**
- * The previous array must be sorted so that the binary search work. 
+ * The previous array must be sorted so that the binary search work.
  * Sometimes a word is not added in the correct order, so
  * this debugging code shows the problem. The same should be
  * done for all arrays.
@@ -1262,7 +1263,7 @@ $PMA_SQPdata_column_type = array (
     'POINT',                // spatial
     'POLYGON',              // spatial
     'REAL',
-    'SERIAL',               // alsias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    'SERIAL',               // alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
     'SET',
     'SMALLINT',
     'TEXT',

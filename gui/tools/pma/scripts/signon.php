@@ -7,9 +7,9 @@
  * not intended to be perfect code and look, only shows how you can
  * integrate this functionality in your application.
  *
- * @version $Id: signon.php 11204 2008-04-21 17:06:03Z lem9 $
+ * @version $Id: signon.php 11988 2008-11-24 11:07:36Z nijel $
  * @package phpMyAdmin
- * @subpacke Example
+ * @subpackage Example
  */
 
 /* Was data posted? */

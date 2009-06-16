@@ -3,7 +3,8 @@
 /**
  * hold PMA_Theme class
  *
- * @version $Id: Theme.class.php 11365 2008-07-01 19:21:28Z lem9 $
+ * @version $Id: Theme.class.php 11994 2008-11-24 11:22:44Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -14,6 +15,7 @@
  * @todo make css optionally replacing 'parent' css or extending it (by appending at the end)
  * @todo add an optional global css file - which will be used for both frames
  *
+ * @package phpMyAdmin
  */
 class PMA_Theme {
     /**

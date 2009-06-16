@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: information_schema_relations.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: information_schema_relations.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

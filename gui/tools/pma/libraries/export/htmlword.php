@@ -3,6 +3,7 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
+ * @package phpMyAdmin-Export-HTMLWord
  * @version $Id: htmlword.php 12349 2009-04-14 13:34:20Z helmo $
  */
 if (! defined('PHPMYADMIN')) {

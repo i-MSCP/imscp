@@ -3,7 +3,8 @@
 /**
  * handle row specifc actions like edit, delete, export
  *
- * @version $Id: tbl_row_action.php 10714 2007-10-04 09:22:50Z cybot_tm $
+ * @version $Id: tbl_row_action.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @package phpMyAdmin
  */
 
 
@@ -82,14 +83,10 @@ if (!empty($submit_mult)) {
             // checkbox, we use the index of it as the
             // indicating primary key. Then we built the array which is used for
             // the tbl_change.php script.
-            /**
-             * urldecode should not be needed here
             $primary_key = array();
             foreach ($_REQUEST['rows_to_delete'] as $i_primary_key => $del_query) {
                 $primary_key[] = urldecode($i_primary_key);
             }
-             */
-            $primary_key = array_keys($_REQUEST['rows_to_delete']);
 
             $active_page = 'tbl_change.php';
             include './tbl_change.php';
@@ -104,14 +101,10 @@ if (!empty($submit_mult)) {
             // checkbox, we use the index of it as the
             // indicating primary key. Then we built the array which is used for
             // the tbl_change.php script.
-            /**
-             * urldecode should not be needed here
             $primary_key = array();
             foreach ($_REQUEST['rows_to_delete'] as $i_primary_key => $del_query) {
                 $primary_key[] = urldecode($i_primary_key);
             }
-             */
-            $primary_key = array_keys($_REQUEST['rows_to_delete']);
 
             $active_page = 'tbl_export.php';
             include './tbl_export.php';

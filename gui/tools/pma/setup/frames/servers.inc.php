@@ -5,13 +5,16 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: servers.inc.php 11650 2008-10-14 10:31:07Z crackpl $
+ * @version    $Id: servers.inc.php 11975 2008-11-24 09:55:30Z nijel $
  */
 
 if (!defined('PHPMYADMIN')) {
     exit;
 }
 
+/**
+ * Core libraries.
+ */
 require_once './setup/lib/Form.class.php';
 require_once './setup/lib/FormDisplay.class.php';
 require_once './setup/lib/form_processing.lib.php';

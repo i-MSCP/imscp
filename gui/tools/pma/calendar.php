@@ -3,6 +3,7 @@
 /**
  *
  * @version $Id: calendar.php 12388 2009-04-30 17:11:42Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**

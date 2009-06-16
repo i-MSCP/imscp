@@ -9,8 +9,17 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: index.lib.php 11646 2008-10-09 16:50:11Z crackpl $
+ * @version    $Id: index.lib.php 12333 2009-04-04 12:41:02Z helmo $
  */
+
+if (!defined('PHPMYADMIN')) {
+    exit;
+}
+
+/**
+ * Load vendor config.
+ */
+require_once('./libraries/vendor_config.php');
 
 /**
  * Initializes message list
@@ -223,7 +232,10 @@ function check_config_rw(&$is_readable, &$is_writable, &$file_exists)
     $file_path = ConfigFile::getInstance()->getFilePath();
     $file_dir = dirname($file_path);
     $is_readable = true;
-    $is_writable = is_dir($file_dir) && is_writable($file_dir);
+    $is_writable = is_dir($file_dir);
+    if (SETUP_DIR_WRITABLE) {
+        $is_writable = $is_writable && is_writable($file_dir);
+    }
     $file_exists = file_exists($file_path);
     if ($file_exists) {
         $is_readable = is_readable($file_path);
@@ -243,7 +255,7 @@ function perform_config_checks()
     $blowfish_secret = $cf->get('blowfish_secret');
     $blowfish_secret_set = false;
     $cookie_auth_used = false;
-    for ($i = 1; $i <= $cf->getServerCount(); $i++) {
+    for ($i = 1, $server_cnt = $cf->getServerCount(); $i <= $server_cnt; $i++) {
         $cookie_auth_server = ($cf->getValue("Servers/$i/auth_type") == 'cookie');
         $cookie_auth_used |= $cookie_auth_server;
         $server_name = $cf->getServerName($i);
@@ -292,14 +304,14 @@ function perform_config_checks()
 
         //
         // $cfg['Servers'][$i]['AllowRoot']
-        // $cfg['Servers'][$i]['AllowNoPasswordRoot']
+        // $cfg['Servers'][$i]['AllowNoPassword']
         // serious security flaw
         //
         if ($cf->getValue("Servers/$i/AllowRoot")
-            && $cf->getValue("Servers/$i/AllowNoPasswordRoot")) {
-            $title = PMA_lang_name('Servers/1/AllowNoPasswordRoot') . " ($server_name)";
-            messages_set('warning', "Servers/$i/AllowNoPasswordRoot", $title,
-                PMA_lang('ServerNoPasswordRootMsg') . ' ' .
+            && $cf->getValue("Servers/$i/AllowNoPassword")) {
+            $title = PMA_lang_name('Servers/1/AllowNoPassword') . " ($server_name)";
+            messages_set('warning', "Servers/$i/AllowNoPassword", $title,
+                PMA_lang('ServerNoPasswordMsg') . ' ' .
                 PMA_lang('ServerSecurityInfoMsg', $i));
         }
     }

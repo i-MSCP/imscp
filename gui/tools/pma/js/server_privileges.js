@@ -2,7 +2,7 @@
 /**
  * function used in server privilege pages
  *
- * @version $Id: server_privileges.js 10929 2007-11-15 17:51:46Z lem9 $
+ * @version $Id: server_privileges.js 12391 2009-05-04 16:32:16Z lem9 $
  */
 
 /**
@@ -71,8 +71,7 @@ function checkAddUser(the_form)
 
 
 /**
- * Generate a new password, which may then be copied to the form
- * with suggestPasswordCopy().
+ * Generate a new password and copy it to the password input areas
  *
  * @param   string   the form name
  *
@@ -90,19 +89,7 @@ function suggestPassword() {
     for ( i = 0; i < passwordlength; i++ ) {
         passwd.value += pwchars.charAt( Math.floor( Math.random() * pwchars.length ) )
     }
-    return passwd.value;
-}
-
-
-/**
- * Copy the generated password (or anything in the field) to the form
- *
- * @param   string   the form name
- *
- * @return  boolean  always true
- */
-function suggestPasswordCopy() {
-    document.getElementById('text_pma_pw').value = document.getElementById('generated_pw').value;
-    document.getElementById('text_pma_pw2').value = document.getElementById('generated_pw').value;
+    document.getElementById('text_pma_pw').value = passwd.value;
+    document.getElementById('text_pma_pw2').value = passwd.value;
     return true;
 }

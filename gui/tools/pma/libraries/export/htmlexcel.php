@@ -3,7 +3,8 @@
 /**
  * Set of functions used to build CSV dumps of tables
  *
- * @version $Id: htmlexcel.php 11484 2008-08-13 16:28:43Z lem9 $
+ * @package phpMyAdmin-Export-HTMLExcel
+ * @version $Id: htmlexcel.php 11972 2008-11-24 09:14:31Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;

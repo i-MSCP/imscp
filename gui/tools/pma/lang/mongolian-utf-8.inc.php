@@ -1,5 +1,5 @@
 <?php
-/* $Id: mongolian-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
+/* $Id: mongolian-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
 
 /**
  * Translated by Bayarsaikhan Enkhtaivan
@@ -285,7 +285,6 @@ $strFileNameTemplateRemember = 'загварыг санах';
 $strFileNameTemplate = 'Файлын нэрийн загвар';
 $strFiles = 'Файлууд';
 $strFileToImport = 'Оруулах файл';
-$strFixed = 'Засагдсан';
 $strFlushPrivilegesNote = 'Тэмдэглэл: phpMyAdmin нь MySQL-ийн онцгой эрхийн хүснэгтээс хэрэглэгчдийн онцгой эрхийг авна. Хэрэв тэд гараар өөрчлөгдсөн бол эдгээр хүснэгтийн агуулга нь сервэрт хэрэглэгдэж буйгаас өөр байна. Энэ тохиолдолд %sдахин дуудаж үргэлжлүүлнэ үү.';
 $strFlushQueryCache = 'Асуудлын утгыг цэвэрлэх';
 $strFlushTable = 'Flush the table ("FLUSH")';
@@ -924,6 +923,7 @@ $strCheck = 'Check';  //to translate
 $strComment = 'Comment';  //to translate
 $strControluserFailed = 'Connection for controluser as defined in your configuration failed.';  //to translate
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
+$strCreateUserDatabasePrivileges = 'Grant all privileges on database &quot;%s&quot;';  //to translate
 $strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';  //to translate
 $strCustomColor = 'Custom color';  //to translate
 
@@ -1012,6 +1012,7 @@ $strRowsDeleted = '%1$d row(s) deleted.';  //to translate
 $strRowsInserted = '%1$d row(s) inserted.';  //to translate
 
 $strSearchInField = 'Inside field:';  //to translate
+$strSessionGCWarning = 'Your PHP parameter [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] is lower that cookie validity configured in phpMyAdmin, because of this, your login will expire sooner than configured in phpMyAdmin.';  //to translate
 $strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 $strSetupAllowAnywhereRecoding_name = 'Allow character set conversion';  //to translate
 $strSetupAllowArbitraryServer_desc = 'If enabled user can enter any MySQL server in login form for cookie auth';  //to translate
@@ -1235,13 +1236,11 @@ $strSetupSaveDir_desc = 'Directory where exports can be saved on server';  //to 
 $strSetupSaveDir_name = 'Save directory';  //to translate
 $strSetupServerAuthConfigMsg = 'You set the [kbd]config[/kbd] authentication type and included username and password for auto-login, which is not a desirable option for live hosts. Anyone who knows or guesses your phpMyAdmin URL can directly access your phpMyAdmin panel. Set [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server]authentication type[/a] to [kbd]cookie[/kbd] or [kbd]http[/kbd].';  //to translate
 $strSetupServerExtensionMsg = 'You should use mysqli for performance reasons';  //to translate
-$strSetupServerNoPasswordRootMsg = 'You allow for connecting to the server as root without a password.';  //to translate
 $strSetupServersAdd = 'Add a new server';  //to translate
 $strSetupServers_AllowDeny_order_desc = 'Leave blank if not used';  //to translate
 $strSetupServers_AllowDeny_order_name = 'Host authentication order';  //to translate
 $strSetupServers_AllowDeny_rules_desc = 'Leave blank for defaults';  //to translate
 $strSetupServers_AllowDeny_rules_name = 'Host authentication rules';  //to translate
-$strSetupServers_AllowNoPasswordRoot_name = 'Allow root without password';  //to translate
 $strSetupServers_AllowRoot_name = 'Allow root login';  //to translate
 $strSetupServers_auth_swekey_config_desc = 'The path for the config file for [a@http://swekey.com]SweKey hardware authentication[/a] (not located in your document root; suggested: /etc/swekey.conf)';  //to translate
 $strSetupServers_auth_swekey_config_name = 'SweKey config file';  //to translate
@@ -1272,7 +1271,7 @@ $strSetupServers_hide_db_desc = 'Hide databases matching regular expression (PCR
 $strSetupServers_hide_db_name = 'Hide databases';  //to translate
 $strSetupServers_history_desc = 'Leave blank for no SQL query history support, default: [kbd]pma_history[/kbd]';  //to translate
 $strSetupServers_history_name = 'SQL query history table';  //to translate
-$strSetupServers_host_desc = '';  //to translate
+$strSetupServers_host_desc = 'Hostname where MySQL server is running';  //to translate
 $strSetupServers_host_name = 'Server hostname';  //to translate
 $strSetupServers_LogoutURL_name = 'Logout URL';  //to translate
 $strSetupServers_nopassword_desc = 'Try to connect without password';  //to translate
@@ -1307,7 +1306,7 @@ $strSetupServers_user_desc = 'Leave empty if not using config auth';  //to trans
 $strSetupServers_user_name = 'User for config auth';  //to translate
 $strSetupServers_verbose_check_desc = 'Disable if you know that your pma_* tables are up to date. This prevents compatibility checks and thereby increases performance';  //to translate
 $strSetupServers_verbose_check_name = 'Verbose check';  //to translate
-$strSetupServers_verbose_desc = 'Hostname where MySQL server is running';  //to translate
+$strSetupServers_verbose_desc = 'A user-friendly description of this server. Leave blank to display the hostname instead.';  //to translate
 $strSetupServers_verbose_name = 'Verbose name of this server';  //to translate
 $strSetupSetValue = 'Set value: %s';  //to translate
 $strSetupShowAll_desc = 'Whether a user should be displayed a &quot;show all (records)&quot; button';  //to translate
@@ -1363,6 +1362,8 @@ $strSetupZipDump_desc = 'Enable [a@http://en.wikipedia.org/wiki/ZIP_(file_format
 $strSetupZipDumpExportWarning = '[a@?page=form&amp;formset=features#tab_Import_export]Zip compression[/a] requires functions (%s) which are unavailable on this system.';  //to translate
 $strSetupZipDumpImportWarning = '[a@?page=form&amp;formset=features#tab_Import_export]Zip decompression[/a] requires functions (%s) which are unavailable on this system.';  //to translate
 $strSetupZipDump_name = 'ZIP';  //to translate
+$strShowBinaryContents = 'Show binary contents';  //to translate
+$strShowBLOBContents = 'Show BLOB contents';  //to translate
 $strShowKeys = 'Only show keys';  //to translate
 $strShowStatusInnodb_buffer_pool_wait_freeDescr = 'Хэвийндээ, InnoDB буфферийн нөөц рүү ар талд бичдэг. Гэхдээ, if it\'s necessary to read or create a page and no clean pages are available, it\'s necessary to wait for pages to be flushed first. This counter counts instances of these waits. If the buffer pool size was set properly, this value should be small.';  //to translate
 $strShowStatusInnodb_dblwr_pages_writtenDescr = 'The number of doublewrite writes that have been performed and the number of pages that have been written for this purpose.';  //to translate
@@ -1465,4 +1466,19 @@ $strViewVideo = 'View video';  //to translate
 $strWebServer = 'Web server';  //to translate
 $strWiki = 'Wiki';  //to translate
 
+$strStatic = 'static';  //to translate
+$strLoginWithoutPassword = 'Login without a password is forbidden by configuration (see AllowNoPassword)';  //to translate
+$strSetupServerNoPasswordMsg = 'You allow for connecting to the server without a password.';  //to translate
+$strSetupServers_AllowNoPassword_name = 'Allow logins without a password';  //to translate
+$strHostTableExplanation = 'When Host table is used, this field is ignored and values stored in Host table are used instead.';  //to translate
+$strGetMoreThemes = 'Get more themes!';  //to translate
+$strNoneDefault = 'None';  //to translate
+$strConfigDirectoryWarning = 'Directory [code]config[/code], which is used by the setup script, still exists in your phpMyAdmin directory. You should remove it once phpMyAdmin has been configured.';  //to translate
+$strRemoveCRLF = 'Remove CRLF characters within fields';  //to translate
+$strDoNotAutoIncrementZeroValues = 'Do not use AUTO_INCREMENT for zero values';  //to translate
+$strAndSmall = 'and';  //to translate
+$strReplicationStatus = 'Replication status';  //to translate
+$strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
+$strReplicationStatus_master = 'Master status';  //to translate
+$strReplicationStatus_slave = 'Slave status';  //to translate
 ?>

@@ -3,7 +3,8 @@
 /**
  * library for displaying table with results from all sort of select queries
  *
- * @version $Id: display_tbl.lib.php 12214 2009-01-27 18:26:30Z lem9 $
+ * @version $Id: display_tbl.lib.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -467,7 +468,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
             $unsorted_sql_query = $analyzed_sql[0]['unsorted_query'];
         }
         // Handles the case of multiple clicks on a column's header
-        // which would add many spaces before "ORDER BY" in the 
+        // which would add many spaces before "ORDER BY" in the
         // generated query.
         $unsorted_sql_query = trim($unsorted_sql_query);
 
@@ -507,15 +508,15 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
                     $asc_sort = '`' . implode('` ASC, `', array_keys($index->getColumns())) . '` ASC';
                     $desc_sort = '`' . implode('` DESC, `', array_keys($index->getColumns())) . '` DESC';
                     $used_index = $used_index || $local_order == $asc_sort || $local_order == $desc_sort;
-                    echo '<option value="' 
-                        . htmlspecialchars($unsorted_sql_query  . ' ORDER BY ' . $asc_sort) 
-                        . '"' . ($local_order == $asc_sort ? ' selected="selected"' : '') 
-                        . '>' . htmlspecialchars($index->getName()) . ' (' 
+                    echo '<option value="'
+                        . htmlspecialchars($unsorted_sql_query  . ' ORDER BY ' . $asc_sort)
+                        . '"' . ($local_order == $asc_sort ? ' selected="selected"' : '')
+                        . '>' . htmlspecialchars($index->getName()) . ' ('
                         . $GLOBALS['strAscending'] . ')</option>';
-                    echo '<option value="' 
-                        . htmlspecialchars($unsorted_sql_query . ' ORDER BY ' . $desc_sort) 
-                        . '"' . ($local_order == $desc_sort ? ' selected="selected"' : '') 
-                        . '>' . htmlspecialchars($index->getName()) . ' (' 
+                    echo '<option value="'
+                        . htmlspecialchars($unsorted_sql_query . ' ORDER BY ' . $desc_sort)
+                        . '"' . ($local_order == $desc_sort ? ' selected="selected"' : '')
+                        . '>' . htmlspecialchars($index->getName()) . ' ('
                         . $GLOBALS['strDescending'] . ')</option>';
                 }
                 echo '<option value="' . htmlspecialchars($unsorted_sql_query) . '"' . ($used_index ? '' : ' selected="selected"') . '>' . $GLOBALS['strNone'] . '</option>';
@@ -565,9 +566,9 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
         }
 
         echo '<div class="formelement">';
-        PMA_generate_html_checkbox('display_binary', $GLOBALS['strShow'] . ' BINARY', ! empty($_SESSION['userconf']['display_binary']), false);
+        PMA_generate_html_checkbox('display_binary', $GLOBALS['strShowBinaryContents'], ! empty($_SESSION['userconf']['display_binary']), false);
         echo '<br />';
-        PMA_generate_html_checkbox('display_blob', $GLOBALS['strShow'] . ' BLOB', ! empty($_SESSION['userconf']['display_blob']), false);
+        PMA_generate_html_checkbox('display_blob', $GLOBALS['strShowBLOBContents'], ! empty($_SESSION['userconf']['display_blob']), false);
         echo '</div>';
 
         // I would have preferred to name this "display_transformation".
@@ -588,7 +589,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
         echo '</form>';
     }
 
-    // Start of form for multi-rows edit/delete/export 
+    // Start of form for multi-rows edit/delete/export
 
     if ($is_display['del_lnk'] == 'dr' || $is_display['del_lnk'] == 'kp') {
         echo '<form method="post" action="tbl_row_action.php" name="rowsDeleteForm" id="rowsDeleteForm">' . "\n";
@@ -746,12 +747,12 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
             // the orgname member does not exist for all MySQL versions
             // but if found, it's the one on which to sort
             $name_to_use_in_sort = $fields_meta[$i]->name;
-            if (isset($fields_meta[$i]->orgname)) {
+            if (isset($fields_meta[$i]->orgname) && strlen($fields_meta[$i]->orgname)) {
                 $name_to_use_in_sort = $fields_meta[$i]->orgname;
             }
-            // $name_to_use_in_sort might contain a space due to 
+            // $name_to_use_in_sort might contain a space due to
             // formatting of function expressions like "COUNT(name )"
-            // so we remove the space in this situation 
+            // so we remove the space in this situation
             $name_to_use_in_sort = str_replace(' )', ')', $name_to_use_in_sort);
 
             if (empty($sort_expression)) {
@@ -763,6 +764,9 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
                 // for the sort expression (avoids problems with queries
                 // like "SELECT id, count(id)..." and clicking to sort
                 // on id or on count(id))
+                if (strpos($sort_expression_nodirection, $sort_tbl) === false) {
+                    $sort_expression_nodirection = $sort_tbl . $sort_expression_nodirection;
+                }
                 $is_in_sort = (str_replace('`', '', $sort_tbl) . $name_to_use_in_sort == str_replace('`', '', $sort_expression_nodirection) ? true : false);
             }
             // 2.1.3 Check the field name for a bracket.
@@ -1047,7 +1051,7 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
          *       avoid to display the delete and edit links
          */
         $unique_condition      = PMA_getUniqueCondition($dt_result, $fields_cnt, $fields_meta, $row);
-        $unique_condition_html = htmlspecialchars(str_replace(']', '&#93;', $unique_condition));
+        $unique_condition_html = urlencode($unique_condition);
 
         // 1.2 Defines the URLs for the modify/delete link(s)
 
@@ -1105,7 +1109,7 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
                 $lnk_goto = 'sql.php' . PMA_generate_common_url($_url_params, 'text');
 
                 $del_query = 'DELETE FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table)
-                    . ' WHERE' . $unique_condition . ' LIMIT 1';
+                    . ' WHERE ' . $unique_condition . ' LIMIT 1';
 
                 $_url_params = array(
                     'db'        => $db,
@@ -1117,7 +1121,7 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
                 $del_url  = 'sql.php' . PMA_generate_common_url($_url_params);
 
                 $js_conf  = 'DELETE FROM ' . PMA_jsFormat($db) . '.' . PMA_jsFormat($table)
-                          . ' WHERE ' . trim(PMA_jsFormat($unique_condition, false))
+                          . ' WHERE ' . PMA_jsFormat($unique_condition, false)
                           . ' LIMIT 1';
                 $del_str = PMA_getIcon('b_drop.png', $GLOBALS['strDelete'], true);
             } elseif ($is_display['del_lnk'] == 'kp') { // kill process case
@@ -1327,9 +1331,9 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
                         $row[$i]     = PMA_printable_bit_value($row[$i], $meta->length);
                     } elseif (stristr($field_flags, 'BINARY') && $meta->type == 'string') {
                         if ($_SESSION['userconf']['display_binary'] || (isset($GLOBALS['is_analyse']) && $GLOBALS['is_analyse'])) {
-                            // user asked to see the real contents of BINARY 
-                            // fields, or we detected a PROCEDURE ANALYSE in 
-                            // the query (results are reported as being 
+                            // user asked to see the real contents of BINARY
+                            // fields, or we detected a PROCEDURE ANALYSE in
+                            // the query (results are reported as being
                             // binary strings)
                             $row[$i] = PMA_replace_binary_contents($row[$i]);
                         } else {
@@ -1458,7 +1462,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['row_delete'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '<th>&nbsp;</th>' . "\n";
+                echo '<th></th>' . "\n";
             }
 
             echo str_replace('[%_PMA_CHECKBOX_DIR_%]', '', $val);
@@ -1476,7 +1480,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['edit'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '    <th>&nbsp;</th>' . "\n";
+                echo '    <th></th>' . "\n";
             }
 
             echo $val;
@@ -1494,7 +1498,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['delete'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '<th>&nbsp;</th>' . "\n";
+                echo '<th></th>' . "\n";
             }
 
             echo $val;
@@ -1529,7 +1533,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['row_delete'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '<th>&nbsp;</th>' . "\n";
+                echo '<th></th>' . "\n";
             }
 
             echo str_replace('[%_PMA_CHECKBOX_DIR_%]', 'r', $val);
@@ -1547,7 +1551,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['edit'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '<th>&nbsp;</th>' . "\n";
+                echo '<th></th>' . "\n";
             }
 
             echo $val;
@@ -1565,7 +1569,7 @@ function PMA_displayVerticalTable()
         $foo_counter = 0;
         foreach ($vertical_display['delete'] as $val) {
             if (($foo_counter != 0) && ($_SESSION['userconf']['repeat_cells'] != 0) && !($foo_counter % $_SESSION['userconf']['repeat_cells'])) {
-                echo '<th>&nbsp;</th>' . "\n";
+                echo '<th></th>' . "\n";
             }
 
             echo $val;
@@ -1681,7 +1685,7 @@ function PMA_displayTable_checkConfigParams()
         // we know that the checkbox was unchecked
         unset($_SESSION['userconf']['query'][$sql_key]['hide_transformation']);
     }
-    
+
     // move current query to the last position, to be removed last
     // so only least executed query will be removed if maximum remembered queries
     // limit is reached
@@ -1815,8 +1819,8 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
         $sort_expression = $sort_expression_nodirection = $sort_direction = '';
     }
 
-    // 1.4 Prepares display of first and last value of the sorted column 
-    
+    // 1.4 Prepares display of first and last value of the sorted column
+
     if (! empty($sort_expression_nodirection)) {
         list($sort_table, $sort_column) = explode('.', $sort_expression_nodirection);
         $sort_table = PMA_unQuote($sort_table);
@@ -1833,11 +1837,11 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
         if ($sorted_column_index !== false) {
             // fetch first row of the result set
             $row = PMA_DBI_fetch_row($dt_result);
-            $column_for_first_row = $row[$sorted_column_index]; 
+            $column_for_first_row = $row[$sorted_column_index];
             // fetch last row of the result set
             PMA_DBI_data_seek($dt_result, $num_rows - 1);
             $row = PMA_DBI_fetch_row($dt_result);
-            $column_for_last_row = $row[$sorted_column_index]; 
+            $column_for_last_row = $row[$sorted_column_index];
             // reset to first row for the loop in PMA_displayTableBody()
             PMA_DBI_data_seek($dt_result, 0);
             // we could also use here $sort_expression_nodirection
@@ -1846,7 +1850,7 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
         }
         unset($sorted_column_index, $sort_table, $sort_column);
     }
-     
+
     // 2. ----- Displays the top of the page -----
 
     // 2.1 Displays a messages with position informations
@@ -2109,7 +2113,7 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
     // (the url_query has extra parameters that won't be used to export)
     // (the single_table parameter is used in display_export.lib.php
     //  to hide the SQL and the structure export dialogs)
-    // If the parser found a PROCEDURE clause 
+    // If the parser found a PROCEDURE clause
     // (most probably PROCEDURE ANALYSE()) it makes no sense to
     // display the Export link).
     if (isset($analyzed_sql[0]) && $analyzed_sql[0]['querytype'] == 'SELECT' && !isset($printview) && ! isset($analyzed_sql[0]['queryflags']['procedure'])) {
@@ -2151,10 +2155,10 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
 }
 
 /**
- * Verifies what to do with non-printable contents (binary or BLOB) 
+ * Verifies what to do with non-printable contents (binary or BLOB)
  * in Browse mode.
  *
- * @uses    is_null()    
+ * @uses    is_null()
  * @uses    isset()
  * @uses    strlen()
  * @uses    PMA_formatByteDown()
@@ -2162,10 +2166,10 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
  * @uses    str_replace()
  * @param   string  $category BLOB|BINARY
  * @param   string  $content  the binary content
- * @param   string  $transform_function 
+ * @param   string  $transform_function
  * @param   string  $transform_options
  * @param   string  $default_function
- * @param   object  $meta   the meta-information about this field 
+ * @param   object  $meta   the meta-information about this field
  * @return  mixed  string or float
  */
 function PMA_handle_non_printable_contents($category, $content, $transform_function, $transform_options, $default_function, $meta) {
@@ -2190,7 +2194,7 @@ function PMA_handle_non_printable_contents($category, $content, $transform_funct
             $result = $default_function($result, array(), $meta);
             if (stristr($meta->type, 'BLOB') && $_SESSION['userconf']['display_blob']) {
                 // in this case, restart from the original $content
-                $result = PMA_replace_binary_contents($content); 
+                $result = PMA_replace_binary_contents($content);
             }
         }
     }
@@ -2202,20 +2206,20 @@ function PMA_handle_non_printable_contents($category, $content, $transform_funct
  * taking into account foreign key description field and transformations
  *
  * @uses    is_array()
- * @uses    PMA_backquote() 
- * @uses    PMA_DBI_try_query() 
- * @uses    PMA_DBI_num_rows() 
- * @uses    PMA_DBI_fetch_row() 
- * @uses    $GLOBALS['strLinkNotFound'] 
- * @uses    PMA_DBI_free_result() 
- * @uses    $GLOBALS['printview'] 
- * @uses    htmlspecialchars() 
- * @uses    PMA_generate_common_url() 
- * @param   string  $mouse_events 
+ * @uses    PMA_backquote()
+ * @uses    PMA_DBI_try_query()
+ * @uses    PMA_DBI_num_rows()
+ * @uses    PMA_DBI_fetch_row()
+ * @uses    $GLOBALS['strLinkNotFound']
+ * @uses    PMA_DBI_free_result()
+ * @uses    $GLOBALS['printview']
+ * @uses    htmlspecialchars()
+ * @uses    PMA_generate_common_url()
+ * @param   string  $mouse_events
  * @param   string  $class
  * @param   string  $condition_field
  * @param   string  $analyzed_sql
- * @param   object  $meta   the meta-information about this field 
+ * @param   object  $meta   the meta-information about this field
  * @param   string  $map
  * @param   string  $data
  * @param   string  $transform_function
@@ -2240,17 +2244,17 @@ function PMA_prepare_row_data($mouse_events, $class, $condition_field, $analyzed
                     $meta->name = $true_column;
                 } // end if
             } // end if
-        } // end foreach 
+        } // end foreach
     } // end if
 
     if (isset($map[$meta->name])) {
         // Field to display from the foreign table?
         if (isset($map[$meta->name][2]) && strlen($map[$meta->name][2])) {
             $dispsql     = 'SELECT ' . PMA_backquote($map[$meta->name][2])
-                . ' FROM ' . PMA_backquote($map[$meta->name][3]) 
+                . ' FROM ' . PMA_backquote($map[$meta->name][3])
                 . '.' . PMA_backquote($map[$meta->name][0])
                 . ' WHERE ' . PMA_backquote($map[$meta->name][1])
-                . $where_comparison; 
+                . $where_comparison;
             $dispresult  = PMA_DBI_try_query($dispsql, null, PMA_DBI_QUERY_STORE);
             if ($dispresult && PMA_DBI_num_rows($dispresult) > 0) {
                 list($dispval) = PMA_DBI_fetch_row($dispresult, 0);
@@ -2285,15 +2289,15 @@ function PMA_prepare_row_data($mouse_events, $class, $condition_field, $analyzed
             );
             $result .= '<a href="sql.php' . PMA_generate_common_url($_url_params)
                  . '"' . $title . '>';
-             
+
             if ($transform_function != $default_function) {
-                // always apply a transformation on the real data, 
+                // always apply a transformation on the real data,
                 // not on the display field
                 $result .= $transform_function($data, $transform_options, $meta);
             } else {
                 if ('D' == $_SESSION['userconf']['relational_display']) {
-                    // user chose "relational display field" in the 
-                    // display options, so show display field in the cell 
+                    // user chose "relational display field" in the
+                    // display options, so show display field in the cell
                     $result .= $transform_function($dispval, array(), $meta);
                 } else {
                     // otherwise display data in the cell

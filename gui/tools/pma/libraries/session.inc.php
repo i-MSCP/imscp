@@ -10,6 +10,7 @@
  * @uses    session_name()
  * @uses    session_start()
  * @uses    ini_set()
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -70,8 +71,8 @@ $session_name = 'phpMyAdmin';
 if (! isset($_COOKIE[$session_name])) {
     // on first start of session we check for errors
     // f.e. session dir cannot be accessed - session file not created
-    $r = session_start();
     $orig_error_count = $GLOBALS['error_handler']->countErrors();
+    $r = session_start();
     if ($r !== true || $orig_error_count != $GLOBALS['error_handler']->countErrors()) {
         setcookie($session_name, '', 1);
         PMA_fatalError('strSessionStartupErrorGeneral');

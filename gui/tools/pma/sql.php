@@ -4,6 +4,7 @@
  * @todo    we must handle the case if sql.php is called directly with a query
  *          that returns 0 rows - to prevent cyclic redirects or includes
  * @version $Id: sql.php 12340 2009-04-09 14:20:44Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -311,8 +312,14 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
             }
             $active_page = $goto;
             $message = PMA_Message::rawError($error);
+            /**
+             * Go to target path.
+             */
             require './' . PMA_securePath($goto);
         } else {
+            /**
+             * HTML header.
+             */
             require_once './libraries/header.inc.php';
             $full_err_url = (preg_match('@^(db|tbl)_@', $err_url))
                           ? $err_url . '&amp;show_query=1&amp;sql_query=' . urlencode($sql_query)
@@ -446,6 +453,9 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
 
     // garvin: if a table or database gets dropped, check column comments.
     if (isset($purge) && $purge == '1') {
+        /**
+         * Cleanup relations.
+         */
         require_once './libraries/relation_cleanup.lib.php';
 
         if (strlen($table) && strlen($db)) {

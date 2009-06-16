@@ -14,12 +14,16 @@
  * @version    $Id: FormDisplay.class.php 12304 2009-03-24 12:56:58Z nijel $
  */
 
+/**
+ * Core libraries.
+ */
 require_once './setup/lib/FormDisplay.tpl.php';
 require_once './setup/lib/validate.lib.php';
 require_once './libraries/js_escape.lib.php';
 
 /**
  * Form management class, displays and processes forms
+ * @package    phpMyAdmin-setup
  */
 class FormDisplay
 {

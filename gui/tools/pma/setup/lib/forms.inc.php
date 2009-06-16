@@ -15,7 +15,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: forms.inc.php 11875 2008-11-13 20:02:18Z crackpl $
+ * @version    $Id: forms.inc.php 12268 2009-03-02 16:19:36Z lem9 $
  */
 
 $forms = array();
@@ -44,7 +44,7 @@ $forms['Server_config'] = array('Servers' => array(1 => array(
     'only_db',
     'hide_db',
     'AllowRoot',
-    'AllowNoPasswordRoot',
+    'AllowNoPassword',
     'DisableIS',
     'AllowDeny/order',
     'AllowDeny/rules',

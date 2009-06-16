@@ -3,7 +3,8 @@
 /**
  * Displays table structure infos like fields/columns, indexes, size, rows
  * and allows manipulation of indexes and columns/fields
- * @version $Id: tbl_structure.php 12075 2008-12-03 21:49:03Z lem9 $
+ * @version $Id: tbl_structure.php 12284 2009-03-03 16:41:41Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -213,8 +214,8 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     $type             = $row['Type'];
     $extracted_fieldspec = PMA_extractFieldSpec($row['Type']);
 
-    if ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type']) { 
-        $type         = $extracted_fieldspec['type'] . '(' . $extracted_fieldspec['spec_in_brackets'] . ')'; 
+    if ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type']) {
+        $type         = $extracted_fieldspec['type'] . '(' . $extracted_fieldspec['spec_in_brackets'] . ')';
 
         // for the case ENUM('&#8211;','&ldquo;')
         $type         = htmlspecialchars($type);
@@ -334,15 +335,15 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     <td nowrap="nowrap" style="font-size: 70%"><?php echo $attribute; ?></td>
     <td><?php echo (($row['Null'] == 'YES') ? $strYes : $strNo); ?></td>
     <td nowrap="nowrap"><?php
-    if (isset($row['Default'])) { 
+    if (isset($row['Default'])) {
         if ($extracted_fieldspec['type'] == 'bit') {
             echo PMA_printable_bit_value($row['Default'], $extracted_fieldspec['spec_in_brackets']);
         } else {
-            echo $row['Default']; 
+            echo $row['Default'];
         }
     }
     else {
-        echo '<i>' . $strNone . '</i>';
+        echo '<i>' . $strNoneDefault . '</i>';
     } ?></td>
     <td nowrap="nowrap"><?php echo $row['Extra']; ?></td>
     <td align="center">
@@ -481,7 +482,7 @@ echo $strPrintView;
 <?php
 if (! $tbl_is_view && ! $db_is_information_schema) {
 
-    // if internal relations are available, or foreign keys are supported 
+    // if internal relations are available, or foreign keys are supported
     // ($tbl_type comes from libraries/tbl_info.inc.php)
     if ($cfgRelation['relwork'] || PMA_foreignkey_supported($tbl_type)) {
         ?>
@@ -523,7 +524,7 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
     $choices = array(
         'last'  => $strAtEndOfTable,
         'first' => $strAtBeginningOfTable,
-        'after' => sprintf($strAfter, '') 
+        'after' => sprintf($strAfter, '')
     );
     PMA_generate_html_radio('field_where', $choices, 'last', false);
     echo $fieldOptions;
@@ -585,6 +586,10 @@ echo '<div id="tablestatistics">' . "\n";
 //                      Joshua Nye <josh at boxcarmedia.com> to get valid
 //                      statistics whatever is the table type
 if ($cfg['ShowStats']) {
+    if (empty($showtable)) {
+        $showtable = PMA_Table::sGetStatusInfo($GLOBALS['db'], $GLOBALS['table'], null, true);
+    }
+
     $nonisam     = false;
     $is_innodb = (isset($showtable['Type']) && $showtable['Type'] == 'InnoDB');
     if (isset($showtable['Type']) && !preg_match('@ISAM|HEAP@i', $showtable['Type'])) {
@@ -705,7 +710,7 @@ if ($cfg['ShowStats']) {
         <th class="name"><?php echo $strFormat; ?></th>
         <td class="value"><?php
         if ($showtable['Row_format'] == 'Fixed') {
-            echo $strFixed;
+            echo $strStatic;
         } elseif ($showtable['Row_format'] == 'Dynamic') {
             echo $strDynamic;
         } else {

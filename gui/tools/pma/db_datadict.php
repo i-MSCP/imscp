@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_datadict.php 11334 2008-06-21 13:16:05Z lem9 $
+ * @version $Id: db_datadict.php 12120 2008-12-10 09:22:29Z cybot_tm $
+ * @package phpMyAdmin
  */
 
 /**
@@ -75,11 +76,8 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
      * Gets table informations
      */
     // The 'show table' statement works correct since 3.23.03
-    $showtable    = PMA_DBI_get_tables_full($db, $table);
-    $num_rows     = (isset($showtable[$table]['TABLE_ROWS']) ? $showtable[$table]['TABLE_ROWS'] : 0);
-    $show_comment = (isset($showtable[$table]['TABLE_COMMENT']) ? $showtable[$table]['TABLE_COMMENT'] : '');
-    unset($showtable);
-
+    $num_rows     = PMA_Table::sGetStatusInfo($db, $table, 'TABLE_ROWS');
+    $show_comment = PMA_Table::sGetStatusInfo($db, $table, 'TABLE_COMMENT');
 
     /**
      * Gets table keys and retains them

@@ -1,8 +1,7 @@
 #!/bin/sh
 #
-# $Id: create-release.sh 12196 2009-01-19 17:26:59Z lem9 $
+# $Id: create-release.sh 12134 2008-12-12 17:49:37Z lem9 $
 # vim: expandtab sw=4 ts=4 sts=4:
-#
 #
 
 KITS="all-languages english"

@@ -3,12 +3,13 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 11626 2008-10-01 20:48:40Z lem9 $
+ * @version $Id: sql_query_form.lib.php 12280 2009-03-03 15:19:48Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
  * @usedby  tbl_structure.php
  * @usedby  querywindow.php
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -110,13 +111,10 @@ function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
         ?>
         <form method="post" id="sqlqueryform" target="frame_content"
               action="import.php"<?php echo $enctype; ?> name="sqlform"
-              onsubmit="
-              // <![CDATA[
-              var save_name = window.opener.parent.frame_content.name;
+              onsubmit="var save_name = window.opener.parent.frame_content.name;
               window.opener.parent.frame_content.name = save_name + '<?php echo time(); ?>';
               this.target = window.opener.parent.frame_content.name;
-              return checkSqlQuery(this);
-              // ]]" >
+              return checkSqlQuery(this)">
         <?php
     } else {
         echo '<form method="post" action="import.php" ' . $enctype . ' id="sqlqueryform"'

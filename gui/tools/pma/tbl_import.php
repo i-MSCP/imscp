@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_import.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @version $Id: tbl_import.php 11994 2008-11-24 11:22:44Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

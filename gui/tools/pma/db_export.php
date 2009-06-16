@@ -3,11 +3,12 @@
 /**
  * dumps a database
  *
- * @version $Id: db_export.php 10827 2007-10-17 12:14:19Z cybot_tm $
+ * @version $Id: db_export.php 11982 2008-11-24 10:32:56Z nijel $
  * @uses    libraries/db_common.inc.php
  * @uses    libraries/db_info.inc.php
  * @uses    libraries/display_export.lib.php
  * @uses    $tables     from libraries/db_info.inc.php
+ * @package phpMyAdmin
  */
 
 /**

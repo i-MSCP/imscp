@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 12335 2009-04-05 11:21:13Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
 
 $charset = 'utf-8';
 $text_dir = 'ltr';
@@ -301,7 +301,6 @@ $strFileNameTemplate = 'Plantilla del nombre del archivo';
 $strFileNameTemplateRemember = 'recordar la plantilla';
 $strFiles = 'Archivos';
 $strFileToImport = 'Archivo a importar';
-$strFixed = 'fijo';
 $strFlushPrivilegesNote = 'Nota: phpMyAdmin obtiene los privilegios de los usuarios \'directamente de las tablas de privilegios MySQL\'. El contenido de estas tablas puede diferir de los privilegios que usa el servidor si es que se han realizado cambios manuales en él. En este caso, nuevamente deberá %scargar la página de privilegios%s antes de continuar.';
 $strFlushQueryCache = 'Vaciar el cache de consultas';
 $strFlushTables = 'Vaciar el cache de todas las tablas';
@@ -1137,7 +1136,6 @@ $strSetupVersionCheckNone = 'No existe una versión estable más reciente';
 $strSetupServerSecurityInfoMsg = 'If you feel this is necessary, use additional protection settings - [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server_config]host authentication[/a] settings and [a@?page=form&amp;formset=features#tab_Security]listado de proxies de confianza[/a]. Sin embargo, la protección basada en IP podría fallar si su IP pertenece a un ISP donde miles de usuarios, incluyendo usted se encuentran conectados.';
 $strSetupServerSslMsg = 'Usted debe usar conexiones SSL si su servidor web lo tiene';
 $strSetupServerExtensionMsg = 'Usted debe utilizar mysqli por razones de mantenimiento';
-$strSetupServerNoPasswordRootMsg = 'Usted autoriza la conexión al servidor como root sin contraseña.';
 $strSetupBlowfishSecretLengthMsg = 'La llave es muy corta, debe tener al menos 8 caracteres';
 $strSetupForceSSLMsg = 'Esta [a@?page=form&amp;formset=features#tab_Security]opción[/a] se debe permitir si su servidor la tiene';
 $strSetupAllowArbitraryServerMsg = 'Esta [a@?page=form&amp;formset=features#tab_Security]opción[/a] se debe desactivar porque permite que los atacantes obtengan un login por fuerza bruta a cualquier servidor MySQL. Si usted siente que esto es necesario, use un [a@?page=form&amp;formset=features#tab_Security]listado de proxies de confianza[/a]. Sin embargo, la protección basada en IP podría no ser confiable si su IP pertenece a un ISP donde miles de usuarios, incluyendo usted se encuentran conectados.';
@@ -1234,7 +1232,6 @@ $strSetupServers_only_db_desc = 'Usted puede usar caracteres comodín MySQL (% y
 $strSetupServers_hide_db_name = 'Ocultar las bases de datos';
 $strSetupServers_hide_db_desc = 'Ocultar las bases de datos que cumplen con los criterios de las expresiones regulares (PCRE)';
 $strSetupServers_AllowRoot_name = 'Permitir el login como root';
-$strSetupServers_AllowNoPasswordRoot_name = 'Permitir root sin contraseña';
 $strSetupServers_DisableIS_name = 'Deshabilitar el uso de INFORMATION_SCHEMA';
 $strSetupServers_DisableIS_desc = 'Más información en [a@http://sf.net/support/tracker.php?aid=1849494]PMA bug tracker[/a] y [a@http://bugs.mysql.com/19588]MySQL Bugs[/a]';
 $strSetupServers_AllowDeny_order_name = 'Orden en que se autentica el Host';
@@ -1440,4 +1437,25 @@ $strSetupServerAuthConfigMsg = 'Usted escogió el tipo de autenticación [kbd]co
 $strSetupServers_extension_desc = 'Cuál extensión PHP debe usar; usted debe usar mysqli si su sistema lo permite';
 $strSetupVersionCheckNewAvailable = 'Una versión más reciente de phpMyAdmin está disponible y le recomendamos que la obtenga. La versión más reciente es %s, y existe desde el %s.';
 $strSetupServers_auth_swekey_config_desc = 'La ruta para el archivo para [a@http://swekey.com]autenticación con el dispositivo SweKey[/a] (no localizado en su carpeta de documentos; sugiere: /etc/swekey.conf)';
+
+$strCreateUserDatabasePrivileges = 'Grant all privileges on database &quot;%s&quot;';  //to translate
+$strShowBinaryContents = 'Show binary contents';  //to translate
+$strShowBLOBContents = 'Show BLOB contents';  //to translate
+$strStatic = 'static';  //to translate
+$strLoginWithoutPassword = 'Login without a password is forbidden by configuration (see AllowNoPassword)';  //to translate
+$strSetupServerNoPasswordMsg = 'You allow for connecting to the server without a password.';  //to translate
+$strSetupServers_AllowNoPassword_name = 'Allow logins without a password';  //to translate
+$strHostTableExplanation = 'When Host table is used, this field is ignored and values stored in Host table are used instead.';  //to translate
+$strGetMoreThemes = 'Get more themes!';  //to translate
+$strNoneDefault = 'None';  //to translate
+$strConfigDirectoryWarning = 'Directory [code]config[/code], which is used by the setup script, still exists in your phpMyAdmin directory. You should remove it once phpMyAdmin has been configured.';  //to translate
+$strRemoveCRLF = 'Remove CRLF characters within fields';  //to translate
+
+$strSessionGCWarning = 'Your PHP parameter [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] is lower that cookie validity configured in phpMyAdmin, because of this, your login will expire sooner than configured in phpMyAdmin.'; //to translate
+$strDoNotAutoIncrementZeroValues = 'Do not use AUTO_INCREMENT for zero values';  //to translate
+$strAndSmall = 'and';  //to translate
+$strReplicationStatus = 'Replication status';  //to translate
+$strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
+$strReplicationStatus_master = 'Master status';  //to translate
+$strReplicationStatus_slave = 'Slave status';  //to translate
 ?>

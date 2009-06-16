@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_databases.php 12238 2009-02-16 10:22:09Z lem9 $
+ * @version $Id: server_databases.php 12242 2009-02-20 09:22:20Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -162,7 +163,7 @@ if ($databases_count > 0) {
     echo '<table id="tabledatabases" class="data">' . "\n"
        . '<thead>' . "\n"
        . '<tr>' . "\n"
-       . ($is_superuser || $cfg['AllowUserDropDatabase'] ? '        <th>&nbsp;</th>' . "\n" : '')
+       . ($is_superuser || $cfg['AllowUserDropDatabase'] ? '        <th></th>' . "\n" : '')
        . '    <th><a href="./server_databases.php' . PMA_generate_common_url($_url_params) . '">' . "\n"
        . '            ' . $strDatabase . "\n"
        . ($sort_by == 'SCHEMA_NAME' ? '                <img class="icon" src="' . $pmaThemeImage . 's_' . $sort_order . '.png" width="11" height="9"  alt="' . ($sort_order == 'asc' ? $strAscending : $strDescending) . '" />' . "\n" : '')
@@ -187,7 +188,7 @@ if ($databases_count > 0) {
         }
     }
     if ($is_superuser) {
-        echo '    <th>' . ($cfg['PropertiesIconic'] ? '&nbsp;' : $strAction) . "\n"
+        echo '    <th>' . ($cfg['PropertiesIconic'] ? '' : $strAction) . "\n"
            . '    </th>' . "\n";
     }
     echo '</tr>' . "\n"
@@ -267,7 +268,7 @@ if ($databases_count > 0) {
 
     echo '<tr>' . "\n";
     if ($is_superuser || $cfg['AllowUserDropDatabase']) {
-        echo '    <th>&nbsp;</th>' . "\n";
+        echo '    <th></th>' . "\n";
     }
     echo '    <th>' . $strTotalUC . ': ' . $databases_count . '</th>' . "\n";
     foreach ($column_order as $stat_name => $stat) {
@@ -294,7 +295,7 @@ if ($databases_count > 0) {
         }
     }
     if ($is_superuser) {
-        echo '    <th>&nbsp;</th>' . "\n";
+        echo '    <th></th>' . "\n";
     }
     echo '</tr>' . "\n";
     echo '</tbody>' . "\n"

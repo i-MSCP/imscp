@@ -4,7 +4,8 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 12100 2008-12-09 13:45:32Z nijel $
+ * @version $Id: db_table_exists.lib.php 12274 2009-03-03 12:11:20Z helmo $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -45,10 +46,10 @@ if (empty($is_db)) {
 
 if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
     // Not a valid table name -> back to the db_sql.php
-    
+
     if (strlen($table)) {
         $is_table = isset(PMA_Table::$cache[$db][$table]);
-        
+
         if (! $is_table) {
             $_result = PMA_DBI_try_query(
                 'SHOW TABLES LIKE \'' . PMA_sqlAddslashes($table, true) . '\';',
@@ -78,19 +79,8 @@ if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
             }
 
             if (! $is_table) {
-                $url_params = array('reload' => 1, 'db' => $db);
-                if (isset($message)) {
-                    $url_params['message'] = $message;
-                }
-                if (! empty($sql_query)) {
-                    $url_params['sql_query'] = $sql_query;
-                }
-                if (isset($display_query)) {
-                    $url_params['display_query'] = $display_query;
-                }
-                PMA_sendHeaderLocation(
-                    $cfg['PmaAbsoluteUri'] . 'db_sql.php'
-                        . PMA_generate_common_url($url_params, '&'));
+                require 'db_sql.php';
+                exit;
             }
         }
 

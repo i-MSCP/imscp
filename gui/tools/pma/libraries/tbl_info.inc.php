@@ -6,7 +6,8 @@
  * @todo should be handled by class Table
  * @todo this should be recoded as functions, to avoid messing with global variables
  *
- * @version $Id: tbl_info.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: tbl_info.inc.php 12121 2008-12-10 09:23:07Z cybot_tm $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -39,11 +40,21 @@ global $showtable, $tbl_is_view, $tbl_type, $show_comment, $tbl_collation,
 // otherwise error #1046, no database selected
 PMA_DBI_select_db($GLOBALS['db']);
 
+
+/**
+ * Holds information about the current table
+ *
+ * @todo replace this by PMA_Table
+ * @global array $GLOBALS['showtable']
+ * @name $showtable
+ */
+$GLOBALS['showtable'] = array();
+
 // PMA_Table::sGetStatusInfo() does caching by default, but here
 // we force reading of the current table status
 // if $reread_info is true (for example, coming from tbl_operations.php
 // and we just changed the table's storage engine)
-$showtable = PMA_Table::sGetStatusInfo($GLOBALS['db'], $GLOBALS['table'], null, (isset($reread_info) && $reread_info ? true : false));
+$GLOBALS['showtable'] = PMA_Table::sGetStatusInfo($GLOBALS['db'], $GLOBALS['table'], null, (isset($reread_info) && $reread_info ? true : false));
 
 // need this test because when we are creating a table, we get 0 rows
 // from the SHOW TABLE query

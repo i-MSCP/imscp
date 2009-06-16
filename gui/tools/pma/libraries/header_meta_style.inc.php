@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header_meta_style.inc.php 11408 2008-07-19 07:31:22Z lem9 $
+ * @version $Id: header_meta_style.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;

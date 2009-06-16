@@ -1,3 +1,5 @@
+phpMyAdmin 3.2.0 Documentation
+
   * Top
   * Requirements
   * Introduction
@@ -7,20 +9,18 @@
   * Transformations
   * FAQ
   * Developers
+  * Copyright
   * Credits
   * Translators
   * Glossary
-
-phpMyAdmin 3.1.5 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
   * Official phpMyAdmin wiki
   * Local documents:
       + Version history: ChangeLog
-      + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 12426 2009-05-15 16:28:09Z
+  * Documentation version: $Id: Documentation.html 12576 2009-06-15 15:30:30Z
     lem9 $
 
 Requirements
@@ -198,11 +198,16 @@ Quick Install
  6. Open the main phpMyAdmin directory in your browser. phpMyAdmin should now
     display a welcome screen and your databases, or a login dialog if using
     HTTP or cookie authentication mode.
- 7. You should deny access to the ./libraries subfolder in your webserver
-    configuration. For Apache you can use supplied .htaccess file in that
-    folder, for other webservers, you should configure this yourself. Such
-    configuration prevents from possible path exposure and cross side scripting
-    vulnerabilities that might happen to be found in that code.
+ 7. You should deny access to the ./libraries and ./setup/lib subfolders in
+    your webserver configuration. For Apache you can use supplied .htaccess
+    file in that folder, for other webservers, you should configure this
+    yourself. Such configuration prevents from possible path exposure and cross
+    side scripting vulnerabilities that might happen to be found in that code.
+ 8. It is generally good idea to protect public phpMyAdmin installation against
+    access by robots as they usually can not do anything good there. You can do
+    this using robots.txt file in root of your webserver or limit access by web
+    server configuration. You can find example .htaccess file which can help
+    you achieve this in contrib directory in phpMyAdmin.
 
 Linked-tables infrastructure
 
@@ -233,10 +238,12 @@ below).
 Upgrading from an older version
 
 Simply copy ./config.inc.php from your previous installation into the newly
-unpacked one. Configuration files from very old versions (2.3.0 or before) may
-require some tweaking as some options have been changed or removed. For
-compatibility with PHP 6, remove a set_magic_quotes_runtime(0); statement that
-you might find near the end of your configuration file.
+unpacked one. Configuration files from old versions may require some tweaking
+as some options have been changed or removed; in particular, the definition of
+$cfg['AttributeTypes'] has changed so you better remove it from your file and
+just use the default one. For compatibility with PHP 6, remove a
+set_magic_quotes_runtime(0); statement that you might find near the end of your
+configuration file.
 
 You should not copy libraries/config.default.php over config.inc.php because
 the default configuration file is version-specific.
@@ -425,6 +432,10 @@ $cfg['PmaNoRelation_DisableWarning'] boolean
 $cfg['SuhosinDisableWarning'] boolean
     A warning is displayed on the main page if Suhosin is detected. You can set
     this parameter to TRUE to stop this message from appearing.
+$cfg['McryptDisableWarning'] boolean
+    Disable the default warning that is displayed if mcrypt is missing for
+    cookie authentication. You can set this parameter to TRUE to stop this
+    message from appearing.
 $cfg['AllowThirdPartyFraming'] boolean
     Setting this to true allows a page located on a different domain to call
     phpMyAdmin inside a frame, and is a potential security hole allowing
@@ -723,10 +734,11 @@ $cfg['Servers'][$i]['verbose_check'] boolean
 $cfg['Servers'][$i]['AllowRoot'] boolean
     Whether to allow root access. This is just a shortcut for the AllowDeny
     rules below.
-$cfg['Servers'][$i]['AllowNoPasswordRoot'] boolean
-    Whether to allow access to root user without password. The default value of
-    false for this parameter prevents unintended access to a MySQL server with
-    was left with an empty password for root.
+$cfg['Servers'][$i]['AllowNoPassword'] boolean
+    Whether to allow logins without a password. The default value of false for
+    this parameter prevents unintended access to a MySQL server with was left
+    with an empty password for root or on which an anonymous (blank) user is
+    defined.
 $cfg['Servers'][$i]['AllowDeny']['order'] string
     If your rule order is empty, then IP authentication is disabled.
 
@@ -776,6 +788,7 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] array of strings
     xxx.xxx.xxx.xxx/nn (CIDR, Classless Inter-Domain Routing type IP addresses)
     But the following does not work:
     xxx.xxx.xxx.xx[yyy-zzz] (partial IP address range)
+    Also IPv6 addresses are not supported.
 $cfg['Servers'][$i]['SignonSession'] string
     Name of session which will be used for signon authentication method.
 $cfg['Servers'][$i]['SignonURL'] string
@@ -852,7 +865,11 @@ $cfg['LoginCookieRecall'] boolean
     This is automatically disabled if you do not have configured $cfg
     ['blowfish_secret'].
 $cfg['LoginCookieValidity'] integer [number of seconds]
-    Define how long is login cookie valid.
+    Define how long is login cookie valid. Please note that php configuration
+    option session.gc_maxlifetime might limit session validity and if session
+    is lost, login cookie is also invalidated. So it is good idea to set
+    session.gc_maxlifetime at least as high is $cfg['LoginCookieValidity'] is
+    set.
 $cfg['LoginCookieStore'] integer [number of seconds]
     Define how long is login cookie should be stored in browser. Default 0
     means that it will be kept for existing session. This is recommended for
@@ -882,9 +899,10 @@ $cfg['LeftFrameLight'] boolean
 $cfg['LeftFrameDBTree'] boolean
     In light mode, defines whether to display the names of databases (in the
     selector) using a tree, see also $cfg['LeftFrameDBSeparator'].
-$cfg['LeftFrameDBSeparator'] string
+$cfg['LeftFrameDBSeparator'] string or array
     The string used to separate the parts of the database name when showing
-    them in a tree.
+    them in a tree. Alternatively you can specify more strings in an array and
+    all of them will be used as a separator.
 $cfg['LeftFrameTableSeparator'] string
     Defines a string to be used to nest table spaces. Defaults to '__'. This
     means if you have tables like 'first__second__third' this will be shown as
@@ -1078,9 +1096,10 @@ $cfg['AllowAnywhereRecoding'] boolean
     used language file must have it enabled (by default only these which are in
     Unicode, just to avoid losing some characters).
 
-    Setting this to TRUE also activates a pull-down menu in the Export page, to
-    choose the character set when exporting a file. The default value in this
-    menu comes from $cfg['Export']['charset'].
+    Setting this to TRUE also activates a pull-down menu in the Export and
+    Import pages, to choose the character set when exporting a file. The
+    default value in this menu comes from $cfg['Export']['charset'] and $cfg
+    ['Import']['charset'].
 $cfg['RecodingEngine'] string
     You can select here which functions will be used for character set
     conversion. Possible values are:
@@ -1395,7 +1414,8 @@ $cfg['NaturalOrder'] boolean
     Database view, for the table list.
 $cfg['InitialSlidersState'] string
     If set to 'closed', the visual sliders are initially in a closed state. A
-    value of 'open' does the reverse.
+    value of 'open' does the reverse. To completely disable all visual sliders,
+    use 'disabled'.
 $cfg['TitleTable'] string
 $cfg['TitleDatabase'] string
 $cfg['TitleServer'] string
@@ -2329,10 +2349,10 @@ memory limit. For GZip/BZip2 exports this can be overcome since 2.5.4 using
 $cfg['CompressOnFly'] (enabled by default). Zip exports can not be handled this
 way, so if you need Zip files for larger dump, you have to use another way.
 
-3.3 With InnoDB tables, I lose foreign key relationships when I rename or alter
-a table.
+3.3 With InnoDB tables, I lose foreign key relationships when I rename a table
+or a column.
 
-This seems to be a InnoDB bug (fixed in MySQL 3.23.50?).
+This is an InnoDB bug, see http://bugs.mysql.com/bug.php?id=21704.
 
 3.4 I am unable to import dumps I created with the mysqldump tool bundled with
 the MySQL server distribution.
@@ -2638,6 +2658,14 @@ Please check the following points:
 
 Many users have confirmed that the Tabbrowser Extensions plugin they installed
 in their Firefox is causing the problem.
+
+5.18 With Konqueror 4.2.x an invalid LIMIT clause is generated when I browse a
+table.
+
+This happens only when both of these conditions are met: using the http
+authentication mode and register_globals being set to On on the server. It
+seems to be a browser-specific problem; meanwhile use the cookie authentication
+mode.
 
 Using phpMyAdmin
 
@@ -3019,7 +3047,6 @@ First, for general information about BLOB streaming on MySQL, visit
 blobstreaming.org. We currently support streaming if you are running MySQL 5.1
 with the PBXT and PBMS storage engines.
 
-
  1. In config.inc.php your host should be defined with a FQDN (fully qualified
     domain name) instead of something like "localhost".
  2. A current limitation is that your first login via phpMyAdmin to a
@@ -3088,6 +3115,27 @@ phpMyAdmin?
 
 Please refer to http://www.phpmyadmin.net/home_page/security.php
 
+8.2 How can I protect phpMyAdmin against brute force attacks?
+
+If you use Apache web server, phpMyAdmin exports information about
+authentication to Apache environment and it can be used in Apache logs.
+Currently there are two variables available:
+
+userID
+    User name of currently active user (he does not have to be logged in).
+userStatus
+    Status of currently active user, one of ok (user is logged in),
+    mysql-denied (MySQL denied user login), allow-denied (user denied by allow/
+    deny rules), root-denied (root is denied in configuration), empty-denied
+    (empty password is denied).
+
+LogFormat directive for Apache can look like following:
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \
+\"%{Referer}i\" \"%{User-Agent}i\" %{userID}n %{userStatus}n"   pma_combined
+
+You can then use any log analyzing tools to detect possible break in attempts.
+
 Developers Information
 
 phpMyAdmin is Open Source, so you're invited to contribute to it. Many great
@@ -3122,6 +3170,32 @@ If you're planning to contribute source, please read the following information:
     during its re-entry into Earth's atmosphere and in memory of the brave men
     and women who gave their lives for the people of Earth.
 
+Copyright
+
+Copyright (C) 1998-2000 Tobias Ratschiller <tobias_at_ratschiller.com>
+Copyright (C) 2001-2009 Marc Delisle <marc_at_infomarc.info>
+                        Olivier M?ller <om_at_omnis.ch>
+                        Robin Johnson <robbat2_at_users.sourceforge.net>
+                        Alexander M. Turek <me_at_derrabus.de>
+                        Michal ?iha? <michal_at_cihar.com>
+                        Garvin Hicking <me_at_supergarv.de>
+                        Michael Keck <mkkeck_at_users.sourceforge.net>
+                        Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
+                        [check credits for more details]
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 2,
+as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 Credits
 
 phpMyAdmin - Credits
@@ -3134,7 +3208,7 @@ CREDITS, in chronological order
     * creator of the phpmyadmin project
     * maintainer from 1998 to summer 2000
 
-- Marc Delisle <Marc.Delisle_at_cegepsherbrooke.qc.ca>
+- Marc Delisle <marc_at_infomarc.info>
     * multi-language version
     * various fixes and improvements
     * SQL analyser (most of it)
@@ -3454,5 +3528,8 @@ From Wikipedia, the free encyclopedia
   * zlib - an open-source, cross-platform data compression library by Jean-loup
     Gailly and Mark Adler.
 
-Valid XHTML 1.1 Valid CSS!
+  * Copyright ? 2003 - 2009 phpMyAdmin devel team
+  * License
+  * Donate
+  * Valid HTML and CSS
 

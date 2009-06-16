@@ -4,6 +4,7 @@
  * SQL import plugin for phpMyAdmin
  *
  * @version $Id: sql.php 12370 2009-04-17 16:58:53Z lem9 $
+ * @package phpMyAdmin-Import
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -35,6 +36,17 @@ if (isset($plugin_list)) {
                     'Server_SQL_mode',
                 ),
             ),
+            array(
+                'type' => 'bool', 
+                'name' => 'no_auto_value_on_zero', 
+                'text' => 'strDoNotAutoIncrementZeroValues',
+                'doc'       => array(
+                    'manual_MySQL_Database_Administration',
+                    'Server_SQL_mode',
+                    'sqlmode_no_auto_value_on_zero'
+                ),
+
+            ),
         );
     }
 
@@ -56,10 +68,18 @@ if (isset($_POST['sql_delimiter'])) {
     $sql_delimiter = ';';
 }
 
-// Handle compatibility option
-if (isset($_REQUEST['sql_compatibility'])) {
-    PMA_DBI_try_query('SET SQL_MODE="' . $_REQUEST['sql_compatibility'] . '"');
+// Handle compatibility options
+$sql_modes = array();
+if (isset($_REQUEST['sql_compatibility']) && 'NONE' != $_REQUEST['sql_compatibility']) {
+    $sql_modes[] = $_REQUEST['sql_compatibility'];
 }
+if (isset($_REQUEST['sql_no_auto_value_on_zero'])) {
+    $sql_modes[] = 'NO_AUTO_VALUE_ON_ZERO';
+}
+if (count($sql_modes) > 0) {
+    PMA_DBI_try_query('SET SQL_MODE="' . implode(',', $sql_modes) . '"');
+}
+unset($sql_modes);
 
 /**
  * will be set in PMA_importGetNextChunk()
@@ -88,7 +108,7 @@ while (!($GLOBALS['finished'] && $i >= $len) && !$error && !$timeout_passed) {
     }
     // Current length of our buffer
     $len = strlen($buffer);
-    
+
     // Grab some SQL queries out of it
     while ($i < $len) {
         $found_delimiter = false;
@@ -97,7 +117,7 @@ while (!($GLOBALS['finished'] && $i >= $len) && !$error && !$timeout_passed) {
         // this is about 7 times faster that looking for each sequence i
         // one by one with strpos()
         if (preg_match('/(\'|"|#|-- |\/\*|`|(?i)DELIMITER)/', $buffer, $matches, PREG_OFFSET_CAPTURE, $i)) {
-            // in $matches, index 0 contains the match for the complete 
+            // in $matches, index 0 contains the match for the complete
             // expression but we don't use it
             $first_position = $matches[1][1];
         } else {

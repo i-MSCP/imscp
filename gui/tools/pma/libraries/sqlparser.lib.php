@@ -27,7 +27,8 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 12194 2009-01-18 12:20:16Z lem9 $
+ * @version $Id: sqlparser.lib.php 12376 2009-04-19 11:31:14Z lem9 $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -55,15 +56,21 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     }
 
     if (!defined('DEBUG_TIMING')) {
-        // currently we don't need the $pos (token position in query)
-        // for other purposes than LIMIT clause verification,
-        // so many calls to this function do not include the 4th parameter
+        /**
+         * currently we don't need the $pos (token position in query)
+         * for other purposes than LIMIT clause verification,
+         * so many calls to this function do not include the 4th parameter
+         */
         function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize, $pos = 0)
         {
             $arr[] = array('type' => $type, 'data' => $data, 'pos' => $pos);
             $arrsize++;
         } // end of the "PMA_SQP_arrayAdd()" function
     } else {
+        /**
+         * This is debug variant of above.
+         * @ignore
+         */
         function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize, $pos = 0)
         {
             global $timer;
@@ -151,7 +158,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12194 2009-01-18 12:20:16Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12376 2009-04-19 11:31:14Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -1150,7 +1157,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                         break;
                 } // end switch
 
-                if ($subresult['querytype'] == 'SELECT' 
+                if ($subresult['querytype'] == 'SELECT'
                  && ! $in_group_concat
                  && ! ($seen_subquery && $arr[$i - 1]['type'] == 'punct_bracket_close_round')) {
                     if (!$seen_from) {
@@ -1705,7 +1712,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     $limit_clause .= $sep;
                 }
             }
-            if ($after_limit && $seen_limit) { 
+            if ($after_limit && $seen_limit) {
                 $section_after_limit .= $arr[$i]['data'] . $sep;
             }
 
@@ -1735,6 +1742,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $foreign_key_number = -1;
         $seen_create_table = FALSE;
         $seen_create = FALSE;
+        $seen_alter = FALSE;
         $in_create_table_fields = FALSE;
         $brackets_level = 0;
         $in_timestamp_options = FALSE;
@@ -1753,6 +1761,10 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
                 if ($upper_data == 'CREATE') {
                     $seen_create = TRUE;
+                }
+
+                if ($upper_data == 'ALTER') {
+                    $seen_alter = TRUE;
                 }
 
                 if ($upper_data == 'TABLE' && $seen_create) {
@@ -1916,11 +1928,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 }
 
                 if ($seen_references) {
+                    if ($seen_alter && $brackets_level > 0) {
+                        $foreign[$foreign_key_number]['ref_index_list'][] = $identifier;
                     // here, the first bracket level corresponds to the
                     // bracket of CREATE TABLE
                     // so if we are on level 2, it must be the index list
                     // of the foreign key REFERENCES
-                    if ($brackets_level > 1) {
+                    } elseif ($brackets_level > 1) {
                         $foreign[$foreign_key_number]['ref_index_list'][] = $identifier;
                     } elseif ($arr[$i+1]['type'] == 'punct_qualifier') {
                         // identifier is `db`.`table`

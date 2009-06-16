@@ -1,5 +1,5 @@
 <?php
-/* $Id: romanian-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
+/* $Id: romanian-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -22,7 +22,6 @@ $month = array('Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'O
 $datefmt = '%d %B %Y la %H:%M';
 $timespanfmt = '%s zile, %s ore, %s minute și %s secunde';
 
- 	  	 
 $strAbortedClients = 'Întrerupt';
 $strAccessDenied = 'Acces interzis';
 $strAccessDeniedCreateConfig = 'Motivul probabil pentru aceasta este că nu ați creat un fișier de configurare. Puteți folosi %1$s vrăjitorul de setări %2$s pentru a crea un astfel de fișier.';
@@ -320,7 +319,6 @@ $strFileNameTemplateRemember = 'ține minte șablonul';
 $strFileNameTemplate = 'Șablon nume fișier';
 $strFiles = 'Fișiere';
 $strFileToImport = 'Fișier de importat';
-$strFixed = 'fixat';
 $strFlushPrivilegesNote = 'Notă: phpMyAdmin folosește privilegiile utilizatorilor direct din tabelul de privilegii din MySQL. Conținutul acestui tabel poate diferi de cel original. În acest caz, reîncărcați de aici înainte de a continua %sreîncărcarea drepturilor%s.';
 $strFlushQueryCache = 'Reinițializare cache interogare';
 $strFlushTable = 'Curățarea tabelului ("FLUSH")';
@@ -811,7 +809,6 @@ $strSetupForm_Tabs_desc = 'Alegeți cum doriți să funcționeze filele';
 $strSetupForm_Tabs = 'File';
 $strSetupGZipDump_name = 'GZip';
 $strSetupServersAdd = 'Adaugă un server nou';
-$strSetupServers_AllowNoPasswordRoot_name = 'Permite „root” fără parolă';
 $strSetupServers_AllowRoot_name = 'Permite autentificarea ca „root”';
 $strSetupServers_auth_type_desc = 'Metoda de autentificare de utilizat';
 $strSetupServers_auth_type_name = 'Tipul autentificării';
@@ -1155,8 +1152,12 @@ $strZip = '„arhivat”';
 
 // To translate:
 
+$strCreateUserDatabasePrivileges = 'Grant all privileges on database &quot;%s&quot;';  //to translate
+
 $strLogServerHelp = 'You can enter hostname/IP address and port separated by space.';  //to translate
 
+
+$strSessionGCWarning = 'Your PHP parameter [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] is lower that cookie validity configured in phpMyAdmin, because of this, your login will expire sooner than configured in phpMyAdmin.';  //to translate
 $strSetupAllowAnywhereRecoding_name = 'Allow character set conversion';  //to translate
 $strSetupAllowArbitraryServer_desc = 'If enabled user can enter any MySQL server in login form for cookie auth';  //to translate
 $strSetupAllowArbitraryServerMsg = 'This [a@?page=form&amp;formset=features#tab_Security]option[/a] should be disabled as it allows attackers to bruteforce login to any MySQL server. If you feel this is necessary, use [a@?page=form&amp;formset=features#tab_Security]trusted proxies list[/a]. However, IP-based protection may not be reliable if your IP belongs to an ISP where thousands of users, including you, are connected to.';  //to translate
@@ -1351,7 +1352,6 @@ $strSetupSaveDir_desc = 'Directory where exports can be saved on server';  //to 
 $strSetupSaveDir_name = 'Save directory';  //to translate
 $strSetupServerAuthConfigMsg = 'You set the [kbd]config[/kbd] authentication type and included username and password for auto-login, which is not a desirable option for live hosts. Anyone who knows or guesses your phpMyAdmin URL can directly access your phpMyAdmin panel. Set [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server]authentication type[/a] to [kbd]cookie[/kbd] or [kbd]http[/kbd].';  //to translate
 $strSetupServerExtensionMsg = 'Ar trebui să utilizați mysqli din motive de performanță';  //to translate
-$strSetupServerNoPasswordRootMsg = 'You allow for connecting to the server as root without a password.';  //to translate
 $strSetupServers_AllowDeny_order_desc = 'Leave blank if not used';  //to translate
 $strSetupServers_AllowDeny_order_name = 'Host authentication order';  //to translate
 $strSetupServers_AllowDeny_rules_desc = 'Leave blank for defaults';  //to translate
@@ -1448,6 +1448,23 @@ $strSetupWarning = 'Avertizare';  //to translate
 $strSetupZipDump_desc = 'Enable [a@http://en.wikipedia.org/wiki/ZIP_(file_format)]ZIP[/a] compression for import and export operations';  //to translate
 $strSetupZipDumpExportWarning = '[a@?page=form&amp;formset=features#tab_Import_export]Zip compression[/a] requires functions (%s) which are unavailable on this system.';  //to translate
 $strSetupZipDumpImportWarning = '[a@?page=form&amp;formset=features#tab_Import_export]Zip decompression[/a] requires functions (%s) which are unavailable on this system.';  //to translate
+$strShowBinaryContents = 'Show binary contents';  //to translate
+$strShowBLOBContents = 'Show BLOB contents';  //to translate
 $strShowKeys = 'Only show keys';  //to translate
+$strStatic = 'static';  //to translate
 
+$strLoginWithoutPassword = 'Login without a password is forbidden by configuration (see AllowNoPassword)';  //to translate
+$strSetupServerNoPasswordMsg = 'You allow for connecting to the server without a password.';  //to translate
+$strSetupServers_AllowNoPassword_name = 'Allow logins without a password';  //to translate
+$strHostTableExplanation = 'When Host table is used, this field is ignored and values stored in Host table are used instead.';  //to translate
+$strGetMoreThemes = 'Get more themes!';  //to translate
+$strNoneDefault = 'None';  //to translate
+$strConfigDirectoryWarning = 'Directory [code]config[/code], which is used by the setup script, still exists in your phpMyAdmin directory. You should remove it once phpMyAdmin has been configured.';  //to translate
+$strRemoveCRLF = 'Remove CRLF characters within fields';  //to translate
+$strDoNotAutoIncrementZeroValues = 'Do not use AUTO_INCREMENT for zero values';  //to translate
+$strAndSmall = 'and';  //to translate
+$strReplicationStatus = 'Replication status';  //to translate
+$strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
+$strReplicationStatus_master = 'Master status';  //to translate
+$strReplicationStatus_slave = 'Slave status';  //to translate
 ?>

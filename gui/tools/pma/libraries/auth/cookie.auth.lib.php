@@ -5,13 +5,17 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 12277 2009-03-03 13:30:49Z nijel $
+ * @package phpMyAdmin-Auth-Cookie
+ * @version $Id: cookie.auth.lib.php 12396 2009-05-07 07:56:13Z helmo $
  */
 
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
+/**
+ * Swekey authentication functions.
+ */
 require './libraries/auth/swekey/swekey.auth.lib.php';
 
 if (function_exists('mcrypt_encrypt')) {
@@ -30,7 +34,11 @@ if (function_exists('mcrypt_encrypt')) {
     if (empty($_COOKIE['pma_mcrypt_iv'])
      || false === ($iv = base64_decode($_COOKIE['pma_mcrypt_iv'], true))) {
         srand((double) microtime() * 1000000);
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC), MCRYPT_RAND);
+         $td = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_CBC, '');   
+         if ($td === false) {
+            trigger_error(PMA_sanitize(sprintf($strCantLoad, 'mcrypt')), E_USER_WARNING);
+         }
+        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
         PMA_setCookie('pma_mcrypt_iv', base64_encode($iv));
     }
 
@@ -72,7 +80,9 @@ if (function_exists('mcrypt_encrypt')) {
 
 } else {
     require_once './libraries/blowfish.php';
-    trigger_error(PMA_sanitize(sprintf($strCantLoad, 'mcrypt')), E_USER_WARNING);
+    if (!$GLOBALS['cfg']['McryptDisableWarning']) {
+        trigger_error(PMA_sanitize(sprintf($strCantLoad, 'mcrypt')), E_USER_WARNING);
+    }
 }
 
 /**
@@ -221,7 +231,7 @@ if (top != self) {
         // use fieldset, don't show doc link
         PMA_select_language(true, false);
     }
-    
+
     ?>
 <br />
 <!-- Login form -->
@@ -656,7 +666,9 @@ function PMA_auth_fails()
     // Deletes password cookie and displays the login form
     PMA_removeCookie('pmaPass-' . $GLOBALS['server']);
 
-    if (! empty($GLOBALS['allowDeny_forbidden'])) {
+    if (! empty($GLOBALS['login_without_password_is_forbidden'])) {
+        $conn_error = $GLOBALS['strLoginWithoutPassword'];
+    } elseif (! empty($GLOBALS['allowDeny_forbidden'])) {
         $conn_error = $GLOBALS['strAccessDenied'];
     } elseif (! empty($GLOBALS['no_activity'])) {
         $conn_error = sprintf($GLOBALS['strNoActivity'], $GLOBALS['cfg']['LoginCookieValidity']);
@@ -675,6 +687,10 @@ function PMA_auth_fails()
     } else {
         $conn_error = $GLOBALS['strCannotLogin'];
     }
+
+    // needed for PHP-CGI (not need for FastCGI or mod-php)
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Pragma: no-cache');
 
     PMA_auth();
 } // end of the 'PMA_auth_fails()' function

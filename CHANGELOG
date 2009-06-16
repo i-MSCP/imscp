@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-06-16 Benedikt Heintel
+	- TOOLS:
+		* Fixed #1869: Updated phpMyAdmin to version 3.2.0
+
 2009-06-12 Benedikt Heintel
 	- DOCS:
 		* Updated Debian INSTALL

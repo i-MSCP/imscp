@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: themes.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @version $Id: themes.php 12281 2009-03-03 15:20:29Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -38,6 +39,7 @@ function takeThis(what){
 
 <body id="bodythemes">
 <h1>phpMyAdmin - <?php echo $strTheme; ?></h1>
+<p><a href="http://www.phpmyadmin.net/home_page/themes.php#pma_<?php echo preg_replace('/([0-9]*)\.([0-9]*)\..*/', '\1_\2', PMA_VERSION); ?>"><?php echo $strGetMoreThemes; ?></a></p>
 <?php
 $_SESSION['PMA_Theme_Manager']->printPreviews();
 ?>

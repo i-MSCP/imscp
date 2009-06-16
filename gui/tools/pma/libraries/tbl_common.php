@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_common.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: tbl_common.php 11995 2008-11-24 11:24:56Z nijel $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;

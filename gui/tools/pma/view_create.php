@@ -5,11 +5,13 @@
  *
  * @todo js error when view name is empty (strFormEmpty)
  * @todo (also validate if js is disabled, after form submission?)
- * @version $Id: view_create.php 11075 2008-01-21 21:17:23Z lem9 $
+ * @version $Id: view_create.php 12190 2009-01-13 22:55:44Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
  * do not import request variable into global scope
+ * @ignore
  */
 if (! defined('PMA_NO_VARIABLES_IMPORT')) {
     define('PMA_NO_VARIABLES_IMPORT', true);
@@ -166,9 +168,9 @@ $url_params['reload'] = 1;
                 if (in_array($option, $view['with'])) {
                     echo ' checked="checked"';
                 }
-                echo ' id="view_with_' . htmlspecialchars($option) . '"';
+                echo ' id="view_with_' . str_replace(' ', '_', htmlspecialchars($option)) . '"';
                 echo ' value="' . htmlspecialchars($option) . '" />';
-                echo '<label for="view_with_' . htmlspecialchars($option) . '">';
+                echo '<label for="view_with_' . str_replace(' ', '_', htmlspecialchars($option)) . '">';
                 echo htmlspecialchars($option) . '</label>';
             }
             ?>

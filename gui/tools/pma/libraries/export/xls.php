@@ -3,7 +3,8 @@
 /**
  * Set of functions used to build XLS dumps of tables
  *
- * @version $Id: xls.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: xls.php 11972 2008-11-24 09:14:31Z nijel $
+ * @package phpMyAdmin-Export-XLS
  */
 if (! defined('PHPMYADMIN')) {
     exit;

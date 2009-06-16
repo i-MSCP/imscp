@@ -1,7 +1,8 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: setup.php 11492 2008-08-16 14:06:27Z lem9 $
+ * @version $Id: setup.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin-DBG
  */
 if (! defined('PHPMYADMIN')) {
     exit;

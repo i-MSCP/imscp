@@ -3,11 +3,14 @@
 /**
  * Interface to the classic MySQL extension
  *
- * @version $Id: mysql.dbi.lib.php 11435 2008-07-26 15:18:59Z lem9 $
+ * @package phpMyAdmin-DBI-MySQL
+ * @version $Id: mysql.dbi.lib.php 12283 2009-03-03 16:20:41Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
 }
+
+require_once './libraries/logging.lib.php';
 
 /**
  * MySQL client API
@@ -84,6 +87,7 @@ function PMA_DBI_connect($user, $password, $is_controluser = false)
             trigger_error($GLOBALS['strControluserFailed'], E_USER_WARNING);
             return false;
         }
+        PMA_log_user($user, 'mysql-denied');
         PMA_auth_fails();
     } // end if
 
@@ -153,10 +157,10 @@ function PMA_DBI_try_query($query, $link = null, $options = 0)
             $_SESSION['debug']['queries'][$hash]['query'] = $query;
             $_SESSION['debug']['queries'][$hash]['time'] = $time;
         }
-        
+
         $trace = array();
         foreach (debug_backtrace() as $trace_step) {
-            $trace[] = PMA_Error::relPath($trace_step['file']) . '#' 
+            $trace[] = PMA_Error::relPath($trace_step['file']) . '#'
                 . $trace_step['line'] . ': '
                 . (isset($trace_step['class']) ? $trace_step['class'] : '')
                 //. (isset($trace_step['object']) ? get_class($trace_step['object']) : '')
@@ -271,9 +275,11 @@ function PMA_DBI_get_client_info()
  * @uses    $GLOBALS['userlink']
  * @uses    $GLOBALS['strServerNotResponding']
  * @uses    $GLOBALS['strSocketProblem']
+ * @uses    $GLOBALS['strDetails']
  * @uses    mysql_errno()
  * @uses    mysql_error()
  * @uses    defined()
+ * @uses    PMA_generate_common_url()
  * @param   resource        $link   mysql link
  * @return  string|boolean  $error or false
  */
@@ -312,6 +318,13 @@ function PMA_DBI_getError($link = null)
         $error = '#' . ((string) $error_number) . ' - ' . $GLOBALS['strServerNotResponding'] . ' ' . $GLOBALS['strSocketProblem'];
     } elseif ($error_number == 2003) {
         $error = '#' . ((string) $error_number) . ' - ' . $GLOBALS['strServerNotResponding'];
+    } elseif ($error_number == 1005) {
+        /* InnoDB contraints, see
+         * http://dev.mysql.com/doc/refman/5.0/en/innodb-foreign-key-constraints.html
+         */
+        $error = '#' . ((string) $error_number) . ' - ' . $error_message .
+            ' (<a href="server_engines.php' . PMA_generate_common_url(array('engine' => 'InnoDB', 'page' => 'Status')).
+            '">' . $GLOBALS['strDetails'] . '</a>)';
     } else {
         $error = '#' . ((string) $error_number) . ' - ' . $error_message;
     }

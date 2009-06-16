@@ -1,5 +1,5 @@
 <?php
-/* $Id: greek-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
+/* $Id: greek-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
 
 /* Translated by Kyriakos Xagoraris <theremon at users.sourceforge.net> */
 
@@ -195,7 +195,6 @@ $strFileAlreadyExists = 'Το αρχείο %s υπάρχει ήδη στον δ�
 $strFileCouldNotBeRead = 'Δεν ήταν δυνατή η ανάγνωση του αρχείου';  
 $strFileNameTemplateRemember = 'αποθήκευση μορφής';
 $strFileNameTemplate = 'Μορφή ονόματος αρχείου';
-$strFixed = 'προκαθορισμένου μήκους';
 $strFlushPrivilegesNote = 'Σημείωση: Το phpMyAdmin διαβάζει τα προνόμια των χρηστών απ\' ευθείεας από τους πίνακες προνομίων της MySQL. Το περιεχόμενο αυτών των πινάκων μπορεί να διαφέρει από τα προνόμια που χρησιμοποιεί ο διακομιστής εάν έχουν γίνει αλλαγές χειροκίνητα. Σε αυτήν την περίπτωση, θα πρέπει να %sεπαναφορτώσετε τα προνόμια%s πριν συνεχίσετε.'; 
 $strFlushTable = 'Εκκαθάριση ("FLUSH") πίνακα';
 $strFormat = 'Μορφοποίηση';
@@ -1164,7 +1163,6 @@ $strSetupVersionCheckNone = 'No newer stable version is available';  //to transl
 $strSetupServerSecurityInfoMsg = 'If you feel this is necessary, use additional protection settings - [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server_config]host authentication[/a] settings and [a@?page=form&amp;formset=features#tab_Security]trusted proxies list[/a]. However, IP-based protection may not be reliable if your IP belongs to an ISP where thousands of users, including you, are connected to.';  //to translate
 $strSetupServerSslMsg = 'You should use SSL connections if your web server supports it';  //to translate
 $strSetupServerExtensionMsg = 'You should use mysqli for performance reasons';  //to translate
-$strSetupServerNoPasswordRootMsg = 'You allow for connecting to the server as root without a password.';  //to translate
 $strSetupBlowfishSecretLengthMsg = 'Key is too short, it should have at least 8 characters';  //to translate
 $strSetupForceSSLMsg = 'This [a@?page=form&amp;formset=features#tab_Security]option[/a] should be enabled if your web server supports it';  //to translate
 $strSetupAllowArbitraryServerMsg = 'This [a@?page=form&amp;formset=features#tab_Security]option[/a] should be disabled as it allows attackers to bruteforce login to any MySQL server. If you feel this is necessary, use [a@?page=form&amp;formset=features#tab_Security]trusted proxies list[/a]. However, IP-based protection may not be reliable if your IP belongs to an ISP where thousands of users, including you, are connected to.';  //to translate
@@ -1229,9 +1227,7 @@ $strSetupForm_Export_defaults_desc = 'Customize default export options';  //to t
 $strSetupForm_Query_window = 'Query window';  //to translate
 $strSetupForm_Query_window_desc = 'Customize query window options';  //to translate
 $strSetupServers_verbose_name = 'Verbose name of this server';  //to translate
-$strSetupServers_verbose_desc = 'Hostname where MySQL server is running';  //to translate
 $strSetupServers_host_name = 'Server hostname';  //to translate
-$strSetupServers_host_desc = '';  //to translate
 $strSetupServers_port_name = 'Server port';  //to translate
 $strSetupServers_port_desc = 'Port on which MySQL server is listening, leave empty for default';  //to translate
 $strSetupServers_socket_name = 'Server socket';  //to translate
@@ -1261,7 +1257,6 @@ $strSetupServers_only_db_desc = 'You can use MySQL wildcard characters (% and _)
 $strSetupServers_hide_db_name = 'Hide databases';  //to translate
 $strSetupServers_hide_db_desc = 'Hide databases matching regular expression (PCRE)';  //to translate
 $strSetupServers_AllowRoot_name = 'Allow root login';  //to translate
-$strSetupServers_AllowNoPasswordRoot_name = 'Allow root without password';  //to translate
 $strSetupServers_DisableIS_name = 'Disable use of INFORMATION_SCHEMA';  //to translate
 $strSetupServers_DisableIS_desc = 'More information on [a@http://sf.net/support/tracker.php?aid=1849494]PMA bug tracker[/a] and [a@http://bugs.mysql.com/19588]MySQL Bugs[/a]';  //to translate
 $strSetupServers_AllowDeny_order_name = 'Host authentication order';  //to translate
@@ -1467,4 +1462,25 @@ $strSetupServerAuthConfigMsg = 'You set the [kbd]config[/kbd] authentication typ
 $strSetupServers_extension_desc = 'What PHP extension to use; you should use mysqli if supported';  //to translate
 $strSetupVersionCheckNewAvailable = 'A newer version of phpMyAdmin is available and you should consider upgrading. The newest version is %s, released on %s.';  //to translate
 $strSetupServers_auth_swekey_config_desc = 'The path for the config file for [a@http://swekey.com]SweKey hardware authentication[/a] (not located in your document root; suggested: /etc/swekey.conf)';  //to translate
+$strSessionGCWarning = 'Your PHP parameter [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] is lower that cookie validity configured in phpMyAdmin, because of this, your login will expire sooner than configured in phpMyAdmin.';  //to translate
+$strSetupServers_host_desc = 'Hostname where MySQL server is running';  //to translate
+$strSetupServers_verbose_desc = 'A user-friendly description of this server. Leave blank to display the hostname instead.';  //to translate
+$strCreateUserDatabasePrivileges = 'Grant all privileges on database &quot;%s&quot;';  //to translate
+$strShowBinaryContents = 'Show binary contents';  //to translate
+$strShowBLOBContents = 'Show BLOB contents';  //to translate
+$strStatic = 'static';  //to translate
+$strLoginWithoutPassword = 'Login without a password is forbidden by configuration (see AllowNoPassword)';  //to translate
+$strSetupServerNoPasswordMsg = 'You allow for connecting to the server without a password.';  //to translate
+$strSetupServers_AllowNoPassword_name = 'Allow logins without a password';  //to translate
+$strHostTableExplanation = 'When Host table is used, this field is ignored and values stored in Host table are used instead.';  //to translate
+$strGetMoreThemes = 'Get more themes!';  //to translate
+$strNoneDefault = 'None';  //to translate
+$strConfigDirectoryWarning = 'Directory [code]config[/code], which is used by the setup script, still exists in your phpMyAdmin directory. You should remove it once phpMyAdmin has been configured.';  //to translate
+$strRemoveCRLF = 'Remove CRLF characters within fields';  //to translate
+$strDoNotAutoIncrementZeroValues = 'Do not use AUTO_INCREMENT for zero values';  //to translate
+$strAndSmall = 'and';  //to translate
+$strReplicationStatus = 'Replication status';  //to translate
+$strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
+$strReplicationStatus_master = 'Master status';  //to translate
+$strReplicationStatus_slave = 'Slave status';  //to translate
 ?>

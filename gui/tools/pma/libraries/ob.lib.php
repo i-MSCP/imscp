@@ -9,7 +9,8 @@
  * Check for all the needed functions for output buffering
  * Make some wrappers for the top and bottoms of our files.
  *
- * @version $Id: ob.lib.php 10892 2007-11-01 20:48:43Z lem9 $
+ * @version $Id: ob.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_create.php 11403 2008-07-15 19:03:11Z lem9 $
+ * @version $Id: db_create.php 11982 2008-11-24 10:32:56Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

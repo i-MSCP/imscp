@@ -3,6 +3,7 @@
 /**
  *
  * @version $Id: display_export.lib.php 12302 2009-03-24 08:55:07Z nijel $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;

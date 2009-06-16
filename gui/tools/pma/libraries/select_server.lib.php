@@ -3,7 +3,8 @@
 /**
  * Code for displaying server selection written by nijel
  *
- * @version $Id: select_server.lib.php 11378 2008-07-09 15:24:44Z lem9 $
+ * @version $Id: select_server.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

@@ -39,6 +39,7 @@
  * @uses    preg_replace()
  * @uses    htmlspecialchars()
  * @version $Id: querywindow.php 12166 2009-01-02 13:55:50Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**

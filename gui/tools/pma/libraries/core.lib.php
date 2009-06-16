@@ -5,7 +5,8 @@
  * This script is distinct from libraries/common.inc.php because this
  * script is called from /test.
  *
- * @version $Id: core.lib.php 11499 2008-08-21 16:45:14Z lem9 $
+ * @version $Id: core.lib.php 11982 2008-11-24 10:32:56Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -310,7 +311,7 @@ function PMA_getTableCount($db)
             // load BS tables
             $session_bs_tables = $_SESSION['PMA_Config']->get('BLOBSTREAMING_TABLES');
 
-            // if BS tables exist 
+            // if BS tables exist
             if (isset ($session_bs_tables))
                 while ($data = PMA_DBI_fetch_assoc($tables))
                     foreach ($session_bs_tables as $table_key=>$table_val)

@@ -5,7 +5,8 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12387 2009-04-29 17:26:27Z lem9 $
+ * @version $Id: tbl_change.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -165,7 +166,7 @@ if (isset($primary_key)) {
     $result             = array();
     $found_unique_key   = false;
     foreach ($primary_key_array as $key_id => $primary_key) {
-        $local_query           = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' WHERE ' . str_replace('&#93;', ']', $primary_key) . ';';
+        $local_query           = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' WHERE ' . $primary_key . ';';
         $result[$key_id]       = PMA_DBI_query($local_query, null, PMA_DBI_QUERY_STORE);
         $rows[$key_id]         = PMA_DBI_fetch_assoc($result[$key_id]);
         $primary_keys[$key_id] = str_replace('\\', '\\\\', $primary_key);
@@ -392,9 +393,11 @@ foreach ($rows as $row_id => $vrow) {
         }
 
         $unnullify_trigger = $chg_evt_handler . "=\"return unNullify('"
-            . PMA_escapeJsString($field['Field_html']) . "', '"
+            . PMA_escapeJsString($field['Field_md5']) . "', '"
             . PMA_escapeJsString($jsvkey) . "')\"";
-        $field_name_appendix =  $vkey . '[' . $field['Field_html'] . ']';
+
+        // Use an MD5 as an array index to avoid having special characters in the name atttibute (see bug #1746964 )
+        $field_name_appendix =  $vkey . '[' . $field['Field_md5'] . ']';
         $field_name_appendix_md5 = $field['Field_md5'] . $vkey . '[]';
 
 
@@ -408,7 +411,10 @@ foreach ($rows as $row_id => $vrow) {
         }
         ?>
         <tr class="<?php echo $odd_row ? 'odd' : 'even'; ?>">
-            <td <?php echo ($cfg['LongtextDoubleTextarea'] && strstr($field['True_Type'], 'longtext') ? 'rowspan="2"' : ''); ?> align="center"><?php echo $field['Field_title']; ?></td>
+            <td <?php echo ($cfg['LongtextDoubleTextarea'] && strstr($field['True_Type'], 'longtext') ? 'rowspan="2"' : ''); ?> align="center">
+                <?php echo $field['Field_title']; ?>
+                <input type="hidden" name="fields_name<?php echo $field_name_appendix; ?>" value="<?php echo $field['Field_html']; ?>"/>
+            </td>
             <td align="center"<?php echo $field['wrap']; ?>>
                 <?php echo $field['pma_type']; ?>
             </td>
@@ -432,10 +438,10 @@ foreach ($rows as $row_id => $vrow) {
             } else {
                 // loic1: special binary "characters"
                 if ($field['is_binary'] || $field['is_blob']) {
-                    $vrow[$field['Field']] = PMA_replace_binary_contents($vrow[$field['Field']]); 
+                    $vrow[$field['Field']] = PMA_replace_binary_contents($vrow[$field['Field']]);
                 } // end if
                 $special_chars   = htmlspecialchars($vrow[$field['Field']]);
-		
+
 		//We need to duplicate the first \n or otherwise we will lose the first newline entered in a VARCHAR or TEXT column
 	        $special_chars_encoded = PMA_duplicateFirstNewline($special_chars);
 
@@ -458,7 +464,7 @@ foreach ($rows as $row_id => $vrow) {
                 $data                     = $field['Default'];
             }
             if ($field['True_Type'] == 'bit') {
-                $special_chars = PMA_printable_bit_value($field['Default'], $extracted_fieldspec['spec_in_brackets']); 
+                $special_chars = PMA_printable_bit_value($field['Default'], $extracted_fieldspec['spec_in_brackets']);
             } else {
                 $special_chars = htmlspecialchars($field['Default']);
             }
@@ -852,8 +858,8 @@ foreach ($rows as $row_id => $vrow) {
 
                     if ($bs_reference_exists)
                     {
-                        echo '<input type="hidden" name="remove_blob_ref_' . $field['Field_html'] . $vkey . '" value="' . $data . '" />';
-                        echo '<input type="checkbox" name="remove_blob_repo_' . $field['Field_html'] . $vkey . '" /> ' . $strBLOBRepositoryRemove . "<br />";
+                        echo '<input type="hidden" name="remove_blob_ref_' . $field['Field_md5'] . $vkey . '" value="' . $data . '" />';
+                        echo '<input type="checkbox" name="remove_blob_repo_' . $field['Field_md5'] . $vkey . '" /> ' . $strBLOBRepositoryRemove . "<br />";
                         echo PMA_BS_CreateReferenceLink($data, $db);
                         echo "<br />";
                     }
@@ -936,7 +942,7 @@ foreach ($rows as $row_id => $vrow) {
                                         if (!empty($bs_tables) && strlen($db) > 0)
                                         {
                                             $bs_tables = $bs_tables[$db];
-                                
+
                                             // check if reference to BLOBStreaming tables exists
                                             if (isset($bs_tables))
                                             {
@@ -953,7 +959,7 @@ foreach ($rows as $row_id => $vrow) {
                                                 if ($allBSTablesExist)
                                                 {
                                                     echo '<br />';
-                                                    echo '<input type="checkbox" name="upload_blob_repo_' . $field['Field_html'] . $vkey . '" /> ' . $strBLOBRepositoryUpload;
+                                                    echo '<input type="checkbox" name="upload_blob_repo_' . $field['Field_md5'] . $vkey . '" /> ' . $strBLOBRepositoryUpload;
                                                 }   // end if ($allBSTablesExist)
                                             }   // end if (isset($bs_tables)
                                         }   // end if (!empty($bs_tables) && strlen ($db) > 0)
@@ -965,7 +971,7 @@ foreach ($rows as $row_id => $vrow) {
                 }
 
                 echo '<br />';
-                echo '<input type="file" name="fields_upload_' . $field['Field_html'] . $vkey . '" class="textfield" id="field_' . $idindex . '_3" size="10" />&nbsp;';
+                echo '<input type="file" name="fields_upload_' . $field['Field_md5'] . $vkey . '" class="textfield" id="field_' . $idindex . '_3" size="10" />&nbsp;';
 
                 // find maximum upload size, based on field type
                 /**
@@ -998,7 +1004,7 @@ foreach ($rows as $row_id => $vrow) {
                 } elseif (!empty($files)) {
                     echo "<br />\n";
                     echo '    <i>' . $strOr . '</i>' . ' ' . $strWebServerUploadDirectory . ':<br />' . "\n";
-                    echo '        <select size="1" name="fields_uploadlocal_' . $field['Field_html'] . $vkey . '">' . "\n";
+                    echo '        <select size="1" name="fields_uploadlocal_' . $field['Field_md5'] . $vkey . '">' . "\n";
                     echo '            <option value="" selected="selected"></option>' . "\n";
                     echo $files;
                     echo '        </select>' . "\n";

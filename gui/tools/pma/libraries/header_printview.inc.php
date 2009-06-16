@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header_printview.inc.php 11378 2008-07-09 15:24:44Z lem9 $
+ * @version $Id: header_printview.inc.php 12190 2009-01-13 22:55:44Z lem9 $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -48,7 +49,6 @@ if ($text_dir == 'ltr') {
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title><?php echo $strSQLResult; ?> - phpMyAdmin <?php echo PMA_VERSION ?></title>
 <link rel="stylesheet" type="text/css" href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=print&amp;nocache=<?php echo $_SESSION['PMA_Config']->getThemeUniqueValue(); ?>" />
-</style>
 </head>
 
 <body bgcolor="#ffffff">

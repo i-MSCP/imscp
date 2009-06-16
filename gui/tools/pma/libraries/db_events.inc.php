@@ -2,12 +2,16 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_events.inc.php 11582 2008-09-10 16:53:28Z lem9 $
+ * @version $Id: db_events.inc.php 11982 2008-11-24 10:32:56Z nijel $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
+/**
+ * Append goto to ulr_query.
+ */
 $url_query .= '&amp;goto=db_structure.php';
 
 $events = PMA_DBI_fetch_result('SELECT EVENT_NAME, EVENT_TYPE FROM information_schema.EVENTS WHERE EVENT_SCHEMA= \'' . PMA_sqlAddslashes($db,true) . '\';');
@@ -29,7 +33,7 @@ if ($events) {
     $delimiter = '//';
     foreach ($events as $event) {
 
-        // information_schema (at least in MySQL 5.1.22) does not return 
+        // information_schema (at least in MySQL 5.1.22) does not return
         // the full CREATE EVENT statement in a way that could be useful for us
         // so we rely on PMA_DBI_get_definition() which uses SHOW CREATE EVENT
 

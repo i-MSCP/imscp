@@ -1,8 +1,8 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- *
- * @version $Id: text_plain__substr.inc.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @package phpMyAdmin-Transformation
+ * @version $Id: text_plain__substr.inc.php 11973 2008-11-24 09:30:37Z nijel $
  */
 
 /**

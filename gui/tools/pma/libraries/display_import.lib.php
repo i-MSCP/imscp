@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_import.lib.php 11626 2008-10-01 20:48:40Z lem9 $
+ * @version $Id: display_import.lib.php 12045 2008-11-30 13:53:40Z nijel $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -88,7 +89,8 @@ if ($cfg['AllowAnywhereRecoding']) {
     echo '<select id="charset_of_file" name="charset_of_file" size="1">';
     foreach ($cfg['AvailableCharsets'] as $temp_charset) {
         echo '<option value="' . htmlentities($temp_charset) .  '"';
-        if ($temp_charset == $charset) {
+        if ((empty($cfg['Import']['charset']) && $temp_charset == $charset)
+          || $temp_charset == $cfg['Import']['charset']) {
             echo ' selected="selected"';
         }
         echo '>' . htmlentities($temp_charset) . '</option>';

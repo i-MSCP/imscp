@@ -1,21 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-    version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 12426 2009-05-15 16:28:09Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
-
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+    version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
+<!-- $Id: Documentation.html 12576 2009-06-15 15:30:30Z lem9 $ -->
 <head>
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 3.1.5 - Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>phpMyAdmin 3.2.0 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
 <body id="top">
+<div id="header">
+    <h1>
+        <a href="http://www.phpmyadmin.net/">php<span class="myadmin">MyAdmin</span></a>
+        3.2.0
+        Documentation
+    </h1>
+</div>
 
 <!-- TOP MENU -->
 <ul class="header">
@@ -28,27 +34,27 @@
     <li><a href="#transformations">Transformations</a></li>
     <li><a href="#faq"><abbr title="Frequently Asked Questions">FAQ</abbr></a></li>
     <li><a href="#developers">Developers</a></li>
+    <li><a href="#copyright">Copyright</a></li>
     <li><a href="#credits">Credits</a></li>
     <li><a href="translators.html">Translators</a></li>
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 3.1.5 Documentation</h1>
+<div id="body">
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
-    <li><a href="https://sf.net/projects/phpmyadmin/">
+    <li><a href="https://sourceforge.net/projects/phpmyadmin/">
             SourceForge phpMyAdmin project page</a></li>
     <li><a href="http://wiki.phpmyadmin.net">
             Official phpMyAdmin wiki</a></li>
     <li>Local documents:
         <ul><li>Version history: <a href="changelog.php">ChangeLog</a></li>
-            <li>General notes: <a href="readme.php">README</a></li>
             <li>License: <a href="license.php">LICENSE</a></li>
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 12426 2009-05-15 16:28:09Z lem9 $</i>
+        <i>$Id: Documentation.html 12576 2009-06-15 15:30:30Z lem9 $</i>
     </li>
 </ul>
 
@@ -292,11 +298,20 @@ rm -rf config                      # remove not needed directory
         and your databases, or a login dialog if using
         <abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
         authentication mode.</li>
-    <li>You should deny access to the <tt>./libraries</tt> subfolder in your
-        webserver configuration. For Apache you can use supplied .htaccess file
-        in that folder, for other webservers, you should configure this yourself.
-        Such configuration prevents from possible path exposure and cross side
-        scripting vulnerabilities that might happen to be found in that code.</li>
+    <li>You should deny access to the <tt>./libraries</tt> and
+        <tt>./setup/lib</tt> subfolders in your webserver configuration. For
+        Apache you can use supplied .htaccess file in that folder, for other
+        webservers, you should configure this yourself.  Such configuration
+        prevents from possible path exposure and cross side scripting
+        vulnerabilities that might happen to be found in that code.</li>
+    <li>
+        It is generally good idea to protect public phpMyAdmin installation
+        against access by robots as they usually can not do anything good
+        there. You can do this using <code>robots.txt</code> file in root of
+        your webserver or limit access by web server configuration. You can
+        find example <code>.htaccess</code> file which can help you achieve
+        this in <code>contrib</code> directory in phpMyAdmin.
+    </li>
 </ol>
 
 <h3 id="linked-tables">Linked-tables infrastructure</h3>
@@ -332,8 +347,10 @@ rm -rf config                      # remove not needed directory
 <h3 id="upgrading">Upgrading from an older version</h3>
 
 <p> Simply copy <i>./config.inc.php</i> from your previous installation into the newly
-    unpacked one. Configuration files from very old versions (2.3.0 or before) may
-    require some tweaking as some options have been changed or removed.
+    unpacked one. Configuration files from old versions may
+    require some tweaking as some options have been changed or removed; in
+    particular, the definition of <tt>$cfg['AttributeTypes']</tt> has changed
+    so you better remove it from your file and just use the default one.
     For compatibility with PHP 6, remove a <tt>set_magic_quotes_runtime(0);</tt>
     statement that you might find near the end of your configuration file.</p>
 
@@ -568,7 +585,7 @@ since this link provides funding for phpMyAdmin.
         Starting with version 2.3.0, it is advisable to try leaving this
         blank. In most cases phpMyAdmin automatically detects the proper
         setting. Users of port forwarding will need to set PmaAbsoluteUri (<a
-        href="https://sf.net/tracker/index.php?func=detail&amp;aid=1340187&amp;group_id=23067&amp;atid=377409">more info</a>).
+        href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1340187&amp;group_id=23067&amp;atid=377409">more info</a>).
         A good test is to browse a table, edit a row and save it. There should
         be an error message if phpMyAdmin is having trouble auto&#8211;detecting
         the correct value. If you get an error that this must be set or if
@@ -589,6 +606,12 @@ since this link provides funding for phpMyAdmin.
 
     <dt id="cfg_SuhosinDisableWarning">$cfg['SuhosinDisableWarning'] boolean</dt>
     <dd>A warning is displayed on the main page if Suhosin is detected.
+    You can set this parameter to <tt>TRUE</tt> to stop this message 
+    from appearing.</dd>
+
+    <dt id="cfg_McryptDisableWarning">$cfg['McryptDisableWarning'] boolean</dt>
+    <dd>Disable the default warning that is displayed if mcrypt is missing for
+    cookie authentication.
     You can set this parameter to <tt>TRUE</tt> to stop this message 
     from appearing.</dd>
 
@@ -1038,11 +1061,12 @@ ALTER TABLE `pma_column_comments`
         boolean</dt>
     <dd>Whether to allow root access. This is just a shortcut for the AllowDeny rules below.
     </dd>
-    <dt><span id="cfg_Servers_AllowNoPasswordRoot">$cfg['Servers'][$i]['AllowNoPasswordRoot']</span>
+    <dt><span id="cfg_Servers_AllowNoPassword">$cfg['Servers'][$i]['AllowNoPassword']</span>
         boolean</dt>
-	<dd>Whether to allow access to root user without password. The default
+	<dd>Whether to allow logins without a password. The default
 	value of <tt>false</tt> for this parameter prevents unintended access 
-	to a MySQL server with was left with an empty password for root.
+	to a MySQL server with was left with an empty password for root or
+	on which an anonymous (blank) user is defined.
     </dd>
     <dt id="servers_allowdeny_order">
         <span id="cfg_Servers_AllowDeny_order">$cfg['Servers'][$i]['AllowDeny']['order']</span> string
@@ -1106,7 +1130,8 @@ ALTER TABLE `pma_column_comments`
         <tt>xxx.xxx.xxx.xxx/nn</tt>     (CIDR, Classless Inter-Domain Routing type <abbr title="Internet Protocol">IP</abbr> addresses)<br />
         But the following does not work:<br />
         <tt>xxx.xxx.xxx.xx[yyy-zzz]</tt> (partial
-        <abbr title="Internet Protocol">IP</abbr> address range)
+        <abbr title="Internet Protocol">IP</abbr> address range)<br />
+        Also IPv6 addresses are not supported.
     </dd>
     <dt><span id="cfg_Servers_SignonSession">$cfg['Servers'][$i]['SignonSession']</span> string</dt>
     <dd>Name of session which will be used for signon authentication method.
@@ -1204,7 +1229,11 @@ ALTER TABLE `pma_column_comments`
         </dd>
 
     <dt id="cfg_LoginCookieValidity">$cfg['LoginCookieValidity'] integer [number of seconds]</dt>
-    <dd>Define how long is login cookie valid.</dd>
+    <dd>Define how long is login cookie valid. Please note that php
+        configuration option <a href="http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime">session.gc_maxlifetime</a> 
+        might limit session validity and if session is lost, login cookie is
+        also invalidated. So it is good idea to set <code>session.gc_maxlifetime</code> 
+        at least as high is $cfg['LoginCookieValidity'] is set.</dd>
 
     <dt id="cfg_LoginCookieStore">$cfg['LoginCookieStore'] integer [number of seconds]</dt>
     <dd>Define how long is login cookie should be stored in browser. Default 0
@@ -1252,9 +1281,11 @@ ALTER TABLE `pma_column_comments`
         <a href="#cfg_LeftFrameDBSeparator" class="configrule">$cfg['LeftFrameDBSeparator']</a>.
     </dd>
 
-    <dt id="cfg_LeftFrameDBSeparator">$cfg['LeftFrameDBSeparator'] string</dt>
+    <dt id="cfg_LeftFrameDBSeparator">$cfg['LeftFrameDBSeparator']
+    string or array</dt>
     <dd>The string used to separate the parts of the database name when showing
-        them in a tree.</dd>
+        them in a tree. Alternatively you can specify more strings in an array
+        and all of them will be used as a separator.</dd>
 
     <dt id="cfg_LeftFrameTableSeparator">$cfg['LeftFrameTableSeparator'] string</dt>
     <dd>Defines a string to be used to nest table spaces. Defaults to '__'.
@@ -1520,8 +1551,9 @@ ALTER TABLE `pma_column_comments`
         which are in Unicode, just to avoid losing some characters).<br /><br />
 
         Setting this to <tt>TRUE</tt> also activates a pull-down menu
-	in the Export page, to choose the character set when exporting a file.
-	The default value in this menu comes from <tt>$cfg['Export']['charset']</tt>.
+        in the Export and Import pages, to choose the character set when 
+        exporting a file. The default value in this menu comes from 
+        <tt>$cfg['Export']['charset']</tt> and <tt>$cfg['Import']['charset']</tt>.
     </dd>
 
     <dt id="cfg_RecodingEngine">$cfg['RecodingEngine'] string</dt>
@@ -1963,7 +1995,8 @@ setfacl -d -m "g:www-data:rwx" tmp
 
     <dt id="cfg_InitialSlidersState">$cfg['InitialSlidersState'] string</dt>
     <dd>If set to <tt>'closed'</tt>, the visual sliders are initially in a
-    closed state. A value of 'open' does the reverse.</dd>
+    closed state. A value of <tt>'open'</tt> does the reverse. To completely 
+    disable all visual sliders, use <tt>'disabled'</tt>.</dd>
 
     <dt id="cfg_TitleTable">$cfg['TitleTable'] string</dt>
     <dt id="cfg_TitleDatabase">$cfg['TitleDatabase'] string</dt>
@@ -2949,6 +2982,7 @@ ProxyPassReverseCookiePath /%7Euser/phpmyadmin /mirror/foo
 <p> The MySQL server's privilege tables are not up to date, you need to run
 the <tt>mysql_upgrade</tt> command on the server.</p>
 
+
 <h3 id="faqconfig">Configuration</h3>
 
 <h4 id="faq2_1">
@@ -3150,10 +3184,10 @@ the <tt>mysql_upgrade</tt> command on the server.</p>
     Zip files for larger dump, you have to use another way.</p>
 
 <h4 id="faq3_3">
-    <a href="#faq3_3">3.3 With InnoDB tables, I lose foreign key relationships when I rename
-    or alter a table.</a></h4>
+    <a href="#faq3_3">3.3 With InnoDB tables, I lose foreign key relationships 
+    when I rename a table or a column.</a></h4>
 
-<p> This seems to be a InnoDB bug (fixed in MySQL 3.23.50?).</p>
+<p> This is an InnoDB bug, see <a href="http://bugs.mysql.com/bug.php?id=21704">http://bugs.mysql.com/bug.php?id=21704</a>.</p>
 
 <h4 id="faq3_4">
     <a href="#faq3_4">3.4 I am unable to import dumps I created with the mysqldump tool
@@ -3242,7 +3276,7 @@ the <tt>mysql_upgrade</tt> command on the server.</p>
     operations into invalid <abbr title="structured query language">SQL</abbr>
     statements. There is no workaround to this behaviour. News to this item will
     be posted in Bug report
-    <a href="https://sf.net/tracker/index.php?func=detail&amp;aid=816858&amp;group_id=23067&amp;atid=377408">#816858</a>
+    <a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=816858&amp;group_id=23067&amp;atid=377408">#816858</a>
 </p>
 
 <h4 id="faq3_10">
@@ -3572,6 +3606,14 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] = array(
     <a href="#faq5_17">5.17 With Firefox, I cannot delete rows of data or drop a database.</a></h4>
 <p> Many users have confirmed that the Tabbrowser Extensions plugin they
     installed in their Firefox is causing the problem.</p>
+
+<h4 id="faq5_18">
+<a href="#faq5_18">5.18 With Konqueror 4.2.x an invalid <tt>LIMIT</tt>
+    clause is generated when I browse a table.</a></h4>
+<p> This happens only when both of these conditions are met: using the 
+    <tt>http</tt> authentication mode and <tt>register_globals</tt> being set 
+    to <tt>On</tt> on the server. It seems to be a browser-specific problem; 
+    meanwhile use the <tt>cookie</tt> authentication mode.</p>
 
 <h3 id="faqusing">Using phpMyAdmin</h3>
 
@@ -4054,7 +4096,8 @@ chmod o+rwx tmp
 <h4 id="faq6_25">
 	<a href="#faq6_25">6.25 How does BLOB streaming work in phpMyAdmin?</a></h4>
 
-<p> First, for general information about BLOB streaming on MySQL, visit <a href="http://blobstreaming.org">blobstreaming.org</a>. We currently support streaming if you are running MySQL 5.1 with the PBXT and PBMS storage engines.<br /><br />
+<p> First, for general information about BLOB streaming on MySQL, visit <a href="http://blobstreaming.org">blobstreaming.org</a>. We currently support streaming if you are running MySQL 5.1 with the PBXT and PBMS storage engines.</p>
+
 <ol>
 	<li>In <tt>config.inc.php</tt> your host should be defined with a FQDN (fully qualified domain name) instead of something like &quot;localhost&quot;.</li>
 	<li>A current limitation is that your first login via phpMyAdmin to a freshly-started server must be done with an account that has the SUPER privilege.</li>
@@ -4063,7 +4106,6 @@ chmod o+rwx tmp
 	<li>When you insert or update a row in this table, put a checkmark on the &quot;Upload to BLOB repository&quot; optional choice; otherwise, the upload will be done directly in your column instead of the repository.</li>
 	<li>Finally when you browse your table, you'll see in your column a link to stream your data, for example &quot;View image&quot;. A header containing the correct MIME-type will be sent to your browser; this MIME-type was stored at upload time but in case it's incorrect, it's possible to edit it by clicking on the displayed MIME-type.</li> 
 </ol>	
-</p>
 
 <h3 id="faqproject">phpMyAdmin project</h3>
 
@@ -4129,6 +4171,36 @@ chmod o+rwx tmp
     <a href="http://www.phpmyadmin.net/home_page/security.php">http://www.phpmyadmin.net/home_page/security.php</a>
 </p>
 
+<h4 id="faq8_2">
+    <a href="#faq8_2">8.2 How can I protect phpMyAdmin against brute force attacks?</a></h4>
+
+<p> If you use Apache web server, phpMyAdmin exports information about 
+    authentication to Apache environment and it can be used in Apache logs.
+    Currently there are two variables available:
+</p>
+<dl>
+    <dt><code>userID</code></dt>
+    <dd>User name of currently active user (he does not have to be logged
+    in).</dd>
+    <dt><code>userStatus</code></dt>
+    <dd>Status of currently active user, one of <code>ok</code> (user is 
+    logged in), <code>mysql-denied</code> (MySQL denied user login),
+    <code>allow-denied</code> (user denied by allow/deny rules),
+    <code>root-denied</code> (root is denied in configuration),
+    <code>empty-denied</code> (empty password is denied).</dd>
+</dl>
+<p>
+    <code>LogFormat</code> directive for Apache can look like following:
+</p>
+<pre>
+LogFormat "%h %l %u %t \"%r\" %>s %b \
+\"%{Referer}i\" \"%{User-Agent}i\" %{userID}n %{userStatus}n"   pma_combined
+</pre>
+<p>
+    You can then use any log analyzing tools to detect possible break in
+    attempts.
+</p>
+
 <!-- DEVELOPERS -->
 <h2 id="developers">Developers Information</h2>
 
@@ -4174,6 +4246,34 @@ chmod o+rwx tmp
         brave men and women who gave their lives for the people of Earth.</li>
 </ul>
 
+<h2 id="copyright">Copyright</h2>
+
+<pre>
+Copyright (C) 1998-2000 Tobias Ratschiller &lt;tobias_at_ratschiller.com&gt;
+Copyright (C) 2001-2009 Marc Delisle &lt;marc_at_infomarc.info&gt;
+                        Olivier Müller &lt;om_at_omnis.ch&gt;
+                        Robin Johnson &lt;robbat2_at_users.sourceforge.net&gt;
+                        Alexander M. Turek &lt;me_at_derrabus.de&gt;
+                        Michal Čihař &lt;michal_at_cihar.com&gt;
+                        Garvin Hicking &lt;me_at_supergarv.de&gt;
+                        Michael Keck &lt;mkkeck_at_users.sourceforge.net&gt;
+                        Sebastian Mendel &lt;cybot_tm_at_users.sourceforge.net&gt;
+                        [check <a href="#credits">credits</a> for more details]
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 2,
+as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+</pre>
+
 <!-- CREDITS -->
 <h2 id="credits">Credits</h2>
 
@@ -4188,7 +4288,7 @@ CREDITS, in chronological order
     * creator of the phpmyadmin project
     * maintainer from 1998 to summer 2000
 
-- Marc Delisle &lt;Marc.Delisle_at_cegepsherbrooke.qc.ca&gt;
+- Marc Delisle &lt;marc_at_infomarc.info&gt;
     * multi-language version
     * various fixes and improvements
     * <abbr title="structured query language">SQL</abbr> analyser (most of it)
@@ -4391,7 +4491,7 @@ Original Credits of Version 2.1.0
          - the default name of Apache's directory-level configuration file.</li>
     <li><a href="http://www.wikipedia.org/wiki/Blowfish_%28cipher%29">Blowfish</a>
          - a keyed, symmetric block cipher, designed in 1993 by Bruce Schneier.</li>
-    <li><a href="http://www.wikipedia.org/wiki/Browser">Browser (Web Browser)</a>
+    <li><a href="http://en.wikipedia.org/wiki/Web_browser">Browser (Web Browser)</a>
          - a software application that enables a user to display and interact with
          text, images, and other information typically located on a web page at a
          website on the World Wide Web.</li>
@@ -4559,14 +4659,14 @@ Original Credits of Version 2.1.0
          - an open-source, cross-platform data compression library by Jean-loup
          Gailly and Mark Adler.</li>
 </ul>
+</div>
 
-<p id="bottom">
-    <a href="http://validator.w3.org/check?uri=referer">
-        <img src="http://www.w3.org/Icons/valid-xhtml11" alt="Valid XHTML 1.1"
-            height="31" width="88" /></a>
-    <a href="http://jigsaw.w3.org/css-validator/">
-        <img src="http://www.w3.org/Icons/valid-css" alt="Valid CSS!" width="88"
-            height="31" /></a></p>
 
+  <ul id="footer">
+    <li>Copyright &copy; 2003 - 2009 <a href="http://www.phpmyadmin.net/home_page/team.php">phpMyAdmin devel team</a></li>
+    <li><a href="LICENSE">License</a></li>
+    <li><a href="http://www.phpmyadmin.net/home_page/donate.php">Donate</a></li>
+    <li class="last">Valid <a href="http://validator.w3.org/check/referer">HTML</a> and <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></li>
+  </ul>
 </body>
 </html>

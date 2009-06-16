@@ -1,8 +1,9 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Set of functions used to build CSV dumps of tables
+ * Set of functions used to build OpenDocument Text dumps of tables
  *
+ * @package phpMyAdmin-Export-ODT
  * @version $Id: odt.php 12349 2009-04-14 13:34:20Z helmo $
  */
 if (! defined('PHPMYADMIN')) {

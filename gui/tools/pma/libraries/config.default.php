@@ -16,7 +16,8 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 12152 2008-12-22 17:32:17Z lem9 $
+ * @version $Id: config.default.php 12336 2009-04-08 11:47:25Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -52,6 +53,14 @@ $cfg['PmaNoRelation_DisableWarning'] = false;
  * @global boolean $cfg['SuhosinDisableWarning']
  */
 $cfg['SuhosinDisableWarning'] = false;
+
+/**
+ * Disable the default warning that is displayed if mcrypt is missing for
+ * cookie authentication.
+ *
+ * @global boolean $cfg['McryptDisableWarning']
+ */
+$cfg['McryptDisableWarning'] = false;
 
 /**
  * Allows phpMyAdmin to be included from a document located on
@@ -338,11 +347,11 @@ $cfg['Servers'][$i]['verbose_check'] = true;
 $cfg['Servers'][$i]['AllowRoot'] = true;
 
 /**
- * whether to allow login of root user with no password (MySQL default)
+ * whether to allow login of any user without a password
  *
- * @global boolean $cfg['Servers'][$i]['AllowNoPasswordRoot']
+ * @global boolean $cfg['Servers'][$i]['AllowNoPassword']
  */
-$cfg['Servers'][$i]['AllowNoPasswordRoot'] = false;
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
 
 /**
  * Host authentication order, leave blank to not use
@@ -512,7 +521,7 @@ $cfg['LoginCookieRecall'] = true;
  *
  * @global integer $cfg['LoginCookieValidity']
  */
-$cfg['LoginCookieValidity'] = 1800;
+$cfg['LoginCookieValidity'] = 1440;
 
 /**
  * how long login cookie should be stored (in seconds)
@@ -962,6 +971,28 @@ $cfg['DefaultTabDatabase'] = 'db_structure.php';
  */
 $cfg['DefaultTabTable'] = 'sql.php';
 
+/**
+ * Mapping between script filenames and translation keys
+ *
+ * Lookup can be performed by PMA_getTitleForTarget()
+ *
+ * @global string $cfg['DefaultTabTranslationMapping']
+ */
+$cfg['DefaultTabTranslationMapping'] = array(
+
+	// Values for $cfg['DefaultTabTable']
+	'tbl_structure.php' =>  'strStructure',
+	'tbl_sql.php' => 'strSQL',
+	'tbl_select.php' => 'strSearch',
+	'tbl_change.php' => 'strInsert',
+	'sql.php' => 'strBrowse',
+
+	// Values for $cfg['DefaultTabDatabase']
+	'db_structure.php' => 'strStructure',
+	'db_sql.php' => 'strSQL',
+	'db_search.php' => 'strSearch',
+	'db_operations.php' => 'strOperations',
+);
 
 /*******************************************************************************
  * Export defaults
@@ -1405,9 +1436,9 @@ $cfg['Export']['sql_drop_table'] = false;
 /**
  *
  *
- * @global boolean $cfg['Export']['sql_if_not_exists']
  * true by default for correct behavior when dealing with exporting
  * of VIEWs and the stand-in table
+ * @global boolean $cfg['Export']['sql_if_not_exists']
  */
 $cfg['Export']['sql_if_not_exists'] = true;
 
@@ -1551,6 +1582,13 @@ $cfg['Import'] = array();
 $cfg['Import']['format'] = 'sql';
 
 /**
+ * Default charset for import.
+ *
+ * @global string $cfg['Import']['charset']
+ */
+$cfg['Import']['charset'] = '';
+
+/**
  *
  *
  * @global boolean $cfg['Import']['allow_interrupt']
@@ -1570,6 +1608,13 @@ $cfg['Import']['skip_queries'] = '0';
  * @global string $cfg['Import']['sql_compatibility']
  */
 $cfg['Import']['sql_compatibility'] = 'NONE';
+
+/**
+ *
+ *
+ * @global string $cfg['Import']['sql_no_auto_value_on_zero']
+ */
+$cfg['Import']['sql_no_auto_value_on_zero'] = true;
 
 /**
  *
@@ -2275,7 +2320,7 @@ $cfg['TempDir'] = '';
 $cfg['GD2Available'] = 'auto';
 
 /**
- * List of trusted proxies for IP allow/deny
+ * Lists proxy IP and HTTP header combinations which are trusted for IP allow/deny
  *
  * @global array $cfg['TrustedProxies']
  */
@@ -2362,7 +2407,7 @@ $cfg['DBG'] = array();
 /**
  * Output executed queries and their execution times
  *
- * @global boolean $cfg['DBG']['enable']
+ * @global boolean $cfg['DBG']['sql']
  */
 $cfg['DBG']['sql'] = false;
 
@@ -2370,7 +2415,7 @@ $cfg['DBG']['sql'] = false;
  * Make the DBG stuff available
  * To use the following, please install the DBG extension from http://dd.cron.ru/dbg/
  *
- * @global boolean $cfg['DBG']['enable']
+ * @global boolean $cfg['DBG']['php']
  */
 $cfg['DBG']['php'] = false;
 

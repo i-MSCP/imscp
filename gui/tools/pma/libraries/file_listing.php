@@ -4,7 +4,8 @@
  * Functions for listing directories
  *
  * @todo rename to file_listing.lib.php
- * @version $Id: file_listing.php 11001 2007-12-15 14:30:37Z lem9 $
+ * @version $Id: file_listing.php 11986 2008-11-24 11:05:40Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -23,7 +24,7 @@ function PMA_getDirContent($dir, $expression = '')
         }
         while ($file = @readdir($handle)) {
         // for PHP < 5.2.4, is_file() gives a warning when using open_basedir
-        // and verifying '..' or '.' 
+        // and verifying '..' or '.'
             if ('.' != $file && '..' != $file && is_file($dir . $file) && ($expression == '' || preg_match($expression, $file))) {
                 $result[] = $file;
             }

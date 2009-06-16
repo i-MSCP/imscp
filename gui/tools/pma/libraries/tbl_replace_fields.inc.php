@@ -17,7 +17,7 @@
  *
  * note: grab_globals has extracted the fields from _FILES or HTTP_POST_FILES
  *
- * @version $Id: tbl_replace_fields.inc.php 11336 2008-06-21 15:01:27Z lem9 $
+ * @version $Id: tbl_replace_fields.inc.php 12245 2009-02-23 08:36:34Z lem9 $
  *
  * @uses $_REQUEST
  * @uses defined()
@@ -28,6 +28,7 @@
  * @uses implode()
  * @uses PMA_NO_VARIABLES_IMPORT
  * @uses PMA_sqlAddslashes()
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -67,7 +68,8 @@ if (false !== $possibly_uploaded_val) {
         $type = '';
     }
 
-    $f = 'field_' . md5($key);
+    // $key contains the md5() of the fieldname
+    $f = 'field_' . $key;
 
     if (0 === strlen($val)) {
         // default
@@ -94,8 +96,8 @@ if (false !== $possibly_uploaded_val) {
                 // garvin: when in UPDATE mode, do not alter field's contents. When in INSERT
                 // mode, insert empty field because no values were submitted. If protected
                 // blobs where set, insert original fields content.
-                if (! empty($prot_row[$key])) {
-                    $val = '0x' . bin2hex($prot_row[$key]);
+                if (! empty($prot_row[$me_fields_name[$key]])) {
+                    $val = '0x' . bin2hex($prot_row[$me_fields_name[$key]]);
                 } else {
                     $val = '';
                 }

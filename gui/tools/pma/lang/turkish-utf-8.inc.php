@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
+/* $Id: turkish-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
 
 // phpMyAdmin Türkçe (Turkish)
 // Çeviren Burak Yavuz (BouRock)
@@ -322,7 +322,6 @@ $strFileNameTemplate = 'Dosya adı şablonu';
 $strFileNameTemplateRemember = 'şablonu hatırla';
 $strFiles = 'Dosyalar';
 $strFileToImport = 'İçeri aktarmak için dosya';
-$strFixed = 'Sabit';
 $strFlushPrivilegesNote = 'Not: phpMyAdmin kullanıcıların yetkilerini doğrudan MySQL\'in yetki tablolarından alır. Bu tabloların içerikleri, eğer elle değiştirildiyse sunucunun kullandığı yetkilerden farklı olabilir. Bu durumda devam etmeden önce %syetkileri yeniden yüklemeniz%s gerekir.';
 $strFlushQueryCache = 'Sorgu önbelleğini temizle';
 $strFlushTables = 'Tüm tabloları temizle (kapat)';
@@ -782,6 +781,7 @@ $strServerTabVariables = 'Değişkenler';
 $strServerTrafficNotes = '<b>Sunucu trafiği</b>: Bu tablolar sunucunun başlatıldığı andan itibaren MySQL sunucusunun ağ trafiği istatistiklerini gösterir.';
 $strServerVars = 'Sunucu değişkenleri ve ayarları';
 $strServerVersion = 'Sunucu sürümü';
+$strSessionGCWarning = 'phpMyAdmin içinde yapılandırılmış tanımlama bilgisi geçerliliği PHP parametreleriniz [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] düşük, bundan dolayı oturum açmanızın süresi phpMyAdmin içinde yapılandırılmadıkça dolacaktır.';
 $strSessionStartupErrorGeneral = 'Oturum hatasız olarak başlatılamıyor, lütfen PHP ve/veya web sunucusu günlüğü dosyanızda verilen hataları kontrol edin ve PHP kurulumunuzu düzgün olarak yapılandırın.';
 $strSessionValue = 'Oturum değeri';
 $strSetEnumVal = 'Eğer alan türü "enum" veya "set" ise lütfen değerleri bu biçimi kullanarak girin: \'a\',\'b\',\'c\'...<br />Eğer bu değerler arasına hep ters eğik çizgi ("\") veya tek tırnak ("\'") koymanız gerekirse, önlerine ters eğik çizgi koyun (örneğin \'\\\\xyz\' veya \'a\\\'b\').';
@@ -1007,13 +1007,11 @@ $strSetupSaveDir_desc = 'Dışarı aktarmaların sunucu üzerinde kaydedilebilec
 $strSetupSaveDir_name = 'Kayıt dizini';
 $strSetupServerAuthConfigMsg = '[kbd]Yapılandırma[/kbd] kimlik denetimi türünü ayarladınız ve buna otomatik oturum açma için kullanıcı adı ve parola dahildir, canlı anamakineler için istenmeyen bir seçenektir. phpMyAdmin URL\'nizi bilen veya tahmin eden herhangi biri doğrudan phpMyAdmin panelinize erişebilir. [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server]Kimlik denetimi türünü[/a] [kbd]tanımlama bilgisine[/kbd] ya da [kbd]http[/kbd] olarak ayarlayın.';
 $strSetupServerExtensionMsg = 'Verim almak için mysqli kullanmalısınız';
-$strSetupServerNoPasswordRootMsg = 'Sunucuya root olarak parolasız bağlanmaya izin veriyorsunuz.';
 $strSetupServersAdd = 'Yeni sunucu ekle';
 $strSetupServers_AllowDeny_order_desc = 'Eğer kullanılmayacaksa boş bırakın';
 $strSetupServers_AllowDeny_order_name = 'Anamakine kimlik denetimi düzeni';
 $strSetupServers_AllowDeny_rules_desc = 'Varsayılan için boş bırakın';
 $strSetupServers_AllowDeny_rules_name = 'Anamakine kimlik denetimi kuralları';
-$strSetupServers_AllowNoPasswordRoot_name = 'Root\'un parolasız oturum açmasına izin verir';
 $strSetupServers_AllowRoot_name = 'Root\'un oturum açmasına izin ver';
 $strSetupServers_auth_swekey_config_desc = '[a@http://swekey.com]SweKey donanımsal kimlik denetimi[/a] için yapılandırma dosyası yolu (belge kök klasörünüzde yer almaz; önerilen: /etc/swekey.conf)';
 $strSetupServers_auth_swekey_config_name = 'SweKey yapılandırma dosyası';
@@ -1448,4 +1446,22 @@ $strYes = 'Evet';
 $strZeroRemovesTheLimit = 'Not: Bu seçeneklerin 0 (sıfır)\'a ayarlanması sınırı kaldırır.';
 $strZip = '"zip olarak"';
 
+$strCreateUserDatabasePrivileges = 'Grant all privileges on database &quot;%s&quot;';  //to translate
+$strShowBinaryContents = 'Show binary contents';  //to translate
+$strShowBLOBContents = 'Show BLOB contents';  //to translate
+$strStatic = 'static';  //to translate
+$strLoginWithoutPassword = 'Login without a password is forbidden by configuration (see AllowNoPassword)';  //to translate
+$strSetupServerNoPasswordMsg = 'You allow for connecting to the server without a password.';  //to translate
+$strSetupServers_AllowNoPassword_name = 'Allow logins without a password';  //to translate
+$strHostTableExplanation = 'When Host table is used, this field is ignored and values stored in Host table are used instead.';  //to translate
+$strGetMoreThemes = 'Get more themes!';  //to translate
+$strNoneDefault = 'None';  //to translate
+$strConfigDirectoryWarning = 'Directory [code]config[/code], which is used by the setup script, still exists in your phpMyAdmin directory. You should remove it once phpMyAdmin has been configured.';  //to translate
+$strRemoveCRLF = 'Remove CRLF characters within fields';  //to translate
+$strDoNotAutoIncrementZeroValues = 'Do not use AUTO_INCREMENT for zero values';  //to translate
+$strAndSmall = 'and';  //to translate
+$strReplicationStatus = 'Replication status';  //to translate
+$strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
+$strReplicationStatus_master = 'Master status';  //to translate
+$strReplicationStatus_slave = 'Slave status';  //to translate
 ?>

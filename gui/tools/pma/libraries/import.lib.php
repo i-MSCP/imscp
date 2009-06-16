@@ -3,7 +3,8 @@
 /**
  * Library that provides common import functions that are used by import plugins
  *
- * @version $Id: import.lib.php 11489 2008-08-16 12:17:52Z lem9 $
+ * @version $Id: import.lib.php 12178 2009-01-08 17:50:54Z lem9 $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -82,7 +83,7 @@ function PMA_detectCompression($filepath)
 function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
 {
     global $import_run_buffer, $go_sql, $complete_query, $display_query,
-        $sql_query, $my_die, $error, $reload, 
+        $sql_query, $my_die, $error, $reload,
         $skip_queries, $executed_queries, $max_sql_len, $read_multiply,
         $cfg, $sql_query_disabled, $db, $run_query, $is_superuser;
     $read_multiply = 1;
@@ -143,7 +144,6 @@ function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
                             if ($a_num_rows > 0) {
                                 $msg .= $GLOBALS['strRows'] . ': ' . $a_num_rows;
                             } elseif ($a_aff_rows > 0) {
-                                $a_rows =
                                 $msg .= sprintf($GLOBALS['strRowsAffected'], $a_aff_rows);
                             } else {
                                 $msg .= $GLOBALS['strEmptyResultSet'];

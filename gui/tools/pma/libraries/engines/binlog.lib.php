@@ -1,11 +1,13 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: binlog.lib.php 10137 2007-03-19 17:55:39Z cybot_tm $
+ * @version $Id: binlog.lib.php 11981 2008-11-24 10:18:44Z nijel $
+ * @package phpMyAdmin-Engines
  */
 
 /**
  *
+ * @package phpMyAdmin-Engines
  */
 class PMA_StorageEngine_binlog extends PMA_StorageEngine
 {

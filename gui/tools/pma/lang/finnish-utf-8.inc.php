@@ -1,5 +1,5 @@
 <?php
-/* $Id: finnish-utf-8.inc.php 12304 2009-03-24 12:56:58Z nijel $ */
+/* $Id: finnish-utf-8.inc.php 12504 2009-05-27 16:45:37Z lem9 $ */
 
 /*
  * Translated by Jouni Kähkönen, <address withdrawn>
@@ -141,7 +141,7 @@ $strChangeCopyModeRevoke = ' ... peruuta kaikki vanhan käyttäjän aktiiviset k
 $strChangeCopyUser = 'Vaihda kirjautumistietoja / Kopioi käyttäjä';
 $strChangeDisplay = 'Valitse näytettävä sarake';
 $strChange = 'Muokkaa';
-$strChangePassword = 'Vaihda salasanaa';
+$strChangePassword = 'Vaihda salasana';
 $strCharset = 'Merkistökoodaus';
 $strCharsetOfFile = 'Tiedoston merkistö:';
 $strCharsetsAndCollations = 'Merkistökoodaukset ja aakkosjärjestykset';
@@ -163,7 +163,7 @@ $strComments = 'Kommentit';
 $strCompatibleHashing = 'MySQL&nbsp;4.0 -yhteensopiva';
 $strCompleteInserts = 'Kokonaiset lisäyslauseet';
 $strCompression = 'Pakkaus';
-$strCompressionWillBeDetected = 'Seuraavat tiedostonpakkausmuodot löydetään automaattisesti: %s';
+$strCompressionWillBeDetected = 'Seuraavat tiedostonpakkausmuodot havaitaan automaattisesti: %s';
 $strConfigDefaultFileError = 'Oletusasetuksia ei voitu ladata kohteesta: "%1$s"';
 $strConfigFileError = 'phpMyAdmin ei pysty lukemaan asetustiedostoa.<br />Tämä saattaa johtua PHP:n löytämästä tiedoston virheestä tai tiedoston puuttumisesta.<br />Voit avata tiedoston alla olevasta linkistä ja lukea mahdolliset PHP-virheilmoitukset. Todennäköisimmin joltain riviltä puuttuu lainausmerkki tai puolipiste.<br />Jos linkistä avautuva sivu on tyhjä, asetustiedostossa ei ollut virhettä.';
 $strConfigureTableCoord = 'Määrittele koordinaatit taululle %s';
@@ -319,7 +319,6 @@ $strFileNameTemplateRemember = 'muista pohja';
 $strFileNameTemplate = 'Tiedostonimen pohja';
 $strFiles = 'Tiedostot';
 $strFileToImport = 'Tuotava tiedosto';
-$strFixed = 'kiinteä';
 $strFlushPrivilegesNote = 'Huom: PhpMyAdmin hakee käyttäjien käyttöoikeudet suoraan MySQL-palvelimen käyttöoikeustauluista. Näiden taulujen sisältö saattaa poiketa palvelimen käyttämistä käyttöoikeuksista, jos tauluihin on tehty muutoksia käsin. Tällöin %skäyttöoikeudet on ladattava uudestaan%s ennen jatkamista.';
 $strFlushQueryCache = 'Tyhjennä kyselymuisti';
 $strFlushTables = 'Tyhjennä (sulje) kaikki taulut';
@@ -779,6 +778,7 @@ $strServerTabVariables = 'Muuttujat';
 $strServerTrafficNotes = '<b>Palvelinliikenne</b>: Nämä taulukot näyttävät tämän MySQL-palvelimen verkkoliikennetilastot käynnistyksestä lähtien.';
 $strServerVars = 'Palvelimen muuttujat ja asetukset';
 $strServerVersion = 'Palvelimen versio';
+$strSessionGCWarning = 'PHP-parametri [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] on matalampi kuin phpMyAdminissa määritetty evästekelpoisuus. Siksi kirjautumisesi erääntyy nopeammin kuin phpMyAdminissa on määritetty.';
 $strSessionStartupErrorGeneral = 'Istuntoa ei voi aloittaa virheettömästi. Tarkista PHP:n tai verkkopalvelimen lokitiedostojen virheilmoitukset ja määritä PHP-asennuksen asetukset oikein.';
 $strSessionValue = 'Tämän istunnon arvo';
 $strSetEnumVal = 'Jos sarakkeen tietotyyppi on "enum" tai "set", syötä vaaditut arvot tässä muodossa: \'a\',\'b\',\'c\'...<br />Jos tarvitset arvoissa kenoviivaa ("\") tai heittomerkkiä ("\'"), laita merkin eteen kenoviiva (esim. \'\\\\xyz\' tai \'a\\\'b\').';
@@ -1004,13 +1004,11 @@ $strSetupSaveDir_desc = 'Hakemisto, jonne viennit voi tallentaa palvelimella';
 $strSetupSaveDir_name = 'Tallennushakemisto';
 $strSetupServerAuthConfigMsg = 'Asetit [kbd]config[/kbd]-todennustyypin ja sisällytit käyttäjänimen ja salasanan automaattista kirjautumista varten. Tämä ei ole suotava vaihtoehto oikeille palvelimille. Joka tietää tai arvaa phpMyAdmin-osoitteesi pystyy suoraan käyttämään phpMyAdmin-paneeliasi.  [a@?page=servers&amp;mode=edit&amp;id=%1$d#tab_Server]Todennustyypiksi[/a] kannattaa asettaa [kbd]cookie[/kbd] tai [kbd]http[/kbd].';
 $strSetupServerExtensionMsg = 'Suorituskykysyistä tulisi käyttää mysqli-laajennusta.';
-$strSetupServerNoPasswordRootMsg = 'Sallit yhteyden palvelimeen pääkäyttäjänä ilman salasanaa.';
 $strSetupServersAdd = 'Lisää uusi palvelin';
 $strSetupServers_AllowDeny_order_desc = 'Jätä tyhjäksi, jos tätä ei käytetä';
 $strSetupServers_AllowDeny_order_name = 'Palvelintodennuksen järjestys';
 $strSetupServers_AllowDeny_rules_desc = 'Käytä oletusarvoja jättämällä tyhjäksi';
 $strSetupServers_AllowDeny_rules_name = 'Palvelintodennuksen säännöt';
-$strSetupServers_AllowNoPasswordRoot_name = 'Salli pääkäyttäjä ilman salasanaa';
 $strSetupServers_AllowRoot_name = 'Salli pääkäyttäjän kirjautuminen';
 $strSetupServers_auth_swekey_config_desc = '[a@http://swekey.com]SweKey-laitteistotodennuksen[/a] asetustiedoston polku (ei dokumenttijuuressa; suositeltu: /etc/swekey.conf)';
 $strSetupServers_auth_swekey_config_name = 'SweKey-asetustiedosto';
@@ -1041,7 +1039,6 @@ $strSetupServers_hide_db_desc = 'Piilota tietokannat, jotka vastaavat säännöl
 $strSetupServers_hide_db_name = 'Piilota tietokannat';
 $strSetupServers_history_desc = 'Jätä tyhjäksi, jos et halua SQL-kyselyhistorian tukea; oletusarvo: [kbd]pma_history[/kbd]';
 $strSetupServers_history_name = 'SQL-kyselyhistorian taulu';
-$strSetupServers_host_desc = '';
 $strSetupServers_host_name = 'Palvelimen verkkonimi';
 $strSetupServers_LogoutURL_name = 'Uloskirjautumisen verkko-osoite';
 $strSetupServers_nopassword_desc = 'Yritä yhdistää ilman salasanaa';
@@ -1076,7 +1073,6 @@ $strSetupServers_user_desc = 'Jätä tyhjäksi, jos et käytä config-todennusta
 $strSetupServers_user_name = 'Config-todennuksen käyttäjä';
 $strSetupServers_verbose_check_desc = 'Poista käytöstä, mikäli tiedät pma_*-taulujesi olevan ajan tasalla. Tämä estää yhteensopivuustarkistukset ja lisää siten suorituskykyä.';
 $strSetupServers_verbose_check_name = 'Yksityiskohtainen tarkistus';
-$strSetupServers_verbose_desc = 'MySQL-palvelimen verkkonimi';
 $strSetupServers_verbose_name = 'Tämän palvelimen yksityiskohtainen nimi';
 $strSetupSetValue = 'Aseta arvo: %s';
 $strSetupShowAll_desc = 'Pitääkö käyttäjälle näyttää "Näytä kaikki (tietueet)" -painike';
@@ -1150,7 +1146,7 @@ $strShowSlaveHosts = 'Näytä alipalvelimet';
 $strShowSlaveStatus = 'Näytä alipalvelimen tila';
 $strShowStatusBinlog_cache_disk_useDescr = 'Kertoo binäärilokin tilapäistä välimuistia käyttäneiden transaktioiden määrän sellaisissa tapauksissa, joissa transaktiot ovat ylittäneet "binlog_cache_size"-muuttujan arvon ja käyttäneet tilapäistiedostoa transaktiokyselyjen tallentamiseen.';
 $strShowStatusBinlog_cache_useDescr = 'Binäärilokin tilapäistä välimuistia käyttäneiden transaktioiden määrä.';
-$strShowStatusCreated_tmp_disk_tablesDescr = 'Kertoo, kuinka monta palvelimen automaattisesti luomia tilapäistauluja levyllä on. Jos Created_tmp_disk_tables-parametrin arvo on liian suuri, nosta tmp_table_size:n arvoa, jotta tilapäisiä tauluja säilytettäisiin muistissa eikä levyllä.';
+$strShowStatusCreated_tmp_disk_tablesDescr = 'Kertoo, kuinka monta palvelimen automaattisesti luomia tilapäistaulua levyllä on. Jos Created_tmp_disk_tables-parametrin arvo on liian suuri, nosta tmp_table_size:n arvoa, jotta tilapäisiä tauluja säilytettäisiin muistissa eikä levyllä.';
 $strShowStatusCreated_tmp_filesDescr = 'Mysqld-palvelun luomien tilapäistiedostojen määrä.';
 $strShowStatusCreated_tmp_tablesDescr = 'Kertoo, kuinka monta tilapäistaulua palvelin on automaattisesti luonut kyselyjä suorittaessaan.';
 $strShowStatusDelayed_errorsDescr = 'Virheen aiheuttaneiden, INSERT DELAYED -kyselyllä kirjoitettujen rivien määrä (virheenä todennäköisesti päällekkäinen avain).';
@@ -1445,4 +1441,24 @@ $strYes = 'Kyllä';
 $strZeroRemovesTheLimit = 'Huom: Näiden valintojen asettaminen nollaksi (0) poistaa rajoituksen.';
 $strZip = '"zip-pakattu"';
 
+$strSetupServers_host_desc = 'MySQL-palvelimen verkkonimi';
+$strSetupServers_verbose_desc = 'Käyttäjäystävällinen kuvaus tästä palvelimesta. Jätä tyhjäksi, jos haluat, että tässä lukee sen sijaan palvelimen verkkonimi.';
+$strCreateUserDatabasePrivileges = 'Anna tietokannalle &quot;%s&quot; kaikki oikeudet';
+$strShowBinaryContents = 'Näytä binäärisisältö';
+$strShowBLOBContents = 'Näytä BLOB-sisältö';
+$strStatic = 'staattinen';
+$strLoginWithoutPassword = 'Kirjautuminen ilman salasanaa on kielletty asetuksissa (katso AllowNoPassword)';
+$strSetupServerNoPasswordMsg = 'Sallit yhteyden muodostamisen palvelimeen ilman salasanaa.';
+$strSetupServers_AllowNoPassword_name = 'Salli kirjautumiset ilman salasanaa';
+$strHostTableExplanation = 'Kun Host-taulua käytetään, tätä kenttää ei huomioida, vaan sen sijaan käytetään Host-taulussa olevia tietoja.';
+$strGetMoreThemes = 'Hae teemoja lisää!';
+$strNoneDefault = 'Ei mikään';
+$strConfigDirectoryWarning = 'Kansio [code]config[/code], jota asennusskripti käyttää, on vielä phpMyAdmin-hakemistossa. Sinun tulee poistaa kansio, kun phpMyAdminin asetukset on määritetty.';
+$strRemoveCRLF = 'Poista kentistä CRLF-merkit';
+$strDoNotAutoIncrementZeroValues = 'Älä käytä nolla-arvoissa AUTO_INCREMENT:iä';
+$strAndSmall = 'ja';
+$strReplicationStatus = 'Replikaation tila';
+$strReplicationStatusInfo = 'MySQL-palvelin toimii %s-tilassa, <b>replikaatio</b>-prosessissa. Hae palvelimen replikaatiotilasta lisää tietoja kohdasta <a href="#replication">Replikaatio</a>.';
+$strReplicationStatus_master = 'Isännän tila';
+$strReplicationStatus_slave = 'Alipalvelimen tila';
 ?>

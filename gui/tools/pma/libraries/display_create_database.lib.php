@@ -3,7 +3,8 @@
 /**
  * Displays form for creating database (if user has privileges for that)
  *
- * @version $Id: display_create_database.lib.php 12238 2009-02-16 10:22:09Z lem9 $
+ * @version $Id: display_create_database.lib.php 12237 2009-02-16 10:13:51Z lem9 $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;

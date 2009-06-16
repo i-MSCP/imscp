@@ -4,6 +4,7 @@
  * Holds class PMA_Error
  *
  * @version $Id: Error.class.php 12202 2009-01-20 18:04:20Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -14,6 +15,7 @@ require_once './libraries/Message.class.php';
 /**
  * a single error
  *
+ * @package phpMyAdmin
  */
 class PMA_Error extends PMA_Message
 {

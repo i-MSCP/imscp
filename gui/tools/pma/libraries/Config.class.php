@@ -3,12 +3,19 @@
 /**
  *
  *
- * @version $Id: Config.class.php 12426 2009-05-15 16:28:09Z lem9 $
+ * @version $Id: Config.class.php 12576 2009-06-15 15:30:30Z lem9 $
+ * @package phpMyAdmin
  */
+
+/**
+ * Load vendor configuration.
+ */
+require_once('./libraries/vendor_config.php');
 
 /**
  * Configuration class
  *
+ * @package phpMyAdmin
  */
 class PMA_Config
 {
@@ -85,7 +92,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.1.5');
+        $this->set('PMA_VERSION', '3.2.0');
         /**
          * @deprecated
          */
@@ -297,7 +304,8 @@ class PMA_Config
      */
     function __wakeup()
     {
-        if (! $this->checkConfigSource()
+        if (SKIP_MTIME_CONFIG_CHECK
+          || ! $this->checkConfigSource()
           || $this->source_mtime !== filemtime($this->getSource())
           || $this->default_source_mtime !== filemtime($this->default_source)
           || $this->error_config_file

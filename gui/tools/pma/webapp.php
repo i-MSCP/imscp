@@ -3,13 +3,20 @@
  * generate an WebApp file for Prism / WebRunner
  *
  * @see http://wiki.mozilla.org/Prism
+ * @package phpMyAdmin
  */
 
 /**
- *
+ * @ignore
  */
 define('PMA_MINIMUM_COMMON', true);
+/**
+ * Gets core libraries and defines some variables
+ */
 require_once './libraries/common.inc.php';
+/**
+ * ZIP file handler.
+ */
 require_once './libraries/zip.lib.php';
 
 // ini file

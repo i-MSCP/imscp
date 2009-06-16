@@ -6,9 +6,12 @@
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @copyright  Copyright (c) 2008, Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: index.php 11582 2008-09-10 16:53:28Z lem9 $
+ * @version    $Id: index.php 11975 2008-11-24 09:55:30Z nijel $
  */
 
+/**
+ * Core libraries.
+ */
 require './lib/common.inc.php';
 
 $page = filter_input(INPUT_GET, 'page');

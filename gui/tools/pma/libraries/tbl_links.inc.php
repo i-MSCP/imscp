@@ -3,6 +3,7 @@
 /**
  *
  * @version $Id: tbl_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
+ * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;

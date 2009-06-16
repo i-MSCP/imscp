@@ -1,36 +1,40 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
-* PHP interface to MimerSQL Validator
-*
-* Copyright 2002, 2003 Robin Johnson <robbat2@users.sourceforge.net>
-* http://www.orbis-terrarum.net/?l=people.robbat2
-*
-* All data is transported over HTTP-SOAP
-* And uses the PEAR SOAP Module
-*
-* Install instructions for PEAR SOAP
-* Make sure you have a really recent PHP with PEAR support
-* run this: "pear install Mail_Mime Net_DIME SOAP"
-*
-* If you got this file from somewhere other than phpMyAdmin
-* please be aware that the latest copy will always be in the
-* phpMyAdmin subversion tree as
-* $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/libraries/sqlvalidator.class.php $
-*
-* This code that also used to depend on the PHP overload module, but that has been
-* removed now.
-*
-* @access   public
-*
-* @author   Robin Johnson <robbat2@users.sourceforge.net>
-*
-* @version  $Id: sqlvalidator.class.php 11336 2008-06-21 15:01:27Z lem9 $
-*/
+ * PHP interface to MimerSQL Validator
+ *
+ * Copyright 2002, 2003 Robin Johnson <robbat2@users.sourceforge.net>
+ * http://www.orbis-terrarum.net/?l=people.robbat2
+ *
+ * All data is transported over HTTP-SOAP
+ * And uses the PEAR SOAP Module
+ *
+ * Install instructions for PEAR SOAP
+ * Make sure you have a really recent PHP with PEAR support
+ * run this: "pear install Mail_Mime Net_DIME SOAP"
+ *
+ * If you got this file from somewhere other than phpMyAdmin
+ * please be aware that the latest copy will always be in the
+ * phpMyAdmin subversion tree as
+ * $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/libraries/sqlvalidator.class.php $
+ *
+ * This code that also used to depend on the PHP overload module, but that has been
+ * removed now.
+ *
+ * @access   public
+ *
+ * @author   Robin Johnson <robbat2@users.sourceforge.net>
+ *
+ * @version  $Id: sqlvalidator.class.php 11990 2008-11-24 11:12:52Z nijel $
+ * @package phpMyAdmin
+ */
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
+/**
+ * Load SOAP client.
+ */
 @include_once 'SOAP/Client.php';
 
 if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
@@ -38,6 +42,9 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
 } else {
     // Ok, we have SOAP Support, so let's use it!
 
+/**
+ * @package phpMyAdmin
+ */
     class PMA_SQLValidator {
 
         var $url;
@@ -179,7 +186,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
             $this->username                      = 'anonymous';
             $this->password                      = '';
             $this->calling_program               = 'PHP_SQLValidator';
-            $this->calling_program_version       = '$Revision: 11336 $';
+            $this->calling_program_version       = '$Revision: 11990 $';
             $this->target_dbms                   = 'N/A';
             $this->target_dbms_version           = 'N/A';
             $this->connection_technology         = 'PHP';

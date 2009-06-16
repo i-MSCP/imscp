@@ -3,7 +3,8 @@
 /**
  * Functions for cleanup of user input.
  *
- * @version $Id: cleanup.lib.php 10723 2007-10-05 09:46:30Z cybot_tm $
+ * @version $Id: cleanup.lib.php 11982 2008-11-24 10:32:56Z nijel $
+ * @package phpMyAdmin
  */
 
 /**

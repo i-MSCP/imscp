@@ -4,6 +4,7 @@
  * Generic plugin interface.
  *
  * @version $Id: plugin_interface.lib.php 12137 2008-12-14 13:58:06Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**

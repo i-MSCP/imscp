@@ -8,6 +8,7 @@
  *
  * @todo display search form again if no results from previous search
  * @version $Id: tbl_select.php 12387 2009-04-29 17:26:27Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**

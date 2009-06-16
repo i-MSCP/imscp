@@ -12,13 +12,17 @@
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  *
  * @author  Mike Cochrane <mike@graftonhall.co.nz>
- * @version $Id: blowfish.php 11081 2008-01-25 09:35:48Z cybot_tm $
+ * @version $Id: blowfish.php 11997 2008-11-24 11:36:33Z nijel $
  * @since   Horde 2.2
  * @package horde.cipher
  */
 
 // Change for phpMyAdmin by lem9:
 //class Horde_Cipher_blowfish extends Horde_Cipher {
+/**
+ * Horde Blowfish cipher class.
+ * @package horde.cipher
+ */
 class Horde_Cipher_blowfish
 {
     /* Pi Array */
@@ -478,17 +482,17 @@ class Horde_Cipher_blowfish
  *
  * @author  lem9
  */
-function PMA_blowfish_encrypt($data, $secret) 
+function PMA_blowfish_encrypt($data, $secret)
 {
     $pma_cipher = new Horde_Cipher_blowfish;
     $encrypt = '';
-    
+
     $mod = strlen($data) % 8;
-    
+
     if ($mod > 0) {
         $data .= str_repeat("\0", 8 - $mod);
     }
-    
+
     foreach (str_split($data, 8) as $chunk) {
         $encrypt .= $pma_cipher->encryptBlock($chunk, $secret);
     }
@@ -512,7 +516,7 @@ function PMA_blowfish_decrypt($encdata, $secret)
     $pma_cipher = new Horde_Cipher_blowfish;
     $decrypt = '';
     $data = base64_decode($encdata);
-    
+
     foreach (str_split($data, 8) as $chunk) {
         $decrypt .= $pma_cipher->decryptBlock($chunk, $secret);
     }

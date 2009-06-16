@@ -3,16 +3,18 @@
 /**
  *
  * @version $Id: Table.class.php 12392 2009-05-06 08:29:26Z helmo $
+ * @package phpMyAdmin
  */
 
 /**
  * @todo make use of PMA_Message and PMA_Error
+ * @package phpMyAdmin
  */
 class PMA_Table
 {
 
     static $cache = array();
-    
+
     /**
      * @var string  table name
      */
@@ -231,45 +233,51 @@ class PMA_Table
             return true;
         }
 
-        // This would be the correct way of doing the check but at least in
-        // MySQL 5.0.33 it's too slow when there are hundreds of databases
-        // and/or tables (more than 3 minutes for 400 tables)
-        /*if (false === PMA_DBI_fetch_value('SELECT TABLE_NAME FROM `information_schema`.`VIEWS` WHERE `TABLE_SCHEMA` = \'' . $db . '\' AND `TABLE_NAME` = \'' . $table . '\';')) {
-            return false;
-        } else {
-            return true;
-        } */
-        // A more complete verification would be to check if all columns
-        // from the result set are NULL except Name and Comment.
-        // MySQL from 5.0.0 to 5.0.12 returns 'view',
-        // from 5.0.13 returns 'VIEW'.
-        // use substr() because the comment might contain something like:
-        // (VIEW 'BASE2.VTEST' REFERENCES INVALID TABLE(S) OR COLUMN(S) OR FUNCTION)
-        // use 'Engine' == NULL to exclude regular tables where the comment starts with the word 'view'
-        $comment = strtoupper(PMA_Table::sGetStatusInfo($db, $table, 'Comment'));
-        $engine = PMA_Table::sGetStatusInfo($db, $table, 'Engine');
-        return ( substr($comment, 0, 4) == 'VIEW' && $engine == NULL);
+        // Since phpMyAdmin 3.2 the field TABLE_TYPE is properly filled by PMA_DBI_get_tables_full()
+        $type = PMA_Table::sGetStatusInfo($db, $table, 'TABLE_TYPE');
+        return $type == 'VIEW';
     }
-    
+
     static public function sGetToolTip($db, $table)
     {
-        return PMA_Table::sGetStatusInfo($db, $table, 'Comment') 
+        return PMA_Table::sGetStatusInfo($db, $table, 'Comment')
             . ' (' . PMA_Table::countRecords($db, $table, true) . ')';
     }
 
+    /**
+     * Returns full table status info, or specific if $info provided
+     *
+     * this info is collected from information_schema
+     *
+     * @todo PMA_DBI_get_tables_full needs to be merged somehow into this class or at least better documented
+     * @param string $db
+     * @param string $table
+     * @param string $info
+     * @param boolean $force_read
+     * @return mixed
+     */
     static public function sGetStatusInfo($db, $table, $info = null, $force_read = false)
     {
         if (! isset(PMA_Table::$cache[$db][$table]) || $force_read) {
-            PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'');
+            PMA_DBI_get_tables_full($db, $table);
         }
-        
+
+        if (! isset(PMA_Table::$cache[$db][$table])) {
+            // happens when we enter the table creation dialog
+            // or when we really did not get any status info, for example
+            // when $table == 'TABLE_NAMES' after the user tried SHOW TABLES
+            return '';
+        }
+
         if (null === $info) {
             return PMA_Table::$cache[$db][$table];
         }
-        
-        if (! isset(PMA_Table::$cache[$db][$table][$info]) || $force_read) {
-            PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'');
+
+        if (! isset(PMA_Table::$cache[$db][$table][$info])) {
+            trigger_error('unkown table status: ' . $info, E_USER_WARNING);
+            return false;
         }
+
         return PMA_Table::$cache[$db][$table][$info];
     }
 
@@ -329,7 +337,7 @@ class PMA_Table
                 $query .= ' NOT NULL';
             }
         }
-        
+
         switch ($default_type) {
             case 'USER_DEFINED' :
                 if ($is_timestamp && $default_value === '0') {
@@ -354,7 +362,7 @@ class PMA_Table
         if (!empty($extra)) {
             $query .= ' ' . $extra;
             // Force an auto_increment field to be part of the primary key
-            // even if user did not tick the PK box; 
+            // even if user did not tick the PK box;
             if ($extra == 'AUTO_INCREMENT') {
                 $primary_cnt = count($field_primary);
                 if (1 == $primary_cnt) {
@@ -403,25 +411,25 @@ class PMA_Table
      *
      * @access  public
      */
-    static public function countRecords($db, $table, $ret = false, 
+    static public function countRecords($db, $table, $ret = false,
         $force_exact = false, $is_view = null)
     {
         if (isset(PMA_Table::$cache[$db][$table]['ExactRows'])) {
             $row_count = PMA_Table::$cache[$db][$table]['ExactRows'];
         } else {
             $row_count = false;
-            
+
             if (null === $is_view) {
                 $is_view = PMA_Table::isView($db, $table);
             }
-            
+
             if (! $force_exact) {
                 if (! isset(PMA_Table::$cache[$db][$table]['Rows']) && ! $is_view) {
                     PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . PMA_sqlAddslashes($table, true) . '\'');
                 }
                 $row_count = PMA_Table::$cache[$db][$table]['Rows'];
             }
-    
+
             // for a VIEW, $row_count is always false at this point
             if (false === $row_count || $row_count < $GLOBALS['cfg']['MaxExactCount']) {
                 if (! $is_view) {
@@ -433,7 +441,7 @@ class PMA_Table
                     // count could bring down a server, so we offer an
                     // alternative: setting MaxExactCountViews to 0 will bypass
                     // completely the record counting for views
-    
+
                     if ($GLOBALS['cfg']['MaxExactCountViews'] == 0) {
                         $row_count = 0;
                     } else {

@@ -29,6 +29,7 @@
  * - authentication work
  *
  * @version $Id: common.inc.php 12397 2009-05-08 14:15:55Z lem9 $
+ * @package phpMyAdmin
  */
 
 /**
@@ -40,8 +41,8 @@ if (version_compare(PHP_VERSION, '5.2.0', 'lt')) {
 }
 
 /**
- * Backward compatibility for PHP 5.2
- */
+  * Backward compatibility for PHP 5.2
+  */
 if (!defined('E_DEPRECATED')) {
     define('E_DEPRECATED', 8192);
 }
@@ -205,7 +206,7 @@ unset($key, $value, $variables_whitelist);
  * ... main form elments ...
  * <input type="submit" name="main_action" value="submit form" />
  * </form>
- * </code
+ * </code>
  *
  * so we now check if a subform is submitted
  */
@@ -807,6 +808,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
          */
         require_once './libraries/database_interface.lib.php';
 
+        require_once './libraries/logging.lib.php';
+
         // Gets the authentication library that fits the $cfg['Server'] settings
         // and run authentication
 
@@ -867,7 +870,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
             // Ejects the user if banished
             if ($allowDeny_forbidden) {
-               PMA_auth_fails();
+                PMA_log_user($cfg['Server']['user'], 'allow-denied');
+                PMA_auth_fails();
             }
             unset($allowDeny_forbidden); //Clean up after you!
         } // end if
@@ -875,15 +879,17 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         // is root allowed?
         if (!$cfg['Server']['AllowRoot'] && $cfg['Server']['user'] == 'root') {
             $allowDeny_forbidden = true;
+            PMA_log_user($cfg['Server']['user'], 'root-denied');
             PMA_auth_fails();
             unset($allowDeny_forbidden); //Clean up after you!
         }
 
-        // is root without password allowed?
-        if (!$cfg['Server']['AllowNoPasswordRoot'] && $cfg['Server']['user'] == 'root' && $cfg['Server']['password'] == '') {
-            $allowDeny_forbidden = true;
+        // is a login without password allowed?
+        if (!$cfg['Server']['AllowNoPassword'] && $cfg['Server']['password'] == '') {
+            $login_without_password_is_forbidden = true;
+            PMA_log_user($cfg['Server']['user'], 'empty-denied');
             PMA_auth_fails();
-            unset($allowDeny_forbidden); //Clean up after you!
+            unset($login_without_password_is_forbidden); //Clean up after you!
         }
 
         // Try to connect MySQL with the control user profile (will be used to
@@ -903,6 +909,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         if (! $controllink) {
             $controllink = $userlink;
         }
+
+        /* Log success */
+        PMA_log_user($cfg['Server']['user']);
 
         /**
          * with phpMyAdmin 3 we support MySQL >=5

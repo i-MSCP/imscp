@@ -8,6 +8,7 @@
  * wiki <http://wiki.phpmyadmin.net>.
  *
  * @version $Id: config.sample.inc.php 12304 2009-03-24 12:56:58Z nijel $
+ * @package phpMyAdmin
  */
 
 /*

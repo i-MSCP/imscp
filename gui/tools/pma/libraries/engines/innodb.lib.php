@@ -1,11 +1,13 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: innodb.lib.php 10689 2007-10-02 08:38:17Z cybot_tm $
+ * @version $Id: innodb.lib.php 11981 2008-11-24 10:18:44Z nijel $
+ * @package phpMyAdmin-Engines
  */
 
 /**
  *
+ * @package phpMyAdmin-Engines
  */
 class PMA_StorageEngine_innodb extends PMA_StorageEngine
 {

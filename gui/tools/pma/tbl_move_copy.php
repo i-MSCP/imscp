@@ -2,7 +2,8 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_move_copy.php 11027 2007-12-30 20:59:57Z lem9 $
+ * @version $Id: tbl_move_copy.php 11994 2008-11-24 11:22:44Z nijel $
+ * @package phpMyAdmin
  */
 
 /**
@@ -28,8 +29,8 @@ PMA_DBI_select_db($db);
 
 $goto = $cfg['DefaultTabTable'];
 
-/** 
- * $_REQUEST['target_db'] could be empty in case we came from an input field 
+/**
+ * $_REQUEST['target_db'] could be empty in case we came from an input field
  * (when there are many databases, no drop-down)
  */
 if (empty($_REQUEST['target_db'])) {

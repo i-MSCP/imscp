@@ -3,13 +3,16 @@
 /**
  * Set of functions used to build NHibernate dumps of tables
  *
- * @version $Id: codegen.php 11582 2008-09-10 16:53:28Z lem9 $
+ * @package phpMyAdmin-Export-Codegen
+ * @version $Id: codegen.php 11982 2008-11-24 10:32:56Z nijel $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
 }
 
-// this gets executed twice so avoid a notice
+/**
+ * This gets executed twice so avoid a notice
+ */
 if (! defined('CG_FORMAT_NHIBERNATE_CS')) {
     define("CG_FORMAT_NHIBERNATE_CS", "NHibernate C# DO");
     define("CG_FORMAT_NHIBERNATE_XML", "NHibernate XML");
@@ -142,6 +145,10 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
 	return PMA_exportOutputHandler(sprintf("%s is not supported.", $format));
 }
 
+/**
+ *
+ * @package phpMyAdmin-Export-Codegen
+ */
 class TableProperty
 {
 	public $name;
@@ -269,7 +276,7 @@ class TableProperty
 		}
 		return implode("\n", $lines);
 	}
-	
+
 	function handleNHibernateXMLBody($db, $table, $crlf)
 	{
 		$lines=array();
@@ -295,7 +302,7 @@ class TableProperty
 		$lines[]="</hibernate-mapping>";
 		return implode("\n", $lines);
 	}
-	
+
 	function cgGetOption($optionName)
 	{
 		global $what;
