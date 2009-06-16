@@ -5,6 +5,18 @@ ispCP ω 1.0.1 Changelog
 	- TOOLS:
 		* Fixed #1869: Updated phpMyAdmin to version 3.2.0
 
+2009-06-15 Thomas Wacker
+	- GUI:
+		* Fixed #1868: Database update fails
+
+2009-06-13 Thomas Wacker
+	- GUI:
+		* Added backtrace e-mail to admin in case of SQL error
+
+2009-06-12 Thomas Wacker
+	- GUI:
+		* Fixed #1764: Problems in admin/reseller_edit.php
+
 2009-06-12 Benedikt Heintel
 	- DOCS:
 		* Updated Debian INSTALL
