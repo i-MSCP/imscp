@@ -960,7 +960,7 @@ sub gen_sys_rand_num {
         }
     }
 
-    if ( -e '/dev/urandom') {
+    if ( -e '/dev/random') {
         push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: seeding the entropy pool (possible current size: $pool_size)");
 
         my $seed = $len;
@@ -975,8 +975,8 @@ sub gen_sys_rand_num {
                 $c .= chr($l);
             } while($n--);
 
-            save_file('/dev/urandom', $c . (rand() * rand() * rand() * rand()));
-            save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
+            save_file('/dev/random', $c . (rand() * rand() * rand() * rand()));
+            save_file('/dev/random', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
             $seed--;
         }
     }
@@ -992,7 +992,7 @@ sub gen_sys_rand_num {
 
     if (!defined($rs)) {
 
-        $rs = open(F, '<', '/dev/urandom');
+        $rs = open(F, '<', '/dev/random');
 
         if (!defined($rs)) {
 
