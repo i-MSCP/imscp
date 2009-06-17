@@ -232,9 +232,8 @@ td.content4 {
 tr.hl:hover td.content,
 tr.hl:hover td.content2,
 table.hl tr:hover td.content,
-table.hl tr:hover td.content2
-{
-	background-color: lightgrey;
+table.hl tr:hover td.content2 {
+	background-color: #a8a8a8;
 }
 
 .textinput {
