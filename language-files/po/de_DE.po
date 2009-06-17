@@ -3272,9 +3272,8 @@ msgstr "Es sind keine Benutzer vorhanden!"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgid "Disk Usage Percent"
-msgstr "Prozentualer Speicherplatzverbrauch"
+msgstr "Speicherplatzverbrauch (in Prozent)"
 
 msgid "Edit domain"
 msgstr "Domain bearbeiten"
