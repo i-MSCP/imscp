@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-06-21 Thomas Wacker
+	- GUI:
+		* Fixed #1811: Problem with translation string
+
 2009-06-16 Benedikt Heintel
 	- TOOLS:
 		* Fixed #1869: Updated phpMyAdmin to version 3.2.0
