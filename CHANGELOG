@@ -2,6 +2,10 @@ ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2009-06-21 Thomas Wacker
+	- CONFIGS:
+		* Fixed #1663: controlpanel redirect
+
+2009-06-21 Thomas Wacker
 	- GUI:
 		* Fixed #1811: Problem with translation string
 

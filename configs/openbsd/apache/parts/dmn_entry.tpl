@@ -14,7 +14,8 @@
 
     RedirectMatch permanent ^/ftp([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
     RedirectMatch permanent ^/pma([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
-    RedirectMatch permanent ^/webmail([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
+    RedirectMatch permanent ^/webmail([\/]?)	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
+    RedirectMatch permanent ^/ispcp([\/]?)		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/
 
     ErrorDocument 401 /errors/401.html
     ErrorDocument 403 /errors/403.html
