@@ -52,7 +52,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 
 	$street2 = (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
 
-	$status = 'new';
+	$status = 'unconfirmed';
 
 	$query = "
 		INSERT INTO
@@ -112,12 +112,19 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
  *
  */
 
+
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];
 } else {
 	system_message(tr('You do not have permission to access this interface!'));
 }
+
+if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
+	system_message(tr('Security code was incorrect!'));
+	user_goto('chart.php');
+}
+
 
 if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	&& (isset($_SESSION['lname']) && $_SESSION['lname'] != '')

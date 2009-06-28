@@ -60,6 +60,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$prevent_external_login_admin	= $_POST['prevent_external_login_admin'];
 	$prevent_external_login_reseller= $_POST['prevent_external_login_reseller'];
 	$prevent_external_login_client	= $_POST['prevent_external_login_client'];
+	$custom_orderpanel_id			= clean_input($_POST['coid']);
 
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
@@ -110,10 +111,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_ADMIN', $prevent_external_login_admin);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_RESELLER', $prevent_external_login_reseller);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_CLIENT', $prevent_external_login_client);
+		setConfig_Value('CUSTOM_ORDERPANEL_ID', $custom_orderpanel_id);
 		set_page_message(tr('Settings saved !'));
 	}
 }
 
+$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
 $tpl->assign(
 	array(
 		'LOSTPASSWORD_TIMEOUT_VALUE' => Config::get('LOSTPASSWORD_TIMEOUT'),
@@ -122,7 +125,8 @@ $tpl->assign(
 		'BRUTEFORCE_BLOCK_TIME_VALUE' => Config::get('BRUTEFORCE_BLOCK_TIME'),
 		'BRUTEFORCE_BETWEEN_TIME_VALUE' => Config::get('BRUTEFORCE_BETWEEN_TIME'),
 		'BRUTEFORCE_MAX_CAPTCHA' => Config::get('BRUTEFORCE_MAX_CAPTCHA'),
-		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE')
+		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE'),
+		'CUSTOM_ORDERPANEL_ID' => $coid
 	)
 );
 $language = Config::get('USER_INITIAL_LANG');
@@ -315,6 +319,7 @@ $tpl->assign(
 		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
 		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
+		'TR_CUSTOM_ORDERPANEL_ID' => tr('Custom orderpanel ID'),
 	)
 );
 

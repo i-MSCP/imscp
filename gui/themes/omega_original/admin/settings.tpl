@@ -242,6 +242,11 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td class="content2">{TR_CUSTOM_ORDERPANEL_ID}</td>
+                              <td class="content"><input name="coid" id="coid" type="text" class="textinput" maxwidth="20" size="20" value="{CUSTOM_ORDERPANEL_ID}" /></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td colspan="2"><input type="hidden" name="uaction" value="apply" />
                                   <input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" /></td>
                             </tr>

@@ -93,6 +93,19 @@
 			<td align="right"><strong>{TR_TOTAL}</strong></td>
 			<td class="content2"><strong>{TOTAL}</strong></td>
 		</tr>
+
+
+		<tr>
+			<td colspan="2"><label for="capcode">{TR_IMGCAPCODE}<br /><strong>{TR_CAPCODE}</strong></label></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input name="capcode" type="text" class="textinput" id="capcode" style="width:210px" value=""></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
+		</tr>
+
+
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>

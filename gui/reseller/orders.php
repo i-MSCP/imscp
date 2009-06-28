@@ -71,9 +71,11 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 			`user_id` = ?
 		AND
 			`status` != ?
+		AND
+			`status` != ?
 	";
 	// let's count
-	$rs = exec_query($sql, $count_query, array($user_id, 'added'));
+	$rs = exec_query($sql, $count_query, array($user_id, 'added', 'unconfirmed'));
 	$records_count = $rs->fields['cnt'];
 
 	$query = "
@@ -85,12 +87,14 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 			`user_id` = ?
 		AND
 			`status` != ?
+		AND
+			`status` != ?
 		ORDER BY
 			`date` DESC
 		LIMIT
 			$start_index, $rows_per_page
 	";
-	$rs = exec_query($sql, $query, array($user_id, 'added'));
+	$rs = exec_query($sql, $query, array($user_id, 'added', 'unconfirmed'));
 
 	$prev_si = $start_index - $rows_per_page;
 

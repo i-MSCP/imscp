@@ -149,6 +149,7 @@ SQL_QUERY;
 			)
 		);
 
+		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
 		$i = 1;
 		while (($data = $rs->FetchRow())) {
 			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
@@ -162,6 +163,7 @@ SQL_QUERY;
 					'PLAN_ACTION' => tr('Delete'),
 					'PLAN_SHOW' => tr('Show hosting plan'),
 					'PURCHASING' => $status,
+					'CUSTOM_ORDERPANEL_ID' => $coid,
 					'HP_ID' => $data['id'],
 					'ADMIN_ID' => $_SESSION['user_id']
 				)

@@ -518,6 +518,46 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * Try to correct E-Mail-Template after-order-msg
+	 *
+	 * @author		Thomas Wacker
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1848
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_21() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+		
+		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
+		
+		$query = <<<SQL_QUERY
+		SELECT
+			`id`, `message`
+		FROM
+			`email_tpls`
+		WHERE
+			`name` = ?
+SQL_QUERY;
+		$res = exec_query($sql, $query, array('after-order-msg'));
+
+		while ($data = $res->FetchRow()) {
+			$msg = $data['message'];
+			$n = strpos($msg, '{DOMAIN}');
+			if ($n !== false) {
+				$msg = substr($msg, 0, $n+8).$add.substr($msg, $n+8);
+				$sqlUpd[] = "UPDATE `email_tpls` SET `message`='".addslashes($msg)."'"
+						  . " WHERE `id`=".$data['id'];
+			}
+		}
+		
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

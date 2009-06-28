@@ -242,6 +242,10 @@ This is an automatic confirmation for the order of the domain:
 
 {DOMAIN}
 
+You have to click the following link to continue the domain creation process.
+
+{ACTIVATE_LINK}
+
 Thank you for using ispCP services.
 The ispCP Team
 

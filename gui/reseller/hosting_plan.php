@@ -172,6 +172,8 @@ SQL_QUERY;
 			)
 		);
 
+		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+
 		$i = 1;
 		while ($data = $rs->FetchRow()) {
 
@@ -187,6 +189,7 @@ SQL_QUERY;
 					'PLAN_ACTION' => tr('Delete'),
 					'PLAN_SHOW' => tr('Show hosting plan'),
 					'PURCHASING' => $status,
+					'CUSTOM_ORDERPANEL_ID' => $coid,
 					'HP_ID' => $data['id'],
 					'RESELLER_ID' => $_SESSION['user_id']
 				)

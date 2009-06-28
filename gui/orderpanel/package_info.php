@@ -96,6 +96,8 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
 		$hp_traff = translate_limit_value($hp_traff, true);
 
+		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+		
 		$tpl->assign(
 			array(
 				'PACK_NAME'		=> $rs->fields['name'],
@@ -116,6 +118,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'SQL_USR'		=> translate_limit_value($hp_sql_user),
 				'PRICE'			=> $price,
 				'SETUP'			=> $setup_fee,
+				'CUSTOM_ORDERPANEL_ID'	=> $coid
 			)
 		);
 	}
@@ -131,7 +134,10 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
  *
  */
 
-if (isset($_GET['id'])) {
+$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+$bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
+
+if (isset($_GET['id']) && $bcoid) {
 	$plan_id = $_GET['id'];
 	$_SESSION['plan_id'] = $plan_id;
 	if (isset($_SESSION['user_id'])) {

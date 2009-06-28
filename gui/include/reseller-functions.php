@@ -1500,6 +1500,11 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 		$to = $uemail;
 	}
 
+	$activate_link = Config::get('BASE_SERVER_VHOST_PREFIX').Config::get('BASE_SERVER_VHOST');
+	$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+	$key = sha1($order_id.'-'.$domain_name.'-'.$admin_id.'-'.$coid);
+	$activate_link .= '/orderpanel/activate.php?id='.$order_id.'&k='.$key;
+
 	$search = array();
 	$replace = array();
 
@@ -1509,6 +1514,8 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$replace[] = $uemail;
 	$search [] = '{NAME}';
 	$replace[] = $name;
+	$search [] = '{ACTIVATE_LINK}';
+	$replace[] = $activate_link;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
@@ -1518,26 +1525,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$headers = "From: ". $from . "\n";
 	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
 
-	$mail_result = mail($to, $subject, $message, $headers);
-
-	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	// let's send mail to the reseller => new order
-	$subject = encode(tr("You have a new order"));
-
-	$message = tr('
-
-Dear {RESELLER},
-you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
-
-Please login into your ispCP control panel for more details.
-
-');
-	$search [] = '{RESELLER}';
-	$replace[] = $from_name;
-	$message = str_replace($search, $replace, $message);
-	$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
-
-	$mail_result = mail($from, $subject, $message, $headers);
+	mail($to, $subject, $message, $headers);
 }
 
 function send_alias_order_email($alias_name) {

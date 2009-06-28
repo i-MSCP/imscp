@@ -3,7 +3,7 @@
 
 <table width="400">
 	<tr align="right">
-		<td colspan="2"><a href="index.php?user_id={USER_ID}" class="link">{TR_BACK}</a></td>
+		<td colspan="2"><a href="index.php?coid={CUSTOM_ORDERPANEL_ID}&amp;user_id={USER_ID}" class="link">{TR_BACK}</a></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="title"><strong>{PACK_NAME}</strong><br />
@@ -127,7 +127,7 @@
 		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr align="center">
-		<td colspan="2"><a href="addon.php?id={PACK_ID}&amp;user_id={USER_ID}" class="link"><strong style="color:red;">{TR_PURCHASE}</strong></a></td>
+		<td colspan="2"><a href="addon.php?coid={CUSTOM_ORDERPANEL_ID}&amp;id={PACK_ID}&amp;user_id={USER_ID}" class="link"><strong style="color:red;">{TR_PURCHASE}</strong></a></td>
 	</tr>
 </table>
 

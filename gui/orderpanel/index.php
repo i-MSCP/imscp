@@ -108,8 +108,10 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
  * static page messages.
  *
  */
+$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+$bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
 
-if (isset($_GET['user_id']) && is_numeric($_GET['user_id'])) {
+if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $bcoid) {
 	$user_id = $_GET['user_id'];
 	$_SESSION['user_id'] = $user_id;
 } else if (isset($_SESSION['user_id'])) {
