@@ -557,6 +557,27 @@ SQL_QUERY;
 		
 		return $sqlUpd;
 	}
+	
+
+	/**
+	 * Add domain expiration field
+	 * Thanks to alecksievici
+	 *
+	 * @author		Thomas Wacker
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r1849
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_22() {
+		$sqlUpd = array();
+		$sqlUpd[] = <<<SQL_QUERY
+		ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`
+SQL_QUERY;
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

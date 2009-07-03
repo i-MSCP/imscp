@@ -67,6 +67,22 @@
                           <input type="text" name="dmn_name" value="{DMN_NAME_VALUE}" style="width:210px" class="textinput" />
                         </td>
                       </tr>
+		      <!-- BDP: expire -->
+		      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="200">{TR_DOMAIN_EXPIRE}</td>
+                        <td class="content">TODO: TRANSLATE
+                        	<select name="dmn_expire">
+				<option value="0">Never</option>
+				<option value="1">1 Month</option>
+				<option value="2">2 Months</option>
+				<option value="3">3 Months</option>
+				<option value="6">6 Months</option>
+				<option value="12">1 Year</option>
+				<option value="24">2 Years</option>
+				</select>
+                        </td>
+                      </tr>
                       <!-- BDP: add_user -->
                       <tr>
                         <td width="25">&nbsp;</td>

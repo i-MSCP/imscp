@@ -206,6 +206,7 @@ function action_delete(url, dmn_name) {
           <td class="content3"><b>{TR_USR_USERNAME}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_DISK_USAGE_PERCENT}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
+          <td width="100" align="center" class="content3"><b>{TR_EXPIRES_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
           <td colspan="5" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
@@ -216,6 +217,7 @@ function action_delete(url, dmn_name) {
           <td class="{USR_CLASS}"> <a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" alt="" />{USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{DISK_USAGE_PERCENT} %</td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
+          <td class="{USR_CLASS}" align="center">{USER_EXPIRES_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{URL_CHANGE_INTERFACE}" class="link" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a></td>

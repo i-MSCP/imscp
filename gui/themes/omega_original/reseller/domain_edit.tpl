@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="../themes/omega_original/css/tooltip.js"></script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -18,6 +19,9 @@
   </tr>
  </table>
  <!-- EDP: logged_from -->
+<!-- ToolTip -->
+<div id="dmn_exp_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000000;width:200px;position:absolute;">{TR_DMN_EXP_HELP}</div>
+<!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -59,6 +63,25 @@
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DOMAIN_NAME}</td>
                         <td class="content">{VL_DOMAIN_NAME}</td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="193">{TR_DOMAIN_EXPIRE}</td>
+                        <td class="content">{VL_DOMAIN_EXPIRE}</td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" /></td>
+                        <td class="content"><select name="dmn_expire">
+							<option value="0">Unchanged</option>
+							<option value="-1">- 1 Month</option>
+							<option value="1">+ 1 Month</option>
+							<option value="2">+ 2 Months</option>
+							<option value="3">+ 3 Months</option>
+							<option value="6">+ 6 Months</option>
+							<option value="12">+ 1 Year</option>
+							<option value="24">+ 2 Years</option>
+						</select></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>

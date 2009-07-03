@@ -115,6 +115,28 @@ function send_request() {
 	return $answer;
 }
 
+function update_expire_date ( $user_id, $domain_new_expire ) {
+
+	$sql = Database::getInstance();
+
+	$query = "
+			UPDATE
+				`domain`
+			SET
+				`domain_expires` = ?
+			WHERE
+				`domain_id` = ?
+		";
+
+		$rs = exec_query(
+			$sql,
+			$query,
+			array(
+				$domain_new_expire,
+				$user_id
+			)
+		);
+}
 
 function update_user_props($user_id, $props) {
 

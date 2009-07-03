@@ -738,7 +738,7 @@ function gen_user_list(&$tpl, &$sql) {
 			// end of user status icon
 			$admin_name = decode_idna($rs->fields['domain_name']);
 
-			$domain_created = $rs->fields['domain_created'];
+			$domain_created = $rs->fields['domain_created']; 
 
 			if ($domain_created == 0) {
 				$domain_created = tr('N/A');
@@ -747,10 +747,20 @@ function gen_user_list(&$tpl, &$sql) {
 				$domain_created = date($date_formt, $domain_created);
 			}
 
+			$domain_expires = $rs->fields['domain_expires']; 
+
+			if ($domain_expires == 0) { 
+				$domain_expires = tr('N/A');
+			} else { 
+				$date_formt = Config::get('DATE_FORMAT'); 
+				$domain_expires = date($date_formt, $domain_expires); 
+			}
+ 
 			$tpl->assign(
 				array(
 					'USR_USERNAME' => $admin_name,
 					'USER_CREATED_ON' => $domain_created,
+					'USER_EXPIRES_ON' => $domain_expires,
 					'USR_CREATED_BY' => $rs2->fields['admin_name'],
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
@@ -782,6 +792,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 			'TR_USERS' => tr('Users'),
 			'TR_SEARCH' => tr('Search'),
 			'TR_CREATED_ON' => tr('Creation date'),
+			'TR_EXPIRES_ON' => tr('Expire date'),
 			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 			'TR_EDIT' => tr("Edit")
 		)

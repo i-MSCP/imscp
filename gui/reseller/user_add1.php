@@ -57,6 +57,7 @@ $tpl->assign(
 		'TR_ADD_USER'				=> tr('Add user'),
 		'TR_CORE_DATA'				=> tr('Core data'),
 		'TR_DOMAIN_NAME'			=> tr('Domain name'),
+		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
 		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
 		'TR_YES'					=> tr('yes'),
@@ -93,6 +94,7 @@ unset_messages();
  */
 function check_user_data() {
 	global $dmn_name; // domain name
+	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
 	$sql = Database::getInstance();
@@ -103,6 +105,10 @@ function check_user_data() {
 		$dmn_name = strtolower(trim($_POST['dmn_name']));
 		$dmn_name = encode_idna($dmn_name);
 	}
+
+	if (isset($_POST['dmn_expire']))
+		$dmn_expire = $_POST['dmn_expire'];
+
 	if (isset($_POST['dmn_tpl']))
 		$dmn_chp = $_POST['dmn_tpl'];
 
@@ -128,6 +134,7 @@ function check_user_data() {
 	} else if ($dmn_pt == '_yes_' || !isset($_POST['dmn_tpl'])) {
 		// send through the session the data
 		$_SESSION['dmn_name']	= $dmn_name;
+		$_SESSION['dmn_expire']	= $dmn_expire;
 		$_SESSION['dmn_tpl']	= $dmn_chp;
 		$_SESSION['chtpl']		= $dmn_pt;
 		$_SESSION['step_one']	= "_yes_";
@@ -138,6 +145,7 @@ function check_user_data() {
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], $dmn_chp)) {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;
+			$_SESSION['dmn_expire']	= $dmn_expire;
 			$_SESSION['dmn_tpl']	= $dmn_chp;
 			$_SESSION['chtpl']		= $dmn_pt;
 			$_SESSION['step_one']	= "_yes_";
@@ -169,6 +177,7 @@ function get_empty_au1_page(&$tpl) {
  */
 function get_data_au1_page(&$tpl) {
 	global $dmn_name; // Domain name
+	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 

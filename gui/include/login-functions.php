@@ -37,6 +37,33 @@ function get_userdata($username) {
 
 }
 
+function is_userdomain_expired($username) {
+	$sql = Database::getInstance();
+	
+	$udata = get_userdata($username);
+
+	if (!is_array($udata)) {
+		return false;
+	}
+
+	if ($udata['admin_type'] != 'user') {
+		return true;
+	}
+
+	$query = 'SELECT `domain_expires` FROM `domain` WHERE `domain_admin_id` = ?';
+
+	$res = exec_query($sql, $query, array($udata['admin_id']));
+
+	$row = $res->FetchRow();
+	
+	$result = false;
+	if (!empty($row['domain_expires'])) {
+		if (time() > $row['domain_expires']) $result = true;
+	}
+
+	return $result;
+}
+
 function is_userdomain_ok($username) {
 	$sql = Database::getInstance();
 

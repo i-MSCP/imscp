@@ -119,7 +119,11 @@ if (Config::get('DUMP_GUI_DEBUG')) {
  * Get data from previous page
  */
 function init_in_values() {
-	global $dmn_name, $dmn_user_name, $hpid;
+	global $dmn_name, $dmn_expire, $dmn_user_name, $hpid;
+	
+	if (isset($_SESSION['dmn_expire'])) {
+		$dmn_expire = $_SESSION['dmn_expire'];
+	}
 
 	if (isset($_SESSION['step_one'])) {
 		$step_two = $_SESSION['dmn_name'] . ";" . $_SESSION['dmn_tpl'];
@@ -151,7 +155,7 @@ function init_in_values() {
  * generate page add user 3
  */
 function gen_user_add3_page(&$tpl) {
-	global $dmn_name, $hpid, $dmn_user_name;
+	global $dmn_name, $dmn_expire, $hpid, $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
 	global $city, $state, $country, $street_one;
@@ -221,7 +225,7 @@ function gen_empty_data() {
 function add_user_data($reseller_id) {
 	$sql = Database::getInstance();
 	global $hpid;
-	global $dmn_name, $dmn_user_name, $admin_login;
+	global $dmn_name, $dmn_expire, $dmn_user_name, $admin_login;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
 	global $city, $state, $country, $street_one;
@@ -316,10 +320,12 @@ function add_user_data($reseller_id) {
 
 	$status = Config::get('ITEM_ADD_STATUS');
 
+	$expire = $dmn_expire * 2635200; // months * 30.5 days
+
 	$query = "
 		INSERT INTO `domain` (
 			`domain_name`, `domain_admin_id`,
-			`domain_created_id`, `domain_created`,
+			`domain_created_id`, `domain_created`, `domain_expires`,
 			`domain_mailacc_limit`, `domain_ftpacc_limit`,
 			`domain_traffic_limit`, `domain_sqld_limit`,
 			`domain_sqlu_limit`, `domain_status`,
@@ -330,7 +336,7 @@ function add_user_data($reseller_id) {
 		)
 		VALUES (
 			?, ?,
-			?, unix_timestamp(),
+			?, unix_timestamp(), (unix_timestamp() + $expire),
 			?, ?,
 			?, ?,
 			?, ?,

@@ -1,7 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-06-21 Thomas Wacker
+2009-07-02 Thomas Wacker
+	- GUI:
+		* Fixed #1860: Patch for domain expire date
+
+2009-06-28 Thomas Wacker
 	- GUI:
 		* Fixed #1684: Orderpanel needs coverage
 

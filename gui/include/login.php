@@ -69,7 +69,13 @@ function register_user($uname, $upass) {
 			system_message(tr("%s's account status is not ok!", $uname));
 			return false;
 		}
-
+		
+		if ($udata['admin_type'] == 'user' && is_userdomain_expired($uname)) {
+			write_log(tr("%s's domain expired!", $uname));
+			system_message(tr("%s's domain expired!", $uname));
+			return false;
+		}
+		
 		$sess_id = session_id();
 
 		$query = <<<SQL_QUERY

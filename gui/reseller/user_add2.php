@@ -125,10 +125,12 @@ if (Config::get('DUMP_GUI_DEBUG')) {
  */
 function get_pageone_param() {
 	global $dmn_name;
+	global $dmn_expire;
 	global $dmn_chp;
 
 	if (isset($_SESSION['dmn_name'])) {
 		$dmn_name = $_SESSION['dmn_name'];
+		$dmn_expire = $_SESSION['dmn_expire'];
 		$dmn_chp = $_SESSION['dmn_tpl'];
 	} else {
 		return false;

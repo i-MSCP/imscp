@@ -53,6 +53,8 @@ $tpl->assign(
 		'TR_DOMAIN_PROPERTIES'	=> tr('Domain properties'),
 		'TR_DOMAIN_NAME'		=> tr('Domain name'),
 		'TR_DOMAIN_IP'			=> tr('Domain IP'),
+		'TR_DOMAIN_EXPIRE'		=> tr('Domain expire'),
+		'TR_DOMAIN_NEW_EXPIRE'	=> tr('New expire date'),  
 		'TR_PHP_SUPP'			=> tr('PHP support'),
 		'TR_CGI_SUPP'			=> tr('CGI support'),
 		'TR_DNS_SUPP'			=> tr('Manual DNS support'),
@@ -73,7 +75,8 @@ $tpl->assign(
 		'TR_UPDATE_DATA'		=> tr('Submit changes'),
 		'TR_CANCEL'				=> tr('Cancel'),
 		'TR_YES'				=> tr('Yes'),
-		'TR_NO'					=> tr('No')
+		'TR_NO'					=> tr('No'),
+		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.") 
 	)
 );
 
@@ -129,7 +132,7 @@ gen_editdomain_page($tpl);
 function load_user_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
 
-	global $domain_name, $domain_ip, $php_sup;
+	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
@@ -169,13 +172,14 @@ function load_user_data($user_id, $domain_id) {
  */
 function load_additional_data($user_id, $domain_id) {
 	$sql = Database::getInstance();
-	global $domain_name, $domain_ip, $php_sup;
+	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
 	// Get domain data
 	$query = "
 		SELECT
 			`domain_name`,
+			`domain_expires`, 
 			`domain_ip_id`,
 			`domain_php`,
 			`domain_cgi`,
@@ -192,6 +196,17 @@ function load_additional_data($user_id, $domain_id) {
 	$data = $res->FetchRow();
 
 	$domain_name		= $data['domain_name'];
+
+	$domain_expires		= $data['domain_expires'];
+	$_SESSION['domain_expires'] = $domain_expires;
+
+	if ($domain_expires == 0) { 
+ 		$domain_expires = tr('N/A'); 
+ 	} else { 
+ 		$date_formt = Config::get('DATE_FORMAT'); 
+ 		$domain_expires = date($date_formt, $domain_expires); 
+ 	} 
+	
 	$domain_ip_id		= $data['domain_ip_id'];
 	$php_sup			= $data['domain_php'];
 	$cgi_supp			= $data['domain_cgi'];
@@ -235,7 +250,7 @@ function load_additional_data($user_id, $domain_id) {
  * Show user data
  */
 function gen_editdomain_page(&$tpl) {
-	global $domain_name, $domain_ip, $php_sup;
+	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
@@ -296,6 +311,7 @@ function gen_editdomain_page(&$tpl) {
 			'DNS_NO'				=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
 			'VL_DOMAIN_NAME'		=> $domain_name,
 			'VL_DOMAIN_IP'			=> $domain_ip,
+			'VL_DOMAIN_EXPIRE' => $domain_expires,
 			'VL_DOM_SUB'			=> $sub,
 			'VL_DOM_ALIAS'			=> $als,
 			'VL_DOM_MAIL_ACCOUNT'	=> $mail,
@@ -314,11 +330,13 @@ function gen_editdomain_page(&$tpl) {
  * Check input data
  */
 function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
-	global $sub, $als, $mail, $ftp;
+	global $domain_expires, $sub, $als, $mail, $ftp;
 	global $sql_db, $sql_user, $traff;
 	global $disk, $sql, $domain_ip, $domain_php;
 	global $domain_cgi, $allowbackup;
 	global $domain_dns;
+
+	$domain_new_expire = clean_input($_POST['dmn_expire']); 
 
 	$sub			= clean_input($_POST['dom_sub']);
 	$als			= clean_input($_POST['dom_alias']);
@@ -446,6 +464,16 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$user_props .= "$domain_cgi;";
 		$user_props .= "$domain_dns";
 		update_user_props($user_id, $user_props);
+
+		$domain_expires = $_SESSION['domain_expires'];
+
+		if ($domain_expires != 0 && $domain_new_expire != 0) {
+			$domain_new_expire = $domain_expires + ($domain_new_expire * 2635200);
+			update_expire_date($user_id, $domain_new_expire);
+		} elseif ($domain_expires == 0 && $domain_new_expire != 0) {
+			$domain_new_expire = time() + ($domain_new_expire * 2635200);
+			update_expire_date($user_id, $domain_new_expire);
+		}
 
 		$reseller_props = "$rdmn_current;$rdmn_max;";
 		$reseller_props .= "$rsub_current;$rsub_max;";
