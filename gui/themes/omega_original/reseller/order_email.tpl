@@ -58,6 +58,11 @@
                         <td class="content2">{TR_USER_REAL_NAME}</td>
                         <td class="content">{NAME}</td>
                       </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2">{TR_ACTIVATION_LINK}</td>
+                        <td class="content">{ACTIVATION_LINK}</td>
+                      </tr>
                     </table>
                   <br />
                     <table width="100%" cellpadding="5" cellspacing="5">

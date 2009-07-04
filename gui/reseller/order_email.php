@@ -77,6 +77,7 @@ $tpl->assign(
 		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
 		'TR_USER_DOMAIN' => tr('Domain name'),
 		'TR_USER_REAL_NAME' => tr('User (first and last) name'),
+		'TR_ACTIVATION_LINK' => tr('Activation Link'),
 		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 		'TR_SUBJECT' => tr('Subject'),
 		'TR_MESSAGE' => tr('Message'),
