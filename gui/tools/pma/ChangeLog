@@ -2,14 +2,17 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 12576 2009-06-15 15:30:30Z lem9 $
+$Id: ChangeLog 12608 2009-06-30 10:48:08Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+3.2.0.1 (2009-06-30)
+- [security] XSS: Insufficient output sanitizing in bookmarks 
 
 3.2.0.0 (2009-06-15)
 - [core] better support for vendor customisation (based on what Debian needs)
 + rfe #2127987 warn when session.gc_maxlifetime is less than cookie validity
 + rfe #2100910 configurable default charset for import
-+ rfe #1913541 link to InnoDB status when error 1005 occurs
++ rfe #1913541 link to InnoDB status when error 150 occurs
 + rfe #1927189 strip ` from column names on import
 + rfe #1821619 LeftFrameDBSeparator can be an array
 + patch #1821619 [privileges] Extra back reference when editing table-specific

@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          that returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 12340 2009-04-09 14:20:44Z nijel $
+ * @version $Id: sql.php 12608 2009-06-30 10:48:08Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -311,7 +311,7 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
                 $table = '';
             }
             $active_page = $goto;
-            $message = PMA_Message::rawError($error);
+            $message = htmlspecialchars(PMA_Message::rawError($error));
             /**
              * Go to target path.
              */

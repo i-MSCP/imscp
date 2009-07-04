@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-07-04 Thomas Wacker
+	- TOOLS:
+		* Fixed #1878: Updated phpMyAdmin to version 3.2.0.1
+
 2009-07-02 Thomas Wacker
 	- GUI:
 		* Fixed #1860: Patch for domain expire date

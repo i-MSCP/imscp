@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 12492 2009-05-24 12:28:04Z lem9 $
+ * @version $Id: common.lib.php 12608 2009-06-30 10:48:08Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -305,7 +305,7 @@ function PMA_formatSql($parsed_sql, $unparsed_sql = '')
     // well, not quite
     // first check for the SQL parser having hit an error
     if (PMA_SQP_isError()) {
-        return $parsed_sql;
+        return htmlspecialchars($parsed_sql['raw']);
     }
     // then check for an array
     if (!is_array($parsed_sql)) {
