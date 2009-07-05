@@ -121,7 +121,7 @@ function delete_account(url, dmn_name) {
                         <!-- EDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_statistics.php?month={VL_MONTH}&amp;year={VL_YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
-                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="delete_account('user_delete.php?id={USER_ID}', '{NAME}')" class="link">{ACTION}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_delete.php?domain_id={DOMAIN_ID}" class="link">{ACTION}</a></td>
                       </tr>
                       <!-- BDP: user_details -->
                       <tr>

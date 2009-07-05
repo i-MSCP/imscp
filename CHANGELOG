@@ -1,6 +1,11 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-07-05 Thomas Wacker
+	- GUI:
+		* Fixed #1500: Subdomain you are trying to remove has ftp & mail alias accounts
+		* Added improved domain deletion
+
 2009-07-04 Thomas Wacker
 	- TOOLS:
 		* Fixed #1878: Updated phpMyAdmin to version 3.2.0.1

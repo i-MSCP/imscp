@@ -536,7 +536,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 function gen_user_list(&$tpl, &$sql) {
 	$start_index = 0;
-	
+
 	$disk_space = disk_total_space(dirname(__FILE__));
 
 	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
@@ -696,13 +696,13 @@ function gen_user_list(&$tpl, &$sql) {
 				} else {
 					$percent_usage = 0;
 				}
-				
+
 				$tpl->assign(
 					array(
 						'USR_DELETE_SHOW' => '',
 						'DOMAIN_ID' => $rs->fields['domain_id'],
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_USR' => "user_delete.php?delete_id=" . $rs->fields['domain_admin_id'] . "&amp;delete_username=" . $rs->fields['domain_name'],
+						'URL_DELETE_USR' => "user_delete.php?domain_id=" . $rs->fields['domain_id'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
@@ -738,7 +738,7 @@ function gen_user_list(&$tpl, &$sql) {
 			// end of user status icon
 			$admin_name = decode_idna($rs->fields['domain_name']);
 
-			$domain_created = $rs->fields['domain_created']; 
+			$domain_created = $rs->fields['domain_created'];
 
 			if ($domain_created == 0) {
 				$domain_created = tr('N/A');
@@ -747,15 +747,15 @@ function gen_user_list(&$tpl, &$sql) {
 				$domain_created = date($date_formt, $domain_created);
 			}
 
-			$domain_expires = $rs->fields['domain_expires']; 
+			$domain_expires = $rs->fields['domain_expires'];
 
-			if ($domain_expires == 0) { 
+			if ($domain_expires == 0) {
 				$domain_expires = tr('N/A');
-			} else { 
-				$date_formt = Config::get('DATE_FORMAT'); 
-				$domain_expires = date($date_formt, $domain_expires); 
+			} else {
+				$date_formt = Config::get('DATE_FORMAT');
+				$domain_expires = date($date_formt, $domain_expires);
 			}
- 
+
 			$tpl->assign(
 				array(
 					'USR_USERNAME' => $admin_name,
@@ -1640,7 +1640,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 	$user_logged = $_SESSION['user_logged'];
 
 	update_reseller_c_props(get_reseller_id($domain_id));
-	
+
 	if ($action == 'disable') {
 		write_log("$user_logged: suspended domain: $domain_name");
 
@@ -1969,7 +1969,7 @@ function rm_rf_user_account($id_user) {
 	$rs = exec_query($sql, $query, array($delete_status, $id_user));
 
 	update_reseller_c_props($domain_created_id);
-	
+
 	remove_users_common_properties($id_user);
 }
 
@@ -2027,7 +2027,7 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 	$rsql_user_current -= $sql_user_current;
 	$rtraff_current -= $traff_current;
 	$rdisk_current -= $disk_current;
-	
+
 	$rprops = "$rdmn_current;$rdmn_max;";
 	$rprops .= "$rsub_current;$rsub_max;";
 	$rprops .= "$rals_current;$rals_max;";

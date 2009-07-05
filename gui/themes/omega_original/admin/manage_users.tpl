@@ -230,7 +230,7 @@ function action_delete(url, dmn_name) {
             -
             <!-- EDP: usr_delete_show -->
             <!-- BDP: usr_delete_link -->
-              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{URL_DELETE_USR}" class="link">{TR_DELETE}</a>
             <!-- EDP: usr_delete_link -->
           </td>
         </tr>
