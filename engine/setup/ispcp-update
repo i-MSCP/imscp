@@ -44,16 +44,16 @@ $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 ################################################################################
 
 use constant {
-		ABORT		=> 0,
-	        VHCS247		=> 1,
-        	VHCS248		=> 2,
-        	RC2		=> 3,
-        	RC3		=> 4,
-        	RC4		=> 5,
-       	 	RC5		=> 6,
-        	RC6		=> 7,
-		RC7		=> 8,
-		1.0		=> 9
+		ABORT			=> 0,
+		VHCS247			=> 1,
+		VHCS248			=> 2,
+		RC2				=> 3,
+		RC3				=> 4,
+		RC4				=> 5,
+		RC5				=> 6,
+		RC6				=> 7,
+		RC7				=> 8,
+		ISPCP_V1_0_0	=> 9
 	};
 
 ################################################################################
@@ -61,7 +61,6 @@ use constant {
 ################################################################################
 
 sub get_vhcs2conf {
-
     push_el(\@main::el, 'get_vhcs2conf()', 'Starting...');
 
     my ($rs, $fline) = get_file($main::vhcs2conf);
@@ -113,7 +112,6 @@ sub ask_vhcs2conf {
 	push_el(\@main::el, 'ask_vhcs2conf()', 'Ending...');
 
 	return 0;
-
 }
 
 sub welcome_note {
@@ -184,7 +182,6 @@ sub welcome_note {
 	$main::ua{'update'} = $rdata;
 
 	if (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
-
 		my $vhcs_update_msg =
 			"\tMake sure you have installed ispCP OMEGA first as described in the INSTALL\n".
 			"\tdocument.\n\n".
@@ -243,7 +240,6 @@ sub stop_services {
 }
 
 sub start_services {
-
     sys_command("$main::cfg{'CMD_ISPCPD'} start");
     sys_command("$main::cfg{'CMD_ISPCPN'} start");
     sleep(2);
