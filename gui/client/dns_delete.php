@@ -65,19 +65,34 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($dns_id));
 
-	$table = empty($rs->fields['alias_id']) ? 'domain' : 'domain_aliasses';
-
+	if (empty($alias_id)) {
 	$query = "
 		UPDATE
-			`{$table}`
+				 `domain`
+		    		,`subdomain`
 		SET
-			`{$table}_status` = ?
+				 `domain`.`domain_status` = ?
+				,`subdomain`.`subdomain_status` = ?
 		WHERE
-			`{$table}_id` = ?
-		LIMIT 1
+				`domain`.`domain_id` = ?
+			AND	`domain`.`domain_id` = subdomain.domain_id
 	";
-
-	$rs = exec_query($sql, $query, array( Config::get('ITEM_CHANGE_STATUS'), $id));
+		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+	} else{
+		$query = "
+			UPDATE
+				 `domain_aliasses`
+				,`subdomain_alias`
+			SET
+				 `domain_aliasses`.`alias_status` = ?
+				 ,`subdomain_alias`.`subdomain_alias_status` = ?
+			WHERE
+				`domain_aliasses`.`alias_id` = subdomain_alias.alias_id
+			AND	`domain_aliasses`.`domain_id` = ?
+			AND	`domain_aliasses`.`alias_id` = ?
+		";
+		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $rs->fields['alias_id']));
+	}
 
 	send_request();
 

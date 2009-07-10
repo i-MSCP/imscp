@@ -576,24 +576,29 @@ function check_fwd_data(&$tpl, $edit_id) {
 			$query = "
 				UPDATE
 					`domain`
+			    		,`subdomain`
 				SET
-					`domain_status` = ?
+					 `domain`.`domain_status` = ?
+    					,`subdomain`.`subdomain_status` = ?
 				WHERE
-					`domain_id` = ?
+    					`domain`.`domain_id` = ?
+    				AND	`domain`.`domain_id` = subdomain.domain_id
 			";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
 		} else{
 			$query = "
 				UPDATE
 					`domain_aliasses`
+					,`subdomain_alias`
 				SET
-					`alias_status` = ?
+					 `domain_aliasses`.`alias_status` = ?
+					 ,`subdomain_alias`.`subdomain_alias_status` = ?
 				WHERE
-					`domain_id` = ?
-				AND
-					`alias_id` = ?
+					`domain_aliasses`.`alias_id` = subdomain_alias.alias_id
+				AND	`domain_aliasses`.`domain_id` = ?
+				AND	`domain_aliasses`.`alias_id` = ?
 			";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
+			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
 		}
 
 		check_for_lock_file();

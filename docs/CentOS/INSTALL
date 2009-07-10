@@ -86,9 +86,8 @@ For the following steps, you will need to be logged in as root.
          first and answer 'no' to autoconfigure perl. 
 
 7. Next, we add remi repository because Centos 5 ships with php 5.1.6 that do not work nice:
-
-        # wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-2.noarch.rpm
-        # wget http://rpms.famillecollet.com/el5.i386/remi-release-5-4.el5.remi.noarch.rpm
+    	# wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
+        # wget http://rpms.famillecollet.com/el5.i386/remi-release-5-7.el5.remi.noarch.rpm
         # rpm -Uvh remi-release-5*.rpm epel-release-5*.rpm
 
    Then in /etc/yum.repos.d/remi.repo add 
@@ -100,7 +99,7 @@ For the following steps, you will need to be logged in as root.
    to a repository entry. Do same thing to /etc/yum.repos.d/epel.repo and /etc/yum.repos.d/epel-testing.repo
    Next lets update php:
 
-        # yum --enablerepo=remi update php*
+        # yum --enablerepo=remi update php* mysql*
 
 8. Now, remove Sendmail so Postfix will be the default MTA
 
@@ -112,12 +111,12 @@ For the following steps, you will need to be logged in as root.
    versions as of the last update, but you should check the package list at the
    previous site to make sure you have the latest versions.
 
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-0.60.6-1.el5.mf.i386.rpm
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-userdb-0.60.6-1.el5.mf.i386.rpm
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-imap-4.3.1-2.el5.mf.i386.rpm
-        # rpm -i courier-authlib-0.60.6-1.el5.mf.i386.rpm
-        # rpm -i courier-authlib-userdb-0.60.6-1.el5.mf.i386.rpm
-        # rpm -i courier-imap-4.3.1-2.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-0.62.2-1.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-userdb-0.62.2-1.el5.mf.i386.rpm
+        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-imap-4.5.0-1.el5.mf.i386.rpm
+        # rpm -i courier-authlib-0.62.2-1.el5.mf.i386.rpm
+        # rpm -i courier-authlib-userdb-0.62.2-1.el5.mf.i386.rpm
+        # rpm -i courier-imap-4.5.0-1.el5.mf.i386.rpm
 
   You will also need to do some minor configuration by adding a user and group
   for courier. The following commands will acomplish this:

@@ -404,29 +404,57 @@ sub dmn_add_named_db_data {
 	#
 	# Let's get needed tags and templates;
 	#
-	my ($entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry) = ('', '', '', '', '', '');
-	($rs, $entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry) = get_tpl(
+	my ($entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry, $db_time_b, $db_time_e) = ('', '', '', '', '', '', '', '');
+	($rs, $entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry, $db_time_b, $db_time_e) = get_tpl(
 		$tpl_dir,
 		'db_e.tpl',
 		'db_dns2_b.tpl',
 		'db_dns2_e.tpl',
                 'db_dns_entry_b.tpl',                                                                                                                                                                                                        
                 'db_dns_entry_e.tpl',                                                                                                                                                                                                        
-	        'db_dns_entry.tpl'                                                                                                                                                                                                           
+		'db_dns_entry.tpl',
+		'db_time_b.tpl',
+		'db_time_e.tpl'
 	);
 	return $rs if ($rs != 0);
 
+	#
+	# Let's prepare them;
+	#
 	my $seq = 0;
 
 	#
 	# RFC 1912
 	#
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
-	#
-	# Let's prepare them;
-	#
+	my $working = undef;
+	($rs, $working) = get_file($working_cfg);
+	if ($rs == 0){
+		my %ts = (
+			'{DMN_NAME}'            => $dmn_name
+		);
+		($rs, $db_time_b, $db_time_e) = prep_tpl(
+			\%ts,
+			$db_time_b,
+			$db_time_e
+		);
+		($rs, $rdata) = get_tag($db_time_b, $db_time_e, $working);
+		if ($rs == 0){
+			my @rdata2 = split(/\n/, $rdata);
+			my $mseq = $rdata2[1];
+			my $ctime = sprintf "%4d%02d%02d",$year+1900,$mon+1,$mday;
+			$mseq =~ s/;.*//;
+			$mseq =~ s/^\s+//;
+			$mseq =~ s/\s+$//;
+			if (substr($mseq, 0, 8) == $ctime){
+				$mseq = substr($mseq, -2);
+				$seq = int($mseq) + 1;
+			}
+		}
+	}
+
+	my $time2 = sprintf "%4d%02d%02d%02d",$year+1900,$mon+1,$mday,$seq;
 	my %tag_hash = (
 		'{DMN_NAME}'            => $dmn_name,
 		'{DMN_IP}'              => $dmn_ip,
@@ -438,7 +466,7 @@ sub dmn_add_named_db_data {
 		\%tag_hash,
 		$entry,
 		$dns2_b,
-		$dns2_e
+		$dns2_e,
 	);
 	return $rs if ($rs != 0);
 
