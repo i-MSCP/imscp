@@ -1,10 +1,14 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-07-12 Thomas Wacker
+	- GUI:
+		* Fixed #1505: When downgrading account, give error to user if account is less than current usage
+
 2009-07-10 Malte Geierhos
-	- ENGINE: 
-		* Imported DNS-TimestampFix (thx to "Blondak") 
-	- GUI: 
+	- ENGINE:
+		* Imported DNS-TimestampFix (thx to "Blondak")
+	- GUI:
 		* Fix for MANUAL DNS Lines (thx to "Blondak")
 
 2009-07-07 Jochen Manz
