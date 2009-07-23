@@ -5,6 +5,8 @@ int helo_syntax(int fd, char *buff)
 {
 	char *ptr;
 
+	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+
 	ptr = strstr(buff, message(MSG_HELO_CMD));
 
 /*
@@ -18,9 +20,10 @@ int helo_syntax(int fd, char *buff)
 
 	} else {
 */
-  
-      	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
 
+/*  
+      	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+*/
 		ptr = strstr(buff, " ");
 
 		strcat(helo_ans, message(MSG_CMD_OK));
