@@ -376,7 +376,6 @@ sub ask_vhost {
 	# file. In this case, or if the returned value isn't FQHN, we use the long
 	# host name who's provided by the system hostname command.
 	if(defined($addr) && ($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) || !($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
-		print STDERR "Mauvais addr : $addr";
 		$addr = $main::ua{'hostname'};
 	}
 
