@@ -367,13 +367,21 @@ sub ask_vhost {
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-	my $eth = $main::ua{'eth_ip'};
-	my $addr = gethostbyaddr($main::ua{'eth_ip'}, AF_INET);
+	#my $eth = $main::ua{'eth_ip'}; # Unused variable
+	my $iaddr = inet_aton($main::ua{'eth_ip'}); # Standard IP with dot to binary data (expected by gethostbyaddr() as first argument )
+	my $addr = gethostbyaddr($iaddr, AF_INET);
 
-	if (!$addr) {
+	# gethostbyaddr() returns a short host name with a suffix ( hostname.local )
+	# if the host name ( for the current interface ) is not set in /etc/hosts
+	# file. In this case, or if the returned value isn't FQHN, we use the long
+	# host name who's provided by the system hostname command.
+	if(defined($addr) && ($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) || !($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
+		print STDERR "Mauvais addr : $addr";
 		$addr = $main::ua{'hostname'};
 	}
 
+	# Todo [INTERNAL DISCUSSION] : It's a not good idea to remove hostname part
+	# of the long hostname to purpose admin.domain.tld instead of admin.hostname.domain.tld ?
 	my $vhost = "admin.$addr";
 	my $qmsg = "\n\tPlease enter the domain name where ispCP OMEGA will run on [$vhost]: ";
 
