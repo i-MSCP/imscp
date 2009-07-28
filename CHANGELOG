@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-07-28 Laurent Declercq
+	- CONFIGS:
+		* Fixed #1906: Fatal: AuthOrder: AuthOrder has already been configured 
+
 2009-07-26 Laurent Declercq
 	- SETUP:
 		* Fixed #1908: ask_vhost subroutine - gethostbyaddr() will always fails
