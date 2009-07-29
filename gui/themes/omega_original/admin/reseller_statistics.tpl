@@ -37,12 +37,13 @@
                     </tr>
                     <tr>
                       <td valign="top"><!-- BDP: page_message -->
-                          <table width="450" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                              <td class="title"><span class="message">{MESSAGE}</span></td>
-                            </tr>
-                          </table>
-                        <!-- EDP: page_message -->
+                            <table width="100%" border="0" cellspacing="5" cellpadding="5">
+                             <tr>
+                              <td width="25">&nbsp;</td>
+                              <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
+                             </tr>
+                            </table>
+                           <!-- EDP: page_message -->
                           <!-- BDP: traffic_table -->
                           <form action="reseller_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
                             <table width="100%">
