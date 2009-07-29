@@ -71,16 +71,14 @@
 		      <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="200">{TR_DOMAIN_EXPIRE}</td>
-                        <td class="content">TODO: TRANSLATE
-                        	<select name="dmn_expire">
-				<option value="0">Never</option>
-				<option value="1">1 Month</option>
-				<option value="2">2 Months</option>
-				<option value="3">3 Months</option>
-				<option value="6">6 Months</option>
-				<option value="12">1 Year</option>
-				<option value="24">2 Years</option>
-				</select>
+                        <td class="content"><select name="dmn_expire">
+							<option value="0">{TR_DOMAIN_EXPIRE_NEVER}</option>
+							<option value="1">{TR_DOMAIN_EXPIRE_1_MONTH}</option>
+							<option value="2">{TR_DOMAIN_EXPIRE_2_MONTHS}</option>
+							<option value="3">{TR_DOMAIN_EXPIRE_3_MONTHS}</option>
+							<option value="6">{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
+							<option value="12">{TR_DOMAIN_EXPIRE_1_YEAR}</option>
+							<option value="24">{TR_DOMAIN_EXPIRE_2_YEARS}</option>
                         </td>
                       </tr>
                       <!-- BDP: add_user -->

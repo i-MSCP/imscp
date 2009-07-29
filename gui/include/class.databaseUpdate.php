@@ -310,7 +310,6 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
-
 	/**
 	 * add variable SHOW_SERVERLOAD to config table
 	 *
@@ -494,7 +493,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_20() {
 		$sqlUpd = array();
-		
+
 		$sql = Database::getInstance();
 		$query	= "SELECT `reseller_id`"
 				. " FROM `reseller_props` ORDER BY `reseller_id`";
@@ -532,9 +531,9 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_21() {
 		$sqlUpd = array();
 		$sql = Database::getInstance();
-		
+
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
-		
+
 		$query = <<<SQL_QUERY
 		SELECT
 			`id`, `message`
@@ -554,10 +553,9 @@ SQL_QUERY;
 						  . " WHERE `id`=".$data['id'];
 			}
 		}
-		
+
 		return $sqlUpd;
 	}
-	
 
 	/**
 	 * Add domain expiration field
