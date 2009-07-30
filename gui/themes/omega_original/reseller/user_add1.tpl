@@ -79,6 +79,7 @@
 							<option value="6">{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
 							<option value="12">{TR_DOMAIN_EXPIRE_1_YEAR}</option>
 							<option value="24">{TR_DOMAIN_EXPIRE_2_YEARS}</option>
+						</select>
                         </td>
                       </tr>
                       <!-- BDP: add_user -->
