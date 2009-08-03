@@ -7,6 +7,7 @@
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
 smtp      inet  n       -       -       -       -       smtpd
+#	-o receive_override_options=no_address_mappings				# Uncomment this line, when unsing AMaViS
 #submission inet n       -       -       -       -       smtpd
 #  -o smtpd_enforce_tls=yes
 #  -o smtpd_sasl_auth_enable=yes

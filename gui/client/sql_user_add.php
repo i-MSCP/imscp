@@ -316,7 +316,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	// add user in the mysql system tables;
 
-	$new_db_name = str_replace("_", "\\_", $db_name);
+	$new_db_name = str_replace("_", "\_", $db_name);
 	$query = 'GRANT ALL PRIVILEGES ON ? *.* TO ?@\'localhost\' IDENTIFIED BY ?';
 	$rs = exec_query($sql, $query, array(quoteIdentifier($new_db_name), $db_user, $user_pass));
 	$query = 'GRANT ALL PRIVILEGES ON ? *.* TO ?@\'%\' IDENTIFIED BY ?';

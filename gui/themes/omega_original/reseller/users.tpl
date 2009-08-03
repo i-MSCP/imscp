@@ -101,7 +101,7 @@ function delete_account(url, dmn_name) {
                         <td class="content3" width="90" align="center"><b>{TR_CREATION_DATE}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_EXPIRE_DATE}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE}</b></td>
-                        <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE_PERCENT}</b></td>                        
+                        <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE_PERCENT}</b></td>
                         <td colspan="6" align="center" class="content3"><b>{TR_ACTION}</b></td>
                       </tr>
                       <!-- BDP: users_list -->

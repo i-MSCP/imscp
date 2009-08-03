@@ -29,9 +29,9 @@ tr.DNS {
 
 	var oStyleSheet;
 	if (document.styleSheets) {
-		for (var oSsDmCt = 0; oSsDmCt < document.styleSheets.length; oSsDmCt++) {
-			if (document.styleSheets[oSsDmCt].href != null && document.styleSheets[oSsDmCt].href.indexOf('demostyles.css') + 1) {
-				oStyleSheet = document.styleSheets[oSsDmCt];
+		for (var i = 0; i < document.styleSheets.length; i++) {
+			if (document.styleSheets[i].href != null && document.styleSheets[i].href.indexOf('demostyles.css') + 1) {
+				oStyleSheet = document.styleSheets[i];
 				break;
 			}
 		}
@@ -67,11 +67,11 @@ tr.DNS {
 	var IPADDRESS = "[0-9\.]";
 	var IPv6ADDRESS = "[0-9a-f:A-F]";
 	var NUMBERS = "[0-9]";
-	
+
 	function filterChars(e, allowed){
-		e = e || window.event; 
+		e = e || window.event;
 		var keynum = e ? e.which : event.keyCode;
-	
+
 		if ((keynum == 8) || (keynum == 0)) {
 			return true;
 		}
