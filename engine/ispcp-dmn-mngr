@@ -410,11 +410,11 @@ sub dmn_add_named_db_data {
 		'db_e.tpl',
 		'db_dns2_b.tpl',
 		'db_dns2_e.tpl',
-                'db_dns_entry_b.tpl',                                                                                                                                                                                                        
-                'db_dns_entry_e.tpl',                                                                                                                                                                                                        
+                'db_dns_entry_b.tpl',
+                'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl',
 		'db_time_b.tpl',
-		'db_time_e.tpl'
+		'db_time_e.tpl'                                                                                                                  
 	);
 	return $rs if ($rs != 0);
 
@@ -455,6 +455,7 @@ sub dmn_add_named_db_data {
 	}
 
 	my $time2 = sprintf "%4d%02d%02d%02d",$year+1900,$mon+1,$mday,$seq;
+
 	my %tag_hash = (
 		'{DMN_NAME}'            => $dmn_name,
 		'{DMN_IP}'              => $dmn_ip,
@@ -466,7 +467,7 @@ sub dmn_add_named_db_data {
 		\%tag_hash,
 		$entry,
 		$dns2_b,
-		$dns2_e,
+		$dns2_e
 	);
 	return $rs if ($rs != 0);
 
@@ -480,7 +481,7 @@ sub dmn_add_named_db_data {
 	#   ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
 	#    return $rs if ($rs != 0);
 	#}
-#blondak : support for manual DNS records : begin
+	# support for manual DNS records : begin
         my $domain_id    = @$dmn_data[0];
 	
 	my $sql = "
@@ -527,7 +528,7 @@ sub dmn_add_named_db_data {
 		}
 	    }
 	}
-#blondak : support for manual DNS records : end
+	# support for manual DNS records : end
 
 	#
 	# Let's store generated data;

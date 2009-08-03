@@ -66,17 +66,18 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$rs = exec_query($sql, $query, array($dns_id));
 
 	if (empty($alias_id)) {
-	$query = "
-		UPDATE
-				 `domain`
-		    		,`subdomain`
-		SET
-				 `domain`.`domain_status` = ?
-				,`subdomain`.`subdomain_status` = ?
-		WHERE
+		$query = "
+			UPDATE
+				`domain`,
+		    		`subdomain`
+			SET
+				`domain`.`domain_status` = ?,
+				`subdomain`.`subdomain_status` = ?
+
+			WHERE
 				`domain`.`domain_id` = ?
-			AND	`domain`.`domain_id` = subdomain.domain_id
-	";
+			AND	`domain`.`domain_id` = subdomain.domain_id";
+
 		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
 	} else{
 		$query = "
@@ -89,11 +90,10 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			WHERE
 				`domain_aliasses`.`alias_id` = subdomain_alias.alias_id
 			AND	`domain_aliasses`.`domain_id` = ?
-			AND	`domain_aliasses`.`alias_id` = ?
-		";
+			AND	`domain_aliasses`.`alias_id` = ?";
+
 		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $rs->fields['alias_id']));
 	}
-
 	send_request();
 
 	write_log($_SESSION['user_logged'] . ': deletes dns zone record: ' . $dns_name . ' of domain ' . $dom_name);

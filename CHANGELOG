@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-04 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1861: DNS zone's records
+
 2009-07-30 Laurent Declercq
 	- CONFIGS:
 		* Fixed #1725: /var/log/rkhunter.log not readable

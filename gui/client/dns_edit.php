@@ -45,9 +45,7 @@ $tpl->assign(
 );
 
 /*
- *
  * static page messages.
- *
  */
 $tpl->assign(
 	array(
@@ -427,7 +425,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 
 	$add_mode = $edit_id === true;
 
-//	$status = $_POST['status'];
 	// unset errors
 	$ed_error = '_off_';
 	$admin_login = '';
@@ -575,29 +572,27 @@ function check_fwd_data(&$tpl, $edit_id) {
 		if (empty($alias_id)) {
 			$query = "
 				UPDATE
-					`domain`
-			    		,`subdomain`
-				SET
-					 `domain`.`domain_status` = ?
-    					,`subdomain`.`subdomain_status` = ?
-				WHERE
+					`domain`,
+			    		`subdomain`
+ 				SET
+					 `domain`.`domain_status` = ?,
+    					`subdomain`.`subdomain_status` = ?
+ 				WHERE
     					`domain`.`domain_id` = ?
-    				AND	`domain`.`domain_id` = subdomain.domain_id
-			";
+   				AND	`domain`.`domain_id` = subdomain.domain_id";
 			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
-		} else{
+		} else {
 			$query = "
-				UPDATE
-					`domain_aliasses`
-					,`subdomain_alias`
-				SET
-					 `domain_aliasses`.`alias_status` = ?
-					 ,`subdomain_alias`.`subdomain_alias_status` = ?
-				WHERE
+ 				UPDATE
+ 					`domain_aliasses`,
+					`subdomain_alias`
+ 				SET
+					`domain_aliasses`.`alias_status` = ?,
+					`subdomain_alias`.`subdomain_alias_status` = ?
+ 				WHERE
 					`domain_aliasses`.`alias_id` = subdomain_alias.alias_id
 				AND	`domain_aliasses`.`domain_id` = ?
-				AND	`domain_aliasses`.`alias_id` = ?
-			";
+				AND	`domain_aliasses`.`alias_id` = ?";
 			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
 		}
 
