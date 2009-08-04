@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-04 Christian Hernmarck
+	- GUI:
+		* Fixed problem that was introduced with a recent client/sqluser_add.php change (changeset 1874)
+
 2009-08-04 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1877: Sending 2 Mails to the Forwarding List.

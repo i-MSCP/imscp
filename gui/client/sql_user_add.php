@@ -316,12 +316,19 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	// add user in the mysql system tables;
 
+	$new_db_name = ereg_replace("_", "\\_", $db_name); 
+	$query = 'GRANT ALL ON ' . quoteIdentifier($new_db_name) . '.* to ?@\'localhost\' identified by ?'; 
+	$rs = exec_query($sql, $query, array($db_user, $user_pass)); 
+	$query = 'GRANT ALL ON ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?'; 
+	$rs = exec_query($sql, $query, array($db_user, $user_pass)); 
+# try to improve, make php 5.3 compatible ???, makes problems with db-names like `2_user`, so reverted bak to the lines above.
+/*
 	$new_db_name = str_replace("_", "\_", $db_name);
 	$query = 'GRANT ALL PRIVILEGES ON ? *.* TO ?@\'localhost\' IDENTIFIED BY ?';
 	$rs = exec_query($sql, $query, array(quoteIdentifier($new_db_name), $db_user, $user_pass));
 	$query = 'GRANT ALL PRIVILEGES ON ? *.* TO ?@\'%\' IDENTIFIED BY ?';
 	$rs = exec_query($sql, $query, array(quoteIdentifier($new_db_name), $db_user, $user_pass));
-
+*/
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . $db_user);
 	set_page_message(tr('SQL user successfully added!'));
 	user_goto('sql_manage.php');
