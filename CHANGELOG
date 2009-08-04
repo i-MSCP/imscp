@@ -1,15 +1,14 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-08-04 Christian Hernmarck
-	- GUI:
-		* Fixed problem that was introduced with a recent client/sqluser_add.php change (changeset 1874)
-
 2009-08-04 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1877: Sending 2 Mails to the Forwarding List.
 	- ENGINE:
 		* Fixed #1861: DNS zone's records
+	- GUI:
+		* Fixed #1913: Error in your SQL syntax -> /gui/client/sql_user_add.php
+		* Fixed #1914: No translation in reseller/gui/domain_edit.php
 
 2009-07-30 Laurent Declercq
 	- CONFIGS:

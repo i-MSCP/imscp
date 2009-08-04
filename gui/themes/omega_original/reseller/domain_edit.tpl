@@ -73,14 +73,14 @@
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" /></td>
                         <td class="content"><select name="dmn_expire">
-							<option value="0">Unchanged</option>
-							<option value="-1">- 1 Month</option>
-							<option value="1">+ 1 Month</option>
-							<option value="2">+ 2 Months</option>
-							<option value="3">+ 3 Months</option>
-							<option value="6">+ 6 Months</option>
-							<option value="12">+ 1 Year</option>
-							<option value="24">+ 2 Years</option>
+							<option value="0">{TR_DOMAIN_EXPIRE_UNCHANGED}</option>
+							<option value="-1">{TR_DOMAIN_EXPIRE_MIN_1_MONTH}</option>
+							<option value="1">{TR_DOMAIN_EXPIRE_PLUS_1_MONTH}</option>
+							<option value="2">{TR_DOMAIN_EXPIRE_PLUS_2_MONTHS}</option>
+							<option value="3">{TR_DOMAIN_EXPIRE_PLUS_3_MONTHS}</option>
+							<option value="6">{TR_DOMAIN_EXPIRE_PLUS_6_MONTHS}</option>
+							<option value="12">{TR_DOMAIN_EXPIRE_PLUS_1_YEAR}</option>
+							<option value="24">{TR_DOMAIN_EXPIRE_PLUS_2_YEARS}</option>
 						</select></td>
                       </tr>
                       <tr>

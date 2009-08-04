@@ -51,34 +51,42 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_EDIT_DOMAIN'		=> tr('Edit Domain'),
-		'TR_DOMAIN_PROPERTIES'	=> tr('Domain properties'),
-		'TR_DOMAIN_NAME'		=> tr('Domain name'),
-		'TR_DOMAIN_EXPIRE'		=> tr('Domain expire'),
-		'TR_DOMAIN_NEW_EXPIRE'	=> tr('New expire date'),
-		'TR_DOMAIN_IP'			=> tr('Domain IP'),
-		'TR_PHP_SUPP'			=> tr('PHP support'),
-		'TR_CGI_SUPP'			=> tr('CGI support'),
-		'TR_DNS_SUPP'			=> tr('Manual DNS support'),
-		'TR_SUBDOMAINS'			=> tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_ALIAS'				=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAIL_ACCOUNT'		=> tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_SQL_DB'				=> tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_SQL_USERS'			=> tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_TRAFFIC'			=> tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
-		'TR_DISK'				=> tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
-		'TR_USER_NAME'			=> tr('Username'),
-		'TR_BACKUP'				=> tr('Backup'),
-		'TR_BACKUP_DOMAIN'		=> tr('Domain'),
-		'TR_BACKUP_SQL'			=> tr('SQL'),
-		'TR_BACKUP_FULL'		=> tr('Full'),
-		'TR_BACKUP_NO'			=> tr('No'),
-		'TR_UPDATE_DATA'		=> tr('Submit changes'),
-		'TR_CANCEL'				=> tr('Cancel'),
-		'TR_YES'				=> tr('Yes'),
-		'TR_NO'					=> tr('No'),
-		'TR_DMN_EXP_HELP'		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
+		'TR_EDIT_DOMAIN'				=> tr('Edit Domain'),
+		'TR_DOMAIN_PROPERTIES'			=> tr('Domain properties'),
+		'TR_DOMAIN_NAME'				=> tr('Domain name'),
+		'TR_DOMAIN_EXPIRE'				=> tr('Domain expire'),
+		'TR_DOMAIN_NEW_EXPIRE'			=> tr('New expire date'),
+		'TR_DOMAIN_EXPIRE_UNCHANGED'	=> tr('Unchanged'),
+		'TR_DOMAIN_EXPIRE_MIN_1_MONTH'	=> tr('- 1 Month'),
+		'TR_DOMAIN_EXPIRE_PLUS_1_MONTH'	=> tr('+ 1 Month'),
+		'TR_DOMAIN_EXPIRE_PLUS_2_MONTHS'=> tr('+ 2 Months'),
+		'TR_DOMAIN_EXPIRE_PLUS_3_MONTHS'=> tr('+ 3 Months'),
+		'TR_DOMAIN_EXPIRE_PLUS_6_MONTHS'=> tr('+ 6 Months'),
+		'TR_DOMAIN_EXPIRE_PLUS_1_YEAR'	=> tr('+ 1 Year'),
+		'TR_DOMAIN_EXPIRE_PLUS_2_YEARS'	=> tr('+ 2 Years'),
+		'TR_DOMAIN_IP'					=> tr('Domain IP'),
+		'TR_PHP_SUPP'					=> tr('PHP support'),
+		'TR_CGI_SUPP'					=> tr('CGI support'),
+		'TR_DNS_SUPP'					=> tr('Manual DNS support'),
+		'TR_SUBDOMAINS'					=> tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_ALIAS'						=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAIL_ACCOUNT'				=> tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_FTP_ACCOUNTS'				=> tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_DB'						=> tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_USERS'					=> tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_TRAFFIC'					=> tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_DISK'						=> tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_USER_NAME'					=> tr('Username'),
+		'TR_BACKUP'						=> tr('Backup'),
+		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
+		'TR_BACKUP_SQL'					=> tr('SQL'),
+		'TR_BACKUP_FULL'				=> tr('Full'),
+		'TR_BACKUP_NO'					=> tr('No'),
+		'TR_UPDATE_DATA'				=> tr('Submit changes'),
+		'TR_CANCEL'						=> tr('Cancel'),
+		'TR_YES'						=> tr('Yes'),
+		'TR_NO'							=> tr('No'),
+		'TR_DMN_EXP_HELP'				=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
 	)
 );
 
@@ -195,8 +203,8 @@ function load_additional_data($user_id, $domain_id) {
 
 	$domain_name		= $data['domain_name'];
 
-	$domain_expires = $data['domain_expires']; 
-	$_SESSION['domain_expires'] = $domain_expires; 
+	$domain_expires = $data['domain_expires'];
+	$_SESSION['domain_expires'] = $domain_expires;
 
 	if ($domain_expires == 0) {
 		$domain_expires = tr('N/A');
@@ -336,7 +344,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	global $domain_dns;
 	global $domain_expires, $domain_new_expire;
 
-	$domain_new_expire = clean_input($_POST['dmn_expire']); 
+	$domain_new_expire = clean_input($_POST['dmn_expire']);
 	$sub = clean_input($_POST['dom_sub']);
 	$als = clean_input($_POST['dom_alias']);
 	$mail = clean_input($_POST['dom_mail_acCount']);
