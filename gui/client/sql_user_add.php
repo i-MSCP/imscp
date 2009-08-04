@@ -321,8 +321,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	$db_name = $rs->fields['db_name'];
 
 	// add user in the mysql system tables
-	$new_db_name = ereg_replace("_", "\\_", $db_name);
-	$query = "GRANT ALL PRIVILEGES ON ". quoteIdentifier($new_db_name) .".* TO ?@? IDENTIFIED BY ?";
+	$query = "GRANT ALL PRIVILEGES ON ". quoteIdentifier($db_name) .".* TO ?@? IDENTIFIED BY ?";
 	exec_query($sql, $query, array($db_user, "localhost", $user_pass));
 	exec_query($sql, $query, array($db_user, "%", $user_pass));
 
