@@ -17,50 +17,52 @@ function action_delete(url, alias_or_subdomain) {
 }
 //-->
 </script>
-<style type="text/css">
-tr.DNS {
-	display: none;
-}
-</style>
 </head>
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <script type="text/javascript">
 /* <![CDATA[ */
 
-	var oStyleSheet;
-	if (document.styleSheets) {
-		for (var i = 0; i < document.styleSheets.length; i++) {
-			if (document.styleSheets[i].href != null && document.styleSheets[i].href.indexOf('demostyles.css') + 1) {
-				oStyleSheet = document.styleSheets[i];
-				break;
-			}
+	function in_array(needle, haystack) {
+		var n = haystack.length;
+		for (var i = 0; i < n; i++) {
+			if (haystack[i] == needle) return true;
 		}
-		if (!oStyleSheet) {
-			oStyleSheet = document.styleSheets[document.styleSheets.length-1];
+		return false;
+	}
+
+	function dns_show_rows(arr_show) {
+		var arr_possible = new Array('name', 'ip_address', 'ip_address_v6', 
+			'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 
+			'srv_weight', 'srv_host', 'srv_port', 'cname');
+		var n = arr_possible.length;
+		var trname;
+		for (var i = 0; i < n; i++) {
+			trname = 'tr_dns_'+arr_possible[i];
+			o = document.getElementById(trname);
+			if (o) {
+				if (in_array(arr_possible[i], arr_show)) {
+					o.style.display = 'table-row';
+				} else {
+					o.style.display = 'none';
+				}
+			} else {
+				alert('Not found: '+trname);
+			}
 		}
 	}
 
-	function showNoDOMSSWarning() { alert('Your browser does not support DOM 2 Style Sheets'); }
-	function showNoSSWarning() { alert('Your browser does not support document.styleSheets'); }
-	function showNoSSFoundWarning() { alert('Your browser does not have any stylesheets in the document.styleSheets collection'); }
-	function showNoDemoWarning() { alert('Your browser does not allow me to find the demonstration stylesheet'); }
-	function showNoBothSSWarning() { alert('Your browser does not correctly support DOM 2 Style Sheets or the Internet Explorer stylesheets model'); }
-
-
-	var lastRule = null;
-
-	function dns_type_changed(sender) {
-		if(!document.styleSheets) { showNoSSWarning(); return; }
-		if(!document.styleSheets.length) { showNoSSFoundWarning(); return; }
-		if(!oStyleSheet) { showNoDemoWarning(); return; }
-		if(!oStyleSheet.insertRule || !oStyleSheet.cssRules || !oStyleSheet.cssRules.length) { showNoDOMSSWarning(); return; }
-		try {
-			if (lastRule != null) {
-				oStyleSheet.deleteRule(lastRule);
-			}
-			lastRule = oStyleSheet.insertRule('tr.DNS_'+sender+' { display : table-row;}', oStyleSheet.cssRules.length);
-		} catch(e) {
-			showNoDOMSSWarning();
+	function dns_type_changed(value) {
+		if (value == 'A') {
+			dns_show_rows(new Array('name', 'ip_address'));
+		} else if (value == 'AAAA') {
+			dns_show_rows(new Array('name', 'ip_address_v6'));
+		} else if (value == 'SRV') {
+			dns_show_rows(new Array('srv_name', 'srv_protocol', 'srv_ttl', 
+				'srv_prio', 'srv_weight', 'srv_host', 'srv_port'));
+		} else if (value == 'CNAME') {
+			dns_show_rows(new Array('name', 'cname'));
+		} else if (value == 'MX') {
+			dns_show_rows(new Array('srv_prio', 'srv_host'));
 		}
 	}
 
@@ -69,15 +71,22 @@ tr.DNS {
 	var NUMBERS = "[0-9]";
 
 	function filterChars(e, allowed){
-		e = e || window.event;
-		var keynum = e ? e.which : event.keyCode;
+		var keynum;
+		if (window.event){
+        	keynum = window.event.keyCode;
+        	e = window.event;
+	    } else if (e) {
+			keynum = e.which;
+		} else {
+			return true;
+		}
 
 		if ((keynum == 8) || (keynum == 0)) {
 			return true;
 		}
 		var keychar = String.fromCharCode(keynum);
 
-		if (e.ctrlKey && ((keychar="C") || (keychar="c") || (keychar="V") || (keychar="v"))) {
+		if (e.ctrlKey && ((keychar=="C") || (keychar=="c") || (keychar=="V") || (keychar=="v"))) {
 			return true;
 		}
 		var re = new RegExp(allowed);
@@ -155,65 +164,60 @@ tr.DNS {
 												<td width="200" class="content2">{TR_DNS_CLASS}</td>
 												<td class="content"><select name="class">{SELECT_DNS_CLASS}</select></td>
 											</tr>
-											<tr class="DNS DNS_A DNS_AAAA DNS_CNAME">
+											<tr id="tr_dns_name">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_NAME}</td>
 												<td class="content"><input type="text" name="dns_name" value="{DNS_NAME}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV">
+											<tr id="tr_dns_srv_name">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_NAME}</td>
 												<td class="content"><input type="text" name="dns_srv_name" value="{DNS_SRV_NAME}" /></td>
 											</tr>
-											<tr class="DNS DNS_A">
+											<tr id="tr_dns_ip_address">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_IP_ADDRESS}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, IPADDRESS);" name="dns_A_address" value="{DNS_ADDRESS}" /></td>
 											</tr>
-											<tr class="DNS DNS_AAAA">
+											<tr id="tr_dns_ip_address_v6">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_IP_ADDRESS_V6}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, IPv6ADDRESS);" name="dns_AAAA_address" value="{DNS_ADDRESS_V6}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV">
+											<tr id="tr_dns_srv_protocol">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_PROTOCOL}</td>
 												<td class="content"><select name="srv_proto" id="srv_protocol">{SELECT_DNS_SRV_PROTOCOL}</select></td>
 											</tr>
-											<tr class="DNS DNS_SRV">
+											<tr id="tr_dns_srv_ttl">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_TTL}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_ttl" value="{DNS_SRV_TTL}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV DNS_MX">
+											<tr id="tr_dns_srv_prio">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_PRIO}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_prio" value="{DNS_SRV_PRIO}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV">
+											<tr id="tr_dns_srv_weight">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_WEIGHT}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_weight" value="{DNS_SRV_WEIGHT}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV DNS_MX">
+											<tr id="tr_dns_srv_host">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_HOST}</td>
 												<td class="content"><input type="text" name="dns_srv_host" value="{DNS_SRV_HOST}" /></td>
 											</tr>
-											<tr class="DNS DNS_SRV">
+											<tr id="tr_dns_srv_port">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_PORT}</td>
 												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_port" value="{DNS_SRV_PORT}" /></td>
 											</tr>
-											<tr class="DNS DNS_CNAME">
+											<tr id="tr_dns_cname">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_CNAME}</td>
 												<td class="content"><input type="text" name="dns_cname" value="{DNS_CNAME}" />.</td>
-											</tr>
-											<tr class="DNS DNS_CERT DNS_DNAME DNS_GPOS DNS_KEY DNS_KX DNS_NAPTR DNS_NSAP DNS_NS DNS_NXT DNS_PTR DNS_PX DNS_SIG DNS_TXT">
-												<td width="25">&nbsp;</td>
-												<td width="200" class="content2">{TR_DNS_PLAIN}</td>
-												<td class="content"><input type="text" name="dns_plain_data" value="{DNS_PLAIN}" />.</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
