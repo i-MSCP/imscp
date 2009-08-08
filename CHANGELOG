@@ -1,6 +1,12 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-08 Andreca Daniel
+	- TOOLS:
+		* Fixed #1916: class.HTMLPurifier_AttrDef_HTML_Class.php missing
+	- CONFIGS:
+		* Debian Squeeze need dash compatibility
+
 2009-08-08 Benedikt Heintel
 	- DEAMON:
 		* Changed Layout of ispCP Network starter
