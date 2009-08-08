@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * imap_messages.php

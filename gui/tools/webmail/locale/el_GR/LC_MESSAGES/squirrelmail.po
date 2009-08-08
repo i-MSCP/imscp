@@ -1,15 +1,15 @@
-# Translation of Squirrelmail interface to Hellenic (Greek)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
-# "George P. Kremmydas" <george@kefalonia-ithaki.gr>, 2003.
+# Translation of SquirrelMail interface to Hellenic (Greek)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# "George P. Kremmydas" <george at kefalonia-ithaki.gr>, 2003.
 # Proofreading & some help, as well as maintenance for now,
-# by Alexandros Vellis <avel@noc.uoa.gr>
-# $Id: squirrelmail.po 11944 2006-11-03 17:11:53Z avel $
+# by Alexandros Vellis <avel at noc.uoa.gr>
+# $Id: squirrelmail.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-08 23:25+0300\n"
-"PO-Revision-Date: 2006-11-03 19:11+0200\n"
+"PO-Revision-Date: 2008-07-23 13:53+0300\n"
 "Last-Translator: Alexandros Vellis <avel@noc.uoa.gr>\n"
 "Language-Team: Greek <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1596,7 +1596,6 @@ msgstr "Πλάτος Παραθύρου Σύνθεσης"
 msgid "Height of Compose Window"
 msgstr "Ύψος Παραθύρου Σύνθεσης"
 
-#, fuzzy
 msgid "Prepend Signature before Reply/Forward Text"
 msgstr "Προσάρτηση υπογραφής πριν το Κείμενο Απάντησης/Προώθησης"
 
@@ -1849,7 +1848,7 @@ msgid "Config File Version"
 msgstr "Έκδοση Αρχείου Προσαρμογής (config)"
 
 msgid "SquirrelMail Version"
-msgstr "Έκδοση Squirrelmail"
+msgstr "Έκδοση SquirrelMail"
 
 msgid "PHP Version"
 msgstr "Έκδοση PHP"
@@ -2091,9 +2090,8 @@ msgstr "Υποστήριξη UID"
 msgid "PHP session name"
 msgstr "Όνομα συνεδρίας PHP"
 
-#, fuzzy
 msgid "Location base"
-msgstr "Λεξικό Διαγράφηκε"
+msgstr "Βάση διεύθυνσης"
 
 msgid "Message of the Day"
 msgstr "Μήνυμα της Ημέρας"
@@ -2261,7 +2259,7 @@ msgid ""
 "the guides in the %s directory where SquirrelMail was installed."
 msgstr ""
 "Αν παρουσιάστηκαν προειδοποιήσεις παραπάνω, προσπαθήστε να τις επιλύσετε "
-"μόνοι σας. Διαβάστε τις οδηγίες στον φάκελο %s όπου το Squirrelmail έχει "
+"μόνοι σας. Διαβάστε τις οδηγίες στον φάκελο %s όπου το SquirrelMail έχει "
 "εγκατασταθεί."
 
 msgid ""
@@ -2272,7 +2270,7 @@ msgid ""
 "like, you can scroll down in the message to see what else is being sent."
 msgstr ""
 "Πατώντας το ακόλουθο κουμπί, θα αρχίσει να συντάσσεται ένα μήνυμα προς τους "
-"προγραμματιστές του Squirrelmail, που θα περιέχει πολλές πληροφορίες για το "
+"προγραμματιστές του SquirrelMail, που θα περιέχει πολλές πληροφορίες για το "
 "σύστημά σας, τον φυλλομετρητή σας, το πώς έχει στηθεί το SquirrelMail και ο "
 "εξυπηρετητής IMAP σας. Επίσης θα σάς προτρέψει για περισσότερες πληροφορίες. "
 "Απλά συμπληρώστε τα τμήματα στην αρχή. Αν θέλετε, μπορείτε να δείτε παρακάτω "
@@ -2290,9 +2288,8 @@ msgstr ""
 "προστεθεί στη λίστα προβλημάτων στο SourceForge, αλλά κάποιος που θα λάβει "
 "το μήνυμά σας μπορεί να το προσθέσει για εσάς."
 
-#, fuzzy
 msgid "This bug involves:"
-msgstr "Αυτό το πρόβλημα έχει να κάνει"
+msgstr "Αυτό το πρόβλημα σχετίζεται:"
 
 msgid "the general program"
 msgstr "με το γενικότερο πρόγραμμα"
@@ -2430,13 +2427,11 @@ msgstr "6 ώρες"
 msgid "Calendar"
 msgstr "Ημερολόγιο"
 
-#, fuzzy
 msgid "Delete &amp; Prev"
-msgstr "Διαγραφή & Προηγ."
+msgstr "Διαγραφή &amp; Προηγ."
 
-#, fuzzy
 msgid "Delete &amp; Next"
-msgstr "Διαγραφή & Επόμενο"
+msgstr "Διαγραφή &amp; Επόμενο"
 
 msgid "Move to:"
 msgstr "Μετακίνηση σε:"
@@ -2799,7 +2794,7 @@ msgid ""
 msgstr ""
 "Εκτέλεση μερικών δοκιμαστικών εντολών IMAP, με εμφάνιση της εντολής και του "
 "αποτελέσματος. Αυτά τα δοκιμαστικά χρησιμοποιούν τις εντολές IMAP του "
-"Squirrelmail και την τρέχουσα ρύθμιση του Squirrelmail. Μπορούν να "
+"SquirrelMail και την τρέχουσα ρύθμιση του SquirrelMail. Μπορούν να "
 "χρησιμοποιηθούν προσαρμοσμένες γραμμές εντολών."
 
 #, php-format
@@ -2827,9 +2822,9 @@ msgstr ""
 "αυτή τη λίστα. Θα προσπαθήσει να ακυρώσει την εγγραφή για την παρακάτω "
 "διεύθυνση."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Unknown action: %s"
-msgstr "Άγνωστο σφάλμα: %s"
+msgstr "Άγνωστη ενέργεια: %s"
 
 msgid "Mailinglist"
 msgstr "ΤαχυδρομικήΛίστα"
@@ -3719,9 +3714,8 @@ msgstr ""
 "Το προσωπικό σας λεξικό έχει  αποκρυπτογραφηθεί και είναι πλέον αποθηκευμένο "
 "ως απλό κείμενο."
 
-#, fuzzy
 msgid "No action requested."
-msgstr "Δεν ζητήθηκε καμία αλλαγή."
+msgstr "Δε ζητήθηκε ενέργεια."
 
 msgid "Personal Dictionary Crypto Settings"
 msgstr "Κρυπτογραφικές Ρυθμίσεις Προσωπικού Λεξικού"
@@ -3888,9 +3882,8 @@ msgstr "Ρυθμίσεις διεθνών λεξικών"
 msgid "Encrypt or decrypt your personal dictionary"
 msgstr "Κρυπτογράφηση ή αποκρυπτογράφηση του προσωπικού σας λεξικού"
 
-#, fuzzy
 msgid "Personal dictionary encryption options are not available"
-msgstr "Κρυπτογραφικές Ρυθμίσεις Προσωπικού Λεξικού"
+msgstr "Οι Ρυθμίσεις κρυπτογράφησης προσωπικού λεξικού δεν είναι διαθέσιμες"
 
 msgid "SquirrelSpell Options Menu"
 msgstr "Μενού Επιλογών Διορθωτής-Squirrel"
@@ -4086,7 +4079,7 @@ msgstr "Κατεύθυνση μετάφρασης"
 
 #, php-format
 msgid "About SquirrelMail %s"
-msgstr "Σχετικά με το Squirrelmail %s"
+msgstr "Σχετικά με το SquirrelMail %s"
 
 msgid ""
 "SquirrelMail is the name of the program that provides access to your email "
@@ -4131,11 +4124,10 @@ msgid "The administrator installed the following plugins:"
 msgstr ""
 
 msgid "none installed"
-msgstr ""
+msgstr "κανένα εγκατεστημένο"
 
-#, fuzzy
 msgid "Nothing to search"
-msgstr "Τίποτα προς διαγραφή!"
+msgstr "Τίποτα προς αναζήτηση"
 
 msgid "SquirrelMail Webmail Application"
 msgstr "Εφαρμογή Webmail SquirrelMail"
@@ -4311,13 +4303,11 @@ msgstr "Ο χρήστης '%s' υπάρχει ήδη"
 msgid "PHP install does not have LDAP support."
 msgstr ""
 
-#, fuzzy
 msgid "Write to address book failed"
 msgstr "Η εγγραφή στο βιβλίο διευθύνσεων απέτυχε"
 
-#, fuzzy
 msgid "Removing entry from address book failed"
-msgstr "Η εγγραφή στο βιβλίο διευθύνσεων απέτυχε"
+msgstr "Η αφαίρεση της εγγραφής από το βιβλίο διευθύνσεων απέτυχε"
 
 msgid "LDAP rename is not supported by used protocol version"
 msgstr ""
@@ -4326,51 +4316,43 @@ msgid ""
 "LDAP rename is not supported by used LDAP library. You can't change nickname"
 msgstr ""
 
-#, fuzzy
 msgid "LDAP rename failed"
-msgstr "Αποτυχία διαγραφής:"
+msgstr "Αλλαγή ονόματος στον LDAP απέτυχε:"
 
 msgid "Unable to remove some field values"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to rename user \"%s\" to \"%s\""
-msgstr "Αδύνατον να παρουσιαστούν διευθύνσεις από %s"
+msgstr "Αδύνατον να μετονομαστεί ο χρήστης \"%s\" σε \"%s\""
 
 msgid "Address book is corrupted. Required fields are missing."
 msgstr ""
 
-#, fuzzy
 msgid "Address book entry is too big"
-msgstr "Πίνακας βιβλίου διευθύνσεων"
+msgstr "Η εγγραφή για το βιβλίο διευθύνσεων είναι πολύ μεγάλη"
 
-#, fuzzy
 msgid "Error initializing address book database."
 msgstr "Σφάλμα στην αρχικοποίηση της βάσης δεδομένων βιβλίου διευθύνσεων."
 
-#, fuzzy
 msgid "Error initializing global address book."
 msgstr "Σφάλμα στην αρχικοποίηση του συνολικού βιβλίου διευθύνσεων."
 
-#, fuzzy
 msgid "Error initializing other address books."
-msgstr "Σφάλμα στην αρχικοποίηση του συνολικού βιβλίου διευθύνσεων."
+msgstr "Σφάλμα στην αρχικοποίηση άλλων βιβλίων διευθύνσεων."
 
-#, fuzzy
 msgid "Unknown address book backend"
-msgstr "Πίνακας Γενικού βιβλίου διευθύνσεων"
+msgstr "Άγλωστο backend βιβλίου διευθύνσεων"
 
-#, fuzzy
 msgid "Illegal folder name."
-msgstr "(Άκυρη ημερομηνία)"
+msgstr "Μη επιτρεπτό όνομα φακέλου."
 
 #, php-format
 msgid "The name may not contain any of the following: %s"
-msgstr ""
+msgstr "Το όνομα δε μπορεί να περιέχει οποιοδήποτε από τα ακόλουθα: %s"
 
-#, fuzzy
 msgid "Please select a different name."
-msgstr "Μη έγκυρο όνομα φακέλου.  Παρακαλώ επιλέξτε ένα διαφορετικό όνομα."
+msgstr "Παρακαλώ επιλέξτε ένα διαφορετικό όνομα."
 
 msgid "You have not selected a folder to subscribe. Please do so."
 msgstr "Δεν έχετε επιλέξει φάκελο για εγγραφή. Παρακαλώ κάντε το."
@@ -4517,13 +4499,11 @@ msgstr "Στυλ Γραμματοσειράς"
 msgid "Font size"
 msgstr "Μέγεθος γραμματοσειράς"
 
-#, fuzzy
 msgid "Default font size"
-msgstr "Εξ ορισμού Αριστερό Μέγεθος"
+msgstr "Εξ ορισμού μέγεθος γραμματοσειράς"
 
-#, fuzzy
 msgid "Icon Theme"
-msgstr "Θέμα Παρουσίασης"
+msgstr "Θέμα Εικονιδίων"
 
 msgid "Enable Fancy Row Mouseover Highlighting"
 msgstr ""
@@ -4544,11 +4524,10 @@ msgid "Height of inline frame"
 msgstr ""
 
 msgid "Show 'Delete &amp; Prev/Next' Links"
-msgstr ""
+msgstr "Εμφνάιση συνδέσεων 'Διαγραφή &amp; Προηγ/Επόμ'"
 
-#, fuzzy
 msgid "Translate Special Folders"
-msgstr "Αυτόματη Δημιουργία Ειδικών Φακέλων"
+msgstr "Μετάφραση Ειδικών Φακέλων"
 
 msgid "Save Replies with Original Message"
 msgstr "Αποθήκευση Απαντήσεων με το Αρχικό Μήνυμα"
@@ -4562,16 +4541,14 @@ msgstr[1] "%d Λεπτά"
 msgid "Show only subscribed folders"
 msgstr "Εμφάνιση μόνο φακέλων στους οποίους έχει γίνει εγγραφή"
 
-#, fuzzy
 msgid "Template Default"
-msgstr "Να Γίνει Εξ ορισμού"
+msgstr ""
 
 msgid "XP"
 msgstr "XP"
 
-#, fuzzy
 msgid "Mercury/32 IMAP server"
-msgstr "Εξυπηρετητής Cyrus IMAP"
+msgstr "Εξυπηρετητής IMAP Mercury/32"
 
 msgid "IMAP Connection Security"
 msgstr ""
@@ -4600,13 +4577,11 @@ msgstr ""
 msgid "Custom SMTP AUTH password"
 msgstr ""
 
-#, fuzzy
 msgid "Disable server-side sorting"
-msgstr "Χρήση ταξινόμησης από τον εξυπηρετητή"
+msgstr "Απενεργοποίηση ταξινόμησης από τον εξυπηρετητή"
 
-#, fuzzy
 msgid "Disable server-side thread sorting"
-msgstr "Χρήση ταξινόμησης thread από τον εξυπηρετητή"
+msgstr "Απενεργοποίηση ταξινόμησης νήματος από τον εξυπηρετητή"
 
 msgid "Search functions"
 msgstr "Λειτουργίες Αναζήτησης"
@@ -4620,16 +4595,14 @@ msgstr "Μόνο προχωρημένη αναζήτηση"
 msgid "Both search functions"
 msgstr "Και οι δύο λειτουργίες αναζήτησης"
 
-#, fuzzy
 msgid "Time Zone Configuration"
 msgstr "Επιλογές Ζώνης Ώρας"
 
 msgid "Standard GNU C time zones"
 msgstr ""
 
-#, fuzzy
 msgid "Strict time zones"
-msgstr "Χρόνος έναρξης:"
+msgstr "Αυστηρές ζώνες ώρας"
 
 msgid "Custom GNU C time zones"
 msgstr ""
@@ -4680,13 +4653,11 @@ msgstr "Πίνακας βιβλίου διευθύνσεων"
 msgid "Templates"
 msgstr "Θέματα"
 
-#, fuzzy
 msgid "Default font set"
-msgstr "Εξ ορισμού Αριστερό Μέγεθος"
+msgstr "Εξ ορισμού σετ γραμματοσειρών"
 
-#, fuzzy
 msgid "Default template"
-msgstr "Εξ ορισμού Θέμα"
+msgstr "Εξ ορισμού template"
 
 msgid "Show System Specifications"
 msgstr ""
@@ -4694,9 +4665,8 @@ msgstr ""
 msgid "my email account"
 msgstr ""
 
-#, fuzzy
 msgid "Bug Reports"
-msgstr "Αναφορές Σφαλμάτων (bug):"
+msgstr "Αναφορές Σφαλμάτων (bugs)"
 
 msgid "You must type in a new password."
 msgstr ""
@@ -4985,9 +4955,8 @@ msgstr "Χρόνος εκτέλεσης:"
 msgid "%s ms"
 msgstr "%s ms"
 
-#, fuzzy
 msgid "Command failed"
-msgstr "Αποτυχία εντολής"
+msgstr "Η εντολή απέτυχε"
 
 msgid "No POP3 servers configured yet."
 msgstr "Δεν έχουν καθοριστεί POP3 εξυπηρετητές ακόμα."
@@ -5063,7 +5032,7 @@ msgstr ""
 
 #, php-format
 msgid "%s notice:"
-msgstr ""
+msgstr "%s σημείωση:"
 
 msgid "Warning"
 msgstr "Προειδοποίηση"

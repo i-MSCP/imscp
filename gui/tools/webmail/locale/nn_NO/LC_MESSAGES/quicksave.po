@@ -1,7 +1,6 @@
 # translation of quicksave.po to Nynorsk
-# translation of quicksave.po to
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (c) 2004-2004-2005 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2004
 #
 msgid ""

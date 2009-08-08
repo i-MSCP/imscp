@@ -1,7 +1,7 @@
 # translation of check_quota.po to Nynorsk
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# $Id: check_quota.po 12740 2007-10-24 21:31:21Z jervfors $
+# $Id: check_quota.po 13696 2009-05-14 06:27:08Z jervfors $
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
 msgid ""
 msgstr ""

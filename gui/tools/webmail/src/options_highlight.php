@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * options_highlight.php

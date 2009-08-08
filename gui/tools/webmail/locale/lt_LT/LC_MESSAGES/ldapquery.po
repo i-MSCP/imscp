@@ -1,9 +1,9 @@
 # Lithuanian translation of
 # SquirrelMail's ldapquery plugin.
-# Copyright (c) 2003-2006 SquirrelMail Project Team
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: ldapquery.po 11579 2006-08-13 13:50:15Z tokul $
+# $Id: ldapquery.po 13696 2009-05-14 06:27:08Z jervfors $
 # 
 # 
 msgid ""

@@ -1,9 +1,7 @@
-# translation of proon.po to Frisian
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# translation of proon.po to
-# LANGUAGE (xx_XX) proon Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Frisian (fy) proon Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: proon.pot 10877 2006-03-04 11:22:22Z jervfors $
 msgid ""
 msgstr ""
@@ -312,13 +310,13 @@ msgid "The following table describes user preferences that can affect how prunin
 msgstr "De folgjende tabel beskriuwt brûker-foarkarren dy't ynfloed hawwe kinne op hoe't it snoeien wol/net foar jo dien wurdt. It gedrach kin wizige wurde of beheind troch side-ynstellingen dy't troch jo systeembehearder opjûn binne. De beskriuwingen binne yn deselde folchoarder as it formulier foar brûker-foarkarren hjirboppe."
 
 msgid "Ordinarily, there is one pruning attempt at SquirrelMail sign-on time.  If you want the sign-on prunings to be done less often, you can specify a number here.  For example, a value of 3 means 'every 3rd sign-on'.  No value specified or a value of 0 means 'every sign-on'.  The local SquirrelMail site administrator may have specified a maximum value for sign-on pruning frequency, in which case that takes precedence if it is lower."
-msgstr "Gewoanwei wurdt der snoeid op it momint dat jo ynlogje by SquirrelMail. As jo wolle dat dit minder faak dien wurdt kinne jo hjir in getal opjaan. Bygelyks de wearde 3 betsjut 'elke tredde kear dat ynlogge wurdt'. As jo gjin wearde, of de wearde 0, opjouwe sil der by elke login snoeid wurde. Jo sidebehearder fan Squirrelmail kin in maksimumwearde opjûn hawwe foar it snoeien by ynlogjen. Dizze sil tapast wurde as dy in legere snoeifrekwinsje brûkt."
+msgstr "Gewoanwei wurdt der snoeid op it momint dat jo ynlogje by SquirrelMail. As jo wolle dat dit minder faak dien wurdt kinne jo hjir in getal opjaan. Bygelyks de wearde 3 betsjut 'elke tredde kear dat ynlogge wurdt'. As jo gjin wearde, of de wearde 0, opjouwe sil der by elke login snoeid wurde. Jo sidebehearder fan SquirrelMail kin in maksimumwearde opjûn hawwe foar it snoeien by ynlogjen. Dizze sil tapast wurde as dy in legere snoeifrekwinsje brûkt."
 
 msgid "maximum"
 msgstr "maksimum"
 
 msgid "Pruning can be done manually from this options page, or it can be done periodically and automatically.  This item specifies the recurring time period.  The format is the same as for the date span values for individual folders.  If not specified, no automatic/periodic pruning will be done; so, you can think of this field as an on/off switch for automatic pruning.  For safety, a value of 0 is treated the same as no value specified.  The local SquirrelMail site administrator may have specified a minimum pruning interval, in which case that takes precedence if it is lower.  The recurring interval is measured from the SquirrelMail session sign-on, so automatic pruning attempts will be made at the specified intervals thereafter.  The actual pruning happens coincident with some screen update activity, so an idle SquirrelMail session will not be doing any automatic pruning."
-msgstr "It snoeien kin hânmjittich fan dizze side ôf útfierd wurde of periodyk en automatysk. Dit item bepaalt de weromkomende tiidsperioade. De opmak is itselde as foar de leeftydslimiten foar individuele mappen. As jo neat opjouwe sil der gjin automatysk/periodyk snoeien barre. Jo kinne dit fjild dus sjen as in oan/útskeakelder foar it automatysk snoeien. Om feilichheidsredenen wurdt 0 sjoen as 'gjin wearde opjûn'. Jo Squirrelmail-systeembehearder kin in minimaal snoei-ynterfal opjûn hawwe. As dizze leger is as dy fan josels, sil dy brûkt wurde. It weromkom-ynterfal wurdt mjitten fan it momint fan ynlogjen by SquirrelMail ôf. It automatysk opskjinjen bart dus op de opjûne ynterfals dernei. It eigentlike snoeien bart by it ferfarskjen fan it skerm, dus yn in ynaktive SquirrelMail-sesje sil net snoeid wurde."
+msgstr "It snoeien kin hânmjittich fan dizze side ôf útfierd wurde of periodyk en automatysk. Dit item bepaalt de weromkomende tiidsperioade. De opmak is itselde as foar de leeftydslimiten foar individuele mappen. As jo neat opjouwe sil der gjin automatysk/periodyk snoeien barre. Jo kinne dit fjild dus sjen as in oan/útskeakelder foar it automatysk snoeien. Om feilichheidsredenen wurdt 0 sjoen as 'gjin wearde opjûn'. Jo SquirrelMail-systeembehearder kin in minimaal snoei-ynterfal opjûn hawwe. As dizze leger is as dy fan josels, sil dy brûkt wurde. It weromkom-ynterfal wurdt mjitten fan it momint fan ynlogjen by SquirrelMail ôf. It automatysk opskjinjen bart dus op de opjûne ynterfals dernei. It eigentlike snoeien bart by it ferfarskjen fan it skerm, dus yn in ynaktive SquirrelMail-sesje sil net snoeid wurde."
 
 msgid "minimum"
 msgstr "minimum"

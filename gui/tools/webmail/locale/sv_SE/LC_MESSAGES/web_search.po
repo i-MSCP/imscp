@@ -1,18 +1,18 @@
 # Swedish (sv_SE) web_search Translation (SquirrelMail plugin)
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: web_search.po 10503 2005-12-27 14:03:40Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: web_search.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: web_search 0.1.6\n"
 "POT-Creation-Date: 2005-10-24 21:07+0300\n"
 "PO-Revision-Date: 2005-12-27 15:02+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Search the Web"
-msgstr "Sök på webben"
+msgstr "SÃ¶k pÃ¥ webben"

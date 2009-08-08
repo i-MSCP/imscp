@@ -1,6 +1,6 @@
 # Lithuanian translation of
 # SquirrelMail's askuserinfo plugin.
-# Copyright (c) 2003-2005 SquirrelMail Project Team
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 msgid ""
 msgstr ""

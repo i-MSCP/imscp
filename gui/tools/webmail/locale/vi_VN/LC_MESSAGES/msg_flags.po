@@ -1,0 +1,112 @@
+# Vietnamese (vi) msg_flags Translation (SquirrelMail plugin)
+# Copyright © 2002-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: msg_flags.pot 12740 2007-10-24 21:31:21Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: msg_flags 1.4.10\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-27 17:43+0200\n"
+"PO-Revision-Date: 2008-03-10 19:22+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:19
+msgid "This message is flagged"
+msgstr ""
+"Thư này có cờ"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:26
+msgid "This message is high priority"
+msgstr "Thư này có mức ưu tiên cao"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:33
+msgid "This message is low priority"
+msgstr "Thư này có mức ưu tiên thấp"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:41
+msgid "This message has an attachment"
+msgstr "Thư này có đồ đính kèm"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:51
+msgid "This message has been read"
+msgstr "Thư này đã được đọc"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:54
+msgid "This message is new"
+msgstr "Thư này là mới"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:61
+msgid "This message has been read & deleted"
+msgstr ""
+"Thư này đã được đọc và bị xoá"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:63
+msgid "This message is new & deleted"
+msgstr "Thư này là mới và đã bị xoá"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:71
+msgid "This message has been read & answered"
+msgstr "Thư này đã được đọc và trả lời"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:73
+msgid "This message is new & answered"
+msgstr "Thư này là mới và đã được trả lời"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:95
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:86
+msgid "Flag"
+msgstr "Đặt cờ"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:96
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:87
+msgid "Unflag"
+msgstr "Bỏ cờ"
+
+#: patches/msg_flags-squirrelmail-1.4.10.diff:129
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:120
+msgid "INBOX"
+msgstr "THƯ ĐẾN"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:18
+msgid "This message is Flagged"
+msgstr ""
+"Thư này có Cờ"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:25
+msgid "This message is High Priority"
+msgstr ""
+"Thư này có mức Ưu tiên Cao"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:29
+msgid "This message is Low Priority"
+msgstr ""
+"Thư này có mức Ưu tiên Thấp"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:37
+msgid "This message is Mulitpart"
+msgstr "Thư này có kiểu Đa Phần (Multipart)"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:50
+msgid "This message is Read"
+msgstr "Thư này đã được Đọc"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:54
+msgid "This message is New"
+msgstr "Thư này là Mới"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:60
+msgid " & Deleted"
+msgstr ""
+" và đã bị Xoá"
+
+#: patches/msg_flags-squirrelmail-1.4.3a.diff:66
+msgid " & Answered"
+msgstr " và đã được Trả lời"

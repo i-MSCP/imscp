@@ -1,9 +1,9 @@
 # Translation of squirrelmail.po to Faroese (Faroe Islands)
 # Faroese (fo_FO) SquirrelMail Translation
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Danial Olsen <danial@com-data.fo>, 2003-2006.
-# $Id: squirrelmail.po 12650 2007-08-31 11:05:21Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail\n"
@@ -1232,7 +1232,7 @@ msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
 msgstr "Við at brúka \"CRAM-MD5\" ella \"DIGEST-MD5\" virkar heimiling møguliga."
 
 msgid "Also, the use of TLS may allow SquirrelMail to login."
-msgstr "Eisini, TLS nýtsla kann loyva Squirrelmail at logga inn."
+msgstr "Eisini, TLS nýtsla kann loyva SquirrelMail at logga inn."
 
 #, php-format
 msgid "Bad request: %s"

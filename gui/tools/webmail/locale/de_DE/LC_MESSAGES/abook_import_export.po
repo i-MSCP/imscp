@@ -1,8 +1,8 @@
 # German translation of SquirrelMail abook_import_export plugin.
-# Copyright (c) 2005-2006 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
-# $Id: abook_import_export.po 11495 2006-08-09 07:28:55Z tokul $
+# $Id: abook_import_export.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: abook_import_export 1.0\n"

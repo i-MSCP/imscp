@@ -1,8 +1,7 @@
-# translation of mini.po to Dutch
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) mini Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Dutch (nl_NL) mini Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: mini.pot 11689 2006-09-10 09:52:24Z jervfors $
 msgid ""
 msgstr ""

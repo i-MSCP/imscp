@@ -3,12 +3,12 @@
       Opciones
    </title>
    <summary>
-      Puede alterar el aspecto y la manera de responder de Squirrelmail
+      Puede alterar el aspecto y la manera de responder de SquirrelMail
       cambiando las distintas opciones de esta sección.
    </summary>
    <description>
       <p>
-      Una de las grandes ventajas de Squirrelmail es el gran nivel de
+      Una de las grandes ventajas de SquirrelMail es el gran nivel de
       personalización del que dispone. Dependiendo de su configuración,
       podrá disponer de una gran variedad de temas de colores, idiomas,
       carpetas y otras posibilidades. Todo esto puede alterarse sin
@@ -58,18 +58,18 @@
    </title>
    <description>
       <b>Tema</b><br>
-      Squirrelmail dispone de distintos temas de colores para cambiar el
+      SquirrelMail dispone de distintos temas de colores para cambiar el
       aspecto cromático del mismo.
       <br><br>
 
       <b>Idioma</b><br>
-      Si desea alterar el idioma con el que Squirrelmail interactua con usted
+      Si desea alterar el idioma con el que SquirrelMail interactua con usted
       puede hacerlo elijiendo un idioma distinto de este desplegable. Nótese
       que esto no va a traducir por usted los mensajes que reciba.
       <br><br>
 
       <b>Usar JavaScript o HTML en la lista de contactos?</b><br>
-      Una de las metas auto impuestas a la hora de realizar Squirrelmail ha
+      Una de las metas auto impuestas a la hora de realizar SquirrelMail ha
       sido no emplear Javascript en ninguna de las páginas. Sin embargo,
       algunos de nuestros desarrolladores han programado un excelente buscador
       para el libro de direcciones que usa Javascript. En vez de quitarlo
@@ -103,7 +103,7 @@
       <br><br>
       
       <b>Actualizar automáticamente la lista de carpetas</b><br>
-      Squirrelmail puede refrescar automáticamente la lista de carpetas
+      SquirrelMail puede refrescar automáticamente la lista de carpetas
       del marco izquierdo, lo que permite actualizar el número de mensajes
       no leidos de cada carpeta (entre paréntesis a la derecha del nombre
       de la carpeta).

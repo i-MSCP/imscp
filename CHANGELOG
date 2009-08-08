@@ -1,6 +1,14 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-08 Benedikt Heintel
+	- DEAMON:
+		* Changed Layout of ispCP Network starter
+	- TOOLS:
+		* Updated HTMLPurifier to version 4.0.0
+		* Updated Squirrelmail to version 1.4.19
+		* Updated NET_DNS to version 1.16
+
 2009-08-05 Thomas Wacker
 	- GUI:
 		* Fixed #1856: DOM 2 style sheets for dns entries

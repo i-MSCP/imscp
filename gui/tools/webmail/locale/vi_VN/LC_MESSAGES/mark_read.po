@@ -1,0 +1,111 @@
+# Vietnamese (vi) mark_read Translation (SquirrelMail plugin)
+# Copyright © 2004-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: mark_read.pot 12742 2007-10-26 23:15:55Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mark_read 1.4.2\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-26 06:57+0200\n"
+"PO-Revision-Date: 2008-03-10 19:11+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
+
+#: functions.php:60
+#: functions.php:162
+#: functions.php:341
+msgid "read"
+msgstr "đã đọc"
+
+#: functions.php:61
+#: functions.php:164
+#: functions.php:342
+msgid "unread"
+msgstr "chưa đọc"
+
+#: functions.php:111
+msgid "mark all messages in this folder as read"
+msgstr "đánh dấu mọi thư nằm trong thư mục này « đã đọc »"
+
+#: functions.php:113
+msgid "mark all messages in this folder as unread"
+msgstr "đánh dấu mọi thư nằm trong thư mục này « chưa đọc »"
+
+#: functions.php:162
+msgid "mark all messages in the above folders as read"
+msgstr "đánh dấu mọi thư nằm trong các thư mục trên « đã đọc »"
+
+#: functions.php:164
+msgid "mark all messages in the above folders as unread"
+msgstr "đánh dấu mọi thư nằm trong các thư mục trên « chưa đọc »"
+
+#: functions.php:165
+msgid "mark all folders"
+msgstr "đánh dấu mọi thư mục"
+
+#: functions.php:294
+msgid "Mark Read Link"
+msgstr "Liên kết Đánh dấu Đã đọc"
+
+#: functions.php:297
+msgid ""
+"Select all Folders, which you want to appear with a mark as read-/unread-"
+"link:"
+msgstr "Hãy chọn tất cả các thư mục bạn muốn thấy có liên kết đánh dấu « đã/chưa đọc »:"
+
+#: functions.php:336
+msgid "Toggle Special Folders"
+msgstr "Bật/tắt thư mục đặc biệt"
+
+#: functions.php:337
+msgid "Toggle All"
+msgstr "Bật/tắt tất cả"
+
+#: functions.php:339
+msgid "Display links"
+msgstr "Hiển thị liên kết"
+
+#: functions.php:340
+#: functions.php:355
+#: functions.php:364
+msgid "none"
+msgstr "không có"
+
+#: functions.php:343
+msgid "read/unread"
+msgstr "đã/chưa đọc"
+
+#: functions.php:347
+msgid "upper"
+msgstr "trên"
+
+#: functions.php:349
+msgid "lower"
+msgstr "dưới"
+
+#: functions.php:352
+msgid "shortened"
+msgstr "ngắn hơn"
+
+#: functions.php:354
+msgid "brackets"
+msgstr "dấu ngoặc"
+
+#: functions.php:363
+msgid "seperator"
+msgstr "dấu tách"
+
+#: functions.php:380
+msgid "Display 'mark all folders' link below the folder list"
+msgstr "Hiển thị liên kết « đánh dấu mọi thư mục » bên dưới danh sách thư mục"
+
+#: functions.php:384
+msgid "Save"
+msgstr "Lưu"

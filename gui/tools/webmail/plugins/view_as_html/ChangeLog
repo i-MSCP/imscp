@@ -1,15 +1,5 @@
 $Id$
 
-* Sat Jan 24 2009 Seth E. Randall <indiri69@users.sourceforge.net>
-
-- Handles emails with Content-Type: charset without a Mime-Version header (#1758486)
-- Removed translations as they are part of the Squirrelmail locales now
-
-* Sat Mar 29 2008 Seth E. Randall <indiri69@users.sourceforge.net>
-
-- Updated to SM Plugin standards
-- Added INSTALL file
-
 * Sat Mar 04 2006 Seth E. Randall <indiri69@users.sourceforge.net>
 
 - Added Dutch (nl_NL) translation from "Bram Mol" <gnoise@gmail.com>

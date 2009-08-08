@@ -1,8 +1,8 @@
 # Turkish (tr_TR) SquirrelMail Translation
-# Copyright (c) 2004-2007 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Kerem Erkan <kerem@keremerkan.net>, 2004-2007
-# $Id: squirrelmail.po 12664 2007-09-02 16:41:29Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail HEAD\n"
@@ -1854,7 +1854,7 @@ msgid "Config File Version"
 msgstr "Konfigürasyon Dosyasý Sürüm"
 
 msgid "SquirrelMail Version"
-msgstr "Squirrelmail Sürüm"
+msgstr "SquirrelMail Sürüm"
 
 msgid "PHP Version"
 msgstr "PHP Sürümü"
@@ -3164,7 +3164,7 @@ msgstr ""
 msgid "Count only messages that are RECENT"
 msgstr "Sadece YENÝ mesajlarý say"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "Selecting the %s option will change the title in some browsers to let you "
 "know when you have new mail (requires JavaScript, and only works in IE but "

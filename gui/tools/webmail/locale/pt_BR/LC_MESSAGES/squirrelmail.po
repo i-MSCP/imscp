@@ -1,7 +1,7 @@
 # translation of squirrelmail.po to Portugues Brasileiro
-# Portuguese (Brazil) Squirrelmail Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
-# $Id: squirrelmail.po 9590 2005-06-12 15:07:08Z tokul $
+# Portuguese (Brazil) SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 # Marcos Tadeu <marcos@v2r.com.br>, 2003-2005.
 msgid ""
 msgstr ""
@@ -384,7 +384,7 @@ msgid "SquirrelMail version %s"
 msgstr "SquirrelMail versão %s"
 
 msgid "By the SquirrelMail Project Team"
-msgstr "Pela Equipe de Desenvolvimento Squirrelmail"
+msgstr "Pela Equipe de Desenvolvimento SquirrelMail"
 
 #, php-format
 msgid "%s Login"
@@ -1264,7 +1264,7 @@ msgid "Show All"
 msgstr "Mostrar todas"
 
 msgid "SquirrelMail could not decode the bodystructure of the message"
-msgstr "o Squirrelmail não pôde decodificar a estrutura do corpo da mensagem"
+msgstr "o SquirrelMail não pôde decodificar a estrutura do corpo da mensagem"
 
 msgid "the provided bodystructure by your imap-server"
 msgstr "a estrutura do corpo de mensagem fornecida pelo seu servidor imap"
@@ -2597,7 +2597,7 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "Rodar alguns testes de comandos IMAP, mostrando o comando e os resultados. "
-"Estes testes usam os comandos do IMAP do Squirrelmail e sua configuração "
+"Estes testes usam os comandos do IMAP do SquirrelMail e sua configuração "
 "atual. Comandos alterados localmente podem ser usados."
 
 msgid "Mailinglist"

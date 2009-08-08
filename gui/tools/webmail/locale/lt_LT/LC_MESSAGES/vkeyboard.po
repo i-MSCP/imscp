@@ -1,8 +1,8 @@
 # Lithuanian translation of
 # SquirrelMail's vkeyboard plugin.
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
-# $Id: vkeyboard.po 11689 2006-09-10 09:52:24Z jervfors $
+# $Id: vkeyboard.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: vkeyboard 0.8\n"

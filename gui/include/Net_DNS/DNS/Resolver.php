@@ -1,25 +1,21 @@
 <?php
-/*
- *  License Information:
- *
- *    Net_DNS:  A resolver library for PHP
- *    Copyright (c) 2002-2003 Eric Kilfoil eric@ypass.net
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation; either
- *    version 2.1 of the License, or (at your option) any later version.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- *
- *    You should have received a copy of the GNU Lesser General Public
- *    License along with this library; if not, write to the Free Software
- *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
+/**
+*  License Information:
+*
+*  Net_DNS:  A resolver library for PHP
+*  Copyright (c) 2002-2003 Eric Kilfoil eric@ypass.net
+*  Maintainers:
+*  Marco Kaiser <bate@php.net>
+*  Florian Anderiasch <fa@php.net>
+*
+* PHP versions 4 and 5
+*
+* LICENSE: This source file is subject to version 3.01 of the PHP license
+* that is available through the world-wide-web at the following URI:
+* http://www.php.net/license/3_01.txt.  If you did not receive a copy of
+* the PHP License and are unable to obtain it through the web, please
+* send a note to license@php.net so we can mail you a copy immediately.
+*/
 
 /* Net_DNS_Resolver object definition {{{ */
 /**
@@ -318,41 +314,41 @@ class Net_DNS_Resolver
      */
     function read_config($file)
     {
-    	if (is_readable($file)) {
-	        if (! ($f = fopen($file, 'r'))) {
-	            $this->error = "can't open $file";
-	        }
-    	}
+        if (is_readable($file)) {
+            if (! ($f = fopen($file, 'r'))) {
+                $this->error = "can't open $file";
+            }
+        }
 
-    	if (!is_resource($f)) {
-    		$this->error = "can't open $file";
-    	} else {
-	        while (! feof($f)) {
-	            $line = chop(fgets($f, 10240));
-	            $line = ereg_replace('(.*)[;#].*', '\\1', $line);
-	            if (ereg("^[ \t]*$", $line, $regs)) {
-	                continue;
-	            }
-	            ereg("^[ \t]*([^ \t]+)[ \t]+([^ \t]+)", $line, $regs);
-	            $option = $regs[1];
-	            $value = $regs[2];
+        if (!is_resource($f)) {
+            $this->error = "can't open $file";
+        } else {
+            while (! feof($f)) {
+                $line = chop(fgets($f, 10240));
+                $line = ereg_replace('(.*)[;#].*', '\\1', $line);
+                if (ereg("^[ \t]*$", $line, $regs)) {
+                    continue;
+                }
+                ereg("^[ \t]*([^ \t]+)[ \t]+([^ \t]+)", $line, $regs);
+                $option = $regs[1];
+                $value = $regs[2];
 
-	            switch ($option) {
-	                case 'domain':
-	                    $this->domain = $regs[2];
-	                    break;
-	                case 'search':
-	                    $this->searchlist[count($this->searchlist)] = $regs[2];
-	                    break;
-	                case 'nameserver':
-	                    foreach (split(' ', $regs[2]) as $ns) {
-	                        $this->nameservers[count($this->nameservers)] = $ns;
-	                    }
-	                    break;
-	            }
-	        }
-	        fclose($f);
-    	}
+                switch ($option) {
+                    case 'domain':
+                        $this->domain = $regs[2];
+                        break;
+                    case 'search':
+                        $this->searchlist[count($this->searchlist)] = $regs[2];
+                        break;
+                    case 'nameserver':
+                        foreach (split(' ', $regs[2]) as $ns) {
+                            $this->nameservers[count($this->nameservers)] = $ns;
+                        }
+                        break;
+                }
+            }
+            fclose($f);
+        }
     }
 
     /* }}} */
@@ -425,7 +421,7 @@ class Net_DNS_Resolver
     function nextid()
     {
         if ($GLOBALS['_Net_DNS_packet_id']++ > 65535) {
-        	$GLOBALS['_Net_DNS_packet_id']= 1;
+            $GLOBALS['_Net_DNS_packet_id']= 1;
         }
         return $GLOBALS['_Net_DNS_packet_id'];
     }
@@ -498,9 +494,9 @@ class Net_DNS_Resolver
                     $addr[] = $rr->address;
                 }
             }
-		}
-		return $addr;
-	}
+        }
+        return $addr;
+    }
 
     /* }}} */
     /* Net_DNS_Resolver::search() {{{ */
@@ -787,7 +783,10 @@ class Net_DNS_Resolver
             if (!$len) {
                 continue;
             }
-            $buf = fread($sock, $len);
+            $buf = '';
+            while (!feof($sock) && (strlen($buf) < $len) ) {
+                $buf .= fread($sock, $len-strlen($buf));
+            }
             $actual = strlen($buf);
             $this->answerfrom = $ns;
             $this->answersize = $len;
@@ -918,7 +917,7 @@ class Net_DNS_Resolver
                 }
 
             }
-            
+
             $this->errorstring = 'query timed out';
             return null;
         }

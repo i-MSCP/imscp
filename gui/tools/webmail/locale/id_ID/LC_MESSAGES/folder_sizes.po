@@ -1,7 +1,7 @@
 # translation of folder_sizes.po to Bahasa Indonesia
 # translation of folder_sizes.po to
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (c) 2004-2005 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2004.
 #
 msgid ""

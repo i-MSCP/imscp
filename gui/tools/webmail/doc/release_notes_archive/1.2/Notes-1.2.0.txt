@@ -1,4 +1,4 @@
-/*****************************************************************
+﻿/*****************************************************************
  * Release Notes: SquirrelMail 1.2.0                             *
  * The "And I Still Have Not Wrapped My Wife's Presents" Release *
  *    aka the "Miriam Noel" Release                              *

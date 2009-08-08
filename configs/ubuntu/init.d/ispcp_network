@@ -51,6 +51,19 @@ NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
 
 START=1
 
+# To monitor more ports, edit SERVICES variable add your own ports
+# (ftp, proxy, http, etc.)
+SERVICES=(
+	# Web traffic
+		80 	443
+	# Pop 3
+		110
+	# IMAP
+		143
+	# Mail
+		25 587 995 993
+)
+
 # Debian LSB extensions (will be used if init-functions doesn't override them):
 log_daemon_msg() {
 	if [ ! -z "${2:-}" ]; then
@@ -89,40 +102,11 @@ add_rules() {
 	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "$LOGFILE"
 	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "$LOGFILE"
 
-	# web traffic
-
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 80 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 80 2>> "$LOGFILE"
-
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 443 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 443 2>> "$LOGFILE"
-
-	# pop3 traffic
-
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 110 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 110 2>> "$LOGFILE"
-
-	# imap traffic
-
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 143 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 143 2>> "$LOGFILE"
-
-	# mail traffic
-
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "$LOGFILE"
-
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 465 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 465 2>> "$LOGFILE"
-
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 587 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 587 2>> "$LOGFILE"
-
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 995 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 995 2>> "$LOGFILE"
-
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 993 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 993 2>> "$LOGFILE"
+	# Services from matrix
+	for PORT in ${SERVICES[@]}; do
+		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
+	done
 
 	# Explicit return once done
 	${IPTABLES} -A ISPCP_INPUT -j RETURN

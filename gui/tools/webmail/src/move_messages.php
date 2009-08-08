@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * move_messages.php

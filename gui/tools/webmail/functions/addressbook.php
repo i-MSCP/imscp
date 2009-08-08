@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * functions/addressbook.php - Functions and classes for the addressbook system

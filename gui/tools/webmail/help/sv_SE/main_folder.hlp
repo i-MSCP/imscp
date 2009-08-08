@@ -3,7 +3,7 @@
       Meddelandelista
    </title>
    <summary>
-      Namnet kan verka märkligt men detta är helt enkelt listan av
+      Namnet kan verka mÃ¤rkligt men detta Ã¤r helt enkelt listan av
       meddelanden som finns i mappen.
    </summary>
 </chapter>
@@ -14,29 +14,29 @@
    </title>
    <description>
       <p>
-      Klicka på mappnamnet på listan av mappar och listan av meddelanden
-      visas. Det står också hur många meddelanden finns på sidan och hur
-      många som sammanlagt finns i mappen.
+      Klicka pÃ¥ mappnamnet pÃ¥ listan av mappar och listan av meddelanden
+      visas. Det stÃ¥r ocksÃ¥ hur mÃ¥nga meddelanden finns pÃ¥ sidan och hur
+      mÃ¥nga som sammanlagt finns i mappen.
       </p><p>
       Till exempel: Visar meddelanden <B>1 - 2</B> (2 sammanlagt)
       </p><p>
-      Notera att det sammanlagda antalet av meddelanden oftast inte är samma
-      som antalet ej lästa meddelanden (på mapplistan bredvid mappnamnet,
-      om visningen är aktiverad).
+      Notera att det sammanlagda antalet av meddelanden oftast inte Ã¤r samma
+      som antalet ej lÃ¤sta meddelanden (pÃ¥ mapplistan bredvid mappnamnet,
+      om visningen Ã¤r aktiverad).
       </p><p>
-      Näst på sidan finns val för att flytta meddelanden till andra mappar,
+      NÃ¤st pÃ¥ sidan finns val fÃ¶r att flytta meddelanden till andra mappar,
       och att ta bort meddelanden.
       </p><p>
-          På listan visas information om avsändaren, datum och ämne.
-          Dessa kan modifieras i indexeringsordning i inställningar.
-	  <b>Obs:</b> På listan kan också finnas en ruta med  "+" "!" eller
+          PÃ¥ listan visas information om avsÃ¤ndaren, datum och Ã¤mne.
+          Dessa kan modifieras i indexeringsordning i instÃ¤llningar.
+	  <b>Obs:</b> PÃ¥ listan kan ocksÃ¥ finnas en ruta med  "+" "!" eller
           "A". Om det finns en "+" betyder det att meddelandet har bilagor.
-          "A" betyder att du har svarat på meddelandet. "!" betyder att
-          meddelandet hat skickats med hög prioritet.
+          "A" betyder att du har svarat pÃ¥ meddelandet. "!" betyder att
+          meddelandet hat skickats med hÃ¶g prioritet.
       </p><p>
-      Resten är ämnen för meddelanden. Observera att ej lästa meddelanden
-      visas med fetstil. På vänstra sidan finns en kontrollruta för att
-      markera meddelandet för flyttning eller radering.
+      Resten Ã¤r Ã¤mnen fÃ¶r meddelanden. Observera att ej lÃ¤sta meddelanden
+      visas med fetstil. PÃ¥ vÃ¤nstra sidan finns en kontrollruta fÃ¶r att
+      markera meddelandet fÃ¶r flyttning eller radering.
       </p>
    </description>
 </section>

@@ -1,4 +1,4 @@
-# Spanish (es_ES) translation of Check Quota (Squirrelmail pugin)
+# Spanish (es_ES) translation of Check Quota (SquirrelMail pugin)
 # Copyright (C) 2005 Carlos Martín
 # This file is distributed under the same license as the SquirrelMail package.
 # Carlos Martín <k@ues.edu.sv>, 2005.

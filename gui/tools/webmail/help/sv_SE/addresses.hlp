@@ -3,23 +3,23 @@
       Adresser
    </title>
    <summary>
-      Användningen av en adressbok kan spara mycket tid och knappande.
-      Spara sådana adresser som du använder ofta och du kan enkelt
-      använda dem om och om igen.
+      AnvÃ¤ndningen av en adressbok kan spara mycket tid och knappande.
+      Spara sÃ¥dana adresser som du anvÃ¤nder ofta och du kan enkelt
+      anvÃ¤nda dem om och om igen.
    </summary>
    <description>
       <p>
-      Adressbok är en fantastisk tidsparande sak. Adresser som man ofta
-      använder är sparade på ett händigt sätt. Du kan också använda dig
-      av LDAP servrar (ofta i bruk på universiteter och företag, samtliga
-      gemensamma adresserna enkelt tillgängliga för alla).
+      Adressbok Ã¤r en fantastisk tidsparande sak. Adresser som man ofta
+      anvÃ¤nder Ã¤r sparade pÃ¥ ett hÃ¤ndigt sÃ¤tt. Du kan ocksÃ¥ anvÃ¤nda dig
+      av LDAP servrar (ofta i bruk pÃ¥ universiteter och fÃ¶retag, samtliga
+      gemensamma adresserna enkelt tillgÃ¤ngliga fÃ¶r alla).
       </p>
       <p>
-      Om din webläsare stödjer Javascript, du kanske vill också använda det.
-      Välj Javascript-adressbok i inställningarna. Det är ett trevligt
-      hjälpmedel med sina egna pop-upp fönster. Den vanliga HTML-adressboken
-      fungerar även i webläsare som inte har stöd för Javascript. Ingen
-      behöver vara utan adressbok.
+      Om din weblÃ¤sare stÃ¶djer Javascript, du kanske vill ocksÃ¥ anvÃ¤nda det.
+      VÃ¤lj Javascript-adressbok i instÃ¤llningarna. Det Ã¤r ett trevligt
+      hjÃ¤lpmedel med sina egna pop-upp fÃ¶nster. Den vanliga HTML-adressboken
+      fungerar Ã¤ven i weblÃ¤sare som inte har stÃ¶d fÃ¶r Javascript. Ingen
+      behÃ¶ver vara utan adressbok.
       </p>
    </description>
 </chapter>
@@ -30,8 +30,8 @@
    </title>
    <description>
       <p>
-      Skriv in ett bekant namn här. Någonting som hjälper dig att minnas.
-      Någonting som gör att du känner igen vems adress denna är.
+      Skriv in ett bekant namn hÃ¤r. NÃ¥gonting som hjÃ¤lper dig att minnas.
+      NÃ¥gonting som gÃ¶r att du kÃ¤nner igen vems adress denna Ã¤r.
       </p>
    </description>
 </section>
@@ -42,18 +42,18 @@
    </title>
    <description>
       <p>
-      Den här skall vara en komplett adress. Det går inte att gissa här.
-      en E-post adress har två delar. Den första är för att identifiera
-      mottagaren, till exempel sven.berg eller svanteb. Den andra är
+      Den hÃ¤r skall vara en komplett adress. Det gÃ¥r inte att gissa hÃ¤r.
+      en E-post adress har tvÃ¥ delar. Den fÃ¶rsta Ã¤r fÃ¶r att identifiera
+      mottagaren, till exempel sven.berg eller svanteb. Den andra Ã¤r
       den mottagande domainen, till exempel storfirma.se eller 
-      laroanstalt.edu. Det allra sista i adresserna är antingen en landskod
-      (t.ex se, fi, us) eller någon annan topdomain adress (företagen har
-      ofta com, organisationer org, nätverksföretagen net, många
-      amerikanska högskolor och universitet edu, osv.).
-      Mittimellan dessa två delar skriver man en @. Adresserna ovan blir då:
+      laroanstalt.edu. Det allra sista i adresserna Ã¤r antingen en landskod
+      (t.ex se, fi, us) eller nÃ¥gon annan topdomain adress (fÃ¶retagen har
+      ofta com, organisationer org, nÃ¤tverksfÃ¶retagen net, mÃ¥nga
+      amerikanska hÃ¶gskolor och universitet edu, osv.).
+      Mittimellan dessa tvÃ¥ delar skriver man en @. Adresserna ovan blir dÃ¥:
       sven.berg@storfirma.se och svanteb@laroanstalt.edu<br>
-      Om adressen är felaktig är det mycket sannolikt att du får tillbaka
-      att automatsvar som informerar dig om att det inte finns någon sådan
+      Om adressen Ã¤r felaktig Ã¤r det mycket sannolikt att du fÃ¥r tillbaka
+      att automatsvar som informerar dig om att det inte finns nÃ¥gon sÃ¥dan
       mottagare.
       </p>
    </description>
@@ -65,10 +65,10 @@
    </title>
    <description>
       <p>
-      Här kan du också skriva in någonting som hjälper dig att komma ihåg
-      vem adressen tillhör. Det finns mer plats här än det du kan skriva
-      in i smeknamn fältet. Om personen ifråga är någon du har träffat på
-      en affärsresa kan du skriva till exempel: "Vi träffades på mässan
+      HÃ¤r kan du ocksÃ¥ skriva in nÃ¥gonting som hjÃ¤lper dig att komma ihÃ¥g
+      vem adressen tillhÃ¶r. Det finns mer plats hÃ¤r Ã¤n det du kan skriva
+      in i smeknamn fÃ¤ltet. Om personen ifrÃ¥ga Ã¤r nÃ¥gon du har trÃ¤ffat pÃ¥
+      en affÃ¤rsresa kan du skriva till exempel: "Vi trÃ¤ffades pÃ¥ mÃ¤ssan
       i Hannover 2000".
       </p>
    </description>
@@ -80,20 +80,20 @@
    </title>
    <description>
       <p>
-      Med hjälp av dessa knappar kan du välja att modifiera eller ta bort
-      adresser. Du kan modifiera bara en adress åt gången.
+      Med hjÃ¤lp av dessa knappar kan du vÃ¤lja att modifiera eller ta bort
+      adresser. Du kan modifiera bara en adress Ã¥t gÃ¥ngen.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Lägg till i Personlig adressbok
+      LÃ¤gg till i Personlig adressbok
    </title>
    <description>
       <p>
-      Fyll i fälten. De första tre (Smeknamn, E-post adress och Förnamn) är
-      obligatoriska. Efternamnet och Ytterligare information är frivillga.
+      Fyll i fÃ¤lten. De fÃ¶rsta tre (Smeknamn, E-post adress och FÃ¶rnamn) Ã¤r
+      obligatoriska. Efternamnet och Ytterligare information Ã¤r frivillga.
       </p>
    </description>
 </section>
@@ -104,23 +104,23 @@
    </title>
    <description>
       <p>
-      LDAP är en protokoll som används för att hämta lagrad information från
-      en centraliserad källa. Till exempel: På ett universitet kan man
+      LDAP Ã¤r en protokoll som anvÃ¤nds fÃ¶r att hÃ¤mta lagrad information frÃ¥n
+      en centraliserad kÃ¤lla. Till exempel: PÃ¥ ett universitet kan man
       i en LDAP databas lagra personalens och de studerandes adresser,
-      enkelt att komma åt för alla. Om SquirrelMail konfigugerars så att
-      den använder sig av denna LDAP server, samtliga adresser, med
-      eventuell extra information, kan användas med adressboken.
+      enkelt att komma Ã¥t fÃ¶r alla. Om SquirrelMail konfigugerars sÃ¥ att
+      den anvÃ¤nder sig av denna LDAP server, samtliga adresser, med
+      eventuell extra information, kan anvÃ¤ndas med adressboken.
       SquirrelMail <i>kombinerar</i> din egen personlig adressbok med
-      informationen från LDAP servern, du kommer åt samtliga adresser som
+      informationen frÃ¥n LDAP servern, du kommer Ã¥t samtliga adresser som
       om de fanns lagrade i en och samma adressbok.
       </p><p>
-      SquirrelMail kan hämta information från vilken som helst LDAP server,
-      det kan också vara så att denna funktion är inte aktiverad. Ta
-      kontakt med din administratör om du har frågor som är relaterade till
+      SquirrelMail kan hÃ¤mta information frÃ¥n vilken som helst LDAP server,
+      det kan ocksÃ¥ vara sÃ¥ att denna funktion Ã¤r inte aktiverad. Ta
+      kontakt med din administratÃ¶r om du har frÃ¥gor som Ã¤r relaterade till
       detta.
       </p><p>
-      LDAP inställningarna påverkar hela SquirrelMail system. Det är
-      därför bara administratörer som får förändra dessa.
+      LDAP instÃ¤llningarna pÃ¥verkar hela SquirrelMail system. Det Ã¤r
+      dÃ¤rfÃ¶r bara administratÃ¶rer som fÃ¥r fÃ¶rÃ¤ndra dessa.
       </p>
    </description>
 </section>

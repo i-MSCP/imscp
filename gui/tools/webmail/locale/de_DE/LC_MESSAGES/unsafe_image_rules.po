@@ -1,5 +1,5 @@
 # German (de_DE) unsafe_image_rules Translation (SquirrelMail plugin)
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
 msgid ""

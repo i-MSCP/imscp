@@ -1,3 +1,48 @@
+2009-05-07
+ - Added Khmer (km).
+
+2009-04-28
+ - Converted Hungarian (hu_HU) to UTF-8.
+
+2009-04-23
+ - Converted Czech (cs_CZ) to UTF-8.
+
+2009-04-22
+ - Converted Italian (it_IT) to UTF-8.
+
+2009-04-18
+ - Branched SM-1_4_18.
+
+2009-03-13
+ - Added Bangladeshi Bengali (bn_BD).
+
+2009-03-11
+ - Added Tamil (ta_LK).
+
+2008-06-15
+ - Branched SM-1_4_15.
+
+2008-05-20
+ - Converted Swedish (sv_SE) to UTF-8.
+
+2008-05-17
+ - Converted Slovak (sk_SK) to UTF-8.
+ - Updated to login_notes 1.2, login_redirect 1.2, select_range 3.7, and vlogin
+   3.9.2.
+
+2008-05-14
+ - Converted Romanian (ro_RO) to UTF-8.
+
+2008-03-03
+ - Converted traditional Chinese (zh_TW) to UTF-8.
+
+2008-02-04
+ - Updated to change_ldappass 2.2.
+
+2008-02-01
+ - Updated to spam_buttons 2.1.
+ - Converted Norwegian Bokmål (nb_NO) to UTF-8.
+
 2007-10-28
  - Added msg_flags 1.4.10.
  - Updated to gpg 2.1 and twc_weather 1.3p3b-rc2.

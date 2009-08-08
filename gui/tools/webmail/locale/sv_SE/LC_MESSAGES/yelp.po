@@ -1,51 +1,51 @@
 # Swedish (sv_SE) yelp Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: yelp.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: yelp.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: yelp\n"
 "POT-Creation-Date: 2004-04-01 10:20+0100\n"
 "PO-Revision-Date: 2005-01-12 04:45+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Annoyance level"
-msgstr "Besvärsgrad"
+msgstr "BesvÃ¤rsgrad"
 
 msgid "Arrrgh, nothing works, fix it now!"
-msgstr "Ingenting fungerar! Lös problemet nu!"
+msgstr "Ingenting fungerar! LÃ¶s problemet nu!"
 
 msgid "Description:"
 msgstr "Beskrivning:"
 
 msgid "High"
-msgstr "Hög"
+msgstr "HÃ¶g"
 
 msgid "I'll do my best to fix it."
-msgstr "Vi ska göra vad vi kan för att lösa problemet."
+msgstr "Vi ska gÃ¶ra vad vi kan fÃ¶r att lÃ¶sa problemet."
 
 msgid "I'm not really fussed"
 msgstr "Det spelar ingen roll"
 
 msgid "It's really rubbing me the wrong way"
-msgstr "Det är verkligen irriterande"
+msgstr "Det Ã¤r verkligen irriterande"
 
 msgid "It's stopping me from enjoying squirrelmail"
-msgstr "Det hindrar mig från att njuta av SquirrelMail"
+msgstr "Det hindrar mig frÃ¥n att njuta av SquirrelMail"
 
 msgid "Low"
-msgstr "Låg"
+msgstr "LÃ¥g"
 
 msgid "Normal"
 msgstr "Normal"
 
 msgid "Please Select"
-msgstr "Välj ett alternativ"
+msgstr "VÃ¤lj ett alternativ"
 
 msgid "Send"
 msgstr "Skicka"
@@ -53,31 +53,31 @@ msgstr "Skicka"
 msgid ""
 "Please press <b>only once</b>! It may take a few seconds to go through..."
 msgstr ""
-"Tryck bara en gång på \"Skicka\". Det kan ta några sekunder innan anmälan "
+"Tryck bara en gÃ¥ng pÃ¥ \"Skicka\". Det kan ta nÃ¥gra sekunder innan anmÃ¤lan "
 "skickas."
 
 msgid "Priority:"
 msgstr "Prioritet:"
 
 msgid "Subject"
-msgstr "Ärende"
+msgstr "Ã„rende"
 
 msgid ""
 "Thanks for the yelp! I'll have a look at it as soon as possible and try and "
 "fix whatever is wrong. If you don't hear from me soon, check that the "
 "problem hasn't been fixed. If it hasn't, bug me some more."
 msgstr ""
-"Tack för din anmälan. Vi kommer att läsa den så snart som möjligt och "
-"försöka att rätta till problemet. Om du inte har fått något gensvar inom "
-"kort, kontrollera om problemet är åtgärdat. Om det inte är det, går det bra "
-"att skicka en ny anmälan."
+"Tack fÃ¶r din anmÃ¤lan. Vi kommer att lÃ¤sa den sÃ¥ snart som mÃ¶jligt och "
+"fÃ¶rsÃ¶ka att rÃ¤tta till problemet. Om du inte har fÃ¥tt nÃ¥got gensvar inom "
+"kort, kontrollera om problemet Ã¤r Ã¥tgÃ¤rdat. Om det inte Ã¤r det, gÃ¥r det bra "
+"att skicka en ny anmÃ¤lan."
 
 msgid "This is mildly annoying"
-msgstr "Det är aningen irriterande"
+msgstr "Det Ã¤r aningen irriterande"
 
 msgid "Use this form to yelp about a problem you are having with squirrelmail."
 msgstr ""
-"Använd detta formulär för att anmäla problem med den här installationen av "
+"AnvÃ¤nd detta formulÃ¤r fÃ¶r att anmÃ¤la problem med den hÃ¤r installationen av "
 "SquirrelMail."
 
 msgid "Yelp!"

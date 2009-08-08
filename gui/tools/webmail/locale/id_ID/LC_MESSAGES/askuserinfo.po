@@ -1,6 +1,6 @@
 # translation of askuserinfo.po to
 # translation of askuserinfo.po to Bahasa Indonesia
-# Copyright (c) 2004-2005 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2004.
 #
 msgid ""

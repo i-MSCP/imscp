@@ -1,8 +1,8 @@
 # Norwegian Nynorsk (nn_NO) unsafe_image_rules Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
-# $Id: unsafe_image_rules.po 10856 2006-03-03 23:34:08Z jervfors $
+# $Id: unsafe_image_rules.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: unsafe_image_rules 0.8\n"
@@ -74,7 +74,7 @@ msgid "WARNING!"
 msgstr "ÅTVARING!"
 
 msgid "This is not recommended by the SquirrelMail Project Team."
-msgstr "Dette er ikkje tilrådd av Squirrelmail prosjekt laget."
+msgstr "Dette er ikkje tilrådd av SquirrelMail prosjekt laget."
 
 msgid ""
 "Read %s for more details. There is a risk you may receive more spam if you "

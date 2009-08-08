@@ -1,5 +1,5 @@
-Installing Message Flags & Icons
-================================
+Installing Message Flags
+========================
 
 1) Start with untaring the file into the plugins directory.
    Here is a example for the 1.4.10 version of the Message
@@ -20,8 +20,7 @@ Installing Message Flags & Icons
    by installing this very useful package:
    http://unxutils.sourceforge.net/
 
-3) (Optional: the only reason to do this is for use with the Plugin
-   Updates plugin) Then go to your config directory and run conf.pl.  
+3) (Optional) Then go to your config directory and run conf.pl.  
    Choose option 8 and move the plugin from the "Available Plugins"
    category to the "Installed Plugins" category.  Save and exit.
 
@@ -29,13 +28,4 @@ Installing Message Flags & Icons
   $ cd ../../config/
   $ ./conf.pl
   ----- optional -----
-
-4) Also, if not being used with SquirrelMail 1.4.10+ or 1.5.2+,
-   please verify that you have the "Compatibility" plugin
-   installed (but not necessarily activated).
-
-5) Translations are not included in this package.  To get a
-   translation, download the language pack needed from:
-
-      http://www.squirrelmail.org/download.php
 

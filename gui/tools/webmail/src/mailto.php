@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * mailto.php -- mailto: url handler

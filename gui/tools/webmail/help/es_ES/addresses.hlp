@@ -108,12 +108,12 @@
       acceso remoto de información. Una universidad, por ejemplo, puede
       utilizar LDAP como único lugar en el que se centraliza el suministro
       de la información relativa a estudiantes, profesorado y direcciones
-      de correo electrónico de la facultad. Si Squirrelmail se configura
+      de correo electrónico de la facultad. Si SquirrelMail se configura
       para acceder al servidor LDAP de la universidad, será posible consultar
       desde el mismo todas las direcciones del campus junto con las que
       se hayan dado de alta manualmente desde el Squirrel.
       </p><p>
-      El empleo de LDAP bajo Squirrelmail resulta tremendamente útil ya que
+      El empleo de LDAP bajo SquirrelMail resulta tremendamente útil ya que
       <i>combina</i> su libreta local de direcciones con servidores de
       direcciones LDAP como si fuera un único listín.      
       </p><p>

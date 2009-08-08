@@ -3,35 +3,22 @@
 
 
 //
-// since 1.5.1 and 1.4.16
+// taken from functions/global.php on 2006/09/07
+// since 1.5.1, but modified in 1.5.2
 //
-if ((!compatibility_check_sm_version(1, 4, 16)
- || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
- && !function_exists('sqsession_start'))
+if (!function_exists('sqsession_start'))
 {
 function sqsession_start() {
     global $base_uri;
 
-    if (empty($base_uri)) {
-        global $PHP_SELF;
-        $dirs = array('|src/.*|', '|plugins/.*|', '|functions/.*|');
-        $repl = array('', '', '');
-        $base_uri = preg_replace($dirs, $repl, $PHP_SELF);
-    }
-
-    session_set_cookie_params (0, $base_uri);
-    @session_start();
+    session_start();
     $session_id = session_id();
 
-    // session_starts sets the sessionid cookie but without the httponly var
+    // session_starts sets the sessionid cookie buth without the httponly var
     // setting the cookie again sets the httponly cookie attribute
-    //
-    // need to check if headers have been sent, since sqsession_is_active()
-    // has become just a passthru to this function, so the sqsetcookie()
-    // below is called every time, even after headers have already been sent
-    //
-    if (!headers_sent())
-       sqsetcookie(session_name(),$session_id,false,$base_uri);
+
+    // disable, @see sqsetcookie and php 5.1.2
+    // sqsetcookie(session_name(),session_id(),false,$base_uri);
 }
 }
 
@@ -60,6 +47,28 @@ function is_plugin_enabled($plugin_name) {
   } else {
     return false;
   }
+}
+}
+
+
+
+//
+// taken from functions/global.php on 2006/09/07
+// since 1.5.1, but modified in 1.5.2
+//
+if (!function_exists('sqsession_start'))
+{
+function sqsession_start() {
+    global $base_uri;
+
+    session_start();
+    $session_id = session_id();
+
+    // session_starts sets the sessionid cookie buth without the httponly var
+    // setting the cookie again sets the httponly cookie attribute
+
+    // disable, @see sqsetcookie and php 5.1.2
+    // sqsetcookie(session_name(),session_id(),false,$base_uri);
 }
 }
 
@@ -119,34 +128,26 @@ function checkForJavascript($reset = FALSE) {
 
 //
 // taken from functions/global.php
-// from 1.4.17svn on 2008/10/31
-// since 1.4.16 and 1.5.1 I think,
-// but substantially modified in 1.5.2
+// from 1.5.2cvs on 2007/06/30
+// since 1.5.1 I think, but substantially modified in 1.5.2
 //
-if ((!compatibility_check_sm_version(1, 4, 16)
- || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
- && !function_exists('sqsetcookie'))
+if (!function_exists('sqsetcookie'))
 {
-function sqsetcookie($sName, $sValue='deleted', $iExpire=0, $sPath="", $sDomain="",
-                     $bSecure=false, $bHttpOnly=true, $bReplace=false) {
-
+function sqsetcookie($sName,$sValue='deleted',$iExpire=0,$sPath="",$sDomain="",$bSecure=false,$bHttpOnly=true) {
     // if we have a secure connection then limit the cookies to https only.
-    global $is_secure_connection;
-    if ($sName && $is_secure_connection)
+    if ($sName && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
         $bSecure = true;
+    }
 
     // admin config can override the restriction of secure-only cookies
-    //
-    // (we have to check if the value is set and default it to true if
-    // not because when upgrading without re-running conf.pl, it will
-    // not be found in config/config.php and thusly evaluate to false,
-    // but we want to default people who upgrade to true due to security
-    // implications of setting this to false)
-    //
+/* Compatibility plugin modification; this will always be false when used in lesser
+   SM versions (this variable is not defined before 1.5.2), however, due to the code
+   immediately above, plugins like Secure Login and Show SSL Link won't work if you
+   ONLY try to do HTTPS for the login and not the rest of the SquirrelMail session......
     global $only_secure_cookies;
-    if (!isset($only_secure_cookies)) $only_secure_cookies = true;
     if (!$only_secure_cookies)
         $bSecure = false;
+*/
 
     if (false && check_php_version(5,2)) {
        // php 5 supports the httponly attribute in setcookie, but because setcookie seems a bit
@@ -168,7 +169,7 @@ function sqsetcookie($sName, $sValue='deleted', $iExpire=0, $sPath="", $sDomain=
                             . (empty($sPath) ? '' : '; path=' . $sPath)
                             . (empty($sDomain) ? '' : '; domain=' . $sDomain)
                             . (!$bSecure ? '' : '; secure')
-                            . (!$bHttpOnly ? '' : '; HttpOnly'), $bReplace);
+                            . (!$bHttpOnly ? '' : '; HttpOnly'), false);
     }
 }
 }
@@ -197,11 +198,9 @@ function sqauth_read_password() {
 //
 // taken from functions/auth.php
 // from 1.5.2cvs on 2007/01/24
-// since 1.5.1 and 1.4.16
+// since 1.5.1
 //
-if ((!compatibility_check_sm_version(1, 4, 16)
- || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
- && !function_exists('sqauth_save_password'))
+if (!function_exists('sqauth_save_password'))
 {
 function sqauth_save_password($pass) {
     sqgetGlobalVar('base_uri',    $base_uri,   SQ_SESSION);
@@ -224,9 +223,7 @@ function sqauth_save_password($pass) {
 // all 1.4.x and 1.5.x code, but does not support ngettext
 // compatibility that was added to this function in 1.5.x...
 // lowest common denominator...  if you want and need ngettext
-// support, just upgrade to 1.5.1+ or settle for the crude
-// ngettext replacement herein (which won't provide correct
-// translations in some languages)
+// support, just upgrade to 1.5.1+.
 //
 if ((!compatibility_check_sm_version(1, 4, 10)
  || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 1)))
@@ -256,39 +253,6 @@ function sq_bindtextdomain($domain,$dir='') {
     }
 
     return $dir;
-}
-}
-
-
-
-//
-// This is a poor quality replacement for ngettext().  It
-// does not include correct plural form support and merely
-// returns the (translated) singluar form string.  This is
-// only here to provide a baseline/fallback ngettext stand-in
-// for systems not running at least SquirrelMail 1.5.1 OR PHP
-// 4.2.0 or better with the gettext extension compiled in.
-//
-// If someone has a clever idea about how to get a translated
-// version of the plural form from the gettext catalog, this
-// function could support at least translated Germanic plural
-// forms, but I couldn't figure out a way to do that.  It'd
-// also have to be compatible with the internal SquirrelMail
-// gettext implementation (replacement).  Really, this is
-// only an issue when in use under SquirrelMail versions 
-// before 1.5.1 and PHP versions before 4.2.0 or any PHP
-// version without the gettext extension.  Users who need
-// correct ngettext() support should simply upgrade to
-// SquirrelMail 1.5.1+ or PHP 4.2.0+ with the gettext
-// extension, as this function is just provided so plugins
-// using ngettext() don't break completely when it's not
-// available.
-//
-if (!function_exists('ngettext'))
-{
-function ngettext($single, $plural, $number)
-{
-   return _($single);
 }
 }
 

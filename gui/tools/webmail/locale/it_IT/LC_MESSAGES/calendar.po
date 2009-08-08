@@ -1,49 +1,19 @@
-# Shared Calendars Italian translation.
-# Copyright (C) 2006 The SquirrelMail Project Team
+# Italian (it_IT) shared_calendars Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
 # Rocco Scappatura <rocsca@sttspa.it>, 2006.
-# $Id: calendar.po 10694 2006-02-10 21:03:04Z tokul $
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: calendar.po 13583 2009-04-22 18:22:53Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: Shared Calendars 2.0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-26 12:59+0100\n"
-"PO-Revision-Date: 2006-01-30 16:50+0100\n"
-"Last-Translator: Rocco Scappatura <rocsca@sttspa.it>\n"
-"Language-Team: thegnuproject@softwarelibero.it <thegnuproject@softwarelibero.it>\n"
+"Project-Id-Version: shared_calendars 2.0.1\n"
+"POT-Creation-Date: 2005-06-07 15:56+0300\n"
+"PO-Revision-Date: 2009-04-22 16:39+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "Sunday"
-msgstr "Domenica"
-
-msgid "Monday"
-msgstr "LunedÏ"
-
-msgid "Tuesday"
-msgstr "MartedÏ"
-
-msgid "Wednesday"
-msgstr "MercoledÏ"
-
-msgid "Thursday"
-msgstr "GiovedÏ"
-
-msgid "Friday"
-msgstr "VenerdÏ"
-
-msgid "Saturday"
-msgstr "Sabato"
-
-msgid "TODAY"
-msgstr "OGGI"
-
-msgid "Go"
-msgstr "Vai"
-
-#, c-format
-msgid "Could not write calendar file %s"
-msgstr "Non Ë possibile scrivere il calendatio %s"
 
 msgid "Badly formatted header color"
 msgstr "Colore per l'intestazione mal-formattato"
@@ -102,73 +72,13 @@ msgstr "Mesi"
 msgid "Years"
 msgstr "Anni"
 
-msgid "Start time:"
-msgstr "Inizio:"
-
-msgid "Length:"
-msgstr "Durata:"
-
-msgid "Priority:"
-msgstr "Priorit‡"
-
-msgid "Title:"
-msgstr "Descrizione:"
-
-msgid "Set Event"
-msgstr "Imposta Evento"
-
-msgid "l, F j Y"
-msgstr "l, j F Y"
-
-msgid "Event Has been added!"
-msgstr "L'evento Ë stato inserito!"
-
-msgid "Date:"
-msgstr "Data:"
-
-msgid "Time:"
-msgstr "Ora:"
-
-msgid "Message:"
-msgstr "Messaggio:"
-
-msgid "Day View"
-msgstr "Vista per giorno"
-
-msgid "Do you really want to delete this event?"
-msgstr "Sei sicuro di voler cancellare questo evento?"
-
-msgid "Yes"
-msgstr "SÏ"
-
-msgid "No"
-msgstr "No"
-
-msgid "Event deleted!"
-msgstr "Evento cancellato!"
-
-msgid "Nothing to delete!"
-msgstr "Nulla da cancellare!"
-
-msgid "Update Event"
-msgstr "Aggiorna evento"
-
-msgid "Do you really want to change this event from:"
-msgstr "Sei sicuro di voler modificare questo evento da:"
-
-msgid "to:"
-msgstr "a:"
-
-msgid "Event updated!"
-msgstr "Evento aggiornato!"
-
 msgid "Event Created Successfully"
 msgstr "Evento creato con successo"
 
 msgid "Event Updated Successfully"
 msgstr "Evento aggiornato con successo"
 
-#, c-format
+#, php-format
 msgid "Personal Calendar for %s"
 msgstr "Calendario personale per %s"
 
@@ -200,66 +110,89 @@ msgid ""
 "by user, or create publicly available calendars."
 msgstr ""
 "Creazione e manutenzione dei calendari. Modifica dei festivi, assegnazione "
-"dell'accesso per utente, o creazione di calendari pubblici." 
+"dell'accesso per utente, o creazione di calendari pubblici."
 
-#, c-format
+msgid "Sunday"
+msgstr "Domenica"
+
+msgid "Monday"
+msgstr "Luned√¨"
+
+msgid "Tuesday"
+msgstr "Marted√¨"
+
+msgid "Wednesday"
+msgstr "Mercoled√¨"
+
+msgid "Thursday"
+msgstr "Gioved√¨"
+
+msgid "Friday"
+msgstr "Venerd√¨"
+
+msgid "Saturday"
+msgstr "Sabato"
+
+#, php-format
 msgid "%d min."
 msgstr "%d minuto/i"
 
-#, c-format
+#, php-format
 msgid "%s hr."
 msgstr "%s ora/e"
 
-#, c-format
+#, php-format
 msgid "%s day"
 msgstr "%s giorno"
 
-#, c-format
+#, php-format
 msgid "%s days"
 msgstr "%s giorni"
 
-#, c-format
+#, php-format
 msgid "%s wk."
 msgstr "%s settimana/e"
 
-#, c-format
+#, php-format
 msgid "%sam"
 msgstr "%sam"
 
-#, c-format
+#, php-format
 msgid "%spm"
 msgstr "%spm"
 
 msgid "Could not load external calendar"
-msgstr "Non Ë possibile caricare il calendario"
+msgstr "Non √® possibile caricare il calendario"
 
 msgid "Could not load external calendar; bad address"
-msgstr "Non Ë possibile caricare il calendario; indirizzo errato"
+msgstr "Non √® possibile caricare il calendario; indirizzo errato"
 
 msgid "Converting old calendar. . ."
 msgstr "Conversione del vecchio calendario..."
 
-#, c-format
+#, php-format
 msgid "Problem converting old calendar; please contact your administrator (%s)"
-msgstr "Problema di conversione del vecchio calendario; contatta il tuo amministratore (%s)"
+msgstr ""
+"Problema di conversione del vecchio calendario; contatta il tuo "
+"amministratore (%s)"
 
-#, c-format
+#, php-format
 msgid "Can't rename %s to %s"
-msgstr "Non Ë possibile rinominare %s in %s"
+msgstr "Non √® possibile rinominare %s in %s"
 
-#, c-format
+#, php-format
 msgid ""
 "Problem converting old calendar; please contact your administrator (cannot "
 "execute %s)"
 msgstr ""
-"Problema di conversione del vecchio calendario; contatta il tuo amministratore ("
-"impossibile eseguire %s"
+"Problema di conversione del vecchio calendario; contatta il tuo "
+"amministratore (impossibile eseguire %s"
 
-#, c-format
+#, php-format
 msgid "Can't find old personal calendar: %s"
 msgstr "Impossibile trovare il vecchio calendario personale: %s"
 
-#, c-format
+#, php-format
 msgid "Successfully merged calendar into \"%s\""
 msgstr "Caricato calendario in '%s'"
 
@@ -267,7 +200,7 @@ msgid ""
 "You already have a calendar with the same ID.  Are you sure you don't want "
 "to merge/synch the calendar you are uploading?"
 msgstr ""
-"Si dispone gi‡ di un calendario con lo stesso ID. Si Ë sicuri di non voler "
+"Si dispone gi√† di un calendario con lo stesso ID. Si √® sicuri di non voler "
 "sincronizzare il calendario che si sta caricando?"
 
 msgid "..."
@@ -286,8 +219,8 @@ msgid ""
 "Overall end of recurrence for recurring events must come after end of "
 "initial occurrence"
 msgstr ""
-"La fine della ricorrenza per gli eventi ricorrenti deve essere "
-"deve venire dopo la fine della occorrenza iniziale"
+"La fine della ricorrenza per gli eventi ricorrenti deve essere deve venire "
+"dopo la fine della occorrenza iniziale"
 
 msgid "Must specify valid recurrence interval"
 msgstr "Si deve specificare un intervallo di ricorrenza valido"
@@ -296,7 +229,7 @@ msgid "Event must have a summary/title"
 msgstr "Gli eventi devono avere un titolo"
 
 msgid "Must specify valid event priority"
-msgstr "Si deve specificare una priorit‡ valida"
+msgstr "Si deve specificare una priorit√† valida"
 
 msgid "Event must have a valid start date/time"
 msgstr "Gli eventi devono avere una data/ora di inizio validi"
@@ -335,14 +268,14 @@ msgid "Calendar Setup"
 msgstr "Impostazione calendario"
 
 msgid ""
-"Create shared access calendars for select users"
-" or public calendars for all users."
+"Create shared access calendars for select users\n"
+" or public calendars for all users.\n"
 msgstr ""
-"Creazione di calendari condivisi fer gli utenti"
-" selezionati o di calendari pubblici per tutti gli utenti."
+"Creazione di calendari condivisi fer gli utenti selezionati\n"
+" o di calendari pubblici per tutti gli utenti.\n"
 
-msgid "Manage user permissions for your shared calendars."
-msgstr "Gestione dei permessi per i calendari condivisi."
+msgid "Manage user permissions for your shared calendars.\n"
+msgstr "Gestione dei permessi per i calendari condivisi.\n"
 
 msgid "Calendars"
 msgstr "Calendari"
@@ -355,9 +288,9 @@ msgid ""
 "write access. To manage user access to your shared calendars, use the \"Users"
 "\" button."
 msgstr ""
-"I calendari <b>condivisi</b> possono essere assegnati agli utenti con accesso di sola"
-" lettura o di lettura/scrittura. Per gestire gli accessi ad un calendario condiviso"
-" si usi il pulsante 'Utenti'."
+"I calendari <b>condivisi</b> possono essere assegnati agli utenti con "
+"accesso di sola lettura o di lettura/scrittura. Per gestire gli accessi ad "
+"un calendario condiviso si usi il pulsante 'Utenti'."
 
 msgid ""
 "<b>Public</b> calendars are available to all users in addition to their "
@@ -407,35 +340,35 @@ msgid ""
 "<b>To add a user</b> to a calendar, type in the username below the calendar, "
 "choose the user's access level, and click the 'Add User' button."
 msgstr ""
-"<b>Per aggiungere un utente</b> ad un calendario, si digiti il nome dell'utente "
-"sotto, si scelga il livello di accesso dell'utente, e si clicchi sul bottone "
-"'Aggiungi utente'."
+"<b>Per aggiungere un utente</b> ad un calendario, si digiti il nome "
+"dell'utente sotto, si scelga il livello di accesso dell'utente, e si clicchi "
+"sul bottone 'Aggiungi utente'."
 
 msgid ""
 "Note that you may use wildcards in user names: * means \"zero or more "
 "characters\" and ? means \"exactly one alphanumeric character\". For "
 "example, \"*@mydomain.com\" will give everyone in \"mydomain.com\" access to "
-"the calendars you assign to that username."
+"the calendars you assign to that username.\n"
 msgstr ""
-"Si noti che e' possibile usare dei caratteri speciali specificando il nome "
-"dell'utente: * significa 'zero o pi˘ caratteri' e ? significa 'esattamente "
-"un carattere alfanumerico'. Per esempio, '*@dominio.com' consentira' l'accesso ' "
-"ai calendari ad ogni utente del dominio 'dominio.com'."
+"Si noti che √® possibile usare dei caratteri speciali specificando il nome "
+"dell'utente: * significa \"zero o pi√π caratteri\" e ? significa"
+"\"'esattamente un carattere alfanumerico\". Per esempio, \"*dominio.com\" "
+"consentir√† l'accesso ai calendari ad ogni utente del dominio \"dominio.com\".\n"
 
 msgid ""
 "<b>To update user access levels</b> for a calendar, adjust the 'Access "
 "Level' selections, then click the 'Save' button below that calendar."
 msgstr ""
-"<b>Per aggiornare i livelli di accesso dei vari utenti</b> per un calendario, "
-"si modifichino le selezioni 'Livello di accesso' dei relativi utenti, poi si "
-"clicchi sul bottone 'Salva' sotto al calendario."
+"<b>Per aggiornare i livelli di accesso dei vari utenti</b> per un "
+"calendario, si modifichino le selezioni 'Livello di accesso' dei relativi "
+"utenti, poi si clicchi sul bottone 'Salva' sotto al calendario."
 
 msgid ""
 "Note that only owners of public calendars will have write access to those "
-"calendars."
+"calendars.\n"
 msgstr ""
 "Si noti che solo i proprietari dei calendari pubblici avranno l'accesso in "
-"scrittura a questi calendari."
+"scrittura a questi calendari.\n"
 
 msgid "No Shared Calendars Have Been Defined"
 msgstr "Nessun calendario condiviso definito"
@@ -444,7 +377,7 @@ msgid "Public"
 msgstr "Pubblico"
 
 msgid "Edit Holidays"
-msgstr "Modifica festivit‡"
+msgstr "Modifica festivit√†"
 
 msgid "User"
 msgstr "Utente"
@@ -474,36 +407,32 @@ msgid "Save"
 msgstr "Salva"
 
 msgid "<b>To create a holiday,</b> blah blah and click the 'Blah Blah' button."
-msgstr "<b>Per creare una festivit‡,</b> blah blah e poi si clicchi sul bottone 'Blah Blah'."
+msgstr ""
+"<b>Per creare una festivit√†,</b> blah blah e poi si clicchi sul bottone "
+"'Blah Blah'."
 
 msgid ""
-"Note that you must also add the new holiday to your calendar if desired."
+"Note that you must also add the new holiday to your calendar if desired.\n"
 msgstr ""
-"Si noti che, se si desidera, si deve inserire anche la nuova festivit‡ al proprio calendario."
+"Si noti che, se si desidera, si deve inserire anche la nuova festivit√† al "
+"proprio calendario.\n"
 
 msgid ""
 "<b>To add a holiday</b> to a calendar, blah blah blah and click the 'Blah "
 "Blah' button."
 msgstr ""
-"<b>Per aggiungere una festivit‡</b> ad un calendario, </b> blah blah e poi si clicchi sul bottone 'Blah Blah'."
+"<b>Per aggiungere una festivit√†</b> ad un calendario, </b> blah blah e poi "
+"si clicchi sul bottone 'Blah Blah'."
 
 msgid ""
 "<b>To remove a holiday</b> from a calendar, blah blah blah, then click the "
 "'Blah' button below that calendar."
 msgstr ""
-"<b>Per cancellare una festivit‡</b> da un calendario, </b> blah blah e poi si clicchi sul bottone 'Blah Blah' sotto al calendario."
+"<b>Per cancellare una festivit√†</b> da un calendario, </b> blah blah e poi "
+"si clicchi sul bottone 'Blah Blah' sotto al calendario."
 
 msgid "No Holidays Have Been Defined"
-msgstr "Nessuna festivit‡ Ë stata definita"
-
-msgid "Year View"
-msgstr "Vista per anno"
-
-msgid "Month View"
-msgstr "Vista per mese"
-
-msgid "Tasks"
-msgstr "Compiti"
+msgstr "Nessuna festivit√† √® stata definita"
 
 msgid "General Calendar Options"
 msgstr "Opzioni generali del calendario"
@@ -512,10 +441,16 @@ msgid "First Day of Week:"
 msgstr "Primo giorno della settimana"
 
 msgid "Priority at which Events Are Highlighted:"
-msgstr "Priorit‡ al di sopra della quale gli eventi verranno evidenziati:"
+msgstr "Priorit√† al di sopra della quale gli eventi verranno evidenziati:"
 
 msgid "Show Daily Add Event Buttons in Month View:"
 msgstr "Mostra i bottoni 'Aggiungi evento' ogni giorno, nella vista mensile:"
+
+msgid "Yes"
+msgstr "S√¨"
+
+msgid "No"
+msgstr "No"
 
 msgid "Show Week Numbers in Month View:"
 msgstr "Mostra i numeri delle settimane nella vista mensile:"
@@ -531,6 +466,9 @@ msgstr "Il click sull'evento nel pese porta a:"
 
 msgid "Event View"
 msgstr "Vista eventi"
+
+msgid "Day View"
+msgstr "Vista per giorno"
 
 msgid "Show Compacted Time of Day in Day View:"
 msgstr "Mostra l'orologio del giorno compattato nella vista giornaliera:"
@@ -566,16 +504,16 @@ msgid "Default"
 msgstr "Predefinito"
 
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 msgid "12px"
-msgstr ""
+msgstr "12px"
 
 msgid "14px"
-msgstr ""
+msgstr "14px"
 
 msgid "16px"
-msgstr ""
+msgstr "16px"
 
 msgid "Small Calendar Separator:"
 msgstr "Separatore del calendario in miniatura:"
@@ -622,6 +560,18 @@ msgstr "normale"
 msgid "italic"
 msgstr "corsivo"
 
+msgid "Submit"
+msgstr "Invia"
+
+msgid "Year View"
+msgstr "Vista per anno"
+
+msgid "Month View"
+msgstr "Vista per mese"
+
+msgid "Tasks"
+msgstr "Compiti"
+
 msgid "Color Picker"
 msgstr "Tavolozza dei colori"
 
@@ -629,20 +579,26 @@ msgid ""
 "Click a box and the hexadecimal color will be shown below.  Use these hex "
 "values for color box settings."
 msgstr ""
-"Clicca una casella e sotto apparir‡ il codice esadecimale che identifica il colore scelto "
-"Usa questi valori esadecimali per impostare colori."
+"Clicca una casella e sotto apparir√† il codice esadecimale che identifica il "
+"colore scelto Usa questi valori esadecimali per impostare colori."
 
 msgid "Hex Value"
 msgstr "Valore esadecimale"
-""
+
 msgid "More"
-msgstr "Pi˘"
+msgstr "Pi√π"
+
+msgid "Go"
+msgstr "Vai"
 
 msgid "Add Event"
 msgstr "Inserimento evento"
 
 msgid "Edit Calendar"
 msgstr "Modifica calendario"
+
+msgid "Update Event"
+msgstr "Aggiorna evento"
 
 msgid "Create Event"
 msgstr "Creazione evento"
@@ -701,6 +657,9 @@ msgstr "Fine ricorrenza:"
 msgid "Recurrence Count:"
 msgstr "Numero di ricorrenze:"
 
+msgid "Priority:"
+msgstr "Priorit√†"
+
 msgid "Reminder:"
 msgstr "Promemoria:"
 
@@ -729,10 +688,13 @@ msgid "Confirm Deletion"
 msgstr "Conferma cancellazione"
 
 msgid "Calendar Helper"
-msgstr ""
+msgstr "Aiuto Calendario"
+
+msgid "TODAY"
+msgstr "OGGI"
 
 msgid "Time Helper"
-msgstr ""
+msgstr "Aiuto Orario"
 
 msgid "Available Calendars"
 msgstr "Calendari disponibili"
@@ -771,4 +733,52 @@ msgid "S M T W T F S"
 msgstr "D L M M G V S"
 
 msgid "cont'd"
-msgstr ""
+msgstr "continua"
+
+#~ msgid "Could not write calendar file %s"
+#~ msgstr "Non √® possibile scrivere il calendatio %s"
+
+#~ msgid "Start time:"
+#~ msgstr "Inizio:"
+
+#~ msgid "Length:"
+#~ msgstr "Durata:"
+
+#~ msgid "Title:"
+#~ msgstr "Descrizione:"
+
+#~ msgid "Set Event"
+#~ msgstr "Imposta Evento"
+
+#~ msgid "l, F j Y"
+#~ msgstr "l, j F Y"
+
+#~ msgid "Event Has been added!"
+#~ msgstr "L'evento √® stato inserito!"
+
+#~ msgid "Date:"
+#~ msgstr "Data:"
+
+#~ msgid "Time:"
+#~ msgstr "Ora:"
+
+#~ msgid "Message:"
+#~ msgstr "Messaggio:"
+
+#~ msgid "Do you really want to delete this event?"
+#~ msgstr "Sei sicuro di voler cancellare questo evento?"
+
+#~ msgid "Event deleted!"
+#~ msgstr "Evento cancellato!"
+
+#~ msgid "Nothing to delete!"
+#~ msgstr "Nulla da cancellare!"
+
+#~ msgid "Do you really want to change this event from:"
+#~ msgstr "Sei sicuro di voler modificare questo evento da:"
+
+#~ msgid "to:"
+#~ msgstr "a:"
+
+#~ msgid "Event updated!"
+#~ msgstr "Evento aggiornato!"

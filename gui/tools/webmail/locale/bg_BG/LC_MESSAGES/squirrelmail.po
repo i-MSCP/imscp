@@ -1,7 +1,7 @@
 # SquirrelMail Bulgarian Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Stanislav Yordanov <stan@stud.ru.acad.bg>, 2003.
-# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"
@@ -1814,7 +1814,7 @@ msgstr "Версия на конфигурационния файл"
 
 #, fuzzy
 msgid "SquirrelMail Version"
-msgstr "Версия на Squirrelmail"
+msgstr "Версия на SquirrelMail"
 
 msgid "PHP Version"
 msgstr "Версия на PHP"
@@ -2715,8 +2715,8 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "Стартира няколко тестови IMAP комадни, показвайки командата и резултата. "
-"Тези тестове използват IMAP команди на Squirrelmail и вашата текуща "
-"конфигурация на Squirrelmail. Могат да бъдат използвани обичайни комнандни "
+"Тези тестове използват IMAP команди на SquirrelMail и вашата текуща "
+"конфигурация на SquirrelMail. Могат да бъдат използвани обичайни комнандни "
 "низове."
 
 msgid "Mailinglist"

@@ -7,7 +7,7 @@
    </summary>
    <description>
       <p>
-      Con questo utile strumento, Ë possibile cercare in una specifica cartella
+      Con questo utile strumento, √® possibile cercare in una specifica cartella
       secondo criteri confrontati in diversi campi
       </p>
    </description>
@@ -22,15 +22,15 @@
       Si sceglie semplicemente la cartella in cui cercare, si inseriscono i
       criteri per cui cercare, quindi scegliere la parte del messaggio su cui
       effettuare la ricerca.Quando si confermano i dati, la lista dei messaggi 
-      che corrispondono ai criteri, comparir‡ sotto il modulo di ricerca.
+      che corrispondono ai criteri, comparir√† sotto il modulo di ricerca.
       E' possibile scegliere il messaggio da visualizzare, e leggerlo come un
       normale messaggio.
       </p>
       <p>
       Notare che mentre si sta leggendo un messaggio, e quindi si va dentro la
-      sezione di ricerca, la cartella attiva sar‡ la cartella di default su cui
+      sezione di ricerca, la cartella attiva sar√† la cartella di default su cui
       cercare. Per esempio si stava scorrendo la cartella "Amici" allora facendo 
-      click su "Cerca", la ricerca sar‡ effettuata di default sulla cartella "Amici".
+      click su "Cerca", la ricerca sar√† effettuata di default sulla cartella "Amici".
       </p>
    </description>
 </section>
@@ -41,18 +41,18 @@
    </title>
    <description>
       <p>
-      Alla sinistra del campo di input, Ë possibile vedere una casella di riepilogo
+      Alla sinistra del campo di input, √® possibile vedere una casella di riepilogo
       contenente i campi su cui poter cercare. Questa include: Corpo, Ovunque,
       Oggetto, Da, Cc, A.
       </p>
       <p>
-      <b>Corpo</b> - Cerca attraverso il corpo di tutti i messaggi.  Questa Ë la
-      parte principale del messaggio dove si trovano le cose pi˘ importanti.
+      <b>Corpo</b> - Cerca attraverso il corpo di tutti i messaggi.  Questa √® la
+      parte principale del messaggio dove si trovano le cose pi√π importanti.
       </p>
       <p>
       <b>Ovunque</b> - In questo modo si cerca qualsiasi cosa, incluso nei titoli
-      dei messaggi. A meno che non siate pi˘ che sicuri che sia ciÚ che fa per voi,
-      probabilmente non lo Ë. PuÚ restituire risultati inaspettati.
+      dei messaggi. A meno che non siate pi√π che sicuri che sia ci√≤ che fa per voi,
+      probabilmente non lo √®. Pu√≤ restituire risultati inaspettati.
       expect.
       </p>
       <p>
@@ -60,14 +60,14 @@
       </p>
       <p>
       <b>Da</b> - Da chi proviene il messaggio.  Notare che potrebbero esserci 
-      pi˘ informazioni rispetto a quelle attualmente visualizzate nella lista.
+      pi√π informazioni rispetto a quelle attualmente visualizzate nella lista.
       Un campo "Da" normale include il nome e l'indirizzo email, ma SquirrelMail
       di solito visualizza solamente il nome. Se i vostri criteri soddisfano 
-      l'indirizzo email, ma questo non viene visualizzato, il messaggio apparir‡
+      l'indirizzo email, ma questo non viene visualizzato, il messaggio apparir√†
       ugualmente.
 	  </p>
       <p>
-      <b>A</b> - A chi Ë stato inviato il messaggio.  Questo campo puÚ contenere
+      <b>A</b> - A chi √® stato inviato il messaggio.  Questo campo pu√≤ contenere
       diversi indirizzi.
       </p>
       <p>

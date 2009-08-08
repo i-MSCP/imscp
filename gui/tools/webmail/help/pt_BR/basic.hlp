@@ -16,7 +16,7 @@ da "World Wide Web" (www). </summary> <description>
 <description> 
 <p> Se sua pergunta &eacute; simples e r&aacute;pida, talvez voc&ecirc; perfira 
   dar uma olhada em FAQ, que armazena as perguntas mais frequentes. </p>
-<p> O Squirrelmail está estruturado em dois segmentos principais chamados "frames". 
+<p> O SquirrelMail está estruturado em dois segmentos principais chamados "frames". 
   O frame da esquerda mostra a lista de pastas subscritas. Maiores detalhes sobre 
   o frame da esquerda podem ser encontradas na se&ccedil;&atilde;o &quot;Folders&quot; 
   deste help.</p>
@@ -33,7 +33,7 @@ da "World Wide Web" (www). </summary> <description>
   <li><b>Pastas</b> - Permite manipular pastas. Aqui &eacute; poss&iacute;vel 
     deletar, criar, renomear, subescrever e retirar as pastas de correio. 
   <li><b>Op&ccedil;&otilde;es</b> - Para ajustar as op&ccedil;&otilde;es de forma 
-    de resposta e apar&ecirc;ncia do Squirrelmail. 
+    de resposta e apar&ecirc;ncia do SquirrelMail. 
   <li><b>pesquisar</b> - Com esta ferramenta &eacute; poss&iacute;vel localizar 
     um determinado crit&eacute;rio em seu mailbox. 
   <li><b>Ajuda</b> - J&aacute; está aqui!!!! 

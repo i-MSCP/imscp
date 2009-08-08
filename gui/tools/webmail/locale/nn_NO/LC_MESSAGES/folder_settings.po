@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Copyright (C) The SquirrelMail Project Team, 2006
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006.
-# $Id: folder_settings.po 10856 2006-03-03 23:34:08Z jervfors $
+# $Id: folder_settings.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: folder_settings 0.3\n"
@@ -48,4 +48,4 @@ msgid ""
 "Folder Settings plugin should not be used with this SquirrelMail version."
 msgstr ""
 "Mappeoppsett programtillegg skulle ikkje vert brukt med denne versjonen av "
-"Squirrelmail."
+"SquirrelMail."

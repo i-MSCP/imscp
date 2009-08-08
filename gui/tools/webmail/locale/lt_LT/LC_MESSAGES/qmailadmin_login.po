@@ -1,8 +1,8 @@
 # Lithuanian translation of
 # SquirrelMail's qmailadmin_login plugin.
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: qmailadmin_login.po 10013 2005-08-28 08:18:29Z tokul $
+# $Id: qmailadmin_login.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: qmailadmin_login 1.0\n"

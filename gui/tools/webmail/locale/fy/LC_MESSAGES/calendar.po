@@ -2,7 +2,7 @@
 # Japie <japie@deserver.nl>, 2006.
 # Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # Dutch translation of SquirrelMail shared_calendars plugin
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # $Id: calendar.po 10756 2006-02-18 11:14:58Z tokul $
 msgid ""
 msgstr ""

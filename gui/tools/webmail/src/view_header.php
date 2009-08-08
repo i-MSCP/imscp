@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * view_header.php

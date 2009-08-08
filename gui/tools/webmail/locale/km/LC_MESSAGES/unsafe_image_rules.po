@@ -1,0 +1,246 @@
+# Khmer (km) unsafe_image_rules Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: unsafe_image_rules\n"
+"POT-Creation-Date: 2006-01-17 10:40+0100\n"
+"PO-Revision-Date: 2009-04-24 09:33+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: add.php:60
+msgid "Safe Sender"
+msgstr "អ្នក​ផ្ញើ​មាន​សុវត្ថិភាព"
+
+#: add.php:60 functions.php:267 options.php:84
+msgid "Unsafe Image Rules"
+msgstr "ក្បួន​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព"
+
+#: add.php:66
+msgid ""
+"Use the form below to modify the address that will be added to the Unsafe "
+"Image Rules."
+msgstr "ប្រើ​សំណុំបែបបទ​ខាងក្រោម ដើម្បី​កែប្រែ​អាសយដ្ឋាន​ដែល​នឹង​ត្រូវ​បន្ថែម​ទៅ​ក្បួន​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព ។"
+
+#: add.php:73 options.php:173
+msgid "From"
+msgstr "ពី"
+
+#: add.php:77 options.php:193 options.php:226
+msgid "Contains"
+msgstr "មាន"
+
+#: add.php:78 options.php:196 options.php:226
+msgid "Reg.Exp."
+msgstr "កន្សោម​ធម្មតា"
+
+#: add.php:83 options.php:155
+msgid "Save"
+msgstr "រក្សាទុក"
+
+#: add.php:111
+msgid "The following address has been successfully added to the Unsafe Images Rules:"
+msgstr "អាសយដ្ឋាន​ខាងក្រោម ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ​ទៅកាន់​ក្បួន​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព ៖"
+
+#: add.php:114
+msgid "I didn't seem to get a valid email address to add. This shouldn't happen!"
+msgstr "ខ្ញុំ​មិនបាន​ទទួល​អាសយដ្ឋាន​អ៊ីមែល​ត្រឹមត្រូវ​ដែល​ត្រូវ​បន្ថែម​ទេ ។ វា​មិន​គួរ​កើត​មាន​ឡើង​ទេ !"
+
+#: add.php:118
+msgid "Sending you back to the message list in five seconds."
+msgstr "ការ​ផ្ញើ​ត្រឡប់​ទៅកាន់​បញ្ជី​សារ​វិញ​​ក្នុង​រយៈពេល ៥ វិនាទី ។"
+
+#. i18n: The first %s inserts HTML flr starting a link, and the second ends it.
+#: add.php:120
+#, php-format
+msgid "If you are not automatically redirected, please click %shere%s."
+msgstr "ប្រសិន​បើ​អ្នក​មិន​ប្ដូរ​ទិស​ដោយ​ស្វ័យប្រវត្តិ​ទេ សូម​ចុច​%sទីនេះ%s ។"
+
+#: functions.php:269
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr "រៀបចំ​ក្បួន​អំពី​របៀប​ដោះស្រាយ​​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព​ក្នុង​សារ HTML ។"
+
+#: functions.php:389
+msgid "Always trust images from this sender"
+msgstr "តែងតែ​ទុកចិត្ត​រូបភាព​ពី​អ្នក​ផ្ញើ​នេះ"
+
+#: options.php:68
+msgid "Saved Trusted Options"
+msgstr "បាន​រក្សាទុក​ជម្រើស​ដែល​បាន​ទុកចិត្ត"
+
+#: options.php:84
+msgid "Options"
+msgstr "ជម្រើស"
+
+#: options.php:92
+msgid "Trust all sources:"
+msgstr "ទុកចិត្ត​ប្រភព​ទាំងអស់ ៖"
+
+#: options.php:96
+msgid "WARNING!"
+msgstr "ព្រមាន !"
+
+#: options.php:97
+msgid "This is not recommended by the SquirrelMail Project Team."
+msgstr "វា​មិនត្រូវ​បាន​ផ្ដល់​អនុសាសន៍​ដោយ​ក្រុម​គម្រោង SquirrelMail ទេ ។"
+
+#. i18n: %s inserts a complete link which doesn't need to be i18n.
+#: options.php:99
+#, php-format
+msgid ""
+"Read %s for more details. There is a risk you may receive more spam if you "
+"check this option."
+msgstr "អាន %s សម្រាប់​ព័ត៌មាន​បន្ថែម ។ មាន​បញ្ហា​ ដែល​អ្នក​អាច​ទទួល​សារ​ឥតបាន​ការ​ច្រើន នៅពេល​ដែល​អ្នក​ពិនិត្យ​មើល​ជម្រើស​នេះ ។"
+
+#: options.php:101
+msgid "If checked unsafe images are always seen."
+msgstr "ប្រសិនបើ​បាន​ធីក រូបភាព​ដែល​មិនមាន​សុវត្ថិភាព​គឺ​ត្រូវបាន​មើលឃើញ​ជា​និច្ច ។"
+
+#: options.php:102
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr "ប្រសិន​បើ​បាន​ធីក​ជម្រើស​នេះ ស្ថានភាព​នៃ​ជម្រើស​ផ្សេងទៀត​គឺ​មិនទាក់ទង​គ្នា​ទេ ។"
+
+#: options.php:107
+msgid "Trust sources in address book:"
+msgstr "ទុកចិត្ត​ប្រភព​នៅក្នុង​សៀវភៅ​អាសយដ្ឋាន ៖"
+
+#: options.php:111
+msgid ""
+"If checked, unsafe images are shown for messages from anyone in your address "
+"book."
+msgstr "ប្រសិន​បើ​បាន​ធីក រូបភាព​ដែល​មិនមាន​សុវត្ថិភាព​គឺ​ត្រូវបាន​បង្ហាញ​សម្រាប់​សារ​ពី​អ្នក​ផ្សេងទៀត​នៅ​ក្នុង​សៀវភៅ​អាសយដ្ឋាន​របស់​អ្នក ។"
+
+#: options.php:115
+msgid "Trust anything I send:"
+msgstr "ទុកចិត្ត​នូវ​អ្វី​ដែល​ខ្ញុំ​ផ្ញើ ៖"
+
+#: options.php:119
+msgid ""
+"If checked, unsafe images are shown for messages sent by any of your "
+"identities."
+msgstr "ប្រសិន​បើ​បាន​ធីក រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព​គឺ​ត្រូវបាន​បង្ហាញ​សម្រាប់​សារ​​ដែល​បាន​ផ្ញើ​ដោយ​អត្តសញ្ញាណ​របស់​អ្នក ។"
+
+#: options.php:120
+msgid ""
+"You might not want to set this if you forward Spam to other people, and then "
+"go back and read from your 'Sent' folder."
+msgstr "អ្នក​អាច​នឹង​មិន​ចង់​កំណត់​វា​ទេ ប្រសិន​បើ​អ្នក​បញ្ជូន​សារ​ឥតបាន​ការ​បន្ត​ទៅកាន់​អ្នក​ផ្សេងទេ ហើយ​បន្ទាប់​មក​ត្រឡប់​ក្រោយ​វិញ និង​អាន​ថត 'បាន​ផ្ញើ' របស់​អ្នក ។"
+
+#: options.php:124
+msgid "Trust defined sources:"
+msgstr "ទុកចិត្ត​ប្រភព​ដែល​បាន​កំណត់ ៖"
+
+#: options.php:128
+msgid "If checked, unsafe images are shown for the sources shown below."
+msgstr "ប្រសិន​បើ​បាន​ធីក រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព​គឺ​ត្រូវបាន​បង្ហាញ​សម្រាប់​ប្រភព​ដែល​បាន​បង្ហាញ​ខាងក្រោម ។"
+
+#: options.php:134
+msgid ""
+"When viewing a message with unsafe images, you can quickly add the sender's "
+"email address or domain to the Unsafe Image Rules by clicking the 'Always "
+"trust images from this sender' link. The following options set the default "
+"behavior when the address is being added."
+msgstr "នៅពេល​ដែល​មើល​សារ​ដែល​មាន​រូបភាព​ដែល​មិន​មាន​សុវត្ថិភាព អ្នក​អាច​បន្ថែម​អាសយដ្ឋាន​អ៊ីមែល​របស់​អ្នក​ផ្ញើ ឬ​ដែន​ទៅកាន់​ក្បួន​រូបភាព​ដែល​មិនមាន​សុវត្ថិភាព ដោយ​ចុច​លើ​តំណ 'ទុកចិត្ត​រូបភាព​ពី​អ្នក​ផ្ញើ​នេះ​ជានិច្ច' ។ ជម្រើស​ខាងក្រោម​កំណត់​ឥរិយាបថ​លំនាំដើម នៅពេល​ដែល​បាន​បន្ថែម​អាសយដ្ឋាន ។"
+
+#: options.php:137
+msgid "Always add full email address:"
+msgstr "បន្ថែម​អាសយដ្ឋាន​ពេញលេញ​ជានិច្ច ៖"
+
+#: options.php:140
+msgid ""
+"If selected the full email address of the sender will be added to the Unsafe "
+"Image Rules list."
+msgstr "ប្រសិន​បើ​បាន​ជ្រើស​អាសយដ្ឋាន​អ៊ីមែល​ពេញលេញ​របស់​អ្នក​ផ្ញើ នឹង​ត្រូវបាន​បន្ថែម​ទៅ​បញ្ជី​ក្បួន​រូបភាព​ដែល​មិនមាន​សុវត្ថិភាព ។"
+
+#: options.php:142
+msgid "Always add full domain:"
+msgstr "បន្ថែម​ដែន​ពេញលេញ​ជានិច្ច ៖"
+
+#: options.php:145
+msgid ""
+"If selected only the domain of the sender will be added to the Unsafe Image "
+"Rules list."
+msgstr "ប្រសិន​បើ​បាន​ជ្រើស មាន​តែ​ដែន​ដែល​បាន​ជ្រើស​របស់​អ្នក​ផ្ញើ​ប៉ុណ្ណោះ​ដែល​នឹង​ត្រូវបាន​បន្ថែម​ទៅ​បញ្ជី​ក្បួន​រូបភាព​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព ។"
+
+#: options.php:147
+msgid "Always ask:"
+msgstr "សួរ​ជានិច្ច ៖"
+
+#: options.php:150
+msgid "Ask what to add to the Unsafe Image Rules list."
+msgstr "សួរ​នូវ​អ្វី​ដែល​ត្រូវ​បន្ថែម​ទៅកាន់​បញ្ជី​ក្បួន​រូបភាព​ដែល​គ្មាន​សុវត្ថិភាព ។"
+
+#: options.php:158
+msgid "Add New Rule"
+msgstr "បន្ថែម​ក្បួន​ថ្មី"
+
+#: options.php:159
+msgid "Done"
+msgstr "ធ្វើ​រួច"
+
+#: options.php:167
+msgid "Trust source if "
+msgstr "ទុកចិត្ត​ប្រភព ប្រសិន​បើ"
+
+#: options.php:176
+msgid "To"
+msgstr "ជូន​ចំពោះ"
+
+#: options.php:179
+msgid "Cc"
+msgstr "ចម្លង​ជូន"
+
+#: options.php:182
+msgid "To or Cc"
+msgstr "ជូន​ចំពោះ ឬ​ចម្លង​ជូន"
+
+#: options.php:185
+msgid "Subject"
+msgstr "ប្រធាន​បទ"
+
+#: options.php:204
+msgid "NB"
+msgstr "NB"
+
+#: options.php:206
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "នៅពេល​ដែល​បាន​បញ្ជាក់​កន្សោម​ធម្មតា​ដែល​អ្នក​ត្រូវ​តែ​រួមទាំង​អ្នក​កំណត់ ។"
+
+#: options.php:207
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr "ការ​ពិនិត្យ 'មាន' នឹង​ត្រូវបាន​ធ្វើ​រួច​ដោយ​ត្រូវ​មាន​ការ​ប្រកាន់តួអក្សរ​តូច​ធំ ។"
+
+#: options.php:209
+msgid "Submit"
+msgstr "ដាក់​ស្នើ"
+
+#: options.php:219
+msgid "Edit"
+msgstr "កែសម្រួល"
+
+#: options.php:221
+msgid "Delete"
+msgstr "លុប"
+
+#. i18n: If [field] [Contains|Reg.Exp.] [user defined data]
+#: options.php:224
+#, php-format
+msgid "If %s %s %s"
+msgstr "ប្រសិន​បើ %s %s %s"
+
+#: options.php:230
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "វា​មិន​ហាក់ដូចជា​មិនមែន​ជា​កន្សោម​ធម្មតា​ត្រឹមត្រូវ​ទេ ។"
+
+#: options.php:230
+msgid "WARNING:"
+msgstr "ព្រមាន ៖"
+

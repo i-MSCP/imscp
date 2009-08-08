@@ -1,17 +1,18 @@
-# vkeyboard plugin for Squirrelmail project.
-# Copyright (C) 2004 Daniel K. Imori
-# This file is distributed under the same license as the vkeyboard package.
-# PaJaSoft <PaJaSoft@PaJaSoftovi.Cz>, 2005.
-#
+# Czech (cs_CZ) vkeyboard Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# PaJaSoft <pajasoft@pajasoftovi.cz>, 2005.
+# $Id: vkeyboard.po 13593 2009-04-24 16:20:57Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: vkeyboard 0.8\n"
+"Report-Msgid-Bugs-To: Daniel K. Imori <daniel@bastion.com.br>\n"
 "POT-Creation-Date: 2004-08-20 17:38-0300\n"
 "PO-Revision-Date: 2005-02-10 13:00-0100\n"
-"Last-Translator: PaJaSoft <PaJaSoft@PaJaSoftovi.Cz>\n"
-"Language-Team: Czech <cs@li.org>\n"
+"Last-Translator: PaJaSoft <pajasoft@pajasoftovi.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: vkeyboard.php:115
@@ -20,71 +21,71 @@ msgstr " sekundami."
 
 #: functions.php:49
 msgid "Are you using a public computer?"
-msgstr "<strong>Pou¾íváte právì veøejnı poèítaè?</strong>"
+msgstr "<strong>PouÅ¾Ã­vÃ¡te prÃ¡vÄ› veÅ™ejnÃ½ poÄÃ­taÄ?</strong>"
 
 #: vkeyboard.php:161
 msgid "Clear"
-msgstr "Vyèistit"
+msgstr "VyÄistit"
 
 #: vkeyboard.php:166
 msgid "Close"
-msgstr "Zavøít"
+msgstr "ZavÅ™Ã­t"
 
 #: functions.php:51
 msgid "Enter your password with the "
-msgstr "Vlo¾te Va¹e heslo pomocí "
+msgstr "VloÅ¾te VaÅ¡e heslo pomocÃ­ "
 
 #: vkeyboard.php:107
 msgid "Enter your password:"
-msgstr "Vlo¾te Va¹e heslo:"
+msgstr "VloÅ¾te VaÅ¡e heslo:"
 
 #: help.php:60
 msgid ""
 "For this, you must point the mouse and keep it for few seconds on the key "
 "that you want to type."
 msgstr ""
-"Nyní musíte nasmìrovat Va¹i my¹ na klávesu, kterou hodláte stisknout a  "
-"ponechat ji nìkolik sekund v klidu."
+"NynÃ­ musÃ­te nasmÄ›rovat VaÅ¡i myÅ¡ na klÃ¡vesu, kterou hodlÃ¡te stisknout a  "
+"ponechat ji nÄ›kolik sekund v klidu."
 
 #: vkeyboard.php:109
 msgid "Help"
-msgstr "Nápovìda"
+msgstr "NÃ¡povÄ›da"
 
 #: help.php:56
 msgid ""
 "It protects your password against keyloggers, which are hidden programs that "
 "capture everything that you type or click."
 msgstr ""
-"Chrání Va¹e heslo proti programùm typu keylogger, které jsou skryté a "
-"monitorují v¹e, co napí¹ete."
+"ChrÃ¡nÃ­ VaÅ¡e heslo proti programÅ¯m typu keylogger, kterÃ© jsou skrytÃ© a "
+"monitorujÃ­ vÅ¡e, co napÃ­Å¡ete."
 
 #: help.php:54
 msgid "It's a keyboard that simulates a real keyboard. ;)"
-msgstr "Toto je klávesnice, která simuluje reálnou klávesnici. ;)"
+msgstr "Toto je klÃ¡vesnice, kterÃ¡ simuluje reÃ¡lnou klÃ¡vesnici. ;)"
 
 #: vkeyboard.php:156
 msgid "Login"
-msgstr "Pøihlásit"
+msgstr "PÅ™ihlÃ¡sit"
 
 #: functions.php:61
 msgid "Open Virtual Keyboard"
-msgstr "Otevøi virtuální klávesnici"
+msgstr "OtevÅ™i virtuÃ¡lnÃ­ klÃ¡vesnici"
 
 #: help.php:58
 msgid ""
 "So, you can increase your security, using the virtual keyboard and its "
 "\"automatic click\" function."
 msgstr ""
-"Pou¾itím této virtuální klávesnice a funkce \"automatické klikání\" mù¾ete "
-"zvı¹it Va¹i bezpeènost."
+"PouÅ¾itÃ­m tÃ©to virtuÃ¡lnÃ­ klÃ¡vesnice a funkce \"automatickÃ© klikÃ¡nÃ­\" mÅ¯Å¾ete "
+"zvÃ½Å¡it VaÅ¡i bezpeÄnost."
 
 #: vkeyboard.php:113
 msgid "The key will be pressed in "
-msgstr "Klávesa byla sti¹tìna pøed "
+msgstr "KlÃ¡vesa byla stiÅ¡tÄ›na pÅ™ed "
 
 #: vkeyboard.php:52
 msgid "Virtual Keyboard"
-msgstr "virtuální klávesnice"
+msgstr "virtuÃ¡lnÃ­ klÃ¡vesnice"
 
 #: help.php:46
 msgid "Virtual Keyboard: Help"
@@ -92,8 +93,8 @@ msgstr "Teclado Virtual: Ajuda"
 
 #: help.php:51
 msgid "What's a virtual keyboard?"
-msgstr "Co je virtuální klávesnice?"
+msgstr "Co je virtuÃ¡lnÃ­ klÃ¡vesnice?"
 
 #: functions.php:56
 msgid "virtual keyboard"
-msgstr "virtuální klávesnice."
+msgstr "virtuÃ¡lnÃ­ klÃ¡vesnice."

@@ -1,25 +1,25 @@
 <chapter>
    <title>
-      Att läsa meddelanden
+      Att lÃ¤sa meddelanden
    </title>
    <summary>
-      Att läsa meddelanden är grundfunktionen av E-postläsare. SquirrelMailil
-      har några ytterligare funktioner att använda när man läser meddelanden.
-      Här är finns förklaringar.
+      Att lÃ¤sa meddelanden Ã¤r grundfunktionen av E-postlÃ¤sare. SquirrelMailil
+      har nÃ¥gra ytterligare funktioner att anvÃ¤nda nÃ¤r man lÃ¤ser meddelanden.
+      HÃ¤r Ã¤r finns fÃ¶rklaringar.
    </summary>
    <description>
       <p>
-      Klicka på ämnet på en av meddelanden och meddelandet visas. En sak som
-      du noterar är att www- och E-post-adresser är klickbara länkar, du kan
-      klicka dessa för att gå till en sida eller att skriva ett nytt
+      Klicka pÃ¥ Ã¤mnet pÃ¥ en av meddelanden och meddelandet visas. En sak som
+      du noterar Ã¤r att www- och E-post-adresser Ã¤r klickbara lÃ¤nkar, du kan
+      klicka dessa fÃ¶r att gÃ¥ till en sida eller att skriva ett nytt
       meddelande.
-      En annan fin egenskap är att meddelandet visas med olika färger.
-      Normalt är ett svar identifierat med ">" tecken. SquirrelMail kan
-      skilja upp till två svar i rad och visa texten med olika färger.
-      På extramenun (under de vamliga) finns tre fält. Den vänstra kan du
-      klicka på för att radera meddelandet eller att gå tillbaks till
-      listan. I mitten finn länkar till föregående och nästa meddelande.
-      På högra sidan finns postfunktioner.
+      En annan fin egenskap Ã¤r att meddelandet visas med olika fÃ¤rger.
+      Normalt Ã¤r ett svar identifierat med ">" tecken. SquirrelMail kan
+      skilja upp till tvÃ¥ svar i rad och visa texten med olika fÃ¤rger.
+      PÃ¥ extramenun (under de vamliga) finns tre fÃ¤lt. Den vÃ¤nstra kan du
+      klicka pÃ¥ fÃ¶r att radera meddelandet eller att gÃ¥ tillbaks till
+      listan. I mitten finn lÃ¤nkar till fÃ¶regÃ¥ende och nÃ¤sta meddelande.
+      PÃ¥ hÃ¶gra sidan finns postfunktioner.
       </p>
    </description>
 </chapter>
@@ -41,7 +41,7 @@
    </title>
    <description>
       <p>
-      Klicka för att radera meddelandet. Eventuella bilagor raderas samtidigt.
+      Klicka fÃ¶r att radera meddelandet. Eventuella bilagor raderas samtidigt.
       Spara de bilagor du vill ha kvar innan du tar bort meddelandet.
       </p>
    </description>
@@ -53,30 +53,30 @@
    </title>
    <description>
       <p>
-      I mitten finns länkar till tidigare och nästa meddelande i denna mapp.
+      I mitten finns lÃ¤nkar till tidigare och nÃ¤sta meddelande i denna mapp.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Nästa
+      NÃ¤sta
    </title>
    <description>
       <p>
-      Klicka för att läsa nästa meddelande.
+      Klicka fÃ¶r att lÃ¤sa nÃ¤sta meddelande.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Framåt
+      FramÃ¥t
    </title>
    <description>
       <p>
-      Till höger. Klicka och du kan editera meddelandet och skicka det
-      vidare. Du kan skriva dina kommentar och välja mottagare.
+      Till hÃ¶ger. Klicka och du kan editera meddelandet och skicka det
+      vidare. Du kan skriva dina kommentar och vÃ¤lja mottagare.
       </p>
    </description>
 </section>
@@ -87,11 +87,11 @@
    </title>
    <description>
       <p>
-      Klicka för att svara till avsändaren. Det ursprungliga meddelandet
-      markeras med ">" tecken. Det är möjligt att somliga rader inte börjar
-      med ">", detta kan tyvärr inte undvikas. Du kan försöka att ändra
-      antalet tecken per rad i inställningarna.
-      Du kan skriva kommentar var som helst i meddelandet, du kan också lägga
+      Klicka fÃ¶r att svara till avsÃ¤ndaren. Det ursprungliga meddelandet
+      markeras med ">" tecken. Det Ã¤r mÃ¶jligt att somliga rader inte bÃ¶rjar
+      med ">", detta kan tyvÃ¤rr inte undvikas. Du kan fÃ¶rsÃ¶ka att Ã¤ndra
+      antalet tecken per rad i instÃ¤llningarna.
+      Du kan skriva kommentar var som helst i meddelandet, du kan ocksÃ¥ lÃ¤gga
       till bilagor.
       </p>
    </description>
@@ -103,7 +103,7 @@
    </title>
    <description>
       <p>
-      Som "Svar" men meddelandet skickas både till avsändaren och till
+      Som "Svar" men meddelandet skickas bÃ¥de till avsÃ¤ndaren och till
       samtliga mottagare av det ursprungliga meddelandet.
       </p>
    </description>
@@ -111,26 +111,26 @@
 
 <section>
    <title>
-      Näytä kaikki otsaketiedot
+      NÃ¤ytÃ¤ kaikki otsaketiedot
    </title>
    <description>
       <p>
-      Tämä tuo näyttöön kaikki viestin ostikkotiedot. Näihin kuuluu myös
-      koko se reitti jonka viesti on kulkenut sekä paljon muutä tietoa
-      itse viestin sisällöstä.
+      TÃ¤mÃ¤ tuo nÃ¤yttÃ¶Ã¶n kaikki viestin ostikkotiedot. NÃ¤ihin kuuluu myÃ¶s
+      koko se reitti jonka viesti on kulkenut sekÃ¤ paljon muutÃ¤ tietoa
+      itse viestin sisÃ¤llÃ¶stÃ¤.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Lataa tämä tiedostona
+      Lataa tÃ¤mÃ¤ tiedostona
    </title>
    <description>
       <p>
-      Aivan sivun alalaidassa. Klikkaamalla tätä voit ladata näytössäolevan
+      Aivan sivun alalaidassa. Klikkaamalla tÃ¤tÃ¤ voit ladata nÃ¤ytÃ¶ssÃ¤olevan
       viestin tekstitiedostona kovalevyllesi. Osa otsikkotiedoista tulee
-      myös mukaan.
+      myÃ¶s mukaan.
       </p>
    </description>
 </section>
@@ -141,11 +141,11 @@
    </title>
    <description>
       <p>
-      Viestin liitteet löydät viestin alalaidasta värjätystä palkista.
-      Klikkaamalla viestin nimeä se joko näytetään selaimessa tai talletetaan,
-      tämä riippuu liitteen tiedostotyypistä. Jos haluat tallettaa liitteen
-      sen tiedostotyypistä riippumatta klikkaa "download"
-      linkkiä rivin oikeassa laidassa.
+      Viestin liitteet lÃ¶ydÃ¤t viestin alalaidasta vÃ¤rjÃ¤tystÃ¤ palkista.
+      Klikkaamalla viestin nimeÃ¤ se joko nÃ¤ytetÃ¤Ã¤n selaimessa tai talletetaan,
+      tÃ¤mÃ¤ riippuu liitteen tiedostotyypistÃ¤. Jos haluat tallettaa liitteen
+      sen tiedostotyypistÃ¤ riippumatta klikkaa "download"
+      linkkiÃ¤ rivin oikeassa laidassa.
       </p>
    </description>
 </section>

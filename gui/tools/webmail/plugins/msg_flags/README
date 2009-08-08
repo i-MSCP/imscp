@@ -1,10 +1,10 @@
 Message Flags & Icons plugin for SquirrelMail
 =============================================
-Ver 1.4.15a, 2008/07/18
+Ver 1.4.10, 2007/08/13
 
 
-Copyright (c) 2002-2007 Robert Jaakke <robert@jaakke.com>
-Copyright (c) 2003-2008 Paul Lesniewski <paul@squirrelmail.org>
+Authors: Robert Jaakke <robert@jaakke.com>
+         Paul Lesniewski <paul@squirrelmail.org>
 
 
 
@@ -21,7 +21,8 @@ their messages (by adding "Flag"/"Unflag" buttons to the message list
 screen).
 
 PLEASE NOTE that this plugin comes integrated with SquirrelMail as of
-version 1.5.0, and should not be installed separately therein.
+version 1.5.0, and should not be installed separately unless you are
+asking for trouble.
 
 
 
@@ -38,8 +39,8 @@ Donations
 
 If you or your company make regular use of this software, please
 consider supporting Open Source development by donating to the authors
-or inquire about hiring them to consult on other projects.  Donation/
-wish list links for the author(s) are as follows:
+or inquire about hiring them to consult on other projects.  Donation
+links for the author(s) are as follows:
 
 Paul Lesniewski: https://sourceforge.net/donate/index.php?user_id=508228
 
@@ -55,49 +56,10 @@ Requirements
 
 
 
-Help Requests
-=============
-
-Before looking for help elsewhere, please try to help yourself:
-
-  * Look to see if others have already asked about the same issue.
-    There are tips and links for the best places to do this in
-    the SquirrelMail mailing list posting guidelines:
-    http://squirrelmail.org/wiki/MailingListPostingGuidelines
-    You should also try Google or some other search engine.
-
-  * If you cannot find any information about your issue, please
-    first mail your help request to the squirrelmail-plugins
-    mailing list.  Information about it can be found here:
-    http://lists.sourceforge.net/mailman/listinfo/squirrelmail-plugins
-    You MUST read the mailing list posting guidelines (see above)
-    and include as much information about your issue (and your
-    system) as possible.  Including configtest output, any debug
-    output, the plugin configuration settings you've made and
-    anything else you can think of to make it easier to diagnose
-    your problem will get you the most useful responses.  Inquiries
-    that do not comply with the posting guidelines are liable to
-    be ignored.
-
-  * If you don't get any replies on the mailing list, you are
-    welcome to send a help request to the authors' personal
-    address(es), but please be patient with the mailing list.
-
-
-
 Change Log
 ==========
 
-  v1.4.15a  2008/07/18  Paul Lesniewski <paul@squirrelmail.org>
-    * Fix PHP error when plugin is activated (there is not
-      much reason to do so, unless using the Plugin Updates
-      plugin)
-
-  v1.4.15  2008/06/11  Paul Lesniewski <paul@squirrelmail.org>
-    * Added patch for SquirrelMail 1.4.13
-    * Added patch for SquirrelMail 1.4.15
-
-  v1.4.10  2007/08/13  Paul Lesniewski <paul@squirrelmail.org>
+  v1.4.10 2007/08/13
     * Added patch for SquirrelMail 1.4.10+; the patch
       for 1.4.3a should work for versions up to 1.4.9
     * Miscellaneous cleanup and updating for compliance

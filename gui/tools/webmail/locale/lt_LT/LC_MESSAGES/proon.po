@@ -1,8 +1,8 @@
 # Lithuanian Translation of SquirrelMail proon plugin.
-# Copyright (c) 2005-2006 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: proon.po 11578 2006-08-13 13:48:28Z tokul $
+# $Id: proon.po 13696 2009-05-14 06:27:08Z jervfors $
 # 
 msgid ""
 msgstr ""

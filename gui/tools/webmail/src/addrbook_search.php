@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * addrbook_search.php

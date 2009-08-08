@@ -1,7 +1,7 @@
 # translation of quicksave.po to Dutch
 # Quicksave Plugin
-# Copyright (C) 2004 The Squirrelmail Devellopment Team
-# This file is distributed under the same license as the Squirrelmail package.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
 #
 # M.J. Prinsen <translation@prinsenonline.com>, 2004.
 # Rinse de Vries <rinsedevries@kde.nl>, 2007.

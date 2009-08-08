@@ -1,8 +1,8 @@
 # translation of squirrelmail.po to Catalan
-# Catalan Squirrelmail Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Catalan SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Albert Cervera Areny <albertca@jazzfree.com>, 2002.
-# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"
@@ -2199,7 +2199,7 @@ msgid ""
 "remotely."
 msgstr ""
 "Aquest mòdul permet als administradors manejar la configuració principal de "
-"l'Squirrelmail de forma remota."
+"l'SquirrelMail de forma remota."
 
 #, fuzzy
 msgid "Submit a Bug Report"

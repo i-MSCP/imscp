@@ -1,11 +1,11 @@
 # Finnish (fi_FI) SquirrelMail Translation
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Teemu Junnila <teejun@vallcom.com>, 2002.
 # Jaakko Heusala <Jaakko.Heusala@kapsi.fi>, 2004.
 # Juha Ojaniemi <juha.ojaniemi@netello.com>, 2005.
 # Kari Mattsson <kari@trivore.com>, 2005-2007.
-# $Id: squirrelmail.po 12717 2007-10-01 10:22:35Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"

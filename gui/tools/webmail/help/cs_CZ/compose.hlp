@@ -1,6 +1,6 @@
 <chapter>
    <title>
-      Nová zpráva
+      NovÃ¡ zprÃ¡va
    </title>
    <summary>
       
@@ -18,9 +18,9 @@
    </title>
    <description>
       <p>
-      Do tohoto pole vepi¹te e-mailovou adresu pøíjemce (pøíjemcù) zprávy. 
-      Mù¾ete zde vepsat libovolnı poèet jmen, musí v¹ak bıt oddìleny èárkou. 
-      Vkládání adres mù¾ete provést kliknutím na tlaèítko adresáø.
+      Do tohoto pole vepiÅ¡te e-mailovou adresu pÅ™Ã­jemce (pÅ™Ã­jemcÅ¯) zprÃ¡vy. 
+      MÅ¯Å¾ete zde vepsat libovolnÃ½ poÄet jmen, musÃ­ vÅ¡ak bÃ½t oddÄ›leny ÄÃ¡rkou. 
+      VklÃ¡dÃ¡nÃ­ adres mÅ¯Å¾ete provÃ©st kliknutÃ­m na tlaÄÃ­tko adresÃ¡Å™.
       </p>
    </description>
 </section>
@@ -31,22 +31,22 @@
    </title>
    <description>
       <p>
-      Jestli¾e si pøejete, aby zprávu obdr¾elo více pøíjemcù, vlo¾íte jejich 
-      adresu do tohoto pole. Do v¹ech polí "Komu", "Kopie", Skrytá kopie" mù¾ete 
-      vepisovat libovolnı poèet adres. Adresy osob, kterıch se zpráva pøímo tıká, 
-      vepisujte do pole "Komu", adresy osoby, pro které je zpráva pouze informativní, 
-      vepisujte do pole "Kopie" a "Skrytá kopie". 
+      JestliÅ¾e si pÅ™ejete, aby zprÃ¡vu obdrÅ¾elo vÃ­ce pÅ™Ã­jemcÅ¯, vloÅ¾Ã­te jejich 
+      adresu do tohoto pole. Do vÅ¡ech polÃ­ "Komu", "Kopie", SkrytÃ¡ kopie" mÅ¯Å¾ete 
+      vepisovat libovolnÃ½ poÄet adres. Adresy osob, kterÃ½ch se zprÃ¡va pÅ™Ã­mo tÃ½kÃ¡, 
+      vepisujte do pole "Komu", adresy osoby, pro kterÃ© je zprÃ¡va pouze informativnÃ­, 
+      vepisujte do pole "Kopie" a "SkrytÃ¡ kopie". 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Skrytá kopie
+      SkrytÃ¡ kopie
    </title>
    <description>
       <p>
-      Adresy osob, je¾ uvedete zde, se nezobrazí v hlavièce zprávy osobám, které 
+      Adresy osob, jeÅ¾ uvedete zde, se nezobrazÃ­ v hlaviÄce zprÃ¡vy osobÃ¡m, kterÃ© 
       byly uvedeny v "Komu" a "Kopie". 
       </p>
    </description>
@@ -54,53 +54,53 @@
 
 <section>
    <title>
-      Pøedmìt
+      PÅ™edmÄ›t
    </title>
    <description>
       <p>
-      Zde uveïte titulek zprávy. 
+      Zde uveÄte titulek zprÃ¡vy. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Adresáø
+      AdresÃ¡Å™
    </title>
    <description>
       <p>
-      Kliknutím na toto tlaèítko otevøete adresáø. Abyste vyhledali po¾adovanou 
-      adresu, musíte do pole "Hledat" zadat po¾adovanı text. Jestli¾e chcete, aby se 
-      Vám zobrazily v¹echny adresy v adresáøi, vlo¾te zde mezeru a kliknìte 
-      na tlaèítko "Odeslat". Pro detailní popis zvolte v nápovìdì èást "Adresáø".
+      KliknutÃ­m na toto tlaÄÃ­tko otevÅ™ete adresÃ¡Å™. Abyste vyhledali poÅ¾adovanou 
+      adresu, musÃ­te do pole "Hledat" zadat poÅ¾adovanÃ½ text. JestliÅ¾e chcete, aby se 
+      VÃ¡m zobrazily vÅ¡echny adresy v adresÃ¡Å™i, vloÅ¾te zde mezeru a kliknÄ›te 
+      na tlaÄÃ­tko "Odeslat". Pro detailnÃ­ popis zvolte v nÃ¡povÄ›dÄ› ÄÃ¡st "AdresÃ¡Å™".
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Text zprávy
+      Text zprÃ¡vy
    </title>
    <description>
       <p>
-      Prázdné okno je urèeno k tomu, abyste zde vlo¾ili text zprávy. Pokud 
-      jste v mo¾nostech zvolili automatickı podpis, zobrazí se v dolní èásti zprávy. 
+      PrÃ¡zdnÃ© okno je urÄeno k tomu, abyste zde vloÅ¾ili text zprÃ¡vy. Pokud 
+      jste v moÅ¾nostech zvolili automatickÃ½ podpis, zobrazÃ­ se v dolnÃ­ ÄÃ¡sti zprÃ¡vy. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøilo¾it soubor
+      PÅ™iloÅ¾it soubor
    </title>
    <description>
       <p>
-      Tato funkce Vám umo¾òuje pøikládat k Va¹í zprávì soubory. Pøikládanı soubor 
-      musí bıt ulo¾en na Va¹em pevném disku nebo na síti. Tlaèítkem "Procházet" mù¾ete 
-      volit cestu k danému souboru a pøilo¾it ho ke zprávì. 
+      Tato funkce VÃ¡m umoÅ¾Åˆuje pÅ™iklÃ¡dat k VaÅ¡Ã­ zprÃ¡vÄ› soubory. PÅ™iklÃ¡danÃ½ soubor 
+      musÃ­ bÃ½t uloÅ¾en na VaÅ¡em pevnÃ©m disku nebo na sÃ­ti. TlaÄÃ­tkem "ProchÃ¡zet" mÅ¯Å¾ete 
+      volit cestu k danÃ©mu souboru a pÅ™iloÅ¾it ho ke zprÃ¡vÄ›. 
       </p>
       <p>
-      Takto pøilo¾enı soubor kdykoliv odstranit kliknutím na tlaèítko "Odstranit."
+      Takto pÅ™iloÅ¾enÃ½ soubor kdykoliv odstranit kliknutÃ­m na tlaÄÃ­tko "Odstranit."
       <p>
    </description>
 </section>

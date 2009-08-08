@@ -1,13 +1,12 @@
-# translation of compatibility.po to Dutch
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) compatibility Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Frisian (fy) compatibility Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: compatibility.pot 12147 2007-01-19 13:36:59Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: compatibility\n"
-"Report-Msgid-Bugs-To: Paul Lesneiwski <paul@squirrelmail.org>\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
 "POT-Creation-Date: 2007-01-19 13:03+0100\n"
 "PO-Revision-Date: 2007-04-11 18:39+0100\n"
 "Last-Translator: Douwe VDM <dvandermeulen@hetnet.nl>\n"

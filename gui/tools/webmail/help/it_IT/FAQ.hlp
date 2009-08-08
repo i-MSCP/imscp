@@ -3,22 +3,22 @@
       Frequently Asked Questions
    </title>   
    <summary>
-      Spesso si fanno domande a cui si Ë gi‡ risposto.
-      Questa Ë una lista delle domande pi˘ frequenti e delle relative risposte.
+      Spesso si fanno domande a cui si √® gi√† risposto.
+      Questa √® una lista delle domande pi√π frequenti e delle relative risposte.
    </summary>
 </chapter>
 
 <section>
    <title>
-      Posso usare pi˘ nomi provenienti dalla rubrica indirizzi?
+      Posso usare pi√π nomi provenienti dalla rubrica indirizzi?
    </title>
    <description>
       <p>
-      Si.  La ricerca sulla rubrica indirizzi visualizzer‡ tutti gli indirizzi
-      corrispondenti ai criteri di ricerca.  Se sono visualizzati 10 nomi, Ë
+      Si.  La ricerca sulla rubrica indirizzi visualizzer√† tutti gli indirizzi
+      corrispondenti ai criteri di ricerca.  Se sono visualizzati 10 nomi, √®
       possibile utilizzare qualsiasi combinazione per i campi <B>A:</B> o <B>CC:</B> 
       Tutti gli indirizzi selezionati saranno inseriti nei propri campi quanto
-      verr‡ premuto il pulsante Usa Indirizzi.
+      verr√† premuto il pulsante Usa Indirizzi.
       </p>
    </description>
 </section>   
@@ -30,12 +30,12 @@
    </title>
    <description>
       <p>
-      No.  Al momento non Ë possibile aggiungere dei nomi direttamente
+      No.  Al momento non √® possibile aggiungere dei nomi direttamente
       da un messaggio ricevuto alla rubrica indirizzi.  E' possibile,
       tuttavia, fare click col il pulsante destro del mouse sopra 
       l'indirizzo e salvarlo negli appunti di Windows, quindi "incollarlo"
       nella rubrica indirizzi.  Provate a non rimanere delusi.  SquirrelMail
-      Ë continuamente in sviluppo e questa caratteristica potrebbe essere
+      √® continuamente in sviluppo e questa caratteristica potrebbe essere
       aggiunta in futuro in un modo o nell'altro.
       </p>
    </description>
@@ -59,40 +59,40 @@
    </title>
    <description>
       <p>
-      Nel caso di SquirrelMail Ë la possibilit‡ di accedere attraverso il protocollo IMAP
+      Nel caso di SquirrelMail √® la possibilit√† di accedere attraverso il protocollo IMAP
       al vostro account email.  Questo significa che non occorre capire esattamente come
-      funziona, ma pi˘ semplicemente controllare la vostra posta.
+      funziona, ma pi√π semplicemente controllare la vostra posta.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Dove Ë possibile usare questa webmail?
+      Dove √® possibile usare questa webmail?
    </title>
    <description>
       <p>
-      Ovunque vi sia la disponibilit‡ di un browser.
-      L'accesso Wireless (WAP/WML) non Ë attualmente previsto.
+      Ovunque vi sia la disponibilit√† di un browser.
+      L'accesso Wireless (WAP/WML) non √® attualmente previsto.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      PerchË usare la webmail anzichË un normale client di posta?
+      Perch√® usare la webmail anzich√® un normale client di posta?
    </title>
    <description>
       <p>
-      Non Ë certo che la webmail possa essere un completo sostituto
-      di un normale client di posta elettronica. Ma hey, chi puÚ
+      Non √® certo che la webmail possa essere un completo sostituto
+      di un normale client di posta elettronica. Ma hey, chi pu√≤
       affermarlo con certezza?  In ogni modo, se vi trovate a casa di
       un amico, in viaggio, a casa o al lavoro e lontani dal vostro
-      computer e volete controllare la vostra posta, gi‡ avete capito
-      perchË!
-      PerchË Ë alquanto scomodo configurare il vostro accont di posta
+      computer e volete controllare la vostra posta, gi√† avete capito
+      perch√®!
+      Perch√® √® alquanto scomodo configurare il vostro accont di posta
       su un altro computer per poi doverlo immediatamente cancellare.
-      SquirrelMail Ë disegnato per essere un supplemento al vostro normale
+      SquirrelMail √® disegnato per essere un supplemento al vostro normale
       client di posta elettronica.
       </p>
    </description>
@@ -107,7 +107,7 @@
       SquirrelMail usa il protocollo IMAP, maggiori informazioni possono
       essere trovate <A HREF="http://imap.org"/>qui</A>.  Il programma usa
       anche proprie funzioni IMAP, non quelle compilate in PHP4.
-      Questa informazione Ë riservata per i responsabili del vostro sistema
+      Questa informazione √® riservata per i responsabili del vostro sistema
       che sapranno apprezzarne il valore.
       </p>
    </description>

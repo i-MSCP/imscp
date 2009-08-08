@@ -1,17 +1,17 @@
 # Swedish (sv_SE) login_alias Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: login_alias.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: login_alias.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: login_alias\n"
 "POT-Creation-Date: 2003-11-11 21:03+0200\n"
 "PO-Revision-Date: 2004-12-08 23:24+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Login Alias"
@@ -20,7 +20,7 @@ msgstr "Inloggningsalias"
 msgid ""
 "You can use this or your regular account name to log in to your account."
 msgstr ""
-"Du kan anv‰nda detta eller ditt vanliga anv‰ndarnamn fˆr att logga in."
+"Du kan anv√§nda detta eller ditt vanliga anv√§ndarnamn f√∂r att logga in."
 
 msgid "Alias is already in use.  Please select another alias."
-msgstr "Detta alias anv‰nds redan. V‰nligen v‰lj ett annat."
+msgstr "Detta alias anv√§nds redan. V√§nligen v√§lj ett annat."

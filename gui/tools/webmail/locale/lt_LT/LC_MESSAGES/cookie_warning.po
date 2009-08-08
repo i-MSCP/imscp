@@ -1,8 +1,8 @@
 # Lithuanian translation of
 # SquirrelMail's cookie_warning plugin.
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: cookie_warning.po 9597 2005-06-12 16:56:02Z tokul $
+# $Id: cookie_warning.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: cookie_warning 1.1\n"

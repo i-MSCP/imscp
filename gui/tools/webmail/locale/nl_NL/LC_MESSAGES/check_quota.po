@@ -1,8 +1,7 @@
-# translation of check_quota.po to Dutch
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) check_quota Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Dutch (nl_NL) check_quota Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: check_quota.pot 12158 2007-01-20 06:49:49Z jervfors $
 msgid ""
 msgstr ""

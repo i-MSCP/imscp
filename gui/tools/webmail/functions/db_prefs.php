@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * db_prefs.php

@@ -1,8 +1,8 @@
 # Lithuanian Translation of
 # SquirrelMail expire plugin.
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
-# $Id: expire.po 11288 2006-06-21 20:08:18Z tokul $
+# $Id: expire.po 13696 2009-05-14 06:27:08Z jervfors $
 # 
 msgid ""
 msgstr ""

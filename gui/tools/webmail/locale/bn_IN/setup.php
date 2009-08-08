@@ -2,7 +2,7 @@
 /**
  * Language configuration file
  *
- * Copyright (c) 2005-2006 The SquirrelMail Project Team
+ * Copyright (c) 2005-2009 The SquirrelMail Project Team
  *
  * This file is part of SquirrelMail webmail interface. It is distributed
  * together with other translation files and is used to enable 
@@ -22,12 +22,10 @@
  * along with SquirrelMail; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @version $Id: setup.php 11413 2006-07-19 12:38:11Z tokul $
+ * @version $Id: setup.php 13693 2009-05-14 00:26:43Z jervfors $
  * @package locales
  */
 
-$languages['bn_IN']['NAME']    = 'Bengali';
+$languages['bn_IN']['NAME']    = 'Bengali (India)';
 $languages['bn_IN']['CHARSET'] = 'utf-8';
-$languages['bn_IN']['LOCALE']  = 'bn_IN.UTF-8';
-$languages['bn_BD']['ALIAS'] = 'bn_IN';
-$languages['bn']['ALIAS'] = 'bn_IN';
+$languages['bn_IN']['LOCALE']  = array('bn_IN.UTF-8', 'bn_IN.UTF8');

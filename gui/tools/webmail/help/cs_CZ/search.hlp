@@ -1,27 +1,27 @@
 <chapter>
    <title>
-      Hledání
+      HledÃ¡nÃ­
    </title>
    <summary>
       
    </summary>
    <description>
       <p>
-      Pomocí této funkce mù¾ete hledat ve slo¾kách zadáním pøíslu¹ného kritéria. 
+      PomocÃ­ tÃ©to funkce mÅ¯Å¾ete hledat ve sloÅ¾kÃ¡ch zadÃ¡nÃ­m pÅ™Ã­sluÅ¡nÃ©ho kritÃ©ria. 
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      Obecné informace
+      ObecnÃ© informace
    </title>
    <description>
       <p>
-      Vyberete slo¾ku, ve které chcete hledat, vepí¹ete, co chcete hledat, a zvolíte 
-      èást zprávy, kterou chcete prohledávat. Po zadání "Hledat" se Vám zobrazí seznam 
-      zpráv, kde si mù¾ete zvolit, kterou zprávu chcete zobrazit a pøeèíst ji normálnì 
-      jako zprávu.
+      Vyberete sloÅ¾ku, ve kterÃ© chcete hledat, vepÃ­Å¡ete, co chcete hledat, a zvolÃ­te 
+      ÄÃ¡st zprÃ¡vy, kterou chcete prohledÃ¡vat. Po zadÃ¡nÃ­ "Hledat" se VÃ¡m zobrazÃ­ seznam 
+      zprÃ¡v, kde si mÅ¯Å¾ete zvolit, kterou zprÃ¡vu chcete zobrazit a pÅ™eÄÃ­st ji normÃ¡lnÄ› 
+      jako zprÃ¡vu.
       </p>
       <p>
       
@@ -35,28 +35,28 @@
    </title>
    <description>
       <p>
-      Mù¾ete hledat v kategoriích: Tìlo zprávy, V¹ude, Pøedmìt, Od, Komu, Kopie.
+      MÅ¯Å¾ete hledat v kategoriÃ­ch: TÄ›lo zprÃ¡vy, VÅ¡ude, PÅ™edmÄ›t, Od, Komu, Kopie.
       </p>
       <p>
-      <b>Tìlo zprávy</b> - hledání v textu zprávy.
+      <b>TÄ›lo zprÃ¡vy</b> - hledÃ¡nÃ­ v textu zprÃ¡vy.
       </p>
       <p>
-      <b>V¹ude</b> - hledání v celé zprávì, vèetnì hlavièky. 
+      <b>VÅ¡ude</b> - hledÃ¡nÃ­ v celÃ© zprÃ¡vÄ›, vÄetnÄ› hlaviÄky. 
       </p>
       <p>
-      <b>Pøedmìt</b> - hledání ve v¹ech pøedmìtech zpráv.
+      <b>PÅ™edmÄ›t</b> - hledÃ¡nÃ­ ve vÅ¡ech pÅ™edmÄ›tech zprÃ¡v.
       </p>
       <p>
-      <b>Od</b> - hledání podle odesílatele zpráv. Squirrelmail v poli Od zobrazuje 
-      pouze jméno. Systém vyhledá po¾adavek, jestli¾e se Vámi zadanı dotaz shoduje 
+      <b>Od</b> - hledÃ¡nÃ­ podle odesÃ­latele zprÃ¡v. SquirrelMail v poli Od zobrazuje 
+      pouze jmÃ©no. SystÃ©m vyhledÃ¡ poÅ¾adavek, jestliÅ¾e se VÃ¡mi zadanÃ½ dotaz shoduje 
       s e-mailovou adresou.
       </p>
       <p>
-      <b>Komu </b> - hledání podle pøíjemce zpráv. 
+      <b>Komu </b> - hledÃ¡nÃ­ podle pÅ™Ã­jemce zprÃ¡v. 
       </p>
       <p>
-      <b>Kopie </b> - stejnì jako v pøecházejícím pøípadì, s vıjimkou, ¾e hledání 
-      probìhne podle toho, komu byla adresována kopie. 
+      <b>Kopie </b> - stejnÄ› jako v pÅ™echÃ¡zejÃ­cÃ­m pÅ™Ã­padÄ›, s vÃ½jimkou, Å¾e hledÃ¡nÃ­ 
+      probÄ›hne podle toho, komu byla adresovÃ¡na kopie. 
       </p>
    </description>
 </section>

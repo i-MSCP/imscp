@@ -3,7 +3,7 @@
 
 # Generic shell script for building SquirrelMail plugin release
 #
-# Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
+# Copyright (c) 2004-2007 Paul Lesniewski <paul@squirrelmail.org>
 # Licensed under the GNU GPL. For full terms see the file COPYING.
 #
 
@@ -111,7 +111,7 @@ if [ ! -e INSTALL ]; then
 fi
 # Translated strings are actually in the core
 #if [ ! -e getpot ]; then
-#   echo
+#   echo 
 #   echo "No getpot file found.  Please create before making release"
 #   echo
 #   exit 5
@@ -171,24 +171,17 @@ fi
 echo
 read -p "Enter Version Number [$OLD_VERSION]: " VERSION
 if [ -z "$VERSION" ] ; then
-   VERSION=$OLD_VERSION;
-#   VERSION=$OLD_FULL_VERSION;
+   VERSION=$OLD_FULL_VERSION;
 fi
 PURE_VERSION=`echo "$VERSION" | sed 's/-.*//'`
-
-if [ ! -z "$REQ_SM_VERSION" ] ; then
-   FINAL_VERSION="$PURE_VERSION-$REQ_SM_VERSION"
-else
-   FINAL_VERSION="$PURE_VERSION"
-fi
 
 
 
 # remove tarball we are building if present
 #
 echo
-echo "Removing $PACKAGE-$FINAL_VERSION.tar.gz"
-rm -f $PACKAGE-$FINAL_VERSION.tar.gz
+echo "Removing $PACKAGE-$VERSION.tar.gz"
+rm -f $PACKAGE-$VERSION.tar.gz
 
 
 
@@ -210,7 +203,7 @@ fi
 #
 echo "Replacing version in version file"
 echo "$PRETTY_NAME" > version
-echo $PURE_VERSION >> version
+echo $VERSION >> version
 
 
 
@@ -225,16 +218,16 @@ while [ "$J" -lt ${#CONFIG_FILES[@]} ]; do
 
    J=`expr $J + 1`
 done
-TAR_COMMAND="$TAR_COMMAND -f $PACKAGE-$FINAL_VERSION.tar.gz $PACKAGE"
+TAR_COMMAND="$TAR_COMMAND -f $PACKAGE-$VERSION.tar.gz $PACKAGE"
 
 
 
 # make tarball
 #
-echo "Creating $PACKAGE-$FINAL_VERSION.tar.gz"
+echo "Creating $PACKAGE-$VERSION.tar.gz"
 cd ../
 $TAR_COMMAND
-mv $PACKAGE-$FINAL_VERSION.tar.gz $PACKAGE
+mv $PACKAGE-$VERSION.tar.gz $PACKAGE
 cd $PACKAGE
 
 

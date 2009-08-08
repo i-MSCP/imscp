@@ -68,7 +68,7 @@
       <br><br>
 
       <b>Utiliser le r&eacute;pertoire Java ?</b><br>
-      Un de nos buts principal en cr&eacute;ant Squirrelmail &eacute;tait de n'avoir aucun script 
+      Un de nos buts principal en cr&eacute;ant SquirrelMail &eacute;tait de n'avoir aucun script 
       Java dans nos pages. Cependant, quelques uns de nos d&eacute;veloppeurs ont faits un tr&eacute;s 
       bon utilitaire de recherche dans le r&eacute;pertoire d'adresses qui utilise le Javascript. Plut&ocirc;t que 
       de l'enlever, nous vous offrons le choix entre le carnet en HTML et celui en Java. Si vous ne 

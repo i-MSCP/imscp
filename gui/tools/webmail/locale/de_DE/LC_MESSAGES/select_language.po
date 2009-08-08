@@ -1,8 +1,8 @@
 # translation of select_language.po to German
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) 2005 The SquirrelMail Project Team.
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: select_language.po 10240 2005-11-04 15:02:38Z tokul $
+# $Id: select_language.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: select_language\n"

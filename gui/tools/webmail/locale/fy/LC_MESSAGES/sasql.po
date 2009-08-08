@@ -1,8 +1,7 @@
-# translation of sasql.po to Nederlands
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) sasql Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Frisian (fy) sasql Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: sasql.pot 12147 2007-01-19 13:36:59Z jervfors $
 msgid ""
 msgstr ""

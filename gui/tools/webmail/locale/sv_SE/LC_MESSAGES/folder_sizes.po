@@ -1,8 +1,8 @@
 # Swedish (sv_SE) folder_sizes Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2006.
-# $Id: folder_sizes.po 11164 2006-05-28 08:51:02Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: folder_sizes.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: folder_sizes 1.5\n"
@@ -10,10 +10,10 @@ msgstr ""
 "<squirrelmail-i18n@lists.sourceforge.net>\n"
 "POT-Creation-Date: 2006-05-01 10:34+0300\n"
 "PO-Revision-Date: 2004-12-08 23:24+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
@@ -24,13 +24,13 @@ msgid "Folder Sizes Options"
 msgstr "Mappstorlekar"
 
 msgid "Show link under folder list"
-msgstr "Visa l‰nk under mapplistan"
+msgstr "Visa l√§nk under mapplistan"
 
 msgid "Show button instead of link"
-msgstr "Visa knapp ist‰llet fˆr l‰nk"
+msgstr "Visa knapp ist√§llet f√∂r l√§nk"
 
 msgid "Show block on folders page"
-msgstr "Visa pÂ sidan Mappar"
+msgstr "Visa p√• sidan Mappar"
 
 msgid "Show subtotals"
 msgstr "Visa delsummor"
@@ -48,7 +48,7 @@ msgid "Count"
 msgstr "Antal"
 
 msgid "Unread"
-msgstr "Ol‰sta"
+msgstr "Ol√§sta"
 
 msgid "Size"
 msgstr "Storlek"

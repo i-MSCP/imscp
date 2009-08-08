@@ -1,6 +1,6 @@
 # translation of custom_charset.po into Russian
-# Copyright (c) 2005 The SquirrelMail Project Team
-# $Id: custom_charset.po 9666 2005-06-26 15:21:09Z tokul $ 
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# $Id: custom_charset.po 13693 2009-05-14 00:26:43Z jervfors $ 
 # Gregory Mokhin <mok@kde.ru>, 2005.
 #
 msgid ""

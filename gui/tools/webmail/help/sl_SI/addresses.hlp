@@ -94,7 +94,7 @@
       kjer vse ¹tudentje, osebje shranijo email naslove in jih imajo na voljo.
       Le konfigurirano za uporabo univerzitetnega LDAP stre¾nika, SquirellMail
 	  bo potem imel mo¾nost narediti seznam vseh email naslovov ( skupaj s tistimi ki
-	  so v Adresarju ).Squirrelmaila je moèno orodje ko <I>kombinira</I>
+	  so v Adresarju ).SquirrelMaila je moèno orodje ko <I>kombinira</I>
       Va¹ lokalni adresar in LDAP stre¾nik ki Vam nudi veliko veè naslovov
 	  kot bi bilo v enem samem Adresarju.
       </p><p>

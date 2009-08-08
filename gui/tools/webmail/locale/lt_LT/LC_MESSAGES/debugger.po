@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail debugger plugin.
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
-# $Id: debugger.po 10013 2005-08-28 08:18:29Z tokul $
+# $Id: debugger.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: debugger 1.1\n"

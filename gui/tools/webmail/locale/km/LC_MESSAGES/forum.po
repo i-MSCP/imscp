@@ -1,0 +1,174 @@
+# Khmer (km) forum Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: forum\n"
+"Report-Msgid-Bugs-To: Sebastian Dolmen <sdolmen %AT% gmail %DOT% com>\n"
+"POT-Creation-Date: 2007-01-19 13:10+0100\n"
+"PO-Revision-Date: 2009-04-24 09:25+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: forum.php:52
+msgid "&nbsp;Forums"
+msgstr "&nbsp;វេទិកា"
+
+#: forum.php:53
+msgid "Threads"
+msgstr "ខ្សែស្រឡាយ"
+
+#: forum.php:54
+msgid "Last thread"
+msgstr "ខ្សែស្រឡាយ​ចុងក្រោយ"
+
+#: hooks.php:23
+msgid "Forum"
+msgstr "វេទិកា"
+
+#: hooks.php:47
+msgid "Discussion board"
+msgstr "ផ្ទាំង​ពិភាក្សា"
+
+#: hooks.php:49
+msgid "A browser-based administrative interface."
+msgstr "ចំណុចប្រទាក់​គ្រប់គ្រង​ដែល​មាន​មូលដ្ឋាន​លើ​កម្មវិធី​រុករក ។"
+
+#: list.php:66 post.php:88 read.php:75
+msgid "Forum list"
+msgstr "បញ្ជី​វេទិកា"
+
+#: list.php:66
+msgid "New thread"
+msgstr "ខ្សែស្រឡាយ​ថ្មី"
+
+#: list.php:72
+msgid "Current Page:"
+msgstr "ទំព័រ​បច្ចុប្បន្ន ៖"
+
+#: list.php:72
+msgid "of"
+msgstr "នៃ"
+
+#: list.php:75 list.php:77
+msgid "Previous"
+msgstr "មុន"
+
+#: list.php:80 list.php:82
+msgid "Next"
+msgstr "បន្ទាប់"
+
+#: list.php:88
+msgid "&nbsp;Subject"
+msgstr "&nbsp;ប្រធានបទ"
+
+#: list.php:89
+msgid "Views"
+msgstr "ទិដ្ឋភាព"
+
+#: list.php:90
+msgid "Posts"
+msgstr "ប្រកាស"
+
+#: list.php:91
+msgid "Last post"
+msgstr "ប្រកាស​ចុងក្រោយ"
+
+#: list.php:97 list.php:100
+msgid "by"
+msgstr "ដោយ"
+
+#: options.php:66 options.php:80
+msgid "Please fill in the name and the description."
+msgstr "សូម​បំពេញ​ឈ្មោះ និង​សេចក្ដី​ពិពណ៌នា ។"
+
+#: options.php:110
+msgid "Options - Discussion board"
+msgstr "ជម្រើស - ផ្ទាំង​ពិភាក្សា"
+
+#: options.php:136 options.php:154 options.php:161 options.php:198
+msgid "Modify forum"
+msgstr "កែប្រែ​វេទិកា"
+
+#: options.php:142 options.php:179
+msgid "Name:"
+msgstr "ឈ្មោះ ៖"
+
+#: options.php:146 options.php:183
+msgid "Description:"
+msgstr "សេចក្ដី​ពិពណ៌នា ៖"
+
+#: options.php:151 options.php:188
+msgid "Forum will be visible"
+msgstr "វេទិកា​​នឹង​មើល​ឃើញ"
+
+#: options.php:164
+msgid "Selected forum:"
+msgstr "វេទិកា​ដែល​បាន​ជ្រើស ៖"
+
+#: options.php:164
+msgid "Confirm delete of selected forum?"
+msgstr "អះអាង​លុប​វេទិកា​ដែល​បាន​ជ្រើស​ឬ ?"
+
+#: options.php:164
+msgid "Confirm delete"
+msgstr "អះអាង​លុប"
+
+#: options.php:173
+msgid "Create forum"
+msgstr "បង្កើត​វេទិកា"
+
+#: options.php:191
+msgid "Add this forum"
+msgstr "បន្ថែម​វេទិកា​នេះ"
+
+#: options.php:203
+msgid "Forum name"
+msgstr "ឈ្មោះ​វេទិកា"
+
+#: options.php:207
+msgid "Modify"
+msgstr "កែប្រែ"
+
+#: options.php:207
+msgid "Delete"
+msgstr "លុប"
+
+#: options.php:209
+msgid "No forum found."
+msgstr "រក​មិនឃើញ​វេទិកា​ទេ ។"
+
+#: post.php:72
+msgid "Please fill in the subject and the body."
+msgstr "សូម​បំពេញ​ក្នុង​ប្រធាន​បទ និង​តួ ។"
+
+#: post.php:88 read.php:75
+msgid "Thread list"
+msgstr "បញ្ជី​ខ្សែ​ស្រឡាយ"
+
+#: post.php:101
+msgid "Subject"
+msgstr "ប្រធាន"
+
+#: post.php:107
+msgid "Post new topic"
+msgstr "ប្រកាស​ប្រធាន​បទ​ថ្មី"
+
+#: read.php:63
+msgid "Please fill in the body of your reply."
+msgstr "សូម​បំពេញ​តួ​នៃ​សេចក្ដី​ឆ្លើយតប​របស់​អ្នក ។"
+
+#: read.php:108
+msgid "Reply"
+msgstr "ឆ្លើយតប"
+
+#: read.php:114
+msgid "Post message"
+msgstr "ប្រកាស​សារ"
+

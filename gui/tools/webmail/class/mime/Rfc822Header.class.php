@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Rfc822Header.class.php

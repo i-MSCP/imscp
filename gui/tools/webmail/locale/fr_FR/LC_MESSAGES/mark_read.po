@@ -1,9 +1,9 @@
-# Squirrelmail mark_read plugin
+# SquirrelMail mark_read plugin
 # French translation
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Michel Bouissou <michel@bouissou.net>, 2004.
-# $Id: mark_read.po 12742 2007-10-26 23:15:55Z jervfors $
+# $Id: mark_read.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mark_read VERSION\n"

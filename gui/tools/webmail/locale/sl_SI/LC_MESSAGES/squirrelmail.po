@@ -1,6 +1,6 @@
 # translation of squirrelmail.po to sloven¹èina
 # SquirrelMail Slovenian Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Tomaz Zupan <tomaz.zupan@orpo.si>, 2001,2003, 2004.
 #
 msgid ""
@@ -2707,7 +2707,7 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "Izvede nekatere testne IMAP ukaze, prika¾e oboje, ukaze in rezultate. Ti "
-"testi uporabljajo Squirrelmail IMAP ukaze in va¹o trenutne Squirrelmail "
+"testi uporabljajo SquirrelMail IMAP ukaze in va¹o trenutne SquirrelMail "
 "nastavitve. Lahko se uporabijo tudi obièajni IMAP ukazi."
 
 msgid "Mailinglist"

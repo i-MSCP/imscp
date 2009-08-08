@@ -1,19 +1,18 @@
-# Czech translation of yelp.
+# Czech (cs_CZ) yelp Translation (SquirrelMail plugin)
 # Copyright (C) 2004 THE yelp'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the yelp package.
 # Ondra 'Kepi' Kudlík <kepi@cacwa.cz>, 2004.
-# $Id: yelp.po 6996 2004-04-03 11:39:03Z tokul $
+# $Id: yelp.po 13712 2009-05-16 11:49:04Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: yelp 1.0\n"
-"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-03-05 18:02+0100\n"
 "PO-Revision-Date: 2004-03-05 18:22+0100\n"
 "Last-Translator: Ondra 'Kepi' Kudlík <kepi@cacwa.cz>\n"
-"Language-Team: Czech <cs@li.org>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: yelp.php:57
 msgid "Annoyance level"

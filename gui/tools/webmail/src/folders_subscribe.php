@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * folders_subscribe.php

@@ -1,8 +1,8 @@
 # Serbian SquirrelMail Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Manojlovic Boris <steki@verat.net>, 2000.
 # Nenad Peric <nesha@teleport.co.yu>, 2002-2005.
-# $Id: squirrelmail.po 10377 2005-11-19 15:55:11Z tokul $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail 1.4-stable\n"

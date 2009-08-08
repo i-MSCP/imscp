@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * forms.php - html form functions

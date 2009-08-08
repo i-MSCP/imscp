@@ -1,51 +1,51 @@
 <chapter>
    <title>
-      Úvod do SquirrelMail-u
+      Ãšvod do SquirrelMail-u
    </title>
    <summary>
-      SquirrelMail vám umo¾òuje spôsob ako skontrolova» svoju po¹tu na intenete.
+      SquirrelMail vÃ¡m umoÅ¾Åˆuje spÃ´sob ako skontrolovaÅ¥ svoju poÅ¡tu na intenete.
    </summary>
    <description>
       <p>
-      Èo je vlastne <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
-      Je to web rozhranie k e-mailom napísané v <A HREF="http://www.php.net">PHP4</A>.
-      Bol navrhnutı aby umo¾nil prístup k e-mailom na vá¹ e-mail-ovı server
-      kdekoµvek vo svete cez internet. Viac informácií ako to funguje a IMAP
-      protokol mô¾te nájs» na <A HREF="http://imap.org">here</A>.
+      ÄŒo je vlastne <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      Je to web rozhranie k e-mailom napÃ­sanÃ© v <A HREF="http://www.php.net">PHP4</A>.
+      Bol navrhnutÃ½ aby umoÅ¾nil prÃ­stup k e-mailom na vÃ¡Å¡ e-mail-ovÃ½ server
+      kdekoÄ¾vek vo svete cez internet. Viac informÃ¡ciÃ­ ako to funguje a IMAP
+      protokol mÃ´Å¾te nÃ¡jsÅ¥ na <A HREF="http://imap.org">here</A>.
       </p>
    </description>
 </chapter>   
 
 <section>
    <title>
-      Základy
+      ZÃ¡klady
    </title>
    <description>
       <p>
-      Ak máte len rıchlu otázku, mali by ste sa pozrie» na sekcie FAQ (Frequently
-      Asked Questions = Najèastej¹ie sa Pıtané Otázky).
+      Ak mÃ¡te len rÃ½chlu otÃ¡zku, mali by ste sa pozrieÅ¥ na sekcie FAQ (Frequently
+      Asked Questions = NajÄastejÅ¡ie sa PÃ½tanÃ© OtÃ¡zky).
       </p>
       <p>
-      SquirrelMail sa skladá z 2 hlavnıch sekcií nazıvanıch rámce (frames). ¥avı
-      rámec zobrazuje len prieèinky. Viac informácií o µavom rámci mô¾te nájs»
-      v sekcii pomocníka "Prieèinky".
+      SquirrelMail sa skladÃ¡ z 2 hlavnÃ½ch sekciÃ­ nazÃ½vanÃ½ch rÃ¡mce (frames). Ä½avÃ½
+      rÃ¡mec zobrazuje len prieÄinky. Viac informÃ¡ciÃ­ o Ä¾avom rÃ¡mci mÃ´Å¾te nÃ¡jsÅ¥
+      v sekcii pomocnÃ­ka "PrieÄinky".
       </p>
       <p>
-      Na pravej strane sa nachádza vaè¹ina nástrojov. Na vrchole stránky sa
-      nachádza menu. "Odhlásenie sa" vás bezpeène odhlási z programu, keï ho
-      ukonèujete. Aktuálny prieèinok zobrazuje v ktorom prieèinku zobrazenıch v
-      µavom rámci sa práve nachadzáte. Hneï ako sa prihlásite, je predvolenım
-      prieèinkom "Doruèená po¹ta".
+      Na pravej strane sa nachÃ¡dza vaÄÅ¡ina nÃ¡strojov. Na vrchole strÃ¡nky sa
+      nachÃ¡dza menu. "OdhlÃ¡senie sa" vÃ¡s bezpeÄne odhlÃ¡si z programu, keÄ ho
+      ukonÄujete. AktuÃ¡lny prieÄinok zobrazuje v ktorom prieÄinku zobrazenÃ½ch v
+      Ä¾avom rÃ¡mci sa prÃ¡ve nachadzÃ¡te. HneÄ ako sa prihlÃ¡site, je predvolenÃ½m
+      prieÄinkom "DoruÄenÃ¡ poÅ¡ta".
       </p>
       <p>
-      Pod vrchnou li¹tou je rad mo¾nosti v menu:
+      Pod vrchnou liÅ¡tou je rad moÅ¾nosti v menu:
          <ul>
-            <li><b>Nová správa</b> - Vytvaránie a posielanie správ, mo¾te k nim ihneï pripoji» prílohu.
-            <li><b>Adresár</b> - Uchováva zoznam adries, ktoré obsahuje vá¹ osobnı adresár.
-            <li><b>Prieèinky</b> - tu sa robia v¹etky operácie s prieèinkami. Prieèinky mô¾te vytvára», maza», premenováva», prihlasova» a odhlasova».
-            <li><b>Mo¾nosti</b> - Zmena nastavení SquirrelMail-u, ako bude vyzera» a ako bude reagova».
-            <li><b>Hµada»</b> - Tento nástroj vám umo¾òuje prehµadáva» po¹tovú schránku na základe vami zadanıch kritérií.
-            <li><b>Pomocník</b> - Práve ste tu! 
+            <li><b>NovÃ¡ sprÃ¡va</b> - VytvarÃ¡nie a posielanie sprÃ¡v, moÅ¾te k nim ihneÄ pripojiÅ¥ prÃ­lohu.
+            <li><b>AdresÃ¡r</b> - UchovÃ¡va zoznam adries, ktorÃ© obsahuje vÃ¡Å¡ osobnÃ½ adresÃ¡r.
+            <li><b>PrieÄinky</b> - tu sa robia vÅ¡etky operÃ¡cie s prieÄinkami. PrieÄinky mÃ´Å¾te vytvÃ¡raÅ¥, mazaÅ¥, premenovÃ¡vaÅ¥, prihlasovaÅ¥ a odhlasovaÅ¥.
+            <li><b>MoÅ¾nosti</b> - Zmena nastavenÃ­ SquirrelMail-u, ako bude vyzeraÅ¥ a ako bude reagovaÅ¥.
+            <li><b>HÄ¾adaÅ¥</b> - Tento nÃ¡stroj vÃ¡m umoÅ¾Åˆuje prehÄ¾adÃ¡vaÅ¥ poÅ¡tovÃº schrÃ¡nku na zÃ¡klade vami zadanÃ½ch kritÃ©riÃ­.
+            <li><b>PomocnÃ­k</b> - PrÃ¡ve ste tu! 
          </ul>
       </p>
    </description>

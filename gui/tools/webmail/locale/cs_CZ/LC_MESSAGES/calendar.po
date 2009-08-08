@@ -1,8 +1,7 @@
 # Czech (cs_CZ) shared_calendars Translation (SquirrelMail plugin)
-# Copyright (c) 2007 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-#
-# Luká¹ Prokop <abeceda.prokop@seznam.cz>, 2007.
+# LukÃ¡Å¡ Prokop <abeceda.prokop@seznam.cz>, 2007.
 # $Id: calendar.pot 10877 2006-03-04 11:22:22Z jervfors $
 msgid ""
 msgstr ""
@@ -12,32 +11,32 @@ msgstr ""
 "Last-Translator: Lukas Prokop <abeceda.prokop@seznam.cz>\n"
 "Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: calendar.php:80 functions.php:1305 interface/month.php:233
 msgid "Sunday"
-msgstr "Nedìle"
+msgstr "NedÄ›le"
 
 #: calendar.php:81 functions.php:1307 interface/month.php:233
 msgid "Monday"
-msgstr "Pondìlí"
+msgstr "PondÄ›lÃ­"
 
 #: calendar.php:82 functions.php:1309 interface/month.php:233
 msgid "Tuesday"
-msgstr "Úterı"
+msgstr "ÃšterÃ½"
 
 #: calendar.php:83 functions.php:1311 interface/month.php:233
 msgid "Wednesday"
-msgstr "Støeda"
+msgstr "StÅ™eda"
 
 #: calendar.php:84 functions.php:1313 interface/month.php:234
 msgid "Thursday"
-msgstr "Ètvrtek"
+msgstr "ÄŒtvrtek"
 
 #: calendar.php:85 functions.php:1315 interface/month.php:234
 msgid "Friday"
-msgstr "Pátek"
+msgstr "PÃ¡tek"
 
 #: calendar.php:86 functions.php:1317 interface/month.php:234
 msgid "Saturday"
@@ -59,32 +58,32 @@ msgstr "Jdi"
 #: calendar_data.php:67
 #, php-format
 msgid "Could not write calendar file %s"
-msgstr "Nelze zapsat kalendáø - soubor %s"
+msgstr "Nelze zapsat kalendÃ¡Å™ - soubor %s"
 
 #: calendar_options.php:131
 msgid "Badly formatted header color"
-msgstr "©patné formátování barvy - záhlaví"
+msgstr "Å patnÃ© formÃ¡tovÃ¡nÃ­ barvy - zÃ¡hlavÃ­"
 
 #: calendar_options.php:146
 msgid "Badly formatted today color"
-msgstr "©patné formátování barvy - dnes"
+msgstr "Å patnÃ© formÃ¡tovÃ¡nÃ­ barvy - dnes"
 
 #: calendar_options.php:161
 msgid "Badly formatted event color"
-msgstr "©patné formátování barvy - událost"
+msgstr "Å patnÃ© formÃ¡tovÃ¡nÃ­ barvy - udÃ¡lost"
 
 #: calendar_options.php:176
 msgid "Badly formatted day color"
-msgstr "©patné formátování barvy - den"
+msgstr "Å patnÃ© formÃ¡tovÃ¡nÃ­ barvy - den"
 
 #: calendar_options.php:186
 msgid "Day view start time must come before end time"
-msgstr "Poèáteèní èas denního zobrazení musí bıt pøed koncovım èasem"
+msgstr "PoÄÃ¡teÄnÃ­ Äas dennÃ­ho zobrazenÃ­ musÃ­ bÃ½t pÅ™ed koncovÃ½m Äasem"
 
 #: classes/calendar.php:592 functions.php:384
 #, php-format
 msgid "Personal Calendar for %s"
-msgstr "Osobní kalendáø - %s"
+msgstr "OsobnÃ­ kalendÃ¡Å™ - %s"
 
 #: classes/event.php:2893
 msgid "..."
@@ -92,103 +91,103 @@ msgstr "..."
 
 #: classes/event.php:3727
 msgid "Must have domain information"
-msgstr "Musí mít doménovou informaci"
+msgstr "MusÃ­ mÃ­t domÃ©novou informaci"
 
 #: classes/event.php:3731
 msgid "Valid event type must be specified"
-msgstr "Musí bıt specifikována platná událost"
+msgstr "MusÃ­ bÃ½t specifikovÃ¡na platnÃ¡ udÃ¡lost"
 
 #: classes/event.php:3736
 msgid "Must specify valid recurrence type"
-msgstr "Musí bıt specifikován platnı typ opakování "
+msgstr "MusÃ­ bÃ½t specifikovÃ¡n platnÃ½ typ opakovÃ¡nÃ­ "
 
 #: classes/event.php:3745
 msgid ""
 "Overall end of recurrence for recurring events must come after end of "
 "initial occurrence"
 msgstr ""
-"Úplnı konec opakování pro opakující se události musí bıt èasovì za prvotním "
-"vıskytem"
+"ÃšplnÃ½ konec opakovÃ¡nÃ­ pro opakujÃ­cÃ­ se udÃ¡losti musÃ­ bÃ½t ÄasovÄ› za prvotnÃ­m "
+"vÃ½skytem"
 
 #: classes/event.php:3750
 msgid "Must specify valid recurrence interval"
-msgstr "Musí bıt specifikován platnı interval opakování"
+msgstr "MusÃ­ bÃ½t specifikovÃ¡n platnÃ½ interval opakovÃ¡nÃ­"
 
 #: classes/event.php:3754
 msgid "Event must have a summary/title"
-msgstr "Událost musí mít titul/popis"
+msgstr "UdÃ¡lost musÃ­ mÃ­t titul/popis"
 
 #: classes/event.php:3758
 msgid "Must specify valid event priority"
-msgstr "Musí bıt specifikována platná priorita události"
+msgstr "MusÃ­ bÃ½t specifikovÃ¡na platnÃ¡ priorita udÃ¡losti"
 
 #: classes/event.php:3762
 msgid "Event must have a valid start date/time"
-msgstr "Událost musí mít platné poèáteèní datum/èas"
+msgstr "UdÃ¡lost musÃ­ mÃ­t platnÃ© poÄÃ¡teÄnÃ­ datum/Äas"
 
 #: classes/event.php:3766
 msgid "Event must have a valid end date/time"
-msgstr "Událost musí mít platné ukonèovací datum/èas"
+msgstr "UdÃ¡lost musÃ­ mÃ­t platnÃ© ukonÄovacÃ­ datum/Äas"
 
 #: classes/event.php:3769
 msgid "End date/time must come after start date and time"
-msgstr "Koncové datum/èas musí následovat po poèáteèním datu a èase"
+msgstr "KoncovÃ© datum/Äas musÃ­ nÃ¡sledovat po poÄÃ¡teÄnÃ­m datu a Äase"
 
 #: classes/event.php:3773
 msgid "At least one parent calendar must be given"
-msgstr "Musí existovat alespoò jeden nadøazenı kalendáø"
+msgstr "MusÃ­ existovat alespoÅˆ jeden nadÅ™azenÃ½ kalendÃ¡Å™"
 
 #: classes/event.php:3777
 msgid "Event must have a creator"
-msgstr "Událost musí mít autora"
+msgstr "UdÃ¡lost musÃ­ mÃ­t autora"
 
 #: classes/event.php:3781
 msgid "Event must have a creation date"
-msgstr "Událost musí mít datum vytvoøení"
+msgstr "UdÃ¡lost musÃ­ mÃ­t datum vytvoÅ™enÃ­"
 
 #: classes/event.php:3785
 msgid "Event must have at least one owner"
-msgstr "Událost musí mít alespoò jednoho vlastníka"
+msgstr "UdÃ¡lost musÃ­ mÃ­t alespoÅˆ jednoho vlastnÃ­ka"
 
 #: constants.php:159 functions.php:1694 functions.php:1696
 msgid "Unknown"
-msgstr "Neznámá"
+msgstr "NeznÃ¡mÃ¡"
 
 #: constants.php:160
 msgid "Emergency"
-msgstr "Pohotovostní"
+msgstr "PohotovostnÃ­"
 
 #: constants.php:161
 msgid "Urgent"
-msgstr "Urgentní"
+msgstr "UrgentnÃ­"
 
 #: constants.php:162
 msgid "Serious"
-msgstr "Vá¾ná"
+msgstr "VÃ¡Å¾nÃ¡"
 
 #: constants.php:163
 msgid "Important"
-msgstr "Dùle¾itá"
+msgstr "DÅ¯leÅ¾itÃ¡"
 
 #: constants.php:164
 msgid "Normal"
-msgstr "Normální"
+msgstr "NormÃ¡lnÃ­"
 
 #: constants.php:165
 msgid "Secondary"
-msgstr "Druhoøadá"
+msgstr "DruhoÅ™adÃ¡"
 
 #: constants.php:166
 msgid "Low"
-msgstr "Nízká"
+msgstr "NÃ­zkÃ¡"
 
 #: constants.php:167
 msgid "Insignificant"
-msgstr "Bezvıznamná"
+msgstr "BezvÃ½znamnÃ¡"
 
 #: constants.php:168
 msgid "Ignore"
-msgstr "Ignorovatelná"
+msgstr "IgnorovatelnÃ¡"
 
 #: constants.php:223
 msgid "Days"
@@ -196,11 +195,11 @@ msgstr "Dny"
 
 #: constants.php:224
 msgid "Weeks"
-msgstr "Tıdny"
+msgstr "TÃ½dny"
 
 #: constants.php:225
 msgid "Months"
-msgstr "Mìsíce"
+msgstr "MÄ›sÃ­ce"
 
 #: constants.php:226
 msgid "Years"
@@ -208,11 +207,11 @@ msgstr "Roky"
 
 #: event_create.php:89
 msgid "Start time:"
-msgstr "Zaèátek:"
+msgstr "ZaÄÃ¡tek:"
 
 #: event_create.php:100 event_edit.php:141
 msgid "Length:"
-msgstr "Délka:"
+msgstr "DÃ©lka:"
 
 #: event_create.php:107 event_edit.php:148 event_edit.php:189
 #: event_edit.php:213 interface/event.php:431 interface/event.php:747
@@ -222,11 +221,11 @@ msgstr "Priorita:"
 #: event_create.php:114 event_create.php:189 event_delete.php:102
 #: event_edit.php:155 event_edit.php:193 event_edit.php:217
 msgid "Title:"
-msgstr "Název:"
+msgstr "NÃ¡zev:"
 
 #: event_create.php:126
 msgid "Set Event"
-msgstr "Nastav Událost:"
+msgstr "Nastav UdÃ¡lost:"
 
 #: event_create.php:157 event_delete.php:157 event_edit.php:282
 msgid "l, F j Y"
@@ -234,7 +233,7 @@ msgstr "l, F j Y"
 
 #: event_create.php:178
 msgid "Event Has been added!"
-msgstr "Událost byla pøidána!"
+msgstr "UdÃ¡lost byla pÅ™idÃ¡na!"
 
 #: event_create.php:181 event_delete.php:94 event_edit.php:115
 #: event_edit.php:181 event_edit.php:205
@@ -244,21 +243,21 @@ msgstr "Datum:"
 #: event_create.php:185 event_delete.php:98 event_edit.php:130
 #: event_edit.php:185 event_edit.php:209
 msgid "Time:"
-msgstr "Èas:"
+msgstr "ÄŒas:"
 
 #: event_create.php:193 event_delete.php:106 event_edit.php:197
 #: event_edit.php:221
 msgid "Message:"
-msgstr "Zpráva:"
+msgstr "ZprÃ¡va:"
 
 #: event_create.php:198 event_delete.php:163 event_edit.php:305
 #: interface/calendar.php:45 interface/calendar_options.php:151
 msgid "Day View"
-msgstr "Denní Pohled"
+msgstr "DennÃ­ Pohled"
 
 #: event_delete.php:91
 msgid "Do you really want to delete this event?"
-msgstr "Opravdu chcete smazat tuto událost?"
+msgstr "Opravdu chcete smazat tuto udÃ¡lost?"
 
 #: event_delete.php:121 event_edit.php:243 interface/calendar_options.php:115
 #: interface/calendar_options.php:124 interface/calendar_options.php:133
@@ -280,19 +279,19 @@ msgstr "Ne"
 
 #: event_delete.php:161
 msgid "Event deleted!"
-msgstr "Událost smazána!"
+msgstr "UdÃ¡lost smazÃ¡na!"
 
 #: event_delete.php:169
 msgid "Nothing to delete!"
-msgstr "Není co smazat!"
+msgstr "NenÃ­ co smazat!"
 
 #: event_edit.php:165 interface/event.php:163
 msgid "Update Event"
-msgstr "Aktualizovat Událost"
+msgstr "Aktualizovat UdÃ¡lost"
 
 #: event_edit.php:178
 msgid "Do you really want to change this event from:"
-msgstr "Opravdu chcete zmìnit tuto událost z:"
+msgstr "Opravdu chcete zmÄ›nit tuto udÃ¡lost z:"
 
 #: event_edit.php:201
 msgid "to:"
@@ -300,15 +299,15 @@ msgstr "na:"
 
 #: event_edit.php:300
 msgid "Event updated!"
-msgstr "Událost Aktualizována!"
+msgstr "UdÃ¡lost AktualizovÃ¡na!"
 
 #: event_manage.php:295
 msgid "Event Created Successfully"
-msgstr "Událost Vytvoøena Úspì¹nì"
+msgstr "UdÃ¡lost VytvoÅ™ena ÃšspÄ›Å¡nÄ›"
 
 #: event_manage.php:367
 msgid "Event Updated Successfully"
-msgstr "Událost Aktualizována Úspì¹nì"
+msgstr "UdÃ¡lost AktualizovÃ¡na ÃšspÄ›Å¡nÄ›"
 
 #: functions.php:443 functions.php:446 interface/month.php:166
 msgid "Today"
@@ -316,36 +315,36 @@ msgstr "Dnes"
 
 #: functions.php:450 interface/event.php:203 interface/event.php:710
 msgid "All Day"
-msgstr "V¹echny dny"
+msgstr "VÅ¡echny dny"
 
 #: functions.php:489
 msgid "Calendar"
-msgstr "Kalendáø"
+msgstr "KalendÃ¡Å™"
 
 #: functions.php:515 interface/calendar_options.php:61
 msgid "Calendar Preferences"
-msgstr "Mo¾nosti Kalendáøe"
+msgstr "MoÅ¾nosti KalendÃ¡Å™e"
 
 #: functions.php:517
 msgid ""
 "Change the way your calendars behave and are displayed, including the "
 "miniature calendar beneath the folder list."
 msgstr ""
-"Zmìny nastavení chovaní a zobrazování kalendáøù vè. mini-kalendáøe pod "
-"seznamem adresáøù."
+"ZmÄ›ny nastavenÃ­ chovanÃ­ a zobrazovÃ¡nÃ­ kalendÃ¡Å™Å¯ vÄ. mini-kalendÃ¡Å™e pod "
+"seznamem adresÃ¡Å™Å¯."
 
 #: functions.php:533
 msgid "Calendar Administration"
-msgstr "Administrace kalendáøe"
+msgstr "Administrace kalendÃ¡Å™e"
 
 #: functions.php:535
 msgid ""
 "Create and maintain shared calendars. Edit holidays, assign calendar access "
 "by user, or create publicly available calendars."
 msgstr ""
-"Vytváøení a správa sdílenıch kalendáøù. Upravování státních svátkù, "
-"pøiøazování práv ke kalendáøùm podle u¾ivatelù èi vytváøení veøejnì "
-"dostupnıch kalendáøù."
+"VytvÃ¡Å™enÃ­ a sprÃ¡va sdÃ­lenÃ½ch kalendÃ¡Å™Å¯. UpravovÃ¡nÃ­ stÃ¡tnÃ­ch svÃ¡tkÅ¯, "
+"pÅ™iÅ™azovÃ¡nÃ­ prÃ¡v ke kalendÃ¡Å™Å¯m podle uÅ¾ivatelÅ¯ Äi vytvÃ¡Å™enÃ­ veÅ™ejnÄ› "
+"dostupnÃ½ch kalendÃ¡Å™Å¯."
 
 #: functions.php:1436
 #, php-format
@@ -365,12 +364,12 @@ msgstr "%s den"
 #: functions.php:1459
 #, php-format
 msgid "%s days"
-msgstr "%s dnù"
+msgstr "%s dnÅ¯"
 
 #: functions.php:1465
 #, php-format
 msgid "%s wk."
-msgstr "%s tıd."
+msgstr "%s tÃ½d."
 
 #: functions.php:1544 functions.php:1545 functions.php:1546 functions.php:1547
 #: functions.php:1548 functions.php:1549 functions.php:1550 functions.php:1551
@@ -420,40 +419,40 @@ msgstr "Chyba:"
 
 #: interface/add_new_personal_calendar.php:46
 msgid "Create New Calendar"
-msgstr "Vytvoøit Novı Kalendáø"
+msgstr "VytvoÅ™it NovÃ½ KalendÃ¡Å™"
 
 #: interface/add_new_personal_calendar.php:49
 #: interface/admin_interface.php:153 interface/edit_calendar.php:47
 msgid "Name"
-msgstr "Jméno"
+msgstr "JmÃ©no"
 
 #: interface/add_new_personal_calendar.php:52
 msgid "Create"
-msgstr "Vytvoøit"
+msgstr "VytvoÅ™it"
 
 #: interface/admin_interface.php:26
 msgid "Calendar Setup"
-msgstr "Nastavení Kalendáøe"
+msgstr "NastavenÃ­ KalendÃ¡Å™e"
 
 #: interface/admin_interface.php:29
 msgid ""
 "Create shared access calendars for select users\n"
 " or public calendars for all users.\n"
 msgstr ""
-"Vytvoøit sdílenı kalendáø pro vybrané u¾ivatele\n"
-" nebo veøejnı kalendáø pro v¹echny u¾ivatele.\n"
+"VytvoÅ™it sdÃ­lenÃ½ kalendÃ¡Å™ pro vybranÃ© uÅ¾ivatele\n"
+" nebo veÅ™ejnÃ½ kalendÃ¡Å™ pro vÅ¡echny uÅ¾ivatele.\n"
 
 #: interface/admin_interface.php:31
 msgid "Manage user permissions for your shared calendars.\n"
-msgstr "Nastavení práv u¾ivatele pro sdílené adresáøe.\n"
+msgstr "NastavenÃ­ prÃ¡v uÅ¾ivatele pro sdÃ­lenÃ© adresÃ¡Å™e.\n"
 
 #: interface/admin_interface.php:34
 msgid "Calendars"
-msgstr "Kalendáøe"
+msgstr "KalendÃ¡Å™e"
 
 #: interface/admin_interface.php:39
 msgid "Users"
-msgstr "U¾ivatelé"
+msgstr "UÅ¾ivatelÃ©"
 
 #: interface/admin_interface.php:85
 msgid ""
@@ -461,41 +460,41 @@ msgid ""
 "write access. To manage user access to your shared calendars, use the \"Users"
 "\" button."
 msgstr ""
-"<b>Sdílené</b> kalendáøe mù¾ou bıt pøiøazeny u¾ivatelùm s právy pouze ke "
-"ètení nebo ke ètení a zápisu. Pro nastavení práv sdílenı kalendáøù pou¾ij "
-"tlaèítko \"U¾ivatelé\"."
+"<b>SdÃ­lenÃ©</b> kalendÃ¡Å™e mÅ¯Å¾ou bÃ½t pÅ™iÅ™azeny uÅ¾ivatelÅ¯m s prÃ¡vy pouze ke "
+"ÄtenÃ­ nebo ke ÄtenÃ­ a zÃ¡pisu. Pro nastavenÃ­ prÃ¡v sdÃ­lenÃ½ kalendÃ¡Å™Å¯ pouÅ¾ij "
+"tlaÄÃ­tko \"UÅ¾ivatelÃ©\"."
 
 #: interface/admin_interface.php:90
 msgid ""
 "<b>Public</b> calendars are available to all users in addition to their "
 "private personal calendar."
 msgstr ""
-"<b>Veøejné</b> kalendáøe jsou dostupné v¹em u¾ivatelùm navíc k jejich "
-"soukromému osobnímu kalendáøi."
+"<b>VeÅ™ejnÃ©</b> kalendÃ¡Å™e jsou dostupnÃ© vÅ¡em uÅ¾ivatelÅ¯m navÃ­c k jejich "
+"soukromÃ©mu osobnÃ­mu kalendÃ¡Å™i."
 
 #: interface/admin_interface.php:101
 msgid "Shared Calendars"
-msgstr "Sdílené Kalendáøe"
+msgstr "SdÃ­lenÃ© KalendÃ¡Å™e"
 
 #: interface/admin_interface.php:114
 msgid "Shared calendars"
-msgstr "Sdílené kalendáøe"
+msgstr "SdÃ­lenÃ© kalendÃ¡Å™e"
 
 #: interface/admin_interface.php:116
 msgid "No Shared Calendars Defined"
-msgstr "®ádné Sdílené Kalendáøe Nejsou Definovány"
+msgstr "Å½Ã¡dnÃ© SdÃ­lenÃ© KalendÃ¡Å™e Nejsou DefinovÃ¡ny"
 
 #: interface/admin_interface.php:125
 msgid "Public Calendars"
-msgstr "Veøejné Kalendáøe"
+msgstr "VeÅ™ejnÃ© KalendÃ¡Å™e"
 
 #: interface/admin_interface.php:139
 msgid "Public calendars"
-msgstr "Veøejné kalendáøe"
+msgstr "VeÅ™ejnÃ© kalendÃ¡Å™e"
 
 #: interface/admin_interface.php:141
 msgid "No Public Calendars Defined"
-msgstr "®ádné Veøejné Kalendáøe Nejsou Definovány"
+msgstr "Å½Ã¡dnÃ© VeÅ™ejnÃ© KalendÃ¡Å™e Nejsou DefinovÃ¡ny"
 
 #: interface/admin_interface.php:145
 msgid "Delete"
@@ -503,31 +502,31 @@ msgstr "Smazat"
 
 #: interface/admin_interface.php:151
 msgid "Add a new calender"
-msgstr "Pøidat novı kalendáø"
+msgstr "PÅ™idat novÃ½ kalendÃ¡Å™"
 
 #: interface/admin_interface.php:160
 msgid "make <b>PUBLIC</b> (read/write for all users)"
-msgstr "vytvoøit <b>VEØEJNİ</b> (ètení/zápis pro v¹echny)"
+msgstr "vytvoÅ™it <b>VEÅ˜EJNÃ</b> (ÄtenÃ­/zÃ¡pis pro vÅ¡echny)"
 
 #: interface/admin_interface.php:163
 msgid "Add"
-msgstr "Pøidat"
+msgstr "PÅ™idat"
 
 #: interface/admin_interface.php:195
 msgid ""
 "<b>To delete one or more users</b> from a calendar, check the box next to "
 "each username and click the 'Delete Users' button."
 msgstr ""
-"<b>Pro vymazání u¾ivatele/ù</b> z kalendáøe, za¹krtni políèko vedle "
-"u¾ivatelského jména a klikni na tlaèítko \"Smazat U¾ivatele\"."
+"<b>Pro vymazÃ¡nÃ­ uÅ¾ivatele/Å¯</b> z kalendÃ¡Å™e, zaÅ¡krtni polÃ­Äko vedle "
+"uÅ¾ivatelskÃ©ho jmÃ©na a klikni na tlaÄÃ­tko \"Smazat UÅ¾ivatele\"."
 
 #: interface/admin_interface.php:198
 msgid ""
 "<b>To add a user</b> to a calendar, type in the username below the calendar, "
 "choose the user's access level, and click the 'Add User' button."
 msgstr ""
-"<b>K pøidání u¾ivatele</b> do kalendáøe, zapi¹ u¾ivatelské jméno pod "
-"kalendáø, zvol oprávnìní a zmáèkni tlaèítko \"Pøidat u¾ivatele\"."
+"<b>K pÅ™idÃ¡nÃ­ uÅ¾ivatele</b> do kalendÃ¡Å™e, zapiÅ¡ uÅ¾ivatelskÃ© jmÃ©no pod "
+"kalendÃ¡Å™, zvol oprÃ¡vnÄ›nÃ­ a zmÃ¡Äkni tlaÄÃ­tko \"PÅ™idat uÅ¾ivatele\"."
 
 #: interface/admin_interface.php:201
 msgid ""
@@ -535,161 +534,161 @@ msgid ""
 "characters\" and ? means \"exactly one alphanumeric character\". For "
 "example, \"*@mydomain.com\" will give everyone in \"mydomain.com\" access to "
 "the calendars you assign to that username.\n"
-msgstr "K zápisu u¾ivatelskıch jmen mù¾ete pou¾ívat zástupné znaky: * znamená \"nula nebo více znakù\", ? znamená \"pøesnì jeden alfanumerickı znak\". Napø. \"*@mojedomena.com\" tedy dává pøistup v¹em u¾ivatelskım jménùm z domény \"mojedomena.com\".\n"
+msgstr "K zÃ¡pisu uÅ¾ivatelskÃ½ch jmen mÅ¯Å¾ete pouÅ¾Ã­vat zÃ¡stupnÃ© znaky: * znamenÃ¡ \"nula nebo vÃ­ce znakÅ¯\", ? znamenÃ¡ \"pÅ™esnÄ› jeden alfanumerickÃ½ znak\". NapÅ™. \"*@mojedomena.com\" tedy dÃ¡vÃ¡ pÅ™istup vÅ¡em uÅ¾ivatelskÃ½m jmÃ©nÅ¯m z domÃ©ny \"mojedomena.com\".\n"
 
 #: interface/admin_interface.php:204
 msgid ""
 "<b>To update user access levels</b> for a calendar, adjust the 'Access "
 "Level' selections, then click the 'Save' button below that calendar."
-msgstr "<b>K aktualizaci u¾ivatelskıch práv</b> pro kalendáø vyberte \"Pøístupové Práva\" a kliknìte na tlaèítko \"Ulo¾it\" pod kalendáøem."
+msgstr "<b>K aktualizaci uÅ¾ivatelskÃ½ch prÃ¡v</b> pro kalendÃ¡Å™ vyberte \"PÅ™Ã­stupovÃ© PrÃ¡va\" a kliknÄ›te na tlaÄÃ­tko \"UloÅ¾it\" pod kalendÃ¡Å™em."
 
 #: interface/admin_interface.php:207
 msgid ""
 "Note that only owners of public calendars will have write access to those "
 "calendars.\n"
-msgstr "Jenom vlastníci veøejnıch kalendáøù mají právo k zápisu do tìchto kalendáøù.\n"
+msgstr "Jenom vlastnÃ­ci veÅ™ejnÃ½ch kalendÃ¡Å™Å¯ majÃ­ prÃ¡vo k zÃ¡pisu do tÄ›chto kalendÃ¡Å™Å¯.\n"
 
 #: interface/admin_interface.php:215
 msgid "No Shared Calendars Have Been Defined"
-msgstr "Není Definován ®ádnı Sdílenı Kalendáø"
+msgstr "NenÃ­ DefinovÃ¡n Å½Ã¡dnÃ½ SdÃ­lenÃ½ KalendÃ¡Å™"
 
 #: interface/admin_interface.php:232
 msgid "Public"
-msgstr "Veøejnı"
+msgstr "VeÅ™ejnÃ½"
 
 #: interface/admin_interface.php:234 interface/calendar.php:72
 msgid "Edit Holidays"
-msgstr "Upravit Svátky"
+msgstr "Upravit SvÃ¡tky"
 
 #: interface/admin_interface.php:237
 msgid "User"
-msgstr "U¾ivatel"
+msgstr "UÅ¾ivatel"
 
 #: interface/admin_interface.php:238
 msgid "Access Level"
-msgstr "Pøístupové Práva"
+msgstr "PÅ™Ã­stupovÃ© PrÃ¡va"
 
 #: interface/admin_interface.php:247
 msgid "No users defined for this calendar"
-msgstr "Pro tento kalendáø není definován ¾ádnı u¾ivatel"
+msgstr "Pro tento kalendÃ¡Å™ nenÃ­ definovÃ¡n Å¾Ã¡dnÃ½ uÅ¾ivatel"
 
 #: interface/admin_interface.php:261 interface/admin_interface.php:282
 msgid "Read"
-msgstr "Ètení"
+msgstr "ÄŒtenÃ­"
 
 #: interface/admin_interface.php:264 interface/admin_interface.php:283
 msgid "Write"
-msgstr "Zápis"
+msgstr "ZÃ¡pis"
 
 #: interface/admin_interface.php:268 interface/admin_interface.php:285
 msgid "Owner"
-msgstr "Vlastník"
+msgstr "VlastnÃ­k"
 
 #: interface/admin_interface.php:274
 msgid "Delete Users"
-msgstr "Sma¾ U¾ivatele"
+msgstr "SmaÅ¾ UÅ¾ivatele"
 
 #: interface/admin_interface.php:287
 msgid "Add User"
-msgstr "Pøidat U¾ivatele"
+msgstr "PÅ™idat UÅ¾ivatele"
 
 #: interface/admin_interface.php:290 interface/edit_calendar.php:50
 msgid "Save"
-msgstr "Ulo¾it"
+msgstr "UloÅ¾it"
 
 #: interface/admin_interface.php:327
 msgid "<b>To create a holiday,</b> blah blah and click the 'Blah Blah' button."
-msgstr "<b>K vytvoøení svátku,</b> blah blah a kliknìte na tlaèítko 'Blah Blah'."
+msgstr "<b>K vytvoÅ™enÃ­ svÃ¡tku,</b> blah blah a kliknÄ›te na tlaÄÃ­tko 'Blah Blah'."
 
 #: interface/admin_interface.php:330
 msgid "Note that you must also add the new holiday to your calendar if desired.\n"
-msgstr "Pokud je to ¾ádoucí, je také potøeba definovat v kalendáøi svátky.\n"
+msgstr "Pokud je to Å¾Ã¡doucÃ­, je takÃ© potÅ™eba definovat v kalendÃ¡Å™i svÃ¡tky.\n"
 
 #: interface/admin_interface.php:333
 msgid ""
 "<b>To add a holiday</b> to a calendar, blah blah blah and click the 'Blah "
 "Blah' button."
-msgstr "<b>K pøidání svátku</b> do kalendáøe, blah blah blah a kliknìte na tlaèítko 'Blah Blah'."
+msgstr "<b>K pÅ™idÃ¡nÃ­ svÃ¡tku</b> do kalendÃ¡Å™e, blah blah blah a kliknÄ›te na tlaÄÃ­tko 'Blah Blah'."
 
 #: interface/admin_interface.php:336
 msgid ""
 "<b>To remove a holiday</b> from a calendar, blah blah blah, then click the "
 "'Blah' button below that calendar."
 msgstr ""
-"<b>K odstranìní svátku</b> z kalendáøe, blah blah blah, pak kliknìte na "
-"tlaèítko 'Blah' pod kalendáøem."
+"<b>K odstranÄ›nÃ­ svÃ¡tku</b> z kalendÃ¡Å™e, blah blah blah, pak kliknÄ›te na "
+"tlaÄÃ­tko 'Blah' pod kalendÃ¡Å™em."
 
 #: interface/admin_interface.php:344
 msgid "No Holidays Have Been Defined"
-msgstr "Nejsou Definovány ®ádné Svátky"
+msgstr "Nejsou DefinovÃ¡ny Å½Ã¡dnÃ© SvÃ¡tky"
 
 #: interface/calendar.php:37
 msgid "Year View"
-msgstr "Roèní pohled"
+msgstr "RoÄnÃ­ pohled"
 
 #: interface/calendar.php:41
 msgid "Month View"
-msgstr "Mìsíèní pohled"
+msgstr "MÄ›sÃ­ÄnÃ­ pohled"
 
 #: interface/calendar.php:57
 msgid "Tasks"
-msgstr "Úkoly"
+msgstr "Ãškoly"
 
 #: interface/calendar_options.php:85
 msgid "General Calendar Options"
-msgstr "Hlavní Mo¾nosti Kalendáøe"
+msgstr "HlavnÃ­ MoÅ¾nosti KalendÃ¡Å™e"
 
 #: interface/calendar_options.php:100
 msgid "First Day of Week:"
-msgstr "První den v tıdnu"
+msgstr "PrvnÃ­ den v tÃ½dnu"
 
 #: interface/calendar_options.php:106
 msgid "Priority at which Events Are Highlighted:"
-msgstr "Které priority \"Událostí\" jsou zvıraznìny:"
+msgstr "KterÃ© priority \"UdÃ¡lostÃ­\" jsou zvÃ½raznÄ›ny:"
 
 #: interface/calendar_options.php:112
 msgid "Show Daily Add Event Buttons in Month View:"
-msgstr "Zobraz tlaèítko \"Pøidání Události\" dennì v mìsíèním pohledu:"
+msgstr "Zobraz tlaÄÃ­tko \"PÅ™idÃ¡nÃ­ UdÃ¡losti\" dennÄ› v mÄ›sÃ­ÄnÃ­m pohledu:"
 
 #: interface/calendar_options.php:121
 msgid "Show Week Numbers in Month View:"
-msgstr "Zobraz \"Èísla Tıdnù\" v mìsíèním pohledu:"
+msgstr "Zobraz \"ÄŒÃ­sla TÃ½dnÅ¯\" v mÄ›sÃ­ÄnÃ­m pohledu:"
 
 #: interface/calendar_options.php:130
 msgid "Show Event Start Times in Month View:"
-msgstr "Zobraz \"Poèáteèní Èas Události\" v mìsíèním pohledu:"
+msgstr "Zobraz \"PoÄÃ¡teÄnÃ­ ÄŒas UdÃ¡losti\" v mÄ›sÃ­ÄnÃ­m pohledu:"
 
 #: interface/calendar_options.php:139
 msgid "Maximum Number Events Shown Per Day in Month View:"
-msgstr "Maximální poèet zobrazenıch událostí za den v mìsíèním pohledu:"
+msgstr "MaximÃ¡lnÃ­ poÄet zobrazenÃ½ch udÃ¡lostÃ­ za den v mÄ›sÃ­ÄnÃ­m pohledu:"
 
 #: interface/calendar_options.php:145
 msgid "Click on Event in Month View Goes To:"
-msgstr "Kliknutí na \"Událost\" v mìsíèním pohledu vede na: "
+msgstr "KliknutÃ­ na \"UdÃ¡lost\" v mÄ›sÃ­ÄnÃ­m pohledu vede na: "
 
 #: interface/calendar_options.php:148
 msgid "Event View"
-msgstr "Zobrazení Události"
+msgstr "ZobrazenÃ­ UdÃ¡losti"
 
 #: interface/calendar_options.php:154
 msgid "Show Compacted Time of Day in Day View:"
-msgstr "Zobraz \"Kompaktní Èas\" v denním pohledu:"
+msgstr "Zobraz \"KompaktnÃ­ ÄŒas\" v dennÃ­m pohledu:"
 
 #: interface/calendar_options.php:163
 msgid "Show Hourly Add Event Buttons in Day View:"
-msgstr "Zobraz tlaèítko \"Pøidání Události\" hodinovì v denním pohledu:"
+msgstr "Zobraz tlaÄÃ­tko \"PÅ™idÃ¡nÃ­ UdÃ¡losti\" hodinovÄ› v dennÃ­m pohledu:"
 
 #: interface/calendar_options.php:172
 msgid "Day View Start Time:"
-msgstr "Poèáteèní èas denního zobrazení:"
+msgstr "PoÄÃ¡teÄnÃ­ Äas dennÃ­ho zobrazenÃ­:"
 
 #: interface/calendar_options.php:249
 msgid "Day View End Time:"
-msgstr "Koncovı èas denního zobrazení:"
+msgstr "KoncovÃ½ Äas dennÃ­ho zobrazenÃ­:"
 
 #: interface/calendar_options.php:326
 msgid "Clock Skew To Remotely Hosted Calendars:"
-msgstr "Èasovı posun ke vzdálenì hostovanım kalendáøùm:"
+msgstr "ÄŒasovÃ½ posun ke vzdÃ¡lenÄ› hostovanÃ½m kalendÃ¡Å™Å¯m:"
 
 #: interface/calendar_options.php:330
 msgid "Minutes"
@@ -697,29 +696,29 @@ msgstr "Minuty"
 
 #: interface/calendar_options.php:341
 msgid "Small Calendar"
-msgstr "Malı Kalendáø"
+msgstr "MalÃ½ KalendÃ¡Å™"
 
 #: interface/calendar_options.php:344
 msgid "Show Small Calendar Under Folder List:"
-msgstr "Zobraz \"Malı Kalendáø\" pod seznamem adresáøù:"
+msgstr "Zobraz \"MalÃ½ KalendÃ¡Å™\" pod seznamem adresÃ¡Å™Å¯:"
 
 #: interface/calendar_options.php:358
 msgid "Small Calendar Source:"
-msgstr "Zdroj \"Malého Kalendáøe\":"
+msgstr "Zdroj \"MalÃ©ho KalendÃ¡Å™e\":"
 
 #: interface/calendar_options.php:369 interface/day.php:720
 #: interface/list_calendars.php:92 interface/list_calendars.php:153
 #: interface/month.php:662 interface/month.php:714
 msgid "Personal"
-msgstr "Osobní"
+msgstr "OsobnÃ­"
 
 #: interface/calendar_options.php:373
 msgid "Small Calendar Size:"
-msgstr "Velikost \"Malého Kalendáøe\":"
+msgstr "Velikost \"MalÃ©ho KalendÃ¡Å™e\":"
 
 #: interface/calendar_options.php:377
 msgid "Default"
-msgstr "Implicitní"
+msgstr "ImplicitnÃ­"
 
 #: interface/calendar_options.php:380
 msgid "10px"
@@ -739,39 +738,39 @@ msgstr "16px"
 
 #: interface/calendar_options.php:393
 msgid "Small Calendar Separator:"
-msgstr "Oddìlovaè \"Malého Kalendáøe\":"
+msgstr "OddÄ›lovaÄ \"MalÃ©ho KalendÃ¡Å™e\":"
 
 #: interface/calendar_options.php:397
 msgid "None"
-msgstr "®ádnı"
+msgstr "Å½Ã¡dnÃ½"
 
 #: interface/calendar_options.php:400
 msgid "Horizontal rule"
-msgstr "Horizontální linka"
+msgstr "HorizontÃ¡lnÃ­ linka"
 
 #: interface/calendar_options.php:403
 msgid "Box"
-msgstr "Rám"
+msgstr "RÃ¡m"
 
 #: interface/calendar_options.php:407
 msgid "Show Year Title Above Small Calendar:"
-msgstr "Zobraz rok nad \"Malım Kalendáøem\":"
+msgstr "Zobraz rok nad \"MalÃ½m KalendÃ¡Å™em\":"
 
 #: interface/calendar_options.php:416
 msgid "Show Today Link Above Small Calendar:"
-msgstr "Zobraz odkaz na denní pohled - \"Dnes\" nad \"Malım Kalendáøem\":"
+msgstr "Zobraz odkaz na dennÃ­ pohled - \"Dnes\" nad \"MalÃ½m KalendÃ¡Å™em\":"
 
 #: interface/calendar_options.php:425
 msgid "Show Day Headers Above Small Calendar:"
-msgstr "Zobraz poè. písmena dnù v tıdnu nad \"Malım Kalendáøem\":"
+msgstr "Zobraz poÄ. pÃ­smena dnÅ¯ v tÃ½dnu nad \"MalÃ½m KalendÃ¡Å™em\":"
 
 #: interface/calendar_options.php:434
 msgid "Use Same Background Colors for Days as Regular Calendar:"
-msgstr "Pou¾ít stejné barvy pozadí pro dny jako v normálním kalendáøi:"
+msgstr "PouÅ¾Ã­t stejnÃ© barvy pozadÃ­ pro dny jako v normÃ¡lnÃ­m kalendÃ¡Å™i:"
 
 #: interface/calendar_options.php:443
 msgid "Header Color:"
-msgstr "Barva Záhlaví:"
+msgstr "Barva ZÃ¡hlavÃ­:"
 
 #: interface/calendar_options.php:448
 msgid "Today Color:"
@@ -779,7 +778,7 @@ msgstr "Barva pro \"Dnes\":"
 
 #: interface/calendar_options.php:453
 msgid "Event Color:"
-msgstr "Barva Události:"
+msgstr "Barva UdÃ¡losti:"
 
 #: interface/calendar_options.php:458
 msgid "Day Color:"
@@ -787,11 +786,11 @@ msgstr "Barva pro \"Den\":"
 
 #: interface/calendar_options.php:463
 msgid "Event Text Style:"
-msgstr "Styl textu Události:"
+msgstr "Styl textu UdÃ¡losti:"
 
 #: interface/calendar_options.php:467
 msgid "normal"
-msgstr "normální"
+msgstr "normÃ¡lnÃ­"
 
 #: interface/calendar_options.php:470
 msgid "italic"
@@ -803,13 +802,13 @@ msgstr "Potvrdit"
 
 #: interface/color.php:34
 msgid "Color Picker"
-msgstr "Vıbìr Barev"
+msgstr "VÃ½bÄ›r Barev"
 
 #: interface/color.php:255
 msgid ""
 "Click a box and the hexadecimal color will be shown below.  Use these hex "
 "values for color box settings."
-msgstr "Klikni na ètvereèek a zobrazí se hexadecimální hodnota dané barvy. Tuto hodnotu pou¾ijte pro nastavení barev."
+msgstr "Klikni na ÄtvereÄek a zobrazÃ­ se hexadecimÃ¡lnÃ­ hodnota danÃ© barvy. Tuto hodnotu pouÅ¾ijte pro nastavenÃ­ barev."
 
 #: interface/color.php:256
 msgid "Hex Value"
@@ -817,19 +816,19 @@ msgstr "Hexa Hodnota"
 
 #: interface/day.php:404 interface/day.php:606
 msgid "More"
-msgstr "Více"
+msgstr "VÃ­ce"
 
 #: interface/day.php:703 interface/month.php:646 interface/month.php:698
 msgid "Add Event"
-msgstr "Pøidat Událost"
+msgstr "PÅ™idat UdÃ¡lost"
 
 #: interface/edit_calendar.php:44
 msgid "Edit Calendar"
-msgstr "Upravit Kalendáø"
+msgstr "Upravit KalendÃ¡Å™"
 
 #: interface/event.php:165
 msgid "Create Event"
-msgstr "Vytvoøit Událost"
+msgstr "VytvoÅ™it UdÃ¡lost"
 
 #: interface/event.php:198 interface/event.php:698
 msgid "Summary:"
@@ -837,7 +836,7 @@ msgstr "Titulek:"
 
 #: interface/event.php:210 interface/event.php:707
 msgid "Start:"
-msgstr "Zaèátek:"
+msgstr "ZaÄÃ¡tek:"
 
 #: interface/event.php:259 interface/event.php:717
 msgid "End:"
@@ -845,11 +844,11 @@ msgstr "Konec:"
 
 #: interface/event.php:309
 msgid "Duration:"
-msgstr "Trvání:"
+msgstr "TrvÃ¡nÃ­:"
 
 #: interface/event.php:321 interface/event.php:726
 msgid "Recurrence:"
-msgstr "Opakování:"
+msgstr "OpakovÃ¡nÃ­:"
 
 #: interface/event.php:325 interface/event.php:628
 msgid "One Time"
@@ -857,11 +856,11 @@ msgstr "Jednou"
 
 #: interface/event.php:329 interface/event.php:630
 msgid "Recurring Every"
-msgstr "Opakující se ka¾dı/ch"
+msgstr "OpakujÃ­cÃ­ se kaÅ¾dÃ½/ch"
 
 #: interface/event.php:340
 msgid "Help"
-msgstr "Nápovìda"
+msgstr "NÃ¡povÄ›da"
 
 #: interface/event.php:342 interface/event.php:729
 msgid "On"
@@ -880,7 +879,7 @@ msgstr "Po"
 #: interface/event.php:354 interface/helper_month.php:103
 #: interface/helper_time.php:113
 msgid "Tue"
-msgstr "Út"
+msgstr "Ãšt"
 
 #: interface/event.php:358 interface/helper_month.php:103
 #: interface/helper_time.php:115
@@ -890,12 +889,12 @@ msgstr "St"
 #: interface/event.php:362 interface/helper_month.php:104
 #: interface/helper_time.php:117
 msgid "Thu"
-msgstr "Èt"
+msgstr "ÄŒt"
 
 #: interface/event.php:366 interface/helper_month.php:104
 #: interface/helper_time.php:119
 msgid "Fri"
-msgstr "Pá"
+msgstr "PÃ¡"
 
 #: interface/event.php:370 interface/helper_month.php:104
 #: interface/helper_time.php:121
@@ -904,19 +903,19 @@ msgstr "So"
 
 #: interface/event.php:380 interface/event.php:737
 msgid "End Recurrence:"
-msgstr "Konec opakování:"
+msgstr "Konec opakovÃ¡nÃ­:"
 
 #: interface/event.php:419
 msgid "Recurrence Count:"
-msgstr "Poèet Opakování:"
+msgstr "PoÄet OpakovÃ¡nÃ­:"
 
 #: interface/event.php:446 interface/event.php:756
 msgid "Reminder:"
-msgstr "Upomínka:"
+msgstr "UpomÃ­nka:"
 
 #: interface/event.php:462 interface/event.php:594
 msgid "before event start"
-msgstr "pøed zaèátkem události"
+msgstr "pÅ™ed zaÄÃ¡tkem udÃ¡losti"
 
 #: interface/event.php:468 interface/event.php:765
 msgid "Description:"
@@ -924,39 +923,39 @@ msgstr "Popis:"
 
 #: interface/event.php:486
 msgid "Delete Event"
-msgstr "Sma¾ Událost:"
+msgstr "SmaÅ¾ UdÃ¡lost:"
 
 #: interface/event.php:518 interface/event.php:774
 msgid "Last Updated:"
-msgstr "Poslední Aktualizace:"
+msgstr "PoslednÃ­ Aktualizace:"
 
 #: interface/event.php:528 interface/event.php:784
 msgid "Created:"
-msgstr "Vytvoøeno:"
+msgstr "VytvoÅ™eno:"
 
 #: interface/event.php:596
 msgid "Reminder not set"
-msgstr "Upomínka není nastavena"
+msgstr "UpomÃ­nka nenÃ­ nastavena"
 
 #: interface/event.php:739
 msgid "Occurrences"
-msgstr "Vıskyty"
+msgstr "VÃ½skyty"
 
 #: interface/event.php:805
 msgid "Confirm Deletion"
-msgstr "Potvrï Smazání"
+msgstr "PotvrÄ SmazÃ¡nÃ­"
 
 #: interface/helper_month.php:31
 msgid "Calendar Helper"
-msgstr "Nápovìda Kalendáøe"
+msgstr "NÃ¡povÄ›da KalendÃ¡Å™e"
 
 #: interface/helper_time.php:31
 msgid "Time Helper"
-msgstr "Nápovìda k Èasu"
+msgstr "NÃ¡povÄ›da k ÄŒasu"
 
 #: interface/list_calendars.php:58
 msgid "Available Calendars"
-msgstr "Dostupné Kalendáøe"
+msgstr "DostupnÃ© KalendÃ¡Å™e"
 
 #: interface/list_calendars.php:73
 msgid "remove"
@@ -972,11 +971,11 @@ msgstr "export"
 
 #: interface/list_calendars.php:103
 msgid "Add Personal Calendar"
-msgstr "Pøidat Osobní Kalendáø"
+msgstr "PÅ™idat OsobnÃ­ KalendÃ¡Å™"
 
 #: interface/list_calendars.php:133
 msgid "Add External Calendar"
-msgstr "Pøidat Externí Kalendáø"
+msgstr "PÅ™idat ExternÃ­ KalendÃ¡Å™"
 
 #: interface/list_calendars.php:134
 msgid "Address:"
@@ -984,15 +983,15 @@ msgstr "Adresa:"
 
 #: interface/list_calendars.php:136
 msgid "Override Name:"
-msgstr "Pøepsat Jméno:"
+msgstr "PÅ™epsat JmÃ©no:"
 
 #: interface/list_calendars.php:144
 msgid "Import Calendar"
-msgstr "Importovat Kalendáø"
+msgstr "Importovat KalendÃ¡Å™"
 
 #: interface/list_calendars.php:150
 msgid "Synch/Merge With"
-msgstr "Synch/Slouèit s"
+msgstr "Synch/SlouÄit s"
 
 #: interface/list_calendars.php:152
 msgid "Auto-detect"
@@ -1000,53 +999,53 @@ msgstr "Auto-detekce"
 
 #: interface/month.php:232
 msgid "S M T W T F S"
-msgstr "N P Ú S È P S"
+msgstr "N P Ãš S ÄŒ P S"
 
 #: interface/month.php:543
 msgid "cont'd"
-msgstr "pokraèoval"
+msgstr "pokraÄoval"
 
 #: list_calendars.php:82
 msgid "Could not load external calendar"
-msgstr "Nelze nahrát externí kalendáø"
+msgstr "Nelze nahrÃ¡t externÃ­ kalendÃ¡Å™"
 
 #: list_calendars.php:116
 msgid "Could not load external calendar; bad address"
-msgstr "Nelze nahrát externí kalendáø; ¹patná adresa"
+msgstr "Nelze nahrÃ¡t externÃ­ kalendÃ¡Å™; Å¡patnÃ¡ adresa"
 
 #: list_calendars.php:193
 msgid "Converting old calendar. . ."
-msgstr "Konvertuji starı kalendáø . . ."
+msgstr "Konvertuji starÃ½ kalendÃ¡Å™ . . ."
 
 #: list_calendars.php:201
 #, php-format
 msgid "Problem converting old calendar; please contact your administrator (%s)"
-msgstr "Problém s konverzí starého kalendáøe; prosím kontaktujte va¹eho administrátora (%s)"
+msgstr "ProblÃ©m s konverzÃ­ starÃ©ho kalendÃ¡Å™e; prosÃ­m kontaktujte vaÅ¡eho administrÃ¡tora (%s)"
 
 #: list_calendars.php:218
 #, php-format
 msgid "Can't rename %s to %s"
-msgstr "Nelze pøejmenovat z %s na %s"
+msgstr "Nelze pÅ™ejmenovat z %s na %s"
 
 #: list_calendars.php:235
 #, php-format
 msgid ""
 "Problem converting old calendar; please contact your administrator (cannot "
 "execute %s)"
-msgstr "Problém s konverzí starého kalendáøe; prosím kontaktujte va¹eho administrátora (nelze spustit %s)"
+msgstr "ProblÃ©m s konverzÃ­ starÃ©ho kalendÃ¡Å™e; prosÃ­m kontaktujte vaÅ¡eho administrÃ¡tora (nelze spustit %s)"
 
 #: list_calendars.php:239
 #, php-format
 msgid "Can't find old personal calendar: %s"
-msgstr "Nemohu najít starı osobní kalendáø: %s"
+msgstr "Nemohu najÃ­t starÃ½ osobnÃ­ kalendÃ¡Å™: %s"
 
 #: list_calendars.php:301
 #, php-format
 msgid "Successfully merged calendar into \"%s\""
-msgstr "Kalendáø úspì¹nì zaèlenìn do \"%s\""
+msgstr "KalendÃ¡Å™ ÃºspÄ›Å¡nÄ› zaÄlenÄ›n do \"%s\""
 
 #: list_calendars.php:315
 msgid ""
 "You already have a calendar with the same ID.  Are you sure you don't want "
 "to merge/synch the calendar you are uploading?"
-msgstr "Kalendáø se stejnım ID u¾ existuje. Opravdu nechcete slouèit/synch kalendáø kterı nahráváte ?"
+msgstr "KalendÃ¡Å™ se stejnÃ½m ID uÅ¾ existuje. Opravdu nechcete slouÄit/synch kalendÃ¡Å™ kterÃ½ nahrÃ¡vÃ¡te ?"

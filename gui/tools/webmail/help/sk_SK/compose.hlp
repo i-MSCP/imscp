@@ -1,18 +1,18 @@
 <chapter>
    <title>
-      Písanie novıch správ
+      PÃ­sanie novÃ½ch sprÃ¡v
    </title>
    <summary>
-      Pomocou funkcie "Nová správa" mô¾te posiela» za pomoci Squirrelmailu
-      správy rôznym µuïom.
+      Pomocou funkcie "NovÃ¡ sprÃ¡va" mÃ´Å¾te posielaÅ¥ za pomoci SquirrelMailu
+      sprÃ¡vy rÃ´znym Ä¾uÄom.
    </summary>
    <description>
       <p>
       Menu
-      Voµba "Nová správa" vám umo¾òuje prejs» na stránku písania novej správy.
-      Tu nájdete niekoµko polí a pár tlaèidiel. V závislosti od toho ako (odkiaµ)
-      ste sa dostali na stránku písania novej správy, mô¾u by» u¾ niektoré polia
-      vyplnené.
+      VoÄ¾ba "NovÃ¡ sprÃ¡va" vÃ¡m umoÅ¾Åˆuje prejsÅ¥ na strÃ¡nku pÃ­sania novej sprÃ¡vy.
+      Tu nÃ¡jdete niekoÄ¾ko polÃ­ a pÃ¡r tlaÄidiel. V zÃ¡vislosti od toho ako (odkiaÄ¾)
+      ste sa dostali na strÃ¡nku pÃ­sania novej sprÃ¡vy, mÃ´Å¾u byÅ¥ uÅ¾ niektorÃ© polia
+      vyplnenÃ©.
       </p>
    </description>
 </chapter>
@@ -22,10 +22,10 @@
       Od:
    </title>
    <description>
-      <p>Pole <B>Od:</B> bude zobrazené len keï povolíte viacnásobne identity.
-      (Cez menu Nastavenia, Menu osobné nastavenia). Ak ste tak urobili a
-      zvolili si ktorú identitu chcete pou¾íva», tak zvolené meno a e-mailová
-      adresa budú zobrazované vo va¹ej správe v poli Od.
+      <p>Pole <B>Od:</B> bude zobrazenÃ© len keÄ povolÃ­te viacnÃ¡sobne identity.
+      (Cez menu Nastavenia, Menu osobnÃ© nastavenia). Ak ste tak urobili a
+      zvolili si ktorÃº identitu chcete pouÅ¾Ã­vaÅ¥, tak zvolenÃ© meno a e-mailovÃ¡
+      adresa budÃº zobrazovanÃ© vo vaÅ¡ej sprÃ¡ve v poli Od.
       </p>
    </description>
 </section>
@@ -36,40 +36,40 @@
    </title>
    <description>
       <p>
-      Ïal¹ie je pole <B>Komu:</B>. V tomto poli musíte zada» e-mailovú adresu
-      osoby alebo viacerıch osôb, ktorım chcete posla» správu. Mô¾te napísa»
-      toµko adries koµko chcete, oddelenıch èiarkou. Taktie¾ mô¾te toto pole
-      vyplni» stlaèením tlaèidla "Adresár". Nemusíte sa obavá», ak niesú  v¹etky
-      ktoré zadáte zobrazené. Zobrazenie poµa "Komu" má fixnú dl¾ku a ïal¹ie
-      adresy ktoré zadáte sa dajú zobrazi» posúvaním sa vo vnútri poµa(napríklad
-      kurzorovımi ¹ípkami doprava a doµava).
+      ÄalÅ¡ie je pole <B>Komu:</B>. V tomto poli musÃ­te zadaÅ¥ e-mailovÃº adresu
+      osoby alebo viacerÃ½ch osÃ´b, ktorÃ½m chcete poslaÅ¥ sprÃ¡vu. MÃ´Å¾te napÃ­saÅ¥
+      toÄ¾ko adries koÄ¾ko chcete, oddelenÃ½ch Äiarkou. TaktieÅ¾ mÃ´Å¾te toto pole
+      vyplniÅ¥ stlaÄenÃ­m tlaÄidla "AdresÃ¡r". NemusÃ­te sa obavÃ¡Å¥, ak niesÃº  vÅ¡etky
+      ktorÃ© zadÃ¡te zobrazenÃ©. Zobrazenie poÄ¾a "Komu" mÃ¡ fixnÃº dlÅ¾ku a ÄalÅ¡ie
+      adresy ktorÃ© zadÃ¡te sa dajÃº zobraziÅ¥ posÃºvanÃ­m sa vo vnÃºtri poÄ¾a(naprÃ­klad
+      kurzorovÃ½mi Å¡Ã­pkami doprava a doÄ¾ava).
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Kópia:
+      KÃ³pia:
    </title>
    <description>
       <p>
-      Ïal¹ie pole je pole <B>Kópia</B>. Ak chcete posla» niekomu kópiu správy,
-      napí¹te jeho adresu do tohto poµa. Do poµa "Pre:" sa odporúèa napísa» adresy
-      len tıch, ktorıch sa táto správa priamo dotıka, do polí "Kópia:" a "Skrytá
-      Kópia:" zadajte len tıch µudí, ktorıch chcete o tejto správe inform.ova».
+      ÄalÅ¡ie pole je pole <B>KÃ³pia</B>. Ak chcete poslaÅ¥ niekomu kÃ³piu sprÃ¡vy,
+      napÃ­Å¡te jeho adresu do tohto poÄ¾a. Do poÄ¾a "Pre:" sa odporÃºÄa napÃ­saÅ¥ adresy
+      len tÃ½ch, ktorÃ½ch sa tÃ¡to sprÃ¡va priamo dotÃ½ka, do polÃ­ "KÃ³pia:" a "SkrytÃ¡
+      KÃ³pia:" zadajte len tÃ½ch Ä¾udÃ­, ktorÃ½ch chcete o tejto sprÃ¡ve inform.ovaÅ¥.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Skrytá Kópia:
+      SkrytÃ¡ KÃ³pia:
    </title>
    <description>
       <p>
-      Skrytá Kópia (tie¾ nazıvaná Slepá Kópia) slú¾i na poslanie kópie správy
-      bez toho, aby prijemca správy vedel o tom, ¾e existujú iní, ktorí dostanú
-      kópiu správy.
+      SkrytÃ¡ KÃ³pia (tieÅ¾ nazÃ½vanÃ¡ SlepÃ¡ KÃ³pia) slÃºÅ¾i na poslanie kÃ³pie sprÃ¡vy
+      bez toho, aby prijemca sprÃ¡vy vedel o tom, Å¾e existujÃº inÃ­, ktorÃ­ dostanÃº
+      kÃ³piu sprÃ¡vy.
       </p>
    </description>
 </section>
@@ -80,38 +80,38 @@
    </title>
    <description>
       <p>
-      Tu napí¹te relevantı názov správy. Pamätajte, ¾e e-mail mô¾e by» ú¾asnım
-      prostriedkom ¹etrenia vá¹ho èasu, pokiaµ napí¹ete relevantnı Predmet správy.
+      Tu napÃ­Å¡te relevantÃ½ nÃ¡zov sprÃ¡vy. PamÃ¤tajte, Å¾e e-mail mÃ´Å¾e byÅ¥ ÃºÅ¾asnÃ½m
+      prostriedkom Å¡etrenia vÃ¡Å¡ho Äasu, pokiaÄ¾ napÃ­Å¡ete relevantnÃ½ Predmet sprÃ¡vy.
    </p>
    </description>
 </section>
 
 <section>
    <title>
-      Tlaèidlo Adresár
+      TlaÄidlo AdresÃ¡r
    </title>
    <description>
       <p>
-      Toto tlaèidlo otvorí adresár. Hneï na to sa zobrazí pole vyhµadávania
-      osoby. Na získanie vısledku musíte do tohto poµa nieèo zada». Pokiaµ
-      chcete zobrazi» v¹etky osoby v adresári, stisnite tlaèidlo "Zobrazi» v¹etko".
-      Adreár má nemalú funkcionalitu a zaslú¾i si vlastnú kapitolu. Viac
-      detailnej¹ích informácií získate v kapitole "Adresár".
+      Toto tlaÄidlo otvorÃ­ adresÃ¡r. HneÄ na to sa zobrazÃ­ pole vyhÄ¾adÃ¡vania
+      osoby. Na zÃ­skanie vÃ½sledku musÃ­te do tohto poÄ¾a nieÄo zadaÅ¥. PokiaÄ¾
+      chcete zobraziÅ¥ vÅ¡etky osoby v adresÃ¡ri, stisnite tlaÄidlo "ZobraziÅ¥ vÅ¡etko".
+      AdreÃ¡r mÃ¡ nemalÃº funkcionalitu a zaslÃºÅ¾i si vlastnÃº kapitolu. Viac
+      detailnejÅ¡Ã­ch informÃ¡ciÃ­ zÃ­skate v kapitole "AdresÃ¡r".
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Tlaèidlo Ulo¾i» Koncept
+      TlaÄidlo UloÅ¾iÅ¥ Koncept
    </title>
    <description>
       <p>
-      Ak pí¹ete správu ale z nejakej príèiny ju teraz nechcete odosla» teraz,
-      mô¾ete stisnú» tlaèidlo "Ulo¾i» Koncept" a správa sa ulo¾í do prieèinka
-      Koncepty. Ak chcete správu neskôr dokonèi» a posla», chod»e do prieèinku
-      Koncepty, otvorte správu, a tım sa vrátite do okna písania novej správy
-      so skôr napísanım textom - mô¾te pokraèova» v písaní+poslaní správy.
+      Ak pÃ­Å¡ete sprÃ¡vu ale z nejakej prÃ­Äiny ju teraz nechcete odoslaÅ¥ teraz,
+      mÃ´Å¾ete stisnÃºÅ¥ tlaÄidlo "UloÅ¾iÅ¥ Koncept" a sprÃ¡va sa uloÅ¾Ã­ do prieÄinka
+      Koncepty. Ak chcete sprÃ¡vu neskÃ´r dokonÄiÅ¥ a poslaÅ¥, chodÅ¥e do prieÄinku
+      Koncepty, otvorte sprÃ¡vu, a tÃ½m sa vrÃ¡tite do okna pÃ­sania novej sprÃ¡vy
+      so skÃ´r napÃ­sanÃ½m textom - mÃ´Å¾te pokraÄovaÅ¥ v pÃ­sanÃ­+poslanÃ­ sprÃ¡vy.
       </p>
    </description>
 </section>
@@ -122,46 +122,46 @@
    </title>
    <description>
       <p>
-      Pokiaµ to povolí systémovı administrátor, bude napravo ponuka priority
-      správy. Tu si mô¾te zvoli» prioritu správy. Správa s vysokou prioritou
-      mô¾e by» odli¹ne prezentovaná e-mailovım programom prímateµa. Nezabudnite,
-      ¾e príli¹nım pou¾ívaním tejto mo¾nosti sa stratí stratí po¾adovanı efekt 
-      (psychologickı).
+      PokiaÄ¾ to povolÃ­ systÃ©movÃ½ administrÃ¡tor, bude napravo ponuka priority
+      sprÃ¡vy. Tu si mÃ´Å¾te zvoliÅ¥ prioritu sprÃ¡vy. SprÃ¡va s vysokou prioritou
+      mÃ´Å¾e byÅ¥ odliÅ¡ne prezentovanÃ¡ e-mailovÃ½m programom prÃ­mateÄ¾a. Nezabudnite,
+      Å¾e prÃ­liÅ¡nÃ½m pouÅ¾Ã­vanÃ­m tejto moÅ¾nosti sa stratÃ­ stratÃ­ poÅ¾adovanÃ½ efekt 
+      (psychologickÃ½).
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Telo správy
+      Telo sprÃ¡vy
    </title>
    <description>
       <p>
-      Do veµkého poµa napí¹te èokoµvek chcete. Ak máte nastavenı podpis správy,
-      mô¾te tento podpis vlo¾i» tlaèidlom "Podpis". Toto je miesto, kde napí¹ete
-      vlastnı text správy.
+      Do veÄ¾kÃ©ho poÄ¾a napÃ­Å¡te ÄokoÄ¾vek chcete. Ak mÃ¡te nastavenÃ½ podpis sprÃ¡vy,
+      mÃ´Å¾te tento podpis vloÅ¾iÅ¥ tlaÄidlom "Podpis". Toto je miesto, kde napÃ­Å¡ete
+      vlastnÃ½ text sprÃ¡vy.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Príloha
+      PrÃ­loha
    </title>
    <description>
       <p>
-      Na spodku stránky "Nová správa" sa nachádza tlaèidlo "Príloha". Umo¾ní vám
-      odosla» spolu s textom správy vami zvolenı súbor ako prílohu. Tento súbor
-      sa musí nachadza» vo va¹om poèítaèi, alebo vo va¹ej sieti. Tlaèidlo "browse"
-      vám umo¾ní nájs» tento súbor klikaním v stromovej ¹truktúre va¹ich adresárov
-      a kliknú» na súbor ktorı chcete prilo¾i» k správe. Alternatívou je, ¾e do
-      poµa "Prilo¾i» súbor:" napí¹ete presnú cestu k súboru. Po vybratí si súboru
-      jednoducho kliknite na tlaèidlo "Prilo¾i»".
+      Na spodku strÃ¡nky "NovÃ¡ sprÃ¡va" sa nachÃ¡dza tlaÄidlo "PrÃ­loha". UmoÅ¾nÃ­ vÃ¡m
+      odoslaÅ¥ spolu s textom sprÃ¡vy vami zvolenÃ½ sÃºbor ako prÃ­lohu. Tento sÃºbor
+      sa musÃ­ nachadzaÅ¥ vo vaÅ¡om poÄÃ­taÄi, alebo vo vaÅ¡ej sieti. TlaÄidlo "browse"
+      vÃ¡m umoÅ¾nÃ­ nÃ¡jsÅ¥ tento sÃºbor klikanÃ­m v stromovej Å¡truktÃºre vaÅ¡ich adresÃ¡rov
+      a kliknÃºÅ¥ na sÃºbor ktorÃ½ chcete priloÅ¾iÅ¥ k sprÃ¡ve. AlternatÃ­vou je, Å¾e do
+      poÄ¾a "PriloÅ¾iÅ¥ sÃºbor:" napÃ­Å¡ete presnÃº cestu k sÃºboru. Po vybratÃ­ si sÃºboru
+      jednoducho kliknite na tlaÄidlo "PriloÅ¾iÅ¥".
       </p>
       <p>
-      Prilo¾i» je mo¾né jeden alebo viac súborov. Pokiaµ chcete u¾ prilo¾enı súbor
-      zmaza» zo zoznamu príloh, kliknite na tlaèidlo "Odstráni» vybrané prilo¾ené
-      súbory".
+      PriloÅ¾iÅ¥ je moÅ¾nÃ© jeden alebo viac sÃºborov. PokiaÄ¾ chcete uÅ¾ priloÅ¾enÃ½ sÃºbor
+      zmazaÅ¥ zo zoznamu prÃ­loh, kliknite na tlaÄidlo "OdstrÃ¡niÅ¥ vybranÃ© priloÅ¾enÃ©
+      sÃºbory".
       <p>
    </description>
 </section>

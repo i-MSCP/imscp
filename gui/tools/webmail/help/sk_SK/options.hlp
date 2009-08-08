@@ -1,78 +1,78 @@
 <chapter>
    <title>
-      Mo¾nosti
+      MoÅ¾nosti
    </title>
    <summary>
-      Rozliènım nastavením v tejto sekcii mô¾te meni» vızor SquirrelMailu-u a
-      spôsob akım reaguje.
+      RozliÄnÃ½m nastavenÃ­m v tejto sekcii mÃ´Å¾te meniÅ¥ vÃ½zor SquirrelMailu-u a
+      spÃ´sob akÃ½m reaguje.
    </summary>
    <description>
       <p>
-      Jednou z ohromnıch vecí v SquirrelMail-e je stupeò jeho prispôsobovania.
-      V závislosti na konfigurácii máte mnoho mo¾ností vıberu schém, jazykov, 
-      prieèinkov, a inıch nastavení. V¹etky z nich mô¾u by» zmenené bez toho aby
-      ovlyvnili nastavenia inıch u¾ívateµov systému. Je tu najmenej pä» hlavnıch
-      kategórií Mo¾nosti: Osobné, Zobrazi», Zvırazòovanie správ, Prieèinky, a Poradie
-      v zozname. Ïal¹ie kategórie Mo¾ností závisia od va¹ej SquirrelMail in¹talácie.
+      Jednou z ohromnÃ½ch vecÃ­ v SquirrelMail-e je stupeÅˆ jeho prispÃ´sobovania.
+      V zÃ¡vislosti na konfigurÃ¡cii mÃ¡te mnoho moÅ¾nostÃ­ vÃ½beru schÃ©m, jazykov, 
+      prieÄinkov, a inÃ½ch nastavenÃ­. VÅ¡etky z nich mÃ´Å¾u byÅ¥ zmenenÃ© bez toho aby
+      ovlyvnili nastavenia inÃ½ch uÅ¾Ã­vateÄ¾ov systÃ©mu. Je tu najmenej pÃ¤Å¥ hlavnÃ½ch
+      kategÃ³riÃ­ MoÅ¾nosti: OsobnÃ©, ZobraziÅ¥, ZvÃ½razÅˆovanie sprÃ¡v, PrieÄinky, a Poradie
+      v zozname. ÄalÅ¡ie kategÃ³rie MoÅ¾nostÃ­ zÃ¡visia od vaÅ¡ej SquirrelMail inÅ¡talÃ¡cie.
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      Osobné informácie
+      OsobnÃ© informÃ¡cie
    </title>
    <description>
-      <b>Plné meno</b><br>
-      Mali by ste tam uvies» svoje úplné meno. Pre príklad, "John Doe". Toto meno
-      sa potom zobrazuje µuïom, ktorım sú správy odosielané. Budú vidie», ¾e je
-      to od "John Doe". Ak túto polo¾ku nevyplníte, adresátom sa zobrazí len 
-      va¹a e-mailová adresa, jdoe@mydomain.org.
+      <b>PlnÃ© meno</b><br>
+      Mali by ste tam uviesÅ¥ svoje ÃºplnÃ© meno. Pre prÃ­klad, "John Doe". Toto meno
+      sa potom zobrazuje Ä¾uÄom, ktorÃ½m sÃº sprÃ¡vy odosielanÃ©. BudÃº vidieÅ¥, Å¾e je
+      to od "John Doe". Ak tÃºto poloÅ¾ku nevyplnÃ­te, adresÃ¡tom sa zobrazÃ­ len 
+      vaÅ¡a e-mailovÃ¡ adresa, jdoe@mydomain.org.
       <br><br>
       
-      <b>E-mailová adresa</b><br>
-      <i>Volitelné</i> - Aj je va¹a email adresa odli¹ná ako tá, ktorá je automaticky
-      prideµovaná, mô¾ete si ju zmeni» tu.
+      <b>E-mailovÃ¡ adresa</b><br>
+      <i>VolitelnÃ©</i> - Aj je vaÅ¡a email adresa odliÅ¡nÃ¡ ako tÃ¡, ktorÃ¡ je automaticky
+      prideÄ¾ovanÃ¡, mÃ´Å¾ete si ju zmeniÅ¥ tu.
       <br><br>
       
-      <b>Odpoveda» na adresu</b><br>
-      <i>Volitelné</i> - To je emailová adresa kam budú prichádza» odpovede od µudí,
-      ktorí vám budú odpoveda».  Je to u¾itoèné, ak chcete aby µudia odpovedali
-      na vá¹ Yahoo (napr. pobox.sk) úèet rad¹ej ako na va¹u firemnú adresu.
+      <b>OdpovedaÅ¥ na adresu</b><br>
+      <i>VolitelnÃ©</i> - To je emailovÃ¡ adresa kam budÃº prichÃ¡dzaÅ¥ odpovede od Ä¾udÃ­,
+      ktorÃ­ vÃ¡m budÃº odpovedaÅ¥.  Je to uÅ¾itoÄnÃ©, ak chcete aby Ä¾udia odpovedali
+      na vÃ¡Å¡ Yahoo (napr. pobox.sk) ÃºÄet radÅ¡ej ako na vaÅ¡u firemnÃº adresu.
       <br><br>
       
-      <b>Viaceré Identity</b><BR>
-      Kliknite na tento odkaz pre nastavenie viacerıch identít - toto¾ností.
-      Toto je u¾itoèné ak si chcete vybra» medzi správami s rozdielnym obsahom
-      poµa "Od:". Napríklad identity obsahujúce va¹u email-ovú adresu do práce
-      alebo domov. Na stránke ktorá sa objaví, si mo¾te prida» tak veµa identít
-      ako chcete. Keï budete tvori» správu, ponúkne sa vám vıber z tıchto identít.
+      <b>ViacerÃ© Identity</b><BR>
+      Kliknite na tento odkaz pre nastavenie viacerÃ½ch identÃ­t - totoÅ¾nostÃ­.
+      Toto je uÅ¾itoÄnÃ© ak si chcete vybraÅ¥ medzi sprÃ¡vami s rozdielnym obsahom
+      poÄ¾a "Od:". NaprÃ­klad identity obsahujÃºce vaÅ¡u email-ovÃº adresu do prÃ¡ce
+      alebo domov. Na strÃ¡nke ktorÃ¡ sa objavÃ­, si moÅ¾te pridaÅ¥ tak veÄ¾a identÃ­t
+      ako chcete. KeÄ budete tvoriÅ¥ sprÃ¡vu, ponÃºkne sa vÃ¡m vÃ½ber z tÃ½chto identÃ­t.
       
-      <b>Odpoveda» ako Citácia</b><BR>
-      Ak kliknete "Odpoveda» na Správu", zobrazí sa vám formulár "Nová správa"
-      s citovanou pôvodnou správou. Pred citáciou tejto správy mô¾e by» vsunutı 
-      napr. text <TT>Ján Novák napísal:</TT> (ak odpovedáte na správu, ktorú
-      poslal Ján Novák). Toto sa nazıva riadok citácie. Tu si mô¾te vybra» ako
-      bude tento riadok vyzera».<BR>
+      <b>OdpovedaÅ¥ ako CitÃ¡cia</b><BR>
+      Ak kliknete "OdpovedaÅ¥ na SprÃ¡vu", zobrazÃ­ sa vÃ¡m formulÃ¡r "NovÃ¡ sprÃ¡va"
+      s citovanou pÃ´vodnou sprÃ¡vou. Pred citÃ¡ciou tejto sprÃ¡vy mÃ´Å¾e byÅ¥ vsunutÃ½ 
+      napr. text <TT>JÃ¡n NovÃ¡k napÃ­sal:</TT> (ak odpovedÃ¡te na sprÃ¡vu, ktorÃº
+      poslal JÃ¡n NovÃ¡k). Toto sa nazÃ½va riadok citÃ¡cie. Tu si mÃ´Å¾te vybraÅ¥ ako
+      bude tento riadok vyzeraÅ¥.<BR>
       
       
       <UL>
-      <LI><B>Bez Citácie</B><br>
-      Vôbec sa nevlo¾í citácia.<br><br>
+      <LI><B>Bez CitÃ¡cie</B><br>
+      VÃ´bec sa nevloÅ¾Ã­ citÃ¡cia.<br><br>
       <LI><B>Autor povedal</B><br>
-      Toto vyprodukuje napr. riadok <TT>Ján Novák Povedal:</TT>. Tu sa vlo¾í text
-      citácie nech pôvodnú správu, na ktorú odpovedáte, napísal ktokoµvek.<br><br>
-      <LI><B>Citova» ako XML</B><br>
-      Toto vyprodukuje riadok: <TT>&lt;Kto cituje="Ján Novák"&gt;</TT>.<br><br>
-      <LI><B>U¾ívateµom definované</B><br>
-      Povolí vami definovanı riadok citácie. V dvoch textovıch poliach ni¾¹ie,
-      mô¾te napísa» zaèiatok a koniec citácie. medzi tımito bude vlo¾ené meno autora.
+      Toto vyprodukuje napr. riadok <TT>JÃ¡n NovÃ¡k Povedal:</TT>. Tu sa vloÅ¾Ã­ text
+      citÃ¡cie nech pÃ´vodnÃº sprÃ¡vu, na ktorÃº odpovedÃ¡te, napÃ­sal ktokoÄ¾vek.<br><br>
+      <LI><B>CitovaÅ¥ ako XML</B><br>
+      Toto vyprodukuje riadok: <TT>&lt;Kto cituje="JÃ¡n NovÃ¡k"&gt;</TT>.<br><br>
+      <LI><B>UÅ¾Ã­vateÄ¾om definovanÃ©</B><br>
+      PovolÃ­ vami definovanÃ½ riadok citÃ¡cie. V dvoch textovÃ½ch poliach niÅ¾Å¡ie,
+      mÃ´Å¾te napÃ­saÅ¥ zaÄiatok a koniec citÃ¡cie. medzi tÃ½mito bude vloÅ¾enÃ© meno autora.
       </UL><br><br>
       
       <b>Podpis</b><br>
-      <i>Voliteµné</i> - Podpisy sú automaticky prikladané na koniec v¹etkıch
-      odoslanıch správ. Ak chcete podpis, musíte sa uisti» ¾e ste voµbu 
-      "Pou¾i» Podpis" za¹krtli, a potom vyplnili text, ktorı by sa mal zobrazova»
+      <i>VoliteÄ¾nÃ©</i> - Podpisy sÃº automaticky prikladanÃ© na koniec vÅ¡etkÃ½ch
+      odoslanÃ½ch sprÃ¡v. Ak chcete podpis, musÃ­te sa uistiÅ¥ Å¾e ste voÄ¾bu 
+      "PouÅ¾iÅ¥ Podpis" zaÅ¡krtli, a potom vyplnili text, ktorÃ½ by sa mal zobrazovaÅ¥
       ako podpis.
       <br><br>
    
@@ -84,103 +84,103 @@
 
 <section>
    <title>
-      Mo¾nosti vzhµadu
+      MoÅ¾nosti vzhÄ¾adu
    </title>
    <description>
-      <b>Schéma</b><br>
-      SquirrelMail ponúka rôzne farebné schémy, pre va¹e vizuálne pote¹enie.
-      Mô¾te si vybra» z mnohıch tu zobrazenıch schém podµa vá¹ho ¾elania.
+      <b>SchÃ©ma</b><br>
+      SquirrelMail ponÃºka rÃ´zne farebnÃ© schÃ©my, pre vaÅ¡e vizuÃ¡lne poteÅ¡enie.
+      MÃ´Å¾te si vybraÅ¥ z mnohÃ½ch tu zobrazenÃ½ch schÃ©m podÄ¾a vÃ¡Å¡ho Å¾elania.
       <br><br>
 
       <b>Custom Stylesheet</b><br>
-      Zmenením schémy len zmeníme farbu, ¹tıly umo¾òujú zmeni» viac, napríklad 
-      veµkos» písma pou¾ívaného v SquirrelMail-y.
+      ZmenenÃ­m schÃ©my len zmenÃ­me farbu, Å¡tÃ½ly umoÅ¾ÅˆujÃº zmeniÅ¥ viac, naprÃ­klad 
+      veÄ¾kosÅ¥ pÃ­sma pouÅ¾Ã­vanÃ©ho v SquirrelMail-y.
       <br><br>
 
       <b>Jazyk</b><br>
-      Ak nieje va¹ím rodnım jazykom angliètina, µahko si mô¾ete zmeni» jazyk podµa
-      jazykovıch verzií zobrazenia. Ak vá¹ po¾adovanı jazyk je v zozname, mô¾ete
-      si ho vybra» a  SquirrelMail  vám v¹etky nasledujúce správy a texty zobrazí
-      v tomto jazyku. Treba poznamena», ¾e toto sa v¹ak nevz»ahuje na prichadzajúce
-      e-mail správy alebo názvy prieèinkov.
+      Ak nieje vaÅ¡Ã­m rodnÃ½m jazykom angliÄtina, Ä¾ahko si mÃ´Å¾ete zmeniÅ¥ jazyk podÄ¾a
+      jazykovÃ½ch verziÃ­ zobrazenia. Ak vÃ¡Å¡ poÅ¾adovanÃ½ jazyk je v zozname, mÃ´Å¾ete
+      si ho vybraÅ¥ a  SquirrelMail  vÃ¡m vÅ¡etky nasledujÃºce sprÃ¡vy a texty zobrazÃ­
+      v tomto jazyku. Treba poznamenaÅ¥, Å¾e toto sa vÅ¡ak nevzÅ¥ahuje na prichadzajÃºce
+      e-mail sprÃ¡vy alebo nÃ¡zvy prieÄinkov.
       <br><br>
 
-      <b>Pou¾i» Javascript</b><br>
-      Jednım z hlavıch cieµov pri vytváraní SquirrelMailu bolo aby vo svojich
-      stránkach neobsahoval JavaScript. Ale jednako, niektorí z na¹ich vıvojárov
-      vyrobili veµmi dobrı nástroj na vyhµadávanie v adresári, ktorı pou¾íva
-      JavaScript. Niektoré ïal¹ie JavaScript funkcie sme tie¾ pridali. Rad¹ej ako
-      ich odstráni», dali sme vám mo¾nos» pou¾i» èíre HTML alebo pou¾i» taktie¾
-      JavaScript. Ak neviete, èo to znamená, je bezpeènej¹ie, keï zvolíte Autodetekcia.
+      <b>PouÅ¾iÅ¥ Javascript</b><br>
+      JednÃ½m z hlavÃ½ch cieÄ¾ov pri vytvÃ¡ranÃ­ SquirrelMailu bolo aby vo svojich
+      strÃ¡nkach neobsahoval JavaScript. Ale jednako, niektorÃ­ z naÅ¡ich vÃ½vojÃ¡rov
+      vyrobili veÄ¾mi dobrÃ½ nÃ¡stroj na vyhÄ¾adÃ¡vanie v adresÃ¡ri, ktorÃ½ pouÅ¾Ã­va
+      JavaScript. NiektorÃ© ÄalÅ¡ie JavaScript funkcie sme tieÅ¾ pridali. RadÅ¡ej ako
+      ich odstrÃ¡niÅ¥, dali sme vÃ¡m moÅ¾nosÅ¥ pouÅ¾iÅ¥ ÄÃ­re HTML alebo pouÅ¾iÅ¥ taktieÅ¾
+      JavaScript. Ak neviete, Äo to znamenÃ¡, je bezpeÄnejÅ¡ie, keÄ zvolÃ­te Autodetekcia.
       <br><br>
       
-      <b>Poèet správ zobrazenıch v prieèinku</b><br>
-      Toto je poèet správ, ktoré sa naraz zobrazia v prieèinku. Ak je ich v tomto
-      prieèinku viac, zobrazí sa  vám odkaz Predchádzajúca a Nasledujúca správa
-      pod zoznamom správ. Pomocou nich dosiahnete zobrazenie po¾adovanej správy.
+      <b>PoÄet sprÃ¡v zobrazenÃ½ch v prieÄinku</b><br>
+      Toto je poÄet sprÃ¡v, ktorÃ© sa naraz zobrazia v prieÄinku. Ak je ich v tomto
+      prieÄinku viac, zobrazÃ­ sa  vÃ¡m odkaz PredchÃ¡dzajÃºca a NasledujÃºca sprÃ¡va
+      pod zoznamom sprÃ¡v. Pomocou nich dosiahnete zobrazenie poÅ¾adovanej sprÃ¡vy.
       <br><br>
       
-      <b>Povoli» Voliè Strán</b><br>
-      Nastavením tejto voµby na Áno sa zobrazia nad a pod zoznamom strán èísla stránok
-      pre rıchly skok na po¾adovanú stránku so zobrazením správ. "Maximálny Poèet
-      Strán pre Zobrazenie" mô¾e limitova» koµko strán koµko maximálne strán bude
-      zobrazenıch nad a pod zoznamom správ.
+      <b>PovoliÅ¥ VoliÄ StrÃ¡n</b><br>
+      NastavenÃ­m tejto voÄ¾by na Ãno sa zobrazia nad a pod zoznamom strÃ¡n ÄÃ­sla strÃ¡nok
+      pre rÃ½chly skok na poÅ¾adovanÃº strÃ¡nku so zobrazenÃ­m sprÃ¡v. "MaximÃ¡lny PoÄet
+      StrÃ¡n pre Zobrazenie" mÃ´Å¾e limitovaÅ¥ koÄ¾ko strÃ¡n koÄ¾ko maximÃ¡lne strÃ¡n bude
+      zobrazenÃ½ch nad a pod zoznamom sprÃ¡v.
       <br><br>
       
-      <b>Zalomi» text doruèenej správy na</b><br>
-      Koµko znakov mo¾e by» pred zalomením textu. Toto zabraòuje pred posúvaním
-      zabrazenia správy mimo obrazovku. 86 je zvyèajne najbezpeènej¹ia mo¾nos»,
-      ktorú tu mô¾te zada», no to èo tu zadáte je len na vás.
+      <b>ZalomiÅ¥ text doruÄenej sprÃ¡vy na</b><br>
+      KoÄ¾ko znakov moÅ¾e byÅ¥ pred zalomenÃ­m textu. Toto zabraÅˆuje pred posÃºvanÃ­m
+      zabrazenia sprÃ¡vy mimo obrazovku. 86 je zvyÄajne najbezpeÄnejÅ¡ia moÅ¾nosÅ¥,
+      ktorÃº tu mÃ´Å¾te zadaÅ¥, no to Äo tu zadÃ¡te je len na vÃ¡s.
       <br><br>
       
-      <b>Veµkos» Okna Editora</b><br>
-      Ako chcete aby ako bolo ¹iroké textové pole na Písanie Správy? Toto je
-      poèet znakov na riadok, ktorı mo¾te napísa» pred zalomením textu do nového
+      <b>VeÄ¾kosÅ¥ Okna Editora</b><br>
+      Ako chcete aby ako bolo Å¡irokÃ© textovÃ© pole na PÃ­sanie SprÃ¡vy? Toto je
+      poÄet znakov na riadok, ktorÃ½ moÅ¾te napÃ­saÅ¥ pred zalomenÃ­m textu do novÃ©ho
       riadku.
       <br><br>
       
-      <b>Umiestnenie Tlaèidiel pri Písaní Novej Správy</b><br>
-      Kde sú umiestnené taèidlá Adresy, Ulo¾i» ako Koncept a Posla»?
+      <b>Umiestnenie TlaÄidiel pri PÃ­sanÃ­ Novej SprÃ¡vy</b><br>
+      Kde sÃº umiestnenÃ© taÄidlÃ¡ Adresy, UloÅ¾iÅ¥ ako Koncept a PoslaÅ¥?
       <br><br>
       
-      <b>Formát Zobrazenia Adresára</B><br>
-      Zvoµte si ako chcete aby vyzeral vá¹ Adresár. Ak chcete maximálnu kompatibilitu
-      so v¹etkımi vyhµadávaèmi, pou¾ívajte HTML. Vyberte si Javascript ak ho vá¹
-      vyhµadávaè podporuje, tak bude adresár vyzera» lep¹ie.
+      <b>FormÃ¡t Zobrazenia AdresÃ¡ra</B><br>
+      ZvoÄ¾te si ako chcete aby vyzeral vÃ¡Å¡ AdresÃ¡r. Ak chcete maximÃ¡lnu kompatibilitu
+      so vÅ¡etkÃ½mi vyhÄ¾adÃ¡vaÄmi, pouÅ¾Ã­vajte HTML. Vyberte si Javascript ak ho vÃ¡Å¡
+      vyhÄ¾adÃ¡vaÄ podporuje, tak bude adresÃ¡r vyzeraÅ¥ lepÅ¡ie.
       <br><br>
       
-      <b>Predvoli» Zobrazovanie HTML verzie</b><br>
-      Ak v správe ktorú obdr¾íte je spolu toxtovı a HTML formát, mô¾ete si vybra»
-      èi chcete vidie» HTML verziu (Áno) alebo textovú verziu (Nie). Predvolená
-      je textová verzia.<br><br>
+      <b>PredvoliÅ¥ Zobrazovanie HTML verzie</b><br>
+      Ak v sprÃ¡ve ktorÃº obdrÅ¾Ã­te je spolu toxtovÃ½ a HTML formÃ¡t, mÃ´Å¾ete si vybraÅ¥
+      Äi chcete vidieÅ¥ HTML verziu (Ãno) alebo textovÃº verziu (Nie). PredvolenÃ¡
+      je textovÃ¡ verzia.<br><br>
       
-      <b>Zahrnú» aj Mòa v Kópii pri Odpovedi V¹etkım</b><br>
-      Odpoveda» V¹etkım po¹le odpoveï v¹etkım príjemcom pôvodnej správy, vrátane
+      <b>ZahrnÃºÅ¥ aj MÅˆa v KÃ³pii pri Odpovedi VÅ¡etkÃ½m</b><br>
+      OdpovedaÅ¥ VÅ¡etkÃ½m poÅ¡le odpoveÄ vÅ¡etkÃ½m prÃ­jemcom pÃ´vodnej sprÃ¡vy, vrÃ¡tane
       seba. Pre vynechanie vlastne e-mailovej adresy, nastavte toto na Nie.
       <br><br>
       
-      <b>Povoli» Zobrazenie Po¹tového Programu (Mailer)</b><BR>
-      Ked si prezeráte správu, toto zobrazí akı po¹tovı program pou¾ívate.
+      <b>PovoliÅ¥ Zobrazenie PoÅ¡tovÃ©ho Programu (Mailer)</b><BR>
+      Ked si prezerÃ¡te sprÃ¡vu, toto zobrazÃ­ akÃ½ poÅ¡tovÃ½ program pouÅ¾Ã­vate.
       <br><br>
       
-      <b>Zobrazi» Obrázky v Prílohe spolu so Správou</b><br>
-      Ak vám niekto po¹le správu s jednım, alebo viacerımi obrázkami a vy máte túto
-      mo¾nos» nastavenú na Áno, obrázky sa zobrazia vpravo od miesta, kde je
-      zobrazená správa.
+      <b>ZobraziÅ¥ ObrÃ¡zky v PrÃ­lohe spolu so SprÃ¡vou</b><br>
+      Ak vÃ¡m niekto poÅ¡le sprÃ¡vu s jednÃ½m, alebo viacerÃ½mi obrÃ¡zkami a vy mÃ¡te tÃºto
+      moÅ¾nosÅ¥ nastavenÃº na Ãno, obrÃ¡zky sa zobrazia vpravo od miesta, kde je
+      zobrazenÃ¡ sprÃ¡va.
       
       <br><br>
       
-      <b>Povoli» Odkaz na Verziu pre Tlaè</b><br>
-      Toto determinuje ako bude zobrazená Verzia pre tlaè.
+      <b>PovoliÅ¥ Odkaz na Verziu pre TlaÄ</b><br>
+      Toto determinuje ako bude zobrazenÃ¡ Verzia pre tlaÄ.
       <br><br>
       
-      <b>Povoli» Zobrazenie Èistého Pohµadu ako Verzie pre Tlaè</b><br>
-      Toto vyèistí formát zobrazenia správy aby vyzerala po vytlaèení lep¹ie.
+      <b>PovoliÅ¥ Zobrazenie ÄŒistÃ©ho PohÄ¾adu ako Verzie pre TlaÄ</b><br>
+      Toto vyÄistÃ­ formÃ¡t zobrazenia sprÃ¡vy aby vyzerala po vytlaÄenÃ­ lepÅ¡ie.
       <br><br>
       
-      <b>Iné nastavenia</b><br>
-      V závislosti na va¹ej in¹talácii SquirrelMail-u, sa tu nachádzajú niektoré
-      ïal¹ie mo¾nosti nastavenia. Dúfame, ¾e budú samovysvetµujúce.
+      <b>InÃ© nastavenia</b><br>
+      V zÃ¡vislosti na vaÅ¡ej inÅ¡talÃ¡cii SquirrelMail-u, sa tu nachÃ¡dzajÃº niektorÃ©
+      ÄalÅ¡ie moÅ¾nosti nastavenia. DÃºfame, Å¾e budÃº samovysvetÄ¾ujÃºce.
       <br><br>
       
    </description>
@@ -188,119 +188,119 @@
 
 <section>
    <title>
-      Zvırazòovanie správ
+      ZvÃ½razÅˆovanie sprÃ¡v
    </title>
    <description>
-      My¹lienka nato vzi¹la z dôvodu, ¾e ak ste prihlásenı do viacerıch mailing-listov
-      (po¹tovıch konferencií), je pre vás veµmi »a¾ké  vyzna» sa medzi správami
-      ktoré pri¹li. So zvırazòovaním správ, máte pozadie farebne odí¹ené v závislosti
-      od toho, z ktorého mailing listu správa pri¹la.
+      MyÅ¡lienka nato vziÅ¡la z dÃ´vodu, Å¾e ak ste prihlÃ¡senÃ½ do viacerÃ½ch mailing-listov
+      (poÅ¡tovÃ½ch konferenciÃ­), je pre vÃ¡s veÄ¾mi Å¥aÅ¾kÃ©  vyznaÅ¥ sa medzi sprÃ¡vami
+      ktorÃ© priÅ¡li. So zvÃ½razÅˆovanÃ­m sprÃ¡v, mÃ¡te pozadie farebne odÃ­Å¡enÃ© v zÃ¡vislosti
+      od toho, z ktorÃ©ho mailing listu sprÃ¡va priÅ¡la.
       <br><br>
 
-      Jednoducho kliknite na [Novı] pre vytvorenie nového a [Upravi»] pre úpravu
-      u¾ existujúceho a voµby sa zobrazia hneï dole.<br><br>
+      Jednoducho kliknite na [NovÃ½] pre vytvorenie novÃ©ho a [UpraviÅ¥] pre Ãºpravu
+      uÅ¾ existujÃºceho a voÄ¾by sa zobrazia hneÄ dole.<br><br>
      
-      <b>Identifikaèné meno</b><br>
-      Toto je jednoducho meno ktoré vidíte v popise od koho pri¹la. Pre príklad,
-      ak ste zvıradznili  správu od mamy, mô¾ete si tu nastavi» text : "od mamy".
+      <b>IdentifikaÄnÃ© meno</b><br>
+      Toto je jednoducho meno ktorÃ© vidÃ­te v popise od koho priÅ¡la. Pre prÃ­klad,
+      ak ste zvÃ½radznili  sprÃ¡vu od mamy, mÃ´Å¾ete si tu nastaviÅ¥ text : "od mamy".
       <br><br>
       
       <b>Farba</b><br>
-      Toto je aktuálna farba pozadia. Mô¾ete si vybra» medzi niekoµko preddefinovanımi
-      farbami, podµa vlastného uvá¾enia, alebo si tu mô¾ete zada» HEX kód farby,
-      ktorú si ¾eláte ( napr.: a6b492). Ak si vyberiete vlastnú farbu musíte
-      tie¾ vybra» prepínacie tlaèidlo (radio button) ktorım toto vyberiete.
+      Toto je aktuÃ¡lna farba pozadia. MÃ´Å¾ete si vybraÅ¥ medzi niekoÄ¾ko preddefinovanÃ½mi
+      farbami, podÄ¾a vlastnÃ©ho uvÃ¡Å¾enia, alebo si tu mÃ´Å¾ete zadaÅ¥ HEX kÃ³d farby,
+      ktorÃº si Å¾elÃ¡te ( napr.: a6b492). Ak si vyberiete vlastnÃº farbu musÃ­te
+      tieÅ¾ vybraÅ¥ prepÃ­nacie tlaÄidlo (radio button) ktorÃ½m toto vyberiete.
       <br><br>
       
       <b>Zhoda</b><br>
-      Tu si mô¾te vybra» frázu zhody. Z políèka vıberu si mô¾te vybra» pole hlavièky
-      (Komu, Od, Predmet, ...)ktoré sa má zhodova» s textom (frázou )ktorı napí¹ete
-      do textového poµa. Napr. mama@centrum.sk
+      Tu si mÃ´Å¾te vybraÅ¥ frÃ¡zu zhody. Z polÃ­Äka vÃ½beru si mÃ´Å¾te vybraÅ¥ pole hlaviÄky
+      (Komu, Od, Predmet, ...)ktorÃ© sa mÃ¡ zhodovaÅ¥ s textom (frÃ¡zou )ktorÃ½ napÃ­Å¡ete
+      do textovÃ©ho poÄ¾a. Napr. mama@centrum.sk
       <br><br>
    </description>
 </section>
 
 <section>
    <title>
-      Nastavenia Prieèinkov
+      Nastavenia PrieÄinkov
    </title>
    <description>
-      <b>Cesta prieèinku</b><br>
-      Na niektorıch systémoch toto nemusí by» zobrazené. Ak nevidíte túto mo¾nos»,
-      jednoducho ju ignorujte. Na inıch systémoch je to dos» podstatná voµba. Zvyèajne
-      je tu toto nastavenie, ak tu musí by». Je to prieèinok vo va¹om domácom
-      (home) prieèinku ktorı uchováva va¹e po¹tovné prieèinky. Ak tomuto
+      <b>Cesta prieÄinku</b><br>
+      Na niektorÃ½ch systÃ©moch toto nemusÃ­ byÅ¥ zobrazenÃ©. Ak nevidÃ­te tÃºto moÅ¾nosÅ¥,
+      jednoducho ju ignorujte. Na inÃ½ch systÃ©moch je to dosÅ¥ podstatnÃ¡ voÄ¾ba. ZvyÄajne
+      je tu toto nastavenie, ak tu musÃ­ byÅ¥. Je to prieÄinok vo vaÅ¡om domÃ¡com
+      (home) prieÄinku ktorÃ½ uchovÃ¡va vaÅ¡e poÅ¡tovnÃ© prieÄinky. Ak tomuto
       nerozumiete, jednoducho to nechajte tak.
       <br><br>
 
-      <b>Prieèinok Kô¹</b><br>
-      Mô¾ete si vybra» prieèinok kam sa va¹e správy budú odstraòova». Ak nechcete,
-      aby sa va¹e správy odstraòovali do ko¹a, vyberte si "Nepou¾íva» kô¹".
+      <b>PrieÄinok KÃ´Å¡</b><br>
+      MÃ´Å¾ete si vybraÅ¥ prieÄinok kam sa vaÅ¡e sprÃ¡vy budÃº odstraÅˆovaÅ¥. Ak nechcete,
+      aby sa vaÅ¡e sprÃ¡vy odstraÅˆovali do koÅ¡a, vyberte si "NepouÅ¾Ã­vaÅ¥ kÃ´Å¡".
       <br><br>
       
-      <b>Prieèinok Odoslaná po¹ta</b><br>
-      Mo¾te si zvoli» do ktorého prieèinka pôjdu odoslané správy. Ak toto nechcete,
-      jednoducho nastavte "Nepou¾íva» prieèinok Odoslaná po¹ta"
+      <b>PrieÄinok OdoslanÃ¡ poÅ¡ta</b><br>
+      MoÅ¾te si zvoliÅ¥ do ktorÃ©ho prieÄinka pÃ´jdu odoslanÃ© sprÃ¡vy. Ak toto nechcete,
+      jednoducho nastavte "NepouÅ¾Ã­vaÅ¥ prieÄinok OdoslanÃ¡ poÅ¡ta"
       <br><br>
 
-      <b>Prieèinok Konceptov</b><br>
+      <b>PrieÄinok Konceptov</b><br>
       
-      Mo¾te si zvoli» do ktorého prieèinka pôjdu Koncepty (rozpísané správy). Ak
-      toto nechcete, jednoducho nastavte "Nepou¾íva» prieèinok Koncepty"
+      MoÅ¾te si zvoliÅ¥ do ktorÃ©ho prieÄinka pÃ´jdu Koncepty (rozpÃ­sanÃ© sprÃ¡vy). Ak
+      toto nechcete, jednoducho nastavte "NepouÅ¾Ã­vaÅ¥ prieÄinok Koncepty"
       <br><br>
       
-      <b>Umiestnenie Zoznamu Prieèinkov</b><br>
-      Determinuje èi chcete ma» zoznam prieèinkov na µavej alebo pravej strane
-      vá¹ho okna.
+      <b>Umiestnenie Zoznamu PrieÄinkov</b><br>
+      Determinuje Äi chcete maÅ¥ zoznam prieÄinkov na Ä¾avej alebo pravej strane
+      vÃ¡Å¡ho okna.
       <br><br>
       
-      <b>©írka Zoznamu Prieèinkov</b><br>
-      S tımto nastavením si mô¾te zvoli» akı bude ¹irokı vá¹ zoznam prieèinkov.
-      Ak máte veµmi dlhé názvy prieèinkov alebo nastavené veµké písmo, je toto
-      veµmi u¾itoèné nastavenie. Inak si toto musíte nastavi» na èo najmenej,
+      <b>Å Ã­rka Zoznamu PrieÄinkov</b><br>
+      S tÃ½mto nastavenÃ­m si mÃ´Å¾te zvoliÅ¥ akÃ½ bude Å¡irokÃ½ vÃ¡Å¡ zoznam prieÄinkov.
+      Ak mÃ¡te veÄ¾mi dlhÃ© nÃ¡zvy prieÄinkov alebo nastavenÃ© veÄ¾kÃ© pÃ­smo, je toto
+      veÄ¾mi uÅ¾itoÄnÃ© nastavenie. Inak si toto musÃ­te nastaviÅ¥ na Äo najmenej,
       aby ste nemrhali plochou obrazovky.
       <br><br>
       
-      <b>Automatické obnovenie Zoznamu Prieèinkov</b><br>
-      SquirrelMail umo¾òuje automaticky obnova» zobrazenie prieèinkov na µavej
-      strane okna vá¹ho prehliadaèa. Toto nastavenie automaticky aktualizuje
-      poèet nepreèítanıch správ v ka¾dom z prieèinkov. Toto je dobrı spôsob ako
-      si prezrie» správy v prieèinku Doruèená po¹ta bez klikania na tento prieèinok
+      <b>AutomatickÃ© obnovenie Zoznamu PrieÄinkov</b><br>
+      SquirrelMail umoÅ¾Åˆuje automaticky obnovaÅ¥ zobrazenie prieÄinkov na Ä¾avej
+      strane okna vÃ¡Å¡ho prehliadaÄa. Toto nastavenie automaticky aktualizuje
+      poÄet nepreÄÃ­tanÃ½ch sprÃ¡v v kaÅ¾dom z prieÄinkov. Toto je dobrÃ½ spÃ´sob ako
+      si prezrieÅ¥ sprÃ¡vy v prieÄinku DoruÄenÃ¡ poÅ¡ta bez klikania na tento prieÄinok
       znovu a znovu.
       <br><br>
 
-      <b>Oznámenie o nepreèítanıch správach</b><br>      
-      Toto nastavenie ¹pecifikuje ako zobrazi» nepreèítané správy zobrazené  na
-      µavej strane okna vá¹ho prehliadaèa. Ak toto nastavíte na "Bez oznámenia"
-      Nebudú sa vám zobrazova» oznámenia o nepreèítanıch správach. Ak toto nastavíte
-      na "Doruèená Po¹ta", tak ak prídu nové správy do prieèinka doruèená po¹ta,
-      Tento prieèinok sa vypí¹e tuènım písmom a zobrazí sa vpravo poèet novıch
-      správ v òom. Ak toto nastavíte na v¹etky prieèinky, bude sa toto oznamovanie
-      vz»ahova» na v¹etky prieèinky. Ak je na va¹om PC nahrávanie zoznamu prieèinkov
-      príli¹ dlhé, nastavne "®iadny". Tımto nahrávanie urıchlite.
+      <b>OznÃ¡menie o nepreÄÃ­tanÃ½ch sprÃ¡vach</b><br>      
+      Toto nastavenie Å¡pecifikuje ako zobraziÅ¥ nepreÄÃ­tanÃ© sprÃ¡vy zobrazenÃ©  na
+      Ä¾avej strane okna vÃ¡Å¡ho prehliadaÄa. Ak toto nastavÃ­te na "Bez oznÃ¡menia"
+      NebudÃº sa vÃ¡m zobrazovaÅ¥ oznÃ¡menia o nepreÄÃ­tanÃ½ch sprÃ¡vach. Ak toto nastavÃ­te
+      na "DoruÄenÃ¡ PoÅ¡ta", tak ak prÃ­du novÃ© sprÃ¡vy do prieÄinka doruÄenÃ¡ poÅ¡ta,
+      Tento prieÄinok sa vypÃ­Å¡e tuÄnÃ½m pÃ­smom a zobrazÃ­ sa vpravo poÄet novÃ½ch
+      sprÃ¡v v Åˆom. Ak toto nastavÃ­te na vÅ¡etky prieÄinky, bude sa toto oznamovanie
+      vzÅ¥ahovaÅ¥ na vÅ¡etky prieÄinky. Ak je na vaÅ¡om PC nahrÃ¡vanie zoznamu prieÄinkov
+      prÃ­liÅ¡ dlhÃ©, nastavne "Å½iadny". TÃ½mto nahrÃ¡vanie urÃ½chlite.
       <br><br>
       
-      <b>Typ Oznámenia o Nepreèítanıch Správach</b><br>
-      Ak sú v Prieèinku nové správy, táto mo¾nos» zobrazí len poèet novıch správ
-      v prieèinku.
+      <b>Typ OznÃ¡menia o NepreÄÃ­tanÃ½ch SprÃ¡vach</b><br>
+      Ak sÃº v PrieÄinku novÃ© sprÃ¡vy, tÃ¡to moÅ¾nosÅ¥ zobrazÃ­ len poÄet novÃ½ch sprÃ¡v
+      v prieÄinku.
       <br><br>
       
-      <b>Povoli» Skládateµné prieèinky</b><br>
-      Skládateµné prieèinky umo¾òujú zlo¾it a rozlo¾i» prieèinok, ktorı obsahuje
-      ïal¹ie pod-prieèinky. Prieèinok mô¾te zlo¾i» kliknutím na "-" a rozlo¾i»
-      kliknutím na znak "+". Nastavenie "Nie" zaká¾e skladanie.
+      <b>PovoliÅ¥ SklÃ¡dateÄ¾nÃ© prieÄinky</b><br>
+      SklÃ¡dateÄ¾nÃ© prieÄinky umoÅ¾ÅˆujÃº zloÅ¾it a rozloÅ¾iÅ¥ prieÄinok, ktorÃ½ obsahuje
+      ÄalÅ¡ie pod-prieÄinky. PrieÄinok mÃ´Å¾te zloÅ¾iÅ¥ kliknutÃ­m na "-" a rozloÅ¾iÅ¥
+      kliknutÃ­m na znak "+". Nastavenie "Nie" zakÃ¡Å¾e skladanie.
       <br><br>
       
-      <b>Zobraz Hodiny na Paneli Prieèinkov</b><br>
-      Toto nastavne ak chcete aby nad zoznamom prieèinkov boli zobrazené hodiny a 
-      ako majú vyzera». zobrazova» ( Y = rok, D = deò, H = hodina, M = minúta,
-      S = sekunda ). Táto voµba <B>Formát hodín</B> vám umo¾òuje si vybra» z: 12- alebo 24-
-      hodinovıch hodín.
+      <b>Zobraz Hodiny na Paneli PrieÄinkov</b><br>
+      Toto nastavne ak chcete aby nad zoznamom prieÄinkov boli zobrazenÃ© hodiny a 
+      ako majÃº vyzeraÅ¥. zobrazovaÅ¥ ( Y = rok, D = deÅˆ, H = hodina, M = minÃºta,
+      S = sekunda ). TÃ¡to voÄ¾ba <B>FormÃ¡t hodÃ­n</B> vÃ¡m umoÅ¾Åˆuje si vybraÅ¥ z: 12- alebo 24-
+      hodinovÃ½ch hodÃ­n.
       <br><br>
       
-      <b>Hµadanie v Pamäti</b><br>
-      Ak vyhµadávate v schránke, zoznam poslednıch vyhµadávané bude zobrazenı pre
-      rıchlej¹í prístup. Toto definuje, ako veµa poslednıch vyhµadávaní bude zobrazenıch.
+      <b>HÄ¾adanie v PamÃ¤ti</b><br>
+      Ak vyhÄ¾adÃ¡vate v schrÃ¡nke, zoznam poslednÃ½ch vyhÄ¾adÃ¡vanÃ© bude zobrazenÃ½ pre
+      rÃ½chlejÅ¡Ã­ prÃ­stup. Toto definuje, ako veÄ¾a poslednÃ½ch vyhÄ¾adÃ¡vanÃ­ bude zobrazenÃ½ch.
       <br><br>
       
    </description>
@@ -311,11 +311,11 @@
       Poradie v zozname
    </title>
    <description>
-      Táto sekcia vám dá kontrolu nad zoznamom správ. Mô¾te si vybra» ako veµa
-      informácií chcete ma» v zozname správ a v akom poradí ich chcete ma»
-      zobrazené.
+      TÃ¡to sekcia vÃ¡m dÃ¡ kontrolu nad zoznamom sprÃ¡v. MÃ´Å¾te si vybraÅ¥ ako veÄ¾a
+      informÃ¡ciÃ­ chcete maÅ¥ v zozname sprÃ¡v a v akom poradÃ­ ich chcete maÅ¥
+      zobrazenÃ©.
       <br><br>
-      Pou¾ite odkazy Hore a Dole pre presun o ståpec ïalej, Del pre odstránie ståpca
-      a Prida» pre pridanie nového ståpca.
+      PouÅ¾ite odkazy Hore a Dole pre presun o stÄºpec Äalej, Del pre odstrÃ¡nie stÄºpca
+      a PridaÅ¥ pre pridanie novÃ©ho stÄºpca.
    </description>
 </section>

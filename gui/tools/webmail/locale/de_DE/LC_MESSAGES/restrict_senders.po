@@ -1,9 +1,9 @@
 # German translation of SquirrelMail restrict_senders plugin.
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Ferdie Ferdsen <ferdie@despam.de>, 2004.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: restrict_senders.po 10086 2005-09-10 11:42:24Z jervfors $
+# $Id: restrict_senders.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: restrict_senders 1.1\n"

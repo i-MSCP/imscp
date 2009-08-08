@@ -1,0 +1,97 @@
+# Khmer (km) vkeyboard Translation
+# piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: vkeyboard\n"
+"Report-Msgid-Bugs-To: Daniel K. Imori <daniel@bastion.com.br>\n"
+"POT-Creation-Date: 2006-09-10 01:15+0200\n"
+"PO-Revision-Date: 2009-04-24 09:34+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:49
+msgid "Are you using a public computer?"
+msgstr "តើ​អ្នក​កំពុង​ប្រើ​កុំព្យូទ័រ​សាធារណៈ​ឬ ?"
+
+#: functions.php:51
+msgid "Enter your password with the "
+msgstr "បញ្ចូល​ពាក្យ​សម្ងាត់​របស់​អ្នក​ជាមួយ "
+
+#: functions.php:56
+msgid "virtual keyboard"
+msgstr "ក្ដារចុច​និម្មិត"
+
+#: functions.php:61
+msgid "Open Virtual Keyboard"
+msgstr "បើក​ក្ដារចុច​និម្មិត"
+
+#: help.php:46
+msgid "Virtual Keyboard: Help"
+msgstr "ក្ដារ​ចុច​និម្មិត ៖ ជំនួយ"
+
+#: help.php:51
+msgid "What's a virtual keyboard?"
+msgstr "អ្វី​ជា​ក្ដារចុច​និម្មិត ?"
+
+#: help.php:54
+msgid "It's a keyboard that simulates a real keyboard. ;)"
+msgstr "វា​ជា​ក្ដារចុច ដែល​បង្កើត​ឡើង​ដូចគ្នា​នឹង​ក្ដារចុច​ពិត​ប្រាកដ ។ ;)"
+
+#: help.php:56
+msgid ""
+"It protects your password against keyloggers, which are hidden programs that "
+"capture everything that you type or click."
+msgstr "វា​ការពារ​ពាក្យ​សម្ងាត់​របស់​អ្នក​ពី​កម្មវិធី​ចុះ​កំណត់ហេតុ​សោ ដែល​ជា​កម្មវិធី​បង្កប់​លាក់ និង​ចាប់យក​នូវ​អ្វីៗ​គ្រប់យ៉ាង​ដែល​អ្នក​វាយ ឬ​ចុច ។"
+
+#: help.php:58
+msgid ""
+"So, you can increase your security, using the virtual keyboard and its "
+"\"automatic click\" function."
+msgstr "ដូច្នេះ អ្នក​អាច​បង្កើន​សុវត្ថិភាព​របស់​អ្នក​បាន ដោយប្រើ​ក្ដារចុច​និម្មិត និង​មុខងារ \"ចុច​ដោយ​ស្វ័យប្រវត្តិ\" របស់​វា ។"
+
+#: help.php:60
+msgid ""
+"For this, you must point the mouse and keep it for few seconds on the key "
+"that you want to type."
+msgstr "ដើម្បី​ប្រើ​វា អ្នក​ត្រូវ​តែ​ដាក់​ទ្រនិច​កណ្ដុរ​លើ​គ្រាប់ចុច​ដែល​អ្នក​ចង់​វាយ​រយៈពេល​បី បួន​វិនាទី ។"
+
+#: vkeyboard.php:52
+msgid "Virtual Keyboard"
+msgstr "ក្ដារចុច​និម្មិត"
+
+#: vkeyboard.php:107
+msgid "Enter your password:"
+msgstr "បញ្ចូល​ពាក្យ​សម្ងាត់​របស់​អ្នក"
+
+#: vkeyboard.php:110
+msgid "Help"
+msgstr "ជំនួយ"
+
+#: vkeyboard.php:114
+msgid "The key will be pressed in "
+msgstr "គ្រាប់ចុច​ដែល​នឹង​ត្រូវ​ចុច​ក្នុង​រយៈពេល "
+
+#: vkeyboard.php:116
+msgid " seconds."
+msgstr " វិនាទី ។"
+
+#: vkeyboard.php:159
+msgid "Login"
+msgstr "ចូល"
+
+#: vkeyboard.php:164
+msgid "Clear"
+msgstr "ជម្រះ"
+
+#: vkeyboard.php:169
+msgid "Close"
+msgstr "បិទ"
+

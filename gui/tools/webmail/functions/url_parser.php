@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * url_parser.php

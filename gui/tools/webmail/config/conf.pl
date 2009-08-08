@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+﻿#!/usr/bin/env perl
 # conf.pl
 #
 # Copyright (c) 1999-2009 The SquirrelMail Project Team

@@ -1,7 +1,7 @@
 # translation of squirrelmail.po to
 # Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# Frisian Squirrelmail Translation
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Frisian SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail\n"
@@ -1277,7 +1277,7 @@ msgid "The bodystructure provided by your IMAP server:"
 msgstr "De haadstruktuer troch jo IMAP-tsjinner:"
 
 msgid "Body retrieval error. The reason for this is most probably that the message is malformed."
-msgstr "Flater by opheljen ynhâld. De reden is wierskynlik dat der programmakoade yn it berjocht stiet dy't net dekodearre wurde kin troch Squirrelmail ."
+msgstr "Flater by opheljen ynhâld. De reden is wierskynlik dat der programmakoade yn it berjocht stiet dy't net dekodearre wurde kin troch SquirrelMail ."
 
 msgid "Command:"
 msgstr "Kommando:"
@@ -2522,7 +2522,7 @@ msgid "IMAP server information"
 msgstr "IMAP-tsjinner ynformaasje"
 
 msgid "Run some test IMAP commands, displaying both the command and the result. These tests use the SquirrelMail IMAP commands and your current SquirrelMail configuration. Custom command strings can be used."
-msgstr "Fier inkele IMAP kommando's út, it kommando en it resultaat wurde toand. Dizze testen brûke de Squirrelmail IMAP kommando's en jo besteande Squirrelmail konfiguraasje. Oanpaste kommandoregels kinne brûkt wurde."
+msgstr "Fier inkele IMAP kommando's út, it kommando en it resultaat wurde toand. Dizze testen brûke de SquirrelMail IMAP kommando's en jo besteande SquirrelMail konfiguraasje. Oanpaste kommandoregels kinne brûkt wurde."
 
 #, php-format
 msgid "This will send a message to %s requesting help for this list. You will receive an emailed response at the address below."
@@ -3587,11 +3587,11 @@ msgstr "Hja kinne jo adekwaat helpe mei dizze saken. It SquirrelMail projektteam
 
 #, php-format
 msgid "SquirrelMail is a feature rich, standards compliant webmail application written in PHP. It was made by a group of volunteers united in the SquirrelMail Project Team and is released as open source, free software under the %sGNU General Public License%s."
-msgstr "Squirrelmail is in webmail applikaasje skreaun yn PHP mei in soad mooglikheden en slút oan by de jildende standerts. It is ûntwikkele troch in groep ûntwikkelders feriene yn it Squirrelmail projektteam en as iepen boarne, frije software ûnder de %sGNU General Public License%s frij jûn."
+msgstr "SquirrelMail is in webmail applikaasje skreaun yn PHP mei in soad mooglikheden en slút oan by de jildende standerts. It is ûntwikkele troch in groep ûntwikkelders feriene yn it SquirrelMail projektteam en as iepen boarne, frije software ûnder de %sGNU General Public License%s frij jûn."
 
 #, php-format
 msgid "For more information about SquirrelMail and the SquirrelMail Project Team, see %sthe SquirrelMail website%s."
-msgstr "Foar mear ynformaasje oer SquirrelMail en it SquirrelMail projektteam, sjoch %sde Squirrelmail webstee%s."
+msgstr "Foar mear ynformaasje oer SquirrelMail en it SquirrelMail projektteam, sjoch %sde SquirrelMail webstee%s."
 
 msgid "System information"
 msgstr "Systeemynformaasje"

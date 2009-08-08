@@ -1,6 +1,6 @@
-# $Id: unsafe_image_rules.po 10575 2006-01-28 11:03:59Z jervfors $
+# $Id: unsafe_image_rules.po 13693 2009-05-14 00:26:43Z jervfors $
 # Portuguese unsafe_image_rules plugin translation.
-# Copyright (c) 2003-2005 The SquirrelMail Project Team
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
 # Ruben Leote Mendes <ruben@nocturno.org>, 2003.
 #
 msgid ""
@@ -30,7 +30,7 @@ msgid "WARNING!"
 msgstr "AVISO!"
 
 msgid "This is not recommended by the Squirrelmail Development Team."
-msgstr "Não recomendado pela equipa Squirrelmail."
+msgstr "Não recomendado pela equipa SquirrelMail."
 
 msgid ""
 "Read this <a href=\"http://www.squirrelmail.org/wiki/UnsafeImages\">http://"

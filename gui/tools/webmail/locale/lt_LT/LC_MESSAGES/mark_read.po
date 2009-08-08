@@ -1,8 +1,8 @@
 # Lithuanian translation of 
 # SquirrelMail's mark_read plugin.
-# Copyright (C) 2004 SquirrelMail Development team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
-# $Id: mark_read.po 12742 2007-10-26 23:15:55Z jervfors $
+# $Id: mark_read.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mark_read 1.3\n"

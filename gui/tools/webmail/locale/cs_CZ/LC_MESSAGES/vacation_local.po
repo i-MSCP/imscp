@@ -1,124 +1,122 @@
-# Czech Translation of SquirrelMail vacation_local plugin
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Czech (cs_CZ) vacation_local Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
 # Petr Stehlik <pstehlik@sophics.cz>, 2005                                                                        \u2502
-# $Id: vacation_local.po 9798 2005-07-20 16:07:38Z jervfors $
+# $Id: vacation_local.po 13593 2009-04-24 16:20:57Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: vacation_local VERSION\n"
+"Project-Id-Version: vacation_local 2.0\n"
 "POT-Creation-Date: 2005-07-20 17:05+0200\n"
 "PO-Revision-Date: 2005-07-20 17:23+0200\n"
 "Last-Translator: Petr Stehlik <pstehlik@sophics.cz>\n"
-"Language-Team: \n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
-"X-Poedit-SourceCharset: iso-8859-2\n"
 
 msgid "Vacation Message"
-msgstr "Automatická odpovìï"
+msgstr "AutomatickÃ¡ odpovÄ›Ä"
 
 msgid ""
 "Set up an auto-reply message and optionally forward your incoming email. "
 "This can be useful when you are away on vacation."
 msgstr ""
-"Nastavte si automatickou odpovìï a pøípadnì i pøeposílání pøíchozí po¹ty. To "
-"se hodí napøíklad kdy¾ jste na dovolené."
+"Nastavte si automatickou odpovÄ›Ä a pÅ™Ã­padnÄ› i pÅ™eposÃ­lÃ¡nÃ­ pÅ™Ã­chozÃ­ poÅ¡ty. To "
+"se hodÃ­ napÅ™Ã­klad kdyÅ¾ jste na dovolenÃ©."
 
 msgid "Bad characters in list of forwarding address."
-msgstr "Nepovolené znaky v seznamu adres k pøeposílání."
+msgstr "NepovolenÃ© znaky v seznamu adres k pÅ™eposÃ­lÃ¡nÃ­."
 
 msgid "Options"
-msgstr "Mo¾nosti"
+msgstr "MoÅ¾nosti"
 
 msgid "Change Vacation Message"
-msgstr "Zmìnit automatickou odpovìï"
+msgstr "ZmÄ›nit automatickou odpovÄ›Ä"
 
 msgid "Settings Saved"
-msgstr "Nastavení ulo¾eno"
+msgstr "NastavenÃ­ uloÅ¾eno"
 
 msgid "Send auto-reply to sender?"
-msgstr "Posílat automatickou odpovìï odesílateli?"
+msgstr "PosÃ­lat automatickou odpovÄ›Ä odesÃ­lateli?"
 
 msgid "Vacation subject:"
-msgstr "Pøedmìt odpovìdi:"
+msgstr "PÅ™edmÄ›t odpovÄ›di:"
 
 msgid "Vacation message:"
-msgstr "Text odpovìdi:"
+msgstr "Text odpovÄ›di:"
 
 msgid "Forward incoming messages to addresses listed below?"
-msgstr "Pøeposílat pøíchozí po¹tu na adresy uvedené ní¾e?"
+msgstr "PÅ™eposÃ­lat pÅ™Ã­chozÃ­ poÅ¡tu na adresy uvedenÃ© nÃ­Å¾e?"
 
 msgid "No local delivery; forward and/or auto-reply only."
-msgstr "Neukládat zprávy; pouze pøeposílat a/nebo automaticky odpovídat."
+msgstr "NeuklÃ¡dat zprÃ¡vy; pouze pÅ™eposÃ­lat a/nebo automaticky odpovÃ­dat."
 
 msgid "Forwarding email addresses (one address per line)"
-msgstr "Adresy kam pøeposílat (ka¾dá adresa na novı øádek)"
+msgstr "Adresy kam pÅ™eposÃ­lat (kaÅ¾dÃ¡ adresa na novÃ½ Å™Ã¡dek)"
 
 msgid "Submit"
 msgstr "Odeslat"
 
 msgid "Error: Could not bind to LDAP server."
-msgstr "Chyba: Nelze se pøiøadit na LDAP server."
+msgstr "Chyba: Nelze se pÅ™iÅ™adit na LDAP server."
 
 #, php-format
 msgid "Error: Could not find FTP server for %s in LDAP server."
 msgstr "Chyba: FTP server pro %s nenalezen v LDAP serveru."
 
 msgid "Error: Could not connect to LDAP server."
-msgstr "Chyba: Nelze se pøipojit k LDAP serveru."
+msgstr "Chyba: Nelze se pÅ™ipojit k LDAP serveru."
 
 msgid "Error: Unable to connect to FTP server. Please try again later."
-msgstr "Chyba: Nelze se pøipojit k FTP serveru. Prosím zkuste za chvíli znovu."
+msgstr "Chyba: Nelze se pÅ™ipojit k FTP serveru. ProsÃ­m zkuste za chvÃ­li znovu."
 
 msgid ""
 "Error: Unable to log in to FTP server. Please contact your system "
 "administrator."
 msgstr ""
-"Chyba: Nelze se pøihlásit k FTP serveru. Prosím kontaktujte administrátora "
-"systému."
+"Chyba: Nelze se pÅ™ihlÃ¡sit k FTP serveru. ProsÃ­m kontaktujte administrÃ¡tora "
+"systÃ©mu."
 
 msgid ""
 "Error: Unable to switch to passive FTP mode. Please contact your system "
 "administrator."
 msgstr ""
-"Chyba: Nelze pøepnout FTP server do pasivního módu. Prosím kontaktujte "
-"administrátora systému."
+"Chyba: Nelze pÅ™epnout FTP server do pasivnÃ­ho mÃ³du. ProsÃ­m kontaktujte "
+"administrÃ¡tora systÃ©mu."
 
 msgid "Error: Unable to upload file. Please contact your system administrator."
-msgstr "Chyba: Nelze nahrát soubor. Prosím kontaktujte administrátora systému."
+msgstr "Chyba: Nelze nahrÃ¡t soubor. ProsÃ­m kontaktujte administrÃ¡tora systÃ©mu."
 
 msgid "An error occurred uploading the file:"
-msgstr "Pøi posílání souboru nastala chyba:"
+msgstr "PÅ™i posÃ­lÃ¡nÃ­ souboru nastala chyba:"
 
 msgid ""
 "Error: unable to download file. Please contact your system administrator."
 msgstr ""
-"Chyba: nelze stáhnout soubor. Prosím kontaktujte administrátora systému."
+"Chyba: nelze stÃ¡hnout soubor. ProsÃ­m kontaktujte administrÃ¡tora systÃ©mu."
 
 msgid "An error occurred downloading the file:"
-msgstr "Pøi stahování souboru nastala chyba:"
+msgstr "PÅ™i stahovÃ¡nÃ­ souboru nastala chyba:"
 
 msgid "Error: unable to delete file. Please contact your system administrator."
-msgstr "Chyba: nelze smazat soubor. Prosím kontaktujte administrátora systému."
+msgstr "Chyba: nelze smazat soubor. ProsÃ­m kontaktujte administrÃ¡tora systÃ©mu."
 
 msgid "An error occurred deleting the file:"
-msgstr "Pøi mazání souboru nastala chyba:"
+msgstr "PÅ™i mazÃ¡nÃ­ souboru nastala chyba:"
 
 msgid "Unknown action:"
-msgstr "Neznámá akce:"
+msgstr "NeznÃ¡mÃ¡ akce:"
 
 msgid ""
 "An error occurred attempting to read temp file; check permissions on "
 "attachments directory."
 msgstr ""
-"Pøi ètení doèasného souboru do¹lo k chybì; zkontrolujte pøístupová práva na "
-"slo¾ce pøíloh."
+"PÅ™i ÄtenÃ­ doÄasnÃ©ho souboru doÅ¡lo k chybÄ›; zkontrolujte pÅ™Ã­stupovÃ¡ prÃ¡va na "
+"sloÅ¾ce pÅ™Ã­loh."
 
 msgid ""
 "An error occurred attempting to create temp file; check permissions on "
 "attachments directory."
 msgstr ""
-"Pøi vytváøení doèasného souboru do¹lo k chybì; zkontrolujte pøístupová práva "
-"na slo¾ce pøíloh."
+"PÅ™i vytvÃ¡Å™enÃ­ doÄasnÃ©ho souboru doÅ¡lo k chybÄ›; zkontrolujte pÅ™Ã­stupovÃ¡ prÃ¡va "
+"na sloÅ¾ce pÅ™Ã­loh."

@@ -5,7 +5,7 @@
 # **
 # ** Philipe Mingo <mingo@rotedic.com>
 # ** 
-# **  $Id: xgetpo 13554 2009-04-16 10:09:16Z jervfors $ 
+# **  $Id: xgetpo 13150 2008-05-16 04:48:31Z jervfors $ 
 
 # force use of same locale in order to keep same sorting order
 LC_ALL=en_US.ISO8859-1
@@ -43,6 +43,8 @@ xgettext ${XGETTEXT_OPTIONS} -j \
     
 # ** Plugins
     
+xgettext ${XGETTEXT_OPTIONS} -j \
+    plugins/abook_take/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
     plugins/administrator/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \

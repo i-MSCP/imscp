@@ -1,24 +1,24 @@
 # Swedish (sv_SE) serversidefilter Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: serversidefilter.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: serversidefilter.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: serversidefilter\n"
 "POT-Creation-Date: 2004-03-01 09:01-0600\n"
 "PO-Revision-Date: 2005-03-11 10:07+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "From"
-msgstr "FrÂn"
+msgstr "Fr√•n"
 
 msgid "Subject"
-msgstr "ƒrende"
+msgstr "√Ñrende"
 
 msgid "To"
 msgstr "Till"
@@ -36,22 +36,22 @@ msgid "Anywhere"
 msgstr "Huvud och text"
 
 msgid "Contains"
-msgstr "innehÂller"
+msgstr "inneh√•ller"
 
 msgid "Begins With"
-msgstr "bˆrjar med"
+msgstr "b√∂rjar med"
 
 msgid "Ends With"
 msgstr "slutar med"
 
 msgid "Is Exactly"
-msgstr "‰r"
+msgstr "√§r"
 
 msgid "Matches Regex"
-msgstr "regulj‰rt uttryck"
+msgstr "regulj√§rt uttryck"
 
 msgid "Options"
-msgstr "Inst‰llningar"
+msgstr "Inst√§llningar"
 
 msgid "Mail Filters"
 msgstr "Brevfilter"
@@ -63,7 +63,7 @@ msgid "If"
 msgstr "Om"
 
 msgid "then"
-msgstr "sÂ"
+msgstr "s√•"
 
 msgid "move"
 msgstr "flytta"
@@ -81,10 +81,10 @@ msgid "Email"
 msgstr "adressen"
 
 msgid "if message is marked as"
-msgstr "om brevet ‰r markerat som"
+msgstr "om brevet √§r markerat som"
 
 msgid "SPAM"
-msgstr "skr‰ppost"
+msgstr "skr√§ppost"
 
 msgid "to"
 msgstr "till"
@@ -93,10 +93,10 @@ msgid "save new"
 msgstr "Spara nytt"
 
 msgid "UNSURE"
-msgstr "os‰kert"
+msgstr "os√§kert"
 
 msgid "Existing Filters:"
-msgstr "Anv‰nda filter:"
+msgstr "Anv√§nda filter:"
 
 msgid "Notice:"
 msgstr "Observera:"
@@ -104,13 +104,13 @@ msgstr "Observera:"
 msgid ""
 "Use of these filters may prevent the reading of mail in non-IMAP mail "
 "clients."
-msgstr "Anv‰ndning av dessa filter kan fˆrhindra Âtkomst till breven n‰r man inte anv‰nder en IMAP-klient."
+msgstr "Anv√§ndning av dessa filter kan f√∂rhindra √•tkomst till breven n√§r man inte anv√§nder en IMAP-klient."
 
 msgid "To or Cc"
 msgstr "Till eller Kopia"
 
 msgid "If message is marked as"
-msgstr "Om brevet ‰r markerat som"
+msgstr "Om brevet √§r markerat som"
 
 msgid "Here you may set up server-side filters on all of your incoming mail."
 msgstr "Servern kan filtrera alla inkommande brev, t.ex. till olika mappar."

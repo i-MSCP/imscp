@@ -1,7 +1,7 @@
 # SquirrelMail Welsh Translation
-# Copyright (c) 2003-2005 The SquirrelMail Project Team
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
 # Andrew Rawlins <awr@aber.ac.uk>, 2003.
-# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail VERSION\n"
@@ -1832,7 +1832,7 @@ msgstr "Fersiwn y Ffeil Ffurfweddu"
 
 #, fuzzy
 msgid "SquirrelMail Version"
-msgstr "Fersiwn Squirrelmail"
+msgstr "Fersiwn SquirrelMail"
 
 msgid "PHP Version"
 msgstr "Fersiwn PHP"

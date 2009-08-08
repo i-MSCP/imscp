@@ -11,7 +11,7 @@
       Le scelte del menu Componi vi porteranno alla pagina di composizione
       di un nuovo messaggio. Qui troverete diversi campi e due pulsanti.
       In funzione di come siete arrivati alla vista di composizione, alcuni
-      campi potrebbero risultare gi‡ compilati.
+      campi potrebbero risultare gi√† compilati.
       </p>
    </description>
 </chapter>
@@ -22,13 +22,13 @@
    </title>
    <description>
       <p>
-      Primo tra questi c'Ë il campo <B>A:</B>  In questo campo dovrete
+      Primo tra questi c'√® il campo <B>A:</B>  In questo campo dovrete
       inserire l'indirizzo email della persona o persone a cui inviare
       il messaggio.  Potete inserire tanti indirizzi quanti volete, separati
-      da una virgola.  EË possibile premere il pulsante "Indirizzi" per 
+      da una virgola.  E√® possibile premere il pulsante "Indirizzi" per 
       compilare automaticamente il campo.  Non preoccupatevi se non dovesse
       essere visualizzato l'intero indirizzo.
-      Il campo Ë a lunghezza fissa, ma qualsiasi cosa vi inserirete sar‡ usata
+      Il campo √® a lunghezza fissa, ma qualsiasi cosa vi inserirete sar√† usata
       fedelmente, anche nel caso dovesse scorrere a destra o sinistra.
       </p>
    </description>
@@ -40,11 +40,11 @@
    </title>
    <description>
       <p>
-      Quindi viene il campo <B>CC:</B>   CC Ë un'abbreviazione di <B>C</B>arbon 
+      Quindi viene il campo <B>CC:</B>   CC √® un'abbreviazione di <B>C</B>arbon 
       <B>C</B>opy (copia carbone).  Se volete inviare il vostro messaggio come una
-      copia (velina) questo Ë il campo che f‡ per voi. E' possibile inserire quanti
+      copia (velina) questo √® il campo che f√† per voi. E' possibile inserire quanti
       indirizzi desiderate nei campi <B>A:</B>, <B>CC:</B>, e <B>BCC:</B>.  
-      Solo le persone a cui il messaggio Ë diretto dovranno essere indicate nel campo
+      Solo le persone a cui il messaggio √® diretto dovranno essere indicate nel campo
       <B>A:</B> mentre le persone che dovranno ricevere il messaggio come informativa
       saranno inserite nei campi <B>CC:</B> e <B>BCC:</B>
       </p>
@@ -57,7 +57,7 @@
    </title>
    <description>
       <p>
-      BCC Ë un'abbreviazione di <B>B</B>lind <B>C</B>arbon <B>C</B>opy (copia nascosta).
+      BCC √® un'abbreviazione di <B>B</B>lind <B>C</B>arbon <B>C</B>opy (copia nascosta).
       Usate questo campo per inserire indirizzi <I>senza</I> che i destinatari
       presenti nei campi <B>A:</B> o <B>CC:</B> ne conoscano l'esistenza.
       </p>
@@ -70,7 +70,7 @@
    </title>
    <description>
       <p>
-      Inserite la descrizione principale del messaggio, qui.  Ricordate, l'email puÚ servire
+      Inserite la descrizione principale del messaggio, qui.  Ricordate, l'email pu√≤ servire
       a risparmiare molto tempo, ed un'accurata riga oggetto rappresenta una buona ragione.
       </p>
    </description>
@@ -82,13 +82,13 @@
    </title>
    <description>
       <p>
-      Questo pulsante aprir‡ la rubrica indirizzi dopo la comparsa di una
+      Questo pulsante aprir√† la rubrica indirizzi dopo la comparsa di una
       finestra di ricerca.
-      Nella casella di ricerca deve essere digitato qualche cosa affinchË
+      Nella casella di ricerca deve essere digitato qualche cosa affinch√®
       possa essere trovato un risultato.
       Se si vuole inviare un messaggio a tutti gli indirizzi presenti nella
       rubrica, inserite uno spazio e premete il pulsante submit. 
-      La rubrica indirizzi ha diverse funzionalit‡ che sono spiegate nella
+      La rubrica indirizzi ha diverse funzionalit√† che sono spiegate nella
       apposita sezione. Maggiori informazioni sono disponibili nel capitolo
       "Indirizzi". 
       </p>
@@ -101,9 +101,9 @@
    </title>
    <description>
       <p>
-      La casella vuota pi˘ ampia Ë per l'inserimento del corpo del vostro
+      La casella vuota pi√π ampia √® per l'inserimento del corpo del vostro
       messaggio. Se avete salvato un file contenente la vostra firma, questa
-      apparir‡ automaticamente qui.
+      apparir√† automaticamente qui.
       </p>
    </description>
 </section>
@@ -116,16 +116,16 @@
       <p>
       Posto in basso della pagina Componi, questa caratteristica vi permette
       di includere un file nel vostro messaggio.  Il file deve essere presente
-      nelle <I>unit‡</I> della vostra macchina o della vostra rete.  E' anche
-      presente un pulsante Sfoglia cosicchË sia possibile cercare nella struttura
+      nelle <I>unit√†</I> della vostra macchina o della vostra rete.  E' anche
+      presente un pulsante Sfoglia cosicch√® sia possibile cercare nella struttura
       delle vostre directory ed includere con un click il file desiderato.
-      Alternativamente Ë possibile digitare direttamente nel campo, il file da allegare,
+      Alternativamente √® possibile digitare direttamente nel campo, il file da allegare,
       con l'esatto percoro e nome. Premete semplicemente il pulsante Aggiungi per
       vedere apparire di seguito il file selezionato, elencato come allegato.
       </p>
       <p>
-      Una volta che Ë stato inserito almeno un file in allegato, vi vedr‡ apparire
-      un altro pulsante.  La cancellazione di uno o pi˘ files allegati sar‡ possibile
+      Una volta che √® stato inserito almeno un file in allegato, vi vedr√† apparire
+      un altro pulsante.  La cancellazione di uno o pi√π files allegati sar√† possibile
       selezionandoli e premendo il pulsante cancella.
       <p>
    </description>

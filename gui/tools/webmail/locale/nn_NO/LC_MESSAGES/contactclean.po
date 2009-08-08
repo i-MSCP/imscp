@@ -1,5 +1,5 @@
 # translation of contactclean.po to Nynorsk
-# Copyright (c) 2004-2005 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2004
 #
 msgid ""

@@ -1,0 +1,63 @@
+# Persian (fa_IR) captcha Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Abbas Esmaeeli Some'eh <abbas (AT) gnu (DOT) org>, 2007.
+# $Id: captcha.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail Captcha Plugin\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-05-25 22:17-0700\n"
+"PO-Revision-Date: 2007-12-09 09:00+0330\n"
+"Last-Translator: Abbas Esmaeeli Some'eh <abbas (AT) gnu (DOT) org>\n"
+"Language-Team: Persian <persian (AT) gnu (DOT) org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Sorry, you did not provide the correct challenge response."
+msgstr "متاسفانه شما متن تصویر را صحیح وارد نکردید."
+
+msgid "This is a CAPTCHA image; please enter the text you see in this image into the input box below"
+msgstr "این یک تصویر به هم ریخته است. لطفا متنی را که در تصویر می‌بینید در داخل کادر پایین وارد نمایید"
+
+msgid "Enter the text you see in the image above:"
+msgstr "متنی را که در تصویر بالا می‌بینید وارد نمایید:"
+
+msgid "Enter the text you see above:"
+msgstr "متنی را که بالا می‌بینید وارد نمایید:"
+
+#, c-format
+msgid "What is %s?"
+msgstr "<span dir=\"ltr\">%s</span> چند می‌شود؟"
+
+msgid "zero "
+msgstr "صفر "
+
+msgid "one "
+msgstr "یک "
+
+msgid "two "
+msgstr "دو "
+
+msgid "three "
+msgstr "سه "
+
+msgid "four "
+msgstr "چهار "
+
+msgid "five "
+msgstr "پنج "
+
+msgid "six "
+msgstr "شش "
+
+msgid "seven "
+msgstr "هفت "
+
+msgid "eight "
+msgstr "هشت "
+
+msgid "nine "
+msgstr "نه "
+

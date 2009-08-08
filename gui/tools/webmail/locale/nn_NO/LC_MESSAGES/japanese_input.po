@@ -1,7 +1,7 @@
 # translation of japanese_input.po to Nynorsk
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# $Id: japanese_input.po 12743 2007-10-27 11:27:09Z jervfors $
+# $Id: japanese_input.po 13696 2009-05-14 06:27:08Z jervfors $
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
 msgid ""
 msgstr ""

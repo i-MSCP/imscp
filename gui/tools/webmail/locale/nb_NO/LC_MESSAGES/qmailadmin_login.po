@@ -1,5 +1,5 @@
-# Norwegian Bokmål (nb_NO) qmailadmin_login Translation (SquirrelMail plugin)
-# Copyright (c) 2007 The SquirrelMail Project Team
+# Norwegian BokmÃ¥l (nb_NO) qmailadmin_login Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Hans Fredrik Nordhaug <hans@nordhaug.priv.no>, 2007.
 # $Id: qmailadmin_login.pot 10877 2006-03-04 11:22:22Z jervfors $
@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: functions.php:58 qmlogin.php:57
@@ -25,7 +25,7 @@ msgstr "Dette valget gir tilgang til kontoadministrasjonsidene."
 #: functions.php:74
 msgid ""
 "Please confirm your password in order to access account management pages."
-msgstr "Bekreft passorder ditt for å få tilgang til kontoadministrasjonsidene."
+msgstr "Bekreft passorder ditt for Ã¥ fÃ¥ tilgang til kontoadministrasjonsidene."
 
 #: functions.php:81
 msgid "Your password: "
@@ -45,10 +45,10 @@ msgid ""
 "not automatically redirect you, please click on login button."
 msgstr ""
 "Du blir videresendt til administrasjonsiden. Hvis din nettleser ikke "
-"automatisk sender deg videre, klikke på logginn-knappen."
+"automatisk sender deg videre, klikke pÃ¥ logginn-knappen."
 
 #: qmlogin.php:61
 msgid ""
 "WARNING: You will have to relogin into SquirrelMail, if you change your "
 "password."
-msgstr "ADVARSEL: Du må logge inn igjen i SquirrelMail hvis du skifter passordet ditt."
+msgstr "ADVARSEL: Du mÃ¥ logge inn igjen i SquirrelMail hvis du skifter passordet ditt."

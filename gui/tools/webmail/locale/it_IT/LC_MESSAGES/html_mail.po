@@ -1,22 +1,23 @@
 # Italian (it_IT) html_mail Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Rocco Scappatura <rocsca@sttspa.it>, 2006.
-# $Id: html_mail.po 11060 2006-04-20 12:43:25Z jervfors $
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: html_mail.po 13573 2009-04-22 09:49:58Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: html_mail 2.3\n"
 "POT-Creation-Date: 2005-10-24 21:00+0300\n"
-"PO-Revision-Date: 2006-04-20 14:34+0200\n"
-"Last-Translator: Rocco Scappatura <rocsca@sttspa.it>\n"
+"PO-Revision-Date: 2009-04-20 12:14+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
 "Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #, php-format
 msgid "ERROR (%s): can't load config file"
-msgstr ""
+msgstr "ERRORE (%s): impossibile caricare il file di configurazione"
 
 msgid "HTML"
 msgstr "HTML"

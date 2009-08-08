@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * page_header.php
@@ -256,8 +256,8 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
         $shortBoxName = _("INBOX");
     }
     //
-	// Modified by ispCP Omega - http://isp-control.net
-	//
+    // Modified by ispCP Omega - http://isp-control.net
+    //
     echo "<a name=\"pagetop\"></a>\n"
     /**** commented out
         . html_tag( 'table', '', '', $color[4], 'border="0" width="100%" cellspacing="0" cellpadding="2"' ) ."\n"

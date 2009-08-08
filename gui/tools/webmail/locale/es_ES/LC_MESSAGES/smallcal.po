@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Small Calendar Squirrelmail Plugin\n"
+"Project-Id-Version: Small Calendar SquirrelMail Plugin\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2003-10-12 19:40+0100\n"
 "Last-Translator: Philippe Mingo <philippe@squirrelmail.org>\n"

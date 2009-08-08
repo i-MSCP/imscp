@@ -1,6 +1,6 @@
 # translation of SquirrelMail folder_sizes plugin to Nynorsk
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (c) 2004-2006 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2004,2006
 #
 msgid ""

@@ -1,44 +1,44 @@
 <chapter>
    <title>
-      Adresáø
+      AdresÃ¡Å™
    </title>
    <summary>
       
    </summary>
    <description>
       <p>
-      Adresáø Vám umo¾ní efektivnìj¹í práci ve SquirrelMailu. V adresáøi 
-      mù¾ete ukládat adresy nejèastìj¹ích pøíjemcù Va¹ich zpráv.
+      AdresÃ¡Å™ VÃ¡m umoÅ¾nÃ­ efektivnÄ›jÅ¡Ã­ prÃ¡ci ve SquirrelMailu. V adresÃ¡Å™i 
+      mÅ¯Å¾ete uklÃ¡dat adresy nejÄastÄ›jÅ¡Ã­ch pÅ™Ã­jemcÅ¯ VaÅ¡ich zprÃ¡v.
       </p>
       <p>
-      Jestli¾e Vá¹ prohlí¾eè podporuje Javascript, mù¾ete si pomocí "Mo¾nosti nastavení" 
-      zvolit adresáø zalo¾enı na Javasriptu. Systém SquirrelMail podporuje HTML 
-      seznamy adres, tak¾e prohlí¾eèe neumo¾òující Javascript mohou vyu¾ívat 
-      SquirrelMail bez toho, ani¾ by nìjaká funkce systému byla znemo¾nìna. 
+      JestliÅ¾e VÃ¡Å¡ prohlÃ­Å¾eÄ podporuje Javascript, mÅ¯Å¾ete si pomocÃ­ "MoÅ¾nosti nastavenÃ­" 
+      zvolit adresÃ¡Å™ zaloÅ¾enÃ½ na Javasriptu. SystÃ©m SquirrelMail podporuje HTML 
+      seznamy adres, takÅ¾e prohlÃ­Å¾eÄe neumoÅ¾ÅˆujÃ­cÃ­ Javascript mohou vyuÅ¾Ã­vat 
+      SquirrelMail bez toho, aniÅ¾ by nÄ›jakÃ¡ funkce systÃ©mu byla znemoÅ¾nÄ›na. 
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      Pøezdívka
+      PÅ™ezdÃ­vka
    </title>
    <description>
       <p>
-      Zde vlo¾te jedineènou pøezdívku pøíjemce. 
+      Zde vloÅ¾te jedineÄnou pÅ™ezdÃ­vku pÅ™Ã­jemce. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Emailová adresa
+      EmailovÃ¡ adresa
    </title>
    <description>
       <p>
-      Tato polo¾ka musí obsahovat správnou adresu, která se skládá ze dvou èástí - 
-      Va¹e jméno a název domény (napø.: eva@adam.cz). Jestli¾e je e-mailová adresa 
-      nesprávná, zpráva se Vám vrátí zpìt do va¹í schránky. 
+      Tato poloÅ¾ka musÃ­ obsahovat sprÃ¡vnou adresu, kterÃ¡ se sklÃ¡dÃ¡ ze dvou ÄÃ¡stÃ­ - 
+      VaÅ¡e jmÃ©no a nÃ¡zev domÃ©ny (napÅ™.: eva@adam.cz). JestliÅ¾e je e-mailovÃ¡ adresa 
+      nesprÃ¡vnÃ¡, zprÃ¡va se VÃ¡m vrÃ¡tÃ­ zpÄ›t do vaÅ¡Ã­ schrÃ¡nky. 
       </p>
    </description>
 </section>
@@ -49,7 +49,7 @@
    </title>
    <description>
       <p>
-      Do tohoto pole mù¾ete vkládat dal¹í informace o pøíjemci zprávy. 
+      Do tohoto pole mÅ¯Å¾ete vklÃ¡dat dalÅ¡Ã­ informace o pÅ™Ã­jemci zprÃ¡vy. 
       </p>
    </description>
 </section>
@@ -60,19 +60,19 @@
    </title>
    <description>
       <p>
-      Tyto funkce Vám umo¾ní mìnit nebo odstranit údaje ve svém adresáøi. 
-      V¾dy mù¾ete upravovat pouze jeden záznam.
+      Tyto funkce VÃ¡m umoÅ¾nÃ­ mÄ›nit nebo odstranit Ãºdaje ve svÃ©m adresÃ¡Å™i. 
+      VÅ¾dy mÅ¯Å¾ete upravovat pouze jeden zÃ¡znam.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøidat do osobního adresáøe
+      PÅ™idat do osobnÃ­ho adresÃ¡Å™e
    </title>
    <description>
       <p>
-      Vyplnìním údajù v prvních tøech polích úspì¹nì zadáte do svého adresáøe novı kontakt.
+      VyplnÄ›nÃ­m ÃºdajÅ¯ v prvnÃ­ch tÅ™ech polÃ­ch ÃºspÄ›Å¡nÄ› zadÃ¡te do svÃ©ho adresÃ¡Å™e novÃ½ kontakt.
       </p>
    </description>
 </section>

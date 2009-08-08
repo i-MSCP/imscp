@@ -1,8 +1,7 @@
-# translation of folder_sizes.po to Dutch
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) folder_sizes Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Dutch (nl_NL) folder_sizes Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: folder_sizes.pot 11163 2006-05-28 08:48:13Z jervfors $
 msgid ""
 msgstr ""

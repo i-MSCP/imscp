@@ -1,0 +1,481 @@
+# Vietnamese (vi) rootly_news Translation (SquirrelMail plugin)
+# Copyright © 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: rootly_news.pot 12740 2007-10-24 21:31:21Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: rootly_news 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-10-27 12:37+0200\n"
+"PO-Revision-Date: 2008-03-10 23:59+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
+
+#: functions.php:55
+msgid "Rootly News"
+msgstr "Tin tức Rootly"
+
+#: functions.php:57
+msgid ""
+"Here you can add news by keyword search, set news update options and more."
+msgstr "Ở đây thì bạn có thể thêm tin tức theo tìm kiếm từ khoá, đặt các tùy chọn cập nhật tin tức v.v."
+
+#: options.php:27
+msgid "Sports"
+msgstr "Thể thao"
+
+#: options.php:27
+msgid "Technology"
+msgstr "Công nghệ"
+
+#: options.php:27
+msgid "Science"
+msgstr "Khoa học"
+
+#: options.php:27
+msgid "Business"
+msgstr ""
+"Kinh doanh"
+
+#: options.php:27
+msgid "World"
+msgstr "Thế giới"
+
+#: options.php:27
+msgid "Entertainment"
+msgstr "Giải trí"
+
+#: options.php:28
+msgid "Africa"
+msgstr "Châu Phi"
+
+#: options.php:28
+msgid "Asia-Pacific"
+msgstr "Châu Á/Thái Bình Dương"
+
+#: options.php:28
+msgid "Canada"
+msgstr "Ca-na-đa"
+
+#: options.php:28
+msgid "Europe"
+msgstr "Châu Âu"
+
+#: options.php:28
+msgid "Middle East"
+msgstr "Bắc Phi"
+
+#: options.php:28
+msgid "South Asia"
+msgstr "Nam Á"
+
+#: options.php:28
+msgid "UK"
+msgstr "Quốc Anh"
+
+#: options.php:28
+msgid "US"
+msgstr "Mỹ"
+
+#: options.php:29
+msgid "American Football"
+msgstr "Quả bóng đá Mỹ"
+
+#: options.php:29
+msgid "Athletics"
+msgstr "Điền kinh"
+
+#: options.php:29
+msgid "Badminton"
+msgstr "Cầu lông"
+
+#: options.php:29
+msgid "Baseball"
+msgstr "Bóng chày"
+
+# Name: don't translate / Tên: đừng dịch
+#: options.php:29
+msgid "Basketball"
+msgstr "Bóng rổ"
+
+#: options.php:29
+msgid "Boxing"
+msgstr "Quyền thuật"
+
+#: options.php:30
+msgid "College basketball"
+msgstr "Bóng rổ đại học"
+
+#: options.php:30
+msgid "Cricket"
+msgstr "Crikê"
+
+#: options.php:30
+msgid "Cycling"
+msgstr "Xe đạp"
+
+#: options.php:30
+msgid "Football"
+msgstr "Quả bóng đá"
+
+#: options.php:30
+msgid "Golf"
+msgstr ""
+"Gôn"
+
+#: options.php:30
+msgid "Horse Racing"
+msgstr "Đua ngựa"
+
+#: options.php:31
+msgid "Ice Hockey"
+msgstr "Bóng gậy trên băng"
+
+#: options.php:31
+msgid "Motorsport"
+msgstr "Thể thao đua ô tô"
+
+#: options.php:31
+msgid "Olympics"
+msgstr "Ô-lim-pích"
+
+#: options.php:31
+msgid "Rugby"
+msgstr "Bóng bầu dục"
+
+#: options.php:31
+msgid "Tennis"
+msgstr "Quần vợt"
+
+#: options.php:31
+msgid "Winter sports"
+msgstr "Thể thao Mùa Đông"
+
+# Name: don't translate / Tên: đừng dịch
+#: options.php:32
+msgid "Apple"
+msgstr "Apple"
+
+#: options.php:32
+msgid "Automobiles"
+msgstr "Xe"
+
+#: options.php:32
+msgid "Design"
+msgstr "Thiết kế"
+
+#: options.php:32
+msgid "Digital Music"
+msgstr "Nhạc số"
+
+#: options.php:32
+msgid "Gadgets"
+msgstr "Công cụ nhỏ"
+
+#: options.php:32
+msgid "Gaming"
+msgstr "Chơi"
+
+#: options.php:33
+msgid "Hardware"
+msgstr "Phần cứng"
+
+#: options.php:33
+msgid "Linux/Unix"
+msgstr "Linux/UNIX"
+
+#: options.php:33
+msgid "Microsoft"
+msgstr "Microsoft"
+
+#: options.php:33
+msgid "Nanotechnology"
+msgstr "Công nghệ nano"
+
+#: options.php:33
+msgid "Programming"
+msgstr "Lập trình"
+
+#: options.php:33
+msgid "SearchEngines"
+msgstr "Máy tìm kiếm"
+
+#: options.php:34
+msgid "Security"
+msgstr "Bảo mật"
+
+#: options.php:34
+msgid "Software"
+msgstr "Phần mềm"
+
+#: options.php:34
+msgid "Web2.0"
+msgstr "Web2.0"
+
+#: options.php:35
+msgid "Arts"
+msgstr "Nghệ thuật"
+
+#: options.php:35
+msgid "Celebrities"
+msgstr "Người nổi danh"
+
+#: options.php:35
+msgid "Fun"
+msgstr "Vui đùa"
+
+#: options.php:35
+msgid "Gossip"
+msgstr "Đôi mách"
+
+#: options.php:35
+msgid "Movies"
+msgstr "Phim"
+
+#: options.php:35
+msgid "Music"
+msgstr ""
+"Nhạc"
+
+#: options.php:35
+msgid "Opinion"
+msgstr "Ý kiến"
+
+#: options.php:35
+msgid "TV"
+msgstr "TV"
+
+#: options.php:35
+msgid "Weird"
+msgstr "Lạ"
+
+#: options.php:36
+msgid "Agriculture"
+msgstr "Nông nghiệp"
+
+#: options.php:36
+msgid "Animals"
+msgstr "Động vật"
+
+#: options.php:36
+msgid "Archaeology"
+msgstr "Khảo cổ học"
+
+#: options.php:36
+msgid "AtmosphericScience"
+msgstr "Khoa học quyển khí"
+
+#: options.php:36
+msgid "Biology"
+msgstr "Sinh học"
+
+#: options.php:36
+msgid "Biotechnology"
+msgstr "Công nghệ sinh học"
+
+#: options.php:37
+msgid "Chemistry"
+msgstr "Hoá học"
+
+#: options.php:37
+msgid "EarthScience"
+msgstr "Khoa học đất"
+
+#: options.php:37
+msgid "Education"
+msgstr "Giáo dục"
+
+#: options.php:37
+msgid "Mathematics"
+msgstr "Toán học"
+
+#: options.php:37
+msgid "MedicineandHealth"
+msgstr "Y tế và Sức khỏe"
+
+#: options.php:37
+msgid "Nature"
+msgstr "Thiên nhiên"
+
+#: options.php:38
+msgid "Physics"
+msgstr "Vật lý"
+
+#: options.php:38
+msgid "PolicyandEthics"
+msgstr "Chính sách và Đạo đức"
+
+#: options.php:38
+msgid "SocialandBehavior"
+msgstr "Xã hội và Ứng xử"
+
+#: options.php:38
+msgid "Space &amp; Astronomy"
+msgstr "Vũ trụ và Thiên văn học"
+
+#: options.php:39
+msgid "Bonds"
+msgstr "Trái phiếu"
+
+#: options.php:39
+msgid "Careers"
+msgstr "Tuyển dụng"
+
+#: options.php:39
+msgid "CIO"
+msgstr "CIO"
+
+#: options.php:39
+msgid "Commerce"
+msgstr "Thương mại"
+
+#: options.php:39
+msgid "Currencies"
+msgstr "Tiền tệ"
+
+#: options.php:39
+msgid "E-business"
+msgstr ""
+"Kinh doanh điện tử"
+
+#: options.php:39
+msgid "Economy"
+msgstr "Kinh tế"
+
+#: options.php:40
+msgid "EmergingMarkets"
+msgstr "Thị trường hiện ra"
+
+#: options.php:40
+msgid "Energy"
+msgstr "Năng lượng"
+
+#: options.php:40
+msgid "Enterprise"
+msgstr "Xí nghiệp"
+
+#: options.php:40
+msgid "Finance"
+msgstr "Tài chính"
+
+#: options.php:40
+msgid "HealthCare"
+msgstr ""
+"Chăm sóc sức khoẻ"
+
+#: options.php:40
+msgid "Infoimaging"
+msgstr "Tạo ảnh thông tin"
+
+#: options.php:41
+msgid "LawandTaxation"
+msgstr "Luật và Thuế"
+
+#: options.php:41
+msgid "Logistics"
+msgstr "Logictic"
+
+#: options.php:41
+msgid "Management"
+msgstr "Quản lý"
+
+#: options.php:41
+msgid "Manufacturing"
+msgstr "Sản xuất"
+
+#: options.php:41
+msgid "PersonalFinance"
+msgstr "Tài chính Cá nhân"
+
+#: options.php:41
+msgid "RealEstate"
+msgstr "Bất động sản"
+
+# #-#-#-#-#  vi.po (Gnome-icon-theme for GNOME 2.1.0)  #-#-#-#-#
+# 48x48/emblems/emblem-marketing.icon.in.h:1
+# 48x48/emblems/emblem-marketing.icon.in.h:1
+#: options.php:42
+msgid "SalesandMarketing"
+msgstr "Bán và Thị trường"
+
+#: options.php:42
+msgid "Services"
+msgstr "Dịch vụ"
+
+#: options.php:42
+msgid "Tech"
+msgstr ""
+"Kỹ thuật"
+
+#: options.php:42
+msgid "Wireless"
+msgstr "Vô tuyến"
+
+#: options.php:100
+msgid "Settings Updated"
+msgstr ""
+"Thiết lập đã cập nhật"
+
+#: templates/default/options.tpl:14
+msgid "Refresh Folder List"
+msgstr "Cập nhật danh sách thư mục"
+
+#: templates/default/options.tpl:17
+msgid "Show me news about..."
+msgstr ""
+"Hiển thị tin tức về..."
+
+#: templates/default/options.tpl:19
+msgid ""
+"Enter keywords of the news content that you want to see.  Each field's "
+"entries will show news that matches the entire field, with a total of three "
+"searches across  Rootly news."
+msgstr "Hãy nhập các từ khoá về nội dung tin tức bạn muốn thấy. Mục nhập của mỗi trường sẽ hiển thị tin tức tương ứng với toàn bộ trường, có tổng số ba lần tìm kiếm qua Tin Tức Rootly."
+
+#: templates/default/options.tpl:24
+msgid "Keywords"
+msgstr "Từ khóa"
+
+#: templates/default/options.tpl:25
+#: templates/default/options.tpl:29
+msgid "or"
+msgstr "hoặc"
+
+#: templates/default/options.tpl:40
+msgid "Display Settings"
+msgstr "Thiết lập Hiển thị"
+
+#: templates/default/options.tpl:44
+msgid "News List Location"
+msgstr "Vị trí Danh sách Tin tức"
+
+#: templates/default/options.tpl:59
+msgid "Update frequency"
+msgstr "Tần số cập nhật"
+
+#: templates/default/options.tpl:75
+msgid "News updates"
+msgstr "Cập nhật tin tức"
+
+#: templates/default/options.tpl:92
+msgid "News Categories &amp; Topics"
+msgstr "Loại Tin tức và Chủ đề"
+
+#: templates/default/options.tpl:94
+msgid ""
+"Select a top-level category, such as Science, to see news relavent to all "
+"that category's topics"
+msgstr "Hãy chọn một phân loại cấp đầu, v.d. Khoa học, để xem tin tức liên quan đến các chủ đề của phân loại đó"
+
+#: templates/default/options.tpl:95
+msgid ""
+"or select as many of the news topics individually that you want to see in "
+"your Rootly news list for Squiremail."
+msgstr "hoặc chọn các chủ đề tin tức bạn muốn thấy trong danh sách tin tức Rootly cho SquirrelMail."

@@ -2,6 +2,8 @@
     /*
      * $Id$
      */
+    require_once(SM_PATH . 'functions/global.php');
+
     function view_as_html_set() {
         global $message, $show_html_default;
         sqgetGlobalVar('view_as_html',       $view_as_html);
@@ -22,7 +24,6 @@
                 $show_html_default = 0;
             }
         }
-
         /* Handle broken emails the have Content-Type w/o Mime-Version */
         if ($message->rfc822_header->content_type->type0 == 'text' &&
             $message->rfc822_header->content_type->type1 == 'html') {
@@ -30,9 +31,6 @@
             $message->header->type1 = 'html';
             $message->type0 = 'text';
             $message->type1 = 'html';
-            if (count($message->rfc822_header->content_type->properties) > 0) {
-                $message->header->parameters = $message->rfc822_header->content_type->properties;
-            }
         }
     }
 
@@ -81,16 +79,20 @@
             }
         }
         if ($has_html == 1) {
-            sq_change_text_domain('view_as_html');
-            $link = ' | ';
+            include_once(SM_PATH . 'functions/i18n.php');
+            echo '&nbsp;|&nbsp;';
+            bindtextdomain('view_as_html', SM_PATH . 'plugins/view_as_html/locale');
+            textdomain('view_as_html');
             if($show_html_default == 1) {
-                $link .= '<a href="' . $new_link . '&amp;view_as_html=0">';
-                $link .= _("View as plain text");
+                echo "<a href=\"$new_link&amp;view_as_html=0\">";
+                echo _("View as plain text");
             } else {
-                $link .= '<a href="' . $new_link . '&amp;view_as_html=1">';
-                $link .= _("View as HTML");
+                echo "<a href=\"$new_link&amp;view_as_html=1\">";
+                echo _("View as HTML");
             }
-            echo $link . "</a>\n";
-            sq_change_text_domain('squirrelmail');
+            echo "</a>\n";
+            bindtextdomain('squirrelmail', SM_PATH . 'locale');
+            textdomain('squirrelmail');
         }
     }
+?>

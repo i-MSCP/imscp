@@ -1,10 +1,10 @@
-# Squirrelmail folder_sizes plugin
+# SquirrelMail folder_sizes plugin
 # German translation
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Ferdie Ferdsen <ferdie@despam.de>, 2004.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
-# $Id: folder_sizes.po 11153 2006-05-25 11:53:03Z jervfors $
+# $Id: folder_sizes.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: folder_sizes\n"

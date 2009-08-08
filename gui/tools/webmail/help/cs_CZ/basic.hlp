@@ -1,46 +1,46 @@
 <chapter>
    <title>
-      Úvod do systému SquirrelMail
+      Ãšvod do systÃ©mu SquirrelMail
    </title>
    <summary>
       
    </summary>
    <description>
       <p>
-      Co je ve skuteènosti systém <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
-      SquirrelMail je webové rozhraní e-mailu vytvoøenı v <A HREF="http://www.php.net">PHP4</A>.
-      Byl vyvinut pro emailovou komunikaci kdekoliv na svìtì. Více informací o tom, jak funguje, naleznete <A HREF="http://imap.org">zde</A>.
+      Co je ve skuteÄnosti systÃ©m <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      SquirrelMail je webovÃ© rozhranÃ­ e-mailu vytvoÅ™enÃ½ v <A HREF="http://www.php.net">PHP4</A>.
+      Byl vyvinut pro emailovou komunikaci kdekoliv na svÄ›tÄ›. VÃ­ce informacÃ­ o tom, jak funguje, naleznete <A HREF="http://imap.org">zde</A>.
       </p>
    </description>
 </chapter>   
 
 <section>
    <title>
-      Základní informace
+      ZÃ¡kladnÃ­ informace
    </title>
    <description>
       <p>
-      V pøípadì jednoduchıch otázek pøejdìte do èásti Nejèastìji pokládané otázky. 
+      V pÅ™Ã­padÄ› jednoduchÃ½ch otÃ¡zek pÅ™ejdÄ›te do ÄÃ¡sti NejÄastÄ›ji poklÃ¡danÃ© otÃ¡zky. 
       </p>
       <p>
-      Squirrelmail je rozlo¾en do dvou hlavních èístí - rámcù. Levı rámec zobrazuje 
-      aktuálnì pøihlá¹ené slo¾ky. Více informací naleznete v sekci "Slo¾ky" této nápovìdy.
+      SquirrelMail je rozloÅ¾en do dvou hlavnÃ­ch ÄÃ­stÃ­ - rÃ¡mcÅ¯. LevÃ½ rÃ¡mec zobrazuje 
+      aktuÃ¡lnÄ› pÅ™ihlÃ¡Å¡enÃ© sloÅ¾ky. VÃ­ce informacÃ­ naleznete v sekci "SloÅ¾ky" tÃ©to nÃ¡povÄ›dy.
       </p>
       <p>
-      V pravé èásti strany se realizuje ve¹kerá èinnost tıkající se e-mailù. 
-      V horní èásti je umístìna nabídka. Zvolíte-li "Odhlásit", odhlásíte se po ukonèení 
-      práce ze systému. Aktuální slo¾ka zobrazuje slo¾ku, ve které se zrovna nacházíte. 
-      Okam¾itì po Va¹em pøihlá¹ení se Vám zobrazí vıchozí slo¾ka INBOX.
+      V pravÃ© ÄÃ¡sti strany se realizuje veÅ¡kerÃ¡ Äinnost tÃ½kajÃ­cÃ­ se e-mailÅ¯. 
+      V hornÃ­ ÄÃ¡sti je umÃ­stÄ›na nabÃ­dka. ZvolÃ­te-li "OdhlÃ¡sit", odhlÃ¡sÃ­te se po ukonÄenÃ­ 
+      prÃ¡ce ze systÃ©mu. AktuÃ¡lnÃ­ sloÅ¾ka zobrazuje sloÅ¾ku, ve kterÃ© se zrovna nachÃ¡zÃ­te. 
+      OkamÅ¾itÄ› po VaÅ¡em pÅ™ihlÃ¡Å¡enÃ­ se VÃ¡m zobrazÃ­ vÃ½chozÃ­ sloÅ¾ka INBOX.
       </p>
       <p>
-      Pod horní li¹tou máte na vıbìr tyto mo¾nosti:
+      Pod hornÃ­ liÅ¡tou mÃ¡te na vÃ½bÄ›r tyto moÅ¾nosti:
          <ul>
-            <li><b>Nová zpráva</b> - Vytvoøí a ode¹le zprávu, ke které lze pøikládat soubory.
-            <li><b>Adresáø</b> - Obsahuje seznam adres, které jsou obsa¾eny ve Va¹em adresáøi.
-            <li><b>Slo¾ky</b> - Ve¹kerá èinnost tıkající se slo¾ek se realizuje zde. Mù¾ete zde odstraòovat, vytváøet, pøejmenovávat slo¾ky, odhla¹ovat se a pøihla¹ovat se do slo¾ek.
-            <li><b>Mo¾nosti</b> - Mìní nastavení SquirrelMailu. 
-            <li><b>Hledat</b> - Nástroj pro vyhledávání ve SquirrelMailu. 
-            <li><b>Nápovìda</b> - Zde se právì nacházíte! 
+            <li><b>NovÃ¡ zprÃ¡va</b> - VytvoÅ™Ã­ a odeÅ¡le zprÃ¡vu, ke kterÃ© lze pÅ™iklÃ¡dat soubory.
+            <li><b>AdresÃ¡Å™</b> - Obsahuje seznam adres, kterÃ© jsou obsaÅ¾eny ve VaÅ¡em adresÃ¡Å™i.
+            <li><b>SloÅ¾ky</b> - VeÅ¡kerÃ¡ Äinnost tÃ½kajÃ­cÃ­ se sloÅ¾ek se realizuje zde. MÅ¯Å¾ete zde odstraÅˆovat, vytvÃ¡Å™et, pÅ™ejmenovÃ¡vat sloÅ¾ky, odhlaÅ¡ovat se a pÅ™ihlaÅ¡ovat se do sloÅ¾ek.
+            <li><b>MoÅ¾nosti</b> - MÄ›nÃ­ nastavenÃ­ SquirrelMailu. 
+            <li><b>Hledat</b> - NÃ¡stroj pro vyhledÃ¡vÃ¡nÃ­ ve SquirrelMailu. 
+            <li><b>NÃ¡povÄ›da</b> - Zde se prÃ¡vÄ› nachÃ¡zÃ­te! 
          </ul>
       </p>
    </description>

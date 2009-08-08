@@ -1,0 +1,220 @@
+# Bengali (bn_BD) spam_buttons Translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: spam_buttons.pot 12911 2008-02-01 08:40:18Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons 2.1\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2008-02-01 09:12+0100\n"
+"PO-Revision-Date: 2008-12-30 12:14+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bounce_send.php:81
+msgid "No resend destination specified"
+msgstr "পুনরায় পাঠানোর লক্ষ্য উল্লেখিত নেই"
+
+#: bounce_send.php:210
+msgid "Could not establish connection to outgoing mail server"
+msgstr "বহির্গামী মেইল সার্ভারের সাথে সংযোগ স্থাপন করতে পারেনি"
+
+#: bounce_send.php:312 report.php:1521
+#, php-format
+msgid "Could not find requested message: %s"
+msgstr "অনুরোধকৃত বার্তাটি খুঁজে পায়নি: %s"
+
+#: bounce_send.php:347
+msgid ""
+"Could not send report: \n"
+"%1\n"
+"%2 %3"
+msgstr ""
+"প্রতিবেদন পাঠাতে পারেনি: \n"
+"%1\n"
+"%2 %3"
+
+#: bounce_send.php:349
+msgid "Could not send report: <blockquote>%1<br />%2 %3</blockquote>"
+msgstr "প্রতিবেদন পাঠাতে পারেনি: <blockquote>%1<br />%2 %3</blockquote>"
+
+#: compose_functions-1.4.10.php:481 compose_functions-1.4.11.php:521
+#: compose_functions-1.4.14.php:522 compose_functions-1.5.2.php:480
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "ত্রুটি: খসড়া ফোল্ডার %s নেই।"
+
+#: compose_functions-1.4.10.php:493
+msgid "Server replied: "
+msgstr "সার্ভারের জবাব:"
+
+#: compose_functions-1.4.11.php:272 compose_functions-1.4.11.php:289
+#: compose_functions-1.4.14.php:269 compose_functions-1.4.14.php:286
+msgid "Subject"
+msgstr "বিষয়"
+
+#: compose_functions-1.4.11.php:273 compose_functions-1.4.11.php:290
+#: compose_functions-1.4.14.php:270 compose_functions-1.4.14.php:287
+msgid "From"
+msgstr "হতে"
+
+#: compose_functions-1.4.11.php:274 compose_functions-1.4.11.php:291
+#: compose_functions-1.4.14.php:271 compose_functions-1.4.14.php:288
+msgid "Date"
+msgstr "তারিখ"
+
+#: compose_functions-1.4.11.php:275 compose_functions-1.4.11.php:292
+#: compose_functions-1.4.14.php:272 compose_functions-1.4.14.php:289
+msgid "To"
+msgstr "প্রতি"
+
+#: compose_functions-1.4.11.php:276 compose_functions-1.4.11.php:296
+#: compose_functions-1.4.14.php:273 compose_functions-1.4.14.php:293
+msgid "Cc"
+msgstr "অঅ"
+
+#: compose_functions-1.4.11.php:288 compose_functions-1.4.14.php:285
+msgid "Original Message"
+msgstr "আসল বার্তা"
+
+#: compose_functions-1.4.11.php:533 compose_functions-1.4.14.php:534
+#: compose_functions-1.5.2.php:492
+msgid "Message not sent."
+msgstr "বার্তাটি পাঠানো হয়নি।"
+
+#: compose_functions-1.4.11.php:533 compose_functions-1.4.14.php:534
+#: compose_functions-1.5.2.php:498
+msgid "Server replied:"
+msgstr "সার্ভারের জবাব:"
+
+#: options.php:60
+msgid "Reselect Messages After Reporting"
+msgstr "প্রতিবেদন করার পর বার্তাটি পুনরায় নির্বাচন করুন"
+
+#: options.php:75
+msgid "Delete Spam After Reporting"
+msgstr "প্রতিবেদনের পর স্প্যাম মুছে ফেলুন"
+
+#: options.php:98 options.php:99 options.php:196 options.php:197
+msgid "[Do not move]"
+msgstr "[নড়বেন না]"
+
+#: options.php:112
+msgid "Copy Spam After Reporting To"
+msgstr "প্রতিবেদনের পর স্প্যাম অনুলিপি করুন"
+
+#: options.php:114
+msgid "Move Spam After Reporting To"
+msgstr "প্রতিবেদনের পর স্প্যাম সরান"
+
+#: options.php:135 options.php:234
+msgid "Copy Instead of Moving"
+msgstr "সরানোর বদলে অনুলিপি করুন"
+
+#: options.php:169
+msgid "Move To Next Message After Reporting"
+msgstr "প্রতিবেদনের পর পরবর্তী বার্তায় সরান"
+
+#: options.php:172
+msgid "Return to Message List"
+msgstr "বার্তা তালিকায় ফিরে যান"
+
+#: options.php:173
+msgid "Next"
+msgstr "পরবর্তী"
+
+#: options.php:174
+msgid "Previous"
+msgstr "পূর্ববর্তী"
+
+#: options.php:211
+msgid "Copy Non-Spam After Reporting To"
+msgstr "প্রতিবেদনের পর নন-স্প্যাম অনুলিপি করুন"
+
+#: options.php:213
+msgid "Move Non-Spam After Reporting To"
+msgstr "প্রতিবেদনের পর নন-স্প্যাম সরান"
+
+#: options.php:259 options.php:260 options.php:271 options.php:272
+#: options.php:348 options.php:349 options.php:362 options.php:363
+#: options.php:438 options.php:439 options.php:453 options.php:454
+#: options.php:529 options.php:530 options.php:545 options.php:546
+msgid "[Always Display]"
+msgstr "[প্রদর্শন সবসময়]"
+
+#: options.php:305
+msgid "Display Spam Button in Folders"
+msgstr "ফোল্ডারে স্প্যাম বোতাম প্রদর্শনী"
+
+#: options.php:322
+msgid "Display Spam Button in Folder"
+msgstr "ফোল্ডারে স্প্যাম বোতাম প্রদর্শনী"
+
+#: options.php:395
+msgid "Display Non-Spam Button in Folders"
+msgstr "ফোল্ডারে নন-স্প্যাম বোতাম প্রদর্শনী"
+
+#: options.php:412
+msgid "Display Non-Spam Button in Folder"
+msgstr "ফোল্ডারে নন-স্প্যাম বোতাম প্রদর্শনী"
+
+#: options.php:486
+msgid "Don't Display Spam Button in Folders"
+msgstr "ফোল্ডারে স্প্যাম বোতাম প্রদর্শনী করবেননা"
+
+#: options.php:503
+msgid "Don't Display Spam Button in Folder"
+msgstr "ফোল্ডারে স্প্যাম বোতাম প্রদর্শনী করবেননা"
+
+#: options.php:579
+msgid "Don't Display Non-Spam Button in Folders"
+msgstr "ফোল্ডারে নন-স্প্যাম বোতাম প্রদর্শনী করবেননা"
+
+#: options.php:596
+msgid "Don't Display Non-Spam Button in Folder"
+msgstr "ফোল্ডারে নন-স্প্যাম বোতাম প্রদর্শনী করবেননা"
+
+#: options.php:609
+msgid "Spam Reporting"
+msgstr "স্প্যাম প্রতিবেদন"
+
+#: report.php:1198
+msgid "The reported message is no longer available in this folder"
+msgstr "প্রতিবেদনকৃত বার্তাটি এই ফোল্ডারে আর নেই"
+
+#: report.php:1422
+msgid "ERROR: Report could not be delivered"
+msgstr "ত্রুটি: প্রতিবেদন পাঠানো হয়নি"
+
+#: report.php:1587
+msgid ""
+"ERROR: Could not open temp file; check attachments directory permissions"
+msgstr "ত্রুটি: অস্থায়ী ফাইল খুলতে পারেনি; সংযুক্তি নির্দেশিকা অনুমতি পরীক্ষা করুন"
+
+#: report.php:1599
+msgid "ERROR %1: Problem reporting message ID %2: %3"
+msgstr "ত্রুটি %1: বার্তাটির আইডি প্রতিবেদনে সমস্যা %2: %3"
+
+#: report.php:1603
+msgid "ERROR %1: Problem reporting message ID %2 (entity %4): %3"
+msgstr "ত্রুটি %1: বার্তাটির আইডি প্রতিবেদনে সমস্যা %2 (বৈশিষ্ট্য %4): %3"
+
+#: setup.php:112
+msgid "Spam"
+msgstr "স্প্যাম"
+
+#: setup.php:113
+msgid "Not Spam"
+msgstr "স্প্যাম নয়"
+
+#: setup.php:114
+msgid "Successfully reported as spam"
+msgstr "স্প্যাম হিসেবে সফল ভাবে প্রতিবেদনকৃত"
+
+#: setup.php:115
+msgid "Successfully reported as non-spam"
+msgstr "নন-স্প্যাম হিসেবে সফল ভাবে প্রতিবেদনকৃত"

@@ -1,61 +1,61 @@
 <chapter>
    <title>
-      Index správ
+      Index sprÃ¡v
    </title>
    <summary>
-      Toto meno mô¾e znie» komplexne, ale je to len zoznam e-mailovıch správ,
-      ktoré sú v konkrétnom prieèinku.
+      Toto meno mÃ´Å¾e znieÅ¥ komplexne, ale je to len zoznam e-mailovÃ½ch sprÃ¡v,
+      ktorÃ© sÃº v konkrÃ©tnom prieÄinku.
    </summary>
 </chapter>
 
 <section>
    <title>
-      Index správ
+      Index sprÃ¡v
    </title>
    <description>
       <p>
-      Po kliknutí na prieèinok, ocitnete sa (v pravom rámci) v indexe správ. Ten
-      zobrazuje správy v zvolenom prieèinku. Pod menu Voµba je riadok, ktorı
-      informuje, ktorú správu v poradí si prezeráte a koµko je v¹etkıch správ.
+      Po kliknutÃ­ na prieÄinok, ocitnete sa (v pravom rÃ¡mci) v indexe sprÃ¡v. Ten
+      zobrazuje sprÃ¡vy v zvolenom prieÄinku. Pod menu VoÄ¾ba je riadok, ktorÃ½
+      informuje, ktorÃº sprÃ¡vu v poradÃ­ si prezerÃ¡te a koÄ¾ko je vÅ¡etkÃ½ch sprÃ¡v.
       </p><p>
-      Napríklad: Zobrazenie Správ <B>20</B> do <B>30</B> (45 celkovo od poètu
-      nepreèítanıch správ, ktorı je vpravo od hlavného prieèinku).
+      NaprÃ­klad: Zobrazenie SprÃ¡v <B>20</B> do <B>30</B> (45 celkovo od poÄtu
+      nepreÄÃ­tanÃ½ch sprÃ¡v, ktorÃ½ je vpravo od hlavnÃ©ho prieÄinku).
       </p><p>
-      Ïal¹ia je li¹ta obsahujúca ¹tyri tlaèidlá. Na µavej strane je rolovací zoznam.
-      Na µavej strane su práve prihlásené prieèinky. Akákoµvek zvolená správa bude
-      presunutá po stisnutí tlaèidla Presunú». Naraz mô¾te presunú» aj viac správ.
-      Celkom na pravo li¹ty je tlaèidlo na zmazanie oznaèenıch správ. Len si
-      vyberte nepotrebnú správu a stisnite tlaèidlo. Naµavo od tlaèidla Odstráni»
-      sú dva tlaèidlá ktoré vám umo¾nia oznaèi» zvolené správy ako preèítané / 
-      nepreèítané.
+      ÄalÅ¡ia je liÅ¡ta obsahujÃºca Å¡tyri tlaÄidlÃ¡. Na Ä¾avej strane je rolovacÃ­ zoznam.
+      Na Ä¾avej strane su prÃ¡ve prihlÃ¡senÃ© prieÄinky. AkÃ¡koÄ¾vek zvolenÃ¡ sprÃ¡va bude
+      presunutÃ¡ po stisnutÃ­ tlaÄidla PresunÃºÅ¥. Naraz mÃ´Å¾te presunÃºÅ¥ aj viac sprÃ¡v.
+      Celkom na pravo liÅ¡ty je tlaÄidlo na zmazanie oznaÄenÃ½ch sprÃ¡v. Len si
+      vyberte nepotrebnÃº sprÃ¡vu a stisnite tlaÄidlo. NaÄ¾avo od tlaÄidla OdstrÃ¡niÅ¥
+      sÃº dva tlaÄidlÃ¡ ktorÃ© vÃ¡m umoÅ¾nia oznaÄiÅ¥ zvolenÃ© sprÃ¡vy ako preÄÃ­tanÃ© / 
+      nepreÄÃ­tanÃ©.
       </p><p>
-	    Ïal¹ou je li¹ta obsahujúca 3 polia (Od, Dátum, a Predmet). iteto názvy rozdeµujú
-	    tabuµku správ do logickıch èastí. Tieto vám povedia, kto poslal správu, alebo
-	    najmenej to, z akej e-mailovej adresy pri¹la správa. Dátum vám ukazuje, akı
-	    deò bola odoslaná správa.Predmet zobrazuje èo odosielateµ napísal ako predmet
-	    správy.
-	    <b>Poznámka:</b> Medzi Dátumom a Predmetom je malı neoznaèenı ståpec. tu mô¾e by»
-	    znak "+", "!" alebo "A".Ak uvidíte "+", znamená to, ¾e správa ma prílohy.
-	    Ak uvidíte "A", znamená to, ¾e na správu ste u¾ odpovedali(A=Answered), a ak vidíte
-	    "!" znamená to, ¾e správa je oznaèená ako urgentná.
+	    ÄalÅ¡ou je liÅ¡ta obsahujÃºca 3 polia (Od, DÃ¡tum, a Predmet). iteto nÃ¡zvy rozdeÄ¾ujÃº
+	    tabuÄ¾ku sprÃ¡v do logickÃ½ch ÄastÃ­. Tieto vÃ¡m povedia, kto poslal sprÃ¡vu, alebo
+	    najmenej to, z akej e-mailovej adresy priÅ¡la sprÃ¡va. DÃ¡tum vÃ¡m ukazuje, akÃ½
+	    deÅˆ bola odoslanÃ¡ sprÃ¡va.Predmet zobrazuje Äo odosielateÄ¾ napÃ­sal ako predmet
+	    sprÃ¡vy.
+	    <b>PoznÃ¡mka:</b> Medzi DÃ¡tumom a Predmetom je malÃ½ neoznaÄenÃ½ stÄºpec. tu mÃ´Å¾e byÅ¥
+	    znak "+", "!" alebo "A".Ak uvidÃ­te "+", znamenÃ¡ to, Å¾e sprÃ¡va ma prÃ­lohy.
+	    Ak uvidÃ­te "A", znamenÃ¡ to, Å¾e na sprÃ¡vu ste uÅ¾ odpovedali(A=Answered), a ak vidÃ­te
+	    "!" znamenÃ¡ to, Å¾e sprÃ¡va je oznaÄenÃ¡ ako urgentnÃ¡.
       </p><p>
-      Èo ostáva, je aktuálna tabuµka správ. O nepreèítanıch správach ste informovanı
-      správou s tuènım písmom, zvy¹né správy sú normálnym textom.
-      V tabuµke sú 4.polia. Celkom vµavo je políèko vıberu. Ak si ho zvolíte, na
-      zvolenej správa sa vykoná akcia, o ktorej sme u¾ písali skôr(presun,
-      oznaèovanie ako (ne)preèítané) a odstránenie).
-      Odkaz "Oznaèi» v¹etko" na vrchu vıpisu vám umo¾nuje oznaèi» v¹etky políèka
-      pod ním naraz.<BR>
-      Pod názvom "Od" sú správy od odosielateµov. Pre zobrazenie správy kliknite
-      na predmet danej správy.
+      ÄŒo ostÃ¡va, je aktuÃ¡lna tabuÄ¾ka sprÃ¡v. O nepreÄÃ­tanÃ½ch sprÃ¡vach ste informovanÃ½
+      sprÃ¡vou s tuÄnÃ½m pÃ­smom, zvyÅ¡nÃ© sprÃ¡vy sÃº normÃ¡lnym textom.
+      V tabuÄ¾ke sÃº 4.polia. Celkom vÄ¾avo je polÃ­Äko vÃ½beru. Ak si ho zvolÃ­te, na
+      zvolenej sprÃ¡va sa vykonÃ¡ akcia, o ktorej sme uÅ¾ pÃ­sali skÃ´r(presun,
+      oznaÄovanie ako (ne)preÄÃ­tanÃ©) a odstrÃ¡nenie).
+      Odkaz "OznaÄiÅ¥ vÅ¡etko" na vrchu vÃ½pisu vÃ¡m umoÅ¾nuje oznaÄiÅ¥ vÅ¡etky polÃ­Äka
+      pod nÃ­m naraz.<BR>
+      Pod nÃ¡zvom "Od" sÃº sprÃ¡vy od odosielateÄ¾ov. Pre zobrazenie sprÃ¡vy kliknite
+      na predmet danej sprÃ¡vy.
       </p>
       <p>
-      Ak va¹a po¹tová schránka obsahuje veµa správ, vıpis správ sa ako je
-      prednastavené, rozdelí do viacerıch stránok. Aby ste si mohli prezrie» ïal¹ie
-      stránky,  pou¾ite odkazy Predchádzajúca a Ïal¹ia. Mô¾te tie¾ preskoèi» priamo
-      do konkrétnej stránky kliknutím na èíslo stránky(èíslo oznaèuje stránku).
-      Ak kliknete máte povolenú voµbu Zobrazi» v¹etko, tak sa ¹tandardné stránkovanie
-      deaktivuje a zobrazia sa v¹etky správy naraz na jednej veµkej stránke.
+      Ak vaÅ¡a poÅ¡tovÃ¡ schrÃ¡nka obsahuje veÄ¾a sprÃ¡v, vÃ½pis sprÃ¡v sa ako je
+      prednastavenÃ©, rozdelÃ­ do viacerÃ½ch strÃ¡nok. Aby ste si mohli prezrieÅ¥ ÄalÅ¡ie
+      strÃ¡nky,  pouÅ¾ite odkazy PredchÃ¡dzajÃºca a ÄalÅ¡ia. MÃ´Å¾te tieÅ¾ preskoÄiÅ¥ priamo
+      do konkrÃ©tnej strÃ¡nky kliknutÃ­m na ÄÃ­slo strÃ¡nky(ÄÃ­slo oznaÄuje strÃ¡nku).
+      Ak kliknete mÃ¡te povolenÃº voÄ¾bu ZobraziÅ¥ vÅ¡etko, tak sa Å¡tandardnÃ© strÃ¡nkovanie
+      deaktivuje a zobrazia sa vÅ¡etky sprÃ¡vy naraz na jednej veÄ¾kej strÃ¡nke.
       </p>
       
    </description>

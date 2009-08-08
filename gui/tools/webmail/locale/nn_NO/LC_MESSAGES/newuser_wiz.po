@@ -1,7 +1,7 @@
 # translation of newuser_wiz.po to Nynorsk
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# $Id: newuser_wiz.po 11517 2006-08-11 13:20:01Z tokul $
+# $Id: newuser_wiz.po 13696 2009-05-14 06:27:08Z jervfors $
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
 msgid ""
 msgstr ""

@@ -1,33 +1,33 @@
 <chapter>
    <title>
-      Ètení zpráv
+      ÄŒtenÃ­ zprÃ¡v
    </title>
    <summary>
        
    </summary>
    <description>
       <p>
-      Po kliknutí na "Pøedmìt" se Vám zobrazí pøijatá zpráva. Emailové a 
-      webové adresy jsou odkazy, na které mù¾ete kliknout a otevøe se Vám 
-      zpráva nebo stránka. Zprávy jsou barevnì rozli¹eny. V odpovìdi na zprávu 
-      je obsa¾en text pøíchozí zprávy a ka¾dı øádek je odsazen pomocí ">". 
-      Díky tomu doká¾e SquirrelMail provést kódování zpráv. Zodpovìzená zpráva pak 
-      bude mít jinou barvu textu ne¾ je text nové zprávy. Text pøíchozí zprávy bude 
-      mít jinou barvu ne¾ text Va¹í odpovìdi. V horní li¹tì máte mo¾nost zprávu 
-      odstranit a vrátit se do seznamu zpráv. Uprostøed li¹ty mù¾ete volit mezi 
-      funkcemi Pøedchozí a Dal¹í. Vpravo jsou zobrazeny rùzné funkce tıkající se 
-      odesílání zpráv. 
+      Po kliknutÃ­ na "PÅ™edmÄ›t" se VÃ¡m zobrazÃ­ pÅ™ijatÃ¡ zprÃ¡va. EmailovÃ© a 
+      webovÃ© adresy jsou odkazy, na kterÃ© mÅ¯Å¾ete kliknout a otevÅ™e se VÃ¡m 
+      zprÃ¡va nebo strÃ¡nka. ZprÃ¡vy jsou barevnÄ› rozliÅ¡eny. V odpovÄ›di na zprÃ¡vu 
+      je obsaÅ¾en text pÅ™Ã­chozÃ­ zprÃ¡vy a kaÅ¾dÃ½ Å™Ã¡dek je odsazen pomocÃ­ ">". 
+      DÃ­ky tomu dokÃ¡Å¾e SquirrelMail provÃ©st kÃ³dovÃ¡nÃ­ zprÃ¡v. ZodpovÄ›zenÃ¡ zprÃ¡va pak 
+      bude mÃ­t jinou barvu textu neÅ¾ je text novÃ© zprÃ¡vy. Text pÅ™Ã­chozÃ­ zprÃ¡vy bude 
+      mÃ­t jinou barvu neÅ¾ text VaÅ¡Ã­ odpovÄ›di. V hornÃ­ liÅ¡tÄ› mÃ¡te moÅ¾nost zprÃ¡vu 
+      odstranit a vrÃ¡tit se do seznamu zprÃ¡v. UprostÅ™ed liÅ¡ty mÅ¯Å¾ete volit mezi 
+      funkcemi PÅ™edchozÃ­ a DalÅ¡Ã­. Vpravo jsou zobrazeny rÅ¯znÃ© funkce tÃ½kajÃ­cÃ­ se 
+      odesÃ­lÃ¡nÃ­ zprÃ¡v. 
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      Seznam zpráv
+      Seznam zprÃ¡v
    </title>
    <description>
       <p>
-      Kliknutím na tento odkaz se vrátíte do vıchozí slo¾ky. 
+      KliknutÃ­m na tento odkaz se vrÃ¡tÃ­te do vÃ½chozÃ­ sloÅ¾ky. 
       </p>
    </description>
 </section>
@@ -38,9 +38,9 @@
    </title>
    <description>
       <p>
-      Kliknutím na tento odkaz sma¾ete zprávy, které jsou aktuálnì zobrazeny. 
-      Spolu se zprávou se také sma¾ou v¹echny pøilo¾ené soubory. Jejich ztrátì 
-      lze pøedejít, jestli¾e je nejdøíve ulo¾íte (podrobnìji ní¾e). 
+      KliknutÃ­m na tento odkaz smaÅ¾ete zprÃ¡vy, kterÃ© jsou aktuÃ¡lnÄ› zobrazeny. 
+      Spolu se zprÃ¡vou se takÃ© smaÅ¾ou vÅ¡echny pÅ™iloÅ¾enÃ© soubory. Jejich ztrÃ¡tÄ› 
+      lze pÅ™edejÃ­t, jestliÅ¾e je nejdÅ™Ã­ve uloÅ¾Ã­te (podrobnÄ›ji nÃ­Å¾e). 
       </p>
    </description>
 </section>
@@ -49,91 +49,91 @@
 
 <section>
    <title>
-      Dal¹í
+      DalÅ¡Ã­
    </title>
    <description>
       <p>
-      Kliknutím na tento odkaz se pøesunete ke zprávì, která následuje zprávu 
-      aktuálnì zobrazenou. 
+      KliknutÃ­m na tento odkaz se pÅ™esunete ke zprÃ¡vÄ›, kterÃ¡ nÃ¡sleduje zprÃ¡vu 
+      aktuÃ¡lnÄ› zobrazenou. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøedat dál
+      PÅ™edat dÃ¡l
    </title>
    <description>
       <p>
-      Tlaèítko "Pøedat dál" je umístìno vpravo a kliknutím na nìj se otevøe okno 
-      obsahující text doruèené zprávy. K pùvodnímu pøedmìtu zprávy se pøipojí "Fwd:", 
-      ostatní pole vyplòujete Vy, mù¾ete mìnit jejich znìní a popøípadì pou¾ít 
-      také funkci "Pøilo¾it soubor."
+      TlaÄÃ­tko "PÅ™edat dÃ¡l" je umÃ­stÄ›no vpravo a kliknutÃ­m na nÄ›j se otevÅ™e okno 
+      obsahujÃ­cÃ­ text doruÄenÃ© zprÃ¡vy. K pÅ¯vodnÃ­mu pÅ™edmÄ›tu zprÃ¡vy se pÅ™ipojÃ­ "Fwd:", 
+      ostatnÃ­ pole vyplÅˆujete Vy, mÅ¯Å¾ete mÄ›nit jejich znÄ›nÃ­ a popÅ™Ã­padÄ› pouÅ¾Ã­t 
+      takÃ© funkci "PÅ™iloÅ¾it soubor."
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Odpovìdìt
+      OdpovÄ›dÄ›t
    </title>
    <description>
       <p>
-      Tato funkce Vám umo¾òuje odpovìdìt odesílateli zprávy. Do pole "Pøedmìt zprávy" 
-      se automaticky vepí¹e Re:" a text pùvodní zprávy se opìt zobrazí v poli "Text zprávy". 
-      Pùvodní zpráva bude odsazena pomocí ">". Mù¾e se stát, ¾e èást pùvodní zprávy nebude 
-      symbol ">" obsahovat z dùvodu nastavení zalomení øádkù. Tomu lze pøedejít zmìnou poètu 
-      jednotek v nastavení v "Zalomit pøíchozí zprávu na". 
+      Tato funkce VÃ¡m umoÅ¾Åˆuje odpovÄ›dÄ›t odesÃ­lateli zprÃ¡vy. Do pole "PÅ™edmÄ›t zprÃ¡vy" 
+      se automaticky vepÃ­Å¡e Re:" a text pÅ¯vodnÃ­ zprÃ¡vy se opÄ›t zobrazÃ­ v poli "Text zprÃ¡vy". 
+      PÅ¯vodnÃ­ zprÃ¡va bude odsazena pomocÃ­ ">". MÅ¯Å¾e se stÃ¡t, Å¾e ÄÃ¡st pÅ¯vodnÃ­ zprÃ¡vy nebude 
+      symbol ">" obsahovat z dÅ¯vodu nastavenÃ­ zalomenÃ­ Å™Ã¡dkÅ¯. Tomu lze pÅ™edejÃ­t zmÄ›nou poÄtu 
+      jednotek v nastavenÃ­ v "Zalomit pÅ™Ã­chozÃ­ zprÃ¡vu na". 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Odpovìdìt v¹em
+      OdpovÄ›dÄ›t vÅ¡em
    </title>
    <description>
       <p>
-      Jedná se v podstatì o stejnou funkci jako "Odpovìdìt" s tou vıjimkou, ¾e zprávu 
-      obdr¾í v¹ichni adresáti uvedení v hlavièce zprávy. 
+      JednÃ¡ se v podstatÄ› o stejnou funkci jako "OdpovÄ›dÄ›t" s tou vÃ½jimkou, Å¾e zprÃ¡vu 
+      obdrÅ¾Ã­ vÅ¡ichni adresÃ¡ti uvedenÃ­ v hlaviÄce zprÃ¡vy. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Zobrazit v¹echny hlavièky
+      Zobrazit vÅ¡echny hlaviÄky
    </title>
    <description>
       <p>
-      Tato funkce zobrazí celou hlavièku zprávy. Ta obsahuje cestu zprávu a podrobnìj¹í 
-      informace o samotné zprávì. 
+      Tato funkce zobrazÃ­ celou hlaviÄku zprÃ¡vy. Ta obsahuje cestu zprÃ¡vu a podrobnÄ›jÅ¡Ã­ 
+      informace o samotnÃ© zprÃ¡vÄ›. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Ulo¾it soubor jako
+      UloÅ¾it soubor jako
    </title>
    <description>
       <p>
-      Ve spodní èásti nad spodní li¹tou je umístìn odkaz, kterım lze ulo¾it zprávu na Vá¹ 
-      pevnı disk v textovém formátu. Ke zprávì bude také pøipojena jednoduchá hlavièka. 
+      Ve spodnÃ­ ÄÃ¡sti nad spodnÃ­ liÅ¡tou je umÃ­stÄ›n odkaz, kterÃ½m lze uloÅ¾it zprÃ¡vu na VÃ¡Å¡ 
+      pevnÃ½ disk v textovÃ©m formÃ¡tu. Ke zprÃ¡vÄ› bude takÃ© pÅ™ipojena jednoduchÃ¡ hlaviÄka. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøilo¾ené soubory
+      PÅ™iloÅ¾enÃ© soubory
    </title>
    <description>
       <p>
-      Jakıkoliv pøilo¾enı soubor se zobrazí v dolní èásti zprávy uprostøed barevné èásti. 
-      Tento soubor se zobrazí jako odkaz s popisem typu souboru. Kliknutím na název souboru se 
-      buï soubor zobrazí nebo se otevøe okno ke sta¾ení souboru. Jestli¾e chcete radìji 
-      soubor ulo¾it, kliknìte na tlaèítko "Ulo¾it" na pravé stranì.
+      JakÃ½koliv pÅ™iloÅ¾enÃ½ soubor se zobrazÃ­ v dolnÃ­ ÄÃ¡sti zprÃ¡vy uprostÅ™ed barevnÃ© ÄÃ¡sti. 
+      Tento soubor se zobrazÃ­ jako odkaz s popisem typu souboru. KliknutÃ­m na nÃ¡zev souboru se 
+      buÄ soubor zobrazÃ­ nebo se otevÅ™e okno ke staÅ¾enÃ­ souboru. JestliÅ¾e chcete radÄ›ji 
+      soubor uloÅ¾it, kliknÄ›te na tlaÄÃ­tko "UloÅ¾it" na pravÃ© stranÄ›.
       </p>
    </description>
 </section>

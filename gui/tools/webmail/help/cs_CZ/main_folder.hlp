@@ -1,6 +1,6 @@
 <chapter>
    <title>
-      Seznam zpráv
+      Seznam zprÃ¡v
    </title>
    <summary>
       
@@ -9,34 +9,34 @@
 
 <section>
    <title>
-      Seznam zpráv
+      Seznam zprÃ¡v
    </title>
    <description>
       <p>
-      Po kliknutí na název slo¾ky se v levé èásti obrazovky zobrazí seznam zpráv, které tato slo¾ka obsahuje. 
-      Pod horním menu se nachází øádek s informacemi o tom, které zprávy se zobrazují a kolik jste jich celkem obdr¾eli. 
+      Po kliknutÃ­ na nÃ¡zev sloÅ¾ky se v levÃ© ÄÃ¡sti obrazovky zobrazÃ­ seznam zprÃ¡v, kterÃ© tato sloÅ¾ka obsahuje. 
+      Pod hornÃ­m menu se nachÃ¡zÃ­ Å™Ã¡dek s informacemi o tom, kterÃ© zprÃ¡vy se zobrazujÃ­ a kolik jste jich celkem obdrÅ¾eli. 
       </p><p>
-      Napøíklad: zobrazeny zprávy <B>20</B> a¾ <B>30</B> (45 celkem).
+      NapÅ™Ã­klad: zobrazeny zprÃ¡vy <B>20</B> aÅ¾ <B>30</B> (45 celkem).
       </p><p>
-      Poèet v¹ech zpráv se mù¾e li¹it od poètu nepøeètenıch zpráv, jejich¾ poèet 
-      je uveden v závorkách v hlavní slo¾ce zpráv. 
+      PoÄet vÅ¡ech zprÃ¡v se mÅ¯Å¾e liÅ¡it od poÄtu nepÅ™eÄtenÃ½ch zprÃ¡v, jejichÅ¾ poÄet 
+      je uveden v zÃ¡vorkÃ¡ch v hlavnÃ­ sloÅ¾ce zprÃ¡v. 
       </p><p>
-      Následuje li¹ta se tøemi tlaèítky. První zleva je rozbalovací seznam 
-      slo¾ek. Tento seznam zobrazuje slo¾ky, které aktuálnì vyu¾íváte. Jakákoliv 
-      vybraná zpráva bude pøesunuta do vybrané slo¾ky, kdy¾ kliknete na tlaèítko 
-      "Pøesunout", pøièem¾ je mo¾né pøesunout více zpráv najednou. V pravé èásti 
-      li¹ty je tlaèítko, kterım lze odstranit vybrané zprávy. Vyberte zprávy, 
-      které chcete vymazat a kliknìte na "Odstranit". 
+      NÃ¡sleduje liÅ¡ta se tÅ™emi tlaÄÃ­tky. PrvnÃ­ zleva je rozbalovacÃ­ seznam 
+      sloÅ¾ek. Tento seznam zobrazuje sloÅ¾ky, kterÃ© aktuÃ¡lnÄ› vyuÅ¾Ã­vÃ¡te. JakÃ¡koliv 
+      vybranÃ¡ zprÃ¡va bude pÅ™esunuta do vybranÃ© sloÅ¾ky, kdyÅ¾ kliknete na tlaÄÃ­tko 
+      "PÅ™esunout", pÅ™iÄemÅ¾ je moÅ¾nÃ© pÅ™esunout vÃ­ce zprÃ¡v najednou. V pravÃ© ÄÃ¡sti 
+      liÅ¡ty je tlaÄÃ­tko, kterÃ½m lze odstranit vybranÃ© zprÃ¡vy. Vyberte zprÃ¡vy, 
+      kterÃ© chcete vymazat a kliknÄ›te na "Odstranit". 
       </p><p>
-      Pole "Od" zobrazuje odesílatele zpráv nebo adresu, ze které byla zpráva 
-      odeslána. V poli "Datum" se zobrazí datum odeslání zprávy a "Pøedmìt" oznaèuje 
-      titulek zprávy, kterı odesílatel uvedl. Poznámka: Mezi políèkem "Datum" a 
-      "Pøedmìt" je neoznaèenı sloupec, kterı mù¾e obsahovat buï  "!" nebo "A". 
-      "A" znamená, ¾e jste na zprávu odpovìdìli, "!" pak to, ¾e je zpráva dùle¾itá. 
+      Pole "Od" zobrazuje odesÃ­latele zprÃ¡v nebo adresu, ze kterÃ© byla zprÃ¡va 
+      odeslÃ¡na. V poli "Datum" se zobrazÃ­ datum odeslÃ¡nÃ­ zprÃ¡vy a "PÅ™edmÄ›t" oznaÄuje 
+      titulek zprÃ¡vy, kterÃ½ odesÃ­latel uvedl. PoznÃ¡mka: Mezi polÃ­Äkem "Datum" a 
+      "PÅ™edmÄ›t" je neoznaÄenÃ½ sloupec, kterÃ½ mÅ¯Å¾e obsahovat buÄ  "!" nebo "A". 
+      "A" znamenÃ¡, Å¾e jste na zprÃ¡vu odpovÄ›dÄ›li, "!" pak to, Å¾e je zprÃ¡va dÅ¯leÅ¾itÃ¡. 
       </p><p>
-      Na této stránce se také zobrazí tabulka aktuálních zpráv. Nepøeètené zprávy 
-      jsou oznaèeny <B>tuènì</B>, pøeètené standardním písmem. Vlevo jsou políèka 
-      urèená k oznaèení zprávy. Oznaèené zprávy lze pøesouvat do slo¾ek nebo je odstraòovat. 
+      Na tÃ©to strÃ¡nce se takÃ© zobrazÃ­ tabulka aktuÃ¡lnÃ­ch zprÃ¡v. NepÅ™eÄtenÃ© zprÃ¡vy 
+      jsou oznaÄeny <B>tuÄnÄ›</B>, pÅ™eÄtenÃ© standardnÃ­m pÃ­smem. Vlevo jsou polÃ­Äka 
+      urÄenÃ¡ k oznaÄenÃ­ zprÃ¡vy. OznaÄenÃ© zprÃ¡vy lze pÅ™esouvat do sloÅ¾ek nebo je odstraÅˆovat. 
      </p>
    </description>
 </section>

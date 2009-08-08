@@ -1,30 +1,30 @@
 # Swedish (sv_SE) compose_fix Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: compose_fix.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: compose_fix.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: compose_fix 0.3\n"
 "POT-Creation-Date: 2005-04-14 06:30-0700\n"
 "PO-Revision-Date: 2005-04-15 10:39+0200\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Compose Window Tab Order"
-msgstr "Tabulatorordning i redigeringsfönstret"
+msgstr "Tabulatorordning i redigeringsfÃ¶nstret"
 
 msgid "Default"
-msgstr "Förval"
+msgstr "FÃ¶rval"
 
 msgid "To-Subject-Message"
-msgstr "Till Ärende Text"
+msgstr "Till Ã„rende Text"
 
 msgid "To-Cc-Bcc-Subject-Message"
-msgstr "Till Kopia Dold kopia Ärende Text"
+msgstr "Till Kopia Dold kopia Ã„rende Text"
 
 msgid "Insert Blank Lines At Top Of Reply Body"
-msgstr "Infoga blankrader i början av svarstexten"
+msgstr "Infoga blankrader i bÃ¶rjan av svarstexten"

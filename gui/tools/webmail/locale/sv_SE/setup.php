@@ -2,7 +2,7 @@
 /**
  * Language configuration file
  *
- * Copyright (c) 2005-2006 The SquirrelMail Project Team
+ * Copyright (c) 2005-2009 The SquirrelMail Project Team
  *
  * This file is part of SquirrelMail webmail interface. It is distributed
  * together with other translation files and is used to enable 
@@ -22,12 +22,12 @@
  * along with SquirrelMail; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @version $Id: setup.php 11413 2006-07-19 12:38:11Z tokul $
+ * @version $Id: setup.php 13693 2009-05-14 00:26:43Z jervfors $
  * @package locales
  */
 
 $languages['sv_SE']['NAME']    = 'Swedish';
 $languages['sv_SE']['ALTNAME'] = 'Svenska';
-$languages['sv_SE']['CHARSET'] = 'iso-8859-1';
-$languages['sv_SE']['LOCALE']  = array('sv_SE.ISO8859-1','sv_SE.ISO-8859-1','sv_SE');
+$languages['sv_SE']['CHARSET'] = 'utf-8';
+$languages['sv_SE']['LOCALE']  = array('sv_SE.UTF-8', 'sv_SE.UTF8', 'sv_SE');
 $languages['sv']['ALIAS'] = 'sv_SE';

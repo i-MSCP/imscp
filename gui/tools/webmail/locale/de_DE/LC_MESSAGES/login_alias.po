@@ -1,9 +1,9 @@
-# Squirrelmail login_alias plugin
+# SquirrelMail login_alias plugin
 # German translation
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Ferdie Ferdsen <ferdie@despam.de>, 2004.
-# $Id: login_alias.po 9522 2005-06-05 11:50:09Z jervfors $
+# $Id: login_alias.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: login_alias\n"

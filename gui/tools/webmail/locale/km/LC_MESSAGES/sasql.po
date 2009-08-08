@@ -1,0 +1,1043 @@
+# Khmer (km) sasql Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: sasql\n"
+"Report-Msgid-Bugs-To: Randy Smith <perlstalker@vuser.org>\n"
+"POT-Creation-Date: 2007-01-19 13:40+0100\n"
+"PO-Revision-Date: 2009-04-24 09:30+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: bayes_stats.inc.php:31
+msgid "Bayes Filter Statistics"
+msgstr "ស្ថិតិ​តម្រង Bayes"
+
+#: bayes_stats.inc.php:37
+msgid ""
+"Below are the number of messages that have been learned as spam and ham (non-"
+"spam) by the Bayesian filter. The Bayesian filter does not activate until "
+"enough messages have been learned as spam or ham."
+msgstr "ខាងក្រោម គឺ​ជា​ចំនួន​សារ​ដែល​ត្រូវបាន​ស្គាល់​ថា​ជា​សារ​ឥតបាន​ការ និង​កំហុស (មិនមែន​ជា​សារ​ឥតបាន​ការ) ដោយ​តម្រង Bayesian ។ តម្រង Bayesian មិន​ធ្វើ​ឲ្យ​សកម្ម​ទេ រហូត​ទាល់តែ​មាន​សារ​គ្រប់គ្រាន់​ដែល​បាន​ដឹង​ថា​ជា​សារ​ឥតបាន​ការ ឬ​កំហុស ។"
+
+#: bayes_stats.inc.php:41
+msgid "Spam Count"
+msgstr "ចំនួន​សារ​ឥត​បាន​ការ"
+
+#: bayes_stats.inc.php:47
+msgid "Ham Count"
+msgstr "ចំនួន​កំហុស"
+
+#: dspam.inc.php:82
+msgid "DSPAM Settings"
+msgstr "ការ​កំណត់ DSPAM"
+
+#: dspam.inc.php:89
+msgid "Warning"
+msgstr "ព្រមាន"
+
+#: dspam.inc.php:91
+msgid "Enabling DSPAM will disable SpamAssassin scanning of your email."
+msgstr "ការ​អនុញ្ញាត DSPAM នឹង​បិទ​ការ​វិភាគ SpamAssassin នៃ​អ៊ីមែល​របស់​អ្នក ។"
+
+#: dspam.inc.php:94
+msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
+msgstr "ការ​កំណត់ SpamAssassin និង​បញ្ជី​ខ្មៅ/ស នឹង​មិន​ត្រូវបាន​ប្រើ​ដោយ dspam ទេ ។"
+
+#. *
+#. * To translators: %s's will be replaced with <a ..> and </a>
+#.
+#: dspam.inc.php:102
+#, php-format
+msgid ""
+"This %sFAQ%s from the DSPAM web site explains the differences between "
+"SpamAssassin and DSPAM and why you might want to use dspam instead of "
+"SpamAssassin."
+msgstr ""
+"%sសំណួរ​សួរ​ជា​ញឹកញាប់%s នេះ​ពី​តំបន់បណ្ដាញ DSPAM ពន្យល់​អំពី​ភាព​ខុសគ្នា​រវាង "
+"SpamAssassin និង DSPAM និង​មូលហេតុ​ដែល​អ្នក​ចង់​ប្រើ dspam ជំនួស SpamAssassin ។"
+
+#: dspam.inc.php:113
+msgid ""
+"DSPAM is a learning system that filters spam based on what <i>you</i> tell "
+"it is spam and what isn't. Messages are analyzed as they are delivered and "
+"are assigned a spam probability between 0 and 1. The more messages you "
+"receive, both spam and innocent, the better DSPAM learns what <i>you</i> "
+"think is spam and what is not."
+msgstr "DSPAM គឺ​ជា​ប្រព័ន្ធ​សិក្សា​ដែល​មាន​មូលដ្ឋាន​លើ​អ្វី​ដែល​<i>អ្នក</i> ប្រាប់​ថា​អ្វី​ជា​សារ​ឥតបាន​ការ និង​អ្វី​ដែល​មិនមែន​ជា​សារ​ឥត​បាន​ការ ។ សារ​​ត្រូវបាន​វិភាគ​ថា​ពួកវា​ត្រូវបាន​បញ្ជូន​ដល់ និង​ត្រូវបាន​ផ្ដល់​ជា​ប្រូបាប​សារ​ឥត​បាន​ការ​រវាង ០ និង ១ ។ អ្នក​ទទួល​សារ​កាន់តែ​ច្រើន (ទាំង​សារ​ឥតបាន​ការ និង​ការ​បន្លំ) នោះ DSPAM កាន់តែ​ដឹង​ច្បាស់​ថាអ្វី​ដែល​<i>អ្នក</i>​គិតថា​ជា​សារ​មិនបាន​ការ និង​អ្វី​​ដែល​មិនមែន ។"
+
+#: dspam.inc.php:117
+msgid "Reporting Spam"
+msgstr "រាយការណ៍​សារ​ឥតបាន​ការ"
+
+#: dspam.inc.php:120
+msgid ""
+"If you receive a spam message in your Inbox, forward the message to "
+"<nobr>username-spam@domain</nobr> and it will be learned as spam. For "
+"example, if your address is joe@example.com, you would forward the message "
+"to <nobr>joe-spam@example.com</nobr>."
+msgstr "ប្រសិន​បើ​អ្នក​ទទួល​សារ​ឥតបាន​ការ​ក្នុង​ប្រអប់​សំបុត្រ​របស់​អ្នក បញ្ជូន​សារ​បន្ត​ទៅ <nobr>username-spam@domain</nobr> ហើយ​វា​នឹង​ត្រូវ​បាន​ដឹង​ថា​ជា​សារ​ឥត​បាន​ការ ។ ឧទាហរណ៍ ប្រសិន​បើ​អាសយដ្ឋាន​របស់​អ្នក​គឺ joe@example.com គឺ​អ្នក​ត្រូវ​បញ្ជូន​បន្ត​សារ​ទៅកាន់ <nobr>joe-spam@example.com</nobr> ។"
+
+#: dspam.inc.php:126
+#, php-format
+msgid ""
+"You can also move your spam messages to the <i>%s</i> folder. This folder is "
+"periodically checked for messages which are then learned as spam and "
+"deleted. You do not need to move messages from your %s folder here because "
+"they have already been learned as spam."
+msgstr "អ្នក​ក៏​អាច​ផ្លាស់ទី​សារ​ឥត​បាន​ការ​របស់​អ្នក​ទៅកាន់​ថត <i>%s</i> ។ ថត​នេះ​គឺ​ត្រូវបាន​ពិនិត្យ​រកមើល​សារ​យ៉ាង​ទៀងទាត់ ដែល​ពេល​នោះ​នឹង​ត្រូវ​បាន​ដឹង​ថា​ជា​សារឥតបាន​ការ ហើយ​ត្រូវបាន​លុបចេញ ។ អ្នក​មិន​ចាំបាច់​ផ្លាស់ទី​សារ​ពី​ថត %s របស់​អ្នក​នៅ​ទីនេះ​ទេ ព្រោះ​​ពួកវា​ត្រូវបាន​ដឹង​ថា​ជា​សារ​ឥតបាន​ការ​រួចហើយ ។"
+
+#: dspam.inc.php:131
+msgid "Reporting False Positives"
+msgstr "រាយការណ៍ False Positives"
+
+#: dspam.inc.php:134
+msgid ""
+"From time to time, DSPAM will catch an innocent messages as spam. These "
+"messages are called \"false positives\". There is no way to prevent false "
+"positives entirely. If you find a false positive, forward the message to "
+"<nobr>username-fp@domain</nobr> and it will be learned as an innocent "
+"message. For example, if your email address is joe@example.com, you would "
+"forward the message to <nobr>joe-fp@example.com</nobr>."
+msgstr ""
+"ពី​ពេល​មួយ​ទៅ​មួយ DSPAM នឹង​ចាប់​យក​សារ​ដែល​មាន​កំហុស​ថា​ជា​សារ​ឥត​បាន​ការ ។ សារ​ទាំងនេះ​គឺ​ត្រូវ​បាន​ហៅ​ថា \"false positives\" ។ គ្មាន​វិធី​ជៀស​ផុត​ពី false positives បានទេ ។ ប្រសិន​បើ​អ្នក​រក​ឃើញ false positive គឺ​ត្រូវ​បញ្ជូន​បន្ត​ទៅ "
+"<nobr>username-fp@domain</nobr> ហើយ​វា​នឹង​ដឹង​ថា​វា​ជា​សារ​កំហុស ។ ឧទាហរណ៍ ប្រសិន​បើ​អាសយដ្ឋាន​អ៊ីមែល​របស់​អ្នក​គឺ joe@example.com អ្នក​នឹង​ត្រូវ​បញ្ជូន​បន្ត​ទៅ <nobr>joe-fp@example.com</nobr> ។"
+
+#: dspam.inc.php:140
+#, php-format
+msgid ""
+"You can also move your false positives to the <i>%s</i> folder from the %s "
+"folder. This folder is periodically checked for messages which are then "
+"learned as false positives and deleted."
+msgstr "អ្នក​ក៏​អាច​ផ្លាស់ទី false របស់​អ្នក​ទៅថត <i>%s</i> ពី​ថត %s ។ ថត​នេះ​គឺ​ត្រូវបាន​ពិនិត្យ​រក​មើល​សារ​យ៉ាង​ទៀតទាត់ ដែល​នឹង​ត្រូវ​ដឹង​ថា​ជា false positives ហើយ​ត្រូវបាន​លុប​ចោល ។"
+
+#: dspam.inc.php:145
+msgid "Disclaimer"
+msgstr "អ្នក​បដិសេធ"
+
+#: dspam.inc.php:148
+msgid ""
+"DSPAM is a learning system. It only knows what is spam based on what you "
+"teach it is spam and what is not. Due to DSPAM's nature, you are more likely "
+"to see errors in spam detection until it is trained on your email. If you do "
+"not report a message as spam within ten days, the message will be "
+"permanently learned as innocent and you will be more likely to receive more "
+"spam."
+msgstr "DSPAM គឺ​ជា​ប្រព័ន្ធ​សិក្សា ។ វា​ដឹង​តែ​ពី​អ្វី​ដែល​ជា​សារ​ឥតបាន​ការ​ដែល​ផ្អែក​លើ​អ្វី​ដែល​អ្នក​ធ្វើ​ឲ្យ​ដឹង​ថា​ជា​សារ​ឥតបាន​ការ និង​អ្វី​ដែល​មិនមែន ។ ដោសារ​តែ​លំនាំដើម​របស់ DSPAM អ្នក​គឺ​នឹង​ឃើញ​សំបុត្រ​ក្នុង​ការរកឃើញ​សារ​ឥតបាន​ការ​ដែល​ត្រូវ​បាន​រក​មើល​នៅ​ក្នុង​អ៊ីមែល​របស់​អ្នក ។ ប្រសិន​បើ​អ្នក​មិន​រាយការណ៍​សារ​ជា​សារ​ឥត​បាន​ការ​ក្នុង​រយៈ​ពេល ១០ ថ្ងៃ​នោះ​ទេ សារ​នឹង​ត្រូវ​ដឹង​ដោយ​ស្វ័យប្រវត្តិ​ថា​ជា​កំហុស ហើយ​អ្នក​នឹង​ទទួល​សារ​ឥត​បាន​ការ​កាន់តែ​ច្រើន​ទៀត ។"
+
+#. *
+#. * To translators: %s's will be replaced by <a ..> and </a>
+#.
+#: dspam.inc.php:162
+#, php-format
+msgid "Please read the %sDSPAM Primer%s before enabling DSPAM."
+msgstr "សូម​អាន %sDSPAM Primer%s មុន​ពេល​អនុញ្ញាត DSPAM ។"
+
+#: dspam.inc.php:183
+msgid "Use DSPAM"
+msgstr "ប្រើ DSPAM"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:198
+#, php-format
+msgid "Clean out your %s folder on opt-in?"
+msgstr "ជម្រះ​ថត %s របស់​អ្នក​នៅ​លើ opt-in ?"
+
+#: dspam.inc.php:200 purge.inc.php:37
+msgid "Note"
+msgstr "ចំណាំ"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:205 purge.inc.php:38
+#, php-format
+msgid ""
+"Your %s folder may be unavailable during the purge. It will become available "
+"again when the purge is complete."
+msgstr "ថត %s របស់​អ្នក​អាច​មិន​មាន​ទេ​នៅពេល​សម្អាត ។ វា​នឹង​មាន​ម្ដងទៀត​នៅពេល​ដែល​បាន​បញ្ចប់​ការ​សម្អាត ។"
+
+#: dspam.inc.php:214
+msgid "Update"
+msgstr "ធ្វើ​ឲ្យ​ទាន់សម័យ"
+
+#: move_to.php:98
+msgid "No messages were selected."
+msgstr "គ្មាន​សារ​ដែល​បាន​ជ្រើស​ទេ ។"
+
+#: policyd_docs.inc.php:8 policyd.inc.php:186
+msgid "Greylisting"
+msgstr "Greylisting"
+
+#: policyd_docs.inc.php:9
+msgid "What is Greylisting?"
+msgstr "អ្វី​ជា Greylisting ?"
+
+#: policyd_docs.inc.php:12
+msgid ""
+"Greylisting is a method of filtering spam that relies on the fact that most "
+"spammers use software that does not behave like a regular email program. "
+"Instead of retrying when it receives a \"temporary error\" from a mail "
+"server, the spammer's software will give up on the message and keep going "
+"through their list. Because legitimate servers will attempt to resend the "
+"message after a temporary error, no legitimate mail is blocked."
+msgstr ""
+"Greylisting គឺ​ជា​វិធីសាស្ដ្រ​នៃ​ការ​ត្រង​សារ​ឥតបាន​ការ​ដែលអាស្រ័យលើ​ការ​ពិត​ជាក់ស្ដែង​ដែល​អ្នក​ផ្ញើ​សារ​ឥតបាន​ការ​ភាគច្រើន​ប្រើ​កម្មវិធី​ដែល​មិន​ដូច​គ្នា​នឹង​កម្មវិធី​អ៊ីមែល​ទូទៅ ។ "
+"ជំនួស​ឲ្យ​ការ​ព្យាយាម​ឡើងវិញ​នៅពេល​ដែល​វា​ទទួល \"កំហុស​បណ្ដោះ​អាសន្ន\" ពី​ម៉ាស៊ីន​បម្រើ​សំបុត្រ ដែល​កម្មវិធី​របស់​អ្នក​ផ្ញើ​សារ​ឥតបាន​ការ​នឹង​បន្សល់​នៅ​លើ​សារ និង​បន្ត​ទៅតាម​បញ្ជី​របស់​ពួកគេ ។ ដោយ​សារ​តែ​ម៉ាស៊ីន​បម្រើ​ត្រឹមត្រូវ នឹង​​ផ្ញើ​សារ​ម្ដងទៀត​បន្ទាប់​ពី​មាន​កំហុស​បណ្ដោះ​អាសន្ន សំបុត្រ​ដែល​មិនត្រឹមត្រូវ​គឺ​ត្រូវ​បាន​ទប់ស្កាត់ ។"
+
+#: policyd_docs.inc.php:15
+msgid "Email Delays"
+msgstr "ពន្យាពេល​អ៊ីម៉ែល"
+
+#: policyd_docs.inc.php:18
+msgid ""
+"Greylisting tells the sending server to retry before the message is allowed "
+"in. Most servers will retry within five minutes but may take longer "
+"depending on the amount of mail to be sent. It is not surprising to see mail "
+"delayed for as much as an hour, though such delays are uncommon."
+msgstr "Greylisting ជូន​ដំណឹង​ដល់​ម៉ាស៊ីន​បម្រើ​ផ្ញើ​ឲ្យ​សាកល្បង​ម្ដងទៀត មុន​ពេល​អនុញ្ញាត​សារ ។ ម៉ាស៊ីន​បម្រើ​ភាគច្រើន នឹង​សាកល្បង​ម្ដងទៀត​​ក្នុង​រយៈពេល ៥ នាទី ប៉ុន្តែ​អាច​យូរ​ជាង​នេះ ដោយ​អាស្រ័យ​តាម​ចំនួន​សំបុត្រ​ដែល​បាន​ផ្ញើ ។ វា​មិន​គួរ​ឲ្យ​ភ្ញាក់ផ្អើល​ទេ​ដែល​​ឃើញ​ថា​សំបុត្រ​ត្រូវបាន​ពន្យាពេល​រយៈ​ពេល ១ ម៉ោង​ ដូច្នេះ​ការ​ពន្យាពេល​ដូចនោះ​គឺ​មិន​ធម្មតា​ទេ ។"
+
+#: policyd_docs.inc.php:22 policyd.inc.php:195
+#, php-format
+msgid "Warning: "
+msgstr "ព្រមាន ៖ "
+
+#: policyd_docs.inc.php:23
+msgid "Do not enable greylisting if you require immediate delivery of email."
+msgstr "មិន​​អនុញ្ញាត greylisting ទេ ប្រសិន​បើ​អ្នក​ត្រូវការ​បញ្ជូន​អ៊ីមែល​ភ្លាមៗ​នោះ ។"
+
+#. To translators: %s's are the function name and PEAR generated errors.
+#.
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: policyd.inc.php:50 policyd.inc.php:90 policyd.inc.php:122
+#: policyd.inc.php:140 sasql_db.php:43 sasql_db.php:79 sasql_db.php:223
+#: sasql_db.php:280 sasql_db.php:336 sasql_db.php:393 sasql_db.php:419
+#: sasql_db.php:466 sasql_db.php:505 sasql_db.php:536
+#, php-format
+msgid "Database error in %s: %s"
+msgstr "មាន​កំហុស​មូលដ្ឋាន​ទិន្នន័យ​នៅ​ក្នុង %s ៖ %s"
+
+#: policyd.inc.php:176
+msgid "Policy Settings"
+msgstr "ការកំណត់​គោលដៅ"
+
+#. To translators: %s's are <a ..> and </a>
+#: policyd.inc.php:191
+#, php-format
+msgid "Enable greylisting. See %sthis page%s for more details."
+msgstr "អនុញ្ញាត greylisting ។ ចំពោះ​សេចក្ដី​លម្អិត​បន្ថែម សូម​មើល​%sទំព័រ​នេះ%s ។"
+
+#: policyd.inc.php:196
+msgid "Greylisting may delay the delivery of email."
+msgstr "Greylisting អាច​ពន្យាពេល​ក្នុង​ការ​បញ្ជូន​អ៊ីមែល ។"
+
+#: policyd.inc.php:204 sa_settings.inc.php:173
+msgid "Save Settings"
+msgstr "រក្សាទុក​ការ​កំណត់"
+
+#: purge.inc.php:22
+#, php-format
+msgid "Purge %s Folder"
+msgstr "សម្អាត %s"
+
+#: purge.inc.php:30
+msgid "Purge"
+msgstr "សម្ងាត"
+
+#: purge.inc.php:33
+#, php-format
+msgid "Delete all messages from your %s folder."
+msgstr "លុប​សារ​ទាំងអស់​ពី​ថត %s របស់​អ្នក ។"
+
+#: sa_abooksync.inc.php:20
+msgid "Allow Senders from Address Book"
+msgstr "អនុញ្ញាត​អ្នក​ផ្ញើ​ពី​សៀវភៅ​អាសយដ្ឋាន"
+
+#: sa_abooksync.inc.php:26
+msgid "Allow"
+msgstr "អនុញ្ញាត"
+
+#: sa_abooksync.inc.php:27
+msgid "Allow all address in the address book."
+msgstr "អនុញ្ញាត​អាសយដ្ឋាន​ទាំងអស់​នៅ​ក្នុង​សៀវភៅ​អាសយដ្ឋាន ។"
+
+#. required_hists
+#: sa_opts-dist.php:19 sasql_hooks.php:450
+msgid "Spam Score"
+msgstr "ពិន្ទុ​​សារ​ឥតបានការ"
+
+#: sa_opts-dist.php:20
+msgid ""
+"Once all SpamAssassin tests have been run, the resulting score is matched "
+"against this value, and if greater than this value, the e-mail message is "
+"marked as spam. We recommend a value of '5'."
+msgstr "នៅពេល​ដែល​ការ​សាកល្បង SpamAssassin ទាំងអស់​ដំណើរការ ពិន្ទុ​លទ្ធផល​គឺ​ត្រូវ​បាន​ផ្គូផ្គងតាម​តម្លៃ​នេះ ហើយ​ប្រសិន​បើ​ធំជាង​តម្លៃ​នេះ នោះ​សារ​អ៊ីមែល​គឺ​ត្រូវ​បាន​សម្គាល់​ថា​ជា​សារ​ឥត​បាន​ការ ។ យើង​ខ្ញុំ​ឲ្យ​ផ្ដល់​អនុសាសន៍​ឲ្យ​ប្រើ​តម្លៃ '5' ។"
+
+#: sa_opts-dist.php:22
+msgid "0 - Very Aggressive"
+msgstr "0 - ឈ្លានពាន​ខ្លាំង"
+
+#: sa_opts-dist.php:23
+msgid "1"
+msgstr "1"
+
+#: sa_opts-dist.php:24
+msgid "2 - Aggressive"
+msgstr "2 - ឈ្លានពាន"
+
+#: sa_opts-dist.php:25
+msgid "3"
+msgstr "3"
+
+#: sa_opts-dist.php:26
+msgid "4"
+msgstr "4"
+
+#: sa_opts-dist.php:27
+msgid "5 - Recommended"
+msgstr "5 - ផ្ដល់​អានុសាសន៍"
+
+#: sa_opts-dist.php:28
+msgid "6"
+msgstr "6"
+
+#: sa_opts-dist.php:29
+msgid "7"
+msgstr "7"
+
+#: sa_opts-dist.php:30
+msgid "8 - Lenient"
+msgstr "8 - អត់អោន"
+
+#: sa_opts-dist.php:31
+msgid "9"
+msgstr "9"
+
+#: sa_opts-dist.php:32
+msgid "10 - Very Lenient"
+msgstr "10 - អត់អោន​ខ្លាំង"
+
+#: sa_opts-dist.php:33
+msgid "Don't Filter"
+msgstr "កុំ​ត្រង"
+
+#. NOTE: The ordering here is a little odd to allow some inclusion of
+#. other option names.
+#. subject_tag
+#: sa_opts-dist.php:43
+msgid "Spam Subject Tag"
+msgstr "ស្លាក​ប្រធាន​បទ​សារ​ឥតបាន​ការ"
+
+#: sa_opts-dist.php:45
+msgid "*****SPAM*****"
+msgstr "*****សារ​ឥត​បាន​ការ*****"
+
+#. rewrite_subject
+#. 'rewrite_header subject'
+#: sa_opts-dist.php:48 sa_opts-dist.php:63
+msgid "Rewrite Subject Line"
+msgstr "សរសេរ​បន្ទាត់​ប្រធាន​បទ​ឡើងវិញ"
+
+#. To translators: %s is the default from subject_tag
+#: sa_opts-dist.php:50
+#, php-format
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with: %s.  To turn "
+"on this feature, select this option."
+msgstr "SpamAssassin អាច​សរសេរ​បន្ទាប់​ប្រធាន​បទ​​អ៊ីមែល​ឡើងវិញ​បាន​ដែល​ត្រូវ​បាន​ចាត់ទុក​ថា​ជា​សារ​ឥតបាន​ការ ដោយ​បន្ថែម​ខាងដើម​ប្រធាន​បទ​ដើម​ជាមួយ​នឹង ៖ %s ។ ដើម្បី​បើក​លក្ខណៈពិសេស​នេះ គឺ​ត្រូវ​ជ្រើស​ជម្រើស​នេះ ។"
+
+#. This is here to allow me to include the rewrite_subject title
+#. *
+#. * To Translators: %s is the title from rewrite_subject
+#.
+#: sa_opts-dist.php:60
+#, php-format
+msgid ""
+"The text to prefix to the subject of messages determined to be spam. %s must "
+"be turned on."
+msgstr "អត្ថបទ​ដែល​ត្រូវ​បន្ថែម​ខាង​មុខ​ប្រធានបទ​របស់​សារ​បាន​កំណត់​ជា​សារ​ឥត​បាន​ការ ។ %s ត្រូវ​តែ​បិទ ។"
+
+#: sa_opts-dist.php:64
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with this value."
+msgstr "SpamAssassin អាច​សរសេរ​បន្ទាត់​ប្រធាន​បទ​ឡើងវិញ​របស់​អ៊ីមែល ដែល​ត្រូវ​បាន​ចាត់ទុក​ថា​ជា​សារ​ឥតបាន​ការ​ដោយ​បន្ថែម​ខាងមុខ​ប្រធាន​បទ​ដើម​ដោយ​តម្លៃ​នេះ ។"
+
+#. use_terse_report
+#: sa_opts-dist.php:70
+msgid "Short Report"
+msgstr "របាយការណ៍​ខ្លី"
+
+#: sa_opts-dist.php:71
+msgid ""
+"This option will tell SpamAssassin to use a shorter spam report once the "
+"message has been found to be spam."
+msgstr "ជម្រើស​នេះ នឹង​ប្រាប់​ឲ្យ SpamAssassin ប្រើ​របាយការណ៍​សារ​ឥត​បាន​ការ​ខ្លីៗ​ នៅពេល​ដែល​​រកឃើញ​ថា​សារ​នោះ​ជា​សារ​ឥត​បាន​ការ ។"
+
+#. use_dcc
+#: sa_opts-dist.php:77
+msgid "Use DCC"
+msgstr "ប្រើ DCC"
+
+#: sa_opts-dist.php:78
+msgid ""
+"Checks messages against the DCC (Distrubuted Checksum Clearinghouse) to see "
+"if a message matches a known spam message."
+msgstr "ពិនិត្យ​រក​មើល​សារ​តាម DCC (Distrubuted Checksum Clearinghouse) ដើម្បី​មើល​ថាតើ សារ​ផ្គូផ្គង​នឹង​សារ​ឥតបាន​ការ​ដែល​ស្គាល់​ឬ​អត់ ។"
+
+#. use_razor1
+#: sa_opts-dist.php:84
+msgid "Use SpamNet (version 1)"
+msgstr "ប្រើ SpamNet (កំណែ ១)"
+
+#: sa_opts-dist.php:85 sa_opts-dist.php:92
+msgid "Checks messages against SpamNet to see if a message is a known spam message."
+msgstr "ពិនិត្យ​មើល​សារ​តាម SpamNet ដើម្បី​មើល​ថាតើ​សារ​ជា​សារ​ឥតបាន​ការ​ឬ​អត់ ។"
+
+#. use_razor2
+#: sa_opts-dist.php:91
+msgid "Use SpamNet (version 2)"
+msgstr "ប្រើ SpamNet (កំណែ ២)"
+
+#. always_add_headers
+#: sa_opts-dist.php:98
+msgid "Always Add Headers"
+msgstr "បន្ថែម​បឋមកថា​ជានិច្ច"
+
+#: sa_opts-dist.php:99
+msgid "Uncheck if you do not want to add the headers to non-spam."
+msgstr "ដោះធីក ប្រសិន​បើ​​អ្នក​មិន​ចង់​បន្ថែម​បឋមកថា​ទៅ​មិនមែន​សារ​ឥតបាន​ការ​នោះ ។"
+
+#. ok_languages
+#: sa_opts-dist.php:105
+msgid "Acceptable Languages"
+msgstr "ភាសា​ដែល​អាច​ទទួល​យក​បាន"
+
+#: sa_opts-dist.php:106
+msgid "Select all the languages you expect to receive e-mail in."
+msgstr "ជ្រើស​ភាសា​ទាំងអស់​ដែល​អ្នក​រំពឹង​ថា​នឹង​ទទួល​អ៊ីមែល ។"
+
+#: sa_opts-dist.php:112
+msgid "All"
+msgstr "ទាំងអស់"
+
+#: sa_opts-dist.php:113
+msgid "Afrikaans"
+msgstr "អាហ្វ្រីកាអាន"
+
+#: sa_opts-dist.php:114
+msgid "Albanian"
+msgstr "អាល់បានី"
+
+#: sa_opts-dist.php:115
+msgid "Amharic"
+msgstr "អាមហារិក"
+
+#: sa_opts-dist.php:116
+msgid "Arabic"
+msgstr "អារ៉ាប់​"
+
+#: sa_opts-dist.php:117
+msgid "Armenian"
+msgstr "​អារមេនី"
+
+#: sa_opts-dist.php:118
+msgid "Basque"
+msgstr "បាស្កេ"
+
+#: sa_opts-dist.php:119
+msgid "Bosnian"
+msgstr "បូស្នី"
+
+#: sa_opts-dist.php:120
+msgid "Bulgarian"
+msgstr "ប៊ុលហ្គារី"
+
+#: sa_opts-dist.php:121
+msgid "Byelorussian"
+msgstr "បាយឡូរុស"
+
+#: sa_opts-dist.php:122
+msgid "Catalan"
+msgstr "កាតាឡាន"
+
+#: sa_opts-dist.php:123
+msgid "Chinese"
+msgstr "ចិន"
+
+#: sa_opts-dist.php:124
+msgid "Croatian"
+msgstr "​ក្រូអាត"
+
+#: sa_opts-dist.php:125
+msgid "Czech"
+msgstr "​ឆេក"
+
+#: sa_opts-dist.php:126
+msgid "Danish"
+msgstr "ដាណឺម៉ាក"
+
+#: sa_opts-dist.php:127
+msgid "Dutch"
+msgstr "​ហុល្លង់"
+
+#: sa_opts-dist.php:128
+msgid "English"
+msgstr "អង់គ្លេស​"
+
+#: sa_opts-dist.php:129
+msgid "Esperanto"
+msgstr "អេស្ពេរ៉ាន់តូ"
+
+#: sa_opts-dist.php:130
+msgid "Estonian"
+msgstr "​​អេស្តូនី"
+
+#: sa_opts-dist.php:131
+msgid "Finnish"
+msgstr "ហ្វាំង​ឡង់"
+
+#: sa_opts-dist.php:132
+msgid "French"
+msgstr "បារាំង"
+
+#: sa_opts-dist.php:133
+msgid "Frisian"
+msgstr "ហ្វ្រីស៊ាន"
+
+#: sa_opts-dist.php:134
+msgid "Georgian"
+msgstr "ហ្សក​ហ្ស៊ី"
+
+#: sa_opts-dist.php:135
+msgid "German"
+msgstr "​​អា​ល្លឺម៉ង់"
+
+#: sa_opts-dist.php:136
+msgid "Greek"
+msgstr "ក្រិក"
+
+#: sa_opts-dist.php:137
+msgid "Hebrew"
+msgstr "ហេប្រ៊ូ"
+
+#: sa_opts-dist.php:138
+msgid "Hindi"
+msgstr "ហិណ្ឌូ"
+
+#: sa_opts-dist.php:139
+msgid "Hungarian"
+msgstr "​​ហុងគ្រី"
+
+#: sa_opts-dist.php:140
+msgid "Icelandic"
+msgstr "អ៊ីស្លង់"
+
+#: sa_opts-dist.php:141
+msgid "Indonesian"
+msgstr "ឥណ្ឌូនេស៊ី"
+
+#: sa_opts-dist.php:142
+msgid "Irish Gaelic"
+msgstr "អៀរឡង់ ហ្គាអេលិក"
+
+#: sa_opts-dist.php:143
+msgid "Italian"
+msgstr "អ៊ីតាលី"
+
+#: sa_opts-dist.php:144
+msgid "Japanese"
+msgstr "​ជប៉ុន"
+
+#: sa_opts-dist.php:145
+msgid "Korean"
+msgstr "កូរ៉េ​"
+
+#: sa_opts-dist.php:146
+msgid "Latin"
+msgstr "ឡាទីន"
+
+#: sa_opts-dist.php:147
+msgid "Latvian"
+msgstr "ឡាតវៀ"
+
+#: sa_opts-dist.php:148
+msgid "Lithuanian"
+msgstr "លីទុយអានី"
+
+#: sa_opts-dist.php:149
+msgid "Malay"
+msgstr "ម៉ាឡៃ"
+
+#: sa_opts-dist.php:150
+msgid "Marathi"
+msgstr "​​ម៉ារ៉ាធី"
+
+#: sa_opts-dist.php:151
+msgid "Nepali"
+msgstr "នេប៉ាល់"
+
+#: sa_opts-dist.php:152
+msgid "Norwegian"
+msgstr "ន័រវែស"
+
+#: sa_opts-dist.php:153
+msgid "Persian"
+msgstr "ពឺស៊ាន"
+
+#: sa_opts-dist.php:154
+msgid "Polish"
+msgstr "​ប៉ូឡូញ"
+
+#: sa_opts-dist.php:155
+msgid "Portuguese"
+msgstr "​ព័រទុយហ្គាល់"
+
+#: sa_opts-dist.php:156
+msgid "Quechua"
+msgstr "កេច្វា"
+
+#: sa_opts-dist.php:157
+msgid "Rhaeto-Romance"
+msgstr "រ៉េតូ-រ៉ូម៉ាំង"
+
+#: sa_opts-dist.php:158
+msgid "Romanian"
+msgstr "រ៉ូម៉ានី"
+
+#: sa_opts-dist.php:159
+msgid "Russian"
+msgstr "រុស្ស៊ី"
+
+#: sa_opts-dist.php:160
+msgid "Sanskrit"
+msgstr "​សំស្ក្រឹត"
+
+#: sa_opts-dist.php:161
+msgid "Scots"
+msgstr "ស្កុតថ៍"
+
+#: sa_opts-dist.php:162
+msgid "Scottish Gaelic"
+msgstr "ស្កុតលែន ហ្គាអេលិក"
+
+#: sa_opts-dist.php:163
+msgid "Serbian"
+msgstr "ស៊ែប៊ី"
+
+#: sa_opts-dist.php:164
+msgid "Slovak"
+msgstr "ស្លូវ៉ាគី"
+
+#: sa_opts-dist.php:165
+msgid "Slovenian"
+msgstr "ស្លូវ៉ានី"
+
+#: sa_opts-dist.php:166
+msgid "Spanish"
+msgstr "​អេស៉្បាញ"
+
+#: sa_opts-dist.php:167
+msgid "Swahili"
+msgstr "ស្វាហ៊ីលី"
+
+#: sa_opts-dist.php:168
+msgid "Swedish"
+msgstr "ស៊ុយអែដ"
+
+#: sa_opts-dist.php:169
+msgid "Tagalog"
+msgstr "តាហ្គាឡូក"
+
+#: sa_opts-dist.php:170
+msgid "Tamil"
+msgstr "តាមីល​"
+
+#: sa_opts-dist.php:171
+msgid "Thai"
+msgstr "ថៃ"
+
+#: sa_opts-dist.php:172
+msgid "Turkish"
+msgstr "ទួរគី"
+
+#: sa_opts-dist.php:173
+msgid "Ukrainian"
+msgstr "​​​អ៊ុយក្រែន"
+
+#: sa_opts-dist.php:174
+msgid "Vietnamese"
+msgstr "វៀតណាម"
+
+#: sa_opts-dist.php:175
+msgid "Welsh"
+msgstr "​​​វែល"
+
+#: sa_opts-dist.php:176
+msgid "Yiddish"
+msgstr "យីឌីហ្ស"
+
+#. use_bayes
+#: sa_opts-dist.php:179
+msgid "Use Bayesian Filter"
+msgstr "ប្រើ​តម្រង Bayesian"
+
+#: sa_opts-dist.php:180
+msgid ""
+"The Baysian Filter will learn what is spam and what isn't to become a better "
+"filter."
+msgstr "តម្រង Baysian នឹង​ដឹង​ថា​អ្វី​ជា​សារ​ឥតបាន​ការ និង​អ្វី​ដែល​មិនមែន ដើម្បី​ឲ្យ​ក្លាយ​ជា​តម្រង​ដែល​ល្អ​មួយ ។"
+
+#. use_bayes_rules
+#: sa_opts-dist.php:186
+msgid "Use Bayesian Filter Rules"
+msgstr "ប្រើ​ក្បួន​តម្រង Bayesian"
+
+#: sa_opts-dist.php:187
+msgid ""
+"Turning this off allows you do disable the Baysian Filter rules while still "
+"training the filter."
+msgstr "ការ​បិទ​វា អនុញ្ញាត​ឲ្យ​អ្នក​បិទ​ក្បួន​តម្រង Baysian នៅពេល​​ហ្វឹកហាត់​តម្រង ។"
+
+#. auto_learn
+#: sa_opts-dist.php:193
+msgid "Auto-learn"
+msgstr "សិក្សា​ស្វ័យប្រវត្តិ"
+
+#: sa_opts-dist.php:194
+msgid ""
+"Automatically feed high and low scoring mails into SpamAssassin's learning "
+"systems. (Currently, only Bayesian filtering is supported.)"
+msgstr "ផ្ដល់​នូវ​សំបុត្រ​ពិន្ទុ​ទាប និង​ខ្ពស់​ទៅ​ក្នុង​ប្រព័ន្ធ​សិក្សា SpamAssassin ។ (បច្ចុប្បន្ន មាន​តែ​តម្រង Bayesian ប៉ុណ្ណោះ​ដែល​ត្រូវ​បាន​គាំទ្រ ។)"
+
+#. report_safe
+#: sa_opts-dist.php:200
+msgid "Spam Encapsulation"
+msgstr "ការ​ស្រោប​សារ​ឥតបាន​ការ"
+
+#: sa_opts-dist.php:201
+msgid ""
+"Encapsulate spam messages into a MIME or plain-text attachment, or you can "
+"disable it altogether."
+msgstr "ស្រោប​សារ​ឥតបាន​ការ​ទៅ​ក្នុង MIME ឬ​ឯកសារ​ភ្ជាប់​អត្ថបទ​ធម្មតា ឬ​អ្នក​អាច​បិទ​វា​ជាមួយ​គ្នា ។"
+
+#: sa_opts-dist.php:203
+msgid "Disabled"
+msgstr "បិទ"
+
+#: sa_opts-dist.php:204
+msgid "MIME Attachment"
+msgstr "ឯកសារ​ភ្ជាប់ MIME"
+
+#: sa_opts-dist.php:205
+msgid "Text Attachment"
+msgstr "ឯកសារ​ភ្ជាប់​អត្ថបទ"
+
+#. These options were removed as of SpamAssassin 2.50-ish
+#. They are here for those running older versions of SA.
+#. report_header
+#: sa_opts-dist.php:212
+msgid "Report in Header"
+msgstr "រាយការណ៍​ក្នុង​បឋមកថា"
+
+#: sa_opts-dist.php:213
+msgid ""
+"SpamAssassin will create a report when it determines an e-mail message to be "
+"spam.  This report is normally prepended to the e-mail message.  To have the "
+"report written as part of the e-mail header, select this option."
+msgstr "SpamAssassin នឹង​បង្កើត​របាយការណ៍ នៅពេល​ដែល​វា​ចាត់ទុក​អ៊ីមែល​ថា​ជាសារ​ឥតបាន​ការ ។ របាយការណ៍​នេះ​ត្រូវបាន​បន្ថែម​នៅ​ខាង​ដើម​​សារ​អ៊ីមែល​ ។ ដើម្បី​សរសេរ​របាយការន៍​ជា​ផ្នែក​របស់​បឋមកថា​អ៊ីមែល សូម​ជ្រើស​ជម្រើស​នេះ ។"
+
+#. defang_mime
+#: sa_opts-dist.php:219
+msgid "Reformat HTML Spam"
+msgstr "ធ្វើ​ទ្រង់ទ្រាយ​សារ​ឥតបាន​ការ HTML ឡើងវិញ"
+
+#: sa_opts-dist.php:220
+msgid ""
+"When an e-mail in HTML format is determined to be spam, SpamAssassin can "
+"convert the message to text. To allow this, select this option."
+msgstr "នៅពេល​ដែល​​បាន​គិត​ថា​ទ្រង់ទ្រាយ​អ៊ីមែល HTML មួយ​គឺ​ជា​សារ​ឥតបាន​ការ នោះ SpamAssassin អាច​បម្លែង​សារ​ទៅ​ជា​អត្ថបទ ។ ដើម្បី​អនុញ្ញាត​ដូច​នោះ គឺ​ត្រូវ​ជ្រើស​ជម្រើស​នេះ ។"
+
+#. White/black list info
+#: sa_opts-dist.php:250
+msgid "Whitelist From"
+msgstr "បញ្ជី​ស​ពី"
+
+#: sa_opts-dist.php:251
+msgid ""
+"E-mail from these addresses will not be marked as spam. You may use '*' as a "
+"wildcard to allow a large number of addresses at one time. E.g. Whitelist "
+"From '*@aol.com' will not mark any message that claims to be from aol.com as "
+"spam."
+msgstr "អ៊ីមែល​ដែល​បាន​មក​ពី​អាសយដ្ឋាន​ទាំងនេះ នឹង​មិនត្រូវបាន​សម្គាល់​ថា​ជា​សារ​ឥត​បាន​ការ​ទេ ។ អ្នក​អាច​ប្រើ '*' ជា​តួអក្សរ​ជំនួស ដើម្បី​អនុញ្ញាត​ឲ្យ​ទទួល​អាសយដ្ឋាន​ច្រើន​ក្នុង​ពេល​តែ​មួយ ។ ឧ. ដាក់​បញ្ជី​ស​ពី '*@aol.com' នឹង​មិន​សម្គាល់​សារ​ដែល​បាន​មក​ពី aol.com ថា​ជា​សារ​ឥត​បាន​ការ​នោះ​ទេ ។"
+
+#: sa_opts-dist.php:253
+msgid "Don't Whitelist From"
+msgstr "កុំ​ដាក់​បញ្ជី​ស​ពី"
+
+#: sa_opts-dist.php:254
+msgid ""
+"This address will be excluded from a previous whitelist and will be treated "
+"as a normal address, i.e. it will not be automatically allowed."
+msgstr "អាសយដ្ឋាន​នេះ នឹងមិនត្រូវ​បាន​រួមបញ្ចូល​ពី​បញ្ជី​ស​មុន​ទេ និង​មិនត្រូវបាន​ចាត់ទុក​ថា​ជា​អាសយដ្ឋាន​ធម្មតា​ទេ មានន័យថា​វា​នឹង​មិន​ត្រូវបាន​អនុញ្ញាត​ដោយ​ស្វ័យប្រវត្តិ​ទេ ។"
+
+#: sa_opts-dist.php:256
+msgid "Blacklist From"
+msgstr "ដាក់​បញ្ជី​ខ្មៅ​ពី"
+
+#: sa_opts-dist.php:257
+msgid ""
+"E-mail from these addresses will always be marked as spam. You may use '*' "
+"as a wildcard to block a large number of addresses at one time. E.g. "
+"Blacklist From '*@aol.com' will mark all messages that claims to be from aol."
+"com as spam."
+msgstr "អ៊ីមែល​ពី​អាសយដ្ឋាន​នេះ​នឹង​ត្រូវបាន​សម្គាល់​ថា​ជា​សារ​ឥតបាន​ការ​ជានិច្ច ។ អ្នក​អាច​ប្រើ '*' ជា​តួអក្សរ​ជំនួស​បាន ដើម្បី​ទប់ស្កាត់​ចំនួន​អាសយដ្ឋាន​ច្រើន​ក្នុង​ពេល​តែ​មួយ ។ ឧ. ដាក់​បញ្ជី​ខ្មៅ​ពី '*@aol.com' នឹង​សម្គាល់​សារ​ទាំងអស់់​ដែល​បាន​មក​ពី aol.com ថា​ជា​សារ​ឥត​បាន​ការ ។"
+
+#: sa_opts-dist.php:259
+msgid "Don't Blacklist From"
+msgstr "កុំ​ដាក់​បញ្ជី​ខ្មៅ​ពី"
+
+#: sa_opts-dist.php:260
+msgid ""
+"This address will be excluded from a previous blacklist and will be treated "
+"as a normal address, i.e. it will not be automatically denied."
+msgstr "អាសយដ្ឋាន​នេះ​នឹង​មិន​ត្រូវ​បាន​រួមបញ្ចូល​ពី​បញ្ជី​ខ្មៅ​មុនទេ ហើយ​នឹង​ត្រូវបាន​ចាត់​ទុក​ថា​ជា​អាសយដ្ឋាន​ធម្មតា មានន័យថា​វា​នឹង​មិន​ត្រូវ​បាន​បដិសេធ​ដោយ​ស្វ័យប្រវត្តិ​នោះ​ទេ ។"
+
+#: sa_opts-dist.php:262
+msgid "Whitelist To"
+msgstr "ដាក់​បញ្ជី​ស​ទៅ"
+
+#: sa_opts-dist.php:263
+msgid ""
+"E-mail to these addresses will not be marked as spam. This is useful for "
+"allowing e-mail lists. For example, you can allow all messages from an e-"
+"mail list that sends to 'Tofu-Support-List@beeflovers.com'. You may use '*' "
+"as a wildcard to allow a large number of addresses at one time. E.g. "
+"Whitelist To '*@aol.com' will not mark any message that claims to be to aol."
+"com as spam."
+msgstr ""
+"អ៊ីមែល​ទៅកាន់​អាសយដ្ឋាន​ទាំង​នេះ​នឹង​មិន​ត្រូវ​បាន​សម្គាល់​ថា​ជា​សារ​ឥតបាន​ការ​នោះ​ទេ ។ វា​មាន​ប្រយោជន៍​សម្រាប់​ការ​អនុញ្ញាត​បញ្ជី​អ៊ីមែល ។ ឧទាហរណ៍ អ្នក​អាច​អនុញ្ញាត​​សារ​ទាំងអស់​ពី​បញ្ជី​អ៊ីមែល​ដែល​ផ្ញើ​ទៅកាន់ 'Tofu-Support-List@beeflovers.com' ។ អ្នក​អាច​ប្រើ '*' ជា​តួអក្សរ​ជំនួស ដើម្បី​អនុញ្ញាត​អាសយដ្ឋាន​ច្រើន​ក្នុង​ពេល​តែ​មួយ​បាន ។ ឧទាហរណ៍ ចុះ​បញ្ជី​ស​ទៅ '*@aol.com' នឹង​មិន​សម្គាល់​សារ​ដែល​ផ្ញើ​ទៅកាន់ aol."
+"com ថា​ជា​សារ​ឥតបាន​ការ​ទេ ។"
+
+#: sa_opts-dist.php:265
+msgid "Blacklist To"
+msgstr "ដាក់​បញ្ជី​ខ្មៅ​ទៅ"
+
+#: sa_opts-dist.php:266
+msgid ""
+"E-mail to these addresses will be marked as spam. You may use '*' as a "
+"wildcard to reject a large number of addresses at one time. E.g. Blacklist "
+"To '*@aol.com' will mark all messages that claims to be to aol.com as spam."
+msgstr "អ៊ីមែល​ទៅកាន់​អាសយដ្ឋាន​ទាំង​នេះ នឹង​ត្រូវ​បាន​សម្គាល់​ថា​ជា​សារ​ឥត​បាន​ការ ។ អ្នក​អាច​ប្រើ '*' ជា​តួអក្សរ​ជំនួស ដើម្បី​បដិសេធ​ចំនួន​អាសយដ្ឋាន​ច្រើន​ក្នុង​ពេល​តែ​មួយ ។ ឧទាហរណ៍ ដាក់​បញ្ជី​ខ្មៅ​ទៅ '*@aol.com' នឹង​សម្គាល់​សារ​ទាំងអស់​ដែល​ផ្ញើ​ទៅកាន់ aol.com ជា​សារ​ឥត​បាន​ការ ។"
+
+#: sa_settings.inc.php:114
+msgid "General Settings"
+msgstr "ការកំណត់​ទូទៅ"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:308
+#, php-format
+msgid "Database error: %s"
+msgstr "កំហុស​មូលដ្ឋាន​ទិន្នន័យ ៖ %s"
+
+#: sasql_db.php:366
+#, php-format
+msgid "sasql_AddPref_multiple Database error: %s"
+msgstr "កំហុស​មូលដ្ឋាន​ទិន្នន័យ sasql_AddPref_multiple ៖ %s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:443
+#, php-format
+msgid "Database error %s: %s"
+msgstr "កំហុស​មូលដ្ឋាន​ទិន្នន័យ %s ៖ %s"
+
+#: sasql_hooks.php:111 sasql_options.php:62
+msgid "Spam Filters"
+msgstr "តម្រង​សារ​ឥត​បាន​ការ"
+
+#: sasql_hooks.php:113
+msgid "Configure the behavior of your spam filters."
+msgstr "កំណត់​រចនា​សម្ព័ន្ធ​ឥរិយាបទ​តម្រង​សារ​ឥត​បាន​ការ​របស់​អ្នក ។"
+
+#: sasql_hooks.php:209
+msgid "Add Email to Whitelist"
+msgstr "បន្ថែម​អ៊ីមែល​ទៅ​បញ្ជី​ស"
+
+#: sasql_hooks.php:210 sasql_hooks.php:280
+msgid "Allow Sender"
+msgstr "អនុញ្ញាត​អ្នក​ផ្ញើ"
+
+#: sasql_hooks.php:211
+msgid "Add Domain to Whitelist"
+msgstr "បន្ថែម​ដែន​ទៅ​បញ្ជី​ស"
+
+#: sasql_hooks.php:212
+msgid "Allow Domain"
+msgstr "អនុញ្ញាត​ដែន"
+
+#: sasql_hooks.php:213
+msgid "Remove Email from Whitelist"
+msgstr "យក​អ៊ីមែល​ចេញ​ពី​បញ្ជី​ស"
+
+#: sasql_hooks.php:214 sasql_hooks.php:216 sasql_hooks.php:223
+#: sasql_hooks.php:225
+msgid "remove"
+msgstr "យកចេញ"
+
+#: sasql_hooks.php:215
+msgid "Remove Domain from Whitelist"
+msgstr "យកដែន​ចេញ​ពី​បញ្ជី​ស"
+
+#: sasql_hooks.php:218
+msgid "Add Email to Blacklist"
+msgstr "បន្ថែម​អ៊ីមែល​ទៅ​បញ្ជី​ខ្មៅ"
+
+#: sasql_hooks.php:219
+msgid "Block Sender"
+msgstr "ទប់ស្កាត់​អ្នកផ្ញើ"
+
+#: sasql_hooks.php:220
+msgid "Add Domain to Blacklist"
+msgstr "បន្ថែម​ដែន​ទៅ​បញ្ជី​ខ្មៅ"
+
+#: sasql_hooks.php:221
+msgid "Block Domain"
+msgstr "ទប់ស្កាត់​ដែន"
+
+#: sasql_hooks.php:222
+msgid "Remove Email from Blacklist"
+msgstr "យកអ៊ីមែលចេញ​ពី​បញ្ជី​ខ្មៅ"
+
+#: sasql_hooks.php:224
+msgid "Remove Domain from Blacklist"
+msgstr "យក​ដែន​ចេញ​ពី​បញ្ជី​ខ្មៅ"
+
+#: sasql_hooks.php:231
+msgid "Address is already in your whitelist"
+msgstr "អាសយដ្ឋាន​​គឺ​ស្ថិត​នៅ​ក្នុង​បញ្ជី​ស​រួចជា​ស្រេច​ហើយ"
+
+#: sasql_hooks.php:232 sasql_hooks.php:240
+msgid "Whitelisted"
+msgstr "បាន​ដាក់​ក្នុង​បញ្ជី​ស"
+
+#: sasql_hooks.php:239
+msgid "Domain is already in your whitelist"
+msgstr "ដែន​គឺ​ស្ថិត​នៅ​ក្នុង​បញ្ជី​ស​របស់​អ្នក​រួចហើយ"
+
+#: sasql_hooks.php:253
+msgid "Address is already in your blacklist"
+msgstr "អាសយដ្ឋាន​គឺ​ស្ថិត​នៅ​ក្នុង​បញ្ជី​ខ្មៅ​របស់​អ្នក​រួចហើយ"
+
+#: sasql_hooks.php:254 sasql_hooks.php:262
+msgid "Blacklisted"
+msgstr "បាន​ដាក់​ក្នុង​បញ្ជី​ខ្មៅ"
+
+#: sasql_hooks.php:261
+msgid "Domain is already in your blacklist"
+msgstr "ដែន​គឺ​ស្ថិត​នៅ​ក្នុង​បញ្ជី​ខ្មៅ​របស់​អ្នក​រួចហើយ"
+
+#: sasql_hooks.php:311 sasql_hooks.php:369
+msgid "Learn as False Positive"
+msgstr "ដឹង​ថា​ជា False Positive"
+
+#: sasql_hooks.php:315 sasql_hooks.php:373
+msgid "Learn as Spam"
+msgstr "ដឹង​ថា​ជា​សារ​ឥត​បាន​ការ"
+
+#: sasql_options.php:62
+msgid "Options"
+msgstr "ជម្រើស"
+
+#: sasql_wblist.php:41 sa_whitelist.inc.php:43
+msgid "Error: You must include an e-mail address."
+msgstr "កំហុស ៖ អ្នក​ត្រូវ​តែ​រួមបញ្ចូល​អាសយដ្ឋាន​អ៊ីមែល ។"
+
+#: sasql_wblist.php:48 sa_whitelist.inc.php:49
+msgid "Error: You have entered an invalid e-mail address."
+msgstr "កំហុស ៖ អ្នក​បាន​បញ្ចូល​អាសយដ្ឋាន​អ៊ីមែល​មិនត្រឹមត្រូវ ។"
+
+#: sasql_wblist.php:53
+msgid "Error: Missing option."
+msgstr "កំហុស ៖ បាត់​ជម្រើស ។"
+
+#: sa_whitelist.inc.php:53
+msgid "Error: You must select Allow or Deny."
+msgstr "កំហុស ៖ អ្នក​ត្រូវ​តែ​ជ្រើស​អនុញ្ញាត ឬ​បដិសេធ ។"
+
+#: sa_whitelist.inc.php:76
+msgid "Global Allow / Deny Address List"
+msgstr "បញ្ជី​អាសយដ្ឋាន​អនុញ្ញាត / បដិសេធ​សកល"
+
+#: sa_whitelist.inc.php:83 sa_whitelist.inc.php:125
+msgid "Address"
+msgstr "អាសយដ្ឋាន"
+
+#: sa_whitelist.inc.php:84 sa_whitelist.inc.php:126
+msgid "Type"
+msgstr "ប្រភេទ"
+
+#: sa_whitelist.inc.php:118
+msgid "Personal Allow / Deny Address List"
+msgstr "បញ្ជី​អាសយដ្ឋាន​អនុញ្ញាត / បដិសេធ​ផ្ទាល់ខ្លួន"
+
+#: sa_whitelist.inc.php:127
+msgid "Action"
+msgstr "អំពើ"
+
+#: sa_whitelist.inc.php:134
+msgid "Address Removed"
+msgstr "បាន​យក​សៀវភៅ​អាសយដ្ឋាន​ចេញ"
+
+#: sa_whitelist.inc.php:160
+#, php-format
+msgid "Unknown option: %s"
+msgstr "ជម្រើស​មិន​ស្គាល់ ៖ %s"
+
+#: sa_whitelist.inc.php:168
+msgid "Delete"
+msgstr "លុប"
+
+#: sa_whitelist.inc.php:174
+msgid "Edit"
+msgstr "កែសម្រួល"
+
+#. echo $edit;
+#: sa_whitelist.inc.php:188
+msgid "Edit Address"
+msgstr "កែសម្រួល​អាសយដ្ឋាន"
+
+#: sa_whitelist.inc.php:194
+msgid "Add New Address"
+msgstr "បន្ថែម​អាសយដ្ឋាន​ថ្មី"
+
+#: sa_whitelist.inc.php:220
+msgid "Address:"
+msgstr "អាសយដ្ឋាន ៖"
+
+#: sa_whitelist.inc.php:224
+msgid "Type:"
+msgstr "ប្រភេទ ៖"
+
+#. End Form
+#. Help
+#: sa_whitelist.inc.php:245
+msgid "Legend"
+msgstr "តាង"
+

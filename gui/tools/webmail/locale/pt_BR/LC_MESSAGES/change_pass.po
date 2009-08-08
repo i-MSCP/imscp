@@ -1,0 +1,80 @@
+# $Id: change_pass.po 13719 2009-05-18 12:02:52Z jervfors $
+# Brazilian Portuguese change_pass plugin translation.
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Edinardo Potrich <edinardo@cbainfo.com.br>, 2004.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-12 12:12-0600\n"
+"PO-Revision-Date: 2004-06-29 09:42-0300\n"
+"Last-Translator: Edinardo Potrich <edinardo@cbainfo.com.br>\n"
+"Language-Team: Portuguese/Brazil <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: options.php:36 setup.php:18
+msgid "Change Password"
+msgstr "Alterar Senha"
+
+#: options.php:77
+msgid "Closing Connection"
+msgstr "Terminando Conexão"
+
+#: options.php:137
+msgid "Connecting to Password Server"
+msgstr "Conectado ao Servidor de Senhas"
+
+#: options.php:141
+msgid "ERROR:"
+msgstr "ERRO:"
+
+#: options.php:52
+msgid "New Password"
+msgstr "Nova Senha"
+
+#: options.php:51
+msgid "Old Password"
+msgstr "Senha Atual"
+
+#: options.php:173 setup.php:35
+msgid "Password changed successfully."
+msgstr "Senha alterada com sucesso."
+
+#: options.php:64
+msgid "Submit"
+msgstr "Alterar"
+
+#: setup.php:20
+msgid ""
+"This connects to your local Password Server to change your email password."
+msgstr ""
+"Conecta-se ao seu Servidor de Senhas local para alterar sua senha de email."
+
+#: options.php:53
+msgid "Verify New Password"
+msgstr "Repita a Nova Senha"
+
+#: options.php:112
+msgid "You must also type in your new password in the verify box."
+msgstr "Você também deve repetir a nova senha."
+
+#: options.php:109
+msgid "You must type in a new password."
+msgstr "Você deve digitar a nova senha."
+
+#: options.php:106
+msgid "You must type in your old password."
+msgstr "Você tem que digitar sua senha atual."
+
+#: options.php:115
+msgid "Your new password doesn't match the verify password."
+msgstr "Sua nova senha não coincide com a repetição."
+
+#: options.php:118
+msgid "Your old password is not correct."
+msgstr "Sua senha atual esta incorreta."
+

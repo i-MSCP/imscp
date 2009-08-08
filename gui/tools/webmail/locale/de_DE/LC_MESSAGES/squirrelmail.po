@@ -1,12 +1,12 @@
 # German translation of SquirrelMail.
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Roland Bauerschmidt <rb@debian.org>, 1999.
-# Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2003, 2004, 2005.
+# Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2003-2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"
 "POT-Creation-Date: 2005-09-04 11:49+0200\n"
-"PO-Revision-Date: 2005-09-06 23:11+0200\n"
+"PO-Revision-Date: 2008-03-08 11:20+0100\n"
 "Last-Translator: Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>\n"
 "Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgid "Use Addresses"
 msgstr "Benutze Adressen"
 
 msgid "Cancel"
-msgstr "Äbbrechen"
+msgstr "Abbrechen"
 
 msgid "Address Book Search"
 msgstr "Adressbuch-Suche"
@@ -144,7 +144,7 @@ msgstr "wer"
 
 #, php-format
 msgid "On %s, %s wrote:"
-msgstr "Am %s, schrieb %s:"
+msgstr "Am %s schrieb %s:"
 
 msgid "Subject"
 msgstr "Betreff"
@@ -373,7 +373,7 @@ msgid "Download this as a file"
 msgstr "Dies als Datei herunterladen"
 
 msgid "INBOX"
-msgstr "INBOX"
+msgstr "Posteingang"
 
 msgid "Purge"
 msgstr "leeren"
@@ -664,7 +664,7 @@ msgid "Mailer"
 msgstr "Mailprogramm"
 
 msgid "Read receipt"
-msgstr "Empfangsbestätigung"
+msgstr "Lesebestätigung"
 
 msgid "sent"
 msgstr "gesendet"
@@ -864,7 +864,7 @@ msgid "Open failed"
 msgstr "Öffnen fehlgeschlagen"
 
 msgid "Write failed"
-msgstr "Öffnen fehlgeschlagen"
+msgstr "Schreiben fehlgeschlagen"
 
 msgid "Unable to update"
 msgstr "Aktualisierung nicht möglich"
@@ -902,7 +902,7 @@ msgid "E-mail address is missing"
 msgstr "E-Mail-Adresse fehlt"
 
 msgid "Nickname contains illegal characters"
-msgstr "Kürzel enthält unzulässige Buchstaben"
+msgstr "Kürzel enthält unzulässige Zeichen"
 
 msgid "View"
 msgstr "Anzeigen"
@@ -995,7 +995,7 @@ msgid "Feb"
 msgstr "Feb"
 
 msgid "Mar"
-msgstr "Mä"
+msgstr "Mrz"
 
 msgid "Apr"
 msgstr "Apr"
@@ -1234,7 +1234,7 @@ msgid "Thread sorting is not supported by your IMAP server."
 msgstr "Thread-Sortierung wird von Ihrem IMAP-Server nicht unterstützt."
 
 msgid "Server-side sorting is not supported by your IMAP server."
-msgstr "Server-seitige Sortierung wird von Ihrem IMAP-Server nicht."
+msgstr "Server-seitige Sortierung wird von Ihrem IMAP-Server nicht unterstützt."
 
 msgid "THIS FOLDER IS EMPTY"
 msgstr "DIESER ORDNER IST LEER"
@@ -1267,7 +1267,7 @@ msgid "Thread View"
 msgstr "Thread-Anzeige"
 
 msgid "Toggle All"
-msgstr "Alle Markierungen ändern"
+msgstr "Auswahl umkehren"
 
 msgid "Unselect All"
 msgstr "Alle abwählen"
@@ -1312,7 +1312,7 @@ msgid "Message:"
 msgstr "Nachricht:"
 
 msgid "FETCH line:"
-msgstr "HOLE Zeile:"
+msgstr "FETCH-Zeile:"
 
 msgid "Hide Unsafe Images"
 msgstr "unsichere Bilder unterdrücken"
@@ -1337,7 +1337,7 @@ msgid "Current Folder"
 msgstr "Aktueller Ordner"
 
 msgid "Compose"
-msgstr "E-Mail schreiben"
+msgstr "Verfassen"
 
 #, php-format
 msgid "Error creating directory %s."
@@ -1454,7 +1454,7 @@ msgid "Maximum Number of Pages to Show"
 msgstr "Maximalanzahl von anzuzeigenden Seiten"
 
 msgid "Always Show Full Date"
-msgstr "Immer gesammtes Datum anzeigen"
+msgstr "Immer vollständiges Datum anzeigen"
 
 msgid "Message Display and Composition"
 msgstr "Nachrichtenanzeige und -erstellung"
@@ -1611,7 +1611,7 @@ msgid "No Notification"
 msgstr "Keine Benachrichtigung"
 
 msgid "Only INBOX"
-msgstr "Nur Eingangsordner"
+msgstr "Nur Posteingang"
 
 msgid "Unread Message Notification Type"
 msgstr "Art der Benachrichtigung für ungelesene Nachrichten"
@@ -1730,7 +1730,7 @@ msgid "AUTHOR Wrote"
 msgstr "AUTHOR schrieb"
 
 msgid "On DATE, AUTHOR Wrote"
-msgstr "Am DATE, schrieb AUTHOR"
+msgstr "Am DATE schrieb AUTHOR"
 
 msgid "Quote Who XML"
 msgstr "Verfasser in XML-Zitierung"
@@ -1820,7 +1820,7 @@ msgid "Cyrus IMAP server"
 msgstr "Cyrus IMAP-Server"
 
 msgid "University of Washington's IMAP server"
-msgstr "IMAP-Server der Universität von Washington"
+msgstr "UW IMAP-Server"
 
 msgid "Microsoft Exchange IMAP server"
 msgstr "Microsoft Exchange IMAP-Server"
@@ -1919,7 +1919,7 @@ msgid "Auto Expunge"
 msgstr "Automatisches Entfernen gelöschter Objekte"
 
 msgid "Default Sub. of INBOX"
-msgstr "Standard-Unterverzeichnis vom Eingangsordner"
+msgstr "Standard-Unterverzeichnis vom Posteingang"
 
 msgid "Show 'Contain Sub.' Option"
 msgstr "Zeige 'Enthält Unterverzeichnis'-Option"
@@ -1955,7 +1955,7 @@ msgid "Hash Disabled"
 msgstr "Hash deaktiviert"
 
 msgid "Moderate"
-msgstr "Moderate"
+msgstr "Mäßig"
 
 msgid "Medium"
 msgstr "Mittel"
@@ -2015,10 +2015,10 @@ msgid "Address book table"
 msgstr "Adressbuch Tabelle"
 
 msgid "Preferences DSN"
-msgstr "Voreinstellungen für DSN"
+msgstr "Voreinstellungen DSN"
 
 msgid "Preferences table"
-msgstr "Voreinstellungen für Tabelle"
+msgstr "Voreinstellungen Tabelle"
 
 msgid "Preferences username field"
 msgstr "Voreinstellung Benutzernamensfeld"
@@ -2129,7 +2129,7 @@ msgid ""
 "This module allows administrators to manage SquirrelMail main configuration "
 "remotely."
 msgstr ""
-"Dieses Modul erlaubt es den Administratoren die Squirrelmail-Konfiguration "
+"Dieses Modul erlaubt es den Administratoren die SquirrelMail-Konfiguration "
 "aus der Ferne zu verwalten."
 
 msgid "Submit a Bug Report"
@@ -2366,7 +2366,7 @@ msgid ""
 "is a pretty reliable list to scan spam from."
 msgstr ""
 "KOMMERZIELL - Diese Liste enthält Server, bei denen überprüft wurde, dass "
-"Sie Quellen von Spam sind. Es ist eine recht zuverlässige Liste."
+"sie Quellen von Spam sind. Es ist eine recht zuverlässige Liste."
 
 msgid ""
 "COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
@@ -2382,7 +2382,7 @@ msgid ""
 "account and send spam directly from there."
 msgstr ""
 "KOMMERZIELL - Anwender, die über eine Einwahlverbindung ins Internet "
-"gelangen werden sehr häufig herausgefiltert, da sie den Mail-Server Ihres "
+"gelangen werden sehr häufig herausgefiltert, da sie den Mail-Server ihres "
 "ISP's für den Versand von E-Mails nutzen sollen. Spammer verschicken "
 "typischerweise ihre E-Mails direkt über eine Einwahlverbindung."
 
@@ -2511,7 +2511,7 @@ msgid ""
 msgstr ""
 "KOSTENLOS - Leadmon SpamBlock - Sites in dieser Liste haben Leadmon.net "
 "direkt SPAM von IP-Adressen geschickt, deren vollständige Netzblöcke nicht "
-"im DNS aufgeführt sind.. Es ist eine Liste von BLOCKIERTEN IP-Adressen, die "
+"im DNS aufgeführt sind. Es ist eine Liste von IP-AdressBLÖCKEN, die "
 "von Leuten benutzt werden, die SPAM an Leadmon.net geschickt haben."
 
 msgid ""
@@ -2641,7 +2641,7 @@ msgid ""
 msgstr ""
 "Je mehr Nachrichten Sie scannen lassen, desto länger dauert es. Ich würde "
 "vorschlagen, nur neue E-Mails zu scannen. Wenn Sie Ihre Filter ändern, würde "
-"ich alle E-Mails scannen lassen, dann in den Eingangsordner gehen und dann "
+"ich alle E-Mails scannen lassen, dann in den Posteingang gehen und dann "
 "nur noch neue E-Mails scannen lassen."
 
 #, php-format
@@ -2691,8 +2691,8 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "Einige IMAP-Testbefehle ausführen und den Befehl, sowie das Resultat "
-"anzeigen. Diese Tests verwenden die Squirrelmail IMAP-Befehle und Ihre "
-"aktuelle Squirrelmail-Konfiguration. Individuelle Befehle können benutzt "
+"anzeigen. Diese Tests verwenden die SquirrelMail IMAP-Befehle und Ihre "
+"aktuelle SquirrelMail-Konfiguration. Individuelle Befehle können benutzt "
 "werden."
 
 #, php-format
@@ -2835,7 +2835,7 @@ msgid "Command failed "
 msgstr "Befehl fehlgeschlagen "
 
 msgid "Remote POP server Fetching Mail"
-msgstr "Entfernter POP-Server holt E-Mails ab"
+msgstr "Mail-Abruf von fremdem POP3-Server"
 
 msgid "Select Server:"
 msgstr "Wählen Sie den Server:"
@@ -3054,7 +3054,7 @@ msgid "New Mail"
 msgstr "Neue E-Mail"
 
 msgid "SquirrelMail Notice:"
-msgstr "SquirrelMail Notiz:"
+msgstr "SquirrelMail Hinweis:"
 
 #, php-format
 msgid "You have %s new message"
@@ -3075,10 +3075,10 @@ msgid ""
 "inbox for notification."
 msgstr ""
 "Die Option %s prüft alle Ordner auf neue E-Mails, nicht nur den "
-"Eingangsordner."
+"Posteingang."
 
 msgid "Check all boxes, not just INBOX"
-msgstr "Prüfe alle Ordner, nicht nur den Eingangsordner"
+msgstr "Prüfe alle Ordner, nicht nur den Posteingang"
 
 #, php-format
 msgid ""
@@ -4926,80 +4926,3 @@ msgstr "Nicht zugestellte Nachrichtenkopfzeilen"
 
 msgid "This image has been removed for security reasons"
 msgstr "Dieses Bild wurde aus Sicherheitsgründen entfernt"
-
-#~ msgid "Available languages"
-#~ msgstr "Verfügbare Sprachen"
-
-#~ msgid "not available"
-#~ msgstr "nicht verfügbar"
-
-#~ msgid "Hide SquirrelMail Header"
-#~ msgstr "SquirrelMail Kopfzeilen nicht anzeigen"
-
-#~ msgid "Unknown error"
-#~ msgstr "Unbekannter Fehler"
-
-#~ msgid "said"
-#~ msgstr "sagte"
-
-#~ msgid "Can not modify global address book"
-#~ msgstr "Kann das globale Adressbuch nicht verändern"
-
-#~ msgid "Server responded: "
-#~ msgstr "Server antwortete: "
-
-#~ msgid "Show recipient name if the message is from your default identity"
-#~ msgstr ""
-#~ "Empfängername anzeigen, wenn die Nachricht von Ihrer Standardidentität "
-#~ "kommt"
-
-#~ msgid "Use old folder listing functions"
-#~ msgstr "Alter Ordneranzeige benutzen"
-
-#~ msgid "Message "
-#~ msgstr "Nachricht "
-
-#~ msgid "No-one server in use. Try to add."
-#~ msgstr "Kein Server in Benutzung. Versuchen Sie einen hinzuzufügen."
-
-#~ msgid "Hey! Wath do You are looking for?"
-#~ msgstr "Hey! Wonach schauen Sie?"
-
-#~ msgid "New Mail Notification options saved"
-#~ msgstr "Optionen für neue E-Mail gespeichert"
-
-#~ msgid "purge"
-#~ msgstr "leeren"
-
-#~ msgid "Nickname:"
-#~ msgstr "Kürzel:"
-
-#~ msgid "Note Field Contains:"
-#~ msgstr "Bemerkungs-Feld enthält:"
-
-#~ msgid "Business Card"
-#~ msgstr "Visitenkarte"
-
-#~ msgid "Please report this to the system administrator."
-#~ msgstr "Bitte melden Sie dies an den System-Administrator."
-
-#~ msgid "Enable Sort by of Receive Date"
-#~ msgstr "Sortierung nach Datum des E-Mail-Eingangs"
-
-#~ msgid "You have"
-#~ msgstr "Sie haben"
-
-#~ msgid "%s new messages"
-#~ msgstr "%s neue Nachrichten"
-
-#~ msgid "Chinese"
-#~ msgstr "Chinesisch"
-
-#~ msgid "European Spanish"
-#~ msgstr "Europäisches Spanisch"
-
-#~ msgid "Simplified Chinese"
-#~ msgstr "Chinesisch, vereinfacht"
-
-#~ msgid "Traditional Chinese"
-#~ msgstr "Chinesisch, traditionell"

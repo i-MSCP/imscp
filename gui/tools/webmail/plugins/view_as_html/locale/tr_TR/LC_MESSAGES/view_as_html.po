@@ -1,0 +1,22 @@
+# Turkish (tr_TR) view_as_html plugin translation.
+# Copyright (C) 2002-2003 The SquirrelMail Development Team
+# Kerem Erkan <akerem@hacettepe.edu.tr>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: view_as_html.po,v 1.2 2003/12/14 21:30:05 indiri69 Exp $\n"
+"POT-Creation-Date: 2002-09-26 15:37-0600\n"
+"PO-Revision-Date: 2002-10-24+0200\n"
+"Last-Translator: Kerem Erkan <akerem@hacettepe.edu.tr>\n"
+"Language-Team: Turkish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:81
+msgid "View as HTML"
+msgstr "HTML olarak göster"
+
+#: setup.php:76
+msgid "View as plain text"
+msgstr "Düz yazý olarak göster"

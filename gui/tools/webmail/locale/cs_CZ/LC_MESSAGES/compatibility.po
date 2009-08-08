@@ -1,30 +1,45 @@
-# SquirrelMail compatibility plugin Czech translation
-# Copyright (C) 2006 The SquirrelMail Project Team
-# This file is distributed under the same license as the compatibility package.
-# Tomas Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2006.
-# $Id: compatibility.po 10744 2006-02-18 10:39:21Z tokul $
+# Czech (cs_CZ) compatibility Translation (SquirrelMail plugin)
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Tomáš Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2006-2008.
+# $Id: compatibility.po 13705 2009-05-15 05:50:31Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: compatibility 2.0.4\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-27 13:45+0200\n"
-"PO-Revision-Date: 2006-02-17 08:55+0100\n"
-"Last-Translator: Tomas Drbohlav <tomas.drbohlav@mff.cuni.cz>\n"
-"Language-Team: czech <tomas.drbohlav@mff.cuni.cz>\n"
+"Project-Id-Version: compatibility 2.0.9\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-17 23:55+0200\n"
+"PO-Revision-Date: 2008-07-17 12:30+0200\n"
+"Last-Translator: Tomáš Drbohlav <tomas.drbohlav@mff.cuni.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: functions.php:635 functions.php:730
 msgid "Administrative error:"
-msgstr "Chyba v nastaven�:"
+msgstr "Chyba v nastavení:"
 
-#, c-format
+#: functions.php:636 functions.php:731
+#, php-format
 msgid "The plugin %s has not been set up correctly."
-msgstr "Z�suvn� modul %s nen� spr�vn� nakonfigurov�n."
+msgstr "Zásuvný modul %s není správně nakonfigurován."
 
-#, c-format
-msgid "The file %s is missing."
-msgstr "Chyb� soubor %s."
-
+#: functions.php:639 functions.php:737
 msgid "Please read the README or INSTALL files that came with the plugin."
-msgstr "Pros�m p�e�t�te si soubory README nebo INSTALL, kter� jsou sou��st� distribuce z�suvn�ho modulu."
+msgstr ""
+"Prosím přečtěte si soubory README nebo INSTALL, které jsou součástí "
+"distribuce rozšíření."
+
+#: functions.php:723
+#, php-format
+msgid "The file %s is missing from plugin %s."
+msgstr "Chybí soubor %s z rozšíření %s."
+
+#: functions.php:734
+#, php-format
+msgid "The file %s is missing."
+msgstr "Chybí soubor %s."
+
+#: includes/1.5.2/global.php:43
+msgid "Illegal filesystem access was requested"
+msgstr "Požadován neoprávněný přístup k souborovému systému"

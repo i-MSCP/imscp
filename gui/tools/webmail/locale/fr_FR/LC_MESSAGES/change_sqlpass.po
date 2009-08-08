@@ -1,7 +1,7 @@
 # French Translation of SquirrelMail change_sqlpass plugin
-# Copyright (c) 2006 The Squirrelmail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # Aldo <aldo@placenet.org>, 2006
-# $Id: change_sqlpass.po 10790 2006-02-21 17:29:21Z tokul $
+# $Id: change_sqlpass.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: change_sqlpass 3.3\n"

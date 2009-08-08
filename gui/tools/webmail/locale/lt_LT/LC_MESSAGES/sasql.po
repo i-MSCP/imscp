@@ -1,7 +1,7 @@
 # Lithuanian Translation of SquirrelMail sasql plugin
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
-# $Id: sasql.po 10018 2005-08-28 10:45:09Z tokul $
+# $Id: sasql.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: sasql\n"

@@ -1,7 +1,7 @@
 # translation of mark_read.po to Nynorsk
-# Copyright (c) 2004-2006 SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2004-2006.
-# $Id: mark_read.po 12742 2007-10-26 23:15:55Z jervfors $
+# $Id: mark_read.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mark_read 1.4.1\n"

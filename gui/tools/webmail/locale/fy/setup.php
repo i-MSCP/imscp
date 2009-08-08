@@ -2,7 +2,7 @@
 /**
  * Language configuration file
  *
- * Copyright (c) 2005-2006 The SquirrelMail Project Team
+ * Copyright (c) 2005-2009 The SquirrelMail Project Team
  *
  * This file is part of SquirrelMail webmail interface. It is distributed
  * together with other translation files and is used to enable 
@@ -29,4 +29,4 @@
 $languages['fy']['NAME']    = 'Frisian';
 $languages['fy']['ALTNAME'] = 'Frysk';
 $languages['fy']['CHARSET'] = 'utf-8';
-$languages['fy']['LOCALE']  = array('fy.UTF-8','fy_NL.UTF-8');
+$languages['fy']['LOCALE']  = array('fy.UTF-8', 'fy.UTF8', 'fy_NL.UTF-8', 'fy_NL.UTF8');

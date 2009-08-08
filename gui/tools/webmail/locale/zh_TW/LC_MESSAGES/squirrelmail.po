@@ -1,480 +1,472 @@
-# SquirrelMail Chinese Traditional translation.
-# Copyright (C) 2002-2004 The SquirrelMail Project Team
+# Traditional Chinese (zh_TW) SquirrelMail Translation
+# Copyright (c) 2002-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
 # Ray Liao <ray6@mail2000.com.tw>, 2002.
-# $Id: squirrelmail.po 9522 2005-06-05 11:50:09Z jervfors $
+# Kanru Chen <kanru@kanru.info>, 2008.
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: squirrelmail VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: SquirrelMail HEAD\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
 "POT-Creation-Date: 2005-04-16 19:47+0200\n"
-"PO-Revision-Date: 2002-02-04 21:28CST\n"
-"Last-Translator: Ray Liao <ray6@mail2000.com.tw>\n"
-"Language-Team: Chinese-Traditional\n"
+"PO-Revision-Date: 2008-02-16 01:08+0800\n"
+"Last-Translator: Kanru Chen <kanru@kanru.info>\n"
+"Language-Team: Traditional Chinese <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=BIG5\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
+"Plural-Forms: nplurals=2; plural=1;\n"
 
 msgid "Address Book"
-msgstr "³q°T¿ı"
+msgstr "é€šè¨ŠéŒ„"
 
 msgid "Name"
-msgstr "©m¦W"
+msgstr "å§“å"
 
 msgid "E-mail"
 msgstr "E-mail"
 
 #
 msgid "Info"
-msgstr "¸ê°T"
+msgstr "è³‡è¨Š"
 
 #
 msgid "Source"
-msgstr "¨Ó·½"
+msgstr "ä¾†æº"
 
 #
 msgid "To"
-msgstr "¦¬¥óªÌ"
+msgstr "æ”¶ä»¶è€…"
 
 #
 msgid "Cc"
-msgstr "°Æ¥»"
+msgstr "å‰¯æœ¬"
 
 msgid "Bcc"
-msgstr "±K°Æ"
+msgstr "å¯†å‰¯"
 
 #
-#, fuzzy
 msgid "No persons matching your search were found"
-msgstr "§ä¤£¨ì²Å¦X±z·j´M±ø¥óªº¤H­û"
+msgstr "æ‰¾ä¸åˆ°ç¬¦åˆæ‚¨æœå°‹æ¢ä»¶çš„äººå“¡"
 
 #
 msgid "Search for"
-msgstr "·j´M"
+msgstr "æœå°‹"
 
 #
 msgid "in"
-msgstr "©ó"
+msgstr "æ–¼"
 
 #
 msgid "All address books"
-msgstr "©Ò¦³³q°T¿ı"
+msgstr "æ‰€æœ‰é€šè¨ŠéŒ„"
 
 #
 msgid "Search"
-msgstr "·j´M"
+msgstr "æœå°‹"
 
 #
 msgid "List all"
-msgstr "¦C¥X¥ş³¡"
+msgstr "åˆ—å‡ºå…¨éƒ¨"
 
 msgid "Close"
-msgstr "Ãö³¬"
+msgstr "é—œé–‰"
 
 #
 #, php-format
 msgid "Unable to list addresses from %s"
-msgstr "µLªk¦Û%s¦C¥X±z­nªº¦a§}"
+msgstr "ç„¡æ³•è‡ª%såˆ—å‡ºæ‚¨è¦çš„åœ°å€"
 
 #
 msgid "Your search failed with the following error(s)"
-msgstr "±zªº·j´M¦]¤U¦C­ì¦]µLªk§¹¦¨¡G"
+msgstr "æ‚¨çš„æœå°‹å› ä¸‹åˆ—åŸå› ç„¡æ³•å®Œæˆï¼š"
 
 #
 msgid "All"
-msgstr "¥ş³¡"
+msgstr "å…¨éƒ¨"
 
 #
 msgid "Use Addresses"
-msgstr "¨Ï¥Î³q°T¿ı"
+msgstr "ä½¿ç”¨é€šè¨ŠéŒ„"
 
 msgid "Cancel"
-msgstr ""
+msgstr "å–æ¶ˆ"
 
 #
 msgid "Address Book Search"
-msgstr "·j´M³q°T¿ı"
+msgstr "æœå°‹é€šè¨ŠéŒ„"
 
 #
 msgid "Return"
-msgstr "©¹¦^"
+msgstr "å¾€å›"
 
 #
 msgid "Nickname"
-msgstr "§O¦W"
+msgstr "åˆ¥å"
 
 #
 msgid "Must be unique"
-msgstr "¤£±o­«ÂĞ¡]¥H­^¤å¡B¼Æ¦r¬°¨Î¡^"
+msgstr "ä¸å¾—é‡è¦†ï¼ˆä»¥è‹±æ–‡ã€æ•¸å­—ç‚ºä½³ï¼‰"
 
 msgid "E-mail address"
-msgstr "E-mail ¦a§}"
+msgstr "E-mail åœ°å€"
 
 #
 msgid "Last name"
-msgstr "¦W"
+msgstr "å"
 
 #
 msgid "First name"
-msgstr "©m"
+msgstr "å§“"
 
 #
 msgid "Additional info"
-msgstr "¨ä¥¦¸ê°T"
+msgstr "å…¶å®ƒè³‡è¨Š"
 
 #
-#, fuzzy
 msgid "Add to:"
-msgstr "·s¼W¦Ü %s"
+msgstr "æ–°å¢è‡³ï¼š"
 
 msgid "No personal address book is defined. Contact administrator."
-msgstr "µLªk¦s¨ú­Ó¤H³q°T¿ı¡A½Ğ¬¢ºŞ²z¤H­û¡C"
+msgstr "ç„¡æ³•å­˜å–å€‹äººé€šè¨ŠéŒ„ï¼Œè«‹æ´½ç®¡ç†äººå“¡ã€‚"
 
 #
 msgid "You can only edit one address at the time"
-msgstr "±z¤@¦¸¥u¯à­×§ï¤@µ§¸ê®Æ"
+msgstr "æ‚¨ä¸€æ¬¡åªèƒ½ä¿®æ”¹ä¸€ç­†è³‡æ–™"
 
 #
 msgid "Update address"
-msgstr "§ó·s³q°T¿ı"
+msgstr "æ›´æ–°é€šè¨ŠéŒ„"
 
 #
 msgid "ERROR"
-msgstr "¿ù»~"
+msgstr "éŒ¯èª¤"
 
 msgid "Please select address that you want to edit"
-msgstr ""
+msgstr "è«‹é¸æ“‡æ‚¨æƒ³è¦ç·¨è¼¯çš„åœ°å€"
 
 #
 msgid "Add address"
-msgstr "·s¼W³q°T¿ı"
+msgstr "æ–°å¢é€šè¨ŠéŒ„"
 
 #
 msgid "Edit selected"
-msgstr "­×§ï¤w¿ï¾Üªº¶µ¥Ø"
+msgstr "ä¿®æ”¹å·²é¸æ“‡çš„é …ç›®"
 
 #
 msgid "Delete selected"
-msgstr "§R°£¤w¿ï¾Üªº¶µ¥Ø"
+msgstr "åˆªé™¤å·²é¸æ“‡çš„é …ç›®"
 
 #
 #, php-format
 msgid "Add to %s"
-msgstr "·s¼W¦Ü %s"
+msgstr "æ–°å¢è‡³ %s"
 
 #, php-format
 msgid "%s wrote:"
-msgstr ""
+msgstr "%s å¯«åˆ°ï¼š"
 
 #
 msgid "quote"
-msgstr "¤Ş¤å"
+msgstr "å¼•æ–‡"
 
 #
 msgid "who"
-msgstr "½Ö"
+msgstr "èª°"
 
 #, php-format
 msgid "On %s, %s wrote:"
-msgstr ""
+msgstr "%s, %s å¯«åˆ°ï¼š"
 
 msgid "Subject"
-msgstr "¥D¦®"
+msgstr "ä¸»æ—¨"
 
 #
 msgid "From"
-msgstr "±H¥óªÌ"
+msgstr "å¯„ä»¶è€…"
 
 #
 msgid "Date"
-msgstr "¤é´Á"
+msgstr "æ—¥æœŸ"
 
 #
 msgid "Original Message"
-msgstr "­ì¤å"
+msgstr "åŸæ–‡"
 
 #
 msgid "Draft Email Saved"
-msgstr "¤w¦s¦¨¯ó½Z"
+msgstr "å·²å­˜æˆè‰ç¨¿"
 
 #
 msgid "Could not move/copy file. File not attached"
-msgstr "µLªk²¾°Ê©Î½Æ»sÀÉ®×¡CªşÀÉ¥¼§¹¦¨¡C"
+msgstr "ç„¡æ³•ç§»å‹•æˆ–è¤‡è£½æª”æ¡ˆã€‚é™„æª”æœªå®Œæˆã€‚"
 
 #
 msgid "Draft Saved"
-msgstr "¤w¦s¦¨¯ó½Z"
+msgstr "å·²å­˜æˆè‰ç¨¿"
 
 #
-#, fuzzy
 msgid "Your Message has been sent."
-msgstr "©|¥¼¿ï¾Ü¶l¥ó"
+msgstr "æ‚¨çš„éƒµä»¶å·²ç¶“å¯„å‡ºã€‚"
 
 #
 msgid "From:"
-msgstr "±H¥óªÌ¡G"
+msgstr "å¯„ä»¶è€…ï¼š"
 
 #
 msgid "Send"
-msgstr "¶Ç°e"
+msgstr "å‚³é€"
 
 #
 msgid "Attach:"
-msgstr "ªşÀÉ¡G"
+msgstr "é™„æª”ï¼š"
 
 #
 msgid "Add"
-msgstr "·s¼W"
+msgstr "æ–°å¢"
 
 #
 msgid "Delete selected attachments"
-msgstr "§R°£¿ï¾Ü¤§ªşÀÉ"
+msgstr "åˆªé™¤é¸æ“‡ä¹‹é™„æª”"
 
 #
 msgid "Priority"
-msgstr "­«­n©Ê"
+msgstr "é‡è¦æ€§"
 
 msgid "High"
-msgstr "°ª"
+msgstr "é«˜"
 
 #
 msgid "Normal"
-msgstr "´¶³q"
+msgstr "æ™®é€š"
 
 #
 msgid "Low"
-msgstr "§C"
+msgstr "ä½"
 
 msgid "Receipt"
-msgstr "¦^±ø"
+msgstr "å›æ¢"
 
 #
 msgid "On Read"
-msgstr "Åª¨ú®É"
+msgstr "è®€å–æ™‚"
 
 msgid "On Delivery"
-msgstr "¶Ç°e®É"
+msgstr "å‚³é€æ™‚"
 
 #
 msgid "Signature"
-msgstr "Ã±¦W"
+msgstr "ç°½å"
 
 #
 msgid "Addresses"
-msgstr "³q°T¿ı"
+msgstr "é€šè¨ŠéŒ„"
 
 #
 msgid "Save Draft"
-msgstr "¦s¦¨¯ó½Z"
+msgstr "å­˜æˆè‰ç¨¿"
 
 #
 msgid "You have not filled in the \"To:\" field."
-msgstr "±z¥¼«ü©w¦¬¥óªÌ"
+msgstr "æ‚¨æœªæŒ‡å®šæ”¶ä»¶è€…"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Error: Draft folder %s does not exist."
-msgstr "¨Ï¥ÎªÌ '%s' ¤£¦s¦b"
+msgstr "éŒ¯èª¤ï¼šè‰ç¨¿è³‡æ–™å¤¾ '%s' ä¸å­˜åœ¨"
 
 #
-#, fuzzy
 msgid "Server replied:"
-msgstr "¦øªA¾¹¦^À³¡G"
+msgstr "ä¼ºæœå™¨å›æ‡‰ï¼š"
 
 #
 msgid "Folders"
-msgstr "¸ê®Æ§¨"
+msgstr "è³‡æ–™å¤¾"
 
 #
-#, fuzzy
 msgid "Subscribed successfully."
-msgstr "¤w§ï¦¨¡uÅã¥Ü¡v"
+msgstr "è¨‚é–±æˆåŠŸã€‚"
 
 #
-#, fuzzy
 msgid "Unsubscribed successfully."
-msgstr "¤w§ï¦¨¡u¤£Åã¥Ü¡v"
+msgstr "å–æ¶ˆè¨‚é–±æˆåŠŸã€‚"
 
 #
-#, fuzzy
 msgid "Deleted folder successfully."
-msgstr "¤w§R°£"
+msgstr "è³‡æ–™å¤¾å·²åˆªé™¤ã€‚"
 
 #
-#, fuzzy
 msgid "Created folder successfully."
-msgstr "¤w·s¼W"
+msgstr "å·²æ–°å¢è³‡æ–™å¤¾ã€‚"
 
 #
-#, fuzzy
 msgid "Renamed successfully."
-msgstr "¤w­«·s©R¦W"
+msgstr "å·²é‡æ–°å‘½åã€‚"
 
 msgid "Subscription Unsuccessful - Folder does not exist."
-msgstr "³]©w¬°¡uÅã¥Ü¡v¥¢±Ñ¡C¸ê®Æ§¨¤£¦s¦b¡C"
+msgstr "è¨­å®šç‚ºã€Œé¡¯ç¤ºã€å¤±æ•—ã€‚è³‡æ–™å¤¾ä¸å­˜åœ¨ã€‚"
 
 #
 msgid "refresh folder list"
-msgstr "­«¾ã¸ê®Æ§¨²M³æ"
+msgstr "é‡æ•´è³‡æ–™å¤¾æ¸…å–®"
 
 #
 msgid "Create Folder"
-msgstr "·s¼W¸ê®Æ§¨"
+msgstr "æ–°å¢è³‡æ–™å¤¾"
 
 #
 msgid "as a subfolder of"
-msgstr "·s¼W¤l¸ê®Æ§¨©ó"
+msgstr "æ–°å¢å­è³‡æ–™å¤¾æ–¼"
 
 msgid "None"
-msgstr "µL"
+msgstr "ç„¡"
 
 msgid "Let this folder contain subfolders"
-msgstr "¦¹¸ê®Æ§¨¥i¥]¬A¤l¸ê®Æ§¨"
+msgstr "æ­¤è³‡æ–™å¤¾å¯åŒ…æ‹¬å­è³‡æ–™å¤¾"
 
 #
 msgid "Create"
-msgstr "·s¼W"
+msgstr "æ–°å¢"
 
 #
 msgid "Rename a Folder"
-msgstr "­«·s©R¦W¸ê®Æ§¨"
+msgstr "é‡æ–°å‘½åè³‡æ–™å¤¾"
 
 #
 msgid "Select a folder"
-msgstr "¿ï¾Ü¸ê®Æ§¨"
+msgstr "é¸æ“‡è³‡æ–™å¤¾"
 
 #
 msgid "Rename"
-msgstr "­«·s©R¦W"
+msgstr "é‡æ–°å‘½å"
 
 #
 msgid "No folders found"
-msgstr "§ä¤£¨ì¸ê®Æ§¨"
+msgstr "æ‰¾ä¸åˆ°è³‡æ–™å¤¾"
 
 #
 msgid "Delete Folder"
-msgstr "§R°£¸ê®Æ§¨"
+msgstr "åˆªé™¤è³‡æ–™å¤¾"
 
 #
 msgid "Delete"
-msgstr "§R°£"
+msgstr "åˆªé™¤"
 
 #
 msgid "Unsubscribe"
-msgstr "¤£Åã¥Ü"
+msgstr "ä¸é¡¯ç¤º"
 
 #
 msgid "Subscribe"
-msgstr "Åã¥Ü"
+msgstr "é¡¯ç¤º"
 
 #
 msgid "No folders were found to unsubscribe from!"
-msgstr "§ä¤£¨ì¥i¥H³]©w¬°¡u¤£Åã¥Ü¡vªº¸ê®Æ§¨¡I"
+msgstr "æ‰¾ä¸åˆ°å¯ä»¥è¨­å®šç‚ºã€Œä¸é¡¯ç¤ºã€çš„è³‡æ–™å¤¾ï¼"
 
 #
 msgid "No folders were found to subscribe to!"
-msgstr "§ä¤£¨ì¥i¥H³]©w¬°¡uÅã¥Ü¡vªº¸ê®Æ§¨¡I"
+msgstr "æ‰¾ä¸åˆ°å¯ä»¥è¨­å®šç‚ºã€Œé¡¯ç¤ºã€çš„è³‡æ–™å¤¾ï¼"
 
 #
 msgid "Subscribe to:"
-msgstr "Åã¥Ü¦¨¡G"
+msgstr "é¡¯ç¤ºæˆï¼š"
 
 #
-#, fuzzy
 msgid "Illegal folder name. Please select a different name."
-msgstr "¤£¦X³W«hªº¸ê®Æ§¨¦WºÙ¡C½Ğ¥t¿ï¦WºÙ"
+msgstr "ä¸åˆè¦å‰‡çš„è³‡æ–™å¤¾åç¨±ã€‚è«‹å¦é¸åç¨±"
 
 #
 msgid "Click here to go back"
-msgstr "ÂI¦¹©¹¦^"
+msgstr "é»æ­¤å¾€å›"
 
 msgid "You have not selected a folder to delete. Please do so."
-msgstr "±z©|¥¼¿ï¾Ü­n§R°£ªº¸ê®Æ§¨¡C½Ğ¿ï¤@­Ó¡C"
+msgstr "æ‚¨å°šæœªé¸æ“‡è¦åˆªé™¤çš„è³‡æ–™å¤¾ã€‚è«‹é¸ä¸€å€‹ã€‚"
 
 #
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "¯uªº­n§R°£¨Æ¥ó %s"
+msgstr "çœŸçš„è¦åˆªé™¤äº‹ä»¶ %s"
 
 #
 msgid "Yes"
-msgstr "¬O"
+msgstr "æ˜¯"
 
 #
 msgid "No"
-msgstr "§_"
+msgstr "å¦"
 
 msgid "You have not selected a folder to rename. Please do so."
-msgstr "±z©|¥¼¿ï¾Ü­n­«·s©R¦Wªº¸ê®Æ§¨¡C½Ğ¿ï¾Ü¡C"
+msgstr "æ‚¨å°šæœªé¸æ“‡è¦é‡æ–°å‘½åçš„è³‡æ–™å¤¾ã€‚è«‹é¸æ“‡ã€‚"
 
 #
 msgid "Rename a folder"
-msgstr "­«·s©R¦W¸ê®Æ§¨"
+msgstr "é‡æ–°å‘½åè³‡æ–™å¤¾"
 
 #
 msgid "New name:"
-msgstr "·s¦WºÙ¡G"
+msgstr "æ–°åç¨±ï¼š"
 
 #
 msgid "Submit"
-msgstr "°e¥X"
+msgstr "é€å‡º"
 
 msgid "ERROR: Help files are not in the right format!"
-msgstr "¿ù»~¡G½u¤W¨D§UÀÉ®æ¦¡¿ù»~¡I"
+msgstr "éŒ¯èª¤ï¼šç·šä¸Šæ±‚åŠ©æª”æ ¼å¼éŒ¯èª¤ï¼"
 
 #
 msgid "Help"
-msgstr "¨D§U"
+msgstr "æ±‚åŠ©"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The help has not been translated to %s. It will be displayed in English "
 "instead."
-msgstr "½u¤W¨D§U©|¥¼Â½Ä¶¦¨ %s¡C±N·|¥H­^¤åÅã¥Ü¡C"
+msgstr "ç·šä¸Šæ±‚åŠ©å°šæœªç¿»è­¯æˆ %sã€‚å°‡æœƒä»¥è‹±æ–‡é¡¯ç¤ºã€‚"
 
 #
 msgid "Some or all of the help documents are not present!"
-msgstr "³¡¥÷©Î¥ş³¡¤å¥ó¤£¦s¦b¡I"
+msgstr "éƒ¨ä»½æˆ–å…¨éƒ¨æ–‡ä»¶ä¸å­˜åœ¨ï¼"
 
 #
 msgid "Table of Contents"
-msgstr "¥Ø¿ı"
+msgstr "ç›®éŒ„"
 
 #
 msgid "Previous"
-msgstr "«e¤@­Ó¶µ¥Ø"
+msgstr "å‰ä¸€å€‹é …ç›®"
 
 #
 msgid "Next"
-msgstr "¤U¤@­Ó¶µ¥Ø"
+msgstr "ä¸‹ä¸€å€‹é …ç›®"
 
 #
 msgid "Top"
-msgstr "¦^¨ì³Ì«e­±"
+msgstr "å›åˆ°æœ€å‰é¢"
 
 msgid "Viewing an image attachment"
-msgstr "¶}±Ò¹Ï¤ùªş¥[ÀÉ"
+msgstr "é–‹å•Ÿåœ–ç‰‡é™„åŠ æª”"
 
 #
 msgid "View message"
-msgstr "Åª¨ú¶l¥ó"
+msgstr "è®€å–éƒµä»¶"
 
 #
 msgid "Download this as a file"
-msgstr "¤U¸ü¦s¦¨·sÀÉ"
+msgstr "ä¸‹è¼‰å­˜æˆæ–°æª”"
 
 msgid "INBOX"
-msgstr "¦¬¥ó§¨"
+msgstr "æ”¶ä»¶å¤¾"
 
 #
-#, fuzzy
 msgid "Purge"
-msgstr "²M°£"
+msgstr "æ¸…é™¤"
 
 #
 msgid "Login"
-msgstr "µn¤J"
+msgstr "ç™»å…¥"
 
 #
 #, php-format
@@ -484,224 +476,222 @@ msgstr "%s Logo"
 #
 #, php-format
 msgid "SquirrelMail version %s"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ± %s"
 
 #
-#, fuzzy
 msgid "By the SquirrelMail Project Team"
-msgstr "¥ÑªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î¬ãµo¤p²Õ³]­p"
+msgstr "ç”±æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ±ç ”ç™¼å°çµ„è¨­è¨ˆ"
 
 #
 #, php-format
 msgid "%s Login"
-msgstr "%s µn¤J"
+msgstr "%s ç™»å…¥"
 
 #
 msgid "Name:"
-msgstr "±b¸¹¡G"
+msgstr "å¸³è™Ÿï¼š"
 
 #
 msgid "Password:"
-msgstr "±K½X¡G"
+msgstr "å¯†ç¢¼ï¼š"
 
 msgid "No messages were selected."
-msgstr "©|¥¼¿ï¾Ü¶l¥ó"
+msgstr "å°šæœªé¸æ“‡éƒµä»¶"
 
 #
 msgid "Personal Information"
-msgstr "­Ó¤H¸ê°T"
+msgstr "å€‹äººè³‡è¨Š"
 
 #
 msgid "Display Preferences"
-msgstr "Åã¥Ü³]©w"
+msgstr "é¡¯ç¤ºè¨­å®š"
 
 #
 msgid "Message Highlighting"
-msgstr "¼Ğ°O¶l¥ó"
+msgstr "æ¨™è¨˜éƒµä»¶"
 
 #
 msgid "Folder Preferences"
-msgstr "¸ê®Æ§¨³]©w"
+msgstr "è³‡æ–™å¤¾è¨­å®š"
 
 #
 msgid "Index Order"
-msgstr "¯Á¤Ş¶¶§Ç"
+msgstr "ç´¢å¼•é †åº"
 
 msgid "Options"
-msgstr "Àô¹Ò³]©w"
+msgstr "ç’°å¢ƒè¨­å®š"
 
 msgid "Error(s) occurred while saving your options"
-msgstr ""
+msgstr "ç•¶æ‚¨å„²å­˜è¨­å®šæ™‚ç™¼ç”ŸéŒ¯èª¤"
 
 msgid "Some of your preference changes were not applied."
-msgstr ""
+msgstr "æœ‰ä¸€äº›æ‚¨çš„è¨­å®šæ²’æœ‰ç”Ÿæ•ˆ"
 
 msgid "Successfully Saved Options"
-msgstr "­Ó¤H¤Æ³]©w¤w¦sÀÉ"
+msgstr "å€‹äººåŒ–è¨­å®šå·²å­˜æª”"
 
 msgid "Refresh Folder List"
-msgstr "§ó·s¸ê®Æ§¨²M³æ"
+msgstr "æ›´æ–°è³‡æ–™å¤¾æ¸…å–®"
 
 #
 msgid "Refresh Page"
-msgstr "§ó·sµe­±"
+msgstr "æ›´æ–°ç•«é¢"
 
 #
 msgid ""
 "This contains personal information about yourself such as your name, your "
 "email address, etc."
-msgstr "³o¸Ìªº³]©w¥]§t±z­Ó¤Hªº¸ê®Æ¡A¦p©m¦W¡B¹q¶l¦a§}µ¥¡C"
+msgstr "é€™è£¡çš„è¨­å®šåŒ…å«æ‚¨å€‹äººçš„è³‡æ–™ï¼Œå¦‚å§“åã€é›»éƒµåœ°å€ç­‰ã€‚"
 
 #
 msgid ""
 "You can change the way that SquirrelMail looks and displays information to "
 "you, such as the colors, the language, and other settings."
-msgstr "±z¥i¥H§ó§ï¥»¨t²Îªº¥~Æ[©MÅã¥Ü¸ê°Tªº¤è¦¡¡C¨Ò¦pÃC¦â¡B»y¨tµ¥¡C"
+msgstr "æ‚¨å¯ä»¥æ›´æ”¹æœ¬ç³»çµ±çš„å¤–è§€å’Œé¡¯ç¤ºè³‡è¨Šçš„æ–¹å¼ã€‚ä¾‹å¦‚é¡è‰²ã€èªç³»ç­‰ã€‚"
 
 #
-#, fuzzy
 msgid ""
 "Based upon given criteria, incoming messages can have different background "
 "colors in the message list. This helps to easily distinguish who the "
 "messages are from, especially for mailing lists."
 msgstr ""
-"®Ú¾Ú±zµ¹©wªº±ø¥ó¡A±H¹Fªº¶l¥ó¥i¥H¥Î¤£¦Pªº©³¦âÅã¥Ü¡CÅı±z¥i¥H»´ÃP°Ï¤À¨Ó·½¡A¤×¨ä"
-"¤è«K¨Ï¥Î©óMailing List ¤W"
+"æ ¹æ“šæ‚¨çµ¦å®šçš„æ¢ä»¶ï¼Œå¯„é”çš„éƒµä»¶å¯ä»¥ç”¨ä¸åŒçš„åº•è‰²é¡¯ç¤ºã€‚è®“æ‚¨å¯ä»¥è¼•é¬†å€åˆ†ä¾†æºï¼Œå°¤å…¶"
+"æ–¹ä¾¿ä½¿ç”¨æ–¼Mailing List ä¸Š"
 
 #
 msgid ""
 "These settings change the way your folders are displayed and manipulated."
-msgstr "³o¨Ç³]©w·|§ïÅÜ¸ê®Æ§¨Åã¥Üªº¤è¦¡©M±z¾Ş§@ªº¤è¦¡¡C"
+msgstr "é€™äº›è¨­å®šæœƒæ”¹è®Šè³‡æ–™å¤¾é¡¯ç¤ºçš„æ–¹å¼å’Œæ‚¨æ“ä½œçš„æ–¹å¼ã€‚"
 
 msgid ""
 "The order of the message index can be rearranged and changed to contain the "
 "headers in any order you want."
-msgstr "«H¥ó¥i¥H¨Ì±zªº³ß¦n±Æ§Ç¡A¨Ã§ïÅÜ«H¥ó¼ĞÀYÅã¥Üªº¶µ¥Ø¡C"
+msgstr "ä¿¡ä»¶å¯ä»¥ä¾æ‚¨çš„å–œå¥½æ’åºï¼Œä¸¦æ”¹è®Šä¿¡ä»¶æ¨™é ­é¡¯ç¤ºçš„é …ç›®ã€‚"
 
 #
 msgid "New"
-msgstr "·s«Ø"
+msgstr "æ–°å»º"
 
 #
 msgid "Done"
-msgstr "§¹¦¨"
+msgstr "å®Œæˆ"
 
 #
 msgid "To or Cc"
-msgstr "¦¬¥óªÌ©Î°Æ¥»"
+msgstr "æ”¶ä»¶è€…æˆ–å‰¯æœ¬"
 
 #
 msgid "subject"
-msgstr "¥D¦®"
+msgstr "ä¸»æ—¨"
 
 #
 msgid "Edit"
-msgstr "½s¿è"
+msgstr "ç·¨è¼¯"
 
 #
 msgid "Up"
-msgstr "¦V¤W"
+msgstr "å‘ä¸Š"
 
 msgid "Down"
-msgstr "¦V¤U"
+msgstr "å‘ä¸‹"
 
 #
 msgid "No highlighting is defined"
-msgstr "¨S¦³³]©w¶l¥ó¼Ğ°Oªº³W«h"
+msgstr "æ²’æœ‰è¨­å®šéƒµä»¶æ¨™è¨˜çš„è¦å‰‡"
 
 #
 msgid "Identifying name"
-msgstr "³W«h¦WºÙ"
+msgstr "è¦å‰‡åç¨±"
 
 #
 msgid "Color"
-msgstr "ÃC¦â"
+msgstr "é¡è‰²"
 
 #
 msgid "Dark Blue"
-msgstr "²`ÂÅ¦â"
+msgstr "æ·±è—è‰²"
 
 #
 msgid "Dark Green"
-msgstr "²`ºñ¦â"
+msgstr "æ·±ç¶ è‰²"
 
 #
 msgid "Dark Yellow"
-msgstr "²`¶À¦â"
+msgstr "æ·±é»ƒè‰²"
 
 #
 msgid "Dark Cyan"
-msgstr "²`«C¦â"
+msgstr "æ·±é’è‰²"
 
 #
 msgid "Dark Magenta"
-msgstr "²`µµ¦â"
+msgstr "æ·±ç´«è‰²"
 
 #
 msgid "Light Blue"
-msgstr "²HÂÅ¦â"
+msgstr "æ·¡è—è‰²"
 
 #
 msgid "Light Green"
-msgstr "²Hºñ¦â"
+msgstr "æ·¡ç¶ è‰²"
 
 #
 msgid "Light Yellow"
-msgstr "²H¶À¦â"
+msgstr "æ·¡é»ƒè‰²"
 
 #
 msgid "Light Cyan"
-msgstr "²H«C¦â"
+msgstr "æ·¡é’è‰²"
 
 #
 msgid "Light Magenta"
-msgstr "²Hµµ¦â"
+msgstr "æ·¡ç´«è‰²"
 
 #
 msgid "Dark Gray"
-msgstr "²`¦Ç¦â"
+msgstr "æ·±ç°è‰²"
 
 #
 msgid "Medium Gray"
-msgstr "¤¤¦Ç¦â"
+msgstr "ä¸­ç°è‰²"
 
 #
 msgid "Light Gray"
-msgstr "²H¦Ç¦â"
+msgstr "æ·¡ç°è‰²"
 
 #
 msgid "White"
-msgstr "¥Õ¦â"
+msgstr "ç™½è‰²"
 
 #
 msgid "Other:"
-msgstr "¨ä¥¦¡G"
+msgstr "å…¶å®ƒï¼š"
 
 msgid "Ex: 63aa7f"
-msgstr "¨Ò¦p¡G63aa7f"
+msgstr "ä¾‹å¦‚ï¼š63aa7f"
 
 msgid "Matches"
-msgstr "²Å¦X"
+msgstr "ç¬¦åˆ"
 
 #
 #, php-format
 msgid "Alternate Identity %d"
-msgstr "¿ï¾Ü©Êªº¨­¤À %d"
+msgstr "é¸æ“‡æ€§çš„èº«åˆ† %d"
 
 #
 msgid "Advanced Identities"
-msgstr "¨­¤À--¶i¶¥³]©w"
+msgstr "èº«åˆ†--é€²éšè¨­å®š"
 
 msgid "Default Identity"
-msgstr "¹w³]¨­¤À"
+msgstr "é è¨­èº«åˆ†"
 
 #
 msgid "Add a New Identity"
-msgstr "·s¼W¨­¤À"
+msgstr "æ–°å¢èº«åˆ†"
 
 #
 msgid "Full Name"
-msgstr "¥ş¦W"
+msgstr "å…¨å"
 
 #
 msgid "E-Mail Address"
@@ -709,545 +699,532 @@ msgstr "e-mail"
 
 #
 msgid "Reply To"
-msgstr "¦^«H¦a§}"
+msgstr "å›ä¿¡åœ°å€"
 
 #
 msgid "Save / Update"
-msgstr "¦sÀÉ/­×§ï"
+msgstr "å­˜æª”/ä¿®æ”¹"
 
 msgid "Make Default"
-msgstr "¥O¬°¹w³]­È"
+msgstr "ä»¤ç‚ºé è¨­å€¼"
 
 #
 msgid "Move Up"
-msgstr "·h²¾"
+msgstr "æ¬ç§»"
 
 #
 msgid "Checkbox"
-msgstr "¿ï¨ú®Ø"
+msgstr "é¸å–æ¡†"
 
 #
 msgid "Flags"
-msgstr "ºX¼Ğ"
+msgstr "æ——æ¨™"
 
 #
 msgid "Size"
-msgstr "¶l¥ó¤j¤p"
+msgstr "éƒµä»¶å¤§å°"
 
 #
-#, fuzzy
 msgid ""
 "The index order is the order that the columns are arranged in the message "
 "index. You can add, remove, and move columns around to customize them to fit "
 "your needs."
-msgstr "±Æ¦C¶l¥óÄæ¦ìªº¶¶§Ç¡C±z¥i¥H·s¼W¡B²¾°£©M²¾°Ê¨Ó°t¦X±zªº»İ¨D¡C"
+msgstr "æ’åˆ—éƒµä»¶æ¬„ä½çš„é †åºã€‚æ‚¨å¯ä»¥æ–°å¢ã€ç§»é™¤å’Œç§»å‹•ä¾†é…åˆæ‚¨çš„éœ€æ±‚ã€‚"
 
 #
 msgid "up"
-msgstr "¤W²¾"
+msgstr "ä¸Šç§»"
 
 #
 msgid "down"
-msgstr "¤U²¾"
+msgstr "ä¸‹ç§»"
 
 #
 msgid "remove"
-msgstr "²¾°£"
+msgstr "ç§»é™¤"
 
 #
 msgid "Return to options page"
-msgstr "¦^¨ì­Ó¤H¤Æ³]©w"
+msgstr "å›åˆ°å€‹äººåŒ–è¨­å®š"
 
 msgid "Message not printable"
-msgstr "«H¥óµLªk¦C¦L"
+msgstr "ä¿¡ä»¶ç„¡æ³•åˆ—å°"
 
 msgid "Invalid URL"
-msgstr ""
+msgstr "ç„¡æ•ˆçš„ URL"
 
 #
 msgid "Printer Friendly"
-msgstr "¤Íµ½¦C¦L"
+msgstr "å‹å–„åˆ—å°"
 
 #
 msgid "Print"
-msgstr "¦C¦L"
+msgstr "åˆ—å°"
 
 #
 msgid "View Printable Version"
-msgstr "Åã¥Ü¤Íµ½¦C¦L¼Ò¦¡"
+msgstr "é¡¯ç¤ºå‹å–„åˆ—å°æ¨¡å¼"
 
 #
 msgid "Read:"
-msgstr "Åª¨ú¡G"
+msgstr "è®€å–ï¼š"
 
 #
 msgid "Your message"
-msgstr "±zªº¶l¥ó"
+msgstr "æ‚¨çš„éƒµä»¶"
 
 #
-#, fuzzy
 msgid "Sent"
-msgstr "°e¥X¡G"
+msgstr "å¯„ä»¶å‚™ä»½"
+
+msgid "Trash"
+msgstr "åƒåœ¾æ¡¶"
+
+msgid "Drafts"
+msgstr "è‰ç¨¿"
 
 #
 #, php-format
 msgid "Was displayed on %s"
-msgstr "Åã¥Ü©ó %s"
+msgstr "é¡¯ç¤ºæ–¼ %s"
 
 #
 msgid "less"
-msgstr "¸û¤Ö"
+msgstr "è¼ƒå°‘"
 
 #
 msgid "more"
-msgstr "¸û¦h"
+msgstr "è¼ƒå¤š"
 
 #
 msgid "Unknown sender"
-msgstr "¤£©ú±H¥óªÌ"
+msgstr "ä¸æ˜å¯„ä»¶è€…"
 
 #
 msgid "Mailer"
 msgstr "Mailer"
 
 msgid "Read receipt"
-msgstr "Åª¨ú¦^±ø"
+msgstr "è®€å–å›æ¢"
 
 #
-#, fuzzy
 msgid "sent"
-msgstr "¶Ç°e"
+msgstr "å‚³é€"
 
 #
 msgid "requested"
-msgstr "³Q½Ğ¨D"
+msgstr "è¢«è«‹æ±‚"
 
 msgid ""
 "The message sender has requested a response to indicate that you have read "
 "this message. Would you like to send a receipt?"
-msgstr "±H¥óªÌ­n¨D¦^±ø¡A¬O§_°e¥X¦^±ø¡H"
+msgstr "å¯„ä»¶è€…è¦æ±‚å›æ¢ï¼Œæ˜¯å¦é€å‡ºå›æ¢ï¼Ÿ"
 
 msgid "Send read receipt now"
-msgstr "°e¥X¤wÅª¨úªº¦^±ø"
+msgstr "é€å‡ºå·²è®€å–çš„å›æ¢"
 
 #
 msgid "Search Results"
-msgstr "·j´Mµ²ªG"
+msgstr "æœå°‹çµæœ"
 
 #
 msgid "Message List"
-msgstr "¶l¥ó²M³æ"
+msgstr "éƒµä»¶æ¸…å–®"
 
 msgid "Resume Draft"
-msgstr "Ä~Äò§¹¦¨¯ó½Z"
+msgstr "ç¹¼çºŒå®Œæˆè‰ç¨¿"
 
 msgid "Edit Message as New"
-msgstr "­«·s½s¼g¶l¥ó"
+msgstr "é‡æ–°ç·¨å¯«éƒµä»¶"
 
 #
 msgid "View Message"
-msgstr "Åª¨ú¶l¥ó"
+msgstr "è®€å–éƒµä»¶"
 
 #
 msgid "Forward"
-msgstr "Âà±H"
+msgstr "è½‰å¯„"
 
 #
 msgid "Forward as Attachment"
-msgstr "¨Ï¥Îªş¥óªº¤è¦¡¨ÓÂà±H"
+msgstr "ä½¿ç”¨é™„ä»¶çš„æ–¹å¼ä¾†è½‰å¯„"
 
 #
 msgid "Reply"
-msgstr "¦^ÂĞ"
+msgstr "å›è¦†"
 
 #
 msgid "Reply All"
-msgstr "¥ş³¡¦^ÂĞ"
+msgstr "å…¨éƒ¨å›è¦†"
 
 msgid "View Full Header"
-msgstr "Åã¥Ü§¹¾ã¼ĞÀY"
+msgstr "é¡¯ç¤ºå®Œæ•´æ¨™é ­"
 
 msgid "Attachments"
-msgstr "ªş¥ó"
+msgstr "é™„ä»¶"
 
 msgid "You must be logged in to access this page."
-msgstr "±z¥²»İµn¤J¤~¯à¦s¨ú¥»­¶¡C"
+msgstr "æ‚¨å¿…éœ€ç™»å…¥æ‰èƒ½å­˜å–æœ¬é ã€‚"
 
 #
 msgid "Folder:"
-msgstr "¸ê®Æ§¨"
+msgstr "è³‡æ–™å¤¾"
 
 #
 msgid "edit"
-msgstr "½s¿è"
+msgstr "ç·¨è¼¯"
 
 #
 msgid "search"
-msgstr "·j´M"
+msgstr "æœå°‹"
 
 #
 msgid "delete"
-msgstr "§R°£"
+msgstr "åˆªé™¤"
 
 msgid "Recent Searches"
-msgstr "³Ìªñªº·j´M¬ö¿ı"
+msgstr "æœ€è¿‘çš„æœå°‹ç´€éŒ„"
 
 #
 msgid "save"
-msgstr "Àx¦s"
+msgstr "å„²å­˜"
 
 #
 msgid "forget"
-msgstr "§Ñ°O"
+msgstr "å¿˜è¨˜"
 
 #
 msgid "Current Search"
-msgstr "¥Ø«eªº·j´M"
+msgstr "ç›®å‰çš„æœå°‹"
 
 #
 msgid "All Folders"
-msgstr "©Ò¦³¸ê®Æ§¨"
+msgstr "æ‰€æœ‰è³‡æ–™å¤¾"
 
 #
 msgid "Body"
-msgstr "¥»¤å"
+msgstr "æœ¬æ–‡"
 
 #
 msgid "Everywhere"
-msgstr "¥ş³¡"
+msgstr "å…¨éƒ¨"
 
 msgid "No Messages Found"
-msgstr "§ä¤£¨ì¶l¥ó"
+msgstr "æ‰¾ä¸åˆ°éƒµä»¶"
 
 #
-#, fuzzy
 msgid "Signout"
-msgstr "µn¥X"
+msgstr "ç™»å‡º"
 
 #
 msgid "Sign Out"
-msgstr "µn¥X"
+msgstr "ç™»å‡º"
 
 #
 msgid "You have been successfully signed out."
-msgstr "±z¤wµn¥X¥»¨t²Î"
+msgstr "æ‚¨å·²ç™»å‡ºæœ¬ç³»çµ±"
 
 #
 msgid "Click here to log back in."
-msgstr "ÂI¦¹­«·sµn¤J"
+msgstr "é»æ­¤é‡æ–°ç™»å…¥"
 
 msgid "Viewing a Business Card"
-msgstr "ÀËµø¦W¤ù"
+msgstr "æª¢è¦–åç‰‡"
 
 #, php-format
 msgid ""
 "vCard Version %s is not supported. Some information might not be converted "
 "correctly."
-msgstr ""
+msgstr "æ²’æœ‰æ”¯æ´ vCard ç¬¬ %s ç‰ˆï¼Œæœ‰ä¸€äº›è³‡è¨Šå¯èƒ½éºå¤±ã€‚"
 
 msgid "Title"
-msgstr "ÀY»Î"
+msgstr "é ­éŠœ"
 
 msgid "Email"
 msgstr "Email"
 
 msgid "Web Page"
-msgstr "ºô­¶"
+msgstr "ç¶²é "
 
 #
 msgid "Organization / Department"
-msgstr "²ÕÂ´/³¡ªù"
+msgstr "çµ„ç¹”/éƒ¨é–€"
 
 msgid "Address"
-msgstr "¦a§}"
+msgstr "åœ°å€"
 
 #
 msgid "Work Phone"
-msgstr "¤½¥q¹q¸Ü"
+msgstr "å…¬å¸é›»è©±"
 
 msgid "Home Phone"
-msgstr "¦í®a¹q¸Ü"
+msgstr "ä½å®¶é›»è©±"
 
 msgid "Cellular Phone"
-msgstr "¦æ°Ê¹q¸Ü"
+msgstr "è¡Œå‹•é›»è©±"
 
 #
 msgid "Fax"
-msgstr "¶Ç¯u"
+msgstr "å‚³çœŸ"
 
 #
 msgid "Note"
-msgstr "³Æµù"
+msgstr "å‚™è¨»"
 
 msgid "Add to Addressbook"
-msgstr "·s¼W¨ì³q°T¿ı"
+msgstr "æ–°å¢åˆ°é€šè¨ŠéŒ„"
 
 #
 msgid "Title & Org. / Dept."
-msgstr "Â¾»Î¤Î ²ÕÂ´/³¡ªù"
+msgstr "è·éŠœåŠ çµ„ç¹”/éƒ¨é–€"
 
-#, fuzzy
 msgid "Add to Address Book"
-msgstr "·s¼W¨ì³q°T¿ı"
+msgstr "æ–°å¢åˆ°é€šè¨ŠéŒ„"
 
 msgid "Viewing Full Header"
-msgstr "Åã¥Ü§¹¾ã¼ĞÀY"
+msgstr "é¡¯ç¤ºå®Œæ•´æ¨™é ­"
 
 #
 msgid "Viewing a text attachment"
-msgstr "Åª¨ú¯Â¤å¦rªş¥[ÀÉ"
+msgstr "è®€å–ç´”æ–‡å­—é™„åŠ æª”"
 
 msgid ""
 "Could not include PEAR database functions required for the database backend."
-msgstr ""
+msgstr "ç„¡æ³•å¼•å…¥æŸäº›è³‡æ–™åº«å¾Œç«¯å¿…é ˆçš„ PEAR è³‡æ–™åº«å‡½å¼"
 
 #, php-format
 msgid "Is PEAR installed, and is the include path set correctly to find %s?"
-msgstr ""
+msgstr "è«‹æ‚¨ç¢ºå®š PEAR å·²ç¶“å®‰è£ï¼Œä¸¦ä¸”æ­£ç¢ºè¨­å®šè·¯å¾‘ï¼Œå¯ä»¥æ‰¾åˆ° %sï¼Ÿ"
 
 msgid "Please contact your system administrator and report this error."
-msgstr "½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¨Ã¦^³ø¿ù»~°T®§"
+msgstr "è«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä¸¦å›å ±éŒ¯èª¤è¨Šæ¯"
 
 #
 msgid "Personal address book"
-msgstr "­Ó¤H³q°T¿ı"
+msgstr "å€‹äººé€šè¨ŠéŒ„"
 
 #
 #, php-format
 msgid "Database error: %s"
-msgstr "¸ê®Æ®w¿ù»~ %s"
+msgstr "è³‡æ–™åº«éŒ¯èª¤ %s"
 
 #
 msgid "Addressbook is read-only"
-msgstr "³q°T¿ı¥Ø«e¬°°ßÅªª¬ºA"
+msgstr "é€šè¨ŠéŒ„ç›®å‰ç‚ºå”¯è®€ç‹€æ…‹"
 
 #
 #, php-format
 msgid "User '%s' already exist"
-msgstr "¨Ï¥ÎªÌ '%s' ¤w¦s¦b"
+msgstr "ä½¿ç”¨è€… '%s' å·²å­˜åœ¨"
 
 #
 #, php-format
 msgid "User '%s' does not exist"
-msgstr "¨Ï¥ÎªÌ '%s' ¤£¦s¦b"
+msgstr "ä½¿ç”¨è€… '%s' ä¸å­˜åœ¨"
 
 msgid "Not a file name"
-msgstr "¤£¥¿½TªºÀÉ¦W"
+msgstr "ä¸æ­£ç¢ºçš„æª”å"
 
 #
 msgid "No such file or directory"
-msgstr "§ä¤£¨ì³o­ÓÀÉ®×©Î¸ê®Æ§¨"
+msgstr "æ‰¾ä¸åˆ°é€™å€‹æª”æ¡ˆæˆ–è³‡æ–™å¤¾"
 
 #
 msgid "Open failed"
-msgstr "¶}±Ò¥¢±Ñ"
+msgstr "é–‹å•Ÿå¤±æ•—"
 
 #
 msgid "Write failed"
-msgstr "¼g¤J¥¢±Ñ"
+msgstr "å¯«å…¥å¤±æ•—"
 
 #
 msgid "Unable to update"
-msgstr "µLªk­×§ï"
+msgstr "ç„¡æ³•ä¿®æ”¹"
 
 #
 msgid "Could not lock datafile"
-msgstr "µLªkÂê©w¸ê®ÆÀÉ"
+msgstr "ç„¡æ³•é–å®šè³‡æ–™æª”"
 
 msgid "Write to addressbook failed"
-msgstr "¼g¤J³q°T¿ı¥¢±Ñ"
+msgstr "å¯«å…¥é€šè¨ŠéŒ„å¤±æ•—"
 
 msgid "Error initializing addressbook database."
-msgstr "µLªk±Ò©l³q°T¿ı¸ê®Æ®w"
+msgstr "ç„¡æ³•å•Ÿå§‹é€šè¨ŠéŒ„è³‡æ–™åº«"
 
 #
 #, php-format
 msgid "Error opening file %s"
-msgstr "¶}±Ò %s ÀÉ®×¥¢±Ñ"
+msgstr "é–‹å•Ÿ %s æª”æ¡ˆå¤±æ•—"
 
 msgid "Global address book"
-msgstr "¤½¥Î³q°T¿ı"
+msgstr "å…¬ç”¨é€šè¨ŠéŒ„"
 
 msgid "Error initializing global addressbook."
-msgstr "µLªk±Ò©l³q°T¿ı"
+msgstr "ç„¡æ³•å•Ÿå§‹é€šè¨ŠéŒ„"
 
 #
 #, php-format
 msgid "Error initializing LDAP server %s:"
-msgstr "µLªk±Ò©l LDAP ¦øªA¾¹ %s:"
+msgstr "ç„¡æ³•å•Ÿå§‹ LDAP ä¼ºæœå™¨ %s:"
 
 #
 msgid "Invalid input data"
-msgstr "¿é¤J¸ê®Æ¤£¥¿½T"
+msgstr "è¼¸å…¥è³‡æ–™ä¸æ­£ç¢º"
 
 #
 msgid "Name is missing"
-msgstr "¥¼¶ñ©m¦W"
+msgstr "æœªå¡«å§“å"
 
 #
 msgid "E-mail address is missing"
-msgstr "¥¼¶ñ E-mail"
+msgstr "æœªå¡« E-mail"
 
 msgid "Nickname contains illegal characters"
-msgstr "§O¦W§tµLªk±µ¨üªº¦r¤¸¡]¤¤¤å»İ¯S§Oª`·N½Ä½X°İÃD¡^"
+msgstr "åˆ¥åå«ç„¡æ³•æ¥å—çš„å­—å…ƒï¼ˆä¸­æ–‡éœ€ç‰¹åˆ¥æ³¨æ„è¡ç¢¼å•é¡Œï¼‰"
 
 #
-#, fuzzy
 msgid "View"
-msgstr "Åª¨ú"
+msgstr "è®€å–"
 
-#, fuzzy
 msgid "View Business Card"
-msgstr "ÀËµø¦W¤ù"
+msgstr "æª¢è¦–åç‰‡"
 
 msgid "Sunday"
-msgstr "¬P´Á¤Ñ"
+msgstr "æ˜ŸæœŸå¤©"
 
 msgid "Monday"
-msgstr "¬P´Á¤@"
+msgstr "æ˜ŸæœŸä¸€"
 
 #
 msgid "Tuesday"
-msgstr "¬P´Á¤G"
+msgstr "æ˜ŸæœŸäºŒ"
 
 #
 msgid "Wednesday"
-msgstr "¬P´Á¤T"
+msgstr "æ˜ŸæœŸä¸‰"
 
 #
 msgid "Thursday"
-msgstr "¬P´Á¥|"
+msgstr "æ˜ŸæœŸå››"
 
 #
 msgid "Friday"
-msgstr "¬P´Á¤­"
+msgstr "æ˜ŸæœŸäº”"
 
 #
 msgid "Saturday"
-msgstr "¬P´Á¤»"
+msgstr "æ˜ŸæœŸå…­"
 
-#, fuzzy
 msgid "Sun"
-msgstr "¬P´Á¤Ñ"
+msgstr "æ—¥"
 
-#, fuzzy
 msgid "Mon"
-msgstr "¬P´Á¤@"
+msgstr "ä¸€"
 
 #
-#, fuzzy
 msgid "Tue"
-msgstr "¬P´Á¤G"
+msgstr "äºŒ"
 
 msgid "Wed"
-msgstr ""
+msgstr "ä¸‰"
 
 msgid "Thu"
-msgstr ""
+msgstr "å››"
 
 #
-#, fuzzy
 msgid "Fri"
-msgstr "¬P´Á¤­"
+msgstr "äº”"
 
 msgid "Sat"
-msgstr ""
+msgstr "å…­"
 
 #
 msgid "January"
-msgstr "¤@¤ë"
+msgstr "ä¸€æœˆ"
 
 #
 msgid "February"
-msgstr "¤G¤ë"
+msgstr "äºŒæœˆ"
 
 msgid "March"
-msgstr "¤T¤ë"
+msgstr "ä¸‰æœˆ"
 
 #
 msgid "April"
-msgstr "¥|¤ë"
+msgstr "å››æœˆ"
 
 #
 msgid "May"
-msgstr "¤­¤ë"
+msgstr "äº”æœˆ"
 
 #
 msgid "June"
-msgstr "¤»¤ë"
+msgstr "å…­æœˆ"
 
 #
 msgid "July"
-msgstr "¤C¤ë"
+msgstr "ä¸ƒæœˆ"
 
 #
 msgid "August"
-msgstr "¤K¤ë"
+msgstr "å…«æœˆ"
 
 #
 msgid "September"
-msgstr "¤E¤ë"
+msgstr "ä¹æœˆ"
 
 msgid "October"
-msgstr "¤Q¤ë"
+msgstr "åæœˆ"
 
 #
 msgid "November"
-msgstr "¤Q¤@¤ë"
+msgstr "åä¸€æœˆ"
 
 #
 msgid "December"
-msgstr "¤Q¤G¤ë"
+msgstr "åäºŒæœˆ"
 
 #
-#, fuzzy
 msgid "Jan"
-msgstr "¤@¤ë"
+msgstr "ä¸€æœˆ"
 
 msgid "Feb"
-msgstr ""
+msgstr "äºŒæœˆ"
 
-#, fuzzy
 msgid "Mar"
-msgstr "¤T¤ë"
+msgstr "ä¸‰æœˆ"
 
 #
-#, fuzzy
 msgid "Apr"
-msgstr "¥|¤ë"
+msgstr "å››æœˆ"
 
 msgid "Ma&#121;"
-msgstr ""
+msgstr "äº”æœˆ"
 
 #
-#, fuzzy
 msgid "Jun"
-msgstr "¤»¤ë"
+msgstr "å…­æœˆ"
 
 #
-#, fuzzy
 msgid "Jul"
-msgstr "¤C¤ë"
+msgstr "ä¸ƒæœˆ"
 
 #
-#, fuzzy
 msgid "Aug"
-msgstr "¤K¤ë"
+msgstr "å…«æœˆ"
 
 msgid "Sep"
-msgstr ""
+msgstr "ä¹æœˆ"
 
-#, fuzzy
 msgid "Oct"
-msgstr "¤Q¤ë"
+msgstr "åæœˆ"
 
 #
-#, fuzzy
 msgid "Nov"
-msgstr "§_"
+msgstr "åä¸€æœˆ"
 
 msgid "Dec"
-msgstr ""
+msgstr "åäºŒæœˆ"
 
 msgid "D, F j, Y g:i a"
 msgstr ""
@@ -1273,508 +1250,487 @@ msgstr ""
 #
 #, php-format
 msgid "Preference database error (%s). Exiting abnormally"
-msgstr "³]©wªº¸ê®Æ®w¿ù»~(%s)¡A¤£¥¿±`°h¥X"
+msgstr "è¨­å®šçš„è³‡æ–™åº«éŒ¯èª¤(%s)ï¼Œä¸æ­£å¸¸é€€å‡º"
 
 #
 #, php-format
 msgid "Click here to return to %s"
-msgstr "ÂI¦¹¦^¨ì %s"
+msgstr "é»æ­¤å›åˆ° %s"
 
 #
 msgid "Go to the login page"
-msgstr "¨ìµn¤Jµe­±"
+msgstr "åˆ°ç™»å…¥ç•«é¢"
 
 #
 #, php-format
 msgid ""
 "Preference file, %s, does not exist. Log out, and log back in to create a "
 "default preference file."
-msgstr "³]©wÀÉ %s ¤£¦s¦b¡C½Ğ­«·sµn¤J¥H²£¥Í¤@­Ó·sªº¹w³]ÀÉ®×¡C"
+msgstr "è¨­å®šæª” %s ä¸å­˜åœ¨ã€‚è«‹é‡æ–°ç™»å…¥ä»¥ç”¢ç”Ÿä¸€å€‹æ–°çš„é è¨­æª”æ¡ˆã€‚"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Preference file, %s, could not be opened. Contact your system administrator "
 "to resolve this issue."
-msgstr "³]©wÀÉµLªk¶}±Ò¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "è¨­å®šæª” %s ç„¡æ³•é–‹å•Ÿï¼Œè«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Preference file, %s, could not be written. Contact your system administrator "
 "to resolve this issue."
-msgstr "³]©wÀÉµLªk¼g¤J¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "è¨­å®šæª” %s ç„¡æ³•å¯«å…¥ï¼Œè«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Preference file, %s, could not be copied from temporary file, %s. Contact "
 "your system administrator to resolve this issue."
-msgstr "³]©wÀÉµLªk¶}±Ò¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "è¨­å®šæª” %s ç„¡æ³•é–‹å•Ÿï¼Œ%sã€‚è«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
 #
 #, php-format
 msgid "Error opening %s"
-msgstr "µLªk¶}±Ò %s"
+msgstr "ç„¡æ³•é–‹å•Ÿ %s"
 
 #
 msgid "Default preference file not found or not readable!"
-msgstr "§ä¤£¨ì¹w³]ªº³]©wÀÉ©ÎµLªk¸ÓÀÉ¡I"
+msgstr "æ‰¾ä¸åˆ°é è¨­çš„è¨­å®šæª”æˆ–ç„¡æ³•è©²æª”ï¼"
 
 msgid "Could not create initial preference file!"
-msgstr "µLªk«Ø¥ß±Ò©l³]©wÀÉ"
+msgstr "ç„¡æ³•å»ºç«‹å•Ÿå§‹è¨­å®šæª”"
 
 #
 #, php-format
 msgid "%s should be writable by user %s"
-msgstr "%s À³¸Ó³]¬°¥i³Q %s ©Ò¼g¤J"
+msgstr "%s æ‡‰è©²è¨­ç‚ºå¯è¢« %s æ‰€å¯«å…¥"
 
 #
-#, fuzzy
 msgid "Signature is too big."
-msgstr "Ã±¦W³]©w"
+msgstr "ç°½åæª”å¤ªå¤§ã€‚"
 
 #
 #, php-format
 msgid ""
 "Signature file, %s, could not be opened. Contact your system administrator "
 "to resolve this issue."
-msgstr "Ã±¦WÀÉ %s µLªk¶}±Ò¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "ç°½åæª” %s ç„¡æ³•é–‹å•Ÿï¼Œè«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
 #
 #, php-format
 msgid ""
 "Signature file, %s, could not be written. Contact your system administrator "
 "to resolve this issue."
-msgstr "Ã±¦WÀÉ %s µLªk¼g¤J¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "ç°½åæª” %s ç„¡æ³•å¯«å…¥ï¼Œè«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Signature file, %s, could not be copied from temporary file, %s. Contact "
 "your system administrator to resolve this issue."
-msgstr "Ã±¦WÀÉ %s µLªk¶}±Ò¡A½Ğ»P¨t²ÎºŞ²z­ûÁpµ¸¡A¥H¸Ñ¨M¦¹°İÃD"
+msgstr "ç°½åæª” %s ç„¡æ³•å¾æš«å­˜æª” %s è¤‡è£½ï¼Œè«‹èˆ‡ç³»çµ±ç®¡ç†å“¡è¯çµ¡ï¼Œä»¥è§£æ±ºæ­¤å•é¡Œ"
 
-#, fuzzy
 msgid ""
 "You need to have php4 installed with the multibyte string function enabled "
 "(using configure option --enable-mbstring)."
-msgstr "±z»İ­n¦b¦w¸Ë php4 ®É¡A¥[¤JÂù¦ì¤¸¦r¦ê¤ä´©--¡]¨Ï¥Î--with-mbstring¿ï¶µ¡^"
+msgstr "æ‚¨éœ€è¦åœ¨å®‰è£ php4 æ™‚ï¼ŒåŠ å…¥é›™ä½å…ƒå­—ä¸²æ”¯æ´--ï¼ˆä½¿ç”¨--with-mbstringé¸é …ï¼‰"
 
-#, fuzzy
 msgid "ERROR: No available IMAP stream."
-msgstr "¿ù»~¡G¨S¦³¥i¥Îªº imapstream"
+msgstr "éŒ¯èª¤ï¼šæ²’æœ‰å¯ç”¨çš„ IMAP stream"
 
 #
-#, fuzzy
 msgid "ERROR: Connection dropped by IMAP server."
-msgstr "³s±µ IMAP ¦øªA¾¹¥¢±Ñ¡G%s"
+msgstr "é€£æ¥ IMAP ä¼ºæœå™¨å¤±æ•—"
 
 #
-#, fuzzy
 msgid "ERROR: Could not complete request."
-msgstr "¿ù»~ : µLªk§¹¦¨«ü©w§@·~"
+msgstr "éŒ¯èª¤ : ç„¡æ³•å®ŒæˆæŒ‡å®šä½œæ¥­"
 
 #
 msgid "Query:"
-msgstr "¬d¸ß¡G"
+msgstr "æŸ¥è©¢ï¼š"
 
 #
-#, fuzzy
 msgid "Reason Given:"
-msgstr "­ì¦]¡G"
+msgstr "åŸå› ï¼š"
 
 #
-#, fuzzy
 msgid "ERROR: Bad or malformed request."
-msgstr "¿ù»~¡G¿ù»~ªº­n¨D¡C"
+msgstr "éŒ¯èª¤ï¼šéŒ¯èª¤çš„è¦æ±‚ã€‚"
 
 #
-#, fuzzy
 msgid "Server responded:"
-msgstr "¦øªA¾¹¦^À³¡G"
+msgstr "ä¼ºæœå™¨å›æ‡‰ï¼š"
 
 msgid "ERROR: IMAP server closed the connection."
-msgstr ""
+msgstr "éŒ¯èª¤ï¼šIMAP ä¼ºæœå™¨é—œé–‰é€£ç·š"
 
 msgid "ERROR: Unknown IMAP response."
-msgstr ""
+msgstr "éŒ¯èª¤ï¼šæœªçŸ¥çš„ IMAP å›æ‡‰"
 
 #
 #, php-format
 msgid "Error connecting to IMAP server: %s."
-msgstr "³s±µ IMAP ¦øªA¾¹¥¢±Ñ¡G%s"
+msgstr "é€£æ¥ IMAP ä¼ºæœå™¨å¤±æ•—ï¼š%s"
 
 msgid "The IMAP server is reporting that plain text logins are disabled."
-msgstr ""
+msgstr "IMAP ä¼ºæœå™¨å›è¦†ç„¡æ³•ä½¿ç”¨æ˜æ–‡ç™»å…¥ã€‚"
 
 msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
-msgstr ""
+msgstr "å¯èƒ½å¯ä»¥ä½¿ç”¨ CRAM-MD5 æˆ– DIGEST-MD5 é©—è­‰ã€‚"
 
 msgid "Also, the use of TLS may allow SquirrelMail to login."
-msgstr ""
+msgstr "ä¸¦ä¸”ï¼Œä½¿ç”¨ TLS ä¹Ÿè¨±å¯ä»¥ä½¿æ¾é¼ é›»å­éƒµä»¶æˆåŠŸç™»å…¥"
 
 #
 #, php-format
 msgid "Bad request: %s"
-msgstr "¿ù»~ªº­n¨D: %s"
+msgstr "éŒ¯èª¤çš„è¦æ±‚: %s"
 
 #
 #, php-format
 msgid "Unknown error: %s"
-msgstr "¤£©ú¿ù»~: %s"
+msgstr "ä¸æ˜éŒ¯èª¤: %s"
 
 #
 msgid "Read data:"
-msgstr "Åª¨ú¸ê®Æ¡G"
+msgstr "è®€å–è³‡æ–™ï¼š"
 
 #
 msgid "Unknown user or password incorrect."
-msgstr "§ä¤£¨ì¨Ï¥ÎªÌ©Î±K½X¿ù»~"
+msgstr "æ‰¾ä¸åˆ°ä½¿ç”¨è€…æˆ–å¯†ç¢¼éŒ¯èª¤"
 
 #
-#, fuzzy
 msgid "ERROR: Could not append message to"
-msgstr "¿ù»~ : µLªk§¹¦¨«ü©w§@·~"
+msgstr "éŒ¯èª¤ : ç„¡æ³•é™„åŠ è¨Šæ¯"
 
 #
-#, fuzzy
 msgid "Solution:"
-msgstr "«ØÄ³¡G"
+msgstr "å»ºè­°ï¼š"
 
 msgid ""
 "Remove unneccessary messages from your folder and start with your Trash "
 "folder."
-msgstr "¦Û±zªº¸ê®Æ§¨¤¤²¾¥h¨S¥Îªº¶l¥ó--¥Ñ¦^¦¬µ©¶}©l"
+msgstr "è‡ªæ‚¨çš„è³‡æ–™å¤¾ä¸­ç§»å»æ²’ç”¨çš„éƒµä»¶--ç”±å›æ”¶ç­’é–‹å§‹"
 
 #
 msgid "(no subject)"
-msgstr "¡]µL¥D¦®¡^"
+msgstr "ï¼ˆç„¡ä¸»æ—¨ï¼‰"
 
 #
 msgid "Unknown Sender"
-msgstr "¤£©ú±H¥óªÌ"
+msgstr "ä¸æ˜å¯„ä»¶è€…"
 
 #
-#, fuzzy
 msgid "Unknown response from IMAP server:"
-msgstr "¦ÛIMAP ¦øªA¾¹¶Ç¦^¥¼ª¾ªº¦^À³"
+msgstr "è‡ªIMAP ä¼ºæœå™¨å‚³å›æœªçŸ¥çš„å›æ‡‰"
 
 msgid "The server couldn't find the message you requested."
-msgstr ""
+msgstr "ä¼ºæœå™¨ç„¡æ³•æ‰¾åˆ°æ‚¨è¦æ±‚çš„éƒµä»¶"
 
 msgid ""
 "Most probably your message list was out of date and the message has been "
 "moved away or deleted (perhaps by another program accessing the same "
 "mailbox)."
 msgstr ""
+"å¤§å¤šæ•¸æ‚¨çš„éƒµä»¶å·²ç¶“éæœŸï¼Œä¸”è¢«ç§»åˆ°å…¶ä»–è³‡æ–™å¤¾æˆ–æ˜¯åˆªé™¤(ä¹Ÿè¨±æ˜¯ç”±å…¶ä»–ç¨‹å¼ç®¡ç†åŒ"
+"ä¸€éƒµä»¶è³‡æ–™å¤¾é€ æˆ)"
 
 #
 msgid "Unknown date"
-msgstr "¤£©ú¤é´Á"
+msgstr "ä¸æ˜æ—¥æœŸ"
 
 msgid "A"
-msgstr "¤@"
+msgstr "ä¸€"
 
-#, fuzzy
 msgid "Thread sorting is not supported by your IMAP server."
-msgstr "±zªº IMAP ¦øªA¾¹¨Ã¤£¤ä´©³o¼Ëªº±Æ§Ç¤è¦¡¡C½Ğ¦V¨t²ÎºŞ²z­û¤ÏÀ³¡C"
+msgstr "æ‚¨çš„ IMAP ä¼ºæœå™¨ä¸¦ä¸æ”¯æ´é€™æ¨£çš„æ’åºæ–¹å¼ã€‚"
 
-#, fuzzy
 msgid "Server-side sorting is not supported by your IMAP server."
-msgstr "±zªºIMAP¦øªA¾¹¨Ã¤£¤ä´©¦øªA¾¹ºİ±Æ§Ç¡C½Ğ¦V¨t²ÎºŞ²z­û¤ÏÀ³¡C"
+msgstr "æ‚¨çš„IMAPä¼ºæœå™¨ä¸¦ä¸æ”¯æ´ä¼ºæœå™¨ç«¯æ’åºã€‚"
 
 #
 msgid "THIS FOLDER IS EMPTY"
-msgstr "¥»¸ê®Æ§¨¤¤¨S¦³¶l¥ó"
+msgstr "æœ¬è³‡æ–™å¤¾ä¸­æ²’æœ‰éƒµä»¶"
 
 #
 msgid "Move Selected To"
-msgstr "·h²¾¤w¿ï¨ú¶µ¥Ø¦Ü:"
+msgstr "æ¬ç§»å·²é¸å–é …ç›®è‡³:"
 
 msgid "Transform Selected Messages"
-msgstr "Âà²¾¤w¿ï¨ú¶µ¥Ø"
+msgstr "è½‰ç§»å·²é¸å–é …ç›®"
 
 #
 msgid "Move"
-msgstr "·h²¾"
+msgstr "æ¬ç§»"
 
 msgid "Expunge"
-msgstr "§R¥h"
+msgstr "åˆªå»"
 
 msgid "mailbox"
-msgstr "¶l¥ó§¨"
+msgstr "éƒµä»¶å¤¾"
 
 msgid "Read"
-msgstr "¤wÅª¨ú"
+msgstr "å·²è®€å–"
 
 #
 msgid "Unread"
-msgstr "¥¼Åª¨ú"
+msgstr "æœªè®€å–"
 
 #
 msgid "Unthread View"
-msgstr "¨ú®ø¥DÃD¦ê¦C"
+msgstr "å–æ¶ˆä¸»é¡Œä¸²åˆ—"
 
 #
 msgid "Thread View"
-msgstr "¥DÃD¦ê¦C"
+msgstr "ä¸»é¡Œä¸²åˆ—"
 
 msgid "Toggle All"
-msgstr "¿ï¾Ü¥ş³¡"
+msgstr "é¸æ“‡å…¨éƒ¨"
 
 #
 msgid "Unselect All"
-msgstr "¨ú®ø¥ş¿ï"
+msgstr "å–æ¶ˆå…¨é¸"
 
 #
 msgid "Select All"
-msgstr "¿ï¨ú¥ş³¡"
+msgstr "é¸å–å…¨éƒ¨"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Viewing Messages: %s to %s (%s total)"
-msgstr "Åª¨ú¶l¥ó¡G <B>%s</B> to <B>%s</B> (¦@ %s «Ê)"
+msgstr "è®€å–éƒµä»¶ï¼š %s to %s (å…± %s å°)"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Viewing Message: %s (%s total)"
-msgstr "Åª¨ú¶l¥ó¡G<B>%s</B> ¡]¦@¤@«Ê¡^"
+msgstr "è®€å–éƒµä»¶ï¼š%s ï¼ˆå…± %s å°ï¼‰"
 
 msgid "Paginate"
-msgstr "¼Ğ­¶¼Æ"
+msgstr "æ¨™é æ•¸"
 
 #
 msgid "Show All"
-msgstr "Åã¥Ü¥ş³¡"
+msgstr "é¡¯ç¤ºå…¨éƒ¨"
 
 msgid "SquirrelMail could not decode the bodystructure of the message"
-msgstr "µLªk¸ÑÅª¶l¥óªº¥»¤åµ²ºc"
+msgstr "ç„¡æ³•è§£è®€éƒµä»¶çš„æœ¬æ–‡çµæ§‹"
 
 msgid "the provided bodystructure by your imap-server"
-msgstr "±zªºIMAP server ´£¨Ñªº¥»¤åµ²ºc"
+msgstr "æ‚¨çš„IMAP server æä¾›çš„æœ¬æ–‡çµæ§‹"
 
 #
 msgid ""
 "Body retrieval error. The reason for this is most probably that the message "
 "is malformed."
-msgstr "µLªk¨ú±o¥»¤å¡C¥i¯àªº­ì¦]¬O¶l¥ó¤£§¹¥ş¡C"
+msgstr "ç„¡æ³•å–å¾—æœ¬æ–‡ã€‚å¯èƒ½çš„åŸå› æ˜¯éƒµä»¶ä¸å®Œå…¨ã€‚"
 
 #
 msgid "Command:"
-msgstr "«ü¥O¡G"
+msgstr "æŒ‡ä»¤ï¼š"
 
 msgid "Response:"
-msgstr "¦^À³¡G"
+msgstr "å›æ‡‰ï¼š"
 
 msgid "Message:"
-msgstr "¶l¥ó¡G"
+msgstr "éƒµä»¶ï¼š"
 
 msgid "FETCH line:"
-msgstr "§ì¨ú¦æ¡G"
+msgstr "æŠ“å–è¡Œï¼š"
 
 msgid "Hide Unsafe Images"
-msgstr "ÁôÂÃ¤£¦w¥şªº¹Ï¤ù"
+msgstr "éš±è—ä¸å®‰å…¨çš„åœ–ç‰‡"
 
 #
 msgid "View Unsafe Images"
-msgstr "Åã¥Ü¤£¦w¥şªº¹Ï¤ù"
+msgstr "é¡¯ç¤ºä¸å®‰å…¨çš„åœ–ç‰‡"
 
 #
-#, fuzzy
 msgid "Download"
-msgstr "¤U¸ü"
+msgstr "ä¸‹è¼‰"
 
 #
 msgid "sec_remove_eng.png"
 msgstr ""
 
 msgid "This external link will open in a new window"
-msgstr ""
+msgstr "é€™å€‹å¤–éƒ¨é€£çµå°‡æœƒé–‹å•Ÿæ–°è¦–çª—"
 
 #
 #, php-format
 msgid "Option Type '%s' Not Found"
-msgstr "§ä¤£¨ì¿ï¶µ«¬ºA '%s'"
+msgstr "æ‰¾ä¸åˆ°é¸é …å‹æ…‹ '%s'"
 
 #
 msgid "Current Folder"
-msgstr "¥Ø«eªº¸ê®Æ§¨"
+msgstr "ç›®å‰çš„è³‡æ–™å¤¾"
 
 msgid "Compose"
-msgstr "½s¼g¶l¥ó"
+msgstr "ç·¨å¯«éƒµä»¶"
 
 #
 #, php-format
 msgid "Error creating directory %s."
-msgstr "µLªk«Ø¥ß¥Ø¿ı %s"
+msgstr "ç„¡æ³•å»ºç«‹ç›®éŒ„ %s"
 
 msgid "Could not create hashed directory structure!"
-msgstr "µLªk«Ø¥ßÂø´êªº¥Ø¿ıµ²ºc"
+msgstr "ç„¡æ³•å»ºç«‹é›œæ¹Šçš„ç›®éŒ„çµæ§‹"
 
 msgid "Service not available, closing channel"
-msgstr ""
+msgstr "æœå‹™ä¸å­˜åœ¨ï¼Œé—œé–‰ channel"
 
 msgid "A password transition is needed"
-msgstr ""
+msgstr "éœ€è¦å¯†ç¢¼"
 
 msgid "Requested mail action not taken: mailbox unavailable"
-msgstr ""
+msgstr "è¦æ±‚çš„æ“ä½œæ²’æœ‰åŸ·è¡Œï¼šä¸å­˜åœ¨çš„éƒµä»¶å¤¾"
 
 msgid "Requested action aborted: error in processing"
-msgstr ""
+msgstr "è¦æ±‚çš„æ“ä½œä¸­æ–·ï¼šæ“ä½œä¸­å‡ºéŒ¯"
 
 msgid "Requested action not taken: insufficient system storage"
-msgstr ""
+msgstr "è¦æ±‚çš„æ“ä½œæ²’æœ‰åŸ·è¡Œï¼šç³»çµ±ç©ºé–“ä¸è¶³"
 
 #
-#, fuzzy
 msgid "Temporary authentication failure"
-msgstr "apop »{µı¥¢±Ñ"
+msgstr "èªè¨¼å¤±æ•—"
 
 msgid "Syntax error; command not recognized"
-msgstr ""
+msgstr "èªæ³•éŒ¯èª¤ï¼›ç„¡æ³•è¾¨èªçš„æŒ‡ä»¤"
 
 msgid "Syntax error in parameters or arguments"
-msgstr ""
+msgstr "åƒæ•¸ä¸­èªæ³•éŒ¯èª¤"
 
-#, fuzzy
 msgid "Command not implemented"
-msgstr "«ü¥O¥¢±Ñ"
+msgstr "é€™å€‹æŒ‡ä»¤æ²’æœ‰å¯¦åš"
 
 msgid "Bad sequence of commands"
-msgstr ""
+msgstr "ç„¡æ•ˆçš„æŒ‡ä»¤åºåˆ—"
 
 msgid "Command parameter not implemented"
-msgstr ""
+msgstr "æ²’æœ‰å¯¦åšçš„æŒ‡ä»¤åƒæ•¸"
 
 #
-#, fuzzy
 msgid "Authentication required"
-msgstr "»{µı¥¢±Ñ"
+msgstr "éœ€è¦èªè¨¼"
 
 msgid "Authentication mechanism is too weak"
-msgstr ""
+msgstr "èªè­‰æ–¹æ³•å¤ªéè–„å¼±"
 
 #
-#, fuzzy
 msgid "Authentication failed"
-msgstr "»{µı¥¢±Ñ"
+msgstr "èªè¨¼å¤±æ•—"
 
 msgid "Encryption required for requested authentication mechanism"
-msgstr ""
+msgstr "è¦æ±‚çš„èªè­‰æ–¹æ³•éœ€è¦åŠ å¯†"
 
 msgid "Requested action not taken: mailbox unavailable"
-msgstr ""
+msgstr "è¦æ±‚çš„å‹•ä½œæ²’æœ‰åŸ·è¡Œï¼šæ²’æœ‰æ­¤éƒµä»¶å¤¾"
 
 msgid "User not local; please try forwarding"
-msgstr ""
+msgstr "éæœ¬åœ°ä½¿ç”¨è€…ï¼›è«‹å˜—è©¦è½‰å¯„"
 
 msgid "Requested mail action aborted: exceeding storage allocation"
-msgstr ""
+msgstr "è¦æ±‚çš„å‹•ä½œä¸­æ–·äº†ï¼šè¶…éå¯ç”¨ç©ºé–“"
 
 msgid "Requested action not taken: mailbox name not allowed"
-msgstr ""
+msgstr "è¦æ±‚çš„å‹•ä½œæ²’æœ‰åŸ·è¡Œï¼šä¸å…è¨±çš„éƒµä»¶å¤¾åç¨±"
 
 #
-#, fuzzy
 msgid "Transaction failed"
-msgstr "»{µı¥¢±Ñ"
+msgstr "äº¤æ˜“å¤±æ•—"
 
 #
-#, fuzzy
 msgid "Unknown response"
-msgstr "¤£©ú±H¥óªÌ"
+msgstr "ä¸æ˜çš„å›æ‡‰"
 
 #
 msgid "General Display Options"
-msgstr "Åã¥Ü³]©w"
+msgstr "é¡¯ç¤ºè¨­å®š"
 
 #
 msgid "Theme"
-msgstr "°t¦â"
+msgstr "é…è‰²"
 
 msgid "Default"
-msgstr "¹w³]­È"
+msgstr "é è¨­å€¼"
 
 msgid "Custom Stylesheet"
-msgstr "¦Û­q¼Ë¦¡"
+msgstr "è‡ªè¨‚æ¨£å¼"
 
 #
 msgid "Language"
-msgstr "»y¨t"
+msgstr "èªç³»"
 
 #
 msgid "Use Javascript"
-msgstr "¨Ï¥ÎJavaScript"
+msgstr "ä½¿ç”¨JavaScript"
 
 #
 msgid "Autodetect"
-msgstr "¦Û°Ê¿ï¾Ü"
+msgstr "è‡ªå‹•é¸æ“‡"
 
 #
 msgid "Always"
-msgstr "¬O"
+msgstr "æ˜¯"
 
 #
 msgid "Never"
-msgstr "¤£­n"
+msgstr "ä¸è¦"
 
 #
 msgid "Mailbox Display Options"
-msgstr "¸ê®Æ§¨Åã¥Ü³]©w"
+msgstr "è³‡æ–™å¤¾é¡¯ç¤ºè¨­å®š"
 
 #
-#, fuzzy
 msgid "Number of Messages per Page"
-msgstr "¨C­¶Åã¥Ü¶l¥ó¼Æ"
+msgstr "æ¯é é¡¯ç¤ºéƒµä»¶æ•¸"
 
 msgid "Enable Alternating Row Colors"
-msgstr "¿ï¥Î©Êªº¨C¦CÃC¦â"
+msgstr "é¸ç”¨æ€§çš„æ¯åˆ—é¡è‰²"
 
 msgid "Enable Page Selector"
-msgstr "¨Ï¥Î¤À­¶¼ĞÅÒ"
+msgstr "ä½¿ç”¨åˆ†é æ¨™ç±¤"
 
 msgid "Maximum Number of Pages to Show"
-msgstr "³Ì¦hÅã¥Ü­¶¼Æ"
+msgstr "æœ€å¤šé¡¯ç¤ºé æ•¸"
 
 msgid "Always Show Full Date"
-msgstr ""
+msgstr "ç¸½æ˜¯é¡¯ç¤ºå®Œæ•´æ—¥æœŸ"
 
 #
 msgid "Message Display and Composition"
-msgstr "¶l¥óÅã¥Ü¤Î½s¼g"
+msgstr "éƒµä»¶é¡¯ç¤ºåŠç·¨å¯«"
 
 msgid "Wrap Incoming Text At"
-msgstr "©ó¦h¤Ö¦r®É¦Û°Ê´«¦æ"
+msgstr "æ–¼å¤šå°‘å­—æ™‚è‡ªå‹•æ›è¡Œ"
 
 #
-#, fuzzy
 msgid "Width of Editor Window"
-msgstr "½s¿èµøµ¡ªº¤j¤p"
+msgstr "ç·¨è¼¯è¦–çª—çš„å¤§å°"
 
 #
-#, fuzzy
 msgid "Height of Editor Window"
-msgstr "½s¿èµøµ¡ªº¤j¤p"
+msgstr "ç·¨è¼¯è¦–çª—çš„é«˜åº¦"
 
 msgid "Location of Buttons when Composing"
-msgstr "½s¼g¶l¥ó®É«öÁäªº¦ì¸m"
+msgstr "ç·¨å¯«éƒµä»¶æ™‚æŒ‰éµçš„ä½ç½®"
 
 #
 msgid "Before headers"
-msgstr "¦b³Ì¤W­±"
+msgstr "åœ¨æœ€ä¸Šé¢"
 
 #
 msgid "Between headers and message body"
-msgstr "¦b«HÀY©M¥»¤å¤§¶¡"
+msgstr "åœ¨ä¿¡é ­å’Œæœ¬æ–‡ä¹‹é–“"
 
 #
 msgid "After message body"
-msgstr "¦b³Ì¤U­±"
+msgstr "åœ¨æœ€ä¸‹é¢"
 
 msgid "Addressbook Display Format"
-msgstr "³q°T¿ıÅã¥Ü³]©w"
+msgstr "é€šè¨ŠéŒ„é¡¯ç¤ºè¨­å®š"
 
 msgid "Javascript"
 msgstr "Javascript"
@@ -1784,398 +1740,383 @@ msgstr "HTML"
 
 #
 msgid "Show HTML Version by Default"
-msgstr "¹w³]¨Ï¥Î HTML"
+msgstr "é è¨­ä½¿ç”¨ HTML"
 
 msgid "Enable Forward as Attachment"
-msgstr "¨Ï¥Îªş¥óªº¤è¦¡Âà±H¶l¥ó"
+msgstr "ä½¿ç”¨é™„ä»¶çš„æ–¹å¼è½‰å¯„éƒµä»¶"
 
 msgid "Include CCs when Forwarding Messages"
-msgstr "Âà±H®É¥]§t°Æ¥»¦¬¥ó¤H"
+msgstr "è½‰å¯„æ™‚åŒ…å«å‰¯æœ¬æ”¶ä»¶äºº"
 
 #
 msgid "Include Me in CC when I Reply All"
-msgstr "·í¿ï¾Ü¥ş³¡¦^ÂĞ®É¡A¥]¬A§Ú¦Û¤w"
+msgstr "ç•¶é¸æ“‡å…¨éƒ¨å›è¦†æ™‚ï¼ŒåŒ…æ‹¬æˆ‘è‡ªå·²"
 
 #
 msgid "Enable Mailer Display"
-msgstr "¶}±Ò Mailer Åã¥Ü"
+msgstr "é–‹å•Ÿ Mailer é¡¯ç¤º"
 
 #
 msgid "Display Attached Images with Message"
-msgstr "Åã¥Üªş¥[¹Ï¤ù"
+msgstr "é¡¯ç¤ºé™„åŠ åœ–ç‰‡"
 
 #
 msgid "Enable Printer Friendly Clean Display"
-msgstr "¨Ï¥Î¤Íµ½¦C¦LÅã¥Ü"
+msgstr "ä½¿ç”¨å‹å–„åˆ—å°é¡¯ç¤º"
 
 #
 msgid "Enable Mail Delivery Notification"
-msgstr "±Ò¥Î¶l¥ó¶Ç°e´£¥Ü"
+msgstr "å•Ÿç”¨éƒµä»¶å‚³é€æç¤º"
 
 msgid "Compose Messages in New Window"
-msgstr "¶}±Ò·sµøµ¡¨Ó½s¼g¶l¥ó"
+msgstr "é–‹å•Ÿæ–°è¦–çª—ä¾†ç·¨å¯«éƒµä»¶"
 
 #
 msgid "Width of Compose Window"
-msgstr "½s¼g¶l¥óµøµ¡ªº¼e«×"
+msgstr "ç·¨å¯«éƒµä»¶è¦–çª—çš„å¯¬åº¦"
 
 #
 msgid "Height of Compose Window"
-msgstr "½s¼g¶l¥óµøµ¡ªº°ª«×"
+msgstr "ç·¨å¯«éƒµä»¶è¦–çª—çš„é«˜åº¦"
 
 msgid "Append Signature before Reply/Forward Text"
-msgstr "¦b¦^ÂĞ/Âà±Hªº¥»¤å«e¥[¤JÃ±¦WÀÉ"
+msgstr "åœ¨å›è¦†/è½‰å¯„çš„æœ¬æ–‡å‰åŠ å…¥ç°½åæª”"
 
 msgid "Prefix for Original Message when Replying"
-msgstr ""
+msgstr "å›è¦†æ™‚é¡¯ç¤ºæ–¼åŸéƒµä»¶ä¹‹å‰çš„å­—å…ƒ"
 
 msgid "Cursor Position when Replying"
-msgstr ""
+msgstr "å›è¦†æ™‚æ¸¸æ¨™çš„ä½ç½®"
 
 msgid "To: field"
-msgstr ""
+msgstr "To: æ¬„ä½"
 
 msgid "Focus in body"
-msgstr ""
+msgstr "è‡ªå‹•ç§»å‹•åˆ°ä¿¡ä»¶æœ¬æ–‡"
 
 #
-#, fuzzy
 msgid "Select body"
-msgstr "¿ï¾Ü¸ê®Æ§¨"
+msgstr "é¸æ“‡ä¿¡ä»¶æœ¬æ–‡"
 
 #
-#, fuzzy
 msgid "No focus"
-msgstr "¤£¨Ï¥Î¤p®ÉÄÁ"
+msgstr "ä¸ä½¿ç”¨ç„¦é»"
 
-#, fuzzy
 msgid "Sort by Received Date"
-msgstr "±Ò¥Î¡u¨Ì¦¬¥ó¤é´Á±Æ§Ç¡v"
+msgstr "ä¾æ”¶ä»¶æ—¥æœŸæ’åº"
 
 msgid "Enable Thread Sort by References Header"
-msgstr "±Ò¥Î¡u¨Ì°Ñ¦Ò¼ĞÀY±Æ¦C¥DÃD¦ê¡v"
+msgstr "å•Ÿç”¨ã€Œä¾åƒè€ƒæ¨™é ­æ’åˆ—ä¸»é¡Œä¸²ã€"
 
 #
 msgid "Special Folder Options"
-msgstr "¯S®í¸ê®Æ§¨³]©w"
+msgstr "ç‰¹æ®Šè³‡æ–™å¤¾è¨­å®š"
 
 #
 msgid "Folder Path"
-msgstr "¸ê®Æ§¨¸ô®|"
+msgstr "è³‡æ–™å¤¾è·¯å¾‘"
 
 #
 msgid "Do not use Trash"
-msgstr "¤£¨Ï¥Î¦^¦¬µ©"
+msgstr "ä¸ä½¿ç”¨å›æ”¶ç­’"
 
 msgid "Trash Folder"
-msgstr "¦^¦¬µ©"
+msgstr "å›æ”¶ç­’"
 
 msgid "Do not use Drafts"
-msgstr "¤£¨Ï¥Î¯ó½Z"
+msgstr "ä¸ä½¿ç”¨è‰ç¨¿"
 
 msgid "Draft Folder"
-msgstr "¯ó½Z"
+msgstr "è‰ç¨¿"
 
 #
 msgid "Do not use Sent"
-msgstr "¤£¨Ï¥Î±H¥ó³Æ¥÷"
+msgstr "ä¸ä½¿ç”¨å¯„ä»¶å‚™ä»½"
 
 msgid "Sent Folder"
-msgstr "±H¥ó³Æ¥÷"
+msgstr "å¯„ä»¶å‚™ä»½"
 
 msgid "Folder List Options"
-msgstr "¸ê®Æ§¨Åã¥Ü³]©w"
+msgstr "è³‡æ–™å¤¾é¡¯ç¤ºè¨­å®š"
 
 msgid "Location of Folder List"
-msgstr "¸ê®Æ§¨²M³æªº¦ì¸m"
+msgstr "è³‡æ–™å¤¾æ¸…å–®çš„ä½ç½®"
 
 #
 msgid "Left"
-msgstr "µe­±¥ªÃä"
+msgstr "ç•«é¢å·¦é‚Š"
 
 #
 msgid "Right"
-msgstr "µe­±¥kÃä"
+msgstr "ç•«é¢å³é‚Š"
 
 #
 msgid "pixels"
-msgstr "¹³¯À"
+msgstr "åƒç´ "
 
 msgid "Width of Folder List"
-msgstr "¸ê®Æ§¨²M³æªº¼e«×"
+msgstr "è³‡æ–™å¤¾æ¸…å–®çš„å¯¬åº¦"
 
 #
 msgid "Minutes"
-msgstr "¤À"
+msgstr "åˆ†"
 
 msgid "Seconds"
-msgstr "¬í"
+msgstr "ç§’"
 
 #
 msgid "Minute"
-msgstr "¤À"
+msgstr "åˆ†"
 
 msgid "Auto Refresh Folder List"
-msgstr "¦Û°Ê§ó·s¸ê®Æ§¨²M³æ"
+msgstr "è‡ªå‹•æ›´æ–°è³‡æ–™å¤¾æ¸…å–®"
 
 msgid "Enable Unread Message Notification"
-msgstr "¥¼Åª¶l¥ó´£¥Ü"
+msgstr "æœªè®€éƒµä»¶æç¤º"
 
 msgid "No Notification"
-msgstr "¤£´£¥Ü"
+msgstr "ä¸æç¤º"
 
 #
 msgid "Only INBOX"
-msgstr "¥u¦³¦¬«H§¨"
+msgstr "åªæœ‰æ”¶ä¿¡å¤¾"
 
 msgid "Unread Message Notification Type"
-msgstr "¥¼Åª¶l¥ó´£¥Üªº¤è¦¡"
+msgstr "æœªè®€éƒµä»¶æç¤ºçš„æ–¹å¼"
 
 msgid "Only Unseen"
-msgstr "¥u¦³¥¼Åªªº"
+msgstr "åªæœ‰æœªè®€çš„"
 
 #
 msgid "Unseen and Total"
-msgstr "¥¼Åª¶l¥ó©M¥ş³¡"
+msgstr "æœªè®€éƒµä»¶å’Œå…¨éƒ¨"
 
 #
 msgid "Enable Collapsable Folders"
-msgstr "¸ê®Æ§¨±_ª¬Åã¥Ü"
+msgstr "è³‡æ–™å¤¾å·¢ç‹€é¡¯ç¤º"
 
 #
 msgid "Enable Cumulative Unread Message Notification"
-msgstr "±Ò¥Î²Ö¥[ªº¥¼Åª¶l¥ó´£¥Ü"
+msgstr "å•Ÿç”¨ç´¯åŠ çš„æœªè®€éƒµä»¶æç¤º"
 
 #
 msgid "Show Clock on Folders Panel"
-msgstr "¨Ï¥Î¤p®ÉÄÁ"
+msgstr "ä½¿ç”¨å°æ™‚é˜"
 
 msgid "International date and time"
-msgstr ""
+msgstr "åœ‹éš›æ—¥æœŸä»¥åŠæ™‚é–“"
 
 msgid "American date and time"
-msgstr ""
+msgstr "ç¾åœ‹æ—¥æœŸä»¥åŠæ™‚é–“"
 
-#, fuzzy
 msgid "European date and time"
-msgstr "¼Ú¬w¦è»y"
+msgstr "æ­æ´²æ—¥æœŸèˆ‡æ™‚é–“"
 
 msgid "Show weekday and time"
-msgstr ""
+msgstr "é¡¯ç¤ºæ˜ŸæœŸä»¥åŠæ™‚é–“"
 
 msgid "Show time with seconds"
-msgstr ""
+msgstr "é¡¯ç¤ºç§’æ•¸"
 
-#, fuzzy
 msgid "Show time"
-msgstr "¶}©l®É¶¡¡G"
+msgstr "é¡¯ç¤ºæ™‚é–“"
 
 #
 msgid "No Clock"
-msgstr "¤£¨Ï¥Î¤p®ÉÄÁ"
+msgstr "ä¸ä½¿ç”¨å°æ™‚é˜"
 
 #
 msgid "Hour Format"
-msgstr "®É¨î¿ï¾Ü"
+msgstr "æ™‚åˆ¶é¸æ“‡"
 
 #
 msgid "12-hour clock"
-msgstr "12¤p®É¨î"
+msgstr "12å°æ™‚åˆ¶"
 
 #
 msgid "24-hour clock"
-msgstr "24¤p®É¨î"
+msgstr "24å°æ™‚åˆ¶"
 
 msgid "Memory Search"
-msgstr "·j´M°O¾ĞÅé"
+msgstr "æœå°‹è¨˜æ†¶é«”"
 
 msgid "Disabled"
-msgstr "Ãö³¬"
+msgstr "é—œé–‰"
 
 #
 msgid "Folder Selection Options"
-msgstr "¸ê®Æ§¨Åã¥Ü³]©w"
+msgstr "è³‡æ–™å¤¾é¡¯ç¤ºè¨­å®š"
 
 #
 msgid "Selection List Style"
-msgstr "¿ï¾Ü²M³æªº®æ¦¡"
+msgstr "é¸æ“‡æ¸…å–®çš„æ ¼å¼"
 
 #
-#, fuzzy
 msgid "Long:"
-msgstr "ªø«×¡G"
+msgstr "é•·åº¦ï¼š"
 
 #
-#, fuzzy
 msgid "Folder"
-msgstr "¸ê®Æ§¨"
+msgstr "è³‡æ–™å¤¾"
 
-#, fuzzy
 msgid "Subfolder"
-msgstr "¨Ï¥Î±H¥ó³Æ¥÷"
+msgstr "ä½¿ç”¨å­è³‡æ–™å¤¾"
 
-#, fuzzy
 msgid "Indented:"
-msgstr "ÁY±Æ"
+msgstr "ç¸®æ’ï¼š"
 
-#, fuzzy
 msgid "Delimited:"
-msgstr "¿ï©w½d³ò"
+msgstr "é¸å®šç¯„åœï¼š"
 
 #
 msgid "Name and Address Options"
-msgstr "­Ó¤H¸ê®Æ³]©w"
+msgstr "å€‹äººè³‡æ–™è¨­å®š"
 
 msgid "Email Address"
-msgstr "Email ¦a§}"
+msgstr "Email åœ°å€"
 
 #
 msgid "Edit Advanced Identities"
-msgstr "¶i¶¥¨­¥÷³]©w"
+msgstr "é€²éšèº«ä»½è¨­å®š"
 
 #
 msgid "(discards changes made on this form so far)"
-msgstr "¡]©ñ±ó¥Ø«e©Ò°µÅÜ§ó¡^"
+msgstr "ï¼ˆæ”¾æ£„ç›®å‰æ‰€åšè®Šæ›´ï¼‰"
 
 #
 msgid "Multiple Identities"
-msgstr "¦h­«¨­¥÷"
+msgstr "å¤šé‡èº«ä»½"
 
 msgid "Same as server"
-msgstr "»P¦øªA¾¹¬Û¦P"
+msgstr "èˆ‡ä¼ºæœå™¨ç›¸åŒ"
 
 msgid "Error opening timezone config, contact administrator."
-msgstr ""
+msgstr "é–‹å•Ÿæ™‚å€è¨­å®šå¤±æ•—ï¼Œè«‹è¯çµ¡ç®¡ç†å“¡ã€‚"
 
 #
 msgid "Timezone Options"
-msgstr "®É°Ï¿ï¶µ"
+msgstr "æ™‚å€é¸é …"
 
 msgid "Your current timezone"
-msgstr "±zªº²{¦æ®É°Ï"
+msgstr "æ‚¨çš„ç¾è¡Œæ™‚å€"
 
 #
 msgid "Reply Citation Options"
-msgstr "¦^ÂĞ¤Ş¨¥³]©w"
+msgstr "å›è¦†å¼•è¨€è¨­å®š"
 
 #
 msgid "Reply Citation Style"
-msgstr "¦^ÂĞ¤Ş¨¥®æ¦¡"
+msgstr "å›è¦†å¼•è¨€æ ¼å¼"
 
 #
 msgid "No Citation"
-msgstr "¤£¤Ş­ì¤å"
+msgstr "ä¸å¼•åŸæ–‡"
 
 #
-#, fuzzy
 msgid "AUTHOR Wrote"
-msgstr "§@ªÌ¦p¬O»¡"
+msgstr "ä½œè€…å¦‚æ˜¯èªª"
 
 msgid "On DATE, AUTHOR Wrote"
-msgstr ""
+msgstr "å¹¾æœˆå¹¾æ—¥, ä½œè€…å¦‚æ˜¯èªª"
 
 #
 msgid "Quote Who XML"
-msgstr "XML ¤Ş¤å"
+msgstr "XML å¼•æ–‡"
 
 #
 msgid "User-Defined"
-msgstr "¨Ï¥ÎªÌ©w¸q"
+msgstr "ä½¿ç”¨è€…å®šç¾©"
 
 #
 msgid "User-Defined Citation Start"
-msgstr "¨Ï¥ÎªÌ©w¸q¤Ş¤å¶}©l"
+msgstr "ä½¿ç”¨è€…å®šç¾©å¼•æ–‡é–‹å§‹"
 
 #
 msgid "User-Defined Citation End"
-msgstr "¨Ï¥ÎªÌ©w¸q¤Ş¤åµ²§ô"
+msgstr "ä½¿ç”¨è€…å®šç¾©å¼•æ–‡çµæŸ"
 
 #
 msgid "Signature Options"
-msgstr "Ã±¦W³]©w"
+msgstr "ç°½åè¨­å®š"
 
 msgid "Use Signature"
-msgstr "¨Ï¥ÎÃ±¦WÀÉ"
+msgstr "ä½¿ç”¨ç°½åæª”"
 
 #
 msgid "Prefix Signature with '-- ' Line"
-msgstr "¦bÃ±¦WÀÉ«e¥[¤J'-- '¥H¸ê¿ë§O"
+msgstr "åœ¨ç°½åæª”å‰åŠ å…¥'-- 'ä»¥è³‡è¾¨åˆ¥"
 
-#, fuzzy
 msgid "Take Address"
-msgstr "¦a§}"
+msgstr "åœ°å€"
 
-#, fuzzy
 msgid "Address Book Take:"
-msgstr "³q°T¿ı"
+msgstr "é€šè¨ŠéŒ„"
 
 msgid "Try to verify addresses"
-msgstr ""
+msgstr "å˜—è©¦é©—è­‰åœ°å€"
 
 msgid "Config File Version"
-msgstr "³]©wÀÉª©¥»½s¸¹"
+msgstr "è¨­å®šæª”ç‰ˆæœ¬ç·¨è™Ÿ"
 
 #
-#, fuzzy
 msgid "SquirrelMail Version"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î"
+msgstr "æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ±"
 
 msgid "PHP Version"
-msgstr "PHP ª©¥»"
+msgstr "PHP ç‰ˆæœ¬"
 
 msgid "Organization Preferences"
-msgstr "²ÕÂ´³]©w­È"
+msgstr "çµ„ç¹”è¨­å®šå€¼"
 
 msgid "Organization Name"
-msgstr "²ÕÂ´¦WºÙ"
+msgstr "çµ„ç¹”åç¨±"
 
 msgid "Organization Logo"
-msgstr "²ÕÂ´ Logo"
+msgstr "çµ„ç¹” Logo"
 
 #
 msgid "Organization Logo Width"
-msgstr "²ÕÂ´ Logo ¼e«×"
+msgstr "çµ„ç¹” Logo å¯¬åº¦"
 
 #
 msgid "Organization Logo Height"
-msgstr "²ÕÂ´ Logo °ª«×"
+msgstr "çµ„ç¹” Logo é«˜åº¦"
 
 msgid "Organization Title"
-msgstr "²ÕÂ´¦W»Î"
+msgstr "çµ„ç¹”åéŠœ"
 
 msgid "Signout Page"
-msgstr "µn¥X­¶"
+msgstr "ç™»å‡ºé "
 
 msgid "Provider Link URI"
-msgstr ""
+msgstr "ä¼ºæœå™¨æä¾›è€…é€£çµ"
 
-#, fuzzy
 msgid "Provider Name"
-msgstr "¦øªA¾¹¦WºÙ:"
+msgstr "ä¼ºæœå™¨æä¾›è€…åç¨±"
 
 msgid "Top Frame"
-msgstr "³Ì«e­¶"
+msgstr "æœ€å‰é "
 
 msgid "Server Settings"
-msgstr "¦øªA¾¹³]©w"
+msgstr "ä¼ºæœå™¨è¨­å®š"
 
 msgid "Mail Domain"
 msgstr "Mail Domain"
 
 msgid "IMAP Server Address"
-msgstr "IMAP Server ¦ì§}¡]IP¡^"
+msgstr "IMAP Server ä½å€ï¼ˆIPï¼‰"
 
 msgid "IMAP Server Port"
 msgstr "IMAP Server Port"
 
 msgid "IMAP Server Type"
-msgstr "IMAP Server «¬¦¡"
+msgstr "IMAP Server å‹å¼"
 
 msgid "Cyrus IMAP server"
 msgstr "Cyrus IMAP server"
 
 msgid "University of Washington's IMAP server"
-msgstr "UW IMAP"
+msgstr ""
 
 msgid "Microsoft Exchange IMAP server"
 msgstr "Microsoft Exchange IMAP server"
@@ -2186,269 +2127,251 @@ msgstr "Courier IMAP server"
 msgid "Mac OS X Mailserver"
 msgstr ""
 
-#, fuzzy
 msgid "hMailServer IMAP server"
-msgstr "Courier IMAP server"
+msgstr ""
 
 msgid "Not one of the above servers"
-msgstr "¥H¤W¬Ò«D"
+msgstr "ä»¥ä¸Šçš†é"
 
 msgid "IMAP Folder Delimiter"
-msgstr "IMAP ¸ê®Æ§¨¦WºÙ"
+msgstr "IMAP è³‡æ–™å¤¾åç¨±"
 
-#, fuzzy
 msgid "Use &quot;detect&quot; to auto-detect."
-msgstr "¨Ï¥Î \"detect\" ¨Ó¦Û°Ê°»´ú"
+msgstr "ä½¿ç”¨ &quot;detect&quot; ä¾†è‡ªå‹•åµæ¸¬"
 
 msgid "Use TLS for IMAP Connections"
-msgstr ""
+msgstr "IMAP ä½¿ç”¨ TLS"
 
 msgid "Requires PHP 4.3.x! Experimental."
-msgstr ""
+msgstr "éœ€è¦ PHP 4.3.xï¼å¯¦é©—æ€§ç‰¹æ€§ã€‚"
 
 #
-#, fuzzy
 msgid "IMAP Authentication Type"
-msgstr "»{µı¥¢±Ñ"
+msgstr "IMAP èªè¨¼æ–¹æ³•"
 
-#, fuzzy
 msgid "IMAP login"
-msgstr "POP3 µn¤J¡G"
+msgstr "IMAP ç™»å…¥"
 
-#, fuzzy
 msgid "Use Sendmail Binary"
-msgstr "¨Ï¥Î Sendmail"
+msgstr "ä½¿ç”¨ Sendmail"
 
 msgid "Choose &quot;no&quot; for SMTP"
-msgstr ""
+msgstr "é¸æ“‡ &quot;no&quot; ä½¿ç”¨ SMTP"
 
 msgid "Sendmail Path"
-msgstr "Sendmail ¸ô®|"
+msgstr "Sendmail è·¯å¾‘"
 
 msgid "SMTP Server Address"
-msgstr "SMTP Server ¦ì§}¡]IP¡^"
+msgstr "SMTP Server ä½å€ï¼ˆIPï¼‰"
 
 msgid "SMTP Server Port"
 msgstr "SMTP Server Port"
 
 msgid "Use TLS for SMTP Connections"
-msgstr ""
+msgstr "SMTP ä½¿ç”¨ TLS"
 
 #
-#, fuzzy
 msgid "SMTP Authentication Type"
-msgstr "»{µı¥¢±Ñ"
+msgstr "SMTP èªè¨¼æ–¹æ³•"
 
 msgid "No SMTP auth"
-msgstr ""
+msgstr "SMTP ä¸ç”¨é©—è­‰"
 
 msgid "Login (plain text)"
 msgstr ""
 
 msgid "POP3 Before SMTP?"
-msgstr ""
+msgstr "ä½¿ç”¨ SMTP å‰å…ˆ POP3 é©—è­‰ï¼Ÿ"
 
 msgid "Invert Time"
-msgstr "Âà´«®É¶¡"
+msgstr "è½‰æ›æ™‚é–“"
 
 msgid "Folders Defaults"
-msgstr "¸ê®Æ§¨¹w³]­È"
+msgstr "è³‡æ–™å¤¾é è¨­å€¼"
 
 msgid "Default Folder Prefix"
-msgstr "¹w³]¸ê®Æ§¨ Prefix"
+msgstr "é è¨­è³‡æ–™å¤¾ Prefix"
 
 msgid "Show Folder Prefix Option"
-msgstr "Åã¥Ü¸ê®Æ§¨ Prefix"
+msgstr "é¡¯ç¤ºè³‡æ–™å¤¾ Prefix"
 
 msgid "By default, move to trash"
-msgstr "²¾¦Ü©U§£µ©¬°¹w³]­È"
+msgstr "ç§»è‡³åƒåœ¾ç­’ç‚ºé è¨­å€¼"
 
 msgid "By default, move to sent"
-msgstr "²¾¦Ü±H¥ó³Æ¥÷¬°¹w³]­È"
+msgstr "ç§»è‡³å¯„ä»¶å‚™ä»½ç‚ºé è¨­å€¼"
 
 msgid "By default, save as draft"
-msgstr "¦s¦¨¯ó½Z¬°¹w³]­È"
+msgstr "å­˜æˆè‰ç¨¿ç‚ºé è¨­å€¼"
 
 msgid "List Special Folders First"
-msgstr "¥ı¦C¥X¯S®í¸ê®Æ§¨"
+msgstr "å…ˆåˆ—å‡ºç‰¹æ®Šè³‡æ–™å¤¾"
 
 msgid "Show Special Folders Color"
-msgstr "Åã¥Ü¯S®í¸ê®Æ§¨ÃC¦â"
+msgstr "é¡¯ç¤ºç‰¹æ®Šè³‡æ–™å¤¾é¡è‰²"
 
 msgid "Auto Expunge"
-msgstr "¦Û°Ê²M°£©U§£µ©"
+msgstr "è‡ªå‹•æ¸…é™¤åƒåœ¾ç­’"
 
 msgid "Default Sub. of INBOX"
-msgstr "¹w³]ªº¦¬¥ó§¨¤l¥Ø¿ı"
+msgstr "é è¨­çš„æ”¶ä»¶å¤¾å­ç›®éŒ„"
 
 msgid "Show 'Contain Sub.' Option"
-msgstr "Åã¥Ü¡u¥]§t¤l¥Ø¿ı¡v¿ï¶µ"
+msgstr "é¡¯ç¤ºã€ŒåŒ…å«å­ç›®éŒ„ã€é¸é …"
 
 msgid "Default Unseen Notify"
-msgstr "¹w³]¥¼Åª¶l¥ó´£¥Ü"
+msgstr "é è¨­æœªè®€éƒµä»¶æç¤º"
 
 msgid "Default Unseen Type"
-msgstr "¹w³]¥¼Åª¶l¥ó´£¥Ü¤è¦¡"
+msgstr "é è¨­æœªè®€éƒµä»¶æç¤ºæ–¹å¼"
 
 msgid "Auto Create Special Folders"
-msgstr "¦Û°Ê·s¼W¯S®í¸ê®Æ§¨"
+msgstr "è‡ªå‹•æ–°å¢ç‰¹æ®Šè³‡æ–™å¤¾"
 
 #
 msgid "Auto delete folders"
-msgstr "¦Û°Ê§R°£¸ê®Æ§¨"
+msgstr "è‡ªå‹•åˆªé™¤è³‡æ–™å¤¾"
 
-#, fuzzy
 msgid "Enable /NoSelect folder fix"
-msgstr "¨Ï¥Î¤À­¶¼ĞÅÒ"
+msgstr "ä½¿ç”¨ /NoSelect è³‡æ–™å¤¾çš„ä¿®æ­£"
 
 msgid "General Options"
-msgstr "¤@¯ë³]©w"
+msgstr "ä¸€èˆ¬è¨­å®š"
 
 msgid "Data Directory"
-msgstr "¸ê®Æ¦s©ñ¥Ø¿ı"
+msgstr "è³‡æ–™å­˜æ”¾ç›®éŒ„"
 
 msgid "Temp Directory"
-msgstr "¼È¦s¥Ø¿ı"
+msgstr "æš«å­˜ç›®éŒ„"
 
 msgid "Hash Level"
-msgstr "Âø´êµ¥¯Å"
+msgstr "é›œæ¹Šç­‰ç´š"
 
 msgid "Hash Disabled"
-msgstr "¤£¨Ï¥ÎÂø´ê½s½X"
+msgstr "ä¸ä½¿ç”¨é›œæ¹Šç·¨ç¢¼"
 
 msgid "Moderate"
-msgstr "¤¤µ¥ªº"
+msgstr "ä¸­ç­‰çš„"
 
 msgid "Medium"
-msgstr "¤¤µ¥"
+msgstr "ä¸­ç­‰"
 
 msgid "Default Left Size"
-msgstr "¹w³]ªº¥ª­¶®Ø¼e«×"
+msgstr "é è¨­çš„å·¦é æ¡†å¯¬åº¦"
 
 msgid "Usernames in Lowercase"
-msgstr "¨Ï¥ÎªÌ¦WºÙ¤p¼g"
+msgstr "ä½¿ç”¨è€…åç¨±å°å¯«"
 
 msgid "Allow use of priority"
-msgstr "¥i¥H¨Ï¥Î¡u­«­n©Ê¡v"
+msgstr "å¯ä»¥ä½¿ç”¨ã€Œé‡è¦æ€§ã€"
 
 msgid "Hide SM attributions"
-msgstr "¤£Åã¥Ü Squirrel Mail ªº¼Ğ°O"
+msgstr "ä¸é¡¯ç¤º Squirrel Mail çš„æ¨™è¨˜"
 
 msgid "Enable use of delivery receipts"
-msgstr "±Ò¥Î¦^±ø"
+msgstr "å•Ÿç”¨å›æ¢"
 
 msgid "Allow editing of identities"
-msgstr "¥i¥H½s¿è¨­¥÷ÃÑ§O"
+msgstr "å¯ä»¥ç·¨è¼¯èº«ä»½è­˜åˆ¥"
 
 msgid "Allow editing of full name"
-msgstr "¥i¥H½s¿è¥ş¦W"
+msgstr "å¯ä»¥ç·¨è¼¯å…¨å"
 
 msgid "Use server-side sorting"
-msgstr ""
+msgstr "ä½¿ç”¨ä¼ºæœå™¨ç«¯æ’åº"
 
 msgid "Use server-side thread sorting"
-msgstr ""
+msgstr "ä½¿ç”¨ä¼ºæœå™¨ç«¯ thread æ’åº"
 
 msgid "Allow server charset search"
-msgstr ""
+msgstr "å…è¨±ä¼ºæœå™¨ charset æœå°‹"
 
 msgid "UID support"
-msgstr ""
+msgstr "UID æ”¯æ´"
 
-#, fuzzy
 msgid "PHP session name"
-msgstr "PHP ª©¥»"
+msgstr "PHP session åç¨±"
 
 msgid "Message of the Day"
-msgstr "¨C¤é¤p»y"
+msgstr "æ¯æ—¥å°èª"
 
 msgid "Database"
-msgstr "¸ê®Æ®w"
+msgstr "è³‡æ–™åº«"
 
 msgid "Address book DSN"
-msgstr "³q°T¿ı DSN"
+msgstr "é€šè¨ŠéŒ„ DSN"
 
 #
 msgid "Address book table"
-msgstr "³q°T¿ıÄæ¦ì"
+msgstr "é€šè¨ŠéŒ„æ¬„ä½"
 
 #
 msgid "Preferences DSN"
-msgstr "Àô¹Ò³]©w DSN"
+msgstr "ç’°å¢ƒè¨­å®š DSN"
 
 #
 msgid "Preferences table"
-msgstr "Àô¹Ò³]©wÄæ¦ì"
+msgstr "ç’°å¢ƒè¨­å®šæ¬„ä½"
 
 msgid "Preferences username field"
-msgstr "Àô¹Ò³]©w¨Ï¥ÎªÌ¦WºÙÄæ"
+msgstr "ç’°å¢ƒè¨­å®šä½¿ç”¨è€…åç¨±æ¬„"
 
 msgid "Preferences key field"
-msgstr "Àô¹Ò³]©wÁä­ÈÄæ"
+msgstr "ç’°å¢ƒè¨­å®šéµå€¼æ¬„"
 
 msgid "Preferences value field"
-msgstr "Àô¹Ò³]©w­ÈÄæ"
+msgstr "ç’°å¢ƒè¨­å®šå€¼æ¬„"
 
-#, fuzzy
 msgid "Global address book DSN"
-msgstr "¤½¥Î³q°T¿ı"
+msgstr "å…¬ç”¨é€šè¨ŠéŒ„ DSN"
 
-#, fuzzy
 msgid "Global address book table"
-msgstr "¤½¥Î³q°T¿ı"
+msgstr "å…¬ç”¨é€šè¨ŠéŒ„è¡¨æ ¼"
 
-#, fuzzy
 msgid "Allow writing into global address book"
-msgstr "µLªk§ó·s¤½¥Î³q°T¿ı"
+msgstr "å…è¨±æ›´æ–°å…¬ç”¨é€šè¨ŠéŒ„"
 
-#, fuzzy
 msgid "Allow listing of global address book"
-msgstr "µLªk§ó·s¤½¥Î³q°T¿ı"
+msgstr "å…è¨±è®€å–å…¬ç”¨é€šè¨ŠéŒ„"
 
-#, fuzzy
 msgid "Language settings"
-msgstr "§ïÅÜ³]©w"
+msgstr "èªè¨€è¨­å®š"
 
 msgid "Default Language"
-msgstr "¹w³]»y¨t"
+msgstr "é è¨­èªç³»"
 
 msgid "Default Charset"
-msgstr "¹w³]½s½X"
+msgstr "é è¨­ç·¨ç¢¼"
 
 msgid "Enable lossy encoding"
-msgstr ""
+msgstr "å•Ÿç”¨ lossy ç·¨ç¢¼"
 
-#, fuzzy
 msgid "Address Books"
-msgstr "³q°T¿ı"
+msgstr "é€šè¨ŠéŒ„"
 
-#, fuzzy
 msgid "Default Javascript Addressbook"
-msgstr "¹w³]¨Ï¥Î JavaScript ³q°T¿ı"
+msgstr "é è¨­ä½¿ç”¨ JavaScript é€šè¨ŠéŒ„"
 
-#, fuzzy
 msgid "Global address book file"
-msgstr "¤½¥Î³q°T¿ı"
+msgstr "å…¬ç”¨é€šè¨ŠéŒ„æª”æ¡ˆ"
 
-#, fuzzy
 msgid "Allow writing into global address book file"
-msgstr "¼g¤J³q°T¿ı¥¢±Ñ"
+msgstr "å…è¨±å¯«å…¥é€šè¨ŠéŒ„æª”æ¡ˆ"
 
 msgid "Themes"
-msgstr "°t¦â"
+msgstr "é…è‰²"
 
 msgid "Style Sheet URL (css)"
-msgstr ""
+msgstr "Style Sheet ç¶²å€ (css)"
 
-#, fuzzy
 msgid "Default theme"
-msgstr "¹w³]½s½X"
+msgstr "é è¨­é…è‰²"
 
 msgid "Use index number of theme"
-msgstr ""
+msgstr "ä½¿ç”¨ç¬¬å¹¾è™Ÿé…è‰²"
 
 msgid "Configuration Administrator"
-msgstr "³]©wºŞ²z­û"
+msgstr "è¨­å®šç®¡ç†å“¡"
 
 msgid ""
 "Note: it is recommended that you configure your system using conf.pl, and "
@@ -2456,6 +2379,8 @@ msgid ""
 "purpose of variables and appropriate values, as well as additional "
 "verification steps."
 msgstr ""
+"æ³¨æ„ï¼šå»ºè­°æ‚¨ä½¿ç”¨ conf.pl ä¾†è¨­å®šç³»çµ±ï¼Œè€Œä¸æ˜¯é€™å€‹ pluginã€‚ config.pl åŒ…å«äº†"
+"é¡å¤–çš„è³‡è¨Šï¼Œä»¥åŠé¡å¤–çš„ç¢ºèªæ­¥é©Ÿã€‚"
 
 msgid ""
 "Run or consult conf.pl should you run into difficulty with your "
@@ -2463,38 +2388,37 @@ msgid ""
 msgstr ""
 
 msgid "Theme Name"
-msgstr "°t¦â¦WºÙ"
+msgstr "é…è‰²åç¨±"
 
 msgid "Theme Path"
-msgstr "°t¦â¸ô®|"
+msgstr "é…è‰²è·¯å¾‘"
 
 msgid "Plugins"
-msgstr ""
+msgstr "æ’ä»¶"
 
 #, php-format
 msgid "Plugin directory could not be found: %s"
-msgstr ""
+msgstr "æ’ä»¶ç›®éŒ„æ‰¾ä¸åˆ°ï¼š %s"
 
 msgid "Change Settings"
-msgstr "§ïÅÜ³]©w"
+msgstr "æ”¹è®Šè¨­å®š"
 
 msgid "Test Configuration"
-msgstr ""
+msgstr "æ¸¬è©¦è¨­å®š"
 
 msgid "Config file can't be opened. Please check config.php."
-msgstr "³]©wÀÉµLªk¶}±Ò¡C½ĞÀË¬d config.php"
+msgstr "è¨­å®šæª”ç„¡æ³•é–‹å•Ÿã€‚è«‹æª¢æŸ¥ config.php"
 
 msgid "Administration"
-msgstr "ºŞ²z"
+msgstr "ç®¡ç†"
 
 msgid ""
 "This module allows administrators to manage SquirrelMail main configuration "
 "remotely."
-msgstr "³o­Ó¼Ò²ÕÅıºŞ²z­û¥i¥H»·ºİ±±¨î Squirrel Mail ªº¥D­n³]©w"
+msgstr "é€™å€‹æ¨¡çµ„è®“ç®¡ç†å“¡å¯ä»¥é ç«¯æ§åˆ¶ Squirrel Mail çš„ä¸»è¦è¨­å®š"
 
-#, fuzzy
 msgid "Submit a Bug Report"
-msgstr "¯äÂÎ¦^³ø¡G"
+msgstr "è‡­èŸ²å›å ±"
 
 msgid ""
 "Before you send your bug report, please make sure to check this checklist "
@@ -2549,162 +2473,160 @@ msgstr ""
 msgid "a specific plugin"
 msgstr ""
 
-#, fuzzy
 msgid "Start Bug Report Form"
-msgstr "¯äÂÎ¦^³ø¡G"
+msgstr "é–‹å§‹è‡­èŸ²å›å ±"
 
 msgid "Bug"
 msgstr ""
 
 msgid "Bug Reports:"
-msgstr "¯äÂÎ¦^³ø¡G"
+msgstr "è‡­èŸ²å›å ±ï¼š"
 
 msgid "Show button in toolbar"
-msgstr "«öÁäÅã¥Ü©ó¤u¨ã¦C"
+msgstr "æŒ‰éµé¡¯ç¤ºæ–¼å·¥å…·åˆ—"
 
 msgid "TODAY"
-msgstr "¤µ¤Ñ"
+msgstr "ä»Šå¤©"
 
 #
 msgid "Go"
-msgstr "¶i¦æ"
+msgstr "é€²è¡Œ"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Could not write calendar file %s"
-msgstr "µLªk«Ø¥ß±Ò©l³]©wÀÉ"
+msgstr "ç„¡æ³•å¯«å…¥æ—¥æ›†æª”æ¡ˆ %s"
 
 msgid "l, F j Y"
 msgstr ""
 
 msgid "ADD"
-msgstr "·s¼W"
+msgstr "æ–°å¢"
 
 msgid "EDIT"
-msgstr "­×§ï"
+msgstr "ä¿®æ”¹"
 
 msgid "DEL"
-msgstr "§R°£"
+msgstr "åˆªé™¤"
 
 msgid "Start time:"
-msgstr "¶}©l®É¶¡¡G"
+msgstr "é–‹å§‹æ™‚é–“ï¼š"
 
 msgid "Length:"
-msgstr "ªø«×¡G"
+msgstr "é•·åº¦ï¼š"
 
 #
 msgid "Priority:"
-msgstr "­«­n©Ê:"
+msgstr "é‡è¦æ€§:"
 
 #
 msgid "Title:"
-msgstr "¥D¦®¡G"
+msgstr "ä¸»æ—¨ï¼š"
 
 msgid "Set Event"
-msgstr "³]©w¨Æ¥ó"
+msgstr "è¨­å®šäº‹ä»¶"
 
 msgid "Event Has been added!"
-msgstr "¨Æ¥ó¤w·s¼W"
+msgstr "äº‹ä»¶å·²æ–°å¢"
 
 #
 msgid "Date:"
-msgstr "¤é´Á¡G"
+msgstr "æ—¥æœŸï¼š"
 
 msgid "Time:"
-msgstr "®É¶¡¡G"
+msgstr "æ™‚é–“ï¼š"
 
 msgid "Day View"
-msgstr "¨Ì¤é´Á"
+msgstr "ä¾æ—¥æœŸ"
 
 msgid "Do you really want to delete this event?"
-msgstr "¯uªº­n§R°£¦¹¨Æ¥ó¡H"
+msgstr "çœŸçš„è¦åˆªé™¤æ­¤äº‹ä»¶ï¼Ÿ"
 
 msgid "Event deleted!"
-msgstr "¨Æ¥ó¤w§R°£¡I"
+msgstr "äº‹ä»¶å·²åˆªé™¤ï¼"
 
 msgid "Nothing to delete!"
-msgstr "¨S¦³¥i¥H§R°£ªº¡I"
+msgstr "æ²’æœ‰å¯ä»¥åˆªé™¤çš„ï¼"
 
 msgid "Update Event"
-msgstr "§ó·s¨Æ¥ó"
+msgstr "æ›´æ–°äº‹ä»¶"
 
 msgid "Do you really want to change this event from:"
-msgstr "±z¯uªº­n§ïÅÜ³o­Ó¨Æ¥ó¡A±q¡G"
+msgstr "æ‚¨çœŸçš„è¦æ”¹è®Šé€™å€‹äº‹ä»¶ï¼Œå¾ï¼š"
 
 msgid "to:"
-msgstr "¦Ü¡G"
+msgstr "è‡³ï¼š"
 
 msgid "Event updated!"
-msgstr "¨Æ¥ó¤w§ó·s"
+msgstr "äº‹ä»¶å·²æ›´æ–°"
 
 msgid "Month View"
-msgstr "¨Ì¤ë¥÷"
+msgstr "ä¾æœˆä»½"
 
 msgid "0 min."
-msgstr "0 ¤À"
+msgstr "0 åˆ†"
 
 msgid "15 min."
-msgstr "15 ¤À"
+msgstr "15 åˆ†"
 
-#, fuzzy
 msgid "30 min."
-msgstr "0 ¤À"
+msgstr "30 åˆ†"
 
 msgid "45 min."
-msgstr "45 ¤À"
+msgstr "45 åˆ†"
 
 msgid "1 hr."
-msgstr "1 ¤p®É"
+msgstr "1 å°æ™‚"
 
 msgid "1.5 hr."
-msgstr "1.5 ¤p®É"
+msgstr "1.5 å°æ™‚"
 
 msgid "2 hr."
-msgstr "2 ¤p®É"
+msgstr "2 å°æ™‚"
 
 msgid "2.5 hr."
-msgstr "2.5 ¤p®É"
+msgstr "2.5 å°æ™‚"
 
 msgid "3 hr."
-msgstr "3 ¤p®É"
+msgstr "3 å°æ™‚"
 
 msgid "3.5 hr."
-msgstr "3.5 ¤p®É"
+msgstr "3.5 å°æ™‚"
 
 msgid "4 hr."
-msgstr "4 ¤p®É"
+msgstr "4 å°æ™‚"
 
 msgid "5 hr."
-msgstr "5 ¤p®É"
+msgstr "5 å°æ™‚"
 
 msgid "6 hr."
-msgstr "6 ¤p®É"
+msgstr "6 å°æ™‚"
 
 msgid "Calendar"
-msgstr "¤é¾ä"
+msgstr "æ—¥æ›†"
 
 msgid "Delete & Prev"
-msgstr "§R°£¨Ã©¹«e"
+msgstr "åˆªé™¤ä¸¦å¾€å‰"
 
 msgid "Delete & Next"
-msgstr "§R°£¨Ã©¹«á"
+msgstr "åˆªé™¤ä¸¦å¾€å¾Œ"
 
 #
 msgid "Move to:"
-msgstr "·h²¾:"
+msgstr "æ¬ç§»:"
 
 msgid "Delete/Move/Next Buttons:"
-msgstr "§R°£/²¾°Ê/¤U¤@¶µ«ö¶s"
+msgstr "åˆªé™¤/ç§»å‹•/ä¸‹ä¸€é …æŒ‰éˆ•"
 
 #
 msgid "Display at top"
-msgstr "Åã¥Ü©ó³Ì¤W¤è"
+msgstr "é¡¯ç¤ºæ–¼æœ€ä¸Šæ–¹"
 
 msgid "with move option"
-msgstr "»P²¾°Ê¿ï¶µ"
+msgstr "èˆ‡ç§»å‹•é¸é …"
 
 #
 msgid "Display at bottom"
-msgstr "Åã¥Ü©ó³Ì¤U¤è"
+msgstr "é¡¯ç¤ºæ–¼æœ€ä¸‹æ–¹"
 
 msgid ""
 "COMMERCIAL - This list contains servers that are verified spam senders. It "
@@ -2845,78 +2767,76 @@ msgid ""
 msgstr ""
 
 msgid "Saved Scan type"
-msgstr "Àx¦s±½ºË¤è¦¡"
+msgstr "å„²å­˜æƒç„æ–¹å¼"
 
 msgid "Message Filtering"
-msgstr "¶l¥ó¹LÂo"
+msgstr "éƒµä»¶éæ¿¾"
 
 #
 msgid "What to Scan:"
-msgstr "¹LÂo¹ï¶H¡G"
+msgstr "éæ¿¾å°è±¡ï¼š"
 
 #
 msgid "All messages"
-msgstr "¥ş³¡"
+msgstr "å…¨éƒ¨"
 
 msgid "Only unread messages"
-msgstr "¥u¦³¥¼Åª¶l¥ó"
+msgstr "åªæœ‰æœªè®€éƒµä»¶"
 
 #
 msgid "Save"
-msgstr "Àx¦s"
+msgstr "å„²å­˜"
 
 msgid "Match:"
-msgstr "²Å¦X¡G"
+msgstr "ç¬¦åˆï¼š"
 
 #
 msgid "Header"
-msgstr "¼ĞÀY"
+msgstr "æ¨™é ­"
 
 msgid "Contains:"
-msgstr "¥]§t¡G"
+msgstr "åŒ…å«ï¼š"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "If %s contains %s then move to %s"
-msgstr "¦pªG<b>%s</b>¥]§t<b>%s</b> «h²¾¦Ü<b>%s</b>"
+msgstr "å¦‚æœ %s åŒ…å« %s å‰‡ç§»è‡³ %s"
 
 msgid "Message Filters"
-msgstr "¶l¥ó¹LÂo¾¹"
+msgstr "éƒµä»¶éæ¿¾å™¨"
 
 msgid ""
 "Filtering enables messages with different criteria to be automatically "
 "filtered into different folders for easier organization."
-msgstr "¶l¥ó³W«h¥i¥H¨Ì¤£¦Pªº±ø¥ó¡A³Q¦Û°Ê¤À¬£¨ì¤£¦P¸ê®Æ§¨¡C"
+msgstr "éƒµä»¶è¦å‰‡å¯ä»¥ä¾ä¸åŒçš„æ¢ä»¶ï¼Œè¢«è‡ªå‹•åˆ†æ´¾åˆ°ä¸åŒè³‡æ–™å¤¾ã€‚"
 
 msgid "SPAM Filters"
-msgstr "©U§£¶l¥ó¹LÂo¾¹"
+msgstr "åƒåœ¾éƒµä»¶éæ¿¾å™¨"
 
 msgid ""
 "SPAM filters allow you to select from various DNS based blacklists to detect "
 "junk email in your INBOX and move it to another folder (like Trash)."
-msgstr "©U§£¶l¥ó¹LÂo¾¹¨Ï±z¥i¥H¥Î¶Â¦W³æ¨Ó¹LÂo¦¬¥ó§¨¤¤ªº¶l¥ó¡C"
+msgstr "åƒåœ¾éƒµä»¶éæ¿¾å™¨ä½¿æ‚¨å¯ä»¥ç”¨é»‘åå–®ä¾†éæ¿¾æ”¶ä»¶å¤¾ä¸­çš„éƒµä»¶ã€‚"
 
 #
-#, fuzzy
 msgid "You must select a spam folder."
-msgstr "¿ï¾Ü¸ê®Æ§¨"
+msgstr "ä½ å¿…é ˆé¸æ“‡ä¸€å€‹åƒåœ¾éƒµä»¶è³‡æ–™å¤¾"
 
-#, fuzzy
 msgid "You must select a scan type."
-msgstr "±z¥²»İ§@¤@¿ï¾Ü"
+msgstr "æ‚¨å¿…éœ€é¸æ“‡ä¸€å€‹éæ…®æ–¹æ³•"
 
 #
 msgid "Spam Filtering"
-msgstr "¹LÂo©U§£¶l¥ó"
+msgstr "éæ¿¾åƒåœ¾éƒµä»¶"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "WARNING! Tell the administrator to set the %s variable."
-msgstr "Äµ§i¡I½Ğ±zªººôºŞ³]©w¹LÂo¾¹°Ñ¼Æ"
+msgstr "è­¦å‘Šï¼è«‹æ‚¨çš„ç¶²ç®¡è¨­å®šéæ¿¾å™¨åƒæ•¸ %s"
 
 #
 msgid "Move spam to:"
-msgstr "·h²¾:"
+msgstr "æ¬ç§»:"
 
 #
 msgid ""
@@ -2926,15 +2846,13 @@ msgid ""
 "periodically, so that you don't have an excessively large mailbox hanging "
 "around."
 msgstr ""
-"ª½±µ±N©U§£¶l¥ó¥á¨ì¦^¦¬µ©¤£¬O­Ó¦n¥D·N¡C¦]¬°¦³¥i¯à»~±ş©¾¨}¡C¤£ºŞ±z³]¦b­ş­Ó¸ê®Æ"
-"§¨¡A°O±o©w®É²M²z¡A¥H§KÃz±¼"
+"ç›´æ¥å°‡åƒåœ¾éƒµä»¶ä¸Ÿåˆ°å›æ”¶ç­’ä¸æ˜¯å€‹å¥½ä¸»æ„ã€‚å› ç‚ºæœ‰å¯èƒ½èª¤æ®ºå¿ è‰¯ã€‚ä¸ç®¡æ‚¨è¨­åœ¨å“ªå€‹è³‡æ–™"
+"å¤¾ï¼Œè¨˜å¾—å®šæ™‚æ¸…ç†ï¼Œä»¥å…çˆ†æ‰"
 
-#, fuzzy
 msgid "Unread messages only"
-msgstr "¥u­­©ó·s¶l¥ó"
+msgstr "åªé™æ–¼æ–°éƒµä»¶"
 
 #
-#, fuzzy
 msgid ""
 "The more messages scanned, the longer it takes. It's recommended to scan "
 "unread messages only. If a change to the filters is made, it's recommended "
@@ -2943,53 +2861,50 @@ msgid ""
 "applied and even the spam you didn't catch with the old filters will be "
 "scanned."
 msgstr ""
-"±z¿ï¾Üªº¹LÂo¹ï¶H·U¦h¡A±Nªá¥h·U¦h®É¶¡¡C«ØÄ³±z¥u¹LÂo·s¶l¥ó¡C¦pªG±z§ïÅÜ¹LÂo±ø"
-"¥ó¡A¥i¥H¼È®É§ï¦¨¥ş³¡¹LÂo¡AµM«áÂI¿ï¦¬¥ó§¨¡C³Ì«á¦A±N¹LÂo¹ï¶H§ï¦^¥u¦³·s¶l¥ó¡C³o"
-"¼Ë¨Ï·s±ø¥ó¥i¥H½T¹ê¦a¥Í®Ä¡C"
+"æ‚¨é¸æ“‡çš„éæ¿¾å°è±¡æ„ˆå¤šï¼Œå°‡èŠ±å»æ„ˆå¤šæ™‚é–“ã€‚å»ºè­°æ‚¨åªéæ¿¾æ–°éƒµä»¶ã€‚å¦‚æœæ‚¨æ”¹è®Šéæ¿¾æ¢"
+"ä»¶ï¼Œå¯ä»¥æš«æ™‚æ”¹æˆå…¨éƒ¨éæ¿¾ï¼Œç„¶å¾Œé»é¸æ”¶ä»¶å¤¾ã€‚æœ€å¾Œå†å°‡éæ¿¾å°è±¡æ”¹å›åªæœ‰æ–°éƒµä»¶ã€‚é€™"
+"æ¨£ä½¿æ–°æ¢ä»¶å¯ä»¥ç¢ºå¯¦åœ°ç”Ÿæ•ˆã€‚"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Spam is sent to %s."
-msgstr "©U§£¶l¥ó¤w³Q°e¦Ü <b>%s</b>"
+msgstr "åƒåœ¾éƒµä»¶å·²è¢«é€è‡³ %s"
 
 #
-#, fuzzy
 msgid "not set yet"
-msgstr "[<i>©|¥¼³]©w</i>]"
+msgstr "å°šæœªè¨­å®š"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Spam scan is limited to %s."
-msgstr "©U§£¶l¥ó¹LÂo³Q­­¨î©ó <b>%s</b>"
+msgstr "åƒåœ¾éƒµä»¶éæ¿¾è¢«é™åˆ¶æ–¼ %s"
 
 #
 msgid "ON"
-msgstr "¶}"
+msgstr "é–‹"
 
 #
 msgid "OFF"
-msgstr "Ãö"
+msgstr "é—œ"
 
 #, php-format
 msgid "%s is not found."
-msgstr ""
+msgstr "%s æ‰¾ä¸åˆ°"
 
 msgid "Today's Fortune"
-msgstr ""
+msgstr "ä»Šå¤©çš„å¹¸é‹ç±¤èª"
 
-#, fuzzy
 msgid "Fortunes:"
-msgstr "¸²»y"
+msgstr "å¹¸é‹ç±¤èªï¼š"
 
 msgid "Show fortunes at top of mailbox"
-msgstr ""
+msgstr "é¡¯ç¤ºå¹¸é‹ç±¤èªæ–¼éƒµä»¶å¤¾ä¸Šæ–¹"
 
 msgid "Plugin is disabled."
-msgstr ""
+msgstr "å·®ä»¶æœªå•Ÿç”¨"
 
-#, fuzzy
 msgid "IMAP server information"
-msgstr "IMAP Server Port"
+msgstr "IMAP ä¼ºæœå™¨è³‡è¨Š"
 
 msgid ""
 "Run some test IMAP commands, displaying both the command and the result. "
@@ -2998,7 +2913,7 @@ msgid ""
 msgstr ""
 
 msgid "Mailinglist"
-msgstr "¶l»¼²M³æ"
+msgstr "éƒµéæ¸…å–®"
 
 #
 #, php-format
@@ -3006,100 +2921,100 @@ msgid ""
 "This will send a message to %s requesting help for this list. You will "
 "receive an emailed response at the address below."
 msgstr ""
-"³o±N·|°e¥X¤@­Ó¶l¥ó¨ì %s ¡A­n¨D³o­Ó¶l»¼²M³æªºÀ°§U¡C±z±N·|±µ¨ì¤@«Ê¶l¥ó¦^ÂĞ¡A©ó"
-"¤U¦C¦a§}¡C"
+"é€™å°‡æœƒé€å‡ºä¸€å€‹éƒµä»¶åˆ° %s ï¼Œè¦æ±‚é€™å€‹éƒµéæ¸…å–®çš„å¹«åŠ©ã€‚æ‚¨å°‡æœƒæ¥åˆ°ä¸€å°éƒµä»¶å›è¦†ï¼Œæ–¼"
+"ä¸‹åˆ—åœ°å€ã€‚"
 
 #
 #, php-format
 msgid ""
 "This will send a message to %s requesting that you will be subscribed to "
 "this list. You will be subscribed with the address below."
-msgstr "³o±N·|°e¥X¤@­Ó¶l¥ó¨ì %s ¡A­n¨D³o­Ó¶l»¼²M³æªºÀ°§U¨ÓÅı±z¥[¤J¤U¦C¦a§}¡C"
+msgstr "é€™å°‡æœƒé€å‡ºä¸€å€‹éƒµä»¶åˆ° %s ï¼Œè¦æ±‚é€™å€‹éƒµéæ¸…å–®çš„å¹«åŠ©ä¾†è®“æ‚¨åŠ å…¥ä¸‹åˆ—åœ°å€ã€‚"
 
 #
 #, php-format
 msgid ""
 "This will send a message to %s requesting that you will be unsubscribed from "
 "this list. It will try to unsubscribe the adress below."
-msgstr "³o±N·|°e¥X¤@­Ó¶l¥ó¨ì %s ¡A­n¨D³o­Ó¶l»¼²M³æªºÀ°§U¨ÓÅı±z°h¥X¤U¦C¦a§}¡C"
+msgstr "é€™å°‡æœƒé€å‡ºä¸€å€‹éƒµä»¶åˆ° %s ï¼Œè¦æ±‚é€™å€‹éƒµéæ¸…å–®çš„å¹«åŠ©ä¾†è®“æ‚¨é€€å‡ºä¸‹åˆ—åœ°å€ã€‚"
 
 msgid "Send Mail"
-msgstr "¶Ç°e¶l¥ó"
+msgstr "å‚³é€éƒµä»¶"
 
 msgid "Post to List"
-msgstr "¦b¶l»¼²M³æ¤Wµoªí"
+msgstr "åœ¨éƒµéæ¸…å–®ä¸Šç™¼è¡¨"
 
 msgid "Reply to List"
-msgstr "¦^ÂĞ¶l»¼²M³æ"
+msgstr "å›è¦†éƒµéæ¸…å–®"
 
 msgid "List Archives"
-msgstr "¦C¥XÀÉ®×®w"
+msgstr "åˆ—å‡ºæª”æ¡ˆåº«"
 
 msgid "Contact Listowner"
-msgstr "³sµ¸²M³æ­t³d¤H"
+msgstr "é€£çµ¡æ¸…å–®è² è²¬äºº"
 
 #
 msgid "Mailing List"
-msgstr "¶l»¼²M³æ"
+msgstr "éƒµéæ¸…å–®"
 
 #
 msgid "POP3 connect:"
-msgstr "³sµ²POP3¡G "
+msgstr "é€£çµPOP3ï¼š "
 
 #
 msgid "No server specified"
-msgstr "¥¼³]©w¦øªA¾¹"
+msgstr "æœªè¨­å®šä¼ºæœå™¨"
 
 msgid "Error "
-msgstr "¿ù»~"
+msgstr "éŒ¯èª¤"
 
 #
 msgid "POP3 user:"
-msgstr "POP3 ±b¸¹¡G"
+msgstr "POP3 å¸³è™Ÿï¼š"
 
 #
 msgid "no login ID submitted"
-msgstr "¥¼°e¥X¨Ï¥ÎªÌ±b¸¹"
+msgstr "æœªé€å‡ºä½¿ç”¨è€…å¸³è™Ÿ"
 
 #
 msgid "connection not established"
-msgstr "³s½u¥¼«Ø¥ß"
+msgstr "é€£ç·šæœªå»ºç«‹"
 
 #
 msgid "POP3 pass:"
-msgstr "POP3 ±K½X¡G"
+msgstr "POP3 å¯†ç¢¼ï¼š"
 
 #
 msgid "No password submitted"
-msgstr "¥¼°e¥X¨Ï¥ÎªÌ±K½X"
+msgstr "æœªé€å‡ºä½¿ç”¨è€…å¯†ç¢¼"
 
 #
 msgid "authentication failed "
-msgstr "»{µı¥¢±Ñ"
+msgstr "èªè¨¼å¤±æ•—"
 
 msgid "POP3 apop:"
 msgstr "POP3 apop:"
 
 msgid "No connection to server"
-msgstr "¥¼³sµ²¦Ü¦øªA¾¹"
+msgstr "æœªé€£çµè‡³ä¼ºæœå™¨"
 
 #
 msgid "No login ID submitted"
-msgstr "¨S¦³°e¥X¨Ï¥ÎªÌ±b¸¹"
+msgstr "æ²’æœ‰é€å‡ºä½¿ç”¨è€…å¸³è™Ÿ"
 
 msgid "No server banner"
-msgstr "¥¼Àò±o¦øªA¾¹¸ê°T"
+msgstr "æœªç²å¾—ä¼ºæœå™¨è³‡è¨Š"
 
 #
 msgid "abort"
-msgstr "¤¤Â_"
+msgstr "ä¸­æ–·"
 
 #
 msgid "apop authentication failed"
-msgstr "apop »{µı¥¢±Ñ"
+msgstr "apop èªè¨¼å¤±æ•—"
 
 msgid "POP3 login:"
-msgstr "POP3 µn¤J¡G"
+msgstr "POP3 ç™»å…¥ï¼š"
 
 msgid "POP3 top:"
 msgstr ""
@@ -3123,13 +3038,13 @@ msgid "POP3 send_cmd:"
 msgstr ""
 
 msgid "Empty command string"
-msgstr "ªÅ¥Õ«ü¥O¦r¦ê"
+msgstr "ç©ºç™½æŒ‡ä»¤å­—ä¸²"
 
 msgid "POP3 quit:"
-msgstr "POP3 Â÷¶}¡G"
+msgstr "POP3 é›¢é–‹ï¼š"
 
 msgid "connection does not exist"
-msgstr "³s½u¤£¦s¦b"
+msgstr "é€£ç·šä¸å­˜åœ¨"
 
 msgid "POP3 uidl:"
 msgstr ""
@@ -3138,467 +3053,444 @@ msgid "POP3 delete:"
 msgstr ""
 
 msgid "No msg number submitted"
-msgstr "¨S¦³°e¥X¶l¥ó¼Æ¶q"
+msgstr "æ²’æœ‰é€å‡ºéƒµä»¶æ•¸é‡"
 
 msgid "Command failed "
-msgstr "«ü¥O¥¢±Ñ"
+msgstr "æŒ‡ä»¤å¤±æ•—"
 
 #
 msgid "Remote POP server Fetching Mail"
-msgstr "¦Û»·ºİ POP ¦øªA¾¹¨ú±o¶l¥ó"
+msgstr "è‡ªé ç«¯ POP ä¼ºæœå™¨å–å¾—éƒµä»¶"
 
 #
 msgid "Select Server:"
-msgstr "¿ï¾Ü¦øªA¾¹"
+msgstr "é¸æ“‡ä¼ºæœå™¨"
 
 msgid "Password for"
-msgstr "±K½X¡A©ó"
+msgstr "å¯†ç¢¼ï¼Œæ–¼"
 
 #
 msgid "Fetch Mail"
-msgstr "¨ú±o¥~³¡¶l¥ó"
+msgstr "å–å¾—å¤–éƒ¨éƒµä»¶"
 
 #
 msgid "Fetching from "
-msgstr "¨ú±o¶l¥ó¡A±q"
+msgstr "å–å¾—éƒµä»¶ï¼Œå¾"
 
 #
 msgid "Oops, "
-msgstr "¤£§®¡A"
+msgstr "ä¸å¦™ï¼Œ"
 
 #
 msgid "Opening IMAP server"
-msgstr "¶}±Ò IMAP server"
+msgstr "é–‹å•Ÿ IMAP server"
 
 #
 msgid "Opening POP server"
-msgstr "¶}±Ò POP server"
+msgstr "é–‹å•Ÿ POP server"
 
 #
 msgid "Login Failed:"
-msgstr "µn¤J¥¢±Ñ¡G"
+msgstr "ç™»å…¥å¤±æ•—ï¼š"
 
 #
 msgid "Login OK: No new messages"
-msgstr "µn¤J OK¡G¨S¦³·s¶l¥ó"
+msgstr "ç™»å…¥ OKï¼šæ²’æœ‰æ–°éƒµä»¶"
 
 #
 msgid "Login OK: Inbox EMPTY"
-msgstr "µn¤J OK¡G¦¬¥ó§¨¨S¦³¶l¥ó"
+msgstr "ç™»å…¥ OKï¼šæ”¶ä»¶å¤¾æ²’æœ‰éƒµä»¶"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Login OK: Inbox contains %s messages"
-msgstr "µn¤JOK¡G¦¬¥ó§¨¦³"
+msgstr "ç™»å…¥OKï¼šæ”¶ä»¶å¤¾æœ‰ %s å°éƒµä»¶"
 
 msgid "Fetching UIDL..."
-msgstr ""
+msgstr "å–å¾— UIDL..."
 
 msgid "Server does not support UIDL."
-msgstr ""
+msgstr "ä¼ºæœå™¨ä¸æ”¯æ´ UIDL"
 
 #
-#, fuzzy
 msgid "Leaving mail on server..."
-msgstr "±N¶l¥ó«O¯d©ó¦øªA¾¹..."
+msgstr "å°‡éƒµä»¶ä¿ç•™æ–¼ä¼ºæœå™¨..."
 
 #
 msgid "Deleting messages from server..."
-msgstr "¦Û¦øªA¾¹§R°£¶l¥ó"
+msgstr "è‡ªä¼ºæœå™¨åˆªé™¤éƒµä»¶"
 
 msgid "Fetching message "
-msgstr "§ì¨ú¶l¥ó"
+msgstr "æŠ“å–éƒµä»¶"
 
-#, fuzzy
 msgid "Server error. Disconnect"
-msgstr "¦øªA¾¹¿ù»~..Â÷½u"
+msgstr "ä¼ºæœå™¨éŒ¯èª¤..é›¢ç·š"
 
 msgid "Reconnect from dead connection"
-msgstr "­«·s³sµ²¤¤Â_ªº³s½u"
+msgstr "é‡æ–°é€£çµä¸­æ–·çš„é€£ç·š"
 
 msgid "Saving UIDL"
-msgstr ""
+msgstr "å„²å­˜ UIDL"
 
 #
 msgid "Refetching message "
-msgstr "§ì¨ú¶l¥ó"
+msgstr "æŠ“å–éƒµä»¶"
 
 msgid "Error Appending Message!"
-msgstr "·s¼W¶l¥ó¥¢±Ñ"
+msgstr "æ–°å¢éƒµä»¶å¤±æ•—"
 
 #
 msgid "Closing POP"
-msgstr "Ãö³¬ POP"
+msgstr "é—œé–‰ POP"
 
 #
 msgid "Logging out from IMAP"
-msgstr "¦Û IMAP Server µn¥X"
+msgstr "è‡ª IMAP Server ç™»å‡º"
 
 #
 msgid "Message appended to mailbox"
-msgstr "±N¶l¥ó©ñ¦Ü¦¬¥ó§¨"
+msgstr "å°‡éƒµä»¶æ”¾è‡³æ”¶ä»¶å¤¾"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Message %d deleted from remote server!"
-msgstr "¦Û»·ºİ¦øªA¾¹§R°£¡I"
+msgstr "è‡ªé ç«¯ä¼ºæœå™¨åˆªé™¤éƒµä»¶ %dï¼"
 
 #
 msgid "Delete failed:"
-msgstr "§R°£¥¢±Ñ¡G"
+msgstr "åˆªé™¤å¤±æ•—ï¼š"
 
 #
 msgid "Remote POP server settings"
-msgstr "»·ºİ POP ¦øªA¾¹³]©w"
+msgstr "é ç«¯ POP ä¼ºæœå™¨è¨­å®š"
 
 #
-#, fuzzy
 msgid ""
 "You should be aware that the encryption used to store your password is not "
 "perfectly secure. However, if you are using pop, there is inherently no "
 "encryption anyway. Additionally, the encryption that we do to save it on the "
 "server can be undone by a hacker reading the source to this file."
 msgstr ""
-"±z¥²»İ¤F¸Ñ±z±K½Xªº½s½X¤è¦¡¨Ã«D¸UµL¤@¥¢¡C·í±z¨Ï¥Î POP ®É¡A±K½X¥»¨Ó´N¤£±o¬°¥[±K"
-"ªº±K½X¡C§Ú­Ì¬°±zÀx¦s¦b¦øªA¾¹¤Wªº±K½X´£¨Ñ°ò¥»ªº¥[±K¡C¦ı¤£¯à«Oµı¥Ã¤£·|³Q¯}¸Ñ¡C"
+"æ‚¨å¿…éœ€äº†è§£æ‚¨å¯†ç¢¼çš„ç·¨ç¢¼æ–¹å¼ä¸¦éè¬ç„¡ä¸€å¤±ã€‚ç•¶æ‚¨ä½¿ç”¨ POP æ™‚ï¼Œå¯†ç¢¼æœ¬ä¾†å°±ä¸å¾—ç‚ºåŠ å¯†"
+"çš„å¯†ç¢¼ã€‚æˆ‘å€‘ç‚ºæ‚¨å„²å­˜åœ¨ä¼ºæœå™¨ä¸Šçš„å¯†ç¢¼æä¾›åŸºæœ¬çš„åŠ å¯†ã€‚ä½†ä¸èƒ½ä¿è¨¼æ°¸ä¸æœƒè¢«ç ´è§£ã€‚"
 
 #
-#, fuzzy
 msgid "If you leave password empty, it will be asked when you fetch mail."
-msgstr "¦pªG±z¤£¦b¦¹¿é¤J±K½X¡A±z±N¥i¥H¦b¨C¦¸¨ú±o¶l¥ó®É¥t¦æ¿é¤J¡C"
+msgstr "å¦‚æœæ‚¨ä¸åœ¨æ­¤è¼¸å…¥å¯†ç¢¼ï¼Œæ‚¨å°‡å¯ä»¥åœ¨æ¯æ¬¡å–å¾—éƒµä»¶æ™‚å¦è¡Œè¼¸å…¥ã€‚"
 
 #
 msgid "Encrypt passwords (informative only)"
-msgstr "±N±K½X§@¥[±K¡]¨ã°ò¥»¦w¥ş©Ê¡^"
+msgstr "å°‡å¯†ç¢¼ä½œåŠ å¯†ï¼ˆå…·åŸºæœ¬å®‰å…¨æ€§ï¼‰"
 
 #
 msgid "Add Server"
-msgstr "·s¼W¦øªA¾¹"
+msgstr "æ–°å¢ä¼ºæœå™¨"
 
 #
 msgid "Server:"
-msgstr "¦øªA¾¹¡G"
+msgstr "ä¼ºæœå™¨ï¼š"
 
 #
 msgid "Port:"
-msgstr "³s±µ°ğ¡G"
+msgstr "é€£æ¥åŸ ï¼š"
 
 #
 msgid "Alias:"
-msgstr "§O¦W¡G"
+msgstr "åˆ¥åï¼š"
 
 msgid "Username:"
-msgstr "±b¸¹"
+msgstr "å¸³è™Ÿ"
 
 msgid "Store in Folder:"
-msgstr "¦s©ñ©ó¸ê®Æ§¨¡G"
+msgstr "å­˜æ”¾æ–¼è³‡æ–™å¤¾ï¼š"
 
 #
-#, fuzzy
 msgid "Leave mail on server"
-msgstr "±N¶l¥ó«O¯d©ó¦øªA¾¹"
+msgstr "å°‡éƒµä»¶ä¿ç•™æ–¼ä¼ºæœå™¨"
 
 #
-#, fuzzy
 msgid "Check mail at login"
-msgstr "¦bµn¤J®É¦P¨BÀË¬d³o¨Ç¦øªA¾¹"
+msgstr "åœ¨ç™»å…¥æ™‚åŒæ­¥æª¢æŸ¥é€™äº›ä¼ºæœå™¨"
 
 #
-#, fuzzy
 msgid "Check mail at folder refresh"
-msgstr "¦b­«¾ã¸ê®Æ§¨²M³æ®É¦P¨BÀË¬d³o¨Ç¦øªA¾¹"
+msgstr "åœ¨é‡æ•´è³‡æ–™å¤¾æ¸…å–®æ™‚åŒæ­¥æª¢æŸ¥é€™äº›ä¼ºæœå™¨"
 
 #
 msgid "Modify Server"
-msgstr "­×§ï¦øªA¾¹"
+msgstr "ä¿®æ”¹ä¼ºæœå™¨"
 
 msgid "Server Name:"
-msgstr "¦øªA¾¹¦WºÙ:"
+msgstr "ä¼ºæœå™¨åç¨±:"
 
 msgid "Modify"
-msgstr "­×§ï"
+msgstr "ä¿®æ”¹"
 
-#, fuzzy
 msgid "No servers known."
-msgstr "¥¼Àò±o¦øªA¾¹¸ê°T"
+msgstr "æœªç²å¾—ä¼ºæœå™¨è³‡è¨Š"
 
 #
 msgid "Fetching Servers"
-msgstr "ÀË¬d¦øªA¾¹¤Wªº¶l¥ó"
+msgstr "æª¢æŸ¥ä¼ºæœå™¨ä¸Šçš„éƒµä»¶"
 
 #
 msgid "Confirm Deletion of a Server"
-msgstr "½T»{§R°£¦øªA¾¹"
+msgstr "ç¢ºèªåˆªé™¤ä¼ºæœå™¨"
 
 #
 msgid "Selected Server:"
-msgstr "¿ï©wªº¦øªA¾¹¡G"
+msgstr "é¸å®šçš„ä¼ºæœå™¨ï¼š"
 
 #
 msgid "Confirm delete of selected server?"
-msgstr "½T©w­n§R°£¿ï©wªº¦øªA¾¹¡H"
+msgstr "ç¢ºå®šè¦åˆªé™¤é¸å®šçš„ä¼ºæœå™¨ï¼Ÿ"
 
 msgid "Confirm Delete"
-msgstr "½T»{§R°£"
+msgstr "ç¢ºèªåˆªé™¤"
 
 #
 msgid "Leave Mail on Server"
-msgstr "±N¶l¥ó«O¯d©ó¦øªA¾¹"
+msgstr "å°‡éƒµä»¶ä¿ç•™æ–¼ä¼ºæœå™¨"
 
 #
 msgid "Undefined Function"
-msgstr "¥¼©w¸qªº¨ç¼Æ"
+msgstr "æœªå®šç¾©çš„å‡½æ•¸"
 
 msgid "The function you requested is unknown."
-msgstr ""
+msgstr "æ‚¨è¦æ±‚æœªçŸ¥çš„å‡½å¼"
 
 msgid "Fetch"
-msgstr "§ì¨ú"
+msgstr "æŠ“å–"
 
 #
 msgid "Warning, "
-msgstr "Äµ§i¡A"
+msgstr "è­¦å‘Šï¼Œ"
 
 #
 msgid "Mail Fetch Result:"
-msgstr "¶l¥ó§ì¨úµ²ªG¡G"
+msgstr "éƒµä»¶æŠ“å–çµæœï¼š"
 
 #
-#, fuzzy
 msgid "POP3 Fetch Mail"
-msgstr "¥~³¡ POP3 ¶l¥ó"
+msgstr "å¤–éƒ¨ POP3 éƒµä»¶"
 
 #
-#, fuzzy
 msgid ""
 "This configures settings for downloading email from a POP3 mailbox to your "
 "account on this server."
-msgstr "³o­Ó¶µ¥Ø¥i¥H³]©w±q§Oªº¦øªA¾¹¨ú±o±zªº¶l¥ó¡A¨Ã©ñ¨ì¥Ø«e³o­Ó¦øªA¾¹¡C"
+msgstr "é€™å€‹é …ç›®å¯ä»¥è¨­å®šå¾åˆ¥çš„ä¼ºæœå™¨å–å¾—æ‚¨çš„éƒµä»¶ï¼Œä¸¦æ”¾åˆ°ç›®å‰é€™å€‹ä¼ºæœå™¨ã€‚"
 
 #
-#, fuzzy
 msgid "Message Details"
-msgstr "¶l¥ó²M³æ"
+msgstr "éƒµä»¶æ¸…å–®"
 
 msgid "Bodystructure"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Entity"
-msgstr "½s¿è"
+msgstr ""
 
 msgid "Content-Type"
 msgstr ""
 
 msgid "Encoding"
-msgstr ""
+msgstr "ç·¨ç¢¼"
 
 #
-#, fuzzy
 msgid "RFC822 Message body"
-msgstr "¦b³Ì¤U­±"
+msgstr "RFC822 éƒµä»¶ä¸»é«”"
 
 msgid "Close Window"
-msgstr "Ãö³¬µøµ¡"
+msgstr "é—œé–‰è¦–çª—"
 
 #
-#, fuzzy
 msgid "Save Message"
-msgstr "Åª¨ú¶l¥ó"
+msgstr "å„²å­˜éƒµä»¶"
 
 #
-#, fuzzy
 msgid "View Message details"
-msgstr "Åª¨ú¶l¥ó"
+msgstr "è®€å–éƒµä»¶"
 
 #
 msgid "New Mail"
-msgstr "·s¶l¥ó"
+msgstr "æ–°éƒµä»¶"
 
 msgid "SquirrelMail Notice:"
-msgstr "ªQ¹«¹q¶l´£¿ô±z¡G"
+msgstr "æ¾é¼ é›»éƒµæé†’æ‚¨ï¼š"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have %s new message"
-msgid_plural "You have %s new messages"
-msgstr[0] "±z¦³·s¶l¥ó¡I"
-msgstr[1] "±z¦³·s¶l¥ó¡I"
+msgstr "æ‚¨æœ‰ %s å°æ–°æ–°éƒµä»¶ï¼"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have %s new messages"
-msgstr "±z¦³·s¶l¥ó¡I"
+msgstr "æ‚¨æœ‰ %s å°æ–°æ–°éƒµä»¶ï¼"
 
 msgid "New Mail Notification"
-msgstr "·s¶l¥ó´£¥Ü"
+msgstr "æ–°éƒµä»¶æç¤º"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %s option will check ALL of your folders for unseen mail, not just the "
 "inbox for notification."
-msgstr "<b>ÀË¬d¥ş³¡¸ê®Æ§¨</b>¿ï¶µ±NÀË¬d±z©Ò¦³ªº¸ê®Æ§¨¤¤ªº¥¼Åª¶l¥ó¡A¨Ã´£¿ô±z¡C"
+msgstr "%s é¸é …å°‡æª¢æŸ¥æ‚¨æ‰€æœ‰çš„è³‡æ–™å¤¾ä¸­çš„æœªè®€éƒµä»¶ï¼Œä¸¦æé†’æ‚¨ã€‚"
 
 #
 msgid "Check all boxes, not just INBOX"
-msgstr "ÀË¬d¥ş³¡¸ê®Æ§¨¡A«D¶È¦¬¥ó§¨"
+msgstr "æª¢æŸ¥å…¨éƒ¨è³‡æ–™å¤¾ï¼Œéåƒ…æ”¶ä»¶å¤¾"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Selecting the %s option will enable the showing of a popup window when "
 "unseen mail is in your folders (requires JavaScript)."
 msgstr ""
-"<b>ÂÛ²{¦¡µøµ¡</b>¿ï¶µ±N¨Ï¥Î¸õ¥Xªºµøµ¡´£¿ô±z¦³¥¼Åªªº¶l¥ó¡]¨Ï¥Î Java Script¡^¡C"
+"é¸æ“‡ %s é¸é …å°‡ä½¿ç”¨è·³å‡ºçš„è¦–çª—æé†’æ‚¨æœ‰æœªè®€çš„éƒµä»¶ï¼ˆä½¿ç”¨ Java Scriptï¼‰ã€‚"
 
 #
 msgid "Show popup window on new mail"
-msgstr "¦³·s¶i¶l¥ó®ÉÅã¥ÜÂÛ²{¦¡µøµ¡"
+msgstr "æœ‰æ–°é€²éƒµä»¶æ™‚é¡¯ç¤ºè¹¦ç¾å¼è¦–çª—"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Use the %s option to only check for messages that are recent. Recent "
 "messages are those that have just recently showed up and have not been "
 "\"viewed\" or checked yet. This can prevent being continuously annoyed by "
 "sounds or popups for unseen mail."
 msgstr ""
-"¨Ï¥Î<b>¥uÀË¬d·s¶i¶l¥ó</b>¨ÓÀË¬d·sªº¶l¥ó¡C·s¶i¶l¥ó«ü­è¨ì¹F¡A¨Ã¥B¥¼´¿³QÀËµø©ÎÀË"
-"¬dªº¶l¥ó¡C¥i¥HÁ×§K¹L¦hµøµ¡ÂÛ²{©Î¬O­µ®Ä"
+"ä½¿ç”¨ %s ä¾†æª¢æŸ¥æ–°çš„éƒµä»¶ã€‚æ–°é€²éƒµä»¶æŒ‡å‰›åˆ°é”ï¼Œä¸¦ä¸”æœªæ›¾è¢«æª¢è¦–æˆ–æª¢"
+"æŸ¥çš„éƒµä»¶ã€‚å¯ä»¥é¿å…éå¤šè¦–çª—è¹¦ç¾æˆ–æ˜¯éŸ³æ•ˆ"
 
 #
 msgid "Count only messages that are RECENT"
-msgstr "¥u­pºâ·s¶i¶l¥ó"
+msgstr "åªè¨ˆç®—æ–°é€²éƒµä»¶"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Selecting the %s option will change the title in some browsers to let you "
 "know when you have new mail (requires JavaScript, and only works in IE but "
 "you won't see errors with other browsers). This will always tell you if you "
 "have new mail, even if you have %s enabled."
 msgstr ""
-"¿ï¾Ü<b>§ïÅÜ¼ĞÃD¦C</b>±N§ïÅÜÂsÄı¾¹ªº¼ĞÃD¦C¡A¥H´£¿ô±z¦³·s¶l¥óªº¨ì¹F¡]¨Ï¥ÎJava "
-"Script¡A¦Ó¥B¶È¾A¥Î©ó IE¡^¡C³o­Ó¿ï¶µ¨Ã¤£¨ü¨ì¡u¥uÀË¬d·s¶i¶l¥ó¡vªº¼vÅT¡C"
+"é¸æ“‡ %s å°‡æ”¹è®Šç€è¦½å™¨çš„æ¨™é¡Œåˆ—ï¼Œä»¥æé†’æ‚¨æœ‰æ–°éƒµä»¶çš„åˆ°é”ï¼ˆä½¿ç”¨Java "
+"Scriptï¼Œè€Œä¸”åƒ…é©ç”¨æ–¼ IEï¼‰ã€‚é€™å€‹é¸é …ä¸¦ä¸å—åˆ°ã€Œ%sã€çš„å½±éŸ¿ã€‚"
 
 #
-#, fuzzy
 msgid "Change title on supported browsers"
-msgstr "§ïÅÜÂsÄı¾¹ªº¼ĞÃD¦C"
+msgstr "æ”¹è®Šç€è¦½å™¨çš„æ¨™é¡Œåˆ—"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Select %s to turn on playing a media file when unseen mail is in your "
 "folders. When enabled, you can specify the media file to play in the "
 "provided file box."
-msgstr "¿ï¾Ü<b>¦h´CÅé¼½©ñ</b>¨Ó¼½©ñ¤@­Ó«ü©wªºÀÉ®×¡A¥H´£¥Ü©|¦³¥¼Åª¨úªº·s¶l¥ó¡C"
+msgstr "é¸æ“‡ %s ä¾†æ’­æ”¾ä¸€å€‹æŒ‡å®šçš„æª”æ¡ˆï¼Œä»¥æç¤ºå°šæœ‰æœªè®€å–çš„æ–°éƒµä»¶ã€‚"
 
 #
 msgid "Enable Media Playing"
-msgstr "¶}±Ò´CÅé¼½©ñ"
+msgstr "é–‹å•Ÿåª’é«”æ’­æ”¾"
 
 #, php-format
 msgid ""
 "Select from the list of %s the media file to play when new mail arrives. If "
 "no file is specified, %s, no sound will be used."
 msgstr ""
+"å¾ %s æ¸…å–®ä¸­é¸æ“‡æ–°éƒµä»¶åˆ°é”æ™‚è¦æ’­æ”¾çš„éŸ³æ•ˆæª”ï¼Œå¦‚æœæ²’æœ‰é¸æ“‡ä»»ä½•æª”æ¡ˆï¼Œ%sï¼Œå‰‡"
+"ä¸æœƒæ’­æ”¾ä»»ä½•éŸ³æ•ˆ"
 
 #
-#, fuzzy
 msgid "Select server file"
-msgstr "¿ï¾Ü¤@­Ó¦øªA¾¹ÀÉ®×¡G"
+msgstr "é¸æ“‡ä¸€å€‹ä¼ºæœå™¨æª”æ¡ˆ"
 
-#, fuzzy
 msgid "(none)"
-msgstr "µL"
+msgstr "ç„¡"
 
 #
 msgid "requires JavaScript to work"
-msgstr "»İ­n Java Script ¤~¯à¹B§@"
+msgstr "éœ€è¦ Java Script æ‰èƒ½é‹ä½œ"
 
 #
 msgid "Try"
-msgstr "¸ÕÅ¥"
+msgstr "è©¦è½"
 
 msgid "Current File:"
-msgstr "¥Ø«eÀÉ®×¡G"
+msgstr "ç›®å‰æª”æ¡ˆï¼š"
 
 msgid "NewMail Options"
-msgstr "·s¶l¥ó¿ï¶µ"
+msgstr "æ–°éƒµä»¶é¸é …"
 
 #
 msgid ""
 "This configures settings for playing sounds and/or showing popup windows "
 "when new mail arrives."
-msgstr "³]©w·í·s¶l¥ó¨ì¹F®É¡A¨Ï¥ÎÁn­µ©ÎÂÛ²{¦¡µøµ¡¨Ó´£¥Ü±z¡C"
+msgstr "è¨­å®šç•¶æ–°éƒµä»¶åˆ°é”æ™‚ï¼Œä½¿ç”¨è²éŸ³æˆ–è¹¦ç¾å¼è¦–çª—ä¾†æç¤ºæ‚¨ã€‚"
 
 #
 #, php-format
 msgid "%s New Messages"
-msgstr "%s ·s¶l¥ó"
+msgstr "%s æ–°éƒµä»¶"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "%s New Message"
 msgid_plural "%s New Messages"
-msgstr[0] "%s ·s¶l¥ó"
-msgstr[1] "%s ·s¶l¥ó"
+msgstr[0] "%s æ–°éƒµä»¶"
+msgstr[1] "%s æ–°éƒµä»¶"
 
 #
 msgid "Test Sound"
-msgstr "¸ÕÅ¥"
+msgstr "è©¦è½"
 
 #
-#, fuzzy
 msgid "No sound specified"
-msgstr "¥¼³]©w¦øªA¾¹"
+msgstr "æœªè¨­å®šéŸ³æ•ˆ"
 
 #
 msgid "Loading the sound..."
-msgstr "¸ü¤J­µ®Ä..."
+msgstr "è¼‰å…¥éŸ³æ•ˆ..."
 
 msgid "Sent Subfolders Options"
-msgstr "±H¥ó³Æ¥÷¿ï¶µ"
+msgstr "å¯„ä»¶å‚™ä»½é¸é …"
 
 msgid "Use Sent Subfolders"
-msgstr "¨Ï¥Î±H¥ó³Æ¥÷"
+msgstr "ä½¿ç”¨å¯„ä»¶å‚™ä»½"
 
 msgid "Monthly"
-msgstr "¨C¤ë"
+msgstr "æ¯æœˆ"
 
 msgid "Quarterly"
-msgstr "¨C©u"
+msgstr "æ¯å­£"
 
 msgid "Yearly"
-msgstr "¨C¦~"
+msgstr "æ¯å¹´"
 
 msgid "Base Sent Folder"
-msgstr "±H¥ó³Æ¥÷¸ê®Æ§¨°ò¥»"
+msgstr "å¯„ä»¶å‚™ä»½è³‡æ–™å¤¾åŸºæœ¬"
 
-#, fuzzy
 msgid "Enabled"
-msgstr "Ãö³¬"
+msgstr "é–‹å•Ÿ"
 
-#, fuzzy
 msgid "Disable it"
-msgstr "Ãö³¬"
+msgstr "é—œé–‰"
 
 msgid "Enable it"
-msgstr ""
+msgstr "é–‹å•Ÿ"
 
 #
-#, fuzzy
 msgid "Spam reporting"
-msgstr "¹LÂo©U§£¶l¥ó"
+msgstr "å›å ±åƒåœ¾éƒµä»¶"
 
 msgid "SpamCop link is:"
-msgstr ""
+msgstr "SpamCop çš„é€£çµï¼š"
 
 #
-#, fuzzy
 msgid "Delete spam when reported:"
-msgstr "§R°£¤w¿ï¾Üªº¶µ¥Ø"
+msgstr "åˆªé™¤å·²å›å ±çš„åƒåœ¾éƒµä»¶"
 
 msgid "Only works with email-based reporting"
 msgstr ""
@@ -3625,12 +3517,11 @@ msgid "see below"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Save ID"
-msgstr "Àx¦s"
+msgstr "å„²å­˜ ID"
 
 msgid "About SpamCop"
-msgstr ""
+msgstr "é—œæ–¼ SpamCop"
 
 msgid ""
 "SpamCop is a free service that greatly assists in finding the true source of "
@@ -3714,9 +3605,8 @@ msgid ""
 msgstr ""
 
 #
-#, fuzzy
 msgid "More information"
-msgstr "­Ó¤H¸ê°T"
+msgstr "æ›´å¤šè³‡è¨Š"
 
 #, php-format
 msgid ""
@@ -3725,7 +3615,7 @@ msgid ""
 msgstr ""
 
 msgid "Report as Spam"
-msgstr "¦^³ø©U§£¶l¥ó"
+msgstr "å›å ±åƒåœ¾éƒµä»¶"
 
 msgid "SpamCop - Spam Reporting"
 msgstr ""
@@ -3750,28 +3640,27 @@ msgid "Send Spam Report"
 msgstr ""
 
 msgid "SpellChecker Options"
-msgstr "«÷¦rÀË¬d¿ï¶µ"
+msgstr "æ‹¼å­—æª¢æŸ¥é¸é …"
 
 #
 msgid ""
 "Here you may set up how your personal dictionary is stored, edit it, or "
 "choose which languages should be available to you when spell-checking."
-msgstr "±z¥i¥H¦b¦¹³]©w­Ó¤H¦r¨å¦s©ñªº¦a¤è¡A½s¿è¥¦©Î¿ï¾Ü±z»İ­n«÷¦rÀË¬dªº»y¨¥"
+msgstr "æ‚¨å¯ä»¥åœ¨æ­¤è¨­å®šå€‹äººå­—å…¸å­˜æ”¾çš„åœ°æ–¹ï¼Œç·¨è¼¯å®ƒæˆ–é¸æ“‡æ‚¨éœ€è¦æ‹¼å­—æª¢æŸ¥çš„èªè¨€"
 
 #
 msgid "Check Spelling"
-msgstr "«÷¦rÀË¬d"
+msgstr "æ‹¼å­—æª¢æŸ¥"
 
 #
 msgid "Back to &quot;SpellChecker Options&quot; page"
-msgstr "¦^¨ì&quot;«÷¦rÀË¬d&quot; ­¶"
+msgstr "å›åˆ°&quot;æ‹¼å­—æª¢æŸ¥&quot; é "
 
 #
 msgid "ATTENTION:"
-msgstr "ª`·N"
+msgstr "æ³¨æ„"
 
 #
-#, fuzzy
 msgid ""
 "SquirrelSpell was unable to decrypt your personal dictionary. This is most "
 "likely due to the fact that you have changed your mailbox password. In order "
@@ -3782,54 +3671,54 @@ msgid ""
 "This is also true if you don't remember your old password -- without it, the "
 "encrypted data is no longer accessible."
 msgstr ""
-"µLªk¸Ñ±K±zªº­Ó¤H¦r¨å¡C¥i¯à¬O¦]¬°±z§ó§ï¤F±K½X¡C±z¥²»İ´£¨ÑÂÂ±K½X¥H¦s¨ú­Ó¤H¦r"
-"¨å¡CµM«á¡A±zªº¸ê®Æ§¨±N³Q·sªº±K½X­«·s¥[±K¡C<br>¦pªG±z±N¨ä¥[±K¡A¥¦±NÅÜ¦¨µLªk¨Ï"
-"¥Î¡C±z¥²»İ§R°£¥¦¡A¨Ã­««Ø¤@·s¦r¨å¡C¦pªG±z§Ñ¤F±K½X¡A¤]¬O¤@¼Ë¡C"
+"ç„¡æ³•è§£å¯†æ‚¨çš„å€‹äººå­—å…¸ã€‚å¯èƒ½æ˜¯å› ç‚ºæ‚¨æ›´æ”¹äº†å¯†ç¢¼ã€‚æ‚¨å¿…éœ€æä¾›èˆŠå¯†ç¢¼ä»¥å­˜å–å€‹äººå­—"
+"å…¸ã€‚ç„¶å¾Œï¼Œæ‚¨çš„è³‡æ–™å¤¾å°‡è¢«æ–°çš„å¯†ç¢¼é‡æ–°åŠ å¯†ã€‚å¦‚æœæ‚¨å°‡å…¶åŠ å¯†ï¼Œå®ƒå°‡è®Šæˆç„¡æ³•ä½¿"
+"ç”¨ã€‚æ‚¨å¿…éœ€åˆªé™¤å®ƒï¼Œä¸¦é‡å»ºä¸€æ–°å­—å…¸ã€‚å¦‚æœæ‚¨å¿˜äº†å¯†ç¢¼ï¼Œä¹Ÿæ˜¯ä¸€æ¨£ã€‚"
 
 #
 msgid "Delete my dictionary and start a new one"
-msgstr "§R°£§Úªº¦r¨å¡A¨Ã«Ø¥ß¤@­Ó·sªº¦r¨å¡C"
+msgstr "åˆªé™¤æˆ‘çš„å­—å…¸ï¼Œä¸¦å»ºç«‹ä¸€å€‹æ–°çš„å­—å…¸ã€‚"
 
 #
 msgid "Decrypt my dictionary with my old password:"
-msgstr "¨Ï¥ÎÂÂ±K½X¨Ó¸Ñ¶}§Úªº¦r¨å¡G"
+msgstr "ä½¿ç”¨èˆŠå¯†ç¢¼ä¾†è§£é–‹æˆ‘çš„å­—å…¸ï¼š"
 
 #
 msgid "Proceed"
-msgstr "°õ¦æ"
+msgstr "åŸ·è¡Œ"
 
 msgid "You must make a choice"
-msgstr "±z¥²»İ§@¤@¿ï¾Ü"
+msgstr "æ‚¨å¿…éœ€ä½œä¸€é¸æ“‡"
 
 msgid ""
 "You can either delete your dictionary or type in the old password. Not both."
-msgstr "±z¥i¥H§R°£±zªº¦r¨å©Î¬OÁä¤JÂÂ±K½X¡A¦ı¤£¦æ¨â­Ó³£¨Ó¡C"
+msgstr "æ‚¨å¯ä»¥åˆªé™¤æ‚¨çš„å­—å…¸æˆ–æ˜¯éµå…¥èˆŠå¯†ç¢¼ï¼Œä½†ä¸è¡Œå…©å€‹éƒ½ä¾†ã€‚"
 
 msgid "This will delete your personal dictionary file. Proceed?"
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "é€™å°‡æœƒåˆªé™¤æ‚¨çš„å­—å…¸ã€‚ç¢ºå®šè¦åŸ·è¡Œ?"
 
 #
 msgid "Error Decrypting Dictionary"
-msgstr "¸Ñ±K¥¢±Ñ"
+msgstr "è§£å¯†å¤±æ•—"
 
 msgid "Cute."
-msgstr "¥i·R"
+msgstr "å¯æ„›"
 
 #, php-format
 msgid "Could not run the spellchecker command (%s)."
-msgstr ""
+msgstr "ç„¡æ³•åŸ·è¡Œæ‹¼å­—æª¢æŸ¥å‘½ä»¤ (%s)"
 
 msgid "Error while writing to pipe."
 msgstr ""
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Could not open temporary file '%s'."
-msgstr "µLªkÂê©w¸ê®ÆÀÉ"
+msgstr "ç„¡æ³•é–‹å•Ÿæš«å­˜æª” '%s'"
 
 #, php-format
 msgid "Error while writing to temporary file '%s'."
-msgstr ""
+msgstr "å¯«å…¥æš«å­˜æª” %s å¤±æ•—ã€‚"
 
 #, php-format
 msgid "I tried to execute '%s', but it returned:"
@@ -3841,9 +3730,8 @@ msgstr ""
 msgid "Spellcheck completed. Commit changes?"
 msgstr ""
 
-#, fuzzy
 msgid "No changes were made."
-msgstr "©|¥¼¿ï¾Ü¶l¥ó"
+msgstr "æ²’æœ‰åšä»»ä½•æ”¹è®Š"
 
 msgid "Now saving your personal dictionary... Please wait."
 msgstr ""
@@ -3858,28 +3746,24 @@ msgstr ""
 msgid "Line with an error:"
 msgstr ""
 
-#, fuzzy
 msgid "Error:"
-msgstr "¿ù»~"
+msgstr "éŒ¯èª¤ï¼š"
 
 #
-#, fuzzy
 msgid "Suggestions:"
-msgstr "«ØÄ³¡G"
+msgstr "å»ºè­°ï¼š"
 
 msgid "Suggestions"
 msgstr ""
 
-#, fuzzy
 msgid "Change to:"
-msgstr "§ïÅÜ³]©w"
+msgstr "å–ä»£ç‚ºï¼š"
 
 msgid "Occurs times:"
 msgstr ""
 
-#, fuzzy
 msgid "Change this word"
-msgstr "§ïÅÜ³]©w"
+msgstr "å–ä»£é€™å€‹å­—"
 
 msgid "Change"
 msgstr ""
@@ -3887,37 +3771,31 @@ msgstr ""
 msgid "Change ALL occurances of this word"
 msgstr ""
 
-#, fuzzy
 msgid "Change All"
-msgstr "¿ï¾Ü¥ş³¡"
+msgstr "å–ä»£å…¨éƒ¨"
 
 msgid "Ignore this word"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Ignore"
-msgstr "¸û¦h"
+msgstr "ç•¥é"
 
 msgid "Ignore ALL occurances this word"
 msgstr ""
 
-#, fuzzy
 msgid "Ignore All"
-msgstr "¿ï¾Ü¥ş³¡"
+msgstr "ç•¥éå…¨éƒ¨"
 
-#, fuzzy
 msgid "Add this word to your personal dictionary"
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "åŠ å…¥é€™å€‹å­—åˆ°æ‚¨çš„å­—å…¸ã€‚"
 
 #
-#, fuzzy
 msgid "Add to Dic"
-msgstr "·s¼W¦Ü %s"
+msgstr "æ–°å¢è‡³å­—å…¸"
 
-#, fuzzy
 msgid "Close and Commit"
-msgstr "Ãö³¬µøµ¡"
+msgstr "é—œé–‰ä¸¦å­˜æª”"
 
 msgid "The spellcheck is not finished. Really close and commit changes?"
 msgstr ""
@@ -3929,9 +3807,8 @@ msgid "The spellcheck is not finished. Really close and discard changes?"
 msgstr ""
 
 #
-#, fuzzy
 msgid "No errors found"
-msgstr "§ä¤£¨ì¸ê®Æ§¨"
+msgstr "æ²’æœ‰éŒ¯èª¤"
 
 msgid ""
 "Your personal dictionary has been encrypted and is now stored in an "
@@ -3945,9 +3822,8 @@ msgstr ""
 msgid "Personal Dictionary Crypto Settings"
 msgstr ""
 
-#, fuzzy
 msgid "Your personal dictionary was erased."
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "å·²åˆªé™¤æ‚¨çš„å­—å…¸ã€‚"
 
 msgid "Dictionary Erased"
 msgstr ""
@@ -3957,18 +3833,16 @@ msgid ""
 "\"Check Spelling\" button again to start your spellcheck over."
 msgstr ""
 
-#, fuzzy
 msgid "Close this Window"
-msgstr "Ãö³¬µøµ¡"
+msgstr "é—œé–‰è¦–çª—"
 
 msgid ""
 "Your personal dictionary was re-encrypted successfully. Now return to the "
 "&quot;SpellChecker options&quot; menu and make your selection again."
 msgstr ""
 
-#, fuzzy
 msgid "Successful re-encryption"
-msgstr "­Ó¤H¤Æ³]©w¤w¦sÀÉ"
+msgstr "æˆåŠŸé‡æ–°åŠ å¯†"
 
 msgid ""
 "Your personal dictionary was re-encrypted successfully. Please close this "
@@ -3980,13 +3854,11 @@ msgid "Dictionary re-encrypted"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Personal Dictionary"
-msgstr "­Ó¤H¸ê°T"
+msgstr "å€‹äººå­—å…¸"
 
-#, fuzzy
 msgid "No words in your personal dictionary."
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "æ‚¨çš„å€‹äººå­—å…¸æ˜¯ç©ºçš„"
 
 msgid "Please check any words you wish to delete from your dictionary."
 msgstr ""
@@ -3996,29 +3868,25 @@ msgid "%s dictionary"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Delete checked words"
-msgstr "§R°£¤w¿ï¾Üªº¶µ¥Ø"
+msgstr "åˆªé™¤å·²é¸æ“‡çš„é …ç›®"
 
 #
-#, fuzzy
 msgid "Edit your Personal Dictionary"
-msgstr "¸Ñ±K¥¢±Ñ"
+msgstr "ç·¨è¼¯å€‹äººå­—å…¸"
 
 msgid "Please make your selection first."
 msgstr ""
 
-#, fuzzy
 msgid ""
 "This will encrypt your personal dictionary and store it in an encrypted "
 "format. Proceed?"
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "é€™å°‡æœƒåŠ å¯†æ‚¨çš„å­—å…¸ã€‚ç¢ºå®šè¦åŸ·è¡Œ?"
 
-#, fuzzy
 msgid ""
 "This will decrypt your personal dictionary and store it in a plain text "
 "format. Proceed?"
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "é€™å°‡æœƒè§£é™¤åŠ å¯†æ‚¨çš„å­—å…¸ã€‚ç¢ºå®šè¦åŸ·è¡Œ?"
 
 msgid "Your personal dictionary is currently encrypted."
 msgstr ""
@@ -4041,9 +3909,8 @@ msgid ""
 "Please decrypt my personal dictionary and store it in a clear-text format."
 msgstr ""
 
-#, fuzzy
 msgid "Change crypto settings"
-msgstr "§ïÅÜ³]©w"
+msgstr "æ”¹è®ŠåŠ å¯†è¨­å®š"
 
 msgid "Your personal dictionary is currently not encrypted."
 msgstr ""
@@ -4074,16 +3941,14 @@ msgid "Deleting the following entries from %s dictionary:"
 msgstr ""
 
 #
-#, fuzzy
 msgid "All done!"
-msgstr "©Ò¦³¸ê®Æ§¨"
+msgstr "å…¨éƒ¨å®Œæˆ"
 
 msgid "Personal Dictionary Updated"
 msgstr ""
 
-#, fuzzy
 msgid "No changes requested."
-msgstr "©|¥¼¿ï¾Ü¶l¥ó"
+msgstr "æ²’æœ‰ä»»ä½•æ”¹è®Š"
 
 msgid "Please wait, communicating with the server..."
 msgstr ""
@@ -4124,228 +3989,215 @@ msgstr ""
 msgid "Please choose which options you wish to set up:"
 msgstr ""
 
-#, fuzzy
 msgid "Edit your personal dictionary"
-msgstr "³o±N·|§R°£±zªº¦r¨å¡C½T©w­n°õ¦æ?"
+msgstr "ç·¨è¼¯æ‚¨çš„å€‹äººå­—å…¸"
 
 msgid "Set up international dictionaries"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Encrypt or decrypt your personal dictionary"
-msgstr "¸Ñ±K¥¢±Ñ"
+msgstr "åŠ å¯†æˆ–è§£å¯†æ‚¨çš„å€‹äººå­—å…¸"
 
 #
-#, fuzzy
 msgid "not available"
-msgstr "µLªk¨Ï¥Î"
+msgstr "ç„¡æ³•ä½¿ç”¨"
 
 msgid "SquirrelSpell Options Menu"
 msgstr ""
 
 #
 msgid "Translator"
-msgstr "Â½Ä¶¾¹"
+msgstr "ç¿»è­¯å™¨"
 
 #
 msgid "Saved Translation Options"
-msgstr "Â½Ä¶¿ï¶µ"
+msgstr "ç¿»è­¯é¸é …"
 
 #
 msgid "Your server options are as follows:"
-msgstr "±zªº¦øªA¾¹¿ï¶µ¦p¤U¡G"
+msgstr "æ‚¨çš„ä¼ºæœå™¨é¸é …å¦‚ä¸‹ï¼š"
 
-#, fuzzy
 msgid "Maximum of 150 words translated, powered by Systran"
-msgstr "¤QºØ»y¨¥°t¹ï¡A³Ì¦h¤G¸U¤­¤d¦r¡Apowered by Systran"
+msgstr "æœ€å¤šç¿»è­¯ 150 å€‹å­—ï¼ŒSystran æä¾›"
 
 #, php-format
 msgid "Number of supported language pairs: %s"
 msgstr ""
 
-#, fuzzy
 msgid "No known limits, powered by Systran"
-msgstr "¤Q¤GºØ»y¨¥°t¹ï¡A¥¼ª¾­­¨î¡Apowered by Systran"
+msgstr "æœªçŸ¥é™åˆ¶ï¼ŒSystran æä¾›"
 
-#, fuzzy
 msgid "No known limits, powered by Translation Experts' InterTran"
-msgstr "767ºØ»y¨¥°t¹ï¡A¥¼ª¾­­¨î¡Apowered by Translation Experts's InterTran"
+msgstr "æœªçŸ¥é™åˆ¶ï¼ŒTranslation Experts's InterTran æä¾›"
 
 #, php-format
 msgid "Number of supported languages: %s"
 msgstr ""
 
-#, fuzzy
 msgid "Hellenic translations, no known limits, powered by Systran"
-msgstr "¤Q¤GºØ»y¨¥°t¹ï¡A¥¼ª¾­­¨î¡Apowered by Systran"
+msgstr "Hellenic ç¿»è­¯ï¼ŒæœªçŸ¥é™åˆ¶ï¼ŒSystran æä¾›"
 
-#, fuzzy
 msgid "Russian translations, maximum of 500 characters translated"
-msgstr "¤Q¤TºØ»y¨¥°t¹ï¡A³Ì¦h¤@¤d¦r¡Apowered by Systran"
+msgstr "ä¿„èªç¿»è­¯ï¼Œæœ€å¤š 500 å­—ï¼ŒSystran æä¾›"
 
 msgid ""
 "You also decide if you want the translation box displayed, and where it will "
 "be located."
-msgstr "±z¥i¥H¨M©w¬O§_Åã¥ÜÂ½Ä¶®Ø¤Î¥¦ªº¦ì¸m¡C"
+msgstr "æ‚¨å¯ä»¥æ±ºå®šæ˜¯å¦é¡¯ç¤ºç¿»è­¯æ¡†åŠå®ƒçš„ä½ç½®ã€‚"
 
 msgid "Select your translator:"
-msgstr "¿ï¾Ü±zªºÂ½Ä¶¾¹¡G"
+msgstr "é¸æ“‡æ‚¨çš„ç¿»è­¯å™¨ï¼š"
 
 msgid "When reading:"
-msgstr "·íÅª¨ú®É¡G"
+msgstr "ç•¶è®€å–æ™‚ï¼š"
 
 msgid "Show translation box"
-msgstr "Åã¥ÜÂ½Ä¶®Ø"
+msgstr "é¡¯ç¤ºç¿»è­¯æ¡†"
 
 msgid "to the left"
-msgstr "¨ì¥ªÃä"
+msgstr "åˆ°å·¦é‚Š"
 
 msgid "in the center"
-msgstr "¦b¤¤¥¡"
+msgstr "åœ¨ä¸­å¤®"
 
 msgid "to the right"
-msgstr "¨ì¥kÃä"
+msgstr "åˆ°å³é‚Š"
 
 msgid "Translate inside the SquirrelMail frames"
-msgstr "¦bªQ¹«¹q¶l­¶®Ø¤¤Â½Ä¶"
+msgstr "åœ¨æ¾é¼ é›»éƒµé æ¡†ä¸­ç¿»è­¯"
 
 msgid "Translation Options"
-msgstr "Â½Ä¶¿ï¶µ"
+msgstr "ç¿»è­¯é¸é …"
 
 msgid ""
 "Which translator should be used when you get messages in a different "
 "language?"
-msgstr "·í¦¬¨ì¤£¦Pªº»y¨¥¼g¨Óªº«H¥ó¡A¸Ó¥Î­ş­ÓÂ½Ä¶¾¹¡H"
+msgstr "ç•¶æ”¶åˆ°ä¸åŒçš„èªè¨€å¯«ä¾†çš„ä¿¡ä»¶ï¼Œè©²ç”¨å“ªå€‹ç¿»è­¯å™¨ï¼Ÿ"
 
 #
 #, php-format
 msgid "%s to %s"
-msgstr "%s ¨ì %s"
+msgstr "%s åˆ° %s"
 
 msgid "Chinese, Simplified"
-msgstr ""
+msgstr "ç°¡é«”ä¸­æ–‡"
 
 msgid "English"
-msgstr "­^»y"
+msgstr "è‹±èª"
 
 msgid "Chinese, Traditional"
-msgstr ""
+msgstr "æ­£é«”ä¸­æ–‡"
 
 msgid "Dutch"
-msgstr "²üÄõ»y"
+msgstr "è·è˜­èª"
 
 msgid "French"
-msgstr "ªk»y"
+msgstr "æ³•èª"
 
 msgid "German"
-msgstr "¼w»y"
+msgstr "å¾·èª"
 
 msgid "Greek"
-msgstr "§ÆÃ¾»y"
+msgstr "å¸Œè‡˜èª"
 
 msgid "Italian"
-msgstr "¸q»y"
+msgstr "ç¾©èª"
 
 msgid "Japanese"
-msgstr "¤é»y"
+msgstr "æ—¥èª"
 
-#, fuzzy
 msgid "Korean"
-msgstr "®¿«Â»y"
+msgstr "éŸ“èª"
 
 msgid "Portuguese"
-msgstr "¸²»y"
+msgstr "è‘¡èª"
 
 msgid "Russian"
-msgstr "«X»y"
+msgstr "ä¿„èª"
 
 msgid "Spanish"
-msgstr "¦è»y"
+msgstr "è¥¿èª"
 
 msgid "Translate"
-msgstr "Â½Ä¶"
+msgstr "ç¿»è­¯"
 
 msgid "Brazilian Portuguese"
-msgstr "¤Ú¦è¸²»y"
+msgstr "å·´è¥¿è‘¡èª"
 
 msgid "Bulgarian"
-msgstr "«O¥[§Q¨È»y"
+msgstr "ä¿åŠ åˆ©äºèª"
 
 msgid "Croatian"
-msgstr "§JÃ¹®J¦è¨È»y"
+msgstr "å…‹ç¾…åŸƒè¥¿äºèª"
 
 msgid "Czech"
-msgstr "±¶§J»y"
+msgstr "æ·å…‹èª"
 
 msgid "Danish"
-msgstr "¤¦³Á»y"
+msgstr "ä¸¹éº¥èª"
 
 msgid "Filipino (Tagalog)"
 msgstr ""
 
 msgid "Finnish"
-msgstr "ªâÄõ»y"
+msgstr "èŠ¬è˜­èª"
 
 msgid "Hungarian"
-msgstr "¦I¤ú§Q»y"
+msgstr "åŒˆç‰™åˆ©èª"
 
 msgid "Icelandic"
-msgstr "¦B®q»y"
+msgstr "å†°å³¶èª"
 
 msgid "Latin"
-msgstr "©Ô¤B»y"
+msgstr "æ‹‰ä¸èª"
 
 msgid "Latin American Spanish"
-msgstr "©Ô¬ü¦è»y"
+msgstr "æ‹‰ç¾è¥¿èª"
 
 msgid "Norwegian"
-msgstr "®¿«Â»y"
+msgstr "æŒªå¨èª"
 
 msgid "Polish"
-msgstr "ªiÄõ»y"
+msgstr "æ³¢è˜­èª"
 
 msgid "Romanian"
-msgstr "Ã¹°¨¥§¨È»y"
+msgstr "ç¾…é¦¬å°¼äºèª"
 
 msgid "Serbian"
-msgstr "¶ëº¸ºû¨È»y"
+msgstr "å¡çˆ¾ç¶­äºèª"
 
 msgid "Slovenian"
-msgstr "´µ¬¥ºû¥§¨È»y"
+msgstr "æ–¯æ´›ç¶­å°¼äºèª"
 
 msgid "Swedish"
-msgstr "·ç¨å»y"
+msgstr "ç‘å…¸èª"
 
 msgid "Turkish"
 msgstr ""
 
 msgid "Welsh"
-msgstr "«Âº¸´µ»y"
+msgstr "å¨çˆ¾æ–¯èª"
 
 msgid "Indonesian"
-msgstr "¦L¥§»y"
+msgstr "å°å°¼èª"
 
-#, fuzzy
 msgid "to English"
-msgstr "­^»y"
+msgstr "è‹±èª"
 
-#, fuzzy
 msgid "from English"
-msgstr "­^»y"
+msgstr "è‹±èª"
 
-#, fuzzy
 msgid "Interface language"
-msgstr "¹w³]»y¨t"
+msgstr "é è¨­èªç³»"
 
-#, fuzzy
 msgid "Translation direction"
-msgstr "Â½Ä¶¿ï¶µ"
+msgstr "ç¿»è­¯æ–¹å‘"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "About SquirrelMail %s"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "é—œæ–¼æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ± %s"
 
 msgid ""
 "SquirrelMail is the name of the program that provides access to your email "
@@ -4380,251 +4232,223 @@ msgid ""
 msgstr ""
 
 #
-#, fuzzy
 msgid "System information"
-msgstr "­Ó¤H¸ê°T"
+msgstr "ç³»çµ±è³‡è¨Š"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "You are using SquirrelMail version: %s"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ‚¨æ­£åœ¨ä½¿ç”¨æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ±ç¬¬ %s ç‰ˆ"
 
 msgid "The administrator installed the following plugins:"
-msgstr ""
+msgstr "ç®¡ç†å“¡å®‰è£äº†ä¸‹åˆ—æ’ä»¶ï¼š"
 
 msgid "none installed"
-msgstr ""
+msgstr "æ²’æœ‰å®‰è£ä»»ä½•æ’ä»¶"
 
 msgid "sort by nickname"
-msgstr ""
+msgstr "ä»¥ nickname æ’åº"
 
 #
-#, fuzzy
 msgid "sort by name"
-msgstr "¦W"
+msgstr "åç¨±æ’åº"
 
 msgid "sort by email"
-msgstr ""
+msgstr "ä»¥éƒµä»¶æ’åº"
 
 msgid "sort by info"
-msgstr ""
+msgstr "ä»¥è³‡è¨Šæ’åº"
 
-#, fuzzy
 msgid "Add to address book"
-msgstr "·s¼W¨ì³q°T¿ı"
+msgstr "æ–°å¢åˆ°é€šè¨ŠéŒ„"
 
 msgid ""
 "Because PHP file uploads are turned off, you can not attach files to this "
 "message. Please see your system administrator for details."
 msgstr ""
+"å› ç‚º PHP æª”æ¡ˆä¸Šå‚³ç„¡æ³•ä½¿ç”¨ï¼Œä½ ç„¡æ³•é™„åŠ æª”æ¡ˆåˆ°é€™å€‹éƒµä»¶ã€‚è«‹è¯çµ¡ç®¡ç†å“¡å–å¾—è©³ç´°"
+"è³‡è¨Šã€‚"
 
 #
-#, fuzzy
 msgid "No folders were found to unsubscribe from."
-msgstr "§ä¤£¨ì¥i¥H³]©w¬°¡u¤£Åã¥Ü¡vªº¸ê®Æ§¨¡I"
+msgstr "æ‰¾ä¸åˆ°å¯ä»¥è¨­å®šç‚ºã€Œä¸é¡¯ç¤ºã€çš„è³‡æ–™å¤¾ï¼"
 
 #
-#, fuzzy
 msgid "No folders were found to subscribe to."
-msgstr "§ä¤£¨ì¥i¥H³]©w¬°¡uÅã¥Ü¡vªº¸ê®Æ§¨¡I"
+msgstr "æ‰¾ä¸åˆ°å¯ä»¥è¨­å®šç‚ºã€Œé¡¯ç¤ºã€çš„è³‡æ–™å¤¾ï¼"
 
 #
 msgid "Last Refresh"
-msgstr "³Ì«á§ó·s®É¶¡"
+msgstr "æœ€å¾Œæ›´æ–°æ™‚é–“"
 
 #
-#, fuzzy
 msgid "Check mail"
-msgstr "¦bµn¤J®É¦P¨BÀË¬d³o¨Ç¦øªA¾¹"
+msgstr "æª¢æŸ¥æ–°éƒµä»¶"
 
 msgid "Save folder tree"
-msgstr "Àx¦s¸ê®Æ§¨²M³æ"
+msgstr "å„²å­˜è³‡æ–™å¤¾æ¸…å–®"
 
 #
-#, fuzzy
 msgid "SquirrelMail Webmail Application"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶ç®¡ç†ç³»çµ±"
 
 #
-#, fuzzy
 msgid "Compose Preferences"
-msgstr "¸ê®Æ§¨³]©w"
+msgstr "ç·¨è¼¯è¨­å®š"
 
 msgid ""
 "Control the behaviour and layout of writing new mail messages, replying to "
 "and forwarding messages."
 msgstr ""
+"æ§åˆ¶ç·¨å¯«éƒµä»¶çš„å¤–è§€ä»¥åŠè¡Œç‚ºã€‚"
 
-#, fuzzy
 msgid "Received"
-msgstr "¦^±ø"
+msgstr "æ”¶åˆ°"
 
-#, fuzzy
 msgid "As Attachment"
-msgstr "ªş¥ó"
+msgstr "é™„ä»¶"
 
 msgid "Bypass Trash"
 msgstr ""
 
 msgid "Please enter something to search for"
-msgstr ""
+msgstr "è«‹è¼¸å…¥æœå°‹çš„é—œéµå­—"
 
 msgid "There must be at least one criteria to search for"
-msgstr ""
+msgstr "æœ€å°‘è¦æœ‰ä¸€å€‹æœå°‹æ¢ä»¶"
 
 msgid "Error in criteria argument"
-msgstr ""
+msgstr "æ¢ä»¶éŒ¯èª¤"
 
 msgid "(Illegal date)"
-msgstr ""
+msgstr "(ç„¡æ•ˆçš„æ—¥æœŸ)"
 
 msgid "(Wrong date)"
-msgstr ""
+msgstr "(éŒ¯èª¤çš„æ—¥æœŸ)"
 
 #
-#, fuzzy
 msgid "In"
-msgstr "¸ê°T"
+msgstr ""
 
 msgid "(Missing argument)"
-msgstr ""
+msgstr "(éºå¤±åƒæ•¸)"
 
 msgid "(Spurious argument)"
-msgstr ""
+msgstr "(å‡çš„åƒæ•¸)"
 
 #
-#, fuzzy
 msgid "Fold"
-msgstr "¸ê®Æ§¨"
+msgstr "è¤¶ç–Š"
 
 #
-#, fuzzy
 msgid "Unfold"
-msgstr "¸ê°T"
+msgstr "å±•é–‹"
 
-#, fuzzy
 msgid "Saved Searches"
-msgstr "³Ìªñªº·j´M¬ö¿ı"
+msgstr "æœ€è¿‘çš„æœå°‹ç´€éŒ„"
 
 msgid "Missing"
-msgstr ""
+msgstr "éºå¤±"
 
 msgid "and&nbsp;subfolders:"
-msgstr ""
+msgstr "ä»¥åŠå­ç›®éŒ„ï¼š"
 
 msgid "Exclude Criteria:"
-msgstr ""
+msgstr "æ’é™¤æ¢ä»¶ï¼š"
 
 #
-#, fuzzy
 msgid "Search Criteria"
-msgstr "·j´M"
+msgstr "æœå°‹æ¢ä»¶"
 
 #
-#, fuzzy
 msgid "Add New Criteria"
-msgstr "·s¼W¦øªA¾¹"
+msgstr "æ–°å¢æ¢ä»¶"
 
 msgid "Remove Excluded Criteria"
-msgstr ""
+msgstr "ç§»é™¤æ’é™¤æ¢ä»¶"
 
 msgid "Remove All Criteria"
-msgstr ""
+msgstr "ç§»é™¤æ‰€æœ‰æ¢ä»¶"
 
 #
-#, fuzzy
 msgid "Not"
-msgstr "³Æµù"
+msgstr "ä¸æ˜¯"
 
 msgid "Answered"
-msgstr ""
+msgstr "å·²å›è¦†"
 
 #
-#, fuzzy
 msgid "Before"
-msgstr "§Ñ°O"
+msgstr "ä¹‹å‰"
 
-#, fuzzy
 msgid "Message Body"
-msgstr "¶l¥ó"
+msgstr "éƒµä»¶æœ¬æ–‡"
 
 #
-#, fuzzy
 msgid "Deleted"
-msgstr "§R°£"
+msgstr "åˆªé™¤"
 
 #
-#, fuzzy
 msgid "Draft"
-msgstr "¦s¦¨¯ó½Z"
+msgstr "è‰ç¨¿"
 
 #
-#, fuzzy
 msgid "Flagged"
-msgstr "ºX¼Ğ"
+msgstr "æ——æ¨™"
 
 #
-#, fuzzy
 msgid "Sent By"
-msgstr "°e¥X¡G"
+msgstr "å¯„ä»¶äºº"
 
 #
-#, fuzzy
 msgid "Header Field"
-msgstr "¼ĞÀY"
+msgstr "æ¨™é ­"
 
 msgid "Keyword"
-msgstr ""
+msgstr "é—œéµå­—"
 
 msgid "Larger Than"
-msgstr ""
+msgstr "å¤§æ–¼"
 
 msgid "Old"
-msgstr ""
+msgstr "æœªè®€"
 
 msgid "On"
 msgstr ""
 
-#, fuzzy
 msgid "Recent"
-msgstr "¦^±ø"
+msgstr "æœ€è¿‘"
 
 #
-#, fuzzy
 msgid "Seen"
-msgstr "¶Ç°e"
+msgstr "è®€é"
 
-#, fuzzy
 msgid "Sent Before"
-msgstr "±H¥ó³Æ¥÷"
+msgstr ""
 
 #
-#, fuzzy
 msgid "Sent On"
-msgstr "°e¥X¡G"
+msgstr ""
 
 msgid "Sent Since"
-msgstr ""
+msgstr "å¯„å‡ºè‡ªå¾"
 
 #
-#, fuzzy
 msgid "Since"
-msgstr "¶l¥ó¤j¤p"
+msgstr "è‡ªå¾"
 
 msgid "Smaller Than"
-msgstr ""
+msgstr "å°æ–¼"
 
-#, fuzzy
 msgid "Subject Contains"
-msgstr "¥]§t¡G"
+msgstr "ä¸»æ—¨åŒ…å«ï¼š"
 
 msgid "Header and Body"
-msgstr ""
+msgstr "æ¨™é ­ä»¥åŠæœ¬æ–‡"
 
 #
-#, fuzzy
 msgid "Sent To"
-msgstr "°e¥X¡G"
+msgstr "æ”¶ä»¶äºº"
 
 msgid "And In"
 msgstr ""
@@ -4633,525 +4457,475 @@ msgid "Or In"
 msgstr ""
 
 #
-#, fuzzy
 msgid "And"
-msgstr "·s¼W"
+msgstr "ä»¥åŠ"
 
 msgid "Or"
-msgstr ""
+msgstr "æˆ–"
 
 msgid "Standard search"
-msgstr ""
+msgstr "æ¨™æº–æœå°‹"
 
 msgid "Advanced search"
-msgstr ""
+msgstr "é€²éšæœå°‹"
 
 #
-#, fuzzy
 msgid "Folder List"
-msgstr "¸ê®Æ§¨"
+msgstr "è³‡æ–™å¤¾"
 
 msgid "PHP install does not have LDAP support."
-msgstr ""
+msgstr "PHP å®‰è£æ²’æœ‰åŒ…å« LDAP æ”¯æ´"
 
 msgid "Click here to change the sorting of the address list"
-msgstr ""
+msgstr "æŒ‰é€™è£¡æ”¹è®Šåœ°å€æ’åºæ–¹å¼"
 
 msgid "Illegal folder name."
-msgstr ""
+msgstr "éŒ¯èª¤çš„è³‡æ–™å¤¾åç¨±ã€‚"
 
 #, php-format
 msgid "The name may not contain any of the following: %s"
-msgstr ""
+msgstr "åç¨±ä¸èƒ½åŒ…å«ï¼š%s"
 
 #
-#, fuzzy
 msgid "Please select a different name."
-msgstr "¤£¦X³W«hªº¸ê®Æ§¨¦WºÙ¡C½Ğ¥t¿ï¦WºÙ"
+msgstr "è«‹å¦é¸åç¨±"
 
-#, fuzzy
 msgid "You have not selected a folder to subscribe. Please do so."
-msgstr "±z©|¥¼¿ï¾Ü­n­«·s©R¦Wªº¸ê®Æ§¨¡C½Ğ¿ï¾Ü¡C"
+msgstr "æ‚¨å°šæœªé¸æ“‡è¦é¡¯ç¤ºçš„è³‡æ–™å¤¾ã€‚è«‹é¸æ“‡ã€‚"
 
-#, fuzzy
 msgid "You have not selected a folder to unsubscribe. Please do so."
-msgstr "±z©|¥¼¿ï¾Ü­n­«·s©R¦Wªº¸ê®Æ§¨¡C½Ğ¿ï¾Ü¡C"
+msgstr "æ‚¨å°šæœªé¸æ“‡è¦éš±è—çš„è³‡æ–™å¤¾ã€‚è«‹é¸æ“‡ã€‚"
 
 msgid "Possible reason:"
-msgstr ""
+msgstr "å¯èƒ½çš„åŸå› ï¼š"
 
 msgid "ERROR: Bad function call."
-msgstr ""
+msgstr "éŒ¯èª¤ï¼šBad function call."
 
-#, fuzzy
 msgid "Reason:"
-msgstr "¦^À³¡G"
+msgstr "åŸå› ï¼š"
 
 msgid ""
 "TLS is enabled, but this version of PHP does not support TLS sockets, or is "
 "missing the openssl extension."
 msgstr ""
+"TLS å•Ÿç”¨äº†ï¼Œä½†æ˜¯é€™å€‹ç‰ˆæœ¬çš„ PHP ä¸æ”¯æ´ TLSï¼Œæˆ–æ˜¯æ²’æœ‰å®‰è£ opensslã€‚"
 
 msgid ""
 "Your mailbox is not located at this server. Try a different server or "
 "consult your system administrator"
 msgstr ""
+"æ‚¨çš„éƒµä»¶ä¿¡ç®±ä¸æ˜¯æœ¬åœ°ä¿¡ç®±ï¼Œè«‹å˜—è©¦å…¶ä»–ä¼ºæœå™¨æˆ–æ˜¯è¯çµ¡ç®¡ç†å“¡ã€‚"
 
 #
-#, fuzzy
 msgid "Unknown recipient"
-msgstr "¤£©ú±H¥óªÌ"
+msgstr "ä¸æ˜æ”¶ä»¶è€…"
 
 msgid "Unflag"
-msgstr ""
+msgstr "å–æ¶ˆæ——æ¨™"
 
 #
-#, fuzzy
 msgid "Flag"
-msgstr "ºX¼Ğ"
+msgstr "æ——æ¨™"
 
 #
-#, fuzzy
 msgid "Undelete"
-msgstr "§R°£"
+msgstr "å–æ¶ˆåˆªé™¤"
 
 #
-#, fuzzy
 msgid "General Message Composition"
-msgstr "¶l¥óÅã¥Ü¤Î½s¼g"
+msgstr "éƒµä»¶ç·¨å¯«"
 
-#, fuzzy
 msgid "Replying and Forwarding Messages"
-msgstr "Âà±H®É¥]§t°Æ¥»¦¬¥ó¤H"
+msgstr "å›è¦†ä¸¦è½‰å¯„ä¿¡ä»¶"
 
 msgid "Strip signature when replying"
-msgstr ""
+msgstr "å›è¦†æ™‚ç§»é™¤ç°½åæª”"
 
 msgid "Enable Fancy Row Mouseover Highlighting"
-msgstr ""
+msgstr "å•Ÿç”¨èŠ±ä¿çš„ç•¶æ»‘é¼ ç¶“éæ™‚åŠ äº®è¨Šæ¯"
 
 msgid "Message Flags Icon Theme"
-msgstr ""
+msgstr "éƒµä»¶æ——æ¨™åœ–ç¤º"
 
 msgid "Show Flag / Unflag Buttons"
-msgstr ""
+msgstr "é¡¯ç¤ºæ——æ¨™æŒ‰éˆ•"
 
-#, fuzzy
 msgid "Use Compact Page Selector"
-msgstr "¨Ï¥Î¤À­¶¼ĞÅÒ"
+msgstr "ä½¿ç”¨ç°¡æ½”çš„åˆ†é é¸æ“‡"
 
 msgid "Length of From/To Field (0 for full)"
-msgstr ""
+msgstr "From/To æ¬„ä½çš„é•·åº¦(0 å¡«æ»¿)"
 
 msgid "Length of Subject Field (0 for full)"
-msgstr ""
+msgstr "ä¸»æ—¨æ¬„ä½çš„é•·åº¦(0 å¡«æ»¿)"
 
 #
-#, fuzzy
 msgid "Message Display Options"
-msgstr "Åã¥Ü³]©w"
+msgstr "é¡¯ç¤ºè¨­å®š"
 
 msgid "Show 'Delete & Prev/Next' Links"
-msgstr ""
+msgstr "é¡¯ç¤º 'åˆªé™¤ä¸¦å¾€å‰/å¾Œ' é€£çµ"
 
 #
-#, fuzzy
 msgid "Save Replies with Original Message"
-msgstr "­ì¤å"
+msgstr "å„²å­˜åŸæ–‡"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgid_plural "%d Minutes"
-msgstr[0] "¤À"
-msgstr[1] "¤À"
+msgstr[0] "%d åˆ†é˜"
+msgstr[1] "%d åˆ†é˜"
 
 msgid "Show only subscribed folders"
-msgstr ""
+msgstr "åªé¡¯ç¤ºæŒ‡å®šé¡¯ç¤ºçš„è³‡æ–™å¤¾"
 
 msgid "XP"
 msgstr ""
 
-#, fuzzy
 msgid "Hide SquirrelMail Header"
-msgstr "Åã¥Ü§¹¾ã¼ĞÀY"
+msgstr "éš±è—ç³»çµ±æ¨™é ­"
 
 #
-#, fuzzy
 msgid "Search functions"
-msgstr "·j´M"
+msgstr "æœå°‹"
 
 msgid "Only basic search"
-msgstr ""
+msgstr "åªæœ‰åŸºæœ¬æœå°‹"
 
 msgid "Only advanced search"
-msgstr ""
+msgstr "åªæœ‰é€²éšæœå°‹"
 
 msgid "Both search functions"
-msgstr ""
+msgstr "åŒæ™‚ä½¿ç”¨åŸºæœ¬æœå°‹ä»¥åŠé€²éšæœå°‹"
 
 msgid "Show alternative language names"
-msgstr ""
+msgstr "é¡¯ç¤ºå…¶ä»–èªè¨€åç¨±"
 
 msgid "Available languages"
-msgstr ""
+msgstr "å¯ç”¨çš„èªè¨€"
 
-#, fuzzy
 msgid "Enable aggressive decoding"
-msgstr "¨Ï¥Î¤À­¶¼ĞÅÒ"
+msgstr "ä½¿ç”¨å¤§è†½çš„è§£ç¢¼æ–¹å¼"
 
 msgid "Tweaks"
-msgstr ""
+msgstr "èª¿æ•´"
 
 msgid "Use advanced tree folder listing"
-msgstr ""
+msgstr "ä½¿ç”¨é€²éšçš„æ¨¹ç‹€è³‡æ–™å¤¾æ’åˆ—"
 
-#, fuzzy
 msgid "Use icons"
-msgstr "¬í"
+msgstr "ä½¿ç”¨åœ–ç¤º"
 
 msgid "Use PHP recode functions"
-msgstr ""
+msgstr "ä½¿ç”¨ PHP recode åŠŸèƒ½"
 
 msgid "Use PHP iconv functions"
-msgstr ""
+msgstr "ä½¿ç”¨ PHP iconv åŠŸèƒ½"
 
 msgid "Allow remote configuration test"
-msgstr ""
+msgstr "å…è¨±é ç«¯è¨­å®šæ¸¬è©¦"
 
 msgid "Show System Specifications"
-msgstr ""
+msgstr "é¡¯ç¤ºç³»çµ±è³‡è¨Š"
 
-#, fuzzy
 msgid "Search Mailing List Archives"
-msgstr "¦C¥XÀÉ®×®w"
+msgstr "æœå°‹éƒµéæ¸…å–®å­˜æª”"
 
 msgid "Search SourceForge Bugtracker"
-msgstr ""
+msgstr "æœå°‹ SourceForge Bugtracker"
 
 #
-#, fuzzy
 msgid "Search for words:"
-msgstr "·j´M"
+msgstr "æœå°‹"
 
 msgid "Written by:"
 msgstr ""
 
-#, fuzzy
 msgid "Email addresses only"
-msgstr "E-mail ¦a§}"
+msgstr "E-mail åœ°å€"
 
-#, fuzzy
 msgid "Mailing list:"
-msgstr "¶l»¼²M³æ"
+msgstr "éƒµéæ¸…å–®ï¼š"
 
 #
-#, fuzzy
 msgid "SquirrelMail users list"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶ä½¿ç”¨è€…æ¸…å–®"
 
 #
-#, fuzzy
 msgid "SquirrelMail plugins list"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶å¤–æ›æ¸…å–®"
 
 #
-#, fuzzy
 msgid "SquirrelMail developers list"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶é–‹ç™¼è€…æ¸…å–®"
 
 #
-#, fuzzy
 msgid "SquirrelMail internationalization list"
-msgstr "ªQ¹«¹q¤l¶l¥óºŞ²z¨t²Î %s"
+msgstr "æ¾é¼ é›»å­éƒµä»¶ç¿»è­¯äººå“¡æ¸…å–®"
 
 #
-#, fuzzy
 msgid "Sort by:"
-msgstr "³s±µ°ğ¡G"
+msgstr "æ’åºæ–¹æ³•ï¼š"
 
 msgid "Relevance"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Search Archives"
-msgstr "·j´Mµ²ªG"
+msgstr "æœå°‹èˆŠæª”"
 
 #
-#, fuzzy
 msgid "Reset Form"
-msgstr "§R°£¸ê®Æ§¨"
+msgstr "é‡è¨­è¡¨å–®"
 
 msgid "Summary keyword:"
-msgstr ""
+msgstr "æ‘˜è¦é—œéµå­—ï¼š"
 
 #
-#, fuzzy
 msgid "Sort By:"
-msgstr "³s±µ°ğ¡G"
+msgstr "æ’åºæ–¹æ³•ï¼š"
 
 msgid "ID"
 msgstr ""
 
-#, fuzzy
 msgid "Summary"
-msgstr "¬P´Á¤Ñ"
+msgstr "æ‘˜è¦"
 
 #
-#, fuzzy
 msgid "Open Date"
-msgstr "¶}±Ò¥¢±Ñ"
+msgstr "é–‹å•Ÿæ—¥æœŸ"
 
-#, fuzzy
 msgid "Close Date"
-msgstr "Ãö³¬"
+msgstr "é—œé–‰æ—¥æœŸ"
 
 #
-#, fuzzy
 msgid "Submitter"
-msgstr "°e¥X"
+msgstr "éäº¤è€…"
 
 msgid "Assignee"
 msgstr ""
 
 #
-#, fuzzy
 msgid "Order:"
-msgstr "¨ä¥¦¡G"
+msgstr "é †åºï¼š"
 
 #
-#, fuzzy
 msgid "Ascending"
-msgstr "¶Ç°e"
+msgstr "éå¢"
 
 msgid "Descending"
-msgstr ""
+msgstr "éæ¸›"
 
 msgid "Search Bugtracker"
-msgstr ""
+msgstr "æœå°‹ Bugtracker"
 
 msgid "You must type in a new password."
-msgstr ""
+msgstr "æ‚¨å¿…é ˆè¼¸å…¥æ–°çš„å¯†ç¢¼ã€‚"
 
 msgid "You must also type in your new password in the verify box."
-msgstr ""
+msgstr "æ‚¨ä¹Ÿå¿…é ˆè¼¸å…¥æ–°çš„å¯†ç¢¼æ–¼é©—è­‰æ¬„ä½ã€‚"
 
 msgid "Your new password does not match the verify password."
-msgstr ""
+msgstr "æ‚¨çš„æ–°å¯†ç¢¼èˆ‡é©—è­‰æ¬„ä½ä¸ç¬¦åˆã€‚"
 
 msgid "You must type in your current password."
-msgstr ""
+msgstr "æ‚¨å¿…é ˆè¼¸å…¥èˆŠçš„å¯†ç¢¼ã€‚"
 
 #
-#, fuzzy
 msgid "Your current password is not correct."
-msgstr "§ä¤£¨ì¨Ï¥ÎªÌ©Î±K½X¿ù»~"
+msgstr "å¯†ç¢¼éŒ¯èª¤"
 
 #, php-format
 msgid "Your new password should be %s to %s characters long."
-msgstr ""
+msgstr "æ‚¨çš„æ–°å¯†ç¢¼å¿…é ˆæ˜¯ %s åˆ° %s å­—å…ƒã€‚"
 
-#, fuzzy
 msgid "Your new password contains invalid characters."
-msgstr "§O¦W§tµLªk±µ¨üªº¦r¤¸¡]¤¤¤å»İ¯S§Oª`·N½Ä½X°İÃD¡^"
+msgstr "æ–°å¯†ç¢¼åŒ…å«ç„¡æ³•æ¥å—çš„å­—å…ƒ"
 
 #
-#, fuzzy
 msgid "Change Password"
-msgstr "±K½X¡G"
+msgstr "æ›´æ”¹å¯†ç¢¼"
 
 #
-#, fuzzy
 msgid "Current Password:"
-msgstr "±K½X¡G"
+msgstr "èˆŠå¯†ç¢¼ï¼š"
 
 #
-#, fuzzy
 msgid "New Password:"
-msgstr "±K½X¡G"
+msgstr "æ–°å¯†ç¢¼ï¼š"
 
 #
-#, fuzzy
 msgid "Verify New Password:"
-msgstr "±K½X¡G"
+msgstr "é©—è­‰æ–°å¯†ç¢¼ï¼š"
 
 msgid "Use this to change your email password."
-msgstr ""
+msgstr "ç”¨é€™å€‹æ”¹è®Šæ‚¨éƒµä»¶å¯†ç¢¼ã€‚"
 
 #
-#, fuzzy
 msgid "User's Password"
-msgstr "±K½X¡G"
+msgstr "å¯†ç¢¼"
 
 msgid "Current configuration requires LDAP support in PHP."
-msgstr ""
+msgstr "ç›®å‰çš„è¨­å®šéœ€è¦ PHP çš„ LDAP æ”¯æ´ã€‚"
 
 msgid "Plugin is not configured correctly."
-msgstr ""
+msgstr "æ’ä»¶æ²’æœ‰è¨­å®šæ­£ç¢ºã€‚"
 
 #, php-format
 msgid "Setting of LDAP connection option %s to value %s failed."
-msgstr ""
+msgstr "è¨­å®š LDAP é€£ç·šè¨­å®š %s ç‚º %s å¤±æ•—ã€‚"
 
 #, php-format
 msgid "Incorrect LDAP connection option: %s"
-msgstr ""
+msgstr "éŒ¯èª¤çš„ LDAP é€£ç·šè¨­å®šï¼š%s"
 
 msgid ""
 "Current PHP LDAP extension does not allow use of ldap_set_option() function."
-msgstr ""
+msgstr "ç›®å‰çš„ PHP LDAP æ“´å……ä¸å…è¨±ä½¿ç”¨ ldap_set_option() åŠŸèƒ½ã€‚"
 
 #
-#, fuzzy
 msgid "Unable to use TLS."
-msgstr "µLªk­×§ï"
+msgstr "ç„¡æ³•ä½¿ç”¨ TLS"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Error: %s"
-msgstr "¿ù»~"
+msgstr "éŒ¯èª¤ï¼š%s"
 
 msgid "Unable to use LDAP TLS in current setup."
-msgstr ""
+msgstr "ç„¡æ³•ä½¿ç”¨ LDAP TLSã€‚"
 
 msgid "Unable to bind to LDAP server."
-msgstr ""
+msgstr "ç„¡æ³• bind åˆ° LDAP ä¼ºæœå™¨ã€‚"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Server replied: %s"
-msgstr "¦øªA¾¹¦^À³¡G"
+msgstr "ä¼ºæœå™¨å›æ‡‰ï¼š%s"
 
 msgid "Unable to find user's password attribute."
-msgstr ""
+msgstr "ç„¡æ³•æ‰¾åˆ°ä½¿ç”¨è€…çš„å¯†ç¢¼å±¬æ€§ã€‚"
 
 msgid "Unable to rebind to LDAP server."
-msgstr ""
+msgstr "ç„¡æ³•é‡æ–° bind åˆ° LDAP ä¼ºæœå™¨ã€‚"
 
 msgid "LDAP server uses different attribute to store user's password."
-msgstr ""
+msgstr "LDAP ä¼ºæœå™¨ä½¿ç”¨ä¸åŒçš„å±¬æ€§ä¾†å­˜å–ä½¿ç”¨è€…å¯†ç¢¼ã€‚"
 
-#, fuzzy
 msgid "Unable to connect to LDAP server."
-msgstr "¥¼³sµ²¦Ü¦øªA¾¹"
+msgstr "æœªé€£çµè‡³ LDAP ä¼ºæœå™¨"
 
 msgid "Unable to find user's DN."
-msgstr ""
+msgstr "æ‰¾ä¸åˆ°ä½¿ç”¨è€…çš„ DNã€‚"
 
 #
-#, fuzzy
 msgid "Search error."
-msgstr "·j´M"
+msgstr "æœå°‹éŒ¯èª¤"
 
 msgid "Multiple userid matches found."
-msgstr ""
+msgstr "æ‰¾åˆ°å¤šå€‹ userid ã€‚"
 
 msgid "ldap_get_dn error."
-msgstr ""
+msgstr "ldap_get_dn éŒ¯èª¤ã€‚"
 
 #, php-format
 msgid "Unsupported crypto: %s"
-msgstr ""
+msgstr "ä¸æ”¯æ´åŠ ç§˜æ–¹æ³•ï¼š%s"
 
 msgid "PHP mhash extension is missing."
-msgstr ""
+msgstr "PHP mhash æ“´å……å¥—ä»¶éºå¤±ã€‚"
 
 msgid "System crypt library doesn't support standard DES crypt."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´æ¨™æº– DES åŠ å¯†ã€‚"
 
 msgid "System crypt library doesn't have MD5 support."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´ MD5 åŠ å¯†ã€‚"
 
 msgid "System crypt library doesn't support extended DES crypt."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´å»¶ä¼¸ DES åŠ å¯†ã€‚"
 
 msgid "System crypt library doesn't have Blowfish support."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´ Blowfish ã€‚"
 
 #
-#, fuzzy
 msgid "unknown"
-msgstr "¤£©ú¤é´Á"
+msgstr "ä¸æ˜"
 
 msgid "Unable to validate user's password."
-msgstr ""
+msgstr "ç„¡æ³•é©—è­‰ä½¿ç”¨è€…å¯†ç¢¼ã€‚"
 
 msgid "Blowfish is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´ Blowfish ã€‚"
 
 msgid "MD5 is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´ MD5 åŠ å¯†ã€‚"
 
 msgid ""
 "Extended DES crypt is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´å»¶ä¼¸ DES åŠ å¯†ã€‚"
 
 msgid ""
 "Standard DES crypt is not supported by webserver's system crypt library."
-msgstr ""
+msgstr "ç³»çµ±ä¸Šçš„ crypt å‡½å¼åº«ä¸æ”¯æ´æ¨™æº– DES åŠ å¯†ã€‚"
 
 msgid "PHP Curl extension is NOT available! Unable to change password!"
-msgstr ""
+msgstr "æ²’æœ‰ PHP Curl æ“´å……å¥—ä»¶ï¼Œç„¡æ³•æ”¹è®Šå¯†ç¢¼ï¼"
 
 msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
-msgstr ""
+msgstr "ç„¡æ³•æ”¹è®Šå¯†ç¢¼ï¼(Is user 'Self Configurable User' ?) (401)"
 
 msgid "Cannot change password!"
-msgstr ""
+msgstr "ç„¡æ³•æ”¹è®Šå¯†ç¢¼ï¼"
 
 msgid "Cannot connect to Database Server, please try later!"
-msgstr ""
+msgstr "ç„¡æ³•é€£ç·šåˆ°è³‡æ–™åº«ä¼ºæœå™¨ï¼Œè«‹ç¨å¾Œå†è©¦ï¼"
 
 msgid "Database not found on server"
-msgstr ""
+msgstr "ä¼ºæœå™¨ä¸Šæ‰¾ä¸åˆ°è³‡æ–™åº«"
 
 msgid "SQL call failed, try again later."
-msgstr ""
+msgstr "SQL å¤±æ•—ï¼Œè«‹ç¨å¾Œå†è©¦ã€‚"
 
 msgid "Duplicate login entries detected, cannot change password!"
-msgstr ""
+msgstr "åµæ¸¬åˆ°å¤šé‡ç™»å…¥ï¼Œç„¡æ³•æ”¹è®Šå¯†ç¢¼ï¼"
 
 msgid "Password change was not successful!"
-msgstr ""
+msgstr "æ”¹è®Šå¯†ç¢¼å¤±æ•—ï¼"
 
 msgid "Closing Connection"
-msgstr ""
+msgstr "é—œé–‰é€£ç·š"
 
-#, fuzzy
 msgid "Connecting to Password Server"
-msgstr "¥¼³sµ²¦Ü¦øªA¾¹"
+msgstr "é€£çµè‡³å¯†ç¢¼ä¼ºæœå™¨"
 
 msgid "No valid backend defined."
-msgstr ""
+msgstr "æ²’æœ‰æœ‰æ•ˆçš„ backendã€‚"
 
 msgid "Incorrent path to vmail.inc file."
-msgstr ""
+msgstr "éŒ¯èª¤çš„ vmail.inc æª”æ¡ˆç›®éŒ„ã€‚"
 
 msgid "Invalid or corrupted vmail.inc file."
-msgstr ""
+msgstr "éŒ¯èª¤æˆ–æå£çš„ vmail.inc æª”æ¡ˆã€‚"
 
 msgid "Invalid user."
-msgstr ""
+msgstr "éŒ¯èª¤çš„ä½¿ç”¨è€…ã€‚"
 
-#, fuzzy
 msgid "Empty domain"
-msgstr "ªÅ¥Õ«ü¥O¦r¦ê"
+msgstr "ç©ºç™½ domain"
 
-#, fuzzy
 msgid "Empty domain password"
-msgstr "ªÅ¥Õ«ü¥O¦r¦ê"
+msgstr "ç©ºç™½ domain å¯†ç¢¼"
 
-#, fuzzy
 msgid "Empty username"
-msgstr "±b¸¹"
+msgstr "ç©ºç™½å¸³è™Ÿ"
 
 msgid "Empty new password"
-msgstr ""
+msgstr "ç©ºç™½æ–°å¯†ç¢¼"
 
 #
-#, fuzzy
 msgid "Server Capability response:"
-msgstr "¦øªA¾¹¦^À³¡G"
+msgstr "ä¼ºæœå™¨å›æ‡‰ï¼š"
 
 msgid ""
 "Select the IMAP commands you would like to run. Most commands require a "
@@ -5167,85 +4941,71 @@ msgid ""
 msgstr ""
 
 #
-#, fuzzy
 msgid "Select"
-msgstr "¿ï¨ú¥ş³¡"
+msgstr "é¸å–"
 
-#, fuzzy
 msgid "Test Name"
-msgstr "°t¦â¦WºÙ"
+msgstr "æ¸¬è©¦åç¨±"
 
-#, fuzzy
 msgid "IMAP command string"
-msgstr "ªÅ¥Õ«ü¥O¦r¦ê"
+msgstr "IMAP æŒ‡ä»¤å­—ä¸²"
 
 #
-#, fuzzy
 msgid "Request:"
-msgstr "³Q½Ğ¨D"
+msgstr "è«‹æ±‚ï¼š"
 
 #
-#, fuzzy
 msgid "No POP3 servers configured yet."
-msgstr "¥¼³]©w¦øªA¾¹"
+msgstr "æœªè¨­å®š POP3 ä¼ºæœå™¨"
 
 #
-#, fuzzy
 msgid "Click here to go to the options page."
-msgstr "ÂI¦¹­«·sµn¤J"
+msgstr "é»æ­¤é€²å…¥è¨­å®šç•«é¢"
 
 #
-#, fuzzy, php-format
+#, php-format
 msgid "Login OK: Inbox contains %s message"
 msgid_plural "Login OK: Inbox contains %s messages"
-msgstr[0] "µn¤JOK¡G¦¬¥ó§¨¦³"
-msgstr[1] "µn¤JOK¡G¦¬¥ó§¨¦³"
+msgstr[0] "ç™»å…¥OKï¼šæ”¶ä»¶å¤¾æœ‰ %s å°éƒµä»¶"
+msgstr[1] "ç™»å…¥OKï¼šæ”¶ä»¶å¤¾æœ‰ %s å°éƒµä»¶"
 
 #
-#, fuzzy
 msgid "Width of popup window:"
-msgstr "½s¼g¶l¥óµøµ¡ªº¼e«×"
+msgstr "ç·¨å¯«éƒµä»¶è¦–çª—çš„å¯¬åº¦"
 
 msgid "If set to 0, reverts to default value"
-msgstr ""
+msgstr "å¦‚æœè¨­æˆ 0ï¼Œé‡è¨­è‡³é è¨­å€¼"
 
 #
-#, fuzzy
 msgid "Height of popup window:"
-msgstr "½s¼g¶l¥óµøµ¡ªº°ª«×"
+msgstr "ç·¨å¯«éƒµä»¶è¦–çª—çš„é«˜åº¦"
 
 #
-#, fuzzy
 msgid "uploaded media file"
-msgstr "¥»¦aºİ¦h´CÅéÀÉ®×"
+msgstr "å·²ä¸Šå‚³å¤šåª’é«”æª”æ¡ˆ"
 
 #
-#, fuzzy
 msgid "none"
-msgstr "§¹¦¨"
+msgstr "ç„¡"
 
 #
-#, fuzzy
 msgid "Upload Media File:"
-msgstr "¥»¦aºİ¦h´CÅéÀÉ®×"
+msgstr "ä¸Šå‚³å¤šåª’é«”æª”æ¡ˆï¼š"
 
 #
-#, fuzzy
 msgid "Uploaded Media File:"
-msgstr "¥»¦aºİ¦h´CÅéÀÉ®×"
+msgstr "å·²ä¸Šå‚³å¤šåª’é«”æª”æ¡ˆï¼š"
 
 #
-#, fuzzy
 msgid "unavailable"
-msgstr "µLªk¨Ï¥Î"
+msgstr "ç„¡æ³•ä½¿ç”¨"
 
 #, php-format
 msgid "Media file %s will be removed, if you upload other media file."
-msgstr ""
+msgstr "å¦‚æœä½ ä¸Šå‚³å…¶ä»–åª’é«”æª”ï¼Œ%s å°‡æœƒè¢«ç§»é™¤"
 
-#, fuzzy
 msgid "Spam Service Type:"
-msgstr "IMAP Server «¬¦¡"
+msgstr "Spam æœå‹™å‹å¼"
 
 msgid "Free reporting"
 msgstr ""
@@ -5253,101 +5013,95 @@ msgstr ""
 msgid "Member services"
 msgstr ""
 
-#, fuzzy
 msgid "Save Service Type"
-msgstr "Àx¦s±½ºË¤è¦¡"
+msgstr "å„²å­˜æœå‹™æ–¹å¼"
 
 #
-#, fuzzy
 msgid "SpamCop reporting"
-msgstr "¹LÂo©U§£¶l¥ó"
+msgstr "å›å ±åƒåœ¾éƒµä»¶åˆ° SpamCop"
 
-#, fuzzy
 msgid "Translation Theme:"
-msgstr "Â½Ä¶"
+msgstr "ç¿»è­¯ï¼š"
 
 msgid ""
 "Selected translation engine is disabled. Please update your translation "
 "preferences."
-msgstr ""
+msgstr "é¸æ“‡çš„ç¿»è­¯å¼•æ“å·²ç¶“å¤±æ•ˆï¼Œè«‹æ›´æ–°æ‚¨çš„ç¿»è­¯è¨­å®šã€‚"
 
-#, fuzzy
 msgid "Translation Preferences"
-msgstr "²ÕÂ´³]©w­È"
+msgstr "ç¿»è­¯è¨­å®š"
 
-#, fuzzy
 msgid "Maximum of 25 kilobytes translated, powered by Systran"
-msgstr "¤QºØ»y¨¥°t¹ï¡A³Ì¦h¤G¸U¤­¤d¦r¡Apowered by Systran"
+msgstr "æœ€å¤šäºŒè¬äº”åƒå­—ï¼ŒSystran æä¾›"
 
-#, fuzzy
 msgid "No known limits, powered by GPLTrans (free, open source)"
-msgstr "8ºØ»y¨¥°t¹ï¡A¥¼ª¾­­¨î¡Apowered by GPLTrans (free, open source)"
+msgstr "æœªçŸ¥é™åˆ¶ï¼ŒGPLTrans (free, open source) æä¾›"
 
 msgid "Transliterate unknown words:"
-msgstr ""
+msgstr "ç¿»è­¯æœªçŸ¥çš„å­—ï¼š"
 
 msgid "When composing:"
-msgstr "·í½s¼g¶l¥ó®É¡G"
+msgstr "ç•¶ç·¨å¯«éƒµä»¶æ™‚ï¼š"
 
 msgid "Not yet functional, currently does nothing"
-msgstr "©|¥¼¯à°Ê§@"
+msgstr "å°šæœªèƒ½å‹•ä½œ"
 
 msgid "Delivery error report"
-msgstr "¶Ç»¼¿ù»~³ø§i"
+msgstr "å‚³ééŒ¯èª¤å ±å‘Š"
 
 msgid "Undelivered Message Headers"
-msgstr "¥¼¶Ç»¼¶l¥ó¼ĞÀY"
+msgstr "æœªå‚³ééƒµä»¶æ¨™é ­"
 
 msgid "This image has been removed for security reasons"
-msgstr ""
+msgstr "é€™å€‹åœ–ç‰‡å› ç‚ºå®‰å…¨å› ç´ å·²ç¶“ç§»é™¤"
 
 #
 #~ msgid "Business Card"
-#~ msgstr "¦W¤ùÀÉ"
+#~ msgstr "åç‰‡æª”"
 
 #
 #~ msgid "Click here to try again"
-#~ msgstr "ÂI¦¹­«·sµn¤J"
+#~ msgstr "é»æ­¤é‡æ–°ç™»å…¥"
 
 #
 #~ msgid "Unknown message number in reply from server: "
-#~ msgstr "¦øªA¾¹¶Ç¦^¥¼ª¾ªº¼Æ¦r"
+#~ msgstr "ä¼ºæœå™¨å‚³å›æœªçŸ¥çš„æ•¸å­—"
 
 #
 #~ msgid "(unknown sender)"
-#~ msgstr "¡]¤£©ú±H¥óªÌ¡^"
+#~ msgstr "ï¼ˆä¸æ˜å¯„ä»¶è€…ï¼‰"
 
 #
 #~ msgid "Enable Subtle Printer Friendly Link"
-#~ msgstr "Åã¥Ü¤Íµ½¦C¦L³sµ²"
+#~ msgstr "é¡¯ç¤ºå‹å–„åˆ—å°é€£çµ"
 
 #~ msgid "Authenticated SMTP"
 #~ msgstr "Authenticated SMTP"
 
 #~ msgid "35 min."
-#~ msgstr "35 ¤À"
+#~ msgstr "35 åˆ†"
 
 #
 #~ msgid "All Messages"
-#~ msgstr "¥ş³¡¶l¥ó"
+#~ msgstr "å…¨éƒ¨éƒµä»¶"
 
 #~ msgid "POP3 noop:"
 #~ msgstr "POP3 noop:"
 
 #~ msgid "] messages"
-#~ msgstr "«Ê·s¶l¥ó"
+#~ msgstr "å°æ–°éƒµä»¶"
 
 #
 #~ msgid "No-one server in use. Try to add."
-#~ msgstr "¨S¦³³]©w¥ô¤@¦øªA¾¹¡C·s¼W¤@³¡§a¡I"
+#~ msgstr "æ²’æœ‰è¨­å®šä»»ä¸€ä¼ºæœå™¨ã€‚æ–°å¢ä¸€éƒ¨å§ï¼"
 
 #
 #~ msgid "Mofify a Server"
-#~ msgstr "­×§ï¦øªA¾¹"
+#~ msgstr "ä¿®æ”¹ä¼ºæœå™¨"
 
 #
 #~ msgid "Hey! Wath do You are looking for?"
-#~ msgstr "³Ş¡I§A¦b§äÔ£¡H"
+#~ msgstr "å–‚ï¼ä½ åœ¨æ‰¾å•¥ï¼Ÿ"
 
 #
 #~ msgid ""
@@ -5357,43 +5111,43 @@ msgstr ""
 #~ "computer.  If no file is specified, the system will use a default from "
 #~ "the server."
 #~ msgstr ""
-#~ "±q<b>¨Ï¥Î¦øªA¾¹ÀÉ®×</b>©M<b>¨Ï¥Î¥»¦aºİÀÉ®×</b>¤¤¿ï¾Ü¤@­Ó¡C­Y¥¼¿ï¨ú¡A«h´£¥Ü"
-#~ "·s¶l¥ó±N¨Ï¥Î¦øªA¾¹¤Wªº¦h´CÅéÀÉ®×"
+#~ "å¾<b>ä½¿ç”¨ä¼ºæœå™¨æª”æ¡ˆ</b>å’Œ<b>ä½¿ç”¨æœ¬åœ°ç«¯æª”æ¡ˆ</b>ä¸­é¸æ“‡ä¸€å€‹ã€‚è‹¥æœªé¸å–ï¼Œå‰‡æç¤º"
+#~ "æ–°éƒµä»¶å°‡ä½¿ç”¨ä¼ºæœå™¨ä¸Šçš„å¤šåª’é«”æª”æ¡ˆ"
 
 #
 #~ msgid "(local media)"
-#~ msgstr "¡]¥»¦aºİ¦h´CÅéÀÉ®×¡^"
+#~ msgstr "ï¼ˆæœ¬åœ°ç«¯å¤šåª’é«”æª”æ¡ˆï¼‰"
 
 #
 #~ msgid "New Mail Notification options saved"
-#~ msgstr "·s¶l¥ó´£¥Ü³]©w¤w¦sÀÉ"
+#~ msgstr "æ–°éƒµä»¶æç¤ºè¨­å®šå·²å­˜æª”"
 
 #
 #~ msgid "Unknown error"
-#~ msgstr "¤£©ú¿ù»~"
+#~ msgstr "ä¸æ˜éŒ¯èª¤"
 
 #
 #~ msgid "To:"
-#~ msgstr "¦¬¥óªÌ¡G"
+#~ msgstr "æ”¶ä»¶è€…ï¼š"
 
 #
 #~ msgid "CC:"
-#~ msgstr "°Æ¥»¡G"
+#~ msgstr "å‰¯æœ¬ï¼š"
 
 #
 #~ msgid "BCC:"
-#~ msgstr "±K°Æ¡G"
+#~ msgstr "å¯†å‰¯ï¼š"
 
 #~ msgid "Subject:"
-#~ msgstr "¥D¦®¡G"
+#~ msgstr "ä¸»æ—¨ï¼š"
 
 #
 #~ msgid "said"
-#~ msgstr "¦p¬O»¡"
+#~ msgstr "å¦‚æ˜¯èªª"
 
 #
 #~ msgid "Draft folder"
-#~ msgstr "¯ó½Z"
+#~ msgstr "è‰ç¨¿"
 
 #~ msgid "CC"
-#~ msgstr "°Æ¥»"
+#~ msgstr "å‰¯æœ¬"

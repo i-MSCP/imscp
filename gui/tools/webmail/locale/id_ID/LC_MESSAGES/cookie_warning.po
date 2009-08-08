@@ -1,8 +1,8 @@
 # Bahasa Indonesia (id_ID) cookie_warning Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Arief S Fitrianto <arief@gurame.fisika.ui.ac.id>, 2006.
-# $Id: cookie_warning.po 11502 2006-08-10 18:14:36Z tokul $
+# $Id: cookie_warning.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: cookie_warning 1.1\n"

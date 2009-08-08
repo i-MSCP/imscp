@@ -3,25 +3,25 @@
       Leggere un messaggio email
    </title>
    <summary>
-      La capacit‡ di leggere un messaggio email Ë una delle caratteristiche pi˘
+      La capacit√† di leggere un messaggio email √® una delle caratteristiche pi√π
       importanti in ogni client di posta elettronica.   
       SquirrelMail possiede diverse caratteristiche per la lettura dei messaggi.
       Qui vengono spiegate nel dettaglio.
    </summary>
    <description>
       <p>
-      Fate Click sull'oggetto di un particolare messaggio ed il suo testo sar‡
-      automaticamente mostrato. Una cosa che si puÚ notare Ë che gli indirizzi 
-      email e web sono dei veri e prorpi collegamenti (link) su cui Ë possibile
+      Fate Click sull'oggetto di un particolare messaggio ed il suo testo sar√†
+      automaticamente mostrato. Una cosa che si pu√≤ notare √® che gli indirizzi 
+      email e web sono dei veri e prorpi collegamenti (link) su cui √® possibile
       cliccare per inviare un email o visitare una pagina. Un'altra importante
-      caratteristica Ë che gli argomenti vengono codificati per mezzo dei colori.
-      Lo standard per una risposta Ë di quotare il messaggio originale con un segno
+      caratteristica √® che gli argomenti vengono codificati per mezzo dei colori.
+      Lo standard per una risposta √® di quotare il messaggio originale con un segno
       ">" all'inizio di ciascuna riga.  SquirrelMail vede questo e codifica con i
-      colori. Un messaggio di risposta avr‡ un colore differente dal quello usato
-      per il nuovo testo. Questo Ë valido fino a due livelli di profondit‡
+      colori. Un messaggio di risposta avr√† un colore differente dal quello usato
+      per il nuovo testo. Questo √® valido fino a due livelli di profondit√†
       Ora compare, sotto al menu principale, un'altra barra dei menu contenente
       tre sezioni. Sul lato sinistro potete cancellare o tornare al sommario. Nel
-      centro ci si puÚ spostare fra i messaggi, quando ciÚ Ë possibile.
+      centro ci si pu√≤ spostare fra i messaggi, quando ci√≤ √® possibile.
       Sulla destra sono presenti varie funzioni di posta.
       </p>
    </description>
@@ -58,9 +58,9 @@
    <description>
       <p>
       Nel centro della barra ci sono i pulsanti per la navigazione.
-      Precedente sar‡ un link attivo se puÚ effetivamente essere utilizzato, altrimenti
-      rappresenta un semplice testo.  Cliccando su questo link verr‡ visualizzato il 
-      messaggio precedente sena la necessit‡ di tornare alla lista di tutti i messaggi.
+      Precedente sar√† un link attivo se pu√≤ effetivamente essere utilizzato, altrimenti
+      rappresenta un semplice testo.  Cliccando su questo link verr√† visualizzato il 
+      messaggio precedente sena la necessit√† di tornare alla lista di tutti i messaggi.
       </p>
    </description>
 </section>
@@ -72,8 +72,8 @@
    <description>
       <p>
       Fate click su questo collegamento per andare al messaggio successivo che segue 
-      immediatamente quello attualmente visualizzato. Comparir‡ quindi un link attivo
-      se puÚ essere effettivamente utilizzato, altrimenti apparir‡ un semplice testo.
+      immediatamente quello attualmente visualizzato. Comparir√† quindi un link attivo
+      se pu√≤ essere effettivamente utilizzato, altrimenti apparir√† un semplice testo.
       </p>
    </description>
 </section>

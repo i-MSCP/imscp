@@ -1,8 +1,8 @@
 # German translation of SquirrelMail serversidefilter plugin.
-# Copyright (c) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
-# $Id: serversidefilter.po 10539 2006-01-14 15:52:05Z tokul $
+# $Id: serversidefilter.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: serversidefilter 1.5-1.2.7\n"

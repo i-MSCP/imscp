@@ -1,175 +1,175 @@
 <chapter>
    <title>
-      Èítanie elektonickej správy
+      ÄŒÃ­tanie elektonickej sprÃ¡vy
    </title>
    <summary>
-      Schopnos» èíta» správy (e-maily) je jedna z najzákladnej¹ích schopností
-      po¹tového programu. Ale, SquirrelMail má niekoµko zaujímavostí na chvíµu,
-      kım èítate správy. Táto sekcia pomocníka vysvetµuje, èo v¹etky robia.
+      SchopnosÅ¥ ÄÃ­taÅ¥ sprÃ¡vy (e-maily) je jedna z najzÃ¡kladnejÅ¡Ã­ch schopnostÃ­
+      poÅ¡tovÃ©ho programu. Ale, SquirrelMail mÃ¡ niekoÄ¾ko zaujÃ­mavostÃ­ na chvÃ­Ä¾u,
+      kÃ½m ÄÃ­tate sprÃ¡vy. TÃ¡to sekcia pomocnÃ­ka vysvetÄ¾uje, Äo vÅ¡etky robia.
    </summary>
    <description>
       <p>
-      Kliknutím na predmet èiastoènıch správ sa správy zobrazia. Mali by sme e¹te
-      pripomenú», ¾e e-maily a internetové adresy sú skutoèné odkazy, tak¾e na
-      nich mô¾te kliknú» a tak napísa» novú správu, èi otvori» web stránku.
-      Ïal¹ia skutoène ¹ikovnou èrtou SquirrelMailu je ¾e èasti textov správ sú
-      zobrazované inımi farbami. ©tandard pre pri odpovedi na správu je, ¾e citát
-      predchádzajúcej správy zaèína znakom ">" pred ka¾dım riadkom správy. Keï
-      toto SquirrelMail zistí, zobrazí ho odli¹nou farbou. Odpovedaná správa je 
-      zobrazená inou farbou, ako text na ktorı odpovedáte, a tiez inou farbou ako
-      text novej spravy. Toto funguje v dvoch vrstvách. Ïal¹ia li¹ta s menu je
-      pod voµbami hlavného menu. Táto li¹ta má tri sekcie. Na µavej strane je
-      mazanie alebo moznost návratu na zoznam správ. V strede je mo¾ná navigácia
-      medzi správami. V pravo sú rôzne funkcie na odosielanie po¹ty.
+      KliknutÃ­m na predmet ÄiastoÄnÃ½ch sprÃ¡v sa sprÃ¡vy zobrazia. Mali by sme eÅ¡te
+      pripomenÃºÅ¥, Å¾e e-maily a internetovÃ© adresy sÃº skutoÄnÃ© odkazy, takÅ¾e na
+      nich mÃ´Å¾te kliknÃºÅ¥ a tak napÃ­saÅ¥ novÃº sprÃ¡vu, Äi otvoriÅ¥ web strÃ¡nku.
+      ÄalÅ¡ia skutoÄne Å¡ikovnou Ärtou SquirrelMailu je Å¾e Äasti textov sprÃ¡v sÃº
+      zobrazovanÃ© inÃ½mi farbami. Å tandard pre pri odpovedi na sprÃ¡vu je, Å¾e citÃ¡t
+      predchÃ¡dzajÃºcej sprÃ¡vy zaÄÃ­na znakom ">" pred kaÅ¾dÃ½m riadkom sprÃ¡vy. KeÄ
+      toto SquirrelMail zistÃ­, zobrazÃ­ ho odliÅ¡nou farbou. OdpovedanÃ¡ sprÃ¡va je 
+      zobrazenÃ¡ inou farbou, ako text na ktorÃ½ odpovedÃ¡te, a tiez inou farbou ako
+      text novej spravy. Toto funguje v dvoch vrstvÃ¡ch. ÄalÅ¡ia liÅ¡ta s menu je
+      pod voÄ¾bami hlavnÃ©ho menu. TÃ¡to liÅ¡ta mÃ¡ tri sekcie. Na Ä¾avej strane je
+      mazanie alebo moznost nÃ¡vratu na zoznam sprÃ¡v. V strede je moÅ¾nÃ¡ navigÃ¡cia
+      medzi sprÃ¡vami. V pravo sÃº rÃ´zne funkcie na odosielanie poÅ¡ty.
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      Zoznam správ
+      Zoznam sprÃ¡v
    </title>
    <description>
       <p>
-      Kliknite na tento odkaz pre návrat do prieèinka, z ktorého ste pri¹li.
+      Kliknite na tento odkaz pre nÃ¡vrat do prieÄinka, z ktorÃ©ho ste priÅ¡li.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Odstráni»
+      OdstrÃ¡niÅ¥
    </title>
    <description>
       <p>
-      Kliknite na tento odkaz pre odstránenie správy, ktorú práve pí¹ete. V¹etky
-      prílohy odstránenej správy sú taktie¾ automaticky odstránené. Strate správ
-      v budúcnosti mô¾te jednoducho zabráni» stiahnutím si príloh e¹te pri èítaní
-      správy.(ïalej vysvetlené v tejto kapitole).<BR>
-      V tomto kontexte, zmazanie znamená, ¾e správa bude presunutá do prieèinka
-      nazvaného Kô¹. Ak chcete po tomto necha» správu, presuòte ju von z prieèinka
-      Kô¹.
+      Kliknite na tento odkaz pre odstrÃ¡nenie sprÃ¡vy, ktorÃº prÃ¡ve pÃ­Å¡ete. VÅ¡etky
+      prÃ­lohy odstrÃ¡nenej sprÃ¡vy sÃº taktieÅ¾ automaticky odstrÃ¡nenÃ©. Strate sprÃ¡v
+      v budÃºcnosti mÃ´Å¾te jednoducho zabrÃ¡niÅ¥ stiahnutÃ­m si prÃ­loh eÅ¡te pri ÄÃ­tanÃ­
+      sprÃ¡vy.(Äalej vysvetlenÃ© v tejto kapitole).<BR>
+      V tomto kontexte, zmazanie znamenÃ¡, Å¾e sprÃ¡va bude presunutÃ¡ do prieÄinka
+      nazvanÃ©ho KÃ´Å¡. Ak chcete po tomto nechaÅ¥ sprÃ¡vu, presuÅˆte ju von z prieÄinka
+      KÃ´Å¡.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Navigácia
+      NavigÃ¡cia
    </title>
    <description>
       <p>
-      V strede panela sú navigaèné tlaèidlá. Tlaèidlo "Predchádzajúci" mô¾e by»
-      znázornené ako textovı odkaz. Kliknutím na tento odkaz sa zobrazí predchádzajúca
-      správa bez toho, aby ste museli znova ís» do zoznamu správ. To isté platí
-      aj pre odkaz  "Ïal¹í" ktorı vas premiestni na ïal¹iu správu nasledujúcu
-      ihneï po správu, ktorú si teraz prezeráte.
+      V strede panela sÃº navigaÄnÃ© tlaÄidlÃ¡. TlaÄidlo "PredchÃ¡dzajÃºci" mÃ´Å¾e byÅ¥
+      znÃ¡zornenÃ© ako textovÃ½ odkaz. KliknutÃ­m na tento odkaz sa zobrazÃ­ predchÃ¡dzajÃºca
+      sprÃ¡va bez toho, aby ste museli znova Ã­sÅ¥ do zoznamu sprÃ¡v. To istÃ© platÃ­
+      aj pre odkaz  "ÄalÅ¡Ã­" ktorÃ½ vas premiestni na ÄalÅ¡iu sprÃ¡vu nasledujÃºcu
+      ihneÄ po sprÃ¡vu, ktorÃº si teraz prezerÃ¡te.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      "Preposla»"
+      "PreposlaÅ¥"
    </title>
    <description>
       <p>
-      Ak kliknete na odkaz "Preposla»", ktorı je vpravo, otvorí sa stránka "Nová
-      správa" s pred chvíµou èítanou správou v textovom poli pod názvom 
-      --Pôvodná správa--".  "Fwd:" je predpona ktorá sa v tomto prípade dopí¹e na
-      zaèiatok správneho poµa. Mno¾stvo polí pre poslanie na po¹tové adresy vás
-      èaká pre dokonèením správy. Pozícia kurzoru mô¾e by» v textovom poli v poradí
-      pre pridanie komentára do u¾ existujúceho textu. Mô¾te tie¾ vyu¾i» mo¾nos»
-      Preposla» ako prílohu.
+      Ak kliknete na odkaz "PreposlaÅ¥", ktorÃ½ je vpravo, otvorÃ­ sa strÃ¡nka "NovÃ¡
+      sprÃ¡va" s pred chvÃ­Ä¾ou ÄÃ­tanou sprÃ¡vou v textovom poli pod nÃ¡zvom 
+      --PÃ´vodnÃ¡ sprÃ¡va--".  "Fwd:" je predpona ktorÃ¡ sa v tomto prÃ­pade dopÃ­Å¡e na
+      zaÄiatok sprÃ¡vneho poÄ¾a. MnoÅ¾stvo polÃ­ pre poslanie na poÅ¡tovÃ© adresy vÃ¡s
+      ÄakÃ¡ pre dokonÄenÃ­m sprÃ¡vy. PozÃ­cia kurzoru mÃ´Å¾e byÅ¥ v textovom poli v poradÃ­
+      pre pridanie komentÃ¡ra do uÅ¾ existujÃºceho textu. MÃ´Å¾te tieÅ¾ vyuÅ¾iÅ¥ moÅ¾nosÅ¥
+      PreposlaÅ¥ ako prÃ­lohu.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Odpoveda»
+      OdpovedaÅ¥
    </title>
    <description>
       <p>
-     Kliknutím na tento odkaz sa dostanete na písanie novej správy odosielateµovi
-     pred chvíµou èítanej správy. 
+     KliknutÃ­m na tento odkaz sa dostanete na pÃ­sanie novej sprÃ¡vy odosielateÄ¾ovi
+     pred chvÃ­Ä¾ou ÄÃ­tanej sprÃ¡vy. 
      Click this link to return a new message to the originator of the
-      previously viewed message.  "Re:" je predpona ktorá sa dopí¹e na zaèiatok
-      riadku poµa "Predmet". Taktie¾ sa symbol ">" dopí¹e pred ka¾dı riadok pôvodnej
-      správy. Text ktorım odpovedáte, nebude tento znak na zaèiatku ka¾dého riadku.
-      Toto mô¾e zapríèini» ze funkcia zalomenia riadkov spôsobí neèitateµnos»
-      správy. Skúste sa teda v nastavení nastavi» voµbu <i>Zalomi» prichádzajúci
-      text</i> na väè¹ie èíslo. Va¹e komnetáre mô¾ete urobi» kdekoµvek v textovom
-      poli alebo ich aj prida» ku citovanej správe. Mô¾te taktie¾ vyu¾i» mo¾nos»
-      s prílohou.
+      previously viewed message.  "Re:" je predpona ktorÃ¡ sa dopÃ­Å¡e na zaÄiatok
+      riadku poÄ¾a "Predmet". TaktieÅ¾ sa symbol ">" dopÃ­Å¡e pred kaÅ¾dÃ½ riadok pÃ´vodnej
+      sprÃ¡vy. Text ktorÃ½m odpovedÃ¡te, nebude tento znak na zaÄiatku kaÅ¾dÃ©ho riadku.
+      Toto mÃ´Å¾e zaprÃ­ÄiniÅ¥ ze funkcia zalomenia riadkov spÃ´sobÃ­ neÄitateÄ¾nosÅ¥
+      sprÃ¡vy. SkÃºste sa teda v nastavenÃ­ nastaviÅ¥ voÄ¾bu <i>ZalomiÅ¥ prichÃ¡dzajÃºci
+      text</i> na vÃ¤ÄÅ¡ie ÄÃ­slo. VaÅ¡e komnetÃ¡re mÃ´Å¾ete urobiÅ¥ kdekoÄ¾vek v textovom
+      poli alebo ich aj pridaÅ¥ ku citovanej sprÃ¡ve. MÃ´Å¾te taktieÅ¾ vyuÅ¾iÅ¥ moÅ¾nosÅ¥
+      s prÃ­lohou.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Odpoveda» v¹etkım
+      OdpovedaÅ¥ vÅ¡etkÃ½m
    </title>
    <description>
       <p>
-      Je to to isté ako voµba "Odpoveda»", ale odpoviete v¹etkım ktorı túto správu
-      dostali (v hlavièke správy boli uvedení ako prijímatelia).
+      Je to to istÃ© ako voÄ¾ba "OdpovedaÅ¥", ale odpoviete vÅ¡etkÃ½m ktorÃ½ tÃºto sprÃ¡vu
+      dostali (v hlaviÄke sprÃ¡vy boli uvedenÃ­ ako prijÃ­matelia).
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      	Zobrazi» celú Hlavièku
+      	ZobraziÅ¥ celÃº HlaviÄku
    </title>
    <description>
       <p>
-      Toto zobrazí úplnú hlavièku správy. To zahàòa trasu odkiaµ správa ide kam,
-      a mnono detailnıch informácií o správe samej.
+      Toto zobrazÃ­ ÃºplnÃº hlaviÄku sprÃ¡vy. To zahÅ•Åˆa trasu odkiaÄ¾ sprÃ¡va ide kam,
+      a mnono detailnÃ½ch informÃ¡ciÃ­ o sprÃ¡ve samej.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Zobrazi» Verziu pre Tlaè
+      ZobraziÅ¥ Verziu pre TlaÄ
    </title>
    <description>
       <p>
-      Ak chcete vytlaèi» správu, pravdepodobne budete chcie» kliknú» na tento
-      odkaz. Vytvorí nové okno, obsahujúce správu, ale s odstránenımi v¹etkımi
-      nepotrebnımi informáciami a menu, pripravenú na tlaè. Kliknutím na tlaèítko
-      Tlaèi» v tomto okne to urobíte, Pre návrat na pôvodnú správu kliknite na
-      Zavrie».
+      Ak chcete vytlaÄiÅ¥ sprÃ¡vu, pravdepodobne budete chcieÅ¥ kliknÃºÅ¥ na tento
+      odkaz. VytvorÃ­ novÃ© okno, obsahujÃºce sprÃ¡vu, ale s odstrÃ¡nenÃ½mi vÅ¡etkÃ½mi
+      nepotrebnÃ½mi informÃ¡ciami a menu, pripravenÃº na tlaÄ. KliknutÃ­m na tlaÄÃ­tko
+      TlaÄiÅ¥ v tomto okne to urobÃ­te, Pre nÃ¡vrat na pÃ´vodnÃº sprÃ¡vu kliknite na
+      ZavrieÅ¥.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Stiahnu» toto ako súbor
+      StiahnuÅ¥ toto ako sÃºbor
    </title>
    <description>
       <p>
-      Dole nad spodnou li¹tou nájdete tento odkaz. Kliknutím na tento odkaz ulo¾íte
-      túto správu ako jednoduchı text. Zjednodu¹ená hlavièka správy sa vlo¾i na
-      zaèiatok správy.
+      Dole nad spodnou liÅ¡tou nÃ¡jdete tento odkaz. KliknutÃ­m na tento odkaz uloÅ¾Ã­te
+      tÃºto sprÃ¡vu ako jednoduchÃ½ text. ZjednoduÅ¡enÃ¡ hlaviÄka sprÃ¡vy sa vloÅ¾i na
+      zaÄiatok sprÃ¡vy.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Prílohy
+      PrÃ­lohy
    </title>
    <description>
       <p>
-      V¹etky prílohy poslané s prijatou správou sa zobrazia na spodku správy vo
-      vyfarbenom políèku. Vpravo je súbor reprezentovanı odkazom s popisom typu
-      súboru. Kliknutím na meno súboru sa zobrazí dialóg na stihnutie súboru.
-      Kliknite na "Stiahnu»" na pravej strane. <BR>
-      Ak vá¹ prehliadaè podporuje prezeranie typu súboru prílohy, inı odkaz,
-      "Zobrazi»", vám zobrazí priamo v prehliadaèi èo obsahuje súbor.
+      VÅ¡etky prÃ­lohy poslanÃ© s prijatou sprÃ¡vou sa zobrazia na spodku sprÃ¡vy vo
+      vyfarbenom polÃ­Äku. Vpravo je sÃºbor reprezentovanÃ½ odkazom s popisom typu
+      sÃºboru. KliknutÃ­m na meno sÃºboru sa zobrazÃ­ dialÃ³g na stihnutie sÃºboru.
+      Kliknite na "StiahnuÅ¥" na pravej strane. <BR>
+      Ak vÃ¡Å¡ prehliadaÄ podporuje prezeranie typu sÃºboru prÃ­lohy, inÃ½ odkaz,
+      "ZobraziÅ¥", vÃ¡m zobrazÃ­ priamo v prehliadaÄi Äo obsahuje sÃºbor.
       </p>
    </description>
 </section>

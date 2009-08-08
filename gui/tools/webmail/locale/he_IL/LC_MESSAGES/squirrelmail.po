@@ -1,5 +1,5 @@
 # Hebrew translation
-# Copyright (c) 2002-2005 SquirrelMail Project Team
+# Copyright (c) 2002-2009 The SquirrelMail Project Team
 # yoav <yoavb@zavit.net.il>, 2002.
 #
 msgid ""

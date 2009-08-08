@@ -281,15 +281,14 @@ function check_plugin_version($plugin_name,
 
 
 //
-// taken from functions/plugin.php on 2008/07/22
+// taken from functions/plugin.php on 2007/06/29
 // since 1.5.2
 //
 if (!function_exists('get_plugin_requirement'))
 {
 function get_plugin_requirement($plugin_name, $requirement,
-                                $ignore_incompatible = TRUE,
                                 $force_inclusion = FALSE)
-{
+{                               
 
    $info_function = $plugin_name . '_info';
    $plugin_info = array();
@@ -385,19 +384,10 @@ function get_plugin_requirement($plugin_name, $requirement,
          $b = $version_array[1];
          $c = $version_array[2];
 
-         // complicated way to say we are interested in these overrides
-         // if the version is applicable to us and if the overrides include
-         // the requirement we are looking for, or if the plugin is not
-         // compatible with this version of SquirrelMail (unless we are
-         // told to ignore such)
-         //
          if (check_sm_version($a, $b, $c)
-          && ((!$ignore_incompatible
-            && (!empty($requirement_overrides[SQ_INCOMPATIBLE])
-             || $requirement_overrides === SQ_INCOMPATIBLE))
-           || (is_array($requirement_overrides)
-            && isset($requirement_overrides[$requirement])
-            && !is_null($requirement_overrides[$requirement]))))
+          && ( !empty($requirement_overrides[SQ_INCOMPATIBLE])
+          || (isset($requirement_overrides[$requirement])
+          && !is_null($requirement_overrides[$requirement]))))
          {
 
             if (empty($highest_version_array)
@@ -409,8 +399,7 @@ function get_plugin_requirement($plugin_name, $requirement,
              && $highest_version_array[2] < $c))
             {
                $highest_version_array = $version_array;
-               if (!empty($requirement_overrides[SQ_INCOMPATIBLE])
-                || $requirement_overrides === SQ_INCOMPATIBLE)
+               if (!empty($requirement_overrides[SQ_INCOMPATIBLE]))
                   $requirement_value_override = SQ_INCOMPATIBLE;
                else
                   $requirement_value_override = $requirement_overrides[$requirement];
@@ -717,10 +706,6 @@ function sq_change_text_domain($domain_name, $directory='') {
     static $domains_already_seen = array();
     $return_value = textdomain(NULL);
 
-    // empty domain defaults to "squirrelmail"
-    //
-    if (empty($domain_name)) $domain_name = 'squirrelmail';
-
     // only need to call bindtextdomain() once unless
     // $use_gettext is turned on
     //
@@ -825,7 +810,10 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
 {
 
    require_once(SM_PATH . 'functions/mime.php');
-   require_once(SM_PATH . 'class/mime.class.php');
+   require_once(SM_PATH . 'class/mime/Message.class.php');
+   require_once(SM_PATH . 'class/mime/Rfc822Header.class.php');
+   require_once(SM_PATH . 'class/mime/ContentType.class.php');
+   require_once(SM_PATH . 'class/mime/AddressStructure.class.php');
 
    if (empty($message))
    {
@@ -861,16 +849,14 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
    if (!$useSendmail) {
       require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
       $deliver = new Deliver_SMTP();
-      global $smtpServerAddress, $smtpPort, $pop_before_smtp,
-             $domain, $pop_before_smtp_host;
+      global $smtpServerAddress, $smtpPort, $pop_before_smtp, $domain;
 
       $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
-      if (empty($pop_before_smtp_host)) $pop_before_smtp_host = $smtpServerAddress;
       $user = '';
       $pass = '';
       get_smtp_user($user, $pass);
       $stream = $deliver->initStream($message,$domain,0,
-                $smtpServerAddress, $smtpPort, $user, $pass, $authPop, $pop_before_smtp_host);
+                $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
    } else {
       require_once(SM_PATH . 'class/deliver/Deliver_SendMail.class.php');
       global $sendmail_path, $sendmail_args;
@@ -900,193 +886,6 @@ function sq_send_mail($to, $subject, $body, $from, $cc='', $bcc='', $message='')
 
    return array($success, $message_id);
 
-}
-}
-
-
-
-//
-// taken from functions/html.php on 2008/05/21
-// since 1.5.2
-//
-if (!function_exists('set_uri_vars'))
-{
-function set_uri_vars($uri, $values, $sanitize=TRUE) {
-    foreach ($values as $key => $value)
-        if (is_array($value)) {
-          $i = 0;
-          foreach ($value as $val)
-             $uri = set_url_var($uri, $key . '[' . $i++ . ']', $val, $sanitize);
-        }
-        else
-          $uri = set_url_var($uri, $key, $value, $sanitize);
-    return $uri;
-}
-}
-
-
-
-//
-// taken from 1.5.2-svn functions/global.php on 2008/11/26
-// since 1.5.2 and 1.4.17
-//
-if ((!compatibility_check_sm_version(1, 4, 17)
- || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 2)))
- && !function_exists('is_ssl_secured_connection'))
-{
-function is_ssl_secured_connection()
-{
-    global $sq_ignore_http_x_forwarded_headers, $sq_https_port;
-    $https_env_var = getenv('HTTPS');
-    if ($sq_ignore_http_x_forwarded_headers
-     || !sqgetGlobalVar('HTTP_X_FORWARDED_PROTO', $forwarded_proto, SQ_SERVER))
-        $forwarded_proto = '';
-    if (empty($sq_https_port)) // won't work with port 0 (zero)
-       $sq_https_port = 443;
-    if ((isset($https_env_var) && strcasecmp($https_env_var, 'on') === 0)
-     || (sqgetGlobalVar('HTTPS', $https, SQ_SERVER) && !empty($https)
-      && strcasecmp($https, 'off') !== 0)
-     || (strcasecmp($forwarded_proto, 'https') === 0)
-     || (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER)
-      && $server_port == $sq_https_port))
-        return TRUE;
-    return FALSE;
-}
-global $is_secure_connection;
-$is_secure_connection = is_ssl_secured_connection();
-}
-
-
-
-//
-// taken from 1.5.2-svn functions/files.php on 2008/11/26
-// since 1.5.2
-//
-if (!function_exists('sq_is_writable'))
-{
-global $server_os;
-if (DIRECTORY_SEPARATOR == '\\') $server_os = 'windows'; else $server_os = '*nix';
-function sq_is_writable($path) {          
-  
-   global $server_os;
-  
-  
-   // under *nix with safe_mode off, use the native is_writable()
-   //                                              
-   if ($server_os == '*nix' && !(bool)ini_get('safe_mode'))
-      return is_writable($path);                   
-  
-  
-   // if it's a directory, that means we have to create a temporary
-   // file therein                                 
-   //                                              
-   $delete_temp_file = FALSE;             
-   if (@is_dir($path) && ($temp_filename = @sq_create_tempfile($path)))
-   {                                      
-      $path .= DIRECTORY_SEPARATOR . $temp_filename;
-      $delete_temp_file = TRUE;           
-   }
-  
-  
-   // try to open the file for writing (without trying to create it)
-   //
-   if (!@is_dir($path) && ($FILE = @fopen($path, 'r+')))
-   {
-      @fclose($FILE);
-
-      // delete temp file if needed
-      //
-      if ($delete_temp_file)
-         @unlink($path);
-
-      return TRUE;
-   }
-
-
-   // delete temp file if needed
-   //
-   if ($delete_temp_file)
-      @unlink($path);
-
-   return FALSE;
-
-}
-}
-
-
-
-//
-// taken from 1.5.2-svn functions/files.php on 2008/11/26
-// since 1.5.2
-//
-if (!function_exists('sq_create_tempfile'))
-{
-function sq_create_tempfile($directory)
-{
-
-    // give up after 1000 tries
-    $maximum_tries = 1000;
-
-    // using PHP >= 4.3.2 we can be truly atomic here
-    $filemods = check_php_version(4, 3, 2) ? 'x' : 'w';
-
-    for ($try = 0; $try < $maximum_tries; ++$try) {
-
-        $localfilename = GenerateRandomString(32, '', 7);
-        $full_localfilename = $directory . DIRECTORY_SEPARATOR . $localfilename;
-
-        // filename collision. try again
-        if ( file_exists($full_localfilename) ) {
-            continue;
-        }
-
-        // try to open for (binary) writing
-        $fp = @fopen( $full_localfilename, $filemods);
-
-        if ($fp !== FALSE) {
-            // success! make sure it's not readable, close and return filename
-            chmod($full_localfilename, 0600);
-            fclose($fp);
-            return $localfilename;
-        }
-
-    }
-
-    // we tried as many times as we could but didn't succeed.
-    return FALSE;
-
-}
-}
-
-
-
-//
-// taken from 1.5.2-svn functions/global.php on 2008/12/04
-// since 1.5.2
-//
-if (!function_exists('get_process_owner_info'))
-{
-function get_process_owner_info()
-{
-    if (!function_exists('posix_getuid'))
-        return FALSE;
-
-    $process_info['uid'] = posix_getuid();
-    $process_info['euid'] = posix_geteuid();
-    $process_info['gid'] = posix_getgid();
-    $process_info['egid'] = posix_getegid();
-
-    $user_info = posix_getpwuid($process_info['uid']);
-    $euser_info = posix_getpwuid($process_info['euid']);
-    $group_info = posix_getgrgid($process_info['gid']);
-    $egroup_info = posix_getgrgid($process_info['egid']);
-
-    $process_info['name'] = $user_info['name'];
-    $process_info['ename'] = $euser_info['name'];
-    $process_info['group'] = $user_info['name'];
-    $process_info['egroup'] = $euser_info['name'];
-
-    return $process_info;
 }
 }
 

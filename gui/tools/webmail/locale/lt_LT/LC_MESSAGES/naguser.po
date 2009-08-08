@@ -1,7 +1,7 @@
-# Squirrelmail Lithuanian Translation.
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# SquirrelMail Lithuanian Translation.
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2001.
-# $Id: naguser.po 9522 2005-06-05 11:50:09Z jervfors $
+# $Id: naguser.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: naguser 1.0\n"

@@ -1,4 +1,4 @@
-# vkeyboard plugin for Squirrelmail project.
+# vkeyboard plugin for SquirrelMail project.
 # Copyright (C) 2004 Daniel K. Imori
 # This file is distributed under the same license as the vkeyboard package.
 # Daniel K. Imori <daniel@bastion.com.br>, 2004.

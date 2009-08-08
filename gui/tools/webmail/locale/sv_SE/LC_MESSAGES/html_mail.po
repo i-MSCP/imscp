@@ -1,17 +1,17 @@
 # Swedish (sv_SE) html_mail Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2005.
-# $Id: html_mail.po 10201 2005-10-26 05:15:12Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: html_mail.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: html_mail 2.3\n"
 "POT-Creation-Date: 2005-10-24 21:00+0300\n"
 "PO-Revision-Date: 2005-10-26 07:14+0200\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #, php-format
@@ -25,35 +25,35 @@ msgid ""
 "Warning: all special formatting will be lost.  Are you sure you want to send "
 "your message in plain text format?"
 msgstr ""
-"Varning: all formatering kommer att förloras. Är du säker på att du vill "
+"Varning: all formatering kommer att fÃ¶rloras. Ã„r du sÃ¤ker pÃ¥ att du vill "
 "skicka brevet som ren text?"
 
 msgid "Plain Text"
 msgstr "Ren text"
 
 msgid "Compose in HTML"
-msgstr "Skriv i HTML-läge"
+msgstr "Skriv i HTML-lÃ¤ge"
 
 #, php-format
 msgid ""
 "FATAL: HTML_Mail plugin must come AFTER %s in plugins array.  Please modify "
 "plugin order using conf.pl or by editing config/config.php"
 msgstr ""
-"FEL: Insticksmodulen HTML Mail måste komma efter %s i konfigureringen. Ändra "
-"ordningen genom att använda conf.pl eller genom att redigera config/config."
+"FEL: Insticksmodulen HTML Mail mÃ¥ste komma efter %s i konfigureringen. Ã„ndra "
+"ordningen genom att anvÃ¤nda conf.pl eller genom att redigera config/config."
 "php"
 
 msgid "Subject"
-msgstr "Ärende"
+msgstr "Ã„rende"
 
 msgid "From"
-msgstr "Från"
+msgstr "FrÃ¥n"
 
 msgid "Default Email Composition Format:"
-msgstr "Förvalt format för nya brev:"
+msgstr "FÃ¶rvalt format fÃ¶r nya brev:"
 
 msgid "Use Emoticons:"
-msgstr "Använd ikoner:"
+msgstr "AnvÃ¤nd ikoner:"
 
 msgid "Yes"
 msgstr "Ja"
@@ -65,13 +65,13 @@ msgid "Only Reply In HTML When Viewing HTML Format:"
 msgstr "Svara endast som HTML om brevet visas som HTML:"
 
 msgid "(Always Attempt To Reply In HTML)"
-msgstr "(Försök alltid svara som HTML)"
+msgstr "(FÃ¶rsÃ¶k alltid svara som HTML)"
 
 msgid "Only Allow Unsafe Images In HTML Replies When Viewing Unsafe Images:"
-msgstr "Tillåt endast osäkra bilder när osäkra bilder visas:"
+msgstr "TillÃ¥t endast osÃ¤kra bilder nÃ¤r osÃ¤kra bilder visas:"
 
 msgid "(Always Include Unsafe Images)"
-msgstr "(Inkludera alltid osäkra bilder)"
+msgstr "(Inkludera alltid osÃ¤kra bilder)"
 
 msgid "HTML Editor Type:"
 msgstr "HTML-editor"

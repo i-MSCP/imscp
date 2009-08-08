@@ -1,0 +1,52 @@
+# Vietnamese (vi) empty_folders Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: empty_folders.pot 10877 2006-03-04 11:22:22Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: empty_folders 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-11-12 16:57+0200\n"
+"PO-Revision-Date: 2008-03-09 22:55+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
+
+#: functions.php:57
+msgid "empty"
+msgstr "rỗng"
+
+#: functions.php:142
+msgid "Empty Link"
+msgstr "Liên kết rỗng"
+
+#: functions.php:181
+msgid "Toggle Special Folders"
+msgstr "Bật/tắt thư mục đặc biệt"
+
+#: functions.php:182
+msgid "Toggle All"
+msgstr "Bật/tắt tất cả"
+
+#: functions.php:188
+msgid "Link behavior"
+msgstr "Ứng xử liên kết"
+
+#: functions.php:192
+msgid "Move to Trash"
+msgstr ""
+"Cho vào Sọt rác"
+
+#: functions.php:196
+msgid "Expunge"
+msgstr "Xoá hẳn"
+
+#: functions.php:201
+msgid "Save"
+msgstr "Lưu"

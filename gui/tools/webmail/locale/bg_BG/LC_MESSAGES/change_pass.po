@@ -1,0 +1,76 @@
+# $Id: change_pass.po 13719 2009-05-18 12:02:52Z jervfors $
+# Bulgarian change_pass plugin translation.
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Marian Kalinov Popov <mano@pazardjik.com>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: change_pass 2.5\n"
+"POT-Creation-Date: 2003-11-08 12:12-0600\n"
+"PO-Revision-Date: 2005-06-05 13:10+0200\n"
+"Last-Translator: Marian Popov <mano@pazardjik.com>\n"
+"Language-Team: BULGARIAN <mano@pazardjik.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=cp1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:36 setup.php:18
+msgid "Change Password"
+msgstr "Смяна на Паролата"
+
+#: options.php:77
+msgid "Closing Connection"
+msgstr "Прекъсване на връзката"
+
+#: options.php:137
+msgid "Connecting to Password Server"
+msgstr "Свързване към сървър за пароли"
+
+#: options.php:141
+msgid "ERROR:"
+msgstr "ГРЕШКА:"
+
+#: options.php:52
+msgid "New Password"
+msgstr "Нова Парола"
+
+#: options.php:51
+msgid "Old Password"
+msgstr "Стара Парола"
+
+#: options.php:173 setup.php:35
+msgid "Password changed successfully."
+msgstr "Паролата е сменена успешно."
+
+#: options.php:64
+msgid "Submit"
+msgstr "Въведи"
+
+#: setup.php:20
+msgid ""
+"This connects to your local Password Server to change your email password."
+msgstr "Свързване към локалния сървър за пароли за смяна паролата на Вашия имеил."
+
+#: options.php:53
+msgid "Verify New Password"
+msgstr "Проверка на новата парола"
+
+#: options.php:112
+msgid "You must also type in your new password in the verify box."
+msgstr "Трябва да въведете новата парола и в полето за проверка."
+
+#: options.php:109
+msgid "You must type in a new password."
+msgstr "Трябва да въведете нова парола."
+
+#: options.php:106
+msgid "You must type in your old password."
+msgstr "Трябва на въведете старата парола."
+
+#: options.php:115
+msgid "Your new password doesn't match the verify password."
+msgstr "Вашата нова парола не съвпада."
+
+#: options.php:118
+msgid "Your old password is not correct."
+msgstr "Старата Ви парола не е правилна."

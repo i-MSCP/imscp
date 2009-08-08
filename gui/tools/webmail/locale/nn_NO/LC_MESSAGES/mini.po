@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the SquirrelMail package.
 # Copyright (C) The SquirrelMail Project Team, 2006
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
-# $Id: mini.po 11046 2006-04-09 16:39:40Z tokul $
+# $Id: mini.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mini 0.3rc1\n"
@@ -19,7 +19,7 @@ msgid "mini window"
 msgstr "mini vindauge"
 
 msgid "Mini SquirrelMail"
-msgstr "Mini Squirrelmail"
+msgstr "Mini SquirrelMail"
 
 msgid "Window width (in pixels)"
 msgstr "Vindauge beidde (i pikslar)"
@@ -68,7 +68,7 @@ msgid ""
 "Could not find a text part. Please use the main SquirrelMail window to read "
 "this message"
 msgstr ""
-"Kan ikkje finna a tekst del. Bruk hoved Squirrelmail programmet for å lesa "
+"Kan ikkje finna a tekst del. Bruk hoved SquirrelMail programmet for å lesa "
 "denne meldinga"
 
 msgid "No subject"

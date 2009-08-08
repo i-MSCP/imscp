@@ -1,8 +1,7 @@
-# translation of proon.po to
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) proon Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Dutch (nl_NL) proon Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: proon.pot 10877 2006-03-04 11:22:22Z jervfors $
 msgid ""
 msgstr ""
@@ -460,7 +459,7 @@ msgid ""
 "specified or a value of 0 means 'every sign-on'.  The local SquirrelMail "
 "site administrator may have specified a maximum value for sign-on pruning "
 "frequency, in which case that takes precedence if it is lower."
-msgstr "Normaliter wordt er gesnoeid op het moment dat u inlogt bij SquirrelMail. Als u wilt dat dit minder vaak wordt gedaan kunt u hier een getal opgeven. Bijvoorbeeld de waarde 3 betekent 'elke derde keer dat wordt ingelogd'. Als u geen waarde, of de waarde 0, opgeeft zal er bij elke login worden gesnoeid. Uw sitebeheerder van Squirrelmail kan een maximumwaarde hebben opgegeven voor het snoeien bij inloggen. Deze zal worden toegepast als die lagere snoeifrequentie gebruikt."
+msgstr "Normaliter wordt er gesnoeid op het moment dat u inlogt bij SquirrelMail. Als u wilt dat dit minder vaak wordt gedaan kunt u hier een getal opgeven. Bijvoorbeeld de waarde 3 betekent 'elke derde keer dat wordt ingelogd'. Als u geen waarde, of de waarde 0, opgeeft zal er bij elke login worden gesnoeid. Uw sitebeheerder van SquirrelMail kan een maximumwaarde hebben opgegeven voor het snoeien bij inloggen. Deze zal worden toegepast als die lagere snoeifrequentie gebruikt."
 
 msgid "maximum"
 msgstr "maximum"
@@ -478,7 +477,7 @@ msgid ""
 "pruning attempts will be made at the specified intervals thereafter.  The "
 "actual pruning happens coincident with some screen update activity, so an "
 "idle SquirrelMail session will not be doing any automatic pruning."
-msgstr "Het snoeien kan handmatig vanaf deze pagina worden uitgevoerd of periodiek en automatisch. Dit item bepaalt de terugkomende tijdsperiode. De opmaak is hetzelfde als voor de leeftijdslimieten voor individuele mappen. Als u niets opgeeft zal er geen automatisch/periodiek snoeien plaatsvinden. U kunt dit veld dus zien als een aan/uitschakelaar voor het automatisch snoeien. Om veiligheidsredenen wordt 0 gezien als 'geen waarde opgegeven'. Uw Squirrelmail-systeembeheerder kan een minimale snoei-interval hebben opgegeven. Als deze lager is dan de uwe zal die worden gebruikt. De terugkominterfal wordt gemeten vanaf het moment dat u inlogt bij SquirrelMail. Het automatisch opschonen gebeurt dus op de opgeven intervals erna. Het eigenlijke snoeien gebeurt tijdens het verversen van het scherm, dus in een inactieve SquirrelMail-sessie zal niet worden gesnoeid."
+msgstr "Het snoeien kan handmatig vanaf deze pagina worden uitgevoerd of periodiek en automatisch. Dit item bepaalt de terugkomende tijdsperiode. De opmaak is hetzelfde als voor de leeftijdslimieten voor individuele mappen. Als u niets opgeeft zal er geen automatisch/periodiek snoeien plaatsvinden. U kunt dit veld dus zien als een aan/uitschakelaar voor het automatisch snoeien. Om veiligheidsredenen wordt 0 gezien als 'geen waarde opgegeven'. Uw SquirrelMail-systeembeheerder kan een minimale snoei-interval hebben opgegeven. Als deze lager is dan de uwe zal die worden gebruikt. De terugkominterfal wordt gemeten vanaf het moment dat u inlogt bij SquirrelMail. Het automatisch opschonen gebeurt dus op de opgeven intervals erna. Het eigenlijke snoeien gebeurt tijdens het verversen van het scherm, dus in een inactieve SquirrelMail-sessie zal niet worden gesnoeid."
 
 msgid "minimum"
 msgstr "minimum"

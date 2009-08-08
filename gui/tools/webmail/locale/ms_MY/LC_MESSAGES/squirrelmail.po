@@ -1,10 +1,10 @@
-# Malay Language (Malaysia) Squirrelmail Translation
-# Copyright (C) SquirrelMail Development Project , 1999-2004
+# Malay Language (Malaysia) SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Sapuan bin Samion <sapuan@pc.jaring.my>, 2001-2003
-# $Id: squirrelmail.po 9317 2005-04-16 18:27:06Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
-"Project-Id-Version: squirrelmail VERSION\n"
+"Project-Id-Version: SquirrelMail\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-16 19:47+0200\n"
 "PO-Revision-Date: 2003-09-02 11:50+0800\n"
@@ -1801,7 +1801,7 @@ msgstr "Fail Konfigurasi Versi"
 
 #, fuzzy
 msgid "SquirrelMail Version"
-msgstr "Squirrelmail Versi"
+msgstr "SquirrelMail Versi"
 
 msgid "PHP Version"
 msgstr "PHP Versi"
@@ -2695,8 +2695,8 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "Laksanakan beberapa command percubaan, tunjukkan command dan keputusannya. "
-"Percubaan ini menggunakan command IMAP Squirrelmail dan konfigurasi Squirrel "
-"mail anda sekarang. Command string sendiri boleh digunakan."
+"Percubaan ini menggunakan command IMAP SquirrelMail dan konfigurasi SquirrelMail "
+"anda sekarang. Command string sendiri boleh digunakan."
 
 msgid "Mailinglist"
 msgstr "Senarai Email"

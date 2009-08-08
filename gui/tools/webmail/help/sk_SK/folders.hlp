@@ -1,47 +1,47 @@
 <chapter>
    <title>   
-      Prieèinky
+      PrieÄinky
    </title>   
    <summary>
-      Správy si mô¾te ulo¾i» v rôznych prieèinkov. Toto je zvlá¹» u¾itoèné ak
-      máte mno¾stvo správ a chcete aby boli organizované. Mo¾nos» "Prieèinky"
-      vám umo¾òuje manipulova» s prieèinkami.
+      SprÃ¡vy si mÃ´Å¾te uloÅ¾iÅ¥ v rÃ´znych prieÄinkov. Toto je zvlÃ¡Å¡Å¥ uÅ¾itoÄnÃ© ak
+      mÃ¡te mnoÅ¾stvo sprÃ¡v a chcete aby boli organizovanÃ©. MoÅ¾nosÅ¥ "PrieÄinky"
+      vÃ¡m umoÅ¾Åˆuje manipulovaÅ¥ s prieÄinkami.
    </summary>
 </chapter>
 
 <section>
    <title>
-      Prihlásené prieèinky a µavı rámec
+      PrihlÃ¡senÃ© prieÄinky a Ä¾avÃ½ rÃ¡mec
    </title>
    <description>
       <p>
-      Aktuálne prihlásené prieèinky sú zobrazené vo vyfarbenom priestore do µava.
-      Tento µavı rámec sa dá v polo¾ke "Mo¾nosti" nastavi» tak, aby sa automaticky
-      znovu zaktualizoval. Navrchu µavého rámca je veµkı a tuènı nadpis. Ak ste
-      urobili zmeny nastavenia v prihlásenıch prieèinkoch pomocou polo¾ky v menu
-      "Prieèinky", mo¾te zobrazenie aktulizova» kliknutím na odkaz pod tımto názvom
-      (aktualizova» zoznam zlo¾iek). Ten sa zaktualizuje taktie¾.
+      AktuÃ¡lne prihlÃ¡senÃ© prieÄinky sÃº zobrazenÃ© vo vyfarbenom priestore do Ä¾ava.
+      Tento Ä¾avÃ½ rÃ¡mec sa dÃ¡ v poloÅ¾ke "MoÅ¾nosti" nastaviÅ¥ tak, aby sa automaticky
+      znovu zaktualizoval. Navrchu Ä¾avÃ©ho rÃ¡mca je veÄ¾kÃ½ a tuÄnÃ½ nadpis. Ak ste
+      urobili zmeny nastavenia v prihlÃ¡senÃ½ch prieÄinkoch pomocou poloÅ¾ky v menu
+      "PrieÄinky", moÅ¾te zobrazenie aktulizovaÅ¥ kliknutÃ­m na odkaz pod tÃ½mto nÃ¡zvom
+      (aktualizovaÅ¥ zoznam zloÅ¾iek). Ten sa zaktualizuje taktieÅ¾.
       </p><p>
-      Prvı tu zobrazenı prieèinok obsahuje prijatú po¹tu. Od prvého prieèinka
-      vpravo v zátvorke "( )" je poèet <I>nepreèítanıch</I> správ.  Toto èíslo
-      sa pravdepodobne odli¹uje od celkového poètu správ zobrazenıch v pravom rámci.
-      Pod hlavnım prieèinkom sú pravdepodobne ïal¹ie prieèinky a pod-prieèinky.
-      Farby tıchto prieèinkov sa menia v závislosti od aktuálne zvolenej schémy
-      na stránke "Mo¾nosti".
+      PrvÃ½ tu zobrazenÃ½ prieÄinok obsahuje prijatÃº poÅ¡tu. Od prvÃ©ho prieÄinka
+      vpravo v zÃ¡tvorke "( )" je poÄet <I>nepreÄÃ­tanÃ½ch</I> sprÃ¡v.  Toto ÄÃ­slo
+      sa pravdepodobne odliÅ¡uje od celkovÃ©ho poÄtu sprÃ¡v zobrazenÃ½ch v pravom rÃ¡mci.
+      Pod hlavnÃ½m prieÄinkom sÃº pravdepodobne ÄalÅ¡ie prieÄinky a pod-prieÄinky.
+      Farby tÃ½chto prieÄinkov sa menia v zÃ¡vislosti od aktuÃ¡lne zvolenej schÃ©my
+      na strÃ¡nke "MoÅ¾nosti".
       </p>
    </description>
 </section>   
 
 <section>
    <title>
-      Odstráni» prieèinok
+      OdstrÃ¡niÅ¥ prieÄinok
    </title>
    <description>
       <p>
-      Mô¾te zmaza» akıkoµvek prieèinok zobrazenı v rolovacom menu vµavo od tlaèidla
-      "Odstráni»". Je treba poznamena», ¾e tento zoznam <B>nemusí</B> obsahova» v¹etky
-      prieèinky. ©peciálne prieèinky ako napríklad Odoslaná po¹ta a Kô¹ nemô¾u by»
-      odstránené a samozrejme nemô¾te zmaza» prieèinok "Doruèená po¹ta".
+      MÃ´Å¾te zmazaÅ¥ akÃ½koÄ¾vek prieÄinok zobrazenÃ½ v rolovacom menu vÄ¾avo od tlaÄidla
+      "OdstrÃ¡niÅ¥". Je treba poznamenaÅ¥, Å¾e tento zoznam <B>nemusÃ­</B> obsahovaÅ¥ vÅ¡etky
+      prieÄinky. Å peciÃ¡lne prieÄinky ako naprÃ­klad OdoslanÃ¡ poÅ¡ta a KÃ´Å¡ nemÃ´Å¾u byÅ¥
+      odstrÃ¡nenÃ© a samozrejme nemÃ´Å¾te zmazaÅ¥ prieÄinok "DoruÄenÃ¡ poÅ¡ta".
       </p>
    </description>
 </section>
@@ -49,54 +49,54 @@
 
 <section>
    <title>
-      Vytvori» prieèinok
+      VytvoriÅ¥ prieÄinok
    </title>
    <description>
       <p>
-      Prieèinky mô¾u vy» vytvorené jednoduchım napísaním mena to textové políèka
-      a stisnutím tlaèidla Vytvori» prieèinok. Ak si prajete aby tento prieèinok
-      bol pod-prieèinom iného prieèinku, mô¾te si v rolovacom menu prieèinkov
-      vybra» tento prieèinok.
+      PrieÄinky mÃ´Å¾u vyÅ¥ vytvorenÃ© jednoduchÃ½m napÃ­sanÃ­m mena to textovÃ© polÃ­Äka
+      a stisnutÃ­m tlaÄidla VytvoriÅ¥ prieÄinok. Ak si prajete aby tento prieÄinok
+      bol pod-prieÄinom inÃ©ho prieÄinku, mÃ´Å¾te si v rolovacom menu prieÄinkov
+      vybraÅ¥ tento prieÄinok.
       </p>
       <p>
-      Na niektorıch po¹tovıch serveroch sú dva typy prieèinkov. Jeden z nich
-      obsahuje správy a druhı obsahuje prieèinky. Tu mô¾te vidie» voµbu nazvanú
-      "Nech tento prieèinok obsahuje podprieèinky". Ak ste to urobili a túto voµbu
-      pou¾ili, prieèinok bude môc» obsahova» len podpieèinky, nie správy. Inak v
-      òom budete môc» uklada» len správy, nie prieèinky.
-      </p>
-   </description>
-</section>
-
-<section>
-   <title>
-      Premenova» prieèinok
-   </title>
-   <description>
-      <p>
-      Akıkoµvek prieèinok zobrazenı v rolovacom menu vµavo od tlaèidla "Premenova»"
-      mô¾te premonova» tlaèidlom Premenova». Je treba poznamena», ¾e tento zoznam
-      <B>nemusí</B> obsahova» v¹etky prieèinky. Zo zrejmıch príèin nemô¾te
-      premenova» prieèinky Doruèená po¹ta, Odoslaná po¹ta a Kô¹.
+      Na niektorÃ½ch poÅ¡tovÃ½ch serveroch sÃº dva typy prieÄinkov. Jeden z nich
+      obsahuje sprÃ¡vy a druhÃ½ obsahuje prieÄinky. Tu mÃ´Å¾te vidieÅ¥ voÄ¾bu nazvanÃº
+      "Nech tento prieÄinok obsahuje podprieÄinky". Ak ste to urobili a tÃºto voÄ¾bu
+      pouÅ¾ili, prieÄinok bude mÃ´cÅ¥ obsahovaÅ¥ len podpieÄinky, nie sprÃ¡vy. Inak v
+      Åˆom budete mÃ´cÅ¥ ukladaÅ¥ len sprÃ¡vy, nie prieÄinky.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Prihlási»/Odhlási»
+      PremenovaÅ¥ prieÄinok
    </title>
    <description>
-      Definície:<br>
-      <i>Prihlási»</i>: Zaregistrovanie prieèinku k po¹tovému serveru vám umo¾ní
-                        ho zobrazi» v zozname prieèinkov.
-      <i>Odhlási»</i>: Opak k prihláseniu. Toto odregistruje prieèinok od po¹tovéhu
+      <p>
+      AkÃ½koÄ¾vek prieÄinok zobrazenÃ½ v rolovacom menu vÄ¾avo od tlaÄidla "PremenovaÅ¥"
+      mÃ´Å¾te premonovaÅ¥ tlaÄidlom PremenovaÅ¥. Je treba poznamenaÅ¥, Å¾e tento zoznam
+      <B>nemusÃ­</B> obsahovaÅ¥ vÅ¡etky prieÄinky. Zo zrejmÃ½ch prÃ­Äin nemÃ´Å¾te
+      premenovaÅ¥ prieÄinky DoruÄenÃ¡ poÅ¡ta, OdoslanÃ¡ poÅ¡ta a KÃ´Å¡.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      PrihlÃ¡siÅ¥/OdhlÃ¡siÅ¥
+   </title>
+   <description>
+      DefinÃ­cie:<br>
+      <i>PrihlÃ¡siÅ¥</i>: Zaregistrovanie prieÄinku k poÅ¡tovÃ©mu serveru vÃ¡m umoÅ¾nÃ­
+                        ho zobraziÅ¥ v zozname prieÄinkov.
+      <i>OdhlÃ¡siÅ¥</i>: Opak k prihlÃ¡seniu. Toto odregistruje prieÄinok od poÅ¡tovÃ©hu
       servera.
       <br><p>
-      Z políèka Prihlási» alebo z políèka Odhlási» si mô¾te si zvoli» tak veµa
-      prieèinkov ako si ¾eláte, potom naò kliknú» na tlaèidlo pod políèkom aby
-      sa nastavenie pou¾ilo. Je treba poznamena», ¾e toto presunie prieèinky do
-      iného políèka. Ak si ¾eláte, mô¾te ich znovu prihlási», alebo odhlási».
+      Z polÃ­Äka PrihlÃ¡siÅ¥ alebo z polÃ­Äka OdhlÃ¡siÅ¥ si mÃ´Å¾te si zvoliÅ¥ tak veÄ¾a
+      prieÄinkov ako si Å¾elÃ¡te, potom naÅˆ kliknÃºÅ¥ na tlaÄidlo pod polÃ­Äkom aby
+      sa nastavenie pouÅ¾ilo. Je treba poznamenaÅ¥, Å¾e toto presunie prieÄinky do
+      inÃ©ho polÃ­Äka. Ak si Å¾elÃ¡te, mÃ´Å¾te ich znovu prihlÃ¡siÅ¥, alebo odhlÃ¡siÅ¥.
       </p>
    </description>
 </section>

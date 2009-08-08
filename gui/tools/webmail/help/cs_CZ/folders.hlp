@@ -1,6 +1,6 @@
 <chapter>
    <title>   
-      Slo¾ky
+      SloÅ¾ky
    </title>   
    <summary>
       
@@ -9,20 +9,20 @@
 
 <section>
    <title>
-      Pøihlá¹ené slo¾ky a levı rámec
+      PÅ™ihlÃ¡Å¡enÃ© sloÅ¾ky a levÃ½ rÃ¡mec
    </title>
    <description>
       <p>
-      Aktuálnì pøihlá¹ené slo¾ky se zobrazují v barevné plo¹e. 
-      Pomocí volby "Mo¾nosti nastavení" si mù¾ete nastavit automatickou aktualizaci stránky. 
-      Pod tuènım nadpisem "Slo¾ky" mù¾ete stránku aktualizovat ruènì 
-      kliknutím na "(aktualizovat seznam slo¾ek)". 
+      AktuÃ¡lnÄ› pÅ™ihlÃ¡Å¡enÃ© sloÅ¾ky se zobrazujÃ­ v barevnÃ© ploÅ¡e. 
+      PomocÃ­ volby "MoÅ¾nosti nastavenÃ­" si mÅ¯Å¾ete nastavit automatickou aktualizaci strÃ¡nky. 
+      Pod tuÄnÃ½m nadpisem "SloÅ¾ky" mÅ¯Å¾ete strÃ¡nku aktualizovat ruÄnÄ› 
+      kliknutÃ­m na "(aktualizovat seznam sloÅ¾ek)". 
       </p><p>
-      První uvedená slo¾ka obsahuje doruèené zprávy. Èíslo v závorkách 
-      oznaèuje poèet nepøeètenıch zpráv. Toto èíslo se mù¾e li¹it od celkového 
-      poètu zpráv zobrazenıch v pravém rámci. Pod slo¾kou INBOX se zobrazují 
-      dal¹í slo¾ky a podslo¾ky. Jejich barvu mù¾ete libovolnì mìnit pomocí 
-      schématu v "Mo¾nostech nastavení". 
+      PrvnÃ­ uvedenÃ¡ sloÅ¾ka obsahuje doruÄenÃ© zprÃ¡vy. ÄŒÃ­slo v zÃ¡vorkÃ¡ch 
+      oznaÄuje poÄet nepÅ™eÄtenÃ½ch zprÃ¡v. Toto ÄÃ­slo se mÅ¯Å¾e liÅ¡it od celkovÃ©ho 
+      poÄtu zprÃ¡v zobrazenÃ½ch v pravÃ©m rÃ¡mci. Pod sloÅ¾kou INBOX se zobrazujÃ­ 
+      dalÅ¡Ã­ sloÅ¾ky a podsloÅ¾ky. Jejich barvu mÅ¯Å¾ete libovolnÄ› mÄ›nit pomocÃ­ 
+      schÃ©matu v "MoÅ¾nostech nastavenÃ­". 
       </p>
    </description>
 </section>   
@@ -33,9 +33,9 @@
    </title>
    <description>
       <p>
-      V rozbalovacím seznamu slo¾ek mù¾ete odstraòovat slo¾ky. Tento seznam 
-      v¹ak nemusí obsahovat v¹echny zobrazené slo¾ky. Slo¾ku "Odeslaná po¹ta" 
-      nebo "Ko¹" nelze odstranit, stejnì tak jako nemù¾e bıt odstranìna slo¾ka INBOX.
+      V rozbalovacÃ­m seznamu sloÅ¾ek mÅ¯Å¾ete odstraÅˆovat sloÅ¾ky. Tento seznam 
+      vÅ¡ak nemusÃ­ obsahovat vÅ¡echny zobrazenÃ© sloÅ¾ky. SloÅ¾ku "OdeslanÃ¡ poÅ¡ta" 
+      nebo "KoÅ¡" nelze odstranit, stejnÄ› tak jako nemÅ¯Å¾e bÃ½t odstranÄ›na sloÅ¾ka INBOX.
       </p>
    </description>
 </section>
@@ -43,44 +43,44 @@
 
 <section>
    <title>
-      Vytvoøit
+      VytvoÅ™it
    </title>
    <description>
       <p>
-      Slo¾ky lze vytvoøit zadáním názvu slo¾ky a kliknutím na tlaèítko "Vytvoøit". 
-      Jestli¾e si pøejete, aby slo¾ka obsahovala podslo¾ky, musíte tento po¾adavek 
-      zvolit v rozbalovacím seznamu slo¾ek.
+      SloÅ¾ky lze vytvoÅ™it zadÃ¡nÃ­m nÃ¡zvu sloÅ¾ky a kliknutÃ­m na tlaÄÃ­tko "VytvoÅ™it". 
+      JestliÅ¾e si pÅ™ejete, aby sloÅ¾ka obsahovala podsloÅ¾ky, musÃ­te tento poÅ¾adavek 
+      zvolit v rozbalovacÃ­m seznamu sloÅ¾ek.
       </p>
       <p>
-      Na nìkterıch mail serverech existují 2 druhy slo¾ek. Jedny obsahují zprávy, 
-      druhé slo¾ky. Jestli¾e pomocí volby "Mo¾nosti nastavení" zvolíte "Slo¾ka mù¾e obsahovat podslo¾ku", 
-      vytvoøená slo¾ka bude obsahovat pouze slo¾ky. V opaèném pøípadì se budou ve slo¾ce 
-      uchovávat pouze zprávy. 
+      Na nÄ›kterÃ½ch mail serverech existujÃ­ 2 druhy sloÅ¾ek. Jedny obsahujÃ­ zprÃ¡vy, 
+      druhÃ© sloÅ¾ky. JestliÅ¾e pomocÃ­ volby "MoÅ¾nosti nastavenÃ­" zvolÃ­te "SloÅ¾ka mÅ¯Å¾e obsahovat podsloÅ¾ku", 
+      vytvoÅ™enÃ¡ sloÅ¾ka bude obsahovat pouze sloÅ¾ky. V opaÄnÃ©m pÅ™Ã­padÄ› se budou ve sloÅ¾ce 
+      uchovÃ¡vat pouze zprÃ¡vy. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøejmenovat
+      PÅ™ejmenovat
    </title>
    <description>
       <p>
-      Pomocí tlaèítka "Pøejmenovat" mù¾ete libovolnì slo¾ky pøejmenovávat. 
-      Tento seznam nemusí obsahovat v¹echny slo¾ky zobrazené v levém rámci. 
-      Nelze pøejmenovat slo¾ky "Odeslaná po¹ta", "Ko¹" a INBOX. 
+      PomocÃ­ tlaÄÃ­tka "PÅ™ejmenovat" mÅ¯Å¾ete libovolnÄ› sloÅ¾ky pÅ™ejmenovÃ¡vat. 
+      Tento seznam nemusÃ­ obsahovat vÅ¡echny sloÅ¾ky zobrazenÃ© v levÃ©m rÃ¡mci. 
+      Nelze pÅ™ejmenovat sloÅ¾ky "OdeslanÃ¡ poÅ¡ta", "KoÅ¡" a INBOX. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Pøihlásit a Odhlásit
+      PÅ™ihlÃ¡sit a OdhlÃ¡sit
    </title>
    <description>
       Definice:<br>
-      <i>Pøihlásit</i>: zaregistrovat slo¾ku na mail serveru tak, aby se zobrazovala v seznamu slo¾ek.<br>
-      <i>Odhlásit</i>: zru¹it registraci na mail serveru.<br>
+      <i>PÅ™ihlÃ¡sit</i>: zaregistrovat sloÅ¾ku na mail serveru tak, aby se zobrazovala v seznamu sloÅ¾ek.<br>
+      <i>OdhlÃ¡sit</i>: zruÅ¡it registraci na mail serveru.<br>
 
       <br><p>
      

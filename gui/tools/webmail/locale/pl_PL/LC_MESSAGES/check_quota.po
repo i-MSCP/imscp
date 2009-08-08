@@ -1,0 +1,343 @@
+# Polish (pl_PL) check_quota Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Michal Margula <alchemyx@uznam.net.pl>, 2007.
+# $Id: check_quota.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota\n"
+"Report-Msgid-Bugs-To: Kerem Erkan <kerem@keremerkan.net>\n"
+"POT-Creation-Date: 2007-08-06 14:50+0300\n"
+"PO-Revision-Date: 2007-12-29 02:07+0100\n"
+"Last-Translator: Michal Margula <alchemyx@uznam.net.pl>\n"
+"Language-Team: SquirrelMail Language Team <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "\"Check Quota\" Troubleshooting"
+msgstr "Rozwi±zywanie problemów z wtyczk± \"Check Quota\""
+
+msgid "This page can aid you in troubleshooting the \"Check Quota\" plugin."
+msgstr "Ta strona pomo¿e Ci w rozwi±zywaniu problemów z wtyczk± \"Check Quota\""
+
+msgid "Quota Binary Output:"
+msgstr "Wynik dzia³ania polecenia quota:"
+
+msgid "Warning:"
+msgstr "Ostrze¿enie:"
+
+msgid "Quota binary did not give any output. Quotas may not be enabled."
+msgstr "Polecenie quota nie zwróci³o ¿adnej informacji. Kwoty mog± byæ wy³±czone."
+
+msgid ""
+"You do not have quotas enabled for your username, you will not see any "
+"informative graphs."
+msgstr "Nie masz w³±czonych kwot dla swojego konta, dlatego nie zobaczysz ¿adnych wykresów."
+
+msgid "IMAP Command Sent:"
+msgstr "Wys³ane polecenie IMAP:"
+
+msgid "IMAP Response Received:"
+msgstr "Otrzymana odpowied¼ IMAP:"
+
+msgid "Your IMAP server does not have IMAP4 QUOTA extension. Quotas not enabled."
+msgstr "Twój serwer IMAP nie posiada rozszerzenia IMAP4 QUOTA. Kwoty  nie zostan± w³±czone."
+
+msgid ""
+"Your username is not in user@domain format. cPanel quotas only work with "
+"that type of usernames for now."
+msgstr "Twoja nazwa u¿ytkownika nie jest w formacie u¿ytkownik@domena. Póki co kwoty cPanel dzia³aj± tylko z takimi nazwami u¿ytkownika."
+
+msgid "Reseller information for your domain cannot be obtained."
+msgstr "Informacje o sprzedawcy Twojej domeny nie mog± byæ znalezione."
+
+msgid "Quota File:"
+msgstr "Plik kwot:"
+
+msgid "Quota file for your domain does not exist or not readable."
+msgstr "Plik kwot dla Twojej domeny nie istnieje lub nie ma do niego dostêpu."
+
+msgid "Your cPanel Quota:"
+msgstr "Twoja kwota w cPanel:"
+
+msgid "Mail Files Location:"
+msgstr "Po³o¿enie plików z poczt±:"
+
+msgid "&quot;du&quot; Binary Output:"
+msgstr "Wynik dzia³ania polecenia &quot;du&quot;:"
+
+msgid ""
+"&quot;du&quot; binary did not give any output. There may be some problem "
+"with that binary."
+msgstr "Polecenie &quot;du&quot; nie zwróci³o ¿adnych informacji. Mo¿e byæ jaki¶ problem z tym programem."
+
+msgid "Quota Usage:"
+msgstr "Zajête miejsce:"
+
+msgid "File Usage:"
+msgstr "Ilo¶æ plików:"
+
+msgid "OVER QUOTA!"
+msgstr "PRZEKROCZONO LIMIT!"
+
+msgid "WARNING:"
+msgstr "OSTRZE¯ENIE:"
+
+#, c-format
+msgid "Your quota usage is currently <b>%s%%</b>."
+msgstr "Aktualnie wykorzystane jest <b>%s%%</b> miejsca."
+
+#, c-format
+msgid "Your quota usage is currently %s%%."
+msgstr "Aktualnie wykorzystane jest  %s%% miejsca."
+
+msgid ""
+"To avoid losing any email, you should immediately empty out your \"Trash\" "
+"and \"Sent\" folders and delete emails with large attachments."
+msgstr "Aby unikn±æ utraty listów przychodz±cych, powiniene¶ jak najszybciej wyczy¶ciæ foldery \"Trash\" (¦mietnik) oraz \"Sent\" (Wys³ane), a tak¿e usun±æ listy z duzymi za³±cznikami."
+
+msgid ""
+"To avoid losing any email, you should immediately empty out your &quot;"
+"Trash&quot; and &quot;Sent&quot; folders and delete emails with large "
+"attachments."
+msgstr "Aby unikn±æ utraty listów przychodz±cych, powiniene¶ jak najszybciej wyczy¶ciæ foldery &quot;Trash&quot; (¦mietnik) oraz &quot;Sent&quot; (Wys³ane), a tak¿e usun±æ listy z duzymi za³±cznikami."
+
+msgid ""
+"You may want to make sure you empty out your \"Trash\" and clean your \"Sent"
+"\" folder."
+msgstr "Upewnij siê, ¿e wyczy¶ci³e¶ foldery \"Trash\" (¦mietnik) oraz \"Sent\" (Wys³ane)."
+
+msgid ""
+"You may want to make sure you empty out your &quot;Trash&quot; and clean "
+"your &quot;Sent&quot; folder."
+msgstr "Upewnij siê, ¿e wyczy¶ci³e¶ foldery &quot;Trash&quot; (¦mietnik) oraz &quot;Sent&quot; (Wys³ane)."
+
+msgid "%1 of %2"
+msgstr "%1 z %2"
+
+msgid "%1% of %2"
+msgstr "%1% z %2"
+
+msgid "Mandatory Settings"
+msgstr "Ustawienia obowi±zkowe"
+
+msgid "Quota Type:"
+msgstr "Rodzaj kwoty:"
+
+msgid "INVALID!"
+msgstr "NIEPOPRAWNE!"
+
+msgid "Please read config.php file for possible values."
+msgstr "Przejrzyj plik config.php w celu uzyskania potencjalnych warto¶ci."
+
+msgid "Check UNIX Quotas:"
+msgstr "Sprawdzaj kwotê typu UNIX:"
+
+msgid "On local server"
+msgstr "Na serwerze lokalnym"
+
+msgid "On remote server"
+msgstr "Na serwerze zdalnym"
+
+msgid "Remote Username:"
+msgstr "Zdalna nazwa u¿ytkownika:"
+
+msgid "Please read INSTALL for details on setting this variable."
+msgstr "Przeczytaj plik INSTALL aby uzyskaæ szczegó³y dotycz±ce ustawienia tej zmiennej."
+
+msgid "Remote Server:"
+msgstr "Zdalny serwer:"
+
+msgid "SUDO Binary:"
+msgstr "Polecenie SUDO:"
+
+msgid "file does not exist or not executable."
+msgstr "plik nie istnieje lub nie jest wykonywalny."
+
+msgid "INFO:"
+msgstr ""
+
+msgid "Remote checking is enabled, cannot check validity of this variable."
+msgstr "Zdalne sprawdzanie jest w³±czone. Nie mo¿na sprawdziæ poprawno¶ci tej zmiennej."
+
+msgid "SSH Binary:"
+msgstr "Polecenie SSH:"
+
+msgid "QUOTA Binary:"
+msgstr "Polecenie QUOTA:"
+
+msgid "DU Binary:"
+msgstr "Polecenie DU:"
+
+msgid "cPanel Root Folder:"
+msgstr "Katalog g³ówny cPanel:"
+
+msgid "directory does not exist or not readable."
+msgstr "katalog nie istnieje lub nie ma do niego dostêpu."
+
+msgid "Use Separate IMAP Connection:"
+msgstr "U¿yj osobnej sesji IMAP:"
+
+msgid "No"
+msgstr "Nie"
+
+msgid "Yes"
+msgstr "Tak"
+
+msgid "Display Settings"
+msgstr "Ustawienia wy¶wietlania"
+
+msgid "Graph Type:"
+msgstr "Rodzaj wykresu:"
+
+msgid "Standard HTML tables"
+msgstr "Standardowe tabele HTML"
+
+msgid "GD images"
+msgstr "Obrazki GD"
+
+msgid "Your server does not have GD support."
+msgstr "Twój serwer nie obs³uguje GD."
+
+msgid "Graph type will revert to standard HTML tables."
+msgstr "Rodzaj wykresu zostanie ustawiony na tabele HTML."
+
+msgid "Graph Location:"
+msgstr "Po³o¿enie wykresu:"
+
+msgid "Below folders list"
+msgstr "Pod list± folderów"
+
+msgid "Above folders list"
+msgstr "Nad list± folderów"
+
+msgid "Font Size:"
+msgstr "Rozmiar czcionki:"
+
+msgid "Graph Alignment:"
+msgstr "Wyrównanie wykresu:"
+
+msgid "Left"
+msgstr "Do lewej"
+
+msgid "Right"
+msgstr "Do prawej"
+
+msgid "Center"
+msgstr "Wy¶rodkowany"
+
+msgid "Use Horizontal Rules:"
+msgstr "Uzyj poziomych linii:"
+
+msgid "Show Intro Texts:"
+msgstr "Pokazuj tekst pocz±tkowy:"
+
+msgid "Quota Details Location:"
+msgstr "Po³o¿enie szczegó³ów kwot:"
+
+msgid "Below quota graph"
+msgstr "Poni¿ej wykresu kwot"
+
+msgid "Above quota graph"
+msgstr "Powy¿ej wykresu kwot"
+
+msgid "Show Quantity or Percent:"
+msgstr "Pokazuj ilo¶æ lub procenty"
+
+msgid "Show percent"
+msgstr "Poka¿ procenty"
+
+msgid "Show quantity (size or count)"
+msgstr "Poka¿ ilo¶æ (rozmiar lub liczbê)"
+
+msgid "Yellow Alert Threshold:"
+msgstr "Poziom alarmu ¿ó³tego:"
+
+#, c-format
+msgid "%s%%"
+msgstr ""
+
+msgid "Red Alert Threshold:"
+msgstr "Poziom alarmu czerwonego:"
+
+msgid "Show Yellow Alert Warning:"
+msgstr "Pokazuj ostrze¿enie dla alarmu ¿ó³tego:"
+
+msgid "Show Red Alert Warning:"
+msgstr "Pokazuj ostrze¿enie dla alarmu czerwonego:"
+
+msgid "KB/MB Conversion:"
+msgstr "Konwersja KB/MB"
+
+msgid "Show Filesystems:"
+msgstr "Pokazuj systemy plików:"
+
+msgid "Override Settings"
+msgstr "Nadpisz ustawienia"
+
+msgid "Filesystem Aliases:"
+msgstr "W³asne nazwy dla systemów plików:"
+
+msgid "No aliases set"
+msgstr "Brak nazw w³asnych"
+
+msgid "will be shown as"
+msgstr "bêdzie pokazywanyjako"
+
+msgid "Excluded Filesystems:"
+msgstr "Wyklucz systemy plików:"
+
+msgid "All filesystems with quota enabled will be shown."
+msgstr "Bêda pokazywane wszystkie systemy plików z w³±czonymi kwotami."
+
+msgid "will be excluded from quota information."
+msgstr "zostanie wykluczyny z informacji o kwotach."
+
+msgid "Override IMAP Size Quota:"
+msgstr "Wymu¶ rozmiar dla kwoty IMAP:"
+
+msgid "No override set"
+msgstr "Brak warto¶ci"
+
+msgid "Override IMAP Count Quota:"
+msgstr "Wymu¶ liczbê dla kwoty IMAP:"
+
+msgid "Files"
+msgstr "Pliki"
+
+msgid "Always Refresh cPanel:"
+msgstr "Zawsze od¶wie¿aj cPanel:"
+
+msgid "Quota Output"
+msgstr "Wyj¶cie quota"
+
+msgid "You have"
+msgstr "Masz"
+
+msgid "error or warning"
+msgstr "b³±d lub ostrze¿enie"
+
+msgid "errors or warnings"
+msgstr "b³êdy lub ostrze¿enia"
+
+msgid "in your configuration. You can find the details below."
+msgstr "w Twojej konfiguracji. Szczegó³y znajdziesz poni¿ej."
+
+msgid "Please correct"
+msgstr "Musisz poprawiæ"
+
+msgid "this error or warning"
+msgstr "ten b³±d lub ostrze¿enie"
+
+msgid "these errors or warnings"
+msgstr "te b³êdy lub ostrze¿enia"
+
+msgid "in order to have &quot;Check Quota&quot; work properly."
+msgstr "aby sprawdziæ czy plugin &quot;Check Quota&quot; dzia³a poprawnie."
+
+msgid ""
+"Your configuration seems to be correct. &quot;Check Quota&quot; should work "
+"properly."
+msgstr "Konfiguracja wygl±da prawid³owo. Wtyczka &quot;Check Quota&quot; powinna dzia³ac poprawnie."
+

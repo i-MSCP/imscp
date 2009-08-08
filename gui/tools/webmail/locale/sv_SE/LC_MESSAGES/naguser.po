@@ -1,50 +1,50 @@
 # Swedish (sv_SE) naguser Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: naguser.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: naguser.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: naguser\n"
 "POT-Creation-Date: 2004-05-12 21:10+0300\n"
 "PO-Revision-Date: 2004-09-08 01:58+0200\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Rules of engagement"
-msgstr "Regler för användning"
+msgstr "Regler fÃ¶r anvÃ¤ndning"
 
 msgid "You have to read and understand program usage rules:"
-msgstr "Du måste läsa och förstå användarvillkoren:"
+msgstr "Du mÃ¥ste lÃ¤sa och fÃ¶rstÃ¥ anvÃ¤ndarvillkoren:"
 
 msgid ""
 "Your browser does not support inline frames. Please read related document by "
 "checking usage instructions."
 msgstr ""
-"Din webbläsare stödjer inte inbäddade ramar. Vänligen läs reglerna i "
-"användarvillkoren."
+"Din webblÃ¤sare stÃ¶djer inte inbÃ¤ddade ramar. VÃ¤nligen lÃ¤s reglerna i "
+"anvÃ¤ndarvillkoren."
 
 msgid "Usage instructions"
-msgstr "Användarvillkor"
+msgstr "AnvÃ¤ndarvillkor"
 
 msgid "Yes, I understand"
-msgstr "Ja, jag har förstått"
+msgstr "Ja, jag har fÃ¶rstÃ¥tt"
 
 msgid "Terms of service"
-msgstr "Användarvillkor"
+msgstr "AnvÃ¤ndarvillkor"
 
 msgid ""
 "URL to usage rules is not available. Please contact your system "
 "administrator."
 msgstr ""
-"Det finns inte någon webbadress till användarvillkoren. Meddela "
-"systemadministratören."
+"Det finns inte nÃ¥gon webbadress till anvÃ¤ndarvillkoren. Meddela "
+"systemadministratÃ¶ren."
 
 msgid "You can find interface usage rules by following the link."
-msgstr "Du hittar användarvillkoren genom att följa länken."
+msgstr "Du hittar anvÃ¤ndarvillkoren genom att fÃ¶lja lÃ¤nken."
 
 msgid "Usage rules"
-msgstr "Annvändarvillkor"
+msgstr "AnnvÃ¤ndarvillkor"

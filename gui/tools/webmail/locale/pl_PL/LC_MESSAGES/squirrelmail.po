@@ -1,14 +1,14 @@
 # Polish (pl_PL) SquirrelMail Translation
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Translators: Lukasz "casa" Klimek <casa@lo.pila.pl>, 2000-2001; Horus <horus@dronet.pl>,
 # Andrzej Pruszynski <digan@users.sourceforge.net>, 2003-2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: squirrelmail 1.4.11\n"
-"Report-Msgid-Bugs-To: squirrelmail-i18n@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-08-31 13:27+0200\n"
-"PO-Revision-Date: 2007-09-23 14:11+0000\n"
+"Project-Id-Version: squirrelmail HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-14 12:48+0100\n"
+"PO-Revision-Date: 2007-09-23 00:00+0000\n"
 "Last-Translator: Andrzej Pruszynski <digan@users.sourceforge.net>\n"
 "Language-Team: Polish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -981,9 +981,6 @@ msgstr "Poka¿"
 msgid "View Business Card"
 msgstr "Podgl±d wizytówki"
 
-msgid "Your session has expired, but will be resumed after logging in again."
-msgstr ""
-
 msgid "Sunday"
 msgstr "Niedziela"
 
@@ -1929,14 +1926,8 @@ msgstr "Serwer Mac OS X Mailserver"
 msgid "hMailServer IMAP server"
 msgstr "Serwer IMAP hMailServer"
 
-msgid "Mercury/32 IMAP server"
-msgstr "Serwer IMAP Mercury/32"
-
 msgid "Binc IMAP server"
 msgstr "Serwer IMAP Binc"
-
-msgid "Dovecot IMAP server"
-msgstr "Serwer IMAP Dovecot"
 
 msgid "Not one of the above servers"
 msgstr "¯aden z powy¿szych serwerów"
@@ -1965,11 +1956,11 @@ msgstr "U¿yj binariów sendmaila"
 msgid "Choose &quot;no&quot; for SMTP"
 msgstr "Wybierz &quot;nie&quot; dla SMTP"
 
-msgid "Sendmail Path"
-msgstr "¦cie¿ka do programu sendmail"
-
 msgid "Sendmail Arguments"
 msgstr "Argumenty do programu sendmail"
+
+msgid "Sendmail Path"
+msgstr "¦cie¿ka do programu sendmail"
 
 msgid "SMTP Server Address"
 msgstr "Adres serwera SMTP"
@@ -1988,12 +1979,6 @@ msgstr "Bez uwierzytelniania SMTP"
 
 msgid "Login (plain text)"
 msgstr "Login (zwyk³y tekst)"
-
-msgid "Custom SMTP AUTH username"
-msgstr "Nazwa u¿ytkownika SMTP AUTH"
-
-msgid "Custom SMTP AUTH password"
-msgstr "Has³o SMTP AUTH"
 
 msgid "POP3 Before SMTP?"
 msgstr "Czy POP3 przed SMTP?"
@@ -2825,11 +2810,17 @@ msgstr "Skontaktuj siê z w³a¶cicielem listy"
 msgid "Mailing List"
 msgstr "Lista dyskusyjna"
 
+msgid "POP3 connect:"
+msgstr "Po³±czenie POP3:"
+
 msgid "No server specified"
 msgstr "Nie okre¶lono serwera"
 
 msgid "Error "
 msgstr "B³±d "
+
+msgid "POP3 user:"
+msgstr "U¿ytkownik POP3:"
 
 msgid "no login ID submitted"
 msgstr "Nie podano identyfikatora u¿ytkownika"
@@ -2837,8 +2828,14 @@ msgstr "Nie podano identyfikatora u¿ytkownika"
 msgid "connection not established"
 msgstr "nie ustanowiono po³±czenia"
 
+msgid "POP3 pass:"
+msgstr "Has³o POP3:"
+
 msgid "No password submitted"
 msgstr "Nie podano has³a"
+
+msgid "POP3 apop:"
+msgstr "Apop POP3:"
 
 msgid "No connection to server"
 msgstr "Brak po³±czenia z serwerem"
@@ -2855,14 +2852,44 @@ msgstr "anuluj"
 msgid "apop authentication failed"
 msgstr "uwierzytelnienie apop nie powiod³o siê"
 
+msgid "POP3 login:"
+msgstr "Login POP3:"
+
+msgid "POP3 top:"
+msgstr ""
+
+msgid "POP3 pop_list:"
+msgstr ""
+
 msgid "Premature end of list"
 msgstr "Przedwczesny koniec listy"
+
+msgid "POP3 get:"
+msgstr ""
+
+msgid "POP3 last:"
+msgstr ""
+
+msgid "POP3 reset:"
+msgstr ""
+
+msgid "POP3 send_cmd:"
+msgstr ""
 
 msgid "Empty command string"
 msgstr "Pusta komenda"
 
+msgid "POP3 quit:"
+msgstr ""
+
 msgid "connection does not exist"
 msgstr "po³±czenie nie istnieje"
+
+msgid "POP3 uidl:"
+msgstr ""
+
+msgid "POP3 delete:"
+msgstr "POP3 - usuñ:"
 
 msgid "No msg number submitted"
 msgstr "Nie podano liczby wiadomo¶ci"
@@ -3185,7 +3212,10 @@ msgstr "Informacja programu SquirrelMail:"
 
 #, php-format
 msgid "You have %s new message"
-msgstr "Masz %s now± wiadomo¶æ"
+msgid_plural "You have %s new messages"
+msgstr[0] "Masz %s now± wiadomo¶æ"
+msgstr[1] "Masz %s nowe wiadomo¶ci"
+msgstr[2] "Masz %s nowych wiadomo¶ci"
 
 #, php-format
 msgid "You have %s new messages"
@@ -3207,7 +3237,10 @@ msgstr "%s nowych wiadomo¶ci"
 
 #, php-format
 msgid "%s New Message"
-msgstr "%s nowa wiadomo¶æ"
+msgid_plural "%s New Messages"
+msgstr[0] "%s nowa wiadomo¶æ"
+msgstr[1] "%s nowe wiadomo¶ci"
+msgstr[2] "%s nowych wiadomo¶ci"
 
 msgid "Test Sound"
 msgstr "Test d¼wiêku"
@@ -3479,6 +3512,9 @@ msgstr "Osobisty s³ownik zostanie skasowany! Kontynuowaæ?"
 
 msgid "Error Decrypting Dictionary"
 msgstr "B³±d podczas odszyfrowywania s³ownika"
+
+msgid "Cute."
+msgstr ""
 
 #, php-format
 msgid "Could not run the spellchecker command (%s)."
@@ -3765,9 +3801,6 @@ msgstr ""
 msgid "SquirrelSpell Initiating"
 msgstr "Inicjalizacja SquirrelSpell"
 
-msgid ", "
-msgstr ", "
-
 #, php-format
 msgid "Settings adjusted to: %s with %s as default dictionary."
 msgstr "Ustawienia uaktualnione do: %s z %s jako s³ownikiem domy¶lnym."
@@ -4006,6 +4039,1166 @@ msgstr "Kierunek t³umaczenia"
 
 msgid "Arabic"
 msgstr "arabski"
+
+#, php-format
+msgid "About SquirrelMail %s"
+msgstr "O SquirrelMail %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+msgid "System information"
+msgstr "Informacja o systemie"
+
+#, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "U¿ywasz programu SquirrelMail w wersji: %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr "Administrator zainstalowaæ nastêpuj±ce wtyczki:"
+
+msgid "none installed"
+msgstr ""
+
+msgid "Nothing to search"
+msgstr "Nie ma czego wyszukiwaæ"
+
+msgid "SquirrelMail Webmail Application"
+msgstr "Aplikacja ob³ugi poczty przez www SquirrelMail"
+
+msgid "Add New Identity"
+msgstr "Dodaj now± to¿samo¶æ"
+
+msgid "Received"
+msgstr "Otrzymano"
+
+msgid "Compose Preferences"
+msgstr "Ustawienia w³a¶ciwo¶ci"
+
+#, php-format
+msgid "Folder list should automatically %srefresh%s."
+msgstr ""
+
+#, php-format
+msgid "This page should automatically %srefresh%s."
+msgstr ""
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+msgid "Read Receipt"
+msgstr "Przeczytaj potwierdzenie"
+
+msgid "deleted"
+msgstr "usuniêto"
+
+msgid "answered"
+msgstr "odpowiedziane"
+
+msgid "draft"
+msgstr "robocze"
+
+msgid "flagged"
+msgstr "oznacznikowane"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "View as plain text"
+msgstr "Podgl±d jako zwyk³y tekst"
+
+msgid "View as HTML"
+msgstr "Podgl±d jako HTML"
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+msgid "Error in criteria argument"
+msgstr "B³±d argumentu w kryterium"
+
+msgid "(Illegal date)"
+msgstr "(niepoprawna data)"
+
+msgid "(Wrong date)"
+msgstr "(z³a data)"
+
+msgid "In"
+msgstr "w"
+
+msgid "(Missing argument)"
+msgstr "(brakuj±cy argument)"
+
+msgid "(Spurious argument)"
+msgstr ""
+
+msgid "Missing"
+msgstr "Brakuj±ce"
+
+msgid "Standard Search"
+msgstr "Wyszukiwanie standardowe"
+
+msgid "Advanced search"
+msgstr "Wyszukiwanie zaawansowane"
+
+msgid "Add New Criteria"
+msgstr "Dodaj nowe kryteria"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr "Usuñ wszystkie kryteria"
+
+msgid "Not"
+msgstr "Nie"
+
+msgid "Answered"
+msgstr "Odpowiedziane"
+
+msgid "Before"
+msgstr "Przed"
+
+msgid "Message Body"
+msgstr "Tre¶æ wiadomo¶ci"
+
+msgid "Deleted"
+msgstr "Usuniêto"
+
+msgid "Draft"
+msgstr "Roboczy"
+
+msgid "Flagged"
+msgstr "Oznacznikowane"
+
+msgid "Sent By"
+msgstr "Wys³ano przez"
+
+msgid "Header Field"
+msgstr "Nag³ówek"
+
+msgid "Keyword"
+msgstr "S³owo kluczowe"
+
+msgid "Larger Than"
+msgstr "Wiêkszy ni¿"
+
+msgid "Old"
+msgstr "Stare"
+
+msgid "On"
+msgstr "na"
+
+msgid "Recent"
+msgstr "Ostatni"
+
+msgid "Seen"
+msgstr "Obejrzany"
+
+msgid "Sent Before"
+msgstr "Wys³ano przed"
+
+msgid "Sent On"
+msgstr "Wys³ano o"
+
+msgid "Sent Since"
+msgstr "Wys³ane po"
+
+msgid "Since"
+msgstr "Od"
+
+msgid "Smaller Than"
+msgstr "Mniejszy ni¿"
+
+msgid "Subject Contains"
+msgstr "Temat zawiera"
+
+msgid "Header and Body"
+msgstr "Nag³ówek i tre¶æ"
+
+msgid "Sent To"
+msgstr "Wy¶lij do"
+
+msgid "And In"
+msgstr "i w"
+
+msgid "Or In"
+msgstr "lub w"
+
+msgid "And"
+msgstr "i"
+
+msgid "Or"
+msgstr "lub"
+
+msgid "No RPC action given"
+msgstr ""
+
+msgid "No deletion ID given"
+msgstr ""
+
+msgid "No mailbox given"
+msgstr ""
+
+msgid "RPC action not understood"
+msgstr ""
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Removing entry from address book failed"
+msgstr "Usuniêcie zapis w ksi±¿ce adresowej nie powiód³o siê"
+
+msgid "LDAP rename is not supported by used protocol version"
+msgstr ""
+
+msgid ""
+"LDAP rename is not supported by used LDAP library. You can't change nickname"
+msgstr ""
+
+msgid "LDAP rename failed"
+msgstr "Zmiana nazwy w LDAP nie powiod³a siê"
+
+msgid "Unable to remove some field values"
+msgstr ""
+
+#, php-format
+msgid "Unable to rename user \"%s\" to \"%s\""
+msgstr "Nie mo¿na zmieniæ nazwy u¿ytkownika z \"%s\" na \"%s\""
+
+msgid "Error initializing other address books."
+msgstr "B³±d inicjalizacji innych ksi±¿ek adresowych."
+
+msgid "Unknown address book backend"
+msgstr ""
+
+#, php-format
+msgid "%s %s"
+msgstr "%s na %s"
+
+msgid ""
+"Could not open temporary file to store attachment. Contact your system "
+"administrator to resolve this issue."
+msgstr ""
+"Nie mo¿na otworzyæ tymczasowego pliku, aby przechowaæ za³±cznik. Skontaktuj siê "
+"w tej sprawie z administratorem."
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+msgid "Please select a different name."
+msgstr "Proszê wybraæ inn± nazwê."
+
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "Nie wybrano foldera do udostêpnienia - wybierz odpowiedni folder."
+
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "Nie wybrano foldera do ukrycia - wybierz odpowiedni folder."
+
+msgid "Possible reason:"
+msgstr "Mo¿liwy powód:"
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+msgid "Reason:"
+msgstr "Powód:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used IMAP server "
+"does not support STARTTLS."
+msgstr ""
+
+msgid "Unable to start TLS."
+msgstr "Nie mo¿na rozpocz±æ TLS."
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+msgid "Trash"
+msgstr "Kosz"
+
+msgid "Drafts"
+msgstr "Pisane"
+
+msgid "Unknown recipient"
+msgstr "Nieznana odbiorca"
+
+msgid "Unflag"
+msgstr "Znie¶ znacznik"
+
+msgid "Flag"
+msgstr "Znacznik"
+
+msgid "Undelete"
+msgstr "Odtwórz"
+
+msgid "Bypass Trash"
+msgstr "Nie u¿ywaj kosza (Trash)"
+
+msgid "Copy"
+msgstr "Kopia"
+
+msgid "unavailable"
+msgstr "niedostêpny"
+
+msgid "Error"
+msgstr "B³±d"
+
+msgid "Terminating SquirrelMail due to a fatal error"
+msgstr ""
+
+msgid ""
+"Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP "
+"version does not support it."
+msgstr ""
+
+msgid "TLS session is already activated."
+msgstr ""
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used SMTP server "
+"does not support it"
+msgstr ""
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 10 "
+"(Disable server thread sort) to true)."
+msgstr ""
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 11 "
+"(Disable server-side sorting) to true."
+msgstr ""
+
+msgid "Your used charset is not supported by your IMAP server."
+msgstr "U¿ywany zestaw znaków nie jest obs³ugiwany przez serwer IMAP."
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 12 "
+"(Allow server charset search) to false) or choose option 10 (Language "
+"settings) and set option 2 (Default charset) to a charset supported by your "
+"IMAP server."
+msgstr ""
+
+msgid "Out of quota error."
+msgstr "B³±d osi±gniêcia quoty."
+
+msgid ""
+"An error occured when SquirrelMail appended a message to the mailbox as "
+"listed in this message."
+msgstr ""
+
+msgid "Your IMAP server returned an error."
+msgstr ""
+
+msgid "IMAP server closed the connection."
+msgstr "Serwer IMAP zamkn±³ po³±czenie."
+
+msgid "General Message Composition"
+msgstr "Tworzenie wiadomo¶ci - ogólne"
+
+msgid "Replying and Forwarding Messages"
+msgstr "Odpowiadanie i 'przesy³anie dalej' wiadomo¶ci"
+
+msgid "Strip signature when replying"
+msgstr "Usuñ podpis przy odpowiadaniu"
+
+msgid "Skin"
+msgstr ""
+
+msgid "Icon Theme"
+msgstr "Motyw ikon"
+
+msgid "Default font style"
+msgstr "Domy¶lna czcionka"
+
+msgid "Font style"
+msgstr "Styl czcionki"
+
+msgid "Font size"
+msgstr "Rozmiar czcionki"
+
+msgid "Default font size"
+msgstr "Domy¶lna wielko¶æ czcionki"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+msgid "Enable Message Copy Buttons"
+msgstr "W³±cz przycisk kopiowania wiadomo¶ci"
+
+msgid "Use Compact Page Selector"
+msgstr "U¿yj kompaktowego selektora strony"
+
+msgid "Message Display Options"
+msgstr "Ogólne ustawienia wy¶wietlania"
+
+msgid "Height of inline frame"
+msgstr ""
+
+msgid "Show 'Delete &amp; Prev/Next' Links"
+msgstr "Poka¿ linki 'Usuñ i wstecz'"
+
+msgid "Translate Special Folders"
+msgstr "Nazwy folderów specjalnych przet³umaczone"
+
+msgid "Save Replies with Original Message"
+msgstr "Zapisuj odpowiedzi razem z wiadomo¶ci± oryginaln±"
+
+#, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "%d minuta"
+msgstr[1] "%d minuty"
+msgstr[2] "%d minut"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr "XP"
+
+msgid "Mercury/32 IMAP server"
+msgstr "Serwer IMAP Mercury/32"
+
+msgid "IMAP Connection Security"
+msgstr ""
+
+msgid "Plain text connection"
+msgstr ""
+
+msgid "Secure IMAP (TLS) connection"
+msgstr "Bezpieczne po³±czenie IMAP (TLS)"
+
+msgid "IMAP STARTTLS connection"
+msgstr ""
+
+msgid ""
+"Requires higher PHP version and special functions. See SquirrelMail "
+"documentation."
+msgstr ""
+
+msgid "SMTP Connection Security"
+msgstr ""
+
+msgid "Custom SMTP AUTH username"
+msgstr "Nazwa u¿ytkownika SMTP AUTH"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Has³o SMTP AUTH"
+
+msgid "Disable server-side sorting"
+msgstr "Wy³±cz sortowania po stronie serwera"
+
+msgid "Disable server-side thread sorting"
+msgstr "Wy³±cz sortowania w±tków po stronie serwera"
+
+msgid "Search functions"
+msgstr "Funkcje wyszukiwania"
+
+msgid "Only basic search"
+msgstr "Tylko podstawowe wyszukiwanie"
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Time Zone Configuration"
+msgstr "Konfiguracja strefy czasu"
+
+msgid "Standard GNU C time zones"
+msgstr ""
+
+msgid "Strict time zones"
+msgstr "GMT plus minus przesiniêcie"
+
+msgid "Custom GNU C time zones"
+msgstr ""
+
+msgid "Custom strict time zones"
+msgstr ""
+
+msgid "Size of username field"
+msgstr "Rozmiar pola nazwy u¿ytkownika"
+
+msgid "Size of key field"
+msgstr "Rozmiar pola klucza"
+
+msgid "Size of value field"
+msgstr "Rozmiar pole warto¶ci"
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Enable aggressive decoding"
+msgstr "W³±cz agresywne (stratne) dekodowanie"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use icons"
+msgstr "U¿ywaj ikon"
+
+msgid "Use inline frames with HTML mails"
+msgstr ""
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr "Pozwól na zdalny test konfiguracji"
+
+msgid "Address book file line length"
+msgstr "D³ugo¶æ linii w ksi±¿ce adresowej"
+
+msgid "Templates"
+msgstr "Motywy"
+
+msgid "Default font set"
+msgstr "Domy¶lna czcionka"
+
+msgid "Default template"
+msgstr "Domy¶lny motyw"
+
+msgid "Fallback template"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+msgid "my email account"
+msgstr "moje konto emailowe"
+
+msgid "Bug Reports"
+msgstr "Zg³oszenia b³êdów"
+
+msgid "You must type in a new password."
+msgstr "Musisz wprowadziæ nowe has³o."
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+msgid "Your current password is not correct."
+msgstr "Aktualne has³o nie jest poprawne."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+msgid "Your new password contains invalid characters."
+msgstr "Nowe has³o zawiera niew³a¶ciwe znaki."
+
+msgid "Change Password"
+msgstr "Zamieñ has³o"
+
+msgid "Current Password:"
+msgstr "Obecne has³o:"
+
+msgid "New Password:"
+msgstr "Nowe has³o:"
+
+msgid "Verify New Password:"
+msgstr "Potwierd¼ nowe has³o:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+msgid "User's Password"
+msgstr "Has³o u¿ytkownika:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+msgid "Unable to use TLS."
+msgstr "Nie mo¿na u¿yæ TLS."
+
+#, php-format
+msgid "Error: %s"
+msgstr "B³±d: %s"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, php-format
+msgid "Server replied: %s"
+msgstr "Odpowied¼ serwera: %s"
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+msgid "Unable to connect to LDAP server."
+msgstr "Nie mo¿na po³±czyæ siê z serwerem LDAP."
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+msgid "Search error."
+msgstr "B³±d wyszukiwania."
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr "Nieobs³ugiwane szyfrowanie: %s"
+
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+msgid "unknown"
+msgstr "nieznane"
+
+msgid "Unable to validate user's password."
+msgstr "Nie mo¿na sprawdziæ has³a uzytkownika."
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+msgid "Cannot change password!"
+msgstr "Nie mozna zmieniæ has³a!"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr "Na serwerze nie znaleziono bazy danych"
+
+msgid "SQL call failed, try again later."
+msgstr "Zapytanie SQL nieudane, proszê spróbowaæ pó¼niej."
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr "Nie uda³o siê zmieniæ has³a!"
+
+msgid ""
+"Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be "
+"available in your PHP include_path setting."
+msgstr ""
+
+msgid "Required change password backend configuration options are missing."
+msgstr ""
+
+#, php-format
+msgid "Connection error: %s"
+msgstr "B³±d po³±czenie: %s"
+
+#, php-format
+msgid "Invalid table name: %s"
+msgstr "Niew³a¶ciwa nazwa tabeli: %s"
+
+msgid "User table is empty."
+msgstr "Tabela u¿ytkowników jest pusta."
+
+msgid "Invalid uid field."
+msgstr "Niew³a¶ciwe pole uid."
+
+msgid "Invalid password field"
+msgstr "Niew³a¶ciwe pole has³a"
+
+msgid "Invalid domain field"
+msgstr "Niew³a¶ciwe pole domeny"
+
+#, php-format
+msgid "Query failed: %s"
+msgstr "Zapytanie nie powiod³o siê: %s"
+
+msgid "Unable to find user in user table."
+msgstr "Nie mo¿na znale¼æ u¿ytkownika w tabeli u¿ytkowników."
+
+msgid "Too many matches found in user table."
+msgstr "Znaleziono zbyt wiele dopasowañ w tabeli u¿ytkowników."
+
+msgid "Unable to detect password crypto algorithm."
+msgstr "Nie mo¿na ustaliæ algorytmu szyfrowania."
+
+msgid "Unable to encrypt new password."
+msgstr "Nie mo¿na zaszyfrowaæ nowego has³a."
+
+#, php-format
+msgid "Unable to set new password: %s"
+msgstr "Nie mo¿na ustanowiæ nowego has³a: %s"
+
+msgid "Unable to use digest-md5 crypto."
+msgstr "Nie mo¿na u¿yæ szyfrowania md5."
+
+msgid "Closing Connection"
+msgstr "Zamykanie po³±czenia"
+
+msgid "Connecting to Password Server"
+msgstr "£±czenie z serwerem hase³..."
+
+msgid "No valid backend defined."
+msgstr "Nie zdefiniowano poprawnego backendu."
+
+msgid "Incorrent path to vmail.inc file."
+msgstr "Niepoprawna ¶cie¿ka do pliku vmail.inc."
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr "Nieprawid³owy lub zniszczony plik vmail.inc."
+
+msgid "Invalid user."
+msgstr "Niew³a¶ciwy u¿ytkownik."
+
+msgid "Empty domain"
+msgstr "Pusta domena"
+
+msgid "Empty domain password"
+msgstr "Puste has³o domeny"
+
+msgid "Empty username"
+msgstr "Pusta nazwa u¿ytkownika"
+
+msgid "Empty new password"
+msgstr "Puste nowe has³o"
+
+#, php-format
+msgid "Unable to execute \"%s\"."
+msgstr "Nie mo¿na uruchomiæ \"%s\"."
+
+msgid "Server Capability response:"
+msgstr "Odpowied¼ o mo¿liwo¶ciach serwera:"
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+msgid "Select"
+msgstr "Zaznacz"
+
+msgid "Test Name"
+msgstr "Test nazwy"
+
+msgid "IMAP command string"
+msgstr "£añcuch znakowy komendy IMAP"
+
+msgid "Request:"
+msgstr "¯±danie:"
+
+msgid "Execution time:"
+msgstr "Czas wywo³ania:"
+
+#, php-format
+msgid "%s ms"
+msgstr "%s ms"
+
+msgid "Mailing Lists"
+msgstr "Lista dyskusyjna"
+
+msgid ""
+"Manage the (non-RFC-compliant) mailing lists that you are subscribed to for "
+"the purpose of providing one-click list replies when responding to list "
+"messages."
+msgstr ""
+
+msgid "No POP3 servers configured yet."
+msgstr "Serwery POP3 jeszcze nieskonfigurowane."
+
+msgid "Click here to go to the options page."
+msgstr "Kliknij tutaj, aby przej¶æ do strony ustawieñ."
+
+#, php-format
+msgid "Fetching from %s"
+msgstr "Pobieranie z %s"
+
+msgid "Can't get mailbox status:"
+msgstr "Nie mozna uzyskaæ statusu skrzynki pocztowej:"
+
+msgid "Fetching list of messages..."
+msgstr "Pobieranie listy wiadomo¶ci..."
+
+#, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "Zalogowano siê - skrzynka odbiorcza zawiera %s wiadomo¶æ"
+msgstr[1] "Zalogowano siê - skrzynka odbiorcza zawiera %s wiadomo¶ci"
+msgstr[2] "Zalogowano siê - skrzynka odbiorcza zawiera %s wiadomo¶ci"
+
+#, php-format
+msgid "Fetching message %s."
+msgstr "Pobieranie %s wiadomo¶ci."
+
+msgid "Warning:"
+msgstr "Ostrze¿enie:"
+
+msgid "Authentication type:"
+msgstr "Typ uwierzytelania:"
+
+msgid "USER"
+msgstr "U¯YTKOWNIK"
+
+msgid "APOP"
+msgstr "APOP"
+
+msgid "APOP or USER"
+msgstr "APOP lub U¯YTKOWNIK"
+
+msgid "Connection type:"
+msgstr "Rodzaj po³±czenia:"
+
+msgid "Plain text"
+msgstr "Zwyk³y tekst"
+
+msgid "Use TLS"
+msgstr "U¿ywaj TLS"
+
+msgid "Use StartTLS"
+msgstr "Uzywaj StartTLS"
+
+msgid ""
+"The NewMail plugin will follow the Folder Preferences option &quot;Enable "
+"Unread Message Notification&quot;"
+msgstr ""
+
+msgid "Follow folder preferences"
+msgstr "Dziedzicz ustawienia folderów"
+
+msgid "All folders"
+msgstr "Wszystkie foldery"
+
+msgid "Special folders"
+msgstr "Foldery specjalne"
+
+msgid "Regular folders"
+msgstr "Foldery typowe"
+
+msgid "Check for new messages in:"
+msgstr "Sprawd¼ czy s± nowe wiadomo¶ci na:"
+
+msgid "Width of popup window:"
+msgstr "Szeroko¶æ okna popup:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Je¶li ustawione na 0, przywraca warto¶æ domy¶ln±"
+
+msgid "Height of popup window:"
+msgstr "Wysoko¶æ okna popup:"
+
+msgid "uploaded media file"
+msgstr "plik medialny za³adowany"
+
+msgid "none"
+msgstr "(¿aden)"
+
+msgid "Upload Media File:"
+msgstr "Za³aduj plik medialny:"
+
+msgid "Uploaded Media File:"
+msgstr "Za³adowany plik medialny:"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr "Plik medialny %s bêdzie usuniêty, je¶li za³adujesz inny plik medialny."
+
+#, php-format
+msgid "%s notice:"
+msgstr "%s napisa³(a):"
+
+msgid "Warning"
+msgstr "Ostrze¿enie"
+
+msgid "There are some restrictions in Sent Subfolder options."
+msgstr "Istniej± pewne ograniczenia w opcjach podfolderu wys³ane."
+
+msgid "Sent Subfolders plugin is misconfigured."
+msgstr "Podfoldery wys³ane pluginu s± zdekonfigurowane."
+
+msgid "Save emails submitted to SpamCop:"
+msgstr "Zapisuj emaile wys³ane do SpamCop:"
+
+msgid "SpamCop reporting"
+msgstr "Raportowanie spamu"
+
+#, php-format
+msgid ""
+"Your %s dictionary is encrypted with password that differs from your current "
+"password."
+msgstr ""
+"Twój %s s³ownik jest zaszyfrowany has³em, które jest inne ni¿ Twoje obecne has³o."
+
+msgid "Invalid SquirrelSpell module."
+msgstr "Z³y modu³ SquirrelSpell."
+
+msgid "Unknown error"
+msgstr "Nieznany b³±d"
+
+msgid "SquirrelSpell error."
+msgstr "B³±d SquirrelSpella."
+
+#, php-format
+msgid "Found %d error"
+msgid_plural "Found %d errors"
+msgstr[0] "Znaleziono %d b³±d"
+msgstr[1] "Znaleziono %d b³êdy"
+msgstr[2] "Znaleziono %d b³êdów"
+
+#, php-format
+msgid "Using %s dictionary for spellcheck."
+msgstr "U¿ywany s³ownik %s do sprawdzania pisowni."
+
+msgid "Translation Theme:"
+msgstr "Motyw t³umaczenia:"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+"Wybrany silnik t³umaczenia jest wy³±czony. Proszê zaktualizowaæ ustawienia t³umaczenia."
+
+msgid "Translation Preferences"
+msgstr "Ustawienia t³umaczenia"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "Przet³umaczono 25 kilobajtów (maksimum) - wspierane przez Systran"
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr "Ograniczenia nie s± znane - wspierane przeze GPLTrans (wolnodostêpne, open source)"
+
+msgid "Transliterate unknown words:"
+msgstr "Transliteracja nieznanych s³ów:"
+
+msgid "When composing:"
+msgstr "W czasie tworzenia:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "Nic jeszcze funkcjonalnego, obecnie nic nie robi"
+
+msgid "Address book is empty"
+msgstr "Ksi±¿ka adresowa jest pusta"
+
+msgid "Address book search"
+msgstr "Przeszukiwanie ksi±¿ki adresowej"
+
+msgid "Attachment"
+msgstr "Za³±cznik"
+
+msgid "Attach"
+msgstr "Za³±cz"
+
+msgid "Max."
+msgstr "max."
+
+msgid "Receipts"
+msgstr "Potwierdzenia"
+
+msgid "SquirrelMail notice messages"
+msgstr "Informacje programu SquirrelMail"
+
+msgid "Category:"
+msgstr "Kategoria:"
+
+msgid "Tip:"
+msgstr "Wskazówka:"
+
+msgid "More info:"
+msgstr "Wiêcej informacji:"
+
+msgid "No folders were found to unsubscribe from."
+msgstr "Nie znaleziono ¿adnych folderów, które mo¿na ukryæ."
+
+msgid "No folders were found to subscribe to."
+msgstr "Nie znaleziono ¿adnych folderów, które mo¿na udostêpniæ."
+
+msgid "Message Flags"
+msgstr "Znaczniki wiadomo¶ci"
+
+msgid "Click here to change the sorting of the message list"
+msgstr "Kliknij tutaj, aby zmieniæ sortowanie listy adresów"
+
+msgid "Add/Edit"
+msgstr "Dodaj/Edycja"
+
+msgid "Rule Conditions"
+msgstr "Warunki regu³"
+
+msgid "Identifying Name"
+msgstr "Nazwa identyfikuj±ca"
+
+msgid "To or cc"
+msgstr "Do lub Kopia"
+
+msgid "Other"
+msgstr "Inny"
+
+msgid "Save Changes"
+msgstr "Zapisz zmiany"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Requested"
+msgstr "¿±dane"
+
+msgid "Send Read Receipt Now"
+msgstr "Wy¶lij potwierdzenie w tej chwili"
+
+msgid "Viewing HTML formatted email"
+msgstr "Podgl±d e-maila sformatowanego w HTMLu"
+
+msgid "As Attachment"
+msgstr "Jako za³±cznik"
+
+msgid "Move To"
+msgstr "Przenie¶ do"
+
+msgid "Delete &amp; Previous"
+msgstr "Usuñ i wstecz"
+
+msgid "and subfolders"
+msgstr "i podfoldery"
+
+msgid "Exclude"
+msgstr "Wyklucz"
+
+msgid "Fold"
+msgstr "Rozwiñ"
+
+msgid "Unfold"
+msgstr "Zwiñ"
+
+msgid "Forget"
+msgstr "anuluj (zapomnij)"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Additional Info"
+msgstr "Opis dodatkowy"
+
+msgid "Folder List"
+msgstr "Lista folderów"
 
 msgid "Delivery error report"
 msgstr "Raport b³êdu dostarczenia poczty"

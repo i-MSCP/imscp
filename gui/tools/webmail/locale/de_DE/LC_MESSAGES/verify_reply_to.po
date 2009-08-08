@@ -1,9 +1,9 @@
 # German (de_DE) verify_reply_to Translation (SquirrelMail plugin)
-# Copyright (c) 2005-2007 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
 # Gregor Wenkelewsky <w-sky@gmx.net>, 2007.
-# $Id: verify_reply_to.po 12774 2007-11-23 13:44:05Z jervfors $
+# $Id: verify_reply_to.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: verify_reply_to 1.0\n"

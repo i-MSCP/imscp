@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * signout.php -- cleans up session and logs the user out

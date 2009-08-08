@@ -1,62 +1,62 @@
 # Swedish (sv_SE) mark_read Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: mark_read.po 12742 2007-10-26 23:15:55Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: mark_read.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: mark_read\n"
 "POT-Creation-Date: 2005-03-04 15:08+0200\n"
 "PO-Revision-Date: 2005-03-05 09:46+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "read"
-msgstr "l‰st"
+msgstr "l√§st"
 
 msgid "unread"
-msgstr "ol‰st"
+msgstr "ol√§st"
 
 msgid "mark all messages in this folder as read"
-msgstr "Markera alla brev i mappen som l‰sta"
+msgstr "Markera alla brev i mappen som l√§sta"
 
 msgid "mark all messages in this folder as unread"
-msgstr "Mmarkera alla brev i mappen som ol‰sta"
+msgstr "Mmarkera alla brev i mappen som ol√§sta"
 
 msgid "mark all messages in the above folders as read"
-msgstr "Markera alla brev i ovanstÂende mappar som l‰sta"
+msgstr "Markera alla brev i ovanst√•ende mappar som l√§sta"
 
 msgid "mark all messages in the above folders as unread"
-msgstr "Markera alla brev i ovanstÂende mappar som ol‰sta"
+msgstr "Markera alla brev i ovanst√•ende mappar som ol√§sta"
 
 msgid "mark all folders"
 msgstr "markera alla mappar"
 
 msgid "Mark Read Link"
-msgstr "Markera som l‰st"
+msgstr "Markera som l√§st"
 
 msgid ""
 "Select all Folders, which you want to appear with a mark as read-/unread-"
 "link:"
-msgstr "V‰lj vilka mappar som ska kunna markeras som l‰sta och/eller ol‰sta:"
+msgstr "V√§lj vilka mappar som ska kunna markeras som l√§sta och/eller ol√§sta:"
 
 msgid "Toggle Special Folders"
-msgstr "V‰xla speciella mappar"
+msgstr "V√§xla speciella mappar"
 
 msgid "Toggle All"
-msgstr "V‰xla alla"
+msgstr "V√§xla alla"
 
 msgid "Display links"
-msgstr "Visa l‰nk fˆr"
+msgstr "Visa l√§nk f√∂r"
 
 msgid "none"
 msgstr "ingen"
 
 msgid "read/unread"
-msgstr "l‰st/ol‰st"
+msgstr "l√§st/ol√§st"
 
 msgid "upper"
 msgstr "versaler"
@@ -65,7 +65,7 @@ msgid "lower"
 msgstr "gemener"
 
 msgid "shortened"
-msgstr "korta l‰nkar"
+msgstr "korta l√§nkar"
 
 msgid "brackets"
 msgstr "parenteser"
@@ -74,7 +74,7 @@ msgid "seperator"
 msgstr "avskiljare"
 
 msgid "Display 'mark all folders' link below the folder list"
-msgstr "Visa en Markera alla mappar-l‰nk under mapplistan"
+msgstr "Visa en Markera alla mappar-l√§nk under mapplistan"
 
 msgid "Save"
 msgstr "Spara"

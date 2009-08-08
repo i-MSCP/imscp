@@ -1,88 +1,88 @@
 <chapter>
    <title>
-      Vyhµadávanie
+      VyhÄ¾adÃ¡vanie
    </title>
    <summary>
-      Vyhµadávanie na základe zadanıch kritérií.
+      VyhÄ¾adÃ¡vanie na zÃ¡klade zadanÃ½ch kritÃ©riÃ­.
    </summary>
    <description>
       <p>
-      S tımto u¾itoènım nástrojom, mô¾ete v ¹pecifikovanom prieèinku vyhµadáva»
-      na základe zadanıch kritérií, ktoré sa zhodujú s hlavièkami správ.
+      S tÃ½mto uÅ¾itoÄnÃ½m nÃ¡strojom, mÃ´Å¾ete v Å¡pecifikovanom prieÄinku vyhÄ¾adÃ¡vaÅ¥
+      na zÃ¡klade zadanÃ½ch kritÃ©riÃ­, ktorÃ© sa zhodujÃº s hlaviÄkami sprÃ¡v.
       </p>
    </description>
 </chapter>
 
 <section>
    <title>
-      V¹eobecnı prehµad
+      VÅ¡eobecnÃ½ prehÄ¾ad
    </title>
    <description>
       <p>
-      Mô¾te si jednoducho zvoli» prieèinok, v ktorom chcete vyhµadáva», napí¹te
-      vyhµadávacie kritéria, a potom zvoµ»e èas» správy, kde sa má vyhµadáva».
-      Keï odo¹lete vyhµadávanı text, pod tımto políèkom na vyµadávanie sa zobrazí
-      vıpis nájdenıch správ. Mô¾te si zvoli» správu, ktorú si ¾eláte preèíta», tak
-      ako normálnu správu.
+      MÃ´Å¾te si jednoducho zvoliÅ¥ prieÄinok, v ktorom chcete vyhÄ¾adÃ¡vaÅ¥, napÃ­Å¡te
+      vyhÄ¾adÃ¡vacie kritÃ©ria, a potom zvoÄ¾Å¥e ÄasÅ¥ sprÃ¡vy, kde sa mÃ¡ vyhÄ¾adÃ¡vaÅ¥.
+      KeÄ odoÅ¡lete vyhÄ¾adÃ¡vanÃ½ text, pod tÃ½mto polÃ­Äkom na vyÄ¾adÃ¡vanie sa zobrazÃ­
+      vÃ½pis nÃ¡jdenÃ½ch sprÃ¡v. MÃ´Å¾te si zvoliÅ¥ sprÃ¡vu, ktorÃº si Å¾elÃ¡te preÄÃ­taÅ¥, tak
+      ako normÃ¡lnu sprÃ¡vu.
       </p>
       <p>
-      Treba poznamena»,¾e keï èítate správy a potom pôjdete do sekcie vyµadávanie,
-      nastaví sa ako prieèinok na vyhµadávanie vá¹ aktuálny prieèinok. Napríklad,
-      ak ste v prieèinku "Priatelia" a ptom kliknete na "Vyhµadávanie", prieèinok"
-      Priatelia" sa nastaví na vyhµadávanie.
+      Treba poznamenaÅ¥,Å¾e keÄ ÄÃ­tate sprÃ¡vy a potom pÃ´jdete do sekcie vyÄ¾adÃ¡vanie,
+      nastavÃ­ sa ako prieÄinok na vyhÄ¾adÃ¡vanie vÃ¡Å¡ aktuÃ¡lny prieÄinok. NaprÃ­klad,
+      ak ste v prieÄinku "Priatelia" a ptom kliknete na "VyhÄ¾adÃ¡vanie", prieÄinok"
+      Priatelia" sa nastavÃ­ na vyhÄ¾adÃ¡vanie.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Cez èo vyhµadáva»
+      Cez Äo vyhÄ¾adÃ¡vaÅ¥
    </title>
    <description>
       <p>
-      Na µavo od textového poµa, vidíte rolovacií zoznam miest, v ktorıch je
-      mo¾né vyhµadáva». To zahàòa: Telo správy, V¹ade, Predmet, Od, Kópia, Komu.
+      Na Ä¾avo od textovÃ©ho poÄ¾a, vidÃ­te rolovaciÃ­ zoznam miest, v ktorÃ½ch je
+      moÅ¾nÃ© vyhÄ¾adÃ¡vaÅ¥. To zahÅ•Åˆa: Telo sprÃ¡vy, VÅ¡ade, Predmet, Od, KÃ³pia, Komu.
       </p>
       <p>
-      <b>Telo</b> - Vyhµadáva v tele správy. Toto je hlavná èas» správy, kde je
-      umiestnená dôle¾itá èas» správy.
+      <b>Telo</b> - VyhÄ¾adÃ¡va v tele sprÃ¡vy. Toto je hlavnÃ¡ ÄasÅ¥ sprÃ¡vy, kde je
+      umiestnenÃ¡ dÃ´leÅ¾itÃ¡ ÄasÅ¥ sprÃ¡vy.
       </p>
       <p>
-      <b>V¹ade</b> - Toto vyhµádava v¹ade, zahròujúc aj hlavièku správy. Pokiaµ
-      si nieste istı, èi toto chcete, pravdepodobne to nieje to èo potrebujete.
-      Toto vyhµadávanie by vám v tomto prípade prinieslo vısledky, ktoré by ste
-      normálne neoèakával.
+      <b>VÅ¡ade</b> - Toto vyhÄ¾Ã¡dava vÅ¡ade, zahrÅˆujÃºc aj hlaviÄku sprÃ¡vy. PokiaÄ¾
+      si nieste istÃ½, Äi toto chcete, pravdepodobne to nieje to Äo potrebujete.
+      Toto vyhÄ¾adÃ¡vanie by vÃ¡m v tomto prÃ­pade prinieslo vÃ½sledky, ktorÃ© by ste
+      normÃ¡lne neoÄakÃ¡val.
       </p>
       <p>
-      <b>Predmet</b> - Vyhµadávanie len v predmetoch správ.
+      <b>Predmet</b> - VyhÄ¾adÃ¡vanie len v predmetoch sprÃ¡v.
       </p>
       <p>
-      <b>Od</b> - Kto poslal správu. Treba poznamena», ¾e toto vyµadávanie mô¾e
-      obsahova» viac dát ako je zobrazenıch vo vıpise prieèinka. V normálnom
-      poli "Od" sa zvyèajne nachádza meno A e-mailová adresa, ale SquirrelMail
-      zvyèajne zobrazuje len mená. Ak do vyhµadávania zadáte e-mailovú adresu,
-      a táto nieje zobrazená, správa sa aj tak nájde.
+      <b>Od</b> - Kto poslal sprÃ¡vu. Treba poznamenaÅ¥, Å¾e toto vyÄ¾adÃ¡vanie mÃ´Å¾e
+      obsahovaÅ¥ viac dÃ¡t ako je zobrazenÃ½ch vo vÃ½pise prieÄinka. V normÃ¡lnom
+      poli "Od" sa zvyÄajne nachÃ¡dza meno A e-mailovÃ¡ adresa, ale SquirrelMail
+      zvyÄajne zobrazuje len menÃ¡. Ak do vyhÄ¾adÃ¡vania zadÃ¡te e-mailovÃº adresu,
+      a tÃ¡to nieje zobrazenÃ¡, sprÃ¡va sa aj tak nÃ¡jde.
       </p>
       <p>
-      <b>Komu</b> - Komu bola poslaná správa. Tu mo¾e by» viac adries, nielen jedna
-      e-mailová adresa.
+      <b>Komu</b> - Komu bola poslanÃ¡ sprÃ¡va. Tu moÅ¾e byÅ¥ viac adries, nielen jedna
+      e-mailovÃ¡ adresa.
       </p>
       <p>
-      <b>Kópia</b> - To isté ako "Komu", s vınimkou správ poslanıch ako slepé kópie.
+      <b>KÃ³pia</b> - To istÃ© ako "Komu", s vÃ½nimkou sprÃ¡v poslanÃ½ch ako slepÃ© kÃ³pie.
       </p>
    </description>
 </section>
 
 <section>
    <title>
-   Posledné vyhµadávania
+   PoslednÃ© vyhÄ¾adÃ¡vania
    </title>
    <description>
-   Ak povolíte túto mo¾nos», stránka vyhµadávania tie¾ zobrazí prehµad do max. 9
-   poslednıch hµadaní za úèelom rıchleho prístupu. Kliknite na "Hµada» ïal¹í" na
-   znovu-vyhµadanie podµa rovnakıch kritérií. Pomocou odkazu ulo¾i» mô¾te aktuálne
-   hµadanie ulo¾i» ako Ulo¾ené vyhµadávania. Ostatanú ulo¾ené pokiaµ explicitne
-   nepriká¾ete vymaza» vyhµadanie. Kliknite na Zabudni pre odstránenie vyhµadávania
-   z vıpisu posledne hµadanıch.
+   Ak povolÃ­te tÃºto moÅ¾nosÅ¥, strÃ¡nka vyhÄ¾adÃ¡vania tieÅ¾ zobrazÃ­ prehÄ¾ad do max. 9
+   poslednÃ½ch hÄ¾adanÃ­ za ÃºÄelom rÃ½chleho prÃ­stupu. Kliknite na "HÄ¾adaÅ¥ ÄalÅ¡Ã­" na
+   znovu-vyhÄ¾adanie podÄ¾a rovnakÃ½ch kritÃ©riÃ­. Pomocou odkazu uloÅ¾iÅ¥ mÃ´Å¾te aktuÃ¡lne
+   hÄ¾adanie uloÅ¾iÅ¥ ako UloÅ¾enÃ© vyhÄ¾adÃ¡vania. OstatanÃº uloÅ¾enÃ© pokiaÄ¾ explicitne
+   neprikÃ¡Å¾ete vymazaÅ¥ vyhÄ¾adanie. Kliknite na Zabudni pre odstrÃ¡nenie vyhÄ¾adÃ¡vania
+   z vÃ½pisu posledne hÄ¾adanÃ½ch.
    </description>
 </section>

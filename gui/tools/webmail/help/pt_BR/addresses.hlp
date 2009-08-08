@@ -62,7 +62,7 @@ se corresponde habitualmente e voltar a us&aacute;-los outras vezes. </summary>
   remoto &agrave;s informa&ccedil;&otilde;es. Uma universidade, por exemplo, pode 
   utilizar LDAP como único lugar em que se centralize o armazenamento e o acesso 
   &agrave;s informa&ccedil;&otilde;es de correio eletr&ocirc;nico relativas a 
-  estudantes, professorado e diretores da facultadade. Se o Squirrelmail for configurado 
+  estudantes, professorado e diretores da facultadade. Se o SquirrelMail for configurado 
   para usar o servidor LDAP da universidade, será poss&iacute;vel listar todas 
   os endere&ccedil;os de correio do campus (juntamente com todos os outros campos 
   de endere&ccedil;o dispon&iacute;veis). </p>

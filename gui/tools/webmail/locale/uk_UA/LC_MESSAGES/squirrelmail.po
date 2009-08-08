@@ -1,8 +1,8 @@
 # SquirrelMail Ukrainian translation
-# Copyright (c) 2005-2006 SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # Khohlov Sergii <sergkh@westlucky.net>, 2004.
 # Serhij Dubyk <dubyk@library.lviv.ua>, 2006
-# $Id: squirrelmail.po 11287 2006-06-21 19:25:22Z tokul $
+# $Id: squirrelmail.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail 1.5.2\n"
@@ -2055,7 +2055,7 @@ msgid "Administration"
 msgstr "Адміністрування"
 
 msgid "This module allows administrators to manage SquirrelMail main configuration remotely."
-msgstr "Цей модуль дозволяє адміністраторам змінювати параметри білки-поштаря (Squirrelmail) дистанційно."
+msgstr "Цей модуль дозволяє адміністраторам змінювати параметри білки-поштаря (SquirrelMail) дистанційно."
 
 msgid "Submit a Bug Report"
 msgstr "Відправити повідомлення про помилку"
@@ -2076,10 +2076,10 @@ msgstr "Перевірте, чи виникає ця помилка регуля
 
 #, php-format
 msgid "If there were warnings displayed above, try to resolve them yourself. Read the guides in the %s directory where SquirrelMail was installed."
-msgstr "Якщо на сторінці показані попередження, спочатку спробуйте усунути ці попередження. Прочитайте керівництво в каталозі %s установки білки-поштаря (Squirrelmail)."
+msgstr "Якщо на сторінці показані попередження, спочатку спробуйте усунути ці попередження. Прочитайте керівництво в каталозі %s установки білки-поштаря (SquirrelMail)."
 
 msgid "Pressing the button below will start a mail message to the developers of SquirrelMail that will contain a lot of information about your system, your browser, how SquirrelMail is set up, and your IMAP server. It will also prompt you for information. Just fill out the sections at the top. If you like, you can scroll down in the message to see what else is being sent."
-msgstr "При натисненні кнопки програма почне складання листа, яке буде відправлено розробникам білки-поштаря (Squirrelmail). До нього увійдуть докладні відомості про систему, версію браузера, параметри Squirrelmail і сервера IMAP. Якісь відомості будуть запитані у вас. Заповніть поля вверху сторінки і перегорніть її до кінця, щоб проглянути всю інформацію, що відправляється."
+msgstr "При натисненні кнопки програма почне складання листа, яке буде відправлено розробникам білки-поштаря (SquirrelMail). До нього увійдуть докладні відомості про систему, версію браузера, параметри SquirrelMail і сервера IMAP. Якісь відомості будуть запитані у вас. Заповніть поля вверху сторінки і перегорніть її до кінця, щоб проглянути всю інформацію, що відправляється."
 
 msgid "Please make sure to fill out as much information as you possibly can to give everyone a good chance of finding and removing the bug. Submitting your bug like this will not have it automatically added to the bug list on SourceForge, but someone who gets your message may add it for you."
 msgstr "Чим докладнішу інформацію ви вкажете, тим легше буде знайти і виправити помилку. При відправці повідомлення воно не буде додано в список помилок на Sourceforge, але спочатку його проглянуть розробники, і вони самі додадуть туди цю помилку, якщо це буде потрібно."
@@ -2451,7 +2451,7 @@ msgid "IMAP server information"
 msgstr "Інформація про IMAP-сервер"
 
 msgid "Run some test IMAP commands, displaying both the command and the result. These tests use the SquirrelMail IMAP commands and your current SquirrelMail configuration. Custom command strings can be used."
-msgstr "Виконання деяких команд IMAP, з виведенням як самих команд, так і результату їх роботи. У тестах використовуються команди IMAP Squirrelmail і поточні параметри Squirrelmail. Можна використовувати і інші команди."
+msgstr "Виконання деяких команд IMAP, з виведенням як самих команд, так і результату їх роботи. У тестах використовуються команди IMAP SquirrelMail і поточні параметри SquirrelMail. Можна використовувати і інші команди."
 
 #, php-format
 msgid "This will send a message to %s requesting help for this list. You will receive an emailed response at the address below."
@@ -2694,7 +2694,7 @@ msgid "Leave mail on server"
 msgstr "Залишати пошту на сервері"
 
 msgid "Check mail at login"
-msgstr "Перевіряти пошту при вході в Squirrelmail"
+msgstr "Перевіряти пошту при вході в SquirrelMail"
 
 msgid "Check mail at folder refresh"
 msgstr "Перевіряти пошту при оновленні списку з теками"
@@ -2838,7 +2838,7 @@ msgid "New Mail"
 msgstr "Нова пошта"
 
 msgid "SquirrelMail Notice:"
-msgstr "Повідомлення від Squirrelmail:"
+msgstr "Повідомлення від SquirrelMail:"
 
 #, fuzzy, php-format
 msgid "You have %s new message"
@@ -3358,7 +3358,7 @@ msgid "to the right"
 msgstr "справа"
 
 msgid "Translate inside the SquirrelMail frames"
-msgstr "Переводити усередині інтерфейсу Squirrelmail"
+msgstr "Переводити усередині інтерфейсу SquirrelMail"
 
 msgid "Translation Options"
 msgstr "Параметри перекладу"
@@ -3489,7 +3489,7 @@ msgid "About SquirrelMail %s"
 msgstr "Про білку-поштаря (SquirrelMail) %s"
 
 msgid "SquirrelMail is the name of the program that provides access to your email via the web."
-msgstr "Squirrelmail (Білка-Поштар) - це назва програми, за допомогою якої Ви працюєте зі своєю поштою у браузері."
+msgstr "SquirrelMail (Білка-Поштар) - це назва програми, за допомогою якої Ви працюєте зі своєю поштою у браузері."
 
 #. i18n: %s displays org_name variable value enclosed in () or empty string.
 #, php-format
@@ -3499,17 +3499,17 @@ msgstr "Питання про свій обліковий запис пошти,
 #. i18n: %s tags are used in order to remove html URL attributes from translation
 #, php-format
 msgid "They can assist you adequately with these issues. The SquirrelMail Project Team cannot help you with that. The %shelp system%s provides answers to frequently asked questions."
-msgstr "Саме вони повинні цим займатися. Розробники Squirrelmail не можуть допомогти з цим. Відповіді на багато питань приведені в %sдовідковій системі%s."
+msgstr "Саме вони повинні цим займатися. Розробники SquirrelMail не можуть допомогти з цим. Відповіді на багато питань приведені в %sдовідковій системі%s."
 
 #. i18n: %s tags are used in order to remove html URL attributes from translation
 #, php-format
 msgid "SquirrelMail is a feature rich, standards compliant webmail application written in PHP. It was made by a group of volunteers united in the SquirrelMail Project Team and is released as open source, free software under the %sGNU General Public License%s."
-msgstr "Squirrelmail - це повнофункціональний і такий, що відповідає стандартам пакет веб-пошти, написаний на PHP. Група розробників Squirrelmail розвиває цей проект програмного забезпечення з відкритими початковими кодами і випускає його на умовах ліцензії %sGNU General Public License%s."
+msgstr "SquirrelMail - це повнофункціональний і такий, що відповідає стандартам пакет веб-пошти, написаний на PHP. Група розробників SquirrelMail розвиває цей проект програмного забезпечення з відкритими початковими кодами і випускає його на умовах ліцензії %sGNU General Public License%s."
 
 #. i18n: %s tags are used in order to remove html URL attributes from translation
 #, php-format
 msgid "For more information about SquirrelMail and the SquirrelMail Project Team, see %sthe SquirrelMail website%s."
-msgstr "Додаткова інофрмация про Squirrelmail і розробників проекту доступна на %sсайте Squirrelmail%s."
+msgstr "Додаткова інофрмация про SquirrelMail і розробників проекту доступна на %sсайте SquirrelMail%s."
 
 msgid "System information"
 msgstr "Системна інформація"

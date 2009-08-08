@@ -3,9 +3,9 @@
       Op&ccedil;&otilde;es
    </title>
    <summary>
-Voc&ecirc; pode personalizar o aspecto e a forma de resposta do Squirrelmail alterando 
+Voc&ecirc; pode personalizar o aspecto e a forma de resposta do SquirrelMail alterando 
 as diferentes op&ccedil;&otilde;es desta se&ccedil;&atilde;o. </summary> <description> 
-<p> Uma das grandes vantagens do Squirrelmail &eacute; o alto n&iacute;vel de 
+<p> Uma das grandes vantagens do SquirrelMail &eacute; o alto n&iacute;vel de 
   personaliza&ccedil;&atilde;o que ele disponibiliza. Dependendo de sua configura&ccedil;&atilde;o, 
   voc&ecirc; poderá dispor de uma grande variedade de temas, cores, idiomas, pastas 
   e outras possibilidades. Tudo isto pode ser alterado sem afetar os outros usu&aacute;rios 
@@ -42,18 +42,18 @@ e o campo texto da assinatura se encontrar preenchido. <br>
 <title> Prefer&ecirc;ncias de Apresenta&ccedil;&atilde;o</title>
 <b><description> </description></b></section> 
 <p><section><description><b>Tema</b><br>
-  O Squirrelmail disp&otilde;e de v&aacute;rios temas de cores para mudar o aspecto 
+  O SquirrelMail disp&otilde;e de v&aacute;rios temas de cores para mudar o aspecto 
   cromático do mesmo. Voc&ecirc; pode escolher qualquer um dentre os listados 
   quando desejar. <br>
   <br>
   <b>L&iacute;ngua</b><br>
-  Se voc&ecirc; deseja alterar o idioma com o qual o Squirrelmail interage com 
+  Se voc&ecirc; deseja alterar o idioma com o qual o SquirrelMail interage com 
   voc&ecirc;, pode escolher um idioma diferente a partir dessa lista. Note, entretanto, 
   que isto n&atilde;o ir&aacute; traduzir as mensagens recebidas por voc&ecirc;, 
   nem mesmo o nome de suas pastas. <br>
   <br>
   <b>Usar Livro de Endere&ccedil;os com JavaScript ou HTML?</b><br>
-  Um dos nossos principais objetivos ao criar o Squirrelmail foi n&atilde;o empregar 
+  Um dos nossos principais objetivos ao criar o SquirrelMail foi n&atilde;o empregar 
   Javascript em nenhuma de nossas páginas. Entretanto, alguns de nossos colaboradores 
   desenvolveram uma excelente ferramenta de busca para o livro de endere&ccedil;os 
   que usa Javascript. Ao inv&eacute;s de remov&ecirc;-la, damos a voc&ecirc; a 
@@ -87,7 +87,7 @@ e o campo texto da assinatura se encontrar preenchido. <br>
   espa&ccedil;o de tela.<br>
   <br>
   <b>Auto atualizar lista de pastas</b><br>
-  O Squirrelmail pode atualizar automaticamente a lista de pastas que fica do 
+  O SquirrelMail pode atualizar automaticamente a lista de pastas que fica do 
   lado esquerdo da janela do seu browser, o que permite atualizar o número de 
   mensagens n&atilde;o lidas de cada pasta (entre parentesis a direita do nome 
   da pasta). Esta &eacute; uma boa op&ccedil;&atilde;o para checar suas mensagens 

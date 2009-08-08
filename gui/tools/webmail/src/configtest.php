@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * SquirrelMail configtest script

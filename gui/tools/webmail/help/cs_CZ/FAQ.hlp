@@ -1,6 +1,6 @@
 <chapter>
    <title>
-      Nejèastìji pokládané otázky
+      NejÄastÄ›ji poklÃ¡danÃ© otÃ¡zky
    </title>   
    <summary>
       
@@ -9,36 +9,36 @@
 
 <section>
    <title>
-      Mohu pou¾ít hromadné adresování zpráv?
+      Mohu pouÅ¾Ã­t hromadnÃ© adresovÃ¡nÃ­ zprÃ¡v?
       </title>
    <description>
       <p>
-      Ano, zadáním klíèového slova v adresáøi se Vám zobrazí vısledky vyhledání. 
-      Pøi zobrazení napø. 10 polo¾ek pak mù¾ete do pole <B>Komu:</B> or <B>Kopie:</B> vlo¾it libovolnı poèet adres. 
+      Ano, zadÃ¡nÃ­m klÃ­ÄovÃ©ho slova v adresÃ¡Å™i se VÃ¡m zobrazÃ­ vÃ½sledky vyhledÃ¡nÃ­. 
+      PÅ™i zobrazenÃ­ napÅ™. 10 poloÅ¾ek pak mÅ¯Å¾ete do pole <B>Komu:</B> or <B>Kopie:</B> vloÅ¾it libovolnÃ½ poÄet adres. 
       </p>
    </description>
 </section>   
 
 <section>
    <title>
-      Mohu ze zprávy pøidávat jména do adresáøe?
+      Mohu ze zprÃ¡vy pÅ™idÃ¡vat jmÃ©na do adresÃ¡Å™e?
    </title>
    <description>
       <p>
-      Tato mo¾nost není v souèasné dobì povolena. Mù¾ete v¹ak na adresu kliknout 
-      pravım tlaèítkem my¹i, ulo¾it ji na clipboard a vlo¾it ji do adresáøe. 
-      SquirrelMail se neustále vyvíjí a tato funkce mù¾e bıt v budoucnu k dispozici. 
+      Tato moÅ¾nost nenÃ­ v souÄasnÃ© dobÄ› povolena. MÅ¯Å¾ete vÅ¡ak na adresu kliknout 
+      pravÃ½m tlaÄÃ­tkem myÅ¡i, uloÅ¾it ji na clipboard a vloÅ¾it ji do adresÃ¡Å™e. 
+      SquirrelMail se neustÃ¡le vyvÃ­jÃ­ a tato funkce mÅ¯Å¾e bÃ½t v budoucnu k dispozici. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Kdo vytvoøil SquirrelMail? 
+      Kdo vytvoÅ™il SquirrelMail? 
    </title>
    <description>
       <p>
-      Seznam lidí, kteøí spolupracovali na systému SquirrelMail, naleznete zde
+      Seznam lidÃ­, kteÅ™Ã­ spolupracovali na systÃ©mu SquirrelMail, naleznete zde
       <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
       </p>
    </description>
@@ -50,34 +50,34 @@
    </title>
    <description>
       <p>
-      SquirrelMail Vám umo¾òuje pøístup k Va¹emu úètu pøes IMAP protokol. 
-      To znamená, ¾e nemusíte v¾dy nastavovat údaje o Va¹em úètu, kdy¾ si chcete zkontrolovat novou po¹tu. 
+      SquirrelMail VÃ¡m umoÅ¾Åˆuje pÅ™Ã­stup k VaÅ¡emu ÃºÄtu pÅ™es IMAP protokol. 
+      To znamenÃ¡, Å¾e nemusÃ­te vÅ¾dy nastavovat Ãºdaje o VaÅ¡em ÃºÄtu, kdyÅ¾ si chcete zkontrolovat novou poÅ¡tu. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Kde mohu pou¾ívat webmail?
+      Kde mohu pouÅ¾Ã­vat webmail?
    </title>
    <description>
       <p>
-      V¹ude tam, kde je k dispozici prohlí¾eè. Bezdrátovı pøístup (WAP/WML) 
-      není v souèasné dobì dostupnı. 
+      VÅ¡ude tam, kde je k dispozici prohlÃ­Å¾eÄ. BezdrÃ¡tovÃ½ pÅ™Ã­stup (WAP/WML) 
+      nenÃ­ v souÄasnÃ© dobÄ› dostupnÃ½. 
       </p>
    </description>
 </section>
 
 <section>
    <title>
-      Proè pou¾ívat webmail místo bì¾ného po¹tovního klienta?
+      ProÄ pouÅ¾Ã­vat webmail mÃ­sto bÄ›Å¾nÃ©ho poÅ¡tovnÃ­ho klienta?
    </title>
    <description>
       <p>
-      Není jisté, zda webmail v budoucnu bude dokonalou náhradou za po¹tovního klienta. 
-      Dobrım dùvodem pro jeho pou¾ívání v¹ak mù¾e bıt snadnı pøístup k Va¹í po¹tì, 
-      bez ohledu na to, zda jste u pøátel, na vıletì, doma èi v práci. SquirrelMail je 
-      navr¾en jako doplnìk Va¹eho po¹tovního klienta. 
+      NenÃ­ jistÃ©, zda webmail v budoucnu bude dokonalou nÃ¡hradou za poÅ¡tovnÃ­ho klienta. 
+      DobrÃ½m dÅ¯vodem pro jeho pouÅ¾Ã­vÃ¡nÃ­ vÅ¡ak mÅ¯Å¾e bÃ½t snadnÃ½ pÅ™Ã­stup k VaÅ¡Ã­ poÅ¡tÄ›, 
+      bez ohledu na to, zda jste u pÅ™Ã¡tel, na vÃ½letÄ›, doma Äi v prÃ¡ci. SquirrelMail je 
+      navrÅ¾en jako doplnÄ›k VaÅ¡eho poÅ¡tovnÃ­ho klienta. 
       </p>
    </description>
 </section>

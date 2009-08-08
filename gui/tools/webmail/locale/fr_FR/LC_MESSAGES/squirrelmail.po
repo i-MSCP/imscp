@@ -1,8 +1,8 @@
-# French Squirrelmail Translation
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# French SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # Antoine Hulin <antoine@origan.fdn.org>, 2002-2003
 # Alex Lemaresquier <alex@brainstorm.fr>, 2003-2005
-# $Id: squirrelmail.po 10961 2006-03-10 16:18:57Z alex-brainstorm $
+# $Id: squirrelmail.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: squirrelmail\n"
@@ -1231,7 +1231,7 @@ msgid "Show All"
 msgstr "Tout afficher"
 
 msgid "SquirrelMail could not decode the bodystructure of the message"
-msgstr "Squirrelmail ne comprend pas la structure du message"
+msgstr "SquirrelMail ne comprend pas la structure du message"
 
 msgid "The bodystructure provided by your IMAP server:"
 msgstr "La structure du corps du message transmise par votre serveur IMAP&nbsp;:"
@@ -2403,7 +2403,7 @@ msgstr "Filtrage des publicités"
 
 #, c-format
 msgid "WARNING! Tell the administrator to set the %s variable."
-msgstr "ATTENTION&nbsp;! Veuillez avertir l'administrateur de Squirrelmail de bien vouloir configurer la variable %s."
+msgstr "ATTENTION&nbsp;! Veuillez avertir l'administrateur de SquirrelMail de bien vouloir configurer la variable %s."
 
 msgid "Move spam to:"
 msgstr "Déplacer les publicités vers&nbsp;:"
@@ -2454,7 +2454,7 @@ msgid "IMAP server information"
 msgstr "Description du serveur IMAP"
 
 msgid "Run some test IMAP commands, displaying both the command and the result. These tests use the SquirrelMail IMAP commands and your current SquirrelMail configuration. Custom command strings can be used."
-msgstr "Exécute quelques commandes IMAP de test en affichant à la fois la commande et son résultat. Ces tests utilisent les commandes IMAP ainsi que votre configuration actuelle de Squirrelmail. Vous pouvez aussi saisir vos propres commandes."
+msgstr "Exécute quelques commandes IMAP de test en affichant à la fois la commande et son résultat. Ces tests utilisent les commandes IMAP ainsi que votre configuration actuelle de SquirrelMail. Vous pouvez aussi saisir vos propres commandes."
 
 #, c-format
 msgid "This will send a message to %s requesting help for this list. You will receive an emailed response at the address below."
@@ -2668,7 +2668,7 @@ msgid "Remote POP server settings"
 msgstr "Options POP3"
 
 msgid "You should be aware that the encryption used to store your password is not perfectly secure. However, if you are using pop, there is inherently no encryption anyway. Additionally, the encryption that we do to save it on the server can be undone by a hacker reading the source to this file."
-msgstr "Vous devez savoir que le chiffrement employé pour conserver votre mot de passe n'est pas parfaitement sûr - votre mot de passe pourrait être déchiffré par un pirate qui regarderait les sources de Squirrelmail. Cette solution est cependant plus sûre que le protocole POP lui-même car ce dernier transmet votre mot de passe sans chiffrement."
+msgstr "Vous devez savoir que le chiffrement employé pour conserver votre mot de passe n'est pas parfaitement sûr - votre mot de passe pourrait être déchiffré par un pirate qui regarderait les sources de SquirrelMail. Cette solution est cependant plus sûre que le protocole POP lui-même car ce dernier transmet votre mot de passe sans chiffrement."
 
 msgid "If you leave password empty, it will be asked when you fetch mail."
 msgstr "Si vous n'indiquez pas votre mot de passe, il vous sera demandé à chaque récupération du courrier."

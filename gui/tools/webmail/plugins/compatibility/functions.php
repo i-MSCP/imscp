@@ -2,7 +2,7 @@
 
 /**
   * SquirrelMail Compatibility Plugin
-  * Copyright (c) 2004-2009 Paul Lesniewski <paul@squirrelmail.org>
+  * Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * SquirrelMail developers, see below under "SQUIRRELMAIL DEVELOPER 
@@ -193,7 +193,7 @@
          '1.5.2', '1.5.1', '1.5.0',
          // in-between includes not needed:
          //'1.4.x-to-1.5.0',
-         '1.4.18', '1.4.17', '1.4.16', '1.4.15', '1.4.14',
+         '1.4.14',
          '1.4.13', '1.4.12', '1.4.11', '1.4.10', '1.4.9', '1.4.8', '1.4.7', 
          '1.4.6', '1.4.5', '1.4.4', '1.4.3', '1.4.2', '1.4.1', '1.4.0',
          // skipping 1.3.x, not supported for now
@@ -265,9 +265,8 @@
   *
   * NOTE that this function will only be useful when called from
   * certain points in the code context, such as from a very early
-  * hook like 'config_override' (which has been changed to
-  * 'prefs_backend'), and may not work reliably for reordering
-  * hooks that are already in execution.
+  * hook like 'config_override', and may not work reliably for 
+  * reordering hooks that are already in execution.
   *
   * @param string  $plugin_name     The name of the plugin to reposition.
   * @param string  $hook_name       The name of the hook wherein the 
@@ -550,57 +549,35 @@ function get_current_hook_name($args='')
   * file (or files).  If the file(s) is(are) not found, an error
   * is displayed and execution stops (function won't return).  
   * If multiple configuration files are given, ALL of them are 
-  * included (unless $load_only_one is TRUE), if they exist, in
-  * the order given.  Only one of them needs to be found to avert
-  * triggering an error.
-  *
-  * Note that configuration files are loaded in the order given,
-  * so the caller should place the file that should have the
-  * final overrides as the LAST in the given list, unless using
-  * $load_only_one, in which case the most important configuration
-  * file should probably come first.
+  * included, if they exist, in the order given.  Only one of 
+  * them needs to be found to avert triggering an error.
   *
   * Non-functional on login_before hook.
-TODO - re-verify that the above is true
   *
-  * @param string $plugin_name    The name of the plugin as
-  *                               it is known to SquirrelMail, 
-  *                               that is, it is the name
-  *                               of the plugin directory
-  * @param mixed $config_files    An array of files that will
-  *                               be included IN THE ORDER that 
-  *                               they are given in the
-  *                               array.  Can also be given as
-  *                               a string if only one config
-  *                               file is being loaded.  Files
-  *                               should be specified relative
-  *                               to the calling plugin's
-  *                               directory, such as:
-  *                                 'config.php'
-  *                               or:
-  *                                 '../../config/my_plugin_config.php'
-  *                               or:
-  *                                 array('data/config.php', 'data/admins.php')
-  *                               It is also possible to give a
-  *                               full/direct path to a
-  *                               configuration file by placing
-  *                               a forward slash at the
-  *                               beginning of the file:
-  *                               array('/var/lib/squirrelmail/config/myplugin.conf')
-  * @param boolean $return_errors When TRUE, any errors encountered
+  * @param string $plugin_name The name of the plugin as
+  *                            it is known to SquirrelMail, 
+  *                            that is, it is the name
+  *                            of the plugin directory
+  * @param array $config_files An array of files that will
+  *                            be included IN THE ORDER that 
+  *                            they are given in the
+  *                            array.  Files should be specified 
+  *                            relative to the calling
+  *                            plugin's directory, such as:
+  *                              array('config.php') 
+  *                            or:
+  *                              array('data/config.php', 'data/admins.php')
+  *                            It is also possible to give a 
+  *                            full/direct path to a 
+  *                            configuration file by placing 
+  *                            a forward slash at the 
+  *                            beginning of the file:
+  *                              array('/var/lib/squirrelmail/config/myplugin.conf')
+  * @param boolean $return_errors When true, any errors encountered
   *                               will cause this function to return
   *                               FALSE; otherwise, errors are
   *                               handled herein by showing an error 
   *                               to the user and exiting (OPTIONAL; 
-  *                               default is FALSE).
-  * @param boolean $load_only_one When TRUE, this function will stop
-  *                               after it has successfully loaded
-  *                               one configuration file, starting
-  *                               with the first one given for
-  *                               $config_files.  When FALSE, all
-  *                               configuration files will be loaded
-  *                               such that the last one can override
-  *                               all others ("cascading") (OPTIONAL;
   *                               default is FALSE).
   *
   * @return mixed If no errors are found, TRUE is returned; if an error
@@ -609,14 +586,14 @@ TODO - re-verify that the above is true
   *               function will never return.
   *
   */
-function load_config($plugin_name, $config_files,
-                     $return_errors=FALSE, $load_only_one=FALSE)
+function load_config($plugin_name, $config_files, $return_errors=FALSE)
 {
 
    global $compatibility_sm_path;
 
 
-   // if only one config file given as string
+   // if only one config file given as string, push 
+   // into an array just to be nice
    //
    if (!is_array($config_files)) $config_files = array($config_files);
       
@@ -636,14 +613,8 @@ function load_config($plugin_name, $config_files,
       //
       ${'config' . $file_count} = @include_once($plugin_path);
 
-      // if we only need one configuration file, stop
-      // here if we successfully loaded this config file
-      //
-      if ($load_only_one && ${'config' . $file_count})
-         return TRUE;
-
       $file_count++;
-
+      
    }
 
 
@@ -781,100 +752,6 @@ function check_plugin_setup($pluginName, $configFiles, $return_errors=FALSE)
    }
 
    return TRUE;
-
-}
-
-
-
-/**
-  * Test if a given file contains a given string.
-  *
-  * This can be used, for example, by plugins during the configtest hook
-  * that want to verify if a certain patch to the SquirrelMail core has
-  * been applied or not.
-  *
-  * The string is searched for using a regular expression to allow for
-  * more complex searches than direct string comparision.  The $string
-  * parameter may contain regular expression syntax if desired.
-  *
-  * @param string  $file   The file to search (usually a full path).
-  * @param string  $string The string to search for (can include regular
-  *                        expression syntax if desired - any special
-  *                        regular expression meta characters need to
-  *                        be escaped unless they are being used as such).
-  * @param boolean $quiet  When TRUE and $file cannot be found or opened,
-  *                        this function returns FALSE, otherwise it 
-  *                        will complain and exit (never return) (OPTIONAL;
-  *                        default is FALSE).
-  *
-  * @return boolean TRUE when $string was found or FALSE when it was not.
-  *                 When $quiet is TRUE, FALSE is also returned if the
-  *                 target file could not be located, opened or read.
-  *
-  */
-function check_file_contents($file, $string, $quiet=FALSE)
-{
-
-   if (check_php_version(4, 3, 0))
-   {
-      $contents = file_get_contents($file);
-      if (!$contents)
-         if ($quiet) return FALSE;
-         else
-         {
-            echo 'FATAL ERROR: ' . $file . ' cannot be found or opened!';
-            exit;
-         }
-   }
-   else
-   {
-      $temp_contents = file($file);
-      if (!$temp_contents || !is_array($temp_contents))
-         if ($quiet) return FALSE;
-         else
-         {
-            echo 'FATAL ERROR: ' . $file . ' cannot be found or opened!';
-            exit;
-         }
-      $contents = '';
-      foreach ($temp_contents as $line)
-         $contents .= $line;
-   }
-
-
-   return preg_match('/' . $string . '/', $contents);
-
-}
-
-
-
-/**
-  * Returns the difference in times.  Some small
-  * amount of precision might be lost in the +
-  * operations, but nothing serious.  
-  *
-  * This is only a convenience function for plugin
-  * authors fine tuning performance and may not
-  * work on some operating systems.
-  *
-  * @param string $start The microtime() results for
-  *                      the start point.
-  * @param string $end   The microtime() results for
-  *                      the end point (OPTIONAL;
-  *                      if empty defaults to the
-  *                      time NOW).
-  *
-  * @return float The difference between start and
-  *               end points.
-  *
-  */
-function sm_microtime_diff($start, $end=0)
-{
-
-   if (empty($end)) $end = microtime();
-
-   return (substr($end, 11) - substr($start, 11))
-        + (substr($end, 0, 9) - substr($start, 0, 9));
 
 }
 

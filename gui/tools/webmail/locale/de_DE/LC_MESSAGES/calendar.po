@@ -1,8 +1,8 @@
 # German translation of SquirrelMail shared_calendar_plugin plugin.
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daumling <jam@qv90.de>, 2005.
-# $Id: calendar.po 10066 2005-09-06 21:28:56Z jervfors $
+# $Id: calendar.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: shared_calendar_plugin 2.0.1\n"

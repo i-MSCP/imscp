@@ -17,18 +17,18 @@
    <description>
       <p>
       Le cartelle attualmente sottoscritte sono elencate nell'area
-      colorata di sinistra. Questo frame puÚ essere configurato
+      colorata di sinistra. Questo frame pu√≤ essere configurato
       per essere aggiornato automaticamente nella pagina delle Opzioni.
-      Sul limite superiore del frame di sinitra c'Ë un titolo in
+      Sul limite superiore del frame di sinitra c'√® un titolo in
       grassetto. Se vengono apportate delle modifiche alle cartelle
-      sottoscritte,  con la voce di menu cartelle, questa lista puÚ
+      sottoscritte,  con la voce di menu cartelle, questa lista pu√≤
       essere aggiornata con il link sotto al titolo.  Strano a dirsi
-      questo link Ë nominato "aggiornamento lista cartelle".
+      questo link √® nominato "aggiornamento lista cartelle".
       </p><p>
       La prima cartella elencata contiene la posta ricevuta.
-      Alla destra della prima cartella c'Ë un numero tra parentesi
+      Alla destra della prima cartella c'√® un numero tra parentesi
       "( )" che riflette il numero dei messaggi <I>non letti</I>.
-      Questo numero probabilmente varier‡ rispetto al numero totale
+      Questo numero probabilmente varier√† rispetto al numero totale
       dei messaggi visualizzati nel frame di destra.  Sotto la cartella
       principale possono esserci altre cartelle o sotto cartelle.
       I colori di queste cartelle variano in funzione dei temi scelti per
@@ -47,7 +47,7 @@
       di riepilogo a sinistra del pulsante Cancella. Notare che la lista 
       potrebbe <B>non</B> includere tutte le cartelle visualizzate.
       Le cartelle speciali quali TRASH e SENT non possono essere cancellate,
-      cosÏ come, ovviamente, non puÚ essere cancellata la cartella INBOX.
+      cos√¨ come, ovviamente, non pu√≤ essere cancellata la cartella INBOX.
       </p>
    </description>
 </section>
@@ -68,7 +68,7 @@
       In alcuni mail servers, esistono due tipi di cartelle.
       Una contenente i messaggi ed una che contiene le cartelle. E' possibile vedere
       un'opzione chiamata "Consenti a questa cartella di contenere sottocartelle".
-	  Se attivate questa casella di controllo,la cartella che creerete potr‡ contenere
+	  Se attivate questa casella di controllo,la cartella che creerete potr√† contenere
       solo altre cartelle, ma nessun messaggio.  Altrimenti potrete memorizzare solo
       messaggi, ma nessuna sotto cartella.
       </p>
@@ -95,7 +95,7 @@
    </title>
    <description>
       Definizioni:<br>
-      <i>Sottoscrizione</i>: Per registrare una cartella con il mail server, affichË
+      <i>Sottoscrizione</i>: Per registrare una cartella con il mail server, affich√®
                              possa essere visualizzata nella lista cartelle.<br>
       <i>Cancella Sottoscrizione</i>: E' l'opposto della sottoscrizione. Cancella nel
                                       mail server la cartella dalla lista.<br>

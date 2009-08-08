@@ -1,9 +1,9 @@
-# Squirrelmail empty_folders plugin
+# SquirrelMail empty_folders plugin
 # French translation
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the plugin's package.
 # Michel Bouissou <michel@bouissou.net>, 2004.
-# $Id: empty_folders.po 10345 2005-11-12 15:13:46Z tokul $
+# $Id: empty_folders.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: empty_folders VERSION\n"

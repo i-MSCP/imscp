@@ -1,17 +1,17 @@
 # Swedish (sv_SE) smallcal Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
-# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
-# $Id: smallcal.po 9522 2005-06-05 11:50:09Z jervfors $
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: smallcal.po 13541 2009-04-15 12:42:12Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: smallcal 0.9\n"
 "POT-Creation-Date: 2003-10-20 16:27+0300\n"
 "PO-Revision-Date: 2004-02-14 17:38+0100\n"
-"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
 "Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "S M T W T F S"
@@ -21,20 +21,20 @@ msgid "Today"
 msgstr "Idag"
 
 msgid "Color Picker"
-msgstr "F‰rgv‰ljare"
+msgstr "F√§rgv√§ljare"
 
 msgid ""
 "Click a box and the hexadecimal color will be shown <br>below. Use these hex "
 "values for color box settings."
 msgstr ""
-"V‰lj en ruta sÂ visas det hexadecimala f‰rgv‰rdet nedan.<br>Anv‰nd dessa v‰rden "
-"i f‰rginst‰llningarna."
+"V√§lj en ruta s√• visas det hexadecimala f√§rgv√§rdet nedan.<br>Anv√§nd dessa v√§rden "
+"i f√§rginst√§llningarna."
 
 msgid "Hex Value"
-msgstr "Hexadecimalt v‰rde"
+msgstr "Hexadecimalt v√§rde"
 
 msgid "Small Calendar Options"
-msgstr "Inst‰llningar fˆr minikalendern"
+msgstr "Inst√§llningar f√∂r minikalendern"
 
 msgid "Small Calendar:"
 msgstr "Minikalender:"
@@ -43,25 +43,25 @@ msgid "Show small calendar in left bar"
 msgstr "Visa minikalendern under mapplistan"
 
 msgid "Use Default Theme:"
-msgstr "Anv‰nd fˆrvalt tema:"
+msgstr "Anv√§nd f√∂rvalt tema:"
 
 msgid "This will override values below"
-msgstr "Detta Âsidos‰tter v‰rdena nedan"
+msgstr "Detta √•sidos√§tter v√§rdena nedan"
 
 msgid "Header Color:"
-msgstr "F‰rg fˆr rubriker:"
+msgstr "F√§rg f√∂r rubriker:"
 
 msgid "Day Color:"
-msgstr "F‰rg fˆr dagar:"
+msgstr "F√§rg f√∂r dagar:"
 
 msgid "Today Color:"
-msgstr "F‰rg fˆr idag:"
+msgstr "F√§rg f√∂r idag:"
 
 msgid "Event Color:"
-msgstr "F‰rg fˆr h‰ndelser:"
+msgstr "F√§rg f√∂r h√§ndelser:"
 
 msgid "Calendar separator:"
-msgstr "Minikalenderns avgr‰nsare"
+msgstr "Minikalenderns avgr√§nsare"
 
 msgid "None"
 msgstr "Ingen"
@@ -76,7 +76,7 @@ msgid "Calendar size:"
 msgstr "Kalenderstorlek:"
 
 msgid "Default size"
-msgstr "Fˆrvald storlek"
+msgstr "F√∂rvald storlek"
 
 msgid "10 px"
 msgstr "10 px"
@@ -91,13 +91,13 @@ msgid "16 px"
 msgstr "16 px"
 
 msgid "Use Shared Calendar:"
-msgstr "Anv‰nd gemensam kalender:"
+msgstr "Anv√§nd gemensam kalender:"
 
 msgid ""
 "Use the shared calendar selected below as your<br>small calendar (default is "
 "Personal calendar)"
 msgstr ""
-"Anv‰nd den nedan valda gemensamma kalendern som<br>din minikalender (fˆrval: "
+"Anv√§nd den nedan valda gemensamma kalendern som<br>din minikalender (f√∂rval: "
 "din privata kalender)."
 
 msgid "Shared Calendar:"

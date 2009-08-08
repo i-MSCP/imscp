@@ -1,8 +1,8 @@
 # translation of sasql.po to Nynorsk
 # This file is distributed under the same license as the sasql plugin.
-# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # Ola Ketil Siqveland <olaketil@hotmail.com>, 2004,2005
-# $Id: sasql.po 9939 2005-08-13 05:35:44Z tokul $
+# $Id: sasql.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: sasql\n"

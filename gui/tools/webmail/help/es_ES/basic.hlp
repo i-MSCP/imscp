@@ -29,7 +29,7 @@
       fichero de preguntas frecuentes.
       </p>
       <p>      
-      Squirrelmail está estructurado en dos segmentos principales llamados
+      SquirrelMail está estructurado en dos segmentos principales llamados
       "frames" o marcos. El marco de la izquierda muestra la lista de
       carpetas suscritas. Puede encontrar mas ayuda sobre el marco
       izquierdo en el apartado de "Carpetas" de la ayuda.
@@ -48,7 +48,7 @@
             <li><b>Componer</b> - Redactar y enviar mensajes que pueden contener ficheros adjuntos.
             <li><b>Direcciones</b> - Contiene su lista de direcciones. 
             <li><b>Carpetas</b> - Permite manipular carpetas, desde aquí puede borrar, crear, renombrar, suscribirse y darse de baja de las distintas carpeta de correo.
-            <li><b>Opciones</b> - Para ajustar las distintas opciones de Squirrelmail.
+            <li><b>Opciones</b> - Para ajustar las distintas opciones de SquirrelMail.
             <li><b>Buscar</b> - Con esta herramienta puede localizar un criterio determinado en su correo.
             <li><b>Ayuda</b> - ¡Ya está aquí! 
          </ul>

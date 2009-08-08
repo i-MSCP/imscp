@@ -2,7 +2,7 @@
 /**
  * Language configuration file
  *
- * Copyright (c) 2005-2006 The SquirrelMail Project Team
+ * Copyright (c) 2005-2009 The SquirrelMail Project Team
  *
  * This file is part of SquirrelMail webmail interface. It is distributed
  * together with other translation files and is used to enable 
@@ -22,11 +22,11 @@
  * along with SquirrelMail; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @version $Id: setup.php 11413 2006-07-19 12:38:11Z tokul $
+ * @version $Id: setup.php 13696 2009-05-14 06:27:08Z jervfors $
  * @package locales
  */
 
 $languages['uk_UA']['NAME']    = 'Ukrainian';
 $languages['uk_UA']['CHARSET'] = 'utf-8';
-$languages['uk_UA']['LOCALE']  = array('uk_UA.UTF-8','uk_UA','uk');
+$languages['uk_UA']['LOCALE']  = array('uk_UA.UTF-8', 'uk_UA.UTF8', 'uk_UA', 'uk');
 $languages['uk']['ALIAS'] = 'uk_UA';

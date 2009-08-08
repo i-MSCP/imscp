@@ -1,5 +1,5 @@
-# Norwegian Bokmål (nb_NO) smallcal Translation (SquirrelMail plugin)
-# Copyright (c) 2007 The SquirrelMail Project Team
+# Norwegian BokmÃ¥l (nb_NO) smallcal Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Hans Fredrik Nordhaug <hans@nordhaug.priv.no>, 2007.
 # $Id: $
@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "S M T W T F S"
@@ -71,10 +71,10 @@ msgid "Box"
 msgstr "Boks"
 
 msgid "Calendar size:"
-msgstr "Kalenderstørrelse"
+msgstr "KalenderstÃ¸rrelse"
 
 msgid "Default size"
-msgstr "Standard størrelse"
+msgstr "Standard stÃ¸rrelse"
 
 msgid "10 px"
 msgstr "10 px"

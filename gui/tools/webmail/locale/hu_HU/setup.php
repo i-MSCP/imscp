@@ -2,7 +2,7 @@
 /**
  * Language configuration file
  *
- * Copyright (c) 2005-2006 The SquirrelMail Project Team
+ * Copyright (c) 2005-2009 The SquirrelMail Project Team
  *
  * This file is part of SquirrelMail webmail interface. It is distributed
  * together with other translation files and is used to enable 
@@ -22,12 +22,12 @@
  * along with SquirrelMail; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @version $Id: setup.php 11413 2006-07-19 12:38:11Z tokul $
+ * @version $Id: setup.php 13625 2009-04-29 00:28:04Z jervfors $
  * @package locales
  */
 
 $languages['hu_HU']['NAME']    = 'Hungarian';
 $languages['hu_HU']['ALTNAME'] = 'Magyar';
-$languages['hu_HU']['CHARSET'] = 'iso-8859-2';
-$languages['hu_HU']['LOCALE']  = array('hu_HU.ISO8859-2','hu_HU.ISO-8859-2','hu_HU');
-$languages['hu']['ALIAS'] = 'hu_HU';
+$languages['hu_HU']['CHARSET'] = 'utf-8';
+$languages['hu_HU']['LOCALE']  = array('hu_HU.UTF-8', 'hu_HU.UTF8', 'hu_HU');
+$languages['hu']['ALIAS']      = 'hu_HU';

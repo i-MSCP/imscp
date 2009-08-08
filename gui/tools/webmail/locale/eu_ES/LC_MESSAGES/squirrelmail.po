@@ -1,9 +1,9 @@
 # Basque (eu_ES) SquirrelMail Translation
-# Copyright (c) 2004-2007 The SquirrelMail Project Team
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Iker Etxaniz <ietxaniz@csiss.jesuitak.org>, 2004.
 # Julen <julenx@gmail.com>, 2007.
-# $Id: squirrelmail.po 12725 2007-10-06 21:43:08Z jervfors $
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail HEAD\n"
@@ -643,7 +643,7 @@ msgid ""
 "You can change the way that SquirrelMail looks and displays information to "
 "you, such as the colors, the language, and other settings."
 msgstr ""
-"Squirrelmail-ek ematen eta azaltzen dizun informazioa alda dezakezu, besteak "
+"SquirrelMail-ek ematen eta azaltzen dizun informazioa alda dezakezu, besteak "
 "beste, kolorea,hizkuntza eta beste konfigurazioak."
 
 msgid ""
@@ -1364,7 +1364,7 @@ msgid "Show All"
 msgstr "Denak"
 
 msgid "SquirrelMail could not decode the bodystructure of the message"
-msgstr "Squirrelmail ez da mezuaren gorputz-egitura dekodifikatzeko gai."
+msgstr "SquirrelMail ez da mezuaren gorputz-egitura dekodifikatzeko gai."
 
 msgid "The bodystructure provided by your IMAP server:"
 msgstr "IMAP zerbitzariak bidalitako gorputz-egitura:"
@@ -2229,7 +2229,7 @@ msgid ""
 "This module allows administrators to manage SquirrelMail main configuration "
 "remotely."
 msgstr ""
-"Modulu honek Squirrelmail-en aukera nagusiak hurrundik konfiguratzeko "
+"Modulu honek SquirrelMail-en aukera nagusiak hurrundik konfiguratzeko "
 "aukeraematen du."
 
 msgid "Submit a Bug Report"

@@ -1,8 +1,7 @@
-# translation of mini.po to Frisian
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) mini Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Frisian (fy) mini Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: mini.pot 11689 2006-09-10 09:52:24Z jervfors $
 msgid ""
 msgstr ""
@@ -128,7 +127,7 @@ msgstr "Map"
 msgid "New Mail"
 msgstr "Nije e-mail"
 
-# net oersetten  yn Postfak yn It liket my tadat INBOX op de Squirrelmail site ek stean bliuwt
+# net oersetten  yn Postfak yn It liket my tadat INBOX op de SquirrelMail site ek stean bliuwt
 #: mini.php:160
 msgid "INBOX"
 msgstr "INBOX"

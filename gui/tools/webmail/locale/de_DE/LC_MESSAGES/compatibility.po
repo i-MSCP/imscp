@@ -1,8 +1,8 @@
 # German translation of SquirrelMail compatibility plugin.
-# Copyright (C) 2006 The SquirrelMail Project Team
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Florian Daeumling <jam@qv90.de>, 2006.
-# $Id: compatibility.po 11562 2006-08-11 13:38:02Z tokul $
+# $Id: compatibility.po 13696 2009-05-14 06:27:08Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: compatibility 2.04\n"

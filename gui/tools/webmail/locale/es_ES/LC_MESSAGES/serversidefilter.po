@@ -1,5 +1,5 @@
 # Spanish (es_ES) serversidefilter Translation (SquirrelMail plugin)
-# Copyright (c) 2007 The SquirrelMail Project Team
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # Gonzalo Carmona Martinez <maidenero@hotmail.com>, 2007.
 # $Id: serversidefilter.pot 10877 2006-03-04 11:22:22Z jervfors $
@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: Gonzalo Carmona Martinez <maidenero@hotmail.com>\n"
 "Language-Team: Spanish <squirrelmail-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; iso-8859-1\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: options.php:62

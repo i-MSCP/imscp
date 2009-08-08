@@ -1,8 +1,7 @@
-# translation of newuser_wiz.po to Dutch
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) newuser_wiz Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Dutch (nl_NL) newuser_wiz Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: newuser_wiz.pot 11025 2006-04-05 19:23:55Z jervfors $
 msgid ""
 msgstr ""

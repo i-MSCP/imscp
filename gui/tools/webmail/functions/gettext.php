@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * SquirrelMail internal gettext functions

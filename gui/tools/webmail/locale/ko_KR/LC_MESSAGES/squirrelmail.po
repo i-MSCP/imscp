@@ -1,5 +1,5 @@
-# Korean Squirrelmail Translation.
-# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Korean SquirrelMail Translation.
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # J.I Kim" <aporie@netian.com>, 2002.
 #
 msgid ""
@@ -1800,7 +1800,7 @@ msgstr "설정 파일 버전"
 
 #, fuzzy
 msgid "SquirrelMail Version"
-msgstr "Squirrelmail 버전"
+msgstr "SquirrelMail 버전"
 
 msgid "PHP Version"
 msgstr "PHP 버전"
@@ -2672,7 +2672,7 @@ msgid ""
 "configuration. Custom command strings can be used."
 msgstr ""
 "약간의 IMAP 명령어를 실행합니다. 명령어와 그 결과를 보여줍니다. 이 테스트들"
-"은 Squirrelmail IMAP 명령어와 현재 Squirrelmail 설정을 사용합니다. 사용자 명"
+"은 SquirrelMail IMAP 명령어와 현재 SquirrelMail 설정을 사용합니다. 사용자 명"
 "령어 문자열도 사용할 수 있습니다."
 
 msgid "Mailinglist"

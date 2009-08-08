@@ -3,22 +3,22 @@
       Indirizzi
    </title>
    <summary>
-      La rubrica indirizzi puÚ risparmiare tempo e fatica.  Potete salvare
-      gli indirizzi pi˘ usati ed usarli quando ne avete bisogno.
+      La rubrica indirizzi pu√≤ risparmiare tempo e fatica.  Potete salvare
+      gli indirizzi pi√π usati ed usarli quando ne avete bisogno.
    </summary>
    <description>
       <p>
       Le rubriche indirizzi hanno la caratteristica di far risparmiare tempo.
- 	  Vi si possono registrare gli indirizzi usati pi˘ di frequente.
-      È possibile utilizzare anche servers LDAP (spesso presenti in grandi 
-      organizzazioni dove Ë necessario condividere gli indirizzi facilmente.
+ 	  Vi si possono registrare gli indirizzi usati pi√π di frequente.
+      √© possibile utilizzare anche servers LDAP (spesso presenti in grandi 
+      organizzazioni dove √® necessario condividere gli indirizzi facilmente.
       </p>
       <p>
       Se il vostro Browser supporta Javascript allora potresti avere il desiderio
       di abilitare la rubrica indirizzi basata su java, presente nel menu Opzioni.
       Si presenta come una piccola ed elegante finestra popup.
       E' comunque supportata una lista di indirizzi in puro HTML in modo che anche
-      senza il supporto per Javascript, Ë possibile usare SquirrelMail nel pieno
+      senza il supporto per Javascript, √® possibile usare SquirrelMail nel pieno
       delle sue funzioni.
       </p>
    </description>
@@ -31,7 +31,7 @@
    <description>
       <p>
       Inserite qui il vostro Nick Name.  Qualcosa che aiuti la mostra memoria.
-      Qualsiasi cosa che ricordi a chi Ë associato l'indirizzo email inserito.
+      Qualsiasi cosa che ricordi a chi √® associato l'indirizzo email inserito.
       </p>
    </description>
 </section>
@@ -43,14 +43,14 @@
    <description>
       <p>
       Deve essere l'esatto indirizzo email della persona. Esistono tre parti
-      che costituiscono un indirizzo email.  Il primo Ë l'identificatore del 
+      che costituiscono un indirizzo email.  Il primo √® l'identificatore del 
       destinatario, come "mario" quindi la sezione con il nome di dominio,
       che potreebbe prendere la forma di "rossi", "tin", "hotmail" o
       altro.  Ultimo il top level domain (dominio di primo livello), che 
       potrebbe essere qualsiasi cosa come it, au, cc, us, com, org, net o
-      come edu.  CosÏ mettendo insieme queste tre parti il risultato potrebbe
-      essere mario@rossi.it   Se l'indirizzo non Ë corretto il risultato sar‡
-      che il messaggio vi sar‡ rinviato indietro perchË non accettato.
+      come edu.  Cos√¨ mettendo insieme queste tre parti il risultato potrebbe
+      essere mario@rossi.it   Se l'indirizzo non √® corretto il risultato sar√†
+      che il messaggio vi sar√† rinviato indietro perch√® non accettato.
       </p>
    </description>
 </section>
@@ -61,7 +61,7 @@
    </title>
    <description>
       <p>
-      Questo Ë un altro campo a disposizione dove Ë possibile memorizzare 
+      Questo √® un altro campo a disposizione dove √® possibile memorizzare 
       qualsiasi cosa che vi aiuti a ricordare la persona. Il campo serve per
       specificare meglio di quanto si possa fare con il "Nick Name".
       Per esempio, se dovete ricordare un contatto relativo a relazioni commerciali,
@@ -102,19 +102,19 @@
    </title>
    <description>
       <p>
-      LDAP Ë un protocollo per la memorizzazione centralizzata e l'accesso remoto 
-      alle informazioni.  Per esempio; un'universit‡ potrebbe usare LDAP come l'unico
+      LDAP √® un protocollo per la memorizzazione centralizzata e l'accesso remoto 
+      alle informazioni.  Per esempio; un'universit√† potrebbe usare LDAP come l'unico
       posto dove tutti gli indirizzi degli studenti, dei docenti, assistenti e della
-      facolt‡ vengono messi a disposizione.  Se configurato per usare il server LDAP
-      di universit‡, SquirrelMail potrebbe essere in grado di elencare tutti gli indirizzi
+      facolt√† vengono messi a disposizione.  Se configurato per usare il server LDAP
+      di universit√†, SquirrelMail potrebbe essere in grado di elencare tutti gli indirizzi
       email dei campus (insieme a tutti gli altri campi disponibili nella rubrica).
-      L'uso di LDAP di Squirrelmail Ë realmente potente in quanto <I>combina</I> 
+      L'uso di LDAP di SquirrelMail √® realmente potente in quanto <I>combina</I> 
       la vostra rubrica indirizzi locale e le informazioni del server degli indirizzi LDAP
       presentandole come se fossero un'unica cosa.
       </p><p>
-      La configurazione di LDAP puÚ essere fatta per usare qualsiasi server LDAP, o per
+      La configurazione di LDAP pu√≤ essere fatta per usare qualsiasi server LDAP, o per
       disabilitare completamente questa caratteristica.  Nel caso abbiate domande specifiche
-      al riguardo Ë bene parlarne con il vostro amministratore.
+      al riguardo √® bene parlarne con il vostro amministratore.
       </p><p>
       La configurazione di LDAP influisce sull'intero sistema di SquirrelMail; per eseguire
       correttamente la configurazione o modificarla questa deve essere fatta da qualcuno che

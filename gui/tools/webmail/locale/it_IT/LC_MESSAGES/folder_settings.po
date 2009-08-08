@@ -1,0 +1,62 @@
+# Italian (it_IT) folder_settings Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: folder_settings.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings 0.3\n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2009-04-27 16:45+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:21
+msgid "Folder Sorting Options"
+msgstr "Opzioni ordinamento cartelle"
+
+#: functions.php:25
+msgid "Enable per-folder sorting"
+msgstr "Abilita l'ordinamento specifico per cartella"
+
+#: functions.php:31
+msgid "Default sort_order"
+msgstr "Ordinamento predefinito"
+
+#: functions.php:34
+msgid "Date (descending)"
+msgstr "Data (decrescente)"
+
+#: functions.php:35
+msgid "Date (ascending)"
+msgstr "Data (crescente)"
+
+#: functions.php:36
+msgid "From (descending)"
+msgstr "Da (decrescente)"
+
+#: functions.php:37
+msgid "From (ascending)"
+msgstr "Da (crescente)"
+
+#: functions.php:38
+msgid "Subject (descending)"
+msgstr "Oggetto (decrescente)"
+
+#: functions.php:39
+msgid "Subject (ascending)"
+msgstr "Oggetto (crescente)"
+
+#: functions.php:40
+msgid "Unsorted"
+msgstr "Non ordinato"
+
+#: functions.php:68
+msgid ""
+"Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr ""
+"Il plugin Folder Settings non dovrebbe essere usato con questa versione di "
+"SquirrelMail."

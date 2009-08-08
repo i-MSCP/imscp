@@ -1,8 +1,7 @@
-# translation of forum.po to Frisian
-# Rinse de Vries <rinsedevries@kde.nl>, 2007.
-# LANGUAGE (xx_XX) forum Translation (SquirrelMail plugin)
-# Copyright (c) 1999-2007 The SquirrelMail Project Team
+# Frisian (fy) forum Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
 # $Id: compatibility.pot 10877 2006-03-04 11:22:22Z jervfors $
 msgid ""
 msgstr ""

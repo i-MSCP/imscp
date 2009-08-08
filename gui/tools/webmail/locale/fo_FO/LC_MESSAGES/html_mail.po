@@ -1,8 +1,8 @@
 # Translation of html_mail.po to Faroese (Faroe Islands)
-# Copyright (c) 2005 The SquirrelMail Project Team
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
 # This file is distributed under the same license as the squirrelmail package.
 # Danial Olsen <danial@com-data.fo>, 2005.
-# $Id: html_mail.po 10513 2005-12-29 09:13:52Z tokul $
+# $Id: html_mail.po 13693 2009-05-14 00:26:43Z jervfors $
 msgid ""
 msgstr ""
 "Project-Id-Version: html_mail\n"

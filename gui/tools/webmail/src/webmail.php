@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * webmail.php -- Displays the main frameset
