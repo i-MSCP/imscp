@@ -213,7 +213,7 @@ require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
 // Use HTMLPurifier on every request, if OVERRIDE_PURIFIER is not defined
 if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
 	$config = HTMLPurifier_Config::createDefault();
-	$config->set('HTML', 'TidyLevel', 'none'); // XSS cleaning
+	$config->set('HTML.TidyLevel', 'none'); // XSS cleaning
 
 	$purifier = new HTMLPurifier($config);
 	//$purifier = HTMLPurifier::getInstance();
