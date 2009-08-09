@@ -733,6 +733,7 @@ sub gen_httpd_alssub_group_entry {
          '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+		 '{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
          '{SUB_NAME}' => $sub_name,
          '{SELF}' => $sub_name,
          '{SUB_IP}' => $sub_ip,

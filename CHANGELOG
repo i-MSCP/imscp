@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-09 Thomas Wacker
+	- CONFIGS:
+		* Fixed #1889: Fix fcgi 500 server errors
+
 2009-08-08 Andreca Daniel
 	- TOOLS:
 		* Fixed #1916: class.HTMLPurifier_AttrDef_HTML_Class.php missing

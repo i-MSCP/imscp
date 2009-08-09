@@ -794,6 +794,7 @@ sub gen_httpd_dmn_group_entry {
 		'{PEAR_DIR}'                  => $main::cfg{'PEAR_DIR'},
 		'{APACHE_USERS_LOG_DIR}'      => $main::cfg{'APACHE_USERS_LOG_DIR'},
 		'{CUSTOM_SITES_CONFIG_DIR}'   => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+		'{MODS_DIR}'                  => $main::cfg{'APACHE_MODS_DIR'},
 		
 		'{AWSTATS_WEB_DIR}'    	      => $main::cfg{'AWSTATS_WEB_DIR'},
 		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},

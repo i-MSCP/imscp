@@ -14,6 +14,7 @@
         </Directory>
     </IfModule>
     <IfModule mod_fcgid.c>
+		Include {MODS_DIR}/fcgid_ispcp.conf
         <Directory {WWW_DIR}/{DMN_NAME}/htdocs>
             FCGIWrapper {STARTER_DIR}/{DMN_NAME}/php{PHP_VERSION}-fcgi-starter .php
             Options +ExecCGI
