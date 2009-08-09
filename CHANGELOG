@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-09 Benedikt Heintel
+	- ENGINE:
+		* Added #1889: missing change
+
 2009-08-09 Thomas Wacker
 	- CONFIGS:
 		* Fixed #1889: Fix fcgi 500 server errors

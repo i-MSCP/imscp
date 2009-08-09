@@ -733,7 +733,7 @@ sub gen_httpd_alssub_group_entry {
          '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
-		 '{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
+         '{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
          '{SUB_NAME}' => $sub_name,
          '{SELF}' => $sub_name,
          '{SUB_IP}' => $sub_ip,
@@ -2161,7 +2161,7 @@ sub alssub_add_proftpd_cfg_data {
 			domain_name
 		FROM
 			subdomain as t1
-		LEFT JOIN 
+		LEFT JOIN
 			(domain as t2)
 		ON
 			(t1.domain_id=t2.domain_id)
@@ -2210,7 +2210,7 @@ sub alssub_add_proftpd_cfg_data {
 			t2.alias_name
 		FROM
 			subdomain_alias as t1
-		LEFT JOIN 
+		LEFT JOIN
 			(domain_aliasses as t2)
 		ON
 			(t1.alias_id=t2.alias_id)
@@ -2240,9 +2240,9 @@ sub alssub_add_proftpd_cfg_data {
 			'proftpd.conf.tpl'
 		);
 		return $rs if ($rs != 0);
-	
+
 		my $seq = 0;
-	
+
 		#
 		# Let's prepare them;
 		#
@@ -2568,7 +2568,7 @@ sub alssub_mngr_engine {
 
         return $rs if ($rs != 0);
 
-    } 
+    }
     elsif ($sub_status eq 'change') {
 
         # Changing domains;
@@ -2670,4 +2670,3 @@ if ($rs != 0) {
 }
 
 exit 0;
-
