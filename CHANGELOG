@@ -4,6 +4,7 @@ ispCP ω 1.0.1 Changelog
 2009-08-09 Benedikt Heintel
 	- ENGINE:
 		* Added #1889: missing change
+		* Changed messager to messenger
 
 2009-08-09 Thomas Wacker
 	- CONFIGS:

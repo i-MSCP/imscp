@@ -75,7 +75,7 @@ localhost:10025 inet  n -       n       -      -        smtpd
 
 # ispCP autoresponder
 ispcp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
+  flags=O user=vmail argv=/var/www/ispcp/engine/messenger/ispcp-arpl-msgr
 
 # TLS - Activate, if TLS is avaiable/used
 smtps     inet  n       -       -       -       -       smtpd

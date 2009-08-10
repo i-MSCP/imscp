@@ -122,7 +122,7 @@ done
 # fixing messager permissions;
 #
 
-i="$ROOT_DIR/engine/messager"
+i="$ROOT_DIR/engine/messenger"
 
 if [ $DEBUG -eq 1 ]; then
 	echo "0700 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME [$i]";
@@ -138,7 +138,7 @@ fi
 # fixing messager folder permissions;
 #
 
-i="$ROOT_DIR/engine/messager"
+i="$ROOT_DIR/engine/messenger"
 
 if [ $DEBUG -eq 1 ]; then
 	echo "0755 $ROOT_USER:$ROOT_GROUP folder [$i]";

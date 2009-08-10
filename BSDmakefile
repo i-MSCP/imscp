@@ -71,7 +71,7 @@ install:
 	# Previous database key detected, assuming being perform Upgrade Procedure
 	#	
 	cp $(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/
-	cp $(SYSTEM_WEB)/ispcp/engine/messager/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messager/
+	cp $(SYSTEM_WEB)/ispcp/engine/messenger/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messenger/
 	cp $(SYSTEM_WEB)/ispcp/gui/include/ispcp-db-keys.php $(SYSTEM_ROOT)/gui/include/
 	cp $(SYSTEM_WEB)/ispcp/gui/themes/user_logos/* $(SYSTEM_ROOT)/gui/themes/user_logos/
 	cp $(SYSTEM_WEB)/ispcp/gui/tools/pma/config.inc.php $(SYSTEM_ROOT)/gui/tools/pma/
@@ -122,5 +122,4 @@ uninstall:
 
 clean:
 	cd ./tools/daemon && $(MAKE) clean
-
 

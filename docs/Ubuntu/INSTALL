@@ -148,7 +148,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 7. Save files
 	# sudo cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
-	# sudo cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messager/
+	# sudo cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
 	# sudo cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 	# sudo cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 

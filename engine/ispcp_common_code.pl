@@ -55,7 +55,7 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 	print STDOUT "\tGenerating database keys, it may take some time, please wait...\n";
 	print STDOUT "\tIf it takes to long, please check http://www.isp-control.net/documentation/frequently_asked_questions/what_does_generating_database_keys_it_may_take_some_time_please_wait..._on_setup_mean\n";
 
-	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messager/ispcp-db-keys.pl");
+	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-db-keys.pl");
 
 	return $rs if ($rs != 0);
 
@@ -148,7 +148,7 @@ $main::ispcp_htgroups_mngr_stdout = "$main::log_dir/ispcp-htgroups-mngr.stdout";
 $main::ispcp_htgroups_mngr_stderr = "$main::log_dir/ispcp-htgroups-mngr.stderr";
 
 
-$main::ispcp_vrl_traff = "$main::root_dir/engine/messager/ispcp-vrl-traff";
+$main::ispcp_vrl_traff = "$main::root_dir/engine/messenger/ispcp-vrl-traff";
 
 $main::ispcp_vrl_traff_el = "$main::log_dir/ispcp-vrl-traff.el";
 $main::ispcp_vrl_traff_stdout = "$main::log_dir/ispcp-vrl-traff.stdout";

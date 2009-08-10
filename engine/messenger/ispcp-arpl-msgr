@@ -511,14 +511,13 @@ if ($rs != 0) {
 		$main::ispcp_arpl_msgr_el = "$main::cfg{'LOG_DIR'}ispcp-arpl-msgr/ispcp-arpl-msgr.el";
 		$main::ispcp_arpl_msgr_stdout = "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
 		$main::ispcp_arpl_msgr_stderr = "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
+		chown($main::cfg{'MTA_MAILBOX_UID'}, $main::cfg{'MTA_MAILBOX_GID'}, ($main::ispcp_arpl_msgr_stdout,$main::ispcp_arpl_msgr_stderr));
 		open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
 		open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
 	}
 	print STDERR "\nCRITICAL ERROR: Failed open /etc/ispcp/ispcp.conf! Maybe wrong permissions?\n" ;
 	exit 0;
 }
-
-# $main::engine_debug = '_on_';
 
 # debug dump files;
 $main::log_dir = $main::cfg{'LOG_DIR'};
@@ -527,6 +526,7 @@ $main::ispcp_arpl_msgr_el = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.el";
 $main::ispcp_arpl_msgr_stdout = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
 $main::ispcp_arpl_msgr_stderr = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
 
+chown($main::cfg{'MTA_MAILBOX_UID'}, $main::cfg{'MTA_MAILBOX_GID'}, ($main::ispcp_arpl_msgr_stdout,$main::ispcp_arpl_msgr_stderr));
 open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
 open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
 
@@ -694,21 +694,21 @@ sub arpl_msgr_engine {
 
 # 				# TODO: Resolve forwards
 # 				return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)$/));
-# 
+#
 # 				# postbox with normal_mail, alias_mail or subdom_mail as type, so '_mail'
 # 				$sql = "SELECT `mail_forward`, INSTR(`mail_type`, '_mail') FROM `mail_users` WHERE `mail_addr` = '$ma'";
-# 
+#
 # 				($rs, $ref) = doSQL($sql);
 # 				return $rs if ($rs != 0);
-# 
+#
 # 				my $ref = @$ref[0]; # erster Datensatz
-# 
+#
 # 				# second field = 0 -> no postbox (forward, etc.)
 # 				if (@$ref[1] == 0) {
 # 					# first field -> forward address
 # 					$ma = @$ref[0];
 # 				}
-# 
+#
 # 				$ma = $ma."\n";
 
 				return 0 if (!($ma =~ /^([^\@]+)\@([^\n]+)\n$/));
@@ -753,10 +753,10 @@ sub arpl_msgr_engine {
 					} else {
 
 						$sql = "
-							SELECT 
+							SELECT
 								COUNT(t1.`subdomain_id`) AS cnt
-							FROM 
-								`subdomain` AS t1 
+							FROM
+								`subdomain` AS t1
 							LEFT JOIN (`domain` AS t2) on (t1.`domain_id` =t2.`domain_id`)
 							WHERE
 								CONCAT(t1.`subdomain_name`,'.',t2.`domain_name`) ='$edmn'

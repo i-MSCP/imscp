@@ -291,7 +291,7 @@ use warnings;
 #                   To => $domain_admin_email,
 #                   Subject => "Backup report about '".$dmn_name."' domain.",
 #                   Data => $msg_data,
-#                   'X-Mailer' => "$main::cfg{'Version'} Automatic Backup Messager"
+#                   'X-Mailer' => "$main::cfg{'Version'} Automatic Backup Messenger"
 #                  );
 #
 # # let's stop smap users every day. thay do not need to know, that backup engine works
@@ -361,4 +361,3 @@ use warnings;
 print STDOUT "Backup Task Completed!\n";
 
 exit 0;
-

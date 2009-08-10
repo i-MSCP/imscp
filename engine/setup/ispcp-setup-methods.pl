@@ -1501,7 +1501,7 @@ sub setup_mta {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$main::cfg{'ROOT_DIR'}/engine/messager/ispcp-arpl-msgr", $main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'}, 0755);
+	$rs = setfmode("$main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-arpl-msgr", $main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'}, 0755);
 	return $rs if ($rs != 0);
 
 	$cmd = "$main::cfg{'CMD_CP'} -p $vrl_dir/aliases $vrl_dir/domains $vrl_dir/mailboxes $vrl_dir/transport $vrl_dir/sender-access $main::cfg{'MTA_VIRTUAL_CONF_DIR'}";

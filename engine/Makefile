@@ -57,8 +57,8 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_DIR_INSTALL) -m 0700 $(SYSTEM_ENGINE_ROOT)/traffic
 
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ENGINE_ROOT)/messager
-	$(CMD_DIR_INSTALL) -m 0755 $(SYSTEM_ENGINE_ROOT)/messager
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ENGINE_ROOT)/messenger
+	$(CMD_DIR_INSTALL) -m 0755 $(SYSTEM_ENGINE_ROOT)/messenger
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_DIR_INSTALL) -m 0700 $(SYSTEM_ENGINE_ROOT)/setup
@@ -75,7 +75,7 @@ install:
 	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
 
 	# one more copy for auto replay system;
-	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)/messager
+	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)/messenger
 
 	$(CMD_INSTALL) ./ispcp-apache-logger $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-rqst-mngr $(SYSTEM_ENGINE_ROOT)
@@ -99,7 +99,7 @@ install:
 
 	$(CMD_INSTALL) ./quota/ispcp-dsk-quota $(SYSTEM_ENGINE_ROOT)/quota
 
-	$(CMD_INSTALL) ./messager/ispcp-arpl-msgr $(SYSTEM_ENGINE_ROOT)/messager
+	$(CMD_INSTALL) ./messenger/ispcp-arpl-msgr $(SYSTEM_ENGINE_ROOT)/messenger
 
 	$(CMD_INSTALL) ./setup/set-engine-permissions.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/set-gui-permissions.sh $(SYSTEM_ENGINE_ROOT)/setup
