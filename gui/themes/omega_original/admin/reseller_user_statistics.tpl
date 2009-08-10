@@ -97,7 +97,7 @@
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{DOMAIN_NAME}</a></b></td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" alt="" /></td>
+                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_left_small.gif" width="13" height="20" alt="" /></td>
                                             <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
@@ -105,14 +105,14 @@
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
                                                 </tr>
                                             </table></td>
-                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" alt="" /></td>
+                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_right_small.gif" width="13" height="20" alt="" /></td>
                                           </tr>
                                         </table>
                                           <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br />
                                         {TRAFF_MSG}</td>
                                       <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" alt="" /></td>
+                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_left_small.gif" width="13" height="20" alt="" /></td>
                                             <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
@@ -120,7 +120,7 @@
                                                   <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
                                                 </tr>
                                             </table></td>
-                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_right_small.gif" width="13" height="20" alt="" /></td>
+                                            <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_right_small.gif" width="13" height="20" alt="" /></td>
                                           </tr>
                                         </table>
                                           <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br />

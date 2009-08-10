@@ -23,7 +23,7 @@ body {
 	height:				auto;
 	background-image:	url(/errors/inc/error_top.jpg);
 	background-repeat:	no-repeat;
-	padding-top:		69px;
+	padding-top:		90px;
 	padding-bottom:		12px;
 	left:				50%;
 	position:			absolute;
@@ -38,7 +38,7 @@ h2 {
 h3 {
 	font-size:			16px;
 	letter-spacing:		7px;
-	padding-top:		30px;
+	padding-top:		10px;
 }
 
 .path {

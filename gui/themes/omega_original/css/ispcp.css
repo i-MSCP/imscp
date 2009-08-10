@@ -173,16 +173,16 @@ td.loginTop {
 }
 
 td.backButton {
-	background-image:	url(../images/button.gif);
+	background-image:	url(../images/button.jpg);
 	color:				red;
 }
 
 td.stats {
-	background-image:	url(../images/stats_background.gif);
+	background-image:	url(../images/bars/stats_background.gif);
 }
 
 td.statsBar {
-	background-image:	url(../images/bars/stats_background.gif);
+	background-image:	url(../images/bars/statsbar_background.gif);
 }
 
 td.content {
