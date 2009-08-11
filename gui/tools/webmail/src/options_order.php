@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * options_order.php

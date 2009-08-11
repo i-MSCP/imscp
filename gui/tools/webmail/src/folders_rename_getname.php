@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * folders_rename_getname.php

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * abook_local_file.php

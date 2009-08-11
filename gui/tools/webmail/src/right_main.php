@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * right_main.php

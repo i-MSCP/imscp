@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * MessageHeader.class.php

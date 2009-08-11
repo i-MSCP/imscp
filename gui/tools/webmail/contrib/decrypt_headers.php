@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Script provides form to decode encrypted header information.

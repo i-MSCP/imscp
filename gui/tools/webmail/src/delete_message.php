@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * delete_message.php

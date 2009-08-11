@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ContentType.class.php

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * load_prefs.php

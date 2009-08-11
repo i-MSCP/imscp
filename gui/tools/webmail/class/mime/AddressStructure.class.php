@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * AddressStructure.class.php

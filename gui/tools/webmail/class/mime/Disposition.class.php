@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Disposition.class.php

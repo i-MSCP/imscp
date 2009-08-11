@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * attachment_common.php

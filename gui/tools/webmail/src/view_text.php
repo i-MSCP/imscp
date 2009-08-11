@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * view_text.php -- Displays the main frameset

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * empty_trash.php

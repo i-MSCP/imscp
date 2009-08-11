@@ -8,6 +8,7 @@ ispCP ω 1.0.1 Changelog
 2009-08-11 Andreca Daniel
 	- TOOLS:
 		* Fixed #1920 Error while installing snapshot 08/11/2009
+		* Fixed #1919 Error in webmail
 
 2009-08-09 Benedikt Heintel
 	- ENGINE:

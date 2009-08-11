@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Local config overrides.

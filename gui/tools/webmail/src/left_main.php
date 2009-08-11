@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * left_main.php

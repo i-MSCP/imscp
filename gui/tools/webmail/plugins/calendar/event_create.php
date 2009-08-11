@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * functions to create a event for calendar.

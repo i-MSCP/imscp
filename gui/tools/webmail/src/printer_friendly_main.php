@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * printer_friendly frameset

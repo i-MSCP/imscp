@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * abook_database.php

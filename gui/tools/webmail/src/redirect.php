@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Prevents users from reposting their form data after a successful logout.

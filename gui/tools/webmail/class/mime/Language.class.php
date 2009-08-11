@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Language.class.php
