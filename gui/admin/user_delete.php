@@ -50,7 +50,13 @@ $tpl->assign(
 	)
 );
 
-if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
+if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
+	if (validate_user_deletion(intval($_GET['delete_id']))) {
+		delete_user(intval($_GET['delete_id']));
+	} else {
+		user_goto('manage_users.php');
+	}
+} else if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
 	validate_domain_deletion(intval($_GET['domain_id']));
 } else if (isset($_POST['domain_id']) && is_numeric($_POST['domain_id'])
 	&& isset($_POST['delete']) && $_POST['delete'] == 1) {
@@ -178,6 +184,72 @@ function delete_domain($domain_id) {
 
 	$_SESSION['ddel'] = '_yes_';
 	user_goto('manage_users.php');
+}
+
+/**
+ * Delete user
+ * @param integer $user_id User ID to delete
+ */
+function delete_user($user_id) {
+	global $sql;
+	
+	$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+	$res = exec_query($sql, $query, array($user_id));
+	$data = $res->FetchRow();
+	$type = $data['admin_type'];
+	if (empty($type) || $type == 'user') {
+		set_page_message(tr('Invalid user id!'));
+		user_goto('manage_users.php');
+	}
+
+	if ($type == 'reseller') {
+		// delete reseller props
+		$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
+		exec_query($sql, $query, array($user_id));
+		// delete hosting plans
+		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
+		exec_query($sql, $query, array($user_id));
+	}
+
+	// Delete ispcp login:
+	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
+	exec_query($sql, $query, array($user_id));
+
+	write_log($_SESSION['user_logged'] .": deletes user " . $user_id);
+
+	$_SESSION['ddel'] = '_yes_';
+	user_goto('manage_users.php');
+}
+
+/**
+ * Validate if delete process is valid
+ * @param integer $user_id User-ID to delete
+ * @return boolean true = deletion can be done
+ */
+function validate_user_deletion($user_id) {
+	global $sql;
+	
+	$result = false;
+	
+	// check if there are domains created by user
+	$query = "SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
+	$res = exec_query($sql, $query, array($user_id));
+	$data = $res->FetchRow();
+	if ($data['num_domains'] == 0) {
+		$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+		$res = exec_query($sql, $query, array($user_id));
+		$data = $res->FetchRow();
+		$type = $data['admin_type'];
+		if ($type == 'admin' || $type == 'reseller') {
+			$result = true;
+		} else {
+			set_page_message(tr('Invalid user id!'));
+		}
+	} else {
+		set_page_message(tr('There are active domains of reseller/admin!'));
+	}
+
+	return $result;
 }
 
 /**

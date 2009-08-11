@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-11 Thomas Wacker
+	- GUI:
+		* Fixed #1918: Can't delete an Admin- or Reselleraccount
+
 2009-08-11 Andreca Daniel
 	- TOOLS:
 		* Fixed #1920 Error while installing snapshot 08/11/2009
