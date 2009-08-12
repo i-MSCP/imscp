@@ -322,6 +322,10 @@ function add_user_data($reseller_id) {
 
 	$expire = $dmn_expire * 2635200; // months * 30.5 days
 
+	if (!empty($expire)) {
+		$expire = time() + $expire;
+ 	}
+
 	$query = "
 		INSERT INTO `domain` (
 			`domain_name`, `domain_admin_id`,
@@ -336,7 +340,7 @@ function add_user_data($reseller_id) {
 		)
 		VALUES (
 			?, ?,
-			?, unix_timestamp(), (unix_timestamp() + $expire),
+			?, unix_timestamp(), $expire,
 			?, ?,
 			?, ?,
 			?, ?,

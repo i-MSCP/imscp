@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-12 Sebastian Sellmeier
+	- GUI:
+		* Fixed #1922: Creating User with Domain expire 'never' does not work
+
 2009-08-12 Jochen Manz
 	- GUI:
 		* Fixed #1881: Webmail button is not disabled when domain has mail disabled
