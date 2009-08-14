@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-14 Malte Geierhos
+	- SETUP: 
+		* Fixed various Bugs preventing RPM Builds ( together with George Machitidze) 
+
 2009-08-12 Sebastian Sellmeier
 	- GUI:
 		* Fixed #1922: Creating User with Domain expire 'never' does not work
