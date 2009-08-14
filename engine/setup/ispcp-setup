@@ -900,9 +900,11 @@ sub setup_host_system {
 	push_el(\@main::el, 'setup_host_system()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-
-	$rs = setup_system_users();
-	return $rs if ($rs != 0);
+	
+	if ($_ < 1 ) { 
+		$rs = setup_system_users();
+		return $rs if ($rs != 0);
+	}	
 
 	$rs = setup_system_dirs();
 	return $rs if ($rs != 0);
@@ -955,6 +957,12 @@ sub setup_host_system {
 system('clear');
 
 my $rs = undef;
+my $uc = 0; 
+
+if ($ARGV[0] eq "-rpm") {
+	#if in rpm mode, rpm setup will create users
+	$uc = 1; 
+}
 
 $rs = setup_start_up();
 
@@ -995,7 +1003,7 @@ if ($rs != 0) {
 	exit 1;
 }
 
-$rs = setup_host_system();
+$rs = setup_host_system($uc);
 
 if ($rs != 0) {
 
