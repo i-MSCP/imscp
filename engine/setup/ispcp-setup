@@ -901,7 +901,7 @@ sub setup_host_system {
 
 	my ($rs, $rdata) = (undef, undef);
 	
-	if ($_ < 1 ) { 
+	if (!defined($_)) { 
 		$rs = setup_system_users();
 		return $rs if ($rs != 0);
 	}	
@@ -959,7 +959,7 @@ system('clear');
 my $rs = undef;
 my $uc = 0; 
 
-if ($ARGV[0] eq "-rpm") {
+if (defined($ARGV[0]) && $ARGV[0] eq "-rpm") {
 	#if in rpm mode, rpm setup will create users
 	$uc = 1; 
 }
