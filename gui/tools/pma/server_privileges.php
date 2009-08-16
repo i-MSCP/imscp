@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 12391 2009-05-04 16:32:16Z lem9 $
+ * @version $Id: server_privileges.php 12629 2009-07-06 19:52:47Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -682,7 +682,7 @@ function PMA_displayLoginInformationFields($mode = 'new')
         . $username_length . '" title="' . $GLOBALS['strUserName'] . '"'
         . (empty($GLOBALS['username'])
             ? ''
-            : ' value="' . (isset($GLOBALS['new_username'])
+            : ' value="' . htmlspecialchars(isset($GLOBALS['new_username'])
                 ? $GLOBALS['new_username']
                 : $GLOBALS['username']) . '"')
         . ' onchange="pred_username.value = \'userdefined\';" />' . "\n"
@@ -747,7 +747,7 @@ function PMA_displayLoginInformationFields($mode = 'new')
        . '</span>' . "\n"
        . '<input type="text" name="hostname" maxlength="'
         . $hostname_length . '" value="'
-        . (isset($GLOBALS['hostname']) ? $GLOBALS['hostname'] : '')
+        . htmlspecialchars(isset($GLOBALS['hostname']) ? $GLOBALS['hostname'] : '')
         . '" title="' . $GLOBALS['strHost']
         . '" onchange="pred_hostname.value = \'userdefined\';" />' . "\n"
        . PMA_showHint($GLOBALS['strHostTableExplanation'])
@@ -1223,7 +1223,7 @@ if (isset($_REQUEST['change_pw'])) {
 
 if (isset($_REQUEST['delete']) || (isset($_REQUEST['change_copy']) && $_REQUEST['mode'] < 4)) {
     if (isset($_REQUEST['change_copy'])) {
-        $selected_usr = array($old_username . chr(27) . $old_hostname);
+        $selected_usr = array($old_username . '&amp;#27;' . $old_hostname);
     } else {
         $selected_usr = $_REQUEST['selected_usr'];
         $queries = array();
@@ -1859,13 +1859,7 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
 
                 // no database name was given, display select db
 
-                if (! empty($found_rows)) {
-                    $pred_db_array = array_diff(
-                        PMA_DBI_fetch_result('SHOW DATABASES;'),
-                        $found_rows);
-                } else {
-                    $pred_db_array =PMA_DBI_fetch_result('SHOW DATABASES;');
-                }
+                $pred_db_array =PMA_DBI_fetch_result('SHOW DATABASES;');
 
                 echo '    <label for="text_dbname">' . $GLOBALS['strAddPrivilegesOnDb'] . ':</label>' . "\n";
                 if (!empty($pred_db_array)) {
@@ -1873,8 +1867,14 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
                        . '        <option value="" selected="selected">' . $GLOBALS['strUseTextField'] . ':</option>' . "\n";
                     foreach ($pred_db_array as $current_db) {
                         $current_db = PMA_escape_mysql_wildcards($current_db);
-                        echo '        <option value="' . htmlspecialchars($current_db) . '">'
-                            . htmlspecialchars($current_db) . '</option>' . "\n";
+                        // cannot use array_diff() once, outside of the loop,
+                        // because the list of databases has special characters
+                        // already escaped in $found_rows, 
+                        // contrary to the output of SHOW DATABASES
+                        if (empty($found_rows) || ! in_array($current_db, $found_rows)) {
+                            echo '        <option value="' . htmlspecialchars($current_db) . '">'
+                                . htmlspecialchars($current_db) . '</option>' . "\n";
+                        }
                     }
                     echo '    </select>' . "\n";
                 }

@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @version $Id: tbl_replace.php 12651 2009-07-15 09:46:45Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -343,6 +343,10 @@ if (! empty($GLOBALS['sql_query'])) {
     $return_to_sql_query = $GLOBALS['sql_query'];
 }
 $GLOBALS['sql_query'] = implode('; ', $query) . ';';
+// to ensure that the query is displayed in case of 
+// "insert as new row" and then "insert another new row"
+$GLOBALS['display_query'] = $GLOBALS['sql_query'];
+
 $total_affected_rows = 0;
 $last_messages = array();
 $warning_messages = array();
@@ -416,6 +420,16 @@ $GLOBALS['js_include'][] = 'functions.js';
 $GLOBALS['js_include'][] = 'mootools.js';
 
 $active_page = $goto_include;
+
+/**
+ * If user asked for "and then Insert another new row" we have to remove
+ * primary key information so that tbl_change.php does not go back
+ * to the current record
+ */
+if (isset($_REQUEST['after_insert']) && 'new_insert' == $_REQUEST['after_insert']) {
+        unset($_REQUEST['primary_key']);
+}
+
 /**
  * Load header.
  */

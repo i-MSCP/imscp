@@ -1,4 +1,4 @@
-phpMyAdmin 3.2.0.1 Documentation
+phpMyAdmin 3.2.1 Documentation
 
   * Top
   * Requirements
@@ -20,7 +20,7 @@ phpMyAdmin 3.2.0.1 Documentation
   * Local documents:
       + Version history: ChangeLog
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 12609 2009-06-30 10:52:07Z
+  * Documentation version: $Id: Documentation.html 12764 2009-08-09 20:58:35Z
     lem9 $
 
 Requirements
@@ -69,7 +69,7 @@ Currently phpMyAdmin can:
     like displaying BLOB-data as image or download-link
   * support InnoDB tables and foreign keys (see FAQ 3.6)
   * support mysqli, the improved MySQL extension (see FAQ 1.17)
-  * communicate in 55 different languages
+  * communicate in 57 different languages
 
 A word about users:
 
@@ -147,6 +147,7 @@ Quick Install
         $i++;
         $cfg['Servers'][$i]['user']          = 'root';
         $cfg['Servers'][$i]['password']      = 'cbb74bc'; // use here your password
+        $cfg['Servers'][$i]['auth_type']     = 'config';
         ?>
 
         For a full explanation of possible configuration values, see the
@@ -1338,7 +1339,7 @@ $cfg['EditInWindow'] boolean
     display a query box.
 
     The size of this query window can be customized with $cfg
-    ['QueryWindowWidth'] and $cfg['QueryWindowWidth'] - both integers for the
+    ['QueryWindowWidth'] and $cfg['QueryWindowHeight'] - both integers for the
     size in pixels. Note that normally, those parameters will be modified in
     layout.inc.php for the theme you are using.
 

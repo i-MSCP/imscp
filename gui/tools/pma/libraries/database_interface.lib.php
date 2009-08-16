@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 12393 2009-05-06 08:30:27Z helmo $
+ * @version $Id: database_interface.lib.php 12678 2009-07-19 10:29:43Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -616,8 +616,13 @@ function PMA_DBI_get_databases_full($database = null, $force_stats = false,
                         += $row['Max_data_length'];
                     $databases[$database_name]['SCHEMA_INDEX_LENGTH']
                         += $row['Index_length'];
-                    $databases[$database_name]['SCHEMA_DATA_FREE']
-                        += $row['Data_free'];
+
+                    // for InnoDB, this does not contain the number of 
+                    // overhead bytes but the total free space
+                    if ('InnoDB' != $row['Engine']) {
+                        $databases[$database_name]['SCHEMA_DATA_FREE']
+                            += $row['Data_free'];
+                    }
                     $databases[$database_name]['SCHEMA_LENGTH']
                         += $row['Data_length'] + $row['Index_length'];
                 }

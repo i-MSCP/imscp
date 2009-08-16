@@ -4,7 +4,7 @@
  * Core script for import, this is just the glue around all other stuff
  *
  * @uses    PMA_Bookmark_getList()
- * @version $Id: import.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id: import.php 12586 2009-06-20 11:23:06Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -308,7 +308,8 @@ if ($import_file != 'none' && !$error) {
                 break;
         }
     }
-    if (!$error && $import_handle === FALSE) {
+    // use isset() because zip compression type does not use a handle
+    if (!$error && isset($import_handle) && $import_handle === FALSE) {
         $message = PMA_Message::error('strFileCouldNotBeRead');
         $error = TRUE;
     }

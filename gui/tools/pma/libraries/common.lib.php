@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 12608 2009-06-30 10:48:08Z lem9 $
+ * @version $Id: common.lib.php 12677 2009-07-19 08:01:31Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -24,10 +24,6 @@ function PMA_pow($base, $exp, $use_function = false)
 {
     static $pow_function = null;
 
-    if ($exp < 0) {
-        return false;
-    }
-
     if (null == $pow_function) {
         if (function_exists('bcpow')) {
             // BCMath Arbitrary Precision Mathematics Function
@@ -43,6 +39,9 @@ function PMA_pow($base, $exp, $use_function = false)
 
     if (! $use_function) {
         $use_function = $pow_function;
+    }
+    if ($exp < 0 && 'pow' != $use_function) {
+        return false;
     }
 
     switch ($use_function) {
@@ -305,7 +304,7 @@ function PMA_formatSql($parsed_sql, $unparsed_sql = '')
     // well, not quite
     // first check for the SQL parser having hit an error
     if (PMA_SQP_isError()) {
-        return htmlspecialchars($parsed_sql['raw']);
+        return htmlspecialchars($parsed_sql['raw']); 
     }
     // then check for an array
     if (!is_array($parsed_sql)) {
@@ -1449,8 +1448,9 @@ function PMA_formatNumber($value, $length = 3, $comma = 0, $only_down = false)
         } // end for
     } elseif (!$only_down && (float) $value !== 0.0) {
         for ($d = -8; $d <= 8; $d++) {
-            if (isset($units[$d]) && $value <= $li * PMA_pow(1000, $d-1)) {
-                $value = round($value / (PMA_pow(1000, $d) / $dh)) /$dh;
+            // force using pow() because of the negative exponent
+            if (isset($units[$d]) && $value <= $li * PMA_pow(1000, $d-1, 'pow')) {
+                $value = round($value / (PMA_pow(1000, $d, 'pow') / $dh)) /$dh;
                 $unit = $units[$d];
                 break 1;
             } // end if
@@ -2419,7 +2419,7 @@ window.addEvent('domready', function(){
 
     var anchor<?php echo $id; ?> = new Element('a', {
         'id': 'toggle_<?php echo $id; ?>',
-        'href': '#',
+        'href': 'javascript:void(0)',
         'events': {
             'click': function(){
                 mySlide<?php echo $id; ?>.toggle();

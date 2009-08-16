@@ -3,7 +3,7 @@
 /**
  * Displays table structure infos like fields/columns, indexes, size, rows
  * and allows manipulation of indexes and columns/fields
- * @version $Id: tbl_structure.php 12284 2009-03-03 16:41:41Z nijel $
+ * @version $Id: tbl_structure.php 12546 2009-06-08 12:04:35Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -608,7 +608,8 @@ if ($cfg['ShowStats']) {
     if ($mergetable == false) {
         list($index_size, $index_unit)   = PMA_formatByteDown($showtable['Index_length'], $max_digits, $decimals);
     }
-    if (isset($showtable['Data_free']) && $showtable['Data_free'] > 0) {
+    // InnoDB returns a huge value in Data_free, do not use it
+    if (! $is_innodb && isset($showtable['Data_free']) && $showtable['Data_free'] > 0) {
         list($free_size, $free_unit)     = PMA_formatByteDown($showtable['Data_free'], $max_digits, $decimals);
         list($effect_size, $effect_unit) = PMA_formatByteDown($showtable['Data_length'] + $showtable['Index_length'] - $showtable['Data_free'], $max_digits, $decimals);
     } else {

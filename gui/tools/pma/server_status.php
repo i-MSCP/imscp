@@ -4,7 +4,7 @@
  * displays status variables with descriptions and some hints an optmizing
  *  + reset status variables
  *
- * @version $Id: server_status.php 12377 2009-04-19 12:01:48Z lem9 $
+ * @version $Id: server_status.php 12727 2009-07-26 11:39:39Z helmo $
  * @package phpMyAdmin
  */
 
@@ -423,19 +423,17 @@ echo sprintf($strServerStatusUptime,
 </p>
 
 <?php
-if ($server_master_status_run || $server_slave_status_run)
-{
-  $replicationOut = "";
-  foreach ($replication_types as $type)
-  {
-    if ($replicationOut != "")
-      $replicationOut .= $strAndSmall . ' ';
-    if (${"server_{$type}_status_run"})
-    {
-      $replicationOut .= '<b>' . $type . '</b> ';
+if ($server_master_status_run || $server_slave_status_run) {
+    $replicationOut = "";
+    foreach ($replication_types as $type) {
+        if (${"server_{$type}_status_run"}) {
+            if ($replicationOut != "") {
+                $replicationOut .= $strAndSmall . ' ';
+            }
+        $replicationOut .= '<b>' . $type . '</b> ';
+        }
     }
-  }
-  echo sprintf('<p>' . $strReplicationStatusInfo . '</p>', $replicationOut);
+    echo sprintf('<p>' . $strReplicationStatusInfo . '</p>', $replicationOut);
 }
 ?>
 
@@ -808,14 +806,18 @@ if ($server_master_status_run || $server_slave_status_run)
       </td>
       <td class="value">
 	<?php 
-	  if (${"{$type}_variables_alerts"}[$variable] == ${"server_{$type}_status"}[0][$variable])
-	    echo '<span class="attention">';
-	  if (${"{$type}_variables_oks"}[$variable] == ${"server_{$type}_status"}[0][$variable])
+	if (isset(${"{$type}_variables_alerts"}[$variable])
+	    && ${"{$type}_variables_alerts"}[$variable] == ${"server_{$type}_status"}[0][$variable]) {
+        echo '<span class="attention">';
+
+	} elseif (isset(${"{$type}_variables_oks"}[$variable])
+	    && ${"{$type}_variables_oks"}[$variable] == ${"server_{$type}_status"}[0][$variable]) {
 	    echo '<span class="allfine">';
-	  else
+	} else {
 	    echo '<span>';
-	  echo ${"server_{$type}_status"}[0][$variable]; 
-	  echo '</span>';
+	}
+	echo ${"server_{$type}_status"}[0][$variable]; 
+	echo '</span>';
 	?>
       </td>
     </tr>

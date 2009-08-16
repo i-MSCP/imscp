@@ -5,7 +5,7 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @version $Id: tbl_change.php 12587 2009-06-20 12:08:34Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -750,11 +750,7 @@ foreach ($rows as $row_id => $vrow) {
                     echo '<input type="radio" name="field_' . $field_name_appendix_md5 . '"';
                     echo ' value="' . $enum_value['html'] . '"';
                     echo ' id="field_' . ($idindex) . '_3_'  . $j . '"';
-                    echo ' onclick="';
-                    echo "if (typeof(document.forms['insertForm'].elements['fields_null"
-                        . $field_name_appendix . "']) != 'undefined') {document.forms['insertForm'].elements['fields_null"
-                        . $field_name_appendix . "'].checked = false}";
-                    echo '"';
+                    echo $unnullify_trigger;
                     if ($data == $enum_value['plain']
                      || ($data == ''
                       && (! isset($primary_key) || $field['Null'] != 'YES')

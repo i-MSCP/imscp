@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 12231 2009-02-10 19:21:01Z lem9 $
+ * @version $Id: relation.lib.php 12597 2009-06-24 21:18:00Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -57,12 +57,13 @@ function PMA_getRelationsParam($verbose = false)
         $_SESSION['relation' . $GLOBALS['server']] = PMA__getRelationsParam();
     }
 
+    // just for BC but needs to be before PMA_printRelationsParamDiagnostic()
+    // which uses it
+    $GLOBALS['cfgRelation'] = $_SESSION['relation' . $GLOBALS['server']];
+
     if ($verbose) {
         PMA_printRelationsParamDiagnostic($_SESSION['relation' . $GLOBALS['server']]);
     }
-
-    // just for BC
-    $GLOBALS['cfgRelation'] = $_SESSION['relation' . $GLOBALS['server']];
 
     return $_SESSION['relation' . $GLOBALS['server']];
 }

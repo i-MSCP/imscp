@@ -1,5 +1,5 @@
 <?php
-/* $Id: polish-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
+/* $Id: polish-utf-8.inc.php 12645 2009-07-13 17:21:02Z lem9 $ */
 
 $charset = 'utf-8';
 $text_dir = 'ltr';
@@ -1253,21 +1253,21 @@ $strSetupServers_controlpass_name = 'Control user password';  //to translate
 $strSetupServers_verbose_check_name = 'Verbose check';  //to translate
 $strSetupServers_verbose_check_desc = 'Disable if you know that your pma_* tables are up to date. This prevents compatibility checks and thereby increases performance';  //to translate
 $strSetupServers_bookmarktable_name = 'Tabela zakładek';
-$strSetupServers_bookmarktable_desc = 'Leave blank for no [a@http://wiki.phpmyadmin.net/pma/bookmark]bookmark[/a] support, default: [kbd]pma_bookmark[/kbd]';  //to translate
+$strSetupServers_bookmarktable_desc = 'Leave blank for no [a@http://wiki.phpmyadmin.net/pma/bookmark]bookmark[/a] support, suggested: [kbd]pma_bookmark[/kbd]';  //to translate
 $strSetupServers_relation_name = 'Tabela związków';
-$strSetupServers_relation_desc = 'Leave blank for no [a@http://wiki.phpmyadmin.net/pma/relation]relation-links[/a] support, default: [kbd]pma_relation[/kbd]';  //to translate
+$strSetupServers_relation_desc = 'Leave blank for no [a@http://wiki.phpmyadmin.net/pma/relation]relation-links[/a] support, suggested: [kbd]pma_relation[/kbd]';  //to translate
 $strSetupServers_table_info_name = 'Display fields table';  //to translate
-$strSetupServers_table_info_desc = 'Table to describe the display fields, leave blank for no support; default: [kbd]pma_table_info[/kbd]';  //to translate
+$strSetupServers_table_info_desc = 'Table to describe the display fields, leave blank for no support; suggested: [kbd]pma_table_info[/kbd]';  //to translate
 $strSetupServers_table_coords_name = 'PDF schema: table coordinates';  //to translate
-$strSetupServers_table_coords_desc = 'Leave blank for no PDF schema support, default: [kbd]pma_table_coords[/kbd]';  //to translate
+$strSetupServers_table_coords_desc = 'Leave blank for no PDF schema support, suggested: [kbd]pma_table_coords[/kbd]';  //to translate
 $strSetupServers_pdf_pages_name = 'PDF schema: pages table';  //to translate
-$strSetupServers_pdf_pages_desc = 'Leave blank for no PDF schema support, default: [kbd]pma_pdf_pages[/kbd]';  //to translate
+$strSetupServers_pdf_pages_desc = 'Leave blank for no PDF schema support, suggested: [kbd]pma_pdf_pages[/kbd]';  //to translate
 $strSetupServers_column_info_name = 'Column information table';  //to translate
-$strSetupServers_column_info_desc = 'Leave blank for no column comments/mime types, default: [kbd]pma_column_info[/kbd]';  //to translate
+$strSetupServers_column_info_desc = 'Leave blank for no column comments/mime types, suggested: [kbd]pma_column_info[/kbd]';  //to translate
 $strSetupServers_history_name = 'SQL query history table';  //to translate
-$strSetupServers_history_desc = 'Leave blank for no SQL query history support, default: [kbd]pma_history[/kbd]';  //to translate
+$strSetupServers_history_desc = 'Leave blank for no SQL query history support, suggested: [kbd]pma_history[/kbd]';  //to translate
 $strSetupServers_designer_coords_name = 'Designer table';  //to translate
-$strSetupServers_designer_coords_desc = 'Leave blank for no Designer support, default: [kbd]designer_coords[/kbd]';  //to translate
+$strSetupServers_designer_coords_desc = 'Leave blank for no Designer support, suggested: [kbd]pma_designer_coords[/kbd]';  //to translate
 $strSetupUploadDir_name = 'Upload directory';  //to translate
 $strSetupUploadDir_desc = 'Directory on server where you can upload files for import';  //to translate
 $strSetupSaveDir_name = 'Save directory';  //to translate

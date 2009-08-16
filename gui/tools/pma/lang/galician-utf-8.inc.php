@@ -1,5 +1,5 @@
 <?php
-/* $Id: galician-utf-8.inc.php 12494 2009-05-25 08:11:32Z helmo $ */
+/* $Id: galician-utf-8.inc.php 12640 2009-07-11 09:11:20Z lem9 $ */
 
 /**
  * Translated by Xosé Calvo <xosecalvo at galizaweb.net>
@@ -1265,7 +1265,7 @@ $strSetupServers_column_info_desc = 'Déixeo en branco se non quere comentarios/
 $strSetupServers_history_name = 'Táboa do historial de procuras SQL query';
 $strSetupServers_history_desc = 'Déixeo en branco se non quere un histórico das procuras SQL; por omisión: [kbd]pma_history[/kbd]';
 $strSetupServers_designer_coords_name = 'Táboa de Designer';
-$strSetupServers_designer_coords_desc = 'Déixeo en branco se non quere empregar Designer; por omisión: [kbd]designer_coords[/kbd]';
+$strSetupServers_designer_coords_desc = 'Déixeo en branco se non quere empregar Designer; por omisión: [kbd]pma_designer_coords[/kbd]';
 $strSetupUploadDir_name = 'Directorio de envíos';
 $strSetupUploadDir_desc = 'Directorio do servidor ao que se poden enviar os ficheiros que importar';
 $strSetupSaveDir_name = 'Directorio de gardado';

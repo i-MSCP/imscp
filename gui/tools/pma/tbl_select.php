@@ -7,7 +7,7 @@
  * and include sql.php to execute it
  *
  * @todo display search form again if no results from previous search
- * @version $Id: tbl_select.php 12387 2009-04-29 17:26:27Z lem9 $
+ * @version $Id: tbl_select.php 12627 2009-07-06 12:05:06Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -338,8 +338,11 @@ else {
     } else {
         $param = PMA_backquote($param);
         $sql_query .= implode(', ', $param);
-        unset($param);
     } // end if
+
+    // avoid a loop, for example when $cfg['DefaultTabTable'] is set 
+    // to 'tbl_select.php'
+    unset($param);
 
     $sql_query .= ' FROM ' . PMA_backquote($table);
 

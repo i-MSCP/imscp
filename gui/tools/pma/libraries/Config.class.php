@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 12609 2009-06-30 10:52:07Z lem9 $
+ * @version $Id: Config.class.php 12764 2009-08-09 20:58:35Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -92,7 +92,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.2.0.1');
+        $this->set('PMA_VERSION', '3.2.1');
         /**
          * @deprecated
          */
@@ -603,9 +603,10 @@ class PMA_Config
 
                 // Host and port
                 if (PMA_getenv('HTTP_HOST')) {
-                    if (strpos(PMA_getenv('HTTP_HOST'), ':') !== false) {
-                        list($url['host'], $url['port']) =
-                            explode(':', PMA_getenv('HTTP_HOST'));
+                    // Prepend the scheme before using parse_url() since this is not part of the RFC2616 Host request-header
+                    $parsed_url = parse_url($url['scheme'] . '://' . PMA_getenv('HTTP_HOST'));
+                    if (!empty($parsed_url['host'])) {
+                        $url = $parsed_url;
                     } else {
                         $url['host'] = PMA_getenv('HTTP_HOST');
                     }

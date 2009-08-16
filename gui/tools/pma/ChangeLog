@@ -2,8 +2,37 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 12608 2009-06-30 10:48:08Z lem9 $
+$Id: ChangeLog 12764 2009-08-09 20:58:35Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+3.2.1.0 (2009-08-09)
+- bug #2799009 Login with ipv6 IP address breaks redirect
+- bug #2796066 [priv] Inconsistent display of databases list 
+- bug #2802870 [display] Incorrect overhead value for InnoDB
+- bug [display] Incorrect display in replication status, 
+  thanks to Tomas Srnka - tomassrnka
+- bug #1601625 [display] The Ignore checkbox is not unchecked for ENUM 
+- bug #2809930 [setup] Notice: Undefined variable: k in setup/index.php
+- bug [features] Incorrect report of missing relational features 
+- [security] XSS: Insufficient output sanitizing (not exploitable without a valid token)
+  thanks to Sven Vetsch/Disenchant for informing us in a responsible manner
+- bug #2634827 [import] Using DELIMITER produces infinite cycle
++ new language files: uzbek_cyrillic and urbek_latin
+- bug #2814109 [search] Right frame is blank 
+- bug #2816840 [priv] Cannot change a user's details 
+- bug #2816165 [display] Executed query not always displayed 
+- bug #2819944 [setup] Incorrect mention of designer_coords
+- bug #2821757 [insert] "Insert another new row" no longer worked 
++ [lang] Norwegian update, thanks to Sven-Erik Andersen 
+- bug [core] PMA_pow() can support negative exponents in the pow() case 
++ [lang] Brazilian Portuguese update, thanks to Fabio Bucior - fabiobucior 
+- patch #2822384 [docs] Missing auth_type in docs-example, 
+  thanks to Jürgen Wind - windkiel
+- patch #2819728 [display] Slider effect jumping to top of page,
+  thanks to Jan Radem - summsel
+- bug [display] Incorrect computation of overhead stats in server view
+  for tables under the InnoDB engine
++ [lang] Swedish update, thanks to Björn T. Hallberg
 
 3.2.0.1 (2009-06-30)
 - [security] XSS: Insufficient output sanitizing in bookmarks 

@@ -4,7 +4,7 @@
  * CSV import plugin for phpMyAdmin
  *
  * @todo    add an option for handling NULL values
- * @version $Id: csv.php 12047 2008-11-30 14:20:25Z nijel $
+ * @version $Id: csv.php 12600 2009-06-27 11:41:51Z lem9 $
  * @package phpMyAdmin-Import
  */
 if (! defined('PHPMYADMIN')) {
@@ -318,7 +318,7 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
 PMA_importRunQuery();
 
 if (count($values) != 0 && !$error) {
-    $message = PMA_Message::error('$strInvalidCSVFormat');
+    $message = PMA_Message::error('strInvalidCSVFormat');
     $message->addParam($line);
     $error = TRUE;
 }

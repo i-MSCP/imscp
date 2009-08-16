@@ -1,5 +1,5 @@
 <?php
-/* $Id: hungarian-utf-8.inc.php 12560 2009-06-08 15:57:49Z lem9 $ */
+/* $Id: hungarian-utf-8.inc.php 12640 2009-07-11 09:11:20Z lem9 $ */
 // Peter Bakondy <bakondyp@freemail.hu>
 // Mihály Mészáros <poizon at sth dot sze dot hu>
 // József Tamás Herczeg <localicer @NOSPAM@ gmail DOT com>
@@ -1044,7 +1044,7 @@ $strSetupServers_controluser_desc = 'Korlátozott jogokkal rendelkező, speciál
 $strSetupServers_controluser_name = 'Kontrollfelhasználó';
 $strSetupServers_CountTables_desc = 'A táblák megszámolása az adatbázislista megjelenítésekor';
 $strSetupServers_CountTables_name = 'Táblák megszámolása';
-$strSetupServers_designer_coords_desc = 'Hagyja üresen, ha nem akar Tervező támogatást, alapértelmezés: [kbd]designer_coords[/kbd]';
+$strSetupServers_designer_coords_desc = 'Hagyja üresen, ha nem akar Tervező támogatást, alapértelmezés: [kbd]pma_designer_coords[/kbd]';
 $strSetupServers_designer_coords_name = 'Tervező tábla';
 $strSetupServers_DisableIS_desc = 'Bővebben a [a@http://sf.net/support/tracker.php?aid=1849494]PMA hibakövetőben[/a] és a [a@http://bugs.mysql.com/19588]MySQL hibabejelentőben[/a] olvashat róla';
 $strSetupServers_DisableIS_name = 'Az INFORMATION_SCHEMA használatának letiltása';

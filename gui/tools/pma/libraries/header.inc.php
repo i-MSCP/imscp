@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id: header.inc.php 12639 2009-07-10 14:36:05Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -19,7 +19,6 @@ if (empty($GLOBALS['is_header_sent'])) {
     /**
      * Gets a core script and starts output buffering work
      */
-    require_once './libraries/common.inc.php';
     require_once './libraries/ob.lib.php';
     PMA_outBufferPre();
 

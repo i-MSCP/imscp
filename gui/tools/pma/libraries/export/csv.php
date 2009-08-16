@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @package phpMyAdmin-Export-CSV
- * @version $Id: csv.php 12494 2009-05-25 08:11:32Z helmo $
+ * @version $Id: csv.php 12602 2009-06-27 11:57:11Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -183,7 +183,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
                     $row[$j]       = preg_replace("/\015(\012)?/", "\012", $row[$j]);
                 }
                 // remove CRLF characters within field
-                if ($GLOBALS[$what . '_removeCRLF']) {
+                if (isset($GLOBALS[$what . '_removeCRLF']) && $GLOBALS[$what . '_removeCRLF']) {
                     $row[$j] = str_replace("\n", "", str_replace("\r", "", $row[$j]));
                 }
                 if ($csv_enclosed == '') {
