@@ -358,7 +358,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	// Modified by ispCP Omega - http://isp-control.net
 	//
 	echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
-		    <tr>\n
+		    <tr>\n";
 	if ( $shortBoxName <> '' && strtolower( $shortBoxName ) <> 'none' ) {
         echo "      <td align=\"left\" class=\"inbox_bar_header\">" . _("Current Folder") . ": <b>$shortBoxName&nbsp;</b></td>\n";
     } else {
