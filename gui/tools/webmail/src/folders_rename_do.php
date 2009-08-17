@@ -35,7 +35,13 @@ sqgetGlobalVar('onetimepad',$onetimepad,    SQ_SESSION);
 sqgetGlobalVar('orig',      $orig,          SQ_POST);
 sqgetGlobalVar('old_name',  $old_name,      SQ_POST);
 sqgetGlobalVar('new_name',  $new_name,      SQ_POST);
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end globals */
+
+// first, validate security token
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $new_name = trim($new_name);
 

@@ -33,7 +33,13 @@ sqgetGlobalVar('username',  $username,      SQ_SESSION);
 sqgetGlobalVar('onetimepad',$onetimepad,    SQ_SESSION);
 sqgetGlobalVar('method',    $method,        SQ_GET);
 sqgetGlobalVar('mailbox',   $mailbox,       SQ_POST);
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end globals */
+
+// first, validate security token
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $location = get_location();
 

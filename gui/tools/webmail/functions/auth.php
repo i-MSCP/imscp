@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: auth.php 13815 2009-08-12 08:19:16Z pdontthink $
  * @package squirrelmail
  */
 
@@ -33,21 +33,56 @@ if (! isset($use_smtp_tls)) {
  * Check if user has previously logged in to the SquirrelMail session.  If user
  * has not logged in, execution will stop inside this function.
  *
+ * This function optionally checks the referrer of this page request.  If the
+ * administrator wants to impose a check that the referrer of this page request
+ * is another page on the same domain (otherwise, the page request is likely
+ * the result of a XSS or phishing attack), then they need to specify the
+ * acceptable referrer domain in a variable named $check_referrer in
+ * config/config.php (or the configuration tool) for which the value is
+ * usually the same as the $domain setting (for example:
+ *    $check_referrer = 'example.com';
+ * However, in some cases (where proxy servers are in use, etc.), the
+ * acceptable referrer might be different.  If $check_referrer is set to
+ * "###DOMAIN###", then the current value of $domain is used (useful in
+ * situations where $domain might change at runtime (when using the Login
+ * Manager plugin to host multiple domains with one SquirrelMail installation,
+ * for example)):
+ *    $check_referrer = '###DOMAIN###';
+ * NOTE HOWEVER, that referrer checks are not foolproof - they can be spoofed
+ * by browsers, and some browsers intentionally don't send them, in which
+ * case SquirrelMail silently ignores referrer checks.
+ *
  * @return void This function returns ONLY if user has previously logged in
  * successfully (otherwise, execution terminates herein).
  */
 function is_logged_in() {
 
-    if ( sqsession_is_registered('user_is_logged_in') ) {
+    // check for user login as well as referrer if needed
+    //
+    global $check_referrer, $domain;
+    if ($check_referrer == '###DOMAIN###') $check_referrer = $domain;
+    if (!empty($check_referrer)) {
+        $ssl_check_referrer = 'https://' . $check_referrer;
+        $check_referrer = 'http://' . $check_referrer;
+    }
+    if (!sqgetGlobalVar('HTTP_REFERER', $referrer, SQ_SERVER)) $referrer = '';
+    if (sqsession_is_registered('user_is_logged_in') 
+     && (!$check_referrer || empty($referrer)
+      || ($check_referrer && !empty($referrer)
+       && (strpos(strtolower($referrer), strtolower($check_referrer)) === 0
+        || strpos(strtolower($referrer), strtolower($ssl_check_referrer)) === 0)))) {
         return;
     } else {
+
         global $session_expired_post,
                $session_expired_location, $squirrelmail_language;
 
         // use $message to indicate what logout text the user
         // will see... if 0, typical "You must be logged in"
         // if 1, information that the user session was saved
-        // and will be resumed after (re)login
+        // and will be resumed after (re)login, if 2, there
+        // seems to have been a XSS or phishing attack (bad
+        // referrer)
         //
         $message = 0;
 
@@ -67,6 +102,12 @@ function is_logged_in() {
                 $message = 1;
         }
 
+        // was bad referrer the reason we were rejected?
+        //
+        if (sqsession_is_registered('user_is_logged_in') 
+         && $check_referrer && !empty($referrer))
+            $message = 2;
+      
         session_write_close();
 
         // signout page will deal with users who aren't logged 
@@ -79,8 +120,10 @@ function is_logged_in() {
         set_up_language($squirrelmail_language, true);
         if (!$message)
             logout_error( _("You must be logged in to access this page.") );
-        else
+        else if ($message == 1)
             logout_error( _("Your session has expired, but will be resumed after logging in again.") );
+        else if ($message == 2)
+            logout_error( _("The current page request appears to have originated from an unrecognized source.") );
         exit;
     }
 }

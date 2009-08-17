@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_general.php 13733 2009-05-21 17:11:04Z kink $
+ * @version $Id: imap_general.php 13789 2009-07-27 01:40:44Z jangliss $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -63,6 +63,43 @@ function sqimap_run_command ($imap_stream, $query, $handle_errors, &$response,
         fputs ($imap_stream, $sid . ' ' . $query . "\r\n");
         $read = sqimap_read_data ($imap_stream, $sid, $handle_errors, $response,
                                   $message, $query,$filter,$outputstream,$no_return);
+        return $read;
+    } else {
+        global $squirrelmail_language, $color;
+        set_up_language($squirrelmail_language);
+        require_once(SM_PATH . 'functions/display_messages.php');
+        $string = "<b><font color=\"$color[2]\">\n" .
+                _("ERROR: No available IMAP stream.") .
+                "</b></font>\n";
+        error_box($string,$color);
+        return false;
+    }
+}
+
+function sqimap_run_literal_command($imap_stream, $query, $handle_errors, &$response, &$message, $unique_id = false) {
+    if ($imap_stream) {
+        $sid = sqimap_session_id($unique_id);
+        $command = sprintf("%s {%d}\r\n", $query['command'], strlen($query['literal_args'][0]));
+        fputs($imap_stream, $sid . ' ' . $command);
+
+        // TODO: Put in error handling here //
+        $read = sqimap_read_data($imap_stream, $sid, $handle_errors, $response, $message, $query['command']);
+        
+        $i = 0;
+        $cnt = count($query['literal_args']);
+        while( $i < $cnt ) {
+        	if (($cnt > 1) && ($i < ($cnt - 1))) {
+				$command = sprintf("%s {%d}\r\n", $query['literal_args'][$i], strlen($query['literal_args'][$i+1]));
+			} else {
+				$command = sprintf("%s\r\n", $query['literal_args'][$i]);
+			}
+        	
+			fputs($imap_stream, $command);
+	        $read = sqimap_read_data($imap_stream, $sid, $handle_errors, $response, $message, $query['command']);
+
+	        $i++;
+	        
+        }
         return $read;
     } else {
         global $squirrelmail_language, $color;
@@ -171,12 +208,17 @@ function sqimap_read_data_list ($imap_stream, $tag_uid, $handle_errors,
     $resultlist = array();
     $data = array();
     $read = sqimap_fgets($imap_stream);
+    
     $i = 0;
     while ($read) {
         $char = $read{0};
         switch ($char)
         {
           case '+':
+          	{
+	          	$response = 'OK';
+	          	break 2;
+          	}
           default:
             $read = sqimap_fgets($imap_stream);
             break;
@@ -657,8 +699,8 @@ function sqimap_get_delimiter ($imap_stream = false) {
              * OS: We want to lookup all personal NAMESPACES...
              */
             $read = sqimap_run_command($imap_stream, 'NAMESPACE', true, $a, $b);
-            if (eregi('\\* NAMESPACE +(\\( *\\(.+\\) *\\)|NIL) +(\\( *\\(.+\\) *\\)|NIL) +(\\( *\\(.+\\) *\\)|NIL)', $read[0], $data)) {
-                if (eregi('^\\( *\\((.*)\\) *\\)', $data[1], $data2)) {
+            if (preg_match('/\* NAMESPACE +(\( *\(.+\) *\)|NIL) +(\( *\(.+\) *\)|NIL) +(\( *\(.+\) *\)|NIL)/i', $read[0], $data)) {
+                if (preg_match('/^\( *\((.*)\) *\)/', $data[1], $data2)) {
                     $pn = $data2[1];
                 }
                 $pna = explode(')(', $pn);
@@ -689,7 +731,7 @@ function sqimap_get_delimiter ($imap_stream = false) {
 function sqimap_get_num_messages ($imap_stream, $mailbox) {
     $read_ary = sqimap_run_command ($imap_stream, "EXAMINE \"$mailbox\"", false, $result, $message);
     for ($i = 0; $i < count($read_ary); $i++) {
-        if (ereg("[^ ]+ +([^ ]+) +EXISTS", $read_ary[$i], $regs)) {
+        if (preg_match('/[^ ]+ +([^ ]+) +EXISTS/', $read_ary[$i], $regs)) {
             return $regs[1];
         }
     }
@@ -878,7 +920,7 @@ function sqimap_unseen_messages ($imap_stream, $mailbox) {
     $i = 0;
     $regs = array(false, false);
     while (isset($read_ary[$i])) {
-        if (ereg("UNSEEN ([0-9]+)", $read_ary[$i], $regs)) {
+        if (preg_match('/UNSEEN\s+([0-9]+)/i', $read_ary[$i], $regs)) {
             break;
         }
         $i++;

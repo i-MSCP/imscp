@@ -45,7 +45,7 @@ function filters_SaveCache () {
        $fp = fopen($data_dir . '/dnscache', 'r');
        flock($fp,LOCK_EX);
     }
-    $fp1=fopen($data_dir . '/dnscache', 'w+');
+    $fp1 = fopen($data_dir . '/dnscache', 'w+');
 
     foreach ($SpamFilters_DNScache as $Key=> $Value) {
        $tstr = $Key . ',' . $Value['L'] . ',' . $Value['T'] . "\n";
@@ -57,7 +57,7 @@ function filters_SaveCache () {
 }
 
 /**
- * FIXME: Undocumented function
+ * Loads the DNS Cache from disk
  * @access private
  */
 function filters_LoadCache () {
@@ -67,20 +67,22 @@ function filters_LoadCache () {
         $SpamFilters_DNScache = array();
         if ($fp = fopen ($data_dir . '/dnscache', 'r')) {
             flock($fp,LOCK_SH);
-            while ($data=fgetcsv($fp,1024)) {
+            while ($data = fgetcsv($fp,1024)) {
                if ($data[2] > time()) {
                   $SpamFilters_DNScache[$data[0]]['L'] = $data[1];
                   $SpamFilters_DNScache[$data[0]]['T'] = $data[2];
                }
             }
-
             flock($fp,LOCK_UN);
         }
     }
 }
 
 /**
- * FIXME: Undocumented function
+ * Uses the BulkQuery executable to query all the RBLs at once
+ * @param array $filters Array of SPAM Filters
+ * @param array $IPs Array of IP Addresses
+ * @param array $read TODO: Document this parameter
  * @access private
  */
 function filters_bulkquery($filters_spam_scan, $filters, $read) {
@@ -111,12 +113,12 @@ function filters_bulkquery($filters_spam_scan, $filters, $read) {
             // Check to see if this line is the right "Received from" line
             // to check
             if (is_int(strpos($read[$i], $SpamFilters_YourHop))) {
-                $read[$i] = ereg_replace('[^0-9\.]', ' ', $read[$i]);
+                $read[$i] = preg_replace('/[^0-9\.]/', ' ', $read[$i]);
                 $elements = explode(' ', $read[$i]);
                 foreach ($elements as $value) {
                     if ($value != '' &&
-                        ereg('[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}',
-                            $value, $regs)) {
+                        preg_match('/((\d{1,3}\.){3}\d{1,3})/',
+                            $value)) {
                         $Chunks = explode('.', $value);
                         $IP = $Chunks[3] . '.' . $Chunks[2] . '.' .
                               $Chunks[1] . '.' . $Chunks[0];
@@ -174,7 +176,7 @@ function filters_bulkquery($filters_spam_scan, $filters, $read) {
 }
 
 /**
- * FIXME: Undocumented function
+ * Starts the filtering process
  * @access private
  */
 function start_filters() {
@@ -193,7 +195,7 @@ function start_filters() {
         $spamfilters = load_spam_filters();
 
         $AllowSpamFilters = false;
-        foreach($spamfilters as $filterkey=>$value) {
+        foreach($spamfilters as $filterkey => $value) {
             if ($value['enabled'] == SMPREF_ON) {
                 $AllowSpamFilters = true;
                 break;
@@ -240,7 +242,8 @@ function start_filters() {
 }
 
 /**
- * FIXME: Undocumented function
+ * Does the loop through each filter
+ * @param stream imap_stream the stream to read from
  * @access private
  */
 function user_filters($imap_stream) {
@@ -253,6 +256,12 @@ function user_filters($imap_stream) {
     $id = array();
     // For every rule
     for ($i=0, $num = count($filters); $i < $num; $i++) {
+    	// Don't attempt to run filters if folder does not exist //
+    	if (!sqimap_mailbox_exists($imap_stream, $filters[$i]['folder'])) {
+    		continue;
+    	}
+    	
+    	
         // If it is the "combo" rule
         if ($filters[$i]['where'] == 'To or Cc') {
             /*
@@ -280,12 +289,18 @@ function user_filters($imap_stream) {
 }
 
 /**
- * FIXME: Undocumented function
+ * Creates and runs the IMAP command to filter messages
+ * @param string $imap TODO: Document this parameter
+ * @param string $where Which part of the message to search (TO, CC, SUBJECT, etc...)
+ * @param string $what String to search for
+ * @param string $where_to Folder it will move to
+ * @param string $user_scan Whether to search all or just unseen
+ * @param string $del_id TODO: Document this parameter
  * @access private
  */
-function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan, 
+function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
                                   $del_id) {
-    global $languages, $squirrelmail_language, $allow_charset_search, 
+    global $languages, $squirrelmail_language, $allow_charset_search,
            $uid_support, $imap_server_type;
 
     if (strtolower($where_to) == 'inbox') {
@@ -297,7 +312,6 @@ function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
     } else {
         $category = 'ALL';
     }
-
     $category .= ' UNDELETED';
 
     if ($allow_charset_search &&
@@ -318,13 +332,17 @@ function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
     // see comments in squirrelmail sqimap_search function
     if ($imap_server_type == 'macosx' || $imap_server_type == 'hmailserver') {
         $search_str .= ' ' . $where . ' ' . $what;
+        $read = sqimap_run_command_list($imap, $search_str, true, $response, $message, $uid_support);        
     } else {
-        $search_str .= ' ' . $where . ' {' . strlen($what) . "}\r\n"
-                    . $what;
+    	$lit = array();
+    	$lit['command'] = $search_str . ' ' . $where;
+    	$lit['literal_args'][] = $what;
+    	
+		$read = sqimap_run_literal_command($imap, $lit, true, $response, $message, $uid_support );
     }
 
     /* read data back from IMAP */
-    $read = sqimap_run_command($imap, $search_str, true, $response, $message, $uid_support);
+    
 
     // This may have problems with EIMS due to it being goofy
 
@@ -334,8 +352,8 @@ function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
         $ids = explode(' ', $read[$r]);
         if (sqimap_mailbox_exists($imap, $where_to)) {
             /*
-             * why we do n calls instead of just one. It is safer to copy 
-             * messages one by one, but code does not call expunge after 
+             * why we do n calls instead of just one. It is safer to copy
+             * messages one by one, but code does not call expunge after
              * message is copied and quota limits are not resolved.
              */
             for ($j=2, $num = count($ids); $j < $num; $j++) {
@@ -350,7 +368,8 @@ function filter_search_and_delete($imap, $where, $what, $where_to, $user_scan,
 }
 
 /**
- * FIXME: Undocumented function
+ * Loops through all the Received Headers to find IP Addresses
+ * @param stream imap_stream the stream to read from
  * @access private
  */
 function spam_filters($imap_stream) {
@@ -370,7 +389,7 @@ function spam_filters($imap_stream) {
 
     $run = false;
 
-    foreach ($filters as $Key=> $Value) {
+    foreach ($filters as $Key => $Value) {
         if ($Value['enabled']) {
             $run = true;
             break;
@@ -396,7 +415,7 @@ function spam_filters($imap_stream) {
             }
         }
     }
-    
+
     if ($filters_spam_scan == 'new' && count($search_array)) {
         $msg_str = sqimap_message_list_squisher($search_array);
         $imap_query = 'FETCH ' . $msg_str . ' (FLAGS BODY.PEEK[HEADER.FIELDS (RECEIVED)])';
@@ -405,17 +424,16 @@ function spam_filters($imap_stream) {
     } else {
         return;
     }
-    
+
     $read = sqimap_run_command_list($imap_stream, $imap_query, true, $response, $message, $uid_support);
-    
+
     if (isset($response) && $response != 'OK') {
         return;
     }
-    
-    $messages = parseFetch($read);
-    
-    $bulkquery = (strlen($SpamFilters_BulkQuery) > 0 ? true : false);
 
+    $messages = parseFetch($read);
+
+    $bulkquery = (strlen($SpamFilters_BulkQuery) > 0 ? true : false);
     $aSpamIds = array();
     foreach($messages as $id=>$message) {
         if (isset($message['UID'])) {
@@ -423,7 +441,7 @@ function spam_filters($imap_stream) {
         } else {
             $MsgNum = $id;
         }
-        
+
         if (isset($message['received'])) {
             foreach($message['received'] as $received) {
                 if (is_int(strpos($received, $SpamFilters_YourHop))) {
@@ -431,13 +449,13 @@ function spam_filters($imap_stream) {
                         $IsSpam = false;
                         if (filters_spam_check_site($matches[1], $matches[2], $matches[3], $matches[4], $filters)) {
                             $aSpamIds[] = $MsgNum;
-                            $IsSpam = true;                            
+                            $IsSpam = true;
                         }
-                        
+
                         if ($bulkquery) {
                             array_shift($matches);
                             $IP = explode('.', $matches);
-                            foreach($filters as $key=>$value) {
+                            foreach ($filters as $key => $value) {
                                 if ($filters[$key]['enabled'] && $filters[$key]['dns']) {
                                     if (strlen($SpamFilters_DNScache[$IP . '.' . $filters[$key]['dns']]) == 0) {
                                         $IPs[$IP] = true;
@@ -446,21 +464,22 @@ function spam_filters($imap_stream) {
                                 }
                             }
                         }
-                        
+                        // If we've checked one IP and YourHop is
+                        // just a space
                         if ($SpamFilters_YourHop == ' ' || $IsSpam) {
-                            break;
+                            break;  // don't check any more
                         }
                     }
                 }
             }
         }
     }
-    
+    // Lookie!  It's spam!  Yum!
     if (count($aSpamIds) && sqimap_mailbox_exists($imap_stream, $filters_spam_folder)) {
         sqimap_msgs_list_move($imap_stream, $aSpamIds, $filters_spam_folder);
         sqimap_mailbox_expunge($imap_stream, 'INBOX', true, $aSpamIds);
     }
-    
+
     if ($bulkquery && count($IPs)) {
         filters_bulkquery($filters, $IPs);
     }
@@ -470,13 +489,17 @@ function spam_filters($imap_stream) {
     } else {
        sqsession_register($SpamFilters_DNScache, 'SpamFilters_DNScache');
     }
-
 }
 
 /**
- * FIXME: Undocumented function
  * Does the loop through each enabled filter for the specified IP address.
  * IP format:  $a.$b.$c.$d
+ * @param int $a First subset of IP
+ * @param int $b Second subset of IP
+ * @param int $c Third subset of IP
+ * @param int $d Forth subset of IP
+ * @param array $filters The Spam Filters
+ * @return boolean Whether the IP is Spam
  * @access private
  */
 function filters_spam_check_site($a, $b, $c, $d, &$filters) {
@@ -484,10 +507,11 @@ function filters_spam_check_site($a, $b, $c, $d, &$filters) {
     foreach ($filters as $key => $value) {
         if ($filters[$key]['enabled']) {
             if ($filters[$key]['dns']) {
-                
+
                 /**
-                 *  RFC allows . on end of hostname to ensure search domain
-                 *  isn't used if no hostname is found
+                 * RFC allows . on end of hostname to force domain lookup to
+                 * not use search domain from resolv.conf, i.e. to ensure
+                 * search domain isn't used if no hostname is found
                  */
                 $filter_revip = $d . '.' . $c . '.' . $b . '.' . $a . '.' .
                                 $filters[$key]['dns'] . '.';
@@ -504,10 +528,10 @@ function filters_spam_check_site($a, $b, $c, $d, &$filters) {
                     $SpamFilters_DNScache[$filter_revip]['T'] =
                                        time() + $SpamFilters_CacheTTL;
                 }
-                
+
                 /**
-                 *  gethostbyname returns ip if resolved, or returns original host
-                 *  supplied to function if there is no resolution
+                 * gethostbyname returns ip if resolved, or returns original
+                 * host supplied to function if there is no resolution
                  */
                 if ($SpamFilters_DNScache[$filter_revip]['L'] != $filter_revip) {
                     return 1;
@@ -519,14 +543,15 @@ function filters_spam_check_site($a, $b, $c, $d, &$filters) {
 }
 
 /**
- * FIXME: Undocumented function
+ * Loads the filters from the user preferences
+ * @return array All the user filters
  * @access private
  */
 function load_filters() {
     global $data_dir, $username;
 
     $filters = array();
-    for ($i=0; $fltr = getPref($data_dir, $username, 'filter' . $i); $i++) {
+    for ($i = 0; $fltr = getPref($data_dir, $username, 'filter' . $i); $i++) {
         $ary = explode(',', $fltr);
         $filters[$i]['where'] = $ary[0];
         $filters[$i]['what'] = str_replace('###COMMA###', ',', $ary[1]);
@@ -536,7 +561,8 @@ function load_filters() {
 }
 
 /**
- * FIXME: Undocumented function
+ * Loads the Spam Filters and checks the preferences for the enabled status
+ * @return array All the spam filters
  * @access private
  */
 function load_spam_filters() {
@@ -776,30 +802,6 @@ function load_spam_filters() {
     $filters['NJABL DUL']['comment'] =
         _("FREE, for now - Not Just Another Blacklist - Dial-up IPs.");
 
-    $filters['Conf DSBL.ORG Relay']['prefname'] = 'filters_spam_dsbl_conf_ss';
-    $filters['Conf DSBL.ORG Relay']['name'] = 'DSBL.org Confirmed Relay List';
-    $filters['Conf DSBL.ORG Relay']['link'] = 'http://www.dsbl.org/';
-    $filters['Conf DSBL.ORG Relay']['dns'] = 'list.dsbl.org';
-    $filters['Conf DSBL.ORG Relay']['result'] = '127.0.0.2';
-    $filters['Conf DSBL.ORG Relay']['comment'] =
-        _("FREE - Distributed Sender Boycott List - Confirmed Relays");
-
-    $filters['Conf DSBL.ORG Multi-Stage']['prefname'] = 'filters_spam_dsbl_conf_ms';
-    $filters['Conf DSBL.ORG Multi-Stage']['name'] = 'DSBL.org Confirmed Multi-Stage Relay List';
-    $filters['Conf DSBL.ORG Multi-Stage']['link'] = 'http://www.dsbl.org/';
-    $filters['Conf DSBL.ORG Multi-Stage']['dns'] = 'multihop.dsbl.org';
-    $filters['Conf DSBL.ORG Multi-Stage']['result'] = '127.0.0.2';
-    $filters['Conf DSBL.ORG Multi-Stage']['comment'] =
-        _("FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays");
-
-    $filters['UN-Conf DSBL.ORG']['prefname'] = 'filters_spam_dsbl_unc';
-    $filters['UN-Conf DSBL.ORG']['name'] = 'DSBL.org UN-Confirmed Relay List';
-    $filters['UN-Conf DSBL.ORG']['link'] = 'http://www.dsbl.org/';
-    $filters['UN-Conf DSBL.ORG']['dns'] = 'unconfirmed.dsbl.org';
-    $filters['UN-Conf DSBL.ORG']['result'] = '127.0.0.2';
-    $filters['UN-Conf DSBL.ORG']['comment'] =
-        _("FREE - Distributed Sender Boycott List - UN-Confirmed Relays");
-
     foreach ($filters as $Key => $Value) {
         $filters[$Key]['enabled'] = (bool)getPref($data_dir, $username, $filters[$Key]['prefname']);
     }
@@ -808,14 +810,14 @@ function load_spam_filters() {
 }
 
 /**
- * FIXME: Undocumented function
+ * Removes a User filter
+ * @param int $id ID of the filter to remove
  * @access private
  */
 function remove_filter ($id) {
     global $data_dir, $username;
 
-    while ($nextFilter = getPref($data_dir, $username, 'filter' .
-        ($id + 1))) {
+    while ($nextFilter = getPref($data_dir, $username, 'filter' . ($id + 1))) {
         setPref($data_dir, $username, 'filter' . $id, $nextFilter);
         $id ++;
     }
@@ -824,7 +826,9 @@ function remove_filter ($id) {
 }
 
 /**
- * FIXME: Undocumented function
+ * Swaps two filters
+ * @param int $id1 ID of first filter to swap
+ * @param int $id2 ID of second filter to swap
  * @access private
  */
 function filter_swap($id1, $id2) {
@@ -840,20 +844,20 @@ function filter_swap($id1, $id2) {
 }
 
 /**
- * This update the filter rules when renaming or deleting folders
+ * This updates the filter rules when renaming or deleting folders
  * @param array $args
  * @access private
  */
 function update_for_folder ($args) {
     $old_folder = $args[0];
-        $new_folder = $args[2];
-        $action = $args[1];
+    $new_folder = $args[2];
+    $action = $args[1];
     global $plugins, $data_dir, $username;
     $filters = array();
     $filters = load_filters();
     $filter_count = count($filters);
     $p = 0;
-    for ($i=0;$i<$filter_count;$i++) {
+    for ($i = 0; $i < $filter_count; $i++) {
         if (!empty($filters)) {
             if ($old_folder == $filters[$i]['folder']) {
                 if ($action == 'rename') {
@@ -883,4 +887,3 @@ function do_error($string) {
     echo $string;
     echo "</font></p>\n";
 }
-?>

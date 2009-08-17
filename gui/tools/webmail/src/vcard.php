@@ -155,6 +155,7 @@ echo '</table>' .
      '</td></tr>' .
      '<tr><td align="center">' .
      '<form action="../src/addressbook.php" method="post" name="f_add">' .
+     '<input type="hidden" name="smtoken" value="' . sm_generate_security_token() . '" />' .
      '<table border="0" cellpadding="2" cellspacing="0" align="center">' .
      '<tr><td align="right"><b>' . _("Nickname") . ':</b></td>' .
      '<td>' .

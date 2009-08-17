@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 13735 2009-05-21 17:19:09Z kink $
+ * @version $Id: strings.php 13822 2009-08-12 08:53:16Z pdontthink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.19';
+$version = '1.4.20RC1';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,19);
+$SQM_INTERNAL_VERSION = array(1,4,20);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -56,12 +56,12 @@ function sqWordWrap(&$line, $wrap, $charset=null) {
         }
     }
 
-    ereg("^([\t >]*)([^\t >].*)?$", $line, $regs);
+    preg_match('/^([\t >]*)([^\t >].*)?$/', $line, $regs);
     $beginning_spaces = $regs[1];
     if (isset($regs[2])) {
         $words = explode(' ', $regs[2]);
     } else {
-        $words = '';
+        $words = array();
     }
 
     $i = 0;
@@ -879,5 +879,186 @@ function sq_trim_value ( &$value ) {
     $value = trim($value);
 }
 
+/**
+  * Gathers the list of secuirty tokens currently
+  * stored in the user's preferences and optionally
+  * purges old ones from the list.
+  *
+  * @param boolean $purge_old Indicates if old tokens
+  *                           should be purged from the
+  *                           list ("old" is 30 days or
+  *                           older unless the administrator
+  *                           overrides that value using
+  *                           $max_security_token_age in
+  *                           config/config_local.php)
+  *                           (OPTIONAL; default is to always
+  *                           purge old tokens)
+  *
+  * @return array The list of tokens
+  *
+  * @since 1.4.19 and 1.5.2
+  *
+  */
+function sm_get_user_security_tokens($purge_old=TRUE)
+{
+
+   global $data_dir, $username, $max_token_age_days;
+
+   $tokens = getPref($data_dir, $username, 'security_tokens', '');
+   if (($tokens = unserialize($tokens)) === FALSE || !is_array($tokens))
+      $tokens = array();
+
+   // purge old tokens if necessary
+   //
+   if ($purge_old)
+   {
+      if (empty($max_token_age_days)) $max_token_age_days = 30;
+      $now = time();
+      $discard_token_date = $now - ($max_token_age_days * 86400);
+      $cleaned_tokens = array();
+      foreach ($tokens as $token => $timestamp)
+         if ($timestamp >= $discard_token_date)
+            $cleaned_tokens[$token] = $timestamp;
+      $tokens = $cleaned_tokens;
+   }
+
+   return $tokens;
+
+}
+
+/**
+  * Generates a security token that is then stored in
+  * the user's preferences with a timestamp for later
+  * verification/use.
+  *
+  * WARNING: If the administrator has turned the token system
+  *          off by setting $disable_security_tokens to TRUE in
+  *          config/config.php or the configuration tool, this
+  *          function will not store tokens in the user
+  *          preferences (but it will still generate and return
+  *          a random string).
+  *
+  * @return void
+  *
+  * @since 1.4.19 and 1.5.2
+  *
+  */
+function sm_generate_security_token()
+{
+
+   global $data_dir, $username, $disable_security_tokens;
+   $max_generation_tries = 1000;
+
+   $tokens = sm_get_user_security_tokens();
+
+   $new_token = GenerateRandomString(12, '', 7);
+   $count = 0;
+   while (isset($tokens[$new_token]))
+   {
+      $new_token = GenerateRandomString(12, '', 7);
+      if (++$count > $max_generation_tries)
+      {
+         logout_error(_("Fatal token generation error; please contact your system administrator or the SquirrelMail Team"));
+         exit;
+      }
+   }
+
+   // is the token system enabled?  CAREFUL!
+   //
+   if (!$disable_security_tokens)
+   {
+      $tokens[$new_token] = time();
+      setPref($data_dir, $username, 'security_tokens', serialize($tokens));
+   }
+
+   return $new_token;
+
+}
+
+/**
+  * Validates a given security token and optionally remove it
+  * from the user's preferences if it was valid.  If the token
+  * is too old but otherwise valid, it will still be rejected.
+  *
+  * "Too old" is 30 days or older unless the administrator
+  * overrides that value using $max_security_token_age in
+  * config/config_local.php
+  *
+  * WARNING: If the administrator has turned the token system
+  *          off by setting $disable_security_tokens to TRUE in
+  *          config/config.php or the configuration tool, this
+  *          function will always return TRUE.
+  *
+  * @param string  $token           The token to validate
+  * @param int     $validity_period The number of seconds tokens are valid
+  *                                 for (set to zero to remove valid tokens
+  *                                 after only one use; use 3600 to allow
+  *                                 tokens to be reused for an hour)
+  *                                 (OPTIONAL; default is to only allow tokens
+  *                                 to be used once)
+  * @param boolean $show_error      Indicates that if the token is not
+  *                                 valid, this function should display
+  *                                 a generic error, log the user out
+  *                                 and exit - this function will never
+  *                                 return in that case.
+  *                                 (OPTIONAL; default FALSE)
+  *
+  * @return boolean TRUE if the token validated; FALSE otherwise
+  *
+  * @since 1.4.19 and 1.5.2
+  *
+  */
+function sm_validate_security_token($token, $validity_period=0, $show_error=FALSE)
+{
+
+   global $data_dir, $username, $max_token_age_days,
+          $disable_security_tokens;
+
+   // bypass token validation?  CAREFUL!
+   //
+   if ($disable_security_tokens) return TRUE;
+
+   // don't purge old tokens here because we already
+   // do it when generating tokens
+   //
+   $tokens = sm_get_user_security_tokens(FALSE);
+
+   // token not found?
+   //
+   if (empty($tokens[$token]))
+   {
+      if (!$show_error) return FALSE;
+      logout_error(_("This page request could not be verified and appears to have expired."));
+      exit;
+   }
+
+   $now = time();
+   $timestamp = $tokens[$token];
+
+   // whether valid or not, we want to remove it from
+   // user prefs if it's old enough
+   //
+   if ($timestamp < $now - $validity_period)
+   {
+      unset($tokens[$token]);
+      setPref($data_dir, $username, 'security_tokens', serialize($tokens));
+   }
+
+   // reject tokens that are too old
+   //
+   if (empty($max_token_age_days)) $max_token_age_days = 30;
+   $old_token_date = $now - ($max_token_age_days * 86400);
+   if ($timestamp < $old_token_date)
+   {
+      if (!$show_error) return FALSE;
+      logout_error(_("The current page request appears to have originated from an untrusted source."));
+      exit;
+   }
+
+   // token OK!
+   //
+   return TRUE;
+
+}
 
 $PHP_SELF = php_self();

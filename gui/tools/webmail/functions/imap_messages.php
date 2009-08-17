@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 13604 2009-04-25 04:00:34Z pdontthink $
+ * @version $Id: imap_messages.php 13800 2009-07-29 02:21:06Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -122,7 +122,7 @@ function get_reference_header($imap_stream, $message) {
     $results = array();
     $references = "";
     $responses = sqimap_run_command_list ($imap_stream, "FETCH $message BODY[HEADER.FIELDS (References)]", true, $response, $message, $uid_support);
-    if (!eregi("^\\* ([0-9]+) FETCH", $responses[0][0], $regs)) {
+    if (!preg_match("/^\* ([0-9]+) FETCH/i", $responses[0][0], $regs)) {
         $responses = array ();
     }
     return $responses;

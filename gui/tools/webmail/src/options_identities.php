@@ -27,6 +27,7 @@ require_once(SM_PATH . 'include/validate.php');
 include_once(SM_PATH . 'functions/global.php');
 include_once(SM_PATH . 'functions/display_messages.php');
 include_once(SM_PATH . 'functions/html.php');
+include_once(SM_PATH . 'functions/forms.php');
 include_once(SM_PATH . 'functions/identity.php');
 
 /* make sure that page is not available when $edit_identity is false */
@@ -42,8 +43,15 @@ sqgetGlobalVar('newidentities', $newidentities, SQ_POST);
 sqgetGlobalVar('smaction', $smaction, SQ_POST);
 sqgetGlobalVar('return', $return, SQ_POST);
 
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
+
 // First lets see if there are any actions to perform //
 if (!empty($smaction) && is_array($smaction)) {
+
+    // first do a security check
+    sm_validate_security_token($submitted_token, 3600, TRUE);
 
     $doaction = '';
     $identid = 0;
@@ -72,9 +80,9 @@ displayPageHeader($color, 'None');
 
 do_hook('options_identities_top');
 
-$td_str = '';
-$td_str .= '<form name="f" action="options_identities.php" method="post"><br />' . "\n";
-$td_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
+$td_str = '<form name="f" action="options_identities.php" method="post"><br />' . "\n"
+        . addHidden('smtoken', sm_generate_security_token()) . "\n"
+        . '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
 $cnt = count($identities);
 foreach( $identities as $iKey=>$ident ) {
 

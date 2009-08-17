@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13667 2009-05-11 21:17:50Z pdontthink $
+ * @version $Id: mime.php 13806 2009-07-31 10:12:46Z avel $
  * @package squirrelmail
  */
 
@@ -117,7 +117,7 @@ function mime_fetch_body($imap_stream, $id, $ent_id=1, $fetch_size=0) {
     } while($topline && ($topline[0] == '*') && !preg_match('/\* [0-9]+ FETCH.*/i', $topline)) ;
 
     $wholemessage = implode('', $data);
-    if (ereg('\\{([^\\}]*)\\}', $topline, $regs)) {
+    if (preg_match('/\{([^\}]*)\}/', $topline, $regs)) {
         $ret = substr($wholemessage, 0, $regs[1]);
         /* There is some information in the content info header that could be important
          * in order to parse html messages. Let's get them here.
@@ -125,7 +125,7 @@ function mime_fetch_body($imap_stream, $id, $ent_id=1, $fetch_size=0) {
 //        if ($ret{0} == '<') {
 //            $data = sqimap_run_command ($imap_stream, "FETCH $id BODY[$ent_id.MIME]", true, $response, $message, $uid_support);
 //        }
-    } else if (ereg('"([^"]*)"', $topline, $regs)) {
+    } else if (preg_match('/"([^"]*)"/', $topline, $regs)) {
         $ret = $regs[1];
     } else if ((stristr($topline, 'nil') !== false) && (empty($wholemessage))) {
         $ret = $wholemessage;
@@ -2546,7 +2546,7 @@ function SendDownloadHeaders($type0, $type1, $filename, $force, $filesize=0) {
         $filename =
             $languages[$squirrelmail_language]['XTRA_CODE']('downloadfilename', $filename, $HTTP_USER_AGENT);
     } else {
-        $filename = ereg_replace('[\\/:\*\?"<>\|;]', '_', str_replace('&#32;', ' ', $filename));
+        $filename = preg_replace('/[\\\\\/:*?"<>|;]/', '_', str_replace('&#32;', ' ', $filename));
     }
 
     // A Pox on Microsoft and it's Internet Explorer!

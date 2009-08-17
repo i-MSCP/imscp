@@ -28,6 +28,7 @@ require_once(SM_PATH . 'functions/display_messages.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/plugin.php');
 require_once(SM_PATH . 'functions/html.php');
+require_once(SM_PATH . 'functions/forms.php');
 
 /* get globals */
 sqgetGlobalVar('num',       $num,       SQ_GET);  
@@ -35,6 +36,9 @@ sqgetGlobalVar('add',       $add,       SQ_POST);
 
 sqgetGlobalVar('submit',    $submit);
 sqgetGlobalVar('method',    $method);
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end of get globals */
 
 displayPageHeader($color, 'None');
@@ -83,9 +87,13 @@ displayPageHeader($color, 'None');
            include_once(SM_PATH . 'include/load_prefs.php');
         }
     } else if ($method == 'add' && $add) {
+
+        // first do a security check
+        sm_validate_security_token($submitted_token, 3600, TRUE);
+
         /* User should not be able to insert PHP-code here */
         $add = str_replace ('<?', '..', $add);
-        $add = ereg_replace ('<.*script.*language.*php.*>', '..', $add);
+        $add = preg_replace ('/<.*script.*language.*php.*>/', '..', $add);
         $add = str_replace ('<%', '..', $add);
         $index_order[count($index_order)+1] = $add;
     }
@@ -128,8 +136,9 @@ displayPageHeader($color, 'None');
     }
     
     if (count($index_order) != count($available)) {
-        echo '<form name="f" method="post" action="options_order.php">';
-        echo '<select name="add">';
+        echo '<form name="f" method="post" action="options_order.php">' . "\n"
+           . addHidden('smtoken', sm_generate_security_token())
+           . '<select name="add">' . "\n";
         for ($i=1; $i <= count($available); $i++) {
             $found = false;
             for ($j=1; $j <= count($index_order); $j++) {

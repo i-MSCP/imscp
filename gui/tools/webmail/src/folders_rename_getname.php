@@ -82,7 +82,7 @@ echo '<br />' .
         ) .
         html_tag( 'tr' ) .
             html_tag( 'td', '', 'center', $color[4] ) .
-            addForm('folders_rename_do.php').
+            addForm('folders_rename_do.php', 'post', '', '', '', '', TRUE).
      _("New name:").
      '<br /><b>'. $parent . '</b>'.
      addInput('new_name', $old_name, 25) . '<br />' . "\n";

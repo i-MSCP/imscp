@@ -1,11 +1,10 @@
 #!/bin/sh
 
-# **
-# ** This script regenerates main POT file
-# **
-# ** Philipe Mingo <mingo@rotedic.com>
-# ** 
-# **  $Id: xgetpo 13150 2008-05-16 04:48:31Z jervfors $ 
+# This script regenerates main POT file
+#
+# Philipe Mingo <mingo@rotedic.com>
+#
+# $Id: xgetpo 13768 2009-05-28 06:19:45Z jervfors $
 
 # force use of same locale in order to keep same sorting order
 LC_ALL=en_US.ISO8859-1
@@ -27,24 +26,18 @@ cd ..
 xgettext ${XGETTEXT_OPTIONS} \
     src/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
-    functions/*.php --output=po/squirrelmail.pot
-xgettext ${XGETTEXT_OPTIONS} -j \
     class/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
-    class/mime/*.php --output=po/squirrelmail.pot
+    class/*/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
-    class/deliver/*.php --output=po/squirrelmail.pot
-xgettext ${XGETTEXT_OPTIONS} -j \
-    class/helper/*.php --output=po/squirrelmail.pot    
+    functions/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
     include/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
     include/options/*.php --output=po/squirrelmail.pot
-    
-# ** Plugins
-    
-xgettext ${XGETTEXT_OPTIONS} -j \
-    plugins/abook_take/*.php --output=po/squirrelmail.pot
+
+# Plugins
+
 xgettext ${XGETTEXT_OPTIONS} -j \
     plugins/administrator/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
@@ -74,12 +67,14 @@ xgettext ${XGETTEXT_OPTIONS} -j \
 xgettext ${XGETTEXT_OPTIONS} -j \
     plugins/squirrelspell/*.php --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
-    plugins/squirrelspell/modules/*.mod \
-    --output=po/squirrelmail.pot
+    plugins/squirrelspell/modules/*.mod --output=po/squirrelmail.pot
 xgettext ${XGETTEXT_OPTIONS} -j \
     plugins/translate/*.php --output=po/squirrelmail.pot
 
 xgettext ${XGETTEXT_OPTIONS} -j \
     po/independent_strings.txt --output=po/squirrelmail.pot
+
+# print stats
+msgfmt --statistics ${SM_LOCALES_PATH}/po/squirrelmail.pot -o /dev/null
 
 cd po

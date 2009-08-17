@@ -83,7 +83,7 @@ function addr_display_result($res, $includesource = true) {
 
     if (sizeof($res) <= 0) return;
 
-    echo addForm($PHP_SELF, 'POST', 'addrbook').
+    echo addForm($PHP_SELF, 'POST', 'addrbook', '', '', '', TRUE).
          addHidden('html_addr_search_done', 'true');
     addr_insert_hidden();
     $line = 0;
@@ -308,7 +308,7 @@ else {
 if ($addrquery == '' || sizeof($res) == 0) {
     /* printf('<center><form method="post" name="k" action="compose.php">'."\n", $PHP_SELF); */
     echo '<center>'.
-        addForm('compose.php','POST','k');
+        addForm('compose.php','POST','k', '', '', '', TRUE);
     addr_insert_hidden();
     echo '<input type="submit" value="' . _("Return") . '" name="return" />' . "\n" .
          '</form></center></nobr>';

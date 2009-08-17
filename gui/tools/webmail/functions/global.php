@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 13685 2009-05-12 07:43:44Z pdontthink $
+ * @version $Id: global.php 13788 2009-07-16 21:33:48Z pdontthink $
  * @package squirrelmail
  */
 
@@ -62,6 +62,16 @@ if ((bool) ini_get('register_globals') &&
     // Unset variables used in foreach
     unset($GLOBALS['key']);
     unset($GLOBALS['value']);
+}
+
+/**
+ * There are some PHP settings that SquirrelMail is incompatible with
+ * and cannot be changed by software at run-time; refuse to run if such
+ * settings are being used...
+ */
+$php_session_auto_start = ini_get('session.auto_start');
+if ((bool)$php_session_auto_start && $php_session_auto_start != 'off') {
+    die('SquirrelMail 1.4.x is not compatible with PHP\'s session.auto_start setting.  Please disable it at least for the location where SquirrelMail is installed.');
 }
 
 /**

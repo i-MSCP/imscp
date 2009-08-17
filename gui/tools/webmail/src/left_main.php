@@ -48,7 +48,7 @@ function formatMailboxName($imapConnection, $box_array) {
     $mailboxURL = urlencode($real_box);
 
     /* Strip down the mailbox name. */
-    if (ereg("^( *)([^ ]*)$", $mailbox, $regs)) {
+    if (preg_match('/^( *)([^ ]*)$/', $mailbox, $regs)) {
         $mailbox = $regs[2];
     }
     $unseen = 0;
@@ -558,7 +558,7 @@ for ($i = 0; $i < count($boxes); $i++) {
             } else {
                 $line .= "<font color=\"$color[15]\">";
             }
-            if (ereg("^( *)([^ ]*)", $mailbox, $regs)) {
+            if (preg_match('/^( *)([^ ]*)/', $mailbox, $regs)) {
                 $mailbox = str_replace('&nbsp;','',$mailbox);
                 $line .= str_replace(' ', '&nbsp;', $mailbox);
             }

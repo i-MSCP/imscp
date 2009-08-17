@@ -11,7 +11,7 @@
  * @link http://www.w3.org/TR/html4/ W3.org HTML 4.01 form specs
  * @copyright &copy; 2004-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: forms.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: forms.php 13818 2009-08-12 08:29:53Z pdontthink $
  * @package squirrelmail
  * @subpackage forms
  * @since 1.4.3 and 1.5.1
@@ -130,8 +130,24 @@ function addTextArea($name, $text = '', $cols = 40, $rows = 10, $attr = '') {
 
 /**
  * Make a <form> start-tag.
+ *
+ * @param string $action
+ * @param string $method
+ * @param string $name
+ * @param string $enctype
+ * @param string $charset
+ * @param string $extra     Any other attributes can be added with this parameter;
+ *                          they should use double quotes around attribute values
+ *                          (OPTIONAL; default empty)
+ * @param mixed  $add_token When given as a string or as boolean TRUE, a hidden
+ *                          input is also added to the form containing a security
+ *                          token.  When given as TRUE, the input name is "smtoken";
+ *                          otherwise the name is the string that is given for this
+ *                          parameter.  When FALSE, no hidden token input field is
+ *                          added.  (OPTIONAL; default not used)
+ *
  */
-function addForm($action, $method = 'post', $name = '', $enctype = '', $charset = '')
+function addForm($action, $method = 'post', $name = '', $enctype = '', $charset = '', $extra = '', $add_token = FALSE)
 {
     if($name) {
         $name = ' name="'.$name.'"';
@@ -143,7 +159,15 @@ function addForm($action, $method = 'post', $name = '', $enctype = '', $charset 
         $charset = ' accept-charset="'.htmlspecialchars($charset).'"';
     }
 
-    return '<form action="'. $action .'" method="'. $method .'"'.
-        $enctype . $name . $charset . ">\n";
+    $form_string = '<form action="'. $action .'" method="'. $method .'"'.
+        $enctype . $name . $charset . ' ' . $extra . " >\n";
+
+    if($add_token) {
+        $form_string .= '<input type="hidden" value="' . sm_generate_security_token()
+                      . '" name="' . (is_string($add_token) ? $add_token : 'smtoken')
+                      . "\" />\n";
+    }
+
+    return $form_string;
 }
 

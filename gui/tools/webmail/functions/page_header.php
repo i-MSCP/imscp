@@ -446,3 +446,4 @@ function compose_Header($color, $mailbox) {
 
     echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" $onload>\n\n";
 }
+

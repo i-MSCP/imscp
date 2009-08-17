@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-17 Benedikt Heintel
+	- TOOLS:
+		* Updated Squirrelmail to version 1.4.20RC1
+
 2009-08-14 Malte Geierhos
 	- SETUP: 
 		* Fixed various Bugs preventing RPM Builds ( together with George Machitidze) 

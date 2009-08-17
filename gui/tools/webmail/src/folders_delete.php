@@ -41,6 +41,9 @@ sqgetGlobalVar('username',  $username,      SQ_SESSION);
 sqgetGlobalVar('onetimepad',$onetimepad,    SQ_SESSION);
 sqgetGlobalVar('delimiter', $delimiter,     SQ_SESSION);
 sqgetGlobalVar('mailbox',   $mailbox,       SQ_POST);
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end globals */
 
 if ($mailbox == '') {
@@ -76,7 +79,7 @@ if( !sqgetGlobalVar('confirmed', $tmp, SQ_POST) ) {
         html_tag( 'tr' ) .
         html_tag( 'td', '', 'center', $color[4] ) .
         sprintf(_("Are you sure you want to delete %s?"), str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),imap_utf7_decode_local($mailbox_unformatted_disp))).
-        addForm('folders_delete.php', 'post')."<p>\n".
+        addForm('folders_delete.php', 'post', '', '', '', '', TRUE)."<p>\n".
         addHidden('mailbox', $mailbox).
         addSubmit(_("Yes"), 'confirmed').
         addSubmit(_("No"), 'backingout').
@@ -84,6 +87,9 @@ if( !sqgetGlobalVar('confirmed', $tmp, SQ_POST) ) {
 
     exit;
 }
+
+// first, validate security token
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $imap_stream = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 
@@ -100,7 +106,7 @@ else
 /** lets see if we CAN move folders to the trash.. otherwise,
     ** just delete them **/
 if ((isset($delete_folder) && $delete_folder) ||
-    eregi('^'.$trash_folder.'.+', $mailbox) ) {
+    preg_match('/^' . $trash_folder . '.+/', $mailbox) ) {
     $can_move_to_trash = FALSE;
 }
 

@@ -138,7 +138,13 @@ sqgetGlobalVar('markUnread',      $markUnread,      SQ_POST);
 sqgetGlobalVar('attache',         $attache,         SQ_POST);
 sqgetGlobalVar('location',        $location,        SQ_POST);
 
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end of get globals */
+
+// security check
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 $mbx_response=sqimap_mailbox_select($imapConnection, $mailbox);

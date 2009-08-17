@@ -28,6 +28,7 @@ require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/imap_search.php');
 require_once(SM_PATH . 'functions/imap_mailbox.php');
 require_once(SM_PATH . 'functions/strings.php');
+require_once(SM_PATH . 'functions/forms.php');
 
 global $allow_thread_sort;
 
@@ -66,6 +67,9 @@ if (sqgetGlobalVar('count',$count,SQ_GET)) {
     $count = (int) $count;
 } else {
     unset($count);
+}
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_GET)) {
+    $submitted_token = '';
 }
 /* end of get globals */
 
@@ -240,7 +244,8 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
         $form_name = "FormMsgs" . $safe_name;
         echo '<form name="' . $form_name . '" method="post" action="move_messages.php">' ."\n" .
              '<input type="hidden" name="mailbox" value="'.htmlspecialchars($mailbox).'">' . "\n" .
-             '<input type="hidden" name="startMessage" value="1">' . "\n";
+             '<input type="hidden" name="startMessage" value="1">' . "\n" .
+             addHidden('smtoken', sm_generate_security_token()) . "\n";
 
         echo '<table border="0" width="100%" cellpadding="0" cellspacing="0">';
         echo '<tr><td>';
@@ -299,6 +304,11 @@ if (isset($composenew) && $composenew) {
 /*  See how the page was called and fire off correct function  */
 if (empty($submit) && !empty($what)) {
     $submit = _("Search");
+}
+
+// need to verify security token if user wants to do anything
+if (!empty($submit)) {
+    sm_validate_security_token($submitted_token, 3600, TRUE);
 }
 
 if ($submit == _("Search") && !empty($what)) {
@@ -449,6 +459,7 @@ if( substr( phpversion(), 0, 3 ) == '4.1'  ) {
 /* Search Form */
 echo html_tag( 'div', '<b>' . _("Current Search") . '</b>', 'left' ) . "\n"
    . '<form action="search.php" name="s">'
+   . addHidden('smtoken', sm_generate_security_token())
    . html_tag( 'table', '', '', '', 'width="95%" cellpadding="0" cellspacing="0" border="0"' )
    . html_tag( 'tr' )
    . html_tag( 'td', '', 'left' )

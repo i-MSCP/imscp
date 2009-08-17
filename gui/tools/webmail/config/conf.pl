@@ -6,7 +6,7 @@
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 13537 2009-04-13 16:52:57Z jervfors $
+# $Id: conf.pl 13820 2009-08-12 08:32:10Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -346,15 +346,19 @@ if ( !$sendmail_args && $sendmail_path =~ /qmail-inject/ ) {
 }
 
 # Added in 1.4.11
-$smtp_sitewide_user = ''				if ( !$smtp_sitewide_user );
-$smtp_sitewide_pass = ''				if ( !$smtp_sitewide_pass );
+$smtp_sitewide_user = ''                if ( !$smtp_sitewide_user );
+$smtp_sitewide_pass = ''                if ( !$smtp_sitewide_pass );
 
 # Added in 1.4.9
 $abook_global_file_listing = 'true'     if ( !$abook_global_file_listing );
 $abook_file_line_length = 2048          if ( !$abook_file_line_length );
 
 # Added in 1.4.16
-$only_secure_cookies = 'true'     if ( !$only_secure_cookies );
+$only_secure_cookies = 'true'           if ( !$only_secure_cookies );
+
+# Added in 1.4.20RC1
+$disable_security_tokens = 'false'      if ( !$disable_security_tokens );
+$check_referrer = ''                    if ( !$check_referrer );
 
 if ( $ARGV[0] eq '--install-plugin' ) {
     print "Activating plugin " . $ARGV[1] . "\n";
@@ -549,6 +553,8 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
         print "14. PHP session name             : $WHT$session_name$NRM\n";
         print "15. Location base                : $WHT$config_location_base$NRM\n";
         print "16. Only secure cookies if poss. : $WHT$only_secure_cookies$NRM\n";
+        print "17. Disable secure forms         : $WHT$disable_security_tokens$NRM\n";
+        print "18. Page referal requirement     : $WHT$check_referrer$NRM\n";
         print "\n";
         print "R   Return to Main Menu\n";
     } elsif ( $menu == 5 ) {
@@ -766,6 +772,8 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
             elsif ( $command == 14 ) { $session_name             = command314(); }
             elsif ( $command == 15 ) { $config_location_base     = command_config_location_base(); }
             elsif ( $command == 16 ) { $only_secure_cookies      = command316(); }
+            elsif ( $command == 17 ) { $disable_security_tokens  = command317(); }
+            elsif ( $command == 18 ) { $check_referrer           = command318(); }
         } elsif ( $menu == 5 ) {
             if ( $command == 1 ) { command41(); }
             elsif ( $command == 2 ) { $theme_css = command42(); }
@@ -2455,6 +2463,63 @@ sub command316 {
 
 
 
+# disable_security_tokens (since 1.4.20RC1)
+sub command317 {
+    print "This option allows you to turn off the security checks in the forms\n";
+    print "that SquirrelMail generates.  It is NOT RECOMMENDED that you disable\n";
+    print "this feature - otherwise, your users may be exposed to phishing and\n";
+    print "other attacks.\n";
+    print "Unless you know what you are doing, you should leave this set to \"NO\".\n";
+    print "\n";
+
+    if ( lc($disable_security_tokens) eq 'true' ) {
+        $default_value = "y";
+    } else {
+        $default_value = "n";
+    }
+    print "Disable secure forms? (y/n) [$WHT$default_value$NRM]: $WHT";
+    $disable_security_tokens = <STDIN>;
+    if ( ( $disable_security_tokens =~ /^y\n/i ) || ( ( $disable_security_tokens =~ /^\n/ ) && ( $default_value eq "y" ) ) ) {
+        $disable_security_tokens = 'true';
+    } else {
+        $disable_security_tokens = 'false';
+    }
+    return $disable_security_tokens;
+}
+
+
+
+# check_referrer (since 1.4.20RC1)
+sub command318 {
+    print "This option allows you to enable referal checks for all page requests\n";
+    print "made to SquirrelMail.  This can help ensure that page requests came\n";
+    print "from the same server and not from an attacker's site (usually the\n";
+    print "result of a XSS or phishing attack).  To enable referal checking,\n";
+    print "this setting can be set to the domain where your SquirrelMail is\n";
+    print "being hosted (usually the same as the Domain setting under Server\n";
+    print "Settings).  For example, it could be \"example.com\", or if you\n";
+    print "use a plugin (such as Login Manager) to host SquirrelMail on more\n";
+    print "than one domain, you can set this to \"###DOMAIN###\" to tell it\n";
+    print "to use the current domain.\n";
+    print "\n";
+    print "However, in some cases (where proxy servers are in use, etc.), the\n";
+    print "domain might be different.\n";
+    print "\n";
+    print "NOTE that referal checks are not foolproof - they can be spoofed by\n";
+    print "browsers, and some browsers intentionally don't send referal\n";
+    print "information (in which case, the check is silently bypassed)\n";
+    print "\n";
+
+    print "Referal requirement? [$WHT$check_referrer$NRM]: $WHT";
+    $new_check_referrer = <STDIN>;
+    chomp($new_check_referrer);
+    $check_referrer = $new_check_referrer;
+
+    return $check_referrer;
+}
+
+
+
 ####################################################################################
 #### THEMES ####
 sub command41 {
@@ -3502,10 +3567,14 @@ sub save_data {
         print CF "\$session_name = '$session_name';\n";
 
     # boolean
-        print CF "\$only_secure_cookies   = $only_secure_cookies;\n";
+        print CF "\$only_secure_cookies     = $only_secure_cookies;\n";
+        print CF "\$disable_security_tokens = $disable_security_tokens;\n";
+
+    # string
+        print CF "\$check_referrer          = '$check_referrer';\n";
 
         print CF "\n";
-        print CF "\$config_location_base     = '$config_location_base';\n";
+        print CF "\$config_location_base    = '$config_location_base';\n";
 
         print CF "\n";
         print CF "\@include SM_PATH . 'config/config_local.php';\n";
@@ -3712,12 +3781,13 @@ sub set_defaults {
 # the SM directory tree, the SM_PATH variable will be 
 # prepended to the path, if not, then the path will be
 # converted to an absolute path, e.g.
-#   '../images/logo.gif'      --> SM_PATH . 'images/logo.gif'
-#   '../../someplace/data'    --> '/absolute/path/someplace/data'
-#   'images/logo.gif'         --> SM_PATH . 'config/images/logo.gif'
-#   '/absolute/path/logo.gif' --> '/absolute/path/logo.gif'
-#   'http://whatever/'        --> 'http://whatever'
-#   $some_var/path            --> "$some_var/path"
+#   '../images/logo.gif'        --> SM_PATH . 'images/logo.gif'
+#   '../../someplace/data'      --> '/absolute/path/someplace/data'
+#   'images/logo.gif'           --> SM_PATH . 'config/images/logo.gif'
+#   '/absolute/path/logo.gif'   --> '/absolute/path/logo.gif'
+#   'C:\absolute\path\logo.gif' --> 'C:\absolute\path\logo.gif'
+#   'http://whatever/'          --> 'http://whatever'
+#   $some_var/path              --> "$some_var/path"
 sub change_to_SM_path() {
     my ($old_path) = @_;
     my $new_path = '';
@@ -3728,7 +3798,7 @@ sub change_to_SM_path() {
     # If the path is absolute, don't bother.
     return "\'" . $old_path . "\'"  if ( $old_path eq '');
     return "\'" . $old_path . "\'"  if ( $old_path =~ /^(\/|http)/ );
-    return "\'" . $old_path . "\'"  if ( $old_path =~ /^\w:\// );
+    return "\'" . $old_path . "\'"  if ( $old_path =~ /^\w:(\\|\/)/ );
     return $old_path                if ( $old_path =~ /^\'(\/|http)/ );
     return $old_path                if ( $old_path =~ /^\'\w:\// );
     return $old_path                if ( $old_path =~ /^SM_PATH/);

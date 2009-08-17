@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: url_parser.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: url_parser.php 13796 2009-07-29 00:01:19Z pdontthink $
  * @package squirrelmail
  */
 
@@ -52,7 +52,7 @@ function parseEmail (&$body) {
     $addresses = array();
 
     /* Find all the email addresses in the body */
-    while(eregi($Email_RegExp_Match, $sbody, $regs)) {
+    while(preg_match('/'.$Email_RegExp_Match.'/i', $sbody, $regs)) {
         $addresses[$regs[0]] = $regs[0];
         $start = strpos($sbody, $regs[0]) + strlen($regs[0]);
         $sbody = substr($sbody, $start);
@@ -169,7 +169,7 @@ function parseUrl (&$body) {
             $url = substr($body, $target_pos, $end-$target_pos);
 
             /* Needed since lines are not passed with \n or \r */
-            while ( ereg("[,\.]$", $url) ) {
+            while ( preg_match('/[,.]$/', $url) ) {
                 $url = substr( $url, 0, -1 );
                 $end--;
             }

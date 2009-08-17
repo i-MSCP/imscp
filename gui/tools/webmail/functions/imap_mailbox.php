@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_mailbox.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: imap_mailbox.php 13801 2009-07-29 02:52:32Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -39,9 +39,9 @@ function sortSpecialMbx($a, $b) {
 function find_mailbox_name ($mailbox) {
     if (preg_match('/\*.+\"([^\r\n\"]*)\"[\s\r\n]*$/', $mailbox, $regs))
         return $regs[1];
-    if (ereg(" *\"([^\r\n\"]*)\"[ \r\n]*$", $mailbox, $regs))
+    if (preg_match('/ *"([^\r\n"]*)"[ \r\n]*$/', $mailbox, $regs))
         return $regs[1];
-    ereg(" *([^ \r\n\"]*)[ \r\n]*$",$mailbox,$regs);
+    preg_match('/ *([^ \r\n"]*)[ \r\n]*$/',$mailbox,$regs);
     return $regs[1];
 }
 
@@ -447,10 +447,11 @@ function sqimap_mailbox_parse ($line, $line_lsub) {
 
         $boxesall[$g]['flags'] = array();
         if (isset($line[$g])) {
-            ereg("\(([^)]*)\)",$line[$g],$regs);
-            $flags = trim(strtolower(str_replace('\\', '',$regs[1])));
-            if ($flags) {
-                $boxesall[$g]['flags'] = explode(' ', $flags);
+            if ( preg_match('/\(([^)]*)\)/',$line[$g],$regs) ) {
+                $flags = trim(strtolower(str_replace('\\', '',$regs[1])));
+                if ($flags) {
+                    $boxesall[$g]['flags'] = explode(' ', $flags);
+                }
             }
         }
     }
@@ -595,7 +596,7 @@ function sqimap_mailbox_list($imap_stream, $force=false) {
              * (larger then fgets buffer)
              */
             if (isset($lsub_ary[$i + 1]) && substr($lsub_ary[$i],-3) == "}\r\n") {
-                if (ereg("^(\\* [A-Z]+.*)\\{[0-9]+\\}([ \n\r\t]*)$",
+                if (preg_match('/^(\* [A-Z]+.*)\{[0-9]+\}([ \n\r\t]*)$/',
                      $lsub_ary[$i], $regs)) {
                         $i++;
                         $lsub_ary[$i] = $regs[1] . '"' . addslashes(trim($lsub_ary[$i])) . '"' . $regs[2];
@@ -636,7 +637,7 @@ function sqimap_mailbox_list($imap_stream, $force=false) {
             /* Another workaround for literals */
 
             if (isset($read[1]) && substr($read[1],-3) == "}\r\n") {
-                if (ereg("^(\\* [A-Z]+.*)\\{[0-9]+\\}([ \n\r\t]*)$",
+                if (preg_match('/^(\* [A-Z]+.*)\{[0-9]+\}([ \n\r\t]*)$/',
                      $read[0], $regs)) {
                     $read[0] = $regs[1] . '"' . addslashes(trim($read[1])) . '"' . $regs[2];
                 }
@@ -658,7 +659,7 @@ function sqimap_mailbox_list($imap_stream, $force=false) {
                                              true, $response, $message);
             /* Another workaround for literals */
             if (isset($inbox_ary[1]) && substr($inbox_ary[0],-3) == "}\r\n") {
-                if (ereg("^(\\* [A-Z]+.*)\\{[0-9]+\\}([ \n\r\t]*)$",
+                if (preg_match('/^(\* [A-Z]+.*)\{[0-9]+\}([ \n\r\t]*)$/',
                      $inbox_ary[0], $regs)) {
                     $inbox_ary[0] = $regs[1] . '"' . addslashes(trim($inbox_ary[1])) .
                                 '"' . $regs[2];
@@ -733,7 +734,7 @@ function sqimap_mailbox_list_all($imap_stream) {
     for ($i = 0, $cnt = count($read_ary); $i < $cnt; $i++) {
         /* Another workaround for EIMS */
         if (isset($read_ary[$i + 1]) &&
-            ereg("^(\\* [A-Z]+.*)\\{[0-9]+\\}([ \n\r\t]*)$",
+            preg_match('/^(\* [A-Z]+.*)\{[0-9]+\}([ \n\r\t]*)$/',
                  $read_ary[$i], $regs)) {
             $i ++;
             $read_ary[$i] = $regs[1] . '"' . addslashes(trim($read_ary[$i])) . '"' . $regs[2];
@@ -753,8 +754,9 @@ function sqimap_mailbox_list_all($imap_stream) {
             /* Format folder name, but only if it's a INBOX.* or has a parent. */
             $boxesallbyname[$mailbox] = $g;
             $parentfolder = readMailboxParent($mailbox, $delimiter);
-            if((eregi('^inbox'.quotemeta($delimiter), $mailbox)) ||
-               (ereg('^'.$folder_prefix, $mailbox)) ||
+			/* @FIXME shouldn't use preg_match for simple string matching */
+            if((preg_match('/^inbox'.quotemeta($delimiter).'/i', $mailbox)) ||
+               (preg_match('/^'.$folder_prefix.'/', $mailbox)) ||
                ( isset($boxesallbyname[$parentfolder]) && (strlen($parentfolder) > 0) ) ) {
                 if ($dm_count) {
                     $boxes[$g]['formatted']  = str_repeat('&nbsp;&nbsp;', $dm_count);
@@ -783,7 +785,7 @@ function sqimap_mailbox_list_all($imap_stream) {
 
             /* Another workaround for EIMS */
 //            if (isset($read_mlbx[1]) &&
-//                ereg("^(\\* [A-Z]+.*)\\{[0-9]+\\}([ \n\r\t]*)$", $read_mlbx[0], $regs)) {
+//                preg_match('/^(\* [A-Z]+.*)\{[0-9]+\}([ \n\r\t]*)$/', $read_mlbx[0], $regs)) {
 //                $read_mlbx[0] = $regs[1] . '"' . addslashes(trim($read_mlbx[1])) . '"' . $regs[2];
 //            }
 //            echo  $read_mlbx[0] .' raw 2 <br>';

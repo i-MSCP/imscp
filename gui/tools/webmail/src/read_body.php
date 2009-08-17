@@ -208,7 +208,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     // Patch #793504 Return Receipt Failing with <@> from Tim Craig (burny_md)
     // This merely comes from compose.php and only happens when there is no
     // email_addr specified in user's identity (which is the startup config)
-    if (ereg("^([^@%/]+)[@%/](.+)$", $username, $usernamedata)) {
+    if (preg_match('|^([^@%/]+)[@%/](.+)$|', $username, $usernamedata)) {
        $popuser = $usernamedata[1];
        $domain  = $usernamedata[2];
        unset($usernamedata);

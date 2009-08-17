@@ -48,16 +48,17 @@ function parse_viewheader($imapConnection,$id, $passed_ent_id) {
     for ($i=1; $i < count($read); $i++) {
         $line = htmlspecialchars($read[$i]);
         switch (true) {
-            case (eregi("^&gt;", $line)):
+            case (preg_match('/^&gt;/i', $line)):
                 $second[$i] = $line;
                 $first[$i] = '&nbsp;';
                 $cnum++;
                 break;
-            case (eregi("^[ |\t]", $line)):
+// FIXME: is the pipe character below a mistake?  I think the original author might have thought it carried special meaning in the character class, which it does not... but then again, I am not currently trying to understand what this code actually does
+            case (preg_match('/^[ |\t]/', $line)):
                 $second[$i] = $line;
                 $first[$i] = '';
                 break;
-            case (eregi("^([^:]+):(.+)", $line, $regs)):
+            case (preg_match('/^([^:]+):(.+)/', $line, $regs)):
                 $first[$i] = $regs[1] . ':';
                 $second[$i] = $regs[2];
                 $cnum++;

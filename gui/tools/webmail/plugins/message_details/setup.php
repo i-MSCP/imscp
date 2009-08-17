@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Message Details plugin - main setup script
  *
  * Plugin to view the RFC822 raw message output and the bodystructure of a message
  *
  * @author Marc Groot Koerkamp
- * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
- * @copyright Copyright &copy; 2004-2009 The SquirrelMail Project Team
+ * @copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
+ * @copyright &copy; 2002-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins
@@ -15,6 +16,7 @@
 
 /**
  * Initialize the plugin
+ * @access private
  */
 function squirrelmail_plugin_init_message_details()
 {
@@ -23,6 +25,10 @@ function squirrelmail_plugin_init_message_details()
   $squirrelmail_plugin_hooks['read_body_header_right']['message_details'] = 'show_message_details';
 }
 
+/**
+ * Add message details link in message view
+ * @access private
+ */
 function show_message_details() {
     global $passed_id, $mailbox, $passed_ent_id, $color,
            $javascript_on;
@@ -35,7 +41,7 @@ function show_message_details() {
               '&mailbox=' . urlencode($mailbox) .
               '&passed_id=' . $passed_id;
 
-    $print_text = _("View Message details");
+    $print_text = _("View Message Details");
 
     $result = '';
     /* Output the link. */
@@ -49,8 +55,7 @@ function show_message_details() {
                 "// -->\n" .
                 "</script>\n" .
                 "&nbsp;|&nbsp;<A HREF=\"javascript:MessageSource();\">$print_text</A>\n";
-    } 
+    }
     echo $result;
 }
- 
-?>
+

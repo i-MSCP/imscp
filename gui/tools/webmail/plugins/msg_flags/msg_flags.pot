@@ -1,5 +1,5 @@
-# <your language> SquirrelMail Message Flags Plugin Translation File
-# Copyright (c) 2007 The Squirrelmail Development Team
+# <your language> SquirrelMail Message Flags & Icons Plugin Translation File
+# Copyright (c) 2008 The Squirrelmail Development Team
 # This file is distributed under the same license as the SquirrelMail package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #

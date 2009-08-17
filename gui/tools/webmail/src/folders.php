@@ -103,7 +103,7 @@ echo html_tag( 'table', '', 'center', '', 'width="70%" cellpadding="4" cellspaci
             ) .
             html_tag( 'tr' ) .
                 html_tag( 'td', '', 'center', $color[0] ) .
-     addForm('folders_create.php', 'POST', 'cf').
+     addForm('folders_create.php', 'POST', 'cf', '', '', '', TRUE).
      addInput('folder_name', '', 25).
      "<br />\n". _("as a subfolder of"). '<br />'.
      "<tt><select name=\"subfolder\">\n";
@@ -228,7 +228,7 @@ echo html_tag( 'table', '', 'center', '', 'width="70%" cellpadding="4" cellspaci
                 html_tag( 'td', '', 'center', $color[0], 'width="50%"' );
 
 if (count($skip_folders) < count($boxes)) {
-    echo addForm('folders_subscribe.php?method=unsub')
+    echo addForm('folders_subscribe.php?method=unsub', 'post', '', '', '', '', TRUE)
        . "<tt><select name=\"mailbox[]\" multiple=\"multiple\" size=\"8\">\n";
     for ($i = 0; $i < count($boxes); $i++) {
         $use_folder = true;
@@ -273,7 +273,7 @@ if(!$no_list_for_subscribe) {
   }
   
   if (count($box) > 0) {
-    echo addForm('folders_subscribe.php?method=sub')
+    echo addForm('folders_subscribe.php?method=sub', 'post', '', '', '', '', TRUE)
        . '<tt><select name="mailbox[]" multiple="multiple" size="8">';
 
     for ($q = 0; $q < count($box); $q++) {      
@@ -288,7 +288,7 @@ if(!$no_list_for_subscribe) {
   }
 } else {
   /* don't perform the list action -- this is much faster */
-  echo addForm('folders_subscribe.php?method=sub')
+  echo addForm('folders_subscribe.php?method=sub', 'post', '', '', '', '', TRUE)
      . _("Subscribe to:") . '<br />'
      . '<tt><input type="text" name="mailbox[]" size="35" />'
      . '<input type="submit" value="'. _("Subscribe") . "\" />\n"

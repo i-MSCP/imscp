@@ -37,7 +37,13 @@ sqgetGlobalVar('subfolder',    $subfolder,     SQ_POST);
 if (! sqgetGlobalVar('contain_subs', $contain_subs,  SQ_POST)) {
     unset($contain_subs);
 }
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
 /* end of get globals */
+
+// first, validate security token
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $folder_name = trim($folder_name);
 

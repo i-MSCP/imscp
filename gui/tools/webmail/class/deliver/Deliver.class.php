@@ -9,7 +9,7 @@
  * @author Marc Groot Koerkamp
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: Deliver.class.php 13804 2009-07-31 05:22:35Z pdontthink $
  * @package squirrelmail
  */
 
@@ -586,15 +586,9 @@ class Deliver {
         /* Create a message-id */
         $message_id = 'MESSAGE ID GENERATION ERROR! PLEASE CONTACT SQUIRRELMAIL DEVELOPERS';
         if (empty($rfc822_header->message_id)) {
-            $message_id = '<';
-            /* user-specifc data to decrease collision chance */
-            $seed_data = $username . '.';
-            $seed_data .= (!empty($REMOTE_PORT) ? $REMOTE_PORT . '.' : '');
-            $seed_data .= (!empty($REMOTE_ADDR) ? $REMOTE_ADDR . '.' : '');
-            /* add the current time in milliseconds and randomness */
-            $seed_data .= uniqid(mt_rand(),true);
-            /* put it through one-way hash and add it to the ID */
-            $message_id .= md5($seed_data) . '.squirrel@' . $SERVER_NAME .'>';
+            $message_id = '<'
+                        . md5(GenerateRandomString(16, '', 7) . uniqid(mt_rand(),true))
+                        . '.squirrel@' . $SERVER_NAME .'>';
         }
 
         /* Make an RFC822 Received: line */
@@ -619,22 +613,33 @@ class Deliver {
          * unless you understand all possible forging issues or your
          * webmail installation does not prevent changes in user's email address.
          * See SquirrelMail bug tracker #847107 for more details about it.
+         *
+         * Add hide_squirrelmail_header as a candidate for config_local.php
+         * (must be defined as a constant:  define('hide_squirrelmail_header', 1);
+         * to allow completely hiding SquirrelMail participation in message
+         * processing; This is dangerous, especially if users can modify their
+         * account information, as it makes mapping a sent message back to the
+         * original sender almost impossible.
          */
+        $show_sm_header = ( defined('hide_squirrelmail_header') ? ! hide_squirrelmail_header : 1 );
+
         // FIXME: The following headers may generate slightly differently between the message sent to the destination and that stored in the Sent folder because this code will be called before both actions.  This is not necessarily a big problem, but other headers such as Message-ID and Date are preserved between both actions
-        if (isset($encode_header_key) &&
+        if ( $show_sm_header ) {
+          if (isset($encode_header_key) &&
             trim($encode_header_key)!='') {
             // use encoded headers, if encryption key is set and not empty
             $header[] = 'X-Squirrel-UserHash: '.OneTimePadEncrypt($username,base64_encode($encode_header_key)).$rn;
             $header[] = 'X-Squirrel-FromHash: '.OneTimePadEncrypt($this->ip2hex($REMOTE_ADDR),base64_encode($encode_header_key)).$rn;
             if (isset($HTTP_X_FORWARDED_FOR))
                 $header[] = 'X-Squirrel-ProxyHash:'.OneTimePadEncrypt($this->ip2hex($HTTP_X_FORWARDED_FOR),base64_encode($encode_header_key)).$rn;
-        } else {
+          } else {
             // use default received headers
             $header[] = "Received: from $received_from" . $rn;
             if ($edit_identity || ! isset($hide_auth_header) || ! $hide_auth_header)
                 $header[] = "        (SquirrelMail authenticated user $username)" . $rn;
             $header[] = "        by $SERVER_NAME with HTTP;" . $rn;
             $header[] = "        $date" . $rn;
+          }
         }
 
         /* Insert the rest of the header fields */

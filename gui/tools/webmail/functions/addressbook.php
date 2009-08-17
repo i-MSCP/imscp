@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: addressbook.php 13802 2009-07-29 03:32:23Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -65,6 +65,7 @@ function addressbook_init($showerr = true, $onlylocal = false) {
         /* File */
         $filename = getHashedFile($username, $data_dir, "$username.abook");
         $r = $abook->add_backend('local_file', Array('filename' => $filename,
+                                                     'umask' => 0077,
                                                      'line_length' => $abook_file_line_length,
                                                      'create'   => true));
         if(!$r && $showerr) {
@@ -519,7 +520,7 @@ class AddressBook {
             $userdata['nickname'] = $userdata['email'];
         }
 
-        if (eregi('[ \\:\\|\\#\\"\\!]', $userdata['nickname'])) {
+        if (preg_match('/[ :|#"!]/', $userdata['nickname'])) {
             $this->error = _("Nickname contains illegal characters");
             return false;
         }
@@ -603,7 +604,7 @@ class AddressBook {
             return false;
         }
 
-        if (eregi('[\\: \\|\\#"\\!]', $userdata['nickname'])) {
+        if (preg_match('/[: |#"!]/', $userdata['nickname'])) {
             $this->error = _("Nickname contains illegal characters");
             return false;
         }

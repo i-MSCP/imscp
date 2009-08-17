@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_local_file.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: abook_local_file.php 13814 2009-08-10 23:19:04Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -295,8 +295,8 @@ class abook_local_file extends addressbook_backend {
                 die('</body></html>');
             } else {
                 $line = join(' ', $row);
-                // errors on eregi call are suppressed in order to prevent display of regexp compilation errors
-                if(@eregi($expr, $line)) {
+                // errors on preg_match call are suppressed in order to prevent display of regexp compilation errors
+                if(@preg_match('/' . $expr . '/i', $line)) {
                     array_push($res, array('nickname'  => $row[0],
                                            'name'      => $row[1] . ' ' . $row[2],
                                            'firstname' => $row[1],
@@ -418,7 +418,8 @@ class abook_local_file extends addressbook_backend {
                 $this->quotevalue((!empty($userdata['label'])?$userdata['label']:''));
 
         /* Strip linefeeds */
-        $data = ereg_replace("[\r\n]", ' ', $data);
+		$nl_str = array("\r","\n");
+		$data = str_replace($nl_str, ' ', $data);
 
         /**
          * Make sure that entry fits into allocated record space.
@@ -573,7 +574,7 @@ class abook_local_file extends addressbook_backend {
     function quotevalue($value) {
         /* Quote the field if it contains | or ". Double quotes need to
          * be replaced with "" */
-        if(ereg("[|\"]", $value)) {
+        if(stristr($value, '"') || stristr($value, '|')) {
             $value = '"' . str_replace('"', '""', $value) . '"';
         }
         return $value;

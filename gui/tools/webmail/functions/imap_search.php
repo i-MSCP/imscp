@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_search.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: imap_search.php 13800 2009-07-29 02:21:06Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  * @deprecated This search interface has been largely replaced by asearch
@@ -34,7 +34,7 @@ function sqimap_search($imapConnection, $search_where, $search_what, $mailbox,
     /* construct the search query, taking multiple search terms into account */
     $multi_search = array();
     $search_what  = trim($search_what);
-    $search_what  = ereg_replace('[ ]{2,}', ' ', $search_what);
+    $search_what  = preg_replace('/[ ]{2,}/', ' ', $search_what);
     $multi_search = explode(' ', $search_what);
     $search_string = '';
 
