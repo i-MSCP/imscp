@@ -1721,48 +1721,41 @@ function recalc_reseller_c_props($reseller_id) {
 
 	$delstatus = Config::get('ITEM_DELETE_STATUS');
 
-	// Get all users of reseller:
-	$query = <<<SQL_QUERY
-		SELECT 
-			`domain_id`, `domain_uid`
-		FROM
-			`domain`
-		WHERE
-			`domain_created_id` = ?
-			AND `domain_status` != ?
+    $query = <<<SQL_QUERY
+            SELECT
+                    COUNT(`domain_id`) AS crn_domains,
+                    IFNULL(SUM(`domain_mailacc_limit`), 0) AS crn_mail,
+                    IFNULL(SUM(`domain_ftpacc_limit`), 0) AS crn_ftp,
+                    IFNULL(SUM(`domain_traffic_limit`), 0) AS crn_traffic,
+                    IFNULL(SUM(`domain_sqld_limit`), 0) AS crn_sql,
+                    IFNULL(SUM(`domain_sqlu_limit`), 0) AS crn_sql_users,
+                    IFNULL(SUM(`domain_alias_limit`), 0) AS crn_als,
+                    IFNULL(SUM(`domain_subd_limit`), 0) AS crn_subdomain,
+                    IFNULL(SUM(`domain_disk_limit`), 0) AS crn_hdd
+            FROM
+                    `domain`
+            WHERE
+                    `domain_created_id` = ?
+            AND
+                    `domain_status` != ?
 SQL_QUERY;
-	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
-	$user_array = $systemuser_array = array();
-	while ($data = $res->FetchRow()) {
-		$user_array[] = $data['domain_id'];
-		$systemuser_array[] = $data['domain_uid'];
-	}
-	$current_dmn_cnt = count($user_array);
-	if ($current_dmn_cnt > 0) {
-		$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
-		$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
-		$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
-		$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
-		$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
-	
-		$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
-		$query .= " WHERE `sqld_id` IN (";
-		$query .= "SELECT sqld_id FROM sql_database";
-		$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
-		$res = exec_query($sql, $query);
-		$current_sql_user_cnt = $res->fields['cnt'];
-	} else {
-		$current_sub_cnt = 
-		$current_als_cnt =
-		$current_mail_cnt =
-		$current_ftp_cnt =
-		$current_sql_db_cnt = 
-		$current_sql_user_cnt = 0; 
-	}
 
-	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt, 
-		$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt, 
-		$current_sql_user_cnt);
+        $rs_count = exec_query($sql, $query, array($reseller_id, $delstatus));
+
+
+        $current_dmn_cnt        = $rs_count -> fields['crn_domains'];
+        $current_mail_cnt       = $rs_count -> fields['crn_mail'];
+        $current_ftp_cnt        = $rs_count -> fields['crn_ftp'];
+        $current_traffic        = $rs_count -> fields['crn_traffic'];
+        $current_sql_db_cnt     = $rs_count -> fields['crn_sql'];
+        $current_sql_user_cnt   = $rs_count -> fields['crn_sql_users'];
+        $current_sub_cnt        = $rs_count -> fields['crn_subdomain'];
+        $current_disk           = $rs_count -> fields['crn_hdd'];
+        $current_als_cnt        = $rs_count -> fields['crn_als'];
+
+        return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
+                $current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
+                $current_sql_user_cnt, $current_disk, $current_traffic);
 }
 
 /**
