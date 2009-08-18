@@ -1,6 +1,10 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-18 Andreca Daniel
+	- GUI:
+		* Fixed #1931: Error when adding/deleting Domain/FTP etc
+
 2009-08-17 Benedikt Heintel
 	- GUI:
 		* Chagend recalc_reseller_c_props with Thomas Partsch's version

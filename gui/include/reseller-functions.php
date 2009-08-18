@@ -1765,7 +1765,7 @@ SQL_QUERY;
 function update_reseller_c_props($reseller_id) {
 	global $sql;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`reseller_props`
 		SET
@@ -1775,14 +1775,31 @@ function update_reseller_c_props($reseller_id) {
 			`current_mail_cnt` = ?,
 			`current_ftp_cnt` = ?,
 			`current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?
+			`current_sql_user_cnt` = ?,
+			`current_disk_amnt` = ?,
+			`current_traff_amnt` = ?
 		WHERE
 			`reseller_id` = ?
-SQL_QUERY;
+	";
 
-	$props = recalc_reseller_c_props($reseller_id);
-	$props[] = $reseller_id;
-
+	list(
+		$current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
+		$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
+		$current_sql_user_cnt, $current_disk, $current_traffic
+	) = recalc_reseller_c_props($reseller_id);
+	
+	$props = array(
+		$current_dmn_cnt,
+		$current_sub_cnt,
+		$current_als_cnt,
+		$current_mail_cnt,
+		$current_ftp_cnt,
+		$current_sql_db_cnt,
+		$current_sql_user_cnt,
+		$current_disk,
+		$current_traffic,
+		$reseller_id
+	);
 	exec_query($sql, $query, $props);
 }
 
@@ -1796,15 +1813,15 @@ function get_reseller_id($domain_id) {
 	$sql = Database::getInstance();
 
 	$query = "
-	SELECT
-		a.`created_by`
-	FROM
-		`domain` d, `admin` a
-	WHERE
-		d.`domain_id` = ?
-	AND
-		d.`domain_admin_id` = a.`admin_id`
-";
+		SELECT
+			a.`created_by`
+		FROM
+			`domain` d, `admin` a
+		WHERE
+			d.`domain_id` = ?
+		AND
+			d.`domain_admin_id` = a.`admin_id`
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
