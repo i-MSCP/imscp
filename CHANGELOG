@@ -1,6 +1,9 @@
 ispCP ω 1.0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-18 Benedikt Heintel
+	-RELEASE ispCP ω Omega 1.0.1
+
 2009-08-18 Andreca Daniel
 	- GUI:
 		* Fixed #1931: Error when adding/deleting Domain/FTP etc

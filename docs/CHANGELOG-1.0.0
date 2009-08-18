@@ -1,4 +1,4 @@
-ispCP ω 1.0.1 Changelog
+ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2009-02-25 Daniel Andreca
@@ -6,7 +6,7 @@ ispCP ω 1.0.1 Changelog
 		* Update Turkish
 
 2009-02-25 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1
+	- RELEASE ispCP ω Omega 1.0.0
 	- Updated all Copyrights
 	- DOCS:
 		* Updated: FreeBSD INSTALL
@@ -129,7 +129,7 @@ ispCP ω 1.0.1 Changelog
 	- CONFIGS:
 		* Release preparation
 	- DOCU:
-		* Updated for ispCP ω 1.0.1
+		* Updated for ispCP ω 1.0.0
 	- ENGINE:
 		* Fixed #1656: small typo in engine/setup/ispcp-update introduced in r1479 (Thanks Haeber)
 		* Updated update script
@@ -305,7 +305,7 @@ ispCP ω 1.0.1 Changelog
 		* Fixed: ERROR: Incorrect SQL Query -> Unknown collation: 'utf' in ispcp-arpl-msgr
 
 2008-12-12 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC7
+	- RELEASE ispCP ω Omega 1.0.0 RC7
 
 2008-12-12 Benedikt Heintel
 	- TOOLS:
@@ -698,7 +698,7 @@ ispCP ω 1.0.1 Changelog
 		* Updated Spanish (Spain)
 
 2008-08-06 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC6
+	- RELEASE ispCP ω Omega 1.0.0 RC6
 	- SETUP:
 		* Fixed: MySQL root password containing " or ` update ends up with an error
 
@@ -916,7 +916,7 @@ ispCP ω 1.0.1 Changelog
 		* Changed: Base PHP Code
 
 2008-06-23 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC5a (GUI Update)
+	- RELEASE ispCP ω Omega 1.0.0 RC5a (GUI Update)
 	- GUI:
 		* Fixed: Missing icons
 		* Fixed: Message shown on same page on "forward error"
@@ -954,7 +954,7 @@ ispCP ω 1.0.1 Changelog
 		* Updated all language files
 
 2008-06-14 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC5
+	- RELEASE ispCP ω Omega 1.0.0 RC5
 	- GUI:
 		* Fixed #1344: Error with LocalPart address checking
 	- ENGINE:
@@ -1470,7 +1470,7 @@ ispCP ω 1.0.1 Changelog
 		* Fixed #1119: Update Spelling Mistake
 
 2008-03-16 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC4
+	- RELEASE ispCP ω Omega 1.0.0 RC4
 
 2008-03-13 Benedikt Heintel
 	- SETUP:
@@ -1755,7 +1755,7 @@ ispCP ω 1.0.1 Changelog
 	- DISTS:
 		CentOS / Slackware:
 		* Fixed #760: ispcp_daemon not working under Slackware 12.0 or CentOS 5
-		* Fixed #900: /tmp/ispcp-1.0.1/etc/ispcp empty after make install on CentOS 5
+		* Fixed #900: /tmp/ispcp-1.0.0/etc/ispcp empty after make install on CentOS 5
 		* Added: Slackware documentation
 	- DOCU:
 		* Updated Debian, CentOS, Slackware
@@ -1765,7 +1765,7 @@ ispCP ω 1.0.1 Changelog
 		* Added: use utf8 with the database, including config var to switch off
 
 2008-02-06 Benedikt Heintel
-	- RELEASE ispCP ω Omega 1.0.1 RC3
+	- RELEASE ispCP ω Omega 1.0.0 RC3
 
 2008-02-05 Benedikt Heintel
 	- GUI:
@@ -1829,8 +1829,8 @@ ispCP ω 1.0.1 Changelog
 
 2008-01-14 Benedikt Heintel
 	- SETUP:
-		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.1 RC3
-						and from ispCP ω 1.0.1 RC2 to ispCP ω 1.0.1 RC3
+		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0 RC3
+						and from ispCP ω 1.0.0 RC2 to ispCP ω 1.0.0 RC3
 		* Fixed #955: "ispcp" Folder in /etc/apache2 is missing
 
 2008-01-13 Benedikt Heintel
@@ -1925,7 +1925,7 @@ ispCP ω 1.0.1 Changelog
 
 2007-12-02 Benedikt Heintel
 	- SETUP:
-		* Part of #55: Update Script from ispCP ω 1.0.1 RC2 to ispCP ω 1.0.1 RC3
+		* Part of #55: Update Script from ispCP ω 1.0.0 RC2 to ispCP ω 1.0.0 RC3
 
 2007-12-01 Benedikt Heintel
 	- SETUP:
@@ -2133,7 +2133,7 @@ ispCP ω 1.0.1 Changelog
 	- ENGINE:
 		* Fixed #7: Improvement of static AWStats
 		* Fixed #7: Removed static dirs from conf filess
-		* Fixed #55: Part I: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.1
+		* Fixed #55: Part I: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
 		* Fixed #768: perl ispcp-setup - does not work
 		* Fixed #779: Makefile Error
 		* Fixed #781: htdocs folder is empty (on new installed domain)
@@ -3468,7 +3468,7 @@ ispCP ω 1.0.1 Changelog
 		* changed debugger layout
 	- TOOLS:
 		* PMA update 2.10.2-RC1
-	- RELEASE ispCP ω Omega 1.0.1 RC2
+	- RELEASE ispCP ω Omega 1.0.0 RC2
 
 2007-04-17 Benedikt Heintel
 	- CONFIGS:
@@ -3554,7 +3554,7 @@ ispCP ω 1.0.1 Changelog
 		* fixed: protected areas templates (Jan Porath)
 
 2007-03-31 Benedikt Heintel
-	- RELEASE: VHCS ω Omega 1.0.1 RC1
+	- RELEASE: VHCS ω Omega 1.0.0 RC1
 
 VHCS ω 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
