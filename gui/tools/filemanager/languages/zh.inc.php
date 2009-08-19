@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "执行";
 $net2ftp_messages["Owner"] = "拥有者";
 $net2ftp_messages["Group"] = "组";
 $net2ftp_messages["Everyone"] = "任何人";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "设置所有的权限为相同值, 在上面中输入需要的权限，然后点击按钮 \"设置所有权限\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "设置所有的权限为相同值, 在上面中输入需要的权限，然后点击按钮 \"设置所有权限\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "设置目录 <b>%1\$s</b> 的权限为: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "设置文件 <b>%1\$s</b> 的权限为: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "设置链接 <b>%1\$s</b> 的权限为: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "请确认一个文件名";
 $net2ftp_messages["Status: This file has not yet been saved"] = "状态: 此文件未保存";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "状态: 保存在 <b>%1\$s</b> 使用模式 %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "状态: <b>此文件无法被保存</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "目录: ";

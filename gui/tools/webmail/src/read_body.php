@@ -544,7 +544,7 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
     $s .= '<a href="' . $msgs_url . '">' . $msgs_str . '</a>';
 
     $delete_url = $base_uri . 'src/delete_message.php?mailbox=' . $urlMailbox .
-                  '&amp;message=' . $passed_id . '&amp;';
+                  '&amp;message=' . $passed_id . '&amp;smtoken=' . sm_generate_security_token() . '&amp;';
     if (!(isset($passed_ent_id) && $passed_ent_id)) {
         if ($where && $what) {
             $delete_url .= 'where=' . urlencode($where) . '&amp;what=' . urlencode($what);

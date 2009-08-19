@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -69,7 +69,7 @@ function net2ftp_module_printJavascript() {
 // -------------------------------------------------------------------------
 // Do not print anything for Mobile skins
 // -------------------------------------------------------------------------
-	if ($net2ftp_globals["skin"] == "mobile") {
+	if ($net2ftp_globals["skin"] == "mobile" || $net2ftp_globals["skin"] == "iphone") {
 		echo "<script type=\"text/javascript\" src=\"". $net2ftp_globals["application_rootdir_url"] . "/modules/browse/browse_main_mobile.js\"></script>\n";
 	}
 
@@ -141,9 +141,20 @@ function net2ftp_module_printCss() {
 
 	global $net2ftp_settings, $net2ftp_globals;
 
-// Include
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/skins/" . $net2ftp_globals["skin"] . "/css/main.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["image_url"]) . "\" />\n";
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload/swfupload.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload") . "\" />\n";
+
+// -------------------------------------------------------------------------
+// Do not print anything for Mobile skins
+// -------------------------------------------------------------------------
+	if ($net2ftp_globals["skin"] == "mobile" || $net2ftp_globals["skin"] == "iphone") {
+	}
+
+// -------------------------------------------------------------------------
+// For the other skins, do print more Javascript functions
+// -------------------------------------------------------------------------
+	else {
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload/swfupload.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload") . "\" />\n";
+	}
 
 } // end function net2ftp_printCssInclude
 

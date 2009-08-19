@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "執行";
 $net2ftp_messages["Owner"] = "擁有者";
 $net2ftp_messages["Group"] = "群組";
 $net2ftp_messages["Everyone"] = "所有人";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "如要設定所有權限一樣, 在上面輸入權限並選 \"所有權限\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "如要設定所有權限一樣, 在上面輸入權限並選 \"所有權限\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "設定資料夾 <b>%1\$s</b> 的屬性為: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "設定檔案 <b>%1\$s</b> 的屬性為: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "設定 symlink <b>%1\$s</b> 的屬性為: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "請指定檔案名稱";
 $net2ftp_messages["Status: This file has not yet been saved"] = "狀態: 此檔案並未儲存";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "狀態: 於 <b>%1\$s</b> 使用 %2\$s 模式儲存";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "狀態: <b>此檔案無法儲存</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "資料夾: ";

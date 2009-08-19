@@ -399,11 +399,11 @@ if ($draft) {
         if(isset($delete_draft)) {
             if ( !isset($pageheader_sent) || !$pageheader_sent ) {
                 Header("Location: $location/delete_message.php?mailbox=" . urlencode($draft_folder) .
-                        "&message=$delete_draft&sort=$sort&startMessage=1&saved_draft=yes");
+                        "&message=$delete_draft&sort=$sort&startMessage=1&saved_draft=yes&smtoken=" . sm_generate_security_token());
             } else {
                 echo '   <br><br><center><a href="' . $location
                     . "/delete_message.php?mailbox=" . urlencode($draft_folder)
-                    . "&message=$delete_draft&sort=$sort&startMessage=1&saved_draft=yes\">"
+                    . "&message=$delete_draft&sort=$sort&startMessage=1&saved_draft=yes&smtoken=" . sm_generate_security_token() . "\">"
                     . _("Return") . '</a></center>';
             }
             exit();
@@ -499,7 +499,7 @@ if ($send) {
         /* if it is resumed draft, delete draft message */
         if ( isset($delete_draft)) {
             Header("Location: $location/delete_message.php?mailbox=" . urlencode( $draft_folder ).
-                    "&message=$delete_draft&sort=$sort&startMessage=1&mail_sent=yes");
+                    "&message=$delete_draft&sort=$sort&startMessage=1&mail_sent=yes&smtoken=" . sm_generate_security_token());
             exit();
         }
         if ($compose_new_win == '1') {

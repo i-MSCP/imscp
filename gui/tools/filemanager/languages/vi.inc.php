@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Th&#7921;c hi&#7879;n";
 $net2ftp_messages["Owner"] = "Ng&#432;&#7901;i t&#7841;o n&#234;n";
 $net2ftp_messages["Group"] = "Nh&#243;m";
 $net2ftp_messages["Everyone"] = "M&#7885;i ng&#432;&#7901;i";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "&#272;&#7875; l&#7853;p t&#7845;t c&#7843; s&#7921; cho ph&#233;p nhanh ch&#243;ng, ch&#7885;n t&#7845;t c&#7843; s&#7921; cho ph&#233;p &#7903; tr&#234;n v&#224; &#7845;n n&#250;t \"L&#7853;p t&#7845;t c&#7843; s&#7921; cho ph&#233;p\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "&#272;&#7875; l&#7853;p t&#7845;t c&#7843; s&#7921; cho ph&#233;p nhanh ch&#243;ng, ch&#7885;n t&#7845;t c&#7843; s&#7921; cho ph&#233;p &#7903; tr&#234;n v&#224; &#7845;n n&#250;t \"L&#7853;p t&#7845;t c&#7843; s&#7921; cho ph&#233;p\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "&#272;&#227; thay &#273;&#7893;i s&#7921; cho ph&#233;p c&#7911;a th&#432; m&#7909;c <b>%1\$s</b> th&#224;nh: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "&#272;&#227; thay &#273;&#7893;i s&#7921; cho ph&#233;p c&#7911;a t&#7879;p <b>%1\$s</b> th&#224;nh: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "&#272;&#227; thay &#273;&#7893;i s&#7921; cho ph&#233;p c&#7911;a l&#7889; t&#7855;t <b>%1\$s</b> th&#224;nh: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Xin vui l&#242;ng x&#225;c &#2
 $net2ftp_messages["Status: This file has not yet been saved"] = "Th&#244;ng b&#225;o: t&#7879;p kh&#244;ng &#273;&#432;&#7907;c l&#432;u l&#7841;i";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Th&#244;ng b&#225;o: &#273;&#227; l&#432;u <b>%1\$s</b> s&#7917; d&#7909;ng ki&#7875;u %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Th&#244;ng b&#225;o: <b>T&#7879;p n&#224;y &#273;&#227; kh&#244;ng th&#7875; l&#432;u l&#7841;i &#273;&#432;&#7907;c</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Th&#432; m&#7909;c: ";

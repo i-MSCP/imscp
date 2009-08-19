@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/css");
-if (isset($_GET["ltr"]) == true && $_GET["ltr"] != "rtl") { $left = "left"; $right = "right"; }
-else                                                      { $left = "right"; $right = "left"; }
+if (isset($_GET["LTR"]) && $_GET["LTR"] != "RTL") { $left = "left"; $right = "right"; }
+else                                              { $left = "right"; $right = "left"; }
 if (isset($_GET["image_url"]) == true) { $image_url = preg_replace("/[\\:\\*\\?\\<\\>\\|]/", "", $_GET["image_url"]); }
 else                                   { $image_url = ""; }
 ?>

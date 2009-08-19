@@ -208,7 +208,7 @@ echo html_tag ( 'div',
             	sprintf(_("SquirrelMail version %s"), $version) . '<br />' . "\n"),
 				NULL, NULL, 'class="login small"'
 			),
-			NULL, NULL, 'class="login"'
+			NULL, NULL, '" class="login'
         ),
 		NULL, NULL, 'id="container"' );
 

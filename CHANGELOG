@@ -1,8 +1,16 @@
-ispCP ω 1.0.1 Changelog
+ispCP ω 1.0.2 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-19 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.2
+	- TOOLS:
+		* Updated SquirrelMail to version 1.4.20RC2
+		* Updated Net2FTP version 0.98 to build 45
+		* Added new "modern" skin for Net2FTP
+		* Added new "modern" skin for PHPmyAdmin
+
 2009-08-18 Benedikt Heintel
-	-RELEASE ispCP ω Omega 1.0.1
+	- RELEASE ispCP ω Omega 1.0.1
 
 2009-08-18 Andreca Daniel
 	- GUI:
@@ -12,7 +20,7 @@ ispCP ω 1.0.1 Changelog
 	- GUI:
 		* Chagend recalc_reseller_c_props with Thomas Partsch's version
 	- TOOLS:
-		* Updated Squirrelmail to version 1.4.20RC1
+		* Updated SquirrelMail to version 1.4.20RC1
 
 2009-08-14 Malte Geierhos
 	- SETUP: 

@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -55,31 +55,44 @@ function net2ftp_module_printJavascript() {
 	if (isset($_POST["textareaType"]) == true) { $textareaType = validateTextareaType($_POST["textareaType"]); }
 	else                                       { $textareaType = ""; }
 
-	if ($textareaType == "" || $textareaType == "plain") {
-		echo "<script type=\"text/javascript\"><!--\n";	
-		echo "function TabText() {\n";
-		echo "	if (event != null) {\n";
-		echo "		if (event.srcElement) {\n";
-		echo "			if (event.srcElement.value) {\n";
-		echo "				if (event.keyCode == 9) {\n";
-		echo "					if (document.selection != null) {\n";
-		echo "						document.selection.createRange().text = '\\t';\n";
-		echo "						event.returnValue = false;\n";
-		echo "					}\n";
-		echo "					else {\n";
-		echo "						event.srcElement.value += '\\t';\n";
-		echo "						return false;\n";
-		echo "					}\n";
-		echo "				}\n";
-		echo "			}\n";
-		echo "		}\n";
-		echo "	}\n";
-		echo "}\n";
-		echo "//--></script>\n";
+// -------------------------------------------------------------------------
+// Do not print anything for Mobile skins
+// -------------------------------------------------------------------------
+	if ($net2ftp_globals["skin"] == "mobile" || $net2ftp_globals["skin"] == "iphone") {
 	}
 
+// -------------------------------------------------------------------------
+// For the other skins, do print more Javascript functions
+// -------------------------------------------------------------------------
+	else {
+
+		if ($textareaType == "" || $textareaType == "plain") {
+			echo "<script type=\"text/javascript\"><!--\n";	
+			echo "function TabText() {\n";
+			echo "	if (event != null) {\n";
+			echo "		if (event.srcElement) {\n";
+			echo "			if (event.srcElement.value) {\n";
+			echo "				if (event.keyCode == 9) {\n";
+			echo "					if (document.selection != null) {\n";
+			echo "						document.selection.createRange().text = '\\t';\n";
+			echo "						event.returnValue = false;\n";
+			echo "					}\n";
+			echo "					else {\n";
+			echo "						event.srcElement.value += '\\t';\n";
+			echo "						return false;\n";
+			echo "					}\n";
+			echo "				}\n";
+			echo "			}\n";
+			echo "		}\n";
+			echo "	}\n";
+			echo "}\n";
+			echo "//--></script>\n";
+		}
+
 // Include
-	echo "<script type=\"text/javascript\" src=\"". $net2ftp_globals["application_rootdir_url"] . "/modules/edit/edit.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"". $net2ftp_globals["application_rootdir_url"] . "/modules/edit/edit.js\"></script>\n";
+
+	}
 
 } // end net2ftp_printJavascript
 
@@ -326,7 +339,7 @@ function net2ftp_module_printBody() {
 
 // Save status
 		$savestatus = __("Status: This file has not yet been saved");
-
+		$savestatus_short = __("Not yet saved");
 	}
 
 // -------------------------------------------------------------------------
@@ -348,7 +361,7 @@ function net2ftp_module_printBody() {
 
 // Save status
 		$savestatus = __("Status: This file has not yet been saved");
-	
+		$savestatus_short = __("Not yet saved");
 	}
 
 // -------------------------------------------------------------------------
@@ -395,13 +408,16 @@ function net2ftp_module_printBody() {
 		if ($net2ftp_result["success"] == false) { 
 			setErrorVars(true, "", "", "", ""); // Continue anyway and print warning message
 			$savestatus = __("Status: <b>This file could not be saved</b>"); 
+			$savestatus_short = __("Could not be saved");
 		}
 		else { 
 			$mytime = mytime();
+			$mytime_short = mytime_short();
 			$ftpmode = ftpAsciiBinary($net2ftp_globals["entry"]);
 			if ($ftpmode == FTP_ASCII)      { $printftpmode = "FTP_ASCII"; }
 			elseif ($ftpmode == FTP_BINARY) { $printftpmode = "FTP_BINARY"; }
 			$savestatus = __("Status: Saved on <b>%1\$s</b> using mode %2\$s", $mytime, $printftpmode); 
+			$savestatus_short = __("Saved at %1\$s", $mytime_short);
 		}
 
 	}

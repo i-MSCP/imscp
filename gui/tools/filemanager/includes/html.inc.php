@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -73,6 +73,26 @@ function mytime() {
 // **                                                                                  **
 // **                                                                                  **
 
+function mytime_short() {
+
+	$datetime = date("H:i");
+	return $datetime;
+}
+
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
 function getBrowser($what) {
 
 // --------------
@@ -111,6 +131,10 @@ function getBrowser($what) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'IE';
 		}
+		elseif (ereg('Safari/([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
+			$BROWSER_VERSION = $regs[1];
+			$BROWSER_AGENT = 'Safari';
+		}
 		elseif (ereg('Opera ([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Opera';
@@ -143,6 +167,9 @@ function getBrowser($what) {
 			strstr($http_user_agent, 'SymbianOS') || 
 			strstr($http_user_agent, 'Windows CE')) {
 			$BROWSER_PLATFORM = 'Mobile';
+		}
+		elseif (strstr($http_user_agent, 'iPhone') || strstr($http_user_agent, 'iPod')) {
+			$BROWSER_PLATFORM = 'iPhone';
 		}
 		elseif (strstr($http_user_agent, 'Win')) {
 			$BROWSER_PLATFORM = 'Win';

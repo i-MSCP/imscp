@@ -107,7 +107,7 @@
       stored and made available.  If configured to use the universities 
       LDAP server, SquirrelMail would then be able to list all campus email 
       address (along with the other address book fields if available).  
-      SquirrelMail's LDAP use is truly powerful in that it <I>combines</I> 
+      SquirrelMail's LDAP use is truly powerful in that it <i>combines</i> 
       your local address book and the LDAP address server information to 
       present all of the information as if it was a single address book.
       </p><p>

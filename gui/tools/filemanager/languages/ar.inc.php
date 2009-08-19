@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "ÊäİíĞ ÇáÇÓÊÚáÇã";
 $net2ftp_messages["Owner"] = "ÇáãÇáß";
 $net2ftp_messages["Group"] = "ÇáãÌãæÚÉ";
 $net2ftp_messages["Everyone"] = "Ãí ÔÎÕ";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "áÊÚííä ÌãíÚ ÇáÕáÇÍíÇÊ Åáì äİÓ ÇáŞíãÉ , ÍÏÏ ÇáÕáÇÍíÇÊ Ëã ÇÖÛØ ÒÑ \"ÊÚííä ÌãíÚ ÇáÕáÇÍíÇÊ\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "áÊÚííä ÌãíÚ ÇáÕáÇÍíÇÊ Åáì äİÓ ÇáŞíãÉ , ÍÏÏ ÇáÕáÇÍíÇÊ Ëã ÇÖÛØ ÒÑ \"ÊÚííä ÌãíÚ ÇáÕáÇÍíÇÊ\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "ÊÚííä ÕáÇÍíÇÊ ÇáãÌáÏ <b>%1\$s</b> Åáì » ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "ÊÚííä ÕáÇÍíÇÊ Çáãáİ <b>%1\$s</b> Åáì » ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "ÊÚííä ÕáÇÍíÇÊ symlink <b>%1\$s</b> Åáì » ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "íÑÌì ÊÍÏíÏ ÇÓã Çáãáİ";
 $net2ftp_messages["Status: This file has not yet been saved"] = "ÇáÍÇáÉ » áã íÊã ÍİÙ åĞÇ Çáãáİ ÈÚÏ";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "ÇáÍÇáÉ » Êã ÇáÍİÙ İí <b>%1\$s</b> ÈÇÓÊÎÏÇã ÇáäãØ %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "ÇáÍÇáÉ » <b>ÊÚĞÑ ÍİÙ åĞÇ Çáãáİ</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "ÇáãÌáÏ » ";

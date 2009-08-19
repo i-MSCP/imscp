@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 //  |                                                                               |
@@ -123,6 +123,12 @@ $net2ftp_settings["max_consumption_ftpserver_datatransfer"] = 50000000; // per F
 $net2ftp_settings["max_consumption_ipaddress_executiontime"] = 1500; // per IP address
 $net2ftp_settings["max_consumption_ftpserver_executiontime"] = 1500; // per FTP server
 
+// Maximum number of FTP servers that can be accessed per day
+$net2ftp_settings["max_consumption_ipaddress_nr_of_ftpservers"] = 50; // per IP address
+
+// Check the user's home directory?
+$net2ftp_settings["check_homedirectory"] = "yes";
+
 // ----------------------------------------------------------------------------------
 // TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
 // ----------------------------------------------------------------------------------
@@ -130,16 +136,12 @@ $tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
 $_ENV['PHP_TMPDIR'] = $tmpdir;
 putenv("PHP_TMPDIR=" . $tmpdir);
 
-// Check the user's home directory?
-$net2ftp_settings["check_homedirectory"] = "yes";
-
-
 // ----------------------------------------------------------------------------------
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 // ----------------------------------------------------------------------------------
 
-$net2ftp_settings["application_version"] = "0.97";
-$net2ftp_settings["application_build_nr"] = "44";
+$net2ftp_settings["application_version"] = "0.98";
+$net2ftp_settings["application_build_nr"] = "45";
 
 // Is this net2ftp.com, or a net2ftp installation elsewhere
 $net2ftp_settings["net2ftpdotcom"] = "no";

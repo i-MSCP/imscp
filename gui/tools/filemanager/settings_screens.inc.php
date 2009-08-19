@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 //  |                                                                               |
@@ -43,7 +43,7 @@ $net2ftp_settings["functionuse_easyWebsite"] = "no";
 $net2ftp_settings["functionuse_bookmark"] = "yes";
 
 // Install functions
-$net2ftp_settings["functionuse_install"] = "no";
+$net2ftp_settings["functionuse_install"] = "yes";
 
 // Advanced functions
 $net2ftp_settings["functionuse_advanced"] = "yes";

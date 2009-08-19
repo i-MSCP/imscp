@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -179,7 +179,7 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate en
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "Tabel net2ftp_log_consumption_ftpserver kan niet worden vernieuwd.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "Tabel net2ftp_log_consumption_ftpserver bevat gelijke gegevens.";
 $net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Tabel net2ftp_log_access kon niet worden geupdate.";
-$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Tabll net2ftp_log_access bevat dubbele rijen.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Tabel net2ftp_log_access bevat dubbele rijen.";
 
 
 // -------------------------------------------------------------------------
@@ -694,7 +694,7 @@ $net2ftp_messages["Directories with names containing \' cannot be displayed corr
 
 $net2ftp_messages["Daily limit reached: you will not be able to transfer data"] = "De dagelijkse limiet is bereikt: hierdoor kunt u geen gegevens meer versturen";
 $net2ftp_messages["In order to guarantee the fair use of the web server for everyone, the data transfer volume and script execution time are limited per user, and per day. Once this limit is reached, you can still browse the FTP server but not transfer data to/from it."] = "Om iedereen een eerlijk gebruik van deze webserver te garanderen, zijn de hoeveelheid data en script verwerkingstijd dagelijks beperkt. Zodra deze limiet is bereikt, kunt u nog wel door de FTP server bladeren, maar er geen bestanden vanaf/naartoe sturen.";
-$net2ftp_messages["If you need unlimited usage, please install net2ftp on your own web server."] = "Als u onbeperkt gebruik wil, overweeg dan om net2ftp op uw eigen server te installeren.";
+$net2ftp_messages["If you need unlimited usage, please install net2ftp on your own web server."] = "Als u onbeperkt gebruik wil, neem dan contact op met de administrator.";
 
 // printdirfilelist()
 // Keep this short, it must fit in a small button!
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Uitvoeren";
 $net2ftp_messages["Owner"] = "Eigenaar";
 $net2ftp_messages["Group"] = "Groep";
 $net2ftp_messages["Everyone"] = "Iedereen";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "Om alle rechten gelijk te maken, specificeer deze rechten hierboven en klik op de knop \"Wijzig alle rechten\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "Om alle rechten gelijk te maken, specificeer deze rechten en klik op de knop \"Wijzig alle rechten\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "Stel de rechten van me map <b>%1\$s</b> in op: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "Stel de rechten van het bestand <b>%1\$s</b> in op: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "Stel de rechten van de symlink <b>%1\$s</b> in op: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Kiest u a.u.b. een bestandsnaa
 $net2ftp_messages["Status: This file has not yet been saved"] = "Status: Dit bestand is nog niet opgeslagen";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Status: Opgeslagen om <b>%1\$s</b> met de mode %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Status: <b>Dit bestand kon niet worden opgeslagen</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Map: ";
@@ -1067,7 +1070,7 @@ $net2ftp_messages["Copy, move and delete"] = "Kopieer, verplaats en verwijder";
 $net2ftp_messages["Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted."] = "Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted.";
 $net2ftp_messages["Copy or move to a 2nd FTP server"] = "Kopieer of verplaats naar een 2e FTP server";
 $net2ftp_messages["Handy to import files to your FTP server, or to export files from your FTP server to another FTP server."] = "Handig om bestanden van je FTP server te importeren of exporteren naar een andere FTP server.";
-$net2ftp_messages["Rename and chmod"] = "Hernoen en wijzig rechten";
+$net2ftp_messages["Rename and chmod"] = "Hernoem en wijzig rechten";
 $net2ftp_messages["Chmod handles directories recursively."] = "Chmod verwerkt mappen recursief.";
 $net2ftp_messages["View code with syntax highlighting"] = "Bekijk code met syntax highlighting";
 $net2ftp_messages["PHP functions are linked to the documentation on php.net."] = "PHP functies zijn gelinkt aan de documentatie op php.net.";

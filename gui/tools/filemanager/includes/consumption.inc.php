@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -26,16 +26,18 @@
 	of the script. There are 6 global variables:
 	
 	These variables
-		$consumption_ipaddress_datatransfer, $consumption_ipaddress_executiontime, 
-		$consumption_ftpserver_datatransfer, $consumption_ftpserver_executiontime; 
-	contain the data transfer volume and script execution time. They are inititialized
-	at the beginning of the script and updated each time data is read/written from/to the
-	FTP server. 
+		$consumption_ipaddress_datatransfer, 
+		$consumption_ipaddress_executiontime, 
+		$consumption_ftpserver_datatransfer, 
+		$consumption_ftpserver_executiontime; 
+	contain the data transfer volume, script execution time and number of FTP 
+	servers that were accessed. They are inititialized at the beginning of the 
+	script and updated each time data is read/written from/to the FTP server. 
 	
 	The variable 
 		$consumption_datatransfer_changeflag;
 	is initialized as 0 and changed to 1 if data was transferred. 
-	This is to avoid having to	run an SQL query if no data was transferred, e.g. when
+	This is to avoid having to run an SQL query if no data was transferred, e.g. when
 	logging in, browsing the FTP server, when confirming an action or even for some 
 	actions like delete or chmod.
 	
@@ -381,10 +383,11 @@ function addConsumption($data, $time) {
 // Initialize variables if needed
 	if (isset($net2ftp_globals["consumption_datatransfer"])  == false)  { $net2ftp_globals["consumption_datatransfer"] = 0; }
 	if (isset($net2ftp_globals["consumption_executiontime"]) == false)  { $net2ftp_globals["consumption_executiontime"] = 0; }
-	if (isset($net2ftp_globals["consumption_ipaddress_datatransfer"]) == false)  { $net2ftp_globals["consumption_ipaddress_datatransfer"] = 0; }
-	if (isset($net2ftp_globals["consumption_ftpserver_datatransfer"]) == false)  { $net2ftp_globals["consumption_ftpserver_datatransfer"] = 0; }
-	if (isset($net2ftp_globals["consumption_ipaddress_executiontime"]) == false) { $net2ftp_globals["consumption_ipaddress_executiontime"] = 0; }
-	if (isset($net2ftp_globals["consumption_ftpserver_executiontime"]) == false) { $net2ftp_globals["consumption_ftpserver_executiontime"] = 0; }
+	if (isset($net2ftp_globals["consumption_ipaddress_datatransfer"])     == false) { $net2ftp_globals["consumption_ipaddress_datatransfer"] = 0; }
+	if (isset($net2ftp_globals["consumption_ipaddress_executiontime"])    == false) { $net2ftp_globals["consumption_ipaddress_executiontime"] = 0; }
+	if (isset($net2ftp_globals["consumption_ftpserver_datatransfer"])     == false) { $net2ftp_globals["consumption_ftpserver_datatransfer"] = 0; }
+	if (isset($net2ftp_globals["consumption_ftpserver_executiontime"])    == false) { $net2ftp_globals["consumption_ftpserver_executiontime"] = 0; }
+
 
 // -------------------------------------------------------------------------
 // Add the consumption to the global variables
@@ -441,17 +444,18 @@ function printConsumption() {
 	echo "FTP server: "     . $net2ftp_globals["ftpserver"]   . "<br />\n";
 	echo "Remote address: " . $net2ftp_globals["REMOTE_ADDR"] . "<br />\n";
 
-	echo "consumption_datatransfer: "            . $net2ftp_globals["consumption_datatransfer"]  . "<br />\n";
-	echo "consumption_executiontime: "           . $net2ftp_globals["consumption_executiontime"] . "<br />\n";
+	echo "consumption_datatransfer: "               . $net2ftp_globals["consumption_datatransfer"]  . "<br />\n";
+	echo "consumption_executiontime: "              . $net2ftp_globals["consumption_executiontime"] . "<br />\n";
 
-	echo "consumption_ipaddress_datatransfer: "  . $net2ftp_globals["consumption_ipaddress_datatransfer"]  . "<br />\n";
-	echo "consumption_ipaddress_executiontime: " . $net2ftp_globals["consumption_ipaddress_executiontime"] . "<br />\n";
+	echo "consumption_ipaddress_datatransfer: "     . $net2ftp_globals["consumption_ipaddress_datatransfer"]  . "<br />\n";
+	echo "consumption_ipaddress_executiontime: "    . $net2ftp_globals["consumption_ipaddress_executiontime"] . "<br />\n";
 
-	echo "consumption_ftpserver_datatransfer: "  . $net2ftp_globals["consumption_ftpserver_datatransfer"]  . "<br />\n";
-	echo "consumption_ftpserver_executiontime: " . $net2ftp_globals["consumption_ftpserver_executiontime"] . "<br />\n";
+	echo "consumption_ftpserver_datatransfer: "     . $net2ftp_globals["consumption_ftpserver_datatransfer"]  . "<br />\n";
+	echo "consumption_ftpserver_executiontime: "    . $net2ftp_globals["consumption_ftpserver_executiontime"] . "<br />\n";
 
-	echo "consumption_datatransfer_changeflag: " . $net2ftp_globals["consumption_datatransfer_changeflag"] . "<br />\n";
-	echo "consumption_ipaddress_executiontime: " . $net2ftp_globals["consumption_ipaddress_executiontime"] . "<br />\n";
+	echo "consumption_datatransfer_changeflag: "    . $net2ftp_globals["consumption_datatransfer_changeflag"] . "<br />\n";
+	echo "consumption_ipaddress_executiontime: "    . $net2ftp_globals["consumption_ipaddress_executiontime"] . "<br />\n";
+
 
 } // End printConsumption() 
 
@@ -494,10 +498,10 @@ function checkConsumption() {
 // -------------------------------------------------------------------------
 // Check if the limit has been reached
 // -------------------------------------------------------------------------
-	if ($net2ftp_globals["consumption_ipaddress_datatransfer"]  > $net2ftp_settings["max_consumption_ipaddress_datatransfer"])  { return false; }
-	if ($net2ftp_globals["consumption_ipaddress_executiontime"] > $net2ftp_settings["max_consumption_ipaddress_executiontime"]) { return false; }
-	if ($net2ftp_globals["consumption_ftpserver_datatransfer"]  > $net2ftp_settings["max_consumption_ftpserver_datatransfer"])  { return false; }
-	if ($net2ftp_globals["consumption_ftpserver_executiontime"] > $net2ftp_settings["max_consumption_ftpserver_executiontime"]) { return false; }
+	if ($net2ftp_globals["consumption_ipaddress_datatransfer"]     > $net2ftp_settings["max_consumption_ipaddress_datatransfer"])     { return false; }
+	if ($net2ftp_globals["consumption_ipaddress_executiontime"]    > $net2ftp_settings["max_consumption_ipaddress_executiontime"])    { return false; }
+	if ($net2ftp_globals["consumption_ftpserver_datatransfer"]     > $net2ftp_settings["max_consumption_ftpserver_datatransfer"])     { return false; }
+	if ($net2ftp_globals["consumption_ftpserver_executiontime"]    > $net2ftp_settings["max_consumption_ftpserver_executiontime"])    { return false; }
 
 	return true;
 

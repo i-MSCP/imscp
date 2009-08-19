@@ -29,6 +29,9 @@ sqgetGlobalVar('onetimepad', $onetimepad, SQ_SESSION);
 
 sqgetGlobalVar('message', $message, SQ_GET);
 sqgetGlobalVar('mailbox', $mailbox, SQ_GET);
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_GET)) {
+    $submitted_token = '';
+}
 /* end globals */
 
 if (isset($_GET['saved_draft'])) {
@@ -49,6 +52,9 @@ if (isset($_GET['sort'])) {
 if (isset($_GET['startMessage'])) {
     $startMessage = (int) $_GET['startMessage'];
 }
+
+// first, validate security token
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 

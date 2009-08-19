@@ -27,7 +27,7 @@
       </p><p>
       The first folder listed contains received mail.  To the 
       right of the first folder is a number in parentheses
-      "( )" reflecting the count of <I>unread</I> emails.
+      "( )" reflecting the count of <i>unread</i> emails.
       This number is likely to vary from the total number 
       of emails displayed in the right frame.  Under the main 
       folder are likely to be other folders or subfolders.
@@ -44,7 +44,7 @@
    <description>
       <p>
       You may delete any folder displayed in the drop down list box to 
-      the left of the Delete button.  Notice that this list may <B>not</B> 
+      the left of the Delete button.  Notice that this list may <b>not</b> 
       include all the folders displayed.  The special folders such as 
       your sent or your trash folder cannot be deleted, and of course,
       you cannot delete INBOX.
@@ -82,7 +82,7 @@
    <description>
       <p>
       You may rename any folder displayed in the drop down list box to the 
-      left of the Rename button.  Notice that this list may <B>not</B> 
+      left of the Rename button.  Notice that this list may <b>not</b> 
       include all the folders displayed in the left frame.  For obvious
       reasons, you cannot rename the sent, trash, or INBOX folders.
       </p>
@@ -94,12 +94,12 @@
       Unsubscribe and Subscribe
    </title>
    <description>
-      Definitions:<br>
+      Definitions:<br />
       <i>Subscribe</i>: To register a folder with the mail server, allowing 
-                        you to view it in the folder listings.<br>
+                        you to view it in the folder listings.<br />
       <i>Unsubscribe</i>: The opposite of subscribing.  This unregisters a
-                        folder with the mail server.<br>
-      <br><p>
+                        folder with the mail server.<br />
+      <br /><p>
       You may choose as many folders as you wish from either the subscribe
       or the unsubscribe box, then click the button under the box to make
       the action take effect.  You will notice that the folders move to the

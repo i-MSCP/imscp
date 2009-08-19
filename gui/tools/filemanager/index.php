@@ -49,7 +49,9 @@ if ($net2ftp_result["success"] == false) {
 <meta http-equiv="Content-type" content="text/html;charset=<?php echo __("iso-8859-1"); ?>" />
 <meta name="keywords" content="net2ftp, web, ftp, based, web-based, xftp, client, PHP, SSL, password, server, free, gnu, gpl, gnu/gpl, net, net to ftp, netftp, connect, user, gui, interface, web2ftp, edit, editor, online, code, php, upload, download, copy, move, delete, zip, tar, unzip, untar, recursive, rename, chmod, syntax, highlighting, host, hosting, ISP, webserver, plan, bandwidth" />
 <meta name="description" content="net2ftp is a web based FTP client. It is mainly aimed at managing websites using a browser. Edit code, upload/download files, copy/move/delete directories recursively, rename files and directories -- without installing any software." />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 <link rel="shortcut icon" href="favicon.ico" />
+<link rel="apple-touch-icon" href="favicon.png"/>
 <title>net2ftp - a web based FTP client</title>
 <?php net2ftp("printJavascript"); ?>
 <?php net2ftp("printCss"); ?>

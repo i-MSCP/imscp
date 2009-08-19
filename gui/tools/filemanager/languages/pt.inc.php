@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Execute";
 $net2ftp_messages["Owner"] = "Dono";
 $net2ftp_messages["Group"] = "Grupo";
 $net2ftp_messages["Everyone"] = "Todos";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "Para ajustar todas as permissões aos mesmos valores, clique no botão \"Selecione todas\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "Para ajustar todas as permissões aos mesmos valores, clique no botão \"Selecione todas\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "Ajustar permissões para a pasta <b>%1\$s</b> para: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "Ajustar permissões do arquivo <b>%1\$s</b> para: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "Ajustar permissões para link simbólico <b>%1\$s</b> para: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Please specify a filename";
 $net2ftp_messages["Status: This file has not yet been saved"] = "Status: O arquivo ainda não foi salvo";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Status: Salvo como <b>%1\$s</b> usando modo %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Status: <b>Este arquivo não pôde ser salvo</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Pasta: ";

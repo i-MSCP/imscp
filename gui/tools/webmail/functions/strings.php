@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2009 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 13822 2009-08-12 08:53:16Z pdontthink $
+ * @version $Id: strings.php 13827 2009-08-17 23:23:15Z pdontthink $
  * @package squirrelmail
  */
 
@@ -16,7 +16,7 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.20RC1';
+$version = '1.4.20-RC2';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE

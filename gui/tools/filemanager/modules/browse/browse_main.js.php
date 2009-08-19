@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/javascript");
-if ($_GET["skin"] == "india") { $extracheck = "|| (state == 'edit' && state2 == '') || state == 'view' || state == 'update'"; }
-else                          { $extracheck = ""; }
+if (isset($_GET["skin"]) == true && $_GET["skin"] == "india") { $extracheck = "|| (state == 'edit' && state2 == '') || state == 'view' || state == 'update'"; }
+else { $extracheck = ""; }
 ?>
 
 function submitBrowseForm(directory, entry, state, state2) {

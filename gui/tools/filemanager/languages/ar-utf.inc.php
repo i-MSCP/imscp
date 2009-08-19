@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "تنفيذ الاستعلام";
 $net2ftp_messages["Owner"] = "المالك";
 $net2ftp_messages["Group"] = "المجموعة";
 $net2ftp_messages["Everyone"] = "أي شخص";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "لتعيين جميع الصلاحيات إلى نفس القيمة , حدد الصلاحيات ثم اضغط زر \"تعيين جميع الصلاحيات\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "لتعيين جميع الصلاحيات إلى نفس القيمة , حدد الصلاحيات ثم اضغط زر \"تعيين جميع الصلاحيات\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "تعيين صلاحيات المجلد <b>%1\$s</b> إلى » ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "تعيين صلاحيات الملف <b>%1\$s</b> إلى » ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "تعيين صلاحيات symlink <b>%1\$s</b> إلى » ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "يرجى تحديد اسم ا�
 $net2ftp_messages["Status: This file has not yet been saved"] = "الحالة » لم يتم حفظ هذا الملف بعد";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "الحالة » تم الحفظ في <b>%1\$s</b> باستخدام النمط %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "الحالة » <b>تعذر حفظ هذا الملف</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "المجلد » ";

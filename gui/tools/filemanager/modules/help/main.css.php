@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/css");
-if ($_GET["ltr"] != "rtl") { $left = "left"; $right = "right"; }
-else                       { $left = "right"; $right = "left"; }
+if (isset($_GET["LTR"]) && $_GET["LTR"] != "RTL") { $left = "left"; $right = "right"; }
+else                                              { $left = "right"; $right = "left"; }
 ?>
 
 /*------------------------------------------------------------------------

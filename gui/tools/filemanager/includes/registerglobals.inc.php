@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -661,8 +661,13 @@ function validateSkin($skin) {
 		return $_COOKIE["net2ftpcookie_skin"];
 	}
 	else {
-		if (isset($skinArray[$net2ftp_settings["default_skin"]]) == true){ return $net2ftp_settings["default_skin"]; }
-		else                                        { return "omega"; }
+		if     (defined("_VALID_MOS")      == true) { return "mambo"; }
+		elseif (defined("CACHE_PERMANENT") == true) { return "drupal"; }
+		elseif (defined("XOOPS_ROOT_PATH") == true) { return "xoops"; }
+		elseif (getBrowser("platform") == "Mobile") { return "mobile"; }
+		elseif (getBrowser("platform") == "iPhone") { return "iphone"; }
+		elseif (isset($skinArray[$net2ftp_settings["default_skin"]]) == true) { return $net2ftp_settings["default_skin"]; }
+		else                                        { return "india"; }
 	}
 
 } // end validateSkin
@@ -960,7 +965,8 @@ function validateEntry($entry) {
 //	$entry = RemoveXSS($entry);
 
 // Remove \ / : * ? < > |
-	$entry = preg_replace("/[\\\\\\/\\:\\*\\?\\<\\>\\|]/", "", $entry);
+// Do not remove / or > otherwise the module "followsymlink" does not work
+//	$entry = preg_replace("/[\\\\\\/\\:\\*\\?\\<\\>\\|]/", "", $entry);
 
 	return $entry;
 
@@ -1091,7 +1097,7 @@ function validateGenericInput($input) {
 //	$input = RemoveXSS($input);
 
 // Remove < >
-	$input = preg_replace("/\\<\\>]/", "", $input);
+	$input = preg_replace("/[\\<\\>]/", "", $input);
 
 	return $input;
 

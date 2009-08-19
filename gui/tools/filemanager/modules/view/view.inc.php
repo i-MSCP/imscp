@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -183,9 +183,8 @@ function net2ftp_module_printBody() {
 // -------------------------------------------------------------------------
 	if ($filetype == "text") {
 
-// Title
+// Title 
 		$title = __("View file %1\$s", $net2ftp_globals["entry"]);
-
 
 // ------------------------
 // geshi_text

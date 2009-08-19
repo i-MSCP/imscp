@@ -182,13 +182,13 @@ function delete_move_next_read($currloc) {
                  "<td bgcolor=\"$color[9]\" width=\"100%\" align=\"center\"><small>";
 
         if ($prev > 0){
-            echo "<a href=\"read_body.php?passed_id=$prev_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete &amp; Prev") . "</a>" . "&nbsp;|&nbsp;\n";
+            echo "<a href=\"read_body.php?passed_id=$prev_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id&amp;smtoken=" . sm_generate_security_token() . "\">" . _("Delete &amp; Prev") . "</a>" . "&nbsp;|&nbsp;\n";
         }
         else {
             echo _("Delete &amp; Prev") . "&nbsp;|&nbsp;";
         }
         if ($next > 0){
-            echo "<a href=\"read_body.php?passed_id=$next_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete &amp; Next") . "</a>\n";
+            echo "<a href=\"read_body.php?passed_id=$next_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id&amp;smtoken=" . sm_generate_security_token() . "\">" . _("Delete &amp; Next") . "</a>\n";
         } else {
             echo _("Delete &amp; Next");
         }
@@ -238,6 +238,7 @@ function delete_move_next_moveNextForm($next) {
            "<form action=\"read_body.php?mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;passed_id=$next\" method=\"post\"><small>".
             "<input type=\"hidden\" name=\"show_more\" value=\"0\">".
             "<input type=\"hidden\" name=\"move_id\" value=\"$passed_id\">".
+            "<input type=\"hidden\" name=\"smtoken\" value=\"" . sm_generate_security_token() . "\">".
             _("Move to:") .
             ' <select name="targetMailbox">';
     get_move_target_list(); 
@@ -261,6 +262,7 @@ function delete_move_next_moveRightMainForm() {
             "<td bgcolor=\"$color[9]\" width=\"100%\" align=\"center\">".
             "<form action=\"right_main.php?mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage\" method=\"post\"><small>" .
             "<input type=\"hidden\" name=\"move_id\" value=\"$passed_id\">".
+            "<input type=\"hidden\" name=\"smtoken\" value=\"" . sm_generate_security_token() . "\">".
             _("Move to:") .
             ' <select name="targetMailbox">';
     get_move_target_list(); 
@@ -277,6 +279,12 @@ function delete_move_next_delete() {
 
     sqgetGlobalVar('delete_id', $delete_id, SQ_GET);
     sqgetGlobalVar('mailbox', $mailbox, SQ_GET);
+    if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_GET)) {
+        $submitted_token = '';
+    }
+
+    // first, validate security token
+    sm_validate_security_token($submitted_token, 3600, TRUE);
 
     sqimap_msgs_list_delete($imapConnection, $mailbox, $delete_id);
     if ($auto_expunge) {
@@ -291,6 +299,12 @@ function delete_move_next_move() {
     sqgetGlobalVar('move_id', $move_id, SQ_POST);
     sqgetGlobalVar('mailbox', $mailbox, SQ_FORM);
     sqgetGlobalVar('targetMailbox', $targetMailbox, SQ_POST);
+    if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+        $submitted_token = '';
+    }
+
+    // first, validate security token
+    sm_validate_security_token($submitted_token, 3600, TRUE);
 
     // Move message
     sqimap_msgs_list_move($imapConnection, $move_id, $targetMailbox);
@@ -380,3 +394,4 @@ function delete_move_next_loading_prefs() {
 
 }
 
+?>

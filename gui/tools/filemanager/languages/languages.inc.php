@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -36,6 +36,8 @@ function getLanguageArray() {
 	$languageArray["tc"]["file"] = "tc.inc.php";
 	$languageArray["cs"]["name"] = "Czech";
 	$languageArray["cs"]["file"] = "cs.inc.php";
+	$languageArray["da"]["name"] = "Danish UTF-8";
+	$languageArray["da"]["file"] = "da-utf.inc.php";
 	$languageArray["nl"]["name"] = "Dutch";
 	$languageArray["nl"]["file"] = "nl.inc.php";
 	$languageArray["en"]["name"] = "English";
@@ -46,6 +48,8 @@ function getLanguageArray() {
 	$languageArray["fr"]["file"] = "fr.inc.php";
 	$languageArray["de"]["name"] = "German";
 	$languageArray["de"]["file"] = "de.inc.php";
+	$languageArray["fi"]["name"] = "Finnish";
+	$languageArray["fi"]["file"] = "fi.inc.php";
 	$languageArray["he"]["name"] = "Hebrew";
 	$languageArray["he"]["file"] = "he-utf.inc.php";
 	$languageArray["it"]["name"] = "Italian";
@@ -64,6 +68,8 @@ function getLanguageArray() {
 	$languageArray["sv"]["file"] = "sv.inc.php";
 	$languageArray["tr"]["name"] = "Turkish";
 	$languageArray["tr"]["file"] = "tr.inc.php";
+	$languageArray["ua"]["name"] = "Ukrainian";
+	$languageArray["ua"]["file"] = "ua.inc.php";
 	$languageArray["vi"]["name"] = "Vietnamese";
 	$languageArray["vi"]["file"] = "vi.inc.php";
 

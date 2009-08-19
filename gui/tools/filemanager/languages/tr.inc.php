@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Gerçekleþtir";
 $net2ftp_messages["Owner"] = "sahip";
 $net2ftp_messages["Group"] = "Grup";
 $net2ftp_messages["Everyone"] = "Herkes";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "Tüm izinleri ayný deðere ayarlamak için, yukarýdaki o izinleri girin ve \"Tüm izinleri ayarla\" düðmesine týklayýn";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "Tüm izinleri ayný deðere ayarlamak için, yukarýdaki o izinleri girin ve \"Tüm izinleri ayarla\" düðmesine týklayýn";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "Diznin <b>%1\$s</b> izinlerini þuna ayarla: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "Dosyanýn <b>%1\$s</b> izinlerini þuna ayarla: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "symlink <b>%1\$s</b> izinlerini þuna ayarla: ";      //smlink: ?
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Lütfen bir dosya adý belirtin"
 $net2ftp_messages["Status: This file has not yet been saved"] = "Durum: Bu sayfa henüz kaydedilmedi";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Durum: <b>%1\$s</b>de %2\$s modu kullanýlarak kaydedildi";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Durum: <b>Bu sayfa kaydedilemiyor</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Dizin: ";
@@ -1283,7 +1286,7 @@ $net2ftp_messages["View Macromedia ShockWave Flash movie %1\$s"] = "Macromedia S
 $net2ftp_messages["Image"] = "Resim";
 
 // /skins/[skin]/view1.template.php
-$net2ftp_messages["Syntax highlighting powered by <a href=\"http://geshi.org\">GeSHi</a>"] = "Sözdizim vurgulama <a href=\"http://geshi.org\">GeSHi</a>ile güçlendirilmiþtir";
+$net2ftp_messages["Syntax highlighting powered by <a href=\"http://geshi.org\">GeSHi</a>"] = "Sözdizim vurgulama <a href=\"http://geshi.org\">GeSHi</a> ile güçlendirilmiþtir";
 $net2ftp_messages["To save the image, right-click on it and choose 'Save picture as...'"] = "Resmi kaydetmek için, üzerine sað týklayýn ve 'Resmi Farklý Kaydet...'i seçin";
 
 } // end view

@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -147,7 +147,7 @@ function net2ftp_module_printBody() {
 	if (isset($_POST["troubleshoot_password"]) == true)      { $troubleshoot_password = validatePassword($_POST["troubleshoot_password"]); }
 	else                                                     { $troubleshoot_password = ""; }
 	if (isset($_POST["troubleshoot_directory"]) == true)     { $troubleshoot_directory = validateDirectory($_POST["troubleshoot_directory"]); }
-	else                                                     { $troubleshoot_directory = ""; }
+	else                                                     { $troubleshoot_directory = "/"; }
 	if (isset($_POST["troubleshoot_passivemode"]) == true)   { $troubleshoot_passivemode = validatePassivemode($_POST["troubleshoot_passivemode"]); }
 	else                                                     { $troubleshoot_passivemode = ""; }
 

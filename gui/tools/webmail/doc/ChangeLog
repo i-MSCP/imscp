@@ -2,8 +2,12 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
-Version 1.4.20RC1 - 12 Aug 2009
--------------------------------
+Version 1.4.20 RC2 - 17 Aug 2009
+--------------------------------
+  - Protect message deletion with security token system. (Secunia Advisory SA34627)
+
+Version 1.4.20 RC1 - 12 Aug 2009
+--------------------------------
   - Removed the shut down DSBL blocklists (#2796734).
   - Fixed broken RFC1918 reference in contrib/.htaccess and doc/.htaccess (#2798839).
   - Updated INSTALL doc to remove possible bad system admin typos (#2827153).

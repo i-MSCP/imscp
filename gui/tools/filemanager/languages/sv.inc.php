@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Utför";
 $net2ftp_messages["Owner"] = "Ägare";
 $net2ftp_messages["Group"] = "Grupp";
 $net2ftp_messages["Everyone"] = "Alla";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "För att ställa in samma värde på alla behörigheter, Skriv i behörigheter ovanför och klicka på knappen \"Ställ in alla behörigheter\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "För att ställa in samma värde på alla behörigheter, Skriv i behörigheter ovanför och klicka på knappen \"Ställ in alla behörigheter\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "Ställ in behörigheter för bibliotek <b>%1\$s</b> till: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "Ställ in behörigheter för fil <b>%1\$s</b> till: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "Ställ in behörigheter för symlink <b>%1\$s</b> till: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Specificera filnamn";
 $net2ftp_messages["Status: This file has not yet been saved"] = "Status: Denna fil är inte sparad";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Status: Sparad på <b>%1\$s</b> med mode %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Status: <b>Denna fil kunde inte sparas</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Bibliotek: ";

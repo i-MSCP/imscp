@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -57,7 +57,8 @@ function getActivePlugins() {
 	elseif ($net2ftp_globals["state"] == "view") { 
 		if ($pluginProperties["geshi"]["use"] == "yes")		 { $activePlugins[$plugincounter] = "geshi"; $plugincounter++; } 
 	}
-	elseif ($net2ftp_globals["state"] == "browse" && $net2ftp_globals["state2"] == "main") { 
+	elseif ($net2ftp_globals["state"] == "browse" && $net2ftp_globals["state2"] == "main" 
+		&& $net2ftp_globals["skin"] != "mobile" && $net2ftp_globals["skin"] != "iphone") { 
 		if ($pluginProperties["swfupload"]["use"] == "yes")	 { $activePlugins[$plugincounter] = "swfupload"; $plugincounter++; } 
 	}
 

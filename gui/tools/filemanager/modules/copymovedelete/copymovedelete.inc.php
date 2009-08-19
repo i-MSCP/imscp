@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -52,42 +52,58 @@ function net2ftp_module_printJavascript() {
 
 	global $net2ftp_settings, $net2ftp_globals, $net2ftp_result;
 
-// Code
-	echo "<script type=\"text/javascript\"><!--\n";	
-	echo "function createDirectoryTreeWindow(directory, FormAndFieldName) {\n";
-	echo "	directoryTreeWindow = window.open(\"\",\"directoryTreeWindow\",\"height=450,width=300,resizable=yes,scrollbars=yes\");\n";
-	echo "	var d = directoryTreeWindow.document;\n";
-	echo "	d.writeln('<html>');\n";
-	echo "	d.writeln('<head>');\n";
-	echo "	d.writeln('<title>" . __("Choose a directory") . "<\/title>');\n";
-	echo "	d.writeln('<\/head>');\n";
-	echo "	d.writeln('<bo' + 'dy on' + 'load=\"document.DirectoryTreeForm.submit();\">');\n";
-//	echo "	d.writeln('<body>');\n";
-	echo "	d.writeln('" . __("Please wait...") . "<br /><br />');\n";
-	echo "	d.writeln('<form name=\"DirectoryTreeForm\" id=\"DirectoryTreeForm\" action=\"" . printPHP_SELF("createDirectoryTreeWindow") . "\" method=\"post\" />');\n";
-	printLoginInfo_javascript();
-	echo "	d.writeln('<input type=\"hidden\" name=\"state\" value=\"browse\" />');\n";
-	echo "	d.writeln('<input type=\"hidden\" name=\"state2\" value=\"popup\" />');\n";
-	echo "	d.writeln('<input type=\"hidden\" name=\"directory\" value=\"' + directory + '\"  />');\n";
-	echo "	d.writeln('<input type=\"hidden\" name=\"FormAndFieldName\" value=\"' + FormAndFieldName + '\"  />');\n";
-	echo "	d.writeln('<\/form>');\n";
-	echo "	d.writeln('<\/div>');\n";
-	echo "	d.writeln('<\/body>');\n";
-	echo "	d.writeln('<\/html>');\n";
-	echo "	d.close();\n";
-	echo "} // end function createDirectoryTreeWindow\n";
-	echo "\n";
-	echo "function CopyValueToAll(myform, mysourcefield, mytargetfieldname) {\n";
-	echo "	for (var i = 0; i < myform.elements.length; i++) {\n";
-	echo "		if (myform.elements[i].name.indexOf(mytargetfieldname) >= 0) {\n";
-	echo "			myform.elements[i].value = mysourcefield.value;\n";
-	echo "		}\n";
-	echo "	}\n";
-	echo "}\n";
-	echo "//--></script>\n";
+// -------------------------------------------------------------------------
+// Mobile skins
+// -------------------------------------------------------------------------
+	if ($net2ftp_globals["skin"] == "mobile" || $net2ftp_globals["skin"] == "iphone") {
+		echo "<script type=\"text/javascript\"><!--\n";	
+		echo "function CopyValueToAll(myform, mysourcefield, mytargetfieldname) {\n";
+		echo "	for (var i = 0; i < myform.elements.length; i++) {\n";
+		echo "		if (myform.elements[i].name.indexOf(mytargetfieldname) >= 0) {\n";
+		echo "			myform.elements[i].value = mysourcefield.value;\n";
+		echo "		}\n";
+		echo "	}\n";
+		echo "}\n";
+		echo "//--></script>\n";
+	}
 
-// Include
-//	echo "<script type=\"text/javascript\" src=\"". $net2ftp_globals["application_rootdir_url"] . "/modules/copymovedelete/copymovedelete.js\"></script>\n";
+// -------------------------------------------------------------------------
+// Other skins
+// -------------------------------------------------------------------------
+	else {
+		echo "<script type=\"text/javascript\"><!--\n";	
+		echo "function createDirectoryTreeWindow(directory, FormAndFieldName) {\n";
+		echo "	directoryTreeWindow = window.open(\"\",\"directoryTreeWindow\",\"height=450,width=300,resizable=yes,scrollbars=yes\");\n";
+		echo "	var d = directoryTreeWindow.document;\n";
+		echo "	d.writeln('<html>');\n";
+		echo "	d.writeln('<head>');\n";
+		echo "	d.writeln('<title>" . __("Choose a directory") . "<\/title>');\n";
+		echo "	d.writeln('<\/head>');\n";
+		echo "	d.writeln('<bo' + 'dy on' + 'load=\"document.DirectoryTreeForm.submit();\">');\n";
+//		echo "	d.writeln('<body>');\n";
+		echo "	d.writeln('" . __("Please wait...") . "<br /><br />');\n";
+		echo "	d.writeln('<form name=\"DirectoryTreeForm\" id=\"DirectoryTreeForm\" action=\"" . printPHP_SELF("createDirectoryTreeWindow") . "\" method=\"post\" />');\n";
+		printLoginInfo_javascript();
+		echo "	d.writeln('<input type=\"hidden\" name=\"state\" value=\"browse\" />');\n";
+		echo "	d.writeln('<input type=\"hidden\" name=\"state2\" value=\"popup\" />');\n";
+		echo "	d.writeln('<input type=\"hidden\" name=\"directory\" value=\"' + directory + '\"  />');\n";
+		echo "	d.writeln('<input type=\"hidden\" name=\"FormAndFieldName\" value=\"' + FormAndFieldName + '\"  />');\n";
+		echo "	d.writeln('<\/form>');\n";
+		echo "	d.writeln('<\/div>');\n";
+		echo "	d.writeln('<\/body>');\n";
+		echo "	d.writeln('<\/html>');\n";
+		echo "	d.close();\n";
+		echo "} // end function createDirectoryTreeWindow\n";
+		echo "\n";
+		echo "function CopyValueToAll(myform, mysourcefield, mytargetfieldname) {\n";
+		echo "	for (var i = 0; i < myform.elements.length; i++) {\n";
+		echo "		if (myform.elements[i].name.indexOf(mytargetfieldname) >= 0) {\n";
+		echo "			myform.elements[i].value = mysourcefield.value;\n";
+		echo "		}\n";
+		echo "	}\n";
+		echo "}\n";
+		echo "//--></script>\n";
+	}
 
 } // end net2ftp_printJavascript
 

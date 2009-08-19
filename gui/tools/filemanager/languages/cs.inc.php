@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -824,7 +824,7 @@ $net2ftp_messages["Execute"] = "Spuštìní";
 $net2ftp_messages["Owner"] = "Vlastník";
 $net2ftp_messages["Group"] = "Skupina";
 $net2ftp_messages["Everyone"] = "Kdokoliv";
-$net2ftp_messages["To set all permissions to the same values, enter those permissions above and click on the button \"Set all permissions\""] = "Pokud chcete nastavit všechna práva na stejnou hodnotu, zadejte tato práva výše a stisknìte tlaèítko \"Nastavit všechna práva\"";
+$net2ftp_messages["To set all permissions to the same values, enter those permissions and click on the button \"Set all permissions\""] = "Pokud chcete nastavit všechna práva na stejnou hodnotu, zadejte tato práva výše a stisknìte tlaèítko \"Nastavit všechna práva\"";
 $net2ftp_messages["Set the permissions of directory <b>%1\$s</b> to: "] = "Nastavit práva adresáøe <b>%1\$s</b> na: ";
 $net2ftp_messages["Set the permissions of file <b>%1\$s</b> to: "] = "Nastavit práva souboru <b>%1\$s</b> na: ";
 $net2ftp_messages["Set the permissions of symlink <b>%1\$s</b> to: "] = "Nastavit práva symlinku <b>%1\$s</b> na: ";
@@ -942,6 +942,9 @@ $net2ftp_messages["Please specify a filename"] = "Vyberte prosím soubor";
 $net2ftp_messages["Status: This file has not yet been saved"] = "Stav: Tento soubor ještì nebyl uložen";
 $net2ftp_messages["Status: Saved on <b>%1\$s</b> using mode %2\$s"] = "Stav: Uložení <b>%1\$s</b> v módu %2\$s";
 $net2ftp_messages["Status: <b>This file could not be saved</b>"] = "Stav: <b>Tento soubor nemùže být uložen</b>";
+$net2ftp_messages["Not yet saved"] = "Not yet saved";
+$net2ftp_messages["Could not be saved"] = "Could not be saved";
+$net2ftp_messages["Saved at %1\$s"] = "Saved at %1\$s";
 
 // /skins/[skin]/edit.template.php
 $net2ftp_messages["Directory: "] = "Adresáø: ";

@@ -16,7 +16,7 @@
       <p>
       Yes.  The address book search will display all matches for the 
       search criteria entered in the search box.  If 10 names are displayed 
-      any combination may be selected for either the <B>To:</B> or <B>CC:</B> 
+      any combination may be selected for either the <b>To:</b> or <b>CC:</b> 
       fields.  All selected addresses will be inserted into the proper 
       field when the Use Address button is pressed.
       </p>
@@ -45,7 +45,7 @@
    <description>
       <p>
       A lot of people helped out.  To get a list of them, you can visit our
-      web site <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      web site <a href="http://squirrelmail.org" target=_top>squirrelmail.org</a>.
       </p>
    </description>
 </section>
@@ -99,8 +99,8 @@
    <description>
       <p>
       SquirrelMail uses the IMAP protocol, info on it can be found 
-      <A HREF="http://imap.org"/>here</A>.  The program also uses 
-      its own IMAP functions, not those built in to PHP4.  This won't 
+      <a href="http://imap.org"/>here</a>.  The program also uses 
+      its own IMAP functions, not those built in to PHP.  This won't 
       matter to anybody except those responsible for installing it, 
       but trust us when we say they appreciate it.
       </p>

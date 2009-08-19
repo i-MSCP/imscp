@@ -117,7 +117,8 @@ copy_row_desc:"Zeile kopieren",
 del:"Tabelle entfernen",
 row:"Zeile",
 col:"Spalte",
-cell:"Zelle"
+cell:"Zelle",
+cellprops_delta_width:"150"
 },
 autosave:{
 unload_msg:"Ihre \u00C4nderungen werden verloren gehen, wenn Sie die Seite verlassen."
