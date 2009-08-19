@@ -7,6 +7,7 @@ ispCP ω 1.0.2 Changelog
 		* Updated SquirrelMail to version 1.4.20RC2
 		* Updated Net2FTP version 0.98 to build 45
 		* Added new "modern" skin for Net2FTP
+		* Added new "mobil" skin for Net2FTP
 		* Added new "modern" skin for PHPmyAdmin
 
 2009-08-18 Benedikt Heintel
