@@ -1,0 +1,52 @@
+# Show User and IP Turkish Translation.
+# Copyright (C) 2005 Kerem Erkan
+# This file is distributed under the same license as the PACKAGE package.
+# Kerem Erkan <kerem.erkan@basari.com.tr>, 2005.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-01-27 11:46+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kerem Erkan <kerem.erkan@basari.com.tr>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Your username:"
+msgstr "Kullanýcý adýnýz"
+
+msgid "Your IP address:"
+msgstr "IP adresiniz:"
+
+msgid "Your Hostname:"
+msgstr "Bilgisayar adýnýz:"
+
+msgid "Welcome,"
+msgstr "Hoþgeldiniz,"
+
+msgid "INFO:"
+msgstr "BÝLGÝ:"
+
+#, c-format
+msgid ""
+"your last connection was from <strong>%s%s</strong> on <strong>%s</strong>."
+msgstr "son baðlantý adresiniz: <strong>%s%s</strong> ve tarihiniz: <strong>%s</strong>."
+
+msgid "Show username under folders list:"
+msgstr "Kullanýcý adýmý klasör listesinin altýnda göster:"
+
+msgid "Yes"
+msgstr "Evet"
+
+msgid "No"
+msgstr "Hayýr"
+
+msgid "Show IP address under folders list:"
+msgstr "IP adresimi klasör listesinin altýnda göster:"
+
+msgid "Show hostname under folders list:"
+msgstr "Bilgisayar adýmý klasör listesinin altýnda göster:"
