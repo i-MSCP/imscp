@@ -276,7 +276,7 @@ class pTemplate {
 
 		$start_from = -1;
 
-		$curl_b = substr($data, '{', $start_from);
+		$curl_b = substr($data, (int) '{', $start_from);
 
 		if ($curl_b) {
 			$this->stack[$this->sp++] = array('{', $curl_b);

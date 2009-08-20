@@ -1,6 +1,10 @@
 ispCP ω 1.0.2 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-21 Andreca Daniel
+	- GUI:
+		* Added compatibility for php V5.3
+
 2009-08-19 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.2
 	- TOOLS:

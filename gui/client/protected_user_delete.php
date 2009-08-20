@@ -144,5 +144,6 @@ while (!$rs->EOF) {
 check_for_lock_file();
 send_request();
 
+$admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes user ID (protected areas): $uname");
 user_goto('protected_user_manage.php');

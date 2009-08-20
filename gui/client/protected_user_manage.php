@@ -141,7 +141,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 			if ($rs->fields['members'] == '') {
 				$tpl->assign('GROUP_MEMBERS', '');
 			} else {
-				$members = split(',', $rs->fields['members']);
+				$members = explode(',', $rs->fields['members']);
 
 				for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
 					$query = "

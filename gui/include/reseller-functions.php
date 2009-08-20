@@ -508,17 +508,17 @@ SQL_QUERY;
 	$sub_current = get_domain_running_sub_cnt($sql, $user_id);
 	$sub_max = $data['domain_subd_limit'];
 
-	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
+	$als_current = records_count( 'domain_aliasses', 'domain_id', $user_id);
 	$als_max = $data['domain_alias_limit'];
 
 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
-		$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
+		$mail_current = records_count( 'mail_users', 'domain_id', $user_id);
 	} else {
 		$where = "`mail_acc` != 'abuse'
 		AND `mail_acc` != 'postmaster'
 		AND `mail_acc` != 'webmaster'
 		AND `domain_id`";
-		$mail_current = records_count('mail_id', 'mail_users', $where, $user_id);
+		$mail_current = records_count( 'mail_users', $where, $user_id);
 	}
 	$mail_max = $data['domain_mailacc_limit'];
 
@@ -536,7 +536,7 @@ SQL_QUERY;
 
 	$ftp_max = $data['domain_ftpacc_limit'];
 
-	$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
+	$sql_db_current = records_count( 'sql_database', 'domain_id', $user_id);
 	$sql_db_max = $data['domain_sqld_limit'];
 
 	$sql_user_current = get_domain_running_sqlu_acc_cnt($sql, $user_id);

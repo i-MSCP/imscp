@@ -70,7 +70,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	$path = clean_input($_POST['other_dir'], false);
 	$domain = $_SESSION['user_logged'];
 	// We need to use the virtual file system
-	$vfs = &new vfs($domain, $sql);
+	$vfs = new vfs($domain, $sql);
 	$res = $vfs->exists($path);
 	if (!$res) {
 		set_page_message(tr("%s doesn't exist", $path));
@@ -280,7 +280,7 @@ SQL_QUERY;
 		$tpl->parse('USER_ITEM', 'user_item');
 	} else {
 		while (!$rs->EOF) {
-			$usr_id = split(',', $user_id);
+			$usr_id = explode(',', $user_id);
 			for ($i = 0, $cnt_usr_id = count($usr_id); $i < $cnt_usr_id; $i++) {
 				if ($edit == 'yes' && $usr_id[$i] == $rs->fields['id']) {
 					$i = $cnt_usr_id + 1;
@@ -326,7 +326,7 @@ SQL_QUERY;
 		$tpl->parse('GROUP_ITEM', 'group_item');
 	} else {
 		while (!$rs->EOF) {
-			$grp_id = split(',', $group_id);
+			$grp_id = explode(',', $group_id);
 			for ($i = 0, $cnt_grp_id = count($grp_id); $i < $cnt_grp_id; $i++) {
 				if ($edit == 'yes' && $grp_id[$i] == $rs->fields['id']) {
 					$i = $cnt_grp_id + 1;

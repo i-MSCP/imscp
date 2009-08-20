@@ -30,7 +30,7 @@ $tpl->define_dynamic('logged_from', 'page');
 function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
 	$domain = $_SESSION['user_logged'];
 	// Check if we already have an error page
-	$vfs = &new vfs($domain, $sql);
+	$vfs = new vfs($domain, $sql);
 	$error = $vfs->get('/errors/' . $eid . '.html');
 	if (false !== $error) {
 		// We already have an error page, return it

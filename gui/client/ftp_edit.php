@@ -75,7 +75,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 	global $other_dir;
 
 	// Create a virtual filesystem (it's important to use =&!)
-	$vfs =& new vfs($dmn_name, $sql);
+	$vfs = new vfs($dmn_name, $sql);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
@@ -151,7 +151,7 @@ SQL_QUERY;
 				$ftp_home = str_replace('//', '/', $other_dir);
 				// Check for $other_dir existence
 				// Create a virtual filesystem (it's important to use =&!)
-				$vfs =& new vfs($dmn_name, $sql);
+				$vfs = new vfs($dmn_name, $sql);
 				// Check for directory existence
 				$res = $vfs->exists($other_dir);
 				if (!$res) {

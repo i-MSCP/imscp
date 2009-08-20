@@ -64,7 +64,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	} else {
 		$tpl->assign('FTP_MESSAGE', '');
 
-		$ftp_accs = split(',', $rs->fields['members']);
+		$ftp_accs = explode(',', $rs->fields['members']);
 		sort($ftp_accs);
 		reset($ftp_accs);
 

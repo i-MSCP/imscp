@@ -89,9 +89,8 @@ $query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` 
 $res_tmp = exec_query($sql, $query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
 $num = $res_tmp->RowCount();
 if ($num > 0) {
-	$catchall_assigned = 1;
 	set_page_message(tr('Please delete first CatchAll account for this email!'));
-	session_register("catchall_assigned");
+	$_SESSION['catchall_assigned'] = 1;
 	user_goto('mail_accounts.php');
 }
 /* if we are locket wait to unlock */
@@ -108,7 +107,6 @@ update_reseller_c_props(get_reseller_id($data['domain_id']));
 send_request();
 $admin_login = decode_idna($_SESSION['user_logged']);
 write_log("$admin_login: deletes mail account: " . $mail_name);
-$maildel = 1;
-session_register("maildel");
+$_SESSION['maildel'] = 1;
 
 user_goto('mail_accounts.php');

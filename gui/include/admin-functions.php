@@ -275,22 +275,6 @@ function get_cnt_of_user(&$sql, $user_type) {
 	return $admin_cnt;
 }
 
-/**
- * @todo use db prepared statements
- */
-function get_cnt(&$sql, $table, $field, $where, $value) {
-	if ($where != '') {
-		$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
-		$rs = exec_query($sql, $query, array($value));
-	} else {
-		$query = "SELECT COUNT(*) AS cnt FROM $table ";
-		$rs = exec_query($sql, $query, array());
-	}
-
-	$cnt = $rs->fields['cnt'];
-	return $cnt;
-}
-
 function get_sql_user_count($sql) {
 	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
 
@@ -321,28 +305,28 @@ function get_admin_general_info(&$tpl, &$sql) {
 	);
 
 	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails]
-	$retrieve_total_emails = get_cnt($sql, 'mail_users', 'mail_id', '', '');
+	$retrieve_total_emails = records_count('mail_users', '', '');
 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
 		$show_total_emails = $retrieve_total_emails;
 	} else {
-		$retrieve_total_default_emails = get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'abuse');
-		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'webmaster');
-		$retrieve_total_default_emails += get_cnt($sql, 'mail_users', 'mail_id', 'mail_acc', 'postmaster');
+		$retrieve_total_default_emails = records_count('mail_users', 'mail_acc', 'abuse');
+		$retrieve_total_default_emails += records_count('mail_users', 'mail_acc', 'webmaster');
+		$retrieve_total_default_emails += records_count('mail_users', 'mail_acc', 'postmaster');
 		$show_total_emails = ($retrieve_total_emails-$retrieve_total_default_emails)."/".$retrieve_total_emails;
 	}
 
 	$tpl->assign(
 		array(
 			'ACCOUNT_NAME' => $_SESSION['user_logged'],
-			'ADMIN_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'admin'),
-			'RESELLER_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'reseller'),
-			'NORMAL_USERS' => get_cnt($sql, 'admin', 'admin_id', 'admin_type', 'user'),
-			'DOMAINS' => get_cnt($sql, 'domain', 'domain_id', '', ''),
-			'SUBDOMAINS' => get_cnt($sql, 'subdomain', 'subdomain_id', '', '') + get_cnt($sql, 'subdomain_alias', 'subdomain_alias_id', '', ''),
-			'DOMAINS_ALIASES' => get_cnt($sql, 'domain_aliasses', 'alias_id', '', ''),
+			'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
+			'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
+			'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
+			'DOMAINS' => records_count('domain', '', ''),
+			'SUBDOMAINS' => records_count('subdomain', '', '') + records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
+			'DOMAINS_ALIASES' => records_count( 'domain_aliasses', '', ''),
 			'MAIL_ACCOUNTS' => $show_total_emails,
-			'FTP_ACCOUNTS' => get_cnt($sql, 'ftp_users', 'userid', '', ''),
-			'SQL_DATABASES' => get_cnt($sql, 'sql_database', 'sqld_id', '', ''),
+			'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
+			'SQL_DATABASES' => records_count('sql_database', '', ''),
 			'SQL_USERS' => get_sql_user_count($sql)
 		)
 	);
@@ -1011,13 +995,13 @@ function generate_user_props($user_id) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
-	$sub_current = records_count('subdomain_id', 'subdomain', 'domain_id', $user_id);
+	$sub_current = records_count('subdomain', 'domain_id', $user_id);
 	$sub_max = $rs->fields['domain_subd_limit'];
 
-	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
+	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
 	// Sorry for the strange hack, but it works - RatS
-	$mail_current = records_count('mail_id', 'mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
+	$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
 	$ftp_current = sub_records_rlike_count(	'domain_name', 'domain', 'domain_id', $user_id,
@@ -1031,7 +1015,7 @@ function generate_user_props($user_id) {
 
 	$ftp_max = $rs->fields['domain_ftpacc_limit'];
 
-	$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
+	$sql_db_current = records_count('sql_database', 'domain_id', $user_id);
 	$sql_db_max = $rs->fields['domain_sqld_limit'];
 
 	$sql_user_current = sub_records_count(	'sqld_id', 'sql_database', 'domain_id', $user_id,
@@ -1054,7 +1038,7 @@ function generate_user_props($user_id) {
 /**
  * @todo implement check for dynamic table/row in SQL query
  */
-function records_count($field, $table, $where, $value) {
+function records_count($table, $where, $value) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
