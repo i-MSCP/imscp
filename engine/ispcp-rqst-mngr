@@ -81,19 +81,12 @@ sub mngr_start_up {
 }
 
 sub mngr_shut_down {
-
-	my $rs = undef;
-
 	push_el(\@main::el, 'mngr_shut_down()', 'Starting...');
 
-	$rs = unlock_system();
-
-	return $rs if ($rs != 0);
+	# Unlocking is not necessary, as ending the script automatically releases the global lock.
 
 	push_el(\@main::el, 'mngr_shut_down()', 'Ending...');
-
 	return 0;
-
 }
 
 sub mngr_engine {

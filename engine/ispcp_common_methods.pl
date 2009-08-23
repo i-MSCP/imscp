@@ -1437,42 +1437,23 @@ sub prep_tpl {
 }
 
 sub lock_system {
-
     push_el(\@main::el, 'lock_system()', 'Starting...');
 
-    if (-e $main::lock_file) {
-
-        push_el(\@main::el, 'lock_system()', 'ERROR: request engine already locked !');
-
+    my $res = open(my $fh, '>', $main::lock_file);
+    if (!$res) { 
+        push_el(\@main::el, 'lock_system()', 'ERROR: unable to open lock file!');
         return -1;
-
     }
 
-    my $touch_cmd = "`which touch` $main::lock_file";
-
-    my $rs = sys_command($touch_cmd);
-
-    return -1 if ($rs != 0);
-
+    use Fcntl ":flock";     # Import LOCK_* constants.
+    $res = flock($fh, LOCK_EX);
+    if (!$res) {
+        push_el(\@main::el, 'lock_system()', 'ERROR: unable to acquire global lock!');
+        return -1;
+    }
+    
     push_el(\@main::el, 'lock_system()', 'Ending...');
-
     return 0;
-}
-
-sub unlock_system {
-
-    push_el(\@main::el, 'unlock_system()', 'Starting...');
-
-    my $rm_cmd = "`which rm` -rf $main::lock_file";
-
-    my $rs = sys_command($rm_cmd);
-
-    return -1 if ($rs != 0);
-
-    push_el(\@main::el, 'unlock_system()', 'Ending...');
-
-    return 0;
-
 }
 
 sub connect_ispcp_daemon {
