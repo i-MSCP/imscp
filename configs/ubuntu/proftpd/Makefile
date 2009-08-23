@@ -51,7 +51,7 @@ install:
 	if [ $(RELEASE) = 'dapper' ] ; then \
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
-	elif [ $(RELEASE) = 'intrepid' ] || [ $(RELEASE) = 'jaunty' ] ; then \
+	elif [ $(RELEASE) = 'intrepid' ] || [ $(RELEASE) = 'jaunty' ] || [ $(RELEASE) = 'karmic' ]; then \
 		cp ./proftpd1.3.intrepid.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 		cp ./proftpd1.3.intrepid.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
 	else \

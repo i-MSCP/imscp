@@ -16,8 +16,8 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:	1.0.2
-INSTALL Skript:		1.2
+ispCP ω Version:	1.0.3
+INSTALL Skript:		1.3
 Maintainer:
 Homepage:			http://isp-contol.net
 Linux Distris:		Ubuntu
@@ -32,12 +32,10 @@ Penitum III or K6-4 with 500 MHz
 100 MB disk space (only for install of ispCP ω)
 Debian (or even any other *NIX-Distribution)
 
-All 6.06 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-edgy
-All 7.04 required packages are listed in ./docs/Ubuntu/ubuntu-packages-feisty
-All 7.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-gutsy
 All 8.04 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-hardy
 All 8.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-interpid
 All 9.04 required packages are listed in ./docs/Ubuntu/ubuntu-packages-jaunty
+All 9.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-karmic
 
 ================================================================================
 3) Introduction
@@ -58,24 +56,24 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp-omega-1.0.2.tar.bz2
+	# tar xjvf ispcp-omega-1.0.3.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.2
+	# cd ./ispcp-omega-1.0.3
 
 3. Install the required modules
    First update your system:
-	# sudo apt-get update && apt-get upgrade
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
+	# sudo aptitude update && aptitude upgrade
+	# sudo aptitude install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
-   If using Hardy, make sure you have added multiverse into your /etc/apt/sources.list
+   Make sure you have added multiverse into your /etc/apt/sources.list
 
-	(when you get to the courier screen select 'no' to web directories)
-	(when you get to the postfix screen select 'internet site' and then type 'root'
+	(if you get to the courier screen select 'no' to web directories)
+	(if you get to the postfix screen select 'internet site' and then type 'root'
 	for mail. If you've set debian up correctly on install your domain should be
 	already on screen. Select 'no' to force sync updates.)
-	(when you get to the proftpd screen, select 'standalone')
-	(when you get to the rootkithunter screen, select two time 'yes')
+	(if you get to the proftpd screen, select 'standalone')
+	(if you get to the rootkithunter screen, select two time 'yes')
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
@@ -99,7 +97,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-10. Activate php mcrypt extension for ubuntu hardy
+10. Activate php mcrypt extension for Ubuntu
 	# sudo touch /etc/php5/conf.d/mcrypt.ini
 	# sudo echo "extension=mcrypt.so" > /etc/php5/conf.d/mcrypt.ini
 	# sudo chmod 644 /etc/php5/conf.d/mcrypt.ini
@@ -108,7 +106,6 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 11. Clean the temporary folders:
 	# sudo rm -fR /tmp/ispcp
-
 
 ================================================================================
 5) Update
@@ -123,22 +120,24 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 2. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp-omega-1.0.2.tar.bz2
+	# tar xjvf ispcp-omega-1.0.3.tar.bz2
 
 3. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.2
+	# cd ./ispcp-omega-1.0.3
 
 4. Install the required modules
    first update your system:
-	# sudo apt-get update && apt-get upgrade
-	# sudo apt-get install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
+	# sudo aptitude update && aptitude upgrade
+	# sudo aptitude install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
-	(when you get to the courier screen select 'no' to web directories)
-	(when you get to the postfix screen select 'internet site' and then type 'root'
+   Make sure you have added multiverse into your /etc/apt/sources.list
+
+	(if you get to the courier screen select 'no' to web directories)
+	(if you get to the postfix screen select 'internet site' and then type 'root'
 	for mail. If you've set debian up correctly on install your domain should be
 	already on screen. Select 'no' to force sync updates.)
-	(when you get to the proftpd screen, select 'standalone')
-	(when you get to the rootkithunter screen, select two time 'yes')
+	(if you get to the proftpd screen, select 'standalone')
+	(if you get to the rootkithunter screen, select two time 'yes')
 
 5. (optional) Check the ispcp.conf and adapt it to your requirements.
 
@@ -151,8 +150,6 @@ provides graphic user interfaces for the administrators, resellers and users.
 	# sudo cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
 	# sudo cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 	# sudo cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
-
-   If updating from ispCP 1.0.0 RC3 or higher:
 	# sudo cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 
 8. Delete old files to avoid security risks:

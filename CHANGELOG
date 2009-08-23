@@ -1,6 +1,10 @@
 ispCP ω 1.0.2 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-23 Benedikt Heintel
+	- DOCS:
+		* Fixed #1936: Remove Support for older Distribution Versions
+
 2009-08-21 Andreca Daniel
 	- GUI:
 		* Added compatibility for php V5.3
