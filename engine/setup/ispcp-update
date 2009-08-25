@@ -36,7 +36,6 @@ use strict;
 use warnings;
 
 %main::ua = ();
-$main::vhcs2conf = undef;
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 ################################################################################
@@ -45,74 +44,13 @@ $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 use constant {
 		ABORT			=> 0,
-		VHCS247			=> 1,
-		VHCS248			=> 2,
-		RC2				=> 3,
-		RC3				=> 4,
-		RC4				=> 5,
-		RC5				=> 6,
-		RC6				=> 7,
-		RC7				=> 8,
-		ISPCP_V1_0_0	=> 9
+		ISPCP_V1_0_0	=> 1,
+		ISPCP_V1_0_2	=> 1
 	};
 
 ################################################################################
 ##                                SUBROUTINES                                 ##
 ################################################################################
-
-sub get_vhcs2conf {
-    push_el(\@main::el, 'get_vhcs2conf()', 'Starting...');
-
-    my ($rs, $fline) = get_file($main::vhcs2conf);
-    return -1 if ($rs != 0);
-
-    my @frows = split(/\n/, $fline);
-    my $i = '';
-
-    for ($i = 0; $i < scalar(@frows); $i++) {
-        $frows[$i] = "$frows[$i]\n";
-
-        if ($frows[$i] =~ /$main::cfg_re/) {
-			$main::vhcs2{$1} = $2;
-        }
-    }
-
-    return -1 if (setup_main_vars() != 0);
-
-    push_el(\@main::el, 'get_vhcs2conf()', 'Ending...');
-
-    return 0;
-}
-
-sub ask_vhcs2conf {
-	push_el(\@main::el, 'ask_vhcs2conf()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	# Get path to vhcs2.conf
-	print STDOUT "\tPlease enter path to vhcs2.conf [/etc/vhcs2/vhcs2.conf]: ";
-
-	$rdata = readline(\*STDIN);
-	chop($rdata);
-
-	if (!defined($rdata) || $rdata eq '') {
-		$rdata = '/etc/vhcs2/vhcs2.conf';
-	}
-
-	# set VHCS2 config
-	$main::vhcs2conf = $rdata;
-
-	# Get VHCS2 config
-	$rs = get_vhcs2conf();
-	return $rs if ($rs != 0);
-
-	$rs = setup_main_vars();
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'ask_vhcs2conf()', 'Ending...');
-
-	return 0;
-}
 
 sub welcome_note {
 	my ($rs, $rdata) = (undef, undef);
@@ -148,22 +86,15 @@ sub welcome_note {
 
 	my $welcome_message =
 		"\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n".
-		"\tThis program will update your VHCS / ispCP OMEGA system on your server.\n".
+		"\tThis program will update your ispCP OMEGA system on your server.\n".
 		"\tPlease make sure you have a backup of your server data.\n\n".
 
 		"\tNOTE: During the migration process some or all services might require to be\n".
 		"\tshut down or restarted.\n\n".
 
 		"\tPlease select from which version you want to update:\n".
-		"\t(1) VHCS 2.4.7 or VHCS 2.4.7.1\n".
-		"\t(2) VHCS 2.4.8 RC1\n".
-		"\t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)\n".
-		"\t(4) ispCP OMEGA 1.0.0 RC3\n".
-		"\t(5) ispCP OMEGA 1.0.0 RC4\n".
-		"\t(6) ispCP OMEGA 1.0.0 RC5\n".
-		"\t(7) ispCP OMEGA 1.0.0 RC6\n".
-		"\t(8) ispCP OMEGA 1.0.0 RC7\n".
-		"\t(9) ispCP OMEGA 1.0.0\n".
+		"\t(1) ispCP OMEGA 1.0.0\n".
+		"\t(2) ispCP OMEGA 1.0.2\n".
 		"\t(0) abort\n";
 
 
@@ -173,39 +104,13 @@ sub welcome_note {
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 8) {
+	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 2) {
 		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);
 	}
 
 	$main::ua{'update'} = $rdata;
-
-	if (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
-		my $vhcs_update_msg =
-			"\tMake sure you have installed ispCP OMEGA first as described in the INSTALL\n".
-			"\tdocument.\n\n".
-			"\tContinue?\n".
-			"\t(1) Yes\n".
-			"\t(0) No\n";
-
-		print STDOUT $vhcs_update_msg;
-		print STDOUT "\tYour selection: ";
-
-		$rdata = readline(\*STDIN);
-		chop($rdata);
-
-		while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
-			print STDOUT "\tPlease select an item mentioned above: ";
-			$rdata = readline(\*STDIN);
-			chop($rdata);
-		}
-
-		# Set to 0 if not ready
-		if ($rdata == 0) {
-			$main::ua{'update'} = $rdata;
-		}
-	}
 
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
@@ -217,12 +122,7 @@ sub stop_services {
     my ($lock_file) = @_;
 
     if (-e $lock_file) {
-        exit_werror("\tVHCS2's backups engine is currently running. Aborting...");
-    }
-
-    if ( -e "/etc/init.d/vhcs2_daemon" ) {
-        print STDOUT "\t";
-        sys_command("/etc/init.d/vhcs2_daemon stop");
+        exit_werror("\tBackups engine is currently running. Aborting...");
     }
 
     if ( -e "/etc/init.d/ispcp_daemon" ) {
@@ -306,210 +206,6 @@ sub rebuild_configs {
 	return 9 if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_configs()', 'Ending...');
-	return 0;
-}
-
-sub migrate_vhcs2 {
-	push_el(\@main::el, 'migrate_vhcs2()', 'Starting...');
-
-	my ($rdata, $rs, $sql) = (undef, undef, undef);
-
-    print STDOUT "\tDropping empty ispcp table...";
-
-    ($rs, $rdata) = doSQL("DROP DATABASE IF EXISTS `ispcp`;");
-
-    if ($rs != 0) {
-        print STDOUT "failed!\n";
-        exit_werror($rdata, $rs);
-    }
-
-    print STDOUT "done\n";
-
-    print STDOUT "\tCreating new database...";
-
-	# Escape " and '
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-    if (sys_command("mysqladmin -u\"$main::db_user\" -p\"$main::db_pwd\" create ispcp ") != 0) {
-        print STDOUT "failed!\n";
-        exit_werror();
-    }
-
-    print STDOUT "done\n";
-
-    print STDOUT "\tCopying database...";
-
-    if (sys_command("$main::cfg{'CMD_MYSQLDUMP'} --opt --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" $main::vhcs2{'DATABASE_NAME'} | $main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" $main::db_name") != 0) {
-        print STDOUT "failed!\n";
-        exit_werror();
-    }
-
-    print STDOUT "done\n";
-
-    print STDOUT "\tUpgrading database structure...";
-
-	# Update from VHCS 2.4.7
-	if ($main::ua{'update'} eq VHCS247) {
-		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.7-ispcp.sql");
-		return $rs if ($rs != 0);
-	}
-	# Update from VHCS 2.4.8
-	elsif ($main::ua{'update'} eq VHCS248) {
-		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.8-ispcp.sql");
-		return $rs if ($rs != 0);
-	}
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
-	if ($rs != 0) {
-    	print STDOUT "failed!\n";
-   	 	exit_werror("SQL Update failed.");
-	}
-
-	# Delete vhcs2 Database
-	($rs, $rdata) = doSQL("DROP DATABASE IF EXISTS `vhcs2`;");
-    if ($rs != 0) {
-        print STDOUT "failed!\n";
-        exit_werror($rdata, $rs);
-    }
-
-    print STDOUT "\tdone\n";
-
-	push_el(\@main::el, 'migrate_vhcs2()', 'Ending...');
-	return 0;
-}
-
-sub remove_vhcs2 {
-	my ($rs, $cmd, $rdata) = (undef, undef, undef);
-
-	push_el(\@main::el, 'remove_vhcs2()', 'Starting...');
-
-	print STDOUT "\tNow you can remove VHCS2. Do you want to remove VHCS2 automaticly? (yes|no) [yes]: ";
-	$rdata = readline(\*STDIN);
-	chop($rdata);
-
-	if (!defined($rdata) || $rdata eq 'y' || $rdata eq '') {
-		$rdata = 'yes';
-	}
-
-	# Remove VHCS2 files
-	if ($rdata eq 'yes') {
-		# Get vhcs2.conf
-# 		$rs = get_conf($main::vhcs2conf);
-# 		return $rs if ($rs != 0);
-
-		# Remove VHCS2 Web/Engine folder
-		print STDOUT "\tRemoving $main::vhcs2{'ROOT_DIR'}...";
-		del_dir($main::vhcs2{'ROOT_DIR'});
-		print STDOUT "done\n";
-
-		# Remove VHCS2 Config folder
-		print STDOUT "\tRemoving $main::vhcs2{'CONF_DIR'}...";
-		del_dir($main::vhcs2{'CONF_DIR'});
-		print STDOUT "done\n";
-
-		# Remove VHCS2 Log folder
-		print STDOUT "\tRemoving $main::vhcs2{'LOG_DIR'}...";
-		del_dir($main::vhcs2{'LOG_DIR'});
-		print STDOUT "done\n";
-
-		# Remove VHCS2 Postfix folders
-		print STDOUT "\tRemoving $main::vhcs2{'MTA_VIRTUAL_CONF_DIR'}...";
-		del_dir($main::vhcs2{'MTA_VIRTUAL_CONF_DIR'});
-		print STDOUT "done\n";
-
-		# Remove VHCS2 logrotation
-		print STDOUT "\tRemoving logrotation...";
-		del_file("/etc/logrotate.d/vhcs2");
-		print STDOUT "done\n";
-
-		# Remove Bind files
-		print STDOUT "\tRemoving old bind files...";
-		del_file("/etc/bind/vhcs.conf");
-
-		# Remove old Include if exists
-		($rs, $rdata) = get_file("/etc/bind/named.conf");
-		if ($rs != 0) {
-        	print STDOUT "failed!\n";
-        	exit_werror("Could not open /etc/bind/named.conf");
-        }
-
-		$rdata =~ s/include "\/etc\/bind\/vhcs.conf";//gi;
-		$rs = store_file("/etc/bind/named.conf", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-		if ($rs != 0) {
-        	print STDOUT "failed!\n";
-        	exit_werror("Could not store /etc/bind/named.conf");
-        }
-		print STDOUT "done\n";
-
-		# Remove VHCS2 crontab
-		print STDOUT "\tDo you really want to remove crontab? All custom entries will be deleted. (yes|no) [no]: ";
-		$rdata = readline(\*STDIN);
-		chop($rdata);
-
-		if (!defined($rdata) || $rdata eq '') {
-			$rdata = 'no';
-		}
-		if ($rdata eq 'yes' || $rdata eq 'y') {
-			print STDOUT "\tRemoving crontab...";
-			sys_command("crontab -r");
-			print STDOUT "done\n";
-		}
-
-		# Remove VHCS2 apache files
-		print STDOUT "\tRemoving apache vhost file...";
-		if ( -e "/usr/sbin/a2dissite" ) {
-			$rs = sys_command("/usr/sbin/a2dissite vhcs2.conf");
-
-			if ($rs == 0) {
-				$rs = sys_command("unlink $main::vhcs2{'APACHE_CONF_FILE'}");
-		    	if ($rs != 0) {
-		        	print STDOUT "failed!\n";
-		        	exit_werror();
-		        }
-		    }
-		}
-		else {
-		    $rs = sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf");
-		    if ($rs != 0) {
-		        print STDOUT "failed!\n";
-		        exit_werror();
-		    }
-		}
-		print STDOUT "done\n";
-
-		# Restart apache
-		$cmd = $main::cfg{'CMD_HTTPD'};
-		sys_command_rs("$cmd stop");
-		sleep(5);
-	    sys_command_rs("$cmd start");
-	    sleep(5);
-
-		if (-e "/usr/sbin/vhcs2-mkdirs.pl") {
-			print STDOUT "\tRemoving vhcs2-mkdirs.pl";
-			del_file("/usr/sbin/vhcs2-mkdirs.pl");
-		}
-
-		# Remove VHCS2 Daemons
-		print STDOUT "\tRemoving Daemons";
-		if ( -x "/usr/sbin/update-rc.d" ) {
-			sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove &> /tmp/ispcp-setup-services.log");
-			sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove &> /tmp/ispcp-setup-services.log");
-		}
-		elsif ( -x "/usr/lib/lsb/remove_initd" ) { #LSB 3.1 Core section 20.4 compatibility
-			sys_command_rs("/usr/lib/lsb/remove_initd $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
-			sys_command_rs("/usr/lib/lsb/remove_initd $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
-    	}
-
-    	if ( -e "/etc/init.d/vhcs2_daemon" ) {
-        	del_file($main::vhcs2{'CMD_VHCS2D'});
-			del_file($main::vhcs2{'CMD_VHCS2N'});
-    	}
-	}
-
-	push_el(\@main::el, 'remove_vhcs2()', 'Ending...');
 	return 0;
 }
 
@@ -855,271 +551,6 @@ sub update_conf {
 	return 0;
 }
 
-sub patch_ispcp_rc2 {
-	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	print STDOUT "\tUpgrading system values ...";
-
-	# AWStats questions
-	do {
-		$rs = ask_awstats_on();
-	} while ($rs == 1);
-
-	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
-		do {
-			$rs = ask_awstats_dyn();
-		} while ($rs == 1);
-	} else {
-		# Just a dummy to prevent warnings
-		$main::ua{'awstats_dyn'} = 0;
-	}
-
-	if ($main::cfg{'MYSQL_PREFIX'} eq 'no') {
-		do {
-			$rs = ask_mysql_prefix();
-		} while ($rs == 1);
-	}
-	else {
-		$main::ua{'mysql_prefix'} = $main::cfg{'MYSQL_PREFIX'};
-		$main::ua{'mysql_prefix_type'} = $main::cfg{'MYSQL_PREFIX_TYPE'};
-	}
-
-	# update ispcp.conf
-	my $cfg_file = $main::cfg_file;
-	my $old_cfg_file = $main::ua{'old_cfg_file'};
-	$rs = update_conf($old_cfg_file, $cfg_file);
-	if ($rs != 0) {
-		exit_werror("failed to get $cfg_file or $old_cfg_file");
-	}
-
-	# add new variables to new ispcp.conf
-	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
-	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
-
-	# save into /etc/ispcp/ispcp.conf
-	$rs = store_conf();
-	if ($rs != 0) {
-		exit_werror("Storing new ispcp.conf failed!");
-	}
-	print STDOUT "done\n";
-
-	# database upgrade
-    print STDOUT "\tUpgrading database structure...";
-
-	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc2-ispcp.sql");
-	return $rs if ($rs != 0);
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
-	if ($rs != 0) {
-   	 	exit_werror("SQL Update failed.");
-	}
-
-    print STDOUT "done\n";
-
-    # Rebuild system configs
-    print STDOUT "\tRebuilding system configurations...";
-
-	$rs = rebuild_configs();
-
-	if ($rs != 0) {
-   	 	exit_werror("Config Rebuild failed.");
-	}
-
-	print STDOUT "done\n";
-
-	# Update PMA's config.inc.php
-	print STDOUT "\tUpdating PMA's config.inc.php...";
-
-	$rs = update_pma();
-
-	if ($rs != 0) {
-   	 	exit_werror("Updating PMA's config.inc.php failed.");
-	}
-
-	print STDOUT "\tdone\n";
-
-	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_rc3 {
-	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	# database upgrade
-    print STDOUT "\tUpgrading database structure...";
-
-	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc3-ispcp.sql");
-	return $rs if ($rs != 0);
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
-	if ($rs != 0) {
- 	print STDOUT "failed!\n";
-   	 	exit_werror("SQL Update failed.");
-	}
-
-    print STDOUT "done\n";
-
-    # Rebuild system configs:
-    print STDOUT "\tRebuilding system configurations...";
-
-	$rs = rebuild_configs();
-
-	if ($rs != 0) {
-   	 	exit_werror("Config Rebuild failed.");
-	}
-
-	print STDOUT "done\n";
-
-	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_rc4 {
-	push_el(\@main::el, 'patch_ispcp_rc4()', 'Starting...');
-
-	my $rs = setup_mta();
-	return 2 if ($rs != 0);
-
-	$rs = setup_ftpd();
-	return 3 if ($rs != 0);
-
-	# FastCGI-Security
-	print STDOUT "\tYou can ignore this error: /bin/sed: can't read php.ini: No such file or directory\n";
-	search_and_replace("$main::cfg{'PHP_STARTER_DIR'}");
-
-	# Update Apache
-	$rs = update_httpd();
-	return 4 if ($rs != 0);
-
-	push_el(\@main::el, 'patch_ispcp_rc4()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_rc5 {
-	push_el(\@main::el, 'patch_ispcp_rc5()', 'Starting...');
-
-	if ($main::cfg{'ISPCP_SUPPORT_SYSTEM_PATH'} eq "support_system.php") {
-		my $rs = set_conf_val('ISPCP_SUPPORT_SYSTEM_PATH', "ticket_system.php");
-		return $rs if ($rs != 0);
-
-		$rs = store_conf();
-		return $rs if ($rs != 0);
-	}
-
-	push_el(\@main::el, 'patch_ispcp_rc5()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_rc6 {
-	push_el(\@main::el, 'patch_ispcp_rc6()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	# database upgrade
-    print STDOUT "\tUpgrading database structure...";
-
-	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc6-ispcp.sql");
-	return $rs if ($rs != 0);
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
-	if ($rs != 0) {
-	print STDOUT "failed!\n";
-		exit_werror("SQL Update failed.");
-	}
-
-	print STDOUT "done\n";
-
-	# Rebuild system configs:
-	print STDOUT "\tRebuilding system configurations...";
-
-# 	$rs = rebuild_configs();
-	if ( -e "$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/cron.d/backup/ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	if ( -e "$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp") {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/bind/backup/named.conf.ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	$rs = setup_crontab();
-	return 2 if ($rs != 0);
-
-	$rs = setup_named();
-	return 3 if ($rs != 0);
-
-	$rs = setup_php();
-	return 4 if ($rs != 0);
-	
-	$rs = setup_httpd();
-	return 5 if ($rs != 0);
-
-	$rs = setup_ftpd();
-	return 6 if ($rs != 0);
-
-	$rs = update_ftpd();
-	return 7 if ($rs != 0);
-
-	print STDOUT "done\n";
-
-	push_el(\@main::el, 'patch_ispcp_rc6()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_rc7 {
-	push_el(\@main::el, 'patch_ispcp_rc7()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	# Rebuild system configs:
-	print STDOUT "\tRebuilding system configurations...";
-
-	if ( -e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp" && $main::ua{'update'} == RC7 ) {
-		$rs = del_file("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp");
-		return 1 if ($rs != 0);
-	}
-
-	# Gentoo need 01_awstats.conf rebuild
-	$rs = setup_httpd();
-	return 5 if ($rs != 0);
-
-	$rs = setup_ftpd();
-	return 6 if ($rs != 0);
-
-	$rs = update_ftpd();
-	return 7 if ($rs != 0);
-
-	print STDOUT "done\n";
-
-	push_el(\@main::el, 'patch_ispcp_rc7()', 'Ending...');
-	return 0;
-}
-
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -1133,168 +564,64 @@ sub prepare_update {
 	if ($main::ua{'update'} == ABORT) {
 		exit_werror("Script was aborted by user.");
 	}
-	# VHCS update
-	elsif (($main::ua{'update'} == VHCS247) || ($main::ua{'update'} == VHCS248)) {
+	# all ispCP 
+	
+	stop_services("/tmp/ispcp-backup-all.lock");
 
-		my $wmsg =
-			"\tIf you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 please note that\n".
-			"\tispCP Omega comes with a new webmail client. Please make sure that your\n".
-			"\tcustomers can still access their address book data. You can ensure this either\n".
-			"\tby making the old webmail client accessable or by using this\n".
-			"\tscript: http://www.isp-control.net/ispcp/ticket/1614\n\n".
-			"\tContinue?\n".
-			"\t(1) Yes\n".
-			"\t(0) No\n";
+	# get ispcp.old.conf
+	my $cfg_file = '/etc/ispcp/ispcp.old.conf';
+	$rs = get_conf($cfg_file);
+	if ($rs != 0) {
+		do {
+			print STDOUT "\tPlease enter path to ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
 
-		print STDOUT $wmsg;
-		print STDOUT "\tYour selection: ";
-
-		$rdata = readline(\*STDIN);
-		chop($rdata);
-
-		while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
-			print STDOUT "\tPlease select an item mentioned above: ";
 			$rdata = readline(\*STDIN);
 			chop($rdata);
-		}
 
-		# Set to 0 if not ready
-		if ($rdata == 0) {
-			exit 0;
-		}
-
-		# look up vhcs2.conf
-		$rs = ask_vhcs2conf();
-
-		if ($rs != 0) {
-			my $el_data = pop_el(\@main::el);
-			my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-			print STDERR "$msg\n";
-
-			exit 1;
-		}
-		stop_services("/tmp/vhcs2-backup-all.lock");
-		$rs = migrate_vhcs2();
-		if ($rs == 0) {
-			$rs = remove_vhcs2();
-		}
-
-		if ($rs != 0) {
-    		print STDOUT "\tUpdate failed!\n";
-   	 		exit_werror("ispCP Update failed.");
-		}
+			$cfg_file = $rdata;
+			$rs = get_conf($cfg_file);
+		} while ($rs == 0);
 	}
-	# ispCP 1.0.0 RC2/3/4/5/6 Update
-	elsif ($main::ua{'update'} >= RC2) {
-		stop_services("/tmp/vhcs2-backup-all.lock");
+	$main::ua{'old_cfg_file'} = $cfg_file;
 
-		# get ispcp.old.conf
-		my $cfg_file = '/etc/ispcp/ispcp.old.conf';
-		$rs = get_conf($cfg_file);
+	# update ispcp.conf
+	$cfg_file = $main::cfg_file;
+	if (defined($main::ua{'old_cfg_file'})) {
+		print STDOUT "\tUpgrading system values...";
+
+		$rs = update_conf($main::ua{'old_cfg_file'}, $cfg_file);
 		if ($rs != 0) {
-			do {
-				print STDOUT "\tPlease enter path to ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
-
-				$rdata = readline(\*STDIN);
-				chop($rdata);
-
-				$cfg_file = $rdata;
-				$rs = get_conf($cfg_file);
-			} while ($rs == 0);
-		}
-		$main::ua{'old_cfg_file'} = $cfg_file;
-
-		if ($main::ua{'update'} >= RC3) {
-			# update ispcp.conf
-			my $cfg_file = $main::cfg_file;
-			if (defined($main::ua{'old_cfg_file'})) {
-				print STDOUT "\tUpgrading system values...";
-
-				$rs = update_conf($main::ua{'old_cfg_file'}, $cfg_file);
-				if ($rs != 0) {
-					exit_werror("failed to get $cfg_file or $main::ua{'old_cfg_file'}");
-				}
-
-				# save into /etc/ispcp/ispcp.conf
-				$rs = store_conf();
-				if ($rs != 0) {
-					exit_werror("Storing new ispcp.conf failed!");
-				}
-				print STDOUT "done\n";
-			}
+			exit_werror("failed to get $cfg_file or $main::ua{'old_cfg_file'}");
 		}
 
-		# ispCP 1.0.0 RC2
-		if ($main::ua{'update'} == RC2) {
-			$rs = patch_ispcp_rc2();
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc3();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc4();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc5();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc6();
-			}
-		}
-		# ispCP 1.0.0 RC3
-		elsif ($main::ua{'update'} == RC3) {
-			$rs = patch_ispcp_rc3();
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc4();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc5();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc6();
-			}
-		}
-		# ispCP 1.0.0 RC4
-		elsif ($main::ua{'update'} == RC4) {
-			$rs = patch_ispcp_rc4();
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc5();
-			}
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc6();
-			}
-		}
-		# ispCP 1.0.0 RC5
-		elsif ($main::ua{'update'} == RC5) {
-			$rs = patch_ispcp_rc5();
-			if ($rs == 0) {
-				$rs = patch_ispcp_rc6();
-			}
-		}
-		# ispCP 1.0.0 RC6
-		elsif ($main::ua{'update'} == RC6) {
-			$rs = patch_ispcp_rc6();
-		}
-		# ispCP 1.0.0 RC7
-		elsif ($main::ua{'update'} == RC7) {
-			$rs = patch_ispcp_rc7();
-		}
-
+		# save into /etc/ispcp/ispcp.conf
+		$rs = store_conf();
 		if ($rs != 0) {
-    		print STDOUT "\t Update failed!\n";
-   	 		exit_werror("ispCP Update failed.");
+			exit_werror("Storing new ispcp.conf failed!");
 		}
-		return $rs if ($rs != 0);
-
-		# set permissions
-		my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0)
+		print STDOUT "done\n";
 	}
+
+	if ($rs != 0) {
+   		print STDOUT "\t Update failed!\n";
+		exit_werror("ispCP Update failed.");
+	}
+	
+	print STDOUT "Rebuild config\n";
+	
+	$rs = rebuild_configs();
+	if ($rs != 0) {
+		exit_werror("Config Rebuild failed.");
+	}
+
+	# set permissions
+	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
 
 	# re-create config files
 	print STDOUT "\tRebuilding customers...";
@@ -1308,7 +635,7 @@ sub prepare_update {
 	return $rs if ($rs != 0);
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host=\"$main::db_host\" -u\"$main::db_user\" -p\"$main::db_pwd\" < /tmp/db.sql");
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host='$main::db_host' -u'$main::db_user' -p'$main::db_pwd' < /tmp/db.sql");
 	if ($rs != 0) {
    	 	exit_werror("SQL Update failed.");
 	}
