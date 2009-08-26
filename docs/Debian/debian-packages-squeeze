@@ -75,6 +75,7 @@ postfix
 postgrey
 procmail
 proftpd
+proftpd-mod-mysql
 rkhunter
 sasl2-bin
 ssh

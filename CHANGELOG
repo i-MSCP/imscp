@@ -1,6 +1,10 @@
 ispCP ω 1.0.2 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-27 Andreca Daniel
+	- CONFIGS:
+		* Update support for Debian Squeeze
+
 2009-08-23 Benedikt Heintel
 	- DOCS:
 		* Fixed #1936: Remove Support for older Distribution Versions
