@@ -127,7 +127,8 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 4. Install the required modules
    first update your system:
-	# sudo aptitude update && aptitude upgrade
+
+	# sudo aptitude update && aptitude safe-upgrade
 	# sudo aptitude install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
    Make sure you have added multiverse into your /etc/apt/sources.list
@@ -145,12 +146,13 @@ provides graphic user interfaces for the administrators, resellers and users.
 	# sudo /etc/init.d/ispcp_daemon stop
 	# sudo make install
 
-7. Save files
+7. Backup files
 	# sudo cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
 	# sudo cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
 	# sudo cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 	# sudo cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 	# sudo cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
+	# sudo cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 8. Delete old files to avoid security risks:
 	# sudo rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/

@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version	: 1.0.3
-INSTALL Script	: 4.1
+INSTALL Script	: 4.2
 Maintainer		: Blocker
 Homepage		: http://www.isp-contol.net
 Distros			: FreeBSD
@@ -67,7 +67,7 @@ and Name Server rndc.key has been setup.
 	# portmaster $(cat ./docs/FreeBSD/freebsd-packages)
 
 	Apache22 Options
- 
+
 	x threads       option
  	x mysql         option
  	x suexec        ( Recomended )
@@ -76,9 +76,9 @@ and Name Server rndc.key has been setup.
  	+ mod_fastcgi   ( choice for improving security )
 	+ mod_fcgid     ( choice for improving security )
  	+ mod_proxy     for awstats
- 
+
 	Proftpd Options
- 
+
 	x IPV6          IP v6 support ( but disable by ispCP )
 	x mysql         Database module
 	x quota         quota module
@@ -86,9 +86,9 @@ and Name Server rndc.key has been setup.
 	x ctrls         control module
 	- delay         Not Available in ports ?
 	- ctrls_admin   Not Available in ports ?
- 
+
 	courier-imap Options
- 
+
 	x userdb        For use with userdb ( ispCP default )
 	x mysql         For use with mysql
 
@@ -96,7 +96,7 @@ and Name Server rndc.key has been setup.
 
 	x userdb
 	x mysql
- 
+
 	Perl Options
 
 	+ Compress-Zlib
@@ -123,17 +123,17 @@ and Name Server rndc.key has been setup.
 	+ URI
 	+ libwww
 	+ Term-ReadPassword
- 
+
 	PHP5 Options
- 
+
 	x apache
 	x CLI
 	x CGI
 	x suhosin
 	+ fastcgi
- 
+
 	PHP5-Extensions Options
- 
+
 	x pcre
 	x bz2
 	x ctype
@@ -206,7 +206,7 @@ and Name Server rndc.key has been setup.
     or for FastCGI
 	LoadModule fcgid_module libexec/apache22/mod_fastcgi.so
 	Include etc/apache22/extra/fastcgi_ispcp.conf
-	
+
 
 WARNING:
           DEFAULT setting is using mod_php not fastcgi or mod_fcgid !!
@@ -244,12 +244,13 @@ Make sure you are logged in as root and MySQL is running.
 	# /etc/init.d/ispcp_daemon stop
 	# make -f Makefile.fbsd install
 
-7. Save files
+7. Backup files
 	# cp -v /usr/local/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/ispcp/engine/
 	# cp -v /usr/local/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/ispcp/engine/messenger/
 	# cp -v /usr/local/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/usr/local/www/ispcp/gui/include/
 	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 	# cp -v /usr/local/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/usr/local/www/ispcp/gui/tools/pma/
+	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 8. Delete old files to avoid security risks:
 	# rm -fR /usr/local/www/ispcp/gui/admin/
@@ -301,7 +302,7 @@ Make sure you are logged in as root and MySQL is running.
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks 
+ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
 of the ispCP | isp Control Panel Project Team.
 
 Please visit our site under http://isp-control.net for further information on

@@ -1,5 +1,11 @@
-ispCP ω 1.0.2 Changelog
+ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-08-27 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1952: Small patch for opensuse
+	- DOCS:
+		* Updates all docs
 
 2009-08-27 Andreca Daniel
 	- CONFIGS:
@@ -38,8 +44,8 @@ ispCP ω 1.0.2 Changelog
 		* Updated SquirrelMail to version 1.4.20RC1
 
 2009-08-14 Malte Geierhos
-	- SETUP: 
-		* Fixed various Bugs preventing RPM Builds ( together with George Machitidze) 
+	- SETUP:
+		* Fixed various Bugs preventing RPM Builds ( together with George Machitidze)
 
 2009-08-12 Sebastian Sellmeier
 	- GUI:

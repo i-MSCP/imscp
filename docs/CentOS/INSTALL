@@ -18,6 +18,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
+
 ispCP Version:         1.0.3
 INSTALL Script:        1.3
 Maintainer:
@@ -82,16 +83,16 @@ For the following steps, you will need to be logged in as root.
    can run the following command to install them:
         # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
 
-   Note: If you've never run 'perl -MCPAN -e shell' before, you'll have to do this 
-         first and answer 'no' to autoconfigure perl. 
+   Note: If you've never run 'perl -MCPAN -e shell' before, you'll have to do this
+         first and answer 'no' to autoconfigure perl.
 
 7. Next, we add remi repository because Centos 5 ships with php 5.1.6 that do not work nice:
     	# wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
         # wget http://rpms.famillecollet.com/el5.i386/remi-release-5-7.el5.remi.noarch.rpm
         # rpm -Uvh remi-release-5*.rpm epel-release-5*.rpm
 
-   Then in /etc/yum.repos.d/remi.repo add 
-   Edit the  /etc/yum.repos.d/remi.repo files in /etc/yum.repos.d/ and set up priorities 
+   Then in /etc/yum.repos.d/remi.repo add
+   Edit the  /etc/yum.repos.d/remi.repo files in /etc/yum.repos.d/ and set up priorities
    by adding the line:
 
         priority=1
@@ -253,12 +254,13 @@ need to be running.
 	# /etc/init.d/ispcp_daemon stop
     # make -f Makefile.centos install
 
-7. Save files
+7. Backup files
     # cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
     # cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
     # cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
     # cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
     # cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
+	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 8. Delete old files to avoid security risks:
 	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
@@ -304,7 +306,7 @@ Make sure you are logged in as root and MySQL is running.
 ----------
 
 ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks 
+ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
 of the ispCP | isp Control Panel Project Team.
 
 Please visit our site under http://isp-control.net for further information on

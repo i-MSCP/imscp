@@ -5,7 +5,7 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root root
   sharedscripts
   prerotate
     /srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
@@ -22,7 +22,7 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root root
 }
 
 /var/log/proftpd/xferlog {
@@ -32,12 +32,11 @@
   compress
   delaycompress
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
-      /srv/bin/killall -HUP syslogd
+    if [ -e /var/run/syslog-nd.pid ]; then
+      /usr/bin/killall -HUP syslog-ng
     elif [ -e /var/run/rsyslogd.pid ]; then
-      /srv/bin/killall -HUP rsyslogd
-    fi
-
+      /usr/bin/killall -HUP rsyslogd
+	fi
   endscript
 }
 
@@ -48,13 +47,13 @@
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /srv/www/ispcp/engine/traffic/ispcp-vrl-traff-SUSE > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
-      /srv/bin/killall -HUP syslogd
+    if [ -e /var/run/syslog-nd.pid ]; then
+      /usr/bin/killall -HUP syslog-ng
     elif [ -e /var/run/rsyslogd.pid ]; then
-      /srv/bin/killall -HUP rsyslogd
+      /usr/bin/killall -HUP rsyslogd
     fi
   endscript
 }
