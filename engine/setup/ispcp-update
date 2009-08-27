@@ -43,7 +43,7 @@ $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 ################################################################################
 
 use constant {
-		ABORT			=> 0,
+		ABORT				=> 0,
 		ISPCP_V1_0_0	=> 1,
 		ISPCP_V1_0_2	=> 1
 	};
@@ -606,9 +606,11 @@ sub prepare_update {
    		print STDOUT "\t Update failed!\n";
 		exit_werror("ispCP Update failed.");
 	}
-	
+
+	$rs = sys_command("rm -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`"); 
+	return $rs if ($rs != 0);
+
 	print STDOUT "Rebuild config\n";
-	
 	$rs = rebuild_configs();
 	if ($rs != 0) {
 		exit_werror("Config Rebuild failed.");

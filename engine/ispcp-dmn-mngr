@@ -1724,9 +1724,10 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-			'{PHP_STARTER_DIR}' => $starter_dir,
-			'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-			'{DMN_NAME}' => $dmn_name
+			'{WWW_DIR}'					=> $www_dir,
+			'{PHP_STARTER_DIR}'	=> $starter_dir,
+			'{PHP5_FASTCGI_BIN}'	=> $main::cfg{'PHP5_FASTCGI_BIN'},
+			'{DMN_NAME}'				=> $dmn_name
 		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
@@ -1924,8 +1925,9 @@ sub dmn_change_httpd_file_data {
 
 		my %tag_hash = (
 			'{PHP_STARTER_DIR}'  => $starter_dir,
-			'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-			'{DMN_NAME}'         => $dmn_name
+			'{WWW_DIR}'					=> $www_dir, 
+			'{PHP5_FASTCGI_BIN}'	=> $main::cfg{'PHP5_FASTCGI_BIN'},
+			'{DMN_NAME}'				=> $dmn_name
 		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
@@ -1941,9 +1943,10 @@ sub dmn_change_httpd_file_data {
 	#	return $rs if ($rs != 0);
 	#
 	#	my  %tag_hash = (
-	#		'{PHP_STARTER_DIR}'  => $starter_dir,
-	#		'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
-	#		'{DMN_NAME}'         => $dmn_name
+	#		'{PHP_STARTER_DIR}' 	=> $starter_dir,
+	#		'{WWW_DIR}'					=> $www_dir, 
+	#		'{PHP4_FASTCGI_BIN}'	=> $main::cfg{'PHP4_FASTCGI_BIN'},
+	#		'{DMN_NAME}'				=> $dmn_name
 	#	);
 	#	($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 	#	return $rs if ($rs != 0);

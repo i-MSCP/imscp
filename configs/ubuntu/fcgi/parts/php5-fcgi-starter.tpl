@@ -5,6 +5,9 @@ umask 022
 PHPRC="{PHP_STARTER_DIR}/{DMN_NAME}/php5/"
 export PHPRC
 
+TMPDIR="{WWW_DIR}/{DMN_NAME}/phptmp" 
+export TMPDIR
+
 PHP_FCGI_CHILDREN=2
 export PHP_FCGI_CHILDREN
 
