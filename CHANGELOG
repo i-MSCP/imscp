@@ -1,11 +1,16 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-08-28 Benedikt Heintel
+	- TOOLS:
+		* Fixed #1921: phpMyAdmin Error (Only Displayed)
+
 2009-08-27 Malte Geierhos
 	- CONFIGS:
 		* Small Change for Fedora
 
 2009-08-27 Benedikt Heintel
-	- CONFIGS:
+	- DISTS:
 		* Fixed #1952: Small patch for opensuse
 	- DOCS:
 		* Updates all docs

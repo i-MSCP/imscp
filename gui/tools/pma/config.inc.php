@@ -88,7 +88,7 @@ $cfg['ShowPhpInfo'] 					= false;
 $cfg['ShowChgPassword'] 				= false;
 $cfg['AllowArbitraryServer'] 			= false;
 $cfg['LoginCookieRecall'] 				= 'something';
-$cfg['LoginCookieValidity'] 			= 1800;
+$cfg['LoginCookieValidity'] 			= 1440;
 /* Directories for saving/loading files from server */
 $cfg['UploadDir'] 						= '{TMP_DIR}';
 $cfg['SaveDir'] 						= '{TMP_DIR}';
