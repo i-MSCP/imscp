@@ -31,16 +31,14 @@
 #
 
 # read needed entries from ispcp.conf
+CONF_FILE="/etc/ispcp/ispcp.conf"
 if [ -f /usr/local/etc/ispcp/ispcp.conf ]
 then
-	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' | sed -e 's/ //g'`; do
-		export $a
-	done
-else
-	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' | sed -e 's/ //g'`; do
-		export $a
-	done
+    CONF_FILE="/usr/local/etc/ispcp/ispcp.conf"
 fi
+for a in `grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' ${CONF_FILE} | sed -e 's/ //g'`; do
+    export $a
+done
 
 # for spacing
 echo "";
@@ -54,31 +52,10 @@ fi
 #
 # fixing gui permissions;
 #
-
-for i in `find $ROOT_DIR/gui/`; do
-
-	if [ -f $i ]; then
-
-		if [ $DEBUG -eq 1 ]; then
-			echo -e "	0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
-		fi
-
-		chmod 0444 $i;
-		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
-
-	elif [ -d $i ]; then
-
-		if [ $DEBUG -eq 1 ]; then
-			echo "0555 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-		else
-			echo -n ".";
-		fi
-
-		chmod 0555 $i;
-		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
-	fi
-
-done
+find . -print0 -type f| xargs -0 chmod 0444
+find . -print0 -type d| xargs -0 chmod 0555
+find . -print0 | xargs -0 \
+    chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
 
 #
 # fixing webmail's database permissions;
