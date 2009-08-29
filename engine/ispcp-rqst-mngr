@@ -83,7 +83,9 @@ sub mngr_start_up {
 sub mngr_shut_down {
 	push_el(\@main::el, 'mngr_shut_down()', 'Starting...');
 
-	# Unlocking is not necessary, as ending the script automatically releases the global lock.
+	# Unlocking is necessary because the gui checks if the lock file exists.
+	my $rs = unlock_system();
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'mngr_shut_down()', 'Ending...');
 	return 0;

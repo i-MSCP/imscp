@@ -1456,6 +1456,18 @@ sub lock_system {
     return 0;
 }
 
+sub unlock_system {
+    push_el(\@main::el, 'unlock_system()', 'Starting...');
+
+    my $res = unlink($main::lock_file);
+    if (!$res) {
+        push_el(\@main::el, 'lock_system()', 'ERROR: unable to delete global lock file!');
+    }
+
+    push_el(\@main::el, 'lock_system()', 'Ending...');
+    return 0;
+}
+
 sub connect_ispcp_daemon {
 
     push_el(\@main::el, 'connect_ispcp_daemon()', 'Starting...');
