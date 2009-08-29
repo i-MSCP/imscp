@@ -52,10 +52,17 @@ fi
 #
 # fixing gui permissions;
 #
-find . -print0 -type f| xargs -0 chmod 0444
-find . -print0 -type d| xargs -0 chmod 0555
-find . -print0 | xargs -0 \
-    chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
+if [ $DEBUG -eq 1 ]; then
+    find $ROOT_DIR/gui/ -print0 -type f| xargs -0 chmod -v 0444
+    find $ROOT_DIR/gui/ -print0 -type d| xargs -0 chmod -v 0555
+    find $ROOT_DIR/gui/ -print0 | xargs -0 \
+	chown -v $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
+else
+    find $ROOT_DIR/gui/ -print0 -type f| xargs -0 chmod 0444
+    find $ROOT_DIR/gui/ -print0 -type d| xargs -0 chmod 0555
+    find $ROOT_DIR/gui/ -print0 | xargs -0 \
+	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
+fi
 
 #
 # fixing webmail's database permissions;

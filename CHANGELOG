@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-27 Andreca Daniel
+	- ENGINE:
+		* Fixed #1958: Gui Permissions Problem
+
 2009-08-28 Benedikt Heintel
 	- TOOLS:
 		* Fixed #1921: phpMyAdmin Error (Only Displayed)
