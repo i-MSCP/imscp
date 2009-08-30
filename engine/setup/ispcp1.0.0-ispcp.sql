@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
 					`alias_id` int(11) default NULL,
 					`domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
 					`domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
-					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS ​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
 					`domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
 					PRIMARY KEY  (`domain_dns_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -48,6 +48,9 @@ UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-
 --- Database update revision 22
 ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`;
 
-REPLACE INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '22');
+--- Database update revision 23
+ALTER TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS​', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'
+
+REPLACE INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '23');
 
 COMMIT;

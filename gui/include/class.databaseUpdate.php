@@ -470,7 +470,7 @@ class databaseUpdate extends ispcpUpdate {
 					`alias_id` int(11) default NULL,
 					`domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
 					`domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
-					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS ​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
 					`domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
 					PRIMARY KEY  (`domain_dns_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -572,6 +572,23 @@ SQL_QUERY;
 	protected function _databaseUpdate_22() {
 		$sqlUpd = array();
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
+		return $sqlUpd;
+	}
+
+	/**
+	 * Add domain expiration field
+	 *
+	 * @author		Daniel Andreca
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.2
+	 * @since		r1955
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_23() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS​', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'";
 		return $sqlUpd;
 	}
 

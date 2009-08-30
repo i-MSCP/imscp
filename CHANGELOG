@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-08-30 Andreca Daniel
 	- ENGINE:
 		* Update for ispcp-update
+	- GUI:
+		* Fixed #1959: Bad characters in changeset r1953
 
 2009-08-30 Marc Pujol
 	- ENGINE:

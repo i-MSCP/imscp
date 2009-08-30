@@ -90,7 +90,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '22'),
+('DATABASE_REVISION', '23'),
 ('CRITICAL_UPDATE_REVISION', '3'),
 
 -- --------------------------------------------------------
@@ -167,16 +167,16 @@ CREATE TABLE `domain_aliasses` (
 -- Table structure for table `domain_dns`
 --
 
-CREATE TABLE `domain_dns` (
+CCREATE TABLE IF NOT EXISTS `domain_dns` (
   `domain_dns_id` int(11) NOT NULL auto_increment,
   `domain_id` int(11) NOT NULL,
   `alias_id` int(11) default NULL,
   `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
-  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS â€‹','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`domain_dns_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
