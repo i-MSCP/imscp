@@ -139,25 +139,4 @@ ${CMD_CHMOD} 0755 $i;
 ${CMD_CHOWN} -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
 
 
-#
-# fixing lock file permissions;
-#
-if [ ! -f ${MR_LOCK_FILE} ]; then
-    if [ $DEBUG -eq 1 ]; then
-        echo "creating lock file ${MR_LOCK_FILE}";
-    else
-        echo -n ".";
-    fi
-    ${CMD_TOUCH} ${MR_LOCK_FILE}
-fi
-
-if [ $DEBUG -eq 1 ]; then
-    echo "0440 $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${MR_LOCK_FILE}";
-else
-    echo -n ".";
-fi
-${CMD_CHMOD} 0440 ${MR_LOCK_FILE};
-${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${MR_LOCK_FILE}
-
-
 echo "done";

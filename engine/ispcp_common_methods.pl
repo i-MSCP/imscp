@@ -1439,7 +1439,7 @@ sub prep_tpl {
 sub lock_system {
     push_el(\@main::el, 'lock_system()', 'Starting...');
 
-    my $res = open(my $fh, '<', $main::lock_file);
+    my $res = open(my $fh, '>', $main::lock_file);
     if (!$res) { 
         push_el(\@main::el, 'lock_system()', 'ERROR: unable to open lock file!');
         return -1;
