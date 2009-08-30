@@ -167,7 +167,7 @@ CREATE TABLE `domain_aliasses` (
 -- Table structure for table `domain_dns`
 --
 
-CCREATE TABLE IF NOT EXISTS `domain_dns` (
+CREATE TABLE IF NOT EXISTS `domain_dns` (
   `domain_dns_id` int(11) NOT NULL auto_increment,
   `domain_id` int(11) NOT NULL,
   `alias_id` int(11) default NULL,
