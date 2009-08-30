@@ -91,7 +91,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
 ('DATABASE_REVISION', '22'),
-('CRITICAL_UPDATE_REVISION', '2'),
+('CRITICAL_UPDATE_REVISION', '3'),
 
 -- --------------------------------------------------------
 
