@@ -783,35 +783,39 @@ sub mngr_engine {
 	# Network card management BEGIN.
 	#
 
-	$sql = "SELECT `ip_id` FROM `server_ips` WHERE `ip_status` != 'ok'";
-	($rs, $rdata) = doSQL($sql);
-
-	my $ip_count = @$rdata;
-
-	$sql = "SELECT `value` FROM `config` WHERE `name` = 'DATABASE_REVISION';";
+	$sql = "SELECT `value` FROM `config` WHERE `name` = 'CRITICAL_UPDATE_REVISION';";
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	my $version = @$rdata[0];
+	
+	if (@$version[0] >= 3) {
 
-	if ($ip_count > 0 && @$version[0] >= 18) {
+		$sql = "SELECT `ip_id` FROM `server_ips` WHERE `ip_status` != 'ok'";
+		($rs, $rdata) = doSQL($sql);
 
-		$rs = sys_command("$main::ispcp_net_interfaces_mngr stop 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+		my $ip_count = @$rdata;
 
-		if (!defined($main::engine_debug)) {
-			del_file($main::ispcp_net_interfaces_mngr_stdout);
+
+		if ($ip_count > 0) {
+
+			$rs = sys_command("$main::ispcp_net_interfaces_mngr stop 1>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+
+			if (!defined($main::engine_debug)) {
+				del_file($main::ispcp_net_interfaces_mngr_stdout);
+			}
+
+			return $rs if($rs != 0);
+
+			$rs = sys_command("$main::ispcp_net_interfaces_mngr start 1>>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
+
+			if (!defined($main::engine_debug)) {
+				del_file($main::ispcp_net_interfaces_mngr_stdout);
+			}
+
+			return $rs if($rs != 0);
+
 		}
-
-		return $rs if($rs != 0);
-
-		$rs = sys_command("$main::ispcp_net_interfaces_mngr start 1>>$main::ispcp_net_interfaces_mngr_stdout 2>&1");
-
-		if (!defined($main::engine_debug)) {
-			del_file($main::ispcp_net_interfaces_mngr_stdout);
-		}
-
-		return $rs if($rs != 0);
-
 	}
 
 	#

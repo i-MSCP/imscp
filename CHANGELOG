@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-30 Andreca Daniel
+	- ENGINE:
+		* Update for ispcp-update
+
 2009-08-30 Marc Pujol
 	- ENGINE:
 		* Fixed a race condition bug in the locking code
@@ -8,7 +12,7 @@ ispCP ω 1.0.3 Changelog
 	- GUI:
 		* Fixed #1954: GUI/Frontend locking issues
 
-2009-08-27 Andreca Daniel
+2009-08-28 Andreca Daniel
 	- ENGINE:
 		* Fixed #1958: Gui Permissions Problem
 

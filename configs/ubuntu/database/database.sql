@@ -39,7 +39,7 @@ CREATE TABLE `admin` (
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -51,7 +51,7 @@ CREATE TABLE `auto_num` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `msg` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -86,12 +86,12 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1;localhost'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1;localhost'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1;localhost'),
-('SHOW_SERVERLOAD' , '1'),
+('SHOW_SERVERLOAD', '1'),
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '19'),
-('CRITICAL_UPDATE_REVISION', 3);
+('DATABASE_REVISION', '22'),
+('CRITICAL_UPDATE_REVISION', '2'),
 
 -- --------------------------------------------------------
 
@@ -122,6 +122,7 @@ CREATE TABLE `domain` (
   `domain_admin_id` int(10) unsigned NOT NULL default '0',
   `domain_created_id` int(10) unsigned NOT NULL default '0',
   `domain_created` int(10) unsigned NOT NULL default '0',
+  `domain_expires` int(10) unsigned NOT NULL default '0',
   `domain_last_modified` int(10) unsigned NOT NULL default '0',
   `domain_mailacc_limit` int(11) default NULL,
   `domain_ftpacc_limit` int(11) default NULL,
@@ -141,7 +142,7 @@ CREATE TABLE `domain` (
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -158,7 +159,7 @@ CREATE TABLE `domain_aliasses` (
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`alias_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -172,10 +173,10 @@ CREATE TABLE `domain_dns` (
   `alias_id` int(11) default NULL,
   `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
-  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS ​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS â€‹','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`domain_dns_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -185,14 +186,14 @@ CREATE TABLE `domain_dns` (
 
 CREATE TABLE `domain_traffic` (
   `dtraff_id` int(10) unsigned NOT NULL auto_increment,
-  `domain_id` int(10) unsigned DEFAULT NULL,
-  `dtraff_time` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_web` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_ftp` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_mail` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_pop` bigint(20) unsigned DEFAULT NULL,
-  `correction` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`dtraff_id`),
+  `domain_id` int(10) unsigned default NULL,
+  `dtraff_time` bigint(20) unsigned default NULL,
+  `dtraff_web` bigint(20) unsigned default NULL,
+  `dtraff_ftp` bigint(20) unsigned default NULL,
+  `dtraff_mail` bigint(20) unsigned default NULL,
+  `dtraff_pop` bigint(20) unsigned default NULL,
+  `correction` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`dtraff_id`),
   KEY `i_correction` (`correction`),
   KEY `i_domain_id` (`domain_id`),
   KEY `i_dtraff_time` (`dtraff_time`)
@@ -276,7 +277,7 @@ CREATE TABLE `hosting_plans` (
   `payment` varchar(255) collate utf8_unicode_ci default NULL,
   `status` int(10) unsigned NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -309,7 +310,7 @@ CREATE TABLE `htaccess_groups` (
   `members` text collate utf8_unicode_ci,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -324,7 +325,7 @@ CREATE TABLE `htaccess_users` (
   `upass` varchar(255) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -337,7 +338,7 @@ CREATE TABLE `log` (
   `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `log_message` varchar(250) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`log_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -375,7 +376,7 @@ CREATE TABLE `mail_users` (
   `quota` int(10) default '10485760',
   `mail_addr` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`mail_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -427,17 +428,17 @@ CREATE TABLE `orders_settings` (
 --
 
 CREATE TABLE `quotalimits` (
-  `name` varchar(30) DEFAULT NULL,
-  `quota_type` enum('user','group','class','all') NOT NULL DEFAULT 'user',
-  `per_session` enum('false','true') NOT NULL DEFAULT 'false',
-  `limit_type` enum('soft','hard') NOT NULL DEFAULT 'soft',
-  `bytes_in_avail` float NOT NULL DEFAULT '0',
-  `bytes_out_avail` float NOT NULL DEFAULT '0',
-  `bytes_xfer_avail` float NOT NULL DEFAULT '0',
-  `files_in_avail` int(10) unsigned NOT NULL DEFAULT '0',
-  `files_out_avail` int(10) unsigned NOT NULL DEFAULT '0',
-  `files_xfer_avail` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`name`)
+  `name` varchar(30) collate utf8_unicode_ci NOT NULL default '',
+  `quota_type` enum('user','group','class','all') collate utf8_unicode_ci NOT NULL default 'user',
+  `per_session` enum('false','true') collate utf8_unicode_ci NOT NULL default 'false',
+  `limit_type` enum('soft','hard') collate utf8_unicode_ci NOT NULL default 'soft',
+  `bytes_in_avail` float NOT NULL default '0',
+  `bytes_out_avail` float NOT NULL default '0',
+  `bytes_xfer_avail` float NOT NULL default '0',
+  `files_in_avail` int(10) unsigned NOT NULL default '0',
+  `files_out_avail` int(10) unsigned NOT NULL default '0',
+  `files_xfer_avail` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -447,15 +448,15 @@ CREATE TABLE `quotalimits` (
 --
 
 CREATE TABLE `quotatallies` (
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `quota_type` enum('user','group','class','all') NOT NULL DEFAULT 'user',
-  `bytes_in_used` float NOT NULL DEFAULT '0',
-  `bytes_out_used` float NOT NULL DEFAULT '0',
-  `bytes_xfer_used` float NOT NULL DEFAULT '0',
-  `files_in_used` int(10) unsigned NOT NULL DEFAULT '0',
-  `files_out_used` int(10) unsigned NOT NULL DEFAULT '0',
-  `files_xfer_used` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`name`)
+  `name` varchar(30) collate utf8_unicode_ci NOT NULL default '',
+  `quota_type` enum('user','group','class','all') collate utf8_unicode_ci NOT NULL default 'user',
+  `bytes_in_used` float NOT NULL default '0',
+  `bytes_out_used` float NOT NULL default '0',
+  `bytes_xfer_used` float NOT NULL default '0',
+  `files_in_used` int(10) unsigned NOT NULL default '0',
+  `files_out_used` int(10) unsigned NOT NULL default '0',
+  `files_xfer_used` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -488,7 +489,7 @@ CREATE TABLE `reseller_props` (
   `customer_id` varchar(200) collate utf8_unicode_ci default NULL,
   `reseller_ips` text collate utf8_unicode_ci,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -505,7 +506,7 @@ CREATE TABLE `server_ips` (
   `ip_ssl_domain_id` int(10) default NULL,
   `ip_status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `ip_id` (`ip_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -515,19 +516,19 @@ CREATE TABLE `server_ips` (
 
 CREATE TABLE `server_traffic` (
   `straff_id` int(10) unsigned NOT NULL auto_increment,
-  `traff_time` int(10) unsigned DEFAULT NULL,
-  `bytes_in` bigint(20) unsigned DEFAULT NULL,
-  `bytes_out` bigint(20) unsigned DEFAULT NULL,
-  `bytes_mail_in` bigint(20) unsigned DEFAULT NULL,
-  `bytes_mail_out` bigint(20) unsigned DEFAULT NULL,
-  `bytes_pop_in` bigint(20) unsigned DEFAULT NULL,
-  `bytes_pop_out` bigint(20) unsigned DEFAULT NULL,
-  `bytes_web_in` bigint(20) unsigned DEFAULT NULL,
-  `bytes_web_out` bigint(20) unsigned DEFAULT NULL,
-  `correction` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`straff_id`),
-  KEY (`correction`),
-  KEY (`traff_time`)
+  `traff_time` int(10) unsigned default NULL,
+  `bytes_in` bigint(20) unsigned default NULL,
+  `bytes_out` bigint(20) unsigned default NULL,
+  `bytes_mail_in` bigint(20) unsigned default NULL,
+  `bytes_mail_out` bigint(20) unsigned default NULL,
+  `bytes_pop_in` bigint(20) unsigned default NULL,
+  `bytes_pop_out` bigint(20) unsigned default NULL,
+  `bytes_web_in` bigint(20) unsigned default NULL,
+  `bytes_web_out` bigint(20) unsigned default NULL,
+  `correction` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`straff_id`),
+  KEY `correction` (`correction`),
+  KEY `traff_time` (`traff_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -541,7 +542,7 @@ CREATE TABLE `sql_database` (
   `domain_id` int(10) unsigned default '0',
   `sqld_name` varchar(64) character set utf8 collate utf8_bin default 'n/a',
   UNIQUE KEY `sqld_id` (`sqld_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -555,7 +556,7 @@ CREATE TABLE `sql_user` (
   `sqlu_name` varchar(64) collate utf8_unicode_ci default 'n/a',
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
   UNIQUE KEY `sqlu_id` (`sqlu_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -564,9 +565,9 @@ CREATE TABLE `sql_user` (
 --
 
 CREATE TABLE `straff_settings` (
-  `straff_max` int(10) unsigned DEFAULT NULL,
-  `straff_warn` int(10) unsigned DEFAULT NULL,
-  `straff_email` int(10) unsigned DEFAULT NULL
+  `straff_max` int(10) unsigned default NULL,
+  `straff_warn` int(10) unsigned default NULL,
+  `straff_email` int(10) unsigned default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -588,7 +589,7 @@ CREATE TABLE `subdomain` (
   `subdomain_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -603,7 +604,7 @@ CREATE TABLE `subdomain_alias` (
   `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_alias_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -653,4 +654,4 @@ CREATE TABLE `user_gui_props` (
   `layout` varchar(255) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

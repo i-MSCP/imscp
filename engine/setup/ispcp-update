@@ -551,6 +551,40 @@ sub update_conf {
 	return 0;
 }
 
+sub patch_ispcp_v1_0_2{
+	push_el(\@main::el, 'patch_ispcp_v1_0_2()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	# database upgrade
+    print STDOUT "\tUpgrading database structure...";
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0-ispcp.sql");
+	return $rs if ($rs != 0);
+
+	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$main::db_pwd =~ s/([\'\"])/\\$1/g;
+	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host='$main::db_host' -u'$main::db_user' -p'$main::db_pwd' < /tmp/db.sql");
+	if ($rs != 0) {
+	print STDOUT "failed!\n";
+		exit_werror("SQL Update failed.");
+	}
+
+	print STDOUT "done\n";
+	
+	# Rebuild system configs:
+	print STDOUT "\tRebuilding system configurations...";
+	
+	$rs = sys_command("$main::cfg{'CMD_RM'} -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`"); 
+	return $rs if ($rs != 0);
+
+	print STDOUT "done\n";
+
+	push_el(\@main::el, 'patch_ispcp_v1_0_2()', 'Ending...');
+	return 0;
+}
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -606,10 +640,16 @@ sub prepare_update {
    		print STDOUT "\t Update failed!\n";
 		exit_werror("ispCP Update failed.");
 	}
-
-	$rs = sys_command("rm -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`"); 
-	return $rs if ($rs != 0);
-
+	
+	# patch installation
+	if ($main::ua{'update'} == ISPCP_V1_0_0) {
+		#nothing to do;
+	}
+	if ($main::ua{'update'} == ISPCP_V1_0_2) {
+		$rs = patch_ispcp_v1_0_2();
+		exit_werror("ispCP Update failed.") if ($rs != 0);
+	}
+	
 	print STDOUT "Rebuild config\n";
 	$rs = rebuild_configs();
 	if ($rs != 0) {

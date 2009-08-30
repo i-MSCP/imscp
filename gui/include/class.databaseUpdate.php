@@ -571,9 +571,7 @@ SQL_QUERY;
 	 */
 	protected function _databaseUpdate_22() {
 		$sqlUpd = array();
-		$sqlUpd[] = <<<SQL_QUERY
-		ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`
-SQL_QUERY;
+		$sqlUpd[] = "ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
 		return $sqlUpd;
 	}
 
