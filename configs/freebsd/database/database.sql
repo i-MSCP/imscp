@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
   `alias_id` int(11) default NULL,
   `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
-  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
+  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`domain_dns_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
