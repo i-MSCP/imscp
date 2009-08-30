@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:21+0200\n"
+"POT-Creation-Date: 2009-08-30 23:21+0300\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -51,26 +51,29 @@ msgstr "Funkce pro obnovu zapomenutého hesla není dostupná"
 msgid "ispCP - Virtual Hosting Control System"
 msgstr "ispCP - Ovládací centrum virtuálního hostingu"
 
-msgid "Password sent"
-msgstr "Heslo bylo odesláno"
-
-msgid "ERROR: Password was not sent"
-msgstr "Chyba: Heslo nebylo odesláno"
-
-msgid "The password was requested"
+#, fuzzy
+msgid "Your new password has been sent."
 msgstr "Heslo bylo vyžádáno"
+
+msgid "New password could not been sent."
+msgstr ""
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
 
 msgid "Back"
 msgstr "Zpět"
 
-msgid "ERROR: Unknown user"
-msgstr "CHYBA: Neznámý uživatel"
+#, fuzzy
+msgid "User or security code was incorrect!"
+msgstr "CHYBA: Bezpečnostní kód nebyl správný!"
 
 msgid "Retry"
 msgstr "Zkusit znovu"
-
-msgid "ERROR: Security code was not correct!"
-msgstr "CHYBA: Bezpečnostní kód nebyl správný!"
 
 msgid "Security code"
 msgstr "Bezpečnostní kód"
@@ -509,6 +512,13 @@ msgstr "Upravit doménu"
 msgid "Domain properties"
 msgstr "Nastavení domény"
 
+#, fuzzy
+msgid "Domain expire"
+msgstr "Vlastnosti domény"
+
+msgid "New expire date"
+msgstr ""
+
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximální počet subdomén<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
@@ -555,8 +565,15 @@ msgid "Yes"
 msgstr "Budiž"
 
 msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr ""
+
+msgid ""
 "User does not exist or you do not have permission to access this interface!"
 msgstr "Uživatel neexistuje nebo nemáte práva přístupu k rozhraní!"
+
+msgid "N/A"
+msgstr "N/A"
 
 msgid "Incorrect subdomains limit!"
 msgstr "Chybný limit subdomén!"
@@ -685,11 +702,53 @@ msgstr "Všechna přenesená data"
 msgid "Day"
 msgstr "Den"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrátor/Přidat plán hostingu"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrátor/Správa plánů hostingu"
+
+msgid "Hosting plans"
+msgstr "Plány hostingu"
+
+msgid "Manage hosting plans"
+msgstr "Správa plánů hostingu"
+
+msgid "Purchasing"
+msgstr "Objednat"
 
 msgid "Add hosting plan"
 msgstr "Přidat plán hostingu"
+
+msgid "Add new user hosting plan"
+msgstr "Přidat nový uživatelský plán hostingu"
+
+msgid "Return to previous menu"
+msgstr "Návrat na předchozí menu"
+
+msgid "Hosting plan added!"
+msgstr "Plán hostingu přidán!"
+
+msgid "Hosting plan deleted!"
+msgstr "Plán hostingu smazán!"
+
+msgid "Hosting plan updated!"
+msgstr "Plán hostingu aktualizován!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Plán hostingu nemůže být smazán, jsou zde objednávky!"
+
+msgid "Hosting plans not found!"
+msgstr "Plán hostingu nenalezen!"
+
+msgid "No."
+msgstr "Č."
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid "Show hosting plan"
+msgstr "Zobrazit plány hostingu"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrátor/Přidat plán hostingu"
 
 msgid "Hosting plan properties"
 msgstr "Vlastnosti plánu hostingu"
@@ -808,48 +867,6 @@ msgstr "Nesprávná cena. Např.: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Nesprávný zřizovací poplatek. Např.: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administrátor/Správa plánů hostingu"
-
-msgid "Hosting plans"
-msgstr "Plány hostingu"
-
-msgid "Manage hosting plans"
-msgstr "Správa plánů hostingu"
-
-msgid "Purchasing"
-msgstr "Objednat"
-
-msgid "Add new user hosting plan"
-msgstr "Přidat nový uživatelský plán hostingu"
-
-msgid "Return to previous menu"
-msgstr "Návrat na předchozí menu"
-
-msgid "Hosting plan added!"
-msgstr "Plán hostingu přidán!"
-
-msgid "Hosting plan deleted!"
-msgstr "Plán hostingu smazán!"
-
-msgid "Hosting plan updated!"
-msgstr "Plán hostingu aktualizován!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Plán hostingu nemůže být smazán, jsou zde objednávky!"
-
-msgid "Hosting plans not found!"
-msgstr "Plán hostingu nenalezen!"
-
-msgid "No."
-msgstr "Č."
-
-msgid "Name"
-msgstr "Jméno"
-
-msgid "Show hosting plan"
-msgstr "Zobrazit plány hostingu"
-
 #, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr "Máte <b>%d</b> nových otázek na podporu"
@@ -897,9 +914,6 @@ msgstr "ispCP - Admin/Správa IP adres"
 
 msgid "Remove IP"
 msgstr "Smazat IP adresu"
-
-msgid "N/A"
-msgstr "N/A"
 
 msgid "New IP was added!"
 msgstr "Byla přidána nová IP adresa!"
@@ -1016,10 +1030,6 @@ msgstr "Dostupné ispCP aktualizace"
 msgid "No new ispCP updates available"
 msgstr "Nejsou dostupné ispCP aktualizace"
 
-#, fuzzy
-msgid "Language was removed!"
-msgstr "Jazyk byl aktualizován!"
-
 msgid "User language updated successfully!"
 msgstr "Jazyk uživatele úspěšně aktualizován!"
 
@@ -1031,6 +1041,10 @@ msgstr "Jazyk"
 
 msgid "Choose default language"
 msgstr "Zvolit výchozí jazyk"
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Jazyk byl aktualizován!"
 
 msgid "Reseller list is empty!"
 msgstr "Seznam partnerů je prázdný!"
@@ -1147,9 +1161,6 @@ msgstr "Uživatel má doménu!<br>Pro smazání uživatele nejprve smažte domé
 msgid "User was disabled"
 msgstr "Uživatel byl zakázán"
 
-msgid "Incorrect data input!"
-msgstr "Nesprávně vložená data!"
-
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Jazykové nastavení"
 
@@ -1207,6 +1218,9 @@ msgstr "Instalovat"
 
 msgid "Export"
 msgstr "Export"
+
+msgid "Incorrect data input!"
+msgstr "Nesprávně vložená data!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Admin/Změnit heslo"
@@ -1491,23 +1505,11 @@ msgstr "%s neexistuje nebo je prázdný"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits Tools Log Checker"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Admin/Denní statistiky serveru"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Statistiky serveru"
 
-msgid "Server day statistics"
-msgstr "Denní statistiky serveru"
-
-msgid "Month:"
-msgstr "Měsíc:"
-
-msgid "Year:"
-msgstr "Rok:"
-
-msgid "Day:"
-msgstr "Den:"
-
-msgid "Hour"
-msgstr "Hodina"
+msgid "Server statistics"
+msgstr "Statistiky serveru"
 
 msgid "Web in"
 msgstr "Web příchozí"
@@ -1543,11 +1545,23 @@ msgstr "Vše příchozí"
 msgid "All out"
 msgstr "Vše odchozí"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Admin/Statistiky serveru"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Denní statistiky serveru"
 
-msgid "Server statistics"
-msgstr "Statistiky serveru"
+msgid "Server day statistics"
+msgstr "Denní statistiky serveru"
+
+msgid "Month:"
+msgstr "Měsíc:"
+
+msgid "Year:"
+msgstr "Rok:"
+
+msgid "Day:"
+msgstr "Den:"
+
+msgid "Hour"
+msgstr "Hodina"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Admin / Sytémové nástroje / Stav serveru"
@@ -1584,6 +1598,117 @@ msgstr "Možnosti"
 
 msgid "Kill session"
 msgstr "Ukončit relaci"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Nastavení"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "Chyba: Jsou povolena jen kladná čísla!"
+
+msgid "Settings saved !"
+msgstr "Nastavení uloženo!"
+
+msgid "General settings"
+msgstr "Hlavní nastavení"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktivační link vyprší za (minuty)"
+
+msgid "Password settings"
+msgstr "Nastavení hesla"
+
+msgid "Use strong Passwords"
+msgstr "Používat silná hesla"
+
+msgid "Password length"
+msgstr "Délka hesla"
+
+msgid "Bruteforce detection"
+msgstr "Detekce útoku hrubou silou"
+
+msgid "Block time between logins"
+msgstr "Čas blokování mezi přihlášením"
+
+msgid "Max number of login attempts"
+msgstr "Maximální počet pokusů o přihlášení"
+
+msgid "Blocktime (minutes)"
+msgstr "Čas blokování (minuty)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Čas blokování mezi přihlášením (sekundy)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Maximální počet pokusů o CAPTCHA ověření"
+
+msgid "Other settings"
+msgstr "Další nastavení"
+
+msgid "E-Mail settings"
+msgstr "Nastavení E-mailů"
+
+msgid "Create default E-Mail addresses"
+msgstr "Vytvořit standardní E-mailové adresy"
+
+#, fuzzy
+msgid "Count default E-Mail addresses"
+msgstr "Vytvořit standardní E-mailové adresy"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "E-Mailové účty jsou tvrdě pozastaveny"
+
+msgid "Default language"
+msgstr "Výchozí jazyk"
+
+msgid "Support system"
+msgstr "Systém podpory"
+
+msgid "Apply changes"
+msgstr "Provést změny"
+
+msgid "Server ports"
+msgstr "Porty serveru"
+
+msgid "Hosting plans available for"
+msgstr "Hostingové plány dostupné pro"
+
+msgid "Admin"
+msgstr "Administrátor"
+
+msgid "Domains per page"
+msgstr "Domén na stránku"
+
+msgid "Log Level"
+msgstr "Úroveň protokolování"
+
+msgid "Notices, Warnings and Errors"
+msgstr "Upozornění, varování a chyby"
+
+msgid "Warnings and Errors"
+msgstr "Varování a chyby"
+
+msgid "Errors"
+msgstr "Chyby"
+
+msgid "Check for update"
+msgstr "Zkontrolovat aktualizace"
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Vyplňte prosím vaše přihlašovací údaje"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Custom orderpanel ID"
+msgstr "ID zákazníka"
 
 msgid "You can only upload images!"
 msgstr "Můžete nahrávat jen obrázky!"
@@ -1666,9 +1791,6 @@ msgstr "Zapomenuté heslo - odkaz"
 msgid "Subject"
 msgstr "Předmět"
 
-msgid "Apply changes"
-msgstr "Provést změny"
-
 msgid "URL to this admin panel"
 msgstr "URL tohoto administračního panelu"
 
@@ -1679,115 +1801,11 @@ msgstr "Protocol"
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Admin/Servisní mód"
 
-msgid "Settings saved !"
-msgstr "Nastavení uloženo!"
-
 msgid "Maintenance mode"
 msgstr "Servisní mód"
 
 msgid "Under this mode only administrators can login"
 msgstr "V tomto módu se mohou přihlásit pouze administrátoři"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Admin/Nastavení"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "Chyba: Jsou povolena jen kladná čísla!"
-
-msgid "General settings"
-msgstr "Hlavní nastavení"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Aktivační link vyprší za (minuty)"
-
-msgid "Password settings"
-msgstr "Nastavení hesla"
-
-msgid "Use strong Passwords"
-msgstr "Používat silná hesla"
-
-msgid "Password length"
-msgstr "Délka hesla"
-
-msgid "Bruteforce detection"
-msgstr "Detekce útoku hrubou silou"
-
-msgid "Block time between logins"
-msgstr "Čas blokování mezi přihlášením"
-
-msgid "Max number of login attempts"
-msgstr "Maximální počet pokusů o přihlášení"
-
-msgid "Blocktime (minutes)"
-msgstr "Čas blokování (minuty)"
-
-msgid "Block time between logins (seconds)"
-msgstr "Čas blokování mezi přihlášením (sekundy)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Maximální počet pokusů o CAPTCHA ověření"
-
-msgid "Other settings"
-msgstr "Další nastavení"
-
-msgid "E-Mail settings"
-msgstr "Nastavení E-mailů"
-
-msgid "Create default E-Mail addresses"
-msgstr "Vytvořit standardní E-mailové adresy"
-
-#, fuzzy
-msgid "Count default E-Mail addresses"
-msgstr "Vytvořit standardní E-mailové adresy"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "E-Mailové účty jsou tvrdě pozastaveny"
-
-msgid "Default language"
-msgstr "Výchozí jazyk"
-
-msgid "Support system"
-msgstr "Systém podpory"
-
-msgid "Server ports"
-msgstr "Porty serveru"
-
-msgid "Hosting plans available for"
-msgstr "Hostingové plány dostupné pro"
-
-msgid "Admin"
-msgstr "Administrátor"
-
-msgid "Domains per page"
-msgstr "Domén na stránku"
-
-msgid "Log Level"
-msgstr "Úroveň protokolování"
-
-msgid "Notices, Warnings and Errors"
-msgstr "Upozornění, varování a chyby"
-
-msgid "Warnings and Errors"
-msgstr "Varování a chyby"
-
-msgid "Errors"
-msgstr "Chyby"
-
-msgid "Check for update"
-msgstr "Zkontrolovat aktualizace"
-
-msgid "Show server load"
-msgstr ""
-
-#, fuzzy
-msgid "Prevent external login for admins"
-msgstr "Vyplňte prosím vaše přihlašovací údaje"
-
-msgid "Prevent external login for resellers"
-msgstr ""
-
-msgid "Prevent external login for clients"
-msgstr ""
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "Chyba: Povolená jsou jen písmena, čísla, pomlčka a podtržítko!"
@@ -1990,14 +2008,14 @@ msgstr "ispCP - Klient : Systém podpory: Zobrazit požadavky"
 msgid "Please type your message!"
 msgstr "Prosím zadejte zprávu!"
 
+msgid "Message was sent."
+msgstr "Zpráva byla odeslána."
+
 msgid "Ticket was closed!"
 msgstr "Požadavek byl uzavřen!"
 
 msgid "Ticket was reopened!"
 msgstr "Požadavek byl znovu otevřen!"
-
-msgid "Message was sent."
-msgstr "Zpráva byla odeslána."
 
 msgid "ispCP - Admin: Support System: View Ticket"
 msgstr "ispCP - Admin : Systém podpory: Zobrazit požadavky"
@@ -2010,6 +2028,57 @@ msgstr "Zaslat odpověď"
 
 msgid "Send reply"
 msgstr "Odpovědět"
+
+#, fuzzy
+msgid "ispCP - Delete Domain"
+msgstr "ispCP - Klient/Správa Domén"
+
+msgid "Wrong domain ID!"
+msgstr "Špatné ID domény!"
+
+#, fuzzy
+msgid "Invalid user id!"
+msgstr "Nesprávné id účtu!"
+
+msgid "There are active domains of reseller/admin!"
+msgstr ""
+
+#, fuzzy
+msgid "Delete domain"
+msgstr "Reálná doména"
+
+#, fuzzy
+msgid "Domain summary:"
+msgstr "Doménový mail"
+
+#, fuzzy
+msgid "Domain e-mails:"
+msgstr "Doménové maily"
+
+#, fuzzy
+msgid "Domain FTP accounts:"
+msgstr "Doménový účet"
+
+#, fuzzy
+msgid "Domain aliases:"
+msgstr "Doménové aliasy"
+
+#, fuzzy
+msgid "Domain subdomains:"
+msgstr "K mé doméně"
+
+#, fuzzy
+msgid "Domain databases:"
+msgstr "Doménové aliasy"
+
+msgid ""
+"Do you really want to delete the entire domain? This operation can not be "
+"undone!"
+msgstr ""
+
+#, fuzzy
+msgid "Yes, delete the domain."
+msgstr "%s smazal celý admin záznam!"
 
 msgid "ispCP Client : Add Alias"
 msgstr "ispCP klient: Přidat alias"
@@ -2325,6 +2394,24 @@ msgstr ""
 msgid "Unknown zone type %s!"
 msgstr "Neznámý typ!"
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Klient/Statistika domény"
+
+msgid "Web Stats"
+msgstr "Web statistiky"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Celkem"
+
 #, fuzzy
 msgid "Manual zone's records list is empty!"
 msgstr "Seznam poštovních účtů je prázdný!"
@@ -2360,24 +2447,6 @@ msgstr "Akce"
 #, fuzzy
 msgid "Record data"
 msgstr "Základní údaje"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Klient/Statistika domény"
-
-msgid "Web Stats"
-msgstr "Web statistiky"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
-
-msgid "Sum"
-msgstr "Celkem"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Klient/Správa uživatelské chybové stránky"
@@ -2554,11 +2623,19 @@ msgstr "Podpora PHP: zapnuta"
 msgid "PHP Support: disabled"
 msgstr "Podpora PHP: vypnuta"
 
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
 msgid "CGI Support: enabled"
 msgstr "Podpora CGI: zapnuta"
 
 msgid "CGI Support: disabled"
 msgstr "Podpora CGI: vypnuta"
+
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
 
 #, fuzzy
 msgid "DNS Support: enabled"
@@ -2568,26 +2645,93 @@ msgstr "Podpora PHP: zapnuta"
 msgid "DNS Support: disabled"
 msgstr "Podpora PHP: vypnuta"
 
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "You have more disk space in use than the new hosting plan limits."
+msgstr ""
+
 msgid "Disk limit"
 msgstr "Diskový prostor"
+
+msgid "You have more traffic than the new hosting plan limits."
+msgstr ""
 
 msgid "Traffic limit"
 msgstr "Přenesená data"
 
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr ""
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr ""
+
+msgid "You have more Email addresses in use than the new hosting plan limits."
+msgstr ""
+
 msgid "Emails"
 msgstr "Emaily"
+
+msgid "You have more FTP accounts in use than the new hosting plan limits."
+msgstr ""
 
 msgid "FTPs"
 msgstr "FTP účty"
 
+msgid "You have more SQL databases in use than the new hosting plan limits."
+msgstr ""
+
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
+msgstr ""
+
 msgid "free of charge"
 msgstr "bez poplatku"
+
+msgid "You can not update to this hosting plan, see notices in text."
+msgstr ""
+
+msgid "Warning:"
+msgstr ""
+
+#, fuzzy
+msgid "Error:"
+msgstr "Chyba"
+
+msgid "I know about the warnings - Purchase!"
+msgstr ""
 
 msgid "There are no available hosting plans for update"
 msgstr "Nejsou k dispozici žádná vylepšení hostingových balíčků"
 
 msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Vylepšit plán hostingu"
+
+msgid "You have more disk space in use than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more traffic than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more aliases in use than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more subdomains in use than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more Email addresses in use than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more FTP accounts in use than the new hosting plan limits"
+msgstr ""
+
+msgid "You have more SQL databases in use than the new hosting plan limits"
+msgstr ""
+
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits"
+msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Váš požadavek na update hostingového balíčku byl uspěšně přidán."
@@ -2771,6 +2915,21 @@ msgstr "Vaše zpráva"
 msgid "Enable mail auto responder"
 msgstr "Zapnout automatickou odpověď"
 
+msgid "Delete CatchAll"
+msgstr "Odtranit doménový koš"
+
+msgid "None"
+msgstr "Žádný"
+
+msgid "Create catch all"
+msgstr "Vytvořit doménový koš"
+
+msgid "Catch all account"
+msgstr "Doménový koš"
+
+msgid "Catch all"
+msgstr "Doménový koš"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Bylo naplánováno vytvoření doménového koše!"
 
@@ -2786,23 +2945,8 @@ msgstr "Vytvořit doménový koš"
 msgid "Mail accounts list"
 msgstr "Seznam poštovních účtů"
 
-msgid "Create catch all"
-msgstr "Vytvořit doménový koš"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "Doménový koš byl naplánován k odstranění!"
-
-msgid "Delete CatchAll"
-msgstr "Odtranit doménový koš"
-
-msgid "None"
-msgstr "Žádný"
-
-msgid "Catch all account"
-msgstr "Doménový koš"
-
-msgid "Catch all"
-msgstr "Doménový koš"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Prosím odstraňte nejprve doménový koš pro tento email!"
@@ -2824,6 +2968,30 @@ msgstr "ispCP - Klient/Změnit Heslo"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Klient/Změnit osobní údaje"
+
+msgid "You do not have protected areas"
+msgstr "Nemáte chráněné oblasti"
+
+msgid "Manage users and groups"
+msgstr "Správa uživatelů a skupin"
+
+msgid "Add user"
+msgstr "Přidat uživatele"
+
+msgid "Group name"
+msgstr "Jméno skupiny"
+
+msgid "Group members"
+msgstr "Členové skupiny"
+
+msgid "Add group"
+msgstr "Přidat skupinu"
+
+msgid "Group"
+msgstr "Skupina"
+
+msgid "Add new protected area"
+msgstr "Přidat chráněnou zónu"
 
 msgid "Please choose user or group"
 msgstr "Prosím vyberte uživatele nebo skupinu"
@@ -2880,9 +3048,6 @@ msgstr "Název oblasti"
 msgid "Unprotect it"
 msgstr "Nechránit"
 
-msgid "Manage users and groups"
-msgstr "Správa uživatelů a skupin"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "Status chráněné oblasti by měl být OK jestli ji chcete smazat!"
 
@@ -2891,27 +3056,6 @@ msgstr "Chráněná oblast byla odstraněna úspěšně!"
 
 msgid "Permission deny!"
 msgstr "Přístup odepřen!"
-
-msgid "You do not have protected areas"
-msgstr "Nemáte chráněné oblasti"
-
-msgid "Add user"
-msgstr "Přidat uživatele"
-
-msgid "Group name"
-msgstr "Jméno skupiny"
-
-msgid "Group members"
-msgstr "Členové skupiny"
-
-msgid "Add group"
-msgstr "Přidat skupinu"
-
-msgid "Group"
-msgstr "Skupina"
-
-msgid "Add new protected area"
-msgstr "Přidat chráněnou zónu"
 
 msgid "Protected area was deleted successful!"
 msgstr "Chráněná oblast byla smazána úspěšně!"
@@ -3097,6 +3241,156 @@ msgstr "Přidat existujícího uživatele"
 
 msgid "Existing SQL users"
 msgstr "Existující uživatelé SQL"
+
+#, fuzzy
+msgid "ispCP - Client/SSL Domains"
+msgstr "ispCP - Klient/Správa Domén"
+
+msgid "Key identifier already used in one crt!\n"
+msgstr ""
+
+msgid "Field Country must be 2 char long!\n"
+msgstr ""
+
+msgid "Field State can not be empty!\n"
+msgstr ""
+
+msgid "Field City can not be empty!\n"
+msgstr ""
+
+#, fuzzy
+msgid "Field Company can not be empty!\n"
+msgstr "Hlavní doména nemůže být použita!"
+
+msgid "Field Company division can not be empty!\n"
+msgstr ""
+
+#, fuzzy
+msgid "Email is not valid!\n"
+msgstr "Doménový alias nebyl přidán!"
+
+msgid "Error retriving key data"
+msgstr ""
+
+msgid "Inexistent key"
+msgstr ""
+
+msgid "Paste certificate"
+msgstr ""
+
+msgid "Intermediate certificate"
+msgstr ""
+
+msgid "Key content"
+msgstr ""
+
+#, fuzzy
+msgid "Add new certificate"
+msgstr "Přidat chráněnou zónu"
+
+#, fuzzy
+msgid "Generate self signed"
+msgstr "Vygenerovat heslo"
+
+#, fuzzy
+msgid "CRT for domain name"
+msgstr "Chybná syntaxe doménového jména!"
+
+#, fuzzy
+msgid "State"
+msgstr "Statistiky"
+
+#, fuzzy
+msgid "Company division"
+msgstr "Společnost"
+
+msgid "List of installed keys"
+msgstr ""
+
+msgid "Key identifier already used in one csr!\n"
+msgstr ""
+
+msgid "Create new signing request"
+msgstr ""
+
+#, fuzzy
+msgid "Generate"
+msgstr "Pohlaví"
+
+#, fuzzy
+msgid "Key identifier already exists!\n"
+msgstr "Uživatel již existuje!"
+
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid.\n"
+msgstr ""
+
+#, fuzzy, php-format
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!\n"
+msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
+
+msgid "Key can not be empty!\n"
+msgstr ""
+
+msgid "You do not own this domain or is an alias / addon domain!\n"
+msgstr ""
+
+#, fuzzy
+msgid "Key for this domain already exists!\n"
+msgstr "Tato IP adresa existuje!"
+
+msgid "Key size is incorrect!\n"
+msgstr ""
+
+#, fuzzy
+msgid "Add new key"
+msgstr "Přidat novou IP adresu"
+
+#, fuzzy
+msgid "Key for domain name"
+msgstr "Chybná syntaxe doménového jména!"
+
+#, fuzzy
+msgid "Paste generated key"
+msgstr "Generátor hesla"
+
+msgid "Generate key with size:"
+msgstr ""
+
+#, fuzzy
+msgid "Generate new"
+msgstr "Vygenerovat heslo"
+
+msgid "Key is encoded with password"
+msgstr ""
+
+#, fuzzy
+msgid "List is empty!"
+msgstr "Záznam je prázdný!"
+
+msgid "Certificate keys"
+msgstr ""
+
+#, fuzzy
+msgid "Certificate sign request"
+msgstr "Spusť dotazy"
+
+msgid "Certificate"
+msgstr ""
+
+#, fuzzy
+msgid "Key host name"
+msgstr "Jméno motivu vzhledu"
+
+msgid "Certificate sign request host name"
+msgstr ""
+
+#, fuzzy
+msgid "Certificate host name"
+msgstr "Služba"
 
 msgid "Subdomains limit reached!"
 msgstr "Dosažen limit subdomén!"
@@ -3287,6 +3581,10 @@ msgstr "Partneři"
 msgid "Search"
 msgstr "Hledat"
 
+#, fuzzy
+msgid "Expire date"
+msgstr "Datum objednávky"
+
 #, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr "%1$s právě jste přihlášen jako %2$s"
@@ -3330,6 +3628,18 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
+#, fuzzy
+msgid "Domain is not instantiated"
+msgstr "Doménový alias nebyl přidán!"
+
+#, fuzzy
+msgid "Domain do not exists"
+msgstr "%s neexistuje"
+
+#, php-format
+msgid "Can not execute external command %s\n"
+msgstr ""
+
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Nemohu zkontrolovat aktualizace! Cílová stránka neodpovídá."
 
@@ -3343,6 +3653,32 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Can not save key!\n"
+msgstr ""
+
+msgid "Can not createself signed certificate!\n"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid destination for key!"
+msgstr "Nesprávné jméno skupiny!"
+
+msgid "Can not create csr!\n"
+msgstr ""
+
+msgid "Can not remove key!\n"
+msgstr ""
+
+msgid "Can not validate key!\n"
+msgstr ""
+
+msgid "Can not generate key!\n"
+msgstr ""
+
+#, fuzzy
+msgid "User do not have domains!"
+msgstr "Uživatel neexistuje!"
 
 msgid "Email and FTP accounts"
 msgstr "E-mailové a FTP účty"
@@ -3370,6 +3706,9 @@ msgstr "FTP účty"
 
 msgid "Update Hosting Package"
 msgstr "Vylepšit hostingový balíček"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Domain mail"
 msgstr "Doménový mail"
@@ -3507,6 +3846,7 @@ msgstr ""
 msgid "Confirmation for domain order {DOMAIN}!"
 msgstr "Potvrzení pro objednávku domény {DOMAIN}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3514,6 +3854,11 @@ msgid ""
 "This is an automatic confirmation for the order of the domain:\n"
 "\n"
 "{DOMAIN}\n"
+"\n"
+"You have to click the following link to continue the domain creation "
+"process.\n"
+"\n"
+"{ACTIVATE_LINK}\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3632,6 +3977,10 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "Stav účtu %s není v pořádku!"
+
+#, php-format
+msgid "%s's domain expired!"
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "Požadavky z jiných hostitelů jsou blokovány!"
@@ -3757,9 +4106,16 @@ msgstr ""
 "Máte limit diskového prostoru!<br>Nemůžete přidat uživatele s neomezeným "
 "diskovým prostorem!"
 
+msgid "ispCP Error"
+msgstr "Chyba ispCP"
+
+msgid "Error Message"
+msgstr "Chybová zpráva"
+
 msgid "You have a new order"
 msgstr "Máte novou objednávku"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3768,6 +4124,7 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
+"\t"
 msgstr ""
 "\n"
 "\n"
@@ -3777,11 +4134,16 @@ msgstr ""
 "Prosím přihlašte se do ispCP pro více detailů.\n"
 "\n"
 
-msgid "ispCP Error"
-msgstr "Chyba ispCP"
+#, fuzzy
+msgid "Your order has been successfully created."
+msgstr "Heslo SQL uživatele bylo změněno úspěšně!"
 
-msgid "Error Message"
-msgstr "Chybová zpráva"
+msgid "Error creating order! Perhaps already activated?"
+msgstr ""
+
+#, fuzzy
+msgid "Order confirmation"
+msgstr "Hlavní informace"
 
 msgid "Wrong domain name syntax!"
 msgstr "Chybná syntaxe doménového jména!"
@@ -3812,6 +4174,10 @@ msgstr "Náklady"
 
 msgid "Personal Data"
 msgstr "Osobní údaje"
+
+#, fuzzy
+msgid "Security code was incorrect!"
+msgstr "CHYBA: Bezpečnostní kód nebyl správný!"
 
 msgid "Check Out"
 msgstr "Zkontrolovat"
@@ -3868,12 +4234,6 @@ msgstr "Zřizovací poplatky"
 msgid "Performance"
 msgstr "Výkon"
 
-msgid "ispCP Reseller : Add Alias"
-msgstr "ispCP Partner : Přidat alias"
-
-msgid "You have no user records."
-msgstr "Nemáte žádný uživatelský záznam."
-
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Správa domény/Alias"
 
@@ -3916,40 +4276,52 @@ msgstr "Objednaný doménový alias byl aktivován!"
 msgid "Ordered domain alias not activated!"
 msgstr "Objednaný doménový alias nebyl aktivován!"
 
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Partner : Přidat alias"
+
+msgid "You have no user records."
+msgstr "Nemáte žádný uživatelský záznam."
+
 msgid "ispCP - Circular"
 msgstr "ispCP - Oběžník"
 
 msgid "Circular"
 msgstr "Oběžník"
 
-msgid "Wrong domain ID!"
-msgstr "Špatné ID domény!"
-
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-"K odstraňované doméně jsou přiřazeny poštovní účty!<br>Nejdříve tyto účty "
-"smažte!"
-
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-"K odstraňované doméně jsou přiřazeny FTP účty!<br>Nejdříve tyto účty smažte!"
-
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
-"K odstraňované doméně jsou přiřazeny aliasy!<br>Nejdříve tyto aliasy smažte!"
-
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-"K odstraňované doméně jsou přiřazeny subdoménové účty!<br>Nejdříve tyto účty "
-"smažte!"
-
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Doména/Upravit"
+
+#, fuzzy
+msgid "Unchanged"
+msgstr "Přepnout"
+
+#, fuzzy
+msgid "- 1 Month"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "+ 1 Month"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "+ 2 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "+ 3 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "+ 6 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "+ 1 Year"
+msgstr "Rok"
+
+#, fuzzy
+msgid "+ 2 Years"
+msgstr "Rok"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled!"
@@ -3962,6 +4334,12 @@ msgstr "Služba <em>%s</em> nemůže být omezena!<br>"
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Služba <em>%s</em> nemůže být neomezená!<br>"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Partner/Hlavní strana"
+
+msgid "View details"
+msgstr "Zobrazit detaily"
 
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Partner/Přidat plán hostingu"
@@ -3980,12 +4358,6 @@ msgstr "ispCP - Partner/Upravit plán hostingu"
 
 msgid "View hosting plan"
 msgstr "Zobrazit plán hostingu"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Partner/Hlavní strana"
-
-msgid "View details"
-msgstr "Zobrazit detaily"
 
 msgid "User accounts"
 msgstr "Uživatelské účty"
@@ -4021,44 +4393,9 @@ msgstr "ispCP - Resseler/Nastavení emailu objednávek"
 msgid "Manage orders"
 msgstr "Správa objednávek"
 
-msgid "Wrong order ID!"
-msgstr "Špatné ID objednávky!"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Objednávka zrušena: bylo dosaženo partnerovo maximum!"
-
-msgid "User added!"
-msgstr "Uživatel přidán!"
-
-msgid "Customer order was removed successful!"
-msgstr "Objednávka zákazníka úspěšně odstraněna!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Partner/Detaily objednávky"
-
-msgid "Order data updated successfully!"
-msgstr "Objednávka byla úspěšně aktualizována!"
-
-msgid "Order date"
-msgstr "Datum objednávky"
-
-msgid "Hosting plan"
-msgstr "Plán hostingu"
-
-msgid "Hosting details"
-msgstr "Detaily hostingu"
-
-msgid "Order details"
-msgstr "Detaily objednávky"
-
-msgid "Customer data"
-msgstr "Údaje zákazníka"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Opravdu chcete odstranit tuto objednávku?"
-
-msgid "Add to the system"
-msgstr "Přidat do sytému"
+#, fuzzy
+msgid "Activation Link"
+msgstr "Aktivační e-mail"
 
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Partner/Nastavení objednávky"
@@ -4090,11 +4427,50 @@ msgstr "Aktualizovat objednávku"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "Údaje zákazníka"
+
 msgid "Order"
 msgstr "Objednávka"
 
+msgid "Hosting plan"
+msgstr "Plán hostingu"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Opravdu chcete odstranit tuto objednávku?"
+
 msgid "Add/Details"
 msgstr "Přidat/Detaily"
+
+msgid "Wrong order ID!"
+msgstr "Špatné ID objednávky!"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Objednávka zrušena: bylo dosaženo partnerovo maximum!"
+
+msgid "User added!"
+msgstr "Uživatel přidán!"
+
+msgid "Customer order was removed successful!"
+msgstr "Objednávka zákazníka úspěšně odstraněna!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Partner/Detaily objednávky"
+
+msgid "Order data updated successfully!"
+msgstr "Objednávka byla úspěšně aktualizována!"
+
+msgid "Order date"
+msgstr "Datum objednávky"
+
+msgid "Hosting details"
+msgstr "Detaily hostingu"
+
+msgid "Order details"
+msgstr "Detaily objednávky"
+
+msgid "Add to the system"
+msgstr "Přidat do sytému"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Partner/Změnit heslo"
@@ -4119,6 +4495,34 @@ msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Uživatelé/Přidat uživatele"
+
+#, fuzzy
+msgid "Never"
+msgstr "Úroveň"
+
+#, fuzzy
+msgid "1 Month"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "2 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "3 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "6 Months"
+msgstr "Měsíc"
+
+#, fuzzy
+msgid "1 Year"
+msgstr "Rok"
+
+#, fuzzy
+msgid "2 Years"
+msgstr "Rok"
 
 msgid "Choose hosting plan"
 msgstr "Vybrat plán hostingu"
@@ -4171,6 +4575,9 @@ msgstr "ispCP - Uživatelé/Upravit"
 msgid "Users list"
 msgstr "Seznam uživatelů"
 
+msgid "This reseller has no domains yet."
+msgstr "Partner ještě nemá žádné domény."
+
 msgid "ispCP - Users"
 msgstr "ispCP - Uživatelé"
 
@@ -4206,8 +4613,40 @@ msgstr "Uživatel má záznam o doméně!<br>Nejprve smažte doménu ze systému
 msgid "User not terminated!"
 msgstr "Uživatel není odstraněn!"
 
-msgid "This reseller has no domains yet."
-msgstr "Partner ještě nemá žádné domény."
+#~ msgid "Password sent"
+#~ msgstr "Heslo bylo odesláno"
+
+#~ msgid "ERROR: Password was not sent"
+#~ msgstr "Chyba: Heslo nebylo odesláno"
+
+#~ msgid "ERROR: Unknown user"
+#~ msgstr "CHYBA: Neznámý uživatel"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has email accounts !<br> first remove "
+#~ "them !"
+#~ msgstr ""
+#~ "K odstraňované doméně jsou přiřazeny poštovní účty!<br>Nejdříve tyto účty "
+#~ "smažte!"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+#~ msgstr ""
+#~ "K odstraňované doméně jsou přiřazeny FTP účty!<br>Nejdříve tyto účty "
+#~ "smažte!"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has domain alias!<br> first remove them !"
+#~ msgstr ""
+#~ "K odstraňované doméně jsou přiřazeny aliasy!<br>Nejdříve tyto aliasy "
+#~ "smažte!"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has subdomains accounts !<br> first "
+#~ "remove them !"
+#~ msgstr ""
+#~ "K odstraňované doméně jsou přiřazeny subdoménové účty!<br>Nejdříve tyto "
+#~ "účty smažte!"
 
 #~ msgid "Set status to \"change\""
 #~ msgstr "Nastavit stav na \"změna\""
@@ -4280,9 +4719,6 @@ msgstr "Partner ještě nemá žádné domény."
 
 #~ msgid "Unknown account type!"
 #~ msgstr "Neznámý typ účtu!"
-
-#~ msgid "Invalid account id!"
-#~ msgstr "Nesprávné id účtu!"
 
 #~ msgid ""
 #~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
@@ -4439,17 +4875,11 @@ msgstr "Partner ještě nemá žádné domény."
 #~ msgid "Edit properties"
 #~ msgstr "Upravit vlastnosti"
 
-#~ msgid "User does not exist!"
-#~ msgstr "Uživatel neexistuje!"
-
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Nemohu se pripojit jako MySQL administrátor"
 
 #~ msgid "of"
 #~ msgstr "z"
-
-#~ msgid "Password generate"
-#~ msgstr "Generátor hesla"
 
 #~ msgid "Multilingual"
 #~ msgstr "Jazyky"
