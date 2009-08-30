@@ -1551,7 +1551,6 @@ function gen_logged_from(&$tpl) {
 }
 
 function change_domain_status(&$sql, $domain_id, $domain_name, $action, $location) {
-	check_for_lock_file();
 
 	if ($action == 'disable') {
 		$new_status = Config::get('ITEM_TODISABLED_STATUS');

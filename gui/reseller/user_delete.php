@@ -50,7 +50,6 @@ if ($res->RowCount() !== 1) {
 } else {
 	// delete the user
 	rm_rf_user_account ($usid);
-	check_for_lock_file();
 	send_request();
 	set_page_message(tr('User terminated!'));
 	user_goto('users.php');

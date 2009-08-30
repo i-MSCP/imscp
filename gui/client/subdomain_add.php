@@ -271,7 +271,6 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 	$status_add = Config::get('ITEM_ADD_STATUS');
 
-	check_for_lock_file();
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
 			INSERT INTO

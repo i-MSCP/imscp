@@ -124,7 +124,6 @@ function add_ip(&$tpl, &$sql) {
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::get('ITEM_ADD_STATUS')));
 
-			check_for_lock_file();
 			send_request();
 
 			set_page_message(tr('New IP was added!'));

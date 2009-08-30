@@ -21,18 +21,21 @@
 /**
  * @todo use of @ is problematic, instead use try-catch
  */
-function check_for_lock_file($wait_lock_timeout = 500000) {
+function check_for_lock_file() {
 
-	set_time_limit(0);
-	// @ prevents the Warning:
-	// File(/var/log/chkrootkit.log) is not within the allowed path(s)
-	while (@file_exists(Config::get('MR_LOCK_FILE'))) {
+    $fh = fopen(Config::get('MR_LOCK_FILE'),'r');
+    if (!$fh) {
+        return false;
+    }
 
-		usleep($wait_lock_timeout);
-		clearstatcache();
-		// and send header to keep connection
-		header("Cache-Control: no-store, no-cache, must-revalidate");
-	}
+    while (!flock($fh, LOCK_EX|LOCK_NB)) {
+        usleep(rand(200, 600)*1000);
+        clearstatcache();
+        // and send header to keep connection
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+    }
+
+    return true;
 }
 
 function read_line(&$socket) {

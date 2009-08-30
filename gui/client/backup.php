@@ -31,7 +31,6 @@ $tpl->define_dynamic('logged_from', 'page');
 
 function send_backup_restore_request(&$sql, $user_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'bk_restore') {
-		check_for_lock_file();
 
 		$query = <<<SQL_QUERY
 			UPDATE

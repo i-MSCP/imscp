@@ -44,8 +44,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		user_goto('mail_catchall.php');
 	}
 
-	check_for_lock_file();
-
 	$query = "
 		UPDATE
 			`mail_users`

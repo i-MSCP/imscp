@@ -196,7 +196,6 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 
 		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
-		check_for_lock_file();
 		send_request();
 		set_page_message(tr('User was assigned to the %s group', $rs->fields['ugroup']));
 	} else {
@@ -246,8 +245,6 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 			";
 
 			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
-
-			check_for_lock_file();
 			send_request();
 
 			set_page_message(tr('User was deleted from the %s group ', $rs->fields['ugroup']));

@@ -395,8 +395,6 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 		$mail_pass=encrypt_db_password($mail_pass);
 	}
 
-	check_for_lock_file();
-
 	$query = "
 		INSERT INTO `mail_users` (
 			`mail_acc`,

@@ -454,7 +454,6 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 			exec_query($sql, $query, array($user_id));
 			$query = "UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `domain_id` = ?";
 			exec_query($sql, $query, array($user_id));
-			check_for_lock_file();
 			send_request();
 		}
 

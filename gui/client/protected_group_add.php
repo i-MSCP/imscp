@@ -78,7 +78,6 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 
 				$rs = exec_query($sql, $query, array($dmn_id, $groupname, $change_status));
 
-				check_for_lock_file();
 				send_request();
 
 				$admin_login = $_SESSION['user_logged'];

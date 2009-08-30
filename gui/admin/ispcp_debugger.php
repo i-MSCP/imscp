@@ -446,7 +446,6 @@ $tpl->assign(
 
 if (isset($_GET['action']) && $exec_count > 0) {
 	if ($_GET['action'] == 'run_engine') {
-		check_for_lock_file();
 		$c = send_request();
 		set_page_message(tr('Daemon returned %d as status code', $c));
 	} else if ($_GET['action'] == 'change_status' && (

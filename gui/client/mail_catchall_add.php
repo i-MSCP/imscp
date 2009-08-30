@@ -311,8 +311,6 @@ function create_catchall_mail_account(&$sql, $id) {
 				$match = explode('@', $mail_acc);
 				$mail_addr = '@' . $match[1];
 
-				check_for_lock_file();
-
 				$query = "
 					INSERT INTO `mail_users`
 						(`mail_acc`,
@@ -404,7 +402,6 @@ function create_catchall_mail_account(&$sql, $id) {
 			}
 
 			$status = Config::get('ITEM_ADD_STATUS');
-			check_for_lock_file();
 
 			$query = "
 				INSERT INTO `mail_users`

@@ -90,7 +90,6 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 				";
 				$rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $status));
 
-				check_for_lock_file();
 				send_request();
 
 				$admin_login = $_SESSION['user_logged'];

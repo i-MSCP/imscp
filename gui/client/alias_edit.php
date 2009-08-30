@@ -197,7 +197,6 @@ function check_fwd_data(&$tpl, $alias_id) {
 		";
 		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 
-		check_for_lock_file();
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];

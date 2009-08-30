@@ -1,6 +1,13 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-08-30 Marc Pujol
+	- ENGINE:
+		* Fixed a race condition bug in the locking code
+		* Improved speed of set-engine-permissions
+	- GUI:
+		* Fixed #1954: GUI/Frontend locking issues
+
 2009-08-27 Andreca Daniel
 	- ENGINE:
 		* Fixed #1958: Gui Permissions Problem

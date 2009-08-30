@@ -64,7 +64,6 @@ SQL_QUERY;
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($id, $dmn_id));
-	check_for_lock_file();
 	send_request();
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id']);

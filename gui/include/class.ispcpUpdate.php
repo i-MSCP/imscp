@@ -73,7 +73,6 @@ abstract class ispcpUpdate {
 	}
 
 	protected function sendEngineRequest() {
-		check_for_lock_file();
 		send_request();
 	}
 

@@ -31,16 +31,14 @@
 #
 
 # read needed entries from ispcp.conf
+CONF_FILE="/etc/ispcp/ispcp.conf"
 if [ -f /usr/local/etc/ispcp/ispcp.conf ]
 then
-	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
-		export $a
-	done
-else
-	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
-		export $a
-	done
+    CONF_FILE="/usr/local/etc/ispcp/ispcp.conf"
 fi
+for a in `grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG|^PHP_STARTER_DIR|^MR_LOCK|^CMD_)' ${CONF_FILE} | sed -e 's/ //g'`; do
+    export $a
+done
 
 #
 # fixing engine permissions;
@@ -58,13 +56,7 @@ if [ $DEBUG -eq 1 ]; then
 else
     echo -n ".";
 fi
-
-if [ -f /usr/local/etc/ispcp/ispcp.conf ]
-then
-	chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /usr/local/etc/ispcp/ispcp.conf
-else
-	chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
-fi
+${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${CONF_FILE}
 
 # Fix rkhunter.log perms
 if [ $DEBUG -eq 1 ]; then
@@ -76,47 +68,31 @@ fi
 #chmod ug+r,u+w,o-r rkhunter.log
 if [ -f /var/log/rkhunter.log ]
 then
-	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_GROUP /var/log/rkhunter.log
+	${CMD_CHOWN} $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$ROOT_GROUP /var/log/rkhunter.log
 fi
 
-for i in `find $ROOT_DIR/engine/`; do
-
-	if [ -f $i ]; then
-
-		if [ $DEBUG -eq 1 ]; then
-			echo -e "	0700 $ROOT_USER:$ROOT_GROUP $i";
-		fi
-
-		chmod 0700 $i;
-		chown $ROOT_USER:$ROOT_GROUP $i;
-
-	elif [ -d $i ]; then
-
-		if [ $DEBUG -eq 1 ]; then
-			echo "0700 $ROOT_USER:$ROOT_GROUP [$i]";
-		else
-			echo -n ".";
-		fi
-
-		chmod 0700 $i;
-		chown $ROOT_USER:$ROOT_GROUP $i;
-	fi
-
-done
+#
+# fixing engine permissions
+#
+if [ $DEBUG -eq 1 ]; then
+    find $ROOT_DIR/engine/ -print0 | xargs -0 ${CMD_CHMOD} -v 0700
+    find $ROOT_DIR/engine/ -print0 | xargs -0 ${CMD_CHOWN} -v $ROOT_USER:$ROOT_GROUP
+else
+    find $ROOT_DIR/engine/ -print0 | xargs -0 ${CMD_CHMOD} 0700
+    find $ROOT_DIR/engine/ -print0 | xargs -0 ${CMD_CHOWN} $ROOT_USER:$ROOT_GROUP
+fi
 
 #
 # fixing engine folder permissions;
 #
-
-	chmod 0755 $ROOT_DIR/engine;
-	chown $ROOT_USER:$ROOT_GROUP $ROOT_DIR/engine;
+${CMD_CHMOD} 0755 $ROOT_DIR/engine;
+${CMD_CHOWN} $ROOT_USER:$ROOT_GROUP $ROOT_DIR/engine;
 
 #
 # fixing fcgi folder permissions in Centos;
 #
-
-	chmod 0755 $PHP_STARTER_DIR/master;
-	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID $PHP_STARTER_DIR/master;
+${CMD_CHMOD} 0755 $PHP_STARTER_DIR/master;
+${CMD_CHOWN} $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID $PHP_STARTER_DIR/master;
 
 #
 # fixing messager permissions;
@@ -129,15 +105,13 @@ if [ $DEBUG -eq 1 ]; then
 else
 	echo -n ".";
 fi
-
-		chmod -R 0700 $i;
-		chown -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
+${CMD_CHMOD} -R 0700 $i;
+${CMD_CHOWN} -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
 
 
 #
 # fixing messager folder permissions;
 #
-
 i="$ROOT_DIR/engine/messenger"
 
 if [ $DEBUG -eq 1 ]; then
@@ -146,15 +120,13 @@ else
 	echo -n ".";
 fi
 
-
-		chmod 0755 $i;
-		chown $ROOT_USER:$ROOT_GROUP $i;
+${CMD_CHMOD} 0755 $i;
+${CMD_CHOWN} $ROOT_USER:$ROOT_GROUP $i;
 
 
 #
 # fixing messager log folder permissions;
 #
-
 i="${LOG_DIR}/ispcp-arpl-msgr"
 
 if [ $DEBUG -eq 1 ]; then
@@ -163,7 +135,29 @@ else
 	echo -n ".";
 fi
 
-		chmod 0755 $i;
-		chown -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
+${CMD_CHMOD} 0755 $i;
+${CMD_CHOWN} -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
+
+
+#
+# fixing lock file permissions;
+#
+if [ ! -f ${MR_LOCK_FILE} ]; then
+    if [ $DEBUG -eq 1 ]; then
+        echo "creating lock file ${MR_LOCK_FILE}";
+    else
+        echo -n ".";
+    fi
+    ${CMD_TOUCH} ${MR_LOCK_FILE}
+fi
+
+if [ $DEBUG -eq 1 ]; then
+    echo "0440 $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${MR_LOCK_FILE}";
+else
+    echo -n ".";
+fi
+${CMD_CHMOD} 0440 ${MR_LOCK_FILE};
+${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${MR_LOCK_FILE}
+
 
 echo "done";

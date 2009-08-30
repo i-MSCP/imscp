@@ -54,8 +54,6 @@ SQL_QUERY;
 		user_goto('domains_manage.php');
 	}
 
-	check_for_lock_file();
-
 	$query = <<<SQL_QUERY
 		UPDATE
 			`subdomain`

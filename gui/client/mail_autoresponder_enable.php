@@ -67,7 +67,6 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 
 		$arsp_message = clean_input($_POST['arsp_message'], false);
 		$item_change_status = Config::get('ITEM_CHANGE_STATUS');
-		check_for_lock_file();
 
 		$query = "
 			UPDATE

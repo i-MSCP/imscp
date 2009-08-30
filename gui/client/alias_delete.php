@@ -108,8 +108,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		user_goto('domains_manage.php');
 	}
 
-	check_for_lock_file();
-
 	$query = "
 		UPDATE
 			`domain_aliasses`

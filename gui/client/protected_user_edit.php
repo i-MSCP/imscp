@@ -80,7 +80,6 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 			";
 			$rs = exec_query($sql, $query, array($nadmin_password, $change_status, $dmn_id, $uuser_id,));
 
-			check_for_lock_file();
 			send_request();
 
 			$query = "

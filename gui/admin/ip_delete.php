@@ -94,7 +94,6 @@ $query = "
 ";
 $rs = exec_query($sql, $query, array(Config::get('ITEM_DELETE_STATUS'), $delete_id));
 
-check_for_lock_file();
 send_request();
 
 set_page_message(tr('IP was deleted!'));

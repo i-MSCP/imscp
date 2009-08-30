@@ -141,7 +141,6 @@ while (!$rs->EOF) {
 	$rs->MoveNext();
 }
 
-check_for_lock_file();
 send_request();
 
 $admin_login = $_SESSION['user_logged'];

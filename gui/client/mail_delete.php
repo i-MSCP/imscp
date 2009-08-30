@@ -93,8 +93,6 @@ if ($num > 0) {
 	$_SESSION['catchall_assigned'] = 1;
 	user_goto('mail_accounts.php');
 }
-/* if we are locket wait to unlock */
-check_for_lock_file();
 
 /**
  * @todo useDB prepared statements

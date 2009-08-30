@@ -83,9 +83,7 @@ sub mngr_start_up {
 sub mngr_shut_down {
 	push_el(\@main::el, 'mngr_shut_down()', 'Starting...');
 
-	# Unlocking is necessary because the gui checks if the lock file exists.
-	my $rs = unlock_system();
-	return $rs if ($rs != 0);
+	# Unlocking is not necessary because it is removed automatically on exit.
 
 	push_el(\@main::el, 'mngr_shut_down()', 'Ending...');
 	return 0;
