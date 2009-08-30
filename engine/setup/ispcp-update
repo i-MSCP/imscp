@@ -568,16 +568,15 @@ sub patch_ispcp_v1_0_2{
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host='$main::db_host' -u'$main::db_user' -p'$main::db_pwd' < /tmp/db.sql");
 	if ($rs != 0) {
-	print STDOUT "failed!\n";
-		exit_werror("SQL Update failed.");
+		print STDOUT "failed!\n Database update will be performed by GUI! Stepping forward\n";
 	}
 
 	print STDOUT "done\n";
-	
+
 	# Rebuild system configs:
 	print STDOUT "\tRebuilding system configurations...";
-	
-	$rs = sys_command("$main::cfg{'CMD_RM'} -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`"); 
+
+	$rs = sys_command("$main::cfg{'CMD_RM'} -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`");
 	return $rs if ($rs != 0);
 
 	print STDOUT "done\n";
@@ -598,8 +597,8 @@ sub prepare_update {
 	if ($main::ua{'update'} == ABORT) {
 		exit_werror("Script was aborted by user.");
 	}
-	# all ispCP 
-	
+	# all ispCP
+
 	stop_services("/tmp/ispcp-backup-all.lock");
 
 	# get ispcp.old.conf
@@ -640,7 +639,7 @@ sub prepare_update {
    		print STDOUT "\t Update failed!\n";
 		exit_werror("ispCP Update failed.");
 	}
-	
+
 	# patch installation
 	if ($main::ua{'update'} == ISPCP_V1_0_0) {
 		#nothing to do;
@@ -649,7 +648,7 @@ sub prepare_update {
 		$rs = patch_ispcp_v1_0_2();
 		exit_werror("ispCP Update failed.") if ($rs != 0);
 	}
-	
+
 	print STDOUT "Rebuild config\n";
 	$rs = rebuild_configs();
 	if ($rs != 0) {
