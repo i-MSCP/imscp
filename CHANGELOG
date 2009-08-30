@@ -8,6 +8,8 @@ ispCP ω 1.0.3 Changelog
 		* Fixed #1959: Bad characters in changeset r1953
 	- LANGUAGES:
 		* Updated languages
+	- CONFIGS:
+		* Fixed #1969: SQL error
 
 2009-08-30 Marc Pujol
 	- ENGINE:
