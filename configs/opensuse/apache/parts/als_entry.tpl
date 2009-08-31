@@ -28,9 +28,9 @@
     ErrorDocument 500 /errors/500.html
     ErrorDocument 503 /errors/503.html
 
-    #<IfModule mod_cband.c>
-    #    CBandUser {DMN_GRP}
-    #</IfModule>
+    <IfModule mod_cband.c>
+        CBandUser {DMN_GRP}
+    </IfModule>
 
     # httpd awstats support BEGIN.
     # httpd awstats support END.
