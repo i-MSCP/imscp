@@ -1,5 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-08-31 Laurent Declercq
+	- CONFIG:
+		* Disable modcband for OpenSuse
+
 2009-08-31 Malte Geierhos
 	- ENGINE:
 		* AGAIN fixing slow setup due to not using pseudo-random
