@@ -960,7 +960,7 @@ sub gen_sys_rand_num {
         }
     }
 
-    if ( -e '/dev/random') {
+    if ( -e '/dev/urandom') {
         push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: seeding the entropy pool (possible current size: $pool_size)");
 
         my $seed = $len;
@@ -975,8 +975,8 @@ sub gen_sys_rand_num {
                 $c .= chr($l);
             } while($n--);
 
-            save_file('/dev/random', $c . (rand() * rand() * rand() * rand()));
-            save_file('/dev/random', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
+            save_file('/dev/urandom', $c . (rand() * rand() * rand() * rand()));
+            save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
             $seed--;
         }
     }
@@ -988,11 +988,14 @@ sub gen_sys_rand_num {
         push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: new entropy pool size is $pool_size");
     }
 
-    my $rs = open(F, '<', '/dev/random');
+#DON#T change this back to /dev/random - the pw is reversible encrypted - more randomness is just totally foolish since 
+#we already provide the key together with the tresor.
+
+    my $rs = open(F, '<', '/dev/urandom');
 
     if (!defined($rs)) {
 
-        $rs = open(F, '<', '/dev/random');
+        $rs = open(F, '<', '/dev/urandom');
 
         if (!defined($rs)) {
 

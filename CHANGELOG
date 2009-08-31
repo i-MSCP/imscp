@@ -1,5 +1,8 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2009-08-31 Malte Geierhos
+	- ENGINE:
+		* AGAIN fixing slow setup due to not using pseudo-random
 
 2009-08-30 Andreca Daniel
 	- ENGINE:
