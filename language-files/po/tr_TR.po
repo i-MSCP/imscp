@@ -61,7 +61,6 @@ msgstr "Kayıp şifreleri almak şimdilik mümkün değil"
 msgid "ispCP - Virtual Hosting Control System"
 msgstr "ispCP - Sanal Barındırma Kontrol Sistemi"
 
-#, fuzzy
 msgid "Your new password has been sent."
 msgstr "Şifre talep edildi"
 
@@ -78,7 +77,6 @@ msgstr "Şifre talebiniz değerlendiriliyor. Onaylamak için E-mail"
 msgid "Back"
 msgstr "Geri"
 
-#, fuzzy
 msgid "User or security code was incorrect!"
 msgstr "HATA: Güvenlik kodu doğru değil!"
 
@@ -174,7 +172,6 @@ msgstr "Posta kodu"
 msgid "City"
 msgstr "Şehir"
 
-#, fuzzy
 msgid "State/Province"
 msgstr "Servis"
 
@@ -461,7 +458,6 @@ msgstr "PHP desteği"
 msgid "CGI support"
 msgstr "CGI desteği"
 
-#, fuzzy
 msgid "Manual DNS support"
 msgstr "MySQL desteği"
 
@@ -519,7 +515,6 @@ msgstr "Domain düzenle"
 msgid "Domain properties"
 msgstr "Domain özellikleri"
 
-#, fuzzy
 msgid "Domain expire"
 msgstr "Domain Özellikleri"
 
@@ -793,7 +788,7 @@ msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
 msgid "Allow adding records to DNS zone"
-msgstr ""
+msgstr "DNS zone için kayıtlara izin ver"
 
 msgid "Backup and restore"
 msgstr "Yedekleme ve Geri Yükleme"
@@ -936,7 +931,6 @@ msgstr "Lütfen, alias belirtiniz!"
 msgid "This IP already exist!"
 msgstr "Bu IP zaten mevcut!"
 
-#, fuzzy
 msgid "Please select nework interface!"
 msgstr "Kullanıcı arayüzüne geç"
 
@@ -949,7 +943,6 @@ msgstr "Kullanılabilir IPler"
 msgid "IP"
 msgstr "IP"
 
-#, fuzzy
 msgid "Network interface"
 msgstr "Kullanıcı arayüzüne geç"
 
@@ -999,7 +992,6 @@ msgstr "ispCP Daemon araçları"
 msgid "Execute requests"
 msgstr "Talepleri çalıştır"
 
-#, fuzzy
 msgid "Set status to 'change'"
 msgstr "Durumu \"değiştir\" olarak ayarla"
 
@@ -1046,7 +1038,6 @@ msgstr "Dil"
 msgid "Choose default language"
 msgstr "Varsayılan dili seçiniz"
 
-#, fuzzy
 msgid "Language was removed!"
 msgstr "Hosting planı güncellendi!"
 
@@ -1651,7 +1642,6 @@ msgstr "Eposta ayarları"
 msgid "Create default E-Mail addresses"
 msgstr "Varsayılan Eposta adresi oluştur"
 
-#, fuzzy
 msgid "Count default E-Mail addresses"
 msgstr "Varsayılan Eposta adresi oluştur"
 
@@ -1695,9 +1685,8 @@ msgid "Check for update"
 msgstr "Güncelleme için bak"
 
 msgid "Show server load"
-msgstr ""
+msgstr "Server yüklemelerini görüntüle"
 
-#, fuzzy
 msgid "Prevent external login for admins"
 msgstr "Lütfen admin giriş bilgilerinizi giriniz"
 
@@ -1707,7 +1696,6 @@ msgstr "Lütfen bayi giriş bilgilerinizi giriniz"
 msgid "Prevent external login for clients"
 msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
 
-#, fuzzy
 msgid "Custom orderpanel ID"
 msgstr "Müşteri ID"
 
@@ -1795,7 +1783,6 @@ msgstr "Konu"
 msgid "URL to this admin panel"
 msgstr "Bu yönetici paneline URL"
 
-#, fuzzy
 msgid "URL protocol"
 msgstr "Protokol"
 
@@ -2030,45 +2017,36 @@ msgstr "Mesajı cevapla"
 msgid "Send reply"
 msgstr "Yanıtla"
 
-#, fuzzy
 msgid "ispCP - Delete Domain"
 msgstr "ispCP - Müşteri/Domain Yönetimi"
 
 msgid "Wrong domain ID!"
 msgstr "Yanlış domain IDsi!"
 
-#, fuzzy
 msgid "Invalid user id!"
 msgstr "Geçersiz hesap idsi!"
 
 msgid "There are active domains of reseller/admin!"
 msgstr "Bayi/Admin'e ayit aktif Domainler"
 
-#, fuzzy
 msgid "Delete domain"
 msgstr "Gerçek domain"
 
-#, fuzzy
 msgid "Domain summary:"
 msgstr "Domain postası"
 
-#, fuzzy
 msgid "Domain e-mails:"
 msgstr "Domain postaları"
 
-#, fuzzy
 msgid "Domain FTP accounts:"
 msgstr "Domain hesabı"
 
-#, fuzzy
 msgid "Domain aliases:"
 msgstr "Domain alias"
 
-#, fuzzy
 msgid "Domain subdomains:"
 msgstr "Ana domaine"
 
-#, fuzzy
 msgid "Domain databases:"
 msgstr "Domain alias"
 
@@ -2077,7 +2055,6 @@ msgid ""
 "undone!"
 msgstr "Gerçekten bütün Domain'leri silmek istiyor musunuz? Bu işlemin geri dönüşü olmaz !"
 
-#, fuzzy
 msgid "Yes, delete the domain."
 msgstr "%s tüm yönetici loglarını sildi"
 
@@ -2105,11 +2082,9 @@ msgstr "Alias ekle"
 msgid "You do not need 'www.' ispCP will add it on its own."
 msgstr "'www.' yazmanıza gerek yok, ispCP kendisi ekleyecektir."
 
-#, fuzzy
 msgid "Wrong domain name!"
 msgstr "Hatalı domain adı yazımı!"
 
-#, fuzzy
 msgid "Please write mount point!"
 msgstr "Lütfen güncelleme için bekleyiniz"
 
@@ -2278,15 +2253,12 @@ msgstr "Cronjob düzenle"
 msgid "Cronjobs"
 msgstr "Cronjob"
 
-#, fuzzy
 msgid "DNS zone record scheduled for deletion!"
 msgstr "Subdomain silme için işleme alındı!"
 
-#, fuzzy
 msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
 
-#, fuzzy
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
 
@@ -2299,22 +2271,18 @@ msgstr "DNS zone kayıt(larını) düzenle"
 msgid "DNS zone's records"
 msgstr "DNS zone kayıtları"
 
-#, fuzzy
 msgid "Class"
 msgstr "Aliaslar"
 
-#, fuzzy
 msgid "Service name"
 msgstr "Servis"
 
-#, fuzzy
 msgid "IP address"
 msgstr "Adres giriniz"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresi"
 
-#, fuzzy
 msgid "Service protocol"
 msgstr "Server portları"
 
@@ -2327,14 +2295,12 @@ msgstr "Aynı önceliğe sahip bağlı kayıtlar"
 msgid "Target host"
 msgstr "hedef host"
 
-#, fuzzy
 msgid "Target port"
 msgstr "Server portları"
 
 msgid "Canonical name"
 msgstr "Kanonik isim"
 
-#, fuzzy
 msgid "Plain record data"
 msgstr "Şifre bilgisi"
 
@@ -2353,29 +2319,23 @@ msgstr "Yanlış IPv4 adresi (\"%s\")."
 msgid "Wrong IPv6 address (\"%s\")."
 msgstr "Yanlış IPv6 adresi (\"%s\")."
 
-#, fuzzy
 msgid "Port must be a number!"
 msgstr "Ücret rakam ile yazılmalıdır."
 
-#, fuzzy
 msgid "TTL must be a number!"
 msgstr "Ücret rakam ile yazılmalıdır."
 
-#, fuzzy
 msgid "Priority must be a number!"
 msgstr "Ücret rakam ile yazılmalıdır."
 
-#, fuzzy
 msgid "Relative weight must be a number!"
 msgstr "Kurulum ücreti bir sayı olmak zorunda!"
 
-#, fuzzy
 msgid "Service must be filled."
 msgstr "Ücret rakam ile yazılmalıdır."
 
 msgid "Host must be filled."
-msgstr "	
-Host doldurulması zorunludur."
+msgstr "Host doldurulması zorunludur."
 
 msgid "conflict with CNAME record"
 msgstr "CNAME kaydı ile çatışma"
@@ -2392,7 +2352,7 @@ msgstr "Kayıt \"%s\" etki alanının parçası olmayan \"%s\"."
 msgid "Cannot validate %s record. Reason '%s'."
 msgstr "Kaydı doğruluyamadık, sebep '%s'."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Unknown zone type %s!"
 msgstr "Bilinmeyen tip!"
 
@@ -2414,7 +2374,6 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Toplam"
 
-#, fuzzy
 msgid "Manual zone's records list is empty!"
 msgstr "Posta hesapları listesi boş!"
 
@@ -2446,7 +2405,6 @@ msgstr "Yönlendir"
 msgid "Actions"
 msgstr "Eylem"
 
-#, fuzzy
 msgid "Record data"
 msgstr "Core verisi"
 
@@ -2639,11 +2597,9 @@ msgid ""
 "You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr "CGI etkin, fakat yeni hosting planı bu özelliğe sahip değil."
 
-#, fuzzy
 msgid "DNS Support: enabled"
 msgstr "PHP Desteği: açık"
 
-#, fuzzy
 msgid "DNS Support: disabled"
 msgstr "PHP Desteği: kapalı"
 
@@ -2697,7 +2653,6 @@ msgstr "Bu hosting planı için güncelleme değil, metin uyarıları bakın."
 msgid "Warning:"
 msgstr "Uyarı:"
 
-#, fuzzy
 msgid "Error:"
 msgstr "Hata"
 
@@ -2711,7 +2666,7 @@ msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Hosting planı güncelle"
 
 msgid "You have more disk space in use than the new hosting plan limits"
-msgstr ""İzin verilen disk limitinden fazlasını kullanmaktasınız.""
+msgstr "İzin verilen disk limitinden fazlasını kullanmaktasınız."
 
 msgid "You have more traffic than the new hosting plan limits"
 msgstr "İzin verilen disk alanından fazlasını kullanmaktasınız."
@@ -2741,7 +2696,7 @@ msgstr "Hosting paketi güncellemesi isteğiniz eklendi"
 msgid "[ispCP OrderPanel] - You have an update order"
 msgstr "[ispCP SiparişPaneli] - Güncelleme siparişiniz var"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
@@ -2824,7 +2779,6 @@ msgstr "Alais postaları"
 msgid "Mails total"
 msgstr "Toplam postalar"
 
-#, fuzzy
 msgid "Show default E-Mail addresses"
 msgstr "Varsayılan Eposta adresi oluştur"
 
@@ -2834,7 +2788,6 @@ msgstr "Yönlendirme listenizdeki bir epostanın yazılışı hatalı!"
 msgid "Mail forward list empty!"
 msgstr "Mail yönlendirme listesi boş!"
 
-#, fuzzy
 msgid "Forward to same address is not allowed!"
 msgstr "Subdomain mevcut veya izin verilmiyor!"
 
@@ -3201,6 +3154,9 @@ msgid ""
 "All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
+"Bu veritabanı geri dönüşümü olmayarak silinecektir. "
+"Bu veritabanına ayit bütün veritabanı kullanıcıları da silinecektir"
+"Başka bir veri tabanı. size% silmek istediğinizden emin misiniz?"
 
 msgid "SQL users limit reached!"
 msgstr "Azami SQL kullanıcı sayısına ulaşıldı!"
@@ -3242,7 +3198,6 @@ msgstr "Mevcut kullanıcı ekle"
 msgid "Existing SQL users"
 msgstr "Mevcut SQL kullanıcıları"
 
-#, fuzzy
 msgid "ispCP - Client/SSL Domains"
 msgstr "ispCP - Müşteri/Domain Yönetimi"
 
@@ -3258,14 +3213,12 @@ msgstr "Devlet alanı doldurulma zorunludur!\n"
 msgid "Field City can not be empty!\n"
 msgstr "Şehir alanı doldurulma zorunludur!\n"
 
-#, fuzzy
 msgid "Field Company can not be empty!\n"
 msgstr "Ana domain kullanılamaz!"
 
 msgid "Field Company division can not be empty!\n"
 msgstr "Firma alanı doldurulma zorunludur\n"
 
-#, fuzzy
 msgid "Email is not valid!\n"
 msgstr "Domain alias eklenmedi!"
 
@@ -3284,23 +3237,18 @@ msgstr "Ara sertifikası"
 msgid "Key content"
 msgstr "önemli içerik"
 
-#, fuzzy
 msgid "Add new certificate"
 msgstr "Yeni korumalı alan ekle"
 
-#, fuzzy
 msgid "Generate self signed"
 msgstr "Şifre oluştur"
 
-#, fuzzy
 msgid "CRT for domain name"
 msgstr "Hatalı domain adı yazımı!"
 
-#, fuzzy
 msgid "State"
 msgstr "İstatistikler"
 
-#, fuzzy
 msgid "Company division"
 msgstr "Şirket"
 
@@ -3313,21 +3261,19 @@ msgstr "Anahtar tanımlayıcı kullanılmakta csr!\n"
 msgid "Create new signing request"
 msgstr "Yeni transfer isteği oluşturun"
 
-#, fuzzy
 msgid "Generate"
 msgstr "Cinsiyet"
 
-#, fuzzy
 msgid "Key identifier already exists!\n"
 msgstr "Böyle bir kullanıcı zaten var!"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid.\n"
 msgstr "Şifre en az %s karakter uzunluğunda ve harf + sayılardan oluşmalıdır."
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Password data is shorter than %s signs or includes not permitted signs!\n"
 msgstr "Şifre %s karakterden kısa veya izin verilmeyen işaretler var!"
@@ -3338,57 +3284,48 @@ msgstr "Key doldurulma yorunludur\n "
 msgid "You do not own this domain or is an alias / addon domain!\n"
 msgstr "Bu etki alanına sahip değil veya bir takma ad / addon etki alanı \n"
 
-#, fuzzy
 msgid "Key for this domain already exists!\n"
 msgstr "Bu IP zaten mevcut!"
 
 msgid "Key size is incorrect!\n"
 msgstr "Anahtar boyutu doğru değil!\n"
 
-#, fuzzy
 msgid "Add new key"
 msgstr "Yeni IP ekle"
 
-#, fuzzy
 msgid "Key for domain name"
 msgstr "Hatalı domain adı yazımı!"
 
-#, fuzzy
 msgid "Paste generated key"
 msgstr "Şifre oluştur"
 
 msgid "Generate key with size:"
 msgstr "Anahtar uzunluğunda oluştur:"
 
-#, fuzzy
 msgid "Generate new"
 msgstr "Şifre oluştur"
 
 msgid "Key is encoded with password"
 msgstr "Anahtar şifre ile kodlanır"
 
-#, fuzzy
 msgid "List is empty!"
 msgstr "Kayıtlar boş!"
 
 msgid "Certificate keys"
 msgstr "Sertifika keyleri"
 
-#, fuzzy
 msgid "Certificate sign request"
 msgstr "Talepleri çalıştır"
 
 msgid "Certificate"
 msgstr "Sertifika"
 
-#, fuzzy
 msgid "Key host name"
 msgstr "Yerleşim adı"
 
 msgid "Certificate sign request host name"
 msgstr "Sertifika için host ismi gerekmektedir"
 
-#, fuzzy
 msgid "Certificate host name"
 msgstr "Servis"
 
@@ -3557,7 +3494,6 @@ msgstr "Kullanıcı listesi boş!"
 msgid "Details"
 msgstr "Ayrıntırlar"
 
-#, fuzzy
 msgid "Disk Usage Percent"
 msgstr "Disk kullanımı"
 
@@ -3579,7 +3515,6 @@ msgstr "Bayiler"
 msgid "Search"
 msgstr "Ara"
 
-#, fuzzy
 msgid "Expire date"
 msgstr "Sipariş tarihi"
 
@@ -3626,11 +3561,9 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-#, fuzzy
 msgid "Domain is not instantiated"
 msgstr "Domain alias eklenmedi!"
 
-#, fuzzy
 msgid "Domain do not exists"
 msgstr "%s bulunamadı"
 
@@ -3658,7 +3591,6 @@ msgstr "Anahtarı kayıt edemiyor \n"
 msgid "Can not createself signed certificate!\n"
 msgstr "Kendi sertifikanız oluşturulamıyor \n"
 
-#, fuzzy
 msgid "Invalid destination for key!"
 msgstr "Geçersiz Hedef!"
 
@@ -3674,7 +3606,6 @@ msgstr "Anahtarı doğruluyamazsınız \n"
 msgid "Can not generate key!\n"
 msgstr "Anahtar oluşturamazsınız \n"
 
-#, fuzzy
 msgid "User do not have domains!"
 msgstr "Kullanıcı bilgisi güncellenmedi!"
 
@@ -3843,7 +3774,6 @@ msgstr ""
 msgid "Confirmation for domain order {DOMAIN}!"
 msgstr "{DOMAIN} domain sipariş onayı!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3875,7 +3805,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "{CUSTOMER} müşterisi için yeni alias siparişi"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3928,7 +3857,7 @@ msgstr ""
 "\n"
 "Bu destek talebiniz için yeni bir cevap var:\n"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Priority: %s\n"
 msgstr "Öncelik"
 
@@ -4112,7 +4041,6 @@ msgstr "Hata sayfaları"
 msgid "You have a new order"
 msgstr "Yeni bir siparişiniz var"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4131,14 +4059,12 @@ msgstr ""
 "Lütfen, ayrıntılar için ispCP kontrol panelinize giriş yapınız.\n"
 "\n"
 
-#, fuzzy
 msgid "Your order has been successfully created."
 msgstr "SQL kullanıcı şifresi değiştirildi! "
 
 msgid "Error creating order! Perhaps already activated?"
-msgstr ""
+msgstr "Hata oluşturma düzeni! Belki de zaten aktif?"
 
-#, fuzzy
 msgid "Order confirmation"
 msgstr "Genel bilgi"
 
@@ -4172,14 +4098,12 @@ msgstr "Maliyetler"
 msgid "Personal Data"
 msgstr "Kişisel Bilgi"
 
-#, fuzzy
 msgid "Security code was incorrect!"
 msgstr "HATA: Güvenlik kodu doğru değil!"
 
 msgid "Check Out"
 msgstr "Ödeme"
 
-#, fuzzy
 msgid ""
 "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
 "with more details and information."
@@ -4289,35 +4213,27 @@ msgstr "Döngüsel"
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domain/Düzenle"
 
-#, fuzzy
 msgid "Unchanged"
 msgstr "Değiştir"
 
-#, fuzzy
 msgid "- 1 Month"
 msgstr "Ay"
 
-#, fuzzy
 msgid "+ 1 Month"
 msgstr "Ay"
 
-#, fuzzy
 msgid "+ 2 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "+ 3 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "+ 6 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "+ 1 Year"
 msgstr "Yıl"
 
-#, fuzzy
 msgid "+ 2 Years"
 msgstr "Yıl"
 
@@ -4366,7 +4282,7 @@ msgstr "Posta hesabı"
 msgid "Extras"
 msgstr "Ekstralar"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s / %2$s of <b>%3$s</b>"
 msgstr "%1$s / %2$s toplam <b>%3$d</b>"
 
@@ -4391,7 +4307,6 @@ msgstr "ispCP - Bayi/Sipariş epostası kurulumu"
 msgid "Manage orders"
 msgstr "Sipariş düzenle"
 
-#, fuzzy
 msgid "Activation Link"
 msgstr "Aktivasyon epostası"
 
@@ -4494,31 +4409,24 @@ msgstr "ispCP - Bayi : Destek Sistemi: Talepleri Görüntüle"
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Kullanıcılar/Kullanıcı Ekle"
 
-#, fuzzy
 msgid "Never"
 msgstr "Seviye"
 
-#, fuzzy
 msgid "1 Month"
 msgstr "Ay"
 
-#, fuzzy
 msgid "2 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "3 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "6 Months"
 msgstr "Ay"
 
-#, fuzzy
 msgid "1 Year"
 msgstr "Yıl"
 
-#, fuzzy
 msgid "2 Years"
 msgstr "Yıl"
 
