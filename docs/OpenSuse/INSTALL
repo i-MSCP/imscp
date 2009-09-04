@@ -18,10 +18,10 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.3
-INSTALL Script:		1.6
+INSTALL Script:	1.6
 postinst Script:	1.0
-Maintainer:			Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com> 
-Homepage:			http://isp-contol.net
+Maintainer:		Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com> 
+Homepage:		http://isp-contol.net
 Linux Distros:		OpenSuse 10.3, 11.1
 
 ================================================================================
@@ -120,10 +120,10 @@ Note : every question which is asked in the first run of cpan should be ok to co
 	# perl ispcp-setup
 
 13. Process to specific OpenSuse post installation tasks
-	# sh /srv/www/ispcp/engine/setup/postinst configure
+	# sh postinst configure
 	
 14. Restore /etc/skel
-	# rm -r /etc/skel && mv /etc/skel.bpk /etc/skel
+	# rm -r /etc/skel && mv /etc/skel.bkp /etc/skel
 
 15. Install ispCP ω step-by-step
 
@@ -193,7 +193,7 @@ Note: For all questions, answer "a" (trust always).
 	# perl ispcp-update
 
 13. Process to specific OpenSuse update tasks
-	# sh /srv/www/ispcp/engine/setup/postinst update
+	# sh postinst update
 
 14. Update ispCP ω step-by-step
 
