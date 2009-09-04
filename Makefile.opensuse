@@ -46,12 +46,11 @@ SYSTEM_VIRTUAL=$(INST_PREF)/srv/www/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/srv/www/awstats
 SYSTEM_FCGI=$(INST_PREF)/srv/www/fcgi
 SYSTEM_SCOREBOARDS=$(INST_PREF)/srv/www/scoreboards
-SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
+SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/spool/mail/virtual
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 SYSTEM_MAKE_FILE=/bin/touch
 
 export
-
 
 install:
 
@@ -72,6 +71,7 @@ install:
 	cd ./engine && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
+	cp ./docs/OpenSuse/postinst $(SYSTEM_ROOT)/engine/setup
 
 
 uninstall:

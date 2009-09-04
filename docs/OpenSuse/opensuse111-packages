@@ -89,7 +89,9 @@ php5-mcrypt
 php5-mysql
 php5-sockets
 php5-suhosin
+policyd-weight
 postfix
+postgrey
 proftpd
 proftpd-sql-mysql
 rkhunter

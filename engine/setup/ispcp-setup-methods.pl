@@ -1357,9 +1357,9 @@ sub setup_httpd {
 		sys_command_rs("/usr/sbin/a2enmod cgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/ispcp-setup-services.log");
-		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
+		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi' && ! -e "/etc/SuSE-release") {
 			sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
-		} else {
+		} elsif (! -e "/etc/SuSE-release") {
 			sys_command_rs("/usr/sbin/a2enmod fcgid_ispcp &> /tmp/ispcp-setup-services.log");
 		}
 		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/ispcp-setup-services.log");
@@ -1374,7 +1374,7 @@ sub setup_httpd {
 	# Disable default fastcgi and mod_php4/5, otherwise FastCgiIpcDir is already defined
 	#
 
-	if (-e "/usr/sbin/a2dismod") {
+	if (-e "/usr/sbin/a2dismod" && ! -e "/etc/SuSE-release") {
 		sys_command_rs("/usr/sbin/a2dismod fastcgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2dismod fcgid &> /tmp/ispcp-setup-services.log");
 		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {

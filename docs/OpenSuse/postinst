@@ -1,0 +1,158 @@
+#!/bin/sh
+#
+# ispCP post install/update script for OpenSuse
+#
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+#
+# copyright     2009 by ispCP | http://isp-control.net
+# link          http://isp-control.net
+# author        Laurent Declercq <l.declercq@nuxwin.com>
+#
+# license
+#  This program is free software; you can redistribute it and/or modify it under
+#  the terms of the MPL General Public License as published by the Free Software
+#  Foundation; either version 1.1 of the License, or (at your option) any later
+#  version.
+#  You should have received a copy of the MPL Mozilla Public License along with
+#  this program; if not, write to the Open Source Initiative (OSI)
+#  http://opensource.org | osi@opensource.org
+#
+#
+# Special note for DevTeam:
+#
+# It is necessary for the error recovery procedures that the scripts be idempotent.
+# This means that if it is run successfully, and then it is called again, it doesn't
+# bomb out or cause any harm, but just ensures that everything is the way it ought to be.
+# If the first call failed, or aborted half way through for some reason, the second call
+# should merely do the things that were left undone the first time, if any, and exit with
+# a success status if if everything is OK.
+#
+#
+# TODO: Check OpenSuse backward compatibility (11, 10.3) ; 
+#
+
+set -e
+
+CONF_FILE=/etc/ispcp/ispcp.conf
+
+if [ ! -f $CONF_FILE ] ; then
+ echo "E: $CONF_FILE not found!"
+ exit 1
+fi
+
+# read needed entries from ispcp.conf
+for a in `grep -E '(^Version|APACHE_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' $CONF_FILE | sed -e 's/ //g'`; do
+    export $a
+done
+
+A2ENMOD=/usr/sbin/a2enmod
+A2DISMOD=/usr/sbin/a2dismod
+INSSERV=/sbin/insserv
+SERVICES="courier-authdaemon courier-imap courier-pop mysql policyd-weight postgrey postfix named proftpd apache2"
+ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
+DIST_VERS=`grep -E '^VERSION' /etc/SuSE-release | sed -e 's/[[:space:]=A-Z]//g'`
+
+if [ $DEBUG -eq 1 ]; then
+  echo "now debugging $0 $@"
+  set -x
+fi
+
+case "$1" in
+
+        configure)
+        	echo "ispCP Post Installation - Starting"
+        	
+			# Stop all services
+			echo " Stop all services"
+			for service in $SERVICES ; do
+				[ -f "/etc/init.d/$service" ] && /etc/init.d/$service stop || true
+			done
+
+			#
+			# OpenSuSE firewall configuration
+			#
+			echo " OpenSuSE Firewall Configuration"
+
+			echo "  Stop firewall service"
+			[ -f /etc/init.d/SuSEfirewall2_setup ] && /etc/init.d/SuSEfirewall2_setup stop
+			echo "  Disabling automatic start"
+			[ -f /sbin/yast2 ] && /sbin/yast2 firewall startup manual
+
+			#
+			# Apache2 Configuration
+			#
+			echo " Apache Configuration Processing"
+
+			if [ -f /usr/sbin/suexec2 ] ; then
+				echo "  Fixing suexec wrapper owner/group and permissions"
+				$CMD_CHOWN $ROOT_USER:$APACHE_GROUP /usr/sbin/suexec2
+				$CMD_CHMOD 4755 /usr/sbin/suexec2
+			fi
+
+			# Enable FastCGI module (fcgid|fascgi) and disable unused
+			if [ ! -z "$PHP_FASTCGI" ] ; then
+				echo "  Enable fastcgi ($PHP_FASTCGI) module"
+				[ -x $A2ENMOD ] && $A2ENMOD $PHP_FASTCGI
+			fi
+
+			# Disable default FastCGI modules configuration files
+			echo "  Disable default fastcgi module configuration file"
+			[ -f /etc/apache2/conf.d/mod_fastcgi.conf ] && $CMD_MV /etc/apache2/conf.d/mod_fastcgi.conf /etc/apache2/conf.d/mod_fastcgi.conf.disabled
+			echo "  Disable default fcgid module configuration file"
+			[ -f /etc/apache2/conf.d/mod_fcgid.conf ] && $CMD_MV /etc/apache2/conf.d/mod_fcgid.conf /etc/apache2/conf.d/mod_fcgid.conf.disabled
+			
+			# Disable mod php5
+			echo "  Disable php5 module"
+			[ -x $A2DISMOD ] && $A2DISMOD php5
+
+			#
+			# Postgrey Configuration
+			#
+			echo " Postgrey Configuration Processing"
+
+			if [ -f /etc/sysconfig/postgrey ] ; then
+				$CMD_SED -i 's/#POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10031"/POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:60000"/' /etc/sysconfig/postgrey
+				$CMD_SED -i 's/POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/#POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/' /etc/sysconfig/postgrey
+			fi
+
+			#
+			# Named (bind9) Configuration
+			#
+
+			# FIXME: configure as DNS for host ?
+			
+			#
+			# System Init Configuration
+			#
+			echo " System Init configuration"
+			
+			# Enable all system init scripts needed by ispCP
+			echo "  Enable all system init scripts needed by ispCP"
+			for service in $SERVICES ; do
+				echo "   Enable $service init script..."
+				[ -f /etc/init.d/$service ] && $INSSERV $service
+			done
+
+			# Restart ispCP firewall
+			echo " Restart ispCP firewall"
+			[ -f /etc/init.d/ispcp_network ] && /etc/init.d/ispcp_network restart
+
+			# Restart all services
+			sleep 2
+
+			echo " Restart all services"
+			for service in $SERVICES ; do
+				[ -f /etc/init.d/$service ] && /etc/init.d/$service start
+			done
+        	echo "ispCP Post Installation - Ending"
+        ;;
+        update)
+			# FIXME: Nothing todo for update 1.0.x to 1.0.3 ?
+        ;;
+        *)
+			echo "Usage: sh $0 {configure|update}"
+			exit 1
+        ;;
+esac
+
+exit 0
