@@ -45,9 +45,10 @@ function register_user($uname, $upass) {
 	$udata = array();
 	$udata = get_userdata($uname);
 
-	if ((Config::get('MAINTENANCEMODE')
+	if (
+		criticalUpdate::getInstance()->checkUpdateExists()
 		|| databaseUpdate::getInstance()->checkUpdateExists()
-		|| criticalUpdate::getInstance()->checkUpdateExists())
+		|| (Config::get('MAINTENANCEMODE'))
 		&& $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
 		system_message(tr('System is currently under maintenance! Only administrators can login.'));
@@ -69,13 +70,13 @@ function register_user($uname, $upass) {
 			system_message(tr("%s's account status is not ok!", $uname));
 			return false;
 		}
-		
+
 		if ($udata['admin_type'] == 'user' && is_userdomain_expired($uname)) {
 			write_log(tr("%s's domain expired!", $uname));
 			system_message(tr("%s's domain expired!", $uname));
 			return false;
 		}
-		
+
 		$sess_id = session_id();
 
 		$query = <<<SQL_QUERY
@@ -150,7 +151,7 @@ SQL_QUERY;
 		return false;
 	}
 
-	if ((Config::get('MAINTENANCEMODE') || databaseUpdate::getInstance()->checkUpdateExists() || criticalUpdate::getInstance()->checkUpdateExists()) && $user_type != 'admin') {
+	if ( criticalUpdate::getInstance()->checkUpdateExists() || databaseUpdate::getInstance()->checkUpdateExists() || (Config::get('MAINTENANCEMODE') ) && $user_type != 'admin') {
 		unset_user_login_data(true);
 		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
 		user_goto('/index.php');

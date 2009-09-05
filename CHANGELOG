@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-05 Andreca Daniel
+	- GUI:
+		* Fixed #1975: Error update last version trunk 05/09
+
 2009-09-04 Laurent Declercq
     - DOCS:
         * Updated OpenSuSE INSTALL file
@@ -24,7 +28,7 @@ ispCP ω 1.0.3 Changelog
             - Disabled OpenSuSE Firewall ( ispCP provides its own )
             - Fixed  #1970 : Impossibility of adding new users
     - SETUP:
-        * Fixed #1961 Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
+        * Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
     - CONFIG:
 	* Fixed  Missing EOL in multiple files
 
