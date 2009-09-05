@@ -104,7 +104,7 @@ Note: All warning about "Header V3 DSA signature" are not important.
 	# mysql_secure_installation
 
 10. Install the perl library Net::libIDN:
-    # zypper in lynx ncftp lukemftp libidn-devel perl-YAML
+	# zypper in lynx ncftp lukemftp libidn-devel perl-YAML
 	# perl -MCPAN -e 'install Net::LibIDN'
 
 Note : every question which is asked in the first run of cpan should be ok to confirm
@@ -131,7 +131,7 @@ Note : every question which is asked in the first run of cpan should be ok to co
 	http://isp-control.net to solve the problem.
 
 16. Clean the temporary folders:
-	# rm -fR /tmp/ispcp
+	# rm -Rf /tmp/ispcp
 
 ================================================================================
 6) Update

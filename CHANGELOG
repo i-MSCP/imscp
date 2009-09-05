@@ -29,11 +29,11 @@ ispCP ω 1.0.3 Changelog
             - Fixed suexec wrapper: owner/group and permissions
             - Removed apache2-mod_cband for 11.1 ( See OpenSuse INSTALL file for more information )
             - Disabled OpenSuSE Firewall ( ispCP provides its own )
-            - Fixed  #1970 : Impossibility of adding new users
+            - Fixed #1970: Impossibility of adding new users
     - SETUP:
         * Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
     - CONFIG:
-	* Fixed  Missing EOL in multiple files
+		* Fixed #1961: Missing EOL in multiple files
 
 2009-09-03 Laurent Declercq
 	- DOCS:

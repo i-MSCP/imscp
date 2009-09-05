@@ -1642,7 +1642,7 @@ sub check_master {
 
     if (defined($main::engine_debug)) {
 
-        push_el(\@$main::el, 'check_master()', 'Starting...');
+        push_el(\@$main::el, 'check_master()', 'Ending...');
 
     }
 
