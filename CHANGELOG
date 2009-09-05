@@ -4,6 +4,7 @@ ispCP ω 1.0.3 Changelog
 2009-09-05 Andreca Daniel
 	- GUI:
 		* Fixed #1975: Error update last version trunk 05/09
+		* Fixed #1974: Reseller properties cannot be edited after working with his domains
 
 2009-09-04 Laurent Declercq
     - DOCS:

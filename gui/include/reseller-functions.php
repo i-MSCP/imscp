@@ -69,7 +69,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 		)
 	);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -78,7 +78,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			`menu_level` = 'reseller'
 		OR
 			`menu_level` = 'all'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -160,7 +160,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 		)
 	);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -169,7 +169,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			`menu_level` = 'reseller'
 		OR
 			`menu_level` = 'all'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -216,14 +216,14 @@ SQL_QUERY;
  */
 function get_reseller_default_props(&$sql, $reseller_id) {
 	// Make sql query
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-SQL_QUERY;
+	";
 	// send sql query
 	$rs = exec_query($sql, $query, array($reseller_id));
 
@@ -287,14 +287,14 @@ function generate_reseller_user_props($reseller_id) {
 	$rdisk_max = 0;
 	$rdisk_uf = '_off_';
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`
 		FROM
 			`admin`
 		WHERE
 			`created_by` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
@@ -305,14 +305,14 @@ SQL_QUERY;
 	while ($data = $res->FetchRow()) {
 		$admin_id = $data['admin_id'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`domain_id`
 			FROM
 				`domain`
 			WHERE
 				`domain_admin_id` = ?
-SQL_QUERY;
+		";
 
 		$dres = exec_query($sql, $query, array($admin_id));
 
@@ -414,7 +414,7 @@ function get_user_traffic($user_id) {
 	$sql = Database::getInstance();
 	global $crnt_month, $crnt_year;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_id`,
 			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage,
@@ -427,7 +427,7 @@ function get_user_traffic($user_id) {
 			`domain_id` = ?
 		ORDER BY
 			`domain_id`
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($user_id));
 
@@ -447,7 +447,7 @@ SQL_QUERY;
 
 		$domain_name = $data['domain_name'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				SUM(`dtraff_web`) AS web,
 				SUM(`dtraff_ftp`) AS ftp,
@@ -461,7 +461,7 @@ SQL_QUERY;
 				`domain_traffic`
 			WHERE
 				`domain_id` = ?
-SQL_QUERY;
+		";
 
 		$res = exec_query($sql, $query, array($domain_id));
 
@@ -488,14 +488,14 @@ function get_user_props($user_id) {
 
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`domain`
 		WHERE
 			`domain_id` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($user_id));
 
@@ -595,14 +595,14 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 	$sql = Database::getInstance();
 	global $domain_ip;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`reseller_ips`
 		FROM
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
@@ -777,18 +777,18 @@ function translate_dmn_status($status) {
 function ispcp_domain_exists($domain_name, $reseller_id) {
 	$sql = Database::getInstance();
 	// query to check if the domain name exist in the table for domains/accounts
-	$query_domain = <<<SQL_QUERY
+	$query_domain = "
 		SELECT
 			COUNT(`domain_id`) AS cnt
 		FROM
 			`domain`
 		WHERE
 			`domain_name` = ?
-SQL_QUERY;
+	";
 
 	$res_domain = exec_query($sql, $query_domain, array($domain_name));
 	// query to check if the domain name exists in the table for domain aliases
-	$query_alias = <<<SQL_QUERY
+	$query_alias = "
 		SELECT
 			COUNT(t1.`alias_id`) AS cnt
 		FROM
@@ -797,11 +797,11 @@ SQL_QUERY;
 			t1.`domain_id` = t2.`domain_id`
 		AND
 			t1.`alias_name` = ?
-SQL_QUERY;
+	";
 
 	$res_aliases = exec_query($sql, $query_alias, array($domain_name));
 	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
-	$query_domain = <<<SQL_QUERY
+	$query_domain = "
 		SELECT
 			COUNT(`domain_id`) AS cnt
 		FROM
@@ -810,9 +810,9 @@ SQL_QUERY;
 			`domain_name` = ?
 		AND
 			`domain_created_id` <> ?
-SQL_QUERY;
+	";
 	// redefine query to check in the table aliases if 3rd level for this reseller is allowed
-	$query_alias = <<<SQL_QUERY
+	$query_alias = "
 		SELECT
 			COUNT(t1.`alias_id`) AS cnt
 		FROM
@@ -823,7 +823,7 @@ SQL_QUERY;
 			t1.`alias_name` = ?
 		AND
 			t2.`domain_created_id` <> ?
-SQL_QUERY;
+	";
 	// here we split the domain name by point separator
 	$split_domain = explode(".", trim($domain_name));
 	$dom_cnt = strlen(trim($domain_name));
@@ -862,7 +862,7 @@ SQL_QUERY;
 	}
 	// ok we do not have end user and we do not have error => the fun goes on :-)
 	// query to check if the domain does not exist as subdomain
-	$query_build_subdomain = <<<SQL_QUERY
+	$query_build_subdomain = "
 		SELECT
 			t1.`subdomain_name`, t2.`domain_name`
 		FROM
@@ -871,7 +871,7 @@ SQL_QUERY;
 			t1.`domain_id` = t2.`domain_id`
 		AND
 			t2.`domain_created_id` = ?
-SQL_QUERY;
+	";
 
 	$subdomains = array();
 	$res_build_sub = exec_query($sql, $query_build_subdomain, array($reseller_id));
@@ -903,16 +903,16 @@ function gen_manage_domain_query(&$search_query, &$count_query,
 		&& $search_status === 'n/a') {
 
 		// We have pure list query;
-		$count_query = <<<SQL_QUERY
+		$count_query = "
 			SELECT
 				COUNT(`domain_id`) AS cnt
 			FROM
 				`domain`
 			WHERE
 				`domain_created_id` = '$reseller_id'
-SQL_QUERY;
+		";
 
-		$search_query = <<<SQL_QUERY
+		$search_query = "
 			SELECT
 				*
 			FROM
@@ -923,30 +923,30 @@ SQL_QUERY;
 				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-SQL_QUERY;
+		";
 	} else if ($search_for === '' && $search_status != '') {
 		if ($search_status === 'all') {
-			$add_query = <<<SQL_QUERY
+			$add_query = "
 				`domain_created_id` = '$reseller_id'
-SQL_QUERY;
+			";
 		} else {
-			$add_query = <<<SQL_QUERY
+			$add_query = "
 					`domain_created_id` = '$reseller_id'
 				AND
 					`domain_status` = '$search_status'
-SQL_QUERY;
+			";
 		}
 
-		$count_query = <<<SQL_QUERY
+		$count_query = "
 			SELECT
 				COUNT(`domain_id`) AS cnt
 			FROM
 				`domain`
 			WHERE
 				$add_query
-SQL_QUERY;
+		";
 
-		$search_query = <<<SQL_QUERY
+		$search_query = "
 			SELECT
 				*
 			FROM
@@ -957,7 +957,7 @@ SQL_QUERY;
 				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-SQL_QUERY;
+		";
 	} else if ($search_for != '') {
 		if ($search_common === 'domain_name') {
 			$add_query = "WHERE `admin_name` RLIKE '" . addslashes($search_for) . "' %s";
@@ -977,7 +977,7 @@ SQL_QUERY;
 
 		if ($search_status != 'all') {
 			$add_query = sprintf($add_query, " AND t1.`created_by` = '$reseller_id' AND t2.`domain_status` = '$search_status'");
-			$count_query = <<<SQL_QUERY
+			$count_query = "
 				SELECT
 					COUNT(`admin_id`) AS cnt
 				FROM
@@ -986,19 +986,19 @@ SQL_QUERY;
 				$add_query
 				AND
 					t1.`admin_id` = t2.`domain_admin_id`
-SQL_QUERY;
+			";
 		} else {
 			$add_query = sprintf($add_query, " AND `created_by` = '$reseller_id'");
-			$count_query = <<<SQL_QUERY
+			$count_query = "
 				SELECT
 					COUNT(`admin_id`) AS cnt
 				FROM
 					`admin`
 				$add_query
-SQL_QUERY;
+			";
 		}
 
-		$search_query = <<<SQL_QUERY
+		$search_query = "
 			SELECT
 				t1.`admin_id`, t2.*
 			FROM
@@ -1011,7 +1011,7 @@ SQL_QUERY;
 				t2.`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-SQL_QUERY;
+		";
 	}
 }
 
@@ -1159,25 +1159,25 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 		$lang_table = $rs->fields[0];
 
 		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table, $matches)) {
-			$query = <<<SQL_QUERY
+			$query = "
 				SELECT
 					`msgstr`
 				FROM
 					$lang_table
 				WHERE
 					`msgid` = 'ispcp_language'
-SQL_QUERY;
+		";
 
 			$res2 = exec_query($sql, $query, array());
 
-			$query = <<<SQL_QUERY
+			$query = "
 				SELECT
 					`msgstr`
 				FROM
 					$lang_table
 				WHERE
 					`msgid` = 'ispcp_languageSetlocaleValue'
-SQL_QUERY;
+			";
 
 			$res3 = exec_query($sql, $query, array());
 
@@ -1233,7 +1233,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 			)
 		);
 
-		$alias_query = <<<SQL_QUERY
+		$alias_query = "
 			SELECT
 				`alias_id`, `alias_name`
 			FROM
@@ -1242,7 +1242,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 				`domain_id` = ?
 			ORDER BY
 				`alias_id` DESC
-SQL_QUERY;
+		";
 		$alias_rs = exec_query($sql, $alias_query, array($domain_id));
 
 		if ($alias_rs->RecordCount() == 0) {
@@ -1270,7 +1270,7 @@ SQL_QUERY;
 }
 
 function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		INSERT INTO `domain_extras`
 			(`dmn_id`,
 			`admin_id`,
@@ -1293,7 +1293,7 @@ function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 			'1',
 			'1',
 			'0')
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $admin_id));
 }
@@ -1306,14 +1306,14 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 		if (isset($_SESSION["ch_hpprops"])) {
 			$props = $_SESSION["ch_hpprops"];
 		} else {
-			$query = <<<SQL_QUERY
+			$query = "
 				SELECT
 					`props`
 				FROM
 					`hosting_plans`
 				WHERE
 					`id` = ?
-SQL_QUERY;
+			";
 
 			$res = exec_query($sql, $query, array($hpid));
 			$data = $res->FetchRow();
@@ -1329,14 +1329,14 @@ SQL_QUERY;
 		$sql_db_new, $sql_user_new,
 		$traff_new, $disk_new) = explode(";", $props);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($reseller_id));
 	$data = $res->FetchRow();
@@ -1604,21 +1604,21 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 		$forward_type = ($dmn_type == 'alias') ? 'alias_forward' : 'normal_forward';
 
 		// prepare SQL
-		$query = <<<SQL_QUERY
-	INSERT INTO mail_users
-		(`mail_acc`,
-		 `mail_pass`,
-		 `mail_forward`,
-		 `domain_id`,
-		 `mail_type`,
-		 `sub_id`,
-		 `status`,
-		 `mail_auto_respond`,
-		 `quota`,
-		 `mail_addr`)
-	VALUES
-		(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+		$query = "
+			INSERT INTO mail_users
+				(`mail_acc`,
+				`mail_pass`,
+				`mail_forward`,
+				`domain_id`,
+				`mail_type`,
+				`sub_id`,
+				`status`,
+				`mail_auto_respond`,
+				`quota`,
+				`mail_addr`)
+			VALUES
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		";
 
 		// create default forwarder for webmaster@domain.tld to the account's owner
 		$rs = exec_query($sql, $query,
@@ -1670,16 +1670,16 @@ SQL_QUERY;
 } // end client_mail_add_default_accounts
 
 /**
- * Get count from table by given domain_id's 
+ * Get count from table by given domain_id's
  * @param $tablename string database table name
  * @param $ua array domain_ids
  * @return integer count
  */
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
-	
+
 	$delstatus = Config::get('ITEM_DELETE_STATUS');
-	
+
 	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
 	if ($tablename == 'ftp_users') {
 		$fieldname = 'uid';
@@ -1721,41 +1721,50 @@ function recalc_reseller_c_props($reseller_id) {
 
 	$delstatus = Config::get('ITEM_DELETE_STATUS');
 
-    $query = <<<SQL_QUERY
-            SELECT
-                    COUNT(`domain_id`) AS crn_domains,
-                    IFNULL(SUM(`domain_mailacc_limit`), 0) AS crn_mail,
-                    IFNULL(SUM(`domain_ftpacc_limit`), 0) AS crn_ftp,
-                    IFNULL(SUM(`domain_traffic_limit`), 0) AS crn_traffic,
-                    IFNULL(SUM(`domain_sqld_limit`), 0) AS crn_sql,
-                    IFNULL(SUM(`domain_sqlu_limit`), 0) AS crn_sql_users,
-                    IFNULL(SUM(`domain_alias_limit`), 0) AS crn_als,
-                    IFNULL(SUM(`domain_subd_limit`), 0) AS crn_subdomain,
-                    IFNULL(SUM(`domain_disk_limit`), 0) AS crn_hdd
-            FROM
-                    `domain`
-            WHERE
-                    `domain_created_id` = ?
-            AND
-                    `domain_status` != ?
-SQL_QUERY;
+	// Get all users of reseller:
+	$query = "
+		SELECT
+			`domain_id`,
+			`domain_uid`
+		FROM
+			`domain`
+		WHERE
+			`domain_created_id` = ?
+		AND
+			`domain_status` != ?
+	";
+	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
+	$user_array = $systemuser_array = array();
+	while ($data = $res->FetchRow()) {
+		$user_array[] = $data['domain_id'];
+		$systemuser_array[] = $data['domain_uid'];
+	}
+	$current_dmn_cnt = count($user_array);
+	if ($current_dmn_cnt > 0) {
+		$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
+		$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
+		$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
+		$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
+		$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
 
-        $rs_count = exec_query($sql, $query, array($reseller_id, $delstatus));
+		$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
+		$query .= " WHERE `sqld_id` IN (";
+		$query .= "SELECT sqld_id FROM sql_database";
+		$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
+		$res = exec_query($sql, $query);
+		$current_sql_user_cnt = $res->fields['cnt'];
+	} else {
+		$current_sub_cnt =
+		$current_als_cnt =
+		$current_mail_cnt =
+		$current_ftp_cnt =
+		$current_sql_db_cnt =
+		$current_sql_user_cnt = 0;
+	}
 
-
-        $current_dmn_cnt        = $rs_count -> fields['crn_domains'];
-        $current_mail_cnt       = $rs_count -> fields['crn_mail'];
-        $current_ftp_cnt        = $rs_count -> fields['crn_ftp'];
-        $current_traffic        = $rs_count -> fields['crn_traffic'];
-        $current_sql_db_cnt     = $rs_count -> fields['crn_sql'];
-        $current_sql_user_cnt   = $rs_count -> fields['crn_sql_users'];
-        $current_sub_cnt        = $rs_count -> fields['crn_subdomain'];
-        $current_disk           = $rs_count -> fields['crn_hdd'];
-        $current_als_cnt        = $rs_count -> fields['crn_als'];
-
-        return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
-                $current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
-                $current_sql_user_cnt, $current_disk, $current_traffic);
+	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
+				$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
+				$current_sql_user_cnt);
 }
 
 /**
@@ -1775,31 +1784,15 @@ function update_reseller_c_props($reseller_id) {
 			`current_mail_cnt` = ?,
 			`current_ftp_cnt` = ?,
 			`current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?,
-			`current_disk_amnt` = ?,
-			`current_traff_amnt` = ?
+			`current_sql_user_cnt` = ?
 		WHERE
 			`reseller_id` = ?
 	";
 
-	list(
-		$current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
-		$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
-		$current_sql_user_cnt, $current_disk, $current_traffic
-	) = recalc_reseller_c_props($reseller_id);
-	
-	$props = array(
-		$current_dmn_cnt,
-		$current_sub_cnt,
-		$current_als_cnt,
-		$current_mail_cnt,
-		$current_ftp_cnt,
-		$current_sql_db_cnt,
-		$current_sql_user_cnt,
-		$current_disk,
-		$current_traffic,
-		$reseller_id
-	);
+
+	$props = recalc_reseller_c_props($reseller_id);
+	$props[] = $reseller_id;
+
 	exec_query($sql, $query, $props);
 }
 
