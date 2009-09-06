@@ -3,7 +3,7 @@
 <div id="container">
 	<div id="head">
 		<div id="headleft">
-			
+			<a href="http://www.isp-control.net" target="_blank"><?php echo printPngImage($net2ftp_globals["image_url"] . "/img/logo.png", "ispCP", "width: 193px; height: 59px; border: 0;"); ?></a>
 		</div>
 		<div id="headright">
 			<h2 style="text-align: <?php echo __("left"); ?>;"></h2>
