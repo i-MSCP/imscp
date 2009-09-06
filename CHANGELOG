@@ -1,7 +1,7 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-09-04 Laurent Declercq
+2009-09-06 Laurent Declercq
 	- ENGINE:
 		* Fixed #1976: Deleting a user account by going properly
 
