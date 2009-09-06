@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-06 Andreca Daniel
+	- LANGUAGES:
+		* Updated Catalan
+		* Updated Danish
+
 2009-09-05 Andreca Daniel
 	- GUI:
 		* Fixed #1975: Error update last version trunk 05/09

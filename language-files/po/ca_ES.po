@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-30 23:21+0300\n"
-"PO-Revision-Date: 2009-05-05 17:59+0200\n"
+"PO-Revision-Date: 2009-09-02 15:56+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,21 +63,20 @@ msgid "Your new password has been sent."
 msgstr "S'ha sol·licitat la contrasenya"
 
 msgid "New password could not been sent."
-msgstr ""
+msgstr "La nova contrasenya no s'ha pogut enviar"
 
 #, php-format
 msgid ""
 "Your password request has been initiated. You will receive an email with "
 "instructions to complete the process. This reset request will expire in %s "
 "minutes."
-msgstr ""
+msgstr "La teva sol·licitud de contrasenya ha començat. Hauries de rebre un correu amb les instruccions per completar el proces. Aquesta sol·licitud caducarà en %s minuts."
 
 msgid "Back"
 msgstr "Enrere"
 
-#, fuzzy
 msgid "User or security code was incorrect!"
-msgstr "ERROR: El codi de seguretat no era correcte"
+msgstr "El codi de seguretat o l'usuari no eren correctes"
 
 msgid "Retry"
 msgstr "Reintentar"
@@ -114,8 +113,7 @@ msgstr ""
 
 #, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr ""
-"La contrasenya té menys de %s caràcters o inclou caràcters no permesos!"
+msgstr "La contrasenya té menys de %s caràcters o inclou caràcters no permesos!"
 
 msgid "Entered passwords do not match!"
 msgstr "Les contrasenyes entrades són diferents"
@@ -517,18 +515,17 @@ msgstr "Editar domini"
 msgid "Domain properties"
 msgstr "Propietats del domini"
 
-#, fuzzy
 msgid "Domain expire"
-msgstr "Característiques del domini"
+msgstr "Caducitat del domini"
 
 msgid "New expire date"
-msgstr ""
+msgstr "Nova data de caducitat"
 
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max subdominis<br /><i>(-1 desactivat, 0 il·limitat)</i>"
+msgstr "Límit subdominis<br /><i>(-1 desactivat, 0 il·limitat)</i>"
 
 msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max àlies<br /><i>(-1 desactivat, 0 il·limitat)</i>"
+msgstr "Límit àlies<br /><i>(-1 desactivat, 0 il·limitat)</i>"
 
 msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límit de comptes de correu <br /><i>(-1 desactivat, 0 il·limitat)</i>"
@@ -555,7 +552,7 @@ msgid "Domain"
 msgstr "Domini"
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "Full"
 msgstr "Complet"
@@ -569,14 +566,11 @@ msgstr "Cancel·lar"
 msgid "Yes"
 msgstr "Sí"
 
-msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
-msgstr ""
+msgid "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr "En cas que 'Caducitat de domini' sigui 'N/A' la caducitat del domini es comptarà  a partir d'avui."
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"L'usuari no existeix o no teniu permís per accedir a aquesta interfície!"
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "L'usuari no existeix o no teniu permís per accedir a aquesta interfície!"
 
 msgid "N/A"
 msgstr "N/A"
@@ -654,8 +648,7 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr "El servei de <em>%s</em> no es pot limitar!"
 
 #, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
 "El nombre especificat és més petit que els registres de <em>%s</em> al "
 "sistema!"
@@ -674,8 +667,7 @@ msgstr "Hi ha límits de distribuïdor per al servei de <em>%s</em>!"
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
-"Esteu excedint els límits de distribuïdor per al servei de <em>%s</em>!"
+msgstr "Esteu excedint els límits de distribuïdor per al servei de <em>%s</em>!"
 
 msgid "ispCP - Domain Statistics Data"
 msgstr "ispCP - Estadístiques de domini"
@@ -795,7 +787,7 @@ msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
 msgid "Allow adding records to DNS zone"
-msgstr ""
+msgstr "Permet afegir entrades a la Zona de DNS"
 
 msgid "Backup and restore"
 msgstr "Còpia i recuperació"
@@ -938,9 +930,8 @@ msgstr "Si us plau indiqueu un àlies!"
 msgid "This IP already exist!"
 msgstr "Aquesta IP ja existeix!"
 
-#, fuzzy
 msgid "Please select nework interface!"
-msgstr "Canviar a la interfície d'usuari"
+msgstr "Sisplau, tria la interficie de xarxa!"
 
 msgid "Manage IPs"
 msgstr "Administrar IPs"
@@ -951,9 +942,8 @@ msgstr "IPs disponibles"
 msgid "IP"
 msgstr "IP"
 
-#, fuzzy
 msgid "Network interface"
-msgstr "Canviar a la interfície d'usuari"
+msgstr "Interfície de xarxa"
 
 msgid "Add new IP"
 msgstr "Afegir nova IP"
@@ -1343,17 +1333,14 @@ msgid "Domains"
 msgstr "Dominis"
 
 #, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
-"Inconsistència entre el nombre d'àlies registrats i els reals (%1$d != %2$d)"
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr "Inconsistència entre el nombre d'àlies registrats i els reals (%1$d != %2$d)"
 
 msgid "Aliases"
 msgstr "Àlies"
 
 #, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 "Inconsistència entre el nombre de comptes FTP registrats i reals (%1$d != %2"
 "$d)"
@@ -1400,10 +1387,8 @@ msgstr ""
 "Aquest distribuïdor té client(s) amb drets il·limitats sobre el servei <b>%"
 "s</b>!<br>"
 
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
-"Si voleu limitar el distribuïdor, primer heu de limitar els seus clients!<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr "Si voleu limitar el distribuïdor, primer heu de limitar els seus clients!<br>"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -1799,9 +1784,8 @@ msgstr "Assumpte"
 msgid "URL to this admin panel"
 msgstr "URL al panell d'administrador "
 
-#, fuzzy
 msgid "URL protocol"
-msgstr "Protocol"
+msgstr "Protocol URL"
 
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Admin/Mode Manteniment"
@@ -2034,23 +2018,20 @@ msgstr "Enviar missatge de resposta"
 msgid "Send reply"
 msgstr "Enviar resposta"
 
-#, fuzzy
 msgid "ispCP - Delete Domain"
-msgstr "ispCP - Client/Administrar Dominis"
+msgstr "ispCP - Esborrar domini"
 
 msgid "Wrong domain ID!"
 msgstr "ID de domini incorrecte!"
 
-#, fuzzy
 msgid "Invalid user id!"
-msgstr "Període de temps incorrecte!"
+msgstr "Id de usuari no vàlid!"
 
 msgid "There are active domains of reseller/admin!"
-msgstr ""
+msgstr "Hi ha dominis actius de distribuïdor/admin!"
 
-#, fuzzy
 msgid "Delete domain"
-msgstr "Domini real"
+msgstr "Esborrar domini"
 
 #, fuzzy
 msgid "Domain summary:"
@@ -2079,11 +2060,10 @@ msgstr "Àlies de domini"
 msgid ""
 "Do you really want to delete the entire domain? This operation can not be "
 "undone!"
-msgstr ""
+msgstr "Estàs segur que vols esborrar tot el domini? Aquesta operació no es pot desfer!"
 
-#, fuzzy
 msgid "Yes, delete the domain."
-msgstr "%s ha esborrat el registre complet d'admin!"
+msgstr "Si, esborra el domini."
 
 msgid "ispCP Client : Add Alias"
 msgstr "ispCP - Client: Afegir Àlies"
@@ -2147,8 +2127,7 @@ msgstr "Àlies programat per ser activat!"
 msgid "Alias scheduled for addition!"
 msgstr "Àlies programat per ser afegit!"
 
-msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
 "L'àlies de domini que esteu intentant eliminar té subdominis!<br> Elimineu-"
 "los primer!"
@@ -2160,8 +2139,7 @@ msgstr ""
 "L'àlies de domini que esteu intentant eliminar té comptes de correu!<br> "
 "Elimineu-los primer!"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
 "L'àlies de domini que esteu intentant eliminar té comptes FTP!<br> Elimineu-"
 "los primer!"
@@ -2193,8 +2171,7 @@ msgstr "Desactivar"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Una URL de redirecció ha de començar amb http://'"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 "El subdomini que esteu intentant eliminar té comptes de correu!<br> Primer "
 "elimineu-les!"
@@ -2229,10 +2206,8 @@ msgstr "(normalment anomenat"
 msgid "Restore backup"
 msgstr "Restaurar backup"
 
-msgid ""
-"Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Faci click sobre Restaurar i el sistema restaurarà el darrer backup diari"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr "Faci click sobre Restaurar i el sistema restaurarà el darrer backup diari"
 
 msgid "Restore"
 msgstr "Restaurar"
@@ -2295,13 +2270,13 @@ msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Administrar Àlies de Domini/Editar Àlies"
 
 msgid "Add DNS zone's record"
-msgstr ""
+msgstr "Afegir entrada a la zona DNS"
 
 msgid "Edit DNS zone's record"
-msgstr ""
+msgstr "Editar entrada a la zona DNS"
 
 msgid "DNS zone's records"
-msgstr ""
+msgstr "Entrades de la zona DNS"
 
 #, fuzzy
 msgid "Class"
@@ -2316,88 +2291,81 @@ msgid "IP address"
 msgstr "Entrar Adreça"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "Adreça IPv6"
 
 #, fuzzy
 msgid "Service protocol"
 msgstr "Ports del servidor"
 
 msgid "TTL"
-msgstr ""
+msgstr "TTL"
 
 msgid "Relative weight for records with the same priority"
-msgstr ""
+msgstr "Pes relatiu per les entrades amb la mateixa prioritat"
 
 msgid "Target host"
-msgstr ""
+msgstr "Servidor destí"
 
-#, fuzzy
 msgid "Target port"
-msgstr "Ports del servidor"
+msgstr "Port de desí"
 
 msgid "Canonical name"
 msgstr ""
 
-#, fuzzy
 msgid "Plain record data"
-msgstr "Dades de contrasenya"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr ""
+msgstr "No es permet fer servir el caràcter (\"%s\") en un CNAME"
 
 msgid "Name must be filled."
-msgstr ""
+msgstr "S'ha d'omplir el nom."
 
 #, php-format
 msgid "Wrong IPv4 address (\"%s\")."
-msgstr ""
+msgstr "L'adreça IPv4 no és vàlida (\"%s\")."
 
 #, php-format
 msgid "Wrong IPv6 address (\"%s\")."
-msgstr ""
+msgstr "L'adreça IPv6 no és vàlida (\"%s\")."
 
-#, fuzzy
 msgid "Port must be a number!"
-msgstr "El preu ha de ser un número!"
+msgstr "El port ha de ser un número!"
 
-#, fuzzy
 msgid "TTL must be a number!"
-msgstr "El preu ha de ser un número!"
+msgstr "El TTL ha de ser un número!"
 
-#, fuzzy
 msgid "Priority must be a number!"
-msgstr "El preu ha de ser un número!"
+msgstr "La prioritat ha de ser un número!"
 
-#, fuzzy
 msgid "Relative weight must be a number!"
-msgstr "L'alta ha de ser un número"
+msgstr "El pes relatiu ha de ser un número"
 
-#, fuzzy
 msgid "Service must be filled."
-msgstr "El preu ha de ser un número!"
+msgstr "S'ha d'omplir el servei"
 
 msgid "Host must be filled."
-msgstr ""
+msgstr "S'ha d'omplir el servidor."
 
 msgid "conflict with CNAME record"
-msgstr ""
+msgstr "conflicte amb el registre CNAME"
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in NAME"
-msgstr ""
+msgstr "No es permet fer servir el caràcter (\"%s\") en un NAME"
 
 #, php-format
 msgid "Record \"%s\" is not part of domain \"%s\"."
-msgstr ""
+msgstr "L'entrada \"%s\" no pertany al domini \"%s\"."
 
 #, php-format
 msgid "Cannot validate %s record. Reason '%s'."
-msgstr ""
+msgstr "No puc validar l'entrada %s. Motiu: '%s'."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Unknown zone type %s!"
-msgstr "Tipus desconegut!"
+msgstr "Tipus de zona %s desconegut!"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Client/Estadístiques del Domini"
@@ -2417,13 +2385,12 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Suma"
 
-#, fuzzy
 msgid "Manual zone's records list is empty!"
-msgstr "La llista de comptes de correu és buida!"
+msgstr "La llista de zones DNS manuals és buida!"
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "entrada %s"
 
 msgid "Subdomain list is empty!"
 msgstr "La llista de subdominis és buida!"
@@ -2449,9 +2416,8 @@ msgstr "Reenviar"
 msgid "Actions"
 msgstr "Accions"
 
-#, fuzzy
 msgid "Record data"
-msgstr "Dades principals"
+msgstr "Dades de l'entrada"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Client/Administrar Pàgines d'Error Personalitzades"
@@ -2466,8 +2432,7 @@ msgid "Custom error page was updated!"
 msgstr "Pàgina d'error personalitzada actualitzada!"
 
 msgid "System error - custom error page was NOT updated!"
-msgstr ""
-"Error de sistema - NO s'ha actualitzat la pàgina d'error personalitzada!"
+msgstr "Error de sistema - NO s'ha actualitzat la pàgina d'error personalitzada!"
 
 msgid "Error 401 (unauthorised)"
 msgstr "Error 401 (no autoritzat)"
@@ -2631,9 +2596,8 @@ msgstr "Suport PHP: activat"
 msgid "PHP Support: disabled"
 msgstr "Suport PHP: desactivat"
 
-msgid ""
-"You have PHP enabled, but the new hosting plan doesn't has this feature."
-msgstr ""
+msgid "You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgstr "Tens el PHP habilitat, però el nou pla de hosting no té aquesta funció."
 
 msgid "CGI Support: enabled"
 msgstr "Suport CGI: activat"
@@ -2641,74 +2605,68 @@ msgstr "Suport CGI: activat"
 msgid "CGI Support: disabled"
 msgstr "Suport CGI: desactivat"
 
-msgid ""
-"You have CGI enabled, but the new hosting plan doesn't has this feature."
-msgstr ""
+msgid "You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgstr "Tens el CGI habilitat, però el nou pla de hosting no té aquesta funció."
 
-#, fuzzy
 msgid "DNS Support: enabled"
-msgstr "Suport PHP: activat"
+msgstr "Suport DNS: activat"
 
-#, fuzzy
 msgid "DNS Support: disabled"
-msgstr "Suport PHP: desactivat"
+msgstr "Suport DNS: desactivat"
 
-msgid ""
-"You have DNS enabled, but the new hosting plan doesn't has this feature."
-msgstr ""
+msgid "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr "Tens el control de DNS habilitat, però el nou pla de hosting no té aquesta funció."
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr ""
+msgstr "Estas ocupant més espai de disk que el que permeten els límits del nou pla de hosting."
 
 msgid "Disk limit"
 msgstr "Límit disc"
 
 msgid "You have more traffic than the new hosting plan limits."
-msgstr ""
+msgstr "Estàs consumint més transit que el que permeten els límits del nou pla de hosting."
 
 msgid "Traffic limit"
 msgstr "Límit trànsit"
 
 msgid "You have more aliases in use than the new hosting plan limits."
-msgstr ""
+msgstr "Tens més àlies que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr ""
+msgstr "Tens més subdominis que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
-msgstr ""
+msgstr "Tens més adreces de correu que el que permeten els límits del nou pla de hosting."
 
 msgid "Emails"
 msgstr "Correus"
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
-msgstr ""
+msgstr "Tens més comptes de FTP que el que permeten els límits del nou pla de hosting."
 
 msgid "FTPs"
 msgstr "FTPs"
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
-msgstr ""
+msgstr "Tens més bases de dades SQL que el que permeten els límits del nou pla de hosting."
 
-msgid ""
-"You have more SQL database users in use than the new hosting plan limits."
-msgstr ""
+msgid "You have more SQL database users in use than the new hosting plan limits."
+msgstr "Tens més usuaris SQL que el que permeten els límits del nou pla de hosting."
 
 msgid "free of charge"
 msgstr "gratuït"
 
 msgid "You can not update to this hosting plan, see notices in text."
-msgstr ""
+msgstr "No pots actualitzar aquest pla de hosting, mira les alertes en el text."
 
 msgid "Warning:"
-msgstr ""
+msgstr "Alerta:"
 
-#, fuzzy
 msgid "Error:"
-msgstr "Error"
+msgstr "Error:"
 
 msgid "I know about the warnings - Purchase!"
-msgstr ""
+msgstr "He vist els avisos - Compra!"
 
 msgid "There are no available hosting plans for update"
 msgstr "No hi ha plans de hosting disponibles per a actualitzar"
@@ -2717,47 +2675,44 @@ msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Actualitzar pla de hosting"
 
 msgid "You have more disk space in use than the new hosting plan limits"
-msgstr ""
+msgstr "Fas servir més espai de disc del que permeten els límits del nou pla de hosting."
 
 msgid "You have more traffic than the new hosting plan limits"
-msgstr ""
+msgstr "Estàs consumint més transit que el que permeten els límits del nou pla de hosting. "
 
 msgid "You have more aliases in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tens més àlies que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more subdomains in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tens més subdominis que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more Email addresses in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tens més adreces de correu que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more FTP accounts in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tens més comptes de FTP que el que permeten els límits del nou pla de hosting."
 
 msgid "You have more SQL databases in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tens més bases de dades SQL que el que permeten els límits del nou pla de hosting."
 
-msgid ""
-"You have more SQL database users in use than the new hosting plan limits"
-msgstr ""
+msgid "You have more SQL database users in use than the new hosting plan limits"
+msgstr "Tens més usuaris SQL que el que permeten els límits del nou pla de hosting."
 
 msgid "Your request for hosting pack update was added successfully"
-msgstr ""
-"La petició per a l'actualització del pla de hosting s'ha afegit correctament"
+msgstr "La petició per a l'actualització del pla de hosting s'ha afegit correctament"
 
 msgid "[ispCP OrderPanel] - You have an update order"
 msgstr "[ispCP Panell de comandes] - Teniu una comanda d'actualització"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
 "Please login into your ispCP control panel at %s for more details"
 msgstr ""
-"Teniu una comanda d'actualització pel compte {ACCOUNT}\n"
+"Teniu una comanda d'actualització pel compte %s\n"
 "\n"
-"\n"
-"Si us plau entreu al panell de control ispCP per a més detalls"
+"Si us plau entreu al panell de control ispCP a %s per a més detalls"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr ""
@@ -2844,9 +2799,8 @@ msgstr ""
 msgid "Mail forward list empty!"
 msgstr "La llista de reenviaments és buida!"
 
-#, fuzzy
 msgid "Forward to same address is not allowed!"
-msgstr "El subdomini ja existeix o no està permés!"
+msgstr "La redirecció a la mateixa adreça no es permet!"
 
 msgid "Mail account already exists!"
 msgstr "El compte de correu ja existeix!"
@@ -3059,8 +3013,7 @@ msgid "Unprotect it"
 msgstr "Desprotegir"
 
 msgid "Protected area status should be OK if you want to delete it!"
-msgstr ""
-"L'estat de l'àrea protegida hauria de ser OK abans d'intentar eliminar-la!"
+msgstr "L'estat de l'àrea protegida hauria de ser OK abans d'intentar eliminar-la!"
 
 msgid "Protected area deleted successfully!"
 msgstr "Àrea protegida eliminada correctament!"
@@ -3227,8 +3180,7 @@ msgid "Too user long password!"
 msgstr "Contrasenya d'usuari massa llarga!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
-"No s'ha trobat l'usuari SQL! Potser ha estat eliminat per un altre usuari!"
+msgstr "No s'ha trobat l'usuari SQL! Potser ha estat eliminat per un altre usuari!"
 
 msgid "User name too long!"
 msgstr "Nom d'usuari massa llarg!"
@@ -3257,158 +3209,137 @@ msgstr "Afegir usuari existent"
 msgid "Existing SQL users"
 msgstr "Existeixen usuaris SQL"
 
-#, fuzzy
 msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Client/Administrar Dominis"
+msgstr "ispCP - Client/Dominis SSL"
 
 msgid "Key identifier already used in one crt!\n"
-msgstr ""
+msgstr "L'identificador ja es fa servir en un certificat!\n"
 
 msgid "Field Country must be 2 char long!\n"
-msgstr ""
+msgstr "L'identificador de país ha de ser de dos caràcters!\n"
 
 msgid "Field State can not be empty!\n"
-msgstr ""
+msgstr "El camp Estat no pot ser buit!\n"
 
 msgid "Field City can not be empty!\n"
-msgstr ""
+msgstr "El camp ciutat no pot ser buit!\n"
 
-#, fuzzy
 msgid "Field Company can not be empty!\n"
-msgstr "El domini mestre no pot ser utilitzat!"
+msgstr "El camp Empresa no pot ser buit!\n"
 
 msgid "Field Company division can not be empty!\n"
-msgstr ""
+msgstr "El camp Divisio de l'empresa no pot ser buit!\n"
 
-#, fuzzy
 msgid "Email is not valid!\n"
-msgstr "Àlies de domini no afegit!"
+msgstr "El correu no és vàlid!\n"
 
 msgid "Error retriving key data"
-msgstr ""
+msgstr "Error obtenint la clau"
 
 msgid "Inexistent key"
-msgstr ""
+msgstr "La clau no existeix"
 
 msgid "Paste certificate"
-msgstr ""
+msgstr "Enganxar certificat"
 
 msgid "Intermediate certificate"
-msgstr ""
+msgstr "Certificat intermig"
 
 msgid "Key content"
+msgstr "Contingut de la clau"
+
+msgid "Add new certificate"
+msgstr "Afegir nou certificat"
+
+msgid "Generate self signed"
+msgstr "Generar certificat autosignat"
+
+msgid "CRT for domain name"
 msgstr ""
 
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Afegir nova àrea protegida"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Generar contrasenya"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Sintàxi de domini incorrecta!"
-
-#, fuzzy
 msgid "State"
-msgstr "Estadístiques"
+msgstr "Estat"
 
-#, fuzzy
 msgid "Company division"
-msgstr "Empresa"
+msgstr "Divisió de l'empresa"
 
 msgid "List of installed keys"
-msgstr ""
+msgstr "Llista de les claus instal·lades"
 
 msgid "Key identifier already used in one csr!\n"
-msgstr ""
+msgstr "L'identificador ja es fa servir en un certificat!\n"
 
 msgid "Create new signing request"
-msgstr ""
+msgstr "Crear una nova solicitud de certificat"
 
-#, fuzzy
 msgid "Generate"
-msgstr "Gènere"
+msgstr "Genera"
 
-#, fuzzy
 msgid "Key identifier already exists!\n"
-msgstr "Ja existeix l'usuari!"
+msgstr "L'identificador de la clau ja existeix!\n"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid.\n"
 msgstr ""
-"La contrasenya ha de tenir al menys %s caràcter i incloure lletres i números "
-"per ser vàlid."
+"La contrasenya ha de tenir al menys %s caràcters i incloure lletres i números "
+"per ser vàlida.\n"
 
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr ""
-"La contrasenya té menys de %s caràcters o inclou caràcters no permesos!"
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!\n"
+msgstr "La contrasenya té menys de %s caràcters o inclou caràcters no permesos!\n"
 
 msgid "Key can not be empty!\n"
-msgstr ""
+msgstr "La clau no pot ser buida!\n"
 
 msgid "You do not own this domain or is an alias / addon domain!\n"
 msgstr ""
 
-#, fuzzy
 msgid "Key for this domain already exists!\n"
-msgstr "Aquesta IP ja existeix!"
+msgstr "Aquesta IP ja existeix!\n"
 
 msgid "Key size is incorrect!\n"
+msgstr "La mida de la clau no és correcta!\n"
+
+msgid "Add new key"
+msgstr "Afegir nova clau"
+
+msgid "Key for domain name"
 msgstr ""
 
-#, fuzzy
-msgid "Add new key"
-msgstr "Afegir nova IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Sintàxi de domini incorrecta!"
-
-#, fuzzy
 msgid "Paste generated key"
-msgstr "Si us plau introduïu el nom de l'àrea"
+msgstr "Enganxar la clau generada"
 
 msgid "Generate key with size:"
-msgstr ""
+msgstr "Generar clau amb la mida:"
 
-#, fuzzy
 msgid "Generate new"
-msgstr "Generar contrasenya"
+msgstr "Generar nova"
 
 msgid "Key is encoded with password"
-msgstr ""
+msgstr "La clau està xifrada amb password"
 
-#, fuzzy
 msgid "List is empty!"
-msgstr "El registre està buit"
+msgstr "La llista està buida!"
 
 msgid "Certificate keys"
-msgstr ""
+msgstr "Claus del certificat"
 
-#, fuzzy
 msgid "Certificate sign request"
-msgstr "Executar consultes"
+msgstr "Solicitud de firma de certificat"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Certificat"
 
-#, fuzzy
 msgid "Key host name"
-msgstr "Nom presentació"
+msgstr ""
 
 msgid "Certificate sign request host name"
-msgstr ""
+msgstr "Nom del servidor per la solicitud de certificat"
 
-#, fuzzy
 msgid "Certificate host name"
-msgstr "Servei"
+msgstr ""
 
 msgid "Subdomains limit reached!"
 msgstr "S'ha arribat al límit de subdominis!"
@@ -3575,9 +3506,8 @@ msgstr "La llista d'usuaris és buida!"
 msgid "Details"
 msgstr "Detalls"
 
-#, fuzzy
 msgid "Disk Usage Percent"
-msgstr "Ús de disc"
+msgstr "Percentatge de ús de disc"
 
 msgid "Edit domain"
 msgstr "Editar domini"
@@ -3597,9 +3527,8 @@ msgstr "Distribuïdors"
 msgid "Search"
 msgstr "Buscar"
 
-#, fuzzy
 msgid "Expire date"
-msgstr "Data de la comanda"
+msgstr "Data de caducitat"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3644,58 +3573,53 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-#, fuzzy
 msgid "Domain is not instantiated"
-msgstr "Àlies de domini no afegit!"
+msgstr ""
 
-#, fuzzy
 msgid "Domain do not exists"
-msgstr "%s no existeix"
+msgstr "El domini no existeix"
 
 #, php-format
 msgid "Can not execute external command %s\n"
-msgstr ""
+msgstr "No puc executar la comanda externa %s\n"
 
 msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-"No es poden comprovar les actualitzacions! La web no es troba disponible."
+msgstr "No es poden comprovar les actualitzacions! La web no es troba disponible."
 
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
-msgstr ""
+msgstr "El fitxer %s no existeix o no es pot obtenir!"
 
 msgid "Error while trying to obtain list of network cards!"
-msgstr ""
+msgstr "Error provant d'obtenir la llista de la targes de xarxa!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
+msgstr "La IP (%s) no està assignada a cap tarja de xarxa!"
 
 msgid "Can not save key!\n"
-msgstr ""
+msgstr "No puc guardar la clau!\n"
 
 msgid "Can not createself signed certificate!\n"
-msgstr ""
+msgstr "No puc crear el certificat autosignat!\n"
 
-#, fuzzy
 msgid "Invalid destination for key!"
-msgstr "Destí no vàlid!"
+msgstr ""
 
 msgid "Can not create csr!\n"
-msgstr ""
+msgstr "No puc crear el csr!\n"
 
 msgid "Can not remove key!\n"
-msgstr ""
+msgstr "No puc esborrar la clau!\n"
 
 msgid "Can not validate key!\n"
-msgstr ""
+msgstr "No puc validar la clau!\n"
 
 msgid "Can not generate key!\n"
-msgstr ""
+msgstr "No puc generar la clau!\n"
 
-#, fuzzy
 msgid "User do not have domains!"
-msgstr "Dades de l'usuari no actualitzades!"
+msgstr "L'usuari no te dominis!"
 
 msgid "Email and FTP accounts"
 msgstr "Comptes FTP i de correu"
@@ -3725,7 +3649,7 @@ msgid "Update Hosting Package"
 msgstr "Actualitzar pla de hosting"
 
 msgid "Manage SSL certificate"
-msgstr ""
+msgstr "Administrar el certificat SSL"
 
 msgid "Domain mail"
 msgstr "Correu del domini"
@@ -3865,7 +3789,6 @@ msgstr ""
 msgid "Confirmation for domain order {DOMAIN}!"
 msgstr "Confirmació per la comanda de domini {DOMAIN}!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3890,6 +3813,10 @@ msgstr ""
 "\n"
 "{DOMAIN}\n"
 "\n"
+"Heu de fer click en el següent link per continuar amb la creació del domini.\n"
+"\n"
+"{ACTIVATE_LINK}\n"
+"\n"
 "Esperem que gaudiu amb l'ispCP\n"
 "L'equip de ispCP\n"
 "\n"
@@ -3897,7 +3824,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Nova comanda d'àlies per a {CUSTOMER}!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3916,7 +3842,7 @@ msgstr ""
 "\n"
 "\n"
 "Apreciat {RESELLER},\n"
-"El vostre client {CUSTOMER} està esperant l'aprovació del nou àlies:\n"
+"El vostre client {CUSTOMER} està esperant l'aprovació del seu nou àlies:\n"
 "\n"
 "{ALIAS}\n"
 "\n"
@@ -3950,9 +3876,9 @@ msgstr ""
 "\n"
 "Teniu un nou tiquet:\n"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Priority: %s\n"
-msgstr "Prioritat"
+msgstr "Prioritat: %s\n"
 
 msgid "Log in to answer"
 msgstr "Accedeix per contestar"
@@ -3990,8 +3916,7 @@ msgstr ""
 "Cancel·lant..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"Usuari ja connectat o problema amb la sessió compartida! Cancel·lant..."
+msgstr "Usuari ja connectat o problema amb la sessió compartida! Cancel·lant..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3999,7 +3924,7 @@ msgstr "L'estat del compte %s no és correcte!"
 
 #, php-format
 msgid "%s's domain expired!"
-msgstr ""
+msgstr "%s dominis caducats!"
 
 msgid "Request from foreign host was blocked!"
 msgstr "Bloquejada petició des de host desconegut!"
@@ -4059,10 +3984,8 @@ msgstr ""
 msgid "You are exceeding your subdomains limit!"
 msgstr "Esteu sobrepassant el límit de subdominis!"
 
-msgid ""
-"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
-msgstr ""
-"Teniu un límit d'àlies!<br> No podeu afegir un usuari amb àlies il·limitats!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgstr "Teniu un límit d'àlies!<br> No podeu afegir un usuari amb àlies il·limitats!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Esteu sobrepasant el límit d'àlies!"
@@ -4114,15 +4037,13 @@ msgstr ""
 msgid "You are exceeding your SQL database limit!"
 msgstr "Esteu sobrepassant el vostre límit de base de dades SQL!"
 
-msgid ""
-"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 "Teniu límits de trànsit!<br> No podeu afegir un usuari amb trànsit "
 "il·limitat!"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
-msgstr ""
-"Teniu límits de disc!<br> No podeu afegir un usuari amb disc il·limitat!"
+msgstr "Teniu límits de disc!<br> No podeu afegir un usuari amb disc il·limitat!"
 
 msgid "ispCP Error"
 msgstr "ispCP Error"
@@ -4133,7 +4054,6 @@ msgstr "Missatge d'error"
 msgid "You have a new order"
 msgstr "Teniu una nova comanda"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4149,19 +4069,18 @@ msgstr ""
 "Estimat {RESELLER},\n"
 "teniu una nova comanda de {NAME} <{MAIL}> per al domini {DOMAIN}\n"
 "\n"
-"Si us plau entreu al panell de control ispCP per a més detalls.\n"
+"Si us plau entreu al vostre panell de control ispCP per a més detalls.\n"
+"\n"
 "\n"
 
-#, fuzzy
 msgid "Your order has been successfully created."
-msgstr "Contrasenya d'usuari SQL canviada correctament!"
-
-msgid "Error creating order! Perhaps already activated?"
 msgstr ""
 
-#, fuzzy
+msgid "Error creating order! Perhaps already activated?"
+msgstr "Error al crear la comanda! Potser ja està actiu?"
+
 msgid "Order confirmation"
-msgstr "Informació General"
+msgstr "Confirmació de la comanda"
 
 msgid "Wrong domain name syntax!"
 msgstr "Sintàxi de domini incorrecta!"
@@ -4193,9 +4112,8 @@ msgstr "Costos"
 msgid "Personal Data"
 msgstr "Dades Personals"
 
-#, fuzzy
 msgid "Security code was incorrect!"
-msgstr "ERROR: El codi de seguretat no era correcte"
+msgstr "El codi de seguretat no era correcte"
 
 msgid "Check Out"
 msgstr "Procedir al pagament"
@@ -4309,37 +4227,29 @@ msgstr "Circular"
 msgid "ispCP - Domain/Edit"
 msgstr "ispCP - Domini/Editar"
 
-#, fuzzy
 msgid "Unchanged"
-msgstr "Canviar"
+msgstr "Sense canviar"
 
-#, fuzzy
 msgid "- 1 Month"
-msgstr "Mes"
+msgstr "- 1 Mes"
 
-#, fuzzy
 msgid "+ 1 Month"
-msgstr "Mes"
+msgstr "+ 1 Mes"
 
-#, fuzzy
 msgid "+ 2 Months"
-msgstr "Mes"
+msgstr "+ 2 Mesos"
 
-#, fuzzy
 msgid "+ 3 Months"
-msgstr "Mes"
+msgstr "+ 3 Mesos"
 
-#, fuzzy
 msgid "+ 6 Months"
-msgstr "Mes"
+msgstr "+ 6 Mesos"
 
-#, fuzzy
 msgid "+ 1 Year"
-msgstr "Any"
+msgstr "+ 1 Any"
 
-#, fuzzy
 msgid "+ 2 Years"
-msgstr "Any"
+msgstr "+ 2 Anys"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled!"
@@ -4369,8 +4279,7 @@ msgid "Setup fee must be a number!"
 msgstr "L'alta ha de ser un número"
 
 msgid "Hosting plan values exceed reseller maximum values!"
-msgstr ""
-"Els valors dels plans de hosting sobrepassen els màxims pel distribuïdor!"
+msgstr "Els valors dels plans de hosting sobrepassen els màxims pel distribuïdor!"
 
 msgid "ispCP - Reseller/Edit hosting plan"
 msgstr "ispCP - Distribuïdor/Editar pla de hosting"
@@ -4412,9 +4321,8 @@ msgstr "ispCP - Distribuïdor/Configuració correu de comanda"
 msgid "Manage orders"
 msgstr "Administrar comandes"
 
-#, fuzzy
 msgid "Activation Link"
-msgstr "Activació de correu"
+msgstr "Link per l'activació"
 
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Distribuïdor/Paràmetres de les comandes"
@@ -4515,33 +4423,26 @@ msgstr "ispCP-Distribuïdor : Sistema de Suport: Veure Tiquets"
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Usuaris/Afegir usuari"
 
-#, fuzzy
 msgid "Never"
-msgstr "Nivell"
+msgstr "Mai"
 
-#, fuzzy
 msgid "1 Month"
-msgstr "Mes"
+msgstr "1 Mes"
 
-#, fuzzy
 msgid "2 Months"
-msgstr "Mes"
+msgstr "2 Mesos"
 
-#, fuzzy
 msgid "3 Months"
-msgstr "Mes"
+msgstr "3 Mesos"
 
-#, fuzzy
 msgid "6 Months"
-msgstr "Mes"
+msgstr "6 Mesos"
 
-#, fuzzy
 msgid "1 Year"
-msgstr "Any"
+msgstr "1 Any"
 
-#, fuzzy
 msgid "2 Years"
-msgstr "Any"
+msgstr "2 Anys"
 
 msgid "Choose hosting plan"
 msgstr "Escollir pla de hosting"
@@ -4627,8 +4528,7 @@ msgstr "Dades de l'usuari actualitzades!"
 msgid "User data not updated!"
 msgstr "Dades de l'usuari no actualitzades!"
 
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
+msgid "This user has domain record !<br>First remove the domain from the system!"
 msgstr ""
 "Aquest usuari té assignat un domini !<br> Primer elimineu el domini del "
 "sistema!"
@@ -4636,42 +4536,3 @@ msgstr ""
 msgid "User not terminated!"
 msgstr "Usuari no eliminat!"
 
-#~ msgid "Password sent"
-#~ msgstr "Contrasenya enviada"
-
-#~ msgid "ERROR: Password was not sent"
-#~ msgstr "ERROR: La contrasenya no s'ha enviat"
-
-#~ msgid "ERROR: Unknown user"
-#~ msgstr "ERROR: Usuari desconegut"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has email accounts !<br> first remove "
-#~ "them !"
-#~ msgstr ""
-#~ "El domini que esteu intentant eliminar té comptes de correu!<br> primer "
-#~ "elimineu-los!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-#~ msgstr ""
-#~ "El domini que esteu intentant eliminar té comptes FTP!<br> primer "
-#~ "elimineu-les!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has domain alias!<br> first remove them !"
-#~ msgstr ""
-#~ "El domini que esteu intentant eliminar té àlies! <br> primer elimineu-los!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has subdomains accounts !<br> first "
-#~ "remove them !"
-#~ msgstr ""
-#~ "El domini que esteu intentant eliminar té subdominis!<br> primer elimineu-"
-#~ "los!"
-
-#~ msgid "Set status to \"change\""
-#~ msgstr "Marcar per actualitzar"
-
-#~ msgid "%1$s / %2$s of <b>%3$d</b>"
-#~ msgstr "%1$s / %2$s de <b>%3$d</b>"
