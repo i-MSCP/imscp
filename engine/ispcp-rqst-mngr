@@ -516,69 +516,6 @@ sub mngr_engine {
 
 	}
 
-	$sql = "select domain_id, domain_name, domain_status from domain where domain_status != 'ok' order by domain_id";
-
-	($rs, $rdata) = doSQL($sql);
-
-	$dmn_count = @$rdata;
-
-	if ($dmn_count > 0) {
-
-		foreach (@$rdata) {
-
-			my $row = $_;
-
-			my ($dmn_id, $dmn_name, $dmn_status) = (@$row[0], @$row[1], @$row[2]);
-
-			if ($dmn_status eq "delete") {
-
-				if (defined($main::engine_debug)) {
-
-					push_el(\@main::el, 'mngr_engine()', "processing $dmn_id, $dmn_name, $dmn_status.");
-
-				}
-
-				$rs = sys_command("$main::ispcp_dmn_mngr $dmn_id 1>$main::ispcp_dmn_mngr_stdout 2>$main::ispcp_dmn_mngr_stderr");
-
-				if ($rs != 0) {
-
-					if (-e $main::ispcp_dmn_mngr_el) {
-
-						my $rs1 = undef;
-
-						pop_el(\@main::el); # removing 'sys_command()' error message;
-
-						($rs1, $rdata) = get_el_error($main::ispcp_dmn_mngr_el);
-
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_dmn_mngr, $rdata);
-
-					}
-
-					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
-					}
-
-					return $rs;
-
-				}
-
-				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
-				}
-
-
-			}
-
-		}
-
-	}
-
 	#
 	# .htusers management BEGIN.
 	#
@@ -778,7 +715,6 @@ sub mngr_engine {
 	# .htaccess management END.
 	#
 
-
 	#
 	# Network card management BEGIN.
 	#
@@ -820,6 +756,80 @@ sub mngr_engine {
 
 	#
 	# Network card management END.
+	#
+
+	#
+	# Domains data deletion BEGIN
+	#
+
+		#
+		##	/!\  This task must be performed last because other managers need data from the domain table to function properly. /!\
+		# 
+
+	$sql = "select domain_id, domain_name, domain_status from domain where domain_status != 'ok' order by domain_id";
+
+	($rs, $rdata) = doSQL($sql);
+
+	$dmn_count = @$rdata;
+
+	if ($dmn_count > 0) {
+
+		foreach (@$rdata) {
+
+			my $row = $_;
+
+			my ($dmn_id, $dmn_name, $dmn_status) = (@$row[0], @$row[1], @$row[2]);
+
+			if ($dmn_status eq "delete") {
+
+				if (defined($main::engine_debug)) {
+
+					push_el(\@main::el, 'mngr_engine()', "processing $dmn_id, $dmn_name, $dmn_status.");
+
+				}
+
+				$rs = sys_command("$main::ispcp_dmn_mngr $dmn_id 1>$main::ispcp_dmn_mngr_stdout 2>$main::ispcp_dmn_mngr_stderr");
+
+				if ($rs != 0) {
+
+					if (-e $main::ispcp_dmn_mngr_el) {
+
+						my $rs1 = undef;
+
+						pop_el(\@main::el); # removing 'sys_command()' error message;
+
+						($rs1, $rdata) = get_el_error($main::ispcp_dmn_mngr_el);
+
+						return $rs1 if ($rs1 != 0);
+
+						push_el(\@main::el, $main::ispcp_dmn_mngr, $rdata);
+
+					}
+
+					if (!defined($main::engine_debug)) {
+
+						del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
+
+					}
+
+					return $rs;
+
+				}
+
+				if (!defined($main::engine_debug)) {
+
+					del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
+
+				}
+
+			}
+
+		}
+
+	}
+
+	#
+	# Domains data deletion END
 	#
 
 	push_el(\@main::el, 'mngr_engine()', 'Ending...');
