@@ -49,9 +49,15 @@ function get_db_user_passwd(&$sql, $db_user_id) {
 
 	$rs = '';
 
-	$fp = fsockopen(Config::get('BASE_SERVER_IP'), 80, $errno, $errstr, 5);
+	// try SSL first, then standard port 80, then error
+	$fp = fsockopen('ssl://'.Config::get('BASE_SERVER_IP'), 443, $errno, $errstr, 5);
+	var_dump($fp);
+	if(!$fp){
+		$fp = fsockopen(Config::get('BASE_SERVER_IP'), 80, $errno, $errstr, 5);
+	}
 	if (!$fp) {
 		auth_error();
+	}
 	} else {
 		fwrite($fp, $out);
 		$header = null;
