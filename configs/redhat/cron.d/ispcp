@@ -32,7 +32,7 @@
 {CR-ENABLED}0 	*/12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
 
 # Look for and purge old sessions every 30 minutes
-0,30 *     * * *     root   {TOOLS_ROOT_DIR}/ispcpphptemp.sh >/dev/null 2>&1
+0,30	*	*	*	*	root	{TOOLS_ROOT_DIR}/ispcpphptemp.sh >/dev/null 2>&1
 
 # [{DMN_NAME}] backup task START.
 # [{DMN_NAME}] backup task END.
