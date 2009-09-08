@@ -5,7 +5,7 @@ ispCP ω 1.0.3 Changelog
 	- CONFIGS:
 		* Fixed #1969: The 6th field of a system cron file must be the name of the user that the command will be executed
 
-2009-09-04 Andreca Daniel
+2009-09-07 Andreca Daniel
 	- TOOLS:
 		* Fixed #1948: Filemanager Config is wrong / ispCP pic is missing
 
@@ -38,18 +38,18 @@ ispCP ω 1.0.3 Changelog
 			- Added postinst script for specific install/update tasks
 			- Added Policyd-Weight and Postgrey packages
 			- Fixed small error during Make process ( cannot overwrite non-directory... )
-			- Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs.
+			- Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
 			- Fixed #1961: Conflict between FastCGI modules conffiles
 			- Fixed Postfix: unknown smtps service in master.cf
 			- Fixed Postfix: wrong ispcp-arpl-msgr path in master.cf
-			- Changed Postfix: configuration to run unchrooted (I'll set to run in a chroot jail later).
+			- Changed Postfix: configuration to run unchrooted (I'll set to run in a chroot jail later)
 			- Fixed suexec wrapper: owner/group and permissions
 			- Removed apache2-mod_cband for 11.1 ( See OpenSuse INSTALL file for more information )
 			- Disabled OpenSuSE Firewall ( ispCP provides its own )
 			- Fixed #1970: Impossibility of adding new users
 	- SETUP:
 		* Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
-	- CONFIG:
+	- CONFIGS:
 		* Fixed #1961: Missing EOL in multiple files
 
 2009-09-03 Laurent Declercq
