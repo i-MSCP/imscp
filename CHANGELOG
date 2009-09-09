@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-09 Andreca Daniel
+	-ENGINE:
+		* Fixed #1979: Domain Alias Redirect
+
 2009-09-09 Laurent Declercq
 	- GUI:
 		* Fixed #1971: DNS Entry in Hostingplan not overtaken

@@ -721,7 +721,7 @@ sub gen_httpd_als_entry {
 	my $dmn_name            = @$als_data[8];
 	my $mount_point         = @$als_data[4];
 	my ($als_php, $als_cgi) = (@$als_data[26], @$als_data[27]);
-	my $url_forward         = @$als_data[6];
+	my $url_forward         = decode_entities(@$als_data[6]);
 	my $conf_dir            = $main::cfg{'CONF_DIR'};
 	my $tpl_dir             = "$conf_dir/apache/parts";
 	my (

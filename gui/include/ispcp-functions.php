@@ -359,36 +359,14 @@ function decode_idna($input) {
 	return ($output == false) ? $input : $output;
 }
 
-function glue_url($parsed) {
-	if (!is_array($parsed)) {
-		return false;
-	}
-	
-	$uri = isset($parsed['scheme']) ? $parsed['scheme'].':'.((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '';
-	$uri .= isset($parsed['user']) ? $parsed['user'].(isset($parsed['pass']) ? ':'.$parsed['pass'] : '').'@' : '';
-	$uri .= isset($parsed['host']) ? $parsed['host'] : '';
-	$uri .= isset($parsed['port']) ? ':'.$parsed['port'] : '';
-
-	if (isset($parsed['path'])) {
-		$uri .= (substr($parsed['path'], 0, 1) == '/') ?
-		$parsed['path'] : ((!empty($uri) ? '/' : '' ) . $parsed['path']);
-	}
-	$uri .= isset($parsed['query']) ? '?'.$parsed['query'] : '';
-	$uri .= isset($parsed['fragment']) ? '#'.$parsed['fragment'] : '';
-	return $uri;
-}
-
 function encode_idna($input) {
-	$support = parse_url($input);
-	if (isset($support['query']))
-	    $support['query'] = html_entity_decode($support['query']);
 	if (function_exists('idn_to_ascii')) {
-		$support['host'] = idn_to_ascii($support['host'], 'utf-8');
-	} else {
-		$IDN = new idna_convert();
-		$support['host'] = $IDN->encode($support['host']);
+		return idn_to_ascii($input, 'utf-8');
 	}
-	return glue_url($support);
+
+	$IDN = new idna_convert();
+	$output = $IDN->encode($input);
+	return $output;
 }
 
 function strip_html($input) {

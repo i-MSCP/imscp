@@ -45,7 +45,8 @@ BEGIN {
                   MIME::Base64,
                   Term::ReadPassword,
                   File::Basename,
-                  File::Path);
+                  File::Path,
+				  HTML::Entities);
 
     my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
@@ -988,7 +989,7 @@ sub gen_sys_rand_num {
         push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: new entropy pool size is $pool_size");
     }
 
-#DON#T change this back to /dev/random - the pw is reversible encrypted - more randomness is just totally foolish since 
+#DON#T change this back to /dev/random - the pw is reversible encrypted - more randomness is just totally foolish since
 #we already provide the key together with the tresor.
 
     my $rs = open(F, '<', '/dev/urandom');
@@ -1443,7 +1444,7 @@ sub lock_system {
     push_el(\@main::el, 'lock_system()', 'Starting...');
 
     my $res = open(my $fh, '>', $main::lock_file);
-    if (!$res) { 
+    if (!$res) {
         push_el(\@main::el, 'lock_system()', 'ERROR: unable to open lock file!');
         return -1;
     }
@@ -1454,7 +1455,7 @@ sub lock_system {
         push_el(\@main::el, 'lock_system()', 'ERROR: unable to acquire global lock!');
         return -1;
     }
-    
+
     push_el(\@main::el, 'lock_system()', 'Ending...');
     return 0;
 }
