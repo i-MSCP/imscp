@@ -263,7 +263,7 @@ function gen_editdomain_page(&$tpl) {
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 
-	if ($allowbackup === 'domain') {
+	if ($allowbackup === 'dmn') {
 		$tpl->assign(
 			array(
 				'BACKUP_DOMAIN' => 'selected="selected"',
@@ -339,18 +339,18 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$domain_new_expire = clean_input($_POST['dmn_expire']); 
 
 	$sub			= clean_input($_POST['dom_sub']);
-	$als			= clean_input($_POST['dom_alias']);
+	$als				= clean_input($_POST['dom_alias']);
 	$mail			= clean_input($_POST['dom_mail_acCount']);
-	$ftp			= clean_input($_POST['dom_ftp_acCounts']);
+	$ftp				= clean_input($_POST['dom_ftp_acCounts']);
 	$sql_db			= clean_input($_POST['dom_sqldb']);
-	$sql_user		= clean_input($_POST['dom_sql_users']);
+	$sql_user			= clean_input($_POST['dom_sql_users']);
 	$traff			= clean_input($_POST['dom_traffic']);
 	$disk			= clean_input($_POST['dom_disk']);
-//	$domain_ip	= $_POST['domain_ip'];
-	$domain_php		= $_POST['domain_php'];
-	$domain_cgi		= $_POST['domain_cgi'];
-	$domain_dns		= $_POST['domain_dns'];
-	$allowbackup	= $_POST['backup'];
+	//$domain_ip		= $_POST['domain_ip'];
+	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
+	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
+	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
+	$allowbackup		= preg_replace("/\_/", "", $_POST['backup']);
 
 	$ed_error = '';
 

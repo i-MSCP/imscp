@@ -66,7 +66,11 @@ $tpl->assign(
 		'TR_PHP'					=> tr('PHP'),
 		'TR_CGI'					=> tr('CGI / Perl'),
 		'TR_DNS'					=> tr('Allow adding records to DNS zone'),
-		'TR_BACKUP_RESTORE'			=> tr('Backup and restore'),
+		'TR_BACKUP'						=> tr('Backup'),
+		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
+		'TR_BACKUP_SQL'					=> tr('SQL'),
+		'TR_BACKUP_FULL'				=> tr('Full'),
+		'TR_BACKUP_NO'					=> tr('No'),
 		'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
 		'TR_AWSTATS'				=> tr('AwStats'),
 		'TR_YES'					=> tr('yes'),
@@ -148,10 +152,15 @@ function restore_form(&$tpl, &$sql) {
 			'TR_CGI_NO'		=> ($_POST['cgi'] !== '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_YES'	=> ($_POST['dns'] === '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_NO'		=> ($_POST['dns'] !== '_yes_')	? 'checked="checked"' : '',
+			'VL_BACKUPD'		=> ($hp_backup ==='_dmn_') ? 'checked="checked"' : '',
+			'VL_BACKUPS'		=> ($hp_backup ==='_sql_') ? 'checked="checked"' : '',
+			'VL_BACKUPF'		=> ($hp_backup ==='_full_') ? 'checked="checked"' : '',
+			'VL_BACKUPN'		=> ($hp_backup ==='_no_') ? 'checked="checked"' : '',
 			'TR_STATUS_YES'	=> ($_POST['status'] == 1)		? 'checked="checked"' : '',
 			'TR_STATUS_NO'	=> ($_POST['status'] != 1)		? 'checked="checked"' : ''
 		)
 	);
+
 } // end of function restore_form()
 
 /**
@@ -204,7 +213,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$value = $data['value'];
 	$payment = $data['payment'];
 	$status = $data['status'];
-	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $props);
+	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns, $hp_backup) = explode(";", $props);
 	$hp_name = $data['name'];
 
 	if ($description == '')
@@ -246,6 +255,10 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'TR_CGI_NO'		=> ($hp_cgi !== '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_YES'	=> ($hp_dns === '_yes_')	? 'checked="checked"' : '',
 			'TR_DNS_NO'		=> ($hp_dns !== '_yes_')	? 'checked="checked"' : '',
+			'VL_BACKUPD'		=> ($hp_backup ==='_dmn_') ? 'checked="checked"' : '',
+			'VL_BACKUPS'		=> ($hp_backup ==='_sql_') ? 'checked="checked"' : '',
+			'VL_BACKUPF'		=> ($hp_backup ==='_full_') ? 'checked="checked"' : '',
+			'VL_BACKUPN'		=> ($hp_backup ==='_no_') ? 'checked="checked"' : '',
 			'TR_STATUS_YES'	=> ($status == 1)			? 'checked="checked"' : '',
 			'TR_STATUS_NO'	=> ($status != 1)			? 'checked="checked"' : '',
 		)
@@ -262,7 +275,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $price, $setup_fee;
-	global $hp_dns;
+	global $hp_dns, $hp_backup;
 
 	$ahp_error		= "_off_";
 	$hp_name		= clean_input($_POST['hp_name']);
@@ -288,10 +301,14 @@ function check_data_iscorrect(&$tpl) {
 		$hp_php = $_POST['php'];
 
 	if (isset($_POST['cgi']))
-		$hp_cgi = $_POST['cgi'];;
+		$hp_cgi = $_POST['cgi'];
 
 	if (isset($_POST['dns']))
 		$hp_dns = $_POST['dns'];
+
+        if (isset($_POST['backup'])) {
+                $hp_backup = $_POST['backup'];
+        }
 
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error = tr('Incorrect subdomains limit!');
@@ -335,7 +352,7 @@ function save_data_to_db() {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $hpid;
-	global $hp_dns;
+	global $hp_dns, $hp_backup;
 
 	$err_msg		= '';
 	$description	= clean_input($_POST['hp_description']);
@@ -345,7 +362,7 @@ function save_data_to_db() {
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= clean_input($_POST['status']);
 
-	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;";
+	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;$hp_backup;";
 
 	$admin_id = $_SESSION['user_id'];
 

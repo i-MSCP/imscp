@@ -283,7 +283,7 @@ sub backup_all_engine {
 
 		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $allowbackup, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6], @$_[7]);
 		
-		if ($allowbackup eq "full" || $allowbackup eq "domain" || $allowbackup eq "sql") {		
+		if ($allowbackup eq "full" || $allowbackup eq "dmn" || $allowbackup eq "sql") {		
 		
 		my $date = get_human_date();
 
@@ -303,19 +303,19 @@ sub backup_all_engine {
 
 		if ($zip eq "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
-			if ($allowbackup eq "full" || $allowbackup eq "domain") {
+			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
 				$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 			}
 		}
 		elsif ($zip eq "gzip") {
 			$backup_filename = "$dmn_name-backup-$date.tar.gz";
-			if ($allowbackup eq "full" || $allowbackup eq "domain") {
+			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 			}
 		}
 		elsif ($zip eq "lzma") {
                         $backup_filename = "$dmn_name-backup-$date.tar.lzma";
-			if ($allowbackup eq "full" || $allowbackup eq "domain") {
+			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
                         	$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
                 	}
 		}		

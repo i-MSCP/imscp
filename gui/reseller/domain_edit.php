@@ -216,7 +216,7 @@ function load_additional_data($user_id, $domain_id) {
 	$domain_ip_id		= $data['domain_ip_id'];
 	$php_sup			= $data['domain_php'];
 	$cgi_supp			= $data['domain_cgi'];
-	$allowbackup		= $data['allowbackup'];
+	$allowbackup			= $data['allowbackup'];
 	$domain_admin_id	= $data['domain_admin_id'];
 	$dns_supp			= $data['domain_dns'];
 	// Get IP of domain
@@ -271,7 +271,7 @@ function gen_editdomain_page(&$tpl) {
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
 
-	if ($allowbackup === 'domain') {
+	if ($allowbackup === 'dmn') {
 		$tpl->assign(
 			array(
 				'BACKUP_DOMAIN' => 'selected="selected"',
@@ -314,7 +314,7 @@ function gen_editdomain_page(&$tpl) {
 			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected="selected"' : '',
 			'PHP_NO'				=> ($php_sup != 'yes') ? 'selected="selected"' : '',
 			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
-			'CGI_NO'				=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
+			'CGI_NO'					=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
 			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
 			'DNS_NO'				=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
 			'VL_DOMAIN_NAME'		=> $domain_name,
@@ -354,10 +354,10 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$traff = clean_input($_POST['dom_traffic']);
 	$disk = clean_input($_POST['dom_disk']);
 	// $domain_ip = $_POST['domain_ip'];
-	$domain_php = $_POST['domain_php'];
-	$domain_cgi = $_POST['domain_cgi'];
-	$domain_dns = $_POST['domain_dns'];
-	$allowbackup = $_POST['backup'];
+	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
+	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
+	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
+	$allowbackup		= preg_replace("/\_/", "", $_POST['backup']);
 
 	$ed_error = '';
 

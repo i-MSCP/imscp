@@ -41,7 +41,7 @@ $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
+		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

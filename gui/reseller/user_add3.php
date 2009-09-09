@@ -44,7 +44,6 @@ $tpl->assign(
  * static page messages.
  *
  */
-
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
@@ -231,7 +230,7 @@ function add_user_data($reseller_id) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
-	global $allowbackup;
+	global $dns, $backup;
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';
 
@@ -259,12 +258,12 @@ function add_user_data($reseller_id) {
 	list($php, $cgi, $sub,
 		$als, $mail, $ftp,
 		$sql_db, $sql_user,
-		$traff, $disk, $allowbackup, $dns) = explode(";", $props);
+		$traff, $disk, $dns, $backup) = explode(";", $props);
 
 	$php			= preg_replace("/\_/", "", $php);
 	$cgi			= preg_replace("/\_/", "", $cgi);
 	$dns			= preg_replace("/\_/", "", $dns);
-	$allowbackup	= clean_input($allowbackup, true);
+	$backup		= preg_replace("/\_/", "", $backup);
 	$pure_user_pass	= $inpass;
 	$inpass			= crypt_user_pass($inpass, true);
 	$first_name		= clean_input($first_name, true);
@@ -351,9 +350,15 @@ function add_user_data($reseller_id) {
 		)
 	";
 
-	$res = exec_query($sql, $query, array(
-		$dmn_name, $record_id, $reseller_id, $mail, $ftp, $traff, $sql_db,
-		$sql_user, $status, $sub, $als, $domain_ip, $disk, $php, $cgi, $allowbackup, $dns));
+	$res = exec_query($sql, $query, 
+						array(
+								$dmn_name, $record_id,
+								$reseller_id, $mail, $ftp, $traff, $sql_db,
+								$sql_user, $status, $sub, $als, $domain_ip,
+								$disk, $php, $cgi, $backup, $dns
+							)
+					);
+								
 	$dmn_id = $sql->Insert_ID();
 
 	// Add statistics group
@@ -364,7 +369,12 @@ function add_user_data($reseller_id) {
 		VALUES
 			(?, ?, ?, ?)
 	";
-	$rs = exec_query($sql, $query, array($dmn_id, $dmn_name, crypt_user_pass_with_salt($pure_user_pass), $status));
+	$rs = exec_query($sql, $query, 
+					array(
+							$dmn_id, $dmn_name,
+							crypt_user_pass_with_salt($pure_user_pass), $status
+						)
+					);
 
 	$user_id = $sql->Insert_ID();
 

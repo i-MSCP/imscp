@@ -161,6 +161,71 @@ class criticalUpdate extends ispcpUpdate{
 		$engine_run_request = true;
 		return $sqlUpd;
 	}
+	
+	/**
+	 * Changed named convention for domain backup
+	 * Fix for ticket #1971 http://www.isp-control.net/ispcp/ticket/1971.
+	 *
+	 * @author	Laurent Declercq <l.declercq@nuxwin.com>
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version	1.0
+	 * @since		r1986
+	 *
+	 * @access	protected
+	 * @param	Type	$engine_run_request Set to true if is needed to perform an engine request
+	 * @return	Type	$sqlUpd Sql statements to be performed
+	 */
+	protected function _criticalUpdate_4(&$engine_run_request)
+	{
+		$sql = Database::getInstance();
+		
+		$sqlUpd = array();
+		
+		$sqlUpd[] = "UPDATE `ispcp`.`domain` SET `allowbackup` = 'dmn' WHERE `domain`.`allowbackup` = 'domain'";
+		
+		$engine_run_request = false;
+		return $sqlUpd;
+	}
+
+	/**
+	 * Added backup property for hosting_plans
+	 * Fix for ticket #1980 http://www.isp-control.net/ispcp/ticket/1980.
+	 *
+	 * @author	Laurent Declercq <l.declercq@nuxwin.com>
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version	1.0
+	 * @since		r1986
+	 *
+	 * @access	protected
+	 * @param	Type	$engine_run_request Set to true if is needed to perform an engine request
+	 * @return	Type	$sqlUpd Sql statements to be performed
+	 */
+	protected function _criticalUpdate_5(&$engine_run_request)
+	{
+		$sql = Database::getInstance();
+
+		$sqlUpd = array();
+
+		$query = "SELECT `id`, `props` FROM `hosting_plans`";
+		$rs = exec_query($sql, $query);
+
+		if ($rs->RecordCount() != 0)
+		{
+			while (!$rs->EOF)
+			{
+				if(count(explode(';' $rs->fields['props'])) < 12)
+				{
+					$new_property = $rs->fields['props'] .  '_full_;';
+					$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = '$new_property' WHERE `id`= {$rs->fields['id']}";
+				}
+
+				$rs->MoveNext();
+			}
+		}
+
+		$engine_run_request = false;
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

@@ -94,8 +94,8 @@
                         <td class="content2" width="193">{TR_PHP_SUPP}</td>
                         <td class="content">
                           <select name="domain_php" id="domain_php">
-                            <option value="yes" {PHP_YES}>{TR_YES}</option>
-                            <option value="no" {PHP_NO}>{TR_NO}</option>
+                            <option value="_yes_" {PHP_YES}>{TR_YES}</option>
+                            <option value="_no_" {PHP_NO}>{TR_NO}</option>
                           </select>
                         </td>
                       </tr>
@@ -104,20 +104,8 @@
                         <td class="content2" width="193">{TR_CGI_SUPP}</td>
                         <td class="content">
                           <select name="domain_cgi" id="domain_cgi">
-                            <option value="yes" {CGI_YES}>{TR_YES}</option>
-                            <option value="no" {CGI_NO}>{TR_NO}</option>
-                          </select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_BACKUP}</td>
-                        <td class="content">
-                          <select name="backup">
-                            <option value="domain" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
-                            <option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
-                            <option value="full" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
-                            <option value="no" {BACKUP_NO}>{TR_BACKUP_NO}</option>
+                            <option value="_yes_" {CGI_YES}>{TR_YES}</option>
+                            <option value="_no_" {CGI_NO}>{TR_NO}</option>
                           </select>
                         </td>
                       </tr>
@@ -126,8 +114,20 @@
                         <td class="content2" width="193">{TR_DNS_SUPP}</td>
                         <td class="content">
                           <select name="domain_dns" id="domain_dns">
-                            <option value="yes" {DNS_YES}>{TR_YES}</option>
-                            <option value="no" {DNS_NO}>{TR_NO}</option>
+                            <option value="_yes_" {DNS_YES}>{TR_YES}</option>
+                            <option value="_no_" {DNS_NO}>{TR_NO}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td class="content2" width="193">{TR_BACKUP}</td>
+                        <td class="content">
+                          <select name="backup">
+                            <option value="_dmn_" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
+                            <option value="_sql_" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
+                            <option value="_full_" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
+                            <option value="_no_" {BACKUP_NO}>{TR_BACKUP_NO}</option>
                           </select>
                         </td>
                       </tr>

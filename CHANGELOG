@@ -1,6 +1,15 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-09 Laurent Declercq
+	- GUI:
+		* Fixed #1971: DNS Entry in Hostingplan not overtaken
+		* Fixed #1980: Per domain backup settings as part of Hosting Plan
+	-ENGINE:
+		* Fixed #1980: Per domain backup settings as part of Hosting Plan
+	- DATABASE:
+		* Changed named convention for domain backup field (related to #1980)
+
 2009-09-08 Laurent Declercq
 	- CONFIGS:
 		* Fixed #1969: The 6th field of a system cron file must be the name of the user that the command will be executed

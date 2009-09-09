@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>{TR_RESELLER_MAIN_INDEX_PAGE_TITLE}</title>
+<title>{TR_ADMIN_MAIN_INDEX_PAGE_TITLE}</title>
 <meta name="robots" content="nofollow, noindex" />
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />

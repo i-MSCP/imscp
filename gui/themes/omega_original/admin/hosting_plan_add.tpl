@@ -124,6 +124,19 @@
                                 {TR_NO}</td>
                             </tr>
                             <tr>
+                             <td width="25">&nbsp;</td>
+                             <td class="content2" width="250">{TR_BACKUP}</td>
+                              <td class="content"><input name="backup" type="radio" value="_dmn_" {VL_BACKUPD} />
+                                {TR_BACKUP_DOMAIN}
+                                <input type="radio" name="backup" value="_sql_" {VL_BACKUPS} />
+                                {TR_BACKUP_SQL}
+				<input name="backup" type="radio" value="_full_" {VL_BACKUPF} />
+                                {TR_BACKUP_FULL}
+                                <input type="radio" name="backup" value="_no_" {VL_BACKUPN} />
+                                {TR_BACKUP_NO}
+			      </td>
+                            </tr>
+                            <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><b>{TR_BILLING_PROPS}</b></td>
                             </tr>

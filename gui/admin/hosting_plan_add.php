@@ -66,7 +66,11 @@ $tpl->assign(
 		'TR_PHP'					=> tr('PHP'),
 		'TR_CGI'					=> tr('CGI / Perl'),
 		'TR_DNS'					=> tr('Allow adding records to DNS zone'),
-		'TR_BACKUP_RESTORE'			=> tr('Backup and restore'),
+		'TR_BACKUP'						=> tr('Backup'),
+		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
+		'TR_BACKUP_SQL'					=> tr('SQL'),
+		'TR_BACKUP_FULL'				=> tr('Full'),
+		'TR_BACKUP_NO'					=> tr('No'),
 		'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
 		'TR_AWSTATS'				=> tr('AwStats'),
 		'TR_YES'					=> tr('yes'),
@@ -130,7 +134,11 @@ function gen_empty_ahp_page(&$tpl) {
 			'TR_CGI_YES'			=> '',
 			'TR_CGI_NO'				=> 'checked="checked"',
 			'TR_DNS_YES'			=> '',
-			'TR_DNS_NO'				=> 'checked="checked"'
+			'TR_DNS_NO'				=> 'checked="checked"',
+			'VL_BACKUPD'		=> '',
+			'VL_BACKUPS'		=> '',
+			'VL_BACKUPF'		=> '',
+			'VL_BACKUPN'		=> 'checked="checked"'
 		)
 	);
 	$tpl->assign('MESSAGE', '');
@@ -145,7 +153,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_dns;
+	global $hp_dns, $hp_backup;
 
 	$tpl->assign(
 		array(
@@ -174,6 +182,15 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(array('TR_DNS_YES'		=> ($hp_dns === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_DNS_NO'		=> ($hp_dns === '_yes_') ? '' : 'checked="checked"'));
+	
+	$tpl->assign(
+			array(
+					'VL_BACKUPD'		=> ($hp_backup ==='_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'		=> ($hp_backup ==='_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'		=> ($hp_backup ==='_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'		=> ($hp_backup ==='_no_') ? 'checked="checked"' : ''
+			)
+		);
 
 	$tpl->assign(array('TR_STATUS_YES'	=> ($status === '_yes_') ? 'checked="checked"' : ''));
 	$tpl->assign(array('TR_STATUS_NO'	=> ($status === '_yes_') ? '' : 'checked="checked"'));
@@ -188,7 +205,7 @@ function check_data_correction(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_dns;
+	global $hp_dns, $hp_backup;
 
 	$ahp_error = "_off_";
 
@@ -211,12 +228,19 @@ function check_data_correction(&$tpl) {
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
 	}
+
 	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
 	}
+
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
+
+	if (isset($_POST['backup'])) {
+		$hp_backup = $_POST['backup'];
+	}
+
 	if (empty($hp_name)) {
 		$ahp_error = tr('Incorrect template name length!');
 	}
@@ -270,7 +294,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_dns;
+	global $hp_dns, $hp_backup;
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$query = "

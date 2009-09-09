@@ -78,7 +78,6 @@ $tpl->assign(
 		'TR_BACKUP_SQL'					=> tr('SQL'),
 		'TR_BACKUP_FULL'				=> tr('Full'),
 		'TR_BACKUP_NO'					=> tr('No'),
-		'TR_BACKUP_RESTORE'				=> tr('Backup / Restore'),
 		'TR_APACHE_LOGS'				=> tr('Apache logs'),
 		'TR_AWSTATS'					=> tr('Awstats')
 	)
@@ -95,7 +94,7 @@ if (isset($_POST['uaction'])
 	&& (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
-		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_allowbackup;$hp_dns;";
+		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;$hp_backup;";
 
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
 			user_goto('user_add3.php');
@@ -146,7 +145,7 @@ function get_init_au2_page(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns;
+	global $hp_traff, $hp_disk, $hp_dns, $hp_backup;
 
 	$tpl->assign(
 		array(
@@ -160,52 +159,18 @@ function get_init_au2_page(&$tpl) {
 			'VL_MAX_SQL_USERS'	=> $hp_sql_user,
 			'VL_MAX_TRAFFIC'	=> $hp_traff,
 			'VL_MAX_DISK_USAGE'	=> $hp_disk,
-			'VL_PHPY'			=> ($hp_php == 'yes') ? 'checked="checked"' : '',
-			'VL_PHPN'			=> ($hp_php != 'yes') ? 'checked="checked"' : '',
-			'VL_CGIY'			=> ($hp_cgi == 'yes') ? 'checked="checked"' : '',
-			'VL_CGIN'			=> ($hp_cgi != 'yes') ? 'checked="checked"' : '',
-			'VL_DNSY'			=> ($hp_dns == 'yes') ? 'checked="checked"' : '',
-			'VL_DNSN'			=> ($hp_dns != 'yes') ? 'checked="checked"' : ''
+			'VL_PHPY'			=> ($hp_php === '_yes_') ? 'checked="checked"' : '',
+			'VL_PHPN'			=> ($hp_php === '_no_') ? 'checked="checked"' : '',
+			'VL_CGIY'			=> ($hp_cgi === '_yes_') ? 'checked="checked"' : '',
+			'VL_CGIN'			=> ($hp_cgi === '_no_'_) ? 'checked="checked"' : '',
+			'VL_DNSY'			=> ($hp_dns === '_yes_') ? 'checked="checked"' : '',
+			'VL_DNSN'			=> ($hp_dns === '_no_') ? 'checked="checked"' : '',
+			'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? 'checked="checked"' : '',
+			'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? 'checked="checked"' : '',
+			'VL_BACKUPF'		=> ($hp_backup === '_full_') ? 'checked="checked"' : '',
+			'VL_BACKUPN'		=> ($hp_backup === '_no_') ? 'checked="checked"' : ''
 		)
 	);
-
-	if ("domain" === $hp_allowbackup) {
-		$tpl->assign(
-			array(
-				'VL_BACKUPD' => 'checked="checked"',
-				'VL_BACKUPS' => '',
-				'VL_BACKUPF' => '',
-				'VL_BACKUPN' => ''
-			)
-		);
-	} else if ("sql" === $hp_allowbackup) {
-		$tpl->assign(
-			array(
-				'VL_BACKUPD' => '',
-				'VL_BACKUPS' => 'checked="checked"',
-				'VL_BACKUPF' => '',
-				'VL_BACKUPN' => '',
-			)
-		);
-	} else if ("full" === $hp_allowbackup) {
-		$tpl->assign(
-			array(
-				'VL_BACKUPD' => '',
-				'VL_BACKUPS' => '',
-				'VL_BACKUPF' => 'checked="checked"',
-				'VL_BACKUPN' => '',
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'VL_BACKUPD' => '',
-				'VL_BACKUPS' => '',
-				'VL_BACKUPF' => '',
-				'VL_BACKUPN' => 'checked="checked"',
-			)
-		);
-	}
 
 } // End of get_init_au2_page()
 
@@ -216,7 +181,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns;
+	global $hp_traff, $hp_disk, $hp_dns, $hp_backup;
 	$sql = Database::getInstance();
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
@@ -228,23 +193,23 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_allowbackup, $hp_dns) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns, $hp_backup) = explode(";", $props);
 
 		$hp_name = $data['name'];
 	} else {
-		$hp_php = '';
-		$hp_cgi = '';
-		$hp_dns = '';
-		$hp_sub = '';
-		$hp_als = '';
-		$hp_mail = '';
-		$hp_ftp = '';
-		$hp_sql_db = '';
-		$hp_sql_user = '';
-		$hp_traff = '';
-		$hp_disk = '';
-		$hp_name = 'Custom';
-		$hp_allowbackup = '';
+			$hp_name = 'Custom';
+			$hp_php = '_no_';
+			$hp_cgi = '_no_';
+			$hp_sub = '';
+			$hp_als = '';
+			$hp_mail = '';
+			$hp_ftp = '';
+			$hp_sql_db = '';
+			$hp_sql_user = '';
+			$hp_traff = '';
+			$hp_disk = '';
+			$hp_dns = '_no_';
+			$hp_backup = '_no_';
 	}
 } // End of get_hp_data()
 
@@ -255,7 +220,7 @@ function check_user_data(&$tpl) {
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_dmn, $hp_allowbackup, $hp_dns;
+	global $hp_traff, $hp_disk, $hp_dmn, $hp_dns, $hp_backup;
 	$sql = Database::getInstance();
 	global $dmn_chp;
 
@@ -264,45 +229,56 @@ function check_user_data(&$tpl) {
 	if (isset($_POST['template'])) {
 		$hp_name = $_POST['template'];
 	}
+
 	if (isset($_POST['nreseller_max_domain_cnt'])) {
 		$hp_dmn = clean_input($_POST['nreseller_max_domain_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_subdomain_cnt'])) {
 		$hp_sub = clean_input($_POST['nreseller_max_subdomain_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_alias_cnt'])) {
 		$hp_als = clean_input($_POST['nreseller_max_alias_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_mail_cnt'])) {
 		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
 	}
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1) {
 		$hp_ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_sql_db_cnt'])) {
 		$hp_sql_db = clean_input($_POST['nreseller_max_sql_db_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_sql_user_cnt'])) {
 		$hp_sql_user = clean_input($_POST['nreseller_max_sql_user_cnt']);
 	}
 	if (isset($_POST['nreseller_max_traffic'])) {
 		$hp_traff = clean_input($_POST['nreseller_max_traffic']);
 	}
+
 	if (isset($_POST['nreseller_max_disk'])) {
 		$hp_disk = clean_input($_POST['nreseller_max_disk']);
 	}
+
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
 	}
+
 	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
 	}
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
-	if (isset($_POST['allowbackup'])) {
-		$hp_allowbackup = $_POST['allowbackup'];
+
+	if (isset($_POST['backup'])) {
+		$hp_backup = $_POST['backup'];
 	}
+
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		set_page_message(tr('Incorrect subdomains limit!'));
