@@ -162,7 +162,7 @@ function get_init_au2_page(&$tpl) {
 			'VL_PHPY'			=> ($hp_php === '_yes_') ? 'checked="checked"' : '',
 			'VL_PHPN'			=> ($hp_php === '_no_') ? 'checked="checked"' : '',
 			'VL_CGIY'			=> ($hp_cgi === '_yes_') ? 'checked="checked"' : '',
-			'VL_CGIN'			=> ($hp_cgi === '_no_'_) ? 'checked="checked"' : '',
+			'VL_CGIN'			=> ($hp_cgi === '_no_') ? 'checked="checked"' : '',
 			'VL_DNSY'			=> ($hp_dns === '_yes_') ? 'checked="checked"' : '',
 			'VL_DNSN'			=> ($hp_dns === '_no_') ? 'checked="checked"' : '',
 			'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? 'checked="checked"' : '',

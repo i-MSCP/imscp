@@ -9,7 +9,7 @@ ispCP ω 1.0.3 Changelog
 	- GUI:
 		* Fixed #1971: DNS Entry in Hostingplan not overtaken
 		* Fixed #1980: Per domain backup settings as part of Hosting Plan
-	-ENGINE:
+	- ENGINE:
 		* Fixed #1980: Per domain backup settings as part of Hosting Plan
 	- DATABASE:
 		* Changed named convention for domain backup field (related to #1980)

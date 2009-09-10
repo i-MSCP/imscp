@@ -213,7 +213,7 @@ class criticalUpdate extends ispcpUpdate{
 		{
 			while (!$rs->EOF)
 			{
-				if(count(explode(';' $rs->fields['props'])) < 12)
+				if(count(explode(';', $rs->fields['props'])) < 12)
 				{
 					$new_property = $rs->fields['props'] .  '_full_;';
 					$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = '$new_property' WHERE `id`= {$rs->fields['id']}";
