@@ -156,7 +156,7 @@ SQL_QUERY;
 		if (!chk_forward_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
-		if (!preg_match("/\/$/", $forward)) {
+		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
 			$forward .= "/";
 		}
 	} else {

@@ -32,21 +32,21 @@
 
 BEGIN {
 
-    my @needed = (strict,
-                  warnings,
-                  IO::Socket,
-                  DBI,
-                  DBD::mysql,
-                  MIME::Entity,
-                  MIME::Parser,
-                  Crypt::CBC,
-                  Crypt::Blowfish,
-                  Crypt::PasswdMD5,
-                  MIME::Base64,
-                  Term::ReadPassword,
-                  File::Basename,
-                  File::Path,
-				  HTML::Entities);
+	my @needed 	= (strict,
+					warnings,
+					IO::Socket,
+					DBI,
+					DBD::mysql,
+					MIME::Entity,
+					MIME::Parser,
+					Crypt::CBC,
+					Crypt::Blowfish,
+					Crypt::PasswdMD5,
+					MIME::Base64,
+					Term::ReadPassword,
+					File::Basename,
+					File::Path,
+					HTML::Entities);
 
     my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
