@@ -46,6 +46,7 @@ libsasl2-modules
 libsnmp-session-perl
 libterm-readkey-perl
 libterm-readpassword-perl
+libhtml-parser-perl
 libtimedate-perl
 libmysqlclient15off
 locales

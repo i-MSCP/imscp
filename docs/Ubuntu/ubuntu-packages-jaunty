@@ -32,6 +32,7 @@ libdbd-mysql-perl
 libdbi-perl
 libio-stringy-perl
 libmail-sendmail-perl
+libhtml-parser-perl
 libmailtools-perl
 libmcrypt4
 libmd5-perl

@@ -33,6 +33,7 @@ libdbi-perl
 libio-stringy-perl
 libmail-sendmail-perl
 libmailtools-perl
+libhtml-parser-perl
 libmcrypt4
 libmd5-perl
 libmime-perl

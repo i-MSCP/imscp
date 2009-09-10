@@ -58,6 +58,7 @@ perl-DateManip
 perl-Digest-HMAC
 perl-HTML-Parser
 perl-HTML-Tagset
+perl-HTML-Entities
 perl-IO-stringy
 perl-MIME-tools
 perl-MailTools

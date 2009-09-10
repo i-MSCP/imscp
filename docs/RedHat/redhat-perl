@@ -7,3 +7,4 @@ Bundle::LWP
 Net::SNMP
 Crypt::Blowfish
 Term::ReadPassword
+HTML::Entities

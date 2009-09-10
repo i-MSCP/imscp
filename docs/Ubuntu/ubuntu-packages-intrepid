@@ -40,6 +40,7 @@ libnet-dns-perl
 libnet-libidn-perl
 libnet-netmask-perl
 libnet-smtp-server-perl
+libhtml-parser-perl
 libperl5.10
 libsasl2-2
 libsasl2-modules

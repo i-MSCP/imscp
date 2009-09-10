@@ -1,8 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-10 Andreca Daniel
+	- DOCS:
+		* Missing dependince
+
 2009-09-09 Andreca Daniel
-	-ENGINE:
+	- ENGINE:
 		* Fixed #1979: Domain Alias Redirect
 
 2009-09-09 Laurent Declercq

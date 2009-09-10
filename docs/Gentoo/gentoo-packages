@@ -23,6 +23,7 @@ dev-perl/Net-LibIDN
 dev-perl/Term-ReadPassword
 dev-perl/XML-Parser
 dev-perl/crypt-cbc
+dev-perl/HTML-Entities
 dev-python/pyzor
 mail-filter/amavisd-new
 mail-filter/dcc
@@ -33,8 +34,8 @@ mail-filter/spamassassin
 mail-mta/postfix
 media-libs/gd
 media-libs/jpeg
-net-dns/libidn 
-net-firewall/iptables 
+net-dns/libidn
+net-firewall/iptables
 net-dns/bind
 net-dns/bind-tools
 net-ftp/proftpd
