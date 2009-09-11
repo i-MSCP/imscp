@@ -40,181 +40,104 @@ use warnings;
 
 sub serv_mngr_start_up {
 
-    my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'serv_mngr_start_up()', 'Starting...');
+	push_el(\@main::el, 'serv_mngr_start_up()', 'Starting...');
 
-    # checking for master process;
+	# checking for master process;
 
-    $rs = check_master();
+	$rs = check_master();
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	# Let's clear Execution Logs, if any.
 
-    # Let's clear Execution Logs, if any.
+	if (-e $main::ispcp_serv_mngr_el) {
 
-    if (-e $main::ispcp_serv_mngr_el) {
+		$rs = del_file($main::ispcp_serv_mngr_el);
+		return $rs if ($rs != 0);
 
-        $rs = del_file($main::ispcp_serv_mngr_el);
+	}
 
-        return $rs if ($rs != 0);
+	# config check;
 
-    }
+	$rs = get_conf();
+	return $rs if ($rs != 0);
 
-    # config check;
+	$main::changed_dmn_cnt = $ARGV[0]."";
 
-    $rs = get_conf();
+	$main::changed_sub_cnt = $ARGV[1]."";
 
-    return $rs if ($rs != 0);
+	$main::changed_als_cnt = $ARGV[2]."";
 
-    # license request check;
+	$main::changed_mail_cnt = $ARGV[3]."";
 
-    #($rs, $rdata) = license_request();
+	$main::changed_alssub_cnt = $ARGV[4]."";
 
-    #return $rs if ($rs != 0);
+	push_el(\@main::el, 'serv_mngr_start_up()', 'Ending...');
 
-    #
-    # License conditions must be stand here;
-    #
-
-    # sql check;
-
-    #
-    # getting initial data also must be done here;
-    #
-
-    my $sql = "
-    	SELECT
-		domain_id,
-		domain_name,
-		domain_gid,
-		domain_uid,
-		domain_admin_id,
-		domain_created_id,
-		domain_created,
-		domain_last_modified,
-		domain_mailacc_limit,
-		domain_ftpacc_limit,
-		domain_traffic_limit,
-		domain_sqld_limit,
-		domain_sqlu_limit,
-		domain_status,
-		domain_alias_limit,
-		domain_subd_limit,
-		domain_ip_id,
-		domain_disk_limit,
-		domain_disk_usage,
-		domain_php,
-		domain_cgi
-	FROM
-		domain
-    ";
-
-    ($rs, $rdata) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    $main::changed_dmn_cnt = $ARGV[0]."";
-
-    $main::changed_sub_cnt = $ARGV[1]."";
-
-    $main::changed_als_cnt = $ARGV[2]."";
-
-    $main::changed_mail_cnt = $ARGV[3]."";
-
-    $main::changed_alssub_cnt = $ARGV[4]."";
-
-    push_el(\@main::el, 'serv_mngr_start_up()', 'Ending...');
-
-    return 0;
+	return 0;
 
 }
 
 sub serv_mngr_shut_down {
 
-    my $rs = undef;
+	my $rs = undef;
 
-    push_el(\@main::el, 'serv_mngr_shut_down()', 'Starting...');
+	push_el(\@main::el, 'serv_mngr_shut_down()', 'Starting...');
 
-    push_el(\@main::el, 'serv_mngr_shut_down()', 'Ending...');
+	push_el(\@main::el, 'serv_mngr_shut_down()', 'Ending...');
 
-    return 0;
-
+	return 0;
 }
 
 sub restart_httpd {
 
-    my ($cmd, $rs, $rdata) = (undef, undef, undef);
+	my ($cmd, $rs, $rdata) = (undef, undef, undef);
 
-    push_el(\@main::el, 'restart_httpd()', 'Starting...');
+	push_el(\@main::el, 'restart_httpd()', 'Starting...');
 
-    $cmd = $main::cfg{'CMD_HTTPD'};
+	$cmd = $main::cfg{'CMD_HTTPD'};
 
-    sys_command_rs("$cmd stop");
+	$rs = sys_command_rs("$cmd configtest");
+	if ($rs != 0){
 
-    sleep(5);
+		send_error_mail('restart_httpd()', "Apache config file is corrupted. Please check before restarting Apache server!!!");
+		return $rs;
 
-    sys_command_rs("$cmd start");
+	}
 
-    sleep(5);
+	$rs = sys_command_rs("$cmd graceful");
+	send_error_mail('restart_httpd()', "Apache config file is corrupted. Please check before restarting Apache server!!!") if ($rs != 0);
 
-    push_el(\@main::el, 'restart_httpd()', 'Ending...');
+	push_el(\@main::el, 'restart_httpd()', 'Ending...');
 
-}
-
-sub check_httpd {
-
-    my ($cmd, $rs, $rdata) = (undef, undef, undef);
-
-    push_el(\@main::el, 'check_httpd()', 'Starting...');
-
-    $cmd = "export COLUMNS=120;$main::cfg{'CMD_PS'} aux | $main::cfg{'CMD_AWK'} '\$0 ~/$main::cfg{'APACHE_NAME'}/ {print \$0}' | $main::cfg{'CMD_WC'} | $main::cfg{'CMD_AWK'} '{print \$1}' 1>/tmp/httpd-run-check.stdout";
-
-    $rs = sys_command($cmd);
-
-    return ($rs, 0) if ($rs != 0);
-
-    ($rs, $rdata) = get_file("/tmp/httpd-run-check.stdout");
-
-    return ($rs, 0) if ($rs != 0);
-
-    push_el(\@main::el, 'check_httpd()', 'Ending...');
-
-    chop($rdata);
-
-    my $pids = $rdata;
-
-    ($rs, $rdata) = del_file("/tmp/httpd-run-check.stdout");
-
-    return ($rs, 0) if ($rs != 0);
-
-    return (0, $pids);
-
+	return $rs;
 }
 
 sub serv_mngr_engine {
 
-    my ($cmd, $rs, $rdata) = (undef, undef, undef);
+	my ($cmd, $rs, $rdata) = (undef, undef, undef);
 
-    push_el(\@main::el, 'serv_mngr_engine()', 'Starting...');
+	push_el(\@main::el, 'serv_mngr_engine()', 'Starting...');
 
 
-    if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0) {
+	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0) {
 
-        if ($main::cfg{'CMD_MTA'} ne 'no') {
+		if ($main::cfg{'CMD_MTA'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_MTA'};
+			$cmd = $main::cfg{'CMD_MTA'};
 
-            sys_command_rs("$cmd stop");
+			sys_command_rs("$cmd stop");
 
-        }
+		}
 
-        if ($main::cfg{'CMD_AUTHD'} ne 'no') {
+		if ($main::cfg{'CMD_AUTHD'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_AUTHD'};
+			$cmd = $main::cfg{'CMD_AUTHD'};
 
-            sys_command_rs("$cmd stop");
+			sys_command_rs("$cmd stop");
 
-        }
+		}
 
 		if ($main::cfg{'CMD_AMAVIS'} ne 'no') {
 
@@ -225,67 +148,67 @@ sub serv_mngr_engine {
 		}
 
 
-        if ($main::cfg{'CMD_IMAP'} ne 'no') {
+		if ($main::cfg{'CMD_IMAP'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_IMAP'};
+			$cmd = $main::cfg{'CMD_IMAP'};
 
-            sys_command_rs("$cmd stop");
+			sys_command_rs("$cmd stop");
 
-        }
+		}
 
-        if ($main::cfg{'CMD_POP'} ne 'no') {
+		if ($main::cfg{'CMD_POP'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_POP'};
+			$cmd = $main::cfg{'CMD_POP'};
 
-            sys_command_rs("$cmd stop");
+			sys_command_rs("$cmd stop");
 
-        }
+		}
 
-    }
+	}
 
-    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
+	if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
-        if ($main::cfg{'CMD_NAMED'} ne 'no') {
+		if ($main::cfg{'CMD_NAMED'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_NAMED'};
+			$cmd = $main::cfg{'CMD_NAMED'};
 
-            sys_command_rs("$cmd restart");
+			sys_command_rs("$cmd restart");
 
-        }
+		}
 
-    }
+	}
 
-    if ($main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
+	if ($main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
-        if ($main::cfg{'CMD_FTPD'} ne 'no') {
+		if ($main::cfg{'CMD_FTPD'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_FTPD'};
+			$cmd = $main::cfg{'CMD_FTPD'};
 
-            sys_command_rs("$cmd restart");
+			sys_command_rs("$cmd restart");
 
-        }
+		}
 
-    }
+	}
 
-    if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
-        $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
+	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
+		$main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
 
-        if ($main::cfg{'CMD_MTA'} ne 'no') {
+		if ($main::cfg{'CMD_MTA'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_MTA'};
+			$cmd = $main::cfg{'CMD_MTA'};
 
-            sys_command_rs("$cmd start");
+			sys_command_rs("$cmd start");
 
-        }
+		}
 
 
-        if ($main::cfg{'CMD_AUTHD'} ne 'no') {
+		if ($main::cfg{'CMD_AUTHD'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_AUTHD'};
+			$cmd = $main::cfg{'CMD_AUTHD'};
 
-            sys_command_rs("$cmd start");
+			sys_command_rs("$cmd start");
 
-        }
+		}
 
 		if ($main::cfg{'CMD_AMAVIS'} ne 'no') {
 
@@ -295,66 +218,38 @@ sub serv_mngr_engine {
 
 		}
 
-        if ($main::cfg{'CMD_IMAP'} ne 'no') {
+		if ($main::cfg{'CMD_IMAP'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_IMAP'};
+			$cmd = $main::cfg{'CMD_IMAP'};
 
-            sys_command_rs("$cmd start");
+			sys_command_rs("$cmd start");
 
-        }
+		}
 
-        if ($main::cfg{'CMD_POP'} ne 'no') {
+		if ($main::cfg{'CMD_POP'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_POP'};
+			$cmd = $main::cfg{'CMD_POP'};
 
-            sys_command_rs("$cmd start");
+			sys_command_rs("$cmd start");
 
-        }
+		}
 
-    }
+	}
 
-    if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
+	if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
-        if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+		if ($main::cfg{'CMD_HTTPD'} ne 'no') {
 
-            $cmd = $main::cfg{'CMD_HTTPD'};
+			$rs = restart_httpd();
+			return $rs if ($rs != 0);
 
-            sys_command_rs("$cmd restart");
+		}
 
-            sleep(3);
+	}
 
-        }
+	push_el(\@main::el, 'serv_mngr_engine()', 'Ending...');
 
-        if ($main::cfg{'CMD_HTTPD'} ne 'no') {
-
-            ($rs, $rdata) = check_httpd();
-
-            return $rs if ($rs != 0);
-
-            if ($rdata == 0) {
-
-                my $i = 1;
-
-                do {
-
-                    restart_httpd();
-
-                    ($rs, $rdata) = check_httpd();
-
-                    return $rs if ($rs != 0);
-
-                    $i++;
-
-                } while ($rdata == 0 && $i <= $main::cfg{'APACHE_RESTART_TRY'});
-            }
-
-        }
-
-    }
-
-    push_el(\@main::el, 'serv_mngr_engine()', 'Ending...');
-
-    return 0;
+	return 0;
 
 }
 
@@ -364,11 +259,11 @@ $rs = serv_mngr_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_serv_mngr_el);
+	dump_el(\@main::el, $main::ispcp_serv_mngr_el);
 
-    serv_mngr_shut_down();
+	serv_mngr_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -376,11 +271,11 @@ $rs = serv_mngr_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_serv_mngr_el);
+	dump_el(\@main::el, $main::ispcp_serv_mngr_el);
 
-    serv_mngr_shut_down();
+	serv_mngr_shut_down();
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -388,9 +283,9 @@ $rs = serv_mngr_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_serv_mngr_el);
+	dump_el(\@main::el, $main::ispcp_serv_mngr_el);
 
-    exit 1;
+	exit 1;
 
 }
 

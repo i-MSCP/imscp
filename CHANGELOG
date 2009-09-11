@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-11 Andreca Daniel
+	- Engine:
+		* Fixed #1984: Adding subdomain causes apache restart - not reload
+
 2009-09-10 Andreca Daniel
 	- DOCS:
 		* Missing dependince
