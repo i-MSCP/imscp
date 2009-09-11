@@ -84,7 +84,8 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	$tpl->assign(
 		array(
 			'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-			'TRAFFIC_BARS' => $bars
+			'TRAFFIC_BARS'       => $bars,
+			'TRAFFIC_PERCENT'    => $percent,
 		)
 	);
 }
@@ -102,7 +103,8 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	$tpl->assign(
 		array(
 			'DISK_USAGE_DATA' => $traffic_usage_data,
-			'DISK_BARS' => $bars
+			'DISK_BARS'       => $bars,
+			'DISK_PERCENT'    => $percent,
 		)
 	);
 }

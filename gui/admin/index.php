@@ -153,16 +153,19 @@ function gen_server_trafic(&$tpl, &$sql) {
 	$bar_value = calc_bar_value($traff, $straff_max , 400);
 
 	$traff_msg = '';
+    $percent = 0;
 	if ($straff_max == 0) {
 		$traff_msg = tr('%1$d%% [%2$s of unlimited]', $pr, sizeit($mtraff));
 	} else {
 		$traff_msg = tr('%1$d%% [%2$s of %3$s]', $pr, sizeit($mtraff), sizeit($straff_max));
+		$percent = ($traff/$straff_max)*100;
 	}
 
 	$tpl->assign(
 		array(
 			'TRAFFIC_WARNING' => $traff_msg,
 			'BAR_VALUE' => $bar_value,
+			'TRAFFIC_PERCENT' => $percent,
 		)
 	);
 }
