@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: create-release.sh 12134 2008-12-12 17:49:37Z lem9 $
+# $Id: create-release.sh 12920 2009-09-05 12:13:30Z lem9 $
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 
@@ -204,9 +204,3 @@ Todo now:
 END
 
 fi
-
-# Removed due to not needed thanks to clever scripting by Robbat2
-# 9. update the demo subdirectory:
-#        - in htdocs, cvs update phpMyAdmin
-#        - and don't forget to give write rights for the updated scripts to the
-#          whole group

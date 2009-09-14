@@ -5,7 +5,7 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @version $Id: tbl_change.php 12587 2009-06-20 12:08:34Z lem9 $
+ * @version $Id: tbl_change.php 12918 2009-09-03 12:29:24Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -266,7 +266,7 @@ if (! empty($sql_query)) {
 
 if (! $cfg['ShowFunctionFields']) {
     $this_url_params = array_merge($url_params,
-        array('ShowFunctionFields' => 1));
+        array('ShowFunctionFields' => 1, 'goto' => 'sql.php'));
     echo $strShow . ' : <a href="tbl_change.php' . PMA_generate_common_url($this_url_params) . '">' . $strFunction . '</a>' . "\n";
 }
 
@@ -293,7 +293,7 @@ foreach ($rows as $row_id => $vrow) {
 <?php
     if ($cfg['ShowFunctionFields']) {
         $this_url_params = array_merge($url_params,
-            array('ShowFunctionFields' => 0));
+            array('ShowFunctionFields' => 0, 'goto' => 'sql.php'));
         echo '          <th><a href="tbl_change.php' . PMA_generate_common_url($this_url_params) . '" title="' . $strHide . '">' . $strFunction . '</a></th>' . "\n";
     }
 ?>
@@ -464,7 +464,7 @@ foreach ($rows as $row_id => $vrow) {
                 $data                     = $field['Default'];
             }
             if ($field['True_Type'] == 'bit') {
-                $special_chars = PMA_printable_bit_value($field['Default'], $extracted_fieldspec['spec_in_brackets']);
+                $special_chars = PMA_convert_bit_default_value($field['Default']);
             } else {
                 $special_chars = htmlspecialchars($field['Default']);
             }

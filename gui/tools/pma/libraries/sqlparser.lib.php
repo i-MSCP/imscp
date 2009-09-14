@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 12376 2009-04-19 11:31:14Z lem9 $
+ * @version $Id: sqlparser.lib.php 12894 2009-08-29 11:41:26Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -158,7 +158,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12376 2009-04-19 11:31:14Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12894 2009-08-29 11:41:26Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -1455,6 +1455,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $first_reserved_word = '';
         $current_identifier = '';
         $unsorted_query = $arr['raw']; // in case there is no ORDER BY
+        $number_of_brackets = 0;
+        $in_subquery = false;
 
         for ($i = 0; $i < $size; $i++) {
 //DEBUG echo "Loop2 <strong>"  . $arr[$i]['data'] . "</strong> (" . $arr[$i]['type'] . ")<br />";
@@ -1471,8 +1473,24 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             //
             // this code is not used for confirmations coming from functions.js
 
+            if ($arr[$i]['type'] == 'punct_bracket_open_round') {
+                $number_of_brackets++;
+            }
+
+            if ($arr[$i]['type'] == 'punct_bracket_close_round') {
+                $number_of_brackets--;
+                if ($number_of_brackets == 0) {
+                    $in_subquery = false;
+                }
+            }
+
             if ($arr[$i]['type'] == 'alpha_reservedWord') {
                 $upper_data = strtoupper($arr[$i]['data']);
+
+                if ($upper_data == 'SELECT' && $number_of_brackets > 0) {
+                    $in_subquery = true;
+                }
+
                 if (!$seen_reserved_word) {
                     $first_reserved_word = $upper_data;
                     $subresult['querytype'] = $upper_data;
@@ -1496,7 +1514,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     }
                 }
 
-                if ($upper_data == 'LIMIT') {
+                if ($upper_data == 'LIMIT' && ! $in_subquery) {
                     $section_before_limit = substr($arr['raw'], 0, $arr[$i]['pos'] - 5);
                     $in_limit = TRUE;
                     $seen_limit = TRUE;

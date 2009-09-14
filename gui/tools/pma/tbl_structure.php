@@ -3,7 +3,7 @@
 /**
  * Displays table structure infos like fields/columns, indexes, size, rows
  * and allows manipulation of indexes and columns/fields
- * @version $Id: tbl_structure.php 12546 2009-06-08 12:04:35Z lem9 $
+ * @version $Id: tbl_structure.php 12700 2009-07-22 21:13:11Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -337,7 +337,8 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     <td nowrap="nowrap"><?php
     if (isset($row['Default'])) {
         if ($extracted_fieldspec['type'] == 'bit') {
-            echo PMA_printable_bit_value($row['Default'], $extracted_fieldspec['spec_in_brackets']);
+            // here, $row['Default'] contains something like b'010'
+            echo PMA_convert_bit_default_value($row['Default']);
         } else {
             echo $row['Default'];
         }

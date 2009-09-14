@@ -1,8 +1,14 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-14 Benedikt Heintel
+	- GUI:
+		* Fixed #1983: Show name on removing user
+	⁻ TOOLS:
+		* Fixed #1981: Updated phpMyAdmin to version 3.2.2
+
 2009-09-11 Andreca Daniel
-	- Engine:
+	- ENGINE:
 		* Fixed #1984: Adding subdomain causes apache restart - not reload
 
 2009-09-10 Andreca Daniel

@@ -3,7 +3,7 @@
 /**
  * library for displaying table with results from all sort of select queries
  *
- * @version $Id: display_tbl.lib.php 12390 2009-05-04 16:05:24Z lem9 $
+ * @version $Id: display_tbl.lib.php 12898 2009-08-30 13:06:31Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -1837,11 +1837,11 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
         if ($sorted_column_index !== false) {
             // fetch first row of the result set
             $row = PMA_DBI_fetch_row($dt_result);
-            $column_for_first_row = $row[$sorted_column_index];
+            $column_for_first_row = substr($row[$sorted_column_index], 0, $GLOBALS['cfg']['LimitChars']);
             // fetch last row of the result set
             PMA_DBI_data_seek($dt_result, $num_rows - 1);
             $row = PMA_DBI_fetch_row($dt_result);
-            $column_for_last_row = $row[$sorted_column_index];
+            $column_for_last_row = substr($row[$sorted_column_index], 0, $GLOBALS['cfg']['LimitChars']);
             // reset to first row for the loop in PMA_displayTableBody()
             PMA_DBI_data_seek($dt_result, 0);
             // we could also use here $sort_expression_nodirection
@@ -2125,6 +2125,19 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
             $header_shown = TRUE;
         }
         $_url_params['unlim_num_rows'] = $unlim_num_rows;
+
+        /**
+         * At this point we don't know the table name; this can happen
+         * for example with a query like
+         * SELECT bike_code FROM (SELECT bike_code FROM bikes) tmp
+         * As a workaround we set in the table parameter the name of the
+         * first table of this database, so that tbl_export.php and
+         * the script it calls do not fail
+         */
+        if (empty($_url_params['table'])) {
+            $_url_params['table'] = PMA_DBI_fetch_value("SHOW TABLES");
+        }
+
         echo PMA_linkOrButton(
             'tbl_export.php' . PMA_generate_common_url($_url_params),
             PMA_getIcon('b_tblexport.png', $GLOBALS['strExport'], false, true),

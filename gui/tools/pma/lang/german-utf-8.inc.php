@@ -8,7 +8,7 @@
  * Bei Verbesserungsvorschlägen diese Datei betreffend wenden Sie sich bitte an
  *     https://sourceforge.net/tracker/?group_id=23067&atid=387645
  *
- * $Id: german-utf-8.inc.php 12645 2009-07-13 17:21:02Z lem9 $
+ * $Id: german-utf-8.inc.php 12960 2009-09-12 12:57:50Z lem9 $
  */
 
 $charset = 'utf-8';
@@ -745,7 +745,7 @@ $strServerTabVariables = 'Variablen';
 $strServerTrafficNotes = '<b>Servertraffic</b>: In diesen Tabellen wird der Netzwerkverkehr dieses MySQL-Servers seit dessen Start aufgeführt.';
 $strServerVars = 'Servervariablen und -einstellungen';
 $strServerVersion = 'Server Version';
-$strSessionGCWarning = 'Ihre PHP Einstellung [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] ist niedriger als die in phpMyAdmin konfigurierte Cookiegültigkeit, deshlab wir ihre Anmeldung eher ablaufen als in phpMyAdmin konfiguriert.';
+$strSessionGCWarning = 'Ihre PHP Einstellung [a@http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime@]session.gc_maxlifetime[/a] ist niedriger als die in phpMyAdmin konfigurierte Cookiegültigkeit, deshalb wird Ihre Anmeldung eher ablaufen als in phpMyAdmin konfiguriert.';
 $strSessionStartupErrorGeneral = 'Die Sitzung konnte nicht ohne Fehler gestartet werden, schauen Sie bitte in das Fehlerprokoll von PHP und/oder Ihres Webservers und konfigurieren Sie PHP entsprechend (session.save_path, Schreibrechte).';
 $strSessionValue = 'Wert für diese Sitzung';
 $strSetEnumVal = 'Wenn das Feld vom Typ \'ENUM\' oder \'SET\' ist, benutzen Sie bitte das Format: \'a\',\'b\',\'c\',... Wann immer Sie ein Backslash ("\") oder ein einfaches Anführungszeichen ("\'") verwenden, setzen Sie bitte ein Backslash vor das Zeichen. (z. B.: \'\\\\xyz\' oder \'a\\\'b\').';

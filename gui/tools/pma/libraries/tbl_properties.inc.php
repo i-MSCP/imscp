@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @version $Id: tbl_properties.inc.php 12284 2009-03-03 16:41:41Z nijel $
+ * @version $Id: tbl_properties.inc.php 12700 2009-07-22 21:13:11Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -241,7 +241,7 @@ for ($i = 0; $i < $num_fields; $i++) {
     if (isset($row['Type'])) {
         $extracted_fieldspec = PMA_extractFieldSpec($row['Type']);
         if ($extracted_fieldspec['type'] == 'bit') {
-            $row['Default'] = PMA_printable_bit_value($row['Default'], $extracted_fieldspec['spec_in_brackets']);
+            $row['Default'] = PMA_convert_bit_default_value($row['Default']);
         }
     }
     // Cell index: If certain fields get left out, the counter shouldn't change.
@@ -396,6 +396,10 @@ for ($i = 0; $i < $num_fields; $i++) {
         $row['Default'] = '';
     }
 
+    if ($type_upper == 'BIT') {
+        $row['DefaultValue'] = PMA_convert_bit_default_value($row['DefaultValue']);
+    } 
+ 
     $content_cells[$i][$ci] = '<select name="field_default_type[' . $i . ']">';
     foreach ($default_options as $key => $value) {
         $content_cells[$i][$ci] .= '<option value="' . $key . '"';

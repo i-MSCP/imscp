@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 12677 2009-07-19 08:01:31Z lem9 $
+ * @version $Id: common.lib.php 12805 2009-08-16 12:59:58Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -1899,6 +1899,7 @@ function PMA_checkParameters($params, $die = true, $request = true)
  * @uses    PMA_DBI_field_flags()
  * @uses    PMA_backquote()
  * @uses    PMA_sqlAddslashes()
+ * @uses    PMA_printable_bit_value()
  * @uses    stristr()
  * @uses    bin2hex()
  * @uses    preg_replace()
@@ -1990,6 +1991,8 @@ function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row, $force
                         // this blob won't be part of the final condition
                         $condition = '';
                     }
+            } elseif ($meta->type == 'bit') {
+                $condition .= "= b'" . PMA_printable_bit_value($row[$i], $meta->length) . "' AND";
             } else {
                 $condition .= '= \''
                     . PMA_sqlAddslashes($row[$i], false, true) . '\' AND';
@@ -2544,6 +2547,18 @@ function PMA_printable_bit_value($value, $length) {
     }
     $printable = substr($printable, -$length);
     return $printable;
+}
+
+/**
+ * Converts a BIT type default value  
+ * for example, b'010' becomes 010 
+ *
+ * @uses    strtr()
+ * @param   string $bit_default_value
+ * @return  string the converted value
+ */
+function PMA_convert_bit_default_value($bit_default_value) {
+    return strtr($bit_default_value, array("b" => "", "'" => ""));
 }
 
 /**

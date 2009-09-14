@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 12678 2009-07-19 10:29:43Z lem9 $
+ * @version $Id: database_interface.lib.php 12796 2009-08-15 13:08:35Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -1335,9 +1335,11 @@ function PMA_DBI_get_triggers($db, $table)
             $one_result['action_timing'] = $trigger['ACTION_TIMING'];
             $one_result['event_manipulation'] = $trigger['EVENT_MANIPULATION'];
 
-            $one_result['full_trigger_name'] = PMA_backquote($trigger['TRIGGER_SCHEMA']) . '.' . PMA_backquote($trigger['TRIGGER_NAME']);
+            // do not prepend the schema name; this way, importing the
+            // definition into another schema will work
+            $one_result['full_trigger_name'] = PMA_backquote($trigger['TRIGGER_NAME']);
             $one_result['drop'] = 'DROP TRIGGER IF EXISTS ' . $one_result['full_trigger_name'];
-            $one_result['create'] = 'CREATE TRIGGER ' . $one_result['full_trigger_name'] . ' ' . $trigger['ACTION_TIMING']. ' ' . $trigger['EVENT_MANIPULATION'] . ' ON ' . PMA_backquote($trigger['EVENT_OBJECT_SCHEMA']) . '.' . PMA_backquote($trigger['EVENT_OBJECT_TABLE']) . "\n" . ' FOR EACH ROW ' . $trigger['ACTION_STATEMENT'] . "\n" . $delimiter . "\n";
+            $one_result['create'] = 'CREATE TRIGGER ' . $one_result['full_trigger_name'] . ' ' . $trigger['ACTION_TIMING']. ' ' . $trigger['EVENT_MANIPULATION'] . ' ON ' . PMA_backquote($trigger['EVENT_OBJECT_TABLE']) . "\n" . ' FOR EACH ROW ' . $trigger['ACTION_STATEMENT'] . "\n" . $delimiter . "\n";
 
             $result[] = $one_result;
         }
