@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -797,9 +797,6 @@ msgstr "CGI / Perl"
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Backup si restaurare"
-
 msgid "Apache logfiles"
 msgstr "Loguri Apache"
 
@@ -1047,7 +1044,8 @@ msgstr "ispCP - Administrator/ Schimba Limba"
 msgid "Language"
 msgstr "Limba"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Alege limba default"
 
 #, fuzzy
@@ -1174,7 +1172,8 @@ msgstr "Utilizatorul a fost dezactivat"
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Administrator/ Internationalizare"
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "Limba principala a fost schimbata!"
 
 msgid "Upload file error!"
@@ -1214,7 +1213,8 @@ msgstr "Limbi instalate"
 msgid "Messages"
 msgstr "Mesaje"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "Principal"
 
 msgid "Install new language"
@@ -1319,6 +1319,9 @@ msgstr "SSI"
 msgid "Frontpage extensions"
 msgstr "Extensii Frontpage"
 
+msgid "Backup and restore"
+msgstr "Backup si restaurare"
+
 msgid "Custom error pages"
 msgstr "Pagini erori customizabile"
 
@@ -1352,6 +1355,9 @@ msgid ""
 msgstr ""
 "Inconsistenta intre current_als_cnt si valoarea actuala contorizata: %1$d != "
 "%2$d"
+
+msgid "! Trying to correct!"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Alias-e"
@@ -1673,8 +1679,9 @@ msgstr "Creaza emailuri predefinite"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Counturile email sunt dezactivate"
 
-msgid "Default language"
-msgstr "Limba principala"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Alege limba default"
 
 msgid "Support system"
 msgstr "Suport sistem"
@@ -2804,6 +2811,9 @@ msgstr "Domeniu Principal"
 msgid "SQL support"
 msgstr "Suport SQL"
 
+msgid "Choose default language"
+msgstr "Alege limba default"
+
 msgid "Traffic usage"
 msgstr "Trafic utilizat"
 
@@ -3254,160 +3264,6 @@ msgstr "Adauga utilizator existent"
 msgid "Existing SQL users"
 msgstr "Utilizatori SQL existenti"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Client/ Administrare Domenii"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "Domeniu principal nu poate fi folosit!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Alias domeniu nu a fost adaugat!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Adauga zona protejata"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Genereaza parola!"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Sitaxa gresita a numelui de domeniu"
-
-#, fuzzy
-msgid "State"
-msgstr "Statistici"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Companie"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Sex"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Utilizator deja existent!"
-
-#, fuzzy, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-"Parola trebuie sa contina minim %s caractere, atat litere cat si cifre "
-"pentru a fi valida"
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr ""
-"Parola este mai scurta de %s caractere sau contine caractere ce nu sunt "
-"permise!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "IP deja existent!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Adauga IP nou"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Sitaxa gresita a numelui de domeniu"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Introdu numele zonei"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Genereaza parola!"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Log-ul este gol!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Executa cererile"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Nume Sablon"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Serviciu"
-
 msgid "Subdomains limit reached!"
 msgstr "Limita subdomenii atinsa!"
 
@@ -3583,9 +3439,6 @@ msgstr "Editare domeniu"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Sigur doriti sa schimbati statusul acestui domeniu?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Sigur doriti sa stergeti acest cont?"
-
 msgid "Administrators"
 msgstr "Administratori"
 
@@ -3642,18 +3495,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Alias domeniu nu a fost adaugat!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "%s nu exista"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 "Nu s-a putut verifica daca exista actualizari disponibile! Website-ul nu "
@@ -3669,32 +3510,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Nume grup incorect!"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Date utilizator neactualizate!"
 
 msgid "Email and FTP accounts"
 msgstr "Conturi Email si FTP"
@@ -4565,9 +4380,6 @@ msgstr "ispCP - Utilizator/Adauga utilizator(pasul2)"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximum domenii<br><i>(-1 dezactivat, 0 nelimitat)</i>"
 
-msgid "Backup / Restore"
-msgstr "Backup / Restaureaza"
-
 msgid "Apache logs"
 msgstr "Loguri Apache"
 
@@ -4637,6 +4449,122 @@ msgstr "Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
 
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
+
+#~ msgid "Default language"
+#~ msgstr "Limba principala"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Client/ Administrare Domenii"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Domeniu principal nu poate fi folosit!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Alias domeniu nu a fost adaugat!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Adauga zona protejata"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Genereaza parola!"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Sitaxa gresita a numelui de domeniu"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Statistici"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Companie"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Sex"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Utilizator deja existent!"
+
+#, fuzzy
+#~ msgid ""
+#~ "The password must be at least %s long and contain letters and numbers to "
+#~ "be valid.\n"
+#~ msgstr ""
+#~ "Parola trebuie sa contina minim %s caractere, atat litere cat si cifre "
+#~ "pentru a fi valida"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr ""
+#~ "Parola este mai scurta de %s caractere sau contine caractere ce nu sunt "
+#~ "permise!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "IP deja existent!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Adauga IP nou"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Sitaxa gresita a numelui de domeniu"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Introdu numele zonei"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Genereaza parola!"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Log-ul este gol!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Executa cererile"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Nume Sablon"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Serviciu"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Sigur doriti sa stergeti acest cont?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Alias domeniu nu a fost adaugat!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s nu exista"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Nume grup incorect!"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Date utilizator neactualizate!"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "Backup / Restaureaza"
 
 #~ msgid "Password sent"
 #~ msgstr "Parola a fost trimisa"

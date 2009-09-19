@@ -1,6 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-19 Benedikt Heintel
+	- GUI:
+		* Fixed #1693: Internationalisiation
+	- LANGUAGES:
+		* Updated all language files
+
 2009-09-14 Benedikt Heintel
 	- GUI:
 		* Fixed #1983: Show name on removing user

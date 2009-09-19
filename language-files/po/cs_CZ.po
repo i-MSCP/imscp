@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -789,9 +789,6 @@ msgstr "CGI / Perl"
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Záloha a obnovení"
-
 msgid "Apache logfiles"
 msgstr "Záznamy Apache"
 
@@ -1039,7 +1036,8 @@ msgstr "ispCP - Klient/Změnit jazyk"
 msgid "Language"
 msgstr "Jazyk"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Zvolit výchozí jazyk"
 
 #, fuzzy
@@ -1164,7 +1162,8 @@ msgstr "Uživatel byl zakázán"
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Jazykové nastavení"
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "Výchozí jazyk byl změněn!"
 
 msgid "Upload file error!"
@@ -1204,7 +1203,8 @@ msgstr "Nainstalované jazyky"
 msgid "Messages"
 msgstr "Zprávy"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "Výchozí"
 
 msgid "Install new language"
@@ -1309,6 +1309,9 @@ msgstr "SSI"
 msgid "Frontpage extensions"
 msgstr "Frontpage rozšíření"
 
+msgid "Backup and restore"
+msgstr "Záloha a obnovení"
+
 msgid "Custom error pages"
 msgstr "Uživatelské chybové stránky"
 
@@ -1342,6 +1345,9 @@ msgid ""
 msgstr ""
 "Nesoulad mezi <i>current_als_cnt</i> a <i>actual alias count</i>: %1$d != %2"
 "$d"
+
+msgid "! Trying to correct!"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliasy"
@@ -1657,8 +1663,9 @@ msgstr "Vytvořit standardní E-mailové adresy"
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mailové účty jsou tvrdě pozastaveny"
 
-msgid "Default language"
-msgstr "Výchozí jazyk"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Zvolit výchozí jazyk"
 
 msgid "Support system"
 msgstr "Systém podpory"
@@ -2789,6 +2796,9 @@ msgstr "Doména"
 msgid "SQL support"
 msgstr "SQL podpora"
 
+msgid "Choose default language"
+msgstr "Zvolit výchozí jazyk"
+
 msgid "Traffic usage"
 msgstr "Přenesená data"
 
@@ -3242,156 +3252,6 @@ msgstr "Přidat existujícího uživatele"
 msgid "Existing SQL users"
 msgstr "Existující uživatelé SQL"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Klient/Správa Domén"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "Hlavní doména nemůže být použita!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Doménový alias nebyl přidán!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Přidat chráněnou zónu"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Vygenerovat heslo"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Chybná syntaxe doménového jména!"
-
-#, fuzzy
-msgid "State"
-msgstr "Statistiky"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Společnost"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Pohlaví"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Uživatel již existuje!"
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "Tato IP adresa existuje!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Přidat novou IP adresu"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Chybná syntaxe doménového jména!"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Generátor hesla"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Vygenerovat heslo"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Záznam je prázdný!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Spusť dotazy"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Jméno motivu vzhledu"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Služba"
-
 msgid "Subdomains limit reached!"
 msgstr "Dosažen limit subdomén!"
 
@@ -3569,9 +3429,6 @@ msgstr "Upravit doménu"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Opravdu chcete změnit stav doménového účtu?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Opravdu chcete odstranit tento účet?"
-
 msgid "Administrators"
 msgstr "Administrátoři"
 
@@ -3628,18 +3485,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Doménový alias nebyl přidán!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "%s neexistuje"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Nemohu zkontrolovat aktualizace! Cílová stránka neodpovídá."
 
@@ -3653,32 +3498,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Nesprávné jméno skupiny!"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Uživatel neexistuje!"
 
 msgid "Email and FTP accounts"
 msgstr "E-mailové a FTP účty"
@@ -4542,9 +4361,6 @@ msgstr "ispCP - Uživatel/Přidat uživatele (krok 2)"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximální počet domén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "Backup / Restore"
-msgstr "Záloha / Obnova"
-
 msgid "Apache logs"
 msgstr "Protokoly Apache"
 
@@ -4612,6 +4428,112 @@ msgstr "Uživatel má záznam o doméně!<br>Nejprve smažte doménu ze systému
 
 msgid "User not terminated!"
 msgstr "Uživatel není odstraněn!"
+
+#~ msgid "Default language"
+#~ msgstr "Výchozí jazyk"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Klient/Správa Domén"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Hlavní doména nemůže být použita!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Doménový alias nebyl přidán!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Přidat chráněnou zónu"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Vygenerovat heslo"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Chybná syntaxe doménového jména!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Statistiky"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Společnost"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Pohlaví"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Uživatel již existuje!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Tato IP adresa existuje!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Přidat novou IP adresu"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Chybná syntaxe doménového jména!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Generátor hesla"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Vygenerovat heslo"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Záznam je prázdný!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Spusť dotazy"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Jméno motivu vzhledu"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Služba"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Opravdu chcete odstranit tento účet?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Doménový alias nebyl přidán!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s neexistuje"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Nesprávné jméno skupiny!"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Uživatel neexistuje!"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "Záloha / Obnova"
 
 #~ msgid "Password sent"
 #~ msgstr "Heslo bylo odesláno"

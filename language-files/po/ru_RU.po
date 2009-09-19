@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -800,9 +800,6 @@ msgstr "CGI / Perl"
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Резервное копирование и восстановление"
-
 msgid "Apache logfiles"
 msgstr "Файлы журнала Apache"
 
@@ -1053,7 +1050,8 @@ msgstr "ispCP - Админ/Сменить язык"
 msgid "Language"
 msgstr "Язык"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Выбор языка по умолчанию"
 
 #, fuzzy
@@ -1180,7 +1178,8 @@ msgstr "Пользователь был выключен"
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Админ/Интернационализация"
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "Язык по умолчанию изменён!"
 
 msgid "Upload file error!"
@@ -1220,7 +1219,8 @@ msgstr "Установленные языки"
 msgid "Messages"
 msgstr "Сообщения"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "По умолчанию"
 
 msgid "Install new language"
@@ -1325,6 +1325,9 @@ msgstr "SSI"
 msgid "Frontpage extensions"
 msgstr "Расширения Frontpage"
 
+msgid "Backup and restore"
+msgstr "Резервное копирование и восстановление"
+
 msgid "Custom error pages"
 msgstr "Персональные страницы ошибок"
 
@@ -1358,6 +1361,9 @@ msgid ""
 msgstr ""
 "Несовместимость между current_als_cnt и фактическими алиасами составляет: %1"
 "$d != %2$d"
+
+msgid "! Trying to correct!"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Алиасы"
@@ -1680,8 +1686,9 @@ msgstr "Создать Email адреса по умолчанию"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Email аккаунты приостановлены"
 
-msgid "Default language"
-msgstr "Язык по умолчанию"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Выбор языка по умолчанию"
 
 msgid "Support system"
 msgstr "Служба поддержки"
@@ -2823,6 +2830,9 @@ msgstr "Основной домен"
 msgid "SQL support"
 msgstr "Поддержка SQL"
 
+msgid "Choose default language"
+msgstr "Выбор языка по умолчанию"
+
 msgid "Traffic usage"
 msgstr "Использование траффика"
 
@@ -3284,156 +3294,6 @@ msgstr "Добавление существующего пользователя
 msgid "Existing SQL users"
 msgstr "Существующие SQL пользователи"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Клиент/Управление доменами"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "Заказанный псевдоним домена НЕ удалён!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Алиас домена НЕ добавлен!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Добавить новую защищённую зону"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Сгенерировать пароль"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Неправильный синтаксис доменного имени!"
-
-#, fuzzy
-msgid "State"
-msgstr "Статистика"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Компания"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Пол"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Пользователь уже существует!"
-
-#, fuzzy, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры"
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "Пароль короче %s символов или содержит запрещенные символы!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "Этот IP уже существует!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Добавить IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Неправильный синтаксис доменного имени!"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Укажите имя зоны"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Сгенерировать пароль"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Лог пуст!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Выполнить запросы"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Имя макета"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Служба"
-
 msgid "Subdomains limit reached!"
 msgstr "Достигнут лимит поддоменов!"
 
@@ -3614,9 +3474,6 @@ msgstr "Редактировать Домен"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Вы уверены что хотите изменить статус учетной записи домена?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Вы уверены что хотите удалить эту учетную запись?"
-
 msgid "Administrators"
 msgstr "Администраторы"
 
@@ -3673,18 +3530,6 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Алиас домена НЕ добавлен!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "%s не существует"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Не возможна проверка обновлений! Сайт не отвечает."
 
@@ -3698,32 +3543,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Неправильное имя группы!"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Пользователь не существует!"
 
 msgid "Email and FTP accounts"
 msgstr "Учётные записи почты и FTP"
@@ -4590,9 +4409,6 @@ msgstr "ispCP - Пользователь/Добавить пользовател
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Максимум доменов<br><i>(-1 отключенно, 0 безлимитно)</i>"
 
-msgid "Backup / Restore"
-msgstr "Бекап / Восстановление"
-
 msgid "Apache logs"
 msgstr "Журнал Apache"
 
@@ -4663,6 +4479,118 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Пользователь не завершил работу!"
+
+#~ msgid "Default language"
+#~ msgstr "Язык по умолчанию"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Клиент/Управление доменами"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Заказанный псевдоним домена НЕ удалён!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Алиас домена НЕ добавлен!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Добавить новую защищённую зону"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Сгенерировать пароль"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Неправильный синтаксис доменного имени!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Статистика"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Компания"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Пол"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Пользователь уже существует!"
+
+#, fuzzy
+#~ msgid ""
+#~ "The password must be at least %s long and contain letters and numbers to "
+#~ "be valid.\n"
+#~ msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Пароль короче %s символов или содержит запрещенные символы!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Этот IP уже существует!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Добавить IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Неправильный синтаксис доменного имени!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Укажите имя зоны"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Сгенерировать пароль"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Лог пуст!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Выполнить запросы"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Имя макета"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Служба"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Вы уверены что хотите удалить эту учетную запись?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Алиас домена НЕ добавлен!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s не существует"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Неправильное имя группы!"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Пользователь не существует!"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "Бекап / Восстановление"
 
 #~ msgid "Password sent"
 #~ msgstr "Пароль отправлен"

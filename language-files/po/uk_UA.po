@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -820,9 +820,6 @@ msgstr ""
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Резервне копіювання та відновлення"
-
 msgid "Apache logfiles"
 msgstr "Журнали веб-сервера"
 
@@ -1080,7 +1077,8 @@ msgstr "ispCP - Клієнт/Зміна мови"
 msgid "Language"
 msgstr "Мова"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Вибір основної мови"
 
 #, fuzzy
@@ -1199,7 +1197,8 @@ msgstr "Користувача заблоковано"
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "Довільна мова змінена!"
 
 msgid "Upload file error!"
@@ -1242,7 +1241,8 @@ msgstr "Установлені мови"
 msgid "Messages"
 msgstr "Повідомлення"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "Довільне"
 
 msgid "Install new language"
@@ -1352,6 +1352,9 @@ msgstr ""
 msgid "Frontpage extensions"
 msgstr ""
 
+msgid "Backup and restore"
+msgstr "Резервне копіювання та відновлення"
+
 msgid "Custom error pages"
 msgstr "Індивідуальні сторінки помилок"
 
@@ -1382,6 +1385,9 @@ msgstr "Домени"
 #, php-format
 msgid ""
 "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+
+msgid "! Trying to correct!"
 msgstr ""
 
 msgid "Aliases"
@@ -1701,8 +1707,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Default language"
-msgstr "Довільна мова"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Вибір основної мови"
 
 msgid "Support system"
 msgstr "Система підтримки"
@@ -2849,6 +2856,9 @@ msgstr "Головний домен"
 msgid "SQL support"
 msgstr "Підтримка SQL"
 
+msgid "Choose default language"
+msgstr "Вибір основної мови"
+
 msgid "Traffic usage"
 msgstr "Використання трафіку"
 
@@ -3307,156 +3317,6 @@ msgstr "Додати існуючого користувача"
 msgid "Existing SQL users"
 msgstr "Існуючі користувачі SQL"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Клієнт/Керування доменами"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "Аліас домену не додано!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Аліас домену не додано!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Додати захищену зону"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Оновити пароль"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Невірний запис доменного імені!"
-
-#, fuzzy
-msgid "State"
-msgstr "Статистика"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Компанія"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Верхня частина"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Користувач уже існує!"
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "Пароль містить недозволені символи!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "Цей IP уже існує!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Додати новий IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Невірний запис доменного імені!"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Ґенерація пароля"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Оновити пароль"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Журнал порожній!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Виконати запит"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Назва макету"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Стан обслуговування"
-
 msgid "Subdomains limit reached!"
 msgstr ""
 
@@ -3641,9 +3501,6 @@ msgstr "Редагувати домен"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Ви впевнені, що бажаєте змінити статус облікового запису домена?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
-
 msgid "Administrators"
 msgstr "Адміністратори"
 
@@ -3701,18 +3558,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Аліас домену не додано!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "Користувач не існує!"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
@@ -3726,32 +3571,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Список поштових скриньок"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Користувач не існує!"
 
 msgid "Email and FTP accounts"
 msgstr "Користувачі E-mail і FTP"
@@ -4527,9 +4346,6 @@ msgstr "ispCP - Користувач/Додавання користувача (
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Backup / Restore"
-msgstr "Резервне копіювання / Відновлення"
-
 msgid "Apache logs"
 msgstr "Журнали веб-сервера"
 
@@ -4600,6 +4416,112 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
+
+#~ msgid "Default language"
+#~ msgstr "Довільна мова"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Клієнт/Керування доменами"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Аліас домену не додано!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Аліас домену не додано!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Додати захищену зону"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Оновити пароль"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Статистика"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Компанія"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Верхня частина"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Користувач уже існує!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Пароль містить недозволені символи!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Цей IP уже існує!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Додати новий IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Ґенерація пароля"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Оновити пароль"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Журнал порожній!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Виконати запит"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Назва макету"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Стан обслуговування"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Аліас домену не додано!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "Користувач не існує!"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Список поштових скриньок"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Користувач не існує!"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "Резервне копіювання / Відновлення"
 
 #~ msgid "ERROR: Unknown user"
 #~ msgstr "ПОМИЛКА: Невідомий користувач"

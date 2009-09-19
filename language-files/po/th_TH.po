@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2009-02-01 22:57+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -791,9 +791,6 @@ msgstr ""
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr ""
-
 msgid "Apache logfiles"
 msgstr "ไฟล์บันทึก Apache"
 
@@ -1040,7 +1037,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-msgid "Choose default language"
+msgid "Choose your default language"
 msgstr ""
 
 msgid "Language was removed!"
@@ -1158,7 +1155,7 @@ msgstr ""
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
-msgid "Default language changed!"
+msgid "Default panel language changed!"
 msgstr ""
 
 msgid "Upload file error!"
@@ -1198,7 +1195,7 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-msgid "Default"
+msgid "Panel Default"
 msgstr ""
 
 msgid "Install new language"
@@ -1305,6 +1302,9 @@ msgstr ""
 msgid "Frontpage extensions"
 msgstr ""
 
+msgid "Backup and restore"
+msgstr ""
+
 msgid "Custom error pages"
 msgstr ""
 
@@ -1335,6 +1335,9 @@ msgstr ""
 #, php-format
 msgid ""
 "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+
+msgid "! Trying to correct!"
 msgstr ""
 
 msgid "Aliases"
@@ -1641,7 +1644,7 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Default language"
+msgid "Panel default language"
 msgstr ""
 
 msgid "Support system"
@@ -2741,6 +2744,9 @@ msgstr ""
 msgid "SQL support"
 msgstr ""
 
+msgid "Choose default language"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr ""
 
@@ -3192,147 +3198,6 @@ msgstr "เพิ่มผู้ใช้ที่มีอยู่แล้ว
 msgid "Existing SQL users"
 msgstr ""
 
-msgid "ispCP - Client/SSL Domains"
-msgstr ""
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "เพิ่ม domain alias"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-msgid "Email is not valid!\n"
-msgstr ""
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "เพิ่ม protected area ใหม่"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "รหัสผ่านปัจจุบัน"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "ชื่อผู้ใช้ไม่ถูกต้อง!"
-
-msgid "State"
-msgstr ""
-
-#, fuzzy
-msgid "Company division"
-msgstr "บริษัท"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "รหัสผ่านปัจจุบัน"
-
-msgid "Key identifier already exists!\n"
-msgstr ""
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-
-#, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr ""
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-msgid "Key for this domain already exists!\n"
-msgstr ""
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "เพิ่ม IP ใหม่"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "ชื่อผู้ใช้ไม่ถูกต้อง!"
-
-msgid "Paste generated key"
-msgstr ""
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "รหัสผ่านปัจจุบัน"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "รายการ Alias ว่างเปล่า!"
-
-msgid "Certificate keys"
-msgstr ""
-
-msgid "Certificate sign request"
-msgstr ""
-
-msgid "Certificate"
-msgstr ""
-
-msgid "Key host name"
-msgstr ""
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-msgid "Certificate host name"
-msgstr ""
-
 msgid "Subdomains limit reached!"
 msgstr ""
 
@@ -3509,9 +3374,6 @@ msgstr "เพิ่ม subdomain"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "คุณแน่ใจที่จะต้องการเปลี่ยนสถานะของโดเมน?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "คุณแน่ใจที่จะต้องการลบบัญชีนี้?"
-
 msgid "Administrators"
 msgstr "ผู้ดูแลระบบ"
 
@@ -3567,16 +3429,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-msgid "Domain is not instantiated"
-msgstr ""
-
-msgid "Domain do not exists"
-msgstr ""
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
@@ -3589,30 +3441,6 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-msgid "Invalid destination for key!"
-msgstr ""
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-msgid "User do not have domains!"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -4359,9 +4187,6 @@ msgstr ""
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Backup / Restore"
-msgstr ""
-
 msgid "Apache logs"
 msgstr "บันทึก Apache"
 
@@ -4429,6 +4254,49 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "เพิ่ม domain alias"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "เพิ่ม protected area ใหม่"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "รหัสผ่านปัจจุบัน"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "ชื่อผู้ใช้ไม่ถูกต้อง!"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "บริษัท"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "รหัสผ่านปัจจุบัน"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "เพิ่ม IP ใหม่"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "ชื่อผู้ใช้ไม่ถูกต้อง!"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "รหัสผ่านปัจจุบัน"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "รายการ Alias ว่างเปล่า!"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "คุณแน่ใจที่จะต้องการลบบัญชีนี้?"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

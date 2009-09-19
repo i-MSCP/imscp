@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -805,9 +805,6 @@ msgstr ""
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Резервно копие и възстановяване"
-
 msgid "Apache logfiles"
 msgstr "Файл журнал на Apache"
 
@@ -1057,7 +1054,8 @@ msgstr "ispCP - Админ/Смяна на език"
 msgid "Language"
 msgstr "Език"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Избор на езика по подразбиране"
 
 #, fuzzy
@@ -1183,7 +1181,8 @@ msgstr "Потребителя беше забранен"
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Админ/Интернационализация"
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "езикът по подразбиране е променен!"
 
 msgid "Upload file error!"
@@ -1223,7 +1222,8 @@ msgstr "Инсталирани езици"
 msgid "Messages"
 msgstr "Съобщения"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "По подразбиране"
 
 msgid "Install new language"
@@ -1328,6 +1328,9 @@ msgstr ""
 msgid "Frontpage extensions"
 msgstr ""
 
+msgid "Backup and restore"
+msgstr "Резервно копие и възстановяване"
+
 msgid "Custom error pages"
 msgstr "Персонална страница за грешки"
 
@@ -1361,6 +1364,9 @@ msgid ""
 msgstr ""
 "Несъвместимост между current_als_cnt и фактическите псевдоними съставлява: %1"
 "$d != %2$d"
+
+msgid "! Trying to correct!"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Псевдоним"
@@ -1681,8 +1687,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Default language"
-msgstr "Език по подразбиране"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Избор на езика по подразбиране"
 
 msgid "Support system"
 msgstr "Служба за поддръжка"
@@ -2829,6 +2836,9 @@ msgstr "Главен домейн"
 msgid "SQL support"
 msgstr "Поддръжка SQL"
 
+msgid "Choose default language"
+msgstr "Избор на езика по подразбиране"
+
 msgid "Traffic usage"
 msgstr "Използван трафик"
 
@@ -3290,156 +3300,6 @@ msgstr "Добави съществуващ потребител"
 msgid "Existing SQL users"
 msgstr "Съществуващ SQL потребител"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Клиент/Управление на домейни"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "заявката за псевдоним на домейна НЕ е изтрита!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Псевдонимът на домейна НЕ е добавен!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Добави нова защитена зона"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Генерирай парола"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Неправилен синтаксис за име на домейн!"
-
-#, fuzzy
-msgid "State"
-msgstr "Статистика"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Компания"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Пол"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Потребителят вече съществува!"
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "Паролата съдържа неразрешени символи!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "Това IP вече съществува!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Добави IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Неправилен синтаксис за име на домейн!"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Укажете име на зоната"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Генерирай парола"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Логът е празен!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Изпълни заявка"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Име на макет"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Служба"
-
 msgid "Subdomains limit reached!"
 msgstr "Достигнут Ограничение поддомейни!"
 
@@ -3620,9 +3480,6 @@ msgstr "Редакция на домейна"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Сигурни ли сте,че искате да промените статуса на домейн акаунта?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Сигурни ли сте,че искате да изтриете този акаунт?"
-
 msgid "Administrators"
 msgstr "Администратори"
 
@@ -3679,18 +3536,6 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Псевдонимът на домейна НЕ е добавен!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "%s не съществува"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
 
@@ -3704,32 +3549,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Неправилно име на група!"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Потребителските данни НЕ са променени!"
 
 msgid "Email and FTP accounts"
 msgstr "Email и FTP акаунти"
@@ -4601,9 +4420,6 @@ msgstr "ispCP - Потребител/Добави потребител (стъп
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Максимум домейни<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
-msgid "Backup / Restore"
-msgstr "Резервно копие / Възстановяване"
-
 msgid "Apache logs"
 msgstr "Журнал Apache"
 
@@ -4673,6 +4489,112 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+#~ msgid "Default language"
+#~ msgstr "Език по подразбиране"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Клиент/Управление на домейни"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "заявката за псевдоним на домейна НЕ е изтрита!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Псевдонимът на домейна НЕ е добавен!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Добави нова защитена зона"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Генерирай парола"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Неправилен синтаксис за име на домейн!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Статистика"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Компания"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Пол"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Потребителят вече съществува!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Паролата съдържа неразрешени символи!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Това IP вече съществува!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Добави IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Неправилен синтаксис за име на домейн!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Укажете име на зоната"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Генерирай парола"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Логът е празен!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Изпълни заявка"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Име на макет"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Служба"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Сигурни ли сте,че искате да изтриете този акаунт?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Псевдонимът на домейна НЕ е добавен!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s не съществува"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Неправилно име на група!"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Потребителските данни НЕ са променени!"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "Резервно копие / Възстановяване"
 
 #~ msgid "Password sent"
 #~ msgstr "Паролата е изпратена"

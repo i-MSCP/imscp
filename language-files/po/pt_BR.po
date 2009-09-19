@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -820,9 +820,6 @@ msgstr ""
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "Backup e restore"
-
 msgid "Apache logfiles"
 msgstr "Arquivos de log do apache"
 
@@ -1080,7 +1077,8 @@ msgstr "ispCP - Cliente/Alterar Idioma"
 msgid "Language"
 msgstr "Idioma"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "Escolha o idioma padrão"
 
 #, fuzzy
@@ -1199,7 +1197,8 @@ msgstr "Usuário desabilitado"
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "Idioma padrão alterado!"
 
 msgid "Upload file error!"
@@ -1242,7 +1241,8 @@ msgstr "Idiomas instalados"
 msgid "Messages"
 msgstr "Mensagens"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "Padrão"
 
 msgid "Install new language"
@@ -1352,6 +1352,9 @@ msgstr ""
 msgid "Frontpage extensions"
 msgstr ""
 
+msgid "Backup and restore"
+msgstr "Backup e restore"
+
 msgid "Custom error pages"
 msgstr "Configura páginas de erro"
 
@@ -1382,6 +1385,9 @@ msgstr "Domínios"
 #, php-format
 msgid ""
 "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+
+msgid "! Trying to correct!"
 msgstr ""
 
 msgid "Aliases"
@@ -1701,8 +1707,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Default language"
-msgstr "Linguagem padrão"
+#, fuzzy
+msgid "Panel default language"
+msgstr "Escolha o idioma padrão"
 
 msgid "Support system"
 msgstr "Sistema de suporte"
@@ -2843,6 +2850,9 @@ msgstr "Domínio de e-mail"
 msgid "SQL support"
 msgstr "Suporte SQL"
 
+msgid "Choose default language"
+msgstr "Escolha o idioma padrão"
+
 msgid "Traffic usage"
 msgstr "Uso do tráfego"
 
@@ -3305,156 +3315,6 @@ msgstr "Adicionar usuário existente"
 msgid "Existing SQL users"
 msgstr "Usuários SQL existentes"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - Cliente/Gerenciar Domínios"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "Domínio alias não incluído!"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "Domínio alias não incluído!"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "Adicionar nova área protegida"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "Alterar senha"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "Sintaxe de domínio inválida!"
-
-#, fuzzy
-msgid "State"
-msgstr "Data"
-
-#, fuzzy
-msgid "Company division"
-msgstr "Empresa"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "Cabeçalho"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "Usuário já existe!"
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr ""
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "Senha contém caracteres não permitidos!"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "Este IP já existe!"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "Adicionar novo IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "Sintaxe de domínio inválida!"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "Gerar senha"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "Alterar senha"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "Log está vazio!"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "Executa query"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "Nome do layout"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "Modo de Manutenção"
-
 msgid "Subdomains limit reached!"
 msgstr ""
 
@@ -3639,9 +3499,6 @@ msgstr "Editar domínio"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Deseja mesmo alterar o status desse domínio?"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "Deseja mesmo deletar essa conta?"
-
 msgid "Administrators"
 msgstr "Administradores"
 
@@ -3699,18 +3556,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "Domínio alias não incluído!"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "Usuário não existe!"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
@@ -3724,32 +3569,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "Lista de e-mails"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "Usuário não existe!"
 
 msgid "Email and FTP accounts"
 msgstr "Contas de e-mail e FTP"
@@ -4525,9 +4344,6 @@ msgstr "ispCP - Usuário/Adicionar usuário(passo 2)"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Backup / Restore"
-msgstr ""
-
 msgid "Apache logs"
 msgstr "Logs do apache"
 
@@ -4598,6 +4414,109 @@ msgstr "Este cliente tem um domínio!<br>Remova-o do sistema primeiro!"
 
 msgid "User not terminated!"
 msgstr "Cliente não finalizado!"
+
+#~ msgid "Default language"
+#~ msgstr "Linguagem padrão"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - Cliente/Gerenciar Domínios"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Domínio alias não incluído!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Domínio alias não incluído!"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "Adicionar nova área protegida"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Alterar senha"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Sintaxe de domínio inválida!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Data"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Empresa"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Cabeçalho"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Usuário já existe!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Senha contém caracteres não permitidos!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Este IP já existe!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Adicionar novo IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Sintaxe de domínio inválida!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Gerar senha"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Alterar senha"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Log está vazio!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Executa query"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Nome do layout"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Modo de Manutenção"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "Deseja mesmo deletar essa conta?"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Domínio alias não incluído!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "Usuário não existe!"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Lista de e-mails"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Usuário não existe!"
 
 #~ msgid "ERROR: Unknown user"
 #~ msgstr "ERRO: Usuário desconhecido"

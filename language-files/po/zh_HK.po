@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-09-19 17:56+0700\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -788,9 +788,6 @@ msgstr "CGI / Perl"
 msgid "Allow adding records to DNS zone"
 msgstr ""
 
-msgid "Backup and restore"
-msgstr "備份與恢復"
-
 msgid "Apache logfiles"
 msgstr "Apache 日誌檔"
 
@@ -1038,7 +1035,8 @@ msgstr "ispCP - 管理員/更改語言"
 msgid "Language"
 msgstr "語言"
 
-msgid "Choose default language"
+#, fuzzy
+msgid "Choose your default language"
 msgstr "選擇默認語言"
 
 #, fuzzy
@@ -1157,7 +1155,8 @@ msgstr "使用者已被停用"
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理員/語言設定"
 
-msgid "Default language changed!"
+#, fuzzy
+msgid "Default panel language changed!"
 msgstr "已更改為默認語言！"
 
 msgid "Upload file error!"
@@ -1197,7 +1196,8 @@ msgstr "已安裝語言"
 msgid "Messages"
 msgstr "訊息"
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "默認"
 
 msgid "Install new language"
@@ -1302,6 +1302,9 @@ msgstr "SSI"
 msgid "Frontpage extensions"
 msgstr "Frontpage 擴展"
 
+msgid "Backup and restore"
+msgstr "備份與恢復"
+
 msgid "Custom error pages"
 msgstr "自定義錯誤頁"
 
@@ -1333,6 +1336,9 @@ msgstr "網域"
 msgid ""
 "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr "現時別名數目 與 實際別名數目 衝突: %1$d != %2$d"
+
+msgid "! Trying to correct!"
+msgstr ""
 
 msgid "Aliases"
 msgstr "別名"
@@ -1643,8 +1649,9 @@ msgstr "建立默認 E-Mail 地址"
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail 帳號強制暫停"
 
-msgid "Default language"
-msgstr "默認語言"
+#, fuzzy
+msgid "Panel default language"
+msgstr "選擇默認語言"
 
 msgid "Support system"
 msgstr "系統支援"
@@ -2767,6 +2774,9 @@ msgstr "主網域"
 msgid "SQL support"
 msgstr "SQL 支援"
 
+msgid "Choose default language"
+msgstr "選擇默認語言"
+
 msgid "Traffic usage"
 msgstr "流量使用量"
 
@@ -3219,156 +3229,6 @@ msgstr "增加現有使用者"
 msgid "Existing SQL users"
 msgstr "現有 SQL 使用者"
 
-#, fuzzy
-msgid "ispCP - Client/SSL Domains"
-msgstr "ispCP - 客戶/網域管理"
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Field Company can not be empty!\n"
-msgstr "主網域不可用！"
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Email is not valid!\n"
-msgstr "網域別名未被增加未！"
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-#, fuzzy
-msgid "Add new certificate"
-msgstr "增加新的保護區域"
-
-#, fuzzy
-msgid "Generate self signed"
-msgstr "產生密碼"
-
-#, fuzzy
-msgid "CRT for domain name"
-msgstr "錯誤的網域語法！"
-
-#, fuzzy
-msgid "State"
-msgstr "統計"
-
-#, fuzzy
-msgid "Company division"
-msgstr "公司名稱"
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-#, fuzzy
-msgid "Generate"
-msgstr "性別"
-
-#, fuzzy
-msgid "Key identifier already exists!\n"
-msgstr "此使用者已存在！"
-
-#, fuzzy, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid.\n"
-msgstr "密碼必須最少%s字元，包括字母和數字。"
-
-#, fuzzy, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr "密碼資料短於%s符號或包含不允許字元！"
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Key for this domain already exists!\n"
-msgstr "此 IP 已存在！"
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Add new key"
-msgstr "增加新 IP"
-
-#, fuzzy
-msgid "Key for domain name"
-msgstr "錯誤的網域語法！"
-
-#, fuzzy
-msgid "Paste generated key"
-msgstr "請輸入區域名稱"
-
-msgid "Generate key with size:"
-msgstr ""
-
-#, fuzzy
-msgid "Generate new"
-msgstr "產生密碼"
-
-msgid "Key is encoded with password"
-msgstr ""
-
-#, fuzzy
-msgid "List is empty!"
-msgstr "日誌是空的！"
-
-msgid "Certificate keys"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate sign request"
-msgstr "執行請求"
-
-msgid "Certificate"
-msgstr ""
-
-#, fuzzy
-msgid "Key host name"
-msgstr "版面名稱"
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-#, fuzzy
-msgid "Certificate host name"
-msgstr "服務"
-
 msgid "Subdomains limit reached!"
 msgstr "子網域數上限！"
 
@@ -3546,9 +3406,6 @@ msgstr "編輯網域"
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "你確定想改變網域帳號狀態嗎？"
 
-msgid "Are you sure you want to delete this account?"
-msgstr "你確定想刪除域帳號嗎？"
-
 msgid "Administrators"
 msgstr "管理員"
 
@@ -3605,18 +3462,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-#, fuzzy
-msgid "Domain is not instantiated"
-msgstr "網域別名未被增加未！"
-
-#, fuzzy
-msgid "Domain do not exists"
-msgstr "%s 不存在"
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "無法檢查更新！無法連絡更新網站。"
 
@@ -3630,32 +3475,6 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
-
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-#, fuzzy
-msgid "Invalid destination for key!"
-msgstr "不完整的組名！"
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr ""
-
-#, fuzzy
-msgid "User do not have domains!"
-msgstr "使用者資料未更新！"
 
 msgid "Email and FTP accounts"
 msgstr "Email 和 FTP 帳號"
@@ -4497,9 +4316,6 @@ msgstr "ispCP - 使用者/增加使用者（第二步）"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "最多網域限制<br><i>(-1 停用, 0 無限制)</i>"
 
-msgid "Backup / Restore"
-msgstr "備份 / 恢復"
-
 msgid "Apache logs"
 msgstr "Apache 日誌"
 
@@ -4567,6 +4383,118 @@ msgstr "此使用者擁有網域記錄！<br>請先從系統中刪除網域！"
 
 msgid "User not terminated!"
 msgstr "使用者未終止！"
+
+#~ msgid "Default language"
+#~ msgstr "默認語言"
+
+#, fuzzy
+#~ msgid "ispCP - Client/SSL Domains"
+#~ msgstr "ispCP - 客戶/網域管理"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "主網域不可用！"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "網域別名未被增加未！"
+
+#, fuzzy
+#~ msgid "Add new certificate"
+#~ msgstr "增加新的保護區域"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "產生密碼"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "錯誤的網域語法！"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "統計"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "公司名稱"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "性別"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "此使用者已存在！"
+
+#, fuzzy
+#~ msgid ""
+#~ "The password must be at least %s long and contain letters and numbers to "
+#~ "be valid.\n"
+#~ msgstr "密碼必須最少%s字元，包括字母和數字。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "密碼資料短於%s符號或包含不允許字元！"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "此 IP 已存在！"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "增加新 IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "錯誤的網域語法！"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "請輸入區域名稱"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "產生密碼"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "日誌是空的！"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "執行請求"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "版面名稱"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "服務"
+
+#~ msgid "Are you sure you want to delete this account?"
+#~ msgstr "你確定想刪除域帳號嗎？"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "網域別名未被增加未！"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s 不存在"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "不完整的組名！"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "使用者資料未更新！"
+
+#~ msgid "Backup / Restore"
+#~ msgstr "備份 / 恢復"
 
 #~ msgid "Password sent"
 #~ msgstr "密碼已發送"
