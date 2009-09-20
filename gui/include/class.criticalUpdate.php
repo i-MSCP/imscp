@@ -29,21 +29,42 @@
 /**
  * Implementing abstract class ispcpUpdate for critical update functions
  *
- * @author	Daniel Andreca <sci2tech@gmail.com>
+ * @author		Daniel Andreca <sci2tech@gmail.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version	1.0
- * @since	r1355
- * @todo	use db prepared statements
+ * @version		1.0
+ * @since		r1355
+ * @todo		use db prepared statements
  */
 class criticalUpdate extends ispcpUpdate{
 
+	/**
+	 * The database variable name for the update version
+	 * @var string 
+	 */
 	protected $databaseVariableName = "CRITICAL_UPDATE_REVISION";
+	
+	/**
+	 * The update functions prefix
+	 * @var string 
+	 */
 	protected $functionName = "_criticalUpdate_";
+	
+	/**
+	 * Error message for updates that have failed 
+	 * @var string 
+	 */
 	protected $errorMessage = "Critical update %s failed";
 
+	/**
+	 * Create and return a new criticalUpdate instance
+	 *
+	 * return object criticalUpdate instance
+	 */
 	public static function getInstance() {
+	
 		static $instance = null;
 		if ($instance === null) $instance = new self();
+
 		return $instance;
 	}
 
@@ -55,16 +76,17 @@ class criticalUpdate extends ispcpUpdate{
 	/**
 	 * Encrypt email and sql users password in database
 	 *
-	 * @author	Daniel Andreca <sci2tech@gmail.com>
+	 * @author		Daniel Andreca <sci2tech@gmail.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version	1.0
-	 * @since	r1355
+	 * @version		1.0
+	 * @since		r1355
 	 *
-	 * @access	protected
-	 * @param	Type	$engine_run_request	Set to true if is needed to perform an engine request
-	 * @return	Type	$sqlUpd	Sql statements to be performed
+	 * @access		protected
+	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
 	protected function _criticalUpdate_1(&$engine_run_request) {
+
 		$status = Config::get('ITEM_CHANGE_STATUS');
 		$sql = Database::getInstance();
 		setConfig_Value('CRITICAL_UPDATE_REVISION', 1);
@@ -100,14 +122,14 @@ class criticalUpdate extends ispcpUpdate{
 	 * Create default group for statistics
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
-	 * @author	Daniel Andreca <sci2tech@gmail.com>
+	 * @author		Daniel Andreca <sci2tech@gmail.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version	1.0
-	 * @since	r1417
+	 * @version		1.0
+	 * @since		r1417
 	 *
-	 * @access	protected
-	 * @param	Type	$engine_run_request	Set to true if is needed to perform an engine request
-	 * @return	Type	$sqlUpd	Sql statements to be performed
+	 * @access		protected
+	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
 	protected function _criticalUpdate_2(&$engine_run_request) {
 
@@ -135,14 +157,14 @@ class criticalUpdate extends ispcpUpdate{
 	 * Create default group for statistics
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
-	 * @author	Daniel Andreca <sci2tech@gmail.com>
+	 * @author		Daniel Andreca <sci2tech@gmail.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version	1.0
-	 * @since	r1725
+	 * @version		1.0
+	 * @since		r1725
 	 *
-	 * @access	protected
-	 * @param	Type	$engine_run_request	Set to true if is needed to perform an engine request
-	 * @return	Type	$sqlUpd	Sql statements to be performed
+	 * @access		protected
+	 * @param		Type	$engine_run_request	Set to true if is needed to perform an engine request
+	 * @return		Type	$sqlUpd	Sql statements to be performed
 	 */
 	protected function _criticalUpdate_3(&$engine_run_request) {
 
@@ -161,70 +183,43 @@ class criticalUpdate extends ispcpUpdate{
 		$engine_run_request = true;
 		return $sqlUpd;
 	}
-	
+
 	/**
-	 * Changed named convention for domain backup
+	 * Change the naming convention for option 'domain' related to the backup feature
 	 * Fix for ticket #1971 http://www.isp-control.net/ispcp/ticket/1971.
 	 *
-	 * @author	Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version	1.0
+	 * @version		1.1
 	 * @since		r1986
 	 *
-	 * @access	protected
-	 * @param	Type	$engine_run_request Set to true if is needed to perform an engine request
-	 * @return	Type	$sqlUpd Sql statements to be performed
+	 * @access		protected
+	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
 	protected function _criticalUpdate_4(&$engine_run_request)
 	{
-		$sql = Database::getInstance();
-		
-		$sqlUpd = array();
-		
-		$sqlUpd[] = "UPDATE `ispcp`.`domain` SET `allowbackup` = 'dmn' WHERE `domain`.`allowbackup` = 'domain'";
-		
-		$engine_run_request = false;
-		return $sqlUpd;
+		// moved to databaseUpdate::_databaseUpdate_24 because the critical updates are performed first
+		return array();
 	}
 
 	/**
-	 * Added backup property for hosting_plans
+	 * Possible missing of backup property
 	 * Fix for ticket #1980 http://www.isp-control.net/ispcp/ticket/1980.
 	 *
-	 * @author	Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version	1.0
+	 * @version		1.2
 	 * @since		r1986
 	 *
-	 * @access	protected
-	 * @param	Type	$engine_run_request Set to true if is needed to perform an engine request
-	 * @return	Type	$sqlUpd Sql statements to be performed
+	 * @access		protected
+	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
 	protected function _criticalUpdate_5(&$engine_run_request)
 	{
-		$sql = Database::getInstance();
-
-		$sqlUpd = array();
-
-		$query = "SELECT `id`, `props` FROM `hosting_plans`";
-		$rs = exec_query($sql, $query);
-
-		if ($rs->RecordCount() != 0)
-		{
-			while (!$rs->EOF)
-			{
-				if(count(explode(';', $rs->fields['props'])) < 12)
-				{
-					$new_property = $rs->fields['props'] .  '_full_;';
-					$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = '$new_property' WHERE `id`= {$rs->fields['id']}";
-				}
-
-				$rs->MoveNext();
-			}
-		}
-
-		$engine_run_request = false;
-		return $sqlUpd;
+		// moved to databaseUpdate::_databaseUpdate_24 because the critical updates are performed first
+		return array();
 	}
 
 	/*

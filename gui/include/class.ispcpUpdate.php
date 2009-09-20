@@ -35,55 +35,127 @@
  *
  * @author	Jochen Manz <zothos@zothos.net>
  * @author	Daniel Andreca <sci2tech@gmail.com>
+ * @author	Laurent Declercq <l.declercq@nuxwin.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version	1.0
- * @see		critical-update-functions.php, database-update-functions.php
+ * @version	1.1
+ * @see		class.criticalUpdate.php, class.databaseUpdate.php
  * @since	r1355
  */
 abstract class ispcpUpdate {
+
+	/**
+	 * Version of the last update that was applied
+	 * @var int
+	 */
 	protected $currentVersion = 0;
+
+	/**
+	 * Error messages for updates that have failed
+	 * @var string
+	 */
 	protected $errorMessages = '';
+
+	/**
+	 * Database variable name for the update version
+	 * @var string
+	 */
 	protected $databaseVariableName = '';
+
+	/**
+	 * Update functions prefix
+	 * @var string
+	 */
 	protected $functionName = '';
+
+	/**
+	 * Error message for updates that have failed
+	 * @var string
+	 */
 	protected $errorMessage = '';
 
+	/**
+	 * Constructor 
+	 *
+	 * @return void
+	 */
 	protected function __construct() {
 		$this->currentVersion = $this->getCurrentVersion();
 	}
 
+	/**
+	 * Returns the version of the last update that was applied
+	 *
+	 * @return int Last update that was applied
+	 */
 	protected function getCurrentVersion() {
 		$sql	= Database::getInstance();
 		$query	= "SELECT * FROM `config` WHERE `name` = '". $this->databaseVariableName ."'";
 		$rs		= $sql->Execute($query);
+
 		return	(int)$rs->fields['value'];
 	}
 
+	/**
+	 * Returns the version of the next update
+	 *
+	 * @return int The version of the next update
+	 */
 	protected function getNextVersion() {
 		return $this->currentVersion + 1;
 	}
 
+	/**
+	 * Checks if a new update is available
+	 *
+	 * @return boolean TRUE if an update is available, FALSE otherwise
+	 */
 	public function checkUpdateExists() {
 		$functionName = $this->returnFunctionName($this->getNextVersion());
 
 		return (method_exists($this, $functionName)) ? true : false;
 	}
 
+	/**
+	 * Returns the name of the function that wraps the update
+	 *
+	 * @return string Update function name
+	 */
 	protected function returnFunctionName($version) {
 		return $this->functionName . $version;
 	}
 
+	/**
+	 * Send a query to the ispCP daemon
+	 *
+	 * @return void
+	 */
 	protected function sendEngineRequest() {
 		send_request();
 	}
 
+	/**
+	 * Adds a new message in the errors messages cache
+	 *
+	 * @return void
+	 */
 	protected function addErrorMessage($message) {
 		$this->errorMessages .= $message;
 	}
 
+	/**
+	 * Accessor for error messages
+	 *
+	 * @return Error messages
+	 */
 	public function getErrorMessage() {
 		return $this->errorMessages;
 	}
 
+	/**
+	 * Apply all available updates
+	 *
+	 * @return void
+	 */
 	public function executeUpdates() {
 		$engine_run_request = false;
 		$sql = Database::getInstance();
@@ -125,6 +197,7 @@ abstract class ispcpUpdate {
 				$this->currentVersion=$newVersion;
 			}
 		}
+
 		if ($engine_run_request) {
 			$this->sendEngineRequest();
 		}
@@ -134,26 +207,45 @@ abstract class ispcpUpdate {
 /**
  * Implementing abstract class ispcpUpdate for future online version update functions
  *
- * @author	Daniel Andreca <sci2tech@gmail.com>
+ * @author		Daniel Andreca <sci2tech@gmail.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version	1.0
- * @see		Other Functions (in other Files)
- * @since	r1355
+ * @version		1.0
+ * @see			Other Functions (in other Files)
+ * @since		r1355
  */
 class versionUpdate extends ispcpUpdate {
+
+	/**
+	 * Database variable name for the update version
+	 * @var string
+	 */
 	protected $databaseVariableName = "VERSION_UPDATE";
+
+	/**
+	 * @todo Please descibe this variable!
+	 */
 	protected $errorMessage = "Version update %s failed";
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	public static function getInstance() {
 		static $instance = null;
 		if ($instance === null) $instance = new self();
+
 		return $instance;
 	}
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	protected function getCurrentVersion() {
 		return (int)Config::get('BuildDate');
 	}
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	protected function getNextVersion() {
 		$last_update = "http://www.isp-control.net/latest.txt";
 		ini_set('user_agent', 'Mozilla/5.0');
@@ -161,19 +253,28 @@ class versionUpdate extends ispcpUpdate {
 		$old_timeout = ini_set('default_socket_timeout', $timeout);
 		$dh2 = @fopen($last_update, 'r');
 		ini_set('default_socket_timeout', $old_timeout);
+
 		if (!is_resource($dh2)) {
 			$this->addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
 			return false;
 		}
+
 		$last_update_result = (int)fread($dh2, 8);
 		fclose($dh2);
+
 		return $last_update_result;
 	}
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	public function checkUpdateExists() {
 		return ($this->getNextVersion()>$this->currentVersion) ? true : false;
 	}
 
+	/**
+	 * @todo Please descibe this method!
+	 */
 	protected function returnFunctionName($version) {
 		return "dummyFunctionThatAllwaysExists";
 	}

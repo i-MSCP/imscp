@@ -36,8 +36,8 @@ $tpl->define_dynamic('hp_order', 'page');
  *
  */
 
-function check_update_current_value($curr, $new)
-{
+function check_update_current_value($curr, $new) {
+
 	$result = true;
 	if ($curr > 0) {
 		if ($new == -1) {
@@ -53,6 +53,7 @@ function check_update_current_value($curr, $new)
 }
 
 function gen_hp(&$tpl, &$sql, $user_id) {
+
 	// get domain id
 	$query = "
 		SELECT
@@ -60,7 +61,9 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_admin_id`=?";
+			`domain_admin_id`=?
+	";
+
 	$rs = exec_query($sql, $query, array($user_id));
 	$domain_id = $rs->fields['domain_id'];
 
@@ -71,7 +74,9 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_id`=?";
+			`domain_id`=?
+	";
+	
 	$rs = exec_query($sql, $query, array($domain_id));
 	$current = $rs->fetchRow();
 
@@ -88,6 +93,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		AND
 			`status` <> ?
 	";
+
 	$rs = exec_query($sql, $query, array($user_id, 'added'));
 
 	if ($rs->RecordCount() > 0) {
@@ -166,12 +172,12 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array(
-				'TR_HOSTING_PLANS'	=> $hp_title,
-				'HOSTING_PLANS'		=> '',
-				'HP_ORDER'			=> '',
-				'COLSPAN'			=> 2
-			)
+				array(
+					'TR_HOSTING_PLANS'	=> $hp_title,
+					'HOSTING_PLANS'		=> '',
+					'HP_ORDER'			=> '',
+					'COLSPAN'			=> 2
+				)
 		);
 
 		set_page_message(tr('There are no available updates'));
@@ -180,8 +186,23 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 	$tpl->assign('COLSPAN', $count);
 	$i = 0;
+
 	while (!$rs->EOF) {
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $rs->fields['props']);
+
+		list(
+				$hp_php,
+				$hp_cgi,
+				$hp_sub,
+				$hp_als,
+				$hp_mail,
+				$hp_ftp,
+				$hp_sql_db,
+				$hp_sql_user,
+				$hp_traff,
+				$hp_disk,
+				$hp_backup,
+				$hp_dns
+		) = explode(";", $rs->fields['props']);
 
 		$details = '';
 		$warning_msgs = $error_msgs = array();
@@ -192,26 +213,31 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		} else {
 			$details = tr('PHP Support: disabled') . "<br />";
 			$php = "no";
+
 			if ($current['domain_php'] == 'yes') {
 				$warning_msgs[] = tr("You have PHP enabled, but the new hosting plan doesn't has this feature.");
 			}
 		}
+
 		if ($hp_cgi === '_yes_') {
 			$cgi = "yes";
 			$details .= tr('CGI Support: enabled') . "<br />";
 		} else {
 			$cgi = "no";
 			$details .= tr('CGI Support: disabled') . "<br />";
+
 			if ($current['domain_cgi'] == 'yes') {
 				$warning_msgs[] = tr("You have CGI enabled, but the new hosting plan doesn't has this feature.");
 			}
 		}
+
 		if ($hp_dns === '_yes_') {
 			$dns = "yes";
 			$details .= tr('DNS Support: enabled') . "<br />";
 		} else {
 			$dns = "no";
 			$details .= tr('DNS Support: disabled') . "<br />";
+
 			if ($current['domain_dns'] == 'yes') {
 				$warning_msgs[] = tr("You have DNS enabled, but the new hosting plan doesn't has this feature.");
 			}
@@ -220,56 +246,73 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$traffic = get_user_traffic($domain_id);
 
 		$curr_value = $traffic[7]; // disk usage
+
 		if (!check_update_current_value($curr_value, $hp_disk)) {
 			$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
 		}
+
 		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
 
 		$curr_value = $traffic[6]; // total
+
 		if (!check_update_current_value($curr_value, $hp_traff)) {
 			$error_msgs[] = tr("You have more traffic than the new hosting plan limits.");
 		}
+
 		$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
 
 		$curr_value = get_domain_running_als_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value, $hp_als)) {
 			$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
 
 		$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value, $hp_sub)) {
 			$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
 
 		$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value[0], $hp_mail)) {
 			$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
 
 		$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value[0], $hp_ftp)) {
 			$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
 
 		$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value, $hp_sql_db)) {
 			$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
 
 		$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
+
 		if (!check_update_current_value($curr_value, $hp_sql_user)) {
 			$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
 		}
+
 		$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br />";
 
 		$details .= $hdd_usage . $traffic_usage;
 
 		$price = $rs->fields['price'];
+
 		if ($price == 0 || $price == '') {
 			$price = tr('free of charge');
 		} else {
@@ -307,7 +350,17 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				`domain_dns` = ?
 		";
 
-		$check = exec_query($sql, $check_query, array($_SESSION['user_id'], $hp_mail, $hp_ftp, $hp_traff, $hp_sql_db, $hp_sql_user, $hp_als, $hp_sub, $hp_disk, $php, $cgi, $dns));
+		$check = exec_query(
+								$sql, $check_query,
+								array(
+										$_SESSION['user_id'],
+										$hp_mail, $hp_ftp, $hp_traff,
+										$hp_sql_db, $hp_sql_user,
+										$hp_als, $hp_sub, $hp_disk,
+										$php, $cgi, $backup, $dns
+								)
+		);
+
 		if ($check->RecordCount() == 0) {
 
 			if ($purchase_link == 'order_id' && count($error_msgs) > 0) {
@@ -327,17 +380,17 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			}
 
 			$tpl->assign(
-				array(
-					'HP_NAME'			=> stripslashes($rs->fields['name']),
-					'HP_DESCRIPTION'	=> stripslashes($rs->fields['description']),
-					'HP_DETAILS'		=> stripslashes($details).$warning_text,
-					'HP_COSTS'			=> $price,
-					'ID'				=> $rs->fields['id'],
-					'TR_PURCHASE'		=> $purchase_text,
-					'LINK'				=> $purchase_link,
-					'TR_HOSTING_PLANS'	=> $hp_title,
-					'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2'
-				)
+					array(
+						'HP_NAME'			=> stripslashes($rs->fields['name']),
+						'HP_DESCRIPTION'	=> stripslashes($rs->fields['description']),
+						'HP_DETAILS'		=> stripslashes($details).$warning_text,
+						'HP_COSTS'			=> $price,
+						'ID'				=> $rs->fields['id'],
+						'TR_PURCHASE'		=> $purchase_text,
+						'LINK'				=> $purchase_link,
+						'TR_HOSTING_PLANS'	=> $hp_title,
+						'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2'
+					)
 			);
 
 			$tpl->parse('HOSTING_PLANS', '.hosting_plans');
@@ -349,12 +402,12 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	}
 	if ($i == 0) {
 		$tpl->assign(
-			array(
-				'HOSTING_PLANS'		=> '',
-				'HP_ORDER'			=> '',
-				'TR_HOSTING_PLANS'	=> $hp_title,
-				'COLSPAN'			=> '2'
-			)
+				array(
+					'HOSTING_PLANS'		=> '',
+					'HP_ORDER'			=> '',
+					'TR_HOSTING_PLANS'	=> $hp_title,
+					'COLSPAN'			=> '2'
+				)
 		);
 
 		set_page_message(tr('There are no available hosting plans for update'));
@@ -363,12 +416,12 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 $tpl->assign(
-	array(
-		'TR_CLIENT_UPDATE_HP'	=> tr('ispCP - Update hosting plan'),
-		'THEME_COLOR_PATH'		=> "../themes/$theme_color",
-		'THEME_CHARSET'			=> tr('encoding'),
-		'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
-	)
+		array(
+			'TR_CLIENT_UPDATE_HP'	=> tr('ispCP - Update hosting plan'),
+			'THEME_COLOR_PATH'		=> "../themes/$theme_color",
+			'THEME_CHARSET'			=> tr('encoding'),
+			'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
+		)
 );
 
 /**
@@ -382,7 +435,9 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_admin_id`=?";
+			`domain_admin_id`=
+	";
+
 	$rs = exec_query($sql, $query, array($user_id));
 	$domain_id = $rs->fields['domain_id'];
 
@@ -393,7 +448,9 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_id`=?";
+			`domain_id`=?
+	";
+
 	$rs = exec_query($sql, $query, array($domain_id));
 	$current = $rs->fetchRow();
 
@@ -408,7 +465,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$error_msgs = array();
 	$rs = exec_query($sql, $query, array($order_id));
-	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $rs->fields['props']);
+	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $rs->fields['props']);
 
 	$traffic = get_user_traffic($domain_id);
 
@@ -522,6 +579,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 }
 
 function del_order(&$tpl, &$sql, $order_id, $user_id) {
+
 	$query = "
 		DELETE FROM
 			`orders`
@@ -559,10 +617,10 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl->assign(
-	array(
-		'TR_LANGUAGE'	=> tr('Language'),
-		'TR_SAVE'		=> tr('Save'),
-	)
+		array(
+			'TR_LANGUAGE'	=> tr('Language'),
+			'TR_SAVE'		=> tr('Save'),
+		)
 );
 
 gen_page_message($tpl);

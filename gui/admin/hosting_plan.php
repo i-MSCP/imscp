@@ -40,12 +40,12 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array(
-		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
+		array(
+			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
 );
 
 /*
@@ -59,16 +59,16 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_hosting_plan.tp
 gen_hp_table($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
-	array(
-		'TR_HOSTING_PLANS' => tr('Hosting plans'),
-		'TR_PAGE_MENU' => tr('Manage hosting plans'),
-		'TR_PURCHASING' => tr('Purchasing'),
-		'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-		'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
-		'TR_BACK' => tr('Back'),
-		'TR_TITLE_BACK' => tr('Return to previous menu'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-	)
+		array(
+			'TR_HOSTING_PLANS' => tr('Hosting plans'),
+			'TR_PAGE_MENU' => tr('Manage hosting plans'),
+			'TR_PURCHASING' => tr('Purchasing'),
+			'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
+			'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
+			'TR_BACK' => tr('Back'),
+			'TR_TITLE_BACK' => tr('Return to previous menu'),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+		)
 );
 
 gen_hp_message();
@@ -79,8 +79,10 @@ $tpl->prnt();
 // BEGIN FUNCTION DECLARE PATH
 
 function gen_hp_message() {
+
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	// global $external_event;
+
 	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
 		// $external_event = '_on_';
 		set_page_message(tr('Hosting plan added!'));
@@ -104,12 +106,14 @@ function gen_hp_message() {
 		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'));
 		unset($_SESSION["hp_deleted_ordererror"]);
 	}
+
 } // End of gen_hp_message()
 
 /**
  * Extract and show data for hosting plans
  */
 function gen_hp_table(&$tpl, $reseller_id) {
+
 	$sql = Database::getInstance();
 
 	$query = <<<SQL_QUERY
@@ -151,9 +155,10 @@ SQL_QUERY;
 
 		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
 		$i = 1;
+
 		while (($data = $rs->FetchRow())) {
 			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
-			$status = ($data['status'] == 1) ? tr('Enabled') : tr('Disabled');
+			$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
 
 			$tpl->assign(
 				array(
@@ -172,6 +177,7 @@ SQL_QUERY;
 		} // end while
 		$tpl->parse('HP_TABLE', 'hp_table');
 	}
+
 } // End of gen_hp_table()
 
 if (Config::get('DUMP_GUI_DEBUG')) {

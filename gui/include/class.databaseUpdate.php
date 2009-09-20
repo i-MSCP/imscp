@@ -26,23 +26,45 @@
  *   http://www.fsf.org/licensing/licenses/gpl.txt
  */
 
-
 /**
  * Implementing abstract class ispcpUpdate for database update functions
+ * Class criticalUpdate for critical update
  *
- * @author	Daniel Andreca <sci2tech@gmail.com>
+ * @author		Daniel Andreca <sci2tech@gmail.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version	1.0
- * @since	r1355
+ * @version		1.0
+ * @since		r1355
  */
 class databaseUpdate extends ispcpUpdate {
+
+	/**
+	 * The database variable name for the update version
+	 * @var string 
+	 */
 	protected $databaseVariableName = "DATABASE_REVISION";
+
+	/**
+	 * The update functions prefix
+	 * @var string 
+	 */
 	protected $functionName = "_databaseUpdate_";
+
+	/**
+	 * Default error message for updates that have failed 
+	 * @var string 
+	 */
 	protected $errorMessage = "Database update %s failed";
 
+	/**
+	 * Create and return a new databaseUpdate instance
+	 *
+	 * return object databaseUpdate instance
+	 */
 	public static function getInstance() {
+
 		static $instance = null;
 		if ($instance === null) $instance = new self();
+
 		return $instance;
 	}
 
@@ -63,6 +85,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_1() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '1')";
@@ -82,6 +105,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_2() {
+
 		$sqlUpd = array(); // we need several SQL Statements...
 
 		// domain mail + forward
@@ -137,6 +161,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_3() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
@@ -156,6 +181,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_4() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
@@ -177,6 +203,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_5() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';";
@@ -197,6 +224,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_6() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "ALTER IGNORE TABLE `htaccess`
@@ -218,6 +246,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_7() {
+
 		$sqlUpd = array();
 
 		$sqlUpd[] = "DROP TABLE IF EXISTS `subdomain_alias`";
@@ -246,7 +275,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_8() {
+
 		$sqlUpd = array();
+
 		// moved to critical because we need to run engine request
 		return $sqlUpd;
 	}
@@ -263,13 +294,16 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_9() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "ALTER TABLE `mail_users`
 					CHANGE `mail_acc` `mail_acc` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `mail_pass` `mail_pass` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `mail_forward` `mail_forward` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `mail_type` `mail_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
+
 		return $sqlUpd;
 	}
 
@@ -285,7 +319,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_10() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, ';') WHERE `name` LIKE \"PORT_%\"";
 		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, 'localhost') WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
 
@@ -304,9 +340,12 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_11() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
 		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+
 		return $sqlUpd;
 	}
 
@@ -322,8 +361,11 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_12() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('SHOW_SERVERLOAD' , '1')";
+
 		return $sqlUpd;
 	}
 
@@ -339,10 +381,13 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_13() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_ADMIN' , '1')";
 		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_RESELLER' , '1')";
 		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_CLIENT' , '1')";
+
 		return $sqlUpd;
 	}
 
@@ -358,8 +403,11 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_14() {
+
 		$sqlUpd = array();
+	
 		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
+
 		return $sqlUpd;
 	}
 
@@ -375,8 +423,11 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_15() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
+
 		return $sqlUpd;
 	}
 
@@ -393,8 +444,11 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_16() {
+
 		$sqlUpd = array();
+	
 		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;')";
+
 		return $sqlUpd;
 	}
 
@@ -411,11 +465,16 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_17() {
+
 		$sqlUpd = array();
+
 		$sql = Database::getInstance();
+
 		$query	= "SELECT `ticket_id`, `ticket_subject`, `ticket_message`"
 				. " FROM `tickets` ORDER BY `ticket_id`";
+	
 		$rs = exec_query($sql, $query);
+
 		if ($rs->RecordCount() != 0) {
 			while (!$rs->EOF) {
 				$subject = html_entity_decode($rs->fields['ticket_subject'], ENT_QUOTES, 'UTF-8');
@@ -446,7 +505,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_18() {
+
 		$sqlUpd = array();
+
 		//moved to 19
 		return $sqlUpd;
 	}
@@ -463,7 +524,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_19() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[]	= "CREATE TABLE IF NOT EXISTS `domain_dns` (
 					`domain_dns_id` int(11) NOT NULL auto_increment,
 					`domain_id` int(11) NOT NULL,
@@ -474,9 +537,11 @@ class databaseUpdate extends ispcpUpdate {
 					`domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
 					PRIMARY KEY  (`domain_dns_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
 		$sqlUpd[]	= "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
 		$sqlUpd[]	= "UPDATE `hosting_plans` SET `props`=CONCAT(`props`,'_no_;') ";
 		$sqlUpd[]	= "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
+
 		return $sqlUpd;
 	}
 
@@ -492,12 +557,16 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_20() {
+
 		$sqlUpd = array();
 
 		$sql = Database::getInstance();
+
 		$query	= "SELECT `reseller_id`"
 				. " FROM `reseller_props` ORDER BY `reseller_id`";
+
 		$rs = exec_query($sql, $query);
+
 		if ($rs->RecordCount() != 0) {
 			while (!$rs->EOF) {
 				$props = recalc_reseller_c_props($rs->fields['reseller_id']);
@@ -514,6 +583,7 @@ class databaseUpdate extends ispcpUpdate {
 				$rs->MoveNext();
 			}
 		}
+
 		return $sqlUpd;
 	}
 
@@ -529,7 +599,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_21() {
+
 		$sqlUpd = array();
+
 		$sql = Database::getInstance();
 
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
@@ -542,6 +614,7 @@ class databaseUpdate extends ispcpUpdate {
 		WHERE
 			`name` = ?
 SQL_QUERY;
+
 		$res = exec_query($sql, $query, array('after-order-msg'));
 
 		while ($data = $res->FetchRow()) {
@@ -570,8 +643,11 @@ SQL_QUERY;
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_22() {
+
 		$sqlUpd = array();
+	
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
+
 		return $sqlUpd;
 	}
 
@@ -587,10 +663,116 @@ SQL_QUERY;
 	 * @return		sql statements to be performed
 	 */
 	protected function _databaseUpdate_23() {
+
 		$sqlUpd = array();
+
 		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'";
+
 		return $sqlUpd;
 	}
+
+	/**
+	 * Fixes for ticket #1985 http://www.isp-control.net/ispcp/ticket/1985.
+	 *
+	 * This db update provides the following:
+	 * Fixes for hosting plans properties:
+	 *  - Possible missing of backup property
+	 *  - Possible inversion between backup and dns properties
+	 * Remove the last semicolon in all "hosting_plans.props"
+	 * Fixes for "domain.allowbackup" and "domain.domain_dns" fieds
+	 *  - Possible inversion between the values of "domain.allowbackup" and "domain.domain_dns
+	 *  - Possible unstripped values
+	 *  - Possible missing value in "domain.allowbackup"
+	 *  - Change the naming convention for option 'domain' related to the backup feature
+	 *
+	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.0
+	 * @since		r1997
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	 protected function _databaseUpdate_24() {
+
+		$sql = Database::getInstance();
+		$sqlUpd = array();
+
+		/**
+		 * Fixes for hosting plans properties:
+		 * - Possible missing of backup property
+		 * - Possible inversion between backup and dns properties
+		 * - Remove the last semicolon in all "hosting_plans.props"
+		 */
+		$query = "SELECT `id`, `props` FROM `hosting_plans`";
+		$rs = exec_query($sql, $query);
+
+		if ($rs->RecordCount() != 0)
+		{
+			while (!$rs->EOF)
+			{
+				list($a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l) = explode(';', $rs->fields['props']);
+
+				if($l == '') { // Possible missing of backup property
+
+					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;_full_;$k";
+	
+				} elseif( ($l != '_no_') && ($l != '_yes_') ) { // Possible inversion between backup and dns properties
+
+					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;$l;$k";
+	
+				} else { // Remove the last semicolon in all "hosting_plans.props"
+
+					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;$k;$l";
+
+				}
+
+				$sqlUpd[] = "UPDATE `hosting_plans`
+							 SET `props` = '$new_props'
+							 WHERE `id`= '{$rs->fields['id']}';
+				";
+
+				$rs->MoveNext();
+			}
+		}
+
+		/**
+		 * Fixes for "domain.allowbackup" and "domain.domain_dns" fieds
+		 *  - Possible inversion between the values of "domain.allowbackup" and "domain.domain_dns"
+		 *  - Possible unstripped values
+		 *  - Possible missing value in "domain.allowbackup"
+		 *  - Change the naming convention for option 'domain' related to the backup feature
+		 */
+
+		// Temporary table used by the following SQL statement
+		$sqlUpd[] = "CREATE TEMPORARY TABLE IF NOT EXISTS `upd_ispcp`
+					 AS SELECT
+						`domain_id` AS `tdomain_id`,
+						TRIM(BOTH '_' FROM `allowbackup`) AS `tdomain_dns`,
+						`domain_dns` AS `tallowbackup`
+					 FROM
+						`domain`
+					 WHERE
+						`domain_dns` NOT REGEXP '^[(yes|no)]';
+		";
+
+		// Possible inversion between the values of "domain.allowbackup" and "domain.domain_dns
+		$sqlUpd[] = "UPDATE `domain`,`upd_ispcp`
+					 SET
+						`allowbackup`=`tallowbackup`,
+						`domain_dns`=`tdomain_dns`
+					 WHERE
+						`domain_id`=`tdomain_id`;
+		";
+
+		// Possible missing value in "domain.allowbackup"
+		$sqlUpd[] = "UPDATE `domain` SET `allowbackup`='full' WHERE `allowbackup`='';";
+
+		// Change the naming convention for option 'domain' related to the backup feature
+		$sqlUpd[] = "UPDATE `domain` SET `allowbackup` = 'dmn' WHERE `allowbackup` = 'domain';";
+	
+		return $sqlUpd; 
+	 }
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

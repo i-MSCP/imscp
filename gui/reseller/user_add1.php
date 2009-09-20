@@ -33,12 +33,12 @@ $tpl->define_dynamic('personalize', 'page');
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 $tpl->assign(
-	array(
-		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
-		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
-		'THEME_CHARSET'								=> tr('encoding'),
-		'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
-	)
+		array(
+				'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
+				'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+				'THEME_CHARSET'								=> tr('encoding'),
+				'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
+		)
 );
 
 /*
@@ -53,26 +53,26 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_man
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array(
-		'TR_ADD_USER'				=> tr('Add user'),
-		'TR_CORE_DATA'				=> tr('Core data'),
-		'TR_DOMAIN_NAME'			=> tr('Domain name'),
-		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-		'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
-		'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
-		'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
-		'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
-		'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
-		'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
-		'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
-		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
-		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
-		'TR_YES'					=> tr('yes'),
-		'TR_NO'						=> tr('no'),
-		'TR_NEXT_STEP'				=> tr('Next step'),
-		'TR_DMN_HELP'				=> tr("You do not need 'www.' ispCP will add it on its own.")
-	)
+		array(
+			'TR_ADD_USER'				=> tr('Add user'),
+			'TR_CORE_DATA'				=> tr('Core data'),
+			'TR_DOMAIN_NAME'			=> tr('Domain name'),
+			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
+			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
+			'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
+			'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
+			'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
+			'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
+			'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
+			'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
+			'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
+			'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
+			'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
+			'TR_YES'					=> tr('yes'),
+			'TR_NO'						=> tr('no'),
+			'TR_NEXT_STEP'				=> tr('Next step'),
+			'TR_DMN_HELP'				=> tr("You do not need 'www.' ispCP will add it on its own.")
+		)
 );
 
 if (isset($_POST['uaction'])) {
@@ -101,11 +101,14 @@ unset_messages();
  * Check correction of entered users data
  */
 function check_user_data() {
+
 	global $dmn_name; // domain name
 	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
+
 	$sql = Database::getInstance();
+
 	// personal template
 	$even_txt = '';
 
@@ -114,14 +117,17 @@ function check_user_data() {
 		$dmn_name = encode_idna($dmn_name);
 	}
 
-	if (isset($_POST['dmn_expire']))
+	if (isset($_POST['dmn_expire'])) {
 		$dmn_expire = $_POST['dmn_expire'];
+	}
 
-	if (isset($_POST['dmn_tpl']))
+	if (isset($_POST['dmn_tpl'])) {
 		$dmn_chp = $_POST['dmn_tpl'];
+	}
 
-	if (isset($_POST['chtpl']))
+	if (isset($_POST['chtpl'])) {
 		$dmn_pt = $_POST['chtpl'];
+	}
 
 	if (!chk_dname($dmn_name)) {
 		$even_txt = tr('Wrong domain name syntax!');
@@ -170,13 +176,15 @@ function check_user_data() {
  * Show empty page
  */
 function get_empty_au1_page(&$tpl) {
+
 	$tpl->assign(
-		array(
-			'DMN_NAME_VALUE'	=> '',
-			'CHTPL1_VAL'		=> '',
-			'CHTPL2_VAL'		=> 'checked="checked"'
-		)
+			array(
+				'DMN_NAME_VALUE'	=> '',
+				'CHTPL1_VAL'		=> '',
+				'CHTPL2_VAL'		=> 'checked="checked"'
+			)
 	);
+
 	$tpl->assign('MESSAGE', '');
 } // End of get_empty_au1_page()
 
@@ -184,17 +192,18 @@ function get_empty_au1_page(&$tpl) {
  * Show first page of add user with data
  */
 function get_data_au1_page(&$tpl) {
+
 	global $dmn_name; // Domain name
 	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 
 	$tpl->assign(
-		array(
-			'DMN_NAME_VALUE'	=> $dmn_name,
-			'CHTPL1_VAL'		=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
-			'CHTPL2_VAL'		=> $dmn_pt === "_yes_" ? '' : 'checked="checked"'
-		)
+			array(
+				'DMN_NAME_VALUE'	=> $dmn_name,
+				'CHTPL1_VAL'		=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
+				'CHTPL2_VAL'		=> $dmn_pt === "_yes_" ? '' : 'checked="checked"'
+			)
 	);
 } // End of get_data_au1_page()
 
@@ -202,8 +211,10 @@ function get_data_au1_page(&$tpl) {
  * Get list with hosting plan for selection
  */
 function get_hp_data_list(&$tpl, $reseller_id) {
-	$sql = Database::getInstance();
+
 	global $dmn_chp;
+	
+	$sql = Database::getInstance();
 
 	if (Config::exists('HOSTING_PLANS_LEVEL')
 		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
@@ -228,6 +239,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 			ORDER BY
 				t1.`name`
 		";
+
 		$rs = exec_query($sql, $query, array('admin'));
 		$tpl->assign('PERSONALIZE', '');
 
@@ -236,6 +248,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 			$tpl->assign('ADD_USER', '');
 			$tpl->assign('ADD_FORM', '');
 		}
+
 	} else {
 		$query = "
 			SELECT
@@ -250,6 +263,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 			ORDER BY
 				`name`
 		";
+
 		$rs = exec_query($sql, $query, array($reseller_id));
 	}
 
@@ -257,14 +271,16 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 		while (($data = $rs->FetchRow())) {
 			$dmn_chp = isset($dmn_chp) ? $dmn_chp : $data['id'];
 			$tpl->assign(
-				array(
-					'HP_NAME'			=> $data['name'],
-					'CHN'				=> $data['id'],
-					'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? 'selected="selected"' : ''
-				)
+					array(
+						'HP_NAME'			=> $data['name'],
+						'CHN'				=> $data['id'],
+						'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? 'selected="selected"' : ''
+					)
 			);
+
 			$tpl->parse('HP_ENTRY', '.hp_entry');
 		}
+
 	} else {
 		// set_page_message(tr('You have no hosting plans. Please add first hosting plan or contact your system administrator.'));
 		$tpl->assign('ADD_USER', '');

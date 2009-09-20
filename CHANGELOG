@@ -1,6 +1,24 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-20 Laurent Declercq
+	-GUI:
+		* Fixed 1985 Several problems with the fixes related to #1971 and #1980 ( Introduced in r1986 )
+			- Moved db criticalUpdate 4 && 5 to db databaseUpdate (because the criticalUpdate is performed before)
+			- Added databaseUpdate 24 for the following database fixes:
+				- Added fix for possible missing of backup property in "hosting_plan.props"
+				- Added fix for possible inversion between backup and dns properties in "hosting_plan.props"
+				- Removed the last semicolon in all "hosting_plans.props" (to prevent wrong results with count() function)
+				- Added fix for possible inversion between the values of "domain.allowbackup" and "domain.domain_dns"
+				- Added fix for possible unstripped values ( _yes_|_no_ instead of yes|no ) in "domain.domain_dns"
+				- Added fix for possible missing value in "domain.allowbackup"
+				- Changed the naming convention for option 'domain' in "domain.allowbackup" ( "domain" to "dmn" )
+			- Changed order of "backup" and "dns" variables in all scripts related to hosting plans (admin/reseller)
+			- Added missing variable related to backup hosting plan property in "admin/hosting_plan_add.php"
+			- Removed the last semicolon in all hosting plan properties related variables (to prevent wrong results with count() function)
+		* Cleaning all scripts related to hosting plans (admin/reseller/client) ( code indentation )
+		* Documented "criticalUpdate" and "ispcpUpdate" classes
+
 2009-09-19 Benedikt Heintel
 	- GUI:
 		* Fixed #1693: Internationalisiation
@@ -81,11 +99,11 @@ ispCP ω 1.0.3 Changelog
 			- Fixed suexec wrapper: owner/group and permissions
 			- Removed apache2-mod_cband for 11.1 ( See OpenSuse INSTALL file for more information )
 			- Disabled OpenSuSE Firewall ( ispCP provides its own )
-			- Fixed #1970: Impossibility of adding new users
+			- Fixed #1970: Domain error at adding user
 	- SETUP:
 		* Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
 	- CONFIGS:
-		* Fixed #1961: Missing EOL in multiple files
+		* Fixed Missing EOL in several files
 
 2009-09-03 Laurent Declercq
 	- DOCS:

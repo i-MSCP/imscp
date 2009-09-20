@@ -34,6 +34,7 @@ else {
 // Check if there is no order for this plan
 $res = exec_query($sql, "SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", array($hpid));
 $data = $res->FetchRow();
+
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';
 	user_goto('hosting_plan.php');

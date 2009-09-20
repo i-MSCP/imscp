@@ -43,49 +43,49 @@ gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_p
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array(
-		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Edit hosting plan'),
-		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
-		'THEME_CHARSET'						=> tr('encoding'),
-		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
-	)
+		array(
+				'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Edit hosting plan'),
+				'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+				'THEME_CHARSET'						=> tr('encoding'),
+				'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
+		)
 );
 
 $tpl->assign(
-	array(
-		'TR_HOSTING PLAN PROPS'		=> tr('Hosting plan properties'),
-		'TR_TEMPLATE_NAME'			=> tr('Template name'),
-		'TR_MAX_SUBDOMAINS'			=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_ALIASES'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_MAILACCOUNTS'		=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_FTP'				=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL'				=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_USERS'			=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_TRAFFIC'			=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_PHP'					=> tr('PHP'),
-		'TR_CGI'					=> tr('CGI / Perl'),
-		'TR_DNS'					=> tr('Allow adding records to DNS zone'),
-		'TR_BACKUP'						=> tr('Backup'),
-		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
-		'TR_BACKUP_SQL'					=> tr('SQL'),
-		'TR_BACKUP_FULL'				=> tr('Full'),
-		'TR_BACKUP_NO'					=> tr('No'),
-		'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
-		'TR_AWSTATS'				=> tr('AwStats'),
-		'TR_YES'					=> tr('yes'),
-		'TR_NO'						=> tr('no'),
-		'TR_BILLING_PROPS'			=> tr('Billing Settings'),
-		'TR_PRICE'					=> tr('Price'),
-		'TR_SETUP_FEE'				=> tr('Setup fee'),
-		'TR_VALUE'					=> tr('Currency'),
-		'TR_PAYMENT'				=> tr('Payment period'),
-		'TR_STATUS'					=> tr('Available for purchasing'),
-		'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
-		'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
-		'TR_EDIT_HOSTING_PLAN'		=> tr('Update plan'),
-		'TR_UPDATE_PLAN'			=> tr('Update plan')
-	)
+		array(
+				'TR_HOSTING PLAN PROPS'		=> tr('Hosting plan properties'),
+				'TR_TEMPLATE_NAME'			=> tr('Template name'),
+				'TR_MAX_SUBDOMAINS'			=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_ALIASES'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_MAILACCOUNTS'		=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_FTP'				=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SQL'				=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SQL_USERS'			=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_TRAFFIC'			=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+				'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+				'TR_PHP'					=> tr('PHP'),
+				'TR_CGI'					=> tr('CGI / Perl'),
+				'TR_DNS'					=> tr('Allow adding records to DNS zone'),
+				'TR_BACKUP'					=> tr('Backup'),
+				'TR_BACKUP_DOMAIN'			=> tr('Domain'),
+				'TR_BACKUP_SQL'				=> tr('SQL'),
+				'TR_BACKUP_FULL'			=> tr('Full'),
+				'TR_BACKUP_NO'				=> tr('No'),
+				'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
+				'TR_AWSTATS'				=> tr('AwStats'),
+				'TR_YES'					=> tr('yes'),
+				'TR_NO'						=> tr('no'),
+				'TR_BILLING_PROPS'			=> tr('Billing Settings'),
+				'TR_PRICE'					=> tr('Price'),
+				'TR_SETUP_FEE'				=> tr('Setup fee'),
+				'TR_VALUE'					=> tr('Currency'),
+				'TR_PAYMENT'				=> tr('Payment period'),
+				'TR_STATUS'					=> tr('Available for purchasing'),
+				'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
+				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
+				'TR_EDIT_HOSTING_PLAN'		=> tr('Update plan'),
+				'TR_UPDATE_PLAN'			=> tr('Update plan')
+		)
 );
 
 /*
@@ -125,40 +125,40 @@ if (Config::get('DUMP_GUI_DEBUG')) {
  */
 function restore_form(&$tpl, &$sql) {
 	$tpl->assign(
-		array(
-			'HP_NAME_VALUE'			=> clean_input($_POST['hp_name'], true),
-			'HP_DESCRIPTION_VALUE'	=> clean_input($_POST['hp_description'], true),
-			'TR_MAX_SUB_LIMITS'		=> clean_input($_POST['hp_sub'], true),
-			'TR_MAX_ALS_VALUES'		=> clean_input($_POST['hp_als'], true),
-			'HP_MAIL_VALUE'			=> clean_input($_POST['hp_mail'], true),
-			'HP_FTP_VALUE'			=> clean_input($_POST['hp_ftp'], true),
-			'HP_SQL_DB_VALUE'		=> clean_input($_POST['hp_sql_db'], true),
-			'HP_SQL_USER_VALUE'		=> clean_input($_POST['hp_sql_user'], true),
-			'HP_TRAFF_VALUE'		=> clean_input($_POST['hp_traff'], true),
-			'HP_TRAFF'				=> clean_input($_POST['hp_traff'], true),
-			'HP_DISK_VALUE'			=> clean_input($_POST['hp_disk'], true),
-			'HP_PRICE'				=> clean_input($_POST['hp_price']),
-			'HP_SETUPFEE'			=> clean_input($_POST['hp_setupfee'], true),
-			'HP_CURRENCY'			=> clean_input($_POST['hp_currency'], true),
-			'HP_PAYMENT'			=> clean_input($_POST['hp_payment'], true)
-		)
+			array(
+					'HP_NAME_VALUE'			=> clean_input($_POST['hp_name'], true),
+					'HP_DESCRIPTION_VALUE'	=> clean_input($_POST['hp_description'], true),
+					'TR_MAX_SUB_LIMITS'		=> clean_input($_POST['hp_sub'], true),
+					'TR_MAX_ALS_VALUES'		=> clean_input($_POST['hp_als'], true),
+					'HP_MAIL_VALUE'			=> clean_input($_POST['hp_mail'], true),
+					'HP_FTP_VALUE'			=> clean_input($_POST['hp_ftp'], true),
+					'HP_SQL_DB_VALUE'		=> clean_input($_POST['hp_sql_db'], true),
+					'HP_SQL_USER_VALUE'		=> clean_input($_POST['hp_sql_user'], true),
+					'HP_TRAFF_VALUE'		=> clean_input($_POST['hp_traff'], true),
+					'HP_TRAFF'				=> clean_input($_POST['hp_traff'], true),
+					'HP_DISK_VALUE'			=> clean_input($_POST['hp_disk'], true),
+					'HP_PRICE'				=> clean_input($_POST['hp_price']),
+					'HP_SETUPFEE'			=> clean_input($_POST['hp_setupfee'], true),
+					'HP_CURRENCY'			=> clean_input($_POST['hp_currency'], true),
+					'HP_PAYMENT'			=> clean_input($_POST['hp_payment'], true)
+			)
 	);
 
 	$tpl->assign(
-		array(
-			'TR_PHP_YES'	=> ($_POST['php'] === '_yes_')	? 'checked="checked"' : '',
-			'TR_PHP_NO'		=> ($_POST['php'] !== '_yes_')	? 'checked="checked"' : '',
-			'TR_CGI_YES'	=> ($_POST['cgi'] === '_yes_')	? 'checked="checked"' : '',
-			'TR_CGI_NO'		=> ($_POST['cgi'] !== '_yes_')	? 'checked="checked"' : '',
-			'TR_DNS_YES'	=> ($_POST['dns'] === '_yes_')	? 'checked="checked"' : '',
-			'TR_DNS_NO'		=> ($_POST['dns'] !== '_yes_')	? 'checked="checked"' : '',
-			'VL_BACKUPD'		=> ($hp_backup ==='_dmn_') ? 'checked="checked"' : '',
-			'VL_BACKUPS'		=> ($hp_backup ==='_sql_') ? 'checked="checked"' : '',
-			'VL_BACKUPF'		=> ($hp_backup ==='_full_') ? 'checked="checked"' : '',
-			'VL_BACKUPN'		=> ($hp_backup ==='_no_') ? 'checked="checked"' : '',
-			'TR_STATUS_YES'	=> ($_POST['status'] == 1)		? 'checked="checked"' : '',
-			'TR_STATUS_NO'	=> ($_POST['status'] != 1)		? 'checked="checked"' : ''
-		)
+			array(
+					'TR_PHP_YES'	=> ($_POST['php'] == '_yes_') ? 'checked="checked"' : '',
+					'TR_PHP_NO'		=> ($_POST['php'] == '_no_') ? 'checked="checked"' : '',
+					'TR_CGI_YES'	=> ($_POST['cgi'] == '_yes_') ? 'checked="checked"' : '',
+					'TR_CGI_NO'		=> ($_POST['cgi'] == '_no_') ? 'checked="checked"' : '',
+					'TR_DNS_YES'	=> ($_POST['dns'] == '_yes_') ? 'checked="checked"' : '',
+					'TR_DNS_NO'		=> ($_POST['dns'] == '_no_') ? 'checked="checked"' : '',
+					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
+					'TR_STATUS_YES'	=> ($_POST['status']) ? 'checked="checked"' : '',
+					'TR_STATUS_NO'	=> (!$_POST['status']) ? 'checked="checked"' : ''
+			)
 	);
 
 } // end of function restore_form()
@@ -167,6 +167,7 @@ function restore_form(&$tpl, &$sql) {
  * Generate load data from sql for requested hosting plan
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
+
 	$_SESSION['hpid'] = $hpid;
 
 	if (Config::exists('HOSTING_PLANS_LEVEL')
@@ -179,11 +180,13 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			WHERE
 				`id` = ?;
 		";
+
 		$res = exec_query($sql, $query, array($hpid));
 		$readonly = 'readonly="readonly"';
 		$disabled = 'disabled="disabled"';
 		$edit_hp = tr('View hosting plan');
 		$tpl->assign('FORM', "");
+
 	} else {
 		$query = "
 			SELECT
@@ -195,6 +198,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			AND
 				`id` = ?;
 		";
+
 		$res = exec_query($sql, $query, array($admin_id, $hpid));
 		$readonly = '';
 		$disabled = '';
@@ -213,7 +217,23 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$value = $data['value'];
 	$payment = $data['payment'];
 	$status = $data['status'];
-	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns, $hp_backup) = explode(";", $props);
+	
+	list(
+			$hp_php,
+			$hp_cgi,
+			$hp_sub,
+			$hp_als,
+			$hp_mail,
+			$hp_ftp,
+			$hp_sql_db,
+			$hp_sql_user,
+			$hp_traff,
+			$hp_disk,
+			$hp_backup,
+			$hp_dns
+
+	) = explode(";", $props);
+	
 	$hp_name = $data['name'];
 
 	if ($description == '')
@@ -226,42 +246,42 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 		$value = '';
 
 	$tpl->assign(
-		array(
-			'HP_NAME_VALUE'			=> stripslashes($hp_name),
-			'TR_EDIT_HOSTING_PLAN'	=> $edit_hp,
-			'TR_MAX_SUB_LIMITS'		=> $hp_sub,
-			'TR_MAX_ALS_VALUES'		=> $hp_als,
-			'HP_MAIL_VALUE'			=> $hp_mail,
-			'HP_FTP_VALUE'			=> $hp_ftp,
-			'HP_SQL_DB_VALUE'		=> $hp_sql_db,
-			'HP_SQL_USER_VALUE'		=> $hp_sql_user,
-			'HP_TRAFF_VALUE'		=> $hp_traff,
-			'HP_DISK_VALUE'			=> $hp_disk,
-			'HP_DESCRIPTION_VALUE'	=> stripslashes($description),
-			'HP_PRICE'				=> $price,
-			'HP_SETUPFEE'			=> $setup_fee,
-			'HP_CURRENCY'			=> stripslashes($value),
-			'READONLY'				=> $readonly,
-			'DISBLED'				=> $disabled,
-			'HP_PAYMENT'			=> stripslashes($payment)
-		)
+			array(
+					'HP_NAME_VALUE'			=> stripslashes($hp_name),
+					'TR_EDIT_HOSTING_PLAN'	=> $edit_hp,
+					'TR_MAX_SUB_LIMITS'		=> $hp_sub,
+					'TR_MAX_ALS_VALUES'		=> $hp_als,
+					'HP_MAIL_VALUE'			=> $hp_mail,
+					'HP_FTP_VALUE'			=> $hp_ftp,
+					'HP_SQL_DB_VALUE'		=> $hp_sql_db,
+					'HP_SQL_USER_VALUE'		=> $hp_sql_user,
+					'HP_TRAFF_VALUE'		=> $hp_traff,
+					'HP_DISK_VALUE'			=> $hp_disk,
+					'HP_DESCRIPTION_VALUE'	=> stripslashes($description),
+					'HP_PRICE'				=> $price,
+					'HP_SETUPFEE'			=> $setup_fee,
+					'HP_CURRENCY'			=> stripslashes($value),
+					'READONLY'				=> $readonly,
+					'DISBLED'				=> $disabled,
+					'HP_PAYMENT'			=> stripslashes($payment)
+			)
 	);
 
 	$tpl->assign(
-		array(
-			'TR_PHP_YES'	=> ($hp_php === '_yes_')	? 'checked="checked"' : '',
-			'TR_PHP_NO'		=> ($hp_php !== '_yes_')	? 'checked="checked"' : '',
-			'TR_CGI_YES'	=> ($hp_cgi === '_yes_')	? 'checked="checked"' : '',
-			'TR_CGI_NO'		=> ($hp_cgi !== '_yes_')	? 'checked="checked"' : '',
-			'TR_DNS_YES'	=> ($hp_dns === '_yes_')	? 'checked="checked"' : '',
-			'TR_DNS_NO'		=> ($hp_dns !== '_yes_')	? 'checked="checked"' : '',
-			'VL_BACKUPD'		=> ($hp_backup ==='_dmn_') ? 'checked="checked"' : '',
-			'VL_BACKUPS'		=> ($hp_backup ==='_sql_') ? 'checked="checked"' : '',
-			'VL_BACKUPF'		=> ($hp_backup ==='_full_') ? 'checked="checked"' : '',
-			'VL_BACKUPN'		=> ($hp_backup ==='_no_') ? 'checked="checked"' : '',
-			'TR_STATUS_YES'	=> ($status == 1)			? 'checked="checked"' : '',
-			'TR_STATUS_NO'	=> ($status != 1)			? 'checked="checked"' : '',
-		)
+			array(
+					'TR_PHP_YES'	=> ($hp_php == '_yes_') ? 'checked="checked"' : '',
+					'TR_PHP_NO'		=> ($hp_php == '_no_')	? 'checked="checked"' : '',
+					'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? 'checked="checked"' : '',
+					'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? 'checked="checked"' : '',
+					'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? 'checked="checked"' : '',
+					'TR_DNS_NO'		=> ($hp_dns == '_no_') ? 'checked="checked"' : '',
+					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
+					'TR_STATUS_YES'	=> ($status) ? 'checked="checked"' : '',
+					'TR_STATUS_NO'	=> (!$status) ? 'checked="checked"' : '',
+			)
 	);
 } // end of gen_load_ehp_page()
 
@@ -275,7 +295,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $price, $setup_fee;
-	global $hp_dns, $hp_backup;
+	global $hp_backup, $hp_dns;
 
 	$ahp_error		= "_off_";
 	$hp_name		= clean_input($_POST['hp_name']);
@@ -291,24 +311,33 @@ function check_data_iscorrect(&$tpl) {
 	$setup_fee		= clean_input($_POST['hp_setupfee']);
 
 	if (isset($_SESSION['hpid']))
+	{
 		$hpid = $_SESSION['hpid'];
+	}
 	else
+	{
 		$ahp_error = tr('Undefined reference to data!');
+	}
+	
 	// put hosting plan id into session value
 	$_SESSION['hpid'] = $hpid;
+	
 	// Get values from previous page and check him correction
-	if (isset($_POST['php']))
+	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
+	}
 
-	if (isset($_POST['cgi']))
+	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
+	}
 
-	if (isset($_POST['dns']))
+	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
+	}
 
-        if (isset($_POST['backup'])) {
-                $hp_backup = $_POST['backup'];
-        }
+    if (isset($_POST['backup'])) {
+    	$hp_backup = $_POST['backup'];
+    }
 
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error = tr('Incorrect subdomains limit!');
@@ -345,14 +374,16 @@ function check_data_iscorrect(&$tpl) {
  * Add new host plan to DB
  */
 function save_data_to_db() {
-	$sql = Database::getInstance();
+
 	global $tpl;
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $hpid;
-	global $hp_dns, $hp_backup;
+	global $hp_backup, $hp_dns;
+	
+	$sql = Database::getInstance();
 
 	$err_msg		= '';
 	$description	= clean_input($_POST['hp_description']);
@@ -362,7 +393,7 @@ function save_data_to_db() {
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= clean_input($_POST['status']);
 
-	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_dns;$hp_backup;";
+	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
 
 	$admin_id = $_SESSION['user_id'];
 
@@ -388,12 +419,14 @@ function save_data_to_db() {
 				WHERE
 					`id` = ?
 			";
+
 			$res = exec_query($sql, $query, array($hp_name, $description, $hp_props, $price,
 				$setup_fee, $currency, $payment, $status, $hpid));
 
 			$_SESSION['hp_updated'] = '_yes_';
 			user_goto('hosting_plan.php');
 		}
+
 	} else {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 		return false;
