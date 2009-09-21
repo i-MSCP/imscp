@@ -1,9 +1,14 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-21 Laurent Declercq
+	- DOCS:
+		* Fixed #1997: "perl-HTML-Entities" in OpenSuSE packages lists because the module "HTML::Entities" is
+		  provided by the package perl-HTML-Parser. The package perl-HTML-Entities in itself does not exist.
+
 2009-09-20 Laurent Declercq
 	-GUI:
-		* Fixed #1985 Several problems with the fixes related to #1971 and #1980 ( Introduced in r1986 )
+		* Fixed #1985: Several problems with the fixes related to #1971 and #1980 ( Introduced in r1986 )
 			- Moved db criticalUpdate 4 && 5 to db databaseUpdate (because the criticalUpdate is performed before)
 			- Added databaseUpdate 24 for the following database fixes:
 				- Added fix for possible missing of backup property in "hosting_plan.props"
