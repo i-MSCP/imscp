@@ -58,7 +58,6 @@ perl-Date-Calc
 perl-DateManip
 perl-Digest-HMAC
 perl-HTML-Parser
-perl-HTML-Entities
 perl-HTML-Tagset
 perl-IO-stringy
 perl-MIME-tools
