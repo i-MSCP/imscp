@@ -39,19 +39,19 @@ class databaseUpdate extends ispcpUpdate {
 
 	/**
 	 * The database variable name for the update version
-	 * @var string 
+	 * @var string
 	 */
 	protected $databaseVariableName = "DATABASE_REVISION";
 
 	/**
 	 * The update functions prefix
-	 * @var string 
+	 * @var string
 	 */
 	protected $functionName = "_databaseUpdate_";
 
 	/**
-	 * Default error message for updates that have failed 
-	 * @var string 
+	 * Default error message for updates that have failed
+	 * @var string
 	 */
 	protected $errorMessage = "Database update %s failed";
 
@@ -405,7 +405,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_14() {
 
 		$sqlUpd = array();
-	
+
 		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
 
 		return $sqlUpd;
@@ -446,7 +446,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_16() {
 
 		$sqlUpd = array();
-	
+
 		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;')";
 
 		return $sqlUpd;
@@ -472,7 +472,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$query	= "SELECT `ticket_id`, `ticket_subject`, `ticket_message`"
 				. " FROM `tickets` ORDER BY `ticket_id`";
-	
+
 		$rs = exec_query($sql, $query);
 
 		if ($rs->RecordCount() != 0) {
@@ -645,7 +645,7 @@ SQL_QUERY;
 	protected function _databaseUpdate_22() {
 
 		$sqlUpd = array();
-	
+
 		$sqlUpd[] = "ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
 
 		return $sqlUpd;
@@ -688,7 +688,7 @@ SQL_QUERY;
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.0
-	 * @since		r1997
+	 * @since		r1998
 	 *
 	 * @access		protected
 	 * @return		sql statements to be performed
@@ -716,11 +716,11 @@ SQL_QUERY;
 				if($l == '') { // Possible missing of backup property
 
 					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;_full_;$k";
-	
+
 				} elseif( ($l != '_no_') && ($l != '_yes_') ) { // Possible inversion between backup and dns properties
 
 					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;$l;$k";
-	
+
 				} else { // Remove the last semicolon in all "hosting_plans.props"
 
 					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;$k;$l";
@@ -770,8 +770,8 @@ SQL_QUERY;
 
 		// Change the naming convention for option 'domain' related to the backup feature
 		$sqlUpd[] = "UPDATE `domain` SET `allowbackup` = 'dmn' WHERE `allowbackup` = 'domain';";
-	
-		return $sqlUpd; 
+
+		return $sqlUpd;
 	 }
 
 	/*
