@@ -33,13 +33,13 @@
 /**
  * Abstract class to implement general update functions
  *
- * @author	Jochen Manz <zothos@zothos.net>
- * @author	Daniel Andreca <sci2tech@gmail.com>
- * @author	Laurent Declercq <l.declercq@nuxwin.com>
+ * @author		Jochen Manz <zothos@zothos.net>
+ * @author		Daniel Andreca <sci2tech@gmail.com>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version	1.1
- * @see		class.criticalUpdate.php, class.databaseUpdate.php
- * @since	r1355
+ * @version		1.2
+ * @see			class.criticalUpdate.php, class.databaseUpdate.php
+ * @since		r1355
  */
 abstract class ispcpUpdate {
 
@@ -74,7 +74,7 @@ abstract class ispcpUpdate {
 	protected $errorMessage = '';
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 *
 	 * @return void
 	 */
@@ -159,44 +159,66 @@ abstract class ispcpUpdate {
 	public function executeUpdates() {
 		$engine_run_request = false;
 		$sql = Database::getInstance();
-		$failedUpdate = false;
 
 		while ($this->checkUpdateExists()) {
+
 			// Get the next database update Version
-			$newVersion		= $this->getNextVersion();
+			$newVersion = $this->getNextVersion();
 
 			// Get the needed function name
-			$functionName	= $this->returnFunctionName($newVersion);
+			$functionName = $this->returnFunctionName($newVersion);
 
 			// Pull the query from the update function using a variable function
-			$queryArray		= $this->$functionName($engine_run_request);
+			$queryArray = $this->$functionName($engine_run_request);
 
-			// Add the query, to set the new Database Version, to our queryArray
-			$queryArray[]	= "UPDATE `config` SET `value` = '$newVersion' WHERE `name` = '{$this->databaseVariableName}'";
+			// Adding the SQL statement to set the new Database Version, to our
+			// queryArray
+			$queryArray[] = "
+							 UPDATE `config`
+							 SET `value` = '$newVersion'
+							 WHERE `name` = '{$this->databaseVariableName}'
+			";
 
-			// Start the Transaction
+			// First, switch to exception mode for errors managment
+			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			// We start a transaction (autocommit disabled)
 			$sql->StartTrans();
 
-			// Execute every query in our queryArray
-			foreach ($queryArray as $query) {
-				$sql->Execute($query);
-			}
+			try {
 
-			// Set failedUpdate to true if an databaseUpdate failed
-			if ($sql->HasFailedTrans())
-				$failedUpdate = true;
+					// We execute every Sql statements
+					foreach($queryArray as $query) {
+						$sql->execute($query);
+					}
 
-			// Complete the Transaction and rollback if necessary
-			$sql->CompleteTrans();
+					// If all SQL statements are executed correctly, commits
+					// the changes
+					$sql->CompleteTrans();
 
-			// Display an error if necessary
-			if ($failedUpdate) {
-				$this->addErrorMessage(tr($this->errorMessage, $newVersion));
+			} catch(PDOException $e) {
+
+				// Perform a rollback if a Sql statement was failed
+				$sql->RollbackTrans();
+
+				// Prepare and display an error message
+				$errorMessage =  tr($this->errorMessage, $newVersion);
+
+				// Extended error message
+				if (Config::get('DEBUG')) {
+					$errorMessage .= "<br />" . $e->getMessage();
+					$errorMessage .=  "<br />Sql Statement was failed: $query";
+				}
+
+				$this->addErrorMessage($errorMessage);
+
+				// An error was occured, we stop here !
 				break;
-			} else {
-				$this->currentVersion=$newVersion;
 			}
-		}
+
+			$this->currentVersion=$newVersion;
+
+		} // End while
 
 		if ($engine_run_request) {
 			$this->sendEngineRequest();

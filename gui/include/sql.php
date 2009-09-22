@@ -38,7 +38,7 @@ Config::set('DB_USER', null);
 Config::set('DB_PASS', null);
 
 /**
- * @todo Please descibe this function!
+ * @todo Please describe this function!
  */
 function execute_query(&$sql, $query) {
 
@@ -49,7 +49,7 @@ function execute_query(&$sql, $query) {
 }
 
 /**
- * @todo Please descibe this function!
+ * @todo Please describe this function!
  */
 function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 
@@ -62,7 +62,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 		$backtrace = debug_backtrace();
 		$output = isset($msg[2]) ? $msg[2] : $msg;
 		$output .= "\n";
-	
+
 		foreach ($backtrace as $entry) {
 			$output .= "File: ".$entry['file']." (Line: ".$entry['line'].")";
 			$output .= " Function: ".$entry['function']."\n";
