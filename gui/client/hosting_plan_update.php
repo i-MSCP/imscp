@@ -76,7 +76,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		WHERE
 			`domain_id`=?
 	";
-	
+
 	$rs = exec_query($sql, $query, array($domain_id));
 	$current = $rs->fetchRow();
 
@@ -357,7 +357,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 										$hp_mail, $hp_ftp, $hp_traff,
 										$hp_sql_db, $hp_sql_user,
 										$hp_als, $hp_sub, $hp_disk,
-										$php, $cgi, $backup, $dns
+										$php, $cgi, $dns
 								)
 		);
 

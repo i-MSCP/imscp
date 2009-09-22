@@ -7,6 +7,7 @@ ispCP ω 1.0.3 Changelog
 		* Fixed #2000: Wrong default value for 'USER_INITAL_LANG' configuration variable
 			- Added an new db databaseUpdate (25) to fix the 'user_gui_props.lang' value ('lang_EnglishBritain' instead of 'lang_English')
 		* Small fixes
+		* Uninitialized variable ($backup) in "client/hosting_plan_update.php"
 
 2009-09-21 Laurent Declercq
 	- DOCS:
