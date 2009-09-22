@@ -52,7 +52,7 @@ Config::set('IPS_LOGO_PATH', '../themes/user_logos');
 Config::set('PURCHASE_TEMPLATE_PATH', '../' . Config::get('ROOT_TEMPLATE_PATH') . Config::get('USER_INITIAL_THEME') . '/orderpanel');
 
 // Standard Language (if not set)
-Config::set('USER_INITIAL_LANG', 'lang_English');
+Config::set('USER_INITIAL_LANG', 'lang_EnglishBritain');
 
 require_once(INCLUDEPATH . '/system-message.php');
 require_once(INCLUDEPATH . '/ispcp-db-keys.php');
