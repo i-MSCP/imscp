@@ -10,7 +10,7 @@ ispCP ω 1.0.3 Changelog
 
 2009-09-23 Laurent Declercq
 	- GUI:
-		* Small fixes (cleanup regexp)
+		* Small fixes (cleanup regexp in input-checks.php)
 
 2009-09-23 Daniel Andreca
 	- ENGINE:
