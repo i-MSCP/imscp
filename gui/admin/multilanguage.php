@@ -42,21 +42,6 @@ $tpl->assign(
 	)
 );
 
-/**
- * update_def_language u
- */
-function update_def_lang() {
-	$sql = Database::getInstance();
-	global $theme;
-
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_language') {
-		if (isset($_POST['default_language']) && !empty($_POST['default_language'])) {
-			setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
-			set_page_message(tr('Default panel language changed!'));
-		}
-	}
-}
-
 function install_lang() {
 	$sql = Database::getInstance();
 
@@ -215,24 +200,6 @@ function show_lang(&$tpl, &$sql) {
 
 		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
-		if ($usr_def_lng[1] == $dat[1]) {
-			$tpl->assign(
-				array(
-					'DEFAULT'		=> tr('yes'),
-					'LANG_RADIO'	=> '',
-				)
-			);
-			$tpl->parse('LANG_DEF', 'lang_def');
-		} else {
-			$tpl->assign(
-				array(
-					'LANG_DEF'		=> '',
-					'LANG_VALUE'	=> 'lang_' . $dat[1],
-				)
-			);
-			$tpl->parse('LANG_RADIO', 'lang_radio');
-		}
-
 		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1]
 			|| $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
@@ -274,8 +241,6 @@ function show_lang(&$tpl, &$sql) {
  * static page messages.
  *
  */
-
-update_def_lang();
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
