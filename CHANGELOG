@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-23 Laurent Declercq
+	- GUI:
+		* Fixed #2001: subdomain: hostname length need >= 2 chars
+		* Small fixes (cleanup regexp)
+
 2009-09-23 Daniel Andreca
 	- ENGINE:
 		* Fixed #1947: ispcp-uninstall don't remove complete ispCp

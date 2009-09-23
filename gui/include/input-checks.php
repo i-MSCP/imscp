@@ -177,24 +177,19 @@ function chk_password($password, $num = 50, $permitted = "") {
  * chk_username
  *
  * @param String $data username to be checked
- * @param int $num number of max. chars
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
  * @return boolean valid username or not
  */
-function chk_username($username, $length = null) {
-	// Username contains only allowed chars
-	if (!preg_match("/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]$/D", $username))
-		return false;
-	// Username has not two times .,- or _
-	if (preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $username))
-		return false;
-	// Username has no not allowed concardination in it
-	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $username))
-		return false;
-	// String is not to long
-	if ($length !== null && strlen($username) > $length)
-		return false;
+function chk_username($username, $max_char, $min_char) {
 
-	return true;
+	$pattern = '/^([^-_.]|[A-Za-z0-9][-_.]?[^-_.]){'.$min_char.','.$max_char.'}?$/';
+
+	if(preg_match($pattern, $username)) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -271,7 +266,7 @@ function full_domain_check($data) {
 		}
 	}
 
-	$res = preg_match("/^[A-Za-z0-9][A-Za-z0-9]*[A-Za-z0-9]\.$/", $match[0][$last]);
+	$res = preg_match("/^[A-Za-z0-9]{2,}\.$/", $match[0][$last]);
 
 	if (!$res) {
 		return false;
@@ -280,17 +275,15 @@ function full_domain_check($data) {
 }
 
 /**
+ * Checks the syntax of all parts of a domain name
  * @todo document this function
  */
 function check_dn_token($data) {
-	if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data))
+
+	if( ( preg_match("/^-|-$/", $data)) ||
+		( preg_match("/[^A-Za-z0-9\-]|\-{2,}/", $data) || $data == '' ) ) {
 		return false;
-	// Username has not two times .,- or _
-	if (preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $data))
-		return false;
-	// Username has no not allowed concardination in it
-	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $data))
-		return false;
+	}
 
 	return true;
 }
@@ -398,12 +391,13 @@ function chk_forward_url($url) {
  * Function checking for valid mount point
  *
  * @param String $data mountpoint data
- * @param int $num number of max. chars
- * @return boolean	false	incorrect syntax
- * 					true	correct syntax
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
+ * @return boolean   false   incorrect syntax
+ *  true    correct syntax
  * @todo check if we can remove the outcommented code block or comment why not
  */
-function chk_mountp($data, $num = 50) {
+function chk_mountp($data, $max_char = 50, $min_char = 2) {
 	if (!preg_match("/^\/(.*)$/D", $data)) {
 		return false;
 	}
@@ -436,7 +430,7 @@ function chk_mountp($data, $num = 50) {
 	for ($i = 0; $i < $count; $i++) {
 		$token = substr($match[0][$i], 1);
 
-		if (!chk_username($token, $num)) {
+		if (!chk_username($token, $max_char, $min_char)) {
 			return false;
 		}
 	}
