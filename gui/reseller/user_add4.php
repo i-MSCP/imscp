@@ -214,9 +214,10 @@ function add_domain_alias(&$sql, &$err_al) {
 		if (!chk_forward_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
-		if (!preg_match("/\/$/", $forward)) {
+		/** @todo test and remove if no bugs encounter
+		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
 			$forward .= "/";
-		}
+		}*/
 	} else {
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));

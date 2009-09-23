@@ -183,9 +183,10 @@ function add_domain_alias(&$sql, &$err_al) {
 		if (!chk_forward_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
+		/** @todo test and remove if no bugs encounter
 		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
 			$forward .= "/";
-		}
+		}*/
 	} else {
 		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
