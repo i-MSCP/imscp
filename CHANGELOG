@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-23 Benedikt Heintel
+	- GUI:
+ 		* Fixed #2004: PHP Error multilanguage.php on line 54
+
 2009-09-23 Daniel Andreca
 	- ENGINE:
 		* Fixed #1947: ispcp-uninstall don't remove complete ispCp
