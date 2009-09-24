@@ -44,13 +44,13 @@ $org_logo = "";
  * The width of the logo (0 for default)
  * @global string $org_logo_width
  */
-$org_logo_width = '200';
+$org_logo_width = '250';
 
 /**
  * The height of the logo (0 for default)
  * @global string $org_logo_height
  */
-$org_logo_height = '111';
+$org_logo_height = '115';
 
 /**
  * Webmail Title
@@ -515,7 +515,7 @@ $dir_hash_level = 0;
  * is 150, but you can set it to whatever you wish.
  * @global string $default_left_size
  */
-$default_left_size = '181';
+$default_left_size = '250';
 
 /**
  * Username Case Control

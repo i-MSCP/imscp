@@ -96,15 +96,15 @@ if ($left_size == "") {
          $left_size = $default_left_size;
     }
     else {
-        $left_size = 200;
+        $left_size = 250;
     }
 }
 
 if ($location_of_bar == 'right') {
-    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\">\n";
+    $output .= "<frameset cols=\"*, $left_size\" frameborder=\"0\" border=\"0\" framespacing=\"0\">\n";
 }
 else {
-    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\">\n";
+    $output .= "<frameset cols=\"$left_size, *\" frameborder=\"0\" border=\"0\" framespacing=\"0\">\n";
 }
 
 /*
@@ -164,12 +164,12 @@ if (empty($right_frame_url)) {
 } 
 
 if ($location_of_bar == 'right') {
-    $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n" .
-               "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\">\n";
+    $output .= "<frame src=\"$right_frame_url\" id=\"f1\" name=\"right\" />\n" .
+               "<frame src=\"left_main.php\" id=\"f2\" name=\"left\" />\n";
 }
 else {
-    $output .= "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\">\n".
-               "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n";
+    $output .= "<frame src=\"left_main.php\" id=\"f1\" name=\"left\" />\n".
+               "<frame src=\"$right_frame_url\" id=\"f2\" name=\"right\" />\n";
 }
 $ret = concat_hook_function('webmail_bottom', $output);
 if($ret != '') {

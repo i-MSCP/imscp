@@ -158,7 +158,7 @@ if (! isset($color) || ! is_array($color)) {
 
 displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
 
-echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
+echo "<body id=\"login_bg\" text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
      "\n" . addForm('redirect.php', 'post', 'login_form');
 
 $username_form_name = 'login_username';
@@ -189,89 +189,26 @@ if (isset($org_logo) && $org_logo) {
 //
 // Modified by ispCP Omega - http://isp-control.net
 //
-
-echo html_tag ( 'div',
-		html_tag ( 'h1', sprintf (_("%s Webmail Login"), $org_name) ) .
-		html_tag ( 'fieldset',
-			html_tag ( 'p',
-				_("Username:") . addInput($username_form_name, $loginname_value) . '<br />' ."\n" .
-				_("Password:") . addPwField($password_form_name) . '<br />' ."\n" .
-				addHidden('js_autodetect_results', SMPREF_JS_OFF) . $mailtofield . addHidden('just_logged_in', '1'),
-				NULL, NULL, 'class="login"'
-			) .
-			html_tag ( 'p',
-				addSubmit(_("Login")),
-				NULL, NULL, 'class="login"'
-			) .
-			html_tag ( 'p',
-				( (isset($hide_sm_attributions) && $hide_sm_attributions) ? '' :
-            	sprintf(_("SquirrelMail version %s"), $version) . '<br />' . "\n"),
-				NULL, NULL, 'class="login small"'
-			),
-			NULL, NULL, '" class="login'
-        ),
-		NULL, NULL, 'id="container"' );
-
-/**** Commented out
-echo html_tag( 'table',
-    html_tag( 'tr',
-        html_tag( 'td',
-            '<center>'.
-            ( isset($org_logo) && $org_logo
-              ? '<img src="' . $org_logo . '" alt="' .
-                sprintf(_("%s Logo"), $org_name) .'"' . $width_and_height .
-                ' /><br />' . "\n"
-              : '' ).
-            ( (isset($hide_sm_attributions) && $hide_sm_attributions) ? '' :
-            '<small>' . sprintf (_("SquirrelMail version %s"), $version) . '<br />' ."\n".
-            '  ' . _("By the SquirrelMail Project Team") . '<br /></small>' . "\n" ) .
-            html_tag( 'table',
-                html_tag( 'tr',
-                    html_tag( 'td',
-                        '<b>' . sprintf (_("%s Login"), $org_name) . "</b>\n",
-                    'center', $color[0] )
-                ) .
-                html_tag( 'tr',
-                    html_tag( 'td',  "\n" .
-                        html_tag( 'table',
-                            html_tag( 'tr',
-                                html_tag( 'td',
-                                    _("Name:") ,
-                                'right', '', 'width="30%"' ) .
-                                html_tag( 'td',
-				    addInput($username_form_name, $loginname_value, 0, 0, ' onfocus="alreadyFocused=true;"'),
-                                'left', '', 'width="70%"' )
-                                ) . "\n" .
-                            html_tag( 'tr',
-                                html_tag( 'td',
-                                    _("Password:") ,
-                                'right', '', 'width="30%"' ) .
-                                html_tag( 'td',
-				    addPwField($password_form_name, null, ' onfocus="alreadyFocused=true;"').
-				    addHidden('js_autodetect_results', SMPREF_JS_OFF).
-                    $mailtofield . 
-				    addHidden('just_logged_in', '1'),
-                                'left', '', 'width="70%"' )
-                            ) ,
-                        'center', $color[4], 'border="0" width="100%"' ) ,
-                    'left',$color[4] )
-                ) . 
-                html_tag( 'tr',
-                    html_tag( 'td',
-                        '<center>'. addSubmit(_("Login")) .'</center>',
-                    'left' )
-                ),
-            '', $color[4], 'border="0" width="350"' ) . '</center>',
-        'center' )
-    ) ,
-'', $color[4], 'border="0" cellspacing="0" cellpadding="0" width="100%"' );
-* ***/
-//
-// End modification
-//
-do_hook('login_form');
-echo '</form>' . "\n";
-
+?>
+<div id="login_container">
+<?php
+  if (isset($org_logo) && $org_logo) { echo '<img src="' . $org_logo . '" alt="' . sprintf(_("%s Logo"), $org_name) .'"' . $width_and_height . 'id="login_logo" />' . "\n"; }?>
+  <fieldset id="login_fieldset">
+  <label for="<?php echo $username_form_name; ?>" class="login_user"><?php echo _("Username"); ?>:</label><?php echo "<input type=\"text\" name=\"$username_form_name\" value=\"$loginname_value\" tabindex=\"1\" class=\"login_input\" onfocus=\"alreadyFocused=true;\">"; ?><br />
+  <label for="<?php echo $password_form_name; ?>" class="login_user"><?php echo _("Password"); ?>:</label><input name="<?php echo $password_form_name; ?>" type="password" class="login_input" tabindex="2" onfocus="alreadyFocused=true;">
+  <input type="hidden" name="js_autodetect_results" value="SMPREF_JS_OFF">
+  <input type="hidden" name="just_logged_in" value="1">
+  <input name="button" type="submit" value="<?php echo _("Login"); ?>" class="login_button">
+<?php do_hook('login_form'); ?>
+</fieldset>
+<div id="login_copyright">
+    <?php echo _("Powered by"); ?> <a href="http://www.squirrelmail.org" target="_blank" style="text-decoration: none;" title="Squirrelmail">Squirrelmail.org</a>
+    <br />
+    <?php echo _("Theme by"); ?> <a href="http://www.ispcp.net" target="_blank" style="text-decoration: none;" title="ispCP">ispCP</a>
+</div>
+</div>
+</form>
+<?php
 do_hook('login_bottom');
 ?>
 </body></html>

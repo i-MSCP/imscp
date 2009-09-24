@@ -17,21 +17,22 @@
  **/
 
 global $color;
-$color[0]   = '#c0c0c0'; // TitleBar
+$color[0]   = '#c8ecfb'; // TitleBar
 $color[1]   = '#c0c0c0'; //
 $color[2]   = '#000000'; // Warning/Error Messages
 $color[3]   = '#c0c0c0'; // Left Bar Background
 $color[4]   = '#FFFFFF'; // Normal Background
 $color[5]   = '#c0c0c0'; // Table Headers
 $color[6]   = '#FFFFFF'; // Text on left bar
-$color[7]   = '#000000'; // Links
+$color[7]   = '#1789AD'; // Links
 $color[8]   = '#000000'; // Normal text
-$color[9]   = '#999999'; // Darker version of #0
+$color[9]   = '#abe4fc'; // Darker version of #0
 $color[10]  = '#666666'; // Darker version of #9
 $color[11]  = '#FFFFFF'; // Special Folders color
 $color[12]  = '#eeeeee'; // Alternating rows color
 $color[15]  = '#FFFFFF'; // Unselectable folders
 $custom_css = 'omega.css';
+$skin_dir = SM_PATH . "skins/omega";
 $GLOBALS['minimize_button'] = 'hive_minimize.png';
 $GLOBALS['refresh_button'] = 'hive_refresh.png';
 ?>

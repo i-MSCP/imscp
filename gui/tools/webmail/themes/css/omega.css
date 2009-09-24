@@ -29,25 +29,26 @@ pre {
 
 body {
 	font-family: Verdana;
-	background-image: url(../../skins/omega/header_right_bg.png);
+	background-image: url(../../skins/omega/header_right_bg.jpg);
 	font-size: 9px;
 	background-repeat: no-repeat;
 	/* background-attachment: fixed; */
 	text-align: center;
-	}
+	margin-top:15px;
+}
 
 body.left {
-	background-image: url(../../skins/omega/folders_bottom.gif);
+	background-image: url(../../skins/omega/folders_bottom.jpg);
 	background-repeat: repeat-y;
-	background-color: #FFFFFF;
+	background-color: #535152;
 	margin: 0;
 	padding: 0;
-	overflow: auto;
-	width: 181px;
+	overflow: hidden;
+	width: 250px;
 }
 
 body.left span {
-	margin-left: 5px;
+	margin-left: 20px;
 	margin-right: 0px;
 }
 
@@ -67,19 +68,25 @@ td {
 
 .top_bar_header {
 	font-family: Verdana;
-	font-size: 13px;
+	font-size: 8pt;
 	color: #000000;
+	padding-top:5px;
+	padding-bottom:40px;
+	text-align:right;
 }
-
+.top_bar_header a {
+	color: #FFFFFF;
+}
+.top_bar_header a:hover {
+	color: #1789AD;
+}
 .top_left_bar_handle {
 }
 
 .inbox_bar_header {
 	font-family: Verdana;
 	font-size: 10px;
-	padding: 10px 1px;
 	color: #000000;
-	margin: auto;
 }
 
 .inbox_left_bar_handle {
@@ -123,7 +130,7 @@ td {
 
 .current_folder {
 	padding: 1px 1px;
-	background: url(../../skins/omega/left_inbox_bar.gif);
+	background: url(../../skins/omega/left_inbox_bar.png);
 	background-repeat: repeat-x;
 	color : #ffffff;
 }
@@ -141,7 +148,7 @@ td {
 }
 */
 .read_icon_bar {
-	background: url(../../skins/omega/readbar_silver.gif);
+	background: url(../../skins/omega/readbar_silver.png);
 	background-repeat: repeat-x;
 	color : #ffffff;
 }
@@ -190,7 +197,7 @@ frame {
 
 .message_toggle_bar {
 
-	background-image: url(../../skins/omega/left_inbox_bar.gif);
+	background-image: url(../../skins/omega/left_inbox_bar.png);
 	background-repeat: repeat-x;
 }
 
@@ -198,66 +205,90 @@ frame {
 	background-color: white;
  	border: 0px none;
 }
-
 /** Login **/
-#container {
-	background-image: url(../../skins/omega/bg.jpg);
+
+#login_bg {
+	background:  url(../../skins/omega/login-bg.jpg) repeat-x;
+	margin: 0;
+}
+#login_container {
+	background-image: url(../../skins/omega/logon_black.png);
 	background-repeat: no-repeat;
 	background-attachment: scroll;
-	background-position: center left;
-	margin: 20em auto 0;
-	width: 474px;
-	height: 273px;
-	position: relative;
+	margin: 150px auto 0;
+	padding-top:200px;
+	width: 316px;
+	height: 339px;
+
+	text-align: left;
+	color: #fff;
+	font-weight:bold;
+	font-size:9pt;
+}
+#login_logo {
+	margin-left: 290px;
 }
 
-#container h1 {
-	text-align: right;
-	font-size: 1em;
-	color: #FFFFFF;
-	width: 375px;
-	margin: 65px 20px 0 0;
-	position: absolute;
-	top: -10px;
-	left: 25px;
+#login_copyright {
+	color: #CCCCCC;
+	font-size:6pt;
+	text-align: center;
+	padding-top:40px;
 }
 
-#container fieldset {
-	width: 250px;
-	margin: 0 auto auto 190px;
-	text-align: right;
+#login_copyright a:link {
+	color: #1789AD;
+}
+#login_copyright a:hover {
+	color: #CCCCCC;
+}
+#login_h1 {
+	display: none;
+}
+#login_fieldset {
 	border: none;
-	position: absolute;
-	top: 100px;
-	right: 30px;
+	margin-left: 0px;
+	width: 316px;
+	position: relative;
+	height: 100px;
+	text-align: right;
 }
-
-#container p.login {
-	font-size: 1em;
+.login_input {
+	width: 140px;
+	background-color:#FFF;
+	border: 1px solid #000;
+	margin-right: 50px;
+}
+.login_user {
+	margin-right: 3px;
+}
+.login_button {
+	border: none;
+	background: transparent url(../../skins/omega/logon_button.png) no-repeat top;
+	width: 110px;
+	height: 25px;
+	line-height: 25px;
+	color: #fff;
 	font-weight: bold;
-	color: #c0c0c0;
-	vertical-align: super;
-	margin: 3px 0 0;
+	font-size: 11px;
+	position: absolute;
+	top: 75px;
+	left: 155px;
 }
 
-#container input {
-	margin: 3px 12px 0px 7px;
-	background-color: #FFFFFF;
-	height: 16px;
-	width: 10em;
-	border: 1px solid #c0c0c0;
-	font-size: 1em;
-	font-weight: normal;
-	vertical-align: middle;
+#login_auto {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+#login_auto p input {
+    vertical-align: middle;
+}
+.login_checkbox {
+	color:#1789AD;
+	font-weight:bold;
 }
 
-#container p.small {
-	position: fixed;
-	bottom: 2px;
-	right: 2px;
-	font-weight: lighter;
-	color: #000000;
-}
 /** END Login **/
 /*
 #right_logo {
@@ -286,7 +317,7 @@ p.button_text {
 	background-position: top left;
 	padding: 0 35px 5px 0;
 	float: left;
-	margin: 3px 0 0 65px;
+	margin: 1px 0 0 65px;
 	cursor: hand;
 	cursor: pointer;
 	color: #FFFFFF;
@@ -342,7 +373,7 @@ p.button_text {
 
 
 #todo_button {
-	background-image: url(../../skins/omega/todo.gif);
+	background-image: url(../../skins/omega/todo.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -366,7 +397,7 @@ p.button_text {
 }
 
 #bookmark_button {
-	background-image: url(../../skins/omega/bookmarks.gif);
+	background-image: url(../../skins/omega/bookmarks.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -377,7 +408,7 @@ p.button_text {
 }
 
 #calendar_button {
-	background-image: url(../../skins/omega/calendar.gif);
+	background-image: url(../../skins/omega/calendar.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -388,7 +419,7 @@ p.button_text {
 }
 
 #fetchmail_button {
-	background-image: url(../../skins/omega/fetchmail.gif);
+	background-image: url(../../skins/omega/fetchmail.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -399,7 +430,7 @@ p.button_text {
 }
 
 #help_button {
-	background-image: url(../../skins/omega/help.gif);
+	background-image: url(../../skins/omega/help.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -410,7 +441,7 @@ p.button_text {
 }
 
 #search_button {
-	background-image: url(../../skins/omega/search.gif);
+	background-image: url(../../skins/omega/search.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -421,7 +452,7 @@ p.button_text {
 }
 
 #exit_button {
-	background-image: url(../../skins/omega/exit.gif);
+	background-image: url(../../skins/omega/exit.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 	padding: 0 16px 5px 0;
@@ -511,9 +542,10 @@ p.button_text {
 }
 
 #left_logo{
-	background-image: url(../../skins/omega/header_bg.png);
+	background-image: url(../../skins/omega/header_bg.jpg);
+	background-repeat:no-repeat;
 	float: none;
-	height:117px;
+	height:115px;
 	margin: 0 0 0px;
 }
 
@@ -725,6 +757,7 @@ p.button_text {
 
 }
 
+
 /* testing */
 .inbox_dropdown {
 	background-color: transparent;
@@ -737,7 +770,7 @@ p.button_text {
 	text-decoration: none;
 	Color: #000000;
 	border: none;
-	background-image: url(../../skins/omega/mail_move.gif);
+	background-image: url(../../skins/omega/mail_move.png);
 	background-repeat: no-repeat;
 	margin: 4px;
 	padding: 1px;
@@ -752,7 +785,7 @@ p.button_text {
 	text-decoration: none;
 	Color: #000000;
 	border: 0px none;
-	background-image: url(../../skins/omega/mail_forward.gif);
+	background-image: url(../../skins/omega/mail_forward.png);
 	background-repeat: no-repeat;
 	margin: 4px;
 	padding: 1px;
@@ -767,7 +800,7 @@ p.button_text {
 	text-decoration: none;
 	Color: #000000;
 	border: 0px none;
-	background-image: url(../../skins/omega/mail_read.gif);
+	background-image: url(../../skins/omega/mail_read.png);
 	background-repeat: no-repeat;
 	margin: 4px;
 	padding: 1px;
@@ -782,7 +815,7 @@ p.button_text {
 	text-decoration: none;
 	Color: #000000;
 	border: 0px none;
-	background-image: url(../../skins/omega/mail_unread.gif);
+	background-image: url(../../skins/omega/mail_unread.png);
 	background-repeat: no-repeat;
 	margin: 4px;
 	padding: 1px;
@@ -797,7 +830,7 @@ p.button_text {
 	text-decoration: none;
 	Color: #000000;
 	border: 0px none;
-	background-image: url(../../skins/omega/mail_delete.gif);
+	background-image: url(../../skins/omega/mail_delete.png);
 	background-repeat: no-repeat;
 	margin: 4px;
 	padding: 1px;
