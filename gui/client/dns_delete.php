@@ -48,7 +48,8 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$rs = exec_query($sql, $query, array($dmn_id, $dns_id));
 	$dom_name = $rs->fields['domain_name'];
 	$dns_name = $rs->fields['domain_dns'];
-	$id =  $rs->fields['id'];
+	$id = $rs->fields['id'];
+	$alias_id = $rs->fields['alias_id'];
 
 	if ($rs->RecordCount() == 0) {
 		user_goto('domains_manage.php');

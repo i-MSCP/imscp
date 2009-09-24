@@ -217,7 +217,7 @@ function action_delete(url, alias_or_subdomain) {
 											<tr id="tr_dns_cname">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_CNAME}</td>
-												<td class="content"><input type="text" name="dns_cname" value="{DNS_CNAME}" />.</td>
+												<td class="content"><input type="text" name="dns_cname" value="{DNS_CNAME}" /></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
