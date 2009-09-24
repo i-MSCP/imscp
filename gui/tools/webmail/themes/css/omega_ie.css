@@ -1,0 +1,37 @@
+#login_copyright {
+	color: #CCCCCC;
+	font-size:6pt;
+	text-align: center;
+	padding-top:55px;
+}
+
+#login_copyright a:link {
+	color: #1789AD;
+}
+#login_copyright a:hover {
+	color: #CCCCCC;
+}
+#quota {
+	display: none;
+}
+#extra {
+	padding: 10px 0;
+}
+#compose_button, #addresses_button, #folders_button, #inbox_button, #options_button {
+	display: inline;
+}
+.inbox-button, .compose-button, .contacts-button, .folders-button, .options-button {
+	width: 110px;
+}
+.inbox-button .button-wrap, .compose-button .button-wrap, .contacts-button .button-wrap, .folders-button .button-wrap, .options-button .button-wrap {
+	display: inline;
+}
+
+.minimize {
+	position: absolute;
+	top: 6px;
+	right: 14px;
+}
+img, #login_container, #logout_container, #inbox_button, #compose_button, #addresses_button, #folders_button, #options_button { 
+	behavior: url(iepngfix.htc);
+}
