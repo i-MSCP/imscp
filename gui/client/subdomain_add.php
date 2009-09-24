@@ -356,8 +356,8 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 			set_page_message(tr('Wrong subdomain syntax!'));
 		} else if (mount_point_exists($dmn_id, array_decode_idna($sub_mnt_pt, true))) {
 			set_page_message(tr('Mount point already in use!'));
-		} else if (!chk_mountp($sub_mnt_pt)) {
-			set_page_message(tr('Incorrect mount point syntax'));
+		} else if (!chk_mountp($sub_mnt_pt, null, 1)) {
+			set_page_message(tr('Incorrect mount point syntax!'));
 		} else {
 			// now let's fix the mountpoint
 			$sub_mnt_pt = array_decode_idna($sub_mnt_pt, true);

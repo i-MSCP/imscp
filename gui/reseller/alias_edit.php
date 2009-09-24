@@ -191,9 +191,10 @@ function check_fwd_data(&$tpl, $alias_id) {
 		if (!chk_forward_url($forward_url)) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
+		/** @todo test and remove if no bugs encounter
 		if (!preg_match("/\/$/", $forward_url) && !preg_match("/\?/", $forward_url)) {
 			$forward_url .= "/";
-		}
+		}*/
 	}
 
 	if ($ed_error === '_off_') {

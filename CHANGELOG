@@ -3,7 +3,14 @@ ispCP ω 1.0.3 Changelog
 
 2009-09-23 Benedikt Heintel
 	- GUI:
- 		* Fixed #2004: PHP Error multilanguage.php on line 54
+		* Fixed #2001: subdomain: hostname length need >= 2 chars
+		* Fixed #2004: PHP Error multilanguage.php on line 54
+		* Fixed #1979: Domain Alias Redirect
+		* Function documentation and small fixes
+
+2009-09-23 Laurent Declercq
+	- GUI:
+		* Small fixes (cleanup regexp in input-checks.php)
 
 2009-09-23 Daniel Andreca
 	- ENGINE:

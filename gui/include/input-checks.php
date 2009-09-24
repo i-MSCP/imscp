@@ -18,36 +18,39 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-// -- check if they are trying to hack
-$CHECK_VARS = array();
-$CHECK_VARS[] = "/wget /i";
-$CHECK_VARS[] = "/chmod /i";
-$CHECK_VARS[] = "/chown /i";
-$CHECK_VARS[] = "/lnyx /i";
-$CHECK_VARS[] = "/curl /i";
-$CHECK_VARS[] = "/fopen /i";
-$CHECK_VARS[] = "/mkdir /i";
-$CHECK_VARS[] = "/passwd /i";
-$CHECK_VARS[] = "/http:/i";
-$CHECK_VARS[] = "/ftp:/i";
-
-$CHECK_VARS[] = "/content-type:/i";
-$CHECK_VARS[] = "/content-transfer-encoding:/i";
-$CHECK_VARS[] = "/mime-version:/i";
-$CHECK_VARS[] = "/subject:/i";
-$CHECK_VARS[] = "/to:/i";
-$CHECK_VARS[] = "/cc:/i";
-$CHECK_VARS[] = "/bcc:/i";
-$CHECK_VARS[] = "/\r/";
-$CHECK_VARS[] = "/\n/";
-$CHECK_VARS[] = "/%0a/";
-$CHECK_VARS[] = "/%0d/";
-
 /**
- * @todo document this function
+ * check_input checks HTML fields of type <input> for content that could be 
+ * related to cross site scripting. The function will call die() if any of the
+ * defined commands is entered in a protected <input> field. An additional 
+ * information is displayed to the user.
+ *
+ * @input String $value The submitted string in the <input> field (value)
  */
 function check_input($value = '') {
-	global $CHECK_VARS;
+	// possible commands for XSS are stored in $CHECK_VARS
+	$CHECK_VARS = array();
+	$CHECK_VARS[] = "/wget /i";
+	$CHECK_VARS[] = "/chmod /i";
+	$CHECK_VARS[] = "/chown /i";
+	$CHECK_VARS[] = "/lnyx /i";
+	$CHECK_VARS[] = "/curl /i";
+	$CHECK_VARS[] = "/fopen /i";
+	$CHECK_VARS[] = "/mkdir /i";
+	$CHECK_VARS[] = "/passwd /i";
+	$CHECK_VARS[] = "/http:/i";
+	$CHECK_VARS[] = "/ftp:/i";
+
+	$CHECK_VARS[] = "/content-type:/i";
+	$CHECK_VARS[] = "/content-transfer-encoding:/i";
+	$CHECK_VARS[] = "/mime-version:/i";
+	$CHECK_VARS[] = "/subject:/i";
+	$CHECK_VARS[] = "/to:/i";
+	$CHECK_VARS[] = "/cc:/i";
+	$CHECK_VARS[] = "/bcc:/i";
+	$CHECK_VARS[] = "/\r/";
+	$CHECK_VARS[] = "/\n/";
+	$CHECK_VARS[] = "/%0a/";
+	$CHECK_VARS[] = "/%0d/";
 
 	if (!empty($value)) {
 		$value = strtolower($value);
@@ -64,15 +67,18 @@ function check_input($value = '') {
 }
 
 /**
- * @todo document this function
+ * clean_html replaces up defined inputs.
+ *
+ * @input String $text text string to be cleaned
+ * @return String cleared text string
  */
 function clean_html($text) {
 	$search = array(
-		'@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
-		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
-		'@([\r\n])[\s]+@', // remove spaces
-		'@&(quot|#34|#034);@i', // change HTML entities
-		'@&(apos|#39|#039);@i', // change HTML entities
+		'@<script[^>]*?>.*?</script[\s]*>@si',	// remove JavaScript
+		'@<[\/\!]*?[^<>]*?>@si',				// remove HTML tags
+		'@([\r\n])[\s]+@', 						// remove spaces
+		'@&(quot|#34|#034);@i',					// change HTML entities
+		'@&(apos|#39|#039);@i',					// change HTML entities
 		'@&(amp|#38);@i',
 		'@&(lt|#60);@i',
 		'@&(gt|#62);@i',
@@ -177,24 +183,25 @@ function chk_password($password, $num = 50, $permitted = "") {
  * chk_username
  *
  * @param String $data username to be checked
- * @param int $num number of max. chars
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
  * @return boolean valid username or not
  */
-function chk_username($username, $length = null) {
-	// Username contains only allowed chars
-	if (!preg_match("/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]$/D", $username))
-		return false;
-	// Username has not two times .,- or _
-	if (preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $username))
-		return false;
-	// Username has no not allowed concardination in it
-	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $username))
-		return false;
-	// String is not to long
-	if ($length !== null && strlen($username) > $length)
-		return false;
+function chk_username($username, $max_char = null, $min_char = 2) {
 
-	return true;
+	if ($min_char === null || $min_char <= 2) {
+		$min_char = 2;
+	}
+	if ($max_char !== null) {
+		(int) $max_char -= 2;
+	}
+	$pattern = '/^[A-Za-z0-9]([A-Za-z0-9]|[_.]{1,1}|[-]{1,2}){'.(int) ($min_char-2).','.$max_char.'}[A-Za-z0-9]?$/';
+
+	if(preg_match($pattern, $username)) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -247,7 +254,10 @@ function ispcp_check_local_part($email, $num = 50) {
 }
 
 /**
- * @todo document this function
+ * full_domain_check checks the domain for validity
+ *
+ * @param String $data domain name to be checked
+ * @return boolean valid domain name or not
  */
 function full_domain_check($data) {
 	$data .= ".";
@@ -264,14 +274,14 @@ function full_domain_check($data) {
 	for ($i = 0; $i < $last; $i++) {
 		$token = chop($match[0][$i], ".");
 
-		$res = check_dn_token($token);
+		$res = chk_dmn_token($token);
 
 		if (!$res) {
 			return false;
 		}
 	}
 
-	$res = preg_match("/^[A-Za-z0-9][A-Za-z0-9]*[A-Za-z0-9]\.$/", $match[0][$last]);
+	$res = preg_match("/^[A-Za-z0-9]{2,}\.$/", $match[0][$last]);
 
 	if (!$res) {
 		return false;
@@ -280,17 +290,17 @@ function full_domain_check($data) {
 }
 
 /**
- * @todo document this function
+ * check_dmn_token checks for a valid domain name token
+ *
+ * @param String $data domain name token to be checked
+ * @return boolean valid domain name token or not
  */
-function check_dn_token($data) {
-	if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data))
+function chk_dmn_token($data) {
+
+	if ((preg_match("/^-|-$/", $data)) ||
+		(preg_match("/[^A-Za-z0-9\-]|\-{2,}/", $data) || $data == '')) {
 		return false;
-	// Username has not two times .,- or _
-	if (preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $data))
-		return false;
-	// Username has no not allowed concardination in it
-	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $data))
-		return false;
+	}
 
 	return true;
 }
@@ -395,37 +405,22 @@ function chk_forward_url($url) {
 }
 
 /**
- * Function checking for valid mount point
+ * chk_mountp checks if the mount point is valid
  *
  * @param String $data mountpoint data
- * @param int $num number of max. chars
- * @return boolean	false	incorrect syntax
- * 					true	correct syntax
- * @todo check if we can remove the outcommented code block or comment why not
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
+ * @return boolean 	false   incorrect syntax
+ *  				true    correct syntax
  */
-function chk_mountp($data, $num = 50) {
-	if (!preg_match("/^\/(.*)$/D", $data)) {
+function chk_mountp($data, $max_char = 50, $min_char = 2) {
+	if (!preg_match("@^/(.*)$@D", $data)) {
 		return false;
 	}
-	if (preg_match("/^\/htdocs$/D", $data)) {
+	$pattern = "@^/(htdocs|backpus|cgi-bin|errors|logs)$@D";
+	if (preg_match($pattern, $data)) {
 		return false;
 	}
-	if (preg_match("/^\/backups$/D", $data)) {
-		return false;
-	}
-	if (preg_match("/^\/cgi-bin$/D", $data)) {
-		return false;
-	}
-	if (preg_match("/^\/errors$/D", $data)) {
-		return false;
-	}
-	if (preg_match("/^\/logs$/D", $data)) {
-		return false;
-	}
-	/*$res = explode("/", trim($data));
-	$cnt_res = count($res);
-	if ($cnt_res > 2)
-		return false;*/
 
 	$match = array();
 	$count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
@@ -436,7 +431,7 @@ function chk_mountp($data, $num = 50) {
 	for ($i = 0; $i < $count; $i++) {
 		$token = substr($match[0][$i], 1);
 
-		if (!chk_username($token, $num)) {
+		if (!chk_username($token, $max_char, $min_char)) {
 			return false;
 		}
 	}
@@ -500,7 +495,7 @@ function chk_subdname($subdname) {
 
 	$res = preg_match_all("/\./", $subdname, $match, PREG_PATTERN_ORDER);
 
-	if ($res <= 1) {
+	if ($res < 1) {
 		return false;
 	}
 
@@ -510,7 +505,7 @@ function chk_subdname($subdname) {
 }
 
 /**
- * All in one function to check who owns what =)
+ * All in one function to check who owns what.
  *
  * @param mixed $id FTP/mail/domain/alias/subdomain/etc id to check
  * @param string $type What kind of id $id is
