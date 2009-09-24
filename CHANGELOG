@@ -1,8 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-24 Benedikt Heintel
+	- GUI:
+		* Fixed #2006: Delete manual DNS entry on domain aliases
+
 2009-09-24 Laurent Declercq
-	- WEBMAIL:
+	- TOOLS:
 		* Integrating new theme for squirrelmail (Thank to Henriks)
 
 2009-09-23 Benedikt Heintel
