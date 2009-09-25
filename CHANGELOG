@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-25 Christian Hernmarck
+	- GUI:
+		* Fixed Bug: error in counting subdom-aliases
+
 2009-09-24 Benedikt Heintel
 	- GUI:
 		* Fixed #2006: Delete manual DNS entry on domain aliases
