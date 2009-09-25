@@ -304,7 +304,7 @@ function validate_domain_deletion($domain_id) {
 		$query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
 		$query .= implode(',', $alias_a);
 		$query .= ")";
-		$res = exec_query($sql, $query, array($domain_id));
+		$res = exec_query($sql, $query, array());
 		while (!$res->EOF) {
 			$any_sub_found = true;
 			$tpl->assign(array(
