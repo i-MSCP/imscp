@@ -1,5 +1,9 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2009-09-25 Blondak <blondak@neser.cz>
+	- GUI:
+		* Fixed #2007: Manual DNS entry should not work when no subdomains
+		* Disallow add manual DNS entry for domain alias on "ordered" state
 
 2009-09-25 Christian Hernmarck
 	- GUI:
