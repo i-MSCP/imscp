@@ -687,7 +687,7 @@ SQL_QUERY;
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version		1.0.0
+	 * @version		1.0.2
 	 * @since		r1998
 	 *
 	 * @access		protected
@@ -793,7 +793,7 @@ SQL_QUERY;
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
 	 * @copyright	2006-2009 by ispCP | http://isp-control.net
-	 * @version		1.0.0
+	 * @version		1.0.2
 	 * @since		r2013
 	 *
 	 * @access		protected
