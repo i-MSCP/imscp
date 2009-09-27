@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-09-27 Daniel Andreca
 	- GUI:
 		* Fixed #1974: Reseller properties cannot be edited after working with his domains
+	- ENGINE:
+		* Fixed #2009: Backups do not work
 
 2009-09-27 Christian Hernmarck
 	- ENGINE:
