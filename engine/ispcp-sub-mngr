@@ -736,6 +736,8 @@ sub gen_httpd_sub_group_entry {
          '{DMN_GRP}' => $dmn_name,
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
+         '{BASE_SERVER_VHOST}'        => $main::cfg{'BASE_SERVER_VHOST'},
+         '{BASE_SERVER_VHOST_PREFIX}' => $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
