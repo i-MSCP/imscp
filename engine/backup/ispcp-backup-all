@@ -37,32 +37,28 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
+our $backup_lock_file = "/tmp/ispcp-backup-all.lock";
 
 sub lock_backup_all_system {
-
-	my ($lock_file) = @_;
 
 	push_el(\@main::el, 'lock_backup_all_system()', 'Starting...');
 
 	if ($main::cfg{'BACKUP_DOMAINS'} ne 'yes') {
 
 		push_el(\@main::el, 'lock_backup_all_system()', 'NOTICE: domain backups are disabled');
-
 		return 2;
 	}
 
-	if (-e $lock_file) {
+	if (-e $backup_lock_file) {
 
 		push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked!');
-
 		return 1;
 
 	}
 
-	my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $lock_file";
+	my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $backup_lock_file";
 
 	my $rs = sys_command($touch_cmd);
-
 	return 1 if ($rs != 0);
 
 	push_el(\@main::el, 'lock_backup_all_system()', 'Ending...');
@@ -73,12 +69,9 @@ sub lock_backup_all_system {
 
 sub unlock_backup_all_system {
 
-	my ($lock_file) = @_;
-
 	push_el(\@main::el, 'unlock_backup_all_system()', 'Starting...');
 
-	my $rs = del_file($lock_file);
-
+	my $rs = del_file($backup_lock_file);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'unlock_backup_all_system()', 'Ending...');
@@ -90,31 +83,17 @@ sub unlock_backup_all_system {
 
 sub backup_all_start_up {
 
-	my ($lock_file) = @_;
-
 	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'backup_all_start_up()', 'Starting...');
 
-	$rs = lock_backup_all_system($lock_file);
-
+	$rs = lock_backup_all_system();
 	return $rs if ($rs != 0);
 
 	# config check;
 
 	$rs = get_conf();
-
 	return $rs if ($rs != 0);
-
-	#
-	# getting initial data also must be done here;
-	#
-
-	#my $sql = "SELECT * FROM domain WHERE domain_status = 'ok'";
-
-	#($rs, $rdata) = doSQL($sql);
-
-	#return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'backup_all_start_up()', 'Ending...');
 
@@ -125,18 +104,15 @@ sub backup_all_start_up {
 
 sub backup_all_shut_down {
 
-	my ($lock_file) = @_;
 
 	my $rs = undef;
 
 	push_el(\@main::el, 'backup_all_shut_down()', 'Starting...');
 
-	$rs = unlock_backup_all_system($lock_file);
-
+	$rs = unlock_backup_all_system();
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'backup_all_shut_down()', 'Ending...');
-
 	return 0;
 
 }
@@ -152,95 +128,84 @@ sub err_exit {
 
 	print STDERR "$msg\n";
 
+	unlock_backup_all_system($backup_lock_file);
 	exit 1;
 
 }
 
-sub backup_all_mail_task {
+sub backup_sql {
 
+	push_el(\@main::el, 'backup_sql()', 'Starting...');
+
+	my ($dmn_id, $dmn_name, $domain_uid, $domain_gid) = @_;
+	my $zip = $main::cfg{'ZIP'};
 	my ($rs, $rdata, $sql) = (undef, undef, undef);
 
-	push_el(\@main::el, 'backup_all_mail_task()', 'Starting...');
+	my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
-	$sql = "
-		SELECT
-			admin_name,
-			email
-		FROM
-			admin
-		WHERE
-			created_by = 0
-	";
-
+	$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 	($rs, $rdata) = doSQL($sql);
 
-	return $rs if ($rs != 0);
+	foreach (@$rdata) {
 
-	#
-	# no admin data -> no mail message;
-	#
+		my $db_id = @$_[0];
+		my $db_name = @$_[1];
+		my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
+		my ($db_filename, $db_compresscmd) = (undef, undef);
 
-	return 0 if (scalar(@$rdata) == 0);
+		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h'$main::cfg{'DATABASE_HOST'}' -u'$main::cfg{'DATABASE_USER'}' -p'".decrypt_db_password($main::cfg{'DATABASE_PASSWORD'})."' '$db_name' >'$db_backup_file'";
 
-	$rdata = @$rdata[0];
+		if ($zip eq "bzip2") {
+			$db_filename = "$db_backup_file.bz2";
+			$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force '$db_backup_file'";
+		} elsif ($zip eq "gzip") {
+			$db_filename = "$db_backup_file.gz";
+			$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force '$db_backup_file'";
+		} elsif ($zip eq "lzma") {
+			$db_filename = "$db_backup_file.lzma";
+			$db_compresscmd = "$main::cfg{'CMD_LZMA'} --force '$db_backup_file'";
+		} else {
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
+			return -1;
+		}
 
-	my $date = get_human_date();
+		$rs = sys_command($db_backupcmd);
+		if( $rs != 0 ){
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");
+			unlink($db_backup_file);
+			return $rs;
+		}
 
-	my ($admin_name, $admin_email) = (@$rdata[0], @$rdata[1]);
+		$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
+		if( $rs != 0 ){
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0660 uid: $domain_uid gid: $domain_gid file $db_backup_file!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0660 uid: $domain_uid gid: $domain_gid file $db_backup_file!");
+			unlink($db_backup_file);
+			return $rs;
+		}
 
-	my $dmn_backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
+		$rs = sys_command($db_compresscmd);
+		if ($rs != 0){
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Error while executing  $db_compresscmd!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Error while executing $db_compresscmd!");
+			unlink($db_backup_file);
+			return $rs;
+		}
 
-	my $backup_file_list = `ls -la $dmn_backup_dir`;
+	}
 
-	my $server_name = $main::cfg{'SERVER_HOSTNAME'};
-
-	my $server_ip = $main::cfg{'BASE_SERVER_IP'};
-
-	my $msg_data = <<MESSAGE_TEXT;
-Hey There,
-
-I'm the automatic backup system on your $server_name ($server_ip) server.
-
-Backup task was completed successfully!
-
-File(s) List In ($dmn_backup_dir):
-
-========================================================================
-$backup_file_list
-========================================================================
-MESSAGE_TEXT
-
-	my $out = new MIME::Entity;
-
-	$out -> build(
-		From		=> "Automatic Backup Manager <".$admin_email.">",
-		To			=> $admin_email,
-		Subject		=> "[$date] Backup report.",
-		Data		=> $msg_data,
-		'X-Mailer'	=> "$main::cfg{'Version'} Automatic Backup Messanger"
-	);
-
-	open MAIL, "| /usr/sbin/sendmail -t -oi";
-
-	$out -> print(\*MAIL);
-
-	close MAIL;
-
-	push_el(\@main::el, 'backup_all_mail_task()', 'Ending...');
-
+	push_el(\@main::el, 'backup_sql()', 'Ending...');
 	return 0;
-
 }
-
 
 sub backup_all_engine {
 
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-
-	my $zip = $main::cfg{ZIP};
-
 	push_el(\@main::el, 'backup_all_engine()', 'Starting...');
 
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	my $zip = $main::cfg{'ZIP'};
 
 	$sql = "
 		SELECT
@@ -264,7 +229,6 @@ sub backup_all_engine {
 	";
 
 	($rs, $rdata) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
 	my $cmd_tar = $main::cfg{'CMD_TAR'};
@@ -277,167 +241,87 @@ sub backup_all_engine {
 
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
-	my ($backup_filename, $backup_cmd) = (undef,"");
-
 	foreach (@$rdata) {
 
+	# DO NOT RETURN, even if backup throws an error, otherwise other domains will not be backuped
+	# I DO MEAN IT :)
+
 		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $allowbackup, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6], @$_[7]);
-		
-		if ($allowbackup eq "full" || $allowbackup eq "dmn" || $allowbackup eq "sql") {		
-		
-		my $date = get_human_date();
 
-		my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
+		if ($allowbackup eq "full" || $allowbackup eq "dmn" || $allowbackup eq "sql") {
 
-		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+			my $date = get_human_date();
+			my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
+			my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+			my ($backup_filename, $backup_cmd) = (undef, "");
 
-		#
-		# User Database Backup
-		#
+			#
+			# User Database Backup
+			#
 
-		if (! -d $dmn_backup_dir) {
-			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
-
-			return $rs if ($rs != 0);
-		}		
-
-		if ($zip eq "bzip2") {
-			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
-			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
-				$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			if (! -d $dmn_backup_dir) {
+				$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
+				return $rs if ($rs != 0);
 			}
-		}
-		elsif ($zip eq "gzip") {
-			$backup_filename = "$dmn_name-backup-$date.tar.gz";
-			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
-			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
-			}
-		}
-		elsif ($zip eq "lzma") {
-                        $backup_filename = "$dmn_name-backup-$date.tar.lzma";
-			if ($allowbackup eq "full" || $allowbackup eq "dmn") {
-                        	$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --lzma --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
-                	}
-		}		
-		else {
-			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
-			return 1;
-		}
 
-		#
-		# User Database Backup - practice:
-		# - read databases from ispcp database for actual domain
-		# - execute MYSQLDUMP with databases and redirect it to the backup folder
-		#
-			
-		if ($allowbackup eq "full" || $allowbackup eq "sql") {
-		
-		$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
-		($rs, my $rdata3) = doSQL($sql);
-
-		foreach (@$rdata3) {
-			my $db_id = @$_[0];
-			my $db_name = @$_[1];
-			$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
-			($rs, my $rdata2) = doSQL($sql);
-			my $dbuser = "";
-			my $dbpass = "";
-
-			if (@$rdata2) {
-				foreach (@$rdata2) {
-					$dbuser = @$_[0];
-					if ($main::use_crypted_pwd) {
-						$dbpass = decrypt_db_password(@$_[1]);
-					} else {
-						$dbpass = @$_[1];
-					}
+			if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma') {
+				$backup_filename = "$dmn_name-backup-$date.tar.".($zip eq 'bzip2' ? 'bz2' : ($zip eq 'gzip' ? 'gz' : $zip));
+				if ($allowbackup eq "full" || $allowbackup eq "dmn") {
+					$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --$zip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 				}
-				if ($dbuser && $dbpass) {
-					my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
-					my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h\'$main::cfg{'DATABASE_HOST'}\' -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
+				if ( $allowbackup eq "full" || $allowbackup eq "sql" ) {
+					$rs = backup_sql($dmn_id, $dmn_name, $domain_uid, $domain_gid);
+				}
+			} else {
+				push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip for domain $dmn_name!");
+				send_error_mail('backup_all_engine()', "Backup algorithm not supported: $zip for domain $dmn_name!");
+			}
 
-					my ($db_filename, $db_compresscmd) = (undef, undef);
+			if ( length($backup_cmd) != 0 ) {
+				$rs = sys_command($backup_cmd);
 
-					if ($zip eq "bzip2") {
-						$db_filename = "$db_backup_file.bz2";
-						$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
-					}
-					elsif ($zip eq "gzip") {
-						$db_filename = "$db_backup_file.gz";
-						$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
-					}
-					elsif ($zip eq "lzma") {
-						$db_filename = "$db_backup_file.lzma";
-						$db_compresscmd = "$main::cfg{'CMD_LZMA'} --force \'$db_backup_file\'";
-					}
-					else {
-						push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+				if ($rs == 0) { # everything ok
 
-						return 1;
+					$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
+					if ($rs != 0){
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_dir/$backup_filename.log!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_dir/$backup_filename.log!");
 					}
 
-					$rs = sys_command($db_backupcmd);
-
-					if ($rs == 0) {
-						$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
-
-						if ($rs != 0) {
-							unlink($db_backup_file);
-						}
-						else {
-							$rs = sys_command($db_compresscmd);
-							return $rs if ($rs != 0);
-						}
-						return $rs if ($rs != 0);
+					$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
+					if ($rs != 0){
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*!");
 					}
-					else {
-						push_el(\@main::el, 'backup_all_engine()', "ERROR: Failed to backup database $db_name");
-						unlink($db_backup_file);
+
+					$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+					if ($rs != 0){
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir!");
 					}
+
+					$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
+					if ($rs != 0){
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0660 uid: $domain_uid gid: $domain_gid for $dmn_backup_dir/$backup_filename!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0660 uid: $domain_uid gid: $domain_gid for $dmn_backup_dir/$backup_filename!");
+					}
+
+				} else { # some error occurred
+
+					push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
+
+					if ( -e "$dmn_dir/$backup_filename" ) {
+
+						$rs = del_file("$dmn_dir/$backup_filename");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while removing file $dmn_dir/$backup_filename!");
+
+					}
+
 				}
 			}
+		} else {
+			push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: ERROR: the type of backup (*$allowbackup*) is not allowed!");
 		}
-	}
-
-		if (length($backup_cmd)!=0) {
-			$rs = sys_command($backup_cmd);
-
-			# do not return, if backup throws an error, otherwise other domains will not be backuped
-			if ($rs == 0) { # everything ok
-
-				$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
-	
-				return $rs if ($rs != 0);
-
-				$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
-
-				return $rs if ($rs != 0);
-
-				$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
-
-				return $rs if ($rs != 0);
-
-				$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
-
-				return $rs if ($rs != 0);
-
-			} else { # some error occurred
-
-				push_el(\@main::el, 'backup_all_engine()', "ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
-
-				if ( -e "$dmn_dir/$backup_filename" ) {
-
-					$rs = del_file("$dmn_dir/$backup_filename");
-
-					return $rs if ($rs != 0);
-
-				}
-
-			}
-		}
-} else {
-	push_el(\@main::el, 'backup_all_engine()', "ERROR: the type of backup (*$allowbackup*) is not allowed!");
-}	
 	}
 
 	push_el(\@main::el, 'backup_all_engine()', 'Ending...');
@@ -446,32 +330,8 @@ sub backup_all_engine {
 
 }
 
-
-sub use_crypted_pwd {
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-
-	push_el(\@main::el, 'database_revision()', 'Starting...');
-
-	$sql="SELECT `value` FROM `config` WHERE `name`='CRITICAL_UPDATE_REVISION'";
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	if (defined(@$rdata[0]) && defined(@{@$rdata[0]}[0])){ 
-		$main::use_crypted_pwd = 1;
-	} else {
-		$main::use_crypted_pwd = 0;
-	}
-
-	push_el(\@main::el, 'database_revision()', 'Ending...');
-	return 0;
-
-}
-
-
 my $rs = undef;
 my $proceed = $ARGV[0];
-
 
 if (!defined($proceed) || $proceed eq '') {
 
@@ -489,24 +349,15 @@ if ($proceed ne 'yes') {
 
 }
 
-my $backup_lock_file = "/tmp/ispcp-backup-all.lock";
-
-$rs = backup_all_start_up($backup_lock_file);
-
+$rs = backup_all_start_up();
 err_exit() if ($rs != 0 && $rs != 2);
 
 exit 0 if ($rs == 2); # $rs == 2 when backups are disabled
 
-$rs = use_crypted_pwd();
-
-err_exit() if ($rs != 0);
-
 $rs = backup_all_engine();
-
 err_exit() if ($rs != 0);
 
-$rs = backup_all_shut_down($backup_lock_file);
-
+$rs = backup_all_shut_down();
 err_exit() if ($rs != 0);
 
 exit 0;

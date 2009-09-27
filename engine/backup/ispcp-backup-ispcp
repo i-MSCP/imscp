@@ -8,27 +8,30 @@
 #
 #
 # License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the MPL Mozilla Public License
+#	as published by the Free Software Foundation; either version 1.1
+#	of the License, or (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	MPL Mozilla Public License for more details.
 #
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
+#	You may have received a copy of the MPL Mozilla Public License
+#	along with this program.
 #
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
+#	An on-line copy of the MPL Mozilla Public License can be found
+#	http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
 # The ispCP ω Home Page is at:
 #
-#    http://isp-control.net
+#	http://isp-control.net
 #
+
+$main::db_pwd = undef;
+$main::db_user = undef;
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -37,52 +40,46 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
+our $backup_lock_file = "/tmp/ispcp-backup-all.lock";
+
 sub lock_backup_ispcp_system {
 
-    my ($lock_file) = @_;
+	push_el(\@main::el, 'lock_backup_ispcp_system()', 'Starting...');
 
-    push_el(\@main::el, 'lock_backup_ispcp_system()', 'Starting...');
+	if ($main::cfg{'BACKUP_ISPCP'} ne 'yes') {
 
-    if ($main::cfg{'BACKUP_ISPCP'} ne 'yes') {
+		push_el(\@main::el, 'lock_backup_ispcp_system()', 'NOTICE: domain backups are disabled');
+		return 2;
+	}
 
-        push_el(\@main::el, 'lock_backup_ispcp_system()', 'NOTICE: domain backups are disabled');
+	if (-e $backup_lock_file) {
 
-        return 2;
-    }
+		push_el(\@main::el, 'lock_backup_ispcp_system()', 'ERROR: backup request engine already locked !');
+		return 1;
 
-    if (-e $lock_file) {
+	}
 
-        push_el(\@main::el, 'lock_backup_ispcp_system()', 'ERROR: backup request engine already locked !');
+	my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $backup_lock_file";
 
-        return 1;
+	my $rs = sys_command($touch_cmd);
+	return 1 if ($rs != 0);
 
-    }
+	push_el(\@main::el, 'lock_backup_ispcp_system()', 'Ending...');
 
-    my $touch_cmd = "$main::cfg{'CMD_TOUCH'} $lock_file";
-
-    my $rs = sys_command($touch_cmd);
-
-    return 1 if ($rs != 0);
-
-    push_el(\@main::el, 'lock_backup_ispcp_system()', 'Ending...');
-
-    return 0;
+	return 0;
 }
 
 
 sub unlock_backup_ispcp_system {
 
-    my ($lock_file) = @_;
+	push_el(\@main::el, 'unlock_backup_ispcp_system()', 'Starting...');
 
-    push_el(\@main::el, 'unlock_backup_ispcp_system()', 'Starting...');
-
-	my $rs = del_file($lock_file);
-
+	my $rs = del_file($backup_lock_file);
 	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'unlock_backup_ispcp_system()', 'Ending...');
+	push_el(\@main::el, 'unlock_backup_ispcp_system()', 'Ending...');
 
-    return 0;
+	return 0;
 
 }
 
@@ -90,58 +87,53 @@ sub unlock_backup_ispcp_system {
 
 sub backup_ispcp_start_up {
 
-    my ($lock_file) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($rs, $rdata) = (undef, undef);
+	push_el(\@main::el, 'backup_ispcp_start_up()', 'Starting...');
 
-    push_el(\@main::el, 'backup_ispcp_start_up()', 'Starting...');
+	$rs = lock_backup_ispcp_system();
+	return $rs if ($rs != 0);
 
-    $rs = lock_backup_ispcp_system($lock_file);
+	# config check;
 
-    return $rs if ($rs != 0);
+	$rs = get_conf();
+	return $rs if ($rs != 0);
 
-    # config check;
+	push_el(\@main::el, 'backup_ispcp_start_up()', 'Ending...');
 
-    $rs = get_conf();
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'backup_ispcp_start_up()', 'Ending...');
-
-    return 0;
+	return 0;
 
 }
 
 
 sub backup_ispcp_shut_down {
 
-    my ($lock_file) = @_;
+	my $rs = undef;
 
-    my $rs = undef;
+	push_el(\@main::el, 'backup_ispcp_shut_down()', 'Starting...');
 
-    push_el(\@main::el, 'backup_ispcp_shut_down()', 'Starting...');
+	$rs = unlock_backup_ispcp_system();
+	return $rs if ($rs != 0);
 
-    $rs = unlock_backup_ispcp_system($lock_file);
+	push_el(\@main::el, 'backup_ispcp_shut_down()', 'Ending...');
 
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'backup_ispcp_shut_down()', 'Ending...');
-
-    return 0;
+	return 0;
 
 }
 
 sub err_exit {
 
-    my $el_data = pop_el(\@main::el);
+	my $el_data = pop_el(\@main::el);
 
 	$main::el_sep = "\t#\t";
 
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
+	backup_ispcp_shut_down();
+
 	print STDERR "$msg\n";
 
-    exit 1;
+	exit 1;
 
 }
 
@@ -199,6 +191,66 @@ MESSAGE_TEXT
 
 }
 
+sub backup_ispcp_database {
+
+	push_el(\@main::el, 'backup_ispcp_database()', 'Starting...');
+
+	my $rs				= undef;
+	my ($date)			= @_;
+	my $dbpass			= $main::db_pwd;
+	my $db_name			= $main::cfg{'DATABASE_NAME'};
+	my $zip				= $main::cfg{'ZIP'};
+	my $backup_dir		= $main::cfg{'BACKUP_FILE_DIR'};
+
+	my $db_backup_file	= "$backup_dir/$db_name-$date.sql";
+
+	$dbpass =~ s/([\''])/\\$1/g;
+
+	my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h'$main::cfg{'DATABASE_HOST'}' -u'$main::db_user' -p'$dbpass' '$db_name' >'$db_backup_file'";
+	my ($db_filename, $db_compresscmd) = (undef, undef);
+
+	if ($zip eq "bzip2") {
+		$db_filename = "$db_backup_file.bz2";
+		$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
+	} elsif ($zip eq "gzip") {
+		$db_filename = "$db_backup_file.gz";
+		$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
+	} elsif ($zip eq "lzma") {
+			$db_filename = "$db_backup_file.lzma";
+			$db_compresscmd = "$main::cfg{'CMD_LZMA'} --force \'$db_backup_file\'";
+	} else {
+		push_el(\@main::el, 'backup_ispcp_database()', "Backup algorithm not supported: $zip");
+		return 1;
+	}
+
+	$rs = sys_command($db_backupcmd);
+	if( $rs != 0 ){
+		push_el(\@main::el, 'backup_ispcp_database()', "ERROR: Failed to backup database $db_name!");
+		send_error_mail('backup_ispcp_database()', "ERROR: Failed to backup database $db_name!");
+		unlink($db_backup_file);
+		return -1;
+	}
+
+	$rs = setfmode("$db_backup_file", 0, 0, 0640);
+	if ($rs != 0) {
+		push_el(\@main::el, 'backup_ispcp_database()', "ERROR: Failed to backup chmod 0640 user root group root file $db_backup_file!");
+		send_error_mail('backup_ispcp_database()', "ERROR: Failed to backup chmod 0640 user root group root file $db_backup_file!");
+		unlink($db_backup_file);
+		return -1;
+	}
+
+	$rs = sys_command($db_compresscmd);
+	if ($rs != 0) {
+		push_el(\@main::el, 'backup_ispcp_database()', "ERROR: Failed to compress database $db_name!");
+		send_error_mail('backup_ispcp_database()', "ERROR: Failed to compress database $db_name!");
+		unlink($db_backup_file);
+		return -1;
+	}
+
+	push_el(\@main::el, 'backup_ispcp_database()', 'Ending...');
+
+	return 0;
+}
 
 sub backup_ispcp_engine {
 
@@ -209,123 +261,55 @@ sub backup_ispcp_engine {
 	push_el(\@main::el, 'backup_ispcp_engine()', 'Starting...');
 
 	my $cmd_tar = $main::cfg{'CMD_TAR'};
-
 	my $cmd_rm = $main::cfg{'CMD_RM'};
-
 	my $cmd_mv = $main::cfg{'CMD_MV'};
 
-	my $zip = $main::cfg{ZIP};
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
+	my $zip = $main::cfg{'ZIP'};
 
 	my $date = get_human_date();
 
 	# Backup of configuration files (/etc/ispcp), preparation
-	my $backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
 
-	if ($zip eq "bzip2") {
-		$backup_filename = "config-backup-$date.tar.bz2";
+	if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma') {
 
-		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
-	}
-	elsif ($zip eq "gzip") {
-		$backup_filename = "config-backup-$date.tar.gz";
+		$backup_filename = "config-backup-$date.tar.".($zip eq 'bzip2' ? 'bz2' : ($zip eq 'gzip' ? 'gz' : $zip));
+		$backup_cmd = "$cmd_tar --create --directory=$conf_dir --$zip --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
 
-		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --gzip --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
-	}
-	elsif ($zip eq "lzma") {
-		$backup_filename = "config-backup-$date.tar.lzma";
-
-		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --lzma --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
-	}
-	else {
-		push_el(\@main::el, 'backup_ispcp_engine()', "Backup algorithm not supported: $zip");
-
-		return 1;
+	} else {
+		push_el(\@main::el, 'backup_ispcp_engine()', "Backup algorithm not supported: $zip!");
+		send_error_mail('backup_all_engine()', "Backup algorithm not supported: $zip!");
+		return -1;
 	}
 
 	if(! -d $backup_dir) {
 		$rs = make_dir($backup_dir, 0, 0, 0750);
-
 		return $rs if ($rs != 0);
 	}
 
-        # DB backup
-        my $dbuser = $main::db_user;
-        my $dbpass = $main::db_pwd;
-        my $db_name = $main::cfg{'DATABASE_NAME'};
-
-        if ($dbuser && $dbpass) {
-
-                my $db_backup_file = "$backup_dir/$db_name-$date.sql";
-
-				$dbpass =~ s/([\'\"])/\\$1/g;
-                my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h\"$main::cfg{'DATABASE_HOST'}\" -u\"$dbuser\" -p\"$dbpass\" \"$db_name\" >\"$db_backup_file\"";
-
-                my ($db_filename, $db_compresscmd) = (undef, undef);
-
-                if ($zip eq "bzip2") {
-
-                        $db_filename = "$db_backup_file.bz2";
-                        $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
-
-                } elsif ($zip eq "gzip") {
-
-                        $db_filename = "$db_backup_file.gz";
-                        $db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
-
-                } elsif ($zip eq "lzma") {
-
-                        $db_filename = "$db_backup_file.lzma";
-                        $db_compresscmd = "$main::cfg{'CMD_LZMA'} --force \'$db_backup_file\'";
-
-                } else {
-
-                        push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
-                        return 1;
-
-                }
-
-                $rs = sys_command($db_backupcmd);
-
-                if ($rs == 0) {
-
-                        $rs = setfmode("$db_backup_file", 0, 0, 0640);
-                        if ($rs != 0) {
-                                unlink($db_backup_file);
-                        } else {
-                                $rs = sys_command($db_compresscmd);
-                                return $rs if ($rs != 0);
-                        }
-                        return $rs if ($rs != 0);
-
-                } else {
-
-                        push_el(\@main::el, 'backup_ispcp_engine()', "ERROR: Failed to backup database $db_name");
-                        unlink($db_backup_file);
-
-                }
-        }
+	# DB backup
+	$rs = backup_ispcp_database($date);
 
 	# do the config backup
-        $rs = sys_command($backup_cmd);
+	$rs = sys_command($backup_cmd);
 
-        # do not return if backup throws an error, otherwise other domains will not be backuped
-        if ($rs == 0) {
+	if ($rs == 0) {
 
-                $rs = sys_command("$cmd_rm -rf $main::cfg{'LOG_DIR'}/$backup_filename.log");
-                return $rs if ($rs != 0);
+		$rs = sys_command("$cmd_rm -rf $main::cfg{'LOG_DIR'}/$backup_filename.log");
+		return $rs if ($rs != 0);
 
-        } elsif ( -e "$backup_dir/$backup_filename" ) {
+	} elsif ( -e "$backup_dir/$backup_filename" ) {
 
-                $rs = del_file("$backup_dir/$backup_filename");
-                return $rs if ($rs != 0);
+		$rs = del_file("$backup_dir/$backup_filename");
+		return $rs if ($rs != 0);
 
-        }
+	}
 
 	# remove old backups: >14 days old
 	sys_command("find $backup_dir/* -maxdepth 0 -type f -mtime +14 -print | xargs -r /bin/rm");
 
 	$rs = setfmode("$backup_dir/$backup_filename", 0, 0, 0640);
-
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'backup_ispcp_engine()', 'Ending...');
@@ -343,7 +327,6 @@ my $proceed = $ARGV[0];
 if (!defined($proceed) || $proceed eq '') {
 
 	push_el(\@main::el, 'main()', "ERROR: Missing Input Data! Please provide appropriate command line parameter(s) (report|noreport)!");
-
 	err_exit();
 
 }
@@ -351,32 +334,24 @@ if (!defined($proceed) || $proceed eq '') {
 if ($proceed ne 'report' && $proceed ne 'noreport' ) {
 
 	push_el(\@main::el, 'main()', "NOTE: If you want to be notified when the backup is done, please run this script with 'report' as command line parameter, otherwise with 'noreport'");
-
 	err_exit();
 
 }
 
-my $backup_lock_file = "/tmp/ispcp-backup-ispcp.lock";
 
-$rs = backup_ispcp_start_up($backup_lock_file);
-
+$rs = backup_ispcp_start_up();
 err_exit() if ($rs != 0 && $rs != 2);
-
 exit 0 if ($rs == 2); # $rs == 2 when backups are disabled
 
 $rs = backup_ispcp_engine();
-
 err_exit() if ($rs != 0);
 
 if ($proceed eq 'report') {
-
 	$rs = backup_ispcp_mail_task();
-
 	err_exit() if ($rs != 0);
 }
 
 $rs = backup_ispcp_shut_down($backup_lock_file);
-
 err_exit() if ($rs != 0);
 
 exit 0;
