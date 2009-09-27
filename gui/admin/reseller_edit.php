@@ -256,9 +256,9 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
 	$err = '_off_';
 
-	calculate_new_reseller_vals($reseller_max_domain_cnt, $rdmn_current, $rdmn_max, $udmn_current, $rdmn_current, $udmn_uf, $err, tr('Domains'));
+	calculate_new_reseller_vals($reseller_max_domain_cnt, $rdmn_current, $rdmn_max, $udmn_current, $rdmn_current, $udmn_uf, $err, tr('Domains'),$reseller_id);
 	if ($err == '_off_') {
-		calculate_new_reseller_vals($reseller_max_subdomain_cnt, $rsub_current, $rsub_max, $usub_current, $rsub_current, $usub_uf, $err, tr('Subdomains'));
+		calculate_new_reseller_vals($reseller_max_subdomain_cnt, $rsub_current, $rsub_max, $usub_current, $rsub_current, $usub_uf, $err, tr('Subdomains'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
@@ -268,7 +268,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 			$err	.= tr("! Trying to correct!");
 			update_reseller_c_props($reseller_id);
 		} else {
-			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Aliases'));
+			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Aliases'),$reseller_id);
 		}
 	}
 
@@ -280,7 +280,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		/* if ($umail_max != $rmail_current && $umail_current > 0)
 			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d', $umail_max, $rmail_current);
 		else */
-		calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
+		calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
@@ -289,24 +289,24 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 			$err	.= tr("! Trying to correct!");
 			update_reseller_c_props($reseller_id);
 		} else {
-			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
+			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'),$reseller_id);
 		}
 	}
 
 	if ($err == '_off_') {
-		calculate_new_reseller_vals($reseller_max_sql_db_cnt, $rsql_db_current, $rsql_db_max, $usql_db_current, $usql_db_max, $usql_db_uf, $err, tr('SQL Databases'));
+		calculate_new_reseller_vals($reseller_max_sql_db_cnt, $rsql_db_current, $rsql_db_max, $usql_db_current, $usql_db_max, $usql_db_uf, $err, tr('SQL Databases'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
-		calculate_new_reseller_vals($reseller_max_sql_user_cnt, $rsql_user_current, $rsql_user_max, $usql_user_current, $usql_user_max, $usql_user_uf, $err, tr('SQL Users'));
+		calculate_new_reseller_vals($reseller_max_sql_user_cnt, $rsql_user_current, $rsql_user_max, $usql_user_current, $usql_user_max, $usql_user_uf, $err, tr('SQL Users'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
-		calculate_new_reseller_vals($reseller_max_traffic, $rtraff_current, $rtraff_max, $utraff_current / 1024 / 1024, $utraff_max, $utraff_uf, $err, tr('Web Traffic'));
+		calculate_new_reseller_vals($reseller_max_traffic, $rtraff_current, $rtraff_max, $utraff_current / 1024 / 1024, $utraff_max, $utraff_uf, $err, tr('Web Traffic'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
-		calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk storage'));
+		calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk storage'),$reseller_id);
 	}
 
 	if ($err == '_off_') {
@@ -334,11 +334,13 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
  * @param string $ &$err Error message returned in case something is not good
  * @param string $service The 'service' name, like domains, subdomains, mail accounts, sql users, etc
  */
-function calculate_new_reseller_vals($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
+function calculate_new_reseller_vals($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service, $reseller_id) {
 	if ($unlimited == '_off_') {
 		// We have something like that: $u <= ($umax = $r) <= $rmax
 		if ($r != $u && $r > 0) { // ... && $u != unlimited
-			$err = tr('Reseller data inconsistency!').' '.$service; //really?
+			$err	= tr('Reseller data inconsistency!').' '.$service; //really?
+			$err	.= tr("! Trying to correct!");
+			update_reseller_c_props($reseller_id);
 
 			return;
 		}
