@@ -44,7 +44,7 @@
 
 install:
 	#
-	# Preparing ISPCP System Directory and files	
+	# Preparing ISPCP System Directory and files
 	#
 	cd ./tools && $(MAKE) install
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
@@ -69,7 +69,7 @@ install:
 .if exists ($(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl)
 	#
 	# Previous database key detected, assuming being perform Upgrade Procedure
-	#	
+	#
 	cp $(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/
 	cp $(SYSTEM_WEB)/ispcp/engine/messenger/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messenger/
 	cp $(SYSTEM_WEB)/ispcp/gui/include/ispcp-db-keys.php $(SYSTEM_ROOT)/gui/include/
