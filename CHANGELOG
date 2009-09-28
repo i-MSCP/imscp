@@ -13,7 +13,7 @@ ispCP ω 1.0.3 Changelog
 
 2009-09-27 Christian Hernmarck
 	- ENGINE:
-		* Fixed #2008: Alias + Subdomain: not all placeholders filled
+		* Fixed #2008: Alias + Subdomain + SubAlias: not all placeholders filled
 
 2009-09-25 Christian Hernmarck
 	- GUI:
