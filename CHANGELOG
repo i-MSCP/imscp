@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-28 Daniel Andreca
+	- LANGUAGES:
+		* Fixed small typo in es_ES.po
+
 2009-09-27 Daniel Andreca
 	- GUI:
 		* Fixed #1974: Reseller properties cannot be edited after working with his domains

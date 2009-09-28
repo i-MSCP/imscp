@@ -1472,7 +1472,7 @@ msgstr "ispCP - Admin/Estadísticas del revendedor"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>de</br> <b>%2$s</b>"
+msgstr "%1$s <br/>de<br/> <b>%2$s</b>"
 
 #, php-format
 msgid "%s <br/>of<br/> <b>unlimited</b>"
@@ -1480,14 +1480,14 @@ msgstr "%s <br/>de<br/> <b>ilimitados</b>"
 
 #, php-format
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>de</br> <b>%2$d</b>"
+msgstr "%1$d <br/>de<br/> <b>%2$d</b>"
 
 msgid "<b>disabled</b>"
 msgstr "<b>desactivado</b>"
 
 #, php-format
 msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>de</br> <b>ilimitados</b>"
+msgstr "%d <br/>de<br/> <b>ilimitados</b>"
 
 msgid "Reseller users table"
 msgstr "Tabla de usuarios del revendedor"
