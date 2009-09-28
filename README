@@ -26,11 +26,11 @@ Your ispCP Team
 INSTALLATION
 ------------
 
-Select the folder of the distribution you are using inside the docs directory. 
+Select the folder of the distribution you are using inside the docs directory.
 For Debian: ./docs/Debian/INSTALL
 If there is none, select Debian and try it with this one.
 
-You have successfully installed ispCP ω on a non-listed distribution? Great, 
+You have successfully installed ispCP ω on a non-listed distribution? Great,
 send us your install instructions.
 
 ================================================================
