@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-09-29 Daniel Andreca
 	- ENGINE:
 		* Fixed #2011: Daily quota script generates errors (missing db in /var/lib/mysql)
+	- LANGUAGES:
+		* Updated Danish
 
 2009-09-29 Laurent Declercq
 	- CONFIG:
