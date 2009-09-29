@@ -43,6 +43,7 @@ install:
 #
 	cp ./main.cf $(SYSTEM_CONF)/postfix/main.cf
 	cp ./master.cf $(SYSTEM_CONF)/postfix/master.cf
+	cp ./smtpd.conf $(SYSTEM_CONF)/postfix/smtpd.conf
 
 #
 #       MTA Configuration Directories;
@@ -58,4 +59,3 @@ uninstall:
 
 	rm -rf $(SYSTEM_CONF)/postfix
 	rm -rf $(ROOT_POSTFIX_CONF)/ispcp
-

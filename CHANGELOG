@@ -1,6 +1,20 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-29 Laurent Declercq
+	- CONFIG:
+		* Fixed #2002: openSUSE 11.1 - Unable to add mail user
+		* Fixed SASL Authentication failed (openSUSE):
+			- Added smtpd.conf configuration file for postfix/sasl
+			- Added new variables related to MTA/SASL in /etc/ispcp/ispcp.conf (openSUSE)
+	- DISTS:
+		* Fixed postfix warning: "not owned by root: /var/spool/postfix" (openSUSE)
+		* Fixed imapd warning related to famd (See http://www.courier-mta.org/FAQ.html#fam) (openSUSE)
+		* Fixed authdaemond warning related to missing modules: "file not found" (openSUSE)
+	- DOCS:
+		* Updated docs/OpenSuse/install file
+		* Removed support for older versions (only current stable version is supported) (openSUSE)
+
 2009-09-28 Daniel Andreca
 	- LANGUAGES:
 		* Fixed small typo in es_ES.po
