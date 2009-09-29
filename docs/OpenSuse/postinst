@@ -7,6 +7,7 @@
 # copyright     2009 by ispCP | http://isp-control.net
 # link          http://isp-control.net
 # author        Laurent Declercq <l.declercq@nuxwin.com>
+# version		1.1
 #
 # license
 #  This program is free software; you can redistribute it and/or modify it under
@@ -20,15 +21,13 @@
 #
 # Special note for DevTeam:
 #
-# It is necessary for the error recovery procedures that the scripts be idempotent.
+# It is necessary for the error recovery and update procedures that the scripts be idempotent.
 # This means that if it is run successfully, and then it is called again, it doesn't
 # bomb out or cause any harm, but just ensures that everything is the way it ought to be.
 # If the first call failed, or aborted half way through for some reason, the second call
 # should merely do the things that were left undone the first time, if any, and exit with
 # a success status if if everything is OK.
 #
-#
-# TODO: Check OpenSuse backward compatibility (11, 10.3) ; 
 #
 
 set -e
@@ -41,14 +40,15 @@ if [ ! -f $CONF_FILE ] ; then
 fi
 
 # read needed entries from ispcp.conf
-for a in `grep -E '(^Version|APACHE_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' $CONF_FILE | sed -e 's/ //g'`; do
+for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' $CONF_FILE | sed -e 's/ //g'`; do
     export $a
 done
 
 A2ENMOD=/usr/sbin/a2enmod
 A2DISMOD=/usr/sbin/a2dismod
+CMD_MD5=/usr/bin/md5sum
 INSSERV=/sbin/insserv
-SERVICES="courier-authdaemon courier-imap courier-pop mysql policyd-weight postgrey postfix named proftpd apache2"
+SERVICES="$CMD_ISPCPN $CMD_ISPCPN fam apache2 postgrey policyd-weight $CMD_MTA $CMD_NAMED $CMD_POP $CMD_POP_SSL $CMD_IMAP $CMD_IMAP_SSL $CMD_FTPD $CMD_AUTHD mysql"
 ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
 DIST_VERS=`grep -E '^VERSION' /etc/SuSE-release | sed -e 's/[[:space:]=A-Z]//g'`
 
@@ -61,7 +61,7 @@ case "$1" in
 
         configure)
         	echo "ispCP Post Installation - Starting"
-        	
+
 			# Stop all services
 			echo " Stop all services"
 			for service in $SERVICES ; do
@@ -91,19 +91,74 @@ case "$1" in
 
 			# Enable FastCGI module (fcgid|fascgi) and disable unused
 			if [ ! -z "$PHP_FASTCGI" ] ; then
-				echo "  Enable fastcgi ($PHP_FASTCGI) module"
-				[ -x $A2ENMOD ] && $A2ENMOD $PHP_FASTCGI
+				echo "  Enable fastcgi ($PHP_FASTCGI) module if not already present"
+				if [ "$PHP_FASTCGI" == "fcgid" ]; then
+					[ -x $A2ENMOD ] && $A2ENMOD $PHP_FASTCGI
+					[ -x $A2DISMOD ] && $A2DISMOD fastcgi
+				else
+					[ -x $A2ENMOD ] && $A2ENMOD $PHP_FASTCGI
+					[ -x $A2DISMOD ] && $A2DISMOD fcgid
+				fi
 			fi
 
 			# Disable default FastCGI modules configuration files
-			echo "  Disable default fastcgi module configuration file"
+			echo "  Disable default fastcgi module configuration file if needed"
 			[ -f /etc/apache2/conf.d/mod_fastcgi.conf ] && $CMD_MV /etc/apache2/conf.d/mod_fastcgi.conf /etc/apache2/conf.d/mod_fastcgi.conf.disabled
-			echo "  Disable default fcgid module configuration file"
+			echo "  Disable default fcgid module configuration file if needed"
 			[ -f /etc/apache2/conf.d/mod_fcgid.conf ] && $CMD_MV /etc/apache2/conf.d/mod_fcgid.conf /etc/apache2/conf.d/mod_fcgid.conf.disabled
-			
+
 			# Disable mod php5
 			echo "  Disable php5 module"
 			[ -x $A2DISMOD ] && $A2DISMOD php5
+
+			#
+			# Postfix Configuration
+			#
+			echo " Postfix Configuration Processing"
+
+			# Fix warning: "not owned by root: /var/spool/postfix"
+			# This is because the postgrey package changes the
+			# owner of this directory dunring installation (why ?)
+			echo "  Fix owner to root for the /var/spool/postfix directory"
+			$CMD_CHOWN root:postfix /var/spool/postfix
+
+			# Sasl postfix configuration
+			echo "  Postfix/Sasl configuration for ispCP"
+
+			if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a \
+				   -f /etc/sasl2/smtpd.conf ]; then
+				echo "   Backup $MTA_SASL_CONF_FILE dist file"
+				$CMD_CP -a /etc/sasl2/smtpd.conf /etc/ispcp/postfix/backup/smtpd.conf.system
+				$CMD_CHMOD 0600 /etc/ispcp/postfix/backup/smtpd.conf.system
+			fi
+
+			# First we build a new conffile with available smtpd.conf template
+			echo "   Generating new smtpd.conf file from template"
+			($CMD_CAT /etc/ispcp/postfix/smtpd.conf) |
+			$CMD_SED "
+						s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
+						s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
+						s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
+					 " >/tmp/smtpd.conf.tmp
+
+			if [ "$MTA_SASL_AUXPROP_PLUGIN" != "no" ]; then
+				$CMD_SED -i "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" /tmp/smtpd.conf.tmp
+			else
+				$CMD_SED -i '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' /tmp/smtpd.conf.tmp
+			fi
+
+			# Update configuration file if needed
+			if [ -f "$MTA_SASL_CONF_FILE" ] ; then
+				oldmd5=`$CMD_MD5 $MTA_SASL_CONF_FILE | cut -d' ' -f1`
+				newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f1`
+				if [ "$oldmd5" != "$newmd5" ]; then
+					echo "   Update $MTA_SASL_CONF_FILE configuration file"
+					$CMD_CP -p /tmp/smtpd.conf.tmp /etc/ispcp/postfix/backup/smtpd.conf.ispcp
+				fi
+			fi
+
+			$CMD_CP -p /etc/ispcp/postfix/backup/smtpd.conf.ispcp $MTA_SASL_CONF_FILE
+			$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/backup/smtpd.conf.ispcp
 
 			#
 			# Postgrey Configuration
@@ -111,8 +166,21 @@ case "$1" in
 			echo " Postgrey Configuration Processing"
 
 			if [ -f /etc/sysconfig/postgrey ] ; then
+				echo "  Changing the listening port of postgrey to 60000"
 				$CMD_SED -i 's/#POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10031"/POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:60000"/' /etc/sysconfig/postgrey
+				echo "  Disable unix socket (we use TCP connection instead)"
 				$CMD_SED -i 's/POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/#POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/' /etc/sysconfig/postgrey
+			fi
+
+			#
+			# Courier-Authentication Configuration
+			#
+			echo " Courier-Authentication Configuration Processing"
+
+			# Prevent authdaemon warnings related to missing modules in mail log files
+			if [ -f /etc/authlib/authdaemonrc ] ; then
+				echo "  Prevent authdaemond warning related to missing modules"
+				$CMD_SED -i 's/authmodulelist="authuserdb authuserdb authpam authpgsql authldap authmysql authcustom authpipe"/authmodulelist="authuserdb authpam authcustom"/' /etc/authlib/authdaemonrc
 			fi
 
 			#
@@ -120,12 +188,12 @@ case "$1" in
 			#
 
 			# FIXME: configure as DNS for host ?
-			
+
 			#
 			# System Init Configuration
 			#
 			echo " System Init configuration"
-			
+
 			# Enable all system init scripts needed by ispCP
 			echo "  Enable all system init scripts needed by ispCP"
 			for service in $SERVICES ; do
@@ -147,7 +215,7 @@ case "$1" in
         	echo "ispCP Post Installation - Ending"
         ;;
         update)
-			# FIXME: Nothing todo for update 1.0.x to 1.0.3 ?
+			./postinst configure
         ;;
         *)
 			echo "Usage: sh $0 {configure|update}"

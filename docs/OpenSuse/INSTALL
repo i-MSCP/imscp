@@ -19,10 +19,10 @@ Table of Content
 ---------------
 ispCP ω Version:	1.0.3
 INSTALL Script:	1.6
-postinst Script:	1.0
-Maintainer:		Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com> 
+postinst Script:	1.1
+Maintainer:		Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
 Homepage:		http://isp-contol.net
-Linux Distros:		OpenSuse 10.3, 11.1
+Linux Distros:		OpenSuse 11.1
 
 ================================================================================
 2) Requirements
@@ -33,10 +33,7 @@ Penitum III or K6-4 with 500 MHz
 512 MB RAM
 100 MB disk space (only for install of ispCP ω)
 
-All OpenSuSE 10.3 required packages are listed in ./docs/OpenSuse/opensuse103-packages
 All OpenSuSE 11.1 required packages are listed in ./docs/OpenSuse/opensuse111-packages
-
-TODO: opensuse110-packages
 
 ================================================================================
 3) Specific Note
@@ -46,6 +43,9 @@ is not available in ispCP!!! If you want to use PHP4 compile it by yourself!!!
 
 For OpenSuse 11.1, the "apache2-mod_cband" package has been removed because it is
 not available. If you want to use, you must compile it yourself.
+
+Postfix note: Currently, Postfix does not run in a chroot jail. See the CHANGELOG
+for more information.
 
 ================================================================================
 4) Introduction
@@ -79,8 +79,6 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
-	
-Note: All warning about "Header V3 DSA signature" are not important.
 
    Or if you prefer yast:
 	# yast -i $(cat ./docs/OpenSuse/opensuse111-packages)
@@ -108,7 +106,6 @@ Note: All warning about "Header V3 DSA signature" are not important.
 	# perl -MCPAN -e 'install Net::LibIDN'
 
 Note : every question which is asked in the first run of cpan should be ok to confirm
-	(hitting Enter should be fine) - until the select of continent and country...
 
 11. Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders in the home folders...
 	# cp -a /etc/skel /etc/skel.bkp
@@ -121,7 +118,7 @@ Note : every question which is asked in the first run of cpan should be ok to co
 
 13. Process to specific OpenSuse post installation tasks
 	# sh postinst configure
-	
+
 14. Restore /etc/skel
 	# rm -r /etc/skel && mv /etc/skel.bkp /etc/skel
 
@@ -146,7 +143,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cd ./ispcp-omega-1.0.3
 
 3. Install the required repositories:
-	# sh ./docs/OpenSuse/opensuse111-repositories
+	# sh ./docs/OpenSuse/opensuse111-repositories add
 
 Note: For all questions, answer "a" (trust always).
 
