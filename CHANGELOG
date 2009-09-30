@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-09-30 Daniel Andreca
 	- LANGUAGES:
 		* Updated Finnish
+	- CONFIGS:
+		* Updated database structure
 
 2009-09-30 Laurent Declercq
 	- TOOLS:
