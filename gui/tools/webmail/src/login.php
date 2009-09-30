@@ -194,8 +194,8 @@ if (isset($org_logo) && $org_logo) {
 <?php
   if (isset($org_logo) && $org_logo) { echo '<img src="' . $org_logo . '" alt="' . sprintf(_("%s Logo"), $org_name) .'"' . $width_and_height . 'id="login_logo" />' . "\n"; }?>
   <fieldset id="login_fieldset">
-  <label for="<?php echo $username_form_name; ?>" class="login_user"><?php echo _("Username"); ?>:</label><?php echo "<input type=\"text\" name=\"$username_form_name\" value=\"$loginname_value\" tabindex=\"1\" class=\"login_input\" onfocus=\"alreadyFocused=true;\">"; ?><br />
-  <label for="<?php echo $password_form_name; ?>" class="login_user"><?php echo _("Password"); ?>:</label><input name="<?php echo $password_form_name; ?>" type="password" class="login_input" tabindex="2" onfocus="alreadyFocused=true;">
+  <label for="<?php echo $username_form_name; ?>" class="login_user"><?php echo _("Name:"); ?></label><?php echo "<input type=\"text\" name=\"$username_form_name\" value=\"$loginname_value\" tabindex=\"1\" class=\"login_input\" onfocus=\"alreadyFocused=true;\">"; ?><br />
+  <label for="<?php echo $password_form_name; ?>" class="login_user"><?php echo _("Password:"); ?></label><input name="<?php echo $password_form_name; ?>" type="password" class="login_input" tabindex="2" onfocus="alreadyFocused=true;">
   <input type="hidden" name="js_autodetect_results" value="SMPREF_JS_OFF">
   <input type="hidden" name="just_logged_in" value="1">
   <input name="button" type="submit" value="<?php echo _("Login"); ?>" class="login_button">
