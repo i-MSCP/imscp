@@ -1,6 +1,17 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+<<<<<<< .working
+=======
+2009-09-30 Daniel Andreca
+	- LANGUAGES:
+		* Updated Finnish
+
+2009-09-30 Laurent Declercq
+	- TOOLS:
+		* Fixed some typo errors in webmail/src/login.php (Thx to Henriks)
+
+>>>>>>> .merge-right.r2068
 2009-09-29 Daniel Andreca
 	- ENGINE:
 		* Fixed #2011: Daily quota script generates errors (missing db in /var/lib/mysql)
