@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-09-30 Daniel Andreca
+	- LANGUAGES:
+		* Updated Finnish
+
 2009-09-30 Laurent Declercq
 	- TOOLS:
 		* Fixed some typo errors in webmail/src/login.php (Thx to Henriks)
