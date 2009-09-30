@@ -5,7 +5,6 @@ ispCP ω 1.0.3 Changelog
 	- TOOLS:
 		* Fixed some typo errors in webmail/src/login.php (Thx to Henriks)
 
-Fixed some typographical errors in the file
 2009-09-29 Daniel Andreca
 	- ENGINE:
 		* Fixed #2011: Daily quota script generates errors (missing db in /var/lib/mysql)
