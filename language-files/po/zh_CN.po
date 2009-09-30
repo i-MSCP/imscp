@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 阙长福 <isque@msn.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -1155,10 +1155,6 @@ msgstr "用户已被禁止"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理员/语言设置"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "默认语言已改变！"
 
 msgid "Upload file error!"
 msgstr "上传文件错误！"
@@ -3251,6 +3247,10 @@ msgstr "错误的子域名拼写！"
 msgid "Mount point already in use!"
 msgstr "子域名挂载点已经存在！"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "不正确的挂载点拼写"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "子域名添加已预定！"
 
@@ -4385,6 +4385,10 @@ msgstr "此用户拥有域名记录！<br>首先从系统中删除域！"
 
 msgid "User not terminated!"
 msgstr "用户未到期！"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "默认语言已改变！"
 
 #~ msgid "Default language"
 #~ msgstr "默认语言"

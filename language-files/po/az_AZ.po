@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: az_AZ\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-06-10 17:25+0100\n"
 "Last-Translator: Nadir Aliyev <nadir@ultel.net>\n"
 "Language-Team: Azəricə (Azərbaycan) <nadir@ultel.net>\n"
@@ -1144,9 +1144,6 @@ msgid "User was disabled"
 msgstr ""
 
 msgid "ispCP - Admin/Internationalisation"
-msgstr ""
-
-msgid "Default panel language changed!"
 msgstr ""
 
 msgid "Upload file error!"
@@ -3186,6 +3183,9 @@ msgid "Wrong subdomain syntax!"
 msgstr ""
 
 msgid "Mount point already in use!"
+msgstr ""
+
+msgid "Incorrect mount point syntax!"
 msgstr ""
 
 msgid "Subdomain scheduled for addition!"

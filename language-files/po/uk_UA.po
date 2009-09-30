@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -1196,10 +1196,6 @@ msgstr "Користувача заблоковано"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Довільна мова змінена!"
 
 msgid "Upload file error!"
 msgstr "Помилка завантаження файлу!"
@@ -3337,6 +3333,10 @@ msgstr "Невірний запис субдомену!"
 msgid "Mount point already in use!"
 msgstr "Точка монтування піддомену вже існує!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Невірний синтаксис <i>точки монтування</i>!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Триває додавання піддомену!"
 
@@ -4416,6 +4416,10 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Довільна мова змінена!"
 
 #~ msgid "Default language"
 #~ msgstr "Довільна мова"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-08-01 13:00+0100\n"
 "Last-Translator: Ergin �zdemir <ergin@ozdemir.se>\n"
 "Language-Team: Svenska <en_GB@li.org>\n"
@@ -1165,9 +1165,6 @@ msgid "User was disabled"
 msgstr ""
 
 msgid "ispCP - Admin/Internationalisation"
-msgstr ""
-
-msgid "Default panel language changed!"
 msgstr ""
 
 msgid "Upload file error!"
@@ -3242,6 +3239,10 @@ msgstr ""
 
 msgid "Mount point already in use!"
 msgstr ""
+
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Incorrect <i>mount point</i> syntax!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr ""

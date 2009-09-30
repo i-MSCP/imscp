@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: Muntenia - DAP.Ro Team <bluedezign@gmail.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -1171,10 +1171,6 @@ msgstr "Utilizatorul a fost dezactivat"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Administrator/ Internationalizare"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Limba principala a fost schimbata!"
 
 msgid "Upload file error!"
 msgstr "Eroare upload fisier"
@@ -3282,6 +3278,10 @@ msgstr "Sintaxa subdomeniu gresita!"
 msgid "Mount point already in use!"
 msgstr "Locul montarii subdomeniu deja existent!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Sintaxa <i>mount point</i> incorecta!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomeniu programat pentru adaugare!"
 
@@ -4449,6 +4449,10 @@ msgstr "Utilizatorul are inregistrari!<br>Intai indeparteaza-le din sistem"
 
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Limba principala a fost schimbata!"
 
 #~ msgid "Default language"
 #~ msgstr "Limba principala"

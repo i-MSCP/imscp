@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Luca Stramenga VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-02-25 21:00+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Italian <sbtluca@gmail.com>\n"
@@ -1173,10 +1173,6 @@ msgstr "L`utente è stato disabilitato"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Amministratore/Internazionalizzazione"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Lingua di default modificata!"
 
 msgid "Upload file error!"
 msgstr "Errore nell'upload del file!"
@@ -3295,6 +3291,10 @@ msgstr "Sintassi del sottodominio errata!"
 msgid "Mount point already in use!"
 msgstr "La cartella del sottodominio è già esistente!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Sintassi del mount point errata"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Sottodominio pianificato per essere aggiunto!"
 
@@ -4463,6 +4463,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "L'utente non è stato disabilitato!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Lingua di default modificata!"
 
 #~ msgid "Default language"
 #~ msgstr "Lingua di default"

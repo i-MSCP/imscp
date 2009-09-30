@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
 "Last-Translator: Leszek Taczkowski <leszek.t@simplusnet.pl>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -1166,10 +1166,6 @@ msgstr "Użytkownik został wyłączony"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP – Admin/Menadżer języków"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Domyślny język zmieniony!"
 
 msgid "Upload file error!"
 msgstr "Błąd wysyłania pliku!"
@@ -3285,6 +3281,10 @@ msgstr "Niepoprawna składnia subdomeny!"
 msgid "Mount point already in use!"
 msgstr "Punkt montowania subdomeny już istnieje!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Nieprawidłowa składnia punktu montowania"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomena została zaplanowana do dodania!"
 
@@ -4443,6 +4443,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Użytkownik nie usunięty!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Domyślny język zmieniony!"
 
 #~ msgid "Default language"
 #~ msgstr "Domyślny język"

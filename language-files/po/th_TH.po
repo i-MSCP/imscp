@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-02-01 22:57+0730\n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -1153,9 +1153,6 @@ msgid "User was disabled"
 msgstr ""
 
 msgid "ispCP - Admin/Internationalisation"
-msgstr ""
-
-msgid "Default panel language changed!"
 msgstr ""
 
 msgid "Upload file error!"
@@ -3215,6 +3212,10 @@ msgstr ""
 
 msgid "Mount point already in use!"
 msgstr ""
+
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Incorrect <i>mount point</i> syntax!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr ""

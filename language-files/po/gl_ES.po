@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP.gl.00.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-08-28 20:35+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galician <infoxeral@ciberirmandade.org>\n"
@@ -1172,10 +1172,6 @@ msgstr "O usuario foi desactivado"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Internacionalización"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Mudouse o idioma predeterminado!"
 
 msgid "Upload file error!"
 msgstr "Erro ao tentar subir o arquivo!"
@@ -3303,6 +3299,10 @@ msgstr "A sintaxe do subdominio é incorrecta!"
 msgid "Mount point already in use!"
 msgstr "O punto de montaxe do subdomino xa existe!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Sintaxe de punto de montaxe incorrecta"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdominio programado para ser engadido!"
 
@@ -4472,6 +4472,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Usuario non dado de baixa!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Mudouse o idioma predeterminado!"
 
 #~ msgid "Default language"
 #~ msgstr "Idioma por defecto"

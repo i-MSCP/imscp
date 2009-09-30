@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -1171,10 +1171,6 @@ msgstr "Gebruiker is gedeactiveerd"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "spCP - Admin/Internationalisering"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Standaard taal gewijzigd!"
 
 msgid "Upload file error!"
 msgstr "Upload bestand fout!"
@@ -3292,6 +3288,10 @@ msgstr "Verkeerde subdomein syntax"
 msgid "Mount point already in use!"
 msgstr "Subdomein mount point bestaat al"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Onjuist mount point syntax"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomein gepland voor toevoeging"
 
@@ -4455,6 +4455,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Gebruiker niet beeindigd!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Standaard taal gewijzigd!"
 
 #~ msgid "Default language"
 #~ msgstr "Standaard taal"
