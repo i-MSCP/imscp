@@ -1,6 +1,18 @@
-#
 msgid ""
-msgstr "Project-Id-Version: da_DK\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2009-09-30 18:29+0200\nPO-Revision-Date: 2009-09-06 14:06+0100\nLast-Translator: MicCo <mrc@micco.dk>\nLanguage-Team: Danish <da_DK@li.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\\n\nX-Generator: x64PoPot 0.2\nX-Poedit-Language: Danish\nX-Poedit-Country: DENMARK\n"
+msgstr ""
+"Project-Id-Version: da_DK\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"PO-Revision-Date: 2009-09-06 14:06+0100\n"
+"Last-Translator: MicCo <mrc@micco.dk>\n"
+"Language-Team: Danish <da_DK@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: x64PoPot 0.2\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
 
 #. Please ignore this entry
 msgid "encoding"
