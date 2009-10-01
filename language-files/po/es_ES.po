@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-02-16 21:07+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -1178,10 +1178,6 @@ msgstr "¡El usuario ha sido desactivado!"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Internacionalización"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Idioma predeterminado cambiado!"
 
 msgid "Upload file error!"
 msgstr "¡Error al subir archivo!"
@@ -3297,6 +3293,10 @@ msgstr "¡Sintaxis de subdominio incorrecta!"
 msgid "Mount point already in use!"
 msgstr "¡Punto de montaje ya está en uso!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "¡La sintaxis del punto de montaje es incorrecta!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "¡Subdominio programado para ser agregado!"
 
@@ -4463,6 +4463,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "¡El usuario no fue eliminado!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Idioma predeterminado cambiado!"
 
 #~ msgid "Default language"
 #~ msgstr "Idioma por defecto"

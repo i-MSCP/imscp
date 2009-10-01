@@ -1,17 +1,6 @@
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
-"PO-Revision-Date: 2009-09-30 01:48+0200\n"
-"Last-Translator: Matti Mieskonen <infocenter@hostingnetworks.info>\n"
-"Language-Team: Finnish <fi_FI@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: x64PoPot 0.2\n"
+msgstr "Project-Id-Version: PACKAGE VERSION\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2009-09-30 18:29+0200\nPO-Revision-Date: 2009-09-30 01:48+0200\nLast-Translator: Matti Mieskonen <infocenter@hostingnetworks.info>\nLanguage-Team: Finnish <fi_FI@li.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=INTEGER; plural=EXPRESSION;\nX-Generator: x64PoPot 0.2\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -1123,9 +1112,6 @@ msgstr "Käyttäjä poistettu käytöstä"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Pääkäyttäjä/Kansainvälistäminen"
-
-msgid "Default panel language changed!"
-msgstr "Oletuskieli vaihdettu!"
 
 msgid "Upload file error!"
 msgstr "Tiedoston lähetysvirhe"
@@ -3137,6 +3123,10 @@ msgstr "Virheellinen alidomainsyntaksi!"
 msgid "Mount point already in use!"
 msgstr "Lliitospiste on jo olemassa!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Virheellinen liitospiste!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Alidomain lisäysjonossa!"
 
@@ -3440,66 +3430,14 @@ msgstr "\n\nHei {NAME}!\n\nKäyttäjänimesi on: {USERNAME}\nSalasanasi on: {PAS
 msgid "Confirmation for domain order {DOMAIN}!"
 msgstr "Vahvistus tilauksesta {DOMAIN}!"
 
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to continue the domain creation process.\n"
-"\n"
-"{ACTIVATE_LINK}\n"
-"\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"Tämä on automaattinen vahvistus tilauksesta:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"Sinun täytyy käydä seuraavassa osoitteessa jatkaaksesi tilauksen käsittelyä.\n"
-"\n"
-"{ACTIVATE_LINK}\n"
-"\n"
-"Ystävällisin terveisin,\n"
-"Ylläpito\n"
-"\n"
+msgid "\n\nDear {NAME},\nThis is an automatic confirmation for the order of the domain:\n\n{DOMAIN}\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n\nThank you for using ispCP services.\nThe ispCP Team\n\n"
+msgstr "\n\nDear {NAME},\nTämä on automaattinen vahvistus tilauksesta:\n\n{DOMAIN}\n\nSinun täytyy käydä seuraavassa osoitteessa jatkaaksesi tilauksen käsittelyä.\n\n{ACTIVATE_LINK}\n\nYstävällisin terveisin,\nYlläpito\n\n"
 
 msgid "New alias order for {CUSTOMER}!"
 msgstr "Uusi alias tilaus käyttäjältä {CUSTOMER}!"
 
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
-"\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Hei {RESELLER},\n"
-"Asiakkaanne {CUSTOMER} odoittaa vahvistusta uudelle aliakselle:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Kun olet kirjautunut sisään, voit aktivoida hänen aliaksen osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
-"\n"
-"Ystävällisin terveisin,\n"
-"Ylläpito\n"
-"\n"
+msgid "\n\nDear {RESELLER},\nYour customer {CUSTOMER} is awaiting for the approval of his new alias:\n\n{ALIAS}\n\nOnce logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nThank you for using ispCP services.\nThe ispCP Team\n\n"
+msgstr "\n\nHei {RESELLER},\nAsiakkaanne {CUSTOMER} odoittaa vahvistusta uudelle aliakselle:\n\n{ALIAS}\n\nKun olet kirjautunut sisään, voit aktivoida hänen aliaksen osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nYstävällisin terveisin,\nYlläpito\n\n"
 
 msgid "[Ticket]"
 msgstr "[Ticket]"
@@ -4111,6 +4049,9 @@ msgstr "Tällä käyttäjällä on domain!<br>Poista ensin domain järjestelmäs
 msgid "User not terminated!"
 msgstr "Käyttäjää ei poistettu!"
 
+#~ msgid "Default panel language changed!"
+#~ msgstr "Oletuskieli vaihdettu!"
+
 #~ msgid "Default language"
 #~ msgstr "Oletuskieli"
 
@@ -4194,6 +4135,7 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "Certificate host name"
 #~ msgstr "Huoltotila"
+
 #~ msgid "Are you sure you want to delete this account?"
 #~ msgstr "Oletko varma että haluat poistaa tämän tunnuksen?"
 
@@ -4212,24 +4154,30 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "User do not have domains!"
 #~ msgstr "Käyttäjää ei ole olemassa!"
+
 #~ msgid "Backup / Restore"
 #~ msgstr "Varmuuskopio / palautus"
+
 #~ msgid "ERROR: Unknown user"
 #~ msgstr "VIRHE: Tuntematon käyttäjä"
+
 #~ msgid ""
 #~ "Domain you are trying to remove has email accounts !<br> first remove "
 #~ "them !"
 #~ msgstr ""
 #~ "Domain jota yrität poistaa sisältää sähköpostitunnuksia!<br> poista ensin "
 #~ "ne!"
+
 #~ msgid ""
 #~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
 #~ msgstr ""
 #~ "Domain jota yrität poistaa sisältää FTP-tunnuksia!<br> poista ne ensin!"
+
 #~ msgid ""
 #~ "Domain you are trying to remove has domain alias!<br> first remove them !"
 #~ msgstr ""
 #~ "Domain jota yrität poistaa sisältää domain-aliaksia!<br> poista ensin ne!"
+
 #~ msgid ""
 #~ "Domain you are trying to remove has subdomains accounts !<br> first "
 #~ "remove them !"
@@ -4248,30 +4196,41 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "Execution of SQL query succeeded!"
 #~ msgstr "Suorita SQL-kysely"
+
 #~ msgid "ispCP - Client/Execute SQL Query"
 #~ msgstr "ispCP - Asiakas / Suorita SQL-kysely"
+
 #~ msgid "Execute SQL query"
 #~ msgstr "Suorita SQL-kysely"
+
 #~ msgid "SQL query"
 #~ msgstr "SQL-kysely"
+
 #~ msgid "Query status"
 #~ msgstr "Kyselyn tila"
+
 #~ msgid "Query result"
 #~ msgstr "Kyselun tulos"
+
 #~ msgid "Execute"
 #~ msgstr "Suorita"
+
 #~ msgid "Mail in"
 #~ msgstr "E-mail sisään"
+
 #~ msgid "Mail out"
 #~ msgstr "E-mail ulos"
+
 #~ msgid "Subdomain list is empty! You cannot add mail accounts!"
 #~ msgstr "Alidomain-lista on tyhjä! Et voi luoda sähköposteja!"
+
 #~ msgid "Message was send!"
 #~ msgstr "Viesti läetetty!"
 
 #, fuzzy
 #~ msgid "Database update %s failed"
 #~ msgstr "Tietokantakäyttäjät"
+
 #~ msgid "Missing or wrong data!"
 #~ msgstr "Uupuvaa tai väärää tietoa!"
 
@@ -4282,28 +4241,38 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "Unknown account type!"
 #~ msgstr "Tuntematon tyyppi"
+
 #~ msgid "Max domain count"
 #~ msgstr "Max domainien määrä"
+
 #~ msgid "Max subdomain count"
 #~ msgstr "Max alidomainmäärä"
+
 #~ msgid "Max aliases count"
 #~ msgstr "Max aliasten määrä"
+
 #~ msgid "Max mail users count"
 #~ msgstr "Max sähköpostikäyttäjien määrä"
+
 #~ msgid "Max FTP users count"
 #~ msgstr "Max FTP-käyttäjien määrä"
+
 #~ msgid "Max SQL databases count"
 #~ msgstr "Max tietokantojen määrä"
+
 #~ msgid "Max SQL users count"
 #~ msgstr "Max tietokantakäyttäjien määrä"
+
 #~ msgid "Max traffic amount [MB]"
 #~ msgstr "Max liikennemäärä [MT]"
+
 #~ msgid "Max disk amount [MB]"
 #~ msgstr "Max levytila [MT]"
 
 #, fuzzy
 #~ msgid "Order in progress"
 #~ msgstr "Lisäys kesken"
+
 #~ msgid "Uninstall"
 #~ msgstr "Poista"
 
@@ -4342,8 +4311,10 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "Incorrect max SQL users number or syntax!"
 #~ msgstr "Virheellinen tietokantakäyttäjien määrä!"
+
 #~ msgid "Incorrect max traffic amount or syntax!"
 #~ msgstr "Virheellinen liikennemäärä!"
+
 #~ msgid "Incorrect max disk amount or syntax!"
 #~ msgstr "Virheellinen levytilan määrä!"
 
@@ -4358,62 +4329,88 @@ msgstr "Käyttäjää ei poistettu!"
 #, fuzzy
 #~ msgid "Incorrect FTP account count or no number<br />"
 #~ msgstr "Virheellinen FTP-käyttäjien määrä!"
+
 #~ msgid "Change user interface"
 #~ msgstr "Muuta ulkoasua"
 
 #, fuzzy
 #~ msgid "show"
 #~ msgstr "Näytä"
+
 #~ msgid "Edit properties"
 #~ msgstr "Muokkaa ominaisuuksia"
+
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Määrittämätän käyttäjävirhe!"
+
 #~ msgid "This reseller has already dispatched more <b>"
 #~ msgstr "Tämä jälleenmyyjä on toimittanut enemmän kuin <b>"
+
 #~ msgid "Then the value you are trying to enter now !<br>"
 #~ msgstr "Ja sitten arvo jota yrität antaa nyt!<br>"
+
 #~ msgid "This reseller has more <b>"
 #~ msgstr "Tällä jälleenmyyjällä on enemmän <b>"
+
 #~ msgid "Then the value you are trying to enter now!<br>"
 #~ msgstr "Ja sitten arvo jota yrität antaa nyt!<br>"
+
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Osoite!<br>Jälleenmyyjän muokkaus keskeytetty!"
+
 #~ msgid "You have"
 #~ msgstr "Sinulla on"
+
 #~ msgid "Support question(s)"
 #~ msgstr "Tukikysymys(tä)"
+
 #~ msgid "New"
 #~ msgstr "Uusi"
+
 #~ msgid "of"
 #~ msgstr "/"
+
 #~ msgid "Catch all mail account cannot be created!"
 #~ msgstr "Nappaa kaikki -tunnusta ei voi luoda!"
+
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias muokkausjonossa!"
+
 #~ msgid "support question(s)"
 #~ msgstr "tukikysymystä"
+
 #~ msgid "new"
 #~ msgstr "uusi"
+
 #~ msgid "Cannot open file! Please contact your administrator !"
 #~ msgstr "Tiedostoa ei voi avata! Ota yhteys ylläpitoon!"
+
 #~ msgid "Not in:"
 #~ msgstr "Ei kuulu:"
+
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Ei voida yhdistää MySQL:n pääkäyttäjänä!"
+
 #~ msgid "SQL query has error"
 #~ msgstr "SQL-kyselyssä on virhe"
+
 #~ msgid "SQL query is ok"
 #~ msgstr "SQL-kysely on ok"
+
 #~ msgid "wait to be added"
 #~ msgstr "odottaa lisäämistä"
+
 #~ msgid "wait to be modified"
 #~ msgstr "odottaa muokkausta"
+
 #~ msgid "wait to be deleted"
 #~ msgstr "odottaa poistamista"
+
 #~ msgid "wait to be enabled"
 #~ msgstr "odottaa aktivoimista"
+
 #~ msgid "wait to be suspended"
 #~ msgstr "odottaa keskeytystä"
+
 #~ msgid "delete"
 #~ msgstr "poista"
-

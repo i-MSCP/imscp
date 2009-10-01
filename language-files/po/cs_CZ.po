@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-10-05 08:49+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -1161,10 +1161,6 @@ msgstr "Uživatel byl zakázán"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Jazykové nastavení"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Výchozí jazyk byl změněn!"
 
 msgid "Upload file error!"
 msgstr "Chyba při nahrávání souboru!"
@@ -3272,6 +3268,10 @@ msgstr "Špatná syntaxe subdomény!"
 msgid "Mount point already in use!"
 msgstr "Připojný bod subdomény již existuje!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Nesprávná syntaxe přípojného bodu"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Přidání subdomény bylo naplánováno!"
 
@@ -4428,6 +4428,10 @@ msgstr "Uživatel má záznam o doméně!<br>Nejprve smažte doménu ze systému
 
 msgid "User not terminated!"
 msgstr "Uživatel není odstraněn!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Výchozí jazyk byl změněn!"
 
 #~ msgid "Default language"
 #~ msgstr "Výchozí jazyk"

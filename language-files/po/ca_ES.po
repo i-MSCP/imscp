@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-09-02 15:56+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -1168,10 +1168,6 @@ msgstr "L'usuari ha estat desactivat"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Internacionalització"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Idioma per defecte canviat!"
 
 msgid "Upload file error!"
 msgstr "Error al carregar l'arxiu!"
@@ -3298,6 +3294,10 @@ msgstr "Sintaxi del subdomini incorrecta!"
 msgid "Mount point already in use!"
 msgstr "El punt de muntatge ja es fa servir!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Sintaxi del punt de muntatge incorrecta"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomini programat per ser afegit!"
 
@@ -4443,6 +4443,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Usuari no eliminat!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Idioma per defecte canviat!"
 
 #~ msgid "Default language"
 #~ msgstr "Idioma per defecte"

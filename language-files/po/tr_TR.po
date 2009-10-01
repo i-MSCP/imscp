@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -1161,10 +1161,6 @@ msgstr "Kullanıcı devre dışı bırakıldı"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Yönetici/Dil Yöneticisi"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Varsayılan dil seçimi değiştirildi!"
 
 msgid "Upload file error!"
 msgstr "Dosya gönderim hatası"
@@ -3232,6 +3228,10 @@ msgstr "Hatalı subdomain yazımı!"
 msgid "Mount point already in use!"
 msgstr "Subdomain monte noktası zaten var!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Hatalı <i>monte noktası</i> yazımı!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomain eklenme için işleme alındı!"
 
@@ -4363,6 +4363,10 @@ msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden silini
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Varsayılan dil seçimi değiştirildi!"
 
 #~ msgid "Default language"
 #~ msgstr "Varsayılan dil"

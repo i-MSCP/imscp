@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -1177,10 +1177,6 @@ msgstr "Пользователь был выключен"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Админ/Интернационализация"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Язык по умолчанию изменён!"
 
 msgid "Upload file error!"
 msgstr "Ошибка закачки файла!"
@@ -3315,6 +3311,10 @@ msgstr "Неправильный синтаксис поддомена!"
 msgid "Mount point already in use!"
 msgstr "Такая точка монтирования поддомена уже существует!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Некорректный синтаксис <i>точки монтирования</i>!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Поддомен в очереди на добавление!"
 
@@ -4479,6 +4479,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Пользователь не завершил работу!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Язык по умолчанию изменён!"
 
 #~ msgid "Default language"
 #~ msgstr "Язык по умолчанию"

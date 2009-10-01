@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1218,10 +1218,6 @@ msgstr "Užívateľ bol zablokovaný"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Zmedzinárodnenie"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Predvolený jazyk zmenený!"
 
 msgid "Upload file error!"
 msgstr "Chyba pri nahrávaní súboru!"
@@ -3382,6 +3378,10 @@ msgstr "Zlá syntax sub-domény!"
 msgid "Mount point already in use!"
 msgstr "Bod pripojenia sub-domény už existuje!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Nesprávna syntax prípojného bodu"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdoména načasovaná na pridanie!"
 
@@ -4494,6 +4494,10 @@ msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo 
 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Predvolený jazyk zmenený!"
 
 #~ msgid "Default language"
 #~ msgstr "Predvolený jazyk"

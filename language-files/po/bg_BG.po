@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <choby@event-sys.com>\n"
@@ -1180,10 +1180,6 @@ msgstr "Потребителя беше забранен"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Админ/Интернационализация"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "езикът по подразбиране е променен!"
 
 msgid "Upload file error!"
 msgstr "Грешка при зареждане на файла!"
@@ -3321,6 +3317,10 @@ msgstr "Неправилен синтаксис на поддомейн!"
 msgid "Mount point already in use!"
 msgstr "Такава точка за монтиране на поддомейна вече съществува!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Некоректен синтакс <i>точка на монтиране</i>!"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Поддомейна е добавен ф графика за добавяне!"
 
@@ -4489,6 +4489,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "езикът по подразбиране е променен!"
 
 #~ msgid "Default language"
 #~ msgstr "Език по подразбиране"

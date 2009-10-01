@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2008-08-07 15:56+0200\n"
 "Last-Translator: Danel Ibañez <laborategia@gmail.com>\n"
 "Language-Team: Basque (Spain) <eu@li.org>\n"
@@ -1177,10 +1177,6 @@ msgstr "Erabiltzailea ezgaitu da "
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Internazionalizazioa"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "Berezko hizkuntza aldatua!"
 
 msgid "Upload file error!"
 msgstr "Akatsa fitxategia igotzerakoan!"
@@ -3300,6 +3296,10 @@ msgstr "Azpidomeinu sistaxi okerra!"
 msgid "Mount point already in use!"
 msgstr "Azpidomeinu muntatze puntua dagoeneko badago!"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Montatzen puntuaren sistaxi okerra"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "Azpidomeinua gehitzeko zain!"
 
@@ -4463,6 +4463,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Erabiltzailea ez da amaitu!"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Berezko hizkuntza aldatua!"
 
 #~ msgid "Default language"
 #~ msgstr "Berezko hizkuntza"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: 2009-09-04 09:24+0900\n"
 "Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -1160,10 +1160,6 @@ msgstr "ユーザーが無効になりました"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理者/国際化"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "言語を変更しました"
 
 msgid "Upload file error!"
 msgstr "ファイルのアップロードに失敗"
@@ -3287,6 +3283,10 @@ msgstr "サブドメインの文法が間違っています"
 msgid "Mount point already in use!"
 msgstr "使用中のマウントポイント！"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "マウント先が間違ってます"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "サブドメインの追加を受け付けました！"
 
@@ -4447,6 +4447,10 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "ユーザは終わりません！"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "言語を変更しました"
 
 #~ msgid "Default language"
 #~ msgstr "言語"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 17:56+0700\n"
+"POT-Creation-Date: 2009-09-30 18:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -1154,10 +1154,6 @@ msgstr "使用者已被停用"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理員/語言設定"
-
-#, fuzzy
-msgid "Default panel language changed!"
-msgstr "已更改為默認語言！"
 
 msgid "Upload file error!"
 msgstr "上傳檔案錯誤！"
@@ -3249,6 +3245,10 @@ msgstr "錯誤的子網域語法！"
 msgid "Mount point already in use!"
 msgstr "子網域掛載點已經存在！"
 
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "不正確的掛載點語法"
+
 msgid "Subdomain scheduled for addition!"
 msgstr "子網域增加已預定！"
 
@@ -4383,6 +4383,10 @@ msgstr "此使用者擁有網域記錄！<br>請先從系統中刪除網域！"
 
 msgid "User not terminated!"
 msgstr "使用者未終止！"
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "已更改為默認語言！"
 
 #~ msgid "Default language"
 #~ msgstr "默認語言"
