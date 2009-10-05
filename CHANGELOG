@@ -1,6 +1,15 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-05 Laurent Declercq
+	- TOOLS:
+		* Fixed #2014: Error when you open phpMyAdmin via link fron the Custumer Interface
+
+2009-10-05 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Japanese
+		* Updated Spanish (Spain)
+
 2009-09-30 Daniel Andreca
 	- LANGUAGES:
 		* Updated Finnish
