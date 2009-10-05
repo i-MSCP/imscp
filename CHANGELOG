@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-06 Laurent Declercq
+	- CONFIGS
+		* Fixed: pma impossible indirect connections with suhosin
+
 2009-10-05 Laurent Declercq
 	- TOOLS:
 		* Fixed #2014: Error when you open phpMyAdmin via link fron the Custumer Interface
