@@ -1,9 +1,13 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-08 Benedikt Heintel
+	- DOCS:
+		* Fixed Pathes on update
+
 2009-10-06 Laurent Declercq
 	- CONFIGS:
-		* Fixed: Pma - impossible indirect connections with suhosin
+		* Fixed: PMA - impossible indirect connections with suhosin
 
 2009-10-05 Laurent Declercq
 	- TOOLS:
