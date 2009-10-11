@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-11 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Japanese
+		* Updated German (Germany)
+
 2009-10-06 Laurent Declercq
 	- CONFIGS:
 		* Fixed: Pma - impossible indirect connections with suhosin

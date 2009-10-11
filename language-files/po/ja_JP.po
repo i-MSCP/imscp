@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-30 18:29+0200\n"
-"PO-Revision-Date: 2009-10-02 13:29+0900\n"
+"PO-Revision-Date: 2009-10-09 17:01+0900\n"
 "Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -184,7 +184,7 @@ msgid "Add"
 msgstr "追加"
 
 msgid "User session was killed!"
-msgstr "ユーザーのセッションは切断されました"
+msgstr "ユーザーのセッションは切断されました！"
 
 msgid "Reseller"
 msgstr "代理店"
@@ -343,7 +343,7 @@ msgid "Invalid target!"
 msgstr "無効なターゲット！"
 
 msgid "Custom menu data updated successful!"
-msgstr "カスタムメニューデータが更新されました"
+msgstr "カスタムメニューデータが更新されました！"
 
 msgid "Custom menu deleted successful!"
 msgstr "カスタムメニューを削除しました"
@@ -623,7 +623,7 @@ msgid "Domain properties could not be updated!"
 msgstr "ドメイン情報は更新されました！"
 
 msgid "Domain properties updated successfully!"
-msgstr "ドメイン情報は更新されました"
+msgstr "ドメイン情報は更新されました！"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled! "
@@ -712,13 +712,13 @@ msgid "Return to previous menu"
 msgstr "前のメニューに戻る"
 
 msgid "Hosting plan added!"
-msgstr "ホスティングプランが追加されました"
+msgstr "ホスティングプランが追加されました！"
 
 msgid "Hosting plan deleted!"
-msgstr "ホスティングプランが削除されました"
+msgstr "ホスティングプランが削除されました！"
 
 msgid "Hosting plan updated!"
-msgstr "ホスティングプランが更新されました"
+msgstr "ホスティングプランが更新されました！"
 
 msgid "Hosting plan can't be deleted, there are orders!"
 msgstr "注文があるため、ホスティングプランを削除できません！"
@@ -892,7 +892,7 @@ msgid "Error: we have a reseller using this IP!"
 msgstr "エラー： このIPアドレスを使用する代理店が既に存在します！"
 
 msgid "IP was deleted!"
-msgstr "IPアドレスは削除されました"
+msgstr "IPアドレスは削除されました！"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - 管理者/IPアドレス管理"
@@ -901,7 +901,7 @@ msgid "Remove IP"
 msgstr "IP削除"
 
 msgid "New IP was added!"
-msgstr "新規IPアドレスが追加されました"
+msgstr "新規IPアドレスが追加されました！"
 
 msgid "Wrong IP number!"
 msgstr "IPアドレスに間違いがあります！"
@@ -1011,7 +1011,7 @@ msgid "No new ispCP updates available"
 msgstr "ispCPのアップデートは有りません"
 
 msgid "User language updated successfully!"
-msgstr "ユーザーの言語が更新されました"
+msgstr "ユーザーの言語が更新されました！"
 
 msgid "ispCP - Admin/Change Language"
 msgstr "ispCP - 管理者/言語変更"
@@ -1114,7 +1114,7 @@ msgid "Reseller added"
 msgstr "代理店が追加されました"
 
 msgid "User updated"
-msgstr "ユーザー情報は更新されてました"
+msgstr "ユーザー情報は更新されました"
 
 msgid "User deleted"
 msgstr "ユーザー情報は削除されました"
@@ -1147,10 +1147,10 @@ msgid "Uploaded file does not contain the language information!"
 msgstr "アップロードファイルは言語情報を含んでいません！"
 
 msgid "New language installed!"
-msgstr "新しい言語ファイルが追加されました"
+msgstr "新しい言語ファイルが追加されました！"
 
 msgid "Language was updated!"
-msgstr "言語が更新されました!"
+msgstr "言語が更新されました！"
 
 msgid "uninstall"
 msgstr "アンインストール"
@@ -1199,7 +1199,7 @@ msgid "The current password is wrong!"
 msgstr "現在のパスワードが間違っています"
 
 msgid "User password updated successfully!"
-msgstr "ユーザーのパスワードが更新されました"
+msgstr "ユーザーのパスワードが更新されました！"
 
 msgid "Change password"
 msgstr "パスワード変更"
@@ -1217,7 +1217,7 @@ msgid "ispCP - Admin/Change Personal Data"
 msgstr "ispCP - 管理者/パーソナルデータ更新"
 
 msgid "Personal data updated successfully!"
-msgstr "パーソナルデータは更新されてました"
+msgstr "パーソナルデータは更新されました！"
 
 msgid "Change personal data"
 msgstr "個人情報変更"
@@ -1556,7 +1556,7 @@ msgid "ERROR: Only positive numbers are allowed !"
 msgstr "エラー： 正の数だけが許可されてます！"
 
 msgid "Settings saved !"
-msgstr "設定は保存されました"
+msgstr "設定は保存されました！"
 
 msgid "General settings"
 msgstr "基本設定"
@@ -1703,7 +1703,7 @@ msgid "Please specify message!"
 msgstr "メッセージを指定してください！"
 
 msgid "Auto email template data updated!"
-msgstr "自動送信メールのテンプレート情報が更新されました!"
+msgstr "自動送信メールのテンプレート情報が更新されました！"
 
 msgid "ispCP - Admin/Lostpw email setup"
 msgstr "ispCP - 管理者/パスワード紛失時 メール設定"
@@ -1787,7 +1787,7 @@ msgid "Warning traffic is bigger than max traffic!"
 msgstr "警告　トラフィック最大を超えてます！"
 
 msgid "Server traffic settings updated successfully!"
-msgstr "サーバーのトラフィック情報は更新されました"
+msgstr "サーバーのトラフィック情報は更新されました！"
 
 msgid "Modify"
 msgstr "変更"
@@ -1922,7 +1922,7 @@ msgid "Closed tickets"
 msgstr "処理済チケット"
 
 msgid "Support ticket deleted successfully!"
-msgstr "サポートチケットは削除されました"
+msgstr "サポートチケットは削除されました！"
 
 msgid "All open support tickets deleted successfully!"
 msgstr "すべてのオープンチケットを削除しました。"
@@ -2359,7 +2359,7 @@ msgid "Edit error page"
 msgstr "エラーページの編集"
 
 msgid "Custom error page was updated!"
-msgstr "カスタムエラーページが更新されました!"
+msgstr "カスタムエラーページが更新されました！"
 
 msgid "System error - custom error page was NOT updated!"
 msgstr "システムエラー - カスタムエラーページを更新できません！"
@@ -2486,13 +2486,13 @@ msgid "Choose"
 msgstr "選択"
 
 msgid "FTP account deleted successfully!"
-msgstr "FTPユーザー情報が正常に削除されました"
+msgstr "FTPユーザー情報が正常に削除されました！"
 
 msgid "Entered passwords differ!"
 msgstr "入力されたパスワードが異なります!"
 
 msgid "FTP account data updated!"
-msgstr "FTPユーザー情報が更新されました"
+msgstr "FTPユーザー情報が更新されました！"
 
 msgid "ispCP - Client/Edit FTP Account"
 msgstr "ispCP - クライアント/FTPユーザー修正"
@@ -3002,7 +3002,7 @@ msgid "Too long user password!"
 msgstr "ユーザのパスワードが長すぎます"
 
 msgid "SQL user password was successfully changed!"
-msgstr "SQLユーザーのパスワードは変更されました"
+msgstr "SQLユーザーのパスワードは変更されました！"
 
 msgid "ispCP - Client/Change SQL User Password"
 msgstr "ispCP - クライアント/データベースユーザーパスワード変更"
@@ -3054,7 +3054,7 @@ msgid "SQL database was removed successfully!"
 msgstr "データベースの削除に成功しました"
 
 msgid "SQL user was removed successfully!"
-msgstr "SQLユーザは削除されました"
+msgstr "SQLユーザは削除されました！"
 
 msgid "Database user list is empty!"
 msgstr "データベースユーザーリストが空です!"
@@ -3109,7 +3109,7 @@ msgid "Specified SQL username name already exists!"
 msgstr "指定されたSQLユーザ名は既に存在しています！"
 
 msgid "SQL user successfully added!"
-msgstr "SQLユーザーは追加されました"
+msgstr "SQLユーザーは追加されました！"
 
 msgid "ispCP - Client/Add SQL User"
 msgstr "ispCP - クライアント/データベースユーザー追加"
@@ -3172,7 +3172,7 @@ msgid "Please specify message subject!"
 msgstr "件名を指定してください！"
 
 msgid "Your message was sent!"
-msgstr "あなたのメッセージは送信されました"
+msgstr "あなたのメッセージは送信されました！"
 
 msgid "ispCP - Support system - New ticket"
 msgstr "ispCP - サポートシステム - 新しいチケット"
@@ -3650,7 +3650,7 @@ msgstr "%d 秒お待ちください"
 
 #, php-format
 msgid "You have been blocked for %d minutes."
-msgstr "あなたは %d 分ブロックされました"
+msgstr "あなたは %d 分ブロックされました。"
 
 msgid "You entered an incorrect username/password."
 msgstr "ユーザ名/パスワードが間違っています。"
@@ -3909,13 +3909,13 @@ msgid "Domain alias not added for termination!"
 msgstr "ドメインエイリアスを追加できないまま終わりました！"
 
 msgid "Domain alias added!"
-msgstr "ドメインエイリアスが追加されました!"
+msgstr "ドメインエイリアスが追加されました！"
 
 msgid "Domain alias not added!"
 msgstr "ドメインエイリアスが追加されませんでした!"
 
 msgid "Domain alias modified!"
-msgstr "ドメインエイリアスが変更されました!"
+msgstr "ドメインエイリアスが変更されました！"
 
 msgid "Domain alias not modified!"
 msgstr "ドメインエイリアスが変更されませんでした!"
@@ -4093,10 +4093,10 @@ msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "注文キャンセル： 代理店の上限を超えてます！"
 
 msgid "User added!"
-msgstr "ユーザーが追加されました"
+msgstr "ユーザーが追加されました！"
 
 msgid "Customer order was removed successful!"
-msgstr "顧客の注文が削除されました!"
+msgstr "顧客の注文が削除されました！"
 
 msgid "ispCP - Reseller/Order details"
 msgstr "ispCP - 代理店/注文詳細"
@@ -4140,9 +4140,8 @@ msgstr "ispCP - 代理店：サポートシステム：チケットを見る"
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - ユーザ/ユーザ追加"
 
-#, fuzzy
 msgid "Never"
-msgstr "まさか"
+msgstr "なし"
 
 msgid "1 Month"
 msgstr "１ヶ月"
@@ -4236,7 +4235,7 @@ msgid "You have no users."
 msgstr "ユーザーが登録されていません"
 
 msgid "User data updated!"
-msgstr "ユーザー情報が更新されました"
+msgstr "ユーザー情報が更新されました！"
 
 msgid "User data not updated!"
 msgstr "ユーザー情報は更新されてませんでした"
