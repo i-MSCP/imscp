@@ -19,9 +19,9 @@
  */
 
 /**
- * check_input checks HTML fields of type <input> for content that could be 
+ * check_input checks HTML fields of type <input> for content that could be
  * related to cross site scripting. The function will call die() if any of the
- * defined commands is entered in a protected <input> field. An additional 
+ * defined commands is entered in a protected <input> field. An additional
  * information is displayed to the user.
  *
  * @input String $value The submitted string in the <input> field (value)
@@ -342,21 +342,15 @@ function ispcp_limit_check($data, $extra = -1) {
  * Function for checking domain name tokens; Internel function,
  * for usage in ispcp_* functions
  *
- * @param String $data token data. Without '\n' at the end
- * @param int $num number of max. chars
- * @return boolean	false	incorrect syntax
- * 					true	correct syntax
- * @todo check if we can remove the outcommented code block or comment why not
+ * @param string $data token data without eol
+ * @return boolean true for correct syntax, false otherwise
  */
 function check_dn_rsl_token($data) {
-	$match = array();
-	if (!preg_match("/^([A-Za-z0-9])([a-z0-9A-Z\-]*)([A-Za-z0-9])$/D", $data, $match)) {
-		return false;
-	}
-	/*if (preg_match("/\-\-/", $match[2]))
-		return false;*/
 
-	return true;
+	$pattern = (strlen($data) == 1) ? '/^[A-Za-z0-9]$/D' :
+	 '/^[A-Za-z0-9][a-z0-9A-Z\-]*[A-Za-z0-9]$/D';
+
+	return (preg_match($pattern, $data)) ? true : false;
 }
 
 /**
