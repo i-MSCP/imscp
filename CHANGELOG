@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-16 Laurent Declercq
+	- GUI:
+		* Fixed #2035: Review Domain name syntax ( 'a.de' is not allowed - but denic soon allows it )
+
 2009-10-15 Benedikt Heintel
 	- LANGUAGES:
 		* Updated Catalan
