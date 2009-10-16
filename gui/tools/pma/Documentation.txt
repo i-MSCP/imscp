@@ -1,4 +1,4 @@
-phpMyAdmin 3.2.2 Documentation
+phpMyAdmin 3.2.2.1 Documentation
 
   * Top
   * Requirements
@@ -20,7 +20,7 @@ phpMyAdmin 3.2.2 Documentation
   * Local documents:
       + Version history: ChangeLog
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 12962 2009-09-13 11:38:04Z
+  * Documentation version: $Id: Documentation.html 13036 2009-10-12 21:59:48Z
     lem9 $
 
 Requirements

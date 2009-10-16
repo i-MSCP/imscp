@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-16 Benedikt Heintel
+	- TOOLS:
+		* Fixed #2031: Updated phpMyAdmin to version 3.2.2.1
+
 2009-10-16 Laurent Declercq
 	- GUI:
 		* Fixed #2035: Review Domain name syntax ( 'a.de' is not allowed - but denic soon allows it )
