@@ -202,17 +202,17 @@ sub mysqldb_quota_by_mysql_engine {
 			my $sqldb_id     = @$_[0];
 			my $sql = "show table status from `$sqldb_name`;";
 
-			if(grep{$$_[0] eq $sqldb_name} @$databases){
+			if(grep{$$_[0] eq $sqldb_name} @$databases) {
 
 				($rs, $ref) = doSQL($sql);
 
-				foreach(@$ref){
+				foreach(@$ref) {
+					my ($data_length, $index_length) = (0, 0);
 
-					my $data_length   = @$_[6];
-					my $index_length  = @$_[8];
+					$data_length  = @$_[6];
+					$index_length = @$_[8];
 
 					$size += $data_length + $index_length;
-
 				}
 			} else {
 

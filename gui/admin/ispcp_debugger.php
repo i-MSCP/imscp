@@ -321,41 +321,27 @@ SQL_QUERY;
 		$i = 1;
 		while (!$rs->EOF) {
 			$searched_id = $rs->fields['domain_id'];
-			$query = '';
+			$query = "";
 
-			if ($rs->fields['mail_type'] == 'normal_mail'
-				|| $rs->fields['mail_type'] == 'normal_forward') {
-				$query = <<<SQL_QUERY
-					SELECT
-						`domain_name`
-					FROM
-						`domain`
-					WHERE
-						`domain_id` = ?
-SQL_QUERY;
-			} else if ($rs->fields['mail_type'] == 'subdom_mail'
-				|| $rs->fields['mail_type'] == 'subdom_forward') {
-				$query = <<<SQL_QUERY
-					SELECT
-						`subdomain_name` AS domain_name
-					FROM
-						`subdomain`
-					WHERE
-						`subdomain_id` = ?
-SQL_QUERY;
-			} else if ($rs->fields['mail_type'] == 'alias_mail'
-				|| $rs->fields['mail_type'] == 'alias_forward') {
-				$query = <<<SQL_QUERY
-					SELECT
-						`alias_name` AS domain_name
-					FROM
-						`domain_aliasses`
-					WHERE
-						`alias_id` = ?
-SQL_QUERY;
-			} else {
-				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
-				die('FIXME: ' . __FILE__ . ':' . __LINE__);
+			switch ($rs->fields['mail_type']) {
+				case 'normal_mail':
+				case 'normal_forward':
+				case 'normal_mail,normal_forward':
+					$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
+					break;
+				case 'subdom_mail':
+				case 'subdom_forward':
+				case 'subdom_mail,subdom_forward':
+					$query = "SELECT `subdomain_name` AS domain_name FROM `subdomain` WHERE `subdomain_id` = ?";
+					break;
+				case 'alias_mail':
+				case 'alias_forward':
+				case 'alias_mail,alias_forward':
+					$query = "SELECT `alias_name` AS domain_name FROM `domain_aliasses` WHERE `alias_id` = ?";
+					break;
+				default:
+					write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
+					die('FIXME: ' . __FILE__ . ':' . __LINE__);
 			}
 
 			$sr = exec_query($sql, $query, array($searched_id));
