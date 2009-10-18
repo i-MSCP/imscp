@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 12011 2008-11-28 12:47:41Z nijel $
+ * @version $Id: db_operations.php 13034 2009-10-12 21:47:40Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -613,7 +613,7 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
         <?php
         while ($pages = @PMA_DBI_fetch_assoc($test_rs)) {
             echo '                <option value="' . $pages['page_nr'] . '">'
-                . $pages['page_nr'] . ': ' . $pages['page_descr'] . '</option>' . "\n";
+                . $pages['page_nr'] . ': ' . htmlspecialchars($pages['page_descr']) . '</option>' . "\n";
         } // end while
         PMA_DBI_free_result($test_rs);
         unset($test_rs);

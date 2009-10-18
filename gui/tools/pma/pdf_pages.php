@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pdf_pages.php 12614 2009-06-30 13:19:39Z helmo $
+ * @version $Id: pdf_pages.php 13034 2009-10-12 21:47:40Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -270,7 +270,7 @@ if ($cfgRelation['pdfwork']) {
             if (isset($chpage) && $chpage == $curr_page['page_nr']) {
                 echo ' selected="selected"';
             }
-            echo '>' . $curr_page['page_nr'] . ': ' . $curr_page['page_descr'] . '</option>';
+            echo '>' . $curr_page['page_nr'] . ': ' . htmlspecialchars($curr_page['page_descr']) . '</option>';
         } // end while
         echo "\n";
         ?>
@@ -429,12 +429,12 @@ function resetDrag() {
             echo "\n" . '        <td>'
                  . "\n" . '            <select name="c_table_' . $i . '[name]">';
             foreach ($selectboxall AS $key => $value) {
-                echo "\n" . '                <option value="' . $value . '"';
+                echo "\n" . '                <option value="' . htmlspecialchars($value) . '"';
                 if ($value == $sh_page['table_name']) {
                     echo ' selected="selected"';
                     $tabExist[$_mtab] = TRUE;
                 }
-                echo '>' . $value . '</option>';
+                echo '>' . htmlspecialchars($value) . '</option>';
             } // end while
             echo "\n" . '            </select>'
                  . "\n" . '        </td>';
@@ -462,7 +462,7 @@ function resetDrag() {
         echo "\n" . '        <td>'
              . "\n" . '            <select name="c_table_' . $i . '[name]">';
         foreach ($selectboxall AS $key => $value) {
-            echo "\n" . '                <option value="' . $value . '">' . $value . '</option>';
+            echo "\n" . '                <option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($value) . '</option>';
         }
         echo "\n" . '            </select>'
              . "\n" . '        </td>';
@@ -493,8 +493,8 @@ function resetDrag() {
     if (!empty($tabExist) && is_array($tabExist)) {
         foreach ($tabExist AS $key => $value) {
             if (!$value) {
-                $_strtrans  .= '<input type="hidden" name="delrow[]" value="' . $key . '" />' . "\n";
-                $_strname   .= '<li>' . $key . '</li>' . "\n";
+                $_strtrans  .= '<input type="hidden" name="delrow[]" value="' . htmlspecialchars($key) . '" />' . "\n";
+                $_strname   .= '<li>' . htmlspecialchars($key) . '</li>' . "\n";
                 $shoot       = TRUE;
             }
         }
