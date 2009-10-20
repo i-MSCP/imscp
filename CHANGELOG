@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-20 Christian Hernmarck
+	- ENGINE:
+		* Fixed #2021: Error in backup
+
 2009-10-17 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2033: ispcp-dsk-quota message
