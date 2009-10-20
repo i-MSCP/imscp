@@ -309,12 +309,16 @@ sub backup_all_engine {
 				} else { # some error occurred
 
 					push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
+					# send mail so we know something went wrong...
+					send_error_mail('backup_all_engine()', "Domain $dmn_name: ERROR: tar returned exit status $rs, have a look in $dmn_dir/$backup_filename.log");
 
+					# delete backup file...
 					if ( -e "$dmn_dir/$backup_filename" ) {
-
 						$rs = del_file("$dmn_dir/$backup_filename");
-						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while removing file $dmn_dir/$backup_filename!");
-
+						if ($rs != 0){
+							push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while removing file $dmn_dir/$backup_filename!");
+# we don't need a second mail...			send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while removing file $dmn_dir/$backup_filename!");
+						}
 					}
 
 				}
