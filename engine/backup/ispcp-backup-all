@@ -264,10 +264,10 @@ sub backup_all_engine {
 				return $rs if ($rs != 0);
 			}
 
-			if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma') {
+			if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma' || $zip eq 'xz') {
 				$backup_filename = "$dmn_name-backup-$date.tar.".($zip eq 'bzip2' ? 'bz2' : ($zip eq 'gzip' ? 'gz' : $zip));
 				if ($allowbackup eq "full" || $allowbackup eq "dmn") {
-					$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --$zip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+					$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --$zip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename --exclude=$backup_filename.log . 2> $dmn_dir/$backup_filename.log";
 				}
 				if ( $allowbackup eq "full" || $allowbackup eq "sql" ) {
 					$rs = backup_sql($dmn_id, $dmn_name, $domain_uid, $domain_gid);

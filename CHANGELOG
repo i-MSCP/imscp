@@ -1,6 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-15 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2044: ispcp-dsk-quota message (Use of uninitialized value in addition (+))
+	- LANGUAGES:
+		* Updated Russian
+
 2009-10-22 Marc Pujol
 	- ENGINE:
 		* Fixed #2046: ispcpphptemp.sh script fails to read per-domain session.gc_maxlifetime directives

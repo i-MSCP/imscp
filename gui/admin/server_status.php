@@ -82,6 +82,7 @@ class status {
 				$fp = @fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
 			}
 			else {
+				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $this->all[$i]['type']));
 				die('FIXME: ' . __FILE__ . ':' . __LINE__);
 			}
 
@@ -125,6 +126,7 @@ class status {
 			$fp = @fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
 		}
 		else {
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $type));
 			die('FIXME: ' . __FILE__ . ':' . __LINE__);
 		}
 
