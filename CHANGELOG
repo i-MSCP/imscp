@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-22 Marc Pujol
+	- ENGINE:
+		* Fixed #2046: ispcpphptemp.sh script fails to read per-domain session.gc_maxlifetime directives
+
 2009-10-20 Christian Hernmarck
 	- ENGINE:
 		* Fixed #2021: Error in backup
