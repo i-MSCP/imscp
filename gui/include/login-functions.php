@@ -18,6 +18,12 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+/**
+ * Checks if an username exists
+ * 
+ * @param  String	$username	Username to be checked
+ * @return Boolean				true, if username exists
+ */
 function username_exists($username) {
 	$sql = Database::getInstance();
 
@@ -27,6 +33,12 @@ function username_exists($username) {
 	return ($res->RecordCount() == 1);
 }
 
+/**
+ * Returns the stored data related to the username
+ * 
+ * @param  String	$username	Username that data should be returend
+ * @return Array				Array of user-related data
+ */
 function get_userdata($username) {
 	$sql = Database::getInstance();
 
@@ -34,9 +46,14 @@ function get_userdata($username) {
 	$res = exec_query($sql, $query, array($username));
 
 	return $res->FetchRow();
-
 }
 
+/**
+ * Checks if the user account (domain name) is still vaild
+ * 
+ * @param  String	$username	Username that data should be checked
+ * @return Boolean				true, if still valid
+ */
 function is_userdomain_expired($username) {
 	$sql = Database::getInstance();
 	
@@ -64,6 +81,12 @@ function is_userdomain_expired($username) {
 	return $result;
 }
 
+/**
+ * Checks if the user account's status is 'ok'
+ * 
+ * @param  String	$username	Username that data should be checked
+ * @return Boolean				true, if status is 'ok'
+ */
 function is_userdomain_ok($username) {
 	$sql = Database::getInstance();
 
@@ -86,6 +109,12 @@ function is_userdomain_ok($username) {
 	return ($row['domain_status'] == Config::get('ITEM_OK_STATUS'));
 }
 
+/**
+ * @todo describe function
+ * 
+ * @param  Integer	$timeout	
+ * @param  String	$type	
+ */
 function unblock($timeout = null, $type = 'bruteforce') {
 	$sql = Database::getInstance();
 
@@ -107,14 +136,22 @@ function unblock($timeout = null, $type = 'bruteforce') {
 			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
 			break;
 		default:
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s',__FILE__, __LINE__, $type));
 			die('FIXME: '.__FILE__.':'.__LINE__);
-			break;
 	}
 
 	exec_query($sql, $query, array($max, $timeout));
 
 }
 
+/**
+ * @todo describe function
+ * 
+ * @param  String	$ipaddr	
+ * @param  String	$type	
+ * @param  Boolean	$autodeny	
+ * @return Boolean				true, if...
+ */
 function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = false) {
 	$sql = Database::getInstance();
 
@@ -134,8 +171,8 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
 			break;
 		default:
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown block reason %s',__FILE__, __LINE__, $type));
 			die('FIXME: '.__FILE__.':'.__LINE__);
-			break;
 	}
 	$res = exec_query($sql, $query, array($ipaddr, $max));
 
@@ -149,6 +186,13 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	return true;
 }
 
+/**
+ * @todo describe function
+ * 
+ * @param  String	$ipaddr	
+ * @param  Boolean	$displayMessage	
+ * @return Boolean					true, if...
+ */
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	$sql = Database::getInstance();
 
@@ -182,12 +226,18 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 			system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
 		}
 		return true;
-	} else {
-		return false;
 	}
 
+	return false;
 }
 
+/**
+ * @todo describe function
+ * 
+ * @param  String	$ipaddr	
+ * @param  String	$type	
+ * @return Boolean				true, if...
+ */
 function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$sql = Database::getInstance();
 
@@ -244,22 +294,41 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 		return false;
 	}
+
+	return true;
 }
 
+/**
+ * @todo describe function
+ * 
+ * @param  String	$ipaddr	
+ * @param  String	$type	
+ */
 function block_ipaddr($ipaddr, $type = 'General') {
 	write_log("$type protection, <b><i> " . htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") . "</i></b> blocked for " . Config::get('BRUTEFORCE_BLOCK_TIME') . " minutes.");
 	deny_access();
 }
 
+/**
+ * @todo describe function
+ */
 function deny_access() {
 	$backButtonDestination =Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
 	system_message(tr('You have been blocked for %d minutes.', Config::get('BRUTEFORCE_BLOCK_TIME')), $backButtonDestination);
 }
 
+/**
+ * Returns the user's IP address
+ * 
+ * @return String				user's IP address
+ */
 function getipaddr() {
 	return $_SERVER['REMOTE_ADDR'];
 }
 
+/**
+ * @todo describe function
+ */
 function do_session_timeout() {
 	$sql = Database::getInstance();
 
@@ -274,11 +343,18 @@ function do_session_timeout() {
 	}
 }
 
+/**
+ * Checks if an session already exists and the IP address is matching
+ * 
+ * @param  String	$sess_id	user session id from cookie
+ * @return Boolean				true, if session is valid
+ */
 function session_exists($sess_id) {
 	$sql = Database::getInstance();
 
-	$query = "SELECT `session_id` FROM `login` WHERE `session_id` = ?";
-	$res = exec_query($sql, $query, array($sess_id));
+	$ip = getipaddr();
+	$query = "SELECT `session_id`, `ipaddr` FROM `login` WHERE `session_id` = ? AND `ipaddr` = ?";
+	$res = exec_query($sql, $query, array($sess_id, $ip));
 
 	return ($res->RecordCount() == 1);
 }

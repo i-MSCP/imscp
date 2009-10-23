@@ -1,6 +1,18 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-10-23 Laurent Declercq
+	- GUI:
+		* Fixed #2050: Unable to change interface (Admin to reseller) since the client IP address is verified
+
+2009-10-15 Benedikt Heintel
+	- GUI:
+		* Added ipaddr check to prevent session hijacking
+	- ENGINE:
+		* Fixed #2044: ispcp-dsk-quota message (Use of uninitialized value in addition (+))
+	- LANGUAGES:
+		* Updated Russian
+
 2009-10-22 Marc Pujol
 	- ENGINE:
 		* Fixed #2046: ispcpphptemp.sh script fails to read per-domain session.gc_maxlifetime directives

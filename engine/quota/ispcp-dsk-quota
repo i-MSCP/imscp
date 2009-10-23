@@ -30,6 +30,7 @@
 #    http://isp-control.net
 #
 
+# @version $Id$
 
 
 use FindBin;
@@ -207,10 +208,8 @@ sub mysqldb_quota_by_mysql_engine {
 				($rs, $ref) = doSQL($sql);
 
 				foreach(@$ref) {
-					my ($data_length, $index_length) = (0, 0);
-
-					$data_length  = @$_[6];
-					$index_length = @$_[8];
+					my $data_length  = (@$_[6] eq undef) ? 0 : @$_[6];
+					my $index_length = (@$_[8] eq undef) ? 0 : @$_[8];
 
 					$size += $data_length + $index_length;
 				}

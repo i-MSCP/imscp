@@ -300,9 +300,9 @@ function change_user_interface($from_id, $to_id) {
 		$_SESSION['user_created_by'] = $to_udata['created_by'];
 		$_SESSION['user_login_time'] = time();
 
-		$query = 'INSERT INTO login (`session_id`, `user_name`, `lastaccess`) VALUES (?, ?, ?)';
+		$query = 'INSERT INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?)';
 
-		exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
+		exec_query($sql, $query, array(session_id(), getipaddr(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
 		write_log(sprintf("%s changes into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
 		break;
