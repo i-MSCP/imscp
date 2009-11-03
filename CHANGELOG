@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-01 Marc Pujol
+	- CONFIGS:
+		* Fixed #2052: SPF registry error
+
 2009-10-23 Laurent Declercq
 	- GUI:
 		* Fixed #2050: Unable to change interface (Admin to reseller) since the client IP address is verified

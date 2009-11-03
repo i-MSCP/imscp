@@ -15,7 +15,7 @@ $ORIGIN {DMN_NAME}.
 
 {DMN_NAME}.     IN              A               {DMN_IP}
 www             IN              A               {DMN_IP}
-{DMN_NAME}.     IN              TXT             "v=spf1 a mx ip4:{DMN_IP} ~all"
+{DMN_NAME}.     IN              TXT             "v=spf1 a mx ip4:{DMN_IP} ip4:{BASE_SERVER_IP} ~all"
 localhost       IN              A               127.0.0.1
 mail            IN              A               {DMN_IP}
 ns1             IN              A               {BASE_SERVER_IP}
