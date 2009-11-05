@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-04 Christian Hernmarck
+	- CONFIG:
+		* Fixed #2060: increase fastcgi-timeout for user-domains
+
 2009-11-01 Marc Pujol
 	- CONFIGS:
 		* Fixed #2052: SPF registry error
