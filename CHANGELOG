@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-05 Laurent Declercq
+	- DISTS:
+		* Fixed openSUSE runlevels
+
 2009-11-04 Christian Hernmarck
 	- CONFIG:
 		* Fixed #2060: increase fastcgi-timeout for user-domains

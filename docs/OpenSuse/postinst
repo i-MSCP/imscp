@@ -47,8 +47,8 @@ done
 A2ENMOD=/usr/sbin/a2enmod
 A2DISMOD=/usr/sbin/a2dismod
 CMD_MD5=/usr/bin/md5sum
-INSSERV=/sbin/insserv
-SERVICES="$CMD_ISPCPN $CMD_ISPCPD fam apache2 postgrey policyd-weight $CMD_MTA $CMD_NAMED $CMD_POP $CMD_POP_SSL $CMD_IMAP $CMD_IMAP_SSL $CMD_FTPD $CMD_AUTHD mysql"
+INSSERV="/sbin/insserv -d"
+SERVICES="$CMD_ISPCPN $CMD_ISPCPD fam $CMD_NAMED apache2 $CMD_FTPD postgrey policyd-weight $CMD_MTA $CMD_AUTHD $CMD_IMAP $CMD_IMAP_SSL $CMD_POP $CMD_POP_SSL mysql"
 ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
 DIST_VERS=`grep -E '^VERSION' /etc/SuSE-release | sed -e 's/[[:space:]=A-Z]//g'`
 
