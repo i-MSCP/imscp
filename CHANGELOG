@@ -4,6 +4,7 @@ ispCP ω 1.0.3 Changelog
 2009-11-09 Christian Hernmarck
 	- ENGINE:
 		* Fixed #2034: ispcp-backup error (I hope it's fixed - could not reproduce)
+		* Fixed #2043: Creating similar mail-addresses causes problems
 
 2009-11-05 Laurent Declercq
 	- DISTS:
