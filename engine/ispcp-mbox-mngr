@@ -110,12 +110,14 @@ sub get_mta_hash_value {
 
 	}
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $ekey) = (undef, undef, $key);
+	$ekey =~ s/\./\\\./g; # escape the dots in $key
 
 	($rs, $rdata) = get_file($hfile);
 	return $rs if ($rs != 0);
 
-	$rdata =~ /^$key\t+([^\n]+)\n/gim; $rdata = $1;
+	$rdata =~ /^$ekey\t+([^\n]+)\n/gim;
+	$rdata = $1;
 
 	if (!defined($rdata)) { $rdata = ''; }
 
@@ -137,7 +139,8 @@ sub del_mta_hash_value {
 
 	}
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $ekey) = (undef, undef, $key);
+	$ekey =~ s/\./\\\./g; # escape the dots in $key
 
 	($rs, $rdata) = get_mta_hash_value($hfile, $key);
 	return 0 if ($rdata eq '');
@@ -145,7 +148,7 @@ sub del_mta_hash_value {
 	($rs, $rdata) = get_file($hfile);
 	return $rs if ($rs != 0);
 
-	$rdata =~ s/^$key\t+([^\n]+)\n//gim;
+	$rdata =~ s/^$ekey\t+([^\n]+)\n//gim;
 
 	$rs = store_file($hfile, $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
@@ -168,7 +171,8 @@ sub set_mta_hash_value {
 
 	}
 
-	my ($rs, $rdata, $fdata) = (undef, undef, undef);
+	my ($rs, $rdata, $fdata, $ekey) = (undef, undef, undef, $key);
+	$ekey =~ s/\./\\\./g; # escape the dots in $key
 
 	($rs, $rdata) = get_mta_hash_value($hfile, $key);
 	return $rs if ($rs != 0);
@@ -176,7 +180,7 @@ sub set_mta_hash_value {
 	($rs, $fdata) = get_file($hfile);
 	return $rs if ($rs != 0);
 
-	$fdata =~ s/^$key\t+([^\n]+)\n//gim if ($rdata ne '');
+	$fdata =~ s/^$ekey\t+([^\n]+)\n//gim if ($rdata ne '');
 	$fdata .= "$key\t$value\n";
 
 	$rs = store_file($hfile, $fdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);

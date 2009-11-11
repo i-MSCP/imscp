@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-09 Christian Hernmarck
+	- ENGINE:
+		* Fixed #2034: ispcp-backup error (I hope it's fixed - could not reproduce)
+		* Fixed #2043: Creating similar mail-addresses causes problems
+
 2009-11-05 Laurent Declercq
 	- DISTS:
 		* Fixed openSUSE runlevels
@@ -79,6 +84,10 @@ ispCP ω 1.0.3 Changelog
 		* Updated Finnish
 	- CONFIGS:
 		* Updated database structure
+
+2009-09-30 Laurent Declercq
+	- TOOLS:
+		* Fixed some typo errors in webmail/src/login.php (Thx to Henriks)
 
 2009-09-29 Daniel Andreca
 	- ENGINE:

@@ -40,7 +40,7 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
-our $backup_lock_file = "/tmp/ispcp-backup-all.lock";
+our $backup_lock_file = "/tmp/ispcp-backup-ispcp.lock";
 
 sub lock_backup_ispcp_system {
 
