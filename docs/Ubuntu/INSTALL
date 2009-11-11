@@ -64,6 +64,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 3. Install the required modules
    First update your system:
 	# sudo aptitude update && aptitude upgrade
+	# sudo aptitude install lsb-release
 	# sudo aptitude install $(cat ./docs/Ubuntu/ubuntu-packages-`lsb_release -cs`)
 
    Make sure you have added multiverse into your /etc/apt/sources.list

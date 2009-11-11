@@ -101,7 +101,6 @@ function delete_account(url, dmn_name) {
                         <td class="content3" width="90" align="center"><b>{TR_CREATION_DATE}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_EXPIRE_DATE}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE}</b></td>
-                        <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE_PERCENT}</b></td>
                         <td colspan="6" align="center" class="content3"><b>{TR_ACTION}</b></td>
                       </tr>
                       <!-- BDP: users_list -->
@@ -113,7 +112,6 @@ function delete_account(url, dmn_name) {
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{EXPIRE_DATE}</td>
 						<td class="{CLASS_TYPE_ROW}" width="90" align="center">{DISK_USAGE} of {DISK_LIMIT} MB</td>
-						<td class="{CLASS_TYPE_ROW}" width="90" align="center">{DISK_USAGE_PERCENT} %</td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_edit.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>

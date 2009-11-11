@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-11 Sebastian Sellmeier
+	- GUI:
+		* Fixed #2039: Disk Usage in Percent is wrong
+
 2009-11-09 Christian Hernmarck
 	- ENGINE:
 		* Fixed #2034: ispcp-backup error (I hope it's fixed - could not reproduce)
