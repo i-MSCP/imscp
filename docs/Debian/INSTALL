@@ -65,18 +65,19 @@ Make sure you are logged in as root and MySQL is running.
    First update your system:
 
 	# aptitude update && aptitude safe-upgrade
+    # aptitude install lsb-release
 	# aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
 
    Make sure you have added the non-free into your /etc/apt/sources.list:
 
-   deb     http://ftp.debian.org/debian/            etch         main contrib non-free
-   deb     http://security.debian.org/              etch/updates main contrib non-free
+   deb     http://ftp.debian.org/debian/            lenny         main contrib non-free
+   deb     http://security.debian.org/              lenny/updates main contrib non-free
 
-	(if you get to the courier screen select 'no' to web directories)
-	(if you get to the postfix screen select 'internet site' and then type 'root'
-	for mail. If you've set debian up correctly on install your domain should be
-	already on screen. Select 'no' to force sync updates.)
 	(if you get to the proftpd screen, select 'standalone')
+	(if you get to the postfix screen select 'internet site'. 'mail name' should be 
+	the server's domain. If you've set debian up correctly on install your domain 
+	should be already shown.)
+	(if you get to the courier screen select 'no' to web directories)
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
