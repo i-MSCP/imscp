@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-13 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2051: Again ispcp-dsk-quota message
+
 2009-11-11 Sebastian Sellmeier
 	- GUI:
 		* Fixed #2039: Disk Usage in Percent is wrong
