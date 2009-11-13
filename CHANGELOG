@@ -1,6 +1,9 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-13 Benedikt Heintel
+	- Updated License Text
+
 2009-11-11 Sebastian Sellmeier
 	- GUI:
 		* Fixed #2039: Disk Usage in Percent is wrong

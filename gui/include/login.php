@@ -146,7 +146,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
 	if ($rs->RecordCount() != 1) {
-		write_log("Detected session manipulation on $user_logged's session!");
+		write_log("Detected session manipulation on ".$user_logged."'s session!");
 		unset_user_login_data();
 		return false;
 	}
