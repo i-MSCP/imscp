@@ -202,10 +202,12 @@ sub mysqldb_quota_by_mysql_engine {
 			if(grep{$$_[0] eq $sqldb_name} @$databases) {
 
 				($rs, $ref) = doSQL($sql);
+				my ($data_length, $index_length) = (0, 0);
 
 				foreach(@$ref) {
-					my $data_length  = (@$_[6] eq undef) ? 0 : @$_[6];
-					my $index_length = (@$_[8] eq undef) ? 0 : @$_[8];
+					# Replace unknown values by 0
+					$data_length  = (@$_[6] =~ /^\d+$/) ? @$_[6] : 0;
+					$index_length = (@$_[8] =~ /^\d+$/) ? @$_[8] : 0;
 
 					$size += $data_length + $index_length;
 				}
