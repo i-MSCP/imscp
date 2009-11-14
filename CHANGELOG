@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-11-13 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2051: Again ispcp-dsk-quota message
+	- PACKAGE:
+		* Updated License Text
 
 2009-11-11 Sebastian Sellmeier
 	- GUI:
