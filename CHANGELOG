@@ -6,6 +6,8 @@ ispCP ω 1.0.3 Changelog
 		* Updated License Text (PHP Files)
 		* Updated License Text (CSS Files)
 		* Updated License Text (JS Files)
+	- TOOLS:
+		* Updated PHPmyAdmin to version 3.2.3
 
 2009-11-15 Laurent Declercq
 	- PACKAGE:

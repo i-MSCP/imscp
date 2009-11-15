@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 12645 2009-07-13 17:21:02Z lem9 $
+ * @version $Id: config.default.php 12995 2009-09-20 10:41:28Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -361,6 +361,13 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
 $cfg['Servers'][$i]['AllowDeny']['order'] = '';
 
 /**
+ * Host authentication rules, leave blank for defaults
+ *
+ * @global array $cfg['Servers'][$i]['AllowDeny']['rules']
+ */
+$cfg['Servers'][$i]['AllowDeny']['rules'] = array();
+
+/**
  * Disable use of INFORMATION_SCHEMA
  *
  * @see http://sf.net/support/tracker.php?aid=1849494
@@ -368,13 +375,6 @@ $cfg['Servers'][$i]['AllowDeny']['order'] = '';
  * @global boolean $cfg['Servers'][$i]['DisableIS']
  */
 $cfg['Servers'][$i]['DisableIS'] = true;
-
-/**
- * Host authentication rules, leave blank for defaults
- *
- * @global array $cfg['Servers'][$i]['AllowDeny']['rules']
- */
-$cfg['Servers'][$i]['AllowDeny']['rules'] = array();
 
 /**
  * SQL command to fetch available databases

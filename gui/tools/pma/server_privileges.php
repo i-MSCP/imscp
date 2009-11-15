@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 12629 2009-07-06 19:52:47Z lem9 $
+ * @version $Id: server_privileges.php 13035 2009-10-12 21:53:01Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -373,7 +373,7 @@ function PMA_displayPrivTable($db = '*', $table = '*', $submit = TRUE)
             .' AND `Host`'
             .' = \'' . PMA_sqlAddslashes($hostname) . "'"
             .' AND `Db`'
-            .' = \'' . PMA_unescape_mysql_wildcards($db) . "'"
+            .' = \'' . PMA_sqlAddslashes(PMA_unescape_mysql_wildcards($db)) . "'"
             .' AND `Table_name`'
             .' = \'' . PMA_sqlAddslashes($table) . '\';');
 
@@ -1026,11 +1026,11 @@ if (isset($_REQUEST['change_copy'])) {
             .' WHERE `User`'
             .' = \'' . PMA_sqlAddslashes($old_username) . "'"
             .' AND `Host`'
-            .' = \'' . $old_hostname . '\''
+            .' = \'' . PMA_sqlAddslashes($old_hostname) . '\''
             .' AND `Db`'
-            .' = \'' . $row['Db'] . "'"
+            .' = \'' . PMA_sqlAddslashes($row['Db']) . "'"
             .' AND `Table_name`'
-            .' = \'' . $row['Table_name'] . "'"
+            .' = \'' . PMA_sqlAddslashes($row['Table_name']) . "'"
             .';',
             null, PMA_DBI_QUERY_STORE);
 
@@ -1690,8 +1690,8 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
                     if (in_array($table_search_in, $tables)) {
                         $db_rights_sqls[] = '
                             SELECT DISTINCT `Db`
-                                   FROM `mysql`.`' . $table_search_in . '`
-                                  ' . $user_host_condition;
+                                   FROM `mysql`.' . PMA_backquote($table_search_in)
+                                   . $user_host_condition;
                     }
                 }
 
@@ -1747,7 +1747,7 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
 
                 $user_host_condition .=
                     ' AND `Db`'
-                    .' LIKE \'' . $dbname . "'";
+                    .' LIKE \'' . PMA_sqlAddslashes($dbname) . "'";
 
                 $tables_to_search_for_users = array(
                     'columns_priv',
@@ -1758,8 +1758,8 @@ if (empty($_REQUEST['adduser']) && (! isset($checkprivs) || ! strlen($checkprivs
                     if (in_array($table_search_in, $tables)) {
                         $db_rights_sqls[] = '
                             SELECT DISTINCT `Table_name`
-                                   FROM `mysql`.`' . $table_search_in . '`
-                                  ' . $user_host_condition;
+                                   FROM `mysql`.' . PMA_backquote($table_search_in) 
+                                   . $user_host_condition;
                     }
                 }
 

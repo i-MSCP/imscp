@@ -19,11 +19,15 @@
  * It's easier to use only uppercase for proper sorting. In case of
  * doubt, use the DEBUG code after this function's definition.
  *
- * @version $Id: sqlparser.data.php 12432 2009-05-17 22:20:16Z helmo $
+ * @version $Id: sqlparser.data.php 13068 2009-10-24 12:25:48Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
+}
+
+if (! isset($GLOBALS['sql_delimiter'])) {
+    $GLOBALS['sql_delimiter'] = ';';
 }
 
 /**

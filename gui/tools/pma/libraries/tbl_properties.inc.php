@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @version $Id: tbl_properties.inc.php 12700 2009-07-22 21:13:11Z lem9 $
+ * @version $Id: tbl_properties.inc.php 13049 2009-10-16 07:34:51Z helmo $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -349,13 +349,12 @@ for ($i = 0; $i < $num_fields; $i++) {
         $binary           = 0;
         $unsigned         = 0;
         $zerofill         = 0;
-        $length_to_display = htmlspecialchars($length);
     } else {
-        $length_to_display = $length;
         $binary           = false;
         $unsigned         = stristr($row['Type'], 'unsigned');
         $zerofill         = stristr($row['Type'], 'zerofill');
     }
+    $length_to_display = $length;
 
     $content_cells[$i][$ci] = '<input id="field_' . $i . '_' . ($ci - $ci_offset) . '"'
         . ' type="text" name="field_length[' . $i . ']" size="' . $length_values_input_size . '"'
