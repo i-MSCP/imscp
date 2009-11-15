@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 12796 2009-08-15 13:08:35Z lem9 $
+ * @version $Id: database_interface.lib.php 13025 2009-10-03 19:25:26Z helmo $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -591,7 +591,7 @@ function PMA_DBI_get_databases_full($database = null, $force_stats = false,
             $databases[$database_name]['SCHEMA_NAME']      = $database_name;
 
             if ($force_stats) {
-                require_once 'mysql_charsets.lib.php';
+                require_once './libraries/mysql_charsets.lib.php';
 
                 $databases[$database_name]['DEFAULT_COLLATION_NAME']
                     = PMA_getDbCollation($database_name);
@@ -1315,21 +1315,32 @@ function PMA_DBI_get_definition($db, $which, $name, $link = null)
  * @uses    PMA_DBI_fetch_result()
  * @param   string              $db     db name
  * @param   string              $table  table name
+ * @param   string              $delimiter  the delimiter to use (may be empty)
  *
  * @return  array               information about triggers (may be empty)
  */
-function PMA_DBI_get_triggers($db, $table)
+function PMA_DBI_get_triggers($db, $table, $delimiter = '//')
 {
     $result = array();
 
+    if (! $GLOBALS['cfg']['Server']['DisableIS']) {
     // Note: in http://dev.mysql.com/doc/refman/5.0/en/faqs-triggers.html
     // their example uses WHERE TRIGGER_SCHEMA='dbname' so let's use this
     // instead of WHERE EVENT_OBJECT_SCHEMA='dbname'
-    $triggers = PMA_DBI_fetch_result("SELECT TRIGGER_SCHEMA, TRIGGER_NAME, EVENT_MANIPULATION, ACTION_TIMING, ACTION_STATEMENT, EVENT_OBJECT_SCHEMA, EVENT_OBJECT_TABLE FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA= '" . PMA_sqlAddslashes($db,true) . "' and EVENT_OBJECT_TABLE = '" . PMA_sqlAddslashes($table, true) . "';");
+        $triggers = PMA_DBI_fetch_result("SELECT TRIGGER_SCHEMA, TRIGGER_NAME, EVENT_MANIPULATION, ACTION_TIMING, ACTION_STATEMENT, EVENT_OBJECT_SCHEMA, EVENT_OBJECT_TABLE FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA= '" . PMA_sqlAddslashes($db,true) . "' and EVENT_OBJECT_TABLE = '" . PMA_sqlAddslashes($table, true) . "';");
+    } else {
+        $triggers = PMA_DBI_fetch_result("SHOW TRIGGERS FROM " . PMA_sqlAddslashes($db,true) . " LIKE '" . PMA_sqlAddslashes($table, true) . "';");
+    }
 
     if ($triggers) {
-        $delimiter = '//';
         foreach ($triggers as $trigger) {
+            if ($GLOBALS['cfg']['Server']['DisableIS']) {
+                $trigger['TRIGGER_NAME'] = $trigger['Trigger'];
+                $trigger['ACTION_TIMING'] = $trigger['Timing'];
+                $trigger['EVENT_MANIPULATION'] = $trigger['Event'];
+                $trigger['EVENT_OBJECT_TABLE'] = $trigger['Table'];
+                $trigger['ACTION_STATEMENT'] = $trigger['Statement'];
+            }
             $one_result = array();
             $one_result['name'] = $trigger['TRIGGER_NAME'];
             $one_result['action_timing'] = $trigger['ACTION_TIMING'];

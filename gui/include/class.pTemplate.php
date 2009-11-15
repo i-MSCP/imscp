@@ -2,51 +2,69 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		SVN: $Id$
- * @link		http://isp-control.net
- * @author		ispCP Team
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
  * @license
- *   This program is free software; you can redistribute it and/or modify it under
- *   the terms of the MPL General Public License as published by the Free Software
- *   Foundation; either version 1.1 of the License, or (at your option) any later
- *   version.
- *   You should have received a copy of the MPL Mozilla Public License along with
- *   this program; if not, write to the Open Source Initiative (OSI)
- *   http://opensource.org | osi@opensource.org
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * The Original Code is "VHCS - Virtual Hosting Control System".
+ *
+ * The Initial Developer of the Original Code is moleSoftware GmbH.
+ * Portions created by Initial Developer are Copyright (C) 2001-2006
+ * by moleSoftware GmbH. All Rights Reserved.
+ * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * isp Control Panel. All Rights Reserved.
  */
 
+/** 
+ * Class pTemplate is the ispCP template engine.
+ */
 class pTemplate {
-	var $tpl_name;
-	var $tpl_data;
-	var $tpl_options;
+	private $tpl_name;
+	private $tpl_data;
+	private $tpl_options;
 
-	var $dtpl_name;
-	var $dtpl_data;
-	var $dtpl_options;
-	var $dtpl_values;
+	private $dtpl_name;
+	private $dtpl_data;
+	private $dtpl_options;
+	private $dtpl_values;
 
-	var $namespace;
+	private $namespace;
 
-	var $root_dir;
+	private $root_dir;
 
-	var $tpl_start_tag;
-	var $tpl_end_tag;
-	var $tpl_start_tag_name;
-	var $tpl_end_tag_name;
-	var $tpl_name_rexpr;
+	private $tpl_start_tag;
+	private $tpl_end_tag;
+	private $tpl_start_tag_name;
+	private $tpl_end_tag_name;
+	private $tpl_name_rexpr;
 
-	var $tpl_start_rexpr;
-	var $tpl_end_rexpr;
+	private $tpl_start_rexpr;
+	private $tpl_end_rexpr;
 
-	var $last_parsed;
+	private $last_parsed;
 
-	var $stack;
-	var $sp;
+	private $stack;
+	private $sp;
 
-	function pTemplate($r_dir = '') {
+	/**
+	 * Constructor
+	 *
+	 * @param String $r_dir Folder where the Template file is located
+	 */
+	public function __construct($r_dir = "") {
 		$this->tpl_name = array();
 		$this->tpl_data = array();
 		$this->tpl_options = array();
@@ -91,11 +109,11 @@ class pTemplate {
 		$this->sp = 0;
 	}
 
-	function set_root($set_dir = '.') {
+	private function set_root($set_dir = '.') {
 		$this->root_dir = $set_dir;
 	}
 
-	function assign($nsp_name, $nsp_data = '') {
+	public function assign($nsp_name, $nsp_data = '') {
 		if (gettype($nsp_name) == "array") {
 			foreach ($nsp_name as $key => $value) {
 				$this->namespace[$key] = $value;
@@ -105,7 +123,7 @@ class pTemplate {
 		}
 	}
 
-	function unsign($nsp_name) {
+	public function unsign($nsp_name) {
 		if (gettype($nsp_name) == "array") {
 			foreach ($nsp_name as $key => $value) {
 				unset($this->namespace[$key]);
@@ -115,7 +133,7 @@ class pTemplate {
 		}
 	}
 
-	function define($t_name, $t_value = '') {
+	public function define($t_name, $t_value = '') {
 		if (gettype($t_name) == "array") {
 			foreach ($t_name as $key => $value) {
 				$this->tpl_name[$key] = $value;
@@ -129,7 +147,7 @@ class pTemplate {
 		}
 	}
 
-	function define_dynamic($t_name, $t_value = '') {
+	public function define_dynamic($t_name, $t_value = '') {
 		if (gettype($t_name) == "array") {
 			foreach ($t_name as $key => $value) {
 				$this->dtpl_name[$key] = $value;
@@ -143,7 +161,7 @@ class pTemplate {
 		}
 	}
 
-	function define_no_file($t_name, $t_value = '') {
+	public function define_no_file($t_name, $t_value = '') {
 		if (gettype($t_name) == "array") {
 			foreach ($t_name as $key => $value) {
 				$this->tpl_name[$key] = '_no_file_';
@@ -157,29 +175,23 @@ class pTemplate {
 		}
 	}
 
-	function define_no_file_dynamic($t_name, $t_value = '') {
+	public function define_no_file_dynamic($t_name, $t_value = '') {
 		if (gettype($t_name) == "array") {
 			foreach ($t_name as $key => $value) {
 				$this->dtpl_name[$key] = '_no_file_';
-
 				$this->dtpl_data[$key] = $value;
-
 				$this->dtpl_data[strtoupper($key)] = $value;
-
 				$this->dtpl_options[$key] = '';
 			}
 		} else {
 			$this->dtpl_name[$t_name] = '_no_file_';
-
 			$this->dtpl_data[$t_name] = $t_value;
-
 			$this->dtpl_data[strtoupper($t_name)] = @$t_value;
-
 			$this->dtpl_options[$t_name] = '';
 		}
 	}
 
-	function find_next($data, $spos) {
+	public function find_next($data, $spos) {
 		do {
 			$tag_spos = strpos($data, $this->tpl_start_tag, $spos + 1);
 
@@ -211,7 +223,7 @@ class pTemplate {
 		} while (true);
 	}
 
-	function find_next_curl($data, $spos) {
+	private function find_next_curl($data, $spos) {
 		$curl_b = strpos($data, '{', $spos + 1);
 
 		$curl_e = strpos($data, '}', $spos + 1);
@@ -235,7 +247,7 @@ class pTemplate {
 		}
 	}
 
-	function devide_dynamic($data) {
+	private function devide_dynamic($data) {
 		$start_from = -1;
 
 		$tag = $this->find_next($data, $start_from);
@@ -271,7 +283,7 @@ class pTemplate {
 		return $data;
 	}
 
-	function substitute_dynamic($data) {
+	private function substitute_dynamic($data) {
 		$this->sp = 0;
 
 		$start_from = -1;
@@ -339,11 +351,11 @@ class pTemplate {
 		}
 	}
 
-	function is_safe($fname) {
+	private function is_safe($fname) {
 		return (file_exists(($this->root_dir) . '/' . $fname)) ? true : false;
 	}
 
-	function get_file($fname) {
+	public function get_file($fname) {
 		if (is_array($fname)) {
 			$fname = (!empty($this->__includeRelativePath) ? $this->__includeRelativePath . '/' : '') . $fname[1];
 		}
@@ -366,10 +378,10 @@ class pTemplate {
 			return $res;
 		}
 
-		return "";
+		return null;
 	}
 
-	function find_origin($tname) {
+	private function find_origin($tname) {
 		if (!@$this->dtpl_name[$tname]) {
 			return false;
 		}
@@ -381,7 +393,7 @@ class pTemplate {
 		return $tname;
 	}
 
-	function parse_dynamic($pname, $tname, $ADD_FLAG) {
+	public function parse_dynamic($pname, $tname, $ADD_FLAG) {
 		$CHILD = false;
 		$parent = '';
 		$swap = '';
@@ -432,7 +444,7 @@ class pTemplate {
 		return true;
 	}
 
-	function parse($pname, $tname) {
+	public function parse($pname, $tname) {
 		if (!preg_match('/[A-Z0-9][A-Z0-9\_]*/', $pname)) {
 			return false;
 		}
@@ -485,7 +497,7 @@ class pTemplate {
 		}
 	}
 
-	function prnt($pname = '') {
+	public function prnt($pname = '') {
 		if ($pname) {
 			print @$this->namespace[$pname];
 		} else {
@@ -493,7 +505,7 @@ class pTemplate {
 		}
 	}
 
-	function FastPrint($pname = '') {
+	public function FastPrint($pname = '') {
 		if ($pname) {
 			$this->prnt($pname);
 		} else {
@@ -501,17 +513,8 @@ class pTemplate {
 		}
 	}
 
-	/* functions added for backward compatibility and debugging */
-	function strict() {
-	}
-
-	function no_strict() {
-	}
-
-	function show_unknown() {
-	}
-
-	function print_namespace() {
+	/* functions added for debugging */
+	public function print_namespace() {
 		print "<br><u>'namespace' contents</u><br>";
 
 		foreach ($this->namespace as $key => $value) {
@@ -519,7 +522,7 @@ class pTemplate {
 		}
 	}
 
-	function print_tpl_name() {
+	public function print_tpl_name() {
 		print "<br><u>'tpl_name' contents</u><br>";
 
 		foreach ($this->tpl_name as $key => $value) {
@@ -527,7 +530,7 @@ class pTemplate {
 		}
 	}
 
-	function print_dtpl_name() {
+	public function print_dtpl_name() {
 		print "<br><u>'dtpl_name' contents</u><br>";
 
 		foreach ($this->dtpl_name as $key => $value) {
@@ -535,7 +538,7 @@ class pTemplate {
 		}
 	}
 
-	function print_tpl_data() {
+	public function print_tpl_data() {
 		print "<br><u>'tpl_data' contents</u><br>";
 
 		foreach ($this->tpl_data as $key => $value) {
@@ -543,7 +546,7 @@ class pTemplate {
 		}
 	}
 
-	function print_dtpl_data() {
+	public function print_dtpl_data() {
 		print "<br><u>'dtpl_data' contents</u><br>";
 
 		foreach ($this->dtpl_data as $key => $value) {
@@ -551,7 +554,7 @@ class pTemplate {
 		}
 	}
 
-	function print_dtpl_options() {
+	public function print_dtpl_options() {
 		print "<br><u>'dtpl_options' contents</u><br>";
 
 		foreach ($this->dtpl_options as $key => $value) {
@@ -559,7 +562,7 @@ class pTemplate {
 		}
 	}
 
-	function print_dtpl_values() {
+	public function print_dtpl_values() {
 		print "<br><u>'dtpl_values' contents</u><br>";
 
 		foreach ($this->dtpl_values as $key => $value) {

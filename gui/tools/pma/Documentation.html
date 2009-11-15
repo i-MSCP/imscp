@@ -5,12 +5,12 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 13036 2009-10-12 21:59:48Z lem9 $ -->
+<!-- $Id: Documentation.html 13085 2009-10-30 16:13:24Z lem9 $ -->
 <head>
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>phpMyAdmin 3.2.2.1 - Documentation</title>
+    <title>phpMyAdmin 3.2.3 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -18,7 +18,7 @@
 <div id="header">
     <h1>
         <a href="http://www.phpmyadmin.net/">php<span class="myadmin">MyAdmin</span></a>
-        3.2.2.1 
+        3.2.3 
         Documentation
     </h1>
 </div>
@@ -54,7 +54,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 13036 2009-10-12 21:59:48Z lem9 $</i>
+        <i>$Id: Documentation.html 13085 2009-10-30 16:13:24Z lem9 $</i>
     </li>
 </ul>
 
@@ -1134,6 +1134,18 @@ ALTER TABLE `pma_column_comments`
         <abbr title="Internet Protocol">IP</abbr> address range)<br />
         Also IPv6 addresses are not supported.
     </dd>
+    <dt><span id="cfg_Servers_DisableIS">$cfg['Servers'][$i]['DisableIS']</span> boolean</dt>
+    <dd>Disable using <tt>INFORMATION_SCHEMA</tt> to retrieve information (use <tt>SHOW</tt> commands instead), because of speed issues when many databases are present. Currently used in some parts of the code, more to come.
+    </dd>
+    <dt><span id="cfg_Servers_ShowDatabasesCommand">$cfg['Servers'][$i]['ShowDatabasesCommand']</span> string</dt>
+    <dd>On a server with a huge number of databases, the default <tt>SHOW
+        DATABASES</tt> command used to fetch the name of available databases will
+    probably be too slow, so it can be replaced by faster commands (see
+    <tt>libraries/config.default.php</tt> for examples).
+    </dd>
+    <dt><span id="cfg_Servers_CountTables">$cfg['Servers'][$i]['CountTables']</span> boolean</dt>
+    <dd>Whether to count the number of tables for each database when preparing the list of databases for the navigation frame.
+    </dd>
     <dt><span id="cfg_Servers_SignonSession">$cfg['Servers'][$i]['SignonSession']</span> string</dt>
     <dd>Name of session which will be used for signon authentication method.
     </dd>
@@ -1190,11 +1202,13 @@ ALTER TABLE `pma_column_comments`
         effect when PHP is running in safe mode.</dd>
 
     <dt id="cfg_MemoryLimit">$cfg['MemoryLimit'] integer [number of bytes]</dt>
-    <dd>Set the number of bytes a script is allowed to allocate. If number set
+    <dd>Set the number of bytes a script is allowed to allocate. If set
         to zero, no limit is imposed.<br />
-        This setting is used while importing/exporting dump files but has no
-        effect when PHP is running in safe mode.<br />
-        You can also use any string as in php.ini, eg. '16M'.</dd>
+        This setting is used while importing/exporting dump files and at some
+        other places in phpMyAdmin so you definitely don't want to put here
+        a too low value. It has no effect when PHP is running in safe mode.<br />
+        You can also use any string as in php.ini, eg. '16M'. Ensure
+        you don't omit the suffix (16 means 16 bytes!)</dd>
 
     <dt id="cfg_SkipLockedTables">$cfg['SkipLockedTables'] boolean</dt>
     <dd>Mark used tables and make it possible to show databases with locked

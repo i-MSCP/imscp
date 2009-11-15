@@ -1,6 +1,16 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-15 Benedikt Heintel
+	- GUI:
+		* Changed class compatibility to PHP5
+	- PACKAGE:
+		* Updated License Text (PHP Files)
+		* Updated License Text (CSS Files)
+		* Updated License Text (JS Files)
+	- TOOLS:
+		* Updated PHPmyAdmin to version 3.2.3
+
 2009-11-15 Laurent Declercq
 	- PACKAGE:
 		* Updated License Text (All Makefile)
@@ -9,7 +19,7 @@ ispCP ω 1.0.3 Changelog
         - ENGINE:
                 * Fixed #2051: Again ispcp-dsk-quota message
 	- PACKAGE:
-		* Updated License Text
+		* Updated License Text (Engine and Make Files)
 
 2009-11-11 Sebastian Sellmeier
 	- GUI:
