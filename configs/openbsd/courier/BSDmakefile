@@ -1,31 +1,30 @@
 #!/usr/bin/make -f
-#
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (c) 2001-2006 by moleSoftware GmbH
-# http://www.molesoftware.com
-# Copyright (c) 2006-2009 by isp Control Panel
-# http://isp-control.net
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
+# Version: $Id$
 #
-# License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
 #
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
+# The Original Code is "VHCS - Virtual Hosting Control System".
 #
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# isp Control Panel. All Rights Reserved.
 #
-#
-# The ispCP ω Home Page is at:
+# The ispCP ω Home Page is:
 #
 #    http://isp-control.net
 #
