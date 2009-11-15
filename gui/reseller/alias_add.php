@@ -2,24 +2,30 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		SVN: $Id$
- * @link		http://isp-control.net
- * @author		ispCP Team
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
  * @license
- *   This program is free software; you can redistribute it and/or modify it under
- *   the terms of the MPL General Public License as published by the Free Software
- *   Foundation; either version 1.1 of the License, or (at your option) any later
- *   version.
- *   You should have received a copy of the MPL Mozilla Public License along with
- *   this program; if not, write to the Open Source Initiative (OSI)
- *   http://opensource.org | osi@opensource.org
- */
-
-/**
- * @todo check the hugh out commented code block, can we remove it?
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * The Original Code is "VHCS - Virtual Hosting Control System".
+ *
+ * The Initial Developer of the Original Code is moleSoftware GmbH.
+ * Portions created by Initial Developer are Copyright (C) 2001-2006
+ * by moleSoftware GmbH. All Rights Reserved.
+ * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * isp Control Panel. All Rights Reserved.
  */
 
 require '../include/ispcp-lib.php';
@@ -43,10 +49,8 @@ $tpl->assign(
 	)
 );
 
-/*
- *
+/**
  * static page messages.
- *
  */
 
 gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
@@ -56,7 +60,7 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Reseller : Add Alias'),
+		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Reseller: Add Alias'),
 		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 		'TR_ADD_ALIAS' => tr('Add domain alias'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -156,10 +160,6 @@ SQL_QUERY;
 		if (!chk_forward_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
-		/** @todo test and remove if no bugs encounter
-		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
-			$forward .= "/";
-		}*/
 	} else {
 		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
@@ -191,7 +191,8 @@ SQL_QUERY;
 	$status = Config::get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
-		"INSERT INTO `domain_aliasses`(`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
+		"INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, ".
+		 "`alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
 		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
@@ -203,54 +204,9 @@ SQL_QUERY;
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
-/*
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
-		$query = <<<SQL_QUERY
-			INSERT INTO `mail_users`
-				(`mail_acc`,
-				`mail_pass`,
-				`mail_forward`,
-				`domain_id`,
-				`mail_type`,
-				`sub_id`,
-				`status`,
-				`mail_auto_respond`)
-			VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) 
+		client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 
-		// create default forwarder for webmaster@alias.tld to the account's owner
-		$rs = exec_query($sql, $query, array('webmaster',
-				'_no_',
-				$user_email,
-				$cr_user_id,
-				'alias_forward',
-				$als_id,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-
-		// create default forwarder for postmaster@alias.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('postmaster',
-				'_no_',
-				$_SESSION['user_email'],
-				$cr_user_id,
-				'alias_forward',
-				$als_id,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-
-		// create default forwarder for abuse@alias.tld to the account's reseller
-		$rs = exec_query($sql, $query, array('abuse',
-				'_no_',
-				$_SESSION['user_email'],
-				$cr_user_id,
-				'alias_forward',
-				$als_id,
-				Config::get('ITEM_ADD_STATUS'),
-				'_no_'));
-	}
-*/
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");
@@ -279,7 +235,7 @@ SQL_QUERY;
 	$ar = exec_query($sql, $query, array($reseller_id));
 
 	if ($ar->RowCount() == 0) {
-		set_page_message(tr('You have no user records.'));
+		set_page_message(tr('There is no user records for this reseller to add an alias for.'));
 		user_goto('alias.php');
 		$tpl->assign('USER_ENTRY', '');
 		return false;
