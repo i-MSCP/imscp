@@ -196,8 +196,7 @@ class criticalUpdate extends ispcpUpdate {
 	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
 	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
-	protected function _criticalUpdate_4(&$engine_run_request)
-	{
+	protected function _criticalUpdate_4(&$engine_run_request) {
 		// moved to databaseUpdate::_databaseUpdate_24 because the critical updates are performed first
 		return array();
 	}
@@ -215,8 +214,7 @@ class criticalUpdate extends ispcpUpdate {
 	 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
 	 * @return		Type $sqlUpd Sql statements to be performed
 	 */
-	protected function _criticalUpdate_5(&$engine_run_request)
-	{
+	protected function _criticalUpdate_5(&$engine_run_request) {
 		// moved to databaseUpdate::_databaseUpdate_24 because the critical updates are performed first
 		return array();
 	}

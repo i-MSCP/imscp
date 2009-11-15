@@ -26,10 +26,6 @@
  */
 
 /**
- * @todo separate classes ispcpUpdate + versionUpdate into two separate files
- */
-
-/**
  * Abstract class to implement general update functions
  *
  * @author		Jochen Manz <zothos@zothos.net>
@@ -222,92 +218,5 @@ abstract class ispcpUpdate {
 		if ($engine_run_request) {
 			$this->sendEngineRequest();
 		}
-	}
-}
-
-/**
- * Implementing abstract class ispcpUpdate for future online version update functions
- *
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0
- * @see			Other Functions (in other Files)
- * @since		r1355
- */
-class versionUpdate extends ispcpUpdate {
-
-	/**
-	 * Database variable name for the update version
-	 * @var string
-	 */
-	protected $databaseVariableName = "VERSION_UPDATE";
-
-	/**
-	 * @todo Please descibe this variable!
-	 */
-	protected $errorMessage = "Version update %s failed";
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	public static function getInstance() {
-		static $instance = null;
-		if ($instance === null) $instance = new self();
-
-		return $instance;
-	}
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	protected function getCurrentVersion() {
-		return (int)Config::get('BuildDate');
-	}
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	protected function getNextVersion() {
-		$last_update = "http://www.isp-control.net/latest.txt";
-		ini_set('user_agent', 'Mozilla/5.0');
-		$timeout = 2;
-		$old_timeout = ini_set('default_socket_timeout', $timeout);
-		$dh2 = @fopen($last_update, 'r');
-		ini_set('default_socket_timeout', $old_timeout);
-
-		if (!is_resource($dh2)) {
-			$this->addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
-			return false;
-		}
-
-		$last_update_result = (int)fread($dh2, 8);
-		fclose($dh2);
-
-		return $last_update_result;
-	}
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	public function checkUpdateExists() {
-		return ($this->getNextVersion()>$this->currentVersion) ? true : false;
-	}
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	protected function returnFunctionName($version) {
-		return "dummyFunctionThatAllwaysExists";
-	}
-
-	/**
-	 * @todo Please descibe this method!
-	 */
-	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
-		// uncomment when engine part will be ready
-		/*
-		setConfig_Value('VERSION_UPDATE', $this->getNextVersion());
-		$engine_run_request = true;
-		*/
 	}
 }

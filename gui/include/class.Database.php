@@ -25,11 +25,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-
-/**
- * @todo separate the 2 classes Database + DatabaseResult in two different files
- */
-
 /**
  * This class wrap the PDO abstraction layer
  */
@@ -39,7 +34,7 @@ final class Database {
 	protected $_db = null;
 	public $nameQuote = '`';
 
-	private function __construct($user, $pass, $type, $host, $name) {
+	public function __construct($user, $pass, $type, $host, $name) {
 		// Avoid stacktrace and revelation of DB Password with try-catch block
 		try {
 			$this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass);
@@ -64,7 +59,7 @@ final class Database {
 	}
 
 	/**
-	 * Set an attribute
+	 * Sets an attribute
 	 *
 	 * Sets an attribute on the database handle.
 	 * See the PDO guideline for more information about this.
@@ -164,57 +159,6 @@ final class Database {
 
 	public function HasFailedTrans() {
 		return false;
-	}
-
-}
-
-final class DatabaseResult {
-
-	protected $_result = null;
-	protected $_fields = null;
-
-	public function __construct($result) {
-		if (!$result instanceof PDOStatement) {
-			return false;
-		}
-		$this->_result = $result;
-	}
-
-	public function __get($param) {
-		if ($param == 'fields') {
-			if ($this->_fields === null) {
-				$this->_fields = $this->_result->fetch();
-			}
-			return $this->_fields;
-		}
-		if ($param == 'EOF') {
-			if ($this->_result->rowCount() == 0) {
-				return true;
-			}
-			return !is_null($this->_fields) && !is_array($this->_fields);
-		}
-
-		throw new Exception('Unknown parameter: ' . $param);
-	}
-
-	public function fields($param) {
-		return $this->fields[$param];
-	}
-
-	public function RowCount() {
-		return $this->_result->rowCount();
-	}
-
-	public function RecordCount() {
-		return $this->_result->rowCount();
-	}
-
-	public function FetchRow() {
-		return $this->_result->fetch();
-	}
-
-	public function MoveNext() {
-		$this->_fields = $this->_result->fetch();
 	}
 
 }

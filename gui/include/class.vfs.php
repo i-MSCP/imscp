@@ -26,14 +26,10 @@
  */
 
 /**
- * @todo: Check access of class variables!
- */
-
-/**
  * Virtual File System main class
  *
- * This class allows the ispCP Control panel to browse and
- * edit all of the user files
+ * This class allows the ispCP Control Panel to browse and edit all of the user 
+ * files
  */
 class vfs {
 	/*
@@ -53,30 +49,30 @@ class vfs {
 	 * Domain name of this filesystem
 	 * @var string
 	 */
-	public $_domain = '';
+	private $_domain = '';
 	/**
 	 * FTP connection handle
 	 * @var resource
 	 */
-	public $_handle = null;
+	private $_handle = null;
 	/**
 	 * Database connection handle
 	 * @var resource
 	 */
-	public $_db = null;
+	private $_db = null;
 	/**
 	 * FTP temporary user name
 	 * @var string
 	 */
-	public $_user = '';
+	private $_user = '';
 	/**
 	 * FTP password
 	 * @var string
 	 */
-	public $_passwd = '';
+	private $_passwd = '';
 
 	/**
-	 * Create a new Virtual File System
+	 * Constructor - Create a new Virtual File System
 	 *
 	 * Creates a new Virtual File System object for the
 	 * specified domain.
@@ -88,20 +84,7 @@ class vfs {
 	 * @param resource $db Adodb database resource.
 	 * @return vfs
 	 */
-	function vfs($domain, &$db) {
-		// Sort of php4 destructor
-		register_shutdown_function(array(&$this, "__destruct"));
-		return $this->__construct($domain, $db);
-	}
-
-	/**
-	 * PHP5 constructor
-	 *
-	 * @param string $domain Domain name of the new VFS.
-	 * @param resource $db Adodb database resource.
-	 * @return vfs
-	 */
-	function __construct($domain, &$db) {
+	public function __construct($domain, &$db) {
 		$this->_domain = $domain;
 		$this->_db = &$db;
 
@@ -118,7 +101,7 @@ class vfs {
 	 * Destructor, ensure that we logout and remove the
 	 * temporary user
 	 */
-	function __destruct() {
+	public function __destruct() {
 		$this->close();
 	}
 
@@ -130,7 +113,7 @@ class vfs {
 	 *
 	 * @param resource $db Adodb database resource.
 	 */
-	function setDb(&$db) {
+	public function setDb(&$db) {
 		$this->_db = &$db;
 	}
 
@@ -139,12 +122,12 @@ class vfs {
 	 *
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	function _createTmpUser() {
+	private function _createTmpUser() {
 		// Get domain data
-		$query = '
+		$query = "
 			SELECT `domain_uid`, `domain_gid`
 			FROM `domain`
-			WHERE `domain_name` = ?';
+			WHERE `domain_name` = ?;";
 		$rs = exec_query($this->_db, $query, array($this->_domain));
 		if (!$rs) {
 			return false;
@@ -154,12 +137,11 @@ class vfs {
 		$this->_passwd = uniqid('tmp_', true);
 		$passwd = crypt_user_pass_with_salt($this->_passwd);
 		// Create the temporary user
-		$query = <<<SQL_QUERY
+		$query = "
 			INSERT INTO `ftp_users`
 				(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
 			VALUES
-				(?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+				(?, ?, ?, ?, ?, ?);";
 		$rs = exec_query($this->_db, $query, array($user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
 				Config::get('CMD_SHELL'), Config::get('FTP_HOMEDIR') . '/' . $this->_domain
 				));
@@ -176,11 +158,10 @@ SQL_QUERY;
 	 *
 	 * @return Returns TRUE on success or FALSE on failure.
 	 */
-	function _removeTmpUser() {
-		$query = <<<SQL_QUERY
+	private function _removeTmpUser() {
+		$query = "
 			DELETE FROM `ftp_users`
-			WHERE `userid` = ?
-SQL_QUERY;
+			WHERE `userid` = ?;";
 		$rs = exec_query($this->_db, $query, array($this->_user));
 
 		return $rs ? true : false;
@@ -191,7 +172,7 @@ SQL_QUERY;
 	 *
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	function open() {
+	public function open() {
 		// Check if we're already open
 		if (is_resource($this->_handle)) {
 			return true;
@@ -225,7 +206,7 @@ SQL_QUERY;
 	/**
 	 * Closes the virtual file system
 	 */
-	function close() {
+	public function close() {
 		// Close FTP connection
 		if ($this->_handle) {
 			ftp_close($this->_handle);
@@ -246,7 +227,7 @@ SQL_QUERY;
 	 * @param string $dirname VFS directory path.
 	 * @return array Returns an array of directory entries or FALSE on error.
 	 */
-	function ls($dirname) {
+	public function ls($dirname) {
 		// Ensure that we're open
 		if (!$this->open()) {
 			return false;
@@ -289,7 +270,7 @@ SQL_QUERY;
 	 * 					VFS_TYPE_LINK or VFS_TYPE_FILE.
 	 * @return boolean Returns TRUE if file exists or FALSE if it doesn't exist.
 	 */
-	function exists($file, $type = null) {
+	public function exists($file, $type = null) {
 		// Ensure that we're open
 		if (false === $this->open()) {
 			return false;
@@ -324,7 +305,7 @@ SQL_QUERY;
 	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	function get($file, $mode = VFS_ASCII) {
+	public function get($file, $mode = VFS_ASCII) {
 		// Ensure that we're open
 		if (!$this->open()) {
 			return false;
@@ -352,7 +333,7 @@ SQL_QUERY;
 	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	function put($file, $content, $mode = VFS_ASCII) {
+	public function put($file, $content, $mode = VFS_ASCII) {
 		// Ensure that we're open
 		if (!$this->open()) {
 			return false;
@@ -373,50 +354,5 @@ SQL_QUERY;
 		unlink($tmp);
 
 		return true;
-	}
-}
-
-/**
- * Make sure we have needed file_put_contents() functionallity
- *
- * @todo don't use this switch for downward compatible, this produces unmantainable code
- */
-if (!function_exists('file_put_contents')) {
-	function file_put_contents($filename, $content) {
-		// Make sure that we have a string to write
-		if (!is_scalar($content)) {
-			user_error('file_put_contents() The 2nd parameter should be a string',
-				E_USER_WARNING);
-			return false;
-		}
-		// Get the data size
-		$length = strlen($content);
-		// Open the file for writing
-		if (($fh = @fopen($filename, 'wb')) === false) {
-			user_error('file_put_contents() failed to open stream: Permission denied',
-				E_USER_WARNING);
-			return false;
-		}
-		// Write to the file
-		$bytes = 0;
-		if (($bytes = @fwrite($fh, $content)) === false) {
-			$errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s',
-				$length,
-				$filename);
-			user_error($errormsg, E_USER_WARNING);
-			return false;
-		}
-		// Close the handle
-		@fclose($fh);
-		// Check all the data was written
-		if ($bytes != $length) {
-			$errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space.',
-				$bytes,
-				$length);
-			user_error($errormsg, E_USER_WARNING);
-			return false;
-		}
-		// Return length
-		return $bytes;
 	}
 }

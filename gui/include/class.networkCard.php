@@ -39,7 +39,7 @@ class networkCard {
 		$this->_populateInterfaces();
 	}
 
-	function read($filename) {
+	public function read($filename) {
 		if (($result = @file_get_contents($filename)) === false) {
 			$this->errors .= sprintf(tr("File %s does not exists or cannot be reached!"), $filename);
 			return '';
@@ -48,13 +48,13 @@ class networkCard {
 		}
 	}
 
-	function network() {
+	public function network() {
 		$file = $this->read('/proc/net/dev');
 		preg_match_all('/(.+):.+/', $file, $dev_name);
 		return $dev_name[1];
 	}
 
-	protected function _getInterface() {
+	private function _getInterface() {
 		$interfaces_info = array();
 		foreach ($this->network() as $key => $value) {
 			$this->interfaces[] = trim($value);
@@ -91,7 +91,7 @@ class networkCard {
 		return $strBuffer;
 	}
 
-	protected function _populateInterfaces() {
+	private function _populateInterfaces() {
 		$err = '';
 		$message = $this->executeExternal(config::Get('CMD_IFCONFIG'), $err);
 
