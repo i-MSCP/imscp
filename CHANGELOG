@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-16 Benedikt Heintel
+	- GUI:
+		* Modified Database Class
+
 2009-11-16 Laurent Declercq
 	- ENGINE:
 		* Fixed #2061: The sender-access file is not backed-up and has no working copy
