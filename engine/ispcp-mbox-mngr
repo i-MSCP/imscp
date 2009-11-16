@@ -1123,10 +1123,10 @@ sub mbox_del_sasl_data {
 
 	do {
 
-		($rs, $rdata) = mbox_check_sasl_user("$mail_acc\@$dmn_name");
+		($rs, $dmn_name) = mbox_get_dmn_full_name($mbox_data);
 		return $rs if ($rs != 0);
 
-		($rs, $dmn_name) = mbox_get_dmn_full_name($mbox_data);
+		($rs, $rdata) = mbox_check_sasl_user("$mail_acc\@$dmn_name");
 		return $rs if ($rs != 0);
 
 		# Prepare cmd for deletion
