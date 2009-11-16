@@ -1,6 +1,13 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-16 Laurent Declercq
+	- ENGINE:
+		* Fixed #2061: The sender-access file is not backed-up and has no working copy
+		* Cleanup of the mbox_add_mta_cfg_autorespond_data() subroutine
+		* Cleanup of the mbox_add_sasl_data() subroutine
+		* Cleanup of the mbox_del_sasl_data() subroutine
+
 2009-11-15 Benedikt Heintel
 	- GUI:
 		* Changed class compatibility to PHP5
