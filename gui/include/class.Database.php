@@ -30,11 +30,14 @@
  */
 final class Database {
 
-	protected static $_instances = array();
-	protected $_db = null;
+	private static $_instances = array();
+	private $_db = null;
 	public $nameQuote = '`';
 
-	public function __construct($user, $pass, $type, $host, $name) {
+	/**
+	 * Constructor is a Singleton ans can only called by itsself
+	 */
+	private function __construct($user, $pass, $type, $host, $name) {
 		// Avoid stacktrace and revelation of DB Password with try-catch block
 		try {
 			$this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass);
