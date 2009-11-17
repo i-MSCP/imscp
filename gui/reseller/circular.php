@@ -152,7 +152,7 @@ SQL_QUERY;
 	}
 
 	set_page_message(tr('You send email to your users successfully!'));
-	write_log("Mass email was sended from Reseller " . $sender_name . " <" . $sender_email . ">");
+	write_log("Mass email was sent from Reseller " . $sender_name . " <" . $sender_email . ">");
 }
 
 function send_circular_email($to, $from, $subject, $message) {

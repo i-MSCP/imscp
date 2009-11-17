@@ -20,7 +20,7 @@
  *
  * The Original Code is "ispCP - isp Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
+ * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2009 by
  * isp Control Panel. All Rights Reserved.
  */
