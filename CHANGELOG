@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-16 Laurent Declercq
+	- SETUP:
+		* Deleting of several sql files that are not longer needed
+
 2009-11-16 Benedikt Heintel
 	- GUI:
 		* Modified Database Class
