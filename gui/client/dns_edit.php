@@ -20,7 +20,7 @@
  *
  * The Original Code is "ispCP - isp Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
+ * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2009 by
  * isp Control Panel. All Rights Reserved.
  */
@@ -43,7 +43,8 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr("ispCP - Manage Domain Alias/Add DNS zone's record") : tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
+		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr("ispCP - Manage Domain Alias/Add DNS zone's record") : 
+													tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
@@ -473,8 +474,8 @@ function check_fwd_data(&$tpl, $edit_id) {
 		}
 		$alias_id = $res->FetchRow();
 		$record_domain = $alias_id['domain_name'];
+		// if no alias is selected, ID is 0 else the real alias_id
 		$alias_id = $alias_id['alias_id'];
-		$alias_id = ($alias_id == 0) ? null : $alias_id;
 	} else {
 		$res = exec_query($sql, "
 		SELECT
@@ -577,7 +578,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			exec_query($sql, $query, array($_dns, $_class, $_type, $_text, $edit_id));
 		}
 
-		if (empty($alias_id)) {
+		if ($alias_id == 0) {
 			$query = "
 				UPDATE
 					`domain`

@@ -811,6 +811,35 @@ SQL_QUERY;
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fixes for ticket #2047 http://www.isp-control.net/ispcp/ticket/2047.
+	 *
+	 * @author		Benedikt Heintel
+	 * @copyright	2006-2009 by ispCP | http://isp-control.net
+	 * @version		1.0.2
+	 * @since		r2173
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_26() {
+
+		$sqlUpd = array();
+
+		// Change all NULL values to decimal 0
+		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ". 
+					"WHERE `domain_dns`.`alias_id`= NULL;";
+		// Remove NULL value for alias_id
+		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".
+					"`domain_dns`.`alias_id` INT(11) NOT NULL;";
+		// Add Unique Key
+		$sqlUpd[] = "ALTER TABLE `domain_dns` ".
+					"ADD UNIQUE (`domain_id`, `alias_id`, `domain_dns`, ".
+					"`domain_class`, `domain_type`, `domain_text`);";
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
