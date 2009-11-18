@@ -243,8 +243,8 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$data = null;
 		$query = "
 			SELECT
-				NULL AS `alias_id`,
-				domain.`domain_name` AS `domain_name`
+				'0' AS `alias_id`,
+				`domain`.`domain_name` AS `domain_name`
 			FROM
 				`domain`
 			WHERE
@@ -450,7 +450,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 				*
 			FROM (
 				SELECT
-					NULL AS `alias_id`,
+					'0' AS `alias_id`,
 					`domain`.`domain_name` AS `domain_name`
 				FROM
 					`domain`
