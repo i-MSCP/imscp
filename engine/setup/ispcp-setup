@@ -926,6 +926,9 @@ sub setup_host_system {
 	$rs = setup_crontab();
 	return $rs if ($rs != 0);
 
+	$rs = setup_rkhunter();
+	return $rs if ($rs != 0);
+
 	$rs = setup_hosts();
 	return $rs if ($rs != 0);
 

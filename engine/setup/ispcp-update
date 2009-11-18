@@ -750,6 +750,17 @@ if ($rs != 0) {
 	exit 1;
 }
 
+$rs = setup_rkhunter();
+
+if ($rs != 0) {
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+	print STDERR "$msg\n";
+
+	exit 1;
+}
+
 $rs = update_shut_down();
 
 if ($rs != 0) {
