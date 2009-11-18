@@ -1755,7 +1755,7 @@ sub setup_rkhunter {
 
 	if(-e '/etc/default/rkhunter')
 	{
-		if(defined &update_engine)
+		if(defined &prepare_update)
 		{
 			# Deleting files that can cause problems
 			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
