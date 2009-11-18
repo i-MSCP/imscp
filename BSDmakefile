@@ -58,6 +58,7 @@ install:
 	cd ./engine && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
+	cd ./database && $(MAKE) install
 
 	#
 	# Patch some variable
@@ -109,6 +110,7 @@ uninstall:
 	cd ./engine && $(MAKE) uninstall
 	cd ./gui && $(MAKE) uninstall
 	cd ./keys && $(MAKE) uninstall
+	cd ./database && $(MAKE) uninstall
 	rm -rf $(SYSTEM_CONF)
 	rm -rf $(SYSTEM_ROOT)
 	rm -rf $(SYSTEM_LOG)

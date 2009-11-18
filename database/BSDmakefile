@@ -4,7 +4,7 @@
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
-# Version: $Id$
+# Version: $Id: BSDmakefile 2133 2009-11-14 00:34:49Z nuxwin $
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -29,15 +29,20 @@
 #    http://isp-control.net
 #
 
-export
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
+.include <../Makefile.inc>
+.endif
+
+DATABASE_DIR=$(SYSTEM_CONF)/database
 
 install:
-
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/database
-	cp ./database.sql $(SYSTEM_CONF)/database
-	cp ./languages.sql $(SYSTEM_CONF)/database
+	$(SYSTEM_MAKE_DIRS) $(DATABASE_DIR)
+	cp ./database.sql $(DATABASE_DIR)
+	cp ./languages.sql $(DATABASE_DIR)
 
 uninstall:
+	rm -rf $(DATABASE_DIR)
 
-	rm -rf $(SYSTEM_CONF)/database
-
+.PHONY: install uninstall
