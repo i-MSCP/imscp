@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-18 Laurent Declercq
+	- GUI:
+		* Fixed #1725: /var/log/rkhunter.log not readable (AGAIN)
+
 2009-11-17 Benedikt Heintel
 	- GUI:
 		* Corrected spelling mistake

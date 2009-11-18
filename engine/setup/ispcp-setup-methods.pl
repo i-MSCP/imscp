@@ -1,5 +1,5 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
@@ -1742,6 +1742,41 @@ sub setup_ispcpd {
 
 	push_el(\@main::el, 'setup_ispcpd()', 'Ending...');
 	return 0;
+}
+
+# If the /etc/default/rkhunter exists :
+# During update, remove the old log files
+# For both, disable the daily runs of the default rkhunter cron task
+sub setup_rkhunter {
+
+	push_el(\@main::el, 'setup_rkhunter()', 'Starting...');
+
+	my ($rs, $rdata, $cmd) = (undef, undef, undef);
+
+	if(-e '/etc/default/rkhunter')
+	{
+		if(defined &update_engine)
+		{
+			# Deleting files that can cause problems
+			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
+			$rs = sys_command_rs($cmd);
+			return $rs if($rs != 0);
+		}
+
+		($rs, $rdata) = get_file('/etc/default/rkhunter');
+		return $rs if($rs !=0);
+
+		# Disable the daily runs of the default rkhunter cron task
+		$rdata =~ s/CRON_DAILY_RUN="yes"/CRON_DAILY_RUN="no"/gmi;
+
+		# Saving the modified file
+		$rs = save_file('/etc/default/rkhunter', $rdata);
+		return $rs if($rs !=0);
+	}
+
+	push_el(\@main::el, 'setup_rkhunter()', 'Ending...');
+
+	0;
 }
 
 ########################################################################
