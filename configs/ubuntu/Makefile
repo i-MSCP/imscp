@@ -39,7 +39,6 @@ install:
 		(cd ./awstats && $(MAKE) install &); \
 		(cd ./bind && $(MAKE) install &); \
 		(cd ./cron.d && $(MAKE) install &); \
-		(cd ./database && $(MAKE) install &);  \
 		(cd ./fcgi && $(MAKE) install &); \
 		(cd ./init.d && $(MAKE) install &); \
 		(cd ./postfix && $(MAKE) install &); \
@@ -56,7 +55,6 @@ uninstall:
 		(cd ./awstats && $(MAKE) uninstall &); \
 		(cd ./bind && $(MAKE) uninstall &); \
 		(cd ./cron.d && $(MAKE) uninstall &); \
-		(cd ./database && $(MAKE) uninstall &); \
 		(cd ./init.d && $(MAKE) uninstall &); \
 		(cd ./postfix && $(MAKE) uninstall &); \
 		(cd ./courier && $(MAKE) uninstall &); \
