@@ -1,12 +1,21 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-19 Laurent Declercq
+	- DATABASE:
+		* Updated database file used for new installations:
+			- Added databaseUpdate 26
+			- Added license header
+			- Added svn Id property
+	- LANGUAGES:
+		* Updated Dutch language files
+
 2009-11-18 Laurent Declercq
 	- GUI:
 		* Fixed #1725: /var/log/rkhunter.log not readable (AGAIN)
 	- DATABASE:
-		* The Sql files (database.sql, language.sql) are the same for all distributions. Moved into only one directory to 
-facilitate the maintenances. 
+		* The Sql files (database.sql, language.sql) are the same for all distributions. Moved into only one directory to
+facilitate the maintenances.
 
 2009-11-17 Benedikt Heintel
 	- GUI:

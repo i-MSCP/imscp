@@ -1,18 +1,41 @@
-create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-use {DATABASE_NAME};
-
 --
 -- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2009 by ispCP | http://isp-control.net
 --
+-- Version: $Id$
+--
+-- The contents of this file are subject to the Mozilla Public License
+-- Version 1.1 (the "License"); you may not use this file except in
+-- compliance with the License. You may obtain a copy of the License at
+-- http://www.mozilla.org/MPL/
+--
+-- Software distributed under the License is distributed on an "AS IS"
+-- basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+-- License for the specific language governing rights and limitations
+-- under the License.
+--
+-- The Original Code is "VHCS - Virtual Hosting Control System".
+--
+-- The Initial Developer of the Original Code is moleSoftware GmbH.
+-- Portions created by Initial Developer are Copyright (C) 2001-2006
+-- by moleSoftware GmbH. All Rights Reserved.
+-- Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+-- isp Control Panel. All Rights Reserved.
+--
+-- The ispCP ω Home Page is:
+--
+--    http://isp-control.net
+--
 -- --------------------------------------------------------
+
+create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+use {DATABASE_NAME};
 
 --
 -- Table structure for table `admin`
 --
-
 
 CREATE TABLE `admin` (
   `admin_id` int(10) unsigned NOT NULL auto_increment,
@@ -90,7 +113,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '25'),
+('DATABASE_REVISION', '26'),
 ('CRITICAL_UPDATE_REVISION', '5');
 
 -- --------------------------------------------------------
@@ -167,16 +190,17 @@ CREATE TABLE `domain_aliasses` (
 -- Table structure for table `domain_dns`
 --
 
-CREATE TABLE IF NOT EXISTS `domain_dns` (
+CREATE TABLE `domain_dns` (
   `domain_dns_id` int(11) NOT NULL auto_increment,
   `domain_id` int(11) NOT NULL,
-  `alias_id` int(11) default NULL,
+  `alias_id` int(11) NOT NULL,
   `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
   `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`domain_dns_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY  (`domain_dns_id`),
+  UNIQUE KEY `domain_id` (`domain_id`,`alias_id`,`domain_dns`,`domain_class`,`domain_type`,`domain_text`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -421,6 +445,7 @@ CREATE TABLE `orders_settings` (
   `footer` text collate utf8_unicode_ci,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
