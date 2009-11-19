@@ -1349,6 +1349,23 @@ sub setup_httpd {
 	}
 
 	#
+	## Disable the default NameVirtualHost directive to avoid warning during service start / restart
+	#
+	if(-e '/etc/apache2/port.conf')
+	{
+		# Loading the file
+		($rs, $rdata) = get_file('/etc/apache2/port.conf');
+		return $rs if($rs != 0);
+
+		# Disable the default NameVirtualHost directive
+		$rdata =~ s/NameVirtualHost \*:80/#NameVirtualHost *:80/gi;
+
+		# Saving the modified file
+		$rs = save_file('/etc/apache2/port.conf', $rdata);
+		return $rs if($rs != 0);
+	}
+
+	#
 	# start fastcgi, suexec and rewrite mod
 	#
 
