@@ -7,6 +7,8 @@ ispCP ω 1.0.3 Changelog
 			- Added databaseUpdate 26
 			- Added license header
 			- Added svn Id property
+	- LANGUAGES:
+		* Updated Dutch language files
 
 2009-11-18 Laurent Declercq
 	- GUI:

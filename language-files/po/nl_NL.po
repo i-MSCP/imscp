@@ -16,10 +16,10 @@ msgstr ""
 
 #. Please ignore this entry
 msgid "encoding"
-msgstr "codering"
+msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "_: Gelokaliseerde taal"
+msgstr "Dutch"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega een Virtueel Hosting Beheer Systeem"
