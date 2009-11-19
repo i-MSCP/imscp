@@ -9,6 +9,8 @@ ispCP ω 1.0.3 Changelog
 			- Added svn Id property
 	- LANGUAGES:
 		* Updated Dutch language files
+	- SETUP:
+		* Added code to disable the default "NameVirtualHost *:80" directive. That is to avoid the Apache warn during start / restart.
 
 2009-11-18 Laurent Declercq
 	- GUI:
