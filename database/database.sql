@@ -13,7 +13,6 @@ use {DATABASE_NAME};
 -- Table structure for table `admin`
 --
 
-
 CREATE TABLE `admin` (
   `admin_id` int(10) unsigned NOT NULL auto_increment,
   `admin_name` varchar(200) collate utf8_unicode_ci default NULL,
@@ -39,7 +38,7 @@ CREATE TABLE `admin` (
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +89,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '25'),
+('DATABASE_REVISION', '26'),
 ('CRITICAL_UPDATE_REVISION', '5');
 
 -- --------------------------------------------------------
@@ -167,16 +166,17 @@ CREATE TABLE `domain_aliasses` (
 -- Table structure for table `domain_dns`
 --
 
-CREATE TABLE IF NOT EXISTS `domain_dns` (
+CREATE TABLE `domain_dns` (
   `domain_dns_id` int(11) NOT NULL auto_increment,
   `domain_id` int(11) NOT NULL,
-  `alias_id` int(11) default NULL,
+  `alias_id` int(11) NOT NULL,
   `domain_dns` varchar(50) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
   `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`domain_dns_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY  (`domain_dns_id`),
+  UNIQUE KEY `domain_id` (`domain_id`,`alias_id`,`domain_dns`,`domain_class`,`domain_type`,`domain_text`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -338,7 +338,7 @@ CREATE TABLE `log` (
   `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `log_message` varchar(250) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -421,6 +421,7 @@ CREATE TABLE `orders_settings` (
   `footer` text collate utf8_unicode_ci,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -506,7 +507,7 @@ CREATE TABLE `server_ips` (
   `ip_ssl_domain_id` int(10) default NULL,
   `ip_status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `ip_id` (`ip_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -654,4 +655,4 @@ CREATE TABLE `user_gui_props` (
   `layout` varchar(255) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
