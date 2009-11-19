@@ -1,7 +1,7 @@
 ispcp_table = Dutch
 ispcp_language = Dutch
 ispcp_languageSetlocaleValue = nl_NL
-encoding = codering
+encoding = UTF-8
 ispCP Omega a Virtual Hosting Control System = ispCP Omega een Virtueel Hosting Beheer Systeem
 Administrator login = Beheerder login
 Username = Gebruikersnaam
