@@ -591,8 +591,9 @@ sub mbox_add_mta_cfg_autorespond_data {
 	foreach($main::cfg{'MTA_VIRTUAL_ALIAS_HASH'}, $main::cfg{'MTA_TRANSPORT_HASH'})
 	{
 		next if(!-e $_);
+		my ($fname) = /.*\/(.*)$/;
 
-		$cmd = "$main::cfg{'CMD_CP'} -p $_ $bkp_dir/$_.$timestamp";
+		$cmd = "$main::cfg{'CMD_CP'} -p $_ $bkp_dir/$fname.$timestamp";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs !=0);
 	}
