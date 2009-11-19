@@ -3,7 +3,10 @@ ispCP ω 1.0.3 Changelog
 
 2009-11-19 Laurent Declercq
 	- DATABASE:
-		* Updated database file used for new installations. (Added databaseUpdate 26)
+		* Updated database file used for new installations:
+			- Added databaseUpdate 26
+			- Added license header
+			- Added svn Id property
 
 2009-11-18 Laurent Declercq
 	- GUI:
