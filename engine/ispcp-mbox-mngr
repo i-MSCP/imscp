@@ -382,7 +382,7 @@ sub mbox_add_sasl_data {
 		{
 			my $timestamp = time;
 
-			$cmd = "main::cfg{'CMD_CP'} -p $main::cfg{'MTA_SENDER_ACCESS_HASH'} $bkp_dir/sender-access.$timestamp";
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'MTA_SENDER_ACCESS_HASH'} $bkp_dir/sender-access.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs != 0);
 		}
@@ -394,7 +394,7 @@ sub mbox_add_sasl_data {
 		return $rs if ($rs != 0);
 
 		# Install the new file in production directory
-		$cmd = "main::cfg{'CMD_CP'} -pf $wrk_dir/sender-access $main::cfg{'MTA_SENDER_ACCESS_HASH'}";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/sender-access $main::cfg{'MTA_SENDER_ACCESS_HASH'}";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 
@@ -592,7 +592,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 	{
 		next if(!-e $_);
 
-		$cmd = "main::cfg{'CMD_CP'} -p $_ $bkp_dir/$_.$timestamp";
+		$cmd = "$main::cfg{'CMD_CP'} -p $_ $bkp_dir/$_.$timestamp";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs !=0);
 	}
@@ -635,7 +635,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 		return $rs if ($rs != 0);
 
 		# Install the new file in production directory
-		$cmd = "main::cfg{'CMD_CP'} -pf $wrk_dir/aliases $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'}";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/aliases $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'}";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 
@@ -651,7 +651,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 		return $rs if ($rs != 0);
 
 		# Install the new file in production directory
-		$cmd = "main::cfg{'CMD_CP'} -pf $wrk_dir/transport $main::cfg{'MTA_TRANSPORT_HASH'}";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/transport $main::cfg{'MTA_TRANSPORT_HASH'}";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 
@@ -767,7 +767,7 @@ sub mbox_check_last_transport_entry {
 			from mail_users
 			where (status = 'ok' or status = 'change')
 			and mail_auto_respond != '_no_'
-			and domain_id = $mail_dmn_id 
+			and domain_id = $mail_dmn_id
 			and sub_id = 0
 			and mail_type != 'normal_catchall'
 			and mail_type != 'alias_catchall';
@@ -1155,7 +1155,7 @@ sub mbox_del_sasl_data {
 		{
 			my $timestamp = time;
 
-			$cmd = "main::cfg{'CMD_CP'} -p $main::cfg{'MTA_SENDER_ACCESS_HASH'} $bkp_dir/sender-access.$timestamp";
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'MTA_SENDER_ACCESS_HASH'} $bkp_dir/sender-access.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs != 0);
 		}
@@ -1167,7 +1167,7 @@ sub mbox_del_sasl_data {
 		return $rs if ($rs != 0);
 
 		# Install the new file in production directory
-		$cmd = "main::cfg{'CMD_CP'} -pf $wrk_dir/sender-access $main::cfg{'MTA_SENDER_ACCESS_HASH'}";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/sender-access $main::cfg{'MTA_SENDER_ACCESS_HASH'}";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 
