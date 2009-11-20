@@ -1351,17 +1351,17 @@ sub setup_httpd {
 	#
 	## Disable the default NameVirtualHost directive to avoid warning during service start / restart
 	#
-	if(-e '/etc/apache2/port.conf')
+	if(-e '/etc/apache2/ports.conf')
 	{
 		# Loading the file
-		($rs, $rdata) = get_file('/etc/apache2/port.conf');
+		($rs, $rdata) = get_file('/etc/apache2/ports.conf');
 		return $rs if($rs != 0);
 
 		# Disable the default NameVirtualHost directive
-		$rdata =~ s/NameVirtualHost \*:80/#NameVirtualHost *:80/gi;
+		$rdata =~ s/^NameVirtualHost \*:80/#NameVirtualHost \*:80/gmi;
 
 		# Saving the modified file
-		$rs = save_file('/etc/apache2/port.conf', $rdata);
+		$rs = save_file('/etc/apache2/ports.conf', $rdata);
 		return $rs if($rs != 0);
 	}
 
