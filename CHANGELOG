@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-20 Laurent Declercq
+	- UTILITIES:
+		* Fixed first-check.sh: 'Fatal error: Class 'Config' not found'
+
 2009-11-19 Laurent Declercq
 	- DATABASE:
 		* Updated database file used for new installations:
