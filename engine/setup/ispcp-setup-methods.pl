@@ -348,10 +348,53 @@ sub ask_admin_email {
 	if (!defined($rdata) || $rdata eq '') {
 		return 1;
 	}
-	else {
-		if ($rdata =~ /^([\w\W]{1,255})\@([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	else
+	{
+		# Note About the mail validation
+		#
+		# The RFC 2822 list quite a few characters that can be
+		# used in an email address. However, in practice, the
+		# mail client accept a limited version of this list.
+		#
+		# This regular expression allows the character list in
+		# the local part of the email. Regarding the domain part,
+		# the syntax is much more strict.
+		#
+		# Local part:
+		#
+		#  Validation is a limited version of the syntax allowed by the RFC 2228.
+		#
+		# Domain part:
+		#
+		# The syntax is much more strict:
+		#
+		# - The dash characters are forbidden in the beginning and end of line;
+		# - The underscore is prohibited.
+		# - It requires at least one second level domain in accordance with
+		#   standards set by the RFC 952 and 1123.
+		# - It allows only IPv4 domain literal
+		if ($rdata =~
+			/^
+				# Optional segment for the local part
+				(?:[-!#\$%&'*+\/=?^`{|}~\w]+\.)*
+				# Segment required for the local part
+				[-!#\$%&'*+\/=?^`{|}~\w]+
+				# Separator
+				@
+				# Domain part
+				(?:
+ 					# As common form (ex. local@domain part)
+					(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,6})
+					|
+ 					# As IPv4 domain literal ( ex local@[192.168.0.130] )
+ 					(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
+				)
+			$/x)
+		{
 			$main::ua{'admin_email'} = $rdata;
-		} else {
+		}
+		else
+		{
 			print STDOUT "\n\tE-mail address not valid!";
 			return 1;
 		}
@@ -1351,17 +1394,17 @@ sub setup_httpd {
 	#
 	## Disable the default NameVirtualHost directive to avoid warning during service start / restart
 	#
-	if(-e '/etc/apache2/port.conf')
+	if(-e '/etc/apache2/ports.conf')
 	{
 		# Loading the file
-		($rs, $rdata) = get_file('/etc/apache2/port.conf');
+		($rs, $rdata) = get_file('/etc/apache2/ports.conf');
 		return $rs if($rs != 0);
 
 		# Disable the default NameVirtualHost directive
-		$rdata =~ s/NameVirtualHost \*:80/#NameVirtualHost *:80/gi;
+		$rdata =~ s/^NameVirtualHost \*:80/#NameVirtualHost \*:80/gmi;
 
 		# Saving the modified file
-		$rs = save_file('/etc/apache2/port.conf', $rdata);
+		$rs = save_file('/etc/apache2/ports.conf', $rdata);
 		return $rs if($rs != 0);
 	}
 

@@ -1,6 +1,14 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-21 Laurent Declercq
+	- SETUP:
+		* Checks of email address: Application of RFC 2228, 952 and 1123
+
+2009-11-20 Laurent Declercq
+	- UTILITIES:
+		* Fixed first-check.sh: 'Fatal error: Class 'Config' not found'
+
 2009-11-19 Laurent Declercq
 	- DATABASE:
 		* Updated database file used for new installations:
