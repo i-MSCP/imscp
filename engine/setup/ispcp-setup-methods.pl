@@ -362,7 +362,7 @@ sub ask_admin_email {
 		#
 		# Local part:
 		#
-		#  Validation is a limited version of the syntax allowed by the RFC 2228.
+		#  Validation is a limited version of the syntax allowed by the RFC 2822.
 		#
 		# Domain part:
 		#
@@ -383,7 +383,7 @@ sub ask_admin_email {
 				@
 				# Domain part
 				(?:
- 					# As common form (ex. local@domain part)
+ 					# As common form ( ex. local@domain.tld )
 					(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,6})
 					|
  					# As IPv4 domain literal ( ex local@[192.168.0.130] )
