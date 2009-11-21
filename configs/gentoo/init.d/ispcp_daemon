@@ -41,8 +41,10 @@ depend() {
 
 start() {
     ebegin "Starting $SVCNAME"
-    start-stop-daemon --start --exec $DAEMON --pidfile $PID
-    eend $?
+	start-stop-daemon --start --exec $DAEMON --make-pidfile --pidfile $PID
+	sleep 1
+	/bin/pidof ispcp_daemon > $PID
+	eend $?
 }
 
 

@@ -206,8 +206,8 @@ sub mysqldb_quota_by_mysql_engine {
 
 				foreach(@$ref) {
 					# Replace unknown values by 0
-					$data_length  = (@$_[6] =~ /^\d+$/) ? @$_[6] : 0;
-					$index_length = (@$_[8] =~ /^\d+$/) ? @$_[8] : 0;
+					$data_length  = (defined(@$_[6]) && @$_[6] =~ /^\d+$/) ? @$_[6] : 0;
+					$index_length = (defined(@$_[8]) && @$_[8] =~ /^\d+$/) ? @$_[8] : 0;
 
 					$size += $data_length + $index_length;
 				}
