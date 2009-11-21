@@ -72,7 +72,7 @@ function gen_directories(&$tpl) {
 	// Show directories only
 	foreach ($list as $entry) {
 		// Skip non-directory entries
-		if ($entry['type'] != VFS_TYPE_DIR) {
+		if ($entry['type'] != vfs::VFS_TYPE_DIR) {
 			continue;
 		}
 		// Skip '.' and '..'
