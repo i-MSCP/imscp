@@ -362,7 +362,7 @@ sub ask_admin_email {
 		#
 		# Local part:
 		#
-		#  Validation is a limited version of the syntax allowed by the RFC 2228.
+		#  Validation is a limited version of the syntax allowed by the RFC 2822.
 		#
 		# Domain part:
 		#
@@ -375,6 +375,7 @@ sub ask_admin_email {
 		# - It allows only IPv4 domain literal
 		if ($rdata =~
 			/^
+				# Local part :
 				# Optional segment for the local part
 				(?:[-!#\$%&'*+\/=?^`{|}~\w]+\.)*
 				# Segment required for the local part
@@ -383,18 +384,20 @@ sub ask_admin_email {
 				@
 				# Domain part
 				(?:
- 					# As common form (ex. local@domain part)
-					(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,6})
+				# As common form ( ex. local@domain.tld ) :
+					(?:
+					[a-z0-9](?:
+					(?:[.](?!-))?[-a-z0-9]*[a-z0-9](?:(?:(?<!-)[.](?!-))?[-a-z0-9])*)?
+					)+
+					(?<!-)[.][a-z0-9]{2,6}
 					|
- 					# As IPv4 domain literal ( ex local@[192.168.0.130] )
- 					(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
+					# As IPv4 domain literal ( ex. local@[192.168.0.130] )
+					(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
 				)
-			$/x)
-		{
+			$/x
+		) {
 			$main::ua{'admin_email'} = $rdata;
-		}
-		else
-		{
+		} else {
 			print STDOUT "\n\tE-mail address not valid!";
 			return 1;
 		}
