@@ -374,7 +374,7 @@ sub ask_admin_email {
 		#   standards set by the RFC 952 and 1123.
 		# - It allows only IPv4 domain literal
 		if ($rdata =~
-			/<^
+			/^
 				# Optional segment for the local part
 				(?:[-!#\$%&'*+\/=?^`{|}~\w]+\.)*
 				# Segment required for the local part
