@@ -158,8 +158,8 @@ SQL_QUERY;
 				`id` = '$update_id';
 SQL_QUERY;
 
-		send_request();
 		$rs = exec_query($sql, $query, array($user_id, $group_id, $area_name, $path, $tochange_status));
+		send_request();
 		set_page_message(tr('Protected area updated successfully!'));
 	} else {
 		$query = <<<SQL_QUERY
@@ -169,8 +169,8 @@ SQL_QUERY;
 				(?, ?, ?, ?, ?, ?, ?);
 SQL_QUERY;
 
-		send_request();
 		$rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
+		send_request();
 		set_page_message(tr('Protected area created successfully!'));
 	}
 
