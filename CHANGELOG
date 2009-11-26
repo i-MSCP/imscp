@@ -1,7 +1,7 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-11-25 Benedikt Heintel
+2009-11-26 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2074: Wrong count for mail accounting in dovecot
 
