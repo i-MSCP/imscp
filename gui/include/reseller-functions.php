@@ -567,6 +567,10 @@ function get_user_props($user_id) {
 	);
 } // end of get_user_props();
 
+/**
+ * @deprecated function deprecated in revision r2228
+ */
+/*
 function rsl_full_domain_check($data) {
 
 	$data .= '.';
@@ -595,6 +599,7 @@ function rsl_full_domain_check($data) {
 
 	return ($res == 0) ? 0 : 1;
 } // end of full_domain_check()
+*/
 
 /**
  * Generate IP list

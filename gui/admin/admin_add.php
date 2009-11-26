@@ -219,7 +219,7 @@ function add_user(&$tpl, &$sql) {
 function check_user_data() {
 	$sql = Database::getInstance();
 
-	if (!chk_username($_POST['username'])) {
+	if (!validates_username($_POST['username'])) {
 		set_page_message(tr("Incorrect username length or syntax!"));
 
 		return false;

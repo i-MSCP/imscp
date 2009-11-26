@@ -128,6 +128,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
+	global $validation_err_msg;
 
 	$cr_user_id = $dmn_id = $_POST['usraccounts'];
 	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
@@ -148,11 +149,11 @@ SQL_QUERY;
 
 	// $mount_point = "/".$mount_point;
 	// First check is the data correct
-	if (!chk_dname($alias_name)) {
-		$err_al = tr("Incorrect domain name syntax");
+	if (!validates_dname($alias_name)) {
+		$err_al = $validation_err_msg;
 	} else if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
 		$err_al = tr('Domain with that name already exists on the system!');
-	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
+	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
 	} else if ($alias_name == Config::get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
@@ -204,7 +205,7 @@ SQL_QUERY;
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) 
+	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
 		client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 
 	send_request();

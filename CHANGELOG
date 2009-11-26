@@ -1,6 +1,16 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-26 Laurent Declercq
+	- GUI:
+		* Fixed #2041: Internationalized domain name - unable to sets a subdomain as Idna label
+		* New routines for the validation of mount points and usernames - The function that checks the mount point should not
+use the routines related to the validation of user names
+
+2009-11-26 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2074: Wrong count for mail accounting in dovecot
+
 2009-11-21 Benedikt Heintel
 	- DISTS:
 		* Fixed #2069: [gentoo] /etc/init.d/ispcp_daemon patch

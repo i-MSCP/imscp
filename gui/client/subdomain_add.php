@@ -319,11 +319,17 @@ function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)
 }
 
 function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
+
+	global $validation_err_msg;
 	$dmn_id = $domain_id = get_user_domain_id($sql, $user_id);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
+
 		if (empty($_POST['subdomain_name'])) {
 			set_page_message(tr('Please specify subdomain name!'));
+			return;
+		} elseif (strpos($_POST['subdomain_name'], '.')) {
+			set_page_message(tr('Wrong subdomain syntax!'));
 			return;
 		}
 
@@ -338,10 +344,12 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		}
 
 		if ($_POST['dmn_type'] === 'als') {
+
 			if (!isset($_POST['als_id'])) {
 				set_page_message(tr('No valid alias domain selected!'));
 				return;
 			}
+
 			$query_alias = "
 				SELECT
 					`alias_mount`
@@ -352,9 +360,12 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 			";
 
 			$rs = exec_query($sql, $query_alias, array($_POST['als_id']));
+
 			$als_mnt = $rs->fields['alias_mount'];
+
 			if ($sub_mnt_pt[0] != '/')
 				$sub_mnt_pt = '/'.$sub_mnt_pt;
+
 			$sub_mnt_pt = $als_mnt.$sub_mnt_pt;
 			$sub_mnt_pt = str_replace('//', '/', $sub_mnt_pt);
 			$domain_id = $_POST['als_id'];
@@ -362,11 +373,11 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 
 		if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
 			set_page_message(tr('Subdomain already exists or is not allowed!'));
-		} else if (!chk_subdname($sub_name . "." . $dmn_name)) {
-			set_page_message(tr('Wrong subdomain syntax!'));
-		} else if (mount_point_exists($dmn_id, array_decode_idna($sub_mnt_pt, true))) {
+		} elseif (!validates_subdname($sub_name . '.' . $dmn_name)) {
+			set_page_message($validation_err_msg);
+		} elseif (mount_point_exists($dmn_id, array_decode_idna($sub_mnt_pt, true))) {
 			set_page_message(tr('Mount point already in use!'));
-		} else if (!chk_mountp($sub_mnt_pt, null, 1)) {
+		} elseif (!validates_mpoint($sub_mnt_pt)) {
 			set_page_message(tr('Incorrect mount point syntax!'));
 		} else {
 			// now let's fix the mountpoint

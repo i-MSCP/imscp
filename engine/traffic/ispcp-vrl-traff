@@ -729,7 +729,6 @@ sub collect_mail_traffic {
 
 		close(F);
 
-
 		$rs = del_file($imap_log);
 
 		return $rs if ($rs != 0);
@@ -773,7 +772,6 @@ sub collect_mail_traffic {
 
 		close(F);
 
-
 		$rs = del_file($imap_log);
 
 		return $rs if ($rs != 0);
@@ -781,7 +779,8 @@ sub collect_mail_traffic {
 
 		# POP3
 		# courierpop3login is for Debian. pop3d for Fedora.
-		$rs = sys_command("$cat $rlog|$grep -E '(courierpop3login|pop3d).+user=.+top='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|"
+		$rs = sys_command("$cat $rlog|$grep -E '(courierpop3login|pop3d).+user=.+top='|"
+			."$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|"
 			."$awk '/courierpop3login/ {print \$7,\$9,substr(\$10,1,length(\$10)-1);} "
 			."/pop3d/ {print \$7,\$10,substr(\$11,1,length(\$11)-1);}'"
 			." 1>>$pop3_log");
@@ -791,7 +790,8 @@ sub collect_mail_traffic {
 		# string will be empty and nothing will be written to the pop3_log.
 		$rs = sys_command("$cat $rlog|$grep 'POP3'| $grep 'Disconnected: Logged out' |"
 			."$awk '/POP3/ {split(\$10,array,\"\/\"); print \"user=\"substr(\$6,6,length(\$6)-7) "
-			."\", top=\"substr(array[2],0,length(array[2])) \", retr=\"substr(\$13,6,length(\$13)) ;}'"
+			."\", top=\"substr(array[2],0,length(array[2])) \", "
+			."retr=\"substr(\$11,index(\$11,\"/\")+1,length(\$11)-1) ;}'"
 			." 1>>$pop3_log");
 		return $rs if ($rs != 0);
 
@@ -806,7 +806,7 @@ sub collect_mail_traffic {
 
 			my $line = $_;
 
-			if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
+			if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+),?\n$/) {
 
 				my ($ma, $sum) = ("$1\n", $2 + $3);
 

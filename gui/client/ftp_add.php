@@ -340,16 +340,12 @@ SQL_QUERY;
 
 function add_ftp_user(&$sql, $dmn_name) {
 	$username = strtolower(clean_input($_POST['username']));
-	$res_uname = preg_match("/\./", $username, $match);
-	if ($res_uname == 1) {
+
+	if (!validates_username($username)) {
 		set_page_message(tr("Incorrect username length or syntax!"));
 		return;
 	}
 
-	if (!chk_username($username)) {
-		set_page_message(tr("Incorrect username length or syntax!"));
-		return;
-	}
 	// Set default values ($ftp_home may be overwritten if user
 	// has specified a mount point)
 	switch ($_POST['dmn_type']) {
@@ -400,6 +396,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 			return;
 		}
 	} // End of user-specified mount-point
+
 	$ftp_gid = get_ftp_user_gid($sql, $dmn_name, $ftp_user);
 	$ftp_uid = get_ftp_user_uid($sql, $dmn_name, $ftp_user, $ftp_gid);
 

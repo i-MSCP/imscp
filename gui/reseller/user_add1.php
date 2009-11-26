@@ -116,6 +116,7 @@ function check_user_data() {
 	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
+	global $validation_err_msg;
 
 	$sql = Database::getInstance();
 
@@ -139,8 +140,8 @@ function check_user_data() {
 		$dmn_pt = $_POST['chtpl'];
 	}
 
-	if (!chk_dname($dmn_name)) {
-		$even_txt = tr('Wrong domain name syntax!');
+	if (!validates_dname($dmn_name)) {
+		$even_txt = $validation_err_msg;
 	} else if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
 	} else if ($dmn_name == Config::get('BASE_SERVER_VHOST')) {
@@ -223,7 +224,7 @@ function get_data_au1_page(&$tpl) {
 function get_hp_data_list(&$tpl, $reseller_id) {
 
 	global $dmn_chp;
-	
+
 	$sql = Database::getInstance();
 
 	if (Config::exists('HOSTING_PLANS_LEVEL')

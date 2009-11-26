@@ -205,6 +205,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $tpl;
+	global $validation_err_msg;
 
 	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
@@ -214,11 +215,11 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$alias_name = encode_idna($alias_name);
 	// First check is the data correct
-	if (!chk_dname($alias_name)) {
-		$err_al = tr("Incorrect domain name syntax");
+	if (!validates_dname($alias_name)) {
+		$err_al = $validation_err_msg;
 	} else if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
 		$err_al = tr('Domain with that name already exists on the system!');
-	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
+	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
 	} else if ($forward != 'no') {
 		if (!chk_forward_url($forward)) {

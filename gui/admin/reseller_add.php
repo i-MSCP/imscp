@@ -406,7 +406,7 @@ function check_user_data() {
 
 		return false;
 	}
-	if (!chk_username(clean_input($_POST['username']))) {
+	if (!validates_username(clean_input($_POST['username']))) {
 		set_page_message(tr("Incorrect username length or syntax!"));
 
 		return false;

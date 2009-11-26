@@ -130,7 +130,7 @@ if (Config::get('DUMP_GUI_DEBUG')) {
 function init_in_values() {
 
 	global $dmn_name, $dmn_expire, $dmn_user_name, $hpid;
-	
+
 	if (isset($_SESSION['dmn_expire'])) {
 		$dmn_expire = $_SESSION['dmn_expire'];
 	}
@@ -155,7 +155,7 @@ function init_in_values() {
 	list($dmn_name, $hpid) = explode(";", $step_two);
 	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
 	$dmn_user_name = $dmn_name;
-	if (!chk_dname($dmn_name) || ($hpid == '')) {
+	if (!validates_dname($dmn_name) || ($hpid == '')) {
 		return false;
 	}
 	return true;
@@ -310,7 +310,7 @@ function add_user_data($reseller_id) {
 	$street_two		= clean_input($street_two, true);
 	$customer_id	= clean_input($customer_id, true);
 
-	if (!chk_dname($dmn_user_name)) {
+	if (!validates_dname($dmn_user_name)) {
 		// set_page_message(tr("Wrong domain name syntax!"));
 		return;
 	}
@@ -388,7 +388,7 @@ function add_user_data($reseller_id) {
 
 	$res = exec_query(
 						$sql,
-						$query, 
+						$query,
 						array(
 								$dmn_name, $record_id,
 								$reseller_id, $mail, $ftp, $traff, $sql_db,
@@ -396,7 +396,7 @@ function add_user_data($reseller_id) {
 								$disk, $php, $cgi, $backup, $dns
 						)
 	);
-								
+
 	$dmn_id = $sql->Insert_ID();
 
 	// Add statistics group
@@ -408,7 +408,7 @@ function add_user_data($reseller_id) {
 			(?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, 
+	$rs = exec_query($sql, $query,
 					array(
 							$dmn_id, $dmn_name,
 							crypt_user_pass_with_salt($pure_user_pass), $status
