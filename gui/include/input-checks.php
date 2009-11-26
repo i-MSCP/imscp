@@ -316,7 +316,7 @@ function ispcp_check_local_part($email, $num = 50) {
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 1.0
- * @since rxxxx
+ * @since r2228
  * @param string $data full domain name to be check
  * @param boolean $iana_rzd if TRUE tld submitted must
  *	be listed in the iana root zone database
@@ -336,7 +336,7 @@ function ispcp_check_local_part($email, $num = 50) {
 	// Valitates a domain name with SLD
 	if(preg_match('/^[^.]+\.([^.]+\.[^.]+)$/', $dname, $matches)) {
 		if(!_validates_sld($matches[1])) {
-			$validation_err_msg = tr('Wrong second level domain syntax!');
+			$validation_err_msg = tr('Wrong Second Level Domain syntax!');
 			return false;
 		}
 
@@ -370,7 +370,7 @@ function ispcp_check_local_part($email, $num = 50) {
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 1.0
- * @since rxxxx
+ * @since r2228
  * @param string $data full subdomain name to be check
  * @param boolean $iana_rzd if true, tld submitted must
  *	be listed in the iana root zone database
@@ -385,7 +385,7 @@ function validates_subdname($subdname, $iana_rzd = true, $strict_sld = true) {
 	$validation_err_msg = tr('Wrong subdomain syntax!');
 
 	if(strlen($subdname) > 255) {
-		$subdname_err_msg = tr('Wrong subdomain lenght!');
+		$validation_err_msg = tr('Wrong subdomain lenght!');
 		return false;
 	}
 
@@ -420,10 +420,10 @@ function validates_subdname($subdname, $iana_rzd = true, $strict_sld = true) {
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 1.0
- * @since rxxxx
+ * @since r2228
  * @access private
  * @param string $label label to be validates
- * @return boolean True if successful, False otherwise
+ * @return boolean TRUE if successful, FALSE otherwise
  */
 function _validates_dname_label($label) {
 
@@ -432,7 +432,7 @@ function _validates_dname_label($label) {
 
 	$pattern = '@^(?:(?:[a-z0-9]|xn--[a-z0-9]){1}(?:-?[a-z0-9]*[a-z0-9](?:-?[a-z0-9])*)?)+$@i';
 
-	return (bool) preg_match($pattern, $label) && strlen($label) < 63;
+	return (bool) (preg_match($pattern, $label) && strlen($label) < 63);
 }
 
 /**
@@ -443,7 +443,7 @@ function _validates_dname_label($label) {
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 1.0
- * @since rxxxx
+ * @since r2228
  * @access private
  * @param string $tld
  * @param boolean $iana_rzd if TRUE tld submitted must be
@@ -516,7 +516,7 @@ function _validates_tld($tld, $iana_rzd = true) {
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 1.0
- * @since rxxxx
+ * @since r2228
  * @access private
  * @param string $sld sld to be validates
  * @param boolean if TRUE, the sld validation is strict
@@ -526,16 +526,16 @@ function _validates_tld($tld, $iana_rzd = true) {
 function _validates_sld($sld, $strict_sld = true) {
 
 	global $validation_err_msg;
-	$validation_err_msg = tr('Wrong syntax for the second level domain!');
+	$validation_err_msg = tr('Wrong Second Level Domain syntax!');
 
 	// Single-Character SLD
 	// Note: All another SC SLD are presently reserved in
 	// all gTLD registry agreements.
 	$scSLD =
-						'i\.net|'.
-						'q\.(?:com|net)|'.
-						'x\.org|'.
-						'[xz]\.com';
+		'i\.net|'.
+		'q\.(?:com|net)|'.
+		'x\.org|'.
+		'[xz]\.com';
 
 	$pattern = ($strict_sld) ? '@^' . $scSLD . '|[a-z]{2,6}\..+$@' : '@^[a-z]+\..+$@';
 
@@ -551,7 +551,7 @@ function _validates_sld($sld, $strict_sld = true) {
  *
  * @param String $data domain name to be checked
  * @return boolean valid domain name or not
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function full_domain_check($data) {
@@ -590,7 +590,7 @@ function full_domain_check($data) {
  *
  * @param String $data domain name token to be checked
  * @return boolean valid domain name token or not
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function chk_dmn_token($data) {
@@ -643,7 +643,7 @@ function ispcp_limit_check($data, $extra = -1) {
  *
  * @param string $data token data without eol
  * @return boolean true for correct syntax, false otherwise
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function check_dn_rsl_token($data) {
@@ -663,7 +663,7 @@ function check_dn_rsl_token($data) {
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function chk_dname($dname) {
@@ -711,7 +711,7 @@ function chk_forward_url($url) {
  * @param int $min_char number of min. chars
  * @return boolean false incorrect syntax
  *	true correct syntax
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function chk_mountp($data, $max_char = 50, $min_char = 2) {
@@ -747,7 +747,7 @@ function chk_mountp($data, $max_char = 50, $min_char = 2) {
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @copyright 2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
- * @since rxxxxx
+ * @since r2228
  * @param string $token mount point to validate
  * @param int|null $max_token_char number of max. chars by token.
  *	Set as null for no limit
@@ -783,7 +783,7 @@ function validates_mpoint($mpoint, $max_token_char = null) {
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @copyright 2006-2009 by ispCP | http://isp-control.net
  * @version	1.0
- * @since rxxxxx
+ * @since r2228
  * @access private
  * @param string $token token of mount point to validate
  * @param int|null $max_char number of max. chars.
@@ -843,7 +843,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
  * @param string $subdname ispcp subdomain data;
  * @return	false - incorrect syntax;
  *			true - correct syntax;
- * @deprecated function deprecated in revision xxxx
+ * @deprecated function deprecated in revision r2228
  */
 /*
 function chk_subdname($subdname) {
