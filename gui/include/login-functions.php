@@ -36,6 +36,7 @@
  */
 function username_exists($username) {
 	$sql = Database::getInstance();
+	$username = encode_idna($username);
 
 	$query = 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?';
 	$res = exec_query($sql, $query, array($username));
