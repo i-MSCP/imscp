@@ -56,7 +56,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
 		// we have to add the user
 		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
-			if (!chk_username($_POST['username'])) {
+			if (!validates_username($_POST['username'])) {
 				set_page_message(tr('Wrong username!'));
 				return;
 			}
