@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-27 Henrik Schytte
+	- GUI:
+		* Graphical adjustments
+
 2009-11-26 Laurent Declercq
 	- GUI:
 		* Fixed #2041: Internationalized domain name - unable to sets a subdomain as Idna label
