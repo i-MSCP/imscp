@@ -1,11 +1,15 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-27 Henrik Schytte
+	- GUI:
+		* Graphical adjustments
+
 2009-11-26 Laurent Declercq
 	- GUI:
 		* Fixed #2041: Internationalized domain name - unable to sets a subdomain as Idna label
-		* New routines for the validation of mount points and usernames - The function that checks the mount point should not
-use the routines related to the validation of user names
+		* New routines for the validation of mount points and usernames - The function that checks the mount point should not use the routines related to the validation of user names
+		* Fixed #2076: Login - unable to login with Idna customer domain name
 
 2009-11-26 Benedikt Heintel
 	- ENGINE:

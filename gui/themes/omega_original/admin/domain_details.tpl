@@ -75,17 +75,15 @@
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_TRAFFIC}</td>
-                            <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
+                           <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                  <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_left_small.gif" width="13" height="20" alt="" /></td>
+                                  <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_left.png" width="3" height="20"></td>
                                   <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                       <tr>
-                                        <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
-                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_TRAFFIC_PERCENT}" height="1" alt="" /></td>
-                                        <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
+                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/stats_progress.png" width="{VL_TRAFFIC_PERCENT}" height="20"></td>
                                       </tr>
                                   </table></td>
-                                  <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_right_small.gif" width="13" height="20" alt="" /></td>
+                                  <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_right.png" width="3" height="20"></td>
                                 </tr>
                               </table>
                                 <br />
@@ -96,15 +94,13 @@
                             <td class="content2" width="193">{TR_DISK}</td>
                             <td colspan="2" class="content"><table width="252" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                  <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_left_small.gif" width="13" height="20" alt="" /></td>
+                                  <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_left.png" width="3" height="20"></td>
                                   <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                       <tr>
-                                        <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13" alt="" /></td>
-                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{VL_DISK_PERCENT}" height="1" alt="" /></td>
-                                        <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13" alt="" /></td>
+                                        <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/stats_progress.png" width="{VL_DISK_PERCENT}" height="20"></td>
                                       </tr>
                                   </table></td>
-                                  <td width="13"><img src="{THEME_COLOR_PATH}/images/bars/stats_right_small.gif" width="13" height="20" alt="" /></td>
+                                  <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_right.png" width="3" height="20"></td>
                                 </tr>
                               </table>
                                 <br />

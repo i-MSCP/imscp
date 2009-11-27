@@ -1439,11 +1439,11 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$replace = array();
 
 	$search [] = '{USERNAME}';
-	$replace[] = $username;
+	$replace[] = decode_idna($username);
 	$search [] = '{USERTYPE}';
 	$replace[] = $utype;
 	$search [] = '{NAME}';
-	$replace[] = $name;
+	$replace[] = decode_idna($name);
 	$search [] = '{PASSWORD}';
 	$replace[] = $password;
 	$search [] = '{BASE_SERVER_VHOST}';
