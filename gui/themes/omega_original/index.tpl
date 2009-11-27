@@ -9,7 +9,7 @@
 		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
-	<body onload="document.frm.uname.focus()">
+	<body onLoad="document.frm.uname.focus()">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
@@ -23,11 +23,11 @@
 										</tr>
 										<!-- BDP: page_message -->
 										<tr>
-											<td colspan="7" align="center"><span class="message" style="font-size:x-small;">{MESSAGE}</span></td>
+											<td colspan="7" align="center"><span class="message" style="font-size:xx-small;">{MESSAGE}</span></td>
 										</tr>
 										<!-- EDP: page_message -->
 										<tr>
-											<td colspan="7"><div align="center"><span style="font-size:x-small;">{TR_LOGIN_INFO}</span></div></td>
+											<td colspan="7"><div align="center"><span style="font-size:xx-small;">{TR_LOGIN_INFO}</span></div></td>
 										</tr>
 										<tr>
 											<td width="19">&nbsp;</td>
@@ -53,7 +53,7 @@
 											<td>&nbsp;</td>
 										</tr>
 										<tr>
-											<td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><span style="font-size:x-small;">{TR_LOSTPW}</span></a></div></td>
+											<td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><span style="font-size:xx-small;">{TR_LOSTPW}</span></a></div></td>
 											<td colspan="4">&nbsp;</td>
 										</tr>
 										<tr>
@@ -77,11 +77,23 @@
 							</td>
 						</tr>
 					</table>
-					<table width="453" align="center">
-						<tr>
-							<td align="right" class="login">Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a></td>
-						</tr>
-					</table>
+     <table align="center" width="453">
+      <tr>
+       <td width="244" align="right" class="login"><table width="300" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td align="center" width="100"><a href="{TR_PMA_SSL_LINK}" target="_self" title="phpMyAdmin"><img src="{THEME_COLOR_PATH}/images/login/phpmyadmin.png" width="28" height="30" border="0" alt="phpMyAdmin"></a></td>
+    <td align="center" width="100"><a href="{TR_FTP_SSL_LINK}" target="_self" title="Filemanager"><img src="{THEME_COLOR_PATH}/images/login/filemanager.png" width="33" height="30" border="0" alt="Filemanager"></a></td>
+    <td align="center" width="100"><a href="{TR_WEBMAIL_SSL_LINK}" target="_self" title="WebMail"><img src="{THEME_COLOR_PATH}/images/login/webmail.png" width="32" height="30" border="0" alt="WebMail"></a></td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a class="login" href='{TR_PMA_SSL_LINK}'>phpMyAdmin</a></td>
+    <td align="center" width="100"><a class="login" href='{TR_FTP_SSL_LINK}'>Filemanager</a></td>
+    <td align="center" width="100"><a class="login" href='{TR_WEBMAIL_SSL_LINK}'>WebMail</a></td>
+  </tr>
+</table></td>
+       <td width="197" align="right" class="login" style="vertical-align:top;">Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a></td>
+      </tr> 
+     </table>
 				</td>
 			</tr>
 		</table>
