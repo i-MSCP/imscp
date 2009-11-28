@@ -22,7 +22,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Russian"
+msgstr "Русский язык - Russian"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP - Система управления виртуальным хостингом"

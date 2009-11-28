@@ -19,7 +19,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Dansk"
+msgstr "Dansk - Danish"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega er et Virtuelt Hosting Kontrol System"

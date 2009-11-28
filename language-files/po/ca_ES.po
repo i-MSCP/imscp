@@ -23,7 +23,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Catalan"
+msgstr "Català - Catalan"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega un Sistema de control de Hosting"

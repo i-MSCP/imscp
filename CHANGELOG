@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-11-28 Benedikt Heintel
+	- LANGUAGES:
+		* Added: Arabic
+
 2009-11-27 Benedikt Heintel
 	- GUI:
 		* Fixed #2077: Files in GUI is absent

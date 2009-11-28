@@ -26,7 +26,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Türkçe"
+msgstr "Türkçe - Turkish"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega Sanal Barındırma Kontrol Sistemi"
