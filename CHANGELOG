@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-04 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2080: Re-enable domains works not properly
+
 2009-11-28 Benedikt Heintel
 	- LANGUAGES:
 		* Added: Arabic
