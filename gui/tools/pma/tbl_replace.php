@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 12651 2009-07-15 09:46:45Z lem9 $
+ * @version $Id: tbl_replace.php 13118 2009-11-21 13:22:08Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -94,10 +94,11 @@ if (isset($_REQUEST['after_insert'])
                 $meta           = PMA_DBI_get_fields_meta($res);
                 // must find a unique condition based on unique key,
                 // not a combination of all fields
-                if ($tmp = PMA_getUniqueCondition($res, count($meta), $meta, $row, true)) {
-                    $_SESSION['edit_next'] = $tmp;
+                list($unique_condition, $clause_is_unique) = PMA_getUniqueCondition($res, count($meta), $meta, $row, true);
+                if (! empty($unique_condition)) {
+                    $_SESSION['edit_next'] = $unique_condition;
                 }
-                unset($tmp);
+                unset($unique_condition, $clause_is_unique);
             }
         }
     }
@@ -303,7 +304,7 @@ foreach ($loop_array as $rowcount => $primary_key) {
         } else {
             // build update query
             $query[] = 'UPDATE ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($GLOBALS['table'])
-                . ' SET ' . implode(', ', $query_values) . ' WHERE ' . $primary_key . ' LIMIT 1';
+                . ' SET ' . implode(', ', $query_values) . ' WHERE ' . $primary_key . ($_REQUEST['clause_is_unique'] ? '' : ' LIMIT 1');
 
         }
     }

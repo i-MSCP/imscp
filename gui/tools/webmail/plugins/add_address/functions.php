@@ -428,7 +428,8 @@ function aa_find_addresses($message, $mailbox=NULL, $passed_id=NULL,
       if (check_sm_version(1, 5, 2))
       {
          global $Email_RegExp_Match;
-         $email_regex = str_replace('/', '\\/', $Email_RegExp_Match);
+         //$email_regex = str_replace('/', '\\/', $Email_RegExp_Match);
+         $email_regex = $Email_RegExp_Match;
       }
       else
       {
