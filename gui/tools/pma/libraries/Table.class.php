@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 13053 2009-10-17 12:58:05Z lem9 $
+ * @version $Id: Table.class.php 13107 2009-11-08 10:35:00Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -274,7 +274,7 @@ class PMA_Table
         }
 
         if (! isset(PMA_Table::$cache[$db][$table][$info])) {
-            trigger_error('unkown table status: ' . $info, E_USER_WARNING);
+            trigger_error('unknown table status: ' . $info, E_USER_WARNING);
             return false;
         }
 

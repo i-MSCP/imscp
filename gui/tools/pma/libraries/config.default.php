@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 12995 2009-09-20 10:41:28Z lem9 $
+ * @version $Id: config.default.php 13102 2009-11-03 13:10:44Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -1018,7 +1018,7 @@ $cfg['Export']['compression'] = 'none';
  *
  * @global boolean $cfg['Export']['asfile']
  */
-$cfg['Export']['asfile'] = false;
+$cfg['Export']['asfile'] = true;
 
 /**
  *

@@ -1,5 +1,5 @@
 <?php
-/* $Id: swedish-utf-8.inc.php 12689 2009-07-20 20:12:29Z lem9 $ */
+/* $Id: swedish-utf-8.inc.php 13109 2009-11-08 12:04:19Z lem9 $ */
 
 /*
  * Translated by Björn T. Hallberg <bjornth at users dot sourceforge dot net>
@@ -1076,7 +1076,6 @@ $strSetupServers_SignonURL_name = 'Signon URL';
 $strSetupServerSslMsg = 'Du bör använda SSL-anslutningar om din webbserver har stöd för det';
 $strSetupServers_socket_desc = 'Sockel som MySQL-servern lyssnar på, lämna tomt för standard';
 $strSetupServers_socket_name = 'Serversockel';
-$strSetupServers_ssl_desc = '';
 $strSetupServers_ssl_name = 'Använd SSL';
 $strSetupServers_table_coords_desc = 'Lämna tomt för inget stöd för PDF-schema, förslag: [kbd]pma_table_coords[/kbd]';
 $strSetupServers_table_coords_name = 'PDF-schema: tabellkoordinater';
@@ -1457,4 +1456,5 @@ $strYes = 'Ja';
 
 $strZeroRemovesTheLimit = 'Anm: Genom att sätta dessa alternativ till 0 (noll) tas begränsningarna bort.';
 $strZip = '"zippad"';
+$strSetupServers_ssl_desc = 'Enable SSL for connection to MySQL server';  //to translate
 ?>

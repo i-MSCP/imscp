@@ -9,7 +9,7 @@
  * Check for all the needed functions for output buffering
  * Make some wrappers for the top and bottoms of our files.
  *
- * @version $Id: ob.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id: ob.lib.php 13104 2009-11-05 10:00:51Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -100,9 +100,12 @@ function PMA_outBufferPost()
 {
     if (ob_get_status() && PMA_outBufferModeGet()) {
         ob_flush();
-    } else {
-        flush();
     }
+    /**
+     * previously we had here an "else flush()" but some PHP versions
+     * (at least PHP 5.2.11) have a bug (49816) that produces garbled
+     * data
+     */
 } // end of the 'PMA_outBufferPost()' function
 
 ?>

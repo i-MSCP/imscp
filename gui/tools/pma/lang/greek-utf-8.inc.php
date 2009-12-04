@@ -1,5 +1,5 @@
 <?php
-/* $Id: greek-utf-8.inc.php 12645 2009-07-13 17:21:02Z lem9 $ */
+/* $Id: greek-utf-8.inc.php 13113 2009-11-10 17:30:25Z nijel $ */
 
 /* Translated by Kyriakos Xagoraris <theremon at users.sourceforge.net> */
 
@@ -234,7 +234,7 @@ $strIndexType = 'Τύπος ευρετηρίου&nbsp;:';
 $strIndex = 'Ευρετήριο';
 $strInnodbStat = 'Κατάσταση InnoDB';  
 $strInsecureMySQL = 'Το αρχείο ρυθμίσεών σας περιέχει ρυθμίσεις (χρήστης root χωρίς κωδικό πρόσβασης) που αντιστοιχούν στον εξ\' ορισμού λογαριασμό χρήστη MySQL. Ο διακομιστής MySQL σας που τρέχει με αυτή τη ρύθμιση, είναι ανοιχτός σε επιθέσεις και θα πρέπει να διορθώσετε το πρόβλημα.';  
-$strInsertAsNewRow = 'Εισαγωγή ως νέα εγγραφές';
+$strInsertAsNewRow = 'Εισαγωγή ως νέα εγγραφή';
 $strInsert = 'Εισαγωγή';
 $strInUse = 'σε χρήση';
 
@@ -1233,7 +1233,6 @@ $strSetupServers_port_desc = 'Port on which MySQL server is listening, leave emp
 $strSetupServers_socket_name = 'Server socket';  //to translate
 $strSetupServers_socket_desc = 'Socket on which MySQL server is listening, leave empty for default';  //to translate
 $strSetupServers_ssl_name = 'Use SSL';  //to translate
-$strSetupServers_ssl_desc = '';  //to translate
 $strSetupServers_connect_type_name = 'Connection type';  //to translate
 $strSetupServers_connect_type_desc = 'How to connect to server, keep tcp if unsure';  //to translate
 $strSetupServers_extension_name = 'PHP extension to use';  //to translate
@@ -1483,4 +1482,5 @@ $strReplicationStatus = 'Replication status';  //to translate
 $strReplicationStatusInfo = 'This MySQL server works as %s in <b>replication</b> process. For further information about replication status on the server, please visit the <a href="#replication">replication section</a>.';  //to translate
 $strReplicationStatus_master = 'Master status';  //to translate
 $strReplicationStatus_slave = 'Slave status';  //to translate
+$strSetupServers_ssl_desc = 'Enable SSL for connection to MySQL server';  //to translate
 ?>

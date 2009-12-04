@@ -6,7 +6,7 @@ ispCP ω 1.0.3 Changelog
 		* Fixed #2080: Re-enable domains works not properly
 	- TOOLS:
 		* Updated PHPmyAdmin to version 3.2.4
-		* Updated SquirrelMail Plugins add_addresses and compatibility
+		* Updated SquirrelMail Plugins add_address and compatibility
 
 2009-11-28 Benedikt Heintel
 	- LANGUAGES:

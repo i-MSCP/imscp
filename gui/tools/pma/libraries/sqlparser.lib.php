@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 12991 2009-09-17 17:05:14Z lem9 $
+ * @version $Id: sqlparser.lib.php 13117 2009-11-15 13:50:32Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -158,7 +158,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 12991 2009-09-17 17:05:14Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 13117 2009-11-15 13:50:32Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -676,7 +676,10 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
             if ($t_cur == 'alpha') {
                 $t_suffix     = '_identifier';
-                if (($t_next == 'punct_qualifier') || ($t_prev == 'punct_qualifier')) {
+                // for example: `thebit` bit(8) NOT NULL DEFAULT b'0' 
+                if ($t_prev == 'alpha' && $d_prev == 'DEFAULT' && $d_cur == 'b' && $t_next == 'quote_single') {
+                    $t_suffix = '_bitfield_constant_introducer';
+                } elseif (($t_next == 'punct_qualifier') || ($t_prev == 'punct_qualifier')) {
                     $t_suffix = '_identifier';
                 } elseif (($t_next == 'punct_bracket_open_round')
                   && PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_function_name, $PMA_SQPdata_function_name_cnt)) {
@@ -922,8 +925,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
  * create_table_fields
  * -------------------
  *
- * For now, mostly used to detect the DEFAULT CURRENT_TIMESTAMP and
+ * Used to detect the DEFAULT CURRENT_TIMESTAMP and
  * ON UPDATE CURRENT_TIMESTAMP clauses of the CREATE TABLE query.
+ * Also used to store the default value of the field.
  * An array, each element is the identifier name.
  * Note that for now, the timestamp_not_null element is created
  * even for non-TIMESTAMP fields.
@@ -1898,6 +1902,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 if ($seen_create_table && $in_create_table_fields) {
                     if ($upper_data == 'DEFAULT') {
                         $seen_default = TRUE;
+                        $create_table_fields[$current_identifier]['default_value'] = $arr[$i + 1]['data'];
                     }
                 }
             }
@@ -2181,6 +2186,10 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             }
 
             switch ($typearr[2]) {
+                case 'alpha_bitfield_constant_introducer':
+                    $before     = ' ';
+                    $after      = '';
+                    break;
                 case 'white_newline':
                     $before     = '';
                     break;
@@ -2415,7 +2424,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     // the @ is incorrectly marked as alpha_variable
                     // in the parser, and here, the '%' gets a blank before,
                     // which is a syntax error
-                    if ($typearr[1] != 'punct_user') {
+                    if ($typearr[1] != 'punct_user' && $typearr[1] != 'alpha_bitfield_constant_introducer') {
                         $before        .= ' ';
                     }
                     if ($infunction && $typearr[3] == 'punct_bracket_close_round') {
