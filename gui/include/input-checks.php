@@ -303,10 +303,17 @@ function ispcp_check_local_part($email, $num = 50) {
  * Validates a domain name
  *
  * This function validates a domain name. Here domains are
- * limited to {dname}.{sld.tld|tld} parts.
+ * limited to {label[s]}.{sld.tld|tld} parts.
  *
- * The string representing the domain name must not
- * exceed 255 characters according RFC 1123.
+ * For new domain names validations, the maximum number of labels
+ * is determined by the 'MAX_DNAMES_LABELS' parameter value .
+ * This parameter can be overridden by admin in the frontend. If this
+ * function is called for the subdomain validation, the maximum number
+ * of labels is set differently to avoid problems if admin has changed the
+ * parameter value.
+ *
+ * The string representing the domain name must not exceed 255 characters
+ * according RFC 1123.
  *
  * Labels syntax: See {@link _validates_dname_label()}
  *
@@ -315,111 +322,146 @@ function ispcp_check_local_part($email, $num = 50) {
  * TLDs syntax: See {@link _validates_tld()}
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0
+ * @version 1.1
  * @since r2228
  * @param string $data full domain name to be check
- * @param boolean $iana_rzd if TRUE tld submitted must
- *	be listed in the iana root zone database
+ * @param boolean $subdname_process NODOC
  * @return boolean TRUE if successful, FALSE otherwize
- * @todo Adds iana_rzd setting into database
  */
- function validates_dname($dname, $iana_rzd = true, $strict_sld = true) {
+function validates_dname($dname, $subdname_process = true) {
 
 	global $validation_err_msg;
-	$max_allowed_labels = 2;
+	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
-	if(strlen($dname) > 255)
-		$validation_err_msg = tr('Wrong domain name lenght!');
+	$max_labels = ($subdname_process) ? config::get('MAX_DNAMES_LABELS') : 99;
+
+	if(!$subdname_process) {
+
+		// Check lenght according RFC 1123 (Max of 255 chars)
+		if(strlen($dname) >255)
+		{
+			$validation_err_msg = tr(' Wrong domain name lenght!');
+			return false;
+		}
+	}
+
+	$pattern = "@^((?:[^.]+\.){0,{$max_labels}})(?:([^.]+)\.)([^.]+)$@i";
 
 	$matches = array();
 
-	// Valitates a domain name with SLD
-	if(preg_match('/^[^.]+\.([^.]+\.[^.]+)$/', $dname, $matches)) {
-		if(!_validates_sld($matches[1])) {
-			$validation_err_msg = tr('Wrong Second Level Domain syntax!');
-			return false;
+	if( ($ret = preg_match($pattern, $dname, $matches)) ) {
+
+		$labels = preg_split('/\./', $matches[1], -1, PREG_SPLIT_NO_EMPTY);
+
+		// Validates label[s]
+		foreach($labels as $label) {
+			if(!_validates_dname_label($label)) {
+				$ret = false;
+				break;
+			}
 		}
 
-		$max_allowed_labels = 3;
+		if($ret && _validates_sld($matches[2] . '.' . $matches[3]) &&
+			_validates_tld($matches[3])) {
+			return true;
+		}
 	}
 
-	if(($nb_labels = count($labels = preg_split('/(?<!\.)\.(?!\.)/', $dname, -1,
-		PREG_SPLIT_NO_EMPTY))) < $max_allowed_labels ||
-		$nb_labels > $max_allowed_labels ) {
-
-		$validation_err_msg = tr('Wrong domain name syntax!');
-		return false;
-	}
-
-	# Get the tld
-	$tld = ($max_allowed_labels == 2) ? $labels[1] : $labels[2];
-
-	return (_validates_tld($tld, $iana_rzd) && _validates_dname_label($labels[0]));
-}
+	return false;
+} // end validates_dname()
 
 /**
  * Validates a subdomain name
  *
- * This function validates a domain name. Here subdomain are
- * limited to {subdname}.{dname}.{sld.tld|tld} parts.
+ * This function validates a subdomain. Here, a subdomain is
+ * limited to {label[s]}.{sld.tld|tld} parts.
  *
- * The labels 'www|ftp|mail|ns[1-2]?' are reserved.
+ * The maximum number of labels is determined by
+ * the 'MAX_SUBDNAMES_LABELS' parameter value.
+ * This parameter can be overridden by admin in the frontend.
+ *
+ * Labels 'www|ftp|mail|ns[1-2]?' can not be used as the first part
+ * of a subdomain.
+ *
+ * The string representing the subdomain name must not exceed
+ * 255 characters according RFC 1123.
  *
  * See {@link validates_dname()} for more information about
- * the allowed syntax for labels, slds and tlds.
+ * the allowed syntax for labels, SLDs and TLDs.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0
+ * @version 1.1
  * @since r2228
- * @param string $data full subdomain name to be check
- * @param boolean $iana_rzd if true, tld submitted must
- *	be listed in the iana root zone database
- * @param boolean $strict_sld if TRUE, the SLD validation
- *	is strict
+ * @param string $subdname labels of subdomain name to be check
+ * @param string $dname full domain name to be check
  * @return boolean TRUE if successful, FALSE otherwize
- * @todo Added iana_rzd and sld_strict settings in the frontend
  */
-function validates_subdname($subdname, $iana_rzd = true, $strict_sld = true) {
+function validates_subdname($subdname, $dname) {
 
 	global $validation_err_msg;
-	$validation_err_msg = tr('Wrong subdomain syntax!');
+	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
-	if(strlen($subdname) > 255) {
+	// Check lenght according RFC 1123 (Max of 255 chars)
+	if(strlen($subdname . '.' . $dname) > 255){
 		$validation_err_msg = tr('Wrong subdomain lenght!');
 		return false;
 	}
 
+	// Counts the number of labels (Only in the domain name part)
+	$dname_nb_labels = count(explode('.', $dname)) -1;
+
+	// Retrieves the maximum number of labels for the subdomain
+	$subdname_nb_labels = Config::get('MAX_SUBDNAMES_LABELS');
+
 	$matches = array();
 
-	if(!preg_match('/^([-a-z0-9]+)\.(([^.]+\.){1,2}[^.]+)$/', $subdname, $matches) ||
-		!validates_dname($matches[2], $iana_rzd) ||
-		!_validates_dname_label($matches[1]) ||
-		(preg_match('@^(www|ftp|mail|ns[1-2]?)$@', $matches[1], $matches) &&
-		$validation_err_msg = tr('Label not allowed: <b>%s</b>', $matches[1]))) {
+	// Check number of labels and get the data
+	$pattern = "/^((?:[^.]+\.){1,{$subdname_nb_labels}}?)((?:[^.]+\.){{$dname_nb_labels}}?)$/i";
 
-		return false;
+	// TRUE if the subdomain syntax or number of labels is correct
+	// TRUE with $matches[1] set and no empty if the first label of the subdomain is reserved
+	// FALSE if the subdomain syntax is wrong
+	$pattern = "@^
+		(?:(www|ftp|mail|ns[1-2]?)\.)?
+		((?:[^.]+\.){0,{$subdname_nb_labels}})
+		((?:[^.]+\.){{$dname_nb_labels}})
+		([^.]+)
+	$@x";
+
+	if(($ret = preg_match($pattern, $subdname . '.' . $dname , $matches)) && !empty($matches[1])) {
+		$validation_err_msg = tr('Label not allowed: <b>%s</b>', $matches[1]);
+		$ret = false;
 	}
 
-	return true;
+	if( $ret && $sub_labels = preg_split('/\./', $matches[2], -1, PREG_SPLIT_NO_EMPTY)) {
+
+		// Validates subdomains label[s]
+		foreach($sub_labels as $label) {
+			if(!_validates_dname_label($label) && !$ret = false) break;
+		}
+	}
+
+	return (bool) ($ret && validates_dname($matches[3] . $matches[4], true));
 }
 
 /**
- * Validates a domain name label
+ * Validates a domain name label located below the SLD
  *
- * Accepted formats for label are:
+ * Here, a label is represented by a token domain name that
+ * is located before the Second Level Domain name. TLDs and
+ * SLDs have their own validation functions.
  *
- * - ASCII format according RFC 1123
- * - Internationalized domain names (IDNs) according RFC 3490
- *  translated to punnycode format according RFC 3492 and
- *  prefixed by the Idna ACE prefix: 'xn--' according RFC 3490.
+ * Accepted formats for labels are:
  *
- *  For example, the label 'bücher' should be translated to 'xn--bcher-kva'
- *  before the validates.
+ * - ASCII format according RFCs 1123, 1035
+ * - Internationalized labels in ToUnicode format according RFC 3490
  *
- * A label must not exceed 63 characters according RFC 1123.
+ *  For example, the ACE label 'xn--bcher-kva' should be submited as 'bücher'.
+ *
+ * A label must not exceed 63 characters according RFCs 1123, 1035.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0
+ * @version 1.1
  * @since r2228
  * @access private
  * @param string $label label to be validates
@@ -430,116 +472,233 @@ function _validates_dname_label($label) {
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong label syntax: <b>%s</b>', $label);
 
-	$pattern = '@^(?:(?:[a-z0-9]|xn--[a-z0-9]){1}(?:-?[a-z0-9]*[a-z0-9](?:-?[a-z0-9])*)?)+$@i';
+	mb_internal_encoding('UTF-8');
 
-	return (bool) (preg_match($pattern, $label) && strlen($label) < 63);
+	if(!isACE($label) &&
+		mb_strpos($label, '-') !== 0 &&
+		(mb_strrpos($label, '-') !== (mb_strlen($label)-1)) &&
+		mb_substr($label, 2, 2, 'utf-8') !== '--') {
+
+		$label = encode_idna($label);
+
+		$matches = array();
+
+		// TRUE if the label syntax and lenght is correct
+		// TRUE with $matches[1] set if the label lenght is wrong
+		// FALSE if the label syntax is wrong
+		$pattern = '@^(?:[a-z0-9][-a-z0-9]{0,61}[a-z0-9]?(?<!-)|([-a-z0-9]{64,}))$@i';
+
+		if(($ret = preg_match($pattern, $label, $matches)) && array_key_exists(1, $matches) ) {
+			$validation_err_msg = tr('Wrong label lenght: <b>%s</b>', $label);
+			$ret = false;
+		}
+
+	} else {
+		$ret = false;
+	}
+
+	return (bool) $ret;
 }
 
 /**
  * Validates a Top Level Domain
  *
+ * The validation can be strict or not. If strict, the Top Level
+ * Domain's must be listed in Iana  root database. Otherwise, the
+ * syntax must respect the realistic usage of TLD's.
+ *
+ * In both case, the used rule for the permitted characters is based
+ * on the realistic usage of Top level Domains.
+ *
  * See {@link http://www.iana.org/domains/root/db/# Iana Root Zone Database}
- * for more information about the iana tld list.
+ * for more information about the Iana TLD's list.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0
+ * @version 1.1
  * @since r2228
  * @access private
  * @param string $tld
- * @param boolean $iana_rzd if TRUE tld submitted must be
- * 	listed in the iana root zone database
  * @return boolean TRUE if successfull, FALSE otherwise
  * @todo build the Iana TLD list via xml
  */
-function _validates_tld($tld, $iana_rzd = true) {
+function _validates_tld($tld) {
 
 	global $validation_err_msg;
-	$validation_err_msg = tr('Wrong Top Level Domain: <b>%s</b>', $tld);
+	$validation_err_msg = tr('Wrong Top Level Domain syntax: <b>%s</b>', $tld);
 
-	if($iana_rzd) {
+	$matches = array();
 
-		// Only Top Level Domain listed in Iana root database
-		// are allowed ( only ccTLDs and gTLDs, not IDNs)
+	if(Config::get('TLD_STRICT_VALIDATION')) {
+
+		// This pattern Matches only Top Level Domain listed in Iana root database
+		// ( only ccTLDs and gTLDs, not IDNs )
+		// TRUE if the TLD syntax and lenght is correct
+		// TRUE with $matches[1] set if the TLD lenght is wrong
+		// FALSE if the TLD syntax is wrong
 		$pattern =
-			'@^('.
-				'(?:a[cdefgilmnoqrstuwxz]|aero|arpa|asia)|'.
-				'(?:b[abdefghijmnorstvwyz]|biz)|'.
-				'(?:c[acdfghiklmnorsuvxyz]|cat|com|coop)|'.
-				'd[ejkmoz]|'.
-				'(?:e[ceghrstu]|edu)|'.
-				'f[ijkmor]|'.
-				'(?:g[abdefghilmnpqrstuwy]|gov)'.
-				'|h[kmnrtu]|'.
-				'(?:i[delmnoqrst]|info|int)|'.
-				'(?:j[emop]|jobs)|'.
-				'k[eghimnprwyz]|'.
-				'l[abcikrstuvy]|'.
-				'(?:m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|'.
-				'(?:n[acefgilopruz]|name|net)|'.
-				'(?:om|org)|'.
-				'(?:p[aefghklmnrstwy]|pro)|'.
-				'qa|'.
-				'r[eouw]|'.
-				's[abcdeghijklmnortvyz]|'.
-				'(?:t[cdfghjklmnoprtvwz]|tel|travel)|'.
-				'u[agkmsyz]|'.
-				'v[aceginu]|'.
-				'w[fs]|'.
-				'y[etu]|'.
-				'z[amw]|'.
-		')$@';
+			'@^(?:
+				(?:a[cdefgilmnoqrstuwxz]|aero|arpa|asia)|
+				(?:b[abdefghijmnorstvwyz]|biz)|
+				(?:c[acdfghiklmnorsuvxyz]|cat|com|coop)|
+				d[ejkmoz]|
+				(?:e[ceghrstu]|edu)|
+				f[ijkmor]|
+				(?:g[abdefghilmnpqrstuwy]|gov)
+				|h[kmnrtu]|
+				(?:i[delmnoqrst]|info|int)|
+				(?:j[emop]|jobs)|
+				k[eghimnprwyz]|
+				l[abcikrstuvy]|
+				(?:m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|
+				(?:n[acefgilopruz]|name|net)|
+				(?:om|org)|
+				(?:p[aefghklmnrstwy]|pro)|
+				qa|
+				r[eouw]|
+				s[abcdeghijklmnortvyz]|
+				(?:t[cdfghjklmnoprtvwz]|tel|travel)|
+				u[agkmsyz]|
+				v[aceginu]|
+				w[fs]|
+				y[etu]|
+				z[amw]|
+				([a-z]|[a-z]{7,})
+			)$@ix';
 	} else {
 
-		// All Top Level Domain respecting a alpha character
-		// interval between 2 and 6 are allowed
-		$pattern = '@^[a-z]{2,6}$@';
+		// This pattern matches only realistic TLDs (i.e. those with 2 to 6 letters) - Not strict.
+		// TRUE if the TLD syntax and lenght is correct
+		// TRUE with $matches[1] set if the TLD lenght is wrong
+		// FALSE if the TLD syntax is wrong
+		$pattern = '@^(?:[a-z]{2,6}|([a-z]|[a-z]{7,}))$@';
 	}
 
-	return (bool) preg_match($pattern, $tld);
-}
+	if(($ret = preg_match($pattern, $tld, $matches)) && array_key_exists(1, $matches)) {
+		$validation_err_msg = tr('Wrong Top Level Domain lenght: <b>%s</b>', $tld);
+		$ret = false;
+	}
+
+	return (bool) $ret;
+} // end _validates_tld()
 
 /**
  * Validates an Second Level Domain
  *
- * This function validates an SLD (SC-LD, ccSLD)
- * as introduced by some of registrars.
+ * This function validates an SLD (SC-LD, ccSLD...)
  *
- * S-C SLD (or S-LSLD:
+ * S-C SLD (or S-LSLD):
  * Single-character second-level domains are domain names
  * in which the second-level domain consists of only one
- * letter, such as  i.net,  x.com.
+ * letter, such as 'i.net', 'x.com'.
  *
  * ccSLD:
  * A country code second-level domain (ccSLD) is a
  * second-level domain to a country code top-level domain
  * such as {com, net and org}, e.g. .com.sg.
  *
+ * The SLDs 'example.com', 'example.net' and 'example.org' are
+ * reserved (See RFC 2606, Section 3)
+ *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0
+ * @version 1.1
  * @since r2228
  * @access private
  * @param string $sld sld to be validates
- * @param boolean if TRUE, the sld validation is strict
  * @return boolean TRUE if the syntax is valid, FALSE otherwise
- * @Todo Added ccSLD list
  */
-function _validates_sld($sld, $strict_sld = true) {
+function _validates_sld($sld) {
 
 	global $validation_err_msg;
-	$validation_err_msg = tr('Wrong Second Level Domain syntax!');
 
-	// Single-Character SLD
-	// Note: All another SC SLD are presently reserved in
-	// all gTLD registry agreements.
-	$scSLD =
-		'i\.net|'.
-		'q\.(?:com|net)|'.
-		'x\.org|'.
-		'[xz]\.com';
+	if(Config::get('SLD_STRICT_VALIDATION')) {
 
-	$pattern = ($strict_sld) ? '@^' . $scSLD . '|[a-z]{2,6}\..+$@' : '@^[a-z]+\..+$@';
+		// Single-Character SLD
+		// Note: All another SC SLD are presently reserved in
+		// all gTLD registry agreements except for Germany since 2009/10/23.
+		$scSLD =
+			'i\.net|'.
+			'q\.(?:com|net)|'.
+			'x\.org|'.
+			'[xz]\.com|'.
+			'[a-z]\.de';
 
-	return (bool) preg_match($pattern, $sld);
+		// Reserved SLD according RFC 2606
+		$reserved_SLD = 'example\.(?:com|net|org)';
+
+		// TRUE if the SLD syntax and lenght is correct
+		// TRUE with $matches[1] set if the SLD is reserved
+		// TRUE with $matches[2] set if the SLD lenght is wrong
+		// FALSE if the SLD syntax is wrong
+		$pattern = "@^
+			(?:($reserved_SLD)|
+			$scSLD|
+			(?:(?:[a-z0-9](?:[a-z0-9]|-+(?!\.))(?:[-a-z0-9](?!\.)){0,60}[a-z0-9]?)|([-a-z0-9]{64,}))\.)
+		@x";
+
+		$matches = array();
+
+		if(!isACE($sld)) {
+
+			mb_internal_encoding('UTF-8');
+
+			if( mb_strpos( $only_sld_part = mb_substr($sld, 0, mb_strpos($sld, '.')), '-') !== 0 &&
+				(mb_strrpos($only_sld_part, '-') !== (mb_strlen($only_sld_part)-1)) &&
+				mb_substr($sld, 2, 2, 'utf-8') !== '--' &&
+				preg_match($pattern, encode_idna($sld), $matches)) {
+
+				if(array_key_exists(2, $matches)) {
+					$validation_err_msg = tr('Wrong Second Level Domain lenght: <b>%s</b>', $only_sld_part);
+				} elseif(array_key_exists(1, $matches)) {
+					$validation_err_msg = tr('Wrong domain name: <b>%s</b> is reserved!', $sld);
+				}
+
+				$ret = true;
+			} else {
+
+				$validation_err_msg = tr('Wrong Second Level Domain syntax: <b>%s</b>', $only_sld_part);
+				$ret = false;
+			}
+
+		} else {
+			$ret = false;
+		}
+		return (bool) ($ret && count($matches) <= 1);
+
+	} else {
+		return _validates_dname_label(substr($sld, 0, strpos($sld, '.')));
+	}
+
+} // end _validates_sld()
+
+/**
+ * Check if a domain name label is an ACE label
+ *
+ * According Rfc 3490, an ACE label is an internationalised
+ * label in ASCII format with the ACE prefix 'xn--'.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 1.0
+ * @since r2266
+ * @param $label label to be validates
+ * @return boolean TRUE if the string is an ACE lable, FALSE otherwise
+ * @todo Check ASCII range
+ */
+function isACE($label) {
+
+	global $validation_err_msg;
+
+	// Check if the input is an ACE label
+	if(strpos($label, 'xn--' ) === 0) {
+
+		$validation_err_msg = tr(
+			'Error, ACE labels are not allowed, please use the <u>ToUnicode equivalent</u>. <br />' .
+			'<small>Example: for the ACE label <b>xn--bcher-kva</b>, type <b>bücher</b> instead</small>.'
+		);
+
+		return true;
+	}
+
+	return false;
 }
 
 /**

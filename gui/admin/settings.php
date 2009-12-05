@@ -71,6 +71,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$prevent_external_login_reseller= $_POST['prevent_external_login_reseller'];
 	$prevent_external_login_client	= $_POST['prevent_external_login_client'];
 	$custom_orderpanel_id			= clean_input($_POST['coid']);
+	$tld_strict_validation			= $_POST['tld_strict_validation'];
+	$sld_strict_validation			= $_POST['sld_strict_validation'];
+	$max_dnames_labels				= clean_input($_POST['max_dnames_labels']);
+	$max_subdnames_labels			= clean_input($_POST['max_subdnames_labels']);
 
 	// change Loglevel to constant:
 	switch ($_POST['log_level']) {
@@ -93,10 +97,16 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($bruteforce_block_time))
 		|| (!is_number($bruteforce_between_time))
 		|| (!is_number($bruteforce_max_capcha))
-		|| (!is_number($domain_rows_per_page))) {
+		|| (!is_number($domain_rows_per_page))
+		|| (!is_number($max_dnames_labels))
+		|| (!is_number($max_subdnames_labels))) {
 		set_page_message(tr('ERROR: Only positive numbers are allowed !'));
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
+	} else if ($max_dnames_labels < 1) {
+		$max_dnames_labels = 1;
+	} else if ($max_subdnames_labels < 1) {
+		$max_subdnames_labels = 1;
 	} else {
 		setConfig_Value('LOSTPASSWORD', $lostpassword);
 		setConfig_Value('LOSTPASSWORD_TIMEOUT', $lostpassword_timeout);
@@ -122,11 +132,16 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_RESELLER', $prevent_external_login_reseller);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_CLIENT', $prevent_external_login_client);
 		setConfig_Value('CUSTOM_ORDERPANEL_ID', $custom_orderpanel_id);
+		setConfig_Value('TLD_STRICT_VALIDATION', $tld_strict_validation);
+		setConfig_Value('SLD_STRICT_VALIDATION', $sld_strict_validation);
+		setConfig_Value('MAX_DNAMES_LABELS', $max_dnames_labels);
+		setConfig_Value('MAX_SUBDNAMES_LABELS', $max_subdnames_labels);
 		set_page_message(tr('Settings saved !'));
 	}
 }
 
 $coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+
 $tpl->assign(
 	array(
 		'LOSTPASSWORD_TIMEOUT_VALUE' => Config::get('LOSTPASSWORD_TIMEOUT'),
@@ -136,9 +151,12 @@ $tpl->assign(
 		'BRUTEFORCE_BETWEEN_TIME_VALUE' => Config::get('BRUTEFORCE_BETWEEN_TIME'),
 		'BRUTEFORCE_MAX_CAPTCHA' => Config::get('BRUTEFORCE_MAX_CAPTCHA'),
 		'DOMAIN_ROWS_PER_PAGE' => Config::get('DOMAIN_ROWS_PER_PAGE'),
-		'CUSTOM_ORDERPANEL_ID' => $coid
+		'CUSTOM_ORDERPANEL_ID' => $coid,
+		'MAX_DNAMES_LABELS_VALUE' => Config::get('MAX_DNAMES_LABELS'),
+		'MAX_SUBDNAMES_LABELS_VALUE' => Config::get('MAX_SUBDNAMES_LABELS')
 	)
 );
+
 $language = Config::get('USER_INITIAL_LANG');
 gen_def_language($tpl, $sql, $language);
 
@@ -180,6 +198,22 @@ if (Config::get('ISPCP_SUPPORT_SYSTEM')) {
 } else {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', '');
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected="selected"');
+}
+
+if (Config::get('TLD_STRICT_VALIDATION')) {
+	$tpl->assign('TLD_STRICT_VALIDATION_ON', 'selected="selected"');
+	$tpl->assign('TLD_STRICT_VALIDATION_OFF', '');
+} else {
+	$tpl->assign('TLD_STRICT_VALIDATION_ON', '');
+	$tpl->assign('TLD_STRICT_VALIDATION_OFF', 'selected="selected"');
+}
+
+if (Config::get('SLD_STRICT_VALIDATION')) {
+	$tpl->assign('SLD_STRICT_VALIDATION_ON', 'selected="selected"');
+	$tpl->assign('SLD_STRICT_VALIDATION_OFF', '');
+} else {
+	$tpl->assign('SLD_STRICT_VALIDATION_ON', '');
+	$tpl->assign('SLD_STRICT_VALIDATION_OFF', 'selected="selected"');
 }
 
 if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
@@ -330,6 +364,11 @@ $tpl->assign(
 		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
 		'TR_CUSTOM_ORDERPANEL_ID' => tr('Custom orderpanel ID'),
+		'TR_DNAMES_VALIDATION_SETTINGS' => tr('Domain names validation'),
+		'TR_TLD_STRICT_VALIDATION' => tr('TLD strict validation - According Iana Database'),
+		'TR_SLD_STRICT_VALIDATION' => tr('SLD strict validation'),
+		'TR_MAX_DNAMES_LABELS' => tr('Max labels for domain names (<i>Excluding SLD && TLD</i>)'),
+		'TR_MAX_SUBDNAMES_LABELS' => tr('Max labels for subdomains')
 	)
 );
 

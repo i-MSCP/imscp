@@ -125,7 +125,9 @@ function check_user_data() {
 
 	if (isset($_POST['dmn_name'])) {
 		$dmn_name = strtolower(trim($_POST['dmn_name']));
-		$dmn_name = encode_idna($dmn_name);
+
+		// Should be perfomed after domain names syntax validation now
+		//$dmn_name = encode_idna($dmn_name);
 	}
 
 	if (isset($_POST['dmn_expire'])) {
@@ -140,13 +142,21 @@ function check_user_data() {
 		$dmn_pt = $_POST['chtpl'];
 	}
 
+	// Check if input string is a valid domain names
 	if (!validates_dname($dmn_name)) {
-		$even_txt = $validation_err_msg;
-	} else if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
+		set_page_message($validation_err_msg);
+		return false;
+	}
+
+	// Should be perfomed after domain names syntax validation now
+	$dmn_name = encode_idna($dmn_name);
+
+	if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
 	} else if ($dmn_name == Config::get('BASE_SERVER_VHOST')) {
 		$even_txt = tr('Master domain cannot be used!');
 	}
+
 	// we have plans only for admins
 	if (Config::exists('HOSTING_PLANS_LEVEL')
 		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {

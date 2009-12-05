@@ -101,6 +101,26 @@ Config::set('DOMAIN_ROWS_PER_PAGE', 10);
 // 'reseller' => hosting plans are available only in reseller level
 Config::set('HOSTING_PLANS_LEVEL', 'reseller');
 
+/**
+ * Domain names validation defaults settings - Begin
+ */
+
+// TlD strict validation (according Iana database)
+Config::set('TLD_STRICT_VALIDATION', true);
+
+// SLD strict validation
+Config::set('SLD_STRICT_VALIDATION', true);
+
+// Maximum number of labels for the domain names
+// and subdomains (excluding SLD and TLD)
+Config::set('MAX_DNAMES_LABELS', 1);
+
+// Maximum number of labels for the subdomain names
+Config::set('MAX_SUBDNAMES_LABELS', 1);
+/**
+ * Domain names validation default settings - End
+ */
+
 // enable or disable supportsystem
 // false = disable, true = enable
 Config::set('ISPCP_SUPPORT_SYSTEM', true);

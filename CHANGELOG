@@ -1,6 +1,14 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-05 Laurent Declercq
+	- GUI:
+		* Added new admin settings for the domain names / subdomains validation
+		* Added new routines for ACE labels check (Todo: added ASCII range check)
+		* Fixed somes issues related to Rfc 3490:
+			- Hyphens are now banned in 2nd and 3rd position of input string
+			- ACE labels are no longer allowed as input string
+
 2009-12-04 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2080: Re-enable domains works not properly

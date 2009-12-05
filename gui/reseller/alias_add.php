@@ -131,7 +131,11 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $validation_err_msg;
 
 	$cr_user_id = $dmn_id = $_POST['usraccounts'];
-	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
+
+	// Should be perfomed after domain names syntax validation now
+	//$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
+
+	$alias_name = strtolower($_POST['ndomain_name']);
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
 	$forward = strtolower($_POST['forward']);
 
@@ -148,10 +152,17 @@ SQL_QUERY;
 	$domain_ip = $rs->fields['domain_ip_id'];
 
 	// $mount_point = "/".$mount_point;
-	// First check is the data correct
+
+	// First check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {
 		$err_al = $validation_err_msg;
-	} else if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
+		return;
+	}
+
+	// Should be perfomed after domain names syntax validation now
+	$alias_name = encode_idna($alias_name);
+
+	if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
@@ -186,6 +197,7 @@ SQL_QUERY;
 	if ('_off_' !== $err_al) {
 		return;
 	}
+
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
