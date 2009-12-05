@@ -273,7 +273,7 @@ sub welcome_note {
 		print STDOUT "\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
 
-	} while($rdata !~ /y|n/i);
+	} while($rdata !~ /(|y|n)/i);
 
 	exit 0 if($rdata =~ /n/i);
 
