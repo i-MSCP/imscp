@@ -30,6 +30,7 @@ libdate-calc-perl
 libdate-manip-perl
 libdbd-mysql-perl
 libdbi-perl
+libfile-mimeinfo-perl
 libio-stringy-perl
 libmail-sendmail-perl
 libmailtools-perl
