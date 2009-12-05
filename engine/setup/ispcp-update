@@ -310,7 +310,7 @@ sub warn_msg {
 		print STDOUT "\tDo you want to continue [Y/n/?]: ";
 		chomp($rdata = readline \*STDIN);
 
-	} while($rdata !~ /^(^$|n|y)$/i);
+	} while($rdata !~ /^(|n|y)$/i);
 
 	exit 0 if($rdata =~ /n/i);
 
