@@ -207,7 +207,7 @@ function action_delete(url, dmn_name) {
           <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_EXPIRES_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
-          <td colspan="4" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
+          <td colspan="5" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
         <!-- BDP: usr_item -->
         <tr class="hl">

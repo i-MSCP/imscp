@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-04 Benedikt Heintel
+	- GUI:
+		* Fixed two small bugs
+
 2009-12-05 Laurent Declercq
 	- GUI:
 		* Added new admin settings for the domain names / subdomains validation

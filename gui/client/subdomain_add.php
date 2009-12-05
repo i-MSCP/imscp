@@ -328,7 +328,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		if (empty($_POST['subdomain_name'])) {
 			set_page_message(tr('Please specify subdomain name!'));
 			return;
-
+		}
 		$sub_name = strtolower($_POST['subdomain_name']);
 
 		// Should be perfomed after domain names syntax validation now
@@ -370,7 +370,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		}
 
 		// First check if input string is a valid domain names
-		if(!validates_subdname($sub_name, $dmn_name) {
+		if(!validates_subdname($sub_name, $dmn_name)) {
 			set_page_message($validation_err_msg);
 			return;
 		}
