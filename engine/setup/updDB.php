@@ -41,40 +41,31 @@ $dbname			= chop($argv[4]);
 $host			= chop($argv[5]);
 
 // Include all needed classes
-require_once $gui_root_dir . '/include/class.Database.php';
-require_once $gui_root_dir . '/include/class.DatabaseResult.php';
-require_once $gui_root_dir . '/include/class.ispcpUpdate.php';
-require_once $gui_root_dir . '/include/class.criticalUpdate.php';
-require_once $gui_root_dir . '/include/class.databaseUpdate.php';
-
-class Config {
-
-	public static function get($value)
-	{
-		return false;
-	}
-
-}
-
-function send_request() {
-	// delegated function
-}
-
-// Create connection to the database
-Database::connect($username, $password, $driver, $host, $dbname);
+require_once $gui_root_dir . '/include/ispcp-lib.php';
 
 // Perfom all database critical updates if exists
 if(criticalUpdate::getInstance()->checkUpdateExists())
 {
 	criticalUpdate::getInstance()->executeUpdates();
-	if(getErrorMessage() != '') exit(1);
+
+	if( ($msg = criticalUpdate::getInstance()->getErrorMessage()) != '')
+	{
+		print $msg;
+		exit(1);
+	}
+
 }
 
 # Perform all database normal updates if exists
 if (databaseUpdate::getInstance()->checkUpdateExists())
 {
 	databaseUpdate::getInstance()->executeUpdates();
-	if(getErrorMessage() != '') exit(1);
+
+	if( ($msg = databaseUpdate::getInstance()->getErrorMessage() != ''))
+	{
+		print $msg;
+		exit(1);
+	}
 }
 
 exit(0);
