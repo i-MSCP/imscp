@@ -445,13 +445,9 @@ sub update_database_schema {
 
 	my ($rs, $cmd, $php) = (undef, undef, undef);
 
-	# Search and cleaning path for php-cli
-	# Todo: added it into ispcp.conf
-	($php = `which php`) =~ s/\s$//g || exit_msg("\n\tERROR: Can't find the php-cli program path.\n\tPlease install it first.");
-
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
-	$cmd = "$php $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php $main::cfg{'GUI_ROOT_DIR'} $main::db_user $main::db_pwd $main::db_name $main::db_host &>/dev/null";
+	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php $main::cfg{'GUI_ROOT_DIR'} $main::db_user $main::db_pwd $main::db_name $main::db_host &>/dev/null";
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs !=0);
 
