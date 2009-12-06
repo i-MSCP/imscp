@@ -328,12 +328,12 @@ function ispcp_check_local_part($email, $num = 50) {
  * @param boolean $subdname_process NODOC
  * @return boolean TRUE if successful, FALSE otherwize
  */
-function validates_dname($dname, $subdname_process = true) {
+function validates_dname($dname, $subdname_process = false) {
 
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
-	$max_labels = ($subdname_process) ? config::get('MAX_DNAMES_LABELS') : 99;
+	$max_labels = ($subdname_process) ? 99 : config::get('MAX_DNAMES_LABELS');
 
 	if(!$subdname_process) {
 
