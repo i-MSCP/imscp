@@ -1809,7 +1809,7 @@ sub setup_ftpd {
 		# We ask the database ftp user and password, and we create new Sql ftp user account if needed
 		if(!defined($main::ua{'db_ftp_user'}) || !defined($main::ua{'db_ftp_password'}))
 		{
-			print defined($warn_msg) ? $wrn_msg :  "\n\tWARNING: Unable to retrieve your current username and" .
+			print defined($warn_msg) ? $warn_msg :  "\n\tWARNING: Unable to retrieve your current username and" .
 				"\n\tpassword for the Ftpd Sql account! We will create a new Ftpd Sql account.\n";
 
 			do
