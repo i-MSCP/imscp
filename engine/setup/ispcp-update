@@ -134,13 +134,11 @@ sub update_engine {
 	print STDOUT "\n\tRebuilding all services configuration files: ";
 	$rs = rebuild_services_cfg();
 	exit_msg('Failed!', $rs) if($rs != 0);
-	print STDOUT BOLD GREEN 'Done';
 
 	# Rebuilding all gui related configuration files
 	print STDOUT "\n\tRebuilding all gui configuration files: ";
 	$rs = rebuild_gui_cfg();
 	exit_msg('Failed!', $rs) if($rs != 0);
-	print STDOUT BOLD GREEN 'Done';
 
 	# Rebuilding all customers configuration files
 	print STDOUT "\n\tRebuilding all customers configuration files";
@@ -519,25 +517,25 @@ sub rebuild_gui_cfg {
 
 	my $rs = undef;
 
-	print STDOUT "\n\t\tIspCP GUI named configuration";
+	print STDOUT "\n\t\tIspCP GUI named configuration: ";
 	$rs = setup_gui_named();
 	return $rs if($rs != 0);
-	print BOLD BLACK 'Done';
+	print BOLD GREEN 'Done';
 
-	print STDOUT "\n\t\tIspCP GUI named fastCGI/php configuration";
+	print STDOUT "\n\t\tIspCP GUI named fastCGI/php configuration: ";
 	$rs = setup_gui_php();
 	return $rs if($rs != 0);
-	print BOLD BLACK 'Done';
+	print BOLD GREEN 'Done';
 
-	print STDOUT "\n\t\tIspCP GUI vhost file";
+	print STDOUT "\n\t\tIspCP GUI vhost file: ";
 	$rs = setup_gui_httpd();
 	return $rs if($rs != 0);
-	print BOLD BLACK 'Done';
+	print BOLD GREEN 'Done';
 
-	print STDOUT "\n\t\tIspCP PMA configuration file";
+	print STDOUT "\n\t\tIspCP PMA configuration file: ";
 	$rs = setup_gui_pma();
 	return $rs if($rs != 0);
-	print BOLD BLACK 'Done';
+	print BOLD GREEN 'Done';
 
 	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
 
