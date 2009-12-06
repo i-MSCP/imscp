@@ -75,7 +75,8 @@ if ($rs->RecordCount() == 0 || !isset($_SESSION['domain_ip'])) {
 
 $domain_ip		= $_SESSION['domain_ip'];
 $dmn_user_name	= $rs->fields['domain_name'];
-$dmn_user_name	= decode_idna($dmn_user_name);
+// Should be performed after domain name validation now
+//$dmn_user_name	= decode_idna($dmn_user_name);
 $hpid			= $rs->fields['plan_id'];
 $first_name		= $rs->fields['fname'];
 $last_name		= $rs->fields['lname'];
@@ -130,11 +131,15 @@ $timestamp = time();
 $pure_user_pass = substr($timestamp, 0, 6);
 $inpass = crypt_user_pass($pure_user_pass);
 
-if (!chk_dname($dmn_user_name)) {
+// Should be performed after domain name validation now
+$dmn_user_name = decode_idna($dmn_user_name);
+
+if (!validates_dname($dmn_user_name)) {
 	set_page_message(tr('Wrong domain name syntax!'));
 	unset($_SESSION['domain_ip']);
 	user_goto('orders.php');
 }
+
 if (ispcp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 	set_page_message(tr('Domain with that name already exists on the system!'));
 	unset($_SESSION['domain_ip']);
@@ -250,6 +255,9 @@ $rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status))
 // Create the 3 default addresses if wanted
 if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
 	client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
+
+// Added to send the msg with the domain name in idna form
+$dmn_user_name = encode_idna($dmn_user_name);
 
 // ispcp 2.5 feature
 // add_domain_extras($dmn_id, $record_id, $sql);
