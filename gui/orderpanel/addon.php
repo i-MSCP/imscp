@@ -41,12 +41,16 @@ $tpl->define_dynamic('purchase_footer', 'page');
  */
 
 function addon_domain($dmn_name) {
-	$dmn_name = encode_idna(strtolower($dmn_name));
 
-	if (!chk_dname($dmn_name)) {
+	if (!validates_dname($dmn_name)) {
 		set_page_message(tr('Wrong domain name syntax!'));
 		return;
-	} else if (ispcp_domain_exists($dmn_name, 0)) {
+	}
+
+	// Should be performed after domain name validation now
+	$dmn_name = encode_idna(strtolower($dmn_name));
+
+	if(ispcp_domain_exists($dmn_name, 0)) {
 		set_page_message(tr('Domain with that name already exists on the system!'));
 		return;
 	}
