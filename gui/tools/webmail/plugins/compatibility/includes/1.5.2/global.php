@@ -545,10 +545,67 @@ function check_plugin_dependencies($plugin_name, $force_inclusion = FALSE)
 
    foreach ($dependencies as $depend_name => $depend_requirements)
    {
-      $version = preg_split('/\./', $depend_requirements['version'], 3);
+
+      // check for core plugins first
+      //
+      if (strpos(strtoupper($depend_requirements['version']), 'CORE') === 0)
+      {
+
+         // see if the plugin is in the core (just check if the directory exists)
+         //
+         if (!file_exists(SM_PATH . 'plugins/' . $depend_name))
+            $missing_or_bad[$depend_name] = $depend_requirements;
+
+
+         // check if it is activated if need be
+         //
+         else if ($depend_requirements['activate'] && !is_plugin_enabled($depend_name))
+            $missing_or_bad[$depend_name] = $depend_requirements;
+
+
+         // check if this is the right core version if one is given
+         // (note this is pretty useless - a plugin should specify
+         // whether or not it itself is compatible with this version
+         // of SM in the first place)
+         //
+         else if (strpos($depend_requirements['version'], ':') !== FALSE)
+         {
+            $version = explode('.', substr($depend_requirements['version'], strpos($depend_requirements['version'], ':') + 1), 3);
+            $version[0] = intval($version[0]);
+            if (isset($version[1])) $version[1] = intval($version[1]);
+            else $version[1] = 0;
+            if (isset($version[2])) $version[2] = intval($version[2]);
+            else $version[2] = 0;
+
+            if (!check_sm_version($version[0], $version[1], $version[2]))
+               $missing_or_bad[$depend_name] = $depend_requirements;
+         }
+
+         continue;
+
+      }
+
+      // if the plugin is actually incompatible; check that it
+      // is not activated
+      //
+      if ($depend_requirements['version'] == SQ_INCOMPATIBLE)
+      {
+
+         if (is_plugin_enabled($depend_name))
+            $missing_or_bad[$depend_name] = $depend_requirements;
+
+         continue;
+
+      }
+
+      // check for normal plugins
+      //
+      $version = explode('.', $depend_requirements['version'], 3);
       $version[0] = intval($version[0]);
-      $version[1] = intval($version[1]);
-      $version[2] = intval($version[2]);
+      if (isset($version[1])) $version[1] = intval($version[1]);
+      else $version[1] = 0;
+      if (isset($version[2])) $version[2] = intval($version[2]);
+      else $version[2] = 0;
 
       $force_dependency_inclusion = !$depend_requirements['activate'];
 
@@ -756,7 +813,7 @@ if ((!compatibility_check_sm_version(1, 4, 12)
  || (compatibility_check_sm_version(1, 5, 0) && !compatibility_check_sm_version(1, 5, 2)))
  && !function_exists('sq_call_function_suppress_errors'))
 {
-function sq_call_function_suppress_errors($function, $args=NULL) {
+function sq_call_function_suppress_errors($function, $args=array()) {
    $display_errors = ini_get('display_errors');
    ini_set('display_errors', '0');
    $ret = call_user_func_array($function, $args);

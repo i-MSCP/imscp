@@ -102,26 +102,26 @@
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><b><a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{DOMAIN_NAME}</a></b></td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
-                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_left.png" width="3" height="20"></td>
-                                    <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.png" width="3" height="20"></td>
+                                    <td class="statsBar"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                         <tr>
-                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/stats_progress.png" width="{TRAFF_PERCENT}" height="20"></td>
+                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/bars/stats_progress.png" width="{TRAFF_PERCENT}" height="20"></td>
                                         </tr>
                                     </table></td>
-                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_right.png" width="3" height="20"></td>
+                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.png" width="3" height="20"></td>
                                   </tr>
                                 </table>
                                   <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br />
                                 {TRAFF_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
-                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_left.png" width="3" height="20"></td>
-                                    <td class="stats"><table border="0" cellspacing="0" cellpadding="0" align="left">
+                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.png" width="3" height="20"></td>
+                                    <td class="statsBar"><table border="0" cellspacing="0" cellpadding="0" align="left">
                                         <tr>
-                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/stats_progress.png" width="{DISK_PERCENT}" height="20"></td>
+                                          <td class="statsBar"><img src="{THEME_COLOR_PATH}/images/bars/stats_progress.png" width="{DISK_PERCENT}" height="20"></td>
                                         </tr>
                                     </table></td>
-                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/stats_right.png" width="3" height="20"></td>
+                                    <td width="3"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.png" width="3" height="20"></td>
                                   </tr>
                                 </table>
                                   <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br />

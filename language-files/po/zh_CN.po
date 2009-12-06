@@ -19,7 +19,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "简体中文(Chinese Simplified)"
+msgstr "简体中文 - Chinese Simplified"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega 虚拟主机管理系统"

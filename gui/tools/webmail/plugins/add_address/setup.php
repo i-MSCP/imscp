@@ -77,7 +77,7 @@ function add_address_info()
                        'sm_site_username' => 'pdontthink',
                     ),
                  ),
-                 'version' => '1.0.1',
+                 'version' => '1.0.2',
                  'required_sm_version' => '1.4.0',
                  'requires_source_patch' => 0,
                  'requires_configuration' => 0,

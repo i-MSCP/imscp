@@ -21,7 +21,7 @@ msgid "encoding"
 msgstr "UTF-8 "
 
 msgid "_: Localised language"
-msgstr "Slovenský jazyk"
+msgstr "slovenčina - Slovak"
 
 #, fuzzy
 msgid "ispCP Omega a Virtual Hosting Control System"

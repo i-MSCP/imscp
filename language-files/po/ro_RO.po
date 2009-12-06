@@ -18,7 +18,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Romanian"
+msgstr "Română - Romanian"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega un Sistem Virtual De Control al Hostingului"

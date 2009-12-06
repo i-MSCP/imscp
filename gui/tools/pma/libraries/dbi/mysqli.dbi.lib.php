@@ -4,7 +4,7 @@
  * Interface to the improved MySQL extension (MySQLi)
  *
  * @package phpMyAdmin-DBI-MySQLi
- * @version $Id: mysqli.dbi.lib.php 12283 2009-03-03 16:20:41Z nijel $
+ * @version $Id: mysqli.dbi.lib.php 13101 2009-11-02 17:35:36Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -22,7 +22,13 @@ if (!defined('PMA_MYSQL_CLIENT_API')) {
 }
 
 /**
- * some older mysql client libs are missing this constants ...
+ * some PHP versions are reporting extra messages like "No index used in query"
+ */
+
+mysqli_report(MYSQLI_REPORT_OFF);
+
+/**
+ * some older mysql client libs are missing these constants ...
  */
 if (! defined('MYSQLI_BINARY_FLAG')) {
    define('MYSQLI_BINARY_FLAG', 128);

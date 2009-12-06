@@ -3082,7 +3082,7 @@ sub dmn_del_awstats_cfg_data {
 	#
 	# Let's delete file, if exists
 	#
-	if ( -e $sys_cfg) {
+	if (-e $sys_cfg) {
 		$rs = del_file($sys_cfg);
 		return $rs if ($rs != 0);
 	}
@@ -3703,11 +3703,21 @@ sub dmn_enable_data {
 	my $www_dir          = $main::cfg{'APACHE_WWW_DIR'};
 	my $dmn_dir          = "$www_dir/$dmn_name";
 	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
+	my $cmd_rm           = $main::cfg{'CMD_RM'};
 	my $cmd_mv           = $main::cfg{'CMD_MV'};
-	my $cmd              = "$cmd_mv $dmn_disabled_dir $dmn_dir";
+	my ($cmd, $rs)       = (undef, undef);
 
-	my $rs = sys_command($cmd);
-	return $rs if ($rs != 0);
+	# delete target folder if exists
+	# this can happen because subdomains created empty access logs
+	if (-e $dmn_dir) {
+		$cmd = "$cmd_rm -r $dmn_dir";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
+	}
+	
+	$cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);	
 
 	push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
 	return 0;

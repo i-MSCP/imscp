@@ -21,7 +21,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Galego"
+msgstr "Galego - Galician"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega un Sistema de Control de Hospedaxe Virtual"

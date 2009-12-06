@@ -16,7 +16,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Česky"
+msgstr "Česky - Czech"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega - Ovládací centrum virtuálního hostingu"

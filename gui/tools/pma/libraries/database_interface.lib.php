@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 13025 2009-10-03 19:25:26Z helmo $
+ * @version $Id: database_interface.lib.php 13108 2009-11-08 11:33:28Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -354,7 +354,7 @@ function PMA_DBI_get_tables_full($database, $table = false, $tbl_is_group = fals
     // this is why we fall back to SHOW TABLE STATUS even for MySQL >= 50002
     if (empty($tables)) {
         foreach ($databases as $each_database) {
-            if (true === $tbl_is_group) {
+            if ($table || (true === $tbl_is_group)) {
                 $sql = 'SHOW TABLE STATUS FROM '
                     . PMA_backquote($each_database)
                     .' LIKE \'' . PMA_escape_mysql_wildcards(addslashes($table)) . '%\'';

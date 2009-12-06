@@ -176,15 +176,23 @@ function add_domain_alias(&$sql, &$err_al) {
 	$rs = exec_query($sql, $query, array($cr_user_id));
 	$domain_ip = $rs->fields['domain_ip_id'];
 
-	$alias_name = encode_idna($alias_name);
+	// Should be perfomed after domain names syntax validation now
+	//$alias_name = encode_idna($alias_name);
+
 	$mount_point = array_encode_idna($mount_point, true);
 
 	//$mount_point = "/".$mount_point;
 
-	// First check if the data is correct
+	// First check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {
 		$err_al = $validation_err_msg;
-	} else if (ispcp_domain_exists($alias_name, 0)) {
+		return;
+	}
+
+	// Should be perfomed after domain names syntax validation now
+	$alias_name = encode_idna($alias_name);
+
+	if (ispcp_domain_exists($alias_name, 0)) {
 	 $err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");

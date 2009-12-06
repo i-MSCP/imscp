@@ -1,5 +1,5 @@
 <?php
-/* $Id: hungarian-utf-8.inc.php 12640 2009-07-11 09:11:20Z lem9 $ */
+/* $Id: hungarian-utf-8.inc.php 13109 2009-11-08 12:04:19Z lem9 $ */
 // Peter Bakondy <bakondyp@freemail.hu>
 // Mihály Mészáros <poizon at sth dot sze dot hu>
 // József Tamás Herczeg <localicer @NOSPAM@ gmail DOT com>
@@ -1081,7 +1081,6 @@ $strSetupServers_SignonURL_name = 'Az egyszeri bejelentkezés URL-címe';
 $strSetupServerSslMsg = 'SSL-kapcsolatokat kell használnia, ha a webszerver támogatja';
 $strSetupServers_socket_desc = 'A szoftvercsatorna, melyen a MySQL-szerver figyel, hagyja üresen, ha az alapértelmezett';
 $strSetupServers_socket_name = 'A szerver szoftvercsatornája';
-$strSetupServers_ssl_desc = '';
 $strSetupServers_ssl_name = 'SSL használata';
 $strSetupServers_table_coords_desc = 'Hagyja üresen, ha nincs PDF-séma támogatás, alapértelmezés: [kbd]pma_table_coords[/kbd]';
 $strSetupServers_table_coords_name = 'PDF-séma: table coordinates';
@@ -1463,4 +1462,5 @@ $strYes = 'Igen';
 $strZeroRemovesTheLimit = 'Megjegyzés: Ezen beállítások 0-ra (nulla) állítása eltávolítja a korlátozást.';
 $strZip = '"zip tömörítés"';
 
+$strSetupServers_ssl_desc = 'Enable SSL for connection to MySQL server';  //to translate
 ?>

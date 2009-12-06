@@ -1,5 +1,5 @@
 <?php
-/* $Id: norwegian-utf-8.inc.php 12655 2009-07-15 17:25:43Z lem9 $ */
+/* $Id: norwegian-utf-8.inc.php 13109 2009-11-08 12:04:19Z lem9 $ */
 
 /**
  * Translated by Sven-Erik Andersen <sven DOT erik DOT andersen AT gmail DOT com>
@@ -915,7 +915,6 @@ $strSetupServers_port_desc = 'Porten som MySQL tjeneren lytter på, la stå tom 
 $strSetupServers_socket_name = 'Tjenersokkel';
 $strSetupServers_socket_desc = 'Sokkel som MySQL tjeneren lytter på, la stå tom for standard verdi';
 $strSetupServers_ssl_name = 'Bruk SSL';
-$strSetupServers_ssl_desc = '';
 $strSetupServers_connect_type_name = 'Tilkoblingstype';
 $strSetupServers_connect_type_desc = 'Hvordan koble til tjener, behold tcp hvis usikker';
 $strSetupServers_extension_name = 'Bruk PHP modul';
@@ -1458,4 +1457,5 @@ $strYes = 'Ja';
 $strZeroRemovesTheLimit = 'Merk: Ved å sette disse til 0 (null) fjernes begrensningen.';
 $strZip = 'Komprimert (zip)';
 
+$strSetupServers_ssl_desc = 'Enable SSL for connection to MySQL server';  //to translate
 ?>

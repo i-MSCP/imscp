@@ -138,6 +138,44 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_DNAMES_VALIDATION_SETTINGS}</strong></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_TLD_STRICT_VALIDATION}</td>
+                              <td class="content">
+                               <select name="tld_strict_validation" id="tld_strict_validation">
+                                <option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {TLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
+                               </select>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_SLD_STRICT_VALIDATION}</td>
+                              <td class="content">
+                               <select name="sld_strict_validation" id="sld_strict_validation">
+                                <option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {SLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
+                               </select>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_MAX_DNAMES_LABELS}</td>
+                              <td class="content">
+                               <input name="max_dnames_labels" type="text" class="textinput" id="max_dnames_labels" style="width:50px" value="{MAX_DNAMES_LABELS_VALUE}" maxlength="2" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_MAX_SUBDNAMES_LABELS}</td>
+                              <td class="content">
+                               <input name="max_subdnames_labels" type="text" class="textinput" id="max_subdnames_labels" style="width:50px" value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_MAIL_SETTINGS}</strong></td>
                             </tr>
                             <tr>

@@ -1,6 +1,36 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-05 Laurent Declercq
+	- GUI:
+		* Added new admin settings for the domain names / subdomains validation
+		* Added new routines for ACE labels check (Todo: added ASCII range check)
+		* Fixed somes issues related to Rfc 3490:
+			- Hyphens are now banned in 2nd and 3rd position of input string
+			- ACE labels are no longer allowed as input string
+
+2009-12-04 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2080: Re-enable domains works not properly
+	- TOOLS:
+		* Updated PHPmyAdmin to version 3.2.4
+		* Updated SquirrelMail Plugins add_address and compatibility
+
+2009-11-28 Benedikt Heintel
+	- LANGUAGES:
+		* Added: Arabic
+
+2009-11-27 Benedikt Heintel
+	- GUI:
+		* Fixed #2077: Files in GUI is absent
+	- TOOLS:
+		* Fixed Error in Filemanager
+
+2009-11-27 Henrik Schytte
+	- GUI:
+		* Added new Icons
+		* Added three links to system tools on the login page
+
 2009-11-27 Henrik Schytte
 	- GUI:
 		* Graphical adjustments

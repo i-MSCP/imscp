@@ -31,7 +31,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" alt="" /></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/icons/system_vital.png" width="25" height="25" alt="" /></td>
 		<td colspan="2" class="title">{TR_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -71,7 +71,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" alt="" /></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/icons/system_cpu.png" width="25" height="25" alt="" /></td>
 		<td colspan="2" class="title">{TR_CPU_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -118,7 +118,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" alt="" /></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/icons/system_memory.png" width="25" height="25" alt="" /></td>
 		<td colspan="2" class="title">{TR_MEMRY_SYSTEM_INFO}</td>
 	</tr>
 </table>
@@ -168,7 +168,7 @@
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
 	<tr>
-		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25" alt="" /></td>
+		<td width="20"><img src="{THEME_COLOR_PATH}/images/icons/system_filesystem.png" width="25" height="25" alt="" /></td>
 		<td colspan="2" class="title">{TR_FILE_SYSTEM_INFO}</td>
 	</tr>
 </table>

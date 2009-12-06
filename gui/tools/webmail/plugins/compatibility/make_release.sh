@@ -103,21 +103,27 @@ if [ ! -e README ]; then
    echo
    exit 3
 fi
-if [ ! -e INSTALL ]; then
+if [ ! -e docs/README ]; then
+   echo
+   echo "No docs/README file found.  Please create before making release"
+   echo
+   exit 3
+fi
+if [ ! -e docs/INSTALL ]; then
    echo 
-   echo "No INSTALL file found.  Please create before making release"
+   echo "No docs/INSTALL file found.  Please create before making release"
    echo
    exit 4
 fi
-if [ ! -e getpot ]; then
+if [ ! -e locale/getpot ]; then
    echo 
-   echo "No getpot file found.  Please create before making release"
+   echo "No locale/getpot file found.  Please create before making release"
    echo
    exit 5
 fi
-if [ ! -e $PACKAGE.pot ]; then
+if [ ! -e locale/$PACKAGE.pot ]; then
    echo
-   echo "No $PACKAGE.pot file found.  Please create before making release"
+   echo "No locale/$PACKAGE.pot file found.  Please create before making release"
    echo
    exit 5
 fi
@@ -126,13 +132,34 @@ fi
 
 # just copy index.php and COPYING automatically if not found
 #
-if [ ! -e COPYING ]; then
-   echo "No COPYING file found.  Grabbing one from ../../"
-   cp ../../COPYING .
+if [ ! -e docs/COPYING ]; then
+   echo "No docs/COPYING file found.  Grabbing one from ../../"
+   cp ../../COPYING ./docs/
 fi
 if [ ! -e index.php ]; then
    echo "No index.php file found.  Grabbing one from ../"
    cp ../index.php .
+fi
+if [ ! -e docs/index.php ]; then
+   echo "No docs/index.php file found.  Grabbing one from ../"
+   cp ../index.php ./docs/
+fi
+if [ ! -e locale/index.php ]; then
+   echo "No locale/index.php file found.  Grabbing one from ../"
+   cp ../index.php ./locale/
+fi
+
+
+
+# Make our own docs/.htaccess and locale/.htaccess if needed
+#
+if [ ! -e docs/.htaccess ]; then
+   echo "No docs/.htaccess file found.  Creating..."
+   echo "Deny from All" > ./docs/.htaccess
+fi
+if [ ! -e locale/.htaccess ]; then
+   echo "No locale/.htaccess file found.  Creating..."
+   echo "Deny from All" > ./locale/.htaccess
 fi
 
 
@@ -215,7 +242,7 @@ echo $PURE_VERSION >> version
 
 # Build tar command; exclude config and other irrelevant files 
 #
-TAR_COMMAND="tar -c -z -v --exclude CVS"
+TAR_COMMAND="tar -c -z -v --exclude CVS --exclude .svn"
 J=0
 while [ "$J" -lt ${#CONFIG_FILES[@]} ]; do
 

@@ -1,11 +1,11 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
 <!-- Template /skins/ispCP/bookmark1.template.php begin -->
 
-<?php if     $net2ftp_globals["browser_agent"] == "IE") { ?>
+<?php if ($net2ftp_globals["browser_agent"] == "IE") { ?>
 <?php 	echo __("Right-click on the link and choose \"Add to Favorites...\""); ?>
-<?php } elseif $net2ftp_globals["browser_agent"] == "Safari") { ?>
+<?php } elseif ($net2ftp_globals["browser_agent"] == "Safari") { ?>
 <?php 	echo __("Right-click on the link and choose \"Add Link to Bookmarks...\""); ?>
-<?php } elseif $net2ftp_globals["browser_agent"] == "Opera") { ?>
+<?php } elseif ($net2ftp_globals["browser_agent"] == "Opera") { ?>
 <?php 	echo __("Right-click on the link and choose \"Bookmark link...\""); ?>
 <?php } else { ?>
 <?php 	echo __("Right-click on the link and choose \"Bookmark This Link...\""); ?>

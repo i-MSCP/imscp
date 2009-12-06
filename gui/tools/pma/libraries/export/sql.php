@@ -4,7 +4,7 @@
  * Set of functions used to build SQL dumps of tables
  *
  * @package phpMyAdmin-Export-SQL
- * @version $Id: sql.php 12897 2009-08-30 12:43:07Z lem9 $
+ * @version $Id: sql.php 13118 2009-11-21 13:22:08Z lem9 $
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -1004,7 +1004,9 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
                     $insert_line .= $field_set[$i] . ' = ' . $values[$i];
                 }
 
-                $insert_line .= ' WHERE ' . PMA_getUniqueCondition($result, $fields_cnt, $fields_meta, $row);
+                list($tmp_unique_condition, $tmp_clause_is_unique) = PMA_getUniqueCondition($result, $fields_cnt, $fields_meta, $row);
+                $insert_line .= ' WHERE ' . $tmp_unique_condition;
+                unset($tmp_unique_condition, $tmp_clause_is_unique);
 
             } else {
 

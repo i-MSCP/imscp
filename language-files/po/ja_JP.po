@@ -25,7 +25,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "_: Localised language"
-msgstr "Japanese"
+msgstr "日本語 - Japanese"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ispCP Omega バーチャルホスティングコントロールシステム"
