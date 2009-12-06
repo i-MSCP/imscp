@@ -2150,7 +2150,10 @@ sub setup_gui_php {
 		{
 			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_")
 			{
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/$_ $bk_dir/master.$_.$timestamp";
+				my (undef, $file) = split('/');
+				$file = $_ if(!defined $file);
+
+				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/master/$_ $bk_dir/master.$_.$timestamp";
 				$rs = sys_command_rs($cmd);
 				return $rs if($rs !=0);
 			}
