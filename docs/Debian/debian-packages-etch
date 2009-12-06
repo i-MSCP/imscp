@@ -65,6 +65,7 @@ perl
 perl-base
 perl-modules
 php5-cgi
+php5-cli
 php5-gd
 php5-idn
 php5-imap
