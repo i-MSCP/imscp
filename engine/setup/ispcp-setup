@@ -312,7 +312,6 @@ sub setup_host_system {
 	return 0;
 }
 
-# NEW - Should be tested
 # Performs all subroutines that generate the
 # configuration related to the IspCP frontend (GUI)
 sub setup_gui_cfg {
@@ -365,16 +364,11 @@ sub setup_shut_down {
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
-	my $shut_down_message = <<MSG;
+	my $shut_down_message = 
+		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!".
+		"\tPlease type http://$main::ua{'admin_vhost'} in your browser,".
+		"\tlog in with your Administrator Account and perform Database Updates if any.";
 
-\tCongratulations!
-
-\tispCP '$main::cfg{'Version'}' Setup completed successfully!
-
-\tPlease type http://$main::ua{'admin_vhost'} in your browser,
-\tlog in with your Administrator Account and perform Database Updates if exists.
-
-MSG
 	print STDOUT $shut_down_message;
 
 	if (sys_command_rs("which rkhunter > /dev/null") eq 0 ) {

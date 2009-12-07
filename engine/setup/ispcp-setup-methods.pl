@@ -2133,7 +2133,7 @@ sub setup_gui_httpd {
 	0;
 }
 
-# ispCP GUI php configuration files - Setup / Update
+# ispCP GUI PHP configuration files - Setup / Update
 # Create gui fcgi directory
 # Build, store and install gui php related files (starter script, php.ini)
 sub setup_gui_php {
@@ -2152,23 +2152,19 @@ sub setup_gui_php {
 	my $wrk_dir = "$cfg_dir/working";
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
 		# Nothing todo here
 	}
 	# Update:
-	else
-	{
+	else {
 		my $timestamp = time();
 
-		foreach(qw{php5-fcgi-starter php5/php.ini})
-		{
-			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_")
-			{
+		foreach(qw{php5-fcgi-starter php5/php.ini}) {
+			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_") {
 				my (undef, $file) = split('/');
 				$file = $_ if(!defined $file);
 
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/master/$_ $bk_dir/master.$_.$timestamp";
+				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/master/$_ $bk_dir/master.$file.$timestamp";
 				$rs = sys_command_rs($cmd);
 				return $rs if($rs !=0);
 			}

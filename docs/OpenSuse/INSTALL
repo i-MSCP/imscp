@@ -18,7 +18,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.3
-INSTALL Script:	1.6
+INSTALL Script:		1.7
 postinst Script:	1.1
 Maintainer:		Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
 Homepage:		http://isp-contol.net
@@ -171,6 +171,7 @@ Note: For all questions, answer "a" (trust always).
 	# cp -v /srv/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/srv/www/ispcp/gui/tools/webmail/data/
 
 8. Delete old files to avoid security risks:
+	# rm -fR /srv/www/ispcp/engine/messager/
 	# rm -Rf /srv/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -Rf /srv/www/ispcp/gui/*.php
 
