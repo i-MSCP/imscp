@@ -667,8 +667,8 @@ sub set_permissions {
 # with EOL.
 #
 # param: string $msg the message to be placed on right
-# param: $left_msg_lenght: lenght of left message
-# return: left formated message
+# param: int $left_msg_lenght: lenght of left message
+# return: string right formated message
 #
 sub str_to_right {
 
