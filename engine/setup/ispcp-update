@@ -210,7 +210,7 @@ sub update_engine {
 
 	# Starting services
 	print STDOUT "\n\tStarting services:";
-	$rs = stop_services();
+	$rs = start_services();
 	exit_msg('Failed!', $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', 35);
 
@@ -384,8 +384,8 @@ sub start_services {
 	{
 		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_})
 		{
-			sys_command("$main::cfg{$_} start");
-			print BOLD BLACK '.';
+			sys_command("$main::cfg{$_} start &>/dev/null");
+			print STDOUT BOLD BLACK '.';
 			sleep 1;
 		}
 	}
@@ -413,7 +413,7 @@ sub stop_services {
 		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_})
 		{
 			sys_command("$main::cfg{$_} stop &>/dev/null");
-			print BOLD BLACK '.';
+			print STDOUT BOLD BLACK '.';
 			sleep 1;
 		}
 	}
