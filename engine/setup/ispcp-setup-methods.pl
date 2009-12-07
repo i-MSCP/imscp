@@ -1741,6 +1741,8 @@ sub setup_ftpd {
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 
+	my $working_file = undef;
+
 	# Sets the path to the configuration file - Begin
 
 	if (! -e $main::cfg{'FTPD_CONF_FILE'})
@@ -1782,8 +1784,21 @@ sub setup_ftpd {
 
 		# Get the current user and password for SQL connection and check it - Begin
 
+		if(-e "$wrk_dir/proftpd.conf" )
+		{
+			$working_file = "$wrk_dir/proftpd.conf";
+		}
+		elsif("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp")
+		{
+			$working_file = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp";
+		}
+		elsif(-e '/etc/proftpd.conf.back')
+		{
+			$working_file = '/etc/proftpd.conf.back';
+		}
+
 		# Loading working configuration file from /etc/ispcp/working/
-		($rs, $rdata) = get_file("$wrk_dir/proftpd.conf");
+		($rs, $rdata) = get_file($working_file);
 		return $rs if($rs != 0);
 
 		if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im)
