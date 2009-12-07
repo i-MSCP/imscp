@@ -51,6 +51,9 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
+# FIXME: Check if it ok for all dist
+use Term::ReadKey;
+
 # Todo Added this package (ex. debian: libfile-mimeinfo-perl)
 use File::MimeInfo::Magic;
 
