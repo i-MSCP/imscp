@@ -1792,9 +1792,9 @@ sub setup_ftpd {
 		{
 			$working_file = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp";
 		}
-		elsif(-e '/etc/proftpd.conf.back')
+		elsif(-e '/etc/proftpd.conf.bak')
 		{
-			$working_file = '/etc/proftpd.conf.back';
+			$working_file = '/etc/proftpd.conf.bak';
 		}
 
 		# Loading working configuration file from /etc/ispcp/working/
