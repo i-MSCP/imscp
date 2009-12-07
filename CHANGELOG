@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-07 Laurent Declercq
+	-GUI:
+		* Fixed: Undefined constant VFS_ASCII
+		* Fixed: ftp_get() expects parameter 4 to be long, string given...
+
 2009-12-06 Laurent Declercq
 	-GUI:
 		* Fixed #2085: Call to undefined function chk_dname()
