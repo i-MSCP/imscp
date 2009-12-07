@@ -28,7 +28,7 @@
 /**
  * Virtual File System main class
  *
- * This class allows the ispCP Control Panel to browse and edit all of the user 
+ * This class allows the ispCP Control Panel to browse and edit all of the user
  * files
  */
 class vfs {
@@ -266,8 +266,8 @@ class vfs {
 	 * Checks for file existence
 	 *
 	 * @param string $file VFS file path.
-	 * @param int $type Type of the file to match. Must be either VFS_TYPE_DIR,
-	 * 					VFS_TYPE_LINK or VFS_TYPE_FILE.
+	 * @param int $type Type of the file to match. Must be either {@link self::VFS_TYPE_DIR},
+	 *	{@link self::VFS_TYPE_LINK} or {@link self::VFS_TYPE_FILE}.
 	 * @return boolean Returns TRUE if file exists or FALSE if it doesn't exist.
 	 */
 	public function exists($file, $type = null) {
@@ -302,10 +302,11 @@ class vfs {
 	 * Retrieves a file from the virtual file system
 	 *
 	 * @param string $file VFS file path.
-	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII}
+	 *	or {@link self::VFS_BINARY}.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	public function get($file, $mode = VFS_ASCII) {
+	public function get($file, $mode = self::VFS_ASCII) {
 		// Ensure that we're open
 		if (!$this->open()) {
 			return false;
@@ -330,10 +331,11 @@ class vfs {
 	 *
 	 * @param string $file VFS file path.
 	 * @param string $content File contents.
-	 * @param int $mode VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII}
+	 *	or {@link self::VFS_BINARY}.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
-	public function put($file, $content, $mode = VFS_ASCII) {
+	public function put($file, $content, $mode = self::VFS_ASCII) {
 		// Ensure that we're open
 		if (!$this->open()) {
 			return false;
