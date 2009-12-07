@@ -262,7 +262,7 @@ sub exit_msg {
 
 	if (defined($msg) && $msg ne '' ) {
 		if($msg eq 'Failed!') {
-			print STDERR BOLD RED "$msg\n";
+			print STDERR BOLD RED "\t$msg\n";
 		}
 		else {
 			print STDERR "\t$msg\n";

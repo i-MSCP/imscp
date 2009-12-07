@@ -34,6 +34,9 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
+use Term::ANSIColor qw(:constants);
+$Term::ANSIColor::AUTORESET = 1;
+
 use strict;
 use warnings;
 use Socket;
@@ -365,11 +368,13 @@ sub setup_shut_down {
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
 	my $shut_down_message = 
-		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!".
-		"\tPlease type http://$main::ua{'admin_vhost'} in your browser,".
-		"\tlog in with your Administrator Account and perform Database Updates if any.";
+		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!";
+	my $login_message =
+		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and".
+		"\tlog in with your Administrator Account to use ispCP.";
 
-	print STDOUT $shut_down_message;
+	print STDOUT BOLD UNDERLINE $shut_down_message;
+	print STDOUT $login_message;
 
 	if (sys_command_rs("which rkhunter > /dev/null") eq 0 ) {
 	   print STDOUT "\tSetup is now updating rkhunter:\n";
