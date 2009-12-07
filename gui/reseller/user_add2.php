@@ -84,7 +84,7 @@ $tpl->assign(
 			'TR_BACKUP_SQL'					=> tr('SQL'),
 			'TR_BACKUP_FULL'				=> tr('Full'),
 			'TR_BACKUP_NO'					=> tr('No'),
-			'TR_DNS'						=> tr('Manual DNS support'),
+			'TR_DNS'						=> tr('Manual DNS support (EXPERIMENTAL)'),
 			'TR_YES'						=> tr('yes'),
 			'TR_NO'							=> tr('no'),
 			'TR_NEXT_STEP'					=> tr('Next step'),
