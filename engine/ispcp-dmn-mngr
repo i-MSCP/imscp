@@ -1,5 +1,5 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -414,7 +414,7 @@ sub dmn_add_named_db_data {
                 'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl',
 		'db_time_b.tpl',
-		'db_time_e.tpl'                                                                                                                  
+		'db_time_e.tpl'
 	);
 	return $rs if ($rs != 0);
 
@@ -483,7 +483,7 @@ sub dmn_add_named_db_data {
 	#}
 	# support for manual DNS records : begin
         my $domain_id    = @$dmn_data[0];
-	
+
 	my $sql = "
 	    SELECT
 		domain_dns_id,
@@ -495,16 +495,16 @@ sub dmn_add_named_db_data {
 		domain_type
 	    FROM
 		domain_dns
-	    WHERE 
-		    domain_dns.alias_id IS NULL
+	    WHERE
+		    domain_dns.alias_id = 0
 		AND domain_dns.domain_id = $domain_id
 	    ;
 	";
-	
+
 	my $rows;
 	($rs, $rows) = doSQL($sql);
 	if ($rs == 0){
-	
+
     	    my ($row, $test);
 	    my ($db_dns_entry_b_val, $db_dns_entry_e_val, $db_dns_entry_val) = (undef, undef, undef);
 	    foreach $row (@$rows){
@@ -514,7 +514,7 @@ sub dmn_add_named_db_data {
 		    '{MANUAL_DNS_DATA}' => @$row[4],
 		    '{MANUAL_DNS_CLASS}' => @$row[5],
 		    '{MANUAL_DNS_TYPE}' => @$row[6]
-		);	    
+		);
 		($rs, $db_dns_entry_val, $db_dns_entry_b_val, $db_dns_entry_e_val) = prep_tpl(
 		    \%tag_hash,
 		    $db_dns_entry,
@@ -795,12 +795,12 @@ sub gen_httpd_dmn_group_entry {
 		'{APACHE_USERS_LOG_DIR}'      => $main::cfg{'APACHE_USERS_LOG_DIR'},
 		'{CUSTOM_SITES_CONFIG_DIR}'   => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 		'{MODS_DIR}'                  => $main::cfg{'APACHE_MODS_DIR'},
-		
+
 		'{AWSTATS_WEB_DIR}'    	      => $main::cfg{'AWSTATS_WEB_DIR'},
 		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},
 		'{HTACCESS_USERS_FILE_NAME}'  => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
 		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
-		
+
 		'{SUEXEC_USER}'               => $suexec_user,
 		'{SUEXEC_GROUP}'              => $suexec_group,
 		'{BWLIMIT}'                   => $dmn_traffic_limit,
@@ -1602,7 +1602,7 @@ sub dmn_add_httpd_file_data {
 		next if ($_ eq "." || $_ eq "..");
 		sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ 2>/dev/null");
 		return $rs if ($rs != 0);
-		
+
 		$rs = setfmode("$www_dir/$dmn_name/errors/inc/$_", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
 	}
@@ -1870,7 +1870,7 @@ sub dmn_change_httpd_file_data {
 		next if ($_ eq "." || $_ eq "..");
 		sys_command("$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip $root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ 2>/dev/null");
 		return $rs if ($rs != 0);
-		
+
 		$rs = setfmode("$www_dir/$dmn_name/errors/inc/$_", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
 	}
@@ -1925,7 +1925,7 @@ sub dmn_change_httpd_file_data {
 
 		my %tag_hash = (
 			'{PHP_STARTER_DIR}'  => $starter_dir,
-			'{WWW_DIR}'					=> $www_dir, 
+			'{WWW_DIR}'					=> $www_dir,
 			'{PHP5_FASTCGI_BIN}'	=> $main::cfg{'PHP5_FASTCGI_BIN'},
 			'{DMN_NAME}'				=> $dmn_name
 		);
@@ -1944,7 +1944,7 @@ sub dmn_change_httpd_file_data {
 	#
 	#	my  %tag_hash = (
 	#		'{PHP_STARTER_DIR}' 	=> $starter_dir,
-	#		'{WWW_DIR}'					=> $www_dir, 
+	#		'{WWW_DIR}'					=> $www_dir,
 	#		'{PHP4_FASTCGI_BIN}'	=> $main::cfg{'PHP4_FASTCGI_BIN'},
 	#		'{DMN_NAME}'				=> $dmn_name
 	#	);
@@ -3555,13 +3555,13 @@ sub dmn_restore_data {
 			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
 
 		}
 		# Restore gz files
@@ -3571,13 +3571,13 @@ sub dmn_restore_data {
 			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
 		}
 		# Restore lzma files
 		if ($fname =~ m/.tar.lzma/i) {
@@ -3586,13 +3586,13 @@ sub dmn_restore_data {
 			return $rs if ($rs != 0);
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
                         $cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
                         $rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0); 
+			return $rs0 if ($rs0 != 0);
 		}
 
 		# Restore bz2 SQL files
@@ -3714,10 +3714,10 @@ sub dmn_enable_data {
 		$rs = sys_command($cmd);
 		return $rs if ($rs != 0);
 	}
-	
+
 	$cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
 	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);	
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
 	return 0;
