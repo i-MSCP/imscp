@@ -5,6 +5,8 @@ ispCP ω 1.0.3 Changelog
 	-GUI:
 		* Fixed: Undefined constant VFS_ASCII
 		* Fixed: ftp_get() expects parameter 4 to be long, string given...
+	ENGINE:
+		* Fixed: The manual DNS entries are not added in the related db file
 
 2009-12-06 Laurent Declercq
 	-GUI:
