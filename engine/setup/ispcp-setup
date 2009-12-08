@@ -356,19 +356,21 @@ sub setup_shut_down {
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
-	my $shut_down_message =
-		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!";
+	my $shut_down_message = colored(['bold underline'],
+		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!");
+
 	my $login_message =
 		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and".
 		"\tlog in with your Administrator Account to use ispCP.";
 
-	print STDOUT BOLD UNDERLINE $shut_down_message;
-	print STDOUT $login_message;
+	print STDOUT $shut_down_message, $login_message;
 
-	if (sys_command_rs("which rkhunter > /dev/null") eq 0 ) {
+	if (sys_command_rs("which rkhunter > /dev/null") == 0 ) {
+
 	   print STDOUT "\tSetup is now updating rkhunter:\n";
 	   sys_command("rkhunter --update");
 	   print STDOUT "\n\n";
+
 	}
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
@@ -381,17 +383,17 @@ sub welcome_note {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, '_welcome_note()', 'Starting...');
+	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	my $welcome_message = <<MSG;
+	my $welcome = colored(['bold underline'],
+		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.\n\n");
 
-\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.
-\tThis program will set up ispCP OMEGA system on your server.
-MSG
+	my $welcome_message =
+		"\tThis program will set up ispCP OMEGA system on your server.\n";
 
-	print STDOUT $welcome_message;
+	print STDOUT $welcome, $welcome_message;
 
-	push_el(\@main::el, '_welcome_note()', 'Ending...');
+	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
 	0;
 }
