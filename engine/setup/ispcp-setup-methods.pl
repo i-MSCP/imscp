@@ -149,7 +149,7 @@ sub ask_db_host {
 
 	push_el(\@main::el, 'ask_db_host()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_db_name {
@@ -175,7 +175,7 @@ sub ask_db_name {
 
 	push_el(\@main::el, 'ask_db_name()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_db_user {
@@ -201,8 +201,9 @@ sub ask_db_user {
 
 	push_el(\@main::el, 'ask_db_user()', 'Ending...');
 
-	return 0;
+	0;
 }
+
 sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
@@ -235,7 +236,7 @@ sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_db_ftp_user {
@@ -267,7 +268,7 @@ sub ask_db_ftp_user {
 
 	push_el(\@main::el, 'ask_db_ftp_user()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_db_ftp_password {
@@ -280,24 +281,25 @@ sub ask_db_ftp_password {
 
 	$pass1 = read_password($qmsg);
 
-	if (!defined($pass1) || $pass1 eq '')
-	{
+	if (!defined($pass1) || $pass1 eq '') {
+
 		$db_password = gen_sys_rand_num(18);
 		$db_password =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_ftp_password'} = $db_password;
+
 		print STDOUT "\tispCP ftp SQL user password set to: $db_password\n";
-	}
-	else
-	{
+
+	} else {
+
 		$qmsg = "\tPlease repeat ispCP ftp SQL user password: ";
 		$pass2 = read_password($qmsg);
 
-		if ($pass1 eq $pass2)
-		{
+		if ($pass1 eq $pass2) {
+
 			$main::ua{'db_ftp_password'} = $pass1;
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tPasswords do not match!";
 			return 1;
 		}
@@ -305,7 +307,7 @@ sub ask_db_ftp_password {
 
 	push_el(\@main::el, 'ask_db_ftp_password()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_admin {
@@ -319,18 +321,18 @@ sub ask_admin {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'admin'} = $admin;
-	}
-	else
-	{
+
+	} else {
+
 		$main::ua{'admin'} = $rdata;
 	}
 
 	push_el(\@main::el, 'ask_admin()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_admin_password {
@@ -338,19 +340,20 @@ sub ask_admin_password {
 	push_el(\@main::el, 'ask_admin_password()', 'Starting...');
 
 	my ($rs, $pass1, $pass2) = (undef, undef, undef);
+
 	my $qmsg = "\n\tPlease enter administrator password: ";
 
 	$pass1 = read_password($qmsg);
 
-	if (!defined($pass1) || $pass1 eq '')
-	{
+	if (!defined($pass1) || $pass1 eq '') {
+
 		print STDOUT "\n\tPassword too short!";
 		return 1;
-	}
-	else
-	{
-		if (length($pass1) < 5)
-		{
+
+	} else {
+
+		if (length($pass1) < 5) {
+
 			print STDOUT "\n\tPassword too short!";
 			return 1;
 		}
@@ -358,21 +361,19 @@ sub ask_admin_password {
 		$qmsg = "\tPlease repeat administrator password: ";
 		$pass2 = read_password($qmsg);
 
-		if ($pass1 =~ m/[a-zA-Z]/ && $pass1 =~ m/[0-9]/)
-		{
+		if ($pass1 =~ m/[a-zA-Z]/ && $pass1 =~ m/[0-9]/) {
 
-			if ($pass1 eq $pass2)
-			{
+			if ($pass1 eq $pass2) {
+
 				$main::ua{'admin_password'} = $pass1;
-			}
-			else
-			{
+
+			} else {
 				print STDOUT "\n\tPasswords do not match!";
 				return 1;
 			}
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tPasswords must contain at least digits and chars!";
 			return 1;
 		}
@@ -380,7 +381,7 @@ sub ask_admin_password {
 
 	push_el(\@main::el, 'ask_admin_password()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_admin_email {
@@ -388,23 +389,24 @@ sub ask_admin_email {
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
+
 	my $qmsg = "\n\tPlease enter administrator e-mail address: ";
 	print STDOUT $qmsg;
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		return 1;
-	}
-	else
-	{
-		if ($rdata =~ /^([\w\W]{1,255})\@([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/)
-		{
+
+	} else {
+
+		if ($rdata =~ /^([\w\W]{1,255})\@([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+
 			$main::ua{'admin_email'} = $rdata;
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tE-mail address not valid!";
 			return 1;
 		}
@@ -412,7 +414,7 @@ sub ask_admin_email {
 
 	push_el(\@main::el, 'ask_admin_email()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_vhost {
@@ -430,8 +432,8 @@ sub ask_vhost {
 	# file. In this case, or if the returned value isn't FQHN, we use the long
 	# host name who's provided by the system hostname command.
 	if(!defined($addr) or ($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
-		!($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) )
-	{
+		!($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
+
 		$addr = $main::ua{'hostname'};
 	}
 
@@ -444,18 +446,18 @@ sub ask_vhost {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'admin_vhost'} = $vhost;
-	}
-	else
-	{
-		if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/)
-		{
+
+	} else {
+
+		if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+
 			$main::ua{'admin_vhost'} = $rdata;
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tVhost not valid!";
 			return 1;
 		}
@@ -463,7 +465,7 @@ sub ask_vhost {
 
 	push_el(\@main::el, 'ask_vhost()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_second_dns {
@@ -579,8 +581,9 @@ sub ask_db_pma_user {
 
 sub ask_db_pma_password {
 
-	my ($rs, $pass1, $pass2) = (undef, undef, undef);
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
+
+	my ($rs, $pass1, $pass2) = (undef, undef, undef);
 
 	my $db_password = undef;
 
@@ -617,9 +620,9 @@ sub ask_db_pma_password {
 
 sub ask_fastcgi {
 
-	my $rdata = undef;
-
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
+
+	my $rdata = undef;
 
 	my $qmsg = "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
 
@@ -1940,7 +1943,7 @@ sub setup_ftpd {
 #  Install ispCP daemon and network init scripts
 sub setup_ispcp_daemon_network {
 
-	push_el(\@main::el, '_setup_ispcp_daemon_network()', 'Starting...');
+	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
 
@@ -1972,7 +1975,7 @@ sub setup_ispcp_daemon_network {
 		}
 	}
 
-	push_el(\@main::el, '_setup_ispcp_daemon_network()', 'Ending...');
+	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Ending...');
 
 	0;
 }
@@ -2261,7 +2264,7 @@ sub setup_gui_pma {
 # Building GUI named dns record's file
 sub setup_gui_named {
 
-	push_el(\@main::el, 'add_named_cfg_data()', 'Starting...');
+	push_el(\@main::el, 'setup_gui_named()', 'Starting...');
 
 	my $rs = undef;
 
@@ -2273,7 +2276,7 @@ sub setup_gui_named {
 	$rs = setup_gui_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
 	return $rs if($rs !=0);
 
-	push_el(\@main::el, 'add_named_cfg_data()', 'Ending...');
+	push_el(\@main::el, 'setup_gui_named()', 'Ending...');
 
 	0;
 }
@@ -2390,7 +2393,7 @@ sub setup_gui_named_cfg_data {
 
 	push_el(\@main::el, 'setup_gui_named_cfg_data()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 # IspCP Gui named dns record's Setup / Update
@@ -2551,6 +2554,7 @@ sub setup_gui_named_db_data {
 #
 ## Others subroutines - Begin
 #
+
 sub check_eth {
 
 	return 0 if(shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
@@ -2615,6 +2619,7 @@ sub _postinst {
 
 	0;
 }
+
 # Check Sql connection
 # This subroutine can check the connections Sql
 sub _check_sql_connection {
@@ -2692,6 +2697,7 @@ sub setup_rkhunter {
 	0;
 }
 
+# Remove all's empty fils in ispCP configuration directories
 sub setup_cleanup {
 
 	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
