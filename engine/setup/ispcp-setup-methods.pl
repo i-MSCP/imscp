@@ -1662,6 +1662,7 @@ sub setup_po {
 
 		# Saving all system configuration files if they exist
 		foreach (qw/authdaemonrc userdb/) {
+
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ $bk_dir/$_.system";
@@ -1678,6 +1679,7 @@ sub setup_po {
 
 		# Saving all current production files if they exist
 		foreach (qw/authdaemonrc userdb/) {
+
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ $bk_dir/$_.$timestamp";
