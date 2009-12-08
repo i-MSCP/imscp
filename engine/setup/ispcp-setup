@@ -29,17 +29,19 @@
 #    http://isp-control.net
 #
 
+use strict;
+use warnings;
+
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
-require 'ispcp-setup-methods.pl';
 
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 
-use strict;
-use warnings;
 use Socket;
+
+require 'ispcp_common_code.pl';
+require 'ispcp-setup-methods.pl';
 
 %main::ua = ();
 

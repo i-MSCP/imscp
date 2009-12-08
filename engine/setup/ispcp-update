@@ -42,11 +42,12 @@
 # not activated during the prior pass (e.g. AWStats).
 #
 
+
+use strict;
+use warnings;
+
 use FindBin;
 use lib "$FindBin::Bin/..";
-
-require 'ispcp_common_code.pl';
-require 'ispcp-setup-methods.pl';
 
 # FIXME: Check if it ok for all dist
 use Term::ReadKey;
@@ -54,11 +55,12 @@ use Term::ReadKey;
 # Todo Add this package to package files (i.e. Debian: libfile-mimeinfo-perl)
 use File::MimeInfo::Magic;
 
-use Term::ANSIColor qw(:constants);
+use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 
-use strict;
-use warnings;
+require 'ispcp_common_code.pl';
+require 'ispcp-setup-methods.pl';
+
 
 # User entries
 %main::ua = ();
@@ -240,15 +242,14 @@ sub update_shutdown {
 	my $rs = setup_cleanup();
 	return $rs if($rs != 0);
 
-	my $shut_down_message =
-		"\n\n\tCongratulations, you updated ispCP '$main::cfg{'Version'}' successfully!\n\n";
+	my $shut_down_message = colored(['bold underline'],
+		"\n\n\tCongratulations, you updated ispCP '$main::cfg{'Version'}' successfully!\n\n");
 
 	my $login_message =
 		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to log in\n".
 		"\tto your panel.\n\n";
 
-	print STDOUT BOLD UNDERLINE $shut_down_message;
-	print STDOUT $login_message;
+	print STDOUT $shut_down_message, $login_message;
 
 	push_el(\@main::el, 'update_shutdown()', 'Ending...');
 
@@ -304,36 +305,32 @@ sub welcome_note {
 	# Clear screen
 	system('clear');
 
-	my $welcome =
-		"\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n";
+	my $welcome = colored(['bold underline'],
+		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n");
 
 	my $welcome_message =
 		"\tThis program will update your current ispCP OMEGA installation on this\n".
 		"\tserver.\n".
 		"\tPlease make sure you did a backup of all your server data.\n\n";
 
-	my $welcome_note =
+	my $welcome_note = colored(['bold'], "\tNOTE:") .
 		" During the migration process some or all services might require to\n".
 		"\tbe shut down.\n\n";
 
-	my $welcome_warning =
+	my $welcome_warning = colored(['bold yellow'], "\tWARNING:") .
 		" Only services that are not marked with 'NO' in your ispcp.conf\n".
 		"\tconfiguration file will be processed by this program.\n\n";
 
-	print STDOUT BOLD UNDERLINE $welcome;
-	print STDOUT $welcome_message;
-	print STDOUT BOLD "\tNOTE:";
-	print STDOUT $welcome_note;
-	print STDOUT BOLD YELLOW "\tWARNING:";
-	print STDOUT $welcome_warning;
+	print STDOUT $welcome, $welcome_message, $welcome_note, $welcome_warning;
 
 	do {
+
 		print STDOUT "\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
 
 	} while($rdata !~ /^(|y|n)$/i);
 
-	exit 0 if($rdata =~ /n/i);
+	exit 0 if($rdata =~ /^n$/i);
 
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
