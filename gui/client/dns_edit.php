@@ -77,7 +77,7 @@ $tpl->assign(
 		'TR_DNS_SRV_PORT'		=> tr('Target port'),
 		'TR_DNS_CNAME'			=> tr('Canonical name'),
 		'TR_DNS_PLAIN'			=> tr('Plain record data'),
-		'TR_MANAGE_DOMAIN_DNS'	=> tr("DNS zone's records")
+		'TR_MANAGE_DOMAIN_DNS'	=> tr("DNS zone's records (EXPERIMENTAL)")
 	)
 );
 
