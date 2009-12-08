@@ -1351,7 +1351,7 @@ sub setup_awstats_vhost {
 			return $rs if ($rs != 0);
 
 			# Install the new file in production directory
-			$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/proxy_conf $main::cfg{'APACHE_MODS_DIR'}/";
+			$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/proxy.conf $main::cfg{'APACHE_MODS_DIR'}/";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs != 0);
 		}
