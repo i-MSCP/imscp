@@ -87,7 +87,9 @@ sub ask_eth {
 
 	my $cmd = "/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' {print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
-	unless(sys_command($cmd)) {
+	$rs = sys_command($cmd);
+
+	unless($rs) {
 		$warn_msg = colored(['bold red'], "\n\tERROR:") .
 			' External command was returned an error status!'. "\n";
 		return ($rs, $warn_msg);
@@ -103,7 +105,7 @@ sub ask_eth {
 	chop($rdata);
 
 	$rs = del_file('/tmp/ispcp-setup.ip');
-	unless(sys_command($cmd)) {
+	unless($rs) {
 		$warn_msg = colored(['bold yellow'], "\n\tERROR:") .
 			' Unable to delete the /tmp/ispcp-setup.ip'. "\n";
 		return ($rs, $warn_msg);
