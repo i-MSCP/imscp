@@ -388,7 +388,7 @@ sub start_services {
 		CMD_POP CMD_POP_SSL
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_}) {
+		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 
 			sys_command("$main::cfg{$_} start &>/tmp/ispcp-update-services.log");
 			print STDOUT BOLD BLACK '.';
@@ -415,7 +415,7 @@ sub stop_services {
 		CMD_POP CMD_POP_SSL
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_}) {
+		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 
 			sys_command("$main::cfg{$_} stop &>/tmp/ispcp-update-services.log");
 			print STDOUT BOLD BLACK '.';

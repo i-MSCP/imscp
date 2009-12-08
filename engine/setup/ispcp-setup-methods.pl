@@ -659,22 +659,22 @@ sub ask_awstats_on {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'awstats_on'} = 'no';
-	}
-	else
-	{
-		if ($rdata eq 'yes' || $rdata eq 'y')
-		{
+
+	} else {
+
+		if ($rdata eq 'yes' || $rdata eq 'y') {
+
 			$main::ua{'awstats_on'} = 'yes';
-		}
-		elsif ($rdata eq 'no' || $rdata eq 'n')
-		{
+
+		} elsif ($rdata eq 'no' || $rdata eq 'n') {
+
 			$main::ua{'awstats_on'} = 'no';
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tOnly '(y)es' and '(n)o' are allowed!";
 			return 1;
 		}
@@ -696,22 +696,22 @@ sub ask_awstats_dyn {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'awstats_dyn'} = '0';
-	}
-	else
-	{
-		if ($rdata eq 'dynamic' || $rdata eq 'd')
-		{
+
+	} else {
+
+		if ($rdata eq 'dynamic' || $rdata eq 'd') {
+
 			$main::ua{'awstats_dyn'} = '0';
-		}
-		elsif ($rdata eq 'static' || $rdata eq 's')
-		{
+
+		} elsif ($rdata eq 'static' || $rdata eq 's') {
+
 			$main::ua{'awstats_dyn'} = '1';
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tOnly '[d]ynamic' or '[s]tatic' are allowed!";
 			return 1;
 		}
@@ -751,8 +751,11 @@ sub setup_crontab {
 
 	# Determines the path of production directory
 	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
+
 		$prod_dir = '/usr/local/etc/ispcp/cron.d';
+
 	} else {
+
 		$prod_dir = '/etc/cron.d'
 	}
 
@@ -760,6 +763,7 @@ sub setup_crontab {
 
 	# Update :
 	if(defined &update_engine) {
+
 		my $timestamp = time();
 
 		# Saving the current production file if it exists
@@ -844,7 +848,7 @@ sub setup_named {
 	push_el(\@main::el, 'setup_named()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'CMD_NAMED'} eq 'no');
+	return 0 if($main::cfg{'CMD_NAMED'} =~ /^no$/i);
 
 	my ($rs, $rdata, $cmd) = (undef, undef, undef);
 	my ($cfg_tpl, $cfg) = (undef, undef);
@@ -939,7 +943,7 @@ sub setup_php {
 	push_el(\@main::el, 'setup_php()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'APACHE_CMD'} eq 'no');
+	return 0 if($main::cfg{'APACHE_CMD'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -1104,7 +1108,7 @@ sub setup_httpd_main_vhost {
 	push_el(\@main::el, 'setup_httpd_main_vhost()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'APACHE_CMD'} eq 'no');
+	return 0 if($main::cfg{'APACHE_CMD'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -1211,7 +1215,7 @@ sub setup_awstats_vhost {
 	push_el(\@main::el, 'setup_awstats_vhost()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'AWSTATS_ACTIVE'} eq 'no');
+	return 0 if($main::cfg{'AWSTATS_ACTIVE'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -1364,7 +1368,7 @@ sub setup_awstats_vhost {
 			return $rs if ($rs != 0);
 
 			# Add code if not exists
-			if ($$cfg !~ m/awstats_updateall\.pl/i) {
+			if ($$cfg !~ /awstats_updateall\.pl/i) {
 
 				# Building the new file
 				$$cfg =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/gi;
@@ -1401,7 +1405,7 @@ sub setup_mta {
 	push_el(\@main::el, 'setup_mta()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'CMD_MTA'} eq 'no');
+	return 0 if($main::cfg{'CMD_MTA'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -1584,7 +1588,7 @@ sub setup_po {
 	push_el(\@main::el, 'setup_po()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'CMD_AUTHD'} eq 'no');
+	return 0 if($main::cfg{'CMD_AUTHD'} =~ /^no$/i);
 
 	my ($rs, $cmd, $rdata) = (undef, undef, undef);
 
@@ -1702,7 +1706,7 @@ sub setup_ftpd {
 	push_el(\@main::el, 'setup_ftpd()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'CMD_FTPD'} eq 'no');
+	return 0 if($main::cfg{'CMD_FTPD'} =~ /^no$/i);
 
 	my ($rs, $cmd, $rdata, $sql) = (undef, undef, undef, undef);
 
@@ -1942,7 +1946,7 @@ sub setup_ispcp_daemon_network {
 	foreach ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'})
 	{
 		# Do not process if the service is disabled
-		next if(/no/i);
+		next if(/^no$/i);
 
 		($filename) = /.*\/(.*)$/;
 
