@@ -722,10 +722,6 @@ sub ask_awstats_dyn {
 	return 0;
 }
 
-
-
-
-
 #
 ## Ask subroutines - End
 #
@@ -754,25 +750,20 @@ sub setup_crontab {
 	my $prod_dir = undef;
 
 	# Determines the path of production directory
-	if ($main::cfg{'ROOT_GROUP'} eq 'wheel')
-	{
+	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
 		$prod_dir = '/usr/local/etc/ispcp/cron.d';
-	}
-	else
-	{
+	} else {
 		$prod_dir = '/etc/cron.d'
 	}
 
 	# Dedicated tasks for Install or Updates process - Begin
 
 	# Update :
-	if(defined &update_engine)
-	{
+	if(defined &update_engine) {
 		my $timestamp = time();
 
 		# Saving the current production file if it exists
-		if(-e  "$prod_dir/ispcp")
-		{
+		if(-e  "$prod_dir/ispcp") {
 			$cmd = "$main::cfg{'CMD_CP'} -p $prod_dir/ispcp $bk_dir/ispcp.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
@@ -788,8 +779,7 @@ sub setup_crontab {
 	return $rs if ($rs != 0);
 
 	# Awstats cron task preparation (On|Off) according status in ispcp.conf
-	if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes' || $main::cfg{'AWSTATS_MODE'} eq 1)
-	{
+	if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes' || $main::cfg{'AWSTATS_MODE'} eq 1) {
 		$awstats = '#';
 	}
 
@@ -866,22 +856,20 @@ sub setup_named {
 	# Dedicated tasks for Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
+
 		# Saving the system main configuration file if it exists
-		if(-e $main::cfg{'BIND_CONF_FILE'} && !-e "$bk_dir/named.conf.system")
-		{
+		if(-e $main::cfg{'BIND_CONF_FILE'} && !-e "$bk_dir/named.conf.system") {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bk_dir/named.conf.system";
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
 		}
-	}
+
 	# Update:
-	else
-	{
+	} else {
+
 		# Saving the current main production file if it exists
-		if(-e $main::cfg{'BIND_CONF_FILE'})
-		{
+		if(-e $main::cfg{'BIND_CONF_FILE'}) {
 			my $timestamp = time();
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bk_dir/named.conf.$timestamp";
@@ -896,8 +884,7 @@ sub setup_named {
 
 	# Loading the system main configuration file from
 	# /etc/ispcp/bind/backup/named.conf.system if it exists
-	if(-e "$bk_dir/named.conf.system")
-	{
+	if(-e "$bk_dir/named.conf.system") {
 		($rs, $cfg) = get_file("$bk_dir/named.conf.system");
 		return $rs if($rs !=0);
 
@@ -905,9 +892,9 @@ sub setup_named {
 		$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
 
 		$cfg .= "\n";
-	}
-	else # eg. Centos, Fedora did not file by default
-	{
+
+	# eg. Centos, Fedora did not file by default
+	} else {
 		push_el(\@main::el, 'add_named_db_data()', "WARNING: Can't find the parent file for named...");
 		$cfg = '';
 	}
@@ -970,22 +957,20 @@ sub setup_php {
 	# Dedicated tasks for the Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
 		$services_log_path = "/tmp/ispcp-setup-services.log";
-	}
+
 	# Update:
-	else
-	{
+	} else {
+
 		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time();
 
-		foreach(qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/)
-		{
+		foreach(qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
+
 			# Saving the current production file if it exists
-			if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_")
-			{
+			if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_") {
 				$cmd = "$main::cfg{CMD_CP} -p $main::cfg{'APACHE_MODS_DIR'}/$_ $bk_dir/$_.$timestamp";
 				$rs = sys_command_rs($cmd);
 				return $rs if($rs != 0);
@@ -1012,8 +997,7 @@ sub setup_php {
 	);
 
 	# fastcgi_ispcp.conf / fcgid_ispcp.conf
-	foreach(qw/fastcgi fcgid/)
-	{
+	foreach(qw/fastcgi fcgid/) {
 		# Loading the template from /etc/ispcp/apache
 		($rs, $cfg_tpl) = get_file("$cfg_dir/$_\_ispcp.conf");
 		return $rs if ($rs != 0);
@@ -1039,8 +1023,8 @@ sub setup_php {
 	}
 
 	# fastcgi_ispcp.load / fcgid_ispcp.load
-	foreach(qw/fastcgi fcgid/)
-	{
+	foreach(qw/fastcgi fcgid/) {
+
 		next if(! -e "$main::cfg{'APACHE_MODS_DIR'}/$_.load");
 
 		# Loading the system configuration file
@@ -1070,8 +1054,8 @@ sub setup_php {
 
 	# Enable required modules and disable unused - Begin
 
-	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' )
-	{
+	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' ) {
+
 		# Disable php4/5 modules
 		sys_command_rs("/usr/sbin/a2dismod php4 &> $services_log_path");
 		sys_command_rs("/usr/sbin/a2dismod php5 &> $services_log_path");
@@ -1079,18 +1063,18 @@ sub setup_php {
 		# Enable actions modules
 		sys_command_rs("/usr/sbin/a2enmod actions &> $services_log_path");
 
-		if(! -e '/etc/SuSE-release')
-		{
-			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi')
-			{
+		if(! -e '/etc/SuSE-release') {
+
+			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
+
 				# Ensures that the unused ispcp fcgid module loader is disabled
 				sys_command_rs("/usr/sbin/a2dismod ispcp_fcgid &> $services_log_path");
 
 				# Enable fastcgi module
 				sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> $services_log_path");
-			}
-			else
-			{
+
+			} else {
+
 				# Ensures that the unused ispcp fastcgi ispcp module loader is disabled
 				sys_command_rs("/usr/sbin/a2dismod ispcp_fastcgi &> $services_log_path");
 
@@ -1104,6 +1088,7 @@ sub setup_php {
 
 		}
 	}
+
 	# Enable required modules and disable unused - End
 
 	push_el(\@main::el, 'setup_php()', 'Ending...');
@@ -1137,18 +1122,17 @@ sub setup_httpd_main_vhost {
 	# Dedicated tasks for the Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
+
 		$services_log_path = "/tmp/ispcp-setup-services.log";
-	}
+
 	# Update:
-	else
-	{
+	} else {
 		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		# Saving the current production file if it exists
-		if(-e "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf")
-		{
+		if(-e "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf") {
+
 			my $timestamp = time();
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf $bk_dir/ispcp.conf.$timestamp";
@@ -1193,8 +1177,8 @@ sub setup_httpd_main_vhost {
 
 	# Enable required modules - Begin
 
-	if(-e "/usr/sbin/a2enmod")
-	{
+	if(-e "/usr/sbin/a2enmod") {
+
 		# We use cgid instead of cgi because we working with MPM.
 		# FIXME: Check if it's ok for all dists. (Lenny, opensuse OK)
 		sys_command("/usr/sbin/a2enmod cgid &> $services_log_path");
@@ -1207,8 +1191,7 @@ sub setup_httpd_main_vhost {
 
 	# Enable main vhost configuration file - Begin
 
-	if(-e "/usr/sbin/a2ensite")
-	{
+	if(-e "/usr/sbin/a2ensite") {
 		sys_command("/usr/sbin/a2ensite ispcp.conf &> $services_log_path");
 	}
 
@@ -1248,8 +1231,7 @@ sub setup_awstats_vhost {
 	# Dedicated tasks for Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
 		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Saving more system cfg files changed by ispCP
@@ -1258,8 +1240,7 @@ sub setup_awstats_vhost {
 			'/etc/logrotate.d/apache',
 			'/etc/logrotate.d/apache2',
 			"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf"
-		)
-		{
+		) {
 				($path, $file) = split /:/ ;
 				next if(!-e $path.$file);
 
@@ -1267,11 +1248,10 @@ sub setup_awstats_vhost {
 				$rs = sys_command_rs($cmd);
 				return $rs if($rs !=0);
 		}
-	}
+
 	# Update:
-	else
-	{
-		$services_log_path = "/tmp/ispcp-update-services.log";
+	} else {
+		$services_log_path = '/tmp/ispcp-update-services.log';
 
 		my $timestamp = time;
 
@@ -1282,8 +1262,7 @@ sub setup_awstats_vhost {
 			'/etc/logrotate.d/apache2',
 			"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf",
 			"$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf"
-		)
-		{
+		) {
 				($path, $file)= split /:/;
 				next if(!-e $path.$file);
 
@@ -1328,12 +1307,12 @@ sub setup_awstats_vhost {
 
 	# Building, storage and installation of new file - End
 
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0)
-	{
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
+
 		# Change the proxy module configuration file if it exists - Begin
 
-		if(-e "$bk_dir/proxy.conf.system")
-		{
+		if(-e "$bk_dir/proxy.conf.system") {
+
 			($rs, $$cfg) = get_file("$bk_dir/proxy.conf.system");
 			return $rs if($rs != 0);
 
@@ -1357,8 +1336,7 @@ sub setup_awstats_vhost {
 		}
 
 		# Enable required modules
-		if(-e '/usr/sbin/a2enmod')
-		{
+		if(-e '/usr/sbin/a2enmod') {
 			sys_command_rs("/usr/sbin/a2enmod proxy &> $services_log_path");
 			sys_command_rs("/usr/sbin/a2enmod proxy_http &> $services_log_path");
 		}
@@ -1366,26 +1344,28 @@ sub setup_awstats_vhost {
 		# Change and enable required proxy module - End
 
 		# Enable awstats vhost - Begin
-		if(-e '/usr/sbin/a2ensite')
-		{
+
+		if(-e '/usr/sbin/a2ensite') {
+
 			sys_command("/usr/sbin/a2ensite 01_awstats.conf &> $services_log_path");
 		}
+
 		# Enable awstats vhost - End
 
 		# Update Apache logrotate file - Begin
 
 		# FIXME: check for openSUSE and other dists...
 		# Todo create dedicated directory for backup logrotate configuration file
-		foreach(qw/apache apache2/)
-		{
+		foreach(qw/apache apache2/) {
+
 			next if(! -e "$bk_dir/$_.system");
 
 			($rs, $$cfg) = get_file("$bk_dir/$_.system");
 			return $rs if ($rs != 0);
 
-			# add code if not exists
-			if ($$cfg !~ m/awstats_updateall\.pl/i)
-			{
+			# Add code if not exists
+			if ($$cfg !~ m/awstats_updateall\.pl/i) {
+
 				# Building the new file
 				$$cfg =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/gi;
 
@@ -1441,8 +1421,7 @@ sub setup_mta {
 	# Dedicated tasks for the Install or Updates process - Begin
 
 	# Install
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
 		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Savings all system configuration files if they exist
@@ -1450,8 +1429,7 @@ sub setup_mta {
 			map {/(.*\/)(.*)$/ && $1.':'.$2}
 			$main::cfg{'POSTFIX_CONF_FILE'},
 			$main::cfg{'POSTFIX_MASTER_CONF_FILE'}
-		)
-		{
+		) {
 			($path, $file) = split /:/;
 
 			next if(!-e $path.$file);
@@ -1460,10 +1438,10 @@ sub setup_mta {
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
 		}
-	}
+
 	# Update
-	else
-	{
+	} else {
+
 		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time;
@@ -1478,8 +1456,7 @@ sub setup_mta {
 			$main::cfg{'MTA_VIRTUAL_CONF_DIR'}.'/mailboxes',
 			$main::cfg{'MTA_VIRTUAL_CONF_DIR'}.'/transport',
 			$main::cfg{'MTA_VIRTUAL_CONF_DIR'}.'/sender-access'
-		)
-		{
+		) {
 			($path, $file) = split /:/;
 
 			next if(!-e $path.$file);
@@ -1554,8 +1531,8 @@ sub setup_mta {
 
 	# Virtuals related files - Begin
 
-	foreach(qw/aliases domains mailboxes transport sender-access/)
-	{
+	foreach(qw/aliases domains mailboxes transport sender-access/) {
+
 		# Store the new files in working directory
 		$cmd = "$main::cfg{'CMD_CP'} -pf $vrl_dir/$_ $wrk_dir/";
 		$rs = sys_command($cmd);
@@ -1621,30 +1598,28 @@ sub setup_po {
 	# Dedicated tasks for the Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
+
 		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Saving all system configuration files if they exist
-		foreach (qw/authdaemonrc userdb/)
-		{
+		foreach (qw/authdaemonrc userdb/) {
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ $bk_dir/$_.system";
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
 		}
-	}
+
 	# Update:
-	else
-	{
+	} else {
+
 		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time;
 
 		# Saving all current production files if they exist
-		foreach (qw/authdaemonrc userdb/)
-		{
+		foreach (qw/authdaemonrc userdb/) {
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ $bk_dir/$_.$timestamp";
@@ -1745,8 +1720,8 @@ sub setup_ftpd {
 
 	# Sets the path to the configuration file - Begin
 
-	if (! -e $main::cfg{'FTPD_CONF_FILE'})
-	{
+	if (! -e $main::cfg{'FTPD_CONF_FILE'}) {
+
 		$rs = set_conf_val('FTPD_CONF_FILE', '/etc/proftpd/proftpd.conf');
 		return $rs if ($rs != 0);
 
@@ -1759,24 +1734,22 @@ sub setup_ftpd {
 	# Dedicated tasks for Install or Updates process - Begin
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
+
 		# Saving the system configuration file if it exist
-		if(-e $main::cfg{'FTPD_CONF_FILE'})
-		{
+		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.system";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs !=0);
 		}
-	}
+
 	# Update:
-	else
-	{
+	} else {
+
 		my $timestamp = time;
 
 		# Saving the current production files if it exits
-		if(-e $main::cfg{'FTPD_CONF_FILE'})
-		{
+		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs !=0);
@@ -1784,56 +1757,58 @@ sub setup_ftpd {
 
 		# Get the current user and password for SQL connection and check it - Begin
 
-		if(-e "$wrk_dir/proftpd.conf" )
-		{
+		if(-e "$wrk_dir/proftpd.conf" ) {
+
 			$working_file = "$wrk_dir/proftpd.conf";
-		}
-		elsif("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp")
-		{
+
+		} elsif("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
+
 			$working_file = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp";
-		}
-		elsif(-e '/etc/proftpd.conf.bak')
-		{
+
+		} elsif(-e '/etc/proftpd.conf.bak') {
+
 			$working_file = '/etc/proftpd.conf.bak';
 		}
 
 		# Loading working configuration file from /etc/ispcp/working/
 		($rs, $rdata) = get_file($working_file);
-		return $rs if($rs != 0);
 
-		if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im)
-		{
+		unless($rs) {
+
+			if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im) {
+
 				# Check the database connection with current ids
 				$rs = _check_sql_connection($1, $2);
 
 				# If the connection is successful, we can use these identifiers
-				unless($rs)
-				{
+				unless($rs) {
 					$main::ua{'db_ftp_user'} = $1;
 					$main::ua{'db_ftp_password'} = $2;
-				}
-				else
-				{
+				} else {
 					$warn_msg = "\n\tWARNING: Unable to connect to the database with authentication information" .
 						"\n\tfound in your proftpd.conf file! We will create a new Ftpd Sql account.\n";
 				}
+			}
+
+		} else {
+
+			$warn_msg ) "\n\tWARNING: Unable to find the Proftpd configuration file!" .
+				"\n\tWe will create a new one.";
 		}
 
 		# Get the current user and password for SQL connection and check it - End
 
 		# We ask the database ftp user and password, and we create new Sql ftp user account if needed
-		if(!defined($main::ua{'db_ftp_user'}) || !defined($main::ua{'db_ftp_password'}))
-		{
+		if(!defined($main::ua{'db_ftp_user'}) || !defined($main::ua{'db_ftp_password'})) {
+
 			print defined($warn_msg) ? $warn_msg :  "\n\tWARNING: Unable to retrieve your current username and" .
 				"\n\tpassword for the Ftpd Sql account! We will create a new Ftpd Sql account.\n";
 
-			do
-			{
+			do {
 				$rs = ask_db_ftp_user();
 			} while ($rs);
 
-			do
-			{
+			do {
 				$rs = ask_db_ftp_password();
 			} while ($rs);
 
@@ -1868,8 +1843,8 @@ sub setup_ftpd {
 
 			# Inserting new data into the database - Begin
 
-			foreach(qw/ftp_group ftp_users quotalimits quotatallies/)
-			{
+			foreach(qw/ftp_group ftp_users quotalimits quotatallies/) {
+
 				$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.$_ " .
 					"TO '$main::ua{'db_ftp_user'}'\@'$main::db_host' IDENTIFIED BY '$main::ua{'db_ftp_password'}'";
 
@@ -1925,8 +1900,7 @@ sub setup_ftpd {
 	# To fill ftp_traff.log file with something.
 	#
 
-	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd")
-	{
+	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd") {
 		$rs = make_dir(
 			"$main::cfg{'TRAFF_LOG_DIR'}/proftpd",
 			$main::cfg{'ROOT_USER'},
@@ -1936,8 +1910,8 @@ sub setup_ftpd {
 		return $rs if ($rs != 0);
 	}
 
-	if(! -e "$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}")
-	{
+	if(! -e "$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}") {
+
 		$rs = store_file(
 			"$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}",
 			"\n",
@@ -2014,20 +1988,18 @@ sub setup_gui_httpd {
 	my $wrk_dir = "$cfg_dir/working";
 
 	# Install:
-	if(!defined &update_engine)
-	{
+	if(!defined &update_engine) {
+
 		   $services_log_path = "/tmp/ispcp-update-services.log";
-	}
-	# Update:
-	else
-	{
+
+	} else { # Update:
+
 		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		my $timestamp = time();
 
 		# Saving the current production file if it exists
-		if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf")
-		{
+		if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/00_master.conf $bk_dir/00_master.conf.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs !=0);
@@ -2088,8 +2060,7 @@ sub setup_gui_httpd {
 
 	# Disable 000-default vhost  - Begin
 
-	if (-e "/usr/sbin/a2dissite")
-	{
+	if (-e "/usr/sbin/a2dissite") {
 		sys_command_rs("/usr/sbin/a2dissite 000-default &> $services_log_path");
 	}
 
@@ -2101,8 +2072,8 @@ sub setup_gui_httpd {
 
 	my $rdata = undef;
 
-	if(-e '/etc/apache2/ports.conf')
-	{
+	if(-e '/etc/apache2/ports.conf') {
+
 		# Loading the file
 		($rs, $rdata) = get_file('/etc/apache2/ports.conf');
 		return $rs if($rs != 0);
@@ -2121,8 +2092,7 @@ sub setup_gui_httpd {
 
 	# Enable GUI vhost - Begin
 
-	if ( -e "/usr/sbin/a2ensite" )
-	{
+	if ( -e "/usr/sbin/a2ensite" ) {
 		sys_command("/usr/sbin/a2ensite 00_master.conf &> $services_log_path");
 	}
 
@@ -2153,13 +2123,16 @@ sub setup_gui_php {
 
 	# Install:
 	if(!defined &update_engine) {
+
 		# Nothing todo here
-	}
+
 	# Update:
-	else {
+	} else {
+
 		my $timestamp = time();
 
 		foreach(qw{php5-fcgi-starter php5/php.ini}) {
+
 			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_") {
 				my (undef, $file) = split('/');
 				$file = $_ if(!defined $file);
@@ -2267,7 +2240,7 @@ sub setup_gui_php {
 sub setup_gui_pma {
 
 	push_el(\@main::el, 'setup_gui_pma()', 'Starting...');
-
+	# TODO
 	push_el(\@main::el, 'setup_gui_pma()', 'Ending...');
 
 	0;
@@ -2283,7 +2256,7 @@ sub setup_gui_named {
 
 	my $rs = undef;
 
-	# Added GUI named cfg data
+	# Add GUI named cfg data
 	$rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
 	return $rs if($rs !=0);
 
@@ -2312,15 +2285,15 @@ sub setup_gui_named_cfg_data {
 	my $wrk_dir = "$cfg_dir/bind/working";
 	my $db_dir = $main::cfg{'BIND_DB_DIR'};
 
-	if (!defined($base_vhost) || $base_vhost eq '')
-	{
+	if (!defined($base_vhost) || $base_vhost eq '') {
+
 		push_el(\@main::el, 'setup_gui_named_cfg_data()', 'FATAL: Undefined Input Data...');
 		return 1;
 	}
 
 	# Saving the current production file if it exists
-	if(-e $main::cfg{'BIND_CONF_FILE'})
-	{
+	if(-e $main::cfg{'BIND_CONF_FILE'}) {
+
 		my $timestamp = time();
 
 		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bk_dir/named.conf.$timestamp";
@@ -2334,6 +2307,7 @@ sub setup_gui_named_cfg_data {
 
 	# Loading all needed templates from /etc/ispcp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
+
 	(
 		$rs,
 		$entry_b,
@@ -2355,6 +2329,7 @@ sub setup_gui_named_cfg_data {
 
 	# Replacement tags
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+
 	(
 		$rs,
 		$entry_b_val,
@@ -2440,8 +2415,8 @@ sub setup_gui_named_db_data {
 	my $wrk_cfg = "$wrk_dir/$db_fname";
 	my $bk_cfg = "$bk_dir/$db_fname";
 
-	if (!defined($base_vhost) || $base_vhost eq '')
-	{
+	if (!defined($base_vhost) || $base_vhost eq '') {
+
 		push_el(\@main::el, 'add_named_db_data()', 'FATAL: Undefined Input Data...');
 		return 1;
 	}
@@ -2451,13 +2426,13 @@ sub setup_gui_named_db_data {
 	#
 
 	# Update
-	if (defined &update_engine)
-	{
+	if (defined &update_engine) {
+
 		my $timestamp = time();
 
 		# Saving the current production file if it exists
-		if(-e $sys_cfg)
-		{
+		if(-e $sys_cfg) {
+
 			$cmd = "$main::cfg{'CMD_CP'} -p $sys_cfg $bk_cfg.$timestamp";
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
@@ -2472,8 +2447,8 @@ sub setup_gui_named_db_data {
 		return $rs if($rs !=0);
 
 		# Extraction of old time data and revision number
-		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s )
-		{
+		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s ) {
+
 			push_el(
 					\@main::el,
 					'add_named_db_data()',
@@ -2538,11 +2513,11 @@ sub setup_gui_named_db_data {
 
 	# Store the new builded file in the working directory
 	$rs = store_file(
-					$wrk_cfg,
-					$entry,
-					$main::cfg{'ROOT_USER'},
-					$main::cfg{'ROOT_GROUP'},
-					0644
+		$wrk_cfg,
+		$entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
 	);
 	return $rs if ($rs != 0);
 
@@ -2557,7 +2532,7 @@ sub setup_gui_named_db_data {
 
 	push_el(\@main::el, 'setup_gui_named_db_data()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 #
@@ -2580,7 +2555,7 @@ sub check_eth {
 	return 0 if (($d3 < 0)	|| ($d3 > 255));
 	return 0 if (($d4 <= 0)	|| ($d4 >= 255));
 
-	return 1;
+	1;
 }
 # Starting preinstallation script
 # Note : In the future, a preinst script will automatically
@@ -2649,8 +2624,8 @@ sub _check_sql_connection {
 	$main::db = undef;
 
 	# If we as receive username and password, we redefine the dsn
-	if(defined $user && defined $password )
-	{
+	if(defined $user && defined $password ) {
+
 		@main::db_connect = (
 			"DBI:mysql:$main::db_name:$main::db_host",
 			$user,
@@ -2686,10 +2661,10 @@ sub setup_rkhunter {
 
 	my ($rs, $rdata, $cmd) = (undef, undef, undef);
 
-	if(-e '/etc/default/rkhunter')
-	{
-		if(defined &update_engine)
-		{
+	if(-e '/etc/default/rkhunter') {
+
+		if(defined &update_engine) {
+
 			# Deleting files that can cause problems
 			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
 			$rs = sys_command_rs($cmd);
