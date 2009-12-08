@@ -1100,7 +1100,7 @@ sub setup_php {
 
 			# Disable default  fastcgi/fcgid modules loaders to avoid conflicts with ispcp loaders
 			sys_command_rs("/usr/sbin/a2dismod fastcgi &> $services_log_path");
-			sys_command_rs("/usr/sbin/a2enmod fcgid &> $services_log_path");
+			sys_command_rs("/usr/sbin/a2dismod fcgid &> $services_log_path");
 
 		}
 	}
