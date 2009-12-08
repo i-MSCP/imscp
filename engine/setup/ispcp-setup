@@ -56,10 +56,6 @@ sub setup_start_up {
 
 	push_el(\@main::el, 'setup_start_up()', 'Starting...');
 
-	# config check; --- Already done in ispcp_common_code.pl
-	#$rs = get_conf();
-	#return $rs if ($rs != 0);
-
 	stop_services();
 
 	push_el(\@main::el, 'setup_start_up()', 'Ending...');
@@ -80,6 +76,7 @@ sub user_dialog {
 
 	my $qmsg = "\n\tNext you are asked to enter a \"fully qualified hostname\" (FQHN).\n" .
                "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n";
+
 	print STDOUT $qmsg;
 
 	do {

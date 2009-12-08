@@ -56,7 +56,9 @@ sub ask_hostname {
 
 		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
-			my $wmsg = "\tWARNING: $rdata is not a \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
+			my $wmsg = colored(['bold yellow'], "\tWARNING:") .
+				 " $rdata is not a \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
+
 			print STDOUT $wmsg;
 		}
 
@@ -66,7 +68,9 @@ sub ask_hostname {
 
 	} else {
 
-		print STDOUT "\n\tHostname is not a valid domain name!\n";
+		print STDOUT colored(['bold red'], "\n\tERROR:") .
+			" Hostname is not a valid domain name!\n";
+
 		return 1;
 	}
 
@@ -84,15 +88,15 @@ sub ask_eth {
 	my $cmd = "/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' {print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
 	unless(sys_command($cmd)) {
-		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
-			'External command was returned an error status!'. "\n";
+		$warn_msg = colored(['bold red'], "\n\tERROR:") .
+			' External command was returned an error status!'. "\n";
 		return ($rs, $warn_msg);
 	}
 
 	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
 	unless($rs){
-		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
-			'Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
+		$warn_msg = colored(['bold red'], "\n\tERROR:") .
+			' Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
 		return ($rs, $warn_msg);
 	}
 
@@ -100,8 +104,8 @@ sub ask_eth {
 
 	$rs = del_file('/tmp/ispcp-setup.ip');
 	unless(sys_command($cmd)) {
-		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
-			'Unable to delete the /tmp/ispcp-setup.ip'. "\n";
+		$warn_msg = colored(['bold yellow'], "\n\tERROR:") .
+			' Unable to delete the /tmp/ispcp-setup.ip'. "\n";
 		return ($rs, $warn_msg);
 	}
 
@@ -214,22 +218,24 @@ sub ask_db_password {
 
 	$pass1 = read_password($qmsg);
 
-	if (!defined($pass1) || $pass1 eq '')
-	{
+	if (!defined($pass1) || $pass1 eq '') {
+
 		$main::ua{'db_password'} = '';
-	}
-	else
-	{
+
+	} else {
+
 		$qmsg = "\tPlease repeat system SQL password: ";
 		$pass2 = read_password($qmsg);
 
-		if ($pass1 eq $pass2)
-		{
+		if ($pass1 eq $pass2) {
+
 			$main::ua{'db_password'} = $pass1;
-		}
-		else
-		{
-			print STDOUT "\n\tPasswords do not match!";
+
+		} else {
+
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' Passwords do not match!';
+
 			return 1;
 		}
 	}
@@ -257,7 +263,9 @@ sub ask_db_ftp_user {
 	}
 	elsif( $rdata eq $main::ua{'db_user'})
 	{
-		$qmsg = "\n\tftp SQL user must not be identical to system SQL user!";
+		$qmsg = colored(['bold red'], "\n\tERROR:") .
+			' Ftp SQL user must not be identical to system SQL user!';
+
 		print STDOUT $qmsg;
 		return 1;
 	}
@@ -276,7 +284,9 @@ sub ask_db_ftp_password {
 	push_el(\@main::el, 'ask_db_ftp_password()', 'Starting...');
 
 	my ($rs, $pass1, $pass2) = (undef, undef, undef);
+
 	my $db_password = undef;
+
 	my $qmsg = "\n\tPlease enter ispCP ftp SQL user password. [auto generate]: ";
 
 	$pass1 = read_password($qmsg);
@@ -300,7 +310,9 @@ sub ask_db_ftp_password {
 
 		} else {
 
-			print STDOUT "\n\tPasswords do not match!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				'Passwords do not match!';
+
 			return 1;
 		}
 	}
@@ -348,14 +360,17 @@ sub ask_admin_password {
 
 	if (!defined($pass1) || $pass1 eq '') {
 
-		print STDOUT "\n\tPassword too short!";
+		print STDOUT colored(['bold red'], "\n\tERROR:") .
+			 ' Password cannot be empty!';
 		return 1;
 
 	} else {
 
 		if (length($pass1) < 5) {
 
-			print STDOUT "\n\tPassword too short!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				'Password too short!';
+
 			return 1;
 		}
 
@@ -369,13 +384,18 @@ sub ask_admin_password {
 				$main::ua{'admin_password'} = $pass1;
 
 			} else {
-				print STDOUT "\n\tPasswords do not match!";
+
+				print STDOUT colored(['bold red'], "\n\tERROR:") .
+					' Passwords do not match!';
+
 				return 1;
 			}
 
 		} else {
 
-			print STDOUT "\n\tPasswords must contain at least digits and chars!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' Passwords must contain at least digits and chars!';
+
 			return 1;
 		}
 	}
@@ -408,7 +428,9 @@ sub ask_admin_email {
 
 		} else {
 
-			print STDOUT "\n\tE-mail address not valid!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' E-mail address not valid!';
+
 			return 1;
 		}
 	}
@@ -459,7 +481,9 @@ sub ask_vhost {
 
 		} else {
 
-			print STDOUT "\n\tVhost not valid!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' Vhost not valid!';
+
 			return 1;
 		}
 	}
@@ -492,7 +516,9 @@ sub ask_second_dns {
 
 		} else {
 
-			print STDOUT "\n\tNo valid IP, please retry!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' No valid IP, please retry!';
+
 			return 1;
 		}
 	}
@@ -532,7 +558,9 @@ sub ask_mysql_prefix {
 
 		} else {
 
-			print STDOUT "\n\tNot allowed Value, please retry!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+			' Not allowed Value, please retry!';
+
 			return 1;
 		}
 	}
@@ -560,14 +588,20 @@ sub ask_db_pma_user {
 
 	} elsif( $rdata eq $main::ua{'db_user'}) {
 
-		$qmsg = "\n\tphpMyAdmin Control user must not be identical to system SQL user!";
+		$qmsg = colored(['bold red'], "\n\tERROR:") .
+			' phpMyAdmin Control user must not be identical to system SQL user!';
+
 		print STDOUT $qmsg;
+
 		return 1;
 
 	} elsif ($rdata eq $main::ua{'db_ftp_user'}) {
 
-		$qmsg = "\n\tphpMyAdmin Control user must not be identical to ftp SQL user!";
+		$qmsg = colored(['bold red'], "\n\tERROR:") .
+			' phpMyAdmin Control user must not be identical to ftp SQL user!';
+
 		print STDOUT $qmsg;
+
 		return 1;
 
 	} else {
@@ -609,7 +643,9 @@ sub ask_db_pma_password {
 
 		} else {
 
-			print STDOUT "\n\tPasswords do not match!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				' Passwords do not match!';
+
 			return 1;
 		}
 	}
@@ -647,7 +683,9 @@ sub ask_fastcgi {
 
 		} else {
 
-			print STDOUT "\n\tOnly ''[f]cgid' or fast[c]gi' are allowed!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				 " Only '[f]cgid' or 'fast[c]gi' are allowed!";
+
 			return 1;
 		}
 	}
@@ -684,7 +722,8 @@ sub ask_awstats_on {
 
 		} else {
 
-			print STDOUT "\n\tOnly '(y)es' and '(n)o' are allowed!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				" Only '(y)es' and '(n)o' are allowed!";
 			return 1;
 		}
 	}
@@ -721,7 +760,9 @@ sub ask_awstats_dyn {
 
 		} else {
 
-			print STDOUT "\n\tOnly '[d]ynamic' or '[s]tatic' are allowed!";
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				 " Only '[d]ynamic' or '[s]tatic' are allowed!";
+
 			return 1;
 		}
 	}
@@ -898,6 +939,7 @@ sub setup_named {
 	# Loading the system main configuration file from
 	# /etc/ispcp/bind/backup/named.conf.system if it exists
 	if(-e "$bk_dir/named.conf.system") {
+
 		($rs, $cfg) = get_file("$bk_dir/named.conf.system");
 		return $rs if($rs != 0);
 
@@ -908,6 +950,7 @@ sub setup_named {
 
 	# eg. Centos, Fedora did not file by default
 	} else {
+
 		push_el(\@main::el, 'add_named_db_data()', "WARNING: Can't find the parent file for named...");
 		$cfg = '';
 	}
