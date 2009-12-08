@@ -344,17 +344,18 @@ sub warn_msg {
 
 	my $rdata = undef;
 
-	my $warning =
+	my $warning = colored(['bold'], "\tNOTICE:") .
 		" Make sure you have read and performed all steps from\n".
 		"\tdocs/distro/INSTALL document (where distro is your linux distribution).\n\n";
 
 	system 'clear';
 
-	print STDOUT BOLD "\tNOTICE:";
 	print STDOUT $warning;
 
 	do {
+
 		if(defined $rdata && $rdata eq '?')	{
+
 			print STDOUT "\n\tOptions:\n".
   				"\t\ty : Continue the update\n".
   				"\t\tn : Abort and exit\n".
@@ -362,6 +363,7 @@ sub warn_msg {
 		}
 
 		print STDOUT "\tDo you want to continue [Y/n/?]: ";
+
 		chomp($rdata = readline \*STDIN);
 
 	} while($rdata !~ /^(|n|y)$/i);
