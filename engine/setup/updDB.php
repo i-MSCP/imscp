@@ -27,29 +27,20 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-/**
- * Warning : Do not execute this script manually !
- */
+error_reporting(E_ALL|E_STRICT);
 
-if($argc < 6) exit(1);
+// GUI root directory absolute path
+$gui_root_dir = '{GUI_ROOT_DIR}';
 
-$gui_root_dir 	= chop($argv[1]);
-$username		= chop($argv[2]);
-$password		= chop($argv[3]);
-$driver			= 'mysql';
-$dbname			= chop($argv[4]);
-$host			= chop($argv[5]);
-
-// Include all needed classes
+// Include all needed files
 require_once $gui_root_dir . '/include/ispcp-lib.php';
 
 // Perfom all database critical updates if exists
-if(criticalUpdate::getInstance()->checkUpdateExists())
-{
+if(criticalUpdate::getInstance()->checkUpdateExists()) {
+
 	criticalUpdate::getInstance()->executeUpdates();
 
-	if( ($msg = criticalUpdate::getInstance()->getErrorMessage()) != '')
-	{
+	if( ($msg = criticalUpdate::getInstance()->getErrorMessage()) != '') {
 		print $msg;
 		exit(1);
 	}
@@ -57,12 +48,11 @@ if(criticalUpdate::getInstance()->checkUpdateExists())
 }
 
 # Perform all database normal updates if exists
-if (databaseUpdate::getInstance()->checkUpdateExists())
-{
+if(databaseUpdate::getInstance()->checkUpdateExists()) {
+
 	databaseUpdate::getInstance()->executeUpdates();
 
-	if( ($msg = databaseUpdate::getInstance()->getErrorMessage() != ''))
-	{
+	if( ($msg = databaseUpdate::getInstance()->getErrorMessage() != '')) {
 		print $msg;
 		exit(1);
 	}

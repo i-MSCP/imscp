@@ -68,6 +68,9 @@ require 'ispcp-setup-methods.pl';
 # Re-assigned here to avoid 'used only once: possible typo warning'
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 @main::db_connect = ();
+$main::db_host = undef;
+$main::db_user = undef;
+$main::db_name = undef;
 
 #
 ## Subroutines - Begin
@@ -344,7 +347,7 @@ sub warn_msg {
 
 	my $rdata = undef;
 
-	my $warning = colored(['bold'], "\tNOTICE:") .
+	my $warning = colored(['bold'], "\n\tNOTICE:") .
 		" Make sure you have read and performed all steps from\n".
 		"\tdocs/distro/INSTALL document (where distro is your linux distribution).\n\n";
 
@@ -495,11 +498,25 @@ sub update_database_schema {
 
 	push_el(\@main::el, 'update_database_schema()', 'Starting...');
 
-	my ($rs, $cmd, $php) = (undef, undef, undef);
+	my ($rs, $cmd, $php, $rdata) = (undef, undef, undef, undef);
+
+	# File preparation - Begin
+
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php");
+	return $rs if($rs != 0);
+
+	if($rdata =~ s/{GUI_ROOT_DIR}/$main::cfg{'GUI_ROOT_DIR'}/) {
+
+		# Saving the modified file
+		$rs = save_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php", $rdata);
+		return $rs if($rs != 0);
+	}
+
+	# File preparation - End
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
-	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php $main::cfg{'GUI_ROOT_DIR'} $main::db_user $main::db_pwd $main::db_name $main::db_host &>/dev/null";
+	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php &>/dev/null";
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs !=0);
 
