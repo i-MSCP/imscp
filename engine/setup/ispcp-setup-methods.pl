@@ -316,6 +316,7 @@ sub ask_admin {
 
 	my ($rs, $rdata) = (undef, undef);
 	my $admin = 'admin';
+
 	my $qmsg = "\n\tPlease enter administrator login name. [$admin]: ";
 	print STDOUT $qmsg;
 
@@ -898,7 +899,7 @@ sub setup_named {
 	# /etc/ispcp/bind/backup/named.conf.system if it exists
 	if(-e "$bk_dir/named.conf.system") {
 		($rs, $cfg) = get_file("$bk_dir/named.conf.system");
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 
 		# Adjusting the configuration if needed
 		$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
@@ -1031,7 +1032,7 @@ sub setup_php {
 		# Install the new file
 		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/$_\_ispcp.conf $main::cfg{'APACHE_MODS_DIR'}/";
 		$rs = sys_command_rs($cmd);
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 	}
 
 	# fastcgi_ispcp.load / fcgid_ispcp.load
@@ -1059,7 +1060,7 @@ sub setup_php {
 		# Install the new file
 		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/$_\_ispcp.load $main::cfg{'APACHE_MODS_DIR'}/";
 		$rs = sys_command_rs($cmd);
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 	}
 
 	# Building, storage and installation of new files - End
@@ -1149,7 +1150,7 @@ sub setup_httpd_main_vhost {
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf $bk_dir/ispcp.conf.$timestamp";
 			$rs = sys_command_rs($cmd);
-			return $rs if($rs !=0);
+			return $rs if($rs != 0);
 		}
 	}
 
@@ -1258,7 +1259,7 @@ sub setup_awstats_vhost {
 
 				$cmd = "$main::cfg{'CMD_CP'} -p $path$file $bk_dir/$file.system";
 				$rs = sys_command_rs($cmd);
-				return $rs if($rs !=0);
+				return $rs if($rs != 0);
 		}
 
 	# Update:
@@ -1280,7 +1281,7 @@ sub setup_awstats_vhost {
 
 				$cmd = "$main::cfg{'CMD_CP'} -p $path$file $bk_dir/$file.$timestamp";
 				$rs = sys_command_rs($cmd);
-				return $rs if($rs !=0);
+				return $rs if($rs != 0);
 		}
 	}
 
@@ -1296,7 +1297,7 @@ sub setup_awstats_vhost {
 
 	# Loading the template from /etc/ispcp/apache
 	($rs, $cfg_tpl) = get_file("$cfg_dir/01_awstats.conf");
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	# Building the new file
 	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfg_tpl);
@@ -1691,7 +1692,7 @@ sub setup_po {
 		$main::cfg{'ROOT_GROUP'},
 		0600
 	);
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	# userdb - End
 
@@ -1752,7 +1753,7 @@ sub setup_ftpd {
 		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.system";
 			$rs = sys_command_rs($cmd);
-			return $rs if($rs !=0);
+			return $rs if($rs != 0);
 		}
 
 	# Update:
@@ -1764,7 +1765,7 @@ sub setup_ftpd {
 		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.$timestamp";
 			$rs = sys_command_rs($cmd);
-			return $rs if($rs !=0);
+			return $rs if($rs != 0);
 		}
 
 		# Get the current user and password for SQL connection and check it - Begin
@@ -1959,10 +1960,10 @@ sub setup_ispcp_daemon_network {
 		($filename) = /.*\/(.*)$/;
 
 		$rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ &> $services_log");
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 
 		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ &> $services_log");
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 
 		if ( -x "/usr/sbin/update-rc.d")
 		{
@@ -2014,7 +2015,7 @@ sub setup_gui_httpd {
 		if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/00_master.conf $bk_dir/00_master.conf.$timestamp";
 			$rs = sys_command_rs($cmd);
-			return $rs if($rs !=0);
+			return $rs if($rs != 0);
 		}
 	}
 
@@ -2022,7 +2023,7 @@ sub setup_gui_httpd {
 
 	# Loading the template from /etc/ispcp/apache
 	($rs, $cfg_tpl) = get_file("$cfg_dir/00_master.conf");
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	# Tags preparation
 	my %tags_hash = (
@@ -2066,7 +2067,7 @@ sub setup_gui_httpd {
 
 	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/00_master.conf $main::cfg{'APACHE_SITES_DIR'}/";
 	$rs = sys_command_rs($cmd);
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	# Storage and installation of new file - End
 
@@ -2151,7 +2152,7 @@ sub setup_gui_php {
 
 				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/master/$_ $bk_dir/master.$file.$timestamp";
 				$rs = sys_command_rs($cmd);
-				return $rs if($rs !=0);
+				return $rs if($rs != 0);
 			}
 		}
 	}
@@ -2270,11 +2271,11 @@ sub setup_gui_named {
 
 	# Add GUI named cfg data
 	$rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	# Building GUI named dns records file
 	$rs = setup_gui_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'setup_gui_named()', 'Ending...');
 
@@ -2456,7 +2457,7 @@ sub setup_gui_named_db_data {
 
 		# First, loading the current working db file
 		($rs, $_) = get_file($wrk_cfg);
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 
 		# Extraction of old time data and revision number
 		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s ) {
@@ -2682,14 +2683,14 @@ sub setup_rkhunter {
 		}
 
 		($rs, $rdata) = get_file('/etc/default/rkhunter');
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 
 		# Disable the daily runs of the default rkhunter cron task
 		$rdata =~ s/CRON_DAILY_RUN="yes"/CRON_DAILY_RUN="no"/gmi;
 
 		# Saving the modified file
 		$rs = save_file('/etc/default/rkhunter', $rdata);
-		return $rs if($rs !=0);
+		return $rs if($rs != 0);
 	}
 
 	push_el(\@main::el, 'setup_rkhunter()', 'Ending...');
