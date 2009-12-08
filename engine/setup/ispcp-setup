@@ -34,7 +34,7 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
-use Term::ANSIColor qw(:constants);
+use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 
 use strict;
@@ -57,7 +57,7 @@ sub setup_start_up {
 	# config check; --- Already done in ispcp_common_code.pl
 	#$rs = get_conf();
 	#return $rs if ($rs != 0);
-	
+
 	stop_services();
 
 	push_el(\@main::el, 'setup_start_up()', 'Ending...');
@@ -84,10 +84,13 @@ sub user_dialog {
 		$rs = ask_hostname();
 	} while ($rs == 1);
 
-	return $rs if ($rs != 0);
+	#return $rs if ($rs != 0);
+
+	my $warn_msg = '';
 
 	do {
-		$rs = ask_eth();
+		($rs, $warn_msg) = ask_eth();
+		print STDERR $warn_msg if($warn_msg ne '');
 	} while ($rs == 1);
 
 	do {
@@ -191,20 +194,6 @@ sub user_dialog {
 
 	print STDOUT $qmsg;
 
-	#push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
-	#push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
-	#push_el(\@main::el, 'user_dialog()', "panel_vhost: $main::ua{'admin_vhost'}");
-	#push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
-	#push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
-	#push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
-	#push_el(\@main::el, 'user_dialog()', "db_password");
-	#push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
-	#push_el(\@main::el, 'user_dialog()', "admin_password");
-	#push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
-	#push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
-	#push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
-	#push_el(\@main::el, 'user_dialog()', "mysql_prefix: $main::ua{'mysql_prefix'}");
-	#push_el(\@main::el, 'user_dialog()', "mysql_prefix_type: $main::ua{'mysql_prefix_type'}");
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	return 0;
@@ -359,15 +348,15 @@ sub setup_shut_down {
 	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
-	
+
 	$rs = setup_cleanup();
 	return $rs if($rs != 0);
-	
+
 	start_services();
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
-	my $shut_down_message = 
+	my $shut_down_message =
 		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!";
 	my $login_message =
 		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and".

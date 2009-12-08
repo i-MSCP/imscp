@@ -48,15 +48,14 @@ sub ask_hostname {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
 		$rdata = $hostname;
 	}
 
-	if ($rdata =~ /^(((([\w][\w-]{0,253}){0,1}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/)
-	{
-		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/)
-		{
+	if ($rdata =~ /^(((([\w][\w-]{0,253}){0,1}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+
+		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+
 			my $wmsg = "\tWARNING: $rdata is not a \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
 			print STDOUT $wmsg;
 		}
@@ -64,9 +63,9 @@ sub ask_hostname {
 		$main::ua{'hostname'} = $rdata;
 		$main::ua{'hostname_local'} = ( ($1) ? $1 : $4);
 		$main::ua{'hostname_local'} =~ s/^([^.]+).+$/$1/;
-	}
-	else
-	{
+
+	} else {
+
 		print STDOUT "\n\tHostname is not a valid domain name!\n";
 		return 1;
 	}
@@ -80,20 +79,31 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $warn_msg) = (undef, undef, '');
+
 	my $cmd = "/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' {print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
-	$rs = sys_command($cmd);
-	return ($rs, '') if ($rs != 0);
+	unless(sys_command($cmd)) {
+		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
+			'External command was returned an error status!'. "\n";
+		return ($rs, $warn_msg);
+	}
 
-	($rs, $rdata) = get_file("/tmp/ispcp-setup.ip");
-	return ($rs, '') if ($rs != 0);
+	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
+	unless($rs){
+		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
+			'Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
+		return ($rs, $warn_msg);
+	}
 
 	chop($rdata);
 
 	$rs = del_file('/tmp/ispcp-setup.ip');
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
+	unless(sys_command($cmd)) {
+		$warn_msg = colored(['red bold'], "\n\t", 'WARNING: ') .
+			'Unable to delete the /tmp/ispcp-setup.ip'. "\n";
+		return ($rs, $warn_msg);
+	}
 
 	my $eth = $rdata;
 	my $qmsg = "\n\tPlease enter system network address. [$eth]: ";
@@ -101,23 +111,19 @@ sub ask_eth {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'eth_ip'} = $eth;
-	}
-	else
-	{
+
+	} else {
 		$main::ua{'eth_ip'} = $rdata;
 	}
 
-	if (check_eth($main::ua{'eth_ip'}) != 0)
-	{
-		return 0;
-	}
+	return 1 if(check_eth($main::ua{'eth_ip'}));
 
 	push_el(\@main::el, 'ask_eth()', 'Ending...');
 
-	return 1;
+	0;
 }
 
 sub ask_db_host {
@@ -471,18 +477,18 @@ sub ask_second_dns {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'secondary_dns'} = '';
-	}
-	else
-	{
-		if (check_eth($rdata) != 0)
-		{
+
+	} else {
+
+		unless (check_eth($rdata)) {
+
 			$main::ua{'secondary_dns'} = $rdata;
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tNo valid IP, please retry!";
 			return 1;
 		}
@@ -490,7 +496,7 @@ sub ask_second_dns {
 
 	push_el(\@main::el, 'ask_second_dns()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_mysql_prefix {
@@ -504,25 +510,25 @@ sub ask_mysql_prefix {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata eq 'none' || $rdata eq 'n')
-	{
+	if (!defined($rdata) || $rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
+
 		$main::ua{'mysql_prefix'} = 'no';
 		$main::ua{'mysql_prefix_type'} = '';
-	}
-	else
-	{
-		if ($rdata eq 'infront' || $rdata eq 'i')
-		{
+
+	} else {
+
+		if ($rdata eq 'infront' || $rdata eq 'i') {
+
 			$main::ua{'mysql_prefix'} = 'yes';
 			$main::ua{'mysql_prefix_type'} = 'infront';
-		}
-		elsif ($rdata eq 'behind' || $rdata eq 'b')
-		{
+
+		} elsif ($rdata eq 'behind' || $rdata eq 'b') {
+
 			$main::ua{'mysql_prefix'} = 'yes';
 			$main::ua{'mysql_prefix_type'} = 'behind';
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tNot allowed Value, please retry!";
 			return 1;
 		}
@@ -530,8 +536,9 @@ sub ask_mysql_prefix {
 
 	push_el(\@main::el, 'ask_mysql_prefix()', 'Ending...');
 
-	return 0;
+	0;
 }
+
 sub ask_db_pma_user {
 
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
@@ -544,30 +551,30 @@ sub ask_db_pma_user {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'db_pma_user'} = $db_user;
-	}
-	elsif( $rdata eq $main::ua{'db_user'})
-	{
+
+	} elsif( $rdata eq $main::ua{'db_user'}) {
+
 		$qmsg = "\n\tphpMyAdmin Control user must not be identical to system SQL user!";
 		print STDOUT $qmsg;
 		return 1;
-	}
-	elsif ($rdata eq $main::ua{'db_ftp_user'})
-	{
+
+	} elsif ($rdata eq $main::ua{'db_ftp_user'}) {
+
 		$qmsg = "\n\tphpMyAdmin Control user must not be identical to ftp SQL user!";
 		print STDOUT $qmsg;
 		return 1;
-	}
-	else
-	{
+
+	} else {
+
 		$main::ua{'db_pma_user'} = $rdata;
 	}
 
 	push_el(\@main::el, 'ask_db_pma_user()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_db_pma_password {
@@ -580,26 +587,24 @@ sub ask_db_pma_password {
 	my $qmsg = "\n\tPlease enter ispCP phpMyAdmin Control user password. [auto generate]: ";
 	$pass1 = read_password($qmsg);
 
-	if (!defined($pass1) || $pass1 eq '')
-	{
+	if (!defined($pass1) || $pass1 eq '') {
 
 		$db_password = gen_sys_rand_num(18);
 		$db_password =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_pma_password'} = $db_password;
 		print STDOUT "\tphpMyAdmin Control user password set to: $db_password\n";
 
-	}
-	else
-	{
+	} else {
+
 		$qmsg = "\tPlease repeat ispCP phpMyAdmin Control user password: ";
 		$pass2 = read_password($qmsg);
 
-		if ($pass1 eq $pass2)
-		{
+		if ($pass1 eq $pass2) {
+
 			$main::ua{'db_pma_password'} = $pass1;
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tPasswords do not match!";
 			return 1;
 		}
@@ -607,7 +612,7 @@ sub ask_db_pma_password {
 
 	push_el(\@main::el, 'ask_db_pma_password()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_fastcgi {
@@ -622,22 +627,22 @@ sub ask_fastcgi {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'php_fastcgi'} = 'fcgid';
-	}
-	else
-	{
-		if ($rdata eq 'fcgid' || $rdata eq 'f')
-		{
+
+	} else {
+
+		if ($rdata eq 'fcgid' || $rdata eq 'f') {
+
 			$main::ua{'php_fastcgi'} = 'fcgid';
-		}
-		elsif ($rdata eq 'fastcgi' || $rdata eq 'c')
-		{
+
+		} elsif ($rdata eq 'fastcgi' || $rdata eq 'c') {
+
 			$main::ua{'php_fastcgi'} = 'fastcgi';
-		}
-		else
-		{
+
+		} else {
+
 			print STDOUT "\n\tOnly ''[f]cgid' or fast[c]gi' are allowed!";
 			return 1;
 		}
@@ -645,7 +650,7 @@ sub ask_fastcgi {
 
 	push_el(\@main::el, 'ask_fastcgi()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_awstats_on {
@@ -682,7 +687,7 @@ sub ask_awstats_on {
 
 	push_el(\@main::el, 'ask_awstats_on()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 sub ask_awstats_dyn {
@@ -719,7 +724,7 @@ sub ask_awstats_dyn {
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 #
@@ -933,7 +938,7 @@ sub setup_named {
 
 	push_el(\@main::el, 'setup_named()', 'Ending...');
 
-	return 0;
+	0;
 }
 # IspCP php main configuration setup / update
 # Built, store and install all system php related configuration files
@@ -1796,7 +1801,7 @@ sub setup_ftpd {
 
 		} else {
 
-			$warn_msg ) "\n\tWARNING: Unable to find the Proftpd configuration file!" .
+			$warn_msg = "\n\tWARNING: Unable to find the Proftpd configuration file!" .
 				"\n\tWe will create a new one.";
 		}
 
@@ -2548,19 +2553,15 @@ sub setup_gui_named_db_data {
 #
 sub check_eth {
 
-	my ($ip) = @_;
-	return 0 if (!($ip =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/));
-
-	$ip =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
-	my ($d1, $d2, $d3, $d4) = ($1, $2, $3, $4);
-
-	return 0 if (($d1 <= 0)	|| ($d1 >= 255));
-	return 0 if (($d2 < 0)	|| ($d2 > 255));
-	return 0 if (($d3 < 0)	|| ($d3 > 255));
-	return 0 if (($d4 <= 0)	|| ($d4 >= 255));
+	return 0 if(shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
+		($1 >  0) && ($1 <  255)  &&
+		($2 >= 0) && ($2 <= 255) &&
+		($3 >= 0) && ($3 <= 255) &&
+		($4 >  0) && ($4 <  255));
 
 	1;
 }
+
 # Starting preinstallation script
 # Note : In the future, a preinst script will automatically
 # install the required packages and will also perform other
