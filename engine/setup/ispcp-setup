@@ -62,7 +62,7 @@ sub setup_start_up {
 
 	push_el(\@main::el, 'setup_start_up()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 # Asks an set of question to user
@@ -196,7 +196,7 @@ sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
-	return 0;
+	0;
 
 }
 
@@ -216,7 +216,7 @@ sub check_host_system {
 
 	push_el(\@main::el, 'check_host_system()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 # Performs all subroutines that generate the
@@ -301,7 +301,8 @@ sub setup_host_system {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_host_system()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 # Performs all subroutines that generate the
@@ -373,8 +374,7 @@ sub setup_shut_down {
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Display a welcome note
@@ -394,8 +394,7 @@ MSG
 
 	push_el(\@main::el, '_welcome_note()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Get and return the fully qualified hostname
@@ -431,6 +430,7 @@ sub get_sys_hostname {
 	return ($rs, '') if ($rs != 0);
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
+
 	return (0, $rdata);
 }
 
@@ -477,7 +477,7 @@ sub check_host_interface {
 
 	push_el(\@main::el, 'check_host_interface()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 # Check the connection to the IspCP database
@@ -512,7 +512,7 @@ sub check_host_sql {
 
 	push_el(\@main::el, 'check_host_sql()', 'Ending...');
 
-	return 0;
+	0;
 }
 
 # Create users and groups for different services
@@ -602,8 +602,7 @@ sub setup_system_users {
 
 	push_el(\@main::el, 'setup_system_users()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 sub setup_system_dirs {
@@ -646,8 +645,7 @@ sub setup_system_dirs {
 
 	push_el(\@main::el, 'setup_system_dirs()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Update ispcp.conf file
@@ -724,8 +722,7 @@ sub setup_config {
 
 	push_el(\@main::el, 'setup_config()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Create and populates the ispCP database
@@ -983,8 +980,7 @@ sub setup_sql {
 
 	push_el(\@main::el, 'setup_sql()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Adjust the table of static correspondence of hostnames.
@@ -1025,8 +1021,7 @@ sub setup_hosts {
 
 	push_el(\@main::el, 'setup_hosts()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 # Stopping services
