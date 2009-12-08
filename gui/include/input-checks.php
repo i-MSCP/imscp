@@ -620,7 +620,7 @@ function _validates_sld($sld) {
 			'q\.(?:com|net)|'.
 			'x\.org|'.
 			'[xz]\.com|'.
-			'[a-z]\.de';
+			'[a-z0-9]\.de';
 
 		// Reserved SLD according RFC 2606
 		$reserved_SLD = 'example\.(?:com|net|org)';

@@ -1,6 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-08 Benedikt Heintel
+	- GUI:
+		* Added help for new domain validation
+	- SETUP:
+		* Fixed some warnings
+
 2009-12-07 Benedikt Heintel
 	- DOCS:
 		* Updated: Update Process

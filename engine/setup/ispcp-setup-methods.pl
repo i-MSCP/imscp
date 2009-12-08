@@ -85,18 +85,20 @@ sub ask_eth {
 
 	my ($rs, $rdata, $warn_msg) = (undef, undef, '');
 
+	# TODO: Replace ifconfig, grep, awk with paths in ispcp.conf
 	my $cmd = "/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' {print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
+	# FIXME: No error correction, if /tmp/ispcp-setup.ip not readable
 	$rs = sys_command($cmd);
 
-	unless($rs) {
+	unless(!$rs) {
 		$warn_msg = colored(['bold red'], "\n\tERROR:") .
-			' External command was returned an error status!'. "\n";
+			' External command $cmd returned an error status on eth lookup!'. "\n";
 		return ($rs, $warn_msg);
 	}
 
 	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
-	unless($rs){
+	unless(!$rs){
 		$warn_msg = colored(['bold red'], "\n\tERROR:") .
 			' Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
 		return ($rs, $warn_msg);
@@ -105,9 +107,9 @@ sub ask_eth {
 	chop($rdata);
 
 	$rs = del_file('/tmp/ispcp-setup.ip');
-	unless($rs) {
-		$warn_msg = colored(['bold yellow'], "\n\tERROR:") .
-			' Unable to delete the /tmp/ispcp-setup.ip'. "\n";
+	unless(!$rs) {
+		$warn_msg = colored(['bold red'], "\n\tERROR:") .
+			' Unable to delete /tmp/ispcp-setup.ip'. "\n";
 		return ($rs, $warn_msg);
 	}
 
@@ -118,9 +120,7 @@ sub ask_eth {
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'eth_ip'} = $eth;
-
 	} else {
 		$main::ua{'eth_ip'} = $rdata;
 	}
@@ -129,7 +129,7 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Ending...');
 
-	0;
+	return (0, '');
 }
 
 sub ask_db_host {
@@ -447,7 +447,6 @@ sub ask_vhost {
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-	#my $eth = $main::ua{'eth_ip'}; # Unused variable
 	# Standard IP with dot to binary data (expected by gethostbyaddr() as first argument )
 	my $iaddr = inet_aton($main::ua{'eth_ip'});
 	my $addr = gethostbyaddr($iaddr, &AF_INET);

@@ -256,7 +256,7 @@ sub update_shutdown {
 	0;
 }
 
-# Exit with an optionnal error message
+# Exit with an optional error message
 sub exit_msg {
 
 	push_el(\@main::el, 'exit_msg()', 'Starting...');
