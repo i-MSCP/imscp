@@ -150,8 +150,8 @@ function init_empty_data() {
 
 	$tpl->assign(
 		array(
-			'DOMAIN' => $alias_name,
-			'MP' => $mount_point,
+			'DOMAIN' => decode_idna($alias_name),
+			'MP' => decode_idna($mount_point),
 			'FORWARD' => 'no'
 		)
 	);
