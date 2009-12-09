@@ -42,25 +42,24 @@
 # not activated during the prior pass (e.g. AWStats).
 #
 
-
 use strict;
 use warnings;
-
-use FindBin;
-use lib "$FindBin::Bin/..";
 
 # FIXME: Check if it ok for all dist
 use Term::ReadKey;
 
-# Todo Add this package to package files (i.e. Debian: libfile-mimeinfo-perl)
+# Todo Add this package to package files
+# (i.e. Debian: libfile-mimeinfo-perl)
 use File::MimeInfo::Magic;
 
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 
+use FindBin;
+use lib "$FindBin::Bin/..";
+
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
-
 
 # User entries
 %main::ua = ();
@@ -256,40 +255,6 @@ sub update_shutdown {
 	0;
 }
 
-# Exit with an optional error message
-sub exit_msg {
-
-	push_el(\@main::el, 'exit_msg()', 'Starting...');
-
-	my ($msg, $code) = @_;
-
-	if (!defined($code) || $code <= 0 ) {
-		$code = 1;
-	}
-
-	if (defined($msg) && $msg ne '' ) {
-
-		if($msg =~ /\[failed\]/) {
-
-		$msg = colored(['bold red'], $msg) . "\n";
-
-		my $final_msg = "\n\t" . colored(['red'], 'FATAL:')  .
-			" An error was occured during update process!\n" .
-			"\tCorrect it and re-run this program." .
-			"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
-
-		print STDERR $msg, $final_msg;
-
-		} else {
-			print STDERR "\n\t$msg\n";
-		}
-	}
-
-	push_el(\@main::el, 'exit_msg()', 'Ending...');
-
-	exit $code;
-}
-
 # User dialog
 sub user_dialog {
 
@@ -383,58 +348,6 @@ sub warn_msg {
 
 	0;
 }
-# Starting services
-sub start_services {
-
-	push_el(\@main::el, 'start_services()', 'Starting...');
-
-	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
-	) {
-		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-
-			sys_command("$main::cfg{$_} start &>/tmp/ispcp-update-services.log");
-			print STDOUT BOLD BLACK '.';
-			sleep 1;
-		}
-	}
-
-	push_el(\@main::el, 'start_services()', 'Ending...');
-
-	0;
-}
-
-# Stopping services
-# Stop all service who are marked as 'no' in ispcp.conf
-sub stop_services {
-
-	push_el(\@main::el, 'stop_services()', 'Starting...');
-
-	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
-	) {
-		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-
-			sys_command("$main::cfg{$_} stop &>/tmp/ispcp-update-services.log");
-			print STDOUT BOLD BLACK '.';
-			sleep 1;
-		}
-	}
-
-	push_el(\@main::el, 'stop_services()', 'Ending...');
-
-	0;
-}
 
 # Load old ispCP main configuration file
 sub load_old_ispcp_cfg {
@@ -458,6 +371,7 @@ sub load_old_ispcp_cfg {
 
 	0;
 }
+
 # Update ispCP main configuration file
 sub update_ispcp_cfg {
 
@@ -700,27 +614,6 @@ sub set_permissions {
 	push_el(\@main::el, 'set_permissions()', 'Ending...');
 
 	0;
-}
-
-#
-# Format a string for it to be placed on the right
-# of another string. The first string should not end
-# with EOL.
-#
-# param: string $msg the message to be placed on right
-# param: int $left_msg_lenght: lenght of left message
-# return: string right formated message
-#
-sub str_to_right {
-
-	my ($msg, $left_msg_lenght) = @_;
-
-	my ($wchar) = GetTerminalSize();
-
-	# 8 chars are a normal tabwidht in bash
-	my $sep = ($wchar - ($left_msg_lenght + 8));
-
-	return sprintf('%'.$sep."s\n", $msg);
 }
 
 #

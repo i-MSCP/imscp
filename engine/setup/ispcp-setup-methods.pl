@@ -98,6 +98,7 @@ sub ask_eth {
 	}
 
 	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
+
 	unless(!$rs){
 		$warn_msg = colored(['bold red'], "\n\tERROR:") .
 			' Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
@@ -107,6 +108,7 @@ sub ask_eth {
 	chop($rdata);
 
 	$rs = del_file('/tmp/ispcp-setup.ip');
+
 	unless(!$rs) {
 		$warn_msg = colored(['bold red'], "\n\tERROR:") .
 			' Unable to delete /tmp/ispcp-setup.ip'. "\n";
@@ -144,12 +146,9 @@ sub ask_db_host {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_host'} = $db_host;
-	}
-	else
-	{
+	} else {
 		$main::ua{'db_host'} = $rdata;
 	}
 
@@ -170,12 +169,9 @@ sub ask_db_name {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_name'} = $db_name;
-	}
-	else
-	{
+	} else {
 		$main::ua{'db_name'} = $rdata;
 	}
 
@@ -196,12 +192,9 @@ sub ask_db_user {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_user'} = $db_user;
-	}
-	else
-	{
+	} else {
 		$main::ua{'db_user'} = $rdata;
 	}
 
@@ -259,20 +252,20 @@ sub ask_db_ftp_user {
 
 	chomp($rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '')
-	{
+	if (!defined($rdata) || $rdata eq '') {
+
 		$main::ua{'db_ftp_user'} = $db_user;
-	}
-	elsif( $rdata eq $main::ua{'db_user'})
-	{
+
+	} elsif( $rdata eq $main::ua{'db_user'}) {
+
 		$qmsg = colored(['bold red'], "\n\tERROR:") .
 			' Ftp SQL user must not be identical to system SQL user!';
 
 		print STDOUT $qmsg;
+
 		return 1;
-	}
-	else
-	{
+
+	} else {
 		$main::ua{'db_ftp_user'} = $rdata;
 	}
 
@@ -455,7 +448,8 @@ sub ask_vhost {
 	# if the host name ( for the current interface ) is not set in /etc/hosts
 	# file. In this case, or if the returned value isn't FQHN, we use the long
 	# host name who's provided by the system hostname command.
-	if(!defined($addr) or ($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
+	if(!defined($addr) or
+		($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
 		!($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
 
 		$addr = $main::ua{'hostname'};
@@ -988,6 +982,7 @@ sub setup_named {
 
 	0;
 }
+
 # IspCP php main configuration setup / update
 # Built, store and install all system php related configuration files
 # Enable required modules and disable unused
@@ -1055,6 +1050,7 @@ sub setup_php {
 
 	# fastcgi_ispcp.conf / fcgid_ispcp.conf
 	foreach(qw/fastcgi fcgid/) {
+
 		# Loading the template from /etc/ispcp/apache
 		($rs, $cfg_tpl) = get_file("$cfg_dir/$_\_ispcp.conf");
 		return $rs if ($rs != 0);
@@ -1633,6 +1629,7 @@ sub setup_mta {
 
 	0;
 }
+
 # IspCP Courier setup / update
 # Build, store and install Courier, related configuration files (authdaemonrc userdb)
 # Creates userdb.dat from the contents of userdb
@@ -1837,7 +1834,7 @@ sub setup_ftpd {
 			if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im) {
 
 				# Check the database connection with current ids
-				$rs = _check_sql_connection($1, $2);
+				$rs = check_sql_connection($1, $2);
 
 				# If the connection is successful, we can use these identifiers
 				unless($rs) {
@@ -1998,8 +1995,8 @@ sub setup_ispcp_daemon_network {
 
 	my $services_log = (!defined &update_engine) ? '/tmp/ispcp-setup-services.log' : '/tmp/ispcp-update-services.log';
 
-	foreach ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'})
-	{
+	foreach ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'}) {
+
 		# Do not process if the service is disabled
 		next if(/^no$/i);
 
@@ -2011,13 +2008,15 @@ sub setup_ispcp_daemon_network {
 		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ &> $services_log");
 		return $rs if($rs != 0);
 
-		if ( -x "/usr/sbin/update-rc.d")
-		{
+		if(-x "/usr/sbin/update-rc.d") {
+
 			sys_command_rs("/usr/sbin/update-rc.d $filename defaults 99 &> $services_log");
-		}
-		elsif ( -x "/usr/lib/lsb/install_initd" ) #LSB 3.1 Core section 20.4 compatibility
-		{
+
+		#LSB 3.1 Core section 20.4 compatibility {
+		} elsif(-x "/usr/lib/lsb/install_initd") {
+
 			sys_command_rs("/usr/lib/lsb/install_initd $_ &> $services_log");
+
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2049,11 +2048,12 @@ sub setup_gui_httpd {
 	# Install:
 	if(!defined &update_engine) {
 
-		   $services_log_path = "/tmp/ispcp-update-services.log";
+		   $services_log_path = "/tmp/ispcp-setup-services.log";
 
-	} else { # Update:
+	# Update:
+	} else {
 
-		$services_log_path = "/tmp/ispcp-setup-services.log";
+		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time();
 
@@ -2151,7 +2151,7 @@ sub setup_gui_httpd {
 
 	# Enable GUI vhost - Begin
 
-	if ( -e "/usr/sbin/a2ensite" ) {
+	if (-e "/usr/sbin/a2ensite") {
 		sys_command("/usr/sbin/a2ensite 00_master.conf &> $services_log_path");
 	}
 
@@ -2305,7 +2305,6 @@ sub setup_gui_pma {
 	0;
 }
 
-
 # IspCP Gui named configuration
 # Add Gui named cfg data in main configuration file
 # Building GUI named dns record's file
@@ -2327,6 +2326,7 @@ sub setup_gui_named {
 
 	0;
 }
+
 # IspCP Gui named cfg file Setup / Update
 # Add Gui named cfg data in main configuration file
 sub setup_gui_named_cfg_data {
@@ -2509,9 +2509,9 @@ sub setup_gui_named_db_data {
 		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s ) {
 
 			push_el(
-					\@main::el,
-					'add_named_db_data()',
-					"FATAL: Can't retrieve the serial number in the master domain SOA record..."
+				\@main::el,
+				'add_named_db_data()',
+				"FATAL: Can't retrieve the serial number in the master domain SOA record..."
 			);
 			return 1;
 		}
@@ -2594,6 +2594,57 @@ sub setup_gui_named_db_data {
 	0;
 }
 
+# If the /etc/default/rkhunter file exists :
+# During update, remove the old log files
+# For both, disable the daily runs of the default rkhunter cron task
+sub setup_rkhunter {
+
+	push_el(\@main::el, 'setup_rkhunter()', 'Starting...');
+
+	my ($rs, $rdata, $cmd) = (undef, undef, undef);
+
+	if(-e '/etc/default/rkhunter') {
+
+		if(defined &update_engine) {
+
+			# Deleting files that can cause problems
+			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
+			$rs = sys_command_rs($cmd);
+			return $rs if($rs != 0);
+		}
+
+		($rs, $rdata) = get_file('/etc/default/rkhunter');
+		return $rs if($rs != 0);
+
+		# Disable the daily runs of the default rkhunter cron task
+		$rdata =~ s/CRON_DAILY_RUN="yes"/CRON_DAILY_RUN="no"/gmi;
+
+		# Saving the modified file
+		$rs = save_file('/etc/default/rkhunter', $rdata);
+		return $rs if($rs != 0);
+	}
+
+	push_el(\@main::el, 'setup_rkhunter()', 'Ending...');
+
+	0;
+}
+
+# Remove all's empty files in ispCP configuration directories
+sub setup_cleanup {
+
+	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+
+	my ($rs, $cmd) = (undef, undef);
+
+	$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'CONF_DIR'}/*/*/empty-file";
+	$rs = sys_command_rs($cmd);
+	return $rs if($rs != 0);
+
+	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+
+	0;
+}
+
 #
 ## Setup / Update subroutines - End
 #
@@ -2602,15 +2653,60 @@ sub setup_gui_named_db_data {
 ## Others subroutines - Begin
 #
 
+# Check ip
 sub check_eth {
 
 	return 0 if(shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
-		($1 >  0) && ($1 <  255)  &&
-		($2 >= 0) && ($2 <= 255) &&
-		($3 >= 0) && ($3 <= 255) &&
-		($4 >  0) && ($4 <  255));
+		($1 >  0) && ($1 <  255) && ($2 >= 0) && ($2 <= 255) &&
+		($3 >= 0) && ($3 <= 255) && ($4 >  0) && ($4 <  255));
 
 	1;
+}
+
+# Check Sql connection
+# This subroutine can check the connections Sql
+#
+# [param: string Sql username]
+# [param: string Sql plaintext password]
+#
+sub check_sql_connection {
+
+	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
+
+	my ($user, $password) = @_;
+
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+
+	# First, we reset db connection
+	$main::db = undef;
+
+	# If we as receive username and password, we redefine the dsn
+	if(defined $user && defined $password ) {
+
+		@main::db_connect = (
+			"DBI:mysql:$main::db_name:$main::db_host",
+			$user,
+			$password
+		);
+	}
+
+	$sql = "show databases;";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	# We reset the connection and restore the previous DSN
+	$main::db = undef;
+
+	@main::db_connect = (
+		"DBI:mysql:$main::db_name:$main::db_host",
+		$main::db_user,
+		$main::db_pwd
+	);
+
+	push_el(\@main::el, 'sql_check_connections()', 'Ending...');
+
+	0;
 }
 
 # Starting preinstallation script
@@ -2667,95 +2763,115 @@ sub _postinst {
 	0;
 }
 
-# Check Sql connection
-# This subroutine can check the connections Sql
-sub _check_sql_connection {
+# Format a string for it to be placed on the right
+# of another string. The first string should not end
+# with EOL.
+#
+# param: string $msg the message to be placed on right
+# param: int $left_msg_lenght: lenght of left message
+# return: string right formated message
+sub str_to_right {
 
-	push_el(\@main::el, '_sql_check_connections()', 'Starting...');
+	my ($msg, $left_msg_lenght) = @_;
 
-	my ($user, $password) = @_;
+	my ($wchar) = GetTerminalSize();
 
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	# 8 chars are a normal tabwidht in bash
+	my $sep = ($wchar - ($left_msg_lenght + 8));
 
-	# First, we reset db connection
-	$main::db = undef;
-
-	# If we as receive username and password, we redefine the dsn
-	if(defined $user && defined $password ) {
-
-		@main::db_connect = (
-			"DBI:mysql:$main::db_name:$main::db_host",
-			$user,
-			$password
-		);
-	}
-
-	$sql = "show databases;";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	# We reset the connection and restore the previous DSN
-	$main::db = undef;
-
-	@main::db_connect = (
-		"DBI:mysql:$main::db_name:$main::db_host",
-		$main::db_user,
-		$main::db_pwd
-	);
-
-	push_el(\@main::el, '_sql_check_connections()', 'Ending...');
-
-	0;
+	return sprintf('%'.$sep."s\n", $msg);
 }
 
-# If the /etc/default/rkhunter file exists :
-# During update, remove the old log files
-# For both, disable the daily runs of the default rkhunter cron task
-sub setup_rkhunter {
+# Exit with an optional error message
+#
+# If the message is the '[failed]' string, it will be
+# re-formatted and an additional message will be displayed.
+#
+# [param: string error message]
+# [param: int exit code]
+#
+sub exit_msg {
 
-	push_el(\@main::el, 'setup_rkhunter()', 'Starting...');
+	push_el(\@main::el, 'exit_msg()', 'Starting...');
 
-	my ($rs, $rdata, $cmd) = (undef, undef, undef);
+	my ($msg, $code) = @_;
 
-	if(-e '/etc/default/rkhunter') {
+	if (!defined($code) || $code <= 0 ) {
+		$code = 1;
+	}
 
-		if(defined &update_engine) {
+	if (defined($msg) && $msg ne '' ) {
 
-			# Deleting files that can cause problems
-			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
-			$rs = sys_command_rs($cmd);
-			return $rs if($rs != 0);
+		if($msg =~ /\[failed\]/) {
+
+		$msg = colored(['bold red'], $msg) . "\n";
+
+		my $final_msg = "\n\t" . colored(['red'], 'FATAL:')  .
+			" An error was occured during update process!\n" .
+			"\tCorrect it and re-run this program." .
+			"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
+
+		print STDERR $msg, $final_msg;
+
+		} else {
+			print STDERR "\n\t$msg\n";
 		}
-
-		($rs, $rdata) = get_file('/etc/default/rkhunter');
-		return $rs if($rs != 0);
-
-		# Disable the daily runs of the default rkhunter cron task
-		$rdata =~ s/CRON_DAILY_RUN="yes"/CRON_DAILY_RUN="no"/gmi;
-
-		# Saving the modified file
-		$rs = save_file('/etc/default/rkhunter', $rdata);
-		return $rs if($rs != 0);
 	}
 
-	push_el(\@main::el, 'setup_rkhunter()', 'Ending...');
+	push_el(\@main::el, 'exit_msg()', 'Ending...');
+
+	exit $code;
+}
+
+# Starting services
+sub start_services {
+
+	push_el(\@main::el, 'start_services()', 'Starting...');
+
+	foreach(
+		qw/CMD_ISPCPN CMD_ISPCPD
+		CMD_NAMED
+		CMD_HTTPD CMD_FTPD
+		CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL
+		CMD_IMAP CMD_IMAP_SSL/
+	) {
+		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
+
+			sys_command("$main::cfg{$_} start &>/tmp/ispcp-update-services.log");
+			print STDOUT BOLD BLACK '.' if(defined &update_engine);
+			sleep 1;
+		}
+	}
+
+	push_el(\@main::el, 'start_services()', 'Ending...');
 
 	0;
 }
 
-# Remove all's empty fils in ispCP configuration directories
-sub setup_cleanup {
+# Stopping services
+# Stop all service who are marked as 'no' in ispcp.conf
+sub stop_services {
 
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+	push_el(\@main::el, 'stop_services()', 'Starting...');
 
-	my ($rs, $cmd) = (undef, undef);
+	foreach(
+		qw/CMD_ISPCPN CMD_ISPCPD
+		CMD_NAMED
+		CMD_HTTPD CMD_FTPD
+		CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL
+		CMD_IMAP CMD_IMAP_SSL/
+	) {
+		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 
-	$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'CONF_DIR'}/*/*/empty-file";
-	$rs = sys_command_rs($cmd);
-	return $rs if($rs != 0);
+			sys_command("$main::cfg{$_} stop &>/tmp/ispcp-update-services.log");
+			print STDOUT BOLD BLACK '.' if(defined &update_engine);
+			sleep 1;
+		}
+	}
 
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+	push_el(\@main::el, 'stop_services()', 'Ending...');
 
 	0;
 }
