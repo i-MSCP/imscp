@@ -17,7 +17,7 @@ function makeUser() {
 	dname = dname.replace(/�/gi, "ue");
 	dname = dname.replace(/�/gi, "oe");
 	dname = dname.replace(/�/gi, "ss");
-	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
+	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
 }
 //-->
 </script>
