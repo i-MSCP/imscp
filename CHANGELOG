@@ -8,6 +8,7 @@ ispCP ω 1.0.3 Changelog
 2009-12-09 Laurent Declercq
 	- GUI:
 		* Fixed: Unable to add new IDN domain name
+		* Fixed: Domains alias - Mount point issue : The dot character should not be replaced by underline
 	- SETUP:
 		* Improvement and cleanup updDB.php script
 		* Updated behavior for 'failed' status on update

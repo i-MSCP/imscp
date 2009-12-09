@@ -66,13 +66,13 @@ function makeUser() {
                       <!-- BDP: alias_list -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td class="content3"><strong>{TR_DOMAIN_ALIS}</strong></td>
+                        <td class="content3"><strong>{TR_DOMAIN_ALIAS}</strong></td>
                         <td class="content3"><strong>{TR_STATUS}</strong></td>
                       </tr>
                       <!-- BDP: alias_entry -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="{CLASS}">{DOMAIN_ALIS}</td>
+                        <td class="{CLASS}">{DOMAIN_ALIAS}</td>
                         <td width="100" class="{CLASS}">{STATUS}</td>
                       </tr>
                       <!-- EDP: alias_entry -->
