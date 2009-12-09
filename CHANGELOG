@@ -5,6 +5,7 @@ ispCP ω 1.0.3 Changelog
 	SETUP:
 		* Improvement and cleanup updDB.php script
 		* Updated behavior for 'failed' status on update
+		* Added log file for database, customers and permissions update process
 		* Small fix
 
 2009-12-08 Benedikt Heintel

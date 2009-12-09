@@ -377,7 +377,7 @@ sub warn_msg {
 
 	} while($rdata !~ /^(|n|y)$/i);
 
-	exit 0 if($rdata =~ /n/i);
+	exit 0 if($rdata =~ /^n$/i);
 
 	push_el(\@main::el, 'warn_msg()', 'Ending...');
 
@@ -522,7 +522,7 @@ sub update_database_schema {
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
-	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php &>/dev/null";
+	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php &>/tmp/ispcp-update-database.log";
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs !=0);
 
@@ -669,7 +669,7 @@ sub rebuild_customers_cfg {
 
 	$main::db = undef;
 
-	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr &>/tmp/ispcp-update-customers.log");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
@@ -690,7 +690,7 @@ sub set_permissions {
 		$print = " Set $_ permissions:";
 		print STDOUT "\t" . $print ;
 
-		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh &>/dev/null";
+		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh &>/tmp/ispcp-update-permissions.log";
 		$rs = sys_command_rs($cmd);
 		exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 
