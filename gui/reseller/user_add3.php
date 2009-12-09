@@ -153,9 +153,9 @@ function init_in_values() {
 	}
 
 	list($dmn_name, $hpid) = explode(";", $step_two);
-	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
+
 	$dmn_user_name = $dmn_name;
-	if (!validates_dname($dmn_name) || ($hpid == '')) {
+	if (!validates_dname(decode_idna($dmn_name)) || ($hpid == '')) {
 		return false;
 	}
 	return true;

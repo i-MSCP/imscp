@@ -7,6 +7,8 @@ ispCP ω 1.0.3 Changelog
 		* Updated behavior for 'failed' status on update
 		* Added log file for database, customers and permissions update process
 		* Small fix
+	GUI:
+		* Fixed: Unable to adds new idna domain name
 
 2009-12-08 Benedikt Heintel
 	- GUI:
