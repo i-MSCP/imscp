@@ -204,7 +204,7 @@ sub update_engine {
 	#
 
 	# Set engine and GUI permissions
-	print STDOUT BOLD "\n\tSet engine and GUI permission\n";
+	print STDOUT BOLD "\n\tSet engine and GUI permissions\n";
 	set_permissions();
 
 	#
