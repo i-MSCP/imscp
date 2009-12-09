@@ -1,14 +1,18 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-09 Benedikt Heintel
+	- GUI:
+		* Fixed some graphical display issues
+
 2009-12-09 Laurent Declercq
-	SETUP:
+	- GUI:
+		* Fixed: Unable to add new IDN domain name
+	- SETUP:
 		* Improvement and cleanup updDB.php script
 		* Updated behavior for 'failed' status on update
 		* Added log file for database, customers and permissions update process
 		* Small fix
-	GUI:
-		* Fixed: Unable to adds new idna domain name
 
 2009-12-08 Benedikt Heintel
 	- GUI:

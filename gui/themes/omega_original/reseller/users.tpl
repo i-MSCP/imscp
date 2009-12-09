@@ -91,7 +91,7 @@ function delete_account(url, dmn_name) {
                               </td>
                             </tr>
                         </table></td>
-                        <td colspan="3" align="right"><input type="hidden" name="details" value="" />
+                        <td colspan="5" align="right"><input type="hidden" name="details" value="" />
                             <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
                       </tr>
                       <tr>
@@ -125,7 +125,7 @@ function delete_account(url, dmn_name) {
                       <tr>
                         <td align="center">&nbsp;</td>
                         <td class="content4" align="center">&nbsp;</td>
-                        <td colspan="8" class="content4">&nbsp;&nbsp;<a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> {ALIAS_DOMAIN}</a>&nbsp;</td>
+                        <td colspan="10" class="content4"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="link">{ALIAS_DOMAIN}</a>&nbsp;</td>
                       </tr>
                       <!-- EDP: user_details -->
                       <!-- EDP: user_entry -->
