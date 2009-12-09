@@ -107,7 +107,7 @@ sub update_engine {
 	$print = 'Stopping Services:';
 	print STDOUT "\n\t" . $print;
 	$rs = stop_services();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)+9), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print)+9);
 
 	# Starting pre-installation script if exists
@@ -129,14 +129,14 @@ sub update_engine {
 	$print = ' Loading old ispCP configuration file:';
 	print STDOUT "\t" . $print;
 	$rs = load_old_ispcp_cfg();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	# Update ispCP configuration file
 	$print = ' Update ispCP configuration file:';
 	print STDOUT "\t" . $print;
 	$rs = update_ispcp_cfg();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	#
@@ -153,7 +153,7 @@ sub update_engine {
 	$print = ' Update ispCP database schema:';
 	print STDOUT "\t" . $print;
 	$rs = update_database_schema();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	#
@@ -166,8 +166,7 @@ sub update_engine {
 
 	# Rebuilding all services configuration files
 	print STDOUT BOLD "\n\tRebuilding all service configuration files\n";
-	$rs = rebuild_services_cfg();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	rebuild_services_cfg();
 
 	#
 	## IspCP Services configuration files - End
@@ -179,8 +178,7 @@ sub update_engine {
 
 	# Rebuilding all GUI related configuration files
 	print STDOUT BOLD "\n\tRebuilding all GUI configuration files\n ";
-	$rs = rebuild_gui_cfg();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	rebuild_gui_cfg();
 
 	#
 	## IspCP gui configuration files - End
@@ -195,7 +193,7 @@ sub update_engine {
 	$print = ' Please wait, this may take some time:';
 	print STDOUT "\n\t" . $print;
 	$rs = rebuild_customers_cfg();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	#
@@ -208,8 +206,7 @@ sub update_engine {
 
 	# Set engine and GUI permissions
 	print STDOUT BOLD "\n\tSet engine and GUI permission\n";
-	$rs = set_permissions();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	set_permissions();
 
 	#
 	## IspCP files permissions - End
@@ -219,7 +216,7 @@ sub update_engine {
 	$print = 'Starting services:';
 	print STDOUT "\n\t" . $print;
 	$rs = start_services();
-	exit_msg('Failed!', $rs) if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)+9), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print) + 9);
 
 	# Starting Post installation script if it exists
@@ -272,10 +269,19 @@ sub exit_msg {
 
 	if (defined($msg) && $msg ne '' ) {
 
-		if($msg eq 'Failed!') {
-			print STDERR BOLD RED "\t$msg\n";
+		if($msg =~ /\[failed\]/) {
+
+		$msg = colored(['bold red'], $msg) . "\n";
+
+		my $final_msg = "\n\t" . colored(['red'], 'FATAL:')  .
+			" An error was occured during update process!\n" .
+			"\tCorrect it and re-run this program." .
+			"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
+
+		print STDERR $msg, $final_msg;
+
 		} else {
-			print STDERR "\t$msg\n";
+			print STDERR "\n\t$msg\n";
 		}
 	}
 
@@ -535,55 +541,55 @@ sub rebuild_services_cfg {
 	$print = ' ispCP Crontab file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_crontab();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP BIND main configuration file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_named();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP PHP (fastCGI modules configuration):';
 	print STDOUT "\t" . $print;
 	$rs = setup_php();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP Apache main vhost file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_httpd_main_vhost();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP Apache AWStats vhost file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_awstats_vhost();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP Postfix configuration files:';
 	print STDOUT "\t" . $print;
 	$rs = setup_mta();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP Courier-Authentication:';
 	print STDOUT "\t" . $print;
 	$rs = setup_po();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP ProFTPd configuration file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_ftpd();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP init scripts:';
 	print STDOUT "\t" . $print;
 	$rs = setup_ispcp_daemon_network();
-	return $rs if ($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	push_el(\@main::el, 'rebuild_services_config()', 'Ending...');
@@ -601,25 +607,25 @@ sub rebuild_gui_cfg {
 	$print = ' ispCP GUI BIND configuration:';
 	print STDOUT "\t" . $print;
 	$rs = setup_gui_named();
-	return $rs if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP GUI fastCGI/PHP configuration:';
 	print STDOUT "\t" . $print;
 	$rs = setup_gui_php();
-	return $rs if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP GUI vhost file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_gui_httpd();
-	return $rs if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	$print = ' ispCP PMA configuration file:';
 	print STDOUT "\t" . $print;
 	$rs = setup_gui_pma();
-	return $rs if($rs != 0);
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
@@ -686,7 +692,7 @@ sub set_permissions {
 
 		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh &>/dev/null";
 		$rs = sys_command_rs($cmd);
-		return $rs if ($rs !=0);
+		exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 
 		print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 	}
