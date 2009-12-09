@@ -310,8 +310,7 @@ function add_user_data($reseller_id) {
 	$street_two		= clean_input($street_two, true);
 	$customer_id	= clean_input($customer_id, true);
 
-	if (!validates_dname($dmn_user_name)) {
-		// set_page_message(tr("Wrong domain name syntax!"));
+	if (!validates_dname(decode_idna($dmn_user_name))) {
 		return;
 	}
 
