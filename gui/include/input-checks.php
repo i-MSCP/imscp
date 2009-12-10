@@ -620,7 +620,7 @@ function _validates_sld($sld) {
 			'q\.(?:com|net)|'.
 			'x\.org|'.
 			'[xz]\.com|'.
-			'[a-z]\.de';
+			'[a-z0-9]\.de';
 
 		// Reserved SLD according RFC 2606
 		$reserved_SLD = 'example\.(?:com|net|org)';
@@ -691,8 +691,8 @@ function isACE($label) {
 	if(strpos($label, 'xn--' ) === 0) {
 
 		$validation_err_msg = tr(
-			'Error, ACE labels are not allowed, please use the <u>ToUnicode equivalent</u>. <br />' .
-			'<small>Example: for the ACE label <b>xn--bcher-kva</b>, type <b>bücher</b> instead</small>.'
+			"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br />".
+			"<small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 		);
 
 		return true;

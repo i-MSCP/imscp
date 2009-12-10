@@ -153,9 +153,9 @@ function init_in_values() {
 	}
 
 	list($dmn_name, $hpid) = explode(";", $step_two);
-	// $dmn_user_name = preg_replace("/\./", "_", $dmn_name);
+
 	$dmn_user_name = $dmn_name;
-	if (!validates_dname($dmn_name) || ($hpid == '')) {
+	if (!validates_dname(decode_idna($dmn_name)) || ($hpid == '')) {
 		return false;
 	}
 	return true;
@@ -310,8 +310,7 @@ function add_user_data($reseller_id) {
 	$street_two		= clean_input($street_two, true);
 	$customer_id	= clean_input($customer_id, true);
 
-	if (!validates_dname($dmn_user_name)) {
-		// set_page_message(tr("Wrong domain name syntax!"));
+	if (!validates_dname(decode_idna($dmn_user_name))) {
 		return;
 	}
 

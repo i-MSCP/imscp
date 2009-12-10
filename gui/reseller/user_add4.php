@@ -128,7 +128,7 @@ $tpl->assign(
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_FORWARD' => tr('Forward to URL'),
 		'TR_ADD' => tr('Add alias'),
-		'TR_DOMAIN_ALIS' => tr('Domain alias'),
+		'TR_DOMAIN_ALIAS' => tr('Domain alias'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_GO_USERS' => tr('Done')
@@ -150,8 +150,8 @@ function init_empty_data() {
 
 	$tpl->assign(
 		array(
-			'DOMAIN' => $alias_name,
-			'MP' => $mount_point,
+			'DOMAIN' => decode_idna($alias_name),
+			'MP' => decode_idna($mount_point),
 			'FORWARD' => 'no'
 		)
 	);
@@ -190,7 +190,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 			$tpl->assign(
 				array(
-					'DOMAIN_ALIS' => $alias_name,
+					'DOMAIN_ALIAS' => $alias_name,
 					'STATUS' => $alias_status,
 					'CLASS' => $page_cont,
 				)

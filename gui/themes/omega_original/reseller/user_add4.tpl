@@ -17,7 +17,7 @@ function makeUser() {
 	dname = dname.replace(/�/gi, "ue");
 	dname = dname.replace(/�/gi, "oe");
 	dname = dname.replace(/�/gi, "ss");
-	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
+	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
 }
 //-->
 </script>
@@ -66,13 +66,13 @@ function makeUser() {
                       <!-- BDP: alias_list -->
                       <tr>
                         <td>&nbsp;</td>
-                        <td class="content3"><strong>{TR_DOMAIN_ALIS}</strong></td>
+                        <td class="content3"><strong>{TR_DOMAIN_ALIAS}</strong></td>
                         <td class="content3"><strong>{TR_STATUS}</strong></td>
                       </tr>
                       <!-- BDP: alias_entry -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="{CLASS}">{DOMAIN_ALIS}</td>
+                        <td class="{CLASS}">{DOMAIN_ALIAS}</td>
                         <td width="100" class="{CLASS}">{STATUS}</td>
                       </tr>
                       <!-- EDP: alias_entry -->

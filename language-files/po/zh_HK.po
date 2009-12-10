@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CMWONG <cmwong@cmwong.com>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
@@ -455,7 +455,7 @@ msgid "CGI support"
 msgstr "支援 CGI"
 
 #, fuzzy
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "支援 MySQL"
 
 msgid "MySQL support"
@@ -785,7 +785,7 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1699,6 +1699,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "客戶 ID"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "網域名稱"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "你只能上傳圖像檔！"
 
@@ -2104,9 +2130,6 @@ msgstr "請等待更新"
 msgid "Domain alias limit reached!"
 msgstr "網域別名限制！"
 
-msgid "Incorrect domain name syntax"
-msgstr "不正確的網域語法"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "此網域已在系統中！"
 
@@ -2270,10 +2293,10 @@ msgstr "ispCP - 管理網域別名/編輯別名"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - 管理網域別名/編輯別名"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2317,6 +2340,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "密碼資料"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3238,9 +3264,6 @@ msgstr "網域別名限制！"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "子網域已經存在或不被允許！"
 
-msgid "Wrong subdomain syntax!"
-msgstr "錯誤的子網域語法！"
-
 #, fuzzy
 msgid "Mount point already in use!"
 msgstr "子網域掛載點已經存在！"
@@ -3396,10 +3419,6 @@ msgstr "使用者列表為空！"
 msgid "Details"
 msgstr "詳細"
 
-#, fuzzy
-msgid "Disk Usage Percent"
-msgstr "磁片使用量"
-
 msgid "Edit domain"
 msgstr "編輯網域"
 
@@ -3462,9 +3481,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "無法檢查更新！無法連絡更新網站。"
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3475,6 +3491,9 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "無法檢查更新！無法連絡更新網站。"
 
 msgid "Email and FTP accounts"
 msgstr "Email 和 FTP 帳號"
@@ -3502,6 +3521,9 @@ msgstr "FTP 帳號"
 
 msgid "Update Hosting Package"
 msgstr "更新託管計劃"
+
+msgid "Add DNS zone's record"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3733,6 +3755,60 @@ msgstr "優先權"
 #, fuzzy
 msgid "Log in to answer"
 msgstr "登入回覆"
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "錯誤的網域語法！"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "錯誤的網域語法！"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "錯誤的子網域語法！"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "錯誤的子網域語法！"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "錯誤的網域語法！"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3984,6 +4060,10 @@ msgstr "自定義錯誤頁"
 msgid "Protected Areas"
 msgstr "保護區域"
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "支援 MySQL"
+
 msgid "Custom Apache Logs"
 msgstr "自定義 Apache 日誌"
 
@@ -4050,11 +4130,12 @@ msgstr "訂過的網域別名已啟動！"
 msgid "Ordered domain alias not activated!"
 msgstr "訂過的網域別名未啟動！"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP 代理商 : 增加別名"
 
-msgid "You have no user records."
-msgstr "你沒有使用者記錄。"
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP - 迴圈"
@@ -4383,6 +4464,16 @@ msgstr "此使用者擁有網域記錄！<br>請先從系統中刪除網域！"
 
 msgid "User not terminated!"
 msgstr "使用者未終止！"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "不正確的網域語法"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "磁片使用量"
+
+#~ msgid "You have no user records."
+#~ msgstr "你沒有使用者記錄。"
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

@@ -77,7 +77,7 @@ $tpl->assign(
 		'TR_DOMAIN_IP'						=> tr('Domain IP'),
 		'TR_PHP_SUPP'						=> tr('PHP support'),
 		'TR_CGI_SUPP'						=> tr('CGI support'),
-		'TR_DNS_SUPP'						=> tr('Manual DNS support'),
+		'TR_DNS_SUPP'						=> tr('Manual DNS support (EXPERIMENTAL)'),
 		'TR_SUBDOMAINS'						=> tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_ALIAS'							=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAIL_ACCOUNT'					=> tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),

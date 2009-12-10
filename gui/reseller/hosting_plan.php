@@ -178,11 +178,11 @@ SQL_QUERY;
 
 		$tpl->assign(
 				array(
-					'TR_HOSTING_PLANS' => tr('Hosting plans'),
-					'TR_NOM' => tr('No.'),
-					'TR_EDIT' => $tr_edit,
-					'TR_PLAN_NAME' => tr('Name'),
-					'TR_ACTION' => tr('Action')
+					'TR_HOSTING_PLANS' 	=> tr('Hosting plans'),
+					'TR_NOM' 			=> tr('No.'),
+					'TR_EDIT' 			=> $tr_edit,
+					'TR_PLAN_NAME' 		=> tr('Name'),
+					'TR_ACTION' 		=> tr('Actions')
 				)
 		);
 

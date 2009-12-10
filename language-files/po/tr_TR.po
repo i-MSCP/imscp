@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2007-07-22 13:53-0500\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -458,7 +458,8 @@ msgstr "PHP desteği"
 msgid "CGI support"
 msgstr "CGI desteği"
 
-msgid "Manual DNS support"
+#, fuzzy
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "MySQL desteği"
 
 msgid "MySQL support"
@@ -789,7 +790,8 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+#, fuzzy
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr "DNS zone için kayıtlara izin ver"
 
 msgid "Apache logfiles"
@@ -1704,6 +1706,32 @@ msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
 msgid "Custom orderpanel ID"
 msgstr "Müşteri ID"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domain adı"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "Sadece resim dosyası gönderebilirsiniz!"
 
@@ -2098,9 +2126,6 @@ msgstr "Lütfen güncelleme için bekleyiniz"
 msgid "Domain alias limit reached!"
 msgstr "Azami domain alias sayısına ulaşıldı!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Hatalı <i>domain adı</i> yazımı"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "Sistemde bu isimde bir domain zaten var!"
 
@@ -2269,10 +2294,12 @@ msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Domain Alias Yönetimi/Alias Düzenle"
 
-msgid "Add DNS zone's record"
+#, fuzzy
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr "DNS zone kayıtı ekle"
 
-msgid "Edit DNS zone's record"
+#, fuzzy
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr "DNS zone kayıt(larını) düzenle"
 
 msgid "DNS zone's records"
@@ -2310,6 +2337,10 @@ msgstr "Kanonik isim"
 
 msgid "Plain record data"
 msgstr "Şifre bilgisi"
+
+#, fuzzy
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr "DNS zone kayıtları"
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3222,9 +3253,6 @@ msgstr "Azami domain alias sayısına ulaşıldı!"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Subdomain mevcut veya izin verilmiyor!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Hatalı subdomain yazımı!"
-
 msgid "Mount point already in use!"
 msgstr "Subdomain monte noktası zaten var!"
 
@@ -3379,9 +3407,6 @@ msgstr "Kullanıcı listesi boş!"
 msgid "Details"
 msgstr "Ayrıntırlar"
 
-msgid "Disk Usage Percent"
-msgstr "Disk kullanımı"
-
 msgid "Edit domain"
 msgstr "Domain düzenle"
 
@@ -3443,9 +3468,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Güncellemelere bakılamıyor. Site ulaşılabilir değil"
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Dosya %s bulunamadı yada yok!"
@@ -3456,6 +3478,9 @@ msgstr "Hata ağ kartlarının listesini edinmek için çalışıyor!"
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr "Bu IP (%s) herhangi bir ağ kartına atanan değil!"
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Güncellemelere bakılamıyor. Site ulaşılabilir değil"
 
 msgid "Email and FTP accounts"
 msgstr "Eposta ve FTP hesapları"
@@ -3483,6 +3508,9 @@ msgstr "FTP Hesapları"
 
 msgid "Update Hosting Package"
 msgstr "Hosting Pakedini Güncelle"
+
+msgid "Add DNS zone's record"
+msgstr "DNS zone kayıtı ekle"
 
 msgid "Manage SSL certificate"
 msgstr "SSL sertıfıka yönetimi"
@@ -3711,6 +3739,60 @@ msgstr "Öncelik"
 
 msgid "Log in to answer"
 msgstr "Cevaba bak."
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Hatalı domain adı yazımı!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Hatalı domain adı yazımı!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Hatalı subdomain yazımı!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Hatalı subdomain yazımı!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Hatalı domain adı yazımı!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3980,6 +4062,9 @@ msgstr "Kişisel Hata Sayfaları"
 msgid "Protected Areas"
 msgstr "Korunan Alanlar"
 
+msgid "Manual DNS support"
+msgstr "MySQL desteği"
+
 msgid "Custom Apache Logs"
 msgstr "Kişisel Apache Logları"
 
@@ -4046,11 +4131,12 @@ msgstr "Sipariş edilen domain aliası eklendi!"
 msgid "Ordered domain alias not activated!"
 msgstr "Sipariş edilen domain aliası aktif edilmedi!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Bayi : Alias Ekle"
 
-msgid "You have no user records."
-msgstr "Kullanıcı kaydınız yok."
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Döngüsel"
@@ -4363,6 +4449,15 @@ msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden silini
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Hatalı <i>domain adı</i> yazımı"
+
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Disk kullanımı"
+
+#~ msgid "You have no user records."
+#~ msgstr "Kullanıcı kaydınız yok."
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

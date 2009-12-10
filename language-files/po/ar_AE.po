@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ar_AE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 23:21+0300\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2009-11-28 13:09+0100\n"
 "Last-Translator: uwe_a\n"
 "Language-Team: Arabic <ar_AE@li.org>\n"
@@ -62,7 +62,10 @@ msgid "New password could not been sent."
 msgstr "تعذر إرسال كلمة المرور الجديدة"
 
 #, php-format
-msgid "Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes."
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
 msgstr ""
 
 msgid "Back"
@@ -77,7 +80,9 @@ msgstr "إعادة المحاولة"
 msgid "Security code"
 msgstr ""
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr ""
 
 msgid "Request password"
@@ -93,7 +98,9 @@ msgid "Incorrect username length or syntax!"
 msgstr ""
 
 #, php-format
-msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
 
 #, php-format
@@ -443,7 +450,7 @@ msgstr ""
 msgid "CGI support"
 msgstr ""
 
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
 msgid "MySQL support"
@@ -551,10 +558,12 @@ msgstr "إلغ"
 msgid "Yes"
 msgstr "نعم"
 
-msgid "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr ""
 
 msgid "N/A"
@@ -641,7 +650,8 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr ""
 
 #, php-format
-msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
 
 #, php-format
@@ -777,10 +787,7 @@ msgstr ""
 msgid "CGI / Perl"
 msgstr ""
 
-msgid "Allow adding records to DNS zone"
-msgstr ""
-
-msgid "Backup and restore"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1027,7 +1034,7 @@ msgstr ""
 msgid "Language"
 msgstr "اللغة"
 
-msgid "Choose default language"
+msgid "Choose your default language"
 msgstr ""
 
 msgid "Language was removed!"
@@ -1080,18 +1087,24 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
 #, php-format
-msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr ""
 
 msgid "Moving aborted!"
 msgstr "تم إلغاء النقل!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1139,9 +1152,6 @@ msgstr "تم تعطيل حساب المستخدم"
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
-msgid "Default language changed!"
-msgstr "تم تغيير اللغة الإفتراضية!"
-
 msgid "Upload file error!"
 msgstr "خطأ أثناء تحميل الملف!"
 
@@ -1179,7 +1189,8 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-msgid "Default"
+#, fuzzy
+msgid "Panel Default"
 msgstr "إفتراضي"
 
 msgid "Install new language"
@@ -1286,6 +1297,9 @@ msgstr ""
 msgid "Frontpage extensions"
 msgstr ""
 
+msgid "Backup and restore"
+msgstr ""
+
 msgid "Custom error pages"
 msgstr ""
 
@@ -1314,14 +1328,19 @@ msgid "Domains"
 msgstr "نطاقات"
 
 #, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+
+msgid "! Trying to correct!"
 msgstr ""
 
 msgid "Aliases"
 msgstr ""
 
 #, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 
 msgid "SQL Databases"
@@ -1340,21 +1359,28 @@ msgid "Reseller data inconsistency!"
 msgstr ""
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr ""
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr ""
 
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr ""
 
 #, php-format
@@ -1613,8 +1639,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-msgid "Default language"
-msgstr ""
+#, fuzzy
+msgid "Panel default language"
+msgstr "تم تغيير اللغة الإفتراضية!"
 
 msgid "Support system"
 msgstr "نظام الدعم الفني"
@@ -1662,6 +1689,32 @@ msgid "Prevent external login for clients"
 msgstr ""
 
 msgid "Custom orderpanel ID"
+msgstr ""
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "إسم النطاق"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
 msgstr ""
 
 msgid "You can only upload images!"
@@ -2015,7 +2068,9 @@ msgstr ""
 msgid "Domain databases:"
 msgstr "قواعد بيانات النطاق"
 
-msgid "Do you really want to delete the entire domain? This operation can not be undone!"
+msgid ""
+"Do you really want to delete the entire domain? This operation can not be "
+"undone!"
 msgstr ""
 
 msgid "Yes, delete the domain."
@@ -2055,9 +2110,6 @@ msgstr "Incorrect <i>mount point</i> syntax!"
 msgid "Domain alias limit reached!"
 msgstr ""
 
-msgid "Incorrect domain name syntax"
-msgstr "Incorrect <i>domain name</i> syntax"
-
 msgid "Domain with that name already exists on the system!"
 msgstr ""
 
@@ -2082,13 +2134,17 @@ msgstr ""
 msgid "Alias scheduled for addition!"
 msgstr ""
 
-msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
 
 msgid "Alias scheduled for deletion!"
@@ -2118,7 +2174,8 @@ msgstr "تعطيل"
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 
 msgid "Subdomain scheduled for deletion!"
@@ -2151,7 +2208,8 @@ msgstr ""
 msgid "Restore backup"
 msgstr "إسترجاع نسخة إحتياطية"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2211,10 +2269,10 @@ msgstr ""
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr ""
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2251,6 +2309,9 @@ msgid "Canonical name"
 msgstr ""
 
 msgid "Plain record data"
+msgstr ""
+
+msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr ""
 
 #, php-format
@@ -2532,7 +2593,8 @@ msgstr ""
 msgid "PHP Support: disabled"
 msgstr ""
 
-msgid "You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 msgid "CGI Support: enabled"
@@ -2541,7 +2603,8 @@ msgstr ""
 msgid "CGI Support: disabled"
 msgstr ""
 
-msgid "You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 msgid "DNS Support: enabled"
@@ -2550,7 +2613,8 @@ msgstr ""
 msgid "DNS Support: disabled"
 msgstr ""
 
-msgid "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2586,7 +2650,8 @@ msgstr ""
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr ""
 
-msgid "You have more SQL database users in use than the new hosting plan limits."
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
 msgstr ""
 
 msgid "free of charge"
@@ -2631,7 +2696,8 @@ msgstr ""
 msgid "You have more SQL databases in use than the new hosting plan limits"
 msgstr ""
 
-msgid "You have more SQL database users in use than the new hosting plan limits"
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -2684,6 +2750,9 @@ msgid "Main domain"
 msgstr ""
 
 msgid "SQL support"
+msgstr ""
+
+msgid "Choose default language"
 msgstr ""
 
 msgid "Traffic usage"
@@ -3089,7 +3158,10 @@ msgid "Login phpMyAdmin"
 msgstr ""
 
 #, php-format
-msgid "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete %s?"
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete %s?"
 msgstr ""
 
 msgid "SQL users limit reached!"
@@ -3131,134 +3203,6 @@ msgstr ""
 msgid "Existing SQL users"
 msgstr ""
 
-msgid "ispCP - Client/SSL Domains"
-msgstr ""
-
-msgid "Key identifier already used in one crt!\n"
-msgstr ""
-
-msgid "Field Country must be 2 char long!\n"
-msgstr ""
-
-msgid "Field State can not be empty!\n"
-msgstr ""
-
-msgid "Field City can not be empty!\n"
-msgstr ""
-
-msgid "Field Company can not be empty!\n"
-msgstr ""
-
-msgid "Field Company division can not be empty!\n"
-msgstr ""
-
-msgid "Email is not valid!\n"
-msgstr ""
-
-msgid "Error retriving key data"
-msgstr ""
-
-msgid "Inexistent key"
-msgstr ""
-
-msgid "Paste certificate"
-msgstr ""
-
-msgid "Intermediate certificate"
-msgstr ""
-
-msgid "Key content"
-msgstr ""
-
-msgid "Add new certificate"
-msgstr ""
-
-msgid "Generate self signed"
-msgstr ""
-
-msgid "CRT for domain name"
-msgstr ""
-
-msgid "State"
-msgstr ""
-
-msgid "Company division"
-msgstr ""
-
-msgid "List of installed keys"
-msgstr ""
-
-msgid "Key identifier already used in one csr!\n"
-msgstr ""
-
-msgid "Create new signing request"
-msgstr ""
-
-msgid "Generate"
-msgstr ""
-
-msgid "Key identifier already exists!\n"
-msgstr ""
-
-#, php-format
-msgid "The password must be at least %s long and contain letters and numbers to be valid.\n"
-msgstr ""
-
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!\n"
-msgstr ""
-
-msgid "Key can not be empty!\n"
-msgstr ""
-
-msgid "You do not own this domain or is an alias / addon domain!\n"
-msgstr ""
-
-msgid "Key for this domain already exists!\n"
-msgstr ""
-
-msgid "Key size is incorrect!\n"
-msgstr ""
-
-msgid "Add new key"
-msgstr ""
-
-msgid "Key for domain name"
-msgstr ""
-
-msgid "Paste generated key"
-msgstr ""
-
-msgid "Generate key with size:"
-msgstr ""
-
-msgid "Generate new"
-msgstr ""
-
-msgid "Key is encoded with password"
-msgstr ""
-
-msgid "List is empty!"
-msgstr ""
-
-msgid "Certificate keys"
-msgstr ""
-
-msgid "Certificate sign request"
-msgstr ""
-
-msgid "Certificate"
-msgstr ""
-
-msgid "Key host name"
-msgstr ""
-
-msgid "Certificate sign request host name"
-msgstr ""
-
-msgid "Certificate host name"
-msgstr ""
-
 msgid "Subdomains limit reached!"
 msgstr ""
 
@@ -3271,11 +3215,12 @@ msgstr ""
 msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
-msgid "Wrong subdomain syntax!"
-msgstr ""
-
 msgid "Mount point already in use!"
 msgstr ""
+
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Incorrect <i>mount point</i> syntax!"
 
 msgid "Subdomain scheduled for addition!"
 msgstr ""
@@ -3425,16 +3370,10 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-msgid "Disk Usage Percent"
-msgstr ""
-
 msgid "Edit domain"
 msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"
-msgstr ""
-
-msgid "Are you sure you want to delete this account?"
 msgstr ""
 
 msgid "Administrators"
@@ -3492,19 +3431,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-msgid "Domain is not instantiated"
-msgstr ""
-
-msgid "Domain do not exists"
-msgstr ""
-
-#, php-format
-msgid "Can not execute external command %s\n"
-msgstr ""
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3516,28 +3442,7 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
-msgid "Can not save key!\n"
-msgstr ""
-
-msgid "Can not createself signed certificate!\n"
-msgstr ""
-
-msgid "Invalid destination for key!"
-msgstr ""
-
-msgid "Can not create csr!\n"
-msgstr ""
-
-msgid "Can not remove key!\n"
-msgstr ""
-
-msgid "Can not validate key!\n"
-msgstr ""
-
-msgid "Can not generate key!\n"
-msgstr "تعذر توليد المفتاح!\n"
-
-msgid "User do not have domains!"
+msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3565,6 +3470,9 @@ msgid "FTP Accounts"
 msgstr "حسابات FTP"
 
 msgid "Update Hosting Package"
+msgstr ""
+
+msgid "Add DNS zone's record"
 msgstr ""
 
 msgid "Manage SSL certificate"
@@ -3670,7 +3578,8 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation process.\n"
+"You have to click the following link to continue the domain creation "
+"process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -3690,7 +3599,8 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3719,6 +3629,58 @@ msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Log in to answer"
+msgstr ""
+
+msgid "Wrong domain name syntax or number of labels"
+msgstr ""
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "إسم نطاق خاطئ"
+
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "إسم نطاق خاطئ"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "إسم نطاق خاطئ"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -3806,46 +3768,60 @@ msgstr ""
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You cannot add an user with unlimited "
+"subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "لقد تجاوز الحد الأعلى للنطاقات الفرعية!"
 
-msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr ""
 
-msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You cannot add an user with unlimited "
+"mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
+"accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
-msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
+"databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
-msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
+"users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You cannot have SQL users "
+"here!"
 msgstr ""
 
 msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
-msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
 msgstr ""
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
@@ -3916,7 +3892,9 @@ msgstr ""
 msgid "Check Out"
 msgstr ""
 
-msgid "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail with more details and information."
+msgid ""
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
 msgstr ""
 
 msgid "No available hosting packages"
@@ -3938,6 +3916,9 @@ msgid "Custom Error Pages"
 msgstr ""
 
 msgid "Protected Areas"
+msgstr ""
+
+msgid "Manual DNS support"
 msgstr ""
 
 msgid "Custom Apache Logs"
@@ -4006,10 +3987,10 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "ispCP Reseller : Add Alias"
+msgid "ispCP Reseller: Add Alias"
 msgstr ""
 
-msgid "You have no user records."
+msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
 msgid "ispCP - Circular"
@@ -4256,9 +4237,6 @@ msgstr ""
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Backup / Restore"
-msgstr ""
-
 msgid "Apache logs"
 msgstr ""
 
@@ -4320,11 +4298,18 @@ msgstr "تم تحديث بيانات المستخدك!"
 msgid "User data not updated!"
 msgstr ""
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Incorrect <i>domain name</i> syntax"
+
+#~ msgid "Can not generate key!\n"
+#~ msgstr "تعذر توليد المفتاح!\n"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"
@@ -4361,12 +4346,13 @@ msgstr ""
 #, fuzzy
 #~ msgid "Incorrect max SQL users number or syntax!"
 #~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
+
 #~ msgid "Incorrect max traffic amount or syntax!"
 #~ msgstr "Incorrect <i>max traffic</i> amount or syntax!"
+
 #~ msgid "Incorrect max disk amount or syntax!"
 #~ msgstr "Incorrect <i>max disk</i> amount or syntax!"
 
 #, fuzzy
 #~ msgid "Incorrect FTP account count or no number<br />"
 #~ msgstr "Incorrect <i>max FTP</i> count or syntax!"
-

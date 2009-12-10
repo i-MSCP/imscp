@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2008-03-30 01:14+0200\n"
 "Last-Translator: Todor Chobanov <choby@event-sys.com>\n"
 "Language-Team: Bulgarian <bg_BG@li.org>\n"
@@ -460,7 +460,7 @@ msgstr "Поддръжка PHP"
 msgid "CGI support"
 msgstr "Поддръжка CGI"
 
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
 msgid "MySQL support"
@@ -802,7 +802,7 @@ msgstr ""
 msgid "CGI / Perl"
 msgstr ""
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1741,6 +1741,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "Клиент ID"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Име на Домейна"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "Вие можете само да качвате картинки!"
 
@@ -2148,9 +2174,6 @@ msgstr "Изчакайте да се обнови"
 msgid "Domain alias limit reached!"
 msgstr "Ограничението за псевдоними е достигнато!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Некоректен синтакс <i>име на домейн</i>"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "домейн с такова име вече съществува в системата!"
 
@@ -2326,10 +2349,10 @@ msgstr "ispCP - Управление на псевдоними/Редакция 
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Управление на псевдоними/Редакция на псевдоним"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2373,6 +2396,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "данни парола"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3310,9 +3336,6 @@ msgstr "Ограничението за псевдоними е достигна
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Такъв поддомейн вече съществува!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Неправилен синтаксис на поддомейн!"
-
 #, fuzzy
 msgid "Mount point already in use!"
 msgstr "Такава точка за монтиране на поддомейна вече съществува!"
@@ -3470,10 +3493,6 @@ msgid "Details"
 msgstr "Детайли"
 
 #, fuzzy
-msgid "Disk Usage Percent"
-msgstr "Използвано дисково пространство"
-
-#, fuzzy
 msgid "Edit domain"
 msgstr "Редакция на домейна"
 
@@ -3536,9 +3555,6 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3549,6 +3565,9 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
 
 msgid "Email and FTP accounts"
 msgstr "Email и FTP акаунти"
@@ -3576,6 +3595,9 @@ msgstr "FTP Акаунти"
 
 msgid "Update Hosting Package"
 msgstr "Обнови Хостинг-Пакет"
+
+msgid "Add DNS zone's record"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3807,6 +3829,60 @@ msgid "Priority: %s\n"
 msgstr "Приоритет"
 
 msgid "Log in to answer"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Неправилен синтаксис на поддомейн!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Неправилен синтаксис на поддомейн!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -4088,6 +4164,9 @@ msgstr "Персонални Cтраници с грешки"
 msgid "Protected Areas"
 msgstr "Защитени Зони"
 
+msgid "Manual DNS support"
+msgstr ""
+
 msgid "Custom Apache Logs"
 msgstr "Персонални Логове на Апача"
 
@@ -4154,11 +4233,12 @@ msgstr "заявката за псевдоним на домейна е акти
 msgid "Ordered domain alias not activated!"
 msgstr "заявката за псевдоним на домейна НЕ е активирана!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Риселър : Добави псевдоним"
 
-msgid "You have no user records."
-msgstr "Нямате записи за потребители."
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr ""
@@ -4489,6 +4569,16 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Некоректен синтакс <i>име на домейн</i>"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Използвано дисково пространство"
+
+#~ msgid "You have no user records."
+#~ msgstr "Нямате записи за потребители."
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

@@ -75,7 +75,7 @@ $tpl->assign(
 				'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 				'TR_PHP'					=> tr('PHP'),
 				'TR_CGI'					=> tr('CGI / Perl'),
-				'TR_DNS'					=> tr('Allow adding records to DNS zone'),
+				'TR_DNS'					=> tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
 				'TR_BACKUP'					=> tr('Backup'),
 				'TR_BACKUP_DOMAIN'			=> tr('Domain'),
 				'TR_BACKUP_SQL'				=> tr('SQL'),

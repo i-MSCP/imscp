@@ -116,8 +116,8 @@ function gen_al_page(&$tpl, $reseller_id) {
 	}
 	$tpl->assign(
 		array(
-			'DOMAIN' => $alias_name,
-			'MP' => $mount_point,
+			'DOMAIN' => decode_idna($alias_name),
+			'MP' => decode_idna($mount_point),
 			'FORWARD' => $forward
 		)
 	);

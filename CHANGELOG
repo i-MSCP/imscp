@@ -1,15 +1,46 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-10 Benedikt Heintel
+	- LANGUAGES:
+		* Updated all .po files
+
+2009-12-09 Benedikt Heintel
+	- GUI:
+		* Fixed some graphical display issues
+
+2009-12-09 Laurent Declercq
+	- GUI:
+		* Fixed: Unable to add new IDN domain name
+		* Fixed: Domains alias - Mount point issue : The dot character should not be replaced by underline
+	- SETUP:
+		* Improvement and cleanup updDB.php script
+		* Updated behavior for 'failed' status on update
+		* Added log file for database, customers and permissions update process
+		* Small fix
+
+2009-12-08 Benedikt Heintel
+	- GUI:
+		* Added help for new domain validation
+	- SETUP:
+		* Fixed some warnings
+
+2009-12-07 Benedikt Heintel
+	- DOCS:
+		* Updated: Update Process
+	- SETUP:
+		* Fixed a small bug
+		* Updated all text strings on update
+
 2009-12-07 Laurent Declercq
-	-GUI:
+	- GUI:
 		* Fixed: Undefined constant VFS_ASCII
 		* Fixed: ftp_get() expects parameter 4 to be long, string given...
-	ENGINE:
+	- ENGINE:
 		* Fixed: The manual DNS entries are not added in the related db file
 
 2009-12-06 Laurent Declercq
-	-GUI:
+	- GUI:
 		* Fixed #2085: Call to undefined function chk_dname()
 
 2009-12-05 Benedikt Heintel
@@ -20,9 +51,11 @@ ispCP ω 1.0.3 Changelog
 	- GUI:
 		* Added new admin settings for the domain names / subdomains validation
 		* Added new routines for ACE labels check (Todo: added ASCII range check)
-		* Fixed somes issues related to Rfc 3490:
+		* Fixed some issues related to RFC 3490:
 			- Hyphens are now banned in 2nd and 3rd position of input string
 			- ACE labels are no longer allowed as input string
+	- SETUP:
+		* Integration of the new update script and several changes related to it - Must be tested and debugged
 
 2009-12-04 Benedikt Heintel
 	- ENGINE:

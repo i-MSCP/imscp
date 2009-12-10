@@ -1,5 +1,5 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
@@ -26,748 +26,620 @@
 #    http://isp-control.net
 #
 
+#
+# Special note for the Dev Team:
+#
+# It is necessary for the error recovery and update procedure that the scripts
+# are idempotent. This means if one run of the script is successful and it is
+# called again, it does not demolish the installation or cause any harm on it.
+# Just ensures that everything is the way it should be.
+# If a call failed or was aborted half way for some reason, the next call should
+# merely do the tasks left undone the first time (if any) and exit with a
+# success status if everything is okay.
+#
+# This is an important point since the successful execution of the script should
+# allow the user to generate configuration files related to services that were
+# not activated during the prior pass (e.g. AWStats).
+#
+
+use strict;
+use warnings;
+
+# FIXME: Check if it ok for all dist
+use Term::ReadKey;
+
+# Todo Add this package to package files
+# (i.e. Debian: libfile-mimeinfo-perl)
+use File::MimeInfo::Magic;
+
+use Term::ANSIColor qw(:constants colored);
+$Term::ANSIColor::AUTORESET = 1;
+
 use FindBin;
 use lib "$FindBin::Bin/..";
 
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
-use strict;
-use warnings;
 
+# User entries
 %main::ua = ();
+
+# Re-assigned here to avoid 'used only once: possible typo warning'
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
+@main::db_connect = ();
+$main::db_host = undef;
+$main::db_user = undef;
+$main::db_name = undef;
 
-################################################################################
-##                                 CONSTANTS                                  ##
-################################################################################
+#
+## Subroutines - Begin
+#
 
-use constant {
-		ABORT				=> 0,
-		ISPCP_V1_0_0	=> 1,
-		ISPCP_V1_0_2	=> 1
-	};
+# Start the update process
+sub update_startup {
 
-################################################################################
-##                                SUBROUTINES                                 ##
-################################################################################
+	push_el(\@main::el, 'update_startup()', 'Starting...');
 
+	# FIXME: PM Joxi
+	if(-e '/tmp/ispcp-backup-all.lock') {
+		exit_msg('Backup engine is currently running. Aborting...');
+	}
+
+	push_el(\@main::el, 'update_startup()', 'Ending...');
+
+	0;
+}
+
+# Performs all update tasks
+sub update_engine {
+
+	push_el(\@main::el, 'update_engine()', 'Starting...');
+
+	my ($rs, $print) = (undef, '');
+
+	# User dialog
+	user_dialog();
+
+	system('clear');
+
+	# Stopping services
+	$print = 'Stopping Services:';
+	print STDOUT "\n\t" . $print;
+	$rs = stop_services();
+	exit_msg(str_to_right('[failed]', length($print)+9), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print)+9);
+
+	# Starting pre-installation script if exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
+
+		print STDOUT "\n\tStarting pre-installation / update script:";
+		$rs = preinst('update');
+		exit_msg('Failed!', $rs) if($rs != 0);
+
+	}
+
+	#
+	## IspCP main configuration file - Begin
+	#
+
+	print STDOUT BOLD "\n\tispCP main configuration file\n";
+
+	# Loading old ispCP configuration file
+	$print = ' Loading old ispCP configuration file:';
+	print STDOUT "\t" . $print;
+	$rs = load_old_ispcp_cfg();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	# Update ispCP configuration file
+	$print = ' Update ispCP configuration file:';
+	print STDOUT "\t" . $print;
+	$rs = update_ispcp_cfg();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	#
+	## IspCP main configuration file - End
+	#
+
+	#
+	## IspCP database - Begin
+	#
+
+	print STDOUT BOLD "\n\tispCP database\n";
+
+	# Update ispCP database schema
+	$print = ' Update ispCP database schema:';
+	print STDOUT "\t" . $print;
+	$rs = update_database_schema();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	#
+	## IspCP database - End
+	#
+
+	#
+	## IspCP Services configuration files - Begin
+	#
+
+	# Rebuilding all services configuration files
+	print STDOUT BOLD "\n\tRebuilding all service configuration files\n";
+	rebuild_services_cfg();
+
+	#
+	## IspCP Services configuration files - End
+	#
+
+	#
+	## IspCP gui configuration files - Begin
+	#
+
+	# Rebuilding all GUI related configuration files
+	print STDOUT BOLD "\n\tRebuilding all GUI configuration files\n ";
+	rebuild_gui_cfg();
+
+	#
+	## IspCP gui configuration files - End
+	#
+
+	#
+	## IspCP customers configuration files - Begin
+	#
+
+	# Rebuilding all customers configuration files
+	print STDOUT BOLD "\n\tRebuilding all customer configuration files";
+	$print = ' Please wait, this may take some time:';
+	print STDOUT "\n\t" . $print;
+	$rs = rebuild_customers_cfg();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	#
+	## IspCP customers configuration files - End
+	#
+
+	#
+	## IspCP files permissions - Begin
+	#
+
+	# Set engine and GUI permissions
+	print STDOUT BOLD "\n\tSet engine and GUI permissions\n";
+	set_permissions();
+
+	#
+	## IspCP files permissions - End
+	#
+
+	# Starting services
+	$print = 'Starting services:';
+	print STDOUT "\n\t" . $print;
+	$rs = start_services();
+	exit_msg(str_to_right('[failed]', length($print)+9), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print) + 9);
+
+	# Starting Post installation script if it exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
+
+	print STDOUT "\n\tStarting post installation / update script:";
+	$rs = postinst('update');
+	exit_msg('Failed!', $rs) if($rs != 0);
+
+	}
+
+	push_el(\@main::el, 'update_engine()', 'Ending...');
+
+	0;
+}
+
+# Shutdown update process
+sub update_shutdown {
+
+	push_el(\@main::el, 'update_shutdown()', 'Starting...');
+
+	# Removes all's empty files in ispCP configuration directories
+	my $rs = setup_cleanup();
+	return $rs if($rs != 0);
+
+	my $shut_down_message = colored(['bold underline'],
+		"\n\n\tCongratulations, you updated ispCP '$main::cfg{'Version'}' successfully!\n\n");
+
+	my $login_message =
+		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to log in\n".
+		"\tto your panel.\n\n";
+
+	print STDOUT $shut_down_message, $login_message;
+
+	push_el(\@main::el, 'update_shutdown()', 'Ending...');
+
+	0;
+}
+
+# User dialog
+sub user_dialog {
+
+	push_el(\@main::el, 'user_dialog()', 'Starting...');
+
+	welcome_note();
+
+	warn_msg();
+
+	push_el(\@main::el, 'user_dialog()', 'Ending...');
+
+	0;
+}
+
+# Welcome note
 sub welcome_note {
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	my $warning =
-		"\tMake sure you have read and performed all steps from docs/distro/INSTALL\n".
-		"\tdocument.\n\n".
-		"\tContinue?\n".
-		"\t(1) Yes\n".
-		"\t(0) No\n";
-
-	print STDOUT $warning;
-	print STDOUT "\tYour selection: ";
-
-	$rdata = readline(\*STDIN);
-	chop($rdata);
-
-	while (!($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 1) {
-		print STDOUT "\tPlease select an item mentioned above: ";
-		$rdata = readline(\*STDIN);
-		chop($rdata);
-	}
-
-	# Set to 0 if not ready
-	if ($rdata == 0) {
-		exit 0;
-	}
+	my $rdata = undef;
 
 	# Clear screen
 	system('clear');
 
+	my $welcome = colored(['bold underline'],
+		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n");
+
 	my $welcome_message =
-		"\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n".
-		"\tThis program will update your ispCP OMEGA system on your server.\n".
-		"\tPlease make sure you have a backup of your server data.\n\n".
+		"\tThis program will update your current ispCP OMEGA installation on this\n".
+		"\tserver.\n".
+		"\tPlease make sure you did a backup of all your server data.\n\n";
 
-		"\tNOTE: During the migration process some or all services might require to be\n".
-		"\tshut down or restarted.\n\n".
+	my $welcome_note = colored(['bold'], "\tNOTE:") .
+		" During the migration process some or all services might require to\n".
+		"\tbe shut down.\n\n";
 
-		"\tPlease select from which version you want to update:\n".
-		"\t(1) ispCP OMEGA 1.0.0\n".
-		"\t(2) ispCP OMEGA 1.0.2\n".
-		"\t(0) abort\n";
+	my $welcome_warning = colored(['bold yellow'], "\tWARNING:") .
+		" Only services that are not marked with 'NO' in your ispcp.conf\n".
+		"\tconfiguration file will be processed by this program.\n\n";
 
+	print STDOUT $welcome, $welcome_message, $welcome_note, $welcome_warning;
 
-	print STDOUT $welcome_message;
-	print STDOUT "\tYour selection: ";
+	do {
 
-	$rdata = readline(\*STDIN);
-	chop($rdata);
+		print STDOUT "\tDo you want to continue [Y/n]: ";
+		chomp($rdata = readline \*STDIN);
 
-	while ( !($rdata =~ /^\d+$/) || $rdata < 0 || $rdata > 2) {
-		print STDOUT "\tPlease select an item mentioned above: ";
-		$rdata = readline(\*STDIN);
-		chop($rdata);
-	}
+	} while($rdata !~ /^(|y|n)$/i);
 
-	$main::ua{'update'} = $rdata;
+	exit 0 if($rdata =~ /^n$/i);
 
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
-	return 0;
+	0;
 }
 
-sub stop_services {
-	push_el(\@main::el, 'stop_services()', 'Starting...');
-    my ($lock_file) = @_;
+# Warn message
+sub warn_msg {
 
-    if (-e $lock_file) {
-        exit_werror("\tBackups engine is currently running. Aborting...");
-    }
+	push_el(\@main::el, 'warn_msg()', 'Starting...');
 
-    if ( -e "/etc/init.d/ispcp_daemon" ) {
-        print STDOUT "\t";
-        sys_command("$main::cfg{'CMD_ISPCPD'} stop");
-    }
+	my $rdata = undef;
 
-    if ( -e "/etc/init.d/ispcp_network" ) {
-        print STDOUT "\t";
-        sys_command("$main::cfg{'CMD_ISPCPN'} stop");
-    }
+	my $warning = colored(['bold'], "\n\tNOTICE:") .
+		" Make sure you have read and performed all steps from\n".
+		"\tdocs/distro/INSTALL document (where distro is your linux distribution).\n\n";
 
-	push_el(\@main::el, 'stop_services()', 'Ending...');
-    return 0;
-}
+	system 'clear';
 
-sub start_services {
-    sys_command("$main::cfg{'CMD_ISPCPD'} start");
-    sys_command("$main::cfg{'CMD_ISPCPN'} start");
-    sleep(2);
-
-    # Restart servers to make them use the newly generated config
-    sys_command("$main::cfg{'CMD_HTTPD'} restart");
-    sleep(2);
-    sys_command("$main::cfg{'CMD_MTA'} restart");
-    sleep(2);
-    if (-e "$main::cfg{'CMD_NAMED'}") {
-        sys_command("$main::cfg{'CMD_NAMED'} restart");
-        sleep(2);
-    }
-    sys_command("$main::cfg{'CMD_POP'} restart");
-    sleep(2);
-    if (-e "$main::cfg{'CMD_POP_SSL'}") {
-        sys_command("$main::cfg{'CMD_POP_SSL'} restart");
-        sleep(2);
-    }
-    sys_command("$main::cfg{'CMD_IMAP'} restart");
-    sleep(2);
-    if (-e "$main::cfg{'CMD_IMAP_SSL'}") {
-        sys_command("$main::cfg{'CMD_IMAP_SSL'} restart");
-        sleep(2);
-    }
-    sys_command("$main::cfg{'CMD_FTPD'} restart");
-    sleep(2);
-    sys_command("$main::cfg{'CMD_AUTHD'} restart");
-
-    return 0;
-}
-
-sub rebuild_configs {
-	push_el(\@main::el, 'rebuild_configs()', 'Starting...');
-
-	my $rs = undef;
-
-	# The folowing functions are specified in 'ispcp-setup'
-	$rs = setup_crontab();
-	return 1 if ($rs != 0);
-
-	$rs = setup_named();
-	return 2 if ($rs != 0);
-
-	$rs = setup_php_master_user_dirs();
-	return 3 if ($rs != 0);
-
-	$rs = setup_php();
-	return 4 if ($rs != 0);
-
-	$rs = setup_httpd();
-	return 5 if ($rs != 0);
-
-	$rs = setup_mta();
-	return 6 if ($rs != 0);
-
-	$rs = setup_po();
-	return 7 if ($rs != 0);
-
-	$rs = setup_ftpd();
-	return 8 if ($rs != 0);
-
-	$rs = setup_ispcpd();
-	return 9 if ($rs != 0);
-
-	push_el(\@main::el, 'rebuild_configs()', 'Ending...');
-	return 0;
-}
-
-sub update_pma {
-	push_el(\@main::el, 'update_pma()', 'Starting...');
-
-	my ($rs, $cfg, $cfg_tpl, $sql, $rdata) = (undef, undef, undef, undef, undef);
-	@main::db_connect = undef;
-	my $hostname = $main::cfg{'DATABASE_HOST'};
-
-	#
-	# PMA user for SQL
-	#
-
-	$rs = ask_db_pma_user();
-	return $rs if ($rs != 0);
+	print STDOUT $warning;
 
 	do {
-		$rs = ask_db_pma_password();
-	} while ($rs == 1);
 
-	@main::db_connect = (
-							"DBI:mysql:mysql:$main::db_host",
-							$main::db_user,
-							$main::db_pwd
-						);
+		if(defined $rdata && $rdata eq '?')	{
 
-	my $pma_sql_user = $main::ua{'db_pma_user'};
-	my $pma_sql_password = $main::ua{'db_pma_password'};
+			print STDOUT "\n\tOptions:\n".
+  				"\t\ty : Continue the update\n".
+  				"\t\tn : Abort and exit\n".
+  				"\t\ts : Select specific tasks to perform (Not yet implemented)\n\n";
+		}
 
-	$sql = "DELETE FROM tables_priv WHERE Host = '$main::db_host' AND Db = '$main::cfg{'DATABASE_NAME'}' and User = '$pma_sql_user'";
+		print STDOUT "\tDo you want to continue [Y/n/?]: ";
 
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
+		chomp($rdata = readline \*STDIN);
 
-	$sql = " delete from user where Host = '$hostname' and User = '$pma_sql_user'";
+	} while($rdata !~ /^(|n|y)$/i);
 
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
+	exit 0 if($rdata =~ /^n$/i);
 
-	$sql = "flush privileges";
+	push_el(\@main::el, 'warn_msg()', 'Ending...');
 
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$hostname\' IDENTIFIED BY \'$pma_sql_password\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO \'$pma_sql_user\'\@\'$hostname\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT ON mysql.db TO \'$pma_sql_user\'\@\'$hostname\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT ON mysql.host TO \'$pma_sql_user\'\@\'$hostname\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO \'$pma_sql_user\'\@\'$hostname\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	#
-	# Insert pma user and password to config file
-	# together with some other information
-	#
-
-	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
-	my $tmp_dir = "$main::cfg{'GUI_ROOT_DIR'}/phptmp";
-
-	print STDOUT "\tGeneration Blowfish key\n";
-	my $blowfish = gen_sys_rand_num(31);
-	$blowfish =~ s/'/\\'/gi;
-
-	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
-	return $rs if ($rs != 0);
-
-	my %tag_hash = (
-					'{PMA_USER}' => $pma_sql_user,
-					'{PMA_PASS}' => $pma_sql_password,
-					'{HOSTNAME}' => $main::cfg{'DATABASE_HOST'},
-					'{TMP_DIR}'  => $tmp_dir,
-					'{BLOWFISH}' => $blowfish
-				   );
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-	$rs = store_file("$cfg_dir/config.inc.php", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_GROUP'}", 0440);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'update_pma()', 'Ending...');
-	return 0;
+	0;
 }
 
-sub update_httpd {
-	push_el(\@main::el, 'update_httpd()', 'Starting...');
+# Load old ispCP main configuration file
+sub load_old_ispcp_cfg {
+
+	push_el(\@main::el, 'load_old_ispcp_config()', 'Starting...');
+
+	my ($rs, $old_ispcp_cfg_file) = (undef, '/etc/ispcp/ispcp.old.conf');
+
+	if (get_conf($old_ispcp_cfg_file)) {
+
+		do {
+			print STDOUT "\tPlease enter path to your ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
+			chomp($old_ispcp_cfg_file = readline \*STDIN);
+
+		} while (get_conf($old_ispcp_cfg_file));
+	}
+
+	$main::ua{'old_cfg_file'} = $old_ispcp_cfg_file;
+
+	push_el(\@main::el, 'load_old_ispcp_config()', 'Ending...');
+
+	0;
+}
+
+# Update ispCP main configuration file
+sub update_ispcp_cfg {
+
+	push_el(\@main::el, 'update_ispcp_config()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-	my $bk_dir = "$cfg_dir/backup";
-	my $wrk_dir = "$cfg_dir/working";
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-	my %tag_hash = ();
 
-	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
-		sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/ispcp-setup-services.log");
+	# Loading old ispCP configuration file as a string
+	($rs, $rdata) = get_file($main::ua{'old_cfg_file'});
+	return $rs if($rs != 0);
+
+	# Loading new configuration from /etc/ispcp/ispcp.conf
+	$rs = get_conf();
+	return $rs if($rs != 0);
+
+	# For each cfg line
+	foreach(map{$$_."\n"} \split(/\n/, $rdata))	{
+
+		if(/$main::cfg_re/ && $1 !~ /^BuildDate|Version|CodeName$/) {
+
+			# If the old configuration key still exists in the new file
+			# and its value is different from existing
+			if(defined($main::cfg{$1}) && $main::cfg{$1} ne $2 ) {
+
+				# We restore old value
+				$rs = set_conf_val($1, $2);
+				return $rs if ($rs != 0);
+			}
+		}
 	}
 
-	#
-	# Apache Master file
-	#
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/00_master.conf $bk_dir/00_master.ispcp-rc4.conf";
-	$rs = sys_command($cmd);
+	# Store the updated configuration in /etc/ispcp/ispcp.conf and reload it
+	# at the same time
+	$rs = store_conf();
 	return $rs if ($rs != 0);
 
-	($rs, $cfg_tpl) = get_file("$cfg_dir/00_master.conf");
-	return $rs if ($rs != 0);
+	push_el(\@main::el, 'update_ispcp_config()', 'Ending...');
 
-	%tag_hash = (
-					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
-					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
-					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
-					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
-					'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
-					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
-					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
-					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'},
-					'{WWW_DIR}'					=> $main::cfg{'ROOT_DIR'},
-					'{DMN_NAME}'				=> 'gui',
-					'{CONF_DIR}'				=> $main::cfg{'CONF_DIR'},
-					'{MR_LOCK_FILE}'			=> $main::cfg{'MR_LOCK_FILE'},
-					'{RKHUNTER_LOG}'			=> $main::cfg{'RKHUNTER_LOG'},
-					'{CHKROOTKIT_LOG}'			=> $main::cfg{'CHKROOTKIT_LOG'},
-					'{PEAR_DIR}'				=> $main::cfg{'PEAR_DIR'},
-					'{OTHER_ROOTKIT_LOG}'		=> $main::cfg{'OTHER_ROOTKIT_LOG'},
-					'{APACHE_SUEXEC_USER_PREF}'	=> $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-					'{APACHE_SUEXEC_MIN_UID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-					'{APACHE_SUEXEC_MIN_GID}'	=> $main::cfg{'APACHE_SUEXEC_MIN_GID'}
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/01_awstats.conf $bk_dir/01_awstats.ispcp-rc4.conf";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	($rs, $cfg_tpl) = get_file("$cfg_dir/01_awstats.conf");
-	return $rs if ($rs != 0);
-
-	%tag_hash = (
-					'{AWSTATS_ENGINE_DIR}' 		=> $main::cfg{'AWSTATS_ENGINE_DIR'},
-					'{AWSTATS_WEB_DIR}' 		=> $main::cfg{'AWSTATS_WEB_DIR'}
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	#
-	# Configure the fastcgi_ispcp.conf
-	#
-
-	$cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-	$bk_dir = "$cfg_dir/backup";
-
-	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi_ispcp.conf');
-	return $rs if ($rs != 0);
-
-	%tag_hash = (
-					'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-					'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
-					'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf $bk_dir/fastcgi_ispcp.ispcp-rc4.conf";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" && ! -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load") {
-            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.rc4.load";
-            $rs = sys_command($cmd);
-            return $rs if ($rs != 0);
-
-            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
-            return $rs if ($rs != 0);
-
-            $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
-            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
-            return $rs if ($rs != 0);
-	}
-
-	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
-		sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/ispcp-setup-services.log");
-	}
-
-	push_el(\@main::el, 'update_httpd()', 'Ending...');
-	return 0;
+	0;
 }
 
-sub update_ftpd {
-	#
-	# we'll add ispCP ftp SQL user here.
-	#
+# Update ispCP database schema
+sub update_database_schema {
+
+	push_el(\@main::el, 'update_database_schema()', 'Starting...');
+
+	my ($rs, $cmd, $php, $rdata) = (undef, undef, undef, undef);
+
+	# File preparation - Begin
+
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php");
+	return $rs if($rs != 0);
+
+	if($rdata =~ s/{GUI_ROOT_DIR}/$main::cfg{'GUI_ROOT_DIR'}/) {
+
+		# Saving the modified file
+		$rs = save_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php", $rdata);
+		return $rs if($rs != 0);
+	}
+
+	# File preparation - End
+
+	$main::db_pwd =~ s/([\'\"])/\\$1/g;
+
+	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php &>/tmp/ispcp-update-database.log";
+	$rs = sys_command_rs($cmd);
+	return $rs if($rs !=0);
+
+	push_el(\@main::el, 'update_database_schema()', 'Ending...');
+
+	0;
+}
+
+# Rebuilding all services configuration files
+sub rebuild_services_cfg {
+
+	push_el(\@main::el, 'rebuild_services_config()', 'Starting...');
+
+	my ($rs, $print) = (undef, '');
+
+	$print = ' ispCP Crontab file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_crontab();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP BIND main configuration file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_named();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP PHP (fastCGI modules configuration):';
+	print STDOUT "\t" . $print;
+	$rs = setup_php();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP Apache main vhost file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_httpd_main_vhost();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP Apache AWStats vhost file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_awstats_vhost();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP Postfix configuration files:';
+	print STDOUT "\t" . $print;
+	$rs = setup_mta();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP Courier-Authentication:';
+	print STDOUT "\t" . $print;
+	$rs = setup_po();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP ProFTPd configuration file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_ftpd();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP init scripts:';
+	print STDOUT "\t" . $print;
+	$rs = setup_ispcp_daemon_network();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	push_el(\@main::el, 'rebuild_services_config()', 'Ending...');
+
+	0;
+}
+
+# Rebuilding all gui related configuration files
+sub rebuild_gui_cfg {
+
+	push_el(\@main::el, 'rebuild_gui_cfg()', 'Starting...');
+
+	my ($rs, $print) = (undef, "");
+
+	$print = ' ispCP GUI BIND configuration:';
+	print STDOUT "\t" . $print;
+	$rs = setup_gui_named();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP GUI fastCGI/PHP configuration:';
+	print STDOUT "\t" . $print;
+	$rs = setup_gui_php();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP GUI vhost file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_gui_httpd();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	$print = ' ispCP PMA configuration file:';
+	print STDOUT "\t" . $print;
+	$rs = setup_gui_pma();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
+
+	0;
+}
+
+# Rebuilding all customers configuration files
+sub rebuild_customers_cfg {
+
+	push_el(\@main::el, 'rebuild_customers_cfg()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	# First, we reset db connection
 	$main::db = undef;
 
+	# Sets the dsn
 	@main::db_connect = (
-							"DBI:mysql:mysql:$main::db_host",
-							$main::db_user,
-							$main::db_pwd
-						);
+		"DBI:mysql:$main::db_name:$main::db_host",
+		$main::db_user,
+		$main::db_pwd
+	);
 
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-	my $vftp_sql_user = $main::ua{'db_ftp_user'};
-	my $vftp_sql_password = $main::ua{'db_ftp_password'};
-	my $hostname = $main::db_host;
+	my $tables = {
+		domain => 'domain_status',
+		domain_aliasses => 'alias_status',
+		subdomain => 'subdomain_status',
+		subdomain_alias => 'subdomain_alias_status',
+		mail_users => 'status',
+		htaccess => 'status',
+		htaccess_groups => 'status',
+		htaccess_users => 'status'
+	};
 
-	$sql = "DELETE FROM tables_priv WHERE Host = '$hostname' AND Db = '$main::db_name' AND User = '$vftp_sql_user'";
+	# Set status as 'change'
+	while (my ($table, $field) = each %$tables) {
+		($rs, $rdata) = doSQL("UPDATE $table SET $field='change' WHERE $field='ok'");
+		return $rs if ($rs != 0);
+	}
 
-	($rs, $rdata) = doSQL($sql);
+	$main::db = undef;
+
+	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr &>/tmp/ispcp-update-customers.log");
 	return $rs if ($rs != 0);
 
-	$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user'";
+	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
 
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "FLUSH PRIVILEGES";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
+	0;
 }
 
-sub search_and_replace {
-    my $dir = shift;
-    my ($cmd, $rs) = (undef, undef);
-    my $sed = $main::cfg{'CMD_SED'};
+# Set engine and gui permissions
+# TODO: Move it into ispcp-setup-methods.pl and call it into ispcp-setup
+sub set_permissions {
 
-    if (opendir(DIRH, "$dir")) {
-        foreach (readdir(DIRH)) {
-            # ignore . and .. :
-            next if ($_ eq "." || $_ eq "..");
-            if (/$ARGV[0]/io) {
-                $cmd = "$sed -i -e 's~/phptmp\"~/phptmp/\"~' php.ini";
-				$rs = sys_command($cmd);
-				#return $rs if ($rs != 0);
-            }
-            search_and_replace("$dir/$_") if (-d "$dir/$_" && ! -l "$dir/$_");
-        }
-        closedir DIRH;
-    }
+	push_el(\@main::el, 'set_permissions()', 'Starting...');
+
+	my ($rs, $cmd, $print) = (undef, undef, '');
+
+	foreach(qw/engine gui/) {
+
+		$print = " Set $_ permissions:";
+		print STDOUT "\t" . $print ;
+
+		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh &>/tmp/ispcp-update-permissions.log";
+		$rs = sys_command_rs($cmd);
+		exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+
+		print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+	}
+
+	push_el(\@main::el, 'set_permissions()', 'Ending...');
+
+	0;
 }
 
-sub update_conf {
-	push_el(\@main::el, 'update_conf()', 'Starting...');
+#
+## Subroutines - End
+#
 
-	my ($oldconf, $newconf) = ($_[0], $_[1]);
+#
+## Main
+#
 
-	if (!defined($oldconf) || !defined($newconf)) {
-		push_el(\@main::el, 'update_conf()', 'ERROR: Undefined input data...');
-		return 1;
-	}
+update_startup();
+update_engine();
 
-    my ($rs, $fline) = get_file($oldconf);
-    return 1 if ($rs != 0);
-    $rs = get_conf($newconf);
-    return 1 if ($rs != 0);
-
-    my @frows = split(/\n/, $fline);
-
-    my $i = undef;
-
-    for ($i = 0; $i < scalar(@frows); $i++) {
-            $frows[$i] = "$frows[$i]\n";
-            if (($frows[$i] =~ /$main::cfg_re/)) {
-                    # Lines should not match variables that have to be changed
-                    if ($1 ne 'BuildDate' && $1 ne 'Version' && $1 ne 'CodeName') {
-                            # now overwrite new conf values with old if exists
-                            if (defined($main::cfg{$1})) {
-                                    $rs = set_conf_val($1, $2);
-                                    return $rs if ($rs != 0);
-                            }
-                    }
-            }
-    }
-
-	$rs = store_conf($newconf);
-    return 1 if ($rs != 0);
-
-	push_el(\@main::el, 'update_conf()', 'Ending...');
-	return 0;
-}
-
-sub patch_ispcp_v1_0_2{
-	push_el(\@main::el, 'patch_ispcp_v1_0_2()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	# database upgrade
-    print STDOUT "\tUpgrading database structure...";
-	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0-ispcp.sql");
-	return $rs if ($rs != 0);
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host='$main::db_host' -u'$main::db_user' -p'$main::db_pwd' < /tmp/db.sql");
-	if ($rs != 0) {
-		print STDOUT "failed!\n Database update will be performed by GUI! Stepping forward\n";
-	}
-
-	print STDOUT "done\n";
-
-	# Rebuild system configs:
-	print STDOUT "\tRebuilding system configurations...";
-
-	$rs = sys_command("$main::cfg{'CMD_RM'} -f `find $main::cfg{'PHP_STARTER_DIR'} -type f -name php?-fcgi-starter`");
-	return $rs if ($rs != 0);
-
-	print STDOUT "done\n";
-
-	push_el(\@main::el, 'patch_ispcp_v1_0_2()', 'Ending...');
-	return 0;
-}
-sub prepare_update {
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'user_dialog()', 'Starting...');
-
-	$rs = welcome_note();
-
-	return $rs if ($rs != 0);
-
-	# Abort
-	if ($main::ua{'update'} == ABORT) {
-		exit_werror("Script was aborted by user.");
-	}
-	# all ispCP
-
-	stop_services("/tmp/ispcp-backup-all.lock");
-
-	# get ispcp.old.conf
-	my $cfg_file = '/etc/ispcp/ispcp.old.conf';
-	$rs = get_conf($cfg_file);
-	if ($rs != 0) {
-		do {
-			print STDOUT "\tPlease enter path to ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
-
-			$rdata = readline(\*STDIN);
-			chop($rdata);
-
-			$cfg_file = $rdata;
-			$rs = get_conf($cfg_file);
-		} while ($rs == 0);
-	}
-	$main::ua{'old_cfg_file'} = $cfg_file;
-
-	# update ispcp.conf
-	$cfg_file = $main::cfg_file;
-	if (defined($main::ua{'old_cfg_file'})) {
-		print STDOUT "\tUpgrading system values...";
-
-		$rs = update_conf($main::ua{'old_cfg_file'}, $cfg_file);
-		if ($rs != 0) {
-			exit_werror("failed to get $cfg_file or $main::ua{'old_cfg_file'}");
-		}
-
-		# save into /etc/ispcp/ispcp.conf
-		$rs = store_conf();
-		if ($rs != 0) {
-			exit_werror("Storing new ispcp.conf failed!");
-		}
-		print STDOUT "done\n";
-	}
-
-	if ($rs != 0) {
-   		print STDOUT "\t Update failed!\n";
-		exit_werror("ispCP Update failed.");
-	}
-
-	# patch installation
-	if ($main::ua{'update'} == ISPCP_V1_0_0) {
-		#nothing to do;
-	}
-	if ($main::ua{'update'} == ISPCP_V1_0_2) {
-		$rs = patch_ispcp_v1_0_2();
-		exit_werror("ispCP Update failed.") if ($rs != 0);
-	}
-
-	print STDOUT "Rebuild config\n";
-	$rs = rebuild_configs();
-	if ($rs != 0) {
-		exit_werror("Config Rebuild failed.");
-	}
-
-	# set permissions
-	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	# re-create config files
-	print STDOUT "\tRebuilding customers...";
-
-	# database upgrade
-	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/regenerate.sql");
-	return $rs if ($rs != 0);
-
-	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	$main::db_pwd =~ s/([\'\"])/\\$1/g;
-	$rs = sys_command("$main::cfg{'CMD_MYSQL'} --host='$main::db_host' -u'$main::db_user' -p'$main::db_pwd' < /tmp/db.sql");
-	if ($rs != 0) {
-   	 	exit_werror("SQL Update failed.");
-	}
-
-	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
-	if ($rs != 0) {
-    	print STDOUT "failed!\n";
-   	 	exit_werror("Rebuild failed.");
-	}
-
-	print STDOUT "done\n";
-
-	# start services
-	start_services();
-
-	return 0;
-
-	push_el(\@main::el, 'user_dialog()', 'Ending...');
-}
-
-sub update_shut_down {
-	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
-
-	my $shut_down_message = <<MSG;
-
-\tCongratulations!
-
-\tispCP '$main::cfg{'Version'}' Update completed successfully!
-
-\tPlease type http://$main::cfg{'BASE_SERVER_VHOST'} in your browser,
-\tlog in with your Administrator Account and perform
-\tDatabase Updates if exists.
-
-MSG
-	print STDOUT $shut_down_message;
-
-	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
-	return 0;
-}
-
-sub exit_werror {
-    my ($msg, $code) = @_;
-
-    if (!defined($code) || $code <= 0 ) {
-        $code = 1;
-    }
-
-    if (defined($msg) && $msg ne '' ) {
-        print STDERR "\t$msg\n";
-    }
-
-    exit $code;
-}
-
-################################################################################
-##                                    MAIN                                    ##
-################################################################################
-
-# Clear screen
-system('clear');
-
-my $rs = undef;
-
-$rs = prepare_update();
+# TODO: Should be modified
+my $rs = setup_rkhunter();
 
 if ($rs != 0) {
+
 	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	my ($sub_name, $msg) = split(/\t#\t/, $el_data);
 
 	print STDERR "$msg\n";
 
 	exit 1;
 }
 
-$rs = setup_rkhunter();
+update_shutdown();
 
-if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-$rs = update_shut_down();
-
-if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
+exit 0;

@@ -61,7 +61,7 @@ $tpl->assign(
 		'TR_CANCEL'				=> tr('Cancel'),
 		'TR_ADD'				=> tr('Add'),
 		'TR_DOMAIN'				=> tr('Domain'),
-		'TR_EDIT_DNS'			=> ($add_mode) ? tr("Add DNS zone's record") : tr("Edit DNS zone's record"),
+		'TR_EDIT_DNS'			=> ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") : tr("Edit DNS zone's record (EXPERIMENTAL)"),
 		'TR_DNS'				=> tr("DNS zone's records"),
 		'TR_DNS_NAME'			=> tr('Name'),
 		'TR_DNS_CLASS'			=> tr('Class'),
@@ -77,7 +77,7 @@ $tpl->assign(
 		'TR_DNS_SRV_PORT'		=> tr('Target port'),
 		'TR_DNS_CNAME'			=> tr('Canonical name'),
 		'TR_DNS_PLAIN'			=> tr('Plain record data'),
-		'TR_MANAGE_DOMAIN_DNS'	=> tr("DNS zone's records")
+		'TR_MANAGE_DOMAIN_DNS'	=> tr("DNS zone's records (EXPERIMENTAL)")
 	)
 );
 

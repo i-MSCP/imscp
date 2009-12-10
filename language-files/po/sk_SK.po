@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -474,7 +474,7 @@ msgstr "Podpora PHP"
 msgid "CGI support"
 msgstr "Podpora CGI"
 
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
 msgid "MySQL support"
@@ -829,7 +829,7 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1793,6 +1793,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "ID zákazníka"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Meno domény"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "Môžete nahrať iba obrázky!"
 
@@ -2203,9 +2229,6 @@ msgstr "Prosím počkajte na aktualizovanie"
 msgid "Domain alias limit reached!"
 msgstr "Limit aliasov domény dosiahnutý!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Nesprávna syntax mena domény"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "Doména s rovnakým menom už existuje v systéme!"
 
@@ -2389,10 +2412,10 @@ msgstr "ispCP - Spravovať doménu/Zmeniť Alias"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Spravovať doménu/Zmeniť Alias"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2436,6 +2459,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "Heslo"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3371,9 +3397,6 @@ msgstr "Limit aliasov domény dosiahnutý!"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Sub-doména už existuje!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Zlá syntax sub-domény!"
-
 #, fuzzy
 msgid "Mount point already in use!"
 msgstr "Bod pripojenia sub-domény už existuje!"
@@ -3536,10 +3559,6 @@ msgid "Details"
 msgstr "Detaily"
 
 #, fuzzy
-msgid "Disk Usage Percent"
-msgstr "Využitie diskového priestoru"
-
-#, fuzzy
 msgid "Edit domain"
 msgstr "Upraviť doménu"
 
@@ -3603,10 +3622,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-#, fuzzy
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nemôže skontrolovať aktualizácie!"
-
 #, fuzzy, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
@@ -3617,6 +3632,10 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+#, fuzzy
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Nemôže skontrolovať aktualizácie!"
 
 msgid "Email and FTP accounts"
 msgstr "E-mail a FTP kontá"
@@ -3646,6 +3665,9 @@ msgstr "FTP kontá"
 
 msgid "Update Hosting Package"
 msgstr "Aktualizovať hostingová balík"
+
+msgid "Add DNS zone's record"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3811,6 +3833,60 @@ msgid "Priority: %s\n"
 msgstr "Priorita"
 
 msgid "Log in to answer"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Zlá syntax domény!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Zlá syntax domény!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Zlá syntax sub-domény!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Zlá syntax sub-domény!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Zlá syntax domény!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -4087,6 +4163,9 @@ msgstr "Vlastné chybové stránky"
 msgid "Protected Areas"
 msgstr "Chránené oblasti"
 
+msgid "Manual DNS support"
+msgstr ""
+
 msgid "Custom Apache Logs"
 msgstr "Vlastné Apache Logy"
 
@@ -4157,11 +4236,12 @@ msgstr "Doménový alias pridaný!"
 msgid "Ordered domain alias not activated!"
 msgstr "Doménový alias nepridaný!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Predajca : Pridať alias"
 
-msgid "You have no user records."
-msgstr "Nemáte žiaden záznam o užívateľovi."
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP- Obežník"
@@ -4494,6 +4574,16 @@ msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo 
 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Nesprávna syntax mena domény"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Využitie diskového priestoru"
+
+#~ msgid "You have no user records."
+#~ msgstr "Nemáte žiaden záznam o užívateľovi."
 
 #, fuzzy
 #~ msgid "Default panel language changed!"
