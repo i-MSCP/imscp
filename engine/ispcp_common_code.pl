@@ -42,8 +42,9 @@ my $rs;
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 
 $rs = get_conf($main::cfg_file);
+#return $rs if ($rs != 0);	# Bad code because we use 'return' outside a subroutine
+die("FATAL: Can't load the ispcp.conf file") if($rs !=0);
 
-return $rs if ($rs != 0);
 
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
@@ -56,10 +57,11 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
 	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-db-keys.pl");
 
-	return $rs if ($rs != 0);
+	#return $rs if ($rs != 0); # Bad code because we use 'return' outside a subroutine
+	die('FATAL: Error during database keys generation !') if ($rs != 0);
 
 	do 'ispcp-db-keys.pl';
-	get_conf();
+	# get_conf(); Not needed here
 }
 
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};
@@ -169,6 +171,4 @@ $main::ispcp_srv_traff_el = "$main::log_dir/ispcp-srv-traff.el";
 
 $main::ispcp_dsk_quota_el = "$main::log_dir/ispcp-dsk-quota.el";
 
-########################################################################
-
-return 1;
+1;
