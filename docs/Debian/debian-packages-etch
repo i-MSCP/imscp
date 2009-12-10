@@ -30,7 +30,6 @@ libdate-calc-perl
 libdate-manip-perl
 libdbd-mysql-perl
 libdbi-perl
-libfile-mimeinfo-perl
 libio-stringy-perl
 libmail-sendmail-perl
 libmailtools-perl
@@ -65,7 +64,6 @@ perl
 perl-base
 perl-modules
 php5-cgi
-php5-cli
 php5-gd
 php5-idn
 php5-imap

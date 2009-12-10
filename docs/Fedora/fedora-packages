@@ -73,7 +73,6 @@ perl-Unix-Syslog
 perl-HTML-Parser
 php
 php-bcmath
-php-cli
 php-dba
 php-gd
 php-ldap

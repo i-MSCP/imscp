@@ -65,7 +65,6 @@ perl-Unix-Syslog
 perl-TermReadKey
 php
 php-bcmath
-php-cli
 php-dba
 php-gd
 php-ldap

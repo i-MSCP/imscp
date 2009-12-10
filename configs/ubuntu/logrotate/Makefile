@@ -34,7 +34,6 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/logrotate.d
-
 	cp ./ispcp $(ROOT_CONF)/logrotate.d
 
 uninstall:

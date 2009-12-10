@@ -46,21 +46,29 @@ install:
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp ./01_awstats.conf $(SYSTEM_CONF)/apache
-
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
 
 	# greater equal Debian 4.0 "Etch"?
 	if [ $(RELEASE) = 'sarge' ]; then \
-		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf ; \
+		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	elif [ $(RELEASE) = 'etch' ] || [ $(RELEASE) = 'lenny' ] || [ $(RELEASE) = 'squeeze' ]; then \
-		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf ; \
+		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	fi
-	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/fcgid_ispcp.conf
+	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/working/fcgid_ispcp.conf
+
+	cp $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf $(ROOT_APACHE_CONF)/mods-available/fastcgi_ispcp.conf
+	cp ./fcgid_ispcp.conf $(ROOT_APACHE_CONF)/mods-available/fcgid_ispcp.conf
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
+	rm -f $(APACHE_SITES_DIR)/ispcp.conf
+	rm -f $(APACHE_SITES_DIR)/00_master.conf
+	rm -f $(APACHE_SITES_DIR)/01_awstats.conf
+	rm -f $(APACHE_MODS_DIR)/fastcgi_ispcp.conf
+	rm -f $(APACHE_MODS_DIR)/fcgid_ispcp.conf

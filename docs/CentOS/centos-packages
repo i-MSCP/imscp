@@ -69,7 +69,6 @@ perl-URI
 perl-Unix-Syslog
 php
 php-bcmath
-php-cli
 php-dba
 php-gd
 php-ldap

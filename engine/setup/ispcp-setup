@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+ 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -40,34 +40,68 @@ use Socket;
 
 %main::ua = ();
 
-#
-##  Subroutines - Begin
-#
+################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
 
-# Start the installation process
-sub setup_start_up {
+sub welcome_note {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'setup_start_up()', 'Starting...');
+	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	# config check; --- Already done in ispcp_common_code.pl
-	#$rs = get_conf();
-	#return $rs if ($rs != 0);
-	
-	stop_services();
+	my $welcome_message = <<MSG;
 
-	push_el(\@main::el, 'setup_start_up()', 'Ending...');
+\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.
+\tThis program will set up ispCP OMEGA system on your server.
+MSG
+
+	print STDOUT $welcome_message;
+
+	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
 	return 0;
+
 }
 
-# Asks an set of question to user
+sub get_sys_hostname {
+	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+	my $cmd = "$main::cfg{'CMD_HOSTNAME'} 1>/tmp/ispcp-setup.hostname";
+
+	$rs = sys_command($cmd);
+	return ($rs, '') if ($rs != 0);
+
+	($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	chomp($rdata);
+
+    if ($rdata !~ m/\./) { # hostname contains no dot -> use "hostname -f"
+            my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
+
+            $rs = sys_command($cmd);
+            return ($rs, '') if ($rs != 0);
+
+            ($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+            return ($rs, '') if ($rs != 0);
+
+            chomp($rdata);
+    }
+
+	$rs = del_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
+	return (0, $rdata);
+}
+
 sub user_dialog {
 
-	push_el(\@main::el, 'user_dialog()', 'Starting...');
-
 	my $rs = undef;
+
+	push_el(\@main::el, 'user_dialog()', 'Starting...');
 
 	$rs = welcome_note();
 
@@ -188,180 +222,56 @@ sub user_dialog {
 
 	print STDOUT $qmsg;
 
-	#push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
-	#push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
-	#push_el(\@main::el, 'user_dialog()', "panel_vhost: $main::ua{'admin_vhost'}");
-	#push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
-	#push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
-	#push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
-	#push_el(\@main::el, 'user_dialog()', "db_password");
-	#push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
-	#push_el(\@main::el, 'user_dialog()', "admin_password");
-	#push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
-	#push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
-	#push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
-	#push_el(\@main::el, 'user_dialog()', "mysql_prefix: $main::ua{'mysql_prefix'}");
-	#push_el(\@main::el, 'user_dialog()', "mysql_prefix_type: $main::ua{'mysql_prefix_type'}");
+	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
+	push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
+	push_el(\@main::el, 'user_dialog()', "panel_vhost: $main::ua{'admin_vhost'}");
+	push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
+	push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
+	push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
+	push_el(\@main::el, 'user_dialog()', "db_password");
+	push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
+	push_el(\@main::el, 'user_dialog()', "admin_password");
+	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
+	push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
+	push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
+	push_el(\@main::el, 'user_dialog()', "mysql_prefix: $main::ua{'mysql_prefix'}");
+	push_el(\@main::el, 'user_dialog()', "mysql_prefix_type: $main::ua{'mysql_prefix_type'}");
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	return 0;
 
 }
 
-# See check_host_sql for more information
-sub check_host_system {
+sub setup_start_up {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'check_host_system()', 'Starting...');
+	push_el(\@main::el, 'setup_start_up()', 'Starting...');
 
-	#$rs = check_host_interface();
-	#return $rs if ($rs != 0);
-
-	$rs = check_host_sql();
-
+	# config check;
+	$rs = get_conf();
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'check_host_system()', 'Ending...');
+	push_el(\@main::el, 'setup_start_up()', 'Ending...');
 
 	return 0;
 }
 
-# Performs all subroutines that generate the
-# configuration related to the different services
-# managed by ispCP
-sub setup_host_system {
-	push_el(\@main::el, 'setup_host_system()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	if (!defined($_)) {
-		$rs = setup_system_users();
-		return $rs if ($rs != 0);
-	}
-
-	$rs = setup_system_dirs();
-	return $rs if ($rs != 0);
-
-	# Updates the ispcp.conf file with the values entered by user
-	$rs = setup_config();
-	return $rs if ($rs != 0);
-
-	$rs = setup_sql();
-	return $rs if ($rs != 0);
-
-	# Built, stores and installs the ispCP crontab file
-	$rs = setup_crontab();
-	return $rs if ($rs != 0);
-
-	$rs = setup_rkhunter();
-	return $rs if ($rs != 0);
-
-	$rs = setup_hosts();
-	return $rs if ($rs != 0);
-
-	# Only main configuration file since the generation of configuration files
-	# related to the frontend (GUI) are supported by dedicated subroutines
-	$rs = setup_named();
-	return $rs if ($rs != 0);
-
-	# Deprecated (integrated into setup_php())
-	#$rs = setup_php_master_user_dirs();
-	#return $rs if ($rs != 0);
-
-	# Only system php related configuration files since the generation of
-	# configuration files related to the frontend (GUI) are supported by dedicated subroutines
-	$rs = setup_php();
-	return $rs if ($rs != 0);
-
-	# Deprecated - Replaced by setup_httpd_main_vhost(), setup_awstats_vhost()
-	# $rs = setup_httpd();
-	# return $rs if ($rs != 0);
-
-	# Only ispcp.conf Apache main IspCP vhost configuration file and related modules
-	$rs = setup_httpd_main_vhost();
-	return $rs if ($rs != 0);
-
-	# Only awstats Apache vhost configuration file and related modules
-	$rs = setup_awstats_vhost();
-	return $rs if ($rs != 0);
-
-	# Built, stores and installs the Postfix related configuration files
-	# - main.cf, master.cf configuration files
-	# Btree databases for virtuals users
-	$rs = setup_mta();
-	return $rs if ($rs != 0);
-
-	# Built, stores and installs all Courier-authentication related configuration files
-	$rs = setup_po();
-	return $rs if ($rs != 0);
-
-	# Built, stores and installs the proftpd main configuration file
-	$rs = setup_ftpd();
-	return $rs if ($rs != 0);
-
-	# Deprecated - Replaced by setup_ispcp_daemon_network()
-	# $rs = setup_ispcpd();
-	# return $rs if ($rs != 0);
-
-	# Sets correct user, group and permissions for ispCP daemon and network init scripts
-	$rs = setup_ispcp_daemon_network();
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'setup_host_system()', 'Ending...');
-	return 0;
-}
-
-# NEW - Should be tested
-# Performs all subroutines that generate the
-# configuration related to the IspCP frontend (GUI)
-sub setup_gui_cfg {
-
-	push_el(\@main::el, 'setup_gui_cfg()', 'Starting...');
-
-	my $rs = undef;
-
-	# Setup named GUI related configuration files
-	# - Added cfg data into named main configuration file
-	# - Create named zone file
-	$rs = setup_gui_named();
-	return $rs if($rs != 0);
-
-	# Create fcgi directory for the user who's used for the frontend (GUI)
-	# Built, stores and installs all php dedicated configuration files (php.ini, fastCGI wrapper)
-	$rs = setup_gui_php();
-	return $rs if($rs != 0);
-
-	# Built, stores and installs the GUI related Apache vhost configuration file
-	$rs = setup_gui_httpd();
-	return $rs if($rs != 0);
-
-	# Not yet Implemented
-	$rs = setup_gui_pma();
-	return $rs if($rs != 0);
-
-	push_el(\@main::el, 'setup_gui_cfg()', 'Ending...');
-
-	0;
-}
-
-# End of the installation process
 sub setup_shut_down {
 
 	my ($rs, $rdata) = (undef, undef);
 
 	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
+
 	$rs = sys_command($cmd);
+
 	return $rs if ($rs != 0);
 
 	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+
 	$rs = sys_command($cmd);
+
 	return $rs if ($rs != 0);
-	
-	$rs = setup_cleanup();
-	return $rs if($rs != 0);
-	
-	start_services();
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
@@ -389,64 +299,6 @@ MSG
 
 }
 
-# Display a welcome note
-sub welcome_note {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, '_welcome_note()', 'Starting...');
-
-	my $welcome_message = <<MSG;
-
-\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.
-\tThis program will set up ispCP OMEGA system on your server.
-MSG
-
-	print STDOUT $welcome_message;
-
-	push_el(\@main::el, '_welcome_note()', 'Ending...');
-
-	return 0;
-
-}
-
-# Get and return the fully qualified hostname
-sub get_sys_hostname {
-
-	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
-
-	my $cmd = "$main::cfg{'CMD_HOSTNAME'} 1>/tmp/ispcp-setup.hostname";
-
-	$rs = sys_command($cmd);
-	return ($rs, '') if ($rs != 0);
-
-	($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
-	return ($rs, '') if ($rs != 0);
-
-	chomp($rdata);
-
-    if ($rdata !~ m/\./) { # hostname contains no dot -> use "hostname -f"
-            my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
-
-            $rs = sys_command($cmd);
-            return ($rs, '') if ($rs != 0);
-
-            ($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
-            return ($rs, '') if ($rs != 0);
-
-            chomp($rdata);
-    }
-
-	$rs = del_file("/tmp/ispcp-setup.hostname");
-	return ($rs, '') if ($rs != 0);
-
-	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
-	return (0, $rdata);
-}
-
-# @TODO NOT USED - Should be rewritten
 sub check_host_interface {
 
 	push_el(\@main::el, 'check_host_interface()', 'Starting...');
@@ -492,8 +344,6 @@ sub check_host_interface {
 	return 0;
 }
 
-# Check the connection to the IspCP database
-# with the login information provided by the user
 sub check_host_sql {
 
 	push_el(\@main::el, 'check_host_sql()', 'Starting...');
@@ -527,7 +377,25 @@ sub check_host_sql {
 	return 0;
 }
 
-# Create users and groups for different services
+sub check_host_system {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'check_host_system()', 'Starting...');
+
+	#$rs = check_host_interface();
+
+	#return $rs if ($rs != 0);
+
+	$rs = check_host_sql();
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'check_host_system()', 'Ending...');
+
+	return 0;
+}
+
 sub setup_system_users {
 
 	my ($rs, $rdata, $cmd) = (undef, undef, undef);
@@ -662,7 +530,6 @@ sub setup_system_dirs {
 
 }
 
-# Update ispcp.conf file
 sub setup_config {
 
 	my ($rs, $rdata) = (undef, undef);
@@ -740,9 +607,6 @@ sub setup_config {
 
 }
 
-# Create and populates the ispCP database
-# Create the SQL user for the FTP service
-# Create the SQL user for PhpMyAdmin
 sub setup_sql {
 
 	my ($rs, $rdata, $cfg_tpl, $cfg) = (undef, undef, undef, undef);
@@ -999,7 +863,6 @@ sub setup_sql {
 
 }
 
-# Adjust the table of static correspondence of hostnames.
 sub setup_hosts {
 
 	my ($rs, $data, $cmd) = (undef, undef, undef);
@@ -1041,71 +904,75 @@ sub setup_hosts {
 
 }
 
-# Stopping services
-# @TODO: Move it in common methods
-sub stop_services {
+sub setup_host_system {
+	push_el(\@main::el, 'setup_host_system()', 'Starting...');
 
-	push_el(\@main::el, '_stop_services()', 'Starting...');
+	my ($rs, $rdata) = (undef, undef);
+	
+	if (!defined($_)) { 
+		$rs = setup_system_users();
+		return $rs if ($rs != 0);
+	}	
 
-	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
-	)
-	{
-		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_})
-		{
-			sys_command("$main::cfg{$_} stop &>/dev/null");
-			sleep 1;
-		}
-	}
+	$rs = setup_system_dirs();
+	return $rs if ($rs != 0);
 
-	push_el(\@main::el, '_stop_services()', 'Ending...');
+	$rs = setup_config();
+	return $rs if ($rs != 0);
 
-	0;
+	$rs = setup_sql();
+	return $rs if ($rs != 0);
+
+	$rs = setup_crontab();
+	return $rs if ($rs != 0);
+
+	$rs = setup_rkhunter();
+	return $rs if ($rs != 0);
+
+	$rs = setup_hosts();
+	return $rs if ($rs != 0);
+
+	$rs = setup_named();
+	return $rs if ($rs != 0);
+
+	$rs = setup_php_master_user_dirs();
+	return $rs if ($rs != 0);
+
+	$rs = setup_php();
+	return $rs if ($rs != 0);
+
+	$rs = setup_httpd();
+	return $rs if ($rs != 0);
+
+	$rs = setup_mta();
+	return $rs if ($rs != 0);
+
+	$rs = setup_po();
+	return $rs if ($rs != 0);
+
+	$rs = setup_ftpd();
+	return $rs if ($rs != 0);
+
+	$rs = setup_ispcpd();
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'setup_host_system()', 'Ending...');
+	return 0;
 }
-# Starting services
-# @TODO: Move it in common methods
-sub start_services {
 
-	push_el(\@main::el, '_start_services()', 'Starting...');
-
-	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
-	)
-	{
-		if( $main::cfg{$_} !~ /no/i && -e $main::cfg{$_})
-		{
-			sys_command("$main::cfg{$_} start &>/dev/null");
-			sleep 1;
-		}
-	}
-
-	push_el(\@main::el, '_start_services()', 'Ending...');
-
-	0;
-}
-#
-##  Subroutines - End
-#
+################################################################################
+##                                  MAIN                                      ##
+################################################################################
 
 # Clear screen
 system('clear');
 
 my $rs = undef;
-my $uc = 0;
+my $uc = 0; 
 
 if (defined($ARGV[0]) && $ARGV[0] eq "-rpm") {
 	#if in rpm mode, rpm setup will create users
-	$uc = 1;
+	$uc = 1; 
 }
 
 $rs = setup_start_up();
@@ -1160,19 +1027,6 @@ if ($rs != 0) {
 	exit 1;
 }
 
-$rs = setup_gui_cfg();
-
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
 $rs = setup_shut_down();
 
 if ($rs != 0) {
@@ -1185,5 +1039,3 @@ if ($rs != 0) {
 
 	exit 1;
 }
-
-exit 0;

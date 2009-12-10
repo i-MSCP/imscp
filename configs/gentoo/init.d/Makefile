@@ -45,7 +45,6 @@ install:
 	if [[ -f conf.d/ispcp_daemon ]]; then \
 		cp -p ispcp_daemon $(ROOT_CONF)/conf.d/ispcp_daemon ; \
 	fi
-
 	if [[ -f conf.d/ispcp_network ]]; then \
 		cp -p ispcp_network $(ROOT_CONF)/conf.d/ispcp_network ; \
 	fi
