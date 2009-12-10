@@ -35,8 +35,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/awstats
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/awstats
-
-	cp ./awstats.ispcp_tpl.conf $(SYSTEM_CONF)/awstats
+	cp -p awstats.ispcp_tpl.conf $(SYSTEM_CONF)/awstats/awstats.ispcp_tpl.conf
 
 uninstall:
 

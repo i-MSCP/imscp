@@ -43,15 +43,21 @@ install:
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp ./01_awstats.conf $(SYSTEM_CONF)/apache
-
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
-	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf
-	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/fcgid_ispcp.conf
+	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf
+	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/working/fcgid_ispcp.conf
+
+	cp $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf $(ROOT_APACHE_CONF)/conf.d/fastcgi_ispcp.conf
+	cp $(SYSTEM_CONF)/apache/working/fcgid_ispcp.conf $(ROOT_APACHE_CONF)/conf.d/fcgid_ispcp.conf
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
+	rm -f $(ROOT_APACHE_CONF)/vhosts.d/ispcp.conf
+	rm -f $(ROOT_APACHE_CONF)/conf.d/fastcgi_ispcp.conf
+	rm -f $(ROOT_APACHE_CONF)/conf.d/fcgid_ispcp.conf

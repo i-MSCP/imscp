@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+ 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -38,33 +38,55 @@ use strict;
 use warnings;
 $SIG{'INT'} = 'IGNORE';
 
-die ("Bad number of arguments!") if (scalar(@ARGV) != 3);
+die ("Undefined Input Data!") if (!defined($ARGV[0]) || !defined($ARGV[1]) || !defined($ARGV[2]));
 
-map {s/'/\\'/g, chop}
-	my $key = gen_sys_rand_num(32),
-	my $iv = gen_sys_rand_num(8);
+my ($php_fname, $perl_fname, $perl_fname2) = ($ARGV[0], $ARGV[1], $ARGV[2]);
 
-# Tags preparation
-my %tags_hash = (
-	'{KEY}' => $key,
-	'{IV}'  => $iv
-);
+my $key = gen_sys_rand_num(32);
+my $iv  = gen_sys_rand_num(8);
 
-my ($rs, $file) = (undef, undef);
+$key =~ s/'/\\'/gi;
+$iv =~ s/'/\\'/gi;
 
-foreach(@ARGV)
-{
-	# Loading the template file
-	($rs, $file) = get_file($_);
-	die("FATAL: Unable to load the template $_ file") if($rs != 0);
+# remove \n at the end of lines;
 
-	# Building the new file
-	($rs, $file) = prep_tpl(\%tags_hash, $file);
-	die("FATAL: Unable to builds the new $_ file") if($rs != 0);
+chop($key);
+chop($iv);
 
-	# Saving the new file
-	$rs = save_file($_, $file);
-	die("FATAL: Unable to save the new $_ file") if($rs != 0);
-}
+my ($rs, $php_file, $perl_file) = (undef, undef, undef);
 
-exit 0;
+my %tag_hash = (
+                    '{KEY}' => $key,
+                    '{IV}'  => $iv
+                );
+
+# php lib;
+
+$php_file = get_file($php_fname);
+
+($rs, $php_file) = prep_tpl(\%tag_hash, $php_file);
+
+return $rs if ($rs != 0);
+
+$rs = save_file($php_fname, $php_file);
+
+return $rs if ($rs != 0);
+
+# perl lib;
+
+$perl_file = get_file($perl_fname);
+
+($rs, $perl_file) = prep_tpl(\%tag_hash, $perl_file);
+
+return $rs if ($rs != 0);
+
+$rs = save_file($perl_fname, $perl_file);
+
+return $rs if ($rs != 0);
+
+
+# perl lib for autoresponder;
+
+$rs = save_file($perl_fname2, $perl_file);
+
+return $rs if ($rs != 0);

@@ -33,4 +33,4 @@ $main::db_pass_key = '{KEY}';
 
 $main::db_pass_iv = '{IV}';
 
-1;
+return 1;

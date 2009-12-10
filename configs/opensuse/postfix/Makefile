@@ -37,16 +37,22 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/postfix
 	$(SYSTEM_MAKE_DIRS) $(ROOT_POSTFIX_CONF)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_POSTFIX_CONF)/ispcp
-
+#
+#       MTA Configuration Files;
+#
 	cp ./main.cf $(SYSTEM_CONF)/postfix/main.cf
 	cp ./master.cf $(SYSTEM_CONF)/postfix/master.cf
 	cp ./smtpd.conf $(SYSTEM_CONF)/postfix/smtpd.conf
 
+#
+#       MTA Configuration Directories;
+#
 	cp -R ./backup $(SYSTEM_CONF)/postfix
 	cp -R ./parts $(SYSTEM_CONF)/postfix
 	cp -R ./working $(SYSTEM_CONF)/postfix
 	cp -R ./ispcp $(SYSTEM_CONF)/postfix
+
+	cp -R ./ispcp $(ROOT_POSTFIX_CONF)
 
 uninstall:
 
