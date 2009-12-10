@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2009-01-18 22:08+0100\n"
 "Last-Translator: István Pongrácz <pongracz.istvan@gmail.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -463,7 +463,7 @@ msgid "CGI support"
 msgstr "CGI támogatás"
 
 #, fuzzy
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "MySQL támogatás"
 
 msgid "MySQL support"
@@ -794,7 +794,7 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1724,6 +1724,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "Ügyfél azonosító"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domain név"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "Csak képet tölthetsz fel!"
 
@@ -2131,9 +2157,6 @@ msgstr "Beállítás frissítése"
 msgid "Domain alias limit reached!"
 msgstr "Elérted a domain alias korlátot!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Hibás domain név formátum!"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "ilyen nevű domain már létezik!"
 
@@ -2306,10 +2329,10 @@ msgstr "ispCP - Domain Alias Kezelés/Alias Módosítás"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Domain Alias Kezelés/Alias Módosítás"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2353,6 +2376,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "Jelszó adat"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3274,9 +3300,6 @@ msgstr "Nincs kiválasztva érvényes alias domain!"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Az aldomain már létezik vagy nem megengedett!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Rossz aldomain formátum!"
-
 msgid "Mount point already in use!"
 msgstr "A csatolási pont már létezik !"
 
@@ -3431,10 +3454,6 @@ msgstr "A felhasználó lista üres!"
 msgid "Details"
 msgstr "Részletek"
 
-#, fuzzy
-msgid "Disk Usage Percent"
-msgstr "Diszk használat"
-
 msgid "Edit domain"
 msgstr "Domain szerkesztés"
 
@@ -3497,9 +3516,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Frissítések keresése sikertelen! A Honlap nem válaszolt."
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3510,6 +3526,9 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Frissítések keresése sikertelen! A Honlap nem válaszolt."
 
 msgid "Email and FTP accounts"
 msgstr "Email és FTP hozzáférések"
@@ -3537,6 +3556,9 @@ msgstr "FTP Hozzáférések"
 
 msgid "Update Hosting Package"
 msgstr "Hosting csomag váltás"
+
+msgid "Add DNS zone's record"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3773,6 +3795,60 @@ msgstr "Prioritás"
 
 msgid "Log in to answer"
 msgstr "Jelentkezzen be a válaszadáshoz"
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Rossz domain név formátum!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Rossz domain név formátum!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Rossz aldomain formátum!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Rossz aldomain formátum!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Rossz domain név formátum!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4048,6 +4124,10 @@ msgstr "Egyedi Hibalapok"
 msgid "Protected Areas"
 msgstr "Védett Területek"
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "MySQL támogatás"
+
 msgid "Custom Apache Logs"
 msgstr "Egyedi Apache Napló"
 
@@ -4114,11 +4194,12 @@ msgstr "Hozzárendelt domain alias aktiválva!"
 msgid "Ordered domain alias not activated!"
 msgstr "Hozzárendelt domain alias nincs aktiválva!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Viszonteladó : Új alias"
 
-msgid "You have no user records."
-msgstr "Nincs felhasználó rekord."
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Körlevél"
@@ -4452,6 +4533,16 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Felhasználó nincs törölve!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Hibás domain név formátum!"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Diszk használat"
+
+#~ msgid "You have no user records."
+#~ msgstr "Nincs felhasználó rekord."
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

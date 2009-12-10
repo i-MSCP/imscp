@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -88,13 +88,15 @@ msgid ""
 "(To avoid abuse, we ask you to write the combination of letters on the above "
 "picture into the field \"Security code\")"
 msgstr ""
-"(Для избежания перебора введите комбинацию букв с изображения \"Код безопасности\")"
+"(Для избежания перебора введите комбинацию букв с изображения \"Код "
+"безопасности\")"
 
 msgid "Request password"
 msgstr "Запрос пароля"
 
 msgid "ispCP - Admin/Manage users/Add User"
-msgstr "ispCP - Администратор / Управление пользователями / Добавить пользователя"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Добавить пользователя"
 
 msgid "Administrator"
 msgstr "Администратор"
@@ -106,8 +108,7 @@ msgstr "Некорректная длина или синтаксис имени
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid."
-msgstr ""
-"Пароль должен быть не короче %s символов и содержать буквы и цифры."
+msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры."
 
 #, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
@@ -201,10 +202,14 @@ msgid "Domain account"
 msgstr "Учётная запись домена"
 
 msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Администратор / Управление пользователями / Редактировать администратора"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Редактировать "
+"администратора"
 
 msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Администратор / Управление пользователями / Редактировать пользователя"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Редактировать "
+"пользователя"
 
 msgid "Edit admin"
 msgstr "Редактировать администратора"
@@ -456,7 +461,8 @@ msgstr "Поддержка PHP"
 msgid "CGI support"
 msgstr "Поддержка CGI"
 
-msgid "Manual DNS support"
+#, fuzzy
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "Поддержка управления DNS"
 
 msgid "MySQL support"
@@ -789,7 +795,8 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+#, fuzzy
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr "Разрешено добавление записей в зону DNS"
 
 msgid "Apache logfiles"
@@ -1044,7 +1051,8 @@ msgid "Reseller list is empty!"
 msgstr "Список реселлеров пуст!"
 
 msgid "ispCP - Admin/Manage users/Reseller assignment"
-msgstr "ispCP - Администратор / Управление пользователями / Назначение реселлера"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Назначение реселлера"
 
 msgid "Reseller assignment"
 msgstr "Назначение реселлера"
@@ -1114,7 +1122,8 @@ msgstr ""
 "<br>Этот пользователь не может быть перемещён!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
-msgstr "ispCP - Администратор / Управление пользователями / Назначение пользователя"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Назначение пользователя"
 
 msgid "User assignment"
 msgstr "Назначение пользователя"
@@ -1327,7 +1336,8 @@ msgid "Customer ID"
 msgstr "ID заказчика"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Администратор / Управление пользователями / Редактировать реселлера"
+msgstr ""
+"ispCP - Администратор / Управление пользователями / Редактировать реселлера"
 
 msgid "Domains"
 msgstr "Домены"
@@ -1391,7 +1401,8 @@ msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!<br>"
 msgstr ""
-"У этого реселлера есть клиент с неограниченными правами на сервис <b>%s</b>!<br>"
+"У этого реселлера есть клиент с неограниченными правами на сервис <b>%s</b>!"
+"<br>"
 
 msgid ""
 "If you want to limit the reseller, you must first limit its customers!<br>"
@@ -1500,8 +1511,8 @@ msgstr "Пользователи SQL"
 
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
-"ispCP - Администратор / Системные инструменты / Проверка лога инструментов борьбы с "
-"руткитами"
+"ispCP - Администратор / Системные инструменты / Проверка лога инструментов "
+"борьбы с руткитами"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -1707,6 +1718,32 @@ msgstr "Запрет внешних логинов для клиентов"
 
 msgid "Custom orderpanel ID"
 msgstr "ID заказчика"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Имя домена"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
 
 msgid "You can only upload images!"
 msgstr "Вы можете закачивать только изображения!"
@@ -2103,9 +2140,6 @@ msgstr "Пожалуйста, укажите точку монтирования
 msgid "Domain alias limit reached!"
 msgstr "Достигнут лимит алиасов!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Некорректный синтаксис <i>доменного имени</i>"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "Домен с этим именем уже существует в системе!"
 
@@ -2274,10 +2308,12 @@ msgstr "ispCP - Управление алиасами / Добавить зап�
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Управление алиасами / Редактировать запись зоны DNS"
 
-msgid "Add DNS zone's record"
+#, fuzzy
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr "Добавить запись зоны DNS"
 
-msgid "Edit DNS zone's record"
+#, fuzzy
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr "Редактировать запись зоны DNS"
 
 msgid "DNS zone's records"
@@ -2315,6 +2351,10 @@ msgstr "Каноническое имя"
 
 msgid "Plain record data"
 msgstr "Данные пустой записи"
+
+#, fuzzy
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr "Записи зоны DNS"
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -2598,7 +2638,8 @@ msgstr "поддержка PHP: выключена"
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
-"У Вас включена поддержка PHP, но новый хостинг-план не имеет данной возможности."
+"У Вас включена поддержка PHP, но новый хостинг-план не имеет данной "
+"возможности."
 
 msgid "CGI Support: enabled"
 msgstr "Поддержка CGI: включена"
@@ -2609,7 +2650,8 @@ msgstr "Поддержка CGI: выключена"
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
-"У Вас включена поддержка CGI, но новый хостинг-план не имеет данной возможности."
+"У Вас включена поддержка CGI, но новый хостинг-план не имеет данной "
+"возможности."
 
 msgid "DNS Support: enabled"
 msgstr "Поддержка DNS: включена"
@@ -2620,10 +2662,13 @@ msgstr "Поддержка DNS: выключена"
 msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
-"У Вас включена поддержка DNS, но новый хостинг-план не имеет данной возможности."
+"У Вас включена поддержка DNS, но новый хостинг-план не имеет данной "
+"возможности."
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr "У Вас используется больше дискового пространства чем доступно в новом хостинг-плане."
+msgstr ""
+"У Вас используется больше дискового пространства чем доступно в новом "
+"хостинг-плане."
 
 msgid "Disk limit"
 msgstr "Лимит дискового пространства"
@@ -2638,16 +2683,19 @@ msgid "You have more aliases in use than the new hosting plan limits."
 msgstr "У Вас используется больше алиасов чем доступно в новом хостинг-плане."
 
 msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr "У Вас используется больше поддоменов чем доступно в новом хостинг-плане."
+msgstr ""
+"У Вас используется больше поддоменов чем доступно в новом хостинг-плане."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
-msgstr "У Вас используется больше адресов email чем доступно в новом хостинг-плане."
+msgstr ""
+"У Вас используется больше адресов email чем доступно в новом хостинг-плане."
 
 msgid "Emails"
 msgstr "Почтовые ящики"
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
-msgstr "У Вас используется больше аккаунтов FTP чем доступно в новом хостинг-плане."
+msgstr ""
+"У Вас используется больше аккаунтов FTP чем доступно в новом хостинг-плане."
 
 msgid "FTPs"
 msgstr "Доступ по FTP"
@@ -2658,7 +2706,8 @@ msgstr "У Вас используется больше баз SQL чем дос
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
 msgstr ""
-"У Вас используется больше пользователей SQL чем доступно в новом хостинг-плане."
+"У Вас используется больше пользователей SQL чем доступно в новом хостинг-"
+"плане."
 
 msgid "free of charge"
 msgstr "бесплатное подключение"
@@ -2682,7 +2731,9 @@ msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Обновить хостинг-план"
 
 msgid "You have more disk space in use than the new hosting plan limits"
-msgstr "У Вас используется больше дискового пространства чем доступно в новом хостинг-плане"
+msgstr ""
+"У Вас используется больше дискового пространства чем доступно в новом "
+"хостинг-плане"
 
 msgid "You have more traffic than the new hosting plan limits"
 msgstr "У Вас используется больше трафика чем доступно в новом хостинг-плане"
@@ -2691,13 +2742,16 @@ msgid "You have more aliases in use than the new hosting plan limits"
 msgstr "У Вас используется больше алиасов чем доступно в новом хостинг-плане"
 
 msgid "You have more subdomains in use than the new hosting plan limits"
-msgstr "У Вас используется больше поддоменов чем доступно в новом хостинг-плане"
+msgstr ""
+"У Вас используется больше поддоменов чем доступно в новом хостинг-плане"
 
 msgid "You have more Email addresses in use than the new hosting plan limits"
-msgstr "У Вас используется больше адресов email чем доступно в новом хостинг-плане"
+msgstr ""
+"У Вас используется больше адресов email чем доступно в новом хостинг-плане"
 
 msgid "You have more FTP accounts in use than the new hosting plan limits"
-msgstr "У Вас используется больше аккаунтов FTP чем доступно в новом хостинг-плане"
+msgstr ""
+"У Вас используется больше аккаунтов FTP чем доступно в новом хостинг-плане"
 
 msgid "You have more SQL databases in use than the new hosting plan limits"
 msgstr "У Вас используется больше баз SQL чем доступно в новом хостинг-плане"
@@ -2705,7 +2759,8 @@ msgstr "У Вас используется больше баз SQL чем дос
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits"
 msgstr ""
-"У Вас используется больше пользователей SQL чем доступно в новом хостинг-плане"
+"У Вас используется больше пользователей SQL чем доступно в новом хостинг-"
+"плане"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ваш запрос на обновление хостинг-плана успешно добавлен"
@@ -3178,9 +3233,9 @@ msgid ""
 "All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
-"Эта база данных будет удалена. Этот процесс нельзя отменить. "
-"Все пользователи этой базы данных будут также удалены если они не "
-"являются пользователями другой базы. Вы уверены что хотите удалить %s?"
+"Эта база данных будет удалена. Этот процесс нельзя отменить. Все "
+"пользователи этой базы данных будут также удалены если они не являются "
+"пользователями другой базы. Вы уверены что хотите удалить %s?"
 
 msgid "SQL users limit reached!"
 msgstr "Лимит пользователей SQL достигнут!"
@@ -3233,9 +3288,6 @@ msgstr "Выбран некорректный алиас для домена!"
 
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Такой поддомен уже существует или недопустим!"
-
-msgid "Wrong subdomain syntax!"
-msgstr "Неправильный синтаксис поддомена!"
 
 msgid "Mount point already in use!"
 msgstr "Такая точка монтирования поддомена уже существует!"
@@ -3390,9 +3442,6 @@ msgstr "Список пользователей пуст!"
 msgid "Details"
 msgstr "Детали"
 
-msgid "Disk Usage Percent"
-msgstr "Диск, %"
-
 msgid "Edit domain"
 msgstr "Редактировать домен"
 
@@ -3454,9 +3503,6 @@ msgstr "%.2f Кб"
 msgid "%d B"
 msgstr "%d Б"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Не возможна проверка обновлений! Сайт не отвечает."
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Файл %s не существует или недоступен!"
@@ -3467,6 +3513,9 @@ msgstr "Возникла ошибка при получении списка с�
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr "Этот IP (%s) не установлен ни на какую сетевую карту!"
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Не возможна проверка обновлений! Сайт не отвечает."
 
 msgid "Email and FTP accounts"
 msgstr "Учётные записи почты и FTP"
@@ -3494,6 +3543,9 @@ msgstr "Учётные записи FTP"
 
 msgid "Update Hosting Package"
 msgstr "Обновить хостинг-пакет"
+
+msgid "Add DNS zone's record"
+msgstr "Добавить запись зоны DNS"
 
 msgid "Manage SSL certificate"
 msgstr "Управление SSL сертификатом"
@@ -3720,6 +3772,60 @@ msgstr "Приоритет: %s\n"
 
 msgid "Log in to answer"
 msgstr "Введите логин и пароль чтобы ответить"
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Неправильный синтаксис доменного имени!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Неправильный синтаксис доменного имени!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Неправильный синтаксис поддомена!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Неправильный синтаксис поддомена!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Неправильный синтаксис доменного имени!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3988,6 +4094,9 @@ msgstr "Персональные страницы ошибок"
 msgid "Protected Areas"
 msgstr "Защищенные Зоны"
 
+msgid "Manual DNS support"
+msgstr "Поддержка управления DNS"
+
 msgid "Custom Apache Logs"
 msgstr "Выборочные логи Apache"
 
@@ -4054,11 +4163,12 @@ msgstr "Заказанный алиас домена активирован!"
 msgid "Ordered domain alias not activated!"
 msgstr "Заказанный алиас домена не активирован!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP - Реселлер / Добавить алиас"
 
-msgid "You have no user records."
-msgstr "У Вас нет записей пользователей."
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Почтовая рассылка"
@@ -4296,8 +4406,7 @@ msgid "Next step"
 msgstr "Следующий шаг"
 
 msgid "You have no hosting plans. Please contact your system administrator."
-msgstr ""
-"У вас нет хостинг планов. Свяжитесь с вашим системным администратором."
+msgstr "У вас нет хостинг планов. Свяжитесь с вашим системным администратором."
 
 msgid "ispCP - User/Add user(step2)"
 msgstr "ispCP - Пользователь / Добавить пользователя (шаг 2)"
@@ -4374,6 +4483,15 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Пользователь не завершил работу!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Некорректный синтаксис <i>доменного имени</i>"
+
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Диск, %"
+
+#~ msgid "You have no user records."
+#~ msgstr "У Вас нет записей пользователей."
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

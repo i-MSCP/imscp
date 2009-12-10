@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: en_GB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (Britain) <en_GB@li.org>\n"
@@ -451,7 +451,7 @@ msgstr ""
 msgid "CGI support"
 msgstr ""
 
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
 msgid "MySQL support"
@@ -788,7 +788,7 @@ msgstr ""
 msgid "CGI / Perl"
 msgstr ""
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1690,6 +1690,31 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr ""
 
+msgid "Domain names validation"
+msgstr ""
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr ""
 
@@ -2083,9 +2108,6 @@ msgstr "Incorrect <i>mount point</i> syntax!"
 msgid "Domain alias limit reached!"
 msgstr ""
 
-msgid "Incorrect domain name syntax"
-msgstr "Incorrect <i>domain name</i> syntax"
-
 msgid "Domain with that name already exists on the system!"
 msgstr ""
 
@@ -2245,10 +2267,10 @@ msgstr ""
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr ""
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2285,6 +2307,9 @@ msgid "Canonical name"
 msgstr ""
 
 msgid "Plain record data"
+msgstr ""
+
+msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr ""
 
 #, php-format
@@ -3188,9 +3213,6 @@ msgstr ""
 msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
-msgid "Wrong subdomain syntax!"
-msgstr ""
-
 msgid "Mount point already in use!"
 msgstr ""
 
@@ -3346,9 +3368,6 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-msgid "Disk Usage Percent"
-msgstr ""
-
 msgid "Edit domain"
 msgstr ""
 
@@ -3410,9 +3429,6 @@ msgstr ""
 msgid "%d B"
 msgstr ""
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3422,6 +3438,9 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3449,6 +3468,9 @@ msgid "FTP Accounts"
 msgstr ""
 
 msgid "Update Hosting Package"
+msgstr ""
+
+msgid "Add DNS zone's record"
 msgstr ""
 
 msgid "Manage SSL certificate"
@@ -3605,6 +3627,57 @@ msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Log in to answer"
+msgstr ""
+
+msgid "Wrong domain name syntax or number of labels"
+msgstr ""
+
+msgid " Wrong domain name lenght!"
+msgstr ""
+
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Incorrect <i>max subdomain</i> count or syntax!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -3842,6 +3915,9 @@ msgstr ""
 msgid "Protected Areas"
 msgstr ""
 
+msgid "Manual DNS support"
+msgstr ""
+
 msgid "Custom Apache Logs"
 msgstr ""
 
@@ -3908,10 +3984,10 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "ispCP Reseller : Add Alias"
+msgid "ispCP Reseller: Add Alias"
 msgstr ""
 
-msgid "You have no user records."
+msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
 msgid "ispCP - Circular"
@@ -4225,6 +4301,9 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Incorrect <i>domain name</i> syntax"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

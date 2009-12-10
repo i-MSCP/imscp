@@ -2,12 +2,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl_NL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2008-10-05 13:00+0100\n"
 "Last-Translator: mata <mata@ezh.be>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\\n\n"
 "X-Generator: x64PoPot 0.2\n"
@@ -459,7 +459,7 @@ msgid "CGI support"
 msgstr "CGI ondersteuning"
 
 #, fuzzy
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "MySQL ondersteuning"
 
 msgid "MySQL support"
@@ -793,7 +793,7 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1727,6 +1727,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "Klant ID"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domeinnaam"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "U kunt alleen plaatjes uploaden!"
 
@@ -2133,9 +2159,6 @@ msgstr "Even geduld voor update"
 msgid "Domain alias limit reached!"
 msgstr "Domein alias limiet bereikt!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Onjuiste domeinnaam syntax!"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "Domein met die naam bestaat al!"
 
@@ -2309,10 +2332,10 @@ msgstr "ispCP - Beheer Domein Aliassen/Wijzig Alias"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Beheer Domein Aliassen/Wijzig Alias"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2356,6 +2379,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "Wachtwoord informatie"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3281,9 +3307,6 @@ msgstr "Domein alias limiet bereikt!"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Subdomein bestaat al of is niet toegestaan!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Verkeerde subdomein syntax"
-
 #, fuzzy
 msgid "Mount point already in use!"
 msgstr "Subdomein mount point bestaat al"
@@ -3439,10 +3462,6 @@ msgstr "Er zijn nog geen gebruikers"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
-msgid "Disk Usage Percent"
-msgstr "Schijfgebruik"
-
 msgid "Edit domain"
 msgstr "Wijzig domein"
 
@@ -3505,9 +3524,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Kan niet naar nieuwe update zoeken ! Website is niet te bereiken."
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3518,6 +3534,9 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Kan niet naar nieuwe update zoeken ! Website is niet te bereiken."
 
 msgid "Email and FTP accounts"
 msgstr "E-mail en FTP accounts"
@@ -3545,6 +3564,9 @@ msgstr "FTP Accounts"
 
 msgid "Update Hosting Package"
 msgstr "Update Hosting Pakket"
+
+msgid "Add DNS zone's record"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3776,6 +3798,60 @@ msgstr "Prioriteit"
 #, fuzzy
 msgid "Log in to answer"
 msgstr "Log in om te antwoorden."
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Verkeerde domeinnaam syntax"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Verkeerde domeinnaam syntax"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Verkeerde subdomein syntax"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Verkeerde subdomein syntax"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Verkeerde domeinnaam syntax"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4052,6 +4128,10 @@ msgstr "Aangepaste error paginas"
 msgid "Protected Areas"
 msgstr "Beschermde gebieden"
 
+#, fuzzy
+msgid "Manual DNS support"
+msgstr "MySQL ondersteuning"
+
 msgid "Custom Apache Logs"
 msgstr "Aangepaste Apache Logs"
 
@@ -4118,11 +4198,12 @@ msgstr "Bestelde domein alias geactiveerd!"
 msgid "Ordered domain alias not activated!"
 msgstr "Bestelde domein alias niet geactiveerd!"
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP - Reseller : Toevoegen Alias"
 
-msgid "You have no user records."
-msgstr "U heeft geen gebruikers"
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
 
 msgid "ispCP - Circular"
 msgstr "ispCP - cirkelvormig"
@@ -4455,6 +4536,16 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Gebruiker niet beeindigd!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Onjuiste domeinnaam syntax!"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Schijfgebruik"
+
+#~ msgid "You have no user records."
+#~ msgstr "U heeft geen gebruikers"
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

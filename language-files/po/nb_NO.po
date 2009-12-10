@@ -7,12 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-30 18:29+0200\n"
+"POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2008-04-21 12:41+0100\n"
 "Last-Translator: Karl M. Kittilsen <karl@kittilsen.org>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Please ignore this entry
@@ -459,7 +459,7 @@ msgstr "PHP hjelp"
 msgid "CGI support"
 msgstr "CGI hjelp"
 
-msgid "Manual DNS support"
+msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
 msgid "MySQL support"
@@ -792,7 +792,7 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-msgid "Allow adding records to DNS zone"
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
 msgstr ""
 
 msgid "Apache logfiles"
@@ -1719,6 +1719,32 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr "Kunde ID"
 
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domenenavn"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
 msgid "You can only upload images!"
 msgstr "Du kan bare last opp bilder!"
 
@@ -2126,9 +2152,6 @@ msgstr "Venligst vent på en oppdatering"
 msgid "Domain alias limit reached!"
 msgstr "Grensen for domene peker nådd!"
 
-msgid "Incorrect domain name syntax"
-msgstr "Ugyldig form på domenenavn"
-
 msgid "Domain with that name already exists on the system!"
 msgstr "Et domene med det navnet eksisterer allerede på systemet!"
 
@@ -2299,10 +2322,10 @@ msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 
-msgid "Add DNS zone's record"
+msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
-msgid "Edit DNS zone's record"
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
 msgstr ""
 
 msgid "DNS zone's records"
@@ -2346,6 +2369,9 @@ msgstr ""
 #, fuzzy
 msgid "Plain record data"
 msgstr "Passord data"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3286,9 +3312,6 @@ msgstr "Grensen for domene peker nådd!"
 msgid "Subdomain already exists or is not allowed!"
 msgstr "Underdomenet eksisterer allerede eller er ikke tillatt!"
 
-msgid "Wrong subdomain syntax!"
-msgstr "Gal form på Underdomenet!"
-
 #, fuzzy
 msgid "Mount point already in use!"
 msgstr "Underdomenets monteringspunkt eksisterer allerede!"
@@ -3446,10 +3469,6 @@ msgid "Details"
 msgstr "Detaljer"
 
 #, fuzzy
-msgid "Disk Usage Percent"
-msgstr "Disk bruk"
-
-#, fuzzy
 msgid "Edit domain"
 msgstr "Endre domene"
 
@@ -3512,9 +3531,6 @@ msgstr "%.2f KB"
 msgid "%d B"
 msgstr "%d B"
 
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
-
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
 msgstr ""
@@ -3525,6 +3541,9 @@ msgstr ""
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
+
+msgid "Couldn't check for updates! Website not reachable."
+msgstr "Kunne ikke sjekke etter oppdateringer! Websiden er ikke tilgjengelig."
 
 msgid "Email and FTP accounts"
 msgstr "Email og FTP kontoer"
@@ -3551,6 +3570,9 @@ msgid "FTP Accounts"
 msgstr "FTP Kontoer"
 
 msgid "Update Hosting Package"
+msgstr ""
+
+msgid "Add DNS zone's record"
 msgstr ""
 
 msgid "Manage SSL certificate"
@@ -3750,6 +3772,60 @@ msgid "Priority: %s\n"
 msgstr "Prioritet"
 
 msgid "Log in to answer"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Galt utseende på domene navnet!"
+
+#, fuzzy
+msgid " Wrong domain name lenght!"
+msgstr "Galt utseende på domene navnet!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Gal form på Underdomenet!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Gal form på Underdomenet!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Galt utseende på domene navnet!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -4003,6 +4079,9 @@ msgstr "Egendefinerte Feilsider"
 msgid "Protected Areas"
 msgstr "Beskyttede områder"
 
+msgid "Manual DNS support"
+msgstr ""
+
 msgid "Custom Apache Logs"
 msgstr "Egendefinerte Apache Logger"
 
@@ -4070,10 +4149,11 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "ispCP Reseller : Add Alias"
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Forhandler : Legg til Pekere"
 
-msgid "You have no user records."
+msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
 #, fuzzy
@@ -4414,6 +4494,13 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr "Bruker ikke avsluttet!"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Ugyldig form på domenenavn"
+
+#, fuzzy
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Disk bruk"
 
 #, fuzzy
 #~ msgid "Default panel language changed!"

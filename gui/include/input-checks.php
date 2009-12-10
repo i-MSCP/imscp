@@ -691,8 +691,8 @@ function isACE($label) {
 	if(strpos($label, 'xn--' ) === 0) {
 
 		$validation_err_msg = tr(
-			'Error, ACE labels are not allowed, please use the ToUnicode equivalent. <br />' .
-			'<small>Example: for the ACE label <b>xn--bcher-kva</b>, type <b>bücher</b> instead</small>.'
+			"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br />".
+			"<small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 		);
 
 		return true;
