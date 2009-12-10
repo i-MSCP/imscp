@@ -33,12 +33,14 @@
     <tr>
     <td><a href="error_pages.php" class="submenu">{TR_MENU_ERROR_PAGES}</a></td>
   </tr>
+  <!-- BDP: active_backup -->
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
     <tr>
     <td><a href="backup.php" class="submenu">{TR_MENU_DAILY_BACKUP}</a></td>
   </tr>
+<!-- EDP: active_backup -->
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>

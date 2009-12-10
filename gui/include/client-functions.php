@@ -51,6 +51,7 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
 			`domain_disk_usage`,
 			`domain_php`,
 			`domain_cgi`,
+			`allowbackup`,
 			`domain_dns`
 		FROM
 			`domain`
@@ -82,6 +83,7 @@ SQL_QUERY;
 			$rs->fields['domain_disk_usage'],
 			$rs->fields['domain_php'],
 			$rs->fields['domain_cgi'],
+			$rs->fields['allowbackup'],
 			$rs->fields['domain_dns']
 		);
 	} else {
