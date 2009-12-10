@@ -34,8 +34,6 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/bind
-	cp ./named.conf ./working
-	cp ./named.conf ./backup/named.conf.ispcp
 	cp ./named.conf $(SYSTEM_CONF)/bind
 	cp -R ./backup $(SYSTEM_CONF)/bind
 	cp -R ./parts $(SYSTEM_CONF)/bind

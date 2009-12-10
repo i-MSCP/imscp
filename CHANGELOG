@@ -23,6 +23,8 @@ ispCP ω 1.0.3 Changelog
 		* Fixed somes issues related to Rfc 3490:
 			- Hyphens are now banned in 2nd and 3rd position of input string
 			- ACE labels are no longer allowed as input string
+	- SETUP:
+		* Integration of the new update script and several changes related it -Must be tested and debugged
 
 2009-12-04 Benedikt Heintel
 	- ENGINE:

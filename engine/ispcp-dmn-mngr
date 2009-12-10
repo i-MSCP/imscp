@@ -93,33 +93,34 @@ sub dmn_mngr_shut_down {
 ## Add DNS CFG Data
 ##
 sub dmn_add_named_cfg_data {
-	my ($dmn_data) = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Starting...');
-	if (!defined($dmn_data) || $dmn_data eq '') {
-		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
+
+	my ($data) = @_;
+
+	my ($rs, $rdata, $cmd, $working) = (undef, undef, undef, undef);
+
+	if (!defined($data) || $data eq '')
+	{
+		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'FATAL: Undefined Input Data...');
 		return -1;
 	}
 
-	#
-	# Initial data we need;
-	#
-	my $dmn_name     = @$dmn_data[1];
-	my $conf_dir     = $main::cfg{'CONF_DIR'};
-	my $sys_cfg      = $main::cfg{'BIND_CONF_FILE'};
-	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-	my $tpl_dir      = "$conf_dir/bind/parts";
-	my $backup_dir   = "$conf_dir/bind/backup";
-	my $working_dir  = "$conf_dir/bind/working";
-	my $timestamp    = time;
-	my $backup_cfg   = "$backup_dir/named.conf.$timestamp";
-	my $working_cfg  = "$working_dir/named.conf";
+	# Domain name
+	my $zone_name = @$data[1];
+
+	# Directories paths
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
+	my $tpl_dir = "$cfg_dir/parts";
+	my $bkp_dir = "$cfg_dir/backup";
+	my $wrk_dir = "$cfg_dir/working";
 
 	#
-	#  BEGIN/END tags, and templates needed for this config;
+	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
 	#
+
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
+
 	(
 		$rs,
 		$dta_b,
@@ -138,13 +139,22 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct needed tags and entries;
+	## Loading all needed template from (eg. /etc/ispcp/bind/parts/) - End
 	#
+
+	#
+	## Let's construct needed tags and entries - Begin
+	#
+
+	# Tags
 	my %tag_hash = (
-		'{DMN_NAME}' => $dmn_name,
-		'{DB_DIR}'   => $named_db_dir
+		'{DMN_NAME}' => $zone_name,
+		'{DB_DIR}'   => $main::cfg{'BIND_DB_DIR'}
 	);
+
+	# Entries
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+
 	(
 		$rs,
 		$entry_b_val,
@@ -159,69 +169,89 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's get System and Working config files;
+	## Let's construct needed tags and entries - End
 	#
-	my ($sys, $working) = ('', '');
 
-	($rs, $sys) = get_file($sys_cfg);
-	return $rs  if ($rs != 0);
+	# Loading the working file from (eg. /etc/ispcp/bind/working/)
+	($rs, $working) = get_file("$wrk_dir/named.conf");
+	return $rs if ($rs != 0);
 
-	($rs, $working) = get_file($working_cfg);
-	return $rs  if ($rs != 0);
-
+	# Check the validity of the working file
 	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
 	return $rs if ($rs != 0);
 
 	#
-	# Does the new domain entry exists ?
+	## If the new entry already exists, remove it - Begin
 	#
+
+	# Check if the new entry already exists in the current working file
 	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-	if ($rs == 0) {
-		# Yes it exists ! Then we must delete it !
+
+	# If the entry exists, remove it !
+	if ($rs == 0)
+	{
 		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
 		return $rs if ($rs != 0);
 	}
+
+	#
+	## If the new entry already exists, remove it - End
+	#
+
+	# Check the validity of the working file
 	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct the replacement and do it;
+	## Saving the current production file if it exist - Begin
 	#
+
+	if(-e $main::cfg{'BIND_CONF_FILE'})
+	{
+		my $timestamp = time;
+
+		my $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bkp_dir/named.conf.$timestamp";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
+	}
+
+	#
+	## Saving the current production file if it exist - End
+	#
+
+	#
+	## Building, storage and installation of the new file  - Begin
+	#
+
+	# Let's construct the replacement and do it
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
+
+	# Building the new file
 	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
 	return $rs if ($rs != 0);
 
-	#
-	# Here we'll backup production config file;
-	#
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
+	# Store the new file in working directory
+	$rs = store_file(
+		"$wrk_dir/named.conf",
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
+	return $rs if ($rs != 0);
+
+	# Install the new file in production directory
+	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/named.conf $main::cfg{'BIND_CONF_FILE'}";
+	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
 	#
-	# Let's save working copy;
+	## Building, storage and installation of the new file  - End
 	#
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	#
-	# Here we'll replace data in production config file with data in working
-	# confing file. A little workaround will be done. If working copy data does not exist
-	# in production config then we will add it;
-	#
-	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
-	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_add_named_cfg_data");
-		return $rs if ($rs != 0);
-		} elsif ($rs == -5) {
-		$sys .= $working;
-	} else {
-		return $rs;
-	}
-	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
@@ -410,8 +440,8 @@ sub dmn_add_named_db_data {
 		'db_e.tpl',
 		'db_dns2_b.tpl',
 		'db_dns2_e.tpl',
-                'db_dns_entry_b.tpl',
-                'db_dns_entry_e.tpl',
+		'db_dns_entry_b.tpl',
+		'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl',
 		'db_time_b.tpl',
 		'db_time_e.tpl'
