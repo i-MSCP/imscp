@@ -4,6 +4,8 @@ ispCP ω 1.0.3 Changelog
 2009-12-11 Laurent Declercq
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN
+		* Orderpanel: Domain name validation - Old error message deleted
+		* Added status of available functionalities (Backup and Manual DNS) in customer overview page
 
 2009-12-10 Laurent Declercq
 	- GUI:

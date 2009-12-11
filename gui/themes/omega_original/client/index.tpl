@@ -72,6 +72,20 @@
             <td width="230" class="content2">{CGI_SUPPORT}</td>
           </tr>
           <!-- EDP: t_cgi_support -->
+          <!-- BDP: t_dns_support -->
+          <tr>
+            <td width="25">&nbsp;</td>
+            <td class="content">{TR_DNS_SUPPORT}</td>
+            <td width="230" class="content2">{DNS_SUPPORT}</td>
+          </tr>
+          <!-- EDP: t_dns_support -->
+          <!-- BDP: t_backup_support -->
+          <tr>
+            <td width="25">&nbsp;</td>
+            <td class="content">{TR_BACKUP_SUPPORT}</td>
+            <td width="230" class="content2">{BACKUP_SUPPORT}</td>
+          </tr>
+          <!-- EDP: t_backup_support -->
           <!-- BDP: t_sql1_support -->
           <tr>
             <td width="25">&nbsp;</td>
