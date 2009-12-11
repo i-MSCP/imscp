@@ -190,7 +190,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 }
 
 /**
- * chk_username
+ * Checks validity of the username
  *
  * @param String $data username to be checked
  * @param int $max_char number of max. chars
@@ -249,7 +249,41 @@ function validates_username($username, $min_char = 2, $max_char = 30) {
 /**
  * @todo document this function
  */
-function chk_email($email, $num = 50) {
+function chk_email($email, $num = 60) {
+	if (strlen($email) > $num) {
+		return false;
+	}
+
+	// split e-mail address by @ chars
+	$email_part = exlpode("@", $email);
+	// check if at least two parts are available
+	$part_count = count($email_part)
+	if ($part_count < 2) {
+		return false
+	}
+
+	// rebuild the local part (necessary if more than one @ contained)
+	$local_part = $email_part[0];
+	for ($i = 1, $i < $part_count - 1) {
+		$local_part .= "@". $email_part[$i];
+	}
+	// check the local part (before last @) first
+	if (ispcp_check_local_part($local_part, $num) {
+		// now check the domain part
+		return full_domain_check($email_part[$part_count-1]);
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Checks validity of an e-mail address' local part
+ *
+ * @param String $email e-mail address to be checked
+ * @param int $num max. length of e-mail address
+ * @return boolean true, if correct
+ */
+function ispcp_check_local_part($email, $num = 60) {
 	if (strlen($email) > $num) {
 		return false;
 	}
@@ -259,34 +293,7 @@ function chk_email($email, $num = 50) {
 	$nqtext = "[^\\\\$nonascii\015\012\"]"; // all not qouteable chars
 	$qchar = "\\\\[^$nonascii]";			// matched quoted chars
 
-	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
-	$user_part = "(?:$normuser|$quotedstring)";
-
-	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\\.';
-	$dom_subpart = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\\.)*';
-	$dom_tldpart = '[a-zA-Z]{2,5}';
-	$domain_part = "$dom_subpart$dom_mainpart$dom_tldpart";
-
-	$regex = "$user_part\@$domain_part";
-	// RegEx end
-	return (bool) preg_match("/^$regex$/", $email);
-}
-
-/**
- * @todo document this function
- */
-function ispcp_check_local_part($email, $num = 50) {
-	if (strlen($email) > $num) {
-		return false;
-	}
-	// RegEx begin
-	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
-
-	$nqtext = "[^\\\\$nonascii\015\012\"]";
-	$qchar = "\\\\[^$nonascii]";
-
-	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
+	$normuser = '[a-zA-Z0-9!#$%&\'*+-\/=?^_`{|}~]+';
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
