@@ -15,7 +15,7 @@
   endscript
 }
 
-/var/log/apache2/backup/*.log.perv {
+/var/log/apache2/backup/*.log.prev {
   size 5M
   missingok
   rotate 5
