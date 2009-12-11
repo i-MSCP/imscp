@@ -1,6 +1,14 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-11 Laurent Declercq
+	- GUI:
+		* Fixed #2098: Unable to add subdomain linked to an IDN
+
+2009-12-10 Laurent Declercq
+	- GUI:
+		* Fixed #1995: Client/Daily Backup
+
 2009-12-10 Benedikt Heintel
 	- LANGUAGES:
 		* Updated all .po files
