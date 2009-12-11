@@ -1,7 +1,7 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2009-12-10 Laurent Declercq
+2009-12-11 Laurent Declercq
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN
 
