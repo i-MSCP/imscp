@@ -1,5 +1,9 @@
-ispCP ω 1.0.3 Changelog
+ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2009-12-12 Benedikt Heintel
+	- ENGINE:
+		* Fixed #266: Default 404 page when disable domain
 
 2009-12-11 Laurent Declercq
 	- GUI:

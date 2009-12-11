@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP . (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
@@ -24,7 +24,7 @@
 # Portions created by the ispCP Team are Copyright (C) 2006-2009 by
 # isp Control Panel. All Rights Reserved.
 #
-# The ispCP ω Home Page is:
+# The ispCP . Home Page is:
 #
 #    http://isp-control.net
 #
@@ -93,34 +93,33 @@ sub dmn_mngr_shut_down {
 ## Add DNS CFG Data
 ##
 sub dmn_add_named_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	my ($rs, $rdata, $cmd, $working) = (undef, undef, undef, undef);
-
-	if (!defined($data) || $data eq '')
-	{
-		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'FATAL: Undefined Input Data...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
 		return -1;
 	}
 
-	# Domain name
-	my $zone_name = @$data[1];
-
-	# Directories paths
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
-	my $tpl_dir = "$cfg_dir/parts";
-	my $bkp_dir = "$cfg_dir/backup";
-	my $wrk_dir = "$cfg_dir/working";
+	#
+	# Initial data we need;
+	#
+	my $dmn_name     = @$dmn_data[1];
+	my $conf_dir     = $main::cfg{'CONF_DIR'};
+	my $sys_cfg      = $main::cfg{'BIND_CONF_FILE'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $tpl_dir      = "$conf_dir/bind/parts";
+	my $backup_dir   = "$conf_dir/bind/backup";
+	my $working_dir  = "$conf_dir/bind/working";
+	my $timestamp    = time;
+	my $backup_cfg   = "$backup_dir/named.conf.$timestamp";
+	my $working_cfg  = "$working_dir/named.conf";
 
 	#
-	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
+	#  BEGIN/END tags, and templates needed for this config;
 	#
-
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
-
 	(
 		$rs,
 		$dta_b,
@@ -139,22 +138,13 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed template from (eg. /etc/ispcp/bind/parts/) - End
+	# Let's construct needed tags and entries;
 	#
-
-	#
-	## Let's construct needed tags and entries - Begin
-	#
-
-	# Tags
 	my %tag_hash = (
-		'{DMN_NAME}' => $zone_name,
-		'{DB_DIR}'   => $main::cfg{'BIND_DB_DIR'}
+		'{DMN_NAME}' => $dmn_name,
+		'{DB_DIR}'   => $named_db_dir
 	);
-
-	# Entries
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
-
 	(
 		$rs,
 		$entry_b_val,
@@ -169,89 +159,69 @@ sub dmn_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Let's construct needed tags and entries - End
+	# Let's get System and Working config files;
 	#
+	my ($sys, $working) = ('', '');
 
-	# Loading the working file from (eg. /etc/ispcp/bind/working/)
-	($rs, $working) = get_file("$wrk_dir/named.conf");
-	return $rs if ($rs != 0);
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs  if ($rs != 0);
 
-	# Check the validity of the working file
+	($rs, $working) = get_file($working_cfg);
+	return $rs  if ($rs != 0);
+
 	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
 	return $rs if ($rs != 0);
 
 	#
-	## If the new entry already exists, remove it - Begin
+	# Does the new domain entry exists ?
 	#
-
-	# Check if the new entry already exists in the current working file
 	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-
-	# If the entry exists, remove it !
-	if ($rs == 0)
-	{
+	if ($rs == 0) {
+		# Yes it exists ! Then we must delete it !
 		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
 		return $rs if ($rs != 0);
 	}
-
-	#
-	## If the new entry already exists, remove it - End
-	#
-
-	# Check the validity of the working file
 	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
 	return $rs if ($rs != 0);
 
 	#
-	## Saving the current production file if it exist - Begin
+	# Let's construct the replacement and do it;
 	#
-
-	if(-e $main::cfg{'BIND_CONF_FILE'})
-	{
-		my $timestamp = time;
-
-		my $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bkp_dir/named.conf.$timestamp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-	}
-
-	#
-	## Saving the current production file if it exist - End
-	#
-
-	#
-	## Building, storage and installation of the new file  - Begin
-	#
-
-	# Let's construct the replacement and do it
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
-
-	# Building the new file
 	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
 	return $rs if ($rs != 0);
 
-	# Store the new file in working directory
-	$rs = store_file(
-		"$wrk_dir/named.conf",
-		$working,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0644
-	);
-	return $rs if ($rs != 0);
-
-	# Install the new file in production directory
-	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/named.conf $main::cfg{'BIND_CONF_FILE'}";
-	$rs = sys_command($cmd);
+	#
+	# Here we'll backup production config file;
+	#
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
 	return $rs if ($rs != 0);
 
 	#
-	## Building, storage and installation of the new file  - End
+	# Let's save working copy;
 	#
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Here we'll replace data in production config file with data in working
+	# confing file. A little workaround will be done. If working copy data does not exist
+	# in production config then we will add it;
+	#
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
+	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
+		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_add_named_cfg_data");
+		return $rs if ($rs != 0);
+		} elsif ($rs == -5) {
+		$sys .= $working;
+	} else {
+		return $rs;
+	}
+	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Ending...');
-
-	0;
+	return 0;
 }
 
 ################################################################################
@@ -440,8 +410,8 @@ sub dmn_add_named_db_data {
 		'db_e.tpl',
 		'db_dns2_b.tpl',
 		'db_dns2_e.tpl',
-		'db_dns_entry_b.tpl',
-		'db_dns_entry_e.tpl',
+                'db_dns_entry_b.tpl',
+                'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl',
 		'db_time_b.tpl',
 		'db_time_e.tpl'
@@ -1470,6 +1440,7 @@ sub dmn_add_httpd_file_data {
 	my $pear_dir            = $main::cfg{'PEAR_DIR'};
 	my $starter_dir         = $main::cfg{'PHP_STARTER_DIR'};
 	my $conf_dir            = $main::cfg{'CONF_DIR'};
+	my $httpd_uid           = $main::cfg{'APACHE_USER'};
 	my $httpd_gid           = $main::cfg{'APACHE_GROUP'};
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 	my $suexec_user_pref    = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1640,7 +1611,7 @@ sub dmn_add_httpd_file_data {
 	#
 	# Default domain page template;
 	#
-	# check if htdocs folder not exists
+	# check if htdocs folder does not exist
 	if (!(-e "$www_dir/$dmn_name/htdocs/")) {
 		$rs = make_dir(
 			"$www_dir/$dmn_name/htdocs",
@@ -1690,7 +1661,60 @@ sub dmn_add_httpd_file_data {
 			return $rs if ($rs != 0);
 		}
 	}
+    
+    # Default disable page template;
+	#
+	# check if disable folder does not exist
+	if (!(-e "$www_dir/$dmn_name/disabled")) {
+		$rs = make_dir(
+			"$www_dir/$dmn_name/disabled",
+			$httpd_uid,
+			$httpd_gid,
+			0755
+		);
+		return $rs if ($rs != 0);
 
+		my ($index_tpl, $err_cfg_dir) = (undef, undef);
+		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
+		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
+		return $rs if ($rs != 0);
+
+		my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+		my %tag_hash = (
+			'{DOMAIN_NAME}' => $decoded_dmn_name,
+			'{BASE_SERVER_VHOST}' => $vhost
+		);
+		($rs, $cfg) = prep_tpl(\%tag_hash, $index_tpl);
+		return $rs if ($rs != 0);
+
+		($rs, $rdata) = store_file(
+			"$www_dir/$dmn_name/disabled/index.html",
+			$cfg,
+			$httpd_uid,
+			$httpd_gid,
+			0644
+		);
+		return $rs if ($rs != 0);
+
+		$rs = sys_command("$main::cfg{'CMD_CP'} -Rp $root_dir/gui/domain_disable_page/images $www_dir/$dmn_name/disabled/");
+		return $rs if ($rs != 0);
+
+		$rs = setfmode("$www_dir/$dmn_name/disabled/images", $httpd_uid, $httpd_gid, 0755);
+		return $rs if ($rs != 0);
+
+		opendir(DIR, "$www_dir/$dmn_name/htdocs/images/");
+		my @files = readdir(DIR);
+		closedir(DIR);
+
+		foreach (@files) {
+			# ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+			$rs = setfmode("$www_dir/$dmn_name/disabled/images/$_", $httpd_uid, $httpd_gid, 0644);
+			return $rs if ($rs != 0);
+		}
+	}
+ 
 	#
 	# php.ini for the new domain
 	#
@@ -1743,6 +1767,7 @@ sub dmn_add_httpd_file_data {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	#
 	# php-fcgi-starters for every domain
 	#
@@ -2019,7 +2044,7 @@ sub dmn_del_httpd_file_data {
 	#
 	if ( -e "$www_dir/$dmn_name" ) {
 		($rs, $rdata) = del_dir("$www_dir/$dmn_name");
-		} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
+	} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
 		($rs, $rdata) = del_dir("$www_dir/$dmn_name.disabled");
 	}
 	return $rs if ($rs != 0);
@@ -3729,24 +3754,20 @@ sub dmn_enable_data {
 		return -1;
 	}
 
-	my $dmn_name         = @$dmn_data[1];
-	my $www_dir          = $main::cfg{'APACHE_WWW_DIR'};
-	my $dmn_dir          = "$www_dir/$dmn_name";
-	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-	my $cmd_rm           = $main::cfg{'CMD_RM'};
-	my $cmd_mv           = $main::cfg{'CMD_MV'};
-	my ($cmd, $rs)       = (undef, undef);
+	my ($rs, $rdata)             = ('', '');
+	my $dmn_name                 = @$dmn_data[1];
+	my $www_dir                  = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir                  = "$www_dir/$dmn_name/htdocs";
+	my $dmn_disabled_dir         = "$www_dir/$dmn_name/htdocs.disabled";
+	my $dmn_disabled_content_dir = "$www_dir/$dmn_name/disabled";
+	my $cmd_mv                   = $main::cfg{'CMD_MV'};
+	my $cmd_di                   = "$cmd_mv $dmn_dir $dmn_disabled_content_dir";
+ 	my $cmd_ht                   = "$cmd_mv $dmn_disabled_dir $dmn_dir";
 
-	# delete target folder if exists
-	# this can happen because subdomains created empty access logs
-	if (-e $dmn_dir) {
-		$cmd = "$cmd_rm -r $dmn_dir";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-	}
+	$rs = sys_command($cmd_di);
+	return $rs if ($rs != 0);
 
-	$cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
-	$rs = sys_command($cmd);
+	$rs = sys_command($cmd_ht);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
@@ -3765,15 +3786,20 @@ sub dmn_disable_data {
 		return -1;
 	}
 
-	my ($rs, $rdata)     = ('', '');
-	my $dmn_name         = @$dmn_data[1];
-	my $www_dir          = $main::cfg{'APACHE_WWW_DIR'};
-	my $dmn_dir          = "$www_dir/$dmn_name";
-	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-	my $cmd_mv           = $main::cfg{'CMD_MV'};
-	my $cmd              = "$cmd_mv $dmn_dir $dmn_disabled_dir";
+	my ($rs, $rdata)             = ('', '');
+	my $dmn_name                 = @$dmn_data[1];
+	my $www_dir                  = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir                  = "$www_dir/$dmn_name/htdocs";
+	my $dmn_disabled_dir         = "$www_dir/$dmn_name/htdocs.disabled";
+	my $dmn_disabled_content_dir = "$www_dir/$dmn_name/disabled";
+	my $cmd_mv                   = $main::cfg{'CMD_MV'};
+	my $cmd_ht                   = "$cmd_mv $dmn_dir $dmn_disabled_dir";
+	my $cmd_di                   = "$cmd_mv $dmn_disabled_content_dir $dmn_dir";
 
-	$rs = sys_command($cmd);
+	$rs = sys_command($cmd_ht);
+	return $rs if ($rs != 0);
+
+	$rs = sys_command($cmd_di);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_disable_data()', 'Ending...');
@@ -3918,3 +3944,4 @@ if ($rs != 0) {
 	exit 1;
 }
 exit 0;
+
