@@ -1,6 +1,10 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-10 Benedikt Heintel
+	- DISTS:
+		* Updated: CentOS INSTALL
+
 2009-12-11 Benedikt Bauer
 	- DISTS:
 		* Updated: Ubuntu packages
