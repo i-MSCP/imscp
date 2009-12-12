@@ -257,7 +257,7 @@ function chk_email($email, $num = 60) {
 	// split e-mail address by @ chars
 	$email_part = exlpode("@", $email);
 	// check if at least two parts are available
-	$part_count = count($email_part)
+	$part_count = count($email_part);
 	if ($part_count < 2) {
 		return false
 	}
