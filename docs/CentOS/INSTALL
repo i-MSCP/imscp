@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for CentOS 5.2
+ispCP ω (OMEGA) HowTo Install for CentOS 5.4
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -20,10 +20,24 @@ Table of Content
 ---------------
 
 ispCP Version:         1.0.3
-INSTALL Script:        1.4
-Maintainer:
+INSTALL Script:        1.5
+Maintainer:            motokochan
 Homepage:              http://isp-contol.net
-Linux Distros:         CentOS 5.2
+Linux Distros:         CentOS 5.4
+
+This documentation was written for CentOS 5, specifically 5.4. While you might
+be able to install on earlier versions, you may encounter difficulties or
+differences. In addition, this guide uses the YUM tool to install packages. If
+you normally use a different tool, you will need to modify the instructions to
+fit your system.
+The instructions are based on a minimum installation of CentOS with no optional
+packages marked during OS install. If you selected additional options during the
+install process, some extra server services may need to be disabled to avoid
+interfering with the packages used by ispCP ω.
+The install instructions attempt to keep system changes to a minimum, so these
+instructions should also work under Red Hat Enterprise Linux 5. If you encounter
+differences, please notify the maintainer.
+The install instructions should be done under the root account
 
 ================================================================================
 2) Requirements
@@ -35,7 +49,7 @@ Pentium III or K6-4 with 500 MHz
 100 MB disk space (only for install of ispCP ω
 Debian (or even any other *NIX-Distribution)
 
-All required packages are listed in ./docs/CentOS
+All required packages are listed in /docs/CentOS/centos-packages
 
 ================================================================================
 3) Introduction
@@ -55,238 +69,287 @@ provides graphic user interfaces for the administrators, resellers and users.
 --------------
 For the following steps, you will need to be logged in as root.
 
-1. First, you will need to install the RPMForge repository for some of the
-   packages required. It is recommended to follow the directions located at
-   http://wiki.centos.org/Repositories/RPMForge, especially concerning the
-   priorities plugin.
-
-2. Next, make sure your system packages are updated. This is as simple as running:
+1. Make sure your OS is updated
+   The very first thing you should do is make sure your base Linux install is
+   fully updated. To do so, simply run "yum update" as root. If there was a
+   kernel upgrade, you will want to reboot before continuing.
         # yum update
 
-3. You now need to disable SELinux, if it is enabled. You can do this by running
-   the following command:
-        # setenforce 0
-   Now, you will want to make sure it is off for future boots. Set "SELINUX" to
-   "disabled" by editing /etc/selinux/config.
+2. Additional Software Repositories
+   The CentOS repositories do not include all the software needed to run icpCP ω.
+   You will need to add two repositories to your system to install everything
+   you need.
 
-4. Untar or unzip the distribution files to a secure directory:
-        # cd /root
-        # tar xjvf ispcp-omega-1.0.3.tar.bz2
+   EPEL (Extra Packages for Enterprise Linux):
+        EPEL contains most of the additional packages needed.
+        Install this repository following
+        http://fedoraproject.org/wiki/EPEL/FAQ#howtouse
 
-5. Change to the newly created directory:
-        # cd ./ispcp-omega-1.0.3
+   Les RPM de Remi:
+        Remi Collet maintains a repository of updated packages for Fedora and
+        CentOS/RHEL. We need his repository to install updated PHP and MySQL
+        packages as CentOS 5 comes with PHP 5.1 and we need PHP 5.2 at a minimum.
+        Install the repository following
+        http://blog.famillecollet.com/pages/Config-en
 
-6. Next, install the software packages we need. A list is conveniently provided
-   and can be used to install by running the following:
-        # yum install `cat ./docs/CentOS/centos-packages`
-   After that, we need to install a few perl modules that aren't packaged. You
-   can run the following command to install them:
-        # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
+        The repository installs in a disabled state. We now want to enable the
+        repository and only include the packages we want from it. To do this,
+        edit the file /etc/yum.repos.d/remi.repo. In the file, under the [remi]
+        heading, change the value of enabled from 0 to 1, then add the following
+        line at the bottom of that section:
 
-   Note: If you've never run 'perl -MCPAN -e shell' before, you'll have to do this
-         first and answer 'no' to autoconfigure perl.
+ 	    includepkgs=mysql* php* sqlite*
 
-7. Next, we add remi repository because Centos 5 ships with php 5.1.6 that do not work nice:
-    	# wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
-        # wget http://rpms.famillecollet.com/el5.i386/remi-release-5-7.el5.remi.noarch.rpm
-        # rpm -Uvh remi-release-5*.rpm epel-release-5*.rpm
+ 	RPMForge:
+ 	    RPMForge is needed for one package that none of the other repositories
+ 	    currently has.
+ 	    Install the repository following http://dag.wieers.com/rpm/FAQ.php#B2
+ 	    We do not want all the packages from RPMForge as it replaces a good deal
+ 	    of the system. To avoid this, edit the file /etc/yum.repos.d/rpmforge.repo.
+ 	    In the file, add the following line at the end:
 
-   Then in /etc/yum.repos.d/remi.repo add
-   Edit the  /etc/yum.repos.d/remi.repo files in /etc/yum.repos.d/ and set up priorities
-   by adding the line:
+ 	    includepkgs=postgrey
 
-        priority=1
+3. Non-Repository Software
+   There are a few pieces of software you will need to download individually
+   that are in any of the major repositories.
 
-   to a repository entry. Do same thing to /etc/yum.repos.d/epel.repo and /etc/yum.repos.d/epel-testing.repo
-   Next lets update php:
+   Courier-IMAP:
+        Michael Fleming maintains RPMs of Courier-IMAP on his website,
+        http://www.thatfleminggent.com
+        You will need to download the latest RPMs of courier-imap,
+        courier-authlib, and courier-authlib-userdb from his site at the
+        following locations:
 
-        # yum --enablerepo=remi update php* mysql*
+        i386 (32-bit):
+        http://www.thatfleminggent.com/packages/centos/5/i386/repoview/system_environment.daemons.group.html
+        x86_64 (64-bit):
+        http://www.thatfleminggent.com/packages/centos/5/x86_64/repoview/system_environment.daemons.group.html
 
-8. Now, remove Sendmail so Postfix will be the default MTA
+   policyd-weight:
+        RPMs for policyd-weight can be found at
+        http://sourceforge.net/projects/policyd-weight/files/
 
-        # yum remove sendmail
+4. Disabling SELinux
+   SELinux will need to be disabled if it is enabled. To disable, run
 
-9. Install the Courier IMAP server. Packages for this are not in the default
-   repositories, but are available from third-party packagers such at at
-   http://www.thatfleminggent.com/. The following three packages are the latest
-   versions as of the last update, but you should check the package list at the
-   previous site to make sure you have the latest versions.
+    # setenforce 0
 
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-0.62.2-1.el5.mf.i386.rpm
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-authlib-userdb-0.62.2-1.el5.mf.i386.rpm
-        # wget http://www.thatfleminggent.com/packages/centos/5/i386/courier-imap-4.5.0-1.el5.mf.i386.rpm
-        # rpm -i courier-authlib-0.62.2-1.el5.mf.i386.rpm
-        # rpm -i courier-authlib-userdb-0.62.2-1.el5.mf.i386.rpm
-        # rpm -i courier-imap-4.5.0-1.el5.mf.i386.rpm
+   as root. To ensure that it stays disabled between reboots, edit the file
+   /etc/selinux/config and change the value of SELINUX to disabled.
 
-  You will also need to do some minor configuration by adding a user and group
-  for courier. The following commands will acomplish this:
-        # groupadd courier -g 3000
-        # useradd -u 3000 -c 'Courier Mail Server' -d /dev/null -g courier -s /bin/false courier
+5. Remove not needed packages
+   CentOS installs Sendmail by default, but icpCP ω uses Postfix. Run
+    # yum remove sendmail
+   to remove Sendmail and have CentOS switch to the Postfix.
 
-10. Now we need to configure MySQL. To do this, it must be running. To make sure
-   it is running, run the following command:
-        # service mysqld start
-   After it starts, you can run the mysql_secure_installation script. This will
-   set up MySQL with an administrator password and make sure any non-secure
-   default items like the test database are removed. This is very important if
-   the server will be for shared hosting.
-        # /usr/bin/mysql_secure_installation
-   Make sure to remember the root password for MySQL. You will need it later.
+6. Configuring Services
+    Courier needs a user and group account configured to run, and the following
+    commands run as root will create them:
+     # groupadd -g 3000 courier
+     # useradd -u 3000 -c 'Courier Mail Server' -d /dev/null -g courier -d /bin/false courier
 
-11. Install mod_fcgid. Packages for this are not in the default
-    repositories, but are available from third-party packagers such at at
-    http://centos.karan.org/. The following package are the latest
-    versions as of the last update, but you should check the package list at the
-    previous site to make sure you have the latest versions.
-
-        # wget http://centos.karan.org/el5/extras/testing/i386/RPMS/mod_fcgid-2.2-4.el5.kb.i386.rpm
-        # rpm -i mod_fcgid-2.2-4.el5.kb.i386.rpm
-
-12. Remove all files from /etc/httpd/conf.d
-
-        # rm -f /etc/httpd/conf.d/*
 ================================================================================
 5) Installation
 ---------------
-For the following steps, you will need to be logged in as root and MySQL will
-need to be running.
+Make sure you are logged in as root and MySQL is running (Start with
+"service mysqld start").
 
-1. (optional) Check the ispcp.conf and adapt it to your requirements.
+1. Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar xjvf ispcp-omega-1.0.3.tar.bz2
 
-2. Build the System by using make:
-        # make -f Makefile.centos install
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.3
 
-3. Copy all the directories into your system (you may make backups)
-        # cp -RLf /tmp/ispcp/* /
-        # cp -Rv /tmp/ispcp/etc/init.d /etc/rc.d/
-        # ln -s /etc/rc.d/init.d /etc/init.d
-        # mkdir /var/mail/virtual
+3. Install the required modules
+   A list of packages required by this software is located in
+   /docs/CentOS/centos-packages and can be used to easily install the packages
+   you need by running the following command:
+    # yum install `cat ./docs/CentOS/centos-packages`
 
-4. Now, setup some items for BIND configuration:
-        # mv /var/named/data /var/named/data2
-        # ln -s /var/named/chroot/var/named/data /var/named/data
-        In file /var/named/chroot/etc/named.caching-nameserver.conf after line:
-                include "/etc/named.rfc1912.zones";
-        add
-                include "/etc/named-ispcp.conf";
-        Modify /var/named/chroot/etc/named.caching-nameserver.conf according your needs (default it binds only to localhost)
+   NOTE: Running this command will install both x86_64 and i3/5/686 packages on
+   x86_64 installs for all packages that have both architectures in the
+   repository! To avoid, either add "exclude=*.i386 *.i586 *.i686" for your yum
+   repository configuration files, or install the packages listed in the file
+   one-by-one, making sure to specify the package name in the format
+   packagename.x86_64.
 
-5. Next, we create the SASL database directory and link the configuration for
-   Postfix
-        # touch /etc/sasldb2
-        # mkdir -p /var/spool/postfix/etc
-        # cp /etc/sasldb2 /var/spool/postfix/etc/sasldb2
+4. Install required Perl package
+    # perl -MCPAN -e 'install Term::ReadPassword'
 
-   Now, edit /usr/lib/sasl2/smtpd.conf to use the SASL database. Replace the
-   contents of that file with the following:
-        pwcheck_method: auxprop
-        auxprop_plugin: sasldb
-        mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5
+   If you have not run CPAN before, you will be prompted for manual
+   configuration. You can simply say no and the install will continue.
 
-6. A little bit of Apache configuration is needed:
+5. Install downloaded RPMs
+    # rpm -Uvh courier-*
+    # rpm -Uvh policyd-weight-*
 
-        # echo 'include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
+6. Clean Apache's conf.d directory
+    # mv /etc/httpd/conf.d /etc/httpd/conf.d-disabled
 
-        # chown apache:apache /var/www/ispcp/gui/tools/webmail/data
+7. Configure BIND DNS
+    # mv /var/named/data /var/named/data-disabled
+    # ln -s /var/named/chroot/var/named/data /var/named/data
+    # echo 'include "/etc/named-ispcp.conf";' >> /var/named/chroot/etc/named.conf
 
-7. Now it's time to set up the frontend. When prompted for fastcgi version select fcgid ( press "c").
-   We need to change into the right directory and run the setup tool:
-        # cd /var/www/ispcp/engine/setup
-        # perl ispcp-setup
+8. (optional) Check the ispcp.conf and adapt it to your requirements.
 
-        If you get no error, all went good; if you get one, look at
-        http://isp-control.net to solve the problem.
+9. Build the Software by using make:
+	# make -f Makefile.centos
+
+10. Copy all the directories into your system. If you have not yet, now is a good
+   time to make backups of your server. The following steps do fundamental
+   changes to your system configuration.
+	# cp -RLf /tmp/ispcp/* /
+
+7. Change or create MySQL root password, remove anonymous users, disallow root
+	login remotely, remove test database (and access to it), reload privilege tables.
+	# mysql_secure_installation
+
+8. Now it's time to set up the frontend. Change into the engine directory and
+	start the engine setup:
+	# cd /var/www/ispcp/engine/setup
+	# perl ispcp-setup
+
+9. Install ispCP ω step-by-step
+
+    NOTE: During setup, you will be asked if you are using fastcgi or fcgid.
+    You will want to choose the option for fcgid (shortcut key "f" on the prompt).
+
+    If you get no error, all went good; if you get one, look at
+    http://isp-control.net to solve the problem.
+
+10. Clean the temporary folders:
+	# rm -fR /tmp/ispcp/
 
 ================================================================================
 6) Post-Installation
 --------------------
-1. There is a bug in some versions of courier that prevent courier-authdaemon
-   from stopping with the default service script. You will need to make an edit
-   to fix this. Edit /etc/init.d/courier-authlib and
-        change: ${libexecdir}/authlib/authdaemon stop
-        into:   killall authdaemond.plain
 
-2. Modify some system values:
-        # chmod 777 /var/www/ispcp/gui/phptmp
+1. Configuring Services
 
-        * Install Daemon:
-        # chkconfig --add ispcp_daemon
-        # chkconfig --add ispcp_network
-        # chkconfig --levels 345 ispcp_daemon on
-        # chkconfig --levels 345 ispcp_network on
-        # service ispcp_daemon start
-        # service ispcp_network start
+    Postfix and SASL Authentication:
+        We need to create the SASL database for authenticating mail users and
+        configure SASL authenitcation. First, we create the SASL database with
+        the following commands:
+        # touch /etc/sasldb2
+        # mkdir -p /var/spool/postfix/etc
+        # cp /etc/sasldb2 /var/spool/postfix/etc
 
-3. Clean the temporary folders:
-        # rm -R /tmp/ispcp
+        To allow authentication, edit /usr/lib/sasl2/smtpd.conf
+        (/usr/lib64/sasl2/smtpd.conf for x86_64) and replace the contents with
+        the following:
+
+        pwcheck_method: auxprop
+        auxprop_plugin: sasldb
+        mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5
+
+    Configure Apache HTTPd:
+        The Apache webserver needs to be configured to read website configuration
+        in the directory /etc/httpd/vhosts/. To establish this, run the following
+        command:
+
+        # echo 'include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
+
+    Configure Postgrey:
+        By default, Postgrey runs on a socket. We want it to run on port 60000.
+        Edit the file /etc/init.d/postgrey and change the line:
+
+        OPTIONS="--unix=$SOCKET"
+
+        to
+
+        OPTIONS="--unix=$SOCKET --inet=60000"
+
+2. Setting Services to Run on Boot
+    Several services need to be set to run on boot. To do this, run the
+    following commands:
+
+    # chkconfig --level 345 httpd on
+    # chkconfig --level 345 mysqld on
+    # chkconfig --level 345 ispcp_network on
+    # chkconfig --level 345 ispcp_daemon on
+    # chkconfig --level 345 amavisd on
+    # chkconfig --level 345 named on
+    # chkconfig --level 345 proftpd on
+    # chkconfig --level 345 postgrey on
+    # chkconfig --level 345 spamassassin on
+
+    If you want to start the services without a reboot, run the following
+    commands:
+
+    # service httpd start
+    # service mysqld start
+    # service ispcp_network start
+    # service ispcp_daemon start
+    # service amavisd start
+    # service named start
+    # service proftpd start
+    # service postgrey start
+    # service spamassassin start
+
+3. Set Permissions
+    The default permissions for the temporary directory of the control panel
+    need to be adjusted. Please run the following command:
+
+    # chmod 775 /var/www/ispcp/gui/phptmp
 
 ================================================================================
 7) Update
 ---------
-For the following steps, you will need to be logged in as root and MySQL will
-need to be running.
+Make sure you are logged in as root and MySQL is running.
 
-1. If you upgrade from VHCS 2.4.7.1 or VHCS OMEGA 2.4.8 you must first install
-   ISPCP as described in INSTALL sections. Please note that ispCP Omega comes
-   with a new webmail client. Please make sure that your customers can still
-   access the address book data. You can ensure this either by making the old
-   webmail client accessable or by using this script:
-   http://www.isp-control.net/ispcp/ticket/1614.
+1. Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar xjvf ispcp-omega-1.0.3.tar.bz2
 
-2. Untar or unzip the distribution files to a secure directory:
-    # cd /root
-    # tar xjvf ispcp-omega-1.0.3.tar.bz2
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.3
 
-3. Change to the newly created directory:
-    # cd ./ispcp-omega-1.0.3
+3. Install the required modules
+   first update your system:
+	# yum update
+	# yum install `cat ./docs/CentOS/centos-packages`
 
-4. Next, install the software packages we need. A list is conveniently provided
-   and can be used to install by running the following:
-    # yum install `cat ./docs/CentOS/centos-packages`
-   After that, we need to install a few perl modules that aren't packaged. You
-   can run the following command to install them:
-    # cat ./docs/CentOS/centos-perl | xargs -I {} perl -MCPAN -e 'install {}'
+4. Stop the ispcp_deamon and build the Software by using make:
+	# services ispcp_daemon stop
+	# make -f Makefile.centos
 
-5. (optional) Check the ispcp.conf and adapt it to your requirements.
-
-6. Stop the ispcp_deamon and build the System by using make:
-	# /etc/init.d/ispcp_daemon stop
-    # make -f Makefile.centos install
-
-7. Backup files
-    # cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
-    # cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
-    # cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
-    # cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
-    # cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
+5. Backup files
+	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
+	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
+	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
+	# cp -TRv /var/www/ispcp/gui/domain_default_page /tmp/ispcp/var/www/ispcp/gui/domain_default_page
+	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/
 	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
-8. Delete old files to avoid security risks:
+6. Delete old files to avoid security risks:
 	# rm -fR /var/www/ispcp/engine/
 	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -fR /var/www/ispcp/gui/*.php
 
-9. Copy /usr and /var directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp/usr/* /usr/
-	# cp -Rv /tmp/ispcp/var/* /var/
+7. Copy /usr and /var directories into your system (you may make backups)
+	# cp -RLf /tmp/ispcp/usr/* /usr/
+	# cp -RLf /tmp/ispcp/var/* /var/
 
-10. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
-	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-	# cp -Rv /tmp/ispcp/etc/* /etc/
+8. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+	# mv /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
+	# cp -RLf /tmp/ispcp/etc/* /etc/
 
-11. Now it's time to update your installation. Change into the engine directory:
+9. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-12. Start the engine update:
+10. Start the engine update:
 	# perl ispcp-update
 
-13. Update ispCP ω step-by-step
+11. Update ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-14. Clean the temporary folders:
+12. Clean the temporary folders:
 	# rm -fR /tmp/ispcp/
 
 ================================================================================

@@ -5,10 +5,22 @@ ispCP ω 1.1.0 Changelog
 	- GUI:
 		* Fixed #2099: "unexpected T_IF in /var/www/ispcp/gui/include/input-checks.php on line 261"
 		* Fixed #2101: Clean install Debian Lenny - ispCP 1.1.0 Login Error
+		* Fixed #2094: Redirection to the ispCP tools - Bad regular expression
+
+2009-12-12 Benedikt Heintel
+	- DISTS:
+		* Updated: CentOS INSTALL
+
+2009-12-11 Benedikt Bauer
+	- DISTS:
+		* Updated: Ubuntu packages
 
 2009-12-11 Laurent Declercq
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN
+		* Orderpanel: Domain name validation - Old error message deleted
+		* Added status of available functionalities (Backup and Manual DNS) in customer overview page
+		* Removed HTML comment related to domain name in domain default page. Reason: All labels with double hyphens in HTML comments causes rendering errors with Firefox. See http://www.w3.org/TR/html4/intro/sgmltut.html#h-3.2.4 for more information about this issue.
 
 2009-12-10 Laurent Declercq
 	- GUI:

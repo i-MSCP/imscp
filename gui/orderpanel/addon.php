@@ -43,7 +43,8 @@ $tpl->define_dynamic('purchase_footer', 'page');
 function addon_domain($dmn_name) {
 
 	if (!validates_dname($dmn_name)) {
-		set_page_message(tr('Wrong domain name syntax!'));
+		global $validation_err_msg;
+		set_page_message(tr($validation_err_msg));
 		return;
 	}
 
