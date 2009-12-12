@@ -264,7 +264,7 @@ function chk_email($email, $num = 60) {
 
 	// rebuild the local part (necessary if more than one @ contained)
 	$local_part = $email_part[0];
-	for ($i = 1, $i < $part_count - 1) {
+	for ($i = 1; $i < $part_count - 1) {
 		$local_part .= "@". $email_part[$i];
 	}
 	// check the local part (before last @) first
