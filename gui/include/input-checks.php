@@ -250,28 +250,37 @@ function validates_username($username, $min_char = 2, $max_char = 30) {
  * @todo document this function
  */
 function chk_email($email, $num = 60) {
+
+	global $validation_err_msg;
+
 	if (strlen($email) > $num) {
 		return false;
 	}
 
 	// split e-mail address by @ chars
-	$email_part = exlpode("@", $email);
+	$email_part = explode('@', $email);
+
 	// check if at least two parts are available
 	$part_count = count($email_part);
-	if ($part_count < 2) {
+
+	if ($part_count < 2 || $part_count > 2  ) {
+		$validation_err_msg = "Wrong email: $email";
 		return false;
 	}
 
-	// rebuild the local part (necessary if more than one @ contained)
-	$local_part = $email_part[0];
-	for ($i = 1; $i < $part_count - 1) {
-		$local_part .= "@". $email_part[$i];
-	}
 	// check the local part (before last @) first
-	if (ispcp_check_local_part($local_part, $num)) {
+	if (ispcp_check_local_part($email_part[0], $num)) {
+
 		// now check the domain part
-		return full_domain_check($email_part[$part_count-1]);
+		if(!validate_dname($email_part[1])) {
+			$validation_err_msg = "Wrong email domain name: {$email_part[1]}";
+			return false;
+		} else {
+			return true;
+		}
+
 	} else {
+		$validation_err_msg = "Wrong email local part: {$email_part[2]}";
 		return false;
 	}
 }
