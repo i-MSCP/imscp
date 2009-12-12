@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-12 Laurent Declercq
+	- GUI:
+		* Fixed #2094: Redirection to the ispCP tools - Bad regular expression
+
 2009-12-11 Laurent Declercq
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN
