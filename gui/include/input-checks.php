@@ -259,7 +259,7 @@ function chk_email($email, $num = 60) {
 	// check if at least two parts are available
 	$part_count = count($email_part);
 	if ($part_count < 2) {
-		return false
+		return false;
 	}
 
 	// rebuild the local part (necessary if more than one @ contained)
@@ -268,7 +268,7 @@ function chk_email($email, $num = 60) {
 		$local_part .= "@". $email_part[$i];
 	}
 	// check the local part (before last @) first
-	if (ispcp_check_local_part($local_part, $num) {
+	if (ispcp_check_local_part($local_part, $num)) {
 		// now check the domain part
 		return full_domain_check($email_part[$part_count-1]);
 	} else {
