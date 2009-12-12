@@ -1,7 +1,0 @@
-MIME::Entity
-IO::Compress::Bzip2
-Crypt::CBC
-Crypt::Blowfish
-Crypt::PasswdMD5
-Term::ReadPassword
-HTML::Entities
