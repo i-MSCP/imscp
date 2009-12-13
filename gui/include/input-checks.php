@@ -272,7 +272,7 @@ function chk_email($email, $num = 60) {
 	if (ispcp_check_local_part($email_part[0], $num)) {
 
 		// now check the domain part
-		if(!validate_dname($email_part[1])) {
+		if(!validates_dname($email_part[1])) {
 			$validation_err_msg = "Wrong email domain name: {$email_part[1]}";
 			return false;
 		} else {
