@@ -65,7 +65,7 @@ if ($dmn_mailacc_limit == -1) {
 }
 
 if($backup == 'no') {
-	tpl->assign('ACTIVE_BACKUP', '');
+	$tpl->assign('ACTIVE_BACKUP', '');
 }
 
 /*
