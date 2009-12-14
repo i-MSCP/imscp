@@ -18,7 +18,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.3
-INSTALL Script:		1.7
+INSTALL Script:		1.8
 postinst Script:	1.1
 Maintainer:		Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
 Homepage:		http://isp-contol.net
@@ -34,6 +34,7 @@ Penitum III or K6-4 with 500 MHz
 100 MB disk space (only for install of ispCP ω)
 
 All OpenSuSE 11.1 required packages are listed in ./docs/OpenSuse/opensuse111-packages
+All OpenSuSE 11.2 required packages are listed in ./docs/OpenSuse/opensuse112-packages
 
 ================================================================================
 3) Specific Note
@@ -41,11 +42,14 @@ All OpenSuSE 11.1 required packages are listed in ./docs/OpenSuse/opensuse111-pa
 PHP4 related packages are removed because they are not available! Therefore PHP4
 is not available in ispCP!!! If you want to use PHP4 compile it by yourself!!!
 
-For OpenSuse 11.1, the "apache2-mod_cband" package has been removed because it is
+For OpenSuse, the "apache2-mod_cband" package has been removed because it is
 not available. If you want to use, you must compile it yourself.
 
 Postfix note: Currently, Postfix does not run in a chroot jail. See the CHANGELOG
 for more information.
+
+For ispCP 1.0.3 , we recommand to use OpenSuSE 11.1 due to several issues
+related to PHP5.3
 
 ================================================================================
 4) Introduction
@@ -78,34 +82,36 @@ First, make sure you are logged in as root.
 Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
+
+	OpenSuse 11.1 (Recommended for ispCP 1.0.3)
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
-   Or if you prefer yast:
-	# yast -i $(cat ./docs/OpenSuse/opensuse111-packages)
+	OpenSuse 11.2
+	# zypper in $(cat ./docs/OpenSuse/opensuse112-packages)
 
-   Or if you use smart package manager:
-	# smart install $(cat ./docs/OpenSuse/opensuse111-packages)
+5. Install more perl libraries from the Perl Archive Network:
+	# cpan CPAN
 
-5. (optional) Check the ispcp.conf and adapt it to your requirements.
+	# For OpenSuse 11.1 (Recommended for ispCP 1.0.3)
+	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
-6. Build the System by using make:
+	# For OpenSuse 11.2
+	# cpan $(cat ./docs/OpenSuse/opensuse112-perl-packages)
+
+6. (optional) Check the ispcp.conf and adapt it to your requirements.
+
+7. Build the System by using make:
 	# make -f Makefile.opensuse install
 
-7. Copy all the directories into your system (you may make backups before)
+8. Copy all the directories into your system (you may make backups before)
 	# cp -RLv /tmp/ispcp/* /
 
-8. Start MySQL, if not running:
+9. Start MySQL, if not running:
 	# rcmysql restart
 
-9. Change or create MySQL root password, remove anonymous users, disallow root
+10. Change or create MySQL root password, remove anonymous users, disallow root
 	login remotely, remove test database (and access to it), reload privilege tables.
 	# mysql_secure_installation
-
-10. Install the perl library Net::libIDN:
-	# zypper in lynx ncftp lukemftp libidn-devel perl-YAML
-	# perl -MCPAN -e 'install Net::LibIDN'
-
-Note : every question which is asked in the first run of cpan should be ok to confirm
 
 11. Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders in the home folders...
 	# cp -a /etc/skel /etc/skel.bkp
@@ -150,19 +156,22 @@ Note: For all questions, answer "a" (trust always).
 4. Install the required packages:
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
-   Or if you prefer yast:
-	# yast -i $(cat ./docs/OpenSuse/opensuse111-packages)
+5. Install more perl libraries from the Perl Archive Network:
+	# cpan CPAN
 
-   Or if you use smart package manager:
-	# smart install $(cat ./docs/OpenSuse/opensuse111-packages)
+	# For OpenSuse 11.1 (Recommended for ispCP 1.0.3)
+	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
-5. (optional) Check the ispcp.conf and adapt it to your requirements.
+	# For OpenSuse 11.2
+	# cpan $(cat ./docs/OpenSuse/opensuse112-perl-packages)
 
-6. Stop the ispcp_deamon and build the System by using make:
+6. (optional) Check the ispcp.conf and adapt it to your requirements.
+
+7. Stop the ispcp_deamon and build the System by using make:
 	# /etc/init.d/ispcp_daemon stop
 	# make -f Makefile.opensuse install
 
-7. Backup files
+8. Backup files
 	# cp -v /srv/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/
 	# cp -v /srv/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/messenger/
 	# cp -v /srv/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/srv/www/ispcp/gui/include/
@@ -170,17 +179,17 @@ Note: For all questions, answer "a" (trust always).
 	# cp -v /srv/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/srv/www/ispcp/gui/tools/pma/
 	# cp -v /srv/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/srv/www/ispcp/gui/tools/webmail/data/
 
-8. Delete old files to avoid security risks:
+9. Delete old files to avoid security risks:
 	# rm -fR /srv/www/ispcp/engine/messager/
 	# rm -Rf /srv/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -Rf /srv/www/ispcp/gui/*.php
 
-9. Copy /usr, /var and /srv directories into your system (you may make backups)
+10. Copy /usr, /var and /srv directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp/usr/* /usr/
 	# cp -Rv /tmp/ispcp/var/* /var/
 	# cp -Rv /tmp/ispcp/srv/* /srv/
 
-10. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+11. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
 	# cp -Rv /tmp/ispcp/etc/* /etc/
 
@@ -190,15 +199,12 @@ Note: For all questions, answer "a" (trust always).
 12. Start the engine update:
 	# perl ispcp-update
 
-13. Process to specific OpenSuse update tasks
-	# sh postinst update
-
-14. Update ispCP ω step-by-step
+13. Update ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-15. Clean the temporary folders:
+14. Clean the temporary folders:
 	# rm -Rf /tmp/ispcp/
 
 ================================================================================

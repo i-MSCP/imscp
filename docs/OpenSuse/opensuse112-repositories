@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ispCP required repositories install script for OpenSuse 11.1
+# ispCP required repositories install script for OpenSuse 11.2
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -34,28 +34,28 @@ case "$1" in
 
 	add)
 		# Proftpd && Cie...
-		$ZYPPER_BIN ar $URI_BASE/home:/csbuild/openSUSE_11.1/ ispcp-proftpd
+		$ZYPPER_BIN ar $URI_BASE/server:/ftp/openSUSE_11.2/ ispcp-proftpd
 
 		# Awstats
-		$ZYPPER_BIN ar $URI_BASE/network:/utilities/openSUSE_11.1/ ispcp-awstats
+		$ZYPPER_BIN ar $URI_BASE/network:/utilities/openSUSE_11.2/ ispcp-awstats
 
 		# Apache && Cie...
-		$ZYPPER_BIN ar $URI_BASE/Apache:/Modules/openSUSE_11.1/ ispcp-apache2
+		$ZYPPER_BIN ar $URI_BASE/Apache:/Modules/Apache_openSUSE_11.2/ ispcp-apache2
 
 		# Rkhunter
-		$ZYPPER_BIN ar $URI_BASE/openSUSE:/Factory:/Contrib/openSUSE_11.1/ ispcp-rkhunter
-
-		# Perl lib
-		$ZYPPER_BIN ar $URI_BASE/home:/csbuild:/Perl/openSUSE_11.1/ ispcp-perllib
+		$ZYPPER_BIN ar $URI_BASE/openSUSE:/Factory:/Contrib/openSUSE_11.2/ ispcp-rkhunter
 
 		# Postgrey && Policy-weight
-		$ZYPPER_BIN ar $URI_BASE/home:/pheinlein/openSUSE_11.1/ ispcp-mtools
+		$ZYPPER_BIN ar $URI_BASE/home:/pheinlein/openSUSE_11.2/ ispcp-mtools
+
+		# lha
+		$ZYPPER_BIN ar $URI_BASE/openSUSE:/Factory:/Contrib/openSUSE_11.2/ ispcp-lha
 
 		# Refresh all repositories
 		$ZYPPER_BIN ref
 	;;
 	rm)
-		REPO="proftpd awstats apache2 rkhunter perllib mtools"
+		REPO="proftpd awstats apache2 rkhunter perllib mtools lha"
 
 		for i in $REPO
    			do $ZYPPER_BIN rr ispcp-$i
@@ -64,7 +64,7 @@ case "$1" in
 	;;
 
 	*)
-		echo "Usage: sh ./opensuse111-repositories {add|rm}"
+		echo "Usage: sh ./opensuse112-repositories {add|rm}"
 
 	exit 1
 esac

@@ -1,6 +1,21 @@
 ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-14 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Catalan
+		* Updated Chinese
+		* Updated Galician
+		* Updated German
+		* Updated Italian
+		* Updated Japanese
+
+2009-12-14 Laurent Declercq
+        - DISTS:
+                * Updated OpenSuse 11.1 INSTALL
+                * Updated OpenSuse packages
+                * Added support for OpenSuse 11.2
+
 2009-12-13 Laurent Declercq
 	- GUI:
 		* Fixed #2103: Webtools Error
