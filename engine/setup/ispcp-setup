@@ -356,7 +356,7 @@ sub setup_shut_down {
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
 	my $shut_down_message = colored(['bold underline'],
-		"\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n");
+		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n");
 
 	my $login_message =
 		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and\n".

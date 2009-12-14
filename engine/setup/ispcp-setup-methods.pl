@@ -2786,9 +2786,9 @@ sub _preinst {
 # For example, the script 'postinst' who's provided for the openSUSE
 # distribution can perform administrative tasks that are not supported
 # by the scripts that are common to all distributions.
-sub _postinst {
+sub postinst {
 
-	push_el(\@main::el, '_postinst()', 'Starting...');
+	push_el(\@main::el, 'postinst()', 'Starting...');
 
 	my $task = shift;
 
@@ -2803,7 +2803,7 @@ sub _postinst {
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs != 0);
 
-	push_el(\@main::el, '_postinst()', 'Ending...');
+	push_el(\@main::el, 'postinst()', 'Ending...');
 
 	0;
 }

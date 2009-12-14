@@ -35,9 +35,7 @@ mailx
 make
 mhash
 mysql
-mysql-Max
 mysql-client
-mysql-shared
 ncftp
 patch
 perl
@@ -52,7 +50,6 @@ perl-Convert-UUlib
 perl-Crypt-Blowfish
 perl-Crypt-CBC
 perl-Crypt-DES
-perl-Crypt-PasswdMD5
 perl-DBD-mysql
 perl-DBI
 perl-Data-ShowTable
@@ -97,7 +94,7 @@ policyd-weight
 postfix
 postgrey
 proftpd
-proftpd-sql-mysql
+proftpd-mysql
 rkhunter
 shared-mime-info
 tar
