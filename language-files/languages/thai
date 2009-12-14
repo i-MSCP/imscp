@@ -1,5 +1,5 @@
 ispcp_table = Thai
-ispcp_language = Thai
+ispcp_language = ไทย - Thai
 ispcp_languageSetlocaleValue = th_TH
 encoding = UTF-8
 Administrator = ผู้ดูแลระบบ
@@ -39,7 +39,6 @@ Year: = ปี:
 [Re] = [ตอบ]
 Add domain alias = เพิ่ม domain alias
 Add alias = เพิ่ม alias
-Incorrect domain name syntax = Incorrect <i>domain name</i> syntax
 Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!
 Incorrect forward syntax = Incorrect <i>forward</i> syntax!
 Add Cronjob = เพิ่ม Cronjob
