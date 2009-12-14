@@ -1,6 +1,12 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-14 Laurent Declercq
+	- DISTS:
+		* Updated OpenSuse 11.1 INSTALL
+		* Updated OpenSuse packages
+		* Added support for OpenSuse 11.2
+
 2009-12-10 Benedikt Heintel
 	- DISTS:
 		* Updated: CentOS INSTALL
