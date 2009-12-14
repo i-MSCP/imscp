@@ -221,7 +221,7 @@ sub update_engine {
 	# Starting Post installation script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 
-	print STDOUT "\n\tStarting post installation / update script:";
+	print STDOUT "\n\tStarting post installation / update script:\n\n";
 	$rs = postinst('update');
 	exit_msg('Failed!', $rs) if($rs != 0);
 
