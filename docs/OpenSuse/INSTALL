@@ -98,51 +98,42 @@ Note: For all questions, answer "a" (trust always).
 	# For OpenSuse 11.2
 	# cpan $(cat ./docs/OpenSuse/opensuse112-perl-packages)
 
-6. Install more perl libraries from the Perl Archive Network:
-	# cpan CPAN
+6. (optional) Check the ispcp.conf and adapt it to your requirements.
 
-	OpenSuse 11.1 (Recommended for ispCP 1.0.3)
-	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
-
-	OpenSuse 11.2
-	# cpan $(cat ./docs/OpenSuse/opensuse112-perl-packages)
-
-7. (optional) Check the ispcp.conf and adapt it to your requirements.
-
-8. Build the System by using make:
+7. Build the System by using make:
 	# make -f Makefile.opensuse install
 
-9. Copy all the directories into your system (you may make backups before)
+8. Copy all the directories into your system (you may make backups before)
 	# cp -RLv /tmp/ispcp/* /
 
-10. Start MySQL, if not running:
+9. Start MySQL, if not running:
 	# rcmysql restart
 
-11. Change or create MySQL root password, remove anonymous users, disallow root
+10. Change or create MySQL root password, remove anonymous users, disallow root
 	login remotely, remove test database (and access to it), reload privilege tables.
 	# mysql_secure_installation
 
-12. Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders in the home folders...
+11. Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders in the home folders...
 	# cp -a /etc/skel /etc/skel.bkp
 	# rm -r /etc/skel && mkdir /etc/skel
 
-13. Now it's time to set up the frontend. Change into the engine directory and
+12. Now it's time to set up the frontend. Change into the engine directory and
 	start the engine setup:
 	# cd /srv/www/ispcp/engine/setup
 	# perl ispcp-setup
 
-14. Process to specific OpenSuse post installation tasks
+13. Process to specific OpenSuse post installation tasks
 	# sh postinst configure
 
-15. Restore /etc/skel
+14. Restore /etc/skel
 	# rm -r /etc/skel && mv /etc/skel.bkp /etc/skel
 
-16. Install ispCP ω step-by-step
+15. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-17. Clean the temporary folders:
+16. Clean the temporary folders:
 	# rm -Rf /tmp/ispcp
 
 ================================================================================
