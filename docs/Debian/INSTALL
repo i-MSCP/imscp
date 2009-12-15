@@ -85,7 +85,7 @@ Make sure you are logged in as root and MySQL is running.
 	# make install
 
 6. Copy all the directories into your system. If you have not yet, now is a good
-   time to make backups of your server. The following steps do fundamental 
+   time to make backups of your server. The following steps do fundamental
    changes to your system configuration.
 	# cp -Rv /tmp/ispcp/* /
 
