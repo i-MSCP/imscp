@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-16 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Basque
+		* Added Lithurnian
+
 2009-12-15 Laurent Declercq
 	- DISTS:
 		* Updated: Ubuntu INSTALL
