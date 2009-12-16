@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: fr_FR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-10 01:27+0100\n"
-"PO-Revision-Date: 2009-12-16 12:50+0100\n"
+"PO-Revision-Date: 2009-12-16 13:59+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2657,10 +2657,9 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel at %s for more details"
 msgstr ""
-"Vous avez une commande de mise à jour pour le compte {ACCOUNT}\n"
+"Vous avez une commande de mise à jour pour le compte %s\n"
 "\n"
-"\n"
-"Veuillez vous connecter dans votre interface ispCP pour plus de détails."
+"Veuillez vous connecter dans votre interface ispCP à l'adresse %s pour plus de détails."
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Votre demande de mise à jour pour votre plan d'hébergement a bien été annulée"
@@ -2769,11 +2768,11 @@ msgstr "Alias de sous domaine"
 
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts!"
-msgstr "La liste des alias est vide ! Vous ne pouvez pas ajouter de comptes emails !"
+msgstr "La liste %s est vide ! Vous ne pouvez pas ajouter de comptes emails !"
 
 #, php-format
 msgid "%s id is invalid! You cannot add mail accounts!"
-msgstr "La liste des alias est vide ! Vous ne pouvez pas ajouter de comptes emails !"
+msgstr "L'id %s est invalide ! Vous ne pouvez pas ajouter de comptes emails !"
 
 msgid "Forward list is empty!"
 msgstr "La liste de transfert est vide !"
@@ -3107,7 +3106,7 @@ msgstr "Connexion phpMyAdmin"
 
 #, php-format
 msgid "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete %s?"
-msgstr "Cette base de données va être supprimée. La suppression est irréversible. Tous les utilisateurs SQL liés à cette base de données vont également être supprimés s'il ne sont pas rattaché à d'autres bases de données. Êtes-vous certain de vouloir continuer ?"
+msgstr "Cette base de données va être supprimée. La suppression est irréversible. Tous les utilisateurs SQL liés à cette base de données vont également être supprimés s'il ne sont pas rattaché à d'autres bases de données. Êtes-vous certain de vouloir supprimer %s ?"
 
 msgid "SQL users limit reached!"
 msgstr "Le nombre limite d'utilisateurs SQL est atteint !"
@@ -3655,11 +3654,11 @@ msgstr "La longueur du sous-domaine est incorrecte !"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr "Le Label "%s" n'est pas autorisé ! "
+msgstr "Le Label \"%s\" n'est pas autorisé ! "
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr "La syntax du label "%s" est incorrecte !"
+msgstr "La syntax du label \"%s\" est incorrecte !"
 
 #, php-format
 msgid "Wrong label lenght: <b>%s</b>"
@@ -3667,7 +3666,7 @@ msgstr "La longueur du label incorrecte : <b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "La syntaxe du TLD "%s" est incorrecte !"
+msgstr "La syntaxe du TLD \"%s\" est incorrecte !"
 
 #, php-format
 msgid "Wrong Top Level Domain lenght: <b>%s</b>"
@@ -3679,14 +3678,14 @@ msgstr "Longueur du SLD est incorrecte : <b>%s</b>"
 
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Le nom de domaine "%s" est réservé !"
+msgstr "Le nom de domaine \"%s\" est réservé !"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "La syntaxe du SLD "%s" est incorrecte !"
+msgstr "La syntaxe du SLD \"%s\" est incorrecte !"
 
 msgid "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
-msgstr "Erreur : Les labels ACE ne sont pas autorisés. Veuillez utiliser l'équivalent ToUnicode.<br /><small>Exemple: Pour le label "xn--bcher-kva", utilisez la forme UNICODE : "bücher"</small>"
+msgstr "Erreur : Les labels ACE ne sont pas autorisés. Veuillez utiliser l'équivalent ToUnicode.<br /><small>Exemple: Pour le label \"xn--bcher-kva\", utilisez la forme UNICODE : \"bücher\"</small>"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3837,7 +3836,7 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
-"\t"
+"\n"
 msgstr ""
 "\n"
 "\n"
@@ -3845,6 +3844,7 @@ msgstr ""
 "Vous avez reçu une nouvelle commande de {NAME} <{MAIL}> pour le domaine {DOMAIN}\n"
 "\n"
 "Veuillez vous connecter à votre interface ispCP pour obtenir plus de détails.\n"
+"\n"
 "\n"
 
 msgid "Your order has been successfully created."
@@ -4024,18 +4024,6 @@ msgstr "+ 1 Année"
 msgid "+ 2 Years"
 msgstr "+2 Années"
 
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "Le service <em>%s</em> ne peut pas être désactivé !"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited!"
-msgstr "Le service <em>%s</em> ne peut pas être limité !"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited!"
-msgstr "Le service <em>%s</em> ne peut pas être illimité !"
-
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Revendeur/Index Général"
 
@@ -4071,7 +4059,7 @@ msgstr "Extras"
 
 #, php-format
 msgid "%1$s / %2$s of <b>%3$s</b>"
-msgstr "%1$s / %2$s de <b>%3$d</b>"
+msgstr "%1$s / %2$s de <b>%3$s</b>"
 
 #, php-format
 msgid "%1$s / %2$s of <b>unlimited</b>"
