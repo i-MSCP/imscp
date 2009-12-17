@@ -3,13 +3,18 @@ ispCP ω 1.0.3 Changelog
 
 2009-12-17 Benedikt Heintel
 	- DOCS:
-		* Updated all INSTALL		
+		* Updated all INSTALL
 	- LANGUAGES:
 		* Updated Swedish
 
 2009-12-17 Laurent Declercq
 	- DOCS:
 		* Updated OpenSuse INSTALL
+	- LANGUAGES:
+		* Fixed: Several error in *.po file
+	- TOOLS:
+		* Added new script(checkPo) to test all *.po files
+		* Added the check process in the translation README file
 
 2009-12-16 Laurent Declercq
 	- LANGUAGES:

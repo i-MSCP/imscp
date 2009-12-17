@@ -1,14 +1,13 @@
 # Copyright (C) 2009 Elekta Team
 # Takashi <takashi@elekta.lt>, 2009.
 #
-#, Takashi
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-15 01:27+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Takashi <takashi@elekta.lt>\n"
+"PO-Revision-Date: 2009-12-17 19:03+0100\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Lithuanian <lt_LT@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -97,7 +96,7 @@ msgstr "Slaptaþodis turi susidaryti ið %s raiþdþiø ir skaièiø, kad bûtø
 
 #, php-format
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Slaptaþodis ávestas trumpesnis nei %. skaitmenø arba panaudoti neleistini þenklai!"
+msgstr "Slaptaþodis ávestas trumpesnis nei %s. skaitmenø arba panaudoti neleistini þenklai!"
 
 msgid "Entered passwords do not match!"
 msgstr "Ávesti slaptaþodþiai neatitinka!"
@@ -4216,3 +4215,4 @@ msgstr ""
 
 msgid "User not terminated!"
 msgstr ""
+

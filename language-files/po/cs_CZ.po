@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
@@ -2421,7 +2422,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Unknown zone type %s!"
-msgstr "Neznámý typ!"
+msgstr "Neznámý typ %s!"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Klient/Statistika domény"
@@ -2774,10 +2775,9 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel at %s for more details"
 msgstr ""
-"Máte objednávku na update pro účet {ACCOUNT}\n"
+"Máte objednávku na update pro účet %s\n"
 "\n"
-"\n"
-"Pro více podrobností se přihlašte do ispCP ovládacího panelu"
+"Pro více podrobností se přihlašte do ispCP %s ovládacího panelu"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Váš požadavek na update hostingového balíčku byl uspěšně odebrán."
@@ -2889,11 +2889,11 @@ msgstr "Subdoménové maily"
 
 #, fuzzy, php-format
 msgid "%s list is empty! You cannot add mail accounts!"
-msgstr "Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
+msgstr "%s Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
 
 #, fuzzy, php-format
 msgid "%s id is invalid! You cannot add mail accounts!"
-msgstr "Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
+msgstr "%s Poštovní účty nelze přidávat. Soubor aliasů je prázdný!"
 
 msgid "Forward list is empty!"
 msgstr "Seznam pro přesměrování je prázdný!"
@@ -3774,7 +3774,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Priority: %s\n"
-msgstr "Priorita"
+msgstr "Priorita: %s\n"
 
 #, fuzzy
 msgid "Log in to answer"
@@ -3822,7 +3822,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Chybná syntaxe doménového jména!"
+msgstr "<b>%s</b>: Chybná syntaxe doménového jména!"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
@@ -4019,7 +4019,7 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
-"\t"
+"\n"
 msgstr ""
 "\n"
 "\n"
@@ -4027,6 +4027,7 @@ msgstr ""
 "máte novou objednávku od {NAME} <{MAIL}> na doménu {DOMAIN}\n"
 "\n"
 "Prosím přihlašte se do ispCP pro více detailů.\n"
+"\n"
 "\n"
 
 #, fuzzy
@@ -4270,7 +4271,7 @@ msgstr "Doplňky"
 
 #, fuzzy, php-format
 msgid "%1$s / %2$s of <b>%3$s</b>"
-msgstr "%1$s / %2$s z <b>%3$d</b>"
+msgstr "%1$s / %2$s z <b>%3$s</b>"
 
 #, php-format
 msgid "%1$s / %2$s of <b>unlimited</b>"

@@ -1,6 +1,7 @@
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: ro_RO\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-10 01:27+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
@@ -10,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Translation-Date: 2008-04-30 16:03-0500\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: x64PoPot 0.2\n"
 
 #. Please ignore this entry
@@ -1474,7 +1475,7 @@ msgstr "%s <br/>din<br/> <b>nelimitat</b>"
 
 #, php-format
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$s <br/>din<br/> <b>%2$s</b>"
+msgstr "%1$d <br/>din<br/> <b>%2$d</b>"
 
 msgid "<b>disabled</b>"
 msgstr "<b>dezactivat</b>"
@@ -2436,7 +2437,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Unknown zone type %s!"
-msgstr "Tip necunoscut!"
+msgstr "Tip necunoscut %s!"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Client/ Statistici Domeniu"
@@ -2789,10 +2790,10 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel at %s for more details"
 msgstr ""
-"Aveti o comanda de actualizare pentru contul {ACCOUNT}\n"
+"Aveti o comanda de actualizare pentru contul %s\n"
 "\n"
 "\n"
-"Autentifica-te in panoul de control ispCP pentru detalii"
+"Autentifica-te in panoul de control ispCP %s pentru detalii"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Cererea ta pentru up-date pachet gazduire a fost refuzata"
@@ -3772,9 +3773,9 @@ msgid ""
 "\n"
 "You have a new ticket:\n"
 msgstr ""
-"Salut {TO_NAME} !\n"
+"Salut %s !\n"
 "\n"
-"Ai un nou ticket necitit"
+"Ai un nou ticket necitit\n"
 
 #, php-format
 msgid ""
@@ -3782,13 +3783,13 @@ msgid ""
 "\n"
 "You have an answer for this ticket:\n"
 msgstr ""
-"Salut {TO_NAME} !\n"
+"Salut %s !\n"
 "\n"
-"Ai un nou ticket necitit"
+"Ai un nou ticket necitit\n"
 
 #, fuzzy, php-format
 msgid "Priority: %s\n"
-msgstr "Prioritate"
+msgstr "Prioritate: %s\n"
 
 #, fuzzy
 msgid "Log in to answer"
@@ -3836,7 +3837,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Sitaxa gresita a numelui de domeniu"
+msgstr "Sitaxa gresita a numelui de domeniu : <b>%s</b>"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
@@ -4037,7 +4038,7 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
-"\t"
+"\n"
 msgstr ""
 "\n"
 "\n"
@@ -4045,6 +4046,7 @@ msgstr ""
 "exista o noua comanda de la {NAME} <{MAIL}> pentru domeniul {DOMAIN}\n"
 "\n"
 "Autorizeaza-te in panoul de control ispCP control pentru detalii.\n"
+"\n"
 "\n"
 
 #, fuzzy
@@ -4289,7 +4291,7 @@ msgstr "Extra"
 
 #, fuzzy, php-format
 msgid "%1$s / %2$s of <b>%3$s</b>"
-msgstr "%1$s / %2$s din <b>%3$d</b>"
+msgstr "%1$s / %2$s din <b>%3$s</b>"
 
 #, php-format
 msgid "%1$s / %2$s of <b>unlimited</b>"

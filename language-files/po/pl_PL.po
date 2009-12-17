@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.3 VOXAR\n"
@@ -3814,7 +3815,7 @@ msgstr ""
 
 #, fuzzy, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Niepoprawna składnia nazwy domeny!"
+msgstr "Nieprawidłowe domeny. <b>%s</b> jest zarezerwowane!"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"

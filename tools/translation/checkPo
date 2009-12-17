@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+#
+# Version:	$Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2009 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+# description:
+#
+# creates the main ispcp.pot file out of any found strings in the php files
+#
+# Warning: This script will remove any strings which aren't present in the GUI
+# php files, this means dynamic strings or strings out of the database will
+# ignored.
+#
+
+set -e
+
+MSGFMT="/usr/bin/msgfmt -cf --strict "
+
+LOCALES="ar_AE ca_ES de_DE es_ES fr_FR ispCPt lt_LT pl_PL ro_RO sv_SE uk_UA az_AZ cs_CZ en_GB eu_ES gl_ES it_IT nb_NO pt_BR ru_RU th_TH zh_CN bg_BG da_DK es_AR fi_FI hu_HU ja_JP nl_NL pt_PT sk_SK tr_TR zh_HK"
+
+cd "../../language-files/po"
+
+for po in $LOCALES ; do
+
+	[ -f $po.po ] && $MSGFMT $po.po
+
+done
+rm -f messages.mo
+
+exit 0
