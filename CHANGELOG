@@ -1,13 +1,19 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-17 Benedikt Heintel
+	- DOCS:
+		* Updated all INSTALL		
+	- LANGUAGES:
+		* Updated Swedish
+
 2009-12-17 Laurent Declercq
-	- DISTS:
+	- DOCS:
 		* Updated OpenSuse INSTALL
 
 2009-12-16 Laurent Declercq
 	- LANGUAGES:
-		* Updated: French
+		* Updated French
 
 2009-12-16 Benedikt Heintel
 	- LANGUAGES:
@@ -15,8 +21,8 @@ ispCP ω 1.0.3 Changelog
 		* Added Lithurnian
 
 2009-12-15 Laurent Declercq
-	- DISTS:
-		* Updated: Ubuntu INSTALL
+	- DOCS:
+		* Updated Ubuntu INSTALL
 
 2009-12-14 Benedikt Heintel
 	- LANGUAGES:
@@ -34,12 +40,12 @@ ispCP ω 1.0.3 Changelog
 		* Added support for OpenSuse 11.2
 
 2009-12-12 Benedikt Heintel
-	- DISTS:
-		* Updated: CentOS INSTALL
+	- DOCS:
+		* Updated CentOS INSTALL
 
 2009-12-11 Benedikt Bauer
 	- DISTS:
-		* Updated: Ubuntu packages
+		* Updated Ubuntu packages
 
 2009-12-11 Laurent Declercq
 	- GUI:
