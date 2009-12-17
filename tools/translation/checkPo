@@ -28,25 +28,21 @@
 
 # description:
 #
-# creates the main ispcp.pot file out of any found strings in the php files
-#
-# Warning: This script will remove any strings which aren't present in the GUI
-# php files, this means dynamic strings or strings out of the database will
-# ignored.
+# checks all .po files against strict xgettext rules
 #
 
 set -e
 
 MSGFMT="/usr/bin/msgfmt -cf --strict "
 
-LOCALES="ar_AE ca_ES de_DE es_ES fr_FR ispCPt lt_LT pl_PL ro_RO sv_SE uk_UA az_AZ cs_CZ en_GB eu_ES gl_ES it_IT nb_NO pt_BR ru_RU th_TH zh_CN bg_BG da_DK es_AR fi_FI hu_HU ja_JP nl_NL pt_PT sk_SK tr_TR zh_HK"
-
 cd "../../language-files/po"
 
-for po in $LOCALES ; do
+for po in *.po ; do
 
-	[ -f $po.po ] && $MSGFMT $po.po
-
+	if [ -f $po ]; then
+		echo $po
+		$MSGFMT $po
+	fi
 done
 rm -f messages.mo
 
