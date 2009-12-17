@@ -11,9 +11,9 @@ ispCP ω 1.0.3 Changelog
 	- DOCS:
 		* Updated OpenSuse INSTALL
 	- LANGUAGES:
-		* Fixed: Several error in *.po file
+		* Fixed: Several errors in *.po files
 	- TOOLS:
-		* Added new script(checkPo) to test all *.po files
+		* Added new script (checkPo) to test all *.po files
 		* Added the check process in the translation README file
 
 2009-12-16 Laurent Declercq

@@ -30,7 +30,7 @@ Default order
 	specific *.po files.
 
 4. check all *.po files
-	Check the syntax of all *.po file with the check_po script. If the script
+	Check the syntax of all *.po files with the check_po script. If the script
 	return one or more error, correct them and rerun the script.
 
 	Note : If one or more localization files have been added, add it in the
