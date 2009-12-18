@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP - Svenska 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-10 01:27+0100\n"
-"PO-Revision-Date: 2009-12-17 19:08+0100\n"
+"POT-Creation-Date: 2009-12-18 12:36+0100\n"
+"PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish <sv_SE@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -693,53 +693,11 @@ msgstr "Alla traffik"
 msgid "Day"
 msgstr "Dag"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr ""
-
-msgid "Hosting plans"
-msgstr ""
-
-msgid "Manage hosting plans"
-msgstr ""
-
-msgid "Purchasing"
-msgstr ""
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administratär/Lägg till hosting plan"
 
 msgid "Add hosting plan"
 msgstr "Lägg till hosting plan"
-
-msgid "Add new user hosting plan"
-msgstr ""
-
-msgid "Return to previous menu"
-msgstr ""
-
-msgid "Hosting plan added!"
-msgstr ""
-
-msgid "Hosting plan deleted!"
-msgstr ""
-
-msgid "Hosting plan updated!"
-msgstr ""
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr ""
-
-msgid "Hosting plans not found!"
-msgstr ""
-
-msgid "No."
-msgstr "Nr."
-
-msgid "Name"
-msgstr "Namn"
-
-msgid "Show hosting plan"
-msgstr ""
-
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administratär/Lägg till hosting plan"
 
 msgid "Hosting plan properties"
 msgstr "Hosting plan egenskaper"
@@ -854,6 +812,48 @@ msgid "Incorrect price. Example: 9.99"
 msgstr ""
 
 msgid "Incorrect setup fee. Example: 19.99"
+msgstr ""
+
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr ""
+
+msgid "Hosting plans"
+msgstr ""
+
+msgid "Manage hosting plans"
+msgstr ""
+
+msgid "Purchasing"
+msgstr ""
+
+msgid "Add new user hosting plan"
+msgstr ""
+
+msgid "Return to previous menu"
+msgstr ""
+
+msgid "Hosting plan added!"
+msgstr ""
+
+msgid "Hosting plan deleted!"
+msgstr ""
+
+msgid "Hosting plan updated!"
+msgstr ""
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+
+msgid "Hosting plans not found!"
+msgstr ""
+
+msgid "No."
+msgstr "Nr."
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Show hosting plan"
 msgstr ""
 
 #, php-format
@@ -1018,6 +1018,10 @@ msgstr ""
 msgid "No new ispCP updates available"
 msgstr ""
 
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Spräk uppdaterad!"
+
 msgid "User language updated successfully!"
 msgstr ""
 
@@ -1030,10 +1034,6 @@ msgstr "Spräk"
 #, fuzzy
 msgid "Choose your default language"
 msgstr "Välj default spräk"
-
-#, fuzzy
-msgid "Language was removed!"
-msgstr "Spräk uppdaterad!"
 
 msgid "Reseller list is empty!"
 msgstr ""
@@ -1138,6 +1138,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr ""
 
+msgid "Incorrect data input!"
+msgstr ""
+
 msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
@@ -1193,9 +1196,6 @@ msgstr "Intallera"
 
 msgid "Export"
 msgstr "Exportera"
-
-msgid "Incorrect data input!"
-msgstr ""
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP Admin/Bytt läsenord"
@@ -1470,11 +1470,23 @@ msgstr ""
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Admin/Server statistik"
+msgid "ispCP - Admin/Server day stats"
+msgstr ""
 
-msgid "Server statistics"
-msgstr "Server statistik"
+msgid "Server day statistics"
+msgstr ""
+
+msgid "Month:"
+msgstr "Mänad:"
+
+msgid "Year:"
+msgstr "är:"
+
+msgid "Day:"
+msgstr "Dag:"
+
+msgid "Hour"
+msgstr "Timme"
 
 msgid "Web in"
 msgstr "Webb inkommande"
@@ -1510,23 +1522,11 @@ msgstr "Allt inkommande"
 msgid "All out"
 msgstr "Allt utgäende"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr ""
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Server statistik"
 
-msgid "Server day statistics"
-msgstr ""
-
-msgid "Month:"
-msgstr "Mänad:"
-
-msgid "Year:"
-msgstr "är:"
-
-msgid "Day:"
-msgstr "Dag:"
-
-msgid "Hour"
-msgstr "Timme"
+msgid "Server statistics"
+msgstr "Server statistik"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr ""
@@ -1562,139 +1562,6 @@ msgid "Options"
 msgstr ""
 
 msgid "Kill session"
-msgstr ""
-
-msgid "ispCP - Admin/Settings"
-msgstr ""
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr ""
-
-msgid "General settings"
-msgstr "Allmänna inställningar"
-
-msgid "Activation link expire time (minutes)"
-msgstr ""
-
-msgid "Password settings"
-msgstr "Läsenords inställningar"
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "Password length"
-msgstr ""
-
-msgid "Bruteforce detection"
-msgstr ""
-
-msgid "Block time between logins"
-msgstr ""
-
-msgid "Max number of login attempts"
-msgstr ""
-
-msgid "Blocktime (minutes)"
-msgstr ""
-
-msgid "Block time between logins (seconds)"
-msgstr ""
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr ""
-
-msgid "Other settings"
-msgstr ""
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "Count default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-#, fuzzy
-msgid "Panel default language"
-msgstr "Välj default spräk"
-
-msgid "Support system"
-msgstr ""
-
-msgid "Apply changes"
-msgstr "Akvitera ändringar"
-
-msgid "Server ports"
-msgstr ""
-
-msgid "Hosting plans available for"
-msgstr ""
-
-msgid "Admin"
-msgstr ""
-
-msgid "Domains per page"
-msgstr ""
-
-msgid "Log Level"
-msgstr ""
-
-msgid "Notices, Warnings and Errors"
-msgstr ""
-
-msgid "Warnings and Errors"
-msgstr ""
-
-msgid "Errors"
-msgstr ""
-
-msgid "Check for update"
-msgstr ""
-
-msgid "Show server load"
-msgstr ""
-
-#, fuzzy
-msgid "Prevent external login for admins"
-msgstr "Fyll i din inloggnings uppgifter"
-
-msgid "Prevent external login for resellers"
-msgstr ""
-
-msgid "Prevent external login for clients"
-msgstr ""
-
-#, fuzzy
-msgid "Custom orderpanel ID"
-msgstr "Kund ID"
-
-#, fuzzy
-msgid "Domain names validation"
-msgstr "Domännamn"
-
-msgid "Top Level Domain name strict validation"
-msgstr ""
-
-msgid "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-
-msgid "Second Level Domain name strict validation"
-msgstr ""
-
-msgid "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-
-msgid "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr ""
-
-msgid "Maximal number of labels for subdomains"
 msgstr ""
 
 msgid "You can only upload images!"
@@ -1778,6 +1645,9 @@ msgstr ""
 msgid "Subject"
 msgstr "ämne"
 
+msgid "Apply changes"
+msgstr "Akvitera ändringar"
+
 msgid "URL to this admin panel"
 msgstr ""
 
@@ -1787,10 +1657,140 @@ msgstr ""
 msgid "ispCP - Admin/Maintenance mode"
 msgstr ""
 
+msgid "Settings saved !"
+msgstr ""
+
 msgid "Maintenance mode"
 msgstr ""
 
 msgid "Under this mode only administrators can login"
+msgstr ""
+
+msgid "ispCP - Admin/Settings"
+msgstr ""
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr ""
+
+msgid "General settings"
+msgstr "Allmänna inställningar"
+
+msgid "Activation link expire time (minutes)"
+msgstr ""
+
+msgid "Password settings"
+msgstr "Läsenords inställningar"
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Bruteforce detection"
+msgstr ""
+
+msgid "Block time between logins"
+msgstr ""
+
+msgid "Max number of login attempts"
+msgstr ""
+
+msgid "Blocktime (minutes)"
+msgstr ""
+
+msgid "Block time between logins (seconds)"
+msgstr ""
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr ""
+
+msgid "Other settings"
+msgstr ""
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+#, fuzzy
+msgid "Panel default language"
+msgstr "Välj default spräk"
+
+msgid "Support system"
+msgstr ""
+
+msgid "Server ports"
+msgstr ""
+
+msgid "Hosting plans available for"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Domains per page"
+msgstr ""
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+msgid "Errors"
+msgstr ""
+
+msgid "Check for update"
+msgstr ""
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Fyll i din inloggnings uppgifter"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Custom orderpanel ID"
+msgstr "Kund ID"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domännamn"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
 msgstr ""
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
@@ -2357,24 +2357,6 @@ msgstr ""
 msgid "Unknown zone type %s!"
 msgstr ""
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr ""
-
-msgid "Web Stats"
-msgstr "Webb statistik"
-
-msgid "WEB"
-msgstr "WEBB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
-
-msgid "Sum"
-msgstr "Tot"
-
 #, fuzzy
 msgid "Manual zone's records list is empty!"
 msgstr "Ombud IP listan är tomt!"
@@ -2410,6 +2392,24 @@ msgstr ""
 #, fuzzy
 msgid "Record data"
 msgstr "Kärn data"
+
+msgid "ispCP - Client/Domain Statistics"
+msgstr ""
+
+msgid "Web Stats"
+msgstr "Webb statistik"
+
+msgid "WEB"
+msgstr "WEBB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Tot"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr ""
@@ -2867,21 +2867,6 @@ msgstr ""
 msgid "Enable mail auto responder"
 msgstr ""
 
-msgid "Delete CatchAll"
-msgstr ""
-
-msgid "None"
-msgstr "Inga"
-
-msgid "Create catch all"
-msgstr ""
-
-msgid "Catch all account"
-msgstr ""
-
-msgid "Catch all"
-msgstr ""
-
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2897,7 +2882,22 @@ msgstr ""
 msgid "Mail accounts list"
 msgstr ""
 
+msgid "Create catch all"
+msgstr ""
+
 msgid "Catch all account scheduled for deletion!"
+msgstr ""
+
+msgid "Delete CatchAll"
+msgstr ""
+
+msgid "None"
+msgstr "Inga"
+
+msgid "Catch all account"
+msgstr ""
+
+msgid "Catch all"
 msgstr ""
 
 msgid "Please delete first CatchAll account for this email!"
@@ -2919,30 +2919,6 @@ msgid "ispCP - Client/Change Password"
 msgstr ""
 
 msgid "ispCP - Client/Change Personal Data"
-msgstr ""
-
-msgid "You do not have protected areas"
-msgstr ""
-
-msgid "Manage users and groups"
-msgstr ""
-
-msgid "Add user"
-msgstr "Lägg till användare"
-
-msgid "Group name"
-msgstr "Group namn"
-
-msgid "Group members"
-msgstr "Group medlemmar"
-
-msgid "Add group"
-msgstr "Lägg till group"
-
-msgid "Group"
-msgstr "Group"
-
-msgid "Add new protected area"
 msgstr ""
 
 msgid "Please choose user or group"
@@ -3000,6 +2976,9 @@ msgstr ""
 msgid "Unprotect it"
 msgstr ""
 
+msgid "Manage users and groups"
+msgstr ""
+
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 
@@ -3007,6 +2986,27 @@ msgid "Protected area deleted successfully!"
 msgstr ""
 
 msgid "Permission deny!"
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr ""
+
+msgid "Add user"
+msgstr "Lägg till användare"
+
+msgid "Group name"
+msgstr "Group namn"
+
+msgid "Group members"
+msgstr "Group medlemmar"
+
+msgid "Add group"
+msgstr "Lägg till group"
+
+msgid "Group"
+msgstr "Group"
+
+msgid "Add new protected area"
 msgstr ""
 
 msgid "Protected area was deleted successful!"
@@ -3619,7 +3619,7 @@ msgid "Wrong domain name syntax or number of labels"
 msgstr ""
 
 #, fuzzy
-msgid " Wrong domain name lenght!"
+msgid "Wrong domain name lenght!"
 msgstr "Domännamn"
 
 msgid "Wrong subdomain syntax or number of labels!"
@@ -3811,7 +3811,6 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
-"\t"
 msgstr ""
 
 msgid "Your order has been successfully created."
@@ -3911,6 +3910,12 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
+msgid "ispCP Reseller: Add Alias"
+msgstr ""
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
 msgid "ispCP - Manage Domain/Alias"
 msgstr ""
 
@@ -3951,12 +3956,6 @@ msgid "Ordered domain alias activated!"
 msgstr ""
 
 msgid "Ordered domain alias not activated!"
-msgstr ""
-
-msgid "ispCP Reseller: Add Alias"
-msgstr ""
-
-msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
 msgid "ispCP - Circular"
@@ -4012,12 +4011,6 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
-msgid "ispCP - Reseller/Main Index"
-msgstr ""
-
-msgid "View details"
-msgstr ""
-
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
@@ -4034,6 +4027,12 @@ msgid "ispCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
+msgstr ""
+
+msgid "ispCP - Reseller/Main Index"
+msgstr ""
+
+msgid "View details"
 msgstr ""
 
 msgid "User accounts"
@@ -4074,6 +4073,45 @@ msgstr ""
 msgid "Activation Link"
 msgstr "Knapp link"
 
+msgid "Wrong order ID!"
+msgstr ""
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "User added!"
+msgstr ""
+
+msgid "Customer order was removed successful!"
+msgstr ""
+
+msgid "ispCP - Reseller/Order details"
+msgstr ""
+
+msgid "Order data updated successfully!"
+msgstr ""
+
+msgid "Order date"
+msgstr ""
+
+msgid "Hosting plan"
+msgstr ""
+
+msgid "Hosting details"
+msgstr ""
+
+msgid "Order details"
+msgstr ""
+
+msgid "Customer data"
+msgstr ""
+
+msgid "Are you sure you want to delete this order?"
+msgstr ""
+
+msgid "Add to the system"
+msgstr ""
+
 msgid "ispCP - Reseller/Order settings"
 msgstr ""
 
@@ -4104,49 +4142,10 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-msgid "Customer data"
-msgstr ""
-
 msgid "Order"
 msgstr ""
 
-msgid "Hosting plan"
-msgstr ""
-
-msgid "Are you sure you want to delete this order?"
-msgstr ""
-
 msgid "Add/Details"
-msgstr ""
-
-msgid "Wrong order ID!"
-msgstr ""
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr ""
-
-msgid "User added!"
-msgstr ""
-
-msgid "Customer order was removed successful!"
-msgstr ""
-
-msgid "ispCP - Reseller/Order details"
-msgstr ""
-
-msgid "Order data updated successfully!"
-msgstr ""
-
-msgid "Order date"
-msgstr ""
-
-msgid "Hosting details"
-msgstr ""
-
-msgid "Order details"
-msgstr ""
-
-msgid "Add to the system"
 msgstr ""
 
 msgid "ispCP - Reseller/Change Password"
@@ -4250,9 +4249,6 @@ msgstr ""
 msgid "Users list"
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr ""
-
 msgid "ispCP - Users"
 msgstr ""
 
@@ -4285,5 +4281,8 @@ msgid "This user has domain record !<br>First remove the domain from the system!
 msgstr ""
 
 msgid "User not terminated!"
+msgstr ""
+
+msgid "This reseller has no domains yet."
 msgstr ""
 

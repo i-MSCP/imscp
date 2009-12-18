@@ -1,6 +1,13 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-18 Laurent Declercq
+	- GUI:
+		* Fixed some mistakes related to i18n
+	- LANGUAGES:
+		* Updated ispCP pot file
+		* Updated all *. po files
+
 2009-12-17 Benedikt Heintel
 	- DOCS:
 		* Updated all INSTALL
