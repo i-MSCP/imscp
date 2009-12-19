@@ -1,9 +1,46 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-19 Laurent Declercq
+	CONFIGS:
+		* Centos - Couldn't to connect to FTP
+		* Centos - Ftp_choose_dir fail (due to the FTP issue ; see above)
+
+2009-12-18 Laurent Declercq
+	- GUI:
+		* Fixed some mistakes related to i18n
+	- LANGUAGES:
+		* Updated ispCP pot file
+		* Updated all *. po files
+		* Updated all INI language files
+
+2009-12-17 Benedikt Heintel
+	- DOCS:
+		* Updated all INSTALL
+	- LANGUAGES:
+		* Updated Swedish
+
+2009-12-17 Laurent Declercq
+	- DOCS:
+		* Updated OpenSuse INSTALL
+	- LANGUAGES:
+		* Fixed: Several errors in *.po files
+	- TOOLS:
+		* Added new script (checkPo) to test all *.po files
+		* Added the check process in the translation README file
+
+2009-12-16 Laurent Declercq
+	- LANGUAGES:
+		* Updated French
+
+2009-12-16 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Basque
+		* Added Lithurnian
+
 2009-12-15 Laurent Declercq
-	- DISTS:
-		* Updated: Ubuntu INSTALL
+	- DOCS:
+		* Updated Ubuntu INSTALL
 		* Updated: version 1.0.3 to 1.0.4 in all INSTALL files
 
 2009-12-14 Benedikt Heintel
@@ -30,12 +67,12 @@ ispCP ω 1.0.4 Changelog
 		* Fixed #2094: Redirection to the ispCP tools - Bad regular expression
 
 2009-12-12 Benedikt Heintel
-	- DISTS:
-		* Updated: CentOS INSTALL
+	- DOCS:
+		* Updated CentOS INSTALL
 
 2009-12-11 Benedikt Bauer
 	- DISTS:
-		* Updated: Ubuntu packages
+		* Updated Ubuntu packages
 
 2009-12-11 Laurent Declercq
 	- GUI:

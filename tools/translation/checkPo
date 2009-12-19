@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 #
-# Version: $Id$
+# Version:	$Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -28,25 +28,22 @@
 
 # description:
 #
-# updates/merges all language specific .po files with strings of the
-# main file ispcp.pot
+# checks all .po files against strict xgettext rules
 #
 
 set -e
 
-if [ ! -d language-files ]; then
-	if [ ! -d ../../language-files ]; then
-		echo 'Neither language-files nor ../../language-files are valid directories!'
-		exit 1
-	else
-		cd ../../language-files/po
+MSGFMT="/usr/bin/msgfmt -cf --strict "
+
+cd "../../language-files/po"
+
+for po in *.po ; do
+
+	if [ -f $po ]; then
+		echo $po
+		$MSGFMT $po
 	fi
-else
-	cd language-files/po
-fi
-
-
-for i in *.po; do
-	echo $i
-	msgmerge -U $i ispCP.pot
 done
+rm -f messages.mo
+
+exit 0
