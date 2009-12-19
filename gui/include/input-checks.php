@@ -356,7 +356,7 @@ function validates_dname($dname, $subdname_process = false) {
 		// Check lenght according RFC 1123 (Max of 255 chars)
 		if(strlen($dname) >255)
 		{
-			$validation_err_msg = tr(' Wrong domain name lenght!');
+			$validation_err_msg = tr('Wrong domain name lenght!');
 			return false;
 		}
 	}

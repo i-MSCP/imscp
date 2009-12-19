@@ -56,7 +56,7 @@ SQL_QUERY;
 		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
 		$ckey = sha1($order_id.'-'.$domain_name.'-'.$admin_id.'-'.$coid);
 		if ($ckey == $key) $result = true;
-	}	
+	}
 	return $result;
 }
 
@@ -119,7 +119,8 @@ you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
 Please login into your ispCP control panel for more details.
 
-	');
+'); // Please, do not put tab here - i18n issue
+
 		$search [] = '{RESELLER}';
 		$replace[] = $from_name;
 		$message = str_replace($search, $replace, $message);
@@ -129,7 +130,7 @@ Please login into your ispCP control panel for more details.
 		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
 
 		mail($from, $subject, $message, $headers);
-	}	
+	}
 }
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {

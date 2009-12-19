@@ -5,20 +5,18 @@
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 # Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
 # Seviye Kaloğlu<seviye@gmail.com>, 06/08/2008, eksik kısımları (%50)tercüme ve düzenleme
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: tr_TR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-10 01:27+0100\n"
-"PO-Revision-Date: 2007-07-22 13:53-0500\n"
-"Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
+"POT-Creation-Date: 2009-12-18 12:36+0100\n"
+"PO-Revision-Date: 2009-12-18 14:32+0100\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: x64PoPot 0.2\n"
 
 #. Please ignore this entry
@@ -68,11 +66,8 @@ msgid "New password could not been sent."
 msgstr "Yeni şifre yollanamadı."
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
-msgstr "Şifre talebiniz değerlendiriliyor. Onaylamak için E-mail"
+msgid "Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes."
+msgstr ""
 
 msgid "Back"
 msgstr "Geri"
@@ -86,12 +81,8 @@ msgstr "Tekrar dene"
 msgid "Security code"
 msgstr "Güvenlik kodu"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
-"(Güvenlik için yukarıdaki harfleri \"Güvenlik kodu\" alanınayazmanız "
-"gerekiyor)"
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgstr "(Güvenlik için yukarıdaki harfleri \"Güvenlik kodu\" alanınayazmanız gerekiyor)"
 
 msgid "Request password"
 msgstr "Şifre talep et"
@@ -106,9 +97,7 @@ msgid "Incorrect username length or syntax!"
 msgstr "Kullanıcı adı uzun veya yazım hatası var"
 
 #, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid."
+msgid "The password must be at least %s long and contain letters and numbers to be valid."
 msgstr "Şifre en az %s karakter uzunluğunda ve harf + sayılardan oluşmalıdır."
 
 #, php-format
@@ -567,14 +556,10 @@ msgstr "İptal"
 msgid "Yes"
 msgstr "Evet"
 
-msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
-msgstr ""
-"'Domain geçerlilik süreci' 'N/A', Geçerlilik süreci bugünden itibaren "
-"başlıyacak."
+msgid "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr "'Domain geçerlilik süreci' 'N/A', Geçerlilik süreci bugünden itibaren başlıyacak."
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
+msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Kullanıcı yok veya sizin bu arayüze erişim yetkiniz yok!"
 
 msgid "N/A"
@@ -653,8 +638,7 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr "<em>%s</em> servisine limit koyulamaz!"
 
 #, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr "Girilen değer sisteminizdeki <em>%s</em> adet kayıttan daha küçüktür!"
 
 #, php-format
@@ -706,53 +690,11 @@ msgstr "Tüm trafik"
 msgid "Day"
 msgstr "Gün"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Yönetici/Hosting Planı Yönetimi"
-
-msgid "Hosting plans"
-msgstr "Hosting planları"
-
-msgid "Manage hosting plans"
-msgstr "Hosting planı düzenle"
-
-msgid "Purchasing"
-msgstr "Satın alma"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Yönetici/Hosting planı ekle"
 
 msgid "Add hosting plan"
 msgstr "Hosting planı ekle"
-
-msgid "Add new user hosting plan"
-msgstr "Yeni kullanıcı hosting planı ekle"
-
-msgid "Return to previous menu"
-msgstr "Önceki menüye geri dön"
-
-msgid "Hosting plan added!"
-msgstr "Hosting planı eklendi!"
-
-msgid "Hosting plan deleted!"
-msgstr "Hosting planı silindi!"
-
-msgid "Hosting plan updated!"
-msgstr "Hosting planı güncellendi!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Hosting planı silinemez, verilen siparişler var!"
-
-msgid "Hosting plans not found!"
-msgstr "Hosting planı bulunamadı!"
-
-msgid "No."
-msgstr "No."
-
-msgid "Name"
-msgstr "Ad"
-
-msgid "Show hosting plan"
-msgstr "Hosting planı göster"
-
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Yönetici/Hosting planı ekle"
 
 msgid "Hosting plan properties"
 msgstr "Hosting planı özellikleri"
@@ -868,6 +810,48 @@ msgstr "Hatalı ücret. Örnek: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Hatalı kurulum ücreti. Örnek: 19.99"
+
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Yönetici/Hosting Planı Yönetimi"
+
+msgid "Hosting plans"
+msgstr "Hosting planları"
+
+msgid "Manage hosting plans"
+msgstr "Hosting planı düzenle"
+
+msgid "Purchasing"
+msgstr "Satın alma"
+
+msgid "Add new user hosting plan"
+msgstr "Yeni kullanıcı hosting planı ekle"
+
+msgid "Return to previous menu"
+msgstr "Önceki menüye geri dön"
+
+msgid "Hosting plan added!"
+msgstr "Hosting planı eklendi!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hosting planı silindi!"
+
+msgid "Hosting plan updated!"
+msgstr "Hosting planı güncellendi!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hosting planı silinemez, verilen siparişler var!"
+
+msgid "Hosting plans not found!"
+msgstr "Hosting planı bulunamadı!"
+
+msgid "No."
+msgstr "No."
+
+msgid "Name"
+msgstr "Ad"
+
+msgid "Show hosting plan"
+msgstr "Hosting planı göster"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -1027,6 +1011,9 @@ msgstr "Hazır ispCP güncellemeleri"
 msgid "No new ispCP updates available"
 msgstr "Yeni ispCP güncellemesi yok"
 
+msgid "Language was removed!"
+msgstr "Hosting planı güncellendi!"
+
 msgid "User language updated successfully!"
 msgstr "Kullanıcı dil seçimi güncellendi"
 
@@ -1039,9 +1026,6 @@ msgstr "Dil"
 #, fuzzy
 msgid "Choose your default language"
 msgstr "Varsayılan dili seçiniz"
-
-msgid "Language was removed!"
-msgstr "Hosting planı güncellendi!"
 
 msgid "Reseller list is empty!"
 msgstr "Bayi listesi boş!"
@@ -1087,36 +1071,22 @@ msgstr "Kaynak ve hedef bayiler aynı!"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr ""
-"<b>%1$s</b> kullanıcısının <b>%2$s</b> servisi için limitsiz yetkisi var !"
-"<br>"
+msgstr "<b>%1$s</b> kullanıcısının <b>%2$s</b> servisi için limitsiz yetkisi var !<br>"
 
 #, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
-msgstr ""
-"<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için kısıtlı<br>yetkisi olan "
-"bir bayiye taşıyamazsınız!"
+msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr "<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için kısıtlı<br>yetkisi olan bir bayiye taşıyamazsınız!"
 
 #, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
-msgstr ""
-"<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için<br>hedef bayideki "
-"limitleri aşıyor!"
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr "<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için<br>hedef bayideki limitleri aşıyor!"
 
 msgid "Moving aborted!"
 msgstr "Taşıma durduruldu!"
 
 #, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller !<br>This user cannot be moved!"
-msgstr ""
-"<b>%s</b> kullanıcısının kaynak bayiden taşınamaz bir IP adresi var!"
-"<br>Kullanıcı taşınamaz!"
+msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
+msgstr "<b>%s</b> kullanıcısının kaynak bayiden taşınamaz bir IP adresi var!<br>Kullanıcı taşınamaz!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Yönetici/Kullanıcıları düzenle/Kullanıcı atanması"
@@ -1155,11 +1125,13 @@ msgid "Email Updated"
 msgstr "Eposta güncellendi"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr ""
-"Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
+msgstr "Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini silin!"
 
 msgid "User was disabled"
 msgstr "Kullanıcı devre dışı bırakıldı"
+
+msgid "Incorrect data input!"
+msgstr "Geçersiz veri girişi!"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Yönetici/Dil Yöneticisi"
@@ -1216,9 +1188,6 @@ msgstr "Kur"
 
 msgid "Export"
 msgstr "Dışarı aktar"
-
-msgid "Incorrect data input!"
-msgstr "Geçersiz veri girişi!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Yönetici/Şifre Değiştir"
@@ -1338,8 +1307,7 @@ msgid "Domains"
 msgstr "Domain"
 
 #, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr "current_als_cnt ve gerçek alias sayısında tutarsızlık: %1$d != %2$d"
 
 msgid "! Trying to correct!"
@@ -1349,8 +1317,7 @@ msgid "Aliases"
 msgstr "Aliaslar"
 
 #, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr "current_ftp_cnt ve gerçek ftp sayısında tutarsızlık: %1$d != %2$d"
 
 msgid "SQL Databases"
@@ -1369,33 +1336,21 @@ msgid "Reseller data inconsistency!"
 msgstr "Bayi veri tutarsızlığı!"
 
 #, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
-msgstr ""
-"Bu bayiye girdiğiniz yeni limitten daha yüksek/büyük <b>%s</b> hesap/limit "
-"atanmış."
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Bu bayiye girdiğiniz yeni limitten daha yüksek/büyük <b>%s</b> hesap/limit atanmış."
 
 msgid "Edit reseller aborted!"
 msgstr "Bayi düzenleme işlemi durduruldu!"
 
 #, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
-msgstr ""
-"Bu bayi müşterilerine girmiş olduğunuz değerden daha yüksek/büyük<b>%s</b> "
-"hesap/limit atanmış."
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Bu bayi müşterilerine girmiş olduğunuz değerden daha yüksek/büyük<b>%s</b> hesap/limit atanmış."
 
 #, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
-msgstr ""
-"Bu bayi <b>%s</b> servisi için limtsiz yetkisi olankullanıcısı var!<br>"
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr "Bu bayi <b>%s</b> servisi için limtsiz yetkisi olankullanıcısı var!<br>"
 
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "Bayiyi kısıtlamak için önce, müşterilerini kısıtlamanız gerekir!<br>"
 
 #, php-format
@@ -1507,11 +1462,23 @@ msgstr "%s yok veya boş!"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits Araçları Log Checker"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Yönetici/Server istatistikleri"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Yönetici/Server günlük istatistikler"
 
-msgid "Server statistics"
-msgstr "Server istatistikleri"
+msgid "Server day statistics"
+msgstr "Server günlük istatistikler"
+
+msgid "Month:"
+msgstr "Ay:"
+
+msgid "Year:"
+msgstr "Yıl:"
+
+msgid "Day:"
+msgstr "Gün:"
+
+msgid "Hour"
+msgstr "Saat"
 
 msgid "Web in"
 msgstr "Web gelen"
@@ -1543,23 +1510,11 @@ msgstr "Tüm gelenler"
 msgid "All out"
 msgstr "Tüm gidenler"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Yönetici/Server günlük istatistikler"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Yönetici/Server istatistikleri"
 
-msgid "Server day statistics"
-msgstr "Server günlük istatistikler"
-
-msgid "Month:"
-msgstr "Ay:"
-
-msgid "Year:"
-msgstr "Yıl:"
-
-msgid "Day:"
-msgstr "Gün:"
-
-msgid "Hour"
-msgstr "Saat"
+msgid "Server statistics"
+msgstr "Server istatistikleri"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Yönetici / Sistem Araçları / Server Durumu"
@@ -1596,141 +1551,6 @@ msgstr "Seçenekler"
 
 msgid "Kill session"
 msgstr "Session sonlandır"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Yönetici/Ayarlar"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "HATA: Sadece pozitif sayı girebilirsiniz!"
-
-msgid "Settings saved !"
-msgstr "Ayarlar kaydedildi!"
-
-msgid "General settings"
-msgstr "Genel ayarlar"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Aktivasyon linki geçersiz olma süresi(dakika)"
-
-msgid "Password settings"
-msgstr "Şifre ayarları"
-
-msgid "Use strong Passwords"
-msgstr "Zor şifreler kullanınız"
-
-msgid "Password length"
-msgstr "Şifre uzunluğu"
-
-msgid "Bruteforce detection"
-msgstr "Bruteforce denetimi"
-
-msgid "Block time between logins"
-msgstr "İki giriş arası bloke süresi"
-
-msgid "Max number of login attempts"
-msgstr "Azami giriş denemesi sayısı"
-
-msgid "Blocktime (minutes)"
-msgstr "Engelleme süresi(dakika)"
-
-msgid "Block time between logins (seconds)"
-msgstr "İki giriş arası bloke süresi(saniye)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Azami CAPTCHA doğrulama denemesi"
-
-msgid "Other settings"
-msgstr "Diğer ayarlar"
-
-msgid "E-Mail settings"
-msgstr "Eposta ayarları"
-
-msgid "Create default E-Mail addresses"
-msgstr "Varsayılan Eposta adresi oluştur"
-
-msgid "Count default E-Mail addresses"
-msgstr "Varsayılan Eposta adresi oluştur"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "Eposta hesapları askıya alınmış"
-
-#, fuzzy
-msgid "Panel default language"
-msgstr "Varsayılan dili seçiniz"
-
-msgid "Support system"
-msgstr "Destek sistemi"
-
-msgid "Apply changes"
-msgstr "Değişiklikleri kaydet"
-
-msgid "Server ports"
-msgstr "Server portları"
-
-msgid "Hosting plans available for"
-msgstr "Kullanılabilir server planları"
-
-msgid "Admin"
-msgstr "Yönetici"
-
-msgid "Domains per page"
-msgstr "Sayfa başı domain"
-
-msgid "Log Level"
-msgstr "Giriş Seviyesi"
-
-msgid "Notices, Warnings and Errors"
-msgstr "İkazlar, Uyarılar ve Hatalar"
-
-msgid "Warnings and Errors"
-msgstr "Uyarılar ve Hatalar"
-
-msgid "Errors"
-msgstr "Hatalar"
-
-msgid "Check for update"
-msgstr "Güncelleme için bak"
-
-msgid "Show server load"
-msgstr "Server yüklemelerini görüntüle"
-
-msgid "Prevent external login for admins"
-msgstr "Lütfen admin giriş bilgilerinizi giriniz"
-
-msgid "Prevent external login for resellers"
-msgstr "Lütfen bayi giriş bilgilerinizi giriniz"
-
-msgid "Prevent external login for clients"
-msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
-
-msgid "Custom orderpanel ID"
-msgstr "Müşteri ID"
-
-#, fuzzy
-msgid "Domain names validation"
-msgstr "Domain adı"
-
-msgid "Top Level Domain name strict validation"
-msgstr ""
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-
-msgid "Second Level Domain name strict validation"
-msgstr ""
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-
-msgid ""
-"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr ""
-
-msgid "Maximal number of labels for subdomains"
-msgstr ""
 
 msgid "You can only upload images!"
 msgstr "Sadece resim dosyası gönderebilirsiniz!"
@@ -1813,6 +1633,9 @@ msgstr "Kayıf şifre linki"
 msgid "Subject"
 msgstr "Konu"
 
+msgid "Apply changes"
+msgstr "Değişiklikleri kaydet"
+
 msgid "URL to this admin panel"
 msgstr "Bu yönetici paneline URL"
 
@@ -1822,11 +1645,139 @@ msgstr "Protokol"
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Yönetici/Bakım Modu"
 
+msgid "Settings saved !"
+msgstr "Ayarlar kaydedildi!"
+
 msgid "Maintenance mode"
 msgstr "Bakım modu"
 
 msgid "Under this mode only administrators can login"
 msgstr "Bu modda sadece yöneticiler giriş yapabilir"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Yönetici/Ayarlar"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "HATA: Sadece pozitif sayı girebilirsiniz!"
+
+msgid "General settings"
+msgstr "Genel ayarlar"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktivasyon linki geçersiz olma süresi(dakika)"
+
+msgid "Password settings"
+msgstr "Şifre ayarları"
+
+msgid "Use strong Passwords"
+msgstr "Zor şifreler kullanınız"
+
+msgid "Password length"
+msgstr "Şifre uzunluğu"
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce denetimi"
+
+msgid "Block time between logins"
+msgstr "İki giriş arası bloke süresi"
+
+msgid "Max number of login attempts"
+msgstr "Azami giriş denemesi sayısı"
+
+msgid "Blocktime (minutes)"
+msgstr "Engelleme süresi(dakika)"
+
+msgid "Block time between logins (seconds)"
+msgstr "İki giriş arası bloke süresi(saniye)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Azami CAPTCHA doğrulama denemesi"
+
+msgid "Other settings"
+msgstr "Diğer ayarlar"
+
+msgid "E-Mail settings"
+msgstr "Eposta ayarları"
+
+msgid "Create default E-Mail addresses"
+msgstr "Varsayılan Eposta adresi oluştur"
+
+msgid "Count default E-Mail addresses"
+msgstr "Varsayılan Eposta adresi oluştur"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "Eposta hesapları askıya alınmış"
+
+#, fuzzy
+msgid "Panel default language"
+msgstr "Varsayılan dili seçiniz"
+
+msgid "Support system"
+msgstr "Destek sistemi"
+
+msgid "Server ports"
+msgstr "Server portları"
+
+msgid "Hosting plans available for"
+msgstr "Kullanılabilir server planları"
+
+msgid "Admin"
+msgstr "Yönetici"
+
+msgid "Domains per page"
+msgstr "Sayfa başı domain"
+
+msgid "Log Level"
+msgstr "Giriş Seviyesi"
+
+msgid "Notices, Warnings and Errors"
+msgstr "İkazlar, Uyarılar ve Hatalar"
+
+msgid "Warnings and Errors"
+msgstr "Uyarılar ve Hatalar"
+
+msgid "Errors"
+msgstr "Hatalar"
+
+msgid "Check for update"
+msgstr "Güncelleme için bak"
+
+msgid "Show server load"
+msgstr "Server yüklemelerini görüntüle"
+
+msgid "Prevent external login for admins"
+msgstr "Lütfen admin giriş bilgilerinizi giriniz"
+
+msgid "Prevent external login for resellers"
+msgstr "Lütfen bayi giriş bilgilerinizi giriniz"
+
+msgid "Prevent external login for clients"
+msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
+
+msgid "Custom orderpanel ID"
+msgstr "Müşteri ID"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Domain adı"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "HATA: Sadece harf, rakam, tire ve altçizgi kullanabilirsiniz."
@@ -2083,12 +2034,8 @@ msgstr "Ana domaine"
 msgid "Domain databases:"
 msgstr "Domain alias"
 
-msgid ""
-"Do you really want to delete the entire domain? This operation can not be "
-"undone!"
-msgstr ""
-"Gerçekten bütün Domain'leri silmek istiyor musunuz? Bu işlemin geri dönüşü "
-"olmaz !"
+msgid "Do you really want to delete the entire domain? This operation can not be undone!"
+msgstr "Gerçekten bütün Domain'leri silmek istiyor musunuz? Bu işlemin geri dönüşü olmaz !"
 
 msgid "Yes, delete the domain."
 msgstr "%s tüm yönetici loglarını sildi"
@@ -2150,24 +2097,14 @@ msgstr "Alias aktivasyon için kaydedildi"
 msgid "Alias scheduled for addition!"
 msgstr "Alias eklenmesi için kaydedildi"
 
-msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr ""
-"Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce "
-"onları silin"
+msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr "Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce onları silin"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr ""
-"Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce "
-"onları silin"
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce onları silin"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
-"Silmeye çalıştığınız domain aliasına kayıtlı FTP hesapları var!<br>Önce "
-"onları silin"
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "Silmeye çalıştığınız domain aliasına kayıtlı FTP hesapları var!<br>Önce onları silin"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias silme için kaydedildi"
@@ -2196,11 +2133,8 @@ msgstr "Kapalı"
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Yönlendirme URLsi 'http://' ile başlamak zorunda"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları "
-"siliniz!"
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları siliniz!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomain silme için işleme alındı!"
@@ -2232,10 +2166,8 @@ msgstr "(örn. yedek "
 msgid "Restore backup"
 msgstr "Yedekleri yükle"
 
-msgid ""
-"Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Yükle buttonuna tıklayınız ve sistem en son alınan günlük yedeği yükleyecek"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr "Yükle buttonuna tıklayınız ve sistem en son alınan günlük yedeği yükleyecek"
 
 msgid "Restore"
 msgstr "Geri Yükle (restore)"
@@ -2388,29 +2320,11 @@ msgstr "Kayıt \"%s\" etki alanının parçası olmayan \"%s\"."
 
 #, php-format
 msgid "Cannot validate %s record. Reason '%s'."
-msgstr "Kaydı doğruluyamadık, sebep '%s'."
+msgstr ""
 
 #, php-format
 msgid "Unknown zone type %s!"
-msgstr "Bilinmeyen tip!"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Müşteri/Domain İstatistikleri"
-
-msgid "Web Stats"
-msgstr "Web İstatistikleri"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
-
-msgid "Sum"
-msgstr "Toplam"
+msgstr ""
 
 msgid "Manual zone's records list is empty!"
 msgstr "Posta hesapları listesi boş!"
@@ -2445,6 +2359,24 @@ msgstr "Eylem"
 
 msgid "Record data"
 msgstr "Core verisi"
+
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Müşteri/Domain İstatistikleri"
+
+msgid "Web Stats"
+msgstr "Web İstatistikleri"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Toplam"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Müşteri/Kişisel Hata Sayfalarını Düzenle"
@@ -2621,8 +2553,7 @@ msgstr "PHP Desteği: açık"
 msgid "PHP Support: disabled"
 msgstr "PHP Desteği: kapalı"
 
-msgid ""
-"You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgid "You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr "PHP etkin, fakat yeni hosting planı bu özelliğe sahip değil."
 
 msgid "CGI Support: enabled"
@@ -2631,8 +2562,7 @@ msgstr "CGI Desteği: açık"
 msgid "CGI Support: disabled"
 msgstr "CGI Desteği: kapalı"
 
-msgid ""
-"You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgid "You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr "CGI etkin, fakat yeni hosting planı bu özelliğe sahip değil."
 
 msgid "DNS Support: enabled"
@@ -2641,8 +2571,7 @@ msgstr "PHP Desteği: açık"
 msgid "DNS Support: disabled"
 msgstr "PHP Desteği: kapalı"
 
-msgid ""
-"You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgid "You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr "DNS etkin, fakat yeni hosting planı bu özelliğe sahip değil."
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2678,10 +2607,8 @@ msgstr "FTP"
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr "İzin verilen Veritabanı sayısından fazlasını kullanmaktasınız."
 
-msgid ""
-"You have more SQL database users in use than the new hosting plan limits."
-msgstr ""
-"İzin verilen Veritabanı kullanıcısı sayısından fazlasını kullanmaktasınız."
+msgid "You have more SQL database users in use than the new hosting plan limits."
+msgstr "İzin verilen Veritabanı kullanıcısı sayısından fazlasını kullanmaktasınız."
 
 msgid "free of charge"
 msgstr "ücretsiz"
@@ -2725,10 +2652,8 @@ msgstr "İzin verilen FTP hesabından fazlasını kullanmaktasınız."
 msgid "You have more SQL databases in use than the new hosting plan limits"
 msgstr "İzin verilen Veritabanı sayısından fazlasını kullanmaktasınız."
 
-msgid ""
-"You have more SQL database users in use than the new hosting plan limits"
-msgstr ""
-"İzin verilen Veritabanı kullanıcı sayısından fazlasını kullanmaktasınız."
+msgid "You have more SQL database users in use than the new hosting plan limits"
+msgstr "İzin verilen Veritabanı kullanıcı sayısından fazlasını kullanmaktasınız."
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Hosting paketi güncellemesi isteğiniz eklendi"
@@ -2742,10 +2667,6 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel at %s for more details"
 msgstr ""
-"{ACCOUNT} hesabı için bir güncelleme talebiniz var\n"
-"\n"
-"\n"
-"Lütfen, ayrıntılar için ispCP kontrol paneline giriş yapınız"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Hosting paketi güncellemesi isteğiniz silindi"
@@ -2854,11 +2775,11 @@ msgstr "Subdomain postaları"
 
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts!"
-msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
+msgstr ""
 
 #, php-format
 msgid "%s id is invalid! You cannot add mail accounts!"
-msgstr "Alias listesi boş! Oraya eposta hesabı ekleyemezsiniz!"
+msgstr ""
 
 msgid "Forward list is empty!"
 msgstr "Yönlendirme listesi boş!"
@@ -2911,21 +2832,6 @@ msgstr "Mesajınız"
 msgid "Enable mail auto responder"
 msgstr "Posta otoyanıt aktif et"
 
-msgid "Delete CatchAll"
-msgstr "TümünüYakala Sil"
-
-msgid "None"
-msgstr "Yok"
-
-msgid "Create catch all"
-msgstr "TümünüYakala oluştur"
-
-msgid "Catch all account"
-msgstr "TümünüYakala hesabı"
-
-msgid "Catch all"
-msgstr "TümünüYakala"
-
 msgid "Catch all account scheduled for creation!"
 msgstr "Tümünü yakala oluşturma için kaydedildi!"
 
@@ -2941,8 +2847,23 @@ msgstr "Tümünüyakala posta hesabı oluşturun"
 msgid "Mail accounts list"
 msgstr "Posta hesapları listesi"
 
+msgid "Create catch all"
+msgstr "TümünüYakala oluştur"
+
 msgid "Catch all account scheduled for deletion!"
 msgstr "TümünüYakala hesabı silme için kaydedildi!"
+
+msgid "Delete CatchAll"
+msgstr "TümünüYakala Sil"
+
+msgid "None"
+msgstr "Yok"
+
+msgid "Catch all account"
+msgstr "TümünüYakala hesabı"
+
+msgid "Catch all"
+msgstr "TümünüYakala"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Lütfen, bu eposta için TümünüYakala hesabını siliniz!"
@@ -2964,30 +2885,6 @@ msgstr "ispCP - Müşteri/Şifre Değiştir"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Müşteri/Kişisel Bilgileri Değiştir"
-
-msgid "You do not have protected areas"
-msgstr "Korumalı alan yok!"
-
-msgid "Manage users and groups"
-msgstr "Kullanıcı ve grupları düzenle"
-
-msgid "Add user"
-msgstr "Kullanıcı ekle"
-
-msgid "Group name"
-msgstr "Grup adı"
-
-msgid "Group members"
-msgstr "Grup üyeleri"
-
-msgid "Add group"
-msgstr "Grup ekle"
-
-msgid "Group"
-msgstr "Grup"
-
-msgid "Add new protected area"
-msgstr "Yeni korumalı alan ekle"
 
 msgid "Please choose user or group"
 msgstr "Lütfen, kullanıcı veya grup seçiniz"
@@ -3044,6 +2941,9 @@ msgstr "Alan adı"
 msgid "Unprotect it"
 msgstr "Koruma alanını kaldır"
 
+msgid "Manage users and groups"
+msgstr "Kullanıcı ve grupları düzenle"
+
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "Silmek için, koruma alanı durumunun OK olması gerekir!"
 
@@ -3052,6 +2952,27 @@ msgstr "Koruma alnı silindi!"
 
 msgid "Permission deny!"
 msgstr "Erişim reddedildi!"
+
+msgid "You do not have protected areas"
+msgstr "Korumalı alan yok!"
+
+msgid "Add user"
+msgstr "Kullanıcı ekle"
+
+msgid "Group name"
+msgstr "Grup adı"
+
+msgid "Group members"
+msgstr "Grup üyeleri"
+
+msgid "Add group"
+msgstr "Grup ekle"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Add new protected area"
+msgstr "Yeni korumalı alan ekle"
 
 msgid "Protected area was deleted successful!"
 msgstr "Koruma alanı silindi!"
@@ -3192,14 +3113,8 @@ msgid "Login phpMyAdmin"
 msgstr "phpMyAdmin aç"
 
 #, php-format
-msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
-msgstr ""
-"Bu veritabanı geri dönüşümü olmayarak silinecektir. Bu veritabanına ayit "
-"bütün veritabanı kullanıcıları da silinecektirBaşka bir veri tabanı. size% "
-"silmek istediğinizden emin misiniz?"
+msgid "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete %s?"
+msgstr "Bu veritabanı geri dönüşümü olmayarak silinecektir. Bu veritabanına ayit bütün veritabanı kullanıcıları da silinecektirBaşka bir veri tabanı. size% silmek istediğinizden emin misiniz?"
 
 msgid "SQL users limit reached!"
 msgstr "Azami SQL kullanıcı sayısına ulaşıldı!"
@@ -3211,8 +3126,7 @@ msgid "Too user long password!"
 msgstr "Kullanıcı şifresi çok uzun!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
-"SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
+msgstr "SQL kullanıcısı bulunamadı! Başka bir kullanıcı tarafından silinmiş olabilir!"
 
 msgid "User name too long!"
 msgstr "Kullanıcı adı çok uzun!"
@@ -3580,11 +3494,9 @@ msgstr ""
 "Kullanıcı adı: {USERNAME}\n"
 "Şifre: {PASSWORD}\n"
 "\n"
-"Şifrenizi ilk kez giriş yaptıktan sonra ve sıklıkla değiştirmenizi "
-"öneririz.\n"
+"Şifrenizi ilk kez giriş yaptıktan sonra ve sıklıkla değiştirmenizi öneririz.\n"
 "\n"
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} adresinden giriş "
-"yapabilirsiniz.\n"
+"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} adresinden giriş yapabilirsiniz.\n"
 "\n"
 "ispCP'yi güle güle kullanmanızı dileriz!\n"
 "ispCP Takımı.\n"
@@ -3640,8 +3552,7 @@ msgstr ""
 "Kullanıcı adınız: {USERNAME}\n"
 "Şifreniz: {PASSWORD}\n"
 "\n"
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} adresinden giriş "
-"yapabilirsiniz\n"
+"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} adresinden giriş yapabilirsiniz\n"
 "\n"
 "ispCP'yi güle güle kullanınız!\n"
 "ispCP Takımı\n"
@@ -3658,8 +3569,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -3689,8 +3599,7 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3735,7 +3644,7 @@ msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
-msgstr "Öncelik"
+msgstr "Öncelik: %s\n"
 
 msgid "Log in to answer"
 msgstr "Cevaba bak."
@@ -3745,7 +3654,7 @@ msgid "Wrong domain name syntax or number of labels"
 msgstr "Hatalı domain adı yazımı!"
 
 #, fuzzy
-msgid " Wrong domain name lenght!"
+msgid "Wrong domain name lenght!"
 msgstr "Hatalı domain adı yazımı!"
 
 #, fuzzy
@@ -3780,18 +3689,15 @@ msgstr ""
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Hatalı domain adı yazımı!"
+msgstr ""
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
-msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
+msgid "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 msgstr ""
 
 msgid ""
@@ -3820,14 +3726,10 @@ msgstr "Sistem bakımda! Sadece yöneticiler giriş yapabilir."
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
-msgstr ""
-"%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
+msgstr "%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
+msgstr "Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal ediliyor..."
 
 #, php-format
 msgid "%s's account status is not ok!"
@@ -3885,82 +3787,50 @@ msgstr "aliasları gizle"
 msgid "You have reached your domains limit.<br>You cannot add more domains!"
 msgstr "Domain limitinize ulaştınız.<br>Başka domain ekleyemezsiniz!"
 
-msgid ""
-"You have a subdomains limit!<br>You cannot add an user with unlimited "
-"subdomains!"
-msgstr ""
-"Subdomain limitiniz var!<br>Limitsiz subdomain yetkili kullanıcı "
-"ekleyemezsiniz!"
+msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+msgstr "Subdomain limitiniz var!<br>Limitsiz subdomain yetkili kullanıcı ekleyemezsiniz!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Subdomain limitinizi aşıyorsunuz!"
 
-msgid ""
-"You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
-msgstr ""
-"Alais limitiniz var!<br>Limitsiz alias yetkili bir kullanıcı "
-"oluşturamazsınız!"
+msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
+msgstr "Alais limitiniz var!<br>Limitsiz alias yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Alias limitini aştınız!"
 
-msgid ""
-"You have a mail accounts limit!<br>You cannot add an user with unlimited "
-"mail accounts!"
-msgstr ""
-"Posta hesabı limitiniz var!<br>Limitsiz posta hesabı ekleme yetkili bir "
-"kullanıcı oluşturamazsınız!"
+msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
+msgstr "Posta hesabı limitiniz var!<br>Limitsiz posta hesabı ekleme yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Posta hesabı limitiniz aşıyorsunuz!"
 
-msgid ""
-"You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP "
-"accounts!"
-msgstr ""
-"FTP hesabı limitiniz var!<br>Limitsiz FTP hesabı ekleme yetkili bir "
-"kullanıcı oluşturamazsınız!"
+msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
+msgstr "FTP hesabı limitiniz var!<br>Limitsiz FTP hesabı ekleme yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "FTP hesabı limitiniz aşıyorsunuz!"
 
-msgid ""
-"You have a SQL databases limit!<br>You cannot add an user with unlimited SQL "
-"databases!"
-msgstr ""
-"SQL veritabanı limitiniz var!<br>Limitsiz SQL veritabanı ekleme yetkili bir "
-"kullanıcı oluşturamazsınız!"
+msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
+msgstr "SQL veritabanı limitiniz var!<br>Limitsiz SQL veritabanı ekleme yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "SQL veritabanı limitinizi aşıyorsunuz!"
 
-msgid ""
-"You have an SQL users limit!<br>You cannot add an user with unlimited SQL "
-"users!"
-msgstr ""
-"SQL kullanıcısı limitiniz var!<br>Limitsiz SQL kullanıcısı ekleme yetkili "
-"bir kullanıcı oluşturamazsınız!"
+msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
+msgstr "SQL kullanıcısı limitiniz var!<br>Limitsiz SQL kullanıcısı ekleme yetkili bir kullanıcı oluşturamazsınız!"
 
-msgid ""
-"You have disabled SQL databases for this user!<br>You cannot have SQL users "
-"here!"
-msgstr ""
-"Bu kullanıcı için SQL veritabanı seçeneğini pasif ettiniz!<br>Burada SQL "
-"kullanıcısıoluşturamazsınız!"
+msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
+msgstr "Bu kullanıcı için SQL veritabanı seçeneğini pasif ettiniz!<br>Burada SQL kullanıcısıoluşturamazsınız!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "SQL veritabanı limitinizi aşıyorsunuz!"
 
-msgid ""
-"You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
-msgstr ""
-"Trafik limitiniz var!<br>Limitsiz trafik kullanma yetkili bir kullanıcı "
-"oluşturamazsınız!"
+msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
+msgstr "Trafik limitiniz var!<br>Limitsiz trafik kullanma yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
-msgstr ""
-"Disk limitiniz var!<br>Limitsiz disk alanı kullanma yetkili bir kullanıcı "
-"oluşturamazsınız!"
+msgstr "Disk limitiniz var!<br>Limitsiz disk alanı kullanma yetkili bir kullanıcı oluşturamazsınız!"
 
 msgid "ispCP Error"
 msgstr "ispCP Hata"
@@ -3971,6 +3841,7 @@ msgstr "Hata sayfaları"
 msgid "You have a new order"
 msgstr "Yeni bir siparişiniz var"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3979,7 +3850,6 @@ msgid ""
 "\n"
 "Please login into your ispCP control panel for more details.\n"
 "\n"
-"\t"
 msgstr ""
 "\n"
 "\n"
@@ -3987,6 +3857,7 @@ msgstr ""
 "{NAME} <{MAIL}> kişisinden {DOMAIN} domaini için yeni bir siparişiniz var  \n"
 "\n"
 "Lütfen, ayrıntılar için ispCP kontrol panelinize giriş yapınız.\n"
+"\n"
 "\n"
 
 msgid "Your order has been successfully created."
@@ -4034,12 +3905,8 @@ msgstr "HATA: Güvenlik kodu doğru değil!"
 msgid "Check Out"
 msgstr "Ödeme"
 
-msgid ""
-"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
-"with more details and information."
-msgstr ""
-"<b>Ödeme için teşekkür ederiz</b><br>Ayrıntılı bilgi içeren bir posta, "
-"adresinize gönderilmiştir"
+msgid "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail with more details and information."
+msgstr "<b>Ödeme için teşekkür ederiz</b><br>Ayrıntılı bilgi içeren bir posta, adresinize gönderilmiştir"
 
 msgid "No available hosting packages"
 msgstr "Kullanılabilir hosting pakedi yok"
@@ -4089,6 +3956,13 @@ msgstr "Kurulum Ücreti"
 msgid "Performance"
 msgstr "Performans"
 
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
+msgstr "ispCP Bayi : Alias Ekle"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Domain Düzenle/Alias"
 
@@ -4131,13 +4005,6 @@ msgstr "Sipariş edilen domain aliası eklendi!"
 msgid "Ordered domain alias not activated!"
 msgstr "Sipariş edilen domain aliası aktif edilmedi!"
 
-#, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP Bayi : Alias Ekle"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
-
 msgid "ispCP - Circular"
 msgstr "ispCP - Döngüsel"
 
@@ -4173,7 +4040,7 @@ msgstr "Yıl"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "Servis devre dışı bırakılamaz!"
+msgstr ""
 
 #, php-format
 msgid "The <em>%s</em> service cannot be limited!"
@@ -4182,12 +4049,6 @@ msgstr "<em>%s</em> servisi sınırlandırılamaz!"
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> servisi limitsiz olamaz!"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Bayi/Anamenü"
-
-msgid "View details"
-msgstr "Ayrıntıları göster"
 
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Bayi/Hosting planı ekle"
@@ -4207,6 +4068,12 @@ msgstr "ispCP - Bayi/Hosting planı düzenle"
 msgid "View hosting plan"
 msgstr "Hosting planlarını göster"
 
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Bayi/Anamenü"
+
+msgid "View details"
+msgstr "Ayrıntıları göster"
+
 msgid "User accounts"
 msgstr "Kullanıcı hesapları"
 
@@ -4218,7 +4085,7 @@ msgstr "Ekstralar"
 
 #, php-format
 msgid "%1$s / %2$s of <b>%3$s</b>"
-msgstr "%1$s / %2$s toplam <b>%3$d</b>"
+msgstr "%1$s / %2$s toplam <b>%3$s</b>"
 
 #, php-format
 msgid "%1$s / %2$s of <b>unlimited</b>"
@@ -4243,6 +4110,45 @@ msgstr "Sipariş düzenle"
 
 msgid "Activation Link"
 msgstr "Aktivasyon epostası"
+
+msgid "Wrong order ID!"
+msgstr "Yanlış sipariş ID!"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Sipariş İptal Edildi: bayi azami değerleri aşıldı!"
+
+msgid "User added!"
+msgstr "Kullanıcı eklendi!"
+
+msgid "Customer order was removed successful!"
+msgstr "Müşteri siparişi silindi!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Bayi/Sipariş ayrıntıları"
+
+msgid "Order data updated successfully!"
+msgstr "Sipariş bilgisi güncellendi!"
+
+msgid "Order date"
+msgstr "Sipariş tarihi"
+
+msgid "Hosting plan"
+msgstr "Hosting planı"
+
+msgid "Hosting details"
+msgstr "Hosting ayrıntıları"
+
+msgid "Order details"
+msgstr "Sipariş ayrıntıları"
+
+msgid "Customer data"
+msgstr "Müşteri bilgileri"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Bu siparişi silmek istediğinize emin misiniz"
+
+msgid "Add to the system"
+msgstr "Sisteme ekle"
 
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Bayi/Sipariş ayarları"
@@ -4274,50 +4180,11 @@ msgstr "Sipariş güncelle"
 msgid "ID"
 msgstr "ID"
 
-msgid "Customer data"
-msgstr "Müşteri bilgileri"
-
 msgid "Order"
 msgstr "Sipariş"
 
-msgid "Hosting plan"
-msgstr "Hosting planı"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Bu siparişi silmek istediğinize emin misiniz"
-
 msgid "Add/Details"
 msgstr "Ekle/Detaylar"
-
-msgid "Wrong order ID!"
-msgstr "Yanlış sipariş ID!"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Sipariş İptal Edildi: bayi azami değerleri aşıldı!"
-
-msgid "User added!"
-msgstr "Kullanıcı eklendi!"
-
-msgid "Customer order was removed successful!"
-msgstr "Müşteri siparişi silindi!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Bayi/Sipariş ayrıntıları"
-
-msgid "Order data updated successfully!"
-msgstr "Sipariş bilgisi güncellendi!"
-
-msgid "Order date"
-msgstr "Sipariş tarihi"
-
-msgid "Hosting details"
-msgstr "Hosting ayrıntıları"
-
-msgid "Order details"
-msgstr "Sipariş ayrıntıları"
-
-msgid "Add to the system"
-msgstr "Sisteme ekle"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Bayi/Şifre Değiştir"
@@ -4412,9 +4279,6 @@ msgstr "ispCP - Kullanıcı/Düzenle"
 msgid "Users list"
 msgstr "Kullanıcı listesi"
 
-msgid "This reseller has no domains yet."
-msgstr "Bu bayinin henüz domaini yok."
-
 msgid "ispCP - Users"
 msgstr "ispCP - Kullanıcılar"
 
@@ -4443,365 +4307,12 @@ msgstr "Kullanıcı bilgisi güncellendi!"
 msgid "User data not updated!"
 msgstr "Kullanıcı bilgisi güncellenmedi!"
 
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
+msgid "This user has domain record !<br>First remove the domain from the system!"
 msgstr "Bu kullanıcının domain kaydı var !<br>Önce domaini sistemden siliniz!"
 
 msgid "User not terminated!"
 msgstr "Kullanıcı sonlandırılmadı!"
 
-#~ msgid "Incorrect domain name syntax"
-#~ msgstr "Hatalı <i>domain adı</i> yazımı"
+msgid "This reseller has no domains yet."
+msgstr "Bu bayinin henüz domaini yok."
 
-#~ msgid "Disk Usage Percent"
-#~ msgstr "Disk kullanımı"
-
-#~ msgid "You have no user records."
-#~ msgstr "Kullanıcı kaydınız yok."
-
-#, fuzzy
-#~ msgid "Default panel language changed!"
-#~ msgstr "Varsayılan dil seçimi değiştirildi!"
-
-#~ msgid "Default language"
-#~ msgstr "Varsayılan dil"
-
-#~ msgid "ispCP - Client/SSL Domains"
-#~ msgstr "ispCP - Müşteri/Domain Yönetimi"
-
-#~ msgid "Key identifier already used in one crt!\n"
-#~ msgstr "Anahtar tanımlayıcı kullanılmakta crt!\n"
-
-#~ msgid "Field Country must be 2 char long!\n"
-#~ msgstr "Alan Ülke 2 karakter uzunluğunda olmalıdır\n"
-
-#~ msgid "Field State can not be empty!\n"
-#~ msgstr "Devlet alanı doldurulma zorunludur!\n"
-
-#~ msgid "Field City can not be empty!\n"
-#~ msgstr "Şehir alanı doldurulma zorunludur!\n"
-
-#~ msgid "Field Company can not be empty!\n"
-#~ msgstr "Ana domain kullanılamaz!"
-
-#~ msgid "Field Company division can not be empty!\n"
-#~ msgstr "Firma alanı doldurulma zorunludur\n"
-
-#~ msgid "Email is not valid!\n"
-#~ msgstr "Domain alias eklenmedi!"
-
-#~ msgid "Error retriving key data"
-#~ msgstr "Key data alınmıyor hata"
-
-#~ msgid "Inexistent key"
-#~ msgstr "mevcudiyeti olmayan key"
-
-#~ msgid "Paste certificate"
-#~ msgstr "sertifika yapıştır"
-
-#~ msgid "Intermediate certificate"
-#~ msgstr "Ara sertifikası"
-
-#~ msgid "Key content"
-#~ msgstr "önemli içerik"
-
-#~ msgid "Add new certificate"
-#~ msgstr "Yeni korumalı alan ekle"
-
-#~ msgid "Generate self signed"
-#~ msgstr "Şifre oluştur"
-
-#~ msgid "CRT for domain name"
-#~ msgstr "Hatalı domain adı yazımı!"
-
-#~ msgid "State"
-#~ msgstr "İstatistikler"
-
-#~ msgid "Company division"
-#~ msgstr "Şirket"
-
-#~ msgid "List of installed keys"
-#~ msgstr "yüklü olan key listesi"
-
-#~ msgid "Key identifier already used in one csr!\n"
-#~ msgstr "Anahtar tanımlayıcı kullanılmakta csr!\n"
-
-#~ msgid "Create new signing request"
-#~ msgstr "Yeni transfer isteği oluşturun"
-
-#~ msgid "Generate"
-#~ msgstr "Cinsiyet"
-
-#~ msgid "Key identifier already exists!\n"
-#~ msgstr "Böyle bir kullanıcı zaten var!"
-
-#~ msgid ""
-#~ "The password must be at least %s long and contain letters and numbers to "
-#~ "be valid.\n"
-#~ msgstr ""
-#~ "Şifre en az %s karakter uzunluğunda ve harf + sayılardan oluşmalıdır."
-
-#~ msgid ""
-#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
-#~ msgstr "Şifre %s karakterden kısa veya izin verilmeyen işaretler var!"
-
-#~ msgid "Key can not be empty!\n"
-#~ msgstr ""
-#~ "Key doldurulma yorunludur\n"
-#~ " "
-
-#~ msgid "You do not own this domain or is an alias / addon domain!\n"
-#~ msgstr "Bu etki alanına sahip değil veya bir takma ad / addon etki alanı \n"
-
-#~ msgid "Key for this domain already exists!\n"
-#~ msgstr "Bu IP zaten mevcut!"
-
-#~ msgid "Key size is incorrect!\n"
-#~ msgstr "Anahtar boyutu doğru değil!\n"
-
-#~ msgid "Add new key"
-#~ msgstr "Yeni IP ekle"
-
-#~ msgid "Key for domain name"
-#~ msgstr "Hatalı domain adı yazımı!"
-
-#~ msgid "Paste generated key"
-#~ msgstr "Şifre oluştur"
-
-#~ msgid "Generate key with size:"
-#~ msgstr "Anahtar uzunluğunda oluştur:"
-
-#~ msgid "Generate new"
-#~ msgstr "Şifre oluştur"
-
-#~ msgid "Key is encoded with password"
-#~ msgstr "Anahtar şifre ile kodlanır"
-
-#~ msgid "List is empty!"
-#~ msgstr "Kayıtlar boş!"
-
-#~ msgid "Certificate keys"
-#~ msgstr "Sertifika keyleri"
-
-#~ msgid "Certificate sign request"
-#~ msgstr "Talepleri çalıştır"
-
-#~ msgid "Certificate"
-#~ msgstr "Sertifika"
-
-#~ msgid "Key host name"
-#~ msgstr "Yerleşim adı"
-
-#~ msgid "Certificate sign request host name"
-#~ msgstr "Sertifika için host ismi gerekmektedir"
-
-#~ msgid "Certificate host name"
-#~ msgstr "Servis"
-
-#~ msgid "Are you sure you want to delete this account?"
-#~ msgstr "Bu hesabı silmek istediğinize emin misiniz?"
-
-#~ msgid "Domain is not instantiated"
-#~ msgstr "Domain alias eklenmedi!"
-
-#~ msgid "Domain do not exists"
-#~ msgstr "%s bulunamadı"
-
-#~ msgid "Can not execute external command %s\n"
-#~ msgstr "dış komut çalıştırılamıyor %s\n"
-
-#~ msgid "Can not save key!\n"
-#~ msgstr "Anahtarı kayıt edemiyor \n"
-
-#~ msgid "Can not createself signed certificate!\n"
-#~ msgstr "Kendi sertifikanız oluşturulamıyor \n"
-
-#~ msgid "Invalid destination for key!"
-#~ msgstr "Geçersiz Hedef!"
-
-#~ msgid "Can not create csr!\n"
-#~ msgstr ""
-#~ "csr!\n"
-#~ " oluşturulamıyor"
-
-#~ msgid "Can not remove key!\n"
-#~ msgstr "Anahtarı kaldıramazsınız \n"
-
-#~ msgid "Can not validate key!\n"
-#~ msgstr "Anahtarı doğruluyamazsınız \n"
-
-#~ msgid "Can not generate key!\n"
-#~ msgstr "Anahtar oluşturamazsınız \n"
-
-#~ msgid "User do not have domains!"
-#~ msgstr "Kullanıcı bilgisi güncellenmedi!"
-
-#~ msgid "Backup / Restore"
-#~ msgstr "Yedekleme/Yeniden Yükleme"
-
-#~ msgid "Password sent"
-#~ msgstr "Şifre gönderildi"
-
-#~ msgid "ERROR: Password was not sent"
-#~ msgstr "HATA: Şifre gönderilmedi"
-
-#~ msgid "ERROR: Unknown user"
-#~ msgstr "HATA: Bilinmeyen kullanıcı"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has email accounts !<br> first remove "
-#~ "them !"
-#~ msgstr ""
-#~ "Silmeye çalıştığınız domain üzerinde eposta hesapları var!<br> Önce "
-#~ "onları siliniz!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-#~ msgstr ""
-#~ "Silmeye çalıştığınız domain üzerinde FTP hesapları var!<br> Önce onları "
-#~ "siliniz!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has domain alias!<br> first remove them !"
-#~ msgstr ""
-#~ "Silmeye çalıştığınız domain üzerinde domain aliasları var!<br> Önce "
-#~ "onları siliniz!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has subdomains accounts !<br> first "
-#~ "remove them !"
-#~ msgstr ""
-#~ "Silmeye çalıştığınız domain üzerinde subdomain hesapları var!<br>Önce "
-#~ "onları siliniz!"
-
-#~ msgid "Set status to \"change\""
-#~ msgstr "Durumu \"değiştir\" olarak ayarla"
-
-#~ msgid "%1$s / %2$s of <b>%3$d</b>"
-#~ msgstr "%1$s / %2$s toplam <b>%3$d</b>"
-
-#~ msgid "Please enter an SQL query!"
-#~ msgstr "Lütfen, bir SQL sorgusu yazınız!"
-
-#~ msgid "Could not connect to the SQL server as %s!"
-#~ msgstr "%s olarak SQL servera bağlanılamıyor!"
-
-#~ msgid "Execution of SQL query failed!"
-#~ msgstr "SQL sorgusu çalıştırılamadı!"
-
-#~ msgid "Execution of SQL query succeeded!"
-#~ msgstr "SQL sorgusu başarıyla çalıştırıldı!"
-
-#~ msgid "ispCP - Client/Execute SQL Query"
-#~ msgstr "ispCP - Müşteri/SQL Sorgusu Çalıştır"
-
-#~ msgid "Execute SQL query"
-#~ msgstr "SQL sorgusu çalıştır"
-
-#~ msgid "SQL query"
-#~ msgstr "SQL sorgusu"
-
-#~ msgid "Query status"
-#~ msgstr "Sorgu durumu"
-
-#~ msgid "Query result"
-#~ msgstr "Sorgu sonucu"
-
-#~ msgid "Execute"
-#~ msgstr "Çalıştır"
-
-#~ msgid "Mail in"
-#~ msgstr "Gelen posta"
-
-#~ msgid "Mail out"
-#~ msgstr "Giden posta"
-
-#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
-#~ msgstr "Subdomain listesi boş! Oraya posta hesabı ekleyemezsiniz!"
-
-#~ msgid "Catchall account"
-#~ msgstr "TümünüYakala hesabı"
-
-#~ msgid "Incorrect password length or syntax!"
-#~ msgstr "Şifre uzun veya yazım hatası var"
-
-#~ msgid "Message was sent!"
-#~ msgstr "Mesaj gönderildi!"
-
-#~ msgid "Message was send!"
-#~ msgstr "Mesaj gönderildi!"
-
-#~ msgid "Database update %s failed"
-#~ msgstr "Veritabanı güncellemesi %s başarısız"
-
-#~ msgid "Unknown domain status!"
-#~ msgstr "Bilinmeyen domain durumu!"
-
-#~ msgid "Order in progress"
-#~ msgstr "Sipariş işleme alındı"
-
-#~ msgid "Incorrect username number or syntax!"
-#~ msgstr "Hatalı kullanıcı adı sayısı ya da yazımı!"
-
-#~ msgid "Incorrect password number or syntax!"
-#~ msgstr "Hatalı şifre sayısı veya yazımı!"
-
-#~ msgid "Incorrect max domain number or syntax!"
-#~ msgstr "Hatalı azami domain sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max subdomain number or syntax!"
-#~ msgstr "Hatalı azami domain sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max alias number or syntax!"
-#~ msgstr "Hatalı azami alias sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max FTP number or syntax!"
-#~ msgstr "Hatalı azami FTP sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max mail number or syntax!"
-#~ msgstr "Hatalı azami posta sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max SQL databases number or syntax!"
-#~ msgstr "Hatalı azami SQL veritabanı sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max SQL users number or syntax!"
-#~ msgstr "Hatalı azami SQL kullanıcı sayısı ya da yazımı!"
-
-#~ msgid "Incorrect max traffic amount or syntax!"
-#~ msgstr "Hatalı azami trafik değeri ya da yazımı!"
-
-#~ msgid "Incorrect max disk amount or syntax!"
-#~ msgstr "Hatalı azami disk değeri ya da yazımı!"
-
-#~ msgid "Incorrect FTP account count or no number<br />"
-#~ msgstr "Hatalı FTP hesabı sayısı ya da girilen rakam değil<br />!"
-
-#~ msgid "Change user interface"
-#~ msgstr "Kullanıcı arayüzünü değiştir"
-
-#~ msgid "Edit properties"
-#~ msgstr "Özellikleri düzenle"
-
-#~ msgid "</b> Address !<br>Edit reseller aborted!"
-#~ msgstr "</b> Adresi !<br>Bayi düzenleme işlemi durduruldu!"
-
-#~ msgid "wait to be added"
-#~ msgstr "eklenmeyi bekliyor"
-
-#~ msgid "wait to be modified"
-#~ msgstr "güncellenmeyi bekliyor"
-
-#~ msgid "wait to be deleted"
-#~ msgstr "silinmeyi bekliyor"
-
-#~ msgid "wait to be enabled"
-#~ msgstr "açılmayı bekliyor"
-
-#~ msgid "New"
-#~ msgstr "Yeni"
-
-#~ msgid "new"
-#~ msgstr "yeni"
-
-#~ msgid "delete"
-#~ msgstr "sil"

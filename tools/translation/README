@@ -29,7 +29,17 @@ Default order
 	Add translations for empty strings or fix wrong translations in the language
 	specific *.po files.
 
-4. create language text files
+4. check all *.po files
+	Check the syntax of all *.po files with the check_po script. If the script
+	return one or more error, correct them and rerun the script.
+
+	Note : If one or more localization files have been added, add it in the
+	localization list of the check_po script before run.
+
+5. create language text files
 	Create/export language specific (.ini-like) text files with a language tool
 	out of language specific *.po files. These text files can be used to upload
 	them to the ispCP GUI panel.
+
+	See http://atomo64.puffinhost.com/ispcp/poconverter.php for the online
+	generator.
