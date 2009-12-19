@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-19 Laurent Declercq
+	CONFIGS:
+		* Centos - Couldn't to connect to FTP
+		* Centos - Ftp_choose_dir fail (due to the FTP issue ; see above)
+
 2009-12-18 Laurent Declercq
 	- GUI:
 		* Fixed some mistakes related to i18n
