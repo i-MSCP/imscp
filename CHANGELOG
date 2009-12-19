@@ -1,6 +1,11 @@
 ispCP ω 1.0.3 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-19 Jochen Manz
+	- RELEASE ispCP ω Omega 1.0.3
+	- DOCS:
+		* fixed a small typo in centos-packages file
+
 2009-12-19 Laurent Declercq
 	CONFIGS:
 		* Centos - Couldn't to connect to FTP
