@@ -5,18 +5,19 @@
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 # Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
 # Seviye Kaloğlu<seviye@gmail.com>, 06/08/2008, eksik kısımları (%50)tercüme ve düzenleme
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: tr_TR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-18 12:36+0100\n"
-"PO-Revision-Date: 2009-12-18 14:32+0100\n"
+"POT-Creation-Date: 2009-12-19 13:35+0100\n"
+"PO-Revision-Date: 2009-12-19 13:39+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: x64PoPot 0.2\n"
 
 #. Please ignore this entry
@@ -1311,7 +1312,7 @@ msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$
 msgstr "current_als_cnt ve gerçek alias sayısında tutarsızlık: %1$d != %2$d"
 
 msgid "! Trying to correct!"
-msgstr ""
+msgstr "onarılmaya çalışılıyor!"
 
 msgid "Aliases"
 msgstr "Aliaslar"
@@ -1762,22 +1763,22 @@ msgid "Domain names validation"
 msgstr "Domain adı"
 
 msgid "Top Level Domain name strict validation"
-msgstr ""
+msgstr "Top Level Domain doğrulaması"
 
 msgid "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
+msgstr "Sadece IANA veritabanına kayıtlı olan Top Level Domain'ler (TLD) kullanılabilir. "
 
 msgid "Second Level Domain name strict validation"
-msgstr ""
+msgstr "Second Level Domain doğrulaması"
 
 msgid "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
+msgstr "Tek haneli Second Level Domain'ler (SLD) çoğu Top Level Domainlerde izin verilmez. Bazı istisnalar mevcuttur, örneğin (TLD) .de."
 
 msgid "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr ""
+msgstr "Domain oluşturmak için maximum Subdomain sayısı"
 
 msgid "Maximal number of labels for subdomains"
-msgstr ""
+msgstr "Maximum subdomain sayısı subdomain için"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "HATA: Sadece harf, rakam, tire ve altçizgi kullanabilirsiniz."
@@ -3644,7 +3645,7 @@ msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
-msgstr "Öncelik: %s\n"
+msgstr ""
 
 msgid "Log in to answer"
 msgstr "Cevaba bak."
@@ -3655,23 +3656,23 @@ msgstr "Hatalı domain adı yazımı!"
 
 #, fuzzy
 msgid "Wrong domain name lenght!"
-msgstr "Hatalı domain adı yazımı!"
+msgstr "Hatalı domain adı uzunluğu!"
 
 #, fuzzy
 msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Hatalı subdomain yazımı!"
+msgstr "Hatalı subdomain uzunluğu!"
 
 #, fuzzy
 msgid "Wrong subdomain lenght!"
-msgstr "Hatalı subdomain yazımı!"
+msgstr "Hatalı subdomain uzunluğu!"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr ""
+msgstr "Başlığa izin verilmiyor: <b>%s</b>"
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr ""
+msgstr "Hatalı başlık dizimi <b>%s</b>"
 
 #, php-format
 msgid "Wrong label lenght: <b>%s</b>"
@@ -3689,16 +3690,16 @@ msgstr ""
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
 msgstr ""
 
-#, php-format
+#, fuzzy, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr ""
+msgstr "Hatalı domain adı yazımı: <b>%s</b> reserve edilmiş!"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "Hatalı Second Level Domain dizimi <b>%s</b>"
 
 msgid "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
-msgstr ""
+msgstr "HATA: Punnycode formatında yazılmış Domainler eklenemez, lütfen Unicode formatında yazınız.<br /><small>Örnek: <strong>xn--bcher-kva.de</strong> yerine <strong>bücher.de</strong>.</small"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3858,7 +3859,6 @@ msgstr ""
 "\n"
 "Lütfen, ayrıntılar için ispCP kontrol panelinize giriş yapınız.\n"
 "\n"
-"\n"
 
 msgid "Your order has been successfully created."
 msgstr "SQL kullanıcı şifresi değiştirildi! "
@@ -3961,7 +3961,7 @@ msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP Bayi : Alias Ekle"
 
 msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
+msgstr "Reseller'e ayit Kullanıcı olmadığından alias eklenemiyor."
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Domain Düzenle/Alias"
