@@ -5,6 +5,8 @@ ispCP ω 1.0.3 Changelog
 	CONFIGS:
 		* Centos - Couldn't to connect to FTP
 		* Centos - Ftp_choose_dir fail (due to the FTP issue ; see above)
+	DOCS:
+		* Updated OpenSuse INSTALL
 
 2009-12-18 Laurent Declercq
 	- GUI:
