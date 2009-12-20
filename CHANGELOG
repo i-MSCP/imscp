@@ -6,6 +6,8 @@ ispCP ω 1.0.4 Changelog
 		* *BSD: Fixed error on make install
 	- GUI: 
 		* Fixed tool tip issue in admin/settings
+	- LANGUAGES:
+		* Updated Polish
 
 2009-12-19 Laurent Declercq
 	CONFIGS:
