@@ -1,6 +1,12 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-20 Benedikt Heintel
+	- DISTS:
+		* *BSD: Fixed error on make install
+	- GUI: 
+		* Fixed tool tip issue in admin/settings
+
 2009-12-19 Laurent Declercq
 	CONFIGS:
 		* Centos - Couldn't to connect to FTP

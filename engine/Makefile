@@ -124,7 +124,6 @@ install:
 		$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
 	fi
 
-
 uninstall:
 
 	rm -rf $(SYSTEM_ENGINE_ROOT)
