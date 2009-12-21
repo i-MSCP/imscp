@@ -1,6 +1,10 @@
 ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-22 Marc Pujol
+	- GUI + BACKEND:
+		* Tightened default permission settings
+
 2009-12-19 Laurent Declercq
 	CONFIGS:
 		* Centos - Couldn't to connect to FTP
