@@ -1,10 +1,19 @@
-ispCP ω 1.0.3 Changelog
+ispCP ω 1.0.3-1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-20 Benedikt Heintel
+	- DISTS:
+		* *BSD: Fixed error on make install
+	- GUI: 
+		* Fixed tool tip issue in admin/settings
+	- LANGUAGES:
+		* Updated Polish
+		* Updated Turkish
+
 2009-12-19 Jochen Manz
-	- RELEASE ispCP ω Omega 1.0.3
-	- DOCS:
-		* fixed a small typo in centos-packages file
+        - RELEASE ispCP ω Omega 1.0.3
+        - DOCS:
+                * fixed a small typo in centos-packages file
 
 2009-12-19 Laurent Declercq
 	CONFIGS:

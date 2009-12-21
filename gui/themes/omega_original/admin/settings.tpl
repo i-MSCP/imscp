@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp_full.js"></script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -205,7 +205,7 @@
                                   <option value="0" {HARD_MAIL_SUSPENSION_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {HARD_MAIL_SUSPENSION_ON}>{TR_ENABLED}</option>
                                 </select></td>
-			    </tr>
+			                </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_OTHER_SETTINGS}</strong></td>
