@@ -2,10 +2,12 @@ ispCP ω 1.0.3-1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2009-12-21 Laurent Declercq
-	PACKAGE:
+	- PACKAGE:
 		* Updated "Version" in all ispcp.conf
-	CONFIGS:
+	- CONFIGS:
 		* CMD_PHP Must be the real path of php5-cli binary to avoid error during update
+	- GUI:
+		* Fixed - Security Fail - The files such as "ispcp.conf" and "ispcp-db-keys.php" should not be readable by other
 
 2009-12-20 Benedikt Heintel
 	- DISTS:

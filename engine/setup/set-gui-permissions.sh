@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -113,7 +113,7 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 # fixing db keys permissions;
 #
 
-chmod 0444 $ROOT_DIR/gui/include/ispcp-db-keys.php
+chmod 0400 $ROOT_DIR/gui/include/ispcp-db-keys.php
 
 #
 # Setting correct permission for virtual root directory
