@@ -111,7 +111,7 @@ unset($_SESSION["ch_hpprops"]);
 list($domain_php, $domain_cgi, $sub,
 	$als, $mail, $ftp,
 	$sql_db, $sql_user,
-	$traff, $disk, $domain_dns) = explode(";", $props);
+	$traff, $disk, $backup, $domain_dns) = explode(";", $props);
 
 $domain_php = preg_replace("/\_/", "", $domain_php);
 $domain_cgi = preg_replace("/\_/", "", $domain_cgi);
@@ -204,7 +204,8 @@ if (empty($ed_error)) {
 	// $user_props .= "$domain_ip;";
 	$user_props .= "$domain_php;";
 	$user_props .= "$domain_cgi;";
-	$user_props .= "$domain_dns";
+	$user_props .= "$domain_dns;";
+	$user_props .= "$backup";
 	update_user_props($dmn_id, $user_props);
 
 	$reseller_props = "$rdmn_current;$rdmn_max;";

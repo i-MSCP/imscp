@@ -295,7 +295,6 @@ function add_user_data($reseller_id) {
 	$cgi			= preg_replace("/\_/", "", $cgi);
 	$backup			= preg_replace("/\_/", "", $backup);
 	$dns			= preg_replace("/\_/", "", $dns);
-	$pure_user_pass	= $inpass;
 	$inpass			= crypt_user_pass($inpass, true);
 	$first_name		= clean_input($first_name, true);
 	$last_name		= clean_input($last_name, true);

@@ -1,6 +1,14 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-21 Benedikt Heintel
+	- GUI:
+		* Fixed: Password generation in order panel
+
+2009-12-21 Peter Ziergöbel
+	- GUI:
+		* Fixed #2108: Small bugs in orderpanel
+
 2009-12-20 Benedikt Heintel
 	- DISTS:
 		* *BSD: Fixed error on make install

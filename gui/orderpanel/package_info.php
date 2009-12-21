@@ -47,6 +47,12 @@ function translate_sse($value) {
 		return tr('Yes');
 	} else if ($value == '_no_') {
 		return tr('No');
+	} else if ($value == '_sql_') {
+		return tr('SQL');
+	} else if ($value == '_full_') {
+		return tr('Full');
+	} else if ($value == '_dmn_') {
+		return tr('Domain');
 	} else {
 		return $value;
 	}
@@ -84,7 +90,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		user_goto('index.php?user_id=' . $user_id);
 	} else {
 		$props = $rs->fields['props'];
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dns) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $props);
 
 		$price = $rs->fields['price'];
 		$setup_fee = $rs->fields['setup_fee'];
@@ -122,6 +128,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'PHP'			=> translate_sse($hp_php),
 				'CGI'			=> translate_sse($hp_cgi),
 				'DNS'			=> translate_sse($hp_dns),
+				'BACKUP'		=> translate_sse($hp_backup),
 				'MAIL'			=> translate_limit_value($hp_mail),
 				'FTP'			=> translate_limit_value($hp_ftp),
 				'SQL_DB'		=> translate_limit_value($hp_sql_db),

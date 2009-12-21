@@ -250,7 +250,6 @@ function add_domain_alias(&$sql, &$err_al) {
 		if (mount_point_exists($dmn_id, $mount_point)) {
 			$err_al = tr('Mount point already in use!');
 		}
-
 	}
 
 	if ('_off_' !== $err_al) {
@@ -260,7 +259,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Begin add new alias domain
 	$status = Config::get('ITEM_ADD_STATUS');
 
-	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
+	$query = "INSERT INTO `domain_aliasses` (" .
+			"`domain_id`, `alias_name`, `alias_mount`, `alias_status`, " .
+			"`alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array(
 			$cr_user_id,
 			$alias_name,
