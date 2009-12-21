@@ -1,10 +1,16 @@
 ispCP ω 1.0.3-1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-21 Laurent Declercq
+	PACKAGE:
+		* Updated "Version" in all ispcp.conf
+	CONFIGS:
+		* CMD_PHP Must be the real path of php5-cli binary to avoid error during update
+
 2009-12-20 Benedikt Heintel
 	- DISTS:
 		* *BSD: Fixed error on make install
-	- GUI: 
+	- GUI:
 		* Fixed tool tip issue in admin/settings
 	- LANGUAGES:
 		* Updated Polish
