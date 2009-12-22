@@ -1,6 +1,12 @@
 ispCP ω 1.0.3-1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-22 Marc Pujol
+        - GUI:
+		* Tightened default permission settings
+	- BACKEND:
+                * Tightened default permission settings
+
 2009-12-21 Laurent Declercq
 	- PACKAGE:
 		* Updated "Version" in all ispcp.conf

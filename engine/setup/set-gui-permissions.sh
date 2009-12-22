@@ -52,13 +52,13 @@ fi
 # fixing gui permissions;
 #
 if [ $DEBUG -eq 1 ]; then
-    find $ROOT_DIR/gui/ -print0 -type f| xargs -0 chmod -v 0444
-    find $ROOT_DIR/gui/ -print0 -type d| xargs -0 chmod -v 0555
+    find $ROOT_DIR/gui/ -type f -print0 | xargs -0 chmod -v 0440
+    find $ROOT_DIR/gui/ -type d -print0 | xargs -0 chmod -v 0550
     find $ROOT_DIR/gui/ -print0 | xargs -0 \
 	chown -v $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
 else
-    find $ROOT_DIR/gui/ -print0 -type f| xargs -0 chmod 0444
-    find $ROOT_DIR/gui/ -print0 -type d| xargs -0 chmod 0555
+    find $ROOT_DIR/gui/ -type f -print0 | xargs -0 chmod 0440
+    find $ROOT_DIR/gui/ -type d -print0 | xargs -0 chmod 0550
     find $ROOT_DIR/gui/ -print0 | xargs -0 \
 	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
 fi
@@ -70,12 +70,12 @@ fi
 i="$ROOT_DIR/gui/tools/webmail/data"
 
 if [ $DEBUG -eq 1 ]; then
-	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
 else
 	echo -n ".";
 fi
 
-chmod -R 0755 $i;
+chmod -R 0750 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 #
@@ -85,12 +85,12 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 i="$ROOT_DIR/gui/tools/filemanager/temp"
 
 if [ $DEBUG -eq 1 ]; then
-	echo "0777 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
 else
 	echo -n ".";
 fi
 
-chmod -R 0777 $i;
+chmod -R 0750 $i;
 
 #
 # fixing user_logo folder permissions;
@@ -99,42 +99,51 @@ chmod -R 0777 $i;
 i="$ROOT_DIR/gui/themes/user_logos"
 
 if [ $DEBUG -eq 1 ]; then
-	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
 else
 	echo -n ".";
 fi
 
-chmod -R 0644 $i;
-chmod 0755 $i;
+chmod -R 0640 $i;
+chmod 0750 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 
 #
 # fixing db keys permissions;
 #
-
-chmod 0400 $ROOT_DIR/gui/include/ispcp-db-keys.php
+i="$ROOT_DIR/gui/include/ispcp-db-keys.php"
+if [ $DEBUG -eq 1 ]; then
+	echo "0400 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID [$i]";
+else
+	echo -n ".";
+fi
+chmod 0400 $i;
+chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID $i;
 
 #
 # Setting correct permission for virtual root directory
 #
 
-chmod  0755 $APACHE_WWW_DIR;
-chown  $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $APACHE_WWW_DIR;
+if [ $DEBUG -eq 1 ]; then
+	echo "0555 $APACHE_USER:$APACHE_GROUP [$APACHE_WWW_DIR]";
+else
+	echo -n ".";
+fi
+chmod  0555 $APACHE_WWW_DIR;
+chown  $APACHE_USER:$APACHE_GROUP $APACHE_WWW_DIR;
 
 #
 # Set correct permission for phptmp gui directory
 #
 
 i="$ROOT_DIR/gui/phptmp"
-
 if [ $DEBUG -eq 1 ]; then
-	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
 else
 	echo -n ".";
 fi
-
-chmod -R 0755 $i;
+chmod -R 0750 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 #
@@ -142,6 +151,12 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 #
 
 i="$ROOT_DIR/gui/include/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer"
-chmod -R 0755 $i;
+if [ $DEBUG -eq 1 ]; then
+	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+else
+	echo -n ".";
+fi
+chmod -R 0750 $i;
+chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 echo "done";
