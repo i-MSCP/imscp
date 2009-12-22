@@ -55,7 +55,8 @@ if [ $DEBUG -eq 1 ]; then
 else
     echo -n ".";
 fi
-${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID ${CONF_FILE}
+${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID ${CONF_FILE}
+${CMD_CHMOD} 0640 ${CONF_FILE}
 
 # Fix rkhunter.log perms
 if [ $DEBUG -eq 1 ]; then
