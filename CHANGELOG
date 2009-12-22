@@ -1,9 +1,47 @@
 ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-22 Laurent Declercq
+	- DOCS:
+		* Updated all INSTALL files
+
 2009-12-22 Marc Pujol
-	- GUI + BACKEND:
+	- GUI:
 		* Tightened default permission settings
+	- BACKEND:
+		* Tightened default permission settings
+
+2009-12-21 Benedikt Heintel
+	- GUI:
+		* Fixed: Password generation in order panel
+	- LANGUAGES:
+		* Updated Turkish
+
+2009-12-21 Peter Ziergöbel
+	- GUI:
+		* Fixed #2108: Small bugs in orderpanel
+
+2009-12-21 Laurent Declercq
+	- PACKAGE:
+		* Updated "Version" in all ispcp.conf
+	- CONFIGS:
+		* CMD_PHP Must be the real path of php5-cli binary to avoid error during update
+	- GUI:
+		* Fixed - Security Fail - The files such as "ispcp.conf" and "ispcp-db-keys.php" should not be readable by other
+
+2009-12-20 Benedikt Heintel
+	- DISTS:
+		* *BSD: Fixed error on make install
+	- GUI:
+		* Fixed tool tip issue in admin/settings
+	- LANGUAGES:
+		* Updated Polish
+		* Updated Turkish
+
+2009-12-19 Jochen Manz
+	- RELEASE ispCP ω Omega 1.0.3
+	- DOCS:
+		* fixed a small typo in centos-packages file
 
 2009-12-19 Laurent Declercq
 	CONFIGS:
@@ -11,6 +49,8 @@ ispCP ω 1.1.0 Changelog
 		* Centos - Ftp_choose_dir fail (due to the FTP issue ; see above)
 	DOCS:
 		* Updated OpenSuse INSTALL
+	LANGUAGES:
+		* Updated turkish
 
 2009-12-18 Laurent Declercq
 	- GUI:

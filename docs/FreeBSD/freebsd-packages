@@ -42,6 +42,7 @@ Perl				=-=-=-= PERL MODULE =-=-=-=
 	+ DBI
 	+ Digest-HMAC
 	+ Digest-SHA1
+	+ File-MimeInfo
 	+ HTML-Parser
 	+ HTML-Tagset
 	+ HTTP-GHTTP
@@ -55,6 +56,7 @@ Perl				=-=-=-= PERL MODULE =-=-=-=
 	+ PlRPC
 	+ URI
 	+ libwww
+	+ Term-ReadKey
 	+ Term-ReadPassword
 PHP				=-=-=-= PHP PACKAGE =-=-=-=
 	x apache		Build Apache module ( optional )

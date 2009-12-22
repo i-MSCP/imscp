@@ -55,7 +55,8 @@ SQL_QUERY;
 		$admin_id 		= $rs->fields['user_id'];
 		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
 		$ckey = sha1($order_id.'-'.$domain_name.'-'.$admin_id.'-'.$coid);
-		if ($ckey == $key) $result = true;
+		if ($ckey == $key) 
+			$result = true;
 	}
 	return $result;
 }

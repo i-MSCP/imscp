@@ -30,12 +30,12 @@
 
 function calc_bars($crnt, $max, $bars_max) {
 	if ($max != 0) {
-		$percent_usage = (100*$crnt)/$max;
+		$percent_usage = (100 * $crnt) / $max;
 	} else {
 		$percent_usage = 0;
 	}
 
-	$bars = ($percent_usage * $bars_max)/100;
+	$bars = ($percent_usage * $bars_max) / 100;
 
 	if ($bars > $bars_max) {
 		$bars = $bars_max;
@@ -47,9 +47,9 @@ function calc_bars($crnt, $max, $bars_max) {
 	);
 }
 
-function sizeit($bytes, $from = 'B') {
+function sizeit($bytes, $to = 'B') {
 
-	switch ($from) {
+	switch ($to) {
 		case 'PB':
 			$bytes = $bytes * pow(1024, 5);
 			break;
@@ -162,7 +162,9 @@ function check_user_pass($crdata, $data) {
 }
 
 /**
- * @todo using loop with "=" operator in loop is unusual
+ * Generates random password of size specified in Config Var 'PASSWD_CHARS'
+ * 
+ * @return String password
  */
 function _passgen() {
 	$pw = '';
@@ -180,7 +182,10 @@ function _passgen() {
 }
 
 /**
- * @todo using loop with "=" operator in loop is unusual
+ * Generates random password matching the chk_password criteria
+ * 
+ * @see _passgen()
+ * @return String password
  */
 function passgen() {
 	$pw = null;
@@ -192,10 +197,22 @@ function passgen() {
 	return $pw;
 }
 
-function translate_limit_value($value, $autosize = false) {
+/**
+ * Translates -1, 0 or value string into human readable string
+ * @version 1.1
+ * 
+ * @param Integer input variable to be translated
+ * @param boolean calculate value in different unit (default false)
+ * @param String unit to calclulate to (default 'MB')
+ * @return String 
+ */
+function translate_limit_value($value, $autosize = false, $to = 'MB') {
 	switch ($value) {
-		case -1: return tr('disabled');
-		case 0: return tr('unlimited');
-		default: return (!$autosize) ? $value : sizeit($value, 'MB');
+		case -1: 
+			return tr('disabled');
+		case  0: 
+			return tr('unlimited');
+		default: 
+			return (!$autosize) ? $value : sizeit($value, $to);
 	}
 }

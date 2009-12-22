@@ -75,8 +75,6 @@ if ($rs->RecordCount() == 0 || !isset($_SESSION['domain_ip'])) {
 
 $domain_ip		= $_SESSION['domain_ip'];
 $dmn_user_name	= $rs->fields['domain_name'];
-// Should be performed after domain name validation now
-//$dmn_user_name	= decode_idna($dmn_user_name);
 $hpid			= $rs->fields['plan_id'];
 $first_name		= $rs->fields['fname'];
 $last_name		= $rs->fields['lname'];
@@ -108,7 +106,7 @@ $props = $data['props'];
 $_SESSION["ch_hpprops"] = $props;
 
 if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
-	set_page_message(tr("Order Canceled: resellers maximum exceeded!"));
+	set_page_message(tr('Order Cancelled: resellers maximum exceeded!'));
 	user_goto('orders.php');
 }
 
@@ -121,15 +119,13 @@ unset($_SESSION["ch_hpprops"]);
 list($php, $cgi, $sub,
 	$als, $mail, $ftp,
 	$sql_db, $sql_user,
-	$traff, $disk, $dns) = explode(";", $props);
+	$traff, $disk, $backup, $dns) = explode(";", $props);
 
 $php = preg_replace("/\_/", "", $php);
 $cgi = preg_replace("/\_/", "", $cgi);
 $dns = preg_replace("/\_/", "", $dns);
 
-$timestamp = time();
-$pure_user_pass = substr($timestamp, 0, 6);
-$inpass = crypt_user_pass($pure_user_pass);
+$inpass = crypt_user_pass(passgen(), true);
 
 // Should be performed after domain name validation now
 $dmn_user_name = decode_idna($dmn_user_name);
@@ -198,7 +194,7 @@ $query = "
 		`domain_subd_limit`, `domain_alias_limit`,
 		`domain_ip_id`, `domain_disk_limit`,
 		`domain_disk_usage`, `domain_php`, `domain_cgi`,
-		domain_dns
+		`allowbackup`, `domain_dns`
 	) VALUES (
 		?, ?,
 		?, unix_timestamp(),
@@ -208,7 +204,7 @@ $query = "
 		?, ?,
 		?, ?,
 		'0', ?, ?,
-		?
+		?, ?
 	)
 ";
 
@@ -227,6 +223,7 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 		$disk,
 		$php,
 		$cgi,
+		$backup,
 		$dns)
 );
 $dmn_id = $sql->Insert_ID();

@@ -50,6 +50,10 @@
 		<td class="content">{TR_DNS_SUPPORT}</td>
 		<td nowrap="nowrap" class="content2">{DNS}</td>
 	</tr>
+		<tr>
+		<td class="content">{TR_BACKUP}</td>
+		<td style="white-space:nowrap;" class="content2">{BACKUP}</td>
+	</tr>
 	<tr>
 		<td class="content">{TR_MAIL_ACCOUNTS}</td>
 		<td style="white-space:nowrap;" class="content2">{MAIL}</td>
@@ -79,10 +83,6 @@
 	</tr>
 	<tr>
 		<td class="content">{TR_FILEMANAGER}</td>
-		<td style="white-space:nowrap;" class="content2">{YES}</td>
-	</tr>
-	<tr>
-		<td class="content">{TR_BACKUP}</td>
 		<td style="white-space:nowrap;" class="content2">{YES}</td>
 	</tr>
 	<tr>

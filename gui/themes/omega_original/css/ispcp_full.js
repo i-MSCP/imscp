@@ -272,6 +272,7 @@ function sprintf() {
 /**
  * show tooltip
  *
+ * @link ../admin/settings.tpl
  * @link ../client/alias_add.tpl
  * @link ../client/ftp_edit.tpl
  * @link ../client/mail_add.tpl
@@ -301,6 +302,7 @@ function showTip(id, e) {
 /**
  * hide tooltip
  *
+ * @link ../admin/settings.tpl
  * @link ../client/alias_add.tpl
  * @link ../client/ftp_edit.tpl
  * @link ../client/mail_add.tpl
