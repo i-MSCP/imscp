@@ -2,10 +2,10 @@ ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2009-12-22 Marc Pujol
-        - GUI:
-                * Tightened default permission settings
-        - BACKEND:
-                * Tightened default permission settings
+	- GUI:
+		* Tightened default permission settings
+	- BACKEND:
+		* Tightened default permission settings
 
 2009-12-21 Benedikt Heintel
 	- GUI:
@@ -35,9 +35,9 @@ ispCP ω 1.0.4 Changelog
 		* Updated Turkish
 
 2009-12-19 Jochen Manz
-        - RELEASE ispCP ω Omega 1.0.3
-        - DOCS:
-                * fixed a small typo in centos-packages file
+	- RELEASE ispCP ω Omega 1.0.3
+	- DOCS:
+		* fixed a small typo in centos-packages file
 
 2009-12-19 Laurent Declercq
 	CONFIGS:
