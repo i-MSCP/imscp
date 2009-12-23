@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
@@ -51,12 +51,12 @@ fi
 
 # Fix ispcp.conf perms
 if [ $DEBUG -eq 1 ]; then
-    echo -e "	ug+r,u+w,o-r $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
+    echo -e "	ug+r,u+w,o+r $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
 else
     echo -n ".";
 fi
 ${CMD_CHOWN} $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID ${CONF_FILE}
-${CMD_CHMOD} 0640 ${CONF_FILE}
+${CMD_CHMOD} 0644 ${CONF_FILE}
 
 # Fix rkhunter.log perms
 if [ $DEBUG -eq 1 ]; then
