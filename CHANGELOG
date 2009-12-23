@@ -1,6 +1,10 @@
 ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-23 Marc Pujol
+	- BACKEND:
+		* Fixed #2122: Critical security bug exploitable by local users
+
 2009-12-22 Laurent Declercq
 	- DOCS:
 		* Updated all INSTALL files
