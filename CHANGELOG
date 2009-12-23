@@ -1,10 +1,14 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-23 Benedikt Heintel
+	- GUI:
+		* Added Demo Translation Strings
+		
 2009-12-23 Marc Pujol
-        - BACKEND:
-                * Fixed #2122: Critical security bug exploitable by local users
-
+	- BACKEND:
+		* Fixed #2122: Critical security bug exploitable by local users
+	
 2009-12-23 Laurent Declercq
 	- GUI:
 		* Updated TLDs list

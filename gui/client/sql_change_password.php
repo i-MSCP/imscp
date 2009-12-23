@@ -156,11 +156,14 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_SQL_USER_PASSWORD' => tr('Change SQL user password'),
-		'TR_USER_NAME' => tr('User name'),
-		'TR_PASS' => tr('Password'),
-		'TR_PASS_REP' => tr('Repeat password'),
-		'TR_CHANGE' => tr('Change')
+		'TR_CHANGE_SQL_USER_PASSWORD' 	=> tr('Change SQL user password'),
+		'TR_USER_NAME' 					=> tr('User name'),
+		'TR_PASS' 						=> tr('Password'),
+		'TR_PASS_REP' 					=> tr('Repeat password'),
+		'TR_CHANGE' 					=> tr('Change'),
+		// The entries below are for Demo versions only
+		'PASSWORD_DISABLED'				=> tr('Password change is deactivated!'),
+		'DEMO_VERSION'					=> tr('Demo Version!')
 	)
 );
 

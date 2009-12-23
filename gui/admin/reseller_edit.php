@@ -831,6 +831,10 @@ $tpl->assign(
 
 		'EDIT_ID' => $edit_id,
 		'TR_UPDATE' => tr('Update'),
+		
+		// The entries below are for Demo versions only
+		'PASSWORD_DISABLED'	=> tr('Password change is deactivated!'),
+		'DEMO_VERSION'		=> tr('Demo Version!')
 	)
 );
 

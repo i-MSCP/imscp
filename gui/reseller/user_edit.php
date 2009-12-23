@@ -90,7 +90,11 @@ $tpl->assign(
 		'TR_MALE'				=> tr('Male'),
 		'TR_FEMALE'				=> tr('Female'),
 		'EDIT_ID'				=> $edit_id,
-		'TR_BTN_ADD_USER'		=> tr('Submit changes')
+		'TR_BTN_ADD_USER'		=> tr('Submit changes'),
+		
+		// The entries below are for Demo versions only
+		'PASSWORD_DISABLED'		=> tr('Password change is deactivated!'),
+		'DEMO_VERSION'			=> tr('Demo Version!')
 	)
 );
 
