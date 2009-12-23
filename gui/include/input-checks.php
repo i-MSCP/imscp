@@ -555,7 +555,7 @@ function _validates_tld($tld) {
 				(?:p[aefghklmnrstwy]|pro)|
 				qa|
 				r[eouw]|
-				s[abcdeghijklmnortvyz]|
+				s[abcdeghijklmnortuvyz]|
 				(?:t[cdfghjklmnoprtvwz]|tel|travel)|
 				u[agkmsyz]|
 				v[aceginu]|

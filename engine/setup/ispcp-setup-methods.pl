@@ -615,7 +615,11 @@ sub ask_db_pma_user {
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
-	my $db_user = 'pma';
+	my $db_user = $main::cfg{'PMA_USER'};
+
+	if(defined &update_engine) {
+		$main::ua{'db_user'} = $main::cfg{'DATABASE_USER'};
+	}
 
 	my $qmsg = "\n\tPlease enter ispCP phpMyAdmin Control user. [$db_user]: ";
 	print STDOUT $qmsg;
@@ -1862,7 +1866,7 @@ sub setup_ftpd {
 
 			$working_file = "$wrk_dir/proftpd.conf";
 
-		} elsif("$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
+		} elsif(-e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
 
 			$working_file = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp";
 
@@ -2339,12 +2343,218 @@ sub setup_gui_php {
 	0;
 }
 
-# IspCP GUI pma configuration file - Not Yet Implemented
+# IspCP GUI pma configuration file and pma slq controluser - Setup / Update
 # Build, store and install ispCP GUI pma configuration file (config.inc.php)
 sub setup_gui_pma {
 
 	push_el(\@main::el, 'setup_gui_pma()', 'Starting...');
-	# TODO
+
+	my ($rs, $sql) = (undef, undef);
+
+	my $cfg_file = undef;
+	my $cfg =  \$cfg_file;
+
+	my ($pma_sql_user, $pma_sql_password) = (undef, undef);
+	my $hostname = undef;
+
+	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
+
+	# Gets the pma configuration file
+	($rs, $cfg_file) = get_file($cfg_dir . 'config.inc.php');
+	return $rs if ($rs != 0);
+
+	# Install
+	if(!defined &update_engine) {
+
+		$pma_sql_user = $main::ua{'db_pma_user'};
+		$pma_sql_password = $main::ua{'db_pma_password'};
+		$hostname = $main::ua{'db_host'};
+
+	# Update:
+	} else {
+
+		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
+
+			print STDOUT colored(['bold yellow'], "\n\n\tWARNING:") .
+				" Your PMA configuration file should be updated !\n";
+
+			# Gets the new pma controluser username
+			do {
+				$rs = ask_db_pma_user();
+			} while ($rs == 1);
+
+			# Gets the new pma controluser password
+			do {
+				$rs = ask_db_pma_password();
+			} while ($rs == 1);
+
+			$pma_sql_user = $main::ua{'db_pma_user'};
+			$pma_sql_password = $main::ua{'db_pma_password'};
+			$hostname = $main::cfg{'DATABASE_HOST'}
+		}
+	}
+
+	#
+	# Create or update the PMA user if needed
+	#
+
+	if(defined $pma_sql_user && defined $pma_sql_password) {
+
+		$main::db = undef;
+
+		@main::db_connect = (
+			"DBI:mysql:mysql:$main::db_host",
+			$main::db_user,
+			$main::db_pwd
+		);
+
+		#
+		## We ensure the new user is not already registered and we remove the
+		## old user during updates
+		#
+
+		my $i = 0;
+
+		foreach($main::cfg{'PMA_USER'}, $pma_sql_user) {
+
+			$i=1 and next if($main::cfg{'PMA_USER'} eq $pma_sql_user && $i == 0);
+
+			$sql = "DELETE FROM tables_priv WHERE Host = '$hostname'
+				AND Db = 'mysql' AND User = '$_';";
+			($rs, undef) = doSQL($sql);
+			return $rs if ($rs != 0);
+
+			$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$_';";
+			($rs, undef) = doSQL($sql);
+			return $rs if ($rs != 0);
+
+			$sql = "DELETE FROM columns_priv WHERE Host = '$hostname'
+				AND User = '$_';";
+			($rs, undef) = doSQL($sql);
+			return $rs if ($rs != 0);
+		}
+
+		#
+		## Flush Db privileges
+		#
+
+		($rs, undef) = doSQL('FLUSH PRIVILEGES');
+		return $rs if ($rs != 0);
+
+		#
+		## Adds the new pma controluser
+		#
+
+		$sql = "
+			GRANT USAGE ON
+				mysql.*
+			TO
+				\'$pma_sql_user\'\@\'$hostname\'
+			IDENTIFIED BY
+				\'$pma_sql_password\';
+		";
+
+		($rs, undef) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		#
+		## Sets the rights for the pma control user
+		#
+
+		$sql = "
+			GRANT SELECT
+				(Host, User, Select_priv, Insert_priv,
+				 Update_priv, Delete_priv, Create_priv,
+				 Drop_priv, Reload_priv, Shutdown_priv,
+				 Process_priv, File_priv, Grant_priv,
+				 References_priv, Index_priv, Alter_priv,
+				 Show_db_priv, Super_priv, Create_tmp_table_priv,
+				 Lock_tables_priv, Execute_priv, Repl_slave_priv,
+				 Repl_client_priv)
+			ON
+				mysql.user
+			TO
+				\'$pma_sql_user\'\@\'$hostname\';
+		";
+
+		($rs, undef) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		$sql = "
+			GRANT SELECT ON
+				mysql.db
+			TO
+				\'$pma_sql_user\'\@\'$hostname\';
+		";
+
+		($rs, undef) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		$sql = "
+			GRANT SELECT ON
+				mysql.host
+			TO
+				\'$pma_sql_user\'\@\'$hostname\';
+		";
+
+		($rs, undef) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		$sql = "
+			GRANT SELECT
+				(Host, Db, User, Table_name, Table_priv, Column_priv)
+			ON
+				mysql.tables_priv
+			TO
+				\'$pma_sql_user\'\@\'$hostname\';
+		";
+
+		($rs, undef) = doSQL($sql);
+		return $rs if ($rs != 0);
+
+		#
+		## Insert pma user and password to config file
+		## together with some other information
+		#
+
+		my $blowfish = gen_sys_rand_num(31);
+		$blowfish =~ s/'/\\'/gi;
+
+		# Tags preparation
+		my %tag_hash = (
+			'{PMA_USER}' => $pma_sql_user,
+			'{PMA_PASS}' => $pma_sql_password,
+			'{HOSTNAME}' => $hostname,
+			'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
+			'{BLOWFISH}' => $blowfish
+		);
+
+		# Building the file
+		($rs, $$cfg) = prep_tpl(\%tag_hash, $cfg_file);
+		return $rs if ($rs != 0);
+
+		# Install the new file
+		$rs = store_file(
+			"$cfg_dir/config.inc.php",
+			$$cfg,
+			"$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}",
+			"$main::cfg{'APACHE_GROUP'}",
+			0440
+		);
+		return $rs if ($rs != 0);
+
+		#
+		## Update the ispcp.conf file
+		#
+
+		$rs = set_conf_val('PMA_USER', $pma_sql_user);
+		return $rs if ($rs != 0);
+
+		$rs = store_conf();
+		return $rs if ($rs != 0);
+
+	}
+
 	push_el(\@main::el, 'setup_gui_pma()', 'Ending...');
 
 	0;
