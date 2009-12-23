@@ -41,21 +41,21 @@ fi
 # By default, gui files must be readable by both the panel user (php files are
 # run under this user) and apache (static files are served by it).
 recursive_set_permissions "$ROOT_DIR/gui/" \
-	$PANEL_USER $APACHE_GROUP 0440 0550
+	$PANEL_USER $APACHE_GROUP 0550 0440
 
 # But the following folders must be writable by the panel user, because
 # php-generated or uploaded files will be stored there.
 recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
-	$PANEL_USER $APACHE_GROUP 0640 0750
+	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
-	$PANEL_USER $APACHE_GROUP 0640 0750
+	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
-	$PANEL_USER $APACHE_GROUP 0640 0750
+	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
-	$PANEL_USER $APACHE_GROUP 0640 0750
+	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions \
 	"$ROOT_DIR/gui/include/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer" \
-	$PANEL_USER $APACHE_GROUP 0640 0750
+	$PANEL_USER $APACHE_GROUP 0750 0640
 
 # Decryption keys allow root access to the database, so they must only be
 # accessible by the panel user.
