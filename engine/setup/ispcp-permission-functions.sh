@@ -38,8 +38,8 @@ for a in `grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG|^PHP_STARTER_DIR|
     export $a
 done
 
-# Detect xargs version:
-# - BSD has no "-r" argument (always acts as if it was specified)
+# Detect xargs version:
+# - BSD has no "-r" argument (always acts as if it was specified)
 # - GNU has "-r" argument, and we need it!
 if echo 'test' | xargs -r >/dev/null 2>&1; then
 	XARGS="xargs -r"

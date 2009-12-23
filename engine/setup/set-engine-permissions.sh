@@ -62,3 +62,5 @@ recursive_set_permissions "$LOG_DIR/ispcp-arpl-msgr" \
 	$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0640
 
 echo " done";
+
+exit 0
