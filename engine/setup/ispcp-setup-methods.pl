@@ -2417,7 +2417,10 @@ sub setup_gui_pma {
 
 		foreach($main::cfg{'PMA_USER'}, $pma_sql_user) {
 
-			$i=1 and next if($main::cfg{'PMA_USER'} eq $pma_sql_user && $i == 0);
+			if($main::cfg{'PMA_USER'} eq $pma_sql_user && $i == 0) {
+				$i++;
+				next;
+			}
 
 			$sql = "DELETE FROM tables_priv WHERE Host = '$hostname'
 				AND Db = 'mysql' AND User = '$_';";
