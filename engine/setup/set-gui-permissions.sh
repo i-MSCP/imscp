@@ -29,134 +29,48 @@
 #    http://isp-control.net
 #
 
-# read needed entries from ispcp.conf
-CONF_FILE="/etc/ispcp/ispcp.conf"
-if [ -f /usr/local/etc/ispcp/ispcp.conf ]
-then
-    CONF_FILE="/usr/local/etc/ispcp/ispcp.conf"
-fi
-for a in `grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG)' ${CONF_FILE} | sed -e 's/ //g'`; do
-    export $a
-done
+. $(dirname "$0")/ispcp-permission-functions.sh
 
 # for spacing
-echo "";
-echo "";
-echo -n "	Setting GUI Permissions: ";
+echo -en "	Setting GUI Permissions: ";
 
 if [ $DEBUG -eq 1 ]; then
     echo	"";
 fi
 
-#
-# fixing gui permissions;
-#
-if [ $DEBUG -eq 1 ]; then
-    find $ROOT_DIR/gui/ -type f -print0 | xargs -0 chmod -v 0440
-    find $ROOT_DIR/gui/ -type d -print0 | xargs -0 chmod -v 0550
-    find $ROOT_DIR/gui/ -print0 | xargs -0 \
-	chown -v $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
-else
-    find $ROOT_DIR/gui/ -type f -print0 | xargs -0 chmod 0440
-    find $ROOT_DIR/gui/ -type d -print0 | xargs -0 chmod 0550
-    find $ROOT_DIR/gui/ -print0 | xargs -0 \
-	chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP
-fi
+# By default, gui files must be readable by both the panel user (php files are
+# run under this user) and apache (static files are served by it).
+recursive_set_permissions "$ROOT_DIR/gui/" \
+	$PANEL_USER $APACHE_GROUP 0550 0440
 
-#
-# fixing webmail's database permissions;
-#
+# But the following folders must be writable by the panel user, because
+# php-generated or uploaded files will be stored there.
+recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions \
+	"$ROOT_DIR/gui/include/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
 
-i="$ROOT_DIR/gui/tools/webmail/data"
+# Decryption keys allow root access to the database, so they must only be
+# accessible by the panel user.
+set_permissions "$ROOT_DIR/gui/include/ispcp-db-keys.php" \
+	$PANEL_USER $PANEL_GROUP 0400
 
-if [ $DEBUG -eq 1 ]; then
-	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-else
-	echo -n ".";
-fi
+# Main virtual webhosts directory must be owned by root and readable by all
+# the domain-specific users.
+set_permissions $APACHE_WWW_DIR $ROOT_USER $ROOT_GROUP 0555
 
-chmod -R 0750 $i;
-chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
+# Main fcgid directory must be world-readable, because all the domain-specific
+# users must be able to access its contents.
+set_permissions "$PHP_STARTER_DIR" $ROOT_USER $ROOT_GROUP 0555
 
-#
-# fixing filemanager permissions
-#
+# Required on centos
+set_permissions "$PHP_STARTER_DIR/master" $PANEL_USER $PANEL_GROUP 0755
 
-i="$ROOT_DIR/gui/tools/filemanager/temp"
-
-if [ $DEBUG -eq 1 ]; then
-	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-else
-	echo -n ".";
-fi
-
-chmod -R 0750 $i;
-
-#
-# fixing user_logo folder permissions;
-#
-
-i="$ROOT_DIR/gui/themes/user_logos"
-
-if [ $DEBUG -eq 1 ]; then
-	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-else
-	echo -n ".";
-fi
-
-chmod -R 0640 $i;
-chmod 0750 $i;
-chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
-
-
-#
-# fixing db keys permissions;
-#
-i="$ROOT_DIR/gui/include/ispcp-db-keys.php"
-if [ $DEBUG -eq 1 ]; then
-	echo "0400 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID [$i]";
-else
-	echo -n ".";
-fi
-chmod 0400 $i;
-chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID $i;
-
-#
-# Setting correct permission for virtual root directory
-#
-
-if [ $DEBUG -eq 1 ]; then
-	echo "0555 $APACHE_USER:$APACHE_GROUP [$APACHE_WWW_DIR]";
-else
-	echo -n ".";
-fi
-chmod  0555 $APACHE_WWW_DIR;
-chown  $APACHE_USER:$APACHE_GROUP $APACHE_WWW_DIR;
-
-#
-# Set correct permission for phptmp gui directory
-#
-
-i="$ROOT_DIR/gui/phptmp"
-if [ $DEBUG -eq 1 ]; then
-	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-else
-	echo -n ".";
-fi
-chmod -R 0750 $i;
-chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
-
-#
-# Set correct permission for HTMLPurifier/DefinitionCache/Serializer gui directory
-#
-
-i="$ROOT_DIR/gui/include/htmlpurifier/HTMLPurifier/DefinitionCache/Serializer"
-if [ $DEBUG -eq 1 ]; then
-	echo "0750 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
-else
-	echo -n ".";
-fi
-chmod -R 0750 $i;
-chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
-
-echo "done";
+echo " done";
