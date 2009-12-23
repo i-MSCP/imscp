@@ -445,7 +445,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_admin_id`=
+			`domain_admin_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -458,7 +458,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		FROM
 			`domain`
 		WHERE
-			`domain_id`=?
+			`domain_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($domain_id));

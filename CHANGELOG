@@ -8,6 +8,7 @@ ispCP ω 1.0.4 Changelog
 2009-12-23 Laurent Declercq
 	- GUI:
 		* Updated TLDs list
+		* Fixed #2113: Wrong SQL syntax in /var/www/ispcp/gui/client/hosting_plan_update.php (Line: 451)
 	- CONFIGS:
 		* The file ispcp.conf should be readable by everyone. (Should be changed in 1.0.4)
 		* Added PMA_USER for recovery process during update
