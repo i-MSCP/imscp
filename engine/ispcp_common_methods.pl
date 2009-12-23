@@ -1864,7 +1864,7 @@ sub store_conf {
         }
     }
 
-    $rs = store_file($file_name, $fline, 'root', 'null', 0640);
+    $rs = store_file($file_name, $fline, 'root', 'null', 0644);
     return 1 if ($rs != 0);
 
     $rs = get_conf($file_name);

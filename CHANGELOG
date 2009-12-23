@@ -5,9 +5,18 @@ ispCP ω 1.1.0 Changelog
 	- BACKEND:
 		* Fixed #2122: Critical security bug exploitable by local users
 
+2009-12-23 Laurent Declercq
+	- GUI:
+		* Updated TLDs list
+	- CONFIGS:
+		* The file ispcp.conf should be readable by everyone. (Should be changed in 1.0.4)
+		* Added PMA_USER for recovery process during update
+	- SETUP
+		* Added recovery process for PMA configuration file
+
 2009-12-22 Laurent Declercq
-	- DOCS:
-		* Updated all INSTALL files
+        - DOCS:
+                * Updated all INSTALL files
 
 2009-12-22 Marc Pujol
 	- GUI:
@@ -18,7 +27,9 @@ ispCP ω 1.1.0 Changelog
 2009-12-21 Benedikt Heintel
 	- GUI:
 		* Fixed: Password generation in order panel
+		* Fixed: Wrong oder of properties in order panel
 	- LANGUAGES:
+		* Updated Spanish
 		* Updated Turkish
 
 2009-12-21 Peter Ziergöbel
