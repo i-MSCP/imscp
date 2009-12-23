@@ -10,7 +10,9 @@ ispCP ω 1.0.4 Changelog
 2009-12-21 Benedikt Heintel
 	- GUI:
 		* Fixed: Password generation in order panel
+		* Fixed: Wrong oder of properties in order panel
 	- LANGUAGES:
+		* Updated Spanish
 		* Updated Turkish
 
 2009-12-21 Peter Ziergöbel
