@@ -55,16 +55,12 @@ recursive_set_permissions "$ROOT_DIR/engine" $ROOT_USER $ROOT_GROUP 0700 0700
 # to access its "messenger" subfolder.
 set_permissions "$ROOT_DIR/engine" $ROOT_USER $ROOT_GROUP 0755
 
-# Messenger script is run by user "vmail (the directory check is because it was
-# renamed to fix spelling at some point).
-if [ -d "$ROOT_DIR/engine/messenger" ]; then
-	recursive_set_permissions "$ROOT_DIR/engine/messenger" \
-		$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0550
-else
-	recursive_set_permissions "$ROOT_DIR/engine/messager" \
-		$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0550
-fi
+# Messenger script is run by user "vmail.
+recursive_set_permissions "$ROOT_DIR/engine/messenger" \
+	$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0550
 recursive_set_permissions "$LOG_DIR/ispcp-arpl-msgr" \
 	$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0640
 
 echo " done";
+
+exit 0
