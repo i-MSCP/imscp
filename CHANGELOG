@@ -5,6 +5,9 @@ ispCP ω 1.1.0 Changelog
 	- CONFIGS:
 		* Changed BuildDate behavior to SVN Revision
 
+2009-12-24 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.3-1
+
 2009-12-23 Marc Pujol
 	- BACKEND:
 		* Fixed #2122: Critical security bug exploitable by local users
