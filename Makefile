@@ -54,6 +54,7 @@ export
 
 install:
 
+	./version.sh
 	cd ./tools && $(MAKE) install
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
