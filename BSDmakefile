@@ -45,7 +45,7 @@ install:
 	#
 	# Preparing ISPCP System Directory and files
 	#
-	./version.sh
+	$(SYSTEM_SH) ./contrib/version.sh
 	cd ./tools && $(MAKE) install
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
@@ -86,7 +86,7 @@ install:
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/reseller
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/*.php
 
-        # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+    # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
 	mv -v /usr/local/etc/proftpd.conf /usr/local/etc/proftpd.old.conf
 
