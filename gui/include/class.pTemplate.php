@@ -354,6 +354,18 @@ class pTemplate {
 	private function is_safe($fname) {
 		return (file_exists(($this->root_dir) . '/' . $fname)) ? true : false;
 	}
+	
+	/**
+	 * Check if a namespace exist
+	 *
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @since r2467
+	 * @param string $namespace namespace to be check
+	 * @return boolean TRUE if the namespace exist, FALSE otherwise
+	 */
+	public function is_namespace($namespace) {
+		return in_array($namespace, $this->namespace);
+	}
 
 	public function get_file($fname) {
 		if (is_array($fname)) {

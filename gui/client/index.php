@@ -110,8 +110,8 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	$tpl->assign(
 		array(
 			'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-			'TRAFFIC_BARS'       => $bars,
-			'TRAFFIC_PERCENT'    => $percent,
+			'TRAFFIC_BARS'	   => $bars,
+			'TRAFFIC_PERCENT'	=> $percent,
 		)
 	);
 
@@ -134,8 +134,8 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	$tpl->assign(
 		array(
 			'DISK_USAGE_DATA' => $traffic_usage_data,
-			'DISK_BARS'       => $bars,
-			'DISK_PERCENT'    => $percent,
+			'DISK_BARS'	   => $bars,
+			'DISK_PERCENT'	=> $percent,
 		)
 	);
 	if ($max_usage != 0 && $usage > $max_usage) {
@@ -145,13 +145,8 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	}
 }
 
-function check_user_permissions(
-									&$tpl, $dmn_sqld_limit,
-									$dmn_sqlu_limit, $dmn_php,
-									$dmn_cgi,$backup, $dns,
-									$dmn_subd_limit, $als_cnt,
-									$dmn_mailacc_limit
-								) {
+function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php,
+	$dmn_cgi,$backup, $dns, $dmn_subd_limit, $als_cnt, $dmn_mailacc_limit) {
 
 	// check if mail accouts available are available for this user
 	if ($dmn_mailacc_limit == -1) {
@@ -160,6 +155,7 @@ function check_user_permissions(
 	} else {
 		$tpl->parse('T_MAILS_SUPPORT', '.t_mails_support');
 	}
+
 	// check if alias are available for this user
 	if ($als_cnt == -1) {
 		$_SESSION['alias_support'] = "no";
@@ -167,6 +163,7 @@ function check_user_permissions(
 	} else {
 		$tpl->parse('T_ALIAS_SUPPORT', '.t_alias_support');
 	}
+
 	// check if subdomains are available for this user
 	if ($dmn_subd_limit == -1) {
 		$_SESSION['subdomain_support'] = "no";
@@ -174,6 +171,7 @@ function check_user_permissions(
 	} else {
 		$tpl->parse('T_SDM_SUPPORT', '.t_sdm_support');
 	}
+
 	// check if SQL Support is available for this user
 	if ($dmn_sqld_limit == -1 || $dmn_sqlu_limit == -1) {
 		$_SESSION['sql_support'] = "no";
@@ -184,29 +182,38 @@ function check_user_permissions(
 		$tpl->parse('T_SQL1_SUPPORT', '.t_sql1_support');
 		$tpl->parse('T_SQL2_SUPPORT', '.t_sql2_support');
 	}
+
 	// check if PHP Support is available for this user
 	if ($dmn_php == 'no') {
 		$tpl->assign('T_PHP_SUPPORT', '');
 	} else {
-		$tpl->assign(
-			array('PHP_SUPPORT' => tr('yes')));
+		$tpl->assign( array('PHP_SUPPORT' => tr('yes')));
 		$tpl->parse('T_PHP_SUPPORT', '.t_php_support');
 	}
+
 	// check if CGI Support is available for this user
 	if ($dmn_cgi == 'no') {
 		$tpl->assign('T_CGI_SUPPORT', '');
 	} else {
-		$tpl->assign(
-			array('CGI_SUPPORT' => tr('yes')));
+		$tpl->assign( array('CGI_SUPPORT' => tr('yes')));
 		$tpl->parse('T_CGI_SUPPORT', '.t_cgi_support');
 	}
 
-	// Check if Backup support is available for this user
-	if ($backup == 'no') {
+	// Check if Backup support is available for this user 
+	switch($backup){
+	case "full":
+		$tpl->assign( array('BACKUP_SUPPORT' => tr('Full'))); 
+		break;
+	case "sql":
+		$tpl->assign( array('BACKUP_SUPPORT' => tr('SQL'))); 
+		break;
+	case "domain":
+		$tpl->assign( array('BACKUP_SUPPORT' => tr('Domain'))); 
+		break;
+	default:
 		$tpl->assign('T_BACKUP_SUPPORT', '');
-	} else {
-		$tpl->assign(
-		array('BACKUP_SUPPORT' => tr('yes')));
+	}
+	if ($tpl->is_namespace('BACKUP_SUPPORT')) {
 		$tpl->parse('T_BACKUP_SUPPORT', '.t_backup_support');
 	}
 
