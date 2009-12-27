@@ -141,6 +141,10 @@ ispCP ω 1.0.4 Changelog
 	- DISTS:
 		* Updated Ubuntu packages
 
+2009-12-12 Benedikt Heintel
+	- ENGINE:
+		* Fixed #266: Default 404 page when disable domain
+
 2009-12-11 Laurent Declercq
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN

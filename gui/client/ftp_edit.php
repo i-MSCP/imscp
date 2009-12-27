@@ -90,7 +90,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Entered passwords differ!'));
+				set_page_message(tr('Entered passwords do not match!'));
 				return;
 			}
 			if (!chk_password($_POST['pass'])) {
