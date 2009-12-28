@@ -252,7 +252,7 @@ function chk_email($email, $num = 60) {
 		}
 
 	} else {
-		$validation_err_msg = "Wrong email local part: {$email_part[2]}";
+		$validation_err_msg = "Wrong email local part: {$email_part[0]}";
 		return false;
 	}
 }
