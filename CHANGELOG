@@ -1,6 +1,10 @@
 ispCP ω 1.1.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-28 Marc Pujol
+	- GUI:
+		* Fixed #2135: open_basedir errors in net2ftp
+
 2009-12-28 Laurent Declercq
 	- GUI:
 		* Fixed PHP Notice: "Undefined offset: 2 in /var/www/ispcp/gui/include/input-checks.php on line 255"
