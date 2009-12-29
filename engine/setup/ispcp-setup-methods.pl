@@ -2274,6 +2274,7 @@ sub setup_gui_php {
 	%tags_hash = (
 		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
 		'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+		'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
 		'{DMN_NAME}' => 'master'
 	);
 

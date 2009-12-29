@@ -416,7 +416,7 @@ function check_CNAME_conflict($domain,&$err) {
 }
 
 function validate_NAME($domain, &$err) {
-	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $domain['name'], $e)) {
+	if (preg_match('~([^-a-z,A-Z,0-9.])~u', $domain['name'], $e)) {
 		$err .= sprintf(tr('Use of disallowed char("%s") in NAME'), $e[1]);
 		return false;
 	}

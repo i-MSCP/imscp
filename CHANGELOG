@@ -1,10 +1,18 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-29 Christian Hernmarck
+	- CONFIGS:
+		* Fixed #2136: Port 465 is missing in ispcp_network daemon
+
+2009-12-28 Marc Pujol
+	- GUI:
+		* Fixed #2135: open_basedir errors in net2ftp
+
 2009-12-27 Benedikt Heintel
-	- LANGUAGES:
-		* Updated Polish
-		* Updated Swedish
+        - LANGUAGES:
+                * Updated Polish
+                * Updated Swedish
 
 2009-12-23 Benedikt Heintel
 	- GUI:
