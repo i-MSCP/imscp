@@ -49,14 +49,14 @@ START=1
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)
 SERVICES=(
-	# Web traffic
-		80 	443
-	# Pop 3
-		110
-	# IMAP
-		143
-	# Mail
-		25 587 995 993
+	# HTTP(S)
+		 80	443
+	# POP3(S)
+		110	995
+	# IMAP4(S)
+		143	993
+	# SMTP(S)/SUBMIT
+		 25	465	587
 )
 
 # Read config file if it is present.
