@@ -190,6 +190,34 @@ function chk_password($password, $num = 50, $permitted = "") {
 }
 
 /**
+ * chk_username
+ *
+ * @param String $data username to be checked
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
+ * @return boolean valid username or not
+ * @deprecated function deprecated in revision xxxx
+ */
+/*
+function chk_username($username, $max_char = null, $min_char = 2) {
+
+	if ($min_char === null || $min_char <= 2) {
+		$min_char = 2;
+	}
+	if ($max_char !== null) {
+		(int) $max_char -= 2;
+	}
+	$pattern = '/^[A-Za-z0-9]([A-Za-z0-9]|[_.]{1,1}|[-]{1,2}){'.(int) ($min_char-2).','.$max_char.'}[A-Za-z0-9]?$/';
+
+	if(preg_match($pattern, $username)) {
+		return true;
+	}
+
+	return false;
+}
+*/
+
+/**
  * Validates a username
  *
  * This function validates syntax of usernames.
@@ -221,50 +249,7 @@ function validates_username($username, $min_char = 2, $max_char = 30) {
 /**
  * @todo document this function
  */
-function chk_email($email, $num = 60) {
-
-	global $validation_err_msg;
-
-	if (strlen($email) > $num) {
-		return false;
-	}
-
-	// split e-mail address by @ chars
-	$email_part = explode('@', $email);
-
-	// check if at least two parts are available
-	$part_count = count($email_part);
-
-	if ($part_count != 2) {
-		$validation_err_msg = "Wrong email: $email";
-		return false;
-	}
-
-	// check the local part (before last @) first
-	if (ispcp_check_local_part($email_part[0], $num)) {
-
-		// now check the domain part
-		if(!validates_dname($email_part[1])) {
-			$validation_err_msg = "Wrong email domain name: {$email_part[1]}";
-			return false;
-		} else {
-			return true;
-		}
-
-	} else {
-		$validation_err_msg = "Wrong email local part: {$email_part[0]}";
-		return false;
-	}
-}
-
-/**
- * Checks validity of an e-mail address' local part
- *
- * @param String $email e-mail address to be checked
- * @param int $num max. length of e-mail address
- * @return boolean true, if correct
- */
-function ispcp_check_local_part($email, $num = 60) {
+function chk_email($email, $num = 50) {
 	if (strlen($email) > $num) {
 		return false;
 	}
@@ -274,7 +259,34 @@ function ispcp_check_local_part($email, $num = 60) {
 	$nqtext = "[^\\\\$nonascii\015\012\"]"; // all not qouteable chars
 	$qchar = "\\\\[^$nonascii]";			// matched quoted chars
 
-	$normuser = '[a-zA-Z0-9!#$%&\'*+-\/=?^_`{|}~]+';
+	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
+	$user_part = "(?:$normuser|$quotedstring)";
+
+	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\\.';
+	$dom_subpart = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\\.)*';
+	$dom_tldpart = '[a-zA-Z]{2,5}';
+	$domain_part = "$dom_subpart$dom_mainpart$dom_tldpart";
+
+	$regex = "$user_part\@$domain_part";
+	// RegEx end
+	return (bool) preg_match("/^$regex$/", $email);
+}
+
+/**
+ * @todo document this function
+ */
+function ispcp_check_local_part($email, $num = 50) {
+	if (strlen($email) > $num) {
+		return false;
+	}
+	// RegEx begin
+	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
+
+	$nqtext = "[^\\\\$nonascii\015\012\"]";
+	$qchar = "\\\\[^$nonascii]";
+
+	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
 	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
 	$user_part = "(?:$normuser|$quotedstring)";
 
@@ -326,7 +338,8 @@ function validates_dname($dname, $subdname_process = false) {
 	if(!$subdname_process) {
 
 		// Check lenght according RFC 1123 (Max of 255 chars)
-		if(strlen($dname) > 255)	{
+		if(strlen($dname) >255)
+		{
 			$validation_err_msg = tr('Wrong domain name lenght!');
 			return false;
 		}
@@ -616,11 +629,11 @@ function _validates_sld($sld) {
 		// TRUE with $matches[1] set if the SLD is reserved
 		// TRUE with $matches[2] set if the SLD lenght is wrong
 		// FALSE if the SLD syntax is wrong
-		$pattern = "@^".
-			"(?:($reserved_SLD)|".
-			"$scSLD|".
-			"(?:(?:[a-z0-9](?:[a-z0-9]|-+(?!\.))(?:[-a-z0-9](?!\.)){0,60}[a-z0-9]?)|([-a-z0-9]{64,}))\.)".
-			"@x";
+		$pattern = "@^
+			(?:($reserved_SLD)|
+			$scSLD|
+			(?:(?:[a-z0-9](?:[a-z0-9]|-+(?!\.))(?:[-a-z0-9](?!\.)){0,60}[a-z0-9]?)|([-a-z0-9]{64,}))\.)
+		@x";
 
 		$matches = array();
 
@@ -693,6 +706,64 @@ function isACE($label) {
  */
 
 /**
+ * full_domain_check checks the domain for validity
+ *
+ * @param String $data domain name to be checked
+ * @return boolean valid domain name or not
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function full_domain_check($data) {
+	$data .= ".";
+	$match = array();
+
+	$res = preg_match_all("/([^\.]*\.)/", $data, $match, PREG_PATTERN_ORDER);
+
+	if (!$res) {
+		return false;
+	}
+
+	$last = $res - 1;
+
+	for ($i = 0; $i < $last; $i++) {
+		$token = chop($match[0][$i], ".");
+
+		$res = chk_dmn_token($token);
+
+		if (!$res) {
+			return false;
+		}
+	}
+
+	$res = preg_match("/^[A-Za-z0-9]{2,}\.$/", $match[0][$last]);
+
+	if (!$res) {
+		return false;
+	}
+	return true;
+}
+*/
+
+/**
+ * check_dmn_token checks for a valid domain name token
+ *
+ * @param String $data domain name token to be checked
+ * @return boolean valid domain name token or not
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function chk_dmn_token($data) {
+
+	if ((preg_match("/^-|-$/", $data)) ||
+		(preg_match("/[^A-Za-z0-9\-]|\-{2,}/", $data) || $data == '')) {
+		return false;
+	}
+
+	return true;
+}
+*/
+
+/**
  * Function for checking ispcp limits.
  *
  * @param string $data ispcp 'limit' field data (by default valids are numbers greater equal 0)
@@ -726,6 +797,53 @@ function ispcp_limit_check($data, $extra = -1) {
 }
 
 /**
+ * Function for checking domain name tokens; Internel function,
+ * for usage in ispcp_* functions
+ *
+ * @param string $data token data without eol
+ * @return boolean true for correct syntax, false otherwise
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function check_dn_rsl_token($data) {
+
+	$pattern = (strlen($data) == 1) ? '/^[A-Za-z0-9]$/D' :
+	 '/^[A-Za-z0-9][a-z0-9A-Z\-]*[A-Za-z0-9]$/D';
+
+	return (preg_match($pattern, $data)) ? true : false;
+}
+*/
+
+/**
+ * Function for checking ispCP domains syntax. Here domains are
+ * limited to {dname}.{ext} parts
+ *
+ * @param String $dname ispcp domain data
+ * @param int $num number of max. chars
+ * @return boolean	false	incorrect syntax
+ * 					true	correct syntax
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function chk_dname($dname) {
+	// Check for invalid characters first
+	if (preg_match('/[^a-z0-9\.\-]+/', $dname)) {
+		return false;
+	}
+
+	if (!rsl_full_domain_check($dname)) {
+		return false;
+	}
+	$match = array();
+
+	if (preg_match_all("/\./", $dname, $match, PREG_PATTERN_ORDER) <= 0) {
+		return false;
+	}
+	return true;
+}
+*/
+
+/**
  * Function for checking URL syntax
  *
  * @param String $url URL data
@@ -743,6 +861,44 @@ function chk_forward_url($url) {
 	}
 	return true;
 }
+
+/**
+ * chk_mountp checks if the mount point is valid
+ *
+ * @param String $data mountpoint data
+ * @param int $max_char number of max. chars
+ * @param int $min_char number of min. chars
+ * @return boolean false incorrect syntax
+ *	true correct syntax
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function chk_mountp($data, $max_char = 50, $min_char = 2) {
+	if (!preg_match("@^/(.*)$@D", $data)) {
+		return false;
+	}
+	$pattern = "@^/(htdocs|backpus|cgi-bin|errors|logs)$@D";
+	if (preg_match($pattern, $data)) {
+		return false;
+	}
+
+	$match = array();
+	$count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
+
+	if (!$count) {
+		return false;
+	}
+	for ($i = 0; $i < $count; $i++) {
+		$token = substr($match[0][$i], 1);
+
+		if (!chk_username($token, $max_char, $min_char)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+*/
 
 /**
  * Validates a mount point
@@ -835,6 +991,38 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 
 	return (count($t) > 1 && $t[0] === '');
 }
+
+/**
+ * Function for checking ispCP subdomain syntax.
+ *
+ * Here subdomains are limited to {subname}.{dname}.{ext} parts.
+ * Data passed to this function must be in the upper form, not
+ * only subdomain part for example.
+ *
+ * @param string $subdname ispcp subdomain data;
+ * @return	false - incorrect syntax;
+ *			true - correct syntax;
+ * @deprecated function deprecated in revision r2228
+ */
+/*
+function chk_subdname($subdname) {
+	if (!full_domain_check($subdname)) {
+		return false;
+	}
+
+	$match = array();
+
+	$res = preg_match_all("/\./", $subdname, $match, PREG_PATTERN_ORDER);
+
+	if ($res < 1) {
+		return false;
+	}
+
+	$res = preg_match("/^(www|ftp|mail|ns)\./", $subdname);
+
+	return !($res == 1);
+}
+*/
 
 /**
  * All in one function to check who owns what.

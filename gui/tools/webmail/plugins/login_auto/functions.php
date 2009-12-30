@@ -83,13 +83,13 @@ else if (file_exists('./plugins/compatibility/functions.php'))
       $cb_auto_user = (isset($_POST['cb_auto_user'])?$_POST['cb_auto_user']:'');
       $cb_auto_pass = (isset($_POST['cb_auto_pass'])?$_POST['cb_auto_pass']:'');
 
-      echo "<table align=right border=0>\n";
+      echo "<center><table border=0>\n";
 
       if ($auto_pass) {
-         echo "<tr><td>\n";
+         echo "<tr><td valign=center>\n";
          echo "<input type=checkbox name=cb_auto_pass value=true>\n";
-         echo "</td><td style=padding-right:50px; nowrap>\n";
-         echo "<font class=login_checkbox>" . _("Remember my Name & Password") . "</font>\n";
+         echo "</td><td valign=center nowrap>\n";
+         echo "<small>" . _("Remember my Name & Password") . "<small>\n";
          echo "</td></tr>\n";
       }
       else {
@@ -97,13 +97,18 @@ else if (file_exists('./plugins/compatibility/functions.php'))
             echo "<tr><td valign=center>\n";
             echo "<input type=checkbox name=cb_auto_user value=true>\n";
             echo "</td><td valign=center nowrap>\n";
-            echo "<font class=login_checkbox>" . _("Remember my Name") . "</font>\n";
+            echo "<small>" . _("Remember my Name") . "</small>\n";
             echo "</td></tr>\n";
          }
       }
 
+      if (($auto_user || $auto_pass) && $login_doc!='') {
+         if (!isset($login_link) || $login_link=='') 
+            $login_link=_("What's this?");
+         echo "<tr><td colspan='2' valign=center align=center><a href=$login_doc>$login_link</a></td></tr>\n";
+      }
 
-      echo "</table>\n";
+      echo "</table></center>\n";
 
    }
 

@@ -47,6 +47,5 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 SYSTEM_MAKE_FILE=/bin/touch
-SYSTEM_SH=/bin/sh
 
 .PHONY: install uninstall clean

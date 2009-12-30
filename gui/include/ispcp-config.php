@@ -53,7 +53,6 @@ function decrypt_db_password($db_pass) {
 	if ($db_pass == '')
 		return '';
 
-	// @todo remove dl() for PHP6 compatibiliy
 	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
 		$text = @base64_decode($db_pass . "\n");
 		// Open the cipher
@@ -83,7 +82,6 @@ function decrypt_db_password($db_pass) {
 function encrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-	// @todo remove dl() for PHP6 compatibiliy
 	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
 		$td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
 		// Create key

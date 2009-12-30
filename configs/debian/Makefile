@@ -31,11 +31,8 @@
 
 export
 
-VERSION=$(shell cat "../../VERSION")
-
 install:
 	if test $(HOST_OS) = debian  ; then \
-		sed -i -e 's/{BUILDVER}/$(VERSION)/' ispcp.conf; \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		(cd ./apache && $(MAKE) install &); \
 		(cd ./awstats && $(MAKE) install &); \
