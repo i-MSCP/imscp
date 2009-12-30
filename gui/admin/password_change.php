@@ -122,12 +122,15 @@ gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_informa
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_PASSWORD' => tr('Change password'),
-		'TR_PASSWORD_DATA' => tr('Password data'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_UPDATE_PASSWORD' => tr('Update password'),
-		'TR_CURR_PASSWORD' => tr('Current password')
+		'TR_CHANGE_PASSWORD' 	=> tr('Change password'),
+		'TR_PASSWORD_DATA' 		=> tr('Password data'),
+		'TR_PASSWORD' 			=> tr('Password'),
+		'TR_PASSWORD_REPEAT' 	=> tr('Repeat password'),
+		'TR_UPDATE_PASSWORD' 	=> tr('Update password'),
+		'TR_CURR_PASSWORD' 		=> tr('Current password'),
+		// The entries below are for Demo versions only
+		'PASSWORD_DISABLED'		=> tr('Password change is deactivated!'),
+		'DEMO_VERSION'			=> tr('Demo Version!')
 	)
 );
 

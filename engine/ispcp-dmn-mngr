@@ -100,8 +100,7 @@ sub dmn_add_named_cfg_data {
 
 	my ($rs, $rdata, $cmd, $working) = (undef, undef, undef, undef);
 
-	if (!defined($data) || $data eq '')
-	{
+	if (!defined($data) || $data eq '') {
 		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'FATAL: Undefined Input Data...');
 		return -1;
 	}
@@ -120,7 +119,6 @@ sub dmn_add_named_cfg_data {
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
-
 	(
 		$rs,
 		$dta_b,
@@ -154,7 +152,6 @@ sub dmn_add_named_cfg_data {
 
 	# Entries
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
-
 	(
 		$rs,
 		$entry_b_val,
@@ -188,8 +185,7 @@ sub dmn_add_named_cfg_data {
 	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
 
 	# If the entry exists, remove it !
-	if ($rs == 0)
-	{
+	if ($rs == 0) {
 		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
 		return $rs if ($rs != 0);
 	}
@@ -206,8 +202,7 @@ sub dmn_add_named_cfg_data {
 	## Saving the current production file if it exist - Begin
 	#
 
-	if(-e $main::cfg{'BIND_CONF_FILE'})
-	{
+	if(-e $main::cfg{'BIND_CONF_FILE'}) {
 		my $timestamp = time;
 
 		my $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bkp_dir/named.conf.$timestamp";
@@ -227,7 +222,7 @@ sub dmn_add_named_cfg_data {
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
 	# Building the new file
-	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
+	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, 'dmn_add_named_cfg_data');
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory
@@ -440,8 +435,8 @@ sub dmn_add_named_db_data {
 		'db_e.tpl',
 		'db_dns2_b.tpl',
 		'db_dns2_e.tpl',
-		'db_dns_entry_b.tpl',
-		'db_dns_entry_e.tpl',
+                'db_dns_entry_b.tpl',
+                'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl',
 		'db_time_b.tpl',
 		'db_time_e.tpl'
@@ -1470,6 +1465,7 @@ sub dmn_add_httpd_file_data {
 	my $pear_dir            = $main::cfg{'PEAR_DIR'};
 	my $starter_dir         = $main::cfg{'PHP_STARTER_DIR'};
 	my $conf_dir            = $main::cfg{'CONF_DIR'};
+	my $httpd_uid           = $main::cfg{'APACHE_USER'};
 	my $httpd_gid           = $main::cfg{'APACHE_GROUP'};
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 	my $suexec_user_pref    = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1640,7 +1636,7 @@ sub dmn_add_httpd_file_data {
 	#
 	# Default domain page template;
 	#
-	# check if htdocs folder not exists
+	# check if htdocs folder does not exist
 	if (!(-e "$www_dir/$dmn_name/htdocs/")) {
 		$rs = make_dir(
 			"$www_dir/$dmn_name/htdocs",
@@ -1687,6 +1683,59 @@ sub dmn_add_httpd_file_data {
 			# ignore . and .. :
             next if ($_ eq "." || $_ eq "..");
 			$rs = setfmode("$www_dir/$dmn_name/htdocs/images/$_", $sys_user, $sys_group, 0644);
+			return $rs if ($rs != 0);
+		}
+	}
+
+    # Default disable page template;
+	#
+	# check if disable folder does not exist
+	if (!(-e "$www_dir/$dmn_name/disabled")) {
+		$rs = make_dir(
+			"$www_dir/$dmn_name/disabled",
+			$httpd_uid,
+			$httpd_gid,
+			0755
+		);
+		return $rs if ($rs != 0);
+
+		my ($index_tpl, $err_cfg_dir) = (undef, undef);
+		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
+		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
+		return $rs if ($rs != 0);
+
+		my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+		my %tag_hash = (
+			'{DOMAIN_NAME}' => $decoded_dmn_name,
+			'{BASE_SERVER_VHOST}' => $vhost
+		);
+		($rs, $cfg) = prep_tpl(\%tag_hash, $index_tpl);
+		return $rs if ($rs != 0);
+
+		($rs, $rdata) = store_file(
+			"$www_dir/$dmn_name/disabled/index.html",
+			$cfg,
+			$httpd_uid,
+			$httpd_gid,
+			0644
+		);
+		return $rs if ($rs != 0);
+
+		$rs = sys_command("$main::cfg{'CMD_CP'} -Rp $root_dir/gui/domain_disable_page/images $www_dir/$dmn_name/disabled/");
+		return $rs if ($rs != 0);
+
+		$rs = setfmode("$www_dir/$dmn_name/disabled/images", $httpd_uid, $httpd_gid, 0755);
+		return $rs if ($rs != 0);
+
+		opendir(DIR, "$www_dir/$dmn_name/htdocs/images/");
+		my @files = readdir(DIR);
+		closedir(DIR);
+
+		foreach (@files) {
+			# ignore . and .. :
+            next if ($_ eq "." || $_ eq "..");
+			$rs = setfmode("$www_dir/$dmn_name/disabled/images/$_", $httpd_uid, $httpd_gid, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -1743,6 +1792,7 @@ sub dmn_add_httpd_file_data {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	#
 	# php-fcgi-starters for every domain
 	#
@@ -2019,7 +2069,7 @@ sub dmn_del_httpd_file_data {
 	#
 	if ( -e "$www_dir/$dmn_name" ) {
 		($rs, $rdata) = del_dir("$www_dir/$dmn_name");
-		} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
+	} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
 		($rs, $rdata) = del_dir("$www_dir/$dmn_name.disabled");
 	}
 	return $rs if ($rs != 0);
@@ -3729,24 +3779,20 @@ sub dmn_enable_data {
 		return -1;
 	}
 
-	my $dmn_name         = @$dmn_data[1];
-	my $www_dir          = $main::cfg{'APACHE_WWW_DIR'};
-	my $dmn_dir          = "$www_dir/$dmn_name";
-	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-	my $cmd_rm           = $main::cfg{'CMD_RM'};
-	my $cmd_mv           = $main::cfg{'CMD_MV'};
-	my ($cmd, $rs)       = (undef, undef);
+	my ($rs, $rdata)             = ('', '');
+	my $dmn_name                 = @$dmn_data[1];
+	my $www_dir                  = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir                  = "$www_dir/$dmn_name/htdocs";
+	my $dmn_disabled_dir         = "$www_dir/$dmn_name/htdocs.disabled";
+	my $dmn_disabled_content_dir = "$www_dir/$dmn_name/disabled";
+	my $cmd_mv                   = $main::cfg{'CMD_MV'};
+	my $cmd_di                   = "$cmd_mv $dmn_dir $dmn_disabled_content_dir";
+ 	my $cmd_ht                   = "$cmd_mv $dmn_disabled_dir $dmn_dir";
 
-	# delete target folder if exists
-	# this can happen because subdomains created empty access logs
-	if (-e $dmn_dir) {
-		$cmd = "$cmd_rm -r $dmn_dir";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-	}
+	$rs = sys_command($cmd_di);
+	return $rs if ($rs != 0);
 
-	$cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
-	$rs = sys_command($cmd);
+	$rs = sys_command($cmd_ht);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
@@ -3765,15 +3811,20 @@ sub dmn_disable_data {
 		return -1;
 	}
 
-	my ($rs, $rdata)     = ('', '');
-	my $dmn_name         = @$dmn_data[1];
-	my $www_dir          = $main::cfg{'APACHE_WWW_DIR'};
-	my $dmn_dir          = "$www_dir/$dmn_name";
-	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-	my $cmd_mv           = $main::cfg{'CMD_MV'};
-	my $cmd              = "$cmd_mv $dmn_dir $dmn_disabled_dir";
+	my ($rs, $rdata)             = ('', '');
+	my $dmn_name                 = @$dmn_data[1];
+	my $www_dir                  = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir                  = "$www_dir/$dmn_name/htdocs";
+	my $dmn_disabled_dir         = "$www_dir/$dmn_name/htdocs.disabled";
+	my $dmn_disabled_content_dir = "$www_dir/$dmn_name/disabled";
+	my $cmd_mv                   = $main::cfg{'CMD_MV'};
+	my $cmd_ht                   = "$cmd_mv $dmn_dir $dmn_disabled_dir";
+	my $cmd_di                   = "$cmd_mv $dmn_disabled_content_dir $dmn_dir";
 
-	$rs = sys_command($cmd);
+	$rs = sys_command($cmd_ht);
+	return $rs if ($rs != 0);
+
+	$rs = sys_command($cmd_di);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'dmn_disable_data()', 'Ending...');
@@ -3900,21 +3951,25 @@ sub dmn_mngr_engine {
 ##                                    MAIN                                    ##
 ################################################################################
 my $rs = undef;
+
 $rs = dmn_mngr_start_up();
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
 	dmn_mngr_shut_down();
 	exit 1;
 }
+
 $rs = dmn_mngr_engine();
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
 	dmn_mngr_shut_down();
 	exit 1;
 }
+
 $rs = dmn_mngr_shut_down();
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
 	exit 1;
 }
+
 exit 0;

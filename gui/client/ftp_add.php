@@ -431,12 +431,12 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	if (!isset($_POST['pass']) || empty($_POST['pass'])
 		|| !isset($_POST['pass_rep'])
 		|| $_POST['pass_rep'] === '') {
-		set_page_message(tr('Password data is missing!'));
+		set_page_message(tr('Password is missing!'));
 		return;
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords differ from the another!'));
+		set_page_message(tr('Entered passwords do not match!'));
 		return;
 	}
 

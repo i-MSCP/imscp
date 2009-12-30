@@ -6,12 +6,17 @@ ispCP ω 1.1.0 Changelog
 		* Fixed #2136: Port 465 is missing in ispcp_network daemon
 
 2009-12-28 Marc Pujol
-	- GUI:
-		* Fixed #2135: open_basedir errors in net2ftp
+        - GUI:
+                * Fixed #2135: open_basedir errors in net2ftp
 
 2009-12-28 Laurent Declercq
 	- GUI:
 		* Fixed PHP Notice: "Undefined offset: 2 in /var/www/ispcp/gui/include/input-checks.php on line 255"
+
+2009-12-27 Benedikt Heintel
+        - LANGUAGES:
+                * Updated Polish
+                * Updated Swedish
 
 2009-12-24 Michael Johnson
 	- CONFIGS:
@@ -19,6 +24,8 @@ ispCP ω 1.1.0 Changelog
 
 2009-12-24 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.3-1
+	- GUI:
+		* Added Demo Translation Strings
 
 2009-12-23 Marc Pujol
 	- BACKEND:
@@ -27,6 +34,7 @@ ispCP ω 1.1.0 Changelog
 2009-12-23 Laurent Declercq
 	- GUI:
 		* Updated TLDs list
+		* Fixed #2113: Wrong SQL syntax in /var/www/ispcp/gui/client/hosting_plan_update.php (Line: 451)
 	- CONFIGS:
 		* The file ispcp.conf should be readable by everyone. (Should be changed in 1.0.4)
 		* Added PMA_USER for recovery process during update
@@ -155,6 +163,10 @@ ispCP ω 1.1.0 Changelog
 2009-12-11 Benedikt Bauer
 	- DISTS:
 		* Updated Ubuntu packages
+
+2009-12-12 Benedikt Heintel
+	- ENGINE:
+		* Fixed #266: Default 404 page when disable domain
 
 2009-12-11 Laurent Declercq
 	- GUI:

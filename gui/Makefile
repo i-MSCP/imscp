@@ -49,6 +49,7 @@ install:
 	cp -dR ./include $(SYSTEM_GUI_ROOT)
 
 	cp -dR ./domain_default_page $(SYSTEM_GUI_ROOT)
+	cp -dR ./domain_disable_page $(SYSTEM_GUI_ROOT)
 	cp -dR ./errordocs $(SYSTEM_GUI_ROOT)
 	cp -dR ./themes $(SYSTEM_GUI_ROOT)
 	cp -dR ./tools $(SYSTEM_GUI_ROOT)

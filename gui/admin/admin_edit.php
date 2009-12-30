@@ -331,7 +331,10 @@ $tpl->assign(
 		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? 'selected="selected"' : ''),
 		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? 'selected="selected"' : ''),
 		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : ''),
-		'EDIT_ID'						=> $edit_id
+		'EDIT_ID'						=> $edit_id,
+		// The entries below are for Demo versions only
+		'PASSWORD_DISABLED'				=> tr('Password change is disabled!'),
+		'DEMO_VERSION'					=> tr('Demo Version!')
 	)
 );
 
