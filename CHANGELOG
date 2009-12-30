@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-30 Christian Hernmarck
+	- GUI:
+		* Fixed #2139: HY93 (or similar) error when deleting domain with alias
+
 2009-12-29 Christian Hernmarck
 	- CONFIGS:
 		* Fixed #2136: Port 465 is missing in ispcp_network daemon
