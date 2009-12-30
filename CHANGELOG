@@ -4,6 +4,7 @@ ispCP ω 1.0.4 Changelog
 2009-12-30 Christian Hernmarck
 	- GUI:
 		* Fixed #2139: HY93 (or similar) error when deleting domain with alias
+		* Fixed #2138: Deny to create the subdomains "backups" and "phptmp"
 
 2009-12-29 Christian Hernmarck
 	- CONFIGS:

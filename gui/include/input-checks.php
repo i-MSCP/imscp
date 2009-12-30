@@ -914,7 +914,7 @@ function chk_mountp($data, $max_char = 50, $min_char = 2) {
  */
 function validates_mpoint($mpoint, $max_token_char = null) {
 
-	$pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backup|cgi-bin|errors|logs)[/]?))|.+/|.*//.*)$@';
+	$pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backups|cgi-bin|errors|logs|phptmp)[/]?))|.+/|.*//.*)$@';
 
 	if (preg_match($pattern, $mpoint)) return false;
 
