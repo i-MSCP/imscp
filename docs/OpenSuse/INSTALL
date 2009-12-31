@@ -80,7 +80,7 @@ First, make sure you are logged in as root.
 
 3. Install the required repositories:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4):
 	# sh ./docs/OpenSuse/opensuse111-repositories add
 
 	For OpenSuse 11.2:
@@ -90,7 +90,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4):
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
 	For OpenSuse 11.2:
@@ -101,7 +101,7 @@ Note: For all questions, answer "a" (trust always).
 	First, update CPAN:
 	# cpan CPAN
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3)
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4)
 	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
 	For OpenSuse 11.2:
@@ -173,7 +173,7 @@ Make sure you are logged in as root and MySQL is running.
 
 3. Install the required repositories:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4):
 	# sh ./docs/OpenSuse/opensuse111-repositories add
 
 	For OpenSuse 11.2:
@@ -183,7 +183,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4):
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
 	For OpenSuse 11.2:
@@ -194,7 +194,7 @@ Note: For all questions, answer "a" (trust always).
 	First, update CPAN:
 	# cpan CPAN
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.3):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.4):
 	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
 	For OpenSuse 11.2:

@@ -4,6 +4,8 @@ ispCP ω 1.0.4 Changelog
 2009-12-31 Laurent Declercq
 	CONFIGS:
 		* Fixed #2132: All ispCP init scripts must be written in Shell and use only POSIX features
+	DOCS:
+		* Updated OpenSUSE INSTALL file
 
 2009-12-30 Christian Hernmarck
 	- GUI:
