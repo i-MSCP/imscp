@@ -48,16 +48,12 @@ START=1
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)
-SERVICES=(
-	# HTTP(S)
-		 80	443
-	# POP3(S)
-		110	995
-	# IMAP4(S)
-		143	993
-	# SMTP(S)/SUBMIT
-		 25	465	587
-)
+#
+# HTTP(S): 80 443
+# POP3(S): 110 995
+# IMAP4(S)): 143 993
+# MAIL(S): 25 465 587
+SERVICES="80 443 110 143 25 465 587 995 993"
 
 # Read config file if it is present.
 if [ -r /etc/default/$NAME ]; then
@@ -69,8 +65,7 @@ if [ $START -eq 0 ]; then
 	exit 0
 fi
 
-add_rules()
-{
+add_rules() {
 	${IPTABLES} -N ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 	${IPTABLES} -N ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 
@@ -79,7 +74,7 @@ add_rules()
 	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 
 	# Services from matrix
-	for PORT in ${SERVICES[@]}; do
+	for PORT in $SERVICES; do
 		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
 		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 	done
@@ -93,8 +88,7 @@ add_rules()
 	touch $LFILE
 }
 
-remove_rules()
-{
+remove_rules() {
 	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 	${IPTABLES} -F ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
@@ -106,11 +100,11 @@ remove_rules()
 	rm $LFILE
 }
 
-add_interfaces(){
+add_interfaces() {
 	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
 
-remove_interfaces(){
+remove_interfaces() {
 	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
 

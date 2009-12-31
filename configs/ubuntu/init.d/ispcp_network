@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control System
 # Copyright (c) 2007 by ispCP
@@ -53,16 +53,13 @@ START=1
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)
-SERVICES=(
-	# HTTP(S)
-		 80	443
-	# POP3(S)
-		110	995
-	# IMAP4(S)
-		143	993
-	# SMTP(S)/SUBMIT
-		 25	465	587
-)
+#
+# HTTP(S): 80 443
+# POP3(S): 110 995
+# IMAP4(S)): 143 993
+# MAIL(S): 25 465 587
+SERVICES="80 443 110 143 25 465 587 995 993"
+
 
 # Debian LSB extensions (will be used if init-functions doesn't override them):
 log_daemon_msg() {
@@ -72,9 +69,11 @@ log_daemon_msg() {
 		log_success_msg "${1:-}"
 	fi
 }
+
 log_end_msg() {
 	local status="$1"
 }
+
 log_progress_msg () {
 	log_success_msg " $@"
 }
@@ -103,7 +102,7 @@ add_rules() {
 	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "$LOGFILE"
 
 	# Services from matrix
-	for PORT in ${SERVICES[@]}; do
+	for PORT in $SERVICES; do
 		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
 		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 	done
@@ -128,11 +127,11 @@ remove_rules() {
 	rm $LFILE
 }
 
-add_interfaces(){
+add_interfaces() {
 	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
 
-remove_interfaces(){
+remove_interfaces() {
 	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop &>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
 

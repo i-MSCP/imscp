@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/local/bin/sh
 
 echo "Starting ispcp_network: currently not ported to BSD"
 exit 0
@@ -50,16 +50,12 @@ ${RMMOD} ipchains 1>/tmp/ispcp_network.log 2>/tmp/ispcp_network.err.log
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)
-SERVICES=(
-	# HTTP(S)
-		 80	443
-	# POP3(S)
-		110	995
-	# IMAP4(S)
-		143	993
-	# SMTP(S)/SUBMIT
-		 25	465	587
-)
+#
+# HTTP(S): 80 443
+# POP3(S): 110 995
+# IMAP4(S)): 143 993
+# MAIL(S): 25 465 587
+SERVICES="80 443 110 143 25 465 587 995 993"
 
 #
 # firewall commet; if u have some kind of firewall
@@ -80,7 +76,9 @@ ${IPTABLES} -I INPUT
 ${IPTABLES} -I OUTPUT
 
 # Services from matrix
-for PORT in ${SERVICES[@]}; do
+for PORT in $SERVICES; do
 	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
 	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 done
+
+exit 0

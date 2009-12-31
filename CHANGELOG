@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2009-12-31 Laurent Declercq
+	CONFIGS:
+		* Fixed #2132: All ispCP init scripts must be written in Shell and use only POSIX features
+
 2009-12-30 Christian Hernmarck
 	- GUI:
 		* Fixed #2139: HY93 (or similar) error when deleting domain with alias
@@ -19,14 +23,15 @@ ispCP ω 1.0.4 Changelog
                 * Updated Polish
                 * Updated Swedish
 
-2009-12-23 Benedikt Heintel
+2009-12-24 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.3-1
 	- GUI:
 		* Added Demo Translation Strings
-		
+
 2009-12-23 Marc Pujol
 	- BACKEND:
 		* Fixed #2122: Critical security bug exploitable by local users
-	
+
 2009-12-23 Laurent Declercq
 	- GUI:
 		* Updated TLDs list
