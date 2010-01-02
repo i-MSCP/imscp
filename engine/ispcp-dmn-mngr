@@ -230,7 +230,7 @@ sub dmn_add_named_cfg_data {
 
 	# Removes the entries related to the domain if it exist
 	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
-	return $rs if ($rs != 0 && != -5);
+	return $rs if ($rs != 0 && $rs != -5);
 
 	# Construct the replacement
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
@@ -406,15 +406,15 @@ sub dmn_del_named_cfg_data {
 
 	# Removes the entries related to the domain if it exist
 	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
-	return $rs if ($rs != 0 && != -5);
+	return $rs if ($rs != 0 && $rs != -5);
 
 	# Avoid work if the entries doesn't exist
-	if($rs = -5) {
+	if($rs == -5) {
 		push_el(
 			\@main::el,
 			'dmn_del_named_cfg_data()',
 			'WARNING: Entries were not found ! Aborting...'
-		)
+		);
 
 		return 0;
 	}
@@ -2223,6 +2223,7 @@ sub dmn_change_httpd_file_data {
 		$rs = make_dir("$www_dir/$dmn_name/phptmp", $sys_user, $sys_group, 0770);
 		return $rs if ($rs != 0);
 	}
+
 	if(! -d "$www_dir/$dmn_name/backups") {
 		$rs = make_dir("$www_dir/$dmn_name/backups", $sys_user, $httpd_gid, 0770);
 		return $rs if ($rs != 0);
@@ -2231,10 +2232,12 @@ sub dmn_change_httpd_file_data {
 	#
 	# Default error pages
 	#
+
 	if(! -d "$www_dir/$dmn_name/errors") {
 		$rs = make_dir("$www_dir/$dmn_name/errors", $sys_user, $sys_group, 0775);
 		return $rs if ($rs != 0);
 	}
+
 	if(! -d "$www_dir/$dmn_name/errors/inc") {
 		$rs = make_dir(
 			"$www_dir/$dmn_name/errors/inc",
@@ -2244,6 +2247,7 @@ sub dmn_change_httpd_file_data {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	my @errordocs = (401, 403, 404, 500, 503);
 	my ($i, $key) = ('', '');
 
@@ -2296,7 +2300,7 @@ sub dmn_change_httpd_file_data {
 	#
 
 	if (! (-e "$starter_dir/$dmn_name/php5/php.ini")) {
-		my $ini_tpl     = undef;
+		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -2417,24 +2421,28 @@ sub dmn_del_httpd_file_data {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log") {
 		($rs, $rdata) = del_file(
 			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log"
 		);
 		return $rs if ($rs != 0);
 	}
+
 	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log") {
 		($rs, $rdata) = del_file(
 			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log"
 		);
 		return $rs if ($rs != 0);
 	}
+
 	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-combined.log") {
 		($rs, $rdata) = del_file(
 			"$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-combined.log"
 		);
 		return $rs if ($rs != 0);
 	}
+
 	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-traf.log") {
 		($rs, $rdata) = del_file(
 			"$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-traf.log"

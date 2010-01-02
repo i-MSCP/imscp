@@ -35,9 +35,10 @@
 
 BEGIN {
 
-	my @needed = (strict,
-				  warnings,
-				  IO::Socket,
+	my @needed = (
+					'strict',
+				  'warnings',
+				  'IO::Socket',
 				  DBI,
 				  DBD::mysql,
 				  MIME::Entity,

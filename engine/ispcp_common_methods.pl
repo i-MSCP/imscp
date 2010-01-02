@@ -32,8 +32,8 @@
 BEGIN {
 
 	my @needed 	= (
-		strict,
-		warnings,
+		'strict',
+		'warnings',
 		IO::Socket,
 		DBI,
 		DBD::mysql,
@@ -179,7 +179,7 @@ sub dump_el {
 
 	if ($fname ne 'stdout' && $fname ne 'stderr') {
 		$res = open(FP, ">", $fname);
-		return 0 if(!defined($res);
+		return 0 if(!defined($res));
 	}
 
 	my $el_data = undef;

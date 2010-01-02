@@ -5,7 +5,7 @@
  * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		Laurent Declercq <l.declercq@nuxwin.com>
+ * @author 		Laurent Declercq <laurent.declercq@ispcp.net>
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License

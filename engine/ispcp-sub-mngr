@@ -2409,7 +2409,7 @@ sub sub_del_proftpd_cfg_data {
 ##
 ## Should be documented
 ##
-sub sub_add_proftpd_data
+sub sub_add_proftpd_data {
 
 	push_el(\@main::el, 'sub_add_proftpd_data()', 'Starting...');
 

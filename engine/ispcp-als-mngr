@@ -274,7 +274,7 @@ sub als_add_named_cfg_data {
 
 	# Removes the entries related to the domain if it exist
 	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
-	return $rs if ($rs != 0 && != -5);
+	return $rs if ($rs != 0 && $rs != -5);
 
 	# Construct the replacement
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
@@ -450,15 +450,15 @@ sub als_del_named_cfg_data {
 
 	# Removes the entries related to the domain if it exist
 	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
-	return $rs if ($rs != 0 && != -5);
+	return $rs if ($rs != 0 && $rs != -5);
 
 	# Avoid work if the entries doesn't exist
-	if($rs = -5) {
+	if($rs == -5) {
 		push_el(
 			\@main::el,
 			'als_del_named_cfg_data()',
 			'WARNING: Entries were not found ! Aborting...'
-		)
+		);
 
 		return 0;
 	}
