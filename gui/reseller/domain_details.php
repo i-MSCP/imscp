@@ -60,6 +60,7 @@ $tpl->assign(
 		'TR_STATUS'				=> tr('Status'),
 		'TR_PHP_SUPP'			=> tr('PHP support'),
 		'TR_CGI_SUPP'			=> tr('CGI support'),
+		'TR_BACKUP_SUPPORT'		=> tr('Backup support'),
 		'TR_DNS_SUPP'			=> tr('Manual DNS support (EXPERIMENTAL)'),
 		'TR_MYSQL_SUPP'			=> tr('MySQL support'),
 		'TR_TRAFFIC'			=> tr('Traffic in MB'),
@@ -261,6 +262,21 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$res1 = exec_query($sql, $query, array($domain_id));
 	$alias_num_data = $res1->FetchRow();
 
+	// Check if Backup support is available for this user
+	switch($data['allowbackup']){
+    case "full":
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full'))); 
+        break;
+    case "sql":
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL'))); 
+        break;
+    case "dmn":
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain'))); 
+        break;
+    default:
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
+    }
+	
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(

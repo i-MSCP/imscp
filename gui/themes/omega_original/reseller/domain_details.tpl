@@ -68,6 +68,11 @@
                       <td class="content2" width="193">{TR_CGI_SUPP}</td>
                       <td class="content" colspan="2">{VL_CGI_SUPP}</td>
                     </tr>
+					<tr>
+					  <td width="25">&nbsp;</td>
+					  <td class="content2" width="193">{TR_BACKUP_SUPPORT}</td>
+					  <td class="content" colspan="2">{VL_BACKUP_SUPPORT}</td>
+					</tr>
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content2" width="193">{TR_DNS_SUPP}</td>
