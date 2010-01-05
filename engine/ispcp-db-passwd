@@ -1,8 +1,8 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -37,13 +37,13 @@ use warnings;
 
 sub db_passwd_start_up {
 	my ($rs, $rdata) = (undef, undef);
-	
+
 	push_el(\@main::el, 'db_passwd_start_up()', 'Starting...');
-	
+
 	# config check;
 	$rs = get_conf();
 	return $rs if ($rs != 0);
-	
+
 	push_el(\@main::el, 'db_passwd_start_up()', 'Ending...');
 	return 0;
 }
@@ -51,9 +51,9 @@ sub db_passwd_start_up {
 sub get_user_pass {
 	my ($check_with) = @_;
 	my ($rs, $rdata, $upass, $upass_check, $upass_current) = (undef, undef, undef, undef, undef);
-	
+
 	push_el(\@main::el, 'get_user_pass()', 'Starting...');
-	
+
 	if ($check_with eq '') {
 		$upass = read_password('Please Enter Your New Database Password:');
 		if ($upass eq '') {
@@ -84,7 +84,7 @@ sub get_user_pass {
 			return (0, $upass);
 		}
 	}
-	
+
 	push_el(\@main::el, 'get_user_pass()', 'Ending...');
 	return 0;
 }
@@ -97,7 +97,7 @@ $rs = db_passwd_start_up();
 if ($rs != 0) {
 	my $el_data = pop_el(\@main::el);
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-	
+
 	print STDERR "$msg\n";
 	exit 1;
 }
@@ -117,7 +117,7 @@ if ($current_db_pass eq '') { # We have not DATABASE password;
 	if ($rs != 0) {
 		my $el_data = pop_el(\@main::el);
 		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-		
+
 		print STDERR "$msg\n";
 		exit 1;
 	}
@@ -126,13 +126,13 @@ if ($current_db_pass eq '') { # We have not DATABASE password;
 
 if ($rs == 0) {
 	my $new_db_pass = $rdata;
-	
+
 	if ($new_db_pass ne '') {
 		($rs, $rdata) = encrypt_db_password($new_db_pass);
 		if ($rs != 0) {
 			my $el_data = pop_el(\@main::el);
 			my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-			
+
 			print STDERR "$msg\n";
 			exit 1;
 		}
@@ -141,7 +141,7 @@ if ($rs == 0) {
 	if ($rs != 0) {
 		my $el_data = pop_el(\@main::el);
 		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-		
+
 		print STDERR "$msg\n";
 		exit 1;
 	}
@@ -149,9 +149,9 @@ if ($rs == 0) {
 	if ($rs != 0) {
 		my $el_data = pop_el(\@main::el);
 		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-		
+
 		print STDERR "$msg\n";
 		exit 1;
-	}	
+	}
 	print STDOUT "Database Password Updated Successfully!\n";
 }

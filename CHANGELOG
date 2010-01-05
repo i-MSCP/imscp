@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-04 Christian Hernmarck
+	- GUI:
+		* Fixed: #2142 "Subdomain add Bug" (problem of ie caused by wrong html in tpl)
+
 2010-01-02 Peter Ziergöbe
 	GUI:
 		* FIXED #2123: Add "Backup Support" in ../reseller/domain_details.php and in ../admin/domain_details.php
