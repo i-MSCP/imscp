@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -163,7 +163,7 @@ function check_user_pass($crdata, $data) {
 
 /**
  * Generates random password of size specified in Config Var 'PASSWD_CHARS'
- * 
+ *
  * @return String password
  */
 function _passgen() {
@@ -183,7 +183,7 @@ function _passgen() {
 
 /**
  * Generates random password matching the chk_password criteria
- * 
+ *
  * @see _passgen()
  * @return String password
  */
@@ -200,19 +200,19 @@ function passgen() {
 /**
  * Translates -1, 0 or value string into human readable string
  * @version 1.1
- * 
+ *
  * @param Integer input variable to be translated
  * @param boolean calculate value in different unit (default false)
  * @param String unit to calclulate to (default 'MB')
- * @return String 
+ * @return String
  */
 function translate_limit_value($value, $autosize = false, $to = 'MB') {
 	switch ($value) {
-		case -1: 
+		case -1:
 			return tr('disabled');
-		case  0: 
+		case  0:
 			return tr('unlimited');
-		default: 
+		default:
 			return (!$autosize) ? $value : sizeit($value, $to);
 	}
 }

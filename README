@@ -37,22 +37,22 @@ send us your install instructions.
 LICENSING
 ---------
 
-ispCP was originally developed by moleSoftware http://molesoftware.com/ under 
-the Name VHCS. After getting Open Source it was released under the MPL (Mozilla 
+ispCP was originally developed by moleSoftware http://molesoftware.com/ under
+the Name VHCS. After getting Open Source it was released under the MPL (Mozilla
 Public License) Version 1.1.
 
-The icons used by the omega_original theme for ispCP are copyrighted 2006-2007 
-by Everaldo Coelho <everaldo@everaldo.com> and released under the Lesser General 
+The icons used by the omega_original theme for ispCP are copyrighted 2006-2007
+by Everaldo Coelho <everaldo@everaldo.com> and released under the Lesser General
 Public License (LGPL) license.
 
 The maillogconvert.pl script is from awstats which is licensed under the GNU
 General Public License version 2 and states the following:
 Copyright (C) 2000-2007 - Laurent Destailleur - eldy@users.sourceforge.net
 
-Unless otherwise stated all code is licensed under the MPL 1.1 and has a 
-Copyright 2006-2009 by ispCP.
+Unless otherwise stated all code is licensed under the MPL 1.1 and has a
+Copyright 2006-2010 by ispCP.
 
-Please have a look at these Licenses if interested. They are shipped with this 
+Please have a look at these Licenses if interested. They are shipped with this
 release in the next files:
 
 LICENSE-MPL1.1

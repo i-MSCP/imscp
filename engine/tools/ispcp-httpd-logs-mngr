@@ -1,8 +1,8 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -314,23 +314,23 @@ sub copy_subdomain_alias_logs {
     push_el(\@main::el, 'copy_subdomain_alias_logs()', 'Starting...');
 
     my $sql = "
-		select 
+		select
 			t1.subdomain_alias_name,
 			t2.alias_mount,
 			t2.alias_name,
 			t3.domain_name,
 			t3.domain_uid
-		from 
+		from
 			subdomain_alias as t1,
 			domain_aliasses as t2,
 			domain as t3
-		where 
+		where
 			t1.alias_id = t2.alias_id
-		and 
+		and
 			t2.domain_id = t3.domain_id
-		and 
+		and
 			t1.subdomain_alias_status = 'ok'
-		order by 
+		order by
 			t1.subdomain_alias_id;
      ";
 

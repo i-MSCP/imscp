@@ -46,7 +46,13 @@ lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache    unix  -       -       -       -       1       scache
 # ====================================================================
-# ISPCP ω OMEGA configuration
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+#
+# @copyright	2001-2006 by moleSoftware GmbH
+# @copyright	2006-2010 by ispCP | http://isp-control.net
+# @version		SVN: $Id$
+# @link			http://isp-control.net
+# @author		ispCP Team
 # ====================================================================
 # for AMaViS and spam filter support
 amavis    unix  -       -       n       -       2       smtp
