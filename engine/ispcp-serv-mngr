@@ -57,9 +57,9 @@ sub serv_mngr_start_up {
 	}
 
 	# config check;
-
-	$rs = get_conf();
-	return $rs if ($rs != 0);
+	# Already done in common file
+	#$rs = get_conf();
+	#return $rs if ($rs != 0);
 
 	$main::changed_dmn_cnt = $ARGV[0]."";
 
