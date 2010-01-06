@@ -113,7 +113,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '26'),
+('DATABASE_REVISION', '27'),
 ('CRITICAL_UPDATE_REVISION', '5');
 
 -- --------------------------------------------------------
@@ -511,6 +511,7 @@ CREATE TABLE `reseller_props` (
   `max_disk_amnt` int(11) default NULL,
   `current_traff_amnt` int(11) default NULL,
   `max_traff_amnt` int(11) default NULL,
+  `support_system` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
   `customer_id` varchar(200) collate utf8_unicode_ci default NULL,
   `reseller_ips` text collate utf8_unicode_ci,
   UNIQUE KEY `id` (`id`)

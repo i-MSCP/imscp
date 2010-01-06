@@ -97,11 +97,11 @@ if ((Config::get('MAINTENANCEMODE')
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
 			// @todo: make this configurable by ispcp-lib
-			'TR_SSL_LINK'				=> isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
-			'TR_WEBMAIL_SSL_LINK'       => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/webmail" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/webmail",
-            'TR_FTP_SSL_LINK'           => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/ftp" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/ftp",
-            'TR_PMA_SSL_LINK'           => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/pma" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/pma",
-			'TR_SSL_IMAGE'				=> isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
+			'TR_SSL_LINK'               => isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] . 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
+			'TR_WEBMAIL_SSL_LINK'       => "webmail",
+			'TR_FTP_SSL_LINK'           => "ftp",
+			'TR_PMA_SSL_LINK'           => "pma",
+			'TR_SSL_IMAGE'              => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 			'TR_SSL_DESCRIPTION'		=> !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
 		)
 	);

@@ -37,6 +37,7 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
 			`domain_uid`,
 			`domain_created_id`,
 			`domain_created`,
+			`domain_expires`,
 			`domain_last_modified`,
 			`domain_mailacc_limit`,
 			`domain_ftpacc_limit`,
@@ -69,6 +70,7 @@ SQL_QUERY;
 			$rs->fields['domain_uid'],
 			$rs->fields['domain_created_id'],
 			$rs->fields['domain_created'],
+			$rs->fields['domain_expires'],
 			$rs->fields['domain_last_modified'],
 			$rs->fields['domain_mailacc_limit'],
 			$rs->fields['domain_ftpacc_limit'],
@@ -502,7 +504,18 @@ SQL_QUERY;
 	if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
 	if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
 
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = '?'
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -614,7 +627,18 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = '?'
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 

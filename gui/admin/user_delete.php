@@ -104,11 +104,11 @@ function delete_domain($domain_id) {
 		user_goto('manage_users.php');
 	}
 
-	$domain_admin_id = $data['domain_admin_id'];
-	$domain_name = $data['domain_name'];
-	$domain_uid = $data['domain_uid'];
-	$domain_gid = $data['domain_gid'];
-	$reseller_id = $data['domain_created_id'];
+	$domain_admin_id 	= $data['domain_admin_id'];
+	$domain_name 		= $data['domain_name'];
+	$domain_uid 		= $data['domain_uid'];
+	$domain_gid 		= $data['domain_gid'];
+	$reseller_id 		= $data['domain_created_id'];
 
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
 
@@ -182,7 +182,7 @@ function delete_domain($domain_id) {
 
 	// Delete the quota section:
 	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
-	exec_query($sql, $query, array($domain_admin_id));
+	exec_query($sql, $query, array($domain_name));
 
 	// Remove support tickets:
 	$query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";

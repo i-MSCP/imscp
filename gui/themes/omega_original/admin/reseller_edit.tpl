@@ -144,6 +144,14 @@
 													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput" />
 												</td>
 											</tr>
+											<tr>
+												<td width="25">&nbsp;</td>
+												<td class="content2" width="200">{TR_SUPPORT_SYSTEM}</td>
+												<td class="content">
+													<input name="support_system" value="yes" {SUPPORT_YES} type="radio">{TR_YES}
+													<input name="support_system" value="no" {SUPPORT_NO} type="radio">{TR_NO}
+												</td>
+											</tr>
 									<!--
 											<tr>
 												<td class="content2" width="175">{TR_PHP}</td>
