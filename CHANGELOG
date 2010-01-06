@@ -6,6 +6,7 @@ ispCP ω 1.0.4 Changelog
 		* Fixed #1121: Support System (Patch by Sebastian Sellmeyer)
 		* Fixed #2093: The main index.php page doesn't deal properly with ssl controlpannel (Patch by aseques)
 		* Fixed #2096: Fix for iptables accounting in srv-traff (Patch by aseques)
+		* Fixed #2143: When deleting the user the entry in quotalimits remains
 
 2010-01-06 Peter Ziergöbel
 	- GUI:

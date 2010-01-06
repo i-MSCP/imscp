@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -104,11 +104,11 @@ function delete_domain($domain_id) {
 		user_goto('manage_users.php');
 	}
 
-	$domain_admin_id = $data['domain_admin_id'];
-	$domain_name = $data['domain_name'];
-	$domain_uid = $data['domain_uid'];
-	$domain_gid = $data['domain_gid'];
-	$reseller_id = $data['domain_created_id'];
+	$domain_admin_id 	= $data['domain_admin_id'];
+	$domain_name 		= $data['domain_name'];
+	$domain_uid 		= $data['domain_uid'];
+	$domain_gid 		= $data['domain_gid'];
+	$reseller_id 		= $data['domain_created_id'];
 
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
 
@@ -182,7 +182,7 @@ function delete_domain($domain_id) {
 
 	// Delete the quota section:
 	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
-	exec_query($sql, $query, array($domain_admin_id));
+	exec_query($sql, $query, array($domain_name));
 
 	// Remove support tickets:
 	$query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";

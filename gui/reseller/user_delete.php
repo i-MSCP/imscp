@@ -59,7 +59,7 @@ if ($res->RowCount() !== 1) {
 	user_goto('users.php');
 } else {
 	// delete the user
-	rm_rf_user_account ($usid);
+	rm_rf_user_account($usid);
 	send_request();
 	set_page_message(tr('User terminated!'));
 	user_goto('users.php');
